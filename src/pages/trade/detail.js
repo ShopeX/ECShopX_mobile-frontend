@@ -52,7 +52,6 @@ export default class TradeDetail extends Component {
 创建时间：${info.created_time_str}
 `
     await copyText(msg)
-    S.toast('已复制信息')
   }
 
   async handleClickBtn (type) {

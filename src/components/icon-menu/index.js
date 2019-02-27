@@ -12,7 +12,11 @@ export default class IconMenu extends Component {
   static defaultProps = {
     title: '',
     onClick: () => {},
-    size: 32
+    size: 32,
+    img: '',
+    icon: '',
+    iconStyle: '',
+    iconPrefixClass: 'sp-icon'
   }
 
   handleClick = () => {
@@ -27,18 +31,18 @@ export default class IconMenu extends Component {
   }
 
   render () {
-    const { img, icon, title, size, className } = this.props
+    const { img, icon, iconStyle, iconPrefixClass, title, size, className } = this.props
 
     return (
       <View
-        className={`sp-icon-menu ${className || ''}`}
+        className={`sp-iconmenu ${className || ''}`}
         onClick={this.handleClick}
       >
-        <View className='sp-icon-menu__icon'>
-          {img && (<Image mode='aspectFill' className='sp-icon-menu__img' src={img} />)}
-          {icon && (<AtIcon value={icon} size={size} />)}
+        <View className='sp-iconmenu__icon'>
+          {img && (<Image mode='aspectFill' className='sp-iconmenu__img' src={img} />)}
+          {icon && (<AtIcon value={icon} prefixClass={iconPrefixClass} size={size} />)}
         </View>
-        <Text className='sp-icon-menu__title'>{title}</Text>
+        <Text className='sp-iconmenu__title'>{title}</Text>
       </View>
     )
   }

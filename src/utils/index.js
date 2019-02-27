@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro'
 import qs from 'qs'
 import moment from 'moment'
 import copy from 'copy-to-clipboard'
+import S from '@/spx'
 
 export { default as log } from './log'
 
@@ -68,15 +69,18 @@ export function formatTime (time, formatter = 'YYYY-MM-DD') {
   return moment(time).format(formatter)
 }
 
-export function copyText (text) {
+export function copyText (text, msg = '内容已复制') {
   return new Promise((resolve, reject) => {
-    if (Taro.getEnv() === Taro.ENV_TYPE.WEAPP) {
+    if (process.env.TARO_ENV === 'weapp') {
       Taro.setClipboardData({
         data: text,
         success: resolve
       })
-    } else if (copy(Text)) {
-      resolve(text)
+    } else {
+      if (copy(Text)) {
+        S.toast(msg)
+        resolve(text)
+      }
     }
   })
 }

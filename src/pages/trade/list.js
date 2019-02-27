@@ -17,11 +17,11 @@ export default class TradeList extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '全部'},
-        {title: '待付款'},
-        {title: '待发货'},
-        {title: '待收货'},
-        {title: '待评价'}
+        {title: '全部', status: ''},
+        {title: '待付款', status: 'WAIT_BUYER_PAY'},
+        {title: '待发货', status: 'WAIT_SELLER_SEND_GOODS'},
+        {title: '待收货', status: 'WAIT_BUYER_CONFIRM_GOODS'},
+        {title: '待评价', status: 'WAIT_RATE'}
       ],
       list: [],
       isLoading: false
@@ -29,14 +29,28 @@ export default class TradeList extends Component {
   }
 
   componentDidMount () {
-    this.nextPage()
+    const { status } = this.$router.params
+    const tabIdx = this.state.tabList.findIndex(tab => tab.status === status)
+
+    if (tabIdx >= 0) {
+      this.setState({
+        curTabIdx: tabIdx
+      }, () => {
+        this.nextPage()
+      })
+    } else {
+      this.nextPage()
+    }
   }
 
   async fetch (params) {
     this.setState({ isLoading: true })
-    const { curTabIdx } = this.state
-    const { list, total_count: total } = await api.trade.list({ status: curTabIdx, ...params })
-
+    const { tabList, curTabIdx } = this.state
+    params = {
+      ...params,
+      status: tabList[curTabIdx].status
+    }
+    const { list, total_count: total } = await api.trade.list(params)
     const nList = this.state.list.concat(list)
 
     this.setState({

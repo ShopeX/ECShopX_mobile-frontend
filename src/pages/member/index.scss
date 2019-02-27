@@ -2,13 +2,42 @@
 
 .page-member-index {
   padding-bottom: $tabbar-height;
+  .sp-icon-pay, .sp-icon-clock, .sp-icon-baoguo, .sp-icon-comment {
+    @include iconfont-gradient(linear-gradient(90deg, #FAA761, #FA3515));
+  }
+  .sp-icon-star, .sp-icon-thumb {
+    @include iconfont-gradient(linear-gradient(270deg, #AF6FF7, #CD3AE3));
+  }
+  .sp-icon-money, .sp-icon-hongbao {
+    @include iconfont-gradient(linear-gradient(90deg, #FAD346, #F7B11C));
+  }
+  .sp-icon-setting, .sp-icon-help {
+    @include iconfont-gradient(linear-gradient(103deg, #7FD5FA, #2580FC));
+  }
+  .sp-icon-location {
+    @include iconfont-gradient(linear-gradient(270deg, #2757C5, #7298FD));
+  }
+  .sp-icon-qrcode {
+    @include iconfont-gradient(linear-gradient(90deg, #B4EC51, #429321));
+  }
 }
 
 .member-index {
   &__hd {
     background: #FA3515;
-    background: linear-gradient(180deg,rgba(250,148,97,1) 0%,rgba(250,53,21,1) 100%);
+    background: linear-gradient(180deg,rgba(#FA9461, 1) 0%,rgba(#FA3515, 1) 100%);
     height: 280px;
+    &:before {
+      transform: rotate(40deg) translate3D(0, -72%, 0);
+      background:linear-gradient(348deg,rgba(#fff, 0) 0%,rgba(#fff, 1) 100%);
+      content: '';
+      width: 300px;
+      height: 300px;
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
   &__bd {
     position: relative;

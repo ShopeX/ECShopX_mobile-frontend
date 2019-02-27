@@ -21,10 +21,10 @@ export default class TabBar extends Component {
     this.state = {
       current: 0,
       tabList: [
-        { title: '首页', iconType: 'shopping-bag' },
-        { title: '分类', iconType: 'camera' },
-        { title: '购物车', iconType: 'folder', text: this.props.cartTotalCount || '', max: '99' },
-        { title: '会员', iconType: 'folder' }
+        { title: '首页', iconType: 'shop', iconPrefixClass: 'sp-icon' },
+        { title: '分类', iconType: 'menu', iconPrefixClass: 'sp-icon' },
+        { title: '购物车', iconType: 'cart', text: this.props.cartTotalCount || '', max: '99', iconPrefixClass: 'sp-icon' },
+        { title: '会员', iconType: 'user', iconPrefixClass: 'sp-icon' }
       ]
     }
   }

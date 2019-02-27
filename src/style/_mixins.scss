@@ -109,3 +109,11 @@
     }
   }
 }
+
+@mixin iconfont-gradient ($background) {
+  &:before {
+    background: $background;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}

@@ -1,17 +1,19 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.scss'
+import S from '@/spx'
 
 export default class Index extends Component {
-
   config = {
     navigationBarTitleText: '首页'
   }
 
   componentWillMount () {
-    Taro.redirectTo({
-      url: `/pages/trade/detail?id=123`
-    })
+    if (process.env.NODE_ENV === 'development') {
+      Taro.redirectTo({
+        url: '/pages/member/index'
+      })
+    }
   }
 
   componentDidMount () { }
