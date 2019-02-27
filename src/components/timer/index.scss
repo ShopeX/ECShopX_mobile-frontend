@@ -1,8 +1,11 @@
 @import '../../style/imports';
 
 .mobile-timer {
-  color: $color-red !important;
+  color: $color-brand-primary !important;
   font-size: $font-size-small !important;
+  background-color: #F4F4F4;
+  border-radius: 32px;
+  padding: 12px 26px !important;
   &__counting {
     color: $color-gray !important;
   }

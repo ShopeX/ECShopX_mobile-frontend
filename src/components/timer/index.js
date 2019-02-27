@@ -11,7 +11,10 @@ export default class Timer extends Component {
   static defaultProps = {
     duration: 60,
     defaultMsg: '发送验证码',
-    msg: '重新发送'
+    msg: '重新发送',
+    onStart: () => {},
+    onStop: () => {},
+    onUpdateTimer: () => {}
   }
 
   constructor (props) {
@@ -60,6 +63,8 @@ export default class Timer extends Component {
         }
       }, 1000)
     }
+console.info(this.props.onStart, this.props)
+    debugger
 
     if (this.props.onStart(this.state.countDur) !== false) {
       next()
