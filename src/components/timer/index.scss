@@ -1,0 +1,9 @@
+@import '../../style/imports';
+
+.mobile-timer {
+  color: $color-red !important;
+  font-size: $font-size-small !important;
+  &__counting {
+    color: $color-gray !important;
+  }
+}

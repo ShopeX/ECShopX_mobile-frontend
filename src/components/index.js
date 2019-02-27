@@ -9,6 +9,7 @@ export { default as AddressPicker } from './address/picker'
 export { default as TabBar } from './tab-bar'
 
 export { default as SearchPanel } from './search'
+export { default as Timer } from './timer'
 
 export { default as SpCheckbox } from './checkbox'
 export { default as SpCell } from './cell'

@@ -1,0 +1,17 @@
+@import "../../style/imports";
+
+.address-edit {
+  &__form {
+    background: #fff;
+    padding: $edge-size;
+    margin: 0 0 $edge-margin;
+
+  }
+  .accountAgreement{
+    width: 100%;
+    text-align: center;
+    &__text {
+      color: $color-brand-primary;
+    }
+  }
+}
