@@ -1,0 +1,110 @@
+import Taro, { Component } from '@tarojs/taro'
+import {View, Form, Text} from '@tarojs/components'
+import { AtSearchBar} from 'taro-ui'
+import { classNames } from '@/utils'
+import api from '@/api'
+
+
+import './index.scss'
+
+export default class SearchPanel extends Component {
+  static defaultProps = {
+    isOpend: false,
+  }
+
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      searchValue: '',
+      showSearchDailog: false,
+      historyList: []
+    }
+  }
+
+  static options = {
+    addGlobalClass: true
+  }
+
+  handleFocusSearchHistory = (isOpend) => {
+    this.setState({ showSearchDailog: isOpend })
+    Taro.getStorage({ key: 'searchHistory' })
+      .then(res => {
+        let stringArr = res.data.split(',')
+        this.setState({ historyList: stringArr })
+      })
+      .catch(() => {})
+  }
+
+  handleChangeSearch = (value) => {
+    this.setState({
+      searchValue: value,
+    })
+  }
+
+  handleConfirm = () => {
+    if (this.state.searchValue) {
+      Taro.getStorage({ key: 'searchHistory' })
+        .then(res => {
+          let stringArr = res.data.split(',')
+          let arr = [].concat(stringArr);
+          arr.unshift(this.state.searchValue)
+          arr = Array.from(new Set(arr))
+          let arrString = arr.join(',')
+          Taro.setStorage({ key: 'searchHistory', data: arrString })
+          this.setState({ searchValue: '' })
+        })
+        .catch(() => {
+          let arr = []
+          arr.push(this.state.searchValue)
+          let arrString = arr.join(',')
+          Taro.setStorage({ key: 'searchHistory', data: arrString })
+        })
+    }
+  }
+
+  handleClickCancel = (isOpend) => {
+    this.setState({
+      showSearchDailog: isOpend,
+      searchValue: ''
+    })
+  }
+
+  handleClickDelete = () => {
+    Taro.removeStorage({ key: 'searchHistory' })
+      .then(() => {
+        this.setState({ historyList: [] })
+      })
+  }
+
+  render () {
+    const { showSearchDailog, historyList } = this.state
+
+    return (
+      <View className={classNames('search-input', showSearchDailog ? 'search-input__focus' : null)}>
+        <Form onSubmit={this.handleConfirm.bind(this)}>
+          <AtSearchBar
+            className='search-input__bar'
+            value={this.state.searchValue}
+            actionName='取消'
+            onFocus={this.handleFocusSearchHistory.bind(this, true)}
+            onChange={this.handleChangeSearch.bind(this)}
+            onConfirm={this.handleConfirm.bind(this)}
+            onActionClick={this.handleClickCancel.bind(this, false)}
+          />
+        </Form>
+        <View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>
+          <View className='search-input__history-title'>
+            <Text>最近搜索</Text>
+            <Text onClick={this.handleClickDelete.bind(this)}>删除</Text>
+          </View>
+          <View className='search-input__history-list'>
+            {
+              historyList.map((item, index) => <View className='search-input__history-list__btn' key={index}>{item}</View> )
+            }
+          </View>
+        </View>
+      </View>
+    )
+  }
+}

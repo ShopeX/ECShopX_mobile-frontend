@@ -48,3 +48,8 @@
 .at-tab-bar__item--active {
   color: $color-brand-primary;
 }
+
+.at-search-bar__action {
+  background-color: $color-search-cancel-bg;
+  color: $color-primary-text;
+}

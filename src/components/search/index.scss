@@ -1,0 +1,50 @@
+@import "../../style/imports";
+
+.search-input {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 750px;
+  height: 84px;
+  text-align: center;
+  border-bottom: 1px solid #DDDDDD;
+  box-shadow: 0px -1px 0px 0px rgba(221, 221, 221, 1);
+  box-sizing: border-box;
+  &__bar {
+
+  }
+  &__history {
+    background: #fff;
+    height: 100%;
+    box-sizing: border-box;
+    &-title {
+      font-size: 26px;
+      color: #666666;
+      display: flex;
+      justify-content:space-between;
+      //text-align: left;
+      padding: 34px 40px;
+    }
+    &-list {
+      font-size: 26px;
+      color: #666666;
+      display: flex;
+      justify-content:flex-start;
+      flex-wrap: wrap;
+      padding: 0 40px 24px 40px;
+      &__btn {
+        padding: 10px 32px;
+        background: #F2F2F2;
+        margin: 20px 20px 0 0;
+        border-radius: 31px;
+      }
+    }
+  }
+  &__history-none {
+    display: none;
+  }
+}
+.search-input__focus{
+  height: 100vh;
+  z-index: 99;
+}

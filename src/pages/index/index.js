@@ -10,7 +10,7 @@ export default class Index extends Component {
 
   componentWillMount () {
     Taro.redirectTo({
-      url: `/pages/trade/list`
+      url: `/pages/category/index`
     })
   }
 
