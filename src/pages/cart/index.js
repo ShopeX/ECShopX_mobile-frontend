@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtInputNumber, AtButton } from 'taro-ui'
-import { GoodsItem, SpCheckbox, Address, Loading, Price } from '@/components'
+import { GoodsItem, SpCheckbox, SpNote, Address, Loading, Price } from '@/components'
 import { log } from '@/utils'
 import api from '@/api'
 
@@ -51,13 +51,19 @@ export default class CartIndex extends Component {
   }
 
   componentDidMount () {
+  }
+
+  componentDidShow () {
     this.fetch()
   }
 
   async fetch () {
     const { cartlist } = await api.cart.get()
-    const list = resolveCartItems(cartlist)
-    const items = normalizeItems(list)
+    // const list = resolveCartItems(cartlist)
+    // const items = normalizeItems(list)
+
+    const list = []
+    const items = []
 
     this.setState({
       list,
@@ -120,6 +126,7 @@ export default class CartIndex extends Component {
     })
   }
 
+  // TODO: 对接api
   render () {
     const { list, selection, totalPrice, cartMode } = this.state
 
@@ -127,9 +134,9 @@ export default class CartIndex extends Component {
       return <Loading />
     }
 
-    // TODO: redux 计算
     const totalSelection = selection.size
     const totalItems = totalSelection
+    const isEmpty = !list.length
 
     return (
       <View className='page-cart-index'>
@@ -137,12 +144,16 @@ export default class CartIndex extends Component {
           className='cart-list__wrap'
           scrollY
         >
-          <View className='cart-list__actions'>
-            <Text
-              clasName='btn-cart-mode'
-              onClick={this.toggleCartMode}
-            >{cartMode === 'edit' ? '完成' : '编辑'}</Text>
-          </View>
+          {
+            !isEmpty && (
+              <View className='cart-list__actions'>
+                <Text
+                  clasName='btn-cart-mode'
+                  onClick={this.toggleCartMode}
+                >{cartMode === 'edit' ? '完成' : '编辑'}</Text>
+              </View>
+            )
+          }
           <View className='cart-list'>
             {
               list.map(shopCart =>
@@ -187,10 +198,24 @@ export default class CartIndex extends Component {
                 </View>
               )
             }
+            {
+              !list.length && (
+                <View>
+                  <SpNote customStyle={'margin-bottom: 20px'} img='cart_empty.png'>快去给我挑点宝贝吧~</SpNote>
+                  <AtButton
+                    circle
+                    type='primary'
+                    onClick={() => Taro.navigateTo({ url: '/pages/items/list' })}
+                  >随便逛逛</AtButton>
+                </View>
+              )
+            }
           </View>
         </ScrollView>
 
-        <View className='toolbar cart-toolbar'>
+        <View
+          className={`toolbar cart-toolbar ${isEmpty && 'hidden'}`}
+        >
           <View className='cart-toolbar__hd'>
             <SpCheckbox
               checked={this.isTotalChecked}
