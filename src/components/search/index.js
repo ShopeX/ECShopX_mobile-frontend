@@ -1,13 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Form, Text} from '@tarojs/components'
-import { AtSearchBar} from 'taro-ui'
+import { AtSearchBar } from 'taro-ui'
 import { classNames } from '@/utils'
 import api from '@/api'
 
 
 import './index.scss'
 
-export default class SearchPanel extends Component {
+export default class SearchBar extends Component {
   static defaultProps = {
     isOpend: false,
   }
@@ -77,11 +77,18 @@ export default class SearchPanel extends Component {
       })
   }
 
+  handleClickTag = () => {
+    console.log("tag")
+  }
+
   render () {
+    const { isFixed } = this.props
+    // s
+    console.log(isFixed, 82)
     const { showSearchDailog, historyList } = this.state
 
     return (
-      <View className={classNames('search-input', showSearchDailog ? 'search-input__focus' : null)}>
+      <View className={classNames('search-input', showSearchDailog ? 'search-input__focus' : null, isFixed ? 'search-input-fixed' : null)}>
         <Form onSubmit={this.handleConfirm.bind(this)}>
           <AtSearchBar
             className='search-input__bar'
@@ -96,11 +103,11 @@ export default class SearchPanel extends Component {
         <View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>
           <View className='search-input__history-title'>
             <Text>最近搜索</Text>
-            <Text onClick={this.handleClickDelete.bind(this)}>删除</Text>
+            <Text className='sp-icon sp-icon-shanchu icon-del' onClick={this.handleClickDelete.bind(this)}></Text>
           </View>
           <View className='search-input__history-list'>
             {
-              historyList.map((item, index) => <View className='search-input__history-list__btn' key={index}>{item}</View> )
+              historyList.map((item, index) => <View className='search-input__history-list__btn' key={index} onClick={this.handleClickTag}>{item}</View> )
             }
           </View>
         </View>

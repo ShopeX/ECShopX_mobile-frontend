@@ -1,9 +1,6 @@
 @import "../../style/imports";
 
 .search-input {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 750px;
   height: 84px;
   text-align: center;
@@ -22,8 +19,10 @@
       color: #666666;
       display: flex;
       justify-content:space-between;
-      //text-align: left;
       padding: 34px 40px;
+      .icon-del {
+        font-size: 40px;
+      }
     }
     &-list {
       font-size: 26px;
@@ -44,6 +43,13 @@
     display: none;
   }
 }
+
+.search-input-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 .search-input__focus{
   height: 100vh;
   z-index: 99;
