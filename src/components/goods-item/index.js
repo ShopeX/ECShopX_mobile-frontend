@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { Price } from '@/components'
-import { isObject } from '@/utils'
+import { isObject, classNames } from '@/utils'
 
 import './index.scss'
 
@@ -15,7 +15,7 @@ export default class GoodsItem extends Component {
   }
 
   render () {
-    const { info, onClickImg } = this.props
+    const { info, onClickImg, className } = this.props
     if (!info) {
       return null
     }
@@ -24,7 +24,7 @@ export default class GoodsItem extends Component {
     const img = info.img || info.image_default_id
 
     return (
-      <View className='goods-item'>
+      <View className={classNames('goods-item', className)}>
         <View className='goods-item__hd'>
           {this.props.children}
         </View>
@@ -42,11 +42,14 @@ export default class GoodsItem extends Component {
             <View className='goods-item__prices'>
               <Price
                 primary
+                classes='goods-item__price'
+                className='goods-item__price'
                 symbol={info.curSymbol}
                 value={price}
               />
               <Price
                 symbol={info.curSymbol}
+                classes='goods-item__price-market'
                 className='goods-item__price-market'
                 value={info.market_price}
               />

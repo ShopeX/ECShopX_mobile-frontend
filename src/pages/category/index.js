@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, ScrollView, Image} from '@tarojs/components'
 import { AtSearchBar, AtButton } from 'taro-ui'
-import { Loading, SearchPanel } from '@/components'
+import { Loading, SearchBar } from '@/components'
 import { classNames } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import api from '@/api'
@@ -51,7 +51,7 @@ export default class CartIndex extends Component {
 
     return (
       <View className='page-category-index'>
-        <SearchPanel
+        <SearchBar
           mode='category'
         />
         <View className='category-list'>

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, FilterBar, GoodsItem } from '@/components'
+import { BackToTop, Loading, FilterBar, SearchBar, GoodsItem } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 
@@ -22,7 +22,8 @@ export default class List extends Component {
         { title: '价格', sort: -1 }
       ],
       query: null,
-      list: []
+      list: [],
+      listType: ''
     }
   }
 
@@ -58,8 +59,6 @@ export default class List extends Component {
       price: ({ price }) => (price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2)
     })
-
-    console.log(nList)
 
     this.setState({
       list: [...this.state.list, ...nList],
@@ -98,6 +97,14 @@ export default class List extends Component {
     })
   }
 
+  handleListTypeChange = () => {
+    const listType = this.state.listType === 'grid' ? 'default' : 'grid'
+
+    this.setState({
+      listType
+    })
+  }
+
   handleClickItem = (item) => {
     const url = `/pages/item/detail?id=${item.item_id}`
     Taro.navigateTo({
@@ -106,16 +113,25 @@ export default class List extends Component {
   }
 
   render () {
-    const { list, curFilterIdx, filterList, showBackToTop, scrollTop, page } = this.state
+    const { list, listType, curFilterIdx, filterList, showBackToTop, scrollTop, page } = this.state
 
     return (
       <View className='page-goods-list'>
-        <FilterBar
-          className='goods-list__tabs'
-          current={curFilterIdx}
-          list={filterList}
-          onChange={this.handleFilterChange}
-        />
+        <View className='goods-list__toolbar'>
+          <SearchBar />
+
+          <FilterBar
+            className='goods-list__tabs'
+            current={curFilterIdx}
+            list={filterList}
+            onChange={this.handleFilterChange}
+          >
+            <View
+              className='at-icon at-icon-bullet-list'
+              onClick={this.handleListTypeChange}
+            ></View>
+          </FilterBar>
+        </View>
 
         <ScrollView
           className='goods-list__scroll'
@@ -125,17 +141,19 @@ export default class List extends Component {
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          {
-            list.map(item => {
-              return (
-                <GoodsItem
-                  key={item.item_id}
-                  info={item}
-                  onClick={() => this.handleClickItem(item)}
-                />
-              )
-            })
-          }
+          <View className={`goods-list goods-list__type-${listType}`}>
+            {
+              list.map(item => {
+                return (
+                  <GoodsItem
+                    key={item.item_id}
+                    info={item}
+                    onClick={() => this.handleClickItem(item)}
+                  />
+                )
+              })
+            }
+          </View>
           {
             page.isLoading
               ? <Loading>正在加载...</Loading>
