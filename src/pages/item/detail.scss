@@ -58,7 +58,7 @@
   font-weight: bold;
   font-size: $font-size-large;
   color: #000;
-  @include mult-ellipsis(2);
+  @include multi-ellipsis(2);
   line-height: 1.2;
   &__wrap {
     display: flex;

@@ -1,7 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import './index.scss'
-import S from '@/spx'
 
 export default class Index extends Component {
   config = {
@@ -11,7 +10,7 @@ export default class Index extends Component {
   componentWillMount () {
     if (process.env.NODE_ENV === 'development') {
       Taro.redirectTo({
-        url: '/pages/member/integral'
+        url: '/pages/item/list?cateId=20'
       })
     }
   }

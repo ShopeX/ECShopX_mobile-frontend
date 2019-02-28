@@ -5,8 +5,8 @@ import qs from 'qs'
 import moment from 'moment'
 import copy from 'copy-to-clipboard'
 import S from '@/spx'
-
-export { default as log } from './log'
+import _get from 'lodash/get'
+import log from './log'
 
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
 
@@ -57,6 +57,28 @@ export function normalizeQuerys (params = {}) {
   return ret
 }
 
+export function pickBy (arr, keyMaps = {}) {
+  const picker = (item) => {
+    const ret = {}
+
+    Object.keys(keyMaps).forEach(key => {
+      const val = keyMaps[key]
+
+      if (isString(val)) {
+        ret[key] = _get(item, val)
+      } else if (isFunction(val)) {
+        ret[key] = val(item)
+      } else {
+        ret[key] = val
+      }
+    })
+
+    return ret
+  }
+
+  return arr.map(picker)
+}
+
 export function resolvePath (baseUrl, params = {}) {
   const queryStr = typeof params === 'string'
     ? params
@@ -74,12 +96,15 @@ export function copyText (text, msg = '内容已复制') {
     if (process.env.TARO_ENV === 'weapp') {
       Taro.setClipboardData({
         data: text,
-        success: resolve
+        success: resolve,
+        error: reject
       })
     } else {
       if (copy(Text)) {
         S.toast(msg)
         resolve(text)
+      } else {
+        reject()
       }
     }
   })
@@ -87,5 +112,6 @@ export function copyText (text, msg = '内容已复制') {
 
 export {
   classNames,
-  styleNames
+  styleNames,
+  log
 }

@@ -6,7 +6,11 @@ import './price.scss'
 
 export default class Price extends Component {
   static options = {
-    addGlobalClass: true
+    addGlobalClass: true,
+    className: null,
+    value: null,
+    primary: false,
+    noSymbol: false
   }
 
   static externalClasses = ['classes']

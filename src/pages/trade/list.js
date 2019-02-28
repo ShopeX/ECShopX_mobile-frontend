@@ -4,7 +4,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
-import { TradeItem } from './comps/item'
+import TradeItem from './comps/item'
 
 import './list.scss'
 
@@ -23,8 +23,7 @@ export default class TradeList extends Component {
         {title: '待收货', status: 'WAIT_BUYER_CONFIRM_GOODS'},
         {title: '待评价', status: 'WAIT_RATE'}
       ],
-      list: [],
-      isLoading: false
+      list: []
     }
   }
 
@@ -44,7 +43,6 @@ export default class TradeList extends Component {
   }
 
   async fetch (params) {
-    this.setState({ isLoading: true })
     const { tabList, curTabIdx } = this.state
     params = {
       ...params,
@@ -54,15 +52,14 @@ export default class TradeList extends Component {
     const nList = this.state.list.concat(list)
 
     this.setState({
-      list: nList,
-      isLoading: false
+      list: nList
     })
 
     return { total }
   }
 
   handleClickTab = (idx) => {
-    if (this.state.isLoading || this.state.page.isLoading) return
+    if (this.state.page.isLoading) return
 
     if (idx !== this.state.curTabIdx) {
       this.resetPage()

@@ -2,7 +2,18 @@
 
 .page-goods-list {
   .goods-list {
-    height: 100vh;
+    &__tabs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: $z-index-toolbar;
+    }
+    &__scroll {
+      height: 100vh;
+      box-sizing: border-box;
+      padding: $tabbar-height 0 $edge-margin/2;
+    }
   }
   .goods-item {
     margin: $edge-size;

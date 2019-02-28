@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading } from '@/components'
-import GoodsItem from './comps/item'
+import { BackToTop, Loading, FilterBar, GoodsItem } from '@/components'
+import api from '@/api'
+import { pickBy } from '@/utils'
 
 import './list.scss'
 
@@ -15,22 +15,87 @@ export default class List extends Component {
 
     this.state = {
       ...this.state,
+      curFilterIdx: 0,
+      filterList: [
+        { title: '综合' },
+        { title: '销量' },
+        { title: '价格', sort: -1 }
+      ],
+      query: null,
       list: []
     }
   }
 
   componentDidMount () {
-    this.nextPage()
+    this.setState({
+      query: {
+        keywords: '',
+        distributor_id: 16,
+        item_type: 'normal',
+        approve_status: 'onsale,only_show',
+        category: this.$router.params.cateId
+      }
+    }, () => {
+      this.nextPage()
+    })
   }
 
   async fetch (params) {
-    const { list, total_count: total } = await api.item.search(params)
-    const nList = this.state.list.concat(list)
-    this.setState({ list: nList })
+    const { page_no: page, page_size: pageSize } = params
+    const query = {
+      ...this.state.query,
+      page,
+      pageSize
+    }
+
+    const { list, total_count: total } = await api.item.search(query)
+
+    const nList = pickBy(list, {
+      img: 'pics[0]',
+      item_id: 'item_id',
+      title: 'itemName',
+      desc: 'brief',
+      price: ({ price }) => (price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2)
+    })
+
+    console.log(nList)
+
+    this.setState({
+      list: [...this.state.list, ...nList],
+      query
+    })
 
     return {
       total
     }
+  }
+
+  handleFilterChange = (data) => {
+    const { current, sort } = data
+
+    const query = {
+      ...this.state.query,
+      goodsSort: current === 0
+          ? null
+          : current === 1
+            ? 1
+            : (sort > 0 ? 3 : 2)
+    }
+
+    if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
+      this.resetPage()
+      this.setState({
+        list: []
+      })
+    }
+
+    this.setState({
+      curFilterIdx: current,
+      query
+    }, () => {
+      this.nextPage()
+    })
   }
 
   handleClickItem = (item) => {
@@ -41,12 +106,19 @@ export default class List extends Component {
   }
 
   render () {
-    const { list, showBackToTop, scrollTop, page } = this.state
+    const { list, curFilterIdx, filterList, showBackToTop, scrollTop, page } = this.state
 
     return (
       <View className='page-goods-list'>
+        <FilterBar
+          className='goods-list__tabs'
+          current={curFilterIdx}
+          list={filterList}
+          onChange={this.handleFilterChange}
+        />
+
         <ScrollView
-          className='goods-list'
+          className='goods-list__scroll'
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
@@ -70,6 +142,7 @@ export default class List extends Component {
               : null
           }
         </ScrollView>
+
         <BackToTop
           show={showBackToTop}
           onClick={this.scrollBackToTop}

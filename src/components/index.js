@@ -7,6 +7,7 @@ export { default as GoodsBuyPanel } from './goods-buy-panel'
 export { default as GoodsItem } from './goods-item'
 export { default as AddressPicker } from './address/picker'
 export { default as TabBar } from './tab-bar'
+export { default as FilterBar } from './filter-bar'
 
 export { default as SearchPanel } from './search'
 export { default as Timer } from './timer'

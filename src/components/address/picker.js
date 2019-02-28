@@ -4,7 +4,7 @@ import { AtNavBar } from 'taro-ui'
 import { SpCell, SpToast, Note } from '@/components'
 import { classNames, log } from '@/utils'
 import api from '@/api'
-import { find } from 'lodash'
+import find from 'lodash/find'
 import AddressEdit from './edit'
 
 

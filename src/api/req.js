@@ -30,7 +30,8 @@ class API {
   makeReq (config) {
     const { url, data, header = {}, method = 'GET', showLoading, showError = true } = config
     const methodIsGet = method.toLowerCase() === 'get'
-    let reqUrl = `${this.baseURL}${url.replace(/^\//, '')}`
+
+    let reqUrl = /^http/.test(url) ? url : `${this.baseURL}${url.replace(/^\//, '')}`
     const query = (!data || typeof data === 'string')
       ? data
       : qs.stringify(data)
@@ -69,7 +70,7 @@ class API {
         }
 
         if (statusCode >= 200 && statusCode < 300) {
-          if (data.code === '200') {
+          if (data.data !== undefined) {
             return data.data
           } else {
             const errMsg = data.msg || data.err_msg || '操作失败，请稍后重试'

@@ -35,8 +35,7 @@ const config = {
     })
   },
   alias: {
-    '@': path.join(__dirname, '..', '/src'),
-    'lodash$': 'lodash-es'
+    '@': path.join(__dirname, '..', '/src')
   },
   copy: {
     patterns: [

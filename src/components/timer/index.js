@@ -10,7 +10,7 @@ export default class Timer extends Component {
   }
 
   static defaultProps = {
-    duration: 10,
+    duration: 60,
     defaultMsg: '发送验证码',
     msg: '重新发送'
   }

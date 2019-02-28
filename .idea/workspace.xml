@@ -2,10 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4b5bd0d-fb3c-48cd-90a1-e84add737e52" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/filter-bar/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/filter-bar/index.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/home/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/espier-taro-fenxiao.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/member/integral.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/member/integral.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/member/integral.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/member/integral.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/item.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/item.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/req.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/req.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/address/picker.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/address/picker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/goods-buy-panel/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/goods-buy-panel/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/goods-item/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/goods-item/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/goods-item/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/goods-item/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/loading/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/loading/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/price/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/price/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/price/price.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/price/price.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/timer/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/timer/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/index/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/index/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/item/comps/item.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/item/comps/item.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/item/detail.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/item/detail.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/item/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/item/list.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/item/list.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/item/list.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/trade/comps/item.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/trade/comps/item.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/trade/comps/order-item.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/trade/comps/order-item.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/trade/comps/order-item.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/trade/comps/order-item.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/trade/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/trade/list.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/style/_mixins.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/style/_mixins.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -23,7 +55,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/note/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="525">
-              <caret line="35" column="1" lean-forward="true" selection-start-line="35" selection-start-column="1" selection-end-line="35" selection-end-column="1" />
+              <caret line="35" column="1" selection-start-line="35" selection-start-column="1" selection-end-line="35" selection-end-column="1" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
               </folding>
@@ -51,8 +83,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/member/integral.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="157" column="41" selection-start-line="157" selection-start-column="41" selection-end-line="157" selection-end-column="41" />
+            <state relative-caret-position="234">
+              <caret line="92" column="49" lean-forward="true" selection-start-line="92" selection-start-column="49" selection-end-line="92" selection-end-column="49" />
               <folding>
                 <element signature="e#1#47#0" expanded="true" />
               </folding>
@@ -64,7 +96,7 @@
         <entry file="file://$PROJECT_DIR$/src/pages/category/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-357">
-              <caret line="32" column="6" lean-forward="true" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
+              <caret line="32" column="6" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
               </folding>
@@ -163,132 +195,20 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="645" />
-    <option name="y" value="87" />
+    <option name="x" value="280" />
+    <option name="y" value="118" />
     <option name="width" value="1400" />
     <option name="height" value="937" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
+      <showMembers ProjectPane="false" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="fonts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="address" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="icon-menu" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="note" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="hocs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="auth" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="category" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="index" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="member" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="trade" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="espier-taro-fenxiao" type="b2602c69:ProjectViewProjectNode" />
-              <item name="espier-taro-fenxiao" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="style" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -326,19 +246,19 @@
       <updated>1551168703692</updated>
       <workItem from="1551168706548" duration="6029000" />
       <workItem from="1551178435380" duration="33108000" />
-      <workItem from="1551332673381" duration="15217000" />
+      <workItem from="1551332673381" duration="15434000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54354000" />
+    <option name="totallyTimeSpent" value="54571000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="645" y="87" width="1400" height="937" extended-state="0" />
+    <frame x="280" y="118" width="1400" height="937" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13560551" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49940827" visible="true" weight="0.13560551" />
+      <window_info id="Structure" order="1" sideWeight="0.5005917" side_tool="true" weight="0.13560551" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -677,7 +597,7 @@
     <entry file="file://$PROJECT_DIR$/src/components/note/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
-          <caret line="35" column="1" lean-forward="true" selection-start-line="35" selection-start-column="1" selection-end-line="35" selection-end-column="1" />
+          <caret line="35" column="1" selection-start-line="35" selection-start-column="1" selection-end-line="35" selection-end-column="1" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
           </folding>
@@ -707,7 +627,7 @@
     <entry file="file://$PROJECT_DIR$/src/pages/category/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-357">
-          <caret line="32" column="6" lean-forward="true" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
+          <caret line="32" column="6" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
           </folding>
@@ -716,8 +636,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/member/integral.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="157" column="41" selection-start-line="157" selection-start-column="41" selection-end-line="157" selection-end-column="41" />
+        <state relative-caret-position="234">
+          <caret line="92" column="49" lean-forward="true" selection-start-line="92" selection-start-column="49" selection-end-line="92" selection-end-column="49" />
           <folding>
             <element signature="e#1#47#0" expanded="true" />
           </folding>

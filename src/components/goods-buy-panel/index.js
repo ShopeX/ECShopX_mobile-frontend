@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
 import { AtInputNumber } from 'taro-ui'
-import { find } from 'lodash'
+import find from 'lodash/find'
 import { Price } from '@/components'
 import { classNames } from '@/utils'
 
