@@ -29,6 +29,7 @@ class App extends Component {
 
       'pages/member/index',
       'pages/member/favorite',
+      'pages/member/integral',
       'pages/trade/list',
       'pages/trade/detail',
       'pages/trade/rate'
