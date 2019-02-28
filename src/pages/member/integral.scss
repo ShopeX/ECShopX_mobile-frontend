@@ -109,6 +109,9 @@
     bottom: 30px;
     box-sizing: border-box;
     width: auto !important;
+    .integral_empty{
+      padding: 20px 0 0
+    }
   }
   &__panel {
     display: none;

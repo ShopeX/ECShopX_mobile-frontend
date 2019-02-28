@@ -18,7 +18,8 @@ export default class SearchBar extends Component {
     this.state = {
       searchValue: '',
       showSearchDailog: false,
-      historyList: []
+      historyList: [],
+      isShowAction: false
     }
   }
 
@@ -27,7 +28,10 @@ export default class SearchBar extends Component {
   }
 
   handleFocusSearchHistory = (isOpend) => {
-    this.setState({ showSearchDailog: isOpend })
+    this.setState({
+      showSearchDailog: isOpend,
+      isShowAction: true
+    })
     Taro.getStorage({ key: 'searchHistory' })
       .then(res => {
         let stringArr = res.data.split(',')
@@ -66,7 +70,8 @@ export default class SearchBar extends Component {
   handleClickCancel = (isOpend) => {
     this.setState({
       showSearchDailog: isOpend,
-      searchValue: ''
+      searchValue: '',
+      isShowAction: false
     })
   }
 
@@ -83,17 +88,15 @@ export default class SearchBar extends Component {
 
   render () {
     const { isFixed } = this.props
-    // s
-    console.log(isFixed, 82)
-    const { showSearchDailog, historyList } = this.state
-
+    const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
       <View className={classNames('search-input', showSearchDailog ? 'search-input__focus' : null, isFixed ? 'search-input-fixed' : null)}>
         <Form onSubmit={this.handleConfirm.bind(this)}>
           <AtSearchBar
             className='search-input__bar'
-            value={this.state.searchValue}
+            value={searchValue}
             actionName='取消'
+            showActionButton={isShowAction}
             onFocus={this.handleFocusSearchHistory.bind(this, true)}
             onChange={this.handleChangeSearch.bind(this)}
             onConfirm={this.handleConfirm.bind(this)}

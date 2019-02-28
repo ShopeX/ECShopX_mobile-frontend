@@ -149,14 +149,14 @@ export default class Integral extends Component {
               {
                 page.isLoading && <Loading>正在加载...</Loading>
               }
-              {/*{
-                !page.isLoading && !page.hasNext && !list.length
-                && (<SpNote img='trades_empty.png'>赶快赚积分吧~</SpNote>)
-              }*/}
               {
-                !list.length
-                && (<SpNote img='integral_empty.png'>赶快赚积分吧~</SpNote>)
+                !page.isLoading && !page.hasNext && !list.length
+                && (<SpNote className='integral_empty' img='trades_empty.png'>赶快赚积分吧~</SpNote>)
               }
+              {/*{*/}
+                {/*!list.length*/}
+                {/*&& (<SpNote className='integral_empty' img='integral_empty.png'>赶快赚积分吧~</SpNote>)*/}
+              {/*}*/}
               <View className='btns'>
                 <AtButton type='primary' onClick={this.handleClickRoam}>随便逛逛</AtButton>
               </View>

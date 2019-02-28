@@ -146,7 +146,7 @@ export default class Recharge extends Component {
               }
               {
                 !page.isLoading && !page.hasNext && !list.length
-                && (<SpNote img='trades_empty.png'>赶快去充值吧~</SpNote>)
+                && (<SpNote className='integral_empty' img='trades_empty.png'>赶快去充值吧~</SpNote>)
               }
             </ScrollView>
           </View>
