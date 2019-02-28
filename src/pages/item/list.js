@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, FilterBar } from '@/components'
+import { BackToTop, Loading, FilterBar, GoodsItem } from '@/components'
 import api from '@/api'
-import GoodsItem from './comps/item'
+import { pickBy } from '@/utils'
 
 import './list.scss'
 
@@ -49,10 +49,20 @@ export default class List extends Component {
     }
 
     const { list, total_count: total } = await api.item.search(query)
-    const nList = this.state.list.concat(list)
+
+    const nList = pickBy(list, {
+      img: 'pics[0]',
+      item_id: 'item_id',
+      title: 'itemName',
+      desc: 'brief',
+      price: ({ price }) => (price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2)
+    })
+
+    console.log(nList)
 
     this.setState({
-      list: nList,
+      list: [...this.state.list, ...nList],
       query
     })
 
@@ -63,17 +73,25 @@ export default class List extends Component {
 
   handleFilterChange = (data) => {
     const { current, sort } = data
+
     const query = {
       ...this.state.query,
       goodsSort: current === 0
           ? null
           : current === 1
             ? 1
-            : (sort > 0 ? 2 : 3)
+            : (sort > 0 ? 3 : 2)
+    }
+
+    if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
+      this.resetPage()
+      this.setState({
+        list: []
+      })
     }
 
     this.setState({
-      current,
+      curFilterIdx: current,
       query
     }, () => {
       this.nextPage()
@@ -97,7 +115,7 @@ export default class List extends Component {
           current={curFilterIdx}
           list={filterList}
           onChange={this.handleFilterChange}
-        ></FilterBar>
+        />
 
         <ScrollView
           className='goods-list__scroll'

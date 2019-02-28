@@ -30,7 +30,7 @@ export default class OrderItem extends Component {
         </View>
         <View className='order-item__ft'>
           <Price className='order-item__price' value={info.price}></Price>
-          <Text className="order-item__num">x {info.num}</Text>
+          <Text className='order-item__num'>x {info.num}</Text>
         </View>
       </View>
     )

@@ -70,8 +70,8 @@ class API {
         }
 
         if (statusCode >= 200 && statusCode < 300) {
-          if (data.code === '200') {
-            return data
+          if (data.data !== undefined) {
+            return data.data
           } else {
             const errMsg = data.msg || data.err_msg || '操作失败，请稍后重试'
             if (showError) {

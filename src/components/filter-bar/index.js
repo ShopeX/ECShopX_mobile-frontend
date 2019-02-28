@@ -26,7 +26,7 @@ export default class FilterBar extends Component {
   }
 
   handleClickItem (idx) {
-    const item = this.state.list[idx]
+    const item = this.props.list[idx]
     let sortOrder = null
 
     if (item.sort) {
@@ -45,11 +45,11 @@ export default class FilterBar extends Component {
   }
 
   render () {
-    const { list } = this.props
+    const { list, className } = this.props
     const { sortOrder, curIdx } = this.state
 
     return (
-      <View className='filter-bar'>
+      <View className={classNames('filter-bar', className)}>
         {
           list.map((item, idx) => {
             const isCurrent = curIdx === idx

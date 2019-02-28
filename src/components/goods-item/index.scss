@@ -1,5 +1,7 @@
 @import '../../style/imports';
 
+$item-img-size: 180px !default;
+
 .goods-item {
   display: flex;
   align-items: center;
@@ -19,12 +21,18 @@
     justify-content: space-between;
   }
   &__img {
-    width: 180px;
-    height: 180px;
-    margin-right: $edge-size;
+    width: $item-img-size;
+    height: $item-img-size;
+    &-wrap {
+      width: $item-img-size;
+      height: $item-img-size;
+      display: block;
+      text-align: center;
+      margin-right: $edge-size;
+    }
   }
   &__title {
-    @include mult-ellipsis(2);
+    @include multi-ellipsis(2);
     line-height: 1.4;
     color: #111;
     margin: 0 0 16px;
@@ -32,7 +40,19 @@
   &__desc {
     color: $color-gray;
     font-size: $font-size-small;
+    @include multi-ellipsis(2);
   }
   &__prices {
+  }
+  .price {
+    &__primary {
+      font-size: floor(1.28 * $font-size);
+    }
+    margin-right: 24px;
+  }
+  .goods-item__price-market {
+    font-size: $font-size-small;
+    color: $color-gray;
+    text-decoration: line-through;
   }
 }

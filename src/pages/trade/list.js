@@ -4,7 +4,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
-import { TradeItem } from './comps/item'
+import TradeItem from './comps/item'
 
 import './list.scss'
 

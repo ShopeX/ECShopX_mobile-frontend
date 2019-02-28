@@ -11,12 +11,13 @@
   overflow: hidden;
 }
 
-@mixin mult-ellipsis($line) {
+@mixin multi-ellipsis($line) {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-box-orient: vertical;
   -webkit-line-clamp: $line;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
 }
 
 @mixin arrow ($size:4px, $color: $color-border-gray) {

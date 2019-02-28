@@ -21,7 +21,7 @@
   }
   &__title {
     font-size: floor(0.95 * $font-size);
-    @include mult-ellipsis(2);
+    @include multi-ellipsis(2);
     line-height: 1.4;
     margin: 0 0 4px;
   }
