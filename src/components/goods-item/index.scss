@@ -1,15 +1,15 @@
 @import '../../style/imports';
 
-$item-img-size: 180px !default;
+$item-img-size: 240px !default;
 
 .goods-item {
+  $self: &;
   display: flex;
   align-items: center;
   background: #fff;
-  border-radius: 20px;
+  border-radius: $item-border-radius;
   overflow: hidden;
-  padding: $edge-margin $edge-size;
-  margin-bottom: $edge-margin;
+  margin: 0 0 $edge-margin;
   &__hd {
   }
   &__bd {
@@ -19,6 +19,7 @@ $item-img-size: 180px !default;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    padding: $edge-margin $edge-size;
   }
   &__img {
     width: $item-img-size;
@@ -28,7 +29,6 @@ $item-img-size: 180px !default;
       height: $item-img-size;
       display: block;
       text-align: center;
-      margin-right: $edge-size;
     }
   }
   &__title {
@@ -38,19 +38,16 @@ $item-img-size: 180px !default;
     margin: 0 0 16px;
   }
   &__desc {
+    @include multi-ellipsis(2);
+    line-height: 1.4;
     color: $color-gray;
     font-size: $font-size-small;
-    @include multi-ellipsis(2);
   }
-  &__prices {
-  }
-  .price {
-    &__primary {
-      font-size: floor(1.28 * $font-size);
-    }
+  &__price {
+    font-size: floor(1.28 * $font-size);
     margin-right: 24px;
   }
-  .goods-item__price-market {
+  &__price-market {
     font-size: $font-size-small;
     color: $color-gray;
     text-decoration: line-through;

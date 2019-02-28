@@ -2,13 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4b5bd0d-fb3c-48cd-90a1-e84add737e52" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/filter-bar/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/filter-bar/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/filter-bar/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/filter-bar/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/goods-item/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/goods-item/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/goods-item/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/goods-item/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/note/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/note/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/search/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/search/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/member/integral.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/member/integral.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/member/integral.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/member/integral.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/member/recharge.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/member/recharge.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/member/recharge.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/member/recharge.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/price/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/price/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/search/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/search-bar/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/search/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/search-bar/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/item/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/item/list.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/item/list.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/item/list.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/trade/comps/item.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/trade/comps/item.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/style/variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/style/variables.scss" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -23,19 +29,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utils/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="17" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pages/index/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
-              <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+              <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
               </folding>
@@ -43,11 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/note/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="13" />
+            <state relative-caret-position="240">
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
               </folding>
@@ -59,16 +56,27 @@
         <entry file="file://$PROJECT_DIR$/src/components/note/index.scss">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
-              <caret line="6" column="3" lean-forward="true" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
+              <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/search/index.js">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/cell/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="90" column="68" selection-start-line="90" selection-start-column="68" selection-end-line="90" selection-end-column="68" />
+            <state relative-caret-position="340">
+              <caret line="24" column="125" lean-forward="true" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="125" />
+              <folding>
+                <element signature="e#0#46#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/search-bar/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1091">
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
               </folding>
@@ -92,7 +100,7 @@
         <entry file="file://$PROJECT_DIR$/src/pages/member/integral.scss">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="295">
-              <caret line="111" column="4" lean-forward="true" selection-start-line="111" selection-start-column="4" selection-end-line="113" selection-end-column="5" />
+              <caret line="111" column="4" selection-start-line="111" selection-start-column="4" selection-end-line="113" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -171,7 +179,6 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/pages/category/index.js" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/src/components/search/index.js" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -197,13 +204,13 @@
         <option value="$PROJECT_DIR$/src/pages/category/index.scss" />
         <option value="$PROJECT_DIR$/src/pages/category/index.js" />
         <option value="$PROJECT_DIR$/src/components/search/index.scss" />
-        <option value="$PROJECT_DIR$/src/components/note/index.js" />
         <option value="$PROJECT_DIR$/src/pages/member/integral.scss" />
         <option value="$PROJECT_DIR$/src/pages/member/recharge.js" />
         <option value="$PROJECT_DIR$/src/pages/member/recharge.scss" />
         <option value="$PROJECT_DIR$/src/pages/member/integral.js" />
         <option value="$PROJECT_DIR$/src/pages/index/index.js" />
         <option value="$PROJECT_DIR$/src/components/search/index.js" />
+        <option value="$PROJECT_DIR$/src/components/note/index.js" />
       </list>
     </option>
   </component>
@@ -266,7 +273,7 @@
               <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="components" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="search" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="search-bar" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="espier-taro-fenxiao" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
@@ -359,12 +366,12 @@
       <workItem from="1551168706548" duration="6029000" />
       <workItem from="1551178435380" duration="33108000" />
       <workItem from="1551332673381" duration="16864000" />
-      <workItem from="1551353985403" duration="4566000" />
+      <workItem from="1551353985403" duration="4703000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60567000" />
+    <option name="totallyTimeSpent" value="60704000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="474" y="200" width="1400" height="937" extended-state="0" />
@@ -394,13 +401,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/pages/auth/forgotpwd.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/icon-menu/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -623,16 +623,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/cell/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="24" column="125" lean-forward="true" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="125" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/style/icon.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="623">
@@ -698,27 +688,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/note/index.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="3" lean-forward="true" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/note/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/member/integral.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="295">
-          <caret line="111" column="4" lean-forward="true" selection-start-line="111" selection-start-column="4" selection-end-line="113" selection-end-column="5" />
+          <caret line="111" column="4" selection-start-line="111" selection-start-column="4" selection-end-line="113" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -752,7 +725,7 @@
     <entry file="file://$PROJECT_DIR$/src/pages/index/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+          <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
           </folding>
@@ -761,8 +734,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/search/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="90" column="68" selection-start-line="90" selection-start-column="68" selection-end-line="90" selection-end-column="68" />
+        <state relative-caret-position="311">
+          <caret line="80" column="10" lean-forward="true" selection-start-line="80" selection-start-column="10" selection-end-line="80" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/note/index.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/cell/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="24" column="125" lean-forward="true" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="125" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/search-bar/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1091">
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/note/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
           </folding>

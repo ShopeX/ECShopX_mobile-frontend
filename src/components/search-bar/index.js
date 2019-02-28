@@ -4,12 +4,11 @@ import { AtSearchBar } from 'taro-ui'
 import { classNames } from '@/utils'
 import api from '@/api'
 
-
 import './index.scss'
 
 export default class SearchBar extends Component {
   static defaultProps = {
-    isOpend: false,
+    isOpend: false
   }
 
   constructor (props) {

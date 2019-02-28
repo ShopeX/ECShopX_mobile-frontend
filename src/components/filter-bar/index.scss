@@ -7,7 +7,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  align-content: center;
+  &__bd {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__ft {
+    padding: 0 10px;
+    &:empty {
+      padding: 0;
+    }
+  }
   &__item {
     flex: 1;
     text-align: center;

@@ -5,8 +5,8 @@ $font-size          : 14px * 2 !default;
 
 $font-size-small    : floor($font-size * 0.9) !default;
 $font-size-large    : floor($font-size * 1.2) !default;
-$edge-size          : 8px * 4 !default;
-$edge-margin        : 5px * 4 !default;
+$edge-size          : 15px * 2 !default;
+$edge-margin        : 10px * 2 !default;
 
 $toolbar-height     : 120px !default;
 $toolbar-shadow     : 0 -2px 3px rgba(#000, 0.05);
