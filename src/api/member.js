@@ -32,3 +32,7 @@ export function addressCreateOrUpdate (data) {
 export function favoriteItems () {
   return req.get('/member.favorite.item.list')
 }
+
+export function getRechargeNumber () {
+  return req.get('http://pjj.aixue7.com/index.php/api/weapp/deposit/rechargerules')
+}
