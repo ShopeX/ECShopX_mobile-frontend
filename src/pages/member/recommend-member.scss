@@ -1,0 +1,33 @@
+@import "../../style/imports";
+
+.recommend-member {
+  &__scroll {
+    background: #fff;
+    height: 100vh;
+    padding: 30px;
+    box-sizing: border-box;
+    border-radius: 20px;
+  }
+}
+.recommend-member__table {
+  text-align: center;
+  &-title {
+    background: #EFEFF4;
+    padding: 20px 0;
+    border-radius: 20px 20px 0 0;
+    color: $color-brand-primary;
+    .title-border {
+      border-right: 1PX solid #D9D9D9;
+    }
+  }
+  &-content {
+    border: 1PX solid #EFEFF4;
+    border-top: 0;
+    border-radius: 0 0 20px 20px;
+    .content-item {
+      border-top: 1PX solid #EFEFF4;
+      padding: 20px 0;
+      color: #000;
+    }
+  }
+}

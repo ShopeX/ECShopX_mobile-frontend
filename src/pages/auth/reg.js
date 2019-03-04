@@ -28,19 +28,25 @@ export default class Reg extends Component {
       return S.toast('请输入正确的手机号')
     }
 
-    if (!data.code) {
-      return S.toast('请选择验证码')
-    }
+    // if (!data.code) {
+    //   return S.toast('请选择验证码')
+    // }
 
     if (!data.password) {
       return S.toast('请输入密码')
     }
     console.log(data, 19)
+    // if (process.env.TARO_ENV === 'h5') {
+      const { UserInfo } = await api.user.reg(data)
+      console.log(UserInfo)
+      // this.setState({
+      //   info.user_type:
+      // })
+    // }
     // if(this.state.isForgot){
     //
     // }
     // const { UserInfo } = await api.user.reg(data)
-    // console.log(UserInfo)
   }
 
   handleChange = (name, val) => {
@@ -136,9 +142,33 @@ export default class Reg extends Component {
                   : <View className='sp-icon sp-icon-icon6 icon-pwd' onClick={this.handleClickIconpwd}> </View>
               }
             </AtInput>
+            <AtInput
+              title='姓名'
+              name='username'
+              value={info.username}
+              placeholder='请输入姓名'
+              onFocus={this.handleErrorToastClose}
+              onChange={this.handleChange.bind(this, 'username')}
+            />
+            <AtInput
+              title='性别'
+              name='sex'
+              value={info.sex = '0'}
+              placeholder='请输入性别'
+              onFocus={this.handleErrorToastClose}
+              onChange={this.handleChange.bind(this, 'sex')}
+            />
+            <AtInput
+              title='类型'
+              name='user_type'
+              value={info.user_type = 'local'}
+              placeholder='请输入类型'
+              onFocus={this.handleErrorToastClose}
+              onChange={this.handleChange.bind(this, 'user_type')}
+            />
           </View>
           <View className='btns'>
-            <AtButton type='primary' formType='submit'>同意协议并注册</AtButton>
+            <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>同意协议并注册</AtButton>
             <View className='accountAgreement'>
               已阅读并同意
               <Text

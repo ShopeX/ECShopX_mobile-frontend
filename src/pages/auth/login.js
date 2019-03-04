@@ -30,7 +30,7 @@ export default class Login extends Component {
       ...this.state.info,
       ...value
     }
-    if (!data.mobile || !/1\d{10}/.test(data.mobile)) {
+    if (!data.username || !/1\d{10}/.test(data.username)) {
       return S.toast('请输入正确的手机号')
     }
 
@@ -38,8 +38,8 @@ export default class Login extends Component {
       return S.toast('请输入密码')
     }
     console.log(data, 19)
-    // const { UserInfo } = await api.user.reg(data)
-    // console.log(UserInfo)
+    const { UserInfo } = await api.user.login(data)
+    console.log(UserInfo)
   }
 
   handleChange = (name, val) => {
@@ -77,12 +77,12 @@ export default class Login extends Component {
           <View className='sec auth-login__form'>
             <AtInput
               title='手机号码'
-              name='mobile'
+              name='username'
               maxLength={11}
               value={info.mobile}
               placeholder='请输入手机号码'
               onFocus={this.handleErrorToastClose}
-              onChange={this.handleChange.bind(this, 'mobile')}
+              onChange={this.handleChange.bind(this, 'username')}
             />
             <AtInput
               title='密码'
@@ -103,7 +103,7 @@ export default class Login extends Component {
           </View>
 
           <View className='btns'>
-            <AtButton type='primary' formType='submit'>登录</AtButton>
+            <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>登录</AtButton>
           </View>
         </AtForm>
         <SpToast />

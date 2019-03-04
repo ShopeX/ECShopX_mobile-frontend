@@ -1,9 +1,10 @@
 
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, ScrollView} from '@tarojs/components'
-import { AtTabs, AtTabsPane} from 'taro-ui'
+import { AtTabs, AtTabsPane, AtCurtain, Image} from 'taro-ui'
 import { Loading, SpNote } from '@/components'
 import { withPager } from '@/hocs'
+import ShareQrcode from './comps/share-qrcode'
 import api from '@/api'
 
 import './recommend.scss'
@@ -24,6 +25,7 @@ export default class Recommend extends Component {
       list: [],
       isLoading: false,
       testIncome: false,
+      isOpened: false
     }
   }
 
@@ -61,6 +63,18 @@ export default class Recommend extends Component {
     return { total }
   }
 
+  handleClickMember = () => {
+    Taro.navigateTo({
+      url: '/pages/member/recommend-member'
+    })
+  }
+
+  handleClickQrcode = () => {
+    this.setState({
+      isOpened: true
+    })
+  }
+
   handleClickTab = (idx) => {
     if (this.state.isLoading || this.state.page.isLoading) return
 
@@ -79,15 +93,27 @@ export default class Recommend extends Component {
   }
 
   render () {
-    const { curTabIdx, tabList, list, page, testIncome } = this.state
+    const { curTabIdx, tabList, list, page, testIncome, isOpened } = this.state
 
     return (
       <View className='page-member-integral'>
         <View className='member-integral__hd'>
-          {/*<View className='integral-info'>*/}
-            {/*<View className='integral-number'>图标<Text className='integral-number__text'>1888</Text></View>*/}
-            {/*<View className='integral-text'>账户可用余额</View>*/}
-          {/*</View>*/}
+          <View className='member-recommend'>
+            <View className='integral-info'>
+              <View className='integral-number'>图标<Text className='integral-number__text'>1888</Text></View>
+              <View
+                className='integral-text member-recommend__text'
+                onClick={this.handleClickMember}
+              >我推荐的会员</View>
+            </View>
+            <View className='integral-info'>
+              <View className='integral-number'>图标<Text className='integral-number__text'>1888</Text></View>
+              <View
+                className='integral-text member-recommend__text'
+                onClick={this.handleClickQrcode}
+              >推广二维码</View>
+            </View>
+        </View>
         </View>
 
         <View className='member-integral__bd'>
@@ -151,6 +177,9 @@ export default class Recommend extends Component {
             </ScrollView>
           </View>
         </View>
+        {
+          isOpened ? <ShareQrcode Opened={isOpened} /> : null
+        }
       </View>
     )
   }
