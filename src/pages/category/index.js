@@ -17,8 +17,6 @@ export default class CartIndex extends Component {
       pluralType: true,
       imgType: true,
       currentIndex: 0,
-      // searchValue: '',
-      // showSearchDailog: false
     }
   }
 

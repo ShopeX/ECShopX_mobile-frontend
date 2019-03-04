@@ -2,7 +2,6 @@ import Taro, { Component } from '@tarojs/taro'
 import {View, Form, Text} from '@tarojs/components'
 import { AtSearchBar } from 'taro-ui'
 import { classNames } from '@/utils'
-import api from '@/api'
 
 import './index.scss'
 
@@ -63,6 +62,9 @@ export default class SearchBar extends Component {
           let arrString = arr.join(',')
           Taro.setStorage({ key: 'searchHistory', data: arrString })
         })
+      Taro.navigateTo({
+        url: `/pages/item/list?keywords=${this.state.searchValue}`
+      })
     }
   }
 

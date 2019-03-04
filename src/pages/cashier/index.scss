@@ -1,0 +1,33 @@
+@import "../../style/imports";
+
+.page-cashier-index {
+  height: 100%;
+  .cashier-money {
+    border-top: 1px solid $color-border-gray-dark;
+    background: $color-brand-primary-text;
+    padding: 50px $edge-size ;
+    &__tip {
+      font-size: $font-size;
+      color: $color-primary-text;
+      margin-bottom: 42px;
+    }
+    &__content {
+      background: #FDE9E6;
+      padding: $edge-size ;
+      &-title {
+        color: #000;
+        font-size: $font-size;
+      }
+      &-number {
+        color: $color-brand-primary;
+        font-size: 96px;
+      }
+    }
+  }
+  .pay-status {
+    background: $color-brand-primary-text;
+    margin-top: 20px;
+    padding: $edge-size ;
+  }
+}
+

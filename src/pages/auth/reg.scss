@@ -1,11 +1,12 @@
 @import "../../style/imports";
 
 .auth-reg {
+  height: 100vh;
+  padding-top: 160px;
+  background: $color-brand-primary-text;
   &__form {
-    background: #fff;
     padding: $edge-size;
     margin: 0 0 $edge-margin;
-
   }
   .accountAgreement{
     width: 100%;

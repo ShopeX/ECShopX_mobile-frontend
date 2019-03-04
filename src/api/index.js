@@ -6,6 +6,7 @@ import * as user from './user'
 import * as wx from './wx'
 import * as member from './member'
 import * as category from './category'
+import * as cashier from './cashier'
 
 export default {
   cart,
@@ -15,5 +16,6 @@ export default {
   user,
   member,
   wx,
-  category
+  category,
+  cashier
 }
