@@ -34,7 +34,7 @@ export default class List extends Component {
         distributor_id: 16,
         item_type: 'normal',
         approve_status: 'onsale,only_show',
-        category: this.$router.params.cateId
+        category: this.$router.params.cat_id
       }
     }, () => {
       this.nextPage()

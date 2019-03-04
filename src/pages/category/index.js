@@ -37,6 +37,15 @@ export default class CartIndex extends Component {
     })
   }
 
+  handleClickItem (item) {
+    const { cat_id } = item
+    const url = `/pages/item/list?cat_id=16`
+
+    Taro.navigateTo({
+      url
+    })
+  }
+
   render () {
     const { list, pluralType, imgType, currentIndex } = this.state
     let items
@@ -79,7 +88,11 @@ export default class CartIndex extends Component {
             <View className={classNames(pluralType ? 'category-content' : 'category-content-no')}>
               {
                 items.map(item =>
-                  <View className='category-content__img' key={item.cat_id}>
+                  <View
+                    className='category-content__img'
+                    key={item.cat_id}
+                    onClick={this.handleClickItem.bind(this, item)}
+                  >
                     <Image
                       className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
                       mode='aspectFill'

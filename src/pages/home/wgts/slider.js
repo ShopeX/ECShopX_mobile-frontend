@@ -35,12 +35,13 @@ export default class WgtSlider extends Component {
   render () {
     const { info } = this.props
     const { curIdx } = this.state
-    const { config, base, data } = info
-    const curContent = (data[curIdx] || {}).content
 
     if (!info) {
       return null
     }
+
+    const { config, base, data } = info
+    const curContent = (data[curIdx] || {}).content
 
     return (
       <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>

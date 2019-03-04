@@ -17,6 +17,11 @@ export default class WgtNavigation extends Component {
 
   render () {
     const { info } = this.props
+
+    if (!info) {
+      return null
+    }
+
     const { base, data } = info
 
     return (
