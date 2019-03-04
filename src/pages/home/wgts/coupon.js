@@ -22,6 +22,14 @@ export default class WgtCoupon extends Component {
     }
   }
 
+  handleGetUserInfo = () => {
+    if (this.state.hasAuth) return
+
+    Taro.redirectTo({
+      url: '/pages/auth/login'
+    })
+  }
+
   handleGetCard = (cardId) => {
     let data = {}
     try {
