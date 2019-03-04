@@ -37,6 +37,8 @@ class App extends Component {
       'pages/member/integral',
       'pages/member/pay',
       'pages/member/recharge',
+      'pages/member/recommend',
+
       'pages/trade/list',
       'pages/trade/detail',
       'pages/trade/rate'
