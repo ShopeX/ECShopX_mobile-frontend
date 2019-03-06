@@ -21,13 +21,14 @@ class App extends Component {
       'pages/home/index',
       'pages/item/list',
       'pages/item/detail',
+
       'pages/cart/index',
       'pages/cart/checkout',
 
       'pages/category/index',
 
-      'pages/auth/login',
       'pages/auth/reg',
+      'pages/auth/login',
       'pages/auth/forgotpwd',
 
       'pages/cashier/index',
@@ -39,6 +40,7 @@ class App extends Component {
       'pages/member/recharge',
       'pages/member/recommend',
       'pages/member/recommend-member',
+      'pages/member/coupon',
 
       'pages/trade/list',
       'pages/trade/detail',

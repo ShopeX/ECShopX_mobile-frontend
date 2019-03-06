@@ -1,7 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Picker } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpToast, Timer } from '@/components'
+import { classNames } from '@/utils'
 import S from '@/spx'
 import api from '@/api'
 
@@ -14,8 +15,51 @@ export default class Reg extends Component {
     this.state = {
       info: {},
       timerMsg: '获取验证码',
-      isVisible: false
+      isVisible: false,
+      list: [],
+      selectorChecked: {},
     }
+  }
+
+  componentDidMount () {
+    if (Taro.getEnv() === 'WEAPP') {
+      this.setState({
+        info: {
+          user_type: 'wechat'
+        }
+      })
+    }else if (Taro.getEnv() === 'H5') {
+      this.setState({
+        info: {
+          user_type: 'local'
+        }
+      })
+    }
+    this.fetch()
+  }
+
+
+  async fetch () {
+    let arr  = []
+    let res = await api.user.regParam()
+    Object.keys(res).forEach(key => {
+      if(res[key].is_open) {
+        if(key === 'sex'){
+          res[key].items = ['男', '女']
+        }
+        arr.push({
+          key: key,
+          name: res[key].name,
+          is_required: res[key].is_required,
+          items: res[key].items ? res[key].items : null
+        })
+
+      }
+    })
+
+    this.setState({
+      list: arr,
+    });
   }
 
   handleSubmit = async (e) => {
@@ -35,23 +79,33 @@ export default class Reg extends Component {
     if (!data.password) {
       return S.toast('请输入密码')
     }
-    console.log(data, 19)
-    // if (process.env.TARO_ENV === 'h5') {
-      const { UserInfo } = await api.user.reg(data)
-      console.log(UserInfo)
-      // this.setState({
-      //   info.user_type:
-      // })
-    // }
-    // if(this.state.isForgot){
-    //
-    // }
-    // const { UserInfo } = await api.user.reg(data)
+    this.state.list.map(item=>{
+      return item.is_required ? (item.is_required && data[item.key] ? true : S.toast(`请输入${item.name}`)) : null
+    })
+
+    const { UserInfo } = await api.user.reg(data)
+    console.log(UserInfo)
   }
 
   handleChange = (name, val) => {
-    const { info } = this.state
+    const { info, list } = this.state
     info[name] = val
+    if(val.currentTarget){
+      if(val.currentTarget.dataset.item) {
+        info[name] = val.currentTarget.dataset.item.items[val.detail.value]
+        list.map(item => {
+          item.key === name ? item.value = val.currentTarget.dataset.item.items[val.detail.value] : null
+        })
+      }
+    }
+    this.setState({ list });
+    if(name === 'sex') {
+      if(info[name] === '男') {
+        info[name] = 1
+      } else {
+        info[name] = 2
+      }
+    }
   }
 
   handleClickIconpwd = () => {
@@ -95,7 +149,7 @@ export default class Reg extends Component {
   }
 
   render () {
-    const { info, timerMsg, isVisible } = this.state
+    const { info, timerMsg, isVisible, list } = this.state
 
     return (
       <View className='auth-reg'>
@@ -142,30 +196,44 @@ export default class Reg extends Component {
                   : <View className='sp-icon sp-icon-icon6 icon-pwd' onClick={this.handleClickIconpwd}> </View>
               }
             </AtInput>
-            <AtInput
-              title='姓名'
-              name='username'
-              value={info.username}
-              placeholder='请输入姓名'
-              onFocus={this.handleErrorToastClose}
-              onChange={this.handleChange.bind(this, 'username')}
-            />
-            <AtInput
-              title='性别'
-              name='sex'
-              value={info.sex = '0'}
-              placeholder='请输入性别'
-              onFocus={this.handleErrorToastClose}
-              onChange={this.handleChange.bind(this, 'sex')}
-            />
-            <AtInput
-              title='类型'
-              name='user_type'
-              value={info.user_type = 'local'}
-              placeholder='请输入类型'
-              onFocus={this.handleErrorToastClose}
-              onChange={this.handleChange.bind(this, 'user_type')}
-            />
+            {
+              list.map((item, index) => {
+                return (
+                  <View key={index}>
+                    {
+                      item.items
+                        ? <View className='page-section'>
+                            <View>
+                              <Picker
+                                mode='selector'
+                                range={item.items}
+                                data-item={item}
+                                onChange={this.handleChange.bind(this, `${item.key}`)}
+                              >
+                                <View className='picker'>
+                                  <View className='picker__title'>{item.name}</View>
+                                  <Text
+                                    className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
+                                  >{item.value ? item.value : `请选择${item.name}`}</Text>
+                                </View>
+                              </Picker>
+                            </View>
+                          </View>
+                        : <View>
+                            <AtInput
+                              title={item.name}
+                              name='text'
+                              placeholder={`请输入${item.name}`}
+                              onFocus={this.handleErrorToastClose}
+                              onChange={this.handleChange.bind(this, `${item.key}`)}
+                            />
+                          </View>
+                    }
+                  </View>
+                )
+              })
+
+            }
           </View>
           <View className='btns'>
             <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>同意协议并注册</AtButton>

@@ -1,7 +1,6 @@
 module.exports = {
   env: {
-    NODE_ENV: '"development"',
-    TARO_ENV: '"h5"'
+    NODE_ENV: '"development"'
   },
   defineConstants: {
   },

@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import {View, Text, ScrollView, Image} from '@tarojs/components'
 import { AtSearchBar, AtButton } from 'taro-ui'
 import { Loading, SearchBar } from '@/components'
-import { classNames } from '@/utils'
+import { classNames, pickBy } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import api from '@/api'
 
@@ -14,8 +14,8 @@ export default class CartIndex extends Component {
 
     this.state = {
       list: null,
-      pluralType: true,
-      imgType: true,
+      pluralType: false,
+      imgType: false,
       currentIndex: 0,
     }
   }
@@ -25,9 +25,15 @@ export default class CartIndex extends Component {
   }
 
   async fetch () {
-    const { categorys } = await api.category.get()
+    let res = await api.category.get()
+    console.log(res)
+    const nList = pickBy(res, {
+      category_name: 'category_name',
+      children: 'children'
+    })
+    console.log(nList)
     this.setState({
-      list: categorys
+      list: nList
     })
   }
 
@@ -50,7 +56,7 @@ export default class CartIndex extends Component {
     const { list, pluralType, imgType, currentIndex } = this.state
     let items
     if(list) {
-      items = list[currentIndex].lv2
+      items = list[currentIndex].children
     }
     if (!list) {
       return <Loading />
@@ -74,7 +80,7 @@ export default class CartIndex extends Component {
                     key={index}
                     onClick={this.handleClickCategoryNav.bind(this, index)}
                   >
-                    {item.cat_name}
+                    {item.category_name}
                   </View>
                 )
               }
@@ -90,15 +96,15 @@ export default class CartIndex extends Component {
                 items.map(item =>
                   <View
                     className='category-content__img'
-                    key={item.cat_id}
+                    key={item.category_id}
                     onClick={this.handleClickItem.bind(this, item)}
                   >
                     <Image
                       className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
                       mode='aspectFill'
-                      src={item.cat_logo}
+                      src={item.image_url}
                     />
-                    <View className='img-cat-name'>{item.cat_name}</View>
+                    <View className='img-cat-name'>{item.category_name}</View>
                   </View>
                 )
               }
