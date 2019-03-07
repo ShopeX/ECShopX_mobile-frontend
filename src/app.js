@@ -21,25 +21,28 @@ class App extends Component {
       'pages/home/index',
       'pages/item/list',
       'pages/item/espier-detail',
+      'pages/item/point-list',
+
       'pages/cart/index',
       'pages/cart/checkout',
       'pages/article/index',
 
       'pages/category/index',
 
-      'pages/auth/login',
       'pages/auth/reg',
+      'pages/auth/login',
       'pages/auth/forgotpwd',
 
       'pages/cashier/index',
 
       'pages/member/index',
       'pages/member/favorite',
-      'pages/member/integral',
+      'pages/member/point',
       'pages/member/pay',
       'pages/member/recharge',
       'pages/member/recommend',
       'pages/member/recommend-member',
+      'pages/member/coupon',
 
       'pages/trade/list',
       'pages/trade/detail',

@@ -6,7 +6,7 @@ import { Loading, SpNote } from '@/components'
 import { withPager } from '@/hocs'
 import api from '@/api'
 
-import './integral.scss'
+import './point.scss'
 
 @withPager
 export default class Integral extends Component {

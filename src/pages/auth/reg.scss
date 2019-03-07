@@ -3,6 +3,7 @@
 .auth-reg {
   height: 100vh;
   padding-top: 160px;
+  box-sizing: border-box;
   background: $color-brand-primary-text;
   &__form {
     padding: $edge-size;
@@ -13,6 +14,27 @@
     text-align: center;
     &__text {
       color: $color-brand-primary;
+    }
+  }
+  .picker {
+    padding: 16px 0;
+    margin: 0 0 $edge-size;
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1PX solid rgba($color-brand-primary, 0.2);
+    &__title {
+      font-size: $font-size;
+      margin-right:16px;
+      width:172px;
+    }
+    .pick-value {
+      color: #333;
+    }
+    span.pick-value-null {
+      color: #ccc;
+    }
+    text.pick-value-null {
+      color: #808080;
     }
   }
 }

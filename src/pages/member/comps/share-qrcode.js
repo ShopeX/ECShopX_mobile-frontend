@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { classNames, formatTime } from '@/utils'
 import { AtCurtain } from "taro-ui";
+import api from '@/api'
 
 import './share-qrcode.scss';
 
@@ -16,6 +17,16 @@ export default class RateItem extends Component {
     this.state = {
       isOpened: true
     }
+  }
+
+  componentDidMount () {
+    this.fetch()
+  }
+
+
+  async fetch (params) {
+    const { list } = await api.member.qrcodeData(params)
+    console.log(list)
   }
 
   componentWillReceiveProps () {

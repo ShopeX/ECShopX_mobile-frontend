@@ -23,6 +23,9 @@ export default class Login extends Component {
       url: `/pages/auth/reg`
     })
   }
+  componentDidMount() {
+    console.log(Taro.getCurrentPages(), 44)
+  }
 
   handleSubmit = async (e) => {
     const { value } = e.detail
@@ -38,8 +41,22 @@ export default class Login extends Component {
       return S.toast('请输入密码')
     }
     console.log(data, 19)
-    const { UserInfo } = await api.user.login(data)
-    console.log(UserInfo)
+    await api.user.login(data).then(res => {
+      S.setAuthToken(res.token)
+      console.log(res, 43)
+      if (Taro.getCurrentPages().length > 1) {
+        Taro.navigateBack({
+          delta: 1
+        });
+      } else {
+        Taro.redirectTo({
+          url: "/pages/home/index"
+        })
+      }
+      // Taro.navigateBack()
+      // let currentPages = Taro.getCurrentPages()
+      // Taro.navigateBack({ delta: Taro.getCurrentPages().length - 1 })
+    })
   }
 
   handleChange = (name, val) => {

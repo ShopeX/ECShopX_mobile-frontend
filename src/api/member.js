@@ -4,8 +4,8 @@ export function pointDetail () {
   return req.get('/member.point.detail')
 }
 
-export function couponList (tid) {
-  return req.get('/member.coupon.list', { tid })
+export function couponList (params = {}) {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/user/newGetCardList', params)
 }
 
 export function addressList () {
@@ -36,3 +36,8 @@ export function favoriteItems () {
 export function getRechargeNumber () {
   return req.get('http://pjj.aixue7.com/index.php/api/weapp/deposit/rechargerules')
 }
+
+export function qrcodeData () {
+  return req.get('http://pjj.aixue7.com/index.php/api/wxapp/promoter/qrcode')
+}
+

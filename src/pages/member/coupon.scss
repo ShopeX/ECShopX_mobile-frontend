@@ -1,0 +1,98 @@
+@import "../../style/imports";
+
+.coupon-list {
+  .at-tabs__header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: $z-index-toolbar;
+  }
+  &__scroll {
+    height: 100vh;
+    padding: $tabbar-height 0 $edge-margin;
+    box-sizing: border-box;
+  }
+  &__tabs {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.coupon-list-ticket {
+  padding-top: 20px;
+  .coupon-item {
+    min-height:180px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 $edge-size $edge-margin;
+    &__name {
+      width:210px;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      background:linear-gradient(315deg,rgba(255,77,24,1) 0%,rgba(253,130,30,1) 100%);
+    }
+    &__name-not {
+      background:linear-gradient(315deg,rgba(136,136,136,1) 0%,rgba(170,170,170,1) 100%);
+    }
+    &__name:before {
+      content: ' ';
+      width: 0;
+      height: 100%;
+      position: absolute;
+      top: 10px;
+    }
+    &__name:before {
+      border-right: 10px dotted $color-bg-gray;
+      left: -5px;
+    }
+    &___number {
+      font-size: 36px;
+      &_text {
+        font-size: 60px;
+      }
+    }
+    &___info {
+      font-size: 24px;
+      //width: 100px;
+      margin: 0 auto;
+      //border: 1px solid #fff;
+      //border-radius: 8px;
+      //padding: 2px 14px;
+    }
+    &__content {
+      background: #fff;
+      font-size: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      border:1px solid #DDDDDD;
+      box-sizing: border-box;
+      padding-left: 20px;
+    }
+    &___description {
+      color: #666;
+      font-size: 24px;
+      display: flex;
+      justify-content: space-between;
+    }
+    &___time {
+      font-size: 24px;
+      color: $color-gray-light;
+    }
+    &___used {
+      width: 180px;
+      //position: absolute;
+      //right: 20px;
+      //top: 30px;
+    }
+  }
+}
