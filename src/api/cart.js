@@ -43,3 +43,7 @@ export function total (params) {
   // return req.post('/cart.total')
   return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/getFreightFee', params)
 }
+
+export function coupons (params) {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/getCardList', params)
+}

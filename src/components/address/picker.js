@@ -126,11 +126,11 @@ export default class AddressPicker extends Component {
   }
 
   render () {
-    const { isOpend } = this.props
+    const { isOpened } = this.props
     const { mode, curAddress, list } = this.state
 
     return (
-      <View className={classNames('address-picker', isOpend ? 'address-picker__active' : null)}>
+      <View className={classNames('address-picker', isOpened ? 'address-picker__active' : null)}>
         {
           mode !== 'edit'
             ? <AtNavBar

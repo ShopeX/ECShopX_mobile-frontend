@@ -2,12 +2,15 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView, Switch } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtInput, AtActionSheet, AtActionSheetItem } from 'taro-ui'
-import { Loading, Price, SpCell, AddressPicker } from '@/components'
+import { Loading, Price, SpCell, AddressPicker, SpToast } from '@/components'
+import qs from 'qs'
 import api from '@/api'
+import S from '@/spx'
+import { pickBy, navigateTo } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import CheckoutItems from './checkout-items'
 
-import './checkout.scss'
+import './espier-checkout.scss'
 
 @connect(({ cart }) => ({
   fastbuy: cart.fastbuy
@@ -24,14 +27,16 @@ export default class CartCheckout extends Component {
       showShippingPicker: false,
       showAddressPicker: false,
       showCheckoutItems: false,
+      showCoupons: false,
       curCheckoutItems: null,
+      coupons: [],
       total: {
         items_count: '',
         total_fee: '0.00',
         item_fee: '',
+        freight_fee: '',
         member_discount: '',
-        coupon_discount: '',
-        freight_fee: ''
+        coupon_discount: ''
       }
     }
   }
@@ -81,6 +86,7 @@ export default class CartCheckout extends Component {
       promotion: 'normal',
       member_discount: false
     }
+
     this.setState({
       total: {
         items_count,
@@ -90,22 +96,28 @@ export default class CartCheckout extends Component {
   }
 
   getParams () {
-    const { name: receiver_name, mobile: receiver_mobile, zip: receiver_zip, addrdetail: receiver_address } = this.state.address
+    const receiver = pickBy(this.state.address, {
+      receiver_name: 'name',
+      receiver_mobile: 'mobile',
+      receiver_state: 'state',
+      receiver_city: 'city',
+      receiver_district: 'district',
+      receiver_address: 'address',
+      receiver_zip: 'zip'
+    })
     const params = {
       ...this.params,
-      receiver_name,
-      receiver_mobile,
-      receiver_state: '浙江省',
-      receiver_city: '杭州市',
-      receiver_district: '上城区',
-      receiver_address,
-      receiver_zip: receiver_zip || '2100000'
+      ...receiver
     }
 
     return params
   }
 
   async calcOrder () {
+    Taro.showLoading({
+      title: '加载中',
+      mask: true
+    })
     const params = this.getParams()
     const data = await api.cart.total(params)
 
@@ -113,11 +125,12 @@ export default class CartCheckout extends Component {
     const total = {
       ...this.state.total,
       item_fee,
-      member_discount,
-      coupon_discount,
+      member_discount: -1 * member_discount,
+      coupon_discount: -1 * coupon_discount,
       freight_fee,
       total_fee
     }
+    Taro.hideLoading()
 
     this.setState({
       total
@@ -125,6 +138,18 @@ export default class CartCheckout extends Component {
   }
 
   handleAddressChange = (address) => {
+    address = pickBy(address, {
+      state: 'provinceName',
+      city: 'cityName',
+      district: 'countyName',
+      addr_id: 'address_id',
+      mobile: 'telephone',
+      name: 'username',
+      zip: 'postalCode',
+      address: 'detailInfo',
+      area: 'area'
+    })
+
     this.setState({
       address
     }, () => {
@@ -148,26 +173,53 @@ export default class CartCheckout extends Component {
     this.toggleCheckoutItems()
   }
 
-  toggleAddressPicker (isOpend) {
-    if (isOpend === undefined) {
-      isOpend = !this.state.showAddressPicker
+  toggleAddressPicker (isOpened) {
+    if (isOpened === undefined) {
+      isOpened = !this.state.showAddressPicker
     }
 
-    lockScreen(isOpend)
-    this.setState({ showAddressPicker: isOpend })
+    lockScreen(isOpened)
+    this.setState({ showAddressPicker: isOpened })
   }
 
-  toggleCheckoutItems (isOpend) {
-    if (isOpend === undefined) {
-      isOpend = !this.state.showCheckoutItems
+  toggleCheckoutItems (isOpened) {
+    if (isOpened === undefined) {
+      isOpened = !this.state.showCheckoutItems
     }
 
-    lockScreen(isOpend)
-    this.setState({ showCheckoutItems: isOpend })
+    lockScreen(isOpened)
+    this.setState({ showCheckoutItems: isOpened })
+  }
+
+  toggleState (key, val) {
+    if (val === undefined) {
+      val = !this.state[key]
+    }
+
+    this.setState({
+      [key]: val
+    })
+  }
+
+  async handlePay () {
+    if (!this.state.address) {
+      return S.notify('请选择地址')
+    }
+
+    const data = await api.trade.create(this.params)
+    console.log(data)
+    const url = `/pages/member/pay`
+    Taro.navigateTo({ url })
+  }
+
+  handleCouponsClick () {
+    Taro.navigateTo({
+      url: `/pages/cart/coupon-picker?items=${JSON.stringify(this.params.items)}`
+    })
   }
 
   render () {
-    const { info, address, total, showShippingPicker, showAddressPicker, showCheckoutItems, curCheckoutItems } = this.state
+    const { info, address, total, showShippingPicker, showAddressPicker, showCheckoutItems, curCheckoutItems, showCoupons } = this.state
 
     if (!info) {
       return <Loading />
@@ -194,7 +246,7 @@ export default class CartCheckout extends Component {
                         收货人：{address.name} {address.mobile}
                       </Text>
                       <Text className='address-info__addr'>
-                        收货地址：{address.addrdetail}
+                        收货地址：{address.area}{address.address}
                       </Text>
                     </View>
                   : <View className='address-info__bd'>请选择收货地址</View>
@@ -210,7 +262,7 @@ export default class CartCheckout extends Component {
                     className='cart-group'
                     key={cart.shop_id}
                   >
-                    <View className='cart-group__shop'>{cart.shop_name}</View>
+                    {/*<View className='cart-group__shop'>{cart.shop_name}</View>*/}
                     <View className='sec cart-group__cont'>
                       <SpCell
                         className='trade-items'
@@ -251,6 +303,14 @@ export default class CartCheckout extends Component {
             }
           </View>
 
+          <SpCell
+            is-link
+            className='coupons-list'
+            title='选择优惠券'
+            onClick={this.handleCouponsClick}
+          >
+          </SpCell>
+
           {/*<View className='sec trade-point'>
             <SpCell
               title='积分'
@@ -287,39 +347,57 @@ export default class CartCheckout extends Component {
               className='trade-sub-total__item'
               title='商品金额'
             >
-              <Price value={total.item_fee} />
+              <Price
+                unit='cent'
+                value={total.item_fee}
+              />
             </SpCell>
             <SpCell
               className='trade-sub-total__item'
-              title='运费'
+              title='会员折扣金额'
             >
-              <Price value={total.freight_fee}></Price>
+              <Price
+                unit='cent'
+                value={total.member_discount}
+              />
             </SpCell>
             <SpCell
               className='trade-sub-total__item'
               title='优惠券'
             >
-              <Price value={total.coupon_discount} />
+              <Price
+                unit='cent'
+                value={total.coupon_discount}
+              />
+            </SpCell>
+            <SpCell
+              className='trade-sub-total__item'
+              title='运费'
+            >
+              <Price
+                unit='cent'
+                value={total.freight_fee}
+              />
             </SpCell>
           </View>
         </ScrollView>
 
         <AddressPicker
-          isOpend={showAddressPicker}
+          isOpened={showAddressPicker}
           value={address}
           onChange={this.handleAddressChange}
-          onClickBack={this.toggleAddressPicker.bind(this, false)}
+          onClickBack={this.toggleState.bind(this, 'showAddressPicker', false)}
         />
 
         <CheckoutItems
-          isOpend={showCheckoutItems}
+          isOpened={showCheckoutItems}
           list={curCheckoutItems}
           onClickBack={this.toggleCheckoutItems.bind(this, false)}
         />
 
         <AtActionSheet
-          isOpend={showShippingPicker}
-          onClose={() => this.setState({ showShippingPicker: false })}
+          isOpened={showShippingPicker}
+          onClose={this.toggleState.bind(this, 'showShippingPicker', false)}
         >
           <AtActionSheetItem onClick={this.handleShippingChange}>顺丰</AtActionSheetItem>
           <AtActionSheetItem onClick={this.handleShippingChange}>自提</AtActionSheetItem>
@@ -327,14 +405,17 @@ export default class CartCheckout extends Component {
 
         <View className='toolbar checkout-toolbar'>
           <View className='checkout__total'>
-            共<Text className='total-items'>{total.items_count}</Text>件，合计: <Price primary value={total.total_fee} />
+            共<Text className='total-items'>{total.items_count}</Text>件，合计: <Price primary unit='cent' value={total.total_fee} />
           </View>
           <AtButton
             circle
             type='primary'
             className='btn-confirm-order'
+            onClick={this.handlePay}
           >提交订单</AtButton>
         </View>
+
+        <SpToast />
       </View>
     )
   }

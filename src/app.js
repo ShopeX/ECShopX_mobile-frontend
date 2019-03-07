@@ -19,6 +19,7 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/home/index',
+      'pages/category/index',
       'pages/item/list',
       'pages/item/espier-detail',
       'pages/item/point-list',
@@ -26,9 +27,8 @@ class App extends Component {
 
       'pages/cart/index',
       'pages/cart/espier-checkout',
+      'pages/cart/coupon-picker',
       'pages/article/index',
-
-      'pages/category/index',
 
       'pages/auth/reg',
       'pages/auth/login',

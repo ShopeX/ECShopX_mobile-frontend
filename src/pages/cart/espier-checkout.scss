@@ -150,4 +150,20 @@
       justify-content: flex-end;
     }
   }
+
+  .coupons-list {
+    margin: 0 0 $edge-margin;
+  }
+
+  .coupon-item {
+    display: flex;
+    align-items: center;
+    &__bd {
+      flex: 1;
+    }
+    &__ft {
+      width: 30%;
+      color: $color-gray;
+    }
+  }
 }
