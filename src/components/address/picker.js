@@ -50,7 +50,7 @@ export default class AddressPicker extends Component {
   changeSelection (params = {}) {
     const { addr_id } = params
     const { list } = this.state
-    const address = find(list, addr => addr_id ? addr_id === addr.addr_id : addr.def_addr > 0) || list[0] || null
+    const address = find(list, addr => addr_id ? addr_id === addr.address_id : addr.def_addr > 0) || list[0] || null
 
     log.debug('[address picker] change selection: ', address)
     this.props.onChange(address)
@@ -93,10 +93,10 @@ export default class AddressPicker extends Component {
   }
 
   handleDelAddress = async (address) => {
-    const { addr_id } = address
-    await api.member.addressDelete(addr_id)
-    const list = this.state.list.filter(addr => addr.addr_id !== addr_id)
-    const isDeleteCurAddress = this.state.curAddress && this.state.curAddress.addr_id === address.addr_id
+    const { address_id } = address
+    await api.member.addressDelete(address_id)
+    const list = this.state.list.filter(addr => addr.address_id !== address_id)
+    const isDeleteCurAddress = this.state.curAddress && this.state.curAddress.address_id === address.address_id
 
     this.setState({
       list
@@ -167,14 +167,14 @@ export default class AddressPicker extends Component {
                     list.map(item => {
                       return (
                         <SpCell
-                          key={item.addr_id}
+                          key={item.address_id}
                           onClick={this.handleClickAddress.bind(this, item)}
                         >
                           <View className='address-item'>
                             <Text className='address-item__receiver'>
-                              <Text className='address-item__name'>{item.name}</Text>
-                              <Text className='address-item__mobile'>{item.mobile}</Text>
-                              <Text className='address-item__addr'>{item.addrdetail}</Text>
+                              <Text className='address-item__name'>{item.username}</Text>
+                              <Text className='address-item__mobile'>{item.telephone}</Text>
+                              <Text className='address-item__addr'>{item.area}</Text>
                             </Text>
                             <Text
                               className='address-item__ft'

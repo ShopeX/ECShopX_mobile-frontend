@@ -160,9 +160,9 @@ export default class Reg extends Component {
   }
 
   handleClickAgreement = () => {
-    Taro.navigateTo({
-      url: '/pages/auth/login'
-    })
+    // Taro.navigateTo({
+    //   url: '/pages/auth/login'
+    // })
     console.log("用户协议")
   }
 

@@ -14,7 +14,8 @@ export default class Login extends Component {
 
     this.state = {
       info: {},
-      isVisible: false
+      isVisible: false,
+      urlBack: ''
     }
   }
 
@@ -25,6 +26,9 @@ export default class Login extends Component {
   }
   componentDidMount() {
     const { redirect } = this.$router.params
+    this.setState({
+      urlBack: redirect
+    })
     console.log(this.$router, this.$router.params, redirect, 44)
   }
 
@@ -43,8 +47,12 @@ export default class Login extends Component {
     }
     console.log(data, 19)
     await api.user.login(data).then(res => {
+      const { urlBack } = this.state
       S.setAuthToken(res.token)
       console.log(res, 43)
+      Taro.redirectTo({
+        url: urlBack
+      })
       // if (Taro.getCurrentPages().length > 1) {
       //   Taro.navigateBack({
       //     delta: 1
