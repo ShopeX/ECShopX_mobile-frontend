@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Switch } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpCell } from '@/components'
+import api from '@/api'
 import S from '@/spx'
 
 import './edit.scss'
@@ -27,28 +28,34 @@ export default class AddressEdit extends Component {
     }
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     const { value } = e.detail
     const data = {
       ...this.state.info,
+      provinceName: '天津市',
+      cityName: '市辖区',
+      countyName: '和平区',
       ...value
     }
 
-    if (!data.name) {
+    if (!data.username) {
       return S.toast('请输入收件人')
     }
 
-    if (!data.mobile || !/1\d{10}/.test(data.mobile)) {
+    if (!data.telephone || !/1\d{10}/.test(data.telephone)) {
       return S.toast('请输入正确的手机号')
     }
 
-    if (!data.area) {
-      return S.toast('请选择所在区域')
-    }
+    // if (!data.area) {
+    //   return S.toast('请选择所在区域')
+    // }
 
-    if (!data.addr) {
+    if (!data.detailInfo) {
       return S.toast('请输入详细地址')
     }
+
+    let res = await api.member.addressCreate(data)
+    console.log(res, 57)
 
     this.props.onChange && this.props.onChange(data)
     this.props.onClose && this.props.onClose()
@@ -89,29 +96,34 @@ export default class AddressEdit extends Component {
           <View className='sec address-edit__form'>
             <AtInput
               title='收件人姓名'
-              name='name'
-              value={info.name}
-              onChange={this.handleChange.bind(this, 'name')}
+              name='username'
+              value={info.username}
+              onChange={this.handleChange.bind(this, 'username')}
             />
             <AtInput
               title='手机号码'
-              name='mobile'
+              name='telephone'
               maxLength={11}
-              value={info.mobile}
-              onChange={this.handleChange.bind(this, 'mobile')}
+              value={info.telephone}
+              onChange={this.handleChange.bind(this, 'telephone')}
             />
+            {/*<AtInput*/}
+              {/*title='所在区域'*/}
+              {/*name='area'*/}
+              {/*value={info.area}*/}
+              {/*onChange={this.handleChange.bind(this, 'area')}*/}
+            {/*/>*/}
             <AtInput
-              title='所在区域'
-              name='area'
-              value={info.area}
-              onChange={this.handleChange.bind(this, 'area')}
-            />
-            <AtInput
-              border={false}
               title='详细地址'
-              name='addr'
-              value={info.addr}
-              onChange={this.handleChange.bind(this, 'addr')}
+              name='detailInfo'
+              value={info.detailInfo}
+              onChange={this.handleChange.bind(this, 'detailInfo')}
+            />
+            <AtInput
+              title='邮政编码'
+              name='postalCode'
+              value={info.postalCode}
+              onChange={this.handleChange.bind(this, 'postalCode')}
             />
           </View>
 
@@ -127,9 +139,9 @@ export default class AddressEdit extends Component {
           </View>
 
           <View className='btns'>
-            <AtButton type='primary' formType='submit'>提交</AtButton>
+            <AtButton type='primary' onSubmit={this.handleSubmit} formType='submit'>提交</AtButton>
             {
-              info.addr_id && (<AtButton onClick={this.handleDelete}>删除</AtButton>)
+              info.address_id && (<AtButton onClick={this.handleDelete}>删除</AtButton>)
             }
           </View>
         </AtForm>
