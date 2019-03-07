@@ -5,6 +5,7 @@ import { Loading, Price, BackToTop, SpHtmlContent } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
 import { styleNames, log } from '@/utils'
+import S from '@/spx'
 import GoodsBuyToolbar from './comps/buy-toolbar'
 
 import './espier-detail.scss'
@@ -106,9 +107,14 @@ export default class Detail extends Component {
     })
   }
 
-  handleBuyClick = (type) => {
-    const { marketing } = this.state
-    let url = `/pages/cart/checkout`
+  handleBuyClick = async (type) => {
+    const { marketing, info } = this.state
+    let url = `/pages/cart/checkout?id=${info.item_id}`
+
+    const hasToken = !!S.getAuthToken()
+    if (!hasToken) {
+      return S.login(this, false)
+    }
 
     if (type === 'cart') {
       return Taro.navigateTo({

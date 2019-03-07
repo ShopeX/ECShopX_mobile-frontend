@@ -1,7 +1,8 @@
 import { createReducer } from 'redux-create-reducer'
 
 const initState = {
-  list: []
+  list: [],
+  checkoutItem: null
 }
 
 const cart = createReducer(initState, {
@@ -11,6 +12,15 @@ const cart = createReducer(initState, {
     return {
       ...state,
       list
+    }
+  },
+
+  ['cart/checkout'](state, action) {
+    const checkoutItem = action.payload
+
+    return {
+      ...state,
+      checkoutItem
     }
   }
 })

@@ -112,15 +112,20 @@ class Spx {
     } catch (e) {
       log.debug('[auth failed] redirect to login page: ', e)
 
-      const { fullPath } = getCurrentRoute(ctx.$router)
-      const authUrl = process.env.TARO_ENV === 'weapp'
-        ? `/pages/auth/login?redirect=${fullPath}`
-        : `/pages/auth/login?redirect=${fullPath}`
-
-      Taro.redirectTo({
-        url: authUrl
-      })
+      this.goLogin(ctx)
     }
+  }
+
+  login (ctx, isRedirect = true) {
+    const { fullPath } = getCurrentRoute(ctx.$router)
+
+    const authUrl = process.env.TARO_ENV === 'weapp'
+      ? `/pages/auth/login?redirect=${fullPath}`
+      : `/pages/auth/login?redirect=${fullPath}`
+
+    Taro[isRedirect ? 'redirectTo' : 'navigateTo']({
+      url: authUrl
+    })
   }
 
   logout () {
