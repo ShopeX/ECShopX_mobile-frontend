@@ -21,14 +21,14 @@ export default class GoodsBuyToolbar extends Component {
       <View className='goods-buy-toolbar'>
         <View className='goods-buy-toolbar__menus'>
           <View className='goods-buy-toolbar__menu-item'>
-            <View className='at-icon at-icon-home'></View>
+            <View className='sp-icon sp-icon-shop'></View>
             <Text className='goods-buy-toolbar__menu-item-text'>店铺</Text>
           </View>
           <View className='goods-buy-toolbar__menu-item'>
             <AtBadge
               value={2}
             >
-              <View className='at-icon at-icon-tag'></View>
+              <View className='sp-icon sp-icon-menu'></View>
             </AtBadge>
             <Text className='goods-buy-toolbar__menu-item-text'>购物车</Text>
           </View>

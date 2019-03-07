@@ -1,14 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
+import { SpHtmlContent } from '@/components'
 import { formatTime } from '@/utils'
 
 import './index.scss'
-
-let wxParse
-if (process.env.TARO_ENV === 'weapp') {
-  wxParse = require('@/components/wxParse/wxParse')
-}
 
 export default class ArticleIndex extends Component {
   constructor (props) {
@@ -34,11 +30,6 @@ export default class ArticleIndex extends Component {
     this.setState({
       info
     })
-
-    if (process.env.TARO_ENV === 'weapp') {
-      const article = info.content
-      wxParse.wxParse('article', 'html', article, this.$scope, )
-    }
   }
 
   render () {
@@ -60,14 +51,9 @@ export default class ArticleIndex extends Component {
         <View className='article-info'>
           <Text className='article-title'>{info.title}</Text>
           <Text className='article-time'>{info.updated_str}</Text>
-          {
-            process.env.TARO_ENV === 'weapp'
-              ? <View className='article-content'>
-                  <import src='../../components/wxParse/wxParse.wxml' />
-                  <template is='wxParse' data='{{wxParseData:article.nodes}}'/>
-                </View>
-              : <View className='article-content' dangerouslySetInnerHTML={{ __html: info.content }}></View>
-          }
+          <SpHtmlContent
+            content={info.content}
+          ></SpHtmlContent>
         </View>
       </View>
     )

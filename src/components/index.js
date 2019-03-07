@@ -17,5 +17,6 @@ export { default as SpCell } from './cell'
 export { default as SpToast } from './toast'
 export { default as SpIconMenu } from './icon-menu'
 export { default as SpNote } from './note'
+export { default as SpHtmlContent } from './html-content'
 
 export default {}

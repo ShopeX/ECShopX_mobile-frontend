@@ -1,16 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image } from '@tarojs/components'
 import { AtDivider } from 'taro-ui'
-import { Loading, Price, BackToTop, GoodsBuyToolbar, GoodsBuyPanel, <SpHtmlContent
-              className='goods-detail__content'
-              content={desc.wap_desc}
-            /> } from '@/components'
+import { Loading, Price, BackToTop, GoodsBuyToolbar, SpHtmlContent } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
 import { styleNames, log } from '@/utils'
-import RateItem from './comps/rate-item'
 
-import './detail.scss'
+import './espier-detail.scss'
 
 @withBackToTop
 export default class Detail extends Component {
@@ -23,11 +19,9 @@ export default class Detail extends Component {
 
     this.state = {
       info: null,
-      rateList: null,
       desc: null,
       windowWidth: 320,
-      curImgIdx: 0,
-      showBuyPanel: false
+      curImgIdx: 0
     }
   }
 
@@ -46,11 +40,10 @@ export default class Detail extends Component {
   async fetch () {
     const { id } = this.$router.params
     const info = await api.item.detail(id)
-    const rateList = await api.item.rateList(id)
-    const desc = await api.item.desc(id)
+    const { intro: desc } = info
 
-    this.setState({ info, rateList, desc })
-    log.debug('fetch: done', info, rateList, desc)
+    this.setState({ info, desc })
+    log.debug('fetch: done', info)
   }
 
   handleSwiperChange = (e) => {
@@ -61,19 +54,18 @@ export default class Detail extends Component {
   }
 
   handleClickAction = () => {
-    this.setState({
-      showBuyPanel: true
-    })
   }
 
   render () {
-    const { info, windowWidth, curImgIdx, rateList, desc, scrollTop, showBackToTop, showBuyPanel } = this.state
+    const { info, windowWidth, curImgIdx, desc, scrollTop, showBackToTop } = this.state
 
     if (!info) {
       return (
         <Loading />
       )
     }
+
+    const { pics: imgs } = info
 
     return (
       <View className='page-goods-detail'>
@@ -91,7 +83,7 @@ export default class Detail extends Component {
               onChange={this.handleSwiperChange}
             >
               {
-                info.item.images.map((img, idx) => {
+                imgs.map((img, idx) => {
                   return (
                     <SwiperItem key={idx}>
                       <Image
@@ -105,17 +97,20 @@ export default class Detail extends Component {
               }
             </Swiper>
             {
-              info.item.images.length > 1
-                && <Text className='goods-imgs__text'>{curImgIdx + 1} / {info.item.images.length}</Text>
+              imgs.length > 1
+                && <Text className='goods-imgs__text'>{curImgIdx + 1} / images.length}</Text>
             }
           </View>
 
           <View className='goods-hd'>
             <View className='goods-prices'>
-              <Price primary value={info.item.price}></Price>
+              <Price primary value={info.price}></Price>
 
               <View className='goods-prices__market'>
-                <Price value={info.item.mkt_price}></Price>
+                <Price
+                  symbol={info.cur.symbol}
+                  value={info.mkt_price}
+                />
               </View>
             </View>
 
@@ -141,30 +136,6 @@ export default class Detail extends Component {
             </View>
           </View>
 
-          <View className='sec goods-sec-comment'>
-            <View className='sec-hd'>
-              <Text className='sec-title'>宝贝评价（{info.item.rate_count}）</Text>
-              <Text className='more'>
-                <Text>查看全部</Text>
-                <Text className='at-icon at-icon-chevron-right'></Text>
-              </Text>
-            </View>
-            <View className='sec-bd'>
-              {
-                rateList && rateList.list.length > 0
-                  ? rateList.list.slice(0, 5).map(item => {
-                      return (
-                        <RateItem
-                          key={item.rate_id}
-                          info={item}
-                        />
-                      )
-                    })
-                  : null
-              }
-            </View>
-          </View>
-
           <View className='goods-sec-detail'>
             <AtDivider content='宝贝详情'></AtDivider>
             <SpHtmlContent
@@ -184,14 +155,6 @@ export default class Detail extends Component {
           onClickAddCart={this.onClickAddCart}
           onClickFastBuy={this.onClickFastBuy}
         />
-
-        {
-          info && <GoodsBuyPanel
-            info={info.item}
-            isOpened={showBuyPanel}
-            onClose={() => this.setState({ showBuyPanel: false })}
-          />
-        }
       </View>
     )
   }

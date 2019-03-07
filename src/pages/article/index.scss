@@ -26,10 +26,6 @@ page, body {
     }
     &-content {
       color: $color-primary-text;
-      img, .wxParse-img {
-        width: 100%;
-        height: auto;
-      }
     }
   }
 }
