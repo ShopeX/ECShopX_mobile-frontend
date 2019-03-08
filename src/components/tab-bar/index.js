@@ -25,7 +25,7 @@ export default class TabBar extends Component {
       tabList: [
         { title: '首页', iconType: 'shop', iconPrefixClass: 'sp-icon', url: '/pages/home/index' },
         { title: '分类', iconType: 'menu', iconPrefixClass: 'sp-icon', url: '/pages/category/index' },
-        { title: '购物车', iconType: 'cart', text: this.props.cartTotalCount || '', max: '99', iconPrefixClass: 'sp-icon', url: '/pages/cart/index' },
+        { title: '购物车', iconType: 'cart', text: this.props.cartTotalCount || '', max: '99', iconPrefixClass: 'sp-icon', url: '/pages/cart/espier-index' },
         { title: '会员', iconType: 'user', iconPrefixClass: 'sp-icon', url: '/pages/member/index' }
       ]
     }

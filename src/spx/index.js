@@ -3,7 +3,8 @@ import api from '@/api'
 import { getCurrentRoute, log } from '@/utils'
 
 const globalData = {}
-const TOKEN_IDENTIFIER = 'authToken'
+const TOKEN_IDENTIFIER = 'auth_token'
+const TOKEN_TIMESTAMP = 'refresh_token_time'
 
 function remove (arr, item) {
   const idx = arr.indexOf(item)
@@ -23,8 +24,16 @@ function isAsync (func) {
 }
 
 class Spx {
-  constructor () {
+  constructor (options = {}) {
     this.hooks = []
+    this.options = {
+      autoRefreshToken: true,
+      ...options
+    }
+
+    if (this.options.autoRefreshToken) {
+      this.startRefreshToken()
+    }
   }
 
   getAuthToken () {
@@ -38,6 +47,25 @@ class Spx {
   setAuthToken (token) {
     this.set(TOKEN_IDENTIFIER, token)
     Taro.setStorageSync(TOKEN_IDENTIFIER, token)
+    Taro.setStorageSync(TOKEN_TIMESTAMP, Date.now() + 55 * 60 * 1000)
+  }
+
+  startRefreshToken () {
+    if (this._refreshTokenTimer) {
+      clearTimeout(this._refreshTokenTimer)
+    }
+    const checkAndRefresh = async () => {
+      const expired = Taro.getStorageSync(TOKEN_TIMESTAMP)
+      if (!expired) return
+      const delta = expired - Date.now()
+      if (delta > 0 && delta <= 5 * 60 * 1000) {
+        const { token } = await api.user.refreshToken()
+        clearTimeout(this._refreshTokenTimer)
+        this.setAuthToken(token)
+      }
+    }
+
+    setInterval(checkAndRefresh, 5 * 60 * 1000)
   }
 
   async getUserInfo () {

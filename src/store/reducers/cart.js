@@ -1,4 +1,5 @@
 import { createReducer } from 'redux-create-reducer'
+import dotProp from 'dot-prop-immutable'
 
 const initState = {
   list: [],
@@ -7,15 +8,6 @@ const initState = {
 }
 
 const cart = createReducer(initState, {
-  ['cart/update'](state, action) {
-    const { list } = action.payload
-
-    return {
-      ...state,
-      list
-    }
-  },
-
   ['cart/checkout'](state, action) {
     const checkoutItem = action.payload
 
@@ -24,7 +16,6 @@ const cart = createReducer(initState, {
       checkoutItem
     }
   },
-
   ['cart/fastbuy'](state, action) {
     const { item , num = 1 } = action.payload
 
@@ -36,14 +27,56 @@ const cart = createReducer(initState, {
       }
     }
   },
+  ['cart/add'](state, action) {
+    const { item, num = 1 } = action.payload
+    const idx = state.list.findIndex(t => item.item_id === t.item_id)
+    let list
 
+    if (idx >= 0) {
+      list = dotProp.set(state.list, `${idx}`, { ...item, num: state.list[idx].num + num })
+    } else {
+      list = [...state.list, { ...item, num }]
+    }
+
+    return {
+      ...state,
+      list
+    }
+  },
+  ['cart/update'](state, action) {
+    const { item, num } = action.payload
+    const idx = state.list.findIndex(t => item.item_id === t.item_id)
+    let list
+
+    if (idx >= 0) {
+      list = dotProp.set(state.list, `${idx}`, { ...item, num })
+    } else {
+      list = [...state.list, { ...item, num }]
+    }
+
+    return {
+      ...state,
+      list
+    }
+  },
+  ['cart/delete'](state, action) {
+    const { item_id } = action.payload
+    const idx = state.list.findIndex(t => t.item_id === item_id)
+
+    return dotProp.delete(state, `list.${idx}`)
+  },
   ['cart/clearFastbuy'](state) {
     return {
       ...state,
       fastbuy: null
     }
   },
-
+  ['cart/clear'](state) {
+    return {
+      ...state,
+      ...initState
+    }
+  },
   ['cart/changeCoupon'](state, action) {
     const coupon = action.payload
 

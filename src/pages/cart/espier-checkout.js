@@ -3,10 +3,9 @@ import { View, Text, Image, ScrollView, Switch } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtInput, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import { Loading, Price, SpCell, AddressPicker, SpToast } from '@/components'
-import qs from 'qs'
 import api from '@/api'
 import S from '@/spx'
-import { pickBy, navigateTo } from '@/utils'
+import { pickBy } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import CheckoutItems from './checkout-items'
 
@@ -16,7 +15,8 @@ import './espier-checkout.scss'
   coupon: cart.coupon,
   fastbuy: cart.fastbuy
 }), (dispatch) => ({
-  onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' })
+  onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' }),
+  onClearCart: () => dispatch({ type: 'cart/clear' })
 }))
 export default class CartCheckout extends Component {
   constructor (props) {
@@ -79,7 +79,8 @@ export default class CartCheckout extends Component {
       receipt_type: 'logistics',
       order_type: 'normal',
       promotion: 'normal',
-      member_discount: false
+      member_discount: false,
+      pay_type: 'deposit'
     }
 
     this.setState({
@@ -223,9 +224,9 @@ export default class CartCheckout extends Component {
       return S.notify('请选择地址')
     }
 
-    const data = await api.trade.create(this.params)
-    console.log(data)
-    const url = `/pages/cashier/index`
+    const { order_id } = await api.trade.create(this.params)
+    const url = `/pages/cashier/index?order_id=${order_id}`
+    this.props.onClearCart()
     Taro.navigateTo({ url })
   }
 
@@ -419,14 +420,6 @@ export default class CartCheckout extends Component {
           list={curCheckoutItems}
           onClickBack={this.toggleCheckoutItems.bind(this, false)}
         />
-
-        <AtActionSheet
-          isOpened={showShippingPicker}
-          onClose={this.toggleState.bind(this, 'showShippingPicker', false)}
-        >
-          <AtActionSheetItem onClick={this.handleShippingChange}>顺丰</AtActionSheetItem>
-          <AtActionSheetItem onClick={this.handleShippingChange}>自提</AtActionSheetItem>
-        </AtActionSheet>
 
         <View className='toolbar checkout-toolbar'>
           <View className='checkout__total'>

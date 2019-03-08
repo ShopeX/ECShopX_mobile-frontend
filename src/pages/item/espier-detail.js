@@ -14,7 +14,8 @@ import './espier-detail.scss'
 @connect(({ cart }) => ({
   cart
 }), (dispatch) => ({
-  onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } })
+  onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
+  onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } })
 }))
 @withBackToTop
 export default class Detail extends Component {
@@ -123,15 +124,12 @@ export default class Detail extends Component {
     }
 
     if (type === 'cart') {
-      const data = await api.cart.add(info)
+      url = `/pages/cart/espier-index`
 
-      if (data.cart_id) {
-        return Taro.navigateTo({
-          url
-        })
-      } else {
-        S.toast('加入购物车失败，请稍后再试')
-      }
+      this.props.onAddCart(info)
+      return Taro.navigateTo({
+        url
+      })
     }
 
     if (type === 'fastbuy') {

@@ -34,7 +34,7 @@ export default class GoodsBuyToolbar extends Component {
           </View>
           <View
             className='goods-buy-toolbar__menu-item'
-            onClick={this.navigateTo.bind(this, '/pages/cart/index')}
+            onClick={this.navigateTo.bind(this, '/pages/cart/espier-index')}
           >
             <AtBadge
               value={2}

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { SpToast, SpIconMenu } from '@/components'
+import { SpToast } from '@/components'
 
 import S from '@/spx'
 import api from '@/api'
@@ -38,6 +38,7 @@ export default class Login extends Component {
       ...this.state.info,
       ...value
     }
+
     if (!data.username || !/1\d{10}/.test(data.username)) {
       return S.toast('请输入正确的手机号')
     }
