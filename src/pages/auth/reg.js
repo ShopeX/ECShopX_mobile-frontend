@@ -261,7 +261,7 @@ export default class Reg extends Component {
             }
           </View>
           <View className='btns'>
-            <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>同意协议并注册</AtButton>
+            <AtButton type='primary' formType='submit'>同意协议并注册</AtButton>
             <View className='accountAgreement'>
               已阅读并同意
               <Text

@@ -108,10 +108,10 @@ export default class CartCheckout extends Component {
                 address
                   ? <View className='address-info__bd'>
                       <Text className='address-info__receiver'>
-                        收货人：{address.name} {address.mobile}
+                        收货人：{address.name} {address.telephone}
                       </Text>
                       <Text className='address-info__addr'>
-                        收货地址：{address.addrdetail}
+                        收货地址：{address.province}{address.city}{address.county}{address.adrdetail}
                       </Text>
                     </View>
                   : <View className='address-info__bd'>请选择收货地址</View>

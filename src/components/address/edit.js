@@ -32,10 +32,14 @@ export default class AddressEdit extends Component {
     const { value } = e.detail
     const data = {
       ...this.state.info,
-      provinceName: '天津市',
-      cityName: '市辖区',
-      countyName: '和平区',
+      province: '安徽省',
+      city: '合肥市',
+      county: '庐江县',
       ...value
+    }
+
+    if (!data.is_def) {
+      data.is_def = 0
     }
 
     if (!data.username) {
@@ -50,12 +54,9 @@ export default class AddressEdit extends Component {
     //   return S.toast('请选择所在区域')
     // }
 
-    if (!data.detailInfo) {
+    if (!data.adrdetail) {
       return S.toast('请输入详细地址')
     }
-
-    let res = await api.member.addressCreate(data)
-    console.log(res, 57)
 
     this.props.onChange && this.props.onChange(data)
     this.props.onClose && this.props.onClose()
@@ -70,7 +71,7 @@ export default class AddressEdit extends Component {
   handleDefChange = (val) => {
     const info = {
       ...this.state.info,
-      def_addr: val ? 1 : 0
+      is_def: val ? 1 : 0
     }
 
     this.setState({
@@ -80,6 +81,9 @@ export default class AddressEdit extends Component {
 
   handleDelete = () => {
     this.props.onDelete(this.state.info)
+  }
+  handleBlur = e => {
+    console.log(e)
   }
 
   render () {
@@ -99,6 +103,7 @@ export default class AddressEdit extends Component {
               name='username'
               value={info.username}
               onChange={this.handleChange.bind(this, 'username')}
+              onBlur={this.handleBlur.bind(this)}
             />
             <AtInput
               title='手机号码'
@@ -115,9 +120,9 @@ export default class AddressEdit extends Component {
             {/*/>*/}
             <AtInput
               title='详细地址'
-              name='detailInfo'
-              value={info.detailInfo}
-              onChange={this.handleChange.bind(this, 'detailInfo')}
+              name='adrdetail'
+              value={info.adrdetail}
+              onChange={this.handleChange.bind(this, 'adrdetail')}
             />
             <AtInput
               title='邮政编码'
@@ -132,7 +137,7 @@ export default class AddressEdit extends Component {
               title='设为默认地址'
             >
               <Switch
-                checked={info.def_addr}
+                checked={info.is_def}
                 onChange={this.handleDefChange}
               />
             </SpCell>

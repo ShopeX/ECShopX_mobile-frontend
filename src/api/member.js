@@ -9,19 +9,19 @@ export function couponList (params = {}) {
 }
 
 export function addressList () {
-  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/member/getAddressList')
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/member/addresslist')
 }
 
 export function addressCreate (params = {}) {
-  return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/member/setAddress', params)
+  return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/member/address', params)
 }
 
 export function addressUpdate (data) {
-  return req.post('/member.address.update', data)
+  return req.put(`http://pjj.aixue7.com/index.php/api/h5app/wxapp/member/address/${data.address_id}`,data)
 }
 
 export function addressDelete (address_id) {
-  return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/member/delAddress', { address_id })
+  return req.delete(`http://pjj.aixue7.com/index.php/api/h5app/wxapp/member/address/${address_id}`)
 }
 
 export function addressCreateOrUpdate (data) {

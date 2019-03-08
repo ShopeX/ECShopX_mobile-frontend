@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtNavBar } from 'taro-ui'
-import { SpCell, SpToast, Note } from '@/components'
+import { SpCell, SpToast, SpNote } from '@/components'
 import { classNames, log } from '@/utils'
 import api from '@/api'
 import find from 'lodash/find'
@@ -48,9 +48,9 @@ export default class AddressPicker extends Component {
   }
 
   changeSelection (params = {}) {
-    const { addr_id } = params
+    const { address_id } = params
     const { list } = this.state
-    const address = find(list, addr => addr_id ? addr_id === addr.address_id : addr.def_addr > 0) || list[0] || null
+    const address = find(list, addr => address_id ? address_id === addr.address_id : addr.def_addr > 0) || list[0] || null
 
     log.debug('[address picker] change selection: ', address)
     this.props.onChange(address)
@@ -174,7 +174,7 @@ export default class AddressPicker extends Component {
                             <Text className='address-item__receiver'>
                               <Text className='address-item__name'>{item.username}</Text>
                               <Text className='address-item__mobile'>{item.telephone}</Text>
-                              <Text className='address-item__addr'>{item.area}</Text>
+                              <Text className='address-item__addr'>{item.province}{item.city}{item.county}{item.adrdetail}</Text>
                             </Text>
                             <Text
                               className='address-item__ft'

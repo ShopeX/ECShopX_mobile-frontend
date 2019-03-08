@@ -53,18 +53,6 @@ export default class Login extends Component {
       Taro.redirectTo({
         url: urlBack
       })
-      // if (Taro.getCurrentPages().length > 1) {
-      //   Taro.navigateBack({
-      //     delta: 1
-      //   });
-      // } else {
-      //   Taro.redirectTo({
-      //     url: "/pages/home/index"
-      //   })
-      // }
-      // Taro.navigateBack()
-      // let currentPages = Taro.getCurrentPages()
-      // Taro.navigateBack({ delta: Taro.getCurrentPages().length - 1 })
     })
   }
 
@@ -129,7 +117,7 @@ export default class Login extends Component {
           </View>
 
           <View className='btns'>
-            <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>登录</AtButton>
+            <AtButton type='primary' formType='submit'>登录</AtButton>
           </View>
         </AtForm>
         <SpToast />
