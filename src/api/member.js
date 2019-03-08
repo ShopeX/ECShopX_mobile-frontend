@@ -24,6 +24,10 @@ export function addressDelete (address_id) {
   return req.delete(`http://pjj.aixue7.com/index.php/api/h5app/wxapp/member/address/${address_id}`)
 }
 
+export function areaList () {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/member/addressarea')
+}
+
 export function addressCreateOrUpdate (data) {
   const fn = data.address_id ? addressUpdate : addressCreate
   return fn(data)

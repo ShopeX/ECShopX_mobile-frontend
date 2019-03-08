@@ -35,6 +35,7 @@ class App extends Component {
       'pages/auth/forgotpwd',
 
       'pages/cashier/index',
+      'pages/cashier/cashier-result',
 
       'pages/member/index',
       'pages/member/favorite',
