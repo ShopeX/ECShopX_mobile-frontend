@@ -2,9 +2,9 @@ import Taro from '@tarojs/taro'
 import S from '@/spx'
 import qs from 'qs'
 
-// function addQuery (url, query) {
-//   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
-// }
+function addQuery (url, query) {
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
+}
 
 class API {
   constructor (options = {}) {
@@ -64,6 +64,13 @@ class API {
     options.data = {
       ...(options.data || {}),
       company_id: 1
+    }
+    if (options.method === 'GET') {
+      options.url = addQuery(options.url, qs.stringify(options.data))
+      delete options.data
+    } else {
+      // nest data
+      options.data = qs.stringify(options.data)
     }
 
     return Taro.request(options)

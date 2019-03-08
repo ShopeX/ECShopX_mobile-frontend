@@ -76,7 +76,11 @@ export function pickBy (arr, keyMaps = {}) {
     return ret
   }
 
-  return arr.map(picker)
+  if (isArray(arr)) {
+    return arr.map(picker)
+  } else {
+    return picker(arr)
+  }
 }
 
 export function navigateTo (url, isRedirect) {

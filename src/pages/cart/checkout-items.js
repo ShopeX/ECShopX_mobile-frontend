@@ -8,7 +8,7 @@ import './checkout-items.scss'
 
 export default class CheckoutItems extends Component {
   static defaultProps = {
-    isOpend: false,
+    isOpened: false,
     list: [],
     onClickBack: () => {}
   }
@@ -18,10 +18,10 @@ export default class CheckoutItems extends Component {
   }
 
   render () {
-    const { isOpend, list, onClickBack } = this.props
+    const { isOpened, list, onClickBack } = this.props
 
     return (
-      <View className={classNames('checkout-items', isOpend ? 'checkout-items__active' : null)}>
+      <View className={classNames('checkout-items', isOpened ? 'checkout-items__active' : null)}>
         <AtNavBar
           leftIconType='chevron-left'
           title={`商品清单(${list.length})件`}

@@ -1,7 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import { AtDivider, AtCountdown } from 'taro-ui'
-import { Loading, Price, BackToTop, SpHtmlContent } from '@/components'
+import { Loading, Price, BackToTop, SpHtmlContent, SpToast } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
 import { styleNames, log } from '@/utils'
@@ -10,6 +11,11 @@ import GoodsBuyToolbar from './comps/buy-toolbar'
 
 import './espier-detail.scss'
 
+@connect(({ cart }) => ({
+  cart
+}), (dispatch) => ({
+  onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } })
+}))
 @withBackToTop
 export default class Detail extends Component {
   static options = {
@@ -109,7 +115,7 @@ export default class Detail extends Component {
 
   handleBuyClick = async (type) => {
     const { marketing, info } = this.state
-    let url = `/pages/cart/checkout`
+    let url = `/pages/cart/espier-checkout`
 
     const hasToken = !!S.getAuthToken()
     if (!hasToken) {
@@ -117,19 +123,27 @@ export default class Detail extends Component {
     }
 
     if (type === 'cart') {
-      await api.cart.add(info)
-      return Taro.navigateTo({
-        url
-      })
+      const data = await api.cart.add(info)
+
+      if (data.cart_id) {
+        return Taro.navigateTo({
+          url
+        })
+      } else {
+        S.toast('加入购物车失败，请稍后再试')
+      }
     }
 
     if (type === 'fastbuy') {
+      url += '?cart_type=fastbuy'
       if (marketing === 'group') {
-        url = `/pages/cart/checkout?type=${marketing}&group_id=${this.state.info.group_activity.groups_activity_id}`
+        url += `&type=${marketing}&group_id=${this.state.info.group_activity.groups_activity_id}`
       } else if (marketing === 'seckill') {
-        url = `/pages/cart/checkout?type=${marketing}&seckill_id=${this.state.info.seckill_activity.seckill_id}`
+        url += `&type=${marketing}&seckill_id=${this.state.info.seckill_activity.seckill_id}`
       }
-      return Taro.navigateTo({
+
+      this.props.onFastbuy(info)
+      Taro.navigateTo({
         url
       })
     }
@@ -315,6 +329,8 @@ export default class Detail extends Component {
           onClickAddCart={this.handleBuyClick.bind(this, 'cart')}
           onClickFastBuy={this.handleBuyClick.bind(this, 'fastbuy')}
         />
+
+        <SpToast />
       </View>
     )
   }

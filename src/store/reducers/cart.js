@@ -2,7 +2,8 @@ import { createReducer } from 'redux-create-reducer'
 
 const initState = {
   list: [],
-  checkoutItem: null
+  fastbuy: null,
+  coupon: null
 }
 
 const cart = createReducer(initState, {
@@ -21,6 +22,34 @@ const cart = createReducer(initState, {
     return {
       ...state,
       checkoutItem
+    }
+  },
+
+  ['cart/fastbuy'](state, action) {
+    const { item , num = 1 } = action.payload
+
+    return {
+      ...state,
+      fastbuy: {
+        ...item,
+        num
+      }
+    }
+  },
+
+  ['cart/clearFastbuy'](state) {
+    return {
+      ...state,
+      fastbuy: null
+    }
+  },
+
+  ['cart/changeCoupon'](state, action) {
+    const coupon = action.payload
+
+    return {
+      ...state,
+      coupon
     }
   }
 })

@@ -7,7 +7,7 @@ import './index.scss'
 
 export default class SearchBar extends Component {
   static defaultProps = {
-    isOpend: false
+    isOpened: false
   }
 
   constructor (props) {
@@ -25,9 +25,9 @@ export default class SearchBar extends Component {
     addGlobalClass: true
   }
 
-  handleFocusSearchHistory = (isOpend) => {
+  handleFocusSearchHistory = (isOpened) => {
     this.setState({
-      showSearchDailog: isOpend,
+      showSearchDailog: isOpened,
       isShowAction: true
     })
     Taro.getStorage({ key: 'searchHistory' })
@@ -68,9 +68,9 @@ export default class SearchBar extends Component {
     }
   }
 
-  handleClickCancel = (isOpend) => {
+  handleClickCancel = (isOpened) => {
     this.setState({
-      showSearchDailog: isOpend,
+      showSearchDailog: isOpened,
       searchValue: '',
       isShowAction: false
     })

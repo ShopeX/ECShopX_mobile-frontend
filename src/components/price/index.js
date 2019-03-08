@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { Text } from '@tarojs/components'
-import { classNames } from '@/utils'
+import { classNames, isNumber } from '@/utils'
 
 import './price.scss'
 
@@ -21,7 +21,10 @@ export default class Price extends Component {
 
   render () {
     const { value = '', noSymbol, primary, className, unit } = this.props
-    const priceVal = unit === 'cent' ? (value / 100).toFixed(2) : value
+    let priceVal = (unit === 'cent') ? (+value) / 100 : value
+    if (isNumber(priceVal)) {
+      priceVal = priceVal.toFixed(2)
+    }
     const [int, decimal] = (priceVal || '').split('.')
     const minus = value < 0
     const symbol = this.props.symbol || '¥'

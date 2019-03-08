@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux'
 import { AtTabBar } from 'taro-ui'
 import api from '@/api'
 import { navigateTo, getCurrentRoute } from '@/utils'
+import S from '@/spx'
 
 @connect(({ cart }) => ({
   cart,
@@ -50,6 +51,8 @@ export default class TabBar extends Component {
   }
 
   async fetchCart () {
+    if (!S.getAuthToken()) return
+
     try {
       const { list } = await api.cart.getBasic()
       this.props.onUpdateCart(list)

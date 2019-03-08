@@ -1,0 +1,169 @@
+@import '../../style/imports';
+
+.page-checkout {
+  .checkout {
+    &__wrap {
+      height: 100vh;
+      box-sizing: border-box;
+      padding-bottom: $toolbar-height;
+    }
+    &__total {
+      margin-right: 24px;
+    }
+    &-toolbar {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .address-info {
+    margin: 0 0 $edge-margin;
+    &__receiver {
+      color: #111;
+      display: block;
+      font-size: $font-size-large;
+      margin: 0 0 16px;
+      line-height: 1;
+    }
+    &__addr {
+      color: #111;
+      line-height: 1;
+      display: block;
+    }
+  }
+
+  .sec-checkout-items {
+    padding: $edge-margin $edge-size $edge-size;
+    .sp-cell {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .cart-group {
+    &__shop {
+      padding: 16px $edge-margin;
+    }
+    &__cont {
+      padding-bottom: 0;
+    }
+    .at-input {
+      &:after {
+        border: none;
+      }
+    }
+  }
+
+  .trade-items {
+    display: flex;
+    &__bd {
+      display: flex;
+      align-items: center;
+      max-width: 68%;
+    }
+  }
+  .trade-item {
+    &__img {
+      width: 120px;
+      height: 120px;
+      margin-right: 20px;
+    }
+    &__title {
+    }
+  }
+
+  .trade-shipping, .trade-invoice, .trade-remark, .trade-point, .trade-sub-total {
+    margin: 0 0 $edge-margin;
+  }
+
+  .trade-point {
+    padding: 0 $edge-size $edge-margin;
+    .sp-cell {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    &__wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    &__hint {
+      color: $color-brand-primary;
+      font-size: $font-size-small;
+    }
+    &__input {
+      background: $color-bg-gray;
+      border-radius: 12px;
+      height: 80px;
+      line-height: 80px;
+      box-sizing: border-box;
+      font-size: $font-size;
+      border: none;
+      box-shadow: none;
+      margin: 0;
+    }
+    switch {
+      margin-left: 20px;
+    }
+    .at-input {
+      &:after {
+        border: none;
+      }
+      input {
+        padding-left: $edge-size;
+      }
+    }
+  }
+
+  .trade-invoice {
+    .sp-cell__bd {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .trade-remark {
+    padding: $edge-margin $edge-size;
+    &__input {
+      box-sizing: border-box;
+      padding: 0;
+      background: none;
+      box-shadow: none;
+      border: none;
+    }
+  }
+
+  .trade-sub-total {
+    padding: $edge-margin 0;
+    &__item {
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+    .sp-cell {
+      &:before {
+        border: none;
+      }
+    }
+    .sp-cell__bd {
+      color: $color-brand-primary;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .coupons-list {
+    margin: 0 0 $edge-margin;
+  }
+
+  .coupon-item {
+    display: flex;
+    align-items: center;
+    &__bd {
+      flex: 1;
+    }
+    &__ft {
+      width: 30%;
+      color: $color-gray;
+    }
+  }
+}

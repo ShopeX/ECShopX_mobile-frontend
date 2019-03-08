@@ -1,4 +1,3 @@
-import qs from 'qs'
 import req from './req'
 
 export function get (params) {
@@ -20,14 +19,12 @@ export function getBasic (params) {
 export function add (item, num = 1) {
   // return req.post('/cart.add', { sku_id, quantity })
   const { item_id, shop_id } = item
-  const q = qs.stringify({
+  return req.post(`http://pjj.aixue7.com/index.php/api/h5app/wxapp/cart`, {
     item_id,
     shop_id,
     num,
-    shop_type: 'distributor',
-    activity_type: 'normal'
+    shop_type: 'distributor'
   })
-  return req.get(`http://pjj.aixue7.com/index.php/api/h5app/wxapp/cart?${q}`)
 }
 
 export function update ({ cart_params }) {
@@ -40,4 +37,13 @@ export function del ({ cart_id }) {
 
 export function checkout () {
   return req.get('/cart.checkout')
+}
+
+export function total (params) {
+  // return req.post('/cart.total')
+  return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/getFreightFee', params)
+}
+
+export function coupons (params) {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/user/newGetCardList', params)
 }

@@ -1,0 +1,88 @@
+@import "../../style/imports";
+
+.coupon-picker {
+  padding: $edge-margin 0;
+  .coupon-item {
+    background: #fff;
+    box-shadow: $box-shadow;
+    height: 180px;
+    position: relative;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    margin: 0 $edge-size $edge-margin;
+    &:before {
+      content: '';
+      display: block;
+      background-image: radial-gradient(transparent 0, transparent 50%, #FD821E 50%);
+      background-position: center center;
+      background-size: 12px 12px;
+      position: absolute;
+      width: 6px;
+      top: 0;
+      left: 0;
+      height: 100%;
+      margin-left: -6px;
+    }
+    &__nil {
+      padding-left: 30px;
+      &:before {
+        background-image: radial-gradient(transparent 0, transparent 50%, #fff 50%);
+      }
+    }
+    &__hd {
+      width: 210px;
+      height: 180px;
+      text-align: center;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(315deg, #FF4D18 0%, #FD821E 100%);
+      .price {
+        font-size: floor(1.2 * $font-size-large);
+      }
+    }
+    &__bd {
+      flex: 1;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      font-size: floor(0.9 * $font-size);
+      justify-content: center;
+    }
+    &__ft {
+      padding: 0 8px;
+    }
+    &__rule, &__rule-inner {
+      font-size: floor(0.9 * $font-size);
+      .price {
+        font-size: floor(0.9 * $font-size);
+      }
+    }
+    &__name {
+      font-size: floor(1.2 * $font-size-large);
+      margin: 0 0 6px;
+    }
+    &__type {
+      @include hairline(#fff, top, right, bottom, left);
+      font-size: floor(0.8 * $font-size);
+      height: 36px;
+      line-height: 36px;
+      display: inline-block;
+      width: 100px;
+      text-align: center;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    &__time {
+      color: $color-gray;
+      font-size: floor(0.8 * $font-size);
+    }
+    &__title, &__rule {
+      margin: 0 0 8px;
+    }
+  }
+}
