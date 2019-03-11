@@ -10,10 +10,12 @@ import { withLogin } from '@/hocs'
 import './index.scss'
 
 @connect(({ cart }) => ({
-  list: cart.list
+  list: cart.list,
+  defaultAllSelect: true
 }), (dispatch) => ({
   onCartUpdate: (item, num) => dispatch({ type: 'cart/update', payload: { item, num } }),
-  onCartDel: (item) => dispatch({ type: 'cart/delete', payload: item })
+  onCartDel: (item) => dispatch({ type: 'cart/delete', payload: item }),
+  onCartSelection: (selection) => dispatch({ type: 'cart/selection', payload: selection })
 }))
 @withLogin()
 export default class CartIndex extends Component {
@@ -23,12 +25,14 @@ export default class CartIndex extends Component {
     this.state = {
       selection: new Set(),
       totalPrice: '0.00',
-      items: null,
       cartMode: 'default'
     }
   }
 
   componentDidMount () {
+    if (this.props.defaultAllSelect) {
+      this.handleAllSelect(true)
+    }
   }
 
   componentDidShow () {
@@ -67,6 +71,7 @@ export default class CartIndex extends Component {
     this.setState({
       selection
     })
+    this.props.onCartSelection([...selection])
 
     log.debug(`[cart change] item: ${item_id}, selection: ${selection}`)
   }
@@ -77,18 +82,21 @@ export default class CartIndex extends Component {
   }
 
   handleAllSelect = (checked) => {
-    const { items, selection } = this.state
+    const { selection } = this.state
+    const { list } = this.props
+
     if (checked) {
-      for (let item of items.values()) {
+      list.forEach((item) => {
         selection.add(item.item_id)
-      }
+      })
     } else {
       selection.clear()
     }
 
     this.setState({
-      selection
+      selection: new Set(selection)
     })
+    this.props.onCartSelection([...selection])
   }
 
   handleDelect = () => {
@@ -96,15 +104,16 @@ export default class CartIndex extends Component {
     selection.forEach(item_id => {
       this.props.onCartDel({ item_id })
     })
+
+    this.setState({
+      selection: new Set(selection)
+    })
+    this.props.onCartSelection(selection)
   }
 
   handleCheckout = () => {
     Taro.navigateTo({
-      url: '/pages/cart/checkout'
-    })
-
-    this.setState({
-      selection: new Set()
+      url: '/pages/cart/espier-checkout'
     })
   }
 

@@ -128,6 +128,7 @@ export default class MemberIndex extends Component {
                 <SpIconMenu
                   icon='location'
                   title='收货地址'
+                  to='/pages/member/address'
                 />
               </View>
               <View class='member-tools__item'>

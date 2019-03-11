@@ -7,7 +7,9 @@ import './index.scss'
 
 export default class GoodsItem extends Component {
   static defaultProps = {
-    onClickImg: () => {}
+    onClickImg: () => {},
+    showMarketPrice: true,
+    noCurSymbol: false
   }
 
   static options = {
@@ -15,7 +17,7 @@ export default class GoodsItem extends Component {
   }
 
   render () {
-    const { info, onClickImg, className } = this.props
+    const { info, showMarketPrice, noCurSymbol, onClickImg, className } = this.props
     if (!info) {
       return null
     }
@@ -40,29 +42,25 @@ export default class GoodsItem extends Component {
           <View className='goods-item__cont'>
             <Text className='goods-item__title'>{info.title}</Text>
             <Text className='goods-item__desc'>{info.desc}</Text>
-            {
-              info.price_text
-                ? <View className='goods-item__prices'>
-                    <View classes='goods-item__price' className='goods-item__price goods-item__point'>
-                      {price}<Text>{info.price_text}</Text>
-                    </View>
-                  </View>
-                : <View className='goods-item__prices'>
-                    <Price
-                      primary
-                      classes='goods-item__price'
-                      className='goods-item__price'
-                      symbol={info.curSymbol}
-                      value={price}
-                    />
-                    <Price
-                      symbol={info.curSymbol}
-                      classes='goods-item__price-market'
-                      className='goods-item__price-market'
-                      value={info.market_price}
-                    />
-                  </View>
-            }
+            <View className='goods-item__prices'>
+              <Price
+                primary
+                classes='goods-item__price'
+                className='goods-item__price'
+                symbol={info.curSymbol}
+                noSymbol={noCurSymbol}
+                value={price}
+              />
+              {showMarketPrice && (
+                <Price
+                  symbol={info.curSymbol}
+                  noSymbol={noCurSymbol}
+                  classes='goods-item__price-market'
+                  className='goods-item__price-market'
+                  value={info.market_price}
+                />
+              )}
+            </View>
           </View>
         </View>
         <View className='goods-item__ft'>

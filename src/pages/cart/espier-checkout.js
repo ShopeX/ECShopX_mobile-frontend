@@ -7,13 +7,16 @@ import api from '@/api'
 import S from '@/spx'
 import { pickBy } from '@/utils'
 import { lockScreen } from '@/utils/dom'
+import { getSelectedCart } from '@/store/cart'
 import CheckoutItems from './checkout-items'
+
 
 import './espier-checkout.scss'
 
 @connect(({ cart }) => ({
   coupon: cart.coupon,
-  fastbuy: cart.fastbuy
+  fastbuy: cart.fastbuy,
+  list: getSelectedCart(cart)
 }), (dispatch) => ({
   onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' }),
   onClearCart: () => dispatch({ type: 'cart/clear' })
@@ -51,16 +54,23 @@ export default class CartCheckout extends Component {
       info = {
         cart: [{
           list: [fastBuyItem],
-          cart_total_num: fastBuyItem.num,
-          cart_total_price: (fastBuyItem.price * fastBuyItem.num / 100).toFixed(2)
+          cart_total_num: fastBuyItem.num
         }]
       }
-      this.setState({
-        info
-      })
     } else {
       this.props.onClearFastbuy()
+      const { list } = this.props
+      info = {
+        cart: [{
+          list,
+          cart_total_num: list.reduce((acc, item) => (+item.num) + acc, 0)
+        }]
+      }
     }
+
+    this.setState({
+      info
+    })
 
     let total_fee = 0
     let items_count = 0
