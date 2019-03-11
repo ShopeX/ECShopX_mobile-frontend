@@ -81,6 +81,10 @@
     margin: 0 30px 30px;
     &__horn {
       padding: 0 30px 0 60px;
+      .laba_horn {
+        font-size: 60px;
+        color: $color-brand-primary;
+      }
     }
     &__share {
       height: 60px;
@@ -128,11 +132,12 @@
     &-name {
       font-size: $edge-size;
       color: $color-primary-text;
+      margin-right: 20px;
     }
-    &-income {
+    &-in {
       color: $color-brand-primary;
     }
-    &-pay {
+    &-out {
       color: $color-green;
     }
   }

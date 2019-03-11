@@ -104,6 +104,10 @@ export function formatTime (time, formatter = 'YYYY-MM-DD') {
   return moment(time).format(formatter)
 }
 
+export function formatDataTime (time, formatter = 'YYYY-MM-DD hh:mm:ss') {
+  return moment(time).format(formatter)
+}
+
 export function copyText (text, msg = '内容已复制') {
   return new Promise((resolve, reject) => {
     if (process.env.TARO_ENV === 'weapp') {

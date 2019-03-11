@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, FilterBar, SearchBar, GoodsItem } from '@/components'
+import { BackToTop, Loading, GoodsItem } from '@/components'
 import { AtDivider,AtIcon } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -10,13 +10,18 @@ import './point-list.scss'
 
 @withPager
 @withBackToTop
-export default class List extends Component {
+export default class PointList extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
       ...this.state,
       curFilterIdx: 0,
+      filterList: [
+        { title: '综合' },
+        { title: '销量' },
+        { title: '价格', sort: -1 }
+      ],
       query: null,
       list: [],
       listType: 'grid'
@@ -26,11 +31,12 @@ export default class List extends Component {
   componentDidMount () {
     this.setState({
       query: {
-        // keywords: '',
-        // distributor_id: 16,
-        // item_type: 'normal',
-        // approve_status: 'onsale,only_show',
-        // category: this.$router.params.cat_id
+        keywords: '',
+        distributor_id: 16,
+        item_type: 'normal',
+        approve_status: 'onsale,only_show',
+        is_point: true,
+        category: this.$router.params.cat_id
       }
     }, () => {
       this.nextPage()
@@ -44,6 +50,7 @@ export default class List extends Component {
       page,
       pageSize
     }
+
     const { list, total_count: total } = await api.item.search(query)
 
     const nList = pickBy(list, {
@@ -65,8 +72,44 @@ export default class List extends Component {
     }
   }
 
+  handleFilterChange = (data) => {
+    const { current, sort } = data
+
+    const query = {
+      ...this.state.query,
+      goodsSort: current === 0
+        ? null
+        : current === 1
+          ? 1
+          : (sort > 0 ? 3 : 2)
+    }
+
+    if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
+      this.resetPage()
+      this.setState({
+        list: []
+      })
+    }
+
+    this.setState({
+      curFilterIdx: current,
+      query
+    }, () => {
+      this.nextPage()
+    })
+  }
+
+  handleListTypeChange = () => {
+    const listType = this.state.listType === 'grid' ? 'default' : 'grid'
+
+    this.setState({
+      listType
+    })
+  }
+
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    console.log(item.item_id, 109)
+    const url = `/pages/item/point-detail?id=${item.item_id}`
     Taro.navigateTo({
       url
     })
@@ -103,7 +146,7 @@ export default class List extends Component {
                   <GoodsItem
                     key={item.item_id}
                     info={item}
-                    onClick={() => this.handleClickItem(item)}
+                    onClick={this.handleClickItem.bind(this, item)}
                   />
                 )
               })

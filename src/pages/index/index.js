@@ -10,7 +10,7 @@ export default class Index extends Component {
   componentWillMount () {
     if (process.env.NODE_ENV === 'development') {
       Taro.redirectTo({
-        url:  '/pages/item/espier-detail?id=268'
+        url: '/pages/member/point'
       })
     }
   }
