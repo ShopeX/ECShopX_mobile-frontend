@@ -148,6 +148,8 @@ export default class PointList extends Component {
                   <GoodsItem
                     key={item.item_id}
                     info={item}
+                    noCurSymbol
+                    showMarketPrice={false}
                     onClick={this.handleClickItem.bind(this, item)}
                   />
                 )
