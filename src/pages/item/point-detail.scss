@@ -30,6 +30,53 @@
   }
 }
 
+.goods-timer {
+  background: linear-gradient(90deg, lighten($color-brand-primary, 10%), $color-brand-primary);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  color: #fff;
+  padding: 0 $edge-size;
+  &__hd {
+    width: 30%;
+  }
+  &__bd {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 16px 0;
+  }
+  .goods-prices {
+    display: block;
+    .price {
+      font-size: floor(1.6 * $font-size);
+    }
+    &__type {
+      font-size: floor($font-size-small * 0.9);
+      display: inline-block;
+      padding: 0 10px;
+      border: 1px solid #fff;
+      margin-right: 2px;
+    }
+    &__market {
+      color: #fff;
+    }
+    &__ft {
+      .price {
+        font-size: floor(0.8 * $font-size);
+      }
+    }
+  }
+  .at-countdown__time-box {
+    background: #fff;
+    border-radius: 6px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+  }
+}
+
 .goods-prices {
   display: flex;
   align-items: baseline;
@@ -37,6 +84,11 @@
   margin: 0 0 12px;
   .price__symbol {
     font-size: $font-size;
+  }
+  &__wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
   }
   &__market {
     font-size: $font-size-small;
@@ -46,6 +98,17 @@
     margin-left: 16px;
   }
 }
+.goods-sold {
+  font-size: $font-size-small;
+  color: $color-gray;
+}
+.goods-income {
+  background: $color-brand-primary;
+  color: #fff;
+  padding: 10px $edge-size;
+  margin: -$edge-margin 0 $edge-margin;
+  position: relative;
+}
 
 .goods-hd {
   background: #fff;
@@ -54,14 +117,17 @@
 }
 
 .goods-title {
-  flex: 1;
-  font-weight: bold;
   font-size: $font-size-large;
+  display: block;
   color: #000;
   @include multi-ellipsis(2);
   line-height: 1.2;
-  &__wrap {
-    display: flex;
+  margin: 0 0 14px;
+  &__desc {
+    display: block;
+    color: $color-gray;
+    font-size: $font-size-small;
+    margin-bottom: $edge-margin;
   }
 }
 
@@ -96,6 +162,29 @@
     &__label {
       color: $color-gray;
       margin-right: 28px;
+    }
+  }
+}
+
+.goods-sec-props {
+  .sec-hd {
+    @include hairline();
+  }
+  .goods-props__wrap {
+    box-sizing: border-box;
+    padding: $edge-size;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .prop-item {
+    display: flex;
+    width: 50%;
+    &__label {
+      color: $color-gray;
+      width: 30%;
+    }
+    &__cont {
+      flex: 1;
     }
   }
 }

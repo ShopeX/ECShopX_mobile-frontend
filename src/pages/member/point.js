@@ -4,6 +4,7 @@ import {View, Text, ScrollView} from '@tarojs/components'
 import {AtButton, AtTabs, AtTabsPane} from 'taro-ui'
 import { Loading, SpNote } from '@/components'
 import { withPager } from '@/hocs'
+import { pickBy, formatDataTime } from '@/utils'
 import api from '@/api'
 
 import './point.scss'
@@ -20,18 +21,18 @@ export default class Integral extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '全部', status: 'All'},
-        {title: '收入', status: 'INCOME'},
-        {title: '支出', status: 'EXPEND'}
+        {title: '全部', status: ''},
+        {title: '收入', status: 'income'},
+        {title: '支出', status: 'outcome'}
       ],
       list: [],
       isLoading: false,
-      testIncome: false,
+      totalPoint: 0
     }
   }
 
   componentDidMount () {
-    const status = 'All'
+    const status = ''
     const tabIdx = this.state.tabList.findIndex(tab => tab.status === status)
 
     if (tabIdx >= 0) {
@@ -51,22 +52,29 @@ export default class Integral extends Component {
     const { tabList, curTabIdx } = this.state
     params = {
       ...params,
-      status: tabList[curTabIdx].status
+      outin_type: tabList[curTabIdx].status
     }
-    const { list, total_count: total } = await api.trade.list(params)
-    // const nList = this.state.list.concat(list)
-    const nList = this.state.list
-
+    const { point } = await api.member.pointTotal()
+    const { list, total_count: total } = await api.member.pointList(params)
+    const nList = pickBy(list, {
+      outin_type: 'outin_type',
+      point: 'point',
+      point_desc: 'point_desc',
+      created: ({ created }) => (formatDataTime(created * 1000)),
+    })
+    // console.log(point, 65)
     this.setState({
-      list: nList,
-      isLoading: false
+      list: [...this.state.list, ...nList],
+      totalPoint: point
     })
 
-    return { total }
+    return {
+      total
+    }
   }
 
   handleClickTab = (idx) => {
-    if (this.state.isLoading || this.state.page.isLoading) return
+    if (this.state.page.isLoading) return
 
     if (idx !== this.state.curTabIdx) {
       this.resetPage()
@@ -87,20 +95,22 @@ export default class Integral extends Component {
   }
 
   render () {
-    const { curTabIdx, tabList, list, page, testIncome } = this.state
+    const { curTabIdx, tabList, list, page, totalPoint } = this.state
 
     return (
       <View className='page-member-integral'>
         <View className='member-integral__hd'>
           <View className='integral-info'>
-            <View className='integral-number'>图标<Text className='integral-number__text'>1888</Text></View>
+            <View className='integral-number'>图标<Text className='integral-number__text'>{totalPoint}</Text></View>
             <View className='integral-text'>当前可用积分</View>
           </View>
         </View>
 
         <View className='member-integral__bd'>
           <View className='integral-sec integral-info__status'>
-            <Text className='integral-sec__horn'>喇叭</Text>
+            <View className='integral-sec__horn'>
+              <Text className='sp-icon sp-icon-laba laba_horn'> </Text>
+            </View>
             <Text className='integral-sec__share'>分享推荐可获取积分呦，赶紧行动吧~</Text>
           </View>
 
@@ -136,14 +146,10 @@ export default class Integral extends Component {
                     <View key={idx}>
                       <View className='integral-item'>
                         <View className='integral-item__title'>
-                          <Text className='integral-item__title-name'>支付</Text>
-                          {
-                            testIncome
-                              ? <Text className='integral-item__title-income'>+1000</Text>
-                              : <Text className='integral-item__title-pay'>-100</Text>
-                          }
+                          <Text className='integral-item__title-name'>{item.point_desc}</Text>
+                          <Text className={`integral-item__title-${item.outin_type}`}>{item.outin_type === 'in' ? '+' : '-'}{item.point}</Text>
                         </View>
-                        <View className='integral-item__data'>2018.11.11 12:00</View>
+                        <View className='integral-item__data'>{item.created}</View>
                       </View>
                     </View>
                   )

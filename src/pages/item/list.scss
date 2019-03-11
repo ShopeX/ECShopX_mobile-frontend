@@ -9,13 +9,25 @@
       left: 0;
       width: 100%;
       z-index: $z-index-toolbar;
+      background: #fff;
+      box-shadow: $box-shadow;
+      &-title {
+        width: 60%;
+        margin:0 auto;
+        height: 84px;
+        line-height: 84px;
+        text-align: center;
+        .at-divider {
+          height: 84px;
+        }
+      }
     }
     &__tabs {
     }
     &__scroll {
       height: 100vh;
       box-sizing: border-box;
-      padding: ($tabbar-height + 84px) 0 0;
+      padding: 84px 0 0;
     }
     &__type-grid {
       @include clearfix();
@@ -48,6 +60,7 @@
         }
         &__bd {
           flex-direction: column;
+          flex: 1;
         }
         &__cont {
           height: 210px;
