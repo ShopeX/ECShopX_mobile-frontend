@@ -68,3 +68,11 @@ export function recommendUserInfo () {
 export function recommendIndexInfo () {
   return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promoter/index')
 }
+
+export function recommendMember (params = {}) {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promoter/children', params)
+}
+
+export function recommendOrder (params = {}) {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promoter/brokerages', params)
+}

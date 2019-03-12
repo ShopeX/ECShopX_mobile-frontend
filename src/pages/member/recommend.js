@@ -20,6 +20,9 @@ export default class Recommend extends Component {
     }
   }
 
+  navigateTo (url) {
+    Taro.navigateTo({ url })
+  }
   componentDidMount () {
     this.fetch()
   }
@@ -92,34 +95,37 @@ export default class Recommend extends Component {
               <Text className='member-status__item-title'>可提现</Text>
             </View>
           </View>
-
           <View className='member-sec member-trades'>
             <View className='sec-bd'>
               <View className='member-recommend__menus'>
-                <AtBadge value={detail.promoter_order_count}>
+                <AtBadge
+                  value={detail.promoter_order_count}
+                >
                   <SpIconMenu
                     icon='pay'
                     title='提成订单'
-                    to='/pages/trade/list?status=WAIT_BUYER_PAY'
+                    to='/pages/member/recommend-order?brokerage_source=order'
                   />
                 </AtBadge>
-                <AtBadge value={detail.promoter_grade_order_count}>
+                <AtBadge
+                  value={detail.promoter_grade_order_count}
+                >
                   <SpIconMenu
                     icon='comment'
                     title='津贴订单'
-                    to='/pages/trade/list?status=WAIT_RATE'
+                    to='/pages/member/recommend-order?brokerage_source=order_team'
                   />
                 </AtBadge>
               </View>
             </View>
           </View>
 
-          <View className='member-sec member-trades'>
+          <View className='member-sec member-trades' onClick={this.navigateTo.bind(this, '/pages/member/recommend-member')}>
             <View className='sec-hd'>
               <Text className='sec-title'>我的会员</Text>
               <View
                 className='more'
-                onClick={this.navigateTo.bind(this, '/pages/trade/list')}
+                // onClick={this.navigateTo.bind(this, '/pages/trade/list')}
               ><AtIcon value='chevron-right'></AtIcon></View>
             </View>
             <View className='sec-bd'>

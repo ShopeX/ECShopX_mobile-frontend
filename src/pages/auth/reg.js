@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Picker } from '@tarojs/components'
+import { View, Text, Picker, Image } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpToast, Timer } from '@/components'
 import { classNames, isString } from '@/utils'
@@ -17,6 +17,8 @@ export default class Reg extends Component {
       timerMsg: '获取验证码',
       isVisible: false,
       list: [],
+      imgVisible: false,
+      imgUrl: ''
       // dateSel: '2018-04-22'
     }
   }
@@ -64,7 +66,12 @@ export default class Reg extends Component {
 
       }
     })
-
+    const query = {
+      type: 'sign'
+    }
+    let resImg = await api.user.regImg(query)
+    console.log(resImg)
+    // imgUrl
     this.setState({
       list: arr,
     });
@@ -99,6 +106,13 @@ export default class Reg extends Component {
   handleChange = (name, val) => {
     const { info, list } = this.state
     info[name] = val
+    if(name === 'mobile') {
+      if(val.length === 11) {
+        this.setState({
+          imgVisible: true
+        })
+      }
+    }
     if(!isString(val)) {
       list.map(item => {
         item.key === name ? info[name] = val.detail.value : null
@@ -141,7 +155,9 @@ export default class Reg extends Component {
     if (!/1\d{10}/.test(mobile)) {
       return S.toast('请输入正确的手机号')
     }
+    console.log(222)
 
+    return false
     resolve()
   }
 
@@ -167,7 +183,7 @@ export default class Reg extends Component {
   }
 
   render () {
-    const { info, timerMsg, isVisible, list } = this.state
+    const { info, timerMsg, isVisible, list, imgVisible } = this.state
 
     return (
       <View className='auth-reg'>
@@ -184,6 +200,13 @@ export default class Reg extends Component {
               onFocus={this.handleErrorToastClose}
               onChange={this.handleChange.bind(this, 'mobile')}
             />
+            {
+              imgVisible
+                ? <AtInput title='图片验证码' name='yzm' value={info.yzm} placeholder='请输入图片验证码' onFocus={this.handleErrorToastClose} onChange={this.handleChange.bind(this, 'yzm')}>
+                    <Image />
+                  </AtInput>
+                : null
+            }
             <AtInput
               title='验证码'
               name='code'
