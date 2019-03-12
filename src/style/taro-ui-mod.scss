@@ -36,6 +36,10 @@
   }
 }
 
+.at-button {
+  margin: 0;
+}
+
 .at-button--primary {
   font-size: $font-size;
   box-shadow: 0 5px 5px rgba(darken($color-brand-primary, 20%), 0.2);

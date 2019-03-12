@@ -99,51 +99,51 @@ export default class MemberIndex extends Component {
           </View>
           <View className='sec-bd'>
             <View className='member-tools__menus'>
-              <View class='member-tools__item'>
+              <View className='member-tools__item'>
                 <SpIconMenu
                   icon='star'
                   title='我的收藏'
                   to='/pages/member/favorite'
                 />
               </View>
-              <View class='member-tools__item'>
+              <View className='member-tools__item'>
                 <SpIconMenu
                   icon='thumb'
                   title='我的推荐'
                 />
               </View>
-              <View class='member-tools__item'>
+              <View className='member-tools__item'>
                 <SpIconMenu
                   icon='hongbao'
                   title='我的红包'
                 />
               </View>
-              <View class='member-tools__item'>
+              <View className='member-tools__item'>
                 <SpIconMenu
                   icon='money'
                   title='我的资金'
                 />
               </View>
-              <View class='member-tools__item'>
+              <View className='member-tools__item'>
                 <SpIconMenu
                   icon='location'
                   title='收货地址'
                   to='/pages/member/address'
                 />
               </View>
-              <View class='member-tools__item'>
+              <View className='member-tools__item'>
                 <SpIconMenu
                   icon='qrcode'
                   title='推广二维码'
                 />
               </View>
-              <View class='member-tools__item'>
+              <View className='member-tools__item'>
                 <SpIconMenu
                   icon='setting'
                   title='设置'
                 />
               </View>
-              <View class='member-tools__item'>
+              <View className='member-tools__item'>
                 <SpIconMenu
                   icon='help'
                   title='使用帮助'

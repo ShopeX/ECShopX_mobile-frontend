@@ -22,6 +22,11 @@ import './espier-checkout.scss'
   onClearCart: () => dispatch({ type: 'cart/clear' })
 }))
 export default class CartCheckout extends Component {
+  static defaultProps = {
+    list: [],
+    fastbuy: null
+  }
+
   constructor (props) {
     super(props)
 
@@ -32,7 +37,7 @@ export default class CartCheckout extends Component {
       showAddressPicker: false,
       showCheckoutItems: false,
       showCoupons: false,
-      curCheckoutItems: null,
+      curCheckoutItems: [],
       coupons: [],
       total: {
         items_count: '',
@@ -102,6 +107,18 @@ export default class CartCheckout extends Component {
   }
 
   componentDidShow () {
+    if (!this.props.list.length && !this.props.fastbuy) {
+      Taro.showToast({
+        title: '购物车中无商品',
+        icon: 'none'
+      }).then(() => {
+        Taro.navigateTo({
+          url: '/pages/home/index'
+        })
+      })
+
+      return
+    }
     if (!this.params) return
     this.calcOrder()
   }
@@ -229,7 +246,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  async handlePay () {
+  handlePay = async () => {
     if (!this.state.address) {
       return S.notify('请选择地址')
     }
@@ -240,7 +257,7 @@ export default class CartCheckout extends Component {
     Taro.navigateTo({ url })
   }
 
-  handleCouponsClick () {
+  handleCouponsClick = () => {
     Taro.navigateTo({
       url: `/pages/cart/coupon-picker?items=${JSON.stringify(this.params.items)}`
     })
@@ -248,7 +265,7 @@ export default class CartCheckout extends Component {
 
   render () {
     const { coupon } = this.props
-    const { info, address, total, showShippingPicker, showAddressPicker, showCheckoutItems, curCheckoutItems } = this.state
+    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems } = this.state
 
     if (!info) {
       return <Loading />

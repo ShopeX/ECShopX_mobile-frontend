@@ -1,11 +1,15 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import { SearchBar, TabBar } from '@/components'
 import req from '@/api/req'
 import { WgtSlider, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase } from './wgts'
 
 import './index.scss'
 
+@connect(store => ({
+  store
+}))
 export default class HomeIndex extends Component {
   constructor (props) {
     super(props)
@@ -30,7 +34,7 @@ export default class HomeIndex extends Component {
 
   render () {
     const { wgts } = this.state
-    if (!wgts) {
+    if (!wgts || !this.props.store) {
       return null
     }
 

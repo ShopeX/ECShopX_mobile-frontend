@@ -103,7 +103,17 @@ const config = {
         }
       }
     },
-    esnextModules: ['taro-ui']
+    esnextModules: ['taro-ui'],
+    webpackChain (chain) {
+      chain.merge({
+        resolve: {
+          alias: {
+            'react': 'nervjs',
+            'react-dom': 'nervjs'
+          }
+        }
+      })
+    }
   }
 }
 
