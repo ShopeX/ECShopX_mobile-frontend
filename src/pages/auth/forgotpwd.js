@@ -133,7 +133,16 @@ export default class Forgotpwd extends Component {
             </AtInput>
           </View>
           <View className='btns'>
-            <AtButton type='primary' formType='submit'>确认</AtButton>
+            {
+              Taro.getEnv() === 'WEAPP'
+                ? <AtButton type='primary' formType='submit'>确认</AtButton>
+                : null
+            }
+            {
+              Taro.getEnv() === 'WEB'
+                ? <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>确认</AtButton>
+                : null
+            }
           </View>
         </AtForm>
 
