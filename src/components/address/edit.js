@@ -238,17 +238,8 @@ export default class AddressEdit extends Component {
               <View className='picker'>
                 <View className='picker__title'>所在区域</View>
                 <Text>{areaList[0][multiIndex[0]]}{areaList[1][multiIndex[1]]}{areaList[2][multiIndex[2]]}</Text>
-                {/*<Text*/}
-                  {/*className={classNames(item.value ? 'pick-value' : 'pick-value-null')}*/}
-                {/*>{item.value ? item.value : `请选择${item.name}`}</Text>*/}
               </View>
             </Picker>
-            {/*<AtInput*/}
-              {/*title='所在区域'*/}
-              {/*name='area'*/}
-              {/*value={info.area}*/}
-              {/*onChange={this.handleChange.bind(this, 'area')}*/}
-            {/*/>*/}
 
             <AtInput
               title='详细地址'
@@ -276,7 +267,16 @@ export default class AddressEdit extends Component {
           </View>
 
           <View className='btns'>
-            <AtButton type='primary' onSubmit={this.handleSubmit} formType='submit'>提交</AtButton>
+            {
+              Taro.getEnv() === 'WEAPP'
+                ? <AtButton type='primary' formType='submit'>提交</AtButton>
+                : null
+            }
+            {
+              Taro.getEnv() === 'WEB'
+                ? <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>提交</AtButton>
+                : null
+            }
             {
               info.address_id && (<AtButton onClick={this.handleDelete}>删除</AtButton>)
             }

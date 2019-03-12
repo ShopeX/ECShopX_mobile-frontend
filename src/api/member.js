@@ -60,3 +60,11 @@ export function depositList (params = {}) {
 export function depositTotal () {
   return req.get('http://pjj.aixue7.com/index.php/api/h5app/weapp/deposit/info')
 }
+
+export function recommendUserInfo () {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promoter/info')
+}
+
+export function recommendIndexInfo () {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promoter/index')
+}
