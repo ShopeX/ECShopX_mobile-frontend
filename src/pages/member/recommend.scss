@@ -1,6 +1,30 @@
 @import '../../style/imports';
-@import './point';
+@import './index';
 
+
+.member-info {
+  &_top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0 0;
+    .member-avatar {
+      width: 140px;
+      height: 140px;
+    }
+  }
+
+  &_name {
+    margin-left: 20px;
+    height: 120px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    .member-name {
+      margin-top: 10px;
+    }
+  }
+}
 .member-recommend{
   display: flex;
   justify-content: space-around;

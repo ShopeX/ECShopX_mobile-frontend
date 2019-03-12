@@ -122,17 +122,9 @@ export default class PointDetail extends Component {
       return S.login(this, false)
     }
 
-    if (type === 'cart') {
-      url = `/pages/cart/espier-index`
-
-      this.props.onAddCart(info)
-      return Taro.navigateTo({
-        url
-      })
-    }
 
     if (type === 'fastbuy') {
-      url += '?cart_type=fastbuy'
+      url += '?cart_type=fastbuy&pay_type=point'
       if (marketing === 'group') {
         url += `&type=${marketing}&group_id=${this.state.info.group_activity.groups_activity_id}`
       } else if (marketing === 'seckill') {

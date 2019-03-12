@@ -58,10 +58,12 @@ export default class PointList extends Component {
       item_id: 'item_id',
       title: 'itemName',
       desc: 'brief',
-      price: ({ price }) => (price/100).toFixed(2),
-      market_price: ({ market_price }) => (market_price/100).toFixed(2)
+      price: 'point',
     })
-
+    nList.map(item => {
+      item.price_text = '积分'
+    })
+    console.log(nList, 64)
     this.setState({
       list: [...this.state.list, ...nList],
       query
@@ -146,6 +148,8 @@ export default class PointList extends Component {
                   <GoodsItem
                     key={item.item_id}
                     info={item}
+                    noCurSymbol
+                    showMarketPrice={false}
                     onClick={this.handleClickItem.bind(this, item)}
                   />
                 )

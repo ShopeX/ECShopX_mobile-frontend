@@ -24,6 +24,7 @@ export default class GoodsItem extends Component {
 
     const price = isObject(info.price) ? info.price.total_price : info.price
     const img = info.img || info.image_default_id
+    console.log(info, 19)
 
     return (
       <View className={classNames('goods-item', className)}>

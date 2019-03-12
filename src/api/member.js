@@ -52,3 +52,11 @@ export function pointList (params = {}) {
 export function pointTotal () {
   return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/point/member/info')
 }
+
+export function depositList (params = {}) {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/weapp/deposit/list', params)
+}
+
+export function depositTotal () {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/weapp/deposit/info')
+}

@@ -1,185 +1,153 @@
-
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text, ScrollView} from '@tarojs/components'
-import { AtTabs, AtTabsPane, AtCurtain, Image} from 'taro-ui'
-import { Loading, SpNote } from '@/components'
-import { withPager } from '@/hocs'
-import ShareQrcode from './comps/share-qrcode'
-import api from '@/api'
+import { View, Text } from '@tarojs/components'
+import { AtBadge, AtIcon, AtAvatar } from 'taro-ui'
+import { SpIconMenu, TabBar } from '@/components'
+import { withLogin } from '@/hocs'
 
 import './recommend.scss'
 
-@withPager
+@withLogin()
 export default class Recommend extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      ...this.state,
-      curTabIdx: 0,
-      tabList: [
-        {title: '全部', status: 'All'},
-        {title: '收入', status: 'INCOME'},
-        {title: '支出', status: 'EXPEND'}
-      ],
-      list: [],
-      isLoading: false,
-      testIncome: false,
-      isOpened: false
-    }
+  navigateTo (url) {
+    Taro.navigateTo({ url })
   }
 
-  componentDidMount () {
-    const status = 'All'
-    const tabIdx = this.state.tabList.findIndex(tab => tab.status === status)
-
-    if (tabIdx >= 0) {
-      this.setState({
-        curTabIdx: tabIdx
-      }, () => {
-        this.nextPage()
-      })
-    } else {
-      this.nextPage()
-    }
-  }
-
-
-  async fetch (params) {
-    this.setState({ isLoading: true })
-    const { tabList, curTabIdx } = this.state
-    params = {
-      ...params,
-      status: tabList[curTabIdx].status
-    }
-    const { list, total_count: total } = await api.trade.list(params)
-    const nList = this.state.list.concat(list)
-
-    this.setState({
-      list: nList,
-      isLoading: false
-    })
-
-    return { total }
-  }
-
-  handleClickMember = () => {
-    Taro.navigateTo({
-      url: '/pages/member/recommend-member'
-    })
-  }
-
-  handleClickQrcode = () => {
-    this.setState({
-      isOpened: true
-    })
-  }
-
-  handleClickTab = (idx) => {
-    if (this.state.isLoading || this.state.page.isLoading) return
-
-    if (idx !== this.state.curTabIdx) {
-      this.resetPage()
-      this.setState({
-        list: []
-      })
-    }
-
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
+  componentDidShow () {
   }
 
   render () {
-    const { curTabIdx, tabList, list, page, testIncome, isOpened } = this.state
-
     return (
-      <View className='page-member-integral'>
-        <View className='member-integral__hd'>
-          <View className='member-recommend'>
-            <View className='integral-info'>
-              <View className='integral-number'>图标<Text className='integral-number__text'>1888</Text></View>
-              <View
-                className='integral-text member-recommend__text'
-                onClick={this.handleClickMember}
-              >我推荐的会员</View>
+      <View className='page-member-index'>
+        <View className='member-index__hd'>
+          <View className='member-info_top'>
+            <AtAvatar
+              className='member-avatar'
+              title='鲜果优格果冻妹'
+              size='large'
+              circle
+            />
+            <View className='member-info_name'>
+              <View className='member-name'>推荐人：</View>
+              <View className='member-name'>18855555555</View>
             </View>
-            <View className='integral-info'>
-              <View className='integral-number'>图标<Text className='integral-number__text'>1888</Text></View>
-              <View
-                className='integral-text member-recommend__text'
-                onClick={this.handleClickQrcode}
-              >推广二维码</View>
-            </View>
-        </View>
-        </View>
-
-        <View className='member-integral__bd'>
-          <View className='integral-sec integral-info__status'>
-            <Text className='integral-sec__horn'>喇叭</Text>
-            <Text className='integral-sec__share'>充值可获取积分呦，赶紧行动吧~</Text>
-          </View>
-
-          <View className='integral-sec member-integral'>
-            <AtTabs
-              className='member-integral__tabs'
-              current={curTabIdx}
-              tabList={tabList}
-              onClick={this.handleClickTab}
-            >
-              {
-                tabList.map((panes, pIdx) =>
-                  (<AtTabsPane
-                    current={curTabIdx}
-                    key={pIdx}
-                    index={pIdx}
-                    className='member-integral__panel'
-                  >
-
-                  </AtTabsPane>)
-                )
-              }
-            </AtTabs>
-
-            <ScrollView
-              scrollY
-              className='member-integral__scroll'
-              onScrollToLower={this.nextPage}
-            >
-              {
-                list.map((item, idx) => {
-                  return (
-                    <View key={idx}>
-                      <View className='integral-item'>
-                        <View className='integral-item__title'>
-                          <Text className='integral-item__title-name'>支付</Text>
-                          {
-                            testIncome
-                              ? <Text className='integral-item__title-income'>+1000</Text>
-                              : <Text className='integral-item__title-pay'>-100</Text>
-                          }
-                        </View>
-                        <View className='integral-item__data'>2018.11.11 12:00</View>
-                      </View>
-                    </View>
-                  )
-                })
-              }
-              {
-                page.isLoading && <Loading>正在加载...</Loading>
-              }
-              {
-                !page.isLoading && !page.hasNext && !list.length
-                && (<SpNote className='integral_empty' img='trades_empty.png'>赶快去充值吧~</SpNote>)
-              }
-            </ScrollView>
           </View>
         </View>
-        {
-          isOpened ? <ShareQrcode Opened={isOpened} /> : null
-        }
+
+        <View className='member-index__bd'>
+          <View className='member-sec member-info__status'>
+            <View className='member-status__item'>
+              <View className='member-status__item-val'>666<Text>元</Text></View>
+              <Text className='member-status__item-title'>营业额</Text>
+            </View>
+            <View className='member-status__item'>
+              <View className='member-status__item-val'>666<Text>元</Text></View>
+              <Text className='member-status__item-title'>可提现</Text>
+            </View>
+          </View>
+
+          <View className='member-sec member-trades'>
+            <View className='sec-hd'>
+              <Text className='sec-title'>我的会员</Text>
+              <View
+                className='more'
+                onClick={this.navigateTo.bind(this, '/pages/trade/list')}
+              >查看全部订单<AtIcon value='chevron-right'></AtIcon></View>
+            </View>
+            <View className='sec-bd'>
+              <View className='member-trades__menus'>
+                <AtBadge value={3}>
+                  <SpIconMenu
+                    icon='pay'
+                    title='待付款'
+                    to='/pages/trade/list?status=WAIT_BUYER_PAY'
+                  />
+                </AtBadge>
+                <AtBadge value={13}>
+                  <SpIconMenu
+                    icon='clock'
+                    title='待发货'
+                    to='/pages/trade/list?status=WAIT_SELLER_SEND_GOODS'
+                  />
+                </AtBadge>
+                <AtBadge value={13}>
+                  <SpIconMenu
+                    icon='baoguo'
+                    title='待收货'
+                    to='/pages/trade/list?status=WAIT_BUYER_CONFIRM_GOODS'
+                  />
+                </AtBadge>
+                <AtBadge>
+                  <SpIconMenu
+                    icon='comment'
+                    title='待评论'
+                    to='/pages/trade/list?status=WAIT_RATE'
+                  />
+                </AtBadge>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        <View className='member-sec member-tools'>
+          <View className='sec-hd'>
+            <Text className='sec-title'>必备工具 </Text>
+          </View>
+          <View className='sec-bd'>
+            <View className='member-tools__menus'>
+              <View class='member-tools__item'>
+                <SpIconMenu
+                  icon='star'
+                  title='我的收藏'
+                  to='/pages/member/favorite'
+                />
+              </View>
+              <View class='member-tools__item'>
+                <SpIconMenu
+                  icon='thumb'
+                  title='我的推荐'
+                />
+              </View>
+              <View class='member-tools__item'>
+                <SpIconMenu
+                  icon='hongbao'
+                  title='我的红包'
+                />
+              </View>
+              <View class='member-tools__item'>
+                <SpIconMenu
+                  icon='money'
+                  title='我的资金'
+                />
+              </View>
+              <View class='member-tools__item'>
+                <SpIconMenu
+                  icon='location'
+                  title='收货地址'
+                  to='/pages/member/address'
+                />
+              </View>
+              <View class='member-tools__item'>
+                <SpIconMenu
+                  icon='qrcode'
+                  title='推广二维码'
+                />
+              </View>
+              <View class='member-tools__item'>
+                <SpIconMenu
+                  icon='setting'
+                  title='设置'
+                />
+              </View>
+              <View class='member-tools__item'>
+                <SpIconMenu
+                  icon='help'
+                  title='使用帮助'
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+
       </View>
     )
   }

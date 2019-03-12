@@ -47,6 +47,9 @@ $item-img-size: 240px !default;
     font-size: floor(1.28 * $font-size);
     margin-right: 24px;
   }
+  &__point {
+    color: $color-brand-primary;
+  }
   &__price-market {
     font-size: $font-size-small;
     color: $color-gray;

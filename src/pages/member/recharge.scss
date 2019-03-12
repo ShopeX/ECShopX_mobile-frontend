@@ -1,2 +1,11 @@
 @import '../../style/imports';
 @import './point';
+.integral-item__title {
+  &-recharge {
+    color: $color-brand-primary;
+  }
+  &-consume {
+    color: $color-green;
+  }
+}
+
