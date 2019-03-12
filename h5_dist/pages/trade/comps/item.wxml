@@ -11,7 +11,7 @@
                 </view>
             </block>
         </block>
-        <view class="trade-item__bd" bindtap="funPrivateaOOfj">
+        <view class="trade-item__bd" bindtap="funPrivateXnbTm">
             <order-item wx:key="idx" __triggerObserer="{{ _triggerObserer }}" info="{{item}}" wx:for="{{info.order}}" wx:for-item="item" wx:for-index="idx"></order-item>
             <block>
                 <block wx:if="{{customRender}}">{{customRender}}</block>

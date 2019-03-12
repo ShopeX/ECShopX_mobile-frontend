@@ -215,7 +215,7 @@ export default class AddressEdit extends Component {
         >
           <View className='sec address-edit__form'>
             <AtInput
-    title='收件人姓名'
+              title='收件人姓名'
               name='username'
               value={info.username}
               onChange={this.handleChange.bind(this, 'username')}

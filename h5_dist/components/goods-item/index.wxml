@@ -8,7 +8,7 @@
         </view>
         <view class="goods-item__bd">
             <view class="goods-item__img-wrap">
-                <image class="goods-item__img" bindtap="funPrivateIDWlB" mode="aspectFill" src="{{img}}"></image>
+                <image class="goods-item__img" bindtap="funPrivateTfeAl" mode="aspectFill" src="{{img}}"></image>
             </view>
             <view class="goods-item__cont"><text class="goods-item__title">{{info.title}}</text><text class="goods-item__desc">{{info.desc}}</text>
                 <view class="goods-item__prices">

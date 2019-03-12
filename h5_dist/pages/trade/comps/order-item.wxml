@@ -1,5 +1,5 @@
 <block>
-    <view class="order-item" bindtap="funPrivatesHliv">
+    <view class="order-item" bindtap="funPrivateIYuLU">
         <view class="order-item__hd">
             <image mode="aspectFill" class="order-item__img" src="{{info.pic_path}}"></image>
         </view>

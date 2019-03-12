@@ -15,9 +15,9 @@
         </view>
         <view class="goods-buy-toolbar__btns" style="width: 59%;">
             <block wx:if="{{type === 'normal'}}">
-                <button class="goods-buy-toolbar__btn btn-add-cart" bindtap="funPrivateMEhny">加入购物车</button>
+                <button class="goods-buy-toolbar__btn btn-add-cart" bindtap="funPrivateXxmBi">加入购物车</button>
             </block>
-            <button class="goods-buy-toolbar__btn btn-fast-buy" bindtap="funPrivatebnJwC">{{fastBuyText}}</button>
+            <button class="goods-buy-toolbar__btn btn-fast-buy" bindtap="funPrivateJqugU">{{fastBuyText}}</button>
         </view>
     </view>
 </block>

@@ -79,13 +79,13 @@ var GoodsBuyToolbar = (_dec = (0, _index3.connect)(function (_ref) {
       return this.__state;
     }
   }, {
-    key: "funPrivateMEhny",
-    value: function funPrivateMEhny() {
+    key: "funPrivateXxmBi",
+    value: function funPrivateXxmBi() {
       this.__triggerPropsFn("onClickAddCart", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivatebnJwC",
-    value: function funPrivatebnJwC() {
+    key: "funPrivateJqugU",
+    value: function funPrivateJqugU() {
       this.__triggerPropsFn("onClickFastBuy", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -120,7 +120,7 @@ var GoodsBuyToolbar = (_dec = (0, _index3.connect)(function (_ref) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["navigateTo", "funPrivateMEhny", "funPrivatebnJwC"], _class2.options = {
+}, _class2.$$events = ["navigateTo", "funPrivateXxmBi", "funPrivateJqugU"], _class2.options = {
   addGlobalClass: true
 }, _class2.defaultProps = {
   type: 'normal',
