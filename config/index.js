@@ -11,7 +11,7 @@ const config = {
     '828': 1.81 / 2
   },
   sourceRoot: 'src',
-  outputRoot: 'dist',
+  outputRoot: process.env.TARO_ENV === 'weapp' ? 'dist' : 'h5_dist',
   plugins: {
     babel: {
       sourceMap: true,
@@ -106,9 +106,6 @@ const config = {
     esnextModules: ['taro-ui'],
     webpackChain (chain) {
       chain.merge({
-        output: {
-          path: path.resolve(__dirname, '../h5_dist')
-        },
         resolve: {
           alias: {
             'react': 'nervjs',
