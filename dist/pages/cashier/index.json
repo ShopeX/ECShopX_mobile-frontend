@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "at-modal": "../../npm/taro-ui/dist/weapp/components/modal/index"
+  }
+}

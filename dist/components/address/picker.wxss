@@ -1,0 +1,110 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+@-webkit-keyframes sp-anim-popup {
+  0% {
+    -webkit-transform: translate3D(0, 100%, 0);
+            transform: translate3D(0, 100%, 0); }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate3D(0, 0, 0);
+            transform: translate3D(0, 0, 0); } }
+@keyframes sp-anim-popup {
+  0% {
+    -webkit-transform: translate3D(0, 100%, 0);
+            transform: translate3D(0, 100%, 0); }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate3D(0, 0, 0);
+            transform: translate3D(0, 0, 0); } }
+
+@-webkit-keyframes sp-anim-fade {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes sp-anim-fade {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+.sp-icon-weixin {
+  color: #07C15F; }
+
+.address-picker {
+  background: #f4f4f4;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 501;
+  visibility: hidden; }
+  .address-picker__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    z-index: 499;
+    -webkit-transition: all 0.15s ease-in;
+    -o-transition: all 0.15s ease-in;
+    transition: all 0.15s ease-in; }
+  .address-picker__active {
+    -webkit-animation: sp-anim-popup 0.2s ease-in-out;
+            animation: sp-anim-popup 0.2s ease-in-out;
+    visibility: visible; }
+    .address-picker__active .address-picker__overlay {
+      opacity: 1; }
+  .address-picker .address-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .address-picker .address-item__receiver {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+          -ms-flex: 1;
+              flex: 1;
+      color: #111; }
+    .address-picker .address-item__name {
+      font-weight: bold;
+      font-size: 33rpx;
+      margin-right: 20rpx; }
+    .address-picker .address-item__mobile {
+      color: #999; }
+    .address-picker .address-item__addr {
+      display: block; }
+    .address-picker .address-item__ft {
+      width: 60rpx;
+      border-left: 1rpx solid #aaa;
+      color: #aaa;
+      padding-left: 30rpx;
+      margin-left: 30rpx;
+      font-size: 25rpx;
+      white-space: nowrap;
+      text-align: center; }

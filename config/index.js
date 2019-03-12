@@ -106,6 +106,9 @@ const config = {
     esnextModules: ['taro-ui'],
     webpackChain (chain) {
       chain.merge({
+        output: {
+          path: path.resolve(__dirname, '../h5_dist')
+        },
         resolve: {
           alias: {
             'react': 'nervjs',

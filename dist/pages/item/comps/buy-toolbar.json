@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "at-badge": "../../../npm/taro-ui/dist/weapp/components/badge/index"
+  }
+}

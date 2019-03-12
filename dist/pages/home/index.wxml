@@ -1,0 +1,31 @@
+<block>
+    <block wx:if="{{!wgts || !store}}">
+        <view></view>
+    </block>
+    <view class="page-index" wx:else>
+        <search-bar isFixed="{{true}}" __triggerObserer="{{ _triggerObserer }}"></search-bar>
+        <view class="wgts-wrap wgts-wrap__fixed">
+            <view class="wgt-wrap" wx:key="idx" wx:for="{{wgts}}" wx:for-item="item" wx:for-index="idx">
+                <block wx:if="{{item.name === 'slider'}}">
+                    <wgt-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-slider>
+                </block>
+                <block wx:if="{{item.name === 'navigation'}}">
+                    <wgt-navigation info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-navigation>
+                </block>
+                <block wx:if="{{item.name === 'coupon'}}">
+                    <wgt-coupon info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-coupon>
+                </block>
+                <block wx:if="{{item.name === 'goodsScroll'}}">
+                    <wgt-goods-scroll info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods-scroll>
+                </block>
+                <block wx:if="{{item.name === 'goodsGrid'}}">
+                    <wgt-goods-grid info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods-grid>
+                </block>
+                <block wx:if="{{item.name === 'showcase'}}">
+                    <wgt-showcase info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-showcase>
+                </block>
+            </view>
+        </view>
+        <tab-bar __triggerObserer="{{ _triggerObserer }}"></tab-bar>
+    </view>
+</block>

@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "loading": "../../components/loading/index",
+    "goods-item": "../../components/goods-item/index",
+    "at-input-number": "../../npm/taro-ui/dist/weapp/components/input-number/index",
+    "sp-checkbox": "../../components/checkbox/index",
+    "sp-note": "../../components/note/index",
+    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index",
+    "price": "../../components/price/index"
+  }
+}

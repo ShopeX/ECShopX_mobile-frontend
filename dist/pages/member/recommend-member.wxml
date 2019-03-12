@@ -1,0 +1,130 @@
+<block>
+    <view class="recommend-member">
+        <scroll-view scroll-y="{{true}}" class="recommend-member__scroll">
+            <view class="recommend-member__table">
+                <view class="at-row recommend-member__table-title">
+                    <view class="at-col title-border">等级</view>
+                    <view class="at-col title-border">人数</view>
+                    <view class="at-col title-border">积分分成</view>
+                    <view class="at-col">现金分成</view>
+                </view>
+                <view class="recommend-member__table-content">
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                    <view class="at-row content-item">
+                        <view class="at-col">1</view>
+                        <view class="at-col">77</view>
+                        <view class="at-col">10%</view>
+                        <view class="at-col">10%</view>
+                    </view>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+</block>

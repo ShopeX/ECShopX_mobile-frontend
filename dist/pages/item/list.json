@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "search-bar": "../../components/search-bar/index",
+    "filter-bar": "../../components/filter-bar/index",
+    "goods-item": "../../components/goods-item/index",
+    "loading": "../../components/loading/index",
+    "back-to-top": "../../components/back-to-top/index"
+  }
+}

@@ -1,0 +1,85 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.goods-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin: 0 0 20rpx; }
+  .goods-item__bd {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+  .goods-item__cont {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding: 20rpx 30rpx; }
+  .goods-item__img {
+    width: 240rpx;
+    height: 240rpx; }
+    .goods-item__img-wrap {
+      width: 240rpx;
+      height: 240rpx;
+      display: block;
+      text-align: center; }
+  .goods-item__title {
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    color: #111;
+    margin: 0 0 16rpx; }
+  .goods-item__desc {
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    color: #999;
+    font-size: 25rpx; }
+  .goods-item__price {
+    font-size: 35rpx;
+    margin-right: 24rpx; }
+  .goods-item__point {
+    color: #FF482B; }
+  .goods-item__price-market {
+    font-size: 25rpx;
+    color: #999;
+    text-decoration: line-through; }

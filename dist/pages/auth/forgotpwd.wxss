@@ -1,0 +1,25 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.auth-forgotpwd {
+  height: 100vh;
+  padding-top: 160rpx;
+  background: #ffffff; }
+  .auth-forgotpwd__form {
+    padding: 30rpx;
+    margin: 0 0 20rpx; }
+  .auth-forgotpwd .accountAgreement {
+    width: 100%;
+    text-align: center; }
+    .auth-forgotpwd .accountAgreement__text {
+      color: #FF482B; }

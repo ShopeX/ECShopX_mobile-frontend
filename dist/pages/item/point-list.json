@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "at-divider": "../../npm/taro-ui/dist/weapp/components/divider/index",
+    "at-icon": "../../npm/taro-ui/dist/weapp/components/icon/index",
+    "goods-item": "../../components/goods-item/index",
+    "loading": "../../components/loading/index",
+    "back-to-top": "../../components/back-to-top/index"
+  }
+}

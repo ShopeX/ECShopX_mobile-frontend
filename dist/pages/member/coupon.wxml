@@ -1,0 +1,46 @@
+<block>
+    <view class="coupon-list">
+        <at-tabs className="coupon-list__tabs" __triggerObserer="{{ _triggerObserer }}" current="{{curTabIdx}}" tabList="{{tabList}}" bindonclick="handleClickTab" __fn_onClick="{{true}}">
+            <at-tabs-pane current="{{curTabIdx}}" __triggerObserer="{{ _triggerObserer }}" wx:key="pIdx" index="{{pIdx}}" wx:for="{{tabList}}" wx:for-item="panes" wx:for-index="pIdx"></at-tabs-pane>
+        </at-tabs>
+        <scroll-view scroll-y="{{true}}" class="coupon-list__scroll" bindscrolltolower="nextPage">
+            <view class="coupon-list-ticket">
+                <view class="coupon-item" wx:key="idx" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="idx">
+                    <block wx:if="{{item.$original.card_type === 'cash'}}">
+                        <view class="{{item.$loopState__temp2}}">
+                            <view class="coupon-item___number">￥<text class="coupon-item___number_text">{{item.$original.reduce_cost / 100}}</text>
+                            </view>
+                            <view class="coupon-item___info">满{{item.$original.least_cost > 0 ? item.$original.least_cost / 100 : 0.01}}可用</view>
+                        </view>
+                    </block>
+                    <block wx:if="{{item.$original.card_type === 'gift'}}">
+                        <view class="{{item.$loopState__temp4}}">
+                            <view class="coupon-item___number">兑换券</view>
+                        </view>
+                    </block>
+                    <block wx:if="{{item.$original.card_type === 'discount'}}">
+                        <view class="{{item.$loopState__temp6}}">
+                            <view class="coupon-item___number"><text class="coupon-item___number_text">{{(100 - item.$original.discount) / 10}}</text>折</view>
+                            <view class="coupon-item___info">满{{item.$original.least_cost > 0 ? item.$original.least_cost / 100 : 0.01}}可用</view>
+                        </view>
+                    </block>
+                    <view class="coupon-item__content">
+                        <view class="coupon-item___description"><text>{{item.$original.title}}</text>
+                            <block wx:if="{{item.$original.tagClass === 'used'}}">
+                                <view class="coupon-item___used">已使用</view>
+                            </block>
+                        </view>
+                        <view class="coupon-item___time">使用期限 <text>{{item.$original.begin_date}}~ {{item.$original.end_date}}</text>
+                        </view>
+                    </view>
+                </view>
+                <block wx:if="{{page.isLoading}}">
+                    <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>
+                </block>
+                <block wx:if="{{!page.isLoading && !page.hasNext && !list.length}}">
+                    <sp-note img="trades_empty.png" __triggerObserer="{{ _triggerObserer }}">赶快去添加吧~</sp-note>
+                </block>
+            </view>
+        </scroll-view>
+    </view>
+</block>

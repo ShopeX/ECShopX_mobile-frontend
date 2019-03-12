@@ -1,0 +1,38 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.trade-list .at-tabs__header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 100; }
+
+.trade-list__scroll {
+  height: 100vh;
+  padding: 100rpx 0 20rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+
+.trade-list__tabs {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%; }
+
+.trade-list .trade-item {
+  margin: 0 30rpx 20rpx; }
+  .trade-list .trade-item .at-button {
+    font-size: 25rpx;
+    padding-left: 26rpx;
+    padding-right: 26rpx;
+    margin-left: 20rpx; }

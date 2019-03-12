@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "at-form": "../../npm/taro-ui/dist/weapp/components/form/index",
+    "at-input": "../../npm/taro-ui/dist/weapp/components/input/index",
+    "sp-cell": "../cell/index",
+    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index"
+  }
+}

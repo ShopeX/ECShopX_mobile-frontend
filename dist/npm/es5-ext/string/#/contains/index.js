@@ -1,0 +1,3 @@
+"use strict";
+
+module.exports = require("./is-implemented.js")() ? String.prototype.contains : require("./shim.js");

@@ -1,0 +1,5 @@
+<block>
+    <view class="{{anonymousState__temp}}">
+        <image src="{{loadingImg}}" class="loading-img"></image><text class="loading-text"><slot></slot></text>
+    </view>
+</block>

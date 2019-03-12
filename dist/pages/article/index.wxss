@@ -1,0 +1,36 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+page, body {
+  background: #fff; }
+
+.article-index .article-brand {
+  display: block;
+  width: 100%; }
+
+.article-index .article-info {
+  padding: 15rpx 0; }
+
+.article-index .article-title {
+  font-size: 44rpx;
+  padding: 0 15rpx;
+  display: block; }
+
+.article-index .article-time {
+  color: #999;
+  padding: 0 15rpx 20rpx;
+  text-align: right;
+  display: block; }
+
+.article-index .article-content {
+  color: #333; }

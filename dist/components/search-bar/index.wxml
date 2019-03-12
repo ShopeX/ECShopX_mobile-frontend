@@ -1,0 +1,14 @@
+<block>
+    <view class="{{anonymousState__temp}}">
+        <form bindsubmit="handleConfirm" data-e-submit-so="this">
+            <at-search-bar className="search-input__bar" __triggerObserer="{{ _triggerObserer }}" value="{{searchValue}}" actionName="取消" showActionButton="{{isShowAction}}" bindonfocus="handleFocusSearchHistory" bindonchange="handleChangeSearch" bindonconfirm="handleConfirm" bindonactionclick="handleClickCancel" __fn_onFocus="{{true}}" data-e-onfocus-so="this" data-e-onfocus-a-a="{{true}}" __fn_onChange="{{true}}" data-e-onchange-so="this" __fn_onConfirm="{{true}}" data-e-onconfirm-so="this" __fn_onActionClick="{{true}}" data-e-onactionclick-so="this" data-e-onactionclick-a-a="{{false}}"></at-search-bar>
+        </form>
+        <view class="{{anonymousState__temp2}}">
+            <view class="search-input__history-title"><text>最近搜索</text><text class="sp-icon sp-icon-shanchu icon-del" bindtap="handleClickDelete" data-e-tap-so="this"></text>
+            </view>
+            <view class="search-input__history-list">
+                <view class="search-input__history-list__btn" wx:key="index" bindtap="handleClickTag" wx:for="{{historyList}}" wx:for-item="item" wx:for-index="index">{{item}}</view>
+            </view>
+        </view>
+    </view>
+</block>

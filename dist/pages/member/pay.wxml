@@ -1,0 +1,41 @@
+<block>
+    <view class="page-member-integral">
+        <view class="member-integral__hd">
+            <view class="integral-info">
+                <view class="integral-number">图标<text class="integral-number__text">1888</text>
+                </view>
+                <view class="integral-text">当前账户余额</view>
+            </view>
+        </view>
+        <view class="member-integral__bd">
+            <view class="integral-sec integral-info__status">
+                <view class="integral-sec__share">点击“立即充值”即表示阅读并同意<text>《充值协议》</text>
+                </view>
+            </view>
+            <block>
+                <block wx:if="{{page.isLoading}}">
+                    <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>
+                </block>
+                <block wx:else>
+                    <view class="integral-sec member-pay">
+                        <block wx:if="{{list.length > 0}}">
+                            <view class="member-pay__list">
+                                <at-tag className="{{item.$loopState__temp2}}" __triggerObserer="{{ _triggerObserer }}" wx:key="index" name="{{item.$original.money}}" active="{{item.$original.money === isActiveName ? true : false}}" bindonclick="handleClickTag" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="index" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item.$original.ruleData}}">{{item.$original.money}}</at-tag>
+                                <block wx:if="{{ruleData > 0}}">
+                                    <view class="extra-regard">额外奖励：<text class="extra-regard__Text">充值{{isActiveName}}送{{ruleData}}</text>
+                                    </view>
+                                </block>
+                            </view>
+                        </block>
+                        <block wx:if="{{otherNumberStatus}}">
+                            <at-input className="otherNumber" __triggerObserer="{{ _triggerObserer }}" title="其他金额" name="otherNumber" value="{{otherNumber}}" placeholder="请输入金额" bindonchange="handleChangeOtherNum" __fn_onChange="{{true}}"></at-input>
+                        </block>
+                        <view class="btns">
+                            <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleClickPay" __fn_onClick="{{true}}">立即充值</at-button>
+                        </view>
+                    </view>
+                </block>
+            </block>
+        </view>
+    </view>
+</block>

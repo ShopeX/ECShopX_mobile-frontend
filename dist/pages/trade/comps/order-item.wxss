@@ -1,0 +1,55 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.order-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  padding: 30rpx; }
+  .order-item__img {
+    width: 160rpx;
+    height: 160rpx;
+    margin-right: 18rpx; }
+  .order-item__bd {
+    width: 50%; }
+  .order-item__ft {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    text-align: right;
+    font-size: 25rpx; }
+  .order-item__title {
+    font-size: 26rpx;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* autoprefixer: ignore next */
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    margin: 0 0 4rpx; }
+  .order-item__desc {
+    color: #999;
+    font-size: 25rpx; }
+  .order-item__price {
+    color: #333; }
+  .order-item__num {
+    display: block;
+    color: #999; }

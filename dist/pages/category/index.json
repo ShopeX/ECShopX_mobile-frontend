@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "loading": "../../components/loading/index",
+    "search-bar": "../../components/search-bar/index"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "at-avatar": "../../npm/taro-ui/dist/weapp/components/avatar/index",
+    "at-badge": "../../npm/taro-ui/dist/weapp/components/badge/index",
+    "sp-icon-menu": "../../components/icon-menu/index",
+    "at-icon": "../../npm/taro-ui/dist/weapp/components/icon/index"
+  }
+}

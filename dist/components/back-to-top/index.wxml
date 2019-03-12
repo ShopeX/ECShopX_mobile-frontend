@@ -1,0 +1,5 @@
+<block>
+    <view class="{{anonymousState__temp}}" style="{{anonymousState__temp2}}" bindtap="funPrivateTluTZ">
+        <view class="at-icon at-icon-chevron-up"></view><text class="back-to-top__text">置顶</text>
+    </view>
+</block>

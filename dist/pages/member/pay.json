@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "loading": "../../components/loading/index",
+    "at-tag": "../../npm/taro-ui/dist/weapp/components/tag/index",
+    "at-input": "../../npm/taro-ui/dist/weapp/components/input/index",
+    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "at-form": "../../npm/taro-ui/dist/weapp/components/form/index",
+    "at-input": "../../npm/taro-ui/dist/weapp/components/input/index",
+    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index",
+    "sp-toast": "../../components/toast/index"
+  }
+}

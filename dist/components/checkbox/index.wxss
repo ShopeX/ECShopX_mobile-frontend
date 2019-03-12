@@ -1,0 +1,53 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.sp-checkbox {
+  background: #fff;
+  border: 1PX solid #d9d9d9;
+  border-radius: 32rpx;
+  width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  text-align: center;
+  -webkit-transition: all .1s ease-in;
+  -o-transition: all .1s ease-in;
+  transition: all .1s ease-in;
+  color: #fff;
+  margin-right: 12rpx;
+  display: inline-block; }
+  .sp-checkbox__wrap {
+    display: inline-block;
+    line-height: 1; }
+  .sp-checkbox__text {
+    display: inline-block;
+    vertical-align: middle; }
+  .sp-checkbox .at-icon {
+    opacity: 0;
+    -webkit-transform: scale(0.7);
+        -ms-transform: scale(0.7);
+            transform: scale(0.7);
+    -webkit-transition: all .1s ease-in;
+    -o-transition: all .1s ease-in;
+    transition: all .1s ease-in;
+    font-size: 20rpx;
+    margin-top: -4rpx; }
+
+.sp-checkbox__checked .sp-checkbox {
+  background: #FF482B;
+  border-color: #FF482B; }
+
+.sp-checkbox__checked .at-icon {
+  opacity: 1;
+  -webkit-transform: scale(1);
+      -ms-transform: scale(1);
+          transform: scale(1); }

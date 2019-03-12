@@ -1,0 +1,73 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.search-input {
+  width: 750rpx;
+  height: 84rpx;
+  text-align: center;
+  border-bottom: 1rpx solid #d9d9d9;
+  -webkit-box-shadow: 0 -1rpx 0 0 #dddddd;
+          box-shadow: 0 -1rpx 0 0 #dddddd;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+  .search-input__history {
+    background: #fff;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box; }
+    .search-input__history-title {
+      font-size: 26rpx;
+      color: #666666;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      padding: 34rpx 40rpx; }
+      .search-input__history-title .icon-del {
+        font-size: 40rpx; }
+    .search-input__history-list {
+      font-size: 26rpx;
+      color: #666666;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: start;
+      -webkit-justify-content: flex-start;
+          -ms-flex-pack: start;
+              justify-content: flex-start;
+      -webkit-flex-wrap: wrap;
+          -ms-flex-wrap: wrap;
+              flex-wrap: wrap;
+      padding: 0 40rpx 24rpx 40rpx; }
+      .search-input__history-list__btn {
+        padding: 10rpx 32rpx;
+        background: #F2F2F2;
+        margin: 20rpx 20rpx 0 0;
+        border-radius: 31rpx; }
+  .search-input__history-none {
+    display: none; }
+
+.search-input-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100; }
+
+.search-input__focus {
+  height: 100vh;
+  z-index: 300; }

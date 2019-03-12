@@ -1,0 +1,49 @@
+<block>
+    <block wx:if="{{!list}}">
+        <loading __triggerObserer="{{ _triggerObserer }}"></loading>
+    </block>
+    <view class="page-cart-index" wx:else>
+        <scroll-view class="cart-list__wrap" scroll-y="{{true}}">
+            <block wx:if="{{!isEmpty}}">
+                <view class="cart-list__actions"><text clas-name="btn-cart-mode" bindtap="toggleCartMode">{{cartMode === 'edit' ? '完成' : '编辑'}}</text>
+                </view>
+            </block>
+            <view class="cart-list">
+                <view class="cart-group__shop">
+                    <goods-item wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="idx">
+                        <sp-checkbox wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" checked="{{item.$loopState__temp2}}" bindonchange="handleSelectionChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="{{item.$original.item_id}}"></sp-checkbox>
+                        <block slot="footer">
+                            <at-input-number min="{{1}}" __triggerObserer="{{ _triggerObserer }}" max="{{999999}}" value="{{item.$original.quantity}}" bindonchange="handleQuantityChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="{{idx}}"></at-input-number>
+                        </block>
+                    </goods-item>
+                </view>
+                <block wx:if="{{!list.length}}">
+                    <view>
+                        <sp-note customStyle="margin-bottom: 20px" __triggerObserer="{{ _triggerObserer }}" img="cart_empty.png">快去给我挑点宝贝吧~</sp-note>
+                        <at-button circle="{{true}}" __triggerObserer="{{ _triggerObserer }}" type="primary" bindonclick="navigateTo" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="/pages/home/index" data-e-onclick-a-b="{{true}}">随便逛逛</at-button>
+                    </view>
+                </block>
+            </view>
+        </scroll-view>
+        <view class="{{'toolbar cart-toolbar ' + (isEmpty && 'hidden')}}">
+            <view class="cart-toolbar__hd">
+                <sp-checkbox checked="{{isTotalChecked}}" __triggerObserer="{{ _triggerObserer }}" bindonchange="handleAllSelect" __fn_onChange="{{true}}">全选</sp-checkbox>
+            </view>
+            <block>
+                <block wx:if="{{cartMode !== 'edit'}}">
+                    <view class="cart-toolbar__bd"><text class="cart-total__hint">不含运费</text>
+                        <view class="cart-total">
+                            <price primary="{{true}}" __triggerObserer="{{ _triggerObserer }}" value="{{totalPrice}}"></price>
+                        </view>
+                        <at-button circle="{{true}}" __triggerObserer="{{ _triggerObserer }}" type="primary" className="btn-checkout" disabled="{{anonymousState__temp3}}" bindonclick="handleCheckout" __fn_onClick="{{true}}">结算({{totalItems}})</at-button>
+                    </view>
+                </block>
+                <block wx:else>
+                    <view class="cart-toolbar__bd">
+                        <at-button circle="{{true}}" __triggerObserer="{{ _triggerObserer }}" type="primary" className="btn-checkout" bindonclick="handleDelect" __fn_onClick="{{true}}">删除</at-button>
+                    </view>
+                </block>
+            </block>
+        </view>
+    </view>
+</block>
