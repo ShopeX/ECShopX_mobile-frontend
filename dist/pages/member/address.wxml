@@ -1,3 +1,0 @@
-<block>
-    <address-picker isOpened="{{true}}" __triggerObserer="{{ _triggerObserer }}" bindonclickback="handleClickBack" __fn_onClickBack="{{true}}" data-e-onclickback-so="this"></address-picker>
-</block>

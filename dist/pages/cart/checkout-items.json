@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "at-nav-bar": "../../npm/taro-ui/dist/weapp/components/nav-bar/index",
-    "goods-item": "../../components/goods-item/index"
-  }
-}

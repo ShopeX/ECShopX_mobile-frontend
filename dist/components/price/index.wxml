@@ -1,5 +1,0 @@
-<block><text class="{{anonymousState__temp}}"><block wx:if="{{minus}}"><text>-</text>
-</block>
-<block wx:if="{{!noSymbol}}"><text class="price__symbol">{{symbol}}</text>
-</block><text class="price__int">{{anonymousState__temp2}}</text>.<text class="price__decimal">{{decimal}}</text></text>
-</block>
