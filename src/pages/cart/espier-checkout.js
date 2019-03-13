@@ -251,7 +251,21 @@ export default class CartCheckout extends Component {
       return S.notify('请选择地址')
     }
 
-    const { order_id } = await api.trade.create(this.params)
+    Taro.showLoading({
+      title: '正在提交',
+      mask: true
+    })
+
+    let order_id
+    try {
+      const res = await api.trade.create(this.params)
+      order_id = res.order_id
+    } catch (e) {
+      Taro.hideLoading()
+    }
+
+    if (!order_id) return
+
     const url = `/pages/cashier/index?order_id=${order_id}`
     this.props.onClearCart()
     Taro.navigateTo({ url })

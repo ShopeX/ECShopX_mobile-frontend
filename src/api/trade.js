@@ -1,11 +1,13 @@
 import req from './req'
 
 export function list (params) {
-  return req.get('/trade.list', params)
+  // return req.get('/trade.list', params)
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/orders', params)
 }
 
 export function detail (tid) {
-  return req.get('/trade.get', { tid })
+  // return req.get('/trade.get', { tid })
+  return req.get(`http://pjj.aixue7.com/index.php/api/h5app/wxapp/order/${tid}`)
 }
 
 export function create (data) {

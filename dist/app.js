@@ -18,6 +18,10 @@ var _index4 = require("./store/index.js");
 
 var _index5 = _interopRequireDefault(_index4);
 
+var _hooks = require("./hooks.js");
+
+var _hooks2 = _interopRequireDefault(_hooks);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37,6 +41,7 @@ var _configStore = (0, _index5.default)(),
     persistor = _configStore.persistor;
 
 (0, _index3.setStore)(store);
+(0, _hooks2.default)();
 
 var _App = function (_BaseComponent) {
   _inherits(_App, _BaseComponent);

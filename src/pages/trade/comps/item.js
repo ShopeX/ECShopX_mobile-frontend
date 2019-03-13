@@ -15,6 +15,7 @@ export default class TradeItem extends Component {
     customHeader: false,
     customFooter: false,
     customRender: false,
+    noHeader: false,
     onClickBtn: () => {},
     onClick: () => {}
   }
@@ -25,16 +26,18 @@ export default class TradeItem extends Component {
   }
 
   render () {
-    const { customHeader, customFooter, onClick, info } = this.props
+    const { customHeader, customFooter, noHeader, onClick, info } = this.props
 
     return (
       <View className='trade-item'>
         {
-          customHeader
-            ? <View className='trade-item__hd'>{this.props.renderHeader}</View>
-            : <View className='trade-item__hd'>
-                <Text className='trade-item__shop'>{info.shopname}</Text><Text className='more'>{info.status_desc}</Text>
-              </View>
+          !noHeader && (
+            customHeader
+              ? <View className='trade-item__hd'>{this.props.renderHeader}</View>
+              : <View className='trade-item__hd'>
+                  <Text className='trade-item__shop'>{info.shopname}</Text><Text className='more'>{info.status_desc}</Text>
+                </View>
+          )
         }
         <View
           className='trade-item__bd'
@@ -51,18 +54,13 @@ export default class TradeItem extends Component {
           {
             this.props.customRender
               ? this.props.customRender
-              : <View className="trade-item__total">
+              : <View className='trade-item__total'>
                   共{info.totalItem}件商品 合计:<Price value={info.payment} />
                 </View>
           }
         </View>
         {customFooter && <View className='trade-item__ft'>{this.props.renderFooter}</View>}
         {!customFooter && info.status === 'WAIT_BUYER_PAY' && <View className='trade-item__ft'>
-          <AtButton
-            circle
-            size='small'
-            onClick={this.handleClickBtn.bind(this, 'cancel')}
-          >取消订单</AtButton>
           <AtButton
             circle
             type='secondary'

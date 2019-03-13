@@ -4,7 +4,7 @@ import { AtDivider } from 'taro-ui'
 import { Loading, Price, BackToTop, GoodsBuyToolbar, SpHtmlContent } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
-import { styleNames, log } from '@/utils'
+import { styleNames, log, pickBy } from '@/utils'
 import RateItem from './comps/rate-item'
 import GoodsBuyPanel from './comps/buy-toolbar'
 

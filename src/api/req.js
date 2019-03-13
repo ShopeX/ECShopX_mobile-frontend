@@ -29,6 +29,16 @@ class API {
     })
   }
 
+  errorToast (data) {
+    const errMsg = data.msg || data.err_msg || (data.error && data.error.message) || '操作失败，请稍后重试'
+    setTimeout(() => {
+      Taro.showToast({
+        icon: 'none',
+        title: errMsg
+      })
+    }, 200)
+  }
+
   makeReq (config) {
     const { url, data, header = {}, method = 'GET', showLoading, showError = true } = config
     const methodIsGet = method.toLowerCase() === 'get'
@@ -85,14 +95,8 @@ class API {
           if (data.data !== undefined) {
             return data.data
           } else {
-            const errMsg = data.msg || data.err_msg || '操作失败，请稍后重试'
             if (showError) {
-              setTimeout(() => {
-                Taro.showToast({
-                  icon: 'none',
-                  title: errMsg
-                })
-              }, 200)
+              this.errorToast(data)
             }
             return Promise.reject(this.reqError(res))
           }
@@ -104,6 +108,13 @@ class API {
             title: data.msg || data.err_msg || '授权过期请重新授权'
           })
           return S.logout()
+        }
+
+        if (statusCode >= 400) {
+          if (showError) {
+            this.errorToast(data)
+          }
+          return Promise.reject(this.reqError(res))
         }
 
         return Promise.reject(this.reqError(res, `API error: ${statusCode}`))
