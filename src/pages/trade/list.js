@@ -1,14 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
+import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote } from '@/components'
 import api from '@/api'
-import { withPager } from '@/hocs'
+import { withPager, withLogin } from '@/hocs'
+import { log, pickBy, resolveOrderStatus } from '@/utils'
 import TradeItem from './comps/item'
 
 import './list.scss'
 
 @withPager
+@withLogin()
 export default class TradeList extends Component {
   constructor (props) {
     super(props)
@@ -17,11 +20,10 @@ export default class TradeList extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '全部', status: ''},
-        {title: '待付款', status: 'WAIT_BUYER_PAY'},
-        {title: '待发货', status: 'WAIT_SELLER_SEND_GOODS'},
-        {title: '待收货', status: 'WAIT_BUYER_CONFIRM_GOODS'},
-        {title: '待评价', status: 'WAIT_RATE'}
+        {title: '全部', status: '0'},
+        {title: '待发货', status: '1'},
+        {title: '待收货', status: '2'},
+        {title: '已完成', status: '3'}
       ],
       list: []
     }
@@ -44,12 +46,36 @@ export default class TradeList extends Component {
 
   async fetch (params) {
     const { tabList, curTabIdx } = this.state
-    params = {
+
+    params = _mapKeys({
       ...params,
+      order_type: 'normal',
       status: tabList[curTabIdx].status
-    }
-    const { list, total_count: total } = await api.trade.list(params)
-    const nList = this.state.list.concat(list)
+    }, function (val, key) {
+      if (key === 'page_no') return 'page'
+      if (key === 'page_size') return 'pageSize'
+
+      return key
+    })
+
+    const { list, pager: { counter: total } } = await api.trade.list(params)
+    const nList = this.state.list.concat(pickBy(list, {
+      tid: 'order_id',
+      status_desc: 'order_status_msg',
+      status: ({ order_status }) => resolveOrderStatus(order_status),
+      totalItems: ({ items }) => items.reduce((acc, item) => (+item.num) + acc, 0),
+      payment: ({ total_fee }) => (total_fee / 100).toFixed(2),
+      order: ({ items }) => pickBy(items, {
+        order_id: 'order_id',
+        item_id: 'item_id',
+        pic_path: 'pic',
+        title: 'item_name',
+        price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+        num: 'num'
+      })
+    }))
+
+    log.debug('[trade list] list fetched and processed: ', nList)
 
     this.setState({
       list: nList
@@ -75,8 +101,9 @@ export default class TradeList extends Component {
     })
   }
 
-  handleClickItem (trade) {
+  handleClickItem = (trade) => {
     const { tid } = trade
+
     Taro.navigateTo({
       url: `/pages/trade/detail?id=${tid}`
     })
@@ -118,9 +145,16 @@ export default class TradeList extends Component {
             list.map((item, idx) => {
               return (
                 <TradeItem
+                  customHeader
+                  renderHeader={
+                    <View className='trade-item__hd-cont'>
+                      <Text className='trade-item__shop'>订单号：{item.tid}</Text>
+                      <Text className='more'>{item.status_desc}</Text>
+                    </View>
+                  }
                   key={idx}
                   info={item}
-                  onClick={this.handleClickItem}
+                  onClick={this.handleClickItem.bind(this, item)}
                   onClickBtn={this.handleClickItemBtn}
                 />
               )

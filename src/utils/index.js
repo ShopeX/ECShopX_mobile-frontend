@@ -5,7 +5,9 @@ import qs from 'qs'
 import moment from 'moment'
 import copy from 'copy-to-clipboard'
 import S from '@/spx'
+import { STATUS_TYPES_MAP } from '@/consts'
 import _get from 'lodash/get'
+import _findKey from 'lodash/findKey'
 import log from './log'
 
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
@@ -125,6 +127,14 @@ export function copyText (text, msg = '内容已复制') {
       }
     }
   })
+}
+
+export function resolveOrderStatus (status, isBackwards) {
+  if (isBackwards) {
+    return _findKey(STATUS_TYPES_MAP, o => o === status)
+  }
+
+  return STATUS_TYPES_MAP[status]
 }
 
 export {

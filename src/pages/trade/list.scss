@@ -20,6 +20,17 @@
   }
   .trade-item {
     margin: 0 $edge-size $edge-margin;
+    &__hd-cont {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .more {
+        color: $color-link;
+        font-size: small;
+        text-align: right;
+      }
+    }
     .at-button {
       font-size: $font-size-small;
       padding-left: 26px;

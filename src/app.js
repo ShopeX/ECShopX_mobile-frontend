@@ -3,6 +3,7 @@ import '@tarojs/async-await'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from '@tarojs/redux'
 import configStore from '@/store'
+import useHooks from '@/hooks'
 import Index from './pages/index'
 
 import './app.scss'
@@ -14,6 +15,7 @@ import './app.scss'
 // }
 
 const { store, persistor } = configStore()
+useHooks()
 
 class App extends Component {
   config = {

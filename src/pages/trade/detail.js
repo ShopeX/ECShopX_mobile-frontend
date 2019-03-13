@@ -1,26 +1,25 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { Loading, SpCell, SpToast, GoodsItem, Price } from '@/components'
-import { classNames, formatTime, copyText } from '@/utils'
+import { Loading, SpCell, SpToast, Price } from '@/components'
+import { classNames, pickBy, formatTime, resolveOrderStatus, copyText } from '@/utils'
 import api from '@/api'
-import S from '@/spx'
 import OrderItem from './comps/order-item'
 
 import './detail.scss'
 
-function resolveTradeOrders (info) {
-  return info.orders.map(order => {
-    const { item_id, title, pic_path: img, total_fee: price, num } = order
-    return {
-      item_id,
-      title,
-      img,
-      price,
-      num
-    }
-  })
-}
+// function resolveTradeOrders (info) {
+//   return info.orders.map(order => {
+//     const { item_id, title, pic_path: img, total_fee: price, num } = order
+//     return {
+//       item_id,
+//       title,
+//       img,
+//       price,
+//       num
+//     }
+//   })
+// }
 
 export default class TradeDetail extends Component {
   constructor (props) {
@@ -37,8 +36,35 @@ export default class TradeDetail extends Component {
 
   async fetch () {
     const { id } = this.$router.params
-    const info = await api.trade.detail(id)
-    info.created_time_str = formatTime(info.created_time, 'YYYY-MM-DD hh:mm:ss')
+    const data = await api.trade.detail(id)
+    console.log(data.orderInfo)
+
+    const info = pickBy(data.orderInfo, {
+      tid: 'order_id',
+      created_time_str: ({ created_time }) => formatTime(created_time, 'YYYY-MM-DD hh:mm:ss'),
+      receiver_name: 'receiver_name',
+      receiver_mobile: 'receiver_mobile',
+      receiver_state: 'receiver_state',
+      receiver_city: 'receiver_city',
+      receiver_district: 'receiver_district',
+      receiver_address: 'receiver_address',
+      status_desc: 'order_status_msg',
+      post_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
+      payment: ({ total_fee }) => (+total_fee / 100).toFixed(2),
+      status: ({ order_status }) => resolveOrderStatus(order_status),
+      orders: ({ items }) => pickBy(items, {
+        order_id: 'order_id',
+        item_id: 'item_id',
+        pic_path: 'pic',
+        title: 'item_name',
+        price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+        num: 'num'
+      })
+    })
+
+    const infoStatus = (info.status || '').toLowerCase()
+    info.status_img = `ico_${infoStatus === 'trade_success' ? 'wait_rate' : infoStatus}.png`
+
     this.setState({
       info
     })
@@ -48,7 +74,7 @@ export default class TradeDetail extends Component {
     const { info } = this.state
     const msg = `收货人：${info.receiver_name} ${info.receiver_mobile}
 收货地址：${info.receiver_state}${info.receiver_city}${info.receiver_district}${info.receiver_address}
-订单号：${info.tid}
+订单编号：${info.tid}
 创建时间：${info.created_time_str}
 `
     await copyText(msg)
@@ -65,7 +91,7 @@ export default class TradeDetail extends Component {
     }
 
     // TODO: orders 多商铺
-    const tradeOrders = resolveTradeOrders(info)
+    // const tradeOrders = resolveTradeOrders(info)
 
     return (
       <View className={classNames('trade-detail', `trade-detail__status-${info.status}`)}>
@@ -74,7 +100,7 @@ export default class TradeDetail extends Component {
           <Image
             mode='aspectFill'
             className='trade-detail__status-ico'
-            src={`/assets/imgs/trade/ico_${info.status.toLowerCase()}.png`}
+            src={`/assets/imgs/trade/${info.status_img}`}
           />
         </View>
         <View className='trade-detail__addr'>
@@ -92,13 +118,17 @@ export default class TradeDetail extends Component {
               </View>
             }
           </SpCell>
-          <View className='trade-detail__express'>配送方式：{info.shipping_type_name}</View>
+          {info.shipping_type_name && (
+            <View className='trade-detail__express'>配送方式：{info.shipping_type_name}</View>
+          )}
         </View>
 
         <View className='sec sec-orders'>
-          <View className='sec-orders__hd'>
-            <Text>丰收蟹旗舰店</Text>
-          </View>
+          {info.shop_name && (
+            <View className='sec-orders__hd'>
+              <Text>{info.shop_name}</Text>
+            </View>
+          )}
           <View className='sec-orders__bd'>
             {
               info.orders.map((item, idx) => {
@@ -118,13 +148,15 @@ export default class TradeDetail extends Component {
               >
                 <Price value={info.post_fee} />
               </SpCell>
-              <SpCell
-                className='trade-detail__total-item'
-                title='积分'
-                border={false}
-              >
-                <Price value={`-${info.points_fee}`} />
-              </SpCell>
+              {info.points_fee && (
+                <SpCell
+                  className='trade-detail__total-item'
+                  title='积分'
+                  border={false}
+                >
+                  <Price value={`-${info.points_fee}`} />
+                </SpCell>
+              )}
               <SpCell
                 className='trade-detail__total-item'
                 title='实付款(含运费)'
@@ -149,29 +181,25 @@ export default class TradeDetail extends Component {
         {info.status === 'WAIT_BUYER_PAY' && (<View className='toolbar toolbar-actions'>
           <AtButton
             circle
-            onClick={this.handleClickBtn.bind(this, 'cancel')
-          }>取消订单</AtButton>
-          <AtButton
-            circle
             type='secondary'
-            onClick={this.handleClickBtn.bind(this, 'pay')
-          }>立即支付</AtButton>
+            onClick={this.handleClickBtn.bind(this, 'pay')}
+          >立即支付</AtButton>
         </View>)}
 
         {info.status === 'WAIT_BUYER_CONFIRM_GOODS' && (<View className='toolbar toolbar-actions'>
           <AtButton
             circle
             type='secondary'
-            onClick={this.handleClickBtn.bind(this, 'confirm')
-          }>确认收货</AtButton>
+            onClick={this.handleClickBtn.bind(this, 'confirm')}
+          >确认收货</AtButton>
         </View>)}
 
         {info.status === 'WAIT_RATE' && (<View className='toolbar toolbar-actions'>
           <AtButton
             circle
             type='secondary'
-            onClick={this.handleClickBtn.bind(this, 'rate')
-          }>评价</AtButton>
+            onClick={this.handleClickBtn.bind(this, 'rate')}
+          >评价</AtButton>
         </View>)}
 
         <SpToast></SpToast>
