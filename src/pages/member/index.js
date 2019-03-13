@@ -36,11 +36,11 @@ export default class MemberIndex extends Component {
               <Text className='member-status__item-val'>666</Text>
               <Text className='member-status__item-title'>收藏夹</Text>
             </View>
-            <View className='member-status__item'>
+            <View className='member-status__item' onClick={this.navigateTo.bind(this, '/pages/member/point')}>
               <Text className='member-status__item-val'>666</Text>
               <Text className='member-status__item-title'>积分</Text>
             </View>
-            <View className='member-status__item'>
+            <View className='member-status__item' onClick={this.navigateTo.bind(this, '/pages/member/coupon')}>
               <Text className='member-status__item-val'>666</Text>
               <Text className='member-status__item-title'>优惠券</Text>
             </View>
@@ -109,19 +109,22 @@ export default class MemberIndex extends Component {
               <View className='member-tools__item'>
                 <SpIconMenu
                   icon='thumb'
-                  title='我的推荐'
+                  title='推广管理'
+                  to='/pages/member/recommend'
                 />
               </View>
               <View className='member-tools__item'>
                 <SpIconMenu
                   icon='hongbao'
-                  title='我的红包'
+                  title='充值'
+                  to='/pages/member/pay'
                 />
               </View>
               <View className='member-tools__item'>
                 <SpIconMenu
                   icon='money'
-                  title='我的资金'
+                  title='资金兑换'
+                  to='/pages/member/money-to-point'
                 />
               </View>
               <View className='member-tools__item'>
@@ -134,19 +137,22 @@ export default class MemberIndex extends Component {
               <View className='member-tools__item'>
                 <SpIconMenu
                   icon='qrcode'
-                  title='推广二维码'
+                  title='积分商城'
+                  to='/pages/item/point-list'
                 />
               </View>
               <View className='member-tools__item'>
                 <SpIconMenu
-                  icon='setting'
-                  title='设置'
+                  icon='money'
+                  title='我的资金'
+                  to='/pages/member/recharge'
                 />
               </View>
               <View className='member-tools__item'>
                 <SpIconMenu
                   icon='help'
-                  title='使用帮助'
+                  title='积分抽奖'
+                  to='/pages/member/point-draw'
                 />
               </View>
             </View>

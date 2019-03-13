@@ -6,22 +6,16 @@ import { AtDivider,AtIcon } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
 
-import './point-list.scss'
+import './point-draw.scss'
 
 @withPager
 @withBackToTop
-export default class PointList extends Component {
+export default class PointDraw extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
       ...this.state,
-      // curFilterIdx: 0,
-      // filterList: [
-      //   { title: '综合' },
-      //   { title: '销量' },
-      //   { title: '价格', sort: -1 }
-      // ],
       query: null,
       list: [],
       listType: 'grid'
@@ -73,41 +67,6 @@ export default class PointList extends Component {
       total
     }
   }
-  //
-  // handleFilterChange = (data) => {
-  //   const { current, sort } = data
-  //
-  //   const query = {
-  //     ...this.state.query,
-  //     goodsSort: current === 0
-  //       ? null
-  //       : current === 1
-  //         ? 1
-  //         : (sort > 0 ? 3 : 2)
-  //   }
-  //
-  //   if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
-  //     this.resetPage()
-  //     this.setState({
-  //       list: []
-  //     })
-  //   }
-  //
-  //   this.setState({
-  //     curFilterIdx: current,
-  //     query
-  //   }, () => {
-  //     this.nextPage()
-  //   })
-  // }
-  //
-  // handleListTypeChange = () => {
-  //   const listType = this.state.listType === 'grid' ? 'default' : 'grid'
-  //
-  //   this.setState({
-  //     listType
-  //   })
-  // }
 
   handleClickItem = (item) => {
     const url = `/pages/item/point-detail?id=${item.item_id}`
