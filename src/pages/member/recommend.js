@@ -1,10 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtBadge, AtIcon, AtAvatar } from 'taro-ui'
-import { SpIconMenu, TabBar } from '@/components'
+import { SpIconMenu } from '@/components'
 import { pickBy } from '@/utils'
 import api from '@/api'
 import { withLogin } from '@/hocs'
+import ShareQrcode from './comps/share-qrcode'
 
 import './recommend.scss'
 
@@ -17,6 +18,7 @@ export default class Recommend extends Component {
       ...this.state,
       info: {},
       detail: {},
+      isOpened: false,
     }
   }
 
@@ -58,12 +60,17 @@ export default class Recommend extends Component {
           detail: nList,
         })
       })
-
-
   }
 
+  handleClickQrcode = () => {
+    this.setState({
+      isOpened: true
+    })
+  }
+
+
   render () {
-    const { info, detail } = this.state
+    const { info, detail, isOpened } = this.state
     console.log(detail, 65)
 
     return (
@@ -83,7 +90,6 @@ export default class Recommend extends Component {
             </View>
           </View>
         </View>
-
         <View className='member-index__bd'>
           <View className='member-sec member-info__status'>
             <View className='member-status__item'>
@@ -139,12 +145,16 @@ export default class Recommend extends Component {
 
         <View className='member-sec member-tools'>
           <View className='sec-bd'>
-            <View className='member-recommend__menus'>
+            <View className='member-recommend__menus' onClick={this.handleClickQrcode}>
               <View className='sp-icon sp-icon-qrcode icon-qrcode'></View>
               <View>我的二维码</View>
             </View>
           </View>
         </View>
+
+        {
+          isOpened ? <ShareQrcode Opened={isOpened} /> : null
+        }
 
       </View>
     )
