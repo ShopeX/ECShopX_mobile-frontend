@@ -4,10 +4,10 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
-import { pickBy } from '@/utils'
+import { pickBy, formatDataTime } from '@/utils'
 
 
-import './recommend-member.scss'
+import './recommend-order.scss'
 
 @withPager
 export default class RecommendOrder extends Component {
@@ -18,15 +18,15 @@ export default class RecommendOrder extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '已购买', status: 'buy'},
-        {title: '未购买', status: 'not_buy'}
+        {title: '未确认', status: 'noClose'},
+        {title: '已确认', status: 'close'}
       ],
       list: []
     }
   }
 
   componentDidMount () {
-    const tabIdx = this.state.tabList.findIndex(tab => tab.status === 'buy')
+    const tabIdx = this.state.tabList.findIndex(tab => tab.status === 'noClose')
 
     if (tabIdx >= 0) {
       this.setState({
@@ -41,17 +41,20 @@ export default class RecommendOrder extends Component {
 
   async fetch (params) {
     const { tabList, curTabIdx } = this.state
+    const { brokerage_source } = this.$router.params
     params = {
       ...params,
-      buy_type: tabList[curTabIdx].status,
+      close_type: tabList[curTabIdx].status,
+      brokerage_source: brokerage_source
     }
-    const { list, total_count: total} = await api.member.recommendMember(params)
+    const { list, total_count: total} = await api.member.recommendOrder(params)
     console.log(list, total)
     const nList = pickBy(list, {
       username: 'username',
-      bind_date: 'bind_date',
-      promoter_grade_name: 'promoter_grade_name',
-      mobile: 'mobile'
+      created: ({ created }) => (formatDataTime(created * 1000)),
+      order_id: 'order_id',
+      rebate: ({ rebate }) => (rebate/100).toFixed(2),
+      source: 'source'
     })
     this.setState({
       list: [...this.state.list, ...nList],
@@ -123,13 +126,16 @@ export default class RecommendOrder extends Component {
                 <View key={idx}>
                   <View className='order-item'>
                     <View className='order-item__title'>
-                      <Text className='order-item__title-name'>{item.username}<Text className='small-text'>({item.promoter_grade_name})</Text></Text>
-                      <Text className='small-text'>绑定时间</Text>
+                      <View className='order-item__title-name'>
+                        <Text className='small-text'>订单号：</Text>{item.order_id}
+                      </View>
+                      <Text className='order-item__title__data'>{item.username}</Text>
                     </View>
-                    <View className='order-item__title'>
-                      <Text className='small-text'>{item.mobile}</Text>
-                      <Text className='small-text'>{item.bind_date}</Text>
+                    <View className='order-item__title-name'>
+                      <Text className='small-text'>{item.source === 'order' ? '佣金' : '津贴' }：</Text>
+                      <Text className='order-item__title-name rebate-color'>￥{item.rebate}</Text>
                     </View>
+                    <View className='small-text'>{item.created}</View>
                   </View>
                 </View>
               )

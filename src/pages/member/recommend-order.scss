@@ -40,10 +40,17 @@
         color: $color-primary-text;
         margin-right: 20px;
       }
-      .small-text{
-        font-size: $font-size;
-        color: #999;
-      }
+    }
+    &__data {
+      font-size: $font-size;
+      color: $color-primary-text;
+    }
+    .small-text{
+      font-size: $font-size;
+      color: #999;
+    }
+    .rebate-color{
+      color: $color-brand-primary;
     }
   }
 }
