@@ -351,7 +351,7 @@ export default class CartCheckout extends Component {
                                   key={idx}
                                   className='trade-item__img'
                                   mode='aspectFill'
-                                  src={Array.isArray(item.pics) ? item.pics[0] : item.pics }
+                                  src={Array.isArray(item.pics) ? item.pics[0] : item.pics}
                                 />
                               )
                             })
