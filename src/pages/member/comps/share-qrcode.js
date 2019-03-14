@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { classNames, formatTime } from '@/utils'
+import { copyText, formatTime } from '@/utils'
 import { AtCurtain } from "taro-ui";
 import api from '@/api'
 
@@ -26,26 +26,13 @@ export default class RateItem extends Component {
 
 
   async fetch () {
-    if(Taro.getEnv() === 'WEAPP') {
-      await api.member.qrcodeData()
-        .then(res => {
-          this.setState({
-            qrCode: res.qrcode
-          })
-          // console.log(res.qrcode)
+    await api.member.h5_qrcodeData()
+      .then(res => {
+        this.imgUrl = res.share_uir
+        this.setState({
+          qrCode: res.share_qrcode
         })
-      console.log(1)
-    } else {
-      await api.member.h5_qrcodeData()
-        .then(res => {
-          this.setState({
-            qrCode: res.share_qrcode
-          })
-        })
-      console.log(2)
-    }
-
-
+      })
   }
 
   componentWillReceiveProps () {
@@ -60,6 +47,10 @@ export default class RateItem extends Component {
     })
   }
 
+  handleClickCopy = () => {
+    copyText(this.imgUrl)
+  }
+
   render () {
     const { isOpened, qrCode } = this.state
 
@@ -68,10 +59,15 @@ export default class RateItem extends Component {
         closeBtnPosition='top-right'
         isOpened={isOpened}
         onClose={this.handleCloseQrcode.bind(this)}
+
       >
         <View className='qrcode-content'>
           <Image src={`${qrCode}`} className='qrcode-content__qrimg' />
+          <View className='qrcode-content__copy' onClick={this.handleClickCopy}>
+            复制链接
+          </View>
         </View>
+
       </AtCurtain>
     )
   }

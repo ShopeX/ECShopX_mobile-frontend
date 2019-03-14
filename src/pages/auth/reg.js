@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Picker, Image } from '@tarojs/components'
+import { connect } from "@tarojs/redux";
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpToast, Timer } from '@/components'
 import { classNames, isString } from '@/utils'
@@ -8,6 +9,9 @@ import api from '@/api'
 
 import './reg.scss'
 
+@connect(( { user } ) => ({
+  land_params: user.land_params
+}), () => ({}))
 export default class Reg extends Component {
   constructor (props) {
     super(props)
@@ -19,12 +23,11 @@ export default class Reg extends Component {
       list: [],
       imgVisible: false,
       imgInfo: {}
-      // dateSel: '2018-04-22'
     }
   }
 
   componentDidMount () {
-    console.log(Taro.getEnv())
+    console.log(Taro.getEnv(),this.props.land_params)
     if (Taro.getEnv() === 'WEAPP') {
       this.setState({
         info: {
@@ -34,7 +37,8 @@ export default class Reg extends Component {
     }else if (Taro.getEnv() === 'WEB') {
       this.setState({
         info: {
-          user_type: 'local'
+          user_type: 'local',
+          uid: this.props.land_params.user_id
         }
       })
     }
@@ -74,8 +78,9 @@ export default class Reg extends Component {
     })
 
     this.handleClickImgcode()
+
     this.setState({
-      list: arr,
+      list: arr
     });
     this.count = 0
   }
@@ -100,27 +105,28 @@ export default class Reg extends Component {
     this.state.list.map(item=>{
       return item.is_required ? (item.is_required && data[item.key] ? true : S.toast(`请输入${item.name}`)) : null
     })
-    console.log(data)
-    try {
-      await api.user.reg(data)
-        .then(res => {
-          S.setAuthToken(res.token.data.token)
-          Taro.showToast({
-            title: '注册成功',
-            icon: 'none',
-          }).then(() => {
-            setTimeout(()=>{
-              Taro.redirectTo({
-                url: '/pages/member/index'
-              })
-            }, 1500)
+    // console.log(data)
+    await api.user.reg(data)
+      .then(res => {
+        S.setAuthToken(res.token.data.token)
+        Taro.showToast({
+          title: '注册成功',
+          icon: 'none',
+        }).then(() => {
+          setTimeout(()=>{
+            Taro.redirectTo({
+              url: '/pages/member/index'
+            })
+          }, 1500)
 
-          })
         })
-    } catch (error) {
-      S.toast(`${error.res.data.error.message}`)
-      return false
-    }
+      })
+      .catch(error => {
+        S.toast(`${error.res.data.error.message}`)
+        return false
+
+      })
+
   }
 
   handleChange = (name, val) => {
@@ -187,16 +193,15 @@ export default class Reg extends Component {
       token: imgInfo.imageToken
     }
 
-    try {
-      await api.user.regSmsCode(query)
-        .then(() => {
-          S.toast('发送成功')
-          // 补token
-        })
-    } catch (error) {
-      S.toast(`${error.res.data.error.message}`)
-      return false
-    }
+    await api.user.regSmsCode(query)
+      .then(() => {
+        S.toast('发送成功')
+        // 补token
+      })
+      .catch (error => {
+        S.toast(`${error.res.data.error.message}`)
+        return false
+      })
 
     resolve()
   }
@@ -224,7 +229,7 @@ export default class Reg extends Component {
 
   render () {
     const { info, timerMsg, isVisible, list, imgVisible, imgInfo } = this.state
-    // console.log(this.state.imgInfo)
+
     return (
       <View className='auth-reg'>
         <AtForm

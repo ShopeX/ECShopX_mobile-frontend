@@ -61,10 +61,31 @@ export default class Recommend extends Component {
       })
   }
 
-  handleClickQrcode = () => {
-    this.setState({
-      isOpened: true
-    })
+  handleClickQrcode = async () => {
+
+    if(Taro.getEnv() === 'WEAPP') {
+      await api.member.qrcodeData()
+        .then(res => {
+          Taro.previewImage({
+            current: res.qrcode,
+            urls: [res.qrcode]
+          })
+        })
+      console.log(1)
+    } else {
+      this.setState({
+        isOpened: true
+      })
+      // await api.member.h5_qrcodeData()
+      //   .then(res => {
+      //
+      //     Taro.previewImage({
+      //       current: res.share_qrcode,
+      //       urls: [res.share_qrcode]
+      //     })
+      //   })
+      // console.log(2)
+    }
   }
 
 

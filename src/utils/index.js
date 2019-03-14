@@ -127,7 +127,7 @@ export function copyText (text, msg = '内容已复制') {
         error: reject
       })
     } else {
-      if (copy(Text)) {
+      if (copy(text)) {
         S.toast(msg)
         resolve(text)
       } else {

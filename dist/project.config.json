@@ -1,13 +1,49 @@
 {
-  "miniprogramRoot": "./",
-  "projectname": "mshop-taro",
-  "description": "taro app for bbc",
-  "appid": "wxfaadceab4f782c35",
-  "setting": {
-    "urlCheck": false,
-    "es6": false,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram"
+	"projectname": "mshop-taro",
+	"description": "taro app for bbc",
+	"appid": "wxfaadceab4f782c35",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 1,
+			"list": [
+				{
+					"id": -1,
+					"name": "login",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 1,
+					"name": "landing",
+					"pathName": "pages/home/landing",
+					"query": "scene=uid%3D123",
+					"scene": 1047
+				}
+			]
+		}
+	}
 }

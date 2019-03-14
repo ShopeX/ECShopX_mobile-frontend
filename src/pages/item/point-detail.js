@@ -31,32 +31,12 @@ export default class PointDetail extends Component {
       desc: null,
       windowWidth: 320,
       curImgIdx: 0,
-      isPromoter: false,
-      timer: null
     }
   }
 
   componentDidMount () {
     this.handleResize()
     this.fetch()
-  }
-
-  calcTimer (totalSec) {
-    let remainingSec = totalSec
-    const dd = Math.floor(totalSec / 24 / 3600)
-    remainingSec -= dd * 3600 * 24
-    const hh = Math.floor(remainingSec / 3600)
-    remainingSec -= hh * 3600
-    const mm = Math.floor(remainingSec / 60)
-    remainingSec -= mm * 60
-    const ss = Math.floor(remainingSec)
-
-    return {
-      dd,
-      hh,
-      mm,
-      ss
-    }
   }
 
   handleResize () {
@@ -68,40 +48,17 @@ export default class PointDetail extends Component {
 
   async fetch () {
     const { id } = this.$router.params
-    const info = await api.item.detail(id, { distributor_id: 16 })
+    const info = await api.item.detail(id, { distributor_id: 16, is_point: true })
     const { intro: desc } = info
 
-    let marketing = 'normal'
-    let timer = null
-    if (info.group_activity) {
-      //团购
-      marketing = 'group'
-      timer = this.calcTimer(info.group_activity.remaining_time)
-    } else if (info.seckill_activity) {
-      //秒杀
-      marketing = 'seckill'
-    }
 
     Taro.setNavigationBarTitle({
       title: info.item_name
     })
 
-    if (marketing === 'group' || marketing === 'seckill') {
-      Taro.setNavigationBarColor({
-        frontColor: '#ffffff',
-        backgroundColor: '#FF482B',
-        animation: {
-          duration: 400,
-          timingFunc: 'easeIn'
-        }
-      })
-    }
-
     this.setState({
       info,
       desc,
-      marketing,
-      timer
     })
     log.debug('fetch: done', info)
   }
@@ -140,7 +97,6 @@ export default class PointDetail extends Component {
 
   render () {
     const { info, windowWidth, curImgIdx, desc, scrollTop, showBackToTop } = this.state
-    const { marketing, timer, isPromoter } = this.state
 
     if (!info) {
       return (
@@ -185,39 +141,6 @@ export default class PointDetail extends Component {
             }
           </View>
 
-          {timer && (
-            <View className='goods-timer'>
-              <View className='goods-timer__hd'>
-                <View className='goods-prices'>
-                  <Price
-                    unit='cent'
-                    symbol={info.cur.symbol}
-                    value={info.price}
-                  />
-                  <View className='goods-prices__ft'>
-                    <Text className='goods-prices__type'>团购</Text>
-                    <Price
-                      unit='cent'
-                      className='goods-prices__market'
-                      symbol={info.cur.symbol}
-                      value={info.mkt_price}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View className='goods-timer__bd'>
-                <Text className='goods-timer__label'>距结束还剩</Text>
-                <AtCountdown
-                  isShowDay
-                  day={timer.dd}
-                  hours={timer.hh}
-                  minutes={timer.mm}
-                  seconds={timer.ss}
-                />
-              </View>
-            </View>
-          )}
-
           <View className='goods-hd'>
             <View className='goods-title__wrap'>
               <Text className='goods-title'>{info.item_name}</Text>
@@ -228,36 +151,20 @@ export default class PointDetail extends Component {
               </View>*/}
             </View>
 
-            {marketing === 'normal' && (
-              <View className='goods-prices__wrap'>
-                <View className='goods-prices'>
-                  <Price
-                    primary
-                    unit='cent'
-                    value={info.price}
-                  />
-
-                  {info.approve_status !== 'only_show' && (
-                    <View className='goods-prices__market'>
-                      <Price
-                        unit='cent'
-                        symbol={info.cur.symbol}
-                        value={info.mkt_price}
-                      />
-                    </View>
-                  )}
-                </View>
-
-                {info.approve_status !== 'only_show' && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>)}
+            <View className='goods-prices__wrap'>
+              <View className='goods-prices'>
+                <Price
+                  primary
+                  noSymbol
+                  showMarketPrice={false}
+                  appendText='积分'
+                  value={info.point}
+                />
               </View>
-            )}
-          </View>
-          {isPromoter && (
-            <View className='goods-income'>
-              <View className='sp-icon sp-icon-jifen'></View>
-              <Text>预计收益：{(info.promoter_price/100).toFixed(2)}</Text>
+
+              {info.approve_status !== 'only_show' && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>)}
             </View>
-          )}
+          </View>
 
           <View className='sec goods-sec-props'>
             <View className='sec-hd'>

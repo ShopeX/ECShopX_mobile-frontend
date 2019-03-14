@@ -45,19 +45,15 @@ export default class PointDraw extends Component {
       pageSize
     }
 
-    const { list, total_count: total } = await api.item.search(query)
+    const { list, total_count: total } = await api.member.pointDraw(query)
 
     const nList = pickBy(list, {
-      img: 'pics[0]',
-      item_id: 'item_id',
-      title: 'itemName',
-      desc: 'brief',
-      price: 'point',
+      img: 'goods_info.pics[0]',
+      item_id: 'luckydraw_id',
+      title: 'goods_info.itemName',
+      desc: 'goods_info.brief',
+      price: 'luckydraw_point',
     })
-    nList.map(item => {
-      item.price_text = '积分'
-    })
-
     this.setState({
       list: [...this.state.list, ...nList],
       query
@@ -107,7 +103,6 @@ export default class PointDraw extends Component {
                     key={item.item_id}
                     info={item}
                     noCurSymbol
-                    showMarketPrice={false}
                     appendText='积分'
                     onClick={this.handleClickItem.bind(this, item)}
                   />

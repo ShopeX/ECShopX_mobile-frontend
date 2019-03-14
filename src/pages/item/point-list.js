@@ -60,9 +60,6 @@ export default class PointList extends Component {
       desc: 'brief',
       price: 'point',
     })
-    nList.map(item => {
-      item.price_text = '积分'
-    })
 
     this.setState({
       list: [...this.state.list, ...nList],
@@ -73,44 +70,9 @@ export default class PointList extends Component {
       total
     }
   }
-  //
-  // handleFilterChange = (data) => {
-  //   const { current, sort } = data
-  //
-  //   const query = {
-  //     ...this.state.query,
-  //     goodsSort: current === 0
-  //       ? null
-  //       : current === 1
-  //         ? 1
-  //         : (sort > 0 ? 3 : 2)
-  //   }
-  //
-  //   if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
-  //     this.resetPage()
-  //     this.setState({
-  //       list: []
-  //     })
-  //   }
-  //
-  //   this.setState({
-  //     curFilterIdx: current,
-  //     query
-  //   }, () => {
-  //     this.nextPage()
-  //   })
-  // }
-  //
-  // handleListTypeChange = () => {
-  //   const listType = this.state.listType === 'grid' ? 'default' : 'grid'
-  //
-  //   this.setState({
-  //     listType
-  //   })
-  // }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/point-detail?id=${item.item_id}`
+    const url = `/pages/item/point-detail?id=${item.item_id}&is_point=true`
     Taro.navigateTo({
       url
     })
@@ -148,7 +110,6 @@ export default class PointList extends Component {
                     key={item.item_id}
                     info={item}
                     noCurSymbol
-                    showMarketPrice={false}
                     appendText='积分'
                     onClick={this.handleClickItem.bind(this, item)}
                   />

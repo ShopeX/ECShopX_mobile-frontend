@@ -66,8 +66,12 @@ class App extends Component {
       navigationBarTextStyle: 'black'
     }
   }
-
-  componentDidMount () {}
+  componentWillMount (params) {
+    console.log(params, 70)
+  }
+  componentDidMount (params) {
+    console.log(params, 73)
+  }
 
   componentDidShow () {}
 
