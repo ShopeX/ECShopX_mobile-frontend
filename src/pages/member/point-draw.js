@@ -103,6 +103,7 @@ export default class PointDraw extends Component {
                     key={item.item_id}
                     info={item}
                     noCurSymbol
+                    noCurDecimal
                     appendText='积分'
                     onClick={this.handleClickItem.bind(this, item)}
                   />

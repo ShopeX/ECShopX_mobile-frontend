@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-create-reducer'
 
 const initState = {
-  land_params: null,
+  land_params: null
 }
 
 const user = createReducer(initState, {
@@ -13,7 +13,6 @@ const user = createReducer(initState, {
       land_params
     }
   }
-
 })
 
 export default user
