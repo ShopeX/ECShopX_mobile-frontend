@@ -17,7 +17,7 @@ export default class GoodsItem extends Component {
   }
 
   render () {
-    const { info, showMarketPrice, noCurSymbol, onClick, appendText, className } = this.props
+    const { info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className } = this.props
     if (!info) {
       return null
     }
@@ -48,6 +48,7 @@ export default class GoodsItem extends Component {
                 className='goods-item__price'
                 symbol={info.curSymbol}
                 noSymbol={noCurSymbol}
+                noDecimal={noCurDecimal}
                 appendText={appendText}
                 value={price}
               />
@@ -58,6 +59,7 @@ export default class GoodsItem extends Component {
                   classes='goods-item__price-market'
                   className='goods-item__price-market'
                   value={info.market_price}
+                  noDecimal={noCurDecimal}
                 />
               )}
             </View>
