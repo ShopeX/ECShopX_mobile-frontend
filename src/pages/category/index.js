@@ -26,12 +26,10 @@ export default class CartIndex extends Component {
 
   async fetch () {
     let res = await api.category.get()
-    console.log(res)
     const nList = pickBy(res, {
       category_name: 'category_name',
       children: 'children'
     })
-    console.log(nList)
     this.setState({
       list: nList
     })
@@ -45,7 +43,7 @@ export default class CartIndex extends Component {
 
   handleClickItem (item) {
     const { cat_id } = item
-    const url = `/pages/item/list?cat_id=16`
+    const url = `/pages/item/list?cat_id=${cat_id}`
 
     Taro.navigateTo({
       url

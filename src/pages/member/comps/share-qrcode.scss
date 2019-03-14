@@ -1,28 +1,14 @@
 @import '../../../style/imports';
-
+.at-curtain__container {
+  width: 70% !important;
+}
 .qrcode-content {
   background: #fff;
   text-align: center;
   padding: 30px;
-  &__name {
-    text-align: left;
-    padding: 8px 0 50px 20px;
-  }
   &__qrimg {
     width: 440px;
     height: 440px;
-    border: 1px solid red;
-  }
-  &__qrtext {
-    font-size: 24px;
-    color: $color-primary-text;
-  }
-  &__copy {
-    margin: 50px auto 0;
-    color: $color-brand-primary;
-    border: 1px solid $color-brand-primary;
-    padding: 20px 0;
-    width: 60%;
-    border-radius: 53px;
   }
 }
+

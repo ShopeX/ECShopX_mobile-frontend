@@ -45,6 +45,10 @@ export function qrcodeData () {
   return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promoter/qrcode')
 }
 
+export function h5_qrcodeData () {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/brokerage/qrcode')
+}
+
 export function pointList (params = {}) {
   return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/point/member', params)
 }

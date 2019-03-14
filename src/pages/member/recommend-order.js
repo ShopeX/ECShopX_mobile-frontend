@@ -48,7 +48,6 @@ export default class RecommendOrder extends Component {
       brokerage_source: brokerage_source
     }
     const { list, total_count: total} = await api.member.recommendOrder(params)
-    console.log(list, total)
     const nList = pickBy(list, {
       username: 'username',
       created: ({ created }) => (formatDataTime(created * 1000)),
@@ -80,17 +79,6 @@ export default class RecommendOrder extends Component {
       this.nextPage()
     })
   }
-
-  // handleClickItem (trade) {
-  //   const { tid } = trade
-  //   Taro.navigateTo({
-  //     url: `/pages/trade/detail?id=${tid}`
-  //   })
-  // }
-  //
-  // handleClickItemBtn = (type, trade) => {
-  //   console.log(type, trade)
-  // }
 
   render () {
     const { curTabIdx, tabList, list, page } = this.state

@@ -38,7 +38,6 @@ export default class Cashier extends Component {
     this.setState({
       info: info
     })
-    console.log(info, 26)
 
   }
   handleClickPayment = async (val) => {
@@ -60,30 +59,17 @@ export default class Cashier extends Component {
         order_type: info.order_type,
       }
      await api.cashier.getPayment(query)
-       .then(res=> {
+       .then(()=> {
          Taro.redirectTo({
            url: `/pages/cashier/cashier-result?payStatus=success&order_id=${info.order_id}`
          })
-         console.log(res)
        })
-       .catch(error => {
+       .catch(() => {
          Taro.redirectTo({
            url: `/pages/cashier/cashier-result?payStatus=fail&order_id=${info.order_id}`
          })
-         console.log(error)
        })
   }
-  // handleClickPayment = async (val) => {
-  //   const { info } = this.state
-  //   console.log(val)
-  //   const query = {
-  //     order_id: info.order_id,
-  //     pay_type: val,
-  //     order_type: info.order_type,
-  //   }
-  //   let res = await api.cashier.getPayment(query)
-  //   console.log(res)
-  // }
 
 
   render () {

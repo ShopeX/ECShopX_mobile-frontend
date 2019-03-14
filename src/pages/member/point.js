@@ -62,7 +62,6 @@ export default class Integral extends Component {
       point_desc: 'point_desc',
       created: ({ created }) => (formatDataTime(created * 1000)),
     })
-    // console.log(point, 65)
     this.setState({
       list: [...this.state.list, ...nList],
       totalPoint: point

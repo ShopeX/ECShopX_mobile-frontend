@@ -6,9 +6,9 @@ import api from '@/api'
 import { SpToast } from '@/components'
 import S from '@/spx'
 
-import './money-to-point.scss'
+import './landing.scss'
 
-export default class MoneyToPoint extends Component {
+export default class Landing extends Component {
   constructor (props) {
     super(props)
 
@@ -31,9 +31,10 @@ export default class MoneyToPoint extends Component {
     })
   }
 
- 
+
 
   handleChangeOtherNum = (val) => {
+    console.log(val)
     this.setState({
       otherNumber: val
     })

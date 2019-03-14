@@ -42,7 +42,6 @@ export default class Pay extends Component {
   }
 
   handleClickTag = (ruleData, ruleType, obj) => {
-    console.log(ruleData, obj)
     this.setState({
       isActiveName: obj.name,
       ruleData: ruleData,
@@ -52,9 +51,6 @@ export default class Pay extends Component {
 
   handleClickPay = () => {
     console.log(this.state.isActiveName, "提交")
-    // Taro.navigateTo({
-    //   url: '/pages/cart/checkout'
-    // })
   }
 
   render () {

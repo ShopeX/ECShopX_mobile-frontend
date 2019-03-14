@@ -41,7 +41,6 @@ export default class Coupon extends Component {
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const { curTabIdx } = this.state
-    console.log(curTabIdx, 43)
     let vaildStatus
     if(curTabIdx === 0) {
       vaildStatus = true

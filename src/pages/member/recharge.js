@@ -59,7 +59,6 @@ export default class Recharge extends Component {
       timeStart: ({ timeStart }) => (formatDataTime(timeStart * 1000)),
       money: ({ money }) => (money/100).toFixed(2),
     })
-    // console.log(point, 65)
     this.setState({
       list: [...this.state.list, ...nList],
       totalDeposit: deposit

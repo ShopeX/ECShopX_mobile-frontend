@@ -74,7 +74,6 @@ export default class AddressEdit extends Component {
 
   // 选定开户地区
   bindMultiPickerChange = async (e) => {
-    // console.log('picker发送选择改变，携带值为', e.detail.value)
     const { info } = this.state
     this.nList.map((item, index) => {
       if(index === e.detail.value[0]) {
@@ -96,7 +95,6 @@ export default class AddressEdit extends Component {
 
   bindMultiPickerColumnChange = (e) => {
     const { areaList, multiIndex } = this.state
-    // console.log('修改的列为', e.detail.column, '，值为', e.detail.value, this.nList)
     if(e.detail.column === 0) {
       this.setState({
         multiIndex: [e.detail.value, 0, 0]
@@ -171,7 +169,6 @@ export default class AddressEdit extends Component {
   handleChange = (name, val) => {
     const { info } = this.state
     info[name] = val
-    // console.log(info)
   }
 
   handleDefChange = (val) => {
@@ -188,13 +185,9 @@ export default class AddressEdit extends Component {
   handleDelete = () => {
     this.props.onDelete(this.state.info)
   }
-  handleBlur = e => {
-    console.log(e)
-  }
 
   render () {
     const { info, areaList, multiIndex } = this.state
-    // console.log(areaList, multiIndex, 225)
     if (!info) {
       return null
     }
@@ -210,7 +203,6 @@ export default class AddressEdit extends Component {
               name='username'
               value={info.username}
               onChange={this.handleChange.bind(this, 'username')}
-              onBlur={this.handleBlur.bind(this)}
             />
             <AtInput
               title='手机号码'

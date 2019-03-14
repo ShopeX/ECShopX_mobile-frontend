@@ -46,7 +46,6 @@ export default class RecommendOrder extends Component {
       buy_type: tabList[curTabIdx].status,
     }
     const { list, total_count: total} = await api.member.recommendMember(params)
-    console.log(list, total)
     const nList = pickBy(list, {
       username: 'username',
       bind_date: 'bind_date',
@@ -77,17 +76,6 @@ export default class RecommendOrder extends Component {
       this.nextPage()
     })
   }
-
-  // handleClickItem (trade) {
-  //   const { tid } = trade
-  //   Taro.navigateTo({
-  //     url: `/pages/trade/detail?id=${tid}`
-  //   })
-  // }
-  //
-  // handleClickItemBtn = (type, trade) => {
-  //   console.log(type, trade)
-  // }
 
   render () {
     const { curTabIdx, tabList, list, page } = this.state

@@ -40,7 +40,6 @@ export default class Recommend extends Component {
           headimgurl: 'headimgurl',
           mobile: 'mobile'
         })
-        console.log(nList, 65)
         this.setState({
           info: nList,
         })
@@ -71,7 +70,6 @@ export default class Recommend extends Component {
 
   render () {
     const { info, detail, isOpened } = this.state
-    console.log(detail, 65)
 
     return (
       <View className='page-member-index'>
