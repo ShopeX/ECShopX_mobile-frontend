@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import { navigateTo } from '@/utils'
 import { linkPage } from './helper'
-
 import './showcase.scss'
 
 export default class WgtShowCase extends Component {
@@ -12,6 +12,8 @@ export default class WgtShowCase extends Component {
   static defaultProps = {
     info: null
   }
+
+  navigateTo = navigateTo
 
   render () {
     const { info } = this.props
