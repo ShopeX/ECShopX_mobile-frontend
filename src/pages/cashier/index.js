@@ -5,6 +5,7 @@ import { pickBy } from '@/utils'
 import {  AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import AlipayBtn from './comps/alipay'
 import WeappBtn from './comps/weapp'
+import PointDepositBtn from './comps/point-deposit'
 
 import './index.scss'
 
@@ -14,8 +15,6 @@ export default class Cashier extends Component {
 
     this.state = {
       info: {},
-      isOpened: false,
-      pay_pay_type: '',
     }
   }
   componentDidShow () {
@@ -31,6 +30,7 @@ export default class Cashier extends Component {
       order_type: 'order_type',
       pay_type: 'pay_type',
       point: 'point',
+      title: 'title',
       total_fee: ({ total_fee }) => (total_fee/100).toFixed(2)
     })
     // const list = resolveCartItems(cartlist)
@@ -40,40 +40,10 @@ export default class Cashier extends Component {
     })
 
   }
-  handleClickPayment = async (val) => {
-    this.setState({
-      isOpened: true,
-      pay_pay_type: val
-    })
-  }
-  handleClosePay = () => {
-    this.setState({
-      isOpened: false
-    })
-  }
-  handleConfirmPay = async () => {
-      const { info, pay_pay_type } = this.state
-      const query = {
-        order_id: info.order_id,
-        pay_type: pay_pay_type,
-        order_type: info.order_type,
-      }
-     await api.cashier.getPayment(query)
-       .then(()=> {
-         Taro.redirectTo({
-           url: `/pages/cashier/cashier-result?payStatus=success&order_id=${info.order_id}`
-         })
-       })
-       .catch(() => {
-         Taro.redirectTo({
-           url: `/pages/cashier/cashier-result?payStatus=fail&order_id=${info.order_id}`
-         })
-       })
-  }
 
 
   render () {
-    const { info, isOpened } = this.state
+    const { info } = this.state
 
     return (
       <View className='page-cashier-index'>
@@ -84,8 +54,10 @@ export default class Cashier extends Component {
               : null
           }
           <View className='cashier-money__content'>
+            <View className='cashier-money__content-title'>订单编号： { info.order_id }</View>
+            <View className='cashier-money__content-title'>订单名称：{ info.title }</View>
             <View className='cashier-money__content-title'>应付总额{ info.pay_type === 'point' ? '（积分）' : '（元）'}</View>
-            <View className='cashier-money__content-number'>{info.pay_type === 'point' ? info.point :info.total_fee}</View>
+            <View className='cashier-money__content-number'>{ info.pay_type === 'point' ? info.point :info.total_fee }</View>
           </View>
         </View>
 
@@ -94,20 +66,12 @@ export default class Cashier extends Component {
           {/*<WeappBtn*/}
             {/*number='66'*/}
           {/*/>*/}
-          <View className='pay-mode' onClick={this.handleClickPayment.bind(this, 'deposit')}>预存款支付</View>
-          {/*<View className='pay-mode' onClick={this.handleClickPayment.bind(this, 'deposit')}>预存款支付</View>*/}
-          <View className='pay-mode' onClick={this.handleClickPayment.bind(this, 'point')}>积分支付</View>
+          <PointDepositBtn
+            orderID={info.order_id}
+            payType={info.pay_type}
+            orderType={info.order_type}
+          />
         </View>
-
-        <AtModal
-          isOpened={isOpened}
-          cancelText='取消'
-          confirmText='确认'
-          onClose={this.handleClosePay}
-          onCancel={this.handleClosePay}
-          onConfirm={this.handleConfirmPay}
-          content='请确认是否支付此订单'
-        />
       </View>
     )
   }
