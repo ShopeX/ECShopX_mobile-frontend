@@ -16,7 +16,8 @@
     "dev:alipay": "npm run build:alipay -- --watch",
     "dev:tt": "npm run build:tt -- --watch",
     "dev:h5": "npm run build:h5 -- --watch",
-    "dev:rn": "npm run build:rn -- --watch"
+    "dev:rn": "npm run build:rn -- --watch",
+    "release:h5": "RELEASE=h5 npm run build:h5"
   },
   "author": "",
   "license": "MIT",
@@ -69,6 +70,12 @@
     "eslint-config-taro": "1.2.15",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-react": "^7.8.2",
-    "eslint-plugin-taro": "1.2.15"
+    "eslint-plugin-taro": "1.2.15",
+    "qn-webpack": "^2.0.3"
+  },
+  "cdn": {
+    "publicPath": "//b-cdn.pjinjin.com/",
+    "bucket": "espier-vue",
+    "path": "h5/"
   }
 }

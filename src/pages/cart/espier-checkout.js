@@ -173,15 +173,16 @@ export default class CartCheckout extends Component {
     const params = this.getParams()
     const data = await api.cart.total(params)
 
-    const { item_fee, member_discount = 0, coupon_discount = 0, freight_fee = 0, point = 0, total_fee } = data
+    const { item_fee, member_discount = 0, coupon_discount = 0, freight_fee = 0, freight_point = 0, point = 0, total_fee } = data
     const total = {
       ...this.state.total,
       item_fee,
       member_discount: -1 * member_discount,
       coupon_discount: -1 * coupon_discount,
       freight_fee,
+      total_fee,
       point,
-      total_fee
+      freight_point
     }
     Taro.hideLoading()
 
@@ -422,21 +423,13 @@ export default class CartCheckout extends Component {
             <View className='sec trade-sub-total'>
               <SpCell
                 className='trade-sub-total__item'
-                title='积分'
+                title='运费'
               >
                 <Price
                   noSymbol
                   noDecimal
-                  value={String(total.point)}
-                />
-              </SpCell>
-              <SpCell
-                className='trade-sub-total__item'
-                title='运费'
-              >
-                <Price
-                  unit='cent'
-                  value={total.freight_fee}
+                  appendText='积分'
+                  value={total.freight_point}
                 />
               </SpCell>
             </View>
@@ -499,7 +492,12 @@ export default class CartCheckout extends Component {
 
         <View className='toolbar checkout-toolbar'>
           <View className='checkout__total'>
-            共<Text className='total-items'>{total.items_count}</Text>件，合计: <Price primary unit='cent' value={total.total_fee} />
+            共<Text className='total-items'>{total.items_count}</Text>件，合计:
+            {
+              payType !== 'point'
+                ? <Price primary unit='cent' value={total.total_fee} />
+                : (total.point && <Price primary value={total.point} noSymbol noDecimal appendText='积分' />)
+            }
           </View>
           <AtButton
             circle
