@@ -1,10 +1,8 @@
 @import "../../style/imports";
 
-page, body {
-  background: #fff;
-}
-
 .article-index {
+  background: #fff;
+  height: 100vh;
   .article {
     &-brand {
       display: block;
