@@ -39,6 +39,9 @@
   padding: 0 $edge-size;
   &__hd {
     width: 30%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
   }
   &__bd {
     display: flex;
@@ -49,8 +52,8 @@
   }
   .goods-prices {
     display: block;
-    .price {
-      font-size: floor(1.6 * $font-size);
+    &-point{
+      font-size: 28px;
     }
     &__type {
       font-size: floor($font-size-small * 0.9);
@@ -131,41 +134,9 @@
   }
 }
 
-.goods-fav {
-  background: #f4f4f4;
-  width: 112px;
-  color: $color-gray;
-  height: 60px;
-  border-top-left-radius: 60px;
-  border-bottom-left-radius: 60px;
-  position: relative;
-  right: 0;
-  margin-right: -$edge-size;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  padding-left: 20px;
-  &__text {
-    font-size: 20px;
-    color: $color-gray;
-    margin-left: 4px;
-  }
-}
-
-.goods-sec-action {
-  display: flex;
-  font-size: $font-size-small;
-  line-height: 1;
-  padding: $edge-size;
-  .goods-action {
-    flex: 1;
-    &__label {
-      color: $color-gray;
-      margin-right: 28px;
-    }
-  }
-}
-
+.notice-bar-hd {
+  margin-bottom: 30px;
+ }
 .goods-sec-props {
   .sec-hd {
     @include hairline();

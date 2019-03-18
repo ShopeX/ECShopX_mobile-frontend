@@ -19,17 +19,17 @@ export default class CashierResult extends Component {
 
   async fetch () {
     const { order_id } = this.$router.params
-    const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
+    const orderInfo = await api.cashier.getOrderDetail(order_id)
 
-    const infoOrder = pickBy(orderInfo, {
+    const info = pickBy(orderInfo, {
       create_time: ({ create_time }) => (formatDataTime(create_time * 1000)),
       order_id: 'order_id',
-    })
-    const infoTrade = pickBy(tradeInfo, {
       payDate: 'payDate',
       tradeId: 'tradeId',
+      payStatus: 'payStatus'
     })
-    let info = Object.assign(infoOrder, infoTrade, this.$router.params)
+
+    // let info = Object.assign(infoOrder, infoTrade, this.$router.params)
     // console.log(info, 33)
     this.setState({
       info: info

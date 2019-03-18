@@ -76,3 +76,61 @@
     margin-right: $edge-size;
   }
 }
+
+.goods-item {
+  $self: &;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: $item-border-radius;
+  overflow: hidden;
+  margin: 0 0 $edge-margin;
+  &__bd {
+    display: flex;
+    flex: 1;
+  }
+  &__cont{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+    padding: $edge-margin $edge-size;
+  }
+  &__img {
+    width: 240px;
+    height: 240px;
+    &-wrap {
+      width: 240px;
+      height: 240px;
+      display: block;
+      text-align: center;
+    }
+  }
+  &__title {
+    @include multi-ellipsis(2);
+    line-height: 1.4;
+    color: #111;
+    margin: 0 0 16px;
+  }
+  &__desc {
+    @include multi-ellipsis(2);
+    line-height: 1.4;
+    color: $color-gray;
+    font-size: $font-size-small;
+  }
+  &__price {
+    font-size: floor(1.28 * $font-size);
+    margin-right: 24px;
+  }
+  &__point {
+    color: $color-brand-primary;
+  }
+  &__prices {
+    display: flex;
+    justify-content: space-between;
+    .lucky-info{
+      font-size: floor(1.28 * $font-size);
+      color: $color-brand-primary;
+    }
+  }
+}

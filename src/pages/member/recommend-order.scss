@@ -1,53 +1,11 @@
 @import "../../style/imports";
+@import './recommend-member';
 
 .trade-list {
-  .at-tabs__header {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: $z-index-toolbar;
-  }
-  &__scroll {
-    height: 100%;
-    padding: $tabbar-height 0 $edge-margin;
-    box-sizing: border-box;
-  }
-  &__tabs {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-  }
-  .trade-item {
-    margin: 0 $edge-size $edge-margin;
-    .at-button {
-      font-size: $font-size-small;
-      padding-left: 26px;
-      padding-right: 26px;
-      margin-left: 20px;
-    }
-  }
   .order-item {
-    padding: 20px 30px;
-    margin: 20px 30px;
-    border-radius: $item-border-radius;
-    background: #fff;
-    &__title {
-      display: flex;
-      justify-content: space-between;
-      &-name {
-        font-size: $edge-size;
-        color: $color-primary-text;
-        margin-right: 20px;
-      }
-    }
     &__data {
       font-size: $font-size;
       color: $color-primary-text;
-    }
-    .small-text{
-      font-size: $font-size;
-      color: #999;
     }
     .rebate-color{
       color: $color-brand-primary;

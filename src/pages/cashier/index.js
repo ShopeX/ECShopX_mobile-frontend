@@ -24,7 +24,7 @@ export default class Cashier extends Component {
 
   async fetch () {
     const { order_id } = this.$router.params
-    const { orderInfo } = await api.cashier.getOrderDetail(order_id)
+    const orderInfo = await api.cashier.getOrderDetail(order_id)
     const info = pickBy(orderInfo, {
       order_id: 'order_id',
       order_type: 'order_type',
@@ -49,7 +49,7 @@ export default class Cashier extends Component {
       <View className='page-cashier-index'>
         <View className='cashier-money'>
           {
-            info.order_type
+            info.order_type === 'recharge'
               ? <View className='cashier-money__tip'>订单提交成功，请选择支付方式</View>
               : null
           }
@@ -57,20 +57,29 @@ export default class Cashier extends Component {
             <View className='cashier-money__content-title'>订单编号： { info.order_id }</View>
             <View className='cashier-money__content-title'>订单名称：{ info.title }</View>
             <View className='cashier-money__content-title'>应付总额{ info.pay_type === 'point' ? '（积分）' : '（元）'}</View>
-            <View className='cashier-money__content-number'>{ info.pay_type === 'point' ? info.point :info.total_fee }</View>
+            <View className='cashier-money__content-number'>{ info.pay_type === 'point' ? info.point : info.total_fee }</View>
           </View>
         </View>
 
         <View className='pay-status'>
-          {/*<AlipayBtn />*/}
-          {/*<WeappBtn*/}
-            {/*number='66'*/}
-          {/*/>*/}
-          <PointDepositBtn
-            orderID={info.order_id}
-            payType={info.pay_type}
-            orderType={info.order_type}
-          />
+          {
+            info.order_type === 'recharge'
+              ? <View>
+                  <AlipayBtn
+                    orderID={info.order_id}
+                    payType='alipayh5'
+                    orderType={info.order_type}
+                  />
+                  <WeappBtn number='66' />
+                </View>
+              : <PointDepositBtn
+                orderID={info.order_id}
+                payType={info.pay_type}
+                orderType={info.order_type}
+              />
+          }
+
+
         </View>
       </View>
     )

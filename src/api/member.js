@@ -65,6 +65,10 @@ export function depositTotal () {
   return req.get('http://pjj.aixue7.com/index.php/api/h5app/weapp/deposit/info')
 }
 
+export function depositPay (params = {}) {
+  return req.post('http://pjj.aixue7.com/index.php/api/h5app/weapp/deposit/recharge_new', params)
+}
+
 export function recommendUserInfo () {
   return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promoter/info')
 }
@@ -87,4 +91,16 @@ export function depositToPoint (params = {}) {
 
 export function pointDraw (params = {}) {
   return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promotion/luckydraw', params)
+}
+
+export function pointDrawDetail (luckydraw_id) {
+  return req.get(`http://pjj.aixue7.com/index.php/api/h5app/wxapp/promotion/luckydraw/${luckydraw_id}`)
+}
+
+export function pointDrawPay (params = {}) {
+  return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promotion/luckydraworder', params)
+}
+
+export function pointDrawPayList (params = {}) {
+  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/promotion/member/luckydraworder', params)
 }

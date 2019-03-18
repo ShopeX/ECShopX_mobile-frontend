@@ -19,6 +19,7 @@ export default class Pay extends Component {
       list: [],
       isLoading: false,
       isActiveName: '',
+      totalDeposit: 0
     }
   }
 
@@ -28,6 +29,7 @@ export default class Pay extends Component {
 
   async fetch () {
     const { list, total_count: total } = await api.member.getRechargeNumber()
+    const { deposit } = await api.member.depositTotal()
     let nList = pickBy(list, {
       money: 'money',
       ruleData: 'ruleData',
@@ -35,6 +37,7 @@ export default class Pay extends Component {
     })
     this.setState({
       list: [...this.state.list, ...nList],
+      totalDeposit: deposit
     })
     return {
       total
@@ -49,12 +52,25 @@ export default class Pay extends Component {
     })
   }
 
-  handleClickPay = () => {
-    console.log(this.state.isActiveName, "提交")
+  handleClickPay = async () => {
+    const query = {
+      total_fee: this.state.isActiveName,
+    }
+    Taro.showLoading({
+      title: '生成订单中',
+      mask: true
+    });
+    await api.member.depositPay(query)
+      .then(res => {
+        Taro.hideLoading()
+        Taro.navigateTo({
+          url: `/pages/cashier/index?order_id=${res.order_id}`
+        })
+      })
   }
 
   render () {
-    const { list, isActiveName, ruleType, ruleData } = this.state
+    const { list, isActiveName, ruleType, ruleData, totalDeposit } = this.state
 
     return (
       <View className='page-member-integral'>
@@ -62,7 +78,7 @@ export default class Pay extends Component {
           <View className='integral-info'>
             <View className='integral-number'>
               <Text className='sp-icon sp-icon-zijin icon-point'> </Text>
-              <Text className='integral-number__text'>1888</Text>
+              <Text className='integral-number__text'>{totalDeposit}</Text>
             </View>
             <View className='integral-text'>当前账户余额</View>
           </View>

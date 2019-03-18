@@ -48,8 +48,9 @@ export default class PointDraw extends Component {
     const { list, total_count: total } = await api.member.pointDraw(query)
 
     const nList = pickBy(list, {
+      luckydraw_id: 'luckydraw_id',
       img: 'goods_info.pics[0]',
-      item_id: 'luckydraw_id',
+      item_id: 'item_id',
       title: 'goods_info.itemName',
       desc: 'goods_info.brief',
       price: 'luckydraw_point',
@@ -65,7 +66,7 @@ export default class PointDraw extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/point-detail?id=${item.item_id}`
+    const url = `/pages/member/point-draw-detail?luckydraw_id=${item.luckydraw_id}&item_id=${item.item_id}`
     Taro.navigateTo({
       url
     })
@@ -80,8 +81,8 @@ export default class PointDraw extends Component {
           <View className='goods-list__toolbar-title'>
             <AtDivider fontColor='#FF482B' lineColor='#FF482B'>
               <View>
-                <AtIcon value='check-circle'></AtIcon>
-                <Text>全部商品</Text>
+                <Text className='sp-icon sp-icon-lifangtilitiduomiantifangkuai2 icon-allgoods'> </Text>
+                <Text>抽奖商品</Text>
               </View>
             </AtDivider>
           </View>
@@ -100,7 +101,7 @@ export default class PointDraw extends Component {
               list.map(item => {
                 return (
                   <GoodsItem
-                    key={item.item_id}
+                    key={item.luckydraw_id}
                     info={item}
                     noCurSymbol
                     noCurDecimal

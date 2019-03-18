@@ -18,15 +18,6 @@
     top: 0;
     width: 100%;
   }
-  .trade-item {
-    margin: 0 $edge-size $edge-margin;
-    .at-button {
-      font-size: $font-size-small;
-      padding-left: 26px;
-      padding-right: 26px;
-      margin-left: 20px;
-    }
-  }
   .order-item {
     padding: 20px 30px;
     margin: 20px 30px;
@@ -40,10 +31,10 @@
         color: $color-primary-text;
         margin-right: 20px;
       }
-      .small-text{
-        font-size: $font-size;
-        color: #999;
-      }
+    }
+    .small-text{
+      font-size: $font-size;
+      color: #999;
     }
   }
 }

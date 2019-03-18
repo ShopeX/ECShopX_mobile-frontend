@@ -9,9 +9,7 @@ export default class Index extends Component {
 
   componentWillMount () {
     Taro.redirectTo({
-      // url: '/pages/cashier/index?order_id=2630407000108945'
-      // url: '/pages/auth/reg'
-      url: '/pages/home/index'
+      url: '/pages/item/point-detail?id=560'
     })
   }
 
