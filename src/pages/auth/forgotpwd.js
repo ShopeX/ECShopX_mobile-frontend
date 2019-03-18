@@ -27,12 +27,14 @@ export default class Forgotpwd extends Component {
     const query = {
       type: 'forgot_password'
     }
-    await api.user.regImg(query)
-      .then(img_res => {
-        this.setState({
-          imgInfo: img_res
-        })
+    try {
+      const img_res = await api.user.regImg(query)
+      this.setState({
+        imgInfo: img_res
       })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async fetch () {
@@ -60,22 +62,17 @@ export default class Forgotpwd extends Component {
     console.log(data, 19)
     try {
       await api.user.forgotPwd(data)
-        .then(() => {
-          Taro.showToast({
-            title: '修改成功',
-            icon: 'none',
-          }).then(() => {
-            setTimeout(()=>{
-              Taro.redirectTo({
-                url: '/pages/auth/login'
-              })
-            }, 1500)
-
-          })
+      Taro.showToast({
+        title: '修改成功',
+        icon: 'none'
+      })
+      setTimeout(()=>{
+        Taro.redirectTo({
+          url: '/pages/auth/login'
         })
+      }, 700)
     } catch (error) {
-      S.toast(`${error.res.data.error.message}`)
-      return false
+      console.log(error)
     }
   }
 
@@ -125,12 +122,9 @@ export default class Forgotpwd extends Component {
 
     try {
       await api.user.regSmsCode(query)
-        .then(() => {
-          S.toast('发送成功')
-        })
+      S.toast('发送成功')
     } catch (error) {
-      S.toast(`${error.res.data.error.message}`)
-      return false
+      console.log(error)
     }
 
     resolve()
@@ -161,6 +155,7 @@ export default class Forgotpwd extends Component {
             <AtInput
               title='手机号码'
               name='mobile'
+              type='number'
               maxLength={11}
               value={info.mobile}
               placeholder='请输入手机号码'

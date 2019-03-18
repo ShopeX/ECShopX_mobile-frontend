@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, GoodsItem } from '@/components'
-import { AtDivider,AtIcon } from 'taro-ui'
+import { AtDivider } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
 

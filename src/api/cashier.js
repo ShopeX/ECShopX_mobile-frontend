@@ -7,7 +7,3 @@ export function getOrderDetail (order_id) {
 export function getPayment (parmas = {}) {
   return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/payment', parmas)
 }
-
-export function getPaymentWeapp (parmas = {}) {
-  return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/payment_deposit', parmas)
-}

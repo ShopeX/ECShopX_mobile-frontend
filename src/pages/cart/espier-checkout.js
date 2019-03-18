@@ -270,8 +270,9 @@ export default class CartCheckout extends Component {
       const res = await api.trade.create(this.params)
       order_id = res.order_id
     } catch (e) {
-      Taro.hideLoading()
+      console.log(e)
     }
+    Taro.hideLoading()
 
     if (!order_id) return
 

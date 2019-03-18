@@ -99,7 +99,7 @@ export default class MoneyToPoint extends Component {
             <View className='integral-sec__share'>点击“立即兑换”即表示阅读并同意<Text>《兑换协议》</Text></View>
           </View>
           <View className='integral-sec member-pay'>
-            <AtInput className='otherNumber' title='兑换金额' name='otherNumber' value={otherNumber} placeholder='请输入金额' onChange={this.handleChangeOtherNum} />
+            <AtInput className='otherNumber' title='兑换金额' name='otherNumber' type='number' value={otherNumber} placeholder='请输入金额' onChange={this.handleChangeOtherNum} />
 
             <View className='btns'>
               <AtButton type='primary' onClick={this.handleClickPay.bind(this, otherNumber)}>立即兑换</AtButton>

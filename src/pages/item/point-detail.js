@@ -48,7 +48,7 @@ export default class PointDetail extends Component {
 
   async fetch () {
     const { id } = this.$router.params
-    const info = await api.item.detail(id, { distributor_id: 16, is_point: true })
+    const info = await api.item.detail(id, { is_point: true })
     const { intro: desc } = info
 
 
@@ -145,10 +145,6 @@ export default class PointDetail extends Component {
             <View className='goods-title__wrap'>
               <Text className='goods-title'>{info.item_name}</Text>
               <Text className='goods-title__desc'>{info.brief}</Text>
-              {/*<View className='goods-fav'>
-                <View className='at-icon at-icon-star'></View>
-                <Text className='goods-fav__text'>收藏</Text>
-              </View>*/}
             </View>
 
             <View className='goods-prices__wrap'>
@@ -156,6 +152,7 @@ export default class PointDetail extends Component {
                 <Price
                   primary
                   noSymbol
+                  noDecimal
                   showMarketPrice={false}
                   appendText='积分'
                   value={info.point}
@@ -192,19 +189,6 @@ export default class PointDetail extends Component {
             </View>
           </View>
 
-          {/*<View
-            className='sec goods-sec-action'
-            onClick={this.handleClickAction}
-          >
-            <Text className='goods-action'>
-              <Text className='goods-action__label'>选择</Text>
-              <Text>购买尺寸、颜色、数量、分类</Text>
-            </Text>
-            <View className='sec-ft'>
-              <View className='at-icon at-icon-chevron-right'></View>
-            </View>
-          </View>*/}
-
           <View className='goods-sec-detail'>
             <AtDivider content='宝贝详情'></AtDivider>
             <SpHtmlContent
@@ -228,7 +212,6 @@ export default class PointDetail extends Component {
             >立即购买</Button>
           </View>
         </View>
-
 
         <SpToast />
       </View>

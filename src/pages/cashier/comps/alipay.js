@@ -23,7 +23,7 @@ export default class AlipayBtn extends Component {
       pay_type: this.props.payType,
       order_type: this.props.orderType,
     }
-    await api.cashier.getPaymentWeapp(query)
+    await api.cashier.getPayment(query)
       .then(res=> {
         console.log(res, 28)
         // Taro.redirectTo({

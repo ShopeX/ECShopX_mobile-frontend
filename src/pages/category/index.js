@@ -1,14 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text, ScrollView, Image} from '@tarojs/components'
-import { AtSearchBar, AtButton } from 'taro-ui'
+import {View, ScrollView, Image} from '@tarojs/components'
 import { Loading, SearchBar } from '@/components'
 import { classNames, pickBy } from '@/utils'
-import { lockScreen } from '@/utils/dom'
 import api from '@/api'
 
 import './index.scss'
 
-export default class CartIndex extends Component {
+export default class Category extends Component {
   constructor (props) {
     super(props)
 
@@ -25,7 +23,7 @@ export default class CartIndex extends Component {
   }
 
   async fetch () {
-    let res = await api.category.get()
+    const res = await api.category.get()
     const nList = pickBy(res, {
       category_name: 'category_name',
       children: 'children'

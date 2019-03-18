@@ -31,7 +31,6 @@ export default class List extends Component {
     this.setState({
       query: {
         keywords: '',
-        distributor_id: 16,
         item_type: 'normal',
         is_point: 'false',
         approve_status: 'onsale,only_show',

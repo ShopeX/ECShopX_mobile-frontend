@@ -38,7 +38,7 @@ export default class Reg extends Component {
       this.setState({
         info: {
           user_type: 'local',
-          uid: this.props.land_params.user_id
+          uid: this.props.land_params ? this.props.land_params.user_id : ''
         }
       })
     }
@@ -49,12 +49,14 @@ export default class Reg extends Component {
     const query = {
       type: 'sign'
     }
-    await api.user.regImg(query)
-      .then(img_res => {
-        this.setState({
-          imgInfo: img_res
-        })
+    try {
+      const img_res = await api.user.regImg(query)
+      this.setState({
+        imgInfo: img_res
       })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async fetch () {
@@ -105,28 +107,22 @@ export default class Reg extends Component {
     this.state.list.map(item=>{
       return item.is_required ? (item.is_required && data[item.key] ? true : S.toast(`请输入${item.name}`)) : null
     })
-    // console.log(data)
-    await api.user.reg(data)
-      .then(res => {
-        S.setAuthToken(res.token.data.token)
-        Taro.showToast({
-          title: '注册成功',
-          icon: 'none',
-        }).then(() => {
-          setTimeout(()=>{
-            Taro.redirectTo({
-              url: '/pages/member/index'
-            })
-          }, 1500)
-
+    try {
+      const res =  await api.user.reg(data)
+      console.log(res.token.data.token)
+      S.setAuthToken(res.token.data.token)
+      Taro.showToast({
+        title: '注册成功',
+        icon: 'none',
+      })
+      setTimeout(()=>{
+        Taro.redirectTo({
+          url: '/pages/member/index'
         })
-      })
-      .catch(error => {
-        S.toast(`${error.res.data.error.message}`)
-        return false
-
-      })
-
+      }, 700)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   handleChange = (name, val) => {
@@ -192,15 +188,12 @@ export default class Reg extends Component {
       yzm: yzm,
       token: imgInfo.imageToken
     }
-    await api.user.regSmsCode(query)
-      .then(() => {
-        S.toast('发送成功')
-        // 补token
-      })
-      .catch (error => {
-        S.toast(`${error.res.data.error.message}`)
-        return false
-      })
+    try {
+      await api.user.regSmsCode(query)
+      S.toast('发送成功')
+    } catch (error) {
+      console.log(error)
+    }
 
     resolve()
   }
@@ -216,7 +209,6 @@ export default class Reg extends Component {
     this.setState({
       timerMsg: '重新获取'
     })
-
   }
 
   handleClickAgreement = () => {
@@ -238,6 +230,7 @@ export default class Reg extends Component {
             <AtInput
               title='手机号码'
               name='mobile'
+              type='number'
               maxLength={11}
               value={info.mobile}
               placeholder='请输入手机号码'

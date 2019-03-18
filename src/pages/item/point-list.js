@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, GoodsItem } from '@/components'
-import { AtDivider,AtIcon } from 'taro-ui'
+import { AtDivider } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
 
@@ -16,12 +16,6 @@ export default class PointList extends Component {
 
     this.state = {
       ...this.state,
-      // curFilterIdx: 0,
-      // filterList: [
-      //   { title: '综合' },
-      //   { title: '销量' },
-      //   { title: '价格', sort: -1 }
-      // ],
       query: null,
       list: [],
       listType: 'grid'
@@ -31,12 +25,9 @@ export default class PointList extends Component {
   componentDidMount () {
     this.setState({
       query: {
-        keywords: '',
-        distributor_id: 16,
         item_type: 'normal',
         approve_status: 'onsale,only_show',
         is_point: true,
-        category: this.$router.params.cat_id
       }
     }, () => {
       this.nextPage()

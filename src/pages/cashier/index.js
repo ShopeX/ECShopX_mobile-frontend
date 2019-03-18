@@ -49,7 +49,7 @@ export default class Cashier extends Component {
       <View className='page-cashier-index'>
         <View className='cashier-money'>
           {
-            info.order_type === 'recharge'
+            info.order_type !== 'recharge'
               ? <View className='cashier-money__tip'>订单提交成功，请选择支付方式</View>
               : null
           }

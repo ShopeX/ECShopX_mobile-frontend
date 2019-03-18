@@ -70,8 +70,7 @@ export default class PointDetail extends Component {
     const { intro: desc } = info.goods_info
     console.log(this.$router.params)
 
-    // let marketing = 'normal'
-    let timer = null
+    let timer
     const now_time = (new Date()).getTime()
     const end_time = info.end_time*1000 - (new Date()).getTime()
     console.log(now_time, end_time, 78)
