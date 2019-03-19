@@ -1,14 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Button } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
-import {  AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
-import AlipayBtn from './comps/alipay'
-import WeappBtn from './comps/weapp'
-import PointDepositBtn from './comps/point-deposit'
+import { withLogin } from '@/hocs'
+import { AlipayPay, WeappPay, WeH5Pay, PointDepositPay } from './comps'
 
 import './index.scss'
 
+@withLogin()
 export default class Cashier extends Component {
   constructor (props) {
     super(props)
@@ -18,7 +17,6 @@ export default class Cashier extends Component {
     }
   }
   componentDidShow () {
-
     this.fetch()
   }
 
@@ -65,14 +63,14 @@ export default class Cashier extends Component {
           {
             info.order_type === 'recharge'
               ? <View>
-                  <AlipayBtn
+                  <AlipayPay
                     orderID={info.order_id}
                     payType='alipayh5'
                     orderType={info.order_type}
                   />
-                  <WeappBtn number='66' />
+                  <WeH5Pay orderID={info.order_id} />
                 </View>
-              : <PointDepositBtn
+              : <PointDepositPay
                 orderID={info.order_id}
                 payType={info.pay_type}
                 orderType={info.order_type}
