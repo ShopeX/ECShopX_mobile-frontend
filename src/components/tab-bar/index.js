@@ -33,29 +33,11 @@ export default class TabBar extends Component {
   }
 
   componentDidMount () {
-    // this.fetchCart()
-    // const { tabList, current } = this.state
-    // const { fullPath } = getCurrentRoute(this.$router)
-    // const { url } = tabList[current]
-    // if (url && url !== fullPath) {
-    //   const nCurrent = tabList.findIndex((t) => t.url === fullPath) || 0
-    //   this.setState({
-    //     current: nCurrent
-    //   })
-    // }
+    // this.updateCurTab()
   }
 
   componentDidShow () {
-    this.fetchCart()
-    const { tabList, current } = this.state
-    const { fullPath } = getCurrentRoute(this.$router)
-    const { url } = tabList[current]
-    if (url && url !== fullPath) {
-      const nCurrent = tabList.findIndex((t) => t.url === fullPath) || 0
-      this.setState({
-        current: nCurrent
-      })
-    }
+    this.updateCurTab()
   }
 
   componentWillReceiveProps (nextProps) {
@@ -70,6 +52,19 @@ export default class TabBar extends Component {
 
     if (nextProps.current !== undefined && nextProps.current !== this.state.current) {
       this.setState({ current: nextProps.current })
+    }
+  }
+
+  updateCurTab () {
+    this.fetchCart()
+    const { tabList, current } = this.state
+    const { fullPath } = getCurrentRoute(this.$router)
+    const { url } = tabList[current]
+    if (url && url !== fullPath) {
+      const nCurrent = tabList.findIndex((t) => t.url === fullPath) || 0
+      this.setState({
+        current: nCurrent
+      })
     }
   }
 

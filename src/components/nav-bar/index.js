@@ -6,9 +6,6 @@ import './index.scss'
 
 export default class NavBar extends Component {
   static defaultProps = {
-    onClickLeftIcon: () => {
-      Taro.navigateBack()
-    }
   }
 
   constructor (props) {
@@ -22,9 +19,15 @@ export default class NavBar extends Component {
     addGlobalClass: true
   }
 
+  handleClickLeftIcon = () => {
+    this.props.onClickLeftIcon
+      ? this.props.onClickLeftIcon()
+      : Taro.navigateBack()
+  }
+
   render () {
-    const { title, leftIconType, fixed, onClickLeftIcon } = this.props
-    console.log(fixed)
+    const { title, leftIconType, fixed } = this.props
+
     return (
       <View className='nav-bar-height'>
         <AtNavBar
@@ -32,7 +35,7 @@ export default class NavBar extends Component {
           color='#000'
           title={title}
           leftIconType={leftIconType}
-          onClickLeftIcon={onClickLeftIcon}
+          onClickLeftIcon={this.handleClickLeftIcon}
         />
       </View>
     )

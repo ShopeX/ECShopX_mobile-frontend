@@ -31,8 +31,7 @@ export default class WeappBtn extends Component {
     // eslint-disable-next-line
     const loc = location
     const redirect_url = encodeURIComponent(`${loc.procotol}://${loc.host}/trade/list`)
-    window.open = `${res.payment.mweb_url}`
-    console.log(res)
+    window.open(`${res.payment.mweb_url}`)
   }
 
   render () {

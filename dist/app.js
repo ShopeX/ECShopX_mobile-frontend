@@ -70,10 +70,10 @@ var _App = function (_BaseComponent) {
 
   _createClass(_App, [{
     key: "componentWillMount",
-    value: function componentWillMount(params) {}
+    value: function componentWillMount() {}
   }, {
     key: "componentDidMount",
-    value: function componentDidMount(params) {}
+    value: function componentDidMount() {}
   }, {
     key: "componentDidShow",
     value: function componentDidShow() {}
