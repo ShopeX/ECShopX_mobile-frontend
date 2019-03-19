@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote } from '@/components'
+import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { pickBy, formatDataTime } from '@/utils'
@@ -85,6 +85,12 @@ export default class RecommendOrder extends Component {
 
     return (
       <View className='trade-list'>
+        <NavBar
+          title='我的推广订单'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
+
         <AtTabs
           className='trade-list__tabs'
           current={curTabIdx}

@@ -2,7 +2,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text } from '@tarojs/components'
 import {AtButton, AtTag, AtInput} from 'taro-ui'
-import { Loading } from '@/components'
+import { NavBar } from '@/components'
 import { withPager } from '@/hocs'
 import api from '@/api'
 import { pickBy, classNames } from '@/utils'
@@ -74,6 +74,10 @@ export default class Pay extends Component {
 
     return (
       <View className='page-member-integral'>
+        <NavBar
+          title='余额充值'
+          leftIconType='chevron-left'
+        />
         <View className='member-integral__hd'>
           <View className='integral-info'>
             <View className='integral-number'>

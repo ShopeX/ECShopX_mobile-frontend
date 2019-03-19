@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import _mapKeys from 'lodash/mapKeys'
-import { Loading, SpNote } from '@/components'
+import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus } from '@/utils'
@@ -132,6 +132,11 @@ export default class TradeList extends Component {
 
     return (
       <View className='trade-list'>
+        <NavBar
+          title='订单列表'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <AtTabs
           className='trade-list__tabs'
           current={curTabIdx}

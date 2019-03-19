@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote } from '@/components'
+import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
@@ -99,6 +99,11 @@ export default class Coupon extends Component {
 
     return (
       <View className='coupon-list'>
+        <NavBar
+          title='优惠券列表'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <AtTabs
           className='coupon-list__tabs'
           current={curTabIdx}

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { Loading, SpCell, SpToast, Price } from '@/components'
+import { Loading, SpCell, SpToast, Price, NavBar } from '@/components'
 import { classNames, pickBy, formatTime, resolveOrderStatus, copyText } from '@/utils'
 import api from '@/api'
 import OrderItem from './comps/order-item'
@@ -99,6 +99,11 @@ export default class TradeDetail extends Component {
 
     return (
       <View className={classNames('trade-detail', `trade-detail__status-${info.status}`)}>
+        <NavBar
+          title='订单详情'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='trade-detail__status'>
           <Text className='trade-detail__status-text'>{info.status_desc}</Text>
           <Image

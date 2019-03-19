@@ -2,7 +2,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, ScrollView} from '@tarojs/components'
 import { AtTabs, AtTabsPane} from 'taro-ui'
-import { Loading, SpNote } from '@/components'
+import { Loading, SpNote, NavBar } from '@/components'
 import { withPager } from '@/hocs'
 import { pickBy, formatDataTime } from '@/utils'
 import api from '@/api'
@@ -91,6 +91,11 @@ export default class Recharge extends Component {
 
     return (
       <View className='page-member-integral'>
+        <NavBar
+          title='我的资金'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='member-integral__hd'>
           <View className='integral-info'>
             <View className='integral-number'>

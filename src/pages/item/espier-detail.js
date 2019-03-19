@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtDivider, AtCountdown } from 'taro-ui'
-import { Loading, Price, BackToTop, SpHtmlContent, SpToast } from '@/components'
+import { Loading, Price, BackToTop, SpHtmlContent, SpToast, NavBar } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
 import { styleNames, log } from '@/utils'
@@ -90,7 +90,7 @@ export default class Detail extends Component {
     if (marketing === 'group' || marketing === 'seckill') {
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
-        backgroundColor: '#FF482B',
+        backgroundColor: '#C40000',
         animation: {
           duration: 400,
           timingFunc: 'easeIn'
@@ -161,6 +161,12 @@ export default class Detail extends Component {
 
     return (
       <View className='page-goods-detail'>
+        <NavBar
+          title={info.item_name}
+          leftIconType='chevron-left'
+          fixed='true'
+        />
+
         <ScrollView
           className='goods-detail__wrap'
           scrollY
@@ -172,6 +178,7 @@ export default class Detail extends Component {
             <Swiper
               className='goods-imgs__swiper'
               style={`height: ${windowWidth}px`}
+              current={curImgIdx}
               onChange={this.handleSwiperChange}
             >
               {

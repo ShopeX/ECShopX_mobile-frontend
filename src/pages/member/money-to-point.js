@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro'
 import {View, Text } from '@tarojs/components'
 import {AtButton, AtInput, AtModal} from 'taro-ui'
 import api from '@/api'
-import { SpToast } from '@/components'
+import { SpToast, NavBar } from '@/components'
 import S from '@/spx'
 
 import './money-to-point.scss'
@@ -84,6 +84,11 @@ export default class MoneyToPoint extends Component {
 
     return (
       <View className='page-member-integral'>
+        <NavBar
+          title='积分充值'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='member-integral__hd'>
           <View className='integral-info'>
             <View className='integral-number'>

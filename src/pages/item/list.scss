@@ -27,7 +27,7 @@
     &__scroll {
       height: 100vh;
       box-sizing: border-box;
-      padding: ($tabbar-height + $searchbar-height) 0 0;
+      padding: ($tabbar-height + $searchbar-height + $navigate-height) 0 0;
     }
     &__type-grid {
       @include clearfix();

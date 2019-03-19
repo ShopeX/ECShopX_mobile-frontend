@@ -86,6 +86,7 @@ export default class Detail extends Component {
             <Swiper
               className='goods-imgs__swiper'
               style={`height: ${windowWidth}px`}
+              current={curImgIdx}
               onChange={this.handleSwiperChange}
             >
               {

@@ -1,9 +1,10 @@
 @import "../../style/imports";
 .page-category-index {
   height: 100%;
+  background: $color-bg-gray;
   .category-list {
     box-sizing: border-box;
-    padding-top: 84px;
+    padding-top: $searchbar-height;
     height: 100vh;
     display: flex;
     align-items: flex-start;
@@ -25,9 +26,9 @@
       border-bottom: 1px solid #E6E6E6;
     }
     &__content-checked {
-      color: #FF482B;
+      color: $color-brand-primary;
       background: #fff;
-      border-left:6px solid #FF482B;
+      border-left:6px solid $color-brand-primary;
       box-sizing: border-box;
     }
   }

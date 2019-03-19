@@ -2,10 +2,10 @@
 
 .auth-login {
   height: 100vh;
-  padding-top: 160px;
+  //padding-top: 160px;
   background: $color-brand-primary-text;
   &__reg {
-    padding: 10px $edge-size 0;
+    padding: $edge-size;
     text-align: right;
     box-sizing: border-box;
   }

@@ -23,25 +23,39 @@ export default class AlipayBtn extends Component {
       pay_type: this.props.payType,
       order_type: this.props.orderType,
     }
-    await api.cashier.getPayment(query)
-      .then(res=> {
-        console.log(res, 28)
-        // Taro.redirectTo({
-        //   url: `/pages/cashier/cashier-result?payStatus=success&order_id=${this.props.orderID}`
-        // })
+    try {
+      const { payment } = await api.cashier.getPayment(query)
+      let view = document.getElementById("box");
+      view.innerHTML = payment
+      document.forms['alipaysubmit'].submit()
+    } catch (error) {
+      console.log(error)
+      Taro.redirectTo({
+        url: `/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
       })
-      .catch(error => {
-        console.log(error, 34)
-
-        Taro.redirectTo({
-          url: `/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
-        })
-      })
+    }
+      // .then(res=> {
+      //   console.log(res, 28)
+      //   // Taro.redirectTo({
+      //   //   url: `/pages/cashier/cashier-result?payStatus=success&order_id=${this.props.orderID}`
+      //   // })
+      // })
+      // .catch(error => {
+      //   console.log(error, 34)
+      //
+      //   Taro.redirectTo({
+      //     url: `/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
+      //   })
+      // })
   }
 
   render () {
     return (
-      <View className='alipay-btn' onClick={this.handleClickPayment.bind(this)}>支付宝支付</View>
+      <View>
+        <View className='alipay-btn' onClick={this.handleClickPayment.bind(this)}>支付宝支付</View>
+        <View id='box'> </View>
+      </View>
+
     )
   }
 }

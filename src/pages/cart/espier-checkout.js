@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtInput, AtActionSheet, AtActionSheetItem } from 'taro-ui'
-import { Loading, Price, SpCell, AddressPicker, SpToast } from '@/components'
+import { Loading, Price, SpCell, AddressPicker, SpToast, NavBar } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { withLogin } from '@/hocs'
@@ -303,6 +303,15 @@ export default class CartCheckout extends Component {
 
     return (
       <View className='page-checkout'>
+        {
+          showAddressPicker === false
+            ? <NavBar
+              title='填写订单信息'
+              leftIconType='chevron-left'
+              fixed='true'
+            />
+            : null
+        }
         <ScrollView
           scrollY
           className='checkout__wrap'

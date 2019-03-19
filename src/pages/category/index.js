@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, ScrollView, Image} from '@tarojs/components'
-import { Loading, SearchBar } from '@/components'
+import { Loading, SearchBar, NavBar } from '@/components'
 import { classNames, pickBy } from '@/utils'
 import api from '@/api'
 
@@ -60,7 +60,13 @@ export default class Category extends Component {
 
     return (
       <View className='page-category-index'>
+        <NavBar
+          title='分类'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <SearchBar
+          className='category-top'
           isFixed
         />
         <View className='category-list'>

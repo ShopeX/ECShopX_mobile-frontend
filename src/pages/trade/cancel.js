@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpCell, SpToast } from '@/components'
+import { SpCell, SpToast, NavBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import { AtTag, AtTextarea, AtButton } from 'taro-ui'
@@ -63,6 +63,12 @@ export default class TradeCancel extends Component {
 
     return (
       <View className='page-trade-cancel'>
+        <NavBar
+          title='取消订单'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
+
         <View className='sec'>
           <SpCell title='请选择取消理由'>
             {reason.map((item, idx) => {

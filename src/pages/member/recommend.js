@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtBadge, AtIcon, AtAvatar } from 'taro-ui'
-import { SpIconMenu } from '@/components'
+import { SpIconMenu, NavBar } from '@/components'
 import { pickBy } from '@/utils'
 import api from '@/api'
 import { withLogin } from '@/hocs'
@@ -94,6 +94,11 @@ export default class Recommend extends Component {
 
     return (
       <View className='page-member-index'>
+        <NavBar
+          title='我的推广'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='member-index__hd'>
           <View className='member-info_top'>
             {

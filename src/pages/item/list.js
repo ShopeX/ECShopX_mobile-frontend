@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, FilterBar, SearchBar, GoodsItem } from '@/components'
+import { BackToTop, Loading, FilterBar, SearchBar, GoodsItem, NavBar } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 
@@ -118,6 +118,11 @@ export default class List extends Component {
     return (
       <View className='page-goods-list'>
         <View className='goods-list__toolbar'>
+          <NavBar
+            title='商城'
+            leftIconType='chevron-left'
+            fixed='true'
+          />
           <SearchBar />
 
           <FilterBar

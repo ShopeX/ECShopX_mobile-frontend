@@ -3,7 +3,7 @@
 .coupon-list {
   .at-tabs__header {
     position: absolute;
-    top: 0;
+    top: $navigate-height;
     width: 100%;
     z-index: $z-index-toolbar;
   }

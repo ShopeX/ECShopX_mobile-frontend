@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Image} from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { SpToast, Timer } from '@/components'
+import { SpToast, Timer, NavBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 
@@ -148,6 +148,10 @@ export default class Forgotpwd extends Component {
 
     return (
       <View className='auth-forgotpwd'>
+        <NavBar
+          title='忘记密码'
+          leftIconType='chevron-left'
+        />
         <AtForm
           onSubmit={this.handleSubmit}
         >

@@ -3,13 +3,13 @@
 .trade-list {
   .at-tabs__header {
     position: absolute;
-    top: 0;
+    top: $navigate-height;
     width: 100%;
     z-index: $z-index-toolbar;
   }
   &__scroll {
     height: 100vh;
-    padding: $tabbar-height 0 $edge-margin;
+    padding: $tabbar-height + 20px 0 $edge-margin;
     box-sizing: border-box;
   }
   &__tabs {

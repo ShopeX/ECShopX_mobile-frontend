@@ -1,7 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { SpToast } from '@/components'
+
+import { SpToast, NavBar } from '@/components'
 
 import S from '@/spx'
 import api from '@/api'
@@ -88,7 +89,12 @@ export default class Login extends Component {
 
     return (
       <View className='auth-login'>
-        <View className='auth-login__reg' onClick={this.handleClickReg}>快速注册</View>
+        <NavBar
+          title='登录'
+        />
+        <View className='auth-login__reg'>
+          <Text onClick={this.handleClickReg}>快速注册</Text>
+        </View>
         <AtForm
           onSubmit={this.handleSubmit}
         >

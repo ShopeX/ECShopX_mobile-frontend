@@ -2,7 +2,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, ScrollView} from '@tarojs/components'
 import {AtButton, AtTabs, AtTabsPane} from 'taro-ui'
-import { Loading, SpNote } from '@/components'
+import { Loading, SpNote, NavBar } from '@/components'
 import { withPager } from '@/hocs'
 import { pickBy, formatDataTime } from '@/utils'
 import api from '@/api'
@@ -98,6 +98,10 @@ export default class Integral extends Component {
 
     return (
       <View className='page-member-integral'>
+        <NavBar
+          title='积分'
+          leftIconType='chevron-left'
+        />
         <View className='member-integral__hd'>
           <View className='integral-info'>
             <View className='integral-number'>

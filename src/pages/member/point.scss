@@ -93,7 +93,7 @@
 
 .member-integral {
   position: fixed;
-  top: 410px;
+  top: 410px + $navigate-height;
   right: 0px;
   left: 0px;
   bottom: 30px;

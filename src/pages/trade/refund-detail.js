@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Icon } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { REFUND_STATUS } from '@/consts'
-import { SpCell, Price, Loading } from '@/components'
+import { SpCell, Price, Loading, NavBar } from '@/components'
 import api from '@/api'
 
 import './refund-detail.scss'
@@ -82,6 +82,12 @@ export default class TradeRefundDetail extends Component {
 
     return (
       <View className='trade-refund-status'>
+        <NavBar
+          title='售后详情'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
+
         <View className='refund-status'>
           {
             (progress == 0 || progress == 1 || progress == 3 || progress == 5)

@@ -57,6 +57,7 @@ export default class WgtSlider extends Component {
             style={`height: ${Taro.pxTransform(config.height * 2)}`}
             circular
             autoplay
+            current={curIdx}
             interval={config.interval}
             duration={300}
             onChange={this.handleSwiperChange}

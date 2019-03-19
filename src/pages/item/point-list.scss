@@ -5,7 +5,7 @@
     padding: $edge-size 0;
     &__toolbar {
       position: fixed;
-      top: 0;
+      top: $navigate-height;
       left: 0;
       width: 100%;
       z-index: $z-index-toolbar;

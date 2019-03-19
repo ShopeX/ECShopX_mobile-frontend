@@ -63,7 +63,7 @@ export default class MemberIndex extends Component {
               <Text className='member-status__item-val'>666</Text>
               <Text className='member-status__item-title'>优惠券</Text>
             </View>
-            <View className='member-status__item'>
+            <View className='member-status__item' onClick={this.navigateTo.bind(this, '/pages/member/point-draw-order')}>
               <Text className='member-status__item-val'>666</Text>
               <Text className='member-status__item-title'>消息</Text>
             </View>
@@ -142,7 +142,7 @@ export default class MemberIndex extends Component {
               <View className='member-tools__item'>
                 <SpIconMenu
                   icon='money'
-                  title='资金兑换'
+                  title='积分充值'
                   to='/pages/member/money-to-point'
                 />
               </View>

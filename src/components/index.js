@@ -9,6 +9,7 @@ export { default as TabBar } from './tab-bar'
 export { default as FilterBar } from './filter-bar'
 
 export { default as SearchBar } from './search-bar'
+export { default as NavBar } from './nav-bar'
 export { default as Timer } from './timer'
 
 export { default as SpCheckbox } from './checkbox'

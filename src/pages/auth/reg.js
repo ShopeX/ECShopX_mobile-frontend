@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Picker, Image } from '@tarojs/components'
 import { connect } from "@tarojs/redux";
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { SpToast, Timer } from '@/components'
+import { SpToast, Timer, NavBar } from '@/components'
 import { classNames, isString } from '@/utils'
 import S from '@/spx'
 import api from '@/api'
@@ -223,6 +223,10 @@ export default class Reg extends Component {
 
     return (
       <View className='auth-reg'>
+        <NavBar
+          title='注册'
+          leftIconType='chevron-left'
+        />
         <AtForm
           onSubmit={this.handleSubmit}
         >

@@ -3,6 +3,7 @@ import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { SearchBar, TabBar } from '@/components'
 import req from '@/api/req'
+import S from "@/spx";
 import { WgtSlider, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase } from './wgts'
 
 import './index.scss'
@@ -15,7 +16,8 @@ export default class HomeIndex extends Component {
     super(props)
 
     this.state = {
-      wgts: null
+      wgts: null,
+      authStatus: false
     }
   }
 
@@ -26,14 +28,18 @@ export default class HomeIndex extends Component {
   async fetch () {
     const url = '//pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
     const info = await req.get(url)
-
+    if (!S.getAuthToken()) {
+      this.setState({
+        authStatus: true
+      })
+    }
     this.setState({
       wgts: info.config
     })
   }
 
   render () {
-    const { wgts } = this.state
+    const { wgts, authStatus } = this.state
     if (!wgts || !this.props.store) {
       return null
     }
@@ -41,6 +47,8 @@ export default class HomeIndex extends Component {
     return (
       <View className='page-index'>
         <SearchBar
+          className='home-index-search'
+          isAuth={authStatus}
           isFixed
         />
         <View className='wgts-wrap wgts-wrap__fixed'>

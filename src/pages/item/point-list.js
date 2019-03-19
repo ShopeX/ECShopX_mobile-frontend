@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, GoodsItem } from '@/components'
+import { BackToTop, Loading, GoodsItem, NavBar } from '@/components'
 import { AtDivider } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -74,9 +74,14 @@ export default class PointList extends Component {
 
     return (
       <View className='page-goods-list'>
+        <NavBar
+          title='积分商城'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='goods-list__toolbar'>
           <View className='goods-list__toolbar-title'>
-            <AtDivider fontColor='#FF482B' lineColor='#FF482B'>
+            <AtDivider fontColor='#C40000' lineColor='#C40000'>
               <View>
                 <Text className='sp-icon sp-icon-lifangtilitiduomiantifangkuai2 icon-allgoods'> </Text>
                 <Text>全部商品</Text>
