@@ -2,7 +2,7 @@ import req from './req'
 
 export function get (params) {
   // return req.get('/cart.get')
-  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/cart', {
+  return req.get('/cart', {
     shop_type: 'distributor',
     ...params
   })
@@ -10,7 +10,7 @@ export function get (params) {
 
 export function getBasic (params) {
   // return req.get('/cart.get.basic')
-  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/cart', {
+  return req.get('/cart', {
     shop_type: 'distributor',
     ...params
   })
@@ -19,7 +19,7 @@ export function getBasic (params) {
 export function add (item, num = 1) {
   // return req.post('/cart.add', { sku_id, quantity })
   const { item_id, shop_id } = item
-  return req.post(`http://pjj.aixue7.com/index.php/api/h5app/wxapp/cart`, {
+  return req.post(`/cart`, {
     item_id,
     shop_id,
     num,
@@ -41,9 +41,9 @@ export function checkout () {
 
 export function total (params) {
   // return req.post('/cart.total')
-  return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/getFreightFee', params)
+  return req.post('/getFreightFee', params)
 }
 
 export function coupons (params) {
-  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/user/newGetCardList', params)
+  return req.get('/user/newGetCardList', params)
 }

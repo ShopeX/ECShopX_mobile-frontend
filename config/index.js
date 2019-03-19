@@ -36,7 +36,7 @@ const config = {
     TARO_APP: JSON.stringify({
       APP_NAME: pkg.app_name,
       APP_VERSION: pkg.version,
-      BASE_URL: 'https://yapi.ishopex.cn/mock/387/api/v1'
+      BASE_URL: 'http://pjj.aixue7.com/index.php/api/h5app/wxapp'
     })
   },
   alias: {

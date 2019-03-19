@@ -26,7 +26,7 @@ export default class HomeIndex extends Component {
   }
 
   async fetch () {
-    const url = 'http://pjj.aixue7.com/index.php/api/h5app/wxapp/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
+    const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
     const info = await req.get(url)
     if (!S.getAuthToken()) {
       this.setState({

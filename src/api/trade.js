@@ -2,17 +2,17 @@ import req from './req'
 
 export function list (params) {
   // return req.get('/trade.list', params)
-  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/orders', params)
+  return req.get('/orders', params)
 }
 
 export function detail (tid) {
   // return req.get('/trade.get', { tid })
-  return req.get(`http://pjj.aixue7.com/index.php/api/h5app/wxapp/order/${tid}`)
+  return req.get(`/order/${tid}`)
 }
 
 export function create (data) {
   // return req.post('/trade.create', data)
-  return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/order_new', data)
+  return req.post('/order_new', data)
 }
 
 export function confirm (tid) {
@@ -20,17 +20,9 @@ export function confirm (tid) {
 }
 
 export function cancel (data) {
-  return req.post('http://pjj.aixue7.com/index.php/api/h5app/wxapp/order/cancel', data)
+  return req.post('/order/cancel', data)
 }
 
 export function getCount (params = { order_type: 'normal' }) {
-  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/orderscount', params)
-}
-
-export function afterSaleList (params) {
-  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/aftersales', params)
-}
-
-export function afterSaleInfo (params) {
-  return req.get('http://pjj.aixue7.com/index.php/api/h5app/wxapp/aftersales/info', params)
+  return req.get('/orderscount', params)
 }

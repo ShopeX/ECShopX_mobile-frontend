@@ -60,9 +60,10 @@ class App extends Component {
       'pages/trade/detail',
       'pages/trade/rate',
       'pages/trade/cancel',
-      'pages/trade/refund',
       'pages/trade/after-sale',
-      'pages/trade/refund-detail'
+      'pages/trade/refund',
+      'pages/trade/refund-detail',
+      'pages/trade/refund-sendback'
     ],
     window: {
       backgroundTextStyle: 'light',

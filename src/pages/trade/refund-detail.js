@@ -23,12 +23,12 @@ export default class TradeRefundDetail extends Component {
 
   async fetch () {
     const { aftersales_bn } = this.$router.params
-    const { aftersales: info, orderInfo } = await api.trade.afterSaleInfo({
+    const { aftersales: info, orderInfo } = await api.aftersales.info({
       aftersales_bn
     })
-    const progress = +info.progress
+    // const progress = +info.progress
+    const progress = 0
     info.status_str = REFUND_STATUS[String(progress)]
-    console.log(progress, REFUND_STATUS);
 
     this.setState({
       orderInfo,
@@ -38,16 +38,39 @@ export default class TradeRefundDetail extends Component {
   }
 
   handleBtnClick = async (type) => {
-    Taro.showLoading({
-      mask: true
-    })
-    const { aftersales_bn } = this.$router.params
-    try {
-      await api.trade.afterSaleClose({ aftersales_bn })
-      this.fetch()
-    } catch (e) {}
+    const { aftersales_bn, order_id, item_id } = this.state.info
 
-    Taro.hideLoading()
+    if (type === 'cancel') {
+      Taro.showLoading({
+        mask: true
+      })
+      try {
+        await api.aftersales.close({ aftersales_bn })
+        this.fetch()
+      } catch (e) {
+        console.log(e)
+      }
+
+      Taro.hideLoading()
+    }
+
+    if (type === 'edit') {
+      Taro.navigateTo({
+        url: `/pages/trade/refund?aftersales_bn=${aftersales_bn}&order_id=${order_id}&item_id=${item_id}`
+      })
+    }
+
+    if (type === 'refund') {
+      Taro.navigateTo({
+        url: `/pages/trade/refund?order_id=${order_id}&item_id=${item_id}`
+      })
+    }
+
+    if (type === 'refund_send') {
+      Taro.navigateTo({
+        url: `/pages/trade/refund-sendback?aftersales_bn=${aftersales_bn}`
+      })
+    }
   }
 
   render () {
@@ -99,8 +122,8 @@ export default class TradeRefundDetail extends Component {
 
         {progress == 0 && (
           <View className='toolbar'>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'edit')}>修改申请</AtButton>
+            <AtButton type='secondary' circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
+            <AtButton type='primary' circle onClick={this.handleBtnClick.bind(this, 'edit')}>修改申请</AtButton>
           </View>
         )}
         {(progress == 3 || progress == 5) && (

@@ -59,7 +59,7 @@ export default class AfterSale extends Component {
       return key
     })
 
-    const { list, total_count: total } = await api.trade.afterSaleList(params)
+    const { list, total_count: total } = await api.aftersales.list(params)
     let nList = pickBy(list, {
       id: 'aftersales_bn',
       status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
@@ -102,10 +102,10 @@ export default class AfterSale extends Component {
   }
 
   handleClickItem = (trade) => {
-    const { tid } = trade
+    const { id } = trade
 
     Taro.navigateTo({
-      url: `/pages/trade/after-sale-detail?id=${tid}`
+      url: `/pages/trade/refund-detail?aftersales_bn=${id}`
     })
   }
 
