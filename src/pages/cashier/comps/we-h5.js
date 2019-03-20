@@ -33,7 +33,8 @@ export default class WeappBtn extends Component {
     const redirect_url = encodeURIComponent(`${loc.procotol}://${loc.host}/trade/list`)
     const form = document.createElement('form')
     const [action, search] = res.payment.mweb_url.split('?')
-    const queryPair = search.split('&')
+    const queryPair = `${search}&redirect_url=${redirect_url}`.split('&')
+
     form.setAttribute('method', 'get')
     form.setAttribute('action', action)
     form.innerHTML = queryPair.map(p => {
@@ -41,9 +42,12 @@ export default class WeappBtn extends Component {
       return `<input type="hidden" name="${name}" value="${value}" />`
     }).join('')
     document.body.appendChild(form)
+    const refMeta = document.querySelector('meta[name="referrer"]')
+    refMeta.setAttribute('content', 'always')
     form.submit()
-
-    // window.open(`${res.payment.mweb_url}`)
+    setTimeout(() => {
+      refMeta.setAttribute('content', 'never')
+    }, 50)
   }
 
   render () {
