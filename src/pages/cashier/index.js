@@ -60,7 +60,7 @@ export default class Cashier extends Component {
         <AtNavBar
           onClickLeftIcon={this.handleClickBack}
           color='#000'
-          title='NavBar 导航栏示例'
+          title='收银台'
           leftIconType='chevron-left'
         />
         <View className='cashier-money'>

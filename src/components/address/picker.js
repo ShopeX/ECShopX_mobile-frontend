@@ -85,13 +85,11 @@ export default class AddressPicker extends Component {
   handleSaveAddress = async (address) => {
     try {
       await api.member.addressCreateOrUpdate(address)
-        .then(() => {
-          if(address.address_id) {
-            S.toast('修改成功')
-          } else {
-            S.toast('创建成功')
-          }
-        })
+      if(address.address_id) {
+        S.toast('修改成功')
+      } else {
+        S.toast('创建成功')
+      }
 
       await this.fetch(() => {
         // update current address

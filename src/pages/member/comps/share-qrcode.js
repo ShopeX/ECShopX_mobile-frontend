@@ -1,8 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
-import { copyText, formatTime } from '@/utils'
+import { View, Image } from '@tarojs/components'
+import { copyText } from '@/utils'
 import { AtCurtain } from "taro-ui";
+import { Loading, SpToast } from "@/components";
 import api from '@/api'
+import S from '@/spx'
 
 import './share-qrcode.scss';
 
@@ -26,13 +28,11 @@ export default class RateItem extends Component {
 
 
   async fetch () {
-    await api.member.h5_qrcodeData()
-      .then(res => {
-        this.imgUrl = res.share_uir
-        this.setState({
-          qrCode: res.share_qrcode
-        })
-      })
+    const res = await api.member.h5_qrcodeData()
+    this.imgUrl = res.share_uir
+    this.setState({
+      qrCode: res.share_qrcode
+    })
   }
 
   componentWillReceiveProps () {
@@ -49,6 +49,7 @@ export default class RateItem extends Component {
 
   handleClickCopy = () => {
     copyText(this.imgUrl)
+    S.toast('复制成功')
   }
 
   render () {
@@ -62,10 +63,14 @@ export default class RateItem extends Component {
 
       >
         <View className='qrcode-content'>
-          <Image src={`${qrCode}`} className='qrcode-content__qrimg' />
+          {
+            qrCode ? <Image src={`${qrCode}`} className='qrcode-content__qrimg' /> : <Loading />
+          }
           <View className='qrcode-content__copy' onClick={this.handleClickCopy}>
             复制链接
           </View>
+          <SpToast />
+
         </View>
 
       </AtCurtain>

@@ -71,10 +71,7 @@ export default class PointDetail extends Component {
     console.log(this.$router.params)
 
     let timer
-    const now_time = (new Date()).getTime()
-    const end_time = info.end_time*1000 - (new Date()).getTime()
-    console.log(now_time, end_time, 78)
-    timer = this.calcTimer(end_time)
+    timer = this.calcTimer(info.remaining_time)
 
     Taro.setNavigationBarTitle({
       title: info.goods_info.itemName
@@ -108,18 +105,16 @@ export default class PointDetail extends Component {
       title: '生成订单中',
       mask: true
     });
-    await api.member.pointDrawPay(this.$router.params)
-      .then(res => {
-        console.log(2630692000018945)
-        Taro.hideLoading()
-        Taro.navigateTo({
-          url: `/pages/cashier/index?order_id=${res.luckydraw_trade_id}`
-        })
+    try {
+      const res = await api.member.pointDrawPay(this.$router.params)
+      Taro.hideLoading()
+      Taro.navigateTo({
+        url: `/pages/cashier/index?order_id=${res.luckydraw_trade_id}`
       })
-      .catch(error => {
-        Taro.hideLoading()
-        S.toast(`${error.res.data.error.message}`)
-      })
+    } catch (error) {
+      Taro.hideLoading()
+      console.log(error)
+    }
   }
 
   render () {

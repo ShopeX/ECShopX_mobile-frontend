@@ -61,7 +61,7 @@ export default class Recharge extends Component {
     })
     this.setState({
       list: [...this.state.list, ...nList],
-      totalDeposit: deposit
+      totalDeposit: (deposit/100).toFixed(2)
     })
 
     return {

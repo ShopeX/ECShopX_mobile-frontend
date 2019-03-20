@@ -9,6 +9,7 @@
   box-sizing: border-box;
   &__form {
     display: flex;
+    position: relative;
     justify-content: space-between;
     .home-login{
       padding-right: 20px;
@@ -24,7 +25,16 @@
   &__bar {
     flex: 1;
   }
-
+  .search-logo {
+    position: absolute;
+    top: 20px;
+    left: 50px;
+    z-index: $z-index-toast;
+    width: 60px;
+    height: 40px;
+    background: transparent;
+    color: $color-brand-primary;
+  }
   &__history {
     background: #fff;
     height: 100%;

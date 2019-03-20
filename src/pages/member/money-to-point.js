@@ -49,24 +49,19 @@ export default class MoneyToPoint extends Component {
     }
     try {
       await api.member.depositToPoint(query)
-        .then(() => {
-          this.setState({
-            isOpened: false,
-            otherNumber: ''
-          })
-          Taro.showToast({
-            title: '兑换成功',
-            icon: 'none',
-          }).then(() => {
-            setTimeout(()=>{
-              this.fetch()
-            }, 1000)
-
-          })
-        })
+      this.setState({
+        isOpened: false,
+        otherNumber: ''
+      })
+      Taro.showToast({
+        title: '兑换成功',
+        icon: 'none',
+      })
+      setTimeout(()=>{
+        this.fetch()
+      }, 700)
     } catch (error) {
-      S.toast(`${error.res.data.error.message}`)
-      return false
+      console.log(error)
     }
   }
   handleClickPay = (val) => {

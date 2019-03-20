@@ -31,46 +31,40 @@ export default class Recommend extends Component {
 
 
   async fetch () {
-    await api.member.recommendUserInfo()
-      .then(res => {
-        const nList = pickBy(res, {
-          username: 'username',
-          promoter_grade_name: 'promoter_grade_name',
-          parent_info: 'parent_info.username',
-          headimgurl: 'headimgurl',
-          mobile: 'mobile'
-        })
-        this.setState({
-          info: nList,
-        })
-      })
+    const res = await api.member.recommendUserInfo()
+    const nList = pickBy(res, {
+      username: 'username',
+      promoter_grade_name: 'promoter_grade_name',
+      parent_info: 'parent_info.username',
+      headimgurl: 'headimgurl',
+      mobile: 'mobile'
+    })
+    this.setState({
+      info: nList,
+    })
 
-    await api.member.recommendIndexInfo()
-      .then(res => {
-        const nList = pickBy(res, {
-          itemTotalPrice: ({ itemTotalPrice }) => (itemTotalPrice/100).toFixed(2),
-          cashWithdrawalRebate: ({ cashWithdrawalRebate }) => (cashWithdrawalRebate/100).toFixed(2),
-          promoter_order_count: 'promoter_order_count',
-          promoter_grade_order_count: 'promoter_grade_order_count',
-          isbuy_promoter: 'isbuy_promoter',
-          notbuy_promoter: 'notbuy_promoter',
-        })
-        this.setState({
-          detail: nList,
-        })
-      })
+    const resIndex = await api.member.recommendIndexInfo()
+    const nIndexList = pickBy(resIndex, {
+      itemTotalPrice: ({ itemTotalPrice }) => (itemTotalPrice/100).toFixed(2),
+      cashWithdrawalRebate: ({ cashWithdrawalRebate }) => (cashWithdrawalRebate/100).toFixed(2),
+      promoter_order_count: 'promoter_order_count',
+      promoter_grade_order_count: 'promoter_grade_order_count',
+      isbuy_promoter: 'isbuy_promoter',
+      notbuy_promoter: 'notbuy_promoter',
+    })
+    this.setState({
+      detail: nIndexList,
+    })
   }
 
   handleClickQrcode = async () => {
 
-    if(Taro.getEnv() === 'WEAPP') {
-      await api.member.qrcodeData()
-        .then(res => {
-          Taro.previewImage({
-            current: res.qrcode,
-            urls: [res.qrcode]
-          })
-        })
+    if(process.env.TARO_ENV === 'weapp') {
+      const res = await api.member.qrcodeData()
+      Taro.previewImage({
+        current: res.qrcode,
+        urls: [res.qrcode]
+      })
       console.log(1)
     } else {
       this.setState({

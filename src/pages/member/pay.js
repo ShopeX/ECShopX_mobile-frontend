@@ -31,13 +31,13 @@ export default class Pay extends Component {
     const { list, total_count: total } = await api.member.getRechargeNumber()
     const { deposit } = await api.member.depositTotal()
     let nList = pickBy(list, {
-      money: 'money',
+      money: ({ money }) => (money/100),
       ruleData: 'ruleData',
       ruleType: 'ruleType',
     })
     this.setState({
       list: [...this.state.list, ...nList],
-      totalDeposit: deposit
+      totalDeposit: (deposit/100).toFixed(2)
     })
     return {
       total
@@ -60,13 +60,11 @@ export default class Pay extends Component {
       title: '生成订单中',
       mask: true
     });
-    await api.member.depositPay(query)
-      .then(res => {
-        Taro.hideLoading()
-        Taro.navigateTo({
-          url: `/pages/cashier/index?order_id=${res.order_id}`
-        })
-      })
+    const res = await api.member.depositPay(query)
+    Taro.hideLoading()
+    Taro.navigateTo({
+      url: `/pages/cashier/index?order_id=${res.order_id}`
+    })
   }
 
   render () {
@@ -111,9 +109,9 @@ export default class Pay extends Component {
                       )
                     })
                   }
-                  <View className='otherNumber'> </View>
-                  <View className='otherNumber'> </View>
-                  <View className='otherNumber'> </View>
+                  <View className='pay-empty'> </View>
+                  <View className='pay-empty'> </View>
+                  <View className='pay-empty'> </View>
                   {
                     ruleData > 0
                       ? <View className='extra-regard'>

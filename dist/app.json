@@ -1,6 +1,5 @@
 {
   "pages": [
-    "pages/index/index",
     "pages/home/index",
     "pages/home/landing",
     "pages/category/index",
