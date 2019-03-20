@@ -18,6 +18,13 @@ export default class WeappBtn extends Component {
   }
 
   componentDidMount () {
+    const refMeta = document.querySelector('meta[name="referrer"]')
+    refMeta.setAttribute('content', 'always')
+  }
+
+  componentWillUnmount () {
+    const refMeta = document.querySelector('meta[name="referrer"]')
+    refMeta.setAttribute('content', 'never')
   }
 
   handleClickPay = async () => {
@@ -42,12 +49,8 @@ export default class WeappBtn extends Component {
       return `<input type="hidden" name="${name}" value="${value}" />`
     }).join('')
     document.body.appendChild(form)
-    const refMeta = document.querySelector('meta[name="referrer"]')
-    refMeta.setAttribute('content', 'always')
+
     form.submit()
-    setTimeout(() => {
-      refMeta.setAttribute('content', 'never')
-    }, 50)
   }
 
   render () {
