@@ -32,8 +32,14 @@ export default class WeappBtn extends Component {
     const loc = location
     const redirect_url = encodeURIComponent(`${loc.procotol}://${loc.host}/trade/list`)
     const form = document.createElement('form')
+    const [action, search] = res.payment.mweb_url.split('?')
+    const queryPair = search.split('&')
     form.setAttribute('method', 'get')
-    form.setAttribute('action', res.payment.mweb_url)
+    form.setAttribute('action', action)
+    form.innerHTML = queryPair.map(p => {
+      const [name, value] = p.split('=')
+      return `<input type="hidden" name="${name}" value="${value}" />`
+    }).join('')
     document.body.appendChild(form)
     form.submit()
 
