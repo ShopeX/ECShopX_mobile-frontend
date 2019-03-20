@@ -37,7 +37,7 @@ export default class WeappBtn extends Component {
     const res = await api.cashier.getPayment(params)
     // eslint-disable-next-line
     const loc = location
-    const redirect_url = encodeURIComponent(`${loc.procotol}://${loc.host}/trade/list`)
+    const redirect_url = encodeURIComponent(`${loc.protocol}://${loc.host}/pages/trade/list`)
     const form = document.createElement('form')
     const [action, search] = res.payment.mweb_url.split('?')
     const queryPair = `${search}&redirect_url=${redirect_url}`.split('&')
