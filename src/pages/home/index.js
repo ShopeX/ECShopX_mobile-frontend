@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { SearchBar, TabBar } from '@/components'
 import req from '@/api/req'
@@ -51,7 +51,9 @@ export default class HomeIndex extends Component {
           isAuth={authStatus}
           isFixed
         />
-        <View className='wgts-wrap wgts-wrap__fixed'>
+        <ScrollView
+          className='wgts-wrap wgts-wrap__fixed'
+        >
           {
             wgts.map((item, idx) => {
               return (
@@ -66,7 +68,7 @@ export default class HomeIndex extends Component {
               )
             })
           }
-        </View>
+        </ScrollView>
         <TabBar></TabBar>
       </View>
     )

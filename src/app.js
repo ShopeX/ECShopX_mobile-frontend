@@ -17,6 +17,19 @@ import './app.scss'
 const { store, persistor } = configStore()
 useHooks()
 
+document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('touchmove', (e) => {
+    console.log(1)
+    e.preventDefault()
+  }, { passive: false })
+
+  const $app = document.getElementById('app')
+
+  $app.addEventListener('touchmove', (e) => {
+    e.stopPropagation()
+  }, false)
+}, false);
+
 class App extends Component {
   config = {
     pages: [
