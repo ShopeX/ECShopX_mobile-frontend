@@ -30,7 +30,8 @@ export default class PointDetail extends Component {
       desc: null,
       windowWidth: 320,
       curImgIdx: 0,
-      timer: null
+      timer: null,
+      luckName: ''
     }
   }
 
@@ -65,7 +66,9 @@ export default class PointDetail extends Component {
   }
 
   async fetch () {
-    const { luckydraw_id } = this.$router.params
+    const { luckydraw_id, item_id } = this.$router.params
+    const luckuser = await api.member.pointDrawLuck(item_id)
+    console.log(luckuser.str_lucky, 70)
     const info = await api.member.pointDrawDetail(luckydraw_id)
     const { intro: desc } = info.goods_info
     console.log(this.$router.params)
@@ -87,7 +90,8 @@ export default class PointDetail extends Component {
     this.setState({
       info,
       desc,
-      timer
+      timer,
+      luckName: luckuser.str_lucky || ''
     })
     log.debug('fetch: done', info)
   }
@@ -118,7 +122,7 @@ export default class PointDetail extends Component {
   }
 
   render () {
-    const { info, windowWidth, curImgIdx, desc, scrollTop, showBackToTop } = this.state
+    const { info, windowWidth, curImgIdx, desc, scrollTop, showBackToTop, luckName } = this.state
     const { timer } = this.state
 
     if (!info) {
@@ -175,11 +179,11 @@ export default class PointDetail extends Component {
               <View className='goods-timer__hd'>
                 <View className='goods-prices'>
                   <View className='goods-prices-point'>已筹集{info.luckydraw_point*info.sales_num}积分</View>
-                  <AtProgress percent={info.sales_num/info.luckydraw_store} status='progress' color='#13CE66' />
+                  <AtProgress percent={(info.sales_num/info.luckydraw_store)*100} status='progress' color='#13CE66' />
                 </View>
               </View>
               <View className='goods-timer__bd'>
-                <Text className='goods-timer__label'>距结束还剩</Text>
+                <Text className='goods-timer__label'>距{info.show_status === 'nostart' ? '开始' : '结束'}还剩</Text>
                 <AtCountdown
                   isShowDay
                   day={timer.dd}
@@ -212,11 +216,15 @@ export default class PointDetail extends Component {
             </View>
           </View>
 
-          <View className='notice-bar-hd'>
-            <AtNoticebar marquee>
-              这是 NoticeBar 通告栏，这是 NoticeBar 通告栏，这是 NoticeBar 通告栏
-            </AtNoticebar>
-          </View>
+          {
+            luckName
+              ? <View className='notice-bar-hd'>
+                  <AtNoticebar marquee>
+                    {luckName}
+                  </AtNoticebar>
+                </View>
+              : null
+          }
 
           <View className='sec goods-sec-props'>
             <View className='sec-hd'>

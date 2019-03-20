@@ -104,3 +104,7 @@ export function pointDrawPay (params = {}) {
 export function pointDrawPayList (params = {}) {
   return req.get('/promotion/member/luckydraworder', params)
 }
+
+export function pointDrawLuck (item_id) {
+  return req.get(`/promotion/luckydrawmember/${item_id}`)
+}

@@ -25,12 +25,9 @@ export default class PointDraw extends Component {
   componentDidMount () {
     this.setState({
       query: {
-        keywords: '',
-        distributor_id: 16,
         item_type: 'normal',
         approve_status: 'onsale,only_show',
         is_point: true,
-        category: this.$router.params.cat_id
       }
     }, () => {
       this.nextPage()
