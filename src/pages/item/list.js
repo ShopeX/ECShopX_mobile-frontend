@@ -30,7 +30,7 @@ export default class List extends Component {
   componentDidMount () {
     this.setState({
       query: {
-        keywords: '',
+        keywords: this.$router.params.keywords,
         item_type: 'normal',
         is_point: 'false',
         approve_status: 'onsale,only_show',

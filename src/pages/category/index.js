@@ -1,11 +1,14 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, ScrollView, Image} from '@tarojs/components'
-import { Loading, SearchBar, NavBar } from '@/components'
+import { connect } from "@tarojs/redux";
+import { Loading, SearchBar, TabBar } from '@/components'
 import { classNames, pickBy } from '@/utils'
 import api from '@/api'
 
 import './index.scss'
-
+@connect(store => ({
+  store
+}))
 export default class Category extends Component {
   constructor (props) {
     super(props)
@@ -60,13 +63,8 @@ export default class Category extends Component {
 
     return (
       <View className='page-category-index'>
-        <NavBar
-          title='分类'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
         <SearchBar
-          className='category-top'
+          // className='category-top'
           isFixed
         />
         <View className='category-list'>
@@ -116,6 +114,9 @@ export default class Category extends Component {
             </View>
           </ScrollView>
         </View>
+        <TabBar
+          current={1}
+        />
       </View>
     )
   }

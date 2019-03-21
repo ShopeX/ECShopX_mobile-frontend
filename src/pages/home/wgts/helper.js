@@ -1,6 +1,8 @@
 import Taro from '@tarojs/taro'
 
 export function linkPage (type, id) {
+  console.log(type, id)
+  debugger
   let url = ''
 
   switch (type) {
@@ -14,6 +16,9 @@ export function linkPage (type, id) {
       url = '/pages/article/index?id=' + id
       break;
     case 'link':
+      url = id
+      break;
+    case 'custom':
       url = id
       break;
     default:

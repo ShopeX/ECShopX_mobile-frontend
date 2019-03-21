@@ -96,8 +96,11 @@ export default class SearchBar extends Component {
       })
   }
 
-  handleClickTag = () => {
-    console.log("tag")
+  handleClickTag = (item) => {
+    console.log(item, 100)
+    Taro.navigateTo({
+      url: `/pages/item/list?keywords=${item}`
+    })
   }
 
   render () {
@@ -134,7 +137,7 @@ export default class SearchBar extends Component {
           </View>
           <View className='search-input__history-list'>
             {
-              historyList.map((item, index) => <View className='search-input__history-list__btn' key={index} onClick={this.handleClickTag}>{item}</View> )
+              historyList.map((item, index) => <View className='search-input__history-list__btn' key={index} onClick={this.handleClickTag.bind(this, item)}>{item}</View> )
             }
           </View>
         </View>

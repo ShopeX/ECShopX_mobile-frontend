@@ -33,7 +33,7 @@ export default class TabBar extends Component {
   }
 
   componentDidMount () {
-    // this.updateCurTab()
+    this.updateCurTab()
   }
 
   componentDidShow () {

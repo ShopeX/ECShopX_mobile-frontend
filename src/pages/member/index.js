@@ -15,7 +15,8 @@ export default class MemberIndex extends Component {
       ordersCount: {
         normal_payed_delivered: '',
         normal_payed_notdelivery: ''
-      }
+      },
+      info: {}
     }
   }
 
@@ -23,6 +24,22 @@ export default class MemberIndex extends Component {
     Taro.navigateTo({ url })
   }
 
+  componentDidMount () {
+    api.member.memberInfo()
+      .then(res => {
+        console.log(res, 29)
+        this.setState({
+          info: {
+            deposit: (res.deposit/100).toFixed(2),
+            point: res.point,
+            coupon: res.coupon,
+            luckdraw: res.luckdraw,
+            user_card_code: res.memberInfo.user_card_code,
+            username: res.memberInfo.username,
+          }
+        })
+      })
+  }
   componentDidShow () {
     api.trade.getCount()
       .then((ordersCount) => {
@@ -33,7 +50,7 @@ export default class MemberIndex extends Component {
   }
 
   render () {
-    const { ordersCount } = this.state
+    const { ordersCount, info } = this.state
 
     return (
       <View className='page-member-index'>
@@ -42,33 +59,28 @@ export default class MemberIndex extends Component {
             className='member-info'
             onClick={this.navigateTo.bind(this, '/pages/member/setting')}
           >
-            <AtAvatar
-              className='member-avatar'
-              title='鲜果优格果冻妹'
-              size='large'
-              circle
-            />
-            <View className='member-name'>鲜果优格果冻妹</View>
+            <View className='member-name member-avatar'>{info.user_card_code}</View>
+            <View className='member-name'>{info.username}</View>
           </View>
         </View>
 
         <View className='member-index__bd'>
           <View className='member-sec member-info__status'>
             <View className='member-status__item' onClick={this.navigateTo.bind(this, '/pages/member/favorite')}>
-              <Text className='member-status__item-val'>666</Text>
-              <Text className='member-status__item-title'>收藏夹</Text>
+              <Text className='member-status__item-val'>{info.deposit}</Text>
+              <Text className='member-status__item-title'>余额</Text>
             </View>
             <View className='member-status__item' onClick={this.navigateTo.bind(this, '/pages/member/point')}>
-              <Text className='member-status__item-val'>666</Text>
+              <Text className='member-status__item-val'>{info.point}</Text>
               <Text className='member-status__item-title'>积分</Text>
             </View>
             <View className='member-status__item' onClick={this.navigateTo.bind(this, '/pages/member/coupon')}>
-              <Text className='member-status__item-val'>666</Text>
+              <Text className='member-status__item-val'>{info.coupon}</Text>
               <Text className='member-status__item-title'>优惠券</Text>
             </View>
             <View className='member-status__item' onClick={this.navigateTo.bind(this, '/pages/member/point-draw-order')}>
-              <Text className='member-status__item-val'>666</Text>
-              <Text className='member-status__item-title'>消息</Text>
+              <Text className='member-status__item-val'>{info.luckdraw}</Text>
+              <Text className='member-status__item-title'>抽奖列表</Text>
             </View>
           </View>
 

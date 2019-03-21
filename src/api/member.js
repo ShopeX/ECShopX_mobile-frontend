@@ -1,5 +1,9 @@
 import req from './req'
 
+export function memberInfo () {
+  return req.get('/member')
+}
+
 export function pointDetail () {
   return req.get('/member.point.detail')
 }
