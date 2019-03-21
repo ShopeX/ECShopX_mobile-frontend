@@ -27,6 +27,11 @@ export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT
           if (super.componentWillMount) {
             super.componentWillMount()
           }
+        } else {
+          const done = await this.__autoLoginDone()
+          if (super.componentWillMount && done) {
+            super.componentWillMount()
+          }
         }
       }
 
@@ -36,6 +41,11 @@ export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT
           if (!res) return
 
           if (super.componentDidMount) {
+            super.componentDidMount()
+          }
+        } else {
+          const done = await this.__autoLoginDone()
+          if (super.componentDidMount && done) {
             super.componentDidMount()
           }
         }
@@ -49,12 +59,46 @@ export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT
           if (super.componentDidShow) {
             super.componentDidShow()
           }
+        } else {
+          const done = await this.__autoLoginDone()
+          if (super.componentDidShow && done) {
+            super.componentDidShow()
+          }
         }
       }
 
       async __autoLogin () {
-        return await S.autoLogin(this)
+        this.$__autoLogin_state = 'pending'
+        let res
+        try {
+          res = this.$__autoLogin_res = await S.autoLogin(this)
+          this.$__autoLogin_state = 'success'
+        } catch (e) {
+          this.$__autoLogin_state = 'fail'
+        }
+
+        return res
       }
+
+      __autoLoginDone = (function () {
+        let timer = null
+        return function () {
+          if (this.$__autoLogin_state === 'success') return Promise.resolve(true)
+          if (this.$__autoLogin_state === 'fail') return Promise.resolve(false)
+          const self = this
+
+          return new Promise(resolve => {
+            timer = setInterval(() => {
+              const state = self.$__autoLogin_state
+              if (state === 'success' || state === 'fail') {
+                clearInterval(timer)
+                timer = null
+                resolve(state === 'success' ? true : false)
+              }
+            }, 100)
+          })
+        }
+      })()
     }
   }
 }
