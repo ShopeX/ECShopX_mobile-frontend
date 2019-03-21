@@ -150,6 +150,15 @@ export function resolveOrderStatus (status, isBackwards) {
   return STATUS_TYPES_MAP[status]
 }
 
+export function goToPage (page) {
+  // eslint-disable-next-line
+  const loc = location
+  page = page.replace(/^\//, '')
+  const url = `${loc.protocol}//${loc.host}/${page}`
+  console.log(url)
+  loc.href = url
+}
+
 export {
   classNames,
   styleNames,

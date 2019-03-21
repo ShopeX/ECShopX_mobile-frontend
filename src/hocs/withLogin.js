@@ -23,10 +23,10 @@ export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT
         if (lifeCycle === LIFE_CYCLE_TYPES.WILL_MOUNT) {
           const res = await this.__autoLogin()
           if (!res) return
-        }
 
-        if (super.componentWillMount) {
-          super.componentWillMount()
+          if (super.componentWillMount) {
+            super.componentWillMount()
+          }
         }
       }
 
@@ -34,10 +34,10 @@ export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT
         if (lifeCycle === LIFE_CYCLE_TYPES.DID_MOUNT) {
           const res = await this.__autoLogin()
           if (!res) return
-        }
 
-        if (super.componentDidMount) {
-          super.componentDidMount()
+          if (super.componentDidMount) {
+            super.componentDidMount()
+          }
         }
       }
 
@@ -45,10 +45,10 @@ export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT
         if (lifeCycle === LIFE_CYCLE_TYPES.DID_SHOW) {
           const res = await this.__autoLogin()
           if (!res) return
-        }
 
-        if (super.componentDidShow) {
-          super.componentDidShow()
+          if (super.componentDidShow) {
+            super.componentDidShow()
+          }
         }
       }
 

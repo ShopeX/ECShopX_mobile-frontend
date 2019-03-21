@@ -8,14 +8,15 @@ function addQuery (url, query) {
 }
 
 const request = (() => {
+  return Taro.request
+
   if (process.env.TARO_ENV === 'weapp') {
-    return Taro.request
   } else {
     return function (config) {
       const params = {
         ...config,
         headers: config.header,
-        validateStatus: status => status <= 500
+        validateStatus: status => status < 500
       }
 
       if (params.method && params.method.toLowerCase() === 'get') {
@@ -24,7 +25,7 @@ const request = (() => {
       }
       delete config.header
 
-      return axios(params)
+      return axios.request(params)
         .then(res => {
           res.statusCode = res.status
           return res

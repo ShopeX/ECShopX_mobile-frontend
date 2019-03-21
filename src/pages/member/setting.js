@@ -2,14 +2,20 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpCell, NavBar } from '@/components'
+import { goToPage } from '@/utils'
+import { withLogin } from '@/hocs'
 import S from '@/spx'
 
+@withLogin()
 export default class MemberSetting extends Component {
-  handleClickLogout = () => {
+  handleClickLogout = async () => {
     S.logout()
-    Taro.redirectTo({
-      url: '/pages/home/index'
-    })
+    if (process.env.TARO_ENV === 'h5') {
+      // eslint-disable-next-line
+      goToPage('/pages/home/index')
+    } else {
+      Taro.redirectTo('/pages/home/index')
+    }
   }
 
   render () {
