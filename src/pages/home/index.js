@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SearchBar, TabBar } from '@/components'
+import { SearchBar, TabBar, Loading } from '@/components'
 import req from '@/api/req'
 import S from "@/spx";
 import { WgtSlider, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase } from './wgts'
@@ -42,8 +42,9 @@ export default class HomeIndex extends Component {
 
   render () {
     const { wgts, authStatus } = this.state
+
     if (!wgts || !this.props.store) {
-      return null
+      return <Loading />
     }
 
     return (

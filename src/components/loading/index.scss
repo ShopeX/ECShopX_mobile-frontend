@@ -5,10 +5,18 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  padding: 10px 0;
   text-align: center;
+  &__large {
+    &-img {
+      width: 120px;
+      height: 120px;
+      opacity: 0.5;
+    }
+  }
   &-img {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     display: block;
   }
   &-text {

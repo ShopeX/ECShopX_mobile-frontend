@@ -10,9 +10,10 @@ export default class Loading extends Component {
   }
 
   render () {
-    const { className } = this.props
+    const { className, type } = this.props
+
     return (
-      <View className={classNames('loading', className)}>
+      <View className={classNames('loading', type && `loading__${type}` , className)}>
         <Image src={loadingImg} className='loading-img' />
         <Text className='loading-text'>{this.props.children}</Text>
       </View>
