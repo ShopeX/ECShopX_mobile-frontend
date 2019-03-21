@@ -31,7 +31,8 @@ export function regParam () {
 }
 
 export function info () {
-  return req.get('/member/setting')
+  return { data: {} }
+  // return req.get('/member/setting')
 }
 
 export function forgotPwd (params = {}) {

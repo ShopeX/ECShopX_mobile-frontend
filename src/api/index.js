@@ -1,4 +1,5 @@
 import * as article from './article'
+import * as aftersales from './aftersales'
 import * as cart from './cart'
 import * as cashier from './cashier'
 import * as category from './category'
@@ -11,6 +12,7 @@ import * as wx from './wx'
 
 export default {
   article,
+  aftersales,
   cart,
   cashier,
   category,

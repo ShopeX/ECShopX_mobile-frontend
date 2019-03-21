@@ -125,6 +125,7 @@ export default class TradeRefund extends Component {
     const { segTypes, curSegIdx, curReasonIdx, description } = this.state
     const reason = this.state.reason[curReasonIdx]
     const aftersales_type = segTypes[curSegIdx]
+    const evidence_pic = this.state.imgs.map(({ url }) => url)
     const { item_id, order_id, aftersales_bn } = this.$router.params
     const data = {
       item_id,
@@ -132,13 +133,15 @@ export default class TradeRefund extends Component {
       aftersales_bn,
       aftersales_type,
       reason,
-      description
+      description,
+      evidence_pic
     }
 
     const method = aftersales_bn ? 'modify' : 'apply'
     const res = await api.aftersales[method](data)
-
-    console.log(res)
+    Taro.redirectTo({
+      url: '/pages/trade/after-sale'
+    })
   }
 
   render () {
