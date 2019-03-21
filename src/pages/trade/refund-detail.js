@@ -130,14 +130,14 @@ export default class TradeRefundDetail extends Component {
         )}
         {(progress == 3 || progress == 5) && (
           <View className='toolbar'>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'refund')}>再次申请</AtButton>
+            <AtButton type='secondary' circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
+            <AtButton type='primary' circle onClick={this.handleBtnClick.bind(this, 'refund')}>再次申请</AtButton>
           </View>
         )}
         {progress == 1 && (
           <View className='toolbar'>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'refund_send')}>填写物流信息</AtButton>
+            <AtButton type='secondary' circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
+            <AtButton type='primary' circle onClick={this.handleBtnClick.bind(this, 'refund_send')}>填写物流信息</AtButton>
           </View>
         )}
       </View>
