@@ -66,12 +66,15 @@ export default class AfterSale extends Component {
       status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
       totalItems: 'num',
       payment: ({ item }) => (item.refunded_fee / 100).toFixed(2),
+      pay_type: 'item.pay_type',
+      point: 'item.point',
       order: ({ item }) => [pickBy(item, {
         order_id: 'order_id',
         item_id: 'item_id',
         pic_path: 'pic',
         title: 'item_name',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+        point: 'item_point',
         num: 'num'
       })]
     })
@@ -148,6 +151,7 @@ export default class AfterSale extends Component {
               return (
                 <TradeItem
                   key={idx}
+                  payType={item.pay_type}
                   customHeader
                   renderHeader={
                     <View className='trade-item__hd-cont'>

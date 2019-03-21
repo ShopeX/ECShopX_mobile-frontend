@@ -65,12 +65,15 @@ export default class TradeList extends Component {
       status: ({ order_status }) => resolveOrderStatus(order_status),
       totalItems: ({ items }) => items.reduce((acc, item) => (+item.num) + acc, 0),
       payment: ({ total_fee }) => (total_fee / 100).toFixed(2),
+      pay_type: 'pay_type',
+      point: 'point',
       order: ({ items }) => pickBy(items, {
         order_id: 'order_id',
         item_id: 'item_id',
         pic_path: 'pic',
         title: 'item_name',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+        point: 'item_point',
         num: 'num'
       })
     })
@@ -164,6 +167,7 @@ export default class TradeList extends Component {
             list.map((item, idx) => {
               return (
                 <TradeItem
+                  payType={item.pay_type}
                   customHeader
                   renderHeader={
                     <View className='trade-item__hd-cont'>

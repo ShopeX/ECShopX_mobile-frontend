@@ -6,11 +6,12 @@ import './order-item.scss'
 
 export default class OrderItem extends Component {
   static defaultProps = {
-    onClick: () => {}
+    onClick: () => {},
+    payType: ''
   }
 
   render () {
-    const { info, onClick } = this.props
+    const { info, onClick, payType } = this.props
 
     return (
       <View
@@ -29,7 +30,10 @@ export default class OrderItem extends Component {
           <Text className='order-item__desc'>{info.goods_props}</Text>
         </View>
         <View className='order-item__ft'>
-          <Price className='order-item__price' value={info.price}></Price>
+          {payType === 'point'
+            ? <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={info.point}></Price>
+            : <Price className='order-item__price' value={info.price}></Price>
+          }
           <Text className='order-item__num'>x {info.num}</Text>
         </View>
       </View>

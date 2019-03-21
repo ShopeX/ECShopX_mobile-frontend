@@ -103,9 +103,15 @@ export default class TradeRefundDetail extends Component {
         </View>
 
         <View className='refund-detail'>
-          <SpCell title='退款金额'>
-            <Price value={orderInfo.item_fee} unit='cent'></Price>
-          </SpCell>
+          {orderInfo.pay_type === 'point'
+            ? (<SpCell title='退款积分'>
+                <Price noSymbol noDecimal value={orderInfo.point}></Price>
+              </SpCell>)
+            : (<SpCell title='退款金额'>
+                <Price value={orderInfo.item_fee} unit='cent'></Price>
+              </SpCell>)
+          }
+
           <SpCell title='退款类型'>
             <Text>{info.aftersales_type === 'ONLY_REFUND' ? '仅退款' : '退款退货'}</Text>
           </SpCell>

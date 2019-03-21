@@ -23,7 +23,7 @@ export default class TradeRefund extends Component {
     this.state = {
       curSegIdx: 0,
       curReasonIdx: 0,
-      segTypes: ['仅退款', '退款退货'],
+      segTypes: [{ key: 'ONLY_REFUND', value: '仅退款' }, { key: 'REFUND_GOODS', value: '退货退款' }],
       reason: ['多买/错买', '不想要了', '买多了', '质量问题', '卖家发错货', '商品破损', '描述不符', '其他'],
       description: '',
       imgs: []
@@ -38,6 +38,7 @@ export default class TradeRefund extends Component {
     Taro.showLoading({
       mask: true
     })
+
     const { aftersales_bn, item_id, order_id } = this.$router.params
     const res = await api.aftersales.info({
       aftersales_bn,
@@ -46,8 +47,10 @@ export default class TradeRefund extends Component {
     })
     Taro.hideLoading()
 
+    if (!res.aftersales) return
+
     const params = pickBy(res.aftersales, {
-      curSegIdx: ({ aftersales_type }) => this.state.segTypes.indexOf(aftersales_type) || 0,
+      curSegIdx: ({ aftersales_type }) => this.state.segTypes.findIndex(t => t.key === aftersales_type) || 0,
       curReasonIdx: ({ reason }) => this.state.reason.indexOf(reason) || 0,
       description: 'description',
       imgs: ({ evidence_pic }) => evidence_pic.map(url => ({ url }))
@@ -140,14 +143,13 @@ export default class TradeRefund extends Component {
     })
   }
 
-  handleImageClick = (data) => {
-
+  handleImageClick = () => {
   }
 
   handleSubmit = async () => {
     const { segTypes, curSegIdx, curReasonIdx, description } = this.state
     const reason = this.state.reason[curReasonIdx]
-    const aftersales_type = segTypes[curSegIdx]
+    const aftersales_type = segTypes[curSegIdx].key
     const evidence_pic = this.state.imgs.map(({ url }) => url)
     const { item_id, order_id, aftersales_bn } = this.$router.params
     const data = {
@@ -161,6 +163,7 @@ export default class TradeRefund extends Component {
     }
 
     const method = aftersales_bn ? 'modify' : 'apply'
+    debugger
     await api.aftersales[method](data)
 
     S.toast('操作成功')
@@ -173,13 +176,14 @@ export default class TradeRefund extends Component {
 
   render () {
     const { reason, curSegIdx, curReasonIdx, segTypes, description, imgs } = this.state
+    const segTypeVals = segTypes.map(t => t.value)
 
     return (
       <View className='page-trade-refund'>
         <SpCell border={false}>
           <AtSegmentedControl
             onClick={this.handleChangeType}
-            values={segTypes}
+            values={segTypeVals}
             current={curSegIdx}
           >
           </AtSegmentedControl>

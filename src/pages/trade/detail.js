@@ -51,6 +51,8 @@ export default class TradeDetail extends Component {
       status_desc: 'order_status_msg',
       post_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
       payment: ({ total_fee }) => (+total_fee / 100).toFixed(2),
+      pay_type: 'pay_type',
+      point: 'point',
       status: ({ order_status }) => resolveOrderStatus(order_status),
       orders: ({ items }) => pickBy(items, {
         order_id: 'order_id',
@@ -60,6 +62,7 @@ export default class TradeDetail extends Component {
         title: 'item_name',
         delivery_status: 'delivery_status',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+        point: 'item_point',
         num: 'num'
       })
     })
@@ -173,7 +176,7 @@ export default class TradeDetail extends Component {
                 return (
                   <View key={idx}>
                     <OrderItem
-
+                      payType={info.pay_type}
                       info={item}
                     />
                     {info.status === 'TRADE_SUCCESS' && item.delivery_status === 'DONE' && (
@@ -198,13 +201,13 @@ export default class TradeDetail extends Component {
               >
                 <Price value={info.post_fee} />
               </SpCell>
-              {info.points_fee && (
+              {info.point && (
                 <SpCell
                   className='trade-detail__total-item'
                   title='积分'
                   border={false}
                 >
-                  <Price value={`-${info.points_fee}`} />
+                  <Price noSymbol noDecimal value={`-${info.point}`} />
                 </SpCell>
               )}
               <SpCell
