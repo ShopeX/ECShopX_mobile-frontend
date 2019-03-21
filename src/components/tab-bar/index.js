@@ -36,11 +36,6 @@ export default class TabBar extends Component {
     this.updateCurTab()
   }
 
-  componentDidShow () {
-    this.updateCurTab()
-    console.info(1111)
-  }
-
   componentWillReceiveProps (nextProps) {
     const { tabList } = this.state
 
@@ -51,7 +46,7 @@ export default class TabBar extends Component {
       })
     }
 
-    if (nextProps.current !== undefined && nextProps.current !== this.state.current) {
+    if (nextProps.current !== undefined) {
       this.setState({ current: nextProps.current })
     }
   }
@@ -83,9 +78,6 @@ export default class TabBar extends Component {
 
   handleClick = (current) => {
     const cur = this.state.current
-    this.setState({
-      current
-    })
 
     if (cur !== current) {
       const curTab = this.state.tabList[current]
@@ -93,22 +85,19 @@ export default class TabBar extends Component {
       const { fullPath } = getCurrentRoute(this.$router)
 
       if (url && fullPath !== url) {
-        // Taro[!urlRedirect ? 'navigateTo' : 'redirectTo']({
-        //   url
-        // })
         navigateTo(url, urlRedirect)
       }
     }
   }
 
   render () {
-    const { tabList } = this.state
+    const { tabList, current } = this.state
     return (
       <AtTabBar
         fixed
         tabList={tabList}
         onClick={this.handleClick}
-        current={this.state.current}
+        current={current}
       ></AtTabBar>
     )
   }

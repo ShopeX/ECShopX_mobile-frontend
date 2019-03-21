@@ -8,7 +8,8 @@ import './item.scss'
 
 export default class TradeItem extends Component {
   static options = {
-    addGlobalClass: true
+    addGlobalClass: true,
+    payType: ''
   }
 
   static defaultProps = {
@@ -26,7 +27,7 @@ export default class TradeItem extends Component {
   }
 
   render () {
-    const { customHeader, customFooter, noHeader, onClick, info } = this.props
+    const { customHeader, customFooter, noHeader, onClick, info, payType } = this.props
 
     return (
       <View className='trade-item'>
@@ -48,15 +49,16 @@ export default class TradeItem extends Component {
               <OrderItem
                 key={idx}
                 info={item}
+                payType={payType}
               />
             )
           }
           {
             this.props.customRender
               ? this.props.customRender
-              : <View className='trade-item__total'>
-                  共{info.totalItem}件商品 合计:<Price value={info.payment} />
-                </View>
+              : payType === 'point'
+                ? (<View className='trade-item__total'>共{info.totalItems}件商品 合计: <Price appendText='积分' noSymbol noDecimal value={info.point} /></View>)
+                : (<View className='trade-item__total'>共{info.totalItems}件商品 合计: <Price value={info.payment} /></View>)
           }
         </View>
         {customFooter && <View className='trade-item__ft'>{this.props.renderFooter}</View>}

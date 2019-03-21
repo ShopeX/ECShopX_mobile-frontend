@@ -99,9 +99,9 @@ export function navigateTo (url, isRedirect) {
   }
 
   if (isRedirect) {
-    Taro.navigateTo({ url })
-  } else {
     Taro.redirectTo({ url })
+  } else {
+    Taro.navigateTo({ url })
   }
 
   return

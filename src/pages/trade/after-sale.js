@@ -2,9 +2,9 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, NavBar } from '@/components'
-import { withLogin, withPager } from '@/hocs'
 import { pickBy, log } from '@/utils'
 import api from '@/api'
+import { withLogin, withPager } from '@/hocs'
 import { AFTER_SALE_STATUS } from '@/consts'
 import _mapKeys from 'lodash/mapKeys'
 import TradeItem from './comps/item'
@@ -60,19 +60,23 @@ export default class AfterSale extends Component {
     })
 
     const { list, total_count: total } = await api.aftersales.list(params)
+
     let nList = pickBy(list, {
       id: 'aftersales_bn',
       status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
       totalItems: 'num',
       payment: ({ item }) => (item.refunded_fee / 100).toFixed(2),
-      order: ({ item }) => [pickBy(item, {
+      pay_type: 'orderInfo.pay_type',
+      point: 'orderInfo.point',
+      order: ({ orderInfo }) => pickBy(orderInfo.items, {
         order_id: 'order_id',
         item_id: 'item_id',
         pic_path: 'pic',
         title: 'item_name',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+        point: 'item_point',
         num: 'num'
-      })]
+      })
     })
 
     log.debug('[trade list] list fetched and processed: ', nList)
@@ -147,6 +151,7 @@ export default class AfterSale extends Component {
               return (
                 <TradeItem
                   key={idx}
+                  payType={item.pay_type}
                   customHeader
                   renderHeader={
                     <View className='trade-item__hd-cont'>
@@ -160,7 +165,7 @@ export default class AfterSale extends Component {
                   }
                   info={item}
                   onClick={this.handleClickItem.bind(this, item)}
-                ></TradeItem>
+                />
               )
             })
           }

@@ -16,7 +16,7 @@ export function create (data) {
 }
 
 export function confirm (tid) {
-  return req.get('/trade.confirm', { tid })
+  return req.post('/order/confirmReceipt', { order_id: tid })
 }
 
 export function cancel (data) {

@@ -22,12 +22,14 @@ export default class TradeRefundDetail extends Component {
   }
 
   async fetch () {
-    const { aftersales_bn } = this.$router.params
+    const { aftersales_bn, item_id, order_id } = this.$router.params
     const { aftersales: info, orderInfo } = await api.aftersales.info({
-      aftersales_bn
+      aftersales_bn,
+      item_id,
+      order_id
     })
-    // const progress = +info.progress
-    const progress = 0
+
+    const progress = +info.progress
     info.status_str = REFUND_STATUS[String(progress)]
 
     this.setState({
@@ -101,9 +103,15 @@ export default class TradeRefundDetail extends Component {
         </View>
 
         <View className='refund-detail'>
-          <SpCell title='退款金额'>
-            <Price value={orderInfo.item_fee} unit='cent'></Price>
-          </SpCell>
+          {orderInfo.pay_type === 'point'
+            ? (<SpCell title='退款积分'>
+                <Price noSymbol noDecimal value={orderInfo.point}></Price>
+              </SpCell>)
+            : (<SpCell title='退款金额'>
+                <Price value={orderInfo.item_fee} unit='cent'></Price>
+              </SpCell>)
+          }
+
           <SpCell title='退款类型'>
             <Text>{info.aftersales_type === 'ONLY_REFUND' ? '仅退款' : '退款退货'}</Text>
           </SpCell>
@@ -128,14 +136,14 @@ export default class TradeRefundDetail extends Component {
         )}
         {(progress == 3 || progress == 5) && (
           <View className='toolbar'>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'refund')}>再次申请</AtButton>
+            <AtButton type='secondary' circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
+            <AtButton type='primary' circle onClick={this.handleBtnClick.bind(this, 'refund')}>再次申请</AtButton>
           </View>
         )}
         {progress == 1 && (
           <View className='toolbar'>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
-            <AtButton circle onClick={this.handleBtnClick.bind(this, 'refund_send')}>填写物流信息</AtButton>
+            <AtButton type='secondary' circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
+            <AtButton type='primary' circle onClick={this.handleBtnClick.bind(this, 'refund_send')}>填写物流信息</AtButton>
           </View>
         )}
       </View>

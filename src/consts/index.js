@@ -25,4 +25,8 @@ export const REFUND_STATUS = {
   '7': '售后关闭'
 }
 
+export const WGTS_NAV_MAP = {
+  'luckdraw': '/pages/member/point-draw'
+}
+
 export default {}

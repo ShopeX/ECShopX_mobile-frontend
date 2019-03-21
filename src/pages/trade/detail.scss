@@ -82,6 +82,14 @@
     }
   }
 
+  .trade-opts {
+    text-align: right;
+    .at-button {
+      transform: scale(0.9);
+      transform-origin: center right;
+    }
+  }
+
   .toolbar-actions {
     display: flex;
     justify-content: flex-end;

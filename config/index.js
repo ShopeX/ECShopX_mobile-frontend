@@ -37,7 +37,7 @@ const config = {
     APP_VERSION: `'${pkg.version}'`,
     APP_BASE_URL: TARO_ENV === 'h5'
       ? "'//pjj.aixue7.com/index.php/api/h5app/wxapp'"
-      : "'https://pjj.aixue7.com/index.php/api/h5app/wxapp'"
+      : 'https://pjj.aixue7.com/index.php/api/h5app/wxapp'
   },
   alias: {
     '@': path.join(__dirname, '../src'),

@@ -118,8 +118,8 @@ export default class MemberIndex extends Component {
                 <AtBadge>
                   <SpIconMenu
                     icon='comment'
-                    title='已完成'
-                    to='/pages/trade/list?status=3'
+                    title='售后'
+                    to='/pages/trade/after-sale'
                   />
                 </AtBadge>
               </View>
