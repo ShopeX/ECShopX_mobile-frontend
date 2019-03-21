@@ -81,11 +81,11 @@ export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT
       }
 
       __autoLoginDone = (function () {
-        let timer = null
         return function () {
           if (this.$__autoLogin_state === 'success') return Promise.resolve(true)
           if (this.$__autoLogin_state === 'fail') return Promise.resolve(false)
           const self = this
+          let timer = null
 
           return new Promise(resolve => {
             timer = setInterval(() => {
