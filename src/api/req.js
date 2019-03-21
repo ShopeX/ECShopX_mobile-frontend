@@ -101,7 +101,7 @@ class API {
     // }
     options.data = {
       ...(options.data || {}),
-      company_id: 1
+      company_id: 2
     }
     if (options.method === 'GET') {
       options.url = addQuery(options.url, qs.stringify(options.data))
