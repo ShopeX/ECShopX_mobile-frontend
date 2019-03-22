@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Swiper, SwiperItem, Image, Button } from '@tarojs/components'
+import { View, Text, ScrollView, Swiper, SwiperItem, Image, Button, Progress } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtDivider, AtCountdown, AtProgress, AtNoticebar } from 'taro-ui'
+import { AtDivider, AtCountdown, AtNoticebar } from 'taro-ui'
 import { Loading, Price, BackToTop, SpHtmlContent, SpToast, NavBar } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
@@ -124,13 +124,12 @@ export default class PointDrawDetail extends Component {
   render () {
     const { info, windowWidth, curImgIdx, desc, scrollTop, showBackToTop, luckName } = this.state
     const { timer } = this.state
-
     if (!info) {
       return (
         <Loading />
       )
     }
-
+    const rate = Number(((info.sales_num/info.luckydraw_store)*100).toFixed(0))
     const { pics: imgs } = info.goods_info
 
     return (
@@ -179,7 +178,12 @@ export default class PointDrawDetail extends Component {
               <View className='goods-timer__hd'>
                 <View className='goods-prices'>
                   <View className='goods-prices-point'>已筹集{info.luckydraw_point*info.sales_num}积分</View>
-                  <AtProgress percent={((info.sales_num/info.luckydraw_store)*100).toFixed(0)} status='progress' color='#13CE66' />
+                  <Progress
+                    strokeWidth={6}
+                    percent={rate}
+                    showInfo
+                    activeColor='#13CE66'
+                  />
                 </View>
               </View>
               <View className='goods-timer__bd'>

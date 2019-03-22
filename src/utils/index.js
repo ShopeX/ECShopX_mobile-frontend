@@ -119,7 +119,7 @@ export function formatTime (time, formatter = 'YYYY-MM-DD') {
   return moment(time).format(formatter)
 }
 
-export function formatDataTime (time, formatter = 'YYYY-MM-DD hh:mm:ss') {
+export function formatDataTime (time, formatter = 'YYYY-MM-DD HH:MM:SS') {
   return moment(time).format(formatter)
 }
 

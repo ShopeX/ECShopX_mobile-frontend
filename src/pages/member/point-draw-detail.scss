@@ -52,6 +52,7 @@
   }
   .goods-prices {
     display: block;
+
     &-point{
       font-size: 28px;
     }
@@ -159,7 +160,12 @@
     }
   }
 }
-
+.weui-progress__bar {
+  border-radius: 3px;
+}
+.weui-progress__opr {
+  font-size: 24px !important;
+}
 .at-divider__line {
   width: 38%;
   left: 50%;

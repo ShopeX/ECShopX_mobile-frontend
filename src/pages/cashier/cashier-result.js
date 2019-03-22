@@ -24,7 +24,7 @@ export default class CashierResult extends Component {
     const info = pickBy(orderInfo, {
       create_time: ({ create_time }) => (formatDataTime(create_time * 1000)),
       order_id: 'order_id',
-      payDate: 'payDate',
+      payDate: ({ payDate }) => (formatDataTime(payDate * 1000)),
       tradeId: 'tradeId',
       payStatus: 'payStatus'
     })
