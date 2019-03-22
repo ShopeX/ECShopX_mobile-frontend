@@ -28,8 +28,6 @@ export default function withBackToTop (Component) {
       const { scrollTop, scrollHeight } = e.detail
       const offset = 300
 
-      console.log(scrollTop)
-
       this.setState({
         scrollTop
       })

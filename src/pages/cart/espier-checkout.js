@@ -192,6 +192,11 @@ export default class CartCheckout extends Component {
   }
 
   handleAddressChange = (address) => {
+    if (!address) {
+      this.toggleAddressPicker(true)
+      return
+    }
+
     address = pickBy(address, {
       state: 'province',
       city: 'city',
@@ -257,7 +262,7 @@ export default class CartCheckout extends Component {
 
   handlePay = async () => {
     if (!this.state.address) {
-      return S.notify('请选择地址')
+      return S.toast('请选择地址')
     }
 
     Taro.showLoading({
@@ -300,6 +305,7 @@ export default class CartCheckout extends Component {
       : coupon.type === 'member'
         ? '会员折扣'
         : ((coupon.value && coupon.value.title) || '')
+    const isBtnDisabled = !address || !address.address.addr_id
 
     return (
       <View className='page-checkout'>
@@ -513,6 +519,7 @@ export default class CartCheckout extends Component {
             circle
             type='primary'
             className='btn-confirm-order'
+            disabled={isBtnDisabled}
             onClick={this.handlePay}
           >提交订单</AtButton>
         </View>

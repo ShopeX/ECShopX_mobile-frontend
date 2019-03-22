@@ -49,6 +49,11 @@ export default class AddressPicker extends Component {
   }
 
   changeSelection (params = {}) {
+    if (!params || !params.address_id) {
+      this.props.onChange(null)
+      return
+    }
+
     const { address_id } = params
     const { list } = this.state
     const address = find(list, addr => address_id ? address_id === addr.address_id : addr.def_addr > 0) || list[0] || null
