@@ -106,15 +106,18 @@ export default class CartIndex extends Component {
   }
 
   handleDelect = () => {
-    const selection = [...this.state.selection]
-    selection.forEach(item_id => {
+    const { list } = this.props
+    this.state.selection.forEach(item_id => {
       this.props.onCartDel({ item_id })
     })
+    const selection = list.filter(item => !this.state.selection.has(item.item_id))
+      .map(({ item_id }) => item_id)
 
     this.setState({
       selection: new Set(selection)
     })
     this.props.onCartSelection(selection)
+    this.toggleCartMode()
   }
 
   handleCheckout = () => {

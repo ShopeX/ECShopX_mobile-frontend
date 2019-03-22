@@ -30,10 +30,12 @@ export default class GoodsItem extends Component {
         <View className='goods-item__hd'>
           {this.props.children}
         </View>
-        <View className='goods-item__bd'>
+        <View
+          className='goods-item__bd'
+          onClick={onClick}
+        >
           <View className='goods-item__img-wrap'>
             <Image className='goods-item__img'
-              onClick={onClick}
               mode='aspectFill'
               src={img}
             />
