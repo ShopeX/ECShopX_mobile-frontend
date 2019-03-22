@@ -275,7 +275,10 @@ export default class CartCheckout extends Component {
       const res = await api.trade.create(this.params)
       order_id = res.order_id
     } catch (e) {
-      console.log(e)
+      Taro.showToast({
+        title: e.message,
+        icon: false
+      })
     }
     Taro.hideLoading()
 
@@ -305,7 +308,7 @@ export default class CartCheckout extends Component {
       : coupon.type === 'member'
         ? '会员折扣'
         : ((coupon.value && coupon.value.title) || '')
-    const isBtnDisabled = !address || !address.address.addr_id
+    const isBtnDisabled = !address || !address.addr_id
 
     return (
       <View className='page-checkout'>

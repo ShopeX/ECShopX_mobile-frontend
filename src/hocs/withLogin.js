@@ -72,7 +72,7 @@ export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT
         let res
         try {
           res = this.$__autoLogin_res = await S.autoLogin(this)
-          this.$__autoLogin_state = 'success'
+          this.$__autoLogin_state = !res ? 'fail' : 'success'
         } catch (e) {
           this.$__autoLogin_state = 'fail'
         }

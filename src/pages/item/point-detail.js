@@ -48,6 +48,10 @@ export default class PointDetail extends Component {
 
   async fetch () {
     const { id } = this.$router.params
+
+    // workaround
+    if (!id) return
+
     const info = await api.item.detail(id, { is_point: true })
     const { intro: desc } = info
 
@@ -74,8 +78,7 @@ export default class PointDetail extends Component {
     const { marketing, info } = this.state
     let url = `/pages/cart/espier-checkout`
 
-    const hasToken = !!S.getAuthToken()
-    if (!hasToken) {
+    if (!S.getAuthToken()) {
       return S.login(this, false)
     }
 

@@ -17,7 +17,7 @@ import './point-draw-detail.scss'
   onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } })
 }))
 @withBackToTop
-export default class PointDetail extends Component {
+export default class PointDrawDetail extends Component {
   static options = {
     addGlobalClass: true
   }
