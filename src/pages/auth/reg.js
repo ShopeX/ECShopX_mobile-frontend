@@ -109,12 +109,8 @@ export default class Reg extends Component {
     })
     try {
       const res =  await api.user.reg(data)
-      console.log(res.token.data.token)
-      S.setAuthToken(res.token.data.token)
-      Taro.showToast({
-        title: '注册成功',
-        icon: 'none',
-      })
+      S.setAuthToken(res.token)
+      S.toast('注册成功')
       setTimeout(()=>{
         Taro.redirectTo({
           url: '/pages/member/index'
@@ -269,6 +265,7 @@ export default class Reg extends Component {
               type={isVisible ? 'text' : 'password'}
               value={info.password}
               placeholder='请输入密码'
+              autocomplete='new-password'
               onFocus={this.handleErrorToastClose}
               onChange={this.handleChange.bind(this, 'password')}
             >

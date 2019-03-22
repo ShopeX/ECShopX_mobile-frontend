@@ -20,14 +20,20 @@ export default class AddressEdit extends Component {
       info: { ...this.props.value },
       areaList: [],
       multiIndex: [],
+      listLength: 0
     }
   }
 
   componentDidMount () {
+
     this.fetch()
   }
 
   async fetch () {
+    const { list } = await api.member.addressList()
+    this.setState({
+      listLength: list.length
+    })
     const { info } = this.state
     let res = await api.member.areaList()
     const nList = pickBy(res, {
@@ -144,6 +150,9 @@ export default class AddressEdit extends Component {
 
     if (!data.is_def) {
       data.is_def = 0
+    }
+    if(this.state.listLength === 0) {
+      data.is_def = 1
     }
 
     if (!data.username) {
