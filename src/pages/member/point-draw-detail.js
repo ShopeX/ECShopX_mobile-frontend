@@ -179,7 +179,7 @@ export default class PointDrawDetail extends Component {
               <View className='goods-timer__hd'>
                 <View className='goods-prices'>
                   <View className='goods-prices-point'>已筹集{info.luckydraw_point*info.sales_num}积分</View>
-                  <AtProgress percent={(info.sales_num/info.luckydraw_store)*100} status='progress' color='#13CE66' />
+                  <AtProgress percent={((info.sales_num/info.luckydraw_store)*100).toFixed(0)} status='progress' color='#13CE66' />
                 </View>
               </View>
               <View className='goods-timer__bd'>
