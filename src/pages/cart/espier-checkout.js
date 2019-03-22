@@ -451,6 +451,17 @@ export default class CartCheckout extends Component {
                   value={total.freight_point}
                 />
               </SpCell>
+              <SpCell
+                className='trade-sub-total__item'
+                title='积分'
+              >
+                <Price
+                  noSymbol
+                  noDecimal
+                  appendText='积分'
+                  value={total.point}
+                />
+              </SpCell>
             </View>
           )}
 
