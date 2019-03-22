@@ -98,7 +98,7 @@ export default class Pay extends Component {
 
         <View className='member-integral__bd'>
           <View className='integral-sec integral-info__status'>
-            <View className='integral-sec__share'>点击“立即充值”即表示阅读并同意<Text onClick={this.handleClickPayRule}>《充值协议》</Text></View>
+            <View className='integral-sec__share'>点击“立即充值”即表示阅读并同意<Text onClick={this.handleClickPayRule.bind(this)}>《充值协议》</Text></View>
           </View>
           <View className='integral-sec member-pay'>
             {
