@@ -28,6 +28,11 @@ export default class MemberIndex extends Component {
   componentDidMount () {
     this.fetch()
   }
+
+  componentDidShow () {
+    this.fetch()
+  }
+  
   async fetch () {
     const res = await api.member.memberInfo()
     this.setState({
@@ -46,9 +51,7 @@ export default class MemberIndex extends Component {
       ordersCount
     })
   }
-  componentDidShow () {
 
-  }
 
   handleClickRecommend = () => {
     const { info } = this.state
