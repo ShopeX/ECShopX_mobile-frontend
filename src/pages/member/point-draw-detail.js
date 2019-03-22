@@ -27,7 +27,6 @@ export default class PointDrawDetail extends Component {
 
     this.state = {
       info: null,
-      desc: null,
       windowWidth: 320,
       curImgIdx: 0,
       timer: null,
@@ -68,9 +67,7 @@ export default class PointDrawDetail extends Component {
   async fetch () {
     const { luckydraw_id, item_id } = this.$router.params
     const luckuser = await api.member.pointDrawLuck(item_id)
-    console.log(luckuser.str_lucky, 70)
     const info = await api.member.pointDrawDetail(luckydraw_id)
-    const { intro: desc } = info.goods_info
     console.log(this.$router.params)
 
     let timer
@@ -89,7 +86,6 @@ export default class PointDrawDetail extends Component {
     })
     this.setState({
       info,
-      desc,
       timer,
       luckName: luckuser.str_lucky || ''
     })
@@ -122,7 +118,7 @@ export default class PointDrawDetail extends Component {
   }
 
   render () {
-    const { info, windowWidth, curImgIdx, desc, scrollTop, showBackToTop, luckName } = this.state
+    const { info, windowWidth, curImgIdx, scrollTop, showBackToTop, luckName } = this.state
     const { timer } = this.state
     if (!info) {
       return (
@@ -260,7 +256,7 @@ export default class PointDrawDetail extends Component {
             <AtDivider content='宝贝详情'></AtDivider>
             <SpHtmlContent
               className='goods-detail__content'
-              content={desc}
+              content={info.description}
             />
           </View>
         </ScrollView>

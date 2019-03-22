@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {Button, Image, Text, View} from '@tarojs/components'
+import {Button, Image, View} from '@tarojs/components'
 import { pickBy, formatDataTime } from '@/utils'
 import api from '@/api'
 
@@ -20,7 +20,6 @@ export default class CashierResult extends Component {
   async fetch () {
     const { order_id } = this.$router.params
     const orderInfo = await api.cashier.getOrderDetail(order_id)
-
     const info = pickBy(orderInfo, {
       create_time: ({ create_time }) => (formatDataTime(create_time * 1000)),
       order_id: 'order_id',
@@ -38,9 +37,16 @@ export default class CashierResult extends Component {
   }
 
   handleClickBack = (order_id) => {
-    Taro.navigateTo({
-      url: `/pages/trade/detail?id=${order_id}`
-    })
+    if(order_id.indexOf('CJ') === -1){
+      Taro.navigateTo({
+        url: `/pages/trade/detail?id=${order_id}`
+      })
+    }else {
+      Taro.navigateTo({
+        url: `/pages/member/point-draw-order`
+      })
+
+    }
   }
 
   handleClickRoam = () => {

@@ -26,30 +26,28 @@ export default class MemberIndex extends Component {
   }
 
   componentDidMount () {
-    api.member.memberInfo()
-      .then(res => {
-        console.log(res, 29)
-        this.setState({
-          info: {
-            deposit: (res.deposit/100).toFixed(2),
-            point: res.point,
-            coupon: res.coupon,
-            luckdraw: res.luckdraw,
-            is_promoter: res.is_promoter,
-            is_open_popularize: res.is_open_popularize,
-            user_card_code: res.memberInfo.user_card_code,
-            username: res.memberInfo.username,
-          }
-        })
-      })
+    this.fetch()
+  }
+  async fetch () {
+    const res = await api.member.memberInfo()
+    this.setState({
+      info: {
+        deposit: res.deposit ? (res.deposit/100).toFixed(2) : 0,
+        point: res.point ? res.point : 0,
+        coupon: res.coupon? res.coupon : 0,
+        luckdraw: res.luckdraw? res.luckdraw : 0,
+        is_promoter: res.is_promoter,
+        is_open_popularize: res.is_open_popularize,
+        username: res.memberInfo.username,
+      }
+    })
+    const ordersCount = await api.trade.getCount()
+    this.setState({
+      ordersCount
+    })
   }
   componentDidShow () {
-    api.trade.getCount()
-      .then((ordersCount) => {
-        this.setState({
-          ordersCount
-        })
-      })
+
   }
 
   handleClickRecommend = () => {
