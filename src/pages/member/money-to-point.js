@@ -45,7 +45,7 @@ export default class MoneyToPoint extends Component {
   }
   handleConfirmPay = async () => {
     const query = {
-      money: this.state.otherNumber
+      money: this.state.otherNumber * 100
     }
     try {
       await api.member.depositToPoint(query)

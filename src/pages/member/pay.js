@@ -55,7 +55,7 @@ export default class Pay extends Component {
 
   handleClickPay = async () => {
     const query = {
-      total_fee: this.state.isActiveName,
+      total_fee: this.state.isActiveName * 100,
     }
     if(!query.total_fee) {
       return S.toast('请选择充值数额')
