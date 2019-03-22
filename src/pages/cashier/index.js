@@ -2,9 +2,10 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtNavBar } from 'taro-ui'
 import api from '@/api'
+import { Loading } from '@/components'
 import { pickBy } from '@/utils'
 import { withLogin } from '@/hocs'
-import { AlipayPay, WeappPay, WeH5Pay, PointDepositPay } from './comps'
+import { AlipayPay, WeH5Pay, PointDepositPay } from './comps'
 
 import './index.scss'
 
@@ -23,6 +24,7 @@ export default class Cashier extends Component {
 
   async fetch () {
     const { order_id } = this.$router.params
+    Taro.showLoading()
     const orderInfo = await api.cashier.getOrderDetail(order_id)
     const info = pickBy(orderInfo, {
       order_id: 'order_id',
@@ -37,6 +39,7 @@ export default class Cashier extends Component {
     this.setState({
       info: info
     })
+    Taro.hideLoading()
 
   }
 
@@ -52,6 +55,10 @@ export default class Cashier extends Component {
 
   render () {
     const { info } = this.state
+
+    if(!info) {
+      <Loading />
+    }
 
     return (
       <View className='page-cashier-index'>
