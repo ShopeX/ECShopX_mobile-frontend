@@ -99,12 +99,10 @@ export function navigateTo (url, isRedirect) {
   }
 
   if (isRedirect) {
-    Taro.redirectTo({ url })
-  } else {
-    Taro.navigateTo({ url })
+    return Taro.redirectTo({ url })
   }
 
-  return
+  return Taro.navigateTo({ url })
 }
 
 export function resolvePath (baseUrl, params = {}) {
@@ -157,6 +155,10 @@ export function goToPage (page) {
   const url = `${loc.protocol}//${loc.host}/${page}`
   console.log(url)
   loc.href = url
+}
+
+export function maskMobile (mobile) {
+  return mobile.replace(/^(\d{2})(\d+)(\d{2}$)/, '$1******$3')
 }
 
 export {

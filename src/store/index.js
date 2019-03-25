@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
-import { persistStore, persistReducer } from 'redux-persist'
+import persistReducer from 'redux-persist/lib/persistReducer'
+import persistStore from 'redux-persist/lib/persistStore'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import reducers from './reducers'

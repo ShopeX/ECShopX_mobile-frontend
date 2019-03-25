@@ -71,7 +71,7 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
         this.$__autoLogin_state = 'pending'
         let res
         try {
-          res = this.$__autoLogin_res = await S.autoLogin(this)
+          res = await S.autoLogin(this)
           this.$__autoLogin_state = !res ? 'fail' : 'success'
         } catch (e) {
           this.$__autoLogin_state = 'fail'
@@ -85,12 +85,13 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
         // if (this.$__autoLogin_state === 'fail') return Promise.resolve(false)
         let timer
         let cnt = 8
+        const self = this
 
         return new Promise((resolve) => {
           const next = () => {
             if (timer) clearTimeout(timer)
             timer = setTimeout(() => {
-              const state = this.$__autoLogin_state
+              const state = self.$__autoLogin_state
               if (state === 'success' || state === 'fail') {
                 clearTimeout(timer)
                 timer = null

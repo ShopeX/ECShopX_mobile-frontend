@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { SearchBar, SpToast, TabBar, Loading } from '@/components'
 import req from '@/api/req'
 import S from "@/spx";
-import { WgtSlider, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase } from './wgts'
+import { WgtSlider, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from './wgts'
 
 import './index.scss'
 
@@ -21,15 +21,14 @@ export default class HomeIndex extends Component {
     }
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.fetch()
   }
-
-  componentDidShow () {}
 
   async fetch () {
     const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
     const info = await req.get(url)
+
     if (!S.getAuthToken()) {
       this.setState({
         authStatus: true
@@ -68,6 +67,9 @@ export default class HomeIndex extends Component {
                     {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} />}
                     {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} />}
                     {item.name === 'showcase' && <WgtShowcase info={item} />}
+                    {idx === 1 && (
+                      <WgtPointLuck />
+                    )}
                   </View>
                 )
               })

@@ -17,9 +17,7 @@ export default class NavBar extends Component {
 
     handleClickLeftIcon = () => {
       if (this.props.onClickLeftIcon) return this.props.onClickLeftIcon()
-      return Taro.navigateBack({
-        delta: 1
-      })
+      return Taro.navigateBack()
     }
 
     render () {

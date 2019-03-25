@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
 import '@tarojs/async-await'
-import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from '@tarojs/redux'
 import configStore from '@/store'
 import useHooks from '@/hooks'
@@ -14,7 +13,7 @@ import './app.scss'
 //   require('nerv-devtools')
 // }
 
-const { store, persistor } = configStore()
+const { store } = configStore()
 useHooks()
 
 class App extends Component {
@@ -93,9 +92,7 @@ class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <Index />
-        </PersistGate>
+        <Index />
       </Provider>
     )
   }

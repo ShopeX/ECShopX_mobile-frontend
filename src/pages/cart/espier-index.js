@@ -39,10 +39,8 @@ export default class CartIndex extends Component {
     if (this.props.defaultAllSelect) {
       this.handleAllSelect(true)
     }
-  }
 
-  componentDidShow () {
-    // this.fetch()
+    console.info(this)
   }
 
   async fetch () {
@@ -61,6 +59,10 @@ export default class CartIndex extends Component {
 
   get isTotalChecked () {
     return this.props.list.length === this.state.selection.size
+  }
+
+  navigateBack = () => {
+
   }
 
   toggleCartMode = () => {
@@ -139,7 +141,9 @@ export default class CartIndex extends Component {
     })
   }
 
-  navigateTo = navigateTo
+  navigateTo = (...args) => {
+    navigateTo.apply(this, args)
+  }
 
   render () {
     const { list } = this.props

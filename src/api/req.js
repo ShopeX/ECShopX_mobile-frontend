@@ -1,38 +1,11 @@
 import Taro from '@tarojs/taro'
 import S from '@/spx'
 import qs from 'qs'
-import axios from 'axios'
 
 function addQuery (url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
 }
 
-const request = (() => {
-  return Taro.request
-
-  if (process.env.TARO_ENV === 'weapp') {
-  } else {
-    return function (config) {
-      const params = {
-        ...config,
-        headers: config.header,
-        validateStatus: status => status < 500
-      }
-
-      if (params.method && params.method.toLowerCase() === 'get') {
-        params.params = params.data
-        delete params.data
-      }
-      delete config.header
-
-      return axios.request(params)
-        .then(res => {
-          res.statusCode = res.status
-          return res
-        })
-    }
-  }
-})()
 
 class API {
   constructor (options = {}) {
@@ -111,7 +84,7 @@ class API {
       options.data = qs.stringify(options.data)
     }
 
-    return request(options)
+    return Taro.request(options)
       .then(res => {
         // eslint-disable-next-line
         const { data, statusCode, header } = res

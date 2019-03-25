@@ -132,3 +132,6 @@ export function pointOrderAddress (params = {}) {
 export function pointOrderConfirm (params = {}) {
   return req.post('/promotion/member/luckyorderfinish', params)
 }
+export function pointDrawLuckAll () {
+  return req.get(`/promotion/luckydrawmember`)
+}

@@ -27,8 +27,8 @@ module.exports = {
           chain.merge({
             resolve: {
               alias: {
-                'react': 'nervjs',
-                'react-dom': 'nervjs'
+                'react$': 'nervjs',
+                'react-dom$': 'nervjs'
               }
             },
             plugin: {
@@ -46,5 +46,16 @@ module.exports = {
           })
         }
       }
-    : {}
+    : {
+      webpackChain (chain) {
+        chain.merge({
+          resolve: {
+            alias: {
+              'react$': 'nervjs',
+              'react-dom$': 'nervjs'
+            }
+          }
+        })
+      }
+    }
 }

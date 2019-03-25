@@ -29,6 +29,7 @@ export default class CashierResult extends Component {
       tradeId: 'tradeId',
       payStatus: 'payStatus'
     })
+
     this.setState({
       info: info
     })

@@ -24,10 +24,10 @@ export default class TabBar extends Component {
     this.state = {
       current: 0,
       tabList: [
-        { title: '首页', iconType: 'shop', iconPrefixClass: 'sp-icon', url: '/pages/home/index' },
-        { title: '分类', iconType: 'menu', iconPrefixClass: 'sp-icon', url: '/pages/category/index' },
+        { title: '首页', iconType: 'shop', iconPrefixClass: 'sp-icon', url: '/pages/home/index', urlRedirect: true },
+        { title: '分类', iconType: 'menu', iconPrefixClass: 'sp-icon', url: '/pages/category/index', urlRedirect: true },
         { title: '购物车', iconType: 'cart', text: this.props.cartTotalCount || '', max: '99', iconPrefixClass: 'sp-icon', url: '/pages/cart/espier-index' },
-        { title: '会员', iconType: 'user', iconPrefixClass: 'sp-icon', url: '/pages/member/index' }
+        { title: '会员', iconType: 'user', iconPrefixClass: 'sp-icon', url: '/pages/member/index', urlRedirect: true }
       ]
     }
   }
@@ -85,7 +85,11 @@ export default class TabBar extends Component {
       const { fullPath } = getCurrentRoute(this.$router)
 
       if (url && fullPath !== url) {
-        navigateTo(url, urlRedirect)
+        if (urlRedirect) {
+          Taro.redirectTo({ url })
+        } else {
+          Taro.navigateTo({ url })
+        }
       }
     }
   }

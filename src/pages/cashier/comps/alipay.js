@@ -16,8 +16,17 @@ export default class AlipayBtn extends Component {
     }
   }
 
+  componentDidMount () {
+    const refMeta = document.querySelector('meta[name="referrer"]')
+    refMeta.setAttribute('content', 'always')
+  }
+
+  componentWillUnmount () {
+    const refMeta = document.querySelector('meta[name="referrer"]')
+    refMeta.setAttribute('content', 'never')
+  }
+
   handleClickPayment = async () => {
-    console.log(this.props.payType, 21)
     const query = {
       order_id: this.props.orderID,
       pay_type: this.props.payType,
@@ -25,9 +34,10 @@ export default class AlipayBtn extends Component {
     }
     try {
       const { payment } = await api.cashier.getPayment(query)
-      let view = document.getElementById("box");
-      view.innerHTML = payment
-      document.forms['alipaysubmit'].submit()
+      const el = document.createElement('div')
+      el.innerHTML = payment.replace(/<script>(.*)?<\/script>/, '')
+      document.body.appendChild(el)
+      document.getElementById('alipaysubmit').submit()
     } catch (error) {
       console.log(error)
       Taro.redirectTo({
@@ -53,7 +63,6 @@ export default class AlipayBtn extends Component {
     return (
       <View>
         <View className='alipay-btn' onClick={this.handleClickPayment.bind(this)}>支付宝支付</View>
-        <View id='box'> </View>
       </View>
 
     )

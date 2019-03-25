@@ -127,21 +127,21 @@ export default class MemberIndex extends Component {
                     to='/pages/trade/list?status=0'
                   />
                 </AtBadge>
-                <AtBadge value={ordersCount.normal_payed_notdelivery}>
+                <AtBadge value={ordersCount.normal_payed_notdelivery || ''}>
                   <SpIconMenu
                     icon='clock'
                     title='待发货'
                     to='/pages/trade/list?status=6'
                   />
                 </AtBadge>
-                <AtBadge value={ordersCount.normal_payed_delivered}>
+                <AtBadge value={ordersCount.normal_payed_delivered || ''}>
                   <SpIconMenu
                     icon='baoguo'
                     title='待收货'
                     to='/pages/trade/list?status=2'
                   />
                 </AtBadge>
-                <AtBadge>
+                <AtBadge value={ordersCount.aftersales || ''}>
                   <SpIconMenu
                     icon='comment'
                     title='售后'

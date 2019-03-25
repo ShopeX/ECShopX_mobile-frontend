@@ -46,7 +46,7 @@ const config = {
       : '1'
   },
   alias: {
-    '@': path.join(__dirname, '../src'),
+    '@': path.join(__dirname, '../src')
   },
   copy: {
     patterns: [
@@ -125,13 +125,12 @@ const config = {
       chain.merge({
         resolve: {
           alias: {
-            'react': 'nervjs',
-            'react-dom': 'nervjs'
+            'react$': 'nervjs',
+            'react-dom$': 'nervjs'
           }
         }
       })
-    },
-    enableDll: false
+    }
   }
 }
 
