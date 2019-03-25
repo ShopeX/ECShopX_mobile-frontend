@@ -36,7 +36,16 @@ export default class PointOrderDetail extends Component {
       point: 'luckydraw_point',
       status_desc: 'lucky_status',
       status_img: 'lucky_status',
-      address_id: 'address_id'
+      address_id: 'address_id',
+      ship_status: 'ship_status',
+      receiver_name: 'data.address.username',
+      receiver_mobile: 'data.address.telephone',
+      receiver_state: 'data.address.province',
+      receiver_city: 'data.address.city',
+      receiver_district: 'data.address.county',
+      receiver_address: 'data.address.adrdetail',
+      ship_corp: 'ship_corp',
+      ship_code: 'ship_code',
     })
     if(info.status_desc === 'lucky') {
       info.status_desc_name = '中奖'
@@ -63,17 +72,23 @@ export default class PointOrderDetail extends Component {
   async handleClickBtn (type) {
     const { info } = this.state
 
-    if (type === 'pay') {
-      Taro.navigateTo({
-        url: `/pages/cashier/index?order_id=${info.tid}`
+    if (type === 'address') {
+      const { confirm } = await Taro.showModal({
+        title: '确认提交该收货地址，提交后不可修改？',
+        content: ''
       })
-      return
-    }
-
-    if (type === 'cancel') {
-      Taro.navigateTo({
-        url: `/pages/trade/cancel?order_id=${info.tid}`
-      })
+      if(confirm){
+        const query = {
+          luckydraw_trade_id: info.luckydraw_trade_id,
+          address_id: info.address_id,
+        }
+        try {
+          await api.member.pointOrderAddress(query)
+          this.fetch()
+        } catch (e) {
+          console.log(e)
+        }
+      }
       return
     }
 
@@ -83,11 +98,15 @@ export default class PointOrderDetail extends Component {
         content: ''
       })
       if (confirm) {
-        await api.trade.confirm(info.tid)
-        const { fullPath } = getCurrentRoute(this.$router)
-        Taro.redirectTo({
-          url: fullPath
-        })
+        const query = {
+          luckydraw_trade_id: info.luckydraw_trade_id,
+        }
+        try {
+          await api.member.pointOrderConfirm(query)
+          this.fetch()
+        } catch (e) {
+          console.log(e)
+        }
       }
       return
     }
@@ -151,6 +170,12 @@ export default class PointOrderDetail extends Component {
     }
   }
 
+  handleClickDelivery = () => {
+    Taro.navigateTo({
+      url: '/pages/trade/delivery-info'
+    })
+  }
+
   render () {
     const { info, address, showAddressPicker } = this.state
     console.log(address)
@@ -178,7 +203,10 @@ export default class PointOrderDetail extends Component {
         </View>
         {
           info.status_desc === 'lucky'
-            ? <View className='trade-detail__addr' onClick={this.toggleAddressPicker.bind(this, true)}>
+            ? <View
+              className='trade-detail__addr'
+              onClick={info.ship_status === 'waitaddress' ? this.toggleAddressPicker.bind(this, true) : null}
+            >
                 <SpCell
                   icon='map-pin'
                 >
@@ -193,10 +221,10 @@ export default class PointOrderDetail extends Component {
                         </Text>
                       </View>
                       : <View className='address-info__bd'>
-                        <Text className='address-info__null'>
-                          请选择收货地址
-                        </Text>
-                      </View>
+                          <Text className='address-info__null'>
+                            请选择收货地址
+                          </Text>
+                        </View>
                   }
                 </SpCell>
               </View>
@@ -238,7 +266,21 @@ export default class PointOrderDetail extends Component {
           </View>
         </View>
 
-        {info.status === 'WAIT_BUYER_CONFIRM_GOODS' && (<View className='toolbar toolbar-actions'>
+        {
+          info.ship_corp && info.ship_code
+            ? <View className='sec trade-extra'>
+              <View className='trade-extra__bd'>
+                <Text>物流公司：{info.ship_corp}</Text>
+                <Text>物流单号：{info.ship_code}</Text>
+              </View>
+              <View className='trade-extra__ft'>
+                <AtButton size='small' onClick={this.handleClickDelivery.bind(this)}>查看</AtButton>
+              </View>
+            </View>
+            : null
+        }
+
+        {info.ship_status === 'waitreceive' && (<View className='toolbar toolbar-actions'>
           <AtButton
             circle
             type='secondary'
@@ -246,12 +288,12 @@ export default class PointOrderDetail extends Component {
           >确认收货</AtButton>
         </View>)}
 
-        {info.status === 'WAIT_RATE' && (<View className='toolbar toolbar-actions'>
+        {info.ship_status === 'waitaddress' && (<View className='toolbar toolbar-actions'>
           <AtButton
             circle
             type='secondary'
-            onClick={this.handleClickBtn.bind(this, 'rate')}
-          >评价</AtButton>
+            onClick={this.handleClickBtn.bind(this, 'address')}
+          >提交地址</AtButton>
         </View>)}
 
         <AddressPicker

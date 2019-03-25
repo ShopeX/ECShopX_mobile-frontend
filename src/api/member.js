@@ -125,6 +125,13 @@ export function pointOrderDetail (luckydraw_trade_id) {
   return req.get(`/promotion/member/luckydraworder/${luckydraw_trade_id}`)
 }
 
+export function pointOrderAddress (params = {}) {
+  return req.post('/promotion/member/luckyaddress', params)
+}
+
+export function pointOrderConfirm (params = {}) {
+  return req.post('/promotion/member/luckyorderfinish', params)
+}
 export function pointDrawLuckAll () {
   return req.get(`/promotion/luckydrawmember`)
 }
