@@ -49,6 +49,10 @@ export function qrcodeData () {
   return req.get('/promoter/qrcode')
 }
 
+export function promoter () {
+  return req.post('/promoter')
+}
+
 export function h5_qrcodeData () {
   return req.get('/brokerage/qrcode')
 }

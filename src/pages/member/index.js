@@ -53,15 +53,20 @@ export default class MemberIndex extends Component {
     })
   }
 
-  handleClickRecommend = () => {
+  handleClickRecommend = async () => {
     const { info } = this.state
-    if(info.is_open_popularize && info.is_promoter) {
-      Taro.navigateTo({
-        url: '/pages/member/recommend'
-      })
-    } else {
-      S.toast('请先成为推广员')
+    if (!info.is_open_popularize) {
+      S.toast('未开启推广')
+      return
     }
+
+    if (info.is_open_popularize && !info.is_promoter) {
+      await api.member.promoter()
+    }
+
+    Taro.navigateTo({
+      url: '/pages/member/recommend'
+    })
   }
 
   render () {
@@ -161,7 +166,6 @@ export default class MemberIndex extends Component {
                 <SpIconMenu
                   icon='thumb'
                   title='推广管理'
-                  // to={`${info.is_open_popularize && info.is_promoter} ? '/pages/member/recommend' : '`}
                 />
               </View>
               <View className='member-tools__item'>
