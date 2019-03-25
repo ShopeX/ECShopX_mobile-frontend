@@ -10,7 +10,9 @@ export default class CashierResult extends Component {
     super(props)
 
     this.state = {
-      info: {}
+      info: {
+        payStatus: 'success'
+      }
     }
   }
   componentDidMount () {
