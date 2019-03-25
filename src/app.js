@@ -35,6 +35,7 @@ class App extends Component {
       'pages/article/index',
 
       'pages/auth/reg',
+      'pages/auth/reg-rule',
       'pages/auth/login',
       'pages/auth/forgotpwd',
 

@@ -75,16 +75,16 @@
   .at-countdown__time-box {
     background: #fff;
     border-radius: 6px;
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
+    //width: 50px;
+    //height: 50px;
+    //line-height: 50px;
   }
 }
 
 .goods-prices {
   display: flex;
   align-items: baseline;
-  font-size: $font-size * 2;
+  font-size: $font-size;
   margin: 0 0 12px;
   .price__symbol {
     font-size: $font-size;
@@ -136,7 +136,7 @@
 }
 
 .notice-bar-hd {
-  margin-bottom: 30px;
+  margin-bottom: $edge-margin;
  }
 .goods-sec-props {
   .sec-hd {

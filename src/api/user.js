@@ -13,8 +13,11 @@ export function refreshToken () {
 }
 
 export function reg (data) {
-  // return req.post('http://pjj.aixue7.com/index.php/api/weapp/deposit/rechargeruleshttp://api.espier.local/index.php/api/h5app/wxapp/member', data)
   return req.post('/member', data)
+}
+
+export function regRule () {
+  return req.get('/member/agreement')
 }
 
 export function regImg (params = {}) {

@@ -66,7 +66,10 @@ export default class PointDrawDetail extends Component {
 
   async fetch () {
     const { luckydraw_id, item_id } = this.$router.params
-    const luckuser = await api.member.pointDrawLuck(item_id)
+    const query = {
+      item_id: item_id
+    }
+    const luckuser = await api.member.pointDrawLuck(query)
     const info = await api.member.pointDrawDetail(luckydraw_id)
     console.log(this.$router.params)
 
