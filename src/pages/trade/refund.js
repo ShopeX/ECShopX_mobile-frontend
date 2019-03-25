@@ -163,7 +163,6 @@ export default class TradeRefund extends Component {
     }
 
     const method = aftersales_bn ? 'modify' : 'apply'
-    debugger
     await api.aftersales[method](data)
 
     S.toast('操作成功')

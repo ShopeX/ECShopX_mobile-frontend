@@ -1,7 +1,7 @@
 import req from './req'
 
 export function login (data) {
-  return req.post('/login?company_id=1', data)
+  return req.post('/login', data)
 }
 
 export function logout () {

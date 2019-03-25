@@ -133,6 +133,7 @@ class Spx {
 
       let userInfo = await this.getUserInfo()
       if (next) await next(userInfo)
+      if (!userInfo) throw new Error('userInfo is empty')
 
       return userInfo
     } catch (e) {

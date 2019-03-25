@@ -4,6 +4,7 @@ import { AtButton } from 'taro-ui'
 import { Loading, SpCell, SpToast, Price, NavBar } from '@/components'
 import { classNames, log, pickBy, formatTime, resolveOrderStatus, copyText } from '@/utils'
 import api from '@/api'
+import { getCurrentRoute } from '@/utils'
 import OrderItem from './comps/order-item'
 
 import './detail.scss'
@@ -96,11 +97,25 @@ export default class TradeDetail extends Component {
       return
     }
 
-    if (type === 'confirm') {
-      await api.trade.confirm(info.tid)
-      Taro.redirectTo({
-        url: this.$router.path
+    if (type === 'cancel') {
+      Taro.navigateTo({
+        url: `/pages/trade/cancel?order_id=${info.tid}`
       })
+      return
+    }
+
+    if (type === 'confirm') {
+      const { confirm } = await Taro.showModal({
+        title: '确认收货？',
+        content: ''
+      })
+      if (confirm) {
+        await api.trade.confirm(info.tid)
+        const { fullPath } = getCurrentRoute(this.$router)
+        Taro.redirectTo({
+          url: fullPath
+        })
+      }
       return
     }
   }
@@ -200,7 +215,7 @@ export default class TradeDetail extends Component {
               >
                 <Price value={info.post_fee} />
               </SpCell>
-              {info.point && (
+              {info.point > 0 && (
                 <SpCell
                   className='trade-detail__total-item'
                   title='积分'

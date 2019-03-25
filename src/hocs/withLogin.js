@@ -7,7 +7,7 @@ const LIFE_CYCLE_TYPES = {
   DID_SHOW: 2
 }
 
-export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT) {
+export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT) {
   if (LIFE_CYCLE_TYPES[lifeCycle] !== undefined) {
     console.warn(`lifeCycle is not in defined types: ${lifeCycle}`)
     return Component => Component
@@ -81,18 +81,30 @@ export default function withLogin (next, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT
       }
 
       $__autoLoginDone () {
-        if (this.$__autoLogin_state === 'success') return Promise.resolve(true)
-        if (this.$__autoLogin_state === 'fail') return Promise.resolve(false)
+        // if (this.$__autoLogin_state === 'success') return Promise.resolve(true)
+        // if (this.$__autoLogin_state === 'fail') return Promise.resolve(false)
+        let timer
+        let cnt = 8
 
         return new Promise((resolve) => {
-          let timer = setInterval(() => {
-            const state = this.$__autoLogin_state
-            if (state === 'success' || state === 'fail') {
-              clearInterval(timer)
-              timer = null
-              resolve(state === 'success' ? 'aaaaa' : false)
-            }
-          }, 100)
+          const next = () => {
+            if (timer) clearTimeout(timer)
+            timer = setTimeout(() => {
+              const state = this.$__autoLogin_state
+              if (state === 'success' || state === 'fail') {
+                clearTimeout(timer)
+                timer = null
+                resolve(state === 'success' ? true : false)
+              } else if (cnt > 0) {
+                cnt--
+                next()
+              } else {
+                resolve(false)
+              }
+            }, 70)
+          }
+
+          next()
         })
       }
     }
