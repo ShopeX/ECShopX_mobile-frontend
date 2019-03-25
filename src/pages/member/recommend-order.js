@@ -16,35 +16,20 @@ export default class RecommendOrder extends Component {
 
     this.state = {
       ...this.state,
-      curTabIdx: 0,
-      tabList: [
-        {title: '未确认', status: 'noClose'},
-        {title: '已确认', status: 'close'}
-      ],
       list: []
     }
   }
 
   componentDidMount () {
-    const tabIdx = this.state.tabList.findIndex(tab => tab.status === 'noClose')
-
-    if (tabIdx >= 0) {
-      this.setState({
-        curTabIdx: tabIdx
-      }, () => {
-        this.nextPage()
-      })
-    } else {
-      this.nextPage()
-    }
+    this.nextPage()
   }
 
   async fetch (params) {
-    const { tabList, curTabIdx } = this.state
+    // const { tabList, curTabIdx } = this.state
     const { brokerage_source } = this.$router.params
     params = {
       ...params,
-      close_type: tabList[curTabIdx].status,
+      close_type: 'close',
       brokerage_source: brokerage_source
     }
     const { list, total_count: total} = await api.member.recommendOrder(params)
@@ -63,25 +48,8 @@ export default class RecommendOrder extends Component {
     }
   }
 
-  handleClickTab = (idx) => {
-    if (this.state.page.isLoading) return
-
-    if (idx !== this.state.curTabIdx) {
-      this.resetPage()
-      this.setState({
-        list: []
-      })
-    }
-
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
-  }
-
   render () {
-    const { curTabIdx, tabList, list, page } = this.state
+    const { list, page } = this.state
 
     return (
       <View className='trade-list'>
@@ -91,27 +59,9 @@ export default class RecommendOrder extends Component {
           fixed='true'
         />
 
-        <AtTabs
-          className='trade-list__tabs'
-          current={curTabIdx}
-          tabList={tabList}
-          onClick={this.handleClickTab}
-        >
-          {
-            tabList.map((panes, pIdx) =>
-              (<AtTabsPane
-                current={curTabIdx}
-                key={pIdx}
-                index={pIdx}
-              >
-              </AtTabsPane>)
-            )
-          }
-        </AtTabs>
-
         <ScrollView
           scrollY
-          className='trade-list__scroll'
+          className='trade-list__scroll order-recom'
           onScrollToLower={this.nextPage}
         >
           {

@@ -17,7 +17,10 @@ export default class Recommend extends Component {
     this.state = {
       ...this.state,
       info: {},
-      detail: {},
+      detail: {
+        isbuy_promoter: '0',
+        notbuy_promoter: '0',
+      },
       isOpened: false,
     }
   }
@@ -45,7 +48,7 @@ export default class Recommend extends Component {
 
     const resIndex = await api.member.recommendIndexInfo()
     const nIndexList = pickBy(resIndex, {
-      itemTotalPrice: ({ itemTotalPrice }) => (itemTotalPrice/100).toFixed(2),
+      rebateTotal: ({ rebateTotal }) => (rebateTotal/100).toFixed(2),
       cashWithdrawalRebate: ({ cashWithdrawalRebate }) => (cashWithdrawalRebate/100).toFixed(2),
       promoter_order_count: 'promoter_order_count',
       promoter_grade_order_count: 'promoter_grade_order_count',
@@ -111,35 +114,39 @@ export default class Recommend extends Component {
         <View className='member-index__bd'>
           <View className='member-sec member-info__status'>
             <View className='member-status__item'>
-              <View className='member-status__item-val'>{detail.itemTotalPrice}<Text>元</Text></View>
-              <Text className='member-status__item-title'>营业额</Text>
-            </View>
-            <View className='member-status__item'>
-              <View className='member-status__item-val'>{detail.cashWithdrawalRebate}<Text>元</Text></View>
-              <Text className='member-status__item-title'>可提现</Text>
+              <View className='member-status__item-title'>
+                推广金额：<Text className='member-status__item-val'>{detail.rebateTotal}元</Text>
+              </View>
             </View>
           </View>
           <View className='member-sec member-trades'>
             <View className='sec-bd'>
-              <View className='member-recommend__menus'>
-                <AtBadge
-                  value={detail.promoter_order_count}
-                >
-                  <SpIconMenu
-                    icon='dingdan1'
-                    title='提成订单'
-                    to='/pages/member/recommend-order?brokerage_source=order'
-                  />
-                </AtBadge>
-                <AtBadge
-                  value={detail.promoter_grade_order_count}
-                >
-                  <SpIconMenu
-                    icon='dingdan1'
-                    title='津贴订单'
-                    to='/pages/member/recommend-order?brokerage_source=order_team'
-                  />
-                </AtBadge>
+              <View
+                className='member-recommend__menus'
+                onClick={this.navigateTo.bind(this, '/pages/member/recommend-order?brokerage_source=recharge')}
+              >
+                <View>
+                  <Text className='sp-icon sp-icon-dingdan1 icon-dingdan'> </Text>
+                  <Text>推广记录</Text>
+                </View>
+                {/*<AtBadge*/}
+                  {/*value={detail.promoter_order_count}*/}
+                {/*>*/}
+                  {/*<SpIconMenu*/}
+                    {/*icon='dingdan1'*/}
+                    {/*title='提成订单'*/}
+                    {/*to='/pages/member/recommend-order?brokerage_source=order'*/}
+                  {/*/>*/}
+                {/*</AtBadge>*/}
+                {/*<AtBadge*/}
+                  {/*value={detail.promoter_grade_order_count}*/}
+                {/*>*/}
+                  {/*<SpIconMenu*/}
+                    {/*icon='dingdan1'*/}
+                    {/*title='津贴订单'*/}
+                    {/*to='/pages/member/recommend-order?brokerage_source=order_team'*/}
+                  {/*/>*/}
+                {/*</AtBadge>*/}
               </View>
             </View>
           </View>
@@ -154,8 +161,8 @@ export default class Recommend extends Component {
             </View>
             <View className='sec-bd'>
               <View className='member-recommend__menus'>
-                <View>已购买会员<Text className='member-number'>{detail.isbuy_promoter}</Text>人</View>
-                <View>未购买会员<Text className='member-number'>{detail.notbuy_promoter}</Text>人</View>
+                <View>已充值会员<Text className='member-number'>{detail.isbuy_promoter}</Text>人</View>
+                <View>未充值会员<Text className='member-number'>{detail.notbuy_promoter}</Text>人</View>
               </View>
             </View>
           </View>
