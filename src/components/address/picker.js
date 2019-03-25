@@ -104,7 +104,6 @@ export default class AddressPicker extends Component {
 
       this.exitEdit()
     } catch (error) {
-      S.toast(`${error.res.data.error.message}`)
       return false
     }
 

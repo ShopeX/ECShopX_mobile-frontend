@@ -33,6 +33,7 @@ export default class Forgotpwd extends Component {
         imgInfo: img_res
       })
     } catch (error) {
+      return false
       console.log(error)
     }
   }
@@ -72,6 +73,7 @@ export default class Forgotpwd extends Component {
         })
       }, 700)
     } catch (error) {
+      return false
       console.log(error)
     }
   }
@@ -124,6 +126,7 @@ export default class Forgotpwd extends Component {
       await api.user.regSmsCode(query)
       S.toast('发送成功')
     } catch (error) {
+      return false
       console.log(error)
     }
 

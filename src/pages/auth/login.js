@@ -50,6 +50,7 @@ export default class Login extends Component {
         url: redirect
       })
     } catch (error) {
+      return false
       console.log(error)
     }
   }
