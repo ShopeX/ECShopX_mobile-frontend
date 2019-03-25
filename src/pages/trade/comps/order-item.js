@@ -34,7 +34,9 @@ export default class OrderItem extends Component {
             ? <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={info.point}></Price>
             : <Price className='order-item__price' value={info.price}></Price>
           }
-          <Text className='order-item__num'>x {info.num}</Text>
+          {
+            info.num ? <Text className='order-item__num'>x {info.num}</Text> : null
+          }
         </View>
       </View>
     )

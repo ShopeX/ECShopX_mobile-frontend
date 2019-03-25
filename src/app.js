@@ -34,6 +34,7 @@ class App extends Component {
       'pages/article/index',
 
       'pages/auth/reg',
+      'pages/auth/reg-rule',
       'pages/auth/login',
       'pages/auth/forgotpwd',
 
@@ -46,6 +47,7 @@ class App extends Component {
       'pages/member/point-draw',
       'pages/member/point-draw-detail',
       'pages/member/point-draw-order',
+      'pages/member/point-order-detail',
       'pages/member/pay',
       'pages/member/pay-rule',
       'pages/member/money-to-point',
@@ -59,6 +61,7 @@ class App extends Component {
 
       'pages/trade/list',
       'pages/trade/detail',
+      'pages/trade/delivery-info',
       'pages/trade/rate',
       'pages/trade/cancel',
       'pages/trade/after-sale',

@@ -35,7 +35,8 @@ export default class SearchBar extends Component {
   handleFocusSearchHistory = (isOpened) => {
     this.setState({
       showSearchDailog: isOpened,
-      isShowAction: true
+      isShowAction: true,
+      searchValue: ' '
     })
     Taro.getStorage({ key: 'searchHistory' })
       .then(res => {

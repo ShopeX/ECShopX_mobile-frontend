@@ -48,6 +48,8 @@ export default class TradeDetail extends Component {
       receiver_district: 'receiver_district',
       receiver_address: 'receiver_address',
       status_desc: 'order_status_msg',
+      delivery_code: 'delivery_code',
+      delivery_corp: 'delivery_corp',
       post_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
       payment: ({ total_fee }) => (+total_fee / 100).toFixed(2),
       pay_type: 'pay_type',
@@ -131,6 +133,12 @@ export default class TradeDetail extends Component {
         url: `/pages/trade/refund-detail?order_id=${order_id}&item_id=${item_id}`
       })
     }
+  }
+
+  handleClickDelivery = () => {
+    Taro.navigateTo({
+      url: '/pages/trade/delivery-info'
+    })
   }
 
   render () {
@@ -243,6 +251,19 @@ export default class TradeDetail extends Component {
             <AtButton size='small' onClick={this.handleCopy}>复制</AtButton>
           </View>
         </View>
+        {
+          info.delivery_code && info.delivery_corp
+            ? <View className='sec trade-extra'>
+                <View className='trade-extra__bd'>
+                  <Text>物流公司：{info.delivery_corp}</Text>
+                  <Text>物流单号：{info.delivery_code}</Text>
+                </View>
+                <View className='trade-extra__ft'>
+                  <AtButton size='small' onClick={this.handleClickDelivery.bind(this)}>查看</AtButton>
+                </View>
+              </View>
+            : null
+        }
 
         {info.status === 'WAIT_BUYER_PAY' && (<View className='toolbar toolbar-actions'>
           <AtButton

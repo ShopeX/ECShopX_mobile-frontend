@@ -147,7 +147,7 @@ export default class Recharge extends Component {
                       <View className='integral-item'>
                         <View className='integral-item__title'>
                           <Text className='integral-item__title-name'>{item.detail}</Text>
-                          <Text className={`integral-item__title-${item.tradeType}`}>{item.tradeType === 'recharge' ? '+' : '-'}{item.money}</Text>
+                          <Text className={`integral-item__title-${item.tradeType === 'consume' ? item.tradeType : 'recharge'}`}>{item.tradeType === 'consume' ? '-' : '+'}{item.money}</Text>
                         </View>
                         <View className='integral-item__data'>{item.timeStart}</View>
                       </View>

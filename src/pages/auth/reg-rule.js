@@ -5,10 +5,10 @@ import { NavBar } from '@/components'
 import { withPager } from '@/hocs'
 import api from '@/api'
 
-import './pay.scss'
+import './reg.scss'
 
 @withPager
-export default class PayRule extends Component {
+export default class RegRule extends Component {
   constructor (props) {
     super(props)
 
@@ -22,7 +22,7 @@ export default class PayRule extends Component {
   }
 
   async fetch () {
-    const { content } = await api.member.depositPayRule()
+    const { content } = await api.user.regRule()
     this.setState({
       info: content
     })
@@ -35,7 +35,7 @@ export default class PayRule extends Component {
     return (
       <View className='page-member-integral'>
         <NavBar
-          title='充值协议'
+          title='注册协议'
           leftIconType='chevron-left'
         />
         <View className='pay-rule-style'>{info}</View>

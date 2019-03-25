@@ -149,7 +149,7 @@ export default class Reg extends Component {
     }
     this.setState({ list });
     if(name === 'sex') {
-      if(info[name] === '男') {
+      if(val.detail.value === 0) {
         info[name] = 1
       } else {
         info[name] = 2
@@ -210,10 +210,9 @@ export default class Reg extends Component {
   }
 
   handleClickAgreement = () => {
-    // Taro.navigateTo({
-    //   url: '/pages/auth/login'
-    // })
-    console.log("用户协议")
+    Taro.navigateTo({
+      url: '/pages/auth/reg-rule'
+    })
   }
 
   render () {

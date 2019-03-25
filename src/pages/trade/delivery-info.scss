@@ -1,0 +1,28 @@
+@import "../../style/imports";
+@import "./detail";
+.delivery-info {
+  padding: 30px;
+  background: #ffffff;
+}
+.at-timeline-item {
+  &__tail {
+    top: 15px;
+    bottom: -15px;
+    left: 14PX;
+    border-left: 2PX solid $color-brand-primary;
+  }
+  &__icon {
+    color: $color-brand-primary;
+  }
+  &__dot, &__icon {
+    top: 0;
+    width: 30PX;
+    height: 30PX;
+  }
+  .at-timeline-item__dot .at-icon, .at-timeline-item__icon .at-icon {
+    font-size: 30PX;
+  }
+  &__content {
+    margin-left: 40PX;
+  }
+}

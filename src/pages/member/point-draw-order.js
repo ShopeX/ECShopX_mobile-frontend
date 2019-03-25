@@ -2,11 +2,11 @@ import Taro, { Component } from '@tarojs/taro'
 import {View, ScrollView, Text, Image} from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, Price, NavBar, SpNote } from '@/components'
-import { AtDivider } from 'taro-ui'
+import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
 
-import './point-draw.scss'
+import './point-draw-order.scss'
 
 @withPager
 @withBackToTop
@@ -16,32 +16,43 @@ export default class PointDraw extends Component {
 
     this.state = {
       ...this.state,
-      query: null,
+      curTabIdx: 0,
+      tabList: [
+        {title: '已参与', status: ''},
+        {title: '已中奖', status: 'lucky'}
+      ],
       list: [],
       listType: ''
     }
   }
 
   componentDidMount () {
-    this.setState({
-      query: {}
-    }, () => {
+    const tabIdx = this.state.tabList.findIndex(tab => tab.status === '')
+
+    if (tabIdx >= 0) {
+      this.setState({
+        curTabIdx: tabIdx
+      }, () => {
+        this.nextPage()
+      })
+    } else {
       this.nextPage()
-    })
+    }
   }
 
   async fetch (params) {
-    const { page_no: page, page_size: pageSize } = params
-    const query = {
-      page,
-      pageSize
+    // const { page_no: page, page_size: pageSize } = params
+    const { tabList, curTabIdx } = this.state
+    params = {
+      ...params,
+      lucky_status: tabList[curTabIdx].status,
     }
 
-    const { list, total_count: total } = await api.member.pointDrawPayList(query)
+    const { list, total_count: total } = await api.member.pointDrawPayList(params)
 
     const nList = pickBy(list, {
       img: 'item_pic',
-      item_id: 'luckydraw_trade_id',
+      luckydraw_trade_id: 'luckydraw_trade_id',
       title: 'item_name',
       price: 'luckydraw_point',
       payment_status: 'payment_status',
@@ -67,7 +78,6 @@ export default class PointDraw extends Component {
     })
     this.setState({
       list: [...this.state.list, ...nList],
-      query
     })
 
     return {
@@ -76,35 +86,60 @@ export default class PointDraw extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/member/point-draw-detail?luckydraw_id=${item.luckydraw_id}&item_id=${item.item_id}`
+    console.log(item.luckydraw_trade_id)
+    const url = `/pages/member/point-order-detail?id=${item.luckydraw_trade_id}`
     Taro.navigateTo({
       url
     })
   }
 
+  handleClickTab = (idx) => {
+    if (this.state.page.isLoading) return
+
+    if (idx !== this.state.curTabIdx) {
+      this.resetPage()
+      this.setState({
+        list: []
+      })
+    }
+
+    this.setState({
+      curTabIdx: idx
+    }, () => {
+      this.nextPage()
+    })
+  }
+
   render () {
-    const { list, listType, showBackToTop, scrollTop, page } = this.state
+    const { list, listType, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
 
     return (
-      <View className='page-goods-list'>
+      <View className='page-draworeder-list'>
         <NavBar
           title='抽奖信息'
           leftIconType='chevron-left'
           fixed='true'
         />
-        <View className='goods-list__toolbar'>
-          <View className='goods-list__toolbar-title'>
-            <AtDivider fontColor='#C40000' lineColor='#C40000'>
-              <View>
-                <Text className='sp-icon sp-icon-lifangtilitiduomiantifangkuai2 icon-allgoods'> </Text>
-                <Text>抽奖信息</Text>
-              </View>
-            </AtDivider>
-          </View>
-        </View>
+        <AtTabs
+          className='trade-list__tabs'
+          current={curTabIdx}
+          tabList={tabList}
+          onClick={this.handleClickTab}
+        >
+          {
+            tabList.map((panes, pIdx) =>
+              (<AtTabsPane
+                current={curTabIdx}
+                key={pIdx}
+                index={pIdx}
+              >
+              </AtTabsPane>)
+            )
+          }
+        </AtTabs>
 
         <ScrollView
-          className='goods-list__scroll'
+          className='goods-order__scroll'
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
@@ -115,7 +150,7 @@ export default class PointDraw extends Component {
             {
               list.map((item, index) => {
                 return (
-                  <View className='goods-item' key={index}>
+                  <View className='goods-item' key={index} onClick={this.handleClickItem.bind(this, item)}>
                     <View className='goods-item__bd'>
                       <View className='goods-item__img-wrap'>
                         <Image className='goods-item__img' mode='aspectFill' src={item.img} />

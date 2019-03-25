@@ -1,36 +1,22 @@
 @import "../../style/imports";
 
-.page-goods-list {
-  .goods-list {
-    padding: $edge-size 0;
-    &__toolbar {
+.page-draworeder-list {
+  .at-tabs {
+    height: 105px;
+    &__header {
       position: fixed;
-      top: 0;
       left: 0;
+      top: $navigate-height;
       width: 100%;
       z-index: $z-index-toolbar;
-      background: #fff;
-
-      &-title {
-        width: 60%;
-        margin:0 auto;
-        height: 84px;
-        line-height: 84px;
-        text-align: center;
-        .at-divider {
-          height: 84px;
-        }
-        .icon-allgoods {
-          margin-right: 4px;
-        }
-      }
     }
-    &__tabs {
-    }
+  }
+  .goods-order {
+    padding: $edge-size 0;
     &__scroll {
       height: 100vh;
       box-sizing: border-box;
-      padding: 84px 0 0;
+      padding-top: 20px;
     }
     &__type-grid {
       @include clearfix();
