@@ -5,7 +5,7 @@ import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
-import { log, pickBy, resolveOrderStatus } from '@/utils'
+import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
 import TradeItem from './comps/item'
 
 import './list.scss'
@@ -112,9 +112,7 @@ export default class TradeList extends Component {
     })
   }
 
-  handleClickItemBtn = (type, trade) => {
-    console.log(type, trade)
-
+  handleClickItemBtn = async (type, trade) => {
     switch(type) {
       case 'pay':
         Taro.navigateTo({
@@ -124,6 +122,12 @@ export default class TradeList extends Component {
       case 'cancel':
         Taro.navigateTo({
           url: `/pages/trade/cancel?order_id=${trade.tid}`
+        })
+        break
+      case 'confirm':
+        await api.trade.confirm(trade.tid)
+        Taro.redirectTo({
+          url: getCurrentRoute(this.$router)
         })
         break
       default:
