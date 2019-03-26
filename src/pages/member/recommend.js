@@ -18,6 +18,7 @@ export default class Recommend extends Component {
       ...this.state,
       info: {},
       detail: {
+        rebateTotal: '0.00',
         isbuy_promoter: '0',
         notbuy_promoter: '0',
       },
