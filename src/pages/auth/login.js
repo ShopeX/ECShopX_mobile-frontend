@@ -85,12 +85,24 @@ export default class Login extends Component {
     })
   }
 
+  handleNavLeftItemClick = () => {
+    const { redirect } = this.$router.params
+    if (redirect) {
+      Taro.redirectTo({
+        url: decodeURIComponent(redirect)
+      })
+    }
+
+    Taro.navigateBack()
+  }
+
   render () {
     const { info, isVisible } = this.state
 
     return (
       <View className='auth-login'>
         <NavBar
+          onClickLeftIcon={this.handleNavLeftItemClick}
           title='登录'
         />
         <View className='auth-login__reg'>

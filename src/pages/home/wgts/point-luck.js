@@ -19,7 +19,7 @@ export default class PointLuck extends Component {
 
   async fetch () {
     const { list } = await api.member.pointDrawLuckAll()
-    const announce = list.map(t => `[${formatTime(t.created * 1000)}] 恭喜${t.username} ${maskMobile(t.mobile)} 获得了 ${t.item_name}`).join('    ')
+    const announce = list.map(t => `[${formatTime(t.created * 1000)}] 恭喜${t.username} ${maskMobile(t.mobile)} 获得了 ${t.item_name}`).join('　　')
     this.setState({
       announce
     })

@@ -1,4 +1,7 @@
 const path = require('path')
+const pkg = require(path.resolve(__dirname, '../package.json'))
+const { publicPath, bucket: CDNBucket, path: CDNPath } = pkg.cdn
+const PUBLIC_PATH = `${publicPath}${CDNPath}`
 
 module.exports = {
   env: {
@@ -18,11 +21,8 @@ module.exports = {
           chunkFilename: 'css/[id].[hash:8].css'
         },
         webpackChain (chain) {
-          const pkg = require(path.resolve(__dirname, '../package.json'))
-          const { publicPath, bucket: CDNBucket, path: CDNPath } = pkg.cdn
-
           chain.output
-            .publicPath(`${publicPath}${CDNPath}`)
+            .publicPath(PUBLIC_PATH)
 
           chain.merge({
             resolve: {
@@ -46,16 +46,5 @@ module.exports = {
           })
         }
       }
-    : {
-      webpackChain (chain) {
-        chain.merge({
-          resolve: {
-            alias: {
-              'react$': 'nervjs',
-              'react-dom$': 'nervjs'
-            }
-          }
-        })
-      }
-    }
+    : {}
 }

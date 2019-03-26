@@ -85,10 +85,10 @@ export default class TabBar extends Component {
       const { fullPath } = getCurrentRoute(this.$router)
 
       if (url && fullPath !== url) {
-        if (urlRedirect) {
-          Taro.redirectTo({ url })
-        } else {
+        if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
           Taro.navigateTo({ url })
+        } else {
+          Taro.redirectTo({ url })
         }
       }
     }
