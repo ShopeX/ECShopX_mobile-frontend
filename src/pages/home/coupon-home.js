@@ -3,14 +3,13 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { Loading, SpNote, NavBar, SpToast } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-
 import { withPager } from '@/hocs'
 import { classNames, pickBy, formatTime } from '@/utils'
 
 import './coupon-home.scss'
 
 @withPager
-export default class Coupon extends Component {
+export default class CouponHome extends Component {
   constructor (props) {
     super(props)
 
@@ -69,7 +68,6 @@ export default class Coupon extends Component {
     }
     try {
       const data = await api.member.homeCouponGet(query)
-      debugger
       S.toast('优惠券领取成功')
       if (data.status) {
         console.log(74 ,222)
