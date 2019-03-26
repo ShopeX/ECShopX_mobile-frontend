@@ -193,7 +193,7 @@ export default class TradeRefund extends Component {
             return (
               <AtTag
                 className='refund-reason'
-                key={idx}
+                key={item}
                 active={idx === curReasonIdx}
                 name={item}
                 onClick={this.handleClickTag}

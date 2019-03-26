@@ -37,8 +37,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // }
 
 var _configStore = (0, _index5.default)(),
-    store = _configStore.store,
-    persistor = _configStore.persistor;
+    store = _configStore.store;
 
 (0, _index3.setStore)(store);
 (0, _hooks2.default)();
@@ -60,7 +59,7 @@ var _App = function (_BaseComponent) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _App.__proto__ || Object.getPrototypeOf(_App)).call.apply(_ref, [this].concat(args))), _this), _this.config = {
       pages: [
       // 'pages/index/index',
-      'pages/home/index', 'pages/home/landing', 'pages/category/index', 'pages/item/list', 'pages/item/espier-detail', 'pages/item/point-list', 'pages/item/point-detail', 'pages/cart/espier-index', 'pages/cart/espier-checkout', 'pages/cart/coupon-picker', 'pages/article/index', 'pages/auth/reg', 'pages/auth/login', 'pages/auth/forgotpwd', 'pages/cashier/index', 'pages/cashier/cashier-result', 'pages/member/index', 'pages/member/favorite', 'pages/member/point', 'pages/member/point-draw', 'pages/member/point-draw-detail', 'pages/member/point-draw-order', 'pages/member/pay', 'pages/member/pay-rule', 'pages/member/money-to-point', 'pages/member/recharge', 'pages/member/recommend', 'pages/member/recommend-member', 'pages/member/recommend-order', 'pages/member/coupon', 'pages/member/address', 'pages/member/setting', 'pages/trade/list', 'pages/trade/detail', 'pages/trade/rate', 'pages/trade/cancel', 'pages/trade/after-sale', 'pages/trade/refund', 'pages/trade/refund-detail', 'pages/trade/refund-sendback'],
+      'pages/home/index', 'pages/home/landing', 'pages/category/index', 'pages/item/list', 'pages/item/espier-detail', 'pages/item/point-list', 'pages/item/point-detail', 'pages/cart/espier-index', 'pages/cart/espier-checkout', 'pages/cart/coupon-picker', 'pages/article/index', 'pages/auth/reg', 'pages/auth/reg-rule', 'pages/auth/login', 'pages/auth/forgotpwd', 'pages/cashier/index', 'pages/cashier/cashier-result', 'pages/member/index', 'pages/member/favorite', 'pages/member/point', 'pages/member/point-draw', 'pages/member/point-draw-detail', 'pages/member/point-draw-order', 'pages/member/point-order-detail', 'pages/member/pay', 'pages/member/pay-rule', 'pages/member/money-to-point', 'pages/member/recharge', 'pages/member/recommend', 'pages/member/recommend-member', 'pages/member/recommend-order', 'pages/member/coupon', 'pages/member/address', 'pages/member/setting', 'pages/trade/list', 'pages/trade/detail', 'pages/trade/delivery-info', 'pages/trade/rate', 'pages/trade/cancel', 'pages/trade/after-sale', 'pages/trade/refund', 'pages/trade/refund-detail', 'pages/trade/refund-sendback'],
       window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#fff',

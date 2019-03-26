@@ -27,7 +27,6 @@ export default class PointOrderDetail extends Component {
   async fetch () {
     const { id } = this.$router.params
     const data = await api.member.pointOrderDetail(id)
-    console.log(data)
     const info = pickBy(data, {
       luckydraw_trade_id: 'luckydraw_trade_id',
       created: ({ created }) => formatTime(created, 'YYYY-MM-DD HH:mm:ss'),
@@ -176,9 +175,15 @@ export default class PointOrderDetail extends Component {
     })
   }
 
+  handleAddressClick = () => {
+    const { info }  = this.state
+    if (info.ship_status === 'waitaddress') {
+      this.toggleAddressPicker.bind(this, true)
+    }
+  }
+
   render () {
     const { info, address, showAddressPicker } = this.state
-    console.log(address)
     if (!info) {
       return <Loading></Loading>
     }
@@ -205,7 +210,7 @@ export default class PointOrderDetail extends Component {
           info.status_desc === 'lucky'
             ? <View
               className='trade-detail__addr'
-              onClick={info.ship_status === 'waitaddress' ? this.toggleAddressPicker.bind(this, true) : null}
+              onClick={this.handleAddressClick}
             >
                 <SpCell
                   icon='map-pin'

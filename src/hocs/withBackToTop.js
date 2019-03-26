@@ -18,9 +18,12 @@ export default function withBackToTop (Component) {
       this.setState({
         scrollTop: 1
       }, () => {
-        // this.setState({
-        //   scrollTop: null
-        // })
+        if (process.env.TARO_ENV === 'weapp') {
+          // workaround for weapp
+          this.setState({
+            scrollTop: null
+          })
+        }
       })
     }
 
@@ -28,9 +31,9 @@ export default function withBackToTop (Component) {
       const { scrollTop, scrollHeight } = e.detail
       const offset = 300
 
-      this.setState({
-        scrollTop
-      })
+      // this.setState({
+      //   scrollTop
+      // })
 
       if (scrollHeight < 600) return
       if (scrollTop > offset && !this.state.showBackToTop) {

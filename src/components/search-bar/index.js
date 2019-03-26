@@ -113,23 +113,26 @@ export default class SearchBar extends Component {
         ref='container'
       >
         <Form className={classNames('search-input__form', className === 'home-index-search' ? `${className} login-width` : '')} onSubmit={this.handleConfirm.bind(this)}>
-          {/*<Image className='search'/>*/}
-          {
-            showSearchDailog === false && className === 'home-index-search' ? <View className='search-logo'>PJJ</View> : null
-          }
-          <AtSearchBar
-            className={classNames('search-input__bar', className === 'home-index-search' ? className : '')}
-            value={searchValue}
-            actionName='取消'
-            showActionButton={isShowAction}
-            onFocus={this.handleFocusSearchHistory.bind(this, true)}
-            onChange={this.handleChangeSearch.bind(this)}
-            onConfirm={this.handleConfirm.bind(this)}
-            onActionClick={this.handleClickCancel.bind(this, false)}
-          />
-          {
-            className === 'home-index-search' && isAuth ? <View className='home-login' onClick={this.handleClickLogin}>登录</View> : null
-          }
+          <View className='search-input__form-cont'>
+            {
+              showSearchDailog === false && className === 'home-index-search' ? <View className='search-logo'>PJJ</View> : null
+            }
+            <View className='search-input__inner'>
+              <AtSearchBar
+                className={classNames('search-input__bar', className === 'home-index-search' ? className : '')}
+                value={searchValue}
+                actionName='取消'
+                showActionButton={isShowAction}
+                onFocus={this.handleFocusSearchHistory.bind(this, true)}
+                onChange={this.handleChangeSearch.bind(this)}
+                onConfirm={this.handleConfirm.bind(this)}
+                onActionClick={this.handleClickCancel.bind(this, false)}
+              />
+            </View>
+            {
+              className === 'home-index-search' && isAuth ? <View className='home-login' onClick={this.handleClickLogin}>登录</View> : null
+            }
+          </View>
         </Form>
         <View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>
           <View className='search-input__history-title'>

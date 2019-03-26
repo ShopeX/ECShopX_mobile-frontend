@@ -8,10 +8,14 @@
   box-shadow: 0px -1px 0px 0px rgba(221, 221, 221, 1);
   box-sizing: border-box;
   &__form {
-    display: flex;
     position: relative;
-    justify-content: space-between;
+    &-cont {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
     .home-login{
+      width: 4em;
       padding-right: 20px;
       line-height: $searchbar-height;
       color: #fff;
@@ -21,6 +25,9 @@
     .at-search-bar__action {
       color: #fff;
     }
+  }
+  &__inner {
+    flex: 1;
   }
   &__bar {
     flex: 1;
@@ -91,5 +98,8 @@
 
 .home-index-search {
   background: $color-brand-primary;
+  .search-input__form-cont {
+    background: $color-brand-primary;
+  }
 }
 

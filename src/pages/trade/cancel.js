@@ -75,7 +75,7 @@ export default class TradeCancel extends Component {
               return (
                 <AtTag
                   className='cancel-reason'
-                  key={idx}
+                  key={item}
                   active={idx === curReasonIdx}
                   name={item}
                   onClick={this.handleClickTag}

@@ -55,6 +55,7 @@ export default class HomeIndex extends Component {
         />
         <ScrollView
           className='wgts-wrap wgts-wrap__fixed'
+          scrollY
         >
           <View className='wgts-wrap__cont'>
             {
