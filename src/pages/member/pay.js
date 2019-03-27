@@ -29,6 +29,7 @@ export default class Pay extends Component {
   }
 
   async fetch () {
+    Taro.showLoading()
     const { list, total_count: total } = await api.member.getRechargeNumber()
     const { deposit } = await api.member.depositTotal()
     let nList = pickBy(list, {
@@ -40,6 +41,7 @@ export default class Pay extends Component {
       list: [...this.state.list, ...nList],
       totalDeposit: (deposit/100).toFixed(2)
     })
+    Taro.hideLoading()
     return {
       total
     }

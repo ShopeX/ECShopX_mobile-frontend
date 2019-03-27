@@ -34,7 +34,11 @@ export default class UserInfo extends Component {
 
   async fetch () {
     const { memberInfo } = await api.member.memberInfo()
-    const avatarArr = [{url : memberInfo.avatar}]
+    let avatarArr = []
+    if(memberInfo.avatar) {
+      avatarArr = [{url : memberInfo.avatar}]
+    }
+    console.log(avatarArr, 38)
     this.setState({
       info: {
         user_name: memberInfo.username,

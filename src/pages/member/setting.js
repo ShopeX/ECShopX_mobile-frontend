@@ -33,17 +33,8 @@ export default class MemberSetting extends Component {
         />
 
         <View className='sec'>
-          <SpCell title='版本'>
-            {APP_VERSION}
-          </SpCell>
-        </View>
-
-        <View className='btns'>
-          <AtButton
-            type='primary'
-            onClick={this.handleClickSetting}
-            size='large'
-          >用户设置</AtButton>
+          <SpCell title='用户设置' isLink onClick={this.handleClickSetting}> </SpCell>
+          <SpCell title='版本' value={APP_VERSION}> </SpCell>
         </View>
 
         <View className='btns'>

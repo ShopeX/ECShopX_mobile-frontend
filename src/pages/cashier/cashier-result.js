@@ -12,7 +12,8 @@ export default class CashierResult extends Component {
     this.state = {
       info: {
         payStatus: 'success'
-      }
+      },
+      showTabBar: '',
     }
   }
   componentDidMount () {
@@ -29,7 +30,15 @@ export default class CashierResult extends Component {
       tradeId: 'tradeId',
       payStatus: 'payStatus'
     })
+    if(info.order_id.indexOf('CZ') !== -1) {
+      this.setState({
+        showTabBar: 'CZ'
+      })
+      console.log(1)
+    }else {
+      console.log(2)
 
+    }
     this.setState({
       info: info
     })
@@ -55,7 +64,7 @@ export default class CashierResult extends Component {
   }
 
   render () {
-    const { info } = this.state
+    const { info, showTabBar } = this.state
 
     return (
       <View className='page-cashier-index'>
@@ -71,7 +80,9 @@ export default class CashierResult extends Component {
             <View className='cashier-result__info'>
               <View className='cashier-result__info-title'>订单支付{info.payStatus === 'fail' ? '失败' : '成功'}</View>
               <View className='cashier-result__info-news'>订单号：{info.order_id}</View>
-              <View className='cashier-result__info-news'>支付单号：{info.tradeId}</View>
+              {
+                info.payStatus === 'success' ? <View className='cashier-result__info-news'>支付单号：{info.tradeId}</View> : null
+              }
               <View className='cashier-result__info-news'>创建时间：{info.create_time}</View>
               {
                 info.payStatus === 'success' ? <View className='cashier-result__info-news'>支付时间：{info.payDate}</View> : null
@@ -80,29 +91,40 @@ export default class CashierResult extends Component {
           </View>
         </View>
 
-        <View className='goods-buy-toolbar'>
-          {
-            info.payStatus === 'fail'
-              ? <View className='goods-buy-toolbar__btns'>
-                  <Button
-                    className='goods-buy-toolbar__btn btn-fast-buy'
-                    onClick={this.handleClickBack.bind(this, info.order_id)}
-                  >返回订单详情</Button>
-                </View>
-              : <View className='goods-buy-toolbar__btns'>
+        {
+          showTabBar === 'CZ'
+            ? <View className='goods-buy-toolbar'>
+                <View className='goods-buy-toolbar__btns'>
                   <Button
                     className='goods-buy-toolbar__btn btn-add-cart'
                     onClick={this.handleClickRoam}
-                  >继续购物</Button>
-                  <Button
-                    className='goods-buy-toolbar__btn btn-fast-buy'
-                    onClick={this.handleClickBack.bind(this, info.order_id)}
-                  >订单详情</Button>
+                  >返回首页</Button>
                 </View>
-          }
+              </View>
+            : <View className='goods-buy-toolbar'>
+                {
+                  info.payStatus === 'fail'
+                    ? <View className='goods-buy-toolbar__btns'>
+                      <Button
+                        className='goods-buy-toolbar__btn btn-fast-buy'
+                        onClick={this.handleClickBack.bind(this, info.order_id)}
+                      >订单详情</Button>
+                    </View>
+                    : <View className='goods-buy-toolbar__btns'>
+                      <Button
+                        className='goods-buy-toolbar__btn btn-add-cart'
+                        onClick={this.handleClickRoam}
+                      >返回首页</Button>
+                      <Button
+                        className='goods-buy-toolbar__btn btn-fast-buy'
+                        onClick={this.handleClickBack.bind(this, info.order_id)}
+                      >订单详情</Button>
+                    </View>
+                }
+              </View>
+        }
 
 
-        </View>
       </View>
     )
   }
