@@ -1,0 +1,30 @@
+@import "../../style/imports";
+
+.auth-login {
+  height: 100vh;
+  //padding-top: 160px;
+  background: $color-brand-primary-text;
+  &__reg {
+    padding: $edge-size;
+    text-align: right;
+    box-sizing: border-box;
+  }
+  &__form {
+    padding: $edge-size;
+    margin: 0 0 $edge-margin;
+    .avatar-user {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      border-bottom: 1PX solid rgba($color-brand-primary, 0.2);
+      margin-bottom: 20px;
+      .avatar-user-text {
+        width: 170px;
+      }
+    }
+    .at-image-picker {
+      height: 150px;
+      width: 150px;
+    }
+  }
+}

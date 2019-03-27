@@ -8,6 +8,13 @@ import S from '@/spx'
 
 @withLogin()
 export default class MemberSetting extends Component {
+
+  handleClickSetting = () => {
+    Taro.navigateTo({
+      url: '/pages/member/userinfo'
+    })
+  }
+
   handleClickLogout = async () => {
     S.logout()
     if (process.env.TARO_ENV === 'h5') {
@@ -29,6 +36,14 @@ export default class MemberSetting extends Component {
           <SpCell title='版本'>
             {APP_VERSION}
           </SpCell>
+        </View>
+
+        <View className='btns'>
+          <AtButton
+            type='primary'
+            onClick={this.handleClickSetting}
+            size='large'
+          >用户设置</AtButton>
         </View>
 
         <View className='btns'>

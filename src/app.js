@@ -59,6 +59,7 @@ class App extends Component {
       'pages/member/coupon',
       'pages/member/address',
       'pages/member/setting',
+      'pages/member/userinfo',
 
       'pages/trade/list',
       'pages/trade/detail',

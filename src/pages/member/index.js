@@ -45,6 +45,7 @@ export default class MemberIndex extends Component {
         is_promoter: res.is_promoter,
         is_open_popularize: res.is_open_popularize,
         username: res.memberInfo.username,
+        avatar: res.memberInfo.avatar,
       }
     })
     const ordersCount = await api.trade.getCount()
@@ -71,6 +72,10 @@ export default class MemberIndex extends Component {
 
   render () {
     const { ordersCount, info } = this.state
+    let isAvatatImg
+    if(info.avatar) {
+      isAvatatImg = true
+    }
 
     return (
       <View className='page-member-index'>
@@ -82,8 +87,11 @@ export default class MemberIndex extends Component {
             <AtAvatar
               className='member-avatar'
               title={info.username}
+              image={isAvatatImg ? info.avatar : ''}
+              text={isAvatatImg ? '' : info.username}
+
               size='large'
-              text={info.username}
+
               circle
             />
             <View className='member-name'>{info.username}</View>
