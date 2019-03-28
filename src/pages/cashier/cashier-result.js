@@ -17,7 +17,11 @@ export default class CashierResult extends Component {
     }
   }
   componentDidMount () {
-    this.fetch()
+    Taro.showLoading()
+    setTimeout(()=>{
+      Taro.hideLoading()
+      this.fetch()
+    },2000)
   }
 
   async fetch () {
