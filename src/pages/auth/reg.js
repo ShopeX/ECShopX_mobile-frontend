@@ -18,12 +18,12 @@ export default class Reg extends Component {
 
     this.state = {
       info: {},
-      timerMsg: '获取验证码',
       isVisible: false,
       list: [],
       imgVisible: false,
       imgInfo: {}
     }
+    this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount () {
@@ -123,6 +123,7 @@ export default class Reg extends Component {
   }
 
   handleChange = (name, val) => {
+    console.log(name, val, 126)
     const { info, list } = this.state
     info[name] = val
     if(name === 'mobile') {
@@ -165,6 +166,7 @@ export default class Reg extends Component {
   }
 
   handleErrorToastClose = () => {
+    console.log(this.textInput.value)
     S.closeToast()
   }
 
@@ -196,17 +198,9 @@ export default class Reg extends Component {
     resolve()
   }
 
-  handleUpdateTimer = (val) => {
-    const timerMsg = `${val}s`
-    this.setState({
-      timerMsg
-    })
-  }
 
   handleTimerStop = () => {
-    this.setState({
-      timerMsg: '重新获取'
-    })
+
   }
 
   handleClickAgreement = () => {
@@ -216,8 +210,7 @@ export default class Reg extends Component {
   }
 
   render () {
-    const { info, timerMsg, isVisible, list, imgVisible, imgInfo } = this.state
-
+    const { info, isVisible, list, imgVisible, imgInfo } = this.state
     return (
       <View className='auth-reg'>
         <NavBar
@@ -241,8 +234,8 @@ export default class Reg extends Component {
             {
               imgVisible
                 ? <AtInput title='图片验证码' name='yzm' value={info.yzm} placeholder='请输入图片验证码' onFocus={this.handleErrorToastClose} onChange={this.handleChange.bind(this, 'yzm')}>
-                    <Image src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
-                  </AtInput>
+                  <Image src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
+                </AtInput>
                 : null
             }
             <AtInput
@@ -255,9 +248,7 @@ export default class Reg extends Component {
             >
               <Timer
                 onStart={this.handleTimerStart}
-                onUpdateTimer={this.handleUpdateTimer}
                 onStop={this.handleTimerStop}
-                timerMsg={timerMsg}
               />
             </AtInput>
             <AtInput
@@ -283,38 +274,40 @@ export default class Reg extends Component {
                     {
                       item.items
                         ? <View className='page-section'>
-                            <View key={index}>
-                              {
-                                item.key === 'birthday'
-                                  ? <Picker mode='date' onChange={this.handleChange.bind(this, `${item.key}`)}>
-                                      <View className='picker'>
-                                        <View className='picker__title'>{item.name}</View>
-                                        <Text
-                                          className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
-                                        >{item.value ? item.value : `请选择${item.name}`}</Text>
-                                      </View>
-                                    </Picker>
-                                  : <Picker mode='selector' range={item.items} key={index} data-item={item} onChange={this.handleChange.bind(this, `${item.key}`)}>
-                                      <View className='picker'>
-                                        <View className='picker__title'>{item.name}</View>
-                                        <Text
-                                          className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
-                                        >{item.value ? item.value : `请选择${item.name}`}</Text>
-                                      </View>
-                                    </Picker>
-                              }
-                            </View>
+                          <View key={index}>
+                            {
+                              item.key === 'birthday'
+                                ? <Picker mode='date' onChange={this.handleChange.bind(this, `${item.key}`)}>
+                                  <View className='picker'>
+                                    <View className='picker__title'>{item.name}</View>
+                                    <Text
+                                      className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
+                                    >{item.value ? item.value : `请选择${item.name}`}</Text>
+                                  </View>
+                                </Picker>
+                                : <Picker mode='selector' range={item.items} key={index} data-item={item} onChange={this.handleChange.bind(this, `${item.key}`)}>
+                                  <View className='picker'>
+                                    <View className='picker__title'>{item.name}</View>
+                                    <Text
+                                      className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
+                                    >{item.value ? item.value : `请选择${item.name}`}</Text>
+                                  </View>
+                                </Picker>
+                            }
                           </View>
+                        </View>
                         : <View key={index}>
-                            <AtInput
-                              key={index}
-                              title={item.name} name={`${item.key}`}
-                              placeholder={`请输入${item.name}`}
-                              value={item.value}
-                              onFocus={this.handleErrorToastClose}
-                              onChange={this.handleChange.bind(this, `${item.key}`)}
-                            />
-                          </View>
+                          <AtInput
+                            key={index}
+                            title={item.name}
+                            name={`${item.key}`}
+                            placeholder={`请输入${item.name}`}
+                            value={item.value}
+                            onFocus={this.handleErrorToastClose}
+                            onChange={this.handleChange.bind(this, `${item.key}`)}
+                            ref={(input) => { this.textInput = input }}
+                          />
+                        </View>
                     }
                   </View>
                 )
