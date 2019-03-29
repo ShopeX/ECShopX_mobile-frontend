@@ -213,6 +213,9 @@
     &:before, &:after {
       display: none;
     }
+    &:disabled {
+      opacity: 0.43;
+    }
   }
   .btn-fast-buy {
     background: linear-gradient(90deg, $color-brand-primary, $color-brand-primary);

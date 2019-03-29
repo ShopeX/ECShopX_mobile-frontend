@@ -2,6 +2,16 @@
 
 $item-img-size: 240px !default;
 
+.goods-list__type-grid {
+  .goods-item {
+    flex-direction: column;
+    align-items: flex-start;
+    &__bd {
+      width: 100%;
+    }
+  }
+}
+
 .goods-item {
   $self: &;
   display: flex;

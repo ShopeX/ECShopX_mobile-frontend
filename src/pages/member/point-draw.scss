@@ -77,5 +77,16 @@
   .goods-item {
     margin-left: $edge-size;
     margin-right: $edge-size;
+    &__ft-inner {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 floor($edge-size / 2) floor($edge-size / 2);
+      font-size: $font-size-small;
+      color: $color-gray;
+    }
+    .weui-progress {
+      width: 160px;
+      margin-left: 10px;
+    }
   }
 }

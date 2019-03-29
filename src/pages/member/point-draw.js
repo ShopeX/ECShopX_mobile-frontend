@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView, Text } from '@tarojs/components'
+import { View, ScrollView, Text, Progress } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, GoodsItem, NavBar } from '@/components'
+import { BackToTop, Loading, Price, GoodsItem, NavBar } from '@/components'
 import { AtDivider } from 'taro-ui'
 import api from '@/api'
-import { pickBy } from '@/utils'
+import { pickBy, log } from '@/utils'
 
 import './point-draw.scss'
 
@@ -51,7 +51,10 @@ export default class PointDraw extends Component {
       title: 'goods_info.itemName',
       desc: 'goods_info.brief',
       price: 'luckydraw_point',
+      rate: ({ sales_num, luckydraw_store }) => Math.round((sales_num / luckydraw_store) * 100)
     })
+
+    log.debug(`[point draw picked]`, nList)
     this.setState({
       list: [...this.state.list, ...nList],
       query
@@ -109,6 +112,18 @@ export default class PointDraw extends Component {
                     noCurDecimal
                     appendText='积分'
                     onClick={this.handleClickItem.bind(this, item)}
+                    customFooter
+                    renderFooter={
+                      <View className='goods-item__ft-inner'>
+                        <Text>已筹集积分</Text>
+                        <Progress
+                          strokeWidth={6}
+                          percent={item.rate}
+                          showInfo
+                          activeColor='#13CE66'
+                        />
+                      </View>
+                    }
                   />
                 )
               })

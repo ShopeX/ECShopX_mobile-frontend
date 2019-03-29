@@ -131,6 +131,7 @@ export default class PointDrawDetail extends Component {
     }
     const rate = Number(((info.sales_num/info.luckydraw_store)*100).toFixed(0))
     const { pics: imgs } = info.goods_info
+    const isBuyBtnDisabled = info.luckydraw_store - info.sales_num <= 0
 
     return (
       <View className='page-goods-detail'>
@@ -274,6 +275,7 @@ export default class PointDrawDetail extends Component {
         <View className='goods-buy-toolbar'>
           <View  className='goods-buy-toolbar__btns' >
             <Button
+              disabled={isBuyBtnDisabled}
               className='goods-buy-toolbar__btn btn-fast-buy'
               onClick={this.handleBuyClick.bind(this)}
             >立即抽奖</Button>
