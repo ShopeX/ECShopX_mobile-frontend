@@ -47,6 +47,7 @@ class App extends Component {
       'pages/member/point',
       'pages/member/point-draw',
       'pages/member/point-draw-detail',
+      'pages/member/draw-rule',
       'pages/member/point-draw-order',
       'pages/member/point-order-detail',
       'pages/member/point-draw-record',

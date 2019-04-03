@@ -99,6 +99,12 @@ export default class PointDraw extends Component {
     })
   }
 
+  handleClickRule = () => {
+    Taro.navigateTo({
+      url: '/pages/member/draw-rule'
+    })
+  }
+
   render () {
     const { list, listType, showBackToTop, scrollTop, page, windowWidth, curImgIdx, imgs, announce } = this.state
 
@@ -156,7 +162,7 @@ export default class PointDraw extends Component {
             <AtNoticebar className='goods-imgs__notice' marquee>
               <Text>{announce}</Text>
             </AtNoticebar>
-            <Text className='goods-imgs__rule'>规则</Text>
+            <Text className='goods-imgs__rule' onClick={this.handleClickRule.bind(this)}>规则</Text>
           </View>
           <View className={`goods-list goods-list__type-${listType}`}>
             {

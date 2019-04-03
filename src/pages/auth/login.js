@@ -86,14 +86,17 @@ export default class Login extends Component {
   }
 
   handleNavLeftItemClick = () => {
-    const { redirect } = this.$router.params
-    if (redirect) {
-      Taro.redirectTo({
-        url: decodeURIComponent(redirect)
-      })
-    }
-
-    Taro.navigateBack()
+    // const { redirect } = this.$router.params
+    // if (redirect) {
+    //   Taro.redirectTo({
+    //     url: decodeURIComponent(redirect)
+    //   })
+    // }
+    //
+    // Taro.navigateBack()、
+    Taro.redirectTo({
+      url: '/pages/home/index'
+    })
   }
 
   render () {

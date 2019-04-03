@@ -419,15 +419,19 @@ export default class PointDrawDetail extends Component {
           onClick={this.scrollBackToTop}
         />
 
-        <View className='goods-buy-toolbar'>
-          <View  className='goods-buy-toolbar__btns' >
-            <Button
-              disabled={isBuyBtnDisabled}
-              className='goods-buy-toolbar__btn btn-fast-buy'
-              onClick={this.handleBuyClick.bind(this)}
-            >立即抽奖</Button>
-          </View>
-        </View>
+        {
+          info.open_status === 'success'
+            ? <View className='goods-buy-toolbar'>
+                <View  className='goods-buy-toolbar__btns' >
+                  <Button
+                    disabled={isBuyBtnDisabled}
+                    className='goods-buy-toolbar__btn btn-fast-buy'
+                    onClick={this.handleBuyClick.bind(this)}
+                  >立即抽奖</Button>
+                </View>
+              </View>
+            : null
+        }
 
         <SpToast />
       </View>

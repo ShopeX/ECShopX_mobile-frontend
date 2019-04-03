@@ -117,6 +117,10 @@ export function pointDraw (params = {}) {
   return req.get('/promotion/luckydraw', params)
 }
 
+export function pointDrawRule () {
+  return req.get('/promotion/luckyrules')
+}
+
 export function pointDrawSwiper () {
   return req.get('/promotion/luckydraw_show')
 }
