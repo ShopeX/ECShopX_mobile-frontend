@@ -79,19 +79,19 @@ export default class PointList extends Component {
           leftIconType='chevron-left'
           fixed='true'
         />
-        <View className='goods-list__toolbar'>
-          <View className='goods-list__toolbar-title'>
-            <AtDivider fontColor='#C40000' lineColor='#C40000'>
-              <View>
-                <Text className='sp-icon sp-icon-lifangtilitiduomiantifangkuai2 icon-allgoods'> </Text>
-                <Text>全部商品</Text>
-              </View>
-            </AtDivider>
-          </View>
-        </View>
+        {/*<View className='goods-list__toolbar'>*/}
+          {/*<View className='goods-list__toolbar-title'>*/}
+            {/*<AtDivider fontColor='#C40000' lineColor='#C40000'>*/}
+              {/*<View>*/}
+                {/*<Text className='sp-icon sp-icon-lifangtilitiduomiantifangkuai2 icon-allgoods'> </Text>*/}
+                {/*<Text>全部商品</Text>*/}
+              {/*</View>*/}
+            {/*</AtDivider>*/}
+          {/*</View>*/}
+        {/*</View>*/}
 
         <ScrollView
-          className='goods-list__scroll'
+          className='goods-listpoint__scroll'
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation

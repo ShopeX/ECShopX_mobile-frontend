@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtTimeline } from 'taro-ui'
-import { Loading, SpCell, SpToast, Price, NavBar } from '@/components'
-import { classNames, log, pickBy, formatTime, resolveOrderStatus, copyText } from '@/utils'
+import { Loading, NavBar } from '@/components'
+import { pickBy } from '@/utils'
 import api from '@/api'
 
 import './delivery-info.scss'
@@ -13,7 +13,7 @@ export default class TradeDetail extends Component {
     super(props)
 
     this.state = {
-      info: null
+      list: []
     }
   }
 
@@ -22,15 +22,23 @@ export default class TradeDetail extends Component {
   }
 
   async fetch () {
+    Taro.showLoading()
+    const list = await api.trade.deliveryInfo(this.$router.params.order_id)
+    const nList = pickBy(list,{
+      title: 'opeTime',
+      content: ({ opeRemark, opeTitle }) => [opeTitle, opeRemark]
+    })
+    this.setState({
+      list: nList
+    })
+    Taro.hideLoading()
   }
 
   render () {
-    // const { info } = this.state
-    // if (!info) {
-    //   return <Loading></Loading>
-    // }
-
-    // TODO: orders 多商铺
+    const { list } = this.state
+    if (!list) {
+      return <Loading></Loading>
+    }
 
     return (
       <View className='trade-detail'>
@@ -50,12 +58,7 @@ export default class TradeDetail extends Component {
 
         <View className='delivery-info'>
           <AtTimeline
-            items={[
-              { title: '刷牙洗脸', content: ['大概8:00'], icon: 'clock' },
-              { title: '吃早餐', content: ['牛奶+面包', '餐后记得吃药'], icon: 'check-circle' },
-              { title: '上班', content: ['查看邮件', '写PPT', '发送PPT给领导'], icon: 'check-circle' },
-              { title: '睡觉', content: ['不超过23:00'], icon: 'check-circle' }
-            ]}
+            items={list}
           >
           </AtTimeline>
         </View>

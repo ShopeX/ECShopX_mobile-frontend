@@ -1,6 +1,12 @@
 @import "../../style/imports";
 
 .page-goods-list {
+  .goods-listpoint__scroll {
+    //height: 100vh;
+    box-sizing: border-box;
+    //padding: 84px 0 0;
+    @include page-scroll($navigate-height, $edge-margin)
+  }
   .goods-list {
     padding: $edge-size 0;
     &__toolbar {
@@ -30,11 +36,7 @@
     }
     &__tabs {
     }
-    &__scroll {
-      height: 100vh;
-      box-sizing: border-box;
-      padding: 84px 0 0;
-    }
+
     &__type-grid {
       @include clearfix();
       .goods-item {

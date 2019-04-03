@@ -117,6 +117,10 @@ export function pointDraw (params = {}) {
   return req.get('/promotion/luckydraw', params)
 }
 
+export function pointDrawSwiper () {
+  return req.get('/promotion/luckydraw_show')
+}
+
 export function pointDrawDetail (luckydraw_id) {
   return req.get(`/promotion/luckydraw/${luckydraw_id}`)
 }
@@ -130,7 +134,7 @@ export function pointDrawPay (params = {}) {
 }
 
 export function pointDrawPayList (params = {}) {
-  return req.get('/promotion/member/luckydraworder', params)
+  return req.get('/promotion/luckydraw/joinactivitys', params)
 }
 
 export function pointDrawLuck (params = {}) {
@@ -151,4 +155,24 @@ export function pointOrderConfirm (params = {}) {
 
 export function pointDrawLuckAll () {
   return req.get(`/promotion/luckydrawmember`)
+}
+
+export function pointMyOrder (params = {}) {
+  return req.get(`/promotion/luckydrawjoinlist`, params)
+}
+
+export function pointAllOrder (luckydraw_id, params = {}) {
+  return req.get(`/promotion/luckydraw/alljoinlist/${luckydraw_id}`, params)
+}
+
+export function pointCompute (luckydraw_id) {
+  return req.get(`/promotion/luckydraw/winning/${luckydraw_id}`)
+}
+
+export function pointCheckLucky (luckydraw_id) {
+  return req.get(`/promotion/luckydraw/checkwinning/${luckydraw_id}`)
+}
+
+export function pointComputeResult (luckydraw_id) {
+  return req.get(`/promotion/luckydraw/luckylogic/${luckydraw_id}`)
 }

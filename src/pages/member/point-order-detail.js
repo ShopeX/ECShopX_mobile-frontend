@@ -29,11 +29,11 @@ export default class PointOrderDetail extends Component {
     const data = await api.member.pointOrderDetail(id)
     const info = pickBy(data, {
       luckydraw_trade_id: 'luckydraw_trade_id',
-      created: ({ created }) => formatTime(created, 'YYYY-MM-DD HH:mm:ss'),
+      created: ({ created }) => formatTime(created*1000, 'YYYY-MM-DD HH:mm:ss'),
       title: 'item_name',
       pic_path: 'item_pic',
       point: 'luckydraw_point',
-      status_desc: 'lucky_status',
+      lucky_status: 'lucky_status',
       status_img: 'lucky_status',
       address_id: 'address_id',
       ship_status: 'ship_status',
@@ -46,10 +46,10 @@ export default class PointOrderDetail extends Component {
       ship_corp: 'ship_corp',
       ship_code: 'ship_code',
     })
-    if(info.status_desc === 'lucky') {
+    if(info.lucky_status === 'lucky') {
       info.status_desc_name = '中奖'
       info.status_img = 'ico_wait_buyer_confirm_goods.png'
-    }else if(info.status_desc === 'unlukcy'){
+    }else if(info.lucky_status === 'unlukcy'){
       info.status_desc_name = '未中奖'
       info.status_img = 'ico_wait_rate.png'
     } else {
@@ -68,7 +68,7 @@ export default class PointOrderDetail extends Component {
     await copyText(msg)
   }
 
-  async handleClickBtn (type) {
+  handleClickBtn = async (type) => {
     const { info } = this.state
 
     if (type === 'address') {
@@ -111,7 +111,7 @@ export default class PointOrderDetail extends Component {
     }
   }
 
-  toggleState (key, val) {
+  toggleState = (key, val) => {
     console.log(key, val, 96)
     if (val === undefined) {
       val = !this.state[key]
@@ -122,7 +122,8 @@ export default class PointOrderDetail extends Component {
     })
   }
 
-  toggleAddressPicker (isOpened) {
+  toggleAddressPicker = (isOpened) => {
+    console.log(isOpened, 126)
     if (isOpened === undefined) {
       isOpened = !this.state.showAddressPicker
     }
@@ -171,14 +172,15 @@ export default class PointOrderDetail extends Component {
 
   handleClickDelivery = () => {
     Taro.navigateTo({
-      url: '/pages/trade/delivery-info'
+      url: '/pages/trade/delivery-info?order_id='+this.state.info.luckydraw_trade_id
     })
   }
 
   handleAddressClick = () => {
     const { info }  = this.state
+    console.log(info,111)
     if (info.ship_status === 'waitaddress') {
-      this.toggleAddressPicker.bind(this, true)
+      this.toggleAddressPicker(true)
     }
   }
 
@@ -187,7 +189,7 @@ export default class PointOrderDetail extends Component {
     if (!info) {
       return <Loading></Loading>
     }
-
+    console.log(info,showAddressPicker, 190)
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
 
@@ -207,10 +209,10 @@ export default class PointOrderDetail extends Component {
           />
         </View>
         {
-          info.status_desc === 'lucky'
+          info.lucky_status === 'lucky'
             ? <View
               className='trade-detail__addr'
-              onClick={this.handleAddressClick}
+              onClick={this.handleAddressClick.bind(this)}
             >
                 <SpCell
                   icon='map-pin'

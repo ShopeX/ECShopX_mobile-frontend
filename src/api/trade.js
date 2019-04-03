@@ -26,3 +26,7 @@ export function cancel (data) {
 export function getCount (params = { order_type: 'normal' }) {
   return req.get('/orderscount', params)
 }
+
+export function deliveryInfo (order_id) {
+  return req.get(`/order/waybill/${order_id}`)
+}

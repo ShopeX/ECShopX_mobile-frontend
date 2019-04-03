@@ -161,61 +161,61 @@ export default class MemberIndex extends Component {
           </View>
         </View>
 
-        {/*<View className='member-sec member-tools'>*/}
-          {/*<View className='sec-hd'>*/}
-            {/*<Text className='sec-title'>必备工具 </Text>*/}
-          {/*</View>*/}
-          {/*<View className='sec-bd'>*/}
-            {/*<View className='member-tools__menus'>*/}
-              {/*<View*/}
-                {/*className='member-tools__item'*/}
-                {/*onClick={this.handleClickRecommend}*/}
-              {/*>*/}
-                {/*<SpIconMenu*/}
-                  {/*icon='thumb'*/}
-                  {/*title='推广管理'*/}
-                {/*/>*/}
-              {/*</View>*/}
-              {/*<View className='member-tools__item'>*/}
-                {/*<SpIconMenu*/}
-                  {/*icon='hongbao'*/}
-                  {/*title='充值'*/}
-                  {/*to='/pages/member/pay'*/}
-                {/*/>*/}
-              {/*</View>*/}
-              {/*<View className='member-tools__item'>*/}
-                {/*<SpIconMenu*/}
-                  {/*icon='money'*/}
-                  {/*title='积分充值'*/}
-                  {/*to='/pages/member/money-to-point'*/}
-                {/*/>*/}
-              {/*</View>*/}
-              {/*<View className='member-tools__item'>*/}
-                {/*<SpIconMenu*/}
-                  {/*icon='location'*/}
-                  {/*title='收货地址'*/}
-                  {/*to='/pages/member/address'*/}
-                {/*/>*/}
-              {/*</View>*/}
-              {/*<View className='member-tools__item'>*/}
-                {/*<SpIconMenu*/}
-                  {/*icon='qrcode'*/}
-                  {/*title='积分商城'*/}
-                  {/*to='/pages/item/point-list'*/}
-                {/*/>*/}
-              {/*</View>*/}
-              {/*<View className='member-tools__item'>*/}
-                {/*<SpIconMenu*/}
-                  {/*icon='help'*/}
-                  {/*title='积分抽奖'*/}
-                  {/*to='/pages/member/point-draw'*/}
-                {/*/>*/}
-              {/*</View>*/}
-              {/*<View className='member-tools__item'> </View>*/}
-              {/*<View className='member-tools__item'> </View>*/}
-            {/*</View>*/}
-          {/*</View>*/}
-        {/*</View>*/}
+        <View className='member-sec member-tools'>
+          <View className='sec-hd'>
+            <Text className='sec-title'>必备工具 </Text>
+          </View>
+          <View className='sec-bd'>
+            <View className='member-tools__menus'>
+              <View
+                className='member-tools__item'
+                onClick={this.handleClickRecommend}
+              >
+                <SpIconMenu
+                  icon='thumb'
+                  title='推广管理'
+                />
+              </View>
+              <View className='member-tools__item'>
+                <SpIconMenu
+                  icon='hongbao'
+                  title='充值'
+                  to='/pages/member/pay'
+                />
+              </View>
+              <View className='member-tools__item'>
+                <SpIconMenu
+                  icon='money'
+                  title='积分充值'
+                  to='/pages/member/money-to-point'
+                />
+              </View>
+              <View className='member-tools__item'>
+                <SpIconMenu
+                  icon='location'
+                  title='收货地址'
+                  to='/pages/member/address'
+                />
+              </View>
+              <View className='member-tools__item'>
+                <SpIconMenu
+                  icon='qrcode'
+                  title='积分商城'
+                  to='/pages/item/point-list'
+                />
+              </View>
+              <View className='member-tools__item'>
+                <SpIconMenu
+                  icon='help'
+                  title='积分抽奖'
+                  to='/pages/member/point-draw'
+                />
+              </View>
+              <View className='member-tools__item'> </View>
+              <View className='member-tools__item'> </View>
+            </View>
+          </View>
+        </View>
         <SpToast />
 
         <TabBar

@@ -12,8 +12,9 @@
     }
   }
   .order-recom {
-    height: 100%;
-    padding: 0 0 $edge-margin;
+    //height: 100%;
+    //padding: 0 0 $edge-margin;
+    @include page-scroll($navigate-height, $edge-margin);
     box-sizing: border-box;
   }
 }

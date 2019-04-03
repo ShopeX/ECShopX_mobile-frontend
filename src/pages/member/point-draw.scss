@@ -1,6 +1,65 @@
 @import "../../style/imports";
 
 .page-goods-list {
+  .goods-listdraw__scroll {
+    //height: 100vh;
+    box-sizing: border-box;
+    @include page-scroll($navigate-height, $edge-margin);
+    //padding: 0;
+  }
+  .goods-imgs {
+    &__wrap {
+      position: relative;
+    }
+    &__text {
+      background: rgba(#000, 0.5);
+      position: absolute;
+      color: #fff;
+      font-size: 20px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 40px;
+      padding: 0 20px;
+      position: absolute;
+      z-index: 5;
+      bottom: 28px;
+      right: 24px;
+      white-space: nowrap;
+      text-align: center;
+    }
+    &__notice {
+      background: rgba(#000, 0.5);
+      position: absolute;
+      color: #fff;
+      font-size: 20px;
+      height: 40px;
+      line-height: 42px;
+      padding: 14px 100px 14px 0;
+      position: absolute;
+      z-index: 5;
+      top: 0px;
+      right: 0px;
+      left: 0;
+      white-space: nowrap;
+      text-align: center;
+    }
+    &__rule {
+      background: rgba(#000, 0.5);
+      position: absolute;
+      color: #fff;
+      font-size: 20px;
+      height: 40px;
+      line-height: 42px;
+      padding: 6px 20px;
+      position: absolute;
+      border-radius: 40px 0 0 40px;
+      z-index: 5;
+      top: 8px;
+      right: 0;
+      white-space: nowrap;
+      text-align: center;
+    }
+  }
   .goods-list {
     padding: $edge-size 0;
     &__toolbar {
@@ -30,11 +89,7 @@
     }
     &__tabs {
     }
-    &__scroll {
-      height: 100vh;
-      box-sizing: border-box;
-      padding: 84px 0 0;
-    }
+
     &__type-grid {
       @include clearfix();
       .goods-item {
@@ -77,16 +132,5 @@
   .goods-item {
     margin-left: $edge-size;
     margin-right: $edge-size;
-    &__ft-inner {
-      display: flex;
-      justify-content: space-between;
-      padding: 0 floor($edge-size / 2) floor($edge-size / 2);
-      font-size: $font-size-small;
-      color: $color-gray;
-    }
-    .weui-progress {
-      width: 160px;
-      margin-left: 10px;
-    }
   }
 }

@@ -51,7 +51,7 @@ export default class RecommendOrder extends Component {
     const { list, page } = this.state
 
     return (
-      <View className='trade-list'>
+      <View className='recomm-list'>
         <NavBar
           title='我的推广订单'
           leftIconType='chevron-left'
@@ -60,7 +60,7 @@ export default class RecommendOrder extends Component {
 
         <ScrollView
           scrollY
-          className='trade-list__scroll order-recom'
+          className='order-recom'
           onScrollToLower={this.nextPage}
         >
           {

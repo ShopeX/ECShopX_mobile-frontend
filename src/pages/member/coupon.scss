@@ -8,8 +8,10 @@
     z-index: $z-index-toolbar;
   }
   &__scroll {
-    height: 100vh;
-    padding: $tabbar-height 0 $edge-margin;
+    //height: 100vh;
+    //padding: $tabbar-height 0 $edge-margin;
+    @include page-scroll($navigate-height + $tabs-height , $edge-margin);
+
     box-sizing: border-box;
   }
   &__tabs {

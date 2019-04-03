@@ -1,6 +1,6 @@
 @import "../../style/imports";
 
-.trade-list {
+.recomm-list {
   .at-tabs__header {
     position: absolute;
     top: $navigate-height;
@@ -8,15 +8,17 @@
     z-index: $z-index-toolbar;
   }
   &__scroll {
-    height: 100%;
-    padding: $tabbar-height 0 $edge-margin;
+    //height: 100%;
+    //padding: $tabbar-height 0 $edge-margin;
     box-sizing: border-box;
+    @include page-scroll($navigate-height + $tabs-height , $edge-margin);
   }
   &__tabs {
     position: fixed;
     left: 0;
     top: 0;
     width: 100%;
+    height: 105PX;
   }
   .order-item {
     padding: 20px 30px;

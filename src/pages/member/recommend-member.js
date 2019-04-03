@@ -81,14 +81,14 @@ export default class RecommendOrder extends Component {
     const { curTabIdx, tabList, list, page } = this.state
 
     return (
-      <View className='trade-list'>
+      <View className='recomm-list'>
         <NavBar
           title='我的会员'
           leftIconType='chevron-left'
           fixed='true'
         />
         <AtTabs
-          className='trade-list__tabs'
+          className='recomm-list__tabs'
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
@@ -107,7 +107,7 @@ export default class RecommendOrder extends Component {
 
         <ScrollView
           scrollY
-          className='trade-list__scroll'
+          className='recomm-list__scroll'
           onScrollToLower={this.nextPage}
         >
           {

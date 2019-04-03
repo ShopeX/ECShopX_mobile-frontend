@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import {View, Text, Image, Progress} from '@tarojs/components'
 import { Price } from '@/components'
 import { isObject, classNames } from '@/utils'
 
@@ -17,7 +17,7 @@ export default class GoodsItem extends Component {
   }
 
   render () {
-    const { info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className } = this.props
+    const { info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw } = this.props
     if (!info) {
       return null
     }
@@ -43,6 +43,19 @@ export default class GoodsItem extends Component {
           <View className='goods-item__cont'>
             <Text className='goods-item__title'>{info.title}</Text>
             <Text className='goods-item__desc'>{info.desc}</Text>
+            {
+              isPointDraw
+                ? <View className='draw-item__ft-inner'>
+                    <Text>已筹集</Text>
+                    <Progress
+                      strokeWidth={6}
+                      percent={info.rate}
+                      showInfo
+                      activeColor='#13CE66'
+                    />
+                  </View>
+                : null
+            }
             <View className='goods-item__prices'>
               <Price
                 primary

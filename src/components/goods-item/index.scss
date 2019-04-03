@@ -12,6 +12,17 @@ $item-img-size: 240px !default;
   }
 }
 
+.draw-item__ft-inner {
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-small;
+  color: $color-gray;
+  .weui-progress {
+    flex: 1;
+    margin-left: 10px;
+  }
+}
+
 .goods-item {
   $self: &;
   display: flex;
@@ -20,16 +31,19 @@ $item-img-size: 240px !default;
   border-radius: $item-border-radius;
   overflow: hidden;
   margin: 0 0 $edge-margin;
+
   &__hd {
   }
   &__bd {
     display: flex;
+    flex: 1;
   }
   &__cont{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: $edge-margin $edge-size;
+    flex: 1;
   }
   &__img {
     width: $item-img-size;
