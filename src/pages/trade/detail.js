@@ -137,7 +137,7 @@ export default class TradeDetail extends Component {
 
   handleClickDelivery = () => {
     Taro.navigateTo({
-      url: '/pages/trade/delivery-info'
+      url: '/pages/trade/delivery-info?order_id='+this.state.info.tid
     })
   }
 

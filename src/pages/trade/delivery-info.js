@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtTimeline } from 'taro-ui'
-import { Loading, NavBar } from '@/components'
+import { Loading, NavBar, SpNote } from '@/components'
 import { pickBy } from '@/utils'
 import api from '@/api'
 
@@ -57,10 +57,13 @@ export default class TradeDetail extends Component {
         </View>
 
         <View className='delivery-info'>
-          <AtTimeline
-            items={list}
-          >
-          </AtTimeline>
+          {
+            list.length === 0
+              ? <SpNote img='plane.png'>目前暂无物流信息~</SpNote>
+              : <AtTimeline items={list} ></AtTimeline>
+
+          }
+
         </View>
       </View>
     )

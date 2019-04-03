@@ -37,15 +37,17 @@ export default class PointOrderDetail extends Component {
       status_img: 'lucky_status',
       address_id: 'address_id',
       ship_status: 'ship_status',
-      receiver_name: 'data.address.username',
-      receiver_mobile: 'data.address.telephone',
-      receiver_state: 'data.address.province',
-      receiver_city: 'data.address.city',
-      receiver_district: 'data.address.county',
-      receiver_address: 'data.address.adrdetail',
+      receiver_name: 'address.username',
+      receiver_mobile: 'address.telephone',
+      receiver_state: 'address.province',
+      receiver_city: 'address.city',
+      receiver_district: 'address.county',
+      receiver_address: 'address.adrdetail',
       ship_corp: 'ship_corp',
       ship_code: 'ship_code',
     })
+
+    console.log(info,49)
     if(info.lucky_status === 'lucky') {
       info.status_desc_name = '中奖'
       info.status_img = 'ico_wait_buyer_confirm_goods.png'

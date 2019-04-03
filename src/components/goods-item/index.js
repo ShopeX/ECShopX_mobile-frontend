@@ -51,7 +51,7 @@ export default class GoodsItem extends Component {
                       strokeWidth={6}
                       percent={info.rate}
                       showInfo
-                      activeColor='#13CE66'
+                      activeColor='#C40000'
                     />
                   </View>
                 : null
