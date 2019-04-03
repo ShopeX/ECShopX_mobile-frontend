@@ -420,7 +420,7 @@ export default class PointDrawDetail extends Component {
         />
 
         {
-          info.open_status === 'success'
+          info.open_status !== 'success'
             ? <View className='goods-buy-toolbar'>
                 <View  className='goods-buy-toolbar__btns' >
                   <Button
