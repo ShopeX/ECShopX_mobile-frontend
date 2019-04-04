@@ -62,6 +62,7 @@ export default class PointDrawOrder extends Component {
       luckydraw_store: 'luckydraw_store',
       mobile: 'mobile',
       join_num: 'join_num',
+      is_own_lucky: 'is_own_lucky',
       rate: ({sales_num, luckydraw_store}) => Number(((sales_num/luckydraw_store)*100).toFixed(0))
     })
     nList.map(item => {
@@ -181,7 +182,9 @@ export default class PointDrawOrder extends Component {
                                 <View className='goods-item__time'>
                                   <Text>获得者：{item.mobile}</Text>
                                 </View>
-                                <View className='lucky-info'>{item.lucky_status}</View>
+                                {
+                                  item.is_own_lucky === 1 && <View className='lucky-info'>{item.lucky_status}</View>
+                                }
                               </View>
                             : <View>
                                 <View className='goods-item__prices—ing'>
