@@ -38,6 +38,7 @@ export default class PointDrawDetail extends Component {
       luckyInfo: {},
       isLucky: false,
       trade_id: '',
+      isDisabled: false
     }
   }
 
@@ -143,9 +144,13 @@ export default class PointDrawDetail extends Component {
   }
 
   handleBuyClick = async () => {
+    this.setState({
+      isDisabled: true
+    })
     Taro.showLoading({
-      title: '支付中',
-      icon: 'none'
+      title: '抽奖中',
+      icon: 'none',
+      mask: true
     });
     try {
       const res = await api.member.pointDrawPay(this.$router.params)
@@ -159,12 +164,16 @@ export default class PointDrawDetail extends Component {
         Taro.hideLoading()
         await api.cashier.getPayment(query)
         Taro.showToast({
-          title: '支付成功',
-          icon: 'none'
+          title: '抽奖成功',
+          icon: 'none',
+          duration: 1000
         });
         setTimeout(() => {
           this.fetch();
-        }, 700);
+          this.setState({
+            isDisabled: false
+          })
+        }, 1500);
         // Taro.redirectTo({
         //   url: `/pages/cashier/cashier-result?payStatus=success&order_id=${orderInfo.order_id}`
         // })
@@ -212,7 +221,7 @@ export default class PointDrawDetail extends Component {
   }
 
   render () {
-    const { info, windowWidth, curImgIdx, scrollTop, showBackToTop, isLogin, intro, isShowDesc, totalRecord, luckyInfo, isLucky } = this.state
+    const { info, windowWidth, curImgIdx, scrollTop, showBackToTop, isLogin, intro, isShowDesc, totalRecord, luckyInfo, isLucky, isDisabled } = this.state
     if (!info) {
       return (
         <Loading />
@@ -449,7 +458,7 @@ export default class PointDrawDetail extends Component {
             ? <View className='goods-buy-toolbar'>
                 <View  className='goods-buy-toolbar__btns' >
                   <Button
-                    disabled={isBuyBtnDisabled}
+                    disabled={isBuyBtnDisabled || isDisabled}
                     className='goods-buy-toolbar__btn btn-fast-buy'
                     onClick={this.handleBuyClick.bind(this)}
                   >立即抽奖</Button>
