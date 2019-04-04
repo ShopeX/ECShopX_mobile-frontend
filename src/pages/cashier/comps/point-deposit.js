@@ -40,17 +40,28 @@ export default class PointDepositBtn extends Component {
       pay_type: pay_pay_type,
       order_type: this.props.orderType,
     }
-    await api.cashier.getPayment(query)
-      .then(()=> {
-        Taro.redirectTo({
-          url: `/pages/cashier/cashier-result?payStatus=success&order_id=${this.props.orderID}`
-        })
+    try {
+      await api.cashier.getPayment(query)
+      Taro.redirectTo({
+        url: `/pages/cashier/cashier-result?payStatus=success&order_id=${this.props.orderID}`
       })
-      .catch(() => {
-        Taro.redirectTo({
-          url: `/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
-        })
+    } catch(e) {
+      console.log(e,49)
+      this.setState({
+        isOpened: false
       })
+    }
+
+      // .then(()=> {
+      //   Taro.redirectTo({
+      //     url: `/pages/cashier/cashier-result?payStatus=success&order_id=${this.props.orderID}`
+      //   })
+      // })
+      // .catch(() => {
+      //   Taro.redirectTo({
+      //     url: `/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
+      //   })
+      // })
   }
 
   render () {

@@ -11,7 +11,7 @@ export default class CashierResult extends Component {
 
     this.state = {
       info: {
-        payStatus: 'success'
+        payStatus: ''
       },
       showTabBar: '',
     }
@@ -38,15 +38,11 @@ export default class CashierResult extends Component {
       this.setState({
         showTabBar: 'CZ'
       })
-      console.log(1)
-    }else {
-      console.log(2)
-
     }
     this.setState({
       info: info
     })
-
+    Taro.hideLoading()
   }
 
   handleClickBack = (order_id) => {
@@ -82,7 +78,7 @@ export default class CashierResult extends Component {
               />
             </View>
             <View className='cashier-result__info'>
-              <View className='cashier-result__info-title'>订单支付{info.payStatus === 'fail' ? '失败' : '成功'}</View>
+              <View className='cashier-result__info-title'>订单支付{info.payStatus === 'fail' ? '失败' : ''}{info.payStatus === 'success' ? '成功' : ''}</View>
               <View className='cashier-result__info-news'>订单号：{info.order_id}</View>
               {
                 info.payStatus === 'success' ? <View className='cashier-result__info-news'>支付单号：{info.tradeId}</View> : null
