@@ -2,16 +2,14 @@ const path = require('path')
 const pkg = require('../package.json')
 
 const [TARO_CMD, TARO_ENV] = process.env.npm_lifecycle_event.split(':')
-const DIST_PATH = TARO_ENV === 'h5'
-  ? (process.env.NODE_ENV === 'production' ? 'h5_dist' : '.h5_dev_dist' )
-  : 'dist'
-const API_HOST = process.env.RELEASE === 'h5'
+const DIST_PATH = 'dist'
+const API_HOST = process.env.NODE_ENV === 'production'
   ? 'b.pjinjin.com'
   : 'pjj.aixue7.com'
 
 const config = {
   projectName: pkg.name,
-  date: '2019-2-18',
+  date: '2019-4-9',
   designWidth: 750,
   deviceRatio: {
     '640': 2.34 / 2,

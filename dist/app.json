@@ -7,6 +7,7 @@
     "pages/item/espier-detail",
     "pages/item/point-list",
     "pages/item/point-detail",
+    "pages/home/coupon-home",
     "pages/cart/espier-index",
     "pages/cart/espier-checkout",
     "pages/cart/coupon-picker",
@@ -22,8 +23,12 @@
     "pages/member/point",
     "pages/member/point-draw",
     "pages/member/point-draw-detail",
+    "pages/member/draw-rule",
     "pages/member/point-draw-order",
     "pages/member/point-order-detail",
+    "pages/member/point-draw-record",
+    "pages/member/point-all-record",
+    "pages/member/point-draw-compute",
     "pages/member/pay",
     "pages/member/pay-rule",
     "pages/member/money-to-point",
@@ -34,6 +39,7 @@
     "pages/member/coupon",
     "pages/member/address",
     "pages/member/setting",
+    "pages/member/userinfo",
     "pages/trade/list",
     "pages/trade/detail",
     "pages/trade/delivery-info",
@@ -42,7 +48,8 @@
     "pages/trade/after-sale",
     "pages/trade/refund",
     "pages/trade/refund-detail",
-    "pages/trade/refund-sendback"
+    "pages/trade/refund-sendback",
+    "pages/protocol/privacy"
   ],
   "window": {
     "backgroundTextStyle": "light",

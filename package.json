@@ -1,9 +1,9 @@
 {
 	"name": "espier-taro-fenxiao",
-	"app_name": "源源客h5",
+	"app_name": "爱茉莉小程序",
 	"version": "1.0.0",
 	"private": true,
-	"description": "taro app for bbc",
+	"description": "爱茉莉商城小程序",
 	"scripts": {
 		"build:weapp": "taro build --type weapp",
 		"build:swan": "taro build --type swan",
@@ -16,8 +16,7 @@
 		"dev:alipay": "npm run build:alipay -- --watch",
 		"dev:tt": "npm run build:tt -- --watch",
 		"dev:h5": "npm run build:h5 -- --watch",
-		"dev:rn": "npm run build:rn -- --watch",
-		"release:h5": "RELEASE=h5 taro build --type h5"
+		"dev:rn": "npm run build:rn -- --watch"
 	},
 	"author": "",
 	"license": "MIT",
@@ -73,10 +72,5 @@
 		"eslint-plugin-react": "^7.8.2",
 		"eslint-plugin-taro": "1.2.21",
 		"qn-webpack": "^2.0.3"
-	},
-	"cdn": {
-		"publicPath": "//b-cdn.pjinjin.com/",
-		"bucket": "espier-vue",
-		"path": "h5/"
 	}
 }
