@@ -27,6 +27,8 @@ class App extends Component {
       'pages/item/espier-detail',
       'pages/item/point-list',
       'pages/item/point-detail',
+      'pages/item/seckill-list',
+      'pages/item/seckill-goods-list',
       'pages/home/coupon-home',
 
       'pages/cart/espier-index',
@@ -62,6 +64,7 @@ class App extends Component {
       'pages/member/recommend-order',
       'pages/member/coupon',
       'pages/member/address',
+      'pages/member/edit-address',
       'pages/member/setting',
       'pages/member/userinfo',
 

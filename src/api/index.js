@@ -8,6 +8,7 @@ import * as member from './member'
 import * as region from './region'
 import * as trade from './trade'
 import * as user from './user'
+import * as seckill from './seckill'
 import * as wx from './wx'
 
 export default {
@@ -21,5 +22,6 @@ export default {
   region,
   trade,
   user,
+  seckill,
   wx
 }

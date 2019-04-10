@@ -1,13 +1,69 @@
 {
-  "miniprogramRoot": "./",
-  "projectname": "mshop-taro",
-  "description": "taro app for bbc",
-  "appid": "wxfaadceab4f782c35",
-  "setting": {
-    "urlCheck": false,
-    "es6": false,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram"
+	"projectname": "mshop-taro",
+	"description": "taro app for bbc",
+	"appid": "wxfaadceab4f782c35",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 4,
+			"list": [
+				{
+					"id": -1,
+					"name": "seckill-list",
+					"pathName": "pages/item/seckill-list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "seckill-goods-list",
+					"pathName": "pages/item/seckill-goods-list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "address",
+					"pathName": "pages/member/address",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "list",
+					"pathName": "pages/item/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "pages/member/index",
+					"scene": null
+				}
+			]
+		}
+	}
 }

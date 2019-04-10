@@ -19,4 +19,8 @@ export { default as SpIconMenu } from './icon-menu'
 export { default as SpNote } from './note'
 export { default as SpHtmlContent } from './html-content'
 
+export { default as AddressList } from './new-address/address'
+export { default as EditAddress } from './new-address/edit-address'
+export { default as AddressChoose } from './new-address/choose-address'
+
 export default {}

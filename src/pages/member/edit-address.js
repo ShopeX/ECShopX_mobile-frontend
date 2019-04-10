@@ -1,11 +1,15 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import AddressList from '@/components/new-address/address'
+import EditAddress from '@/components/new-address/edit-address'
 
 export default class AddressIndex extends Component {
 
   config = {
     navigationBarTitleText: '地址管理'
+  }
+
+  componentDidMount() {
+    console.log(this.$router.params.address_id, 29)
   }
 
   // handleClickBack () {
@@ -17,12 +21,10 @@ export default class AddressIndex extends Component {
 
   render () {
     return (
-      <AddressList
-        paths={this.$router.params.paths}
+      <EditAddress
+        address={this.$router.params.address}
+        addressID={this.$router.params.address_id}
       />
-        // onChange={this.handleAddressChange.bind(this)}
-        // onClickBack={this.handleClickBack.bind(this)}
-
     )
   }
 }
