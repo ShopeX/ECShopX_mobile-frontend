@@ -5,6 +5,7 @@ import { Loading, SpNote, Price } from '@/components'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
 import { withPager } from '@/hocs'
+import { calcTimer } from '@/utils'
 
 import './group-list.scss'
 
@@ -48,6 +49,11 @@ export default class GroupList extends Component {
     })
 
     const { list, total_count: total } = await api.item.groupList(params)
+    list.forEach(t => {
+      if (t.remaining_time > 0) {
+        t.remaining_time_obj = calcTimer(t.remaining_time)
+      }
+    })
 
     this.setState({
       list: [...this.state.list, ...list]
@@ -111,6 +117,7 @@ export default class GroupList extends Component {
         >
           {
             list.map((item, idx) => {
+              const { remaining_time_obj } = item
               return (
                 <View
                   className="group-item"
@@ -125,7 +132,11 @@ export default class GroupList extends Component {
                   </View>
                   <View className="group-item__bd">
                     <View className="group-item__cont">
-                      <Text className='group-item__title'>{item.goods_name}</Text>
+                      <Text className='group-item__title'>
+                        {item.team_status == 2 && (<Text className='group-item__title-status'>【已满团】</Text>)}
+                        {item.team_status == 3 && (<Text className='group-item__title-status'>【未成团】</Text>)}
+                        {item.goods_name}
+                      </Text>
                       <View className='group-item__desc'>
                         <View className='group-item__tuan'><Text className='group-item__tuan-num'>{item.person_num}</Text><Text className='group-item__tuan-txt'>人团</Text></View>
                         <Price
@@ -137,17 +148,19 @@ export default class GroupList extends Component {
                       </View>
                     </View>
                     <View className="group-item__action">
-                      <View className="timer">
-                        <View className='at-icon at-icon-clock'></View>
-                        <AtCountdown
-                          isShowDay
-                          format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
-                          day={2}
-                          hours={1}
-                          minutes={1}
-                          seconds={10}
-                        />
-                      </View>
+                      {remaining_time_obj && (
+                        <View className="timer">
+                          <View className='at-icon at-icon-clock'></View>
+                          <AtCountdown
+                            isShowDay
+                            format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                            day={remaining_time_obj.dd}
+                            hours={remaining_time_obj.hh}
+                            minutes={remaining_time_obj.mm}
+                            seconds={remaining_time_obj.ss}
+                          />
+                        </View>
+                      )}
                       {curTabIdx === 0
                         ? <View className='btn-go'>去开团</View>
                         : <View className='btn-go disabled'>未开始</View>

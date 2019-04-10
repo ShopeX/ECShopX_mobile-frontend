@@ -5,7 +5,7 @@ import { AtDivider, AtCountdown } from 'taro-ui'
 import { Loading, Price, BackToTop, SpHtmlContent, SpToast, NavBar } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
-import { styleNames, log } from '@/utils'
+import { styleNames, log, calcTimer } from '@/utils'
 import S from '@/spx'
 import GoodsBuyToolbar from './comps/buy-toolbar'
 
@@ -42,24 +42,6 @@ export default class Detail extends Component {
     this.fetch()
   }
 
-  calcTimer (totalSec) {
-    let remainingSec = totalSec
-    const dd = Math.floor(totalSec / 24 / 3600)
-    remainingSec -= dd * 3600 * 24
-    const hh = Math.floor(remainingSec / 3600)
-    remainingSec -= hh * 3600
-    const mm = Math.floor(remainingSec / 60)
-    remainingSec -= mm * 60
-    const ss = Math.floor(remainingSec)
-
-    return {
-      dd,
-      hh,
-      mm,
-      ss
-    }
-  }
-
   handleResize () {
     const { windowWidth } = Taro.getSystemInfoSync()
     this.setState({
@@ -77,7 +59,7 @@ export default class Detail extends Component {
     if (info.group_activity) {
       //团购
       marketing = 'group'
-      timer = this.calcTimer(info.group_activity.remaining_time)
+      timer = calcTimer(info.group_activity.remaining_time)
     } else if (info.seckill_activity) {
       //秒杀
       marketing = 'seckill'

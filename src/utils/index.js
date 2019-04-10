@@ -140,6 +140,24 @@ export function copyText (text, msg = '内容已复制') {
   })
 }
 
+export function calcTimer (totalSec) {
+  let remainingSec = totalSec
+  const dd = Math.floor(totalSec / 24 / 3600)
+  remainingSec -= dd * 3600 * 24
+  const hh = Math.floor(remainingSec / 3600)
+  remainingSec -= hh * 3600
+  const mm = Math.floor(remainingSec / 60)
+  remainingSec -= mm * 60
+  const ss = Math.floor(remainingSec)
+
+  return {
+    dd,
+    hh,
+    mm,
+    ss
+  }
+}
+
 export function resolveOrderStatus (status, isBackwards) {
   if (isBackwards) {
     return _findKey(STATUS_TYPES_MAP, o => o === status)

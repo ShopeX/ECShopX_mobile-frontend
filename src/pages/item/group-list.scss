@@ -39,6 +39,10 @@ $item-img-size: 240px !default;
       line-height: 1.4;
       color: #111;
       margin: 0 0 16px;
+      &-status {
+        color: $color-red;
+        font-weight: bold;
+      }
     }
     &__desc {
       line-height: 1.4;
