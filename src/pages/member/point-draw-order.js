@@ -187,14 +187,14 @@ export default class PointDrawOrder extends Component {
                                 }
                               </View>
                             : <View>
-                                <View className='goods-item__prices—ing'>
+                                <View className='goods-item__prices_ing'>
                                   <Progress
                                     strokeWidth={5}
                                     percent={item.rate}
                                     activeColor='#C40000'
                                   />
                                 </View>
-                                <View className='goods-item__prices—ing'>
+                                <View className='goods-item__prices_ing'>
                                   <View className='person-num'>
                                     <Text className='number-color'>{item.sales_num}</Text>
                                     <Text>已参与</Text>

@@ -2,17 +2,18 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtInput, AtActionSheet, AtActionSheetItem } from 'taro-ui'
-import { Loading, Price, SpCell, AddressPicker, SpToast, NavBar } from '@/components'
+import { Loading, Price, SpCell, AddressChoose, SpToast, NavBar } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { withLogin } from '@/hocs'
-import { pickBy } from '@/utils'
+import { pickBy, log } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { getSelectedCart } from '@/store/cart'
 import CheckoutItems from './checkout-items'
 
 
 import './espier-checkout.scss'
+import find from "lodash/find";
 
 @connect(({ cart }) => ({
   coupon: cart.coupon,
@@ -21,6 +22,11 @@ import './espier-checkout.scss'
 }), (dispatch) => ({
   onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' }),
   onClearCart: () => dispatch({ type: 'cart/clear' })
+}))
+@connect(( { address } ) => ({
+  defaultAddress: address.defaultAddress,
+}), (dispatch) => ({
+  onAddressChoose: (defaultAddress) => dispatch({ type: 'address/choose', payload: defaultAddress }),
 }))
 @withLogin()
 export default class CartCheckout extends Component {
@@ -33,6 +39,7 @@ export default class CartCheckout extends Component {
     super(props)
 
     this.state = {
+      address_list: [],
       info: null,
       address: null,
       showShippingPicker: false,
@@ -55,6 +62,8 @@ export default class CartCheckout extends Component {
   }
 
   componentDidMount () {
+    this.fetch(() => this.changeSelection())
+
     const { cart_type, pay_type: payType } = this.$router.params
     let info = null
 
@@ -111,9 +120,15 @@ export default class CartCheckout extends Component {
         total_fee: total_fee.toFixed(2)
       }
     })
+    this.handleAddressChange(this.props.defaultAddress)
   }
 
   componentDidShow () {
+    console.log( 123)
+    if(this.state.address_list < 2) {
+      this.fetch(() => this.changeSelection())
+    }
+    // this.fetch(() => this.changeSelection())
     if (!this.props.list.length && !this.props.fastbuy) {
       Taro.showToast({
         title: '购物车中无商品',
@@ -127,13 +142,46 @@ export default class CartCheckout extends Component {
       return
     }
     if (!this.params) return
+    if (!this.state.address) return
     this.calcOrder()
+    this.setState({
+      address: this.props.defaultAddress
+    },()=>{
+      this.handleAddressChange(this.state.address)
+    })
   }
 
-  async fetch () {
-    // const { point_total: { point_count: pointTotal } } = await api.member.pointDetail()
-    // const { cartInfo: info, total, default_address: address } = await api.cart.checkout()
+  async fetch (cb) {
+    Taro.showLoading({
+      mask: true
+    })
+    const { list } = await api.member.addressList()
+    Taro.hideLoading()
+
+    this.setState({
+      address_list: list
+    }, () => {
+      cb && cb(list)
+    })
   }
+
+  changeSelection (params = {}) {
+    const { address_list } = this.state
+    if (address_list.length === 0) {
+      Taro.navigateTo({
+        url: '/pages/member/edit-address'
+      })
+      return
+    }
+    const { address_id } = params
+    let address = find(address_list, addr => address_id ? address_id === addr.address_id : addr.is_def > 0) || address_list[0] || null
+
+    log.debug('[address picker] change selection: ', address)
+    this.props.onAddressChoose(address)
+    this.handleAddressChange(address)
+    // this.props.onChange(address)
+  }
+
 
   getParams () {
     const receiver = pickBy(this.state.address, {
@@ -191,12 +239,11 @@ export default class CartCheckout extends Component {
     })
   }
 
+
   handleAddressChange = (address) => {
     if (!address) {
-      this.toggleAddressPicker(true)
       return
     }
-
     address = pickBy(address, {
       state: 'province',
       city: 'city',
@@ -232,14 +279,14 @@ export default class CartCheckout extends Component {
     this.toggleCheckoutItems()
   }
 
-  toggleAddressPicker (isOpened) {
-    if (isOpened === undefined) {
-      isOpened = !this.state.showAddressPicker
-    }
-
-    lockScreen(isOpened)
-    this.setState({ showAddressPicker: isOpened })
-  }
+  // toggleAddressPicker (isOpened) {
+  //   if (isOpened === undefined) {
+  //     isOpened = !this.state.showAddressPicker
+  //   }
+  //
+  //   lockScreen(isOpened)
+  //   this.setState({ showAddressPicker: isOpened })
+  // }
 
   toggleCheckoutItems (isOpened) {
     if (isOpened === undefined) {
@@ -298,7 +345,6 @@ export default class CartCheckout extends Component {
   render () {
     const { coupon } = this.props
     const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType } = this.state
-
     if (!info) {
       return <Loading />
     }
@@ -325,28 +371,31 @@ export default class CartCheckout extends Component {
           scrollY
           className='checkout__wrap'
         >
-          <View
-            className='address-info'
-            onClick={this.toggleAddressPicker.bind(this, true)}
-          >
-            <SpCell
-              isLink
-              icon='map-pin'
-            >
-              {
-                address
-                  ? <View className='address-info__bd'>
-                      <Text className='address-info__receiver'>
-                        收货人：{address.name} {address.mobile}
-                      </Text>
-                      <Text className='address-info__addr'>
-                        收货地址：{address.province}{address.state}{address.district}{address.address}
-                      </Text>
-                    </View>
-                  : <View className='address-info__bd'>请选择收货地址</View>
-              }
-            </SpCell>
-          </View>
+          <AddressChoose
+            isAddress={address}
+          />
+          {/*<View*/}
+            {/*className='address-info'*/}
+            {/*onClick={this.toggleAddressPicker.bind(this, true)}*/}
+          {/*>*/}
+            {/*<SpCell*/}
+              {/*isLink*/}
+              {/*icon='map-pin'*/}
+            {/*>*/}
+              {/*{*/}
+                {/*address*/}
+                  {/*? <View className='address-info__bd'>*/}
+                      {/*<Text className='address-info__receiver'>*/}
+                        {/*收货人：{address.name} {address.mobile}*/}
+                      {/*</Text>*/}
+                      {/*<Text className='address-info__addr'>*/}
+                        {/*收货地址：{address.province}{address.state}{address.district}{address.address}*/}
+                      {/*</Text>*/}
+                    {/*</View>*/}
+                  {/*: <View className='address-info__bd'>请选择收货地址</View>*/}
+              {/*}*/}
+            {/*</SpCell>*/}
+          {/*</View>*/}
 
           <View className='cart-list'>
             {
@@ -507,12 +556,17 @@ export default class CartCheckout extends Component {
           )}
         </ScrollView>
 
-        <AddressPicker
-          isOpened={showAddressPicker}
-          value={address}
-          onChange={this.handleAddressChange}
-          onClickBack={this.toggleState.bind(this, 'showAddressPicker', false)}
-        />
+        {/*<AddressPicker*/}
+          {/*isOpened={showAddressPicker}*/}
+          {/*value={address}*/}
+          {/*onChange={this.handleAddressChange}*/}
+          {/*onClickBack={this.toggleState.bind(this, 'showAddressPicker', false)}*/}
+        {/*/>*/}
+        {/*<AddressList*/}
+          {/*onClickTo={this.clickTo.bind(this)}*/}
+          {/*onChange={this.handleAddressChange.bind(this)}*/}
+          {/*onClickBack={this.handleClickBack.bind(this)}*/}
+        {/*/>*/}
 
         <CheckoutItems
           isOpened={showCheckoutItems}

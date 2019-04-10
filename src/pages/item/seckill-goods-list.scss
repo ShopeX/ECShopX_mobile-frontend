@@ -1,0 +1,17 @@
+@import "../../style/imports";
+
+.page-seckill-goods {
+  .seckill-goods{
+    &__scroll {
+      box-sizing: border-box;
+    }
+    &__swiper {
+      box-sizing: border-box;
+      width: 100%;
+    }
+    &__list {
+      padding: 30px;
+    }
+  }
+
+}

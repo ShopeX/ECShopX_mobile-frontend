@@ -6,7 +6,7 @@
 }
 
 .address-picker {
-  @include page-view();
+  //@include page-view();
   .add_address {
     text-align: right;
     padding: 10px 30px;

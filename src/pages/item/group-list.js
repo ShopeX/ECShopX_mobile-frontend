@@ -10,6 +10,10 @@ import './group-list.scss'
 
 @withPager
 export default class GroupList extends Component {
+  static config = {
+    title: '限时团购'
+  }
+
   constructor (props) {
     super(props)
 
