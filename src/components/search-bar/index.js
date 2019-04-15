@@ -102,7 +102,9 @@ export default class SearchBar extends Component {
     const { isFixed, className } = this.props
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
-      <View className='search-input'>
+      <View
+        className={classNames('search-input', isFixed ? 'search-input-fixed' : null)}
+      >
 
         {/*<View*/}
         {/*className={classNames('search-input', className === 'category-top' ? className : '', showSearchDailog ? 'search-input__focus' : null, isFixed ? 'search-input-fixed' : null)}*/}

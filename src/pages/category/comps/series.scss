@@ -1,5 +1,4 @@
 @import "../../../style/imports";
-@import "../../../style/theme";
 
 .category-list {
   padding-top: 25px;
@@ -35,6 +34,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    border-left: 7px solid transparent;
     line-height: 95px;
     margin:0 auto;
     box-sizing: border-box;
@@ -49,10 +49,10 @@
     background: #fff;
     border-left: 7px solid $color-brand-primary;
     box-sizing: border-box;
-    border-top: 0;
+    border-top: 1PX solid transparent;
   }
   &__content-checked + &__content {
-    border-top: 0;
+    border-top: 1PX solid transparent;
   }
 }
 .category-content {

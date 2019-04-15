@@ -1,18 +1,17 @@
 @import "../../style/imports";
-@import "../../style/theme";
 
 .page-category-index {
   width: 100%;
   height: 100%;
   background: #ffffff;
-  .category-search {
-    position: fixed;
-    height: 65px;
-    width: 690px;
-    background-color: #eff0f0;
-    top: 0;
-    left: 25px;
-  }
+  //.category-search {
+  //  position: fixed;
+  //  height: 65px;
+  //  width: 690px;
+  //  background-color: #eff0f0;
+  //  top: 0;
+  //  left: 25px;
+  //}
   .category__tabs {
     position: fixed;
     top: 65px;
