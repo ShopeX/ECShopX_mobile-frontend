@@ -1,0 +1,9 @@
+@import '../../style/imports';
+
+.float-menus {
+  position: fixed;
+  width: 60px;
+  right: $edge-size;
+  bottom: 100px;
+  z-index: $z-index-tooltip;
+}

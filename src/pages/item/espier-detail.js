@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtDivider, AtCountdown } from 'taro-ui'
-import { Loading, Price, BackToTop, SpHtmlContent, SpToast, NavBar } from '@/components'
+import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
 import { styleNames, log, calcTimer } from '@/utils'
@@ -152,7 +152,7 @@ export default class Detail extends Component {
   }
 
   render () {
-    const { info, windowWidth, curImgIdx, desc, scrollTop, showBackToTop } = this.state
+    const { info, windowWidth, desc, scrollTop, showBackToTop } = this.state
     const { marketing, timer, isPromoter, startSecKill, hasStock, detailTabs, curTabIdx } = this.state
 
     if (!info) {
@@ -161,7 +161,6 @@ export default class Detail extends Component {
       )
     }
 
-    const { pics: imgs } = info
     const imgInfo = {
       img: info.pics[0],
       width: windowWidth + 'px'
@@ -294,15 +293,24 @@ export default class Detail extends Component {
               </View>
             </View>
           </View>
-
-
         </ScrollView>
 
-        <BackToTop
-          bottom={150}
-          show={showBackToTop}
-          onClick={this.scrollBackToTop}
-        />
+        <FloatMenus>
+          <FloatMenuItem
+            iconPrefixClass='in-icon'
+            icon='back-top'
+            hide={!showBackToTop}
+            onClick={this.scrollBackToTop}
+          />
+          <FloatMenuItem
+            iconPrefixClass='in-icon'
+            icon='float-share'
+          />
+          <FloatMenuItem
+            iconPrefixClass='in-icon'
+            icon='float-gift'
+          />
+        </FloatMenus>
 
         {(!info.distributor_sale_status && hasStock && startSecKill)
           ?

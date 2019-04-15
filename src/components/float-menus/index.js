@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { classNames, styleNames } from '@/utils'
+import { View } from '@tarojs/components'
+import { styleNames } from '@/utils'
 
 import './index.scss'
 
@@ -10,19 +10,18 @@ export default class BackToTop extends Component {
   }
 
   static defaultProps = {
-    onClick: () => {}
+    bottom: null
   }
 
   render () {
-    const { show, onClick, bottom } = this.props
+    const { bottom } = this.props
 
     return (
       <View
-        className={classNames('back-to-top', { 'is-show': show })}
+        className='float-menus'
         style={styleNames(bottom ? { bottom: `${Taro.pxTransform(bottom)}` } : null)}
-        onClick={onClick}
       >
-        <View className='at-icon at-icon-chevron-up'></View>
+        {this.props.children}
       </View>
     )
   }
