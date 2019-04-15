@@ -162,8 +162,8 @@ export default class GoodsBuyPanel extends Component {
           </View>
           <View className='goods-buy-panel__ft'>
             <View className='goods-buy-panel__btns'>
-              <Button className='goods-buy-panel__btn btn-add-cart'>加入购物车</Button>
               <Button className='goods-buy-panel__btn btn-fast-buy'>立即购买</Button>
+              <Button className='goods-buy-panel__btn btn-add-cart'>添加至购物车</Button>
             </View>
           </View>
         </View>

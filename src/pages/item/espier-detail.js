@@ -8,6 +8,7 @@ import { withBackToTop } from '@/hocs'
 import { styleNames, log, calcTimer } from '@/utils'
 import S from '@/spx'
 import GoodsBuyToolbar from './comps/buy-toolbar'
+import ItemImg from './comps/item-img'
 
 import './espier-detail.scss'
 
@@ -35,7 +36,13 @@ export default class Detail extends Component {
       isPromoter: false,
       timer: null,
       startSecKill: true,
-      hasStock: true
+      hasStock: true,
+      curTabIdx: 0,
+      detailTabs: [
+        { title: '商品详情' },
+        { title: '商品参数' },
+        { title: '服务保障' }
+      ]
     }
   }
 
@@ -138,9 +145,15 @@ export default class Detail extends Component {
     }
   }
 
+  handleTabClick = (idx) => {
+    this.setState({
+      curTabIdx: idx
+    })
+  }
+
   render () {
     const { info, windowWidth, curImgIdx, desc, scrollTop, showBackToTop } = this.state
-    const { marketing, timer, isPromoter, startSecKill, hasStock } = this.state
+    const { marketing, timer, isPromoter, startSecKill, hasStock, detailTabs, curTabIdx } = this.state
 
     if (!info) {
       return (
@@ -149,6 +162,10 @@ export default class Detail extends Component {
     }
 
     const { pics: imgs } = info
+    const imgInfo = {
+      img: info.pics[0],
+      width: windowWidth + 'px'
+    }
 
     return (
       <View className='page-goods-detail'>
@@ -166,35 +183,9 @@ export default class Detail extends Component {
           onScroll={this.handleScroll}
         >
           <View className='goods-imgs__wrap'>
-            <Image
-              src={imgs[0]}
-              mode='aspectFill'
-              style={styleNames({ width: windowWidth + 'px', height: windowWidth + 'px' })}
+            <ItemImg
+              info={imgInfo}
             />
-            {/*<Swiper
-              className='goods-imgs__swiper'
-              style={`height: ${windowWidth}px`}
-              current={curImgIdx}
-              onChange={this.handleSwiperChange}
-            >
-              {
-                imgs.map((img, idx) => {
-                  return (
-                    <SwiperItem key={idx}>
-                      <Image
-                        src={img}
-                        mode='aspectFill'
-                        style={styleNames({ width: windowWidth + 'px', height: windowWidth + 'px' })}
-                      />
-                    </SwiperItem>
-                  )
-                })
-              }
-            </Swiper>
-            {
-              imgs.length > 1
-                && <Text className='goods-imgs__text'>{curImgIdx + 1} / {imgs.length}</Text>
-            }*/}
           </View>
 
           {timer && (
@@ -249,19 +240,9 @@ export default class Detail extends Component {
                     unit='cent'
                     value={info.price}
                   />
-
-                  {info.approve_status !== 'only_show' && (
-                    <View className='goods-prices__market'>
-                      <Price
-                        unit='cent'
-                        symbol={info.cur.symbol}
-                        value={info.mkt_price}
-                      />
-                    </View>
-                  )}
                 </View>
 
-                {info.approve_status !== 'only_show' && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>)}
+                {/* info.approve_status !== 'only_show' && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>) */}
               </View>
             )}
           </View>
@@ -272,11 +253,27 @@ export default class Detail extends Component {
             </View>
           )}
 
-          <View className='sec goods-sec-props'>
-            <View className='sec-hd'>
-              <Text className='sec-title'>商品参数</Text>
+          <View className='goods-sec-tabs'>
+            <View className='sec-tabs'>
+              {detailTabs.map((tab, idx) => {
+                return (
+                  <View
+                    key={tab.title}
+                    className={`sec-tab__item ${idx === curTabIdx ? 'is-active' : ''}`}
+                    onClick={this.handleTabClick.bind(this, idx)}
+                  >{tab.title}</View>
+                )
+              })}
             </View>
-            <View className='sec-bd'>
+
+            <View className={`goods-sec-detail sec-tab__panel ${curTabIdx === 0 ? 'is-show' : ''}`}>
+              <SpHtmlContent
+                className='goods-detail__content'
+                content={desc}
+              />
+            </View>
+
+            <View className={`goods-sec-props sec-tab__panel ${curTabIdx === 1 ? 'is-show' : ''}`}>
               <View className='goods-props__wrap'>
                 <View className='prop-item'>
                   <Text className='prop-item__label'>品牌：</Text>
@@ -298,26 +295,7 @@ export default class Detail extends Component {
             </View>
           </View>
 
-          {/*<View
-            className='sec goods-sec-action'
-            onClick={this.handleClickAction}
-          >
-            <Text className='goods-action'>
-              <Text className='goods-action__label'>选择</Text>
-              <Text>购买尺寸、颜色、数量、分类</Text>
-            </Text>
-            <View className='sec-ft'>
-              <View className='at-icon at-icon-chevron-right'></View>
-            </View>
-          </View>*/}
 
-          <View className='goods-sec-detail'>
-            <AtDivider content='宝贝详情'></AtDivider>
-            <SpHtmlContent
-              className='goods-detail__content'
-              content={desc}
-            />
-          </View>
         </ScrollView>
 
         <BackToTop

@@ -1,0 +1,29 @@
+@import "../../../style/imports";
+
+.item-img {
+  position: relative;
+  overflow: hidden;
+  &__img {
+    position: relative;
+    width: 650px;
+    height: 390px;
+    z-index: 10;
+    display: block;
+    border-radius: 10PX;
+    overflow: hidden;
+    margin: 60px auto 0;
+    box-shadow: 0 0 20px rgba(#000, 0.1);
+  }
+  &__blured {
+    position: absolute;
+    mask-image: linear-gradient(#000 0%, #000 70%, transparent 100%);
+    top: 0;
+    left: -8px;
+    right: -8px;
+    width: 110%;
+    height: 370px;
+    z-index: 2;
+    overflow: hidden;
+    filter: blur(8px);
+  }
+}

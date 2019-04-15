@@ -85,12 +85,15 @@
   align-items: baseline;
   font-size: $font-size * 2;
   margin: 0 0 12px;
-  .price__symbol {
-    font-size: $font-size;
+  .price {
+    font-size: 43px;
+    &__symbol {
+      font-size: 32px;
+    }
   }
   &__wrap {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: baseline;
   }
   &__market {
@@ -115,22 +118,25 @@
 
 .goods-hd {
   background: #fff;
-  padding: 24px $edge-size;
+  padding: 50px $edge-size 15px;
   margin: 0 0 $edge-margin;
 }
 
 .goods-title {
-  font-size: $font-size-large;
+  font-size: 32px;
   display: block;
   color: #000;
+  text-align: center;
   @include multi-ellipsis(2);
   line-height: 1.2;
-  margin: 0 0 14px;
+  margin: 0 60px 14px;
   &__desc {
+    font-size: 18px;
     display: block;
+    line-height: 1;
     color: $color-gray;
     font-size: $font-size-small;
-    margin-bottom: $edge-margin;
+    margin-bottom: 28px;
   }
 }
 
@@ -171,7 +177,6 @@
 
 .goods-sec-props {
   .sec-hd {
-    @include hairline();
   }
   .goods-props__wrap {
     box-sizing: border-box;
@@ -189,6 +194,34 @@
     &__cont {
       flex: 1;
     }
+  }
+}
+
+.goods-sec-tabs {
+  .sec-tabs {
+    height: 110px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10%;
+  }
+  .sec-tab {
+    &__item {
+      font-size: $font-size;
+      flex: 1;
+      text-align: center;
+      &.is-active {
+        color: $color-brand-primary;
+        text-decoration: underline;
+      }
+    }
+    &__panel {
+      display: none;
+    }
+  }
+  .is-show {
+    display: block !important;
   }
 }
 

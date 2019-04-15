@@ -1,11 +1,13 @@
-$color-bg-gray: #fafafa;
+$color-bg-gray            : #fafafa;
+$color-gray               : #818181;
 $color-brand-primary      : #0b4137 !default;
 $color-brand-accent       : #6d8d87 !default;
 $color-brand-accent-light : #787878 !default;
 $color-brand-primary-text : #ffffff !default;
 $color-brand-accent-text  : #ffffff !default;
 
-$tabbar-height      : 100px !default;
+$toolbar-height           : 100px !default;
+$tabbar-height            : 100px !default;
 
 $at-tab-bar-color: #818181 !default;
 $at-tab-bar-color-active: $color-brand-primary !default;

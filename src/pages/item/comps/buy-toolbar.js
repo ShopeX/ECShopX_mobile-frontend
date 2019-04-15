@@ -33,13 +33,11 @@ export default class GoodsBuyToolbar extends Component {
     return (
       <View className='goods-buy-toolbar'>
         <View className='goods-buy-toolbar__menus'>
-          <View
-            className='goods-buy-toolbar__menu-item'
-            onClick={this.navigateTo.bind(this, '/pages/home/index')}
-          >
-            <View className='sp-icon sp-icon-shop'></View>
-            <Text className='goods-buy-toolbar__menu-item-text'>店铺</Text>
-          </View>
+          {process.env.TARO_ENV === 'weapp' && (
+            <Button className='goods-buy-toolbar__menu-item' openType='contact'>
+              <View className='in-icon in-icon-kefu2'></View>
+            </Button>
+          )}
           <View
             className='goods-buy-toolbar__menu-item'
             onClick={this.navigateTo.bind(this, '/pages/cart/espier-index')}
@@ -47,29 +45,19 @@ export default class GoodsBuyToolbar extends Component {
             <AtBadge
               value={cartTotalCount || null}
             >
-              <View className='sp-icon sp-icon-cart'></View>
+              <View className='in-icon in-icon-cart2'></View>
             </AtBadge>
-            <Text className='goods-buy-toolbar__menu-item-text'>购物车</Text>
           </View>
-          {process.env.TARO_ENV === 'weapp' && (
-            <Button className='goods-buy-toolbar__menu-item' openType='contact'>
-              <View className='sp-icon sp-icon-contact'></View>
-              <Text className='goods-buy-toolbar__menu-item-text'>客服</Text>
-            </Button>
-          )}
         </View>
         {this.props.customRender
           ? this.props.children
           : (
-              <View
-                className='goods-buy-toolbar__btns'
-                style={process.env.TARO_ENV === 'weapp' ? 'width: 59%;': null}
-              >
+              <View className='goods-buy-toolbar__btns'>
                 {type === 'normal' && (
                   <Button
                     className='goods-buy-toolbar__btn btn-add-cart'
                     onClick={onClickAddCart}
-                  >加入购物车</Button>
+                  >添加至购物车</Button>
                 )}
                 <Button
                   className='goods-buy-toolbar__btn btn-fast-buy'
