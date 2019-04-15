@@ -4,7 +4,7 @@
   background: #fff;
   height: $toolbar-height;
   box-sizing: border-box;
-  padding: $edge-margin $edge-size;
+  padding: $edge-margin 0;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -16,8 +16,7 @@
     flex: 1;
     display: flex;
     align-items: center;
-    padding-right: 32px;
-    margin-left: -($edge-size / 2);
+    padding: 0 20px;
   }
   &__menu-item {
     flex: 1;
@@ -25,7 +24,7 @@
     flex-direction: column;
     align-items: center;
     font-size: $font-size-small;
-    color: #555;
+    color: #9d9d9d;
     padding: 4px 0 0;
     margin: 0;
     line-height: 1;
@@ -34,9 +33,10 @@
     &:before, &:after {
       border: none;
     }
-    .sp-icon {
-      font-size: 42px;
+    .in-icon {
+      font-size: 46px;
       margin: 0 0 8px;
+      color: #555;
     }
     &-text {
       font-size: $font-size-small;
@@ -44,33 +44,33 @@
     }
   }
   &__btns {
-    width: 67%;
+    width: 69%;
     display: flex;
     align-items: center;
-    border-radius: 52px;
     overflow: hidden;
-    box-shadow: 0 5px 5px rgba(darken($color-brand-primary, 20%), 0.2);
+    height: $toolbar-height;
   }
   &__btn {
     background: $color-brand-primary;
     font-size: $font-size;
     flex: 1;
-    height: 80px;
-    line-height: 80px;
     text-align: center;
+    height: $toolbar-height;
+    line-height: $toolbar-height;
     color: #fff;
     border: none;
     border-radius: 0;
     font-weight: bold;
+    white-space: nowrap;
     &:before, &:after {
       display: none;
     }
   }
   .btn-add-cart {
-    background: linear-gradient(90deg, #FFBE1C, #FA7815);
+    background: #131313;
   }
   .btn-fast-buy {
     margin-left: -1px;
-    background: linear-gradient(90deg, $color-brand-primary, $color-brand-primary);
+    background: $color-brand-primary;
   }
 }

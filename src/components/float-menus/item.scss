@@ -1,0 +1,22 @@
+@import '../../style/imports';
+
+.float-menu {
+  &__item {
+    background: rgba(#fff, 0.8);
+    margin: 0 0 $edge-margin;
+    color: $color-brand-primary;
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
+    border-radius: 64px;
+    text-align: center;
+    transition: all .2s;
+    .in-icon {
+      color: $color-brand-primary;
+      font-size: 46px;
+    }
+    &.hidden {
+      opacity: 0;
+    }
+  }
+}

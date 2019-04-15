@@ -19,10 +19,12 @@ export default class ItemImg extends Component {
       <View className='item-img'>
         <Image
           className='item-img__img'
+          mode='aspectFill'
           src={info.img}
         />
         <Image
           src={info.img}
+          mode='aspectFill'
           className='item-img__blured'
         />
       </View>
