@@ -76,12 +76,6 @@ export default class SearchBar extends Component {
     }
   }
 
-  handleClickLogin = () => {
-    Taro.redirectTo({
-      url: '/pages/auth/login'
-    })
-  }
-
   handleClickCancel = (isOpened) => {
     this.setState({
       showSearchDailog: isOpened,
@@ -105,46 +99,59 @@ export default class SearchBar extends Component {
   }
 
   render () {
-    const { isFixed, className, isAuth } = this.props
+    const { isFixed, className } = this.props
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
-      <View
-        className={classNames('search-input', className === 'category-top' ? className : '', showSearchDailog ? 'search-input__focus' : null, isFixed ? 'search-input-fixed' : null)}
-        ref='container'
-      >
-        <Form className={classNames('search-input__form', className === 'home-index-search' ? `${className} login-width` : '')} onSubmit={this.handleConfirm.bind(this)}>
-          <View className='search-input__form-cont'>
-            {
-              showSearchDailog === false && className === 'home-index-search' ? <View className='search-logo'>PJJ</View> : null
-            }
-            <View className='search-input__inner'>
-              <AtSearchBar
-                className={classNames('search-input__bar', className === 'home-index-search' ? className : '')}
-                value={searchValue}
-                actionName='取消'
-                showActionButton={isShowAction}
-                onFocus={this.handleFocusSearchHistory.bind(this, true)}
-                onChange={this.handleChangeSearch.bind(this)}
-                onConfirm={this.handleConfirm.bind(this)}
-                onActionClick={this.handleClickCancel.bind(this, false)}
-              />
-            </View>
-            {
-              className === 'home-index-search' && isAuth ? <View className='home-login' onClick={this.handleClickLogin}>登录</View> : null
-            }
-          </View>
+      <View className='search-input'>
+
+        {/*<View*/}
+        {/*className={classNames('search-input', className === 'category-top' ? className : '', showSearchDailog ? 'search-input__focus' : null, isFixed ? 'search-input-fixed' : null)}*/}
+        {/*ref='container'*/}
+        {/*>*/}
+        {/*<Form className={classNames('search-input__form', className === 'home-index-search' ? `${className} login-width` : '')} onSubmit={this.handleConfirm.bind(this)}>*/}
+        {/*<View className='search-input__form-cont'>*/}
+        {/*{*/}
+        {/*showSearchDailog === false && className === 'home-index-search' ? <View className='search-logo'>PJJ</View> : null*/}
+        {/*}*/}
+        {/*<View className='search-input__inner'>*/}
+        {/*<AtSearchBar*/}
+        {/*className={classNames('search-input__bar', className === 'home-index-search' ? className : '')}*/}
+        {/*value={searchValue}*/}
+        {/*actionName='取消'*/}
+        {/*showActionButton={isShowAction}*/}
+        {/*onFocus={this.handleFocusSearchHistory.bind(this, true)}*/}
+        {/*onChange={this.handleChangeSearch.bind(this)}*/}
+        {/*onConfirm={this.handleConfirm.bind(this)}*/}
+        {/*onActionClick={this.handleClickCancel.bind(this, false)}*/}
+        {/*/>*/}
+        {/*</View>*/}
+        {/*</View>*/}
+        {/*</Form>*/}
+        {/*<View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>*/}
+        {/*<View className='search-input__history-title'>*/}
+        {/*<Text>最近搜索</Text>*/}
+        {/*<Text className='sp-icon sp-icon-shanchu icon-del' onClick={this.handleClickDelete.bind(this)}></Text>*/}
+        {/*</View>*/}
+        {/*<View className='search-input__history-list'>*/}
+        {/*{*/}
+        {/*historyList.map((item, index) => <View className='search-input__history-list__btn' key={index} onClick={this.handleClickTag.bind(this, item)}>{item}</View> )*/}
+        {/*}*/}
+        {/*</View>*/}
+        {/*</View>*/}
+        {/*</View>*/}
+        <Form className='search-input__form'>
+          <AtSearchBar
+            className='search-input__bar'
+            value={searchValue}
+            placeholder='护肤/彩妆/面膜/指甲油'
+            actionName='取消'
+            showActionButton={isShowAction}
+            onFocus={this.handleFocusSearchHistory.bind(this, true)}
+            onChange={this.handleChangeSearch.bind(this)}
+            onConfirm={this.handleConfirm.bind(this)}
+            onActionClick={this.handleClickCancel.bind(this, false)}
+            />
         </Form>
-        <View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>
-          <View className='search-input__history-title'>
-            <Text>最近搜索</Text>
-            <Text className='sp-icon sp-icon-shanchu icon-del' onClick={this.handleClickDelete.bind(this)}></Text>
-          </View>
-          <View className='search-input__history-list'>
-            {
-              historyList.map((item, index) => <View className='search-input__history-list__btn' key={index} onClick={this.handleClickTag.bind(this, item)}>{item}</View> )
-            }
-          </View>
-        </View>
       </View>
     )
   }

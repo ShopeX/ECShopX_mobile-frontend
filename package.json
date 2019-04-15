@@ -55,9 +55,9 @@
 	"devDependencies": {
 		"@tarojs/plugin-babel": "1.2.21",
 		"@tarojs/plugin-csso": "1.2.21",
-		"@tarojs/plugin-sass": "1.2.21",
+		"@tarojs/plugin-sass": "^1.2.25",
 		"@tarojs/plugin-uglifyjs": "1.2.21",
-		"@tarojs/webpack-runner": "1.2.21",
+		"@tarojs/webpack-runner": "^1.2.25",
 		"@types/react": "^16.8.5",
 		"@types/webpack-env": "^1.13.6",
 		"babel-eslint": "^8.2.3",

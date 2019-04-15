@@ -1,79 +1,26 @@
 @import "../../style/imports";
+@import "../../style/theme";
+
 .page-category-index {
+  width: 100%;
   height: 100%;
-  background: $color-bg-gray;
-  .category-list {
+  background: #ffffff;
+  .category-search {
+    position: fixed;
+    height: 65px;
+    width: 690px;
+    background-color: #eff0f0;
+    top: 0;
+    left: 25px;
+  }
+  .category__tabs {
+    position: fixed;
+    top: 65px;
+  }
+  .category-comps{
     box-sizing: border-box;
-    padding-top: $searchbar-height;
-    height: 100vh;
-    display: flex;
-    align-items: flex-start;
-    &__nav {
-      width: 180px;
-      height: 100%;
-      text-align: center;
-    }
-    &__content {
-      width: 570px;
-      height: 100%;
-      background: #fff;
-    }
-  }
-  .category-nav {
-    &__content {
-      width: 180px;
-      height: 80px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      line-height: 80px;
-      border-bottom: 1px solid #E6E6E6;
-    }
-    &__content-checked {
-      color: $color-brand-primary;
-      background: #fff;
-      border-left:6px solid $color-brand-primary;
-      box-sizing: border-box;
-    }
-  }
-  .category-content {
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    padding-left: 36px;
-    text-align: center;
-    &__img {
-      margin-top: 40px;
-      .cat-img {
-        width: 140px;
-        border-radius: 8px;
-        height: 140px;
-      }
-      .cat-img-no {
-        display: none;
-      }
-    }
-    &__img-empty {
-      height: 0;
-    }
-    &__content {
-      height: 80px;
-      line-height: 80px;
-    }
-  }
-  .category-content-no {
-    padding-left: 36px;
-    text-align: center;
-    &__content {
-      margin-top: 40px;
-    }
+    background: #ffffff;
+    @include page-scroll($searchbar-height + $tabnavbar-height, $tabbar-height);
   }
 }
 
-.category-search {
-  z-index: $z-index-modal;
-  box-sizing: border-box;
-  padding-top: 84px;
-  height: 100vh;
-}

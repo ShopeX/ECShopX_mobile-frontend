@@ -6,8 +6,10 @@ $color-brand-accent-light : #787878 !default;
 $color-brand-primary-text : #ffffff !default;
 $color-brand-accent-text  : #ffffff !default;
 
+$tabbar-height      : 100px !default;
+$searchbar-height   : 75px !default;
+$tabnavbar-height      : 65px !default;
 $toolbar-height           : 100px !default;
-$tabbar-height            : 100px !default;
 
 $at-tab-bar-color: #818181 !default;
 $at-tab-bar-color-active: $color-brand-primary !default;
@@ -22,5 +24,41 @@ $at-button-height: 80px !default;
   }
   &__title {
     margin-top: -4px;
+  }
+}
+
+.at-tabs {
+  height: 75px;
+  .at-tabs__body {
+    height: 0;
+  }
+  .at-tabs__item {
+    height: 75px;
+    line-height: 75px;
+    padding: 0;
+  }
+  .at-tabs__item-underline {
+    height: 2PX;
+    left: 42%;
+    width: 15%;
+  }
+}
+
+.at-search-bar {
+  padding: 0 35px 0 20px !important;
+  height: 65px;
+  .at-search-bar__input-cnt {
+    border-radius: 0;
+    width: 690px;
+    height: 65px;
+    line-height: 65px;
+    background-color: #eff0f0;
+  }
+  .at-search-bar__placeholder-wrap {
+    justify-content: flex-start;
+    padding-left: 23px;
+  }
+  .at-search-bar__placeholder-wrap .at-icon {
+    font-size: 17PX;
   }
 }
