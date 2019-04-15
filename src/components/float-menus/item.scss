@@ -4,16 +4,26 @@
   &__item {
     background: rgba(#fff, 0.8);
     margin: 0 0 $edge-margin;
+    padding: 0;
     color: $color-brand-primary;
     width: 64px;
     height: 64px;
+    overflow: hidden;
     line-height: 64px;
     border-radius: 64px;
+    font-size: $font-size;
     text-align: center;
     transition: all .2s;
+    opacity: 1;
+    min-width: auto;
+    width: auto;
+    &:before, &:after {
+      border: none;
+    }
     .in-icon {
       color: $color-brand-primary;
-      font-size: 46px;
+      font-size: 42px;
+      font-weight: light;
     }
     &.hidden {
       opacity: 0;

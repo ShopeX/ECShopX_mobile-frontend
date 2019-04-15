@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 
 import './item.scss'
 
@@ -12,20 +12,22 @@ export default class Index extends Component {
     onClick: null,
     iconPrefixClass: 'sp-icon',
     icon: '',
+    openType: null,
     hide: false
   }
 
   render () {
-    const{ onClick, iconPrefixClass, hide, icon, hide } = this.props
+    const{ onClick, openType, iconPrefixClass, hide, icon } = this.props
 
     return (
-      <View
+      <Button
         className={`float-menu__item ${hide ? 'hidden' : ''}`}
         onClick={onClick}
+        openType={openType}
       >
         <View className={`${iconPrefixClass} ${iconPrefixClass}-${icon}`}></View>
         {this.props.children}
-      </View>
+      </Button>
     )
   }
 }

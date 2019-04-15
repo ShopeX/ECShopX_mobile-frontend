@@ -32,7 +32,6 @@ export default class Detail extends Component {
       info: null,
       desc: null,
       windowWidth: 320,
-      curImgIdx: 0,
       isPromoter: false,
       timer: null,
       startSecKill: true,
@@ -49,6 +48,15 @@ export default class Detail extends Component {
   componentDidMount () {
     this.handleResize()
     this.fetch()
+  }
+
+  onShareAppMessage () {
+    const { info } = this.state
+
+    return {
+      title: info.item_name,
+      path: `/pages/item/espier-detail?id=${info.item_id}`
+    }
   }
 
   handleResize () {
@@ -105,13 +113,6 @@ export default class Detail extends Component {
     log.debug('fetch: done', info)
   }
 
-  handleSwiperChange = (e) => {
-    const { detail: { current } } = e
-    this.setState({
-      curImgIdx: current
-    })
-  }
-
   handleBuyClick = async (type) => {
     const { marketing, info } = this.state
     let url = `/pages/cart/espier-checkout`
@@ -149,6 +150,10 @@ export default class Detail extends Component {
     this.setState({
       curTabIdx: idx
     })
+  }
+
+  handleShare () {
+
   }
 
   render () {
@@ -305,6 +310,8 @@ export default class Detail extends Component {
           <FloatMenuItem
             iconPrefixClass='in-icon'
             icon='float-share'
+            openType='share'
+            onClick={this.handleShare}
           />
           <FloatMenuItem
             iconPrefixClass='in-icon'
