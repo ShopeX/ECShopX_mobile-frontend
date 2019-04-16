@@ -25,7 +25,7 @@ export default class List extends Component {
       query: null,
       list: [],
       listType: 'grid',
-      showDrawer: true
+      showDrawer: false
     }
   }
 
