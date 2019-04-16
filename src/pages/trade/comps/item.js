@@ -65,7 +65,7 @@ export default class TradeItem extends Component {
         {!customFooter && info.status === 'WAIT_BUYER_PAY' && <View className='trade-item__ft'>
           <AtButton
             circle
-            type='secondary'
+            type='primary'
             size='small'
             onClick={this.handleClickBtn.bind(this, 'pay')}
           >立即支付</AtButton>
@@ -73,9 +73,15 @@ export default class TradeItem extends Component {
         {!customFooter && info.status === 'WAIT_SELLER_SEND_GOODS' && (<View className='trade-item__ft'>
           <AtButton
             circle
+            type='secondary'
             size='small'
             onClick={this.handleClickBtn.bind(this, 'cancel')}
           >取消订单</AtButton>
+          <AtButton
+            circle
+            type='primary'
+            size='small'
+          >订单详情</AtButton>
         </View>)}
         {!customFooter && info.status === 'WAIT_BUYER_CONFIRM_GOODS' && <View className='trade-item__ft'>
           <AtButton
@@ -84,6 +90,11 @@ export default class TradeItem extends Component {
             size='small'
             onClick={this.handleClickBtn.bind(this, 'confirm')}
           >确认收货</AtButton>
+          <AtButton
+            circle
+            type='primary'
+            size='small'
+          >订单详情</AtButton>
         </View>}
         {!customFooter && info.status === 'WAIT_RATE' && <View className='trade-item__ft'>
           <AtButton
@@ -92,6 +103,11 @@ export default class TradeItem extends Component {
             size='small'
             onClick={this.handleClickBtn.bind(this, 'rate')}
           >评价</AtButton>
+          <AtButton
+            circle
+            type='primary'
+            size='small'
+          >订单详情</AtButton>
         </View>}
       </View>
     )

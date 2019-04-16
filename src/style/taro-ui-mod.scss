@@ -1,4 +1,4 @@
-@import './variables';
+@import './imports';
 
 .at-modal {
   &__overlay {
@@ -128,5 +128,25 @@
   }
   .at-search-bar__placeholder-wrap .at-icon {
     font-size: 17PX;
+  }
+}
+
+.at-button {
+  &--secondary {
+    border: 1PX solid #c1c1c1;
+    color: #fff;
+    background: #c1c1c1;
+  }
+  &--small {
+    height: 42px;
+    line-height: 40px;
+    padding: 0 26px;
+    font-size: 22px;
+    .at-button__text {
+      font-size: 22px;
+    }
+    &.at-button--circle {
+      border-radius: 8px;
+    }
   }
 }

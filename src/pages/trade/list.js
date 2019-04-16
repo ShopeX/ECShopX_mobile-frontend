@@ -20,10 +20,10 @@ export default class TradeList extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '全部', status: '0'},
-        {title: '待发货', status: '6'},
-        {title: '待收货', status: '2'},
-        {title: '已完成', status: '3'}
+        {title: '全部订单', status: '0'},
+        {title: '待支付', status: '5'},
+        {title: '待收货', status: '1'},
+        {title: '待评价', status: '3'}
       ],
       list: []
     }
@@ -67,6 +67,7 @@ export default class TradeList extends Component {
       payment: ({ total_fee }) => (total_fee / 100).toFixed(2),
       pay_type: 'pay_type',
       point: 'point',
+      create_date: 'create_date',
       order: ({ items }) => pickBy(items, {
         order_id: 'order_id',
         item_id: 'item_id',
@@ -177,8 +178,8 @@ export default class TradeList extends Component {
                   customHeader
                   renderHeader={
                     <View className='trade-item__hd-cont'>
+                      <Text className='time'>{item.create_date}</Text>
                       <Text className='trade-item__shop'>订单号：{item.tid}</Text>
-                      <Text className='more'>{item.status_desc}</Text>
                     </View>
                   }
                   key={idx}

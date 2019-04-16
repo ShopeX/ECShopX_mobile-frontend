@@ -10,6 +10,10 @@ export default class OrderItem extends Component {
     payType: ''
   }
 
+  static options = {
+    addGlobalClass: true
+  }
+
   render () {
     const { info, onClick, payType } = this.props
 
@@ -28,6 +32,7 @@ export default class OrderItem extends Component {
         <View className='order-item__bd'>
           <Text className='order-item__title'>{info.title}</Text>
           <Text className='order-item__desc'>{info.goods_props}</Text>
+          {info.num && <Text className='order-item__num'>数量：{info.num}</Text>}
         </View>
         {info.customFooter
           ? (<View className='order-item__ft'>
@@ -39,9 +44,7 @@ export default class OrderItem extends Component {
                 ? <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={info.point}></Price>
                 : <Price className='order-item__price' value={info.price}></Price>
               }
-              {
-                info.num ? <Text className='order-item__num'>x {info.num}</Text> : null
-              }
+              <Text className='order-item__pay-type'>[在线支付]</Text>
             </View>
           )
         }
