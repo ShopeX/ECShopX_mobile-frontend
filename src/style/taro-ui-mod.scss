@@ -96,6 +96,8 @@
 
 .at-tabs {
   height: 75px;
+  box-sizing: border-box;
+  box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.1);
   .at-tabs__body {
     height: 0;
   }
@@ -111,12 +113,11 @@
   }
 }
 
-.at-search-bar {
-  padding: 0 35px 0 20px !important;
+.search-input__bar.at-search-bar {
+  padding: 0 35px 0 30px !important;
   height: 65px;
   .at-search-bar__input-cnt {
     border-radius: 0;
-    //width: 690px;
     height: 65px;
     line-height: 65px;
     background-color: #eff0f0;

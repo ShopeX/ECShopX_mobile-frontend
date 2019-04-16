@@ -2,24 +2,16 @@
 
 .page-category-index {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #ffffff;
-  //.category-search {
-  //  position: fixed;
-  //  height: 65px;
-  //  width: 690px;
-  //  background-color: #eff0f0;
-  //  top: 0;
-  //  left: 25px;
-  //}
   .category__tabs {
     position: fixed;
-    top: 65px;
+    top: $searchbar-height + 10px;
   }
   .category-comps{
     box-sizing: border-box;
     background: #ffffff;
-    @include page-scroll($searchbar-height + $tabnavbar-height, $tabbar-height);
+    @include page-scroll($searchbar-height + $tabnavbar-height + 10px, $tabbar-height);
   }
 }
 

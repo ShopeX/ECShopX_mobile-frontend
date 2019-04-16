@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SearchBar, SpToast, TabBar, Loading } from '@/components'
+import { SpToast, TabBar, Loading } from '@/components'
 import req from '@/api/req'
 import S from "@/spx";
-import { WgtSlider, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from './wgts'
+import { WgtSearchHome, WgtSlider, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from './wgts'
 
 import './index.scss'
 
@@ -48,11 +48,7 @@ export default class HomeIndex extends Component {
 
     return (
       <View className='page-index'>
-        <SearchBar
-          className='home-index-search'
-          isAuth={authStatus}
-          isFixed
-        />
+        <WgtSearchHome />
         <ScrollView
           className='wgts-wrap wgts-wrap__fixed'
           scrollY

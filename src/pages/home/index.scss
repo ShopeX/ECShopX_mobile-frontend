@@ -4,21 +4,21 @@
   padding-bottom: $tabbar-height;
   background: #fff;
   height: 100vh;
-  .at-search-bar {
-    background: none;
-  }
-  .at-search-bar__action {
-    color: #fff;
-  }
-  .at-search-bar__placeholder-wrap {
-    justify-content: flex-start;
-    left: 86px;
-  }
-  .search-input__focus {
-    .at-search-bar__placeholder-wrap {
-      left: 16px;
-    }
-  }
+  //.at-search-bar {
+  //  background: none;
+  //}
+  //.at-search-bar__action {
+  //  color: #fff;
+  //}
+  //.at-search-bar__placeholder-wrap {
+  //  justify-content: flex-start;
+  //  left: 86px;
+  //}
+  //.search-input__focus {
+  //  .at-search-bar__placeholder-wrap {
+  //    left: 16px;
+  //  }
+  //}
 }
 
 .wgts-wrap {

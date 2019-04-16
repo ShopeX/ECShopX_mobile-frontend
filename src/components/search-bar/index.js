@@ -98,12 +98,16 @@ export default class SearchBar extends Component {
     })
   }
 
+  handleClickHotItem = () => {
+    console.log('热门搜索', 100)
+  }
+
   render () {
-    const { isFixed, className } = this.props
+    const { isFixed } = this.props
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
       <View
-        className={classNames('search-input', isFixed ? 'search-input-fixed' : null)}
+        className={classNames('search-input', isFixed ? 'search-input-fixed' : null, showSearchDailog ? 'search-input__focus' : null)}
       >
 
         {/*<View*/}
@@ -154,6 +158,26 @@ export default class SearchBar extends Component {
             onActionClick={this.handleClickCancel.bind(this, false)}
             />
         </Form>
+        <View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>
+          <View className='search-input__history-title'>
+            <Text>最近搜索</Text>
+            <Text className='in-icon in-icon-trash icon-del' onClick={this.handleClickDelete.bind(this)}></Text>
+          </View>
+          <View className='search-input__history-list'>
+           {
+              historyList.map((item, index) => <View className='search-input__history-list__btn' key={index} onClick={this.handleClickTag.bind(this, item)}>{item}</View> )
+           }
+          </View>
+          <View className='search-input__history-title hot-title'>
+            <Text>热门搜索</Text>
+          </View>
+          <View className='hot-list'>
+            <View className='hot-list__item' onClick={this.handleClickHotItem.bind(this)}>
+              <Text>#绿茶籽小绿瓶#</Text>
+              <View className='at-icon at-icon-chevron-right'></View>
+            </View>
+          </View>
+        </View>
       </View>
     )
   }

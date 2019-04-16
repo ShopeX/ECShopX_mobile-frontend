@@ -80,7 +80,6 @@ export default class Category extends Component {
         <SearchBar
           isFixed
         />
-        {/*<View className='category-search'>ssss</View>*/}
         <AtTabs
           className='category__tabs'
           current={curTabIdx}
