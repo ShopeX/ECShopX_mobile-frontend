@@ -25,7 +25,8 @@ export default class TradeList extends Component {
         {title: '待收货', status: '1'},
         {title: '待评价', status: '3'}
       ],
-      list: []
+      list: [],
+      curItemActionsId: null
     }
   }
 
@@ -42,6 +43,10 @@ export default class TradeList extends Component {
     } else {
       this.nextPage()
     }
+  }
+
+  componentWillUnmount () {
+    this.hideLayer()
   }
 
   async fetch (params) {
@@ -89,6 +94,7 @@ export default class TradeList extends Component {
   }
 
   handleClickTab = (idx) => {
+    this.hideLayer()
     if (this.state.page.isLoading) return
 
     if (idx !== this.state.curTabIdx) {
@@ -137,8 +143,26 @@ export default class TradeList extends Component {
     }
   }
 
+  handleActionClick = (type, item) => {
+    console.log(type, item)
+    this.hideLayer()
+  }
+
+  handleActionBtnClick = (item) => {
+    console.log(item)
+    this.setState({
+      curItemActionsId: item.tid
+    })
+  }
+
+  hideLayer = () => {
+    this.setState({
+      curItemActionsId: null
+    })
+  }
+
   render () {
-    const { curTabIdx, tabList, list, page } = this.state
+    const { curTabIdx, curItemActionsId, tabList, list, page } = this.state
 
     return (
       <View className='trade-list'>
@@ -171,21 +195,17 @@ export default class TradeList extends Component {
           onScrollToLower={this.nextPage}
         >
           {
-            list.map((item, idx) => {
+            list.map((item) => {
               return (
                 <TradeItem
                   payType={item.pay_type}
-                  customHeader
-                  renderHeader={
-                    <View className='trade-item__hd-cont'>
-                      <Text className='time'>{item.create_date}</Text>
-                      <Text className='trade-item__shop'>订单号：{item.tid}</Text>
-                    </View>
-                  }
-                  key={idx}
+                  key={item.tid}
                   info={item}
+                  showActions={curItemActionsId === item.tid}
                   onClick={this.handleClickItem.bind(this, item)}
                   onClickBtn={this.handleClickItemBtn}
+                  onActionBtnClick={this.handleActionBtnClick.bind(this, item)}
+                  onActionClick={this.handleActionClick.bind(this, item)}
                 />
               )
             })
@@ -197,6 +217,10 @@ export default class TradeList extends Component {
             !page.isLoading && !page.hasNext && !list.length
               && (<SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>)
           }
+          {!!curItemActionsId && <View
+            className='layer'
+            onClick={this.hideLayer}
+          />}
         </ScrollView>
       </View>
     )

@@ -87,9 +87,8 @@ export default class WgtSearchHome extends Component {
     const { isShowAction, searchValue } = this.state
     return (
       <View
-        className={classNames('home-search-input')}
+        className='home-search-input'
       >
-
         <Form className='home-search__form'>
           <AtSearchBar
             className='home-search__bar'

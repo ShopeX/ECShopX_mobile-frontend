@@ -51,9 +51,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 3,
 					"name": "订单列表",
 					"pathName": "pages/trade/list",
+					"query": "status=1",
 					"scene": null
 				}
 			]
