@@ -44,28 +44,28 @@ const cart = createReducer(initState, {
       list
     }
   },
-  ['cart/update'](state, action) {
-    const { item, num } = action.payload
-    const idx = state.list.findIndex(t => item.item_id === t.item_id)
-    let list
+  // ['cart/update'](state, action) {
+  //   const { item, num } = action.payload
+  //   const idx = state.list.findIndex(t => item.item_id === t.item_id)
+  //   let list
 
-    if (idx >= 0) {
-      list = dotProp.set(state.list, `${idx}`, { ...item, num })
-    } else {
-      list = [...state.list, { ...item, num }]
-    }
+  //   if (idx >= 0) {
+  //     list = dotProp.set(state.list, `${idx}`, { ...item, num })
+  //   } else {
+  //     list = [...state.list, { ...item, num }]
+  //   }
 
-    return {
-      ...state,
-      list
-    }
-  },
-  ['cart/delete'](state, action) {
-    const { item_id } = action.payload
-    const idx = state.list.findIndex(t => t.item_id === item_id)
+  //   return {
+  //     ...state,
+  //     list
+  //   }
+  // },
+  // ['cart/delete'](state, action) {
+  //   const { item_id } = action.payload
+  //   const idx = state.list.findIndex(t => t.item_id === item_id)
 
-    return dotProp.delete(state, `list.${idx}`)
-  },
+  //   return dotProp.delete(state, `list.${idx}`)
+  // },
   ['cart/clearFastbuy'](state) {
     return {
       ...state,

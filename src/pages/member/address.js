@@ -66,7 +66,7 @@ export default class AddressIndex extends Component {
                   <View className='address-item__check' onClick={this.handleClickChecked.bind(this, index)}>
                     {
                       index === ItemIndex
-                        ? <Text className='in-icon in-icon-check-copy address-item__checked'> </Text>
+                        ? <Text className='in-icon in-icon-check address-item__checked'> </Text>
                         : <Text className='address-item__unchecked'> </Text>
                     }
                   </View>
@@ -80,8 +80,8 @@ export default class AddressIndex extends Component {
                       <View className='address-item__footer_default'>
                         {
                           isDefaultChecked
-                            ? <Text className='in-icon in-icon-check-copy default__icon default__checked'> </Text>
-                            : <Text className='in-icon in-icon-check-copy default__icon'> </Text>
+                            ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>
+                            : <Text className='in-icon in-icon-check default__icon'> </Text>
                         }
                         <Text className='default-text'>设为默认</Text>
                       </View>

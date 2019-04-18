@@ -3,8 +3,8 @@
 $checkbox-size: 32px;
 
 .sp-checkbox {
-  background: #fff;
-  border: 1PX solid $color-border-gray;
+  background: #c6c6c6;
+  // border: 1PX solid $color-border-gray;
   border-radius: $checkbox-size;
   width: $checkbox-size;
   height: $checkbox-size;
@@ -23,8 +23,8 @@ $checkbox-size: 32px;
     vertical-align: middle;
   }
   .at-icon {
-    opacity: 0;
-    transform: scale(0.7);
+    // opacity: 1;
+    transform: scale(0.9);
     transition: all .1s ease-in;
     font-size: 20px;
     margin-top: -4px;
@@ -34,10 +34,10 @@ $checkbox-size: 32px;
 .sp-checkbox__checked {
   .sp-checkbox {
     background: $color-brand-primary;
-    border-color: $color-brand-primary;
+    // border-color: $color-brand-primary;
   }
   .at-icon {
-    opacity: 1;
-    transform: scale(1);
+    // opacity: 1;
+    // transform: scale(1);
   }
 }

@@ -14,12 +14,13 @@ export default class NoteIndex extends Component {
   }
 
   render () {
-    const { img, imgStyle, customStyle, className } = this.props
+    const { img, imgStyle, styles, className } = this.props
+    console.log(styles)
 
     return (
       <View
         className={classNames('note', img ? 'note__has-img' : null, className)}
-        style={styleNames(customStyle)}
+        style={styleNames(styles)}
       >
         {
           img && (<Image
