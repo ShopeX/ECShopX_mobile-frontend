@@ -6,10 +6,11 @@
 		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
-		"minified": false,
-		"newFeature": true
+		"minified": false
 	},
 	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -27,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,
@@ -55,6 +56,13 @@
 					"name": "订单列表",
 					"pathName": "pages/trade/list",
 					"query": "status=1",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "trade/list",
+					"pathName": "pages/trade/detail",
+					"query": "",
 					"scene": null
 				}
 			]

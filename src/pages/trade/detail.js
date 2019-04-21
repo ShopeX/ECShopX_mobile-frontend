@@ -4,7 +4,7 @@ import { AtButton } from 'taro-ui'
 import { Loading, SpCell, SpToast, Price, NavBar } from '@/components'
 import { classNames, log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
 import api from '@/api'
-import OrderItem from './comps/order-item'
+import DetailItem from './comps/detail-item'
 
 import './detail.scss'
 
@@ -143,21 +143,68 @@ export default class TradeDetail extends Component {
 
   render () {
     const { info } = this.state
-    if (!info) {
-      return <Loading></Loading>
-    }
+    // if (!info) {
+    //   return <Loading></Loading>
+    // }
 
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
 
     return (
-      <View className={classNames('trade-detail', `trade-detail__status-${info.status}`)}>
-        <NavBar
-          title='订单详情'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
-        <View className='trade-detail__status'>
+      <View className='trade-detail'>
+        {/*<View className={classNames('trade-detail-header', `trade-detail-header__waitpay`)}>
+          <View>该订单将为您保留<Text className='count-down'>15:00</Text>分钟</View>
+        </View>*/}
+        <View className={classNames('trade-detail-header')}>
+          <View className='trade-detail-waitdeliver'>
+            <View>1</View>
+            <View className='delivery-infos'>
+              <View className='delivery-infos__status'>
+                <Text className='delivery-infos__text text-status'>待发货</Text>
+                <Text className='delivery-infos__text'>物流信息：正在审核订单</Text>
+              </View>
+              <Text className='delivery-infos__text'>2019-04-30 11:30:21</Text>
+            </View>
+          </View>
+        </View>
+        <View className='trade-detail-address'>
+          <View className='trade-info address-receive'>
+            <Text>收货地址：</Text>
+            <View className='info-trade'>
+              <View className='user-info-trade'>
+                <Text>amy</Text>
+                <Text>13x-xxxx-xxxx</Text>
+              </View>
+              <Text className='address-detail'>xx市xx区xx路xx小区xx号</Text>
+            </View>
+          </View>
+        </View>
+        <View className='trade-detail-goods'>
+          <DetailItem
+            info={info}
+          />
+        </View>
+        <View className='trade-detail-info'>
+          <Text className='info-text'>订单号：12312312341</Text>
+          <Text className='info-text'>下单时间：2018-09-06</Text>
+          <Text className='info-text'>发票信息：上海xxx有限公司上海xx有</Text>
+          <Text className='info-text'>商品金额：￥188.00</Text>
+          <Text className='info-text'>积分抵扣：-￥30.00</Text>
+          <Text className='info-text'>免运费：-￥0.00</Text>
+          <Text className='info-text'>优惠：-￥0.00</Text>
+          <Text className='info-text'>支付：158.00（微信支付）</Text>
+        </View>
+        <View className='trade-money'>总计：<Text className='trade-money__num'>￥188</Text></View>
+        <View className='trade-detail__footer'>
+          <Text className='trade-detail__footer__btn'>取消订单</Text>
+          <Text className='trade-detail__footer__btn trade-detail__footer_active'>立即支付</Text>
+        </View>
+        {/*<View className='trade-detail__footer'>
+          <Text className='trade-detail__footer__btn'>取消订单</Text>
+          <Text className='trade-detail__footer__btn trade-detail__footer_active'>继续购物</Text>
+        </View>*/}
+
+        {/*<View className='trade-detail__status'>
           <Text className='trade-detail__status-text'>{info.status_desc}</Text>
           <Image
             mode='aspectFill'
@@ -288,7 +335,7 @@ export default class TradeDetail extends Component {
             onClick={this.handleClickBtn.bind(this, 'rate')}
           >评价</AtButton>
         </View>)}
-
+*/}
         <SpToast></SpToast>
       </View>
     )

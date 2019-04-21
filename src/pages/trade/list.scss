@@ -31,7 +31,7 @@
   }
   &__scroll {
     box-sizing: border-box;
-    @include page-scroll($navigate-height + $tabs-height + 10px, $edge-margin)
+    @include page-scroll($navigate-height + $tabs-height + 10px, $edge-margin);
     z-index: 2;
   }
   &__tabs {
