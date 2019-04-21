@@ -35,6 +35,15 @@
         color: #cdcdcd;
       }
     }
+    .at-input-number {
+      border-top: none;
+      border-bottom: none;
+      border-radius: 0;
+      &__btn {
+        border-top: 1PX solid $color-border-gray;
+        border-bottom: 1PX solid $color-border-gray;
+      }
+    }
   }
   .btn-rand {
     width: 180px;
@@ -72,6 +81,7 @@
     width: 256px;
     margin: 0 0 0 24px;
     height: $toolbar-height;
+    line-height: $toolbar-height;
     border: none;
     border-radius: 0;
     font-weight: bold;

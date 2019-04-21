@@ -33,6 +33,7 @@ export default class CartIndex extends Component {
 
     this.state = {
       selection: new Set(),
+      loading: true,
       cartMode: 'default'
     }
   }
@@ -58,6 +59,9 @@ export default class CartIndex extends Component {
 
     log.debug('[cart fetch]', list)
     this.props.onUpdateCart(list)
+    this.setState({
+      loading: false
+    })
     cb && cb(list)
   }
 
@@ -109,14 +113,10 @@ export default class CartIndex extends Component {
 
   handleAllSelect = (checked) => {
     const { selection } = this.state
-    const { list } = this.state
+    const { cartIds } = this.props
 
     if (checked) {
-      list.forEach(shopCart => {
-        shopCart.list.forEach(item => {
-          selection.add(item.cart_id)
-        })
-      })
+      cartIds.forEach(cartId => selection.add(cartId))
     } else {
       selection.clear()
     }
@@ -158,7 +158,7 @@ export default class CartIndex extends Component {
       img: ({ pics }) => pics,
       price: ({ price }) => (+price / 100).toFixed(2),
       market_price: ({ market_price }) => (+market_price / 100).toFixed(2),
-      quantity: 'num'
+      num: 'num'
     })
   }
 
@@ -167,10 +167,10 @@ export default class CartIndex extends Component {
   }
 
   render () {
-    const { selection, cartMode } = this.state
+    const { selection, cartMode, loading } = this.state
     const { totalPrice, list } = this.props
 
-    if (!list) {
+    if (loading) {
       return <Loading />
     }
 

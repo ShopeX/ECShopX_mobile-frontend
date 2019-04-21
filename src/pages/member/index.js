@@ -48,10 +48,6 @@ export default class MemberIndex extends Component {
         avatar: res.memberInfo.avatar,
       }
     })
-    const ordersCount = await api.trade.getCount()
-    this.setState({
-      ordersCount
-    })
   }
 
   handleClickRecommend = async () => {

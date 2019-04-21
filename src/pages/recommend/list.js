@@ -10,7 +10,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class RecommendList extends Component {
-  static options = {
+  static config = {
     navigationBarTitleText: '种草'
   }
 

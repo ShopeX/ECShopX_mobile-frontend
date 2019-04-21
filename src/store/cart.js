@@ -54,7 +54,7 @@ const cart = createReducer(initState, {
   ['cart/update'](state, action) {
     const list = action.payload
     let cartIds = []
-    walkCart(state, t => {
+    walkCart({ list }, t => {
       cartIds.push(t.cart_id)
     })
 
@@ -121,7 +121,7 @@ export function getTotalPrice (state) {
     total += (+item.price) * (+item.num)
   })
 
-  return (total / 100).toFixed(2)
+  return (total).toFixed(2)
 }
 
 export function getSelectedCart (state) {

@@ -1,19 +1,21 @@
 @import '../../../style/imports';
 
-$item-img-size: 240px !default;
+$item-img-width: 250px !default;
+$item-img-height: 206px !default;
 
 .cart-item {
   $self: &;
   align-items: center;
   background: #fff;
-  border-radius: $item-border-radius;
   overflow: hidden;
   margin: 0 0 $edge-margin;
   position: relative;
+  padding: 0 0 28px;
   &__hd {
-    padding: 13px;
+    padding: 25px - 5px;
   }
   &__bd {
+    padding: 0 25px;
     display: flex;
     flex: 1;
   }
@@ -21,35 +23,42 @@ $item-img-size: 240px !default;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: $edge-margin 20px;
+    padding: 0 20px;
     flex: 1;
   }
   &__img {
-    width: $item-img-size;
-    height: $item-img-size;
+    width: $item-img-width;
+    height: $item-img-height;
+    border-radius: 6px;
+    overflow: hidden;
     &-wrap {
-      width: $item-img-size;
-      height: $item-img-size;
+      width: $item-img-width;
+      height: $item-img-height;
       display: block;
       text-align: center;
     }
   }
   &__title {
     @include multi-ellipsis(2);
+    font-size: $font-size-small;
     line-height: 1.4;
-    color: #111;
+    color: #333;
     margin: 0 0 16px;
   }
   &__desc {
-    line-height: 1.4;
-    @include multi-ellipsis(2);
+    line-height: 1;
+    display: block;
+    @include text-overflow();
     color: $color-gray;
     font-size: $font-size-small;
-    margin: 0 0 20px;
+    margin: 0 0 70px;
   }
   &__price {
-    font-size: 24px;
+    font-size: 28px;
     margin-right: 24px;
+    .price__symbol {
+      font-size: $font-size-small;
+    }
   }
   &__point {
     color: $color-brand-primary;
@@ -97,9 +106,9 @@ $item-img-size: 240px !default;
     }
   }
   &__ft {
-    transform: scale(0.8);
+    transform: scale(0.6);
     position: absolute;
     right: 0;
-    bottom: 16px;
+    bottom: 24px;
   }
 }
