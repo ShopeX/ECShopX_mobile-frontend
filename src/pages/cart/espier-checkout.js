@@ -94,7 +94,7 @@ export default class CartCheckout extends Component {
 
     let total_fee = 0
     let items_count = 0
-    const items = info.cart[0].list.map((item) => {
+    const items = info.cart ? info.cart[0].list.map((item) => {
       const { item_id, num } = item
       total_fee += +(item.price)
       items_count += +(item.num)
@@ -103,13 +103,10 @@ export default class CartCheckout extends Component {
         num
       }
     })
+    : []
 
     this.params = {
       items,
-      receipt_type: 'logistics',
-      order_type: 'normal',
-      promotion: 'normal',
-      member_discount: false,
       pay_type: payType || 'deposit'
     }
 
@@ -197,8 +194,11 @@ export default class CartCheckout extends Component {
     const params = {
       ...this.params,
       ...receiver,
+      receipt_type: 'logistics',
+      order_type: 'normal',
+      promotion: 'normal',
+      member_discount: 0,
       coupon_discount: 0,
-      member_discount: 0
     }
     if (coupon) {
       if (coupon.type === 'coupon' && coupon.value.code) {
@@ -207,6 +207,7 @@ export default class CartCheckout extends Component {
         params.member_discount = coupon.value ? 1 : 0
       }
     }
+
     this.params = params
 
     return params

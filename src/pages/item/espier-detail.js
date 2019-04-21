@@ -125,8 +125,11 @@ export default class Detail extends Component {
     if (type === 'cart') {
       url = `/pages/cart/espier-index`
 
-      // this.props.onAddCart(info)
-      await api.cart.add(this.state.info, 1)
+      await api.cart.add(this.state.info, 1, true)
+      Taro.showToast({
+        title: '成功加入购物车',
+        icon: 'success'
+      })
       return
     }
 

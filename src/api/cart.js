@@ -15,13 +15,13 @@ export function getBasic (params) {
   })
 }
 
-export function add (item, num = 1) {
+export function add (item, num = 1, isAccumulate = false) {
   // return req.post('/cart.add', { sku_id, quantity })
-  const { item_id, shop_id } = item
+  const { item_id } = item
   return req.post(`/cart`, {
     item_id,
-    shop_id,
     num,
+    isAccumulate,
     shop_type: 'distributor'
   })
 }

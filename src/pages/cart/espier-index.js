@@ -90,7 +90,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  handleSelectionChange (cart_id, checked) {
+  async handleSelectionChange (cart_id, checked) {
     this.state.selection[checked ? 'add' : 'delete'](cart_id)
     const selection = new Set(this.state.selection)
 
@@ -98,13 +98,17 @@ export default class CartIndex extends Component {
       selection
     })
     this.props.onCartSelection([...selection])
+    await api.cart.select({
+      cart_id,
+      is_checked: checked
+    })
 
     log.debug(`[cart change] item: ${cart_id}, selection:`, selection)
   }
 
   handleDelect = async (cart_id) => {
     const res = await Taro.showModal({
-      title: '将当前商品移除购物车?',
+      title: '将当前商品移出购物车?',
       showCancel: true,
       cancel: '取消',
       confirmText: '确认',

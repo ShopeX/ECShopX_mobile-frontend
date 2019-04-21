@@ -64,12 +64,6 @@ const cart = createReducer(initState, {
       cartIds
     }
   },
-  // ['cart/delete'](state, action) {
-  //   const { item_id } = action.payload
-  //   const idx = state.list.findIndex(t => t.item_id === item_id)
-
-  //   return dotProp.delete(state, `list.${idx}`)
-  // },
   ['cart/clearFastbuy'](state) {
     return {
       ...state,

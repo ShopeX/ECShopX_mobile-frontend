@@ -33,6 +33,11 @@ export default class GoodsBuyToolbar extends Component {
     return (
       <View className='goods-buy-toolbar'>
         <View className='goods-buy-toolbar__menus'>
+          <View
+            className='goods-buy-toolbar__menu-item'
+          >
+            <View className='in-icon in-icon-fav'></View>
+          </View>
           {process.env.TARO_ENV === 'weapp' && (
             <Button className='goods-buy-toolbar__menu-item' openType='contact'>
               <View className='in-icon in-icon-kefu2'></View>
@@ -45,7 +50,7 @@ export default class GoodsBuyToolbar extends Component {
             <AtBadge
               value={cartTotalCount || null}
             >
-              <View className='in-icon in-icon-cart2'></View>
+              <View className='in-icon in-icon-cart'></View>
             </AtBadge>
           </View>
         </View>
