@@ -1,61 +1,39 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
-import { AtTabs, AtTabsPane } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
-import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
+import { log, pickBy, resolveOrderStatus } from '@/utils'
 import TradeItem from './comps/item'
 
 import './list.scss'
 
 @withPager
 @withLogin()
-export default class TradeList extends Component {
+export default class InvoiceList extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
       ...this.state,
-      curTabIdx: 0,
-      tabList: [
-        {title: '全部订单', status: '0'},
-        {title: '待支付', status: '5'},
-        {title: '待收货', status: '1'},
-        {title: '待评价', status: '3'}
-      ],
-      list: [],
-      curItemActionsId: null
+      list: []
     }
   }
 
   componentDidMount () {
-    const { status } = this.$router.params
-    const tabIdx = this.state.tabList.findIndex(tab => tab.status === status)
-
-    if (tabIdx >= 0) {
-      this.setState({
-        curTabIdx: tabIdx
-      }, () => {
-        this.nextPage()
-      })
-    } else {
-      this.nextPage()
-    }
+    this.nextPage()
   }
 
   componentWillUnmount () {
-    this.hideLayer()
   }
 
   async fetch (params) {
-    const { tabList, curTabIdx } = this.state
-
     params = _mapKeys({
       ...params,
       order_type: 'normal',
-      status: tabList[curTabIdx].status
+      status: 1
     }, function (val, key) {
       if (key === 'page_no') return 'page'
       if (key === 'page_size') return 'pageSize'
@@ -93,24 +71,6 @@ export default class TradeList extends Component {
     return { total }
   }
 
-  handleClickTab = (idx) => {
-    this.hideLayer()
-    if (this.state.page.isLoading) return
-
-    if (idx !== this.state.curTabIdx) {
-      this.resetPage()
-      this.setState({
-        list: []
-      })
-    }
-
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
-  }
-
   handleClickItem = (trade) => {
     const { tid } = trade
 
@@ -120,74 +80,28 @@ export default class TradeList extends Component {
   }
 
   handleClickItemBtn = async (type, trade) => {
+    const params = { ...trade }
+
     switch(type) {
-      case 'pay':
-        Taro.navigateTo({
-          url: `/pages/cashier/index?order_id=${trade.tid}`
-        })
+      case 'add-card':
+        await Taro.addCard(params)
         break
-      case 'cancel':
-        Taro.navigateTo({
-          url: `/pages/trade/cancel?order_id=${trade.tid}`
-        })
+      case 'open-card':
+        await Taro.openCard(params)
         break
-      case 'confirm':
-        await api.trade.confirm(trade.tid)
-        // eslint-disable-nextline
-        const { fullPath } = getCurrentRoute(this.$router)
-        Taro.redirectTo({
-          url: fullPath
-        })
-        break
-      default:
     }
   }
 
-  handleActionClick = (type, item) => {
-    console.log(type, item)
-    this.hideLayer()
-  }
-
-  handleActionBtnClick = (item) => {
-    console.log(item)
-    this.setState({
-      curItemActionsId: item.tid
-    })
-  }
-
-  hideLayer = () => {
-    this.setState({
-      curItemActionsId: null
-    })
-  }
-
   render () {
-    const { curTabIdx, curItemActionsId, tabList, list, page } = this.state
+    const { list, page } = this.state
 
     return (
-      <View className='page-trade-list'>
+      <View className='page-trade-list page-invoice-list'>
         <NavBar
-          title='订单列表'
+          title='发票管理'
           leftIconType='chevron-left'
           fixed='true'
         />
-        <AtTabs
-          className='trade-list__tabs'
-          current={curTabIdx}
-          tabList={tabList}
-          onClick={this.handleClickTab}
-        >
-          {
-            tabList.map((panes, pIdx) =>
-              (<AtTabsPane
-                current={curTabIdx}
-                key={pIdx}
-                index={pIdx}
-              >
-              </AtTabsPane>)
-            )
-          }
-        </AtTabs>
 
         <ScrollView
           scrollY
@@ -198,14 +112,23 @@ export default class TradeList extends Component {
             list.map((item) => {
               return (
                 <TradeItem
+                  customFooter
                   payType={item.pay_type}
                   key={item.tid}
                   info={item}
-                  showActions={curItemActionsId === item.tid}
                   onClick={this.handleClickItem.bind(this, item)}
                   onClickBtn={this.handleClickItemBtn}
-                  onActionBtnClick={this.handleActionBtnClick.bind(this, item)}
-                  onActionClick={this.handleActionClick.bind(this, item)}
+                  renderFooter={
+                    <View>
+                      <Text className='trade-item__status'>已开票</Text>
+                      <AtButton
+                        circle
+                        type='primary'
+                        size='small'
+                        onClick={this.handleClickBtn.bind(this, 'add-card')}
+                      >放入卡包</AtButton>
+                    </View>
+                  }
                 />
               )
             })
@@ -217,10 +140,6 @@ export default class TradeList extends Component {
             !page.isLoading && !page.hasNext && !list.length
               && (<SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>)
           }
-          {!!curItemActionsId && <View
-            className='layer'
-            onClick={this.hideLayer}
-          />}
         </ScrollView>
       </View>
     )

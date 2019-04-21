@@ -161,7 +161,7 @@ export default class MemberIndex extends Component {
               icon='invoice'
               iconPrefixClass='in-icon'
               title='发票管理'
-              to='/pages/invoice/list'
+              to='/pages/trade/invoice-list'
             />
           </View>
           <View className='member-menu__item none-bb'>

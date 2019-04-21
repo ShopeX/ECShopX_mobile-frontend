@@ -81,6 +81,7 @@ class App extends Component {
       'pages/trade/refund',
       'pages/trade/refund-detail',
       'pages/trade/refund-sendback',
+      'pages/trade/invoice-list',
 
       'pages/protocol/privacy'
     ],

@@ -64,7 +64,7 @@ export default class TradeItem extends Component {
                 : (<View className='trade-item__total'>共{info.totalItems}件商品 合计: <Price value={info.payment} /></View>)
           }
         </View>
-        {customFooter && <View className='trade-item__ft'>{this.props.renderFooter}</View>}
+        {customFooter && (<View className='trade-item__ft'>{this.props.renderFooter}</View>)}
         {!customFooter && info.status === 'WAIT_BUYER_PAY' && <View className='trade-item__ft'>
           <View className='trade-item__ft-actions'></View>
           <View className='trade-item__ft-bd'>
