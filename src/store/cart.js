@@ -35,22 +35,22 @@ const cart = createReducer(initState, {
       }
     }
   },
-  // ['cart/add'](state, action) {
-  //   const { item, num = 1 } = action.payload
-  //   const idx = state.list.findIndex(t => item.item_id === t.item_id)
-  //   let list
+  ['cart/updateNum'](state, action) {
+    const { cart_id, num } = action.payload
+    let item = null
+    walkCart(state, t => {
+      if (t.cart_id === cart_id) {
+        item = t
+        item.num = num
+      }
+    })
+    const list = [...state.list]
 
-  //   if (idx >= 0) {
-  //     list = dotProp.set(state.list, `${idx}`, { ...item, num: (+state.list[idx].num) + num })
-  //   } else {
-  //     list = [...state.list, { ...item, num }]
-  //   }
-
-  //   return {
-  //     ...state,
-  //     list
-  //   }
-  // },
+    return {
+      ...state,
+      list
+    }
+  },
   ['cart/update'](state, action) {
     const list = action.payload
     let cartIds = []
@@ -82,13 +82,13 @@ const cart = createReducer(initState, {
       ...initState
     }
   },
-  // ['cart/selection'](state, action) {
-  //   const selection = action.payload
-  //   return {
-  //     ...state,
-  //     selection
-  //   }
-  // },
+  ['cart/selection'](state, action) {
+    const selection = action.payload
+    return {
+      ...state,
+      selection
+    }
+  },
   ['cart/changeCoupon'](state, action) {
     const coupon = action.payload
 
@@ -105,7 +105,7 @@ export function getTotalCount (state) {
   let total = 0
 
   walkCart(state, (item) => {
-    if (state.selection.includes(item.cart_id)) return
+    if (!state.selection.includes(item.cart_id)) return
     total += (+item.num)
   })
 
@@ -116,7 +116,7 @@ export function getTotalPrice (state) {
   let total = 0
 
   walkCart(state, (item) => {
-    if (state.selection.includes(item.cart_id)) return
+    if (!state.selection.includes(item.cart_id)) return
 
     total += (+item.price) * (+item.num)
   })

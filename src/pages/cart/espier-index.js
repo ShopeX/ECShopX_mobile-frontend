@@ -18,6 +18,7 @@ import './espier-index.scss'
   defaultAllSelect: true,
   totalPrice: getTotalPrice(cart)
 }), (dispatch) => ({
+  onUpdateCartNum: (cart_id, num) => dispatch({ type: 'cart/updateNum', payload: { cart_id, num } }),
   onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
   onCartSelection: (selection) => dispatch({ type: 'cart/selection', payload: selection })
 }))
@@ -36,6 +37,8 @@ export default class CartIndex extends Component {
       loading: true,
       cartMode: 'default'
     }
+
+    this.lastCartId = null
   }
 
   componentDidMount () {
@@ -65,16 +68,19 @@ export default class CartIndex extends Component {
     cb && cb(list)
   }
 
-  updateCart = debounce(() => {
-    this.fetch()
-  }, 500)
+  updateCart = debounce(async () => {
+    // Taro.showLoading({
+    //   mask: true,
+    //   title: '正在加载...'
+    // })
+    await this.fetch()
+    // Taro.hideLoading()
+  }, 500, {
+    leading: true
+  })
 
   get isTotalChecked () {
     return this.props.cartIds.length === this.state.selection.size
-  }
-
-  navigateBack = () => {
-
   }
 
   toggleCartMode = () => {
@@ -97,18 +103,45 @@ export default class CartIndex extends Component {
   }
 
   handleDelect = async (cart_id) => {
-    await api.cart.del({ cart_id })
-    const cartIds = this.state.cartIds.filter(t => t !== cart_id)
-
-    this.setState({
-      cartIds
+    const res = await Taro.showModal({
+      title: '将当前商品移除购物车?',
+      showCancel: true,
+      cancel: '取消',
+      confirmText: '确认',
+      confirmColor: '#0b4137'
     })
+    if (!res.confirm) return
+
+    await api.cart.del({ cart_id })
+
+    const cartIds = this.props.cartIds.filter(t => t !== cart_id)
+    const selection = new Set(cartIds)
+    this.setState({
+      selection
+    })
+    this.props.onCartSelection(cartIds)
     this.updateCart()
   }
 
-  handleQuantityChange = async (cart_id, num) => {
+  async changeCartNum (cart_id, num) {
+    this.updateCart.cancel()
     await api.cart.updateNum({ cart_id, num })
     this.updateCart()
+  }
+
+  debounceChangeCartNum = debounce(async (cart_id, num) => {
+    await this.changeCartNum(cart_id, num)
+  }, 400)
+
+  handleQuantityChange = async (cart_id, num) => {
+    this.props.onUpdateCartNum(cart_id, num)
+    this.updateCart.cancel()
+    if (this.lastCartId === cart_id || this.lastCartId === undefined) {
+      await this.debounceChangeCartNum(cart_id, num)
+    } else {
+      this.lastCartId = cart_id
+      await this.changeCartNum(cart_id, num)
+    }
   }
 
   handleAllSelect = (checked) => {
@@ -126,21 +159,6 @@ export default class CartIndex extends Component {
     })
     this.props.onCartSelection([...selection])
   }
-
-  // handleDelect = () => {
-  //   const { list } = this.props
-  //   this.state.selection.forEach(item_id => {
-  //     this.props.onCartDel({ item_id })
-  //   })
-  //   const selection = list.filter(item => !this.state.selection.has(item.item_id))
-  //     .map(({ item_id }) => item_id)
-
-  //   this.setState({
-  //     selection: new Set(selection)
-  //   })
-  //   this.props.onCartSelection(selection)
-  //   this.toggleCartMode()
-  // }
 
   handleCheckout = () => {
     Taro.navigateTo({
