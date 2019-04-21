@@ -4,12 +4,9 @@
   $self: &;
   text-align: center;
   padding: 0;
-  border: none;
-  &button {
-    border: none;
-  }
+  border: none !important;
   &:before, &:after {
-    border: none;
+    border: none !important;
   }
   &__icon {
     margin: 0 0 28px;
