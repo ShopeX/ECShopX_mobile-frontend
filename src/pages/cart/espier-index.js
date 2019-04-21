@@ -14,11 +14,11 @@ import './espier-index.scss'
 
 @connect(({ cart }) => ({
   list: cart.list,
+  cartIds: cart.cartIds,
   defaultAllSelect: true,
   totalPrice: getTotalPrice(cart)
 }), (dispatch) => ({
-  onCartUpdate: (item, num) => dispatch({ type: 'cart/update', payload: { item, num } }),
-  onCartDel: (item) => dispatch({ type: 'cart/delete', payload: item }),
+  onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
   onCartSelection: (selection) => dispatch({ type: 'cart/selection', payload: selection })
 }))
 @withLogin()
@@ -33,8 +33,7 @@ export default class CartIndex extends Component {
 
     this.state = {
       selection: new Set(),
-      cartMode: 'default',
-      cartIds: []
+      cartMode: 'default'
     }
   }
 
@@ -48,11 +47,9 @@ export default class CartIndex extends Component {
 
   async fetch (cb) {
     const { valid_cart } = await api.cart.get()
-    let cartIds = []
 
     const list = valid_cart.map(shopCart => {
       const tList = this.transformCartList(shopCart.list)
-      cartIds = cartIds.concat(list.map(t => t.cart_id))
       return {
         ...shopCart,
         list: tList
@@ -60,13 +57,8 @@ export default class CartIndex extends Component {
     })
 
     log.debug('[cart fetch]', list)
-
-    this.setState({
-      list,
-      cartIds
-    }, () => {
-      cb && cb(list)
-    })
+    this.props.onUpdateCart(list)
+    cb && cb(list)
   }
 
   updateCart = debounce(() => {
@@ -74,7 +66,7 @@ export default class CartIndex extends Component {
   }, 500)
 
   get isTotalChecked () {
-    return this.state.cartIds.length === this.state.selection.size
+    return this.props.cartIds.length === this.state.selection.size
   }
 
   navigateBack = () => {
@@ -175,8 +167,8 @@ export default class CartIndex extends Component {
   }
 
   render () {
-    const { selection, cartMode, list } = this.state
-    const { totalPrice } = this.props
+    const { selection, cartMode } = this.state
+    const { totalPrice, list } = this.props
 
     if (!list) {
       return <Loading />
@@ -251,7 +243,7 @@ export default class CartIndex extends Component {
                     <SpNote img='cart_empty.png'>快去给我挑点宝贝吧~</SpNote>
                   </View>
                   <AtButton
-                    circle
+                    className='btn-rand'
                     type='primary'
                     onClick={this.navigateTo.bind(this, '/pages/home/index', true)}
                   >随便逛逛</AtButton>

@@ -40,7 +40,7 @@
       }
     }
     &__scroll {
-      @include page-scroll($tabbar-height + $searchbar-height + $navigate-height, 0);
+      @include page-scroll($tabs-height + $searchbar-height + $navigate-height, 0);
     }
     &__type-grid {
       @include clearfix();

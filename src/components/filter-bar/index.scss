@@ -3,7 +3,7 @@
 .filter-bar {
   $self: &;
   background: #fff;
-  height: $tabbar-height;
+  height: $tabs-height;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,8 +38,8 @@
     &-text {
       position: relative;
       display: block;
-      height: $tabbar-height;
-      line-height: $tabbar-height;
+      height: $tabs-height;
+      line-height: $tabs-height;
     }
     &-sort {
       .filter-bar__item-text {

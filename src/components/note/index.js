@@ -15,7 +15,6 @@ export default class NoteIndex extends Component {
 
   render () {
     const { img, imgStyle, styles, className } = this.props
-    console.log(styles)
 
     return (
       <View

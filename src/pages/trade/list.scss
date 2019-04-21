@@ -12,7 +12,7 @@
   }
 
   .at-tabs {
-    height: 80px;
+    height: $tabs-height;
     box-shadow: 0 10px 10px rgba(#000, 0.05);
     &__header {
       position: fixed;
@@ -22,7 +22,7 @@
       z-index: $z-index-toolbar;
     }
     &__item {
-      height: 80px;
+      height: $tabs-height;
     }
     &__item-underline {
       width: 40%;

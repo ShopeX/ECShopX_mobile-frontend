@@ -1,8 +1,15 @@
 import { createReducer } from 'redux-create-reducer'
-import dotProp from 'dot-prop-immutable'
+// import dotProp from 'dot-prop-immutable'
+
+function walkCart (state, fn) {
+  state.list.forEach(shopCart => {
+    shopCart.list.forEach(fn)
+  })
+}
 
 const initState = {
   list: [],
+  cartIds: [],
   fastbuy: null,
   coupon: null,
   selection: []
@@ -28,29 +35,13 @@ const cart = createReducer(initState, {
       }
     }
   },
-  ['cart/add'](state, action) {
-    const { item, num = 1 } = action.payload
-    const idx = state.list.findIndex(t => item.item_id === t.item_id)
-    let list
-
-    if (idx >= 0) {
-      list = dotProp.set(state.list, `${idx}`, { ...item, num: (+state.list[idx].num) + num })
-    } else {
-      list = [...state.list, { ...item, num }]
-    }
-
-    return {
-      ...state,
-      list
-    }
-  },
-  // ['cart/update'](state, action) {
-  //   const { item, num } = action.payload
+  // ['cart/add'](state, action) {
+  //   const { item, num = 1 } = action.payload
   //   const idx = state.list.findIndex(t => item.item_id === t.item_id)
   //   let list
 
   //   if (idx >= 0) {
-  //     list = dotProp.set(state.list, `${idx}`, { ...item, num })
+  //     list = dotProp.set(state.list, `${idx}`, { ...item, num: (+state.list[idx].num) + num })
   //   } else {
   //     list = [...state.list, { ...item, num }]
   //   }
@@ -60,6 +51,19 @@ const cart = createReducer(initState, {
   //     list
   //   }
   // },
+  ['cart/update'](state, action) {
+    const list = action.payload
+    let cartIds = []
+    walkCart(state, t => {
+      cartIds.push(t.cart_id)
+    })
+
+    return {
+      ...state,
+      list,
+      cartIds
+    }
+  },
   // ['cart/delete'](state, action) {
   //   const { item_id } = action.payload
   //   const idx = state.list.findIndex(t => t.item_id === item_id)
@@ -78,13 +82,13 @@ const cart = createReducer(initState, {
       ...initState
     }
   },
-  ['cart/selection'](state, action) {
-    const selection = action.payload
-    return {
-      ...state,
-      selection
-    }
-  },
+  // ['cart/selection'](state, action) {
+  //   const selection = action.payload
+  //   return {
+  //     ...state,
+  //     selection
+  //   }
+  // },
   ['cart/changeCoupon'](state, action) {
     const coupon = action.payload
 
@@ -98,17 +102,25 @@ const cart = createReducer(initState, {
 export default cart
 
 export function getTotalCount (state) {
-  return state.list.reduce((acc, item) => (+item.num) + acc, 0)
+  let total = 0
+
+  walkCart(state, (item) => {
+    if (state.selection.includes(item.cart_id)) return
+    total += (+item.num)
+  })
+
+  return total
 }
 
 export function getTotalPrice (state) {
-  const total = state.list.reduce((acc, item) => {
-    if (!state.selection.includes(item.item_id)) {
-      return acc
-    }
+  let total = 0
 
-    return (+item.price) * (+item.num) + acc
-  }, 0)
+  walkCart(state, (item) => {
+    if (state.selection.includes(item.cart_id)) return
+
+    total += (+item.price) * (+item.num)
+  })
+
   return (total / 100).toFixed(2)
 }
 

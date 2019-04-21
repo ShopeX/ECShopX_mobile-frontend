@@ -48,7 +48,7 @@ $item-img-size: 240px !default;
     margin: 0 0 20px;
   }
   &__price {
-    font-size: floor(1.28 * $font-size);
+    font-size: 24px;
     margin-right: 24px;
   }
   &__point {

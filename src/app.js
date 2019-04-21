@@ -68,6 +68,9 @@ class App extends Component {
       'pages/member/edit-address',
       'pages/member/setting',
       'pages/member/userinfo',
+      'pages/member/item-history',
+      'pages/member/item-fav',
+      'pages/member/item-guess',
 
       'pages/trade/list',
       'pages/trade/detail',

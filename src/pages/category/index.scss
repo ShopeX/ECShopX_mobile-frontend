@@ -11,7 +11,7 @@
   .category-comps{
     box-sizing: border-box;
     background: #ffffff;
-    @include page-scroll($searchbar-height + $tabnavbar-height + 10px, $tabbar-height);
+    @include page-scroll($searchbar-height + $tabs-height + 10px, $tabbar-height);
   }
 }
 

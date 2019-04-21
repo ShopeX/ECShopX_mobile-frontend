@@ -17,8 +17,7 @@ import find from "lodash/find";
 
 @connect(({ cart }) => ({
   coupon: cart.coupon,
-  fastbuy: cart.fastbuy,
-  list: getSelectedCart(cart)
+  fastbuy: cart.fastbuy
 }), (dispatch) => ({
   onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' }),
   onClearCart: () => dispatch({ type: 'cart/clear' })

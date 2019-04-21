@@ -1,0 +1,10 @@
+@import "../../style/imports";
+@import "../item/list";
+
+.page-goods-fav {
+  .goods-list {
+    &__scroll {
+      @include page-scroll($navigate-height, 0);
+    }
+  }
+}

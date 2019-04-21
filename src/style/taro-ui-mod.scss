@@ -94,21 +94,28 @@
 }
 
 .at-tabs {
-  height: 75px;
+  height: $tabs-height;
+  box-shadow: 0 10px 10px rgba(#000, 0.05);
   box-sizing: border-box;
-  box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  left: 0;
+  top: $navigate-height;
+  width: 100%;
+  z-index: $z-index-toolbar;
+  &__header {
+  }
   .at-tabs__body {
     height: 0;
   }
   .at-tabs__item {
-    height: 75px;
-    line-height: 75px;
+    height: $tabs-height;
+    line-height: $tabs-height;
     padding: 0;
   }
   .at-tabs__item-underline {
     height: 2PX;
-    left: 42%;
-    width: 15%;
+    width: 20%;
+    left: 40%;
   }
 }
 

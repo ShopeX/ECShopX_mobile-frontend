@@ -1,26 +1,9 @@
 @import "../../style/imports";
 
 .coupon-list {
-  .at-tabs__header {
-    position: absolute;
-    top: $navigate-height;
-    width: 100%;
-    z-index: $z-index-toolbar;
-  }
   &__scroll {
-    //height: 100vh;
-    //padding: $tabbar-height 0 $edge-margin;
-    @include page-scroll($navigate-height + $tabs-height , $edge-margin);
-
+    @include page-scroll($navigate-height + $tabs-height, $edge-margin);
     box-sizing: border-box;
-  }
-  &__tabs {
-    position: fixed;
-    z-index: $z-index-toolbar;
-    left: 0;
-    height: 100PX;
-    top: 0;
-    width: 100%;
   }
 }
 
