@@ -27,7 +27,7 @@ export function add (item, num = 1) {
 }
 
 export function del ({ cart_id }) {
-  return req.post('/cartdel', { cart_id })
+  return req.delete('/cartdel', { cart_id })
 }
 
 export function select ({ cart_id, is_checked }) {

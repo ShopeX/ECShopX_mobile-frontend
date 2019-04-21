@@ -19,6 +19,7 @@ export default class TradeItem extends Component {
     noHeader: false,
     showActions: false,
     payType: '',
+    info: null,
     onClickBtn: () => {},
     onClick: () => {}
   }
@@ -30,6 +31,9 @@ export default class TradeItem extends Component {
 
   render () {
     const { customHeader, customFooter, noHeader, onClick, info, payType, showActions } = this.props
+    if (!info) {
+      return null
+    }
 
     return (
       <View className='trade-item'>

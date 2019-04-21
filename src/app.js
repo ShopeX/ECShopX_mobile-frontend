@@ -37,6 +37,8 @@ class App extends Component {
       'pages/cart/coupon-picker',
       'pages/article/index',
 
+      'pages/recommend/list',
+
       'pages/auth/reg',
       'pages/auth/reg-rule',
       'pages/auth/login',
@@ -46,7 +48,6 @@ class App extends Component {
       'pages/cashier/cashier-result',
 
       'pages/member/index',
-      'pages/member/favorite',
       'pages/member/point',
       'pages/member/point-draw',
       'pages/member/point-draw-detail',

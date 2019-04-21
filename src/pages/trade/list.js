@@ -21,9 +21,9 @@ export default class TradeList extends Component {
       curTabIdx: 0,
       tabList: [
         {title: '全部订单', status: '0'},
-        {title: '待支付', status: '5'},
+        {title: '待付款', status: '5'},
         {title: '待收货', status: '1'},
-        {title: '待评价', status: '3'}
+        {title: '已完成', status: '3'}
       ],
       list: [],
       curItemActionsId: null
@@ -43,6 +43,13 @@ export default class TradeList extends Component {
     } else {
       this.nextPage()
     }
+  }
+
+  onPullDownRefresh () {
+    debugger
+    // this.resetPage(() => {
+    //   this.nextPage()
+    // })
   }
 
   componentWillUnmount () {
@@ -89,6 +96,8 @@ export default class TradeList extends Component {
     this.setState({
       list: [...this.state.list, ...nList]
     })
+
+    Taro.stopPullDownRefresh()
 
     return { total }
   }

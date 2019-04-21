@@ -48,10 +48,6 @@ export default class MemberIndex extends Component {
         avatar: res.memberInfo.avatar,
       }
     })
-    const ordersCount = await api.trade.getCount()
-    this.setState({
-      ordersCount
-    })
   }
 
   handleClickRecommend = async () => {
@@ -187,6 +183,7 @@ export default class MemberIndex extends Component {
               size='28'
               icon='kefu'
               iconPrefixClass='in-icon'
+              openType='contact'
               title='联系客服'
             />
           </View>

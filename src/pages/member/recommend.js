@@ -1,187 +1,114 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { AtBadge, AtIcon, AtAvatar } from 'taro-ui'
-import { SpIconMenu, NavBar } from '@/components'
-import { pickBy } from '@/utils'
+import { View, ScrollView } from '@tarojs/components'
+import { withPager, withBackToTop } from '@/hocs'
+import { BackToTop, Loading, GoodsItem, NavBar, SpNote } from '@/components'
 import api from '@/api'
-import { withLogin } from '@/hocs'
-import ShareQrcode from './comps/share-qrcode'
+import { pickBy } from '@/utils'
 
 import './recommend.scss'
 
-@withLogin()
-export default class Recommend extends Component {
+@withPager
+@withBackToTop
+export default class MemberRecommend extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
       ...this.state,
-      info: {},
-      detail: {
-        rebateTotal: '0.00',
-        isbuy_promoter: '0',
-        notbuy_promoter: '0',
-      },
-      isOpened: false,
+      list: []
     }
   }
 
-  navigateTo (url) {
-    Taro.navigateTo({ url })
-  }
   componentDidMount () {
-    this.fetch()
+    this.nextPage()
   }
 
+  async fetch (params) {
+    const { page_no: page, page_size: pageSize } = params
+    const query = {
+      item_type: 'normal',
+      is_point: 'false',
+      approve_status: 'onsale,only_show',
+      page,
+      pageSize
+    }
 
-  async fetch () {
-    const res = await api.member.recommendUserInfo()
-    const nList = pickBy(res, {
-      username: 'username',
-      promoter_grade_name: 'promoter_grade_name',
-      parent_info: 'parent_info.username',
-      headimgurl: 'headimgurl',
-      mobile: 'mobile'
+    const { list, total_count: total } = await api.item.search(query)
+
+    const nList = pickBy(list, {
+      img: 'pics[0]',
+      item_id: 'item_id',
+      title: 'itemName',
+      desc: 'brief',
+      price: ({ price }) => (price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2)
     })
+
     this.setState({
-      info: nList,
+      list: [...this.state.list, ...nList],
+      query
     })
 
-    const resIndex = await api.member.recommendIndexInfo()
-    const nIndexList = pickBy(resIndex, {
-      rebateTotal: ({ rebateTotal }) => (rebateTotal/100).toFixed(2),
-      cashWithdrawalRebate: ({ cashWithdrawalRebate }) => (cashWithdrawalRebate/100).toFixed(2),
-      promoter_order_count: 'promoter_order_count',
-      promoter_grade_order_count: 'promoter_grade_order_count',
-      isbuy_promoter: 'isbuy_promoter',
-      notbuy_promoter: 'notbuy_promoter',
-    })
-    this.setState({
-      detail: nIndexList,
-    })
-  }
-
-  handleClickQrcode = async () => {
-
-    if(process.env.TARO_ENV === 'weapp') {
-      const res = await api.member.qrcodeData()
-      Taro.previewImage({
-        current: res.qrcode,
-        urls: [res.qrcode]
-      })
-      console.log(1)
-    } else {
-      this.setState({
-        isOpened: true
-      })
-      // await api.member.h5_qrcodeData()
-      //   .then(res => {
-      //
-      //     Taro.previewImage({
-      //       current: res.share_qrcode,
-      //       urls: [res.share_qrcode]
-      //     })
-      //   })
-      // console.log(2)
+    return {
+      total
     }
   }
 
+  handleClickItem = (item) => {
+    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    Taro.navigateTo({
+      url
+    })
+  }
 
   render () {
-    const { info, detail, isOpened } = this.state
+    const { list, showBackToTop, scrollTop, page } = this.state
 
     return (
-      <View className='page-member-index'>
-        <NavBar
-          title='我的推广'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
-        <View className='member-index__hd'>
-          <View className='member-info_top'>
+      <View className='page-goods-list page-goods-history'>
+        <View className='goods-list__toolbar'>
+          <NavBar
+            leftIconType='chevron-left'
+            fixed='true'
+          />
+        </View>
+
+        <ScrollView
+          className='goods-list__scroll'
+          scrollY
+          scrollTop={scrollTop}
+          scrollWithAnimation
+          onScroll={this.handleScroll}
+          onScrollToLower={this.nextPage}
+        >
+          <View className='goods-list goods-list__type-grid'>
             {
-              info.parent_info ? <AtAvatar className='member-avatar' title='头像' size='large' circle /> : null
+              list.map(item => {
+                return (
+                  <GoodsItem
+                    key={item.item_id}
+                    info={item}
+                    onClick={() => this.handleClickItem(item)}
+                  />
+                )
+              })
             }
-
-            <View className='member-info_name'>
-              <View>{info.username}({info.promoter_grade_name})</View>
-              <View>{info.mobile}</View>
-              {
-                info.parent_info ? <View className='member-name'>推荐人：{info.parent_info}</View> : null
-              }
-            </View>
           </View>
-        </View>
-        <View className='member-index__bd'>
-          <View className='member-sec member-info__status'>
-            <View className='member-status__item'>
-              <View className='member-status__item-title'>
-                推广金额：<Text className='member-status__item-val'>{detail.rebateTotal}元</Text>
-              </View>
-            </View>
-          </View>
-          <View className='member-sec member-trades'>
-            <View className='sec-bd'>
-              <View
-                className='member-recommend__menus'
-                onClick={this.navigateTo.bind(this, '/pages/member/recommend-order?brokerage_source=recharge')}
-              >
-                <View>
-                  <Text className='sp-icon sp-icon-dingdan1 icon-dingdan'> </Text>
-                  <Text>推广记录</Text>
-                </View>
-                {/*<AtBadge*/}
-                  {/*value={detail.promoter_order_count}*/}
-                {/*>*/}
-                  {/*<SpIconMenu*/}
-                    {/*icon='dingdan1'*/}
-                    {/*title='提成订单'*/}
-                    {/*to='/pages/member/recommend-order?brokerage_source=order'*/}
-                  {/*/>*/}
-                {/*</AtBadge>*/}
-                {/*<AtBadge*/}
-                  {/*value={detail.promoter_grade_order_count}*/}
-                {/*>*/}
-                  {/*<SpIconMenu*/}
-                    {/*icon='dingdan1'*/}
-                    {/*title='津贴订单'*/}
-                    {/*to='/pages/member/recommend-order?brokerage_source=order_team'*/}
-                  {/*/>*/}
-                {/*</AtBadge>*/}
-              </View>
-            </View>
-          </View>
+          {
+            page.isLoading
+              ? <Loading>正在加载...</Loading>
+              : null
+          }
+          {
+            !page.isLoading && !page.hasNext && !list.length
+              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
+          }
+        </ScrollView>
 
-          <View className='member-sec member-trades' onClick={this.navigateTo.bind(this, '/pages/member/recommend-member')}>
-            <View className='sec-hd'>
-              <Text className='sec-title'>我的会员</Text>
-              <View
-                className='more'
-                // onClick={this.navigateTo.bind(this, '/pages/trade/list')}
-              ><AtIcon value='chevron-right'></AtIcon></View>
-            </View>
-            <View className='sec-bd'>
-              <View className='member-recommend__menus'>
-                <View>已充值会员<Text className='member-number'>{detail.isbuy_promoter}</Text>人</View>
-                <View>未充值会员<Text className='member-number'>{detail.notbuy_promoter}</Text>人</View>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View className='member-sec member-tools'>
-          <View className='sec-bd'>
-            <View className='member-recommend__menus' onClick={this.handleClickQrcode}>
-              <View className='sp-icon sp-icon-qrcode icon-qrcode'></View>
-              <View>我的二维码</View>
-            </View>
-          </View>
-        </View>
-
-        {
-          isOpened ? <ShareQrcode Opened={isOpened} /> : null
-        }
-
+        <BackToTop
+          show={showBackToTop}
+          onClick={this.scrollBackToTop}
+        />
       </View>
     )
   }

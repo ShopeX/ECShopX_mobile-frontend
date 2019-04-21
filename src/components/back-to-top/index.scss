@@ -8,7 +8,7 @@
   line-height: 64px;
   border-radius: 64px;
   position: fixed;
-  bottom: $edge-size * 2;
+  bottom: $tabbar-height + floor($edge-size / 2);
   right: $edge-size;
   z-index: $z-index-tooltip;
   display: flex;

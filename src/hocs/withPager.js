@@ -48,7 +48,7 @@ export default function withPager (Component) {
       })
     }
 
-    resetPage () {
+    resetPage (cb = () => {}) {
       const page = {
         ...(this.state.page || {}),
         page_no: 0,
@@ -56,7 +56,7 @@ export default function withPager (Component) {
         isLoading: false,
         hasNext: true
       }
-      this.setState({ page })
+      this.setState({ page }, cb)
     }
   }
 }

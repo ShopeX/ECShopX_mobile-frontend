@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Image, Button } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
+import { styleNames } from '@/utils'
 
 import './index.scss'
 
@@ -16,7 +17,9 @@ export default class IconMenu extends Component {
     img: '',
     icon: '',
     iconStyle: '',
-    iconPrefixClass: 'sp-icon'
+    iconPrefixClass: 'sp-icon',
+    hoverClass: '',
+    openType: null
   }
 
   handleClick = () => {
@@ -31,19 +34,21 @@ export default class IconMenu extends Component {
   }
 
   render () {
-    const { img, icon, iconStyle, iconPrefixClass, title, size, className } = this.props
+    const { img, icon, iconStyle, iconPrefixClass, title, size, className, hoverClass, openType } = this.props
 
     return (
-      <View
+      <Button
         className={`sp-iconmenu ${className || ''}`}
+        hoverClass={hoverClass}
         onClick={this.handleClick}
+        openType={openType}
       >
         <View className='sp-iconmenu__icon'>
           {img && (<Image mode='aspectFill' className='sp-iconmenu__img' src={img} />)}
-          {icon && (<AtIcon value={icon} prefixClass={iconPrefixClass} size={size} />)}
+          {icon && (<AtIcon value={icon} prefixClass={iconPrefixClass} style={styleNames(iconStyle)} size={size} />)}
         </View>
         <Text className='sp-iconmenu__title'>{title}</Text>
-      </View>
+      </Button>
     )
   }
 }

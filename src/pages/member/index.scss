@@ -95,6 +95,13 @@
       .in-icon {
         color: #5c5c5c;
       }
+      .button-hover {
+        background: none;
+        color: $color-brand-primary;
+        .in-icon, .sp-iconmenu__icon, .sp-iconmenu__title {
+          color: $color-brand-primary;
+        }
+      }
       .sp-iconmenu__title {
         color: #5c5c5c;
         font-size: 24px;

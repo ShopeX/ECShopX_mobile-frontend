@@ -15,6 +15,7 @@
     "pages/cart/espier-checkout",
     "pages/cart/coupon-picker",
     "pages/article/index",
+    "pages/recommend/list",
     "pages/auth/reg",
     "pages/auth/reg-rule",
     "pages/auth/login",
@@ -22,7 +23,6 @@
     "pages/cashier/index",
     "pages/cashier/cashier-result",
     "pages/member/index",
-    "pages/member/favorite",
     "pages/member/point",
     "pages/member/point-draw",
     "pages/member/point-draw-detail",
@@ -64,6 +64,5 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "innisfree悦诗风吟",
     "navigationBarTextStyle": "black"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }
