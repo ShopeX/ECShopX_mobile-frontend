@@ -1,7 +1,13 @@
 @import '../../style/imports';
 
 .sp-iconmenu {
+  $self: &;
   text-align: center;
+  padding: 0;
+  border: none;
+  &:before, &:after {
+    border: none;
+  }
   &__icon {
     margin: 0 0 28px;
     line-height: 1;
