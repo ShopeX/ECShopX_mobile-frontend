@@ -18,7 +18,7 @@ export default class TradeRefundDetail extends Component {
   }
 
   componentDidMount () {
-    this.fetch()
+    // this.fetch()
   }
 
   async fetch () {
@@ -76,21 +76,43 @@ export default class TradeRefundDetail extends Component {
   }
 
   render () {
-    const { info, orderInfo, progress } = this.state
-
-    if (!info) {
-      return <Loading />
-    }
+    // const { info, orderInfo, progress } = this.state
+    //
+    // if (!info) {
+    //   return <Loading />
+    // }
 
     return (
-      <View className='trade-refund-status'>
-        <NavBar
-          title='售后详情'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
-
+      <View className='trade-refund-detail'>
         <View className='refund-status'>
+          <Text className='refund-status__text text-status'>待发货</Text>
+          <Text className='refund-status__text'>物流信息：正在审核订单</Text>
+        </View>
+        <View className='refund-detail'>
+          <Text className='refund-detail__title'>您已成功发起退款申请，请耐心等待商家处理</Text>
+          <Text className='refund-detail__descr'>说明</Text>
+          <Text className='refund-detail__btn'>修改申请</Text>
+        </View>
+        <View className='refund-info'>
+          <View className='refund-info__num'>
+            <Text className='refund-info__text'>商品数量：</Text>
+            <Text className='refund-info__text text-primary'>3</Text>
+          </View>
+          <View className='refund-info__num'>
+            <Text className='refund-info__text'>退款金额：</Text>
+            <View>
+              <Text className='refund-info__text text-primary'>300</Text>
+              <Text className='refund-info__text'>(含发货邮费￥300)</Text>
+            </View>
+          </View>
+        </View>
+        <View className='refund-detail-info'>
+          <View className='info-name'>订单号：<Text className='info-value'>12312312341</Text></View>
+          <View className='info-name'>下单时间：<Text className='info-value'>2018-09-06</Text></View>
+          <View className='info-name'>发票信息：<Text className='info-value'>上海xxx有限公司上海xx有</Text></View>
+        </View>
+        <View className='refund-detail-btn'>联系客服</View>
+        {/*<View className='refund-status'>
           {
             (progress == 0 || progress == 1 || progress == 3 || progress == 5)
               ? <Icon size='50' type='waiting'></Icon>
@@ -145,7 +167,7 @@ export default class TradeRefundDetail extends Component {
             <AtButton type='secondary' circle onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</AtButton>
             <AtButton type='primary' circle onClick={this.handleBtnClick.bind(this, 'refund_send')}>填写物流信息</AtButton>
           </View>
-        )}
+        )}*/}
       </View>
     )
   }

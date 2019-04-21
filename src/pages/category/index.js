@@ -99,51 +99,6 @@ export default class Category extends Component {
         </AtTabs>
         <View className='category-comps'>
           <Series />
-          {/*<ScrollView*/}
-            {/*className='category-list__nav'*/}
-            {/*scrollY*/}
-          {/*>*/}
-            {/*<View className='category-nav'>*/}
-              {/*{*/}
-                {/*list.map((item, index) =>*/}
-                  {/*<View*/}
-                    {/*className={classNames('category-nav__content', currentIndex === index ? 'category-nav__content-checked' : null)}*/}
-                    {/*key={index}*/}
-                    {/*onClick={this.handleClickCategoryNav.bind(this, index)}*/}
-                  {/*>*/}
-                    {/*{item.category_name}*/}
-                  {/*</View>*/}
-                {/*)*/}
-              {/*}*/}
-            {/*</View>*/}
-          {/*</ScrollView>*/}
-          {/*/!*右*!/*/}
-          {/*<ScrollView*/}
-            {/*className='category-list__content'*/}
-            {/*scrollY*/}
-          {/*>*/}
-            {/*<View className={classNames(pluralType ? 'category-content' : 'category-content-no')}>*/}
-              {/*{*/}
-                {/*items.map(item =>*/}
-                  {/*<View*/}
-                    {/*className='category-content__img'*/}
-                    {/*key={item.category_id}*/}
-                    {/*onClick={this.handleClickItem.bind(this, item)}*/}
-                  {/*>*/}
-                    {/*<Image*/}
-                      {/*className={classNames(imgType ? 'cat-img' : 'cat-img-no')}*/}
-                      {/*mode='aspectFill'*/}
-                      {/*src={item.image_url}*/}
-                    {/*/>*/}
-                    {/*<View className='img-cat-name'>{item.category_name}</View>*/}
-                  {/*</View>*/}
-                {/*)*/}
-              {/*}*/}
-              {/*<View className='category-content__img-empty'> </View>*/}
-              {/*<View className='category-content__img-empty'> </View>*/}
-              {/*<View className='category-content__img-empty'> </View>*/}
-            {/*</View>*/}
-          {/*</ScrollView>*/}
         </View>
         <TabBar
           current={1}

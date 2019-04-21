@@ -30,6 +30,7 @@ export default class Series extends Component {
     const res = await api.category.get()
     const nList = pickBy(res, {
       category_name: 'category_name',
+      image_url: 'image_url',
       children: 'children'
     })
     this.setState({
@@ -88,7 +89,7 @@ export default class Series extends Component {
           scrollY
         >
           <View className={classNames(pluralType ? 'category-content' : 'category-content-no')}>
-            <Image src='/assets/imgs/pay_success.png' mode='aspectFill' className='category__banner' />
+            <Image src={item.image_url} mode='aspectFill' className='category__banner' />
             {
               items.map(item =>
                 <View
@@ -99,8 +100,7 @@ export default class Series extends Component {
                   <Image
                     className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
                     mode='aspectFill'
-                    // src={item.image_url}
-                    src='/assets/imgs/pay_success.png'
+                    src={item.image_url}
                   />
                   <View className='img-cat-name'>{item.category_name}</View>
                 </View>
@@ -114,7 +114,6 @@ export default class Series extends Component {
                   <Image
                     className='cat-img'
                     mode='aspectFill'
-                    src='/assets/imgs/pay_success.png'
                   />
                   <View className='img-cat-name'>3333</View>
                 </View>

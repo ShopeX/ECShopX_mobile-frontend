@@ -11,7 +11,7 @@ export default class AddressIndex extends Component {
 
     this.state = {
       list: [],
-      // isItemChecked: true,
+      isItemChecked: false,
       ItemIndex: null,
       isDefaultChecked: true,
     }
@@ -39,9 +39,25 @@ export default class AddressIndex extends Component {
 
   handleClickChecked = (index) => {
     this.setState({
-      // isItemChecked: !this.state.isItemChecked,
+      isItemChecked: !this.state.isItemChecked,
       ItemIndex: index
     })
+  }
+
+  handleChangeDefault = async (item) => {
+    /*try {
+      await api.member.addressCreateOrUpdate(item.address_id)
+      if(data.address_id) {
+        S.toast('修改成功')
+      } else {
+        S.toast('创建成功')
+      }
+      setTimeout(()=>{
+        Taro.navigateBack()
+      }, 700)
+    } catch (error) {
+      return false
+    }*/
   }
 
   handleClickToEdit = (item) => {
@@ -51,7 +67,7 @@ export default class AddressIndex extends Component {
   }
 
   render () {
-    const { ItemIndex } = this.state
+    const { ItemIndex, isItemChecked } = this.state
 
     return (
       <View className='page-address-index'>
@@ -65,8 +81,8 @@ export default class AddressIndex extends Component {
                 <View key={index} className='address-item'>
                   <View className='address-item__check' onClick={this.handleClickChecked.bind(this, index)}>
                     {
-                      index === ItemIndex
-                        ? <Text className='in-icon in-icon-check address-item__checked'> </Text>
+                      index === ItemIndex && isItemChecked
+                        ? <Text className='in-icon in-icon-check-copy address-item__checked'> </Text>
                         : <Text className='address-item__unchecked'> </Text>
                     }
                   </View>
@@ -77,7 +93,7 @@ export default class AddressIndex extends Component {
                     </View>
                     <View className='address-item__detail'>{item.province}{item.city}{item.county}{item.adrdetail}</View>
                     <View className='address-item__footer'>
-                      <View className='address-item__footer_default'>
+                      <View className='address-item__footer_default' onClick={this.handleChangeDefault.bind(this, item)}>
                         {
                           isDefaultChecked
                             ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>

@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtSegmentedControl, AtImagePicker, AtTag, AtButton, AtTextarea } from 'taro-ui'
+import { AtActionSheet, AtActionSheetItem, AtSegmentedControl, AtImagePicker, AtTag, AtButton, AtTextarea } from 'taro-ui'
 import { SpCell, SpToast } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
@@ -24,14 +24,16 @@ export default class TradeRefund extends Component {
       curSegIdx: 0,
       curReasonIdx: 0,
       segTypes: [{ key: 'ONLY_REFUND', value: '仅退款' }, { key: 'REFUND_GOODS', value: '退货退款' }],
-      reason: ['多买/错买', '不想要了', '买多了', '质量问题', '卖家发错货', '商品破损', '描述不符', '其他'],
+      reason: ['多拍/拍错/不想要', '缺货'],
+      // reason: ['多拍/拍错/不想要', '缺货', '买多了', '质量问题', '卖家发错货', '商品破损', '描述不符', '其他'],
       description: '',
-      imgs: []
+      imgs: [],
+      isRefundReason: false
     }
   }
 
   componentDidMount () {
-    this.fetch()
+    // this.fetch()
   }
 
   async fetch () {
@@ -173,13 +175,84 @@ export default class TradeRefund extends Component {
     }, 700)
   }
 
+  handleClickReason = () => {
+    this.setState({
+      isRefundReason: true
+    })
+  }
+
   render () {
-    const { reason, curSegIdx, curReasonIdx, segTypes, description, imgs } = this.state
+    const { reason, curSegIdx, curReasonIdx, segTypes, description, imgs, isRefundReason } = this.state
     const segTypeVals = segTypes.map(t => t.value)
 
     return (
       <View className='page-trade-refund'>
-        <SpCell border={false}>
+        <View className='refund-info'>
+          <View className='refund-info__num'>
+            <Text className='refund-info__text'>商品数量：</Text>
+            <Text className='refund-info__text text-primary'>3</Text>
+          </View>
+          <View className='refund-info__num'>
+            <Text className='refund-info__text'>退款金额：</Text>
+            <View>
+              <Text className='refund-info__text text-primary'>300</Text>
+              <Text className='refund-info__text'>(含发货邮费￥300)</Text>
+            </View>
+          </View>
+        </View>
+
+        <SpCell title='退款原因' isLink onClick={this.handleClickReason.bind(this)} value='请选择' />
+        <AtActionSheet
+          className='refund-reason'
+          isOpened={isRefundReason}
+          cancelText='关闭'
+          title='退款原因'
+        >
+          <AtActionSheetItem>
+            <View className='refund-reason__item'>
+              <Text>多拍/拍错/不想要</Text>
+              {
+                isRefundReason
+                  ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>
+                  : <Text className='in-icon in-icon-check default__icon'> </Text>
+              }
+            </View>
+          </AtActionSheetItem>
+          <AtActionSheetItem>
+            <View className='refund-reason__item'>
+              <Text>缺货</Text>
+              {
+                isRefundReason
+                  ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>
+                  : <Text className='in-icon in-icon-check default__icon'> </Text>
+              }
+            </View>
+          </AtActionSheetItem>
+        </AtActionSheet>
+
+        <View className='refund-describe'>
+          <AtTextarea
+            value={description}
+            onChange={this.handleTextChange}
+            placeholder='退款说明（选填）'
+          > </AtTextarea>
+          <View className='refund-describe__img'>
+            <Text className='refund-describe__text'>上传凭证</Text>
+            <View className='refund-describe__imgupload'>
+              <Text className='refund-describe__imgupload_text'>您可以上传最多3张图片</Text>
+              <AtImagePicker
+                multiple
+                mode='aspectFill'
+                length={5}
+                files={imgs}
+                onChange={this.handleImageChange}
+                onImageClick={this.handleImageClick}
+              > </AtImagePicker>
+            </View>
+          </View>
+        </View>
+        <View className='refund-btn'>提交</View>
+        {/*<SpCell border={false}>
           <AtSegmentedControl
             onClick={this.handleChangeType}
             values={segTypeVals}
@@ -230,7 +303,7 @@ export default class TradeRefund extends Component {
             circle
             onClick={this.handleSubmit}
           >提交申请</AtButton>
-        </View>
+        </View>*/}
 
         <SpToast />
       </View>
