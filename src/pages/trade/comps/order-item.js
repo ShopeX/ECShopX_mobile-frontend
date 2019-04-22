@@ -7,7 +7,8 @@ import './order-item.scss'
 export default class OrderItem extends Component {
   static defaultProps = {
     onClick: () => {},
-    payType: ''
+    payType: '',
+    showExtra: true
   }
 
   static options = {
@@ -15,7 +16,12 @@ export default class OrderItem extends Component {
   }
 
   render () {
-    const { info, onClick, payType } = this.props
+    const { info, onClick, payType, showExtra, customFooter } = this.props
+    const img = info.pic_path
+      ? info.pic_path
+      : Array.isArray(info.pics)
+        ? info.pics[0]
+        : info.pics
 
     return (
       <View
@@ -26,18 +32,20 @@ export default class OrderItem extends Component {
           <Image
             mode='aspectFill'
             className='order-item__img'
-            src={info.pic_path}
+            src={img}
           />
         </View>
         <View className='order-item__bd'>
           <Text className='order-item__title'>{info.title}</Text>
-          <Text className='order-item__desc'>{info.goods_props}</Text>
-          {info.num && <Text className='order-item__num'>数量：{info.num}</Text>}
+          {showExtra && (
+            <View className='order-item__extra'>
+              <Text className='order-item__desc'>{info.goods_props}</Text>
+              {info.num && <Text className='order-item__num'>数量：{info.num}</Text>}
+            </View>
+          )}
         </View>
-        {info.customFooter
-          ? (<View className='order-item__ft'>
-              {this.renderFooter}
-            </View>)
+        {customFooter
+          ? this.props.renderFooter
           : (
             <View className='order-item__ft'>
               {payType === 'point'

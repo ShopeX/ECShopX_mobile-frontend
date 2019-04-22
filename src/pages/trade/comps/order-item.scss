@@ -5,9 +5,10 @@
   align-items: flex-start;
   padding: $edge-size;
   &__img {
-    width: 160px;
-    height: 160px;
-    margin-right: 18px
+    width: 120px;
+    height: 100px;
+    margin-right: 35px;
+    border-radius: 6px;
   }
   &__hd {
   }

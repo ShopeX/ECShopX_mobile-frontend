@@ -45,7 +45,7 @@
       padding: 16px $edge-margin;
     }
     &__cont {
-      padding-bottom: 0;
+      padding: $edge-margin 0;
     }
     .at-input {
       &:after {
@@ -69,6 +69,50 @@
       margin-right: 20px;
     }
     &__title {
+    }
+  }
+
+  .order-item {
+    position: relative;
+    padding: 40px 50px 20px;
+    &__wrap {
+    }
+    &__bd {
+      flex: 1;
+    }
+    &__idx {
+      font-size: 24px;
+      color: #333;
+      padding: 16px 32px;
+      height: 36px;
+      line-height: 36px;
+      display: block;
+      border-bottom: 1px solid #ececec;
+    }
+    &__img {
+      width: 250px;
+      height: 206px;
+      margin-right: 34px;
+    }
+    &__ft {
+      position: absolute;
+      bottom: 20px;
+      right: 50px;
+      left: 330px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &__num {
+      font-size: $font-size-small;
+      color: #333333;
+    }
+    &__price {
+      color: $color-brand-primary;
+      font-size: 28px;
+      .price__symbol {
+        font-size: $font-size-small;
+      }
     }
   }
 
@@ -143,11 +187,15 @@
       &:before {
         border: none;
       }
-    }
-    .sp-cell__bd {
-      color: $color-brand-primary;
-      display: flex;
-      justify-content: flex-end;
+      &__hd {
+        width: 130px;
+        text-align: right;
+      }
+      &__bd {
+        color: $color-brand-primary;
+        display: flex;
+        justify-content: flex-end;
+      }
     }
   }
 
@@ -164,6 +212,38 @@
     &__ft {
       width: 30%;
       color: $color-gray;
+    }
+  }
+
+  .checkout-toolbar {
+    padding-left: 34px;
+    padding-right: 0;
+    justify-content: space-between;
+    .checkout__total {
+      white-space: nowrap;
+      flex: 1;
+      margin-right: 0;
+    }
+    .price {
+      font-size: 35px;
+      font-weight: bold;
+      .price__symbol {
+        font-size: $font-size;
+      }
+    }
+  }
+
+  .btn-confirm-order {
+    width: 256px;
+    margin: 0 0 0 24px;
+    height: $toolbar-height;
+    line-height: $toolbar-height;
+    border: none;
+    border-radius: 0;
+    font-weight: bold;
+    font-size: $font-size;
+    &:before, &:after {
+      border: none;
     }
   }
 }

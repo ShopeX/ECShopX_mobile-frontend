@@ -2,10 +2,11 @@
 
 .sp-cell {
   background: #fff;
-  padding: $edge-margin $edge-size;
+  padding: 24px $edge-size;
   display: flex;
   align-items: center;
-  @include hairline($color-border-gray, bottom);
+  @include hairline($color-border-gray-light, bottom);
+  color: $color-primary-text;
   &__no-border {
     &:before {
       border: none;
