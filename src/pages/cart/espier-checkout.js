@@ -26,18 +26,14 @@ const transformCartList = (list) => {
   })
 }
 
-
-@connect(({ cart }) => ({
+@connect(({ address, cart }) => ({
+  defaultAddress: address.defaultAddress,
   coupon: cart.coupon,
   fastbuy: cart.fastbuy
 }), (dispatch) => ({
   onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' }),
-  onClearCart: () => dispatch({ type: 'cart/clear' })
-}))
-@connect(( { address } ) => ({
-  defaultAddress: address.defaultAddress,
-}), (dispatch) => ({
-  onAddressChoose: (defaultAddress) => dispatch({ type: 'address/choose', payload: defaultAddress }),
+  onClearCart: () => dispatch({ type: 'cart/clear' }),
+  onAddressChoose: (defaultAddress) => dispatch({ type: 'address/choose', payload: defaultAddress })
 }))
 @withLogin()
 export default class CartCheckout extends Component {

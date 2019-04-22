@@ -12,6 +12,21 @@ export function pointDetail () {
   return req.get('/member.point.detail')
 }
 
+export function favsList () {
+  return req.get('/member/collect/item')
+}
+
+export function addFav (item_id) {
+  return req.post(`/member/collect/item/${item_id}`)
+}
+
+export function delFav (item_ids) {
+  item_ids = Array.isArray(item_ids) ? item_ids : [item_ids]
+  return req.delete('/member/collect/item', {
+    item_ids: item_ids
+  })
+}
+
 export function couponList (params = {}) {
   return req.get('/user/newGetCardList', params)
 }

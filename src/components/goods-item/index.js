@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Image, Progress} from '@tarojs/components'
 import { Price } from '@/components'
 import { isObject, classNames } from '@/utils'
+import api from '@/api'
 
 import './index.scss'
 
@@ -9,15 +10,21 @@ export default class GoodsItem extends Component {
   static defaultProps = {
     onClick: () => {},
     showMarketPrice: true,
-    noCurSymbol: false
+    noCurSymbol: false,
+    type: 'item'
   }
 
   static options = {
     addGlobalClass: true
   }
 
+  handleFavClick = async () => {
+    const { item_id, is_collect } = this.props.info
+    await api.item.collect(item_id)
+  }
+
   render () {
-    const { info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw } = this.props
+    const { info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw, type } = this.props
     if (!info) {
       return null
     }
@@ -52,34 +59,20 @@ export default class GoodsItem extends Component {
                 <Text className='goods-item__author-name'>{info.title}</Text>
               </View>
               <View className='goods-item__actions'>
-                <View
-                  className='in-icon in-icon-like'
-                  onClick={this.handleLikeClick}
-                ><Text>666</Text></View>
+                {type === 'item' && (
+                  <View
+                    className='in-icon in-icon-fav'
+                    onClick={this.handleFavClick}
+                  />
+                )}
+                {type === 'recommend' && (
+                  <View
+                    className='in-icon in-icon-like'
+                    onClick={this.handleLikeClick}
+                  ><Text>666</Text></View>
+                )}
               </View>
             </View>
-            {/*<View className='goods-item__prices'>
-              <Price
-                primary
-                classes='goods-item__price'
-                className='goods-item__price'
-                symbol={info.curSymbol}
-                noSymbol={noCurSymbol}
-                noDecimal={noCurDecimal}
-                appendText={appendText}
-                value={price}
-              />
-              {showMarketPrice && (
-                <Price
-                  symbol={info.curSymbol}
-                  noSymbol={noCurSymbol}
-                  classes='goods-item__price-market'
-                  className='goods-item__price-market'
-                  value={info.market_price}
-                  noDecimal={noCurDecimal}
-                />
-              )}
-            </View>*/}
           </View>
         </View>
         <View className='goods-item__ft'>

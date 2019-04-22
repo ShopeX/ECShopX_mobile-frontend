@@ -12,11 +12,14 @@ import ItemImg from './comps/item-img'
 
 import './espier-detail.scss'
 
-@connect(({ cart }) => ({
-  cart
+@connect(({ cart, favs }) => ({
+  cart,
+  favs
 }), (dispatch) => ({
   onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
-  onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } })
+  onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
+  onAddFav: ({ item_id }) => dispatch({ type: 'member/addFav', payload: { item_id } }),
+  onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
 }))
 @withBackToTop
 export default class Detail extends Component {
@@ -104,6 +107,9 @@ export default class Detail extends Component {
       })
     }
 
+    const isFav = this.props.favs.indexOf(info.item_id) >= 0
+    info.isFav = isFav
+
     this.setState({
       info,
       desc,
@@ -111,6 +117,20 @@ export default class Detail extends Component {
       timer
     })
     log.debug('fetch: done', info)
+  }
+
+  handleMenuClick = async (type) => {
+    const { info } = this.state
+
+    if (type === 'fav') {
+      if (!info.isFav) {
+        await api.member.addFav(info.item_id)
+        this.props.onAddFav(info)
+      } else {
+        await api.member.delFav(info.item_id)
+        this.props.onDelFav(info)
+      }
+    }
   }
 
   handleBuyClick = async (type) => {
@@ -324,12 +344,15 @@ export default class Detail extends Component {
         {(!info.distributor_sale_status && hasStock && startSecKill)
           ?
             (<GoodsBuyToolbar
+              info={info}
               type={marketing}
+              onFavItem={this.handleMenuClick.bind(this, 'fav')}
               onClickAddCart={this.handleBuyClick.bind(this, 'cart')}
               onClickFastBuy={this.handleBuyClick.bind(this, 'fastbuy')}
             />)
           :
             (<GoodsBuyToolbar
+              info={info}
               customRender
               type={marketing}
             >

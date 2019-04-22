@@ -18,13 +18,15 @@ export default class GoodsBuyToolbar extends Component {
   static defaultProps = {
     type: 'normal',
     onClickAddCart: () => {},
-    onClickFastBuy: () => {}
+    onClickFastBuy: () => {},
+    onFavItem: () => {},
+    info: null
   }
 
   navigateTo = navigateTo
 
   render () {
-    const { onClickAddCart, onClickFastBuy, cartTotalCount, type } = this.props
+    const { onClickAddCart, onClickFastBuy, cartTotalCount, type, info } = this.props
     const fastBuyText = type === 'normal'
       ? '立即购买'
       : type === 'seckill'
@@ -35,8 +37,9 @@ export default class GoodsBuyToolbar extends Component {
         <View className='goods-buy-toolbar__menus'>
           <View
             className='goods-buy-toolbar__menu-item'
+            onClick={this.props.onFavItem}
           >
-            <View className='in-icon in-icon-fav'></View>
+            <View className='in-icon in-icon-fav'>{info.isFav ? 'fav' : ''}</View>
           </View>
           {process.env.TARO_ENV === 'weapp' && (
             <Button className='goods-buy-toolbar__menu-item' openType='contact'>

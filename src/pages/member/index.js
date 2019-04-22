@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtBadge, AtIcon, AtAvatar } from 'taro-ui'
+import { connect } from '@tarojs/redux'
 import { SpIconMenu, TabBar, SpToast } from '@/components'
 import { withLogin } from '@/hocs'
 import api from '@/api'
@@ -8,6 +9,10 @@ import S from '@/spx'
 
 import './index.scss'
 
+@connect(() => ({
+}), (dispatch) => ({
+  onFetchFavs: (favs) => dispatch({ type: '/user/favs', payload: favs })
+}))
 @withLogin()
 export default class MemberIndex extends Component {
   constructor (props) {
@@ -34,8 +39,10 @@ export default class MemberIndex extends Component {
   componentDidMount () {
     this.fetch()
   }
+
   async fetch () {
-    const res = await api.member.memberInfo()
+    const [res, { list: favs }] = await Promise.all([api.member.memberInfo(), api.member.favsList()])
+    this.props.onFetchFavs(favs)
     this.setState({
       info: {
         deposit: res.deposit ? (res.deposit/100).toFixed(2) : 0,
