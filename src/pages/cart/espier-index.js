@@ -166,7 +166,7 @@ export default class CartIndex extends Component {
 
   handleCheckout = () => {
     Taro.navigateTo({
-      url: '/pages/cart/espier-checkout'
+      url: '/pages/cart/espier-checkout?cart_type=cart'
     })
   }
 

@@ -1,19 +1,30 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtButton, AtInput, AtActionSheet, AtActionSheetItem } from 'taro-ui'
+import { AtButton, AtInput } from 'taro-ui'
 import { Loading, Price, SpCell, AddressChoose, SpToast, NavBar } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { withLogin } from '@/hocs'
 import { pickBy, log } from '@/utils'
 import { lockScreen } from '@/utils/dom'
-import { getSelectedCart } from '@/store/cart'
+import find from 'lodash/find'
 import CheckoutItems from './checkout-items'
 
-
 import './espier-checkout.scss'
-import find from "lodash/find";
+
+const transformCartList = (list) => {
+  return pickBy(list, {
+    item_id: 'item_id',
+    cart_id: 'cart_id',
+    title: 'item_name',
+    curSymbol: 'fee_symbol',
+    pics: 'pic',
+    price: ({ price }) => (+price / 100).toFixed(2),
+    num: 'num'
+  })
+}
+
 
 @connect(({ cart }) => ({
   coupon: cart.coupon,
@@ -38,8 +49,8 @@ export default class CartCheckout extends Component {
     super(props)
 
     this.state = {
-      address_list: [],
       info: null,
+      address_list: [],
       address: null,
       showShippingPicker: false,
       showAddressPicker: false,
@@ -74,17 +85,11 @@ export default class CartCheckout extends Component {
           cart_total_num: fastBuyItem.num
         }]
       }
-    } else {
+    } else if (cart_type === 'cart') {
       // 积分购买不在此种情况
 
       this.props.onClearFastbuy()
-      const { list } = this.props
-      info = {
-        cart: [{
-          list,
-          cart_total_num: list.reduce((acc, item) => (+item.num) + acc, 0)
-        }]
-      }
+      info = null
     }
 
     this.setState({
@@ -94,7 +99,7 @@ export default class CartCheckout extends Component {
 
     let total_fee = 0
     let items_count = 0
-    const items = info.cart ? info.cart[0].list.map((item) => {
+    const items = (info && info.cart) ? info.cart[0].list.map((item) => {
       const { item_id, num } = item
       total_fee += +(item.price)
       items_count += +(item.num)
@@ -120,25 +125,11 @@ export default class CartCheckout extends Component {
   }
 
   componentDidShow () {
-    console.log( 123)
     if(this.state.address_list < 2) {
       this.fetch(() => this.changeSelection())
     }
-    // this.fetch(() => this.changeSelection())
-    if (!this.props.list.length && !this.props.fastbuy) {
-      Taro.showToast({
-        title: '购物车中无商品',
-        icon: 'none'
-      }).then(() => {
-        Taro.navigateTo({
-          url: '/pages/home/index'
-        })
-      })
+    if (!this.params || !this.state.address) return
 
-      return
-    }
-    if (!this.params) return
-    if (!this.state.address) return
     this.calcOrder()
     this.setState({
       address: this.props.defaultAddress
@@ -200,6 +191,9 @@ export default class CartCheckout extends Component {
       member_discount: 0,
       coupon_discount: 0,
     }
+
+    log.debug('[checkout] params: ', params)
+
     if (coupon) {
       if (coupon.type === 'coupon' && coupon.value.code) {
         params.coupon_discount = coupon.value.code
@@ -221,7 +215,7 @@ export default class CartCheckout extends Component {
     const params = this.getParams()
     const data = await api.cart.total(params)
 
-    const { item_fee, member_discount = 0, coupon_discount = 0, freight_fee = 0, freight_point = 0, point = 0, total_fee } = data
+    const { items, item_fee, member_discount = 0, coupon_discount = 0, freight_fee = 0, freight_point = 0, point = 0, total_fee } = data
     const total = {
       ...this.state.total,
       item_fee,
@@ -232,10 +226,24 @@ export default class CartCheckout extends Component {
       point,
       freight_point
     }
+
+    let info = this.state.info
+    if (items && !this.state.info) {
+      // 从后端获取订单item
+      info = {
+        cart: [{
+          list: transformCartList(items),
+          cart_total_num: items.reduce((acc, item) => (+item.num) + acc, 0)
+        }]
+      }
+      this.params.items = items
+    }
+
     Taro.hideLoading()
 
     this.setState({
-      total
+      total,
+      info
     })
   }
 
@@ -374,29 +382,6 @@ export default class CartCheckout extends Component {
           <AddressChoose
             isAddress={address}
           />
-          {/*<View*/}
-            {/*className='address-info'*/}
-            {/*onClick={this.toggleAddressPicker.bind(this, true)}*/}
-          {/*>*/}
-            {/*<SpCell*/}
-              {/*isLink*/}
-              {/*icon='map-pin'*/}
-            {/*>*/}
-              {/*{*/}
-                {/*address*/}
-                  {/*? <View className='address-info__bd'>*/}
-                      {/*<Text className='address-info__receiver'>*/}
-                        {/*收货人：{address.name} {address.mobile}*/}
-                      {/*</Text>*/}
-                      {/*<Text className='address-info__addr'>*/}
-                        {/*收货地址：{address.province}{address.state}{address.district}{address.address}*/}
-                      {/*</Text>*/}
-                    {/*</View>*/}
-                  {/*: <View className='address-info__bd'>请选择收货地址</View>*/}
-              {/*}*/}
-            {/*</SpCell>*/}
-          {/*</View>*/}
-
           <View className='cart-list'>
             {
               info.cart.map(cart => {
@@ -555,18 +540,6 @@ export default class CartCheckout extends Component {
             </View>
           )}
         </ScrollView>
-
-        {/*<AddressPicker*/}
-          {/*isOpened={showAddressPicker}*/}
-          {/*value={address}*/}
-          {/*onChange={this.handleAddressChange}*/}
-          {/*onClickBack={this.toggleState.bind(this, 'showAddressPicker', false)}*/}
-        {/*/>*/}
-        {/*<AddressList*/}
-          {/*onClickTo={this.clickTo.bind(this)}*/}
-          {/*onChange={this.handleAddressChange.bind(this)}*/}
-          {/*onClickBack={this.handleClickBack.bind(this)}*/}
-        {/*/>*/}
 
         <CheckoutItems
           isOpened={showCheckoutItems}
