@@ -9,6 +9,7 @@ import S from '@/spx'
 import * as qiniu from 'qiniu-js'
 
 import './refund.scss'
+import DetailItem from "./detail";
 
 function resolveBlobFromFile (url, type) {
   return fetch(url)
@@ -23,17 +24,18 @@ export default class TradeRefund extends Component {
     this.state = {
       curSegIdx: 0,
       curReasonIdx: 0,
-      segTypes: [{ key: 'ONLY_REFUND', value: '仅退款' }, { key: 'REFUND_GOODS', value: '退货退款' }],
+      // segTypes: [{ key: 'ONLY_REFUND', value: '仅退款' }, { key: 'REFUND_GOODS', value: '退货退款' }],
       reason: ['多拍/拍错/不想要', '缺货'],
       // reason: ['多拍/拍错/不想要', '缺货', '买多了', '质量问题', '卖家发错货', '商品破损', '描述不符', '其他'],
       description: '',
       imgs: [],
-      isRefundReason: false
+      refundReasonIndex: null,
+      isSameReason: false
     }
   }
 
   componentDidMount () {
-    // this.fetch()
+    this.fetch()
   }
 
   async fetch () {
@@ -181,25 +183,38 @@ export default class TradeRefund extends Component {
     })
   }
 
+  handleClickSheet = (index) => {
+    this.setState({
+      refundReasonIndex: index,
+      isSameReason: !this.state.isSameReason,
+      isRefundReason: false
+    })
+  }
+
   render () {
-    const { reason, curSegIdx, curReasonIdx, segTypes, description, imgs, isRefundReason } = this.state
-    const segTypeVals = segTypes.map(t => t.value)
+    const { reason, curSegIdx, curReasonIdx, segTypes, description, imgs, isRefundReason, refundReasonIndex, isSameReason } = this.state
+    // const segTypeVals = segTypes.map(t => t.value)
 
     return (
       <View className='page-trade-refund'>
-        <View className='refund-info'>
-          <View className='refund-info__num'>
-            <Text className='refund-info__text'>商品数量：</Text>
-            <Text className='refund-info__text text-primary'>3</Text>
-          </View>
-          <View className='refund-info__num'>
-            <Text className='refund-info__text'>退款金额：</Text>
-            <View>
-              <Text className='refund-info__text text-primary'>300</Text>
-              <Text className='refund-info__text'>(含发货邮费￥300)</Text>
-            </View>
-          </View>
-        </View>
+        {/*<View className='trade-detail-goods'>
+          <DetailItem
+            info={info}
+          />
+        </View>*/}
+        {/*<View className='refund-info'>*/}
+          {/*<View className='refund-info__num'>*/}
+            {/*<Text className='refund-info__text'>商品数量：</Text>*/}
+            {/*<Text className='refund-info__text text-primary'>3</Text>*/}
+          {/*</View>*/}
+          {/*<View className='refund-info__num'>*/}
+            {/*<Text className='refund-info__text'>退款金额：</Text>*/}
+            {/*<View>*/}
+              {/*<Text className='refund-info__text text-primary'>300</Text>*/}
+              {/*<Text className='refund-info__text'>(含发货邮费￥300)</Text>*/}
+            {/*</View>*/}
+          {/*</View>*/}
+        {/*</View>*/}
 
         <SpCell title='退款原因' isLink onClick={this.handleClickReason.bind(this)} value='请选择' />
         <AtActionSheet
@@ -208,26 +223,22 @@ export default class TradeRefund extends Component {
           cancelText='关闭'
           title='退款原因'
         >
-          <AtActionSheetItem>
-            <View className='refund-reason__item'>
-              <Text>多拍/拍错/不想要</Text>
-              {
-                isRefundReason
-                  ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>
-                  : <Text className='in-icon in-icon-check default__icon'> </Text>
-              }
-            </View>
-          </AtActionSheetItem>
-          <AtActionSheetItem>
-            <View className='refund-reason__item'>
-              <Text>缺货</Text>
-              {
-                isRefundReason
-                  ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>
-                  : <Text className='in-icon in-icon-check default__icon'> </Text>
-              }
-            </View>
-          </AtActionSheetItem>
+          {
+            reason.map((item, index) => {
+              return(
+                <AtActionSheetItem key={index} onClick={this.handleClickSheet.bind(this, index)}>
+                  <View className='refund-reason__item'>
+                    <Text>{item}</Text>
+                    {
+                      refundReasonIndex === index && isSameReason
+                        ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>
+                        : <Text className='in-icon in-icon-check default__icon'> </Text>
+                    }
+                  </View>
+                </AtActionSheetItem>
+              )
+            })
+          }
         </AtActionSheet>
 
         <View className='refund-describe'>

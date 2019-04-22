@@ -154,9 +154,9 @@ export default class TradeDetail extends Component {
 
   render () {
     const { info } = this.state
-    // if (!info) {
-    //   return <Loading></Loading>
-    // }
+    if (!info) {
+      return <Loading></Loading>
+    }
 
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
@@ -177,11 +177,13 @@ export default class TradeDetail extends Component {
                 <Text className='delivery-infos__text'>
                   { info.status === 'WAIT_SELLER_SEND_GOODS' ? '物流信息：正在审核订单' : null}
                   { info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '物流信息：正在派送中' : null }
-                  { info.status === 'WAIT_SELLER_SEND_GOODS' ? '订单已取消' : null }
-                  { info.status === 'WAIT_RATE' ? '订单已完成' : null }
+                  { info.status === 'TRADE_CLOSED' ? '订单已取消' : null }
+                  { info.status === 'TRADE_SUCCESS' ? '物流单号：22222' : null }
                 </Text>
               </View>
-              <Text className='delivery-infos__text'>2019-04-30 11:30:21</Text>
+              {
+                info.status !== 'TRADE_SUCCESS' ? <Text className='delivery-infos__text'>2019-04-30 11:30:21</Text> : null
+              }
             </View>
           </View>
         </View>
@@ -233,7 +235,7 @@ export default class TradeDetail extends Component {
           </View>
         }
         {
-          info.status === 'WAIT_RATE' && <View className='trade-detail__footer'>
+          info.status === 'TRADE_SUCCESS' && <View className='trade-detail__footer'>
             <Text className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'>联系客服</Text>
             {/*<Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickAfterSale.bind(this)}>申请售后</Text>*/}
           </View>

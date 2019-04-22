@@ -1,13 +1,90 @@
 {
-  "miniprogramRoot": "./",
-  "projectname": "mshop-taro",
-  "description": "taro app for bbc",
-  "appid": "wxfaadceab4f782c35",
-  "setting": {
-    "urlCheck": false,
-    "es6": false,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram"
+	"projectname": "mshop-taro",
+	"description": "taro app for bbc",
+	"appid": "wxfaadceab4f782c35",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false
+	},
+	"compileType": "miniprogram",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 7,
+			"list": [
+				{
+					"id": -1,
+					"name": "会员中心",
+					"pathName": "pages/member/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商品详情",
+					"pathName": "pages/item/espier-detail",
+					"query": "id=123",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商品列表",
+					"pathName": "pages/item/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 3,
+					"name": "订单列表",
+					"pathName": "pages/trade/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/cart/espier-index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "种草",
+					"pathName": "pages/recommend/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "地址",
+					"pathName": "pages/member/address",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 7,
+					"name": "订单详情",
+					"pathName": "pages/trade/detail",
+					"query": "id=2668532000128945",
+					"scene": null
+				}
+			]
+		}
+	}
 }
