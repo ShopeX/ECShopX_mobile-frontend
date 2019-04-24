@@ -87,42 +87,21 @@ export default class TradeRefund extends Component {
     })
   }
 
-  /*getUploadToken = (cb) => {
-    http.action(api.imageUpload.token, JSON.parse(JSON.stringify(this.tokenParams))).then(res => {
-      if(res.data.data) {
-        this.qiniuOptions = {
-          region: res.data.data.region, // 华东区
-          uptoken: res.data.data.token,
-          domain: res.data.data.domain,
-          key: res.data.data.key,
-          shouldUseQiniuFileName: false,
-        };
-        qiniuUploader.init(this.qiniuOptions);
-        cb&&cb();
-      } else {
-        wx.showModal({
-          content: res.data.error.message ,
-          showCancel: false
-        })
-        return
-      }
-      this.$apply()
-    })
-  }*/
+  uploadURLFromRegionCode = (code) => {
+    let uploadURL = null;
+    switch(code) {
+      case 'z0': uploadURL = 'https://up.qiniup.com'; break;
+      case 'z1': uploadURL = 'https://up-z1.qiniup.com'; break;
+      case 'z2': uploadURL = 'https://up-z2.qiniup.com'; break;
+      case 'na0': uploadURL = 'https://up-na0.qiniup.com'; break;
+      case 'as0': uploadURL = 'https://up-as0.qiniup.com'; break;
+      default: console.error('please make the region is with one of [z0, z1, z2, na0, as0]');
+    }
+    return uploadURL;
+  }
+
 
   handleImageChange = async (data, type) => {
-
-    /*Taro.chooseImage({
-      count: 3,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success(res) {
-        // tempFilePath可以作为img标签的src属性显示图片
-        const tempFilePaths = res.tempFilePaths
-        // data.url = tempFilePaths
-        console.log(data, tempFilePaths, 99)
-      }
-    })*/
 
     if (type === 'remove') {
       console.log(222)
@@ -137,44 +116,6 @@ export default class TradeRefund extends Component {
       S.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 3)
-    /*let promises = []
-
-    for (let item of imgFiles) {
-      console.log(item, 143)
-      const promise = new Promise(async (resolve, reject) => {
-        if (!item.file) {
-          resolve(item)
-        } else {
-          const filename = item.url.split('//tmp')[1]
-          const { region, token, key, domain } = await req.get('/espier/image_upload_token', {
-            filesystem: 'qiniu',
-            filetype: 'aftersales',
-            filename
-          })
-
-          const query = {
-            region, // 华东区
-            uptoken: token,
-            domain,
-            key,
-            shouldUseQiniuFileName: false,
-          }
-
-          qiniuUploader.upload(item.url, (res) => {
-            resolve({
-              url: res.imageURL
-            })
-          }, '', query)
-        }
-      })
-      promises.push(promise)
-    }
-    const results = await Promise.all(promises)
-    log.debug('[qiniu uploaded] results: ', promises, results)
-
-    this.setState({
-      imgs: results
-    })*/
 
     let promises = []
 
@@ -189,23 +130,24 @@ export default class TradeRefund extends Component {
             filetype: 'aftersales',
             filename
           })
+          let uploadUrl = this.uploadURLFromRegionCode(region)
           if (process.env.TARO_ENV === 'weapp') {
-            const query = {
-              region,
-              uptoken: token,
-              domain,
-              key,
-              shouldUseQiniuFileName: false,
-            }
-            try {
-              qiniuUploader.upload(item.url, (res) => {
+            Taro.uploadFile({
+              url: uploadUrl,
+              filePath: item.url,
+              name: 'file',
+              formData:{
+                'token': token,
+                'key': key
+              },
+              success: res => {
+                let imgData = JSON.parse(res.data)
                 resolve({
-                  url: res.imageURL
+                  url: `${domain}/${imgData.key}`
                 })
-              }, '', query)
-            } catch (e) {
-              console.log(e)
-            }
+              },
+              fail: error => reject(error)
+            })
           } else {
             let observable
             try {
@@ -290,7 +232,6 @@ export default class TradeRefund extends Component {
   render () {
     const { reason, curSegIdx, curReasonIdx, segTypes, description, imgs, isRefundReason, refundReasonIndex, isSameReason } = this.state
     // const segTypeVals = segTypes.map(t => t.value)
-    console.log(imgs, 319)
     return (
       <View className='page-trade-refund'>
         {/*<View className='trade-detail-goods'>

@@ -45,7 +45,6 @@ export default class DetailItem extends Component {
 
   render () {
     const { customHeader, customFooter, noHeader, onClick, info, showActions } = this.props
-    console.log(info, 40)
     return (
       <View className='detail-item'>
         {
