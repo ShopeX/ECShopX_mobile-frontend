@@ -42,6 +42,7 @@ export default class CouponItem extends Component {
         {
           isShowCheckout && info.status === '2' && <View className='coupon-item__check' onClick={this.handleClickChecked.bind(this, info.id)}>
             {
+
               isChoosed === info.id && isItemChecked
                 ? <Text className='in-icon in-icon-check coupon-item__checked'> </Text>
                 : <Text className='coupon-item__unchecked'> </Text>

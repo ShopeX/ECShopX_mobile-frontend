@@ -29,62 +29,17 @@ export default class AddressChoose extends Component {
     super(props)
 
     this.state = {
-      address: {},
     }
   }
 
-  // componentDidMount () {
-  //   this.fetch(() => this.changeSelection())
-  // }
-  //
-  // // componentDidShow() {
-  // //   this.fetch()
-  // // }
-  //
-  // async fetch (cb) {
-  //   Taro.showLoading({
-  //     mask: true
-  //   })
-  //   const { list } = await api.member.addressList()
-  //   Taro.hideLoading()
-  //
-  //   this.setState({
-  //     list
-  //   }, () => {
-  //     cb && cb(list)
-  //   })
-  // }
-  //
-  // changeSelection (params = {}) {
-  //   const { list } = this.state
-  //   // if (list.length === 0) {
-  //   //   this.props.onChange(null)
-  //   //   return
-  //   // }
-  //   const { address_id } = params
-  //   let address = find(list, addr => address_id ? address_id === addr.address_id : addr.is_def > 0) || list[0] || null
-  //   // console.log(address, 66)
-  //   // if (!params || !params.address_id) {
-  //   //   // list.filter(item => !this.state.selection.has(item.item_id))
-  //   //   const address = list.filter(item => item.is_def === true ? item : null)
-  //   //   console.log(address, 53)
-  //   //   this.props.onChange(address)
-  //   //   return
-  //   // }
-  //   log.debug('[address picker] change selection: ', address)
-  //   this.props.onAddressChoose(address)
-  //   // this.props.onChange(address)
-  // }
-
   clickTo = (choose) => {
     Taro.navigateTo({
-      url: `/pages/member/address?paths=${choose}`
+      url: `/pages/member/address?isPicker=${choose}`
     })
   }
 
   render () {
-    const { address, list } = this.state
-    const { isAddress, defaultAddress } = this.props
+    const { isAddress } = this.props
 
     return (
       <View className='address-picker'>
@@ -94,22 +49,29 @@ export default class AddressChoose extends Component {
         >
           <SpCell
             isLink
-            icon='map-pin'
+            // icon='map-pin'
           >
             {
               isAddress
-                ? <View className='address-info__bd'>
-                    <Text className='address-info__receiver'>
-                      收货人：{isAddress.name} {isAddress.mobile}
-                    </Text>
-                    <Text className='address-info__addr'>
-                      收货地址：{isAddress.province}{isAddress.state}{isAddress.district}{isAddress.address}
-                    </Text>
+                ? <View className='address-picker__bd'>
+                    <View className='address-receive'>
+                      <Text>收货地址：</Text>
+                      <View className='info-trade'>
+                        <View className='user-info-trade'>
+                          <Text>{isAddress.name}</Text>
+                          <Text>{isAddress.mobile}</Text>
+                        </View>
+                        <Text className='address-detail'>{isAddress.province}{isAddress.state}{isAddress.district}{isAddress.address}</Text>
+                      </View>
+                    </View>
                   </View>
                 : <View className='address-info__bd'>请选择收货地址</View>
             }
-
           </SpCell>
+          <View className='other-address'>
+            <Text className='in-icon in-icon-xinzeng icon-add'> </Text>
+            <Text>使用其他地址</Text>
+          </View>
         </View>
       </View>
     )

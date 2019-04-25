@@ -40,4 +40,41 @@
       text-align: center;
     }
   }
+  // choose-address
+  &__bd {
+    width: 100%;
+    box-sizing: border-box;
+    .address-receive {
+      display: flex;
+      justify-content: flex-start;
+      color: #555555;
+      font-size: 22px;
+      margin-right: 9px;
+    }
+    .info-trade {
+      flex: 1;
+    }
+    .user-info-trade {
+      display: flex;
+      justify-content: space-between;
+      font-size: 22px;
+      line-height: 36px;
+    }
+    .address-detail {
+      font-size: 22px;
+      color: #999999;
+    }
+  }
+  .other-address {
+    background: #ffffff;
+    border-top: 1PX solid #ececec;
+    padding: 28px 30px 21px;
+    font-size: 24px;
+    color: #555555;
+    .icon-add {
+      color: #555555;
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
 }

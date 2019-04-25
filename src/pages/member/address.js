@@ -1,12 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 // import AddressList from '@/components/new-address/address'
+import { connect } from "@tarojs/redux";
 import { SpToast } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 
 import './address.scss'
-
+@connect(( { address } ) => ({
+  defaultAddress: address.defaultAddress,
+}), (dispatch) => ({
+  onAddressChoose: (defaultAddress) => dispatch({ type: 'address/choose', payload: defaultAddress }),
+}))
 export default class AddressIndex extends Component {
   constructor (props) {
     super(props)
@@ -45,7 +50,7 @@ export default class AddressIndex extends Component {
     })
   }
 
-  handleClickChecked = (index) => {
+  handleClickChecked = (index, item) => {
     if(index === this.state.ItemIndex) {
       this.setState({
         isItemChecked: !this.state.isItemChecked,
@@ -57,6 +62,10 @@ export default class AddressIndex extends Component {
         ItemIndex: index
       })
     }
+    this.props.onAddressChoose(item)
+    setTimeout(()=>{
+      Taro.navigateBack()
+    }, 700)
   }
 
   handleChangeDefault = async (item) => {
@@ -107,7 +116,7 @@ export default class AddressIndex extends Component {
               return (
                 <View key={index} className='address-item'>
                   {
-                    isChoose && <View className='address-item__check' onClick={this.handleClickChecked.bind(this, index)}>
+                    isChoose && <View className='address-item__check' onClick={this.handleClickChecked.bind(this, index, item)}>
                       {
                         index === ItemIndex && isItemChecked
                           ? <Text className='in-icon in-icon-check address-item__checked'> </Text>
