@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtDivider, AtCountdown } from 'taro-ui'
-import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar } from '@/components'
+import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
 import { styleNames, log, calcTimer } from '@/utils'
@@ -40,6 +40,8 @@ export default class Detail extends Component {
       startSecKill: true,
       hasStock: true,
       curTabIdx: 0,
+      showBuyPanel: false,
+      buyPanelType: null,
       detailTabs: [
         { title: '商品详情' },
         { title: '商品参数' },
@@ -70,8 +72,8 @@ export default class Detail extends Component {
   }
 
   async fetch () {
-    const { id } = this.$router.params
-    const info = await api.item.detail(id, { distributor_id: 16 })
+    const { id, demo } = this.$router.params
+    const info = await api.item.detail(id, { distributor_id: 16, demo })
     const { intro: desc } = info
 
     let marketing = 'normal'
@@ -113,7 +115,9 @@ export default class Detail extends Component {
       info,
       desc,
       marketing,
-      timer
+      timer,
+      hasStock,
+      startSecKill
     })
     log.debug('fetch: done', info)
   }
@@ -131,13 +135,20 @@ export default class Detail extends Component {
         return
       }
 
-
       if (!info.is_fav) {
         await api.member.addFav(info.item_id)
         this.props.onAddFav(info)
+        Taro.showToast({
+          title: '已加入收藏',
+          icon: 'none'
+        })
       } else {
         await api.member.delFav(info.item_id)
         this.props.onDelFav(info)
+        Taro.showToast({
+          title: '已移出收藏',
+          icon: 'none'
+        })
       }
 
       info.is_fav = !info.is_fav
@@ -147,19 +158,38 @@ export default class Detail extends Component {
     }
   }
 
-  handleBuyClick = async (type) => {
+  handleBuyBarClick = (type) => {
+    if (!S.getAuthToken()) {
+      Taro.showToast({
+        title: '请先登录再购买',
+        icon: 'none'
+      })
+
+      setTimeout(() => {
+        S.login(this)
+      }, 2000)
+
+      return
+    }
+
+    this.setState({
+      showBuyPanel: true,
+      buyPanelType: type
+    })
+  }
+
+  handleBuyClick = async (type, skuInfo, num) => {
     const { marketing, info } = this.state
     let url = `/pages/cart/espier-checkout`
 
-    const hasToken = !!S.getAuthToken()
-    if (!hasToken) {
-      return S.login(this, false)
-    }
+    this.setState({
+      showBuyPanel: false
+    })
 
     if (type === 'cart') {
       url = `/pages/cart/espier-index`
 
-      await api.cart.add(this.state.info, 1, true)
+      await api.cart.add(skuInfo, num, true)
       Taro.showToast({
         title: '成功加入购物车',
         icon: 'success'
@@ -194,7 +224,7 @@ export default class Detail extends Component {
 
   render () {
     const { info, windowWidth, desc, scrollTop, showBackToTop } = this.state
-    const { marketing, timer, isPromoter, startSecKill, hasStock, detailTabs, curTabIdx } = this.state
+    const { marketing, timer, isPromoter, startSecKill, hasStock, detailTabs, curTabIdx, showBuyPanel, buyPanelType } = this.state
 
     if (!info) {
       return (
@@ -361,8 +391,8 @@ export default class Detail extends Component {
               info={info}
               type={marketing}
               onFavItem={this.handleMenuClick.bind(this, 'fav')}
-              onClickAddCart={this.handleBuyClick.bind(this, 'cart')}
-              onClickFastBuy={this.handleBuyClick.bind(this, 'fastbuy')}
+              onClickAddCart={this.handleBuyBarClick.bind(this, 'cart')}
+              onClickFastBuy={this.handleBuyBarClick.bind(this, 'fastbuy')}
             />)
           :
             (<GoodsBuyToolbar
@@ -381,6 +411,17 @@ export default class Detail extends Component {
                 }
               </View>
             </GoodsBuyToolbar>)
+        }
+
+        {
+          info && <GoodsBuyPanel
+            info={info}
+            type={buyPanelType}
+            isOpened={showBuyPanel}
+            onClose={() => this.setState({ showBuyPanel: false })}
+            onClickAddCart={this.handleBuyClick.bind(this, 'cart')}
+            onClickFastBuy={this.handleBuyClick.bind(this, 'fastbuy')}
+          />
         }
 
         <SpToast />

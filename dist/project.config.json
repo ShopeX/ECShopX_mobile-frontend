@@ -40,7 +40,7 @@
 					"id": 1,
 					"name": "商品详情",
 					"pathName": "pages/item/espier-detail",
-					"query": "id=577",
+					"query": "id=577&demo=1",
 					"scene": null
 				},
 				{
@@ -80,7 +80,6 @@
 				},
 				{
 					"id": -1,
-
 					"name": "地址",
 					"pathName": "pages/member/address",
 					"query": "",
