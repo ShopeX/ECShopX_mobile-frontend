@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote, NavBar } from '@/components'
+import { Loading, SpNote, NavBar, CouponItem } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
@@ -20,7 +20,8 @@ export default class Coupon extends Component {
         {title: '可用优惠券', status: '1'},
         {title: '过期和已使用', status: '2'}
       ],
-      list: []
+      list: [],
+      curId: null
     }
   }
 
@@ -55,6 +56,7 @@ export default class Coupon extends Component {
     }
     const { list, count: total } = await api.member.couponList(params)
     const nList = pickBy(list, {
+      id: 'id',
       status: 'status',
       reduce_cost: 'reduce_cost',
       least_cost: 'least_cost',
@@ -93,6 +95,12 @@ export default class Coupon extends Component {
     })
   }
 
+  /*handleClickChecked = (id) => {
+    this.setState({
+      curId: id
+    })
+  }*/
+
 
   render () {
     const { curTabIdx, tabList, list, page } = this.state
@@ -129,60 +137,12 @@ export default class Coupon extends Component {
         >
           <View className='coupon-list-ticket'>
             {
-              list.map((item, idx) => {
+              list.map(item => {
                 return (
-                  <View className='coupon-item' key={idx}>
-                    {/*<View className={classNames('coupon-item__name')}>*/}
-                      {/*<View className='coupon-item___number'>￥<Text className='coupon-item___number_text'>{item.reduce_cost/100}</Text></View>*/}
-                      {/*<View className='radius-view radius-left-top'> </View>*/}
-                      {/*<View className='radius-view radius-left-bottom'> </View>*/}
-                    {/*</View>*/}
-                    {
-                      item.card_type === 'cash'
-                        ? <View className={classNames('coupon-item__name', item.status === '2' ? 'coupon-item__name-not' : null)}>
-                            <View className='coupon-item___number'>￥<Text className='coupon-item___number_text'>{item.reduce_cost/100}</Text></View>
-                            <View className='coupon-item___info'>满{item.least_cost > 0 ? item.least_cost/100 : 0.01}可用</View>
-                            <View className='radius-view radius-left-top'> </View>
-                            <View className='radius-view radius-left-bottom'> </View>
-                          </View>
-                        : null
-                    }
-                    {
-                      item.card_type === 'gift'
-                        ? <View className={classNames('coupon-item__name', item.status === '2' ? 'coupon-item__name-not' : null)}>
-                            <View className='coupon-item___number'>兑换券</View>
-                            <View className='radius-view radius-left-top'> </View>
-                            <View className='radius-view radius-left-bottom'> </View>
-                          </View>
-                        : null
-                    }
-                    {
-                      item.card_type === 'discount'
-                        ? <View className={classNames('coupon-item__name', item.status === '2' ? 'coupon-item__name-not' : null)}>
-                            <View className='coupon-item___number'><Text className='coupon-item___number_text'>{(100-item.discount)/10}</Text>折</View>
-                            <View className='coupon-item___info'>满{item.least_cost > 0 ? item.least_cost/100 : 0.01}可用</View>
-                            <View className='radius-view radius-left-top'> </View>
-                            <View className='radius-view radius-left-bottom'> </View>
-                          </View>
-                        : null
-                    }
-                    <View className='coupon-item__content'>
-                      <View className='coupon-item___description'>
-                        <Text>{item.title}</Text>
-                        {
-                          item.tagClass === 'used'
-                            ? <View className='coupon-item___used'>
-                              <Text className='sp-icon sp-icon-yishiyong icon-used'></Text>
-                            </View>
-                            : null
-                        }
-                      </View>
-                      <View className='coupon-item___time'><Text>{item.begin_date} ~ {item.end_date}</Text></View>
-                      <View className='radius-view radius-right-top'> </View>
-                      <View className='radius-view radius-right-bottom'> </View>
-                    </View>
-
-                  </View>
+                  <CouponItem
+                    info={item}
+                    key={item.id}
+                  />
                 )
               })
             }

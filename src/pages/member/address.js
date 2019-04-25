@@ -1,12 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 // import AddressList from '@/components/new-address/address'
-import { SpToast } from '@/components'
+import { connect } from "@tarojs/redux";
+import { SpToast, SpCell } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 
 import './address.scss'
-
+@connect(( { address } ) => ({
+  defaultAddress: address.defaultAddress,
+}), (dispatch) => ({
+  onAddressChoose: (defaultAddress) => dispatch({ type: 'address/choose', payload: defaultAddress }),
+}))
 export default class AddressIndex extends Component {
   constructor (props) {
     super(props)
@@ -45,11 +50,22 @@ export default class AddressIndex extends Component {
     })
   }
 
-  handleClickChecked = (index) => {
-    this.setState({
-      isItemChecked: !this.state.isItemChecked,
-      ItemIndex: index
-    })
+  handleClickChecked = (index, item) => {
+    if(index === this.state.ItemIndex) {
+      this.setState({
+        isItemChecked: !this.state.isItemChecked,
+        ItemIndex: index
+      })
+    } else {
+      this.setState({
+        isItemChecked: true,
+        ItemIndex: index
+      })
+    }
+    this.props.onAddressChoose(item)
+    setTimeout(()=>{
+      Taro.navigateBack()
+    }, 700)
   }
 
   handleChangeDefault = async (item) => {
@@ -87,21 +103,37 @@ export default class AddressIndex extends Component {
     }, 700)
   }
 
-  render () {
-    const { ItemIndex, isItemChecked } = this.state
+  wxAddress = () => {
+    Taro.navigateTo({
+      url: `/pages/member/edit-address?isWechatAddress=true`
+    })
+  }
 
+  render () {
+    const { ItemIndex, isItemChecked, isChoose } = this.state
     return (
       <View className='page-address-index'>
         {/*<AddressList*/}
           {/*paths={this.$router.params.paths}*/}
         {/*/>*/}
+        {
+          process.env.TARO_ENV === 'weapp'
+            ? <SpCell
+                isLink
+                iconPrefix='sp-icon'
+                icon='weixin'
+                title='获取微信收货地址'
+                onClick={this.wxAddress.bind(this)}
+              />
+            : null
+        }
         <View className='member-address-list'>
           {
             list.map((item, index) => {
               return (
                 <View key={index} className='address-item'>
                   {
-                    isChoose && <View className='address-item__check' onClick={this.handleClickChecked.bind(this, index)}>
+                    isChoose && <View className='address-item__check' onClick={this.handleClickChecked.bind(this, index, item)}>
                       {
                         index === ItemIndex && isItemChecked
                           ? <Text className='in-icon in-icon-check address-item__checked'> </Text>

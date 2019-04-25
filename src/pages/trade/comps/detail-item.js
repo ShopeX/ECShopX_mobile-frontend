@@ -31,14 +31,20 @@ export default class DetailItem extends Component {
   handleClickAfterSale= (item) => {
     const { info: { tid: order_id } } = this.props
     console.log(item, order_id, 33)
-    Taro.navigateTo({
-      url: `/pages/trade/refund?order_id=${order_id}&item_id=${item.item_id}`
-    })
+    if (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') {
+      Taro.navigateTo({
+        url: `/pages/trade/refund?order_id=${order_id}&item_id=${item.item_id}`
+      })
+    } else {
+      Taro.navigateTo({
+        url: `/pages/trade/refund-detail?order_id=${order_id}&item_id=${item.item_id}`
+      })
+    }
+
   }
 
   render () {
     const { customHeader, customFooter, noHeader, onClick, info, showActions } = this.props
-    console.log(info, 40)
     return (
       <View className='detail-item'>
         {
@@ -49,13 +55,17 @@ export default class DetailItem extends Component {
                 key={idx}
                 info={item}
               />
-              {!customFooter && info.status === 'TRADE_SUCCESS' && <View className='order-item__ft'>
+              {!customFooter && info.status === 'TRADE_SUCCESS'  && <View className='order-item__ft'>
                 <AtButton
                   circle
                   type='primary'
                   size='small'
                   onClick={this.handleClickAfterSale.bind(this, item)}
-                >申请售后</AtButton>
+                >
+                  {
+                    (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
+                  }
+                </AtButton>
               </View>}
             </View>
 

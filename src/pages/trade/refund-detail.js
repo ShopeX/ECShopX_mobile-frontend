@@ -18,7 +18,7 @@ export default class TradeRefundDetail extends Component {
   }
 
   componentDidMount () {
-    // this.fetch()
+    this.fetch()
   }
 
   async fetch () {
@@ -91,9 +91,9 @@ export default class TradeRefundDetail extends Component {
         <View className='refund-detail'>
           <Text className='refund-detail__title'>您已成功发起退款申请，请耐心等待商家处理</Text>
           <Text className='refund-detail__descr'>说明</Text>
-          <Text className='refund-detail__btn'>修改申请</Text>
+          <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'edit')}>修改申请</Text>
         </View>
-        <View className='refund-info'>
+        {/*<View className='refund-info'>
           <View className='refund-info__num'>
             <Text className='refund-info__text'>商品数量：</Text>
             <Text className='refund-info__text text-primary'>3</Text>
@@ -105,7 +105,7 @@ export default class TradeRefundDetail extends Component {
               <Text className='refund-info__text'>(含发货邮费￥300)</Text>
             </View>
           </View>
-        </View>
+        </View>*/}
         <View className='refund-detail-info'>
           <View className='info-name'>订单号：<Text className='info-value'>12312312341</Text></View>
           <View className='info-name'>下单时间：<Text className='info-value'>2018-09-06</Text></View>

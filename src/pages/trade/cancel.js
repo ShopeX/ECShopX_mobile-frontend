@@ -95,12 +95,8 @@ export default class TradeCancel extends Component {
           )}
         </View>
 
-        <View className='toolbar toolbar-inline'>
-          <AtButton
-            circle
-            type='primary'
-            onClick={this.handleSubmit}
-          >确定取消</AtButton>
+        <View className='trade-cancel-footer'>
+          <View onClick={this.handleSubmit} className='toolbar_btn'> 确定取消</View>
         </View>
 
         <SpToast />

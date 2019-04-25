@@ -15,27 +15,11 @@ export default class Series extends Component {
     super(props)
 
     this.state = {
-      list: null,
+      // list: null,
       pluralType: true,
       imgType: true,
       currentIndex: 0,
     }
-  }
-
-  componentDidMount () {
-    this.fetch()
-  }
-
-  async fetch () {
-    const res = await api.category.get()
-    const nList = pickBy(res, {
-      category_name: 'category_name',
-      image_url: 'image_url',
-      children: 'children'
-    })
-    this.setState({
-      list: nList
-    })
   }
 
   handleClickCategoryNav = (gIndex) => {
@@ -54,12 +38,13 @@ export default class Series extends Component {
   }
 
   render () {
-    const { list, pluralType, imgType, currentIndex } = this.state
+    const { info } = this.props
+    const { pluralType, imgType, currentIndex } = this.state
     let items
-    if(list) {
-      items = list[currentIndex].children
+    if(info) {
+      items = info[currentIndex].children
     }
-    if (!list) {
+    if (!info) {
       return <Loading />
     }
 
@@ -71,7 +56,7 @@ export default class Series extends Component {
         >
           <View className='category-nav'>
             {
-              list.map((item, index) =>
+              info.map((item, index) =>
                 <View
                   className={classNames('category-nav__content', currentIndex === index ? 'category-nav__content-checked' : null)}
                   key={index}

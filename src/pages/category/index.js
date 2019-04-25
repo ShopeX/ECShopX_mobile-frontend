@@ -66,14 +66,7 @@ export default class Category extends Component {
   }
 
   render () {
-    const { curTabIdx, tabList, list, pluralType, imgType, currentIndex } = this.state
-    let items
-    if(list) {
-      items = list[currentIndex].children
-    }
-    if (!list) {
-      return <Loading />
-    }
+    const { curTabIdx, tabList, list } = this.state
 
     return (
       <View className='page-category-index'>
@@ -98,7 +91,9 @@ export default class Category extends Component {
           }
         </AtTabs>
         <View className='category-comps'>
-          <Series />
+          <Series
+            info={list}
+          />
         </View>
         <TabBar
           current={1}

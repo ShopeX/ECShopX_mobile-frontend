@@ -55,7 +55,6 @@ export default class TradeDetail extends Component {
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
       post_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
       payment: ({ total_fee }) => (+total_fee / 100).toFixed(2),
-
       pay_type: 'pay_type',
       point: 'point',
       status: ({ order_status }) => resolveOrderStatus(order_status),
@@ -94,6 +93,13 @@ export default class TradeDetail extends Component {
 
   async handleClickBtn (type) {
     const { info } = this.state
+
+    if (type === 'home') {
+      Taro.redirectTo({
+        url: '/pages/home/index'
+      })
+      return
+    }
 
     if (type === 'pay') {
       Taro.navigateTo({
@@ -152,6 +158,10 @@ export default class TradeDetail extends Component {
   //   })
   // }
 
+  handleClickToDelivery = () => {
+
+  }
+
   render () {
     const { info } = this.state
     if (!info) {
@@ -163,32 +173,39 @@ export default class TradeDetail extends Component {
 
     return (
       <View className='trade-detail'>
+        <NavBar
+          title='订单详情'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         {
           info.status === 'WAIT_BUYER_PAY' && <View className={classNames('trade-detail-header', `trade-detail-header__waitpay`)}>
             <View>该订单将为您保留<Text className='count-down'>15:00</Text>分钟</View>
           </View>
         }
-        <View className={classNames('trade-detail-header')}>
-          <View className='trade-detail-waitdeliver'>
-            <View>1</View>
-            <View className='delivery-infos'>
-              <View className='delivery-infos__status'>
-                <Text className='delivery-infos__text text-status'>{info.order_status_msg}</Text>
-                <Text className='delivery-infos__text'>
-                  { info.status === 'WAIT_SELLER_SEND_GOODS' ? '物流信息：正在审核订单' : null}
-                  { info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '物流信息：正在派送中' : null }
-                  { info.status === 'TRADE_CLOSED' ? '订单已取消' : null }
-                  { info.status === 'TRADE_SUCCESS' ? '物流单号：22222' : null }
-                </Text>
+        {
+          info.status !== 'WAIT_BUYER_PAY' && <View className={classNames('trade-detail-header')}>
+            <View className='trade-detail-waitdeliver'>
+              <View>1</View>
+              <View className='delivery-infos'>
+                <View className='delivery-infos__status'>
+                  <Text className='delivery-infos__text text-status'>{info.order_status_msg}</Text>
+                  <Text className='delivery-infos__text'>
+                    { info.status === 'WAIT_SELLER_SEND_GOODS' ? '物流信息：正在审核订单' : null}
+                    { info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '物流信息：正在派送中' : null }
+                    { info.status === 'TRADE_CLOSED' ? '订单已取消' : null }
+                    { info.status === 'TRADE_SUCCESS' ? `物流单号：${info.delivery_code}` : null }
+                  </Text>
+                </View>
+                {
+                  info.status !== 'TRADE_SUCCESS' ? <Text className='delivery-infos__text'>2019-04-30 11:30:21</Text> : null
+                }
               </View>
-              {
-                info.status !== 'TRADE_SUCCESS' ? <Text className='delivery-infos__text'>2019-04-30 11:30:21</Text> : null
-              }
             </View>
           </View>
-        </View>
+        }
 
-        <View className='trade-detail-address'>
+        <View className='trade-detail-address' onClick={this.handleClickDelivery.bind(this)}>
           <View className='address-receive'>
             <Text>收货地址：</Text>
             <View className='info-trade'>
@@ -218,14 +235,14 @@ export default class TradeDetail extends Component {
         </View>
         {
           info.status === 'WAIT_BUYER_PAY' && <View className='trade-detail__footer'>
-            <Text className='trade-detail__footer__btn'>取消订单</Text>
+            <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
             <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'pay')}>立即支付</Text>
           </View>
         }
         {
           info.status === 'WAIT_SELLER_SEND_GOODS' && <View className='trade-detail__footer'>
-            <Text className='trade-detail__footer__btn'>取消订单</Text>
-            <Text className='trade-detail__footer__btn trade-detail__footer_active'>继续购物</Text>
+            <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
+            <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'home')}>继续购物</Text>
           </View>
         }
         {
@@ -237,7 +254,6 @@ export default class TradeDetail extends Component {
         {
           info.status === 'TRADE_SUCCESS' && <View className='trade-detail__footer'>
             <Text className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'>联系客服</Text>
-            {/*<Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickAfterSale.bind(this)}>申请售后</Text>*/}
           </View>
         }
 

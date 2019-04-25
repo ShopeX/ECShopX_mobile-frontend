@@ -1,7 +1,15 @@
 @import "../../style/imports";
-@import "./detail";
-.trade-detail {
-  padding: 0;
+.delivery-detail {
+  &__status {
+    background: $color-brand-primary;
+    height: 150px;
+    line-height: 150px;
+    box-sizing: border-box;
+    padding-left: 30px;
+    &-text {
+      color: #ffffff;
+    }
+  }
 }
 .delivery-info {
   padding: 30px;

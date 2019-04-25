@@ -18,7 +18,7 @@ export default class TradeDetail extends Component {
   }
 
   componentDidMount () {
-    this.fetch()
+    // this.fetch()
   }
 
   async fetch () {
@@ -35,32 +35,33 @@ export default class TradeDetail extends Component {
   }
 
   render () {
-    const { list } = this.state
-    if (!list) {
-      return <Loading></Loading>
-    }
+    // const { list } = this.state
+    // if (!list) {
+    //   return <Loading></Loading>
+    // }
+    let lists = [
+      { title: '刷牙洗脸' },
+      { title: '吃早餐' },
+      { title: '上班' },
+      { title: '睡觉' }
+    ]
 
     return (
-      <View className='trade-detail'>
+      <View className='delivery-detail'>
         <NavBar
           title='物流信息'
           leftIconType='chevron-left'
           fixed='true'
         />
-        <View className='trade-detail__status'>
-          <Text className='trade-detail__status-text'>物流信息</Text>
-          <Image
-            mode='aspectFill'
-            className='trade-detail__status-ico'
-            src='/assets/imgs/trade/ico_wait_buyer_confirm_goods.png'
-          />
+        <View className='delivery-detail__status'>
+          <Text className='delivery-detail__status-text'>物流信息</Text>
         </View>
 
         <View className='delivery-info'>
           {
-            list.length === 0
+            lists.length === 0
               ? <SpNote img='plane.png'>目前暂无物流信息~</SpNote>
-              : <AtTimeline items={list} ></AtTimeline>
+              : <AtTimeline items={lists} ></AtTimeline>
 
           }
 

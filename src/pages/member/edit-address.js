@@ -26,6 +26,7 @@ export default class AddressIndex extends Component {
   }
 
   async fetch () {
+    Taro.showLoading()
     const { list } = await api.member.addressList()
     this.setState({
       listLength: list.length
@@ -64,13 +65,9 @@ export default class AddressIndex extends Component {
     })
     this.setState({
       areaList: [arrProvice, arrCity, arrCounty],
-    },()=>{
-      // this.setState({
-      //   multiIndex: [0, 0, 0]
-      // })
     })
 
-    if (this.props.address === 'wx'){
+    if (this.$router.params.isWechatAddress){
       const res = await Taro.chooseAddress()
       const query = {
         province: res.provinceName,
@@ -86,6 +83,7 @@ export default class AddressIndex extends Component {
         info: query
       })
     }
+    Taro.hideLoading()
   }
 
   // 选定开户地区
@@ -266,7 +264,7 @@ export default class AddressIndex extends Component {
               <View className='picker'>
                 <View className='picker__title'>所在区域</View>
                 {
-                  info.address_id
+                  info.address_id || (this.$router.params.isWechatAddress && info.province)
                     ? `${info.province}${info.city}${info.county}`
                     : <View>
                       {

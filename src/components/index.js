@@ -25,4 +25,6 @@ export { default as AddressList } from './new-address/address'
 export { default as EditAddress } from './new-address/edit-address'
 export { default as AddressChoose } from './new-address/choose-address'
 
+export { default as CouponItem } from './coupon-item'
+
 export default {}

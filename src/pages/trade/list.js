@@ -46,7 +46,7 @@ export default class TradeList extends Component {
   }
 
   onPullDownRefresh () {
-    debugger
+    // debugger
     // this.resetPage(() => {
     //   this.nextPage()
     // })

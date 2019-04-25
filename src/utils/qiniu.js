@@ -1,155 +1,81 @@
-// created by gpake
+import Taro from "@tarojs/taro";
+import req from '@/api/req'
+import * as qiniu from 'qiniu-js'
 
-var config = {
-    qiniuRegion: '',
-    qiniuImageURLPrefix: '',
-    qiniuUploadToken: '',
-    qiniuUploadTokenURL: '',
-    qiniuUploadTokenFunction: null,
-    qiniuShouldUseQiniuFileName: false
-}
+async function uploadImageFn (imgFiles, getUrl, curFilesystem, curFiletype) {
+  let promises = []
 
-// 在整个程序生命周期中，只需要 init 一次即可
-// 如果需要变更参数，再调用 init 即可
-function init(options) {
-    config = {
-        qiniuRegion: '',
-        qiniuImageURLPrefix: '',
-        qiniuUploadToken: '',
-        qiniuUploadTokenURL: '',
-        qiniuUploadTokenFunction: null,
-        qiniuShouldUseQiniuFileName: false
-    };
-    updateConfigWithOptions(options);
-}
-
-function updateConfigWithOptions(options) {
-    if (options.region) {
-        config.qiniuRegion = options.region;
-    } else {
-        console.error('qiniu uploader need your bucket region');
-    }
-    if (options.uptoken) {
-        config.qiniuUploadToken = options.uptoken;
-    } else if (options.uptokenURL) {
-        config.qiniuUploadTokenURL = options.uptokenURL;
-    } else if(options.uptokenFunc) {
-        config.qiniuUploadTokenFunction = options.uptokenFunc;
-    }
-    if (options.domain) {
-        config.qiniuImageURLPrefix = options.domain;
-    }
-    config.qiniuShouldUseQiniuFileName = options.shouldUseQiniuFileName
-}
-
-function upload(filePath, success, fail, options, progress, cancelTask) {
-    if (null == filePath) {
-        console.error('qiniu uploader need filePath to upload');
-        return;
-    }
-    if (options) {
-      updateConfigWithOptions(options);
-    }
-    if (config.qiniuUploadToken) {
-        doUpload(filePath, success, fail, options, progress, cancelTask);
-    } else if (config.qiniuUploadTokenURL) {
-        getQiniuToken(function() {
-            doUpload(filePath, success, fail, options, progress, cancelTask);
-        });
-    } else if (config.qiniuUploadTokenFunction) {
-        config.qiniuUploadToken = config.qiniuUploadTokenFunction();
-        if (null == config.qiniuUploadToken && config.qiniuUploadToken.length > 0) {
-            console.error('qiniu UploadTokenFunction result is null, please check the return value');
-            return
-        }
-        doUpload(filePath, success, fail, options, progress, cancelTask);
-    } else {
-        console.error('qiniu uploader need one of [uptoken, uptokenURL, uptokenFunc]');
-        return;
-    }
-}
-
-function doUpload(filePath, success, fail, options, progress, cancelTask) {
-    if (null == config.qiniuUploadToken && config.qiniuUploadToken.length > 0) {
-        console.error('qiniu UploadToken is null, please check the init config or networking');
-        return
-    }
-    var url = uploadURLFromRegionCode(config.qiniuRegion);
-    var fileName = filePath.split('//')[1];
-    if (options && options.key) {
-        fileName = options.key;
-    }
-    var formData = {
-        'token': config.qiniuUploadToken
-    };
-    if (!config.qiniuShouldUseQiniuFileName) {
-      formData['key'] = fileName
-    }
-    var uploadTask = wx.uploadFile({
-        url: url,
-        filePath: filePath,
-        name: 'file',
-        formData: formData,
-        success: function (res) {
-          var dataString = res.data
-          if(res.data.hasOwnProperty('type') && res.data.type === 'Buffer'){
-            dataString = String.fromCharCode.apply(null, res.data.data)
-          }
-          try {
-            var dataObject = JSON.parse(dataString);
-            //do something
-            var imageUrl = config.qiniuImageURLPrefix + '/' + dataObject.key;
-            dataObject.imageURL = imageUrl;
-            console.log(dataObject);
-            if (success) {
-              success(dataObject);
-            }
-          } catch(e) {
-            console.log('parse JSON failed, origin String is: ' + dataString)
-            if (fail) {
-              fail(e);
-            }
-          }
-        },
-        fail: function (error) {
-            console.error(error);
-            if (fail) {
-                fail(error);
-            }
-        }
-    })
-
-    uploadTask.onProgressUpdate((res) => {
-        progress && progress(res)
-    })
-
-    cancelTask && cancelTask(() => {
-        uploadTask.abort()
-    })
-}
-
-function getQiniuToken(callback) {
-  wx.request({
-    url: config.qiniuUploadTokenURL,
-    success: function (res) {
-      var token = res.data.uptoken;
-      if (token && token.length > 0) {
-        config.qiniuUploadToken = token;
-        if (callback) {
-            callback();
-        }
+  for (let item of imgFiles) {
+    const promise = new Promise(async (resolve, reject) => {
+      if (!item.file) {
+        resolve(item)
       } else {
-        console.error('qiniuUploader cannot get your token, please check the uptokenURL or server')
+        const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+        const { region, token, key, domain } = await req.get(getUrl, {
+          filesystem: curFilesystem,
+          filetype: curFiletype,
+          filename
+        })
+        let uploadUrl = uploadURLFromRegionCode(region)
+        if (process.env.TARO_ENV === 'weapp') {
+          Taro.uploadFile({
+            url: uploadUrl,
+            filePath: item.url,
+            name: 'file',
+            formData:{
+              'token': token,
+              'key': key
+            },
+            success: res => {
+              let imgData = JSON.parse(res.data)
+              resolve({
+                url: `${domain}/${imgData.key}`
+              })
+            },
+            fail: error => reject(error)
+          })
+        } else {
+          let observable
+          try {
+            const blobImg = await resolveBlobFromFile(item.url, item.file.type)
+            observable = qiniu.upload(blobImg, key, token, {}, {
+              region: qiniu.region[region]
+            })
+          } catch (e) {
+            console.log(e)
+          }
+
+          observable.subscribe({
+            next (res) {},
+            error (err) {
+              reject(err)
+            },
+            complete (res) {
+              resolve({
+                url: `${domain}/${res.key}`
+              })
+            }
+          })
+        }
+
       }
-    },
-    fail: function (error) {
-      console.error('qiniu UploadToken is null, please check the init config or networking: ' + error);
-    }
-  })
+    })
+    promises.push(promise)
+  }
+
+  let results = await Promise.all(promises)
+
+  return results
+}
+
+function resolveBlobFromFile (url, type) {
+  return fetch(url)
+    .then(res => res.blob())
+    .then(blob => blob.slice(0, blob.size, type))
 }
 
 function uploadURLFromRegionCode(code) {
-    var uploadURL = null;
+    let uploadURL = null;
     switch(code) {
         case 'z0': uploadURL = 'https://up.qiniup.com'; break;
         case 'z1': uploadURL = 'https://up-z1.qiniup.com'; break;
@@ -162,6 +88,5 @@ function uploadURLFromRegionCode(code) {
 }
 
 module.exports = {
-    init: init,
-    upload: upload,
+  uploadImageFn: uploadImageFn,
 }
