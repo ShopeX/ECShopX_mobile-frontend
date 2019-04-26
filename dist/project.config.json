@@ -10,6 +10,8 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -27,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 9,
 			"list": [
 				{
 					"id": -1,
@@ -90,6 +92,13 @@
 					"name": "订单详情",
 					"pathName": "pages/trade/detail",
 					"query": "id=2668532000128945",
+					"scene": null
+				},
+				{
+					"id": 9,
+					"name": "商品详情",
+					"pathName": "pages/item/espier-detail",
+					"query": "id=580",
 					"scene": null
 				}
 			]

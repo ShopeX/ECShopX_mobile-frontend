@@ -1,22 +1,20 @@
 import req from './req'
 
 export function get (params) {
-  // return req.get('/cart.get')
   return req.get('/cart', {
     shop_type: 'distributor',
     ...params
   })
 }
 
-export function getBasic (params) {
-  return req.get('/cart', {
+export function count (params) {
+  return req.get('/cartcount', {
     shop_type: 'distributor',
     ...params
   })
 }
 
 export function add (item, num = 1, isAccumulate = false) {
-  // return req.post('/cart.add', { sku_id, quantity })
   const { item_id } = item
   return req.post(`/cart`, {
     item_id,

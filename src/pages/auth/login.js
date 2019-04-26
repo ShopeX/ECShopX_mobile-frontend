@@ -119,7 +119,7 @@ export default class Login extends Component {
               title='手机号码'
               name='username'
               maxLength={11}
-              type='number'
+              type='tel'
               value={info.username}
               placeholder='请输入手机号码'
               onFocus={this.handleErrorToastClose}

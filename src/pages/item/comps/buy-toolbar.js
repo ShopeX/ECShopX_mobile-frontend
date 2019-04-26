@@ -1,15 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
 import { AtBadge } from 'taro-ui'
 import { navigateTo } from '@/utils'
-import { getTotalCount } from '@/store/cart'
 
 import './buy-toolbar.scss'
 
-@connect(({ cart }) => ({
-  cartTotalCount: getTotalCount(cart)
-}))
 export default class GoodsBuyToolbar extends Component {
   static options = {
     addGlobalClass: true
@@ -20,13 +15,13 @@ export default class GoodsBuyToolbar extends Component {
     onClickAddCart: () => {},
     onClickFastBuy: () => {},
     onFavItem: () => {},
+    cartCount: '',
     info: null
   }
 
-  navigateTo = navigateTo
-
   render () {
-    const { onClickAddCart, onClickFastBuy, cartTotalCount, type, info } = this.props
+    const { onClickAddCart, onClickFastBuy, cartCount, type, info } = this.props
+
     const fastBuyText = type === 'normal'
       ? '立即购买'
       : type === 'seckill'
@@ -43,15 +38,15 @@ export default class GoodsBuyToolbar extends Component {
           </View>
           {process.env.TARO_ENV === 'weapp' && (
             <Button className='goods-buy-toolbar__menu-item' openType='contact'>
-              <View className='in-icon in-icon-kefu2'></View>
+              <View className='in-icon in-icon-kefu'></View>
             </Button>
           )}
           <View
             className='goods-buy-toolbar__menu-item'
-            onClick={this.navigateTo.bind(this, '/pages/cart/espier-index')}
+            onClick={navigateTo.bind(this, '/pages/cart/espier-index')}
           >
             <AtBadge
-              value={cartTotalCount || null}
+              value={cartCount || null}
             >
               <View className='in-icon in-icon-cart'></View>
             </AtBadge>

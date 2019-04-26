@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Swiper, SwiperItem, Image } from '@tarojs/components'
+import { View, Text, ScrollView, Swiper, SwiperItem, Image, Video } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtDivider, AtCountdown } from 'taro-ui'
+import { AtCountdown } from 'taro-ui'
 import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
-import { styleNames, log, calcTimer } from '@/utils'
+import { log, calcTimer } from '@/utils'
 import S from '@/spx'
 import GoodsBuyToolbar from './comps/buy-toolbar'
 import ItemImg from './comps/item-img'
@@ -40,6 +40,7 @@ export default class Detail extends Component {
       startSecKill: true,
       hasStock: true,
       curTabIdx: 0,
+      cartCount: '',
       showBuyPanel: false,
       buyPanelType: null,
       detailTabs: [
@@ -53,6 +54,10 @@ export default class Detail extends Component {
   componentDidMount () {
     this.handleResize()
     this.fetch()
+  }
+
+  componentDidShow () {
+    this.fetchCartCount()
   }
 
   onShareAppMessage () {
@@ -71,9 +76,19 @@ export default class Detail extends Component {
     })
   }
 
+  async fetchCartCount () {
+    if (!S.getAuthToken()) return
+
+    const res = await api.cart.count()
+    this.setState({
+      cartCount: res.item_count
+    })
+  }
+
   async fetch () {
     const { id, demo } = this.$router.params
     const info = await api.item.detail(id, { distributor_id: 16, demo })
+
     const { intro: desc } = info
 
     let marketing = 'normal'
@@ -101,7 +116,7 @@ export default class Detail extends Component {
     if (marketing === 'group' || marketing === 'seckill') {
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
-        backgroundColor: '#C40000',
+        backgroundColor: '#0b4137',
         animation: {
           duration: 400,
           timingFunc: 'easeIn'
@@ -180,6 +195,7 @@ export default class Detail extends Component {
 
   handleBuyClick = async (type, skuInfo, num) => {
     const { marketing, info } = this.state
+    const { item_id } = info
     let url = `/pages/cart/espier-checkout`
 
     this.setState({
@@ -200,11 +216,15 @@ export default class Detail extends Component {
     if (type === 'fastbuy') {
       url += '?cart_type=fastbuy'
       if (marketing === 'group') {
-        url += `&type=${marketing}&group_id=${this.state.info.group_activity.groups_activity_id}`
+        const { groups_activity_id } = info.group_activity
+        url += `&type=${marketing}&group_id=${groups_activity_id}`
       } else if (marketing === 'seckill') {
-        url += `&type=${marketing}&seckill_id=${this.state.info.seckill_activity.seckill_id}`
+        const { seckill_id } = info.seckill_activity
+        const { ticket } = await api.item.seckillCheck({ item_id, seckill_id, num })
+        url += `&type=${marketing}&seckill_id=${seckill_id}&ticket=${ticket}`
       }
 
+      // TODO: fastbuy 修改到线上购物车
       this.props.onFastbuy(info)
       Taro.navigateTo({
         url
@@ -223,7 +243,7 @@ export default class Detail extends Component {
   }
 
   render () {
-    const { info, windowWidth, desc, scrollTop, showBackToTop } = this.state
+    const { info, windowWidth, desc, cartCount, scrollTop, showBackToTop } = this.state
     const { marketing, timer, isPromoter, startSecKill, hasStock, detailTabs, curTabIdx, showBuyPanel, buyPanelType } = this.state
 
     if (!info) {
@@ -253,6 +273,13 @@ export default class Detail extends Component {
           onScroll={this.handleScroll}
         >
           <View className='goods-imgs__wrap'>
+            {
+              // info.videos_url && (<Video
+              //   src={info.videos_url}
+              //   className='video'
+              //   controls
+              // />)
+            }
             <ItemImg
               info={imgInfo}
             />
@@ -418,6 +445,7 @@ export default class Detail extends Component {
             info={info}
             type={buyPanelType}
             isOpened={showBuyPanel}
+            cartCount={cartCount}
             onClose={() => this.setState({ showBuyPanel: false })}
             onClickAddCart={this.handleBuyClick.bind(this, 'cart')}
             onClickFastBuy={this.handleBuyClick.bind(this, 'fastbuy')}

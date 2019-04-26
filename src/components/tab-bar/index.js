@@ -2,17 +2,17 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtTabBar } from 'taro-ui'
-// import api from '@/api'
+import api from '@/api'
 import { navigateTo, getCurrentRoute } from '@/utils'
 import S from '@/spx'
 import { getTotalCount } from '@/store/cart'
 
-@connect(({ cart }) => ({
-  cart,
-  cartTotalCount: getTotalCount(cart)
-}), (dispatch) => ({
-  onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: { list } })
-}))
+// @connect(({ cart }) => ({
+//   cart,
+//   cartTotalCount: getTotalCount(cart)
+// }), (dispatch) => ({
+//   onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: { list } })
+// }))
 export default class TabBar extends Component {
   static options = {
     addGlobalClass: true
@@ -37,17 +37,11 @@ export default class TabBar extends Component {
     this.updateCurTab()
   }
 
+  componentDidShow () {
+    this.fetchCart()
+  }
+
   componentWillReceiveProps (nextProps) {
-    const { tabList } = this.state
-
-    const cartTabIdx = 3
-    if (nextProps.cartTotalCount != this.state.tabList[cartTabIdx].text) {
-      tabList[cartTabIdx].text = nextProps.cartTotalCount
-      this.setState({
-        tabList
-      })
-    }
-
     if (nextProps.current !== undefined) {
       this.setState({ current: nextProps.current })
     }
@@ -68,14 +62,20 @@ export default class TabBar extends Component {
 
   async fetchCart () {
     if (!S.getAuthToken()) return
+    const cartTabIdx = 3
 
-    // try {
-    //   const { list } = await api.cart.getBasic()
-    //   this.props.onUpdateCart(list)
-    // } catch (e) {
-    //   console.error(e)
-    // }
+    try {
+      const res = await api.cart.count()
+      debugger
 
+      const { tabList } = this.state
+      tabList[cartTabIdx].text = cartCount
+      this.setState({
+        tabList
+      })
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   handleClick = (current) => {

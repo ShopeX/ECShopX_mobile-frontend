@@ -111,6 +111,7 @@ export default class GoodsBuyPanel extends Component {
     }
 
     this.disabledSet = disabledSet
+    console.log(disabledSet)
   }
 
   updateCurSku (selection) {

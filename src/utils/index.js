@@ -9,6 +9,8 @@ import { STATUS_TYPES_MAP } from '@/consts'
 import _get from 'lodash/get'
 import _findKey from 'lodash/findKey'
 import _pickBy from 'lodash/pickBy'
+import debounce from 'lodash/debounce'
+import throttle from 'lodash/throttle'
 import log from './log'
 
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
@@ -182,5 +184,7 @@ export function maskMobile (mobile) {
 export {
   classNames,
   styleNames,
-  log
+  log,
+  debounce,
+  throttle
 }

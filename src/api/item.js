@@ -28,3 +28,15 @@ export function category () {
 export function groupList (params) {
   return req.get('/promotions/groups', params)
 }
+
+export function seckillCheck ({ item_id, num = 1, seckill_id }) {
+  return req.get('/promotion/seckillactivity/geticket', {
+    item_id,
+    num,
+    seckill_id
+  })
+}
+
+export function seckillCancelCheck () {
+  return req.delete('/promotion/seckillactivity/cancelTicket')
+}
