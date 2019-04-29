@@ -34,7 +34,6 @@ export default class EditAddress extends Component {
       listLength: list.length
     })
 
-    // debugger
     list.map(a_item => {
       if(a_item.address_id === this.props.addressID) {
         this.setState({

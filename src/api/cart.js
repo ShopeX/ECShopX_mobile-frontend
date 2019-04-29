@@ -36,6 +36,10 @@ export function updateNum ({ cart_id, num }) {
   return req.put('/cartupdate/num', { cart_id, num })
 }
 
+export function updatePromotion ({ cart_id, activity_id }) {
+  return req.put('/cartupdate/promotion', { cart_id, activity_id })
+}
+
 export function checkout () {
   return req.get('/cart.checkout')
 }

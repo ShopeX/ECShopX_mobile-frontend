@@ -32,7 +32,6 @@ export default class AddressIndex extends Component {
       listLength: list.length
     })
 
-    // debugger
     list.map(a_item => {
       if(a_item.address_id === this.$router.params.address_id) {
         this.setState({

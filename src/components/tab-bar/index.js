@@ -65,11 +65,10 @@ export default class TabBar extends Component {
     const cartTabIdx = 3
 
     try {
-      const res = await api.cart.count()
-      debugger
+      const { item_count } = await api.cart.count()
 
       const { tabList } = this.state
-      tabList[cartTabIdx].text = cartCount
+      tabList[cartTabIdx].text = item_count
       this.setState({
         tabList
       })

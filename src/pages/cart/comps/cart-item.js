@@ -9,6 +9,7 @@ import './cart-item.scss'
 export default class GoodsItem extends Component {
   static defaultProps = {
     onClick: () => {},
+    onClickPromotion: () => {},
     showMarketPrice: false,
     noCurSymbol: false
   }
@@ -25,6 +26,7 @@ export default class GoodsItem extends Component {
 
     const price = isObject(info.price) ? info.price.total_price : info.price
     const img = info.img || info.image_default_id
+    const curPromotion = info.promotions && info.activity_id && info.promotions.find(p => p.marketing_id === info.activity_id)
 
     return (
       <View className={classNames('cart-item', className)}>
@@ -42,8 +44,19 @@ export default class GoodsItem extends Component {
             />
           </View>
           <View className='cart-item__cont'>
-            <Text className='cart-item__title'>{info.title}</Text>
-            <Text className='cart-item__desc'>{info.desc}</Text>
+            <View className='cart-item__cont-hd'>
+              <Text className='cart-item__title'>{info.title}</Text>
+              <Text className='cart-item__desc'>{info.desc}</Text>
+              {curPromotion && (
+                <View
+                  className='cart-item__promotion'
+                  onClick={this.props.onClickPromotion}
+                >
+                  {curPromotion.marketing_desc}
+                </View>
+              )}
+            </View>
+
             <View className='cart-item__prices'>
               <Price
                 primary

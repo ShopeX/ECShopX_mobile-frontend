@@ -25,6 +25,13 @@ $item-img-height: 206px !default;
     justify-content: space-between;
     padding: 0 20px;
     flex: 1;
+    overflow: hidden;
+    &-hd {
+      flex: 3;
+    }
+  }
+  &-prices {
+    flex: 1;
   }
   &__img {
     width: $item-img-width;
@@ -39,8 +46,8 @@ $item-img-height: 206px !default;
     }
   }
   &__title {
-    @include multi-ellipsis(2);
-    font-size: $font-size-small;
+    @include text-overflow();
+    font-size: $font-size;
     line-height: 1.4;
     color: #333;
     margin: 0 0 16px;
@@ -51,7 +58,16 @@ $item-img-height: 206px !default;
     @include text-overflow();
     color: $color-gray;
     font-size: $font-size-small;
-    margin: 0 0 70px;
+    margin: 0 0 16px;
+  }
+  &__promotion {
+    background: #f8f8f8;
+    @include text-overflow();
+    font-size: $font-size-small;
+    color: #333;
+    display: inline-block;
+    padding: 3px 10px;
+    @include hairline(#333, top, right, bottom, left);
   }
   &__price {
     font-size: 28px;

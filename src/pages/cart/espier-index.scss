@@ -22,6 +22,22 @@
       margin-right: 8px;
     }
   }
+  .cart-group {
+    &__activity {
+      margin: 0 0 8px;
+      &-item {
+      }
+      &-label {
+        background: $color-brand-primary;
+        color: #fff;
+        font-size: 20px;
+        display: inline-block;
+        vertical-align: middle;
+        padding: 2px 8px;
+        margin-right: 8px;
+      }
+    }
+  }
   .cart-item {
     &__act {
       display: flex;
@@ -43,10 +59,24 @@
       }
     }
   }
+  .cart-promotion {
+    &__label {
+      background: $color-brand-primary;
+      color: #fff;
+      font-size: $font-size-small;
+      display: inline-block;
+      vertical-align: middle;
+      padding: 2px 8px;
+      margin-right: 8px;
+    }
+  }
   .btn-rand {
     width: 180px;
     margin: 0 auto;
     display: block;
+  }
+  .at-action-sheet__container {
+    z-index: $z-index-modal;
   }
 }
 
@@ -67,10 +97,16 @@
     padding-left: 40px;
     display: flex;
     align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    &__discount {
+      font-size: $font-size-small;
+    }
+    &__total {
+      font-size: $font-size;
+    }
     &__hint {
       color: $color-gray-light;
-      font-size: $font-size-small;
-      font-size: 26px;
       color: #555;
       margin-right: 10px;
     }

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtButton } from 'taro-ui'
+import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import { SpCheckbox, SpNote, TabBar, Loading, Price, NavBar } from '@/components'
 import { log, navigateTo, pickBy } from '@/utils'
 import debounce from 'lodash/debounce'
@@ -33,11 +33,13 @@ export default class CartIndex extends Component {
     super(props)
 
     this.state = {
-      selection: new Set(),
       loading: true,
-      cartMode: 'default'
+      selection: new Set(),
+      cartMode: 'default',
+      curPromotions: null
     }
 
+    this.updating = false
     this.lastCartId = null
   }
 
@@ -46,6 +48,9 @@ export default class CartIndex extends Component {
       if (this.props.defaultAllSelect) {
         this.handleAllSelect(true)
       }
+      this.setState({
+        loading: false
+      })
     })
   }
 
@@ -62,14 +67,17 @@ export default class CartIndex extends Component {
 
     log.debug('[cart fetch]', list)
     this.props.onUpdateCart(list)
-    this.setState({
-      loading: false
-    })
     cb && cb(list)
   }
 
   updateCart = debounce(async () => {
-    await this.fetch()
+    this.updating = true
+    try {
+      await this.fetch()
+    } catch (e) {
+      console.log(e)
+    }
+    this.updating = false
   }, 600)
 
   get isTotalChecked () {
@@ -131,8 +139,10 @@ export default class CartIndex extends Component {
   }, 400)
 
   handleQuantityChange = async (cart_id, num) => {
+    this.updating = true
     this.props.onUpdateCartNum(cart_id, num)
     this.updateCart.cancel()
+
     if (this.lastCartId === cart_id || this.lastCartId === undefined) {
       await this.debounceChangeCartNum(cart_id, num)
     } else {
@@ -157,7 +167,48 @@ export default class CartIndex extends Component {
     this.props.onCartSelection([...selection])
   }
 
+  handleClickPromotion = (cart_id) => {
+    let promotions
+    this.props.list.some((cart) => {
+      cart.list.some(item => {
+        if (item.cart_id === cart_id) {
+          promotions = item.promotions.slice()
+        }
+      })
+    })
+
+    this.setState({
+      curPromotions: promotions
+    })
+  }
+
+  handleSelectPromotion = async (item) => {
+    const { marketing_id: activity_id, cart_id } = item
+    this.setState({
+      curPromotions: null
+    })
+    await api.cart.updatePromotion({
+      activity_id,
+      cart_id
+    })
+    this.updateCart()
+  }
+
+  handleClosePromotions = () => {
+    this.setState({
+      curPromotions: null
+    })
+  }
+
   handleCheckout = () => {
+    if (this.updating) {
+      Taro.showToast({
+        title: '正在计算价格，请稍后',
+        icon: 'none'
+      })
+      return
+    }
+
     Taro.navigateTo({
       url: '/pages/cart/espier-checkout?cart_type=cart'
     })
@@ -167,9 +218,14 @@ export default class CartIndex extends Component {
     return pickBy(list, {
       item_id: 'item_id',
       cart_id: 'cart_id',
+      activity_id: 'activity_id',
       title: 'item_name',
       desc: 'brief',
       curSymbol: 'cur.symbol',
+      promotions: ({ promotions = [], cart_id }) => promotions.map(p => {
+        p.cart_id = cart_id
+        return p
+      }),
       img: ({ pics }) => pics,
       price: ({ price }) => (+price / 100).toFixed(2),
       market_price: ({ market_price }) => (+market_price / 100).toFixed(2),
@@ -182,7 +238,7 @@ export default class CartIndex extends Component {
   }
 
   render () {
-    const { selection, cartMode, loading } = this.state
+    const { selection, cartMode, loading, curPromotions } = this.state
     const { totalPrice, list } = this.props
 
     if (loading) {
@@ -223,6 +279,19 @@ export default class CartIndex extends Component {
                     className='cart-group__shop'
                     key={shopCart.shop_id}
                   >
+                    <View className='cart-group__activity'>
+                      {shopCart.cart_used_activity.map((item) => {
+                        return (
+                          <View
+                            className='cart-group__activity-item'
+                            key={item.activity_name}
+                          >
+                            <Text className='cart-group__activity-label'>{item.activity_tag}</Text>
+                            <Text>{item.activity_name}</Text>
+                          </View>
+                        )
+                      })}
+                    </View>
                     {
                       shopCart.list.map((item) => {
                         return (
@@ -230,6 +299,7 @@ export default class CartIndex extends Component {
                             key={item.cart_id}
                             info={item}
                             onNumChange={this.handleQuantityChange.bind(this, item.cart_id)}
+                            onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
                           >
                             <View className='cart-item__act'>
                               <SpCheckbox
@@ -281,11 +351,23 @@ export default class CartIndex extends Component {
             cartMode !== 'edit'
               ? <View className='cart-toolbar__bd'>
                   <View className='cart-total'>
-                    <Text className='cart-total__hint'>总计：</Text>
-                    <Price
-                      primary
-                      value={totalPrice}
-                    />
+                    {list[0].discount_fee > 0 && (
+                      <View className='cart-total__discount'>
+                        <Text className='cart-total__hint'>优惠：</Text>
+                        <Price
+                          primary
+                          value={-1 * list[0].discount_fee}
+                          unit='cent'
+                        />
+                      </View>
+                    )}
+                    <View className='cart-total__total'>
+                      <Text className='cart-total__hint'>总计：</Text>
+                      <Price
+                        primary
+                        value={totalPrice}
+                      />
+                    </View>
                   </View>
                   <AtButton
                     type='primary'
@@ -303,6 +385,21 @@ export default class CartIndex extends Component {
                   </View>
           }
         </View>
+
+        <AtActionSheet
+          title='请选择商品优惠'
+          isOpened={Boolean(curPromotions)}
+          onClose={this.handleClosePromotions}
+        >
+          {curPromotions.map(item => {
+            return (
+              <AtActionSheetItem
+                key={item.marketing_id}
+                onClick={this.handleSelectPromotion.bind(this, item)}
+              ><Text className='cart-promotion__label'>{item.promotion_tag}</Text><Text>{item.marketing_name}</Text></AtActionSheetItem>
+            )
+          })}
+        </AtActionSheet>
 
         <TabBar
           current={3}
