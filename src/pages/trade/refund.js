@@ -1,10 +1,19 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtActionSheet, AtActionSheetItem, AtSegmentedControl, AtImagePicker, AtTag, AtButton, AtTextarea } from 'taro-ui'
+import {
+  AtActionSheet,
+  AtActionSheetItem,
+  AtSegmentedControl,
+  AtImagePicker,
+  AtTag,
+  AtButton,
+  AtTextarea,
+  AtTabsPane, AtTabs
+} from 'taro-ui'
 import { SpCell, SpToast } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
-import { log, pickBy } from '@/utils'
+import { log, pickBy, classNames } from '@/utils'
 import S from '@/spx'
 // import * as qiniu from 'qiniu-js'
 import qiniuUploader from '@/utils/qiniu'
@@ -20,15 +29,18 @@ export default class TradeRefund extends Component {
       // reason: ['多拍/拍错/不想要', '缺货', '买多了', '质量问题', '卖家发错货', '商品破损', '描述不符', '其他'],
       description: '',
       imgs: [],
-      // isSameReason: false,
-      // isRefundType: false,
-      reason: ['多拍/拍错/不想要', '缺货'],
+      reason: ['物流破损', '产品描述与实物不符', '质量问题', '皮肤过敏'],
       curReasonIdx: null,
-      isShowSegReasonSheet: false,
-      isSameCurSegReason: false,
-      curSegReasonValue: null,
-      segTypes: [{ key: 'ONLY_REFUND', value: '仅退款' }, { key: 'REFUND_GOODS', value: '退货退款' }],
-      curSegIdx: null,
+      goodStatus: ['未收到货', '已收到货'],
+      curGoodIdx: null,
+      isShowSegGoodSheet: false,
+      isSameCurSegGood: false,
+      curSegGoodValue: null,
+      segTypes: [
+        {title: '仅退款', status: 'ONLY_REFUND'},
+        {title: '退货退款', status: 'REFUND_GOODS'}
+      ],
+      curSegIdx: 0,
       isShowSegTypeSheet: false,
       isSameCurSegType: false,
       curSegTypeValue: null,
@@ -55,8 +67,8 @@ export default class TradeRefund extends Component {
     if (!res.aftersales) return
 
     const params = pickBy(res.aftersales, {
-      curSegIdx: ({ aftersales_type }) => this.state.segTypes.findIndex(t => t.key === aftersales_type) || 0,
-      curSegTypeValue: ({ aftersales_type }) => this.state.segTypes[this.state.segTypes.findIndex(t => t.key === aftersales_type)].value,
+      curSegIdx: ({ aftersales_type }) => this.state.segTypes.findIndex(t => t.status === aftersales_type) || 0,
+      curSegTypeValue: ({ aftersales_type }) => this.state.segTypes[this.state.segTypes.findIndex(t => t.status === aftersales_type)].title,
       curReasonIdx: ({ reason }) => this.state.reason.indexOf(reason) || 0,
       curSegReasonValue: 'reason',
       description: 'description',
@@ -69,7 +81,7 @@ export default class TradeRefund extends Component {
   }
 
 
-  /*handleClickTag = (data) => {
+  handleClickTag = (data) => {
     const idx = this.state.reason.indexOf(data.name)
 
     if (idx >= 0) {
@@ -77,7 +89,7 @@ export default class TradeRefund extends Component {
         curReasonIdx: idx
       })
     }
-  }*/
+  }
 
   handleTextChange = (e) => {
     const { value } = e.target
@@ -106,12 +118,15 @@ export default class TradeRefund extends Component {
           imgs: res
         })
       })
-
-    // this.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
-
   }
 
   handleImageClick = () => {
+  }
+
+  handleClickTab = (idx) => {
+    this.setState({
+      curSegIdx: idx
+    })
   }
 
   handleChangeRefundOptions = (type) => {
@@ -121,9 +136,9 @@ export default class TradeRefund extends Component {
       })
     }
 
-    if (type === 'reason') {
+    if (type === 'goods') {
       this.setState({
-        isShowSegReasonSheet: true,
+        isShowSegGoodSheet: true,
       })
     }
   }
@@ -138,12 +153,12 @@ export default class TradeRefund extends Component {
       })
     }
 
-    if (type === 'reason') {
+    if (type === 'goods') {
       this.setState({
-        curReasonIdx: index === this.state.curReasonIdx ? null : index,
-        isSameCurSegReason:  index === this.state.curReasonIdx ? !this.state.isSameCurSegReason : true,
-        isShowSegReasonSheet: false,
-        curSegReasonValue: index === this.state.curReasonIdx ? null : item
+        curGoodIdx: index === this.state.curGoodIdx ? null : index,
+        isSameCurSegGood:  index === this.state.curGoodIdx ? !this.state.isSameCurSegGood : true,
+        isShowSegGoodSheet: false,
+        curSegGoodValue: index === this.state.curGoodIdx ? null : item
       })
     }
   }
@@ -151,7 +166,7 @@ export default class TradeRefund extends Component {
   handleSubmit = async () => {
     const { segTypes, curSegIdx, curReasonIdx, description } = this.state
     const reason = this.state.reason[curReasonIdx]
-    const aftersales_type = segTypes[curSegIdx].key
+    const aftersales_type = segTypes[curSegIdx].status
     const evidence_pic = this.state.imgs.map(({ url }) => url)
     const { item_id, order_id, aftersales_bn } = this.$router.params
     const data = {
@@ -177,78 +192,61 @@ export default class TradeRefund extends Component {
   }
 
   render () {
-    const { segTypes, curSegIdx, isShowSegTypeSheet, isSameCurSegType, curSegTypeValue,
-      reason, curReasonIdx, isShowSegReasonSheet, isSameCurSegReason, curSegReasonValue, description, imgs } = this.state
+    const { segTypes, curSegIdx, reason, curReasonIdx,
+      goodStatus, curGoodIdx, isShowSegGoodSheet, isSameCurSegGood, curSegGoodValue, description, imgs } = this.state
+
     return (
       <View className='page-trade-refund'>
-        {/*<View className='trade-detail-goods'>
-          <DetailItem
-            info={info}
-          />
-        </View>*/}
-        {/*<View className='refund-info'>*/}
-          {/*<View className='refund-info__num'>*/}
-            {/*<Text className='refund-info__text'>商品数量：</Text>*/}
-            {/*<Text className='refund-info__text text-primary'>3</Text>*/}
-          {/*</View>*/}
-          {/*<View className='refund-info__num'>*/}
-            {/*<Text className='refund-info__text'>退款金额：</Text>*/}
-            {/*<View>*/}
-              {/*<Text className='refund-info__text text-primary'>300</Text>*/}
-              {/*<Text className='refund-info__text'>(含发货邮费￥300)</Text>*/}
-            {/*</View>*/}
-          {/*</View>*/}
-        {/*</View>*/}
-        <SpCell
-          title='退款类型'
-          isLink
-          onClick={this.handleChangeRefundOptions.bind(this, 'type')}
-          value={curSegTypeValue ? curSegTypeValue : '请选择'}
-        />
-        <AtActionSheet
-          className='refund-reason'
-          isOpened={isShowSegTypeSheet}
-          cancelText='关闭'
-          title='退款类型'
+        <AtTabs
+          className='trade-refund__tabs'
+          current={curSegIdx}
+          tabList={segTypes}
+          onClick={this.handleClickTab}
         >
           {
-            segTypes.map((item, index) => {
-              return(
-                <AtActionSheetItem key={index} onClick={this.handleClickSheet.bind(this, index, item, 'type')}>
-                  <View className='refund-reason__item'>
-                    <Text>{item.value}</Text>
-                    {
-                      curSegTypeValue === item.value || (curSegIdx === index && isSameCurSegType)
-                        ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>
-                        : <Text className='in-icon in-icon-check default__icon'> </Text>
-                    }
-                  </View>
-                </AtActionSheetItem>
-              )
-            })
+            segTypes.map((panes, pIdx) =>
+              (<AtTabsPane
+                current={curSegIdx}
+                key={pIdx}
+                index={pIdx}
+              >
+              </AtTabsPane>)
+            )
           }
-        </AtActionSheet>
-
-        <SpCell
-          title='退款原因'
+        </AtTabs>
+        <SpCell className='trade-refund__reason' title='请选择退款理由'>
+          {reason.map((item, idx) => {
+            return (
+              <AtTag
+                key={item}
+                className={classNames('refund-reason', idx === curReasonIdx ? 'refund-reason__checked' : '')}
+                name={item}
+                onClick={this.handleClickTag}
+              >{item}</AtTag>
+            )
+          })}
+        </SpCell>
+        {/*<SpCell
+          className='trade-refund__goods'
+          title='货物状态'
           isLink
-          onClick={this.handleChangeRefundOptions.bind(this, 'reason')}
-          value={curSegReasonValue ? curSegReasonValue : '请选择'}
+          onClick={this.handleChangeRefundOptions.bind(this, 'goods')}
+          value={curSegGoodValue ? curSegGoodValue : '请选择'}
         />
         <AtActionSheet
-          className='refund-reason'
-          isOpened={isShowSegReasonSheet}
+          className='refund-goods'
+          isOpened={isShowSegGoodSheet}
           cancelText='关闭'
-          title='退款原因'
+          title='货物状态'
         >
           {
-            reason.map((item, t_index) => {
+            goodStatus.map((item, t_index) => {
               return(
-                <AtActionSheetItem key={t_index} onClick={this.handleClickSheet.bind(this, t_index, item, 'reason')}>
-                  <View className='refund-reason__item'>
+                <AtActionSheetItem key={t_index} onClick={this.handleClickSheet.bind(this, t_index, item, 'goods')}>
+                  <View className='refund-goods__item'>
                     <Text>{item}</Text>
                     {
-                      curSegReasonValue === item || (curReasonIdx === t_index && isSameCurSegReason)
+                      curSegGoodValue === item || (curGoodIdx === t_index && isSameCurSegGood)
                         ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>
                         : <Text className='in-icon in-icon-check default__icon'> </Text>
                     }
@@ -257,7 +255,7 @@ export default class TradeRefund extends Component {
               )
             })
           }
-        </AtActionSheet>
+        </AtActionSheet>*/}
 
         <View className='refund-describe'>
           <AtTextarea

@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Icon } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { REFUND_STATUS } from '@/consts'
+import { formatTime } from '@/utils'
 import { SpCell, Price, Loading, NavBar } from '@/components'
 import api from '@/api'
 
@@ -31,7 +32,7 @@ export default class TradeRefundDetail extends Component {
 
     const progress = +info.progress
     info.status_str = REFUND_STATUS[String(progress)]
-
+    info.creat_time_str = formatTime(info.create_time * 1000)
     this.setState({
       orderInfo,
       info,
@@ -76,22 +77,53 @@ export default class TradeRefundDetail extends Component {
   }
 
   render () {
-    // const { info, orderInfo, progress } = this.state
-    //
-    // if (!info) {
-    //   return <Loading />
-    // }
+    const { info, orderInfo, progress } = this.state
+
+    if (!info) {
+      return <Loading />
+    }
 
     return (
       <View className='trade-refund-detail'>
         <View className='refund-status'>
-          <Text className='refund-status__text text-status'>待发货</Text>
-          <Text className='refund-status__text'>物流信息：正在审核订单</Text>
+          <Text className='refund-status__text text-status'>{info.status_str}</Text>
+          {progress == 0 ? <Text className='refund-status__text'>正在审核订单</Text> : null}
+          {progress == 1 ? <Text className='refund-status__text'>已接受申请，等回寄</Text> : null}
+          {progress == 2 ? <Text className='refund-status__text'>客户已回寄，等待商家收货确认</Text> : null}
+          {progress == 3 ? <Text className='refund-status__text'>申请已驳回</Text> : null}
+          {progress == 4 ? <Text className='refund-status__text'>物流信息：已发货</Text> : null}
+          {progress == 5 ? <Text className='refund-status__text'>时间</Text> : null}
+          {progress == 6 ? <Text className='refund-status__text'>时间</Text> : null}
+          {progress == 7 ? <Text className='refund-status__text'>时间</Text> : null}
+
         </View>
         <View className='refund-detail'>
-          <Text className='refund-detail__title'>您已成功发起退款申请，请耐心等待商家处理</Text>
-          <Text className='refund-detail__descr'>说明</Text>
-          <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'edit')}>修改申请</Text>
+          {progress == 0 ?  <Text className='refund-detail__title'>您已成功发起退款申请，请耐心等待商家处理</Text> : null}
+          <Text className='refund-detail__descr'>{info.description}</Text>
+          {
+            progress == 0
+              ? <View>
+                  <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'edit')}>修改申请</Text>
+                  <Text className='refund-detail__btn refund-detail__cancel' onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</Text>
+                </View>
+              : null
+          }
+          {
+            (progress == 3 || progress == 5)
+              ? <View>
+                  <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'refund')}>再次申请</Text>
+                  <Text className='refund-detail__btn refund-detail__cancel' onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</Text>
+                </View>
+              : null
+          }
+          {
+            progress == 1
+              ? <View>
+                  <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'refund_send')}>填写物流信息</Text>
+                  <Text className='refund-detail__btn refund-detail__cancel' onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</Text>
+                </View>
+              : null
+          }
         </View>
         {/*<View className='refund-info'>
           <View className='refund-info__num'>
@@ -107,9 +139,9 @@ export default class TradeRefundDetail extends Component {
           </View>
         </View>*/}
         <View className='refund-detail-info'>
-          <View className='info-name'>订单号：<Text className='info-value'>12312312341</Text></View>
-          <View className='info-name'>下单时间：<Text className='info-value'>2018-09-06</Text></View>
-          <View className='info-name'>发票信息：<Text className='info-value'>上海xxx有限公司上海xx有</Text></View>
+          <View className='info-name'>退款原因：<Text className='info-value'>{info.reason}</Text></View>
+          <View className='info-name'>申请时间：<Text className='info-value'>{info.creat_time_str}</Text></View>
+          <View className='info-name'>退款编号：<Text className='info-value'>{info.aftersales_bn}</Text></View>
         </View>
         <View className='refund-detail-btn'>联系客服</View>
         {/*<View className='refund-status'>

@@ -38,6 +38,10 @@
       color: $color-brand-primary;
       padding: 10px 30px;
     }
+    &__cancel {
+      border: 1PX solid $color-brand-accent-light ;
+      color: $color-brand-accent-light ;
+    }
   }
   .refund-info {
     background: #ffffff;

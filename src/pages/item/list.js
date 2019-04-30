@@ -5,7 +5,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
 import { BackToTop, Loading, FilterBar, SearchBar, GoodsItem, NavBar, SpNote } from '@/components'
 import api from '@/api'
-import { pickBy } from '@/utils'
+import { pickBy, classNames } from '@/utils'
 
 import './list.scss'
 
@@ -30,12 +30,15 @@ export default class List extends Component {
       ],
       query: null,
       list: [],
+      paramsList: [],
       listType: 'grid',
-      showDrawer: false
+      showDrawer: false,
+      selectParams: []
     }
   }
 
   componentDidMount () {
+    this.firstStatus = true
     this.setState({
       query: {
         keywords: this.$router.params.keywords,
@@ -51,14 +54,25 @@ export default class List extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
+    const { selectParams } = this.state
     const query = {
       ...this.state.query,
+      item_params: selectParams,
       page,
       pageSize
     }
-
-    const { list, total_count: total } = await api.item.search(query)
+    const { list, total_count: total, item_params_list } = await api.item.search(query)
     const { favs } = this.props
+
+    item_params_list.map(item => {
+      if(selectParams.length < 4){
+        selectParams.push({
+          attribute_id: item.attribute_id,
+          attribute_value_id: 'all'
+        })
+      }
+      item.attribute_values.unshift({attribute_value_id: 'all', attribute_value_name: '全部', isChooseParams: true})
+    })
 
     const nList = pickBy(list, {
       img: 'pics[0]',
@@ -72,8 +86,17 @@ export default class List extends Component {
 
     this.setState({
       list: [...this.state.list, ...nList],
+      showDrawer: false,
       query
     })
+
+    if (this.firstStatus) {
+      this.setState({
+        paramsList: item_params_list,
+        selectParams
+      })
+      this.firstStatus = false
+    }
 
     return {
       total
@@ -128,8 +151,64 @@ export default class List extends Component {
     })
   }
 
+  handleClickParmas = (id, child_id) => {
+    const { paramsList, selectParams } = this.state
+    paramsList.map(item => {
+      if(item.attribute_id === id) {
+        item.attribute_values.map(v_item => {
+          if(v_item.attribute_value_id === child_id) {
+            v_item.isChooseParams = true
+          } else {
+            v_item.isChooseParams = false
+          }
+        })
+      }
+    })
+    selectParams.map(item => {
+      if(item.attribute_id === id) {
+        item.attribute_value_id = child_id
+      }
+    })
+    this.setState({
+      paramsList,
+      selectParams
+    })
+  }
+
+  handleClickSearchParams = (type) => {
+    this.setState({
+      showDrawer: false
+    })
+    if(type === 'reset') {
+      const { paramsList, selectParams } = this.state
+      this.state.paramsList.map(item => {
+        item.attribute_values.map(v_item => {
+          if(v_item.attribute_value_id === 'all') {
+            v_item.isChooseParams = true
+          } else {
+            v_item.isChooseParams = false
+          }
+        })
+      })
+      selectParams.map(item => {
+        item.attribute_value_id = 'all'
+      })
+      this.setState({
+        paramsList,
+        selectParams
+      })
+    }
+
+    this.resetPage()
+    this.setState({
+      list: []
+    }, () => {
+      this.nextPage()
+    })
+  }
+
   render () {
-    const { list, listType, curFilterIdx, filterList, showBackToTop, scrollTop, page, showDrawer } = this.state
+    const { list, listType, curFilterIdx, filterList, showBackToTop, scrollTop, page, showDrawer, paramsList, selectParams } = this.state
 
     return (
       <View className='page-goods-list'>
@@ -160,7 +239,38 @@ export default class List extends Component {
           mask
           width={`${Taro.pxTransform(570)}`}
         >
-          <View className='drawer-item'>
+          {
+            paramsList.map((item, index) => {
+              return (
+                <View className='drawer-item' key={index}>
+                  <View className='drawer-item__title'>
+                    <Text>{item.attribute_name}</Text>
+                    <View className='at-icon at-icon-chevron-down'> </View>
+                  </View>
+                  <View className='drawer-item__options'>
+                    {
+                      item.attribute_values.map((v_item, v_index) => {
+                        return (
+                          <View
+                            className={classNames('drawer-item__options__item' ,v_item.isChooseParams ? 'drawer-item__options__checked' : '')}
+                            // className='drawer-item__options__item'
+                            key={v_index}
+                            onClick={this.handleClickParmas.bind(this, item.attribute_id, v_item.attribute_value_id)}
+                          >
+                            {v_item.attribute_value_name}
+                          </View>
+                        )
+                      })
+                    }
+                    <View className='drawer-item__options__none'> </View>
+                    <View className='drawer-item__options__none'> </View>
+                    <View className='drawer-item__options__none'> </View>
+                  </View>
+                </View>
+              )
+            })
+          }
+          {/*<View className='drawer-item'>
             <View className='drawer-item__title'>
               <Text>系列</Text>
               <View className='at-icon at-icon-chevron-down'> </View>
@@ -191,10 +301,10 @@ export default class List extends Component {
               <View className='drawer-item__options__none'> </View>
               <View className='drawer-item__options__none'> </View>
             </View>
-          </View>
+          </View>*/}
           <View className='drawer-footer'>
-            <Text className='drawer-footer__btn'>重置</Text>
-            <Text className='drawer-footer__btn drawer-footer__btn_active'>确定</Text>
+            <Text className='drawer-footer__btn' onClick={this.handleClickSearchParams.bind(this, 'reset')}>重置</Text>
+            <Text className='drawer-footer__btn drawer-footer__btn_active' onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定</Text>
           </View>
         </AtDrawer>
 

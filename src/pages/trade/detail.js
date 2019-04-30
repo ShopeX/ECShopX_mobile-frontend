@@ -4,6 +4,7 @@ import { AtButton } from 'taro-ui'
 import { Loading, SpCell, SpToast, Price, NavBar } from '@/components'
 import { classNames, log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
 import api from '@/api'
+import { AFTER_SALE_STATUS } from '@/consts'
 import DetailItem from './comps/detail-item'
 
 import './detail.scss'
@@ -61,7 +62,7 @@ export default class TradeDetail extends Component {
       orders: ({ items }) => pickBy(items, {
         order_id: 'order_id',
         item_id: 'item_id',
-        aftersales_status: 'aftersales_status',
+        aftersales_status: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
         pic_path: 'pic',
         title: 'item_name',
         delivery_status: 'delivery_status',
