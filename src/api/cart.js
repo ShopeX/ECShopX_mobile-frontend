@@ -14,12 +14,22 @@ export function count (params) {
   })
 }
 
-export function add (item, num = 1, isAccumulate = false) {
-  const { item_id } = item
+export function add (params) {
+  const { item_id, num = 1, isAccumulate = false } = params
   return req.post(`/cart`, {
     item_id,
     num,
     isAccumulate,
+    shop_type: 'distributor'
+  })
+}
+
+export function fastBuy (params) {
+  const { item_id, num = 1 } = params
+  return req.post('/cart', {
+    item_id,
+    num,
+    isAccumulate: false,
     shop_type: 'distributor'
   })
 }

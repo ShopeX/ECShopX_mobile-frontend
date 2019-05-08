@@ -36,7 +36,8 @@ export default class CartIndex extends Component {
       loading: true,
       selection: new Set(),
       cartMode: 'default',
-      curPromotions: null
+      curPromotions: null,
+      groups: []
     }
 
     this.updating = false
@@ -44,14 +45,58 @@ export default class CartIndex extends Component {
   }
 
   componentDidMount () {
-    this.fetch(() => {
+    this.fetch((list) => {
       if (this.props.defaultAllSelect) {
         this.handleAllSelect(true)
       }
+      const groups = this.resolveActivityGroup(list)
       this.setState({
+        groups,
         loading: false
       })
     })
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.list !== this.props.list) {
+      const groups = this.resolveActivityGroup(nextProps.list)
+      this.setState({
+        groups
+      })
+    }
+  }
+
+  // 活动分组
+  resolveActivityGroup (cartList) {
+    const groups = cartList.map(shopCart => {
+      const { list } = shopCart
+      const tDict = list.reduce((acc, val) => {
+        acc[val.cart_id] = val
+        return acc
+      }, {})
+      const group = shopCart.activity_grouping.map((activity) => {
+        const itemList = activity.cart_ids.map(id => {
+          const cartItem = tDict[id]
+          delete tDict[id]
+          return cartItem
+        })
+
+        return {
+          activity,
+          list: itemList
+        }
+      })
+
+      // 无活动列表
+      group.push({
+        activity: null,
+        list: Object.values(tDict)
+      })
+
+      return group
+    })
+
+    return groups
   }
 
   async fetch (cb) {
@@ -59,6 +104,7 @@ export default class CartIndex extends Component {
 
     const list = valid_cart.map(shopCart => {
       const tList = this.transformCartList(shopCart.list)
+
       return {
         ...shopCart,
         list: tList
@@ -105,6 +151,7 @@ export default class CartIndex extends Component {
     })
 
     log.debug(`[cart change] item: ${cart_id}, selection:`, selection)
+    this.updateCart()
   }
 
   handleDelect = async (cart_id) => {
@@ -184,6 +231,9 @@ export default class CartIndex extends Component {
 
   handleSelectPromotion = async (item) => {
     const { marketing_id: activity_id, cart_id } = item
+    Taro.showLoading({
+      mask: true
+    })
     this.setState({
       curPromotions: null
     })
@@ -191,7 +241,8 @@ export default class CartIndex extends Component {
       activity_id,
       cart_id
     })
-    this.updateCart()
+    await this.fetch()
+    Taro.hideLoading()
   }
 
   handleClosePromotions = () => {
@@ -238,7 +289,7 @@ export default class CartIndex extends Component {
   }
 
   render () {
-    const { selection, cartMode, loading, curPromotions } = this.state
+    const { selection, groups, cartMode, loading, curPromotions } = this.state
     const { totalPrice, list } = this.props
 
     if (loading) {
@@ -273,46 +324,56 @@ export default class CartIndex extends Component {
           }
           <View className='cart-list'>
             {
-              list.map((shopCart) => {
+              groups.map((activityGroup, idx) => {
                 return (
                   <View
-                    className='cart-group__shop'
-                    key={shopCart.shop_id}
+                    className='cart-list__shop'
+                    key={idx}
                   >
-                    <View className='cart-group__activity'>
-                      {shopCart.cart_used_activity.map((item) => {
+                    {
+                      activityGroup.map(shopCart => {
+                        const { activity } = shopCart
+
                         return (
                           <View
-                            className='cart-group__activity-item'
-                            key={item.activity_name}
+                            className='cart-group'
+                            key={shopCart.shop_id}
                           >
-                            <Text className='cart-group__activity-label'>{item.activity_tag}</Text>
-                            <Text>{item.activity_name}</Text>
+                            {activity && (
+                              <View className='cart-group__activity'>
+                                <View
+                                  className='cart-group__activity-item'
+                                >
+                                  <Text className='cart-group__activity-label'>{activity.activity_tag}</Text>
+                                  <Text>{activity.activity_name}</Text>
+                                </View>
+                              </View>
+                            )}
+                            {
+                              shopCart.list.map((item) => {
+                                return (
+                                  <CartItem
+                                    key={item.cart_id}
+                                    info={item}
+                                    onNumChange={this.handleQuantityChange.bind(this, item.cart_id)}
+                                    onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
+                                  >
+                                    <View className='cart-item__act'>
+                                      <SpCheckbox
+                                        key={item.item_id}
+                                        checked={selection.has(item.cart_id)}
+                                        onChange={this.handleSelectionChange.bind(this, item.cart_id)}
+                                      />
+                                      <View
+                                        className='in-icon in-icon-close'
+                                        onClick={this.handleDelect.bind(this, item.cart_id)}
+                                      />
+                                    </View>
+                                  </CartItem>
+                                )
+                              })
+                            }
                           </View>
-                        )
-                      })}
-                    </View>
-                    {
-                      shopCart.list.map((item) => {
-                        return (
-                          <CartItem
-                            key={item.cart_id}
-                            info={item}
-                            onNumChange={this.handleQuantityChange.bind(this, item.cart_id)}
-                            onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
-                          >
-                            <View className='cart-item__act'>
-                              <SpCheckbox
-                                key={item.item_id}
-                                checked={selection.has(item.cart_id)}
-                                onChange={this.handleSelectionChange.bind(this, item.cart_id)}
-                              />
-                              <View
-                                className='in-icon in-icon-close'
-                                onClick={this.handleDelect.bind(this, item.cart_id)}
-                              />
-                            </View>
-                          </CartItem>
                         )
                       })
                     }

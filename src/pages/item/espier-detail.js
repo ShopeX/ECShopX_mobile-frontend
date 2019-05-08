@@ -195,7 +195,7 @@ export default class Detail extends Component {
 
   handleBuyClick = async (type, skuInfo, num) => {
     const { marketing, info } = this.state
-    const { item_id } = info
+    const { item_id } = skuInfo
     let url = `/pages/cart/espier-checkout`
 
     this.setState({
@@ -205,7 +205,10 @@ export default class Detail extends Component {
     if (type === 'cart') {
       url = `/pages/cart/espier-index`
 
-      await api.cart.add(skuInfo, num, true)
+      await api.cart.add({
+        item_id,
+        num
+      })
       Taro.showToast({
         title: '成功加入购物车',
         icon: 'success'
@@ -224,8 +227,11 @@ export default class Detail extends Component {
         url += `&type=${marketing}&seckill_id=${seckill_id}&ticket=${ticket}`
       }
 
-      // TODO: fastbuy 修改到线上购物车
-      this.props.onFastbuy(info)
+      await api.cart.fastBuy({
+        item_id,
+        num
+      })
+
       Taro.navigateTo({
         url
       })

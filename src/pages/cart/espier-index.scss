@@ -23,6 +23,7 @@
     }
   }
   .cart-group {
+    margin: 0 0 40px;
     &__activity {
       margin: 0 0 8px;
       &-item {
@@ -56,6 +57,14 @@
       &__btn {
         border-top: 1PX solid $color-border-gray;
         border-bottom: 1PX solid $color-border-gray;
+        padding: 2px;
+        &-subtract, &-add {
+          font-size: 20px;
+        }
+      }
+      &__input, input {
+        line-height: 1;
+        font-size: $font-size;
       }
     }
   }

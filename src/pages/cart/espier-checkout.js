@@ -28,8 +28,7 @@ const transformCartList = (list) => {
 
 @connect(({ address, cart }) => ({
   defaultAddress: address.defaultAddress,
-  coupon: cart.coupon,
-  fastbuy: cart.fastbuy
+  coupon: cart.coupon
 }), (dispatch) => ({
   onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' }),
   onClearCart: () => dispatch({ type: 'cart/clear' }),
@@ -38,8 +37,7 @@ const transformCartList = (list) => {
 @withLogin()
 export default class CartCheckout extends Component {
   static defaultProps = {
-    list: [],
-    fastbuy: null
+    list: []
   }
 
   constructor (props) {
@@ -75,13 +73,8 @@ export default class CartCheckout extends Component {
     let info = null
 
     if (cart_type === 'fastbuy') {
-      const fastBuyItem = this.props.fastbuy
-      info = {
-        cart: [{
-          list: [fastBuyItem],
-          cart_total_num: fastBuyItem.num
-        }]
-      }
+      this.props.onClearFastbuy()
+      info = null
     } else if (cart_type === 'cart') {
       // 积分购买不在此种情况
 
@@ -108,6 +101,7 @@ export default class CartCheckout extends Component {
     : []
 
     this.params = {
+      cart_type,
       items,
       pay_type: payType || 'deposit'
     }

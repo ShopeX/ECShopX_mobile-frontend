@@ -52,7 +52,7 @@ export default class GoodsItem extends Component {
                   className='cart-item__promotion'
                   onClick={this.props.onClickPromotion}
                 >
-                  {curPromotion.marketing_desc}
+                  {curPromotion.marketing_name}
                 </View>
               )}
             </View>
