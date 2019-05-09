@@ -229,6 +229,9 @@ export default class AddressIndex extends Component {
   }
 
   render () {
+
+    const { info, multiIndex, areaList } = this.state
+
     return (
       <View className='page-address-edit'>
         {/*<EditAddress*/}

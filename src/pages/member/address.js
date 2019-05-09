@@ -110,7 +110,7 @@ export default class AddressIndex extends Component {
   }
 
   render () {
-    const { ItemIndex, isItemChecked, isChoose } = this.state
+    const { ItemIndex, isItemChecked, isChoose, list } = this.state
     return (
       <View className='page-address-index'>
         {/*<AddressList*/}

@@ -41,7 +41,7 @@ export default class TradeDetail extends Component {
 
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
-      created_time_str: ({ create_time }) => formatTime(create_time*1000),
+      created_time_str: ({ created_time }) => formatTime(created_time*1000),
       receiver_name: 'receiver_name',
       receiver_mobile: 'receiver_mobile',
       receiver_state: 'receiver_state',

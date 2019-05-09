@@ -1,6 +1,7 @@
 import Taro from "@tarojs/taro";
 import req from '@/api/req'
 import * as qiniu from 'qiniu-js'
+import log from "./log";
 
 async function uploadImageFn (imgFiles, getUrl, curFilesystem, curFiletype) {
   let promises = []
@@ -87,6 +88,10 @@ function uploadURLFromRegionCode(code) {
     return uploadURL;
 }
 
-module.exports = {
-  uploadImageFn: uploadImageFn,
+// module.export = {
+//   uploadImageFn: uploadImageFn,
+// }
+
+export default {
+  uploadImageFn
 }

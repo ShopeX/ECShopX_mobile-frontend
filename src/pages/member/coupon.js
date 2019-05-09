@@ -71,9 +71,6 @@ export default class Coupon extends Component {
     this.setState({
       list: [...this.state.list, ...nList],
     })
-    this.setState({
-      list: nList
-    })
 
     return { total }
   }

@@ -47,7 +47,6 @@ export default class GoodsBuyPanel extends Component {
       t.propsText = propsText
       skuDict[key] = t
     })
-
     const selection = Array(info.item_spec_desc.length).fill(null)
     this.skuDict = skuDict
     this.setState({
