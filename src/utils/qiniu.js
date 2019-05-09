@@ -5,7 +5,6 @@ import log from "./log";
 
 async function uploadImageFn (imgFiles, getUrl, curFilesystem, curFiletype) {
   let promises = []
-  console.log(888)
 
   for (let item of imgFiles) {
     const promise = new Promise(async (resolve, reject) => {

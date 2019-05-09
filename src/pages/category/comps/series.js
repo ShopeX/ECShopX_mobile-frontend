@@ -40,9 +40,10 @@ export default class Series extends Component {
   render () {
     const { info } = this.props
     const { pluralType, imgType, currentIndex } = this.state
-    let items
+    let items, itemsImg
     if(info) {
       items = info[currentIndex].children
+      itemsImg = info[currentIndex].image_url
     }
     if (!info) {
       return <Loading />
@@ -74,7 +75,7 @@ export default class Series extends Component {
           scrollY
         >
           <View className={classNames(pluralType ? 'category-content' : 'category-content-no')}>
-            <Image src={item.image_url} mode='aspectFill' className='category__banner' />
+            <Image src={itemsImg} mode='aspectFill' className='category__banner' />
             {
               items.map(item =>
                 <View
@@ -88,19 +89,6 @@ export default class Series extends Component {
                     src={item.image_url}
                   />
                   <View className='img-cat-name'>{item.category_name}</View>
-                </View>
-              )
-            }
-            {
-              [1,2,3,4,5,6,7,8,9,0,2,3,4,5,5].map(() =>
-                <View
-                  className='category-content__img'
-                >
-                  <Image
-                    className='cat-img'
-                    mode='aspectFill'
-                  />
-                  <View className='img-cat-name'>3333</View>
                 </View>
               )
             }

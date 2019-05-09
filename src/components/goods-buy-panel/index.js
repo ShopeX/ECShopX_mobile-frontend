@@ -43,14 +43,11 @@ export default class GoodsBuyPanel extends Component {
 
     info.spec_items.forEach(t => {
       const key = t.item_spec.map(s => s.spec_value_id).join('_')
-      console.log(key, 44)
       const propsText = t.item_spec.map(s => s.spec_value_name).join(' ')
       t.propsText = propsText
       skuDict[key] = t
     })
-    console.log(info.spec_items, 49)
     const selection = Array(info.item_spec_desc.length).fill(null)
-    console.log(selection, 51)
     this.skuDict = skuDict
     this.setState({
       selection
@@ -165,7 +162,6 @@ export default class GoodsBuyPanel extends Component {
     if (this.props.info.spec_items.length <= 1 || this.disabledSet.has(item.spec_value_id)) return
 
     const { selection } = this.state
-    console.log(selection, item, idx, 145)
     if (selection[idx] === item.spec_value_id) {
       selection[idx] = null
     } else {
