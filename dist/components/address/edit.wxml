@@ -1,0 +1,40 @@
+<block>
+    <block wx:if="{{!info}}">
+        <view></view>
+    </block>
+    <view class="address-edit" wx:else>
+        <at-form bindonsubmit="handleSubmit" __triggerObserer="{{ _triggerObserer }}" __fn_onSubmit="{{true}}">
+            <view class="sec address-edit__form">
+                <at-input title="收件人姓名" __triggerObserer="{{ _triggerObserer }}" name="username" value="{{info.username}}" bindonchange="handleChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="username"></at-input>
+                <at-input title="手机号码" __triggerObserer="{{ _triggerObserer }}" name="telephone" maxLength="{{11}}" value="{{info.telephone}}" bindonchange="handleChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="telephone"></at-input>
+                <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{areaList}}">
+                    <view class="picker">
+                        <view class="picker__title">所在区域</view>
+                        <block>
+                            <block wx:if="{{info.address_id}}">{{'' + info.province + info.city + info.county}}</block>
+                            <block wx:else>
+                                <view>
+                                    <block wx:if="{{areaList.length > 0}}"><text>{{areaList[0][multiIndex[0]]}}{{areaList[1][multiIndex[1]]}}{{areaList[2][multiIndex[2]]}}</text>
+                                    </block>
+                                </view>
+                            </block>
+                        </block>
+                    </view>
+                </picker>
+                <at-input title="详细地址" __triggerObserer="{{ _triggerObserer }}" name="adrdetail" value="{{info.adrdetail}}" bindonchange="handleChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="adrdetail"></at-input>
+                <at-input title="邮政编码" __triggerObserer="{{ _triggerObserer }}" name="postalCode" value="{{info.postalCode}}" bindonchange="handleChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="postalCode"></at-input>
+            </view>
+            <view class="sec">
+                <sp-cell title="设为默认地址" __triggerObserer="{{ _triggerObserer }}">
+                    <switch checked="{{info.is_def}}" bindchange="handleDefChange" data-e-change-so="this"></switch>
+                </sp-cell>
+            </view>
+            <view class="btns">
+                <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" formType="submit">提交</at-button>
+                <block wx:if="{{info.address_id}}">
+                    <at-button bindonclick="handleDelete" __triggerObserer="{{ _triggerObserer }}" __fn_onClick="{{true}}" data-e-onclick-so="this">删除</at-button>
+                </block>
+            </view>
+        </at-form>
+    </view>
+</block>

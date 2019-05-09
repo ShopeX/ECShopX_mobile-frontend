@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "loading": "../../components/loading/index",
+    "nav-bar": "../../components/nav-bar/index",
+    "detail-item": "./comps/detail-item",
+    "sp-toast": "../../components/toast/index"
+  }
+}

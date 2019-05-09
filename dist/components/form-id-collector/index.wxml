@@ -1,0 +1,7 @@
+<block>
+    <form report-submit="{{true}}" bindsubmit="handleSubmit">
+        <button class="form-id-collector__btn" form-type="submit">
+            <slot></slot>
+        </button>
+    </form>
+</block>

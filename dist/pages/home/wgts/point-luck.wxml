@@ -1,0 +1,11 @@
+<block>
+    <block wx:if="{{!announce}}">
+        <view></view>
+    </block>
+    <view class="wgt" wx:else>
+        <view class="wgt-body with-padding">
+            <at-noticebar marquee="{{true}}" __triggerObserer="{{ _triggerObserer }}"><text>{{announce}}</text>
+            </at-noticebar>
+        </view>
+    </view>
+</block>

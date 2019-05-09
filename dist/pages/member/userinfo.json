@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "nav-bar": "../../components/nav-bar/index",
+    "at-form": "../../npm/taro-ui/dist/weapp/components/form/index",
+    "at-image-picker": "../../npm/taro-ui/dist/weapp/components/image-picker/index",
+    "at-input": "../../npm/taro-ui/dist/weapp/components/input/index",
+    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index",
+    "sp-toast": "../../components/toast/index"
+  }
+}

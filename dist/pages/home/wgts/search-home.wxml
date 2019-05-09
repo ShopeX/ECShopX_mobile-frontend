@@ -1,0 +1,7 @@
+<block>
+    <view class="home-search-input">
+        <form class="home-search__form">
+            <at-search-bar className="home-search__bar" __triggerObserer="{{ _triggerObserer }}" value="{{searchValue}}" placeholder="护肤/彩妆/面膜/指甲油" actionName="取消" showActionButton="{{isShowAction}}" bindonfocus="handleFocusSearchHistory" bindonchange="handleChangeSearch" bindonconfirm="handleConfirm" bindonactionclick="handleClickCancel" __fn_onFocus="{{true}}" data-e-onfocus-so="this" data-e-onfocus-a-a="{{true}}" __fn_onChange="{{true}}" data-e-onchange-so="this" __fn_onConfirm="{{true}}" data-e-onconfirm-so="this" __fn_onActionClick="{{true}}" data-e-onactionclick-so="this" data-e-onactionclick-a-a="{{false}}"></at-search-bar>
+        </form>
+    </view>
+</block>

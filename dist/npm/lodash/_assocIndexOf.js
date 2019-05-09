@@ -1,0 +1,1 @@
+var eq=require("./eq.js");function assocIndexOf(e,r){for(var n=e.length;n--;)if(eq(e[n][0],r))return n;return-1}module.exports=assocIndexOf;

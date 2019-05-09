@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "at-avatar": "../../npm/taro-ui/dist/weapp/components/avatar/index",
+    "sp-icon-menu": "../../components/icon-menu/index",
+    "tab-bar": "../../components/tab-bar/index"
+  }
+}

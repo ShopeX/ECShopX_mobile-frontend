@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "loading": "../../components/loading/index",
+    "at-nav-bar": "../../npm/taro-ui/dist/weapp/components/nav-bar/index",
+    "alipay-pay": "./comps/alipay",
+    "we-h-5-pay": "./comps/we-h5",
+    "point-deposit-pay": "./comps/point-deposit"
+  }
+}

@@ -1,0 +1,1 @@
+var baseAssignValue=require("./_baseAssignValue.js"),eq=require("./eq.js"),objectProto=Object.prototype,hasOwnProperty=objectProto.hasOwnProperty;function assignValue(e,s,a){var r=e[s];hasOwnProperty.call(e,s)&&eq(r,a)&&(void 0!==a||s in e)||baseAssignValue(e,s,a)}module.exports=assignValue;

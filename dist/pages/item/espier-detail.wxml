@@ -1,0 +1,82 @@
+<block>
+    <block wx:if="{{!info}}">
+        <loading __triggerObserer="{{ _triggerObserer }}"></loading>
+    </block>
+    <view class="page-goods-detail" wx:else>
+        <nav-bar title="{{info.item_name}}" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <scroll-view class="goods-detail__wrap" scroll-y="{{true}}" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}" bindscroll="handleScroll">
+            <view class="goods-imgs__wrap">
+                <item-img info="{{imgInfo}}" __triggerObserer="{{ _triggerObserer }}"></item-img>
+            </view>
+            <block wx:if="{{timer}}">
+                <view class="goods-timer">
+                    <view class="goods-timer__hd">
+                        <view class="goods-prices">
+                            <price unit="cent" __triggerObserer="{{ _triggerObserer }}" symbol="{{info.cur.symbol}}" value="{{info.price}}"></price>
+                            <price unit="cent" __triggerObserer="{{ _triggerObserer }}" className="goods-prices__market" symbol="{{info.cur.symbol}}" value="{{info.mkt_price}}"></price>
+                            <view class="goods-prices__ft"><text class="goods-prices__type">团购</text><text class="goods-prices__rule">{{info.group_activity.person_num}}人团</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="goods-timer__bd"><text class="goods-timer__label">距结束还剩</text>
+                        <at-countdown isShowDay="{{true}}" __triggerObserer="{{ _triggerObserer }}" day="{{timer.dd}}" hours="{{timer.hh}}" minutes="{{timer.mm}}" seconds="{{timer.ss}}"></at-countdown>
+                    </view>
+                </view>
+            </block>
+            <view class="goods-hd">
+                <view class="goods-title__wrap"><text class="goods-title">{{info.item_name}}</text><text class="goods-title__desc">{{info.brief}}</text>
+                </view>
+                <block wx:if="{{marketing === 'normal'}}">
+                    <view class="goods-prices__wrap">
+                        <view class="goods-prices">
+                            <price primary="{{true}}" __triggerObserer="{{ _triggerObserer }}" unit="cent" value="{{info.price}}"></price>
+                        </view>
+                    </view>
+                </block>
+            </view>
+            <block wx:if="{{isPromoter}}">
+                <view class="goods-income">
+                    <view class="sp-icon sp-icon-jifen"></view><text>预计收益：{{anonymousState__temp}}</text>
+                </view>
+            </block>
+            <view class="goods-sec-specs">
+                <view class="specs-title"><text>规格</text>
+                    <block wx:if="{{curSku}}"><text class="specs-selected">已选 {{curSku.propsText}}</text>
+                    </block>
+                </view>
+                <scroll-view class="specs-scroller" scroll-x="{{true}}">
+                    <view class="specs-imgs">
+                        <image class="specs-imgs__item" src="{{specValueId.img}}" wx:key="img" mode="aspectFill" bindtap="handleBuyBarClick" wx:for="{{loopArray0}}" wx:for-item="specValueId" wx:for-index="_anonIdx" data-e-tap-so="this" data-e-tap-a-a="{{buyPanelType}}"></image>
+                    </view>
+                </scroll-view>
+            </view>
+            <sp-html-content className="goods-detail__content" __triggerObserer="{{ _triggerObserer }}" content="{{desc}}"></sp-html-content>
+        </scroll-view>
+        <float-menus __triggerObserer="{{ _triggerObserer }}">
+            <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="float-gift"></float-menu-item>
+            <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="float-share" openType="share" bindonclick="handleShare" __fn_onClick="{{true}}"></float-menu-item>
+            <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="back-top" hide="{{anonymousState__temp2}}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></float-menu-item>
+        </float-menus>
+        <block>
+            <block wx:if="{{!info.distributor_sale_status && hasStock && startSecKill}}">
+                <goods-buy-toolbar info="{{info}}" __triggerObserer="{{ _triggerObserer }}" type="{{marketing}}" bindonfavitem="handleMenuClick" bindonclickaddcart="handleBuyBarClick" bindonclickfastbuy="handleBuyBarClick" __fn_onFavItem="{{true}}" data-e-onfavitem-so="this" data-e-onfavitem-a-a="fav" __fn_onClickAddCart="{{true}}" data-e-onclickaddcart-so="this" data-e-onclickaddcart-a-a="cart" __fn_onClickFastBuy="{{true}}" data-e-onclickfastbuy-so="this" data-e-onclickfastbuy-a-a="fastbuy"></goods-buy-toolbar>
+            </block>
+            <block wx:else>
+                <goods-buy-toolbar info="{{info}}" __triggerObserer="{{ _triggerObserer }}" customRender="{{true}}" type="{{marketing}}">
+                    <view class="goods-buy-toolbar__btns" style="width: 40%; text-align: center;">
+                        <block>
+                            <block wx:if="{{!startSecKill}}"><text>活动即将开始</text>
+                            </block>
+                            <block wx:else><text>当前店铺无货</text>
+                            </block>
+                        </block>
+                    </view>
+                </goods-buy-toolbar>
+            </block>
+        </block>
+        <block wx:if="{{info}}">
+            <goods-buy-panel info="{{info}}" __triggerObserer="{{ _triggerObserer }}" type="{{buyPanelType}}" isOpened="{{showBuyPanel}}" cartCount="{{cartCount}}" bindonclose="anonymousFunc0" bindonchange="handleSkuChange" bindonclickaddcart="handleBuyClick" bindonclickfastbuy="handleBuyClick" __fn_onClose="{{true}}" __fn_onChange="{{true}}" __fn_onClickAddCart="{{true}}" data-e-onclickaddcart-so="this" data-e-onclickaddcart-a-a="cart" __fn_onClickFastBuy="{{true}}" data-e-onclickfastbuy-so="this" data-e-onclickfastbuy-a-a="fastbuy"></goods-buy-panel>
+        </block>
+        <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
+    </view>
+</block>

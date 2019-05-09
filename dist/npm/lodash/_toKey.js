@@ -1,0 +1,1 @@
+var isSymbol=require("./isSymbol.js"),INFINITY=1/0;function toKey(r){if("string"==typeof r||isSymbol(r))return r;var e=r+"";return"0"==e&&1/r==-1/0?"-0":e}module.exports=toKey;

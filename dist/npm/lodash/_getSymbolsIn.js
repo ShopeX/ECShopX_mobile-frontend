@@ -1,0 +1,1 @@
+var arrayPush=require("./_arrayPush.js"),getPrototype=require("./_getPrototype.js"),getSymbols=require("./_getSymbols.js"),stubArray=require("./stubArray.js"),nativeGetSymbols=Object.getOwnPropertySymbols,getSymbolsIn=nativeGetSymbols?function(r){for(var e=[];r;)arrayPush(e,getSymbols(r)),r=getPrototype(r);return e}:stubArray;module.exports=getSymbolsIn;

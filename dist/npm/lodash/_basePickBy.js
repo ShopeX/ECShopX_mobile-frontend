@@ -1,0 +1,1 @@
+var baseGet=require("./_baseGet.js"),baseSet=require("./_baseSet.js"),castPath=require("./_castPath.js");function basePickBy(e,a,t){for(var s=-1,r=a.length,b={};++s<r;){var c=a[s],i=baseGet(e,c);t(i,c)&&baseSet(b,castPath(c,e),i)}return b}module.exports=basePickBy;

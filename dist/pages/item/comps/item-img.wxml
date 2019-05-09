@@ -1,0 +1,6 @@
+<block>
+    <view class="item-img">
+        <image class="item-img__img" mode="aspectFill" src="{{info.img}}"></image>
+        <image src="{{info.img}}" mode="aspectFill" class="item-img__blured"></image>
+    </view>
+</block>

@@ -1,0 +1,1 @@
+var createFind=require("./_createFind.js"),findIndex=require("./findIndex.js"),find=createFind(findIndex);module.exports=find;

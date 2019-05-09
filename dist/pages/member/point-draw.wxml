@@ -1,0 +1,25 @@
+<block>
+    <view class="page-goods-list">
+        <nav-bar title="抽奖商品列表" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <scroll-view class="goods-listdraw__scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}" bindscroll="handleScroll" bindscrolltolower="nextPage">
+            <view class="goods-imgs__wrap">
+                <swiper class="goods-imgs__swiper" style="{{'height: ' + windowWidth + 'px'}}" current="{{curImgIdx}}" bindchange="handleSwiperChange">
+                    <swiper-item wx:key="idx" wx:for="{{loopArray0}}" wx:for-item="img" wx:for-index="idx">
+                        <image src="{{img.$original.imgUrl}}" mode="aspectFill" style="{{img.$loopState__temp2}}"></image>
+                    </swiper-item>
+                </swiper>
+                <block wx:if="{{imgs.length > 1}}"><text class="goods-imgs__text">{{curImgIdx + 1}}/ {{imgs.length}}</text>
+                </block>
+                <at-noticebar className="goods-imgs__notice" __triggerObserer="{{ _triggerObserer }}" marquee="{{true}}"><text>{{announce}}</text>
+                </at-noticebar><text class="goods-imgs__rule" bindtap="handleClickRule" data-e-tap-so="this">规则</text>
+            </view>
+            <view class="{{'goods-list goods-list__type-' + listType}}">
+                <goods-item wx:key="luckydraw_id" __triggerObserer="{{ _triggerObserer }}" info="{{item}}" noCurSymbol="{{true}}" noCurDecimal="{{true}}" appendText="积分" bindonclick="handleClickItem" customFooter="{{true}}" isPointDraw="{{true}}" wx:for="{{list}}" wx:for-item="item" wx:for-index="_anonIdx" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item}}"></goods-item>
+            </view>
+            <block wx:if="{{page.isLoading}}">
+                <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>
+            </block>
+        </scroll-view>
+        <back-to-top show="{{showBackToTop}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></back-to-top>
+    </view>
+</block>

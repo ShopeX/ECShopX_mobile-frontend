@@ -1,0 +1,1 @@
+var baseAssignValue=require("./_baseAssignValue.js"),baseForOwn=require("./_baseForOwn.js"),baseIteratee=require("./_baseIteratee.js");function mapKeys(e,r){var n={};return r=baseIteratee(r,3),baseForOwn(e,function(e,s,a){baseAssignValue(n,r(e,s,a),e)}),n}module.exports=mapKeys;

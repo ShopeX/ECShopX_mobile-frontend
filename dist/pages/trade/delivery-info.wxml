@@ -1,0 +1,17 @@
+<block>
+    <view class="delivery-detail">
+        <nav-bar title="物流信息" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <view class="delivery-detail__status"><text class="delivery-detail__status-text">物流信息</text>
+        </view>
+        <view class="delivery-info">
+            <block>
+                <block wx:if="{{lists.length === 0}}">
+                    <sp-note img="plane.png" __triggerObserer="{{ _triggerObserer }}">目前暂无物流信息~</sp-note>
+                </block>
+                <block wx:else>
+                    <at-timeline items="{{lists}}" __triggerObserer="{{ _triggerObserer }}"></at-timeline>
+                </block>
+            </block>
+        </view>
+    </view>
+</block>
