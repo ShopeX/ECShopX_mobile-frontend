@@ -50,10 +50,14 @@ export default class CartIndex extends Component {
         this.handleAllSelect(true)
       }
       const groups = this.resolveActivityGroup(list)
-      this.setState({
-        groups,
-        loading: false
-      })
+
+      // this.props.list 此时为空数组
+      setTimeout(() => {
+        this.setState({
+          groups,
+          loading: false
+        })
+      }, 40)
     })
   }
 
@@ -452,7 +456,7 @@ export default class CartIndex extends Component {
           isOpened={Boolean(curPromotions)}
           onClose={this.handleClosePromotions}
         >
-          {curPromotions.map(item => {
+          {curPromotions && curPromotions.map(item => {
             return (
               <AtActionSheetItem
                 key={item.marketing_id}

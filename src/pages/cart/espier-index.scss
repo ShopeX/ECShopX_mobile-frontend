@@ -54,17 +54,28 @@
       border-top: none;
       border-bottom: none;
       border-radius: 0;
+      height: 32px;
+      overflow: hidden;
       &__btn {
-        border-top: 1PX solid $color-border-gray;
-        border-bottom: 1PX solid $color-border-gray;
-        padding: 2px;
+        border-top: 1px solid $color-border-gray;
+        border-bottom: 1px solid $color-border-gray;
+        width: 32px - 2px;
+        height: 32px;
+        box-sizing: border-box;
+        padding: 0;
+        text-align: center;
+        overflow: hidden;
         &-subtract, &-add {
           font-size: 20px;
         }
       }
       &__input, input {
         line-height: 1;
-        font-size: $font-size;
+        height: 32px;
+        padding-top: 0;
+        padding-bottom: 0;
+        box-sizing: border-box;
+        font-size: $font-size-small;
       }
     }
   }

@@ -10,7 +10,12 @@ $item-img-height: 206px !default;
   overflow: hidden;
   margin: 0 0 $edge-margin;
   position: relative;
-  padding: 0 0 28px;
+  padding: 0 0 56px;
+  &__ft {
+    position: absolute;
+    right: 20px;
+    bottom: 56px;
+  }
   &__hd {
     padding: 25px - 5px;
   }
@@ -120,10 +125,5 @@ $item-img-height: 206px !default;
         margin-right: 8px;
       }
     }
-  }
-  &__ft {
-    position: absolute;
-    right: 0;
-    bottom: 26px;
   }
 }
