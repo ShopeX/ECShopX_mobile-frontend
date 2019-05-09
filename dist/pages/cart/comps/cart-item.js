@@ -38,7 +38,7 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GoodsItem.__proto__ || Object.getPrototypeOf(GoodsItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "img", "curPromotion", "noCurSymbol", "noCurDecimal", "appendText", "price", "showMarketPrice", "className", "isPointDraw", "__fn_onChange", "children", "onClickPromotion"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GoodsItem.__proto__ || Object.getPrototypeOf(GoodsItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "img", "curPromotion", "noCurSymbol", "noCurDecimal", "appendText", "price", "showMarketPrice", "isDisabled", "className", "isPointDraw", "__fn_onChange", "children", "onClickPromotion", "onNumChange"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(GoodsItem, [{
@@ -62,6 +62,7 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
           onClick = _props.onClick,
           appendText = _props.appendText,
           className = _props.className,
+          isDisabled = _props.isDisabled,
           isPointDraw = _props.isPointDraw;
 
       if (!info) {
@@ -74,7 +75,7 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
         return p.marketing_id === info.activity_id;
       });
 
-      var anonymousState__temp = (0, _index3.classNames)('cart-item', className);
+      var anonymousState__temp = (0, _index3.classNames)('cart-item', className, { 'is-disabled': isDisabled });
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
         info: info,
@@ -84,23 +85,24 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
         noCurDecimal: noCurDecimal,
         appendText: appendText,
         price: price,
-        showMarketPrice: showMarketPrice
+        showMarketPrice: showMarketPrice,
+        isDisabled: isDisabled
       });
       return this.__state;
     }
   }, {
-    key: "funPrivatejZYLN",
-    value: function funPrivatejZYLN() {
+    key: "funPrivatehxFlm",
+    value: function funPrivatehxFlm() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivateFAKst",
-    value: function funPrivateFAKst() {
+    key: "funPrivatePEyFc",
+    value: function funPrivatePEyFc() {
       this.__triggerPropsFn("onClickPromotion", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivateVKvNn",
-    value: function funPrivateVKvNn() {
+    key: "funPrivateTfKVC",
+    value: function funPrivateTfKVC() {
       this.__triggerPropsFn("onNumChange", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -135,6 +137,10 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   },
+  "isDisabled": {
+    "type": null,
+    "value": null
+  },
   "isPointDraw": {
     "type": null,
     "value": null
@@ -163,11 +169,12 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivatejZYLN", "funPrivateFAKst", "funPrivateVKvNn"], _class.defaultProps = {
+}, _class.$$events = ["funPrivatehxFlm", "funPrivatePEyFc", "funPrivateTfKVC"], _class.defaultProps = {
   onClick: function onClick() {},
   onClickPromotion: function onClickPromotion() {},
   showMarketPrice: false,
-  noCurSymbol: false
+  noCurSymbol: false,
+  isDisabled: false
 }, _class.options = {
   addGlobalClass: true
 }, _temp2);

@@ -149,7 +149,7 @@
 
 .member-integral {
   position: fixed;
-  top: 502rpx;
+  top: 410rpx;
   right: 0;
   left: 0;
   bottom: 30rpx;

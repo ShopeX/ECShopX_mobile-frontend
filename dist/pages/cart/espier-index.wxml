@@ -31,6 +31,18 @@
                     </view>
                 </block>
             </view>
+            <view class="cart-list cart-list__disabled">
+                <view class="cart-list__hd"><text>已失效</text>
+                </view>
+                <view class="cart-list__bd">
+                    <cart-item isDisabled="{{true}}" __triggerObserer="{{ _triggerObserer }}" wx:key="cart_id" info="{{item}}" wx:for="{{invalidList}}" wx:for-item="item" wx:for-index="_anonIdx3">
+                        <view class="cart-item__act">
+                            <view></view>
+                            <view class="in-icon in-icon-close" bindtap="handleDelect" data-e-tap-so="this" data-e-tap-a-a="{{item.cart_id}}"></view>
+                        </view>
+                    </cart-item>
+                </view>
+            </view>
         </scroll-view>
         <view class="{{'toolbar cart-toolbar ' + (isEmpty && 'hidden')}}">
             <view class="cart-toolbar__hd">
@@ -61,7 +73,7 @@
         </view>
         <at-action-sheet title="请选择商品优惠" __triggerObserer="{{ _triggerObserer }}" isOpened="{{anonymousState__temp5}}" bindonclose="handleClosePromotions" __fn_onClose="{{true}}">
             <block wx:if="{{curPromotions}}">
-                <at-action-sheet-item wx:key="marketing_id" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleSelectPromotion" wx:for="{{curPromotions}}" wx:for-item="item" wx:for-index="_anonIdx3" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item}}"><text class="cart-promotion__label">{{item.promotion_tag}}</text><text>{{item.marketing_name}}</text>
+                <at-action-sheet-item wx:key="marketing_id" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleSelectPromotion" wx:for="{{curPromotions}}" wx:for-item="item" wx:for-index="_anonIdx4" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item}}"><text class="cart-promotion__label">{{item.promotion_tag}}</text><text>{{item.marketing_name}}</text>
                 </at-action-sheet-item>
             </block>
         </at-action-sheet>

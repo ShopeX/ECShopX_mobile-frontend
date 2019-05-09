@@ -6,11 +6,7 @@ export function search (params = {}) {
 }
 
 export function detail (item_id, params = {}) {
-  return req.get(`/goods/items/${item_id}`, params, {
-    header: {
-      'Accept': 'application/vnd.espier.v2+json'
-    }
-  })
+  return req.get(`/goods/items/${item_id}`, params)
 }
 
 export function desc (item_id) {

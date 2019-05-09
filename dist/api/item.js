@@ -28,11 +28,7 @@ function search() {
 function detail(item_id) {
   var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  return _req2.default.get('/goods/items/' + item_id, params, {
-    header: {
-      'Accept': 'application/vnd.espier.v2+json'
-    }
-  });
+  return _req2.default.get('/goods/items/' + item_id, params);
 }
 
 function desc(item_id) {

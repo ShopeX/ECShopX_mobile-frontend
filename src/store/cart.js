@@ -37,11 +37,10 @@ const cart = createReducer(initState, {
   },
   ['cart/updateNum'](state, action) {
     const { cart_id, num } = action.payload
-    let item = null
+
     walkCart(state, t => {
       if (t.cart_id === cart_id) {
-        item = t
-        item.num = num
+        t.num = num
       }
     })
     const list = [...state.list]
@@ -95,11 +94,11 @@ const cart = createReducer(initState, {
 
 export default cart
 
-export function getTotalCount (state) {
+export function getTotalCount (state, isAll) {
   let total = 0
 
   walkCart(state, (item) => {
-    if (!state.selection.includes(item.cart_id)) return
+    if (!isAll && !state.selection.includes(item.cart_id)) return
     total += (+item.num)
   })
 

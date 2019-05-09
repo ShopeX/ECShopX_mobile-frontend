@@ -57,11 +57,10 @@ var cart = (0, _index.createReducer)(initState, (_createReducer = {}, _definePro
       cart_id = _action$payload2.cart_id,
       num = _action$payload2.num;
 
-  var item = null;
+
   walkCart(state, function (t) {
     if (t.cart_id === cart_id) {
-      item = t;
-      item.num = num;
+      t.num = num;
     }
   });
   var list = [].concat(_toConsumableArray(state.list));
@@ -100,11 +99,11 @@ var cart = (0, _index.createReducer)(initState, (_createReducer = {}, _definePro
 }), _createReducer));
 
 exports.default = cart;
-function getTotalCount(state) {
+function getTotalCount(state, isAll) {
   var total = 0;
 
   walkCart(state, function (item) {
-    if (!state.selection.includes(item.cart_id)) return;
+    if (!isAll && !state.selection.includes(item.cart_id)) return;
     total += +item.num;
   });
 

@@ -78,7 +78,7 @@
   position: absolute;
   left: 0;
   width: 100%;
-  top: 232rpx;
+  top: 140rpx;
   bottom: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -221,7 +221,7 @@
   position: absolute;
   left: 0;
   width: 100%;
-  top: 92rpx;
+  top: 0;
   bottom: 98rpx;
   overflow-y: auto;
   overflow-x: hidden;

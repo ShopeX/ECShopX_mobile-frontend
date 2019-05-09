@@ -7,7 +7,7 @@ import { log, navigateTo, pickBy } from '@/utils'
 import debounce from 'lodash/debounce'
 import api from '@/api'
 import { withLogin } from '@/hocs'
-import { getTotalPrice } from '@/store/cart'
+import { getTotalPrice, getTotalCount } from '@/store/cart'
 import CartItem from './comps/cart-item'
 
 import './espier-index.scss'
@@ -16,9 +16,11 @@ import './espier-index.scss'
   list: cart.list,
   cartIds: cart.cartIds,
   defaultAllSelect: false,
-  totalPrice: getTotalPrice(cart)
+  totalPrice: getTotalPrice(cart),
+  // workaround for none selection cartItem num change
+  totalItems: getTotalCount(cart, true)
 }), (dispatch) => ({
-  onUpdateCartNum: (cart_id, num) => dispatch({ type: 'cart/updateNum', payload: { cart_id, num } }),
+  onUpdateCartNum: (cart_id, num) => dispatch({ type: 'cart/updateNum', payload: { cart_id, num: +num } }),
   onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
   onCartSelection: (selection) => dispatch({ type: 'cart/selection', payload: selection })
 }))
@@ -69,6 +71,11 @@ export default class CartIndex extends Component {
         })
       }, 40)
     })
+  }
+
+  componentDidShow () {
+    if (this.state.loading) return
+    this.updateCart()
   }
 
   componentWillReceiveProps (nextProps) {
@@ -124,14 +131,8 @@ export default class CartIndex extends Component {
       }
     })
 
-    const invalidList = invalid_cart.map(shopCart => {
-      const tList = this.transformCartList(shopCart.list)
-
-      return {
-        ...shopCart,
-        list: tList
-      }
-    })
+    // TODO: invalid render
+    const invalidList = this.transformCartList(invalid_cart)
 
     this.setState({
       invalidList
@@ -226,7 +227,7 @@ export default class CartIndex extends Component {
     }
   }
 
-  handleAllSelect = (checked) => {
+  handleAllSelect = async (checked) => {
     const { selection } = this.state
     const { cartIds } = this.props
 
@@ -236,6 +237,16 @@ export default class CartIndex extends Component {
       selection.clear()
     }
 
+    Taro.showLoading()
+    try {
+      await api.cart.select({
+        cart_id: cartIds,
+        is_checked: checked
+      })
+    } catch (e) {
+      console.log(e)
+    }
+    Taro.hideLoading()
     this.updateSelection([...selection])
   }
 
@@ -315,7 +326,7 @@ export default class CartIndex extends Component {
   }
 
   render () {
-    const { selection, groups, cartMode, loading, curPromotions } = this.state
+    const { selection, groups, invalidList, cartMode, loading, curPromotions } = this.state
     const { totalPrice, list } = this.props
 
     if (loading) {
@@ -422,6 +433,29 @@ export default class CartIndex extends Component {
                 </View>
               )
             }
+          </View>
+
+          <View className='cart-list cart-list__disabled'>
+            <View className='cart-list__hd'><Text>已失效</Text></View>
+            <View className='cart-list__bd'>
+              {invalidList.map(item => {
+                return (
+                  <CartItem
+                    isDisabled
+                    key={item.cart_id}
+                    info={item}
+                  >
+                    <View className='cart-item__act'>
+                      <View></View>
+                      <View
+                        className='in-icon in-icon-close'
+                        onClick={this.handleDelect.bind(this, item.cart_id)}
+                      />
+                    </View>
+                  </CartItem>
+                )
+              })}
+            </View>
           </View>
         </ScrollView>
 

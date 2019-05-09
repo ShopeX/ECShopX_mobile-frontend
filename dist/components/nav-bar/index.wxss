@@ -12,5 +12,5 @@
 =            z-index            =
 ===============================*/
 .nav-bar-height {
-  height: 92rpx;
+  height: 0;
 }

@@ -11,7 +11,8 @@ export default class GoodsItem extends Component {
     onClick: () => {},
     onClickPromotion: () => {},
     showMarketPrice: false,
-    noCurSymbol: false
+    noCurSymbol: false,
+    isDisabled: false
   }
 
   static options = {
@@ -19,7 +20,7 @@ export default class GoodsItem extends Component {
   }
 
   render () {
-    const { info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw } = this.props
+    const { info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className, isDisabled, isPointDraw } = this.props
     if (!info) {
       return null
     }
@@ -29,7 +30,7 @@ export default class GoodsItem extends Component {
     const curPromotion = info.promotions && info.activity_id && info.promotions.find(p => p.marketing_id === info.activity_id)
 
     return (
-      <View className={classNames('cart-item', className)}>
+      <View className={classNames('cart-item', className, { 'is-disabled': isDisabled })}>
         <View className='cart-item__hd'>
           {this.props.children}
         </View>
@@ -82,12 +83,14 @@ export default class GoodsItem extends Component {
           </View>
         </View>
         <View className='cart-item__ft'>
-          <AtInputNumber
-            min={1}
-            max={999999}
-            value={info.num}
-            onChange={this.props.onNumChange}
-          />
+          {!isDisabled && (
+            <AtInputNumber
+              min={1}
+              max={999999}
+              value={info.num}
+              onChange={this.props.onNumChange}
+            />
+          )}
         </View>
       </View>
     )

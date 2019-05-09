@@ -50,12 +50,14 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
     list: cart.list,
     cartIds: cart.cartIds,
     defaultAllSelect: false,
-    totalPrice: (0, _cart.getTotalPrice)(cart)
+    totalPrice: (0, _cart.getTotalPrice)(cart),
+    // workaround for none selection cartItem num change
+    totalItems: (0, _cart.getTotalCount)(cart, true)
   };
 }, function (dispatch) {
   return {
     onUpdateCartNum: function onUpdateCartNum(cart_id, num) {
-      return dispatch({ type: 'cart/updateNum', payload: { cart_id: cart_id, num: num } });
+      return dispatch({ type: 'cart/updateNum', payload: { cart_id: cart_id, num: +num } });
     },
     onUpdateCart: function onUpdateCart(list) {
       return dispatch({ type: 'cart/update', payload: list });
@@ -130,6 +132,13 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       });
     }
   }, {
+    key: "componentDidShow",
+    value: function componentDidShow() {
+      if (this.state.loading) {
+        return;
+      }this.updateCart();
+    }
+  }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
       if (nextProps.list !== this.props.list) {
@@ -201,13 +210,10 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
                     list: tList
                   });
                 });
-                invalidList = invalid_cart.map(function (shopCart) {
-                  var tList = _this3.transformCartList(shopCart.list);
 
-                  return _extends({}, shopCart, {
-                    list: tList
-                  });
-                });
+                // TODO: invalid render
+
+                invalidList = this.transformCartList(invalid_cart);
 
 
                 this.setState({
@@ -358,6 +364,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       var _state = this.__state,
           selection = _state.selection,
           groups = _state.groups,
+          invalidList = _state.invalidList,
           cartMode = _state.cartMode,
           loading = _state.loading,
           curPromotions = _state.curPromotions;
@@ -466,7 +473,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
 }, _initialiseProps = function _initialiseProps() {
   var _this4 = this;
 
-  this.$usedState = ["anonymousState__temp3", "anonymousState__temp4", "anonymousState__temp5", "loopArray0", "loading", "groups", "list", "isEmpty", "cartMode", "totalPrice", "curPromotions", "selection", "invalidList", "defaultAllSelect", "__fn_onUpdateCart", "cartIds", "__fn_onCartSelection", "__fn_onUpdateCartNum", "isTotalChecked"];
+  this.$usedState = ["anonymousState__temp3", "anonymousState__temp4", "anonymousState__temp5", "loopArray0", "loading", "groups", "list", "invalidList", "isEmpty", "cartMode", "totalPrice", "curPromotions", "selection", "defaultAllSelect", "__fn_onUpdateCart", "cartIds", "__fn_onCartSelection", "__fn_onUpdateCartNum", "isTotalChecked"];
   this.updateCart = (0, _debounce2.default)(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -619,21 +626,59 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
     };
   }();
 
-  this.handleAllSelect = function (checked) {
-    var selection = _this4.state.selection;
-    var cartIds = _this4.props.cartIds;
+  this.handleAllSelect = function () {
+    var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(checked) {
+      var selection, cartIds;
+      return regeneratorRuntime.wrap(function _callee8$(_context8) {
+        while (1) {
+          switch (_context8.prev = _context8.next) {
+            case 0:
+              selection = _this4.state.selection;
+              cartIds = _this4.props.cartIds;
 
 
-    if (checked) {
-      cartIds.forEach(function (cartId) {
-        return selection.add(cartId);
-      });
-    } else {
-      selection.clear();
-    }
+              if (checked) {
+                cartIds.forEach(function (cartId) {
+                  return selection.add(cartId);
+                });
+              } else {
+                selection.clear();
+              }
 
-    _this4.updateSelection([].concat(_toConsumableArray(selection)));
-  };
+              _index2.default.showLoading();
+              _context8.prev = 4;
+              _context8.next = 7;
+              return _index6.default.cart.select({
+                cart_id: cartIds,
+                is_checked: checked
+              });
+
+            case 7:
+              _context8.next = 12;
+              break;
+
+            case 9:
+              _context8.prev = 9;
+              _context8.t0 = _context8["catch"](4);
+
+              console.log(_context8.t0);
+
+            case 12:
+              _index2.default.hideLoading();
+              _this4.updateSelection([].concat(_toConsumableArray(selection)));
+
+            case 14:
+            case "end":
+              return _context8.stop();
+          }
+        }
+      }, _callee8, _this4, [[4, 9]]);
+    }));
+
+    return function (_x12) {
+      return _ref15.apply(this, arguments);
+    };
+  }();
 
   this.handleClickPromotion = function (cart_id) {
     var promotions = void 0;
@@ -651,11 +696,11 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
   };
 
   this.handleSelectPromotion = function () {
-    var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(item) {
+    var _ref16 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(item) {
       var activity_id, cart_id;
-      return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      return regeneratorRuntime.wrap(function _callee9$(_context9) {
         while (1) {
-          switch (_context8.prev = _context8.next) {
+          switch (_context9.prev = _context9.next) {
             case 0:
               activity_id = item.marketing_id, cart_id = item.cart_id;
 
@@ -665,14 +710,14 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
               _this4.setState({
                 curPromotions: null
               });
-              _context8.next = 5;
+              _context9.next = 5;
               return _index6.default.cart.updatePromotion({
                 activity_id: activity_id,
                 cart_id: cart_id
               });
 
             case 5:
-              _context8.next = 7;
+              _context9.next = 7;
               return _this4.fetch();
 
             case 7:
@@ -680,14 +725,14 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
 
             case 8:
             case "end":
-              return _context8.stop();
+              return _context9.stop();
           }
         }
-      }, _callee8, _this4);
+      }, _callee9, _this4);
     }));
 
-    return function (_x12) {
-      return _ref15.apply(this, arguments);
+    return function (_x13) {
+      return _ref16.apply(this, arguments);
     };
   }();
 

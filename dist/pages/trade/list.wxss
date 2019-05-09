@@ -28,7 +28,7 @@
 .page-trade-list .at-tabs__header {
   position: fixed;
   left: 0;
-  top: 92rpx;
+  top: 0;
   width: 100%;
   z-index: 100;
 }
@@ -45,7 +45,7 @@
   position: absolute;
   left: 0;
   width: 100%;
-  top: 177rpx;
+  top: 85rpx;
   bottom: 16rpx;
   overflow-y: auto;
   overflow-x: hidden;

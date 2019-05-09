@@ -18,7 +18,7 @@
   position: absolute;
   left: 0;
   width: 100%;
-  top: 92rpx;
+  top: 0;
   bottom: 190rpx;
   overflow-y: auto;
   overflow-x: hidden;
@@ -40,6 +40,15 @@
       -ms-flex-pack: end;
           justify-content: flex-end;
   padding: 16rpx 30rpx 0;
+}
+.page-cart-index .cart-list__hd {
+  color: #818181;
+  font-size: 26rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+}
+.page-cart-index .cart-list__disabled {
+  margin-top: -40rpx;
 }
 .page-cart-index .cart-list .goods-item {
   position: relative;

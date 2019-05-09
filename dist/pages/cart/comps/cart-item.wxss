@@ -22,6 +22,10 @@
   position: relative;
   padding: 0 0 56rpx;
 }
+.cart-item.is-disabled {
+  background: #fafafa;
+  opacity: 0.8;
+}
 .cart-item__ft {
   position: absolute;
   right: 20rpx;

@@ -11,6 +11,10 @@ $item-img-height: 206px !default;
   margin: 0 0 $edge-margin;
   position: relative;
   padding: 0 0 56px;
+  &.is-disabled {
+    background: #fafafa;
+    opacity: 0.8;
+  }
   &__ft {
     position: absolute;
     right: 20px;

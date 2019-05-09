@@ -11,6 +11,15 @@
       justify-content: flex-end;
       padding: $edge-margin $edge-size 0;
     }
+    &__hd {
+      color: $color-gray;
+      font-size: $font-size;
+      height: 40px;
+      line-height: 40px;
+    }
+    &__disabled {
+      margin-top: -40px;
+    }
     .goods-item {
       position: relative;
     }

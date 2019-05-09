@@ -17,7 +17,7 @@
   position: absolute;
   left: 0;
   width: 100%;
-  top: 92rpx;
+  top: 0;
   bottom: 16rpx;
   overflow-y: auto;
   overflow-x: hidden;
@@ -85,7 +85,7 @@
 }
 .page-goods-list .goods-list__toolbar {
   position: fixed;
-  top: 92rpx;
+  top: 0;
   left: 0;
   width: 100%;
   z-index: 100;

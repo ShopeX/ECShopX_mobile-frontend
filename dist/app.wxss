@@ -12580,7 +12580,7 @@
           box-sizing: border-box;
   position: fixed;
   left: 0;
-  top: 92rpx;
+  top: 0;
   width: 100%;
   z-index: 100;
 }
