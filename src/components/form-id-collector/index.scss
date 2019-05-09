@@ -1,0 +1,15 @@
+@import "../../style/imports";
+
+.form-id-collector {
+  &__btn {
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: $font-size;
+    text-align: left;
+    line-height: auto;
+    overflow: visible;
+    background: none !important;
+    position: static;
+  }
+}

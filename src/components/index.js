@@ -9,6 +9,7 @@ export { default as TabBar } from './tab-bar'
 export { default as FilterBar } from './filter-bar'
 export { default as FloatMenus } from './float-menus'
 export { default as FloatMenuItem } from './float-menus/item'
+export { default as FormIdCollector } from './form-id-collector'
 
 export { default as SearchBar } from './search-bar'
 export { default as NavBar } from './nav-bar'

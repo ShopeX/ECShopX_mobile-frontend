@@ -62,6 +62,11 @@ export default class Detail extends Component {
     this.fetchCartCount()
   }
 
+  handleTest = (e) => {
+    console.log(e)
+    debugger
+  }
+
   onShareAppMessage () {
     const { info } = this.state
 
