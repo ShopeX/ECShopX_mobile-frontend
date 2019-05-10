@@ -43,7 +43,11 @@
           filter: blur(8rpx);
 }
 .item-img__blured-wrap {
-  position: relative;
-  height: 390rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 450rpx;
+  padding-bottom: 20rpx;
   overflow: hidden;
 }

@@ -10,6 +10,9 @@ export default class CouponItem extends Component {
   }
 
   static defaultProps = {
+    onClick: () => {},
+    info: null,
+    isShowCheckout: false
   }
 
   constructor (props) {
@@ -34,7 +37,7 @@ export default class CouponItem extends Component {
   }
 
   render () {
-    const { info, isShowCheckout, isChoosed } = this.props
+    const { info, isShowCheckout, isChoosed, onClick } = this.props
     const { isItemChecked } = this.state
 
     if (!info) {
@@ -42,7 +45,10 @@ export default class CouponItem extends Component {
     }
 
     return (
-      <View className='coupon-item-index'>
+      <View
+        className='coupon-item-index'
+        onClick={this.props.onClick}
+      >
         {
           isShowCheckout && info.status === '2' && <View className='coupon-item__check' onClick={this.handleClickChecked.bind(this, info.id)}>
             {
@@ -83,6 +89,15 @@ export default class CouponItem extends Component {
               </View>
               : null
           }
+          {
+            info.card_type === 'member' && (
+              <View className={classNames('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null)}>
+                <View className='coupon-item___number'><Text className='coupon-item___number_text'>会员折扣</Text></View>
+                <View className='radius-view radius-left-top'> </View>
+                <View className='radius-view radius-left-bottom'> </View>
+              </View>
+            )
+          }
           <View className='coupon-item__content'>
             <View className='coupon-item___description'>
               <Text>{info.title}</Text>
@@ -93,8 +108,11 @@ export default class CouponItem extends Component {
                   </View>
                   : null
               }
+              {this.props.children}
             </View>
-            <View className='coupon-item___time'><Text>{info.begin_date} ~ {info.end_date}</Text></View>
+            {info.begin_date && info.end_date && (
+              <View className='coupon-item___time'><Text>{info.begin_date} ~ {info.end_date}</Text></View>
+            )}
             <View className='radius-view radius-right-top'> </View>
             <View className='radius-view radius-right-bottom'> </View>
           </View>

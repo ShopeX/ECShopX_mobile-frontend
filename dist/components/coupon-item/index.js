@@ -38,7 +38,7 @@ var CouponItem = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CouponItem.__proto__ || Object.getPrototypeOf(CouponItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "info", "isShowCheckout", "isChoosed", "isItemChecked", "curKey", "__fn_onClickBtn"], _this.handleClickChecked = function (index) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CouponItem.__proto__ || Object.getPrototypeOf(CouponItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "anonymousState__temp4", "info", "isShowCheckout", "isChoosed", "isItemChecked", "curKey", "__fn_onClickBtn", "children"], _this.handleClickChecked = function (index) {
       if (_this.props.curKey === index) {
         _this.setState({
           isItemChecked: !_this.state.isItemChecked
@@ -72,7 +72,8 @@ var CouponItem = (_temp2 = _class = function (_BaseComponent) {
       var _props = this.__props,
           info = _props.info,
           isShowCheckout = _props.isShowCheckout,
-          isChoosed = _props.isChoosed;
+          isChoosed = _props.isChoosed,
+          onClick = _props.onClick;
       var isItemChecked = this.__state.isItemChecked;
 
 
@@ -83,15 +84,22 @@ var CouponItem = (_temp2 = _class = function (_BaseComponent) {
       var anonymousState__temp = info.card_type === 'cash' ? (0, _index3.classNames)('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null) : null;
       var anonymousState__temp2 = info.card_type === 'gift' ? (0, _index3.classNames)('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null) : null;
       var anonymousState__temp3 = info.card_type === 'discount' ? (0, _index3.classNames)('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null) : null;
+      var anonymousState__temp4 = info.card_type === 'member' ? (0, _index3.classNames)('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null) : null;
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
         anonymousState__temp2: anonymousState__temp2,
         anonymousState__temp3: anonymousState__temp3,
+        anonymousState__temp4: anonymousState__temp4,
         info: info,
         isShowCheckout: isShowCheckout,
         isChoosed: isChoosed
       });
       return this.__state;
+    }
+  }, {
+    key: "funPrivatePGYQl",
+    value: function funPrivatePGYQl() {
+      this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
 
@@ -116,10 +124,22 @@ var CouponItem = (_temp2 = _class = function (_BaseComponent) {
   "isChoosed": {
     "type": null,
     "value": null
+  },
+  "onClick": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClick": {
+    "type": null,
+    "value": null
   }
-}, _class.$$events = ["handleClickChecked"], _class.options = {
+}, _class.$$events = ["funPrivatePGYQl", "handleClickChecked"], _class.options = {
   addGlobalClass: true
-}, _class.defaultProps = {}, _temp2);
+}, _class.defaultProps = {
+  onClick: function onClick() {},
+  info: null,
+  isShowCheckout: false
+}, _temp2);
 exports.default = CouponItem;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(CouponItem));

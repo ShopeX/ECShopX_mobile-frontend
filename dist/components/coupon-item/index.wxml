@@ -2,7 +2,7 @@
     <block wx:if="{{!info}}">
         <view></view>
     </block>
-    <view class="coupon-item-index" wx:else>
+    <view class="coupon-item-index" bindtap="funPrivatePGYQl" wx:else>
         <block wx:if="{{isShowCheckout && info.status === '2'}}">
             <view class="coupon-item__check" bindtap="handleClickChecked" data-e-tap-so="this" data-e-tap-a-a="{{info.id}}">
                 <block>
@@ -38,15 +38,26 @@
                     <view class="radius-view radius-left-bottom"></view>
                 </view>
             </block>
+            <block wx:if="{{info.card_type === 'member'}}">
+                <view class="{{anonymousState__temp4}}">
+                    <view class="coupon-item___number"><text class="coupon-item___number_text">会员折扣</text>
+                    </view>
+                    <view class="radius-view radius-left-top"></view>
+                    <view class="radius-view radius-left-bottom"></view>
+                </view>
+            </block>
             <view class="coupon-item__content">
                 <view class="coupon-item___description"><text>{{info.title}}</text>
                     <block wx:if="{{info.tagClass === 'used'}}">
                         <view class="coupon-item___used"><text class="sp-icon sp-icon-yishiyong icon-used"></text>
                         </view>
                     </block>
+                    <slot></slot>
                 </view>
-                <view class="coupon-item___time"><text>{{info.begin_date}}~ {{info.end_date}}</text>
-                </view>
+                <block wx:if="{{info.begin_date && info.end_date}}">
+                    <view class="coupon-item___time"><text>{{info.begin_date}}~ {{info.end_date}}</text>
+                    </view>
+                </block>
                 <view class="radius-view radius-right-top"></view>
                 <view class="radius-view radius-right-bottom"></view>
             </view>

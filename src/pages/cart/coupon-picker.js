@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { Price, SpCheckbox } from '@/components'
+import { Price, SpCheckbox, CouponItem } from '@/components'
 import { pickBy } from '@/utils'
 import api from '@/api'
 
@@ -71,61 +71,62 @@ export default class CouponPicker extends Component {
       return null
     }
 
+    const memberCoupon = {
+      card_type: 'member',
+      title: '会员折扣价'
+    }
+
     return (
       <View className='coupon-picker'>
-        <View
-          className='coupon-item'
+        <CouponItem
+          info={memberCoupon}
           onClick={this.handleCouponSelect.bind(this, 'member', true)}
         >
-          <View className='coupon-item__hd'>
-            <View className='coupon-item__name'>会员折扣</View>
-          </View>
-          <View className='coupon-item__bd'>
-            <Text className='coupon-item__title'>会员折扣价</Text>
-          </View>
-          <View className='coupon-item__ft'>
-            <SpCheckbox
-              checked={curCoupon && curCoupon.type === 'member' && curCoupon.value}
-            />
-          </View>
-        </View>
+          <SpCheckbox
+            checked={curCoupon && curCoupon.type === 'member' && curCoupon.value}
+          />
+        </CouponItem>
         {
           coupons.map((coupon, idx) => {
-            const typeStr = coupon.type === 'cash'
-              ? '抵用券'
-              : coupon.type === 'discount'
-                ? '折扣券'
-                : '兑换券'
-
             return (
-              <View
+              <CouponItem
                 key={idx}
-                className='coupon-item'
+                info={coupon}
                 onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
               >
-                <View className='coupon-item__hd'>
-                  <View className='coupon-item__name'>
-                    {coupon.card_type === 'cash' && (<Price value={coupon.reduce_cost} unit='cent' />)}
-                    {coupon.card_type === 'discount' && (<Text>{(100 - coupon.discount) / 10}折</Text>)}
-                    {coupon.card_type === 'gift' && (<Text>兑换券</Text>)}
-                  </View>
-                  <Text className='coupon-item__type'>{typeStr}</Text>
-                </View>
-                <View className='coupon-item__bd'>
-                  <Text className='coupon-item__title'>{coupon.title}</Text>
-                  <View className='coupon-item__rule'>
-                    {(coupon.card_type !== 'gift' && coupon.least_cost > 0)
-                      ? <View className='coupon-item__rule-inner'>满<Price value={coupon.least_cost} unit='cent' />元可用</View>
-                      : (coupon.card_type != 'gift' && (<Text>满0.01可用</Text>))}
-                  </View>
-                  <Text className='coupon-item__time'>使用期限 {coupon.begin_date} ~ {coupon.end_date}</Text>
-                </View>
-                <View className='coupon-item__ft'>
-                  <SpCheckbox
-                    checked={curCoupon && curCoupon.type === 'coupon' && curCoupon.value.code === coupon.code}
-                  />
-                </View>
-              </View>
+                <SpCheckbox
+                  checked={curCoupon && curCoupon.type === 'coupon' && curCoupon.value.code === coupon.code}
+                />
+              </CouponItem>
+
+              // <View
+              //   key={idx}
+              //   className='coupon-item'
+              //   onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
+              // >
+              //   <View className='coupon-item__hd'>
+              //     <View className='coupon-item__name'>
+              //       {coupon.card_type === 'cash' && (<Price value={coupon.reduce_cost} unit='cent' />)}
+              //       {coupon.card_type === 'discount' && (<Text>{(100 - coupon.discount) / 10}折</Text>)}
+              //       {coupon.card_type === 'gift' && (<Text>兑换券</Text>)}
+              //     </View>
+              //     <Text className='coupon-item__type'>{typeStr}</Text>
+              //   </View>
+              //   <View className='coupon-item__bd'>
+              //     <Text className='coupon-item__title'>{coupon.title}</Text>
+              //     <View className='coupon-item__rule'>
+              //       {(coupon.card_type !== 'gift' && coupon.least_cost > 0)
+              //         ? <View className='coupon-item__rule-inner'>满<Price value={coupon.least_cost} unit='cent' />元可用</View>
+              //         : (coupon.card_type != 'gift' && (<Text>满0.01可用</Text>))}
+              //     </View>
+              //     <Text className='coupon-item__time'>使用期限 {coupon.begin_date} ~ {coupon.end_date}</Text>
+              //   </View>
+              //   <View className='coupon-item__ft'>
+              //     <SpCheckbox
+              //       checked={curCoupon && curCoupon.type === 'coupon' && curCoupon.value.code === coupon.code}
+              //     />
+              //   </View>
+              // </View>
             )
           })
         }
