@@ -61,7 +61,9 @@
   margin-right: 8rpx;
 }
 .page-cart-index .cart-group {
-  margin: 0 0 40rpx;
+  margin: 0 0 20rpx;
+  padding: 0 0 4rpx;
+  border-bottom: 1rpx dashed #d9d9d9;
 }
 .page-cart-index .cart-group__activity {
   margin: 0 0 8rpx;
@@ -74,6 +76,46 @@
   vertical-align: middle;
   padding: 2rpx 8rpx;
   margin-right: 8rpx;
+}
+.page-cart-index .cart-group__gifts {
+  background: #fff;
+  padding: 10rpx 25rpx;
+  margin: 0 0 20rpx;
+}
+.page-cart-index .cart-group__gifts-hd {
+  height: 50rpx;
+  line-height: 50rpx;
+}
+.page-cart-index .cart-group__gifts .gift-item {
+  margin: 0 0 10rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+.page-cart-index .cart-group__gifts .gift-item__img {
+  background: #f8f8f8;
+  width: 80rpx;
+  height: 80rpx;
+  border: 1rpx solid #d9d9d9;
+  margin-right: 16rpx;
+}
+.page-cart-index .cart-group__gifts .gift-item__title {
+  font-size: 23rpx;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.page-cart-index .cart-group__gifts .gift-item__num {
+  width: 50rpx;
+  font-size: 23rpx;
+  color: #818181;
+  text-align: right;
 }
 .page-cart-index .cart-item__act {
   display: -webkit-box;

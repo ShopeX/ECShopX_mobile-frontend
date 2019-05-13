@@ -32,7 +32,9 @@
     }
   }
   .cart-group {
-    margin: 0 0 40px;
+    margin: 0 0 20px;
+    padding: 0 0 4px;
+    border-bottom: 1px dashed $color-border-gray;
     &__activity {
       margin: 0 0 8px;
       &-item {
@@ -45,6 +47,39 @@
         vertical-align: middle;
         padding: 2px 8px;
         margin-right: 8px;
+      }
+    }
+    &__gifts {
+      background: #fff;
+      padding: 10px 25px;
+      margin: 0 0 20px;
+      &-hd {
+        height: 50px;
+        line-height: 50px;
+      }
+      &-bd {
+      }
+      .gift-item {
+        margin: 0 0 10px;
+        display: flex;
+        align-items: flex-start;
+        &__img {
+          background: #f8f8f8;
+          width: 80px;
+          height: 80px;
+          border: 1px solid $color-border-gray;
+          margin-right: 16px;
+        }
+        &__title {
+          font-size: $font-size-small;
+          flex: 1;
+        }
+        &__num {
+          width: 50px;
+          font-size: $font-size-small;
+          color: $color-gray;
+          text-align: right;
+        }
       }
     }
   }

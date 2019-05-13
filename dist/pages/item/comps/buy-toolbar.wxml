@@ -1,7 +1,7 @@
 <block>
     <view class="goods-buy-toolbar">
         <view class="goods-buy-toolbar__menus">
-            <view class="goods-buy-toolbar__menu-item" bindtap="funPrivatecvvoq">
+            <view class="goods-buy-toolbar__menu-item" bindtap="funPrivateVkXAc">
                 <view class="{{'in-icon ' + (info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav')}}"></view>
             </view>
             <button class="goods-buy-toolbar__menu-item" open-type="contact">
@@ -21,10 +21,10 @@
                 <view class="goods-buy-toolbar__btns">
                     <block wx:if="{{type === 'normal'}}">
                         <form-id-collector classes="goods-buy-toolbar__btn btn-add-cart" __triggerObserer="{{ _triggerObserer }}">
-                            <button class="goods-buy-toolbar__btn btn-add-cart" bindtap="funPrivateQDdAI">添加至购物车</button>
+                            <button class="goods-buy-toolbar__btn btn-add-cart" bindtap="funPrivatefevtP">添加至购物车</button>
                         </form-id-collector>
                     </block>
-                    <button class="goods-buy-toolbar__btn btn-fast-buy" bindtap="funPrivateezqwr">{{fastBuyText}}</button>
+                    <button class="goods-buy-toolbar__btn btn-fast-buy" bindtap="funPrivateJqDNk">{{fastBuyText}}</button>
                 </view>
             </block>
         </block>

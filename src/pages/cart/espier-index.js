@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import { SpCheckbox, SpNote, TabBar, Loading, Price, NavBar } from '@/components'
@@ -95,7 +95,9 @@ export default class CartIndex extends Component {
         acc[val.cart_id] = val
         return acc
       }, {})
-      const group = shopCart.activity_grouping.map((activity) => {
+      const activityGrouping = shopCart.activity_grouping
+      const group = Object.values(shopCart.used_activity).map((actId) => {
+        const activity = activityGrouping.find(a => String(a.activity_id) === actId)
         const itemList = activity.cart_ids.map(id => {
           const cartItem = tDict[id]
           delete tDict[id]
@@ -131,9 +133,7 @@ export default class CartIndex extends Component {
       }
     })
 
-    // TODO: invalid render
     const invalidList = this.transformCartList(invalid_cart)
-
     this.setState({
       invalidList
     })
@@ -410,6 +410,29 @@ export default class CartIndex extends Component {
                                 )
                               })
                             }
+                            {activity && activity.gifts && (
+                              <View className='cart-group__gifts'>
+                                <View className='cart-group__gifts-hd'>赠品</View>
+                                <View className='cart-group__gifts-bd'>
+                                  {activity.gifts.map(gift => {
+                                    return (
+                                      <View
+                                        className='gift-item'
+                                        key={gift.item_id}
+                                      >
+                                        <Image
+                                          className='gift-item__img'
+                                          src={gift.pics[0]}
+                                          mode='aspectFill'
+                                        />
+                                        <View className='gift-item__title'>{gift.item_name}</View>
+                                        <Text className='gift-item__num'>x{gift.gift_num}</Text>
+                                      </View>
+                                    )
+                                  })}
+                                </View>
+                              </View>
+                            )}
                           </View>
                         )
                       })

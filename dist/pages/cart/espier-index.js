@@ -161,7 +161,11 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
           acc[val.cart_id] = val;
           return acc;
         }, {});
-        var group = shopCart.activity_grouping.map(function (activity) {
+        var activityGrouping = shopCart.activity_grouping;
+        var group = Object.values(shopCart.used_activity).map(function (actId) {
+          var activity = activityGrouping.find(function (a) {
+            return String(a.activity_id) === actId;
+          });
           var itemList = activity.cart_ids.map(function (id) {
             var cartItem = tDict[id];
             delete tDict[id];
@@ -210,11 +214,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
                     list: tList
                   });
                 });
-
-                // TODO: invalid render
-
                 invalidList = this.transformCartList(invalid_cart);
-
 
                 this.setState({
                   invalidList: invalidList

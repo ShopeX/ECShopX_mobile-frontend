@@ -96,7 +96,7 @@ class API {
         if (statusCode >= 200 && statusCode < 300) {
           if (data.data !== undefined) {
             if (options.url.indexOf('token/refresh') >= 0) {
-              data.data.token = res.header.authorization
+              data.data.token = res.header.Authorization.replace('Bearer ', '')
             }
             return data.data
           } else {

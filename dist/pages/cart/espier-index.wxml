@@ -7,7 +7,7 @@
         <scroll-view class="cart-list__scroll" scroll-y="{{true}}">
             <view class="cart-list">
                 <view class="cart-list__shop" wx:key="idx" wx:for="{{loopArray0}}" wx:for-item="activityGroup" wx:for-index="idx">
-                    <view class="cart-group" wx:key="$original.shop_id" wx:for="{{activityGroup.$anonymousCallee__1}}" wx:for-item="shopCart" wx:for-index="_anonIdx2">
+                    <view class="cart-group" wx:key="$original.shop_id" wx:for="{{activityGroup.$anonymousCallee__1}}" wx:for-item="shopCart" wx:for-index="_anonIdx3">
                         <block wx:if="{{shopCart.activity}}">
                             <view class="cart-group__activity">
                                 <view class="cart-group__activity-item"><text class="cart-group__activity-label">{{shopCart.activity.activity_tag}}</text><text>{{shopCart.activity.activity_name}}</text>
@@ -20,6 +20,17 @@
                                 <view class="in-icon in-icon-close" bindtap="handleDelect" data-e-tap-so="this" data-e-tap-a-a="{{item.$original.cart_id}}"></view>
                             </view>
                         </cart-item>
+                        <block wx:if="{{shopCart.activity && shopCart.activity.gifts}}">
+                            <view class="cart-group__gifts">
+                                <view class="cart-group__gifts-hd">赠品</view>
+                                <view class="cart-group__gifts-bd">
+                                    <view class="gift-item" wx:key="item_id" wx:for="{{shopCart.activity.gifts}}" wx:for-item="gift" wx:for-index="_anonIdx2">
+                                        <image class="gift-item__img" src="{{gift.pics[0]}}" mode="aspectFill"></image>
+                                        <view class="gift-item__title">{{gift.item_name}}</view><text class="gift-item__num">x{{gift.gift_num}}</text>
+                                    </view>
+                                </view>
+                            </view>
+                        </block>
                     </view>
                 </view>
                 <block wx:if="{{!list.length}}">
@@ -35,7 +46,7 @@
                 <view class="cart-list__hd"><text>已失效</text>
                 </view>
                 <view class="cart-list__bd">
-                    <cart-item isDisabled="{{true}}" __triggerObserer="{{ _triggerObserer }}" wx:key="cart_id" info="{{item}}" wx:for="{{invalidList}}" wx:for-item="item" wx:for-index="_anonIdx3">
+                    <cart-item isDisabled="{{true}}" __triggerObserer="{{ _triggerObserer }}" wx:key="cart_id" info="{{item}}" wx:for="{{invalidList}}" wx:for-item="item" wx:for-index="_anonIdx4">
                         <view class="cart-item__act">
                             <view></view>
                             <view class="in-icon in-icon-close" bindtap="handleDelect" data-e-tap-so="this" data-e-tap-a-a="{{item.cart_id}}"></view>
@@ -73,7 +84,7 @@
         </view>
         <at-action-sheet title="请选择商品优惠" __triggerObserer="{{ _triggerObserer }}" isOpened="{{anonymousState__temp5}}" bindonclose="handleClosePromotions" __fn_onClose="{{true}}">
             <block wx:if="{{curPromotions}}">
-                <at-action-sheet-item wx:key="marketing_id" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleSelectPromotion" wx:for="{{curPromotions}}" wx:for-item="item" wx:for-index="_anonIdx4" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item}}"><text class="cart-promotion__label">{{item.promotion_tag}}</text><text>{{item.marketing_name}}</text>
+                <at-action-sheet-item wx:key="marketing_id" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleSelectPromotion" wx:for="{{curPromotions}}" wx:for-item="item" wx:for-index="_anonIdx5" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item}}"><text class="cart-promotion__label">{{item.promotion_tag}}</text><text>{{item.marketing_name}}</text>
                 </at-action-sheet-item>
             </block>
         </at-action-sheet>
