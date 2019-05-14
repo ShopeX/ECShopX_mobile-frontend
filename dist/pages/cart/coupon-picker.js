@@ -85,11 +85,10 @@ var CouponPicker = (_dec = (0, _index3.connect)(function (_ref) {
               case 0:
                 _$router$params = this.$router.params, items = _$router$params.items, _$router$params$use_p = _$router$params.use_platform, use_platform = _$router$params$use_p === undefined ? 'mall' : _$router$params$use_p;
                 params = {
-                  items: items,
+                  items: JSON.parse(items),
                   use_platform: use_platform,
                   page_type: 'picker',
-                  valid: true,
-                  distributor_id: 16
+                  valid: true
                 };
                 _context.next = 4;
                 return _index6.default.cart.coupons(params);

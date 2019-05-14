@@ -12,12 +12,24 @@
                 <sp-cell is-link="{{true}}" __triggerObserer="{{ _triggerObserer }}" className="coupons-list" title="选择优惠券" bindonclick="handleCouponsClick" value="{{couponText}}" __fn_onClick="{{true}}"></sp-cell>
             </block>
             <view class="cart-list">
-                <view class="cart-group" wx:key="shop_id" wx:for="{{info.cart}}" wx:for-item="cart" wx:for-index="_anonIdx">
+                <view class="cart-group" wx:key="shop_id" wx:for="{{info.cart}}" wx:for-item="cart" wx:for-index="_anonIdx2">
                     <view class="sec cart-group__cont">
                         <view class="order-item__wrap" wx:key="item_id" wx:for="{{cart.list}}" wx:for-item="item" wx:for-index="idx">
-                            <view class="order-item__idx"><text>第{{idx + 1}}件商品</text>
-                            </view>
+                            <block>
+                                <block wx:if="{{item.order_item_type === 'gift'}}">
+                                    <view class="order-item__idx"><text>赠品</text>
+                                    </view>
+                                </block>
+                                <block wx:else>
+                                    <view class="order-item__idx"><text>第{{idx + 1}}件商品</text>
+                                    </view>
+                                </block>
+                            </block>
                             <order-item info="{{item}}" __triggerObserer="{{ _triggerObserer }}" showExtra="{{false}}" customFooter="{{true}}">
+                                <view class="order-item__desc" slot="desc">
+                                    <block wx:if="{{item.discount_info}}"><text class="order-item__discount" wx:key="type" wx:for="{{item.discount_info}}" wx:for-item="discount" wx:for-index="_anonIdx">{{discount.info}}</text>
+                                    </block>
+                                </view>
                                 <view class="order-item__ft" slot="footer">
                                     <block>
                                         <block wx:if="{{payType === 'point'}}">
@@ -38,9 +50,8 @@
                     </view>
                 </view>
             </view>
-            <sp-cell isLink="{{true}}" __triggerObserer="{{ _triggerObserer }}" className="trade-invoice" title="开发票"><text>否</text>
+            <sp-cell isLink="{{true}}" __triggerObserer="{{ _triggerObserer }}" className="trade-invoice" title="开发票" bindonclick="handleInvoiceClick" __fn_onClick="{{true}}"><text>{{invoiceTitle || '否'}}</text>
             </sp-cell>
-            <sp-cell className="trade-shipping" __triggerObserer="{{ _triggerObserer }}" title="配送方式" value="[快递免邮]"></sp-cell>
             <block wx:if="{{payType === 'point'}}">
                 <view class="sec trade-sub-total">
                     <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="运费">

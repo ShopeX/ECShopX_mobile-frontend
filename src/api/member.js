@@ -50,7 +50,7 @@ export function addressCreate (params = {}) {
 }
 
 export function addressUpdate (data) {
-  return req.put(`/member/address/${data.address_id}`,data)
+  return req.put(`/member/address/${data.address_id}`, data)
 }
 
 export function addressDelete (address_id) {

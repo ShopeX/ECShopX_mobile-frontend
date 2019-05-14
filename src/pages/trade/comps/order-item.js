@@ -40,6 +40,7 @@ export default class OrderItem extends Component {
         </View>
         <View className='order-item__bd'>
           <Text className='order-item__title'>{info.title}</Text>
+          {this.props.renderDesc}
           {showExtra && (
             <View className='order-item__extra'>
               <Text className='order-item__desc'>{info.goods_props}</Text>

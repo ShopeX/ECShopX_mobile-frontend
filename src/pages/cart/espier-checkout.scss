@@ -114,6 +114,18 @@
         font-size: $font-size-small;
       }
     }
+    &__desc {
+      margin: 0 0 10px;
+    }
+    &__discount {
+      background: $color-brand-primary;
+      color: #fff;
+      font-size: $font-size-small;
+      display: inline-block;
+      vertical-align: middle;
+      padding: 2px 8px;
+      margin-right: 8px;
+    }
   }
 
   .trade-shipping, .trade-invoice, .trade-remark, .trade-point, .trade-sub-total {

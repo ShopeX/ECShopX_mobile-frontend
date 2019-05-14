@@ -288,13 +288,13 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
       ;
     }
   }, {
-    key: "funPrivateZGICW",
-    value: function funPrivateZGICW() {
+    key: "funPrivateJapPf",
+    value: function funPrivateJapPf() {
       this.__triggerPropsFn("onClickAddCart", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivateuuUCU",
-    value: function funPrivateuuUCU() {
+    key: "funPrivatelYTCq",
+    value: function funPrivatelYTCq() {
       this.__triggerPropsFn("onClickFastBuy", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -349,7 +349,7 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["anonymousFunc0", "handleSelectSku", "handleQuantityChange", "funPrivateZGICW", "funPrivateuuUCU"], _class.options = {
+}, _class.$$events = ["anonymousFunc0", "handleSelectSku", "handleQuantityChange", "funPrivateJapPf", "funPrivatelYTCq"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
   info: null,

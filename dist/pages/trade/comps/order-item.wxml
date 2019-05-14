@@ -2,11 +2,12 @@
     <block wx:if="{{!info}}">
         <view></view>
     </block>
-    <view class="order-item" bindtap="funPrivateGKTkU" wx:else>
+    <view class="order-item" bindtap="funPrivateDUvIx" wx:else>
         <view class="order-item__hd">
             <image mode="aspectFill" class="order-item__img" src="{{img}}"></image>
         </view>
         <view class="order-item__bd"><text class="order-item__title">{{info.title}}</text>
+            <slot name="desc"></slot>
             <block wx:if="{{showExtra}}">
                 <view class="order-item__extra"><text class="order-item__desc">{{info.goods_props}}</text>
                     <block wx:if="{{info.num}}"><text class="order-item__num">数量：{{info.num}}</text>

@@ -54,12 +54,16 @@ var transformCartList = function transformCartList(list) {
     cart_id: 'cart_id',
     title: 'item_name',
     curSymbol: 'fee_symbol',
+    discount_info: 'discount_info',
+    order_item_type: 'order_item_type',
     pics: 'pic',
     price: function price(_ref) {
       var _price = _ref.price;
       return (+_price / 100).toFixed(2);
     },
     num: 'num'
+  }).sort(function (a) {
+    return a.order_item_type !== 'gift' ? -1 : 1;
   });
 };
 
@@ -97,7 +101,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = CartCheckout.__proto__ || Object.getPrototypeOf(CartCheckout)).call.apply(_ref3, [this].concat(args))), _this), _this.$usedState = ["info", "showAddressPicker", "address", "payType", "couponText", "total", "showCheckoutItems", "curCheckoutItems", "isBtnDisabled", "address_list", "showShippingPicker", "showCoupons", "coupons", "__fn_onClearFastbuy", "defaultAddress", "__fn_onAddressChoose", "coupon", "__fn_onClearCart"], _this.handleAddressChange = function (address) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = CartCheckout.__proto__ || Object.getPrototypeOf(CartCheckout)).call.apply(_ref3, [this].concat(args))), _this), _this.$usedState = ["info", "showAddressPicker", "address", "payType", "couponText", "total", "showCheckoutItems", "curCheckoutItems", "isBtnDisabled", "invoiceTitle", "address_list", "showShippingPicker", "showCoupons", "coupons", "__fn_onClearFastbuy", "defaultAddress", "__fn_onAddressChoose", "coupon", "__fn_onClearCart"], _this.handleAddressChange = function (address) {
       if (!address) {
         return;
       }
@@ -125,18 +129,58 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       }
     }, _this.handleShippingChange = function (type) {
       console.log(type);
-    }, _this.handlePay = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var order_id, res, url;
+    }, _this.handleInvoiceClick = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var res, type, content, company_address, registration_number, bankname, bankaccount, company_phone;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              _context.next = 2;
+              return _index2.default.chooseInvoiceTitle();
+
+            case 2:
+              res = _context.sent;
+
+
+              if (res.errMsg === 'chooseInvoiceTitle:ok') {
+                _index9.log.debug('[invoice] info:', res);
+                type = res.type, content = res.title, company_address = res.companyAddress, registration_number = res.taxNumber, bankname = res.bankName, bankaccount = res.bankAccount, company_phone = res.telephone;
+
+                _this.params = _extends({}, _this.params, {
+                  invoice_type: 'normal',
+                  invoice_content: {
+                    title: type !== 0 ? 'individual' : 'unit',
+                    content: content,
+                    company_address: company_address,
+                    registration_number: registration_number,
+                    bankname: bankname,
+                    bankaccount: bankaccount,
+                    company_phone: company_phone
+                  }
+                });
+                _this.setState({
+                  invoiceTitle: content
+                });
+              }
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2);
+    })), _this.handlePay = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var order_id, res, url;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
               if (_this.state.address) {
-                _context.next = 2;
+                _context2.next = 2;
                 break;
               }
 
-              return _context.abrupt("return", _index7.default.toast('请选择地址'));
+              return _context2.abrupt("return", _index7.default.toast('请选择地址'));
 
             case 2:
 
@@ -146,23 +190,23 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
               });
 
               order_id = void 0;
-              _context.prev = 4;
-              _context.next = 7;
+              _context2.prev = 4;
+              _context2.next = 7;
               return _index5.default.trade.create(_this.params);
 
             case 7:
-              res = _context.sent;
+              res = _context2.sent;
 
               order_id = res.order_id;
-              _context.next = 14;
+              _context2.next = 14;
               break;
 
             case 11:
-              _context.prev = 11;
-              _context.t0 = _context["catch"](4);
+              _context2.prev = 11;
+              _context2.t0 = _context2["catch"](4);
 
               _index2.default.showToast({
-                title: _context.t0.message,
+                title: _context2.t0.message,
                 icon: false
               });
 
@@ -170,11 +214,11 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
               _index2.default.hideLoading();
 
               if (order_id) {
-                _context.next = 17;
+                _context2.next = 17;
                 break;
               }
 
-              return _context.abrupt("return");
+              return _context2.abrupt("return");
 
             case 17:
               url = "/pages/cashier/index?order_id=" + order_id;
@@ -184,13 +228,26 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
 
             case 20:
             case "end":
-              return _context.stop();
+              return _context2.stop();
           }
         }
-      }, _callee, _this2, [[4, 11]]);
+      }, _callee2, _this2, [[4, 11]]);
     })), _this.handleCouponsClick = function () {
+      console.log(JSON.stringify(_this.params.items));
+      var items = _this.params.items.filter(function (item) {
+        return item.order_item_type !== 'gift';
+      }).map(function (item) {
+        var item_id = item.item_id,
+            num = item.num;
+
+        return {
+          item_id: item_id,
+          num: num
+        };
+      });
+
       _index2.default.navigateTo({
-        url: "/pages/cart/coupon-picker?items=" + JSON.stringify(_this.params.items)
+        url: "/pages/cart/coupon-picker?items=" + JSON.stringify(items)
       });
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -219,17 +276,14 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
           coupon_discount: '',
           point: ''
         },
-        payType: ''
+        payType: '',
+        invoiceTitle: ''
       };
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this3 = this;
-
-      this.fetch(function () {
-        return _this3.changeSelection();
-      });
+      this.fetchAddress();
 
       var _$router$params = this.$router.params,
           cart_type = _$router$params.cart_type,
@@ -283,12 +337,10 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
   }, {
     key: "componentDidShow",
     value: function componentDidShow() {
-      var _this4 = this;
+      var _this3 = this;
 
       if (this.state.address_list < 2) {
-        this.fetch(function () {
-          return _this4.changeSelection();
-        });
+        this.fetchAddress();
       }
       if (!this.params || !this.state.address) {
         return;
@@ -296,50 +348,53 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       this.setState({
         address: this.props.defaultAddress
       }, function () {
-        _this4.handleAddressChange(_this4.state.address);
+        _this3.handleAddressChange(_this3.state.address);
       });
     }
   }, {
-    key: "fetch",
+    key: "fetchAddress",
     value: function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(cb) {
-        var _ref6, list;
+      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(cb) {
+        var _this4 = this;
 
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        var _ref7, list;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 _index2.default.showLoading({
                   mask: true
                 });
-                _context2.next = 3;
+                _context3.next = 3;
                 return _index5.default.member.addressList();
 
               case 3:
-                _ref6 = _context2.sent;
-                list = _ref6.list;
+                _ref7 = _context3.sent;
+                list = _ref7.list;
 
                 _index2.default.hideLoading();
 
                 this.setState({
                   address_list: list
                 }, function () {
+                  _this4.changeSelection();
                   cb && cb(list);
                 });
 
               case 7:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
-      function fetch(_x) {
-        return _ref5.apply(this, arguments);
+      function fetchAddress(_x) {
+        return _ref6.apply(this, arguments);
       }
 
-      return fetch;
+      return fetchAddress;
     }()
   }, {
     key: "changeSelection",
@@ -404,23 +459,23 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
   }, {
     key: "calcOrder",
     value: function () {
-      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
         var params, data, items, item_fee, _data$member_discount, member_discount, _data$coupon_discount, coupon_discount, _data$freight_fee, freight_fee, _data$freight_point, freight_point, _data$point, point, total_fee, total, info;
 
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 _index2.default.showLoading({
                   title: '加载中',
                   mask: true
                 });
                 params = this.getParams();
-                _context3.next = 4;
+                _context4.next = 4;
                 return _index5.default.cart.total(params);
 
               case 4:
-                data = _context3.sent;
+                data = _context4.sent;
                 items = data.items, item_fee = data.item_fee, _data$member_discount = data.member_discount, member_discount = _data$member_discount === undefined ? 0 : _data$member_discount, _data$coupon_discount = data.coupon_discount, coupon_discount = _data$coupon_discount === undefined ? 0 : _data$coupon_discount, _data$freight_fee = data.freight_fee, freight_fee = _data$freight_fee === undefined ? 0 : _data$freight_fee, _data$freight_point = data.freight_point, freight_point = _data$freight_point === undefined ? 0 : _data$freight_point, _data$point = data.point, point = _data$point === undefined ? 0 : _data$point, total_fee = data.total_fee;
                 total = _extends({}, this.state.total, {
                   item_fee: item_fee,
@@ -447,7 +502,6 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 }
 
                 _index2.default.hideLoading();
-
                 this.setState({
                   total: total,
                   info: info
@@ -455,14 +509,14 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
 
               case 11:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
       function calcOrder() {
-        return _ref7.apply(this, arguments);
+        return _ref8.apply(this, arguments);
       }
 
       return calcOrder;
@@ -475,16 +529,6 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       });
       this.toggleCheckoutItems();
     }
-
-    // toggleAddressPicker (isOpened) {
-    //   if (isOpened === undefined) {
-    //     isOpened = !this.state.showAddressPicker
-    //   }
-    //
-    //   lockScreen(isOpened)
-    //   this.setState({ showAddressPicker: isOpened })
-    // }
-
   }, {
     key: "toggleCheckoutItems",
     value: function toggleCheckoutItems(isOpened) {
@@ -520,7 +564,8 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
           showAddressPicker = _state.showAddressPicker,
           showCheckoutItems = _state.showCheckoutItems,
           curCheckoutItems = _state.curCheckoutItems,
-          payType = _state.payType;
+          payType = _state.payType,
+          invoiceTitle = _state.invoiceTitle;
 
       if (!info) {
         return null;
@@ -559,7 +604,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleCouponsClick", "toggleCheckoutItems", "handlePay"], _class2.defaultProps = {
+}, _class2.$$events = ["handleCouponsClick", "handleInvoiceClick", "toggleCheckoutItems", "handlePay"], _class2.defaultProps = {
   list: []
 }, _temp2)) || _class) || _class);
 exports.default = CartCheckout;

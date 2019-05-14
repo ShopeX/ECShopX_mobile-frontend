@@ -20,10 +20,12 @@ const transformCartList = (list) => {
     cart_id: 'cart_id',
     title: 'item_name',
     curSymbol: 'fee_symbol',
+    discount_info: 'discount_info',
+    order_item_type: 'order_item_type',
     pics: 'pic',
     price: ({ price }) => (+price / 100).toFixed(2),
     num: 'num'
-  })
+  }).sort((a) => a.order_item_type !== 'gift' ? -1 : 1)
 }
 
 @connect(({ address, cart }) => ({
@@ -62,12 +64,13 @@ export default class CartCheckout extends Component {
         coupon_discount: '',
         point: ''
       },
-      payType: ''
+      payType: '',
+      invoiceTitle: ''
     }
   }
 
   componentDidMount () {
-    this.fetch(() => this.changeSelection())
+    this.fetchAddress()
 
     const { cart_type, pay_type: payType } = this.$router.params
     let info = null
@@ -117,7 +120,7 @@ export default class CartCheckout extends Component {
 
   componentDidShow () {
     if(this.state.address_list < 2) {
-      this.fetch(() => this.changeSelection())
+      this.fetchAddress()
     }
     if (!this.params || !this.state.address) return
 
@@ -129,7 +132,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  async fetch (cb) {
+  async fetchAddress (cb) {
     Taro.showLoading({
       mask: true
     })
@@ -139,6 +142,7 @@ export default class CartCheckout extends Component {
     this.setState({
       address_list: list
     }, () => {
+      this.changeSelection()
       cb && cb(list)
     })
   }
@@ -231,7 +235,6 @@ export default class CartCheckout extends Component {
     }
 
     Taro.hideLoading()
-
     this.setState({
       total,
       info
@@ -278,14 +281,30 @@ export default class CartCheckout extends Component {
     this.toggleCheckoutItems()
   }
 
-  // toggleAddressPicker (isOpened) {
-  //   if (isOpened === undefined) {
-  //     isOpened = !this.state.showAddressPicker
-  //   }
-  //
-  //   lockScreen(isOpened)
-  //   this.setState({ showAddressPicker: isOpened })
-  // }
+  handleInvoiceClick = async () => {
+    const res = await Taro.chooseInvoiceTitle()
+
+    if (res.errMsg === 'chooseInvoiceTitle:ok') {
+      log.debug('[invoice] info:', res)
+      const { type, title: content, companyAddress: company_address, taxNumber: registration_number, bankName: bankname, bankAccount: bankaccount, telephone: company_phone } = res
+      this.params = {
+        ...this.params,
+        invoice_type: 'normal',
+        invoice_content: {
+          title: type !== 0 ? 'individual' : 'unit',
+          content,
+          company_address,
+          registration_number,
+          bankname,
+          bankaccount,
+          company_phone
+        }
+      }
+      this.setState({
+        invoiceTitle: content
+      })
+    }
+  }
 
   toggleCheckoutItems (isOpened) {
     if (isOpened === undefined) {
@@ -336,14 +355,25 @@ export default class CartCheckout extends Component {
   }
 
   handleCouponsClick = () => {
+    console.log(JSON.stringify(this.params.items))
+    const items = this.params.items
+      .filter(item => item.order_item_type !== 'gift')
+      .map(item => {
+        const { item_id, num } = item
+        return {
+          item_id,
+          num
+        }
+      })
+
     Taro.navigateTo({
-      url: `/pages/cart/coupon-picker?items=${JSON.stringify(this.params.items)}`
+      url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}`
     })
   }
 
   render () {
     const { coupon } = this.props
-    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType } = this.state
+    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle } = this.state
     if (!info) {
       return <Loading />
     }
@@ -400,10 +430,24 @@ export default class CartCheckout extends Component {
                               className='order-item__wrap'
                               key={item.item_id}
                             >
-                              <View className='order-item__idx'><Text>第{idx + 1}件商品</Text></View>
+                              {
+                                item.order_item_type === 'gift'
+                                  ? (<View className='order-item__idx'><Text>赠品</Text></View>)
+                                  : (<View className='order-item__idx'><Text>第{idx + 1}件商品</Text></View>)
+                              }
                               <OrderItem
                                 info={item}
                                 showExtra={false}
+                                renderDesc={
+                                  <View className='order-item__desc'>
+                                    {item.discount_info && item.discount_info.map((discount) =>
+                                        <Text
+                                          className='order-item__discount'
+                                          key={discount.type}
+                                        >{discount.info}</Text>
+                                      )}
+                                  </View>
+                                }
                                 customFooter
                                 renderFooter={
                                   <View className='order-item__ft'>
@@ -442,16 +486,17 @@ export default class CartCheckout extends Component {
             isLink
             className='trade-invoice'
             title='开发票'
+            onClick={this.handleInvoiceClick}
           >
-            <Text>否</Text>
+            <Text>{invoiceTitle || '否'}</Text>
           </SpCell>
 
-          <SpCell
+          {/*<SpCell
             className='trade-shipping'
             title='配送方式'
             value='[快递免邮]'
           >
-          </SpCell>
+          </SpCell>*/}
 
           {payType === 'point' && (
             <View className='sec trade-sub-total'>

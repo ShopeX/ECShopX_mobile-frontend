@@ -136,6 +136,18 @@
 .page-checkout .order-item__price .price__symbol {
   font-size: 23rpx;
 }
+.page-checkout .order-item__desc {
+  margin: 0 0 10rpx;
+}
+.page-checkout .order-item__discount {
+  background: #0b4137;
+  color: #fff;
+  font-size: 23rpx;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 2rpx 8rpx;
+  margin-right: 8rpx;
+}
 .page-checkout .trade-shipping, .page-checkout .trade-invoice, .page-checkout .trade-remark, .page-checkout .trade-point, .page-checkout .trade-sub-total {
   margin: 0 0 16rpx;
 }
