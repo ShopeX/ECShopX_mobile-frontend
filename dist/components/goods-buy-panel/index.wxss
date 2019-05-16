@@ -130,6 +130,7 @@
 }
 .goods-buy-panel__btn:before, .goods-buy-panel__btn:after {
   display: none;
+  border: none;
 }
 .goods-buy-panel .btn-add-cart, .goods-buy-panel .btn-add-cart {
   background: #0b4137;
@@ -183,8 +184,9 @@
   font-size: 23rpx;
   border: 1PX solid #eeeeee;
   padding: 0 30rpx;
-  margin: 0 15rpx 10rpx 0;
+  margin: 0 15rpx 15rpx 0;
   display: inline-block;
+  white-space: nowrap;
 }
 .goods-buy-panel .sku-item.is-active {
   color: #0b4137;
@@ -202,12 +204,6 @@
   margin: 0 0 30rpx;
   display: block;
   font-size: 23rpx;
-}
-.goods-buy-panel .sku-item__group-bd {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
 }
 .goods-buy-panel .goods-quantity__wrap {
   padding: 30rpx 0;

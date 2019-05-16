@@ -77,10 +77,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "loopArray0", "info", "scrollTop", "imgInfo", "timer", "marketing", "isPromoter", "curSku", "buyPanelType", "$anonymousCallee__0", "desc", "hasStock", "startSecKill", "showBuyPanel", "cartCount", "windowWidth", "curTabIdx", "specImgsDict", "detailTabs", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleTest = function (e) {
-      console.log(e);
-      debugger;
-    }, _this.handleMenuClick = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "loopArray0", "info", "scrollTop", "imgInfo", "timer", "marketing", "isPromoter", "curSku", "buyPanelType", "$anonymousCallee__0", "desc", "hasStock", "startSecKill", "showBuyPanel", "cartCount", "windowWidth", "specImgsDict", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type) {
         var info, isAuth;
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -271,11 +268,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       return function (_x2, _x3, _x4) {
         return _ref6.apply(this, arguments);
       };
-    }(), _this.handleTabClick = function (idx) {
-      _this.setState({
-        curTabIdx: idx
-      });
-    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    }(), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Detail, [{
@@ -292,13 +285,11 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
         timer: null,
         startSecKill: true,
         hasStock: true,
-        curTabIdx: 0,
         cartCount: '',
         showBuyPanel: false,
         buyPanelType: null,
         specImgsDict: {},
-        curSku: null,
-        detailTabs: [{ title: '商品详情' }, { title: '商品参数' }, { title: '服务保障' }]
+        curSku: null
       };
     }
   }, {
@@ -378,15 +369,14 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
     key: "fetch",
     value: function () {
       var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-        var _$router$params, id, demo, info, desc, marketing, timer, hasStock, startSecKill, specImgsDict;
-
+        var id, info, desc, marketing, timer, hasStock, startSecKill, specImgsDict;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _$router$params = this.$router.params, id = _$router$params.id, demo = _$router$params.demo;
+                id = this.$router.params.id;
                 _context4.next = 3;
-                return _index5.default.item.detail(id, { distributor_id: 16, demo: demo });
+                return _index5.default.item.detail(id);
 
               case 3:
                 info = _context4.sent;
@@ -480,7 +470,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
 
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __runloopRef = arguments[2];
+      var __isRunloopRef = arguments[2];
       ;
 
       var _state = this.__state,
@@ -497,8 +487,6 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
           isPromoter = _state2.isPromoter,
           startSecKill = _state2.startSecKill,
           hasStock = _state2.hasStock,
-          detailTabs = _state2.detailTabs,
-          curTabIdx = _state2.curTabIdx,
           showBuyPanel = _state2.showBuyPanel,
           buyPanelType = _state2.buyPanelType;
 

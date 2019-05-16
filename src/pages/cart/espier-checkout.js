@@ -355,7 +355,6 @@ export default class CartCheckout extends Component {
   }
 
   handleCouponsClick = () => {
-    console.log(JSON.stringify(this.params.items))
     const items = this.params.items
       .filter(item => item.order_item_type !== 'gift')
       .map(item => {

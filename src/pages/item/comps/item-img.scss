@@ -1,17 +1,21 @@
 @import "../../../style/imports";
 
+$img-size: 390px;
+$offset-Bottom: 30px;
 .item-img {
+  background: #fff;
   overflow: hidden;
+  padding-bottom: $offset-Bottom;
   &__img {
     position: relative;
     width: 650px;
-    height: 390px;
+    height: $img-size;
     z-index: 10;
     display: block;
     border-radius: 10PX;
     overflow: hidden;
     margin: 60px auto 0;
-    box-shadow: 0 0 20px rgba(#000, 0.1);
+    box-shadow: 0 5px 20px rgba(#000, 0.1);
   }
   &__blured {
     &-wrap {
@@ -19,8 +23,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 390px + 60px;
-      padding-bottom: 20px;
+      height: $img-size;
       overflow: hidden;
     }
     position: absolute;
@@ -28,8 +31,8 @@
     top: 0;
     left: -8px;
     right: -8px;
+    height: $img-size;
     width: 110%;
-    height: 370px;
     z-index: 2;
     overflow: hidden;
     filter: blur(8px);

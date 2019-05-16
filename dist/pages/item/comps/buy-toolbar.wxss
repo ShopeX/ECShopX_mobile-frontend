@@ -86,7 +86,7 @@
   color: #555;
 }
 .goods-buy-toolbar__btns {
-  width: 67%;
+  width: 500rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -123,4 +123,11 @@
 .goods-buy-toolbar .btn-fast-buy {
   margin-left: -1rpx;
   background: #0b4137;
+}
+.goods-buy-toolbar form-id-collector {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow: hidden;
 }

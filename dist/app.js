@@ -30,6 +30,8 @@ var _index8 = require("./spx/index.js");
 
 var _index9 = _interopRequireDefault(_index8);
 
+var _index10 = require("./service/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -86,6 +88,8 @@ var _App = function (_BaseComponent) {
   }, {
     key: "componentDidShow",
     value: function componentDidShow() {
+      console.info(_index10.FormIds);
+      _index10.FormIds.startCollectingFormIds();
       try {
         if (_index9.default.getAuthToken()) {
           _index7.default.member.favsList().then(function (_ref2) {
@@ -97,11 +101,15 @@ var _App = function (_BaseComponent) {
             });
           });
         }
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
     }
   }, {
     key: "componentDidHide",
-    value: function componentDidHide() {}
+    value: function componentDidHide() {
+      _index10.FormIds.stop();
+    }
   }, {
     key: "componentDidCatchError",
     value: function componentDidCatchError() {}

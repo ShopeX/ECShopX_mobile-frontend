@@ -11,14 +11,20 @@
 /*===============================
 =            z-index            =
 ===============================*/
+.form-id-collector {
+  overflow: hidden;
+}
 .form-id-collector__btn {
-  border: none;
   padding: 0;
   margin: 0;
+  width: 100%;
   font-size: 26rpx;
   text-align: left;
   line-height: auto;
   overflow: visible;
   background: none !important;
-  position: static;
+  border-radius: 0;
+}
+.form-id-collector__btn:before, .form-id-collector__btn:after {
+  border: none;
 }

@@ -85,6 +85,7 @@
     font-weight: bold;
     &:before, &:after {
       display: none;
+      border: none;
     }
   }
   .btn-add-cart, .btn-add-cart {
@@ -145,8 +146,9 @@
     font-size: $font-size-small;
     border: 1PX solid #eeeeee;
     padding: 0 $edge-size;
-    margin: 0 15px 10px 0;
+    margin: 0 15px 15px 0;
     display: inline-block;
+    white-space: nowrap;
     &.is-active {
       color: $color-brand-primary;
       border-color: $color-brand-primary;
@@ -164,7 +166,6 @@
         font-size: $font-size-small;
       }
       &-bd {
-        display: flex;
       }
     }
   }

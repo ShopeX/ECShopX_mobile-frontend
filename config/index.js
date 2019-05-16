@@ -40,9 +40,7 @@ const config = {
     APP_BASE_URL: TARO_ENV === 'h5'
       ? `'//${API_HOST}/index.php/api/h5app/wxapp'`
       : `https://${API_HOST}/index.php/api/h5app/wxapp`,
-    APP_COMPANY_ID: process.env.RELEASE === 'h5'
-      ? '2'
-      : '1'
+    APP_COMPANY_ID: '1'
   },
   alias: {
     '@': path.join(__dirname, '../src')

@@ -29,6 +29,7 @@ exports.depositList = depositList;
 exports.depositTotal = depositTotal;
 exports.depositPay = depositPay;
 exports.depositPayRule = depositPayRule;
+exports.formId = formId;
 exports.recommendUserInfo = recommendUserInfo;
 exports.recommendIndexInfo = recommendIndexInfo;
 exports.recommendMember = recommendMember;
@@ -186,6 +187,10 @@ function depositPay() {
 
 function depositPayRule() {
   return _req2.default.get('/deposit/recharge/agreement');
+}
+
+function formId(formid) {
+  return _req2.default.post('/promotion/formid', { formid: formid });
 }
 
 function recommendUserInfo() {

@@ -220,7 +220,7 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
 
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __runloopRef = arguments[2];
+      var __isRunloopRef = arguments[2];
       ;
 
       var _props = this.__props,
@@ -288,13 +288,13 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
       ;
     }
   }, {
-    key: "funPrivateEMNdR",
-    value: function funPrivateEMNdR() {
+    key: "funPrivateIcSFC",
+    value: function funPrivateIcSFC() {
       this.__triggerPropsFn("onClickAddCart", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivateqbUmC",
-    value: function funPrivateqbUmC() {
+    key: "funPrivateWNyBE",
+    value: function funPrivateWNyBE() {
       this.__triggerPropsFn("onClickFastBuy", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -349,7 +349,7 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["anonymousFunc0", "handleSelectSku", "handleQuantityChange", "funPrivateEMNdR", "funPrivateqbUmC"], _class.options = {
+}, _class.$$events = ["anonymousFunc0", "handleSelectSku", "handleQuantityChange", "funPrivateIcSFC", "funPrivateWNyBE"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
   info: null,

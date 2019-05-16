@@ -233,7 +233,6 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
         }
       }, _callee2, _this2, [[4, 11]]);
     })), _this.handleCouponsClick = function () {
-      console.log(JSON.stringify(_this.params.items));
       var items = _this.params.items.filter(function (item) {
         return item.order_item_type !== 'gift';
       }).map(function (item) {
@@ -553,7 +552,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
     value: function _createData() {
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __runloopRef = arguments[2];
+      var __isRunloopRef = arguments[2];
       ;
 
       var coupon = this.__props.coupon;

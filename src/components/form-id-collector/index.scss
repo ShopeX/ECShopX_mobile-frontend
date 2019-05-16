@@ -1,15 +1,19 @@
 @import "../../style/imports";
 
 .form-id-collector {
+  overflow: hidden;
   &__btn {
-    border: none;
     padding: 0;
     margin: 0;
+    width: 100%;
     font-size: $font-size;
     text-align: left;
     line-height: auto;
     overflow: visible;
     background: none !important;
-    position: static;
+    border-radius: 0;
+    &:before, &:after {
+      border: none;
+    }
   }
 }

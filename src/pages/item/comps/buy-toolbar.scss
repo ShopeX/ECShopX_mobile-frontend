@@ -44,7 +44,7 @@
     }
   }
   &__btns {
-    width: 67%;
+    width: 500px;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -72,5 +72,9 @@
   .btn-fast-buy {
     margin-left: -1px;
     background: $color-brand-primary;
+  }
+  form-id-collector {
+    flex: 1;
+    overflow: hidden;
   }
 }

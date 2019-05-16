@@ -39,17 +39,11 @@ export default class Detail extends Component {
       timer: null,
       startSecKill: true,
       hasStock: true,
-      curTabIdx: 0,
       cartCount: '',
       showBuyPanel: false,
       buyPanelType: null,
       specImgsDict: {},
-      curSku: null,
-      detailTabs: [
-        { title: '商品详情' },
-        { title: '商品参数' },
-        { title: '服务保障' }
-      ]
+      curSku: null
     }
   }
 
@@ -60,11 +54,6 @@ export default class Detail extends Component {
 
   componentDidShow () {
     this.fetchCartCount()
-  }
-
-  handleTest = (e) => {
-    console.log(e)
-    debugger
   }
 
   onShareAppMessage () {
@@ -93,8 +82,8 @@ export default class Detail extends Component {
   }
 
   async fetch () {
-    const { id, demo } = this.$router.params
-    const info = await api.item.detail(id, { distributor_id: 16, demo })
+    const { id } = this.$router.params
+    const info = await api.item.detail(id)
 
     const { intro: desc } = info
 
@@ -268,18 +257,12 @@ export default class Detail extends Component {
     }
   }
 
-  handleTabClick = (idx) => {
-    this.setState({
-      curTabIdx: idx
-    })
-  }
-
   handleShare () {
   }
 
   render () {
     const { info, windowWidth, desc, cartCount, scrollTop, showBackToTop, curSku } = this.state
-    const { marketing, timer, isPromoter, startSecKill, hasStock, detailTabs, curTabIdx, showBuyPanel, buyPanelType } = this.state
+    const { marketing, timer, isPromoter, startSecKill, hasStock, showBuyPanel, buyPanelType } = this.state
 
     if (!info) {
       return (
@@ -480,7 +463,7 @@ export default class Detail extends Component {
           />
         </FloatMenus>
 
-        {(!info.distributor_sale_status && hasStock && startSecKill)
+        {(info.distributor_sale_status && hasStock && startSecKill)
           ?
             (<GoodsBuyToolbar
               info={info}
@@ -497,7 +480,7 @@ export default class Detail extends Component {
             >
               <View
                 className='goods-buy-toolbar__btns'
-                style='width: 40%; text-align: center;'
+                style='width: 60%; text-align: center'
               >
                 {
                   !startSecKill

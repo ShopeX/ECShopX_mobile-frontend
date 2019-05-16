@@ -6,7 +6,6 @@ function addQuery (url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
 }
 
-
 class API {
   constructor (options = {}) {
     let { baseURL = '/' } = options
@@ -53,7 +52,6 @@ class API {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
     }
     header['Authorization'] = `Bearer ${S.getAuthToken()}`
-
 
     const options = {
       ...config,

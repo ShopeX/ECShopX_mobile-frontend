@@ -55,22 +55,22 @@ export default class GoodsBuyToolbar extends Component {
         </View>
         {this.props.customRender
           ? this.props.children
-          : (
-              <View className='goods-buy-toolbar__btns'>
-                {type === 'normal' && (
-                  <FormIdCollector classes='goods-buy-toolbar__btn btn-add-cart'>
-                    <Button
-                      className='goods-buy-toolbar__btn btn-add-cart'
-                      onClick={onClickAddCart}
-                    >添加至购物车</Button>
-                  </FormIdCollector>
-                )}
-                <Button
-                  className='goods-buy-toolbar__btn btn-fast-buy'
-                  onClick={onClickFastBuy}
-                >{fastBuyText}</Button>
-              </View>
-            )
+          : (<View className='goods-buy-toolbar__btns'>
+              {type === 'normal' && (
+                <FormIdCollector
+                  sync
+                  onClick={onClickAddCart}
+                >
+                  <View className='goods-buy-toolbar__btn btn-add-cart'>添加至购物车</View>
+                </FormIdCollector>
+              )}
+              <FormIdCollector
+                sync
+                onClick={onClickFastBuy}
+              >
+                <View className='goods-buy-toolbar__btn btn-fast-buy'>{fastBuyText}</View>
+              </FormIdCollector>
+            </View>)
         }
       </View>
     )

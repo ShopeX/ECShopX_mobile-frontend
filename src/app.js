@@ -5,6 +5,7 @@ import configStore from '@/store'
 import useHooks from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
+import { FormIds } from '@/service'
 import Index from './pages/index'
 
 import './app.scss'
@@ -101,6 +102,8 @@ class App extends Component {
   }
 
   componentDidShow () {
+    console.info(FormIds)
+    FormIds.startCollectingFormIds()
     try {
       if (S.getAuthToken()) {
         api.member.favsList()
@@ -112,10 +115,13 @@ class App extends Component {
           })
       }
     } catch (e) {
+      console.log(e)
     }
   }
 
-  componentDidHide () {}
+  componentDidHide () {
+    FormIds.stop()
+  }
 
   componentDidCatchError () {}
 

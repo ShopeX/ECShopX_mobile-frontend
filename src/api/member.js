@@ -110,6 +110,10 @@ export function depositPayRule () {
   return req.get('/deposit/recharge/agreement')
 }
 
+export function formId (formid) {
+  return req.post('/promotion/formid', { formid })
+}
+
 export function recommendUserInfo () {
   return req.get('/promoter/info')
 }

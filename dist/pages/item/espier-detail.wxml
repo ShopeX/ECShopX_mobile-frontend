@@ -58,12 +58,12 @@
             <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="back-top" hide="{{anonymousState__temp2}}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></float-menu-item>
         </float-menus>
         <block>
-            <block wx:if="{{!info.distributor_sale_status && hasStock && startSecKill}}">
+            <block wx:if="{{info.distributor_sale_status && hasStock && startSecKill}}">
                 <goods-buy-toolbar info="{{info}}" __triggerObserer="{{ _triggerObserer }}" type="{{marketing}}" bindonfavitem="handleMenuClick" bindonclickaddcart="handleBuyBarClick" bindonclickfastbuy="handleBuyBarClick" __fn_onFavItem="{{true}}" data-e-onfavitem-so="this" data-e-onfavitem-a-a="fav" __fn_onClickAddCart="{{true}}" data-e-onclickaddcart-so="this" data-e-onclickaddcart-a-a="cart" __fn_onClickFastBuy="{{true}}" data-e-onclickfastbuy-so="this" data-e-onclickfastbuy-a-a="fastbuy"></goods-buy-toolbar>
             </block>
             <block wx:else>
                 <goods-buy-toolbar info="{{info}}" __triggerObserer="{{ _triggerObserer }}" customRender="{{true}}" type="{{marketing}}">
-                    <view class="goods-buy-toolbar__btns" style="width: 40%; text-align: center;">
+                    <view class="goods-buy-toolbar__btns" style="width: 60%; text-align: center">
                         <block>
                             <block wx:if="{{!startSecKill}}"><text>活动即将开始</text>
                             </block>
