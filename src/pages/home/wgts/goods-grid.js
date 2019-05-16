@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import { GoodsItem } from '@/components'
 
 import './goods-grid.scss'
 
@@ -12,6 +13,13 @@ export default class WgtGoodsGrid extends Component {
     Taro.navigateTo({ url })
   }
 
+  handleClickItem = (item) => {
+    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    Taro.navigateTo({
+      url
+    })
+  }
+
   render () {
     const { info } = this.props
     if (!info) {
@@ -19,10 +27,26 @@ export default class WgtGoodsGrid extends Component {
     }
 
     const { base, data, config } = info
+    let listData = []
+    data.map(item => {
+      listData.push({
+        title: item.title,
+        desc: item.desc,
+        img: item.imgUrl,
+        is_fav: item.is_fav,
+        item_id: item.goodsId,
+      })
+    })
+    console.log(listData, 31)
 
     return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
-        {base.title && (
+      <View className={`wgt wgt-grid ${base.padded ? 'wgt__padded' : null}`}>
+        <View className='wgt-grid__header'>
+          <Text className='wgt-grid__title'>
+            猜你喜欢
+          </Text>
+        </View>
+        {/*{base.title && (
           <View className='wgt__header'>
             <View className='wgt__title'>
               <Text>{base.title}</Text>
@@ -35,11 +59,16 @@ export default class WgtGoodsGrid extends Component {
               <View className='three-dot'></View>
             </View>
           </View>
-        )}
+        )}*/}
         <View className='wgt-body with-padding'>
-          <View className='grid-goods out-padding'>
-            {data.map((item, idx) => (
-              <View
+          <View className='grid-goods out-padding grid-goods__type-grid'>
+            {listData.map((item, idx) => (
+              <GoodsItem
+                key={item.item_id}
+                info={item}
+                onClick={() => this.handleClickItem(item)}
+              />
+              /*<View
                 key={idx}
                 className='grid-item'
                 onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
@@ -63,7 +92,7 @@ export default class WgtGoodsGrid extends Component {
                     <View className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.title}</View>
                   </View>
                 </View>
-              </View>
+              </View>*/
             ))}
           </View>
         </View>

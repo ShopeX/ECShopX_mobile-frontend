@@ -1,12 +1,17 @@
 @import "../../../style/imports";
 
-
-.wgt {
+.wgt-limit {
   &__header {
     display: block !important;
   }
+  &__title {
+    font-size: 32px;
+    color: #000000;
+  }
   &__subtitle {
+    font-size: 22px;
     padding-left: 0;
+    color: #8a8a8a;
   }
 }
 .slider-wrap {

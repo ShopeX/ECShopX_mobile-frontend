@@ -36,7 +36,12 @@ var WgtGoodsGrid = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtGoodsGrid.__proto__ || Object.getPrototypeOf(WgtGoodsGrid)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data", "config"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtGoodsGrid.__proto__ || Object.getPrototypeOf(WgtGoodsGrid)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["loopArray0", "info", "base", "listData"], _this.handleClickItem = function (item) {
+      var url = "/pages/item/espier-detail?id=" + item.item_id;
+      _index2.default.navigateTo({
+        url: url
+      });
+    }, _this.anonymousFunc0Array = [], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(WgtGoodsGrid, [{
@@ -52,6 +57,8 @@ var WgtGoodsGrid = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "_createData",
     value: function _createData() {
+      var _this2 = this;
+
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
       var __isRunloopRef = arguments[2];
@@ -67,14 +74,70 @@ var WgtGoodsGrid = (_temp2 = _class = function (_BaseComponent) {
           data = info.data,
           config = info.config;
 
+      var listData = [];
+      data.map(function (item) {
+        listData.push({
+          title: item.title,
+          desc: item.desc,
+          img: item.imgUrl,
+          is_fav: item.is_fav,
+          item_id: item.goodsId
+        });
+      });
+      console.log(listData, 31);
 
+      var loopArray0 = listData.map(function (item, idx) {
+        item = {
+          $original: (0, _index.internal_get_original)(item)
+        };
+
+        _this2.anonymousFunc0Array[idx] = function () {
+          return _this2.handleClickItem(item.$original);
+        };
+
+        return {
+          $original: item.$original
+        };
+      }
+      /*<View
+        key={idx}
+        className='grid-item'
+        onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
+      >
+        <View className='goods-wrap'>
+          <View className='thumbnail'>
+            <Image
+              className='goods-img'
+              src={item.imgUrl}
+              mode='aspectFill'
+            />
+          </View>
+          <View className='caption'>
+            {config.brand && item.brand && (
+              <Image
+                className='goods-brand'
+                src={item.brand}
+                mode='aspectFill'
+              />
+            )}
+            <View className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.title}</View>
+          </View>
+        </View>
+      </View>*/
+      );
       Object.assign(this.__state, {
+        loopArray0: loopArray0,
         info: info,
         base: base,
-        data: data,
-        config: config
+        listData: listData
       });
       return this.__state;
+    }
+  }, {
+    key: "anonymousFunc0",
+    value: function anonymousFunc0(idx, e) {
+      ;
+      this.anonymousFunc0Array[idx] && this.anonymousFunc0Array[idx](e);
     }
   }]);
 
@@ -84,7 +147,7 @@ var WgtGoodsGrid = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["navigateTo"], _class.options = {
+}, _class.$$events = ["anonymousFunc0"], _class.options = {
   addGlobalClass: true
 }, _temp2);
 exports.default = WgtGoodsGrid;

@@ -2,10 +2,10 @@
     <block wx:if="{{!info}}">
         <view></view>
     </block>
-    <view class="{{'wgt ' + (base.padded ? 'wgt__padded' : null)}}" wx:else>
-        <view class="wgt__header">
-            <view class="wgt__title">限时抢购{{base.title}}</view>
-            <view class="wgt__subtitle">4月限时发售，购买即享四重福利{{base.subtitle}}</view>
+    <view class="{{'wgt wgt-limit ' + (base.padded ? 'wgt__padded' : null)}}" wx:else>
+        <view class="wgt-limit__header">
+            <view class="wgt-limit__title">限时抢购{{base.title}}</view>
+            <view class="wgt-limit__subtitle">4月限时发售，购买即享四重福利{{base.subtitle}}</view>
         </view>
         <view class="{{'slider-wrap ' + (config.padded ? 'padded' : '')}}">
             <swiper class="slider-img" style="{{anonymousState__temp}}" circular="{{true}}" autoplay="{{true}}" current="{{curIdx}}" interval="{{config.interval}}" duration="{{300}}" bindchange="handleSwiperChange">

@@ -37,17 +37,18 @@
     }
     &__typename {
       width: 151px;
+      padding: 0 10px;
       height: 39px;
       background-color: #ffffff;
-      transform: skew(-30deg);
-      border-radius: 10px;
+      transform: skew(-20deg);
+      border-radius: 8px;
       margin-top: 18px;
       text-align: center;
     }
     &__typetext {
       display: block;
       font-size: 22px;
-      transform: skew(30deg);
+      transform: skew(20deg);
       color: $color-brand-primary;
     }
     &__tips {

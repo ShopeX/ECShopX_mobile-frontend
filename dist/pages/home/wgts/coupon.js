@@ -45,7 +45,7 @@ var WgtCoupon = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtCoupon.__proto__ || Object.getPrototypeOf(WgtCoupon)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base"], _this.handleGetCard = function (cardId) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtCoupon.__proto__ || Object.getPrototypeOf(WgtCoupon)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data"], _this.handleGetCard = function (cardId) {
       var data = _req2.default.get('/user/receiveCard', { card_id: cardId });
 
       if (data.status) {
@@ -84,7 +84,8 @@ var WgtCoupon = (_temp2 = _class = function (_BaseComponent) {
 
       Object.assign(this.__state, {
         info: info,
-        base: base
+        base: base,
+        data: data
       });
       return this.__state;
     }
@@ -96,7 +97,7 @@ var WgtCoupon = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["navigateTo"], _class.options = {
+}, _class.$$events = ["navigateTo", "handleGetCard"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
   info: null

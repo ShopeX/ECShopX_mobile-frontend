@@ -44,10 +44,10 @@ export default class WgtLimittimeSlider extends Component {
     const curContent = (data[curIdx] || {}).content
 
     return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
-        <View className='wgt__header'>
-          <View className='wgt__title'>限时抢购{base.title}</View>
-          <View className='wgt__subtitle'>4月限时发售，购买即享四重福利{base.subtitle}</View>
+      <View className={`wgt wgt-limit ${base.padded ? 'wgt__padded' : null}`}>
+        <View className='wgt-limit__header'>
+          <View className='wgt-limit__title'>限时抢购{base.title}</View>
+          <View className='wgt-limit__subtitle'>4月限时发售，购买即享四重福利{base.subtitle}</View>
         </View>
         {/*{base.title && (
           <View className='wgt__header'>

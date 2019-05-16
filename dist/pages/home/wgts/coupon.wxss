@@ -59,21 +59,22 @@
 }
 .coupon-body .coupon-content__typename {
   width: 151rpx;
+  padding: 0 10rpx;
   height: 39rpx;
   background-color: #ffffff;
-  -webkit-transform: skew(-30deg);
-      -ms-transform: skew(-30deg);
-          transform: skew(-30deg);
-  border-radius: 10rpx;
+  -webkit-transform: skew(-20deg);
+      -ms-transform: skew(-20deg);
+          transform: skew(-20deg);
+  border-radius: 8rpx;
   margin-top: 18rpx;
   text-align: center;
 }
 .coupon-body .coupon-content__typetext {
   display: block;
   font-size: 22rpx;
-  -webkit-transform: skew(30deg);
-      -ms-transform: skew(30deg);
-          transform: skew(30deg);
+  -webkit-transform: skew(20deg);
+      -ms-transform: skew(20deg);
+          transform: skew(20deg);
   color: #0b4137;
 }
 .coupon-body .coupon-content__tips {

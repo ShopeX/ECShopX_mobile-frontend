@@ -1,10 +1,28 @@
+@import "../../../style/imports";
+
+
+.wgt-grid {
+  &__header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 44px;
+  }
+  &__title {
+    font-size: 32px;
+    line-height: 40px;
+    padding-bottom: 5px;
+    border-bottom: 1PX solid $color-brand-primary;
+    color: $color-brand-primary;
+  }
+}
+
 .grid-goods {
-  display: flex;
-  flex-wrap: wrap;
+  /*display: flex;
+  flex-wrap: wrap;*/
   &.out-padding {
     margin: 0 -6px;
   }
-  .grid-item {
+  /*.grid-item {
     width: 50%;
     padding: 6px;
     box-sizing: border-box;
@@ -51,5 +69,5 @@
         }
       }
     }
-  }
+  }*/
 }

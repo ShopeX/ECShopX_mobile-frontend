@@ -11,11 +11,17 @@
 /*===============================
 =            z-index            =
 ===============================*/
-.wgt__header {
+.wgt-limit__header {
   display: block !important;
 }
-.wgt__subtitle {
+.wgt-limit__title {
+  font-size: 32rpx;
+  color: #000000;
+}
+.wgt-limit__subtitle {
+  font-size: 22rpx;
   padding-left: 0;
+  color: #8a8a8a;
 }
 
 .slider-wrap {
