@@ -1,1 +1,145 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function o(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}return function(e,t,n){return t&&o(e.prototype,t),n&&o(e,n),e}}(),_get=function e(t,n,o){null===t&&(t=Function.prototype);var r=Object.getOwnPropertyDescriptor(t,n);if(void 0===r){var s=Object.getPrototypeOf(t);return null===s?void 0:e(s,n,o)}if("value"in r)return r.value;var a=r.get;return void 0!==a?a.call(o):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../utils/index.js");function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var CouponItem=(_temp2=_class=function(e){function a(){var e,t,n;_classCallCheck(this,a);for(var o=arguments.length,r=Array(o),s=0;s<o;s++)r[s]=arguments[s];return(t=n=_possibleConstructorReturn(this,(e=a.__proto__||Object.getPrototypeOf(a)).call.apply(e,[this].concat(r)))).$usedState=["anonymousState__temp","anonymousState__temp2","anonymousState__temp3","anonymousState__temp4","info","isShowCheckout","isChoosed","isItemChecked","curKey","__fn_onClickBtn","children"],n.handleClickChecked=function(e){n.props.curKey===e?n.setState({isItemChecked:!n.state.isItemChecked}):n.setState({isItemChecked:!0}),n.__triggerPropsFn("onClickBtn",[null].concat([e]))},n.$$refs=[],_possibleConstructorReturn(n,t)}return _inherits(a,_index.Component),_createClass(a,[{key:"_constructor",value:function(e){_get(a.prototype.__proto__||Object.getPrototypeOf(a.prototype),"_constructor",this).call(this,e),this.state={isItemChecked:!1}}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props,t=e.info,n=e.isShowCheckout,o=e.isChoosed;e.onClick,this.__state.isItemChecked;if(!t)return null;var r="cash"===t.card_type?(0,_index3.classNames)("coupon-item__name","2"===t.status?"coupon-item__name-not":null):null,s="gift"===t.card_type?(0,_index3.classNames)("coupon-item__name","2"===t.status?"coupon-item__name-not":null):null,a="discount"===t.card_type?(0,_index3.classNames)("coupon-item__name","2"===t.status?"coupon-item__name-not":null):null,l="member"===t.card_type?(0,_index3.classNames)("coupon-item__name","2"===t.status?"coupon-item__name-not":null):null;return Object.assign(this.__state,{anonymousState__temp:r,anonymousState__temp2:s,anonymousState__temp3:a,anonymousState__temp4:l,info:t,isShowCheckout:n,isChoosed:o}),this.__state}},{key:"funPrivategbrum",value:function(){this.__triggerPropsFn("onClick",[].concat(Array.prototype.slice.call(arguments)))}}]),a}(),_class.properties={curKey:{type:null,value:null},__fn_onClickBtn:{type:null,value:null},info:{type:null,value:null},isShowCheckout:{type:null,value:null},isChoosed:{type:null,value:null},onClick:{type:null,value:null},__fn_onClick:{type:null,value:null}},_class.$$events=["funPrivategbrum","handleClickChecked"],_class.options={addGlobalClass:!0},_class.defaultProps={onClick:function(){},info:null,isShowCheckout:!1},_temp2);exports.default=CouponItem,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(CouponItem));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../utils/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CouponItem = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(CouponItem, _BaseComponent);
+
+  function CouponItem() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, CouponItem);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CouponItem.__proto__ || Object.getPrototypeOf(CouponItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "anonymousState__temp4", "info", "isShowCheckout", "isChoosed", "isItemChecked", "curKey", "__fn_onClickBtn", "children"], _this.handleClickChecked = function (index) {
+      if (_this.props.curKey === index) {
+        _this.setState({
+          isItemChecked: !_this.state.isItemChecked
+        });
+      } else {
+        _this.setState({
+          isItemChecked: true
+        });
+      }
+      _this.__triggerPropsFn("onClickBtn", [null].concat([index]));
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(CouponItem, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(CouponItem.prototype.__proto__ || Object.getPrototypeOf(CouponItem.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        isItemChecked: false
+      };
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _props = this.__props,
+          info = _props.info,
+          isShowCheckout = _props.isShowCheckout,
+          isChoosed = _props.isChoosed,
+          onClick = _props.onClick;
+      var isItemChecked = this.__state.isItemChecked;
+
+
+      if (!info) {
+        return null;
+      }
+
+      var anonymousState__temp = info.card_type === 'cash' ? (0, _index3.classNames)('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null) : null;
+      var anonymousState__temp2 = info.card_type === 'gift' ? (0, _index3.classNames)('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null) : null;
+      var anonymousState__temp3 = info.card_type === 'discount' ? (0, _index3.classNames)('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null) : null;
+      var anonymousState__temp4 = info.card_type === 'member' ? (0, _index3.classNames)('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null) : null;
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        anonymousState__temp2: anonymousState__temp2,
+        anonymousState__temp3: anonymousState__temp3,
+        anonymousState__temp4: anonymousState__temp4,
+        info: info,
+        isShowCheckout: isShowCheckout,
+        isChoosed: isChoosed
+      });
+      return this.__state;
+    }
+  }, {
+    key: "funPrivateEsUjK",
+    value: function funPrivateEsUjK() {
+      this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
+    }
+  }]);
+
+  return CouponItem;
+}(_index.Component), _class.properties = {
+  "curKey": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClickBtn": {
+    "type": null,
+    "value": null
+  },
+  "info": {
+    "type": null,
+    "value": null
+  },
+  "isShowCheckout": {
+    "type": null,
+    "value": null
+  },
+  "isChoosed": {
+    "type": null,
+    "value": null
+  },
+  "onClick": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClick": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["funPrivateEsUjK", "handleClickChecked"], _class.options = {
+  addGlobalClass: true
+}, _class.defaultProps = {
+  onClick: function onClick() {},
+  info: null,
+  isShowCheckout: false
+}, _temp2);
+exports.default = CouponItem;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(CouponItem));

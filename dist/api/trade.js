@@ -1,1 +1,51 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.list=list,exports.detail=detail,exports.create=create,exports.confirm=confirm,exports.cancel=cancel,exports.getCount=getCount,exports.deliveryInfo=deliveryInfo;var _req=require("./req.js"),_req2=_interopRequireDefault(_req);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function list(e){return _req2.default.get("/orders",e)}function detail(e){return _req2.default.get("/order/"+e)}function create(e){return _req2.default.post("/order_new",e)}function confirm(e){return _req2.default.post("/order/confirmReceipt",{order_id:e})}function cancel(e){return _req2.default.post("/order/cancel",e)}function getCount(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{order_type:"normal"};return _req2.default.get("/orderscount",e)}function deliveryInfo(e){return _req2.default.get("/order/waybill/"+e)}
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.list = list;
+exports.detail = detail;
+exports.create = create;
+exports.confirm = confirm;
+exports.cancel = cancel;
+exports.getCount = getCount;
+exports.deliveryInfo = deliveryInfo;
+
+var _req = require('./req.js');
+
+var _req2 = _interopRequireDefault(_req);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function list(params) {
+  // return req.get('/trade.list', params)
+  return _req2.default.get('/orders', params);
+}
+
+function detail(tid) {
+  // return req.get('/trade.get', { tid })
+  return _req2.default.get('/order/' + tid);
+}
+
+function create(data) {
+  // return req.post('/trade.create', data)
+  return _req2.default.post('/order_new', data);
+}
+
+function confirm(tid) {
+  return _req2.default.post('/order/confirmReceipt', { order_id: tid });
+}
+
+function cancel(data) {
+  return _req2.default.post('/order/cancel', data);
+}
+
+function getCount() {
+  var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { order_type: 'normal' };
+
+  return _req2.default.get('/orderscount', params);
+}
+
+function deliveryInfo(order_id) {
+  return _req2.default.get('/order/waybill/' + order_id);
+}

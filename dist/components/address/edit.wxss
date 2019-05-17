@@ -1,1 +1,45 @@
-.address-edit__form{background:#fff;padding:30rpx;margin:0 0 16rpx}.address-edit .picker{padding:16rpx 0;margin:0 0 30rpx;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;border-bottom:1PX solid rgba(11,65,55,.2)}.address-edit .picker__title{font-size:26rpx;margin-right:16rpx;width:172rpx}.address-edit .picker .pick-value{color:#333}.address-edit .picker span.pick-value-null{color:#ccc}.address-edit .picker text.pick-value-null{color:gray}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.address-edit__form {
+  background: #fff;
+  padding: 30rpx;
+  margin: 0 0 16rpx;
+}
+.address-edit .picker {
+  padding: 16rpx 0;
+  margin: 0 0 30rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  border-bottom: 1PX solid rgba(11, 65, 55, 0.2);
+}
+.address-edit .picker__title {
+  font-size: 26rpx;
+  margin-right: 16rpx;
+  width: 172rpx;
+}
+.address-edit .picker .pick-value {
+  color: #333;
+}
+.address-edit .picker span.pick-value-null {
+  color: #ccc;
+}
+.address-edit .picker text.pick-value-null {
+  color: #808080;
+}

@@ -1,1 +1,379 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var a=Object.getOwnPropertyDescriptor(t,n);if(void 0===a){var i=Object.getPrototypeOf(t);return null===i?void 0:e(i,n,r)}if("value"in a)return a.value;var o=a.get;return void 0!==o?o.call(r):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../api/index.js"),_index4=_interopRequireDefault(_index3),_index5=require("../../utils/index.js"),_index6=require("../../spx/index.js"),_index7=_interopRequireDefault(_index6);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var l=e.apply(this,arguments);return new Promise(function(i,o){return function t(e,n){try{var r=l[e](n),a=r.value}catch(e){return void o(e)}if(!r.done)return Promise.resolve(a).then(function(e){t("next",e)},function(e){t("throw",e)});i(a)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var AddressEdit=(_temp2=_class=function(e){function u(){var e,t,o,n,r,a=this;_classCallCheck(this,u);for(var i=arguments.length,l=Array(i),s=0;s<i;s++)l[s]=arguments[s];return(t=o=_possibleConstructorReturn(this,(e=u.__proto__||Object.getPrototypeOf(u)).call.apply(e,[this].concat(l)))).$usedState=["info","multiIndex","areaList","listLength","value","__fn_onDelete"],o.bindMultiPickerChange=(r=_asyncToGenerator(regeneratorRuntime.mark(function e(n){var r;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:r=o.state.info,o.nList.map(function(e,t){t===n.detail.value[0]&&(r.province=e.label,e.children.map(function(e,t){t===n.detail.value[1]&&(r.city=e.label,e.children.map(function(e,t){t===n.detail.value[2]&&(r.county=e.label)}))}))}),o.setState({info:r});case 3:case"end":return e.stop()}},e,a)})),function(e){return r.apply(this,arguments)}),o.bindMultiPickerColumnChange=function(a){var e=o.state,i=e.areaList,t=e.multiIndex;0===a.detail.column?(o.setState({multiIndex:[a.detail.value,0,0]}),o.nList.map(function(e,t){if(t===a.detail.value){var n=[],r=[];e.children.map(function(e,t){n.push(e.label),0===t&&e.children.map(function(e){r.push(e.label)})}),i[1]=n,i[2]=r,o.setState({areaList:i})}})):1===a.detail.column?(t[1]=a.detail.value,o.setState({multiIndex:t}),o.nList[t[0]].children.map(function(e,t){if(t===a.detail.value){var n=[];e.children.map(function(e){n.push(e.label)}),i[2]=n,o.setState({areaList:i})}})):(t[2]=a.detail.value,o.setState({multiIndex:t}))},o.handleSubmit=(n=_asyncToGenerator(regeneratorRuntime.mark(function e(t){var n,r;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(n=t.detail.value,(r=_extends({},o.state.info,n)).is_def?r.is_def="1":r.is_def="0",0===o.state.listLength&&(r.is_def="1"),r.username){e.next=6;break}return e.abrupt("return",_index7.default.toast("请输入收件人"));case 6:if(r.telephone&&/1\d{10}/.test(r.telephone)){e.next=8;break}return e.abrupt("return",_index7.default.toast("请输入正确的手机号"));case 8:if(r.province){e.next=10;break}return e.abrupt("return",_index7.default.toast("请选择所在区域"));case 10:if(r.adrdetail){e.next=12;break}return e.abrupt("return",_index7.default.toast("请输入详细地址"));case 12:console.log(r),o.props.onChange&&o.__triggerPropsFn("onChange",[null].concat([r])),o.props.onClose&&o.__triggerPropsFn("onClose",[null].concat([]));case 15:case"end":return e.stop()}},e,a)})),function(e){return n.apply(this,arguments)}),o.handleChange=function(e,t){o.state.info[e]=t},o.handleDefChange=function(e){console.log(e.detail.value);var t=_extends({},o.state.info,{is_def:e.detail.value?1:0});o.setState({info:t})},o.handleDelete=function(){o.__triggerPropsFn("onDelete",[null].concat([o.state.info]))},o.$$refs=[],_possibleConstructorReturn(o,t)}var t;return _inherits(u,_index.Component),_createClass(u,[{key:"_constructor",value:function(e){_get(u.prototype.__proto__||Object.getPrototypeOf(u.prototype),"_constructor",this).call(this,e),this.state={info:_extends({},this.props.value),areaList:[],multiIndex:[],listLength:0}}},{key:"componentDidMount",value:function(){this.fetch()}},{key:"fetch",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n,r,a,i,o,l,s,u=this;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,_index4.default.member.addressList();case 2:return t=e.sent,n=t.list,this.setState({listLength:n.length}),r=this.state.info,e.next=8,_index4.default.member.areaList();case 8:a=e.sent,i=(0,_index5.pickBy)(a,{label:"label",children:"children"}),this.nList=i,o=[],l=[],s=[],i.map(function(e,t){o.push(e.label),0===t&&e.children.map(function(e,t){l.push(e.label),0===t&&e.children.map(function(e){s.push(e.label)})})}),r.province=o[0],r.city=l[0],r.county=s[0],this.setState({areaList:[o,l,s]},function(){u.setState({multiIndex:[0,0,0],info:r})});case 19:case"end":return e.stop()}},e,this)})),function(){return t.apply(this,arguments)})},{key:"componentWillReceiveProps",value:function(e){e.value!==this.state.info&&this.setState({info:_extends({},e.value)})}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state,t=e.info;e.areaList,e.multiIndex;return t?(Object.assign(this.__state,{}),this.__state):null}}]),u}(),_class.properties={value:{type:null,value:null},onChange:{type:null,value:null},__fn_onChange:{type:null,value:null},onClose:{type:null,value:null},__fn_onClose:{type:null,value:null},__fn_onDelete:{type:null,value:null}},_class.$$events=["handleSubmit","handleChange","bindMultiPickerChange","bindMultiPickerColumnChange","handleDefChange","handleDelete"],_class.options={addGlobalClass:!0},_temp2);exports.default=AddressEdit,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(AddressEdit));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../api/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../../utils/index.js");
+
+var _index6 = require("../../spx/index.js");
+
+var _index7 = _interopRequireDefault(_index6);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddressEdit = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(AddressEdit, _BaseComponent);
+
+  function AddressEdit() {
+    var _ref,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, AddressEdit);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddressEdit.__proto__ || Object.getPrototypeOf(AddressEdit)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "multiIndex", "areaList", "listLength", "value", "__fn_onDelete"], _this.bindMultiPickerChange = function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
+        var info;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                info = _this.state.info;
+
+                _this.nList.map(function (item, index) {
+                  if (index === e.detail.value[0]) {
+                    info.province = item.label;
+                    item.children.map(function (s_item, sIndex) {
+                      if (sIndex === e.detail.value[1]) {
+                        info.city = s_item.label;
+                        s_item.children.map(function (th_item, thIndex) {
+                          if (thIndex === e.detail.value[2]) {
+                            info.county = th_item.label;
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+                _this.setState({ info: info });
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, _this2);
+      }));
+
+      return function (_x) {
+        return _ref2.apply(this, arguments);
+      };
+    }(), _this.bindMultiPickerColumnChange = function (e) {
+      var _this$state = _this.state,
+          areaList = _this$state.areaList,
+          multiIndex = _this$state.multiIndex;
+
+      if (e.detail.column === 0) {
+        _this.setState({
+          multiIndex: [e.detail.value, 0, 0]
+        });
+        _this.nList.map(function (item, index) {
+          if (index === e.detail.value) {
+            var arrCity = [];
+            var arrCounty = [];
+            item.children.map(function (c_item, c_index) {
+              arrCity.push(c_item.label);
+              if (c_index === 0) {
+                c_item.children.map(function (cny_item) {
+                  arrCounty.push(cny_item.label);
+                });
+              }
+            });
+            areaList[1] = arrCity;
+            areaList[2] = arrCounty;
+            _this.setState({ areaList: areaList });
+          }
+        });
+      } else if (e.detail.column === 1) {
+        multiIndex[1] = e.detail.value;
+        _this.setState({ multiIndex: multiIndex });
+        _this.nList[multiIndex[0]].children.map(function (c_item, c_index) {
+          if (c_index === e.detail.value) {
+            var arrCounty = [];
+            c_item.children.map(function (cny_item) {
+              arrCounty.push(cny_item.label);
+            });
+            areaList[2] = arrCounty;
+            _this.setState({ areaList: areaList });
+          }
+        });
+      } else {
+        multiIndex[2] = e.detail.value;
+        _this.setState({ multiIndex: multiIndex });
+      }
+    }, _this.handleSubmit = function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
+        var value, data;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                value = e.detail.value;
+                data = _extends({}, _this.state.info, value);
+
+
+                if (!data.is_def) {
+                  data.is_def = '0';
+                } else {
+                  data.is_def = '1';
+                }
+                if (_this.state.listLength === 0) {
+                  data.is_def = '1';
+                }
+
+                if (data.username) {
+                  _context2.next = 6;
+                  break;
+                }
+
+                return _context2.abrupt("return", _index7.default.toast('请输入收件人'));
+
+              case 6:
+                if (!(!data.telephone || !/1\d{10}/.test(data.telephone))) {
+                  _context2.next = 8;
+                  break;
+                }
+
+                return _context2.abrupt("return", _index7.default.toast('请输入正确的手机号'));
+
+              case 8:
+                if (data.province) {
+                  _context2.next = 10;
+                  break;
+                }
+
+                return _context2.abrupt("return", _index7.default.toast('请选择所在区域'));
+
+              case 10:
+                if (data.adrdetail) {
+                  _context2.next = 12;
+                  break;
+                }
+
+                return _context2.abrupt("return", _index7.default.toast('请输入详细地址'));
+
+              case 12:
+                console.log(data);
+                _this.props.onChange && _this.__triggerPropsFn("onChange", [null].concat([data]));
+                _this.props.onClose && _this.__triggerPropsFn("onClose", [null].concat([]));
+
+              case 15:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, _this2);
+      }));
+
+      return function (_x2) {
+        return _ref3.apply(this, arguments);
+      };
+    }(), _this.handleChange = function (name, val) {
+      var info = _this.state.info;
+
+      info[name] = val;
+    }, _this.handleDefChange = function (e) {
+      console.log(e.detail.value);
+      var info = _extends({}, _this.state.info, {
+        is_def: e.detail.value ? 1 : 0
+      });
+
+      _this.setState({
+        info: info
+      });
+    }, _this.handleDelete = function () {
+      _this.__triggerPropsFn("onDelete", [null].concat([_this.state.info]));
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(AddressEdit, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(AddressEdit.prototype.__proto__ || Object.getPrototypeOf(AddressEdit.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        info: _extends({}, this.props.value),
+        areaList: [],
+        multiIndex: [],
+        listLength: 0
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+
+      this.fetch();
+    }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+        var _this3 = this;
+
+        var _ref5, list, info, res, nList, arrProvice, arrCity, arrCounty;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return _index4.default.member.addressList();
+
+              case 2:
+                _ref5 = _context3.sent;
+                list = _ref5.list;
+
+                this.setState({
+                  listLength: list.length
+                });
+                info = this.state.info;
+                _context3.next = 8;
+                return _index4.default.member.areaList();
+
+              case 8:
+                res = _context3.sent;
+                nList = (0, _index5.pickBy)(res, {
+                  label: 'label',
+                  children: 'children'
+                });
+
+                this.nList = nList;
+                arrProvice = [];
+                arrCity = [];
+                arrCounty = [];
+
+                nList.map(function (item, index) {
+                  arrProvice.push(item.label);
+                  if (index === 0) {
+                    item.children.map(function (c_item, c_index) {
+                      arrCity.push(c_item.label);
+                      if (c_index === 0) {
+                        c_item.children.map(function (cny_item) {
+                          arrCounty.push(cny_item.label);
+                        });
+                      }
+                    });
+                  }
+                });
+                info.province = arrProvice[0];
+                info.city = arrCity[0];
+                info.county = arrCounty[0];
+                this.setState({
+                  areaList: [arrProvice, arrCity, arrCounty]
+                }, function () {
+                  _this3.setState({
+                    multiIndex: [0, 0, 0],
+                    info: info
+                  });
+                });
+
+              case 19:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function fetch() {
+        return _ref4.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.value !== this.state.info) {
+        this.setState({
+          info: _extends({}, nextProps.value)
+        });
+      }
+    }
+
+    // 选定开户地区
+
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          info = _state.info,
+          areaList = _state.areaList,
+          multiIndex = _state.multiIndex;
+
+      if (!info) {
+        return null;
+      }
+      //
+      Object.assign(this.__state, {});
+      return this.__state;
+    }
+  }]);
+
+  return AddressEdit;
+}(_index.Component), _class.properties = {
+  "value": {
+    "type": null,
+    "value": null
+  },
+  "onChange": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onChange": {
+    "type": null,
+    "value": null
+  },
+  "onClose": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClose": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onDelete": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["handleSubmit", "handleChange", "bindMultiPickerChange", "bindMultiPickerColumnChange", "handleDefChange", "handleDelete"], _class.options = {
+  addGlobalClass: true
+}, _temp2);
+exports.default = AddressEdit;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(AddressEdit));

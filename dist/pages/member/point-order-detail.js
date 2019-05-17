@@ -1,1 +1,357 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e},_createClass=function(){function n(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,r){return t&&n(e.prototype,t),r&&n(e,r),e}}(),_get=function e(t,r,n){null===t&&(t=Function.prototype);var s=Object.getOwnPropertyDescriptor(t,r);if(void 0===s){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,r,n)}if("value"in s)return s.value;var i=s.get;return void 0!==i?i.call(n):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../utils/index.js"),_dom=require("../../utils/dom.js"),_index4=require("../../api/index.js"),_index5=_interopRequireDefault(_index4);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _defineProperty(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}function _asyncToGenerator(e){return function(){var o=e.apply(this,arguments);return new Promise(function(a,i){return function t(e,r){try{var n=o[e](r),s=n.value}catch(e){return void i(e)}if(!n.done)return Promise.resolve(s).then(function(e){t("next",e)},function(e){t("throw",e)});a(s)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var PointOrderDetail=(_temp2=_class=function(e){function i(){var e,t,o,r,c=this;_classCallCheck(this,i);for(var n=arguments.length,s=Array(n),a=0;a<n;a++)s[a]=arguments[a];return(t=o=_possibleConstructorReturn(this,(e=i.__proto__||Object.getPrototypeOf(i)).call.apply(e,[this].concat(s)))).$usedState=["anonymousState__temp","info","showAddressPicker","address"],o.handleCopy=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,r;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=o.state.info,r=t.luckydraw_trade_id,e.next=4,(0,_index3.copyText)(r);case 4:case"end":return e.stop()}},e,c)})),o.handleClickBtn=(r=_asyncToGenerator(regeneratorRuntime.mark(function e(t){var r,n,s,a,i;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(r=o.state.info,"address"===t)return e.next=4,_index2.default.showModal({title:"确认提交该收货地址，提交后不可修改？",content:""});e.next=18;break;case 4:if(n=e.sent,n.confirm)return s={luckydraw_trade_id:r.luckydraw_trade_id,address_id:r.address_id},e.prev=8,e.next=11,_index5.default.member.pointOrderAddress(s);e.next=17;break;case 11:o.fetch(),e.next=17;break;case 14:e.prev=14,e.t0=e.catch(8),console.log(e.t0);case 17:return e.abrupt("return");case 18:if("confirm"===t)return e.next=21,_index2.default.showModal({title:"确认收货？",content:""});e.next=35;break;case 21:if(a=e.sent,a.confirm)return i={luckydraw_trade_id:r.luckydraw_trade_id},e.prev=25,e.next=28,_index5.default.member.pointOrderConfirm(i);e.next=34;break;case 28:o.fetch(),e.next=34;break;case 31:e.prev=31,e.t1=e.catch(25),console.log(e.t1);case 34:return e.abrupt("return");case 35:case"end":return e.stop()}},e,c,[[8,14],[25,31]])})),function(e){return r.apply(this,arguments)}),o.toggleState=function(e,t){console.log(e,t,96),void 0===t&&(t=!o.state[e]),o.setState(_defineProperty({},e,t))},o.toggleAddressPicker=function(e){console.log(e,126),void 0===e&&(e=!o.state.showAddressPicker),(0,_dom.lockScreen)(e),o.setState({showAddressPicker:e})},o.handleAddressChange=function(e){e?(e=(0,_index3.pickBy)(e,{state:"province",city:"city",district:"county",addr_id:"address_id",mobile:"telephone",name:"username",zip:"postalCode",address:"adrdetail",area:"area"}),o.setState({address:e,info:_extends({},o.state.info,{receiver_name:e.name,receiver_mobile:e.mobile,receiver_state:e.state,receiver_city:e.city,receiver_district:e.district,receiver_address:e.address,address_id:e.addr_id})}),e||o.setState({showAddressPicker:!0})):o.toggleAddressPicker(!0)},o.handleClickDelivery=function(){_index2.default.navigateTo({url:"/pages/trade/delivery-info?order_id="+o.state.info.luckydraw_trade_id})},o.handleAddressClick=function(){var e=o.state.info;console.log(e,111),"waitaddress"===e.ship_status&&o.toggleAddressPicker(!0)},o.$$refs=[],_possibleConstructorReturn(o,t)}var t;return _inherits(i,_index.Component),_createClass(i,[{key:"_constructor",value:function(e){_get(i.prototype.__proto__||Object.getPrototypeOf(i.prototype),"_constructor",this).call(this,e),this.state={info:null,address:null,showAddressPicker:!1}}},{key:"componentDidMount",value:function(){this.fetch()}},{key:"fetch",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,r,n;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=this.$router.params.id,e.next=3,_index5.default.member.pointOrderDetail(t);case 3:r=e.sent,n=(0,_index3.pickBy)(r,{luckydraw_trade_id:"luckydraw_trade_id",created:function(e){var t=e.created;return(0,_index3.formatTime)(1e3*t,"YYYY-MM-DD HH:mm:ss")},title:"item_name",pic_path:"item_pic",point:"luckydraw_point",lucky_status:"lucky_status",status_img:"lucky_status",address_id:"address_id",ship_status:"ship_status",receiver_name:"address.username",receiver_mobile:"address.telephone",receiver_state:"address.province",receiver_city:"address.city",receiver_district:"address.county",receiver_address:"address.adrdetail",ship_corp:"ship_corp",ship_code:"ship_code"}),console.log(n,49),"lucky"===n.lucky_status?(n.status_desc_name="中奖",n.status_img="ico_wait_buyer_confirm_goods.png"):"unlukcy"===n.lucky_status?(n.status_desc_name="未中奖",n.status_img="ico_wait_rate.png"):(n.status_desc_name="尚未开奖",n.status_img="ico_wait_seller_send_goods.png"),this.setState({info:n});case 8:case"end":return e.stop()}},e,this)})),function(){return t.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state,t=e.info,r=(e.address,e.showAddressPicker);if(!t)return null;console.log(t,r,190);var n=(0,_index3.classNames)("trade-detail","trade-detail__status-"+t.status);return Object.assign(this.__state,{anonymousState__temp:n}),this.__state}}]),i}(),_class.properties={},_class.$$events=["handleAddressClick","handleCopy","handleClickDelivery","handleClickBtn","handleAddressChange","toggleState"],_temp2);exports.default=PointOrderDetail,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(PointOrderDetail,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../utils/index.js");
+
+var _dom = require("../../utils/dom.js");
+
+var _index4 = require("../../api/index.js");
+
+var _index5 = _interopRequireDefault(_index4);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PointOrderDetail = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(PointOrderDetail, _BaseComponent);
+
+  function PointOrderDetail() {
+    var _ref,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, PointOrderDetail);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PointOrderDetail.__proto__ || Object.getPrototypeOf(PointOrderDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "showAddressPicker", "address"], _this.handleCopy = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var info, msg;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              info = _this.state.info;
+              msg = info.luckydraw_trade_id;
+              _context.next = 4;
+              return (0, _index3.copyText)(msg);
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2);
+    })), _this.handleClickBtn = function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(type) {
+        var info, _ref4, confirm, query, _ref5, _confirm, _query;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                info = _this.state.info;
+
+                if (!(type === 'address')) {
+                  _context2.next = 18;
+                  break;
+                }
+
+                _context2.next = 4;
+                return _index2.default.showModal({
+                  title: '确认提交该收货地址，提交后不可修改？',
+                  content: ''
+                });
+
+              case 4:
+                _ref4 = _context2.sent;
+                confirm = _ref4.confirm;
+
+                if (!confirm) {
+                  _context2.next = 17;
+                  break;
+                }
+
+                query = {
+                  luckydraw_trade_id: info.luckydraw_trade_id,
+                  address_id: info.address_id
+                };
+                _context2.prev = 8;
+                _context2.next = 11;
+                return _index5.default.member.pointOrderAddress(query);
+
+              case 11:
+                _this.fetch();
+                _context2.next = 17;
+                break;
+
+              case 14:
+                _context2.prev = 14;
+                _context2.t0 = _context2["catch"](8);
+
+                console.log(_context2.t0);
+
+              case 17:
+                return _context2.abrupt("return");
+
+              case 18:
+                if (!(type === 'confirm')) {
+                  _context2.next = 35;
+                  break;
+                }
+
+                _context2.next = 21;
+                return _index2.default.showModal({
+                  title: '确认收货？',
+                  content: ''
+                });
+
+              case 21:
+                _ref5 = _context2.sent;
+                _confirm = _ref5.confirm;
+
+                if (!_confirm) {
+                  _context2.next = 34;
+                  break;
+                }
+
+                _query = {
+                  luckydraw_trade_id: info.luckydraw_trade_id
+                };
+                _context2.prev = 25;
+                _context2.next = 28;
+                return _index5.default.member.pointOrderConfirm(_query);
+
+              case 28:
+                _this.fetch();
+                _context2.next = 34;
+                break;
+
+              case 31:
+                _context2.prev = 31;
+                _context2.t1 = _context2["catch"](25);
+
+                console.log(_context2.t1);
+
+              case 34:
+                return _context2.abrupt("return");
+
+              case 35:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, _this2, [[8, 14], [25, 31]]);
+      }));
+
+      return function (_x) {
+        return _ref3.apply(this, arguments);
+      };
+    }(), _this.toggleState = function (key, val) {
+      console.log(key, val, 96);
+      if (val === undefined) {
+        val = !_this.state[key];
+      }
+
+      _this.setState(_defineProperty({}, key, val));
+    }, _this.toggleAddressPicker = function (isOpened) {
+      console.log(isOpened, 126);
+      if (isOpened === undefined) {
+        isOpened = !_this.state.showAddressPicker;
+      }
+
+      (0, _dom.lockScreen)(isOpened);
+      _this.setState({ showAddressPicker: isOpened });
+    }, _this.handleAddressChange = function (address) {
+      if (!address) {
+        _this.toggleAddressPicker(true);
+        return;
+      }
+
+      address = (0, _index3.pickBy)(address, {
+        state: 'province',
+        city: 'city',
+        district: 'county',
+        addr_id: 'address_id',
+        mobile: 'telephone',
+        name: 'username',
+        zip: 'postalCode',
+        address: 'adrdetail',
+        area: 'area'
+      });
+
+      _this.setState({
+        address: address,
+        info: _extends({}, _this.state.info, {
+          receiver_name: address.name,
+          receiver_mobile: address.mobile,
+          receiver_state: address.state,
+          receiver_city: address.city,
+          receiver_district: address.district,
+          receiver_address: address.address,
+          address_id: address.addr_id
+        })
+      });
+      if (!address) {
+        _this.setState({
+          showAddressPicker: true
+        });
+      }
+    }, _this.handleClickDelivery = function () {
+      _index2.default.navigateTo({
+        url: '/pages/trade/delivery-info?order_id=' + _this.state.info.luckydraw_trade_id
+      });
+    }, _this.handleAddressClick = function () {
+      var info = _this.state.info;
+
+      console.log(info, 111);
+      if (info.ship_status === 'waitaddress') {
+        _this.toggleAddressPicker(true);
+      }
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(PointOrderDetail, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(PointOrderDetail.prototype.__proto__ || Object.getPrototypeOf(PointOrderDetail.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        info: null,
+        address: null,
+        showAddressPicker: false
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.fetch();
+    }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+        var id, data, info;
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                id = this.$router.params.id;
+                _context3.next = 3;
+                return _index5.default.member.pointOrderDetail(id);
+
+              case 3:
+                data = _context3.sent;
+                info = (0, _index3.pickBy)(data, {
+                  luckydraw_trade_id: 'luckydraw_trade_id',
+                  created: function created(_ref7) {
+                    var _created = _ref7.created;
+                    return (0, _index3.formatTime)(_created * 1000, 'YYYY-MM-DD HH:mm:ss');
+                  },
+                  title: 'item_name',
+                  pic_path: 'item_pic',
+                  point: 'luckydraw_point',
+                  lucky_status: 'lucky_status',
+                  status_img: 'lucky_status',
+                  address_id: 'address_id',
+                  ship_status: 'ship_status',
+                  receiver_name: 'address.username',
+                  receiver_mobile: 'address.telephone',
+                  receiver_state: 'address.province',
+                  receiver_city: 'address.city',
+                  receiver_district: 'address.county',
+                  receiver_address: 'address.adrdetail',
+                  ship_corp: 'ship_corp',
+                  ship_code: 'ship_code'
+                });
+
+
+                console.log(info, 49);
+                if (info.lucky_status === 'lucky') {
+                  info.status_desc_name = '中奖';
+                  info.status_img = 'ico_wait_buyer_confirm_goods.png';
+                } else if (info.lucky_status === 'unlukcy') {
+                  info.status_desc_name = '未中奖';
+                  info.status_img = 'ico_wait_rate.png';
+                } else {
+                  info.status_desc_name = '尚未开奖';
+                  info.status_img = 'ico_wait_seller_send_goods.png';
+                }
+
+                this.setState({
+                  info: info
+                });
+
+              case 8:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function fetch() {
+        return _ref6.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          info = _state.info,
+          address = _state.address,
+          showAddressPicker = _state.showAddressPicker;
+
+      if (!info) {
+        return null;
+      }
+      console.log(info, showAddressPicker, 190);
+      // TODO: orders 多商铺
+      // const tradeOrders = resolveTradeOrders(info)
+
+      var anonymousState__temp = (0, _index3.classNames)('trade-detail', "trade-detail__status-" + info.status);
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp
+      });
+      return this.__state;
+    }
+  }]);
+
+  return PointOrderDetail;
+}(_index.Component), _class.properties = {}, _class.$$events = ["handleAddressClick", "handleCopy", "handleClickDelivery", "handleClickBtn", "handleAddressChange", "toggleState"], _temp2);
+exports.default = PointOrderDetail;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(PointOrderDetail, true));

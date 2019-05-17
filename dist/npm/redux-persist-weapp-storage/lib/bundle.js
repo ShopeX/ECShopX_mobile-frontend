@@ -1,1 +1,82 @@
-"use strict";function _defineProperty(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}function _objectSpread(t){for(var e=1;e<arguments.length;e++){var r=null!=arguments[e]?arguments[e]:{},n=Object.keys(r);"function"==typeof Object.getOwnPropertySymbols&&(n=n.concat(Object.getOwnPropertySymbols(r).filter(function(e){return Object.getOwnPropertyDescriptor(r,e).enumerable}))),n.forEach(function(e){_defineProperty(t,e,r[e])})}return t}var wxApis=["getStorage","setStorage","removeStorage","clearStorage","getStorageInfo"],api=Object.create(null);wxApis.forEach(function(n){api[n]=function(e){return new Promise(function(t,r){wx[n](_objectSpread({},e,{success:function(e){t(e)},fail:function(e){r(e)}}))})}});var index={getItem:function(e){return api.getStorage({key:e}).then(function(e){return e.data})},setItem:function(e,t){return api.setStorage({key:e,data:t})},removeItem:function(e){return api.removeStorage({key:e})},clear:function(){return api.clearStorage()},getAllKeys:function(){return api.getStorageInfo().then(function(e){return e.keys})}};module.exports=index;
+'use strict';
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function _objectSpread(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    var ownKeys = Object.keys(source);
+
+    if (typeof Object.getOwnPropertySymbols === 'function') {
+      ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+      }));
+    }
+
+    ownKeys.forEach(function (key) {
+      _defineProperty(target, key, source[key]);
+    });
+  }
+
+  return target;
+}
+
+var wxApis = ['getStorage', 'setStorage', 'removeStorage', 'clearStorage', 'getStorageInfo'];
+var api = Object.create(null);
+wxApis.forEach(function (name) {
+  api[name] = function (args) {
+    return new Promise(function (resolve, reject) {
+      wx[name](_objectSpread({}, args, {
+        success: function success(res) {
+          resolve(res);
+        },
+        fail: function fail(res) {
+          reject(res);
+        }
+      }));
+    });
+  };
+});
+var index = {
+  getItem: function getItem(key) {
+    return api.getStorage({
+      key: key
+    }).then(function (res) {
+      return res.data;
+    });
+  },
+  setItem: function setItem(key, data) {
+    return api.setStorage({
+      key: key,
+      data: data
+    });
+  },
+  removeItem: function removeItem(key) {
+    return api.removeStorage({
+      key: key
+    });
+  },
+  clear: function clear() {
+    return api.clearStorage();
+  },
+  getAllKeys: function getAllKeys() {
+    return api.getStorageInfo().then(function (res) {
+      return res.keys;
+    });
+  }
+};
+
+module.exports = index;

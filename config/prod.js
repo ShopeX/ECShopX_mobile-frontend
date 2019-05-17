@@ -7,13 +7,16 @@ module.exports = {
     NODE_ENV: '"production"',
     INTEGRATION_APP: isIntegration
   },
-  defineConstants: {
-  },
   plugins: {
     sass: {
-      resource: isIntegration
+      resource: [
+        isIntegration
           ? path.resolve(__dirname, '..', 'src/style/iwa.scss')
-          : null
+          : null,
+        path.resolve(__dirname, '..', 'src/style/imports.scss')
+      ],
+      // projectDirectory 需要配置，插件中做为~的别名
+      projectDirectory: path.resolve(__dirname, '..')
     }
   }
 }

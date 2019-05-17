@@ -1,1 +1,366 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function n(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,r){return t&&n(e.prototype,t),r&&n(e,r),e}}(),_get=function e(t,r,n){null===t&&(t=Function.prototype);var i=Object.getOwnPropertyDescriptor(t,r);if(void 0===i){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,r,n)}if("value"in i)return i.value;var o=i.get;return void 0!==o?o.call(n):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../utils/index.js"),_index4=require("../../api/index.js"),_index5=_interopRequireDefault(_index4),_index6=require("../../consts/index.js");function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(a,o){return function t(e,r){try{var n=s[e](r),i=n.value}catch(e){return void o(e)}if(!n.done)return Promise.resolve(i).then(function(e){t("next",e)},function(e){t("throw",e)});a(i)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var TradeDetail=(_temp2=_class=function(e){function s(){var e,t,n,i=this;_classCallCheck(this,s);for(var r=arguments.length,a=Array(r),o=0;o<r;o++)a[o]=arguments[o];return(t=n=_possibleConstructorReturn(this,(e=s.__proto__||Object.getPrototypeOf(s)).call.apply(e,[this].concat(a)))).$usedState=["anonymousState__temp","anonymousState__temp2","info"],n.handleCopy=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,r;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=n.state.info,r="收货人："+t.receiver_name+" "+t.receiver_mobile+"\n收货地址："+t.receiver_state+t.receiver_city+t.receiver_district+t.receiver_address+"\n订单编号："+t.tid+"\n创建时间："+t.created_time_str+"\n",e.next=4,(0,_index3.copyText)(r);case 4:case"end":return e.stop()}},e,i)})),n.handleClickDelivery=function(){_index2.default.navigateTo({url:"/pages/trade/delivery-info?order_id="+n.state.info.tid})},n.handleClickToDelivery=function(){},n.$$refs=[],_possibleConstructorReturn(n,t)}var r,t,n;return _inherits(s,_index.Component),_createClass(s,[{key:"_constructor",value:function(e){_get(s.prototype.__proto__||Object.getPrototypeOf(s.prototype),"_constructor",this).call(this,e),this.state={info:null}}},{key:"componentDidMount",value:function(){this.fetch()}},{key:"fetch",value:(n=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,r,n,i;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=this.$router.params.id,e.next=3,_index5.default.trade.detail(t);case 3:r=e.sent,n=(0,_index3.pickBy)(r.orderInfo,{tid:"order_id",created_time_str:function(e){var t=e.created_time;return(0,_index3.formatTime)(1e3*t)},receiver_name:"receiver_name",receiver_mobile:"receiver_mobile",receiver_state:"receiver_state",receiver_city:"receiver_city",receiver_district:"receiver_district",receiver_address:"receiver_address",status_desc:"order_status_msg",delivery_code:"delivery_code",delivery_corp:"delivery_corp",order_status_msg:"order_status_msg",item_fee:function(e){return(+e.item_fee/100).toFixed(2)},coupon_discount:function(e){return(+e.coupon_discount/100).toFixed(2)},post_fee:function(e){return(+e.freight_fee/100).toFixed(2)},payment:function(e){return(+e.total_fee/100).toFixed(2)},pay_type:"pay_type",point:"point",status:function(e){var t=e.order_status;return(0,_index3.resolveOrderStatus)(t)},orders:function(e){var t=e.items;return(0,_index3.pickBy)(t,{order_id:"order_id",item_id:"item_id",aftersales_status:function(e){var t=e.aftersales_status;return _index6.AFTER_SALE_STATUS[t]},pic_path:"pic",title:"item_name",delivery_status:"delivery_status",price:function(e){return(+e.item_fee/100).toFixed(2)},point:"item_point",num:"num"})}}),i=(n.status||"").toLowerCase(),n.status_img="ico_"+("trade_success"===i?"wait_rate":i)+".png",_index3.log.debug("[trade info] info: ",n),this.setState({info:n});case 9:case"end":return e.stop()}},e,this)})),function(){return n.apply(this,arguments)})},{key:"handleClickBtn",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(t){var r,n,i,a;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(r=this.state.info,"home"===t)return _index2.default.redirectTo({url:"/pages/home/index"}),e.abrupt("return");e.next=4;break;case 4:if("pay"===t)return _index2.default.navigateTo({url:"/pages/cashier/index?order_id="+r.tid}),e.abrupt("return");e.next=7;break;case 7:if("cancel"===t)return _index2.default.navigateTo({url:"/pages/trade/cancel?order_id="+r.tid}),e.abrupt("return");e.next=10;break;case 10:if("confirm"===t)return e.next=13,_index2.default.showModal({title:"确认收货？",content:""});e.next=21;break;case 13:if(n=e.sent,n.confirm)return e.next=18,_index5.default.trade.confirm(r.tid);e.next=20;break;case 18:i=(0,_index3.getCurrentRoute)(this.$router),a=i.fullPath,_index2.default.redirectTo({url:a});case 20:return e.abrupt("return");case 21:case"end":return e.stop()}},e,this)})),function(e){return t.apply(this,arguments)})},{key:"handleClickRefund",value:(r=_asyncToGenerator(regeneratorRuntime.mark(function e(t,r){var n;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:n=this.state.info.tid,"refund"===t?_index2.default.navigateTo({url:"/pages/trade/refund?order_id="+n+"&item_id="+r}):"refundDetail"===t&&_index2.default.navigateTo({url:"/pages/trade/refund-detail?order_id="+n+"&item_id="+r});case 2:case"end":return e.stop()}},e,this)})),function(e,t){return r.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state.info;if(!e)return null;var t="WAIT_BUYER_PAY"===e.status?(0,_index3.classNames)("trade-detail-header","trade-detail-header__waitpay"):null,r="WAIT_BUYER_PAY"!==e.status?(0,_index3.classNames)("trade-detail-header"):null;return Object.assign(this.__state,{anonymousState__temp:t,anonymousState__temp2:r}),this.__state}}]),s}(),_class.properties={},_class.$$events=["handleClickDelivery","handleClickBtn"],_temp2);exports.default=TradeDetail,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(TradeDetail,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../utils/index.js");
+
+var _index4 = require("../../api/index.js");
+
+var _index5 = _interopRequireDefault(_index4);
+
+var _index6 = require("../../consts/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// function resolveTradeOrders (info) {
+//   return info.orders.map(order => {
+//     const { item_id, title, pic_path: img, total_fee: price, num } = order
+//     return {
+//       item_id,
+//       title,
+//       img,
+//       price,
+//       num
+//     }
+//   })
+// }
+
+var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(TradeDetail, _BaseComponent);
+
+  function TradeDetail() {
+    var _ref,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, TradeDetail);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TradeDetail.__proto__ || Object.getPrototypeOf(TradeDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "info"], _this.handleCopy = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var info, msg;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              info = _this.state.info;
+              msg = "\u6536\u8D27\u4EBA\uFF1A" + info.receiver_name + " " + info.receiver_mobile + "\n\u6536\u8D27\u5730\u5740\uFF1A" + info.receiver_state + info.receiver_city + info.receiver_district + info.receiver_address + "\n\u8BA2\u5355\u7F16\u53F7\uFF1A" + info.tid + "\n\u521B\u5EFA\u65F6\u95F4\uFF1A" + info.created_time_str + "\n";
+              _context.next = 4;
+              return (0, _index3.copyText)(msg);
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2);
+    })), _this.handleClickDelivery = function () {
+      _index2.default.navigateTo({
+        url: '/pages/trade/delivery-info?order_id=' + _this.state.info.tid
+      });
+    }, _this.handleClickToDelivery = function () {}, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(TradeDetail, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(TradeDetail.prototype.__proto__ || Object.getPrototypeOf(TradeDetail.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        info: null
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.fetch();
+    }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var id, data, info, infoStatus;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                id = this.$router.params.id;
+                _context2.next = 3;
+                return _index5.default.trade.detail(id);
+
+              case 3:
+                data = _context2.sent;
+                info = (0, _index3.pickBy)(data.orderInfo, {
+                  tid: 'order_id',
+                  created_time_str: function created_time_str(_ref4) {
+                    var created_time = _ref4.created_time;
+                    return (0, _index3.formatTime)(created_time * 1000);
+                  },
+                  receiver_name: 'receiver_name',
+                  receiver_mobile: 'receiver_mobile',
+                  receiver_state: 'receiver_state',
+                  receiver_city: 'receiver_city',
+                  receiver_district: 'receiver_district',
+                  receiver_address: 'receiver_address',
+                  status_desc: 'order_status_msg',
+                  delivery_code: 'delivery_code',
+                  delivery_corp: 'delivery_corp',
+                  order_status_msg: 'order_status_msg',
+                  item_fee: function item_fee(_ref5) {
+                    var _item_fee = _ref5.item_fee;
+                    return (+_item_fee / 100).toFixed(2);
+                  },
+                  coupon_discount: function coupon_discount(_ref6) {
+                    var _coupon_discount = _ref6.coupon_discount;
+                    return (+_coupon_discount / 100).toFixed(2);
+                  },
+                  post_fee: function post_fee(_ref7) {
+                    var freight_fee = _ref7.freight_fee;
+                    return (+freight_fee / 100).toFixed(2);
+                  },
+                  payment: function payment(_ref8) {
+                    var total_fee = _ref8.total_fee;
+                    return (+total_fee / 100).toFixed(2);
+                  },
+                  pay_type: 'pay_type',
+                  point: 'point',
+                  status: function status(_ref9) {
+                    var order_status = _ref9.order_status;
+                    return (0, _index3.resolveOrderStatus)(order_status);
+                  },
+                  orders: function orders(_ref10) {
+                    var items = _ref10.items;
+                    return (0, _index3.pickBy)(items, {
+                      order_id: 'order_id',
+                      item_id: 'item_id',
+                      aftersales_status: function aftersales_status(_ref11) {
+                        var _aftersales_status = _ref11.aftersales_status;
+                        return _index6.AFTER_SALE_STATUS[_aftersales_status];
+                      },
+                      pic_path: 'pic',
+                      title: 'item_name',
+                      delivery_status: 'delivery_status',
+                      price: function price(_ref12) {
+                        var item_fee = _ref12.item_fee;
+                        return (+item_fee / 100).toFixed(2);
+                      },
+                      point: 'item_point',
+                      num: 'num'
+                    });
+                  }
+                });
+                infoStatus = (info.status || '').toLowerCase();
+
+                info.status_img = "ico_" + (infoStatus === 'trade_success' ? 'wait_rate' : infoStatus) + ".png";
+
+                _index3.log.debug('[trade info] info: ', info);
+
+                this.setState({
+                  info: info
+                });
+
+              case 9:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function fetch() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "handleClickBtn",
+    value: function () {
+      var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(type) {
+        var info, _ref14, confirm, _getCurrentRoute, fullPath;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                info = this.state.info;
+
+                if (!(type === 'home')) {
+                  _context3.next = 4;
+                  break;
+                }
+
+                _index2.default.redirectTo({
+                  url: '/pages/home/index'
+                });
+                return _context3.abrupt("return");
+
+              case 4:
+                if (!(type === 'pay')) {
+                  _context3.next = 7;
+                  break;
+                }
+
+                _index2.default.navigateTo({
+                  url: "/pages/cashier/index?order_id=" + info.tid
+                });
+                return _context3.abrupt("return");
+
+              case 7:
+                if (!(type === 'cancel')) {
+                  _context3.next = 10;
+                  break;
+                }
+
+                _index2.default.navigateTo({
+                  url: "/pages/trade/cancel?order_id=" + info.tid
+                });
+                return _context3.abrupt("return");
+
+              case 10:
+                if (!(type === 'confirm')) {
+                  _context3.next = 21;
+                  break;
+                }
+
+                _context3.next = 13;
+                return _index2.default.showModal({
+                  title: '确认收货？',
+                  content: ''
+                });
+
+              case 13:
+                _ref14 = _context3.sent;
+                confirm = _ref14.confirm;
+
+                if (!confirm) {
+                  _context3.next = 20;
+                  break;
+                }
+
+                _context3.next = 18;
+                return _index5.default.trade.confirm(info.tid);
+
+              case 18:
+                _getCurrentRoute = (0, _index3.getCurrentRoute)(this.$router), fullPath = _getCurrentRoute.fullPath;
+
+                _index2.default.redirectTo({
+                  url: fullPath
+                });
+
+              case 20:
+                return _context3.abrupt("return");
+
+              case 21:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function handleClickBtn(_x) {
+        return _ref13.apply(this, arguments);
+      }
+
+      return handleClickBtn;
+    }()
+  }, {
+    key: "handleClickRefund",
+    value: function () {
+      var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(type, item_id) {
+        var order_id;
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                order_id = this.state.info.tid;
+
+
+                if (type === 'refund') {
+                  _index2.default.navigateTo({
+                    url: "/pages/trade/refund?order_id=" + order_id + "&item_id=" + item_id
+                  });
+                } else if (type === 'refundDetail') {
+                  _index2.default.navigateTo({
+                    url: "/pages/trade/refund-detail?order_id=" + order_id + "&item_id=" + item_id
+                  });
+                }
+
+              case 2:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function handleClickRefund(_x2, _x3) {
+        return _ref15.apply(this, arguments);
+      }
+
+      return handleClickRefund;
+    }()
+
+    // handleClickAfterSale= () => {
+    //   const { info: { tid: order_id } } = this.state
+    //   Taro.navigateTo({
+    //     url: `/pages/trade/refund?order_id=${order_id}`
+    //   })
+    // }
+
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var info = this.__state.info;
+
+      if (!info) {
+        return null;
+      }
+
+      // TODO: orders 多商铺
+      // const tradeOrders = resolveTradeOrders(info)
+
+      var anonymousState__temp = info.status === 'WAIT_BUYER_PAY' ? (0, _index3.classNames)('trade-detail-header', "trade-detail-header__waitpay") : null;
+      var anonymousState__temp2 = info.status !== 'WAIT_BUYER_PAY' ? (0, _index3.classNames)('trade-detail-header') : null;
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        anonymousState__temp2: anonymousState__temp2
+      });
+      return this.__state;
+    }
+  }]);
+
+  return TradeDetail;
+}(_index.Component), _class.properties = {}, _class.$$events = ["handleClickDelivery", "handleClickBtn"], _temp2);
+exports.default = TradeDetail;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(TradeDetail, true));

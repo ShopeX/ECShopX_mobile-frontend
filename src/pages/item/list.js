@@ -61,7 +61,7 @@ export default class List extends Component {
       page,
       pageSize
     }
-    const { list, total_count: total, item_params_list } = await api.item.search(query)
+    const { list, total_count: total, item_params_list = [] } = await api.item.search(query)
     const { favs } = this.props
 
     item_params_list.map(item => {

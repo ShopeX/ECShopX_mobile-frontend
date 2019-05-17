@@ -41,7 +41,6 @@ export default class HomeIndex extends Component {
 
   render () {
     const { wgts, authStatus } = this.state
-    console.log(wgts, 44)
 
     if (!wgts || !this.props.store) {
       return <Loading />
