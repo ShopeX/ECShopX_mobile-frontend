@@ -111,13 +111,18 @@ export default class TabBar extends Component {
 
   render () {
     const { tabList, current } = this.state
-    return (
-      <AtTabBar
-        fixed
-        tabList={tabList}
-        onClick={this.handleClick}
-        current={current}
-      />
-    )
+
+    if (process.env.INTEGRATION_APP) {
+      return <View></View>
+    } else {
+      return (
+        <AtTabBar
+          fixed
+          tabList={tabList}
+          onClick={this.handleClick}
+          current={current}
+        />
+      )
+    }
   }
 }

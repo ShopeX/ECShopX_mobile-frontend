@@ -1,0 +1,7 @@
+{
+  "pages": [
+    "pages/article/index",
+    "pages/recommend/list",
+    "pages/item/list"
+  ]
+}

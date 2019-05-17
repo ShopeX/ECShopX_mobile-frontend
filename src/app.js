@@ -101,7 +101,6 @@ class App extends Component {
   }
 
   componentDidShow () {
-    console.info(FormIds)
     FormIds.startCollectingFormIds()
     try {
       if (S.getAuthToken()) {
