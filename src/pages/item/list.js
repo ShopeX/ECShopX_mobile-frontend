@@ -104,6 +104,9 @@ export default class List extends Component {
   }
 
   handleFilterChange = (data) => {
+    this.setState({
+      showDrawer: false
+    })
     const { current, sort } = data
 
     const query = {

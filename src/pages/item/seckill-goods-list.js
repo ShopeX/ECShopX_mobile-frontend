@@ -60,8 +60,6 @@ export default class SeckillGoodsList extends Component {
     const ss = Math.floor(remainingSec)
 
     return {
-      dd,
-      hh,
       mm,
       ss
     }
@@ -118,9 +116,6 @@ export default class SeckillGoodsList extends Component {
           <Image className='seckill-goods__swiper' src={imgurl} mode='widthFix' />
           <View className=''>
             <AtCountdown
-              isShowDay
-              day={timer.dd}
-              hours={timer.hh}
               minutes={timer.mm}
               seconds={timer.ss}
             />

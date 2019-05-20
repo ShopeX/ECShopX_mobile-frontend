@@ -1495,9 +1495,7 @@ function () {
 
       var nextChain = this._getNextChain();
 
-      return nextInterceptor(nextChain).catch(function (err) {
-        return Promise.reject(err);
-      });
+      return nextInterceptor(nextChain);
     }
   }, {
     key: "_getNextInterceptor",
@@ -1551,9 +1549,6 @@ function timeoutInterceptor(chain) {
       if (!timeout) return;
       clearTimeout(timeout);
       resolve(res);
-    }).catch(function (err) {
-      timeout && clearTimeout(timeout);
-      reject(err);
     });
   });
 }
@@ -3771,8 +3766,8 @@ function doUpdate(component, prevProps, prevState) {
 
   if (component._createData) {
     // 返回null或undefined则保持不变
-    var isRunLoopRef = !component.__mounted;
-    data = component._createData(state, props, isRunLoopRef) || data;
+    var runLoopRef = !component.__mounted;
+    data = component._createData(state, props, runLoopRef) || data;
   }
 
   var privatePropKeyVal = component.$scope.data[privatePropKeyName] || false;

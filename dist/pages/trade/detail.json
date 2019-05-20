@@ -2,6 +2,7 @@
   "usingComponents": {
     "loading": "../../components/loading/index",
     "nav-bar": "../../components/nav-bar/index",
+    "at-countdown": "../../npm/taro-ui/dist/weapp/components/countdown/index",
     "detail-item": "./comps/detail-item",
     "sp-toast": "../../components/toast/index"
   }

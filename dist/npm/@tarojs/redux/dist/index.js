@@ -248,7 +248,7 @@ function connect(mapStateToProps, mapDispatchToProps) {
     if (isChanged) {
       this.prevProps = prevProps;
       this._unsafeCallUpdate = true;
-      this.setState({}, function () {
+      this.forceUpdate(function () {
         delete _this._unsafeCallUpdate;
       });
     }
@@ -266,12 +266,12 @@ function connect(mapStateToProps, mapDispatchToProps) {
       function (_Component) {
         _inherits(Connect, _Component);
 
-        function Connect(props, isPage) {
+        function Connect(props) {
           var _this2;
 
           _classCallCheck(this, Connect);
 
-          _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Connect).call(this, Object.assign.apply(Object, Array.prototype.slice.call(arguments).concat([mergeObjects(mapStateToProps(store.getState(), props), initMapDispatch)])), isPage));
+          _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Connect).call(this, Object.assign.apply(Object, Array.prototype.slice.call(arguments).concat([mergeObjects(mapStateToProps(store.getState(), props), initMapDispatch)]))));
           Object.keys(initMapDispatch).forEach(function (key) {
             _this2["__event_".concat(key)] = initMapDispatch[key];
           });
