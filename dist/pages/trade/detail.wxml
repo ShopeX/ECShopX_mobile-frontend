@@ -13,7 +13,7 @@
         <block wx:if="{{info.status !== 'WAIT_BUYER_PAY'}}">
             <view class="{{anonymousState__temp3}}">
                 <view class="trade-detail-waitdeliver">
-                    <view>1</view>
+                    <view></view>
                     <view class="delivery-infos">
                         <view class="delivery-infos__status"><text class="delivery-infos__text text-status">{{info.order_status_msg}}</text><text class="delivery-infos__text"><block><block wx:if="{{info.status === 'WAIT_SELLER_SEND_GOODS'}}">{{'物流信息：正在审核订单'}}</block><block wx:else><view></view></block></block><block><block wx:if="{{info.status === 'WAIT_BUYER_CONFIRM_GOODS'}}">{{'物流信息：正在派送中'}}</block><block wx:else><view></view></block></block><block><block wx:if="{{info.status === 'TRADE_CLOSED'}}">{{'订单已取消'}}</block><block wx:else><view></view></block></block><block><block wx:if="{{info.status === 'TRADE_SUCCESS'}}">{{'物流单号：' + info.delivery_code}}</block><block wx:else><view></view></block></block></text>
                         </view>

@@ -60,9 +60,8 @@ export default class TradeDetail extends Component {
 
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
-      create_time: 'create_time',
       created_time_str: ({ create_time }) => formatTime(create_time*1000),
-      auto_cancel_time: 'auto_cancel_time',
+      auto_cancel_seconds: 'auto_cancel_seconds',
       receiver_name: 'receiver_name',
       receiver_mobile: 'receiver_mobile',
       receiver_state: 'receiver_state',
@@ -94,9 +93,8 @@ export default class TradeDetail extends Component {
     })
 
     let timer = null
-    if(info.auto_cancel_time){
-      timer = this.calcTimer(info.auto_cancel_time - info.create_time)
-      console.log(timer, 98)
+    if(info.auto_cancel_seconds){
+      timer = this.calcTimer(info.auto_cancel_seconds)
       this.setState({
         timer
       })
@@ -225,7 +223,7 @@ export default class TradeDetail extends Component {
         {
           info.status !== 'WAIT_BUYER_PAY' && <View className={classNames('trade-detail-header')}>
             <View className='trade-detail-waitdeliver'>
-              <View>1</View>
+              <View></View>
               <View className='delivery-infos'>
                 <View className='delivery-infos__status'>
                   <Text className='delivery-infos__text text-status'>{info.order_status_msg}</Text>

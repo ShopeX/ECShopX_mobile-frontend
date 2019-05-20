@@ -135,12 +135,11 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                 data = _context2.sent;
                 info = (0, _index3.pickBy)(data.orderInfo, {
                   tid: 'order_id',
-                  create_time: 'create_time',
                   created_time_str: function created_time_str(_ref4) {
                     var create_time = _ref4.create_time;
                     return (0, _index3.formatTime)(create_time * 1000);
                   },
-                  auto_cancel_time: 'auto_cancel_time',
+                  auto_cancel_seconds: 'auto_cancel_seconds',
                   receiver_name: 'receiver_name',
                   receiver_mobile: 'receiver_mobile',
                   receiver_state: 'receiver_state',
@@ -196,9 +195,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                 });
                 timer = null;
 
-                if (info.auto_cancel_time) {
-                  timer = this.calcTimer(info.auto_cancel_time - info.create_time);
-                  console.log(timer, 98);
+                if (info.auto_cancel_seconds) {
+                  timer = this.calcTimer(info.auto_cancel_seconds);
                   this.setState({
                     timer: timer
                   });
