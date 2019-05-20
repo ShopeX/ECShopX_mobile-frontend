@@ -78,8 +78,8 @@ var SpCell = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivatezTkcx",
-    value: function funPrivatezTkcx() {
+    key: "funPrivateXoyrg",
+    value: function funPrivateXoyrg() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -126,7 +126,7 @@ var SpCell = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivatezTkcx"], _class.options = {
+}, _class.$$events = ["funPrivateXoyrg"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
   isLink: false,
