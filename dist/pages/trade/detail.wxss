@@ -33,6 +33,9 @@
   font-size: 36rpx;
   margin: 0 20rpx;
 }
+.trade-detail-header .at-countdown__time {
+  color: #fff;
+}
 .trade-detail-waitdeliver {
   width: 100%;
   padding: 34rpx 58rpx 39rpx 30rpx;

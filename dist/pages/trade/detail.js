@@ -60,7 +60,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TradeDetail.__proto__ || Object.getPrototypeOf(TradeDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "info"], _this.handleCopy = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TradeDetail.__proto__ || Object.getPrototypeOf(TradeDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "info", "timer"], _this.handleCopy = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var info, msg;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -90,7 +90,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       _get(TradeDetail.prototype.__proto__ || Object.getPrototypeOf(TradeDetail.prototype), "_constructor", this).call(this, props);
 
       this.state = {
-        info: null
+        info: null,
+        timer: null
       };
     }
   }, {
@@ -99,10 +100,29 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       this.fetch();
     }
   }, {
+    key: "calcTimer",
+    value: function calcTimer(totalSec) {
+      var remainingSec = totalSec;
+      var dd = Math.floor(totalSec / 24 / 3600);
+      remainingSec -= dd * 3600 * 24;
+      var hh = Math.floor(remainingSec / 3600);
+      remainingSec -= hh * 3600;
+      var mm = Math.floor(remainingSec / 60);
+      remainingSec -= mm * 60;
+      var ss = Math.floor(remainingSec);
+
+      return {
+        dd: dd,
+        hh: hh,
+        mm: mm,
+        ss: ss
+      };
+    }
+  }, {
     key: "fetch",
     value: function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var id, data, info, infoStatus;
+        var id, data, info, timer, infoStatus;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -115,10 +135,12 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                 data = _context2.sent;
                 info = (0, _index3.pickBy)(data.orderInfo, {
                   tid: 'order_id',
+                  create_time: 'create_time',
                   created_time_str: function created_time_str(_ref4) {
-                    var created_time = _ref4.created_time;
-                    return (0, _index3.formatTime)(created_time * 1000);
+                    var create_time = _ref4.create_time;
+                    return (0, _index3.formatTime)(create_time * 1000);
                   },
+                  auto_cancel_time: 'auto_cancel_time',
                   receiver_name: 'receiver_name',
                   receiver_mobile: 'receiver_mobile',
                   receiver_state: 'receiver_state',
@@ -172,6 +194,16 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                     });
                   }
                 });
+                timer = null;
+
+                if (info.auto_cancel_time) {
+                  timer = this.calcTimer(info.auto_cancel_time - info.create_time);
+                  console.log(timer, 98);
+                  this.setState({
+                    timer: timer
+                  });
+                }
+
                 infoStatus = (info.status || '').toLowerCase();
 
                 info.status_img = "ico_" + (infoStatus === 'trade_success' ? 'wait_rate' : infoStatus) + ".png";
@@ -182,7 +214,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                   info: info
                 });
 
-              case 9:
+              case 11:
               case "end":
                 return _context2.stop();
             }
@@ -340,7 +372,9 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       var __runloopRef = arguments[2];
       ;
 
-      var info = this.__state.info;
+      var _state = this.__state,
+          info = _state.info,
+          timer = _state.timer;
 
       if (!info) {
         return null;
@@ -350,10 +384,12 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       // const tradeOrders = resolveTradeOrders(info)
 
       var anonymousState__temp = info.status === 'WAIT_BUYER_PAY' ? (0, _index3.classNames)('trade-detail-header', "trade-detail-header__waitpay") : null;
-      var anonymousState__temp2 = info.status !== 'WAIT_BUYER_PAY' ? (0, _index3.classNames)('trade-detail-header') : null;
+      var anonymousState__temp2 = info.status === 'WAIT_BUYER_PAY' ? { minutes: ':', seconds: '' } : null;
+      var anonymousState__temp3 = info.status !== 'WAIT_BUYER_PAY' ? (0, _index3.classNames)('trade-detail-header') : null;
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
-        anonymousState__temp2: anonymousState__temp2
+        anonymousState__temp2: anonymousState__temp2,
+        anonymousState__temp3: anonymousState__temp3
       });
       return this.__state;
     }

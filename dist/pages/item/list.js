@@ -58,6 +58,9 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = List.__proto__ || Object.getPrototypeOf(List)).call.apply(_ref2, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "loopArray0", "loopArray1", "curFilterIdx", "filterList", "showDrawer", "paramsList", "scrollTop", "listType", "list", "page", "showBackToTop", "query", "selectParams", "favs"], _this.handleFilterChange = function (data) {
+      _this.setState({
+        showDrawer: false
+      });
       var current = data.current,
           sort = data.sort;
 

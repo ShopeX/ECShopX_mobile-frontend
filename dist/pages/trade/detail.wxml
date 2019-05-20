@@ -6,11 +6,12 @@
         <nav-bar title="订单详情" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
         <block wx:if="{{info.status === 'WAIT_BUYER_PAY'}}">
             <view class="{{anonymousState__temp}}">
-                <view>该订单将为您保留<text class="count-down">15:00</text>分钟</view>
+                <view>该订单将为您保留
+                    <at-countdown format="{{anonymousState__temp2}}" __triggerObserer="{{ _triggerObserer }}" minutes="{{timer.mm}}" seconds="{{timer.ss}}"></at-countdown>分钟</view>
             </view>
         </block>
         <block wx:if="{{info.status !== 'WAIT_BUYER_PAY'}}">
-            <view class="{{anonymousState__temp2}}">
+            <view class="{{anonymousState__temp3}}">
                 <view class="trade-detail-waitdeliver">
                     <view>1</view>
                     <view class="delivery-infos">

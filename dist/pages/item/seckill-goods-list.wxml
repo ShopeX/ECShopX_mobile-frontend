@@ -3,7 +3,7 @@
         <scroll-view class="seckill-goods__scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}" bindscroll="handleScroll">
             <image class="seckill-goods__swiper" src="{{imgurl}}" mode="widthFix"></image>
             <view class="">
-                <at-countdown isShowDay="{{true}}" __triggerObserer="{{ _triggerObserer }}" day="{{timer.dd}}" hours="{{timer.hh}}" minutes="{{timer.mm}}" seconds="{{timer.ss}}"></at-countdown>后结束</view>
+                <at-countdown minutes="{{timer.mm}}" __triggerObserer="{{ _triggerObserer }}" seconds="{{timer.ss}}"></at-countdown>后结束</view>
             <view class="seckill-goods__list">
                 <goods-item wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonclick="anonymousFunc0" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="index" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{index}}"></goods-item>
             </view>

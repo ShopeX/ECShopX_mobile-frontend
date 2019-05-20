@@ -92,8 +92,6 @@ var SeckillGoodsList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop
       var ss = Math.floor(remainingSec);
 
       return {
-        dd: dd,
-        hh: hh,
         mm: mm,
         ss: ss
       };

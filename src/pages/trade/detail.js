@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import {AtButton, AtCountdown} from 'taro-ui'
 import { Loading, SpCell, SpToast, Price, NavBar } from '@/components'
 import { classNames, log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
 import api from '@/api'
@@ -27,12 +27,31 @@ export default class TradeDetail extends Component {
     super(props)
 
     this.state = {
-      info: null
+      info: null,
+      timer: null
     }
   }
 
   componentDidMount () {
     this.fetch()
+  }
+
+  calcTimer (totalSec) {
+    let remainingSec = totalSec
+    const dd = Math.floor(totalSec / 24 / 3600)
+    remainingSec -= dd * 3600 * 24
+    const hh = Math.floor(remainingSec / 3600)
+    remainingSec -= hh * 3600
+    const mm = Math.floor(remainingSec / 60)
+    remainingSec -= mm * 60
+    const ss = Math.floor(remainingSec)
+
+    return {
+      dd,
+      hh,
+      mm,
+      ss
+    }
   }
 
   async fetch () {
@@ -41,7 +60,9 @@ export default class TradeDetail extends Component {
 
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
-      created_time_str: ({ created_time }) => formatTime(created_time*1000),
+      create_time: 'create_time',
+      created_time_str: ({ create_time }) => formatTime(create_time*1000),
+      auto_cancel_time: 'auto_cancel_time',
       receiver_name: 'receiver_name',
       receiver_mobile: 'receiver_mobile',
       receiver_state: 'receiver_state',
@@ -71,6 +92,15 @@ export default class TradeDetail extends Component {
         num: 'num'
       })
     })
+
+    let timer = null
+    if(info.auto_cancel_time){
+      timer = this.calcTimer(info.auto_cancel_time - info.create_time)
+      console.log(timer, 98)
+      this.setState({
+        timer
+      })
+    }
 
     const infoStatus = (info.status || '').toLowerCase()
     info.status_img = `ico_${infoStatus === 'trade_success' ? 'wait_rate' : infoStatus}.png`
@@ -164,7 +194,7 @@ export default class TradeDetail extends Component {
   }
 
   render () {
-    const { info } = this.state
+    const { info, timer } = this.state
     if (!info) {
       return <Loading></Loading>
     }
@@ -181,7 +211,15 @@ export default class TradeDetail extends Component {
         />
         {
           info.status === 'WAIT_BUYER_PAY' && <View className={classNames('trade-detail-header', `trade-detail-header__waitpay`)}>
-            <View>该订单将为您保留<Text className='count-down'>15:00</Text>分钟</View>
+            <View>该订单将为您保留
+              <AtCountdown
+                format={{ minutes: ':', seconds: '' }}
+                minutes={timer.mm}
+                seconds={timer.ss}
+              />
+              分钟
+            </View>
+
           </View>
         }
         {
