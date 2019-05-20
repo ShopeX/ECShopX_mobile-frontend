@@ -1,4 +1,5 @@
 
+@charset "UTF-8";
 /*==============================
 =            colors            =
 ==============================*/
@@ -35,6 +36,9 @@
 }
 .trade-detail-header .at-countdown__time {
   color: #fff;
+}
+.trade-detail-header .at-countdown__time-box {
+  font-family: "Hiragino Sans GB", "微软雅黑", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 .trade-detail-waitdeliver {
   width: 100%;
