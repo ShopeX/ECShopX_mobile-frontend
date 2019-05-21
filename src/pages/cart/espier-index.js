@@ -90,14 +90,14 @@ export default class CartIndex extends Component {
   // 活动分组
   resolveActivityGroup (cartList) {
     const groups = cartList.map(shopCart => {
-      const { list } = shopCart
+      const { list, used_activity = [] } = shopCart
       const tDict = list.reduce((acc, val) => {
         acc[val.cart_id] = val
         return acc
       }, {})
       const activityGrouping = shopCart.activity_grouping
-      const group = Object.values(shopCart.used_activity).map((actId) => {
-        const activity = activityGrouping.find(a => String(a.activity_id) === actId)
+      const group = used_activity.map((act) => {
+        const activity = activityGrouping.find(a => String(a.activity_id) === String(act.activity_id))
         const itemList = activity.cart_ids.map(id => {
           const cartItem = tDict[id]
           delete tDict[id]

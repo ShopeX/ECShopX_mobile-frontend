@@ -155,16 +155,18 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
     key: "resolveActivityGroup",
     value: function resolveActivityGroup(cartList) {
       var groups = cartList.map(function (shopCart) {
-        var list = shopCart.list;
+        var list = shopCart.list,
+            _shopCart$used_activi = shopCart.used_activity,
+            used_activity = _shopCart$used_activi === undefined ? [] : _shopCart$used_activi;
 
         var tDict = list.reduce(function (acc, val) {
           acc[val.cart_id] = val;
           return acc;
         }, {});
         var activityGrouping = shopCart.activity_grouping;
-        var group = Object.values(shopCart.used_activity).map(function (actId) {
+        var group = used_activity.map(function (act) {
           var activity = activityGrouping.find(function (a) {
-            return String(a.activity_id) === actId;
+            return String(a.activity_id) === String(act.activity_id);
           });
           var itemList = activity.cart_ids.map(function (id) {
             var cartItem = tDict[id];
