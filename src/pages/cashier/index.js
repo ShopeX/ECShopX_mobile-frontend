@@ -4,7 +4,7 @@ import api from '@/api'
 import { Loading, NavBar } from '@/components'
 import { pickBy } from '@/utils'
 import { withLogin } from '@/hocs'
-import { AlipayPay, WeH5Pay, PointDepositPay } from './comps'
+import { AlipayPay, WeH5Pay, PointDepositPay, WePay } from './comps'
 
 import './index.scss'
 
@@ -89,11 +89,16 @@ export default class Cashier extends Component {
                   />
                   <WeH5Pay orderID={info.order_id} />
                 </View>
-              : <PointDepositPay
-                orderID={info.order_id}
-                payType={info.pay_type}
-                orderType={info.order_type}
-              />
+              : <View>
+                <PointDepositPay
+                  orderID={info.order_id}
+                  payType={info.pay_type}
+                  orderType={info.order_type}
+                />
+                <WePay
+                  info={info}
+                />
+              </View>
           }
 
 

@@ -21,7 +21,10 @@
                     </view>
                 </block>
                 <block wx:else>
-                    <point-deposit-pay orderID="{{info.order_id}}" __triggerObserer="{{ _triggerObserer }}" payType="{{info.pay_type}}" orderType="{{info.order_type}}"></point-deposit-pay>
+                    <view>
+                        <point-deposit-pay orderID="{{info.order_id}}" __triggerObserer="{{ _triggerObserer }}" payType="{{info.pay_type}}" orderType="{{info.order_type}}"></point-deposit-pay>
+                        <we-pay info="{{info}}" __triggerObserer="{{ _triggerObserer }}"></we-pay>
+                    </view>
                 </block>
             </block>
         </view>

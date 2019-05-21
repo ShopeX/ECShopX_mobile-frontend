@@ -4,6 +4,7 @@
     "nav-bar": "../../components/nav-bar/index",
     "alipay-pay": "./comps/alipay",
     "we-h-5-pay": "./comps/we-h5",
-    "point-deposit-pay": "./comps/point-deposit"
+    "point-deposit-pay": "./comps/point-deposit",
+    "we-pay": "./comps/we"
   }
 }
