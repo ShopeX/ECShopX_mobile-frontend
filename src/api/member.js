@@ -66,8 +66,12 @@ export function addressCreateOrUpdate (data) {
   return fn(data)
 }
 
-export function favoriteItems () {
-  return req.get('/member.favorite.item.list')
+export function itemHistorySave (item_id) {
+  return req.post('/member/browse/history/save', { item_id })
+}
+
+export function itemHistory (params) {
+  return req.get('/member/browse/history/list', params)
 }
 
 export function getRechargeNumber () {

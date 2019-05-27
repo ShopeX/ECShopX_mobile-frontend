@@ -216,6 +216,17 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
     value: function componentDidMount() {
       this.handleResize();
       this.fetch();
+
+      // 浏览记录
+      if (_index9.default.getAuthToken()) {
+        try {
+          var id = this.$router.params.id;
+
+          _index5.default.member.itemHistorySave(id);
+        } catch (e) {
+          console.log(e);
+        }
+      }
     }
   }, {
     key: "componentDidShow",

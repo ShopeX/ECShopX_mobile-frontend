@@ -91,18 +91,18 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivatetXNKI",
-    value: function funPrivatetXNKI() {
+    key: "funPrivatewMbNE",
+    value: function funPrivatewMbNE() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivateJKSZt",
-    value: function funPrivateJKSZt() {
+    key: "funPrivateazWGX",
+    value: function funPrivateazWGX() {
       this.__triggerPropsFn("onClickPromotion", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivatepAVcI",
-    value: function funPrivatepAVcI() {
+    key: "funPrivateTmioh",
+    value: function funPrivateTmioh() {
       this.__triggerPropsFn("onNumChange", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -169,7 +169,7 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivatetXNKI", "funPrivateJKSZt", "funPrivatepAVcI"], _class.defaultProps = {
+}, _class.$$events = ["funPrivatewMbNE", "funPrivateazWGX", "funPrivateTmioh"], _class.defaultProps = {
   onClick: function onClick() {},
   onClickPromotion: function onClickPromotion() {},
   showMarketPrice: false,

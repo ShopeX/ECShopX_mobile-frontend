@@ -26,14 +26,11 @@ export default class ItemHistory extends Component {
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
-      item_type: 'normal',
-      is_point: 'false',
-      approve_status: 'onsale,only_show',
       page,
       pageSize
     }
 
-    const { list, total_count: total } = await api.item.search(query)
+    const { list, total_count: total } = await api.member.itemHistory(query)
 
     const nList = pickBy(list, {
       img: 'pics[0]',

@@ -50,6 +50,16 @@ export default class Detail extends Component {
   componentDidMount () {
     this.handleResize()
     this.fetch()
+
+    // 浏览记录
+    if (S.getAuthToken()) {
+      try {
+        const { id } = this.$router.params
+        api.member.itemHistorySave(id)
+      } catch (e) {
+        console.log(e)
+      }
+    }
   }
 
   componentDidShow () {

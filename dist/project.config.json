@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 11,
+			"current": 12,
 			"list": [
 				{
 					"id": -1,
@@ -112,6 +112,12 @@
 					"name": "付款",
 					"pathName": "pages/cashier/index",
 					"query": "order_id=2697415000038945",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "浏览历史",
+					"pathName": "pages/member/item-history",
 					"scene": null
 				}
 			]

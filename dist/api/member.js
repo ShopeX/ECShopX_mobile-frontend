@@ -18,7 +18,8 @@ exports.addressUpdate = addressUpdate;
 exports.addressDelete = addressDelete;
 exports.areaList = areaList;
 exports.addressCreateOrUpdate = addressCreateOrUpdate;
-exports.favoriteItems = favoriteItems;
+exports.itemHistorySave = itemHistorySave;
+exports.itemHistory = itemHistory;
 exports.getRechargeNumber = getRechargeNumber;
 exports.qrcodeData = qrcodeData;
 exports.promoter = promoter;
@@ -139,8 +140,12 @@ function addressCreateOrUpdate(data) {
   return fn(data);
 }
 
-function favoriteItems() {
-  return _req2.default.get('/member.favorite.item.list');
+function itemHistorySave(item_id) {
+  return _req2.default.post('/member/browse/history/save', { item_id: item_id });
+}
+
+function itemHistory(params) {
+  return _req2.default.get('/member/browse/history/list', params);
 }
 
 function getRechargeNumber() {

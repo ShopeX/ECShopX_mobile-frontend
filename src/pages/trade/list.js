@@ -129,23 +129,30 @@ export default class TradeList extends Component {
   }
 
   handleClickItemBtn = async (type, trade) => {
+    const { tid } = trade
+    if (type === 'confirm') {
+      await api.trade.confirm(tid)
+      const { fullPath } = getCurrentRoute(this.$router)
+      Taro.redirectTo({
+        url: fullPath
+      })
+      return
+    }
+
     switch(type) {
       case 'pay':
         Taro.navigateTo({
-          url: `/pages/cashier/index?order_id=${trade.tid}`
+          url: `/pages/cashier/index?order_id=${tid}`
         })
         break
       case 'cancel':
         Taro.navigateTo({
-          url: `/pages/trade/cancel?order_id=${trade.tid}`
+          url: `/pages/trade/cancel?order_id=${tid}`
         })
         break
-      case 'confirm':
-        await api.trade.confirm(trade.tid)
-        // eslint-disable-nextline
-        const { fullPath } = getCurrentRoute(this.$router)
-        Taro.redirectTo({
-          url: fullPath
+      case 'detail':
+        Taro.navigateTo({
+          url: `/pages/trade/detail?id=${tid}`
         })
         break
       default:
@@ -212,7 +219,7 @@ export default class TradeList extends Component {
                   info={item}
                   showActions={curItemActionsId === item.tid}
                   onClick={this.handleClickItem.bind(this, item)}
-                  onClickBtn={this.handleClickItemBtn}
+                  onClickBtn={this.handleClickItemBtn.bind(this, item)}
                   onActionBtnClick={this.handleActionBtnClick.bind(this, item)}
                   onActionClick={this.handleActionClick.bind(this, item)}
                 />

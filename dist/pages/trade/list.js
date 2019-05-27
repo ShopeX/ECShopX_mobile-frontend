@@ -80,42 +80,54 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
       });
     }, _this.handleClickItemBtn = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type, trade) {
-        var _getCurrentRoute, fullPath;
+        var tid, _getCurrentRoute, fullPath;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.t0 = type;
-                _context.next = _context.t0 === 'pay' ? 3 : _context.t0 === 'cancel' ? 5 : _context.t0 === 'confirm' ? 7 : 12;
-                break;
+                tid = trade.tid;
 
-              case 3:
-                _index2.default.navigateTo({
-                  url: "/pages/cashier/index?order_id=" + trade.tid
-                });
-                return _context.abrupt("break", 12);
+                if (!(type === 'confirm')) {
+                  _context.next = 7;
+                  break;
+                }
 
-              case 5:
-                _index2.default.navigateTo({
-                  url: "/pages/trade/cancel?order_id=" + trade.tid
-                });
-                return _context.abrupt("break", 12);
+                _context.next = 4;
+                return _index4.default.trade.confirm(tid);
 
-              case 7:
-                _context.next = 9;
-                return _index4.default.trade.confirm(trade.tid);
-
-              case 9:
-                // eslint-disable-nextline
+              case 4:
                 _getCurrentRoute = (0, _index6.getCurrentRoute)(_this.$router), fullPath = _getCurrentRoute.fullPath;
 
                 _index2.default.redirectTo({
                   url: fullPath
                 });
-                return _context.abrupt("break", 12);
+                return _context.abrupt("return");
+
+              case 7:
+                _context.t0 = type;
+                _context.next = _context.t0 === 'pay' ? 10 : _context.t0 === 'cancel' ? 12 : _context.t0 === 'detail' ? 14 : 16;
+                break;
+
+              case 10:
+                _index2.default.navigateTo({
+                  url: "/pages/cashier/index?order_id=" + tid
+                });
+                return _context.abrupt("break", 16);
 
               case 12:
+                _index2.default.navigateTo({
+                  url: "/pages/trade/cancel?order_id=" + tid
+                });
+                return _context.abrupt("break", 16);
+
+              case 14:
+                _index2.default.navigateTo({
+                  url: "/pages/trade/detail?id=" + tid
+                });
+                return _context.abrupt("break", 16);
+
+              case 16:
               case "end":
                 return _context.stop();
             }

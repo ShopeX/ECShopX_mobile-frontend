@@ -84,14 +84,11 @@ var ItemHistory = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_cl
               case 0:
                 page = params.page_no, pageSize = params.page_size;
                 query = {
-                  item_type: 'normal',
-                  is_point: 'false',
-                  approve_status: 'onsale,only_show',
                   page: page,
                   pageSize: pageSize
                 };
                 _context.next = 4;
-                return _index5.default.item.search(query);
+                return _index5.default.member.itemHistory(query);
 
               case 4:
                 _ref3 = _context.sent;
