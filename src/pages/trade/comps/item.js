@@ -122,6 +122,7 @@ export default class TradeItem extends Component {
               circle
               type='primary'
               size='small'
+              onClick={this.handleClickBtn.bind(this, 'detail')}
             >订单详情</AtButton>
           </View>
         </View>}
@@ -145,6 +146,7 @@ export default class TradeItem extends Component {
               circle
               type='primary'
               size='small'
+              onClick={this.handleClickBtn.bind(this, 'detail')}
             >订单详情</AtButton>
           </View>
         </View>}

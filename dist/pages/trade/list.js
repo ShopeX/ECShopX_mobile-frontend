@@ -79,7 +79,7 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
         url: "/pages/trade/detail?id=" + tid
       });
     }, _this.handleClickItemBtn = function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type, trade) {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(trade, type) {
         var tid, _getCurrentRoute, fullPath;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {

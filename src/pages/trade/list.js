@@ -128,7 +128,7 @@ export default class TradeList extends Component {
     })
   }
 
-  handleClickItemBtn = async (type, trade) => {
+  handleClickItemBtn = async (trade, type) => {
     const { tid } = trade
     if (type === 'confirm') {
       await api.trade.confirm(tid)
