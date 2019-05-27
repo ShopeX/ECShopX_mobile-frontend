@@ -5,5 +5,6 @@
     "loading": "../../components/loading/index",
     "sp-note": "../../components/note/index",
     "back-to-top": "../../components/back-to-top/index"
-  }
+  },
+  "navigationBarTitleText": "浏览记录"
 }

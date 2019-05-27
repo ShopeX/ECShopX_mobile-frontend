@@ -10,6 +10,10 @@ import './item-history.scss'
 @withPager
 @withBackToTop
 export default class ItemHistory extends Component {
+  static config = {
+    navigationBarTitleText: '浏览记录'
+  }
+
   constructor (props) {
     super(props)
 

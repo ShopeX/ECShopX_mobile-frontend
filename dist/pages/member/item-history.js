@@ -180,7 +180,9 @@ var ItemHistory = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_cl
   }]);
 
   return ItemHistory;
-}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleScroll", "nextPage", "anonymousFunc0", "scrollBackToTop"], _temp2)) || _class) || _class;
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleScroll", "nextPage", "anonymousFunc0", "scrollBackToTop"], _class2.config = {
+  navigationBarTitleText: '浏览记录'
+}, _temp2)) || _class) || _class;
 
 exports.default = ItemHistory;
 
