@@ -95,17 +95,17 @@ var ItemHistory = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_cl
                 list = _ref3.list;
                 total = _ref3.total_count;
                 nList = (0, _index6.pickBy)(list, {
-                  img: 'pics[0]',
-                  item_id: 'item_id',
-                  title: 'itemName',
-                  desc: 'brief',
+                  img: 'itemData.pics[0]',
+                  item_id: 'itemData.item_id',
+                  title: 'itemData.itemName',
+                  desc: 'itemData.brief',
                   price: function price(_ref4) {
-                    var _price = _ref4.price;
-                    return (_price / 100).toFixed(2);
+                    var itemData = _ref4.itemData;
+                    return (itemData.price / 100).toFixed(2);
                   },
                   market_price: function market_price(_ref5) {
-                    var _market_price = _ref5.market_price;
-                    return (_market_price / 100).toFixed(2);
+                    var itemData = _ref5.itemData;
+                    return (itemData.market_price / 100).toFixed(2);
                   }
                 });
 

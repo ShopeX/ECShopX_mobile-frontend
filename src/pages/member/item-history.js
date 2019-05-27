@@ -33,12 +33,12 @@ export default class ItemHistory extends Component {
     const { list, total_count: total } = await api.member.itemHistory(query)
 
     const nList = pickBy(list, {
-      img: 'pics[0]',
-      item_id: 'item_id',
-      title: 'itemName',
-      desc: 'brief',
-      price: ({ price }) => (price/100).toFixed(2),
-      market_price: ({ market_price }) => (market_price/100).toFixed(2)
+      img: 'itemData.pics[0]',
+      item_id: 'itemData.item_id',
+      title: 'itemData.itemName',
+      desc: 'itemData.brief',
+      price: ({ itemData }) => (itemData.price/100).toFixed(2),
+      market_price: ({ itemData }) => (itemData.market_price/100).toFixed(2)
     })
 
     this.setState({
