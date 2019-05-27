@@ -371,7 +371,7 @@ export default class CartIndex extends Component {
                       activityGroup.map(shopCart => {
                         const { activity } = shopCart
 
-                        return (
+                        return shopCart.list.length > 0 && (
                           <View
                             className='cart-group'
                             key={shopCart.shop_id}

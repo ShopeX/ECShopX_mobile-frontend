@@ -7,31 +7,33 @@
         <scroll-view class="cart-list__scroll" scroll-y="{{true}}">
             <view class="cart-list">
                 <view class="cart-list__shop" wx:key="idx" wx:for="{{loopArray0}}" wx:for-item="activityGroup" wx:for-index="idx">
-                    <view class="cart-group" wx:key="$original.shop_id" wx:for="{{activityGroup.$anonymousCallee__1}}" wx:for-item="shopCart" wx:for-index="_anonIdx3">
-                        <block wx:if="{{shopCart.activity}}">
-                            <view class="cart-group__activity">
-                                <view class="cart-group__activity-item"><text class="cart-group__activity-label">{{shopCart.activity.activity_tag}}</text><text>{{shopCart.activity.activity_name}}</text>
-                                </view>
-                            </view>
-                        </block>
-                        <cart-item wx:key="$original.cart_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonnumchange="handleQuantityChange" bindonclickpromotion="handleClickPromotion" wx:for="{{shopCart.$anonymousCallee__0}}" wx:for-item="item" wx:for-index="_anonIdx" __fn_onNumChange="{{true}}" data-e-onnumchange-so="this" data-e-onnumchange-a-a="{{item.$original.cart_id}}" __fn_onClickPromotion="{{true}}" data-e-onclickpromotion-so="this" data-e-onclickpromotion-a-a="{{item.$original.cart_id}}">
-                            <view class="cart-item__act">
-                                <sp-checkbox wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" checked="{{item.$loopState__temp2}}" bindonchange="handleSelectionChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="{{item.$original.cart_id}}"></sp-checkbox>
-                                <view class="in-icon in-icon-close" bindtap="handleDelect" data-e-tap-so="this" data-e-tap-a-a="{{item.$original.cart_id}}"></view>
-                            </view>
-                        </cart-item>
-                        <block wx:if="{{shopCart.activity && shopCart.activity.gifts}}">
-                            <view class="cart-group__gifts">
-                                <view class="cart-group__gifts-hd">赠品</view>
-                                <view class="cart-group__gifts-bd">
-                                    <view class="gift-item" wx:key="item_id" wx:for="{{shopCart.activity.gifts}}" wx:for-item="gift" wx:for-index="_anonIdx2">
-                                        <image class="gift-item__img" src="{{gift.pics[0]}}" mode="aspectFill"></image>
-                                        <view class="gift-item__title">{{gift.item_name}}</view><text class="gift-item__num">x{{gift.gift_num}}</text>
+                    <block wx:if="{{shopCart.$original.list.length > 0}}" wx:for="{{activityGroup.$anonymousCallee__1}}" wx:for-item="shopCart" wx:for-index="_anonIdx3" wx:key="$original.shop_id">
+                        <view class="cart-group">
+                            <block wx:if="{{shopCart.activity}}">
+                                <view class="cart-group__activity">
+                                    <view class="cart-group__activity-item"><text class="cart-group__activity-label">{{shopCart.activity.activity_tag}}</text><text>{{shopCart.activity.activity_name}}</text>
                                     </view>
                                 </view>
-                            </view>
-                        </block>
-                    </view>
+                            </block>
+                            <cart-item wx:key="$original.cart_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonnumchange="handleQuantityChange" bindonclickpromotion="handleClickPromotion" wx:for="{{shopCart.$anonymousCallee__0}}" wx:for-item="item" wx:for-index="_anonIdx" __fn_onNumChange="{{true}}" data-e-onnumchange-so="this" data-e-onnumchange-a-a="{{item.$original.cart_id}}" __fn_onClickPromotion="{{true}}" data-e-onclickpromotion-so="this" data-e-onclickpromotion-a-a="{{item.$original.cart_id}}">
+                                <view class="cart-item__act">
+                                    <sp-checkbox wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" checked="{{item.$loopState__temp2}}" bindonchange="handleSelectionChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="{{item.$original.cart_id}}"></sp-checkbox>
+                                    <view class="in-icon in-icon-close" bindtap="handleDelect" data-e-tap-so="this" data-e-tap-a-a="{{item.$original.cart_id}}"></view>
+                                </view>
+                            </cart-item>
+                            <block wx:if="{{shopCart.activity && shopCart.activity.gifts}}">
+                                <view class="cart-group__gifts">
+                                    <view class="cart-group__gifts-hd">赠品</view>
+                                    <view class="cart-group__gifts-bd">
+                                        <view class="gift-item" wx:key="item_id" wx:for="{{shopCart.activity.gifts}}" wx:for-item="gift" wx:for-index="_anonIdx2">
+                                            <image class="gift-item__img" src="{{gift.pics[0]}}" mode="aspectFill"></image>
+                                            <view class="gift-item__title">{{gift.item_name}}</view><text class="gift-item__num">x{{gift.gift_num}}</text>
+                                        </view>
+                                    </view>
+                                </view>
+                            </block>
+                        </view>
+                    </block>
                 </view>
                 <block wx:if="{{!list.length}}">
                     <view>

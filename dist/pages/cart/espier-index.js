@@ -398,17 +398,17 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
           var activity = shopCart.$original.activity;
 
 
-          var $anonymousCallee__0 = shopCart.$original.list.map(function (item) {
+          var $anonymousCallee__0 = shopCart.$original.list.length > 0 ? shopCart.$original.list.map(function (item) {
             item = {
               $original: (0, _index.internal_get_original)(item)
             };
-            var $loopState__temp2 = selection.has(item.$original.cart_id);
+            var $loopState__temp2 = shopCart.$original.list.length > 0 ? selection.has(item.$original.cart_id) : null;
             return {
               activity: shopCart.activity,
               $loopState__temp2: $loopState__temp2,
               $original: item.$original
             };
-          });
+          }) : [];
           return {
             activity: activity,
             $anonymousCallee__0: $anonymousCallee__0,

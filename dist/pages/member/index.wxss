@@ -90,7 +90,7 @@
   font-size: 36rpx;
 }
 .member-btn__item .in-icon-check {
-  font-size: 32rpx;
+  font-size: 30rpx;
 }
 .member-btn__item .in-icon-home-th {
   margin-right: 0;
