@@ -98,6 +98,12 @@ var API = function () {
         header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded';
       }
       header['Authorization'] = "Bearer " + _index4.default.getAuthToken();
+      {
+        var extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+        if (extConfig.appid) {
+          header['authorizer-appid'] = extConfig.appid;
+        }
+      }
 
       var options = _extends({}, config, {
         url: reqUrl,

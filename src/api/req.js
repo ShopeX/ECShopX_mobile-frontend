@@ -52,6 +52,12 @@ class API {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
     }
     header['Authorization'] = `Bearer ${S.getAuthToken()}`
+    if (process.env.TARO_ENV === 'weapp') {
+      const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+      if (extConfig.appid) {
+        header['authorizer-appid'] = extConfig.appid
+      }
+    }
 
     const options = {
       ...config,

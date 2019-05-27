@@ -54,7 +54,7 @@ var WeappBtn = (_temp2 = _class = function (_BaseComponent) {
               info = _this.props.info;
               order_id = info.order_id, order_type = info.order_type;
               params = {
-                pay_type: 'wxpay',
+                pay_type: 'amorepay',
                 order_id: order_id,
                 order_type: order_type
               };

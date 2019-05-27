@@ -1,19 +1,17 @@
 @import "../../style/imports";
 
 .page-cashier-index {
-  height: 100%;
   .cashier-money {
     border-top: 1px solid $color-border-gray-dark;
     background: $color-brand-primary-text;
     padding: 50px $edge-size ;
     &__tip {
-      font-size: $font-size;
+      font-size: $font-size-large;
       color: $color-primary-text;
-      margin-bottom: 42px;
+      margin: 0 0 $edge-margin;
     }
     &__content {
-      background: #FDE9E6;
-      padding: $edge-size ;
+      background: #fff;
       &-title {
         color: #000;
         font-size: $font-size;

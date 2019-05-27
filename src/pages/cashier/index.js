@@ -10,13 +10,10 @@ import './index.scss'
 
 @withLogin()
 export default class Cashier extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      info: {},
-    }
+  state = {
+    info: null
   }
+
   componentDidShow () {
     this.fetch()
   }

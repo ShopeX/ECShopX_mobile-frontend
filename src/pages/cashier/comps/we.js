@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import api from '@/api'
+import S from '@/spx'
 
 import './we.scss'
 
@@ -20,7 +21,7 @@ export default class WeappBtn extends Component {
     const { info } = this.props
     const { order_id, order_type } = info
     const params = {
-      pay_type: 'wxpay',
+      pay_type: 'amorepay',
       order_id,
       order_type
     }
