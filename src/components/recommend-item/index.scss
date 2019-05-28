@@ -1,0 +1,124 @@
+@import '../../style/imports';
+
+$item-img-size: 240px !default;
+
+.goods-list__type-grid {
+  .goods-item {
+    flex-direction: column;
+    align-items: flex-start;
+    &__bd {
+      width: 100%;
+    }
+  }
+}
+
+.draw-item__ft-inner {
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-small;
+  color: $color-gray;
+  .weui-progress {
+    flex: 1;
+    margin-left: 10px;
+  }
+}
+
+.goods-item {
+  $self: &;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: $item-border-radius;
+  overflow: hidden;
+  margin: 0 0 $edge-margin;
+
+  &__hd {
+  }
+  &__bd {
+    display: flex;
+    flex: 1;
+  }
+  &__cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: $edge-margin 20px;
+    flex: 1;
+  }
+  &__img {
+    width: $item-img-size;
+    height: $item-img-size;
+    &-wrap {
+      width: $item-img-size;
+      height: $item-img-size;
+      display: block;
+      text-align: center;
+    }
+  }
+  &__title {
+    @include multi-ellipsis(2);
+    line-height: 1.4;
+    height: 1.4 * 2em;
+    color: #111;
+    margin: 0 0 16px;
+  }
+  &__desc {
+    line-height: 1.4;
+    @include multi-ellipsis(2);
+    color: $color-gray;
+    font-size: $font-size-small;
+    margin: 0 0 20px;
+  }
+  &__price {
+    font-size: floor(1.28 * $font-size);
+    margin-right: 24px;
+  }
+  &__point {
+    color: $color-brand-primary;
+  }
+  &__price-market {
+    font-size: $font-size-small;
+    color: $color-gray;
+    text-decoration: line-through;
+  }
+
+  &__extra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__author {
+    font-size: $font-size-small;
+    color: #000;
+    &-avatar {
+      background: $color-bg-gray;
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+      margin-right: 12px;
+      display: inline-block;
+      vertical-align: middle;
+      overflow: hidden;
+    }
+    &-name {
+      width: 140px;
+      display: inline-block;
+      vertical-align: middle;
+      @include text-overflow();
+    }
+  }
+  &__actions {
+    color: #d0d0d0;
+    font-size: $font-size-small;
+    .in-icon {
+      color: #d0d0d0;
+      font-size: 28px;
+      &:before {
+        margin-right: 8px;
+      }
+    }
+    .in-icon-fav-f, .in-icon-like-f {
+      color: $color-brand-primary;
+    }
+  }
+}

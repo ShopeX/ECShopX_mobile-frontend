@@ -16,6 +16,7 @@
     "pages/cart/coupon-picker",
     "pages/article/index",
     "pages/recommend/list",
+    "pages/recommend/detail",
     "pages/auth/reg",
     "pages/auth/reg-rule",
     "pages/auth/login",
@@ -63,6 +64,5 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "innisfree悦诗风吟",
     "navigationBarTextStyle": "black"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

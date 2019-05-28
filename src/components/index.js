@@ -21,6 +21,7 @@ export { default as SpToast } from './toast'
 export { default as SpIconMenu } from './icon-menu'
 export { default as SpNote } from './note'
 export { default as SpHtmlContent } from './html-content'
+export { default as RecommendItem } from './recommend-item'
 
 export { default as AddressChoose } from './address/choose-address'
 export { default as CouponItem } from './coupon-item'

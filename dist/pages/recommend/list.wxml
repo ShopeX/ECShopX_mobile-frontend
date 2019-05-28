@@ -5,7 +5,7 @@
         </view>
         <scroll-view class="goods-list__scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}" bindscroll="handleScroll" bindscrolltolower="nextPage">
             <view class="goods-list goods-list__type-grid">
-                <goods-item wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonclick="anonymousFunc0" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="__index0" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{__index0}}"></goods-item>
+                <recommend-item wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonclick="anonymousFunc0" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="__index0" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{__index0}}"></recommend-item>
             </view>
             <block wx:if="{{page.isLoading}}">
                 <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>

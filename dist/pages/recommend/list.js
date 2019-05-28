@@ -51,7 +51,7 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = RecommendList.__proto__ || Object.getPrototypeOf(RecommendList)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["loopArray0", "scrollTop", "list", "page", "showBackToTop"], _this.handleClickItem = function (item) {
-      var url = "/pages/item/espier-detail?id=" + item.item_id;
+      var url = "/pages/recommend/detail?id=" + item.item_id;
       _index2.default.navigateTo({
         url: url
       });
@@ -143,7 +143,7 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
 
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __isRunloopRef = arguments[2];
+      var __runloopRef = arguments[2];
       ;
 
       var _state = this.__state,

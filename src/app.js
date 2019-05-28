@@ -40,6 +40,7 @@ class App extends Component {
       'pages/article/index',
 
       'pages/recommend/list',
+      'pages/recommend/detail',
 
       'pages/auth/reg',
       'pages/auth/reg-rule',

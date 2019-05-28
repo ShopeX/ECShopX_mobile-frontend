@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, GoodsItem, NavBar, TabBar, SpNote } from '@/components'
+import { BackToTop, Loading, RecommendItem, NavBar, TabBar, SpNote } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 
@@ -59,7 +59,7 @@ export default class RecommendList extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    const url = `/pages/recommend/detail?id=${item.item_id}`
     Taro.navigateTo({
       url
     })
@@ -89,7 +89,7 @@ export default class RecommendList extends Component {
             {
               list.map(item => {
                 return (
-                  <GoodsItem
+                  <RecommendItem
                     key={item.item_id}
                     info={item}
                     onClick={() => this.handleClickItem(item)}

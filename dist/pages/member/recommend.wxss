@@ -101,6 +101,12 @@
   margin-right: 10rpx;
   font-size: 36rpx;
 }
+.member-btn__item .in-icon-check {
+  font-size: 30rpx;
+}
+.member-btn__item .in-icon-home-th {
+  margin-right: 0;
+}
 .member-btn__item text {
   display: inline-block;
   vertical-align: middle;

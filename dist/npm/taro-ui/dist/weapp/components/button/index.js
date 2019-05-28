@@ -109,7 +109,6 @@ var AtButton = (_temp2 = _class = function (_AtComponent) {
     key: "onSumit",
     value: function onSumit() {
       if (this.state.isWEAPP) {
-        // debugger
         this.$scope.triggerEvent('submit', arguments[0].detail, {
           bubbles: true,
           composed: true
@@ -133,7 +132,7 @@ var AtButton = (_temp2 = _class = function (_AtComponent) {
 
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __isRunloopRef = arguments[2];
+      var __runloopRef = arguments[2];
       ;
 
       var _props = this.__props,

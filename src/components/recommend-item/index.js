@@ -1,0 +1,78 @@
+import Taro, { Component } from '@tarojs/taro'
+import {View, Text, Image, Progress} from '@tarojs/components'
+import { Price } from '@/components'
+import { isObject, classNames } from '@/utils'
+import api from '@/api'
+
+import './index.scss'
+
+export default class RecommendItem extends Component {
+  static defaultProps = {
+    onClick: () => {},
+    showMarketPrice: true,
+    noCurSymbol: false,
+    type: 'item'
+  }
+
+  static options = {
+    addGlobalClass: true
+  }
+
+  handleLikeClick = async (e) => {
+    e.stopPropagation()
+    const { item_id, is_like } = this.props.info
+    console.log(is_like, item_id)
+    // await api.item.collect(item_id)
+  }
+
+  render () {
+    const { info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw, type } = this.props
+    if (!info) {
+      return null
+    }
+
+    const price = isObject(info.price) ? info.price.total_price : info.price
+    const img = info.img || info.image_default_id
+
+    return (
+      <View className={classNames('goods-item', className)}>
+        <View className='goods-item__hd'>
+          {this.props.children}
+        </View>
+        <View
+          className='goods-item__bd'
+          onClick={onClick}
+        >
+          <View className='goods-item__img-wrap'>
+            <Image className='goods-item__img'
+                   mode='aspectFill'
+                   src={img}
+            />
+          </View>
+          <View className='goods-item__cont'>
+            <Text className='goods-item__title'>{info.title}</Text>
+            <Text className='goods-item__desc'>{info.desc}</Text>
+            <View className='goods-item__extra'>
+              <View className='goods-item__author'>
+                <Image className='goods-item__author-avatar'
+                       src={img}
+                       mode='aspectFill'
+                />
+                <Text className='goods-item__author-name'>{info.title}</Text>
+              </View>
+              <View className='goods-item__actions'>
+                <View
+                  className={`in-icon in-icon-like ${info.is_like ? '' : ''}`}
+                  onClick={this.handleLikeClick}
+                ><Text>666</Text></View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View className='goods-item__ft'>
+          {this.props.renderFooter}
+        </View>
+      </View>
+    )
+  }
+}
