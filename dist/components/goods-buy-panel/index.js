@@ -382,8 +382,6 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
       var maxStore = +(curSku ? curSku.store : info.store || 99999);
       var hasStore = curSku ? curSku.store > 0 : info.store > 0;
 
-      console.log(!curSku);
-
       var anonymousState__temp = (0, _index3.classNames)('goods-buy-panel', isActive ? 'goods-buy-panel__active' : null);
 
       this.anonymousFunc0 = function () {

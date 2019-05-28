@@ -272,8 +272,6 @@ export default class GoodsBuyPanel extends Component {
     const maxStore = +(curSku ? curSku.store : (info.store || 99999))
     const hasStore = curSku ? curSku.store > 0 : info.store > 0
 
-    console.log(!curSku)
-
     return (
       <View className={classNames('goods-buy-panel', isActive ? 'goods-buy-panel__active' : null)}>
         <View className='goods-buy-panel__overlay'></View>
