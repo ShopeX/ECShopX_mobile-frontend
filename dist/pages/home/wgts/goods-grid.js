@@ -84,7 +84,6 @@ var WgtGoodsGrid = (_temp2 = _class = function (_BaseComponent) {
           item_id: item.goodsId
         });
       });
-      console.log(listData, 31);
 
       var loopArray0 = listData.map(function (item, idx) {
         item = {

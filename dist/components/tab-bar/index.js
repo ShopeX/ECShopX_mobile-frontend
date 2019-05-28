@@ -157,7 +157,7 @@ var TabBar = (_temp2 = _class = function (_BaseComponent) {
                 updateCartCount = function updateCartCount(count) {
                   var tabList = _this2.state.tabList;
 
-                  tabList[cartTabIdx].text = count;
+                  tabList[cartTabIdx].text = count || '';
                   _this2.setState({
                     tabList: tabList
                   });

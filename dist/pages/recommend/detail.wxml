@@ -9,7 +9,7 @@
             <view class="recommend-detail-info__time"><text class="{{'in-icon in-icon-xingzhuang ' + (info.is_like ? '' : '')}}"></text>4026关注</view>
         </view>
         <view class="recommend-detail__content">
-            <sp-html-content content="电风扇的发热管他人萨芬是" __triggerObserer="{{ _triggerObserer }}"></sp-html-content>
+            <sp-html-content content="电风扇的发热管他人萨芬是地方" __triggerObserer="{{ _triggerObserer }}"></sp-html-content>
         </view>
         <view class="recommend-detail__bar">
             <view class="recommend-detail__bar-item" bindtap="handleClickBar" data-e-tap-so="this" data-e-tap-a-a="like"><text class="{{'in-icon in-icon-like ' + (info.is_like ? '' : '')}}"></text><text>已赞·380</text>

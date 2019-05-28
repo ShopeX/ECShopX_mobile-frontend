@@ -458,28 +458,30 @@ export default class CartIndex extends Component {
             }
           </View>
 
-          <View className='cart-list cart-list__disabled'>
-            <View className='cart-list__hd'><Text>已失效</Text></View>
-            <View className='cart-list__bd'>
-              {invalidList.map(item => {
-                return (
-                  <CartItem
-                    isDisabled
-                    key={item.cart_id}
-                    info={item}
-                  >
-                    <View className='cart-item__act'>
-                      <View></View>
-                      <View
-                        className='in-icon in-icon-close'
-                        onClick={this.handleDelect.bind(this, item.cart_id)}
-                      />
-                    </View>
-                  </CartItem>
-                )
-              })}
+          {list.length && (
+            <View className='cart-list cart-list__disabled'>
+              <View className='cart-list__hd'><Text>已失效</Text></View>
+              <View className='cart-list__bd'>
+                {invalidList.map(item => {
+                  return (
+                    <CartItem
+                      isDisabled
+                      key={item.cart_id}
+                      info={item}
+                    >
+                      <View className='cart-item__act'>
+                        <View></View>
+                        <View
+                          className='in-icon in-icon-close'
+                          onClick={this.handleDelect.bind(this, item.cart_id)}
+                        />
+                      </View>
+                    </CartItem>
+                  )
+                })}
+              </View>
             </View>
-          </View>
+          )}
         </ScrollView>
 
         <View
@@ -495,7 +497,7 @@ export default class CartIndex extends Component {
             cartMode !== 'edit'
               ? <View className='cart-toolbar__bd'>
                   <View className='cart-total'>
-                    {list[0].discount_fee > 0 && (
+                    {list.length && list[0].discount_fee > 0 && (
                       <View className='cart-total__discount'>
                         <Text className='cart-total__hint'>优惠：</Text>
                         <Price

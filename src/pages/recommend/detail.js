@@ -55,7 +55,7 @@ export default class ArticleIndex extends Component {
         </View>
         <View className='recommend-detail__content'>
           <SpHtmlContent
-            content='电风扇的发热管他人萨芬是'
+            content='电风扇的发热管他人萨芬是地方'
           />
         </View>
         <View className='recommend-detail__bar'>

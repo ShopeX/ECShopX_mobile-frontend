@@ -65,7 +65,7 @@ export default class TabBar extends Component {
     const cartTabIdx = 3
     const updateCartCount = (count) => {
       const { tabList } = this.state
-      tabList[cartTabIdx].text = count
+      tabList[cartTabIdx].text = count || ''
       this.setState({
         tabList
       })

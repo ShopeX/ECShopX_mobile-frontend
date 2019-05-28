@@ -60,7 +60,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TradeDetail.__proto__ || Object.getPrototypeOf(TradeDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "info", "timer"], _this.handleCopy = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TradeDetail.__proto__ || Object.getPrototypeOf(TradeDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "info", "timer", "payLoading"], _this.handleCopy = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var info, msg;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -91,7 +91,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
 
       this.state = {
         info: null,
-        timer: null
+        timer: null,
+        payLoading: false
       };
     }
   }, {
@@ -149,6 +150,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                   status_desc: 'order_status_msg',
                   delivery_code: 'delivery_code',
                   delivery_corp: 'delivery_corp',
+                  order_type: 'order_type',
                   order_status_msg: 'order_status_msg',
                   item_fee: function item_fee(_ref5) {
                     var _item_fee = _ref5.item_fee;
@@ -227,10 +229,10 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       return fetch;
     }()
   }, {
-    key: "handleClickBtn",
+    key: "handlePay",
     value: function () {
-      var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(type) {
-        var info, _ref14, confirm, _getCurrentRoute, fullPath;
+      var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+        var info, order_id, order_type, paymentParams, config, payErr, payRes, _getCurrentRoute, fullPath;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
@@ -238,82 +240,164 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
               case 0:
                 info = this.state.info;
 
+
+                this.setState({
+                  payLoading: true
+                });
+
+                // 爱茉pay流程
+                order_id = info.tid, order_type = info.order_type;
+                paymentParams = {
+                  pay_type: 'amorepay',
+                  order_id: order_id,
+                  order_type: order_type
+                };
+                _context3.next = 6;
+                return _index5.default.cashier.getPayment(paymentParams);
+
+              case 6:
+                config = _context3.sent;
+
+
+                this.setState({
+                  payLoading: false
+                });
+
+                payErr = void 0;
+                _context3.prev = 9;
+                _context3.next = 12;
+                return _index2.default.requestPayment(config);
+
+              case 12:
+                payRes = _context3.sent;
+                _context3.next = 19;
+                break;
+
+              case 15:
+                _context3.prev = 15;
+                _context3.t0 = _context3["catch"](9);
+
+                payErr = _context3.t0;
+                if (_context3.t0.errMsg.indexOf('cancel') < 0) {
+                  _index2.default.showToast({
+                    title: _context3.t0.err_desc || _context3.t0.errMsg || '支付失败',
+                    icon: 'none'
+                  });
+                }
+
+              case 19:
+
+                if (!payErr) {
+                  _getCurrentRoute = (0, _index3.getCurrentRoute)(this.$router), fullPath = _getCurrentRoute.fullPath;
+
+                  _index2.default.redirectTo({
+                    url: fullPath
+                  });
+                }
+
+              case 20:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[9, 15]]);
+      }));
+
+      function handlePay() {
+        return _ref13.apply(this, arguments);
+      }
+
+      return handlePay;
+    }()
+  }, {
+    key: "handleClickBtn",
+    value: function () {
+      var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(type) {
+        var info, _ref15, confirm, _getCurrentRoute2, fullPath;
+
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                info = this.state.info;
+
                 if (!(type === 'home')) {
-                  _context3.next = 4;
+                  _context4.next = 4;
                   break;
                 }
 
                 _index2.default.redirectTo({
                   url: '/pages/home/index'
                 });
-                return _context3.abrupt("return");
+                return _context4.abrupt("return");
 
               case 4:
                 if (!(type === 'pay')) {
-                  _context3.next = 7;
+                  _context4.next = 8;
                   break;
                 }
 
-                _index2.default.navigateTo({
-                  url: "/pages/cashier/index?order_id=" + info.tid
-                });
-                return _context3.abrupt("return");
+                _context4.next = 7;
+                return this.handlePay();
 
               case 7:
+                return _context4.abrupt("return");
+
+              case 8:
                 if (!(type === 'cancel')) {
-                  _context3.next = 10;
+                  _context4.next = 11;
                   break;
                 }
 
                 _index2.default.navigateTo({
                   url: "/pages/trade/cancel?order_id=" + info.tid
                 });
-                return _context3.abrupt("return");
+                return _context4.abrupt("return");
 
-              case 10:
+              case 11:
                 if (!(type === 'confirm')) {
-                  _context3.next = 21;
+                  _context4.next = 22;
                   break;
                 }
 
-                _context3.next = 13;
+                _context4.next = 14;
                 return _index2.default.showModal({
                   title: '确认收货？',
                   content: ''
                 });
 
-              case 13:
-                _ref14 = _context3.sent;
-                confirm = _ref14.confirm;
+              case 14:
+                _ref15 = _context4.sent;
+                confirm = _ref15.confirm;
 
                 if (!confirm) {
-                  _context3.next = 20;
+                  _context4.next = 21;
                   break;
                 }
 
-                _context3.next = 18;
+                _context4.next = 19;
                 return _index5.default.trade.confirm(info.tid);
 
-              case 18:
-                _getCurrentRoute = (0, _index3.getCurrentRoute)(this.$router), fullPath = _getCurrentRoute.fullPath;
+              case 19:
+                _getCurrentRoute2 = (0, _index3.getCurrentRoute)(this.$router), fullPath = _getCurrentRoute2.fullPath;
 
                 _index2.default.redirectTo({
                   url: fullPath
                 });
 
-              case 20:
-                return _context3.abrupt("return");
-
               case 21:
+                return _context4.abrupt("return");
+
+              case 22:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
       function handleClickBtn(_x) {
-        return _ref13.apply(this, arguments);
+        return _ref14.apply(this, arguments);
       }
 
       return handleClickBtn;
@@ -321,11 +405,11 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "handleClickRefund",
     value: function () {
-      var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(type, item_id) {
+      var _ref16 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(type, item_id) {
         var order_id;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
                 order_id = this.state.info.tid;
 
@@ -342,14 +426,14 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
 
               case 2:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee5, this);
       }));
 
       function handleClickRefund(_x2, _x3) {
-        return _ref15.apply(this, arguments);
+        return _ref16.apply(this, arguments);
       }
 
       return handleClickRefund;
@@ -372,7 +456,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
 
       var _state = this.__state,
           info = _state.info,
-          timer = _state.timer;
+          timer = _state.timer,
+          payLoading = _state.payLoading;
 
       if (!info) {
         return null;

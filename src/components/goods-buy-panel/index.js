@@ -42,6 +42,7 @@ export default class GoodsBuyPanel extends Component {
 
   componentDidMount () {
     const { info } = this.props
+    const { spec_items } = info
     const marketing = info.group_activity
       ? 'group'
       : info.seckill_activity
@@ -49,7 +50,7 @@ export default class GoodsBuyPanel extends Component {
         : 'normal'
     const skuDict = {}
 
-    info.spec_items.forEach(t => {
+    spec_items.forEach(t => {
       const key = t.item_spec.map(s => s.spec_value_id).join('_')
       const propsText = t.item_spec.map(s => s.spec_value_name).join(' ')
       t.propsText = propsText
@@ -61,6 +62,10 @@ export default class GoodsBuyPanel extends Component {
       marketing,
       selection
     })
+
+    if (!spec_items || !spec_items.length) {
+      this.noSpecs = true
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -79,8 +84,11 @@ export default class GoodsBuyPanel extends Component {
     const { curSku } = this.state
     let propsText = ''
 
+    if (this.noSpecs) {
+      return ''
+    }
+
     if (!curSku) {
-      // propsText = info.item_spec_desc.map(s => s.spec_name).join(' ')
       return `请选择`
     }
 
@@ -194,7 +202,7 @@ export default class GoodsBuyPanel extends Component {
 
   handleBuyClick = async (type, skuInfo, num) => {
     const { marketing, info } = this.state
-    const { item_id } = skuInfo
+    const { item_id } = this.noSpecs ? info : skuInfo
     let url = `/pages/cart/espier-checkout`
 
     if (type === 'cart') {
@@ -255,14 +263,14 @@ export default class GoodsBuyPanel extends Component {
 
   render () {
     const { info, type, fastBuyText } = this.props
-    const { curSku, curImg, quantity, selection, isActive, busy } = this.state
-
+    const { curImg, quantity, selection, isActive, busy } = this.state
     if (!info) {
       return null
     }
 
+    const curSku = this.noSpecs ? info : this.state.curSku
     const maxStore = +(curSku ? curSku.store : (info.store || 99999))
-    const hasStore = curSku ? curSku.store > 0 : true
+    const hasStore = curSku ? curSku.store > 0 : info.store > 0
 
     return (
       <View className={classNames('goods-buy-panel', isActive ? 'goods-buy-panel__active' : null)}>
@@ -291,7 +299,13 @@ export default class GoodsBuyPanel extends Component {
               {
                 // curSku && <Text className='goods-sku__stock'>库存{curSku.store}{info.unit}</Text>
               }
-              <Text className='goods-sku__props'><Text className='goods-sku__props-label'>选择规格</Text>{curSku ? `已选择 ${curSku.propsText}` : '请选择'}</Text>
+              {this.noSpecs
+                ? (<Text className='goods-sku__props'>{info.item_name}</Text>)
+                :(<Text className='goods-sku__props'>
+                    <Text className='goods-sku__props-label'>选择规格</Text>
+                    <Text>{curSku ? `已选择 ${curSku.propsText}` : '请选择'}</Text>
+                  </Text>)
+              }
             </View>
           </View>
           <View className='goods-buy-panel__bd'>
@@ -343,7 +357,7 @@ export default class GoodsBuyPanel extends Component {
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-add-cart', { 'is-disabled': !curSku })}
                   onClick={this.handleBuyClick.bind(this, 'cart', curSku, quantity)}
-                  disabled={!curSku}
+                  disabled={Boolean(!curSku)}
                 >添加至购物车</Button>
               )}
               {(type === 'fastbuy' || type === 'all' && hasStore) && (
@@ -351,7 +365,7 @@ export default class GoodsBuyPanel extends Component {
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSku })}
                   onClick={this.handleBuyClick.bind(this, 'fastbuy', curSku, quantity)}
-                  disabled={!curSku}
+                  disabled={Boolean(!curSku)}
                 >{fastBuyText}</Button>
               )}
               {!hasStore && (<Text>当前店铺无货</Text>)}

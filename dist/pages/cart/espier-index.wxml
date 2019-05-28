@@ -44,18 +44,20 @@
                     </view>
                 </block>
             </view>
-            <view class="cart-list cart-list__disabled">
-                <view class="cart-list__hd"><text>已失效</text>
+            <block wx:if="{{list.length}}">
+                <view class="cart-list cart-list__disabled">
+                    <view class="cart-list__hd"><text>已失效</text>
+                    </view>
+                    <view class="cart-list__bd">
+                        <cart-item isDisabled="{{true}}" __triggerObserer="{{ _triggerObserer }}" wx:key="cart_id" info="{{item}}" wx:for="{{invalidList}}" wx:for-item="item" wx:for-index="_anonIdx4">
+                            <view class="cart-item__act">
+                                <view></view>
+                                <view class="in-icon in-icon-close" bindtap="handleDelect" data-e-tap-so="this" data-e-tap-a-a="{{item.cart_id}}"></view>
+                            </view>
+                        </cart-item>
+                    </view>
                 </view>
-                <view class="cart-list__bd">
-                    <cart-item isDisabled="{{true}}" __triggerObserer="{{ _triggerObserer }}" wx:key="cart_id" info="{{item}}" wx:for="{{invalidList}}" wx:for-item="item" wx:for-index="_anonIdx4">
-                        <view class="cart-item__act">
-                            <view></view>
-                            <view class="in-icon in-icon-close" bindtap="handleDelect" data-e-tap-so="this" data-e-tap-a-a="{{item.cart_id}}"></view>
-                        </view>
-                    </cart-item>
-                </view>
-            </view>
+            </block>
         </scroll-view>
         <view class="{{'toolbar cart-toolbar ' + (isEmpty && 'hidden')}}">
             <view class="cart-toolbar__hd">
@@ -65,7 +67,7 @@
                 <block wx:if="{{cartMode !== 'edit'}}">
                     <view class="cart-toolbar__bd">
                         <view class="cart-total">
-                            <block wx:if="{{list[0].discount_fee > 0}}">
+                            <block wx:if="{{list.length && list[0].discount_fee > 0}}">
                                 <view class="cart-total__discount"><text class="cart-total__hint">优惠：</text>
                                     <price primary="{{true}}" __triggerObserer="{{ _triggerObserer }}" value="{{anonymousState__temp3}}" unit="cent"></price>
                                 </view>

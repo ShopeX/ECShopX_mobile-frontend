@@ -383,7 +383,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       var totalItems = totalSelection;
       var isEmpty = !list.length;
 
-      var anonymousState__temp3 = list[0].discount_fee > 0 ? cartMode !== 'edit' ? -1 * list[0].discount_fee : null : null;
+      var anonymousState__temp3 = list.length && list[0].discount_fee > 0 ? cartMode !== 'edit' ? -1 * list[0].discount_fee : null : null;
       var anonymousState__temp4 = cartMode !== 'edit' ? totalItems <= 0 : null;
       var anonymousState__temp5 = Boolean(curPromotions);
       var loopArray0 = groups.map(function (activityGroup, idx) {

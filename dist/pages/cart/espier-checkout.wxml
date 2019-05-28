@@ -93,7 +93,7 @@
                     </block>
                 </block>
             </view>
-            <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" className="btn-confirm-order" disabled="{{isBtnDisabled}}" bindonclick="handlePay" __fn_onClick="{{true}}">提交订单</at-button>
+            <at-button loading="{{submitLoading}}" __triggerObserer="{{ _triggerObserer }}" type="primary" className="btn-confirm-order" disabled="{{isBtnDisabled}}" bindonclick="handlePay" __fn_onClick="{{true}}">提交订单</at-button>
         </view>
         <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
     </view>

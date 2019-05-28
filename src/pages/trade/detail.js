@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import {AtButton, AtCountdown} from 'taro-ui'
+import { AtButton, AtCountdown} from 'taro-ui'
 import { Loading, SpCell, SpToast, Price, NavBar } from '@/components'
 import { classNames, log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
 import api from '@/api'
@@ -28,7 +28,8 @@ export default class TradeDetail extends Component {
 
     this.state = {
       info: null,
-      timer: null
+      timer: null,
+      payLoading: false
     }
   }
 
@@ -71,6 +72,7 @@ export default class TradeDetail extends Component {
       status_desc: 'order_status_msg',
       delivery_code: 'delivery_code',
       delivery_corp: 'delivery_corp',
+      order_type: 'order_type',
       order_status_msg: 'order_status_msg',
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
@@ -120,6 +122,47 @@ export default class TradeDetail extends Component {
     await copyText(msg)
   }
 
+  async handlePay () {
+    const { info } = this.state
+
+    this.setState({
+      payLoading: true
+    })
+
+    // 爱茉pay流程
+    const { tid: order_id, order_type } = info
+    const paymentParams = {
+      pay_type: 'amorepay',
+      order_id,
+      order_type
+    }
+    const config = await api.cashier.getPayment(paymentParams)
+
+    this.setState({
+      payLoading: false
+    })
+
+    let payErr
+    try {
+      const payRes = await Taro.requestPayment(config)
+    } catch (e) {
+      payErr = e
+      if (e.errMsg.indexOf('cancel') < 0) {
+        Taro.showToast({
+          title: e.err_desc || e.errMsg || '支付失败',
+          icon: 'none'
+        })
+      }
+    }
+
+    if (!payErr) {
+      const { fullPath } = getCurrentRoute(this.$router)
+      Taro.redirectTo({
+        url: fullPath
+      })
+    }
+  }
+
   async handleClickBtn (type) {
     const { info } = this.state
 
@@ -131,9 +174,7 @@ export default class TradeDetail extends Component {
     }
 
     if (type === 'pay') {
-      Taro.navigateTo({
-        url: `/pages/cashier/index?order_id=${info.tid}`
-      })
+      await this.handlePay()
       return
     }
 
@@ -192,7 +233,7 @@ export default class TradeDetail extends Component {
   }
 
   render () {
-    const { info, timer } = this.state
+    const { info, timer, payLoading } = this.state
     if (!info) {
       return <Loading></Loading>
     }
@@ -273,7 +314,7 @@ export default class TradeDetail extends Component {
         {
           info.status === 'WAIT_BUYER_PAY' && <View className='trade-detail__footer'>
             <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
-            <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'pay')}>立即支付</Text>
+            <AtButton className='trade-detail__footer__btn trade-detail__footer_active' type='primary' loading={payLoading} onClick={this.handleClickBtn.bind(this, 'pay')}>立即支付</AtButton>
           </View>
         }
         {
@@ -294,138 +335,6 @@ export default class TradeDetail extends Component {
           </View>
         }
 
-        {/*<View className='trade-detail__status'>
-          <Text className='trade-detail__status-text'>{info.status_desc}</Text>
-          <Image
-            mode='aspectFill'
-            className='trade-detail__status-ico'
-            src={`/assets/imgs/trade/${info.status_img}`}
-          />
-        </View>
-        <View className='trade-detail__addr'>
-          <SpCell
-            icon='map-pin'
-          >
-            {
-              <View className='address-info__bd'>
-                <Text className='address-info__receiver'>
-                  收货人：{info.receiver_name} {info.receiver_mobile}
-                </Text>
-                <Text className='address-info__addr'>
-                  收货地址：{info.receiver_state}{info.receiver_city}{info.receiver_district}{info.receiver_address}
-                </Text>
-              </View>
-            }
-          </SpCell>
-          {info.shipping_type_name && (
-            <View className='trade-detail__express'>配送方式：{info.shipping_type_name}</View>
-          )}
-        </View>
-
-        <View className='sec sec-orders'>
-          {info.shop_name && (
-            <View className='sec-orders__hd'>
-              <Text>{info.shop_name}</Text>
-            </View>
-          )}
-          <View className='sec-orders__bd'>
-            {
-              info.orders.map((item, idx) => {
-                return (
-                  <View key={idx}>
-                    <OrderItem
-                      payType={info.pay_type}
-                      info={item}
-                    />
-                    {info.status === 'TRADE_SUCCESS' && item.delivery_status === 'DONE' && (
-                      <SpCell className='trade-opts'>
-                        {(!item.aftersales_status || item.aftersales_status == 'SELLER_REFUSE_BUYER') && (
-                          <AtButton type='primary' size='small' onClick={this.handleClickRefund.bind(this, 'refund', item.item_id)}>申请售后</AtButton>
-                        )}
-                        {item.aftersales_status && (
-                          <AtButton size='small' onClick={this.handleClickRefund.bind(this, 'refundDetail', item.item_id)}>售后详情</AtButton>
-                        )}
-                      </SpCell>
-                    )}
-                  </View>
-                )
-              })
-            }
-            <View className='trade-detail__total'>
-              <SpCell
-                className='trade-detail__total-item'
-                title='运费'
-                border={false}
-              >
-                <Price value={info.post_fee} />
-              </SpCell>
-              {info.point > 0 && (
-                <SpCell
-                  className='trade-detail__total-item'
-                  title='积分'
-                  border={false}
-                >
-                  <Price noSymbol noDecimal value={`-${info.point}`} />
-                </SpCell>
-              )}
-              <SpCell
-                className='trade-detail__total-item'
-                title='实付款(含运费)'
-                border={false}
-              >
-                <Price primary value={info.payment} />
-              </SpCell>
-            </View>
-          </View>
-        </View>
-
-        <View className='sec trade-extra'>
-          <View className='trade-extra__bd'>
-            <Text>订单编号：{info.tid}</Text>
-            <Text>创建时间：{info.created_time_str}</Text>
-          </View>
-          <View className='trade-extra__ft'>
-            <AtButton size='small' onClick={this.handleCopy}>复制</AtButton>
-          </View>
-        </View>
-        {
-          info.delivery_code && info.delivery_corp
-            ? <View className='sec trade-extra'>
-                <View className='trade-extra__bd'>
-                  <Text>物流公司：{info.delivery_corp}</Text>
-                  <Text>物流单号：{info.delivery_code}</Text>
-                </View>
-                <View className='trade-extra__ft'>
-                  <AtButton size='small' onClick={this.handleClickDelivery.bind(this)}>查看</AtButton>
-                </View>
-              </View>
-            : null
-        }
-
-        {info.status === 'WAIT_BUYER_PAY' && (<View className='toolbar toolbar-actions'>
-          <AtButton
-            circle
-            type='secondary'
-            onClick={this.handleClickBtn.bind(this, 'pay')}
-          >立即支付</AtButton>
-        </View>)}
-
-        {info.status === 'WAIT_BUYER_CONFIRM_GOODS' && (<View className='toolbar toolbar-actions'>
-          <AtButton
-            circle
-            type='secondary'
-            onClick={this.handleClickBtn.bind(this, 'confirm')}
-          >确认收货</AtButton>
-        </View>)}
-
-        {info.status === 'WAIT_RATE' && (<View className='toolbar toolbar-actions'>
-          <AtButton
-            circle
-            type='secondary'
-            onClick={this.handleClickBtn.bind(this, 'rate')}
-          >评价</AtButton>
-        </View>)}
-*/}
         <SpToast></SpToast>
       </View>
     )

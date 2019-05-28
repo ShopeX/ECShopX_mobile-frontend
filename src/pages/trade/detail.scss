@@ -126,10 +126,18 @@
     &__btn {
       width: 50%;
       display: inline-block;
+      vertical-align: middle;
       height: 87px;
       line-height: 87px;
       text-align: center;
       background-color: #fafafa;
+      border-radius: 0;
+      &:before {
+        border: none;
+      }
+    }
+    .at-button__icon {
+      vertical-align: middle;
     }
     &_active {
       background: $color-brand-primary;

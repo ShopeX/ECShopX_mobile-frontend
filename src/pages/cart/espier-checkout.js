@@ -47,6 +47,7 @@ export default class CartCheckout extends Component {
 
     this.state = {
       info: null,
+      submitLoading: false,
       address_list: [],
       showShippingPicker: false,
       showAddressPicker: false,
@@ -329,19 +330,61 @@ export default class CartCheckout extends Component {
       mask: true
     })
 
-    let order_id
+    this.setState({
+      submitLoading: true
+    })
+
+    let order_id, orderInfo
     try {
-      const res = await api.trade.create(this.params)
-      order_id = res.order_id
+      orderInfo = await api.trade.create(this.params)
+      order_id = orderInfo.order_id
     } catch (e) {
       Taro.showToast({
         title: e.message,
-        icon: false
+        icon: 'none'
       })
     }
     Taro.hideLoading()
 
     if (!order_id) return
+
+    // 爱茉pay流程
+    const paymentParams = {
+      order_id,
+      pay_type: 'amorepay',
+      order_type: orderInfo.order_type
+    }
+    const config = await api.cashier.getPayment(paymentParams)
+    this.setState({
+      submitLoading: false
+    })
+
+
+    let payErr
+    try {
+      const payRes = await Taro.requestPayment(config)
+      log.debug(`[order pay]: `, payRes)
+    } catch (e) {
+      payErr = e
+      Taro.showToast({
+        title: e.err_desc || e.errMsg || '支付失败',
+        icon: 'none'
+      })
+    }
+
+    if (!payErr) {
+      this.props.onClearCart()
+      Taro.redirectTo({
+        url: `/pages/trade/detail?id=${order_id}`
+      })
+    } else {
+      if (payErr.errMsg.indexOf('fail cancel') >= 0) {
+        Taro.redirectTo({
+          url: `/pages/trade/detail?id=${order_id}`
+        })
+      }
+    }
+    return
 
     const url = `/pages/cashier/index?order_id=${order_id}`
     this.props.onClearCart()
@@ -366,7 +409,7 @@ export default class CartCheckout extends Component {
 
   render () {
     const { coupon } = this.props
-    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle } = this.state
+    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading } = this.state
     if (!info) {
       return <Loading />
     }
@@ -576,6 +619,7 @@ export default class CartCheckout extends Component {
             }
           </View>
           <AtButton
+            loading={submitLoading}
             type='primary'
             className='btn-confirm-order'
             disabled={isBtnDisabled}

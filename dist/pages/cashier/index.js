@@ -46,7 +46,9 @@ var Cashier = (_dec = (0, _index6.withLogin)(), _dec(_class = (_temp2 = _class2 
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Cashier.__proto__ || Object.getPrototypeOf(Cashier)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info"], _this.handleClickBack = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Cashier.__proto__ || Object.getPrototypeOf(Cashier)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info"], _this.state = {
+      info: null
+    }, _this.handleClickBack = function () {
       var order_type = _this.state.info.order_type;
 
       var url = order_type === 'recharge' ? '/pages/member/pay' : '/pages/trade/list';
@@ -61,10 +63,6 @@ var Cashier = (_dec = (0, _index6.withLogin)(), _dec(_class = (_temp2 = _class2 
     key: "_constructor",
     value: function _constructor(props) {
       _get(Cashier.prototype.__proto__ || Object.getPrototypeOf(Cashier.prototype), "_constructor", this).call(this, props);
-
-      this.state = {
-        info: {}
-      };
     }
   }, {
     key: "componentDidShow",

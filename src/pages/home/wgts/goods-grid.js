@@ -37,7 +37,6 @@ export default class WgtGoodsGrid extends Component {
         item_id: item.goodsId,
       })
     })
-    console.log(listData, 31)
 
     return (
       <View className={`wgt wgt-grid ${base.padded ? 'wgt__padded' : null}`}>

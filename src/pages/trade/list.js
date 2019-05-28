@@ -140,22 +140,15 @@ export default class TradeList extends Component {
     }
 
     switch(type) {
-      case 'pay':
-        Taro.navigateTo({
-          url: `/pages/cashier/index?order_id=${tid}`
-        })
-        break
       case 'cancel':
         Taro.navigateTo({
           url: `/pages/trade/cancel?order_id=${tid}`
         })
         break
-      case 'detail':
+      default:
         Taro.navigateTo({
           url: `/pages/trade/detail?id=${tid}`
         })
-        break
-      default:
     }
   }
 

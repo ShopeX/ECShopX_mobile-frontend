@@ -46,7 +46,7 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GoodsBuyPanel.__proto__ || Object.getPrototypeOf(GoodsBuyPanel)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp4", "anonymousState__temp5", "info", "loopArray0", "curImg", "curSku", "maxStore", "quantity", "type", "hasStore", "busy", "fastBuyText", "marketing", "selection", "isActive", "__fn_onChange", "__fn_onAddCart", "__fn_onFastbuy", "isOpened"], _this.getSkuProps = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GoodsBuyPanel.__proto__ || Object.getPrototypeOf(GoodsBuyPanel)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp4", "anonymousState__temp5", "anonymousState__temp6", "anonymousState__temp7", "info", "loopArray0", "curImg", "curSku", "noSpecs", "maxStore", "quantity", "type", "hasStore", "busy", "fastBuyText", "marketing", "selection", "isActive", "__fn_onChange", "__fn_onAddCart", "__fn_onFastbuy", "isOpened"], _this.getSkuProps = function () {
       var info = _this.props.info;
 
       if (!info) {
@@ -55,8 +55,11 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
 
       var propsText = '';
 
+      if (_this.noSpecs) {
+        return '';
+      }
+
       if (!curSku) {
-        // propsText = info.item_spec_desc.map(s => s.spec_name).join(' ')
         return "\u8BF7\u9009\u62E9";
       }
 
@@ -90,14 +93,14 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
       _this.props.onClose && _this.__triggerPropsFn("onClose", [null].concat([]));
     }, _this.handleBuyClick = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type, skuInfo, num) {
-        var _this$state, marketing, info, item_id, url, groups_activity_id, seckill_id, _ref3, ticket;
+        var _this$state, marketing, info, _ref3, item_id, url, groups_activity_id, seckill_id, _ref4, ticket;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _this$state = _this.state, marketing = _this$state.marketing, info = _this$state.info;
-                item_id = skuInfo.item_id;
+                _ref3 = _this.noSpecs ? info : skuInfo, item_id = _ref3.item_id;
                 url = "/pages/cart/espier-checkout";
 
                 if (!(type === 'cart')) {
@@ -167,8 +170,8 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
                 return _index5.default.item.seckillCheck({ item_id: item_id, seckill_id: seckill_id, num: num });
 
               case 27:
-                _ref3 = _context.sent;
-                ticket = _ref3.ticket;
+                _ref4 = _context.sent;
+                ticket = _ref4.ticket;
 
                 url += "&type=" + marketing + "&seckill_id=" + seckill_id + "&ticket=" + ticket;
 
@@ -235,11 +238,12 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
     key: "componentDidMount",
     value: function componentDidMount() {
       var info = this.props.info;
+      var spec_items = info.spec_items;
 
       var marketing = info.group_activity ? 'group' : info.seckill_activity ? 'seckill' : 'normal';
       var skuDict = {};
 
-      info.spec_items.forEach(function (t) {
+      spec_items.forEach(function (t) {
         var key = t.item_spec.map(function (s) {
           return s.spec_value_id;
         }).join('_');
@@ -255,6 +259,10 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
         marketing: marketing,
         selection: selection
       });
+
+      if (!spec_items || !spec_items.length) {
+        this.noSpecs = true;
+      }
     }
   }, {
     key: "componentWillReceiveProps",
@@ -354,27 +362,25 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
       var __runloopRef = arguments[2];
-      ;
-
+      var noSpecs = this.noSpecs;
       var _props = this.__props,
           info = _props.info,
           type = _props.type,
           fastBuyText = _props.fastBuyText;
       var _state = this.__state,
-          curSku = _state.curSku,
           curImg = _state.curImg,
           quantity = _state.quantity,
           selection = _state.selection,
           isActive = _state.isActive,
           busy = _state.busy;
 
-
       if (!info) {
         return null;
       }
 
+      var curSku = this.noSpecs ? info : this.__state.curSku;
       var maxStore = +(curSku ? curSku.store : info.store || 99999);
-      var hasStore = curSku ? curSku.store > 0 : true;
+      var hasStore = curSku ? curSku.store > 0 : info.store > 0;
 
       var anonymousState__temp = (0, _index3.classNames)('goods-buy-panel', isActive ? 'goods-buy-panel__active' : null);
 
@@ -383,7 +389,9 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
       };
 
       var anonymousState__temp4 = type === 'cart' || type === 'all' && hasStore ? (0, _index3.classNames)('goods-buy-panel__btn btn-add-cart', { 'is-disabled': !curSku }) : null;
-      var anonymousState__temp5 = type === 'fastbuy' || type === 'all' && hasStore ? (0, _index3.classNames)('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSku }) : null;
+      var anonymousState__temp5 = type === 'cart' || type === 'all' && hasStore ? Boolean(!curSku) : null;
+      var anonymousState__temp6 = type === 'fastbuy' || type === 'all' && hasStore ? (0, _index3.classNames)('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSku }) : null;
+      var anonymousState__temp7 = type === 'fastbuy' || type === 'all' && hasStore ? Boolean(!curSku) : null;
       var loopArray0 = info.item_spec_desc.map(function (spec, idx) {
         spec = {
           $original: (0, _index.internal_get_original)(spec)
@@ -407,8 +415,11 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
         anonymousState__temp: anonymousState__temp,
         anonymousState__temp4: anonymousState__temp4,
         anonymousState__temp5: anonymousState__temp5,
+        anonymousState__temp6: anonymousState__temp6,
+        anonymousState__temp7: anonymousState__temp7,
         info: info,
         loopArray0: loopArray0,
+        noSpecs: noSpecs,
         maxStore: maxStore,
         type: type,
         hasStore: hasStore,

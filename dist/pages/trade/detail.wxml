@@ -39,7 +39,8 @@
         <view class="trade-detail-info"><text class="info-text">订单号：{{info.tid}}</text><text class="info-text">下单时间：{{info.created_time_str}}</text><text class="info-text">发票信息：上海xxx有限公司上海xx有</text><text class="info-text">商品金额：￥{{info.item_fee}}</text><text class="info-text">免运费：-￥{{info.freight_fee}}</text><text class="info-text">优惠：-￥{{info.coupon_discount}}</text><text class="info-text">支付：{{info.payment}}（微信支付）</text>
         </view>
         <block wx:if="{{info.status === 'WAIT_BUYER_PAY'}}">
-            <view class="trade-detail__footer"><text class="trade-detail__footer__btn" bindtap="handleClickBtn" data-e-tap-so="this" data-e-tap-a-a="cancel">取消订单</text><text class="trade-detail__footer__btn trade-detail__footer_active" bindtap="handleClickBtn" data-e-tap-so="this" data-e-tap-a-a="pay">立即支付</text>
+            <view class="trade-detail__footer"><text class="trade-detail__footer__btn" bindtap="handleClickBtn" data-e-tap-so="this" data-e-tap-a-a="cancel">取消订单</text>
+                <at-button className="trade-detail__footer__btn trade-detail__footer_active" __triggerObserer="{{ _triggerObserer }}" type="primary" loading="{{payLoading}}" bindonclick="handleClickBtn" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="pay">立即支付</at-button>
             </view>
         </block>
         <block wx:if="{{info.status === 'WAIT_SELLER_SEND_GOODS'}}">

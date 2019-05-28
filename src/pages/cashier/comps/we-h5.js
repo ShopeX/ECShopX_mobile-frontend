@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import api from '@/api'
 
-import './weapp.scss'
+import './we.scss'
 
 export default class WeappBtn extends Component {
   static options = {

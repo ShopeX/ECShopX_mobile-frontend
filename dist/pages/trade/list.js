@@ -106,28 +106,21 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
 
               case 7:
                 _context.t0 = type;
-                _context.next = _context.t0 === 'pay' ? 10 : _context.t0 === 'cancel' ? 12 : _context.t0 === 'detail' ? 14 : 16;
+                _context.next = _context.t0 === 'cancel' ? 10 : 12;
                 break;
 
               case 10:
                 _index2.default.navigateTo({
-                  url: "/pages/cashier/index?order_id=" + tid
+                  url: "/pages/trade/cancel?order_id=" + tid
                 });
-                return _context.abrupt("break", 16);
+                return _context.abrupt("break", 13);
 
               case 12:
                 _index2.default.navigateTo({
-                  url: "/pages/trade/cancel?order_id=" + tid
-                });
-                return _context.abrupt("break", 16);
-
-              case 14:
-                _index2.default.navigateTo({
                   url: "/pages/trade/detail?id=" + tid
                 });
-                return _context.abrupt("break", 16);
 
-              case 16:
+              case 13:
               case "end":
                 return _context.stop();
             }
