@@ -101,7 +101,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = CartCheckout.__proto__ || Object.getPrototypeOf(CartCheckout)).call.apply(_ref3, [this].concat(args))), _this), _this.$usedState = ["info", "showAddressPicker", "address", "payType", "couponText", "total", "showCheckoutItems", "curCheckoutItems", "isBtnDisabled", "invoiceTitle", "address_list", "showShippingPicker", "showCoupons", "coupons", "__fn_onClearFastbuy", "defaultAddress", "__fn_onAddressChoose", "coupon", "__fn_onClearCart"], _this.handleAddressChange = function (address) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = CartCheckout.__proto__ || Object.getPrototypeOf(CartCheckout)).call.apply(_ref3, [this].concat(args))), _this), _this.$usedState = ["info", "showAddressPicker", "address", "payType", "couponText", "total", "showCheckoutItems", "curCheckoutItems", "submitLoading", "isBtnDisabled", "invoiceTitle", "address_list", "showShippingPicker", "showCoupons", "coupons", "__fn_onClearFastbuy", "defaultAddress", "__fn_onAddressChoose", "coupon", "__fn_onClearCart"], _this.handleAddressChange = function (address) {
       if (!address) {
         return;
       }
@@ -170,7 +170,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
         }
       }, _callee, _this2);
     })), _this.handlePay = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var order_id, res, url;
+      var order_id, orderInfo, paymentParams, config, payErr, payRes, url;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
@@ -189,49 +189,102 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 mask: true
               });
 
-              order_id = void 0;
-              _context2.prev = 4;
-              _context2.next = 7;
+              _this.setState({
+                submitLoading: true
+              });
+
+              order_id = void 0, orderInfo = void 0;
+              _context2.prev = 5;
+              _context2.next = 8;
               return _index5.default.trade.create(_this.params);
 
-            case 7:
-              res = _context2.sent;
+            case 8:
+              orderInfo = _context2.sent;
 
-              order_id = res.order_id;
-              _context2.next = 14;
+              order_id = orderInfo.order_id;
+              _context2.next = 15;
               break;
 
-            case 11:
-              _context2.prev = 11;
-              _context2.t0 = _context2["catch"](4);
+            case 12:
+              _context2.prev = 12;
+              _context2.t0 = _context2["catch"](5);
 
               _index2.default.showToast({
                 title: _context2.t0.message,
-                icon: false
+                icon: 'none'
               });
 
-            case 14:
+            case 15:
               _index2.default.hideLoading();
 
               if (order_id) {
-                _context2.next = 17;
+                _context2.next = 18;
                 break;
               }
 
               return _context2.abrupt("return");
 
-            case 17:
-              url = "/pages/cashier/index?order_id=" + order_id;
+            case 18:
+              // 爱茉pay流程
+              paymentParams = {
+                order_id: order_id,
+                pay_type: 'amorepay',
+                order_type: orderInfo.order_type
+              };
+              _context2.next = 21;
+              return _index5.default.cashier.getPayment(paymentParams);
 
-              _this.__triggerPropsFn("onClearCart", [null].concat([]));
-              _index2.default.navigateTo({ url: url });
+            case 21:
+              config = _context2.sent;
 
-            case 20:
+              _this.setState({
+                submitLoading: false
+              });
+
+              payErr = void 0;
+              _context2.prev = 24;
+              _context2.next = 27;
+              return _index2.default.requestPayment(config);
+
+            case 27:
+              payRes = _context2.sent;
+
+              _index9.log.debug("[order pay]: ", payRes);
+              _context2.next = 35;
+              break;
+
+            case 31:
+              _context2.prev = 31;
+              _context2.t1 = _context2["catch"](24);
+
+              payErr = _context2.t1;
+              _index2.default.showToast({
+                title: _context2.t1.err_desc || _context2.t1.errMsg || '支付失败',
+                icon: 'none'
+              });
+
+            case 35:
+
+              if (!payErr) {
+                _this.__triggerPropsFn("onClearCart", [null].concat([]));
+                _index2.default.redirectTo({
+                  url: "/pages/trade/detail?id=" + order_id
+                });
+              } else {
+                if (payErr.errMsg.indexOf('fail cancel') >= 0) {
+                  _index2.default.redirectTo({
+                    url: "/pages/trade/detail?id=" + order_id
+                  });
+                }
+              }
+              return _context2.abrupt("return");
+
+            case 40:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, _this2, [[4, 11]]);
+      }, _callee2, _this2, [[5, 12], [24, 31]]);
     })), _this.handleCouponsClick = function () {
       var items = _this.params.items.filter(function (item) {
         return item.order_item_type !== 'gift';
@@ -258,6 +311,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
 
       this.state = {
         info: null,
+        submitLoading: false,
         address_list: [],
         showShippingPicker: false,
         showAddressPicker: false,
@@ -557,7 +611,8 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
           showCheckoutItems = _state.showCheckoutItems,
           curCheckoutItems = _state.curCheckoutItems,
           payType = _state.payType,
-          invoiceTitle = _state.invoiceTitle;
+          invoiceTitle = _state.invoiceTitle,
+          submitLoading = _state.submitLoading;
 
       if (!info) {
         return null;

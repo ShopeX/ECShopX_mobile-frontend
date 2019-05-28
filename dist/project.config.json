@@ -1,7 +1,7 @@
 {
 	"projectname": "mshop-taro",
 	"description": "taro app for bbc",
-	"appid": "wxfaadceab4f782c35",
+	"appid": "wxf91925e702efe3e3",
 	"setting": {
 		"urlCheck": false,
 		"es6": false,
@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 13,
+			"current": 8,
 			"list": [
 				{
 					"id": -1,
@@ -87,10 +87,10 @@
 					"scene": null
 				},
 				{
-					"id": 7,
+					"id": 8,
 					"name": "订单详情",
 					"pathName": "pages/trade/detail",
-					"query": "id=2668532000128945",
+					"query": "id=2704479000158945",
 					"scene": null
 				},
 				{

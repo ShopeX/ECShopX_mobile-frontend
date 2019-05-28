@@ -173,10 +173,18 @@
 .trade-detail__footer__btn {
   width: 50%;
   display: inline-block;
+  vertical-align: middle;
   height: 87rpx;
   line-height: 87rpx;
   text-align: center;
   background-color: #fafafa;
+  border-radius: 0;
+}
+.trade-detail__footer__btn:before {
+  border: none;
+}
+.trade-detail__footer .at-button__icon {
+  vertical-align: middle;
 }
 .trade-detail__footer_active {
   background: #0b4137;
