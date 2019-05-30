@@ -14,6 +14,8 @@ var _index = require("../../../npm/@tarojs/taro-weapp/index.js");
 
 var _index2 = _interopRequireDefault(_index);
 
+var _helper = require("./helper.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22,27 +24,38 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var GoodsBuyToolbar = (_temp2 = _class = function (_BaseComponent) {
-  _inherits(GoodsBuyToolbar, _BaseComponent);
+var WgtFilm = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(WgtFilm, _BaseComponent);
 
-  function GoodsBuyToolbar() {
+  function WgtFilm() {
     var _ref;
 
     var _temp, _this, _ret;
 
-    _classCallCheck(this, GoodsBuyToolbar);
+    _classCallCheck(this, WgtFilm);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GoodsBuyToolbar.__proto__ || Object.getPrototypeOf(GoodsBuyToolbar)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "cartCount", "type", "fastBuyText", "__fn_onClick", "customRender", "children", "onClickAddCart", "onClickFastBuy"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtFilm.__proto__ || Object.getPrototypeOf(WgtFilm)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base", "config", "curIdx"], _this.handleClickItem = _helper.linkPage, _this.handleSwiperChange = function (e) {
+      var current = e.detail.current;
+
+
+      _this.setState({
+        curIdx: current
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  _createClass(GoodsBuyToolbar, [{
+  _createClass(WgtFilm, [{
     key: "_constructor",
     value: function _constructor(props) {
-      _get(GoodsBuyToolbar.prototype.__proto__ || Object.getPrototypeOf(GoodsBuyToolbar.prototype), "_constructor", this).call(this, props);
+      _get(WgtFilm.prototype.__proto__ || Object.getPrototypeOf(WgtFilm.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        curIdx: 0
+      };
     }
   }, {
     key: "_createData",
@@ -52,97 +65,40 @@ var GoodsBuyToolbar = (_temp2 = _class = function (_BaseComponent) {
       var __runloopRef = arguments[2];
       ;
 
-      var _props = this.__props,
-          onClickAddCart = _props.onClickAddCart,
-          onClickFastBuy = _props.onClickFastBuy,
-          cartCount = _props.cartCount,
-          type = _props.type,
-          info = _props.info;
+      var info = this.__props.info;
+      var curIdx = this.__state.curIdx;
 
 
-      var fastBuyText = type === 'normal' ? '立即购买' : type === 'seckill' ? '立即抢购' : '我要开团';
+      if (!info) {
+        return null;
+      }
+
+      var config = info.config,
+          base = info.base,
+          data = info.data;
+
+      var curContent = (data[curIdx] || {}).content;
 
       Object.assign(this.__state, {
         info: info,
-        cartCount: cartCount,
-        type: type,
-        fastBuyText: fastBuyText
+        base: base,
+        config: config
       });
       return this.__state;
     }
-  }, {
-    key: "funPrivatemuhRT",
-    value: function funPrivatemuhRT() {
-      this.__triggerPropsFn("onFavItem", [].concat(Array.prototype.slice.call(arguments)));
-    }
-  }, {
-    key: "funPrivateAFPaU",
-    value: function funPrivateAFPaU() {
-      this.__triggerPropsFn("onClickAddCart", [].concat(Array.prototype.slice.call(arguments)));
-    }
-  }, {
-    key: "funPrivateHcVbR",
-    value: function funPrivateHcVbR() {
-      this.__triggerPropsFn("onClickFastBuy", [].concat(Array.prototype.slice.call(arguments)));
-    }
   }]);
 
-  return GoodsBuyToolbar;
+  return WgtFilm;
 }(_index.Component), _class.properties = {
-  "onClickAddCart": {
-    "type": null,
-    "value": null
-  },
-  "onClickFastBuy": {
-    "type": null,
-    "value": null
-  },
-  "cartCount": {
-    "type": null,
-    "value": null
-  },
-  "type": {
-    "type": null,
-    "value": null
-  },
   "info": {
     "type": null,
     "value": null
-  },
-  "onFavItem": {
-    "type": null,
-    "value": null
-  },
-  "__fn_onClick": {
-    "type": null,
-    "value": null
-  },
-  "__fn_onFavItem": {
-    "type": null,
-    "value": null
-  },
-  "customRender": {
-    "type": null,
-    "value": null
-  },
-  "__fn_onClickAddCart": {
-    "type": null,
-    "value": null
-  },
-  "__fn_onClickFastBuy": {
-    "type": null,
-    "value": null
   }
-}, _class.$$events = ["funPrivatemuhRT", "navigateTo", "funPrivateAFPaU", "funPrivateHcVbR"], _class.options = {
+}, _class.$$events = [], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
-  type: 'normal',
-  onClickAddCart: function onClickAddCart() {},
-  onClickFastBuy: function onClickFastBuy() {},
-  onFavItem: function onFavItem() {},
-  cartCount: '',
   info: null
 }, _temp2);
-exports.default = GoodsBuyToolbar;
+exports.default = WgtFilm;
 
-Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(GoodsBuyToolbar));
+Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(WgtFilm));

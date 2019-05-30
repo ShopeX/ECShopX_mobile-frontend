@@ -1,5 +1,8 @@
 {
   "usingComponents": {
-    "sp-html-content": "../../components/html-content/index"
+    "wgt-film": "../home/wgts/film",
+    "wgt-slider": "../home/wgts/slider",
+    "wgt-writing": "../home/wgts/writing",
+    "wgt-goods-scroll": "../home/wgts/goods-scroll"
   }
 }

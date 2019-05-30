@@ -81,24 +81,24 @@ var WgtSlider = (_temp2 = _class = function (_BaseComponent) {
 
       var curContent = (data[curIdx] || {}).content;
 
-      var anonymousState__temp = "height: " + _index2.default.pxTransform(config.height * 2);
-      var anonymousState__temp4 = data.length > 1 && config.dot ? (0, _index3.classNames)('slider-dot', { 'dot-size-switch': config.animation }, config.dotLocation, config.dotCover ? 'cover' : 'no-cover', config.dotColor, config.shape) : null;
-      var anonymousState__temp7 = data.length > 1 && !config.dot ? (0, _index3.classNames)('slider-count', config.dotLocation, config.shape, config.dotColor) : null;
-      var loopArray0 = data.map(function (item, idx) {
+      var anonymousState__temp = config ? "height: " + _index2.default.pxTransform(config.height * 2) : null;
+      var anonymousState__temp4 = data.length > 1 && config.dot ? config ? (0, _index3.classNames)('slider-dot', { 'dot-size-switch': config.animation }, config.dotLocation, config.dotCover ? 'cover' : 'no-cover', config.dotColor, config.shape) : null : null;
+      var anonymousState__temp7 = data.length > 1 && !config.dot ? config ? (0, _index3.classNames)('slider-count', config.dotLocation, config.shape, config.dotColor) : null : null;
+      var loopArray0 = config ? data.map(function (item, idx) {
         item = {
           $original: (0, _index.internal_get_original)(item)
         };
-        var $loopState__temp3 = "padding: 0 " + _index2.default.pxTransform(config.sliderSpace || 0);
+        var $loopState__temp3 = config ? "padding: 0 " + (config.padded ? _index2.default.pxTransform(20) : 0) : null;
         return {
           $loopState__temp3: $loopState__temp3,
           $original: item.$original
         };
-      });
+      }) : [];
       var loopArray1 = data.length > 1 && config.dot ? data.map(function (dot, dotIdx) {
         dot = {
           $original: (0, _index.internal_get_original)(dot)
         };
-        var $loopState__temp6 = data.length > 1 && config.dot ? (0, _index3.classNames)('dot', { active: curIdx === dotIdx }) : null;
+        var $loopState__temp6 = data.length > 1 && config.dot ? config ? (0, _index3.classNames)('dot', { active: curIdx === dotIdx }) : null : null;
         return {
           $loopState__temp6: $loopState__temp6,
           $original: dot.$original

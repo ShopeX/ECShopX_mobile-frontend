@@ -1,35 +1,55 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import {View, Text, Image, ScrollView} from '@tarojs/components'
 import api from '@/api'
 import { SpHtmlContent } from '@/components'
 import { formatTime } from '@/utils'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoodsScroll } from '../home/wgts'
 
 import './detail.scss'
 
-export default class ArticleIndex extends Component {
+export default class recommendDetail extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      info: {}
+      info: null
     }
   }
 
-  componentDidMount () {
+  componentDidShow () {
     this.fetch()
+
+  }
+
+  componentDidMount () {
   }
 
   async fetch () {
-    const { id } = this.$router.params
-    // const info = await api.article.detail(id)
 
-    // info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD HH:mm')
-    // this.setState({
-    //   info
-    // })
+    const { id } = this.$router.params
+    const resFocus = await api.article.focus(id)
+    if(resFocus) {
+      const info = await api.article.detail(id)
+
+      console.log(info, 27)
+
+      info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD')
+      this.setState({
+        info
+      })
+    }
+
   }
 
-  handleClickBar = (type) => {
+  handleClickBar = async (type) => {
+    const { id } = this.$router.params
+    if (type === 'like') {
+      const resPraise = await api.article.praise(id)
+    }
+
+    if (type === 'mark') {
+      const resCollectArticle = await api.article.collectArticle(id)
+    }
     console.log(type)
   }
 
@@ -40,28 +60,44 @@ export default class ArticleIndex extends Component {
       return null
     }
 
+    console.log(info.content, 44)
+
     return (
       <View className='page-recommend-detail'>
         <View className='recommend-detail__title'>最in的5月</View>
         <View className='recommend-detail-info'>
           <View className='recommend-detail-info__time'>
             <Text className={`in-icon in-icon-shijian ${info.is_like ? '' : ''}`}> </Text>
-            2019-5-28
+            {info.updated_str}
           </View>
           <View className='recommend-detail-info__time'>
             <Text className={`in-icon in-icon-xingzhuang ${info.is_like ? '' : ''}`}> </Text>
-            4026关注
+            {info.articleFocusNum.count ? info.articleFocusNum.count : 0}关注
           </View>
         </View>
-        <View className='recommend-detail__content'>
-          <SpHtmlContent
-            content='电风扇的发热管他人萨芬是地方'
-          />
+        <View
+          className='recommend-detail__content'
+          scrollY
+        >
+          <View className='wgts-wrap__cont'>
+            {
+              info.content.map((item, idx) => {
+                return (
+                  <View className='wgt-wrap' key={idx}>
+                    {item.name === 'film' && <WgtFilm info={item} />}
+                    {item.name === 'slider' && <WgtSlider info={item} />}
+                    {item.name === 'writing' && <WgtWriting info={item} />}
+                    {item.name === 'goods' && <WgtGoodsScroll info={item} />}
+                  </View>
+                )
+              })
+            }
+          </View>
         </View>
         <View className='recommend-detail__bar'>
           <View className='recommend-detail__bar-item' onClick={this.handleClickBar.bind(this, 'like')}>
             <Text className={`in-icon in-icon-like ${info.is_like ? '' : ''}`}> </Text>
-            <Text>已赞·380</Text>
+            <Text>点赞·{info.articlePraiseNum.count ? info.articlePraiseNum.count : 0}</Text>
           </View>
           <View className='recommend-detail__bar-item' onClick={this.handleClickBar.bind(this, 'mark')}>
             <Text className={`in-icon in-icon-jiarushoucang ${info.is_like ? '' : ''}`}> </Text>

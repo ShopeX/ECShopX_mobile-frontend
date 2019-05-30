@@ -58,7 +58,7 @@ export default class RecommendItem extends Component {
                        src={img}
                        mode='aspectFill'
                 />
-                <Text className='goods-item__author-name'>{info.title}</Text>
+                <Text className='goods-item__author-name'>{info.author}</Text>
               </View>
               <View className='goods-item__actions'>
                 <View

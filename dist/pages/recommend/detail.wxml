@@ -5,14 +5,29 @@
     <view class="page-recommend-detail" wx:else>
         <view class="recommend-detail__title">最in的5月</view>
         <view class="recommend-detail-info">
-            <view class="recommend-detail-info__time"><text class="{{'in-icon in-icon-shijian ' + (info.is_like ? '' : '')}}"></text>2019-5-28</view>
-            <view class="recommend-detail-info__time"><text class="{{'in-icon in-icon-xingzhuang ' + (info.is_like ? '' : '')}}"></text>4026关注</view>
+            <view class="recommend-detail-info__time"><text class="{{'in-icon in-icon-shijian ' + (info.is_like ? '' : '')}}"></text>{{info.updated_str}}</view>
+            <view class="recommend-detail-info__time"><text class="{{'in-icon in-icon-xingzhuang ' + (info.is_like ? '' : '')}}"></text>{{info.articleFocusNum.count ? info.articleFocusNum.count : 0}}关注</view>
         </view>
-        <view class="recommend-detail__content">
-            <sp-html-content content="电风扇的发热管他人萨芬是地方" __triggerObserer="{{ _triggerObserer }}"></sp-html-content>
+        <view class="recommend-detail__content" scroll-y="{{true}}">
+            <view class="wgts-wrap__cont">
+                <view class="wgt-wrap" wx:key="idx" wx:for="{{info.content}}" wx:for-item="item" wx:for-index="idx">
+                    <block wx:if="{{item.name === 'film'}}">
+                        <wgt-film info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-film>
+                    </block>
+                    <block wx:if="{{item.name === 'slider'}}">
+                        <wgt-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-slider>
+                    </block>
+                    <block wx:if="{{item.name === 'writing'}}">
+                        <wgt-writing info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-writing>
+                    </block>
+                    <block wx:if="{{item.name === 'goods'}}">
+                        <wgt-goods-scroll info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods-scroll>
+                    </block>
+                </view>
+            </view>
         </view>
         <view class="recommend-detail__bar">
-            <view class="recommend-detail__bar-item" bindtap="handleClickBar" data-e-tap-so="this" data-e-tap-a-a="like"><text class="{{'in-icon in-icon-like ' + (info.is_like ? '' : '')}}"></text><text>已赞·380</text>
+            <view class="recommend-detail__bar-item" bindtap="handleClickBar" data-e-tap-so="this" data-e-tap-a-a="like"><text class="{{'in-icon in-icon-like ' + (info.is_like ? '' : '')}}"></text><text>点赞·{{info.articlePraiseNum.count ? info.articlePraiseNum.count : 0}}</text>
             </view>
             <view class="recommend-detail__bar-item" bindtap="handleClickBar" data-e-tap-so="this" data-e-tap-a-a="mark"><text class="{{'in-icon in-icon-jiarushoucang ' + (info.is_like ? '' : '')}}"></text><text>加入心愿</text>
             </view>

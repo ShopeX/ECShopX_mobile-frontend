@@ -76,46 +76,35 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
     key: "fetch",
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(params) {
-        var page, pageSize, query, _ref3, list, total, nList;
+        var page, pageSize, article_query, _ref3, list, total, nList;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 page = params.page_no, pageSize = params.page_size;
-                query = {
-                  item_type: 'normal',
-                  is_point: 'false',
-                  approve_status: 'onsale,only_show',
+                article_query = {
+                  article_type: 'bring',
                   page: page,
                   pageSize: pageSize
                 };
                 _context.next = 4;
-                return _index5.default.item.search(query);
+                return _index5.default.article.list(article_query);
 
               case 4:
                 _ref3 = _context.sent;
                 list = _ref3.list;
                 total = _ref3.total_count;
                 nList = (0, _index6.pickBy)(list, {
-                  img: 'pics[0]',
-                  item_id: 'item_id',
-                  title: 'itemName',
-                  desc: 'brief',
-                  price: function price(_ref4) {
-                    var _price = _ref4.price;
-                    return (_price / 100).toFixed(2);
-                  },
-                  market_price: function market_price(_ref5) {
-                    var _market_price = _ref5.market_price;
-                    return (_market_price / 100).toFixed(2);
-                  }
+                  img: 'image_url',
+                  item_id: 'article_id',
+                  title: 'title',
+                  author: 'author'
                 });
 
 
                 this.setState({
-                  list: [].concat(_toConsumableArray(this.state.list), _toConsumableArray(nList)),
-                  query: query
+                  list: [].concat(_toConsumableArray(this.state.list), _toConsumableArray(nList))
                 });
 
                 return _context.abrupt("return", {

@@ -29,28 +29,23 @@ export default class RecommendList extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-    const query = {
-      item_type: 'normal',
-      is_point: 'false',
-      approve_status: 'onsale,only_show',
+    const article_query = {
+      article_type: 'bring',
       page,
       pageSize
     }
 
-    const { list, total_count: total } = await api.item.search(query)
+    const { list, total_count: total } = await api.article.list(article_query)
 
     const nList = pickBy(list, {
-      img: 'pics[0]',
-      item_id: 'item_id',
-      title: 'itemName',
-      desc: 'brief',
-      price: ({ price }) => (price/100).toFixed(2),
-      market_price: ({ market_price }) => (market_price/100).toFixed(2)
+      img: 'image_url',
+      item_id: 'article_id',
+      title: 'title',
+      author: 'author',
     })
 
     this.setState({
       list: [...this.state.list, ...nList],
-      query
     })
 
     return {
