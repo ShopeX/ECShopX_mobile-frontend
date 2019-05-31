@@ -359,11 +359,17 @@ export default class CartCheckout extends Component {
       submitLoading: false
     })
 
+    try {
+      await api.trade.tradeQuery(config.trade_info.trade_id)
+    } catch (e) {
+      console.info(e)
+    }
 
     let payErr
     try {
       const payRes = await Taro.requestPayment(config)
       log.debug(`[order pay]: `, payRes)
+      await api.trade.tradeQuery(orderInfo.trade_info.trade_id)
     } catch (e) {
       payErr = e
       Taro.showToast({
@@ -386,9 +392,9 @@ export default class CartCheckout extends Component {
     }
     return
 
-    const url = `/pages/cashier/index?order_id=${order_id}`
-    this.props.onClearCart()
-    Taro.navigateTo({ url })
+    // const url = `/pages/cashier/index?order_id=${order_id}`
+    // this.props.onClearCart()
+    // Taro.navigateTo({ url })
   }
 
   handleCouponsClick = () => {
