@@ -170,7 +170,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
         }
       }, _callee, _this2);
     })), _this.handlePay = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-      var order_id, orderInfo, paymentParams, config, payErr, payRes, url;
+      var order_id, orderInfo, paymentParams, config, payErr, payRes;
       return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
@@ -241,29 +241,48 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 submitLoading: false
               });
 
+              _context2.prev = 23;
+              _context2.next = 26;
+              return _index5.default.trade.tradeQuery(config.trade_info.trade_id);
+
+            case 26:
+              _context2.next = 31;
+              break;
+
+            case 28:
+              _context2.prev = 28;
+              _context2.t1 = _context2["catch"](23);
+
+              console.info(_context2.t1);
+
+            case 31:
               payErr = void 0;
-              _context2.prev = 24;
-              _context2.next = 27;
+              _context2.prev = 32;
+              _context2.next = 35;
               return _index2.default.requestPayment(config);
 
-            case 27:
+            case 35:
               payRes = _context2.sent;
 
               _index9.log.debug("[order pay]: ", payRes);
-              _context2.next = 35;
+              _context2.next = 39;
+              return _index5.default.trade.tradeQuery(orderInfo.trade_info.trade_id);
+
+            case 39:
+              _context2.next = 45;
               break;
 
-            case 31:
-              _context2.prev = 31;
-              _context2.t1 = _context2["catch"](24);
+            case 41:
+              _context2.prev = 41;
+              _context2.t2 = _context2["catch"](32);
 
-              payErr = _context2.t1;
+              payErr = _context2.t2;
               _index2.default.showToast({
-                title: _context2.t1.err_desc || _context2.t1.errMsg || '支付失败',
+                title: _context2.t2.err_desc || _context2.t2.errMsg || '支付失败',
                 icon: 'none'
               });
 
-            case 35:
+            case 45:
 
               if (!payErr) {
                 _this.__triggerPropsFn("onClearCart", [null].concat([]));
@@ -279,12 +298,12 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
               }
               return _context2.abrupt("return");
 
-            case 40:
+            case 47:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, _this2, [[5, 12], [24, 31]]);
+      }, _callee2, _this2, [[5, 12], [23, 28], [32, 41]]);
     })), _this.handleCouponsClick = function () {
       var items = _this.params.items.filter(function (item) {
         return item.order_item_type !== 'gift';
@@ -599,7 +618,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
     value: function _createData() {
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __runloopRef = arguments[2];
+      var __isRunloopRef = arguments[2];
       ;
 
       var coupon = this.__props.coupon;

@@ -10,6 +10,7 @@ exports.confirm = confirm;
 exports.cancel = cancel;
 exports.getCount = getCount;
 exports.deliveryInfo = deliveryInfo;
+exports.tradeQuery = tradeQuery;
 
 var _req = require('./req.js');
 
@@ -48,4 +49,8 @@ function getCount() {
 
 function deliveryInfo(order_id) {
   return _req2.default.get('/order/waybill/' + order_id);
+}
+
+function tradeQuery(trade_id) {
+  return _req2.default.get('/tradequery', { trade_id: trade_id });
 }

@@ -30,3 +30,7 @@ export function getCount (params = { order_type: 'normal' }) {
 export function deliveryInfo (order_id) {
   return req.get(`/order/waybill/${order_id}`)
 }
+
+export function tradeQuery (trade_id) {
+  return req.get(`/tradequery`, { trade_id })
+}
