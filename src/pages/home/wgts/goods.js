@@ -3,9 +3,9 @@ import { View, Text, Image, Video, SwiperItem } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
 
-import './writing.scss'
+import './goods.scss'
 
-export default class WgtWriting extends Component {
+export default class WgtGoods extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -42,10 +42,6 @@ export default class WgtWriting extends Component {
 
     const { config, base, data } = info
     const curContent = (data[curIdx] || {}).content
-    let contentArr = []
-    if(curContent) {
-      contentArr = curContent.split('\n')
-    }
 
     return (
       <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
@@ -55,11 +51,30 @@ export default class WgtWriting extends Component {
             <View className='wgt__subtitle'>{base.subtitle}</View>
           </View>
         )}
-        <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
+        <View className='slider-wrap'>
           {
-            contentArr.map((item, index) => {
+            data.map((item, index) => {
               return (
-                <View className='writing-view' key={index}>{item}</View>
+                <View className='goods-content' key={index}>
+                  <View className='goods-content__info'>
+                    <View className='goods-content__info_img'>
+                      <Image className='img-style' mode='aspectFill' src={item.img_url} />
+                    </View>
+                    <View className='goods-content__info_text'>
+                      <Text>{item.item_name}</Text>
+                      <Text>点击查看产品详情</Text>
+                      <View>
+                        <Text>dd</Text>
+                        <Text>{item.sales}</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View className='goods-content__operate'>
+                    <View className='goods-content__operate_btn'>加入心愿</View>
+                    <Text>|</Text>
+                    <View className='goods-content__operate_btn'>加入购买</View>
+                  </View>
+                </View>
               )
             })
           }

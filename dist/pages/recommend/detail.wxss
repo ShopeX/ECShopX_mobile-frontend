@@ -51,6 +51,9 @@
   color: #999;
 }
 
+.recommend-detail {
+  padding-bottom: 100rpx;
+}
 .recommend-detail__title {
   display: block;
   width: 100%;
@@ -75,6 +78,7 @@
 }
 .recommend-detail__content {
   margin-top: 20rpx;
+  padding-bottom: 100rpx;
 }
 .recommend-detail__bar {
   position: fixed;

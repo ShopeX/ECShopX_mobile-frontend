@@ -55,7 +55,7 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
                 id = _this.$router.params.id;
 
                 if (!(type === 'like')) {
-                  _context.next = 5;
+                  _context.next = 6;
                   break;
                 }
 
@@ -65,22 +65,24 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
               case 4:
                 resPraise = _context.sent;
 
-              case 5:
+                console.log(resPraise, 48);
+
+              case 6:
                 if (!(type === 'mark')) {
-                  _context.next = 9;
+                  _context.next = 10;
                   break;
                 }
 
-                _context.next = 8;
+                _context.next = 9;
                 return _index4.default.article.collectArticle(id);
 
-              case 8:
+              case 9:
                 resCollectArticle = _context.sent;
 
-              case 9:
+              case 10:
                 console.log(type);
 
-              case 10:
+              case 11:
               case "end":
                 return _context.stop();
             }

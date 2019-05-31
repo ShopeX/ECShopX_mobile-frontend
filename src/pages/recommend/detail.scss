@@ -28,6 +28,8 @@
   }
 }
 .recommend-detail {
+  padding-bottom: 100px;
+
   &__title {
     display: block;
     width: 100%;
@@ -52,6 +54,7 @@
   }
   &__content {
     margin-top: 20px;
+    padding-bottom: 100px;
   }
   &__bar {
     position: fixed;

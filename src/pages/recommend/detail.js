@@ -3,7 +3,7 @@ import {View, Text, Image, ScrollView} from '@tarojs/components'
 import api from '@/api'
 import { SpHtmlContent } from '@/components'
 import { formatTime } from '@/utils'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoodsScroll } from '../home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods } from '../home/wgts'
 
 import './detail.scss'
 
@@ -45,6 +45,7 @@ export default class recommendDetail extends Component {
     const { id } = this.$router.params
     if (type === 'like') {
       const resPraise = await api.article.praise(id)
+      console.log(resPraise, 48)
     }
 
     if (type === 'mark') {
@@ -87,7 +88,7 @@ export default class recommendDetail extends Component {
                     {item.name === 'film' && <WgtFilm info={item} />}
                     {item.name === 'slider' && <WgtSlider info={item} />}
                     {item.name === 'writing' && <WgtWriting info={item} />}
-                    {item.name === 'goods' && <WgtGoodsScroll info={item} />}
+                    {item.name === 'goods' && <WgtGoods info={item} />}
                   </View>
                 )
               })

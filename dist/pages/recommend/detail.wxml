@@ -21,7 +21,7 @@
                         <wgt-writing info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-writing>
                     </block>
                     <block wx:if="{{item.name === 'goods'}}">
-                        <wgt-goods-scroll info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods-scroll>
+                        <wgt-goods info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods>
                     </block>
                 </view>
             </view>

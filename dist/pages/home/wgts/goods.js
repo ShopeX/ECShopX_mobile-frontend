@@ -24,21 +24,21 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var WgtWriting = (_temp2 = _class = function (_BaseComponent) {
-  _inherits(WgtWriting, _BaseComponent);
+var WgtGoods = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(WgtGoods, _BaseComponent);
 
-  function WgtWriting() {
+  function WgtGoods() {
     var _ref;
 
     var _temp, _this, _ret;
 
-    _classCallCheck(this, WgtWriting);
+    _classCallCheck(this, WgtGoods);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtWriting.__proto__ || Object.getPrototypeOf(WgtWriting)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base", "config", "contentArr", "curIdx"], _this.handleClickItem = _helper.linkPage, _this.handleSwiperChange = function (e) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtGoods.__proto__ || Object.getPrototypeOf(WgtGoods)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data", "curIdx"], _this.handleClickItem = _helper.linkPage, _this.handleSwiperChange = function (e) {
       var current = e.detail.current;
 
 
@@ -48,10 +48,10 @@ var WgtWriting = (_temp2 = _class = function (_BaseComponent) {
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  _createClass(WgtWriting, [{
+  _createClass(WgtGoods, [{
     key: "_constructor",
     value: function _constructor(props) {
-      _get(WgtWriting.prototype.__proto__ || Object.getPrototypeOf(WgtWriting.prototype), "_constructor", this).call(this, props);
+      _get(WgtGoods.prototype.__proto__ || Object.getPrototypeOf(WgtGoods.prototype), "_constructor", this).call(this, props);
 
       this.state = {
         curIdx: 0
@@ -78,22 +78,17 @@ var WgtWriting = (_temp2 = _class = function (_BaseComponent) {
           data = info.data;
 
       var curContent = (data[curIdx] || {}).content;
-      var contentArr = [];
-      if (curContent) {
-        contentArr = curContent.split('\n');
-      }
 
       Object.assign(this.__state, {
         info: info,
         base: base,
-        config: config,
-        contentArr: contentArr
+        data: data
       });
       return this.__state;
     }
   }]);
 
-  return WgtWriting;
+  return WgtGoods;
 }(_index.Component), _class.properties = {
   "info": {
     "type": null,
@@ -104,6 +99,6 @@ var WgtWriting = (_temp2 = _class = function (_BaseComponent) {
 }, _class.defaultProps = {
   info: null
 }, _temp2);
-exports.default = WgtWriting;
+exports.default = WgtGoods;
 
-Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(WgtWriting));
+Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(WgtGoods));

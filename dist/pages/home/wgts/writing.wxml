@@ -10,7 +10,7 @@
             </view>
         </block>
         <view class="{{'slider-wrap ' + (config.padded ? 'padded' : '')}}">
-            <view>{{curContent}}</view>
+            <view class="writing-view" wx:key="index" wx:for="{{contentArr}}" wx:for-item="item" wx:for-index="index">{{item}}</view>
         </view>
     </view>
 </block>
