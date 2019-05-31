@@ -44,7 +44,7 @@ export default class recommendDetail extends Component {
   handleClickBar = async (type) => {
     const { id } = this.$router.params
     if (type === 'like') {
-      const resPraise = await api.article.praise(id)
+      // const resPraise = await api.article.praise(id)
       console.log( 48)
     }
 

@@ -47,7 +47,7 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = recommendDetail.__proto__ || Object.getPrototypeOf(recommendDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info"], _this.handleClickBar = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type) {
-        var id, resPraise, resCollectArticle;
+        var id, resPraise;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -65,24 +65,16 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
               case 4:
                 resPraise = _context.sent;
 
-                console.log(resPraise, 48);
+                console.log(48);
 
               case 6:
-                if (!(type === 'mark')) {
-                  _context.next = 10;
-                  break;
-                }
 
-                _context.next = 9;
-                return _index4.default.article.collectArticle(id);
-
-              case 9:
-                resCollectArticle = _context.sent;
-
-              case 10:
+                // if (type === 'mark') {
+                //   const resCollectArticle = await api.article.collectArticle(id)
+                // }
                 console.log(type);
 
-              case 11:
+              case 7:
               case "end":
                 return _context.stop();
             }

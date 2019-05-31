@@ -27,6 +27,11 @@ export default class RecommendList extends Component {
     this.nextPage()
   }
 
+  /*praiseCheck = async (id) => {
+    const { status } = await api.article.praiseCheck(id)
+    return status
+  }*/
+
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const article_query = {
@@ -42,6 +47,7 @@ export default class RecommendList extends Component {
       item_id: 'article_id',
       title: 'title',
       author: 'author',
+      articlePraiseNum: 'articlePraiseNum.count',
     })
 
     this.setState({
@@ -109,7 +115,7 @@ export default class RecommendList extends Component {
           onClick={this.scrollBackToTop}
         />
 
-      <TabBar current={2}/>
+      <TabBar current={2} />
       </View>
     )
   }

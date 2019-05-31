@@ -72,6 +72,12 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
     value: function componentDidMount() {
       this.nextPage();
     }
+
+    /*praiseCheck = async (id) => {
+      const { status } = await api.article.praiseCheck(id)
+      return status
+    }*/
+
   }, {
     key: "fetch",
     value: function () {
@@ -99,7 +105,8 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
                   img: 'image_url',
                   item_id: 'article_id',
                   title: 'title',
-                  author: 'author'
+                  author: 'author',
+                  articlePraiseNum: 'articlePraiseNum.count'
                 });
 
 

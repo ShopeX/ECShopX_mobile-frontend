@@ -41,7 +41,7 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = RecommendItem.__proto__ || Object.getPrototypeOf(RecommendItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "img", "showMarketPrice", "noCurSymbol", "noCurDecimal", "appendText", "className", "isPointDraw", "type", "children", "renderFooter"], _this.handleLikeClick = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = RecommendItem.__proto__ || Object.getPrototypeOf(RecommendItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "img", "noCurSymbol", "noCurDecimal", "appendText", "className", "isPointDraw", "type", "children", "renderFooter"], _this.handleLikeClick = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
         var _this$props$info, item_id, is_like;
 
@@ -84,7 +84,6 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
 
       var _props = this.__props,
           info = _props.info,
-          showMarketPrice = _props.showMarketPrice,
           noCurSymbol = _props.noCurSymbol,
           noCurDecimal = _props.noCurDecimal,
           onClick = _props.onClick,
@@ -97,6 +96,7 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
         return null;
       }
 
+      console.log(info, 34);
       var price = (0, _index3.isObject)(info.price) ? info.price.total_price : info.price;
       var img = info.img || info.image_default_id;
 
@@ -109,8 +109,8 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivateVJAzz",
-    value: function funPrivateVJAzz() {
+    key: "funPrivateIeJiW",
+    value: function funPrivateIeJiW() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -118,10 +118,6 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
   return RecommendItem;
 }(_index.Component), _class.properties = {
   "info": {
-    "type": null,
-    "value": null
-  },
-  "showMarketPrice": {
     "type": null,
     "value": null
   },
@@ -157,7 +153,7 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivateVJAzz", "handleLikeClick"], _class.defaultProps = {
+}, _class.$$events = ["funPrivateIeJiW", "handleLikeClick"], _class.defaultProps = {
   onClick: function onClick() {},
   showMarketPrice: true,
   noCurSymbol: false,

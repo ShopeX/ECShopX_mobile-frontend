@@ -7,6 +7,7 @@ exports.list = list;
 exports.detail = detail;
 exports.focus = focus;
 exports.praise = praise;
+exports.praiseCheck = praiseCheck;
 exports.collectArticle = collectArticle;
 
 var _req = require("./req.js");
@@ -31,6 +32,10 @@ function focus(id) {
 
 function praise(id) {
   return _req2.default.get("/article/praise/" + id);
+}
+
+function praiseCheck(id) {
+  return _req2.default.get("/article/praise/check/" + id);
 }
 
 function collectArticle(id) {

@@ -16,6 +16,10 @@ export function praise (id) {
   return req.get(`/article/praise/${id}`)
 }
 
+export function praiseCheck (id) {
+  return req.get(`/article/praise/check/${id}`)
+}
+
 export function collectArticle (id) {
   return req.get(`/member/collect/article/${id}`)
 }
