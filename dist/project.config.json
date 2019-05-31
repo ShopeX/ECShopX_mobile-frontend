@@ -1,13 +1,50 @@
 {
-  "miniprogramRoot": "./",
-  "projectname": "mshop-taro",
-  "description": "taro app for bbc",
-  "appid": "wxfaadceab4f782c35",
-  "setting": {
-    "urlCheck": false,
-    "es6": false,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram"
+	"projectname": "mshop-taro",
+	"description": "taro app for bbc",
+	"appid": "wxfaadceab4f782c35",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false
+	},
+	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 1,
+			"list": [
+				{
+					"id": -1,
+					"name": "种草",
+					"pathName": "pages/recommend/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "种草详情",
+					"pathName": "pages/recommend/detail",
+					"query": "id=19",
+					"scene": null
+				}
+			]
+		}
+	}
 }

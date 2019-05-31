@@ -109,8 +109,8 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivateZhgAk",
-    value: function funPrivateZhgAk() {
+    key: "funPrivateCwqRf",
+    value: function funPrivateCwqRf() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -157,7 +157,7 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivateZhgAk", "handleLikeClick"], _class.defaultProps = {
+}, _class.$$events = ["funPrivateCwqRf", "handleLikeClick"], _class.defaultProps = {
   onClick: function onClick() {},
   showMarketPrice: true,
   noCurSymbol: false,
