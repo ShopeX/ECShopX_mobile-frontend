@@ -1,6 +1,9 @@
 const path = require('path')
 
 const isIntegration = process.env.INTEGRATION_APP
+const resource = (isIntegration
+  ? [path.resolve(__dirname, '..', 'src/style/iwa.scss')]
+  : []).concat(path.resolve(__dirname, '..', 'src/style/imports.scss'))
 
 module.exports = {
   env: {
@@ -9,12 +12,7 @@ module.exports = {
   },
   plugins: {
     sass: {
-      resource: [
-        isIntegration
-          ? path.resolve(__dirname, '..', 'src/style/iwa.scss')
-          : null,
-        path.resolve(__dirname, '..', 'src/style/imports.scss')
-      ],
+      resource,
       // projectDirectory 需要配置，插件中做为~的别名
       projectDirectory: path.resolve(__dirname, '..')
     }

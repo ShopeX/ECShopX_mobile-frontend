@@ -1,11 +1,1 @@
-var getNative = require("./_getNative.js");
-
-var defineProperty = function () {
-  try {
-    var func = getNative(Object, 'defineProperty');
-    func({}, '', {});
-    return func;
-  } catch (e) {}
-}();
-
-module.exports = defineProperty;
+var getNative=require("./_getNative.js"),defineProperty=function(){try{var e=getNative(Object,"defineProperty");return e({},"",{}),e}catch(e){}}();module.exports=defineProperty;
