@@ -34,6 +34,7 @@ export default class RecommendItem extends Component {
 
     console.log(info, 34)
     const img = info.img || info.image_default_id
+    const img_head = info.head_portrait || info.image_default_id
 
     return (
       <View className={classNames('goods-item', className)}>
@@ -58,14 +59,14 @@ export default class RecommendItem extends Component {
               <View className='goods-item__author'>
                 <Image
                   className='goods-item__author-avatar'
-                  src={img}
+                  src={img_head}
                   mode='aspectFill'
                 />
                 <Text className='goods-item__author-name'>{info.author}</Text>
               </View>
-              <View className='goods-item__actions'>
+              <View className={`goods-item__actions ${info.isPraise ? 'is_like__active' : ''}`}>
                 <View
-                  className={`in-icon in-icon-like ${info.is_like ? '' : ''}`}
+                  className={`in-icon in-icon-like `}
                   onClick={this.handleLikeClick}
                 ><Text>{info.articlePraiseNum}</Text></View>
               </View>

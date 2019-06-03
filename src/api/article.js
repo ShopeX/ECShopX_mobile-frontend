@@ -4,7 +4,15 @@ export function list (params = {}) {
   return req.get('/article/management', params)
 }
 
+export function authList (params = {}) {
+  return req.get('/article/usermanagement', params)
+}
+
 export function detail (id) {
+  return req.get(`/article/management/${id}`)
+}
+
+export function authDetail (id) {
   return req.get(`/article/management/${id}`)
 }
 
@@ -30,6 +38,10 @@ export function collectArticle (id) {
 
 export function delCollectArticle (params={}) {
   return req.delete('/member/collect/article',params)
+}
+
+export function delCollectArticleInfo (params={}) {
+  return req.get('/member/collect/article/info',params)
 }
 
 export default {}

@@ -1,7 +1,7 @@
 {
 	"projectname": "mshop-taro",
 	"description": "taro app for bbc",
-	"appid": "wxfaadceab4f782c35",
+	"appid": "wxf91925e702efe3e3",
 	"setting": {
 		"urlCheck": false,
 		"es6": false,
@@ -26,7 +26,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 3,
 			"list": [
 				{
 					"id": -1,
@@ -47,6 +47,13 @@
 					"name": "espier-detail",
 					"pathName": "pages/item/espier-detail",
 					"query": "id=949",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "espier-checkout",
+					"pathName": "pages/cart/espier-checkout",
+					"query": "",
 					"scene": null
 				}
 			]

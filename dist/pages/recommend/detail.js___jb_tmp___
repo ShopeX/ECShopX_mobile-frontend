@@ -42,7 +42,7 @@ export default class recommendDetail extends Component {
       })
     }
     if(resFocus) {
-      const info = S.getAuthToken() ? await api.article.authDetail(id): await api.article.detail(id)
+      const info = !S.getAuthToken() ? await api.article.detail(id): await api.article.authDetail(id)
 
 
 

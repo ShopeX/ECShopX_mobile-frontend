@@ -20,6 +20,10 @@ var _index4 = _interopRequireDefault(_index3);
 
 var _index5 = require("../../utils/index.js");
 
+var _index6 = require("../../spx/index.js");
+
+var _index7 = _interopRequireDefault(_index6);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -184,7 +188,7 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
     key: "fetch",
     value: function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-        var id, resFocus, info;
+        var id, resFocus, res, info;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -195,27 +199,57 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
 
               case 3:
                 resFocus = _context3.sent;
+                _context3.next = 6;
+                return _index4.default.article.delCollectArticleInfo({ article_id: id });
+
+              case 6:
+                res = _context3.sent;
+
+                if (res.length === 0) {
+                  this.setState({
+                    collectArticleStatus: false
+                  });
+                } else {
+                  this.setState({
+                    collectArticleStatus: true
+                  });
+                }
 
                 if (!resFocus) {
-                  _context3.next = 11;
+                  _context3.next = 21;
                   break;
                 }
 
-                _context3.next = 7;
+                if (!_index7.default.getAuthToken()) {
+                  _context3.next = 15;
+                  break;
+                }
+
+                _context3.next = 12;
+                return _index4.default.article.authDetail(id);
+
+              case 12:
+                _context3.t0 = _context3.sent;
+                _context3.next = 18;
+                break;
+
+              case 15:
+                _context3.next = 17;
                 return _index4.default.article.detail(id);
 
-              case 7:
-                info = _context3.sent;
+              case 17:
+                _context3.t0 = _context3.sent;
 
+              case 18:
+                info = _context3.t0;
 
-                console.log(info, 27);
 
                 info.updated_str = (0, _index5.formatTime)(info.updated * 1000, 'YYYY-MM-DD');
                 this.setState({
                   info: info
                 });
 
-              case 11:
+              case 21:
               case "end":
                 return _context3.stop();
             }

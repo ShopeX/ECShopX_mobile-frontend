@@ -121,4 +121,9 @@ $item-img-size: 240px !default;
       color: $color-brand-primary;
     }
   }
+  .is_like__active{
+    .in-icon {
+      color: $color-brand-primary;
+    }
+  }
 }

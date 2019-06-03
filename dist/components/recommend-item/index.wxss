@@ -189,3 +189,6 @@
 .goods-item__actions .in-icon-fav-f, .goods-item__actions .in-icon-like-f {
   color: #0b4137;
 }
+.goods-item .is_like__active .in-icon {
+  color: #0b4137;
+}

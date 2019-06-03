@@ -41,7 +41,7 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = RecommendItem.__proto__ || Object.getPrototypeOf(RecommendItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "img", "noCurSymbol", "noCurDecimal", "appendText", "className", "isPointDraw", "type", "children", "renderFooter"], _this.handleLikeClick = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = RecommendItem.__proto__ || Object.getPrototypeOf(RecommendItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "img", "img_head", "noCurSymbol", "noCurDecimal", "appendText", "className", "isPointDraw", "type", "children", "renderFooter"], _this.handleLikeClick = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
         var _this$props$info, item_id, is_like;
 
@@ -98,18 +98,20 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
 
       console.log(info, 34);
       var img = info.img || info.image_default_id;
+      var img_head = info.head_portrait || info.image_default_id;
 
       var anonymousState__temp = (0, _index3.classNames)('goods-item', className);
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
         info: info,
-        img: img
+        img: img,
+        img_head: img_head
       });
       return this.__state;
     }
   }, {
-    key: "funPrivateABtxt",
-    value: function funPrivateABtxt() {
+    key: "funPrivateYawtp",
+    value: function funPrivateYawtp() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -152,7 +154,7 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivateABtxt", "handleLikeClick"], _class.defaultProps = {
+}, _class.$$events = ["funPrivateYawtp", "handleLikeClick"], _class.defaultProps = {
   onClick: function onClick() {},
   showMarketPrice: true,
   noCurSymbol: false,
