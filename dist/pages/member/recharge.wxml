@@ -1,0 +1,38 @@
+<block>
+    <view class="page-member-integral">
+        <nav-bar title="我的资金" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <view class="member-integral__hd">
+            <view class="integral-info">
+                <view class="integral-number"><text class="sp-icon sp-icon-zijin icon-point"></text><text class="integral-number__text">{{totalDeposit}}</text>
+                </view>
+                <view class="integral-text">账户可用余额</view>
+            </view>
+        </view>
+        <view class="member-integral__bd">
+            <view class="integral-sec integral-info__status">
+                <view class="integral-sec__horn"><text class="sp-icon sp-icon-laba laba_horn"></text>
+                </view><text class="integral-sec__share">充值可获取积分呦，赶紧行动吧~</text>
+            </view>
+            <view class="integral-sec member-integral">
+                <at-tabs className="member-integral__tabs" __triggerObserer="{{ _triggerObserer }}" current="{{curTabIdx}}" tabList="{{tabList}}" bindonclick="handleClickTab" __fn_onClick="{{true}}">
+                    <at-tabs-pane current="{{curTabIdx}}" __triggerObserer="{{ _triggerObserer }}" wx:key="pIdx" index="{{pIdx}}" className="member-integral__panel" wx:for="{{tabList}}" wx:for-item="panes" wx:for-index="pIdx"></at-tabs-pane>
+                </at-tabs>
+                <scroll-view scroll-y="{{true}}" class="member-integral__scroll" bindscrolltolower="nextPage">
+                    <view wx:key="idx" wx:for="{{list}}" wx:for-item="item" wx:for-index="idx">
+                        <view class="integral-item">
+                            <view class="integral-item__title"><text class="integral-item__title-name">{{item.detail}}</text><text class="{{'integral-item__title-' + (item.tradeType === 'consume' ? item.tradeType : 'recharge')}}">{{item.tradeType === 'consume' ? '-' : '+'}}{{item.money}}</text>
+                            </view>
+                            <view class="integral-item__data">{{item.timeStart}}</view>
+                        </view>
+                    </view>
+                    <block wx:if="{{page.isLoading}}">
+                        <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>
+                    </block>
+                    <block wx:if="{{!page.isLoading && !page.hasNext && !list.length}}">
+                        <sp-note className="integral_empty" __triggerObserer="{{ _triggerObserer }}" img="trades_empty.png">赶快去充值吧~</sp-note>
+                    </block>
+                </scroll-view>
+            </view>
+        </view>
+    </view>
+</block>

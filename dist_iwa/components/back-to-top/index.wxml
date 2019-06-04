@@ -1,5 +1,9 @@
 <block>
+<<<<<<< HEAD
     <view class="{{anonymousState__temp}}" style="{{anonymousState__temp2}}" bindtap="funPrivateRHnjR">
+=======
+    <view class="{{anonymousState__temp}}" style="{{anonymousState__temp2}}" bindtap="funPrivateDPCit">
+>>>>>>> 7eb36985c480a949c492b080ce2054bc14cc3c62
         <view class="in-icon in-icon-back-top"></view>
     </view>
 </block>

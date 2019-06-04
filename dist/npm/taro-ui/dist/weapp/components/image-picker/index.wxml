@@ -1,0 +1,26 @@
+<block>
+    <view class="{{rootCls}}" style="{{anonymousState__temp}}">
+        <view class="at-image-picker__flex-box" wx:key="i" wx:for="{{loopArray0}}" wx:for-item="row" wx:for-index="i">
+            <block wx:for="{{row.$anonymousCallee__0}}" wx:for-item="item" wx:for-index="j" wx:key="$loopState__temp3">
+                <block wx:if="{{item.$original.url}}">
+                    <view class="at-image-picker__flex-item">
+                        <view class="at-image-picker__item">
+                            <view class="at-image-picker__remove-btn" bindtap="handleRemoveImg" data-e-tap-so="this" data-e-tap-a-a="{{i * length + j}}"></view>
+                            <image class="at-image-picker__preview-img" mode="{{mode}}" src="{{item.$original.url}}" bindtap="handleImageClick" data-e-tap-so="this" data-e-tap-a-a="{{i * length + j}}"></image>
+                        </view>
+                    </view>
+                </block>
+                <block wx:else>
+                    <view class="at-image-picker__flex-item" wx:key="$loopState__temp5">
+                        <block wx:if="{{item.$original.type === 'btn'}}">
+                            <view class="at-image-picker__item at-image-picker__choose-btn" bindtap="chooseFile">
+                                <view class="add-bar"></view>
+                                <view class="add-bar"></view>
+                            </view>
+                        </block>
+                    </view>
+                </block>
+            </block>
+        </view>
+    </view>
+</block>

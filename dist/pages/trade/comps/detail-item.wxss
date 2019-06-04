@@ -1,0 +1,32 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.detail-item {
+  padding: 36rpx 0 37rpx;
+}
+.detail-item-good {
+  position: relative;
+}
+.detail-item__title {
+  display: block;
+  font-size: 22rpx;
+  line-height: 36rpx;
+  color: #333333;
+  border-bottom: 1PX solid #ececec;
+  padding: 0 38rpx 17rpx 27rpx;
+}
+.detail-item .order-item__ft {
+  position: absolute;
+  bottom: 20rpx;
+  right: 30rpx;
+}

@@ -5,5 +5,10 @@
     "pages/iwp/recommend-list",
     "pages/iwp/recommend-detail",
     "pages/iwp/article-index"
+<<<<<<< HEAD
   ]
+=======
+  ],
+  "sitemapLocation": "sitemap.json"
+>>>>>>> 7eb36985c480a949c492b080ce2054bc14cc3c62
 }

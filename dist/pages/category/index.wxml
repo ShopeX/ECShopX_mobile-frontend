@@ -1,0 +1,12 @@
+<block>
+    <view class="page-category-index">
+        <search-bar isFixed="{{true}}" __triggerObserer="{{ _triggerObserer }}"></search-bar>
+        <at-tabs className="category__tabs" __triggerObserer="{{ _triggerObserer }}" current="{{curTabIdx}}" tabList="{{tabList}}" bindonclick="handleClickTab" __fn_onClick="{{true}}">
+            <at-tabs-pane current="{{curTabIdx}}" __triggerObserer="{{ _triggerObserer }}" wx:key="pIdx" index="{{pIdx}}" wx:for="{{tabList}}" wx:for-item="panes" wx:for-index="pIdx"></at-tabs-pane>
+        </at-tabs>
+        <view class="category-comps">
+            <series info="{{list}}" __triggerObserer="{{ _triggerObserer }}"></series>
+        </view>
+        <tab-bar current="{{1}}" __triggerObserer="{{ _triggerObserer }}"></tab-bar>
+    </view>
+</block>

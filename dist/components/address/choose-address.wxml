@@ -1,0 +1,25 @@
+<block>
+    <view class="address-picker">
+        <view class="address-info" bindtap="clickTo" data-e-tap-so="this" data-e-tap-a-a="choose">
+            <sp-cell isLink="{{true}}" __triggerObserer="{{ _triggerObserer }}">
+                <block>
+                    <block wx:if="{{isAddress}}">
+                        <view class="address-picker__bd">
+                            <view class="address-receive"><text>收货地址：</text>
+                                <view class="info-trade">
+                                    <view class="user-info-trade"><text>{{isAddress.name}}</text><text>{{isAddress.mobile}}</text>
+                                    </view><text class="address-detail">{{isAddress.province}}{{isAddress.state}}{{isAddress.district}}{{isAddress.address}}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </block>
+                    <block wx:else>
+                        <view class="address-info__bd">请选择收货地址</view>
+                    </block>
+                </block>
+            </sp-cell>
+            <view class="other-address"><text class="in-icon in-icon-xinzeng icon-add"></text><text>使用其他地址</text>
+            </view>
+        </view>
+    </view>
+</block>

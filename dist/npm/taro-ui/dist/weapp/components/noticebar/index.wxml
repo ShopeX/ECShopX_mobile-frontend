@@ -1,0 +1,27 @@
+<block>
+    <block wx:if="{{show}}">
+        <view class="{{anonymousState__temp}}" style="{{anonymousState__temp2}}">
+            <block wx:if="{{close}}">
+                <view class="at-noticebar__close" bindtap="onClose" data-e-tap-so="this"><text class="at-icon at-icon-close"></text>
+                </view>
+            </block>
+            <view class="at-noticebar__content">
+                <block wx:if="{{icon}}">
+                    <view class="at-noticebar__content-icon"><text class="{{anonymousState__temp3}}"></text>
+                    </view>
+                </block>
+                <view class="at-noticebar__content-text">
+                    <view animation="{{animationData}}" class="{{anonymousState__temp4}}" style="{{anonymousState__temp5}}">
+                        <slot></slot>
+                    </view>
+                </view>
+            </view>
+            <block wx:if="{{showMore}}">
+                <view class="at-noticebar__more" bindtap="onGotoMore" data-e-tap-so="this"><text class="text">{{_moreText}}</text>
+                    <view class="at-noticebar__more-icon"><text class="at-icon at-icon-chevron-right"></text>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </block>
+</block>

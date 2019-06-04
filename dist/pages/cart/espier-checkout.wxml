@@ -1,0 +1,100 @@
+<block>
+    <block wx:if="{{!info}}">
+        <loading __triggerObserer="{{ _triggerObserer }}"></loading>
+    </block>
+    <view class="page-checkout" wx:else>
+        <block wx:if="{{showAddressPicker === false}}">
+            <nav-bar title="填写订单信息" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        </block>
+        <scroll-view scroll-y="{{true}}" class="checkout__wrap">
+            <address-choose isAddress="{{address}}" __triggerObserer="{{ _triggerObserer }}"></address-choose>
+            <block wx:if="{{payType !== 'point'}}">
+                <sp-cell is-link="{{true}}" __triggerObserer="{{ _triggerObserer }}" className="coupons-list" title="选择优惠券" bindonclick="handleCouponsClick" value="{{couponText}}" __fn_onClick="{{true}}"></sp-cell>
+            </block>
+            <view class="cart-list">
+                <view class="cart-group" wx:key="shop_id" wx:for="{{info.cart}}" wx:for-item="cart" wx:for-index="_anonIdx2">
+                    <view class="sec cart-group__cont">
+                        <view class="order-item__wrap" wx:key="item_id" wx:for="{{cart.list}}" wx:for-item="item" wx:for-index="idx">
+                            <block>
+                                <block wx:if="{{item.order_item_type === 'gift'}}">
+                                    <view class="order-item__idx"><text>赠品</text>
+                                    </view>
+                                </block>
+                                <block wx:else>
+                                    <view class="order-item__idx"><text>第{{idx + 1}}件商品</text>
+                                    </view>
+                                </block>
+                            </block>
+                            <order-item info="{{item}}" __triggerObserer="{{ _triggerObserer }}" showExtra="{{false}}" customFooter="{{true}}">
+                                <view class="order-item__desc" slot="desc">
+                                    <block wx:if="{{item.discount_info}}"><text class="order-item__discount" wx:key="type" wx:for="{{item.discount_info}}" wx:for-item="discount" wx:for-index="_anonIdx">{{discount.info}}</text>
+                                    </block>
+                                </view>
+                                <view class="order-item__ft" slot="footer">
+                                    <block>
+                                        <block wx:if="{{payType === 'point'}}">
+                                            <price className="order-item__price" __triggerObserer="{{ _triggerObserer }}" appendText="积分" noSymbol="{{true}}" noDecimal="{{true}}" value="{{item.point}}"></price>
+                                        </block>
+                                        <block wx:else>
+                                            <price className="order-item__price" __triggerObserer="{{ _triggerObserer }}" value="{{item.price}}"></price>
+                                        </block>
+                                    </block><text class="order-item__num">x {{item.num}}</text>
+                                </view>
+                            </order-item>
+                        </view>
+                    </view>
+                    <view class="sec cart-group__cont">
+                        <sp-cell className="sec trade-remark" __triggerObserer="{{ _triggerObserer }}" border="{{false}}">
+                            <at-input className="trade-remark__input" __triggerObserer="{{ _triggerObserer }}" placeholder="给商家留言：选填（50字以内）"></at-input>
+                        </sp-cell>
+                    </view>
+                </view>
+            </view>
+            <sp-cell isLink="{{true}}" __triggerObserer="{{ _triggerObserer }}" className="trade-invoice" title="开发票" bindonclick="handleInvoiceClick" __fn_onClick="{{true}}"><text>{{invoiceTitle || '否'}}</text>
+            </sp-cell>
+            <block wx:if="{{payType === 'point'}}">
+                <view class="sec trade-sub-total">
+                    <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="运费">
+                        <price noSymbol="{{true}}" __triggerObserer="{{ _triggerObserer }}" noDecimal="{{true}}" appendText="积分" value="{{total.freight_point}}"></price>
+                    </sp-cell>
+                    <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="积分">
+                        <price noSymbol="{{true}}" __triggerObserer="{{ _triggerObserer }}" noDecimal="{{true}}" appendText="积分" value="{{total.point}}"></price>
+                    </sp-cell>
+                </view>
+            </block>
+            <block wx:if="{{payType !== 'point'}}">
+                <view class="sec trade-sub-total">
+                    <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="商品金额：">
+                        <price unit="cent" __triggerObserer="{{ _triggerObserer }}" value="{{total.item_fee}}"></price>
+                    </sp-cell>
+                    <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="会员折扣：">
+                        <price unit="cent" __triggerObserer="{{ _triggerObserer }}" value="{{total.member_discount}}"></price>
+                    </sp-cell>
+                    <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="优惠券：">
+                        <price unit="cent" __triggerObserer="{{ _triggerObserer }}" value="{{total.coupon_discount}}"></price>
+                    </sp-cell>
+                    <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="运费：">
+                        <price unit="cent" __triggerObserer="{{ _triggerObserer }}" value="{{total.freight_fee}}"></price>
+                    </sp-cell>
+                </view>
+            </block>
+        </scroll-view>
+        <checkout-items isOpened="{{showCheckoutItems}}" __triggerObserer="{{ _triggerObserer }}" list="{{curCheckoutItems}}" bindonclickback="toggleCheckoutItems" __fn_onClickBack="{{true}}" data-e-onclickback-so="this" data-e-onclickback-a-a="{{false}}"></checkout-items>
+        <view class="toolbar checkout-toolbar">
+            <view class="checkout__total"><text>共 <text class="total-items">{{total.items_count}}</text>件商品　　总计:　</text>
+                <block>
+                    <block wx:if="{{payType !== 'point'}}">
+                        <price primary="{{true}}" __triggerObserer="{{ _triggerObserer }}" unit="cent" value="{{total.total_fee}}"></price>
+                    </block>
+                    <block wx:else>
+                        <block wx:if="{{total.point}}">
+                            <price primary="{{true}}" __triggerObserer="{{ _triggerObserer }}" value="{{total.point}}" noSymbol="{{true}}" noDecimal="{{true}}" appendText="积分"></price>
+                        </block>
+                    </block>
+                </block>
+            </view>
+            <at-button loading="{{submitLoading}}" __triggerObserer="{{ _triggerObserer }}" type="primary" className="btn-confirm-order" disabled="{{isBtnDisabled}}" bindonclick="handlePay" __fn_onClick="{{true}}">提交订单</at-button>
+        </view>
+        <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
+    </view>
+</block>

@@ -1,0 +1,22 @@
+<block>
+    <view class="page-trade-refund">
+        <at-tabs className="trade-refund__tabs" __triggerObserer="{{ _triggerObserer }}" current="{{curSegIdx}}" tabList="{{segTypes}}" bindonclick="handleClickTab" __fn_onClick="{{true}}">
+            <at-tabs-pane current="{{curSegIdx}}" __triggerObserer="{{ _triggerObserer }}" wx:key="pIdx" index="{{pIdx}}" wx:for="{{segTypes}}" wx:for-item="panes" wx:for-index="pIdx"></at-tabs-pane>
+        </at-tabs>
+        <sp-cell className="trade-refund__reason" __triggerObserer="{{ _triggerObserer }}" title="请选择退款理由">
+            <at-tag wx:key="$original" __triggerObserer="{{ _triggerObserer }}" className="{{item.$loopState__temp2}}" name="{{item.$original}}" bindonclick="handleClickTag" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="idx" __fn_onClick="{{true}}">{{item.$original}}</at-tag>
+        </sp-cell>
+        <view class="refund-describe">
+            <at-textarea value="{{description}}" __triggerObserer="{{ _triggerObserer }}" bindonchange="handleTextChange" placeholder="退款说明（选填）" __fn_onChange="{{true}}"></at-textarea>
+            <block wx:if="{{curSegIdx === 1}}">
+                <view class="refund-describe__img"><text class="refund-describe__text">上传凭证</text>
+                    <view class="refund-describe__imgupload"><text class="refund-describe__imgupload_text">您可以上传最多3张图片</text>
+                        <at-image-picker multiple="{{true}}" __triggerObserer="{{ _triggerObserer }}" mode="aspectFill" length="{{5}}" files="{{imgs}}" bindonchange="handleImageChange" bindonimageclick="handleImageClick" __fn_onChange="{{true}}" __fn_onImageClick="{{true}}"></at-image-picker>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <view class="refund-btn" bindtap="handleSubmit">提交</view>
+        <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
+    </view>
+</block>
