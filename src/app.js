@@ -21,7 +21,7 @@ useHooks()
 class App extends Component {
   config = {
     pages: [
-        'pages/home/index',
+        /*'pages/home/index',
         'pages/home/landing',
         'pages/category/index',
         'pages/item/list',
@@ -86,7 +86,7 @@ class App extends Component {
         'pages/trade/refund-sendback',
         'pages/trade/invoice-list',
 
-        'pages/protocol/privacy',
+        'pages/protocol/privacy',*/
 
         // 集成用，勿删
         'pages/iwp/item-list',

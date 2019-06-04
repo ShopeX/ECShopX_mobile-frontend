@@ -64,7 +64,7 @@ var Detail = (0, _index5.withBackToTop)(_class = (_temp2 = _class2 = function (_
         appId: 'wx4721629519a8f25b', // 要跳转的小程序的appid
         path: "pages/item/espier-detail?id=" + _this.state.info.item_id, // 跳转的目标页面
         extraData: {
-          id: item.item_id
+          id: _this.state.info.item_id
         },
         envVersion: 'trial',
         /*extarData: {

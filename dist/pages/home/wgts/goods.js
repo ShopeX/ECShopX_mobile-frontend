@@ -64,7 +64,7 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = WgtGoods.__proto__ || Object.getPrototypeOf(WgtGoods)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data", "is_fav", "curIdx", "count"], _this.handleClickItem = function (id) {
       _index2.default.navigateTo({
-        url: "/pages/item/espier-detail?id=" + id
+        url: "/pages/iwp/item-detail?id=" + id
       });
     }, _this.handleSwiperChange = function (e) {
       var current = e.detail.current;
@@ -183,7 +183,7 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleClickOperate"], _class2.options = {
+}, _class2.$$events = ["handleClickItem", "handleClickOperate"], _class2.options = {
   addGlobalClass: true
 }, _class2.defaultProps = {
   info: null

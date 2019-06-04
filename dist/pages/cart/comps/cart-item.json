@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "price": "../../../components/price/index",
-    "at-input-number": "../../../npm/taro-ui/dist/weapp/components/input-number/index"
-  }
-}

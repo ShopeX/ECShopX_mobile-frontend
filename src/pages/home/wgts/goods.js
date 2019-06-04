@@ -36,7 +36,7 @@ export default class WgtGoods extends Component {
 
   handleClickItem = (id) => {
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${id}`
+      url: `/pages/iwp/item-detail?id=${id}`
     })
   }
 
@@ -131,7 +131,7 @@ export default class WgtGoods extends Component {
           {
             data.map(item => {
               return (
-                <View className='goods-content' key={item.item_id} onClick={this.handleClickOperate.bind(this, item)}>
+                <View className='goods-content' key={item.item_id} onClick={this.handleClickItem.bind(this, item.item_id)}>
                   <View className='goods-content__info'>
                     <View className='goods-content__info_img'>
                       <Image className='img-style' mode='aspectFill' src={item.img_url} />

@@ -1,8 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "order-item": "./order-item",
-    "price": "../../../components/price/index",
-    "at-button": "../../../npm/taro-ui/dist/weapp/components/button/index"
-  }
-}

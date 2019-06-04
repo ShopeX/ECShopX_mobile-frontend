@@ -165,7 +165,7 @@ export default class Detail extends Component {
       appId: 'wx4721629519a8f25b', // 要跳转的小程序的appid
       path: `pages/item/espier-detail?id=${this.state.info.item_id}`, // 跳转的目标页面
       extraData: {
-        id: item.item_id
+        id: this.state.info.item_id
       },
       envVersion: 'trial',
       /*extarData: {

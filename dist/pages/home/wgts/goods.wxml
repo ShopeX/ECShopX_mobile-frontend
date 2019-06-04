@@ -10,7 +10,7 @@
             </view>
         </block>
         <view class="slider-wrap">
-            <view class="goods-content" wx:key="item_id" bindtap="handleClickOperate" wx:for="{{data}}" wx:for-item="item" wx:for-index="_anonIdx" data-e-tap-so="this" data-e-tap-a-a="{{item}}">
+            <view class="goods-content" wx:key="item_id" bindtap="handleClickItem" wx:for="{{data}}" wx:for-item="item" wx:for-index="_anonIdx" data-e-tap-so="this" data-e-tap-a-a="{{item.item_id}}">
                 <view class="goods-content__info">
                     <view class="goods-content__info_img">
                         <image class="img-style" mode="aspectFill" src="{{item.img_url}}"></image>

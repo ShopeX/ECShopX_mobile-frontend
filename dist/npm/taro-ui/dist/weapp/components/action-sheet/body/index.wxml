@@ -1,5 +1,0 @@
-<block>
-    <view class="{{rootClass}}">
-        <slot></slot>
-    </view>
-</block>
