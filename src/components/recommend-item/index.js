@@ -32,7 +32,6 @@ export default class RecommendItem extends Component {
       return null
     }
 
-    console.log(info, 34)
     const img = info.img || info.image_default_id
     const img_head = info.head_portrait || info.image_default_id
 

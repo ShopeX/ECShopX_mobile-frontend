@@ -89,12 +89,12 @@ class App extends Component {
         'pages/protocol/privacy',
 
         // 集成用，勿删
-        /*'pages/iwp/item-list',
+        'pages/iwp/item-list',
         // 'pages/iwp/coupon-home',
         'pages/iwp/item-detail',
         'pages/iwp/recommend-list',
         'pages/iwp/recommend-detail'
-        // 'pages/iwp/article-index'*/
+        // 'pages/iwp/article-index'
       ],
     navigateToMiniProgramAppIdList: [
       'wx4721629519a8f25b',

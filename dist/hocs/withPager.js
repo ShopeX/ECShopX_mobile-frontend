@@ -1,1 +1,132 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}();function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(o,i){return function t(e,n){try{var r=s[e](n),a=r.value}catch(e){return void i(e)}if(!r.done)return Promise.resolve(a).then(function(e){t("next",e)},function(e){t("throw",e)});o(a)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function withPager(t){var e,p;return e=function(e){function u(e){_classCallCheck(this,u);var t=_possibleConstructorReturn(this,(u.__proto__||Object.getPrototypeOf(u)).call(this,e));p.call(t);var n=e||{},r=n.pageSize,a=void 0===r?10:r,o=n.pageNo,i=void 0===o?0:o,s=n.pageTotal,c={hasNext:!0,isLoading:!1,total:void 0===s?0:s,page_no:i,page_size:a};return t.state.page=c,t}return _inherits(u,t),_createClass(u,[{key:"resetPage",value:function(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:function(){},t=_extends({},this.state.page||{},{page_no:0,total:0,isLoading:!1,hasNext:!0});this.setState({page:t},e)}}]),u}(),p=function(){var s=this;this.nextPage=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n,r,a,o,i;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!(t=s.state.page).hasNext||t.isLoading)return e.abrupt("return");e.next=3;break;case 3:return t.isLoading=!0,s.setState({page:t}),n=t.page_no,r=t.page_size,a=n+1,e.next=9,s.fetch({page_no:a,page_size:r});case 9:o=e.sent,(!(i=o.total)||a>=Math.ceil(+i/r))&&(t.hasNext=!1),s.setState({page:_extends({},t,{total:i,page_no:a,isLoading:!1})});case 13:case"end":return e.stop()}},e,s)}))},e}exports.default=withPager;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.default = withPager;
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// this.fetch 方法需要返回条数总量: { total }，用来计算页数
+// this.state.page 存放page相关的状态
+
+function withPager(Component) {
+  var _class, _temp, _initialiseProps;
+
+  return _temp = _class = function (_Component) {
+    _inherits(WithPagerComponent, _Component);
+
+    function WithPagerComponent(props) {
+      _classCallCheck(this, WithPagerComponent);
+
+      var _this = _possibleConstructorReturn(this, (WithPagerComponent.__proto__ || Object.getPrototypeOf(WithPagerComponent)).call(this, props));
+
+      _initialiseProps.call(_this);
+
+      var _ref = props || {},
+          _ref$pageSize = _ref.pageSize,
+          pageSize = _ref$pageSize === undefined ? 10 : _ref$pageSize,
+          _ref$pageNo = _ref.pageNo,
+          pageNo = _ref$pageNo === undefined ? 0 : _ref$pageNo,
+          _ref$pageTotal = _ref.pageTotal,
+          pageTotal = _ref$pageTotal === undefined ? 0 : _ref$pageTotal;
+
+      var page = {
+        hasNext: true,
+        isLoading: false,
+        total: pageTotal,
+        page_no: pageNo,
+        page_size: pageSize
+      };
+
+      _this.state.page = page;
+      return _this;
+    }
+
+    _createClass(WithPagerComponent, [{
+      key: "resetPage",
+      value: function resetPage() {
+        var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+        var page = _extends({}, this.state.page || {}, {
+          page_no: 0,
+          total: 0,
+          isLoading: false,
+          hasNext: true
+        });
+        this.setState({ page: page }, cb);
+      }
+    }]);
+
+    return WithPagerComponent;
+  }(Component), _initialiseProps = function _initialiseProps() {
+    var _this2 = this;
+
+    this.nextPage = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var page, page_no, page_size, curPage, _ref3, total;
+
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              page = _this2.state.page;
+
+              if (!(!page.hasNext || page.isLoading)) {
+                _context.next = 3;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 3:
+
+              page.isLoading = true;
+              _this2.setState({
+                page: page
+              });
+
+              page_no = page.page_no, page_size = page.page_size;
+              curPage = page_no + 1;
+              _context.next = 9;
+              return _this2.fetch({
+                page_no: curPage,
+                page_size: page_size
+              });
+
+            case 9:
+              _ref3 = _context.sent;
+              total = _ref3.total;
+
+
+              if (!total || curPage >= Math.ceil(+total / page_size)) {
+                page.hasNext = false;
+              }
+
+              _this2.setState({
+                page: _extends({}, page, {
+                  total: total,
+                  page_no: curPage,
+                  isLoading: false
+                })
+              });
+
+            case 13:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2);
+    }));
+  }, _temp;
+}

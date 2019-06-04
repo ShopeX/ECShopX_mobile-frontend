@@ -67,7 +67,14 @@ var _App = function (_BaseComponent) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _App.__proto__ || Object.getPrototypeOf(_App)).call.apply(_ref, [this].concat(args))), _this), _this.config = {
       pages: ['pages/home/index', 'pages/home/landing', 'pages/category/index', 'pages/item/list', 'pages/item/espier-detail', 'pages/item/point-list', 'pages/item/point-detail', 'pages/item/group-list', 'pages/item/seckill-list', 'pages/item/seckill-goods-list', 'pages/home/coupon-home', 'pages/cart/espier-index', 'pages/cart/espier-checkout', 'pages/cart/coupon-picker', 'pages/article/index', 'pages/recommend/list', 'pages/recommend/detail', 'pages/auth/reg', 'pages/auth/reg-rule', 'pages/auth/login', 'pages/auth/forgotpwd', 'pages/cashier/index', 'pages/cashier/cashier-result', 'pages/member/index', 'pages/member/point', 'pages/member/point-draw', 'pages/member/point-draw-detail', 'pages/member/draw-rule', 'pages/member/point-draw-order',
       // 'pages/member/point-order-detail',
-      'pages/member/point-draw-record', 'pages/member/point-all-record', 'pages/member/point-draw-compute', 'pages/member/pay', 'pages/member/pay-rule', 'pages/member/money-to-point', 'pages/member/recharge', 'pages/member/recommend', 'pages/member/recommend-member', 'pages/member/recommend-order', 'pages/member/coupon', 'pages/member/address', 'pages/member/edit-address', 'pages/member/setting', 'pages/member/userinfo', 'pages/member/item-history', 'pages/member/item-fav', 'pages/member/item-guess', 'pages/trade/list', 'pages/trade/detail', 'pages/trade/delivery-info', 'pages/trade/rate', 'pages/trade/cancel', 'pages/trade/after-sale', 'pages/trade/refund', 'pages/trade/refund-detail', 'pages/trade/refund-sendback', 'pages/trade/invoice-list', 'pages/protocol/privacy'],
+      'pages/member/point-draw-record', 'pages/member/point-all-record', 'pages/member/point-draw-compute', 'pages/member/pay', 'pages/member/pay-rule', 'pages/member/money-to-point', 'pages/member/recharge', 'pages/member/recommend', 'pages/member/recommend-member', 'pages/member/recommend-order', 'pages/member/coupon', 'pages/member/address', 'pages/member/edit-address', 'pages/member/setting', 'pages/member/userinfo', 'pages/member/item-history', 'pages/member/item-fav', 'pages/member/item-guess', 'pages/trade/list', 'pages/trade/detail', 'pages/trade/delivery-info', 'pages/trade/rate', 'pages/trade/cancel', 'pages/trade/after-sale', 'pages/trade/refund', 'pages/trade/refund-detail', 'pages/trade/refund-sendback', 'pages/trade/invoice-list', 'pages/protocol/privacy',
+
+      // 集成用，勿删
+      'pages/iwp/item-list',
+      // 'pages/iwp/coupon-home',
+      'pages/iwp/item-detail', 'pages/iwp/recommend-list', 'pages/iwp/recommend-detail'
+      // 'pages/iwp/article-index'
+      ],
       navigateToMiniProgramAppIdList: ['wx4721629519a8f25b', 'wxf91925e702efe3e3'],
       window: {
         backgroundTextStyle: 'light',

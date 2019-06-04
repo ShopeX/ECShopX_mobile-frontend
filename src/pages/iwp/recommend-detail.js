@@ -118,8 +118,6 @@ export default class recommendDetail extends Component {
       return null
     }
 
-    console.log(info.content, 44)
-
     return (
       <View className='page-recommend-detail'>
         <View className='recommend-detail__title'>{info.title}</View>

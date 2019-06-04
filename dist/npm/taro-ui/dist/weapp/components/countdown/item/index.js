@@ -1,1 +1,107 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function n(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,r){return t&&n(e.prototype,t),r&&n(e,r),e}}(),_get=function e(t,r,n){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,r);if(void 0===o){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,r,n)}if("value"in o)return o.value;var u=o.get;return void 0!==u?u.call(n):void 0},_index=require("../../../../../../@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../../../../../prop-types/index.js"),_index4=_interopRequireDefault(_index3),_component=require("../../../common/component.js"),_component2=_interopRequireDefault(_component);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var AtCountdownItem=(_temp2=_class=function(e){function u(){var e,t,r;_classCallCheck(this,u);for(var n=arguments.length,o=Array(n),a=0;a<n;a++)o[a]=arguments[a];return(t=r=_possibleConstructorReturn(this,(e=u.__proto__||Object.getPrototypeOf(u)).call.apply(e,[this].concat(o)))).$usedState=["anonymousState__temp","separator","num"],r.$$refs=[],_possibleConstructorReturn(r,t)}return _inherits(u,_component2.default),_createClass(u,[{key:"_constructor",value:function(e){_get(u.prototype.__proto__||Object.getPrototypeOf(u.prototype),"_constructor",this).call(this,e)}},{key:"formatNum",value:function(e){return e<=9?"0"+e:""+e}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props,t=e.num,r=e.separator,n=this.formatNum(t);return Object.assign(this.__state,{anonymousState__temp:n,separator:r}),this.__state}}]),u}(),_class.properties={num:{type:null,value:null},separator:{type:null,value:null}},_class.$$events=[],_temp2);AtCountdownItem.defaultProps={num:0,separator:":"},AtCountdownItem.propTypes={num:_index4.default.number.isRequired,separator:_index4.default.string},exports.default=AtCountdownItem,Component(require("../../../../../../@tarojs/taro-weapp/index.js").default.createComponent(AtCountdownItem));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../../../../../@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../../../../../prop-types/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _component = require("../../../common/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AtCountdownItem = (_temp2 = _class = function (_AtComponent) {
+  _inherits(AtCountdownItem, _AtComponent);
+
+  function AtCountdownItem() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, AtCountdownItem);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AtCountdownItem.__proto__ || Object.getPrototypeOf(AtCountdownItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "separator", "num"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(AtCountdownItem, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(AtCountdownItem.prototype.__proto__ || Object.getPrototypeOf(AtCountdownItem.prototype), "_constructor", this).call(this, props);
+    }
+  }, {
+    key: "formatNum",
+    value: function formatNum(num) {
+      return num <= 9 ? "0" + num : "" + num;
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __runloopRef = arguments[2];
+      ;
+
+      var _props = this.__props,
+          num = _props.num,
+          separator = _props.separator;
+
+
+      var anonymousState__temp = this.formatNum(num);
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        separator: separator
+      });
+      return this.__state;
+    }
+  }]);
+
+  return AtCountdownItem;
+}(_component2.default), _class.properties = {
+  "num": {
+    "type": null,
+    "value": null
+  },
+  "separator": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = [], _temp2);
+
+
+AtCountdownItem.defaultProps = {
+  num: 0,
+  separator: ':'
+};
+
+AtCountdownItem.propTypes = {
+  num: _index4.default.number.isRequired,
+  separator: _index4.default.string
+};
+
+exports.default = AtCountdownItem;
+
+Component(require('../../../../../../@tarojs/taro-weapp/index.js').default.createComponent(AtCountdownItem));

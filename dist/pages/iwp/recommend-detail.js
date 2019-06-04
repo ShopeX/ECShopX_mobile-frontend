@@ -1,1 +1,199 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var i=Object.getPrototypeOf(t);return null===i?void 0:e(i,n,r)}if("value"in o)return o.value;var a=o.get;return void 0!==a?a.call(r):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../api/index.js"),_index4=_interopRequireDefault(_index3),_index5=require("../../utils/index.js");function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(i,a){return function t(e,n){try{var r=s[e](n),o=r.value}catch(e){return void a(e)}if(!r.done)return Promise.resolve(o).then(function(e){t("next",e)},function(e){t("throw",e)});i(o)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var recommendDetail=(_temp2=_class=function(e){function a(){var e,t,n;_classCallCheck(this,a);for(var r=arguments.length,o=Array(r),i=0;i<r;i++)o[i]=arguments[i];return(t=n=_possibleConstructorReturn(this,(e=a.__proto__||Object.getPrototypeOf(a)).call.apply(e,[this].concat(o)))).$usedState=["info","praiseCheckStatus","collectArticleStatus"],n.handleClickBar=function(e){_index2.default.navigateToMiniProgram({appId:"wx4721629519a8f25b",path:"pages/recommend/detail?id="+e,extraData:{id:e},envVersion:"trial",success:function(e){console.log(e)}})},n.$$refs=[],_possibleConstructorReturn(n,t)}var t;return _inherits(a,_index.Component),_createClass(a,[{key:"_constructor",value:function(e){_get(a.prototype.__proto__||Object.getPrototypeOf(a.prototype),"_constructor",this).call(this,e),this.state={info:null,praiseCheckStatus:!1,collectArticleStatus:!1}}},{key:"componentDidShow",value:function(){this.fetch()}},{key:"componentDidMount",value:function(){}},{key:"fetch",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=this.$router.params.id,e.next=3,_index4.default.article.focus(t);case 3:if(e.sent)return e.next=7,_index4.default.article.detail(t);e.next=10;break;case 7:(n=e.sent).updated_str=(0,_index5.formatTime)(1e3*n.updated,"YYYY-MM-DD"),this.setState({info:n});case 10:case"end":return e.stop()}},e,this)})),function(){return t.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state,t=e.info;e.praiseCheckStatus,e.collectArticleStatus;return t?(console.log(t.content,44),Object.assign(this.__state,{}),this.__state):null}}]),a}(),_class.properties={},_class.$$events=["handleClickBar"],_temp2);exports.default=recommendDetail,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(recommendDetail,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../api/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../../utils/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(recommendDetail, _BaseComponent);
+
+  function recommendDetail() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, recommendDetail);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = recommendDetail.__proto__ || Object.getPrototypeOf(recommendDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "praiseCheckStatus", "collectArticleStatus"], _this.handleClickBar = function (article_id) {
+      _index2.default.navigateToMiniProgram({
+        appId: 'wx4721629519a8f25b', // 要跳转的小程序的appid
+        path: "pages/recommend/detail?id=" + article_id, // 跳转的目标页面
+        extraData: {
+          id: article_id
+        },
+        envVersion: 'trial',
+        success: function success(res) {
+          // 打开成功
+          console.log(res);
+        }
+      });
+      /*const { id } = this.$router.params
+      if (type === 'like') {
+        if(this.state.praiseCheckStatus === true){
+          return false
+        }
+        const resPraise = await api.article.praise(id)
+        console.log(resPraise, 48)
+      }
+        if (type === 'mark') {
+        const resCollectArticle = await api.article.collectArticle(id)
+        if(resCollectArticle.fav_id && (this.state.collectArticleStatus === false)){
+          this.setState({
+            collectArticleStatus: true
+          })
+          Taro.showToast({
+            title: '已加入心愿单',
+            icon: 'none'
+          })
+        } else {
+          const query = {
+            article_id: id
+          }
+          await api.article.delCollectArticle(query)
+          this.setState({
+            collectArticleStatus: false
+          })
+          Taro.showToast({
+            title: '已移出心愿单',
+            icon: 'none'
+          })
+        }
+        console.log(resCollectArticle, 62)
+      }*/
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(recommendDetail, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(recommendDetail.prototype.__proto__ || Object.getPrototypeOf(recommendDetail.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        info: null,
+        praiseCheckStatus: false,
+        collectArticleStatus: false
+      };
+    }
+  }, {
+    key: "componentDidShow",
+    value: function componentDidShow() {
+      this.fetch();
+      // this.praiseCheck()
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {}
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var id, resFocus, info;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                id = this.$router.params.id;
+                _context.next = 3;
+                return _index4.default.article.focus(id);
+
+              case 3:
+                resFocus = _context.sent;
+
+                if (!resFocus) {
+                  _context.next = 10;
+                  break;
+                }
+
+                _context.next = 7;
+                return _index4.default.article.detail(id);
+
+              case 7:
+                info = _context.sent;
+
+
+                info.updated_str = (0, _index5.formatTime)(info.updated * 1000, 'YYYY-MM-DD');
+                this.setState({
+                  info: info
+                });
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetch() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+
+    /*praiseCheck = async () => {
+      const { id } = this.$router.params
+      const { status } = await api.article.praiseCheck(id)
+      this.setState({
+        praiseCheckStatus: status
+      })
+    }*/
+
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __runloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          info = _state.info,
+          praiseCheckStatus = _state.praiseCheckStatus,
+          collectArticleStatus = _state.collectArticleStatus;
+
+
+      if (!info) {
+        return null;
+      }
+
+      Object.assign(this.__state, {});
+      return this.__state;
+    }
+  }]);
+
+  return recommendDetail;
+}(_index.Component), _class.properties = {}, _class.$$events = ["handleClickBar"], _temp2);
+exports.default = recommendDetail;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(recommendDetail, true));

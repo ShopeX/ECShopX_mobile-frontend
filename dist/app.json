@@ -57,7 +57,11 @@
     "pages/trade/refund-detail",
     "pages/trade/refund-sendback",
     "pages/trade/invoice-list",
-    "pages/protocol/privacy"
+    "pages/protocol/privacy",
+    "pages/iwp/item-list",
+    "pages/iwp/item-detail",
+    "pages/iwp/recommend-list",
+    "pages/iwp/recommend-detail"
   ],
   "navigateToMiniProgramAppIdList": [
     "wx4721629519a8f25b",

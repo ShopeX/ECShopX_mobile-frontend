@@ -1,1 +1,208 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.API=void 0;var _extends=Object.assign||function(e){for(var r=1;r<arguments.length;r++){var t=arguments[r];for(var a in t)Object.prototype.hasOwnProperty.call(t,a)&&(e[a]=t[a])}return e},_createClass=function(){function a(e,r){for(var t=0;t<r.length;t++){var a=r[t];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(e,r,t){return r&&a(e.prototype,r),t&&a(e,t),e}}(),_index=require("../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../spx/index.js"),_index4=_interopRequireDefault(_index3),_index5=require("../npm/qs/lib/index.js"),_index6=_interopRequireDefault(_index5);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,r){if(!(e instanceof r))throw new TypeError("Cannot call a class as a function")}function addQuery(e,r){return e+(0<=e.indexOf("?")?"&":"?")+r}var API=function(){function a(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{};_classCallCheck(this,a);var r=e.baseURL,t=void 0===r?"/":r;/\/$/.test(t)||(t+="/"),this.options=e,this.baseURL=t,this.genMethods(["get","post","delete","put"])}return _createClass(a,[{key:"genMethods",value:function(e){var n=this;e.forEach(function(a){n[a]=function(e,r){var t=2<arguments.length&&void 0!==arguments[2]?arguments[2]:{};return n.makeReq(_extends({},t,{method:a,url:e,data:r}))}})}},{key:"errorToast",value:function(e){var r=e.msg||e.err_msg||e.error&&e.error.message||"操作失败，请稍后重试";setTimeout(function(){_index2.default.showToast({icon:"none",title:r})},200)}},{key:"makeReq",value:function(e){var a=this,r=e.url,t=e.data,n=e.header,o=void 0===n?{}:n,i=e.method,d=void 0===i?"GET":i,s=e.showLoading,u=e.showError,l=void 0===u||u,c="get"===d.toLowerCase(),f=/^http/.test(r)?r:""+this.baseURL+r.replace(/^\//,""),p=t&&"string"!=typeof t?t:_index6.default.parse(t);c||(o["content-type"]=o["content-type"]||"application/x-www-form-urlencoded"),o.Authorization="Bearer "+_index4.default.getAuthToken();var h=wx.getExtConfigSync?wx.getExtConfigSync():{};h.appid&&(o["authorizer-appid"]=h.appid);var x=_extends({},e,{url:f,data:p,method:d.toUpperCase(),header:o});return s&&_index2.default.showLoading({mask:!0}),x.data=_extends({},x.data||{},{company_id:1}),"GET"===x.method?(x.url=addQuery(x.url,_index6.default.stringify(x.data)),delete x.data):x.data=_index6.default.stringify(x.data),_index2.default.request(x).then(function(e){var r=e.data,t=e.statusCode;e.header;return s&&_index2.default.hideLoading(),200<=t&&t<300?void 0!==r.data?(0<=x.url.indexOf("token/refresh")&&(r.data.token=e.header.Authorization.replace("Bearer ","")),r.data):(l&&a.errorToast(r),Promise.reject(a.reqError(e))):401===t?(_index4.default.logout(),l&&(r.err_msg=r.err_msg||"授权过期请重新授权",a.errorToast(r)),_index2.default.redirectTo({url:"/pages/auth/login"}),Promise.reject(a.reqError(e))):400<=t?(l&&a.errorToast(r),Promise.reject(a.reqError(e))):Promise.reject(a.reqError(e,"API error: "+t))})}},{key:"reqError",value:function(e){var r=1<arguments.length&&void 0!==arguments[1]?arguments[1]:"",t=e.data||{},a=t.msg||t.err_msg||r,n=new Error(a);return n.res=e,n}}]),a}();exports.default=new API({baseURL:"https://bbc54.shopex123.com/index.php/api/h5app/wxapp"}),exports.API=API;
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.API = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _index = require("../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../spx/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../npm/qs/lib/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function addQuery(url, query) {
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + query;
+}
+
+var API = function () {
+  function API() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, API);
+
+    var _options$baseURL = options.baseURL,
+        baseURL = _options$baseURL === undefined ? '/' : _options$baseURL;
+
+    if (!/\/$/.test(baseURL)) {
+      baseURL = baseURL + '/';
+    }
+
+    this.options = options;
+    this.baseURL = baseURL;
+    this.genMethods(['get', 'post', 'delete', 'put']);
+  }
+
+  _createClass(API, [{
+    key: "genMethods",
+    value: function genMethods(methods) {
+      var _this = this;
+
+      methods.forEach(function (method) {
+        _this[method] = function (url, data) {
+          var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+          return _this.makeReq(_extends({}, config, {
+            method: method,
+            url: url,
+            data: data
+          }));
+        };
+      });
+    }
+  }, {
+    key: "errorToast",
+    value: function errorToast(data) {
+      var errMsg = data.msg || data.err_msg || data.error && data.error.message || '操作失败，请稍后重试';
+      setTimeout(function () {
+        _index2.default.showToast({
+          icon: 'none',
+          title: errMsg
+        });
+      }, 200);
+    }
+  }, {
+    key: "makeReq",
+    value: function makeReq(config) {
+      var _this2 = this;
+
+      var url = config.url,
+          data = config.data,
+          _config$header = config.header,
+          header = _config$header === undefined ? {} : _config$header,
+          _config$method = config.method,
+          method = _config$method === undefined ? 'GET' : _config$method,
+          showLoading = config.showLoading,
+          _config$showError = config.showError,
+          showError = _config$showError === undefined ? true : _config$showError;
+
+      var methodIsGet = method.toLowerCase() === 'get';
+
+      var reqUrl = /^http/.test(url) ? url : "" + this.baseURL + url.replace(/^\//, '');
+      var query = !data || typeof data === 'string' ? _index6.default.parse(data) : data;
+
+      if (!methodIsGet) {
+        header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded';
+      }
+      header['Authorization'] = "Bearer " + _index4.default.getAuthToken();
+      {
+        var extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+        if (extConfig.appid) {
+          header['authorizer-appid'] = extConfig.appid;
+        }
+      }
+
+      var options = _extends({}, config, {
+        url: reqUrl,
+        data: query,
+        method: method.toUpperCase(),
+        header: header
+      });
+
+      if (showLoading) {
+        _index2.default.showLoading({
+          mask: true
+        });
+      }
+
+      // TODO: update taro version
+      // if (this.options.interceptor && Taro.addInterceptor) {
+      //   Taro.addInterceptor(this.options.interceptor)
+      // }
+      options.data = _extends({}, options.data || {}, {
+        company_id: 1
+      });
+      if (options.method === 'GET') {
+        options.url = addQuery(options.url, _index6.default.stringify(options.data));
+        delete options.data;
+      } else {
+        // nest data
+        options.data = _index6.default.stringify(options.data);
+      }
+
+      return _index2.default.request(options).then(function (res) {
+        // eslint-disable-next-line
+        var data = res.data,
+            statusCode = res.statusCode,
+            header = res.header;
+
+        if (showLoading) {
+          _index2.default.hideLoading();
+        }
+
+        if (statusCode >= 200 && statusCode < 300) {
+          if (data.data !== undefined) {
+            if (options.url.indexOf('token/refresh') >= 0) {
+              data.data.token = res.header.Authorization.replace('Bearer ', '');
+            }
+            return data.data;
+          } else {
+            if (showError) {
+              _this2.errorToast(data);
+            }
+            return Promise.reject(_this2.reqError(res));
+          }
+        }
+
+        if (statusCode === 401) {
+          _index4.default.logout();
+          if (showError) {
+            data.err_msg = data.err_msg || '授权过期请重新授权';
+            _this2.errorToast(data);
+          }
+          _index2.default.redirectTo({
+            url: '/pages/auth/login'
+          });
+          return Promise.reject(_this2.reqError(res));
+        }
+
+        if (statusCode >= 400) {
+          if (showError) {
+            _this2.errorToast(data);
+          }
+          return Promise.reject(_this2.reqError(res));
+        }
+
+        return Promise.reject(_this2.reqError(res, "API error: " + statusCode));
+      });
+    }
+  }, {
+    key: "reqError",
+    value: function reqError(res) {
+      var msg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+      var data = res.data || {};
+      var errMsg = data.msg || data.err_msg || msg;
+      var err = new Error(errMsg);
+      err.res = res;
+      return err;
+    }
+  }]);
+
+  return API;
+}();
+
+exports.default = new API({
+  baseURL: "https://bbc54.shopex123.com/index.php/api/h5app/wxapp"
+
+  // interceptor (chain) {
+  //   const { requestParams } = chain
+  //   requestParams.company_id = '1'
+
+  //   return chain.proceed(requestParams)
+  // }
+});
+exports.API = API;
