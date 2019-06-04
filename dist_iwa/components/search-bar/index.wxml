@@ -1,0 +1,21 @@
+<block>
+    <view class="{{anonymousState__temp}}">
+        <form class="search-input__form">
+            <at-search-bar className="search-input__bar" __triggerObserer="{{ _triggerObserer }}" value="{{searchValue}}" placeholder="护肤/彩妆/面膜/指甲油" actionName="取消" showActionButton="{{isShowAction}}" bindonfocus="handleFocusSearchHistory" bindonchange="handleChangeSearch" bindonconfirm="handleConfirm" bindonactionclick="handleClickCancel" __fn_onFocus="{{true}}" data-e-onfocus-so="this" data-e-onfocus-a-a="{{true}}" __fn_onChange="{{true}}" data-e-onchange-so="this" __fn_onConfirm="{{true}}" data-e-onconfirm-so="this" __fn_onActionClick="{{true}}" data-e-onactionclick-so="this" data-e-onactionclick-a-a="{{false}}"></at-search-bar>
+        </form>
+        <view class="{{anonymousState__temp2}}">
+            <view class="search-input__history-title"><text>最近搜索</text><text class="in-icon in-icon-trash2 icon-del" bindtap="handleClickDelete" data-e-tap-so="this"></text>
+            </view>
+            <view class="search-input__history-list">
+                <view class="search-input__history-list__btn" wx:key="index" bindtap="handleClickTag" wx:for="{{historyList}}" wx:for-item="item" wx:for-index="index" data-e-tap-so="this" data-e-tap-a-a="{{item}}">{{item}}</view>
+            </view>
+            <view class="search-input__history-title hot-title"><text>热门搜索</text>
+            </view>
+            <view class="hot-list">
+                <view class="hot-list__item" bindtap="handleClickHotItem" data-e-tap-so="this"><text>#绿茶籽小绿瓶#</text>
+                    <view class="at-icon at-icon-chevron-right"></view>
+                </view>
+            </view>
+        </view>
+    </view>
+</block>

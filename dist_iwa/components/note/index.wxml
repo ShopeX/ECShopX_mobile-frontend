@@ -1,0 +1,7 @@
+<block>
+    <view class="{{anonymousState__temp}}" style="{{anonymousState__temp2}}">
+        <block wx:if="{{img}}">
+            <image class="note__img" mode="aspectFill" style="{{anonymousState__temp3}}" src="{{anonymousState__temp4}}"></image>
+        </block><text calss-name="note__text"><slot></slot></text>
+    </view>
+</block>

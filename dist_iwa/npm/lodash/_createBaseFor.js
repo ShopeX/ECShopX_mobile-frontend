@@ -1,0 +1,1 @@
+function createBaseFor(f){return function(e,r,t){for(var a=-1,n=Object(e),o=t(e),c=o.length;c--;){var u=o[f?c:++a];if(!1===r(n[u],u,n))break}return e}}module.exports=createBaseFor;

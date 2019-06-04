@@ -1,0 +1,1 @@
+var MAX_SAFE_INTEGER=9007199254740991;function isLength(e){return"number"==typeof e&&-1<e&&e%1==0&&e<=MAX_SAFE_INTEGER}module.exports=isLength;

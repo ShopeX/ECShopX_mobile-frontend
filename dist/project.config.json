@@ -9,6 +9,8 @@
 		"minified": false
 	},
 	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -26,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 7,
+			"current": 8,
 			"list": [
 				{
 					"id": -1,
@@ -89,7 +91,19 @@
 					"id": -1,
 					"name": "coupon-home",
 					"pathName": "pages/iwp/coupon-home",
+					"query": "",
 					"scene": null
+				},
+				{
+					"id": 8,
+					"name": "小程序跳转",
+					"pathName": "pages/item/espier-detail",
+					"query": "id=999",
+					"scene": 1038,
+					"referrerInfo": {
+						"appId": "wxfaadceab4f782c35",
+						"extraData": "{\"item_id\": 12}"
+					}
 				}
 			]
 		}

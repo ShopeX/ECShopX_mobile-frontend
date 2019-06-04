@@ -1,0 +1,1 @@
+function baseProperty(e){return function(r){return null==r?void 0:r[e]}}module.exports=baseProperty;

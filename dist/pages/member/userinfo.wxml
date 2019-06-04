@@ -1,0 +1,18 @@
+<block>
+    <view class="page-member-setting">
+        <nav-bar title="用户信息" __triggerObserer="{{ _triggerObserer }}"></nav-bar>
+        <at-form bindonsubmit="handleSubmit" __triggerObserer="{{ _triggerObserer }}" __fn_onSubmit="{{true}}">
+            <view class="sec auth-login__form">
+                <view class="avatar-user">
+                    <view class="avatar-user-text">头像</view>
+                    <at-image-picker showAddBtn="{{isHasAvator}}" __triggerObserer="{{ _triggerObserer }}" mode="aspectFill" length="{{1}}" files="{{imgs}}" bindonchange="handleImageChange" bindonimageclick="handleImageClick" __fn_onChange="{{true}}" __fn_onImageClick="{{true}}"></at-image-picker>
+                </view>
+                <at-input title="昵称" __triggerObserer="{{ _triggerObserer }}" value="{{info.user_name}}" placeholder="请输入昵称" bindonfocus="handleErrorToastClose" bindonchange="handleChange" __fn_onFocus="{{true}}" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="user_name"></at-input>
+            </view>
+            <view class="btns">
+                <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" formType="submit">保存</at-button>
+            </view>
+        </at-form>
+        <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
+    </view>
+</block>

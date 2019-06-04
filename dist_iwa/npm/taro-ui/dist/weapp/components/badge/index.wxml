@@ -1,0 +1,15 @@
+<block>
+    <view class="{{anonymousState__temp}}" style="{{anonymousState__temp2}}">
+        <slot></slot>
+        <block>
+            <block wx:if="{{dot}}">
+                <view class="at-badge__dot"></view>
+            </block>
+            <block wx:else>
+                <block wx:if="{{val !== ''}}">
+                    <view class="at-badge__num">{{val}}</view>
+                </block>
+            </block>
+        </block>
+    </view>
+</block>

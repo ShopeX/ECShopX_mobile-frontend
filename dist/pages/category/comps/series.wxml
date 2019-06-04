@@ -1,0 +1,24 @@
+<block>
+    <block wx:if="{{!info}}">
+        <loading __triggerObserer="{{ _triggerObserer }}"></loading>
+    </block>
+    <view class="category-list" wx:else>
+        <scroll-view class="category-list__nav" scroll-y="{{true}}">
+            <view class="category-nav">
+                <view class="{{item.$loopState__temp2}}" wx:key="index" bindtap="handleClickCategoryNav" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="index" data-e-tap-so="this" data-e-tap-a-a="{{index}}">{{item.$original.category_name}}</view>
+            </view>
+        </scroll-view>
+        <scroll-view class="category-list__content" scroll-y="{{true}}">
+            <view class="{{anonymousState__temp3}}">
+                <image src="{{itemsImg}}" mode="aspectFill" class="category__banner"></image>
+                <view class="category-content__img" wx:key="$original.category_id" bindtap="handleClickItem" wx:for="{{loopArray1}}" wx:for-item="item" wx:for-index="_anonIdx" data-e-tap-so="this" data-e-tap-a-a="{{item.$original}}">
+                    <image class="{{item.$loopState__temp5}}" mode="aspectFill" src="{{item.$original.image_url}}"></image>
+                    <view class="img-cat-name">{{item.$original.category_name}}</view>
+                </view>
+                <view class="category-content__img-empty"></view>
+                <view class="category-content__img-empty"></view>
+                <view class="category-content__img-empty"></view>
+            </view>
+        </scroll-view>
+    </view>
+</block>

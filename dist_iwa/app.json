@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "pages/iwp/item-list",
+    "pages/iwp/item-detail",
+    "pages/iwp/recommend-list",
+    "pages/iwp/recommend-detail",
+    "pages/iwp/article-index"
+  ],
+  "sitemapLocation": "sitemap.json"
+}

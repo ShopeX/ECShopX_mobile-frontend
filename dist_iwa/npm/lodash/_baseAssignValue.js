@@ -1,0 +1,1 @@
+var defineProperty=require("./_defineProperty.js");function baseAssignValue(e,r,i){"__proto__"==r&&defineProperty?defineProperty(e,r,{configurable:!0,enumerable:!0,value:i,writable:!0}):e[r]=i}module.exports=baseAssignValue;

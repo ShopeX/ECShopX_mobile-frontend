@@ -21,7 +21,6 @@ useHooks()
 class App extends Component {
   config = {
     pages: [
-        /*// 'pages/index/index',
         'pages/home/index',
         'pages/home/landing',
         'pages/category/index',
@@ -87,15 +86,15 @@ class App extends Component {
         'pages/trade/refund-sendback',
         'pages/trade/invoice-list',
 
-        'pages/protocol/privacy',*/
+        'pages/protocol/privacy',
 
         // 集成用，勿删
-        'pages/iwp/item-list',
-        'pages/iwp/coupon-home',
-        'pages/iwp/item-detail',
-        'pages/iwp/recommend-list',
-        'pages/iwp/recommend-detail',
-        'pages/iwp/article-index'
+        // 'pages/iwp/item-list',
+        // 'pages/iwp/coupon-home',
+        // 'pages/iwp/item-detail',
+        // 'pages/iwp/recommend-list',
+        // 'pages/iwp/recommend-detail',
+        // 'pages/iwp/article-index'
       ],
     navigateToMiniProgramAppIdList:[
       'wxf91925e702efe3e3'
@@ -112,7 +111,7 @@ class App extends Component {
   componentDidMount () {
   }
 
-  componentDidShow () {
+  componentDidShow (options) {
     FormIds.startCollectingFormIds()
     try {
       if (S.getAuthToken()) {
@@ -126,6 +125,12 @@ class App extends Component {
       }
     } catch (e) {
       console.log(e)
+    }
+
+    const { referrerInfo } = options || {}
+    debugger
+    if (referrerInfo) {
+      console.log(referrerInfo)
     }
   }
 

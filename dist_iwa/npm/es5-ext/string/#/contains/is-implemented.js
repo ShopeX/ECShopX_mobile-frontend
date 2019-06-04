@@ -1,0 +1,1 @@
+"use strict";var str="razdwatrzy";module.exports=function(){return"function"==typeof str.contains&&(!0===str.contains("dwa")&&!1===str.contains("foo"))};

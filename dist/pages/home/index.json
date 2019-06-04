@@ -1,0 +1,16 @@
+{
+  "usingComponents": {
+    "loading": "../../components/loading/index",
+    "wgt-search-home": "./wgts/search-home",
+    "wgt-slider": "./wgts/slider",
+    "wgt-navigation": "./wgts/navigation",
+    "wgt-limittime-slider": "./wgts/limittime-slider",
+    "wgt-coupon": "./wgts/coupon",
+    "wgt-goods-scroll": "./wgts/goods-scroll",
+    "wgt-goods-grid": "./wgts/goods-grid",
+    "wgt-showcase": "./wgts/showcase",
+    "wgt-point-luck": "./wgts/point-luck",
+    "sp-toast": "../../components/toast/index",
+    "tab-bar": "../../components/tab-bar/index"
+  }
+}

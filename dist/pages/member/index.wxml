@@ -1,0 +1,54 @@
+<block>
+    <view class="page-member-index">
+        <view class="member-card">
+            <view class="member-welcome">
+                <view class="in-icon in-icon-make-up"></view>
+            </view>
+            <view class="member-info" bindtap="navigateTo" data-e-tap-so="this" data-e-tap-a-a="/pages/member/setting">
+                <at-avatar className="member-avatar" __triggerObserer="{{ _triggerObserer }}" title="{{info.username}}" image="{{isAvatatImg ? info.avatar : ''}}" text="{{isAvatatImg ? '' : info.username}}" size="large" circle="{{true}}"></at-avatar>
+                <view class="member-name">{{info.username}}</view>
+            </view>
+            <view class="member-btns">
+                <view class="member-btn__item">
+                    <view class="in-icon in-icon-check"></view><text>Welcome</text>
+                </view>
+                <view class="member-btn__item">
+                    <view class="in-icon in-icon-home-th" bindtap="handleClickApp"></view>
+                </view>
+                <view class="member-btn__item">
+                    <view class="in-icon in-icon-coin"></view><text>我的积分</text>
+                </view>
+            </view>
+        </view>
+        <view class="member-index__bd">
+            <view class="member-menu__item">
+                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="coupon" iconPrefixClass="in-icon" title="优惠券" to="/pages/member/coupon"></sp-icon-menu>
+            </view>
+            <view class="member-menu__item">
+                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="gift" iconPrefixClass="in-icon" title="我要送礼"></sp-icon-menu>
+            </view>
+            <view class="member-menu__item none-br">
+                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="clock" iconPrefixClass="in-icon" title="浏览记录" to="/pages/member/item-history"></sp-icon-menu>
+            </view>
+            <view class="member-menu__item">
+                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="address" iconPrefixClass="in-icon" title="我的地址" to="/pages/member/address"></sp-icon-menu>
+            </view>
+            <view class="member-menu__item">
+                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="order" iconPrefixClass="in-icon" title="我的订单" to="/pages/trade/list"></sp-icon-menu>
+            </view>
+            <view class="member-menu__item none-br">
+                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="invoice" iconPrefixClass="in-icon" title="发票管理" to="/pages/trade/invoice-list"></sp-icon-menu>
+            </view>
+            <view class="member-menu__item none-bb">
+                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="fav" iconPrefixClass="in-icon" title="我的收藏" to="/pages/member/item-fav"></sp-icon-menu>
+            </view>
+            <view class="member-menu__item none-bb">
+                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="guess" iconPrefixClass="in-icon" title="猜你喜欢" to="/pages/member/item-guess"></sp-icon-menu>
+            </view>
+            <view class="member-menu__item none-bb none-br">
+                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="kefu" iconPrefixClass="in-icon" openType="contact" title="联系客服"></sp-icon-menu>
+            </view>
+        </view>
+        <tab-bar current="{{4}}" __triggerObserer="{{ _triggerObserer }}"></tab-bar>
+    </view>
+</block>

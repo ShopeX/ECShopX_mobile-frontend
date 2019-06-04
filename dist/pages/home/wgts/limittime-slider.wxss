@@ -1,0 +1,212 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.wgt-limit__header {
+  display: block !important;
+}
+.wgt-limit__title {
+  font-size: 32rpx;
+  color: #000000;
+}
+.wgt-limit__subtitle {
+  font-size: 22rpx;
+  padding-left: 0;
+  color: #8a8a8a;
+}
+
+.slider-wrap {
+  position: relative;
+  background: #ffffff;
+}
+
+.slider-img .slider-item {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: block;
+}
+.slider-img .slider-item__img {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.slider-img .slider-item__img image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.slider-img .slider-item.rounded .slider-item {
+  border-radius: 10rpx;
+}
+
+.slider-dot {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.slider-dot.no-cover {
+  padding: 25rpx;
+}
+.slider-dot.center {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.slider-dot.right {
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+.slider-dot.cover {
+  padding: 0;
+  position: absolute;
+  top: -20rpx;
+  z-index: 20;
+}
+.slider-dot.cover.center {
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+.slider-dot.cover.left {
+  left: 20rpx;
+}
+.slider-dot.cover.right {
+  right: 20rpx;
+}
+.slider-dot.dark .dot {
+  background: #e6e6e6;
+}
+.slider-dot.light .dot {
+  background: rgba(255, 255, 255, 0.7);
+}
+.slider-dot.circle .dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 100%;
+}
+.slider-dot.rectangle .dot {
+  /*width: 34px;
+  height: 4px;*/
+  width: 12rpx;
+  height: 12rpx;
+  -webkit-transition: width 0.3s linear;
+  -o-transition: width 0.3s linear;
+  transition: width 0.3s linear;
+  border-radius: 50%;
+  margin-right: 4rpx;
+}
+.slider-dot .dot {
+  margin: 0 6rpx;
+}
+.slider-dot .dot.active {
+  width: 30rpx;
+  -webkit-transition: width 0.3s linear;
+  -o-transition: width 0.3s linear;
+  transition: width 0.3s linear;
+  border-radius: 6rpx;
+  background: #0b4137;
+}
+.slider-dot.dot-size-switch.circle .dot {
+  border-radius: 20rpx;
+}
+.slider-dot.dot-size-switch .dot {
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.slider-dot.dot-size-switch .dot.active {
+  width: 30rpx;
+}
+
+.slider-count {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  bottom: 20rpx;
+  width: 50rpx;
+  height: 50rpx;
+  font-size: 24rpx;
+  z-index: 20;
+}
+.slider-count.left {
+  left: 20rpx;
+}
+.slider-count.right {
+  right: 20rpx;
+}
+.slider-count.dark {
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+}
+.slider-count.light {
+  background: rgba(255, 255, 255, 0.7);
+  color: #555;
+}
+.slider-count.circle {
+  border-radius: 100%;
+}
+.slider-count.rectangle {
+  border-radius: 0;
+}
+
+.slider-wrap.padded .sliderimg {
+  padding: 20rpx 0;
+}
+.slider-wrap.padded .sliderimg .item {
+  padding: 0 20rpx;
+}
+.slider-wrap.padded .slider-dot.no-cover {
+  padding: 10rpx 45rpx;
+}
+.slider-wrap.padded .slider-dot.cover {
+  padding: 0;
+  bottom: 40rpx;
+}
+.slider-wrap.padded .slider-dot.cover.left {
+  left: 40rpx;
+}
+.slider-wrap.padded .slider-dot.cover.right {
+  right: 40rpx;
+}
+.slider-wrap.padded .slider-count {
+  bottom: 40rpx;
+}
+.slider-wrap.padded .slider-count.left {
+  left: 40rpx;
+}
+.slider-wrap.padded .slider-count.right {
+  right: 40rpx;
+}
+
+.slider-caption {
+  padding: 20rpx 30rpx;
+  color: #999;
+}

@@ -1,0 +1,1 @@
+"use strict";var __DEV__=!1;try{__DEV__=!1}catch(e){}exports.createReducer=function(n,r){return __DEV__&&r[void 0]&&console.warn("Reducer contains an 'undefined' action type. Have you misspelled a constant?"),function(e,t){return void 0===e&&(e=n),r.hasOwnProperty(t.type)?r[t.type](e,t):e}};

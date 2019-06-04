@@ -1,0 +1,22 @@
+<block>
+    <view class="{{anonymousState__temp}}" bindtap="funPrivateVnutP">
+        <block wx:if="{{icon}}">
+            <view class="{{'sp-cell__icon ' + (iconPrefix ? iconPrefix + ' ' + iconPrefix + '-' + icon : 'at-icon at-icon-' + icon)}}"></view>
+        </block>
+        <view class="sp-cell__hd">
+            <block wx:if="{{title}}"><text class="sp-cell__title">{{title}}</text>
+            </block>
+        </view>
+        <view class="sp-cell__bd">
+            <slot></slot>
+        </view>
+        <view class="sp-cell__ft">
+            <block wx:if="{{value}}">
+                <view class="sp-cell__value">{{value}}</view>
+            </block>
+        </view>
+        <block wx:if="{{isLink}}">
+            <view class="{{'sp-cell__ft-icon at-icon at-icon-chevron-' + arrow}}"></view>
+        </block>
+    </view>
+</block>

@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "nav-bar": "../../components/nav-bar/index",
+    "at-input": "../../npm/taro-ui/dist/weapp/components/input/index",
+    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index",
+    "at-modal": "../../npm/taro-ui/dist/weapp/components/modal/index",
+    "sp-toast": "../../components/toast/index"
+  }
+}

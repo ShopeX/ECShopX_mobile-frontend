@@ -1,0 +1,13 @@
+<block>
+    <block wx:if="{{!info}}">
+        <view></view>
+    </block>
+    <view class="article-index" wx:else>
+        <block wx:if="{{info.image_url}}">
+            <image class="article-brand" src="{{info.image_url}}" mode="widthFix"></image>
+        </block>
+        <view class="article-info"><text class="article-title">{{info.title}}</text><text class="article-time">{{info.updated_str}}</text>
+            <sp-html-content content="{{info.content}}" __triggerObserer="{{ _triggerObserer }}"></sp-html-content>
+        </view>
+    </view>
+</block>
