@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "loading": "../../components/loading/index",
+    "nav-bar": "../../components/nav-bar/index",
+    "price": "../../components/price/index",
+    "at-divider": "../../npm/taro-ui/dist/weapp/components/divider/index",
+    "sp-html-content": "../../components/html-content/index",
+    "back-to-top": "../../components/back-to-top/index",
+    "sp-toast": "../../components/toast/index"
+  }
+}

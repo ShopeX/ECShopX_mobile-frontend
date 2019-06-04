@@ -57,6 +57,7 @@ var HtmlContent = (_temp2 = _class = function (_BaseComponent) {
       {
         var content = this.props.content;
 
+        console.log(content, 24);
         wxParse.wxParse('content', 'html', content, this.$scope);
       }
     }

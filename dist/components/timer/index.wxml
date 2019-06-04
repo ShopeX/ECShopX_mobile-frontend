@@ -1,0 +1,2 @@
+<block><text class="{{anonymousState__temp}}" bindtap="handleClick">{{msg}}</text>
+</block>

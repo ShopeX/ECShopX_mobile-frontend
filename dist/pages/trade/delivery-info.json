@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "nav-bar": "../../components/nav-bar/index",
+    "sp-note": "../../components/note/index",
+    "at-timeline": "../../npm/taro-ui/dist/weapp/components/timeline/index"
+  }
+}

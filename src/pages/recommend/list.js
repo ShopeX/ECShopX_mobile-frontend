@@ -48,6 +48,12 @@ export default class RecommendList extends Component {
       articlePraiseNum: 'articlePraiseNum.count',
     })
 
+    nList.map(item =>{
+      if(!item.articlePraiseNum) {
+        item.articlePraiseNum = 0
+      }
+    })
+
     this.setState({
       list: [...this.state.list, ...nList],
     })

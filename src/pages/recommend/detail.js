@@ -31,16 +31,18 @@ export default class recommendDetail extends Component {
 
     const { id } = this.$router.params
     const resFocus = await api.article.focus(id)
-    const res = await api.article.delCollectArticleInfo({article_id: id})
-    if(res.length === 0) {
-      this.setState({
-        collectArticleStatus: false
-      })
-    } else {
-      this.setState({
-        collectArticleStatus: true
-      })
-    }
+    if( S.getAuthToken()){
+      const res = await api.article.delCollectArticleInfo({article_id: id})
+      if(res.length === 0) {
+        this.setState({
+          collectArticleStatus: false
+        })
+      } else {
+        this.setState({
+          collectArticleStatus: true
+        })
+      } }
+
     if(resFocus) {
       const info = S.getAuthToken() ? await api.article.authDetail(id): await api.article.detail(id)
 
@@ -55,6 +57,9 @@ export default class recommendDetail extends Component {
   }
 
   praiseCheck = async () => {
+    if(!S.getAuthToken()){
+      return false
+    }
     const { id } = this.$router.params
     const { status } = await api.article.praiseCheck(id)
     this.setState({

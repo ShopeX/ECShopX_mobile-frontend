@@ -1,0 +1,12 @@
+<block>
+    <view class="page-member-setting">
+        <nav-bar title="设置" __triggerObserer="{{ _triggerObserer }}"></nav-bar>
+        <view class="sec">
+            <sp-cell title="用户设置" __triggerObserer="{{ _triggerObserer }}" isLink="{{true}}" bindonclick="handleClickSetting" __fn_onClick="{{true}}"></sp-cell>
+            <sp-cell title="版本" __triggerObserer="{{ _triggerObserer }}" value="'1.0.0'"></sp-cell>
+        </view>
+        <view class="btns">
+            <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleClickLogout" size="large" __fn_onClick="{{true}}">退出登录</at-button>
+        </view>
+    </view>
+</block>

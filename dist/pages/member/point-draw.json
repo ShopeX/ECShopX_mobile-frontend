@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "nav-bar": "../../components/nav-bar/index",
+    "at-noticebar": "../../npm/taro-ui/dist/weapp/components/noticebar/index",
+    "goods-item": "../../components/goods-item/index",
+    "loading": "../../components/loading/index",
+    "back-to-top": "../../components/back-to-top/index"
+  }
+}

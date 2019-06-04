@@ -1,0 +1,42 @@
+<block>
+    <view class="page-address-index">
+        <sp-cell isLink="{{true}}" __triggerObserer="{{ _triggerObserer }}" iconPrefix="sp-icon" icon="weixin" title="获取微信收货地址" bindonclick="wxAddress" __fn_onClick="{{true}}" data-e-onclick-so="this"></sp-cell>
+        <view class="member-address-list">
+            <view wx:key="item[ADDRESS_ID]" class="address-item" wx:for="{{list}}" wx:for-item="item" wx:for-index="index">
+                <block wx:if="{{isPicker}}">
+                    <view class="address-item__check" bindtap="handleClickChecked" data-e-tap-so="this" data-e-tap-a-a="{{item}}">
+                        <block>
+                            <block wx:if="{{item[ADDRESS_ID] === selectedId}}"><text class="in-icon in-icon-check address-item__checked"></text>
+                            </block>
+                            <block wx:else><text class="address-item__unchecked"></text>
+                            </block>
+                        </block>
+                    </view>
+                </block>
+                <view class="address-item__content">
+                    <view class="address-item__title"><text class="address-item__info">{{item.username}}</text><text class="address-item__info">{{item.telephone}}</text>
+                    </view>
+                    <view class="address-item__detail">{{item.province}}{{item.city}}{{item.county}}{{item.adrdetail}}</view>
+                    <view class="address-item__footer">
+                        <view class="address-item__footer_default" bindtap="handleChangeDefault" data-e-tap-so="this" data-e-tap-a-a="{{item}}">
+                            <block>
+                                <block wx:if="{{item.is_def}}"><text class="in-icon in-icon-check default__icon default__checked"></text>
+                                </block>
+                                <block wx:else><text class="in-icon in-icon-check default__icon"></text>
+                                </block>
+                            </block><text class="default-text">设为默认</text>
+                        </view>
+                        <view class="address-item__footer_edit">
+                            <view class="footer-text" bindtap="handleClickToEdit" data-e-tap-so="this" data-e-tap-a-a="{{item}}"><text class="in-icon in-icon-edit footer-icon"></text><text>编辑</text>
+                            </view>
+                            <view class="footer-text" bindtap="handleDelete" data-e-tap-so="this" data-e-tap-a-a="{{item}}"><text class="in-icon in-icon-trash footer-icon"></text><text>删除</text>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="member-address-add" bindtap="handleClickToEdit" data-e-tap-so="this">添加新地址</view>
+        <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
+    </view>
+</block>

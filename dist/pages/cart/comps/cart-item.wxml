@@ -1,0 +1,33 @@
+<block>
+    <block wx:if="{{!info}}">
+        <view></view>
+    </block>
+    <view class="{{anonymousState__temp}}" wx:else>
+        <view class="cart-item__hd">
+            <slot></slot>
+        </view>
+        <view class="cart-item__bd" bindtap="funPrivateyxkgn">
+            <view class="cart-item__img-wrap">
+                <image class="cart-item__img" mode="aspectFill" src="{{img}}"></image>
+            </view>
+            <view class="cart-item__cont">
+                <view class="cart-item__cont-hd"><text class="cart-item__title">{{info.title}}</text><text class="cart-item__desc">{{info.desc}}</text>
+                    <block wx:if="{{curPromotion}}">
+                        <view class="cart-item__promotion" bindtap="funPrivateiZGXu">{{curPromotion.marketing_name}}</view>
+                    </block>
+                </view>
+                <view class="cart-item__prices">
+                    <price primary="{{true}}" __triggerObserer="{{ _triggerObserer }}" classes="cart-item__price" className="cart-item__price" symbol="{{info.curSymbol}}" noSymbol="{{noCurSymbol}}" noDecimal="{{noCurDecimal}}" appendText="{{appendText}}" value="{{price}}"></price>
+                    <block wx:if="{{showMarketPrice}}">
+                        <price symbol="{{info.curSymbol}}" __triggerObserer="{{ _triggerObserer }}" noSymbol="{{noCurSymbol}}" classes="cart-item__price-market" className="cart-item__price-market" value="{{info.market_price}}" noDecimal="{{noCurDecimal}}"></price>
+                    </block>
+                </view>
+            </view>
+        </view>
+        <view class="cart-item__ft">
+            <block wx:if="{{!isDisabled}}">
+                <at-input-number min="{{1}}" __triggerObserer="{{ _triggerObserer }}" max="{{999999}}" value="{{info.num}}" bindonchange="funPrivateXPdrO" __fn_onChange="{{true}}"></at-input-number>
+            </block>
+        </view>
+    </view>
+</block>

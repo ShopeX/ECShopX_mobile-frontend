@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "nav-bar": "../../components/nav-bar/index",
+    "loading": "../../components/loading/index",
+    "sp-note": "../../components/note/index"
+  }
+}
