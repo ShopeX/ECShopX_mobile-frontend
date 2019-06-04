@@ -1,62 +1,13 @@
 {
-	"projectname": "mshop-taro",
-	"description": "taro app for bbc",
-	"appid": "wxf91925e702efe3e3",
-	"setting": {
-		"urlCheck": false,
-		"es6": false,
-		"postcss": false,
-		"minified": false
-	},
-	"compileType": "miniprogram",
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"list": []
-		},
-		"miniprogram": {
-			"current": 3,
-			"list": [
-				{
-					"id": -1,
-					"name": "种草",
-					"pathName": "pages/recommend/list",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "种草详情",
-					"pathName": "pages/recommend/detail",
-					"query": "id=19",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "espier-detail",
-					"pathName": "pages/item/espier-detail",
-					"query": "id=949",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "espier-checkout",
-					"pathName": "pages/cart/espier-checkout",
-					"query": "",
-					"scene": null
-				}
-			]
-		}
-	}
+  "miniprogramRoot": "./",
+  "projectname": "mshop-taro",
+  "description": "taro app for bbc",
+  "appid": "wxfaadceab4f782c35",
+  "setting": {
+    "urlCheck": false,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
 }

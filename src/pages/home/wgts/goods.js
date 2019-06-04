@@ -34,7 +34,11 @@ export default class WgtGoods extends Component {
     }
   }
 
-  handleClickItem = linkPage
+  handleClickItem = (id) => {
+    Taro.navigateTo({
+      url: `/pages/item/espier-detail?id=${id}`
+    })
+  }
 
   handleSwiperChange = (e) => {
     const { current  } = e.detail
@@ -44,7 +48,8 @@ export default class WgtGoods extends Component {
     })
   }
 
-  handleClickOperate = async (item_data, type) => {
+  handleClickOperate = async (item_data, type, e) => {
+    e.stopPropagation()
     if(type === 'collect') {
       if(this.state.count === 0) {
         let is_fav = Boolean(this.props.favs[item_data.item_id])
@@ -115,7 +120,7 @@ export default class WgtGoods extends Component {
           {
             data.map(item => {
               return (
-                <View className='goods-content' key={item.item_id}>
+                <View className='goods-content' key={item.item_id} onClick={this.handleClickItem.bind(this, item.item_id)}>
                   <View className='goods-content__info'>
                     <View className='goods-content__info_img'>
                       <Image className='img-style' mode='aspectFill' src={item.img_url} />

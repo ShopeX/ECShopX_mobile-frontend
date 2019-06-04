@@ -14,8 +14,6 @@ var _index = require("../../../npm/@tarojs/taro-weapp/index.js");
 
 var _index2 = _interopRequireDefault(_index);
 
-var _helper = require("./helper.js");
-
 var _index3 = require("../../../npm/@tarojs/redux/index.js");
 
 var _index4 = require("../../../api/index.js");
@@ -71,7 +69,11 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = WgtGoods.__proto__ || Object.getPrototypeOf(WgtGoods)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data", "is_fav", "curIdx", "count", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleClickItem = _helper.linkPage, _this.handleSwiperChange = function (e) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = WgtGoods.__proto__ || Object.getPrototypeOf(WgtGoods)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data", "is_fav", "curIdx", "count", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleClickItem = function (id) {
+      _index2.default.navigateTo({
+        url: "/pages/item/espier-detail?id=" + id
+      });
+    }, _this.handleSwiperChange = function (e) {
       var current = e.detail.current;
 
 
@@ -79,14 +81,16 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
         curIdx: current
       });
     }, _this.handleClickOperate = function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(item_data, type) {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(item_data, type, e) {
         var is_fav;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                e.stopPropagation();
+
                 if (!(type === 'collect')) {
-                  _context.next = 16;
+                  _context.next = 17;
                   break;
                 }
 
@@ -100,28 +104,28 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
                 }
 
                 if (_this.state.is_fav) {
-                  _context.next = 10;
+                  _context.next = 11;
                   break;
                 }
 
-                _context.next = 5;
+                _context.next = 6;
                 return _index5.default.member.addFav(item_data.item_id);
 
-              case 5:
+              case 6:
                 _this.__triggerPropsFn("onAddFav", [null].concat([item_data]));
                 console.log(_this.props.favs, _this.props.favs[1192], 51, 'addafter');
                 _index2.default.showToast({
                   title: '已加入收藏',
                   icon: 'none'
                 });
-                _context.next = 15;
+                _context.next = 16;
                 break;
 
-              case 10:
-                _context.next = 12;
+              case 11:
+                _context.next = 13;
                 return _index5.default.member.delFav(item_data.item_id);
 
-              case 12:
+              case 13:
                 _this.__triggerPropsFn("onDelFav", [null].concat([item_data]));
                 console.log(_this.props.favs, 51, 'delafter');
                 _index2.default.showToast({
@@ -129,50 +133,50 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
                   icon: 'none'
                 });
 
-              case 15:
+              case 16:
                 _this.setState({
                   is_fav: !_this.state.is_fav
                 });
 
-              case 16:
+              case 17:
                 if (!(type === 'buy')) {
-                  _context.next = 26;
+                  _context.next = 27;
                   break;
                 }
 
-                _context.prev = 17;
-                _context.next = 20;
+                _context.prev = 18;
+                _context.next = 21;
                 return _index5.default.cart.add({
                   item_id: item_data.item_id,
                   num: 1
                 });
 
-              case 20:
-                _context.next = 25;
+              case 21:
+                _context.next = 26;
                 break;
 
-              case 22:
-                _context.prev = 22;
-                _context.t0 = _context["catch"](17);
+              case 23:
+                _context.prev = 23;
+                _context.t0 = _context["catch"](18);
 
                 console.log(_context.t0);
 
-              case 25:
+              case 26:
 
                 _index2.default.showToast({
                   title: '成功加入购物车',
                   icon: 'success'
                 });
 
-              case 26:
+              case 27:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, _this2, [[17, 22]]);
+        }, _callee, _this2, [[18, 23]]);
       }));
 
-      return function (_x, _x2) {
+      return function (_x, _x2, _x3) {
         return _ref5.apply(this, arguments);
       };
     }(), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
@@ -240,7 +244,7 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleClickOperate"], _class2.options = {
+}, _class2.$$events = ["handleClickItem", "handleClickOperate"], _class2.options = {
   addGlobalClass: true
 }, _class2.defaultProps = {
   info: null
