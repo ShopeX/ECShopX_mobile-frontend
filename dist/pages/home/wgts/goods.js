@@ -16,13 +16,7 @@ var _index2 = _interopRequireDefault(_index);
 
 var _index3 = require("../../../npm/@tarojs/redux/index.js");
 
-var _index4 = require("../../../api/index.js");
-
-var _index5 = _interopRequireDefault(_index4);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -58,8 +52,7 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
   _inherits(WgtGoods, _BaseComponent);
 
   function WgtGoods() {
-    var _ref4,
-        _this2 = this;
+    var _ref4;
 
     var _temp, _this, _ret;
 
@@ -69,7 +62,7 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = WgtGoods.__proto__ || Object.getPrototypeOf(WgtGoods)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data", "is_fav", "curIdx", "count", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleClickItem = function (id) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = WgtGoods.__proto__ || Object.getPrototypeOf(WgtGoods)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data", "is_fav", "curIdx", "count"], _this.handleClickItem = function (id) {
       _index2.default.navigateTo({
         url: "/pages/item/espier-detail?id=" + id
       });
@@ -80,106 +73,16 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
       _this.setState({
         curIdx: current
       });
-    }, _this.handleClickOperate = function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(item_data, type, e) {
-        var is_fav;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                e.stopPropagation();
-
-                if (!(type === 'collect')) {
-                  _context.next = 17;
-                  break;
-                }
-
-                if (_this.state.count === 0) {
-                  is_fav = Boolean(_this.props.favs[item_data.item_id]);
-
-                  _this.setState({
-                    count: 1,
-                    is_fav: is_fav
-                  });
-                }
-
-                if (_this.state.is_fav) {
-                  _context.next = 11;
-                  break;
-                }
-
-                _context.next = 6;
-                return _index5.default.member.addFav(item_data.item_id);
-
-              case 6:
-                _this.__triggerPropsFn("onAddFav", [null].concat([item_data]));
-                console.log(_this.props.favs, _this.props.favs[1192], 51, 'addafter');
-                _index2.default.showToast({
-                  title: '已加入收藏',
-                  icon: 'none'
-                });
-                _context.next = 16;
-                break;
-
-              case 11:
-                _context.next = 13;
-                return _index5.default.member.delFav(item_data.item_id);
-
-              case 13:
-                _this.__triggerPropsFn("onDelFav", [null].concat([item_data]));
-                console.log(_this.props.favs, 51, 'delafter');
-                _index2.default.showToast({
-                  title: '已移出收藏',
-                  icon: 'none'
-                });
-
-              case 16:
-                _this.setState({
-                  is_fav: !_this.state.is_fav
-                });
-
-              case 17:
-                if (!(type === 'buy')) {
-                  _context.next = 27;
-                  break;
-                }
-
-                _context.prev = 18;
-                _context.next = 21;
-                return _index5.default.cart.add({
-                  item_id: item_data.item_id,
-                  num: 1
-                });
-
-              case 21:
-                _context.next = 26;
-                break;
-
-              case 23:
-                _context.prev = 23;
-                _context.t0 = _context["catch"](18);
-
-                console.log(_context.t0);
-
-              case 26:
-
-                _index2.default.showToast({
-                  title: '成功加入购物车',
-                  icon: 'success'
-                });
-
-              case 27:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, _this2, [[18, 23]]);
-      }));
-
-      return function (_x, _x2, _x3) {
-        return _ref5.apply(this, arguments);
-      };
-    }(), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    }, _this.handleClickOperate = function (item) {
+      _index2.default.navigateToMiniProgram({
+        appId: 'wxf91925e702efe3e3', // 要跳转的小程序的appid
+        path: "pages/recommend/detail?id=" + item.item_id, // 跳转的目标页面
+        success: function success(res) {
+          // 打开成功
+          console.log(res);
+        }
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(WgtGoods, [{
@@ -193,12 +96,60 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
         count: 0
       };
     }
+
+    /*handleClickOperate = async (item_data, type, e) => {
+      e.stopPropagation()
+      if(type === 'collect') {
+        if(this.state.count === 0) {
+          let is_fav = Boolean(this.props.favs[item_data.item_id])
+          this.setState({
+            count: 1,
+            is_fav
+          })
+        }
+        if(!this.state.is_fav) {
+          await api.member.addFav(item_data.item_id)
+          this.props.onAddFav(item_data)
+          console.log(this.props.favs,this.props.favs[1192], 51,'addafter')
+          Taro.showToast({
+            title: '已加入收藏',
+            icon: 'none'
+          })
+        } else {
+          await api.member.delFav(item_data.item_id)
+          this.props.onDelFav(item_data)
+          console.log(this.props.favs, 51,'delafter')
+          Taro.showToast({
+            title: '已移出收藏',
+            icon: 'none'
+          })
+        }
+        this.setState({
+          is_fav: !this.state.is_fav
+        })
+      }
+        if(type === 'buy') {
+        try {
+          await api.cart.add({
+            item_id:item_data.item_id,
+            num: 1
+          })
+        } catch (e) {
+          console.log(e)
+        }
+          Taro.showToast({
+          title: '成功加入购物车',
+          icon: 'success'
+        })
+      }
+    }*/
+
   }, {
     key: "_createData",
     value: function _createData() {
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __isRunloopRef = arguments[2];
+      var __runloopRef = arguments[2];
       ;
 
       var info = this.__props.info;
@@ -228,18 +179,6 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
 
   return WgtGoods;
 }(_index.Component), _class2.properties = {
-  "favs": {
-    "type": null,
-    "value": null
-  },
-  "__fn_onAddFav": {
-    "type": null,
-    "value": null
-  },
-  "__fn_onDelFav": {
-    "type": null,
-    "value": null
-  },
   "info": {
     "type": null,
     "value": null

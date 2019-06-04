@@ -16,13 +16,13 @@
                         <image class="img-style" mode="aspectFill" src="{{item.img_url}}"></image>
                     </view>
                     <view class="goods-content__info_text"><text>{{item.item_name}}</text><text>点击查看产品详情</text>
-                        <view><text>dd</text><text>{{item.sales}}</text>
+                        <view><text class="in-icon in-icon-yuangong"></text><text>{{item.sales}}</text>
                         </view>
                     </view>
                 </view>
                 <view class="goods-content__operate">
-                    <view class="goods-content__operate_btn" catchtap="handleClickOperate" data-e-tap-so="this" data-e-tap-a-a="{{item}}" data-e-tap-a-b="collect">{{is_fav ? '移除心愿' : '加入心愿'}}</view><text>|</text>
-                    <view class="goods-content__operate_btn" catchtap="handleClickOperate" data-e-tap-so="this" data-e-tap-a-a="{{item}}" data-e-tap-a-b="buy">加入购买</view>
+                    <view class="goods-content__operate_btn" bindtap="handleClickOperate" data-e-tap-so="this" data-e-tap-a-a="{{item}}" data-e-tap-a-b="collect">{{is_fav ? '移除心愿' : '加入心愿'}}</view><text>|</text>
+                    <view class="goods-content__operate_btn" bindtap="handleClickOperate" data-e-tap-so="this" data-e-tap-a-a="{{item}}" data-e-tap-a-b="buy">加入购买</view>
                 </view>
             </view>
         </view>

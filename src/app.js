@@ -21,7 +21,7 @@ useHooks()
 class App extends Component {
   config = {
     pages: [
-        'pages/home/index',
+        /*'pages/home/index',
         'pages/home/landing',
         'pages/category/index',
         'pages/item/list',
@@ -86,14 +86,14 @@ class App extends Component {
         'pages/trade/refund-sendback',
         'pages/trade/invoice-list',
 
-        'pages/protocol/privacy',
+        'pages/protocol/privacy',*/
 
         // 集成用，勿删
-        // 'pages/iwp/item-list',
-        // 'pages/iwp/coupon-home',
-        // 'pages/iwp/item-detail',
-        // 'pages/iwp/recommend-list',
-        // 'pages/iwp/recommend-detail',
+        'pages/iwp/item-list',
+        'pages/iwp/coupon-home',
+        'pages/iwp/item-detail',
+        'pages/iwp/recommend-list',
+        'pages/iwp/recommend-detail'
         // 'pages/iwp/article-index'
       ],
     navigateToMiniProgramAppIdList:[
@@ -128,7 +128,6 @@ class App extends Component {
     }
 
     const { referrerInfo } = options || {}
-    debugger
     if (referrerInfo) {
       console.log(referrerInfo)
     }

@@ -1,12 +1,9 @@
 <block>
     <view class="goods-buy-toolbar">
         <view class="goods-buy-toolbar__menus">
-            <view class="goods-buy-toolbar__menu-item" bindtap="funPrivatefydcH">
+            <view class="goods-buy-toolbar__menu-item" bindtap="funPrivateIZzXv">
                 <view class="{{'in-icon ' + (info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav')}}"></view>
             </view>
-            <button class="goods-buy-toolbar__menu-item" open-type="contact">
-                <view class="in-icon in-icon-kefu"></view>
-            </button>
             <view class="goods-buy-toolbar__menu-item" bindtap="navigateTo" data-e-tap-so="this" data-e-tap-a-a="/pages/cart/espier-index">
                 <at-badge value="{{cartCount || null}}" __triggerObserer="{{ _triggerObserer }}">
                     <view class="in-icon in-icon-cart"></view>
@@ -20,11 +17,11 @@
             <block wx:else>
                 <view class="goods-buy-toolbar__btns">
                     <block wx:if="{{type === 'normal'}}">
-                        <form-id-collector sync="{{true}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivateSVUCp" __fn_onClick="{{true}}">
+                        <form-id-collector sync="{{true}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivatelGrLX" __fn_onClick="{{true}}">
                             <view class="goods-buy-toolbar__btn btn-add-cart">添加至购物车</view>
                         </form-id-collector>
                     </block>
-                    <form-id-collector sync="{{true}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivateUeoDF" __fn_onClick="{{true}}">
+                    <form-id-collector sync="{{true}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivatebFdOn" __fn_onClick="{{true}}">
                         <view class="goods-buy-toolbar__btn btn-fast-buy">{{fastBuyText}}</view>
                     </form-id-collector>
                 </view>

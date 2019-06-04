@@ -9,8 +9,6 @@
 		"minified": false
 	},
 	"compileType": "miniprogram",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -28,7 +26,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 8,
+			"current": 10,
 			"list": [
 				{
 					"id": -1,
@@ -103,6 +101,24 @@
 					"referrerInfo": {
 						"appId": "wxfaadceab4f782c35",
 						"extraData": "{\"item_id\": 12}"
+					}
+				},
+				{
+					"id": -1,
+					"name": "recommend-list",
+					"pathName": "pages/iwp/recommend-list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 10,
+					"name": "commend-detail",
+					"pathName": "pages/iwp/recommend-detail",
+					"query": "id=20",
+					"scene": 1037,
+					"referrerInfo": {
+						"appId": "wxf91925e702efe3e3",
+						"extraData": "{\"id\":20}"
 					}
 				}
 			]

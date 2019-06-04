@@ -1,5 +1,0 @@
-<block>
-    <view class="{{rootClass}}" bindtap="handleClick">
-        <slot></slot>
-    </view>
-</block>

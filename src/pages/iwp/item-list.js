@@ -142,24 +142,24 @@ export default class List extends Component {
   }
 */
   handleClickItem = (item) => {
-    /*const url = `/pages/item/espier-detail?id=${item.item_id}`
+    const url = `/pages/iwp/item-detail?id=${item.item_id}`
     Taro.navigateTo({
       url
-    })*/
-    Taro.navigateToMiniProgram({
+    })
+    /*Taro.navigateToMiniProgram({
       appId: 'wxf91925e702efe3e3', // 要跳转的小程序的appid
       path: `/pages/item/espier-detail`, // 跳转的目标页面
       extraData: {
         id: item.item_id
       },
-      /*extarData: {
+      /!*extarData: {
         open: 'auth'
-      },*/
+      },*!/
       success(res) {
         // 打开成功
         console.log(res)
       }
-    })
+    })*/
   }
 
   handleClickFilter = () => {

@@ -1,6 +1,0 @@
-<block>
-    <view class="page-member-integral">
-        <nav-bar title="充值协议" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left"></nav-bar>
-        <view class="pay-rule-style">{{info}}</view>
-    </view>
-</block>

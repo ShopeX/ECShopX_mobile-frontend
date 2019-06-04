@@ -48,7 +48,7 @@ export default class WgtGoods extends Component {
     })
   }
 
-  handleClickOperate = async (item_data, type, e) => {
+  /*handleClickOperate = async (item_data, type, e) => {
     e.stopPropagation()
     if(type === 'collect') {
       if(this.state.count === 0) {
@@ -95,6 +95,17 @@ export default class WgtGoods extends Component {
         icon: 'success'
       })
     }
+  }*/
+
+  handleClickOperate = (item) => {
+    Taro.navigateToMiniProgram({
+      appId: 'wxf91925e702efe3e3', // 要跳转的小程序的appid
+      path: `pages/recommend/detail?id=${item.item_id}`, // 跳转的目标页面
+      success(res) {
+        // 打开成功
+        console.log(res)
+      }
+    })
   }
 
   render () {
@@ -129,7 +140,7 @@ export default class WgtGoods extends Component {
                       <Text>{item.item_name}</Text>
                       <Text>点击查看产品详情</Text>
                       <View>
-                        <Text>dd</Text>
+                        <Text className='in-icon in-icon-yuangong'></Text>
                         <Text>{item.sales}</Text>
                       </View>
                     </View>

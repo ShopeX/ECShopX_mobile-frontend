@@ -31,8 +31,8 @@ export default class recommendDetail extends Component {
 
     const { id } = this.$router.params
     const resFocus = await api.article.focus(id)
-    const res = await api.article.delCollectArticleInfo({article_id: id})
-    if(res.length === 0) {
+    // const res = await api.article.delCollectArticleInfo({article_id: id})
+    /*if(res.length === 0) {
       this.setState({
         collectArticleStatus: false
       })
@@ -40,7 +40,7 @@ export default class recommendDetail extends Component {
       this.setState({
         collectArticleStatus: true
       })
-    }
+    }*/
     if(resFocus) {
       const info = await api.article.detail(id)
 
@@ -54,15 +54,23 @@ export default class recommendDetail extends Component {
 
   }
 
-  praiseCheck = async () => {
+  /*praiseCheck = async () => {
     const { id } = this.$router.params
     const { status } = await api.article.praiseCheck(id)
     this.setState({
       praiseCheckStatus: status
     })
-  }
+  }*/
 
-  handleClickBar = async () => {
+  handleClickBar = (article_id) => {
+    Taro.navigateToMiniProgram({
+      appId: 'wxf91925e702efe3e3', // 要跳转的小程序的appid
+      path: `pages/recommend/detail?id=${article_id}`, // 跳转的目标页面
+      success(res) {
+        // 打开成功
+        console.log(res)
+      }
+    })
     /*const { id } = this.$router.params
     if (type === 'like') {
       if(this.state.praiseCheckStatus === true){
@@ -141,15 +149,15 @@ export default class recommendDetail extends Component {
           </View>
         </View>
         <View className='recommend-detail__bar'>
-          <View className={`recommend-detail__bar-item ${praiseCheckStatus ? 'check-true': ''}`} onClick={this.handleClickBar.bind(this, 'like')}>
+          <View className={`recommend-detail__bar-item ${praiseCheckStatus ? 'check-true': ''}`} onClick={this.handleClickBar.bind(this, info.article_id, 'like')}>
             <Text className={`in-icon in-icon-like ${info.is_like ? '' : ''}`}> </Text>
             <Text>{praiseCheckStatus ? '已赞' : '点赞'} · {info.articlePraiseNum.count ? info.articlePraiseNum.count : 0}</Text>
           </View>
-          <View className={`recommend-detail__bar-item ${collectArticleStatus ? 'check-true': ''}`} onClick={this.handleClickBar.bind(this, 'mark')}>
+          <View className={`recommend-detail__bar-item ${collectArticleStatus ? 'check-true': ''}`} onClick={this.handleClickBar.bind(this, info.article_id, 'mark')}>
             <Text className={`in-icon in-icon-jiarushoucang ${info.is_like ? '' : ''}`}> </Text>
             <Text>{collectArticleStatus ? '已加入' : '加入心愿'}</Text>
           </View>
-          <Button  openType='share' className='recommend-detail__bar-item' onClick={this.handleClickBar.bind(this, 'share')}>
+          <Button  openType='share' className='recommend-detail__bar-item' onClick={this.handleClickBar.bind(this, info.article_id, 'share')}>
             <Text className={`in-icon in-icon-fenxiang ${info.is_like ? '' : ''}`}> </Text>
             <Text>分享</Text>
           </Button>
