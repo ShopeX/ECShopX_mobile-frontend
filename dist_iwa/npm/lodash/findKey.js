@@ -1,0 +1,1 @@
+var baseFindKey=require("./_baseFindKey.js"),baseForOwn=require("./_baseForOwn.js"),baseIteratee=require("./_baseIteratee.js");function findKey(e,r){return baseFindKey(e,baseIteratee(r,3),baseForOwn)}module.exports=findKey;

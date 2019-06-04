@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "wgt-film": "../home/wgts/film",
+    "wgt-slider": "../home/wgts/slider",
+    "wgt-writing": "../home/wgts/writing",
+    "wgt-goods": "../home/wgts/goods"
+  }
+}

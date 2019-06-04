@@ -20,10 +20,6 @@ var _index4 = _interopRequireDefault(_index3);
 
 var _index5 = require("../../utils/index.js");
 
-var _index6 = require("../../spx/index.js");
-
-var _index7 = _interopRequireDefault(_index6);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -139,32 +135,15 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
                 }
 
                 if (!resFocus) {
-                  _context3.next = 21;
+                  _context3.next = 14;
                   break;
                 }
 
-                if (!_index7.default.getAuthToken()) {
-                  _context3.next = 15;
-                  break;
-                }
-
-                _context3.next = 12;
-                return _index4.default.article.authDetail(id);
-
-              case 12:
-                _context3.t0 = _context3.sent;
-                _context3.next = 18;
-                break;
-
-              case 15:
-                _context3.next = 17;
+                _context3.next = 11;
                 return _index4.default.article.detail(id);
 
-              case 17:
-                _context3.t0 = _context3.sent;
-
-              case 18:
-                info = _context3.t0;
+              case 11:
+                info = _context3.sent;
 
 
                 info.updated_str = (0, _index5.formatTime)(info.updated * 1000, 'YYYY-MM-DD');
@@ -172,7 +151,7 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
                   info: info
                 });
 
-              case 21:
+              case 14:
               case "end":
                 return _context3.stop();
             }

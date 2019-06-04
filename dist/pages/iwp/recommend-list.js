@@ -24,10 +24,6 @@ var _index5 = _interopRequireDefault(_index4);
 
 var _index6 = require("../../utils/index.js");
 
-var _index7 = require("../../spx/index.js");
-
-var _index8 = _interopRequireDefault(_index7);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -103,29 +99,11 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
                   page: page,
                   pageSize: pageSize
                 };
-
-                if (!_index8.default.getAuthToken()) {
-                  _context.next = 8;
-                  break;
-                }
-
-                _context.next = 5;
-                return _index5.default.article.authList(article_query);
-
-              case 5:
-                _context.t0 = _context.sent;
-                _context.next = 11;
-                break;
-
-              case 8:
-                _context.next = 10;
+                _context.next = 4;
                 return _index5.default.article.list(article_query);
 
-              case 10:
-                _context.t0 = _context.sent;
-
-              case 11:
-                _ref3 = _context.t0;
+              case 4:
+                _ref3 = _context.sent;
                 list = _ref3.list;
                 total = _ref3.total_count;
                 nList = (0, _index6.pickBy)(list, {
@@ -147,7 +125,7 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
                   total: total
                 });
 
-              case 17:
+              case 10:
               case "end":
                 return _context.stop();
             }

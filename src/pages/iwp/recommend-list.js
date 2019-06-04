@@ -35,7 +35,7 @@ export default class RecommendList extends Component {
       page,
       pageSize
     }
-    const { list, total_count: total } = S.getAuthToken() ? await api.article.authList(article_query) : await api.article.list(article_query)
+    const { list, total_count: total } = await api.article.list(article_query)
 
     const nList = pickBy(list, {
       img: 'image_url',

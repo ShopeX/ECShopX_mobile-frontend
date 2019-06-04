@@ -1,0 +1,1 @@
+var getNative=require("./_getNative.js"),nativeCreate=getNative(Object,"create");module.exports=nativeCreate;

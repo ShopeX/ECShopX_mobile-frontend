@@ -1,0 +1,1 @@
+.float-menus{position:fixed;width:60rpx;right:30rpx;bottom:100rpx;z-index:300}

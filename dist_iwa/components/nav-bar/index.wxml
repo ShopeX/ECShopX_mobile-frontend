@@ -1,0 +1,8 @@
+<block>
+    <block wx:if="{{Taro.getEnv() === Taro.ENV_TYPE.WEAPP}}">
+        <view></view>
+    </block>
+    <view class="nav-bar-height" wx:else>
+        <at-nav-bar fixed="{{fixed}}" __triggerObserer="{{ _triggerObserer }}" color="#000" title="{{title}}" leftIconType="{{leftIconType}}" bindonclicklefticon="handleClickLeftIcon" __fn_onClickLeftIcon="{{true}}" data-e-onclicklefticon-so="this"></at-nav-bar>
+    </view>
+</block>

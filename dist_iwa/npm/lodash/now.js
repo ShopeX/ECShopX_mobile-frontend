@@ -1,0 +1,1 @@
+var root=require("./_root.js"),now=function(){return Date.now()};module.exports=now;

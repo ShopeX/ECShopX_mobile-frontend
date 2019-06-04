@@ -1,0 +1,34 @@
+<block>
+    <block wx:if="{{!info}}">
+        <view></view>
+    </block>
+    <view class="{{anonymousState__temp}}" wx:else>
+        <view class="goods-item__hd">
+            <slot></slot>
+        </view>
+        <view class="goods-item__bd" bindtap="funPrivatekapxy">
+            <view class="goods-item__img-wrap">
+                <image class="goods-item__img" mode="aspectFill" src="{{img}}"></image>
+            </view>
+            <view class="goods-item__cont"><text class="goods-item__title">{{info.title}}</text><text class="goods-item__desc">{{info.desc}}</text>
+                <view class="goods-item__extra">
+                    <view class="goods-item__author">
+                        <image class="goods-item__author-avatar" src="{{img}}" mode="aspectFill"></image><text class="goods-item__author-name">{{info.title}}</text>
+                    </view>
+                    <view class="goods-item__actions">
+                        <block wx:if="{{type === 'item'}}">
+                            <view class="{{'in-icon ' + (info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav')}}" bindtap="handleFavClick"></view>
+                        </block>
+                        <block wx:if="{{type === 'recommend'}}">
+                            <view class="in-icon in-icon-like" bindtap="handleLikeClick"><text>666</text>
+                            </view>
+                        </block>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="goods-item__ft">
+            <slot name="footer"></slot>
+        </view>
+    </view>
+</block>

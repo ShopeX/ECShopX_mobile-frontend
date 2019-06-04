@@ -1,0 +1,1 @@
+var nativeCreate=require("./_nativeCreate.js"),HASH_UNDEFINED="__lodash_hash_undefined__";function hashSet(e,t){var a=this.__data__;return this.size+=this.has(e)?0:1,a[e]=nativeCreate&&void 0===t?HASH_UNDEFINED:t,this}module.exports=hashSet;

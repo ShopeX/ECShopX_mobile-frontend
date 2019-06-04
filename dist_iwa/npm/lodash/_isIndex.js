@@ -1,0 +1,1 @@
+var MAX_SAFE_INTEGER=9007199254740991,reIsUint=/^(?:0|[1-9]\d*)$/;function isIndex(e,n){var r=typeof e;return!!(n=null==n?MAX_SAFE_INTEGER:n)&&("number"==r||"symbol"!=r&&reIsUint.test(e))&&-1<e&&e%1==0&&e<n}module.exports=isIndex;
