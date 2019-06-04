@@ -1,0 +1,20 @@
+<block>
+    <view class="page-refund-sendback">
+        <nav-bar title="售后填写物流公司" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <view class="sec">
+            <view class="at-input">
+                <view class="at-input__container">
+                    <view class="at-input__title">物流公司：</view>
+                    <picker mode="selector" range="{{express}}" range-key="corp_name" bindchange="handleExpressChange">
+                        <view class="picker">{{express[curExpressIdx].corp_name}}</view>
+                    </picker>
+                </view>
+            </view>
+            <at-input title="物流单号：" __triggerObserer="{{ _triggerObserer }}" name="logi_no" type="text" placeholder="请填写物流单号" value="{{logi_no}}" bindonchange="handleChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="logi_no"></at-input>
+        </view>
+        <view class="btns">
+            <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleSubmit" __fn_onClick="{{true}}">保存</at-button>
+        </view>
+        <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
+    </view>
+</block>

@@ -1,0 +1,19 @@
+<block>
+    <view class="coupon-list">
+        <nav-bar title="优惠券列表" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <at-tabs className="coupon-list__tabs" __triggerObserer="{{ _triggerObserer }}" current="{{curTabIdx}}" tabList="{{tabList}}" bindonclick="handleClickTab" __fn_onClick="{{true}}">
+            <at-tabs-pane current="{{curTabIdx}}" __triggerObserer="{{ _triggerObserer }}" wx:key="pIdx" index="{{pIdx}}" wx:for="{{tabList}}" wx:for-item="panes" wx:for-index="pIdx"></at-tabs-pane>
+        </at-tabs>
+        <scroll-view scroll-y="{{true}}" class="coupon-list__scroll" bindscrolltolower="nextPage">
+            <view class="coupon-list-ticket">
+                <coupon-item info="{{item}}" __triggerObserer="{{ _triggerObserer }}" wx:key="id" wx:for="{{list}}" wx:for-item="item" wx:for-index="_anonIdx"></coupon-item>
+                <block wx:if="{{page.isLoading}}">
+                    <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>
+                </block>
+                <block wx:if="{{!page.isLoading && !page.hasNext && !list.length}}">
+                    <sp-note img="trades_empty.png" __triggerObserer="{{ _triggerObserer }}">赶快去添加吧~</sp-note>
+                </block>
+            </view>
+        </scroll-view>
+    </view>
+</block>

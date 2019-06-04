@@ -1,0 +1,19 @@
+<block>
+    <view class="page-trade-cancel">
+        <nav-bar title="取消订单" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <view class="sec">
+            <sp-cell title="请选择取消理由" __triggerObserer="{{ _triggerObserer }}">
+                <at-tag className="cancel-reason" __triggerObserer="{{ _triggerObserer }}" wx:key="$original" active="{{item.$loopState__temp2}}" name="{{item.$original}}" bindonclick="handleClickTag" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="idx" __fn_onClick="{{true}}">{{item.$original}}</at-tag>
+            </sp-cell>
+            <block wx:if="{{curReasonIdx === 3}}">
+                <sp-cell title="其他理由" __triggerObserer="{{ _triggerObserer }}">
+                    <at-textarea value="{{otherReason}}" __triggerObserer="{{ _triggerObserer }}" bindonchange="handleTextChange" maxLength="{{textCount}}" placeholder="请输入您的理由..." __fn_onChange="{{true}}"></at-textarea>
+                </sp-cell>
+            </block>
+        </view>
+        <view class="trade-cancel-footer">
+            <view bindtap="handleSubmit" class="toolbar_btn">确定取消</view>
+        </view>
+        <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
+    </view>
+</block>

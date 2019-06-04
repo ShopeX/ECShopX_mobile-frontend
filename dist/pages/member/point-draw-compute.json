@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "loading": "../../components/loading/index",
+    "nav-bar": "../../components/nav-bar/index",
+    "sp-note": "../../components/note/index",
+    "back-to-top": "../../components/back-to-top/index"
+  }
+}

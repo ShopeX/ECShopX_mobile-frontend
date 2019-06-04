@@ -1,0 +1,64 @@
+<block>
+    <view class="page-draworeder-list">
+        <nav-bar title="抽奖信息" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <at-tabs className="trade-list__tabs" __triggerObserer="{{ _triggerObserer }}" current="{{curTabIdx}}" tabList="{{tabList}}" bindonclick="handleClickTab" __fn_onClick="{{true}}">
+            <at-tabs-pane current="{{curTabIdx}}" __triggerObserer="{{ _triggerObserer }}" wx:key="pIdx" index="{{pIdx}}" wx:for="{{tabList}}" wx:for-item="panes" wx:for-index="pIdx"></at-tabs-pane>
+        </at-tabs>
+        <scroll-view class="goods-order__scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}" bindscroll="handleScroll" bindscrolltolower="nextPage">
+            <view class="{{'goods-list goods-list__type-' + listType}}">
+                <view class="goods-item" wx:key="index" bindtap="handleClickItem" wx:for="{{list}}" wx:for-item="item" wx:for-index="index" data-e-tap-so="this" data-e-tap-a-a="{{item}}">
+                    <view class="goods-item__bd">
+                        <view class="goods-item__img-wrap">
+                            <image class="goods-item__img" mode="aspectFill" src="{{item.img}}"></image><text class="goods-item__imgtext">{{tabList[curTabIdx].title}}</text>
+                        </view>
+                        <view class="goods-item__cont"><text class="goods-item__title">{{item.title}}</text>
+                            <block>
+                                <block wx:if="{{curTabIdx === 1}}">
+                                    <view class="goods-item__time-open"><text>获得时间：</text><text>{{item.lucky_open_time}}</text>
+                                    </view>
+                                </block>
+                                <block wx:else>
+                                    <view class="goods-item__time"><text>本人已参与：<text class="number-color">{{item.join_num}}</text>次</text>
+                                    </view>
+                                </block>
+                            </block>
+                            <block>
+                                <block wx:if="{{curTabIdx === 1}}">
+                                    <view class="goods-item__prices">
+                                        <view class="goods-item__time"><text>获得者：{{item.mobile}}</text>
+                                        </view>
+                                        <block wx:if="{{item.is_own_lucky === 1}}">
+                                            <view class="lucky-info">{{item.lucky_status}}</view>
+                                        </block>
+                                    </view>
+                                </block>
+                                <block wx:else>
+                                    <view>
+                                        <view class="goods-item__prices_ing">
+                                            <progress stroke-width="{{5}}" percent="{{item.rate}}" activeColor="#C40000"></progress>
+                                        </view>
+                                        <view class="goods-item__prices_ing">
+                                            <view class="person-num"><text class="number-color">{{item.sales_num}}</text><text>已参与</text>
+                                            </view>
+                                            <view class="person-num"><text>{{item.luckydraw_store}}</text><text>总需人次</text>
+                                            </view>
+                                            <view class="person-num"><text>{{item.luckydraw_store - item.sales_num}}</text><text>剩余</text>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </block>
+                            </block>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <block wx:if="{{page.isLoading}}">
+                <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>
+            </block>
+            <block wx:if="{{!page.isLoading && !page.hasNext && !list.length}}">
+                <sp-note img="trades_empty.png" __triggerObserer="{{ _triggerObserer }}">赶快去参与抽奖吧~</sp-note>
+            </block>
+        </scroll-view>
+        <back-to-top show="{{showBackToTop}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></back-to-top>
+    </view>
+</block>

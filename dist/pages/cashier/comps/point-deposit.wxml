@@ -1,0 +1,6 @@
+<block>
+    <view class="point-deposit-index">
+        <view class="pay-mode" bindtap="handleClickPayment" data-e-tap-so="this" data-e-tap-a-a="{{payType}}">{{payType === 'deposit' ? '预存款支付' : '积分支付'}}</view>
+        <at-modal isOpened="{{isOpened}}" __triggerObserer="{{ _triggerObserer }}" cancelText="取消" confirmText="确认" bindonclose="handleClosePay" bindoncancel="handleClosePay" bindonconfirm="handleConfirmPay" content="请确认是否支付此订单" __fn_onClose="{{true}}" __fn_onCancel="{{true}}" __fn_onConfirm="{{true}}"></at-modal>
+    </view>
+</block>

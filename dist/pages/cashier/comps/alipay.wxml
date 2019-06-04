@@ -1,0 +1,5 @@
+<block>
+    <view>
+        <view class="alipay-btn" bindtap="handleClickPayment" data-e-tap-so="this">支付宝支付</view>
+    </view>
+</block>

@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "nav-bar": "../../components/nav-bar/index",
+    "trade-item": "./comps/item",
+    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index",
+    "loading": "../../components/loading/index",
+    "sp-note": "../../components/note/index"
+  }
+}

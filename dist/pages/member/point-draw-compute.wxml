@@ -1,0 +1,29 @@
+<block>
+    <block wx:if="{{!info}}">
+        <view></view>
+    </block>
+    <view class="page-point-list" wx:else>
+        <nav-bar title="计算结果" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <scroll-view class="page-point-list__scroll compute__scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}" bindscroll="handleScroll"><text class="compute-title">截止获得时间【{{anonymousState__temp}}】最后{{info.last_pay_num}}条全站购买时间记录</text>
+            <block wx:if="{{info.list}}">
+                <view class="point-item" wx:key="index" wx:for="{{info.list}}" wx:for-item="item" wx:for-index="index">
+                    <view class="point-item__cont"><text class="point-item__desc">{{item.created}}</text><text class="point-item__desc">{{item.created_exchange}}</text><text class="point-item__desc">{{item.mobile}}</text>
+                    </view>
+                </view>
+            </block>
+            <block wx:if="{{!(info.list && info.list.length > 0)}}">
+                <sp-note img="trades_empty.png" __triggerObserer="{{ _triggerObserer }}">赶快去参与新活动吧~</sp-note>
+            </block>
+        </scroll-view>
+        <view class="compute-rule">
+            <view>取以上数值结果得：</view>
+            <view>1. 求和：{{info.alltimesum}}<text class="compute-rule__explain">（上面{{info.last_pay_num}}条购买记录时间取值相加之和）</text>
+            </view>
+            <view></view>
+            <view>2. 取余：({{info.alltimesum}}<text class="compute-rule__explain">（{{info.last_pay_num}}条时间记录之和）</text>+ {{info.lucky_float_number}}<text class="compute-rule__explain">{{info.third_info ? '(' + info.third_info.name + '第' + info.third_info.period + '期开奖结果)' : ''}}</text>)% {{info.luckydraw_store}}<text class="compute-rule__explain">（本商品总参与人次）</text>= {{info.remainder}}<text class="compute-rule__explain">（余数）</text>
+            </view>
+            <view>3. 计算结果：{{info.remainder}}<text class="compute-rule__explain">（余数）</text>+{{info.lucky_fixed_number}}= {{info.lucky_code}}</view>
+        </view>
+        <back-to-top show="{{showBackToTop}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></back-to-top>
+    </view>
+</block>

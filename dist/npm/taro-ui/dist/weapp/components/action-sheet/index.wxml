@@ -1,0 +1,16 @@
+<block>
+    <view class="{{rootClass}}" catchtouchmove="handleTouchMove">
+        <view bindtap="close" class="at-action-sheet__overlay"></view>
+        <view class="at-action-sheet__container">
+            <block wx:if="{{title}}">
+                <at-action-sheet-header __triggerObserer="{{ _triggerObserer }}">{{title}}</at-action-sheet-header>
+            </block>
+            <at-action-sheet-body __triggerObserer="{{ _triggerObserer }}">
+                <slot></slot>
+            </at-action-sheet-body>
+            <block wx:if="{{cancelText}}">
+                <at-action-sheet-footer bindonclick="handleCancel" __triggerObserer="{{ _triggerObserer }}" __fn_onClick="{{true}}">{{cancelText}}</at-action-sheet-footer>
+            </block>
+        </view>
+    </view>
+</block>

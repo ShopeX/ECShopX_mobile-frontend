@@ -1,0 +1,35 @@
+<block>
+    <block wx:if="{{title || content}}">
+        <view class="{{rootClass}}">
+            <view bindtap="handleClickOverlay" class="at-modal__overlay"></view>
+            <view class="at-modal__container">
+                <block wx:if="{{title}}">
+                    <at-modal-header __triggerObserer="{{ _triggerObserer }}"><text>{{title}}</text>
+                    </at-modal-header>
+                </block>
+                <block wx:if="{{content}}">
+                    <at-modal-content __triggerObserer="{{ _triggerObserer }}">
+                        <view class="content-simple"><text>{{content}}</text>
+                        </view>
+                    </at-modal-content>
+                </block>
+                <block wx:if="{{_$isRenderAction}}">
+                    <at-modal-action isSimple="{{true}}" __triggerObserer="{{ _triggerObserer }}">
+                        <block wx:if="{{cancelText}}">
+                            <button bindtap="handleCancel">{{cancelText}}</button>
+                        </block>
+                        <block wx:if="{{confirmText}}">
+                            <button bindtap="handleConfirm">{{confirmText}}</button>
+                        </block>
+                    </at-modal-action>
+                </block>
+            </view>
+        </view>
+    </block>
+    <view catchtouchmove="handleTouchMove" class="{{rootClass}}" wx:else>
+        <view class="at-modal__overlay" bindtap="handleClickOverlay"></view>
+        <view class="at-modal__container">
+            <slot></slot>
+        </view>
+    </view>
+</block>
