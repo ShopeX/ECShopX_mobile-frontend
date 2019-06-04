@@ -1,9 +1,0 @@
-{
-  "usingComponents": {
-    "nav-bar": "../../components/nav-bar/index",
-    "goods-item": "../../components/goods-item/index",
-    "loading": "../../components/loading/index",
-    "sp-note": "../../components/note/index",
-    "back-to-top": "../../components/back-to-top/index"
-  }
-}

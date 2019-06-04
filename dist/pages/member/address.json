@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "sp-toast": "../../components/toast/index",
-    "sp-cell": "../../components/cell/index"
-  }
-}

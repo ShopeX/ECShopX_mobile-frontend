@@ -26,7 +26,6 @@ export default class RecommendList extends Component {
 
   componentDidMount () {
     this.nextPage()
-    // this.praiseNum()
   }
 
   async fetch (params) {
@@ -58,9 +57,20 @@ export default class RecommendList extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/recommend/detail?id=${item.item_id}`
+    /*const url = `/pages/recommend/detail?id=${item.item_id}`
     Taro.navigateTo({
       url
+    })*/
+    Taro.navigateToMiniProgram({
+      appId: 'wxf91925e702efe3e3', // 要跳转的小程序的appid
+      path: `/pages/recommend/detail`, // 跳转的目标页面
+      extarData: {
+        id: item.item_id
+      },
+      success(res) {
+        // 打开成功
+        console.log(res)
+      }
     })
   }
 

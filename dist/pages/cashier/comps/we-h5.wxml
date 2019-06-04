@@ -1,3 +1,0 @@
-<block>
-    <view class="weapp-btn" bindtap="handleClickPay" data-e-tap-so="this">微信支付</view>
-</block>

@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "nav-bar": "../../components/nav-bar/index",
-    "sp-cell": "../../components/cell/index",
-    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index"
-  }
-}

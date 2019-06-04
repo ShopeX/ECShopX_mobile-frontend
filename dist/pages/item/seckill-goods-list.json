@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "at-countdown": "../../npm/taro-ui/dist/weapp/components/countdown/index",
-    "goods-item": "../../components/goods-item/index",
-    "back-to-top": "../../components/back-to-top/index"
-  },
-  "navigationBarTitleText": "限时秒杀"
-}

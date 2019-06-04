@@ -21,7 +21,7 @@ export default class recommendDetail extends Component {
 
   componentDidShow () {
     this.fetch()
-    this.praiseCheck()
+    // this.praiseCheck()
   }
 
   componentDidMount () {
@@ -62,8 +62,8 @@ export default class recommendDetail extends Component {
     })
   }
 
-  handleClickBar = async (type) => {
-    const { id } = this.$router.params
+  handleClickBar = async () => {
+    /*const { id } = this.$router.params
     if (type === 'like') {
       if(this.state.praiseCheckStatus === true){
         return false
@@ -96,7 +96,7 @@ export default class recommendDetail extends Component {
         })
       }
       console.log(resCollectArticle, 62)
-    }
+    }*/
   }
 
   render () {

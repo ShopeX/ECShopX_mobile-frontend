@@ -14,9 +14,15 @@ var _index = require("../../npm/@tarojs/taro-weapp/index.js");
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = require("../../utils/index.js");
+var _index3 = require("../../api/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../../utils/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24,42 +30,76 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var wxParse = void 0;
-{
-  wxParse = require("../wxParse/wxParse.js");
-}
+var ArticleIndex = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(ArticleIndex, _BaseComponent);
 
-var HtmlContent = (_temp2 = _class = function (_BaseComponent) {
-  _inherits(HtmlContent, _BaseComponent);
-
-  function HtmlContent() {
+  function ArticleIndex() {
     var _ref;
 
     var _temp, _this, _ret;
 
-    _classCallCheck(this, HtmlContent);
+    _classCallCheck(this, ArticleIndex);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HtmlContent.__proto__ || Object.getPrototypeOf(HtmlContent)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["classes", "content", "className"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ArticleIndex.__proto__ || Object.getPrototypeOf(ArticleIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  _createClass(HtmlContent, [{
+  _createClass(ArticleIndex, [{
     key: "_constructor",
     value: function _constructor(props) {
-      _get(HtmlContent.prototype.__proto__ || Object.getPrototypeOf(HtmlContent.prototype), "_constructor", this).call(this, props);
+      _get(ArticleIndex.prototype.__proto__ || Object.getPrototypeOf(ArticleIndex.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        info: null
+      };
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      {
-        var content = this.props.content;
-
-        wxParse.wxParse('content', 'html', content, this.$scope);
-      }
+      this.fetch();
     }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var id, info;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                id = this.$router.params.id;
+                _context.next = 3;
+                return _index4.default.article.detail(id);
+
+              case 3:
+                info = _context.sent;
+
+
+                info.updated_str = (0, _index5.formatTime)(info.updated * 1000, 'YYYY-MM-DD HH:mm');
+                _index2.default.setNavigationBarTitle({
+                  title: info.title
+                });
+                this.setState({
+                  info: info
+                });
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetch() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
   }, {
     key: "_createData",
     value: function _createData() {
@@ -68,32 +108,20 @@ var HtmlContent = (_temp2 = _class = function (_BaseComponent) {
       var __runloopRef = arguments[2];
       ;
 
-      var className = this.__props.className;
+      var info = this.__state.info;
 
-      var classes = (0, _index3.classNames)('html-content', className);
 
-      Object.assign(this.__state, {
-        classes: classes
-      });
+      if (!info) {
+        return null;
+      }
+
+      Object.assign(this.__state, {});
       return this.__state;
     }
   }]);
 
-  return HtmlContent;
-}(_index.Component), _class.properties = {
-  "content": {
-    "type": null,
-    "value": null
-  },
-  "className": {
-    "type": null,
-    "value": null
-  }
-}, _class.$$events = [], _class.defaultProps = {
-  content: ''
-}, _class.options = {
-  addGlobalClass: true
-}, _temp2);
-exports.default = HtmlContent;
+  return ArticleIndex;
+}(_index.Component), _class.properties = {}, _class.$$events = [], _temp2);
+exports.default = ArticleIndex;
 
-Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(HtmlContent));
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(ArticleIndex, true));

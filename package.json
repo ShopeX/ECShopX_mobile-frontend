@@ -6,13 +6,13 @@
 	"description": "爱茉莉商城小程序",
 	"scripts": {
 		"build:weapp": "taro build --type weapp",
-		"build:weapp-iwp": "INTEGRATION_APP=true taro build --type weapp && node build/index.js",
+		"build:weapp-iwp": "cross-env INTEGRATION_APP=true taro build --type weapp && node build/index.js",
 		"build:swan": "taro build --type swan",
 		"build:alipay": "taro build --type alipay",
 		"build:tt": "taro build --type tt",
 		"build:h5": "taro build --type h5",
 		"build:rn": "taro build --type rn",
-		"dev:weapp": "npm run build:weapp -- --watch",
+    "dev:weapp": "npm run build:weapp -- --watch",
 		"dev:swan": "npm run build:swan -- --watch",
 		"dev:alipay": "npm run build:alipay -- --watch",
 		"dev:tt": "npm run build:tt -- --watch",
@@ -33,7 +33,7 @@
 		"@tarojs/taro-swan": "1.2.26",
 		"@tarojs/taro-tt": "1.2.26",
 		"@tarojs/taro-weapp": "1.2.26",
-		"axios": "^0.18.0",
+		"axios": "^0.19.0",
 		"classnames": "^2.2.6",
 		"copy-to-clipboard": "^3.0.8",
 		"dot-prop-immutable": "^1.5.0",
@@ -75,6 +75,7 @@
 		"eslint-plugin-taro": "1.2.26",
 		"fs-extra": "^8.0.1",
 		"glob": "^7.1.4",
-		"qn-webpack": "^2.0.3"
+		"qn-webpack": "^2.0.3",
+		"webpack-dev-server": "^2.9.7"
 	}
 }

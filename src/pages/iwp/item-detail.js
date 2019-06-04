@@ -12,7 +12,7 @@ import ItemImg from '../item/comps/item-img'
 
 import '../item/espier-detail.scss'
 
-@connect(({ cart, member }) => ({
+/*@connect(({ cart, member }) => ({
   cart,
   favs: member.favs
 }), (dispatch) => ({
@@ -20,7 +20,7 @@ import '../item/espier-detail.scss'
   onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
   onAddFav: ({ item_id }) => dispatch({ type: 'member/addFav', payload: { item_id } }),
   onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
-}))
+}))*/
 @withBackToTop
 export default class Detail extends Component {
   static options = {
@@ -130,7 +130,7 @@ export default class Detail extends Component {
       })
     }
 
-    info.is_fav = Boolean(this.props.favs[info.item_id])
+    // info.is_fav = Boolean(this.props.favs[info.item_id])
     const specImgsDict = this.resolveSpecImgs(info.item_spec_desc)
 
     this.setState({
@@ -145,7 +145,7 @@ export default class Detail extends Component {
     log.debug('fetch: done', info)
   }
 
-  resolveSpecImgs (specs) {
+  /*resolveSpecImgs (specs) {
     const ret = {}
 
     //只有一个图片类型规格
@@ -158,9 +158,9 @@ export default class Detail extends Component {
     })
 
     return ret
-  }
+  }*/
 
-  handleMenuClick = async (type) => {
+  /*handleMenuClick = async (type) => {
     const { info } = this.state
     const isAuth = S.getAuthToken()
 
@@ -226,7 +226,7 @@ export default class Detail extends Component {
     this.setState({
       showBuyPanel: false
     })
-  }
+  }*/
 
   handleShare () {
   }
@@ -359,7 +359,7 @@ export default class Detail extends Component {
                       src={img}
                       key={img}
                       mode='aspectFill'
-                      onClick={this.handleBuyBarClick.bind(this, buyPanelType)}
+                      // onClick={this.handleBuyBarClick.bind(this, buyPanelType)}
                     />
                   )
                 })}
@@ -430,7 +430,7 @@ export default class Detail extends Component {
             iconPrefixClass='in-icon'
             icon='back-top'
             hide={!showBackToTop}
-            onClick={this.scrollBackToTop}
+            // onClick={this.scrollBackToTop}
           />
         </FloatMenus>
 
@@ -439,9 +439,9 @@ export default class Detail extends Component {
             (<GoodsBuyToolbar
               info={info}
               type={marketing}
-              onFavItem={this.handleMenuClick.bind(this, 'fav')}
-              onClickAddCart={this.handleBuyBarClick.bind(this, 'cart')}
-              onClickFastBuy={this.handleBuyBarClick.bind(this, 'fastbuy')}
+              // onFavItem={this.handleMenuClick.bind(this, 'fav')}
+              // onClickAddCart={this.handleBuyBarClick.bind(this, 'cart')}
+              // onClickFastBuy={this.handleBuyBarClick.bind(this, 'fastbuy')}
             />)
           :
             (<GoodsBuyToolbar
@@ -469,9 +469,9 @@ export default class Detail extends Component {
             isOpened={showBuyPanel}
             cartCount={cartCount}
             onClose={() => this.setState({ showBuyPanel: false })}
-            onChange={this.handleSkuChange}
-            onAddCart={this.handleBuyAction.bind(this, 'cart')}
-            onFastbuy={this.handleBuyAction.bind(this, 'fastbuy')}
+            // onChange={this.handleSkuChange}
+            // onAddCart={this.handleBuyAction.bind(this, 'cart')}
+            // onFastbuy={this.handleBuyAction.bind(this, 'fastbuy')}
           />
         }
 
