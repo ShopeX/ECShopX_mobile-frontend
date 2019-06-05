@@ -13,7 +13,7 @@ export default class WxAuth extends Component {
   }
 
   componentDidMount () {
-    this.autoLogin()
+    // this.autoLogin()
   }
 
   async autoLogin () {
