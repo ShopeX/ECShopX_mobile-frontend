@@ -39,7 +39,8 @@ export default class WgtGoods extends Component {
       Taro.navigateTo({
         url: `/pages/iwp/item-detail?id=${id}`
       })
-    } catch {
+    } catch (error) {
+      console.log(error)
       Taro.navigateTo({
         url: `/pages/item/espier-detail?id=${id}`
       })

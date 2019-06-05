@@ -170,8 +170,13 @@ export default class GoodsBuyPanel extends Component {
   }
 
   handleQuantityChange = (val) => {
-    console.log(val, 173)
-    let valueNumber =val.replace(/[^\d]/g,'')
+    if (/\d/.test(val)) {
+      console.log(22)
+    } else {
+      console.log(23)
+    }
+    // console.log(val, 173)
+    // let valueNumber =val.replace(/[^\d]/g,'')
     /*if(isNumber(val)) {
       this.setState({
         quantity: val
@@ -181,19 +186,6 @@ export default class GoodsBuyPanel extends Component {
         quantity: 1
       })
     }*/
-    this.setState({
-      quantity: valueNumber
-    },()=>{
-      console.log(this.state.quantity, 187)
-      this.setState({
-        quantity: valueNumber
-      })
-    })
-    console.log(valueNumber, 178)
-    /*console.log(val.replace(/[^0-9.]/g, ''), 173)
-    this.setState({
-      quantity: val
-    })*/
   }
 
   handleSelectSku = (item, idx) => {
@@ -373,6 +365,7 @@ export default class GoodsBuyPanel extends Component {
               <View className='goods-quantity__bd'>
                 <AtInputNumber
                   min={1}
+                  step={1}
                   max={maxStore}
                   value={quantity}
                   onChange={this.handleQuantityChange}
