@@ -527,7 +527,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
     key: "calcOrder",
     value: function () {
       var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-        var params, data, items, item_fee, _data$member_discount, member_discount, _data$coupon_discount, coupon_discount, _data$freight_fee, freight_fee, _data$freight_point, freight_point, _data$point, point, total_fee, total, info;
+        var params, data, items, item_fee, totalItemNum, _data$member_discount, member_discount, _data$coupon_discount, coupon_discount, _data$freight_fee, freight_fee, _data$freight_point, freight_point, _data$point, point, total_fee, total, info;
 
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
@@ -543,13 +543,14 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
 
               case 4:
                 data = _context4.sent;
-                items = data.items, item_fee = data.item_fee, _data$member_discount = data.member_discount, member_discount = _data$member_discount === undefined ? 0 : _data$member_discount, _data$coupon_discount = data.coupon_discount, coupon_discount = _data$coupon_discount === undefined ? 0 : _data$coupon_discount, _data$freight_fee = data.freight_fee, freight_fee = _data$freight_fee === undefined ? 0 : _data$freight_fee, _data$freight_point = data.freight_point, freight_point = _data$freight_point === undefined ? 0 : _data$freight_point, _data$point = data.point, point = _data$point === undefined ? 0 : _data$point, total_fee = data.total_fee;
+                items = data.items, item_fee = data.item_fee, totalItemNum = data.totalItemNum, _data$member_discount = data.member_discount, member_discount = _data$member_discount === undefined ? 0 : _data$member_discount, _data$coupon_discount = data.coupon_discount, coupon_discount = _data$coupon_discount === undefined ? 0 : _data$coupon_discount, _data$freight_fee = data.freight_fee, freight_fee = _data$freight_fee === undefined ? 0 : _data$freight_fee, _data$freight_point = data.freight_point, freight_point = _data$freight_point === undefined ? 0 : _data$freight_point, _data$point = data.point, point = _data$point === undefined ? 0 : _data$point, total_fee = data.total_fee;
                 total = _extends({}, this.state.total, {
                   item_fee: item_fee,
                   member_discount: -1 * member_discount,
                   coupon_discount: -1 * coupon_discount,
                   freight_fee: freight_fee,
                   total_fee: total_fee,
+                  items_count: totalItemNum,
                   point: point,
                   freight_point: freight_point
                 });

@@ -205,7 +205,7 @@ export default class CartCheckout extends Component {
     const params = this.getParams()
     const data = await api.cart.total(params)
 
-    const { items, item_fee, member_discount = 0, coupon_discount = 0, freight_fee = 0, freight_point = 0, point = 0, total_fee } = data
+    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, freight_fee = 0, freight_point = 0, point = 0, total_fee } = data
     const total = {
       ...this.state.total,
       item_fee,
@@ -213,6 +213,7 @@ export default class CartCheckout extends Component {
       coupon_discount: -1 * coupon_discount,
       freight_fee,
       total_fee,
+      items_count: totalItemNum,
       point,
       freight_point
     }
