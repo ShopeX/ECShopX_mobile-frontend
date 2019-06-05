@@ -10,14 +10,12 @@
             </view>
         </block>
         <view class="slider-wrap">
-            <view class="goods-content" wx:key="item_id" bindtap="handleClickItem" wx:for="{{data}}" wx:for-item="item" wx:for-index="_anonIdx" data-e-tap-so="this" data-e-tap-a-a="{{item.item_id}}">
+            <view class="goods-content" wx:key="item_id" catchtap="handleClickItem" wx:for="{{data}}" wx:for-item="item" wx:for-index="_anonIdx" data-e-tap-so="this" data-e-tap-a-a="{{item.item_id}}">
                 <view class="goods-content__info">
                     <view class="goods-content__info_img">
                         <image class="img-style" mode="aspectFill" src="{{item.img_url}}"></image>
                     </view>
-                    <view class="goods-content__info_text"><text>{{item.item_name}}</text><text>点击查看产品详情</text>
-                        <view><text class="in-icon in-icon-yuangong"></text><text>{{item.sales}}</text>
-                        </view>
+                    <view class="goods-content__info_text"><text>{{item.item_name}}</text><text>{{item.isOnsale === true ? '点击查看产品详情' : '该商品已下架'}}</text>
                     </view>
                 </view>
                 <view class="goods-content__operate">

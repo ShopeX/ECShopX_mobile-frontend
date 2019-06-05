@@ -88,9 +88,10 @@ export default class AddressIndex extends Component {
 
   // 选定开户地区
   handleClickPicker = () => {
-    this.setState({
+    this.fetch()
+    /*this.setState({
       multiIndex: [0, 0, 0]
-    })
+    })*/
   }
 
   bindMultiPickerChange = async (e) => {

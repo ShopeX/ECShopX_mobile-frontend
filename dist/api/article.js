@@ -11,6 +11,7 @@ exports.focus = focus;
 exports.praise = praise;
 exports.praiseCheck = praiseCheck;
 exports.praiseNum = praiseNum;
+exports.totalCollectArticle = totalCollectArticle;
 exports.collectArticle = collectArticle;
 exports.delCollectArticle = delCollectArticle;
 exports.delCollectArticleInfo = delCollectArticleInfo;
@@ -55,6 +56,12 @@ function praiseCheck(id) {
 
 function praiseNum(id) {
   return _req2.default.get('/article/praise/num/' + id);
+}
+
+function totalCollectArticle() {
+  var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  return _req2.default.get('/member/collect/article', params);
 }
 
 function collectArticle(id) {

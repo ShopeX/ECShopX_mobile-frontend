@@ -12,8 +12,8 @@ export function pointDetail () {
   return req.get('/member.point.detail')
 }
 
-export function favsList () {
-  return req.get('/member/collect/item')
+export function favsList (params = {}) {
+  return req.get('/member/collect/item', params)
 }
 
 export function addFav (item_id) {

@@ -35,6 +35,16 @@ export default class WgtGoods extends Component {
   }
 
   handleClickItem = (id) => {
+    const { info } = this.props
+
+    e.stopPropagation()
+    if(info.data) {
+      info.data.map(item => {
+        if(id === item.item_id && item.isOnsale !== true){
+          return false
+        }
+      })
+    }
     try {
       Taro.navigateTo({
         url: `/pages/iwp/item-detail?id=${id}`
@@ -57,7 +67,16 @@ export default class WgtGoods extends Component {
   }
 
   handleClickOperate = async (item_data, type, e) => {
+    const { info } = this.props
+
     e.stopPropagation()
+    if(info.data) {
+      info.data.map(item => {
+        if(item_data.item_id === item.item_id && item.isOnsale !== true){
+          return false
+        }
+      })
+    }
     try {
       if(type === 'collect') {
         if(this.state.count === 0) {
@@ -132,7 +151,7 @@ export default class WgtGoods extends Component {
   render () {
     const { info } = this.props
     const { curIdx, is_fav } = this.state
-
+    console.log(info, 135)
     if (!info) {
       return null
     }
@@ -159,11 +178,11 @@ export default class WgtGoods extends Component {
                     </View>
                     <View className='goods-content__info_text'>
                       <Text>{item.item_name}</Text>
-                      <Text>点击查看产品详情</Text>
-                      <View>
+                      <Text>{item.isOnsale === true ? '点击查看产品详情' : '该商品已下架'}</Text>
+                      {/*<View>
                         <Text className='in-icon in-icon-yuangong'></Text>
                         <Text>{item.sales}</Text>
-                      </View>
+                      </View>*/}
                     </View>
                   </View>
                   <View className='goods-content__operate'>

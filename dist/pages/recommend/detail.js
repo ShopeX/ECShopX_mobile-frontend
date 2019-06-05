@@ -4,11 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _class, _temp2;
+var _class, _class2, _temp2;
 
 var _index = require("../../npm/@tarojs/taro-weapp/index.js");
 
@@ -18,11 +20,13 @@ var _index3 = require("../../api/index.js");
 
 var _index4 = _interopRequireDefault(_index3);
 
-var _index5 = require("../../utils/index.js");
+var _index5 = require("../../hocs/index.js");
 
-var _index6 = require("../../spx/index.js");
+var _index6 = require("../../utils/index.js");
 
-var _index7 = _interopRequireDefault(_index6);
+var _index7 = require("../../spx/index.js");
+
+var _index8 = _interopRequireDefault(_index7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34,7 +38,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
+var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = function (_BaseComponent) {
   _inherits(recommendDetail, _BaseComponent);
 
   function recommendDetail() {
@@ -49,14 +53,14 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = recommendDetail.__proto__ || Object.getPrototypeOf(recommendDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "praiseCheckStatus", "collectArticleStatus"], _this.praiseCheck = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = recommendDetail.__proto__ || Object.getPrototypeOf(recommendDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "praiseCheckStatus", "collectArticleStatus", "item_id_List"], _this.praiseCheck = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var id, _ref3, status;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              if (_index7.default.getAuthToken()) {
+              if (_index8.default.getAuthToken()) {
                 _context.next = 2;
                 break;
               }
@@ -105,7 +109,7 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
                 count = _ref5.count;
 
                 _this.praiseCheck();
-                _this.fetch();
+                _this.fetchContent();
 
               case 8:
                 if (!(type === 'mark')) {
@@ -170,18 +174,21 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
   _createClass(recommendDetail, [{
     key: "_constructor",
     value: function _constructor(props) {
+      props = props || {};
+      props.pageSize = 50;
       _get(recommendDetail.prototype.__proto__ || Object.getPrototypeOf(recommendDetail.prototype), "_constructor", this).call(this, props);
 
-      this.state = {
+      this.state = _extends({}, this.state, {
         info: null,
         praiseCheckStatus: false,
-        collectArticleStatus: false
-      };
+        collectArticleStatus: false,
+        item_id_List: []
+      });
     }
   }, {
     key: "componentDidShow",
     value: function componentDidShow() {
-      this.fetch();
+      this.fetchContent();
       this.praiseCheck();
     }
   }, {
@@ -190,29 +197,93 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "fetch",
     value: function () {
-      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-        var id, resFocus, res, info;
+      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(params) {
+        var _this3 = this;
+
+        var page, pageSize, query, _ref7, list, total;
+
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                page = params.page_no, pageSize = params.page_size;
+                query = {
+                  page: page,
+                  pageSize: 50,
+                  item_type: 'normal',
+                  item_id: this.state.item_id_List
+                };
+                _context3.next = 4;
+                return _index4.default.item.search(query);
+
+              case 4:
+                _ref7 = _context3.sent;
+                list = _ref7.list;
+                total = _ref7.total_count;
+
+                list.map(function (item) {
+                  if (item.approve_status === 'onsale') {
+                    _this3.state.info.content.map(function (info_item) {
+                      if (info_item.name === 'goods') {
+                        info_item.data.map(function (id_item) {
+                          if (item.item_id === id_item.item_id) {
+                            id_item.isOnsale = true;
+                          }
+                        });
+                      }
+                    });
+                    _this3.setState({
+                      info: _this3.state.info
+                    });
+                  }
+                });
+
+                return _context3.abrupt("return", {
+                  total: total
+                });
+
+              case 9:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function fetch(_x2) {
+        return _ref6.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "fetchContent",
+    value: function () {
+      var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+        var _this4 = this;
+
+        var id, resFocus, res, info;
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
                 id = this.$router.params.id;
-                _context3.next = 3;
+                _context4.next = 3;
                 return _index4.default.article.focus(id);
 
               case 3:
-                resFocus = _context3.sent;
+                resFocus = _context4.sent;
 
-                if (!_index7.default.getAuthToken()) {
-                  _context3.next = 9;
+                if (!_index8.default.getAuthToken()) {
+                  _context4.next = 9;
                   break;
                 }
 
-                _context3.next = 7;
+                _context4.next = 7;
                 return _index4.default.article.delCollectArticleInfo({ article_id: id });
 
               case 7:
-                res = _context3.sent;
+                res = _context4.sent;
 
                 if (res.length === 0) {
                   this.setState({
@@ -226,52 +297,69 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
 
               case 9:
                 if (!resFocus) {
-                  _context3.next = 22;
+                  _context4.next = 22;
                   break;
                 }
 
-                if (!_index7.default.getAuthToken()) {
-                  _context3.next = 16;
+                if (!_index8.default.getAuthToken()) {
+                  _context4.next = 16;
                   break;
                 }
 
-                _context3.next = 13;
+                _context4.next = 13;
                 return _index4.default.article.authDetail(id);
 
               case 13:
-                _context3.t0 = _context3.sent;
-                _context3.next = 19;
+                _context4.t0 = _context4.sent;
+                _context4.next = 19;
                 break;
 
               case 16:
-                _context3.next = 18;
+                _context4.next = 18;
                 return _index4.default.article.detail(id);
 
               case 18:
-                _context3.t0 = _context3.sent;
+                _context4.t0 = _context4.sent;
 
               case 19:
-                info = _context3.t0;
+                info = _context4.t0;
 
 
-                info.updated_str = (0, _index5.formatTime)(info.updated * 1000, 'YYYY-MM-DD');
+                info.updated_str = (0, _index6.formatTime)(info.updated * 1000, 'YYYY-MM-DD');
                 this.setState({
                   info: info
+                }, function () {
+                  var item_id_List = [];
+                  if (info.content) {
+                    info.content.map(function (item) {
+                      if (item.name === 'goods') {
+                        console.log(item, 57);
+                        item.data.map(function (id_item) {
+                          item_id_List.push(id_item.item_id);
+                        });
+                      }
+                    });
+                    _this4.setState({
+                      item_id_List: item_id_List
+                    }, function () {
+                      _this4.nextPage();
+                    });
+                  }
                 });
 
               case 22:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
-      function fetch() {
-        return _ref6.apply(this, arguments);
+      function fetchContent() {
+        return _ref8.apply(this, arguments);
       }
 
-      return fetch;
+      return fetchContent;
     }()
   }, {
     key: "_createData",
@@ -299,7 +387,8 @@ var recommendDetail = (_temp2 = _class = function (_BaseComponent) {
   }]);
 
   return recommendDetail;
-}(_index.Component), _class.properties = {}, _class.$$events = ["handleClickBar"], _temp2);
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleClickBar"], _temp2)) || _class;
+
 exports.default = recommendDetail;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(recommendDetail, true));

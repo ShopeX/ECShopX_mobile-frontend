@@ -53,9 +53,10 @@ var AddressIndex = (_temp2 = _class = function (_BaseComponent) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AddressIndex.__proto__ || Object.getPrototypeOf(AddressIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "multiIndex", "areaList", "_isWechatAddress", "listLength"], _this.handleClickPicker = function () {
-      _this.setState({
+      _this.fetch();
+      /*this.setState({
         multiIndex: [0, 0, 0]
-      });
+      })*/
     }, _this.bindMultiPickerChange = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
         var info;

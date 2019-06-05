@@ -4,7 +4,7 @@
 .page-goods-fav {
   .goods-list {
     &__scroll {
-      @include page-scroll($navigate-height, 0);
+      @include page-scroll($navigate-height + $tabs-height + 10px, 0);
     }
   }
 }

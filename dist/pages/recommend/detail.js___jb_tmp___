@@ -1,7 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Button, ScrollView} from '@tarojs/components'
 import api from '@/api'
-import { withPager } from '@/hocs'
 import { SpHtmlContent } from '@/components'
 import { formatTime } from '@/utils'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods } from '../home/wgts'
@@ -9,61 +8,26 @@ import S from '@/spx'
 
 import './detail.scss'
 
-@withPager
 export default class recommendDetail extends Component {
   constructor (props) {
-    props = props || {}
-    props.pageSize = 50
     super(props)
 
     this.state = {
-      ...this.state,
       info: null,
       praiseCheckStatus: false,
-      collectArticleStatus: false,
-      item_id_List: []
+      collectArticleStatus: false
     }
   }
 
   componentDidShow () {
-    this.fetchContent()
+    this.fetch()
     this.praiseCheck()
   }
 
   componentDidMount () {
   }
 
-  async fetch (params) {
-    const { page_no: page, page_size: pageSize } = params
-    const query = {
-      page,
-      pageSize: 50,
-      item_type: 'normal',
-      item_id: this.state.item_id_List
-    }
-    const { list, total_count: total } = await api.item.search(query)
-    list.map(item => {
-      if(item.approve_status === 'onsale') {
-        this.state.info.content.map(info_item => {
-          if(info_item.name === 'goods') {
-            info_item.data.map(id_item => {
-              if(item.item_id === id_item.item_id) {
-                id_item.isOnsale = true
-              }
-            })
-          }
-        })
-        this.setState({
-          info: this.state.info
-        })
-      }
-    })
-
-    return {
-      total
-    }
-  }
-  async fetchContent () {
+  async fetch () {
 
     const { id } = this.$router.params
     const resFocus = await api.article.focus(id)
@@ -85,25 +49,19 @@ export default class recommendDetail extends Component {
       info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD')
       this.setState({
         info
-      }, ()=>{
+      },()=>{
         let item_id_List = []
         if(info.content){
           info.content.map(item => {
             if(item.name === 'goods') {
               console.log(item,57)
-              item.data.map(id_item => {
-                item_id_List.push(id_item.item_id)
-              })
+              // item_id_List.push(item.data.item)
             }
-          })
-          this.setState({
-            item_id_List
-          },()=>{
-            this.nextPage()
           })
         }
       })
     }
+
   }
 
   praiseCheck = async () => {
@@ -125,7 +83,7 @@ export default class recommendDetail extends Component {
       }*/
       const { count } = await api.article.praise(id)
       this.praiseCheck()
-      this.fetchContent()
+      this.fetch()
     }
 
     if (type === 'mark') {

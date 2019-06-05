@@ -70,6 +70,17 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = WgtGoods.__proto__ || Object.getPrototypeOf(WgtGoods)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data", "is_fav", "curIdx", "count", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleClickItem = function (id) {
+      var info = _this.props.info;
+
+
+      e.stopPropagation();
+      if (info.data) {
+        info.data.map(function (item) {
+          if (id === item.item_id && item.isOnsale !== true) {
+            return false;
+          }
+        });
+      }
       try {
         _index2.default.navigateTo({
           url: "/pages/iwp/item-detail?id=" + id
@@ -89,16 +100,26 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
       });
     }, _this.handleClickOperate = function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(item_data, type, e) {
-        var is_fav;
+        var info, is_fav;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                info = _this.props.info;
+
+
                 e.stopPropagation();
-                _context.prev = 1;
+                if (info.data) {
+                  info.data.map(function (item) {
+                    if (item_data.item_id === item.item_id && item.isOnsale !== true) {
+                      return false;
+                    }
+                  });
+                }
+                _context.prev = 3;
 
                 if (!(type === 'collect')) {
-                  _context.next = 18;
+                  _context.next = 20;
                   break;
                 }
 
@@ -112,28 +133,28 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
                 }
 
                 if (_this.state.is_fav) {
-                  _context.next = 12;
+                  _context.next = 14;
                   break;
                 }
 
-                _context.next = 7;
+                _context.next = 9;
                 return _index5.default.member.addFav(item_data.item_id);
 
-              case 7:
+              case 9:
                 _this.__triggerPropsFn("onAddFav", [null].concat([item_data]));
                 console.log(_this.props.favs, _this.props.favs[1192], 51, 'addafter');
                 _index2.default.showToast({
                   title: '已加入收藏',
                   icon: 'none'
                 });
-                _context.next = 17;
+                _context.next = 19;
                 break;
 
-              case 12:
-                _context.next = 14;
+              case 14:
+                _context.next = 16;
                 return _index5.default.member.delFav(item_data.item_id);
 
-              case 14:
+              case 16:
                 _this.__triggerPropsFn("onDelFav", [null].concat([item_data]));
                 console.log(_this.props.favs, 51, 'delafter');
                 _index2.default.showToast({
@@ -141,48 +162,48 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
                   icon: 'none'
                 });
 
-              case 17:
+              case 19:
                 _this.setState({
                   is_fav: !_this.state.is_fav
                 });
 
-              case 18:
+              case 20:
                 if (!(type === 'buy')) {
-                  _context.next = 28;
+                  _context.next = 30;
                   break;
                 }
 
-                _context.prev = 19;
-                _context.next = 22;
+                _context.prev = 21;
+                _context.next = 24;
                 return _index5.default.cart.add({
                   item_id: item_data.item_id,
                   num: 1
                 });
 
-              case 22:
-                _context.next = 27;
+              case 24:
+                _context.next = 29;
                 break;
 
-              case 24:
-                _context.prev = 24;
-                _context.t0 = _context["catch"](19);
+              case 26:
+                _context.prev = 26;
+                _context.t0 = _context["catch"](21);
 
                 console.log(_context.t0);
 
-              case 27:
+              case 29:
 
                 _index2.default.showToast({
                   title: '成功加入购物车',
                   icon: 'success'
                 });
 
-              case 28:
-                _context.next = 34;
+              case 30:
+                _context.next = 36;
                 break;
 
-              case 30:
-                _context.prev = 30;
-                _context.t1 = _context["catch"](1);
+              case 32:
+                _context.prev = 32;
+                _context.t1 = _context["catch"](3);
 
                 console.log(_context.t1);
                 _index2.default.navigateToMiniProgram({
@@ -194,12 +215,12 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
                   }
                 });
 
-              case 34:
+              case 36:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, _this2, [[1, 30], [19, 24]]);
+        }, _callee, _this2, [[3, 32], [21, 26]]);
       }));
 
       return function (_x, _x2, _x3) {
@@ -245,7 +266,7 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
           curIdx = _state.curIdx,
           is_fav = _state.is_fav;
 
-
+      console.log(info, 135);
       if (!info) {
         return null;
       }
@@ -267,6 +288,10 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
 
   return WgtGoods;
 }(_index.Component), _class2.properties = {
+  "info": {
+    "type": null,
+    "value": null
+  },
   "favs": {
     "type": null,
     "value": null
@@ -276,10 +301,6 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
     "value": null
   },
   "__fn_onDelFav": {
-    "type": null,
-    "value": null
-  },
-  "info": {
     "type": null,
     "value": null
   }

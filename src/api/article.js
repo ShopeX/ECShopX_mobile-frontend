@@ -32,6 +32,10 @@ export function praiseNum (id) {
   return req.get(`/article/praise/num/${id}`)
 }
 
+export function totalCollectArticle (params={}) {
+  return req.get('/member/collect/article',params)
+}
+
 export function collectArticle (id) {
   return req.post(`/member/collect/article/${id}`)
 }
