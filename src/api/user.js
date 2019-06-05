@@ -1,5 +1,10 @@
 import req from './req'
 
+const getAppId = () => {
+  const { appid } = wx.getExtConfigSync? wx.getExtConfigSync(): {}
+  return appid
+}
+
 export function login (data) {
   return req.post('/login', data)
 }
@@ -12,8 +17,12 @@ export function refreshToken () {
   return req.get('/token/refresh')
 }
 
-export function reg (data) {
-  return req.post('/member', data)
+export function reg (params) {
+  const appid = getAppId()
+  return req.post('/member', {
+    ...params,
+    appid
+  }, { showError: false })
 }
 
 export function regRule () {
