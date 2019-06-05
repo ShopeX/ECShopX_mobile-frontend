@@ -3,7 +3,7 @@ import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
 import { AtInputNumber } from 'taro-ui'
 // import find from 'lodash/find'
 import { Price } from '@/components'
-import { classNames, log } from '@/utils'
+import { classNames, log, isNumber } from '@/utils'
 import api from '@/api'
 
 import './index.scss'
@@ -170,9 +170,30 @@ export default class GoodsBuyPanel extends Component {
   }
 
   handleQuantityChange = (val) => {
+    console.log(val, 173)
+    let valueNumber =val.replace(/[^\d]/g,'')
+    /*if(isNumber(val)) {
+      this.setState({
+        quantity: val
+      })
+    } else {
+      this.setState({
+        quantity: 1
+      })
+    }*/
+    this.setState({
+      quantity: valueNumber
+    },()=>{
+      console.log(this.state.quantity, 187)
+      this.setState({
+        quantity: valueNumber
+      })
+    })
+    console.log(valueNumber, 178)
+    /*console.log(val.replace(/[^0-9.]/g, ''), 173)
     this.setState({
       quantity: val
-    })
+    })*/
   }
 
   handleSelectSku = (item, idx) => {

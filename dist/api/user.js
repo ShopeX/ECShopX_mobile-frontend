@@ -13,6 +13,7 @@ exports.regSmsCode = regSmsCode;
 exports.regParam = regParam;
 exports.info = info;
 exports.forgotPwd = forgotPwd;
+exports.prelogin = prelogin;
 
 var _req = require('./req.js');
 
@@ -67,4 +68,8 @@ function forgotPwd() {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   return _req2.default.post('/member/reset/password', params);
+}
+
+function prelogin(data) {
+  return _req2.default.post('/prelogin', data);
 }

@@ -307,33 +307,34 @@ var AddressIndex = (_temp2 = _class = function (_BaseComponent) {
                 arrProvice = [];
                 arrCity = [];
                 arrCounty = [];
-
-                nList.map(function (item, index) {
-                  arrProvice.push(item.label);
-                  if (index === 0) {
-                    item.children.map(function (c_item, c_index) {
-                      arrCity.push(c_item.label);
-                      if (c_index === 0) {
-                        c_item.children.map(function (cny_item) {
-                          arrCounty.push(cny_item.label);
-                        });
+                /*nList.map((item, index) => {
+                  arrProvice.push(item.label)
+                  if(index === 0) {
+                    item.children.map((c_item, c_index) => {
+                      arrCity.push(c_item.label)
+                      if(c_index === 0) {
+                        c_item.children.map(cny_item => {
+                          arrCounty.push(cny_item.label)
+                        })
                       }
-                    });
+                    })
                   }
-                });
+                })*/
+
                 this.setState({
-                  areaList: [arrProvice, arrCity, arrCounty]
+                  // areaList: [arrProvice, arrCity, arrCounty],
+                  areaList: [['北京'], ['北京'], ['东城']]
                 });
 
                 if (!this.$router.params.isWechatAddress) {
-                  _context3.next = 23;
+                  _context3.next = 22;
                   break;
                 }
 
-                _context3.next = 20;
+                _context3.next = 19;
                 return _index2.default.chooseAddress();
 
-              case 20:
+              case 19:
                 _res = _context3.sent;
                 query = {
                   province: _res.provinceName,
@@ -350,10 +351,10 @@ var AddressIndex = (_temp2 = _class = function (_BaseComponent) {
                   info: query
                 });
 
-              case 23:
+              case 22:
                 _index2.default.hideLoading();
 
-              case 24:
+              case 23:
               case "end":
                 return _context3.stop();
             }

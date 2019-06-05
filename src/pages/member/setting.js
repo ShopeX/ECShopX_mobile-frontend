@@ -21,7 +21,9 @@ export default class MemberSetting extends Component {
       // eslint-disable-next-line
       goToPage('/pages/home/index')
     } else {
-      Taro.redirectTo('/pages/home/index')
+      Taro.redirectTo({
+        url: '/pages/home/index'
+      })
     }
   }
 
@@ -41,7 +43,6 @@ export default class MemberSetting extends Component {
           <AtButton
             type='primary'
             onClick={this.handleClickLogout}
-            size='large'
           >退出登录</AtButton>
         </View>
       </View>
