@@ -41,3 +41,7 @@ export function info () {
 export function forgotPwd (params = {}) {
   return req.post('/member/reset/password', params)
 }
+
+export function prelogin (data) {
+  return req.post('/prelogin', data)
+}
