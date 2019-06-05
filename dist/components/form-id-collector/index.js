@@ -58,7 +58,7 @@ var FormIdCollector = (_temp2 = _class = function (_BaseComponent) {
     value: function _createData() {
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __isRunloopRef = arguments[2];
+      var __runloopRef = arguments[2];
       ;
 
       if (_index2.default.getEnv() === _index2.default.ENV_TYPE.WEAPP) {
@@ -74,8 +74,8 @@ var FormIdCollector = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivatejanKm",
-    value: function funPrivatejanKm() {
+    key: "funPrivateQuLmd",
+    value: function funPrivateQuLmd() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -98,7 +98,7 @@ var FormIdCollector = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["handleSubmit", "funPrivatejanKm"], _class.options = {
+}, _class.$$events = ["handleSubmit", "funPrivateQuLmd"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
   sync: false,

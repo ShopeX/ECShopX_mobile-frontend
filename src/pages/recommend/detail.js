@@ -41,7 +41,9 @@ export default class recommendDetail extends Component {
       item_type: 'normal',
       item_id: this.state.item_id_List
     }
+
     const { list, total_count: total } = await api.item.search(query)
+
     list.map(item => {
       if(item.approve_status === 'onsale') {
         this.state.info.content.map(info_item => {
@@ -58,6 +60,7 @@ export default class recommendDetail extends Component {
         })
       }
     })
+    Taro.hideLoading()
 
     return {
       total
@@ -86,11 +89,11 @@ export default class recommendDetail extends Component {
       this.setState({
         info
       }, ()=>{
+        Taro.showLoading()
         let item_id_List = []
         if(info.content){
           info.content.map(item => {
             if(item.name === 'goods') {
-              console.log(item,57)
               item.data.map(id_item => {
                 item_id_List.push(id_item.item_id)
               })
@@ -99,8 +102,12 @@ export default class recommendDetail extends Component {
           this.setState({
             item_id_List
           },()=>{
-            this.nextPage()
+            this.resetPage()
+            setTimeout(()=>{
+              this.nextPage()
+            }, 200)
           })
+
         }
       })
     }
@@ -161,8 +168,6 @@ export default class recommendDetail extends Component {
     if (!info) {
       return null
     }
-
-    console.log(info.content, 44)
 
     return (
       <View className='page-recommend-detail'>

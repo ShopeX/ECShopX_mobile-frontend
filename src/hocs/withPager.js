@@ -57,6 +57,7 @@ export default function withPager (Component) {
         isLoading: false,
         hasNext: true
       }
+
       this.setState({ page }, cb)
     }
   }

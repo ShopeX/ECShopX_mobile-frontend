@@ -66,3 +66,6 @@
   color: #0b4137;
   margin-bottom: 20rpx;
 }
+.goods-content .disabled__operate {
+  color: #787878;
+}

@@ -37,22 +37,27 @@ export default class WgtGoods extends Component {
   handleClickItem = (id) => {
     const { info } = this.props
 
-    e.stopPropagation()
     if(info.data) {
+      let onsale = true
       info.data.map(item => {
-        if(id === item.item_id && item.isOnsale !== true){
-          return false
+        if(id === item.item_id){
+          if(!item.isOnsale){
+            onsale = false
+          }
         }
       })
+      if(!onsale){
+        return false
+      }
     }
     try {
       Taro.navigateTo({
-        url: `/pages/iwp/item-detail?id=${id}`
+        url: `/pages/item/espier-detail?id=${id}`
       })
     } catch (error) {
       console.log(error)
       Taro.navigateTo({
-        url: `/pages/item/espier-detail?id=${id}`
+        url: `/pages/iwp/item-detail?id=${id}`
       })
     }
 
@@ -70,12 +75,19 @@ export default class WgtGoods extends Component {
     const { info } = this.props
 
     e.stopPropagation()
+
     if(info.data) {
+      let onsale = true
       info.data.map(item => {
-        if(item_data.item_id === item.item_id && item.isOnsale !== true){
-          return false
+        if(item_data.item_id === item.item_id){
+          if(!item.isOnsale){
+            onsale = false
+          }
         }
       })
+      if(!onsale){
+        return false
+      }
     }
     try {
       if(type === 'collect') {
@@ -89,7 +101,6 @@ export default class WgtGoods extends Component {
         if(!this.state.is_fav) {
           await api.member.addFav(item_data.item_id)
           this.props.onAddFav(item_data)
-          console.log(this.props.favs,this.props.favs[1192], 51,'addafter')
           Taro.showToast({
             title: '已加入收藏',
             icon: 'none'
@@ -97,7 +108,6 @@ export default class WgtGoods extends Component {
         } else {
           await api.member.delFav(item_data.item_id)
           this.props.onDelFav(item_data)
-          console.log(this.props.favs, 51,'delafter')
           Taro.showToast({
             title: '已移出收藏',
             icon: 'none'
@@ -151,7 +161,6 @@ export default class WgtGoods extends Component {
   render () {
     const { info } = this.props
     const { curIdx, is_fav } = this.state
-    console.log(info, 135)
     if (!info) {
       return null
     }
@@ -178,17 +187,14 @@ export default class WgtGoods extends Component {
                     </View>
                     <View className='goods-content__info_text'>
                       <Text>{item.item_name}</Text>
-                      <Text>{item.isOnsale === true ? '点击查看产品详情' : '该商品已下架'}</Text>
-                      {/*<View>
-                        <Text className='in-icon in-icon-yuangong'></Text>
-                        <Text>{item.sales}</Text>
-                      </View>*/}
+                      <Text>{item.isOnsale ? '点击查看产品详情' : '该商品已下架'}</Text>
+
                     </View>
                   </View>
                   <View className='goods-content__operate'>
-                    <View className='goods-content__operate_btn' onClick={this.handleClickOperate.bind(this, item, 'collect')}>{is_fav ? '移除心愿' : '加入心愿'}</View>
+                    <View className={`goods-content__operate_btn ${item.isOnsale ? '' : 'disabled__operate'}`} onClick={this.handleClickOperate.bind(this, item, 'collect')}>{is_fav ? '移除心愿' : '加入心愿'}</View>
                     <Text>|</Text>
-                    <View className='goods-content__operate_btn' onClick={this.handleClickOperate.bind(this, item, 'buy')}>加入购买</View>
+                    <View className={`goods-content__operate_btn ${item.isOnsale ? '' : 'disabled__operate'}`} onClick={this.handleClickOperate.bind(this, item, 'buy')}>加入购买</View>
                   </View>
                 </View>
               )

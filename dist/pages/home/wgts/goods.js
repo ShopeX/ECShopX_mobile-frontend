@@ -73,22 +73,27 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
       var info = _this.props.info;
 
 
-      e.stopPropagation();
       if (info.data) {
+        var onsale = true;
         info.data.map(function (item) {
-          if (id === item.item_id && item.isOnsale !== true) {
-            return false;
+          if (id === item.item_id) {
+            if (!item.isOnsale) {
+              onsale = false;
+            }
           }
         });
+        if (!onsale) {
+          return false;
+        }
       }
       try {
         _index2.default.navigateTo({
-          url: "/pages/iwp/item-detail?id=" + id
+          url: "/pages/item/espier-detail?id=" + id
         });
       } catch (error) {
         console.log(error);
         _index2.default.navigateTo({
-          url: "/pages/item/espier-detail?id=" + id
+          url: "/pages/iwp/item-detail?id=" + id
         });
       }
     }, _this.handleSwiperChange = function (e) {
@@ -100,7 +105,7 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
       });
     }, _this.handleClickOperate = function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(item_data, type, e) {
-        var info, is_fav;
+        var info, onsale, is_fav;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -109,17 +114,34 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
 
 
                 e.stopPropagation();
-                if (info.data) {
-                  info.data.map(function (item) {
-                    if (item_data.item_id === item.item_id && item.isOnsale !== true) {
-                      return false;
-                    }
-                  });
+
+                if (!info.data) {
+                  _context.next = 7;
+                  break;
                 }
-                _context.prev = 3;
+
+                onsale = true;
+
+                info.data.map(function (item) {
+                  if (item_data.item_id === item.item_id) {
+                    if (!item.isOnsale) {
+                      onsale = false;
+                    }
+                  }
+                });
+
+                if (onsale) {
+                  _context.next = 7;
+                  break;
+                }
+
+                return _context.abrupt("return", false);
+
+              case 7:
+                _context.prev = 7;
 
                 if (!(type === 'collect')) {
-                  _context.next = 20;
+                  _context.next = 22;
                   break;
                 }
 
@@ -133,77 +155,75 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
                 }
 
                 if (_this.state.is_fav) {
-                  _context.next = 14;
+                  _context.next = 17;
                   break;
                 }
 
-                _context.next = 9;
+                _context.next = 13;
                 return _index5.default.member.addFav(item_data.item_id);
 
-              case 9:
+              case 13:
                 _this.__triggerPropsFn("onAddFav", [null].concat([item_data]));
-                console.log(_this.props.favs, _this.props.favs[1192], 51, 'addafter');
                 _index2.default.showToast({
                   title: '已加入收藏',
                   icon: 'none'
                 });
-                _context.next = 19;
+                _context.next = 21;
                 break;
 
-              case 14:
-                _context.next = 16;
+              case 17:
+                _context.next = 19;
                 return _index5.default.member.delFav(item_data.item_id);
 
-              case 16:
+              case 19:
                 _this.__triggerPropsFn("onDelFav", [null].concat([item_data]));
-                console.log(_this.props.favs, 51, 'delafter');
                 _index2.default.showToast({
                   title: '已移出收藏',
                   icon: 'none'
                 });
 
-              case 19:
+              case 21:
                 _this.setState({
                   is_fav: !_this.state.is_fav
                 });
 
-              case 20:
+              case 22:
                 if (!(type === 'buy')) {
-                  _context.next = 30;
+                  _context.next = 32;
                   break;
                 }
 
-                _context.prev = 21;
-                _context.next = 24;
+                _context.prev = 23;
+                _context.next = 26;
                 return _index5.default.cart.add({
                   item_id: item_data.item_id,
                   num: 1
                 });
 
-              case 24:
-                _context.next = 29;
+              case 26:
+                _context.next = 31;
                 break;
 
-              case 26:
-                _context.prev = 26;
-                _context.t0 = _context["catch"](21);
+              case 28:
+                _context.prev = 28;
+                _context.t0 = _context["catch"](23);
 
                 console.log(_context.t0);
 
-              case 29:
+              case 31:
 
                 _index2.default.showToast({
                   title: '成功加入购物车',
                   icon: 'success'
                 });
 
-              case 30:
-                _context.next = 36;
+              case 32:
+                _context.next = 38;
                 break;
 
-              case 32:
-                _context.prev = 32;
-                _context.t1 = _context["catch"](3);
+              case 34:
+                _context.prev = 34;
+                _context.t1 = _context["catch"](7);
 
                 console.log(_context.t1);
                 _index2.default.navigateToMiniProgram({
@@ -215,12 +235,12 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
                   }
                 });
 
-              case 36:
+              case 38:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, _this2, [[3, 32], [21, 26]]);
+        }, _callee, _this2, [[7, 34], [23, 28]]);
       }));
 
       return function (_x, _x2, _x3) {
@@ -258,7 +278,7 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
     value: function _createData() {
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __isRunloopRef = arguments[2];
+      var __runloopRef = arguments[2];
       ;
 
       var info = this.__props.info;
@@ -266,7 +286,6 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
           curIdx = _state.curIdx,
           is_fav = _state.is_fav;
 
-      console.log(info, 135);
       if (!info) {
         return null;
       }
