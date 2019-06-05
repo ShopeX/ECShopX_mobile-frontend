@@ -184,10 +184,7 @@ export default class WgtGoods extends Component {
                     <View className='goods-content__info_text'>
                       <Text>{item.item_name}</Text>
                       <Text>{item.isOnsale === true ? '点击查看产品详情' : '该商品已下架'}</Text>
-                      {/*<View>
-                        <Text className='in-icon in-icon-yuangong'></Text>
-                        <Text>{item.sales}</Text>
-                      </View>*/}
+                    
                     </View>
                   </View>
                   <View className='goods-content__operate'>

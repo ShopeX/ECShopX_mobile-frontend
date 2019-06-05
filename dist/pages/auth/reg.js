@@ -40,6 +40,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var isWeapp = _index2.default.getEnv() === _index2.default.ENV_TYPE.WEAPP;
+
 var Reg = (_dec = (0, _index3.connect)(function (_ref) {
   var user = _ref.user;
   return {
@@ -98,45 +100,44 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       }, _callee, _this2, [[1, 8]]);
     })), _this.handleSubmit = function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
-        var isWeapp, value, data, _this$$router$params, union_id, open_id, res, _ref5, token, _res;
+        var value, data, _this$$router$params, union_id, open_id, res, code, _ref5, token, _res;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                isWeapp = _index2.default.getEnv() === _index2.default.ENV_TYPE.WEAPP;
                 value = e.detail.value;
                 data = _extends({}, _this.state.info, value);
 
                 if (!(!data.mobile || !/1\d{10}/.test(data.mobile))) {
-                  _context2.next = 5;
+                  _context2.next = 4;
                   break;
                 }
 
                 return _context2.abrupt("return", _index6.default.toast('请输入正确的手机号'));
 
-              case 5:
+              case 4:
                 if (!(!isWeapp && !data.vcode)) {
-                  _context2.next = 7;
+                  _context2.next = 6;
                   break;
                 }
 
                 return _context2.abrupt("return", _index6.default.toast('请输入验证码'));
 
-              case 7:
+              case 6:
                 if (data.password) {
-                  _context2.next = 9;
+                  _context2.next = 8;
                   break;
                 }
 
                 return _context2.abrupt("return", _index6.default.toast('请输入密码'));
 
-              case 9:
+              case 8:
                 _this.state.list.map(function (item) {
                   return item.is_required ? item.is_required && data[item.key] ? true : _index6.default.toast("\u8BF7\u8F93\u5165" + item.name) : null;
                 });
 
-                _context2.prev = 10;
+                _context2.prev = 9;
 
                 if (!isWeapp) {
                   _context2.next = 23;
@@ -144,7 +145,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
                 }
 
                 _this$$router$params = _this.$router.params, union_id = _this$$router$params.union_id, open_id = _this$$router$params.open_id;
-                _context2.next = 15;
+                _context2.next = 14;
                 return _index8.default.user.reg(_extends({}, data, {
                   user_type: 'wechat',
                   auth_type: 'wxapp',
@@ -152,8 +153,9 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
                   open_id: open_id
                 }));
 
-              case 15:
+              case 14:
                 res = _context2.sent;
+                code = _this.$router.params.code;
                 _context2.next = 18;
                 return _index8.default.wx.login({ code: code });
 
@@ -187,7 +189,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
 
               case 31:
                 _context2.prev = 31;
-                _context2.t0 = _context2["catch"](10);
+                _context2.t0 = _context2["catch"](9);
                 return _context2.abrupt("return", false);
 
               case 35:
@@ -195,7 +197,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
                 return _context2.stop();
             }
           }
-        }, _callee2, _this2, [[10, 31]]);
+        }, _callee2, _this2, [[9, 31]]);
       }));
 
       return function (_x) {
@@ -429,7 +431,9 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
                   }
                 });
 
-                this.handleClickImgcode();
+                if (!isWeapp) {
+                  this.handleClickImgcode();
+                }
 
                 this.setState({
                   list: arr
@@ -477,9 +481,9 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
         var $loopState__temp4 = (0, _index4.classNames)(item.$original.value ? 'pick-value' : 'pick-value-null');
         var $loopState__temp6 = "" + item.$original.key;
         var $loopState__temp8 = "\u8BF7\u8F93\u5165" + item.$original.name;
-        var $loopState__temp10 = "DpJqV" + index;
+        var $loopState__temp10 = "nJbQU" + index;
 
-        var __ref = __scope && __runloopRef && (0, _index.getElementById)(__scope, "#" + ("DpJqV" + index), "component");
+        var __ref = __scope && __runloopRef && (0, _index.getElementById)(__scope, "#" + ("nJbQU" + index), "component");
 
         __ref && function (input) {
           _this3.textInput = input;

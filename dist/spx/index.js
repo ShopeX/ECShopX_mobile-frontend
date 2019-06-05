@@ -402,11 +402,11 @@ var Spx = function () {
           fullPath = _getCurrentRoute.fullPath;
 
       var encodedRedirect = encodeURIComponent(fullPath);
-      if (path === '/pages/auth/login') {
+      if (path === "/pages/auth/login") {
         return;
       }
 
-      var authUrl = "/pages/auth/login?redirect=" + encodedRedirect;
+      var authUrl = "/pages/auth/login" + ("?redirect=" + encodedRedirect);
 
       _index2.default[isRedirect ? 'redirectTo' : 'navigateTo']({
         url: authUrl

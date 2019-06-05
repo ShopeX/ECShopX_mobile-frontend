@@ -95,7 +95,7 @@ export default class TabBar extends Component {
 
       if (withLogin && !S.getAuthToken()) {
         return Taro.redirectTo({
-          url: '/pages/auth/login'
+          url: APP_AUTH_PAGE
         })
       }
 

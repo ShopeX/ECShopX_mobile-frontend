@@ -68,7 +68,7 @@ var TabBar = (_temp2 = _class = function (_BaseComponent) {
 
         if (withLogin && !_index7.default.getAuthToken()) {
           return _index2.default.redirectTo({
-            url: '/pages/auth/login'
+            url: "/pages/auth/login"
           });
         }
 
