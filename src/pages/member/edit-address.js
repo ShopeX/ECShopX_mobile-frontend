@@ -49,7 +49,7 @@ export default class AddressIndex extends Component {
     let arrProvice = []
     let arrCity = []
     let arrCounty = []
-    /*nList.map((item, index) => {
+    nList.map((item, index) => {
       arrProvice.push(item.label)
       if(index === 0) {
         item.children.map((c_item, c_index) => {
@@ -61,10 +61,10 @@ export default class AddressIndex extends Component {
           }
         })
       }
-    })*/
+    })
     this.setState({
-      // areaList: [arrProvice, arrCity, arrCounty],
-      areaList: [['北京'], ['北京'], ['东城']],
+      areaList: [arrProvice, arrCity, arrCounty],
+      // areaList: [['北京'], ['北京'], ['东城']],
     })
 
     if (this.$router.params.isWechatAddress){

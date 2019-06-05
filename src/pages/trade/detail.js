@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { AtButton, AtCountdown} from 'taro-ui'
 import { Loading, SpCell, SpToast, Price, NavBar } from '@/components'
 import { classNames, log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
@@ -351,13 +351,14 @@ export default class TradeDetail extends Component {
         }
         {
           info.status === 'WAIT_BUYER_CONFIRM_GOODS' && <View className='trade-detail__footer'>
-            <Text className='trade-detail__footer__btn'>联系客服</Text>
+            <Button openType='contact' className='trade-detail__footer__btn'>联系客服</Button>
+            {/*<Text className='trade-detail__footer__btn'>联系客服</Text>*/}
             <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'confirm')}>确认收货</Text>
           </View>
         }
         {
           info.status === 'TRADE_SUCCESS' && <View className='trade-detail__footer'>
-            <Text className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'>联系客服</Text>
+            <Button openType='contact' className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'>联系客服</Button>
           </View>
         }
 

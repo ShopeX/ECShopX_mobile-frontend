@@ -50,11 +50,13 @@
             </view>
         </block>
         <block wx:if="{{info.status === 'WAIT_BUYER_CONFIRM_GOODS'}}">
-            <view class="trade-detail__footer"><text class="trade-detail__footer__btn">联系客服</text><text class="trade-detail__footer__btn trade-detail__footer_active" bindtap="handleClickBtn" data-e-tap-so="this" data-e-tap-a-a="confirm">确认收货</text>
+            <view class="trade-detail__footer">
+                <button open-type="contact" class="trade-detail__footer__btn">联系客服</button><text class="trade-detail__footer__btn trade-detail__footer_active" bindtap="handleClickBtn" data-e-tap-so="this" data-e-tap-a-a="confirm">确认收货</text>
             </view>
         </block>
         <block wx:if="{{info.status === 'TRADE_SUCCESS'}}">
-            <view class="trade-detail__footer"><text class="trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn">联系客服</text>
+            <view class="trade-detail__footer">
+                <button open-type="contact" class="trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn">联系客服</button>
             </view>
         </block>
         <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>

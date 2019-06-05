@@ -57,8 +57,12 @@ export function addressDelete (address_id) {
   return req.delete(`/member/address/${address_id}`)
 }
 
-export function areaList () {
+/*export function areaList () {
   return req.get('/member/addressarea')
+}*/
+
+export function areaList () {
+  return req.get('/espier/address')
 }
 
 export function addressCreateOrUpdate (data) {

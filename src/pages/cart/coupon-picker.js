@@ -78,14 +78,14 @@ export default class CouponPicker extends Component {
 
     return (
       <View className='coupon-picker'>
-        <CouponItem
+        {/*<CouponItem
           info={memberCoupon}
           onClick={this.handleCouponSelect.bind(this, 'member', true)}
         >
           <SpCheckbox
             checked={curCoupon && curCoupon.type === 'member' && curCoupon.value}
           />
-        </CouponItem>
+        </CouponItem>*/}
         {
           coupons.map((coupon, idx) => {
             return (

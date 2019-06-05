@@ -57,7 +57,7 @@ var CouponPicker = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = CouponPicker.__proto__ || Object.getPrototypeOf(CouponPicker)).call.apply(_ref2, [this].concat(args))), _this), _this.$usedState = ["coupons", "memberCoupon", "curCoupon", "__fn_onChangeCoupon"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = CouponPicker.__proto__ || Object.getPrototypeOf(CouponPicker)).call.apply(_ref2, [this].concat(args))), _this), _this.$usedState = ["coupons", "curCoupon", "__fn_onChangeCoupon"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(CouponPicker, [{
@@ -161,7 +161,6 @@ var CouponPicker = (_dec = (0, _index3.connect)(function (_ref) {
       };
 
       Object.assign(this.__state, {
-        memberCoupon: memberCoupon,
         curCoupon: curCoupon
       });
       return this.__state;

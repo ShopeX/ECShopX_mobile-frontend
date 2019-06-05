@@ -67,9 +67,6 @@
                     <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="商品金额：">
                         <price unit="cent" __triggerObserer="{{ _triggerObserer }}" value="{{total.item_fee}}"></price>
                     </sp-cell>
-                    <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="会员折扣：">
-                        <price unit="cent" __triggerObserer="{{ _triggerObserer }}" value="{{total.member_discount}}"></price>
-                    </sp-cell>
                     <sp-cell className="trade-sub-total__item" __triggerObserer="{{ _triggerObserer }}" title="优惠券：">
                         <price unit="cent" __triggerObserer="{{ _triggerObserer }}" value="{{total.coupon_discount}}"></price>
                     </sp-cell>

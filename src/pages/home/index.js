@@ -46,7 +46,6 @@ export default class HomeIndex extends Component {
     },()=>{
       if(info.config) {
         info.config.map(item => {
-          console.log(item)
           if(item.name === 'faverite_type' && item.config.isOpen === true) {
             this.setState({
               isFaverite_open: true
@@ -83,9 +82,8 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, isFaverite_open } = this.state
+    const { wgts, authStatus, page, likeList } = this.state
 
-    console.log(likeList, isFaverite_open, 84)
     if (!wgts || !this.props.store) {
       return <Loading />
     }

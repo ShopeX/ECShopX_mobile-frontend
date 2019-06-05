@@ -198,6 +198,7 @@
   line-height: 87rpx;
   text-align: center;
   background-color: #fafafa;
+  font-size: 26rpx;
   border-radius: 0;
 }
 .trade-detail__footer__btn:before {

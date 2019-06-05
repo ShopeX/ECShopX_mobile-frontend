@@ -582,7 +582,7 @@ export default class CartCheckout extends Component {
                   value={total.item_fee}
                 />
               </SpCell>
-              <SpCell
+              {/*<SpCell
                 className='trade-sub-total__item'
                 title='会员折扣：'
               >
@@ -590,7 +590,7 @@ export default class CartCheckout extends Component {
                   unit='cent'
                   value={total.member_discount}
                 />
-              </SpCell>
+              </SpCell>*/}
               <SpCell
                 className='trade-sub-total__item'
                 title='优惠券：'

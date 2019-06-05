@@ -113,7 +113,6 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
                 }, function () {
                   if (info.config) {
                     info.config.map(function (item) {
-                      console.log(item);
                       if (item.name === 'faverite_type' && item.config.isOpen === true) {
                         _this2.setState({
                           isFaverite_open: true
@@ -202,11 +201,9 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
           wgts = _state.wgts,
           authStatus = _state.authStatus,
           page = _state.page,
-          likeList = _state.likeList,
-          isFaverite_open = _state.isFaverite_open;
+          likeList = _state.likeList;
 
 
-      console.log(likeList, isFaverite_open, 84);
       if (!wgts || !this.__props.store) {
         return null;
       }

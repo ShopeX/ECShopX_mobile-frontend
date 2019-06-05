@@ -109,6 +109,7 @@
   position: fixed;
   bottom: 0;
   width: 100%;
+  font-size: 26rpx;
   line-height: 84rpx;
   text-align: center;
   color: #ffffff;

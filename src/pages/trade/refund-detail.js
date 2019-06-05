@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Icon } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
 import { formatTime } from '@/utils'
 import { SpCell, Price, Loading, NavBar } from '@/components'
@@ -143,7 +142,7 @@ export default class TradeRefundDetail extends Component {
           <View className='info-name'>申请时间：<Text className='info-value'>{info.creat_time_str}</Text></View>
           <View className='info-name'>退款编号：<Text className='info-value'>{info.aftersales_bn}</Text></View>
         </View>
-        <View className='refund-detail-btn'>联系客服</View>
+        <View openType='contact' className='refund-detail-btn'>联系客服</View>
         {/*<View className='refund-status'>
           {
             (progress == 0 || progress == 1 || progress == 3 || progress == 5)
