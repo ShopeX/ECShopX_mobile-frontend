@@ -80,7 +80,7 @@ export default class WxAuth extends Component {
       S.setAuthToken(token)
       // 跳转注册绑定
       Taro.redirectTo({
-        url: `/pages/auth/reg?open_id=${open_id}&union_id=${union_id}`
+        url: `/pages/auth/reg?code=${code}&open_id=${open_id}&union_id=${union_id}`
       })
     } catch (e) {
       console.info(e)

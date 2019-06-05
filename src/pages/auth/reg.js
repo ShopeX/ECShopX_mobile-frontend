@@ -9,6 +9,8 @@ import api from '@/api'
 
 import './reg.scss'
 
+const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
+
 @connect(( { user } ) => ({
   land_params: user.land_params
 }), () => ({}))
@@ -79,7 +81,9 @@ export default class Reg extends Component {
       }
     })
 
-    this.handleClickImgcode()
+    if (!isWeapp) {
+      this.handleClickImgcode()
+    }
 
     this.setState({
       list: arr
@@ -88,7 +92,6 @@ export default class Reg extends Component {
   }
 
   handleSubmit = async (e) => {
-    const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
     const { value } = e.detail
     const data = {
       ...this.state.info,
@@ -120,6 +123,8 @@ export default class Reg extends Component {
           union_id,
           open_id
         })
+        
+        const { code } = this.$router.params
         const { token } = await api.wx.login({ code })
         S.setAuthToken(token)
       } else {

@@ -108,7 +108,7 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
                 _index6.default.setAuthToken(token);
                 // 跳转注册绑定
                 _index2.default.redirectTo({
-                  url: "/pages/auth/reg?open_id=" + open_id + "&union_id=" + union_id
+                  url: "/pages/auth/reg?code=" + code + "&open_id=" + open_id + "&union_id=" + union_id
                 });
                 _context.next = 25;
                 break;

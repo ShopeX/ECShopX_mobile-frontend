@@ -122,7 +122,7 @@ class API {
             this.errorToast(data)
           }
           Taro.redirectTo({
-            url: '/pages/auth/login'
+            url: APP_AUTH_PAGE
           })
           return Promise.reject(this.reqError(res))
         }

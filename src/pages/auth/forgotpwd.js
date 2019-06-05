@@ -69,7 +69,7 @@ export default class Forgotpwd extends Component {
       })
       setTimeout(()=>{
         Taro.redirectTo({
-          url: '/pages/auth/login'
+          url: APP_AUTH_PAGE
         })
       }, 700)
     } catch (error) {

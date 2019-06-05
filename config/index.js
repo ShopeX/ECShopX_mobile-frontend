@@ -43,7 +43,7 @@ const config = {
       : `https://${API_HOST}/index.php/api/h5app/wxapp`,
     APP_COMPANY_ID: '1',
     APP_INTEGRATION: process.env.INTEGRATION_APP,
-    APP_AUTH_PAGE: process.env.TARO_ENV === 'weapp'
+    APP_AUTH_PAGE: TARO_ENV === 'weapp'
       ? '/pages/auth/wxauth'
       : '/pages/auth/login'
   },

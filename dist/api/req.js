@@ -174,7 +174,7 @@ var API = function () {
             _this2.errorToast(data);
           }
           _index2.default.redirectTo({
-            url: '/pages/auth/login'
+            url: "/pages/auth/wxauth"
           });
           return Promise.reject(_this2.reqError(res));
         }
