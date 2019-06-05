@@ -30,6 +30,8 @@ var _index8 = _interopRequireDefault(_index7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -60,7 +62,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = Reg.__proto__ || Object.getPrototypeOf(Reg)).call.apply(_ref2, [this].concat(args))), _this), _this.$$hasLoopRef = true, _this.$usedState = ["loopArray0", "info", "imgVisible", "imgInfo", "isVisible", "list"], _this.handleClickImgcode = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = Reg.__proto__ || Object.getPrototypeOf(Reg)).call.apply(_ref2, [this].concat(args))), _this), _this.$$hasLoopRef = true, _this.$usedState = ["anonymousState__temp11", "loopArray0", "info", "imgVisible", "imgInfo", "isVisible", "list"], _this.handleClickImgcode = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var query, img_res;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -96,69 +98,104 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       }, _callee, _this2, [[1, 8]]);
     })), _this.handleSubmit = function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
-        var value, data, res;
+        var isWeapp, value, data, _this$$router$params, union_id, open_id, res, _ref5, token, _res;
+
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                isWeapp = _index2.default.getEnv() === _index2.default.ENV_TYPE.WEAPP;
                 value = e.detail.value;
                 data = _extends({}, _this.state.info, value);
 
                 if (!(!data.mobile || !/1\d{10}/.test(data.mobile))) {
-                  _context2.next = 4;
+                  _context2.next = 5;
                   break;
                 }
 
                 return _context2.abrupt("return", _index6.default.toast('请输入正确的手机号'));
 
-              case 4:
-                if (data.vcode) {
-                  _context2.next = 6;
+              case 5:
+                if (!(!isWeapp && !data.vcode)) {
+                  _context2.next = 7;
                   break;
                 }
 
                 return _context2.abrupt("return", _index6.default.toast('请输入验证码'));
 
-              case 6:
+              case 7:
                 if (data.password) {
-                  _context2.next = 8;
+                  _context2.next = 9;
                   break;
                 }
 
                 return _context2.abrupt("return", _index6.default.toast('请输入密码'));
 
-              case 8:
+              case 9:
                 _this.state.list.map(function (item) {
                   return item.is_required ? item.is_required && data[item.key] ? true : _index6.default.toast("\u8BF7\u8F93\u5165" + item.name) : null;
                 });
-                _context2.prev = 9;
-                _context2.next = 12;
+
+                _context2.prev = 10;
+
+                if (!isWeapp) {
+                  _context2.next = 23;
+                  break;
+                }
+
+                _this$$router$params = _this.$router.params, union_id = _this$$router$params.union_id, open_id = _this$$router$params.open_id;
+                _context2.next = 15;
+                return _index8.default.user.reg(_extends({}, data, {
+                  user_type: 'wechat',
+                  auth_type: 'wxapp',
+                  union_id: union_id,
+                  open_id: open_id
+                }));
+
+              case 15:
+                res = _context2.sent;
+                _context2.next = 18;
+                return _index8.default.wx.login({ code: code });
+
+              case 18:
+                _ref5 = _context2.sent;
+                token = _ref5.token;
+
+                _index6.default.setAuthToken(token);
+                _context2.next = 27;
+                break;
+
+              case 23:
+                _context2.next = 25;
                 return _index8.default.user.reg(data);
 
-              case 12:
-                res = _context2.sent;
+              case 25:
+                _res = _context2.sent;
 
-                _index6.default.setAuthToken(res.token);
+                _index6.default.setAuthToken(_res.token);
+
+              case 27:
+
                 _index6.default.toast('注册成功');
                 setTimeout(function () {
                   _index2.default.redirectTo({
                     url: '/pages/member/index'
                   });
                 }, 700);
-                _context2.next = 22;
+                _context2.next = 35;
                 break;
 
-              case 18:
-                _context2.prev = 18;
-                _context2.t0 = _context2["catch"](9);
+              case 31:
+                _context2.prev = 31;
+                _context2.t0 = _context2["catch"](10);
                 return _context2.abrupt("return", false);
 
-              case 22:
+              case 35:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, _this2, [[9, 18]]);
+        }, _callee2, _this2, [[10, 31]]);
       }));
 
       return function (_x) {
@@ -211,7 +248,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       console.log(_this.textInput.value);
       _index6.default.closeToast();
     }, _this.handleTimerStart = function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(resolve) {
+      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(resolve) {
         var _this$state$info, mobile, yzm, imgInfo, query;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
@@ -278,13 +315,58 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       }));
 
       return function (_x2) {
-        return _ref5.apply(this, arguments);
+        return _ref6.apply(this, arguments);
       };
     }(), _this.handleTimerStop = function () {}, _this.handleClickAgreement = function () {
       _index2.default.navigateTo({
         url: '/pages/auth/reg-rule'
       });
-    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    }, _this.handleGetPhoneNumber = function () {
+      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
+        var _ref8, code, _e$detail, errMsg, params, _ref9, phoneNumber;
+
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return _index2.default.login();
+
+              case 2:
+                _ref8 = _context4.sent;
+                code = _ref8.code;
+                _e$detail = e.detail, errMsg = _e$detail.errMsg, params = _objectWithoutProperties(_e$detail, ["errMsg"]);
+
+                if (!(errMsg.indexOf('fail') >= 0)) {
+                  _context4.next = 7;
+                  break;
+                }
+
+                return _context4.abrupt("return");
+
+              case 7:
+                params.code = code;
+                _context4.next = 10;
+                return _index8.default.wx.decryptPhone(params);
+
+              case 10:
+                _ref9 = _context4.sent;
+                phoneNumber = _ref9.phoneNumber;
+
+                _this.handleChange('mobile', phoneNumber);
+
+              case 13:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, _this2);
+      }));
+
+      return function (_x3) {
+        return _ref7.apply(this, arguments);
+      };
+    }(), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Reg, [{
@@ -317,18 +399,18 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
   }, {
     key: "fetch",
     value: function () {
-      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+      var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
         var arr, res;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
                 arr = [];
-                _context4.next = 3;
+                _context5.next = 3;
                 return _index8.default.user.regParam();
 
               case 3:
-                res = _context4.sent;
+                res = _context5.sent;
 
                 Object.keys(res).forEach(function (key) {
                   if (res[key].is_open) {
@@ -356,14 +438,14 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
 
               case 8:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee5, this);
       }));
 
       function fetch() {
-        return _ref6.apply(this, arguments);
+        return _ref10.apply(this, arguments);
       }
 
       return fetch;
@@ -386,6 +468,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
           imgVisible = _state.imgVisible,
           imgInfo = _state.imgInfo;
 
+      var anonymousState__temp11 = _index2.default.getEnv() !== _index2.default.ENV_TYPE.WEAPP;
       var loopArray0 = list.map(function (item, index) {
         item = {
           $original: (0, _index.internal_get_original)(item)
@@ -394,9 +477,9 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
         var $loopState__temp4 = (0, _index4.classNames)(item.$original.value ? 'pick-value' : 'pick-value-null');
         var $loopState__temp6 = "" + item.$original.key;
         var $loopState__temp8 = "\u8BF7\u8F93\u5165" + item.$original.name;
-        var $loopState__temp10 = "sRtZm" + index;
+        var $loopState__temp10 = "IHdXA" + index;
 
-        var __ref = __scope && __runloopRef && (0, _index.getElementById)(__scope, "#" + ("sRtZm" + index), "component");
+        var __ref = __scope && __runloopRef && (0, _index.getElementById)(__scope, "#" + ("IHdXA" + index), "component");
 
         __ref && function (input) {
           _this3.textInput = input;
@@ -411,6 +494,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
         };
       });
       Object.assign(this.__state, {
+        anonymousState__temp11: anonymousState__temp11,
         loopArray0: loopArray0
       });
       return this.__state;
@@ -418,7 +502,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
   }]);
 
   return Reg;
-}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleSubmit", "handleErrorToastClose", "handleChange", "handleClickImgcode", "handleTimerStart", "handleTimerStop", "handleClickIconpwd", "handleClickAgreement"], _temp2)) || _class);
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleSubmit", "handleErrorToastClose", "handleChange", "handleGetPhoneNumber", "handleClickImgcode", "handleTimerStart", "handleTimerStop", "handleClickIconpwd", "handleClickAgreement"], _temp2)) || _class);
 exports.default = Reg;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(Reg, true));

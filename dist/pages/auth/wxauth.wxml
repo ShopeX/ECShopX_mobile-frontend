@@ -1,6 +1,6 @@
 <block>
     <view class="page-wxauth">
-        <block wx:if="{{!userInfo}}">
+        <block wx:if="{{isAuthShow}}">
             <view class="sec-auth"><text class="auth-hint">需要您的授权才能继续</text>
                 <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" openType="getUserInfo" bindongetuserinfo="handleGetUserInfo" __fn_onGetUserInfo="{{true}}">点此授权</at-button>
             </view>

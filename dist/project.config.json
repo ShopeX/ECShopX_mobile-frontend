@@ -1,12 +1,21 @@
 {
 	"projectname": "mshop-taro",
 	"description": "taro app for bbc",
+<<<<<<< HEAD
 	"appid": "wx4721629519a8f25b",
+=======
+	"appid": "wx32b438e5538d90ed",
+>>>>>>> 55c8cec297b660654ed88b4affe73de7c4b9a22e
 	"setting": {
 		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
+<<<<<<< HEAD
 		"minified": false
+=======
+		"minified": false,
+		"newFeature": true
+>>>>>>> 55c8cec297b660654ed88b4affe73de7c4b9a22e
 	},
 	"compileType": "miniprogram",
 	"condition": {
@@ -26,17 +35,27 @@
 			"list": []
 		},
 		"miniprogram": {
+<<<<<<< HEAD
 			"current": 6,
 			"list": [
 				{
 					"id": -1,
 					"name": "商品列表",
 					"pathName": "pages/item/list",
+=======
+			"current": 1,
+			"list": [
+				{
+					"id": 0,
+					"name": "微信授权",
+					"pathName": "pages/auth/wxauth",
+>>>>>>> 55c8cec297b660654ed88b4affe73de7c4b9a22e
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": 1,
+<<<<<<< HEAD
 					"name": "商品详情",
 					"pathName": "pages/item/espier-detail",
 					"query": "id=1208",
@@ -75,6 +94,11 @@
 					"name": "新增地址",
 					"pathName": "pages/member/edit-address",
 					"query": "id=20",
+=======
+					"name": "注册",
+					"pathName": "pages/auth/reg",
+					"query": "open_id=olp694m8psTjDGnJHdTpQuGXwKjc&union_id=ol23QwSfLg1Dsyq6Sd0Zi1efu9jo",
+>>>>>>> 55c8cec297b660654ed88b4affe73de7c4b9a22e
 					"scene": null
 				}
 			]

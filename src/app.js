@@ -115,18 +115,18 @@ class App extends Component {
   componentDidShow (options) {
     if (process.env.TARO_ENV === 'weapp') {
       FormIds.startCollectingFormIds()
-      try {
-        if (S.getAuthToken()) {
-          api.member.favsList()
-            .then(({ list }) => {
-              store.dispatch({
-                type: 'member/favs',
-                payload: list
-              })
+      if (S.getAuthToken()) {
+        api.member.favsList()
+          .then(({ list }) => {
+            if (!list) return
+            store.dispatch({
+              type: 'member/favs',
+              payload: list
             })
-        }
-      } catch (e) {
-        console.log(e)
+          })
+          .catch(e => {
+            console.info(e)
+          })
       }
     }
 

@@ -18,7 +18,9 @@ var _index3 = require("../../api/index.js");
 
 var _index4 = _interopRequireDefault(_index3);
 
-var _index5 = require("../../utils/index.js");
+var _index5 = require("../../spx/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -45,16 +47,18 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WxAuth.__proto__ || Object.getPrototypeOf(WxAuth)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["userInfo"], _this.handleGetUserInfo = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WxAuth.__proto__ || Object.getPrototypeOf(WxAuth)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["isAuthShow"], _this.state = {
+      isAuthShow: false
+    }, _this.handleGetUserInfo = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(res) {
-        var loginParams, iv, encryptedData, _ref3, code, extConfig, _userInfo, mobile;
+        var loginParams, iv, encryptedData, rawData, signature, _ref3, code, _ref4, token, open_id, union_id;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 loginParams = res.detail;
-                iv = loginParams.iv, encryptedData = loginParams.encryptedData;
+                iv = loginParams.iv, encryptedData = loginParams.encryptedData, rawData = loginParams.rawData, signature = loginParams.signature;
 
                 if (!(!iv || !encryptedData)) {
                   _context.next = 5;
@@ -77,36 +81,41 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
               case 7:
                 _ref3 = _context.sent;
                 code = _ref3.code;
-                extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
 
-                loginParams.appid = extConfig.appid;
-                loginParams.code = code;
 
                 _index2.default.showLoading({
                   mask: true,
                   title: '正在加载...'
                 });
 
-                _context.prev = 13;
-                _context.next = 16;
-                return _index4.default.wx.login(loginParams);
+                _context.prev = 10;
+                _context.next = 13;
+                return _index4.default.wx.prelogin({
+                  code: code,
+                  iv: iv,
+                  encryptedData: encryptedData,
+                  rawData: rawData,
+                  signature: signature
+                });
 
-              case 16:
-                _userInfo = _context.sent;
+              case 13:
+                _ref4 = _context.sent;
+                token = _ref4.token;
+                open_id = _ref4.open_id;
+                union_id = _ref4.union_id;
 
-                _index5.log.debug("[authorize] userInfo:", _userInfo);
 
-                mobile = _userInfo.memberInfo.mobile;
-
-                _index2.default.setStorageSync('user_info', _userInfo);
-                _index2.default.setStorageSync('user_mobile', mobile);
-                _this.redirect();
-                _context.next = 28;
+                _index6.default.setAuthToken(token);
+                // 跳转注册绑定
+                _index2.default.redirectTo({
+                  url: "/pages/auth/reg?open_id=" + open_id + "&union_id=" + union_id
+                });
+                _context.next = 25;
                 break;
 
-              case 24:
-                _context.prev = 24;
-                _context.t0 = _context["catch"](13);
+              case 21:
+                _context.prev = 21;
+                _context.t0 = _context["catch"](10);
 
                 console.info(_context.t0);
                 _index2.default.showToast({
@@ -114,61 +123,20 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
                   icon: 'none'
                 });
 
-              case 28:
+              case 25:
 
                 _index2.default.hideLoading();
 
-              case 29:
+              case 26:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, _this2, [[13, 24]]);
+        }, _callee, _this2, [[10, 21]]);
       }));
 
       return function (_x) {
         return _ref2.apply(this, arguments);
-      };
-    }(), _this.handleGetPhoneNumber = function () {
-      var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
-        var _e$detail, iv, encryptedData, errMsg, _ref5, code, res;
-
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                // TODO: handle phone
-                _e$detail = e.detail, iv = _e$detail.iv, encryptedData = _e$detail.encryptedData, errMsg = _e$detail.errMsg;
-                _context2.next = 3;
-                return _index2.default.login();
-
-              case 3:
-                _ref5 = _context2.sent;
-                code = _ref5.code;
-                _context2.next = 7;
-                return _index4.default.wx.decryptPhoneInfo({
-                  code: code,
-                  iv: iv,
-                  encryptedData: encryptedData
-                });
-
-              case 7:
-                res = _context2.sent;
-
-
-                console.info(res);
-                debugger;
-
-              case 10:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, _this2);
-      }));
-
-      return function (_x2) {
-        return _ref4.apply(this, arguments);
       };
     }(), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -181,51 +149,79 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      // this.getUserInfo()
+      this.autoLogin();
     }
   }, {
-    key: "getUserInfo",
+    key: "autoLogin",
     value: function () {
-      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-        var _ref7, authSetting;
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+        var _ref6, authSetting, _ref7, code, _ref8, token;
 
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
-                _context3.next = 2;
+                _context2.next = 2;
                 return _index2.default.getSetting();
 
               case 2:
-                _ref7 = _context3.sent;
-                authSetting = _ref7.authSetting;
+                _ref6 = _context2.sent;
+                authSetting = _ref6.authSetting;
 
                 if (!authSetting['scope.userInfo']) {
-                  _context3.next = 9;
+                  _context2.next = 21;
                   break;
                 }
 
-                _context3.next = 7;
-                return _index2.default.getUserInfo({ lang: 'zh_CN' });
+                _context2.next = 7;
+                return _index2.default.login();
 
               case 7:
-                userInfo = _context3.sent;
+                _ref7 = _context2.sent;
+                code = _ref7.code;
+                _context2.prev = 9;
+                _context2.next = 12;
+                return _index4.default.wx.login({ code: code });
 
-                console.info(userInfo);
+              case 12:
+                _ref8 = _context2.sent;
+                token = _ref8.token;
 
-              case 9:
+                if (!token) {
+                  _context2.next = 17;
+                  break;
+                }
+
+                _index6.default.setAuthToken(token);
+                return _context2.abrupt("return", this.redirect());
+
+              case 17:
+                _context2.next = 21;
+                break;
+
+              case 19:
+                _context2.prev = 19;
+                _context2.t0 = _context2["catch"](9);
+
+              case 21:
+
+                this.setState({
+                  isAuthShow: true
+                });
+
+              case 22:
               case "end":
-                return _context3.stop();
+                return _context2.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee2, this, [[9, 19]]);
       }));
 
-      function getUserInfo() {
-        return _ref6.apply(this, arguments);
+      function autoLogin() {
+        return _ref5.apply(this, arguments);
       }
 
-      return getUserInfo;
+      return autoLogin;
     }()
   }, {
     key: "redirect",
@@ -245,12 +241,10 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
       var __runloopRef = arguments[2];
       ;
 
-      var userInfo = this.__state.userInfo;
+      var isAuthShow = this.__state.isAuthShow;
 
 
-      Object.assign(this.__state, {
-        userInfo: userInfo
-      });
+      Object.assign(this.__state, {});
       return this.__state;
     }
   }]);

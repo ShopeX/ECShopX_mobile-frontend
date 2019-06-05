@@ -2,22 +2,37 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
+import S from '@/spx'
 import { log } from '@/utils'
 
 import './wxauth.scss'
 
 export default class WxAuth extends Component {
-  componentDidMount () {
-    // this.getUserInfo()
+  state = {
+    isAuthShow: false
   }
 
-  async getUserInfo () {
+  componentDidMount () {
+    this.autoLogin()
+  }
+
+  async autoLogin () {
     const { authSetting } = await Taro.getSetting()
-    
     if (authSetting['scope.userInfo']) {
-      userInfo = await Taro.getUserInfo({ lang: 'zh_CN' })
-      console.info(userInfo)
+      const { code } = await Taro.login()
+
+      try {
+        const { token } = await api.wx.login({ code })
+        if (token) {
+          S.setAuthToken(token)
+          return this.redirect()
+        }
+      } catch (e) {}
     }
+
+    this.setState({
+      isAuthShow: true
+    })
   }
 
   redirect () {
@@ -33,7 +48,7 @@ export default class WxAuth extends Component {
 
   handleGetUserInfo = async (res) => {
     const loginParams = res.detail
-    const { iv, encryptedData } = loginParams
+    const { iv, encryptedData, rawData, signature } = loginParams
 
     if (!iv || !encryptedData) {
       Taro.showModal({
@@ -47,9 +62,6 @@ export default class WxAuth extends Component {
     }
 
     const { code } = await Taro.login()
-    const extConfig = wx.getExtConfigSync? wx.getExtConfigSync(): {}
-    loginParams.appid = extConfig.appid
-    loginParams.code = code
 
     Taro.showLoading({
       mask: true,
@@ -57,13 +69,19 @@ export default class WxAuth extends Component {
     })
 
     try {
-      const userInfo = await api.wx.login(loginParams)
-      log.debug(`[authorize] userInfo:`, userInfo)
+      const { token, open_id, union_id } = await api.wx.prelogin({
+        code,
+        iv,
+        encryptedData,
+        rawData,
+        signature
+      })
 
-      const { mobile } = userInfo.memberInfo
-      Taro.setStorageSync('user_info', userInfo)
-      Taro.setStorageSync('user_mobile', mobile)
-      this.redirect()
+      S.setAuthToken(token)
+      // 跳转注册绑定
+      Taro.redirectTo({
+        url: `/pages/auth/reg?open_id=${open_id}&union_id=${union_id}`
+      })
     } catch (e) {
       console.info(e)
       Taro.showToast({
@@ -75,26 +93,12 @@ export default class WxAuth extends Component {
     Taro.hideLoading()
   }
 
-  handleGetPhoneNumber = async (e) => {
-    // TODO: handle phone
-    const { iv, encryptedData, errMsg } = e.detail
-    const { code } = await Taro.login()
-    const res = await api.wx.decryptPhoneInfo({
-      code,
-      iv,
-      encryptedData
-    })
-
-    console.info(res)
-    debugger
-  }
-
   render () {
-    const { userInfo } = this.state
+    const { isAuthShow } = this.state
 
     return (
       <View className='page-wxauth'>
-        {!userInfo && (
+        {isAuthShow && (
           <View className='sec-auth'>
             <Text className='auth-hint'>需要您的授权才能继续</Text>
             <AtButton
@@ -104,11 +108,6 @@ export default class WxAuth extends Component {
             >点此授权</AtButton>
           </View>
         )}
-        {/*<AtButton
-          type='primary'
-          openType='getPhoneNumber'
-          onGetPhoneNumber={this.handleGetPhoneNumber}
-        >获取手机号</AtButton>*/}
       </View>
     )
   }

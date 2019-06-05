@@ -52,11 +52,14 @@ class API {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
     }
     header['Authorization'] = `Bearer ${S.getAuthToken()}`
+
+    let company_id = APP_COMPANY_ID
     if (process.env.TARO_ENV === 'weapp') {
       const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
       if (extConfig.appid) {
         header['authorizer-appid'] = extConfig.appid
       }
+      if (extConfig.company_id) company_id = extConfig.company_id
     }
 
     const options = {
@@ -77,9 +80,10 @@ class API {
     // if (this.options.interceptor && Taro.addInterceptor) {
     //   Taro.addInterceptor(this.options.interceptor)
     // }
+    const {  } = wx.getExtConfigSync? wx.getExtConfigSync(): {}
     options.data = {
       ...(options.data || {}),
-      company_id: APP_COMPANY_ID
+      company_id
     }
     if (options.method === 'GET') {
       options.url = addQuery(options.url, qs.stringify(options.data))

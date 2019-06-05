@@ -88,18 +88,20 @@ export default class Reg extends Component {
   }
 
   handleSubmit = async (e) => {
+    const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
     const { value } = e.detail
     const data = {
       ...this.state.info,
       ...value
     }
+
     if (!data.mobile || !/1\d{10}/.test(data.mobile)) {
       return S.toast('请输入正确的手机号')
     }
 
-    if (!data.vcode) {
-      return S.toast('请输入验证码')
-    }
+    if (!isWeapp && !data.vcode) {
+        return S.toast('请输入验证码')
+      }
 
     if (!data.password) {
       return S.toast('请输入密码')
@@ -107,9 +109,24 @@ export default class Reg extends Component {
     this.state.list.map(item=>{
       return item.is_required ? (item.is_required && data[item.key] ? true : S.toast(`请输入${item.name}`)) : null
     })
+
     try {
-      const res =  await api.user.reg(data)
-      S.setAuthToken(res.token)
+      if (isWeapp) {
+        const { union_id, open_id } = this.$router.params
+        const res = await api.user.reg({
+          ...data,
+          user_type: 'wechat',
+          auth_type: 'wxapp',
+          union_id,
+          open_id
+        })
+        const { token } = await api.wx.login({ code })
+        S.setAuthToken(token)
+      } else {
+        const res = await api.user.reg(data)
+        S.setAuthToken(res.token)
+      }
+
       S.toast('注册成功')
       setTimeout(()=>{
         Taro.redirectTo({
@@ -209,6 +226,28 @@ export default class Reg extends Component {
     })
   }
 
+  handleGetPhoneNumber = async (e) => {
+    // let { code } = this.$router.params
+    // try {
+    //   await Taro.checkSession()
+    // } catch (e) {
+    //   code = null
+    // }
+
+    // if (!code) {
+    //   const codeRes = await Taro.login()
+    //   code = codeRes.code
+    // }
+    const { code } = await Taro.login()
+    const { errMsg, ...params } = e.detail
+    if (errMsg.indexOf('fail') >= 0) {
+      return
+    }
+    params.code = code    
+    const { phoneNumber } = await api.wx.decryptPhone(params)
+    this.handleChange('mobile', phoneNumber)
+  }
+
   render () {
     const { info, isVisible, list, imgVisible, imgInfo } = this.state
     return (
@@ -221,36 +260,57 @@ export default class Reg extends Component {
           onSubmit={this.handleSubmit}
         >
           <View className='sec auth-reg__form'>
-            <AtInput
-              title='手机号码'
-              name='mobile'
-              type='number'
-              maxLength={11}
-              value={info.mobile}
-              placeholder='请输入手机号码'
-              onFocus={this.handleErrorToastClose}
-              onChange={this.handleChange.bind(this, 'mobile')}
-            />
-            {
-              imgVisible
-                ? <AtInput title='图片验证码' name='yzm' value={info.yzm} placeholder='请输入图片验证码' onFocus={this.handleErrorToastClose} onChange={this.handleChange.bind(this, 'yzm')}>
-                  <Image src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
+            {process.env.TARO_ENV === 'weapp' && (
+              <AtInput
+                title='手机号码'
+                name='mobile'
+                type='number'
+                maxLength={11}
+                value={info.mobile}
+                placeholder=''
+                onFocus={this.handleErrorToastClose}
+                onChange={this.handleChange.bind(this, 'mobile')}
+              >
+                <AtButton
+                  openType='getPhoneNumber'
+                  onGetPhoneNumber={this.handleGetPhoneNumber}
+                >获取手机号码</AtButton>
+              </AtInput>
+            )}
+            {Taro.getEnv() !== Taro.ENV_TYPE.WEAPP && (
+              <View>
+                <AtInput
+                  title='手机号码'
+                  name='mobile'
+                  type='number'
+                  maxLength={11}
+                  value={info.mobile}
+                  placeholder='请输入手机号码'
+                  onFocus={this.handleErrorToastClose}
+                  onChange={this.handleChange.bind(this, 'mobile')}
+                />
+                {
+                  imgVisible
+                    ? <AtInput title='图片验证码' name='yzm' value={info.yzm} placeholder='请输入图片验证码' onFocus={this.handleErrorToastClose} onChange={this.handleChange.bind(this, 'yzm')}>
+                      <Image src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
+                    </AtInput>
+                    : null
+                }
+                <AtInput
+                  title='验证码'
+                  name='vcode'
+                  value={info.vcode}
+                  placeholder='请输入验证码'
+                  onFocus={this.handleErrorToastClose}
+                  onChange={this.handleChange.bind(this, 'vcode')}
+                >
+                  <Timer
+                    onStart={this.handleTimerStart}
+                    onStop={this.handleTimerStop}
+                  />
                 </AtInput>
-                : null
-            }
-            <AtInput
-              title='验证码'
-              name='vcode'
-              value={info.vcode}
-              placeholder='请输入验证码'
-              onFocus={this.handleErrorToastClose}
-              onChange={this.handleChange.bind(this, 'vcode')}
-            >
-              <Timer
-                onStart={this.handleTimerStart}
-                onStop={this.handleTimerStop}
-              />
-            </AtInput>
+              </View>
+            )}
             <AtInput
               title='密码'
               name='password'

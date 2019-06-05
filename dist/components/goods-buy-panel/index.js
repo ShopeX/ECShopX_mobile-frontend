@@ -361,7 +361,7 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
 
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __runloopRef = arguments[2];
+      var __isRunloopRef = arguments[2];
       var noSpecs = this.noSpecs;
       var _props = this.__props,
           info = _props.info,

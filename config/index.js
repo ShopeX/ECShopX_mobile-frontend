@@ -42,7 +42,10 @@ const config = {
       ? `'//${API_HOST}/index.php/api/h5app/wxapp'`
       : `https://${API_HOST}/index.php/api/h5app/wxapp`,
     APP_COMPANY_ID: '1',
-    APP_INTEGRATION: process.env.INTEGRATION_APP
+    APP_INTEGRATION: process.env.INTEGRATION_APP,
+    APP_AUTH_PAGE: process.env.TARO_ENV === 'weapp'
+      ? '/pages/auth/wxauth'
+      : '/pages/auth/login'
   },
   alias: {
     '@': path.join(__dirname, '../src')

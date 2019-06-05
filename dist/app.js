@@ -89,19 +89,19 @@ var _App = function (_BaseComponent) {
     value: function componentDidShow(options) {
       {
         _index10.FormIds.startCollectingFormIds();
-        try {
-          if (_index4.default.getAuthToken()) {
-            _index9.default.member.favsList().then(function (_ref2) {
-              var list = _ref2.list;
+        if (_index4.default.getAuthToken()) {
+          _index9.default.member.favsList().then(function (_ref2) {
+            var list = _ref2.list;
 
-              store.dispatch({
-                type: 'member/favs',
-                payload: list
-              });
+            if (!list) {
+              return;
+            }store.dispatch({
+              type: 'member/favs',
+              payload: list
             });
-          }
-        } catch (e) {
-          console.log(e);
+          }).catch(function (e) {
+            console.info(e);
+          });
         }
       }
 
