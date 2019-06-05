@@ -5,3 +5,4 @@ node_modules/
 .idea/
 .h5_dev_dist
 release.*
+dist_iwa.zip
