@@ -176,20 +176,19 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
                 _ref7 = _context2.sent;
                 token = _ref7.token;
 
-                if (!token) {
-                  _context2.next = 12;
+                if (token) {
+                  _context2.next = 11;
                   break;
                 }
 
+                throw new Error("token is not defined: " + token);
+
+              case 11:
                 _index6.default.setAuthToken(token);
                 return _context2.abrupt("return", this.redirect());
 
-              case 12:
-                _context2.next = 18;
-                break;
-
-              case 14:
-                _context2.prev = 14;
+              case 15:
+                _context2.prev = 15;
                 _context2.t0 = _context2["catch"](4);
 
                 console.log(_context2.t0);
@@ -197,12 +196,12 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
                   isAuthShow: true
                 });
 
-              case 18:
+              case 19:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[4, 14]]);
+        }, _callee2, this, [[4, 15]]);
       }));
 
       function autoLogin() {

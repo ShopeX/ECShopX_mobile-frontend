@@ -20,10 +20,10 @@ export default class WxAuth extends Component {
     const { code } = await Taro.login()
     try {
       const { token } = await api.wx.login({ code })
-      if (token) {
-        S.setAuthToken(token)
-        return this.redirect()
-      }
+      if (!token) throw new Error(`token is not defined: ${token}`)
+
+      S.setAuthToken(token)
+      return this.redirect()
     } catch (e) {
       console.log(e)
       this.setState({
