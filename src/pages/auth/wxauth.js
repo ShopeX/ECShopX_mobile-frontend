@@ -36,7 +36,7 @@ export default class WxAuth extends Component {
     const redirect = this.$router.params.redirect
     let redirect_url = redirect
       ? decodeURIComponent(redirect)
-      : APP_HOME_PAGE
+      : '/pages/member/index'
 
     Taro.redirectTo({
       url: redirect_url
