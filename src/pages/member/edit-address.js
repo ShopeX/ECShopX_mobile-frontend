@@ -17,7 +17,8 @@ export default class AddressIndex extends Component {
       info: {},
       areaList: [],
       multiIndex: [],
-      listLength: 0
+      listLength: 0,
+      resetAreaList: []
     }
   }
 
@@ -64,6 +65,7 @@ export default class AddressIndex extends Component {
     })
     this.setState({
       areaList: [arrProvice, arrCity, arrCounty],
+      resetAreaList: [arrProvice, arrCity, arrCounty]
       // areaList: [['北京'], ['北京'], ['东城']],
     })
 
@@ -88,10 +90,10 @@ export default class AddressIndex extends Component {
 
   // 选定开户地区
   handleClickPicker = () => {
-    this.fetch()
-    /*this.setState({
-      multiIndex: [0, 0, 0]
-    })*/
+    // this.fetch()
+    this.setState({
+      areaList: this.state.resetAreaList
+    })
   }
 
   bindMultiPickerChange = async (e) => {
