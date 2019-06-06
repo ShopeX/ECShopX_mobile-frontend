@@ -56,7 +56,7 @@ var CashierResult = (_temp2 = _class = function (_BaseComponent) {
       }
     }, _this.handleClickRoam = function () {
       _index2.default.navigateTo({
-        url: '/pages/home/index'
+        url: "/pages/index"
       });
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }

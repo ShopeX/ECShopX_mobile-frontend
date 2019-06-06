@@ -57,7 +57,7 @@ var MemberSetting = (_dec = (0, _index3.withLogin)(), _dec(_class = (_temp2 = _c
               _index5.default.logout();
 
               _index2.default.redirectTo({
-                url: '/pages/home/index'
+                url: "/pages/index"
               });
 
             case 2:

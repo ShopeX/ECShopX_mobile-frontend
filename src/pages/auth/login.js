@@ -45,7 +45,7 @@ export default class Login extends Component {
     try {
       const { token } = await api.user.login(data)
       S.setAuthToken(token)
-      const redirect = decodeURIComponent(this.$router.params.redirect || '/pages/home/index')
+      const redirect = decodeURIComponent(this.$router.params.redirect || APP_HOME_PAGE)
       Taro.redirectTo({
         url: redirect
       })
@@ -95,7 +95,7 @@ export default class Login extends Component {
     //
     // Taro.navigateBack()、
     Taro.redirectTo({
-      url: '/pages/home/index'
+      url: APP_HOME_PAGE
     })
   }
 

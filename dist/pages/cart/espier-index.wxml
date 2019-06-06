@@ -40,7 +40,7 @@
                         <view style="margin-bottom: 20px">
                             <sp-note img="cart_empty.png" __triggerObserer="{{ _triggerObserer }}">快去给我挑点宝贝吧~</sp-note>
                         </view>
-                        <at-button className="btn-rand" __triggerObserer="{{ _triggerObserer }}" type="primary" bindonclick="navigateTo" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="/pages/home/index" data-e-onclick-a-b="{{true}}">随便逛逛</at-button>
+                        <at-button className="btn-rand" __triggerObserer="{{ _triggerObserer }}" type="primary" bindonclick="navigateTo" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="/pages/index" data-e-onclick-a-b="{{true}}">随便逛逛</at-button>
                     </view>
                 </block>
             </view>

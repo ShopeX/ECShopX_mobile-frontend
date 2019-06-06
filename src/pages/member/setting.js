@@ -19,10 +19,10 @@ export default class MemberSetting extends Component {
     S.logout()
     if (process.env.TARO_ENV === 'h5') {
       // eslint-disable-next-line
-      goToPage('/pages/home/index')
+      goToPage(APP_HOME_PAGE)
     } else {
       Taro.redirectTo({
-        url: '/pages/home/index'
+        url: APP_HOME_PAGE
       })
     }
   }

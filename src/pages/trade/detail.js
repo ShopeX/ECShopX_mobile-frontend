@@ -181,7 +181,7 @@ export default class TradeDetail extends Component {
 
     if (type === 'home') {
       Taro.redirectTo({
-        url: '/pages/home/index'
+        url: APP_HOME_PAGE
       })
       return
     }

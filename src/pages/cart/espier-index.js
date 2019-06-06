@@ -481,7 +481,7 @@ export default class CartIndex extends Component {
                   <AtButton
                     className='btn-rand'
                     type='primary'
-                    onClick={this.navigateTo.bind(this, '/pages/home/index', true)}
+                    onClick={this.navigateTo.bind(this, APP_HOME_PAGE, true)}
                   >随便逛逛</AtButton>
                 </View>
               )

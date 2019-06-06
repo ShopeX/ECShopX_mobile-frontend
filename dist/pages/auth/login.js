@@ -89,7 +89,7 @@ var Login = (_temp2 = _class = function (_BaseComponent) {
                 token = _ref3.token;
 
                 _index4.default.setAuthToken(token);
-                redirect = decodeURIComponent(_this.$router.params.redirect || '/pages/home/index');
+                redirect = decodeURIComponent(_this.$router.params.redirect || "/pages/index");
 
                 _index2.default.redirectTo({
                   url: redirect
@@ -141,7 +141,7 @@ var Login = (_temp2 = _class = function (_BaseComponent) {
       //
       // Taro.navigateBack()、
       _index2.default.redirectTo({
-        url: '/pages/home/index'
+        url: "/pages/index"
       });
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }

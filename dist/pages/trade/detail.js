@@ -359,7 +359,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                 }
 
                 _index2.default.redirectTo({
-                  url: '/pages/home/index'
+                  url: "/pages/index"
                 });
                 return _context4.abrupt("return");
 

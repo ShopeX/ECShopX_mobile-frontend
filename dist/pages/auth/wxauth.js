@@ -228,7 +228,7 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
     key: "redirect",
     value: function redirect() {
       var redirect = this.$router.params.redirect;
-      var redirect_url = redirect ? decodeURIComponent(redirect) : '/pages/home/index';
+      var redirect_url = redirect ? decodeURIComponent(redirect) : "/pages/index";
 
       _index2.default.redirectTo({
         url: redirect_url

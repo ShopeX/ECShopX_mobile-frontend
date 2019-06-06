@@ -59,7 +59,7 @@ export default class CashierResult extends Component {
 
   handleClickRoam = () => {
     Taro.navigateTo({
-      url: '/pages/home/index'
+      url: APP_HOME_PAGE
     })
   }
 

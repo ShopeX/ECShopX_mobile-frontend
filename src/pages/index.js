@@ -7,9 +7,9 @@ import api from '@/api'
 import { pickBy } from '@/utils'
 import { withPager } from '@/hocs'
 import S from "@/spx";
-import { WgtSearchHome, WgtSlider, WgtLimittimeSlider, WgtGoodsFaverite, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from './wgts'
+import { WgtSearchHome, WgtSlider, WgtLimittimeSlider, WgtGoodsFaverite, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from './home/wgts'
 
-import './index.scss'
+import './home/index.scss'
 
 @connect(store => ({
   store

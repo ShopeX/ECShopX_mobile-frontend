@@ -21,7 +21,7 @@ useHooks()
 class App extends Component {
   config = {
     pages: [
-      'pages/home/index',
+      'pages/index',
       'pages/home/landing',
       'pages/category/index',
       'pages/item/list',
