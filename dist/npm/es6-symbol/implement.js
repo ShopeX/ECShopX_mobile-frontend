@@ -1,6 +1,1 @@
-'use strict';
-
-if (!require("./is-implemented.js")()) {
-  Object.defineProperty(require("../es5-ext/global.js"), 'Symbol', { value: require("./polyfill.js"), configurable: true, enumerable: false,
-    writable: true });
-}
+"use strict";require("./is-implemented.js")()||Object.defineProperty(require("../es5-ext/global.js"),"Symbol",{value:require("./polyfill.js"),configurable:!0,enumerable:!1,writable:!0});

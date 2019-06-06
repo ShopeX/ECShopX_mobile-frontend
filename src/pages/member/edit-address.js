@@ -92,6 +92,7 @@ export default class AddressIndex extends Component {
   handleClickPicker = () => {
     // this.fetch()
     this.setState({
+      multiIndex: [0, 0, 0],
       areaList: this.state.resetAreaList
     })
   }

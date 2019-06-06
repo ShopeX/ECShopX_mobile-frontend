@@ -1,11 +1,1 @@
-'use strict';
-
-exports.__esModule = true;
-var KEY_PREFIX = exports.KEY_PREFIX = 'persist:';
-var FLUSH = exports.FLUSH = 'persist/FLUSH';
-var REHYDRATE = exports.REHYDRATE = 'persist/REHYDRATE';
-var PAUSE = exports.PAUSE = 'persist/PAUSE';
-var PERSIST = exports.PERSIST = 'persist/PERSIST';
-var PURGE = exports.PURGE = 'persist/PURGE';
-var REGISTER = exports.REGISTER = 'persist/REGISTER';
-var DEFAULT_VERSION = exports.DEFAULT_VERSION = -1;
+"use strict";exports.__esModule=!0;var KEY_PREFIX=exports.KEY_PREFIX="persist:",FLUSH=exports.FLUSH="persist/FLUSH",REHYDRATE=exports.REHYDRATE="persist/REHYDRATE",PAUSE=exports.PAUSE="persist/PAUSE",PERSIST=exports.PERSIST="persist/PERSIST",PURGE=exports.PURGE="persist/PURGE",REGISTER=exports.REGISTER="persist/REGISTER",DEFAULT_VERSION=exports.DEFAULT_VERSION=-1;
