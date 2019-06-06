@@ -47,11 +47,7 @@ function reg(params) {
   var appid = getAppId();
   return _req2.default.post('/member', _extends({}, params, {
     appid: appid
-<<<<<<< HEAD
-  }), { showError: false });
-=======
   }));
->>>>>>> 31103b9b8da116677ee5705eb91901855502c777
 }
 
 function regRule() {

@@ -20,7 +20,6 @@ export default class WxAuth extends Component {
     const { authSetting } = await Taro.getSetting()
     if (authSetting['scope.userInfo']) {
       const { code } = await Taro.login()
-
       try {
         const { token } = await api.wx.login({ code })
         if (token) {
