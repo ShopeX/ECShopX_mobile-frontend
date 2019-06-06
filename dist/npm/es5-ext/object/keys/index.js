@@ -1,1 +1,3 @@
-"use strict";module.exports=require("./is-implemented.js")()?Object.keys:require("./shim.js");
+"use strict";
+
+module.exports = require("./is-implemented.js")() ? Object.keys : require("./shim.js");

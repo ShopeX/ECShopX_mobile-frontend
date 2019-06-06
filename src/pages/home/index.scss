@@ -4,10 +4,12 @@
   padding-bottom: $tabbar-height;
   background: #fff;
   height: 100vh;
+  box-sizing: border-box;
 }
 
 .wgts-wrap {
   &__fixed {
+    background: #fff;
     @include page-scroll(0, $tabbar-height + $edge-margin);
   }
   &__is-distributor {

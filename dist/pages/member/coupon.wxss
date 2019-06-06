@@ -1,1 +1,38 @@
-.coupon-list{background:#f6f6f6}.coupon-list__scroll{position:absolute;left:0;width:100%;top:75rpx;bottom:16rpx;overflow-y:auto;overflow-x:hidden;z-index:1;-webkit-box-sizing:border-box;box-sizing:border-box}.coupon-list__scroll,.coupon-list__scroll>div{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}.coupon-list-ticket{padding-top:20rpx}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.coupon-list {
+  background: #f6f6f6;
+}
+.coupon-list__scroll {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 75rpx;
+  bottom: 16rpx;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  z-index: 1;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.coupon-list__scroll > div {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
+.coupon-list-ticket {
+  padding-top: 20rpx;
+}

@@ -1,1 +1,59 @@
-.page-cashier-index .cashier-money{border-top:1rpx solid #b9b9b9;background:#fff;padding:50rpx 30rpx}.page-cashier-index .cashier-money__tip{font-size:31rpx;color:#333;margin:0 0 16rpx}.page-cashier-index .cashier-money__content{background:#fff}.page-cashier-index .cashier-money__content-title{color:#000;font-size:26rpx}.page-cashier-index .cashier-money__content-number{color:#0b4137;font-size:96rpx}.page-cashier-index .pay-status{margin-top:20rpx;padding:30rpx}.page-cashier-index .pay-mode{background:#0b4137;color:#fff;border-radius:6rpx;text-align:center;padding:0 32rpx;height:80rpx;line-height:80rpx;margin-bottom:20rpx}.page-cashier-index .at-modal__content{text-align:center;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.page-cashier-index .cashier-money {
+  border-top: 1rpx solid #b9b9b9;
+  background: #ffffff;
+  padding: 50rpx 30rpx;
+}
+.page-cashier-index .cashier-money__tip {
+  font-size: 31rpx;
+  color: #333;
+  margin: 0 0 16rpx;
+}
+.page-cashier-index .cashier-money__content {
+  background: #fff;
+}
+.page-cashier-index .cashier-money__content-title {
+  color: #000;
+  font-size: 26rpx;
+}
+.page-cashier-index .cashier-money__content-number {
+  color: #0b4137;
+  font-size: 96rpx;
+}
+.page-cashier-index .pay-status {
+  margin-top: 20rpx;
+  padding: 30rpx;
+}
+.page-cashier-index .pay-mode {
+  background: #0b4137;
+  color: #ffffff;
+  border-radius: 6rpx;
+  text-align: center;
+  padding: 0 32rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-bottom: 20rpx;
+}
+.page-cashier-index .at-modal__content {
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}

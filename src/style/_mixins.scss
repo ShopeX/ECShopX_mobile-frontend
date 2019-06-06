@@ -121,7 +121,7 @@
   overflow-x: hidden;
   transform: translate3d(0,0,0);
   z-index: 1;
-  > div {
+  > div, > view {
     transform: translate3d(0,0,0);
   }
 }

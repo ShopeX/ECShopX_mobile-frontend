@@ -6,3 +6,4 @@ node_modules/
 .h5_dev_dist
 release.*
 dist_iwa.zip
+sitemap.json
