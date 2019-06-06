@@ -342,10 +342,11 @@ export default class Detail extends Component {
             </View>
           )}
 
-          <View className='goods-sec-specs'>
-            {
-              promotion_activity && promotion_activity.length > 0
-                ? <View className='goods-sec-specs__activity'>
+
+          {
+            promotion_activity && promotion_activity.length > 0
+              ? <View className='goods-sec-specs'>
+                <View className='goods-sec-specs__activity'>
                   {
                     promotion_activity.map(item =>{
                       return (
@@ -359,40 +360,44 @@ export default class Detail extends Component {
                       )
                     })
                   }
-
                 </View>
-                : null
-            }
-
-          </View>
-
-          <View className='goods-sec-specs'>
-            <View className='specs-title'>
-              <Text>规格</Text>
-              {curSku && (
-                <Text className='specs-selected'>已选 {curSku.propsText}</Text>
-              )}
-            </View>
-            <ScrollView
-              className='specs-scroller'
-              scrollX
-            >
-              <View className='specs-imgs'>
-                {Object.keys(this.state.specImgsDict).map((specValueId) => {
-                  const img = this.state.specImgsDict[specValueId]
-                  return (
-                    <Image
-                      class='specs-imgs__item'
-                      src={img}
-                      key={img}
-                      mode='aspectFill'
-                      onClick={this.handleBuyBarClick.bind(this, buyPanelType)}
-                    />
-                  )
-                })}
               </View>
-            </ScrollView>
-          </View>
+              : null
+          }
+
+
+          {
+            info.nospec !== true
+              ? <View className='goods-sec-specs'>
+                <View className='specs-title'>
+                  <Text>规格</Text>
+                  {curSku && (
+                    <Text className='specs-selected'>已选 {curSku.propsText}</Text>
+                  )}
+                </View>
+                <ScrollView
+                  className='specs-scroller'
+                  scrollX
+                >
+                  <View className='specs-imgs'>
+                    {Object.keys(this.state.specImgsDict).map((specValueId) => {
+                      const img = this.state.specImgsDict[specValueId]
+                      return (
+                        <Image
+                          class='specs-imgs__item'
+                          src={img}
+                          key={img}
+                          mode='aspectFill'
+                          onClick={this.handleBuyBarClick.bind(this, buyPanelType)}
+                        />
+                      )
+                    })}
+                  </View>
+                </ScrollView>
+              </View>
+              : null
+          }
+
 
           <View className='wgts-wrap__cont'>
             {

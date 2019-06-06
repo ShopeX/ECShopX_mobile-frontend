@@ -13,9 +13,6 @@
                     <block wx:if="{{item.name === 'navigation'}}">
                         <wgt-navigation info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-navigation>
                     </block>
-                    <block wx:if="{{item.name === 'slider'}}">
-                        <wgt-limittime-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-limittime-slider>
-                    </block>
                     <block wx:if="{{item.name === 'coupon'}}">
                         <wgt-coupon info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-coupon>
                     </block>

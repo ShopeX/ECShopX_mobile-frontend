@@ -1,13 +1,13 @@
 {
-	"projectname": "mshop-taro",
-	"description": "taro app for bbc",
-	"appid": "wxf91925e702efe3e3",
-	"setting": {
-		"urlCheck": false,
-		"es6": false,
-		"postcss": false,
-		"minified": false
-	},
-	"compileType": "miniprogram",
-	"condition": {}
+  "miniprogramRoot": "./",
+  "projectname": "mshop-taro",
+  "description": "taro app for bbc",
+  "appid": "wx32b438e5538d90ed",
+  "setting": {
+    "urlCheck": false,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
 }
