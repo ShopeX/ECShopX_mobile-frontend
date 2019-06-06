@@ -44,7 +44,8 @@ export default class Detail extends Component {
       showBuyPanel: false,
       buyPanelType: null,
       specImgsDict: {},
-      curSku: null
+      curSku: null,
+      promotion_activity: []
     }
   }
 
@@ -96,8 +97,8 @@ export default class Detail extends Component {
     const { id } = this.$router.params
     const info = await api.item.detail(id)
 
-    const { intro: desc } = info
-
+    const { intro: desc, promotion_activity: promotion_activity } = info
+    console.log(promotion_activity, 100)
     let marketing = 'normal'
     let timer = null
     let hasStock = info.store && info.store > 0
@@ -141,7 +142,8 @@ export default class Detail extends Component {
       timer,
       hasStock,
       startSecKill,
-      specImgsDict
+      specImgsDict,
+      promotion_activity
     })
     log.debug('fetch: done', info)
   }
@@ -233,7 +235,7 @@ export default class Detail extends Component {
   }
 
   render () {
-    const { info, windowWidth, desc, cartCount, scrollTop, showBackToTop, curSku } = this.state
+    const { info, windowWidth, desc, cartCount, scrollTop, showBackToTop, curSku, promotion_activity } = this.state
     const { marketing, timer, isPromoter, startSecKill, hasStock, showBuyPanel, buyPanelType } = this.state
 
     if (!info) {
@@ -339,6 +341,30 @@ export default class Detail extends Component {
               <Text>预计收益：{(info.promoter_price/100).toFixed(2)}</Text>
             </View>
           )}
+
+          <View className='goods-sec-specs'>
+            {
+              promotion_activity
+                ? <View className='goods-sec-specs__activity'>
+                  {
+                    promotion_activity.map(item =>{
+                      return (
+                        <View
+                          key={item.marketing_id}
+                          className='goods-sec-specs__activity-item'
+                        >
+                          <Text className='goods-sec-specs__activity-label'>{item.promotion_tag}</Text>
+                          <Text>{item.condition_rules}</Text>
+                        </View>
+                      )
+                    })
+                  }
+
+                </View>
+                : null
+            }
+
+          </View>
 
           <View className='goods-sec-specs'>
             <View className='specs-title'>

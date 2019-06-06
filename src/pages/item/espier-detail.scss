@@ -210,6 +210,18 @@
   background: #fff;
   padding: 50px 30px;
   margin: 0 0 $edge-margin;
+  &__activity {
+    font-size: 26px;
+    &-label {
+      background: $color-brand-primary;
+      color: #fff;
+      font-size: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      padding: 2px 8px;
+      margin-right: 8px;
+    }
+  }
   .specs {
     &-title {
       font-size: $font-size-large;

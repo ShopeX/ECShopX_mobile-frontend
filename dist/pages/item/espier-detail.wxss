@@ -282,6 +282,18 @@
   padding: 50rpx 30rpx;
   margin: 0 0 16rpx;
 }
+.goods-sec-specs__activity {
+  font-size: 26rpx;
+}
+.goods-sec-specs__activity-label {
+  background: #0b4137;
+  color: #fff;
+  font-size: 20rpx;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 2rpx 8rpx;
+  margin-right: 8rpx;
+}
 .goods-sec-specs .specs-title {
   font-size: 31rpx;
   color: #000;

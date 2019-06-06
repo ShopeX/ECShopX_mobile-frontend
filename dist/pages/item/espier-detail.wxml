@@ -40,13 +40,21 @@
                 </view>
             </block>
             <view class="goods-sec-specs">
+                <block wx:if="{{promotion_activity}}">
+                    <view class="goods-sec-specs__activity">
+                        <view wx:key="marketing_id" class="goods-sec-specs__activity-item" wx:for="{{promotion_activity}}" wx:for-item="item" wx:for-index="_anonIdx"><text class="goods-sec-specs__activity-label">{{item.promotion_tag}}</text><text>{{item.condition_rules}}</text>
+                        </view>
+                    </view>
+                </block>
+            </view>
+            <view class="goods-sec-specs">
                 <view class="specs-title"><text>规格</text>
                     <block wx:if="{{curSku}}"><text class="specs-selected">已选 {{curSku.propsText}}</text>
                     </block>
                 </view>
                 <scroll-view class="specs-scroller" scroll-x="{{true}}">
                     <view class="specs-imgs">
-                        <image class="specs-imgs__item" src="{{specValueId.img}}" wx:key="img" mode="aspectFill" bindtap="handleBuyBarClick" wx:for="{{loopArray0}}" wx:for-item="specValueId" wx:for-index="_anonIdx" data-e-tap-so="this" data-e-tap-a-a="{{buyPanelType}}"></image>
+                        <image class="specs-imgs__item" src="{{specValueId.img}}" wx:key="img" mode="aspectFill" bindtap="handleBuyBarClick" wx:for="{{loopArray0}}" wx:for-item="specValueId" wx:for-index="_anonIdx2" data-e-tap-so="this" data-e-tap-a-a="{{buyPanelType}}"></image>
                     </view>
                 </scroll-view>
             </view>
