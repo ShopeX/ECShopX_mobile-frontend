@@ -9,7 +9,7 @@ import './wxauth.scss'
 
 export default class WxAuth extends Component {
   state = {
-    isAuthShow: false
+    isAuthShow: true
   }
 
   componentDidMount () {
@@ -103,6 +103,7 @@ export default class WxAuth extends Component {
             <Text className='auth-hint'>需要您的授权才能继续</Text>
             <AtButton
               type='primary'
+              lang='zh_CN'
               openType='getUserInfo'
               onGetUserInfo={this.handleGetUserInfo}
             >点此授权</AtButton>

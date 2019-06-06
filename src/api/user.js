@@ -22,7 +22,7 @@ export function reg (params) {
   return req.post('/member', {
     ...params,
     appid
-  }, { showError: false })
+  })
 }
 
 export function regRule () {

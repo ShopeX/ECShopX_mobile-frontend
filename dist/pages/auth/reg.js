@@ -100,7 +100,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       }, _callee, _this2, [[1, 8]]);
     })), _this.handleSubmit = function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
-        var value, data, _this$$router$params, union_id, open_id, res, code, _ref5, token, _res;
+        var value, data, _this$$router$params, union_id, open_id, res, _ref5, code, _ref6, token, _res;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -140,7 +140,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
                 _context2.prev = 9;
 
                 if (!isWeapp) {
-                  _context2.next = 23;
+                  _context2.next = 26;
                   break;
                 }
 
@@ -155,28 +155,33 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
 
               case 14:
                 res = _context2.sent;
-                code = _this.$router.params.code;
-                _context2.next = 18;
+                _context2.next = 17;
+                return _index2.default.login();
+
+              case 17:
+                _ref5 = _context2.sent;
+                code = _ref5.code;
+                _context2.next = 21;
                 return _index8.default.wx.login({ code: code });
 
-              case 18:
-                _ref5 = _context2.sent;
-                token = _ref5.token;
+              case 21:
+                _ref6 = _context2.sent;
+                token = _ref6.token;
 
                 _index6.default.setAuthToken(token);
-                _context2.next = 27;
+                _context2.next = 30;
                 break;
 
-              case 23:
-                _context2.next = 25;
+              case 26:
+                _context2.next = 28;
                 return _index8.default.user.reg(data);
 
-              case 25:
+              case 28:
                 _res = _context2.sent;
 
                 _index6.default.setAuthToken(_res.token);
 
-              case 27:
+              case 30:
 
                 _index6.default.toast('注册成功');
                 setTimeout(function () {
@@ -184,20 +189,20 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
                     url: '/pages/member/index'
                   });
                 }, 700);
-                _context2.next = 35;
+                _context2.next = 38;
                 break;
 
-              case 31:
-                _context2.prev = 31;
+              case 34:
+                _context2.prev = 34;
                 _context2.t0 = _context2["catch"](9);
                 return _context2.abrupt("return", false);
 
-              case 35:
+              case 38:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, _this2, [[9, 31]]);
+        }, _callee2, _this2, [[9, 34]]);
       }));
 
       return function (_x) {
@@ -250,7 +255,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       console.log(_this.textInput.value);
       _index6.default.closeToast();
     }, _this.handleTimerStart = function () {
-      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(resolve) {
+      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(resolve) {
         var _this$state$info, mobile, yzm, imgInfo, query;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
@@ -317,15 +322,15 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       }));
 
       return function (_x2) {
-        return _ref6.apply(this, arguments);
+        return _ref7.apply(this, arguments);
       };
     }(), _this.handleTimerStop = function () {}, _this.handleClickAgreement = function () {
       _index2.default.navigateTo({
         url: '/pages/auth/reg-rule'
       });
     }, _this.handleGetPhoneNumber = function () {
-      var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
-        var _ref8, code, _e$detail, errMsg, params, _ref9, phoneNumber;
+      var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(e) {
+        var _ref9, code, _e$detail, errMsg, params, _ref10, phoneNumber;
 
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
@@ -335,8 +340,8 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
                 return _index2.default.login();
 
               case 2:
-                _ref8 = _context4.sent;
-                code = _ref8.code;
+                _ref9 = _context4.sent;
+                code = _ref9.code;
                 _e$detail = e.detail, errMsg = _e$detail.errMsg, params = _objectWithoutProperties(_e$detail, ["errMsg"]);
 
                 if (!(errMsg.indexOf('fail') >= 0)) {
@@ -352,8 +357,8 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
                 return _index8.default.wx.decryptPhone(params);
 
               case 10:
-                _ref9 = _context4.sent;
-                phoneNumber = _ref9.phoneNumber;
+                _ref10 = _context4.sent;
+                phoneNumber = _ref10.phoneNumber;
 
                 _this.handleChange('mobile', phoneNumber);
 
@@ -366,7 +371,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       }));
 
       return function (_x3) {
-        return _ref7.apply(this, arguments);
+        return _ref8.apply(this, arguments);
       };
     }(), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -401,7 +406,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
   }, {
     key: "fetch",
     value: function () {
-      var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
+      var _ref11 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
         var arr, res;
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
@@ -449,7 +454,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       }));
 
       function fetch() {
-        return _ref10.apply(this, arguments);
+        return _ref11.apply(this, arguments);
       }
 
       return fetch;
@@ -481,9 +486,9 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
         var $loopState__temp4 = (0, _index4.classNames)(item.$original.value ? 'pick-value' : 'pick-value-null');
         var $loopState__temp6 = "" + item.$original.key;
         var $loopState__temp8 = "\u8BF7\u8F93\u5165" + item.$original.name;
-        var $loopState__temp10 = "nJbQU" + index;
+        var $loopState__temp10 = "XbFvY" + index;
 
-        var __ref = __scope && __runloopRef && (0, _index.getElementById)(__scope, "#" + ("nJbQU" + index), "component");
+        var __ref = __scope && __runloopRef && (0, _index.getElementById)(__scope, "#" + ("XbFvY" + index), "component");
 
         __ref && function (input) {
           _this3.textInput = input;

@@ -65,6 +65,7 @@ function withPager(Component) {
           isLoading: false,
           hasNext: true
         });
+
         this.setState({ page: page }, cb);
       }
     }]);

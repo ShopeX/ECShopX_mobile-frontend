@@ -124,7 +124,7 @@ export default class Reg extends Component {
           open_id
         })
         
-        const { code } = this.$router.params
+        const { code } = await Taro.login()
         const { token } = await api.wx.login({ code })
         S.setAuthToken(token)
       } else {
