@@ -15,9 +15,12 @@
   padding-bottom: 90rpx;
   background: #fff;
   height: 100vh;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .wgts-wrap__fixed {
+  background: #fff;
   position: absolute;
   left: 0;
   width: 100%;
@@ -29,7 +32,7 @@
           transform: translate3d(0, 0, 0);
   z-index: 1;
 }
-.wgts-wrap__fixed > div {
+.wgts-wrap__fixed > div, .wgts-wrap__fixed > view {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }

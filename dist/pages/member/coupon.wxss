@@ -28,7 +28,7 @@
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
-.coupon-list__scroll > div {
+.coupon-list__scroll > div, .coupon-list__scroll > view {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }

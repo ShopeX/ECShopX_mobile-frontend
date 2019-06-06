@@ -201,9 +201,15 @@ export default class GoodsBuyPanel extends Component {
   }
 
   handleBuyClick = async (type, skuInfo, num) => {
+    if (this.state.busy) return
+
     const { marketing, info } = this.state
     const { item_id } = this.noSpecs ? info : skuInfo
     let url = `/pages/cart/espier-checkout`
+
+    this.setState({
+      busy: true
+    })
 
     if (type === 'cart') {
       url = `/pages/cart/espier-index`

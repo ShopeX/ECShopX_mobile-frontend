@@ -86,7 +86,7 @@
           transform: translate3d(0, 0, 0);
   z-index: 1;
 }
-.page-goods-list .goods-list__scroll > div {
+.page-goods-list .goods-list__scroll > div, .page-goods-list .goods-list__scroll > view {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
@@ -229,7 +229,7 @@
           transform: translate3d(0, 0, 0);
   z-index: 1;
 }
-.page-goods-history .goods-list__scroll > div {
+.page-goods-history .goods-list__scroll > div, .page-goods-history .goods-list__scroll > view {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }

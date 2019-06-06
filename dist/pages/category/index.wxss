@@ -35,7 +35,7 @@
           transform: translate3d(0, 0, 0);
   z-index: 1;
 }
-.page-category-index .category-comps > div {
+.page-category-index .category-comps > div, .page-category-index .category-comps > view {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }

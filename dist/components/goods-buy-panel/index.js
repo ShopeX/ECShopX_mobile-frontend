@@ -99,35 +99,48 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                if (!_this.state.busy) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
                 _this$state = _this.state, marketing = _this$state.marketing, info = _this$state.info;
                 _ref3 = _this.noSpecs ? info : skuInfo, item_id = _ref3.item_id;
                 url = "/pages/cart/espier-checkout";
 
+
+                _this.setState({
+                  busy: true
+                });
+
                 if (!(type === 'cart')) {
-                  _context.next = 16;
+                  _context.next = 19;
                   break;
                 }
 
                 url = "/pages/cart/espier-index";
 
-                _context.prev = 5;
-                _context.next = 8;
+                _context.prev = 8;
+                _context.next = 11;
                 return _index5.default.cart.add({
                   item_id: item_id,
                   num: num
                 });
 
-              case 8:
-                _context.next = 13;
+              case 11:
+                _context.next = 16;
                 break;
 
-              case 10:
-                _context.prev = 10;
-                _context.t0 = _context["catch"](5);
+              case 13:
+                _context.prev = 13;
+                _context.t0 = _context["catch"](8);
 
                 console.log(_context.t0);
 
-              case 13:
+              case 16:
 
                 _index2.default.showToast({
                   title: '成功加入购物车',
@@ -140,60 +153,60 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
 
                 _this.__triggerPropsFn("onAddCart", [null].concat([item_id, num]));
 
-              case 16:
+              case 19:
                 if (!(type === 'fastbuy')) {
-                  _context.next = 41;
+                  _context.next = 44;
                   break;
                 }
 
                 url += '?cart_type=fastbuy';
 
                 if (!(marketing === 'group')) {
-                  _context.next = 23;
+                  _context.next = 26;
                   break;
                 }
 
                 groups_activity_id = info.group_activity.groups_activity_id;
 
                 url += "&type=" + marketing + "&group_id=" + groups_activity_id;
-                _context.next = 30;
+                _context.next = 33;
                 break;
 
-              case 23:
+              case 26:
                 if (!(marketing === 'seckill')) {
-                  _context.next = 30;
+                  _context.next = 33;
                   break;
                 }
 
                 seckill_id = info.seckill_activity.seckill_id;
-                _context.next = 27;
+                _context.next = 30;
                 return _index5.default.item.seckillCheck({ item_id: item_id, seckill_id: seckill_id, num: num });
 
-              case 27:
+              case 30:
                 _ref4 = _context.sent;
                 ticket = _ref4.ticket;
 
                 url += "&type=" + marketing + "&seckill_id=" + seckill_id + "&ticket=" + ticket;
 
-              case 30:
-                _context.prev = 30;
-                _context.next = 33;
+              case 33:
+                _context.prev = 33;
+                _context.next = 36;
                 return _index5.default.cart.fastBuy({
                   item_id: item_id,
                   num: num
                 });
 
-              case 33:
-                _context.next = 38;
+              case 36:
+                _context.next = 41;
                 break;
 
-              case 35:
-                _context.prev = 35;
-                _context.t1 = _context["catch"](30);
+              case 38:
+                _context.prev = 38;
+                _context.t1 = _context["catch"](33);
 
                 console.log(_context.t1);
 
-              case 38:
+              case 41:
 
                 _this.setState({
                   busy: false
@@ -204,12 +217,12 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
                   url: url
                 });
 
-              case 41:
+              case 44:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, _this2, [[5, 10], [30, 35]]);
+        }, _callee, _this2, [[8, 13], [33, 38]]);
       }));
 
       return function (_x, _x2, _x3) {

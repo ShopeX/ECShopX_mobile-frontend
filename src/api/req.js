@@ -13,6 +13,15 @@ class API {
       baseURL = baseURL + '/'
     }
 
+    options.company_id = APP_COMPANY_ID
+    if (process.env.TARO_ENV === 'weapp') {
+      const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+      options.appid = extConfig.appid
+      if (extConfig.company_id) {
+        options.company_id = extConfig.company_id
+      }
+    }
+
     this.options = options
     this.baseURL = baseURL
     this.genMethods(['get', 'post', 'delete', 'put'])
@@ -53,13 +62,11 @@ class API {
     }
     header['Authorization'] = `Bearer ${S.getAuthToken()}`
 
-    let company_id = APP_COMPANY_ID
+    const { company_id, appid } = this.options
     if (process.env.TARO_ENV === 'weapp') {
-      const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
-      if (extConfig.appid) {
-        header['authorizer-appid'] = extConfig.appid
+      if (appid) {
+        header['authorizer-appid'] = appid
       }
-      if (extConfig.company_id) company_id = extConfig.company_id
     }
 
     const options = {
@@ -80,7 +87,6 @@ class API {
     // if (this.options.interceptor && Taro.addInterceptor) {
     //   Taro.addInterceptor(this.options.interceptor)
     // }
-    const {  } = wx.getExtConfigSync? wx.getExtConfigSync(): {}
     options.data = {
       ...(options.data || {}),
       company_id

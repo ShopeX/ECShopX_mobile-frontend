@@ -23,8 +23,6 @@ var _index6 = _interopRequireDefault(_index5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function addQuery(url, query) {
@@ -42,6 +40,15 @@ var API = function () {
 
     if (!/\/$/.test(baseURL)) {
       baseURL = baseURL + '/';
+    }
+
+    options.company_id = 1;
+    {
+      var extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+      options.appid = extConfig.appid;
+      if (extConfig.company_id) {
+        options.company_id = extConfig.company_id;
+      }
     }
 
     this.options = options;
@@ -101,13 +108,14 @@ var API = function () {
       }
       header['Authorization'] = "Bearer " + _index4.default.getAuthToken();
 
-      var company_id = 1;
+      var _options = this.options,
+          company_id = _options.company_id,
+          appid = _options.appid;
+
       {
-        var extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
-        if (extConfig.appid) {
-          header['authorizer-appid'] = extConfig.appid;
+        if (appid) {
+          header['authorizer-appid'] = appid;
         }
-        if (extConfig.company_id) company_id = extConfig.company_id;
       }
 
       var options = _extends({}, config, {
@@ -127,11 +135,6 @@ var API = function () {
       // if (this.options.interceptor && Taro.addInterceptor) {
       //   Taro.addInterceptor(this.options.interceptor)
       // }
-
-      var _ref = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
-
-      _objectDestructuringEmpty(_ref);
-
       options.data = _extends({}, options.data || {}, {
         company_id: company_id
       });

@@ -43,7 +43,7 @@
           transform: translate3d(0, 0, 0);
   z-index: 1;
 }
-.recomm-list__scroll > div {
+.recomm-list__scroll > div, .recomm-list__scroll > view {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
@@ -101,7 +101,7 @@
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
-.trade-list .order-recom > div {
+.trade-list .order-recom > div, .trade-list .order-recom > view {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
