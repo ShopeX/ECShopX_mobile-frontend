@@ -45,10 +45,10 @@ const config = {
     APP_INTEGRATION: process.env.INTEGRATION_APP,
 
     APP_HOME_PAGE: '/pages/index',
-    APP_AUTH_PAGE: '/pages/auth/login',
-    // APP_AUTH_PAGE: TARO_ENV === 'weapp'
-    //   ? '/pages/auth/wxauth'
-    //   : '/pages/auth/login'
+    // APP_AUTH_PAGE: '/pages/auth/login',
+    APP_AUTH_PAGE: TARO_ENV === 'weapp'
+      ? '/pages/auth/wxauth'
+      : '/pages/auth/login'
   },
   alias: {
     '@': path.join(__dirname, '../src')

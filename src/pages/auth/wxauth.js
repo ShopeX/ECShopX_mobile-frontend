@@ -9,7 +9,7 @@ import './wxauth.scss'
 
 export default class WxAuth extends Component {
   state = {
-    isAuthShow: true
+    isAuthShow: false
   }
 
   componentDidMount () {
@@ -17,21 +17,19 @@ export default class WxAuth extends Component {
   }
 
   async autoLogin () {
-    const { authSetting } = await Taro.getSetting()
-    if (authSetting['scope.userInfo']) {
-      const { code } = await Taro.login()
-      try {
-        const { token } = await api.wx.login({ code })
-        if (token) {
-          S.setAuthToken(token)
-          return this.redirect()
-        }
-      } catch (e) {}
+    const { code } = await Taro.login()
+    try {
+      const { token } = await api.wx.login({ code })
+      if (token) {
+        S.setAuthToken(token)
+        return this.redirect()
+      }
+    } catch (e) {
+      console.log(e)
+      this.setState({
+        isAuthShow: true
+      })
     }
-
-    this.setState({
-      isAuthShow: true
-    })
   }
 
   redirect () {

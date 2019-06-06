@@ -48,7 +48,7 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WxAuth.__proto__ || Object.getPrototypeOf(WxAuth)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["isAuthShow"], _this.state = {
-      isAuthShow: true
+      isAuthShow: false
     }, _this.handleGetUserInfo = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(res) {
         var loginParams, iv, encryptedData, rawData, signature, userInfo, _ref3, code, _ref4, token, open_id, union_id;
@@ -156,66 +156,53 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
     key: "autoLogin",
     value: function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var _ref6, authSetting, _ref7, code, _ref8, token;
+        var _ref6, code, _ref7, token;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _index2.default.getSetting();
+                return _index2.default.login();
 
               case 2:
                 _ref6 = _context2.sent;
-                authSetting = _ref6.authSetting;
-
-                if (!authSetting['scope.userInfo']) {
-                  _context2.next = 21;
-                  break;
-                }
-
+                code = _ref6.code;
+                _context2.prev = 4;
                 _context2.next = 7;
-                return _index2.default.login();
+                return _index4.default.wx.login({ code: code });
 
               case 7:
                 _ref7 = _context2.sent;
-                code = _ref7.code;
-                _context2.prev = 9;
-                _context2.next = 12;
-                return _index4.default.wx.login({ code: code });
-
-              case 12:
-                _ref8 = _context2.sent;
-                token = _ref8.token;
+                token = _ref7.token;
 
                 if (!token) {
-                  _context2.next = 17;
+                  _context2.next = 12;
                   break;
                 }
 
                 _index6.default.setAuthToken(token);
                 return _context2.abrupt("return", this.redirect());
 
-              case 17:
-                _context2.next = 21;
+              case 12:
+                _context2.next = 18;
                 break;
 
-              case 19:
-                _context2.prev = 19;
-                _context2.t0 = _context2["catch"](9);
+              case 14:
+                _context2.prev = 14;
+                _context2.t0 = _context2["catch"](4);
 
-              case 21:
-
+                console.log(_context2.t0);
                 this.setState({
                   isAuthShow: true
                 });
 
-              case 22:
+              case 18:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[9, 19]]);
+        }, _callee2, this, [[4, 14]]);
       }));
 
       function autoLogin() {
