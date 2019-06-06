@@ -51,14 +51,14 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
       isAuthShow: true
     }, _this.handleGetUserInfo = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(res) {
-        var loginParams, iv, encryptedData, rawData, signature, _ref3, code, _ref4, token, open_id, union_id;
+        var loginParams, iv, encryptedData, rawData, signature, userInfo, _ref3, code, _ref4, token, open_id, union_id;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 loginParams = res.detail;
-                iv = loginParams.iv, encryptedData = loginParams.encryptedData, rawData = loginParams.rawData, signature = loginParams.signature;
+                iv = loginParams.iv, encryptedData = loginParams.encryptedData, rawData = loginParams.rawData, signature = loginParams.signature, userInfo = loginParams.userInfo;
 
                 if (!(!iv || !encryptedData)) {
                   _context.next = 5;
@@ -95,7 +95,8 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
                   iv: iv,
                   encryptedData: encryptedData,
                   rawData: rawData,
-                  signature: signature
+                  signature: signature,
+                  userInfo: userInfo
                 });
 
               case 13:
@@ -149,7 +150,7 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      // this.autoLogin()
+      this.autoLogin();
     }
   }, {
     key: "autoLogin",

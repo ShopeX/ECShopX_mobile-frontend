@@ -1,13 +1,116 @@
 {
-  "miniprogramRoot": "./",
-  "projectname": "mshop-taro",
-  "description": "taro app for bbc",
-  "appid": "wx32b438e5538d90ed",
-  "setting": {
-    "urlCheck": false,
-    "es6": false,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram"
+	"projectname": "mshop-taro",
+	"description": "taro app for bbc",
+	"appid": "wx32b438e5538d90ed",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false
+	},
+	"compileType": "miniprogram",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 9,
+			"list": [
+				{
+					"id": -1,
+					"name": "种草",
+					"pathName": "pages/recommend/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "种草详情",
+					"pathName": "pages/recommend/detail",
+					"query": "id=19",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "espier-detail",
+					"pathName": "pages/item/espier-detail",
+					"query": "id=949",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "espier-checkout",
+					"pathName": "pages/cart/espier-checkout",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "item-detail",
+					"pathName": "pages/iwp/item-detail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "item-detail",
+					"pathName": "pages/iwp/item-list",
+					"query": "",
+					"scene": 1037,
+					"referrerInfo": {
+						"appId": "wxf91925e702efe3e3",
+						"extraData": "{\"id\":1166}"
+					}
+				},
+				{
+					"id": -1,
+					"name": "item-list-ee",
+					"pathName": "pages/iwp/item-list",
+					"query": "",
+					"scene": 1037,
+					"referrerInfo": {
+						"appId": "wxf91925e702efe3e3",
+						"extraData": "{\"id\":1166}"
+					}
+				},
+				{
+					"id": -1,
+					"name": "coupon-home",
+					"pathName": "pages/iwp/coupon-home",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 8,
+					"name": "小程序跳转",
+					"pathName": "pages/item/espier-detail",
+					"query": "id=999",
+					"scene": 1037,
+					"referrerInfo": {
+						"appId": "wxfaadceab4f782c35",
+						"extraData": "{\"item_id\": 12}"
+					}
+				},
+				{
+					"id": -1,
+					"name": "授权",
+					"pathName": "pages/auth/wxauth",
+					"query": "",
+					"scene": null
+				}
+			]
+		}
+	}
 }

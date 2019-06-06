@@ -13,7 +13,7 @@ export default class WxAuth extends Component {
   }
 
   componentDidMount () {
-    // this.autoLogin()
+    this.autoLogin()
   }
 
   async autoLogin () {
@@ -48,7 +48,7 @@ export default class WxAuth extends Component {
 
   handleGetUserInfo = async (res) => {
     const loginParams = res.detail
-    const { iv, encryptedData, rawData, signature } = loginParams
+    const { iv, encryptedData, rawData, signature, userInfo } = loginParams
 
     if (!iv || !encryptedData) {
       Taro.showModal({
@@ -74,7 +74,8 @@ export default class WxAuth extends Component {
         iv,
         encryptedData,
         rawData,
-        signature
+        signature,
+        userInfo
       })
 
       S.setAuthToken(token)
