@@ -1,5 +1,9 @@
 <block>
+<<<<<<< HEAD
     <view class="{{anonymousState__temp}}" bindtap="funPrivateZKsei">
+=======
+    <view class="{{anonymousState__temp}}" bindtap="funPrivateGnCJl">
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
         <block wx:if="{{icon}}">
             <view class="{{'sp-cell__icon ' + (iconPrefix ? iconPrefix + ' ' + iconPrefix + '-' + icon : 'at-icon at-icon-' + icon)}}"></view>
         </block>

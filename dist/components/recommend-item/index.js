@@ -109,8 +109,13 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
+<<<<<<< HEAD
     key: "funPrivateSZhWT",
     value: function funPrivateSZhWT() {
+=======
+    key: "funPrivateFEzty",
+    value: function funPrivateFEzty() {
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -153,7 +158,11 @@ var RecommendItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
+<<<<<<< HEAD
 }, _class.$$events = ["funPrivateSZhWT"], _class.defaultProps = {
+=======
+}, _class.$$events = ["funPrivateFEzty"], _class.defaultProps = {
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
   onClick: function onClick() {},
   showMarketPrice: true,
   noCurSymbol: false,

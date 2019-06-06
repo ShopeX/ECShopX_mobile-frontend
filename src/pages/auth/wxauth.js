@@ -13,14 +13,13 @@ export default class WxAuth extends Component {
   }
 
   componentDidMount () {
-    // this.autoLogin()
+    this.autoLogin()
   }
 
   async autoLogin () {
     const { authSetting } = await Taro.getSetting()
     if (authSetting['scope.userInfo']) {
       const { code } = await Taro.login()
-
       try {
         const { token } = await api.wx.login({ code })
         if (token) {
@@ -48,7 +47,7 @@ export default class WxAuth extends Component {
 
   handleGetUserInfo = async (res) => {
     const loginParams = res.detail
-    const { iv, encryptedData, rawData, signature } = loginParams
+    const { iv, encryptedData, rawData, signature, userInfo } = loginParams
 
     if (!iv || !encryptedData) {
       Taro.showModal({
@@ -74,7 +73,8 @@ export default class WxAuth extends Component {
         iv,
         encryptedData,
         rawData,
-        signature
+        signature,
+        userInfo
       })
 
       S.setAuthToken(token)

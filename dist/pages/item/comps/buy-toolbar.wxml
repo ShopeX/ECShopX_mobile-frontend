@@ -1,7 +1,11 @@
 <block>
     <view class="goods-buy-toolbar">
         <view class="goods-buy-toolbar__menus">
+<<<<<<< HEAD
             <view class="goods-buy-toolbar__menu-item" bindtap="funPrivatewfXEe">
+=======
+            <view class="goods-buy-toolbar__menu-item" bindtap="funPrivateWriVc">
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
                 <view class="{{'in-icon ' + (info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav')}}"></view>
             </view>
             <view class="goods-buy-toolbar__menu-item" bindtap="handleClickMiniProgram" data-e-tap-so="this" data-e-tap-a-a="{{info.item_id}}">
@@ -17,11 +21,19 @@
             <block wx:else>
                 <view class="goods-buy-toolbar__btns">
                     <block wx:if="{{type === 'normal'}}">
+<<<<<<< HEAD
                         <form-id-collector sync="{{true}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivateoSRhq" __fn_onClick="{{true}}">
                             <view class="goods-buy-toolbar__btn btn-add-cart">添加至购物车</view>
                         </form-id-collector>
                     </block>
                     <form-id-collector sync="{{true}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivateSaaug" __fn_onClick="{{true}}">
+=======
+                        <form-id-collector sync="{{true}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivatevNNZE" __fn_onClick="{{true}}">
+                            <view class="goods-buy-toolbar__btn btn-add-cart">添加至购物车</view>
+                        </form-id-collector>
+                    </block>
+                    <form-id-collector sync="{{true}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivatejzatv" __fn_onClick="{{true}}">
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
                         <view class="goods-buy-toolbar__btn btn-fast-buy">{{fastBuyText}}</view>
                     </form-id-collector>
                 </view>

@@ -2,7 +2,11 @@
     <block wx:if="{{!info}}">
         <view></view>
     </block>
+<<<<<<< HEAD
     <view class="order-item" bindtap="funPrivateCnymj" wx:else>
+=======
+    <view class="order-item" bindtap="funPrivateVMFKp" wx:else>
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
         <view class="order-item__hd">
             <image mode="aspectFill" class="order-item__img" src="{{img}}"></image>
         </view>

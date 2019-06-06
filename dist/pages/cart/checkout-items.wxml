@@ -1,6 +1,10 @@
 <block>
     <view class="{{anonymousState__temp}}">
+<<<<<<< HEAD
         <at-nav-bar leftIconType="chevron-left" __triggerObserer="{{ _triggerObserer }}" title="{{anonymousState__temp2}}" bindonclicklefticon="funPrivateABAgy" __fn_onClickLeftIcon="{{true}}"></at-nav-bar>
+=======
+        <at-nav-bar leftIconType="chevron-left" __triggerObserer="{{ _triggerObserer }}" title="{{anonymousState__temp2}}" bindonclicklefticon="funPrivateASNpU" __fn_onClickLeftIcon="{{true}}"></at-nav-bar>
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
         <scroll-view class="checkout-items__scroll">
             <view class="checkout-items__list">
                 <goods-item wx:key="item_id" __triggerObserer="{{ _triggerObserer }}" info="{{item}}" wx:for="{{list}}" wx:for-item="item" wx:for-index="_anonIdx"></goods-item>

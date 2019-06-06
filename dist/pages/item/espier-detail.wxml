@@ -40,7 +40,7 @@
                 </view>
             </block>
             <view class="goods-sec-specs">
-                <block wx:if="{{promotion_activity}}">
+                <block wx:if="{{promotion_activity.length > 0}}">
                     <view class="goods-sec-specs__activity">
                         <view wx:key="marketing_id" class="goods-sec-specs__activity-item" wx:for="{{promotion_activity}}" wx:for-item="item" wx:for-index="_anonIdx"><text class="goods-sec-specs__activity-label">{{item.promotion_tag}}</text><text>{{item.condition_rules}}</text>
                         </view>

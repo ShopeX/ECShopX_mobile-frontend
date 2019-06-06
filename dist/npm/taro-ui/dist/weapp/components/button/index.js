@@ -109,6 +109,7 @@ var AtButton = (_temp2 = _class = function (_AtComponent) {
     key: "onSumit",
     value: function onSumit() {
       if (this.state.isWEAPP) {
+        // debugger
         this.$scope.triggerEvent('submit', arguments[0].detail, {
           bubbles: true,
           composed: true

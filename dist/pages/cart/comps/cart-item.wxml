@@ -6,14 +6,22 @@
         <view class="cart-item__hd">
             <slot></slot>
         </view>
+<<<<<<< HEAD
         <view class="cart-item__bd" bindtap="funPrivateVxYmg">
+=======
+        <view class="cart-item__bd" bindtap="funPrivateZdyYo">
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
             <view class="cart-item__img-wrap">
                 <image class="cart-item__img" mode="aspectFill" src="{{img}}"></image>
             </view>
             <view class="cart-item__cont">
                 <view class="cart-item__cont-hd"><text class="cart-item__title">{{info.title}}</text><text class="cart-item__desc">{{info.desc}}</text>
                     <block wx:if="{{curPromotion}}">
+<<<<<<< HEAD
                         <view class="cart-item__promotion" bindtap="funPrivatejEucj">{{curPromotion.marketing_name}}</view>
+=======
+                        <view class="cart-item__promotion" bindtap="funPrivateiuXhX">{{curPromotion.marketing_name}}</view>
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
                     </block>
                 </view>
                 <view class="cart-item__prices">
@@ -26,7 +34,11 @@
         </view>
         <view class="cart-item__ft">
             <block wx:if="{{!isDisabled}}">
+<<<<<<< HEAD
                 <at-input-number min="{{1}}" __triggerObserer="{{ _triggerObserer }}" max="{{999999}}" value="{{info.num}}" bindonchange="funPrivatekWTPr" __fn_onChange="{{true}}"></at-input-number>
+=======
+                <at-input-number min="{{1}}" __triggerObserer="{{ _triggerObserer }}" max="{{999999}}" value="{{info.num}}" bindonchange="funPrivateVZhpw" __fn_onChange="{{true}}"></at-input-number>
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
             </block>
         </view>
     </view>

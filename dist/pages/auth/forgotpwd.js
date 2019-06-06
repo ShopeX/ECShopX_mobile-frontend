@@ -128,7 +128,7 @@ var Forgotpwd = (_temp2 = _class = function (_BaseComponent) {
                 });
                 setTimeout(function () {
                   _index2.default.redirectTo({
-                    url: "/pages/auth/login"
+                    url: "/pages/auth/wxauth"
                   });
                 }, 700);
                 _context2.next = 20;

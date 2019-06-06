@@ -2,7 +2,11 @@
     <block wx:if="{{!info}}">
         <view></view>
     </block>
+<<<<<<< HEAD
     <view class="coupon-item-index" bindtap="funPrivateqzlao" wx:else>
+=======
+    <view class="coupon-item-index" bindtap="funPrivateJAwtm" wx:else>
+>>>>>>> c429d07664a87b16d2eb63f4d20d642ed4c2ed27
         <block wx:if="{{isShowCheckout && info.status === '2'}}">
             <view class="coupon-item__check" bindtap="handleClickChecked" data-e-tap-so="this" data-e-tap-a-a="{{info.id}}">
                 <block>

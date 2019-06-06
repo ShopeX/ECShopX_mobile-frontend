@@ -344,7 +344,7 @@ export default class Detail extends Component {
 
           <View className='goods-sec-specs'>
             {
-              promotion_activity
+              promotion_activity.length > 0
                 ? <View className='goods-sec-specs__activity'>
                   {
                     promotion_activity.map(item =>{
