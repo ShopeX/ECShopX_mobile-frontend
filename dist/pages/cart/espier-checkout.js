@@ -354,9 +354,14 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       };
     }
   }, {
+    key: "componentDidShow",
+    value: function componentDidShow() {
+      this.fetchAddress();
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.fetchAddress();
+      // this.fetchAddress()
 
       var _$router$params = this.$router.params,
           cart_type = _$router$params.cart_type,
@@ -410,6 +415,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
   }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
+      console.log(nextProps, 122);
       if (nextProps.address !== this.props.address) {
         this.fetchAddress();
       }
@@ -436,6 +442,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 _ref7 = _context3.sent;
                 list = _ref7.list;
 
+                console.log(list, 141);
                 _index2.default.hideLoading();
 
                 this.setState({
@@ -445,7 +452,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                   cb && cb(list);
                 });
 
-              case 7:
+              case 8:
               case "end":
                 return _context3.stop();
             }
@@ -466,6 +473,15 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       var address_list = this.state.address_list;
 
       if (address_list.length === 0) {
+        console.log(address_list, 154);
+        // this.props.address = {
+        //   current: null
+        // }
+        this.__triggerPropsFn("onAddressChoose", [null].concat([null]));
+        this.setState({
+          address: null
+        });
+        // this.handleAddressChange()
         this.calcOrder();
         /*Taro.navigateTo({
           url: '/pages/member/edit-address'
@@ -473,6 +489,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
         return;
       }
 
+      console.log(444, 163);
       var address = this.props.address;
       if (!address) {
         var address_id = params.address_id;

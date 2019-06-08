@@ -69,8 +69,12 @@ export default class CartCheckout extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidShow () {
     this.fetchAddress()
+  }
+
+  componentDidMount () {
+    // this.fetchAddress()
 
     const { cart_type, pay_type: payType } = this.$router.params
     let info = null
@@ -119,6 +123,7 @@ export default class CartCheckout extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    console.log(nextProps, 122)
     if (nextProps.address !== this.props.address) {
       this.fetchAddress()
     }
@@ -129,6 +134,7 @@ export default class CartCheckout extends Component {
       mask: true
     })
     const { list } = await api.member.addressList()
+    console.log(list, 141)
     Taro.hideLoading()
 
     this.setState({
@@ -142,6 +148,15 @@ export default class CartCheckout extends Component {
   changeSelection (params = {}) {
     const { address_list } = this.state
     if (address_list.length === 0) {
+      console.log(address_list, 154)
+      // this.props.address = {
+      //   current: null
+      // }
+      this.props.onAddressChoose(null)
+      this.setState({
+        address: null
+      })
+      // this.handleAddressChange()
       this.calcOrder()
       /*Taro.navigateTo({
         url: '/pages/member/edit-address'
@@ -149,6 +164,7 @@ export default class CartCheckout extends Component {
       return
     }
 
+    console.log(444,163)
     let address = this.props.address
     if (!address) {
       const { address_id } = params
