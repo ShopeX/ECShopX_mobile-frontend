@@ -43,8 +43,9 @@ export default class Integral extends Component {
     const nList = pickBy(list, {
       chngdate: ({ chngdate }) => chngdate.substring(0, 4)+ '-' + chngdate.substring(4, 6)+ '-' + chngdate.substring(6, 8),
       point: 'point',
-      point_desc: 'point_desc',
-      created: ({ created }) => (formatDataTime(created * 1000)),
+      accfl: 'accfl',
+      chngpt: 'chngpt',
+      rsnnm: 'rsnnm',
     })
     console.log(nList, 58)
 
@@ -73,8 +74,8 @@ export default class Integral extends Component {
         />
         <View className='member-point__hd'>
           <View className='member-point__hd_content'>
-            <Text className='member-point__num'>{totalPoint}</Text>
-            <Text>积分</Text>
+            <Text className='text-hd member-point__num'>{totalPoint}</Text>
+            <Text className='text-hd'>积分</Text>
           </View>
         </View>
         <View className='member-point__content'>
@@ -90,8 +91,8 @@ export default class Integral extends Component {
                   <View key={idx}>
                     <View className='point-item'>
                       <View className='point-item__title'>
-                        <Text className='point-item__title-name'>{item.point_desc}</Text>
-                        <Text className={`point-item__title-${item.outin_type}`}>{item.outin_type === 'in' ? '+' : '-'}{item.point}</Text>
+                        <Text className='point-item__title-name'>{item.rsnnm}</Text>
+                        <Text className={`point-item__num point-item__title_${item.accfl === '106001' ? 'in' : 'out' }`}>{item.accfl === '106001' ? '+' : '-'}{item.chngpt}</Text>
                       </View>
                       <View className='point-item__data'>{item.chngdate}</View>
                     </View>

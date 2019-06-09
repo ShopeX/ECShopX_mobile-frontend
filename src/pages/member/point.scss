@@ -14,8 +14,10 @@
     }
     &__hd_content {
       width: 100%;
-      color: $color-brand-primary;
       height: 300px;
+      .text-hd {
+        color: $color-brand-primary;
+      }
     }
     &__num {
       font-size: 60px;
@@ -25,6 +27,9 @@
       margin-top: 30px;
     }
     &__scroll {
+      .at-divider {
+        height: 70px;
+      }
       .at-divider__content {
         background: $color-bg-gray;
       }
@@ -41,6 +46,39 @@
     margin-left: -10px;
     width: 0;
     height: 0;
+  }
+  .point-item {
+    border-bottom: 1px solid $color-gray-light;
+    padding: 20px 0 12px;
+    margin: 0 30px;
+    &__num {
+      background: #ffffff;
+      border: 1PX solid $color-brand-accent-light;
+      border-radius: 8px;
+      padding: 10px 20px;
+    }
+    &__title {
+      display: flex;
+      justify-content: space-between;
+      &-name {
+        font-size: $edge-size;
+        color: $color-primary-text;
+        margin-right: 20px;
+      }
+      &_in {
+        color: $color-brand-primary;
+      }
+      &_out {
+        color: $color-brand-accent-light;
+      }
+    }
+    &__data {
+      font-size: 24px;
+      color: $color-brand-accent-light;
+    }
+  }
+  .integral_empty{
+    padding: 20px 0 0
   }
 }
 

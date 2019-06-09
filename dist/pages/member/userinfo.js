@@ -77,15 +77,15 @@ var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2
                   _index7.default.toast('最多上传1张图片');
                 }
                 imgFiles = data.slice(0, 1);
-                /*azureUploader.uploadImagesFn(imgFiles)
-                  .then(res => {
-                    console.log(res, 67)
-                    this.setState({
-                      imgs: res
-                    })
-                  })*/
 
-              case 5:
+                azureUploader.uploadImagesFn(imgFiles).then(function (res) {
+                  console.log(res, 67);
+                  _this.setState({
+                    imgs: res
+                  });
+                });
+
+              case 6:
               case "end":
                 return _context.stop();
             }
