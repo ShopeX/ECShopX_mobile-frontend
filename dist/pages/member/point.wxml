@@ -2,7 +2,7 @@
     <view class="page-member-integral">
         <nav-bar title="积分" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left"></nav-bar>
         <view class="member-point__hd">
-            <view class="member-point__hd_content"><text class="member-point__num">{{totalPoint}}</text><text>积分</text>
+            <view class="member-point__hd_content"><text class="text-hd member-point__num">{{totalPoint}}</text><text class="text-hd">积分</text>
             </view>
         </view>
         <view class="member-point__content">
@@ -10,7 +10,7 @@
                 <at-divider fontColor="#787878" __triggerObserer="{{ _triggerObserer }}" lineColor="#EFEFEF" content="积分详情"></at-divider>
                 <view wx:key="idx" wx:for="{{list}}" wx:for-item="item" wx:for-index="idx">
                     <view class="point-item">
-                        <view class="point-item__title"><text class="point-item__title-name">{{item.point_desc}}</text><text class="{{'point-item__title-' + item.outin_type}}">{{item.outin_type === 'in' ? '+' : '-'}}{{item.point}}</text>
+                        <view class="point-item__title"><text class="point-item__title-name">{{item.rsnnm}}</text><text class="{{'point-item__num point-item__title_' + (item.accfl === '106001' ? 'in' : 'out')}}">{{item.accfl === '106001' ? '+' : '-'}}{{item.chngpt}}</text>
                         </view>
                         <view class="point-item__data">{{item.chngdate}}</view>
                     </view>

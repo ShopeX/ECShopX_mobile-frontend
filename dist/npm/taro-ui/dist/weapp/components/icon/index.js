@@ -10,11 +10,21 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _class, _temp2;
 
-var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+var _index = require("../../../../../@tarojs/taro-weapp/index.js");
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = require("../../utils/index.js");
+var _index3 = require("../../../../../prop-types/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../../../../../classnames/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
+
+var _component = require("../../common/component.js");
+
+var _component2 = _interopRequireDefault(_component);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24,27 +34,32 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var BackToTop = (_temp2 = _class = function (_BaseComponent) {
-  _inherits(BackToTop, _BaseComponent);
+var AtIcon = (_temp2 = _class = function (_AtComponent) {
+  _inherits(AtIcon, _AtComponent);
 
-  function BackToTop() {
+  function AtIcon() {
     var _ref;
 
     var _temp, _this, _ret;
 
-    _classCallCheck(this, BackToTop);
+    _classCallCheck(this, AtIcon);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = BackToTop.__proto__ || Object.getPrototypeOf(BackToTop)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "show", "bottom"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AtIcon.__proto__ || Object.getPrototypeOf(AtIcon)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "__fn_onClick", "customStyle", "className", "prefixClass", "value", "size", "color"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  _createClass(BackToTop, [{
+  _createClass(AtIcon, [{
     key: "_constructor",
-    value: function _constructor(props) {
-      _get(BackToTop.prototype.__proto__ || Object.getPrototypeOf(BackToTop.prototype), "_constructor", this).call(this, props);
+    value: function _constructor() {
+      _get(AtIcon.prototype.__proto__ || Object.getPrototypeOf(AtIcon.prototype), "_constructor", this).apply(this, arguments);
+    }
+  }, {
+    key: "handleClick",
+    value: function handleClick() {
+      this.__triggerPropsFn("onClick", [null].concat([].concat(Array.prototype.slice.call(arguments))));
     }
   }, {
     key: "_createData",
@@ -55,49 +70,77 @@ var BackToTop = (_temp2 = _class = function (_BaseComponent) {
       ;
 
       var _props = this.__props,
-          show = _props.show,
-          onClick = _props.onClick,
-          bottom = _props.bottom;
+          customStyle = _props.customStyle,
+          className = _props.className,
+          prefixClass = _props.prefixClass,
+          value = _props.value,
+          size = _props.size,
+          color = _props.color;
 
 
-      var anonymousState__temp = (0, _index3.classNames)('back-to-top', { 'is-show': show });
-      var anonymousState__temp2 = (0, _index.internal_inline_style)((0, _index3.styleNames)(bottom ? { bottom: "" + _index2.default.pxTransform(bottom) } : null));
+      var rootStyle = {
+        fontSize: "" + _index2.default.pxTransform(parseInt(size) * 2),
+        color: color
+      };
+
+      var iconName = value ? prefixClass + "-" + value : '';
+      var anonymousState__temp = (0, _index6.default)(prefixClass, iconName, className);
+      var anonymousState__temp2 = (0, _index.internal_inline_style)(this.mergeStyle(rootStyle, customStyle));
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
         anonymousState__temp2: anonymousState__temp2
       });
       return this.__state;
     }
-  }, {
-    key: "funPrivateKTuUB",
-    value: function funPrivateKTuUB() {
-      this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
-    }
   }]);
 
-  return BackToTop;
-}(_index.Component), _class.properties = {
-  "show": {
-    "type": null,
-    "value": null
-  },
-  "onClick": {
-    "type": null,
-    "value": null
-  },
-  "bottom": {
-    "type": null,
-    "value": null
-  },
+  return AtIcon;
+}(_component2.default), _class.properties = {
   "__fn_onClick": {
     "type": null,
     "value": null
+  },
+  "customStyle": {
+    "type": null,
+    "value": null
+  },
+  "className": {
+    "type": null,
+    "value": null
+  },
+  "prefixClass": {
+    "type": null,
+    "value": null
+  },
+  "value": {
+    "type": null,
+    "value": null
+  },
+  "size": {
+    "type": null,
+    "value": null
+  },
+  "color": {
+    "type": null,
+    "value": null
   }
-}, _class.$$events = ["funPrivateKTuUB"], _class.options = {
-  addGlobalClass: true
-}, _class.defaultProps = {
+}, _class.$$events = ["handleClick"], _class.defaultProps = {
+  customStyle: '',
+  className: '',
+  prefixClass: 'at-icon',
+  value: '',
+  color: '',
+  size: 24,
   onClick: function onClick() {}
+}, _class.propTypes = {
+  customStyle: _index4.default.oneOfType([_index4.default.object, _index4.default.string]),
+  className: _index4.default.oneOfType([_index4.default.array, _index4.default.string]),
+  prefixClass: _index4.default.string,
+  value: _index4.default.string,
+  color: _index4.default.string,
+  size: _index4.default.oneOfType([_index4.default.string, _index4.default.number]),
+  onClick: _index4.default.func
 }, _temp2);
-exports.default = BackToTop;
+exports.default = AtIcon;
 
-Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(BackToTop));
+Component(require('../../../../../@tarojs/taro-weapp/index.js').default.createComponent(AtIcon));

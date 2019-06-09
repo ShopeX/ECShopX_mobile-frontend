@@ -101,11 +101,9 @@ var Integral = (0, _index3.withPager)(_class = (_temp2 = _class2 = function (_Ba
                     return _chngdate.substring(0, 4) + '-' + _chngdate.substring(4, 6) + '-' + _chngdate.substring(6, 8);
                   },
                   point: 'point',
-                  point_desc: 'point_desc',
-                  created: function created(_ref5) {
-                    var _created = _ref5.created;
-                    return (0, _index4.formatDataTime)(_created * 1000);
-                  }
+                  accfl: 'accfl',
+                  chngpt: 'chngpt',
+                  rsnnm: 'rsnnm'
                 });
 
                 console.log(nList, 58);
