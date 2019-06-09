@@ -54,6 +54,10 @@ var IconMenu = (_temp2 = _class = function (_BaseComponent) {
               console.log(res);
             }
           });
+        } else if (to === 'makephone') {
+          _index2.default.makePhoneCall({
+            phoneNumber: '1340000'
+          });
         } else {
           _index2.default.navigateTo({
             url: to

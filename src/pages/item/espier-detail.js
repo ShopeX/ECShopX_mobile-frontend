@@ -5,7 +5,7 @@ import { AtCountdown } from 'taro-ui'
 import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
-import { log, calcTimer } from '@/utils'
+import { log, calcTimer, isArray } from '@/utils'
 import S from '@/spx'
 import GoodsBuyToolbar from './comps/buy-toolbar'
 import ItemImg from './comps/item-img'
@@ -263,7 +263,7 @@ export default class Detail extends Component {
   render () {
     const { info, windowWidth, curImgIdx, desc, cartCount, scrollTop, showBackToTop, curSku, promotion_activity } = this.state
     const { marketing, timer, isPromoter, startSecKill, hasStock, showBuyPanel, buyPanelType } = this.state
-
+    console.log(isArray(desc), 255)
     if (!info) {
       return (
         <Loading />
@@ -445,25 +445,30 @@ export default class Detail extends Component {
           }
 
 
-          <View className='wgts-wrap__cont'>
-            {
-              desc.map((item, idx) => {
-                return (
-                  <View className='wgt-wrap' key={idx}>
-                    {item.name === 'film' && <WgtFilm info={item} />}
-                    {item.name === 'slider' && <WgtSlider info={item} />}
-                    {item.name === 'writing' && <WgtWriting info={item} />}
-                    {item.name === 'goods' && <WgtGoods info={item} />}
-                  </View>
-                )
-              })
-            }
-          </View>
+          {
+            isArray(desc)
+              ? <View className='wgts-wrap__cont'>
+                {
+                  desc.map((item, idx) => {
+                    return (
+                      <View className='wgt-wrap' key={idx}>
+                        {item.name === 'film' && <WgtFilm info={item} />}
+                        {item.name === 'slider' && <WgtSlider info={item} />}
+                        {item.name === 'writing' && <WgtWriting info={item} />}
+                        {item.name === 'goods' && <WgtGoods info={item} />}
+                      </View>
+                    )
+                  })
+                }
+              </View>
+              : <SpHtmlContent
+                className='goods-detail__content'
+                content={desc}
+              />
+          }
 
-          {/*<SpHtmlContent
-            className='goods-detail__content'
-            content={desc}
-          />*/}
+
+
 
           {/*<View className='goods-sec-tabs'>
             <View className='sec-tabs'>

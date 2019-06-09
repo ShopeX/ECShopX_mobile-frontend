@@ -9,6 +9,7 @@
     "wgt-slider": "../home/wgts/slider",
     "wgt-writing": "../home/wgts/writing",
     "wgt-goods": "../home/wgts/goods",
+    "sp-html-content": "../../components/html-content/index",
     "float-menus": "../../components/float-menus/index",
     "float-menu-item": "../../components/float-menus/item",
     "goods-buy-toolbar": "./comps/buy-toolbar",

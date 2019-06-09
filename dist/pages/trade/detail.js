@@ -159,6 +159,10 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                   receiver_name: 'receiver_name',
                   receiver_mobile: 'receiver_mobile',
                   receiver_state: 'receiver_state',
+                  discount_fee: function discount_fee(_ref5) {
+                    var _discount_fee = _ref5.discount_fee;
+                    return (+_discount_fee / 100).toFixed(2);
+                  },
                   receiver_city: 'receiver_city',
                   receiver_district: 'receiver_district',
                   receiver_address: 'receiver_address',
@@ -167,42 +171,43 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                   delivery_corp: 'delivery_corp',
                   order_type: 'order_type',
                   order_status_msg: 'order_status_msg',
-                  item_fee: function item_fee(_ref5) {
-                    var _item_fee = _ref5.item_fee;
+                  item_fee: function item_fee(_ref6) {
+                    var _item_fee = _ref6.item_fee;
                     return (+_item_fee / 100).toFixed(2);
                   },
-                  coupon_discount: function coupon_discount(_ref6) {
-                    var _coupon_discount = _ref6.coupon_discount;
+                  coupon_discount: function coupon_discount(_ref7) {
+                    var _coupon_discount = _ref7.coupon_discount;
                     return (+_coupon_discount / 100).toFixed(2);
                   },
-                  post_fee: function post_fee(_ref7) {
-                    var freight_fee = _ref7.freight_fee;
-                    return (+freight_fee / 100).toFixed(2);
+                  freight_fee: function freight_fee(_ref8) {
+                    var _freight_fee = _ref8.freight_fee;
+                    return (+_freight_fee / 100).toFixed(2);
                   },
-                  payment: function payment(_ref8) {
-                    var total_fee = _ref8.total_fee;
+                  payment: function payment(_ref9) {
+                    var total_fee = _ref9.total_fee;
                     return (+total_fee / 100).toFixed(2);
                   },
                   pay_type: 'pay_type',
+                  invoice_content: 'invoice.content',
                   point: 'point',
-                  status: function status(_ref9) {
-                    var order_status = _ref9.order_status;
+                  status: function status(_ref10) {
+                    var order_status = _ref10.order_status;
                     return (0, _index3.resolveOrderStatus)(order_status);
                   },
-                  orders: function orders(_ref10) {
-                    var items = _ref10.items;
+                  orders: function orders(_ref11) {
+                    var items = _ref11.items;
                     return (0, _index3.pickBy)(items, {
                       order_id: 'order_id',
                       item_id: 'item_id',
-                      aftersales_status: function aftersales_status(_ref11) {
-                        var _aftersales_status = _ref11.aftersales_status;
+                      aftersales_status: function aftersales_status(_ref12) {
+                        var _aftersales_status = _ref12.aftersales_status;
                         return _index8.AFTER_SALE_STATUS[_aftersales_status];
                       },
                       pic_path: 'pic',
                       title: 'item_name',
                       delivery_status: 'delivery_status',
-                      price: function price(_ref12) {
-                        var item_fee = _ref12.item_fee;
+                      price: function price(_ref13) {
+                        var item_fee = _ref13.item_fee;
                         return (+item_fee / 100).toFixed(2);
                       },
                       point: 'item_point',
@@ -246,7 +251,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "handlePay",
     value: function () {
-      var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
         var info, order_id, order_type, paymentParams, config, payErr, payRes, _getCurrentRoute, fullPath;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
@@ -336,7 +341,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       }));
 
       function handlePay() {
-        return _ref13.apply(this, arguments);
+        return _ref14.apply(this, arguments);
       }
 
       return handlePay;
@@ -344,8 +349,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "handleClickBtn",
     value: function () {
-      var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(type) {
-        var info, _ref15, confirm, _getCurrentRoute2, fullPath;
+      var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(type) {
+        var info, _ref16, confirm, _getCurrentRoute2, fullPath;
 
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
@@ -399,8 +404,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                 });
 
               case 14:
-                _ref15 = _context4.sent;
-                confirm = _ref15.confirm;
+                _ref16 = _context4.sent;
+                confirm = _ref16.confirm;
 
                 if (!confirm) {
                   _context4.next = 21;
@@ -429,7 +434,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       }));
 
       function handleClickBtn(_x) {
-        return _ref14.apply(this, arguments);
+        return _ref15.apply(this, arguments);
       }
 
       return handleClickBtn;
@@ -437,7 +442,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "handleClickRefund",
     value: function () {
-      var _ref16 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(type, item_id) {
+      var _ref17 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(type, item_id) {
         var order_id;
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
@@ -465,7 +470,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       }));
 
       function handleClickRefund(_x2, _x3) {
-        return _ref16.apply(this, arguments);
+        return _ref17.apply(this, arguments);
       }
 
       return handleClickRefund;
@@ -491,7 +496,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       // const tradeOrders = resolveTradeOrders(info)
 
       var anonymousState__temp = info.status === 'WAIT_BUYER_PAY' ? (0, _index3.classNames)('trade-detail-header', "trade-detail-header__waitpay") : null;
-      var anonymousState__temp2 = info.status === 'WAIT_BUYER_PAY' ? { minutes: ':', seconds: '' } : null;
+      var anonymousState__temp2 = info.status === 'WAIT_BUYER_PAY' ? { hours: ':', minutes: ':', seconds: '' } : null;
       var anonymousState__temp3 = info.status !== 'WAIT_BUYER_PAY' ? (0, _index3.classNames)('trade-detail-header') : null;
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
@@ -503,7 +508,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
   }]);
 
   return TradeDetail;
-}(_index.Component), _class.properties = {}, _class.$$events = ["handleClickDelivery", "handleClickCopy", "handleClickBtn"], _temp2);
+}(_index.Component), _class.properties = {}, _class.$$events = ["fetch", "handleClickDelivery", "handleClickCopy", "handleClickBtn"], _temp2);
 exports.default = TradeDetail;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(TradeDetail, true));

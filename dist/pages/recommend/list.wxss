@@ -233,3 +233,6 @@
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
+.page-recommend-list .goods-item__cont {
+  height: 250rpx !important;
+}

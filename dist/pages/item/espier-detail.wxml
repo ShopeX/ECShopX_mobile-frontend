@@ -64,22 +64,29 @@
                     </scroll-view>
                 </view>
             </block>
-            <view class="wgts-wrap__cont">
-                <view class="wgt-wrap" wx:key="idx" wx:for="{{desc}}" wx:for-item="item" wx:for-index="idx">
-                    <block wx:if="{{item.name === 'film'}}">
-                        <wgt-film info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-film>
-                    </block>
-                    <block wx:if="{{item.name === 'slider'}}">
-                        <wgt-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-slider>
-                    </block>
-                    <block wx:if="{{item.name === 'writing'}}">
-                        <wgt-writing info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-writing>
-                    </block>
-                    <block wx:if="{{item.name === 'goods'}}">
-                        <wgt-goods info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods>
-                    </block>
-                </view>
-            </view>
+            <block>
+                <block wx:if="{{anonymousState__temp3}}">
+                    <view class="wgts-wrap__cont">
+                        <view class="wgt-wrap" wx:key="idx" wx:for="{{desc}}" wx:for-item="item" wx:for-index="idx">
+                            <block wx:if="{{item.name === 'film'}}">
+                                <wgt-film info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-film>
+                            </block>
+                            <block wx:if="{{item.name === 'slider'}}">
+                                <wgt-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-slider>
+                            </block>
+                            <block wx:if="{{item.name === 'writing'}}">
+                                <wgt-writing info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-writing>
+                            </block>
+                            <block wx:if="{{item.name === 'goods'}}">
+                                <wgt-goods info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods>
+                            </block>
+                        </view>
+                    </view>
+                </block>
+                <block wx:else>
+                    <sp-html-content className="goods-detail__content" __triggerObserer="{{ _triggerObserer }}" content="{{desc}}"></sp-html-content>
+                </block>
+            </block>
         </scroll-view>
         <float-menus __triggerObserer="{{ _triggerObserer }}">
             <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="float-gift" bindonclick="handleToGiftMiniProgram" __fn_onClick="{{true}}" data-e-onclick-so="this"></float-menu-item>

@@ -178,10 +178,16 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
         this.setState({
           curTabIdx: tabIdx
         }, function () {
-          _this3.nextPage();
+          _this3.resetPage();
+          setTimeout(function () {
+            _this3.nextPage();
+          }, 500);
         });
       } else {
-        this.nextPage();
+        this.resetPage();
+        setTimeout(function () {
+          _this3.nextPage();
+        }, 500);
       }
     }
   }, {

@@ -78,7 +78,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "loopArray0", "info", "scrollTop", "curImgIdx", "imgs", "timer", "marketing", "isPromoter", "promotion_activity", "curSku", "buyPanelType", "$anonymousCallee__0", "desc", "hasStock", "startSecKill", "cartCount", "showBuyPanel", "windowWidth", "specImgsDict", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "loopArray0", "info", "scrollTop", "curImgIdx", "imgs", "timer", "marketing", "isPromoter", "promotion_activity", "curSku", "buyPanelType", "$anonymousCallee__0", "desc", "hasStock", "startSecKill", "cartCount", "showBuyPanel", "windowWidth", "specImgsDict", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type) {
         var info, isAuth, favRes;
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -462,7 +462,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
           showBuyPanel = _state2.showBuyPanel,
           buyPanelType = _state2.buyPanelType;
 
-
+      console.log((0, _index7.isArray)(desc), 255);
       if (!info) {
         return null;
       }
@@ -483,6 +483,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       };
 
       var $anonymousCallee__0 = info.nospec !== true ? Object.keys(this.__state.specImgsDict) : [];
+      var anonymousState__temp3 = (0, _index7.isArray)(desc);
       var loopArray0 = info.nospec !== true ? Object.keys(this.__state.specImgsDict).map(function (specValueId) {
         specValueId = {
           $original: (0, _index.internal_get_original)(specValueId)
@@ -496,6 +497,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
         anonymousState__temp2: anonymousState__temp2,
+        anonymousState__temp3: anonymousState__temp3,
         loopArray0: loopArray0,
         scrollTop: scrollTop,
         imgs: imgs,
