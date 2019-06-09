@@ -1,1 +1,116 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e},_createClass=function(){function n(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,r){return t&&n(e.prototype,t),r&&n(e,r),e}}(),_get=function e(t,r,n){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,r);if(void 0===o){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,r,n)}if("value"in o)return o.value;var i=o.get;return void 0!==i?i.call(n):void 0},_index=require("../../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../../api/index.js"),_index4=_interopRequireDefault(_index3);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(a,i){return function t(e,r){try{var n=s[e](r),o=n.value}catch(e){return void i(e)}if(!n.done)return Promise.resolve(o).then(function(e){t("next",e)},function(e){t("throw",e)});a(o)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var WeappBtn=(_temp2=_class=function(e){function a(){var e,t,s,u=this;_classCallCheck(this,a);for(var r=arguments.length,n=Array(r),o=0;o<r;o++)n[o]=arguments[o];return(t=s=_possibleConstructorReturn(this,(e=a.__proto__||Object.getPrototypeOf(a)).call.apply(e,[this].concat(n)))).$usedState=["info"],s.handleClickPay=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,r,n,o,a,i;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=s.props.info,r=t.order_id,n=t.order_type,o={pay_type:"amorepay",order_id:r,order_type:n},e.next=5,_index4.default.cashier.getPayment(o);case 5:return a=e.sent,e.next=8,_index2.default.requestPayment(_extends({},a));case 8:i=e.sent,console.log(i);case 10:case"end":return e.stop()}},e,u)})),s.$$refs=[],_possibleConstructorReturn(s,t)}return _inherits(a,_index.Component),_createClass(a,[{key:"_constructor",value:function(e){_get(a.prototype.__proto__||Object.getPrototypeOf(a.prototype),"_constructor",this).call(this,e)}},{key:"componentDidMount",value:function(){}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];return Object.assign(this.__state,{}),this.__state}}]),a}(),_class.properties={info:{type:null,value:null}},_class.$$events=["handleClickPay"],_class.options={addGlobalClass:!0},_class.defaultProps={info:null},_temp2);exports.default=WeappBtn,Component(require("../../../npm/@tarojs/taro-weapp/index.js").default.createComponent(WeappBtn));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../../api/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var WeappBtn = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(WeappBtn, _BaseComponent);
+
+  function WeappBtn() {
+    var _ref,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, WeappBtn);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WeappBtn.__proto__ || Object.getPrototypeOf(WeappBtn)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info"], _this.handleClickPay = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var info, order_id, order_type, params, config, payRes;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              info = _this.props.info;
+              order_id = info.order_id, order_type = info.order_type;
+              params = {
+                pay_type: 'amorepay',
+                order_id: order_id,
+                order_type: order_type
+              };
+              _context.next = 5;
+              return _index4.default.cashier.getPayment(params);
+
+            case 5:
+              config = _context.sent;
+              _context.next = 8;
+              return _index2.default.requestPayment(_extends({}, config));
+
+            case 8:
+              payRes = _context.sent;
+
+              console.log(payRes);
+
+            case 10:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2);
+    })), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(WeappBtn, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(WeappBtn.prototype.__proto__ || Object.getPrototypeOf(WeappBtn.prototype), "_constructor", this).call(this, props);
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {}
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+      Object.assign(this.__state, {});
+      return this.__state;
+    }
+  }]);
+
+  return WeappBtn;
+}(_index.Component), _class.properties = {
+  "info": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["handleClickPay"], _class.options = {
+  addGlobalClass: true
+}, _class.defaultProps = {
+  info: null
+}, _temp2);
+exports.default = WeappBtn;
+
+Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(WeappBtn));

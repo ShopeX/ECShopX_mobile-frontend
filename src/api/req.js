@@ -145,8 +145,8 @@ class API {
   }
 
   reqError (res, msg = '') {
-    const data = (res.data || {})
-    const errMsg = data.msg || data.err_msg || msg
+    const data = (res.data.error || res.data)
+    const errMsg = data.message || data.err_msg || msg
     const err = new Error(errMsg)
     err.res = res
     return err

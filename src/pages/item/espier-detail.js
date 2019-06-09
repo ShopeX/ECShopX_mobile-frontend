@@ -35,6 +35,7 @@ export default class Detail extends Component {
       marketing: 'normal',
       info: null,
       desc: null,
+      curImgIdx: 0,
       windowWidth: 320,
       isPromoter: false,
       timer: null,
@@ -228,7 +229,17 @@ export default class Detail extends Component {
     })
   }
 
-  handleBuyAction = async () => {
+  handleSwiperChange = (e) => {
+    const { detail: { current } } = e
+    this.setState({
+      curImgIdx: current
+    })
+  }
+
+  handleBuyAction = async (type) => {
+    if (type === 'cart') {
+      this.fetchCartCount()
+    }
     this.setState({
       showBuyPanel: false
     })
@@ -250,7 +261,7 @@ export default class Detail extends Component {
   }
 
   render () {
-    const { info, windowWidth, desc, cartCount, scrollTop, showBackToTop, curSku, promotion_activity } = this.state
+    const { info, windowWidth, curImgIdx, desc, cartCount, scrollTop, showBackToTop, curSku, promotion_activity } = this.state
     const { marketing, timer, isPromoter, startSecKill, hasStock, showBuyPanel, buyPanelType } = this.state
 
     if (!info) {
@@ -259,10 +270,12 @@ export default class Detail extends Component {
       )
     }
 
-    const imgInfo = {
-      img: info.pics[0],
-      width: windowWidth + 'px'
-    }
+    // const imgInfo = {
+    //   img: info.pics[0],
+    //   width: windowWidth + 'px'
+    // }
+
+    const { pics: imgs } = info
 
     return (
       <View className='page-goods-detail'>
@@ -280,6 +293,24 @@ export default class Detail extends Component {
           onScroll={this.handleScroll}
         >
           <View className='goods-imgs__wrap'>
+            <Swiper
+              className='goods-imgs__swiper'
+              current={curImgIdx}
+              onChange={this.handleSwiperChange}
+            >
+              {
+                imgs.map((img, idx) => {
+                  return (
+                    <SwiperItem key={idx}>
+                      <ItemImg
+                        src={img}
+                      ></ItemImg>
+                    </SwiperItem>
+                  )
+                })
+              }
+            </Swiper>
+
             {
               // info.videos_url && (<Video
               //   src={info.videos_url}
@@ -287,9 +318,9 @@ export default class Detail extends Component {
               //   controls
               // />)
             }
-            <ItemImg
+            {/*<ItemImg
               info={imgInfo}
-            />
+            />*/}
           </View>
 
           {timer && (

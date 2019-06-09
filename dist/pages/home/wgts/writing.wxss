@@ -1,1 +1,8 @@
-.wgt-writing{background:#fff}.writing-view{padding:0 20rpx}
+
+.wgt-writing {
+  background: #ffffff;
+}
+
+.writing-view {
+  padding: 0 20rpx;
+}

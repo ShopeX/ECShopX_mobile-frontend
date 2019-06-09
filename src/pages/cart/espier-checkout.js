@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtInput } from 'taro-ui'
 import { Loading, Price, SpCell, AddressChoose, SpToast, NavBar } from '@/components'
@@ -10,6 +10,7 @@ import { pickBy, log } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import find from 'lodash/find'
 import CheckoutItems from './checkout-items'
+import PaymentPicker from './comps/payment-picker'
 import OrderItem from '../trade/comps/order-item'
 
 import './espier-checkout.scss'
@@ -65,7 +66,9 @@ export default class CartCheckout extends Component {
         coupon_discount: '',
         point: ''
       },
-      payType: '',
+      payType: 'amorepay',
+      disabledPayment: null,
+      isPaymentOpend: false,
       invoiceTitle: ''
     }
   }
@@ -92,7 +95,7 @@ export default class CartCheckout extends Component {
 
     this.setState({
       info,
-      payType
+      payType: payType || this.state.payType
     })
 
     let total_fee = 0
@@ -190,6 +193,7 @@ export default class CartCheckout extends Component {
       receiver_address: 'address',
       receiver_zip: 'zip'
     })
+    const { payType } = this.state
     const { coupon } = this.props
 
     const params = {
@@ -200,6 +204,7 @@ export default class CartCheckout extends Component {
       promotion: 'normal',
       member_discount: 0,
       coupon_discount: 0,
+      pay_type: payType
     }
 
     log.debug('[checkout] params: ', params)
@@ -341,10 +346,24 @@ export default class CartCheckout extends Component {
     })
   }
 
+  handleClickPay = async () => {
+    if (!this.state.address) {
+      return S.toast('请选择地址')
+    }
+
+    this.setState({
+      isPaymentOpend: true
+    })
+
+    // await this.handlePay()
+  }
+
   handlePay = async () => {
     if (!this.state.address) {
       return S.toast('请选择地址')
     }
+
+    const { payType } = this.state
 
     Taro.showLoading({
       title: '正在提交',
@@ -357,28 +376,53 @@ export default class CartCheckout extends Component {
 
     let order_id, orderInfo
     try {
-      orderInfo = await api.trade.create(this.params)
+      const params = this.getParams()
+      orderInfo = await api.trade.create(params)
       order_id = orderInfo.order_id
     } catch (e) {
       Taro.showToast({
         title: e.message,
         icon: 'none'
       })
-    }
-    Taro.hideLoading()
 
+      // dhpoint 判断
+      if (payType === 'dhpoint') {
+        const message = e.message === '当前积分不足以支付本次订单费用'
+          ? e.message
+          : '积分获取失败'
+
+        this.setState({
+          disabledPayment: { name: 'dhpoint', message },
+          payType: 'amorepay',
+          submitLoading: false
+        })
+      }
+    }
+
+    Taro.hideLoading()
     if (!order_id) return
 
     // 爱茉pay流程
     const paymentParams = {
       order_id,
-      pay_type: 'amorepay',
+      pay_type: this.state.payType,
       order_type: orderInfo.order_type
     }
+
     const config = await api.cashier.getPayment(paymentParams)
     this.setState({
       submitLoading: false
     })
+
+    // 积分流程
+    if (payType === 'dhpoint') {
+      this.props.onClearCart()
+      Taro.redirectTo({
+        url: `/pages/trade/detail?id=${order_id}`
+      })
+
+      return
+    }
 
     let payErr
     try {
@@ -438,9 +482,21 @@ export default class CartCheckout extends Component {
     })
   }
 
+  handlePaymentChange = async (payType) => {
+    this.setState({
+      payType
+    })
+  }
+
+  handlePaymentClose = () => {
+    this.setState({
+      isPaymentOpend: false
+    })
+  }
+
   render () {
     const { coupon } = this.props
-    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading } = this.state
+    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend } = this.state
     if (!info) {
       return <Loading />
     }
@@ -650,13 +706,22 @@ export default class CartCheckout extends Component {
             }
           </View>
           <AtButton
-            loading={submitLoading}
             type='primary'
             className='btn-confirm-order'
             disabled={isBtnDisabled}
-            onClick={this.handlePay}
+            onClick={this.handleClickPay}
           >提交订单</AtButton>
         </View>
+
+        <PaymentPicker
+          isOpened={isPaymentOpend}
+          type={payType}
+          loading={submitLoading}
+          disabledPayment={disabledPayment}
+          onClose={this.handlePaymentClose}
+          onChange={this.handlePaymentChange}
+          onConfirm={this.handlePay}
+        ></PaymentPicker>
 
         <SpToast />
       </View>

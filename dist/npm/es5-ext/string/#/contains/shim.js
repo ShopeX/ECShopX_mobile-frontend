@@ -1,1 +1,7 @@
-"use strict";var indexOf=String.prototype.indexOf;module.exports=function(t){return-1<indexOf.call(this,t,arguments[1])};
+"use strict";
+
+var indexOf = String.prototype.indexOf;
+
+module.exports = function (searchString /*, position*/) {
+  return indexOf.call(this, searchString, arguments[1]) > -1;
+};

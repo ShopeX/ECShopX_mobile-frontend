@@ -1,1 +1,232 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_class2,_temp2,_extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,n,r)}if("value"in o)return o.value;var i=o.get;return void 0!==i?i.call(r):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../api/index.js"),_index4=_interopRequireDefault(_index3),_index5=require("../../spx/index.js"),_index6=_interopRequireDefault(_index5),_index7=require("../../hocs/index.js"),_index8=require("../../utils/index.js");function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _toConsumableArray(e){if(Array.isArray(e)){for(var t=0,n=Array(e.length);t<e.length;t++)n[t]=e[t];return n}return Array.from(e)}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(a,i){return function t(e,n){try{var r=s[e](n),o=r.value}catch(e){return void i(e)}if(!r.done)return Promise.resolve(o).then(function(e){t("next",e)},function(e){t("throw",e)});a(o)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var CouponHome=(0,_index7.withPager)((_temp2=_class2=function(e){function u(){var e,t,i,n,s=this;_classCallCheck(this,u);for(var r=arguments.length,o=Array(r),a=0;a<r;a++)o[a]=arguments[a];return(t=i=_possibleConstructorReturn(this,(e=u.__proto__||Object.getPrototypeOf(u)).call.apply(e,[this].concat(o)))).$usedState=["loopArray0","list","page"],i.handleGetCard=(n=_asyncToGenerator(regeneratorRuntime.mark(function e(t,n){var r,o,a;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return r=i.state.list,o={card_id:t},e.prev=2,e.next=5,_index4.default.member.homeCouponGet(o);case 5:a=e.sent,_index6.default.toast("优惠券领取成功"),a.status&&(console.log(74,222),a.status.total_lastget_num<=0?r[n].getted=2:a.status.lastget_num<=0&&(r[n].getted=1),i.setState({list:r})),e.next=12;break;case 10:e.prev=10,e.t0=e.catch(2);case 12:case"end":return e.stop()}},e,s,[[2,10]])})),function(e,t){return n.apply(this,arguments)}),i.$$refs=[],_possibleConstructorReturn(i,t)}var t;return _inherits(u,_index.Component),_createClass(u,[{key:"_constructor",value:function(e){_get(u.prototype.__proto__||Object.getPrototypeOf(u.prototype),"_constructor",this).call(this,e),this.state=_extends({},this.state,{list:[]})}},{key:"componentDidMount",value:function(){this.nextPage()}},{key:"fetch",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(t){var n,r,o,a;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=_extends({},t,{end_date:1}),e.next=3,_index4.default.member.homeCouponList(t);case 3:return n=e.sent,r=n.list,o=n.pagers.total,(a=(0,_index8.pickBy)(r,{status:"status",reduce_cost:"reduce_cost",least_cost:"least_cost",begin_date:"begin_date",end_date:function(e){var t=e.end_date;return(0,_index8.formatTime)(1e3*t,"YYYY-MM-DD HH:mm:ss")},fixed_term:"fixed_term",card_type:"card_type",tagClass:"tagClass",title:"title",discount:"discount",get_limit:"get_limit",user_get_num:"user_get_num",quantity:"quantity",get_num:"get_num",card_id:"card_id"})).map(function(e){e.get_limit-e.user_get_num<=0?e.getted=1:e.quantity-e.get_num<=0&&(e.getted=2)}),this.setState({list:[].concat(_toConsumableArray(this.state.list),_toConsumableArray(a))}),e.abrupt("return",{total:o});case 10:case"end":return e.stop()}},e,this)})),function(e){return t.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state,t=e.list,n=e.page,r=t.map(function(e,t){return{$loopState__temp2:"cash"===(e={$original:(0,_index.internal_get_original)(e)}).$original.card_type?(0,_index8.classNames)("coupon-item__name","2"===e.$original.status?"coupon-item__name-not":null):null,$loopState__temp4:"gift"===e.$original.card_type?(0,_index8.classNames)("coupon-item__name","2"===e.$original.status?"coupon-item__name-not":null):null,$loopState__temp6:"discount"===e.$original.card_type?(0,_index8.classNames)("coupon-item__name","2"===e.$original.status?"coupon-item__name-not":null):null,$original:e.$original}});return Object.assign(this.__state,{loopArray0:r,page:n}),this.__state}}]),u}(),_class2.properties={},_class2.$$events=["nextPage","handleGetCard"],_class=_temp2))||_class;exports.default=CouponHome,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(CouponHome,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _class2, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../api/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../../spx/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
+
+var _index7 = require("../../hocs/index.js");
+
+var _index8 = require("../../utils/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CouponHome = (0, _index7.withPager)(_class = (_temp2 = _class2 = function (_BaseComponent) {
+  _inherits(CouponHome, _BaseComponent);
+
+  function CouponHome() {
+    var _ref,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, CouponHome);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CouponHome.__proto__ || Object.getPrototypeOf(CouponHome)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["loopArray0", "list", "page"], _this.handleGetCard = function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(cardId, idx) {
+        var list, query, data;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                list = _this.state.list;
+                query = {
+                  card_id: cardId
+                };
+                _context.prev = 2;
+                _context.next = 5;
+                return _index4.default.member.homeCouponGet(query);
+
+              case 5:
+                data = _context.sent;
+
+                _index6.default.toast('优惠券领取成功');
+                if (data.status) {
+                  console.log(74, 222);
+                  if (data.status.total_lastget_num <= 0) {
+                    list[idx].getted = 2;
+                  } else if (data.status.lastget_num <= 0) {
+                    list[idx].getted = 1;
+                  }
+                  _this.setState({
+                    list: list
+                  });
+                }
+                _context.next = 12;
+                break;
+
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](2);
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, _this2, [[2, 10]]);
+      }));
+
+      return function (_x, _x2) {
+        return _ref2.apply(this, arguments);
+      };
+    }(), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(CouponHome, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(CouponHome.prototype.__proto__ || Object.getPrototypeOf(CouponHome.prototype), "_constructor", this).call(this, props);
+
+      this.state = _extends({}, this.state, {
+        list: []
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.nextPage();
+    }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
+        var _ref4, list, total, nList;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                params = _extends({}, params, {
+                  end_date: 1
+                });
+                _context2.next = 3;
+                return _index4.default.member.homeCouponList(params);
+
+              case 3:
+                _ref4 = _context2.sent;
+                list = _ref4.list;
+                total = _ref4.pagers.total;
+                nList = (0, _index8.pickBy)(list, {
+                  status: 'status',
+                  reduce_cost: 'reduce_cost',
+                  least_cost: 'least_cost',
+                  begin_date: 'begin_date',
+                  end_date: function end_date(_ref5) {
+                    var _end_date = _ref5.end_date;
+                    return (0, _index8.formatTime)(_end_date * 1000, 'YYYY-MM-DD HH:mm:ss');
+                  },
+                  fixed_term: 'fixed_term',
+                  card_type: 'card_type',
+                  tagClass: 'tagClass',
+                  title: 'title',
+                  discount: 'discount',
+                  get_limit: 'get_limit',
+                  user_get_num: 'user_get_num',
+                  quantity: 'quantity',
+                  get_num: 'get_num',
+                  card_id: 'card_id'
+                });
+
+                nList.map(function (item) {
+                  if (item.get_limit - item.user_get_num <= 0) {
+                    item.getted = 1;
+                  } else if (item.quantity - item.get_num <= 0) {
+                    item.getted = 2;
+                  }
+                });
+
+                this.setState({
+                  list: [].concat(_toConsumableArray(this.state.list), _toConsumableArray(nList))
+                });
+
+                return _context2.abrupt("return", { total: total });
+
+              case 10:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function fetch(_x3) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          list = _state.list,
+          page = _state.page;
+
+
+      var loopArray0 = list.map(function (item, idx) {
+        item = {
+          $original: (0, _index.internal_get_original)(item)
+        };
+        var $loopState__temp2 = item.$original.card_type === 'cash' ? (0, _index8.classNames)('coupon-item__name', item.$original.status === '2' ? 'coupon-item__name-not' : null) : null;
+        var $loopState__temp4 = item.$original.card_type === 'gift' ? (0, _index8.classNames)('coupon-item__name', item.$original.status === '2' ? 'coupon-item__name-not' : null) : null;
+        var $loopState__temp6 = item.$original.card_type === 'discount' ? (0, _index8.classNames)('coupon-item__name', item.$original.status === '2' ? 'coupon-item__name-not' : null) : null;
+        return {
+          $loopState__temp2: $loopState__temp2,
+          $loopState__temp4: $loopState__temp4,
+          $loopState__temp6: $loopState__temp6,
+          $original: item.$original
+        };
+      });
+      Object.assign(this.__state, {
+        loopArray0: loopArray0,
+        page: page
+      });
+      return this.__state;
+    }
+  }]);
+
+  return CouponHome;
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["nextPage", "handleGetCard"], _temp2)) || _class;
+
+exports.default = CouponHome;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(CouponHome, true));

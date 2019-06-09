@@ -6,7 +6,11 @@
         <nav-bar title="{{info.item_name}}" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
         <scroll-view class="goods-detail__wrap" scroll-y="{{true}}" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}" bindscroll="handleScroll">
             <view class="goods-imgs__wrap">
-                <item-img info="{{imgInfo}}" __triggerObserer="{{ _triggerObserer }}"></item-img>
+                <swiper class="goods-imgs__swiper" current="{{curImgIdx}}" bindchange="handleSwiperChange">
+                    <swiper-item wx:key="idx" wx:for="{{imgs}}" wx:for-item="img" wx:for-index="idx">
+                        <item-img src="{{img}}" __triggerObserer="{{ _triggerObserer }}"></item-img>
+                    </swiper-item>
+                </swiper>
             </view>
             <block wx:if="{{timer}}">
                 <view class="goods-timer">
@@ -55,7 +59,7 @@
                     </view>
                     <scroll-view class="specs-scroller" scroll-x="{{true}}">
                         <view class="specs-imgs">
-                            <image class="specs-imgs__item" src="{{specValueId.img}}" wx:key="img" mode="aspectFill" bindtap="handleBuyBarClick" wx:for="{{loopArray0}}" wx:for-item="specValueId" wx:for-index="_anonIdx2" data-e-tap-so="this" data-e-tap-a-a="{{buyPanelType}}"></image>
+                            <image class="specs-imgs__item" src="{{img}}" wx:key="img" mode="aspectFill" bindtap="handleBuyBarClick" wx:for="{{loopArray0}}" wx:for-item="specValueId" wx:for-index="_anonIdx2" data-e-tap-so="this" data-e-tap-a-a="{{buyPanelType}}"></image>
                         </view>
                     </scroll-view>
                 </view>

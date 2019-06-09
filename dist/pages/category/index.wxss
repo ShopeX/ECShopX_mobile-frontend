@@ -1,1 +1,41 @@
-.page-category-index{width:100%;height:100vh;background:#fff}.page-category-index .category__tabs{position:fixed;top:75rpx}.page-category-index .category-comps{-webkit-box-sizing:border-box;box-sizing:border-box;background:#fff;position:absolute;left:0;width:100%;top:150rpx;bottom:90rpx;overflow-y:auto;overflow-x:hidden;z-index:1}.page-category-index .category-comps,.page-category-index .category-comps>div,.page-category-index .category-comps>view{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.page-category-index {
+  width: 100%;
+  height: 100vh;
+  background: #ffffff;
+}
+.page-category-index .category__tabs {
+  position: fixed;
+  top: 75rpx;
+}
+.page-category-index .category-comps {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background: #ffffff;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 150rpx;
+  bottom: 110rpx;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  z-index: 1;
+}
+.page-category-index .category-comps > div, .page-category-index .category-comps > view {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}

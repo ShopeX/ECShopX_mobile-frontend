@@ -18,6 +18,10 @@
 .goods-imgs {
   &__wrap {
     position: relative;
+    height: 580px;
+  }
+  &__swiper {
+    height: 580px;
   }
   &__text {
     background: rgba(#000, 0.5);
@@ -228,6 +232,7 @@
       color: #000;
       margin: 0 0 26px;
       line-height: 1;
+      text-align: center;
     }
     &-selected {
       color: $color-primary-text;
@@ -249,7 +254,7 @@
         box-sizing: border-box;
         display: inline-block;
         vertical-align: middle;
-        margin-right: 20px;
+        margin: 0 10px;
         overflow: hidden;
       }
     }

@@ -90,8 +90,9 @@
                     </block>
                 </block>
             </view>
-            <at-button loading="{{submitLoading}}" __triggerObserer="{{ _triggerObserer }}" type="primary" className="btn-confirm-order" disabled="{{isBtnDisabled}}" bindonclick="handlePay" __fn_onClick="{{true}}">提交订单</at-button>
+            <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" className="btn-confirm-order" disabled="{{isBtnDisabled}}" bindonclick="handleClickPay" __fn_onClick="{{true}}">提交订单</at-button>
         </view>
+        <payment-picker isOpened="{{isPaymentOpend}}" __triggerObserer="{{ _triggerObserer }}" type="{{payType}}" loading="{{submitLoading}}" disabledPayment="{{disabledPayment}}" bindonclose="handlePaymentClose" bindonchange="handlePaymentChange" bindonconfirm="handlePay" __fn_onClose="{{true}}" __fn_onChange="{{true}}" __fn_onConfirm="{{true}}"></payment-picker>
         <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
     </view>
 </block>

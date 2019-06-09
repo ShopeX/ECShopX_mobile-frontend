@@ -1,1 +1,66 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _extends=Object.assign||function(e){for(var r=1;r<arguments.length;r++){var t=arguments[r];for(var n in t)Object.prototype.hasOwnProperty.call(t,n)&&(e[n]=t[n])}return e};exports.info=info,exports.code=code,exports.userInfo=userInfo,exports.login=login,exports.prelogin=prelogin,exports.decryptPhone=decryptPhone;var _index=require("../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_req=require("./req.js"),_req2=_interopRequireDefault(_req);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}var getAppId=function(){return(wx.getExtConfigSync?wx.getExtConfigSync():{}).appid};function info(e){return _req2.default.post("/wx.info",e)}function code(e){return _req2.default.get("/wx.code",{code:e})}function userInfo(){return _req2.default.get("/wx.user.info")}function login(e){var r=getAppId();return _req2.default.post("/login",_extends({},e,{appid:r,auth_type:"wxapp"}),{showError:!1})}function prelogin(e){var r=getAppId();return _req2.default.post("/prelogin",_extends({},e,{appid:r,auth_type:"wxapp"}))}function decryptPhone(e){var r=getAppId();return _req2.default.get("/member/decryptPhone",_extends({},e,{appid:r}))}
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.info = info;
+exports.code = code;
+exports.userInfo = userInfo;
+exports.login = login;
+exports.prelogin = prelogin;
+exports.decryptPhone = decryptPhone;
+
+var _index = require("../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _req = require("./req.js");
+
+var _req2 = _interopRequireDefault(_req);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getAppId = function getAppId() {
+  var _ref = wx.getExtConfigSync ? wx.getExtConfigSync() : {},
+      appid = _ref.appid;
+
+  return appid;
+};
+
+function info(data) {
+  return _req2.default.post('/wx.info', data);
+}
+
+function code(code) {
+  return _req2.default.get('/wx.code', { code: code });
+}
+
+function userInfo() {
+  return _req2.default.get('/wx.user.info');
+}
+
+function login(params) {
+  var appid = getAppId();
+  return _req2.default.post('/login', _extends({}, params, {
+    appid: appid,
+    auth_type: 'wxapp'
+  }), { showError: false });
+}
+
+function prelogin(params) {
+  var appid = getAppId();
+  return _req2.default.post('/prelogin', _extends({}, params, {
+    appid: appid,
+    auth_type: 'wxapp'
+  }));
+}
+
+function decryptPhone(params) {
+  var appid = getAppId();
+  return _req2.default.get('/member/decryptPhone', _extends({}, params, {
+    appid: appid
+  }));
+}

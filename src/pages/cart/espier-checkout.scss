@@ -200,7 +200,7 @@
         border: none;
       }
       &__hd {
-        width: 130px;
+        width: 140px;
         text-align: right;
       }
       &__bd {
@@ -224,6 +224,27 @@
     &__ft {
       width: 30%;
       color: $color-gray;
+    }
+  }
+
+  .at-float-layout {
+    &__container {
+      min-height: auto;
+    }
+    .layout-body {
+      padding: 0;
+    }
+    .at-button {
+      position: fixed;
+      bottom: 0;
+      border-radius: 0;
+      left: 0;
+      width: 100%;
+      z-index: 99;
+      &:before {
+        border-radius: 0;
+        border: none;
+      }
     }
   }
 

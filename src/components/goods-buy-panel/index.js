@@ -177,7 +177,7 @@ export default class GoodsBuyPanel extends Component {
   }
 
   handleSelectSku = (item, idx) => {
-    if (this.props.info.spec_items.length <= 1 || this.disabledSet.has(item.spec_value_id)) return
+    if (this.disabledSet.has(item.spec_value_id)) return
 
     const { selection } = this.state
     if (selection[idx] === item.spec_value_id) {

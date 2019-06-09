@@ -9,24 +9,24 @@ export default class ItemImg extends Component {
   }
 
   static defaultProps = {
-    info: null
+    src: null
   }
 
   render () {
-    const { info } = this.props
+    const { src } = this.props
 
     return (
       <View className='item-img'>
         <Image
           className='item-img__img'
           mode='aspectFill'
-          src={info.img}
+          src={src}
         />
         <View
           className='item-img__blured-wrap'
         >
           <Image
-            src={info.img}
+            src={src}
             mode='aspectFill'
             className='item-img__blured'
           />
