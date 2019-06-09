@@ -65,7 +65,7 @@ var AtActionSheetFooter = (_temp2 = _class = function (_AtComponent) {
     value: function _createData() {
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __isRunloopRef = arguments[2];
+      var __runloopRef = arguments[2];
       ;
 
       var rootClass = (0, _index6.default)('at-action-sheet__footer', this.__props.className);

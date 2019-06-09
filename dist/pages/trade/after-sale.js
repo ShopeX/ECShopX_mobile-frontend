@@ -201,7 +201,7 @@ var AfterSale = (_dec = (0, _index6.withLogin)(), (0, _index6.withPager)(_class 
     value: function _createData() {
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __isRunloopRef = arguments[2];
+      var __runloopRef = arguments[2];
       ;
 
       var _state2 = this.__state,

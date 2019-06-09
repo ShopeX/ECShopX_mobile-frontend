@@ -155,7 +155,7 @@ export default class CartIndex extends Component {
 
       return group
     })
-
+    console.log(groups, 158)
     return groups
   }
 
@@ -362,6 +362,7 @@ export default class CartIndex extends Component {
       title: 'item_name',
       desc: 'brief',
       is_checked: 'is_checked',
+      store: 'store',
       curSymbol: 'cur.symbol',
       promotions: ({ promotions = [], cart_id }) => promotions.map(p => {
         p.cart_id = cart_id

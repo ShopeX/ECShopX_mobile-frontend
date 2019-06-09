@@ -14,7 +14,7 @@ export default class PointLuck extends Component {
   }
 
   componentDidMount () {
-    this.fetch()
+    // this.fetch()
   }
 
   async fetch () {

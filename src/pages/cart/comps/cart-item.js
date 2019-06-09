@@ -26,6 +26,7 @@ export default class GoodsItem extends Component {
     }
 
     const price = isObject(info.price) ? info.price.total_price : info.price
+    console.log(info.store, 29)
     const img = info.img || info.image_default_id
     const curPromotion = info.promotions && info.activity_id && info.promotions.find(p => p.marketing_id === info.activity_id)
 

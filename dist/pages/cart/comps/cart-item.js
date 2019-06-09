@@ -51,7 +51,7 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
     value: function _createData() {
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
-      var __isRunloopRef = arguments[2];
+      var __runloopRef = arguments[2];
       ;
 
       var _props = this.__props,
@@ -70,6 +70,7 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
       }
 
       var price = (0, _index3.isObject)(info.price) ? info.price.total_price : info.price;
+      console.log(info.store, 29);
       var img = info.img || info.image_default_id;
       var curPromotion = info.promotions && info.activity_id && info.promotions.find(function (p) {
         return p.marketing_id === info.activity_id;
@@ -91,18 +92,18 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivatevIvkt",
-    value: function funPrivatevIvkt() {
+    key: "funPrivateVkrcr",
+    value: function funPrivateVkrcr() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivatenkhZU",
-    value: function funPrivatenkhZU() {
+    key: "funPrivateASIym",
+    value: function funPrivateASIym() {
       this.__triggerPropsFn("onClickPromotion", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivateVftMY",
-    value: function funPrivateVftMY() {
+    key: "funPrivatejlxFD",
+    value: function funPrivatejlxFD() {
       this.__triggerPropsFn("onNumChange", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -169,7 +170,7 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivatevIvkt", "funPrivatenkhZU", "funPrivateVftMY"], _class.defaultProps = {
+}, _class.$$events = ["funPrivateVkrcr", "funPrivateASIym", "funPrivatejlxFD"], _class.defaultProps = {
   onClick: function onClick() {},
   onClickPromotion: function onClickPromotion() {},
   showMarketPrice: false,
