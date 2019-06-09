@@ -1,1 +1,83 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var o=arguments[e];for(var r in o)Object.prototype.hasOwnProperty.call(o,r)&&(t[r]=o[r])}return t};exports.default=withBackToTop;var _index=require("../utils/index.js"),_throttle=require("../npm/lodash/throttle.js"),_throttle2=_interopRequireDefault(_throttle);function _interopRequireDefault(t){return t&&t.__esModule?t:{default:t}}function _classCallCheck(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function _inherits(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}function withBackToTop(o){return function(t){function e(t){_classCallCheck(this,e);var r=_possibleConstructorReturn(this,(e.__proto__||Object.getPrototypeOf(e)).call(this,t));return r.scrollBackToTop=function(){r.setState({scrollTop:1},function(){r.setState({scrollTop:null})})},r.handleScroll=(0,_throttle2.default)(function(t){var e=t.detail,o=e.scrollTop;e.scrollHeight<600||(300<o&&!r.state.showBackToTop?(_index.log.debug("[BackToTop] showBackToTop, scrollTop: "+o),r.setState({showBackToTop:!0})):r.state.showBackToTop&&o<=300&&(_index.log.debug("[BackToTop] hideBackToTop, scrollTop: "+o),r.setState({showBackToTop:!1})))},70),r.state=_extends({},r.state,{scrollTop:null,showBackToTop:!1}),r}return _inherits(e,o),e}()}
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = withBackToTop;
+
+var _index = require("../utils/index.js");
+
+var _throttle = require("../npm/lodash/throttle.js");
+
+var _throttle2 = _interopRequireDefault(_throttle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function withBackToTop(Component) {
+  return function (_Component) {
+    _inherits(WithBackToTopComponent, _Component);
+
+    function WithBackToTopComponent(props) {
+      _classCallCheck(this, WithBackToTopComponent);
+
+      var _this = _possibleConstructorReturn(this, (WithBackToTopComponent.__proto__ || Object.getPrototypeOf(WithBackToTopComponent)).call(this, props));
+
+      _this.scrollBackToTop = function () {
+        // workaround
+        _this.setState({
+          scrollTop: 1
+        }, function () {
+          {
+            // workaround for weapp
+            _this.setState({
+              scrollTop: null
+            });
+          }
+        });
+      };
+
+      _this.handleScroll = (0, _throttle2.default)(function (e) {
+        var _e$detail = e.detail,
+            scrollTop = _e$detail.scrollTop,
+            scrollHeight = _e$detail.scrollHeight;
+
+        var offset = 300;
+
+        // this.setState({
+        //   scrollTop
+        // })
+
+        if (scrollHeight < 600) return;
+        if (scrollTop > offset && !_this.state.showBackToTop) {
+          _index.log.debug("[BackToTop] showBackToTop, scrollTop: " + scrollTop);
+          _this.setState({
+            showBackToTop: true
+          });
+        } else if (_this.state.showBackToTop && scrollTop <= offset) {
+          _index.log.debug("[BackToTop] hideBackToTop, scrollTop: " + scrollTop);
+          _this.setState({
+            showBackToTop: false
+          });
+        }
+      }, 70);
+
+
+      _this.state = _extends({}, _this.state, {
+        scrollTop: null,
+        showBackToTop: false
+      });
+      return _this;
+    }
+
+    return WithBackToTopComponent;
+  }(Component);
+}

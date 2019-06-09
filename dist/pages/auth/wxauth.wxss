@@ -1,1 +1,24 @@
-.page-wxauth{padding:60rpx 0 0;text-align:center}.page-wxauth .sec-auth{padding:100rpx 100rpx 0}.page-wxauth .auth-hint{margin:0 0 20rpx;display:block}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.page-wxauth {
+  padding: 60rpx 0 0;
+  text-align: center;
+}
+.page-wxauth .sec-auth {
+  padding: 100rpx 100rpx 0;
+}
+.page-wxauth .auth-hint {
+  margin: 0 0 20rpx;
+  display: block;
+}

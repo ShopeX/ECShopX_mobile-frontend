@@ -1,10 +1,9 @@
 import Taro from "@tarojs/taro";
-import AzureStorage from 'azure-storage/browser/azure-storage.blob.export'
 import req from '@/api/req'
-import { APP_COMPANY_ID } from '@/config'
+import S from '@/spx'
+import { APP_COMPANY_ID } from '../../config'
 
-
-async function uploadImageFn (imgFiles, getUrl) {
+async function uploadImagesFn (imgFiles) {
   let promises = []
   for (let item of imgFiles) {
     const promise = new Promise(async (resolve, reject) => {
@@ -12,38 +11,25 @@ async function uploadImageFn (imgFiles, getUrl) {
         resolve(item)
       } else {
         // const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+        const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
         Taro.uploadFile({
-          url: req.baseURL,
+          url: req.baseURL + 'espier/upload',
           filePath: item.url,
           name: 'file',
+          header: {
+            'Authorization': S.getAuthToken(),
+            'authorizer-appid': extConfig.appid
+          },
           formData:{
             'file': item.url,
+            'company_id': APP_COMPANY_ID
           },
           success: res => {
-            console.log(res, 23)
-            // let imgData = JSON.parse(res.data)
-
+            let imgData = JSON.parse(res.data)
+             resolve(imgData.data)
           },
           fail: error => reject(error)
         })
-       /* console.log(item.url, 37)
-        var formData = new FormData(filename);
-        formData.append('file', filename);
-        console.log(formData.get('file'),39)*/
-        /*Taro.request({
-          url: req.baseURL + 'espier/upload',
-          method: 'POST',
-          data: {
-            file: filename,
-            company_id: APP_COMPANY_ID
-          }
-        }).then(res => {
-          console.log(res, 49)
-        })*/
-        /*const res = await req.post(getUrl, {
-          file: filename
-        })*/
-
       }
     })
     promises.push(promise)
@@ -55,5 +41,5 @@ async function uploadImageFn (imgFiles, getUrl) {
 }
 
 export default {
-  uploadImageFn
+  uploadImagesFn
 }

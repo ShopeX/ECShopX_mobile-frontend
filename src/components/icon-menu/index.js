@@ -29,7 +29,7 @@ export default class IconMenu extends Component {
         Taro.navigateToMiniProgram({
           appId: 'wx2fb97cb696f68d22', // 要跳转的小程序的appid
           path: '/pages/index/index', // 跳转的目标页面
-          envVersion: 'trial',
+          // envVersion: 'trial',
           success(res) {
             // 打开成功
             console.log(res)
