@@ -145,15 +145,14 @@ var TradeRefund = (_temp2 = _class = function (_BaseComponent) {
                 reason: reason,
                 description: description,
                 evidence_pic: evidence_pic
+
+                // console.log(data, 244)
               };
-
-
-              console.log(data, 244);
               method = aftersales_bn ? 'modify' : 'apply';
-              _context.next = 10;
+              _context.next = 9;
               return _index4.default.aftersales[method](data);
 
-            case 10:
+            case 9:
 
               _index7.default.toast('操作成功');
               // setTimeout(() => {
@@ -162,7 +161,7 @@ var TradeRefund = (_temp2 = _class = function (_BaseComponent) {
               //   })
               // }, 700)
 
-            case 11:
+            case 10:
             case "end":
               return _context.stop();
           }
@@ -263,12 +262,11 @@ var TradeRefund = (_temp2 = _class = function (_BaseComponent) {
                   }
                 });
 
-
-                console.log(params, 70);
+                // console.log(params, 70)
 
                 this.setState(params);
 
-              case 11:
+              case 10:
               case "end":
                 return _context2.stop();
             }

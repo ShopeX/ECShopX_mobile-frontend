@@ -30,7 +30,7 @@ export default class DetailItem extends Component {
 
   handleClickAfterSale= (item) => {
     const { info: { tid: order_id } } = this.props
-    console.log(item, order_id, 33)
+    // console.log(item, order_id, 33)
     if (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') {
       Taro.navigateTo({
         url: `/pages/trade/refund?order_id=${order_id}&item_id=${item.item_id}`

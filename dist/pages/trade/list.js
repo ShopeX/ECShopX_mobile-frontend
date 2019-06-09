@@ -55,7 +55,12 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TradeList.__proto__ || Object.getPrototypeOf(TradeList)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["loopArray0", "curTabIdx", "tabList", "list", "page", "curItemActionsId"], _this.handleClickTab = function (idx) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TradeList.__proto__ || Object.getPrototypeOf(TradeList)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["loopArray0", "curTabIdx", "tabList", "list", "page", "curItemActionsId"], _this.onPullDownRefresh = function () {
+      // debugger
+      _this.resetPage(function () {
+        _this.nextPage();
+      });
+    }, _this.handleClickTab = function (idx) {
       _this.hideLayer();
       if (_this.state.page.isLoading) {
         return;
@@ -178,14 +183,6 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
       } else {
         this.nextPage();
       }
-    }
-  }, {
-    key: "onPullDownRefresh",
-    value: function onPullDownRefresh() {
-      // debugger
-      // this.resetPage(() => {
-      //   this.nextPage()
-      // })
     }
   }, {
     key: "componentWillUnmount",
@@ -320,7 +317,7 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
   }]);
 
   return TradeList;
-}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleClickTab", "nextPage", "handleClickItem", "handleClickItemBtn", "handleActionBtnClick", "handleActionClick", "hideLayer"], _temp2)) || _class) || _class);
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleClickTab", "onPullDownRefresh", "nextPage", "handleClickItem", "handleClickItemBtn", "handleActionBtnClick", "handleActionClick", "hideLayer"], _temp2)) || _class) || _class);
 exports.default = TradeList;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(TradeList, true));

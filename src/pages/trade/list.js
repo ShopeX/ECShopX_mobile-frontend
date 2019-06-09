@@ -43,14 +43,16 @@ export default class TradeList extends Component {
     } else {
       this.nextPage()
     }
+
   }
 
-  onPullDownRefresh () {
+  onPullDownRefresh = () =>{
     // debugger
-    // this.resetPage(() => {
-    //   this.nextPage()
-    // })
+    this.resetPage(() => {
+      this.nextPage()
+    })
   }
+
 
   componentWillUnmount () {
     this.hideLayer()
@@ -201,6 +203,7 @@ export default class TradeList extends Component {
         <ScrollView
           scrollY
           className='trade-list__scroll'
+          onScrollToUpper={this.onPullDownRefresh.bind(this)}
           onScrollToLower={this.nextPage}
         >
           {

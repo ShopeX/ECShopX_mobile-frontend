@@ -60,12 +60,21 @@
         }
         .goods-title {
           width: 100%;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
+          line-height: 1.4;
+          font-weight: 700;
+          @include multi-ellipsis(2);
+          margin: 0 0 20px;
           &.no-brand {
             padding-top: 10px;
           }
+        }
+        .goods-brief{
+          width: 100%;
+          line-height: 1.4;
+          @include multi-ellipsis(3);
+          color: $color-gray;
+          font-size: $font-size-small;
+          margin: 0 0 20px;
         }
       }
     }

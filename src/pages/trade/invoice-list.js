@@ -81,7 +81,7 @@ export default class InvoiceList extends Component {
 
   handleClickItemBtn = async (type, trade) => {
     const params = { ...trade }
-    console.log(trade, 84)
+    // console.log(trade, 84)
     switch(type) {
       case 'add-card':
         await Taro.addCard(params)

@@ -23,6 +23,9 @@
 /*===============================
 =            z-index            =
 ===============================*/
+.page-trade-list {
+  height: 100vh;
+}
 .page-trade-list .layer {
   background: rgba(0, 0, 0, 0.01);
   position: fixed;

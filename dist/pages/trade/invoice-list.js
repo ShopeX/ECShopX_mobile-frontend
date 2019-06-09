@@ -70,27 +70,27 @@ var InvoiceList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_clas
             switch (_context.prev = _context.next) {
               case 0:
                 params = _extends({}, trade);
+                // console.log(trade, 84)
 
-                console.log(trade, 84);
                 _context.t0 = type;
-                _context.next = _context.t0 === 'add-card' ? 5 : _context.t0 === 'open-card' ? 8 : 11;
+                _context.next = _context.t0 === 'add-card' ? 4 : _context.t0 === 'open-card' ? 7 : 10;
                 break;
 
-              case 5:
-                _context.next = 7;
+              case 4:
+                _context.next = 6;
                 return _index2.default.addCard(params);
 
-              case 7:
-                return _context.abrupt("break", 11);
+              case 6:
+                return _context.abrupt("break", 10);
 
-              case 8:
-                _context.next = 10;
+              case 7:
+                _context.next = 9;
                 return _index2.default.openCard(params);
 
-              case 10:
-                return _context.abrupt("break", 11);
+              case 9:
+                return _context.abrupt("break", 10);
 
-              case 11:
+              case 10:
               case "end":
                 return _context.stop();
             }

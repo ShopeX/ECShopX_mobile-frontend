@@ -270,7 +270,7 @@ var PointDrawDetail = (_dec = (0, _index3.connect)(function (_ref) {
 
               case 14:
                 if (!(info.open_status === 'success' && _index9.default.getAuthToken())) {
-                  _context2.next = 20;
+                  _context2.next = 19;
                   break;
                 }
 
@@ -280,7 +280,7 @@ var PointDrawDetail = (_dec = (0, _index3.connect)(function (_ref) {
               case 17:
                 res = _context2.sent;
 
-                console.log(res, 78);
+                // console.log(res, 78)
                 if (res.luckydraw_id) {
                   this.setState({
                     isLucky: true,
@@ -288,16 +288,16 @@ var PointDrawDetail = (_dec = (0, _index3.connect)(function (_ref) {
                   });
                 }
 
-              case 20:
+              case 19:
                 if (!_index9.default.getAuthToken()) {
-                  _context2.next = 26;
+                  _context2.next = 25;
                   break;
                 }
 
-                _context2.next = 23;
+                _context2.next = 22;
                 return _index5.default.member.pointMyOrder({ luckydraw_id: luckydraw_id });
 
-              case 23:
+              case 22:
                 _ref6 = _context2.sent;
                 total_count = _ref6.total_count;
 
@@ -306,7 +306,7 @@ var PointDrawDetail = (_dec = (0, _index3.connect)(function (_ref) {
                   totalRecord: total_count
                 });
 
-              case 26:
+              case 25:
                 _index2.default.setNavigationBarTitle({
                   title: info.goods_info.itemName
                 });
@@ -329,7 +329,7 @@ var PointDrawDetail = (_dec = (0, _index3.connect)(function (_ref) {
 
                 _index7.log.debug('fetch: done', info);
 
-              case 31:
+              case 30:
               case "end":
                 return _context2.stop();
             }

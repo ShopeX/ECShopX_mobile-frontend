@@ -47,7 +47,7 @@ export default class PointOrderDetail extends Component {
       ship_code: 'ship_code',
     })
 
-    console.log(info,49)
+    // console.log(info,49)
     if(info.lucky_status === 'lucky') {
       info.status_desc_name = '中奖'
       info.status_img = 'ico_wait_buyer_confirm_goods.png'

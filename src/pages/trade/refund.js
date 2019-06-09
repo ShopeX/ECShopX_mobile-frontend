@@ -75,7 +75,7 @@ export default class TradeRefund extends Component {
       imgs: ({ evidence_pic }) => evidence_pic.map(url => ({ url }))
     })
 
-    console.log(params, 70)
+    // console.log(params, 70)
 
     this.setState(params)
   }
@@ -179,7 +179,7 @@ export default class TradeRefund extends Component {
       evidence_pic
     }
 
-    console.log(data, 244)
+    // console.log(data, 244)
     const method = aftersales_bn ? 'modify' : 'apply'
     await api.aftersales[method](data)
 

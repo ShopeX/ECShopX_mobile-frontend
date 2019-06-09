@@ -94,11 +94,31 @@
 }
 .grid-goods .grid-item .goods-wrap .caption .goods-title {
   width: 100%;
+  line-height: 1.4;
+  font-weight: 700;
   overflow: hidden;
-  white-space: nowrap;
   -o-text-overflow: ellipsis;
      text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+  margin: 0 0 20rpx;
 }
 .grid-goods .grid-item .goods-wrap .caption .goods-title.no-brand {
   padding-top: 10rpx;
+}
+.grid-goods .grid-item .goods-wrap .caption .goods-brief {
+  width: 100%;
+  line-height: 1.4;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+  color: #818181;
+  font-size: 23rpx;
+  margin: 0 0 20rpx;
 }

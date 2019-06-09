@@ -95,7 +95,7 @@ export default class PointDrawDetail extends Component {
 
     if(info.open_status === 'success' && S.getAuthToken()) {
       const res = await api.member.pointCheckLucky(luckydraw_id)
-      console.log(res, 78)
+      // console.log(res, 78)
       if(res.luckydraw_id) {
         this.setState({
           isLucky: true,

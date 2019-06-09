@@ -38,8 +38,8 @@ var DetailItem = (_temp2 = _class = function (_BaseComponent) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DetailItem.__proto__ || Object.getPrototypeOf(DetailItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "customFooter", "customHeader", "noHeader", "onClick", "showActions"], _this.handleClickAfterSale = function (item) {
       var order_id = _this.props.info.tid;
+      // console.log(item, order_id, 33)
 
-      console.log(item, order_id, 33);
       if (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') {
         _index2.default.navigateTo({
           url: "/pages/trade/refund?order_id=" + order_id + "&item_id=" + item.item_id

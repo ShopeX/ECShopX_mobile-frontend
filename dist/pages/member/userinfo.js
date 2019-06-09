@@ -85,12 +85,12 @@ var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2
                   _index7.default.toast('最多上传1张图片');
                 }
                 imgFiles = data.slice(0, 1);
-                // azureUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
-                //   .then(res => {
-                //     this.setState({
-                //       imgs: res
-                //     })
-                //   })
+                /* azureUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
+                   .then(res => {
+                     this.setState({
+                       imgs: res
+                     })
+                   })*/
 
               case 5:
               case "end":
@@ -187,7 +187,7 @@ var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2
                 if (memberInfo.avatar) {
                   avatarArr = [{ url: memberInfo.avatar }];
                 }
-                console.log(avatarArr, 38);
+                // console.log(avatarArr, 38)
                 this.setState({
                   info: {
                     user_name: memberInfo.username,
@@ -196,7 +196,7 @@ var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2
                   imgs: avatarArr
                 });
 
-              case 8:
+              case 7:
               case "end":
                 return _context3.stop();
             }

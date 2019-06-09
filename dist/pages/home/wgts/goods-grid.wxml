@@ -25,6 +25,7 @@
                                 <image class="goods-brand" src="{{item.brand}}" mode="aspectFill"></image>
                             </block>
                             <view class="{{'goods-title ' + (!config.brand || !item.brand ? 'no-brand' : '')}}">{{item.title}}</view>
+                            <view class="{{'goods-brief ' + (!config.brand || !item.brand ? 'no-brand' : '')}}">{{item.brief}}</view>
                         </view>
                     </view>
                 </view>

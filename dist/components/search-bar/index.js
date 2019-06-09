@@ -83,7 +83,7 @@ var SearchBar = (_temp2 = _class = function (_BaseComponent) {
         _this.setState({ historyList: [] });
       });
     }, _this.handleClickTag = function (item) {
-      console.log(item, 100);
+      // console.log(item, 100)
       _index2.default.navigateTo({
         url: "/pages/item/list?keywords=" + item
       });

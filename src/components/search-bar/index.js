@@ -92,7 +92,7 @@ export default class SearchBar extends Component {
   }
 
   handleClickTag = (item) => {
-    console.log(item, 100)
+    // console.log(item, 100)
     Taro.navigateTo({
       url: `/pages/item/list?keywords=${item}`
     })
