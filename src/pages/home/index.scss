@@ -40,6 +40,14 @@
     font-size: 24px;
     color: #999;
   }
+  &__goods__more {
+    display: flex;
+    text-align: right;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    border-radius: 60px;
+  }
   &__more {
     display: flex;
     align-items: center;

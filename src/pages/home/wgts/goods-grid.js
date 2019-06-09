@@ -45,11 +45,17 @@ export default class WgtGoodsGrid extends Component {
               <Text>{base.title}</Text>
               <View className='wgt__subtitle'>{base.subtitle}</View>
             </View>
-            <View
+            {/*<View
               className='wgt__more'
               onClick={this.navigateTo.bind(this, '/pages/item/list')}
             >
               <View className='three-dot'></View>
+            </View>*/}
+            <View
+              className='wgt__goods__more'
+              onClick={this.navigateTo.bind(this, '/pages/item/list')}
+            >
+              <View className='all-goods'>全部商品</View>
             </View>
           </View>
         )}

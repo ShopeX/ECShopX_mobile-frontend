@@ -159,8 +159,8 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
       });
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "componentDidShow",
+    value: function componentDidShow() {
       var _this3 = this;
 
       var status = this.$router.params.status;

@@ -30,7 +30,7 @@ export default class TradeList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidShow () {
     const { status } = this.$router.params
     const tabIdx = this.state.tabList.findIndex(tab => tab.status === status)
 

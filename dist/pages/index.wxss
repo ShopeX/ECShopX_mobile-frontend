@@ -74,6 +74,23 @@
   font-size: 24rpx;
   color: #999;
 }
+.wgt__goods__more {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: right;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 24rpx;
+  border-radius: 60rpx;
+}
 .wgt__more {
   display: -webkit-box;
   display: -webkit-flex;

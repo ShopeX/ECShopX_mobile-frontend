@@ -8,8 +8,8 @@
                 <view class="wgt__title"><text>{{base.title}}</text>
                     <view class="wgt__subtitle">{{base.subtitle}}</view>
                 </view>
-                <view class="wgt__more" bindtap="navigateTo" data-e-tap-so="this" data-e-tap-a-a="/pages/item/list">
-                    <view class="three-dot"></view>
+                <view class="wgt__goods__more" bindtap="navigateTo" data-e-tap-so="this" data-e-tap-a-a="/pages/item/list">
+                    <view class="all-goods">全部商品</view>
                 </view>
             </view>
         </block>
