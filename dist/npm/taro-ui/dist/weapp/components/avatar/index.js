@@ -1,1 +1,164 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var a=Object.getOwnPropertyDescriptor(t,n);if(void 0===a){var o=Object.getPrototypeOf(t);return null===o?void 0:e(o,n,r)}if("value"in a)return a.value;var l=a.get;return void 0!==l?l.call(r):void 0},_index=require("../../../../../@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../../../../prop-types/index.js"),_index4=_interopRequireDefault(_index3),_index5=require("../../../../../classnames/index.js"),_index6=_interopRequireDefault(_index5),_component=require("../../common/component.js"),_component2=_interopRequireDefault(_component);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _defineProperty(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var SIZE_CLASS={large:"large",normal:"normal",small:"small"},AtAvatar=(_temp2=_class=function(e){function l(){var e,t,n;_classCallCheck(this,l);for(var r=arguments.length,a=Array(r),o=0;o<r;o++)a[o]=arguments[o];return(t=n=_possibleConstructorReturn(this,(e=l.__proto__||Object.getPrototypeOf(l)).call.apply(e,[this].concat(a)))).$usedState=["anonymousState__temp","anonymousState__temp2","openData","image","letter","isWEAPP","size","circle","text","customStyle","className"],n.$$refs=[],_possibleConstructorReturn(n,t)}return _inherits(l,_component2.default),_createClass(l,[{key:"_constructor",value:function(){_get(l.prototype.__proto__||Object.getPrototypeOf(l.prototype),"_constructor",this).apply(this,arguments),this.state={isWEAPP:_index2.default.getEnv()===_index2.default.ENV_TYPE.WEAPP}}},{key:"_createData",value:function(){var e;this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var t=this.__props,n=t.size,r=t.circle,a=t.image,o=t.text,l=t.openData,i=t.customStyle,s=(_defineProperty(e={},"at-avatar--"+SIZE_CLASS[n],SIZE_CLASS[n]),_defineProperty(e,"at-avatar--circle",r),e),u="";o&&(u=o[0]);l&&"userAvatarUrl"===l.type&&this.__state.isWEAPP;var p=(0,_index6.default)(["at-avatar"],s,this.__props.className),_=(0,_index.internal_inline_style)(i);return Object.assign(this.__state,{anonymousState__temp:p,anonymousState__temp2:_,openData:l,image:a,letter:u}),this.__state}}]),l}(),_class.properties={size:{type:null,value:null},circle:{type:null,value:null},image:{type:null,value:null},text:{type:null,value:null},openData:{type:null,value:null},customStyle:{type:null,value:null},className:{type:null,value:null}},_class.$$events=[],_temp2);AtAvatar.defaultProps={size:"normal",circle:!1,text:"",image:"",openData:{},customStyle:{},className:""},AtAvatar.propTypes={size:_index4.default.oneOf(["large","normal","small"]),circle:_index4.default.bool,text:_index4.default.string,image:_index4.default.string,openData:_index4.default.object,customStyle:_index4.default.oneOfType([_index4.default.object,_index4.default.string]),className:_index4.default.oneOfType([_index4.default.array,_index4.default.string])},exports.default=AtAvatar,Component(require("../../../../../@tarojs/taro-weapp/index.js").default.createComponent(AtAvatar));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../../../../@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../../../../prop-types/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../../../../../classnames/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
+
+var _component = require("../../common/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SIZE_CLASS = {
+  large: 'large',
+  normal: 'normal',
+  small: 'small'
+};
+
+var AtAvatar = (_temp2 = _class = function (_AtComponent) {
+  _inherits(AtAvatar, _AtComponent);
+
+  function AtAvatar() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, AtAvatar);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AtAvatar.__proto__ || Object.getPrototypeOf(AtAvatar)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "openData", "image", "letter", "isWEAPP", "size", "circle", "text", "customStyle", "className"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(AtAvatar, [{
+    key: "_constructor",
+    value: function _constructor() {
+      _get(AtAvatar.prototype.__proto__ || Object.getPrototypeOf(AtAvatar.prototype), "_constructor", this).apply(this, arguments);
+      this.state = {
+        isWEAPP: _index2.default.getEnv() === _index2.default.ENV_TYPE.WEAPP
+      };
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      var _classObject;
+
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _props = this.__props,
+          size = _props.size,
+          circle = _props.circle,
+          image = _props.image,
+          text = _props.text,
+          openData = _props.openData,
+          customStyle = _props.customStyle;
+
+      var rootClassName = ['at-avatar'];
+
+      var classObject = (_classObject = {}, _defineProperty(_classObject, "at-avatar--" + SIZE_CLASS[size], SIZE_CLASS[size]), _defineProperty(_classObject, 'at-avatar--circle', circle), _classObject);
+
+      var letter = '';
+      if (text) {
+        letter = text[0];
+      }var elem = void 0;
+      if (openData && openData.type === 'userAvatarUrl' && this.__state.isWEAPP) {} else if (image) {} else {}
+      var anonymousState__temp = (0, _index6.default)(rootClassName, classObject, this.__props.className);
+      var anonymousState__temp2 = (0, _index.internal_inline_style)(customStyle);
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        anonymousState__temp2: anonymousState__temp2,
+        openData: openData,
+        image: image,
+        letter: letter
+      });
+      return this.__state;
+    }
+  }]);
+
+  return AtAvatar;
+}(_component2.default), _class.properties = {
+  "size": {
+    "type": null,
+    "value": null
+  },
+  "circle": {
+    "type": null,
+    "value": null
+  },
+  "image": {
+    "type": null,
+    "value": null
+  },
+  "text": {
+    "type": null,
+    "value": null
+  },
+  "openData": {
+    "type": null,
+    "value": null
+  },
+  "customStyle": {
+    "type": null,
+    "value": null
+  },
+  "className": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = [], _temp2);
+
+
+AtAvatar.defaultProps = {
+  size: 'normal',
+  circle: false,
+  text: '',
+  image: '',
+  openData: {},
+  customStyle: {},
+  className: ''
+};
+
+AtAvatar.propTypes = {
+  size: _index4.default.oneOf(['large', 'normal', 'small']),
+  circle: _index4.default.bool,
+  text: _index4.default.string,
+  image: _index4.default.string,
+  openData: _index4.default.object,
+  customStyle: _index4.default.oneOfType([_index4.default.object, _index4.default.string]),
+  className: _index4.default.oneOfType([_index4.default.array, _index4.default.string])
+};
+exports.default = AtAvatar;
+
+Component(require('../../../../../@tarojs/taro-weapp/index.js').default.createComponent(AtAvatar));

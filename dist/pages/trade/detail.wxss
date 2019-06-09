@@ -1,1 +1,318 @@
-@charset "UTF-8";.trade-detail{background:#fff;-webkit-box-sizing:border-box;box-sizing:border-box;min-height:100vh;padding-bottom:84rpx}.trade-detail-header{width:100%;height:150rpx;background:#0b4137;color:#fff}.trade-detail-header__waitpay{text-align:center;font-size:26rpx;line-height:150rpx}.trade-detail-header__waitpay .count-down{font-size:36rpx;margin:0 20rpx}.trade-detail-header .at-countdown__time{color:#fff}.trade-detail-header .at-countdown__time-box{font-family:"Hiragino Sans GB","微软雅黑","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"}.trade-detail-address,.trade-detail-waitdeliver{width:100%;-webkit-box-sizing:border-box;box-sizing:border-box}.trade-detail-waitdeliver,.trade-detail-waitdeliver .delivery-infos{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex}.trade-detail-waitdeliver{padding:34rpx 58rpx 39rpx 30rpx;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start}.trade-detail-waitdeliver .delivery-infos{-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;margin-left:23rpx;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:end;-webkit-align-items:flex-end;-ms-flex-align:end;align-items:flex-end}.trade-detail-waitdeliver .delivery-infos__text{display:block;font-size:22rpx}.trade-detail-waitdeliver .text-status{font-size:28rpx;margin-bottom:10rpx}.trade-detail-address{height:143rpx;padding:38rpx 38rpx 49rpx 30rpx}.trade-detail-address .address-receive{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:start;-webkit-justify-content:flex-start;-ms-flex-pack:start;justify-content:flex-start;color:#555;font-size:22rpx;margin-bottom:18rpx}.trade-detail-address .info-trade,.trade-detail-info .delivery_code_copy .info-text{-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}.trade-detail-address .user-info-trade{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;font-size:22rpx;line-height:36rpx}.trade-detail-address .address-detail{font-size:22rpx;color:#999}.trade-detail-goods,.trade-detail-info{width:100%;border-top:14rpx solid #f6f6f6}.trade-detail-goods{min-height:100rpx}.trade-detail .order-item__pay-type{display:none}.trade-detail .trade-money{-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;text-align:right;padding:34rpx 38rpx;font-size:26rpx;color:#5b5b5b;border-top:1PX solid #ececec}.trade-detail .trade-money__num{font-size:36rpx;color:#0b4137}.trade-detail-info{-webkit-box-sizing:border-box;box-sizing:border-box;font-size:25rpx;line-height:1.5;color:#999;padding:42rpx 30rpx}.trade-detail-info .info-text{display:block}.trade-detail-info .delivery_code_copy{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;width:100%}.trade-detail-info .delivery_code_copy .info-text:last-child{text-align:right}.trade-detail__footer{position:fixed;left:0;width:100%;height:84rpx;bottom:0}.trade-detail__footer__btn{width:50%;display:inline-block;vertical-align:middle;height:87rpx;line-height:87rpx;text-align:center;background-color:#fafafa;font-size:26rpx;border-radius:0}.trade-detail__footer__btn-inline{width:100%}.trade-detail__footer__btn:before{border:0}.trade-detail__footer .at-button__icon{vertical-align:middle}.trade-detail__footer_active{background:#0b4137;color:#fff}.trade-detail__footer_allWidthBtn{width:100%}
+
+@charset "UTF-8";
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.trade-detail {
+  background: #ffffff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  min-height: 100vh;
+  padding-bottom: 84rpx;
+}
+.trade-detail-header {
+  width: 100%;
+  height: 150rpx;
+  background: #0b4137;
+  color: #ffffff;
+}
+.trade-detail-header__waitpay {
+  text-align: center;
+  font-size: 26rpx;
+  line-height: 150rpx;
+}
+.trade-detail-header__waitpay .count-down {
+  font-size: 36rpx;
+  margin: 0 20rpx;
+}
+.trade-detail-header .at-countdown__time {
+  color: #fff;
+}
+.trade-detail-header .at-countdown__time-box {
+  font-family: "Hiragino Sans GB", "微软雅黑", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+.trade-detail-waitdeliver {
+  width: 100%;
+  padding: 34rpx 58rpx 39rpx 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+.trade-detail-waitdeliver .delivery-infos {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin-left: 23rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+.trade-detail-waitdeliver .delivery-infos__text {
+  display: block;
+  font-size: 22rpx;
+}
+.trade-detail-waitdeliver .text-status {
+  font-size: 28rpx;
+  margin-bottom: 10rpx;
+}
+.trade-detail-address {
+  width: 100%;
+  height: 143rpx;
+  padding: 38rpx 38rpx 49rpx 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  /*.trade-info {
+    font-size: 20px;
+    line-height: 36px;
+    color: #999999;
+  }*/
+}
+.trade-detail-address .address-receive {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  color: #555555;
+  font-size: 22rpx;
+  margin-bottom: 18rpx;
+}
+.trade-detail-address .info-trade {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.trade-detail-address .user-info-trade {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 22rpx;
+  line-height: 36rpx;
+}
+.trade-detail-address .address-detail {
+  font-size: 22rpx;
+  color: #999999;
+}
+.trade-detail-goods {
+  border-top: 14rpx solid #f6f6f6;
+  width: 100%;
+  min-height: 100rpx;
+}
+.trade-detail .order-item__pay-type {
+  display: none;
+}
+.trade-detail .trade-money {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  text-align: right;
+  padding: 34rpx 38rpx;
+  font-size: 26rpx;
+  color: #5b5b5b;
+  border-top: 1PX solid #ececec;
+}
+.trade-detail .trade-money__num {
+  font-size: 36rpx;
+  color: #0b4137;
+}
+.trade-detail-info {
+  width: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-size: 25rpx;
+  line-height: 1.5;
+  color: #999999;
+  border-top: 14rpx solid #f6f6f6;
+  padding: 42rpx 30rpx;
+}
+.trade-detail-info .info-text {
+  display: block;
+}
+.trade-detail-info .delivery_code_copy {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+}
+.trade-detail-info .delivery_code_copy .info-text {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.trade-detail-info .delivery_code_copy .info-text:last-child {
+  text-align: right;
+}
+.trade-detail__footer {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 84rpx;
+  bottom: 0;
+}
+.trade-detail__footer__btn {
+  width: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  height: 87rpx;
+  line-height: 87rpx;
+  text-align: center;
+  background-color: #fafafa;
+  font-size: 26rpx;
+  border-radius: 0;
+}
+.trade-detail__footer__btn-inline {
+  width: 100%;
+}
+.trade-detail__footer__btn:before {
+  border: none;
+}
+.trade-detail__footer .at-button__icon {
+  vertical-align: middle;
+}
+.trade-detail__footer_active {
+  background: #0b4137;
+  color: #ffffff;
+}
+.trade-detail__footer_allWidthBtn {
+  width: 100%;
+}
+
+/*.trade-detail {
+  padding-bottom: $toolbar-height + $edge-margin;
+  &__status {
+    background: linear-gradient(227deg,rgba(250,167,97,1) 0%,rgba(250,53,21,1) 100%);
+    position: relative;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 80px;
+    &-text {
+      color: #fff;
+      font-size: $font-size-large;
+    }
+    &-ico {
+      width: 130px;
+      height: 110px;
+      margin-right: -6px;
+    }
+  }
+
+  &__addr {
+    background: #fff;
+    margin: 0 0 $edge-margin;
+  }
+
+  &__express {
+    padding: $edge-margin $edge-size $edge-margin ($edge-size + 40px);
+  }
+
+  &__total {
+    padding: 0 0 $edge-size;
+    .sp-cell {
+      padding: 8px $edge-size;
+      display: flex;
+      align-items: space-between;
+      &__bd {
+        text-align: right;
+      }
+    }
+  }
+
+  .address-info {
+    margin: 0 0 $edge-margin;
+    &__receiver {
+      color: #111;
+      display: block;
+      font-size: $font-size-large;
+      margin: 0 0 16px;
+      line-height: 1;
+    }
+    &__addr {
+      color: #111;
+      line-height: 1;
+      display: block;
+    }
+  }
+
+  .sec-orders {
+    &__hd {
+      padding: $edge-margin $edge-size;
+    }
+  }
+
+  .trade-extra {
+    display: flex;
+    align-items: space-between;
+    padding: $edge-margin $edge-size;
+    &__bd {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      font-size: $font-size-small;
+    }
+    &__ft {
+      .at-button {
+        transform: scale(0.9);
+        transform-origin: center right;
+      }
+    }
+  }
+
+  .trade-opts {
+    text-align: right;
+    .at-button {
+      transform: scale(0.9);
+      transform-origin: center right;
+    }
+  }
+
+  .toolbar-actions {
+    display: flex;
+    justify-content: flex-end;
+    .at-button {
+      margin: 0 0 0 20px;
+    }
+  }
+}*/

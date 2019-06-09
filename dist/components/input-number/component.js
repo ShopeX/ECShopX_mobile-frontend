@@ -1,1 +1,70 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var _class,_temp,_createClass=function(){function n(e,t){for(var o=0;o<t.length;o++){var n=t[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,o){return t&&n(e.prototype,t),o&&n(e,o),e}}(),_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var objectToString=function(o){if(o&&"object"===(void 0===o?"undefined":_typeof(o))){var n="";return Object.keys(o).forEach(function(e){var t=e.replace(/([A-Z])/g,"-$1").toLowerCase();n+=t+":"+o[e]+";"}),n}return o&&"string"==typeof o?o:""},AtComponent=(_temp=_class=function(e){function t(){return _classCallCheck(this,t),_possibleConstructorReturn(this,(t.__proto__||Object.getPrototypeOf(t)).apply(this,arguments))}return _inherits(t,_index.Component),_createClass(t,[{key:"mergeStyle",value:function(e,t){return e&&"object"===(void 0===e?"undefined":_typeof(e))&&t&&"object"===(void 0===t?"undefined":_typeof(t))?Object.assign({},e,t):objectToString(e)+objectToString(t)}}]),t}(),_class.options={addGlobalClass:!0},_temp);exports.default=AtComponent;
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _class, _temp;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _index = require('../../npm/@tarojs/taro-weapp/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var objectToString = function objectToString(style) {
+  if (style && (typeof style === 'undefined' ? 'undefined' : _typeof(style)) === 'object') {
+    var styleStr = '';
+    Object.keys(style).forEach(function (key) {
+      var lowerCaseKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+      styleStr += lowerCaseKey + ':' + style[key] + ';';
+    });
+    return styleStr;
+  } else if (style && typeof style === 'string') {
+    return style;
+  }
+  return '';
+};
+
+var AtComponent = (_temp = _class = function (_Component) {
+  _inherits(AtComponent, _Component);
+
+  function AtComponent() {
+    _classCallCheck(this, AtComponent);
+
+    return _possibleConstructorReturn(this, (AtComponent.__proto__ || Object.getPrototypeOf(AtComponent)).apply(this, arguments));
+  }
+
+  _createClass(AtComponent, [{
+    key: 'mergeStyle',
+    value: function mergeStyle(style1, style2) {
+      if (style1 && (typeof style1 === 'undefined' ? 'undefined' : _typeof(style1)) === 'object' && style2 && (typeof style2 === 'undefined' ? 'undefined' : _typeof(style2)) === 'object') {
+        return Object.assign({}, style1, style2);
+      }
+      return objectToString(style1) + objectToString(style2);
+    }
+  }]);
+
+  return AtComponent;
+}(_index.Component), _class.options = {
+  addGlobalClass: true
+
+  /**
+   * 合并 style
+   * @param {Object|String} style1
+   * @param {Object|String} style2
+   * @returns {String}
+   */
+}, _temp);
+exports.default = AtComponent;

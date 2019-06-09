@@ -1,1 +1,22 @@
-var baseIsMatch=require("./_baseIsMatch.js"),getMatchData=require("./_getMatchData.js"),matchesStrictComparable=require("./_matchesStrictComparable.js");function baseMatches(t){var e=getMatchData(t);return 1==e.length&&e[0][2]?matchesStrictComparable(e[0][0],e[0][1]):function(a){return a===t||baseIsMatch(a,t,e)}}module.exports=baseMatches;
+var baseIsMatch = require("./_baseIsMatch.js"),
+    getMatchData = require("./_getMatchData.js"),
+    matchesStrictComparable = require("./_matchesStrictComparable.js");
+
+/**
+ * The base implementation of `_.matches` which doesn't clone `source`.
+ *
+ * @private
+ * @param {Object} source The object of property values to match.
+ * @returns {Function} Returns the new spec function.
+ */
+function baseMatches(source) {
+  var matchData = getMatchData(source);
+  if (matchData.length == 1 && matchData[0][2]) {
+    return matchesStrictComparable(matchData[0][0], matchData[0][1]);
+  }
+  return function (object) {
+    return object === source || baseIsMatch(object, source, matchData);
+  };
+}
+
+module.exports = baseMatches;

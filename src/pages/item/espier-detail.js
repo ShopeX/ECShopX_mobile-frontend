@@ -9,7 +9,7 @@ import { log, calcTimer, isArray } from '@/utils'
 import S from '@/spx'
 import GoodsBuyToolbar from './comps/buy-toolbar'
 import ItemImg from './comps/item-img'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods } from '../home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
 
@@ -455,6 +455,7 @@ export default class Detail extends Component {
                         {item.name === 'film' && <WgtFilm info={item} />}
                         {item.name === 'slider' && <WgtSlider info={item} />}
                         {item.name === 'writing' && <WgtWriting info={item} />}
+                        {item.name === 'heading' && <WgtHeading info={item} />}
                         {item.name === 'goods' && <WgtGoods info={item} />}
                       </View>
                     )

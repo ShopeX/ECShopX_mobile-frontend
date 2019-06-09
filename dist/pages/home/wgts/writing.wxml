@@ -9,7 +9,7 @@
                 <view class="wgt__subtitle">{{base.subtitle}}</view>
             </view>
         </block>
-        <view class="{{'slider-wra wgt-writing ' + (config.padded ? 'padded' : '')}}">
+        <view class="{{'slider-wra wgt-writing ' + (config.padded ? 'padded' : '')}}" style="{{'' + (config.align ? 'text-align:' + config.align : '')}}">
             <view class="writing-view" wx:key="index" wx:for="{{contentArr}}" wx:for-item="item" wx:for-index="index">{{item}}</view>
         </view>
     </view>

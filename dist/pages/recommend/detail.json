@@ -3,6 +3,7 @@
     "wgt-film": "../home/wgts/film",
     "wgt-slider": "../home/wgts/slider",
     "wgt-writing": "../home/wgts/writing",
+    "wgt-heading": "../home/wgts/heading",
     "wgt-goods": "../home/wgts/goods",
     "float-menus": "../../components/float-menus/index",
     "float-menu-item": "../../components/float-menus/item"

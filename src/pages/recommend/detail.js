@@ -4,7 +4,7 @@ import api from '@/api'
 import { withPager } from '@/hocs'
 import { FloatMenus, FloatMenuItem } from '@/components'
 import { formatTime } from '@/utils'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods } from '../home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 import S from '@/spx'
 
 import './detail.scss'
@@ -208,6 +208,7 @@ export default class recommendDetail extends Component {
                     {item.name === 'film' && <WgtFilm info={item} />}
                     {item.name === 'slider' && <WgtSlider info={item} />}
                     {item.name === 'writing' && <WgtWriting info={item} />}
+                    {item.name === 'heading' && <WgtHeading info={item} />}
                     {item.name === 'goods' && <WgtGoods info={item} />}
                   </View>
                 )
