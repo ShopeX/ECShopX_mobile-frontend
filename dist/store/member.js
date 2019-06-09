@@ -37,9 +37,7 @@ var member = (0, _index.createReducer)(initState, (_createReducer = {}, _defineP
 }), _defineProperty(_createReducer, 'member/addFav', function memberAddFav(state, action) {
   var item_id = action.payload.item_id;
 
-  var favs = _extends({}, state.favs, {
-    item_id: item_id
-  });
+  var favs = _extends({}, state.favs, _defineProperty({}, item_id, action.payload));
 
   return _extends({}, state, {
     favs: favs

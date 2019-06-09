@@ -54,8 +54,9 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       return dispatch({ type: 'cart/add', payload: { item: item } });
     },
     onAddFav: function onAddFav(_ref2) {
-      var item_id = _ref2.item_id;
-      return dispatch({ type: 'member/addFav', payload: { item_id: item_id } });
+      var item_id = _ref2.item_id,
+          fav_id = _ref2.fav_id;
+      return dispatch({ type: 'member/addFav', payload: { item_id: item_id, fav_id: fav_id } });
     },
     onDelFav: function onDelFav(_ref3) {
       var item_id = _ref3.item_id;
@@ -79,7 +80,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "loopArray0", "info", "scrollTop", "imgInfo", "timer", "marketing", "isPromoter", "promotion_activity", "curSku", "buyPanelType", "$anonymousCallee__0", "desc", "hasStock", "startSecKill", "cartCount", "showBuyPanel", "windowWidth", "specImgsDict", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type) {
-        var info, isAuth;
+        var info, isAuth, favRes;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -88,7 +89,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
                 isAuth = _index9.default.getAuthToken();
 
                 if (!(type === 'fav')) {
-                  _context.next = 19;
+                  _context.next = 20;
                   break;
                 }
 
@@ -105,7 +106,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
 
               case 6:
                 if (info.is_fav) {
-                  _context.next = 13;
+                  _context.next = 14;
                   break;
                 }
 
@@ -113,33 +114,35 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
                 return _index5.default.member.addFav(info.item_id);
 
               case 9:
-                _this.__triggerPropsFn("onAddFav", [null].concat([info]));
+                favRes = _context.sent;
+
+                _this.__triggerPropsFn("onAddFav", [null].concat([favRes]));
                 _index2.default.showToast({
                   title: '已加入收藏',
                   icon: 'none'
                 });
-                _context.next = 17;
+                _context.next = 18;
                 break;
 
-              case 13:
-                _context.next = 15;
+              case 14:
+                _context.next = 16;
                 return _index5.default.member.delFav(info.item_id);
 
-              case 15:
+              case 16:
                 _this.__triggerPropsFn("onDelFav", [null].concat([info]));
                 _index2.default.showToast({
                   title: '已移出收藏',
                   icon: 'none'
                 });
 
-              case 17:
+              case 18:
 
                 info.is_fav = !info.is_fav;
                 _this.setState({
                   info: info
                 });
 
-              case 19:
+              case 20:
               case "end":
                 return _context.stop();
             }

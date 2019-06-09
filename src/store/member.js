@@ -25,7 +25,7 @@ const member = createReducer(initState, {
     const { item_id } = action.payload
     const favs = {
       ...state.favs,
-      item_id
+      [item_id]: action.payload
     }
 
     return {

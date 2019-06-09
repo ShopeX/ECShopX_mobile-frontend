@@ -19,7 +19,7 @@ import './espier-detail.scss'
 }), (dispatch) => ({
   onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
   onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
-  onAddFav: ({ item_id }) => dispatch({ type: 'member/addFav', payload: { item_id } }),
+  onAddFav: ({ item_id, fav_id }) => dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
   onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
 }))
 @withBackToTop
@@ -180,8 +180,8 @@ export default class Detail extends Component {
       }
 
       if (!info.is_fav) {
-        await api.member.addFav(info.item_id)
-        this.props.onAddFav(info)
+        const favRes = await api.member.addFav(info.item_id)
+        this.props.onAddFav(favRes)
         Taro.showToast({
           title: '已加入收藏',
           icon: 'none'
