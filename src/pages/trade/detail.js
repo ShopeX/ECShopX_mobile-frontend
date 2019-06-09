@@ -79,7 +79,7 @@ export default class TradeDetail extends Component {
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
       freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
-      payment: ({ total_fee }) => (+total_fee / 100).toFixed(2),
+      payment: ({ pay_type, total_fee }) => pay_type !== 'dhpoint' ? (+total_fee / 100).toFixed(2) : total_fee,
       pay_type: 'pay_type',
       invoice_content: 'invoice.content',
       point: 'point',
@@ -258,6 +258,8 @@ export default class TradeDetail extends Component {
       return <Loading></Loading>
     }
 
+    const isDhPoint = info.pay_type === 'dhpoint'
+
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
 
@@ -322,7 +324,10 @@ export default class TradeDetail extends Component {
             info={info}
           />
         </View>
-        <View className='trade-money'>总计：<Text className='trade-money__num'>￥{info.payment}</Text></View>
+        {isDhPoint
+          ? (<View className='trade-money'>总计：<Text className='trade-money__num'>{info.payment}积分</Text></View>)
+          : (<View className='trade-money'>总计：<Text className='trade-money__num'>￥{info.payment}</Text></View>)
+        }
         <View className='trade-detail-info'>
           <Text className='info-text'>订单号：{info.tid}</Text>
           <Text className='info-text'>下单时间：{info.created_time_str}</Text>
@@ -336,7 +341,10 @@ export default class TradeDetail extends Component {
           {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
           <Text className='info-text'>运费：-￥{info.freight_fee}</Text>
           <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
-          <Text className='info-text'>支付：￥{info.payment}（微信支付）</Text>
+          {isDhPoint
+            ? (<Text className='info-text' space>支付：{info.payment} {' 积分支付'}</Text>)
+            : (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>)}
+
           {
             info.delivery_code
               ? <View className='delivery_code_copy'>
@@ -347,15 +355,25 @@ export default class TradeDetail extends Component {
           }
         </View>
         {
-          info.status === 'WAIT_BUYER_PAY' && <View className='trade-detail__footer'>
+          !isDhPoint && info.status === 'WAIT_BUYER_PAY' && <View className='trade-detail__footer'>
             <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
             <AtButton className='trade-detail__footer__btn trade-detail__footer_active' type='primary' loading={payLoading} onClick={this.handleClickBtn.bind(this, 'pay')}>立即支付</AtButton>
           </View>
         }
         {
-          info.status === 'WAIT_SELLER_SEND_GOODS' && <View className='trade-detail__footer'>
+          isDhPoint && info.status === 'WAIT_BUYER_PAY' && <View className='trade-detail__footer'>
+            <AtButton className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active' type='primary' loading={payLoading} onClick={this.handleClickBtn.bind(this, 'pay')}>立即支付</AtButton>
+          </View>
+        }
+        {
+          !isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS' && <View className='trade-detail__footer'>
             <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
             <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'home')}>继续购物</Text>
+          </View>
+        }
+        {
+          isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS' && <View className='trade-detail__footer'>
+            <Text className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'home')}>继续购物</Text>
           </View>
         }
         {

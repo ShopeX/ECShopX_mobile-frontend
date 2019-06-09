@@ -32,23 +32,46 @@
         <view class="trade-detail-goods">
             <detail-item info="{{info}}" __triggerObserer="{{ _triggerObserer }}"></detail-item>
         </view>
-        <view class="trade-money">总计：<text class="trade-money__num">￥{{info.payment}}</text>
-        </view>
+        <block>
+            <block wx:if="{{isDhPoint}}">
+                <view class="trade-money">总计：<text class="trade-money__num">{{info.payment}}积分</text>
+                </view>
+            </block>
+            <block wx:else>
+                <view class="trade-money">总计：<text class="trade-money__num">￥{{info.payment}}</text>
+                </view>
+            </block>
+        </block>
         <view class="trade-detail-info"><text class="info-text">订单号：{{info.tid}}</text><text class="info-text">下单时间：{{info.created_time_str}}</text>
             <block wx:if="{{info.invoice_content}}"><text class="info-text">发票信息：{{info.invoice_content}}</text>
-            </block><text class="info-text">商品金额：￥{{info.item_fee}}</text><text class="info-text">运费：-￥{{info.freight_fee}}</text><text class="info-text">优惠：-￥{{info.discount_fee}}</text><text class="info-text">支付：￥{{info.payment}}（微信支付）</text>
+            </block><text class="info-text">商品金额：￥{{info.item_fee}}</text><text class="info-text">运费：-￥{{info.freight_fee}}</text><text class="info-text">优惠：-￥{{info.discount_fee}}</text>
+            <block>
+                <block wx:if="{{isDhPoint}}"><text class="info-text" space="{{true}}">支付：{{info.payment}}{{' 积分支付'}}</text>
+                </block>
+                <block wx:else><text class="info-text" space="{{true}}">支付：￥{{info.payment}}{{' 微信支付'}}</text>
+                </block>
+            </block>
             <block wx:if="{{info.delivery_code}}">
                 <view class="delivery_code_copy"><text class="info-text">物流单号：{{info.delivery_code}}</text><text class="info-text" bindtap="handleClickCopy" data-e-tap-so="this" data-e-tap-a-a="{{info.delivery_code}}">复制</text>
                 </view>
             </block>
         </view>
-        <block wx:if="{{info.status === 'WAIT_BUYER_PAY'}}">
+        <block wx:if="{{!isDhPoint && info.status === 'WAIT_BUYER_PAY'}}">
             <view class="trade-detail__footer"><text class="trade-detail__footer__btn" bindtap="handleClickBtn" data-e-tap-so="this" data-e-tap-a-a="cancel">取消订单</text>
                 <at-button className="trade-detail__footer__btn trade-detail__footer_active" __triggerObserer="{{ _triggerObserer }}" type="primary" loading="{{payLoading}}" bindonclick="handleClickBtn" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="pay">立即支付</at-button>
             </view>
         </block>
-        <block wx:if="{{info.status === 'WAIT_SELLER_SEND_GOODS'}}">
+        <block wx:if="{{isDhPoint && info.status === 'WAIT_BUYER_PAY'}}">
+            <view class="trade-detail__footer">
+                <at-button className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active" __triggerObserer="{{ _triggerObserer }}" type="primary" loading="{{payLoading}}" bindonclick="handleClickBtn" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="pay">立即支付</at-button>
+            </view>
+        </block>
+        <block wx:if="{{!isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS'}}">
             <view class="trade-detail__footer"><text class="trade-detail__footer__btn" bindtap="handleClickBtn" data-e-tap-so="this" data-e-tap-a-a="cancel">取消订单</text><text class="trade-detail__footer__btn trade-detail__footer_active" bindtap="handleClickBtn" data-e-tap-so="this" data-e-tap-a-a="home">继续购物</text>
+            </view>
+        </block>
+        <block wx:if="{{isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS'}}">
+            <view class="trade-detail__footer"><text class="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active" bindtap="handleClickBtn" data-e-tap-so="this" data-e-tap-a-a="home">继续购物</text>
             </view>
         </block>
         <block wx:if="{{info.status === 'WAIT_BUYER_CONFIRM_GOODS'}}">

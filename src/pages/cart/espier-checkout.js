@@ -422,10 +422,11 @@ export default class CartCheckout extends Component {
       order_type: orderInfo.order_type
     }
 
-    let config
+    let config, payErr
     try {
       config = await api.cashier.getPayment(paymentParams)
     } catch (e) {
+      payErr = e
       console.log(e)
     }
 
@@ -435,15 +436,23 @@ export default class CartCheckout extends Component {
 
     // 积分流程
     if (payType === 'dhpoint') {
-      this.props.onClearCart()
-      Taro.redirectTo({
-        url: `/pages/trade/detail?id=${order_id}`
-      })
+      if (!payErr) {
+        Taro.showToast({
+          title: '支付成功',
+          icon: 'none'
+        })
+
+        this.props.onClearCart()
+        Taro.redirectTo({
+          url: `/pages/trade/detail?id=${order_id}`
+        })
+      }
+
 
       return
     }
 
-    let payErr
+    payErr = null
     try {
       const payRes = await Taro.requestPayment(config)
       log.debug(`[order pay]: `, payRes)
