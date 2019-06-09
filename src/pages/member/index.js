@@ -41,20 +41,31 @@ export default class MemberIndex extends Component {
   }
 
   async fetch () {
+    let resUser = null
+    if(Taro.getStorageSync('userinfo')){
+      resUser = Taro.getStorageSync('userinfo')
+      this.setState({
+        info: {
+          username: resUser.username,
+          avatar: resUser.avatar,
+        }
+      })
+    }
     const [res, { list: favs }] = await Promise.all([api.member.memberInfo(), api.member.favsList()])
     this.props.onFetchFavs(favs)
-    this.setState({
-      info: {
-        deposit: res.deposit ? (res.deposit/100).toFixed(2) : 0,
-        point: res.point ? res.point : 0,
-        coupon: res.coupon? res.coupon : 0,
-        luckdraw: res.luckdraw? res.luckdraw : 0,
-        is_promoter: res.is_promoter,
-        is_open_popularize: res.is_open_popularize,
-        username: res.memberInfo.username,
-        avatar: res.memberInfo.avatar,
-      }
-    })
+    const userObj = {
+      username: res.memberInfo.username,
+      avatar: res.memberInfo.avatar,
+    }
+    if(!resUser || resUser.username !== userObj.username || resUser.avatar !== userObj.avatar) {
+      Taro.setStorageSync('userinfo', userObj)
+      this.setState({
+        info: {
+          username: res.memberInfo.username,
+          avatar: res.memberInfo.avatar,
+        }
+      })
+    }
   }
 
   handleClickRecommend = async () => {

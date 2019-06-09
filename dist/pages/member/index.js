@@ -135,36 +135,49 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
     key: "fetch",
     value: function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var _ref4, _ref5, res, favs;
+        var resUser, _ref4, _ref5, res, favs, userObj;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
+                resUser = null;
+
+                if (_index2.default.getStorageSync('userinfo')) {
+                  resUser = _index2.default.getStorageSync('userinfo');
+                  this.setState({
+                    info: {
+                      username: resUser.username,
+                      avatar: resUser.avatar
+                    }
+                  });
+                }
+                _context2.next = 4;
                 return Promise.all([_index6.default.member.memberInfo(), _index6.default.member.favsList()]);
 
-              case 2:
+              case 4:
                 _ref4 = _context2.sent;
                 _ref5 = _slicedToArray(_ref4, 2);
                 res = _ref5[0];
                 favs = _ref5[1].list;
 
                 this.__triggerPropsFn("onFetchFavs", [null].concat([favs]));
-                this.setState({
-                  info: {
-                    deposit: res.deposit ? (res.deposit / 100).toFixed(2) : 0,
-                    point: res.point ? res.point : 0,
-                    coupon: res.coupon ? res.coupon : 0,
-                    luckdraw: res.luckdraw ? res.luckdraw : 0,
-                    is_promoter: res.is_promoter,
-                    is_open_popularize: res.is_open_popularize,
-                    username: res.memberInfo.username,
-                    avatar: res.memberInfo.avatar
-                  }
-                });
+                userObj = {
+                  username: res.memberInfo.username,
+                  avatar: res.memberInfo.avatar
+                };
 
-              case 8:
+                if (!resUser || resUser.username !== userObj.username || resUser.avatar !== userObj.avatar) {
+                  _index2.default.setStorageSync('userinfo', userObj);
+                  this.setState({
+                    info: {
+                      username: res.memberInfo.username,
+                      avatar: res.memberInfo.avatar
+                    }
+                  });
+                }
+
+              case 11:
               case "end":
                 return _context2.stop();
             }
