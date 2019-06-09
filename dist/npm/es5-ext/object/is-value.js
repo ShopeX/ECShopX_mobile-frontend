@@ -1,7 +1,1 @@
-"use strict";
-
-var _undefined = require("../function/noop.js")(); // Support ES3 engines
-
-module.exports = function (val) {
-  return val !== _undefined && val !== null;
-};
+"use strict";var _undefined=require("../function/noop.js")();module.exports=function(n){return n!==_undefined&&null!==n};

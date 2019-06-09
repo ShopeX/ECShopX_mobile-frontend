@@ -6,7 +6,7 @@
         <view class="goods-item__hd">
             <slot></slot>
         </view>
-        <view class="goods-item__bd" bindtap="funPrivateOelSb">
+        <view class="goods-item__bd" bindtap="funPrivatetbLUy">
             <view class="goods-item__img-wrap">
                 <image class="goods-item__img" mode="aspectFill" src="{{img}}"></image>
             </view>
