@@ -63,6 +63,9 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
       });
       _this.resetPage(function () {
         _this.nextPage();
+        _this.setState({
+          list: []
+        });
         _index2.default.hideLoading();
       });
     }, _this.handleClickTab = function (idx) {
@@ -181,7 +184,8 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
 
       if (tabIdx >= 0) {
         this.setState({
-          curTabIdx: tabIdx
+          curTabIdx: tabIdx,
+          list: []
         }, function () {
           _this3.resetPage();
           setTimeout(function () {
@@ -190,6 +194,9 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
         });
       } else {
         this.resetPage();
+        this.setState({
+          list: []
+        });
         setTimeout(function () {
           _this3.nextPage();
         }, 500);
@@ -234,6 +241,7 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
                 nList = (0, _index6.pickBy)(list, {
                   tid: 'order_id',
                   status_desc: 'order_status_msg',
+                  order_status_des: 'order_status_des',
                   status: function status(_ref5) {
                     var order_status = _ref5.order_status;
                     return (0, _index6.resolveOrderStatus)(order_status);

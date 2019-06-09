@@ -9,8 +9,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
 var _class, _temp2;
-// import * as qiniu from 'qiniu-js'
-
 
 var _index = require("../../npm/@tarojs/taro-weapp/index.js");
 
@@ -26,9 +24,9 @@ var _index6 = require("../../spx/index.js");
 
 var _index7 = _interopRequireDefault(_index6);
 
-var _qiniu = require("../../utils/qiniu.js");
+var _azureWry = require("../../utils/azure-wry.js");
 
-var _qiniu2 = _interopRequireDefault(_qiniu);
+var _azureWry2 = _interopRequireDefault(_azureWry);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -83,7 +81,7 @@ var TradeRefund = (_temp2 = _class = function (_BaseComponent) {
         _index7.default.toast('最多上传3张图片');
       }
       var imgFiles = data.slice(0, 3);
-      _qiniu2.default.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales').then(function (res) {
+      _azureWry2.default.uploadImagesFn(imgFiles).then(function (res) {
         _this.setState({
           imgs: res
         });
@@ -155,13 +153,13 @@ var TradeRefund = (_temp2 = _class = function (_BaseComponent) {
             case 9:
 
               _index7.default.toast('操作成功');
-              // setTimeout(() => {
-              //   Taro.redirectTo({
-              //     url: '/pages/trade/after-sale'
-              //   })
-              // }, 700)
+              setTimeout(function () {
+                _index2.default.redirectTo({
+                  url: "/pages/trade/detail?id=" + order_id
+                });
+              }, 700);
 
-            case 10:
+            case 11:
             case "end":
               return _context.stop();
           }

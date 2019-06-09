@@ -15,8 +15,7 @@ import api from '@/api'
 import req from '@/api/req'
 import { log, pickBy, classNames } from '@/utils'
 import S from '@/spx'
-// import * as qiniu from 'qiniu-js'
-import qiniuUploader from '@/utils/qiniu'
+import azureUploader from '@/utils/azure-wry'
 
 import './refund.scss'
 import DetailItem from "./detail";
@@ -112,7 +111,7 @@ export default class TradeRefund extends Component {
       S.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 3)
-    qiniuUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
+    azureUploader.uploadImagesFn(imgFiles)
       .then(res => {
         this.setState({
           imgs: res
@@ -184,11 +183,11 @@ export default class TradeRefund extends Component {
     await api.aftersales[method](data)
 
     S.toast('操作成功')
-    // setTimeout(() => {
-    //   Taro.redirectTo({
-    //     url: '/pages/trade/after-sale'
-    //   })
-    // }, 700)
+    setTimeout(() => {
+      Taro.redirectTo({
+        url: `/pages/trade/detail?id=${order_id}`
+      })
+    }, 700)
   }
 
   render () {

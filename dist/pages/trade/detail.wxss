@@ -179,6 +179,7 @@
   -webkit-flex: 1;
       -ms-flex: 1;
           flex: 1;
+  font-size: 24rpx;
 }
 .trade-detail-info .delivery_code_copy .info-text:last-child {
   text-align: right;

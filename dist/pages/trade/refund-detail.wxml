@@ -45,6 +45,6 @@
             <view class="info-name">退款编号：<text class="info-value">{{info.aftersales_bn}}</text>
             </view>
         </view>
-        <view open-type="contact" class="refund-detail-btn">联系客服</view>
+        <view bindtap="handleBtnClick" class="refund-detail-btn" data-e-tap-so="this" data-e-tap-a-a="contact">联系客服</view>
     </view>
 </block>

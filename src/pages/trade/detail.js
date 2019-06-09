@@ -76,6 +76,7 @@ export default class TradeDetail extends Component {
       delivery_corp: 'delivery_corp',
       order_type: 'order_type',
       order_status_msg: 'order_status_msg',
+      order_status_des: 'order_status_des',
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
       freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
@@ -87,7 +88,8 @@ export default class TradeDetail extends Component {
       orders: ({ items }) => pickBy(items, {
         order_id: 'order_id',
         item_id: 'item_id',
-        aftersales_status: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
+        // aftersales_status: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
+        aftersales_status: 'aftersales_status',
         pic_path: 'pic',
         title: 'item_name',
         delivery_status: 'delivery_status',
@@ -186,6 +188,12 @@ export default class TradeDetail extends Component {
         url: APP_HOME_PAGE
       })
       return
+    }
+
+    if(type === 'contact') {
+      Taro.makePhoneCall({
+        phoneNumber: '1340000'
+      })
     }
 
     if (type === 'pay') {
@@ -293,8 +301,8 @@ export default class TradeDetail extends Component {
                 <View className='delivery-infos__status'>
                   <Text className='delivery-infos__text text-status'>{info.order_status_msg}</Text>
                   <Text className='delivery-infos__text'>
-                    { info.status === 'WAIT_SELLER_SEND_GOODS' ? '物流信息：正在审核订单' : null}
-                    { info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '物流信息：正在派送中' : null }
+                    { info.status === 'WAIT_SELLER_SEND_GOODS' ? '正在审核订单' : null}
+                    { info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '正在派送中' : null }
                     { info.status === 'TRADE_CLOSED' ? '订单已取消' : null }
                     { info.status === 'TRADE_SUCCESS' ? `物流单号：${info.delivery_code}` : null }
                   </Text>
@@ -364,8 +372,13 @@ export default class TradeDetail extends Component {
         }
         {
           !isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS' && <View className='trade-detail__footer'>
-            <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
-            <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'home')}>继续购物</Text>
+            {
+              info.order_status_des !== 'PAYED_WAIT_PROCESS' && <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
+            }
+            <Text
+              className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_status_des === 'PAYED_WAIT_PROCESS' ? 'trade-detail__footer_allWidthBtn' : ''} `}
+              onClick={this.handleClickBtn.bind(this, 'home')}
+            >继续购物</Text>
           </View>
         }
         {
@@ -375,16 +388,20 @@ export default class TradeDetail extends Component {
         }
         {
           info.status === 'WAIT_BUYER_CONFIRM_GOODS' && <View className='trade-detail__footer'>
-            <Button openType='contact' className='trade-detail__footer__btn'>联系客服</Button>
-            {/*<Text className='trade-detail__footer__btn'>联系客服</Text>*/}
+            <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'contact')}>联系客服</Text>
             <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'confirm')}>确认收货</Text>
           </View>
         }
         {
           info.status === 'TRADE_SUCCESS' && <View className='trade-detail__footer'>
-            <Button openType='contact' className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'>联系客服</Button>
+            <Text className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn' onClick={this.handleClickBtn.bind(this, 'contact')}>联系客服</Text>
           </View>
         }
+        {/*{
+          info.order_status_des === 'PAYED_WAIT_PROCESS' && <View className='trade-detail__footer'>
+            <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'home')}>继续购物</Text>
+          </View>
+        }*/}
 
         <SpToast></SpToast>
       </View>

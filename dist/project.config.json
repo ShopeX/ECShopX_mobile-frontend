@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 11,
+			"current": 12,
 			"list": [
 				{
 					"id": -1,
@@ -120,6 +120,13 @@
 					"name": "上传调试",
 					"pathName": "pages/member/userinfo",
 					"query": "id=27",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "订单详情",
+					"pathName": "pages/trade/detail",
+					"query": "id=CN3000062717230000089128",
 					"scene": null
 				}
 			]

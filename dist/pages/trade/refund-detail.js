@@ -86,6 +86,12 @@ var TradeRefundDetail = (_temp2 = _class = function (_BaseComponent) {
 
               case 13:
 
+                if (type === 'contact') {
+                  _index2.default.makePhoneCall({
+                    phoneNumber: '1340000'
+                  });
+                }
+
                 if (type === 'edit') {
                   _index2.default.navigateTo({
                     url: "/pages/trade/refund?aftersales_bn=" + aftersales_bn + "&order_id=" + order_id + "&item_id=" + item_id
@@ -104,7 +110,7 @@ var TradeRefundDetail = (_temp2 = _class = function (_BaseComponent) {
                   });
                 }
 
-              case 16:
+              case 17:
               case "end":
                 return _context.stop();
             }

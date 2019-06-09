@@ -24,8 +24,6 @@ var _index6 = require("../../spx/index.js");
 
 var _index7 = _interopRequireDefault(_index6);
 
-var _index8 = require("../../consts/index.js");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -171,6 +169,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                   delivery_corp: 'delivery_corp',
                   order_type: 'order_type',
                   order_status_msg: 'order_status_msg',
+                  order_status_des: 'order_status_des',
                   item_fee: function item_fee(_ref6) {
                     var _item_fee = _ref6.item_fee;
                     return (+_item_fee / 100).toFixed(2);
@@ -200,15 +199,13 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                     return (0, _index3.pickBy)(items, {
                       order_id: 'order_id',
                       item_id: 'item_id',
-                      aftersales_status: function aftersales_status(_ref12) {
-                        var _aftersales_status = _ref12.aftersales_status;
-                        return _index8.AFTER_SALE_STATUS[_aftersales_status];
-                      },
+                      // aftersales_status: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
+                      aftersales_status: 'aftersales_status',
                       pic_path: 'pic',
                       title: 'item_name',
                       delivery_status: 'delivery_status',
-                      price: function price(_ref13) {
-                        var item_fee = _ref13.item_fee;
+                      price: function price(_ref12) {
+                        var item_fee = _ref12.item_fee;
                         return (+item_fee / 100).toFixed(2);
                       },
                       point: 'item_point',
@@ -252,7 +249,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "handlePay",
     value: function () {
-      var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      var _ref13 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
         var info, order_id, order_type, paymentParams, config, payErr, payRes, _getCurrentRoute, fullPath;
 
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
@@ -342,7 +339,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       }));
 
       function handlePay() {
-        return _ref14.apply(this, arguments);
+        return _ref13.apply(this, arguments);
       }
 
       return handlePay;
@@ -350,8 +347,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "handleClickBtn",
     value: function () {
-      var _ref15 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(type) {
-        var info, _ref16, confirm, _getCurrentRoute2, fullPath;
+      var _ref14 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(type) {
+        var info, _ref15, confirm, _getCurrentRoute2, fullPath;
 
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
@@ -370,20 +367,27 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                 return _context4.abrupt("return");
 
               case 4:
+
+                if (type === 'contact') {
+                  _index2.default.makePhoneCall({
+                    phoneNumber: '1340000'
+                  });
+                }
+
                 if (!(type === 'pay')) {
-                  _context4.next = 8;
+                  _context4.next = 9;
                   break;
                 }
 
-                _context4.next = 7;
+                _context4.next = 8;
                 return this.handlePay();
 
-              case 7:
+              case 8:
                 return _context4.abrupt("return");
 
-              case 8:
+              case 9:
                 if (!(type === 'cancel')) {
-                  _context4.next = 11;
+                  _context4.next = 12;
                   break;
                 }
 
@@ -392,41 +396,41 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                 });
                 return _context4.abrupt("return");
 
-              case 11:
+              case 12:
                 if (!(type === 'confirm')) {
-                  _context4.next = 22;
+                  _context4.next = 23;
                   break;
                 }
 
-                _context4.next = 14;
+                _context4.next = 15;
                 return _index2.default.showModal({
                   title: '确认收货？',
                   content: ''
                 });
 
-              case 14:
-                _ref16 = _context4.sent;
-                confirm = _ref16.confirm;
+              case 15:
+                _ref15 = _context4.sent;
+                confirm = _ref15.confirm;
 
                 if (!confirm) {
-                  _context4.next = 21;
+                  _context4.next = 22;
                   break;
                 }
 
-                _context4.next = 19;
+                _context4.next = 20;
                 return _index5.default.trade.confirm(info.tid);
 
-              case 19:
+              case 20:
                 _getCurrentRoute2 = (0, _index3.getCurrentRoute)(this.$router), fullPath = _getCurrentRoute2.fullPath;
 
                 _index2.default.redirectTo({
                   url: fullPath
                 });
 
-              case 21:
+              case 22:
                 return _context4.abrupt("return");
 
-              case 22:
+              case 23:
               case "end":
                 return _context4.stop();
             }
@@ -435,7 +439,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       }));
 
       function handleClickBtn(_x) {
-        return _ref15.apply(this, arguments);
+        return _ref14.apply(this, arguments);
       }
 
       return handleClickBtn;
@@ -443,7 +447,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "handleClickRefund",
     value: function () {
-      var _ref17 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(type, item_id) {
+      var _ref16 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(type, item_id) {
         var order_id;
         return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
@@ -471,7 +475,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       }));
 
       function handleClickRefund(_x2, _x3) {
-        return _ref17.apply(this, arguments);
+        return _ref16.apply(this, arguments);
       }
 
       return handleClickRefund;

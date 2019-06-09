@@ -36,7 +36,8 @@ export default class TradeList extends Component {
 
     if (tabIdx >= 0) {
       this.setState({
-        curTabIdx: tabIdx
+        curTabIdx: tabIdx,
+        list: []
       }, () => {
         this.resetPage()
         setTimeout(()=>{
@@ -45,6 +46,9 @@ export default class TradeList extends Component {
       })
     } else {
       this.resetPage()
+      this.setState({
+        list: []
+      })
       setTimeout(()=>{
         this.nextPage()
       },500)
@@ -60,6 +64,9 @@ export default class TradeList extends Component {
     })
     this.resetPage(() => {
       this.nextPage()
+      this.setState({
+        list: []
+      })
       Taro.hideLoading()
     })
   }
@@ -87,6 +94,7 @@ export default class TradeList extends Component {
     let nList = pickBy(list, {
       tid: 'order_id',
       status_desc: 'order_status_msg',
+      order_status_des: 'order_status_des',
       status: ({ order_status }) => resolveOrderStatus(order_status),
       totalItems: ({ items }) => items.reduce((acc, item) => (+item.num) + acc, 0),
       payment: ({ total_fee }) => (total_fee / 100).toFixed(2),
