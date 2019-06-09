@@ -187,7 +187,17 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
           }
         }
       }, _callee2, _this2);
-    })), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    })), _this.handleToGiftMiniProgram = function () {
+      _index2.default.navigateToMiniProgram({
+        appId: 'wx2fb97cb696f68d22', // 要跳转的小程序的appid
+        path: '/pages/index/index', // 跳转的目标页面
+        envVersion: 'trial',
+        success: function success(res) {
+          // 打开成功
+          console.log(res);
+        }
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Detail, [{
@@ -485,7 +495,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleScroll", "handleBuyBarClick", "handleShare", "scrollBackToTop", "handleMenuClick", "anonymousFunc0", "handleSkuChange", "handleBuyAction"], _class2.options = {
+}, _class2.$$events = ["handleScroll", "handleBuyBarClick", "handleToGiftMiniProgram", "handleShare", "scrollBackToTop", "handleMenuClick", "anonymousFunc0", "handleSkuChange", "handleBuyAction"], _class2.options = {
   addGlobalClass: true
 }, _temp2)) || _class) || _class);
 exports.default = Detail;

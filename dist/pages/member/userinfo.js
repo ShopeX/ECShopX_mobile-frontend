@@ -26,10 +26,6 @@ var _index6 = require("../../spx/index.js");
 
 var _index7 = _interopRequireDefault(_index6);
 
-var _azureWry = require("../../utils/azure-wry.js");
-
-var _azureWry2 = _interopRequireDefault(_azureWry);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -89,14 +85,14 @@ var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2
                   _index7.default.toast('最多上传1张图片');
                 }
                 imgFiles = data.slice(0, 1);
+                // azureUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
+                //   .then(res => {
+                //     this.setState({
+                //       imgs: res
+                //     })
+                //   })
 
-                _azureWry2.default.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales').then(function (res) {
-                  _this.setState({
-                    imgs: res
-                  });
-                });
-
-              case 6:
+              case 5:
               case "end":
                 return _context.stop();
             }

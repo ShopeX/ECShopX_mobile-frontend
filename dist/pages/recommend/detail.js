@@ -168,7 +168,17 @@ var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = functi
       return function (_x) {
         return _ref4.apply(this, arguments);
       };
-    }(), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    }(), _this.handleToGiftMiniProgram = function () {
+      _index2.default.navigateToMiniProgram({
+        appId: 'wx2fb97cb696f68d22', // 要跳转的小程序的appid
+        path: '/pages/index/index', // 跳转的目标页面
+        envVersion: 'trial',
+        success: function success(res) {
+          // 打开成功
+          console.log(res);
+        }
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(recommendDetail, [{
@@ -397,7 +407,7 @@ var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = functi
   }]);
 
   return recommendDetail;
-}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleShare", "scrollBackToTop", "handleClickBar"], _temp2)) || _class;
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleToGiftMiniProgram", "handleShare", "scrollBackToTop", "handleClickBar"], _temp2)) || _class;
 
 exports.default = recommendDetail;
 

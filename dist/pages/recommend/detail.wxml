@@ -27,7 +27,7 @@
             </view>
         </view>
         <float-menus __triggerObserer="{{ _triggerObserer }}">
-            <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="float-gift"></float-menu-item>
+            <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="float-gift" bindonclick="handleToGiftMiniProgram" __fn_onClick="{{true}}" data-e-onclick-so="this"></float-menu-item>
             <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="float-share" openType="share" bindonclick="handleShare" __fn_onClick="{{true}}"></float-menu-item>
             <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="back-top" hide="{{anonymousState__temp}}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></float-menu-item>
         </float-menus>

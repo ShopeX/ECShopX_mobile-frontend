@@ -87,9 +87,9 @@ export default class MemberIndex extends Component {
     return (
       <View className='page-member-index'>
         <View className='member-card'>
-          <View className='member-welcome'>
+          {/*<View className='member-welcome'>
             <View className='in-icon in-icon-make-up' />
-          </View>
+          </View>*/}
           <View
             className='member-info'
             onClick={this.navigateTo.bind(this, '/pages/member/setting')}
@@ -138,6 +138,7 @@ export default class MemberIndex extends Component {
               icon='gift'
               iconPrefixClass='in-icon'
               title='我要送礼'
+              to='new-mini'
             />
           </View>
           <View className='member-menu__item none-br'>

@@ -234,6 +234,18 @@ export default class Detail extends Component {
   handleShare () {
   }
 
+  handleToGiftMiniProgram = () => {
+    Taro.navigateToMiniProgram({
+      appId: 'wx2fb97cb696f68d22', // 要跳转的小程序的appid
+      path: '/pages/index/index', // 跳转的目标页面
+      envVersion: 'trial',
+      success(res) {
+        // 打开成功
+        console.log(res)
+      }
+    })
+  }
+
   render () {
     const { info, windowWidth, desc, cartCount, scrollTop, showBackToTop, curSku, promotion_activity } = this.state
     const { marketing, timer, isPromoter, startSecKill, hasStock, showBuyPanel, buyPanelType } = this.state
@@ -466,6 +478,7 @@ export default class Detail extends Component {
           <FloatMenuItem
             iconPrefixClass='in-icon'
             icon='float-gift'
+            onClick={this.handleToGiftMiniProgram.bind(this)}
           />
           <FloatMenuItem
             iconPrefixClass='in-icon'

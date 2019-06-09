@@ -99,6 +99,7 @@ class App extends Component {
     ],
     navigateToMiniProgramAppIdList: [
       'wx4721629519a8f25b',
+      'wx2fb97cb696f68d22',
       'wxf91925e702efe3e3'
     ],
     window: {

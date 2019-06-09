@@ -62,12 +62,12 @@ export default class UserInfo extends Component {
       S.toast('最多上传1张图片')
     }
     const imgFiles = data.slice(0, 1)
-    azureUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
-      .then(res => {
-        this.setState({
-          imgs: res
-        })
-      })
+    // azureUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
+    //   .then(res => {
+    //     this.setState({
+    //       imgs: res
+    //     })
+    //   })
   }
 
   handleImageClick = () => {

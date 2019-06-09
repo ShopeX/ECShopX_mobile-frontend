@@ -25,9 +25,22 @@ export default class IconMenu extends Component {
   handleClick = () => {
     const { to, onClick } = this.props
     if (to) {
-      Taro.navigateTo({
-        url: to
-      })
+      if(to === 'new-mini'){
+        Taro.navigateToMiniProgram({
+          appId: 'wx2fb97cb696f68d22', // 要跳转的小程序的appid
+          path: '/pages/index/index', // 跳转的目标页面
+          envVersion: 'trial',
+          success(res) {
+            // 打开成功
+            console.log(res)
+          }
+        })
+      } else {
+        Taro.navigateTo({
+          url: to
+        })
+      }
+
     }
 
     onClick()
