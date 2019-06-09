@@ -3,19 +3,11 @@ import { View, Text } from '@tarojs/components'
 import {AtButton, AtForm, AtImagePicker, AtInput} from 'taro-ui'
 import { NavBar, SpToast } from '@/components'
 import api from '@/api'
-import req from '@/api/req'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
-// import azureUploader from '@/utils/azure-wry'
-// import AzureStorage from 'azure-storage/browser/azure-storage.blob.export'
+// import azureUploader from '../../utils/azure-wry'
 
 import './userinfo.scss'
-
-function resolveBlobFromFile (url, type) {
-  return fetch(url)
-    .then(res => res.blob())
-    .then(blob => blob.slice(0, blob.size, type))
-}
 
 @withLogin()
 export default class UserInfo extends Component {
@@ -62,12 +54,13 @@ export default class UserInfo extends Component {
       S.toast('最多上传1张图片')
     }
     const imgFiles = data.slice(0, 1)
-    azureUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
+    /*azureUploader.uploadImagesFn(imgFiles)
       .then(res => {
+        console.log(res, 67)
         this.setState({
           imgs: res
         })
-      })
+      })*/
   }
 
   handleImageClick = () => {

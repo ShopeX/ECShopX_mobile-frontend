@@ -36,16 +36,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// import azureUploader from '@/utils/azure-wry'
-// import AzureStorage from 'azure-storage/browser/azure-storage.blob.export'
-
-function resolveBlobFromFile(url, type) {
-  return fetch(url).then(function (res) {
-    return res.blob();
-  }).then(function (blob) {
-    return blob.slice(0, blob.size, type);
-  });
-}
+// import azureUploader from '../../utils/azure-wry'
 
 var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2 = function (_BaseComponent) {
   _inherits(UserInfo, _BaseComponent);
@@ -86,14 +77,15 @@ var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2
                   _index7.default.toast('最多上传1张图片');
                 }
                 imgFiles = data.slice(0, 1);
+                /*azureUploader.uploadImagesFn(imgFiles)
+                  .then(res => {
+                    console.log(res, 67)
+                    this.setState({
+                      imgs: res
+                    })
+                  })*/
 
-                azureUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales').then(function (res) {
-                  _this.setState({
-                    imgs: res
-                  });
-                });
-
-              case 6:
+              case 5:
               case "end":
                 return _context.stop();
             }

@@ -223,7 +223,7 @@ export default class recommendDetail extends Component {
           />
           <FloatMenuItem
             iconPrefixClass='in-icon'
-            icon='float-share'
+            icon='fenxiang1'
             openType='share'
             onClick={this.handleShare}
           />
