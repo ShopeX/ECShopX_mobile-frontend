@@ -50,7 +50,7 @@ var Integral = (0, _index3.withPager)(_class = (_temp2 = _class2 = function (_Ba
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Integral.__proto__ || Object.getPrototypeOf(Integral)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["list", "page", "isLoading", "totalPoint"], _this.handleClickRoam = function () {}, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Integral.__proto__ || Object.getPrototypeOf(Integral)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["list", "page", "totalPoint", "isLoading"], _this.handleClickRoam = function () {}, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Integral, [{
@@ -73,7 +73,7 @@ var Integral = (0, _index3.withPager)(_class = (_temp2 = _class2 = function (_Ba
     key: "fetch",
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(params) {
-        var _params, page, size, _ref3, point, _ref4, data, total, nList;
+        var _params, page, size, _ref3, list, total, remainpt, nList;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -85,47 +85,41 @@ var Integral = (0, _index3.withPager)(_class = (_temp2 = _class2 = function (_Ba
                 this.setState({ isLoading: true });
                 params = {
                   page: page,
-                  size: size,
-                  accfl: 1
+                  size: size
                 };
                 _context.next = 5;
-                return _index6.default.member.pointTotal();
+                return _index6.default.member.pointList(params);
 
               case 5:
                 _ref3 = _context.sent;
-                point = _ref3.point;
-                _context.next = 9;
-                return _index6.default.member.pointList(params);
-
-              case 9:
-                _ref4 = _context.sent;
-                data = _ref4.data;
-                total = _ref4.total_count;
-
-                console.log(data, 58);
-                nList = (0, _index4.pickBy)(data, {
-                  chngdate: function chngdate(_ref5) {
-                    var _chngdate = _ref5.chngdate;
-                    return _chngdate.substring(0, 3) + '-';
+                list = _ref3.list;
+                total = _ref3.total_count;
+                remainpt = _ref3.remainpt;
+                nList = (0, _index4.pickBy)(list, {
+                  chngdate: function chngdate(_ref4) {
+                    var _chngdate = _ref4.chngdate;
+                    return _chngdate.substring(0, 4) + '-' + _chngdate.substring(4, 6) + '-' + _chngdate.substring(6, 8);
                   },
                   point: 'point',
                   point_desc: 'point_desc',
-                  created: function created(_ref6) {
-                    var _created = _ref6.created;
+                  created: function created(_ref5) {
+                    var _created = _ref5.created;
                     return (0, _index4.formatDataTime)(_created * 1000);
                   }
                 });
 
+                console.log(nList, 58);
+
                 this.setState({
                   list: [].concat(_toConsumableArray(this.state.list), _toConsumableArray(nList)),
-                  totalPoint: point
+                  totalPoint: remainpt
                 });
 
                 return _context.abrupt("return", {
                   total: total
                 });
 
-              case 16:
+              case 13:
               case "end":
                 return _context.stop();
             }

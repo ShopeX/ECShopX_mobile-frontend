@@ -24,10 +24,12 @@
 }
 .page-member-integral .member-point__hd_content {
   width: 100%;
+  color: #0b4137;
   height: 300rpx;
 }
 .page-member-integral .member-point__num {
   font-size: 60rpx;
+  margin-right: 6rpx;
 }
 .page-member-integral .member-point__content {
   margin-top: 30rpx;

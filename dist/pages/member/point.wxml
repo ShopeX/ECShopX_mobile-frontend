@@ -2,7 +2,7 @@
     <view class="page-member-integral">
         <nav-bar title="积分" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left"></nav-bar>
         <view class="member-point__hd">
-            <view class="member-point__hd_content"><text class="member-point__num">666</text><text>积分</text>
+            <view class="member-point__hd_content"><text class="member-point__num">{{totalPoint}}</text><text>积分</text>
             </view>
         </view>
         <view class="member-point__content">

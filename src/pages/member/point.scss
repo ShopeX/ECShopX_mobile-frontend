@@ -14,10 +14,12 @@
     }
     &__hd_content {
       width: 100%;
+      color: $color-brand-primary;
       height: 300px;
     }
     &__num {
       font-size: 60px;
+      margin-right: 6px;
     }
     &__content {
       margin-top: 30px;

@@ -37,21 +37,20 @@ export default class Integral extends Component {
     this.setState({ isLoading: true })
     params = {
       page,
-      size,
-      accfl: 1
+      size
     }
-    const { point } = await api.member.pointTotal()
-    const { data , total_count: total} = await api.member.pointList(params)
-    console.log(data, 58)
-    const nList = pickBy(data, {
-      chngdate: ({ chngdate }) => chngdate.substring(0, 3)+ '-',
+    const { list , total_count: total, remainpt } = await api.member.pointList(params)
+    const nList = pickBy(list, {
+      chngdate: ({ chngdate }) => chngdate.substring(0, 4)+ '-' + chngdate.substring(4, 6)+ '-' + chngdate.substring(6, 8),
       point: 'point',
       point_desc: 'point_desc',
       created: ({ created }) => (formatDataTime(created * 1000)),
     })
+    console.log(nList, 58)
+
     this.setState({
       list: [...this.state.list, ...nList],
-      totalPoint: point
+      totalPoint: remainpt
     })
 
     return {
@@ -74,7 +73,7 @@ export default class Integral extends Component {
         />
         <View className='member-point__hd'>
           <View className='member-point__hd_content'>
-            <Text className='member-point__num'>666</Text>
+            <Text className='member-point__num'>{totalPoint}</Text>
             <Text>积分</Text>
           </View>
         </View>
