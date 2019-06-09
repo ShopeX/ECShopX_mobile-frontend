@@ -39,3 +39,22 @@
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
+.page-category-index .category-comps-not {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background: #ffffff;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 75rpx;
+  bottom: 90rpx;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  z-index: 1;
+}
+.page-category-index .category-comps-not > div, .page-category-index .category-comps-not > view {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}

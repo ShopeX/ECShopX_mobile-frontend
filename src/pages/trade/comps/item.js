@@ -73,6 +73,16 @@ export default class TradeItem extends Component {
           <View className='trade-item__ft-actions'></View>
           <View className='trade-item__ft-bd'>
             <Text className='trade-item__status'>{info.status_desc}</Text>
+            {
+              info.order_status_des === 'PAYED' || info.order_status_des === 'NOTPAY'
+                ? <AtButton
+                  circle
+                  type='secondary'
+                  size='small'
+                  onClick={this.handleClickBtn.bind(this, 'cancel')}
+                >取消订单</AtButton>
+                : null
+            }
             <AtButton
               circle
               type='primary'
@@ -85,12 +95,16 @@ export default class TradeItem extends Component {
           <View className='trade-item__ft-actions'></View>
           <View className='trade-item__ft-bd'>
             <Text className='trade-item__status'>{info.status_desc}</Text>
-            <AtButton
-              circle
-              type='secondary'
-              size='small'
-              onClick={this.handleClickBtn.bind(this, 'cancel')}
-            >取消订单</AtButton>
+            {
+              info.order_status_des === 'PAYED' || info.order_status_des === 'NOTPAY'
+                ? <AtButton
+                  circle
+                  type='secondary'
+                  size='small'
+                  onClick={this.handleClickBtn.bind(this, 'cancel')}
+                >取消订单</AtButton>
+                : null
+            }
             <AtButton
               circle
               type='primary'

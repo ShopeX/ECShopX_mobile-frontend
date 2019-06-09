@@ -50,15 +50,27 @@ var Category = (_dec = (0, _index3.connect)(function (store) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Category.__proto__ || Object.getPrototypeOf(Category)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["curTabIdx", "tabList", "list", "pluralType", "imgType", "currentIndex"], _this.handleClickTab = function (idx) {
-      console.log(idx, 46);
-      _this.setState({
-        curTabIdx: idx
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Category.__proto__ || Object.getPrototypeOf(Category)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["tabList", "curTabIdx", "hasSeries", "isChanged", "list", "contentList"], _this.handleClickTab = function (idx) {
+      var curIndexList = _this.state.contentList[idx];
+
+      var nList = (0, _index4.pickBy)(curIndexList, {
+        name: 'name',
+        img: 'img',
+        children: 'children'
       });
-    }, _this.handleClickCategoryNav = function (gIndex) {
       _this.setState({
-        currentIndex: gIndex
+        curTabIdx: idx,
+        list: nList
       });
+      if (idx === _this.state.curTabIdx) {
+        _this.setState({
+          isChanged: false
+        });
+      } else {
+        _this.setState({
+          isChanged: true
+        });
+      }
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -69,11 +81,11 @@ var Category = (_dec = (0, _index3.connect)(function (store) {
 
       this.state = {
         curTabIdx: 0,
-        tabList: [{ title: '产品类别', status: '0' }, { title: '护肤系列', status: '1' }],
+        tabList: [],
+        contentList: [],
         list: null,
-        pluralType: true,
-        imgType: true,
-        currentIndex: 0
+        hasSeries: false,
+        isChanged: false
       };
     }
   }, {
@@ -85,29 +97,81 @@ var Category = (_dec = (0, _index3.connect)(function (store) {
     key: "fetch",
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var res, nList;
+        var query, _ref3, list, seriesList, res, nList, tabList, contentList, curIndexList, _nList;
+
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return _index6.default.category.get();
-
-              case 2:
-                res = _context.sent;
-                nList = (0, _index4.pickBy)(res, {
+                /*const nList = pickBy(res, {
                   category_name: 'category_name',
                   image_url: 'image_url',
                   children: 'children'
-                });
+                })*/
 
-                console.log(nList, 42);
+                query = { template_name: 'yykweishop', version: 'v1.0.1', page_name: 'category' };
+                _context.next = 3;
+                return _index6.default.category.getCategory(query);
+
+              case 3:
+                _ref3 = _context.sent;
+                list = _ref3.list;
+                seriesList = list[0].params.data;
+
+                if (!(seriesList.length < 1)) {
+                  _context.next = 14;
+                  break;
+                }
+
+                _context.next = 9;
+                return _index6.default.category.get();
+
+              case 9:
+                res = _context.sent;
+                nList = (0, _index4.pickBy)(res, {
+                  name: 'category_name',
+                  img: 'image_url',
+                  children: function children(_ref4) {
+                    var _children = _ref4.children;
+                    return (0, _index4.pickBy)(_children, {
+                      name: 'category_name',
+                      img: 'image_url'
+                    });
+                  }
+                });
 
                 this.setState({
-                  list: nList
+                  list: nList,
+                  hasSeries: false
+                });
+                _context.next = 20;
+                break;
+
+              case 14:
+                tabList = [];
+                contentList = [];
+
+                seriesList.map(function (item) {
+                  if (item.content.length > 0) {
+                    tabList.push({ title: item.title, status: item.name });
+                    contentList.push(item.content);
+                  }
+                });
+                curIndexList = contentList[this.state.curTabIdx];
+                _nList = (0, _index4.pickBy)(curIndexList, {
+                  name: 'name',
+                  img: 'img',
+                  children: 'children'
                 });
 
-              case 6:
+                this.setState({
+                  tabList: tabList,
+                  contentList: contentList,
+                  hasSeries: true,
+                  list: _nList
+                });
+
+              case 20:
               case "end":
                 return _context.stop();
             }
@@ -143,7 +207,9 @@ var Category = (_dec = (0, _index3.connect)(function (store) {
       var _state = this.__state,
           curTabIdx = _state.curTabIdx,
           tabList = _state.tabList,
-          list = _state.list;
+          list = _state.list,
+          hasSeries = _state.hasSeries,
+          isChanged = _state.isChanged;
 
 
       Object.assign(this.__state, {});

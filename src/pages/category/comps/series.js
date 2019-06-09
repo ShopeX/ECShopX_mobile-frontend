@@ -22,6 +22,14 @@ export default class Series extends Component {
     }
   }
 
+  componentWillReceiveProps (nextProps){
+    if(nextProps.isChanged === true) {
+      this.setState({
+        currentIndex: 0,
+      })
+    }
+  }
+
   handleClickCategoryNav = (gIndex) => {
     this.setState({
       currentIndex: gIndex
@@ -38,17 +46,17 @@ export default class Series extends Component {
   }
 
   render () {
-    const { info } = this.props
+    const { info, isChanged } = this.props
     const { pluralType, imgType, currentIndex } = this.state
     let items, itemsImg
-    if(info) {
-      items = info[currentIndex].children
-      itemsImg = info[currentIndex].image_url
-    }
-    console.log(info, 48)
     if (!info) {
       return <Loading />
     }
+    if(info) {
+      items = info[currentIndex].children
+      itemsImg = info[currentIndex].img
+    }
+
 
     return (
       <View className='category-list'>
@@ -64,7 +72,7 @@ export default class Series extends Component {
                   key={index}
                   onClick={this.handleClickCategoryNav.bind(this, index)}
                 >
-                  {item.category_name}
+                  {item.name}
                 </View>
               )
             }
@@ -87,9 +95,9 @@ export default class Series extends Component {
                   <Image
                     className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
                     mode='aspectFill'
-                    src={item.image_url}
+                    src={item.img}
                   />
-                  <View className='img-cat-name'>{item.category_name}</View>
+                  <View className='img-cat-name'>{item.name}</View>
                 </View>
               )
             }

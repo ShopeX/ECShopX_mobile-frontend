@@ -20,8 +20,9 @@ export default class Category extends Component {
       tabList: [],
       contentList: [],
       list: null,
-      hasSeries: false,
-      isChanged: false
+      pluralType: true,
+      imgType: true,
+      currentIndex: 0,
     }
   }
 
@@ -42,62 +43,61 @@ export default class Category extends Component {
     if(seriesList.length < 1){
       const res = await api.category.get()
       const nList = pickBy(res, {
-        name: 'category_name',
-        img: 'image_url',
-        children: ({ children }) => pickBy(children, {
-          name: 'category_name',
-          img: 'image_url',
-        })
+        category_name: 'category_name',
+        image_url: 'image_url',
+        children: 'children'
       })
       this.setState({
         list: nList,
-        hasSeries: false
       })
     }else {
       let tabList = []
       let contentList = []
       seriesList.map(item => {
+        console.log(item, 42)
+        tabList.push({ title: item.title, status: item.name })
         if(item.content.length > 0) {
-          tabList.push({ title: item.title, status: item.name })
           contentList.push(item.content)
         }
       })
       const curIndexList = contentList[this.state.curTabIdx]
+      console.log(curIndexList, 60)
       const nList = pickBy(curIndexList, {
-        name: 'name',
-        img: 'img',
+        category_name: 'name',
+        image_url: 'img',
         children: 'children'
       })
       this.setState({
         tabList,
         contentList,
-        hasSeries: true,
         list: nList,
+        // hasSeries: list[0].params.hasSeries
       })
     }
+
+
   }
 
   handleClickTab = (idx) => {
-    const curIndexList = this.state.contentList[idx]
-
+    console.log(idx, 46)
+    const curIndexList = contentList[idx]
     const nList = pickBy(curIndexList, {
-      name: 'name',
-      img: 'img',
+      category_name: 'name',
+      image_url: 'img',
       children: 'children'
     })
     this.setState({
       curTabIdx: idx,
       list: nList,
     })
-    if(idx === this.state.curTabIdx){
-      this.setState({
-        isChanged: false
-      })
-    } else {
-      this.setState({
-        isChanged: true
-      })
-    }
+    this.setState({
+    })
+  }
+
+  handleClickCategoryNav = (gIndex) => {
+    this.setState({
+      currentIndex: gIndex
+    })
   }
 
   handleClickItem (item) {
@@ -110,7 +110,7 @@ export default class Category extends Component {
   }
 
   render () {
-    const { curTabIdx, tabList, list, hasSeries, isChanged } = this.state
+    const { curTabIdx, tabList, list } = this.state
 
     return (
       <View className='page-category-index'>
@@ -118,7 +118,7 @@ export default class Category extends Component {
           isFixed
         />
         {
-          tabList.length !== 0
+          tabList.length > 0
             ? <AtTabs
               className='category__tabs'
               current={curTabIdx}
@@ -138,9 +138,8 @@ export default class Category extends Component {
             </AtTabs>
             : null
         }
-        <View className={`${hasSeries ? 'category-comps' : 'category-comps-not'}`}>
+        <View className={`${tabList.length > 0 ? 'category-comps' : 'category-comps-not'}`}>
           <Series
-            isChanged={isChanged}
             info={list}
           />
         </View>

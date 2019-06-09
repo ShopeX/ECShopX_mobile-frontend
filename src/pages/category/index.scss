@@ -8,10 +8,15 @@
     position: fixed;
     top: $searchbar-height + 10px;
   }
-  .category-comps{
+  .category-comps {
     box-sizing: border-box;
     background: #ffffff;
     @include page-scroll($searchbar-height + $tabs-height + 10px, $tabbar-height);
+  }
+  .category-comps-not {
+    box-sizing: border-box;
+    background: #ffffff;
+    @include page-scroll($searchbar-height + 10px, $tabbar-height);
   }
 }
 

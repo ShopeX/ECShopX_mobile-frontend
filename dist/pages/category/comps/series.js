@@ -44,7 +44,7 @@ var Series = (_dec = (0, _index3.connect)(function (store) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Series.__proto__ || Object.getPrototypeOf(Series)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp3", "loopArray0", "loopArray1", "info", "itemsImg", "items", "pluralType", "imgType", "currentIndex"], _this.handleClickCategoryNav = function (gIndex) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Series.__proto__ || Object.getPrototypeOf(Series)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp3", "loopArray0", "loopArray1", "info", "itemsImg", "items", "pluralType", "imgType", "currentIndex", "isChanged"], _this.handleClickCategoryNav = function (gIndex) {
       _this.setState({
         currentIndex: gIndex
       });
@@ -62,6 +62,15 @@ var Series = (_dec = (0, _index3.connect)(function (store) {
         imgType: true,
         currentIndex: 0
       };
+    }
+  }, {
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.isChanged === true) {
+        this.setState({
+          currentIndex: 0
+        });
+      }
     }
   }, {
     key: "handleClickItem",
@@ -82,7 +91,9 @@ var Series = (_dec = (0, _index3.connect)(function (store) {
       var __isRunloopRef = arguments[2];
       ;
 
-      var info = this.__props.info;
+      var _props = this.__props,
+          info = _props.info,
+          isChanged = _props.isChanged;
       var _state = this.__state,
           pluralType = _state.pluralType,
           imgType = _state.imgType,
@@ -90,13 +101,12 @@ var Series = (_dec = (0, _index3.connect)(function (store) {
 
       var items = void 0,
           itemsImg = void 0;
-      if (info) {
-        items = info[currentIndex].children;
-        itemsImg = info[currentIndex].image_url;
-      }
-      console.log(info, 48);
       if (!info) {
         return null;
+      }
+      if (info) {
+        items = info[currentIndex].children;
+        itemsImg = info[currentIndex].img;
       }
 
       var anonymousState__temp3 = (0, _index4.classNames)(pluralType ? 'category-content' : 'category-content-no');
@@ -135,6 +145,10 @@ var Series = (_dec = (0, _index3.connect)(function (store) {
   return Series;
 }(_index.Component), _class2.properties = {
   "info": {
+    "type": null,
+    "value": null
+  },
+  "isChanged": {
     "type": null,
     "value": null
   }
