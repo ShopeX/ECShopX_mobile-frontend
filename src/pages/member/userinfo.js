@@ -6,7 +6,7 @@ import api from '@/api'
 import req from '@/api/req'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
-import azureUploader from '@/utils/azure-wry'
+// import azureUploader from '@/utils/azure-wry'
 // import AzureStorage from 'azure-storage/browser/azure-storage.blob.export'
 
 import './userinfo.scss'
@@ -62,12 +62,12 @@ export default class UserInfo extends Component {
       S.toast('最多上传1张图片')
     }
     const imgFiles = data.slice(0, 1)
-   /* azureUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
+    azureUploader.uploadImageFn(imgFiles, '/espier/image_upload_token', 'qiniu', 'aftersales')
       .then(res => {
         this.setState({
           imgs: res
         })
-      })*/
+      })
   }
 
   handleImageClick = () => {

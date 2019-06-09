@@ -181,6 +181,24 @@ export function maskMobile (mobile) {
   return mobile.replace(/^(\d{2})(\d+)(\d{2}$)/, '$1******$3')
 }
 
+// 不可使用promise/async异步写法
+export function authSetting (scope, succFn, errFn) {
+  Taro.getSetting({
+    success (res) {
+      const result = res.authSetting[`scope.${scope}`]
+      if (result === undefined) {
+        Taro.authorize({
+          scope: `scope.${scope}`
+        }).then(succFn, errFn)
+      } else if (!result) {
+        Taro.openSetting().then(succFn, errFn)
+      } else {
+        succFn()
+      }
+    }
+  })
+}
+
 export {
   classNames,
   styleNames,
