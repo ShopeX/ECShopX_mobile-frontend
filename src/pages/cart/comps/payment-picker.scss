@@ -35,6 +35,9 @@
         border: none;
       }
     }
+    &.is-disabled {
+      opacity: 0.6;
+    }
     &__bd {
       flex: 1;
     }

@@ -5,7 +5,7 @@
                 <view class="at-icon at-icon-close" bindtap="handleCancel"></view>
             </view>
             <view class="payment-picker__bd">
-                <view class="payment-item" bindtap="handlePaymentChange" data-e-tap-so="this" data-e-tap-a-a="dhpoint">
+                <view class="{{'payment-item ' + (!!disabledPayment ? 'is-disabled' : '')}}" bindtap="handlePaymentChange" data-e-tap-so="this" data-e-tap-a-a="dhpoint">
                     <view class="payment-item__bd"><text class="payment-item__title">积分支付</text><text class="payment-item__desc">{{disabledPayment ? disabledPayment.message : '使用积分支付'}}</text>
                     </view>
                     <view class="payment-item__ft">
@@ -19,7 +19,7 @@
                         <sp-checkbox checked="{{anonymousState__temp3}}" __triggerObserer="{{ _triggerObserer }}"></sp-checkbox>
                     </view>
                 </view>
-                <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" size="large" loading="{{loading}}" bindonclick="funPrivatePsncy" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{localType}}">确定</at-button>
+                <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" loading="{{loading}}" bindonclick="funPrivatewXqZy" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{localType}}">确定</at-button>
             </view>
         </view>
     </at-float-layout>

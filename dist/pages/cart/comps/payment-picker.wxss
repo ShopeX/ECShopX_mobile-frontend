@@ -151,6 +151,9 @@
 .payment-picker .payment-item.no-border:after {
   border: none;
 }
+.payment-picker .payment-item.is-disabled {
+  opacity: 0.6;
+}
 .payment-picker .payment-item__bd {
   -webkit-box-flex: 1;
   -webkit-flex: 1;

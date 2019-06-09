@@ -36,7 +36,7 @@ var PaymentPicker = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PaymentPicker.__proto__ || Object.getPrototypeOf(PaymentPicker)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "isOpened", "loading", "localType", "disabledPayment", "type", "__fn_onClose", "__fn_onClick"], _this.componentWillReceiveProps = function (nextProps) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PaymentPicker.__proto__ || Object.getPrototypeOf(PaymentPicker)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "isOpened", "disabledPayment", "loading", "localType", "type", "__fn_onClose", "__fn_onClick"], _this.componentWillReceiveProps = function (nextProps) {
       if (nextProps.type !== _this.props.type) {
         _this.setState({
           localType: nextProps.type
@@ -90,14 +90,14 @@ var PaymentPicker = (_temp2 = _class = function (_BaseComponent) {
         anonymousState__temp2: anonymousState__temp2,
         anonymousState__temp3: anonymousState__temp3,
         isOpened: isOpened,
-        loading: loading,
-        disabledPayment: disabledPayment
+        disabledPayment: disabledPayment,
+        loading: loading
       });
       return this.__state;
     }
   }, {
-    key: "funPrivatePsncy",
-    value: function funPrivatePsncy() {
+    key: "funPrivatewXqZy",
+    value: function funPrivatewXqZy() {
       this.__triggerPropsFn("onChange", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -136,7 +136,7 @@ var PaymentPicker = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["handleCancel", "handlePaymentChange", "funPrivatePsncy"], _class.defaultProps = {
+}, _class.$$events = ["handleCancel", "handlePaymentChange", "funPrivatewXqZy"], _class.defaultProps = {
   isOpened: false,
   type: 'amorepay',
   disabledPayment: null

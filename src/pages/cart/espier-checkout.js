@@ -226,7 +226,15 @@ export default class CartCheckout extends Component {
       mask: true
     })
     const params = this.getParams()
-    const data = await api.cart.total(params)
+
+    let data
+    try {
+      data = await api.cart.total(params)
+    } catch (e) {
+      this.resolvePayError(e)
+    }
+
+    if (!data) return
 
     const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction } = data
     const total = {
@@ -353,6 +361,19 @@ export default class CartCheckout extends Component {
     })
   }
 
+  resolvePayError (e) {
+    const { payType } = this.state
+    if (payType === 'dhpoint') {
+      // let payTypeNeedsChange = ['当前积分不足以支付本次订单费用', '当月使用积分已达限额'].includes(e.message)
+      this.setState({
+        disabledPayment: { name: 'dhpoint', message: e.message },
+        payType: 'amorepay'
+      }, () => {
+        this.calcOrder()
+      })
+    }
+  }
+
   handlePay = async () => {
     if (!this.state.address) {
       return S.toast('请选择地址')
@@ -398,17 +419,13 @@ export default class CartCheckout extends Component {
         icon: 'none'
       })
 
+      this.resolvePayError(e)
+
       // dhpoint 判断
       if (payType === 'dhpoint') {
-        const message = e.message
-
         this.setState({
-          disabledPayment: { name: 'dhpoint', message },
-          payType: 'amorepay',
           submitLoading: false
         })
-        Taro.hideLoading()
-        return
       }
     }
 

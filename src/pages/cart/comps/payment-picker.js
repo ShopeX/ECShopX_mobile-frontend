@@ -66,7 +66,7 @@ export default class PaymentPicker extends Component {
           </View>
           <View className='payment-picker__bd'>
             <View
-              className='payment-item'
+              className={`payment-item ${!!disabledPayment ? 'is-disabled' : ''}`}
               onClick={this.handlePaymentChange.bind(this, 'dhpoint')}
             >
               <View className='payment-item__bd'>
@@ -97,7 +97,6 @@ export default class PaymentPicker extends Component {
 
             <AtButton
               type='primary'
-              size='large'
               loading={loading}
               onClick={this.props.onChange.bind(this, localType)}
             >确定</AtButton>
