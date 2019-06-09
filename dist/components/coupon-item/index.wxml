@@ -2,8 +2,8 @@
     <block wx:if="{{!info}}">
         <view></view>
     </block>
-    <view class="coupon-item-index" bindtap="funPrivatedNzVH" wx:else>
-        <block wx:if="{{isShowCheckout && info.status === '2'}}">
+    <view class="coupon-item-index" bindtap="funPrivateDnfZh" wx:else>
+        <block wx:if="{{isShowCheckout && isDisabled}}">
             <view class="coupon-item__check" bindtap="handleClickChecked" data-e-tap-so="this" data-e-tap-a-a="{{info.id}}">
                 <block>
                     <block wx:if="{{isChoosed === info.id && isItemChecked}}"><text class="in-icon in-icon-check coupon-item__checked"></text>

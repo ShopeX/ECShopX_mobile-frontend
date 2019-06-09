@@ -46,7 +46,7 @@ export default class CouponPicker extends Component {
       discount: 'discount',
       begin_date: 'begin_date',
       end_date: 'end_date'
-    })
+    }).sort((a) => !a.valid)
 
     this.setState({
       coupons
@@ -71,10 +71,10 @@ export default class CouponPicker extends Component {
       return null
     }
 
-    const memberCoupon = {
-      card_type: 'member',
-      title: '会员折扣价'
-    }
+    // const memberCoupon = {
+    //   card_type: 'member',
+    //   title: '会员折扣价'
+    // }
 
     return (
       <View className='coupon-picker'>
@@ -92,6 +92,7 @@ export default class CouponPicker extends Component {
               <CouponItem
                 key={idx}
                 info={coupon}
+                isDisabled={!coupon.valid}
                 onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
               >
                 <SpCheckbox

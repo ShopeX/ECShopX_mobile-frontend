@@ -75,6 +75,12 @@ const cart = createReducer(initState, {
       ...initState
     }
   },
+  ['cart/clearCoupon'](state) {
+    return {
+      ...state,
+      coupon: null
+    }
+  },
   ['cart/selection'](state, action) {
     const selection = action.payload
     return {

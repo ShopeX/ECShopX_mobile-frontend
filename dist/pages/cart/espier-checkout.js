@@ -82,6 +82,9 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
     onClearCart: function onClearCart() {
       return dispatch({ type: 'cart/clear' });
     },
+    onClearCoupon: function onClearCoupon() {
+      return dispatch({ type: 'cart/clearCoupon' });
+    },
     onAddressChoose: function onAddressChoose(address) {
       return dispatch({ type: 'address/choose', payload: address });
     }
@@ -101,7 +104,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = CartCheckout.__proto__ || Object.getPrototypeOf(CartCheckout)).call.apply(_ref3, [this].concat(args))), _this), _this.$usedState = ["info", "showAddressPicker", "address", "payType", "couponText", "total", "showCheckoutItems", "curCheckoutItems", "submitLoading", "isBtnDisabled", "invoiceTitle", "address_list", "showShippingPicker", "showCoupons", "coupons", "__fn_onClearFastbuy", "defaultAddress", "__fn_onAddressChoose", "coupon", "__fn_onClearCart"], _this.handleAddressChange = function (address) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = CartCheckout.__proto__ || Object.getPrototypeOf(CartCheckout)).call.apply(_ref3, [this].concat(args))), _this), _this.$usedState = ["info", "showAddressPicker", "address", "payType", "couponText", "total", "showCheckoutItems", "curCheckoutItems", "submitLoading", "isBtnDisabled", "invoiceTitle", "address_list", "showShippingPicker", "showCoupons", "coupons", "__fn_onClearFastbuy", "defaultAddress", "__fn_onClearCoupon", "__fn_onAddressChoose", "coupon", "__fn_onClearCart"], _this.handleAddressChange = function (address) {
       if (!address) {
         return;
       }
@@ -413,6 +416,12 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       this.handleAddressChange(this.props.defaultAddress);
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      // teardown clean
+      this.__triggerPropsFn("onClearCoupon", [null].concat([]));
+    }
+  }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
       console.log(nextProps, 122);
@@ -675,6 +684,10 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
     "value": null
   },
   "defaultAddress": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClearCoupon": {
     "type": null,
     "value": null
   },

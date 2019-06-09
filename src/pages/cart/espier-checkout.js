@@ -34,6 +34,7 @@ const transformCartList = (list) => {
 }), (dispatch) => ({
   onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' }),
   onClearCart: () => dispatch({ type: 'cart/clear' }),
+  onClearCoupon: () => dispatch({ type: 'cart/clearCoupon' }),
   onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address })
 }))
 @withLogin()
@@ -120,6 +121,11 @@ export default class CartCheckout extends Component {
       }
     })
     this.handleAddressChange(this.props.defaultAddress)
+  }
+
+  componentWillUnmount() {
+    // teardown clean
+    this.props.onClearCoupon()
   }
 
   componentWillReceiveProps (nextProps) {
