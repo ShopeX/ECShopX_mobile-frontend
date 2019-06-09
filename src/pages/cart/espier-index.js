@@ -156,7 +156,6 @@ export default class CartIndex extends Component {
 
       return group
     })
-    console.log(groups, 158)
     return groups
   }
 
@@ -281,7 +280,6 @@ export default class CartIndex extends Component {
     e.stopPropagation()
 
     const { item_id, cart_id } = item
-    this.updating = true
     Taro.showLoading({
       mask: true
     })
