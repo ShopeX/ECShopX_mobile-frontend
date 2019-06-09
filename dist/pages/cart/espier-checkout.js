@@ -306,23 +306,24 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 pay_type: _this.state.payType,
                 order_type: orderInfo.order_type
               };
-              config = void 0;
+              config = void 0, payErr = void 0;
               _context3.prev = 38;
               _context3.next = 41;
               return _index5.default.cashier.getPayment(paymentParams);
 
             case 41:
               config = _context3.sent;
-              _context3.next = 47;
+              _context3.next = 48;
               break;
 
             case 44:
               _context3.prev = 44;
               _context3.t2 = _context3["catch"](38);
 
+              payErr = _context3.t2;
               console.log(_context3.t2);
 
-            case 47:
+            case 48:
 
               _this.setState({
                 submitLoading: false
@@ -335,15 +336,23 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 break;
               }
 
-              _this.__triggerPropsFn("onClearCart", [null].concat([]));
-              _index2.default.redirectTo({
-                url: "/pages/trade/detail?id=" + order_id
-              });
+              if (!payErr) {
+                _index2.default.showToast({
+                  title: '支付成功',
+                  icon: 'none'
+                });
+
+                _this.__triggerPropsFn("onClearCart", [null].concat([]));
+                _index2.default.redirectTo({
+                  url: "/pages/trade/detail?id=" + order_id
+                });
+              }
 
               return _context3.abrupt("return");
 
             case 52:
-              payErr = void 0;
+
+              payErr = null;
               _context3.prev = 53;
               _context3.next = 56;
               return _index2.default.requestPayment(config);

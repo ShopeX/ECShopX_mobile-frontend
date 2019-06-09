@@ -108,8 +108,8 @@
   &-info {
     width: 100%;
     box-sizing: border-box;
-    font-size: 22px;
-    line-height: 38px;
+    font-size: $font-size-small;
+    line-height: 1.5;
     color: #999999;
     border-top: 14px solid #f6f6f6;
     padding: 42px 30px;
@@ -144,6 +144,9 @@
       background-color: #fafafa;
       font-size: 26px;
       border-radius: 0;
+      &-inline {
+        width: 100%;
+      }
       &:before {
         border: none;
       }

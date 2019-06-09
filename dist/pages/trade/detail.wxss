@@ -154,8 +154,8 @@
   width: 100%;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  font-size: 22rpx;
-  line-height: 38rpx;
+  font-size: 25rpx;
+  line-height: 1.5;
   color: #999999;
   border-top: 14rpx solid #f6f6f6;
   padding: 42rpx 30rpx;
@@ -200,6 +200,9 @@
   background-color: #fafafa;
   font-size: 26rpx;
   border-radius: 0;
+}
+.trade-detail__footer__btn-inline {
+  width: 100%;
 }
 .trade-detail__footer__btn:before {
   border: none;

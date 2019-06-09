@@ -90,6 +90,7 @@ export default class TradeList extends Component {
       status: ({ order_status }) => resolveOrderStatus(order_status),
       totalItems: ({ items }) => items.reduce((acc, item) => (+item.num) + acc, 0),
       payment: ({ total_fee }) => (total_fee / 100).toFixed(2),
+      total_fee: 'total_fee',
       pay_type: 'pay_type',
       point: 'point',
       create_date: 'create_date',
@@ -99,6 +100,7 @@ export default class TradeList extends Component {
         pic_path: 'pic',
         title: 'item_name',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+        item_fee: 'item_fee',
         point: 'item_point',
         num: 'num'
       })

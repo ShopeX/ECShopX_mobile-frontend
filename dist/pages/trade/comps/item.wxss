@@ -43,9 +43,8 @@
   text-align: right;
 }
 .trade-item__hd {
-  padding: 0;
-  height: 44rpx;
-  line-height: 44rpx;
+  padding: 0 0 10rpx;
+  line-height: 1.4;
   border-bottom: 1rpx solid #e4e4e4;
   width: 100%;
   display: -webkit-box;

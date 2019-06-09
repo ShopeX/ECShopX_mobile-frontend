@@ -88,18 +88,18 @@ var TradeItem = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivateRxPqK",
-    value: function funPrivateRxPqK() {
+    key: "funPrivateykBug",
+    value: function funPrivateykBug() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivatewUvys",
-    value: function funPrivatewUvys() {
+    key: "funPrivateZRRSh",
+    value: function funPrivateZRRSh() {
       this.__triggerPropsFn("onActionBtnClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivatenHqNr",
-    value: function funPrivatenHqNr() {
+    key: "funPrivatekAkRE",
+    value: function funPrivatekAkRE() {
       this.__triggerPropsFn("onActionClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -166,7 +166,7 @@ var TradeItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivateRxPqK", "handleClickBtn", "funPrivatewUvys", "funPrivatenHqNr"], _class.options = {
+}, _class.$$events = ["funPrivateykBug", "handleClickBtn", "funPrivateZRRSh", "funPrivatekAkRE"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
   customHeader: false,

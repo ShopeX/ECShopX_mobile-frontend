@@ -64,7 +64,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TradeDetail.__proto__ || Object.getPrototypeOf(TradeDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "info", "timer", "payLoading"], _this.handleCopy = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TradeDetail.__proto__ || Object.getPrototypeOf(TradeDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "info", "timer", "isDhPoint", "payLoading"], _this.handleCopy = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var info, msg;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -184,9 +184,10 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                     return (+_freight_fee / 100).toFixed(2);
                   },
                   payment: function payment(_ref9) {
-                    var total_fee = _ref9.total_fee;
-                    return (+total_fee / 100).toFixed(2);
-                  },
+                    var pay_type = _ref9.pay_type,
+                        total_fee = _ref9.total_fee;
+                    return pay_type === 'dhpoint' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2);
+                  }, // 积分向下取整
                   pay_type: 'pay_type',
                   invoice_content: 'invoice.content',
                   point: 'point',
@@ -492,6 +493,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
         return null;
       }
 
+      var isDhPoint = info.pay_type === 'dhpoint';
+
       // TODO: orders 多商铺
       // const tradeOrders = resolveTradeOrders(info)
 
@@ -501,7 +504,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
         anonymousState__temp2: anonymousState__temp2,
-        anonymousState__temp3: anonymousState__temp3
+        anonymousState__temp3: anonymousState__temp3,
+        isDhPoint: isDhPoint
       });
       return this.__state;
     }

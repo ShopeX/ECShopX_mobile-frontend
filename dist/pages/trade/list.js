@@ -248,6 +248,7 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
                     var total_fee = _ref7.total_fee;
                     return (total_fee / 100).toFixed(2);
                   },
+                  total_fee: 'total_fee',
                   pay_type: 'pay_type',
                   point: 'point',
                   create_date: 'create_date',
@@ -262,6 +263,7 @@ var TradeList = (_dec = (0, _index5.withLogin)(), (0, _index5.withPager)(_class 
                         var item_fee = _ref9.item_fee;
                         return (+item_fee / 100).toFixed(2);
                       },
+                      item_fee: 'item_fee',
                       point: 'item_point',
                       num: 'num'
                     });
