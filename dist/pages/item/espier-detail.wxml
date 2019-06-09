@@ -59,7 +59,7 @@
                     </view>
                     <scroll-view class="specs-scroller" scroll-x="{{true}}">
                         <view class="specs-imgs">
-                            <image class="specs-imgs__item" src="{{img}}" wx:key="img" mode="aspectFill" bindtap="handleBuyBarClick" wx:for="{{loopArray0}}" wx:for-item="specValueId" wx:for-index="_anonIdx2" data-e-tap-so="this" data-e-tap-a-a="{{buyPanelType}}"></image>
+                            <image class="specs-imgs__item" src="{{specValueId.url}}" wx:key="$original" mode="aspectFill" bindtap="handleBuyBarClick" wx:for="{{loopArray0}}" wx:for-item="specValueId" wx:for-index="_anonIdx2" data-e-tap-so="this" data-e-tap-a-a="{{buyPanelType}}"></image>
                         </view>
                     </scroll-view>
                 </view>

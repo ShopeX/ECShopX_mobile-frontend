@@ -488,9 +488,10 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
           $original: (0, _index.internal_get_original)(specValueId)
         };
 
-        var img = _this3.__state.specImgsDict[specValueId.$original];
+        var url = _this3.__state.specImgsDict[specValueId.$original];
 
         return {
+          url: url,
           $original: specValueId.$original
         };
       }) : [];

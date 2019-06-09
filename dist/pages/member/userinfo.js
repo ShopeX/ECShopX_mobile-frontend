@@ -26,10 +26,6 @@ var _index6 = require("../../spx/index.js");
 
 var _index7 = _interopRequireDefault(_index6);
 
-var _azureWry = require("../../utils/azure-wry.js");
-
-var _azureWry2 = _interopRequireDefault(_azureWry);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -39,6 +35,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// import azureUploader from './../../utils/azure-wry'
 
 var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2 = function (_BaseComponent) {
   _inherits(UserInfo, _BaseComponent);
@@ -79,15 +77,15 @@ var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2
                   _index7.default.toast('最多上传1张图片');
                 }
                 imgFiles = data.slice(0, 1);
+                /*azureUploader.uploadImagesFn(imgFiles)
+                  .then(res => {
+                    console.log(res, 67)
+                    this.setState({
+                      imgs: res
+                    })
+                  })*/
 
-                _azureWry2.default.uploadImagesFn(imgFiles).then(function (res) {
-                  console.log(res, 67);
-                  _this.setState({
-                    imgs: res
-                  });
-                });
-
-              case 6:
+              case 5:
               case "end":
                 return _context.stop();
             }

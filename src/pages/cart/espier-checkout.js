@@ -406,8 +406,6 @@ export default class CartCheckout extends Component {
       submitLoading: true
     })
 
-    debugger
-
     let order_id, orderInfo
     try {
       const params = this.getParams()

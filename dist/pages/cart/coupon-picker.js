@@ -135,7 +135,7 @@ var CouponPicker = (_dec = (0, _index3.connect)(function (_ref) {
       var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'coupon';
       var value = arguments[1];
 
-      if (!value.valid) {
+      if (value && !value.valid) {
         return;
       }var payload = value ? { type: type, value: value } : null;
       this.__triggerPropsFn("onChangeCoupon", [null].concat([payload]));

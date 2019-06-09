@@ -2,7 +2,7 @@
     <view class="detail-item">
         <view class="detail-item-good" wx:key="idx" wx:for="{{info.orders}}" wx:for-item="item" wx:for-index="idx"><text class="detail-item__title">第{{idx + 1}}件商品</text>
             <order-item wx:key="idx" __triggerObserer="{{ _triggerObserer }}" info="{{item}}"></order-item>
-            <block wx:if="{{!customFooter && info.status === 'TRADE_SUCCESS'}}">
+            <block wx:if="{{!customFooter && info.pay_type !== 'dhpoint' && info.status === 'TRADE_SUCCESS'}}">
                 <view class="order-item__ft">
                     <at-button circle="{{true}}" __triggerObserer="{{ _triggerObserer }}" type="primary" size="small" bindonclick="handleClickAfterSale" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item}}">{{!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER' ? '申请售后' : '售后详情'}}</at-button>
                 </view>

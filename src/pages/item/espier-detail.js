@@ -426,13 +426,13 @@ export default class Detail extends Component {
                 >
                   <View className='specs-imgs'>
                     {Object.keys(this.state.specImgsDict).map((specValueId) => {
-                      const img = this.state.specImgsDict[specValueId]
+                      const url = this.state.specImgsDict[specValueId]
 
                       return (
                         <Image
                           class='specs-imgs__item'
-                          src={img}
-                          key={img}
+                          src={url}
+                          key={specValueId}
                           mode='aspectFill'
                           onClick={this.handleBuyBarClick.bind(this, buyPanelType)}
                         />

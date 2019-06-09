@@ -5,7 +5,7 @@ import { NavBar, SpToast } from '@/components'
 import api from '@/api'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
-import azureUploader from '../../utils/azure-wry'
+// import azureUploader from './../../utils/azure-wry'
 
 import './userinfo.scss'
 
@@ -54,13 +54,13 @@ export default class UserInfo extends Component {
       S.toast('最多上传1张图片')
     }
     const imgFiles = data.slice(0, 1)
-    azureUploader.uploadImagesFn(imgFiles)
+    /*azureUploader.uploadImagesFn(imgFiles)
       .then(res => {
         console.log(res, 67)
         this.setState({
           imgs: res
         })
-      })
+      })*/
   }
 
   handleImageClick = () => {
