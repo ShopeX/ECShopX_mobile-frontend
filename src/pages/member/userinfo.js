@@ -5,7 +5,7 @@ import { NavBar, SpToast } from '@/components'
 import api from '@/api'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
-// import azureUploader from '../../utils/azure-wry'
+import azureUploader from '../../utils/azure-wry'
 
 import './userinfo.scss'
 
