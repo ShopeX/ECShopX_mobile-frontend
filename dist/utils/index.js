@@ -25,6 +25,7 @@ exports.calcTimer = calcTimer;
 exports.resolveOrderStatus = resolveOrderStatus;
 exports.goToPage = goToPage;
 exports.maskMobile = maskMobile;
+exports.authSetting = authSetting;
 
 var _index = require("../npm/@tarojs/taro-weapp/index.js");
 
@@ -259,6 +260,24 @@ function goToPage(page) {
 
 function maskMobile(mobile) {
   return mobile.replace(/^(\d{2})(\d+)(\d{2}$)/, '$1******$3');
+}
+
+// 不可使用promise/async异步写法
+function authSetting(scope, succFn, errFn) {
+  _index2.default.getSetting({
+    success: function success(res) {
+      var result = res.authSetting["scope." + scope];
+      if (result === undefined) {
+        _index2.default.authorize({
+          scope: "scope." + scope
+        }).then(succFn, errFn);
+      } else if (!result) {
+        _index2.default.openSetting().then(succFn, errFn);
+      } else {
+        succFn();
+      }
+    }
+  });
 }
 
 exports.classNames = _index4.default;

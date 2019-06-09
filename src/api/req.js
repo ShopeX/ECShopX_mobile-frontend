@@ -124,7 +124,7 @@ class API {
         if (statusCode === 401) {
           S.logout()
           if (showError) {
-            // data.err_msg = data.err_msg || '登录过期正在重新登录'
+            data.err_msg = data.err_msg || '登录过期正在重新登录'
             this.errorToast(data)
           }
           Taro.redirectTo({

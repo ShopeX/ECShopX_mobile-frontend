@@ -244,7 +244,6 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
 
         return group;
       });
-      console.log(groups, 158);
       return groups;
     }
   }, {
@@ -700,16 +699,15 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
 
               item_id = item.item_id, cart_id = item.cart_id;
 
-              _this4.updating = true;
               _index2.default.showLoading({
                 mask: true
               });
 
               _this4.__triggerPropsFn("onUpdateCartNum", [null].concat([cart_id, num]));
-              _context8.next = 7;
+              _context8.next = 6;
               return _this4.changeCartNum(item_id, num);
 
-            case 7:
+            case 6:
               _index2.default.hideLoading();
               // this.updateCart.cancel()
 
@@ -720,7 +718,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
               //   await this.changeCartNum(cart_id, num)
               // }
 
-            case 8:
+            case 7:
             case "end":
               return _context8.stop();
           }
