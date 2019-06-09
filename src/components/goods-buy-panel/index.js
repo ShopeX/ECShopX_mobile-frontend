@@ -1,8 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
-import { AtInputNumber } from 'taro-ui'
+// import { AtInputNumber } from 'taro-ui'
 // import find from 'lodash/find'
 import { Price } from '@/components'
+import InputNumber from '@/components/input-number'
 import { classNames, log, isNumber } from '@/utils'
 import api from '@/api'
 
@@ -356,7 +357,7 @@ export default class GoodsBuyPanel extends Component {
             <View className='goods-quantity__wrap'>
               <Text className='goods-quantity__hd'></Text>
               <View className='goods-quantity__bd'>
-                <AtInputNumber
+                <InputNumber
                   min={1}
                   max={maxStore}
                   value={quantity}

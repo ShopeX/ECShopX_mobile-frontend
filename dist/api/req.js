@@ -173,7 +173,7 @@ var API = function () {
         if (statusCode === 401) {
           _index4.default.logout();
           if (showError) {
-            data.err_msg = data.err_msg || '授权过期请重新授权';
+            // data.err_msg = data.err_msg || '登录过期正在重新登录'
             _this2.errorToast(data);
           }
           _index2.default.redirectTo({

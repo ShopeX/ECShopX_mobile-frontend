@@ -15,7 +15,7 @@
                                     </view>
                                 </view>
                             </block>
-                            <cart-item wx:key="$original.cart_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonnumchange="handleQuantityChange" bindonclickpromotion="handleClickPromotion" bindonclick="handleClickToDetail" wx:for="{{shopCart.$anonymousCallee__0}}" wx:for-item="item" wx:for-index="_anonIdx" __fn_onNumChange="{{true}}" data-e-onnumchange-so="this" data-e-onnumchange-a-a="{{item.$original.cart_id}}" __fn_onClickPromotion="{{true}}" data-e-onclickpromotion-so="this" data-e-onclickpromotion-a-a="{{item.$original.cart_id}}" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item.$original.item_id}}">
+                            <cart-item wx:key="$original.cart_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonnumchange="handleQuantityChange" bindonclickpromotion="handleClickPromotion" bindonclickimgandtitle="handleClickToDetail" wx:for="{{shopCart.$anonymousCallee__0}}" wx:for-item="item" wx:for-index="_anonIdx" __fn_onNumChange="{{true}}" data-e-onnumchange-so="this" data-e-onnumchange-a-a="{{item.$original.cart_id}}" __fn_onClickPromotion="{{true}}" data-e-onclickpromotion-so="this" data-e-onclickpromotion-a-a="{{item.$original.cart_id}}" __fn_onClickImgAndTitle="{{true}}" data-e-onclickimgandtitle-so="this" data-e-onclickimgandtitle-a-a="{{item.$original.item_id}}">
                                 <view class="cart-item__act">
                                     <sp-checkbox wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" checked="{{item.$loopState__temp2}}" bindonchange="handleSelectionChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="{{item.$original.cart_id}}"></sp-checkbox>
                                     <view class="in-icon in-icon-close" bindtap="handleDelect" data-e-tap-so="this" data-e-tap-a-a="{{item.$original.cart_id}}"></view>
@@ -63,7 +63,7 @@
                     <view class="cart-list__hd like__hd"><text class="cart-list__title">猜你喜欢</text>
                     </view>
                     <view class="goods-list goods-list__type-grid">
-                        <goods-item wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonclick="anonymousFunc0" wx:for="{{loopArray1}}" wx:for-item="item" wx:for-index="__index0" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{__index0}}"></goods-item>
+                        <goods-item wx:key="item_id" __triggerObserer="{{ _triggerObserer }}" info="{{item}}" bindonclick="handleClickItem" wx:for="{{likeList}}" wx:for-item="item" wx:for-index="_anonIdx5" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item}}"></goods-item>
                     </view>
                 </view>
             </block>
@@ -103,7 +103,7 @@
         </view>
         <at-action-sheet title="请选择商品优惠" __triggerObserer="{{ _triggerObserer }}" isOpened="{{anonymousState__temp5}}" bindonclose="handleClosePromotions" __fn_onClose="{{true}}">
             <block wx:if="{{curPromotions}}">
-                <at-action-sheet-item wx:key="marketing_id" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleSelectPromotion" wx:for="{{curPromotions}}" wx:for-item="item" wx:for-index="_anonIdx5" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item}}"><text class="cart-promotion__label">{{item.promotion_tag}}</text><text>{{item.marketing_name}}</text>
+                <at-action-sheet-item wx:key="marketing_id" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleSelectPromotion" wx:for="{{curPromotions}}" wx:for-item="item" wx:for-index="_anonIdx6" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item}}"><text class="cart-promotion__label">{{item.promotion_tag}}</text><text>{{item.marketing_name}}</text>
                 </at-action-sheet-item>
             </block>
         </at-action-sheet>

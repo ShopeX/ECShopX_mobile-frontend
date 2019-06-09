@@ -414,8 +414,6 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
   }, {
     key: "_createData",
     value: function _createData() {
-      var _this4 = this;
-
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
       var __isRunloopRef = arguments[2];
@@ -480,25 +478,11 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
           $original: activityGroup.$original
         };
       });
-      var loopArray1 = likeList.length ? likeList.map(function (item, __index0) {
-        item = {
-          $original: (0, _index.internal_get_original)(item)
-        };
-
-        _this4.anonymousFunc0Array[__index0] = function () {
-          return _this4.handleClickItem(item.$original);
-        };
-
-        return {
-          $original: item.$original
-        };
-      }) : [];
       Object.assign(this.__state, {
         anonymousState__temp3: anonymousState__temp3,
         anonymousState__temp4: anonymousState__temp4,
         anonymousState__temp5: anonymousState__temp5,
         loopArray0: loopArray0,
-        loopArray1: loopArray1,
         list: list,
         page: page,
         isEmpty: isEmpty,
@@ -506,12 +490,6 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
         isTotalChecked: this.isTotalChecked
       });
       return this.__state;
-    }
-  }, {
-    key: "anonymousFunc0",
-    value: function anonymousFunc0(__index0, e) {
-      ;
-      this.anonymousFunc0Array[__index0] && this.anonymousFunc0Array[__index0](e);
     }
   }, {
     key: "isTotalChecked",
@@ -550,13 +528,13 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["nextPage", "handleQuantityChange", "handleClickPromotion", "handleClickToDetail", "handleSelectionChange", "handleDelect", "navigateTo", "anonymousFunc0", "handleAllSelect", "handleCheckout", "handleClosePromotions", "handleSelectPromotion"], _class2.defaultProps = {
+}, _class2.$$events = ["nextPage", "handleQuantityChange", "handleClickPromotion", "handleClickToDetail", "handleSelectionChange", "handleDelect", "navigateTo", "handleClickItem", "handleAllSelect", "handleCheckout", "handleClosePromotions", "handleSelectPromotion"], _class2.defaultProps = {
   totalPrice: '0.00',
   list: null
 }, _initialiseProps = function _initialiseProps() {
-  var _this5 = this;
+  var _this4 = this;
 
-  this.$usedState = ["anonymousState__temp3", "anonymousState__temp4", "anonymousState__temp5", "loopArray0", "loopArray1", "loading", "groups", "list", "invalidList", "likeList", "page", "isEmpty", "cartMode", "totalPrice", "curPromotions", "selection", "defaultAllSelect", "__fn_onUpdateCart", "cartIds", "__fn_onCartSelection", "__fn_onUpdateCartNum", "isTotalChecked"];
+  this.$usedState = ["anonymousState__temp3", "anonymousState__temp4", "anonymousState__temp5", "loopArray0", "loading", "groups", "list", "invalidList", "likeList", "page", "isEmpty", "cartMode", "totalPrice", "curPromotions", "selection", "defaultAllSelect", "__fn_onUpdateCart", "cartIds", "__fn_onCartSelection", "__fn_onUpdateCartNum", "isTotalChecked"];
 
   this.handleClickItem = function (item) {
     var url = "/pages/item/espier-detail?id=" + item.item_id;
@@ -570,10 +548,10 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            _this5.updating = true;
+            _this4.updating = true;
             _context5.prev = 1;
             _context5.next = 4;
-            return _this5.fetchCart();
+            return _this4.fetchCart();
 
           case 4:
             _context5.next = 9;
@@ -586,19 +564,19 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
             console.log(_context5.t0);
 
           case 9:
-            _this5.updating = false;
+            _this4.updating = false;
 
           case 10:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, _this5, [[1, 6]]);
+    }, _callee5, _this4, [[1, 6]]);
   })), 600);
 
   this.toggleCartMode = function () {
-    var cartMode = _this5.state.cartMode !== 'edit' ? 'edit' : 'default';
-    _this5.setState({
+    var cartMode = _this4.state.cartMode !== 'edit' ? 'edit' : 'default';
+    _this4.setState({
       cartMode: cartMode
     });
   };
@@ -634,20 +612,20 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
               return _index6.default.cart.del({ cart_id: cart_id });
 
             case 7:
-              cartIds = _this5.props.cartIds.filter(function (t) {
+              cartIds = _this4.props.cartIds.filter(function (t) {
                 return t !== cart_id;
               });
 
 
-              _this5.updateSelection(cartIds);
-              _this5.updateCart();
+              _this4.updateSelection(cartIds);
+              _this4.updateCart();
 
             case 10:
             case "end":
               return _context6.stop();
           }
         }
-      }, _callee6, _this5);
+      }, _callee6, _this4);
     }));
 
     return function (_x8) {
@@ -662,14 +640,14 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
           switch (_context7.prev = _context7.next) {
             case 0:
               _context7.next = 2;
-              return _this5.changeCartNum(cart_id, num);
+              return _this4.changeCartNum(cart_id, num);
 
             case 2:
             case "end":
               return _context7.stop();
           }
         }
-      }, _callee7, _this5);
+      }, _callee7, _this4);
     }));
 
     return function (_x9, _x10) {
@@ -684,33 +662,33 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
           switch (_context8.prev = _context8.next) {
             case 0:
               e.stopPropagation();
-              _this5.updating = true;
-              _this5.__triggerPropsFn("onUpdateCartNum", [null].concat([cart_id, num]));
-              _this5.updateCart.cancel();
+              _this4.updating = true;
+              _this4.__triggerPropsFn("onUpdateCartNum", [null].concat([cart_id, num]));
+              _this4.updateCart.cancel();
 
-              if (!(_this5.lastCartId === cart_id || _this5.lastCartId === undefined)) {
+              if (!(_this4.lastCartId === cart_id || _this4.lastCartId === undefined)) {
                 _context8.next = 9;
                 break;
               }
 
               _context8.next = 7;
-              return _this5.debounceChangeCartNum(cart_id, num);
+              return _this4.debounceChangeCartNum(cart_id, num);
 
             case 7:
               _context8.next = 12;
               break;
 
             case 9:
-              _this5.lastCartId = cart_id;
+              _this4.lastCartId = cart_id;
               _context8.next = 12;
-              return _this5.changeCartNum(cart_id, num);
+              return _this4.changeCartNum(cart_id, num);
 
             case 12:
             case "end":
               return _context8.stop();
           }
         }
-      }, _callee8, _this5);
+      }, _callee8, _this4);
     }));
 
     return function (_x11, _x12, _x13) {
@@ -725,8 +703,8 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
         while (1) {
           switch (_context9.prev = _context9.next) {
             case 0:
-              selection = _this5.state.selection;
-              cartIds = _this5.props.cartIds;
+              selection = _this4.state.selection;
+              cartIds = _this4.props.cartIds;
 
 
               if (checked) {
@@ -757,14 +735,14 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
 
             case 12:
               _index2.default.hideLoading();
-              _this5.updateSelection([].concat(_toConsumableArray(selection)));
+              _this4.updateSelection([].concat(_toConsumableArray(selection)));
 
             case 14:
             case "end":
               return _context9.stop();
           }
         }
-      }, _callee9, _this5, [[4, 9]]);
+      }, _callee9, _this4, [[4, 9]]);
     }));
 
     return function (_x14) {
@@ -773,9 +751,9 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
   }();
 
   this.handleClickPromotion = function (cart_id, e) {
-    _this5.isTodetail = 0;
+    _this4.isTodetail = 0;
     var promotions = void 0;
-    _this5.props.list.some(function (cart) {
+    _this4.props.list.some(function (cart) {
       cart.list.some(function (item) {
         if (item.cart_id === cart_id) {
           promotions = item.promotions.slice();
@@ -783,18 +761,18 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       });
     });
 
-    _this5.setState({
+    _this4.setState({
       curPromotions: promotions
     }, function () {
-      _this5.isTodetail = 1;
+      _this4.isTodetail = 1;
     });
   };
 
   this.handleClickToDetail = function (item_id) {
-    if (_this5.isTodetail === 0) {
+    if (_this4.isTodetail === 0) {
       return false;
     }
-    _this5.isTodetail = 1;
+    _this4.isTodetail = 1;
     _index2.default.navigateTo({
       url: "/pages/item/espier-detail?id=" + item_id
     });
@@ -812,7 +790,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
               _index2.default.showLoading({
                 mask: true
               });
-              _this5.setState({
+              _this4.setState({
                 curPromotions: null
               });
               _context10.next = 5;
@@ -823,7 +801,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
 
             case 5:
               _context10.next = 7;
-              return _this5.fetchCart();
+              return _this4.fetchCart();
 
             case 7:
               _index2.default.hideLoading();
@@ -833,7 +811,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
               return _context10.stop();
           }
         }
-      }, _callee10, _this5);
+      }, _callee10, _this4);
     }));
 
     return function (_x15) {
@@ -842,13 +820,13 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
   }();
 
   this.handleClosePromotions = function () {
-    _this5.setState({
+    _this4.setState({
       curPromotions: null
     });
   };
 
   this.handleCheckout = function () {
-    if (_this5.updating) {
+    if (_this4.updating) {
       _index2.default.showToast({
         title: '正在计算价格，请稍后',
         icon: 'none'
@@ -866,10 +844,9 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key2] = arguments[_key2];
     }
 
-    _index4.navigateTo.apply(_this5, args);
+    _index4.navigateTo.apply(_this4, args);
   };
 
-  this.anonymousFunc0Array = [];
   this.$$refs = [];
 }, _temp2)) || _class) || _class) || _class);
 exports.default = CartIndex;

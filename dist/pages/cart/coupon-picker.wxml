@@ -3,8 +3,8 @@
         <view></view>
     </block>
     <view class="coupon-picker" wx:else>
-        <coupon-item wx:key="idx" __triggerObserer="{{ _triggerObserer }}" info="{{coupon}}" bindonclick="handleCouponSelect" wx:for="{{coupons}}" wx:for-item="coupon" wx:for-index="idx" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="coupon" data-e-onclick-a-b="{{coupon}}">
-            <sp-checkbox checked="{{curCoupon && curCoupon.type === 'coupon' && curCoupon.value.code === coupon.code}}" __triggerObserer="{{ _triggerObserer }}"></sp-checkbox>
+        <coupon-item wx:key="idx" __triggerObserer="{{ _triggerObserer }}" info="{{coupon.$original}}" isDisabled="{{coupon.$loopState__temp2}}" bindonclick="handleCouponSelect" wx:for="{{loopArray0}}" wx:for-item="coupon" wx:for-index="idx" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="coupon" data-e-onclick-a-b="{{coupon.$original}}">
+            <sp-checkbox checked="{{curCoupon && curCoupon.type === 'coupon' && curCoupon.value.code === coupon.$original.code}}" __triggerObserer="{{ _triggerObserer }}"></sp-checkbox>
         </coupon-item>
         <view class="coupon-item coupon-item__nil" bindtap="handleCouponSelect" data-e-tap-so="this" data-e-tap-a-a="coupon" data-e-tap-a-b="{{null}}">
             <view class="coupon-item__bd"><text class="coupon-item__title">不使用优惠券</text>

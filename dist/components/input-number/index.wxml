@@ -2,7 +2,7 @@
     <view class="{{rootCls}}" style="{{anonymousState__temp}}">
         <view class="{{minusBtnCls}}" bindtap="handleClick" data-e-tap-so="this" data-e-tap-a-a="minus"><text class="at-icon at-icon-subtract at-input-number__btn-subtract"></text>
         </view>
-        <input class="at-input-number__input" style="{{anonymousState__temp2}}" type="{{type}}" value="{{inputValue}}" disabled="{{disabled}}" bindinput="handleInput" bindblur="handleBlur" />
+        <input class="at-input-number__input" style="{{anonymousState__temp2}}" type="{{type}}" value="{{inputValue}}" disabled="{{true}}" bindinput="handleInput" bindblur="handleBlur" />
         <view class="{{plusBtnCls}}" bindtap="handleClick" data-e-tap-so="this" data-e-tap-a-a="plus"><text class="at-icon at-icon-add at-input-number__btn-add"></text>
         </view>
     </view>

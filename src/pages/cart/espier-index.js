@@ -449,7 +449,7 @@ export default class CartIndex extends Component {
                                     info={item}
                                     onNumChange={this.handleQuantityChange.bind(this, item.cart_id)}
                                     onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
-                                    onClick={this.handleClickToDetail.bind(this, item.item_id)}
+                                    onClickImgAndTitle={this.handleClickToDetail.bind(this, item.item_id)}
                                   >
                                     <View className='cart-item__act'>
                                       <SpCheckbox
@@ -550,7 +550,7 @@ export default class CartIndex extends Component {
                         <GoodsItem
                           key={item.item_id}
                           info={item}
-                          onClick={() => this.handleClickItem(item)}
+                          onClick={this.handleClickItem.bind(this, item)}
                         />
                       )
                     })

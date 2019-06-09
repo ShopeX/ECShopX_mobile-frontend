@@ -34,7 +34,7 @@
                 </scroll-view>
                 <view class="goods-quantity__wrap"><text class="goods-quantity__hd"></text>
                     <view class="goods-quantity__bd">
-                        <at-input-number min="{{1}}" __triggerObserer="{{ _triggerObserer }}" max="{{maxStore}}" value="{{quantity}}" bindonchange="handleQuantityChange" __fn_onChange="{{true}}" data-e-onchange-so="this"></at-input-number>
+                        <input-number min="{{1}}" __triggerObserer="{{ _triggerObserer }}" max="{{maxStore}}" value="{{quantity}}" bindonchange="handleQuantityChange" __fn_onChange="{{true}}" data-e-onchange-so="this"></input-number>
                     </view>
                 </view>
             </view>

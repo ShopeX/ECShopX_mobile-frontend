@@ -57,7 +57,7 @@ var CouponPicker = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = CouponPicker.__proto__ || Object.getPrototypeOf(CouponPicker)).call.apply(_ref2, [this].concat(args))), _this), _this.$usedState = ["coupons", "curCoupon", "__fn_onChangeCoupon"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = CouponPicker.__proto__ || Object.getPrototypeOf(CouponPicker)).call.apply(_ref2, [this].concat(args))), _this), _this.$usedState = ["loopArray0", "coupons", "curCoupon", "__fn_onChangeCoupon"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(CouponPicker, [{
@@ -106,6 +106,8 @@ var CouponPicker = (_dec = (0, _index3.connect)(function (_ref) {
                   discount: 'discount',
                   begin_date: 'begin_date',
                   end_date: 'end_date'
+                }).sort(function (a) {
+                  return !a.valid;
                 });
 
 
@@ -155,12 +157,53 @@ var CouponPicker = (_dec = (0, _index3.connect)(function (_ref) {
         return null;
       }
 
-      var memberCoupon = {
-        card_type: 'member',
-        title: '会员折扣价'
-      };
+      // const memberCoupon = {
+      //   card_type: 'member',
+      //   title: '会员折扣价'
+      // }
 
+      var loopArray0 = coupons.map(function (coupon, idx) {
+        coupon = {
+          $original: (0, _index.internal_get_original)(coupon)
+        };
+        var $loopState__temp2 = !coupon.$original.valid;
+        return {
+          $loopState__temp2: $loopState__temp2,
+          $original: coupon.$original
+        };
+      }
+
+      // <View
+      //   key={idx}
+      //   className='coupon-item'
+      //   onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
+      // >
+      //   <View className='coupon-item__hd'>
+      //     <View className='coupon-item__name'>
+      //       {coupon.card_type === 'cash' && (<Price value={coupon.reduce_cost} unit='cent' />)}
+      //       {coupon.card_type === 'discount' && (<Text>{(100 - coupon.discount) / 10}折</Text>)}
+      //       {coupon.card_type === 'gift' && (<Text>兑换券</Text>)}
+      //     </View>
+      //     <Text className='coupon-item__type'>{typeStr}</Text>
+      //   </View>
+      //   <View className='coupon-item__bd'>
+      //     <Text className='coupon-item__title'>{coupon.title}</Text>
+      //     <View className='coupon-item__rule'>
+      //       {(coupon.card_type !== 'gift' && coupon.least_cost > 0)
+      //         ? <View className='coupon-item__rule-inner'>满<Price value={coupon.least_cost} unit='cent' />元可用</View>
+      //         : (coupon.card_type != 'gift' && (<Text>满0.01可用</Text>))}
+      //     </View>
+      //     <Text className='coupon-item__time'>使用期限 {coupon.begin_date} ~ {coupon.end_date}</Text>
+      //   </View>
+      //   <View className='coupon-item__ft'>
+      //     <SpCheckbox
+      //       checked={curCoupon && curCoupon.type === 'coupon' && curCoupon.value.code === coupon.code}
+      //     />
+      //   </View>
+      // </View>
+      );
       Object.assign(this.__state, {
+        loopArray0: loopArray0,
         curCoupon: curCoupon
       });
       return this.__state;

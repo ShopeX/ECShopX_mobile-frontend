@@ -85,6 +85,10 @@ var cart = (0, _index.createReducer)(initState, (_createReducer = {}, _definePro
   });
 }), _defineProperty(_createReducer, 'cart/clear', function cartClear(state) {
   return _extends({}, state, initState);
+}), _defineProperty(_createReducer, 'cart/clearCoupon', function cartClearCoupon(state) {
+  return _extends({}, state, {
+    coupon: null
+  });
 }), _defineProperty(_createReducer, 'cart/selection', function cartSelection(state, action) {
   var selection = action.payload;
   return _extends({}, state, {

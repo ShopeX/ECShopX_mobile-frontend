@@ -10,27 +10,21 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _class, _temp2;
 
-var _index = require("../../../../../@tarojs/taro-weapp/index.js");
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = require("../../../../../prop-types/index.js");
+var _index3 = require("../../npm/classnames/index.js");
 
 var _index4 = _interopRequireDefault(_index3);
 
-var _index5 = require("../../../../../classnames/index.js");
-
-var _index6 = _interopRequireDefault(_index5);
-
-var _toString2 = require("../../../../../lodash/toString.js");
+var _toString2 = require("../../npm/lodash/toString.js");
 
 var _toString3 = _interopRequireDefault(_toString2);
 
-var _component = require("../../common/component.js");
+var _component = require("./component.js");
 
 var _component2 = _interopRequireDefault(_component);
-
-var _utils = require("../../common/utils.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -70,8 +64,6 @@ function parseValue(num) {
   return (0, _toString3.default)(num);
 }
 
-(0, _utils.initTestEnv)();
-
 var AtInputNumber = (_temp2 = _class = function (_AtComponent) {
   _inherits(AtInputNumber, _AtComponent);
 
@@ -86,7 +78,7 @@ var AtInputNumber = (_temp2 = _class = function (_AtComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AtInputNumber.__proto__ || Object.getPrototypeOf(AtInputNumber)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "rootCls", "minusBtnCls", "type", "inputValue", "disabled", "plusBtnCls", "value", "min", "max", "step", "__fn_onChange", "__fn_onBlur", "customStyle", "className", "width", "size"], _this.handleValue = function (value) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AtInputNumber.__proto__ || Object.getPrototypeOf(AtInputNumber)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "rootCls", "minusBtnCls", "type", "inputValue", "plusBtnCls", "disabled", "value", "min", "max", "step", "__fn_onChange", "__fn_onBlur", "customStyle", "className", "width", "size"], _this.handleValue = function (value) {
       var _this$props = _this.props,
           max = _this$props.max,
           min = _this$props.min;
@@ -95,9 +87,17 @@ var AtInputNumber = (_temp2 = _class = function (_AtComponent) {
       // 此处不能使用 Math.max，会是字符串变数字，并丢失 .
       if (resultValue > max) {
         resultValue = max;
+        _this.handleError({
+          type: 'OVER',
+          errorValue: resultValue
+        });
       }
       if (resultValue < min) {
         resultValue = min;
+        _this.handleError({
+          type: 'LOW',
+          errorValue: resultValue
+        });
       }
       resultValue = parseValue(resultValue);
       return resultValue;
@@ -120,6 +120,11 @@ var AtInputNumber = (_temp2 = _class = function (_AtComponent) {
       }
 
       return _this.__triggerPropsFn("onBlur", [null].concat([].concat(arg)));
+    }, _this.handleError = function (errorValue) {
+      if (!_this.props.onErrorInput) {
+        return;
+      }
+      _this.__triggerPropsFn("onErrorInput", [null].concat([errorValue]));
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -138,9 +143,25 @@ var AtInputNumber = (_temp2 = _class = function (_AtComponent) {
           max = _props.max,
           step = _props.step;
 
-      if (disabled || clickType === 'minus' && value <= min || clickType === 'plus' && value >= max) {
+      var lowThanMin = clickType === 'minus' && value <= min;
+      var overThanMax = clickType === 'plus' && value >= max;
+      if (lowThanMin || overThanMax || disabled) {
+        var _deltaValue = clickType === 'minus' ? -step : step;
+        var errorValue = addNum(value, _deltaValue);
+        if (disabled) {
+          this.handleError({
+            type: 'DISABLED',
+            errorValue: errorValue
+          });
+        } else {
+          this.handleError({
+            type: lowThanMin ? 'LOW' : 'OVER',
+            errorValue: errorValue
+          });
+        }
         return;
-      }var deltaValue = clickType === 'minus' ? -step : step;
+      }
+      var deltaValue = clickType === 'minus' ? -step : step;
       var newValue = addNum(value, deltaValue);
       newValue = this.handleValue(newValue);
       this.__triggerPropsFn("onChange", [null].concat([newValue]));
@@ -169,13 +190,13 @@ var AtInputNumber = (_temp2 = _class = function (_AtComponent) {
         width: width ? "" + _index2.default.pxTransform(width) : ''
       };
       var inputValue = this.handleValue(value);
-      var rootCls = (0, _index6.default)('at-input-number', {
+      var rootCls = (0, _index4.default)('at-input-number', {
         'at-input-number--lg': size
       }, className);
-      var minusBtnCls = (0, _index6.default)('at-input-number__btn', {
+      var minusBtnCls = (0, _index4.default)('at-input-number__btn', {
         'at-input-number--disabled': inputValue <= min || disabled
       });
-      var plusBtnCls = (0, _index6.default)('at-input-number__btn', {
+      var plusBtnCls = (0, _index4.default)('at-input-number__btn', {
         'at-input-number--disabled': inputValue >= max || disabled
       });
 
@@ -188,7 +209,6 @@ var AtInputNumber = (_temp2 = _class = function (_AtComponent) {
         minusBtnCls: minusBtnCls,
         type: type,
         inputValue: inputValue,
-        disabled: disabled,
         plusBtnCls: plusBtnCls
       });
       return this.__state;
@@ -222,6 +242,14 @@ var AtInputNumber = (_temp2 = _class = function (_AtComponent) {
     "value": null
   },
   "__fn_onBlur": {
+    "type": null,
+    "value": null
+  },
+  "onErrorInput": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onErrorInput": {
     "type": null,
     "value": null
   },
@@ -263,21 +291,6 @@ AtInputNumber.defaultProps = {
   onBlur: function onBlur() {}
 };
 
-AtInputNumber.propTypes = {
-  customStyle: _index4.default.oneOfType([_index4.default.object, _index4.default.string]),
-  className: _index4.default.oneOfType([_index4.default.array, _index4.default.string]),
-  value: _index4.default.oneOfType([_index4.default.number, _index4.default.string]),
-  type: _index4.default.oneOf(['number', 'digit']),
-  disabled: _index4.default.bool,
-  width: _index4.default.number,
-  min: _index4.default.number,
-  max: _index4.default.number,
-  step: _index4.default.number,
-  size: _index4.default.string,
-  onChange: _index4.default.func,
-  onBlur: _index4.default.func
-};
-
 exports.default = AtInputNumber;
 
-Component(require('../../../../../@tarojs/taro-weapp/index.js').default.createComponent(AtInputNumber));
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(AtInputNumber));
