@@ -186,8 +186,8 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                   payment: function payment(_ref9) {
                     var pay_type = _ref9.pay_type,
                         total_fee = _ref9.total_fee;
-                    return pay_type !== 'dhpoint' ? (+total_fee / 100).toFixed(2) : total_fee;
-                  },
+                    return pay_type === 'dhpoint' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2);
+                  }, // 积分向下取整
                   pay_type: 'pay_type',
                   invoice_content: 'invoice.content',
                   point: 'point',

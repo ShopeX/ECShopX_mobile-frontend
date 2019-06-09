@@ -79,7 +79,7 @@ export default class TradeDetail extends Component {
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
       freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
-      payment: ({ pay_type, total_fee }) => pay_type !== 'dhpoint' ? (+total_fee / 100).toFixed(2) : total_fee,
+      payment: ({ pay_type, total_fee }) => pay_type === 'dhpoint' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2), // 积分向下取整
       pay_type: 'pay_type',
       invoice_content: 'invoice.content',
       point: 'point',
@@ -324,10 +324,7 @@ export default class TradeDetail extends Component {
             info={info}
           />
         </View>
-        {isDhPoint
-          ? (<View className='trade-money'>总计：<Text className='trade-money__num'>{info.payment}积分</Text></View>)
-          : (<View className='trade-money'>总计：<Text className='trade-money__num'>￥{info.payment}</Text></View>)
-        }
+        <View className='trade-money'>总计：<Text className='trade-money__num'>￥{info.item_fee}</Text></View>
         <View className='trade-detail-info'>
           <Text className='info-text'>订单号：{info.tid}</Text>
           <Text className='info-text'>下单时间：{info.created_time_str}</Text>
