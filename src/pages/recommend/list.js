@@ -43,6 +43,7 @@ export default class RecommendList extends Component {
       item_id: 'article_id',
       title: 'title',
       author: 'author',
+      summary: 'summary',
       head_portrait: 'head_portrait',
       isPraise: 'isPraise',
       articlePraiseNum: 'articlePraiseNum.count',

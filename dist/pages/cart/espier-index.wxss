@@ -125,6 +125,22 @@
   margin-left: 8rpx;
   margin-right: 8rpx;
 }
+.page-cart-index .hidden-scroll {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 0;
+  bottom: 100rpx;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  z-index: 1;
+}
+.page-cart-index .hidden-scroll > div, .page-cart-index .hidden-scroll > view {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
 .page-cart-index .cart-group {
   margin: 0 0 20rpx;
   padding: 0 0 4rpx;

@@ -1,7 +1,6 @@
 @import "../../style/imports";
 
 .page-cart-index {
-
   .goods-list {
     &__type-grid {
       @include clearfix();
@@ -42,11 +41,13 @@
       }
     }
   }
+
   .cart-list {
     padding: $edge-size;
     &__scroll {
       @include page-scroll($navigate-height, $toolbar-height + $tabbar-height);
     }
+
     &__actions {
       display: flex;
       justify-content: flex-end;
@@ -80,6 +81,9 @@
       margin-left: 8px;
       margin-right: 8px;
     }
+  }
+  .hidden-scroll {
+    @include page-scroll($navigate-height, $toolbar-height);
   }
   .cart-group {
     margin: 0 0 20px;

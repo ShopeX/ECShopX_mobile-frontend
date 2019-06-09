@@ -77,9 +77,10 @@ export default class TradeDetail extends Component {
       order_status_msg: 'order_status_msg',
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
-      post_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
+      freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
       payment: ({ total_fee }) => (+total_fee / 100).toFixed(2),
       pay_type: 'pay_type',
+      invoice_content: 'invoice.content',
       point: 'point',
       status: ({ order_status }) => resolveOrderStatus(order_status),
       orders: ({ items }) => pickBy(items, {
@@ -322,7 +323,7 @@ export default class TradeDetail extends Component {
         <View className='trade-detail-info'>
           <Text className='info-text'>订单号：{info.tid}</Text>
           <Text className='info-text'>下单时间：{info.created_time_str}</Text>
-          <Text className='info-text'>发票信息：上海xxx有限公司上海xx有</Text>
+          <Text className='info-text'>发票信息：{info.invoice_content}</Text>
           <Text className='info-text'>商品金额：￥{info.item_fee}</Text>
           {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
           <Text className='info-text'>免运费：-￥{info.freight_fee}</Text>

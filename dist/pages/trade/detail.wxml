@@ -34,7 +34,7 @@
         </view>
         <view class="trade-money">总计：<text class="trade-money__num">￥{{info.payment}}</text>
         </view>
-        <view class="trade-detail-info"><text class="info-text">订单号：{{info.tid}}</text><text class="info-text">下单时间：{{info.created_time_str}}</text><text class="info-text">发票信息：上海xxx有限公司上海xx有</text><text class="info-text">商品金额：￥{{info.item_fee}}</text><text class="info-text">免运费：-￥{{info.freight_fee}}</text><text class="info-text">优惠：-￥{{info.coupon_discount}}</text><text class="info-text">支付：{{info.payment}}（微信支付）</text>
+        <view class="trade-detail-info"><text class="info-text">订单号：{{info.tid}}</text><text class="info-text">下单时间：{{info.created_time_str}}</text><text class="info-text">发票信息：{{info.invoice_content}}</text><text class="info-text">商品金额：￥{{info.item_fee}}</text><text class="info-text">免运费：-￥{{info.freight_fee}}</text><text class="info-text">优惠：-￥{{info.coupon_discount}}</text><text class="info-text">支付：{{info.payment}}（微信支付）</text>
             <block wx:if="{{info.delivery_code}}">
                 <view class="delivery_code_copy"><text class="info-text">物流单号：{{info.delivery_code}}</text><text class="info-text" bindtap="handleClickCopy" data-e-tap-so="this" data-e-tap-a-a="{{info.delivery_code}}">复制</text>
                 </view>

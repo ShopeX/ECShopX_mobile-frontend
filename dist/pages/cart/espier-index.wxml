@@ -4,7 +4,7 @@
     </block>
     <view class="page-cart-index" wx:else>
         <nav-bar title="购物车" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
-        <scroll-view class="cart-list__scroll" bindscrolltolower="nextPage" scroll-y="{{true}}">
+        <scroll-view class="{{'' + (isEmpty ? 'hidden-scroll' : 'cart-list__scroll')}}" bindscrolltolower="nextPage" scroll-y="{{true}}">
             <view class="cart-list">
                 <view class="cart-list__shop" wx:key="idx" wx:for="{{loopArray0}}" wx:for-item="activityGroup" wx:for-index="idx">
                     <block wx:if="{{shopCart.$original.list.length > 0}}" wx:for="{{activityGroup.$anonymousCallee__1}}" wx:for-item="shopCart" wx:for-index="_anonIdx3" wx:key="$original.shop_id">

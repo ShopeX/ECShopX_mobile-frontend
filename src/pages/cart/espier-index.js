@@ -424,6 +424,7 @@ export default class CartIndex extends Component {
     const totalSelection = selection.size
     const totalItems = totalSelection
     const isEmpty = !list.length
+    console.log(list, 427)
 
     return (
       <View className='page-cart-index'>
@@ -434,7 +435,7 @@ export default class CartIndex extends Component {
         />
 
         <ScrollView
-          className='cart-list__scroll'
+          className={`${isEmpty ? 'hidden-scroll' : 'cart-list__scroll'}`}
           onScrollToLower={this.nextPage}
           scrollY
         >

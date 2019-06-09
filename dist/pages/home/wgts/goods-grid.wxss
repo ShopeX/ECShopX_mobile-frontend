@@ -83,6 +83,9 @@
       -ms-flex-pack: center;
           justify-content: center;
   padding: 0 20rpx 20rpx 20rpx;
+  height: 230rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   font-size: 24rpx;
 }
 .grid-goods .grid-item .goods-wrap .caption .goods-brand {

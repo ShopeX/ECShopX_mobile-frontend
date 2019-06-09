@@ -90,18 +90,18 @@ var GoodsBuyToolbar = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivatesflDC",
-    value: function funPrivatesflDC() {
+    key: "funPrivateFvtCu",
+    value: function funPrivateFvtCu() {
       this.__triggerPropsFn("onFavItem", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivatefqfWz",
-    value: function funPrivatefqfWz() {
+    key: "funPrivateJZlNw",
+    value: function funPrivateJZlNw() {
       this.__triggerPropsFn("onClickAddCart", [].concat(Array.prototype.slice.call(arguments)));
     }
   }, {
-    key: "funPrivatesVXuA",
-    value: function funPrivatesVXuA() {
+    key: "funPrivatelXBUh",
+    value: function funPrivatelXBUh() {
       this.__triggerPropsFn("onClickFastBuy", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -152,7 +152,7 @@ var GoodsBuyToolbar = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivatesflDC", "handleClickMiniProgram", "funPrivatefqfWz", "funPrivatesVXuA"], _class.options = {
+}, _class.$$events = ["funPrivateFvtCu", "handleClickMiniProgram", "funPrivateJZlNw", "funPrivatelXBUh"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
   type: 'normal',

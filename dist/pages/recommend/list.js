@@ -123,6 +123,7 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
                   item_id: 'article_id',
                   title: 'title',
                   author: 'author',
+                  summary: 'summary',
                   head_portrait: 'head_portrait',
                   isPraise: 'isPraise',
                   articlePraiseNum: 'articlePraiseNum.count'

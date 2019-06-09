@@ -175,15 +175,16 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
                     var _coupon_discount = _ref6.coupon_discount;
                     return (+_coupon_discount / 100).toFixed(2);
                   },
-                  post_fee: function post_fee(_ref7) {
-                    var freight_fee = _ref7.freight_fee;
-                    return (+freight_fee / 100).toFixed(2);
+                  freight_fee: function freight_fee(_ref7) {
+                    var _freight_fee = _ref7.freight_fee;
+                    return (+_freight_fee / 100).toFixed(2);
                   },
                   payment: function payment(_ref8) {
                     var total_fee = _ref8.total_fee;
                     return (+total_fee / 100).toFixed(2);
                   },
                   pay_type: 'pay_type',
+                  invoice_content: 'invoice.content',
                   point: 'point',
                   status: function status(_ref9) {
                     var order_status = _ref9.order_status;

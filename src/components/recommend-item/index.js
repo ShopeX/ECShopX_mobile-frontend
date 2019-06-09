@@ -53,7 +53,7 @@ export default class RecommendItem extends Component {
           </View>
           <View className='goods-item__cont'>
             <Text className='goods-item__title'>{info.title}</Text>
-            <Text className='goods-item__desc'>{info.desc}</Text>
+            <Text className='goods-item__desc'>{info.summary}</Text>
             <View className='goods-item__extra'>
               <View className='goods-item__author'>
                 <Image

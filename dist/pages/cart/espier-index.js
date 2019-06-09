@@ -475,6 +475,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       var totalSelection = selection.size;
       var totalItems = totalSelection;
       var isEmpty = !list.length;
+      console.log(list, 427);
 
       var anonymousState__temp3 = list.length && list[0].discount_fee > 0 ? cartMode !== 'edit' ? -1 * list[0].discount_fee : null : null;
       var anonymousState__temp4 = cartMode !== 'edit' ? totalItems <= 0 : null;
@@ -519,9 +520,9 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
         anonymousState__temp4: anonymousState__temp4,
         anonymousState__temp5: anonymousState__temp5,
         loopArray0: loopArray0,
+        isEmpty: isEmpty,
         list: list,
         page: page,
-        isEmpty: isEmpty,
         totalPrice: totalPrice,
         isTotalChecked: this.isTotalChecked
       });
@@ -570,7 +571,7 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
 }, _initialiseProps = function _initialiseProps() {
   var _this4 = this;
 
-  this.$usedState = ["anonymousState__temp3", "anonymousState__temp4", "anonymousState__temp5", "loopArray0", "loading", "groups", "list", "invalidList", "likeList", "page", "isEmpty", "cartMode", "totalPrice", "curPromotions", "selection", "error", "defaultAllSelect", "__fn_onUpdateCart", "cartIds", "__fn_onCartSelection", "__fn_onUpdateCartNum", "isTotalChecked"];
+  this.$usedState = ["anonymousState__temp3", "anonymousState__temp4", "anonymousState__temp5", "loopArray0", "loading", "isEmpty", "groups", "list", "invalidList", "likeList", "page", "cartMode", "totalPrice", "curPromotions", "selection", "error", "defaultAllSelect", "__fn_onUpdateCart", "cartIds", "__fn_onCartSelection", "__fn_onUpdateCartNum", "isTotalChecked"];
 
   this.handleClickItem = function (item) {
     var url = "/pages/item/espier-detail?id=" + item.item_id;
