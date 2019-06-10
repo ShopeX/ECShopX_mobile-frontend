@@ -414,7 +414,7 @@ export default class Detail extends Component {
                                       <View className='promotion-goods'>
                                         <Text className='promotion-goods__tag'>【赠品】</Text>
                                         <Text className='promotion-goods__name'>{g_item.gift.item_name} </Text>
-                                        <Text className='promotion-goods__num'>x{g_item.gift.gift_num} </Text>
+                                        <Text className='promotion-goods__num'>x{g_item.gift.gift_num}</Text>
                                       </View>
                                     )
                                   })}

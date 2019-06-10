@@ -1,1 +1,28 @@
-.auth-forgotpwd{height:100vh;background:#fff}.auth-forgotpwd__form{padding:30rpx;margin:0 0 16rpx}.auth-forgotpwd .accountAgreement{width:100%;text-align:center}.auth-forgotpwd .accountAgreement__text{color:#0b4137}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.auth-forgotpwd {
+  height: 100vh;
+  background: #ffffff;
+}
+.auth-forgotpwd__form {
+  padding: 30rpx;
+  margin: 0 0 16rpx;
+}
+.auth-forgotpwd .accountAgreement {
+  width: 100%;
+  text-align: center;
+}
+.auth-forgotpwd .accountAgreement__text {
+  color: #0b4137;
+}

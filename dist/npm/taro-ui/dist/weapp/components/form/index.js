@@ -1,1 +1,136 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function o(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}return function(e,t,n){return t&&o(e.prototype,t),n&&o(e,n),e}}(),_get=function e(t,n,o){null===t&&(t=Function.prototype);var r=Object.getOwnPropertyDescriptor(t,n);if(void 0===r){var u=Object.getPrototypeOf(t);return null===u?void 0:e(u,n,o)}if("value"in r)return r.value;var i=r.get;return void 0!==i?i.call(o):void 0},_index=require("../../../../../@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../../../../prop-types/index.js"),_index4=_interopRequireDefault(_index3),_index5=require("../../../../../classnames/index.js"),_index6=_interopRequireDefault(_index5),_component=require("../../common/component.js"),_component2=_interopRequireDefault(_component);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var AtForm=(_temp2=_class=function(e){function i(){var e,t,n;_classCallCheck(this,i);for(var o=arguments.length,r=Array(o),u=0;u<o;u++)r[u]=arguments[u];return(t=n=_possibleConstructorReturn(this,(e=i.__proto__||Object.getPrototypeOf(i)).call.apply(e,[this].concat(r)))).$usedState=["anonymousState__temp","rootCls","reportSubmit","__fn_onSubmit","__fn_onReset","customStyle","className","children"],n.$$refs=[],_possibleConstructorReturn(n,t)}return _inherits(i,_component2.default),_createClass(i,[{key:"_constructor",value:function(e){_get(i.prototype.__proto__||Object.getPrototypeOf(i.prototype),"_constructor",this).call(this,e)}},{key:"onSubmit",value:function(){this.__triggerPropsFn("onSubmit",[null].concat([].concat(Array.prototype.slice.call(arguments))))}},{key:"onReset",value:function(){this.__triggerPropsFn("onReset",[null].concat([].concat(Array.prototype.slice.call(arguments))))}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props,t=e.customStyle,n=e.className,o=e.reportSubmit,r=(0,_index6.default)("at-form",n),u=(0,_index.internal_inline_style)(t);return Object.assign(this.__state,{anonymousState__temp:u,rootCls:r,reportSubmit:o}),this.__state}}]),i}(),_class.properties={__fn_onSubmit:{type:null,value:null},__fn_onReset:{type:null,value:null},customStyle:{type:null,value:null},className:{type:null,value:null},reportSubmit:{type:null,value:null}},_class.$$events=["onSubmit","onReset"],_temp2);AtForm.defaultProps={customStyle:"",className:"",reportSubmit:!1,onSubmit:function(){},onReset:function(){}},AtForm.propTypes={customStyle:_index4.default.oneOfType([_index4.default.object,_index4.default.string]),className:_index4.default.oneOfType([_index4.default.array,_index4.default.string]),reportSubmit:_index4.default.bool,onSubmit:_index4.default.func,onReset:_index4.default.func},exports.default=AtForm,Component(require("../../../../../@tarojs/taro-weapp/index.js").default.createComponent(AtForm));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../../../../@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../../../../prop-types/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../../../../../classnames/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
+
+var _component = require("../../common/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AtForm = (_temp2 = _class = function (_AtComponent) {
+  _inherits(AtForm, _AtComponent);
+
+  function AtForm() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, AtForm);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AtForm.__proto__ || Object.getPrototypeOf(AtForm)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "rootCls", "reportSubmit", "__fn_onSubmit", "__fn_onReset", "customStyle", "className", "children"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(AtForm, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(AtForm.prototype.__proto__ || Object.getPrototypeOf(AtForm.prototype), "_constructor", this).call(this, props);
+    }
+  }, {
+    key: "onSubmit",
+    value: function onSubmit() {
+      this.__triggerPropsFn("onSubmit", [null].concat([].concat(Array.prototype.slice.call(arguments))));
+    }
+  }, {
+    key: "onReset",
+    value: function onReset() {
+      this.__triggerPropsFn("onReset", [null].concat([].concat(Array.prototype.slice.call(arguments))));
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _props = this.__props,
+          customStyle = _props.customStyle,
+          className = _props.className,
+          reportSubmit = _props.reportSubmit;
+
+      var rootCls = (0, _index6.default)('at-form', className);
+
+      var anonymousState__temp = (0, _index.internal_inline_style)(customStyle);
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        rootCls: rootCls,
+        reportSubmit: reportSubmit
+      });
+      return this.__state;
+    }
+  }]);
+
+  return AtForm;
+}(_component2.default), _class.properties = {
+  "__fn_onSubmit": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onReset": {
+    "type": null,
+    "value": null
+  },
+  "customStyle": {
+    "type": null,
+    "value": null
+  },
+  "className": {
+    "type": null,
+    "value": null
+  },
+  "reportSubmit": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["onSubmit", "onReset"], _temp2);
+
+
+AtForm.defaultProps = {
+  customStyle: '',
+  className: '',
+  reportSubmit: false,
+  onSubmit: function onSubmit() {},
+  onReset: function onReset() {}
+};
+
+AtForm.propTypes = {
+  customStyle: _index4.default.oneOfType([_index4.default.object, _index4.default.string]),
+  className: _index4.default.oneOfType([_index4.default.array, _index4.default.string]),
+  reportSubmit: _index4.default.bool,
+  onSubmit: _index4.default.func,
+  onReset: _index4.default.func
+};
+exports.default = AtForm;
+
+Component(require('../../../../../@tarojs/taro-weapp/index.js').default.createComponent(AtForm));

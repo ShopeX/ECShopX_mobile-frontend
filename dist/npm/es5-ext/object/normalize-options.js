@@ -1,1 +1,21 @@
-"use strict";var isValue=require("./is-value.js"),forEach=Array.prototype.forEach,create=Object.create,process=function(r,e){var c;for(c in r)e[c]=r[c]};module.exports=function(r){var e=create(null);return forEach.call(arguments,function(r){isValue(r)&&process(Object(r),e)}),e};
+"use strict";
+
+var isValue = require("./is-value.js");
+
+var forEach = Array.prototype.forEach,
+    create = Object.create;
+
+var process = function (src, obj) {
+  var key;
+  for (key in src) obj[key] = src[key];
+};
+
+// eslint-disable-next-line no-unused-vars
+module.exports = function (opts1 /*, …options*/) {
+  var result = create(null);
+  forEach.call(arguments, function (options) {
+    if (!isValue(options)) return;
+    process(Object(options), result);
+  });
+  return result;
+};

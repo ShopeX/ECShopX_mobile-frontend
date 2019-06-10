@@ -1,1 +1,54 @@
-.item-img{background:#fff;overflow:hidden;padding-bottom:30rpx}.item-img__img{position:relative;width:500rpx;height:500rpx;z-index:10;display:block;border-radius:10PX;overflow:hidden;margin:60rpx auto 0;-webkit-box-shadow:0 5rpx 20rpx rgba(0,0,0,.1);box-shadow:0 5rpx 20rpx rgba(0,0,0,.1)}.item-img__blured,.item-img__blured-wrap{position:absolute;top:0;height:500rpx;overflow:hidden}.item-img__blured{-webkit-mask-image:-webkit-gradient(linear,left top,left bottom,from(#000),color-stop(70%,#000),to(transparent));-webkit-mask-image:-webkit-linear-gradient(#000 0%,#000 70%,transparent 100%);mask-image:-webkit-gradient(linear,left top,left bottom,from(#000),color-stop(70%,#000),to(transparent));mask-image:linear-gradient(#000 0%,#000 70%,transparent 100%);right:-8rpx;z-index:2;-webkit-filter:blur(8rpx);filter:blur(8rpx);left:-8rpx;width:110%}.item-img__blured-wrap{left:0;width:100%}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.item-img {
+  background: #fff;
+  overflow: hidden;
+  padding-bottom: 30rpx;
+}
+.item-img__img {
+  position: relative;
+  width: 500rpx;
+  height: 500rpx;
+  z-index: 10;
+  display: block;
+  border-radius: 10PX;
+  overflow: hidden;
+  margin: 60rpx auto 0;
+  -webkit-box-shadow: 0 5rpx 20rpx rgba(0, 0, 0, 0.1);
+          box-shadow: 0 5rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+.item-img__blured {
+  position: absolute;
+  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(#000), color-stop(70%, #000), to(transparent));
+  -webkit-mask-image: -webkit-linear-gradient(#000 0%, #000 70%, transparent 100%);
+          mask-image: -webkit-gradient(linear, left top, left bottom, from(#000), color-stop(70%, #000), to(transparent));
+          mask-image: linear-gradient(#000 0%, #000 70%, transparent 100%);
+  top: 0;
+  left: -8rpx;
+  right: -8rpx;
+  height: 500rpx;
+  width: 110%;
+  z-index: 2;
+  overflow: hidden;
+  -webkit-filter: blur(8rpx);
+          filter: blur(8rpx);
+}
+.item-img__blured-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 500rpx;
+  overflow: hidden;
+}

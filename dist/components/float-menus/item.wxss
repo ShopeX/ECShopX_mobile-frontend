@@ -1,1 +1,45 @@
-.float-menu__item{background:#fff;margin:0 0 16rpx;padding:0;color:#0b4137;height:64rpx;overflow:hidden;line-height:64rpx;border-radius:100%;font-size:28rpx;display:block;text-align:center;opacity:1;min-width:auto;width:auto;border:1rpx solid rgba(11,65,55,.1);-webkit-transition:all .2s;-o-transition:all .2s;transition:all .2s}.float-menu__item:after,.float-menu__item:before{border:0}.float-menu__item .in-icon{color:#0b4137;font-size:42rpx;font-weight:light}.float-menu__item.hidden{opacity:0}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.float-menu__item {
+  background: white;
+  margin: 0 0 16rpx;
+  padding: 0;
+  color: #0b4137;
+  width: 64rpx;
+  height: 64rpx;
+  overflow: hidden;
+  line-height: 64rpx;
+  border-radius: 100%;
+  font-size: 28rpx;
+  display: block;
+  text-align: center;
+  opacity: 1;
+  min-width: auto;
+  width: auto;
+  border: 1rpx solid rgba(11, 65, 55, 0.1);
+  -webkit-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.float-menu__item:before, .float-menu__item:after {
+  border: none;
+}
+.float-menu__item .in-icon {
+  color: #0b4137;
+  font-size: 42rpx;
+  font-weight: light;
+}
+.float-menu__item.hidden {
+  opacity: 0;
+}
