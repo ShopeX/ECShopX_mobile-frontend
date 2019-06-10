@@ -19,7 +19,7 @@
                         <sp-checkbox checked="{{anonymousState__temp3}}" __triggerObserer="{{ _triggerObserer }}"></sp-checkbox>
                     </view>
                 </view>
-                <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" loading="{{loading}}" bindonclick="funPrivatemugNF" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{localType}}">确定</at-button>
+                <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" loading="{{loading}}" bindonclick="funPrivatezyWmO" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{localType}}">确定</at-button>
             </view>
         </view>
     </at-float-layout>

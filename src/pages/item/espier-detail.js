@@ -399,8 +399,28 @@ export default class Detail extends Component {
                           key={item.marketing_id}
                           className='goods-sec-specs__activity-item'
                         >
-                          <Text className='goods-sec-specs__activity-label'>{item.promotion_tag}</Text>
-                          <Text>{item.condition_rules}</Text>
+                          <View className='promotion-title'>以下优惠可参与{item.join_limit}次</View>
+                          <Text className='goods-sec-specs__activity-label promotion-text'>【{item.promotion_tag}】</Text>
+                          <Text className='promotion-text'>{item.marketing_name}</Text>
+                          <View className='promotion-rule-content'>
+                            <Text className='promotion-rule-content__text'>活动时间：{item.start_date}~{item.end_date}</Text>
+                            <Text className='promotion-rule-content__text'>活动规则：{item.condition_rules}</Text>
+                          </View>
+                          {
+                            item.promotion_tag === '满赠' && item.gifts
+                              ? <View>
+                                  {item.gifts.map(g_item => {
+                                    return (
+                                      <View className='promotion-goods'>
+                                        <Text className='promotion-goods__tag'>【赠品】</Text>
+                                        <Text className='promotion-goods__name'>{g_item.gift.item_name} </Text>
+                                        <Text className='promotion-goods__num'>x{g_item.gift.gift_num} </Text>
+                                      </View>
+                                    )
+                                  })}
+                                </View>
+                              : null
+                          }
                         </View>
                       )
                     })
