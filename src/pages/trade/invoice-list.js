@@ -154,18 +154,19 @@ export default class InvoiceList extends Component {
                   renderFooter={
                     <View className='trade-item__ft'>
                       <Text className='trade-item__status'>已开票</Text>
-                      <AtButton
-                        circle
-                        type='primary'
-                        size='small'
-                        // onClick={this.handleClickBtn.bind(this, 'add-card')}
-                      />
+
                     </View>
                   }
                 />
               )
             })
           }
+          {/*<AtButton
+                        circle
+                        type='primary'
+                        size='small'
+                        onClick={this.handleClickBtn.bind(this, 'add-card')}
+                      >下载</AtButton>*/}
           {
             page.isLoading && <Loading>正在加载...</Loading>
           }

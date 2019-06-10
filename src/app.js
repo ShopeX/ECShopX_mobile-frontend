@@ -23,6 +23,7 @@ class App extends Component {
     pages: [
       'pages/index',
       'pages/home/landing',
+      'pages/home/license',
       'pages/category/index',
       'pages/item/list',
       'pages/item/espier-detail',
