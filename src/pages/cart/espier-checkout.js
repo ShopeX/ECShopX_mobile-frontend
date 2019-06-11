@@ -486,16 +486,16 @@ export default class CartCheckout extends Component {
     }
 
     if (!payErr) {
-      try {
-        api.trade.tradeQuery(config.trade_info.trade_id)
-      } catch (e) {
-        console.info(e)
-      }
-
       await Taro.showToast({
         title: '支付成功',
         icon: 'success'
       })
+
+      try {
+        await api.trade.tradeQuery(config.trade_info.trade_id)
+      } catch (e) {
+        console.info(e)
+      }
 
       this.props.onClearCart()
       Taro.redirectTo({
