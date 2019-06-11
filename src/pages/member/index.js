@@ -120,10 +120,10 @@ export default class MemberIndex extends Component {
               <Text>Welcome</Text>
             </View>
             <View className='member-btn__item'>
-              <View
+              {/*<View
                 className='in-icon in-icon-home-th'
                 onClick={this.handleClickApp}
-              ></View>
+              ></View>*/}
             </View>
             <View className='member-btn__item' onClick={this.navigateTo.bind(this,'/pages/member/point')}>
               <View className='in-icon in-icon-coin' />
