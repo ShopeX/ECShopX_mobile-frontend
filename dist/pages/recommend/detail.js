@@ -268,8 +268,8 @@ var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = functi
         item_type: 'normal',
         item_id: this.state.item_id_List
       }
-       const { list, total_count: total } = await api.item.search(query)
-       list.map(item => {
+        const { list, total_count: total } = await api.item.search(query)
+        list.map(item => {
         if(item.approve_status === 'onsale') {
           this.state.info.content.map(info_item => {
             if(info_item.name === 'goods') {
@@ -286,7 +286,7 @@ var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = functi
         }
       })
       Taro.hideLoading()
-       return {
+        return {
         total
       }
     }*/

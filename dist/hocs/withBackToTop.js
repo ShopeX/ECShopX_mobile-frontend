@@ -38,6 +38,7 @@ function withBackToTop(Component) {
         }, function () {
           {
             // workaround for weapp
+            console.log(17);
             _this.setState({
               scrollTop: null
             });

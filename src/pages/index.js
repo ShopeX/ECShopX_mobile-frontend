@@ -99,6 +99,7 @@ export default class HomeIndex extends Component {
       <View className='page-index'>
         <ScrollView
           className='wgts-wrap wgts-wrap__fixed'
+          scrollTop={scrollTop}
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
           scrollTop={scrollTop}
@@ -154,13 +155,11 @@ export default class HomeIndex extends Component {
               })
             }
           </View>
-
           <Image
             src='/assets/imgs/innisfree/license.png'
             className='img-license'
             onClick={this.handleClickLicense}
           />
-
         </ScrollView>
 
         <BackToTop

@@ -20,6 +20,7 @@ export default function withBackToTop (Component) {
       }, () => {
         if (process.env.TARO_ENV === 'weapp') {
           // workaround for weapp
+          console.log(17)
           this.setState({
             scrollTop: null
           })
