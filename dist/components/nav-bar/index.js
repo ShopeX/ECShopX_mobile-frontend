@@ -1,1 +1,110 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var l=Object.getPrototypeOf(t);return null===l?void 0:e(l,n,r)}if("value"in o)return o.value;var a=o.get;return void 0!==a?a.call(r):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var NavBar=(_temp2=_class=function(e){function a(){var e,t,n;_classCallCheck(this,a);for(var r=arguments.length,o=Array(r),l=0;l<r;l++)o[l]=arguments[l];return(t=n=_possibleConstructorReturn(this,(e=a.__proto__||Object.getPrototypeOf(a)).call.apply(e,[this].concat(o)))).$usedState=["Taro","fixed","title","leftIconType"],n.handleClickLeftIcon=function(){return n.props.onClickLeftIcon?n.__triggerPropsFn("onClickLeftIcon",[null].concat([])):_index2.default.navigateBack()},n.$$refs=[],_possibleConstructorReturn(n,t)}return _inherits(a,_index.Component),_createClass(a,[{key:"_constructor",value:function(e){_get(a.prototype.__proto__||Object.getPrototypeOf(a.prototype),"_constructor",this).call(this,e)}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props,t=e.title,n=e.leftIconType,r=e.fixed;return _index2.default.getEnv()===_index2.default.ENV_TYPE.WEAPP?null:(Object.assign(this.__state,{Taro:_index2.default,fixed:r,title:t,leftIconType:n}),this.__state)}}]),a}(),_class.properties={onClickLeftIcon:{type:null,value:null},__fn_onClickLeftIcon:{type:null,value:null},title:{type:null,value:null},leftIconType:{type:null,value:null},fixed:{type:null,value:null}},_class.$$events=["handleClickLeftIcon"],_class.defaultProps={leftIconType:"chevron-left",fixed:!0,title:""},_class.options={addGlobalClass:!0},_temp2);exports.default=NavBar,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(NavBar));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NavBar = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(NavBar, _BaseComponent);
+
+  function NavBar() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, NavBar);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["Taro", "fixed", "title", "leftIconType"], _this.handleClickLeftIcon = function () {
+      if (_this.props.onClickLeftIcon) {
+        return _this.__triggerPropsFn("onClickLeftIcon", [null].concat([]));
+      }return _index2.default.navigateBack();
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(NavBar, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(NavBar.prototype.__proto__ || Object.getPrototypeOf(NavBar.prototype), "_constructor", this).call(this, props);
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _props = this.__props,
+          title = _props.title,
+          leftIconType = _props.leftIconType,
+          fixed = _props.fixed;
+
+
+      if (_index2.default.getEnv() === _index2.default.ENV_TYPE.WEAPP) {
+        return null;
+      }
+
+      Object.assign(this.__state, {
+        Taro: _index2.default,
+        fixed: fixed,
+        title: title,
+        leftIconType: leftIconType
+      });
+      return this.__state;
+    }
+  }]);
+
+  return NavBar;
+}(_index.Component), _class.properties = {
+  "onClickLeftIcon": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClickLeftIcon": {
+    "type": null,
+    "value": null
+  },
+  "title": {
+    "type": null,
+    "value": null
+  },
+  "leftIconType": {
+    "type": null,
+    "value": null
+  },
+  "fixed": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["handleClickLeftIcon"], _class.defaultProps = {
+  leftIconType: 'chevron-left',
+  fixed: true,
+  title: ''
+}, _class.options = {
+  addGlobalClass: true
+}, _temp2);
+exports.default = NavBar;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(NavBar));

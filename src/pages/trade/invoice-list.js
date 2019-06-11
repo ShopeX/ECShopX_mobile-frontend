@@ -154,7 +154,6 @@ export default class InvoiceList extends Component {
                   renderFooter={
                     <View className='trade-item__ft'>
                       <Text className='trade-item__status'>已开票</Text>
-
                     </View>
                   }
                 />

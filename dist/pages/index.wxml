@@ -16,6 +16,9 @@
                     <block wx:if="{{item.name === 'coupon'}}">
                         <wgt-coupon info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-coupon>
                     </block>
+                    <block wx:if="{{item.name === 'imgHotzone'}}">
+                        <wgt-img-hot-zone info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-img-hot-zone>
+                    </block>
                     <block wx:if="{{item.name === 'goodsScroll'}}">
                         <wgt-goods-scroll info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods-scroll>
                     </block>
@@ -25,6 +28,11 @@
                     <block wx:if="{{item.name === 'showcase'}}">
                         <wgt-showcase info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-showcase>
                     </block>
+                    <block wx:if="{{idx === 1}}">
+                        <wgt-point-luck __triggerObserer="{{ _triggerObserer }}"></wgt-point-luck>
+                    </block>
+                </view>
+                <view class="wgt-wrap faverite-content" wx:key="idx" wx:for="{{wgts}}" wx:for-item="item" wx:for-index="idx">
                     <block wx:if="{{item.name === 'faverite_type' && item.config.isOpen === true}}">
                         <view>
                             <wgt-goods-faverite info="{{likeList}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods-faverite>

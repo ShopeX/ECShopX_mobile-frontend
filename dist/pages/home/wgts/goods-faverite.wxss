@@ -1,1 +1,81 @@
-.wgt-grid__header{display:block!important;text-align:center;margin-bottom:44rpx}.wgt-grid__title{font-size:32rpx;line-height:40rpx;padding-bottom:5rpx;border-bottom:1PX solid #0b4137;color:#0b4137}.grid-goods.out-padding{margin:0 -6rpx}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.wgt-grid__header {
+  display: block !important;
+  text-align: center;
+  margin-bottom: 44rpx;
+}
+.wgt-grid__title {
+  font-size: 32rpx;
+  line-height: 40rpx;
+  padding-bottom: 5rpx;
+  border-bottom: 1PX solid #0b4137;
+  color: #0b4137;
+}
+
+.grid-goods {
+  /*display: flex;
+  flex-wrap: wrap;*/
+  /*.grid-item {
+    width: 50%;
+    padding: 6px;
+    box-sizing: border-box;
+    .goods-wrap {
+      border-radius: 12px;
+      border: 1px solid #f5f5f5;
+      .thumbnail {
+        position: relative;
+        &::after {
+          display: flex;
+          padding-top: 100%;
+          content: "";
+        }
+        .goods-img {
+          display: block;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .caption {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px 20px 20px;
+        font-size: 24px;
+        .goods-brand {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          margin-top: -50px;
+          margin-bottom: 10px;
+        }
+        .goods-title {
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          &.no-brand {
+            padding-top: 10px;
+          }
+        }
+      }
+    }
+  }*/
+}
+.grid-goods.out-padding {
+  margin: 0 -6rpx;
+}

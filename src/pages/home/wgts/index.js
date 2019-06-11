@@ -1,5 +1,3 @@
-import WgtHeading from "./heading";
-
 export { default as WgtSlider } from './slider'
 export { default as WgtLimittimeSlider } from './limittime-slider'
 export { default as WgtNavigation } from './navigation'
@@ -14,5 +12,6 @@ export { default as WgtWriting } from './writing'
 export { default as WgtHeading } from './heading'
 export { default as WgtGoods } from './goods'
 export { default as WgtGoodsFaverite } from './goods-faverite'
+export { default as WgtImgHotZone } from './imghot-zone'
 
 export default {}

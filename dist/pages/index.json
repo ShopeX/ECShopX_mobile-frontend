@@ -5,12 +5,13 @@
     "wgt-slider": "./home/wgts/slider",
     "wgt-navigation": "./home/wgts/navigation",
     "wgt-coupon": "./home/wgts/coupon",
+    "wgt-img-hot-zone": "./home/wgts/imghot-zone",
     "wgt-goods-scroll": "./home/wgts/goods-scroll",
     "wgt-goods-grid": "./home/wgts/goods-grid",
     "wgt-showcase": "./home/wgts/showcase",
+    "wgt-point-luck": "./home/wgts/point-luck",
     "wgt-goods-faverite": "./home/wgts/goods-faverite",
     "sp-note": "../components/note/index",
-    "wgt-point-luck": "./home/wgts/point-luck",
     "sp-toast": "../components/toast/index",
     "tab-bar": "../components/tab-bar/index"
   }
