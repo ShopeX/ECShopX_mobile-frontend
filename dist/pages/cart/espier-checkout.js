@@ -381,47 +381,56 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
 
             case 65:
               if (payErr) {
-                _context3.next = 73;
+                _context3.next = 80;
                 break;
               }
 
-              try {
-                _index5.default.trade.tradeQuery(config.trade_info.trade_id);
-              } catch (e) {
-                console.info(e);
-              }
-
-              _context3.next = 69;
+              _context3.next = 68;
               return _index2.default.showToast({
                 title: '支付成功',
                 icon: 'success'
               });
 
-            case 69:
+            case 68:
+              _context3.prev = 68;
+              _context3.next = 71;
+              return _index5.default.trade.tradeQuery(config.trade_info.trade_id);
+
+            case 71:
+              _context3.next = 76;
+              break;
+
+            case 73:
+              _context3.prev = 73;
+              _context3.t4 = _context3["catch"](68);
+
+              console.info(_context3.t4);
+
+            case 76:
 
               _this.__triggerPropsFn("onClearCart", [null].concat([]));
               _index2.default.redirectTo({
                 url: "/pages/trade/detail?id=" + order_id
               });
-              _context3.next = 74;
+              _context3.next = 81;
               break;
 
-            case 73:
+            case 80:
               if (payErr.errMsg.indexOf('fail cancel') >= 0) {
                 _index2.default.redirectTo({
                   url: "/pages/trade/detail?id=" + order_id
                 });
               }
 
-            case 74:
+            case 81:
               return _context3.abrupt("return");
 
-            case 75:
+            case 82:
             case "end":
               return _context3.stop();
           }
         }
-      }, _callee3, _this2, [[4, 13], [20, 29], [39, 45], [54, 61]]);
+      }, _callee3, _this2, [[4, 13], [20, 29], [39, 45], [54, 61], [68, 73]]);
     })), _this.handleCouponsClick = function () {
       if (_this.state.payType === 'dhpoint') {
         return;
