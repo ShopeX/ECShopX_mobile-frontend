@@ -51,7 +51,6 @@ function withBackToTop(Component) {
             scrollHeight = _e$detail.scrollHeight;
 
         var offset = 300;
-
         // this.setState({
         //   scrollTop
         // })

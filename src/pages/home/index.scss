@@ -10,7 +10,7 @@
 .wgts-wrap {
   &__fixed {
     background: #fff;
-    @include page-scroll(0, $tabbar-height + $edge-margin);
+    @include page-scroll(0, $tabbar-height);
   }
   &__is-distributor {
   }
@@ -129,9 +129,9 @@
 }
 
 .img-license {
-  width: 80px;
-  height: 80px;
+  width: 84px;
+  height: 84px;
   margin: 0 auto;
-  padding: 28px 0 15px;
+  padding: 28px 0 20px;
   display: block;
 }

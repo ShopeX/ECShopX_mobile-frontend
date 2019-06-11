@@ -221,7 +221,7 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleClickApp", "navigateTo"], _temp2)) || _class) || _class);
+}, _class2.$$events = ["navigateTo"], _temp2)) || _class) || _class);
 exports.default = MemberIndex;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(MemberIndex, true));

@@ -14,7 +14,7 @@
 .page-index {
   padding-bottom: 110rpx;
   background: #fff;
-  height: 100vh;
+  height: 100%;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
@@ -25,7 +25,7 @@
   left: 0;
   width: 100%;
   top: 0;
-  bottom: 126rpx;
+  bottom: 110rpx;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-transform: translate3d(0, 0, 0);
@@ -205,9 +205,9 @@
 }
 
 .img-license {
-  width: 80rpx;
-  height: 80rpx;
+  width: 84rpx;
+  height: 84rpx;
   margin: 0 auto;
-  padding: 28rpx 0 15rpx;
+  padding: 28rpx 0 20rpx;
   display: block;
 }

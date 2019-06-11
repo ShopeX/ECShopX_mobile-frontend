@@ -50,7 +50,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
   return {
     store: store
   };
-}), _dec(_class = (0, _index7.withPager)(_class = (_temp2 = _class2 = function (_BaseComponent) {
+}), _dec(_class = (0, _index7.withPager)(_class = (0, _index7.withBackToTop)(_class = (_temp2 = _class2 = function (_BaseComponent) {
   _inherits(HomeIndex, _BaseComponent);
 
   function HomeIndex() {
@@ -64,7 +64,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "likeList", "page", "authStatus", "isFaverite_open", "store"], _this.handleClickLicense = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "likeList", "page", "showBackToTop", "authStatus", "isFaverite_open", "store"], _this.handleClickLicense = function () {
       _index2.default.navigateTo({
         url: '/pages/home/license'
       });
@@ -205,7 +205,8 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
           wgts = _state.wgts,
           authStatus = _state.authStatus,
           page = _state.page,
-          likeList = _state.likeList;
+          likeList = _state.likeList,
+          showBackToTop = _state.showBackToTop;
 
 
       if (!wgts || !this.__props.store) {
@@ -213,7 +214,8 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       }
 
       Object.assign(this.__state, {
-        page: page
+        page: page,
+        showBackToTop: showBackToTop
       });
       return this.__state;
     }
@@ -225,7 +227,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["nextPage", "handleClickLicense"], _temp2)) || _class) || _class);
+}, _class2.$$events = ["handleScroll", "nextPage", "handleClickLicense", "scrollBackToTop"], _temp2)) || _class) || _class) || _class);
 exports.default = HomeIndex;
 
 Component(require('../npm/@tarojs/taro-weapp/index.js').default.createComponent(HomeIndex, true));
