@@ -66,8 +66,6 @@ var Landing = (_dec = (0, _index3.connect)(function () {
     key: "componentDidMount",
     value: function componentDidMount() {
       var query = (0, _index4.normalizeQuerys)(this.$router.params);
-      console.log(query, 24);
-      console.log(this.$router.params);
 
       this.__triggerPropsFn("onUserLanding", [null].concat([query]));
 

@@ -75,7 +75,6 @@ var CouponHome = (0, _index7.withPager)(_class = (_temp2 = _class2 = function (_
 
                 _index6.default.toast('优惠券领取成功');
                 if (data.status) {
-                  console.log(74, 222);
                   if (data.status.total_lastget_num <= 0) {
                     list[idx].getted = 2;
                   } else if (data.status.lastget_num <= 0) {

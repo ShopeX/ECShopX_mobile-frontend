@@ -76,40 +76,37 @@ var PointDepositBtn = (_temp2 = _class = function (_BaseComponent) {
           switch (_context2.prev = _context2.next) {
             case 0:
               pay_pay_type = _this.state.pay_pay_type;
-
-              console.log(pay_pay_type, _this.props.orderID, _this.props.orderType);
-
               query = {
                 order_id: _this.props.orderID,
                 pay_type: pay_pay_type,
                 order_type: _this.props.orderType
               };
-              _context2.prev = 3;
-              _context2.next = 6;
+              _context2.prev = 2;
+              _context2.next = 5;
               return _index4.default.cashier.getPayment(query);
 
-            case 6:
+            case 5:
               _index2.default.redirectTo({
                 url: "/pages/cashier/cashier-result?payStatus=success&order_id=" + _this.props.orderID
               });
-              _context2.next = 13;
+              _context2.next = 12;
               break;
 
-            case 9:
-              _context2.prev = 9;
-              _context2.t0 = _context2["catch"](3);
+            case 8:
+              _context2.prev = 8;
+              _context2.t0 = _context2["catch"](2);
 
-              console.log(_context2.t0, 49);
+              console.log(_context2.t0);
               _this.setState({
                 isOpened: false
               });
 
-            case 13:
+            case 12:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, _this2, [[3, 9]]);
+      }, _callee2, _this2, [[2, 8]]);
     })), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 

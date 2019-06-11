@@ -116,12 +116,11 @@ var Forgotpwd = (_temp2 = _class = function (_BaseComponent) {
                 return _context2.abrupt("return", _index4.default.toast('请输入密码'));
 
               case 8:
-                console.log(data, 19);
-                _context2.prev = 9;
-                _context2.next = 12;
+                _context2.prev = 8;
+                _context2.next = 11;
                 return _index6.default.user.forgotPwd(data);
 
-              case 12:
+              case 11:
                 _index2.default.showToast({
                   title: '修改成功',
                   icon: 'none'
@@ -131,20 +130,20 @@ var Forgotpwd = (_temp2 = _class = function (_BaseComponent) {
                     url: "/pages/auth/wxauth"
                   });
                 }, 700);
-                _context2.next = 20;
+                _context2.next = 19;
                 break;
 
-              case 16:
-                _context2.prev = 16;
-                _context2.t0 = _context2["catch"](9);
+              case 15:
+                _context2.prev = 15;
+                _context2.t0 = _context2["catch"](8);
                 return _context2.abrupt("return", false);
 
-              case 20:
+              case 19:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, _this2, [[9, 16]]);
+        }, _callee2, _this2, [[8, 15]]);
       }));
 
       return function (_x) {

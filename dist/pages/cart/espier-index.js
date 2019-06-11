@@ -474,7 +474,6 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       var totalSelection = selection.size;
       var totalItems = totalSelection;
       var isEmpty = !list.length;
-      console.log(list, 427);
 
       var anonymousState__temp3 = list.length && list[0].discount_fee > 0 ? cartMode !== 'edit' ? -1 * list[0].discount_fee : null : null;
       var anonymousState__temp4 = cartMode !== 'edit' ? totalItems <= 0 : null;
