@@ -30,7 +30,6 @@ export default function withBackToTop (Component) {
     handleScroll = throttle((e) => {
       const { scrollTop, scrollHeight } = e.detail
       const offset = 300
-
       // this.setState({
       //   scrollTop
       // })

@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, Loading, SpNote } from '@/components'
+import { SpToast, TabBar, Loading, SpNote, BackToTop } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
 import { pickBy } from '@/utils'
-import { withPager } from '@/hocs'
+import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
 import { WgtSearchHome, WgtSlider, WgtLimittimeSlider, WgtImgHotZone, WgtGoodsFaverite, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from './home/wgts'
 
@@ -15,6 +15,7 @@ import './home/index.scss'
   store
 }))
 @withPager
+@withBackToTop
 export default class HomeIndex extends Component {
   constructor (props) {
     super(props)
@@ -82,7 +83,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList } = this.state
+    const { wgts, authStatus, page, likeList, showBackToTop } = this.state
 
     if (!wgts || !this.props.store) {
       return <Loading />
@@ -92,6 +93,7 @@ export default class HomeIndex extends Component {
       <View className='page-index'>
         <ScrollView
           className='wgts-wrap wgts-wrap__fixed'
+          onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
           scrollY
         >
@@ -146,6 +148,11 @@ export default class HomeIndex extends Component {
             }
           </View>
         </ScrollView>
+
+        <BackToTop
+          show={showBackToTop}
+          onClick={this.scrollBackToTop}
+        />
         <SpToast />
         <TabBar />
       </View>

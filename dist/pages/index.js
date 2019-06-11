@@ -1,1 +1,229 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _dec,_class,_class2,_temp2,_extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e},_createClass=function(){function n(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,r){return t&&n(e.prototype,t),r&&n(e,r),e}}(),_get=function e(t,r,n){null===t&&(t=Function.prototype);var i=Object.getOwnPropertyDescriptor(t,r);if(void 0===i){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,r,n)}if("value"in i)return i.value;var o=i.get;return void 0!==o?o.call(n):void 0},_index=require("../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../npm/@tarojs/redux/index.js"),_req=require("../api/req.js"),_req2=_interopRequireDefault(_req),_index4=require("../api/index.js"),_index5=_interopRequireDefault(_index4),_index6=require("../utils/index.js"),_index7=require("../hocs/index.js"),_index8=require("../spx/index.js"),_index9=_interopRequireDefault(_index8);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _toConsumableArray(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(a,o){return function t(e,r){try{var n=s[e](r),i=n.value}catch(e){return void o(e)}if(!n.done)return Promise.resolve(i).then(function(e){t("next",e)},function(e){t("throw",e)});a(i)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var HomeIndex=(_dec=(0,_index3.connect)(function(e){return{store:e}}))(_class=(0,_index7.withPager)((_temp2=_class2=function(e){function o(){var e,t,r;_classCallCheck(this,o);for(var n=arguments.length,i=Array(n),a=0;a<n;a++)i[a]=arguments[a];return(t=r=_possibleConstructorReturn(this,(e=o.__proto__||Object.getPrototypeOf(o)).call.apply(e,[this].concat(i)))).$usedState=["wgts","likeList","page","authStatus","isFaverite_open","store"],r.$$refs=[],_possibleConstructorReturn(r,t)}var t,r;return _inherits(o,_index.Component),_createClass(o,[{key:"_constructor",value:function(e){_get(o.prototype.__proto__||Object.getPrototypeOf(o.prototype),"_constructor",this).call(this,e),this.state=_extends({},this.state,{wgts:null,authStatus:!1,likeList:[],isFaverite_open:!1})}},{key:"componentDidMount",value:function(){this.fetchInfo()}},{key:"fetchInfo",value:(r=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,r=this;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return"/pageparams/setting?template_name=yykweishopamore&version=v1.0.1&page_name=index",e.next=3,_req2.default.get("/pageparams/setting?template_name=yykweishopamore&version=v1.0.1&page_name=index");case 3:t=e.sent,_index9.default.getAuthToken()||this.setState({authStatus:!0}),this.setState({wgts:t.config},function(){t.config&&t.config.map(function(e){"faverite_type"===e.name&&!0===e.config.isOpen&&(r.setState({isFaverite_open:!0}),r.nextPage())})});case 6:case"end":return e.stop()}},e,this)})),function(){return r.apply(this,arguments)})},{key:"fetch",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(t){var r,n,i,a,o,s,u;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return r=t.page_no,n=t.page_size,i={page:r,pageSize:n},e.next=4,_index5.default.cart.likeList(i);case 4:return a=e.sent,o=a.list,s=a.total_count,u=(0,_index6.pickBy)(o,{img:"pics[0]",item_id:"item_id",title:"itemName",desc:"brief"}),this.setState({likeList:[].concat(_toConsumableArray(this.state.likeList),_toConsumableArray(u))}),e.abrupt("return",{total:s});case 10:case"end":return e.stop()}},e,this)})),function(e){return t.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state,t=e.wgts,r=(e.authStatus,e.page);e.likeList;return t&&this.__props.store?(Object.assign(this.__state,{page:r}),this.__state):null}}]),o}(),_class2.properties={store:{type:null,value:null}},_class2.$$events=["nextPage"],_class=_temp2))||_class)||_class;exports.default=HomeIndex,Component(require("../npm/@tarojs/taro-weapp/index.js").default.createComponent(HomeIndex,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _dec, _class, _class2, _temp2;
+
+var _index = require("../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../npm/@tarojs/redux/index.js");
+
+var _req = require("../api/req.js");
+
+var _req2 = _interopRequireDefault(_req);
+
+var _index4 = require("../api/index.js");
+
+var _index5 = _interopRequireDefault(_index4);
+
+var _index6 = require("../utils/index.js");
+
+var _index7 = require("../hocs/index.js");
+
+var _index8 = require("../spx/index.js");
+
+var _index9 = _interopRequireDefault(_index8);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
+  return {
+    store: store
+  };
+}), _dec(_class = (0, _index7.withPager)(_class = (0, _index7.withBackToTop)(_class = (_temp2 = _class2 = function (_BaseComponent) {
+  _inherits(HomeIndex, _BaseComponent);
+
+  function HomeIndex() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, HomeIndex);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "likeList", "page", "showBackToTop", "authStatus", "isFaverite_open", "store"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(HomeIndex, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(HomeIndex.prototype.__proto__ || Object.getPrototypeOf(HomeIndex.prototype), "_constructor", this).call(this, props);
+
+      this.state = _extends({}, this.state, {
+        wgts: null,
+        authStatus: false,
+        likeList: [],
+        isFaverite_open: false
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.fetchInfo();
+    }
+  }, {
+    key: "fetchInfo",
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _this2 = this;
+
+        var url, info;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                url = '/pageparams/setting?template_name=yykweishopamore&version=v1.0.1&page_name=index';
+                _context.next = 3;
+                return _req2.default.get(url);
+
+              case 3:
+                info = _context.sent;
+
+
+                if (!_index9.default.getAuthToken()) {
+                  this.setState({
+                    authStatus: true
+                  });
+                }
+                this.setState({
+                  wgts: info.config
+                }, function () {
+                  if (info.config) {
+                    info.config.map(function (item) {
+                      if (item.name === 'faverite_type' && item.config.isOpen === true) {
+                        _this2.setState({
+                          isFaverite_open: true
+                        });
+                        _this2.nextPage();
+                      }
+                    });
+                  }
+                });
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetchInfo() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return fetchInfo;
+    }()
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
+        var page, pageSize, query, _ref4, list, total, nList;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                page = params.page_no, pageSize = params.page_size;
+                query = {
+                  page: page,
+                  pageSize: pageSize
+                };
+                _context2.next = 4;
+                return _index5.default.cart.likeList(query);
+
+              case 4:
+                _ref4 = _context2.sent;
+                list = _ref4.list;
+                total = _ref4.total_count;
+                nList = (0, _index6.pickBy)(list, {
+                  img: 'pics[0]',
+                  item_id: 'item_id',
+                  title: 'itemName',
+                  desc: 'brief'
+                });
+
+
+                this.setState({
+                  likeList: [].concat(_toConsumableArray(this.state.likeList), _toConsumableArray(nList))
+                });
+
+                return _context2.abrupt("return", {
+                  total: total
+                });
+
+              case 10:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function fetch(_x) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          wgts = _state.wgts,
+          authStatus = _state.authStatus,
+          page = _state.page,
+          likeList = _state.likeList,
+          showBackToTop = _state.showBackToTop;
+
+
+      if (!wgts || !this.__props.store) {
+        return null;
+      }
+
+      Object.assign(this.__state, {
+        page: page,
+        showBackToTop: showBackToTop
+      });
+      return this.__state;
+    }
+  }]);
+
+  return HomeIndex;
+}(_index.Component), _class2.properties = {
+  "store": {
+    "type": null,
+    "value": null
+  }
+}, _class2.$$events = ["handleScroll", "nextPage", "scrollBackToTop"], _temp2)) || _class) || _class) || _class);
+exports.default = HomeIndex;
+
+Component(require('../npm/@tarojs/taro-weapp/index.js').default.createComponent(HomeIndex, true));

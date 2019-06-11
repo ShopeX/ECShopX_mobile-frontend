@@ -12,6 +12,7 @@
     "wgt-point-luck": "./home/wgts/point-luck",
     "wgt-goods-faverite": "./home/wgts/goods-faverite",
     "sp-note": "../components/note/index",
+    "back-to-top": "../components/back-to-top/index",
     "sp-toast": "../components/toast/index",
     "tab-bar": "../components/tab-bar/index"
   }

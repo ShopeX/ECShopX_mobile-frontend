@@ -1,1 +1,56 @@
-var Stack=require("./_Stack.js"),baseIsEqual=require("./_baseIsEqual.js"),COMPARE_PARTIAL_FLAG=1,COMPARE_UNORDERED_FLAG=2;function baseIsMatch(r,e,a,s){var t=a.length,i=t,u=!s;if(null==r)return!i;for(r=Object(r);t--;){var n=a[t];if(u&&n[2]?n[1]!==r[n[0]]:!(n[0]in r))return!1}for(;++t<i;){var f=(n=a[t])[0],l=r[f],v=n[1];if(u&&n[2]){if(void 0===l&&!(f in r))return!1}else{var c=new Stack;if(s)var o=s(l,v,f,r,e,c);if(!(void 0===o?baseIsEqual(v,l,3,s,c):o))return!1}}return!0}module.exports=baseIsMatch;
+var Stack = require("./_Stack.js"),
+    baseIsEqual = require("./_baseIsEqual.js");
+
+/** Used to compose bitmasks for value comparisons. */
+var COMPARE_PARTIAL_FLAG = 1,
+    COMPARE_UNORDERED_FLAG = 2;
+
+/**
+ * The base implementation of `_.isMatch` without support for iteratee shorthands.
+ *
+ * @private
+ * @param {Object} object The object to inspect.
+ * @param {Object} source The object of property values to match.
+ * @param {Array} matchData The property names, values, and compare flags to match.
+ * @param {Function} [customizer] The function to customize comparisons.
+ * @returns {boolean} Returns `true` if `object` is a match, else `false`.
+ */
+function baseIsMatch(object, source, matchData, customizer) {
+  var index = matchData.length,
+      length = index,
+      noCustomizer = !customizer;
+
+  if (object == null) {
+    return !length;
+  }
+  object = Object(object);
+  while (index--) {
+    var data = matchData[index];
+    if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
+      return false;
+    }
+  }
+  while (++index < length) {
+    data = matchData[index];
+    var key = data[0],
+        objValue = object[key],
+        srcValue = data[1];
+
+    if (noCustomizer && data[2]) {
+      if (objValue === undefined && !(key in object)) {
+        return false;
+      }
+    } else {
+      var stack = new Stack();
+      if (customizer) {
+        var result = customizer(objValue, srcValue, key, object, source, stack);
+      }
+      if (!(result === undefined ? baseIsEqual(srcValue, objValue, 3, customizer, stack) : result)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+module.exports = baseIsMatch;
