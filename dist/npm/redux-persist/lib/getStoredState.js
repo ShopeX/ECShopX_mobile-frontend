@@ -1,1 +1,37 @@
-"use strict";exports.__esModule=!0,exports.default=getStoredState;var _constants=require("./constants.js");function getStoredState(e){var o=e.transforms||[],t=""+(void 0!==e.keyPrefix?e.keyPrefix:_constants.KEY_PREFIX)+e.key,r=e.storage,s=(e.debug,!1===e.serialize?function(e){return e}:defaultDeserialize);return r.getItem(t).then(function(e){if(e)try{var t={},n=s(e);return Object.keys(n).forEach(function(r){t[r]=o.reduceRight(function(e,t){return t.out(e,r,n)},s(n[r]))}),t}catch(e){throw e}})}function defaultDeserialize(e){return JSON.parse(e)}
+'use strict';
+
+exports.__esModule = true;
+exports.default = getStoredState;
+
+var _constants = require("./constants.js");
+
+function getStoredState(config) {
+  var transforms = config.transforms || [];
+  var storageKey = '' + (config.keyPrefix !== undefined ? config.keyPrefix : _constants.KEY_PREFIX) + config.key;
+  var storage = config.storage;
+  var debug = config.debug;
+  var deserialize = config.serialize === false ? function (x) {
+    return x;
+  } : defaultDeserialize;
+  return storage.getItem(storageKey).then(function (serialized) {
+    if (!serialized) return undefined;else {
+      try {
+        var state = {};
+        var rawState = deserialize(serialized);
+        Object.keys(rawState).forEach(function (key) {
+          state[key] = transforms.reduceRight(function (subState, transformer) {
+            return transformer.out(subState, key, rawState);
+          }, deserialize(rawState[key]));
+        });
+        return state;
+      } catch (err) {
+        if (debug) console.log('redux-persist/getStoredState: Error restoring data ' + serialized, err);
+        throw err;
+      }
+    }
+  });
+}
+
+function defaultDeserialize(serial) {
+  return JSON.parse(serial);
+}

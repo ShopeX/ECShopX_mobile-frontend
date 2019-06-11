@@ -1,1 +1,26 @@
-"use strict";var keys=require("../keys/index.js"),value=require("../valid-value.js"),max=Math.max;module.exports=function(r,a){var t,e,u,i=max(arguments.length,2);for(r=Object(value(r)),u=function(e){try{r[e]=a[e]}catch(e){t||(t=e)}},e=1;e<i;++e)a=arguments[e],keys(a).forEach(u);if(void 0!==t)throw t;return r};
+"use strict";
+
+var keys = require("../keys/index.js"),
+    value = require("../valid-value.js"),
+    max = Math.max;
+
+module.exports = function (dest, src /*, …srcn*/) {
+  var error,
+      i,
+      length = max(arguments.length, 2),
+      assign;
+  dest = Object(value(dest));
+  assign = function (key) {
+    try {
+      dest[key] = src[key];
+    } catch (e) {
+      if (!error) error = e;
+    }
+  };
+  for (i = 1; i < length; ++i) {
+    src = arguments[i];
+    keys(src).forEach(assign);
+  }
+  if (error !== undefined) throw error;
+  return dest;
+};

@@ -1,1 +1,6 @@
-var root=require("./_root.js"),Symbol=root.Symbol;module.exports=Symbol;
+var root = require("./_root.js");
+
+/** Built-in value references. */
+var Symbol = root.Symbol;
+
+module.exports = Symbol;

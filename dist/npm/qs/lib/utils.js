@@ -1,1 +1,226 @@
-"use strict";var has=Object.prototype.hasOwnProperty,isArray=Array.isArray,hexTable=function(){for(var e=[],r=0;r<256;++r)e.push("%"+((r<16?"0":"")+r.toString(16)).toUpperCase());return e}(),compactQueue=function(e){for(;1<e.length;){var r=e.pop(),t=r.obj[r.prop];if(isArray(t)){for(var o=[],c=0;c<t.length;++c)void 0!==t[c]&&o.push(t[c]);r.obj[r.prop]=o}}},arrayToObject=function(e,r){for(var t=r&&r.plainObjects?Object.create(null):{},o=0;o<e.length;++o)void 0!==e[o]&&(t[o]=e[o]);return t},merge=function o(c,n,a){if(!n)return c;if("object"!=typeof n){if(isArray(c))c.push(n);else{if(!c||"object"!=typeof c)return[c,n];(a&&(a.plainObjects||a.allowPrototypes)||!has.call(Object.prototype,n))&&(c[n]=!0)}return c}if(!c||"object"!=typeof c)return[c].concat(n);var e=c;return isArray(c)&&!isArray(n)&&(e=arrayToObject(c,a)),isArray(c)&&isArray(n)?(n.forEach(function(e,r){if(has.call(c,r)){var t=c[r];t&&"object"==typeof t&&e&&"object"==typeof e?c[r]=o(t,e,a):c.push(e)}else c[r]=e}),c):Object.keys(n).reduce(function(e,r){var t=n[r];return has.call(e,r)?e[r]=o(e[r],t,a):e[r]=t,e},e)},assign=function(e,t){return Object.keys(t).reduce(function(e,r){return e[r]=t[r],e},e)},decode=function(e,r,t){var o=e.replace(/\+/g," ");if("iso-8859-1"===t)return o.replace(/%[0-9a-f]{2}/gi,unescape);try{return decodeURIComponent(o)}catch(e){return o}},encode=function(e,r,t){if(0===e.length)return e;var o="string"==typeof e?e:String(e);if("iso-8859-1"===t)return escape(o).replace(/%u[0-9a-f]{4}/gi,function(e){return"%26%23"+parseInt(e.slice(2),16)+"%3B"});for(var c="",n=0;n<o.length;++n){var a=o.charCodeAt(n);45===a||46===a||95===a||126===a||48<=a&&a<=57||65<=a&&a<=90||97<=a&&a<=122?c+=o.charAt(n):a<128?c+=hexTable[a]:a<2048?c+=hexTable[192|a>>6]+hexTable[128|63&a]:a<55296||57344<=a?c+=hexTable[224|a>>12]+hexTable[128|a>>6&63]+hexTable[128|63&a]:(n+=1,a=65536+((1023&a)<<10|1023&o.charCodeAt(n)),c+=hexTable[240|a>>18]+hexTable[128|a>>12&63]+hexTable[128|a>>6&63]+hexTable[128|63&a])}return c},compact=function(e){for(var r=[{obj:{o:e},prop:"o"}],t=[],o=0;o<r.length;++o)for(var c=r[o],n=c.obj[c.prop],a=Object.keys(n),i=0;i<a.length;++i){var u=a[i],p=n[u];"object"==typeof p&&null!==p&&-1===t.indexOf(p)&&(r.push({obj:n,prop:u}),t.push(p))}return compactQueue(r),e},isRegExp=function(e){return"[object RegExp]"===Object.prototype.toString.call(e)},isBuffer=function(e){return!(!e||"object"!=typeof e)&&!!(e.constructor&&e.constructor.isBuffer&&e.constructor.isBuffer(e))},combine=function(e,r){return[].concat(e,r)};module.exports={arrayToObject:arrayToObject,assign:assign,combine:combine,compact:compact,decode:decode,encode:encode,isBuffer:isBuffer,isRegExp:isRegExp,merge:merge};
+'use strict';
+
+var has = Object.prototype.hasOwnProperty;
+var isArray = Array.isArray;
+
+var hexTable = function () {
+  var array = [];
+  for (var i = 0; i < 256; ++i) {
+    array.push('%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase());
+  }
+
+  return array;
+}();
+
+var compactQueue = function compactQueue(queue) {
+  while (queue.length > 1) {
+    var item = queue.pop();
+    var obj = item.obj[item.prop];
+
+    if (isArray(obj)) {
+      var compacted = [];
+
+      for (var j = 0; j < obj.length; ++j) {
+        if (typeof obj[j] !== 'undefined') {
+          compacted.push(obj[j]);
+        }
+      }
+
+      item.obj[item.prop] = compacted;
+    }
+  }
+};
+
+var arrayToObject = function arrayToObject(source, options) {
+  var obj = options && options.plainObjects ? Object.create(null) : {};
+  for (var i = 0; i < source.length; ++i) {
+    if (typeof source[i] !== 'undefined') {
+      obj[i] = source[i];
+    }
+  }
+
+  return obj;
+};
+
+var merge = function merge(target, source, options) {
+  if (!source) {
+    return target;
+  }
+
+  if (typeof source !== 'object') {
+    if (isArray(target)) {
+      target.push(source);
+    } else if (target && typeof target === 'object') {
+      if (options && (options.plainObjects || options.allowPrototypes) || !has.call(Object.prototype, source)) {
+        target[source] = true;
+      }
+    } else {
+      return [target, source];
+    }
+
+    return target;
+  }
+
+  if (!target || typeof target !== 'object') {
+    return [target].concat(source);
+  }
+
+  var mergeTarget = target;
+  if (isArray(target) && !isArray(source)) {
+    mergeTarget = arrayToObject(target, options);
+  }
+
+  if (isArray(target) && isArray(source)) {
+    source.forEach(function (item, i) {
+      if (has.call(target, i)) {
+        var targetItem = target[i];
+        if (targetItem && typeof targetItem === 'object' && item && typeof item === 'object') {
+          target[i] = merge(targetItem, item, options);
+        } else {
+          target.push(item);
+        }
+      } else {
+        target[i] = item;
+      }
+    });
+    return target;
+  }
+
+  return Object.keys(source).reduce(function (acc, key) {
+    var value = source[key];
+
+    if (has.call(acc, key)) {
+      acc[key] = merge(acc[key], value, options);
+    } else {
+      acc[key] = value;
+    }
+    return acc;
+  }, mergeTarget);
+};
+
+var assign = function assignSingleSource(target, source) {
+  return Object.keys(source).reduce(function (acc, key) {
+    acc[key] = source[key];
+    return acc;
+  }, target);
+};
+
+var decode = function (str, decoder, charset) {
+  var strWithoutPlus = str.replace(/\+/g, ' ');
+  if (charset === 'iso-8859-1') {
+    // unescape never throws, no try...catch needed:
+    return strWithoutPlus.replace(/%[0-9a-f]{2}/gi, unescape);
+  }
+  // utf-8
+  try {
+    return decodeURIComponent(strWithoutPlus);
+  } catch (e) {
+    return strWithoutPlus;
+  }
+};
+
+var encode = function encode(str, defaultEncoder, charset) {
+  // This code was originally written by Brian White (mscdex) for the io.js core querystring library.
+  // It has been adapted here for stricter adherence to RFC 3986
+  if (str.length === 0) {
+    return str;
+  }
+
+  var string = typeof str === 'string' ? str : String(str);
+
+  if (charset === 'iso-8859-1') {
+    return escape(string).replace(/%u[0-9a-f]{4}/gi, function ($0) {
+      return '%26%23' + parseInt($0.slice(2), 16) + '%3B';
+    });
+  }
+
+  var out = '';
+  for (var i = 0; i < string.length; ++i) {
+    var c = string.charCodeAt(i);
+
+    if (c === 0x2D // -
+    || c === 0x2E // .
+    || c === 0x5F // _
+    || c === 0x7E // ~
+    || c >= 0x30 && c <= 0x39 // 0-9
+    || c >= 0x41 && c <= 0x5A // a-z
+    || c >= 0x61 && c <= 0x7A // A-Z
+    ) {
+        out += string.charAt(i);
+        continue;
+      }
+
+    if (c < 0x80) {
+      out = out + hexTable[c];
+      continue;
+    }
+
+    if (c < 0x800) {
+      out = out + (hexTable[0xC0 | c >> 6] + hexTable[0x80 | c & 0x3F]);
+      continue;
+    }
+
+    if (c < 0xD800 || c >= 0xE000) {
+      out = out + (hexTable[0xE0 | c >> 12] + hexTable[0x80 | c >> 6 & 0x3F] + hexTable[0x80 | c & 0x3F]);
+      continue;
+    }
+
+    i += 1;
+    c = 0x10000 + ((c & 0x3FF) << 10 | string.charCodeAt(i) & 0x3FF);
+    out += hexTable[0xF0 | c >> 18] + hexTable[0x80 | c >> 12 & 0x3F] + hexTable[0x80 | c >> 6 & 0x3F] + hexTable[0x80 | c & 0x3F];
+  }
+
+  return out;
+};
+
+var compact = function compact(value) {
+  var queue = [{ obj: { o: value }, prop: 'o' }];
+  var refs = [];
+
+  for (var i = 0; i < queue.length; ++i) {
+    var item = queue[i];
+    var obj = item.obj[item.prop];
+
+    var keys = Object.keys(obj);
+    for (var j = 0; j < keys.length; ++j) {
+      var key = keys[j];
+      var val = obj[key];
+      if (typeof val === 'object' && val !== null && refs.indexOf(val) === -1) {
+        queue.push({ obj: obj, prop: key });
+        refs.push(val);
+      }
+    }
+  }
+
+  compactQueue(queue);
+
+  return value;
+};
+
+var isRegExp = function isRegExp(obj) {
+  return Object.prototype.toString.call(obj) === '[object RegExp]';
+};
+
+var isBuffer = function isBuffer(obj) {
+  if (!obj || typeof obj !== 'object') {
+    return false;
+  }
+
+  return !!(obj.constructor && obj.constructor.isBuffer && obj.constructor.isBuffer(obj));
+};
+
+var combine = function combine(a, b) {
+  return [].concat(a, b);
+};
+
+module.exports = {
+  arrayToObject: arrayToObject,
+  assign: assign,
+  combine: combine,
+  compact: compact,
+  decode: decode,
+  encode: encode,
+  isBuffer: isBuffer,
+  isRegExp: isRegExp,
+  merge: merge
+};
