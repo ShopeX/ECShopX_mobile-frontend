@@ -5,6 +5,16 @@
   background: #fff;
   height: 100%;
   box-sizing: border-box;
+  .gsj-zz {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    box-sizing: border-box;
+    &__img {
+      width: 91px;
+      height: 91px;
+    }
+  }
 }
 
 .wgts-wrap {

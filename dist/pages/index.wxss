@@ -18,6 +18,17 @@
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
+.page-index .gsj-zz {
+  width: 100%;
+  text-align: center;
+  padding: 20rpx 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.page-index .gsj-zz__img {
+  width: 91rpx;
+  height: 91rpx;
+}
 
 .wgts-wrap__fixed {
   background: #fff;

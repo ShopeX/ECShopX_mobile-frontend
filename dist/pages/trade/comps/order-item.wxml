@@ -2,7 +2,7 @@
     <block wx:if="{{!info}}">
         <view></view>
     </block>
-    <view class="order-item" bindtap="funPrivateUonlW" wx:else>
+    <view class="order-item" bindtap="funPrivatedKRNm" wx:else>
         <view class="order-item__hd">
             <image mode="aspectFill" class="order-item__img" src="{{img}}"></image>
         </view>

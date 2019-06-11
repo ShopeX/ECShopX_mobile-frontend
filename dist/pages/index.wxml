@@ -3,7 +3,7 @@
         <loading __triggerObserer="{{ _triggerObserer }}"></loading>
     </block>
     <view class="page-index" wx:else>
-        <scroll-view class="wgts-wrap wgts-wrap__fixed" bindscroll="handleScroll" bindscrolltolower="nextPage" scroll-y="{{true}}">
+        <scroll-view class="wgts-wrap wgts-wrap__fixed" scroll-top="{{scrollTop}}" bindscroll="handleScroll" bindscrolltolower="nextPage" scroll-y="{{true}}">
             <view class="wgts-wrap__cont">
                 <wgt-search-home __triggerObserer="{{ _triggerObserer }}"></wgt-search-home>
                 <view class="wgt-wrap" wx:key="idx" wx:for="{{wgts}}" wx:for-item="item" wx:for-index="idx">
@@ -48,6 +48,9 @@
                         <wgt-point-luck __triggerObserer="{{ _triggerObserer }}"></wgt-point-luck>
                     </block>
                 </view>
+            </view>
+            <view class="gsj-zz" bindtap="handleClickToLicense" data-e-tap-so="this">
+                <image src="/assets/imgs/gsj.png" class="gsj-zz__img"></image>
             </view>
         </scroll-view>
         <back-to-top show="{{showBackToTop}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></back-to-top>
