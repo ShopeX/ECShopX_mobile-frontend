@@ -8,7 +8,7 @@
                 </view>
             </block>
             <view class="layout-body">
-                <scroll-view scroll-y="{{scrollY}}" scroll-x="{{scrollX}}" scroll-top="{{scrollTop}}" scroll-left="{{scrollLeft}}" upper-threshold="{{upperThreshold}}" lower-threshold="{{lowerThreshold}}" scroll-with-animation="{{scrollWithAnimation}}" bindscroll="funPrivateqvHYW" bindscrolltolower="funPrivateWcjJV" bindscrolltoupper="funPrivatecgCiu" class="layout-body__content">
+                <scroll-view scroll-y="{{scrollY}}" scroll-x="{{scrollX}}" scroll-top="{{scrollTop}}" scroll-left="{{scrollLeft}}" upper-threshold="{{upperThreshold}}" lower-threshold="{{lowerThreshold}}" scroll-with-animation="{{scrollWithAnimation}}" bindscroll="funPrivateVRthm" bindscrolltolower="funPrivateydOGt" bindscrolltoupper="funPrivatexPhgr" class="layout-body__content">
                     <slot></slot>
                 </scroll-view>
             </view>
