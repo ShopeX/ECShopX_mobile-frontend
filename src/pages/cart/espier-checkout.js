@@ -9,6 +9,7 @@ import { withLogin } from '@/hocs'
 import { pickBy, log } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import find from 'lodash/find'
+import _cloneDeep from 'lodash/cloneDeep'
 import CheckoutItems from './checkout-items'
 import PaymentPicker from './comps/payment-picker'
 import OrderItem from '../trade/comps/order-item'
@@ -217,7 +218,7 @@ export default class CartCheckout extends Component {
 
     this.params = params
 
-    return params
+    return _cloneDeep(params)
   }
 
   async calcOrder () {
@@ -409,6 +410,11 @@ export default class CartCheckout extends Component {
     let order_id, orderInfo
     try {
       const params = this.getParams()
+      // 积分不开票
+      if (payType === 'dhpoint') {
+        delete params.invoice_type
+        delete params.invoice_content
+      }
       orderInfo = await api.trade.create(params)
       order_id = orderInfo.order_id
     } catch (e) {
@@ -658,14 +664,14 @@ export default class CartCheckout extends Component {
             }
           </View>
 
-          <SpCell
+          {/*<SpCell
             isLink
             className='trade-invoice'
             title='开发票'
             onClick={this.handleInvoiceClick}
           >
             <Text>{invoiceTitle || '否'}</Text>
-          </SpCell>
+          </SpCell>*/}
 
           {/*<SpCell
             className='trade-shipping'

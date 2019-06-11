@@ -14,60 +14,61 @@
     border-bottom: 1PX solid $color-brand-primary;
     color: $color-brand-primary;
   }
-}
 
-.grid-goods {
-  /*display: flex;
-  flex-wrap: wrap;*/
-  &.out-padding {
-    margin: 0 -6px;
-  }
-  /*.grid-item {
-    width: 50%;
-    padding: 6px;
-    box-sizing: border-box;
-    .goods-wrap {
-      border-radius: 12px;
-      border: 1px solid #f5f5f5;
-      .thumbnail {
-        position: relative;
-        &::after {
+  .grid-goods {
+    /*display: flex;
+    flex-wrap: wrap;*/
+    &.out-padding {
+      // margin: 0 30px;
+    }
+    /*.grid-item {
+      width: 50%;
+      padding: 6px;
+      box-sizing: border-box;
+      .goods-wrap {
+        border-radius: 12px;
+        border: 1px solid #f5f5f5;
+        .thumbnail {
+          position: relative;
+          &::after {
+            display: flex;
+            padding-top: 100%;
+            content: "";
+          }
+          .goods-img {
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .caption {
+          position: relative;
           display: flex;
-          padding-top: 100%;
-          content: "";
-        }
-        .goods-img {
-          display: block;
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .caption {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 0 20px 20px 20px;
-        font-size: 24px;
-        .goods-brand {
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          margin-top: -50px;
-          margin-bottom: 10px;
-        }
-        .goods-title {
-          width: 100%;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          &.no-brand {
-            padding-top: 10px;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 0 20px 20px 20px;
+          font-size: 24px;
+          .goods-brand {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-top: -50px;
+            margin-bottom: 10px;
+          }
+          .goods-title {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            &.no-brand {
+              padding-top: 10px;
+            }
           }
         }
       }
-    }
-  }*/
+    }*/
+  }
+
 }

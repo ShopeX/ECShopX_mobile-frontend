@@ -66,7 +66,7 @@ export default class WxAuth extends Component {
     })
 
     try {
-      const { token, open_id, union_id } = await api.wx.prelogin({
+      const { token, open_id, union_id, user_id } = await api.wx.prelogin({
         code,
         iv,
         encryptedData,
@@ -76,6 +76,16 @@ export default class WxAuth extends Component {
       })
 
       S.setAuthToken(token)
+
+      // 绑定过，跳转会员中心
+      if (user_id) {
+        Taro.redirectTo({
+          url: '/pages/member/index'
+        })
+        await this.autoLogin()
+        return
+      }
+
       // 跳转注册绑定
       Taro.redirectTo({
         url: `/pages/auth/reg?code=${code}&open_id=${open_id}&union_id=${union_id}`

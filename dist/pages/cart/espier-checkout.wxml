@@ -50,8 +50,6 @@
                     </view>
                 </view>
             </view>
-            <sp-cell isLink="{{true}}" __triggerObserer="{{ _triggerObserer }}" className="trade-invoice" title="开发票" bindonclick="handleInvoiceClick" __fn_onClick="{{true}}"><text>{{invoiceTitle || '否'}}</text>
-            </sp-cell>
             <view class="trade-payment">
                 <sp-cell isLink="{{true}}" __triggerObserer="{{ _triggerObserer }}" border="{{false}}" title="支付方式" bindonclick="handlePaymentShow" __fn_onClick="{{true}}"><text>{{payType === 'dhpoint' ? '积分支付' : '微信支付'}}</text>
                 </sp-cell>

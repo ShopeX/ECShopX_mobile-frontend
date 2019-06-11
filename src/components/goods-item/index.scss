@@ -27,16 +27,17 @@ $item-img-size: 240px !default;
   $self: &;
   display: flex;
   align-items: center;
-  background: #fff;
   border-radius: $item-border-radius;
   overflow: hidden;
   margin: 0 0 $edge-margin;
-
   &__hd {
   }
   &__bd {
+    background: #fff;
     display: flex;
     flex: 1;
+    border-radius: $item-border-radius;
+    overflow: hidden;
   }
   &__cont{
     display: flex;

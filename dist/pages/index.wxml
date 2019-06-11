@@ -49,9 +49,7 @@
                     </block>
                 </view>
             </view>
-            <view class="gsj-zz" bindtap="handleClickToLicense" data-e-tap-so="this">
-                <image src="/assets/imgs/gsj.png" class="gsj-zz__img"></image>
-            </view>
+            <image src="/assets/imgs/innisfree/license.png" class="img-license" bindtap="handleClickLicense"></image>
         </scroll-view>
         <back-to-top show="{{showBackToTop}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></back-to-top>
         <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>

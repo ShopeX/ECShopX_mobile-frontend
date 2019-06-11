@@ -3,7 +3,7 @@
 .page-goods-list {
   background: $color-bg-gray;
   .goods-list {
-    padding: ($edge-margin / 2) 0;
+    padding: 24px $edge-margin;
     &__toolbar {
       position: fixed;
       top: 0;

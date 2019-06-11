@@ -23,8 +23,7 @@
   border-bottom: 1PX solid #0b4137;
   color: #0b4137;
 }
-
-.grid-goods {
+.wgt-grid .grid-goods {
   /*display: flex;
   flex-wrap: wrap;*/
   /*.grid-item {
@@ -75,7 +74,4 @@
       }
     }
   }*/
-}
-.grid-goods.out-padding {
-  margin: 0 -6rpx;
 }

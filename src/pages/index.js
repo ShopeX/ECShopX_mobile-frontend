@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView, Image } from '@tarojs/components'
+import { View, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { SpToast, TabBar, Loading, SpNote, BackToTop } from '@/components'
 import req from '@/api/req'
@@ -82,14 +82,14 @@ export default class HomeIndex extends Component {
     }
   }
 
-  handleClickToLicense = () => {
+  handleClickLicense = () => {
     Taro.navigateTo({
       url: '/pages/home/license'
     })
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop } = this.state
+    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop } = this.state
 
     if (!wgts || !this.props.store) {
       return <Loading />
@@ -102,6 +102,7 @@ export default class HomeIndex extends Component {
           scrollTop={scrollTop}
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
+          scrollTop={scrollTop}
           scrollY
         >
           <View className='wgts-wrap__cont'>
@@ -154,9 +155,11 @@ export default class HomeIndex extends Component {
               })
             }
           </View>
-          <View className='gsj-zz' onClick={this.handleClickToLicense.bind(this)}>
-            <Image src='/assets/imgs/gsj.png' className='gsj-zz__img' />
-          </View>
+          <Image
+            src='/assets/imgs/innisfree/license.png'
+            className='img-license'
+            onClick={this.handleClickLicense}
+          />
         </ScrollView>
 
         <BackToTop

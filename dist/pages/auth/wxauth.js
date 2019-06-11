@@ -51,7 +51,7 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
       isAuthShow: false
     }, _this.handleGetUserInfo = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(res) {
-        var loginParams, iv, encryptedData, rawData, signature, userInfo, _ref3, code, _ref4, token, open_id, union_id;
+        var loginParams, iv, encryptedData, rawData, signature, userInfo, _ref3, code, _ref4, token, open_id, union_id, user_id;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -104,18 +104,38 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
                 token = _ref4.token;
                 open_id = _ref4.open_id;
                 union_id = _ref4.union_id;
+                user_id = _ref4.user_id;
 
 
                 _index6.default.setAuthToken(token);
+
+                // 绑定过，跳转会员中心
+
+                if (!user_id) {
+                  _context.next = 24;
+                  break;
+                }
+
+                _index2.default.redirectTo({
+                  url: '/pages/member/index'
+                });
+                _context.next = 23;
+                return _this.autoLogin();
+
+              case 23:
+                return _context.abrupt("return");
+
+              case 24:
+
                 // 跳转注册绑定
                 _index2.default.redirectTo({
                   url: "/pages/auth/reg?code=" + code + "&open_id=" + open_id + "&union_id=" + union_id
                 });
-                _context.next = 25;
+                _context.next = 31;
                 break;
 
-              case 21:
-                _context.prev = 21;
+              case 27:
+                _context.prev = 27;
                 _context.t0 = _context["catch"](10);
 
                 console.info(_context.t0);
@@ -124,16 +144,16 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
                   icon: 'none'
                 });
 
-              case 25:
+              case 31:
 
                 _index2.default.hideLoading();
 
-              case 26:
+              case 32:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, _this2, [[10, 21]]);
+        }, _callee, _this2, [[10, 27]]);
       }));
 
       return function (_x) {

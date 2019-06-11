@@ -36,6 +36,10 @@ var _find = require("../../npm/lodash/find.js");
 
 var _find2 = _interopRequireDefault(_find);
 
+var _cloneDeep2 = require("../../npm/lodash/cloneDeep.js");
+
+var _cloneDeep3 = _interopRequireDefault(_cloneDeep2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -104,7 +108,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = CartCheckout.__proto__ || Object.getPrototypeOf(CartCheckout)).call.apply(_ref3, [this].concat(args))), _this), _this.$usedState = ["info", "showAddressPicker", "address", "payType", "couponText", "total", "showCheckoutItems", "curCheckoutItems", "submitLoading", "isBtnDisabled", "isPaymentOpend", "disabledPayment", "invoiceTitle", "address_list", "showShippingPicker", "showCoupons", "coupons", "__fn_onClearFastbuy", "defaultAddress", "__fn_onClearCoupon", "__fn_onAddressChoose", "coupon", "__fn_onClearCart"], _this.handleAddressChange = function (address) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = CartCheckout.__proto__ || Object.getPrototypeOf(CartCheckout)).call.apply(_ref3, [this].concat(args))), _this), _this.$usedState = ["info", "showAddressPicker", "address", "payType", "couponText", "total", "showCheckoutItems", "curCheckoutItems", "submitLoading", "isBtnDisabled", "isPaymentOpend", "disabledPayment", "address_list", "showShippingPicker", "showCoupons", "coupons", "invoiceTitle", "__fn_onClearFastbuy", "defaultAddress", "__fn_onClearCoupon", "__fn_onAddressChoose", "coupon", "__fn_onClearCart"], _this.handleAddressChange = function (address) {
       if (!address) {
         return;
       }
@@ -255,18 +259,24 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
               order_id = void 0, orderInfo = void 0;
               _context3.prev = 20;
               params = _this.getParams();
-              _context3.next = 24;
+              // 积分不开票
+
+              if (payType === 'dhpoint') {
+                delete params.invoice_type;
+                delete params.invoice_content;
+              }
+              _context3.next = 25;
               return _index5.default.trade.create(params);
 
-            case 24:
+            case 25:
               orderInfo = _context3.sent;
 
               order_id = orderInfo.order_id;
-              _context3.next = 33;
+              _context3.next = 34;
               break;
 
-            case 28:
-              _context3.prev = 28;
+            case 29:
+              _context3.prev = 29;
               _context3.t1 = _context3["catch"](20);
 
               _index2.default.showToast({
@@ -283,18 +293,18 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 });
               }
 
-            case 33:
+            case 34:
 
               _index2.default.hideLoading();
 
               if (order_id) {
-                _context3.next = 36;
+                _context3.next = 37;
                 break;
               }
 
               return _context3.abrupt("return");
 
-            case 36:
+            case 37:
               // 爱茉pay流程
               paymentParams = {
                 order_id: order_id,
@@ -302,23 +312,23 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 order_type: orderInfo.order_type
               };
               config = void 0, payErr = void 0;
-              _context3.prev = 38;
-              _context3.next = 41;
+              _context3.prev = 39;
+              _context3.next = 42;
               return _index5.default.cashier.getPayment(paymentParams);
 
-            case 41:
+            case 42:
               config = _context3.sent;
-              _context3.next = 48;
+              _context3.next = 49;
               break;
 
-            case 44:
-              _context3.prev = 44;
-              _context3.t2 = _context3["catch"](38);
+            case 45:
+              _context3.prev = 45;
+              _context3.t2 = _context3["catch"](39);
 
               payErr = _context3.t2;
               console.log(_context3.t2);
 
-            case 48:
+            case 49:
 
               _this.setState({
                 submitLoading: false
@@ -327,7 +337,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
               // 积分流程
 
               if (!(payType === 'dhpoint')) {
-                _context3.next = 52;
+                _context3.next = 53;
                 break;
               }
 
@@ -345,23 +355,23 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
 
               return _context3.abrupt("return");
 
-            case 52:
+            case 53:
 
               payErr = null;
-              _context3.prev = 53;
-              _context3.next = 56;
+              _context3.prev = 54;
+              _context3.next = 57;
               return _index2.default.requestPayment(config);
 
-            case 56:
+            case 57:
               payRes = _context3.sent;
 
               _index9.log.debug("[order pay]: ", payRes);
-              _context3.next = 64;
+              _context3.next = 65;
               break;
 
-            case 60:
-              _context3.prev = 60;
-              _context3.t3 = _context3["catch"](53);
+            case 61:
+              _context3.prev = 61;
+              _context3.t3 = _context3["catch"](54);
 
               payErr = _context3.t3;
               _index2.default.showToast({
@@ -369,9 +379,9 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 icon: 'none'
               });
 
-            case 64:
+            case 65:
               if (payErr) {
-                _context3.next = 72;
+                _context3.next = 73;
                 break;
               }
 
@@ -381,37 +391,37 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
                 console.info(e);
               }
 
-              _context3.next = 68;
+              _context3.next = 69;
               return _index2.default.showToast({
                 title: '支付成功',
                 icon: 'success'
               });
 
-            case 68:
+            case 69:
 
               _this.__triggerPropsFn("onClearCart", [null].concat([]));
               _index2.default.redirectTo({
                 url: "/pages/trade/detail?id=" + order_id
               });
-              _context3.next = 73;
+              _context3.next = 74;
               break;
 
-            case 72:
+            case 73:
               if (payErr.errMsg.indexOf('fail cancel') >= 0) {
                 _index2.default.redirectTo({
                   url: "/pages/trade/detail?id=" + order_id
                 });
               }
 
-            case 73:
+            case 74:
               return _context3.abrupt("return");
 
-            case 74:
+            case 75:
             case "end":
               return _context3.stop();
           }
         }
-      }, _callee3, _this2, [[4, 13], [20, 28], [38, 44], [53, 60]]);
+      }, _callee3, _this2, [[4, 13], [20, 29], [39, 45], [54, 61]]);
     })), _this.handleCouponsClick = function () {
       if (_this.state.payType === 'dhpoint') {
         return;
@@ -685,7 +695,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
 
       this.params = params;
 
-      return params;
+      return (0, _cloneDeep3.default)(params);
     }
   }, {
     key: "calcOrder",
@@ -888,7 +898,7 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleCouponsClick", "handleInvoiceClick", "handlePaymentShow", "toggleCheckoutItems", "handlePay", "handlePaymentClose", "handlePaymentChange"], _class2.defaultProps = {
+}, _class2.$$events = ["handleCouponsClick", "handlePaymentShow", "toggleCheckoutItems", "handlePay", "handlePaymentClose", "handlePaymentChange"], _class2.defaultProps = {
   list: []
 }, _temp2)) || _class) || _class);
 exports.default = CartCheckout;
