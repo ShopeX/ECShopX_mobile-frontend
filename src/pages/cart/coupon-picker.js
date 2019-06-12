@@ -99,6 +99,7 @@ export default class CouponPicker extends Component {
               >
                 <SpCheckbox
                   checked={curCoupon && curCoupon.type === 'coupon' && curCoupon.value.code === coupon.code}
+                  disabled={!coupon.valid}
                 />
               </CouponItem>
 

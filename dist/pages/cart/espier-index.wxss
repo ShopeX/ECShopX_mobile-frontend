@@ -215,6 +215,8 @@
 .page-cart-index .cart-item__act .in-icon-close {
   font-size: 28rpx;
   color: #cdcdcd;
+  padding: 8rpx;
+  margin: -4rpx -4rpx 0 0;
 }
 .page-cart-index .cart-item .at-input-number {
   border: none;

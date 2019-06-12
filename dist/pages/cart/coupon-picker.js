@@ -169,8 +169,10 @@ var CouponPicker = (_dec = (0, _index3.connect)(function (_ref) {
           $original: (0, _index.internal_get_original)(coupon)
         };
         var $loopState__temp2 = !coupon.$original.valid;
+        var $loopState__temp4 = !coupon.$original.valid;
         return {
           $loopState__temp2: $loopState__temp2,
+          $loopState__temp4: $loopState__temp4,
           $original: coupon.$original
         };
       }
