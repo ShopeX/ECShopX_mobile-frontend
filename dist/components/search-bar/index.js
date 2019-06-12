@@ -91,6 +91,10 @@ var SearchBar = (_temp2 = _class = function (_BaseComponent) {
     }, _this.handleClickTag = function (item) {
       // console.log(item, 100)
       _this.__triggerPropsFn("onConfirm", [null].concat([item]));
+      _this.setState({
+        showSearchDailog: false,
+        isShowAction: false
+      });
       /*Taro.navigateTo({
         url: `/pages/item/list?keywords=${item}`
       })*/

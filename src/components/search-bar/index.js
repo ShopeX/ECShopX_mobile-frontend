@@ -100,6 +100,10 @@ export default class SearchBar extends Component {
   handleClickTag = (item) => {
     // console.log(item, 100)
     this.props.onConfirm(item)
+    this.setState({
+      showSearchDailog: false,
+      isShowAction: false
+    })
     /*Taro.navigateTo({
       url: `/pages/item/list?keywords=${item}`
     })*/
