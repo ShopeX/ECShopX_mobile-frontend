@@ -125,7 +125,7 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
               case 23:
 
                 // 跳转注册绑定
-                _index2.default.redirectTo({
+                _index2.default.navigateTo({
                   url: "/pages/auth/reg?code=" + code + "&open_id=" + open_id + "&union_id=" + union_id
                 });
                 _context.next = 30;
