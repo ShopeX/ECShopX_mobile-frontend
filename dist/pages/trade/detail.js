@@ -228,6 +228,7 @@ var TradeDetail = (_temp2 = _class = function (_BaseComponent) {
 
                 if (info.auto_cancel_seconds <= 0 && info.order_status_des === 'NOTPAY') {
                   info.status = 'TRADE_CLOSED';
+                  info.order_status_msg = '已取消';
                 }
                 info.status_img = "ico_" + (infoStatus === 'trade_success' ? 'wait_rate' : infoStatus) + ".png";
 

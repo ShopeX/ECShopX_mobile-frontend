@@ -1,64 +1,13 @@
 {
-	"projectname": "mshop-taro",
-	"description": "taro app for bbc",
-	"appid": "wx32b438e5538d90ed",
-	"setting": {
-		"urlCheck": false,
-		"es6": false,
-		"postcss": false,
-		"minified": false
-	},
-	"compileType": "miniprogram",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"list": []
-		},
-		"miniprogram": {
-			"current": 3,
-			"list": [
-				{
-					"id": 0,
-					"name": "微信授权",
-					"pathName": "pages/auth/wxauth",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 1,
-					"name": "注册",
-					"pathName": "pages/auth/reg",
-					"query": "open_id=olp694m8psTjDGnJHdTpQuGXwKjc&union_id=ol23QwSfLg1Dsyq6Sd0Zi1efu9jo",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "电子营业执照",
-					"pathName": "pages/home/license",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "种草详情",
-					"pathName": "pages/recommend/detail",
-					"query": "id=20",
-					"scene": null
-				}
-			]
-		}
-	}
+  "miniprogramRoot": "./",
+  "projectname": "mshop-taro",
+  "description": "taro app for bbc",
+  "appid": "wx32b438e5538d90ed",
+  "setting": {
+    "urlCheck": false,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
 }
