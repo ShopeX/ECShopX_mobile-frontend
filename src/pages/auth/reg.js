@@ -23,7 +23,8 @@ export default class Reg extends Component {
       isVisible: false,
       list: [],
       imgVisible: false,
-      imgInfo: {}
+      imgInfo: {},
+      isHasValue: false
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -250,10 +251,13 @@ export default class Reg extends Component {
     params.code = code
     const { phoneNumber } = await api.wx.decryptPhone(params)
     this.handleChange('mobile', phoneNumber)
+    this.setState({
+      isHasValue: true
+    })
   }
 
   render () {
-    const { info, isVisible, list, imgVisible, imgInfo } = this.state
+    const { info, isVisible, isHasValue, list, imgVisible, imgInfo } = this.state
     return (
       <View className='auth-reg'>
         <NavBar
@@ -269,6 +273,7 @@ export default class Reg extends Component {
                 title='手机号码'
                 name='mobile'
                 type='number'
+                disabled={isHasValue}
                 maxLength={11}
                 value={info.mobile}
                 placeholder=''

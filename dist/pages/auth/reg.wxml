@@ -3,7 +3,7 @@
         <nav-bar title="注册" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left"></nav-bar>
         <at-form bindonsubmit="handleSubmit" __triggerObserer="{{ _triggerObserer }}" __fn_onSubmit="{{true}}">
             <view class="sec auth-reg__form">
-                <at-input title="手机号码" __triggerObserer="{{ _triggerObserer }}" name="mobile" type="number" maxLength="{{11}}" value="{{info.mobile}}" placeholder="" bindonfocus="handleErrorToastClose" bindonchange="handleChange" __fn_onFocus="{{true}}" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="mobile">
+                <at-input title="手机号码" __triggerObserer="{{ _triggerObserer }}" name="mobile" type="number" disabled="{{isHasValue}}" maxLength="{{11}}" value="{{info.mobile}}" placeholder="" bindonfocus="handleErrorToastClose" bindonchange="handleChange" __fn_onFocus="{{true}}" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="mobile">
                     <at-button openType="getPhoneNumber" __triggerObserer="{{ _triggerObserer }}" bindongetphonenumber="handleGetPhoneNumber" __fn_onGetPhoneNumber="{{true}}">获取手机号码</at-button>
                 </at-input>
                 <block wx:if="{{anonymousState__temp11}}">
