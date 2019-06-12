@@ -1,1 +1,23 @@
-"use strict";function symbolObservablePonyfill(e){var b,l=e.Symbol;return"function"==typeof l?l.observable?b=l.observable:(b=l("observable"),l.observable=b):b="@@observable",b}Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=symbolObservablePonyfill;
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports['default'] = symbolObservablePonyfill;
+function symbolObservablePonyfill(root) {
+  var result;
+  var _Symbol = root.Symbol;
+
+  if (typeof _Symbol === 'function') {
+    if (_Symbol.observable) {
+      result = _Symbol.observable;
+    } else {
+      result = _Symbol('observable');
+      _Symbol.observable = result;
+    }
+  } else {
+    result = '@@observable';
+  }
+
+  return result;
+};

@@ -21,7 +21,7 @@ export default class HtmlContent extends Component {
   componentDidMount () {
     if (process.env.TARO_ENV === 'weapp') {
       const { content } = this.props
-      console.log(content, 24)
+      // console.log(content, 24)
       wxParse.wxParse('content', 'html', content, this.$scope, )
     }
   }

@@ -1,1 +1,41 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.linkPage=linkPage;var _index=require("../../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function linkPage(e,a){var i="";switch(e){case"goods":i="/pages/item/espier-detail?id="+a;break;case"category":i="/pages/item/list?cat_id="+a;break;case"planting":i="/pages/recommend/detail?id="+a;break;case"link":case"custom":i=a}_index2.default.navigateTo({url:i})}exports.default={};
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.linkPage = linkPage;
+
+var _index = require('../../../npm/@tarojs/taro-weapp/index.js');
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function linkPage(type, id) {
+  var url = '';
+
+  switch (type) {
+    case 'goods':
+      url = '/pages/item/espier-detail?id=' + id;
+      break;
+    case 'category':
+      url = '/pages/item/list?cat_id=' + id;
+      break;
+    case 'planting':
+      url = '/pages/recommend/detail?id=' + id;
+      break;
+    case 'link':
+      url = id;
+      break;
+    case 'custom':
+      url = id;
+      break;
+    default:
+  }
+
+  _index2.default.navigateTo({
+    url: url
+  });
+}
+
+exports.default = {};

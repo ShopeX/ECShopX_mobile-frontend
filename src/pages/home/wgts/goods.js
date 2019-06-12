@@ -35,9 +35,9 @@ export default class WgtGoods extends Component {
   }
 
   handleClickItem = (id) => {
-    const { info } = this.props
+    // const { info } = this.props
 
-    if(info.data) {
+    /*if(info.data) {
       let onsale = true
       info.data.map(item => {
         if(id === item.item_id){
@@ -49,7 +49,7 @@ export default class WgtGoods extends Component {
       if(!onsale){
         return false
       }
-    }
+    }*/
     try {
       Taro.navigateTo({
         url: `/pages/item/espier-detail?id=${id}`

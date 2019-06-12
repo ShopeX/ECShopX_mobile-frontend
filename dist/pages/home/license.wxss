@@ -1,1 +1,34 @@
-.page-home-license{background:#fff;padding:20rpx 0}.page-home-license .dl{font-size:24rpx;color:#2d2d2d;margin:0 60rpx 50rpx}.page-home-license .dt{font-size:22rpx;color:#888;margin:0 0 13rpx;display:block;line-height:1}.page-home-license .dd{line-height:1.5;display:block;font-weight:700}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.page-home-license {
+  background: #fff;
+  padding: 20rpx 0 20rpx;
+}
+.page-home-license .dl {
+  font-size: 24rpx;
+  color: #2d2d2d;
+  margin: 0 60rpx 50rpx;
+}
+.page-home-license .dt {
+  font-size: 22rpx;
+  color: #888;
+  margin: 0 0 13rpx;
+  display: block;
+  line-height: 1;
+}
+.page-home-license .dd {
+  line-height: 1.5;
+  display: block;
+  font-weight: bold;
+}

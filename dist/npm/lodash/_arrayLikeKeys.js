@@ -1,1 +1,47 @@
-var baseTimes=require("./_baseTimes.js"),isArguments=require("./isArguments.js"),isArray=require("./isArray.js"),isBuffer=require("./isBuffer.js"),isIndex=require("./_isIndex.js"),isTypedArray=require("./isTypedArray.js"),objectProto=Object.prototype,hasOwnProperty=objectProto.hasOwnProperty;function arrayLikeKeys(e,r){var s=isArray(e),i=!s&&isArguments(e),t=!s&&!i&&isBuffer(e),a=!s&&!i&&!t&&isTypedArray(e),n=s||i||t||a,y=n?baseTimes(e.length,String):[],u=y.length;for(var o in e)!r&&!hasOwnProperty.call(e,o)||n&&("length"==o||t&&("offset"==o||"parent"==o)||a&&("buffer"==o||"byteLength"==o||"byteOffset"==o)||isIndex(o,u))||y.push(o);return y}module.exports=arrayLikeKeys;
+var baseTimes = require("./_baseTimes.js"),
+    isArguments = require("./isArguments.js"),
+    isArray = require("./isArray.js"),
+    isBuffer = require("./isBuffer.js"),
+    isIndex = require("./_isIndex.js"),
+    isTypedArray = require("./isTypedArray.js");
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys(value, inherited) {
+  var isArr = isArray(value),
+      isArg = !isArr && isArguments(value),
+      isBuff = !isArr && !isArg && isBuffer(value),
+      isType = !isArr && !isArg && !isBuff && isTypedArray(value),
+      skipIndexes = isArr || isArg || isBuff || isType,
+      result = skipIndexes ? baseTimes(value.length, String) : [],
+      length = result.length;
+
+  for (var key in value) {
+    if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && (
+    // Safari 9 has enumerable `arguments.length` in strict mode.
+    key == 'length' ||
+    // Node.js 0.10 has enumerable non-index properties on buffers.
+    isBuff && (key == 'offset' || key == 'parent') ||
+    // PhantomJS 2 has enumerable non-index properties on typed arrays.
+    isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset') ||
+    // Skip index properties.
+    isIndex(key, length)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+module.exports = arrayLikeKeys;
