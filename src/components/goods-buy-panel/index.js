@@ -368,7 +368,7 @@ export default class GoodsBuyPanel extends Component {
           </View>
           <View className='goods-buy-panel__ft'>
             <View className='goods-buy-panel__btns'>
-              {(type === 'cart' || type === 'all' && hasStore) && (
+              {(type === 'cart' && hasStore) && (
                 <Button
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-add-cart', { 'is-disabled': !curSku })}
@@ -376,7 +376,7 @@ export default class GoodsBuyPanel extends Component {
                   disabled={Boolean(!curSku)}
                 >添加至购物车</Button>
               )}
-              {(type === 'fastbuy' || type === 'all' && hasStore) && (
+              {(type === 'fastbuy' && hasStore) && (
                 <Button
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSku })}
@@ -384,7 +384,7 @@ export default class GoodsBuyPanel extends Component {
                   disabled={Boolean(!curSku)}
                 >{fastBuyText}</Button>
               )}
-              {!hasStore && (<Text>当前店铺无货</Text>)}
+              {!hasStore && (<Button disabled className='goods-buy-panel__btn btn-fast-buy'>当前商品无货</Button>)}
             </View>
           </View>
         </View>

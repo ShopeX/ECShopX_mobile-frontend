@@ -474,7 +474,7 @@ export default class Detail extends Component {
               {
                 !startSecKill
                   ? <Text>活动即将开始</Text>
-                  : <Text>当前店铺无货</Text>
+                  : <Text>当前商品无货</Text>
               }
             </View>
           </GoodsBuyToolbar>)

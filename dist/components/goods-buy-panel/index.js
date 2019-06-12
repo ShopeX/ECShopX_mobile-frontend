@@ -402,10 +402,10 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
         return _this3.toggleShow(false);
       };
 
-      var anonymousState__temp4 = type === 'cart' || type === 'all' && hasStore ? (0, _index3.classNames)('goods-buy-panel__btn btn-add-cart', { 'is-disabled': !curSku }) : null;
-      var anonymousState__temp5 = type === 'cart' || type === 'all' && hasStore ? Boolean(!curSku) : null;
-      var anonymousState__temp6 = type === 'fastbuy' || type === 'all' && hasStore ? (0, _index3.classNames)('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSku }) : null;
-      var anonymousState__temp7 = type === 'fastbuy' || type === 'all' && hasStore ? Boolean(!curSku) : null;
+      var anonymousState__temp4 = type === 'cart' && hasStore ? (0, _index3.classNames)('goods-buy-panel__btn btn-add-cart', { 'is-disabled': !curSku }) : null;
+      var anonymousState__temp5 = type === 'cart' && hasStore ? Boolean(!curSku) : null;
+      var anonymousState__temp6 = type === 'fastbuy' && hasStore ? (0, _index3.classNames)('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSku }) : null;
+      var anonymousState__temp7 = type === 'fastbuy' && hasStore ? Boolean(!curSku) : null;
       var loopArray0 = info.item_spec_desc.map(function (spec, idx) {
         spec = {
           $original: (0, _index.internal_get_original)(spec)

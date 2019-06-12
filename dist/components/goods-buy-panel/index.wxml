@@ -40,13 +40,14 @@
             </view>
             <view class="goods-buy-panel__ft">
                 <view class="goods-buy-panel__btns">
-                    <block wx:if="{{type === 'cart' || type === 'all' && hasStore}}">
+                    <block wx:if="{{type === 'cart' && hasStore}}">
                         <button loading="{{busy}}" class="{{anonymousState__temp4}}" bindtap="handleBuyClick" disabled="{{anonymousState__temp5}}" data-e-tap-so="this" data-e-tap-a-a="cart" data-e-tap-a-b="{{curSku}}" data-e-tap-a-c="{{quantity}}">添加至购物车</button>
                     </block>
-                    <block wx:if="{{type === 'fastbuy' || type === 'all' && hasStore}}">
+                    <block wx:if="{{type === 'fastbuy' && hasStore}}">
                         <button loading="{{busy}}" class="{{anonymousState__temp6}}" bindtap="handleBuyClick" disabled="{{anonymousState__temp7}}" data-e-tap-so="this" data-e-tap-a-a="fastbuy" data-e-tap-a-b="{{curSku}}" data-e-tap-a-c="{{quantity}}">{{fastBuyText}}</button>
                     </block>
-                    <block wx:if="{{!hasStore}}"><text>当前店铺无货</text>
+                    <block wx:if="{{!hasStore}}">
+                        <button disabled="{{true}}" class="goods-buy-panel__btn btn-fast-buy">当前商品无货</button>
                     </block>
                 </view>
             </view>
