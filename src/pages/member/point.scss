@@ -27,6 +27,7 @@
       margin-top: 30px;
     }
     &__scroll {
+      @include page-scroll(340px, 0);
       .at-divider {
         height: 70px;
       }

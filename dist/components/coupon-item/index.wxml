@@ -2,7 +2,7 @@
     <block wx:if="{{!info}}">
         <view></view>
     </block>
-    <view class="coupon-item-index" bindtap="funPrivateigNfg" wx:else>
+    <view class="coupon-item-index" bindtap="funPrivatedhLKY" wx:else>
         <block wx:if="{{isShowCheckout && isDisabled}}">
             <view class="coupon-item__check" bindtap="handleClickChecked" data-e-tap-so="this" data-e-tap-a-a="{{info.id}}">
                 <block>

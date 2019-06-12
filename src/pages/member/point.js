@@ -39,7 +39,7 @@ export default class Integral extends Component {
       page,
       size
     }
-    const { list , total_count: total, remainpt } = await api.member.pointList(params)
+    const { list , total, remainpt } = await api.member.pointList(params)
     const nList = pickBy(list, {
       chngdate: ({ chngdate }) => chngdate.substring(0, 4)+ '-' + chngdate.substring(4, 6)+ '-' + chngdate.substring(6, 8),
       point: 'point',
@@ -59,7 +59,9 @@ export default class Integral extends Component {
   }
 
   handleClickRoam = () => {
-
+    Taro.navigateTo({
+      url: '/pages/index'
+    })
   }
 
   render () {

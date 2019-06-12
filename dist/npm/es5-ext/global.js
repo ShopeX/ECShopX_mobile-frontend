@@ -1,1 +1,5 @@
-module.exports=function(){return this}();
+/* eslint strict: "off" */
+
+module.exports = function () {
+  return this;
+}();

@@ -16,7 +16,7 @@
                 </block>
             </block>
         </block>
-        <view class="trade-item__bd" bindtap="funPrivatevDsfg">
+        <view class="trade-item__bd" bindtap="funPrivateJkxNg">
             <order-item wx:key="idx" __triggerObserer="{{ _triggerObserer }}" info="{{item}}" payType="{{payType}}" wx:for="{{info.order}}" wx:for-item="item" wx:for-index="idx"></order-item>
             <block>
                 <block wx:if="{{customRender}}">{{customRender}}</block>
@@ -82,8 +82,8 @@
         </block>
         <block wx:if="{{!customFooter && info.status === 'WAIT_BUYER_CONFIRM_GOODS'}}">
             <view class="trade-item__ft">
-                <view class="trade-item__ft-actions"><text class="trade-item__acts" bindtap="funPrivatexbmiG" data-e-tap-so="this">更多</text>
-                    <view class="{{anonymousState__temp}}"><text class="trade-item__dropdown-item" bindtap="funPrivateYKNZL" data-e-tap-so="this" data-e-tap-a-a="confirm-receive">确认收货</text><text class="trade-item__dropdown-item" bindtap="funPrivateYKNZL" data-e-tap-so="this" data-e-tap-a-a="view-express">查看物流</text>
+                <view class="trade-item__ft-actions"><text class="trade-item__acts" bindtap="funPrivatefjQIN" data-e-tap-so="this">更多</text>
+                    <view class="{{anonymousState__temp}}"><text class="trade-item__dropdown-item" bindtap="funPrivatesKIgv" data-e-tap-so="this" data-e-tap-a-a="confirm-receive">确认收货</text><text class="trade-item__dropdown-item" bindtap="funPrivatesKIgv" data-e-tap-so="this" data-e-tap-a-a="view-express">查看物流</text>
                     </view>
                 </view>
                 <view class="trade-item__ft-bd"><text class="trade-item__status">{{info.status_desc}}</text>
@@ -95,7 +95,7 @@
         <block wx:if="{{!customFooter && info.status === 'WAIT_RATE'}}">
             <view class="trade-item__ft">
                 <view class="trade-item__ft-actions"><text class="trade-item__acts">更多</text>
-                    <view class="{{anonymousState__temp2}}"><text class="trade-item__dropdown-item" bindtap="funPrivateYKNZL" data-e-tap-so="this" data-e-tap-a-a="rate">评价|晒单</text><text class="trade-item__dropdown-item" bindtap="funPrivateYKNZL" data-e-tap-so="this" data-e-tap-a-a="rebuy">再次购买</text>
+                    <view class="{{anonymousState__temp2}}"><text class="trade-item__dropdown-item" bindtap="funPrivatesKIgv" data-e-tap-so="this" data-e-tap-a-a="rate">评价|晒单</text><text class="trade-item__dropdown-item" bindtap="funPrivatesKIgv" data-e-tap-so="this" data-e-tap-a-a="rebuy">再次购买</text>
                     </view>
                 </view>
                 <view class="trade-item__ft-bd"><text class="trade-item__status">{{info.status_desc}}</text>

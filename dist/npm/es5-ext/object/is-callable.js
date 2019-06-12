@@ -1,1 +1,7 @@
-"use strict";module.exports=function(t){return"function"==typeof t};
+// Deprecated
+
+"use strict";
+
+module.exports = function (obj) {
+  return typeof obj === "function";
+};
