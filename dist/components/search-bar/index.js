@@ -49,6 +49,7 @@ var SearchBar = (_temp2 = _class = function (_BaseComponent) {
         _this.setState({ historyList: stringArr });
       }).catch(function () {});
     }, _this.handleChangeSearch = function (value) {
+      console.log(value, 50);
       value = value.replace(/\s+/g, '');
       _this.setState({
         searchValue: value

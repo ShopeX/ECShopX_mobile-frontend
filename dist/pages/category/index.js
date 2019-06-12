@@ -72,7 +72,7 @@ var Category = (_dec = (0, _index3.connect)(function (store) {
         });
       }
     }, _this.handleConfirm = function (val) {
-      var url = "/pages/item/list??keywords=" + val;
+      var url = "/pages/item/list?keywords=" + val;
 
       _index2.default.navigateTo({
         url: url

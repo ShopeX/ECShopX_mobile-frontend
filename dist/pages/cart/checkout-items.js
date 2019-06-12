@@ -70,8 +70,8 @@ var CheckoutItems = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivateDbVkg",
-    value: function funPrivateDbVkg() {
+    key: "funPrivatesTZWv",
+    value: function funPrivatesTZWv() {
       this.__triggerPropsFn("onClickBack", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -98,7 +98,7 @@ var CheckoutItems = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivateDbVkg"], _class.defaultProps = {
+}, _class.$$events = ["funPrivatesTZWv"], _class.defaultProps = {
   isOpened: false,
   list: [],
   onClickBack: function onClickBack() {}

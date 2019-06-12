@@ -69,8 +69,8 @@ var BackToTop = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivateyHGFA",
-    value: function funPrivateyHGFA() {
+    key: "funPrivateyJwsI",
+    value: function funPrivateyJwsI() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -93,7 +93,7 @@ var BackToTop = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivateyHGFA"], _class.options = {
+}, _class.$$events = ["funPrivateyJwsI"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
   onClick: function onClick() {}

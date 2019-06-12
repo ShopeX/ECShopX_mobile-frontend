@@ -110,7 +110,7 @@ export default class Category extends Component {
   }
 
   handleConfirm = (val) => {
-    const url = `/pages/item/list??keywords=${val}`
+    const url = `/pages/item/list?keywords=${val}`
 
     Taro.navigateTo({
       url
@@ -124,7 +124,7 @@ export default class Category extends Component {
       <View className='page-category-index'>
         <SearchBar
           isFixed
-          onConfirm={this.handleConfirm.bind(this)}
+          onConfirm={this.handleConfirm}
         />
         {
           tabList.length !== 0

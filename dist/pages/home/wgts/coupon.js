@@ -42,8 +42,10 @@ var WgtCoupon = (_temp2 = _class = function (_BaseComponent) {
     }
 
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtCoupon.__proto__ || Object.getPrototypeOf(WgtCoupon)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data"], _this.handleGetCard = function (cardId) {
-      var data = _req2.default.get('/user/receiveCard', { card_id: cardId });
-      if (data) {
+      var _req$get = _req2.default.get('/user/receiveCard', { card_id: cardId }),
+          status = _req$get.status;
+
+      if (status) {
         _index2.default.showToast({
           title: '优惠券领取成功',
           icon: 'success'
