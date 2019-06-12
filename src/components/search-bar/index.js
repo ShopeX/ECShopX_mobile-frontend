@@ -70,10 +70,15 @@ export default class SearchBar extends Component {
           let arrString = arr.join(',')
           Taro.setStorage({ key: 'searchHistory', data: arrString })
         })
-      Taro.navigateTo({
+      this.props.onConfirm(this.state.searchValue)
+      /*Taro.navigateTo({
         url: `/pages/item/list?keywords=${this.state.searchValue}`
-      })
+      })*/
     }
+    this.setState({
+      showSearchDailog: false,
+      isShowAction: false
+    })
   }
 
   handleClickCancel = (isOpened) => {
@@ -93,9 +98,10 @@ export default class SearchBar extends Component {
 
   handleClickTag = (item) => {
     // console.log(item, 100)
-    Taro.navigateTo({
+    this.props.onConfirm(item)
+    /*Taro.navigateTo({
       url: `/pages/item/list?keywords=${item}`
-    })
+    })*/
   }
 
   handleClickHotItem = () => {

@@ -38,7 +38,7 @@ var SearchBar = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SearchBar.__proto__ || Object.getPrototypeOf(SearchBar)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "searchValue", "isShowAction", "historyList", "showSearchDailog", "isFixed"], _this.handleFocusSearchHistory = function (isOpened) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SearchBar.__proto__ || Object.getPrototypeOf(SearchBar)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "searchValue", "isShowAction", "historyList", "showSearchDailog", "__fn_onConfirm", "isFixed"], _this.handleFocusSearchHistory = function (isOpened) {
       _this.setState({
         showSearchDailog: isOpened,
         isShowAction: true,
@@ -68,10 +68,15 @@ var SearchBar = (_temp2 = _class = function (_BaseComponent) {
           var arrString = arr.join(',');
           _index2.default.setStorage({ key: 'searchHistory', data: arrString });
         });
-        _index2.default.navigateTo({
-          url: "/pages/item/list?keywords=" + _this.state.searchValue
-        });
+        _this.__triggerPropsFn("onConfirm", [null].concat([_this.state.searchValue]));
+        /*Taro.navigateTo({
+          url: `/pages/item/list?keywords=${this.state.searchValue}`
+        })*/
       }
+      _this.setState({
+        showSearchDailog: false,
+        isShowAction: false
+      });
     }, _this.handleClickCancel = function (isOpened) {
       _this.setState({
         showSearchDailog: isOpened,
@@ -84,9 +89,10 @@ var SearchBar = (_temp2 = _class = function (_BaseComponent) {
       });
     }, _this.handleClickTag = function (item) {
       // console.log(item, 100)
-      _index2.default.navigateTo({
-        url: "/pages/item/list?keywords=" + item
-      });
+      _this.__triggerPropsFn("onConfirm", [null].concat([item]));
+      /*Taro.navigateTo({
+        url: `/pages/item/list?keywords=${item}`
+      })*/
     }, _this.handleClickHotItem = function () {
       console.log('热门搜索', 100);
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
@@ -134,6 +140,10 @@ var SearchBar = (_temp2 = _class = function (_BaseComponent) {
 
   return SearchBar;
 }(_index.Component), _class.properties = {
+  "__fn_onConfirm": {
+    "type": null,
+    "value": null
+  },
   "isFixed": {
     "type": null,
     "value": null

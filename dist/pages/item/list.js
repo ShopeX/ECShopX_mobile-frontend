@@ -155,6 +155,19 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
       }, function () {
         _this.nextPage();
       });
+    }, _this.handleConfirm = function (val) {
+      _this.setState({
+        query: _extends({}, _this.state.query, {
+          keywords: val
+        })
+      }, function () {
+        _this.resetPage();
+        _this.setState({
+          list: []
+        }, function () {
+          _this.nextPage();
+        });
+      });
     }, _this.anonymousFunc0Array = [], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -363,7 +376,7 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleFilterChange", "handleClickFilter", "handleClickParmas", "handleClickSearchParams", "handleScroll", "nextPage", "anonymousFunc0", "scrollBackToTop"], _temp2)) || _class) || _class) || _class);
+}, _class2.$$events = ["handleConfirm", "handleFilterChange", "handleClickFilter", "handleClickParmas", "handleClickSearchParams", "handleScroll", "nextPage", "anonymousFunc0", "scrollBackToTop"], _temp2)) || _class) || _class) || _class);
 exports.default = List;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(List, true));

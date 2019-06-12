@@ -36,6 +36,12 @@
       color: #808080;
     }
   }
+
+  .input-phone {
+    .at-input__input {
+      visibility: hidden;
+    }
+  }
 }
 .pay-rule-style {
   padding: 30px;

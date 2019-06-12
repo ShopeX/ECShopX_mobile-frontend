@@ -210,6 +210,22 @@ export default class List extends Component {
     })
   }
 
+  handleConfirm = (val) => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        keywords: val,
+      }
+    }, () =>{
+      this.resetPage()
+      this.setState({
+        list: []
+      }, () => {
+        this.nextPage()
+      })
+    })
+  }
+
   render () {
     const { list, listType, curFilterIdx, filterList, showBackToTop, scrollTop, page, showDrawer, paramsList, selectParams } = this.state
 
@@ -221,7 +237,9 @@ export default class List extends Component {
             leftIconType='chevron-left'
             fixed='true'
           />
-          <SearchBar />
+          <SearchBar
+            onConfirm={this.handleConfirm.bind(this)}
+          />
 
           <FilterBar
             className='goods-list__tabs'

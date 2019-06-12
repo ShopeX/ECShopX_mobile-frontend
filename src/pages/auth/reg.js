@@ -269,22 +269,36 @@ export default class Reg extends Component {
         >
           <View className='sec auth-reg__form'>
             {process.env.TARO_ENV === 'weapp' && (
-              <AtInput
-                title='手机号码'
-                name='mobile'
-                type='number'
-                disabled={isHasValue}
-                maxLength={11}
-                value={info.mobile}
-                placeholder=''
-                onFocus={this.handleErrorToastClose}
-                onChange={this.handleChange.bind(this, 'mobile')}
-              >
-                <AtButton
-                  openType='getPhoneNumber'
-                  onGetPhoneNumber={this.handleGetPhoneNumber}
-                >获取手机号码</AtButton>
-              </AtInput>
+              <View className='at-input'>
+                <View className='at-input__container'>
+                  <View className='at-input__title'>手机号码</View>
+                  <View className='at-input__input'>{info.mobile}</View>
+                  <View className='at-input__children'>
+                    <AtButton
+                      openType='getPhoneNumber'
+                      onGetPhoneNumber={this.handleGetPhoneNumber}
+                    >获取手机号码</AtButton>
+                  </View>
+                </View>
+              </View>
+
+              // <AtInput
+              //   title='手机号码'
+              //   className='input-phone'
+              //   name='mobile'
+              //   type='number'
+              //   // disabled={isHasValue}
+              //   maxLength={11}
+              //   value={info.mobile}
+              //   placeholder=''
+              //   onFocus={this.handleErrorToastClose}
+              //   onChange={this.handleChange.bind(this, 'mobile')}
+              // >
+              //   <AtButton
+              //     openType='getPhoneNumber'
+              //     onGetPhoneNumber={this.handleGetPhoneNumber}
+              //   >获取手机号码</AtButton>
+              // </AtInput>
             )}
             {Taro.getEnv() !== Taro.ENV_TYPE.WEAPP && (
               <View>

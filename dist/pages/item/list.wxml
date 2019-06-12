@@ -2,7 +2,7 @@
     <view class="page-goods-list">
         <view class="goods-list__toolbar">
             <nav-bar title="商城" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
-            <search-bar __triggerObserer="{{ _triggerObserer }}"></search-bar>
+            <search-bar bindonconfirm="handleConfirm" __triggerObserer="{{ _triggerObserer }}" __fn_onConfirm="{{true}}" data-e-onconfirm-so="this"></search-bar>
             <filter-bar className="goods-list__tabs" __triggerObserer="{{ _triggerObserer }}" current="{{curFilterIdx}}" list="{{filterList}}" bindonchange="handleFilterChange" __fn_onChange="{{true}}">
                 <view class="filter-bar__item" bindtap="handleClickFilter" data-e-tap-so="this">
                     <view class="in-icon in-icon-filter"></view><text class="filter-bar__text">筛选</text>

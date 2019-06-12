@@ -71,6 +71,12 @@ var Category = (_dec = (0, _index3.connect)(function (store) {
           isChanged: true
         });
       }
+    }, _this.handleConfirm = function (val) {
+      var url = "/pages/item/list??keywords=" + val;
+
+      _index2.default.navigateTo({
+        url: url
+      });
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -218,7 +224,7 @@ var Category = (_dec = (0, _index3.connect)(function (store) {
   }]);
 
   return Category;
-}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleClickTab"], _temp2)) || _class);
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleConfirm", "handleClickTab"], _temp2)) || _class);
 exports.default = Category;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(Category, true));

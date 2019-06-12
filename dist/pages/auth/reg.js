@@ -64,7 +64,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = Reg.__proto__ || Object.getPrototypeOf(Reg)).call.apply(_ref2, [this].concat(args))), _this), _this.$$hasLoopRef = true, _this.$usedState = ["anonymousState__temp11", "loopArray0", "isHasValue", "info", "imgVisible", "imgInfo", "list", "isVisible"], _this.handleClickImgcode = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = Reg.__proto__ || Object.getPrototypeOf(Reg)).call.apply(_ref2, [this].concat(args))), _this), _this.$$hasLoopRef = true, _this.$usedState = ["anonymousState__temp11", "loopArray0", "info", "imgVisible", "imgInfo", "list", "isVisible", "isHasValue"], _this.handleClickImgcode = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var query, img_res;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -486,9 +486,9 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
         var $loopState__temp4 = (0, _index4.classNames)(item.$original.value ? 'pick-value' : 'pick-value-null');
         var $loopState__temp6 = "" + item.$original.key;
         var $loopState__temp8 = "\u8BF7\u8F93\u5165" + item.$original.name;
-        var $loopState__temp10 = "eqvbh" + index;
+        var $loopState__temp10 = "fFykK" + index;
 
-        var __ref = __scope && __isRunloopRef && (0, _index.getElementById)(__scope, "#" + ("eqvbh" + index), "component");
+        var __ref = __scope && __isRunloopRef && (0, _index.getElementById)(__scope, "#" + ("fFykK" + index), "component");
 
         __ref && function (input) {
           _this3.textInput = input;
@@ -511,7 +511,7 @@ var Reg = (_dec = (0, _index3.connect)(function (_ref) {
   }]);
 
   return Reg;
-}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleSubmit", "handleErrorToastClose", "handleChange", "handleGetPhoneNumber", "handleClickImgcode", "handleTimerStart", "handleTimerStop", "handleClickAgreement"], _temp2)) || _class);
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleSubmit", "handleGetPhoneNumber", "handleErrorToastClose", "handleChange", "handleClickImgcode", "handleTimerStart", "handleTimerStop", "handleClickAgreement"], _temp2)) || _class);
 exports.default = Reg;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(Reg, true));
