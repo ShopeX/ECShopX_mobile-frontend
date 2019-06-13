@@ -88,15 +88,7 @@ class App extends Component {
       'pages/trade/refund-sendback',
       'pages/trade/invoice-list',
 
-      'pages/protocol/privacy',
-
-      // 集成用，勿删
-      /*'pages/iwp/item-list',
-      'pages/iwp/item-detail',
-      'pages/iwp/recommend-list',
-      'pages/iwp/recommend-detail'*/
-      // 'pages/iwp/coupon-home',
-      // 'pages/iwp/article-index'
+      'pages/protocol/privacy'
     ],
     navigateToMiniProgramAppIdList: [
       'wx4721629519a8f25b',

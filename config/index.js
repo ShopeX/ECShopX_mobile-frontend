@@ -50,7 +50,6 @@ const config = {
       ? '/pages/auth/wxauth'
       : '/pages/auth/login',
 
-    APP_APPID: '', // 正式版 appid
     APP_GIFT_APPID: 'wx2fb97cb696f68d22' // 礼品小程序 appid
   },
   alias: {

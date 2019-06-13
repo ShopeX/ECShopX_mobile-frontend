@@ -6,7 +6,6 @@
 	"description": "爱茉莉商城小程序",
 	"scripts": {
 		"build:weapp": "taro build --type weapp",
-		"build:weapp-iwp": "cross-env INTEGRATION_APP=true taro build --type weapp && node build/index.js",
 		"build:swan": "taro build --type swan",
 		"build:alipay": "taro build --type alipay",
 		"build:tt": "taro build --type tt",

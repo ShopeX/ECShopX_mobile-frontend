@@ -91,9 +91,9 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
         });
       } catch (error) {
         console.log(error);
-        _index2.default.navigateTo({
-          url: "/pages/iwp/item-detail?id=" + id
-        });
+        /*Taro.navigateTo({
+          url: `/pages/iwp/item-detail?id=${id}`
+        })*/
       }
     }, _this.handleSwiperChange = function (e) {
       var current = e.detail.current;

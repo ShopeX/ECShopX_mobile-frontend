@@ -21,19 +21,6 @@ export default class GoodsBuyToolbar extends Component {
   }
 
   handleClickCart = (id) => {
-    if (APP_INTEGRATION) {
-      Taro.navigateToMiniProgram({
-        appId: 'wx4721629519a8f25b', // 要跳转的小程序的appid
-        path: `pages/recommend/detail?id=${id}`, // 跳转的目标页面
-        extraData: {
-          id: id
-        },
-        envVersion: 'trial'
-      })
-
-      return
-    }
-
     Taro.navigateTo({
       url: '/pages/cart/espier-index'
     })
