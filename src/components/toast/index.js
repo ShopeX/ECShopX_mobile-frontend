@@ -56,6 +56,10 @@ export default class SpToast extends Component {
 
   render () {
     const { showToast, text } = this.state
+    let newText = ''
+    if(text.length > 11) {
+      newText = text.substring(0, 11)+ '\n' + text.substring(11)
+    }
     const { icon, image, status, duration, hasMask } = resolveState(this.props, this.state)
 
     return (
@@ -67,7 +71,7 @@ export default class SpToast extends Component {
         hasMask={hasMask}
         isOpened={showToast}
         onClose={this.handleClose}
-        text={text}
+        text={newText}
       />
     )
   }

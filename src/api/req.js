@@ -40,10 +40,14 @@ class API {
 
   errorToast (data) {
     const errMsg = data.msg || data.err_msg || (data.error && data.error.message) || '操作失败，请稍后重试'
+    let newText = ''
+    if(errMsg.length > 11) {
+      newText = errMsg.substring(0, 11)+ '\n' + errMsg.substring(11)
+    }
     setTimeout(() => {
       Taro.showToast({
         icon: 'none',
-        title: errMsg
+        title: newText
       })
     }, 200)
   }
