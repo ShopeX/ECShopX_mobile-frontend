@@ -83,17 +83,14 @@ function withPager(Component) {
             case 0:
               page = _this2.state.page;
 
-
-              console.log(page, 24);
-
               if (!(!page.hasNext || page.isLoading)) {
-                _context.next = 4;
+                _context.next = 3;
                 break;
               }
 
               return _context.abrupt("return");
 
-            case 4:
+            case 3:
 
               page.isLoading = true;
               _this2.setState({
@@ -102,13 +99,13 @@ function withPager(Component) {
 
               page_no = page.page_no, page_size = page.page_size;
               curPage = page_no + 1;
-              _context.next = 10;
+              _context.next = 9;
               return _this2.fetch({
                 page_no: curPage,
                 page_size: page_size
               });
 
-            case 10:
+            case 9:
               _ref3 = _context.sent;
               total = _ref3.total;
 
@@ -125,7 +122,7 @@ function withPager(Component) {
                 })
               });
 
-            case 14:
+            case 13:
             case "end":
               return _context.stop();
           }

@@ -48,14 +48,20 @@ export default class Detail extends Component {
       isGreaterSix: false,
       sixSpecImgsDict: {},
       curSku: null,
-      promotion_activity: []
+      promotion_activity: [],
+      screenWidth: 0
     }
   }
 
   componentDidMount () {
     this.handleResize()
     this.fetch()
-
+    Taro.getSystemInfo()
+      .then(res =>{
+        this.setState({
+          screenWidth: res.screenWidth
+        })
+      })
     // 浏览记录
     if (S.getAuthToken()) {
       try {
@@ -78,6 +84,8 @@ export default class Detail extends Component {
       title: info.item_name,
       path: `/pages/item/espier-detail?id=${info.item_id}`
     }
+
+
   }
 
   handleResize () {
@@ -276,7 +284,7 @@ export default class Detail extends Component {
   }
 
   render () {
-    const { info, windowWidth, isGreaterSix, sixSpecImgsDict, curImgIdx, desc, cartCount, scrollTop, showBackToTop, curSku, promotion_activity } = this.state
+    const { info, windowWidth, screenWidth, isGreaterSix, sixSpecImgsDict, curImgIdx, desc, cartCount, scrollTop, showBackToTop, curSku, promotion_activity } = this.state
     const { marketing, timer, isPromoter, startSecKill, hasStock, showBuyPanel, buyPanelType } = this.state
 
     if (!info) {
@@ -498,7 +506,7 @@ export default class Detail extends Component {
                     return (
                       <View className='wgt-wrap' key={idx}>
                         {item.name === 'film' && <WgtFilm info={item} />}
-                        {item.name === 'slider' && <WgtSlider info={item} />}
+                        {item.name === 'slider' && <WgtSlider info={item} width={screenWidth} />}
                         {item.name === 'writing' && <WgtWriting info={item} />}
                         {item.name === 'heading' && <WgtHeading info={item} />}
                         {item.name === 'goods' && <WgtGoods info={item} />}

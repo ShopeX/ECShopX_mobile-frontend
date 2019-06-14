@@ -8,7 +8,7 @@
                 <wgt-search-home __triggerObserer="{{ _triggerObserer }}"></wgt-search-home>
                 <view class="wgt-wrap" wx:key="idx" wx:for="{{wgts}}" wx:for-item="item" wx:for-index="idx">
                     <block wx:if="{{item.name === 'slider'}}">
-                        <wgt-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-slider>
+                        <wgt-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}" width="{{screenWidth}}"></wgt-slider>
                     </block>
                     <block wx:if="{{item.name === 'navigation'}}">
                         <wgt-navigation info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-navigation>

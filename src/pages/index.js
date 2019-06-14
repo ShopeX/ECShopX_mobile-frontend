@@ -27,7 +27,8 @@ export default class HomeIndex extends Component {
       authStatus: false,
       likeList: [],
       isFaverite_open: false,
-      isShowAddTip: false
+      isShowAddTip: false,
+      screenWidth: 0
     }
   }
 
@@ -43,6 +44,12 @@ export default class HomeIndex extends Component {
   }
 
   componentDidMount () {
+    Taro.getSystemInfo()
+      .then(res =>{
+        this.setState({
+          screenWidth: res.screenWidth
+        })
+      })
     this.fetchInfo()
   }
 
@@ -119,7 +126,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip } = this.state
+    const { wgts, authStatus, screenWidth, page, likeList, showBackToTop, scrollTop, isShowAddTip } = this.state
 
     if (!wgts || !this.props.store) {
       return <Loading />
@@ -141,7 +148,7 @@ export default class HomeIndex extends Component {
               wgts.map((item, idx) => {
                 return (
                   <View className='wgt-wrap' key={idx}>
-                    {item.name === 'slider' && <WgtSlider info={item} />}
+                    {item.name === 'slider' && <WgtSlider info={item} width={screenWidth} />}
                     {item.name === 'navigation' && <WgtNavigation info={item} />}
                     {item.name === 'coupon' && <WgtCoupon info={item} />}
                     {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}

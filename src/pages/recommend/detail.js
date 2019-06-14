@@ -21,7 +21,8 @@ export default class recommendDetail extends Component {
       info: null,
       praiseCheckStatus: false,
       collectArticleStatus: false,
-      item_id_List: []
+      item_id_List: [],
+      screenWidth: 0
     }
   }
 
@@ -31,6 +32,12 @@ export default class recommendDetail extends Component {
   }
 
   componentDidMount () {
+    Taro.getSystemInfo()
+      .then(res =>{
+        this.setState({
+          screenWidth: res.screenWidth
+        })
+      })
   }
 
   /*async fetch (params) {
@@ -202,7 +209,7 @@ export default class recommendDetail extends Component {
   }
 
   render () {
-    const { info, praiseCheckStatus, collectArticleStatus, showBackToTop } = this.state
+    const { info, praiseCheckStatus, screenWidth, collectArticleStatus, showBackToTop } = this.state
 
     if (!info) {
       return null
@@ -231,7 +238,7 @@ export default class recommendDetail extends Component {
                 return (
                   <View className='wgt-wrap' key={idx}>
                     {item.name === 'film' && <WgtFilm info={item} />}
-                    {item.name === 'slider' && <WgtSlider info={item} />}
+                    {item.name === 'slider' && <WgtSlider info={item} width={screenWidth} />}
                     {item.name === 'writing' && <WgtWriting info={item} />}
                     {item.name === 'heading' && <WgtHeading info={item} />}
                     {item.name === 'goods' && <WgtGoods onClick={this.handleClickGoods.bind('goods')} info={item} />}

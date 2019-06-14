@@ -53,7 +53,7 @@ var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = functi
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = recommendDetail.__proto__ || Object.getPrototypeOf(recommendDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "collectArticleStatus", "praiseCheckStatus", "item_id_List"], _this.confirmCollectArticle = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = recommendDetail.__proto__ || Object.getPrototypeOf(recommendDetail)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "screenWidth", "collectArticleStatus", "praiseCheckStatus", "item_id_List"], _this.confirmCollectArticle = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var id, res;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -247,7 +247,8 @@ var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = functi
         info: null,
         praiseCheckStatus: false,
         collectArticleStatus: false,
-        item_id_List: []
+        item_id_List: [],
+        screenWidth: 0
       });
     }
   }, {
@@ -258,7 +259,15 @@ var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = functi
     }
   }, {
     key: "componentDidMount",
-    value: function componentDidMount() {}
+    value: function componentDidMount() {
+      var _this3 = this;
+
+      _index2.default.getSystemInfo().then(function (res) {
+        _this3.setState({
+          screenWidth: res.screenWidth
+        });
+      });
+    }
 
     /*async fetch (params) {
       const { page_no: page, page_size: pageSize } = params
@@ -384,6 +393,7 @@ var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = functi
       var _state = this.__state,
           info = _state.info,
           praiseCheckStatus = _state.praiseCheckStatus,
+          screenWidth = _state.screenWidth,
           collectArticleStatus = _state.collectArticleStatus,
           showBackToTop = _state.showBackToTop;
 

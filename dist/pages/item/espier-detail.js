@@ -78,7 +78,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "loopArray0", "info", "scrollTop", "curImgIdx", "imgs", "timer", "marketing", "isPromoter", "promotion_activity", "curSku", "buyPanelType", "$anonymousCallee__0", "isGreaterSix", "desc", "hasStock", "startSecKill", "cartCount", "showBuyPanel", "windowWidth", "specImgsDict", "sixSpecImgsDict", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "loopArray0", "info", "scrollTop", "curImgIdx", "imgs", "timer", "marketing", "isPromoter", "promotion_activity", "curSku", "buyPanelType", "$anonymousCallee__0", "isGreaterSix", "desc", "screenWidth", "hasStock", "startSecKill", "cartCount", "showBuyPanel", "windowWidth", "specImgsDict", "sixSpecImgsDict", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type) {
         var info, isAuth, favRes;
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -239,15 +239,22 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
         isGreaterSix: false,
         sixSpecImgsDict: {},
         curSku: null,
-        promotion_activity: []
+        promotion_activity: [],
+        screenWidth: 0
       };
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      var _this3 = this;
+
       this.handleResize();
       this.fetch();
-
+      _index2.default.getSystemInfo().then(function (res) {
+        _this3.setState({
+          screenWidth: res.screenWidth
+        });
+      });
       // 浏览记录
       if (_index9.default.getAuthToken()) {
         try {
@@ -339,7 +346,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
     key: "fetch",
     value: function () {
       var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-        var _this3 = this;
+        var _this4 = this;
 
         var id, info, desc, promotion_activity, marketing, timer, hasStock, startSecKill, specImgsDict, spectImg, sixSpecImgsDict;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
@@ -394,7 +401,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
 
                 Object.keys(spectImg).map(function (item, index) {
                   if (index > 6) {
-                    _this3.setState({
+                    _this4.setState({
                       isGreaterSix: true
                     });
                   }
@@ -452,7 +459,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
   }, {
     key: "_createData",
     value: function _createData() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
@@ -462,6 +469,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       var _state = this.__state,
           info = _state.info,
           windowWidth = _state.windowWidth,
+          screenWidth = _state.screenWidth,
           isGreaterSix = _state.isGreaterSix,
           sixSpecImgsDict = _state.sixSpecImgsDict,
           curImgIdx = _state.curImgIdx,
@@ -497,7 +505,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       var anonymousState__temp2 = !showBackToTop;
 
       this.anonymousFunc0 = function () {
-        return _this4.setState({ showBuyPanel: false });
+        return _this5.setState({ showBuyPanel: false });
       };
 
       var $anonymousCallee__0 = info.nospec !== true ? Object.keys(sixSpecImgsDict) : [];

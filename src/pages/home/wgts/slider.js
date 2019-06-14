@@ -33,13 +33,12 @@ export default class WgtSlider extends Component {
   }
 
   render () {
-    const { info } = this.props
+    const { info, width } = this.props
     const { curIdx } = this.state
 
     if (!info) {
       return null
     }
-
     const { config, base, data } = info
     const curContent = (data[curIdx] || {}).content
 
@@ -56,7 +55,7 @@ export default class WgtSlider extends Component {
             ? <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
                 <Swiper
                   className='slider-img'
-                  style={`height: ${Taro.pxTransform(config.height * 2)}`}
+                  style={`height: ${Taro.pxTransform(Math.round(width*(config.height/320)) * 2)}`}
                   circular
                   autoplay
                   current={curIdx}

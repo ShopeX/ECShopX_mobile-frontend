@@ -83,7 +83,7 @@
                                 <wgt-film info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-film>
                             </block>
                             <block wx:if="{{item.name === 'slider'}}">
-                                <wgt-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-slider>
+                                <wgt-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}" width="{{screenWidth}}"></wgt-slider>
                             </block>
                             <block wx:if="{{item.name === 'writing'}}">
                                 <wgt-writing info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-writing>

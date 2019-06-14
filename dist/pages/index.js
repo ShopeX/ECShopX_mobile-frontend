@@ -64,7 +64,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "scrollTop", "likeList", "page", "showBackToTop", "isShowAddTip", "authStatus", "isFaverite_open", "store"], _this.componentDidShow = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "scrollTop", "screenWidth", "likeList", "page", "showBackToTop", "isShowAddTip", "authStatus", "isFaverite_open", "store"], _this.componentDidShow = function () {
       _index2.default.getStorage({ key: 'addTipIsShow' }).then(function () {}).catch(function (error) {
         console.log(error);
         _this.setState({
@@ -93,12 +93,20 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
         authStatus: false,
         likeList: [],
         isFaverite_open: false,
-        isShowAddTip: false
+        isShowAddTip: false,
+        screenWidth: 0
       });
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      var _this2 = this;
+
+      _index2.default.getSystemInfo().then(function (res) {
+        _this2.setState({
+          screenWidth: res.screenWidth
+        });
+      });
       this.fetchInfo();
     }
   }, {
@@ -116,7 +124,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
     key: "fetchInfo",
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var _this2 = this;
+        var _this3 = this;
 
         var url, info;
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -142,10 +150,10 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
                   if (info.config) {
                     info.config.map(function (item) {
                       if (item.name === 'faverite_type' && item.config.isOpen === false) {
-                        _this2.setState({
+                        _this3.setState({
                           isFaverite_open: true
                         });
-                        _this2.nextPage();
+                        _this3.nextPage();
                       }
                     });
                   }
@@ -228,6 +236,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       var _state = this.__state,
           wgts = _state.wgts,
           authStatus = _state.authStatus,
+          screenWidth = _state.screenWidth,
           page = _state.page,
           likeList = _state.likeList,
           showBackToTop = _state.showBackToTop,
