@@ -1,1 +1,122 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,n,r)}if("value"in o)return o.value;var i=o.get;return void 0!==i?i.call(r):void 0},_index=require("../../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_helper=require("./helper.js");function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var WgtHeading=(_temp2=_class=function(e){function i(){var e,t,n;_classCallCheck(this,i);for(var r=arguments.length,o=Array(r),a=0;a<r;a++)o[a]=arguments[a];return(t=n=_possibleConstructorReturn(this,(e=i.__proto__||Object.getPrototypeOf(i)).call.apply(e,[this].concat(o)))).$usedState=["anonymousState__temp","info","base","config","curContent","curIdx"],n.handleClickItem=_helper.linkPage,n.handleSwiperChange=function(e){var t=e.detail.current;n.setState({curIdx:t})},n.$$refs=[],_possibleConstructorReturn(n,t)}return _inherits(i,_index.Component),_createClass(i,[{key:"_constructor",value:function(e){_get(i.prototype.__proto__||Object.getPrototypeOf(i.prototype),"_constructor",this).call(this,e),this.state={curIdx:0}}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props.info,t=this.__state.curIdx;if(!e)return null;var n=e.config,r=e.base,o=(e.data[t]||{}).content,a="";n&&(n.align&&(a="text-align: "+n.align+";"),!0===n.italic&&(a=a.concat("font-style: italic;")),!0===n.bold&&(a=a.concat("font-weight: 700;")),n.size&&(a=a.concat("font-size: "+_index2.default.pxTransform(2*n.size)+";")));var i=(0,_index.internal_inline_style)(a);return Object.assign(this.__state,{anonymousState__temp:i,info:e,base:r,config:n,curContent:o}),this.__state}}]),i}(),_class.properties={info:{type:null,value:null}},_class.$$events=[],_class.options={addGlobalClass:!0},_class.defaultProps={info:null},_temp2);exports.default=WgtHeading,Component(require("../../../npm/@tarojs/taro-weapp/index.js").default.createComponent(WgtHeading));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _helper = require("./helper.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var WgtHeading = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(WgtHeading, _BaseComponent);
+
+  function WgtHeading() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, WgtHeading);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtHeading.__proto__ || Object.getPrototypeOf(WgtHeading)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "base", "config", "curContent", "curIdx"], _this.handleClickItem = _helper.linkPage, _this.handleSwiperChange = function (e) {
+      var current = e.detail.current;
+
+
+      _this.setState({
+        curIdx: current
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(WgtHeading, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(WgtHeading.prototype.__proto__ || Object.getPrototypeOf(WgtHeading.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        curIdx: 0
+      };
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var info = this.__props.info;
+      var curIdx = this.__state.curIdx;
+
+
+      if (!info) {
+        return null;
+      }
+
+      var config = info.config,
+          base = info.base,
+          data = info.data;
+
+      var curContent = (data[curIdx] || {}).content;
+      var stringStyle = '';
+      if (config) {
+        if (config.align) {
+          stringStyle = "text-align: " + config.align + ";";
+        }
+        if (config.italic === true) {
+          stringStyle = stringStyle.concat('font-style: italic;');
+        }
+        if (config.bold === true) {
+          stringStyle = stringStyle.concat('font-weight: 700;');
+        }
+        if (config.size) {
+          stringStyle = stringStyle.concat("font-size: " + _index2.default.pxTransform(config.size * 2) + ";");
+        }
+      }
+
+      var anonymousState__temp = (0, _index.internal_inline_style)(stringStyle);
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        info: info,
+        base: base,
+        config: config,
+        curContent: curContent
+      });
+      return this.__state;
+    }
+  }]);
+
+  return WgtHeading;
+}(_index.Component), _class.properties = {
+  "info": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = [], _class.options = {
+  addGlobalClass: true
+}, _class.defaultProps = {
+  info: null
+}, _temp2);
+exports.default = WgtHeading;
+
+Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(WgtHeading));

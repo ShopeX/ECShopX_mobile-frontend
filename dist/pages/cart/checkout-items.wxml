@@ -1,6 +1,6 @@
 <block>
     <view class="{{anonymousState__temp}}">
-        <at-nav-bar leftIconType="chevron-left" __triggerObserer="{{ _triggerObserer }}" title="{{anonymousState__temp2}}" bindonclicklefticon="funPrivateNDLYM" __fn_onClickLeftIcon="{{true}}"></at-nav-bar>
+        <at-nav-bar leftIconType="chevron-left" __triggerObserer="{{ _triggerObserer }}" title="{{anonymousState__temp2}}" bindonclicklefticon="funPrivategVqND" __fn_onClickLeftIcon="{{true}}"></at-nav-bar>
         <scroll-view class="checkout-items__scroll">
             <view class="checkout-items__list">
                 <goods-item wx:key="item_id" __triggerObserer="{{ _triggerObserer }}" info="{{item}}" wx:for="{{list}}" wx:for-item="item" wx:for-index="_anonIdx"></goods-item>

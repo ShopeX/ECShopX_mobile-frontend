@@ -1,1 +1,152 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function o(t,e){for(var n=0;n<e.length;n++){var o=e[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(t,o.key,o)}}return function(t,e,n){return e&&o(t.prototype,e),n&&o(t,n),t}}(),_get=function t(e,n,o){null===e&&(e=Function.prototype);var r=Object.getOwnPropertyDescriptor(e,n);if(void 0===r){var l=Object.getPrototypeOf(e);return null===l?void 0:t(l,n,o)}if("value"in r)return r.value;var a=r.get;return void 0!==a?a.call(o):void 0},_index=require("../../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index);function _interopRequireDefault(t){return t&&t.__esModule?t:{default:t}}function _classCallCheck(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function _inherits(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}var GoodsBuyToolbar=(_temp2=_class=function(t){function a(){var t,e,n;_classCallCheck(this,a);for(var o=arguments.length,r=Array(o),l=0;l<o;l++)r[l]=arguments[l];return(e=n=_possibleConstructorReturn(this,(t=a.__proto__||Object.getPrototypeOf(a)).call.apply(t,[this].concat(r)))).$usedState=["info","cartCount","type","fastBuyText","__fn_onClick","customRender","children","onClickAddCart","onClickFastBuy"],n.handleClickCart=function(t){_index2.default.navigateTo({url:"/pages/cart/espier-index"})},n.$$refs=[],_possibleConstructorReturn(n,e)}return _inherits(a,_index.Component),_createClass(a,[{key:"_constructor",value:function(t){_get(a.prototype.__proto__||Object.getPrototypeOf(a.prototype),"_constructor",this).call(this,t)}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var t=this.__props,e=(t.onClickAddCart,t.onClickFastBuy,t.cartCount),n=t.type,o=t.info,r="normal"===n?"立即购买":"seckill"===n?"立即抢购":"我要开团";return Object.assign(this.__state,{info:o,cartCount:e,type:n,fastBuyText:r}),this.__state}},{key:"funPrivatezmbbA",value:function(){this.__triggerPropsFn("onFavItem",[].concat(Array.prototype.slice.call(arguments)))}},{key:"funPrivateZzNhi",value:function(){this.__triggerPropsFn("onClickAddCart",[].concat(Array.prototype.slice.call(arguments)))}},{key:"funPrivateJNbId",value:function(){this.__triggerPropsFn("onClickFastBuy",[].concat(Array.prototype.slice.call(arguments)))}}]),a}(),_class.properties={onClickAddCart:{type:null,value:null},onClickFastBuy:{type:null,value:null},cartCount:{type:null,value:null},type:{type:null,value:null},info:{type:null,value:null},onFavItem:{type:null,value:null},__fn_onClick:{type:null,value:null},__fn_onFavItem:{type:null,value:null},customRender:{type:null,value:null},__fn_onClickAddCart:{type:null,value:null},__fn_onClickFastBuy:{type:null,value:null}},_class.$$events=["funPrivatezmbbA","handleClickCart","funPrivateZzNhi","funPrivateJNbId"],_class.options={addGlobalClass:!0},_class.defaultProps={type:"normal",onClickAddCart:function(){},onClickFastBuy:function(){},onFavItem:function(){},cartCount:"",info:null},_temp2);exports.default=GoodsBuyToolbar,Component(require("../../../npm/@tarojs/taro-weapp/index.js").default.createComponent(GoodsBuyToolbar));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GoodsBuyToolbar = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(GoodsBuyToolbar, _BaseComponent);
+
+  function GoodsBuyToolbar() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, GoodsBuyToolbar);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GoodsBuyToolbar.__proto__ || Object.getPrototypeOf(GoodsBuyToolbar)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "cartCount", "type", "fastBuyText", "__fn_onClick", "customRender", "children", "onClickAddCart", "onClickFastBuy"], _this.handleClickCart = function (id) {
+      _index2.default.navigateTo({
+        url: '/pages/cart/espier-index'
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(GoodsBuyToolbar, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(GoodsBuyToolbar.prototype.__proto__ || Object.getPrototypeOf(GoodsBuyToolbar.prototype), "_constructor", this).call(this, props);
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _props = this.__props,
+          onClickAddCart = _props.onClickAddCart,
+          onClickFastBuy = _props.onClickFastBuy,
+          cartCount = _props.cartCount,
+          type = _props.type,
+          info = _props.info;
+
+
+      var fastBuyText = type === 'normal' ? '立即购买' : type === 'seckill' ? '立即抢购' : '我要开团';
+
+      Object.assign(this.__state, {
+        info: info,
+        cartCount: cartCount,
+        type: type,
+        fastBuyText: fastBuyText
+      });
+      return this.__state;
+    }
+  }, {
+    key: "funPrivatewLvSz",
+    value: function funPrivatewLvSz() {
+      this.__triggerPropsFn("onFavItem", [].concat(Array.prototype.slice.call(arguments)));
+    }
+  }, {
+    key: "funPrivatePXpRK",
+    value: function funPrivatePXpRK() {
+      this.__triggerPropsFn("onClickAddCart", [].concat(Array.prototype.slice.call(arguments)));
+    }
+  }, {
+    key: "funPrivateboczk",
+    value: function funPrivateboczk() {
+      this.__triggerPropsFn("onClickFastBuy", [].concat(Array.prototype.slice.call(arguments)));
+    }
+  }]);
+
+  return GoodsBuyToolbar;
+}(_index.Component), _class.properties = {
+  "onClickAddCart": {
+    "type": null,
+    "value": null
+  },
+  "onClickFastBuy": {
+    "type": null,
+    "value": null
+  },
+  "cartCount": {
+    "type": null,
+    "value": null
+  },
+  "type": {
+    "type": null,
+    "value": null
+  },
+  "info": {
+    "type": null,
+    "value": null
+  },
+  "onFavItem": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClick": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onFavItem": {
+    "type": null,
+    "value": null
+  },
+  "customRender": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClickAddCart": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClickFastBuy": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["funPrivatewLvSz", "handleClickCart", "funPrivatePXpRK", "funPrivateboczk"], _class.options = {
+  addGlobalClass: true
+}, _class.defaultProps = {
+  type: 'normal',
+  onClickAddCart: function onClickAddCart() {},
+  onClickFastBuy: function onClickFastBuy() {},
+  onFavItem: function onFavItem() {},
+  cartCount: '',
+  info: null
+}, _temp2);
+exports.default = GoodsBuyToolbar;
+
+Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(GoodsBuyToolbar));

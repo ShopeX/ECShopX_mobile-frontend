@@ -108,3 +108,11 @@ switch, .weui-switch {
   transform: scale(0.6);
   transform-origin: center right;
 }
+
+.search-input__bar {
+  .at-search-bar {
+    &__input {
+      line-height: 30PX - 10PX;
+    }
+  }
+}
