@@ -61,7 +61,7 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MemberIndex.__proto__ || Object.getPrototypeOf(MemberIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "isAvatatImg", "ordersCount", "__fn_onFetchFavs"], _this.handleClickRecommend = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MemberIndex.__proto__ || Object.getPrototypeOf(MemberIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "vipgrade", "gradeInfo", "orderCount", "isOpenPopularize", "isPromoter", "ordersCount", "loginCode", "animationCodeData", "cardInfo", "memberInfo", "cursymbol", "__fn_onFetchFavs"], _this.handleClickRecommend = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var info;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -98,9 +98,7 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
           }
         }
       }, _callee, _this2);
-    })), _this.handleClickApp = function () {
-      console.log('跳转统合小程序');
-    }, _this.handleClickGiftApp = function () {
+    })), _this.handleClickGiftApp = function () {
       _index2.default.navigateToMiniProgram({
         appId: "wx2fb97cb696f68d22",
         path: '/pages/index/index'
@@ -126,8 +124,30 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
           point: '',
           coupon: '',
           luckdraw: '',
-          username: ''
-        }
+          username: '',
+          user_card_code: ''
+        },
+        vipgrade: {
+          grade_name: '',
+          end_date: '',
+          is_vip: '',
+          vip_type: '',
+          is_open: '',
+          background_pic_url: ''
+        },
+        gradeInfo: {
+          user_card_code: '',
+          grade_name: '',
+          background_pic_url: ''
+        },
+        orderCount: '',
+        loginCode: '',
+        animationCodeData: {},
+        cardInfo: {},
+        memberInfo: {},
+        isOpenPopularize: false,
+        isPromoter: false,
+        cursymbol: '¥'
       };
     }
   }, {
@@ -185,8 +205,23 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
                     }
                   });
                 }
+                this.setState({
+                  vipgrade: {
+                    grade_name: res.vipgrade.grade_name,
+                    end_date: res.vipgrade.end_time,
+                    is_vip: res.vipgrade.is_vip,
+                    vip_type: res.vipgrade.vip_type,
+                    is_open: res.vipgrade.is_open,
+                    background_pic_url: res.vipgrade.background_pic_url
+                  },
+                  gradeInfo: {
+                    user_card_code: res.memberInfo.user_card_code,
+                    grade_name: res.memberInfo.gradeInfo.grade_name,
+                    background_pic_url: res.memberInfo.gradeInfo.background_pic_url
+                  }
+                });
 
-              case 11:
+              case 12:
               case "end":
                 return _context2.stop();
             }
@@ -217,9 +252,7 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
         isAvatatImg = true;
       }
 
-      Object.assign(this.__state, {
-        isAvatatImg: isAvatatImg
-      });
+      Object.assign(this.__state, {});
       return this.__state;
     }
   }]);
@@ -230,7 +263,7 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["navigateTo", "handleClickGiftApp", "handleClickPhone"], _temp2)) || _class) || _class);
+}, _class2.$$events = ["viewOrder", "viewAftersales", "toPay", "beDistributor"], _temp2)) || _class) || _class);
 exports.default = MemberIndex;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(MemberIndex, true));

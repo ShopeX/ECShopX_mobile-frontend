@@ -1,49 +1,144 @@
 <block>
     <view class="page-member-index">
-        <view class="member-card">
-            <view class="member-info">
-                <at-avatar className="member-avatar" __triggerObserer="{{ _triggerObserer }}" title="{{info.username}}" image="{{isAvatatImg ? info.avatar : ''}}" text="{{isAvatatImg ? '' : info.username}}" size="large" circle="{{true}}"></at-avatar>
-                <view class="member-name">{{info.username}}</view>
-            </view>
-            <view class="member-btns">
-                <view class="member-btn__item">
-                    <view class="in-icon in-icon-check"></view><text>Welcome</text>
+        <view class="main">
+            <navigator hover-className="none" class="user-info view-flex view-flex-middle view-flex-center" url="member_code">
+                <view class="avatar">
+                    <image class="avatar-img" src="{{info.avatar}}" mode="aspectFill"></image>
+                    <block wx:if="{{vipgrade.vip_type === 'vip' || vipgrade.vip_type === 'svip'}}">
+                        <image class="icon-vip" src="/assets/imgs/svip.png"></image>
+                    </block>
                 </view>
-                <view class="member-btn__item"></view>
-                <view class="member-btn__item" bindtap="navigateTo" data-e-tap-so="this" data-e-tap-a-a="/pages/member/point">
-                    <view class="in-icon in-icon-coin"></view><text>我的积分</text>
+                <view>
+                    <view class="nickname">Hi, {{info.username}}<text class="icon-qrcode"></text>
+                    </view>
+                    <block>
+                        <block wx:if="{{!vipgrade.is_vip}}">
+                            <view class="gradename">{{gradeInfo.grade_name}}</view>
+                        </block>
+                        <block wx:else>
+                            <view class="gradename">{{vipgrade.grade_name}}</view>
+                        </block>
+                    </block>
+                </view>
+                <view class="icon-arrowRight"></view>
+            </navigator>
+            <view class="member-card {{vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip ? 'opened' : ''}}">
+                <block wx:if="{{vipgrade.is_open && !vipgrade.is_vip}}">
+                    <navigator url="vipgrades" class="vip-btn"><text class="icon-crown"></text>开通VIP会员</navigator>
+                </block>
+                <block wx:if="{{vipgrade.is_vip}}">
+                    <view class="view-flex grade-info">
+                        <view class="member-no">NO.{{gradeInfo.user_card_code}}</view>
+                        <view class="view-flex view-flex-middle content-v-padded">
+                            <view>{{vipgrade.end_date}}到期</view>
+                            <block wx:if="{{vipgrade.is_open}}">
+                                <navigator url="vipgrades" class="renewals-btn">续费</navigator>
+                            </block>
+                        </view>
+                        <view class="view-flex view-flex-middle vip-sign">
+                            <block wx:if="{{vipgrade.vip_type === 'svip'}}"><text class="icon-s"></text>
+                            </block><text class="icon-v"></text><text class="icon-i"></text><text class="icon-p"></text>
+                        </view>
+                    </view>
+                </block>
+                <block wx:if="{{vipgrade.is_vip}}">
+                    <image class="member-info-bg" src="{{vipgrade.background_pic_url}}"></image>
+                </block>
+                <block wx:if="{{vipgrade.is_open && !vipgrade.is_vip}}">
+                    <image class="member-info-bg" src="{{gradeInfo.background_pic_url}}"></image>
+                </block>
+            </view>
+            <view class="section section-card order-box">
+                <view class="section-title no-foot-padded">我的订单</view>
+                <view class="list">
+                    <view class="list-item" bindtap="viewOrder" data-e-tap-so="this" data-e-tap-a-a="{{4}}">
+                        <view class="list-item-txt">
+                            <view>自提订单</view>
+                            <view class="text-muted">您有{{orderCount.normal_payed_daiziti}}个等待自提的订单</view>
+                        </view>
+                        <view class="icon-ziti"></view>
+                        <view class="icon-arrowRight item-icon-go"></view>
+                    </view>
+                </view>
+                <view class="section-body">
+                    <view class="view-flex view-flex-justify">
+                        <view class="view-flex-item view-flex view-flex-vertical view-flex-middle" bindtap="viewOrder" data-e-tap-so="this" data-e-tap-a-a="{{5}}">
+                            <view class="icon-wallet">
+                                <block wx:if="{{orderCount.normal_notpay_notdelivery > 0}}">
+                                    <view class="order-num">{{orderCount.normal_notpay_notdelivery}}</view>
+                                </block>
+                            </view>
+                            <view>待支付</view>
+                        </view>
+                        <view class="order-item view-flex-item view-flex view-flex-vertical view-flex-middle" bindtap="viewOrder" data-e-tap-so="this" data-e-tap-a-a="{{1}}">
+                            <view class="icon-delivery">
+                                <block wx:if="{{orderCount.normal_payed_notdelivery > 0}}">
+                                    <view class="order-num">{{orderCount.normal_payed_notdelivery}}</view>
+                                </block>
+                            </view>
+                            <view>待收货</view>
+                        </view>
+                        <view class="view-flex-item view-flex view-flex-vertical view-flex-middle" bindtap="viewOrder" data-e-tap-so="this" data-e-tap-a-a="{{3}}">
+                            <view class="icon-office-box">
+                                <block wx:if="{{orderCount.normal_payed_delivered > 0}}">
+                                    <view class="order-num">{{orderCount.normal_payed_delivered}}</view>
+                                </block>
+                            </view>
+                            <view>已完成</view>
+                        </view>
+                        <view class="order-item view-flex-item view-flex view-flex-vertical view-flex-middle" bindtap="viewAftersales" data-e-tap-so="this">
+                            <view class="icon-repeat">
+                                <block wx:if="{{orderCount.aftersales > 0}}">
+                                    <view class="order-num">{{orderCount.aftersales}}</view>
+                                </block>
+                            </view>
+                            <view>售后</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="important-box view-flex">
+                <view class="view-flex-item view-flex view-flex-vertical view-flex-middle" bindtap="toPay" data-e-tap-so="this">
+                    <image class="icon-img" src="/assets/imgs/buy.png" mode="aspectFit"></image>
+                    <view>买单</view>
+                </view>
+                <navigator class="view-flex-item view-flex view-flex-vertical view-flex-middle" url="user_coupon">
+                    <image class="icon-img" src="/assets/imgs/coupons.png" mode="aspectFit"></image>
+                    <view>优惠券</view>
+                </navigator>
+                <block wx:if="{{isOpenPopularize && !isPromoter}}">
+                    <navigator class="view-flex-item view-flex view-flex-vertical view-flex-middle" bindtap="beDistributor" data-e-tap-so="this">
+                        <image class="icon-img" src="/assets/imgs/store.png" mode="aspectFit"></image>
+                        <view>我要推广</view>
+                    </navigator>
+                </block>
+                <block wx:if="{{isOpenPopularize && isPromoter}}">
+                    <navigator class="view-flex-item view-flex view-flex-vertical view-flex-middle" url="distribution/index">
+                        <image class="icon-img" src="../assets/imgs/store.png" mode="aspectFit"></image>
+                        <view>推广管理</view>
+                    </navigator>
+                </block>
+                <navigator class="view-flex-item view-flex view-flex-vertical view-flex-middle" url="my_group">
+                    <image class="icon-img" src="/assets/imgs/group.png" mode="aspectFit"></image>
+                    <view>我的拼团</view>
+                </navigator>
+            </view>
+            <view class="section section-card">
+                <view class="list">
+                    <view open-type="share" class="list-item">
+                        <button class="btn-share" open-type="share"></button>
+                        <view class="item-icon icon-share"></view>
+                        <view class="list-item-txt">我要分享</view>
+                        <view class="icon-arrowRight item-icon-go"></view>
+                    </view>
+                    <navigator class="list-item" url="address_list">
+                        <view class="item-icon icon-periscope"></view>
+                        <view class="list-item-txt">地址管理</view>
+                        <view class="icon-arrowRight item-icon-go"></view>
+                    </navigator>
                 </view>
             </view>
         </view>
-        <view class="member-index__bd">
-            <view class="member-menu__item">
-                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="coupon" iconPrefixClass="in-icon" title="优惠券" to="/pages/member/coupon"></sp-icon-menu>
-            </view>
-            <view class="member-menu__item">
-                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="gift" iconPrefixClass="in-icon" title="我要送礼" bindonclick="handleClickGiftApp" __fn_onClick="{{true}}"></sp-icon-menu>
-            </view>
-            <view class="member-menu__item none-br">
-                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="clock" iconPrefixClass="in-icon" title="浏览记录" to="/pages/member/item-history"></sp-icon-menu>
-            </view>
-            <view class="member-menu__item">
-                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="address" iconPrefixClass="in-icon" title="我的地址" to="/pages/member/address"></sp-icon-menu>
-            </view>
-            <view class="member-menu__item">
-                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="order" iconPrefixClass="in-icon" title="我的订单" to="/pages/trade/list"></sp-icon-menu>
-            </view>
-            <view class="member-menu__item none-br">
-                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="invoice" iconPrefixClass="in-icon" title="发票管理" to="/pages/trade/invoice-list"></sp-icon-menu>
-            </view>
-            <view class="member-menu__item none-bb">
-                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="fav" iconPrefixClass="in-icon" title="我的收藏" to="/pages/member/item-fav"></sp-icon-menu>
-            </view>
-            <view class="member-menu__item none-bb">
-                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="guess" iconPrefixClass="in-icon" title="猜你喜欢" to="/pages/member/item-guess"></sp-icon-menu>
-            </view>
-            <view class="member-menu__item none-bb none-br">
-                <sp-icon-menu size="28" __triggerObserer="{{ _triggerObserer }}" icon="kefu" iconPrefixClass="in-icon" title="联系客服" bindonclick="handleClickPhone" __fn_onClick="{{true}}"></sp-icon-menu>
-            </view>
-        </view>
-        <tab-bar current="{{4}}" __triggerObserer="{{ _triggerObserer }}"></tab-bar>
+        <tab-bar current="{{5}}" __triggerObserer="{{ _triggerObserer }}"></tab-bar>
     </view>
 </block>
