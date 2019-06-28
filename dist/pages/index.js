@@ -64,7 +64,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "scrollTop", "screenWidth", "likeList", "page", "showBackToTop", "isShowAddTip", "authStatus", "isFaverite_open", "store"], _this.componentDidShow = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "scrollTop", "screenWidth", "likeList", "page", "showBackToTop", "isShowAddTip", "authStatus", "store"], _this.componentDidShow = function () {
       _index2.default.getStorage({ key: 'addTipIsShow' }).then(function () {}).catch(function (error) {
         console.log(error);
         _this.setState({
@@ -92,7 +92,6 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
         wgts: null,
         authStatus: false,
         likeList: [],
-        isFaverite_open: false,
         isShowAddTip: false,
         screenWidth: 0
       });
@@ -100,13 +99,6 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this2 = this;
-
-      _index2.default.getSystemInfo().then(function (res) {
-        _this2.setState({
-          screenWidth: res.screenWidth
-        });
-      });
       this.fetchInfo();
     }
   }, {
@@ -124,14 +116,14 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
     key: "fetchInfo",
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var _this3 = this;
+        var _this2 = this;
 
         var url, info;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                url = '/pageparams/setting?template_name=yykweishopamore&version=v1.0.1&page_name=index';
+                url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index';
                 _context.next = 3;
                 return _req2.default.get(url);
 
@@ -149,11 +141,8 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
                 }, function () {
                   if (info.config) {
                     info.config.map(function (item) {
-                      if (item.name === 'faverite_type' && item.config.isOpen === false) {
-                        _this3.setState({
-                          isFaverite_open: true
-                        });
-                        _this3.nextPage();
+                      if (item.name === 'setting' && item.config.faverite) {
+                        _this2.nextPage();
                       }
                     });
                   }

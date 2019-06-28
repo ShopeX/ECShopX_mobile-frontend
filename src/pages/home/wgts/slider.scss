@@ -1,10 +1,5 @@
 @import "../../../style/imports";
 
-.slider-wrap {
-  position: relative;
-  background: #ffffff;
-}
-
 .slider-img {
   .slider-item {
     box-sizing: border-box;
@@ -132,8 +127,10 @@
 }
 
 .slider-wrap {
+  position: relative;
+  background: #ffffff;
   &.padded {
-    .sliderimg {
+    .slider-img {
       padding: 20px 0;
       .item {
         padding: 0 20px;
@@ -163,6 +160,20 @@
         right: 40px;
       }
     }
+  }
+  .slider-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width:100%;
+    height: 100%;
+    z-index: 10;
+  }
+  .scale-placeholder {
+    display:block;
+    width: 100%;
+    visibility: hidden;
+    z-index: -1;
   }
 }
 

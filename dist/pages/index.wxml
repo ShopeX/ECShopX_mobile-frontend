@@ -36,7 +36,7 @@
                     </block>
                 </view>
                 <view class="wgt-wrap faverite-content" wx:key="idx" wx:for="{{wgts}}" wx:for-item="item" wx:for-index="idx">
-                    <block wx:if="{{item.name === 'faverite_type' && item.config.isOpen === true}}">
+                    <block wx:if="{{item.name === 'setting' && item.config.faverite}}">
                         <view>
                             <wgt-goods-faverite info="{{likeList}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods-faverite>
                             <block wx:if="{{page.isLoading}}">

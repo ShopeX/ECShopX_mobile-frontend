@@ -33,7 +33,7 @@ export default class WgtSlider extends Component {
   }
 
   render () {
-    const { info, width } = this.props
+    const { info } = this.props
     const { curIdx } = this.state
 
     if (!info) {
@@ -55,13 +55,11 @@ export default class WgtSlider extends Component {
             ? <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
                 <Image
                   mode='widthFix'
-                  className='slider-item__img'
-                  style='width: 100%; visibility: hidden; z-index: -1'
+                  className='scale-placeholder'
                   src={data[0].imgUrl}
                 />
                 <Swiper
                   className='slider-img'
-                  style={`position: absolute; left: 0; top: 0; width:100%; height: 100%; z-index: 10`}
                   circular
                   autoplay
                   current={curIdx}

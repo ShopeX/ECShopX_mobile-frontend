@@ -213,7 +213,7 @@ var API = function () {
 }();
 
 exports.default = new API({
-  baseURL: "https://bbc54.shopex123.com/index.php/api/h5app/wxapp"
+  baseURL: "https://ecshopx.shopex123.com/index.php/api/h5app/wxapp"
 
   // interceptor (chain) {
   //   const { requestParams } = chain

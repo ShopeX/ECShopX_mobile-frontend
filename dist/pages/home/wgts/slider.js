@@ -40,7 +40,7 @@ var WgtSlider = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtSlider.__proto__ || Object.getPrototypeOf(WgtSlider)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp3", "anonymousState__temp6", "loopArray0", "loopArray1", "info", "base", "config", "data", "curIdx", "curContent", "width"], _this.handleClickItem = _helper.linkPage, _this.handleSwiperChange = function (e) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtSlider.__proto__ || Object.getPrototypeOf(WgtSlider)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp3", "anonymousState__temp6", "loopArray0", "loopArray1", "info", "base", "config", "data", "curIdx", "curContent"], _this.handleClickItem = _helper.linkPage, _this.handleSwiperChange = function (e) {
       var current = e.detail.current;
 
 
@@ -67,9 +67,7 @@ var WgtSlider = (_temp2 = _class = function (_BaseComponent) {
       var __runloopRef = arguments[2];
       ;
 
-      var _props = this.__props,
-          info = _props.info,
-          width = _props.width;
+      var info = this.__props.info;
       var curIdx = this.__state.curIdx;
 
 
@@ -122,10 +120,6 @@ var WgtSlider = (_temp2 = _class = function (_BaseComponent) {
   return WgtSlider;
 }(_index.Component), _class.properties = {
   "info": {
-    "type": null,
-    "value": null
-  },
-  "width": {
     "type": null,
     "value": null
   }

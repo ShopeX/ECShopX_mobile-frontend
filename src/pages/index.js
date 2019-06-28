@@ -26,7 +26,6 @@ export default class HomeIndex extends Component {
       wgts: null,
       authStatus: false,
       likeList: [],
-      isFaverite_open: false,
       isShowAddTip: false,
       screenWidth: 0
     }
@@ -44,12 +43,6 @@ export default class HomeIndex extends Component {
   }
 
   componentDidMount () {
-    Taro.getSystemInfo()
-      .then(res =>{
-        this.setState({
-          screenWidth: res.screenWidth
-        })
-      })
     this.fetchInfo()
   }
 
@@ -64,7 +57,7 @@ export default class HomeIndex extends Component {
   }
 
   async fetchInfo () {
-    const url = '/pageparams/setting?template_name=yykweishopamore&version=v1.0.1&page_name=index'
+    const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
     const info = await req.get(url)
 
     if (!S.getAuthToken()) {
@@ -77,10 +70,7 @@ export default class HomeIndex extends Component {
     },()=>{
       if(info.config) {
         info.config.map(item => {
-          if(item.name === 'faverite_type' && item.config.isOpen === false) {
-            this.setState({
-              isFaverite_open: true
-            })
+          if(item.name === 'setting' && item.config.faverite) {
             this.nextPage()
           }
         })
@@ -167,7 +157,7 @@ export default class HomeIndex extends Component {
               wgts.map((item, idx) => {
                 return (
                   <View className='wgt-wrap faverite-content' key={idx}>
-                    {item.name === 'faverite_type' && item.config.isOpen === true
+                    {item.name === 'setting' && item.config.faverite
                       ? (
                         <View>
                           <WgtGoodsFaverite info={likeList} />

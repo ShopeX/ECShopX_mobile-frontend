@@ -61,13 +61,13 @@ async function handleShareOptions(data, isNeedLocate) {
 
 //获取定位配置
 async function getLocalSetting() {
-  var filter = {template_name: 'yykweishop', version: 'v1.0.1', name: 'location_type'}
+  var filter = {template_name: 'yykweishop', version: 'v1.0.1', name: 'setting'}
   var positionStatus = await http.action(api.template.pageparams, filter, true).then(res => {
     if (res.data.data.length > 0) {
       var data = res.data.data[0].params
       if (!data || !data.config) {
         return true
-      } else if(data.config.isOpen){
+      } else if(data.config.location){
         return true
       } else {
         return false
