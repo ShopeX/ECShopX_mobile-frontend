@@ -10,7 +10,7 @@
                 </view>
                 <view class="filter-bar__item">
                     <picker mode="multiSelector" bindtap="handleClickPicker" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{areaList}}">
-                        <view class="icon-periscope"></view><text>{{info.city || '产地'}}</text>
+                        <view class="icon-periscope"></view><text>{{'' + info.province + info.city || '产地'}}</text>
                     </picker>
                 </view>
             </filter-bar>

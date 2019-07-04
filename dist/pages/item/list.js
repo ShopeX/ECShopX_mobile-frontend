@@ -58,7 +58,21 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = List.__proto__ || Object.getPrototypeOf(List)).call.apply(_ref2, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "loopArray0", "loopArray1", "curFilterIdx", "filterList", "multiIndex", "areaList", "showDrawer", "paramsList", "scrollTop", "listType", "list", "page", "showBackToTop", "query", "selectParams", "info", "favs"], _this.handleFilterChange = function (data) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = List.__proto__ || Object.getPrototypeOf(List)).call.apply(_ref2, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "loopArray0", "loopArray1", "curTagId", "tagsList", "curFilterIdx", "filterList", "multiIndex", "areaList", "showDrawer", "paramsList", "scrollTop", "listType", "list", "page", "showBackToTop", "query", "selectParams", "info", "favs"], _this.handleTagChange = function (data) {
+      var current = data.current;
+
+
+      _this.resetPage();
+      _this.setState({
+        list: []
+      });
+
+      _this.setState({
+        curTagId: current
+      }, function () {
+        _this.nextPage();
+      });
+    }, _this.handleFilterChange = function (data) {
       _this.setState({
         showDrawer: false
       });
@@ -288,9 +302,11 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
 
       this.state = _extends({}, this.state, {
         curFilterIdx: 0,
+        curTagId: '',
         filterList: [{ title: '综合' }, { title: '销量' }, { title: '价格', sort: -1 }],
         query: null,
         list: [],
+        tagsList: [],
         paramsList: [],
         listType: 'grid',
         showDrawer: false,
@@ -322,16 +338,17 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
     key: "fetch",
     value: function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
-        var page, pageSize, selectParams, query, _ref5, list, total, _ref5$item_params_lis, item_params_list, favs, res, addList, arrProvice, arrCity, arrCounty, nList;
+        var page, pageSize, _state, selectParams, areaList, tagsList, curTagId, query, _ref5, list, total, _ref5$item_params_lis, item_params_list, _ref5$select_tags_lis, select_tags_list, favs, res, addList, arrProvice, arrCity, arrCounty, nList;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 page = params.page_no, pageSize = params.page_size;
-                selectParams = this.state.selectParams;
+                _state = this.state, selectParams = _state.selectParams, areaList = _state.areaList, tagsList = _state.tagsList, curTagId = _state.curTagId;
                 query = _extends({}, this.state.query, {
                   item_params: selectParams,
+                  tag_id: curTagId,
                   page: page,
                   pageSize: pageSize
                 });
@@ -344,11 +361,19 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
                 total = _ref5.total_count;
                 _ref5$item_params_lis = _ref5.item_params_list;
                 item_params_list = _ref5$item_params_lis === undefined ? [] : _ref5$item_params_lis;
+                _ref5$select_tags_lis = _ref5.select_tags_list;
+                select_tags_list = _ref5$select_tags_lis === undefined ? [] : _ref5$select_tags_lis;
                 favs = this.props.favs;
-                _context2.next = 13;
+
+                if (!(areaList.length === 0)) {
+                  _context2.next = 24;
+                  break;
+                }
+
+                _context2.next = 16;
                 return _index6.default.member.areaList();
 
-              case 13:
+              case 16:
                 res = _context2.sent;
                 addList = (0, _index7.pickBy)(res, {
                   label: 'label',
@@ -376,6 +401,8 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
                 this.setState({
                   areaList: [arrProvice, arrCity, arrCounty]
                 });
+
+              case 24:
 
                 item_params_list.map(function (item) {
                   if (selectParams.length < 4) {
@@ -421,11 +448,17 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
                   this.firstStatus = false;
                 }
 
+                if (tagsList.length === 0) {
+                  this.setState({
+                    tagsList: select_tags_list
+                  });
+                }
+
                 return _context2.abrupt("return", {
                   total: total
                 });
 
-              case 26:
+              case 30:
               case "end":
                 return _context2.stop();
             }
@@ -452,19 +485,21 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
       var __runloopRef = arguments[2];
       ;
 
-      var _state = this.__state,
-          list = _state.list,
-          listType = _state.listType,
-          curFilterIdx = _state.curFilterIdx,
-          filterList = _state.filterList,
-          showBackToTop = _state.showBackToTop,
-          scrollTop = _state.scrollTop,
-          page = _state.page,
-          showDrawer = _state.showDrawer,
-          paramsList = _state.paramsList,
-          selectParams = _state.selectParams,
-          multiIndex = _state.multiIndex,
-          areaList = _state.areaList;
+      var _state2 = this.__state,
+          list = _state2.list,
+          listType = _state2.listType,
+          curFilterIdx = _state2.curFilterIdx,
+          filterList = _state2.filterList,
+          showBackToTop = _state2.showBackToTop,
+          scrollTop = _state2.scrollTop,
+          page = _state2.page,
+          showDrawer = _state2.showDrawer,
+          paramsList = _state2.paramsList,
+          selectParams = _state2.selectParams,
+          multiIndex = _state2.multiIndex,
+          areaList = _state2.areaList,
+          tagsList = _state2.tagsList,
+          curTagId = _state2.curTagId;
 
 
       var anonymousState__temp = "" + _index2.default.pxTransform(570);
@@ -524,7 +559,7 @@ var List = (_dec = (0, _index3.connect)(function (_ref) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleConfirm", "handleFilterChange", "handleClickFilter", "handleClickPicker", "bindMultiPickerChange", "bindMultiPickerColumnChange", "handleClickParmas", "handleClickSearchParams", "handleScroll", "nextPage", "anonymousFunc0", "scrollBackToTop"], _temp2)) || _class) || _class) || _class);
+}, _class2.$$events = ["handleConfirm", "handleTagChange", "handleFilterChange", "handleClickFilter", "handleClickPicker", "bindMultiPickerChange", "bindMultiPickerColumnChange", "handleClickParmas", "handleClickSearchParams", "handleScroll", "nextPage", "anonymousFunc0", "scrollBackToTop"], _temp2)) || _class) || _class) || _class);
 exports.default = List;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(List, true));

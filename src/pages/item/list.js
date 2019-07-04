@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Picker } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
-import { BackToTop, Loading, FilterBar, SearchBar, GoodsItem, NavBar, SpNote } from '@/components'
+import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, NavBar, SpNote } from '@/components'
 import api from '@/api'
 import { pickBy, classNames } from '@/utils'
 
@@ -23,6 +23,7 @@ export default class List extends Component {
     this.state = {
       ...this.state,
       curFilterIdx: 0,
+      curTagId: '',
       filterList: [
         { title: '综合' },
         { title: '销量' },
@@ -30,6 +31,7 @@ export default class List extends Component {
       ],
       query: null,
       list: [],
+      tagsList: [],
       paramsList: [],
       listType: 'grid',
       showDrawer: false,
@@ -57,41 +59,44 @@ export default class List extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-    const { selectParams } = this.state
+    const { selectParams, areaList, tagsList, curTagId } = this.state
     const query = {
       ...this.state.query,
       item_params: selectParams,
+      tag_id: curTagId,
       page,
       pageSize
     }
-    const { list, total_count: total, item_params_list = [] } = await api.item.search(query)
+    const { list, total_count: total, item_params_list = [], select_tags_list = []} = await api.item.search(query)
     const { favs } = this.props
 
-    let res = await api.member.areaList()
-    const addList = pickBy(res, {
-      label: 'label',
-      children: 'children',
-    })
-    this.addList = addList
-    let arrProvice = []
-    let arrCity = []
-    let arrCounty = []
-    addList.map((item, index) => {
-      arrProvice.push(item.label)
-      if(index === 0) {
-        item.children.map((c_item, c_index) => {
-          arrCity.push(c_item.label)
-          if(c_index === 0) {
-            c_item.children.map(cny_item => {
-              arrCounty.push(cny_item.label)
-            })
-          }
-        })
-      }
-    })
-    this.setState({
-      areaList: [arrProvice, arrCity, arrCounty]
-    })
+    if (areaList.length === 0) {
+      let res = await api.member.areaList()
+      const addList = pickBy(res, {
+        label: 'label',
+        children: 'children',
+      })
+      this.addList = addList
+      let arrProvice = []
+      let arrCity = []
+      let arrCounty = []
+      addList.map((item, index) => {
+        arrProvice.push(item.label)
+        if(index === 0) {
+          item.children.map((c_item, c_index) => {
+            arrCity.push(c_item.label)
+            if(c_index === 0) {
+              c_item.children.map(cny_item => {
+                arrCounty.push(cny_item.label)
+              })
+            }
+          })
+        }
+      })
+      this.setState({
+        areaList: [arrProvice, arrCity, arrCounty]
+      })
+    }
 
     item_params_list.map(item => {
       if(selectParams.length < 4){
@@ -127,9 +132,30 @@ export default class List extends Component {
       this.firstStatus = false
     }
 
+    if (tagsList.length === 0) {
+      this.setState({
+        tagsList: select_tags_list,
+      })
+    }
+
     return {
       total
     }
+  }
+
+  handleTagChange = (data) => {
+    const { current } = data
+
+    this.resetPage()
+    this.setState({
+      list: []
+    })
+    
+    this.setState({
+      curTagId: current
+    }, () => {
+      this.nextPage()
+    })
   }
 
   handleFilterChange = (data) => {
@@ -364,7 +390,9 @@ export default class List extends Component {
       paramsList,
       selectParams,
       multiIndex,
-      areaList
+      areaList,
+      tagsList,
+      curTagId
     } = this.state
 
     return (
@@ -378,7 +406,11 @@ export default class List extends Component {
           <SearchBar
             onConfirm={this.handleConfirm.bind(this)}
           />
-
+          <TagsBar
+            current={curTagId}
+            list={tagsList}
+            onChange={this.handleTagChange.bind(this)}
+          />
           <FilterBar
             className='goods-list__tabs'
             custom

@@ -1,0 +1,7 @@
+<block>
+    <scroll-view class="tags" scroll-y="{{true}}">
+        <block wx:if="{{list.length > 0}}">
+            <view class="{{item.$loopState__temp2}}" bindtap="handleClickItem" wx:key="$original.tag_id" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="idx" data-e-tap-so="this" data-e-tap-a-a="{{item.$original.tag_id}}">{{item.$original.tag_name}}</view>
+        </block>
+    </scroll-view>
+</block>

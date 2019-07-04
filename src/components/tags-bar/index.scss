@@ -1,0 +1,18 @@
+@import "../../style/imports";
+
+.tags {
+  width: 100%;
+  background: #fff;
+  .tag-item {
+    display: inline-block;
+    padding: 0 20rpx;
+    height: $tags-height;
+    line-height: $tags-height;
+    font-size: 26rpx;
+    color: #666;
+    &.active {
+      color: $color-link;
+      font-weight: 600;
+    }
+  }
+}

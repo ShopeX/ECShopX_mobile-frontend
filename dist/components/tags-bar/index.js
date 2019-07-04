@@ -16,8 +16,6 @@ var _index2 = _interopRequireDefault(_index);
 
 var _index3 = require("../../utils/index.js");
 
-var _index4 = require("../../service/index.js");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26,84 +24,95 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var FormIdCollector = (_temp2 = _class = function (_BaseComponent) {
-  _inherits(FormIdCollector, _BaseComponent);
+var TagsBar = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(TagsBar, _BaseComponent);
 
-  function FormIdCollector() {
+  function TagsBar() {
     var _ref;
 
     var _temp, _this, _ret;
 
-    _classCallCheck(this, FormIdCollector);
+    _classCallCheck(this, TagsBar);
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = FormIdCollector.__proto__ || Object.getPrototypeOf(FormIdCollector)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "sync", "children"], _this.handleSubmit = function (e) {
-      var formId = e.detail.formId;
-      var sync = _this.props.sync;
-
-      _index4.FormIds.collectFormIds(formId, sync);
-    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = TagsBar.__proto__ || Object.getPrototypeOf(TagsBar)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["loopArray0", "list", "curId", "__fn_onChange"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
-  _createClass(FormIdCollector, [{
+  _createClass(TagsBar, [{
     key: "_constructor",
     value: function _constructor(props) {
-      _get(FormIdCollector.prototype.__proto__ || Object.getPrototypeOf(FormIdCollector.prototype), "_constructor", this).call(this, props);
+      _get(TagsBar.prototype.__proto__ || Object.getPrototypeOf(TagsBar.prototype), "_constructor", this).call(this, props);
+
+      var current = props.current;
+
+      this.state = {
+        curId: current
+      };
+    }
+  }, {
+    key: "handleClickItem",
+    value: function handleClickItem(id) {
+      this.setState({
+        curId: id
+      });
+      this.__triggerPropsFn("onChange", [null].concat([{
+        current: id
+      }]));
     }
   }, {
     key: "_createData",
     value: function _createData() {
+      var _this2 = this;
+
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
       var __runloopRef = arguments[2];
       ;
 
-      if (_index2.default.getEnv() === _index2.default.ENV_TYPE.WEAPP) {
-        var children = this.__props.children;
+      var list = this.__props.list;
 
-        return { children: children };
-      }
 
-      var anonymousState__temp = (0, _index3.classNames)('form-id-collector', 'classes');
+      var loopArray0 = list.length > 0 ? list.map(function (item, idx) {
+        item = {
+          $original: (0, _index.internal_get_original)(item)
+        };
+
+        var isCurrent = _this2.__state.curId === item.$original.tag_id;
+
+        var $loopState__temp2 = list.length > 0 ? (0, _index3.classNames)('tag-item', isCurrent && 'active') : null;
+        return {
+          isCurrent: isCurrent,
+          $loopState__temp2: $loopState__temp2,
+          $original: item.$original
+        };
+      }) : [];
       Object.assign(this.__state, {
-        anonymousState__temp: anonymousState__temp
+        loopArray0: loopArray0,
+        list: list
       });
       return this.__state;
     }
-  }, {
-    key: "funPrivateEcWOf",
-    value: function funPrivateEcWOf() {
-      this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
-    }
   }]);
 
-  return FormIdCollector;
+  return TagsBar;
 }(_index.Component), _class.properties = {
-  "sync": {
+  "__fn_onChange": {
     "type": null,
     "value": null
   },
-  "children": {
-    "type": null,
-    "value": null
-  },
-  "onClick": {
-    "type": null,
-    "value": null
-  },
-  "__fn_onClick": {
+  "list": {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["handleSubmit", "funPrivateEcWOf"], _class.options = {
+}, _class.$$events = ["handleClickItem"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
-  sync: false,
-  onClick: function onClick() {}
-}, _class.externalClasses = ['classes'], _temp2);
-exports.default = FormIdCollector;
+  current: '',
+  list: []
+}, _temp2);
+exports.default = TagsBar;
 
-Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(FormIdCollector));
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(TagsBar));

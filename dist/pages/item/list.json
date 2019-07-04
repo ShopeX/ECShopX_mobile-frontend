@@ -2,6 +2,7 @@
   "usingComponents": {
     "nav-bar": "../../components/nav-bar/index",
     "search-bar": "../../components/search-bar/index",
+    "tags-bar": "../../components/tags-bar/index",
     "filter-bar": "../../components/filter-bar/index",
     "at-drawer": "../../npm/taro-ui/dist/weapp/components/drawer/index",
     "goods-item": "../../components/goods-item/index",
