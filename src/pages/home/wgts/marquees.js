@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
+import { AtNoticebar } from 'taro-ui'
 
 import './marquees.scss'
 
@@ -14,6 +15,22 @@ export default class WgtMarquees extends Component {
 
   constructor (props) {
     super(props)
+
+    this.state = {
+      announce: null
+    }
+  }
+
+  componentDidMount () {
+    const { info } = this.props
+    const { config, data } = info
+
+    if (config.direction === 'horizontal') {
+      const announce = data.map(t => t.title).join('　　')
+      this.setState({
+        announce
+      })
+    }
   }
 
   handleClickItem = (id) => {
@@ -37,7 +54,7 @@ export default class WgtMarquees extends Component {
     return (
       <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
         {
-          config
+          config.direction === 'vertical'
             ? <Swiper
                   className='marquees'
                   autoplay
@@ -56,6 +73,7 @@ export default class WgtMarquees extends Component {
                         <View
                           onClick={this.handleClickItem.bind(this, item.id)}
                           style={`color:${config.fontcolor}`}
+                          className='item-text'
                         >
                           {item.title}
                         </View>
@@ -63,7 +81,9 @@ export default class WgtMarquees extends Component {
                     )
                   })}
                 </Swiper>
-            : null
+            : <AtNoticebar marquee>
+                <Text>{announce}</Text>
+              </AtNoticebar>
         }
       </View>
     )

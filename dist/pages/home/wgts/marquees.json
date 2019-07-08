@@ -1,3 +1,6 @@
 {
-  "component": true
+  "component": true,
+  "usingComponents": {
+    "at-noticebar": "../../../npm/taro-ui/dist/weapp/components/noticebar/index"
+  }
 }

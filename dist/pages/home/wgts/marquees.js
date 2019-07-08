@@ -36,7 +36,7 @@ var WgtMarquees = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtMarquees.__proto__ || Object.getPrototypeOf(WgtMarquees)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base", "config", "data"], _this.handleClickItem = function (id) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtMarquees.__proto__ || Object.getPrototypeOf(WgtMarquees)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base", "config", "data", "announce"], _this.handleClickItem = function (id) {
       try {
         _index2.default.navigateTo({
           url: "/pages/recommend/detail?id=" + id
@@ -51,6 +51,27 @@ var WgtMarquees = (_temp2 = _class = function (_BaseComponent) {
     key: "_constructor",
     value: function _constructor(props) {
       _get(WgtMarquees.prototype.__proto__ || Object.getPrototypeOf(WgtMarquees.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        announce: null
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var info = this.props.info;
+      var config = info.config,
+          data = info.data;
+
+
+      if (config.direction === 'horizontal') {
+        var announce = data.map(function (t) {
+          return t.title;
+        }).join('　　');
+        this.setState({
+          announce: announce
+        });
+      }
     }
   }, {
     key: "_createData",
