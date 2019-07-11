@@ -1,151 +1,91 @@
 @import "../../../style/imports";
 
-.coupon-body {
-  width: 100%;
-  padding: 0 15px 0 33px;
-  box-sizing: border-box;
-  position: relative;
-  .coupon_bg {
-    height: 180px;
-    width: 100%;
-    position: relative;
-  }
-  .coupon-content {
-    position: absolute;
-    top: 32px;
-    //bottom: 36px;
-    left: 73px;
-    &__type {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      height: 76px;
-    }
-    &__amount {
-      display: block;
-      font-size: 99px;
-      height: 76px;
-      line-height: 76px;
-      color: #ffffff;
-      margin-right: 12px;
-    }
-    &__amount-cur {
-      display: block;
-      font-size: 31px;
-      margin: 28px 35px 0 0;
-      color: #ffffff;
-    }
-    &__typename {
-      width: 151px;
-      padding: 0 10px;
-      height: 39px;
-      background-color: #ffffff;
-      transform: skew(-20deg);
-      border-radius: 8px;
-      margin-top: 18px;
-      text-align: center;
-    }
-    &__typetext {
-      display: block;
-      font-size: 22px;
-      line-height: 39px;
-      transform: skew(20deg);
-      color: $color-brand-primary;
-    }
-    &__tips {
-      margin-top: 18px;
-      color: #ffffff;
-      font-size: 19px;
-    }
-  }
-}
-
-
-/*
 .coupon-wgt {
-  display: flex;
-  align-items: center;
   position: relative;
-  padding: 25px 35px;
-  margin-bottom: 10px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-  &:before {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background: radial-gradient(circle at left, transparent 5px, #f0f2f5 5px);
-    background-size: 100% 15px;
-    content: "";
-    z-index: -1;
-  }
-  &:after {
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background: radial-gradient(circle at right, transparent 5px, #f0f2f5 5px);
-    background-size: 100% 15px;
-    content: "";
-    z-index: -1;
-  }
-  .coupon-brand {
-    position: relative;
-    width: 24%;
-    &::after {
-      display: flex;
-      padding-top: 100%;
-      content: "";
+  padding: 25rpx 35rpx;
+  margin-bottom: 10rpx;
+  z-index: 0;
+  &.with-img {
+    padding: 0;
+    &.coupon-body::before, &.coupon-body::after {
+      content: none;
     }
-    .brand-img {
-      position: absolute;
+  }
+  .coupon_img {
+    width: 100%;
+    height: auto;
+  }
+  .coupon-body {
+    display: flex;
+    align-items: center;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    &::before {
       display: block;
-      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 50%;
       height: 100%;
-      border-radius: 50%;
+      background: radial-gradient(circle at left, transparent 10rpx, #f0f2f5 10rpx);
+      background-size: 100% 30rpx;
+      content: "";
+      z-index: -1;
     }
-  }
-  .coupon-caption {
-    flex: 1;
-    padding: 0 30px;
-    .coupon-amount {
+    &::after {
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: radial-gradient(circle at right, transparent 10rpx, #f0f2f5 10rpx);
+      background-size: 100% 30rpx;
+      content: "";
+      z-index: -1;
+    }
+    .coupon__amount {
       display: flex;
       align-items: flex-end;
-      padding-bottom: 10px;
-      font-size: 50px;
+      font-size: 64rpx;
       line-height: 0.8;
-      border-bottom: 1px solid #dcdcdc;
-      font-weight: 500;
-      .amount-cur {
-        padding-left: 10px;
-        font-size: 30px;
+      padding: 0 40rpx 0 20rpx;
+      .coupon__amount-cur {
+        padding-left: 4rpx;
+        font-size: 24rpx;
         color: #999;
+        line-height: 1;
       }
     }
-    .coupon-content {
-      padding-top: 10px;
-      .brand-name {
-        font-size: 32px;
-        line-height: 1.2;
-        display: block;
-      }
-      .coupon-desc {
-        font-size: 24px;
-        color: #999;
-        display: block;
+    .coupon-caption {
+      flex: 1;
+      padding-right: 120rpx;
+      .coupon-content {
+        padding-top: 5px;
+        .coupon-content__brand-name {
+          font-size: 28rpx;
+          line-height: 1.5;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .coupon-content__coupon-desc {
+          font-size: 24rpx;
+          color: #999;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
     }
   }
-
-  .coupon-getted-btn {
-    width: auto;
-    font-size: 26px;
+  .coupon-btn__getted {
+    position: absolute;
+    top: 50%;
+    right: 30rpx;
+    transform: translateY(-50%);
+    font-size: 26rpx;
     background: #fff;
   }
-}*/
+}

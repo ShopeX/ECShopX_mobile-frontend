@@ -22,6 +22,8 @@ var _index3 = require("../../../spx/index.js");
 
 var _index4 = _interopRequireDefault(_index3);
 
+var _index5 = require("../../../utils/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45,7 +47,7 @@ var WgtCoupon = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtCoupon.__proto__ || Object.getPrototypeOf(WgtCoupon)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data"], _this.handleGetCard = function (cardId) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = WgtCoupon.__proto__ || Object.getPrototypeOf(WgtCoupon)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["loopArray0", "info", "base", "data"], _this.handleGetCard = function (cardId) {
       _req2.default.get('/user/receiveCard', { card_id: cardId }).then(function (res) {
         if (res.status) {
           _index4.default.toast('该券已经领取成功，赶快购物吧！');
@@ -82,7 +84,18 @@ var WgtCoupon = (_temp2 = _class = function (_BaseComponent) {
           data = info.data;
 
 
+      var loopArray0 = data.map(function (item, idx) {
+        item = {
+          $original: (0, _index.internal_get_original)(item)
+        };
+        var $loopState__temp2 = (0, _index5.classNames)('coupon-wgt', item.$original.imgUrl && 'with-img');
+        return {
+          $loopState__temp2: $loopState__temp2,
+          $original: item.$original
+        };
+      });
       Object.assign(this.__state, {
+        loopArray0: loopArray0,
         info: info,
         base: base,
         data: data

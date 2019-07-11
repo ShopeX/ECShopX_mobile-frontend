@@ -14,15 +14,26 @@
             </view>
         </block>
         <view class="wgt__body with-padding">
-            <view class="coupon-wgt coupon-body" wx:key="idx" bindtap="handleGetCard" wx:for="{{data}}" wx:for-item="item" wx:for-index="idx" data-e-tap-so="this" data-e-tap-a-a="{{item.id}}">
-                <image src="/assets/imgs/coupon.png" class="coupon_bg"></image>
-                <view class="coupon-content">
-                    <view class="coupon-content__type"><text class="coupon-content__amount">{{item.amount}}</text><text class="coupon-content__amount-cur">{{item.type === 'cash' ? '元' : ''}}{{item.type === 'discount' ? '折' : ''}}</text>
-                        <view class="coupon-content__typename"><text class="coupon-content__typetext">{{item.title}}</text>
+            <view class="{{item.$loopState__temp2}}" wx:key="idx" bindtap="handleGetCard" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="idx" data-e-tap-so="this" data-e-tap-a-a="{{item.$original.id}}">
+                <block>
+                    <block wx:if="{{item.$original.imgUrl}}">
+                        <image src="{{item.$original.imgUrl}}" class="coupon_img" mode="widthFix"></image>
+                    </block>
+                    <block wx:else>
+                        <view class="coupon-body">
+                            <view class="coupon__amount"><text>{{item.$original.amount}}</text>
+                                <view class="coupon__amount-cur">{{item.$original.type === 'cash' ? '元' : ''}}{{item.$original.type === 'discount' ? '折' : ''}}</view>
+                            </view>
+                            <view class="coupon-caption">
+                                <view class="coupon-content">
+                                    <view class="coupon-content__brand-name">{{item.$original.title}}</view>
+                                    <view class="coupon-content__coupon-desc">{{item.$original.desc}}</view>
+                                </view>
+                            </view>
                         </view>
-                    </view>
-                    <view class="coupon-content__tips">{{item.desc}}</view>
-                </view>
+                    </block>
+                </block>
+                <button class="coupon-btn__getted" bindtap="handleGetCard" data-e-tap-so="this" data-e-tap-a-a="{{item.$original.id}}">领取</button>
             </view>
         </view>
     </view>

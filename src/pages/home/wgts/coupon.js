@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import req from '@/api/req'
 import S from '@/spx'
+import { classNames } from '@/utils'
 
 import './coupon.scss'
 
@@ -60,21 +61,29 @@ export default class WgtCoupon extends Component {
           {data.map((item, idx) => {
             return (
               <View
-                className='coupon-wgt coupon-body'
+                className={classNames('coupon-wgt', item.imgUrl && 'with-img')}
                 key={idx}
                 onClick={this.handleGetCard.bind(this, item.id)}
-              >
-                <Image src='/assets/imgs/coupon.png' className='coupon_bg'/>
-                <View className='coupon-content'>
-                  <View className='coupon-content__type'>
-                    <Text className='coupon-content__amount'>{item.amount}</Text>
-                    <Text className='coupon-content__amount-cur'>{item.type === 'cash' ? '元' : ''}{item.type === 'discount' ? '折' : ''}</Text>
-                    <View className='coupon-content__typename'>
-                      <Text className='coupon-content__typetext'>{item.title}</Text>
-                    </View>
+              > {
+                  item.imgUrl
+                  ? <Image src={item.imgUrl} className='coupon_img' mode='widthFix'/>
+                  : <View className='coupon-body'>
+                      <View className='coupon__amount'>
+                        <Text>{item.amount}</Text>
+                        <View className='coupon__amount-cur'>{item.type === 'cash' ? '元' : ''}{item.type === 'discount' ? '折' : ''}</View>
+                      </View>
+                      <View className='coupon-caption'>
+                        <View className='coupon-content'>
+                          <View className='coupon-content__brand-name'>{item.title}</View>
+                          <View className='coupon-content__coupon-desc'>{item.desc}</View>
+                        </View>
+                      </View>
                   </View>
-                  <View className='coupon-content__tips'>{item.desc}</View>
-                </View>
+                }
+                <Button
+                  className='coupon-btn__getted'
+                  onClick={this.handleGetCard.bind(this, item.id)}
+                >领取</Button>
                 {/*<View className='coupon-brand'>
                   <Image
                     className='brand-img'
