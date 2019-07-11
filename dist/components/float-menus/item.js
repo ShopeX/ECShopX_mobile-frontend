@@ -71,8 +71,8 @@ var Index = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivategCsfN",
-    value: function funPrivategCsfN() {
+    key: "funPrivateBjxis",
+    value: function funPrivateBjxis() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -107,7 +107,7 @@ var Index = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivategCsfN"], _class.options = {
+}, _class.$$events = ["funPrivateBjxis"], _class.options = {
   addGlobalClass: true
 }, _class.defaultProps = {
   onClick: null,

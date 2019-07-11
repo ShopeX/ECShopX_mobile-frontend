@@ -69,7 +69,9 @@ export default class TabBar extends Component {
   }
 
   componentDidShow () {
-    this.fetchCart()
+    if (this.state.tabList.length > 0) {
+      this.fetchCart()
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -81,7 +83,6 @@ export default class TabBar extends Component {
   updateCurTab () {
     this.fetchCart()
     const { tabList, current } = this.state
-    console.log(tabList)
     const { fullPath } = getCurrentRoute(this.$router)
     const { url } = tabList[current]
     if (url && url !== fullPath) {
@@ -94,9 +95,9 @@ export default class TabBar extends Component {
 
   async fetchCart () {
     if (!S.getAuthToken()) return
-    const cartTabIdx = 3
+    const { tabList } = this.state
+    const cartTabIdx = tabList.findIndex(item => item.url.indexOf('cart') !== -1)
     const updateCartCount = (count) => {
-      const { tabList } = this.state
       tabList[cartTabIdx].text = count || ''
       this.setState({
         tabList

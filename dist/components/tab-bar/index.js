@@ -148,7 +148,9 @@ var TabBar = (_dec = (0, _index3.connect)(function (_ref) {
   }, {
     key: "componentDidShow",
     value: function componentDidShow() {
-      this.fetchCart();
+      if (this.state.tabList.length > 0) {
+        this.fetchCart();
+      }
     }
   }, {
     key: "componentWillReceiveProps",
@@ -164,8 +166,6 @@ var TabBar = (_dec = (0, _index3.connect)(function (_ref) {
       var _state = this.state,
           tabList = _state.tabList,
           current = _state.current;
-
-      console.log(tabList);
 
       var _getCurrentRoute2 = (0, _index6.getCurrentRoute)(this.$router),
           fullPath = _getCurrentRoute2.fullPath;
@@ -187,7 +187,7 @@ var TabBar = (_dec = (0, _index3.connect)(function (_ref) {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
         var _this3 = this;
 
-        var cartTabIdx, updateCartCount, _getCurrentRoute3, path, _ref4, item_count;
+        var tabList, cartTabIdx, updateCartCount, _getCurrentRoute3, path, _ref4, item_count;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -201,11 +201,12 @@ var TabBar = (_dec = (0, _index3.connect)(function (_ref) {
                 return _context.abrupt("return");
 
               case 2:
-                cartTabIdx = 3;
+                tabList = this.state.tabList;
+                cartTabIdx = tabList.findIndex(function (item) {
+                  return item.url.indexOf('cart') !== -1;
+                });
 
                 updateCartCount = function updateCartCount(count) {
-                  var tabList = _this3.state.tabList;
-
                   tabList[cartTabIdx].text = count || '';
                   _this3.setState({
                     tabList: tabList
@@ -215,38 +216,38 @@ var TabBar = (_dec = (0, _index3.connect)(function (_ref) {
                 _getCurrentRoute3 = (0, _index6.getCurrentRoute)(this.$router), path = _getCurrentRoute3.path;
 
                 if (!(path === this.state.tabList[cartTabIdx].url)) {
-                  _context.next = 8;
+                  _context.next = 9;
                   break;
                 }
 
                 updateCartCount('');
                 return _context.abrupt("return");
 
-              case 8:
-                _context.prev = 8;
-                _context.next = 11;
+              case 9:
+                _context.prev = 9;
+                _context.next = 12;
                 return _index5.default.cart.count();
 
-              case 11:
+              case 12:
                 _ref4 = _context.sent;
                 item_count = _ref4.item_count;
 
                 updateCartCount(item_count);
-                _context.next = 19;
+                _context.next = 20;
                 break;
 
-              case 16:
-                _context.prev = 16;
-                _context.t0 = _context["catch"](8);
+              case 17:
+                _context.prev = 17;
+                _context.t0 = _context["catch"](9);
 
                 console.error(_context.t0);
 
-              case 19:
+              case 20:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[8, 16]]);
+        }, _callee, this, [[9, 17]]);
       }));
 
       function fetchCart() {

@@ -65,6 +65,7 @@ export default class Reg extends Component {
   async fetch () {
     let arr  = []
     let res = await api.user.regParam()
+    console.log(res)
     Object.keys(res).forEach(key => {
       if(res[key].is_open) {
         if(key === 'sex'){
