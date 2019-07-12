@@ -294,7 +294,7 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
     key: "fetch",
     value: function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
-        var page, pageSize, _state, columnList, areaList, selectColumn, article_query, res, addList, arrProvice, arrCity, arrCounty, columns, clist, defaultItem, _ref4, list, total, nList;
+        var page, pageSize, _state, columnList, areaList, selectColumn, article_query, columns, clist, defaultItem, _ref4, list, total, province_list, res, regions, addList, arrProvice, arrCity, arrCounty, nList;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
@@ -310,18 +310,78 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
                   category_id: selectColumn.id
                 });
 
-                if (!(areaList.length === 0)) {
-                  _context2.next = 15;
+                if (!(columnList.length === 0)) {
+                  _context2.next = 13;
                   break;
                 }
 
                 _context2.next = 7;
-                return _index5.default.member.areaList();
+                return _index5.default.article.columnList();
 
               case 7:
+                columns = _context2.sent;
+                clist = (0, _index6.pickBy)(columns, {
+                  name: 'category_name',
+                  id: 'category_id'
+                });
+                defaultItem = { id: '', name: '全部', isChooseColumn: true };
+
+                selectColumn = Object.assign({}, defaultItem);
+                clist.unshift(defaultItem);
+                this.setState({
+                  columnList: clist
+                });
+
+              case 13:
+                if (!_index8.default.getAuthToken()) {
+                  _context2.next = 19;
+                  break;
+                }
+
+                _context2.next = 16;
+                return _index5.default.article.authList(article_query);
+
+              case 16:
+                _context2.t0 = _context2.sent;
+                _context2.next = 22;
+                break;
+
+              case 19:
+                _context2.next = 21;
+                return _index5.default.article.list(article_query);
+
+              case 21:
+                _context2.t0 = _context2.sent;
+
+              case 22:
+                _ref4 = _context2.t0;
+                list = _ref4.list;
+                total = _ref4.total_count;
+                province_list = _ref4.province_list;
+
+                if (!(areaList.length === 0)) {
+                  _context2.next = 39;
+                  break;
+                }
+
+                _context2.next = 29;
+                return _index5.default.member.areaList();
+
+              case 29:
                 res = _context2.sent;
-                addList = (0, _index6.pickBy)(res, {
+                regions = [];
+
+                province_list.map(function (item) {
+                  var match = res.find(function (area) {
+                    return item == area.id;
+                  });
+                  if (match) {
+                    regions.push(match);
+                  }
+                });
+                addList = (0, _index6.pickBy)(regions, {
                   label: 'label',
+                  id: 'id',
                   children: 'children'
                 });
 
@@ -348,54 +408,7 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
                   areaList: [arrProvice, arrCity, arrCounty]
                 });
 
-              case 15:
-                if (!(columnList.length === 0)) {
-                  _context2.next = 24;
-                  break;
-                }
-
-                _context2.next = 18;
-                return _index5.default.article.columnList();
-
-              case 18:
-                columns = _context2.sent;
-                clist = (0, _index6.pickBy)(columns, {
-                  name: 'category_name',
-                  id: 'category_id'
-                });
-                defaultItem = { id: '', name: '全部', isChooseColumn: true };
-
-                selectColumn = Object.assign({}, defaultItem);
-                clist.unshift(defaultItem);
-                this.setState({
-                  columnList: clist
-                });
-
-              case 24:
-                if (!_index8.default.getAuthToken()) {
-                  _context2.next = 30;
-                  break;
-                }
-
-                _context2.next = 27;
-                return _index5.default.article.authList(article_query);
-
-              case 27:
-                _context2.t0 = _context2.sent;
-                _context2.next = 33;
-                break;
-
-              case 30:
-                _context2.next = 32;
-                return _index5.default.article.list(article_query);
-
-              case 32:
-                _context2.t0 = _context2.sent;
-
-              case 33:
-                _ref4 = _context2.t0;
-                list = _ref4.list;
-                total = _ref4.total_count;
+              case 39:
                 nList = (0, _index6.pickBy)(list, {
                   img: 'image_url',
                   item_id: 'article_id',
@@ -422,7 +435,7 @@ var RecommendList = (0, _index3.withPager)(_class = (0, _index3.withBackToTop)(_
                   total: total
                 });
 
-              case 40:
+              case 43:
               case "end":
                 return _context2.stop();
             }

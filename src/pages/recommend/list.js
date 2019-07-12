@@ -59,10 +59,34 @@ export default class RecommendList extends Component {
       category_id: selectColumn.id
     }
 
+    if (columnList.length === 0) {
+      const columns = await api.article.columnList()
+      let clist = pickBy(columns, {
+        name: 'category_name',
+        id: 'category_id'
+      })
+      let defaultItem = {id: '', name: '全部', isChooseColumn: true}
+      selectColumn = Object.assign({}, defaultItem)
+      clist.unshift(defaultItem)
+      this.setState({
+        columnList: clist
+      })
+    }
+
+    const { list, total_count: total, province_list } = S.getAuthToken() ? await api.article.authList(article_query) : await api.article.list(article_query)
+
     if (areaList.length === 0) {
       let res = await api.member.areaList()
-      const addList = pickBy(res, {
+      let regions = []
+      province_list.map(item => {
+        let match = res.find(area => item == area.id)
+        if (match) {
+          regions.push(match)
+        }
+      })
+      const addList = pickBy(regions, {
         label: 'label',
+        id: 'id',
         children: 'children',
       })
       this.addList = addList
@@ -87,22 +111,6 @@ export default class RecommendList extends Component {
         areaList: [arrProvice, arrCity, arrCounty]
       })
     }
-
-    if (columnList.length === 0) {
-      const columns = await api.article.columnList()
-      let clist = pickBy(columns, {
-        name: 'category_name',
-        id: 'category_id'
-      })
-      let defaultItem = {id: '', name: '全部', isChooseColumn: true}
-      selectColumn = Object.assign({}, defaultItem)
-      clist.unshift(defaultItem)
-      this.setState({
-        columnList: clist
-      })
-    }
-
-    const { list, total_count: total } = S.getAuthToken() ? await api.article.authList(article_query) : await api.article.list(article_query)
 
     const nList = pickBy(list, {
       img: 'image_url',
