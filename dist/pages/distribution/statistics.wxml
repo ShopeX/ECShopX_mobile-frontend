@@ -4,7 +4,7 @@
             <view class="header-top">
                 <view class="view-flex view-flex-justify">
                     <view>累计提取金额：{{info.payedRebate / 100}}元</view>
-                    <navigator url="/pages/distribution/withdraw_record" class="record-btn">提现记录 <text className="icons icons-gengduo" __triggerObserer="{{ _triggerObserer }}"></text>
+                    <navigator url="/pages/distribution/withdrawals-record" class="record-btn">提现记录 <text className="icons icons-gengduo" __triggerObserer="{{ _triggerObserer }}"></text>
                     </navigator>
                 </view>
                 <view class="view-flex  view-flex-vertical view-flex-middle view-flex-center">

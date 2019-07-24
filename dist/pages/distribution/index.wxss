@@ -68,20 +68,17 @@
   padding: 15rpx 0;
   font-size: 24rpx;
 }
+.page-distribution-index .share .item-icon {
+  color: #00c3ff;
+}
 .page-distribution-index .share .share-btn {
   margin: 0;
-  padding: 0;
   line-height: 1;
   background: none;
   font-size: inherit;
   color: inherit;
+  text-align: left;
 }
 .page-distribution-index .share .share-btn::after {
   content: none;
-}
-.page-distribution-index .share [class^=icon-] {
-  color: #00c3ff;
-  font-size: 50rpx;
-  margin-right: 10rpx;
-  vertical-align: middle;
 }

@@ -52,8 +52,8 @@ function statistics() {
   return _req2.default.get('/promoter/brokerage/count');
 }
 
-function withdrawRecord() {
-  return _req2.default.get('/promoter/cash_withdrawal');
+function withdrawRecord(params) {
+  return _req2.default.get('/promoter/cash_withdrawal', params);
 }
 
 function withdraw() {

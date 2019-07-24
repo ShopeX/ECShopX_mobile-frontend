@@ -349,7 +349,7 @@ export default class MemberIndex extends Component {
                 <View className="list-item-txt">我的收藏</View>
                 <View className="icon-arrowRight item-icon-go"></View>
               </Navigator>
-              <View open-type="share" className="list-item">
+              <View className="list-item">
                 <Button className="btn-share" open-type="share"></Button>
                 <View className="item-icon icon-share"></View>
                 <View className="list-item-txt">我要分享</View>

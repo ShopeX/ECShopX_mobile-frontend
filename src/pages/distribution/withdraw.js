@@ -12,14 +12,14 @@ export default class DistributionWithdraw extends Component {
     this.state = {
       limit_rebate: 0,
       cashWithdrawalRebate: 0,
-      amount: '',
+      amount: null,
       curIdx: 0,
       payList: ['微信(金额 ≦ 800)', '支付宝'],
       alipay_account: ''
     }
   }
 
-  componentDidMount () {
+  componentDidShow () {
     this.fetch()
   }
 
@@ -58,6 +58,13 @@ export default class DistributionWithdraw extends Component {
     })
   }
 
+  handlePick = (e) => {
+    const idx = e.detail.value
+    this.setState({
+      curIdx: idx
+    })
+  }
+
   render () {
     const { cashWithdrawalRebate, limit_rebate, amount, curIdx, payList, alipay_account } = this.state
 
@@ -84,7 +91,7 @@ export default class DistributionWithdraw extends Component {
         <View className="section list">
           <View className="list-item" style="position: relative;">
             <Picker
-              onChange={this.handleChange}
+              onChange={this.handlePick.bind(this)}
               value={curIdx}
               range={payList}
             >
@@ -94,11 +101,14 @@ export default class DistributionWithdraw extends Component {
             <View className="list-item-txt content-right">{payList[curIdx]}</View>
             <View className="item-icon-go icon-arrowRight"></View>
           </View>
-          <Navigator url="/pages/distribution/withdraw_account_settings" className="list-item">
-            <View className="label">提现账户</View>
-            <View className="list-item-txt content-right">{alipay_account ? alipay_account : '去设置'}</View>
-            <View className="item-icon-go icon-arrowRight"></View>
-          </Navigator>
+          {
+            curIdx
+            && <Navigator url="/pages/distribution/withdrawals-acount" className="list-item">
+                <View className="label">提现账户</View>
+                <View className="list-item-txt content-right">{alipay_account ? alipay_account : '去设置'}</View>
+                <View className="item-icon-go icon-arrowRight"></View>
+              </Navigator>
+          }
         </View>
         <View className="content-padded">
           <Button

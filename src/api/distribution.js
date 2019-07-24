@@ -28,8 +28,8 @@ export function statistics () {
   return req.get('/promoter/brokerage/count')
 }
 
-export function withdrawRecord () {
-  return req.get('/promoter/cash_withdrawal')
+export function withdrawRecord (params) {
+  return req.get('/promoter/cash_withdrawal', params)
 }
 
 export function withdraw () {

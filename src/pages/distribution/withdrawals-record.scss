@@ -1,0 +1,37 @@
+@import '../../style/imports';
+
+.page-distribution-record {
+  .record-list__scroll {
+    @include page-scroll($tabs-height + $navigate-height, 0);
+  }
+  .status-icon {
+    display: block;
+    margin-right: 10rpx;
+    vertical-align: middle;
+  }
+  .status-header {
+    transition: opacity .3s;
+    &.open {
+      opacity: .4;
+    }
+  }
+  .status-content {
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: .3s;
+    padding-top: 20rpx;
+    font-size: 28rpx;
+    color: #999;
+    &.open {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .status-body {
+    height: 0;
+    overflow: hidden;
+    &.open{
+        height: auto;
+    }
+  }
+}

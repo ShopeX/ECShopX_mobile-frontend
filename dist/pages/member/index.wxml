@@ -78,7 +78,7 @@
                         <view class="list-item-txt">我的收藏</view>
                         <view class="icon-arrowRight item-icon-go"></view>
                     </navigator>
-                    <view open-type="share" class="list-item">
+                    <view class="list-item">
                         <button class="btn-share" open-type="share"></button>
                         <view class="item-icon icon-share"></view>
                         <view class="list-item-txt">我要分享</view>

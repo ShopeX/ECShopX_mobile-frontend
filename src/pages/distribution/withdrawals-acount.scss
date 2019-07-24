@@ -1,0 +1,44 @@
+.page-distribution-acount {
+  .message-input, .view-flex-item {
+    font-size: 28rpx;
+  }
+  .message-input {
+    margin: 0 20rpx;
+  }
+  .verify-code-wrap {
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+  .verify-code {
+    width: 200rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    background: #ffc304;
+    color: #fff;
+    flex: none;
+  }
+  .verify-code_off {
+    background: #999999;
+  }
+  .g-ul {
+    padding: 0 30rpx;
+    font-size: 28rpx;
+    color: #999;
+    line-height: 48rpx;
+    .g-ul-li {
+      display: -webkit-box;
+      -webkit-box-align: center;
+      &:before {
+        content: '';
+        display: block;
+        background: #999;
+        width: 8rpx;
+        height: 8rpx;
+        border-radius: 50%;
+        margin-right: 12rpx;
+      }
+    }
+  }
+}

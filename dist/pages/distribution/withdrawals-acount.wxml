@@ -1,0 +1,46 @@
+<block>
+    <view class="page-distribution-acount">
+        <view class="section list message">
+            <block>
+                <block wx:if="{{!hasBind}}">
+                    <at-input className="message-input" __triggerObserer="{{ _triggerObserer }}" title="开户人姓名：" type="text" maxLength="30" bindonchange="handleChange" value="{{name}}" placeholder="请输入开户人姓名" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="name"></at-input>
+                </block>
+                <block wx:else>
+                    <view class="list-item">
+                        <view class="">开户人姓名：</view>
+                        <view class="list-item-txt">{{name}}</view>
+                    </view>
+                </block>
+            </block>
+            <block>
+                <block wx:if="{{!hasBind}}">
+                    <at-input className="message-input" __triggerObserer="{{ _triggerObserer }}" title="支付宝账号" type="text" maxLength="30" bindonchange="handleChange" value="{{acount}}" placeholder="请输入账号" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="acount"></at-input>
+                </block>
+                <block wx:else>
+                    <view class="list-item">
+                        <view class="">支付宝账号：</view>
+                        <view class="list-item-txt">{{acount}}</view>
+                    </view>
+                </block>
+            </block>
+            <block wx:if="{{hasBind && isEdit}}">
+                <at-input className="message-input" __triggerObserer="{{ _triggerObserer }}" title="新支付宝账号" type="text" maxLength="30" bindonchange="handleChange" value="{{new_acount}}" placeholder="请填写其他未绑定的支付宝账号" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="new_acount"></at-input>
+            </block>
+        </view>
+        <view class="content-padded">
+            <block wx:if="{{!hasBind}}">
+                <button type="primary" bindtap="handleSubmit">确认绑定</button>
+            </block>
+            <block wx:if="{{hasBind && !isEdit}}">
+                <button type="primary" bindtap="handleClick">修改支付宝账号</button>
+            </block>
+            <block wx:if="{{hasBind && isEdit}}">
+                <button type="primary" bindtap="handleSubmit">确认修改并保存</button>
+            </block>
+        </view>
+        <view class="g-ul">
+            <view class="g-ul-li">请务必准确填写开户人姓名和支付宝账号</view>
+            <view class="g-ul-li">支持支付宝账户的修改，但每天仅限1次</view>
+        </view>
+    </view>
+</block>

@@ -1,0 +1,67 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.page-distribution-record .record-list__scroll {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 75rpx;
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  z-index: 1;
+}
+.page-distribution-record .record-list__scroll > div, .page-distribution-record .record-list__scroll > view {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+.page-distribution-record .status-icon {
+  display: block;
+  margin-right: 10rpx;
+  vertical-align: middle;
+}
+.page-distribution-record .status-header {
+  -webkit-transition: opacity 0.3s;
+  -o-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+.page-distribution-record .status-header.open {
+  opacity: 0.4;
+}
+.page-distribution-record .status-content {
+  opacity: 0;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  padding-top: 20rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+.page-distribution-record .status-content.open {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0);
+}
+.page-distribution-record .status-body {
+  height: 0;
+  overflow: hidden;
+}
+.page-distribution-record .status-body.open {
+  height: auto;
+}

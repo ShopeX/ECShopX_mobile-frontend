@@ -54,6 +54,11 @@ var DistributionWithdraw = (_temp2 = _class = function (_BaseComponent) {
       _this.setState({
         amount: val
       });
+    }, _this.handlePick = function (e) {
+      var idx = e.detail.value;
+      _this.setState({
+        curIdx: idx
+      });
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -65,15 +70,15 @@ var DistributionWithdraw = (_temp2 = _class = function (_BaseComponent) {
       this.state = {
         limit_rebate: 0,
         cashWithdrawalRebate: 0,
-        amount: '',
+        amount: null,
         curIdx: 0,
         payList: ['微信(金额 ≦ 800)', '支付宝'],
         alipay_account: ''
       };
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "componentDidShow",
+    value: function componentDidShow() {
       this.fetch();
     }
   }, {
@@ -155,7 +160,7 @@ var DistributionWithdraw = (_temp2 = _class = function (_BaseComponent) {
   }]);
 
   return DistributionWithdraw;
-}(_index.Component), _class.properties = {}, _class.$$events = ["handleChange", "handleWithdrawAll"], _temp2);
+}(_index.Component), _class.properties = {}, _class.$$events = ["handleChange", "handleWithdrawAll", "handlePick"], _temp2);
 exports.default = DistributionWithdraw;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(DistributionWithdraw, true));

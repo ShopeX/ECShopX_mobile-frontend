@@ -79,7 +79,7 @@ export default class DistributionSubordinate extends Component {
     const { list, page, curTabIdx, tabList, scrollTop } = this.state
 
     return (
-      <View className="page-distribution-client">
+      <View className="page-distribution-subordinate">
         <AtTabs
           className='client-list__tabs'
           current={curTabIdx}

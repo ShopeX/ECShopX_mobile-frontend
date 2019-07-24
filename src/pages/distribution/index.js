@@ -21,6 +21,16 @@ export default class DistributionDashboard extends Component {
     this.fetch()
   }
 
+  onShareAppMessage () {
+    const { info } = this.state
+
+    return {
+      title: info.item_name,
+      path: `/pages/item/espier-detail?id=${info.item_id}`
+    }
+  }
+
+
   async fetch() {
     const resUser = Taro.getStorageSync('userinfo')
     const { username, avatar } = resUser
@@ -121,15 +131,22 @@ export default class DistributionDashboard extends Component {
             <View className="view-flex-item">未购买会员 <Text className="mark">{info.notbuy_promoter}</Text> 人</View>
           </View>
         </View>
-        <View className="section share">
-          <View className="section-body view-flex content-center">
-            <Navigator className="view-flex-item" open-type="navigateTo" url="invite_friends">
-              <Text className="icon-qrcode1"></Text> 我的二维码
-            </Navigator>
-            <Button className="share-btn view-flex-item" open-type="share">
-              <Text className="icon-share1"></Text> 分享给好友
-            </Button>
-          </View>
+        <View className="section list share">
+          <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/invite_friends">
+            <View className="item-icon icon-qrcode1"></View>
+            <View className="list-item-txt">我的二维码</View>
+            <View className="icon-arrowRight item-icon-go"></View>
+          </Navigator>
+          <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/shop">
+            <View className="item-icon icon-shop"></View>
+            <View className="list-item-txt">我的小店</View>
+            <View className="icon-arrowRight item-icon-go"></View>
+          </Navigator>
+          <Button className="share-btn list-item" open-type="share">
+            <View className="item-icon icon-share1"></View>
+            <View className="list-item-txt">分享给好友</View>
+            <View className="icon-arrowRight item-icon-go"></View>
+          </Button>
         </View>
       </View>
     )

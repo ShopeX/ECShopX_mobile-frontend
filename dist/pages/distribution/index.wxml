@@ -57,11 +57,22 @@
                 <view class="view-flex-item">未购买会员 <text class="mark">{{info.notbuy_promoter}}</text>人</view>
             </view>
         </view>
-        <view class="section share">
-            <view class="section-body view-flex content-center">
-                <navigator class="view-flex-item" open-type="navigateTo" url="invite_friends"><text class="icon-qrcode1"></text>我的二维码</navigator>
-                <button class="share-btn view-flex-item" open-type="share"><text class="icon-share1"></text>分享给好友</button>
-            </view>
+        <view class="section list share">
+            <navigator class="list-item" open-type="navigateTo" url="/pages/distribution/invite_friends">
+                <view class="item-icon icon-qrcode1"></view>
+                <view class="list-item-txt">我的二维码</view>
+                <view class="icon-arrowRight item-icon-go"></view>
+            </navigator>
+            <navigator class="list-item" open-type="navigateTo" url="/pages/distribution/shop">
+                <view class="item-icon icon-shop"></view>
+                <view class="list-item-txt">我的小店</view>
+                <view class="icon-arrowRight item-icon-go"></view>
+            </navigator>
+            <button class="share-btn list-item" open-type="share">
+                <view class="item-icon icon-share1"></view>
+                <view class="list-item-txt">分享给好友</view>
+                <view class="icon-arrowRight item-icon-go"></view>
+            </button>
         </view>
     </view>
 </block>

@@ -1,0 +1,27 @@
+<block>
+    <block wx:if="{{!info}}">
+        <view></view>
+    </block>
+    <view class="{{anonymousState__temp}}" wx:else>
+        <view class="goods-item__bd">
+            <view class="goods-item__img-wrap">
+                <image class="goods-item__img" mode="aspectFill" src="{{img}}"></image>
+            </view>
+            <view class="goods-item__cont">
+                <view>
+                    <view class="goods-item__title">{{info.title}}</view>
+                    <view class="goods-item__price"><text class="cur">¥</text>{{info.price}}</view>
+                    <view class="goods-item__promoter-price">预计收益：<text class="cur">¥</text>{{info.promoter_price}}</view>
+                </view>
+                <view class="goods-item__extra">
+                    <view class="goods-item__author">
+                        <at-button bindonclick="funPrivateRcFyC" __triggerObserer="{{ _triggerObserer }}" size="small" __fn_onClick="{{true}}">上架</at-button>
+                    </view>
+                    <view class="goods-item__actions">
+                        <button data-id="{{info.item_id}}" data-name="{{info.title}}" open-type="share" size="small">分享</button>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</block>

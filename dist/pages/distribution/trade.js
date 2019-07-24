@@ -36,7 +36,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var DistributionTrade = (0, _index6.withPager)(_class = (_temp2 = _class2 = function (_BaseComponent) {
+var DistributionTrade = (0, _index6.withPager)(_class = (0, _index6.withBackToTop)(_class = (_temp2 = _class2 = function (_BaseComponent) {
   _inherits(DistributionTrade, _BaseComponent);
 
   function DistributionTrade() {
@@ -167,7 +167,7 @@ var DistributionTrade = (0, _index6.withPager)(_class = (_temp2 = _class2 = func
   }]);
 
   return DistributionTrade;
-}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleClickTab", "nextPage"], _temp2)) || _class;
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleClickTab", "nextPage"], _temp2)) || _class) || _class;
 
 exports.default = DistributionTrade;
 

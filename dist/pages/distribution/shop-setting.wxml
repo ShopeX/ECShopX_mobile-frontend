@@ -1,0 +1,9 @@
+<block>
+    <view class="page-distribution-shop-setting">
+        <sp-cell title="小店名称" __triggerObserer="{{ _triggerObserer }}" value="{{info.shop_name}}" border="{{true}}" isLink="{{true}}"></sp-cell>
+        <sp-cell title="小店描述" __triggerObserer="{{ _triggerObserer }}" value="{{info.brief}}" border="{{true}}" isLink="{{true}}"></sp-cell>
+        <sp-cell title="小店店招" __triggerObserer="{{ _triggerObserer }}" isLink="{{true}}">
+            <image class="shop-sign" src="{{info.shop_pic || 'https://fakeimg.pl/320x100/EFEFEF/CCC/?font=lobster'}}" mode="widthFix"></image>
+        </sp-cell>
+    </view>
+</block>

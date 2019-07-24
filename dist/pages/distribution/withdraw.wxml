@@ -9,18 +9,20 @@
         </view>
         <view class="section list">
             <view class="list-item" style="position: relative;">
-                <picker bindchange="handleChange" value="{{curIdx}}" range="{{payList}}">
+                <picker bindchange="handlePick" value="{{curIdx}}" range="{{payList}}" data-e-change-so="this">
                     <view class="pay-type-picker"></view>
                 </picker>
                 <view class="label">提现方式</view>
                 <view class="list-item-txt content-right">{{payList[curIdx]}}</view>
                 <view class="item-icon-go icon-arrowRight"></view>
             </view>
-            <navigator url="/pages/distribution/withdraw_account_settings" class="list-item">
-                <view class="label">提现账户</view>
-                <view class="list-item-txt content-right">{{alipay_account ? alipay_account : '去设置'}}</view>
-                <view class="item-icon-go icon-arrowRight"></view>
-            </navigator>
+            <block wx:if="{{curIdx}}">
+                <navigator url="/pages/distribution/withdrawals-acount" class="list-item">
+                    <view class="label">提现账户</view>
+                    <view class="list-item-txt content-right">{{alipay_account ? alipay_account : '去设置'}}</view>
+                    <view class="item-icon-go icon-arrowRight"></view>
+                </navigator>
+            </block>
         </view>
         <view class="content-padded">
             <button class="g-button {{isClick ? '_off' : ''}}" type="primary" bindtap="goWithdraw" disabled="{{!curIdx && amount > 800}}">提现</button>

@@ -103,8 +103,8 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivatengfow",
-    value: function funPrivatengfow() {
+    key: "funPrivateZKpLQ",
+    value: function funPrivateZKpLQ() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -151,7 +151,7 @@ var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivatengfow", "handleFavClick", "handleLikeClick"], _class.defaultProps = {
+}, _class.$$events = ["funPrivateZKpLQ", "handleFavClick", "handleLikeClick"], _class.defaultProps = {
   onClick: function onClick() {},
   showMarketPrice: true,
   noCurSymbol: false,

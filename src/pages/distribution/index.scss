@@ -63,22 +63,19 @@
     }
   }
   .share {
+    .item-icon {
+      color: #00c3ff;
+    }
     .share-btn {
       margin: 0;
-      padding: 0;
       line-height: 1;
       background: none;
       font-size: inherit;
       color: inherit;
+      text-align: left;
       &::after {
         content: none;
       }
-    }
-    [class^="icon-"] {
-      color: #00c3ff;
-      font-size: 50rpx;
-      margin-right: 10rpx;
-      vertical-align: middle;
     }
   }
 }

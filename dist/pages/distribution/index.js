@@ -67,6 +67,17 @@ var DistributionDashboard = (_temp2 = _class = function (_BaseComponent) {
       this.fetch();
     }
   }, {
+    key: "onShareAppMessage",
+    value: function onShareAppMessage() {
+      var info = this.state.info;
+
+
+      return {
+        title: info.item_name,
+        path: "/pages/item/espier-detail?id=" + info.item_id
+      };
+    }
+  }, {
     key: "fetch",
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {

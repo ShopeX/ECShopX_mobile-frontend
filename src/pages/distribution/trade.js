@@ -4,11 +4,12 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { BackToTop, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
-import { withPager } from '@/hocs'
+import { withPager, withBackToTop } from '@/hocs'
 
 import './trade.scss'
 
 @withPager
+@withBackToTop
 export default class DistributionTrade extends Component {
   constructor (props) {
     super(props)

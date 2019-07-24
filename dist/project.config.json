@@ -1,13 +1,15 @@
 {
-  "miniprogramRoot": "./",
-  "projectname": "mshop-taro",
-  "description": "taro app for bbc",
-  "appid": "wx912913df9fef6ddd",
-  "setting": {
-    "urlCheck": false,
-    "es6": false,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram"
+	"projectname": "mshop-taro",
+	"description": "taro app for bbc",
+	"appid": "wx912913df9fef6ddd",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false
+	},
+	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {}
 }

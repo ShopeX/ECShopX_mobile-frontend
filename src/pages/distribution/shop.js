@@ -1,0 +1,340 @@
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text, ScrollView, Image, Navigator } from '@tarojs/components'
+import { AtDrawer } from 'taro-ui'
+import { BackToTop, Loading, FilterBar, SpNote } from '@/components'
+import DistributionGoodsItem from './comps/goods-item'
+import api from '@/api'
+import { withPager, withBackToTop } from '@/hocs'
+import { classNames, pickBy } from '@/utils'
+
+import './shop.scss'
+
+@withPager
+@withBackToTop
+export default class DistributionShop extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      ...this.state,
+      info: {},
+      curFilterIdx: 0,
+      filterList: [
+        { title: '综合' },
+        { title: '销量' },
+        { title: '价格', sort: -1 }
+      ],
+      query: null,
+      showDrawer: false,
+      paramsList: [],
+      selectParams: [],
+      list: []
+    }
+  }
+
+  componentDidMount () {
+    this.firstStatus = true
+    this.setState({
+      query: {
+        item_type: 'normal',
+        approve_status: 'onsale,only_show',
+        is_promoter: true
+      }
+    }, () => {
+      this.nextPage()
+    })
+  }
+
+  componentDidShow () {
+    this.fetchInfo()
+  }
+
+  async fetchInfo () {
+    const resUser = Taro.getStorageSync('userinfo')
+    const { username, avatar } = resUser
+
+    const res = await api.distribution.info()
+    const {shop_name = '' } = res
+
+    this.setState({
+      info: {
+        username,
+        avatar,
+        shop_name
+      }
+    })
+  }
+
+  async fetch (params) {
+    const { page_no: page, page_size: pageSize } = params
+    const { selectParams } = this.state
+    const query = {
+      ...this.state.query,
+      page,
+      pageSize
+    }
+
+    const { list, total_count: total, item_params_list = []} = await api.item.search(query)
+
+    item_params_list.map(item => {
+      if (selectParams.length < 4) {
+        selectParams.push({
+          attribute_id: item.attribute_id,
+          attribute_value_id: 'all'
+        })
+      }
+      item.attribute_values.unshift({attribute_value_id: 'all', attribute_value_name: '全部', isChooseParams: true})
+    })
+
+    const nList = pickBy(list, {
+      img: 'pics[0]',
+      item_id: 'item_id',
+      title: 'itemName',
+      desc: 'brief',
+      price: ({ price }) => (price/100).toFixed(2),
+      promoter_price: ({ promoter_price }) => (promoter_price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2)
+    })
+
+    this.setState({
+      list: [...this.state.list, ...nList],
+      showDrawer: false,
+      query
+    })
+
+    if (this.firstStatus) {
+      this.setState({
+        paramsList: item_params_list,
+        selectParams
+      })
+      this.firstStatus = false
+    }
+
+    return {
+      total
+    }
+  }
+
+  handleFilterChange = (data) => {
+    this.setState({
+      showDrawer: false
+    })
+    const { current, sort } = data
+
+    const query = {
+      ...this.state.query,
+      goodsSort: current === 0
+          ? null
+          : current === 1
+            ? 1
+            : (sort > 0 ? 3 : 2)
+    }
+
+    if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
+      this.resetPage()
+      this.setState({
+        list: []
+      })
+    }
+
+    this.setState({
+      curFilterIdx: current,
+      query
+    }, () => {
+      this.nextPage()
+    })
+  }
+
+  handleClickFilter = () => {
+    this.setState({
+      showDrawer: true
+    })
+  }
+
+  handleClickParmas = (id, child_id) => {
+    const { paramsList, selectParams } = this.state
+    paramsList.map(item => {
+      if(item.attribute_id === id) {
+        item.attribute_values.map(v_item => {
+          if(v_item.attribute_value_id === child_id) {
+            v_item.isChooseParams = true
+          } else {
+            v_item.isChooseParams = false
+          }
+        })
+      }
+    })
+    selectParams.map(item => {
+      if(item.attribute_id === id) {
+        item.attribute_value_id = child_id
+      }
+    })
+    this.setState({
+      paramsList,
+      selectParams
+    })
+  }
+
+  handleClickSearchParams = (type) => {
+    this.setState({
+      showDrawer: false
+    })
+    if(type === 'reset') {
+      const { paramsList, selectParams } = this.state
+      this.state.paramsList.map(item => {
+        item.attribute_values.map(v_item => {
+          if(v_item.attribute_value_id === 'all') {
+            v_item.isChooseParams = true
+          } else {
+            v_item.isChooseParams = false
+          }
+        })
+      })
+      selectParams.map(item => {
+        item.attribute_value_id = 'all'
+      })
+      this.setState({
+        paramsList,
+        selectParams
+      })
+    }
+
+    this.resetPage()
+    this.setState({
+      list: []
+    }, () => {
+      this.nextPage()
+    })
+  }
+
+  handleClickItem = (item) => {
+
+  }
+
+  onShareAppMessage (res) {
+    const { id, name } = res.target.dataset
+
+    return {
+      title: name,
+      path: `/pages/item/espier-detail?id=${id}`
+    }
+  }
+
+  render () {
+    const { list, page, showDrawer, paramsList, selectParams, scrollTop } = this.state
+
+    return (
+      <View className="page-distribution-shop">
+        <View className="shop-banner">
+          <View className="shop-info">
+            <Image
+              className='shopkeeper-avatar'
+              src={info.avatar}
+              mode='aspectFill'
+            />
+            <View>
+              <View className='shop-name'>{info.shop_name}</View>
+              <View className='shop-desc'></View>
+            </View>
+          </View>
+          <Navigator className="shop-setting" url="/pages/distribution/shop-setting">
+            <View>设置小店</View>
+            <View class="icon-arrowRight"></View>
+          </Navigator>
+          <Image
+            className='banner-img'
+            src={info.banner}
+            mode='aspectFill'
+          />
+        </View>
+        <FilterBar
+          className='goods-list__tabs'
+          custom
+          current={curFilterIdx}
+          list={filterList}
+          onChange={this.handleFilterChange}
+        >
+          <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
+            <View className='icon-filter'></View>
+            <Text>筛选</Text>
+          </View>
+        </FilterBar>
+
+        <AtDrawer
+          show={showDrawer}
+          right
+          mask
+          width={`${Taro.pxTransform(570)}`}
+        >
+          {
+            paramsList.map((item, index) => {
+              return (
+                <View className='drawer-item' key={index}>
+                  <View className='drawer-item__title'>
+                    <Text>{item.attribute_name}</Text>
+                    <View className='at-icon at-icon-chevron-down'> </View>
+                  </View>
+                  <View className='drawer-item__options'>
+                    {
+                      item.attribute_values.map((v_item, v_index) => {
+                        return (
+                          <View
+                            className={classNames('drawer-item__options__item' ,v_item.isChooseParams ? 'drawer-item__options__checked' : '')}
+                            // className='drawer-item__options__item'
+                            key={v_index}
+                            onClick={this.handleClickParmas.bind(this, item.attribute_id, v_item.attribute_value_id)}
+                          >
+                            {v_item.attribute_value_name}
+                          </View>
+                        )
+                      })
+                    }
+                    <View className='drawer-item__options__none'> </View>
+                    <View className='drawer-item__options__none'> </View>
+                    <View className='drawer-item__options__none'> </View>
+                  </View>
+                </View>
+              )
+            })
+          }
+          <View className='drawer-footer'>
+            <Text className='drawer-footer__btn' onClick={this.handleClickSearchParams.bind(this, 'reset')}>重置</Text>
+            <Text className='drawer-footer__btn drawer-footer__btn_active' onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定</Text>
+          </View>
+        </AtDrawer>
+
+        <ScrollView
+          className='goods-list__scroll'
+          scrollY
+          scrollTop={scrollTop}
+          scrollWithAnimation
+          onScroll={this.handleScroll}
+          onScrollToLower={this.nextPage}
+        >
+          <View className='goods-list'>
+            {
+              list.map((item, index) => {
+                return (
+                  <DistributionGoodsItem
+                    key={index}
+                    info={item}
+                    onClick={() => this.handleClickItem(item)}
+                  />
+                )
+              })
+            }
+          </View>
+          {
+            page.isLoading
+              ? <Loading>正在加载...</Loading>
+              : null
+          }
+          {
+            !page.isLoading && !page.hasNext && !list.length
+              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
+          }
+        </ScrollView>
+      </View>
+    )
+  }
+}
