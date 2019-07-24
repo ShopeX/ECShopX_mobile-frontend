@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { AtInput } from 'taro-ui'
 import { SpCell } from '@/components'
 import api from '@/api'
 
@@ -15,7 +14,7 @@ export default class DistributionShopSetting extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidShow () {
     this.fetch()
   }
 
@@ -32,6 +31,14 @@ export default class DistributionShopSetting extends Component {
     })
   }
 
+  handleClick = (key) => {
+    const { info } = this.state
+
+    Taro.navigateTo({
+      url: `/pages/distribution/shop-form?key=${key}&val=${info[key] || ''}`
+    })
+  }
+
   render () {
     const { info } = this.state
 
@@ -40,17 +47,20 @@ export default class DistributionShopSetting extends Component {
         <SpCell
           title='小店名称'
           value={info.shop_name}
+          onClick={this.handleClick.bind(this, 'shop_name')}
           border
           isLink
         />
         <SpCell
           title='小店描述'
           value={info.brief}
+          onClick={this.handleClick.bind(this, 'brief')}
           border
           isLink
         />
         <SpCell
           title='小店店招'
+          onClick={this.handleClick.bind(this, 'shop_pic')}
           isLink
         >
           <Image

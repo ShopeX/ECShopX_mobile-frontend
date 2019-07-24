@@ -15,10 +15,11 @@
                 </view>
                 <view class="goods-item__extra">
                     <view class="goods-item__author">
-                        <at-button bindonclick="funPrivateRcFyC" __triggerObserer="{{ _triggerObserer }}" size="small" __fn_onClick="{{true}}">上架</at-button>
+                        <at-button bindonclick="funPrivateLGPbX" __triggerObserer="{{ _triggerObserer }}" size="small" __fn_onClick="{{true}}">上架</at-button>
                     </view>
                     <view class="goods-item__actions">
-                        <button data-id="{{info.item_id}}" data-name="{{info.title}}" open-type="share" size="small">分享</button>
+                        <button class="goods-item__share-btn" data-id="{{info.item_id}}" data-name="{{info.title}}" open-type="share" size="small"><text class="icon-share2"></text>
+                        </button>
                     </view>
                 </view>
             </view>

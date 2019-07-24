@@ -73,8 +73,8 @@ var OrderItem = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivateBWVDB",
-    value: function funPrivateBWVDB() {
+    key: "funPrivateVffdz",
+    value: function funPrivateVffdz() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -105,7 +105,7 @@ var OrderItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivateBWVDB"], _class.defaultProps = {
+}, _class.$$events = ["funPrivateVffdz"], _class.defaultProps = {
   onClick: function onClick() {},
   payType: '',
   showExtra: true,

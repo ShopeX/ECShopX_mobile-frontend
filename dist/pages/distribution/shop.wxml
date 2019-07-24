@@ -5,14 +5,14 @@
                 <image class="shopkeeper-avatar" src="{{info.avatar}}" mode="aspectFill"></image>
                 <view>
                     <view class="shop-name">{{info.shop_name}}</view>
-                    <view class="shop-desc"></view>
+                    <view class="shop-desc">{{info.brief}}</view>
                 </view>
             </view>
             <navigator class="shop-setting" url="/pages/distribution/shop-setting">
                 <view>设置小店</view>
                 <view class="icon-arrowRight"></view>
             </navigator>
-            <image class="banner-img" src="{{info.banner}}" mode="aspectFill"></image>
+            <image class="banner-img" src="{{info.shop_pic}}" mode="aspectFill"></image>
         </view>
         <filter-bar className="goods-list__tabs" __triggerObserer="{{ _triggerObserer }}" custom="{{true}}" current="{{curFilterIdx}}" list="{{filterList}}" bindonchange="handleFilterChange" __fn_onChange="{{true}}">
             <view class="filter-bar__item" bindtap="handleClickFilter" data-e-tap-so="this">

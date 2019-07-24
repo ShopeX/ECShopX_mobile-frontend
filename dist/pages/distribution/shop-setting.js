@@ -42,7 +42,14 @@ var DistributionShopSetting = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DistributionShopSetting.__proto__ || Object.getPrototypeOf(DistributionShopSetting)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DistributionShopSetting.__proto__ || Object.getPrototypeOf(DistributionShopSetting)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info"], _this.handleClick = function (key) {
+      var info = _this.state.info;
+
+
+      _index2.default.navigateTo({
+        url: "/pages/distribution/shop-form?key=" + key + "&val=" + (info[key] || '')
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(DistributionShopSetting, [{
@@ -55,8 +62,8 @@ var DistributionShopSetting = (_temp2 = _class = function (_BaseComponent) {
       };
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "componentDidShow",
+    value: function componentDidShow() {
       this.fetch();
     }
   }, {
@@ -115,7 +122,7 @@ var DistributionShopSetting = (_temp2 = _class = function (_BaseComponent) {
   }]);
 
   return DistributionShopSetting;
-}(_index.Component), _class.properties = {}, _class.$$events = [], _temp2);
+}(_index.Component), _class.properties = {}, _class.$$events = ["handleClick"], _temp2);
 exports.default = DistributionShopSetting;
 
 Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(DistributionShopSetting, true));

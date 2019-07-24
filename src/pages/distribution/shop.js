@@ -54,13 +54,15 @@ export default class DistributionShop extends Component {
     const { username, avatar } = resUser
 
     const res = await api.distribution.info()
-    const {shop_name = '' } = res
+    const {shop_name, brief, shop_pic } = res
 
     this.setState({
       info: {
         username,
         avatar,
-        shop_name
+        shop_name,
+        brief,
+        shop_pic
       }
     })
   }
@@ -234,7 +236,7 @@ export default class DistributionShop extends Component {
             />
             <View>
               <View className='shop-name'>{info.shop_name}</View>
-              <View className='shop-desc'></View>
+              <View className='shop-desc'>{info.brief}</View>
             </View>
           </View>
           <Navigator className="shop-setting" url="/pages/distribution/shop-setting">
@@ -243,7 +245,7 @@ export default class DistributionShop extends Component {
           </Navigator>
           <Image
             className='banner-img'
-            src={info.banner}
+            src={info.shop_pic}
             mode='aspectFill'
           />
         </View>

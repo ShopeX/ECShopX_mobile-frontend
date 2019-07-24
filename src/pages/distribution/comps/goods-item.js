@@ -45,11 +45,14 @@ export default class DistributionGoodsItem extends Component {
               </View>
               <View className='goods-item__actions'>
                 <Button
+                  className='goods-item__share-btn'
                   dataId={info.item_id}
                   dataName={info.title}
                   openType='share'
                   size="small"
-                >分享</Button>
+                >
+                  <Text class="icon-share2"></Text>
+                </Button>
               </View>
             </View>
           </View>

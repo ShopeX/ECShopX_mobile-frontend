@@ -787,7 +787,7 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
   content: "";
 }
 
-.icon-share:before {
+.icon-share2:before {
   content: "";
 }
 

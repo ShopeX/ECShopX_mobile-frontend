@@ -181,8 +181,7 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
     key: "fetchInfo",
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var resUser, username, avatar, res, _res$shop_name, shop_name;
-
+        var resUser, username, avatar, res, shop_name, brief, shop_pic;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -194,14 +193,16 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
 
               case 4:
                 res = _context.sent;
-                _res$shop_name = res.shop_name, shop_name = _res$shop_name === undefined ? '' : _res$shop_name;
+                shop_name = res.shop_name, brief = res.brief, shop_pic = res.shop_pic;
 
 
                 this.setState({
                   info: {
                     username: username,
                     avatar: avatar,
-                    shop_name: shop_name
+                    shop_name: shop_name,
+                    brief: brief,
+                    shop_pic: shop_pic
                   }
                 });
 

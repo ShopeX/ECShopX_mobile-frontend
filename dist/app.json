@@ -59,6 +59,7 @@
     "pages/distribution/withdrawals-acount",
     "pages/distribution/shop",
     "pages/distribution/shop-setting",
+    "pages/distribution/shop-form",
     "pages/trade/list",
     "pages/trade/detail",
     "pages/trade/delivery-info",
@@ -81,6 +82,5 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "ecshopX商城",
     "navigationBarTextStyle": "black"
-  },
-  "sitemapLocation": "sitemap.json"
+  }
 }

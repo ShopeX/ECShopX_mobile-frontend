@@ -1,4 +1,13 @@
 
+.page-distribution-withdraw .withdraw .at-input {
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  margin: 0;
+  background: #f8f8f8;
+}
+.page-distribution-withdraw .withdraw .at-input:after {
+  border: 0;
+}
 .page-distribution-withdraw .withdraw .withdraw-title {
   height: 80rpx;
   display: -webkit-box;
