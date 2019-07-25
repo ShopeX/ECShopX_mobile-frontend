@@ -59,6 +59,8 @@ export default class SpToast extends Component {
     let newText = ''
     if(text.length > 11) {
       newText = text.substring(0, 11)+ '\n' + text.substring(11)
+    } else {
+      newText = text
     }
     const { icon, image, status, duration, hasMask } = resolveState(this.props, this.state)
 

@@ -17,7 +17,7 @@ export default class DistributionGoodsItem extends Component {
   }
 
   render () {
-    const { info, onClick, className } = this.props
+    const { info, onClick, className, isRelease } = this.props
     if (!info) {
       return null
     }
@@ -41,13 +41,18 @@ export default class DistributionGoodsItem extends Component {
             </View>
             <View className='goods-item__extra'>
               <View className='goods-item__author'>
-                <AtButton onClick={onClick} size="small">上架</AtButton>
+                <AtButton onClick={onClick} size="small">
+                  {
+                    isRelease
+                      ? <Text>下架</Text>
+                      : <Text>上架</Text>
+                  }
+                </AtButton>
               </View>
               <View className='goods-item__actions'>
                 <Button
                   className='goods-item__share-btn'
-                  dataId={info.item_id}
-                  dataName={info.title}
+                  dataInfo={info}
                   openType='share'
                   size="small"
                 >

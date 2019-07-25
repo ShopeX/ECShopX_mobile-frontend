@@ -276,6 +276,7 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
                 userObj = {
                   username: res.memberInfo.username,
                   avatar: res.memberInfo.avatar,
+                  userId: res.memberInfo.user_id,
                   isPromoter: res.is_promoter
                 };
 

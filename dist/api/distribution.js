@@ -13,6 +13,9 @@ exports.statistics = statistics;
 exports.withdrawRecord = withdrawRecord;
 exports.withdraw = withdraw;
 exports.qrcode = qrcode;
+exports.items = items;
+exports.release = release;
+exports.unreleased = unreleased;
 
 var _req = require('./req.js');
 
@@ -62,4 +65,16 @@ function withdraw() {
 
 function qrcode() {
   return _req2.default.post('/promoter/qrcode');
+}
+
+function items(params) {
+  return _req2.default.get('/promoter/relgoods', params);
+}
+
+function release(params) {
+  return _req2.default.post('/promoter/relgoods', params);
+}
+
+function unreleased(params) {
+  return _req2.default.delete('/promoter/relgoods', params);
 }

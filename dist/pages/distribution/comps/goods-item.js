@@ -38,7 +38,7 @@ var DistributionGoodsItem = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DistributionGoodsItem.__proto__ || Object.getPrototypeOf(DistributionGoodsItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "img", "className"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DistributionGoodsItem.__proto__ || Object.getPrototypeOf(DistributionGoodsItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "img", "isRelease", "className"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(DistributionGoodsItem, [{
@@ -57,7 +57,8 @@ var DistributionGoodsItem = (_temp2 = _class = function (_BaseComponent) {
       var _props = this.__props,
           info = _props.info,
           onClick = _props.onClick,
-          className = _props.className;
+          className = _props.className,
+          isRelease = _props.isRelease;
 
       if (!info) {
         return null;
@@ -69,13 +70,14 @@ var DistributionGoodsItem = (_temp2 = _class = function (_BaseComponent) {
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
         info: info,
-        img: img
+        img: img,
+        isRelease: isRelease
       });
       return this.__state;
     }
   }, {
-    key: "funPrivateLGPbX",
-    value: function funPrivateLGPbX() {
+    key: "funPrivategegqV",
+    value: function funPrivategegqV() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -94,11 +96,15 @@ var DistributionGoodsItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   },
+  "isRelease": {
+    "type": null,
+    "value": null
+  },
   "__fn_onClick": {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivateLGPbX"], _class.defaultProps = {
+}, _class.$$events = ["funPrivategegqV"], _class.defaultProps = {
   onClick: function onClick() {},
   onShare: function onShare() {}
 }, _class.options = {

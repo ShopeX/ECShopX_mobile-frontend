@@ -104,6 +104,8 @@ var SpToast = (_temp2 = _class = function (_BaseComponent) {
       var newText = '';
       if (text.length > 11) {
         newText = text.substring(0, 11) + '\n' + text.substring(11);
+      } else {
+        newText = text;
       }
 
       var _resolveState = resolveState(this.__props, this.__state),

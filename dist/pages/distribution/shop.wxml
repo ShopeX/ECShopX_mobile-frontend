@@ -36,7 +36,7 @@
         </at-drawer>
         <scroll-view class="goods-list__scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}" bindscroll="handleScroll" bindscrolltolower="nextPage">
             <view class="goods-list">
-                <distribution-goods-item wx:key="index" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonclick="anonymousFunc0" wx:for="{{loopArray1}}" wx:for-item="item" wx:for-index="index" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{index}}"></distribution-goods-item>
+                <distribution-goods-item wx:key="index" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" isRelease="{{item.isRelease}}" bindonclick="anonymousFunc0" wx:for="{{loopArray1}}" wx:for-item="item" wx:for-index="index" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{index}}"></distribution-goods-item>
             </view>
             <block wx:if="{{page.isLoading}}">
                 <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>
@@ -45,5 +45,6 @@
                 <sp-note img="trades_empty.png" __triggerObserer="{{ _triggerObserer }}">暂无数据~</sp-note>
             </block>
         </scroll-view>
+        <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
     </view>
 </block>

@@ -77,6 +77,7 @@ export default class MemberIndex extends Component {
     const userObj = {
       username: res.memberInfo.username,
       avatar: res.memberInfo.avatar,
+      userId: res.memberInfo.user_id,
       isPromoter: res.is_promoter
     }
     if(!resUser || resUser.username !== userObj.username || resUser.avatar !== userObj.avatar) {

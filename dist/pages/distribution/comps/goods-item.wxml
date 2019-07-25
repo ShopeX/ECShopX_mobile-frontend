@@ -15,10 +15,17 @@
                 </view>
                 <view class="goods-item__extra">
                     <view class="goods-item__author">
-                        <at-button bindonclick="funPrivateLGPbX" __triggerObserer="{{ _triggerObserer }}" size="small" __fn_onClick="{{true}}">上架</at-button>
+                        <at-button bindonclick="funPrivategegqV" __triggerObserer="{{ _triggerObserer }}" size="small" __fn_onClick="{{true}}">
+                            <block>
+                                <block wx:if="{{isRelease}}"><text>下架</text>
+                                </block>
+                                <block wx:else><text>上架</text>
+                                </block>
+                            </block>
+                        </at-button>
                     </view>
                     <view class="goods-item__actions">
-                        <button class="goods-item__share-btn" data-id="{{info.item_id}}" data-name="{{info.title}}" open-type="share" size="small"><text class="icon-share2"></text>
+                        <button class="goods-item__share-btn" data-info="{{info}}" open-type="share" size="small"><text class="icon-share2"></text>
                         </button>
                     </view>
                 </view>

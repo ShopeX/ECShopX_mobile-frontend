@@ -22,11 +22,13 @@ export default class DistributionDashboard extends Component {
   }
 
   onShareAppMessage () {
+    const { username, userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
 
     return {
-      title: info.item_name,
-      path: `/pages/item/espier-detail?id=${info.item_id}`
+      title: info.shop_name || `${username}的小店`,
+      imageUrl: info.shop_pic,
+      path: `/pages/item/espier-detail?id=${info.item_id}&userid=${userId}`
     }
   }
 
@@ -49,6 +51,7 @@ export default class DistributionDashboard extends Component {
     const promoter = await api.distribution.info()
     const pInfo = pickBy(promoter, {
       shop_name: 'shop_name',
+      shop_pic: 'shop_pic',
       is_open_promoter_grade: 'is_open_promoter_grade',
       promoter_grade_name: 'promoter_grade_name'
     })

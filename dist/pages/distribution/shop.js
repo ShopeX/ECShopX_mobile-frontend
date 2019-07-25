@@ -16,13 +16,17 @@ var _index = require("../../npm/@tarojs/taro-weapp/index.js");
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = require("../../api/index.js");
+var _index3 = require("../../spx/index.js");
 
 var _index4 = _interopRequireDefault(_index3);
 
-var _index5 = require("../../hocs/index.js");
+var _index5 = require("../../api/index.js");
 
-var _index6 = require("../../utils/index.js");
+var _index6 = _interopRequireDefault(_index5);
+
+var _index7 = require("../../hocs/index.js");
+
+var _index8 = require("../../utils/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,11 +40,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop)(_class = (_temp2 = _class2 = function (_BaseComponent) {
+var DistributionShop = (0, _index7.withPager)(_class = (0, _index7.withBackToTop)(_class = (_temp2 = _class2 = function (_BaseComponent) {
   _inherits(DistributionShop, _BaseComponent);
 
   function DistributionShop() {
-    var _ref;
+    var _ref,
+        _this2 = this;
 
     var _temp, _this, _ret;
 
@@ -50,7 +55,7 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DistributionShop.__proto__ || Object.getPrototypeOf(DistributionShop)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "loopArray0", "loopArray1", "info", "curFilterIdx", "filterList", "showDrawer", "paramsList", "scrollTop", "list", "page", "query", "selectParams"], _this.handleFilterChange = function (data) {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DistributionShop.__proto__ || Object.getPrototypeOf(DistributionShop)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "loopArray0", "loopArray1", "info", "curFilterIdx", "filterList", "showDrawer", "paramsList", "scrollTop", "list", "page", "query", "selectParams", "goodsIds"], _this.handleFilterChange = function (data) {
       _this.setState({
         showDrawer: false
       });
@@ -137,7 +142,73 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
       }, function () {
         _this.nextPage();
       });
-    }, _this.handleClickItem = function (item) {}, _this.anonymousFunc0Array = [], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+    }, _this.handleClickItem = function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id) {
+        var goodsIds, goodsId, idx, isRelease, _ref3, status, _ref4, _status;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                console.log(id);
+                goodsIds = _this.state.goodsIds;
+                goodsId = { goods_id: id };
+                idx = goodsIds.findIndex(function (item) {
+                  return id === item;
+                });
+                isRelease = idx !== -1;
+
+                if (isRelease) {
+                  _context.next = 13;
+                  break;
+                }
+
+                _context.next = 8;
+                return _index6.default.distribution.release(goodsId);
+
+              case 8:
+                _ref3 = _context.sent;
+                status = _ref3.status;
+
+                if (status) {
+                  _this.setState({
+                    goodsIds: [].concat(_toConsumableArray(_this.state.goodsIds), [id])
+                  }, function () {
+                    _index4.default.toast('上架成功');
+                  });
+                }
+                _context.next = 18;
+                break;
+
+              case 13:
+                _context.next = 15;
+                return _index6.default.distribution.unreleased(goodsId);
+
+              case 15:
+                _ref4 = _context.sent;
+                _status = _ref4.status;
+
+                if (_status) {
+                  goodsIds.splice(idx, 1);
+                  _this.setState({
+                    goodsIds: goodsIds
+                  }, function () {
+                    _index4.default.toast('下架成功');
+                  });
+                }
+
+              case 18:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, _this2);
+      }));
+
+      return function (_x) {
+        return _ref2.apply(this, arguments);
+      };
+    }(), _this.anonymousFunc0Array = [], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(DistributionShop, [{
@@ -153,13 +224,14 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
         showDrawer: false,
         paramsList: [],
         selectParams: [],
-        list: []
+        list: [],
+        goodsIds: []
       });
     }
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.firstStatus = true;
       this.setState({
@@ -169,7 +241,7 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
           is_promoter: true
         }
       }, function () {
-        _this2.nextPage();
+        _this3.nextPage();
       });
     }
   }, {
@@ -180,19 +252,19 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
   }, {
     key: "fetchInfo",
     value: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
         var resUser, username, avatar, res, shop_name, brief, shop_pic;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 resUser = _index2.default.getStorageSync('userinfo');
                 username = resUser.username, avatar = resUser.avatar;
-                _context.next = 4;
-                return _index4.default.distribution.info();
+                _context2.next = 4;
+                return _index6.default.distribution.info();
 
               case 4:
-                res = _context.sent;
+                res = _context2.sent;
                 shop_name = res.shop_name, brief = res.brief, shop_pic = res.shop_pic;
 
 
@@ -208,14 +280,14 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
 
               case 7:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
       function fetchInfo() {
-        return _ref2.apply(this, arguments);
+        return _ref5.apply(this, arguments);
       }
 
       return fetchInfo;
@@ -223,28 +295,29 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
   }, {
     key: "fetch",
     value: function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
-        var page, pageSize, selectParams, query, _ref4, list, total, _ref4$item_params_lis, item_params_list, nList;
+      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(params) {
+        var _Taro$getStorageSync, userId, page, pageSize, selectParams, query, _ref7, list, total, _ref7$item_params_lis, item_params_list, nList, ids, param, _ref11, goods_id;
 
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
+                _Taro$getStorageSync = _index2.default.getStorageSync('userinfo'), userId = _Taro$getStorageSync.userId;
                 page = params.page_no, pageSize = params.page_size;
                 selectParams = this.state.selectParams;
                 query = _extends({}, this.state.query, {
                   page: page,
                   pageSize: pageSize
                 });
-                _context2.next = 5;
-                return _index4.default.item.search(query);
+                _context3.next = 6;
+                return _index6.default.item.search(query);
 
-              case 5:
-                _ref4 = _context2.sent;
-                list = _ref4.list;
-                total = _ref4.total_count;
-                _ref4$item_params_lis = _ref4.item_params_list;
-                item_params_list = _ref4$item_params_lis === undefined ? [] : _ref4$item_params_lis;
+              case 6:
+                _ref7 = _context3.sent;
+                list = _ref7.list;
+                total = _ref7.total_count;
+                _ref7$item_params_lis = _ref7.item_params_list;
+                item_params_list = _ref7$item_params_lis === undefined ? [] : _ref7$item_params_lis;
 
 
                 item_params_list.map(function (item) {
@@ -257,25 +330,46 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
                   item.attribute_values.unshift({ attribute_value_id: 'all', attribute_value_name: '全部', isChooseParams: true });
                 });
 
-                nList = (0, _index6.pickBy)(list, {
+                nList = (0, _index8.pickBy)(list, {
                   img: 'pics[0]',
                   item_id: 'item_id',
+                  goods_id: 'goods_id',
                   title: 'itemName',
                   desc: 'brief',
-                  price: function price(_ref5) {
-                    var _price = _ref5.price;
+                  price: function price(_ref8) {
+                    var _price = _ref8.price;
                     return (_price / 100).toFixed(2);
                   },
-                  promoter_price: function promoter_price(_ref6) {
-                    var _promoter_price = _ref6.promoter_price;
+                  promoter_price: function promoter_price(_ref9) {
+                    var _promoter_price = _ref9.promoter_price;
                     return (_promoter_price / 100).toFixed(2);
                   },
-                  market_price: function market_price(_ref7) {
-                    var _market_price = _ref7.market_price;
+                  market_price: function market_price(_ref10) {
+                    var _market_price = _ref10.market_price;
                     return (_market_price / 100).toFixed(2);
                   }
                 });
+                ids = [];
 
+                list.map(function (item) {
+                  ids.push(item.goods_id);
+                });
+
+                param = {
+                  goods_id: ids,
+                  user_id: userId
+                };
+                _context3.next = 18;
+                return _index6.default.distribution.items(param);
+
+              case 18:
+                _ref11 = _context3.sent;
+                goods_id = _ref11.goods_id;
+
+
+                this.setState({
+                  goodsIds: [].concat(_toConsumableArray(this.state.goodsIds), _toConsumableArray(goods_id))
+                });
 
                 this.setState({
                   list: [].concat(_toConsumableArray(this.state.list), _toConsumableArray(nList)),
@@ -291,20 +385,20 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
                   this.firstStatus = false;
                 }
 
-                return _context2.abrupt("return", {
+                return _context3.abrupt("return", {
                   total: total
                 });
 
-              case 15:
+              case 24:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
-      function fetch(_x) {
-        return _ref3.apply(this, arguments);
+      function fetch(_x2) {
+        return _ref6.apply(this, arguments);
       }
 
       return fetch;
@@ -312,20 +406,22 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
   }, {
     key: "onShareAppMessage",
     value: function onShareAppMessage(res) {
-      var _res$target$dataset = res.target.dataset,
-          id = _res$target$dataset.id,
-          name = _res$target$dataset.name;
+      var _Taro$getStorageSync2 = _index2.default.getStorageSync('userinfo'),
+          userId = _Taro$getStorageSync2.userId;
+
+      var info = res.target.dataset.info;
 
 
       return {
-        title: name,
-        path: "/pages/item/espier-detail?id=" + id
+        title: info.title,
+        imageUrl: info.img,
+        path: "/pages/item/espier-detail?id=" + info.item_id + "&userid=" + userId
       };
     }
   }, {
     key: "_createData",
     value: function _createData() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.__state = arguments[0] || this.state || {};
       this.__props = arguments[1] || this.props || {};
@@ -338,7 +434,8 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
           showDrawer = _state.showDrawer,
           paramsList = _state.paramsList,
           selectParams = _state.selectParams,
-          scrollTop = _state.scrollTop;
+          scrollTop = _state.scrollTop,
+          goodsIds = _state.goodsIds;
 
 
       var anonymousState__temp = "" + _index2.default.pxTransform(570);
@@ -350,7 +447,7 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
           v_item = {
             $original: (0, _index.internal_get_original)(v_item)
           };
-          var $loopState__temp3 = (0, _index6.classNames)('drawer-item__options__item', v_item.$original.isChooseParams ? 'drawer-item__options__checked' : '');
+          var $loopState__temp3 = (0, _index8.classNames)('drawer-item__options__item', v_item.$original.isChooseParams ? 'drawer-item__options__checked' : '');
           return {
             $loopState__temp3: $loopState__temp3,
             $original: v_item.$original
@@ -366,11 +463,17 @@ var DistributionShop = (0, _index5.withPager)(_class = (0, _index5.withBackToTop
           $original: (0, _index.internal_get_original)(item)
         };
 
-        _this3.anonymousFunc0Array[index] = function () {
-          return _this3.handleClickItem(item.$original);
+        var isRelease = goodsIds.findIndex(function (n) {
+          return item.$original.goods_id == n;
+        }) !== -1;
+        console.log(isRelease);
+
+        _this4.anonymousFunc0Array[index] = function () {
+          return _this4.handleClickItem(item.$original.goods_id);
         };
 
         return {
+          isRelease: isRelease,
           $original: item.$original
         };
       });

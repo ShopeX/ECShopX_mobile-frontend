@@ -69,12 +69,17 @@ var DistributionDashboard = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "onShareAppMessage",
     value: function onShareAppMessage() {
+      var _Taro$getStorageSync = _index2.default.getStorageSync('userinfo'),
+          username = _Taro$getStorageSync.username,
+          userId = _Taro$getStorageSync.userId;
+
       var info = this.state.info;
 
 
       return {
-        title: info.item_name,
-        path: "/pages/item/espier-detail?id=" + info.item_id
+        title: info.shop_name || username + "\u7684\u5C0F\u5E97",
+        imageUrl: info.shop_pic,
+        path: "/pages/item/espier-detail?id=" + info.item_id + "&userid=" + userId
       };
     }
   }, {
@@ -109,6 +114,7 @@ var DistributionDashboard = (_temp2 = _class = function (_BaseComponent) {
                 promoter = _context.sent;
                 pInfo = (0, _index5.pickBy)(promoter, {
                   shop_name: 'shop_name',
+                  shop_pic: 'shop_pic',
                   is_open_promoter_grade: 'is_open_promoter_grade',
                   promoter_grade_name: 'promoter_grade_name'
                 });

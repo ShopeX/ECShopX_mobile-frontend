@@ -39,3 +39,15 @@ export function withdraw () {
 export function qrcode () {
   return req.post('/promoter/qrcode')
 }
+
+export function items (params) {
+  return req.get('/promoter/relgoods', params)
+}
+
+export function release (params) {
+  return req.post('/promoter/relgoods', params)
+}
+
+export function unreleased (params) {
+  return req.delete('/promoter/relgoods', params)
+}

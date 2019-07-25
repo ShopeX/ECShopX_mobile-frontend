@@ -1,8 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Image, Navigator } from '@tarojs/components'
 import { AtDrawer } from 'taro-ui'
-import { BackToTop, Loading, FilterBar, SpNote } from '@/components'
+import { SpToast, BackToTop, Loading, FilterBar, SpNote } from '@/components'
 import DistributionGoodsItem from './comps/goods-item'
+import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
@@ -28,7 +29,8 @@ export default class DistributionShop extends Component {
       showDrawer: false,
       paramsList: [],
       selectParams: [],
-      list: []
+      list: [],
+      goodsIds: []
     }
   }
 
@@ -68,6 +70,7 @@ export default class DistributionShop extends Component {
   }
 
   async fetch (params) {
+    const { userId } = Taro.getStorageSync('userinfo')
     const { page_no: page, page_size: pageSize } = params
     const { selectParams } = this.state
     const query = {
@@ -91,11 +94,28 @@ export default class DistributionShop extends Component {
     const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
+      goods_id: 'goods_id',
       title: 'itemName',
       desc: 'brief',
       price: ({ price }) => (price/100).toFixed(2),
       promoter_price: ({ promoter_price }) => (promoter_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2)
+    })
+
+    let ids = []
+    list.map(item => {
+      ids.push(item.goods_id)
+    })
+
+    const param = {
+      goods_id: ids,
+      user_id: userId
+    }
+
+    const { goods_id } = await api.distribution.items(param)
+
+    this.setState({
+      goodsIds: [...this.state.goodsIds, ...goods_id],
     })
 
     this.setState({
@@ -209,21 +229,47 @@ export default class DistributionShop extends Component {
     })
   }
 
-  handleClickItem = (item) => {
-
+  handleClickItem = async (id) => {
+    console.log(id)
+    const { goodsIds } = this.state
+    const goodsId = {goods_id: id}
+    const idx = goodsIds.findIndex(item => id === item)
+    const isRelease = idx !== -1
+    if (!isRelease) {
+      const { status } = await api.distribution.release(goodsId)
+      if ( status ) {
+        this.setState({
+          goodsIds: [...this.state.goodsIds, id]
+        }, () => {
+          S.toast('上架成功')
+        })
+      }
+    } else {
+      const { status } = await api.distribution.unreleased(goodsId)
+      if ( status ) {
+        goodsIds.splice(idx, 1)
+        this.setState({
+          goodsIds
+        }, () => {
+          S.toast('下架成功')
+        })
+      }
+    }
   }
 
   onShareAppMessage (res) {
-    const { id, name } = res.target.dataset
+    const { userId } = Taro.getStorageSync('userinfo')
+    const { info } = res.target.dataset
 
     return {
-      title: name,
-      path: `/pages/item/espier-detail?id=${id}`
+      title: info.title,
+      imageUrl: info.img,
+      path: `/pages/item/espier-detail?id=${info.item_id}&userid=${userId}`
     }
   }
 
   render () {
-    const { list, page, showDrawer, paramsList, selectParams, scrollTop } = this.state
+    const { list, page, showDrawer, paramsList, selectParams, scrollTop, goodsIds } = this.state
 
     return (
       <View className="page-distribution-shop">
@@ -316,11 +362,14 @@ export default class DistributionShop extends Component {
           <View className='goods-list'>
             {
               list.map((item, index) => {
+                const isRelease = goodsIds.findIndex(n => item.goods_id == n) !== -1
+                console.log(isRelease)
                 return (
                   <DistributionGoodsItem
                     key={index}
                     info={item}
-                    onClick={() => this.handleClickItem(item)}
+                    isRelease={isRelease}
+                    onClick={() => this.handleClickItem(item.goods_id)}
                   />
                 )
               })
@@ -336,6 +385,7 @@ export default class DistributionShop extends Component {
               && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
           }
         </ScrollView>
+        <SpToast />
       </View>
     )
   }
