@@ -28,7 +28,7 @@ export default class DistributionDashboard extends Component {
     return {
       title: info.shop_name || `${username}的小店`,
       imageUrl: info.shop_pic,
-      path: `/pages/item/espier-detail?id=${info.item_id}&userid=${userId}`
+      path: `/pages/distribution/shop-home?uid=${userId}`
     }
   }
 
@@ -135,7 +135,7 @@ export default class DistributionDashboard extends Component {
           </View>
         </View>
         <View className="section list share">
-          <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/invite_friends">
+          <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/qrcode">
             <View className="item-icon icon-qrcode1"></View>
             <View className="list-item-txt">我的二维码</View>
             <View className="icon-arrowRight item-icon-go"></View>

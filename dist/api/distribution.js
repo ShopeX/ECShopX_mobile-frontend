@@ -38,7 +38,9 @@ function dashboard() {
 }
 
 function info() {
-  return _req2.default.get('/promoter/info');
+  var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  return _req2.default.get('/promoter/info', params);
 }
 
 function subordinate(params) {
@@ -63,8 +65,8 @@ function withdraw() {
   return _req2.default.post('/promoter/cash_withdrawal');
 }
 
-function qrcode() {
-  return _req2.default.post('/promoter/qrcode');
+function qrcode(params) {
+  return _req2.default.get('/promoter/qrcode', params);
 }
 
 function items(params) {

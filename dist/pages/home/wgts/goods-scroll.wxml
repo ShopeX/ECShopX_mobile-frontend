@@ -19,7 +19,7 @@
                     <block wx:if="{{config.leaderboard}}">
                         <view class="subscript">
                             <view class="subscript-text">NO.{{idx + 1}}</view>
-                            <image class="subscript-img" src="/assets/imgs/espier/paihang.png"></image>
+                            <image class="subscript-img" src="/assets/imgs/paihang.png"></image>
                         </view>
                     </block>
                     <view class="thumbnail">

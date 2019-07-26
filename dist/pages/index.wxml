@@ -55,6 +55,11 @@
                 </view>
             </view>
         </scroll-view>
+        <block wx:if="{{isPromoter || distributionShopId}}">
+            <float-menus __triggerObserer="{{ _triggerObserer }}">
+                <image class="distribution-shop" src="/assets/imgs/gift_mini.png" mode="widthFix" bindtap="handleClickShop"></image>
+            </float-menus>
+        </block>
         <back-to-top show="{{showBackToTop}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></back-to-top>
         <block wx:if="{{isShowAddTip}}">
             <view class="add_tip">

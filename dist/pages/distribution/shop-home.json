@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "filter-bar": "../../components/filter-bar/index",
+    "at-drawer": "../../npm/taro-ui/dist/weapp/components/drawer/index",
+    "goods-item": "../../components/goods-item/index",
+    "loading": "../../components/loading/index",
+    "sp-note": "../../components/note/index",
+    "sp-toast": "../../components/toast/index"
+  }
+}

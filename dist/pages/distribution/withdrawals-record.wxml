@@ -7,13 +7,8 @@
                         <block wx:if="{{item.$original.status === 'success'}}">
                             <icon type="success" size="20"></icon>
                         </block>
-                        <block>
-                            <block wx:if="{{item.$original.status === 'apply'}}">{{item.$original.status === 'apply'}}</block>
-                            <block wx:else>
-                                <block wx:if="{{item.$original.status === 'process'}}">
-                                    <icon type="waiting" size="20"></icon>
-                                </block>
-                            </block>
+                        <block wx:if="{{item.$original.status === 'apply' || item.$original.status === 'process'}}">
+                            <icon type="waiting" size="20"></icon>
                         </block>
                         <block wx:if="{{item.$original.status === 'reject'}}">
                             <icon type="warn" size="20"></icon>
@@ -25,13 +20,8 @@
                         <block wx:if="{{item.$original.status === 'success'}}">
                             <view class="{{item.$loopState__temp6}}">申请成功</view>
                         </block>
-                        <block>
-                            <block wx:if="{{item.$original.status === 'apply'}}">{{item.$original.status === 'apply'}}</block>
-                            <block wx:else>
-                                <block wx:if="{{item.$original.status === 'process'}}">
-                                    <view class="{{item.$loopState__temp8}}">审核中</view>
-                                </block>
-                            </block>
+                        <block wx:if="{{item.$original.status === 'apply' || item.$original.status === 'process'}}">
+                            <view class="{{item.$loopState__temp8}}">审核中</view>
                         </block>
                         <block wx:if="{{item.$original.status === 'reject'}}">
                             <view class="{{item.$loopState__temp10}}">申请驳回：{{item.$original.remarks}}</view>

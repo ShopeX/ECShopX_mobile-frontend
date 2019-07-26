@@ -75,11 +75,10 @@
           padding-right: floor($edge-size / 2);
         }
         &__bd {
-          flex-direction: column;
-          flex: 1;
+          display: block;
         }
         &__cont {
-          height: 210px;
+          height: 250px;
         }
       }
     }

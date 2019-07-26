@@ -157,7 +157,7 @@ var DistributionWithdrawalsRecord = (0, _index5.withPager)(_class = (0, _index5.
         var $loopState__temp2 = (0, _index6.classNames)('view-flex-item', 'view-flex', 'view-flex-middle', 'status-header', item.$original.isopen && 'open');
         var $loopState__temp4 = (0, _index6.classNames)('status-body', item.$original.isopen && 'open');
         var $loopState__temp6 = item.$original.status === 'success' ? (0, _index6.classNames)('status-content', item.$original.isopen && 'open') : null;
-        var $loopState__temp8 = item.$original.status === 'process' ? (0, _index6.classNames)('status-content', item.$original.isopen && 'open') : null;
+        var $loopState__temp8 = item.$original.status === 'apply' || item.$original.status === 'process' ? (0, _index6.classNames)('status-content', item.$original.isopen && 'open') : null;
         var $loopState__temp10 = item.$original.status === 'reject' ? (0, _index6.classNames)('status-content', item.$original.isopen && 'open') : null;
         return {
           $loopState__temp2: $loopState__temp2,

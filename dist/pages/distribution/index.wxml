@@ -58,7 +58,7 @@
             </view>
         </view>
         <view class="section list share">
-            <navigator class="list-item" open-type="navigateTo" url="/pages/distribution/invite_friends">
+            <navigator class="list-item" open-type="navigateTo" url="/pages/distribution/qrcode">
                 <view class="item-icon icon-qrcode1"></view>
                 <view class="list-item-txt">我的二维码</view>
                 <view class="icon-arrowRight item-icon-go"></view>

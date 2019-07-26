@@ -64,7 +64,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "scrollTop", "likeList", "page", "showBackToTop", "isShowAddTip", "authStatus", "store"], _this.componentDidShow = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "scrollTop", "likeList", "page", "isPromoter", "distributionShopId", "showBackToTop", "isShowAddTip", "authStatus", "store"], _this.componentDidShow = function () {
       _index2.default.getStorage({ key: 'addTipIsShow' }).then(function () {}).catch(function (error) {
         console.log(error);
         _this.setState({
@@ -79,6 +79,10 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       _index2.default.setStorage({ key: 'addTipIsShow', data: { isShowAddTip: false } });
       _this.setState({
         isShowAddTip: false
+      });
+    }, _this.handleClickShop = function () {
+      _index2.default.navigateTo({
+        url: '/pages/distribution/shop-home'
       });
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -230,6 +234,9 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
           scrollTop = _state.scrollTop,
           isShowAddTip = _state.isShowAddTip;
 
+      var user = _index2.default.getStorageSync('userinfo');
+      var isPromoter = user && user.isPromoter;
+      var distributionShopId = _index2.default.getStorageSync('distribution_shop_id');
 
       if (!wgts || !this.__props.store) {
         return null;
@@ -238,6 +245,8 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       Object.assign(this.__state, {
         scrollTop: scrollTop,
         page: page,
+        isPromoter: isPromoter,
+        distributionShopId: distributionShopId,
         showBackToTop: showBackToTop
       });
       return this.__state;
@@ -250,7 +259,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleScroll", "nextPage", "scrollBackToTop", "handleClickCloseAddTip"], _temp2)) || _class) || _class) || _class);
+}, _class2.$$events = ["handleScroll", "nextPage", "handleClickShop", "scrollBackToTop", "handleClickCloseAddTip"], _temp2)) || _class) || _class) || _class);
 exports.default = HomeIndex;
 
 Component(require('../npm/@tarojs/taro-weapp/index.js').default.createComponent(HomeIndex, true));

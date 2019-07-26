@@ -69,14 +69,19 @@ $item-img-size: 240px !default;
     color: $color-gray;
     font-size: $font-size-small;
   }
+  &__cur {
+    padding-right: 5px;
+    font-size: 20px;
+  }
   &__price {
-    font-size: floor(1.28 * $font-size);
+    font-size: floor(1.1 * $font-size);
     margin-right: 24px;
   }
   &__point {
     color: $color-brand-primary;
   }
   &__price-market {
+    padding-left: 5px;
     font-size: $font-size-small;
     color: $color-gray;
     text-decoration: line-through;

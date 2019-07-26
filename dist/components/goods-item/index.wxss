@@ -127,14 +127,19 @@
   color: #818181;
   font-size: 25rpx;
 }
+.goods-item__cur {
+  padding-right: 5rpx;
+  font-size: 20rpx;
+}
 .goods-item__price {
-  font-size: 35rpx;
+  font-size: 30rpx;
   margin-right: 24rpx;
 }
 .goods-item__point {
   color: #0b4137;
 }
 .goods-item__price-market {
+  padding-left: 5rpx;
   font-size: 25rpx;
   color: #818181;
   text-decoration: line-through;

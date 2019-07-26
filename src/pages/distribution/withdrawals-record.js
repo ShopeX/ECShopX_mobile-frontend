@@ -86,7 +86,7 @@ export default class DistributionWithdrawalsRecord extends Component {
                   <View className="list-item no-flex" onClick={this.handleToggle.bind(this, idx)}>
                     <View className={classNames('view-flex-item', 'view-flex', 'view-flex-middle', 'status-header', item.isopen && 'open')}>
                       {item.status === 'success' && <Icon type="success" size="20"></Icon>}
-                      {item.status === 'apply' || item.status === 'process' && <Icon type="waiting" size="20"></Icon>}
+                      {(item.status === 'apply' || item.status === 'process') && <Icon type="waiting" size="20"></Icon>}
                       {item.status === 'reject' && <Icon type="warn" size="20"></Icon>}
                       <View className="view-flex-item content-h-padded">申请提现 {item.money/100} 元</View>
                       <View className="content-right muted">{item.created_date}</View>
@@ -97,7 +97,7 @@ export default class DistributionWithdrawalsRecord extends Component {
                         <View className={classNames('status-content', item.isopen && 'open')}>申请成功</View>
                       }
                       {
-                        item.status === 'apply' || item.status === 'process' &&
+                        (item.status === 'apply' || item.status === 'process') &&
                         <View className={classNames('status-content', item.isopen && 'open')}>审核中</View>
                       }
                       {

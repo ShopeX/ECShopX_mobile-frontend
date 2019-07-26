@@ -12,8 +12,8 @@ export function dashboard () {
   return req.get('/promoter/index')
 }
 
-export function info () {
-  return req.get('/promoter/info')
+export function info (params = {}) {
+  return req.get('/promoter/info', params)
 }
 
 export function subordinate (params) {
@@ -36,8 +36,8 @@ export function withdraw () {
   return req.post('/promoter/cash_withdrawal')
 }
 
-export function qrcode () {
-  return req.post('/promoter/qrcode')
+export function qrcode (params) {
+  return req.get('/promoter/qrcode', params)
 }
 
 export function items (params) {

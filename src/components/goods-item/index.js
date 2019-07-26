@@ -54,12 +54,10 @@ export default class GoodsItem extends Component {
               <Text className='goods-item__desc'>{info.desc}</Text>
             </View>
             <View className='goods-item__extra'>
-              <View className='goods-item__author'>
-                {/*<Image className='goods-item__author-avatar'
-                  src=''
-                  mode='aspectFill'
-                />*/}
-                <Text className='goods-item__author-name'> </Text>
+              <View className='goods-item__price'>
+                <Text className='goods-item__cur'>¥</Text>
+                <Text>{info.price}</Text>
+                <Text className='goods-item__price-market'>{info.market_price}</Text>
               </View>
               <View className='goods-item__actions'>
                 {type === 'item' && (

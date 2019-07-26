@@ -47,6 +47,16 @@
     width: 0;
     height: 0;
   }
+  .float-menus {
+    width: 180px;
+    right: 20px;
+    bottom: 190px;
+    .distribution-shop {
+      width: 100%;
+      border-radius: 60px;
+      box-shadow: 0 0 20px rgba(0,0,0,.2);
+    }
+  }
 }
 
 .wgts-wrap {

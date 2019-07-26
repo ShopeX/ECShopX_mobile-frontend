@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, Loading, SpNote, BackToTop } from '@/components'
+import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -114,8 +114,17 @@ export default class HomeIndex extends Component {
     })
   }
 
+  handleClickShop = () => {
+    Taro.navigateTo({
+      url: '/pages/distribution/shop-home'
+    })
+  }
+
   render () {
     const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip } = this.state
+    const user = Taro.getStorageSync('userinfo')
+    const isPromoter = user && user.isPromoter
+    const distributionShopId = Taro.getStorageSync('distribution_shop_id')
 
     if (!wgts || !this.props.store) {
       return <Loading />
@@ -183,6 +192,18 @@ export default class HomeIndex extends Component {
             }
           </View>
         </ScrollView>
+
+        {
+          (isPromoter || distributionShopId)
+          && <FloatMenus>
+              <Image
+                className='distribution-shop'
+                src='/assets/imgs/gift_mini.png'
+                mode='widthFix'
+                onClick={this.handleClickShop}
+              />
+            </FloatMenus>
+        }
 
         <BackToTop
           show={showBackToTop}

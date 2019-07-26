@@ -1,0 +1,14 @@
+<block>
+    <view class="page-distribution-qrcode">
+        <view class="qrcode-bg">
+            <view class="title">邀请卡</view>
+            <image class="avatar" src="{{info.avatar}}" mode="aspectFit"></image>
+            <view class="name">{{info.username}}</view>
+            <view class="welcome-words">邀你一起加入，推广赢奖励</view>
+            <view class="qrcode">
+                <image src="{{info.qrcode}}" mode="aspectFit"></image>
+            </view>
+            <view class="tips">微信扫一扫或长按识别</view>
+        </view>
+    </view>
+</block>

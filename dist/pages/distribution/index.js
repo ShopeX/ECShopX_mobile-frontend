@@ -79,7 +79,7 @@ var DistributionDashboard = (_temp2 = _class = function (_BaseComponent) {
       return {
         title: info.shop_name || username + "\u7684\u5C0F\u5E97",
         imageUrl: info.shop_pic,
-        path: "/pages/item/espier-detail?id=" + info.item_id + "&userid=" + userId
+        path: "/pages/distribution/shop-home?uid=" + userId
       };
     }
   }, {

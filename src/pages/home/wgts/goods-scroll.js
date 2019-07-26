@@ -51,7 +51,7 @@ export default class WgtGoodsScroll extends Component {
                 {config.leaderboard && (
                   <View className='subscript'>
                     <View className='subscript-text'>NO.{idx + 1}</View>
-                    <Image className='subscript-img' src='/assets/imgs/espier/paihang.png' />
+                    <Image className='subscript-img' src='/assets/imgs/paihang.png' />
                   </View>
                 )}
                 <View className='thumbnail'>

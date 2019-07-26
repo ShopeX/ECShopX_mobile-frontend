@@ -60,6 +60,8 @@
     "pages/distribution/shop",
     "pages/distribution/shop-setting",
     "pages/distribution/shop-form",
+    "pages/distribution/qrcode",
+    "pages/distribution/shop-home",
     "pages/trade/list",
     "pages/trade/detail",
     "pages/trade/delivery-info",

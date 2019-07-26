@@ -89,6 +89,8 @@ class App extends Component {
       'pages/distribution/shop',
       'pages/distribution/shop-setting',
       'pages/distribution/shop-form',
+      'pages/distribution/qrcode',
+      'pages/distribution/shop-home',
 
       'pages/trade/list',
       'pages/trade/detail',
@@ -117,6 +119,25 @@ class App extends Component {
     }
   }
   componentWillMount () {
+    const { query } = this.$router.params
+    const { scene = null } = query
+    let uid = null
+    if (scene) {
+      let sceneData = decodeURIComponent(scene)
+      const isMore = sceneData.indexOf('&') !== -1
+      if (isMore) {
+        sceneData = sceneData.split('&')
+        const uidx = sceneData.find(item => item.indexOf('uid=') !== -1)
+        console.log(sceneData, uidx)
+        uid = uidx && uidx.replace('uid=', '')
+        console.log(uidx)
+      } else {
+        uid = sceneData.replace('uid=', '')
+      }
+    } else {
+      uid = query.uid || null
+    }
+    this.fetch(uid)
   }
   componentDidMount () {
     this.fetchTabs()
@@ -147,6 +168,17 @@ class App extends Component {
 
   componentDidHide () {
     FormIds.stop()
+  }
+
+  async fetch (uid) {
+    if (uid) {
+      const { is_valid } = await api.distribution.info({user_id: uid})
+      if (is_valid) {
+        Taro.setStorageSync('distribution_shop_id', uid)
+      } else {
+        Taro.setStorageSync('distribution_shop_id', '')
+      }
+    }
   }
 
   async fetchTabs () {

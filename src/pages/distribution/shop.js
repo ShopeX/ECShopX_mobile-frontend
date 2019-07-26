@@ -264,7 +264,7 @@ export default class DistributionShop extends Component {
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&userid=${userId}`
+      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
     }
   }
 

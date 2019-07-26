@@ -415,7 +415,7 @@ var DistributionShop = (0, _index7.withPager)(_class = (0, _index7.withBackToTop
       return {
         title: info.title,
         imageUrl: info.img,
-        path: "/pages/item/espier-detail?id=" + info.item_id + "&userid=" + userId
+        path: "/pages/item/espier-detail?id=" + info.item_id + "&uid=" + userId
       };
     }
   }, {
