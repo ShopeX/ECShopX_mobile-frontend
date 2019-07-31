@@ -34,6 +34,7 @@ export default class Detail extends Component {
     this.state = {
       marketing: 'normal',
       info: null,
+      store: null,
       desc: null,
       curImgIdx: 0,
       windowWidth: 320,
@@ -55,6 +56,12 @@ export default class Detail extends Component {
   }
 
   componentDidMount () {
+    const { name } = Taro.getStorageSync('curStore')
+    this.setState({
+      store: {
+        name
+      }
+    })
     this.handleResize()
     this.fetch()
     Taro.getSystemInfo()
@@ -188,7 +195,7 @@ export default class Detail extends Component {
     }, () => {
       this.fetchCartCount()
     })
-    
+
     log.debug('fetch: done', info)
   }
 
@@ -514,6 +521,18 @@ export default class Detail extends Component {
               : null
           }
 
+          {
+            store
+            && <View className='store-info'>
+                <View className="view-flex view-flex-middle">
+                  <Image className="store-brand" src={store.imgUrl || 'https://fakeimg.pl/120x120/EFEFEF/CCC/?text=brand&font=lobster'} mode="aspectFit" />
+                  <View>
+                    <View className="store-name">{store.name}</View>
+                  </View>
+                </View>
+                <Navigator className="store-enter-btn" url="/pages/store/index">进入店铺</Navigator>
+              </View>
+          }
 
           {
             isArray(desc)

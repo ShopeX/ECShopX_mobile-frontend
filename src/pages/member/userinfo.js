@@ -72,10 +72,12 @@ export default class UserInfo extends Component {
   }
 
   handleSubmit = async (e) => {
+    const distributionShopId = Taro.getStorageSync('distribution_shop_id')
     const { value } = e.detail
     const data = {
       ...this.state.info,
-      ...value
+      ...value,
+      inviter_id: distributionShopId
     }
     try {
       await api.member.setMemberInfo(data)

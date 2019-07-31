@@ -7,38 +7,26 @@ import api from '@/api'
 import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
-import { HeaderHome, WgtSearchHome, WgtSlider, WgtLimittimeSlider, WgtImgHotZone, WgtGoodsFaverite, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from './home/wgts'
+import { WgtSlider, WgtLimittimeSlider, WgtImgHotZone, WgtGoodsFaverite, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from '../home/wgts'
 
-import './home/index.scss'
-import PointDrawCompute from "./member/point-draw-compute";
+import './index.scss'
 
 @connect(store => ({
   store
 }))
-@withPager
 @withBackToTop
 export default class HomeIndex extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      ...this.state,
       wgts: null,
       authStatus: false,
-      likeList: [],
-      isShowAddTip: false,
-      curStore: null
+      isShowAddTip: false
     }
   }
 
   componentDidShow = () => {
-    const curStore = Taro.getStorageSync('curStore')
-    if (curStore) {
-      this.setState({
-        curStore
-      })
-    }
-
     Taro.getStorage({ key: 'addTipIsShow' })
       .then(() => {})
       .catch((error) => {
@@ -64,7 +52,8 @@ export default class HomeIndex extends Component {
   }
 
   async fetchInfo () {
-    const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
+    const { distributor_id } = Taro.getStorageSync('curStore')
+    const url = `/pageparams/setting?template_name=yykweishop&version=shop_${distributor_id}&page_name=shop_home`
     const info = await req.get(url)
 
     if (!S.getAuthToken()) {
@@ -122,14 +111,9 @@ export default class HomeIndex extends Component {
     })
   }
 
-  handleClickShop = () => {
-    Taro.navigateTo({
-      url: '/pages/distribution/shop-home'
-    })
-  }
-
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore } = this.state
+    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip } = this.state
+    const { name, brand = '' } = Taro.getStorageSync('curStore')
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
@@ -139,10 +123,7 @@ export default class HomeIndex extends Component {
     }
 
     return (
-      <View className='page-index'>
-        <HeaderHome
-          storeName={curStore.name}
-        />
+      <View className='page-store'>
         <ScrollView
           className='wgts-wrap wgts-wrap__fixed'
           scrollTop={scrollTop}
@@ -151,12 +132,16 @@ export default class HomeIndex extends Component {
           scrollY
         >
           <View className='wgts-wrap__cont'>
-            {/*<WgtLimittimeSlider />*/}
+            <View className='store-header'>
+              <View>
+                <Image className='store-brand' src={brand || 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'} />
+              </View>
+              <View className="store-name">{name}</View>
+            </View>
             {
               wgts.map((item, idx) => {
                 return (
                   <View className='wgt-wrap' key={idx}>
-                    {item.name === 'search' && <WgtSearchHome info={item} />}
                     {item.name === 'slider' && <WgtSlider info={item} />}
                     {item.name === 'marquees' && <WgtMarquees info={item} />}
                     {item.name === 'navigation' && <WgtNavigation info={item} />}
@@ -172,62 +157,15 @@ export default class HomeIndex extends Component {
                 )
               })
             }
-            {
-              wgts.map((item, idx) => {
-                return (
-                  <View className='wgt-wrap faverite-content' key={idx}>
-                    {item.name === 'setting' && item.config.faverite
-                      ? (
-                        <View>
-                          <WgtGoodsFaverite info={likeList} />
-                          {
-                            page.isLoading
-                              ? <Loading>正在加载...</Loading>
-                              : null
-                          }
-                          {
-                            !page.isLoading && !page.hasNext && !likeList.length
-                            && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-                          }
-                        </View>
-                      )
-                      : null
-                    }
-                    {idx === 1 && (
-                      <WgtPointLuck />
-                    )}
-                  </View>
-                )
-              })
-            }
           </View>
         </ScrollView>
-
-        {
-          (isPromoter || distributionShopId)
-          && <FloatMenus>
-              <Image
-                className='distribution-shop'
-                src='/assets/imgs/gift_mini.png'
-                mode='widthFix'
-                onClick={this.handleClickShop}
-              />
-            </FloatMenus>
-        }
 
         <BackToTop
           show={showBackToTop}
           onClick={this.scrollBackToTop}
         />
-        {
-          isShowAddTip ? <View className='add_tip'>
-            <View class="tip-text">点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺</View>
-            <View className='icon-close icon-view' onClick={this.handleClickCloseAddTip.bind(this)}> </View>
-          </View> : null
-        }
 
         <SpToast />
-        <TabBar />
       </View>
     )
   }

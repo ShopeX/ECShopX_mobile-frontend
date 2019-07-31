@@ -19,6 +19,7 @@ export default class DistributionShopForm extends Component {
   }
 
   componentDidMount () {
+    const { imgs } = this.state
     const { key, val } = this.$router.params
     this.setState({
       info: {
@@ -26,6 +27,12 @@ export default class DistributionShopForm extends Component {
         val
       }
     })
+    if (key === 'shop_pic') {
+      imgs.push(val)
+      this.setState({
+        imgs
+      })
+    }
   }
 
   handleChange = (e) => {

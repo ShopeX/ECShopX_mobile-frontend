@@ -12,6 +12,7 @@ import * as seckill from './seckill'
 import * as wx from './wx'
 import * as shop from './shop'
 import * as distribution from './distribution'
+import * as track from './track'
 
 export default {
   article,
@@ -27,5 +28,6 @@ export default {
   seckill,
   wx,
   shop,
-  distribution
+  distribution,
+  track
 }

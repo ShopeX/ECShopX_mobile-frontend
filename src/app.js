@@ -5,6 +5,7 @@ import configStore from '@/store'
 import useHooks from '@/hooks'
 import req from '@/api/req'
 import api from '@/api'
+import entry from '@/utils/entry'
 import { FormIds, WxAuth } from '@/service'
 import Index from './pages/index'
 
@@ -92,6 +93,8 @@ class App extends Component {
       'pages/distribution/qrcode',
       'pages/distribution/shop-home',
 
+      'pages/store/index',
+
       'pages/trade/list',
       'pages/trade/detail',
       'pages/trade/delivery-info',
@@ -118,26 +121,10 @@ class App extends Component {
       // navigationStyle: 'custom'
     }
   }
-  componentWillMount () {
-    const { query } = this.$router.params
-    const { scene = null } = query
-    let uid = null
-    if (scene) {
-      let sceneData = decodeURIComponent(scene)
-      const isMore = sceneData.indexOf('&') !== -1
-      if (isMore) {
-        sceneData = sceneData.split('&')
-        const uidx = sceneData.find(item => item.indexOf('uid=') !== -1)
-        console.log(sceneData, uidx)
-        uid = uidx && uidx.replace('uid=', '')
-        console.log(uidx)
-      } else {
-        uid = sceneData.replace('uid=', '')
-      }
-    } else {
-      uid = query.uid || null
-    }
-    this.fetch(uid)
+  async componentWillMount () {
+    const options = this.$router.params.query
+    const { uid } = entry.entryLaunch(options)
+    this.fetchDistribution(uid)
   }
   componentDidMount () {
     this.fetchTabs()
@@ -170,7 +157,7 @@ class App extends Component {
     FormIds.stop()
   }
 
-  async fetch (uid) {
+  async fetchDistribution (uid) {
     if (uid) {
       const { is_valid } = await api.distribution.info({user_id: uid})
       if (is_valid) {

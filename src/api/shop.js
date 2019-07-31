@@ -1,5 +1,5 @@
 import req from './req'
 
-export function getShop () {
-  return req.get('/distributor/is_valid')
+export function getShop (param = {}) {
+  return req.get('/distributor/is_valid', {})
 }

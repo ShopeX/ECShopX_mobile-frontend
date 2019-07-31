@@ -398,6 +398,31 @@
   }
 }
 
+.store-info {
+  padding: 30px;
+  background: #fff;
+  .store-brand {
+    display: block;
+    margin-right: 20px;
+    width: 120px;
+    height: 120px;
+  }
+  .store-name {
+    font-size: 32px;
+  }
+  .store-desc {
+    color: #999;
+  }
+  .store-enter-btn {
+    margin-top: 20px;
+    line-height: 60px;
+    border-radius: 60px;
+    box-shadow: 0 0 1PX rgba(0,0,0,0.5);
+    text-align: center;
+    font-size: 28rpx;
+  }
+}
+
 .at-divider__line {
   width: 38%;
   left: 50%;

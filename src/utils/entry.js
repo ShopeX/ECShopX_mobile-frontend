@@ -1,32 +1,33 @@
-import Taro from "@tarojs/taro";
+import Taro from '@tarojs/taro'
+import api from '@/api'
 import req from '@/api/req'
 
 // 请在onload 中调用此函数，保证千人千码跟踪记录正常
 // 用户分享和接受参数处理
-async function handleShareOptions(data, isNeedLocate) {
-  var options
+async function entryLaunch(data, isNeedLocate) {
+  let options = null
   if (data.scene) {
-    var scene = decodeURIComponent(data.scene)
+    const scene = decodeURIComponent(data.scene)
     //格式化二维码参数
     options = parseUrlStr(scene)
   } else {
-	  console.log('share data',data)
     options = data
   }
-  console.log('分享带过来的参数', options)
 
   // 如果没有带店铺id
   if (!options.dtid) {
-    let trackIdentity = Taro.getStorageSync('trackIdentity')
-    if (trackIdentity.distributor_id) {
-      options.dtid = trackIdentity.distributor_id
+    let { distributor_id } = Taro.getStorageSync('curStore')
+    if (distributor_id) {
+      options.dtid = distributor_id
     }
   }
-  var dtidValid = false
-  var distributor = {}
+  let dtidValid = false
+  let store = {}
+
+  // 传过来的店铺id
   if (options.dtid) {
-    distributor = await handleDistributorId(options.dtid)
-    dtidValid = distributor.status ? false : true
+    store = await handleDistributorId(options.dtid)
+    dtidValid = store.status ? false : true
   }
 
   console.log('是否需要定位', dtidValid)
@@ -34,16 +35,14 @@ async function handleShareOptions(data, isNeedLocate) {
   // 如果需要定位,并且店铺无效，
   if (!dtidValid) {
     console.log('进行定位处理')
-    distributor = await getLocal(isNeedLocate)
+    store = await getLocal(isNeedLocate)
   }
 
-  console.log('定位或返回值', distributor)
+  console.log('定位或返回值', store)
 
-  options.distributor = false
-  if (distributor.status === false) {
-    options.distributor = distributor
-    options.dtid = distributor.distributor_id
-    Taro.setStorageSync('currentShopName', distributor.name)
+  if (!store.status) {
+    options.store = store
+    options.dtid = store.distributor_id
   }
 
   if (options.uid) {
@@ -61,65 +60,56 @@ async function handleShareOptions(data, isNeedLocate) {
 
 //获取定位配置
 async function getLocalSetting() {
-  var filter = {template_name: 'yykweishop', version: 'v1.0.1', name: 'setting'}
-  var positionStatus = await http.action(api.template.pageparams, filter, true).then(res => {
-    if (res.data.data.length > 0) {
-      var data = res.data.data[0].params
-      if (!data || !data.config) {
-        return true
-      } else if(data.config.location){
-        return true
-      } else {
-        return false
-      }
-    } else {
+  const filter = {template_name: 'yykweishop', version: 'v1.0.1', name: 'setting'}
+  const res = await api.category.getCategory(filter)
+  const data = res[0].params
+  if (res.length > 0) {
+    if (!data || !data.config) {
       return true
+    } else if(data.config.location){
+      return true
+    } else {
+      return false
     }
-  })
+  } else {
+    return true
+  }
   return positionStatus
 }
 
 async function getLocal (isNeedLocate) {
-  var positionStatus = await getLocalSetting()
+  const positionStatus = await getLocalSetting()
+  let store = null
   if (!positionStatus) {
-    var param = {}
-    var distributor = await http.action(api.cash.distributorIsValid, param, true).then(res => {
-      return res.data.data
-    })
+    store = await api.shop.getShop()
   } else {
     let lnglat = Taro.getStorageSync('lnglat')
     if (lnglat) {
-      var param = {}
+      let param = {}
       if (isNeedLocate && positionStatus) {
         param.lat = lnglat.latitude
         param.lng = lnglat.longitude
       }
-      var distributor = await http.action(api.cash.distributorIsValid, param, true).then(res => {
-        return res.data.data
-      })
+      store = await api.shop.getShop(param)
     } else {
       var locationData = await getLoc()
       if (locationData !== '') {
-        var param = {}
+        let param = {}
         if (isNeedLocate && positionStatus) {
           param.lat = locationData.latitude
           param.lng = locationData.longitude
         }
-        var distributor = await http.action(api.cash.distributorIsValid, param, true).then(res => {
-          return res.data.data
-        })
-      } else {
-        var distributor = {}
+        store = await api.shop.getShop(param)
       }
     }
   }
 
-  if (distributor.status === false) {
-    Taro.setStorageSync('trackIdentity', {distributor_id: distributor.distributor_id})
+  if (!store.status) {
+    Taro.setStorageSync('curStore', store)
   } else {
-    Taro.setStorageSync('trackIdentity', false)
+    Taro.setStorageSync('curStore', false)
   }
-  return distributor
+  return store
 }
 
 async function getLoc () {
@@ -140,22 +130,20 @@ function trackViewNum (monitor_id, source_id) {
 
   if (monitor_id && source_id) {
     let param = {source_id: source_id, monitor_id: monitor_id}
-    http.action(api.track.viewnum, param)
+    api.track.viewnum(param)
   }
   return true
 }
 
 // distributorId 店铺ID
 function handleDistributorId(distributorId) {
-  return http.action(api.cash.distributorIsValid, {distributor_id: distributorId}, true).then(res => {
-    // 是否需要定位，false则表示有效，不需要定位
-    if (res.data.data.status === false) {
-      Taro.setStorageSync('trackIdentity', {distributor_id: distributorId})
-    } else {
-      Taro.setStorageSync('trackIdentity', '')
-    }
-    return res.data.data
-  })
+  const res = api.shop.getShop({distributor_id: distributorId})
+  if (res.status === false) {
+    Taro.setStorageSync('trackIdentity', {distributor_id: distributorId})
+  } else {
+    Taro.setStorageSync('trackIdentity', '')
+  }
+  return res
 }
 
 // 格式化URL字符串
@@ -175,5 +163,5 @@ function parseUrlStr (urlStr) {
 }
 
 export default {
-  handleShareOptions
+  entryLaunch
 }

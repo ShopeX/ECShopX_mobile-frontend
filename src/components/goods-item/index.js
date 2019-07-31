@@ -44,7 +44,7 @@ export default class GoodsItem extends Component {
         >
           <View className='goods-item__img-wrap'>
             <Image className='goods-item__img'
-              mode='aspectFill'
+              mode='aspectFix'
               src={img}
             />
           </View>

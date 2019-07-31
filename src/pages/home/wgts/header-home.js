@@ -8,7 +8,7 @@ import './header-home.scss'
 
 export default class HeaderHome extends Component {
   static defaultProps = {
-    distributor_name: null
+    storeName: null
   }
 
   constructor (props) {
@@ -52,12 +52,13 @@ export default class HeaderHome extends Component {
   }
 
   render () {
+    const { storeName } = this.props
 
     return (
       <View className="nearly-shop">
         <View class="view-flex-item view-flex view-flex-middle" onClick={this.handlePickStore.bind(this)}>
           <View class="icon-periscope"></View>
-          <View class="shop-name">{distributor_name}</View>
+          <View class="shop-name">{storeName || '选择店铺'}</View>
           <View class="icon-arrowDown"></View>
         </View>
         <View className="scancode" onClick={this.handleScanCode.bind(this)}>

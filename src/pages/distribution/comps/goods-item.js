@@ -29,7 +29,7 @@ export default class DistributionGoodsItem extends Component {
         <View className='goods-item__bd'>
           <View className='goods-item__img-wrap'>
             <Image className='goods-item__img'
-              mode='aspectFill'
+              mode='aspectFix'
               src={img}
             />
           </View>

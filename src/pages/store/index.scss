@@ -1,10 +1,22 @@
 @import "../../style/imports";
 
-.page-index {
-  padding-bottom: $tabbar-height;
+.page-store {
   background: #fff;
   height: 100%;
   box-sizing: border-box;
+  .store-header {
+    padding: 30px;
+    text-align: center;
+    .store-brand {
+      display: inline-block;
+      width: 120px;
+      height: 120px;
+      box-shadow: 0 0 1PX rgba(0,0,0,0.5);
+    }
+    .store-name {
+      font-size: 32px;
+    }
+  }
   .at-toast {
 
   }
@@ -62,7 +74,7 @@
 .wgts-wrap {
   &__fixed {
     background: #fff;
-    @include page-scroll($home-header-height, $tabbar-height);
+    @include page-scroll(0, 0);
   }
   &__is-distributor {
   }
