@@ -75,6 +75,17 @@
                     </scroll-view>
                 </view>
             </block>
+            <block wx:if="{{store}}">
+                <view class="store-info">
+                    <view class="view-flex view-flex-middle">
+                        <image class="store-brand" src="{{store.imgUrl || 'https://fakeimg.pl/120x120/EFEFEF/CCC/?text=brand&font=lobster'}}" mode="aspectFit"></image>
+                        <view>
+                            <view class="store-name">{{store.name}}</view>
+                        </view>
+                    </view>
+                    <navigator class="store-enter-btn" url="/pages/store/index">进入店铺</navigator>
+                </view>
+            </block>
             <block>
                 <block wx:if="{{anonymousState__temp3}}">
                     <view class="wgts-wrap__cont">

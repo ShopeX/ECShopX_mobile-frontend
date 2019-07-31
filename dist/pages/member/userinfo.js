@@ -104,39 +104,42 @@ var UserInfo = (_dec = (0, _index5.withLogin)(), _dec(_class = (_temp2 = _class2
       info[name] = val;
     }, _this.handleSubmit = function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {
-        var value, data;
+        var distributionShopId, value, data;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                distributionShopId = _index2.default.getStorageSync('distribution_shop_id');
                 value = e.detail.value;
-                data = _extends({}, _this.state.info, value);
-                _context2.prev = 2;
-                _context2.next = 5;
+                data = _extends({}, _this.state.info, value, {
+                  inviter_id: distributionShopId
+                });
+                _context2.prev = 3;
+                _context2.next = 6;
                 return _index4.default.member.setMemberInfo(data);
 
-              case 5:
+              case 6:
                 _index7.default.toast('修改成功');
                 setTimeout(function () {
                   _index2.default.redirectTo({
                     url: '/pages/member/index'
                   });
                 }, 500);
-                _context2.next = 12;
+                _context2.next = 13;
                 break;
 
-              case 9:
-                _context2.prev = 9;
-                _context2.t0 = _context2["catch"](2);
+              case 10:
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](3);
 
                 console.log(_context2.t0);
 
-              case 12:
+              case 13:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, _this2, [[2, 9]]);
+        }, _callee2, _this2, [[3, 10]]);
       }));
 
       return function (_x3) {

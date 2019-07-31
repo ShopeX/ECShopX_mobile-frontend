@@ -107,8 +107,8 @@ var DrugInfo = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivateSEycT",
-    value: function funPrivateSEycT() {
+    key: "funPrivateKuMkK",
+    value: function funPrivateKuMkK() {
       this.__triggerPropsFn("onChange", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -139,7 +139,7 @@ var DrugInfo = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["handleChange", "handleImageChange", "funPrivateSEycT"], _class.defaultProps = {
+}, _class.$$events = ["handleChange", "handleImageChange", "funPrivateKuMkK"], _class.defaultProps = {
   isOpened: false,
   onChange: function onChange() {}
 }, _class.options = {

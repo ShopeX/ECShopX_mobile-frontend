@@ -2,14 +2,16 @@
     <block wx:if="{{!wgts || !store}}">
         <loading __triggerObserer="{{ _triggerObserer }}"></loading>
     </block>
-    <view class="page-index" wx:else>
-        <header-home storeName="{{curStore.name}}" __triggerObserer="{{ _triggerObserer }}"></header-home>
+    <view class="page-store" wx:else>
         <scroll-view class="wgts-wrap wgts-wrap__fixed" scroll-top="{{scrollTop}}" bindscroll="handleScroll" bindscrolltolower="nextPage" scroll-y="{{true}}">
             <view class="wgts-wrap__cont">
+                <view class="store-header">
+                    <view>
+                        <image class="store-brand" src="{{brand || 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'}}"></image>
+                    </view>
+                    <view class="store-name">{{name}}</view>
+                </view>
                 <view class="wgt-wrap" wx:key="idx" wx:for="{{wgts}}" wx:for-item="item" wx:for-index="idx">
-                    <block wx:if="{{item.name === 'search'}}">
-                        <wgt-search-home info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-search-home>
-                    </block>
                     <block wx:if="{{item.name === 'slider'}}">
                         <wgt-slider info="{{item}}" __triggerObserer="{{ _triggerObserer }}"></wgt-slider>
                     </block>
@@ -38,37 +40,9 @@
                         <wgt-point-luck __triggerObserer="{{ _triggerObserer }}"></wgt-point-luck>
                     </block>
                 </view>
-                <view class="wgt-wrap faverite-content" wx:key="idx" wx:for="{{wgts}}" wx:for-item="item" wx:for-index="idx">
-                    <block wx:if="{{item.name === 'setting' && item.config.faverite}}">
-                        <view>
-                            <wgt-goods-faverite info="{{likeList}}" __triggerObserer="{{ _triggerObserer }}"></wgt-goods-faverite>
-                            <block wx:if="{{page.isLoading}}">
-                                <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>
-                            </block>
-                            <block wx:if="{{!page.isLoading && !page.hasNext && !likeList.length}}">
-                                <sp-note img="trades_empty.png" __triggerObserer="{{ _triggerObserer }}">暂无数据~</sp-note>
-                            </block>
-                        </view>
-                    </block>
-                    <block wx:if="{{idx === 1}}">
-                        <wgt-point-luck __triggerObserer="{{ _triggerObserer }}"></wgt-point-luck>
-                    </block>
-                </view>
             </view>
         </scroll-view>
-        <block wx:if="{{isPromoter || distributionShopId}}">
-            <float-menus __triggerObserer="{{ _triggerObserer }}">
-                <image class="distribution-shop" src="/assets/imgs/gift_mini.png" mode="widthFix" bindtap="handleClickShop"></image>
-            </float-menus>
-        </block>
         <back-to-top show="{{showBackToTop}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></back-to-top>
-        <block wx:if="{{isShowAddTip}}">
-            <view class="add_tip">
-                <view class="tip-text">点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺</view>
-                <view class="icon-close icon-view" bindtap="handleClickCloseAddTip" data-e-tap-so="this"></view>
-            </view>
-        </block>
         <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
-        <tab-bar __triggerObserer="{{ _triggerObserer }}"></tab-bar>
     </view>
 </block>

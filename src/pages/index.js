@@ -5,6 +5,7 @@ import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem 
 import req from '@/api/req'
 import api from '@/api'
 import { pickBy } from '@/utils'
+import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
 import { HeaderHome, WgtSearchHome, WgtSlider, WgtLimittimeSlider, WgtImgHotZone, WgtGoodsFaverite, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from './home/wgts'
@@ -49,8 +50,17 @@ export default class HomeIndex extends Component {
       })
   }
 
-  componentDidMount () {
-    this.fetchInfo()
+  async componentDidMount () {
+    const options = this.$router.params
+    const res = await entry.entryLaunch(options, true)
+    const { store } = res
+    if (store) {
+      this.setState({
+        curStore: store
+      }, () => {
+        this.fetchInfo()
+      })
+    }
   }
 
   onShareAppMessage (res) {

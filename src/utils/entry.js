@@ -47,10 +47,10 @@ async function entryLaunch(data, isNeedLocate) {
 
   if (options.uid) {
     // 如果分享带了会员ID 那么
-    Taro.setStorageSync('uid', options.uid)
+    Taro.setStorageSync('distribution_shop_id', options.uid)
     Taro.setStorageSync('trackParams', {})
   } else if (options.s && options.m) {
-    Taro.setStorageSync('uid', '')
+    Taro.setStorageSync('distribution_shop_id', '')
     Taro.setStorageSync('trackParams', {source_id: options.s, monitor_id: options.m})
     trackViewNum(options.m, options.s)
   }

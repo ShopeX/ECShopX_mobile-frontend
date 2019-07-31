@@ -73,7 +73,12 @@ var _App = function (_BaseComponent) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = _App.__proto__ || Object.getPrototypeOf(_App)).call.apply(_ref, [this].concat(args))), _this), _this.config = {
       pages: ['pages/index', 'pages/home/landing', 'pages/home/license', 'pages/category/index', 'pages/item/list', 'pages/item/espier-detail', 'pages/item/point-list', 'pages/item/point-detail', 'pages/item/group-list', 'pages/item/seckill-list', 'pages/item/seckill-goods-list', 'pages/home/coupon-home', 'pages/cart/espier-index', 'pages/cart/espier-checkout', 'pages/cart/coupon-picker', 'pages/article/index', 'pages/recommend/list', 'pages/recommend/detail', 'pages/auth/reg', 'pages/auth/reg-rule', 'pages/auth/login', 'pages/auth/forgotpwd', 'pages/auth/wxauth', 'pages/cashier/index', 'pages/cashier/cashier-result', 'pages/member/index', 'pages/member/point', 'pages/member/point-draw', 'pages/member/point-draw-detail', 'pages/member/draw-rule', 'pages/member/point-draw-order',
       // 'pages/member/point-order-detail',
-      'pages/member/point-draw-record', 'pages/member/point-all-record', 'pages/member/point-draw-compute', 'pages/member/pay', 'pages/member/pay-rule', 'pages/member/money-to-point', 'pages/member/recharge', 'pages/member/recommend', 'pages/member/recommend-member', 'pages/member/recommend-order', 'pages/member/coupon', 'pages/member/address', 'pages/member/edit-address', 'pages/member/setting', 'pages/member/userinfo', 'pages/member/item-history', 'pages/member/item-fav', 'pages/member/item-guess', 'pages/distribution/index', 'pages/distribution/setting', 'pages/distribution/statistics', 'pages/distribution/trade', 'pages/distribution/subordinate', 'pages/distribution/withdraw', 'pages/distribution/withdrawals-record', 'pages/distribution/withdrawals-acount', 'pages/distribution/shop', 'pages/distribution/shop-setting', 'pages/distribution/shop-form', 'pages/distribution/qrcode', 'pages/distribution/shop-home', 'pages/trade/list', 'pages/trade/detail', 'pages/trade/delivery-info', 'pages/trade/rate', 'pages/trade/cancel', 'pages/trade/after-sale', 'pages/trade/refund', 'pages/trade/refund-detail', 'pages/trade/refund-sendback', 'pages/trade/invoice-list', 'pages/protocol/privacy'],
+      'pages/member/point-draw-record', 'pages/member/point-all-record', 'pages/member/point-draw-compute', 'pages/member/pay', 'pages/member/pay-rule', 'pages/member/money-to-point', 'pages/member/recharge', 'pages/member/recommend', 'pages/member/recommend-member', 'pages/member/recommend-order', 'pages/member/coupon', 'pages/member/address', 'pages/member/edit-address', 'pages/member/setting', 'pages/member/userinfo', 'pages/member/item-history', 'pages/member/item-fav', 'pages/member/item-guess', 'pages/distribution/index', 'pages/distribution/setting', 'pages/distribution/statistics', 'pages/distribution/trade', 'pages/distribution/subordinate', 'pages/distribution/withdraw', 'pages/distribution/withdrawals-record', 'pages/distribution/withdrawals-acount', 'pages/distribution/shop', 'pages/distribution/shop-setting', 'pages/distribution/shop-form', 'pages/distribution/qrcode', 'pages/distribution/shop-home', 'pages/store/index', 'pages/trade/list', 'pages/trade/detail', 'pages/trade/delivery-info', 'pages/trade/rate', 'pages/trade/cancel', 'pages/trade/after-sale', 'pages/trade/refund', 'pages/trade/refund-detail', 'pages/trade/refund-sendback', 'pages/trade/invoice-list', 'pages/protocol/privacy'],
+      permission: {
+        "scope.userLocation": {
+          "desc": "您的位置信息将用于定位附近门店"
+        }
+      },
       navigateToMiniProgramAppIdList: ['wx4721629519a8f25b', 'wx2fb97cb696f68d22', 'wxf91925e702efe3e3'],
       window: {
         backgroundTextStyle: 'light',
@@ -87,31 +92,7 @@ var _App = function (_BaseComponent) {
 
   _createClass(_App, [{
     key: "componentWillMount",
-    value: function componentWillMount() {
-      var query = this.$router.params.query;
-      var _query$scene = query.scene,
-          scene = _query$scene === undefined ? null : _query$scene;
-
-      var uid = null;
-      if (scene) {
-        var sceneData = decodeURIComponent(scene);
-        var isMore = sceneData.indexOf('&') !== -1;
-        if (isMore) {
-          sceneData = sceneData.split('&');
-          var uidx = sceneData.find(function (item) {
-            return item.indexOf('uid=') !== -1;
-          });
-          console.log(sceneData, uidx);
-          uid = uidx && uidx.replace('uid=', '');
-          console.log(uidx);
-        } else {
-          uid = sceneData.replace('uid=', '');
-        }
-      } else {
-        uid = query.uid || null;
-      }
-      this.fetch(uid);
-    }
+    value: function componentWillMount() {}
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
@@ -151,62 +132,20 @@ var _App = function (_BaseComponent) {
       _index10.FormIds.stop();
     }
   }, {
-    key: "fetch",
+    key: "fetchTabs",
     value: function () {
-      var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(uid) {
-        var _ref5, is_valid;
-
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var url, info;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!uid) {
-                  _context.next = 6;
-                  break;
-                }
-
-                _context.next = 3;
-                return _index9.default.distribution.info({ user_id: uid });
-
-              case 3:
-                _ref5 = _context.sent;
-                is_valid = _ref5.is_valid;
-
-                if (is_valid) {
-                  _index2.default.setStorageSync('distribution_shop_id', uid);
-                } else {
-                  _index2.default.setStorageSync('distribution_shop_id', '');
-                }
-
-              case 6:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function fetch(_x) {
-        return _ref4.apply(this, arguments);
-      }
-
-      return fetch;
-    }()
-  }, {
-    key: "fetchTabs",
-    value: function () {
-      var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var url, info;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
                 url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=tabs';
-                _context2.next = 3;
+                _context.next = 3;
                 return _req2.default.get(url);
 
               case 3:
-                info = _context2.sent;
+                info = _context.sent;
 
                 store.dispatch({
                   type: 'tabBar',
@@ -215,14 +154,14 @@ var _App = function (_BaseComponent) {
 
               case 5:
               case "end":
-                return _context2.stop();
+                return _context.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee, this);
       }));
 
       function fetchTabs() {
-        return _ref6.apply(this, arguments);
+        return _ref4.apply(this, arguments);
       }
 
       return fetchTabs;

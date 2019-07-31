@@ -4,37 +4,31 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
 var _dec, _class, _class2, _temp2;
 
-var _index = require("../npm/@tarojs/taro-weapp/index.js");
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
 
 var _index2 = _interopRequireDefault(_index);
 
-var _index3 = require("../npm/@tarojs/redux/index.js");
+var _index3 = require("../../npm/@tarojs/redux/index.js");
 
-var _req = require("../api/req.js");
+var _req = require("../../api/req.js");
 
 var _req2 = _interopRequireDefault(_req);
 
-var _index4 = require("../api/index.js");
+var _index4 = require("../../api/index.js");
 
 var _index5 = _interopRequireDefault(_index4);
 
-var _index6 = require("../utils/index.js");
+var _index6 = require("../../utils/index.js");
 
-var _entry = require("../utils/entry.js");
+var _index7 = require("../../hocs/index.js");
 
-var _entry2 = _interopRequireDefault(_entry);
-
-var _index7 = require("../hocs/index.js");
-
-var _index8 = require("../spx/index.js");
+var _index8 = require("../../spx/index.js");
 
 var _index9 = _interopRequireDefault(_index8);
 
@@ -54,7 +48,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
   return {
     store: store
   };
-}), _dec(_class = (0, _index7.withPager)(_class = (0, _index7.withBackToTop)(_class = (_temp2 = _class2 = function (_BaseComponent) {
+}), _dec(_class = (0, _index7.withBackToTop)(_class = (_temp2 = _class2 = function (_BaseComponent) {
   _inherits(HomeIndex, _BaseComponent);
 
   function HomeIndex() {
@@ -68,14 +62,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "curStore", "scrollTop", "likeList", "page", "isPromoter", "distributionShopId", "showBackToTop", "isShowAddTip", "authStatus", "store"], _this.componentDidShow = function () {
-      var curStore = _index2.default.getStorageSync('curStore');
-      if (curStore) {
-        _this.setState({
-          curStore: curStore
-        });
-      }
-
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = HomeIndex.__proto__ || Object.getPrototypeOf(HomeIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["wgts", "scrollTop", "brand", "showBackToTop", "name", "authStatus", "isShowAddTip", "store"], _this.componentDidShow = function () {
       _index2.default.getStorage({ key: 'addTipIsShow' }).then(function () {}).catch(function (error) {
         console.log(error);
         _this.setState({
@@ -91,10 +78,6 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
       _this.setState({
         isShowAddTip: false
       });
-    }, _this.handleClickShop = function () {
-      _index2.default.navigateTo({
-        url: '/pages/distribution/shop-home'
-      });
     }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -103,55 +86,17 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
     value: function _constructor(props) {
       _get(HomeIndex.prototype.__proto__ || Object.getPrototypeOf(HomeIndex.prototype), "_constructor", this).call(this, props);
 
-      this.state = _extends({}, this.state, {
+      this.state = {
         wgts: null,
         authStatus: false,
-        likeList: [],
-        isShowAddTip: false,
-        curStore: null
-      });
+        isShowAddTip: false
+      };
     }
   }, {
     key: "componentDidMount",
-    value: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var _this2 = this;
-
-        var options, res, store;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                options = this.$router.params;
-                _context.next = 3;
-                return _entry2.default.entryLaunch(options, true);
-
-              case 3:
-                res = _context.sent;
-                store = res.store;
-
-                if (store) {
-                  this.setState({
-                    curStore: store
-                  }, function () {
-                    _this2.fetchInfo();
-                  });
-                }
-
-              case 6:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function componentDidMount() {
-        return _ref2.apply(this, arguments);
-      }
-
-      return componentDidMount;
-    }()
+    value: function componentDidMount() {
+      this.fetchInfo();
+    }
   }, {
     key: "onShareAppMessage",
     value: function onShareAppMessage(res) {
@@ -166,20 +111,22 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
   }, {
     key: "fetchInfo",
     value: function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-        var _this3 = this;
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _this2 = this;
 
-        var url, info;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        var _Taro$getStorageSync, distributor_id, url, info;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context.prev = _context.next) {
               case 0:
-                url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index';
-                _context2.next = 3;
+                _Taro$getStorageSync = _index2.default.getStorageSync('curStore'), distributor_id = _Taro$getStorageSync.distributor_id;
+                url = "/pageparams/setting?template_name=yykweishop&version=shop_" + distributor_id + "&page_name=shop_home";
+                _context.next = 4;
                 return _req2.default.get(url);
 
-              case 3:
-                info = _context2.sent;
+              case 4:
+                info = _context.sent;
 
 
                 if (!_index9.default.getAuthToken()) {
@@ -193,22 +140,22 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
                   if (info.config) {
                     info.config.map(function (item) {
                       if (item.name === 'setting' && item.config.faverite) {
-                        _this3.nextPage();
+                        _this2.nextPage();
                       }
                     });
                   }
                 });
 
-              case 6:
+              case 7:
               case "end":
-                return _context2.stop();
+                return _context.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee, this);
       }));
 
       function fetchInfo() {
-        return _ref3.apply(this, arguments);
+        return _ref2.apply(this, arguments);
       }
 
       return fetchInfo;
@@ -216,25 +163,25 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
   }, {
     key: "fetch",
     value: function () {
-      var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(params) {
-        var page, pageSize, query, _ref5, list, total, nList;
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
+        var page, pageSize, query, _ref4, list, total, nList;
 
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 page = params.page_no, pageSize = params.page_size;
                 query = {
                   page: page,
                   pageSize: pageSize
                 };
-                _context3.next = 4;
+                _context2.next = 4;
                 return _index5.default.cart.likeList(query);
 
               case 4:
-                _ref5 = _context3.sent;
-                list = _ref5.list;
-                total = _ref5.total_count;
+                _ref4 = _context2.sent;
+                list = _ref4.list;
+                total = _ref4.total_count;
                 nList = (0, _index6.pickBy)(list, {
                   img: 'pics[0]',
                   item_id: 'item_id',
@@ -247,20 +194,20 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
                   likeList: [].concat(_toConsumableArray(this.state.likeList), _toConsumableArray(nList))
                 });
 
-                return _context3.abrupt("return", {
+                return _context2.abrupt("return", {
                   total: total
                 });
 
               case 10:
               case "end":
-                return _context3.stop();
+                return _context2.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee2, this);
       }));
 
       function fetch(_x) {
-        return _ref4.apply(this, arguments);
+        return _ref3.apply(this, arguments);
       }
 
       return fetch;
@@ -280,8 +227,12 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
           likeList = _state.likeList,
           showBackToTop = _state.showBackToTop,
           scrollTop = _state.scrollTop,
-          isShowAddTip = _state.isShowAddTip,
-          curStore = _state.curStore;
+          isShowAddTip = _state.isShowAddTip;
+
+      var _Taro$getStorageSync2 = _index2.default.getStorageSync('curStore'),
+          name = _Taro$getStorageSync2.name,
+          _Taro$getStorageSync3 = _Taro$getStorageSync2.brand,
+          brand = _Taro$getStorageSync3 === undefined ? '' : _Taro$getStorageSync3;
 
       var user = _index2.default.getStorageSync('userinfo');
       var isPromoter = user && user.isPromoter;
@@ -293,10 +244,9 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
 
       Object.assign(this.__state, {
         scrollTop: scrollTop,
-        page: page,
-        isPromoter: isPromoter,
-        distributionShopId: distributionShopId,
-        showBackToTop: showBackToTop
+        brand: brand,
+        showBackToTop: showBackToTop,
+        name: name
       });
       return this.__state;
     }
@@ -308,7 +258,7 @@ var HomeIndex = (_dec = (0, _index3.connect)(function (store) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["handleScroll", "nextPage", "handleClickShop", "scrollBackToTop", "handleClickCloseAddTip"], _temp2)) || _class) || _class) || _class);
+}, _class2.$$events = ["handleScroll", "nextPage", "scrollBackToTop"], _temp2)) || _class) || _class);
 exports.default = HomeIndex;
 
-Component(require('../npm/@tarojs/taro-weapp/index.js').default.createComponent(HomeIndex, true));
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(HomeIndex, true));

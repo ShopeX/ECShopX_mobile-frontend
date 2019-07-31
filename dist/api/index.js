@@ -60,6 +60,10 @@ var _distribution = require("./distribution.js");
 
 var distribution = _interopRequireWildcard(_distribution);
 
+var _track = require("./track.js");
+
+var track = _interopRequireWildcard(_track);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 exports.default = {
@@ -76,5 +80,6 @@ exports.default = {
   seckill: seckill,
   wx: wx,
   shop: shop,
-  distribution: distribution
+  distribution: distribution,
+  track: track
 };

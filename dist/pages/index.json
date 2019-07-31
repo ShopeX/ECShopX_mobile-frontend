@@ -1,6 +1,7 @@
 {
   "usingComponents": {
     "loading": "../components/loading/index",
+    "header-home": "./home/wgts/header-home",
     "wgt-search-home": "./home/wgts/search-home",
     "wgt-slider": "./home/wgts/slider",
     "wgt-marquees": "./home/wgts/marquees",

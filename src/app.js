@@ -5,7 +5,6 @@ import configStore from '@/store'
 import useHooks from '@/hooks'
 import req from '@/api/req'
 import api from '@/api'
-import entry from '@/utils/entry'
 import { FormIds, WxAuth } from '@/service'
 import Index from './pages/index'
 
@@ -126,10 +125,7 @@ class App extends Component {
       // navigationStyle: 'custom'
     }
   }
-  async componentWillMount () {
-    const options = this.$router.params.query
-    const { uid } = entry.entryLaunch(options)
-    this.fetchDistribution(uid)
+  componentWillMount () {
   }
   componentDidMount () {
     this.fetchTabs()
@@ -160,17 +156,6 @@ class App extends Component {
 
   componentDidHide () {
     FormIds.stop()
-  }
-
-  async fetchDistribution (uid) {
-    if (uid) {
-      const { is_valid } = await api.distribution.info({user_id: uid})
-      if (is_valid) {
-        Taro.setStorageSync('distribution_shop_id', uid)
-      } else {
-        Taro.setStorageSync('distribution_shop_id', '')
-      }
-    }
   }
 
   async fetchTabs () {

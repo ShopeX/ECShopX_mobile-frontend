@@ -67,7 +67,7 @@ var WxAuth = (_temp2 = _class = function (_BaseComponent) {
 
                 _index2.default.showModal({
                   title: '授权提示',
-                  content: "'\u7231\u8309\u8389\u5C0F\u7A0B\u5E8F'" + "\u9700\u8981\u60A8\u7684\u6388\u6743\u624D\u80FD\u6B63\u5E38\u8FD0\u884C",
+                  content: "'ecshopx'" + "\u9700\u8981\u60A8\u7684\u6388\u6743\u624D\u80FD\u6B63\u5E38\u8FD0\u884C",
                   showCancel: false,
                   confirmText: '知道啦'
                 });

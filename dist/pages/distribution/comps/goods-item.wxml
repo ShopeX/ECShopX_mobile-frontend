@@ -5,7 +5,7 @@
     <view class="{{anonymousState__temp}}" wx:else>
         <view class="goods-item__bd">
             <view class="goods-item__img-wrap">
-                <image class="goods-item__img" mode="aspectFill" src="{{img}}"></image>
+                <image class="goods-item__img" mode="aspectFix" src="{{img}}"></image>
             </view>
             <view class="goods-item__cont">
                 <view>
@@ -15,7 +15,7 @@
                 </view>
                 <view class="goods-item__extra">
                     <view class="goods-item__author">
-                        <at-button bindonclick="funPrivatewAmXl" __triggerObserer="{{ _triggerObserer }}" size="small" __fn_onClick="{{true}}">
+                        <at-button bindonclick="funPrivateFHRpc" __triggerObserer="{{ _triggerObserer }}" size="small" __fn_onClick="{{true}}">
                             <block>
                                 <block wx:if="{{isRelease}}"><text>下架</text>
                                 </block>

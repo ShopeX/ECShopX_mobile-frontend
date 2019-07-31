@@ -6,9 +6,9 @@
         <view class="goods-item__hd">
             <slot></slot>
         </view>
-        <view class="goods-item__bd" bindtap="funPrivatealDPZ">
+        <view class="goods-item__bd" bindtap="funPrivateCThkv">
             <view class="goods-item__img-wrap">
-                <image class="goods-item__img" mode="aspectFill" src="{{img}}"></image>
+                <image class="goods-item__img" mode="aspectFix" src="{{img}}"></image>
             </view>
             <view class="goods-item__cont">
                 <view><text class="goods-item__title">{{info.title}}</text><text class="goods-item__desc">{{info.desc}}</text>

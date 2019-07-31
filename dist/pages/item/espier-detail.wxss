@@ -447,6 +447,32 @@
   display: block !important;
 }
 
+.store-info {
+  padding: 30rpx;
+  background: #fff;
+}
+.store-info .store-brand {
+  display: block;
+  margin-right: 20rpx;
+  width: 120rpx;
+  height: 120rpx;
+}
+.store-info .store-name {
+  font-size: 32rpx;
+}
+.store-info .store-desc {
+  color: #999;
+}
+.store-info .store-enter-btn {
+  margin-top: 20rpx;
+  line-height: 60rpx;
+  border-radius: 60rpx;
+  -webkit-box-shadow: 0 0 1PX rgba(0, 0, 0, 0.5);
+          box-shadow: 0 0 1PX rgba(0, 0, 0, 0.5);
+  text-align: center;
+  font-size: 28rpx;
+}
+
 .at-divider__line {
   width: 38%;
   left: 50%;

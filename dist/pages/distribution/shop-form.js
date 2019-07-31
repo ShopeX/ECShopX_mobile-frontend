@@ -167,6 +167,7 @@ var DistributionShopForm = (_temp2 = _class = function (_BaseComponent) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
+      var imgs = this.state.imgs;
       var _$router$params = this.$router.params,
           key = _$router$params.key,
           val = _$router$params.val;
@@ -177,6 +178,12 @@ var DistributionShopForm = (_temp2 = _class = function (_BaseComponent) {
           val: val
         }
       });
+      if (key === 'shop_pic') {
+        imgs.push(val);
+        this.setState({
+          imgs: imgs
+        });
+      }
     }
   }, {
     key: "_createData",

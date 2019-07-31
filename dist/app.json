@@ -62,6 +62,7 @@
     "pages/distribution/shop-form",
     "pages/distribution/qrcode",
     "pages/distribution/shop-home",
+    "pages/store/index",
     "pages/trade/list",
     "pages/trade/detail",
     "pages/trade/delivery-info",
@@ -74,6 +75,11 @@
     "pages/trade/invoice-list",
     "pages/protocol/privacy"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于定位附近门店"
+    }
+  },
   "navigateToMiniProgramAppIdList": [
     "wx4721629519a8f25b",
     "wx2fb97cb696f68d22",

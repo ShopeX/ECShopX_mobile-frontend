@@ -78,7 +78,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "loopArray0", "info", "scrollTop", "curImgIdx", "imgs", "timer", "marketing", "isPromoter", "promotion_activity", "curSku", "buyPanelType", "$anonymousCallee__0", "isGreaterSix", "desc", "screenWidth", "sessionFrom", "hasStock", "startSecKill", "cartCount", "showBuyPanel", "windowWidth", "specImgsDict", "sixSpecImgsDict", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "anonymousState__temp3", "loopArray0", "info", "scrollTop", "curImgIdx", "imgs", "timer", "marketing", "isPromoter", "promotion_activity", "curSku", "buyPanelType", "$anonymousCallee__0", "isGreaterSix", "store", "desc", "screenWidth", "sessionFrom", "hasStock", "startSecKill", "cartCount", "showBuyPanel", "windowWidth", "specImgsDict", "sixSpecImgsDict", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type) {
         var info, isAuth, favRes;
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -225,6 +225,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       this.state = {
         marketing: 'normal',
         info: null,
+        store: null,
         desc: null,
         curImgIdx: 0,
         windowWidth: 320,
@@ -249,6 +250,14 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
     value: function componentDidMount() {
       var _this3 = this;
 
+      var _Taro$getStorageSync = _index2.default.getStorageSync('curStore'),
+          name = _Taro$getStorageSync.name;
+
+      this.setState({
+        store: {
+          name: name
+        }
+      });
       this.handleResize();
       this.fetch();
       _index2.default.getSystemInfo().then(function (res) {
