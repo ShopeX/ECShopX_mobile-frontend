@@ -1,6 +1,1 @@
-var overArg = require("./_overArg.js");
-
-/** Built-in value references. */
-var getPrototype = overArg(Object.getPrototypeOf, Object);
-
-module.exports = getPrototype;
+var overArg=require("./_overArg.js"),getPrototype=overArg(Object.getPrototypeOf,Object);module.exports=getPrototype;

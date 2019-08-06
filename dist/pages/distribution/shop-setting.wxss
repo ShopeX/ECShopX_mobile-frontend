@@ -1,18 +1,1 @@
-
-/*==============================
-=            colors            =
-==============================*/
-/*===============================
-=            z-index            =
-===============================*/
-/*==============================
-=            colors            =
-==============================*/
-/*===============================
-=            z-index            =
-===============================*/
-.page-distribution-shop-setting .shop-sign {
-  display: block;
-  float: right;
-  width: 96%;
-}
+.page-distribution-shop-setting .shop-sign{display:block;float:right;width:96%}
