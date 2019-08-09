@@ -1,1 +1,66 @@
-.page-distribution-trade .trade-list__scroll{position:absolute;left:0;width:100%;top:75rpx;bottom:0;overflow-y:auto;overflow-x:hidden;z-index:1}.page-distribution-trade .trade-list__scroll,.page-distribution-trade .trade-list__scroll>div,.page-distribution-trade .trade-list__scroll>view{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}.page-distribution-trade .order-no{font-size:30rpx;color:#555}.page-distribution-trade .order-no .key{color:#999;font-size:26rpx}.page-distribution-trade .order-no .key .space{display:inline-block;width:24rpx}.page-distribution-trade .order-date{font-size:28rpx;color:#999}.page-distribution-trade .commission{font-size:30rpx}.page-distribution-trade .customer-logo{width:60rpx;height:60rpx;border-radius:50%;background:#eee;-webkit-box-shadow:0 0 0 1rpx rgba(0,0,0,.2);box-shadow:0 0 0 1rpx rgba(0,0,0,.2)}.page-distribution-trade .customer-name{font-size:28rpx;color:#666;padding-top:5rpx;line-height:1.2}.page-distribution-trade .customer-phone{font-size:26rpx;color:#999}
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+.page-distribution-trade .trade-list__scroll {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 75rpx;
+  bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  z-index: 1;
+}
+.page-distribution-trade .trade-list__scroll > div, .page-distribution-trade .trade-list__scroll > view {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+.page-distribution-trade .order-no {
+  font-size: 30rpx;
+  color: #555;
+}
+.page-distribution-trade .order-no .key {
+  color: #999;
+  font-size: 26rpx;
+}
+.page-distribution-trade .order-no .key .space {
+  display: inline-block;
+  width: 24rpx;
+}
+.page-distribution-trade .order-date {
+  font-size: 28rpx;
+  color: #999;
+}
+.page-distribution-trade .commission {
+  font-size: 30rpx;
+}
+.page-distribution-trade .customer-logo {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: #eee;
+  -webkit-box-shadow: 0 0 0 1rpx rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0 0 1rpx rgba(0, 0, 0, 0.2);
+}
+.page-distribution-trade .customer-name {
+  font-size: 28rpx;
+  color: #666;
+  padding-top: 5rpx;
+  line-height: 1.2;
+}
+.page-distribution-trade .customer-phone {
+  font-size: 26rpx;
+  color: #999;
+}

@@ -1,1 +1,253 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function o(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}return function(e,t,n){return t&&o(e.prototype,t),n&&o(e,n),e}}(),_get=function e(t,n,o){null===t&&(t=Function.prototype);var i=Object.getOwnPropertyDescriptor(t,n);if(void 0===i){var l=Object.getPrototypeOf(t);return null===l?void 0:e(l,n,o)}if("value"in i)return i.value;var r=i.get;return void 0!==r?r.call(o):void 0},_index=require("../../../../../@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../../../../prop-types/index.js"),_index4=_interopRequireDefault(_index3),_index5=require("../../../../../classnames/index.js"),_index6=_interopRequireDefault(_index5),_component=require("../../common/component.js"),_component2=_interopRequireDefault(_component);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _defineProperty(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var AtTabBar=(_temp2=_class=function(e){function r(){var e,t,n;_classCallCheck(this,r);for(var o=arguments.length,i=Array(o),l=0;l<o;l++)i[l]=arguments[l];return(t=n=_possibleConstructorReturn(this,(e=r.__proto__||Object.getPrototypeOf(r)).call.apply(e,[this].concat(i)))).$usedState=["anonymousState__temp","anonymousState__temp2","loopArray0","tabList","__fn_onClick","customStyle","className","fixed","backgroundColor","current","color","iconSize","fontSize","selectedColor"],n.$$refs=[],_possibleConstructorReturn(n,t)}return _inherits(r,_component2.default),_createClass(r,[{key:"_constructor",value:function(e){_get(r.prototype.__proto__||Object.getPrototypeOf(r.prototype),"_constructor",this).call(this,e)}},{key:"handleClick",value:function(){this.__triggerPropsFn("onClick",[null].concat([].concat(Array.prototype.slice.call(arguments))))}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props,t=e.customStyle,n=e.className,o=e.fixed,i=e.backgroundColor,l=e.tabList,r=e.current,a=e.color,u=e.iconSize,_=e.fontSize,c=e.selectedColor,s={color:a||""},p={color:c||""},d={fontSize:_?_+"px":""},f={backgroundColor:i||""},y={width:u+"px",height:u+"px"},b=(0,_index6.default)({"at-tab-bar":!0,"at-tab-bar--fixed":o},n),m=(0,_index.internal_inline_style)(this.mergeStyle(f,t)),x=l.map(function(e,t){var n;return e={$original:(0,_index.internal_get_original)(e)},{$loopState__temp4:(0,_index6.default)("at-tab-bar__item",{"at-tab-bar__item--active":r===t}),$loopState__temp6:(0,_index.internal_inline_style)(r===t?p:s),$loopState__temp8:e.$original.iconType?!!e.$original.dot:null,$loopState__temp10:e.$original.iconType?(0,_index6.default)(""+(e.$original.iconPrefixClass||"at-icon"),(_defineProperty(n={},(e.$original.iconPrefixClass||"at-icon")+"-"+e.$original.selectedIconType,r===t&&e.$original.selectedIconType),_defineProperty(n,(e.$original.iconPrefixClass||"at-icon")+"-"+e.$original.iconType,!(r===t&&e.$original.selectedIconType)),n)):null,$loopState__temp12:e.$original.iconType?(0,_index.internal_inline_style)({color:r===t?c:a,fontSize:u?u+"px":""}):null,$loopState__temp14:e.$original.image?!!e.$original.dot:null,$loopState__temp16:e.$original.image?(0,_index6.default)("at-tab-bar__inner-img",{"at-tab-bar__inner-img--inactive":r!==t}):null,$loopState__temp18:e.$original.image?(0,_index.internal_inline_style)(y):null,$loopState__temp20:e.$original.image?(0,_index6.default)("at-tab-bar__inner-img",{"at-tab-bar__inner-img--inactive":r===t}):null,$loopState__temp22:e.$original.image?(0,_index.internal_inline_style)(y):null,$loopState__temp24:(0,_index.internal_inline_style)(d),$original:e.$original}});return Object.assign(this.__state,{anonymousState__temp:b,anonymousState__temp2:m,loopArray0:x,tabList:l}),this.__state}}]),r}(),_class.properties={__fn_onClick:{type:null,value:null},customStyle:{type:null,value:null},className:{type:null,value:null},fixed:{type:null,value:null},backgroundColor:{type:null,value:null},tabList:{type:null,value:null},current:{type:null,value:null},color:{type:null,value:null},iconSize:{type:null,value:null},fontSize:{type:null,value:null},selectedColor:{type:null,value:null}},_class.$$events=["handleClick"],_temp2);AtTabBar.defaultProps={customStyle:"",className:"",fixed:!1,current:0,scroll:!1,tabList:[],onClick:function(){}},AtTabBar.propTypes={customStyle:_index4.default.oneOfType([_index4.default.object,_index4.default.string]),className:_index4.default.oneOfType([_index4.default.array,_index4.default.string]),fixed:_index4.default.bool,backgroundColor:_index4.default.string,current:_index4.default.number,iconSize:_index4.default.oneOfType([_index4.default.number,_index4.default.string]),fontSize:_index4.default.oneOfType([_index4.default.number,_index4.default.string]),color:_index4.default.string,selectedColor:_index4.default.string,scroll:_index4.default.bool,tabList:_index4.default.array,onClick:_index4.default.func},exports.default=AtTabBar,Component(require("../../../../../@tarojs/taro-weapp/index.js").default.createComponent(AtTabBar));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../../../../@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../../../../prop-types/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../../../../../classnames/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
+
+var _component = require("../../common/component.js");
+
+var _component2 = _interopRequireDefault(_component);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AtTabBar = (_temp2 = _class = function (_AtComponent) {
+  _inherits(AtTabBar, _AtComponent);
+
+  function AtTabBar() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, AtTabBar);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AtTabBar.__proto__ || Object.getPrototypeOf(AtTabBar)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "loopArray0", "tabList", "__fn_onClick", "customStyle", "className", "fixed", "backgroundColor", "current", "color", "iconSize", "fontSize", "selectedColor"], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(AtTabBar, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(AtTabBar.prototype.__proto__ || Object.getPrototypeOf(AtTabBar.prototype), "_constructor", this).call(this, props);
+    }
+
+    // constructor () {
+    //   super(...arguments)
+    //   this.state = {
+    //     isIPhoneX: false
+    //   }
+    // }
+
+    // componentDidMount () {
+    //   const curEnv = Taro.getEnv()
+
+    //   if (
+    //     curEnv === Taro.ENV_TYPE.WEAPP &&
+    //     Taro.getSystemInfoSync().model.indexOf('iPhone X') >= 0
+    //   ) {
+    //     this.setState({ isIPhoneX: true })
+    //   }
+    // }
+
+  }, {
+    key: "handleClick",
+    value: function handleClick() {
+      this.__triggerPropsFn("onClick", [null].concat([].concat(Array.prototype.slice.call(arguments))));
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _props = this.__props,
+          customStyle = _props.customStyle,
+          className = _props.className,
+          fixed = _props.fixed,
+          backgroundColor = _props.backgroundColor,
+          tabList = _props.tabList,
+          current = _props.current,
+          color = _props.color,
+          iconSize = _props.iconSize,
+          fontSize = _props.fontSize,
+          selectedColor = _props.selectedColor;
+      // const { isIPhoneX } = this.state
+
+      var defaultStyle = {
+        color: color || ''
+      };
+      var selectedStyle = {
+        color: selectedColor || ''
+      };
+      var titleStyle = {
+        fontSize: fontSize ? fontSize + "px" : ''
+      };
+      var rootStyle = {
+        backgroundColor: backgroundColor || ''
+      };
+      var imgStyle = {
+        width: iconSize + "px",
+        height: iconSize + "px"
+      };
+
+      var anonymousState__temp = (0, _index6.default)({
+        'at-tab-bar': true,
+        'at-tab-bar--fixed': fixed
+        // 'at-tab-bar--ipx': isIPhoneX
+      }, className);
+      var anonymousState__temp2 = (0, _index.internal_inline_style)(this.mergeStyle(rootStyle, customStyle));
+      var loopArray0 = tabList.map(function (item, i) {
+        var _classNames;
+
+        item = {
+          $original: (0, _index.internal_get_original)(item)
+        };
+        var $loopState__temp4 = (0, _index6.default)('at-tab-bar__item', { 'at-tab-bar__item--active': current === i });
+        var $loopState__temp6 = (0, _index.internal_inline_style)(current === i ? selectedStyle : defaultStyle);
+        var $loopState__temp8 = item.$original.iconType ? !!item.$original.dot : null;
+        var $loopState__temp10 = item.$original.iconType ? (0, _index6.default)("" + (item.$original.iconPrefixClass || 'at-icon'), (_classNames = {}, _defineProperty(_classNames, (item.$original.iconPrefixClass || 'at-icon') + "-" + item.$original.selectedIconType, current === i && item.$original.selectedIconType), _defineProperty(_classNames, (item.$original.iconPrefixClass || 'at-icon') + "-" + item.$original.iconType, !(current === i && item.$original.selectedIconType)), _classNames)) : null;
+        var $loopState__temp12 = item.$original.iconType ? (0, _index.internal_inline_style)({
+          color: current === i ? selectedColor : color,
+          fontSize: iconSize ? iconSize + "px" : ''
+        }) : null;
+        var $loopState__temp14 = item.$original.image ? !!item.$original.dot : null;
+        var $loopState__temp16 = item.$original.image ? (0, _index6.default)('at-tab-bar__inner-img', {
+          'at-tab-bar__inner-img--inactive': current !== i
+        }) : null;
+        var $loopState__temp18 = item.$original.image ? (0, _index.internal_inline_style)(imgStyle) : null;
+        var $loopState__temp20 = item.$original.image ? (0, _index6.default)('at-tab-bar__inner-img', {
+          'at-tab-bar__inner-img--inactive': current === i
+        }) : null;
+        var $loopState__temp22 = item.$original.image ? (0, _index.internal_inline_style)(imgStyle) : null;
+        var $loopState__temp24 = (0, _index.internal_inline_style)(titleStyle);
+        return {
+          $loopState__temp4: $loopState__temp4,
+          $loopState__temp6: $loopState__temp6,
+          $loopState__temp8: $loopState__temp8,
+          $loopState__temp10: $loopState__temp10,
+          $loopState__temp12: $loopState__temp12,
+          $loopState__temp14: $loopState__temp14,
+          $loopState__temp16: $loopState__temp16,
+          $loopState__temp18: $loopState__temp18,
+          $loopState__temp20: $loopState__temp20,
+          $loopState__temp22: $loopState__temp22,
+          $loopState__temp24: $loopState__temp24,
+          $original: item.$original
+        };
+      });
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        anonymousState__temp2: anonymousState__temp2,
+        loopArray0: loopArray0,
+        tabList: tabList
+      });
+      return this.__state;
+    }
+  }]);
+
+  return AtTabBar;
+}(_component2.default), _class.properties = {
+  "__fn_onClick": {
+    "type": null,
+    "value": null
+  },
+  "customStyle": {
+    "type": null,
+    "value": null
+  },
+  "className": {
+    "type": null,
+    "value": null
+  },
+  "fixed": {
+    "type": null,
+    "value": null
+  },
+  "backgroundColor": {
+    "type": null,
+    "value": null
+  },
+  "tabList": {
+    "type": null,
+    "value": null
+  },
+  "current": {
+    "type": null,
+    "value": null
+  },
+  "color": {
+    "type": null,
+    "value": null
+  },
+  "iconSize": {
+    "type": null,
+    "value": null
+  },
+  "fontSize": {
+    "type": null,
+    "value": null
+  },
+  "selectedColor": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["handleClick"], _temp2);
+
+
+AtTabBar.defaultProps = {
+  customStyle: '',
+  className: '',
+  fixed: false,
+  current: 0,
+  scroll: false,
+  tabList: [],
+  onClick: function onClick() {}
+};
+
+AtTabBar.propTypes = {
+  customStyle: _index4.default.oneOfType([_index4.default.object, _index4.default.string]),
+  className: _index4.default.oneOfType([_index4.default.array, _index4.default.string]),
+  fixed: _index4.default.bool,
+  backgroundColor: _index4.default.string,
+  current: _index4.default.number,
+  iconSize: _index4.default.oneOfType([_index4.default.number, _index4.default.string]),
+  fontSize: _index4.default.oneOfType([_index4.default.number, _index4.default.string]),
+  color: _index4.default.string,
+  selectedColor: _index4.default.string,
+  scroll: _index4.default.bool,
+  tabList: _index4.default.array,
+  onClick: _index4.default.func
+};
+exports.default = AtTabBar;
+
+Component(require('../../../../../@tarojs/taro-weapp/index.js').default.createComponent(AtTabBar));

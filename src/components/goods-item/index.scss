@@ -57,13 +57,14 @@ $item-img-size: 240px !default;
     }
   }
   &__title {
+    margin: 0 0 10px;
+    max-height: 80px;
     @include multi-ellipsis(2);
     line-height: 1.4;
-    max-height: 80px;
     color: #111;
-    margin: 0 0 10px;
   }
   &__desc {
+    margin: 0 0 10px;
     line-height: 1.4;
     @include multi-ellipsis(2);
     color: $color-gray;

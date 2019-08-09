@@ -269,7 +269,7 @@
 
 .goods-sec-specs {
   background: #fff;
-  padding: 50px 30px;
+  padding: 30px;
   margin: 0 0 $edge-margin;
 
   &__activity {
@@ -337,13 +337,12 @@
 
     &-scroller {
       width: 100%;
-      height: 80px;
+      height: 100px;
+      line-height: 100px;
     }
 
     &-imgs {
       white-space: nowrap;
-      display: flex;
-      justify-content: center;
 
       &__item {
         border: 1px solid $color-border-gray;
@@ -352,8 +351,15 @@
         box-sizing: border-box;
         display: inline-block;
         vertical-align: middle;
-        margin: 0 10px;
+        margin-left: 20px;
         overflow: hidden;
+        transition: all 0.2s ease;
+        box-shadow: 0 0 0 1PX transparent;
+        &-active {
+          width: 85px;
+          height: 85px;
+          box-shadow: 0 0 0 1PX #ff5000;
+        }
       }
     }
 
@@ -399,8 +405,6 @@
 }
 
 .store-info {
-  padding: 30px;
-  background: #fff;
   .store-brand {
     display: block;
     margin-right: 20px;

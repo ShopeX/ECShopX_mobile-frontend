@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "at-accordion": "../../../npm/taro-ui/dist/weapp/components/accordion/index",
+    "goods-item": "../../../components/goods-item/index",
+    "sp-checkbox": "../../../components/checkbox/index",
+    "at-button": "../../../npm/taro-ui/dist/weapp/components/button/index"
+  }
+}

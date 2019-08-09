@@ -1,1 +1,307 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _dec,_class,_class2,_temp2,_createClass=function(){function n(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,r){return t&&n(e.prototype,t),r&&n(e,r),e}}(),_get=function e(t,r,n){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,r);if(void 0===o){var i=Object.getPrototypeOf(t);return null===i?void 0:e(i,r,n)}if("value"in o)return o.value;var a=o.get;return void 0!==a?a.call(n):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../npm/@tarojs/redux/index.js"),_index4=require("../../api/index.js"),_index5=_interopRequireDefault(_index4),_index6=require("../../utils/index.js"),_index7=require("../../spx/index.js"),_index8=_interopRequireDefault(_index7);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var u=e.apply(this,arguments);return new Promise(function(i,a){return function t(e,r){try{var n=u[e](r),o=n.value}catch(e){return void a(e)}if(!n.done)return Promise.resolve(o).then(function(e){t("next",e)},function(e){t("throw",e)});i(o)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var TabBar=(_dec=(0,_index3.connect)(function(e){return{tabBar:e.tabBar.current}}))((_temp2=_class2=function(e){function i(){var e,t,a;_classCallCheck(this,i);for(var r=arguments.length,n=Array(r),o=0;o<r;o++)n[o]=arguments[o];return(t=a=_possibleConstructorReturn(this,(e=i.__proto__||Object.getPrototypeOf(i)).call.apply(e,[this].concat(n)))).$usedState=["color","backgroundColor","selectedColor","tabList","current","tabBar","cartTotalCount"],a.handleClick=function(e){if(a.state.current!==e){var t=a.state.tabList[e],r=t.url,n=t.urlRedirect,o=t.withLogin,i=(0,_index6.getCurrentRoute)(a.$router).fullPath;if(o&&!_index8.default.getAuthToken())return _index2.default.redirectTo({url:"/pages/auth/wxauth"});r&&i!==r&&(!n||"/pages/member/index"===r&&!_index8.default.getAuthToken()?_index2.default.navigateTo({url:r}):_index2.default.redirectTo({url:r}))}},a.$$refs=[],_possibleConstructorReturn(a,t)}var t;return _inherits(i,_index.Component),_createClass(i,[{key:"_constructor",value:function(e){_get(i.prototype.__proto__||Object.getPrototypeOf(i.prototype),"_constructor",this).call(this,e),this.state={current:0,backgroundColor:"",color:"",selectedColor:"",tabList:[]}}},{key:"componentDidMount",value:function(){var r=this,e=this.props.tabBar,n=[];if(e){var t=e.config,o=e.data,i=t.backgroundColor,a=t.color,u=t.selectedColor;this.setState({backgroundColor:i,color:a,selectedColor:u}),o.map(function(e){var t={title:e.text,iconType:e.iconPath&&e.selectedIconPath?"":e.name,iconPrefixClass:"icon",image:e.iconPath,selectedImage:e.selectedIconPath,url:e.pagePath,urlRedirect:!0};"cart"===e.name&&Object.assign(t,{withLogin:!0}),"member"===e.name&&Object.assign(t,{withLogin:!0,text:r.props.cartTotalCount||"",max:"99"}),n.push(t)})}else n=[{title:"首页",iconType:"home",iconPrefixClass:"icon",url:"/pages/index",urlRedirect:!0},{title:"分类",iconType:"category",iconPrefixClass:"icon",url:"/pages/category/index",urlRedirect:!0},{title:"购物车",iconType:"cart",iconPrefixClass:"icon",url:"/pages/cart/espier-index",withLogin:!0,urlRedirect:!0},{title:"我的",iconType:"member",iconPrefixClass:"icon",url:"/pages/member/index",withLogin:!0,text:this.props.cartTotalCount||"",max:"99",urlRedirect:!0}];this.setState({tabList:n},function(){r.updateCurTab()})}},{key:"componentDidShow",value:function(){0<this.state.tabList.length&&this.fetchCart()}},{key:"componentWillReceiveProps",value:function(e){void 0!==e.current&&this.setState({current:e.current})}},{key:"updateCurTab",value:function(){this.fetchCart();var e=this.state,t=e.tabList,r=e.current,n=(0,_index6.getCurrentRoute)(this.$router).fullPath,o=t[r].url;if(o&&o!==n){var i=t.findIndex(function(e){return e.url===n})||0;this.setState({current:i})}}},{key:"fetchCart",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,r,n,o,i,a,u=this;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(_index8.default.getAuthToken()){e.next=2;break}return e.abrupt("return");case 2:if(t=this.state.tabList,r=t.findIndex(function(e){return-1!==e.url.indexOf("cart")}),n=function(e){t[r].text=e||"",u.setState({tabList:t})},o=(0,_index6.getCurrentRoute)(this.$router),o.path===this.state.tabList[r].url)return n(""),e.abrupt("return");e.next=9;break;case 9:return e.prev=9,e.next=12,_index5.default.cart.count({shop_type:"distributor"});case 12:i=e.sent,a=i.item_count,n(a),e.next=20;break;case 17:e.prev=17,e.t0=e.catch(9),console.error(e.t0);case 20:case"end":return e.stop()}},e,this,[[9,17]])})),function(){return t.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state;e.color,e.backgroundColor,e.selectedColor,e.tabList,e.current;return Object.assign(this.__state,{}),this.__state}}]),i}(),_class2.properties={tabBar:{type:null,value:null},cartTotalCount:{type:null,value:null},current:{type:null,value:null}},_class2.$$events=["handleClick"],_class2.options={addGlobalClass:!0},_class=_temp2))||_class;exports.default=TabBar,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(TabBar));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _dec, _class, _class2, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../npm/@tarojs/redux/index.js");
+
+var _index4 = require("../../api/index.js");
+
+var _index5 = _interopRequireDefault(_index4);
+
+var _index6 = require("../../utils/index.js");
+
+var _index7 = require("../../spx/index.js");
+
+var _index8 = _interopRequireDefault(_index7);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// @connect(({ cart }) => ({
+//   cart,
+//   cartTotalCount: getTotalCount(cart)
+// }), (dispatch) => ({
+//   onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: { list } })
+// }))
+var TabBar = (_dec = (0, _index3.connect)(function (_ref) {
+  var tabBar = _ref.tabBar;
+  return {
+    tabBar: tabBar.current
+  };
+}), _dec(_class = (_temp2 = _class2 = function (_BaseComponent) {
+  _inherits(TabBar, _BaseComponent);
+
+  function TabBar() {
+    var _ref2;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, TabBar);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = TabBar.__proto__ || Object.getPrototypeOf(TabBar)).call.apply(_ref2, [this].concat(args))), _this), _this.$usedState = ["color", "backgroundColor", "selectedColor", "tabList", "current", "tabBar", "cartTotalCount"], _this.handleClick = function (current) {
+      var cur = _this.state.current;
+
+      if (cur !== current) {
+        var curTab = _this.state.tabList[current];
+        var url = curTab.url,
+            urlRedirect = curTab.urlRedirect,
+            withLogin = curTab.withLogin;
+
+        var _getCurrentRoute = (0, _index6.getCurrentRoute)(_this.$router),
+            fullPath = _getCurrentRoute.fullPath;
+
+        if (withLogin && !_index8.default.getAuthToken()) {
+          return _index2.default.redirectTo({
+            url: "/pages/auth/wxauth"
+          });
+        }
+
+        if (url && fullPath !== url) {
+          if (!urlRedirect || url === '/pages/member/index' && !_index8.default.getAuthToken()) {
+            _index2.default.navigateTo({ url: url });
+          } else {
+            _index2.default.redirectTo({ url: url });
+          }
+        }
+      }
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(TabBar, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(TabBar.prototype.__proto__ || Object.getPrototypeOf(TabBar.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        current: 0,
+        backgroundColor: '',
+        color: '',
+        selectedColor: '',
+        tabList: []
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var tabBar = this.props.tabBar;
+
+      var list = [];
+
+      if (tabBar) {
+        var config = tabBar.config,
+            data = tabBar.data;
+        var backgroundColor = config.backgroundColor,
+            color = config.color,
+            selectedColor = config.selectedColor;
+
+        this.setState({
+          backgroundColor: backgroundColor,
+          color: color,
+          selectedColor: selectedColor
+        });
+        data.map(function (item) {
+          var obj = {
+            title: item.text,
+            iconType: item.iconPath && item.selectedIconPath ? '' : item.name,
+            iconPrefixClass: 'icon',
+            image: item.iconPath,
+            selectedImage: item.selectedIconPath,
+            url: item.pagePath,
+            urlRedirect: true
+          };
+          if (item.name === 'cart') {
+            Object.assign(obj, { withLogin: true });
+          }
+          if (item.name === 'member') {
+            Object.assign(obj, { withLogin: true, text: _this2.props.cartTotalCount || '', max: '99' });
+          }
+          list.push(obj);
+        });
+      } else {
+        list = [{ title: '首页', iconType: 'home', iconPrefixClass: 'icon', url: '/pages/index', urlRedirect: true }, { title: '分类', iconType: 'category', iconPrefixClass: 'icon', url: '/pages/category/index', urlRedirect: true }, { title: '购物车', iconType: 'cart', iconPrefixClass: 'icon', url: '/pages/cart/espier-index', withLogin: true, urlRedirect: true }, { title: '我的', iconType: 'member', iconPrefixClass: 'icon', url: '/pages/member/index', withLogin: true, text: this.props.cartTotalCount || '', max: '99', urlRedirect: true }];
+      }
+
+      this.setState({
+        tabList: list
+      }, function () {
+        _this2.updateCurTab();
+      });
+    }
+  }, {
+    key: "componentDidShow",
+    value: function componentDidShow() {
+      if (this.state.tabList.length > 0) {
+        this.fetchCart();
+      }
+    }
+  }, {
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.current !== undefined) {
+        this.setState({ current: nextProps.current });
+      }
+    }
+  }, {
+    key: "updateCurTab",
+    value: function updateCurTab() {
+      this.fetchCart();
+      var _state = this.state,
+          tabList = _state.tabList,
+          current = _state.current;
+
+      var _getCurrentRoute2 = (0, _index6.getCurrentRoute)(this.$router),
+          fullPath = _getCurrentRoute2.fullPath;
+
+      var url = tabList[current].url;
+
+      if (url && url !== fullPath) {
+        var nCurrent = tabList.findIndex(function (t) {
+          return t.url === fullPath;
+        }) || 0;
+        this.setState({
+          current: nCurrent
+        });
+      }
+    }
+  }, {
+    key: "fetchCart",
+    value: function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var _this3 = this;
+
+        var tabList, cartTabIdx, updateCartCount, _getCurrentRoute3, path, _ref4, item_count;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (_index8.default.getAuthToken()) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
+                tabList = this.state.tabList;
+                cartTabIdx = tabList.findIndex(function (item) {
+                  return item.url.indexOf('cart') !== -1;
+                });
+
+                updateCartCount = function updateCartCount(count) {
+                  tabList[cartTabIdx].text = count || '';
+                  _this3.setState({
+                    tabList: tabList
+                  });
+                };
+
+                _getCurrentRoute3 = (0, _index6.getCurrentRoute)(this.$router), path = _getCurrentRoute3.path;
+
+                if (!(path === this.state.tabList[cartTabIdx].url)) {
+                  _context.next = 9;
+                  break;
+                }
+
+                updateCartCount('');
+                return _context.abrupt("return");
+
+              case 9:
+                _context.prev = 9;
+                _context.next = 12;
+                return _index5.default.cart.count({ shop_type: 'distributor' });
+
+              case 12:
+                _ref4 = _context.sent;
+                item_count = _ref4.item_count;
+
+                updateCartCount(item_count);
+                _context.next = 20;
+                break;
+
+              case 17:
+                _context.prev = 17;
+                _context.t0 = _context["catch"](9);
+
+                console.error(_context.t0);
+
+              case 20:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[9, 17]]);
+      }));
+
+      function fetchCart() {
+        return _ref3.apply(this, arguments);
+      }
+
+      return fetchCart;
+    }()
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state2 = this.__state,
+          color = _state2.color,
+          backgroundColor = _state2.backgroundColor,
+          selectedColor = _state2.selectedColor,
+          tabList = _state2.tabList,
+          current = _state2.current;
+
+      // eslint-disable-next-line
+
+      Object.assign(this.__state, {});
+      return this.__state;
+    }
+  }]);
+
+  return TabBar;
+}(_index.Component), _class2.properties = {
+  "tabBar": {
+    "type": null,
+    "value": null
+  },
+  "cartTotalCount": {
+    "type": null,
+    "value": null
+  },
+  "current": {
+    "type": null,
+    "value": null
+  }
+}, _class2.$$events = ["handleClick"], _class2.options = {
+  addGlobalClass: true
+}, _temp2)) || _class);
+exports.default = TabBar;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(TabBar));

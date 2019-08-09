@@ -199,6 +199,11 @@ export function authSetting (scope, succFn, errFn) {
   })
 }
 
+export function imgCompression (url) {
+  const rule = '?imageView2/1/w/80'
+  return url +  rule
+}
+
 export {
   classNames,
   styleNames,

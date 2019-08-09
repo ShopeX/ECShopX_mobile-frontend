@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "package-item": "./comps/package-item",
+    "loading": "../../components/loading/index",
+    "sp-note": "../../components/note/index",
+    "goods-buy-panel": "../../components/goods-buy-panel/index",
+    "back-to-top": "../../components/back-to-top/index"
+  },
+  "navigationBarTitleText": "优惠组合"
+}

@@ -1,0 +1,31 @@
+@import '../../../style/imports';
+
+.package-goods {
+  &__list {
+    padding: $edge-margin $edge-size;
+  }
+  &__item {
+    padding: $edge-margin 0;
+    margin: 0;
+  }
+  &__item-footer {
+    display: flex;
+    align-items: center;
+    padding: $edge-size;
+    @include hairline($color-border-gray, top);
+    .package-amount {
+      flex: 1;
+    }
+  }
+}
+
+.goods-item__sku {
+  display: inline-block;
+  padding: 0 10px;
+  color: $color-gray;
+  font-size: $font-size-small;
+  box-shadow: 0 0 0 1PX #efefef;
+  [class^="icon-"] {
+    margin-right: 10px;
+  }
+}

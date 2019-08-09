@@ -1,1 +1,10 @@
-.img-hotzone{position:relative}.img-hotzone_img{width:100%}.img-hotzone_zone{position:absolute}
+
+.img-hotzone {
+  position: relative;
+}
+.img-hotzone_img {
+  width: 100%;
+}
+.img-hotzone_zone {
+  position: absolute;
+}

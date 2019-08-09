@@ -5,6 +5,7 @@
     "item-img": "./comps/item-img",
     "price": "../../components/price/index",
     "at-countdown": "../../npm/taro-ui/dist/weapp/components/countdown/index",
+    "sp-cell": "../../components/cell/index",
     "wgt-film": "../home/wgts/film",
     "wgt-slider": "../home/wgts/slider",
     "wgt-writing": "../home/wgts/writing",

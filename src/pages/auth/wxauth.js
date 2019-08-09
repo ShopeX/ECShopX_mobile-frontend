@@ -84,7 +84,7 @@ export default class WxAuth extends Component {
       }
 
       // 跳转注册绑定
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: `/pages/auth/reg?code=${code}&open_id=${open_id}&union_id=${union_id}`
       })
     } catch (e) {

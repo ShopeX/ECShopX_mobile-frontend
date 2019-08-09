@@ -1,1 +1,612 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _dec,_class,_class2,_temp2,_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var a=arguments[e];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(t[r]=a[r])}return t},_createClass=function(){function r(t,e){for(var a=0;a<e.length;a++){var r=e[a];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(t,e,a){return e&&r(t.prototype,e),a&&r(t,a),t}}(),_get=function t(e,a,r){null===e&&(e=Function.prototype);var i=Object.getOwnPropertyDescriptor(e,a);if(void 0===i){var n=Object.getPrototypeOf(e);return null===n?void 0:t(n,a,r)}if("value"in i)return i.value;var s=i.get;return void 0!==s?s.call(r):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../npm/@tarojs/redux/index.js"),_index4=require("../../hocs/index.js"),_index5=require("../../api/index.js"),_index6=_interopRequireDefault(_index5),_index7=require("../../utils/index.js");function _interopRequireDefault(t){return t&&t.__esModule?t:{default:t}}function _toConsumableArray(t){if(Array.isArray(t)){for(var e=0,a=Array(t.length);e<t.length;e++)a[e]=t[e];return a}return Array.from(t)}function _asyncToGenerator(t){return function(){var o=t.apply(this,arguments);return new Promise(function(n,s){return function e(t,a){try{var r=o[t](a),i=r.value}catch(t){return void s(t)}if(!r.done)return Promise.resolve(i).then(function(t){e("next",t)},function(t){e("throw",t)});n(i)}("next")})}}function _classCallCheck(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function _inherits(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}var List=(_dec=(0,_index3.connect)(function(t){return{favs:t.member.favs}}))(_class=(0,_index4.withPager)(_class=(0,_index4.withBackToTop)((_temp2=_class2=function(t){function l(){var t,e,s,a,i=this;_classCallCheck(this,l);for(var r=arguments.length,n=Array(r),o=0;o<r;o++)n[o]=arguments[o];return(e=s=_possibleConstructorReturn(this,(t=l.__proto__||Object.getPrototypeOf(l)).call.apply(t,[this].concat(n)))).$usedState=["anonymousState__temp","anonymousState__temp4","loopArray0","loopArray1","tagsList","curTagId","curFilterIdx","filterList","multiIndex","areaList","showDrawer","paramsList","scrollTop","listType","list","page","showBackToTop","info","query","selectParams","favs"],s.handleTagChange=function(t){var e=t.current;s.resetPage(),s.setState({list:[]}),s.setState({curTagId:e},function(){s.nextPage()})},s.handleFilterChange=function(t){console.log(111),s.setState({showDrawer:!1});var e=t.current,a=t.sort,r=_extends({},s.state.query,{goodsSort:0===e?null:1===e?1:0<a?3:2});(e!==s.state.curFilterIdx||e===s.state.curFilterIdx&&r.goodsSort!==s.state.query.goodsSort)&&(s.resetPage(),s.setState({list:[]})),s.setState({curFilterIdx:e,query:r},function(){s.nextPage()})},s.handleListTypeChange=function(){var t="grid"===s.state.listType?"default":"grid";s.setState({listType:t})},s.handleClickItem=function(t){var e="/pages/item/espier-detail?id="+t.item_id;_index2.default.navigateTo({url:e})},s.handleClickFilter=function(){s.setState({showDrawer:!0})},s.handleClickParmas=function(e,a){var t=s.state,r=t.paramsList,i=t.selectParams;r.map(function(t){t.attribute_id===e&&t.attribute_values.map(function(t){t.attribute_value_id===a?t.isChooseParams=!0:t.isChooseParams=!1})}),i.map(function(t){t.attribute_id===e&&(t.attribute_value_id=a)}),s.setState({paramsList:r,selectParams:i})},s.handleClickSearchParams=function(t){if(s.setState({showDrawer:!1}),"reset"===t){var e=s.state,a=e.paramsList,r=e.selectParams;s.state.paramsList.map(function(t){t.attribute_values.map(function(t){"all"===t.attribute_value_id?t.isChooseParams=!0:t.isChooseParams=!1})}),r.map(function(t){t.attribute_value_id="all"}),s.setState({paramsList:a,selectParams:r})}s.resetPage(),s.setState({list:[]},function(){s.nextPage()})},s.handleClickPicker=function(){var a=[],r=[],i=[];s.addList&&(s.addList.map(function(t,e){a.push(t.label),0===e&&t.children.map(function(t,e){r.push(t.label),0===e&&t.children.map(function(t){i.push(t.label)})})}),s.setState({showDrawer:!1,areaList:[a,r,i],multiIndex:[0,0,0]}))},s.bindMultiPickerChange=(a=_asyncToGenerator(regeneratorRuntime.mark(function t(a){var r,e;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:r=s.state.info,s.addList.map(function(t,e){console.log(t),e===a.detail.value[0]&&(r.province={label:t.label,id:t.id},t.children.map(function(t,e){e===a.detail.value[1]&&(r.city={label:t.label,id:t.id},t.children.map(function(t,e){e===a.detail.value[2]&&(r.county={label:t.label,id:t.id})}))}))}),e=[r.province.id,r.city.id,r.county.id],s.setState({query:_extends({},s.state.query,{regions_id:e})},function(){s.resetPage(),s.setState({list:[]},function(){s.nextPage()})}),s.setState({info:r});case 5:case"end":return t.stop()}},t,i)})),function(t){return a.apply(this,arguments)}),s.bindMultiPickerColumnChange=function(i){var t=s.state,n=t.areaList,e=t.multiIndex;0===i.detail.column?(s.setState({multiIndex:[i.detail.value,0,0]}),s.addList.map(function(t,e){if(e===i.detail.value){var a=[],r=[];t.children.map(function(t,e){a.push(t.label),0===e&&t.children.map(function(t){r.push(t.label)})}),n[1]=a,n[2]=r,s.setState({areaList:n})}})):1===i.detail.column?(e[1]=i.detail.value,e[2]=0,s.setState({multiIndex:e},function(){s.addList[e[0]].children.map(function(t,e){if(e===i.detail.value){var a=[];t.children.map(function(t){a.push(t.label)}),n[2]=a,s.setState({areaList:n})}})})):(e[2]=i.detail.value,s.setState({multiIndex:e}))},s.handleConfirm=function(t){s.setState({query:_extends({},s.state.query,{keywords:t})},function(){s.resetPage(),s.setState({list:[]},function(){s.nextPage()})})},s.anonymousFunc0Array=[],s.$$refs=[],_possibleConstructorReturn(s,e)}var e;return _inherits(l,_index.Component),_createClass(l,[{key:"_constructor",value:function(t){_get(l.prototype.__proto__||Object.getPrototypeOf(l.prototype),"_constructor",this).call(this,t),this.state=_extends({},this.state,{curFilterIdx:0,curTagId:"",filterList:[{title:"综合"},{title:"销量"},{title:"价格",sort:-1}],query:null,list:[],tagsList:[],paramsList:[],listType:"grid",showDrawer:!1,selectParams:[],info:{},areaList:[],multiIndex:[]})}},{key:"componentDidMount",value:function(){var t=this;this.firstStatus=!0,console.log(this.$router.params),this.setState({query:{keywords:this.$router.params.keywords,item_type:"normal",is_point:"false",approve_status:"onsale,only_show",category:this.$router.params.cat_id}},function(){t.nextPage()})}},{key:"fetch",value:(e=_asyncToGenerator(regeneratorRuntime.mark(function t(e){var a,r,i,n,s,o,l,u,c,d,p,_,f,h,m,g,y,v,b,x,P,w,C,S,k;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return a=e.page_no,r=e.page_size,i=this.state,n=i.selectParams,s=i.areaList,o=i.tagsList,l=i.curTagId,u=_extends({},this.state.query,{item_params:n,tag_id:l,page:a,pageSize:r}),t.next=5,_index6.default.item.search(u);case 5:if(c=t.sent,d=c.list,p=c.total_count,_=c.item_params_list,f=void 0===_?[]:_,h=c.select_tags_list,m=void 0===h?[]:h,g=c.select_address_list,y=void 0===g?[]:g,v=this.props.favs,0===s.length)return t.next=18,_index6.default.member.areaList();t.next=28;break;case 18:b=t.sent,x=[],y.map(function(e){var t=b.find(function(t){return e==t.id});t&&x.push(t)}),P=(0,_index7.pickBy)(x,{label:"label",id:"id",children:"children"}),this.addList=P,w=[],C=[],S=[],P.map(function(t,e){w.push(t.label),0===e&&t.children.map(function(t,e){C.push(t.label),0===e&&t.children.map(function(t){S.push(t.label)})})}),this.setState({areaList:[w,C,S]});case 28:return f.map(function(t){n.length<4&&n.push({attribute_id:t.attribute_id,attribute_value_id:"all"}),t.attribute_values.unshift({attribute_value_id:"all",attribute_value_name:"全部",isChooseParams:!0})}),k=(0,_index7.pickBy)(d,{img:"pics[0]",item_id:"item_id",title:"itemName",desc:"brief",price:function(t){return(t.price/100).toFixed(2)},market_price:function(t){return(t.market_price/100).toFixed(2)},is_fav:function(t){var e=t.item_id;return Boolean(v[e])}}),this.setState({list:[].concat(_toConsumableArray(this.state.list),_toConsumableArray(k)),showDrawer:!1,query:u}),this.firstStatus&&(this.setState({paramsList:f,selectParams:n}),this.firstStatus=!1),0===o.length&&this.setState({tagsList:m}),t.abrupt("return",{total:p});case 34:case"end":return t.stop()}},t,this)})),function(t){return e.apply(this,arguments)})},{key:"_createData",value:function(){var a=this;this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var t=this.__state,e=t.list,r=(t.listType,t.curFilterIdx,t.filterList,t.showBackToTop),i=t.scrollTop,n=t.page,s=(t.showDrawer,t.paramsList),o=(t.selectParams,t.multiIndex,t.areaList,t.tagsList),l=(t.curTagId,t.info,""+_index2.default.pxTransform(570)),u=(0,_index7.classNames)("goods-list__scroll",0<o.length&&"with-tag-bar"),c=s.map(function(t,e){return{$anonymousCallee__0:(t={$original:(0,_index.internal_get_original)(t)}).$original.attribute_values.map(function(t,e){return t={$original:(0,_index.internal_get_original)(t)},{$loopState__temp3:(0,_index7.classNames)("drawer-item__options__item",t.$original.isChooseParams?"drawer-item__options__checked":""),$original:t.$original}}),$original:t.$original}}),d=e.map(function(t,e){return t={$original:(0,_index.internal_get_original)(t)},a.anonymousFunc0Array[e]=function(){return a.handleClickItem(t.$original)},{$original:t.$original}});return Object.assign(this.__state,{anonymousState__temp:l,anonymousState__temp4:u,loopArray0:c,loopArray1:d,scrollTop:i,page:n,showBackToTop:r}),this.__state}},{key:"anonymousFunc0",value:function(t,e){this.anonymousFunc0Array[t]&&this.anonymousFunc0Array[t](e)}}]),l}(),_class2.properties={favs:{type:null,value:null}},_class2.$$events=["handleConfirm","handleTagChange","handleFilterChange","handleClickFilter","handleClickPicker","bindMultiPickerChange","bindMultiPickerColumnChange","handleClickParmas","handleClickSearchParams","handleScroll","nextPage","anonymousFunc0","scrollBackToTop"],_class=_temp2))||_class)||_class)||_class;exports.default=List,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(List,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _dec, _class, _class2, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../npm/@tarojs/redux/index.js");
+
+var _index4 = require("../../hocs/index.js");
+
+var _index5 = require("../../api/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
+
+var _index7 = require("../../utils/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var List = (_dec = (0, _index3.connect)(function (_ref) {
+  var member = _ref.member;
+  return {
+    favs: member.favs
+  };
+}), _dec(_class = (0, _index4.withPager)(_class = (0, _index4.withBackToTop)(_class = (_temp2 = _class2 = function (_BaseComponent) {
+  _inherits(List, _BaseComponent);
+
+  function List() {
+    var _ref2,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, List);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref2 = List.__proto__ || Object.getPrototypeOf(List)).call.apply(_ref2, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp4", "loopArray0", "loopArray1", "tagsList", "curTagId", "curFilterIdx", "filterList", "multiIndex", "areaList", "showDrawer", "paramsList", "scrollTop", "listType", "list", "page", "showBackToTop", "info", "query", "selectParams", "favs"], _this.handleTagChange = function (data) {
+      var current = data.current;
+
+
+      _this.resetPage();
+      _this.setState({
+        list: []
+      });
+
+      _this.setState({
+        curTagId: current
+      }, function () {
+        _this.nextPage();
+      });
+    }, _this.handleFilterChange = function (data) {
+      console.log(111);
+      _this.setState({
+        showDrawer: false
+      });
+      var current = data.current,
+          sort = data.sort;
+
+
+      var query = _extends({}, _this.state.query, {
+        goodsSort: current === 0 ? null : current === 1 ? 1 : sort > 0 ? 3 : 2
+      });
+
+      if (current !== _this.state.curFilterIdx || current === _this.state.curFilterIdx && query.goodsSort !== _this.state.query.goodsSort) {
+        _this.resetPage();
+        _this.setState({
+          list: []
+        });
+      }
+
+      _this.setState({
+        curFilterIdx: current,
+        query: query
+      }, function () {
+        _this.nextPage();
+      });
+    }, _this.handleListTypeChange = function () {
+      var listType = _this.state.listType === 'grid' ? 'default' : 'grid';
+
+      _this.setState({
+        listType: listType
+      });
+    }, _this.handleClickItem = function (item) {
+      var url = "/pages/item/espier-detail?id=" + item.item_id;
+      _index2.default.navigateTo({
+        url: url
+      });
+    }, _this.handleClickFilter = function () {
+      _this.setState({
+        showDrawer: true
+      });
+    }, _this.handleClickParmas = function (id, child_id) {
+      var _this$state = _this.state,
+          paramsList = _this$state.paramsList,
+          selectParams = _this$state.selectParams;
+
+      paramsList.map(function (item) {
+        if (item.attribute_id === id) {
+          item.attribute_values.map(function (v_item) {
+            if (v_item.attribute_value_id === child_id) {
+              v_item.isChooseParams = true;
+            } else {
+              v_item.isChooseParams = false;
+            }
+          });
+        }
+      });
+      selectParams.map(function (item) {
+        if (item.attribute_id === id) {
+          item.attribute_value_id = child_id;
+        }
+      });
+      _this.setState({
+        paramsList: paramsList,
+        selectParams: selectParams
+      });
+    }, _this.handleClickSearchParams = function (type) {
+      _this.setState({
+        showDrawer: false
+      });
+      if (type === 'reset') {
+        var _this$state2 = _this.state,
+            paramsList = _this$state2.paramsList,
+            selectParams = _this$state2.selectParams;
+
+        _this.state.paramsList.map(function (item) {
+          item.attribute_values.map(function (v_item) {
+            if (v_item.attribute_value_id === 'all') {
+              v_item.isChooseParams = true;
+            } else {
+              v_item.isChooseParams = false;
+            }
+          });
+        });
+        selectParams.map(function (item) {
+          item.attribute_value_id = 'all';
+        });
+        _this.setState({
+          paramsList: paramsList,
+          selectParams: selectParams
+        });
+      }
+
+      _this.resetPage();
+      _this.setState({
+        list: []
+      }, function () {
+        _this.nextPage();
+      });
+    }, _this.handleClickPicker = function () {
+      var arrProvice = [];
+      var arrCity = [];
+      var arrCounty = [];
+      if (_this.addList) {
+        _this.addList.map(function (item, index) {
+          arrProvice.push(item.label);
+          if (index === 0) {
+            item.children.map(function (c_item, c_index) {
+              arrCity.push(c_item.label);
+              if (c_index === 0) {
+                c_item.children.map(function (cny_item) {
+                  arrCounty.push(cny_item.label);
+                });
+              }
+            });
+          }
+        });
+        _this.setState({
+          showDrawer: false,
+          areaList: [arrProvice, arrCity, arrCounty],
+          multiIndex: [0, 0, 0]
+        });
+      }
+    }, _this.bindMultiPickerChange = function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
+        var info, regions;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                info = _this.state.info;
+
+                _this.addList.map(function (item, index) {
+                  console.log(item);
+                  if (index === e.detail.value[0]) {
+                    info.province = {
+                      label: item.label,
+                      id: item.id
+                    };
+                    item.children.map(function (s_item, sIndex) {
+                      if (sIndex === e.detail.value[1]) {
+                        info.city = {
+                          label: s_item.label,
+                          id: s_item.id
+                        };
+                        s_item.children.map(function (th_item, thIndex) {
+                          if (thIndex === e.detail.value[2]) {
+                            info.county = {
+                              label: th_item.label,
+                              id: th_item.id
+                            };
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+
+                regions = [info.province.id, info.city.id, info.county.id];
+
+
+                _this.setState({
+                  query: _extends({}, _this.state.query, {
+                    regions_id: regions
+                  })
+                }, function () {
+                  _this.resetPage();
+                  _this.setState({
+                    list: []
+                  }, function () {
+                    _this.nextPage();
+                  });
+                });
+                _this.setState({ info: info });
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, _this2);
+      }));
+
+      return function (_x) {
+        return _ref3.apply(this, arguments);
+      };
+    }(), _this.bindMultiPickerColumnChange = function (e) {
+      var _this$state3 = _this.state,
+          areaList = _this$state3.areaList,
+          multiIndex = _this$state3.multiIndex;
+
+      if (e.detail.column === 0) {
+        _this.setState({
+          multiIndex: [e.detail.value, 0, 0]
+        });
+        _this.addList.map(function (item, index) {
+          if (index === e.detail.value) {
+            var arrCity = [];
+            var arrCounty = [];
+            item.children.map(function (c_item, c_index) {
+              arrCity.push(c_item.label);
+              if (c_index === 0) {
+                c_item.children.map(function (cny_item) {
+                  arrCounty.push(cny_item.label);
+                });
+              }
+            });
+            areaList[1] = arrCity;
+            areaList[2] = arrCounty;
+            _this.setState({ areaList: areaList });
+          }
+        });
+      } else if (e.detail.column === 1) {
+        multiIndex[1] = e.detail.value;
+        multiIndex[2] = 0;
+        _this.setState({
+          multiIndex: multiIndex
+        }, function () {
+          _this.addList[multiIndex[0]].children.map(function (c_item, c_index) {
+            if (c_index === e.detail.value) {
+              var arrCounty = [];
+              c_item.children.map(function (cny_item) {
+                arrCounty.push(cny_item.label);
+              });
+              areaList[2] = arrCounty;
+              _this.setState({ areaList: areaList });
+            }
+          });
+        });
+      } else {
+        multiIndex[2] = e.detail.value;
+        _this.setState({
+          multiIndex: multiIndex
+        });
+      }
+    }, _this.handleConfirm = function (val) {
+      _this.setState({
+        query: _extends({}, _this.state.query, {
+          keywords: val
+        })
+      }, function () {
+        _this.resetPage();
+        _this.setState({
+          list: []
+        }, function () {
+          _this.nextPage();
+        });
+      });
+    }, _this.anonymousFunc0Array = [], _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(List, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(List.prototype.__proto__ || Object.getPrototypeOf(List.prototype), "_constructor", this).call(this, props);
+
+      this.state = _extends({}, this.state, {
+        curFilterIdx: 0,
+        curTagId: '',
+        filterList: [{ title: '综合' }, { title: '销量' }, { title: '价格', sort: -1 }],
+        query: null,
+        list: [],
+        tagsList: [],
+        paramsList: [],
+        listType: 'grid',
+        showDrawer: false,
+        selectParams: [],
+        info: {},
+        areaList: [],
+        multiIndex: []
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this3 = this;
+
+      this.firstStatus = true;
+      console.log(this.$router.params);
+      this.setState({
+        query: {
+          keywords: this.$router.params.keywords,
+          item_type: 'normal',
+          is_point: 'false',
+          approve_status: 'onsale,only_show',
+          category: this.$router.params.cat_id
+        }
+      }, function () {
+        _this3.nextPage();
+      });
+    }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(params) {
+        var page, pageSize, _state, selectParams, areaList, tagsList, curTagId, _Taro$getStorageSync, distributor_id, query, _ref5, list, total, _ref5$item_params_lis, item_params_list, _ref5$select_tags_lis, select_tags_list, _ref5$select_address_, select_address_list, favs, res, regions, addList, arrProvice, arrCity, arrCounty, nList;
+
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                page = params.page_no, pageSize = params.page_size;
+                _state = this.state, selectParams = _state.selectParams, areaList = _state.areaList, tagsList = _state.tagsList, curTagId = _state.curTagId;
+                _Taro$getStorageSync = _index2.default.getStorageSync('curStore'), distributor_id = _Taro$getStorageSync.distributor_id;
+                query = _extends({}, this.state.query, {
+                  item_params: selectParams,
+                  tag_id: curTagId,
+                  distributor_id: distributor_id,
+                  page: page,
+                  pageSize: pageSize
+                });
+                _context2.next = 6;
+                return _index6.default.item.search(query);
+
+              case 6:
+                _ref5 = _context2.sent;
+                list = _ref5.list;
+                total = _ref5.total_count;
+                _ref5$item_params_lis = _ref5.item_params_list;
+                item_params_list = _ref5$item_params_lis === undefined ? [] : _ref5$item_params_lis;
+                _ref5$select_tags_lis = _ref5.select_tags_list;
+                select_tags_list = _ref5$select_tags_lis === undefined ? [] : _ref5$select_tags_lis;
+                _ref5$select_address_ = _ref5.select_address_list;
+                select_address_list = _ref5$select_address_ === undefined ? [] : _ref5$select_address_;
+                favs = this.props.favs;
+
+                if (!(areaList.length === 0)) {
+                  _context2.next = 29;
+                  break;
+                }
+
+                _context2.next = 19;
+                return _index6.default.member.areaList();
+
+              case 19:
+                res = _context2.sent;
+                regions = [];
+
+                select_address_list.map(function (item) {
+                  var match = res.find(function (area) {
+                    return item == area.id;
+                  });
+                  if (match) {
+                    regions.push(match);
+                  }
+                });
+                addList = (0, _index7.pickBy)(regions, {
+                  label: 'label',
+                  id: 'id',
+                  children: 'children'
+                });
+
+                this.addList = addList;
+                arrProvice = [];
+                arrCity = [];
+                arrCounty = [];
+
+                addList.map(function (item, index) {
+                  arrProvice.push(item.label);
+                  if (index === 0) {
+                    item.children.map(function (c_item, c_index) {
+                      arrCity.push(c_item.label);
+                      if (c_index === 0) {
+                        c_item.children.map(function (cny_item) {
+                          arrCounty.push(cny_item.label);
+                        });
+                      }
+                    });
+                  }
+                });
+                this.setState({
+                  areaList: [arrProvice, arrCity, arrCounty]
+                });
+
+              case 29:
+
+                item_params_list.map(function (item) {
+                  if (selectParams.length < 4) {
+                    selectParams.push({
+                      attribute_id: item.attribute_id,
+                      attribute_value_id: 'all'
+                    });
+                  }
+                  item.attribute_values.unshift({ attribute_value_id: 'all', attribute_value_name: '全部', isChooseParams: true });
+                });
+
+                nList = (0, _index7.pickBy)(list, {
+                  img: 'pics[0]',
+                  item_id: 'item_id',
+                  title: 'itemName',
+                  desc: 'brief',
+                  price: function price(_ref6) {
+                    var _price = _ref6.price;
+                    return (_price / 100).toFixed(2);
+                  },
+                  market_price: function market_price(_ref7) {
+                    var _market_price = _ref7.market_price;
+                    return (_market_price / 100).toFixed(2);
+                  },
+                  is_fav: function is_fav(_ref8) {
+                    var item_id = _ref8.item_id;
+                    return Boolean(favs[item_id]);
+                  }
+                });
+
+
+                this.setState({
+                  list: [].concat(_toConsumableArray(this.state.list), _toConsumableArray(nList)),
+                  showDrawer: false,
+                  query: query
+                });
+
+                if (this.firstStatus) {
+                  this.setState({
+                    paramsList: item_params_list,
+                    selectParams: selectParams
+                  });
+                  this.firstStatus = false;
+                }
+
+                if (tagsList.length === 0) {
+                  this.setState({
+                    tagsList: select_tags_list
+                  });
+                }
+
+                return _context2.abrupt("return", {
+                  total: total
+                });
+
+              case 35:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function fetch(_x2) {
+        return _ref4.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+
+    // 选定开户地区
+
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      var _this4 = this;
+
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state2 = this.__state,
+          list = _state2.list,
+          listType = _state2.listType,
+          curFilterIdx = _state2.curFilterIdx,
+          filterList = _state2.filterList,
+          showBackToTop = _state2.showBackToTop,
+          scrollTop = _state2.scrollTop,
+          page = _state2.page,
+          showDrawer = _state2.showDrawer,
+          paramsList = _state2.paramsList,
+          selectParams = _state2.selectParams,
+          multiIndex = _state2.multiIndex,
+          areaList = _state2.areaList,
+          tagsList = _state2.tagsList,
+          curTagId = _state2.curTagId,
+          info = _state2.info;
+
+
+      var anonymousState__temp = "" + _index2.default.pxTransform(570);
+      var anonymousState__temp4 = (0, _index7.classNames)('goods-list__scroll', tagsList.length > 0 && 'with-tag-bar');
+      var loopArray0 = paramsList.map(function (item, index) {
+        item = {
+          $original: (0, _index.internal_get_original)(item)
+        };
+        var $anonymousCallee__0 = item.$original.attribute_values.map(function (v_item, v_index) {
+          v_item = {
+            $original: (0, _index.internal_get_original)(v_item)
+          };
+          var $loopState__temp3 = (0, _index7.classNames)('drawer-item__options__item', v_item.$original.isChooseParams ? 'drawer-item__options__checked' : '');
+          return {
+            $loopState__temp3: $loopState__temp3,
+            $original: v_item.$original
+          };
+        });
+        return {
+          $anonymousCallee__0: $anonymousCallee__0,
+          $original: item.$original
+        };
+      });
+      var loopArray1 = list.map(function (item, __index0) {
+        item = {
+          $original: (0, _index.internal_get_original)(item)
+        };
+
+        _this4.anonymousFunc0Array[__index0] = function () {
+          return _this4.handleClickItem(item.$original);
+        };
+
+        return {
+          $original: item.$original
+        };
+      });
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        anonymousState__temp4: anonymousState__temp4,
+        loopArray0: loopArray0,
+        loopArray1: loopArray1,
+        scrollTop: scrollTop,
+        page: page,
+        showBackToTop: showBackToTop
+      });
+      return this.__state;
+    }
+  }, {
+    key: "anonymousFunc0",
+    value: function anonymousFunc0(__index0, e) {
+      ;
+      this.anonymousFunc0Array[__index0] && this.anonymousFunc0Array[__index0](e);
+    }
+  }]);
+
+  return List;
+}(_index.Component), _class2.properties = {
+  "favs": {
+    "type": null,
+    "value": null
+  }
+}, _class2.$$events = ["handleConfirm", "handleTagChange", "handleFilterChange", "handleClickFilter", "handleClickPicker", "bindMultiPickerChange", "bindMultiPickerColumnChange", "handleClickParmas", "handleClickSearchParams", "handleScroll", "nextPage", "anonymousFunc0", "scrollBackToTop"], _temp2)) || _class) || _class) || _class);
+exports.default = List;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(List, true));

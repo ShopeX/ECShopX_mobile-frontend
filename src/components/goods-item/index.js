@@ -10,6 +10,8 @@ export default class GoodsItem extends Component {
   static defaultProps = {
     onClick: () => {},
     showMarketPrice: true,
+    showFav: true,
+    showSku: false,
     noCurSymbol: false,
     type: 'item'
   }
@@ -18,6 +20,8 @@ export default class GoodsItem extends Component {
     addGlobalClass: true
   }
 
+  static externalClasses = ['classes']
+
   handleFavClick = async () => {
     const { item_id, is_fav } = this.props.info
     console.log(is_fav, item_id)
@@ -25,7 +29,7 @@ export default class GoodsItem extends Component {
   }
 
   render () {
-    const { info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw, type } = this.props
+    const { info, showMarketPrice, showFav, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw, type } = this.props
     if (!info) {
       return null
     }
@@ -34,16 +38,18 @@ export default class GoodsItem extends Component {
     const img = info.img || info.image_default_id
 
     return (
-      <View className={classNames('goods-item', className)}>
+      <View className={classNames('goods-item', 'classes')}>
         <View className='goods-item__hd'>
-          {this.props.children}
+          {this.props.renderCheckbox}
         </View>
         <View
           className='goods-item__bd'
           onClick={onClick}
         >
-          <View className='goods-item__img-wrap'>
-            <Image className='goods-item__img'
+          <View
+            className='goods-item__img-wrap'>
+            <Image
+              className='goods-item__img'
               mode='aspectFix'
               src={img}
             />
@@ -52,6 +58,7 @@ export default class GoodsItem extends Component {
             <View>
               <Text className='goods-item__title'>{info.title}</Text>
               <Text className='goods-item__desc'>{info.desc}</Text>
+              {this.props.renderSpec}
             </View>
             <View className='goods-item__extra'>
               <View className='goods-item__price'>
@@ -59,20 +66,23 @@ export default class GoodsItem extends Component {
                 <Text>{info.price}</Text>
                 <Text className='goods-item__price-market'>{info.market_price}</Text>
               </View>
-              <View className='goods-item__actions'>
-                {type === 'item' && (
-                  <View
-                    className={`in-icon ${info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav'}`}
-                    onClick={this.handleFavClick}
-                  />
-                )}
-                {type === 'recommend' && (
-                  <View
-                    className='in-icon in-icon-like'
-                    onClick={this.handleLikeClick}
-                  ><Text>666</Text></View>
-                )}
-              </View>
+              {
+                 showFav &&
+                   (<View className='goods-item__actions'>
+                     {(type === 'item') && (
+                       <View
+                         className={`in-icon ${info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav'}`}
+                         onClick={this.handleFavClick}
+                       />
+                     )}
+                     {type === 'recommend' && (
+                       <View
+                         className='in-icon in-icon-like'
+                         onClick={this.handleLikeClick}
+                       ><Text>666</Text></View>
+                     )}
+                   </View>)
+              }
             </View>
           </View>
         </View>

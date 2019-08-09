@@ -1,0 +1,22 @@
+@import "../../style/imports";
+
+$submit-height: 50px !default;
+
+.page-package-goods {
+  .package-goods{
+    &__scroll {
+      box-sizing: border-box;
+      @include page-scroll(0, $submit-height);
+    }
+    &__list {
+
+    }
+    &__item {
+      margin-bottom: 30px;
+      background: #fff;
+    }
+  }
+  .package-add-cart {
+    display: block;
+  }
+}

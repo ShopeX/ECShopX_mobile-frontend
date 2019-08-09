@@ -68,6 +68,7 @@ export default class GoodsBuyToolbar extends Component {
           : (<View className='goods-buy-toolbar__btns'>
               {type === 'normal' && (
                 <FormIdCollector
+                  style='flex: 1'
                   sync
                   onClick={onClickAddCart}
                 >
@@ -77,6 +78,7 @@ export default class GoodsBuyToolbar extends Component {
                 </FormIdCollector>
               )}
               {!isDrug && <FormIdCollector
+                  style='flex: 1'
                   sync
                   onClick={onClickFastBuy}
                 >

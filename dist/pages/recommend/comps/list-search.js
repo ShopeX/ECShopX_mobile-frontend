@@ -1,1 +1,116 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,n,r)}if("value"in o)return o.value;var s=o.get;return void 0!==s?s.call(r):void 0},_index=require("../../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var ListSearch=(_temp2=_class=function(e){function s(){var e,t,n;_classCallCheck(this,s);for(var r=arguments.length,o=Array(r),a=0;a<r;a++)o[a]=arguments[a];return(t=n=_possibleConstructorReturn(this,(e=s.__proto__||Object.getPrototypeOf(s)).call.apply(e,[this].concat(o)))).$usedState=["searchValue","isShowAction","historyList","__fn_onConfirm"],n.handleFocusSearchHistory=function(e){n.setState({showSearchDailog:e,isShowAction:!0,searchValue:" "}),_index2.default.getStorage({key:"searchHistory"}).then(function(e){var t=e.data.split(",");n.setState({historyList:t})}).catch(function(){})},n.handleChangeSearch=function(e){},n.handleBlur=function(e){var t=e.detail.value;t=t.replace(/\s+/g,""),n.setState({searchValue:t})},n.handleConfirm=function(){setTimeout(function(){n.state.searchValue&&n.__triggerPropsFn("onConfirm",[null].concat([n.state.searchValue]))},300)},n.handleClear=function(){n.__triggerPropsFn("onConfirm",[null].concat([""]))},n.handleClickCancel=function(e){n.setState({showSearchDailog:e,searchValue:"",isShowAction:!1})},n.$$refs=[],_possibleConstructorReturn(n,t)}return _inherits(s,_index.Component),_createClass(s,[{key:"_constructor",value:function(e){_get(s.prototype.__proto__||Object.getPrototypeOf(s.prototype),"_constructor",this).call(this,e),this.state={searchValue:"",historyList:[],isShowAction:!1}}},{key:"componentDidMount",value:function(){}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state;e.isShowAction,e.searchValue;return Object.assign(this.__state,{}),this.__state}}]),s}(),_class.properties={__fn_onConfirm:{type:null,value:null}},_class.$$events=["handleFocusSearchHistory","handleClear","handleBlur","handleChangeSearch","handleConfirm","handleClickCancel"],_class.defaultProps={isOpened:!1},_class.options={addGlobalClass:!0},_temp2);exports.default=ListSearch,Component(require("../../../npm/@tarojs/taro-weapp/index.js").default.createComponent(ListSearch));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ListSearch = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(ListSearch, _BaseComponent);
+
+  function ListSearch() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, ListSearch);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ListSearch.__proto__ || Object.getPrototypeOf(ListSearch)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["searchValue", "isShowAction", "historyList", "__fn_onConfirm"], _this.handleFocusSearchHistory = function (isOpened) {
+      _this.setState({
+        showSearchDailog: isOpened,
+        isShowAction: true,
+        searchValue: ' '
+      });
+      _index2.default.getStorage({ key: 'searchHistory' }).then(function (res) {
+        var stringArr = res.data.split(',');
+        _this.setState({ historyList: stringArr });
+      }).catch(function () {});
+    }, _this.handleChangeSearch = function (value) {}, _this.handleBlur = function (e) {
+      var text = e.detail.value;
+      text = text.replace(/\s+/g, '');
+      _this.setState({
+        searchValue: text
+      });
+    }, _this.handleConfirm = function () {
+      setTimeout(function () {
+        if (_this.state.searchValue) {
+          _this.__triggerPropsFn("onConfirm", [null].concat([_this.state.searchValue]));
+        }
+      }, 300);
+    }, _this.handleClear = function () {
+      _this.__triggerPropsFn("onConfirm", [null].concat(['']));
+    }, _this.handleClickCancel = function (isOpened) {
+      _this.setState({
+        showSearchDailog: isOpened,
+        searchValue: '',
+        isShowAction: false
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(ListSearch, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(ListSearch.prototype.__proto__ || Object.getPrototypeOf(ListSearch.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        searchValue: '',
+        historyList: [],
+        isShowAction: false
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {}
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          isShowAction = _state.isShowAction,
+          searchValue = _state.searchValue;
+
+      Object.assign(this.__state, {});
+      return this.__state;
+    }
+  }]);
+
+  return ListSearch;
+}(_index.Component), _class.properties = {
+  "__fn_onConfirm": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["handleFocusSearchHistory", "handleClear", "handleBlur", "handleChangeSearch", "handleConfirm", "handleClickCancel"], _class.defaultProps = {
+  isOpened: false
+}, _class.options = {
+  addGlobalClass: true
+}, _temp2);
+exports.default = ListSearch;
+
+Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(ListSearch));

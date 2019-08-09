@@ -12,6 +12,15 @@
                     </swiper-item>
                 </swiper>
             </view>
+            <block wx:if="{{!info.nospec && sixSpecImgsDict.length}}">
+                <view class="goods-sec-specs">
+                    <scroll-view class="specs-scroller" scroll-x="{{true}}">
+                        <view class="specs-imgs"><text>{{sixSpecImgsDict.length}}色可选</text>
+                            <image class="{{item.$loopState__temp2}}" src="{{item.$original.url}}" wx:key="$original.specValueId" mode="aspectFill" bindtap="handleSepcImgClick" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="index" data-e-tap-so="this" data-e-tap-a-a="{{index}}"></image>
+                        </view>
+                    </scroll-view>
+                </view>
+            </block>
             <block wx:if="{{timer}}">
                 <view class="goods-timer">
                     <view class="goods-timer__hd">
@@ -40,7 +49,7 @@
             </view>
             <block wx:if="{{isPromoter}}">
                 <view class="goods-income">
-                    <view class="sp-icon sp-icon-jifen"></view><text>预计收益：{{anonymousState__temp}}</text>
+                    <view class="sp-icon sp-icon-jifen"></view><text>预计收益：{{anonymousState__temp3}}</text>
                 </view>
             </block>
             <block wx:if="{{promotion_activity && promotion_activity.length > 0}}">
@@ -60,23 +69,14 @@
                     </view>
                 </view>
             </block>
-            <block wx:if="{{info.nospec !== true}}">
-                <view class="goods-sec-specs">
-                    <view class="specs-title"><text>规格</text>
-                        <block wx:if="{{curSku}}"><text class="specs-selected">已选 {{curSku.propsText}}</text>
-                        </block>
-                    </view>
-                    <scroll-view class="specs-scroller" scroll-x="{{true}}">
-                        <view class="specs-imgs">
-                            <image class="specs-imgs__item" src="{{specValueId.url}}" wx:key="$original" mode="aspectFill" bindtap="handleBuyBarClick" wx:for="{{loopArray0}}" wx:for-item="specValueId" wx:for-index="_anonIdx3" data-e-tap-so="this" data-e-tap-a-a="{{buyPanelType}}"></image>
-                            <block wx:if="{{isGreaterSix}}"><text class="specs-imgs__item specs-text__item" mode="aspectFill" bindtap="handleBuyBarClick" data-e-tap-so="this" data-e-tap-a-a="{{buyPanelType}}">更多</text>
-                            </block>
-                        </view>
-                    </scroll-view>
-                </view>
+            <block wx:if="{{promotion_package}}">
+                <sp-cell className="goods-sec-specs" __triggerObserer="{{ _triggerObserer }}" isLink="{{true}}" title="优惠组合" bindonclick="handlePackageClick" value="{{anonymousState__temp4}}" __fn_onClick="{{true}}"></sp-cell>
+            </block>
+            <block wx:if="{{!info.nospec}}">
+                <sp-cell className="goods-sec-specs" __triggerObserer="{{ _triggerObserer }}" isLink="{{true}}" title="规格" bindonclick="handleBuyBarClick" value="{{curSku ? curSku.propsText : '请选择'}}" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{buyPanelType}}"></sp-cell>
             </block>
             <block wx:if="{{store}}">
-                <view class="store-info">
+                <view class="goods-sec-specs store-info">
                     <view class="view-flex view-flex-middle">
                         <image class="store-brand" src="{{store.imgUrl || 'https://fakeimg.pl/120x120/EFEFEF/CCC/?text=brand&font=lobster'}}" mode="aspectFit"></image>
                         <view>
@@ -94,7 +94,7 @@
                 </view>
             </block>
             <block>
-                <block wx:if="{{anonymousState__temp3}}">
+                <block wx:if="{{anonymousState__temp6}}">
                     <view class="wgts-wrap__cont">
                         <view class="wgt-wrap" wx:key="idx" wx:for="{{desc}}" wx:for-item="item" wx:for-index="idx">
                             <block wx:if="{{item.name === 'film'}}">
@@ -123,7 +123,7 @@
         <float-menus __triggerObserer="{{ _triggerObserer }}">
             <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="fenxiang1" openType="share" bindonclick="handleShare" __fn_onClick="{{true}}"></float-menu-item>
             <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="kefu" openType="contact" sessionFrom="{{sessionFrom}}"></float-menu-item>
-            <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="back-top" hide="{{anonymousState__temp2}}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></float-menu-item>
+            <float-menu-item iconPrefixClass="in-icon" __triggerObserer="{{ _triggerObserer }}" icon="back-top" hide="{{anonymousState__temp5}}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></float-menu-item>
         </float-menus>
         <block>
             <block wx:if="{{info.distributor_sale_status && hasStock && startSecKill}}">

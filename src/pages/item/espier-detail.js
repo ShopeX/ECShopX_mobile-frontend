@@ -2,10 +2,10 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image, Video, Navigator } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
-import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel } from '@/components'
+import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
-import { log, calcTimer, isArray } from '@/utils'
+import { log, calcTimer, isArray, pickBy, classNames } from '@/utils'
 import S from '@/spx'
 import GoodsBuyToolbar from './comps/buy-toolbar'
 import ItemImg from './comps/item-img'
@@ -45,10 +45,11 @@ export default class Detail extends Component {
       showBuyPanel: false,
       buyPanelType: null,
       specImgsDict: {},
-      isGreaterSix: false,
+      currentImgs: -1,
       sixSpecImgsDict: {},
       curSku: null,
       promotion_activity: [],
+      promotion_package: [],
       screenWidth: 0,
       sessionFrom: ''
     }
@@ -115,7 +116,11 @@ export default class Detail extends Component {
   async fetch () {
     const { id } = this.$router.params
     const info = await api.item.detail(id)
-
+    let promotion_package = null
+    const { list } = await api.item.packageList({item_id: id})
+    if (list.length) {
+      promotion_package = list.length
+    }
     const { intro: desc, promotion_activity: promotion_activity } = info
     let marketing = 'normal'
     let timer = null
@@ -153,18 +158,10 @@ export default class Detail extends Component {
 
     info.is_fav = Boolean(this.props.favs[info.item_id])
     const specImgsDict = this.resolveSpecImgs(info.item_spec_desc)
-    let spectImg = this.resolveSpecImgs(info.item_spec_desc)
-
-    let sixSpecImgsDict = {}
-    Object.keys(spectImg).map((item, index) => {
-      if(index > 6) {
-        this.setState({
-          isGreaterSix: true
-        })
-      }
-      if(index < 6) {
-        sixSpecImgsDict[item] = spectImg[item]
-      }
+    const sixSpecImgsDict = pickBy(info.spec_images, {
+      url: 'spec_image_url',
+      images: 'item_image_url',
+      specValueId: 'spec_value_id'
     })
 
     sessionFrom += '{'
@@ -184,6 +181,7 @@ export default class Detail extends Component {
       specImgsDict,
       sixSpecImgsDict,
       promotion_activity,
+      promotion_package,
       sessionFrom
     }, () => {
       this.fetchCartCount()
@@ -246,6 +244,28 @@ export default class Detail extends Component {
   handleSkuChange = (curSku) => {
     this.setState({
       curSku
+    })
+  }
+
+  handleSepcImgClick = (index) => {
+    const { sixSpecImgsDict, info } = this.state
+    this.setState({
+      currentImgs: index
+    })
+    if (sixSpecImgsDict[index].images.length) {
+      info.pics = sixSpecImgsDict[index].images
+      this.setState({
+        info,
+        curImgIdx: 0
+      })
+    }
+  }
+
+  handlePackageClick = () => {
+    const { info } = this.state
+
+    Taro.navigateTo({
+      url: `/pages/item/package-list?id=${info.item_id}`
     })
   }
 
@@ -320,7 +340,9 @@ export default class Detail extends Component {
       showBackToTop,
       curSku,
       promotion_activity,
-      sessionFrom
+      promotion_package,
+      sessionFrom,
+      currentImgs
     } = this.state
     const { marketing, timer, isPromoter, startSecKill, hasStock, showBuyPanel, buyPanelType } = this.state
 
@@ -383,6 +405,34 @@ export default class Detail extends Component {
               info={imgInfo}
             />*/}
           </View>
+
+          {
+            !info.nospec && sixSpecImgsDict.length
+              ? <View className='goods-sec-specs'>
+                <ScrollView
+                  className='specs-scroller'
+                  scrollX
+                >
+                  <View className='specs-imgs'>
+                    <Text>{sixSpecImgsDict.length}色可选</Text>
+                    {
+                      sixSpecImgsDict.map((item, index) => {
+                        return (
+                          <Image
+                            className={classNames('specs-imgs__item', currentImgs === index && 'specs-imgs__item-active')}
+                            src={item.url}
+                            key={item.specValueId}
+                            mode='aspectFill'
+                            onClick={this.handleSepcImgClick.bind(this, index)}
+                          />
+                        )
+                      })
+                    }
+                  </View>
+                </ScrollView>
+              </View>
+              : null
+          }
 
           {timer && (
             <View className='goods-timer'>
@@ -449,7 +499,6 @@ export default class Detail extends Component {
             </View>
           )}
 
-
           {
             promotion_activity && promotion_activity.length > 0
               ? <View className='goods-sec-specs'>
@@ -492,52 +541,31 @@ export default class Detail extends Component {
               : null
           }
 
+          {
+            promotion_package &&
+              <SpCell
+                className='goods-sec-specs'
+                isLink
+                title='优惠组合'
+                onClick={this.handlePackageClick}
+                value={`共${promotion_package}种组合随意搭配`}
+              />
+          }
 
           {
-            info.nospec !== true
-              ? <View className='goods-sec-specs'>
-                <View className='specs-title'>
-                  <Text>规格</Text>
-                  {curSku && (
-                    <Text className='specs-selected'>已选 {curSku.propsText}</Text>
-                  )}
-                </View>
-                <ScrollView
-                  className='specs-scroller'
-                  scrollX
-                >
-                  <View className='specs-imgs'>
-                    {Object.keys(sixSpecImgsDict).map((specValueId) => {
-                      const url = sixSpecImgsDict[specValueId]
-
-                      return (
-                        <Image
-                          class='specs-imgs__item'
-                          src={url}
-                          key={specValueId}
-                          mode='aspectFill'
-                          onClick={this.handleBuyBarClick.bind(this, buyPanelType)}
-                        />
-                      )
-                    })}
-                    {
-                      isGreaterSix ?
-                        <Text
-                          class='specs-imgs__item specs-text__item'
-                          mode='aspectFill'
-                          onClick={this.handleBuyBarClick.bind(this, buyPanelType)}
-                        >更多</Text>
-                      : null
-                    }
-                  </View>
-                </ScrollView>
-              </View>
-              : null
+            !info.nospec &&
+              <SpCell
+                className='goods-sec-specs'
+                isLink
+                title='规格'
+                onClick={this.handleBuyBarClick.bind(this, buyPanelType)}
+                value={curSku ? curSku.propsText : '请选择'}
+              />
           }
 
           {
             store
-            && <View className='store-info'>
+            && <View className='goods-sec-specs store-info'>
                 <View className="view-flex view-flex-middle">
                   <Image className="store-brand" src={store.imgUrl || 'https://fakeimg.pl/120x120/EFEFEF/CCC/?text=brand&font=lobster'} mode="aspectFit" />
                   <View>

@@ -4,27 +4,30 @@
     </block>
     <view class="{{anonymousState__temp}}" wx:else>
         <view class="goods-item__hd">
-            <slot></slot>
+            <slot name="checkbox"></slot>
         </view>
-        <view class="goods-item__bd" bindtap="funPrivatelCHva">
+        <view class="goods-item__bd" bindtap="funPrivateDkfvm">
             <view class="goods-item__img-wrap">
                 <image class="goods-item__img" mode="aspectFix" src="{{img}}"></image>
             </view>
             <view class="goods-item__cont">
                 <view><text class="goods-item__title">{{info.title}}</text><text class="goods-item__desc">{{info.desc}}</text>
+                    <slot name="spec"></slot>
                 </view>
                 <view class="goods-item__extra">
                     <view class="goods-item__price"><text class="goods-item__cur">¥</text><text>{{info.price}}</text><text class="goods-item__price-market">{{info.market_price}}</text>
                     </view>
-                    <view class="goods-item__actions">
-                        <block wx:if="{{type === 'item'}}">
-                            <view class="{{'in-icon ' + (info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav')}}" bindtap="handleFavClick"></view>
-                        </block>
-                        <block wx:if="{{type === 'recommend'}}">
-                            <view class="in-icon in-icon-like" bindtap="handleLikeClick"><text>666</text>
-                            </view>
-                        </block>
-                    </view>
+                    <block wx:if="{{showFav}}">
+                        <view class="goods-item__actions">
+                            <block wx:if="{{type === 'item'}}">
+                                <view class="{{'in-icon ' + (info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav')}}" bindtap="handleFavClick"></view>
+                            </block>
+                            <block wx:if="{{type === 'recommend'}}">
+                                <view class="in-icon in-icon-like" bindtap="handleLikeClick"><text>666</text>
+                                </view>
+                            </block>
+                        </view>
+                    </block>
                 </view>
             </view>
         </view>

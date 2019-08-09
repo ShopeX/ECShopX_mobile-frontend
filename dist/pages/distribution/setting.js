@@ -1,1 +1,146 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var i=Object.getPrototypeOf(t);return null===i?void 0:e(i,n,r)}if("value"in o)return o.value;var a=o.get;return void 0!==a?a.call(r):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../api/index.js"),_index4=_interopRequireDefault(_index3);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(i,a){return function t(e,n){try{var r=s[e](n),o=r.value}catch(e){return void a(e)}if(!r.done)return Promise.resolve(o).then(function(e){t("next",e)},function(e){t("throw",e)});i(o)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var DistributionSetting=(_temp2=_class=function(e){function a(){var e,t,r;_classCallCheck(this,a);for(var n=arguments.length,o=Array(n),i=0;i<n;i++)o[i]=arguments[i];return(t=r=_possibleConstructorReturn(this,(e=a.__proto__||Object.getPrototypeOf(a)).call.apply(e,[this].concat(o)))).$usedState=["anonymousState__temp","info","shop_name","isEdit"],r.handleChange=function(e){r.setState({shop_name:e})},r.handleClick=function(){var e=r.state,t=e.isEdit,n=e.shop_name;r.setState({isEdit:!t}),t&&_index4.default.distribution.update({shop_name:n})},r.$$refs=[],_possibleConstructorReturn(r,t)}var t;return _inherits(a,_index.Component),_createClass(a,[{key:"_constructor",value:function(e){_get(a.prototype.__proto__||Object.getPrototypeOf(a.prototype),"_constructor",this).call(this,e),this.state={info:{},shop_name:"",isEdit:!1}}},{key:"componentDidMount",value:function(){this.fetch()}},{key:"fetch",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n,r,o,i,a,s;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,_index4.default.distribution.info();case 2:t=e.sent,n=t.parent_info,r=void 0===n?null:n,o=t.bind_date,i=t.mobile,a=t.shop_name,s=void 0===a?"":a,this.setState({info:{parent_info:r,bind_date:o,mobile:i},shop_name:s});case 5:case"end":return e.stop()}},e,this)})),function(){return t.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state,t=(e.info,e.shop_name,!e.isEdit);return Object.assign(this.__state,{anonymousState__temp:t}),this.__state}}]),a}(),_class.properties={},_class.$$events=["handleChange","handleClick"],_temp2);exports.default=DistributionSetting,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(DistributionSetting,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../api/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DistributionSetting = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(DistributionSetting, _BaseComponent);
+
+  function DistributionSetting() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, DistributionSetting);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DistributionSetting.__proto__ || Object.getPrototypeOf(DistributionSetting)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "shop_name", "isEdit"], _this.handleChange = function (val) {
+      _this.setState({
+        shop_name: val
+      });
+    }, _this.handleClick = function () {
+      var _this$state = _this.state,
+          isEdit = _this$state.isEdit,
+          shop_name = _this$state.shop_name;
+
+      _this.setState({
+        isEdit: !isEdit
+      });
+      if (isEdit) {
+        _index4.default.distribution.update({ shop_name: shop_name });
+      }
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(DistributionSetting, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(DistributionSetting.prototype.__proto__ || Object.getPrototypeOf(DistributionSetting.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        info: {},
+        shop_name: '',
+        isEdit: false
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.fetch();
+    }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var res, _res$parent_info, parent_info, bind_date, mobile, _res$shop_name, shop_name;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _index4.default.distribution.info();
+
+              case 2:
+                res = _context.sent;
+                _res$parent_info = res.parent_info, parent_info = _res$parent_info === undefined ? null : _res$parent_info, bind_date = res.bind_date, mobile = res.mobile, _res$shop_name = res.shop_name, shop_name = _res$shop_name === undefined ? '' : _res$shop_name;
+
+
+                this.setState({
+                  info: {
+                    parent_info: parent_info,
+                    bind_date: bind_date,
+                    mobile: mobile
+                  },
+                  shop_name: shop_name
+                });
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetch() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          info = _state.info,
+          shop_name = _state.shop_name,
+          isEdit = _state.isEdit;
+
+
+      var anonymousState__temp = !isEdit;
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp
+      });
+      return this.__state;
+    }
+  }]);
+
+  return DistributionSetting;
+}(_index.Component), _class.properties = {}, _class.$$events = ["handleChange", "handleClick"], _temp2);
+exports.default = DistributionSetting;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(DistributionSetting, true));

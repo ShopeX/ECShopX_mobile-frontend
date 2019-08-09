@@ -61,10 +61,12 @@ export default class List extends Component {
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, areaList, tagsList, curTagId } = this.state
+    const { distributor_id } = Taro.getStorageSync('curStore')
     const query = {
       ...this.state.query,
       item_params: selectParams,
       tag_id: curTagId,
+      distributor_id,
       page,
       pageSize
     }

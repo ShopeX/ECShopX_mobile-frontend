@@ -1,1 +1,354 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _dec,_dec2,_class,_class2,_temp2,_slicedToArray=function(e,r){if(Array.isArray(e))return e;if(Symbol.iterator in Object(e))return function(e,r){var t=[],n=!0,a=!1,o=void 0;try{for(var i,s=e[Symbol.iterator]();!(n=(i=s.next()).done)&&(t.push(i.value),!r||t.length!==r);n=!0);}catch(e){a=!0,o=e}finally{try{!n&&s.return&&s.return()}finally{if(a)throw o}}return t}(e,r);throw new TypeError("Invalid attempt to destructure non-iterable instance")},_createClass=function(){function n(e,r){for(var t=0;t<r.length;t++){var n=r[t];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,r,t){return r&&n(e.prototype,r),t&&n(e,t),e}}(),_get=function e(r,t,n){null===r&&(r=Function.prototype);var a=Object.getOwnPropertyDescriptor(r,t);if(void 0===a){var o=Object.getPrototypeOf(r);return null===o?void 0:e(o,t,n)}if("value"in a)return a.value;var i=a.get;return void 0!==i?i.call(n):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../npm/@tarojs/redux/index.js"),_index4=require("../../hocs/index.js"),_index5=require("../../api/index.js"),_index6=_interopRequireDefault(_index5),_index7=require("../../spx/index.js"),_index8=_interopRequireDefault(_index7);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(o,i){return function r(e,t){try{var n=s[e](t),a=n.value}catch(e){return void i(e)}if(!n.done)return Promise.resolve(a).then(function(e){r("next",e)},function(e){r("throw",e)});o(a)}("next")})}}function _classCallCheck(e,r){if(!(e instanceof r))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,r){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!r||"object"!=typeof r&&"function"!=typeof r?e:r}function _inherits(e,r){if("function"!=typeof r&&null!==r)throw new TypeError("Super expression must either be null or a function, not "+typeof r);e.prototype=Object.create(r&&r.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),r&&(Object.setPrototypeOf?Object.setPrototypeOf(e,r):e.__proto__=r)}var MemberIndex=(_dec=(0,_index3.connect)(function(){return{}},function(r){return{onFetchFavs:function(e){return r({type:"member/favs",payload:e})}}}))(_class=(_dec2=(0,_index4.withLogin)())((_temp2=_class2=function(e){function o(){var e,r,u,c=this;_classCallCheck(this,o);for(var t=arguments.length,n=Array(t),a=0;a<t;a++)n[a]=arguments[a];return(r=u=_possibleConstructorReturn(this,(e=o.__proto__||Object.getPrototypeOf(o)).call.apply(e,[this].concat(n)))).$usedState=["info","orderCount","isOpenPopularize","ordersCount","vipgrade","gradeInfo","__fn_onFetchFavs"],u.handleClickRecommend=_asyncToGenerator(regeneratorRuntime.mark(function e(){var r;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if((r=u.state.info).is_open_popularize){e.next=4;break}return _index8.default.toast("未开启推广"),e.abrupt("return");case 4:if(r.is_open_popularize&&!r.is_promoter)return e.next=7,_index6.default.member.promoter();e.next=7;break;case 7:_index2.default.navigateTo({url:"/pages/member/recommend"});case 8:case"end":return e.stop()}},e,c)})),u.handleClickGiftApp=function(){_index2.default.navigateToMiniProgram({appId:"wx2fb97cb696f68d22",path:"/pages/index/index"})},u.handleClickPhone=function(){_index2.default.makePhoneCall({phoneNumber:"021-61255625"})},u.beDistributor=_asyncToGenerator(regeneratorRuntime.mark(function e(){var r,t,n,a,o,i,s;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(r=u.state,r.isOpenPopularize,t=r.info,n=t.username,a=t.avatar,t.isPromoter)return _index2.default.navigateTo({url:"/pages/distribution/index"}),e.abrupt("return");e.next=5;break;case 5:return e.next=7,_index2.default.showModal({title:"邀请推广",content:"确定申请成为推广员？",showCancel:!0,cancel:"取消",confirmText:"确认",confirmColor:"#0b4137"});case 7:if(o=e.sent,o.confirm){e.next=11;break}return e.abrupt("return");case 11:return e.next=13,_index6.default.distribution.become();case 13:i=e.sent,i.status&&(_index2.default.showModal({title:"恭喜",content:"已成为推广员",showCancel:!1,confirmText:"好"}),s={username:n,avatar:a,isPromoter:!0},console.log(s),_index2.default.setStorageSync("userinfo",s),u.setState({info:s}));case 16:case"end":return e.stop()}},e,c)})),u.viewOrder=function(e){_index2.default.navigateTo({url:"/pages/trade/list?status="+e})},u.viewAftersales=function(){_index2.default.navigateTo({url:"/pages/trade/after-sale"})},u.$$refs=[],_possibleConstructorReturn(u,r)}var r;return _inherits(o,_index.Component),_createClass(o,[{key:"_constructor",value:function(e){_get(o.prototype.__proto__||Object.getPrototypeOf(o.prototype),"_constructor",this).call(this,e),this.state={ordersCount:{normal_payed_daifahuo:"",normal_payed_daishouhuo:""},info:{deposit:"",point:"",coupon:"",luckdraw:"",username:"",user_card_code:""},vipgrade:{grade_name:"",end_date:"",is_vip:"",vip_type:"",is_open:"",background_pic_url:""},gradeInfo:{user_card_code:"",grade_name:"",background_pic_url:""},orderCount:"",isOpenPopularize:!1}}},{key:"navigateTo",value:function(e){_index2.default.navigateTo({url:e})}},{key:"componentDidMount",value:function(){this.fetch()}},{key:"fetch",value:(r=_asyncToGenerator(regeneratorRuntime.mark(function e(){var r,t,n,a,o,i;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return r=null,_index2.default.getStorageSync("userinfo")&&(r=_index2.default.getStorageSync("userinfo"),this.setState({info:{username:r.username,avatar:r.avatar,isPromoter:r.isPromoter}})),e.next=4,Promise.all([_index6.default.member.memberInfo(),_index6.default.member.favsList()]);case 4:t=e.sent,n=_slicedToArray(t,2),a=n[0],o=n[1].list,this.__triggerPropsFn("onFetchFavs",[null].concat([o])),this.setState({isOpenPopularize:a.is_open_popularize}),i={username:a.memberInfo.username,avatar:a.memberInfo.avatar,userId:a.memberInfo.user_id,isPromoter:a.is_promoter},r&&r.username===i.username&&r.avatar===i.avatar||(_index2.default.setStorageSync("userinfo",i),this.setState({info:{username:a.memberInfo.username,avatar:a.memberInfo.avatar,isPromoter:a.is_promoter}})),this.setState({vipgrade:{grade_name:a.vipgrade.grade_name,end_date:a.vipgrade.end_time,is_vip:a.vipgrade.is_vip,vip_type:a.vipgrade.vip_type,is_open:a.vipgrade.is_open,background_pic_url:a.vipgrade.background_pic_url},gradeInfo:{user_card_code:a.memberInfo.user_card_code,grade_name:a.memberInfo.gradeInfo.grade_name,background_pic_url:a.memberInfo.gradeInfo.background_pic_url}});case 13:case"end":return e.stop()}},e,this)})),function(){return r.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state;e.ordersCount;return e.info.avatar&&!0,Object.assign(this.__state,{}),this.__state}}]),o}(),_class2.properties={__fn_onFetchFavs:{type:null,value:null}},_class2.$$events=["viewOrder","viewAftersales","beDistributor"],_class=_temp2))||_class)||_class;exports.default=MemberIndex,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(MemberIndex,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _dec, _dec2, _class, _class2, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../npm/@tarojs/redux/index.js");
+
+var _index4 = require("../../hocs/index.js");
+
+var _index5 = require("../../api/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
+
+var _index7 = require("../../spx/index.js");
+
+var _index8 = _interopRequireDefault(_index7);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MemberIndex = (_dec = (0, _index3.connect)(function () {
+  return {};
+}, function (dispatch) {
+  return {
+    onFetchFavs: function onFetchFavs(favs) {
+      return dispatch({ type: 'member/favs', payload: favs });
+    }
+  };
+}), _dec2 = (0, _index4.withLogin)(), _dec(_class = _dec2(_class = (_temp2 = _class2 = function (_BaseComponent) {
+  _inherits(MemberIndex, _BaseComponent);
+
+  function MemberIndex() {
+    var _ref,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, MemberIndex);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MemberIndex.__proto__ || Object.getPrototypeOf(MemberIndex)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["info", "orderCount", "isOpenPopularize", "ordersCount", "vipgrade", "gradeInfo", "__fn_onFetchFavs"], _this.handleClickRecommend = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var info;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              info = _this.state.info;
+
+              if (info.is_open_popularize) {
+                _context.next = 4;
+                break;
+              }
+
+              _index8.default.toast('未开启推广');
+              return _context.abrupt("return");
+
+            case 4:
+              if (!(info.is_open_popularize && !info.is_promoter)) {
+                _context.next = 7;
+                break;
+              }
+
+              _context.next = 7;
+              return _index6.default.member.promoter();
+
+            case 7:
+
+              _index2.default.navigateTo({
+                url: '/pages/member/recommend'
+              });
+
+            case 8:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2);
+    })), _this.handleClickGiftApp = function () {
+      _index2.default.navigateToMiniProgram({
+        appId: "wx2fb97cb696f68d22",
+        path: '/pages/index/index'
+      });
+    }, _this.handleClickPhone = function () {
+      _index2.default.makePhoneCall({
+        phoneNumber: '021-61255625'
+      });
+    }, _this.beDistributor = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var _this$state, isOpenPopularize, info, username, avatar, isPromoter, _ref4, confirm, res, status, userinfo;
+
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _this$state = _this.state, isOpenPopularize = _this$state.isOpenPopularize, info = _this$state.info;
+              username = info.username, avatar = info.avatar, isPromoter = info.isPromoter;
+
+              if (!isPromoter) {
+                _context2.next = 5;
+                break;
+              }
+
+              _index2.default.navigateTo({
+                url: '/pages/distribution/index'
+              });
+              return _context2.abrupt("return");
+
+            case 5:
+              _context2.next = 7;
+              return _index2.default.showModal({
+                title: '邀请推广',
+                content: '确定申请成为推广员？',
+                showCancel: true,
+                cancel: '取消',
+                confirmText: '确认',
+                confirmColor: '#0b4137'
+              });
+
+            case 7:
+              _ref4 = _context2.sent;
+              confirm = _ref4.confirm;
+
+              if (confirm) {
+                _context2.next = 11;
+                break;
+              }
+
+              return _context2.abrupt("return");
+
+            case 11:
+              _context2.next = 13;
+              return _index6.default.distribution.become();
+
+            case 13:
+              res = _context2.sent;
+              status = res.status;
+
+              if (status) {
+                _index2.default.showModal({
+                  title: '恭喜',
+                  content: '已成为推广员',
+                  showCancel: false,
+                  confirmText: '好'
+                });
+                userinfo = {
+                  username: username,
+                  avatar: avatar,
+                  isPromoter: true
+                };
+
+                console.log(userinfo);
+                _index2.default.setStorageSync('userinfo', userinfo);
+                _this.setState({
+                  info: userinfo
+                });
+              }
+
+            case 16:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, _this2);
+    })), _this.viewOrder = function (type) {
+      _index2.default.navigateTo({
+        url: "/pages/trade/list?status=" + type
+      });
+    }, _this.viewAftersales = function () {
+      _index2.default.navigateTo({
+        url: "/pages/trade/after-sale"
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(MemberIndex, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(MemberIndex.prototype.__proto__ || Object.getPrototypeOf(MemberIndex.prototype), "_constructor", this).call(this, props);
+      this.state = {
+        ordersCount: {
+          normal_payed_daifahuo: '',
+          normal_payed_daishouhuo: ''
+        },
+        info: {
+          deposit: '',
+          point: '',
+          coupon: '',
+          luckdraw: '',
+          username: '',
+          user_card_code: ''
+        },
+        vipgrade: {
+          grade_name: '',
+          end_date: '',
+          is_vip: '',
+          vip_type: '',
+          is_open: '',
+          background_pic_url: ''
+        },
+        gradeInfo: {
+          user_card_code: '',
+          grade_name: '',
+          background_pic_url: ''
+        },
+        orderCount: '',
+        isOpenPopularize: false
+      };
+    }
+  }, {
+    key: "navigateTo",
+    value: function navigateTo(url) {
+      _index2.default.navigateTo({ url: url });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.fetch();
+    }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+        var resUser, _ref6, _ref7, res, favs, userObj;
+
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                resUser = null;
+
+                if (_index2.default.getStorageSync('userinfo')) {
+                  resUser = _index2.default.getStorageSync('userinfo');
+                  this.setState({
+                    info: {
+                      username: resUser.username,
+                      avatar: resUser.avatar,
+                      isPromoter: resUser.isPromoter
+                    }
+                  });
+                }
+                _context3.next = 4;
+                return Promise.all([_index6.default.member.memberInfo(), _index6.default.member.favsList()]);
+
+              case 4:
+                _ref6 = _context3.sent;
+                _ref7 = _slicedToArray(_ref6, 2);
+                res = _ref7[0];
+                favs = _ref7[1].list;
+
+                this.__triggerPropsFn("onFetchFavs", [null].concat([favs]));
+                this.setState({
+                  isOpenPopularize: res.is_open_popularize
+                });
+                userObj = {
+                  username: res.memberInfo.username,
+                  avatar: res.memberInfo.avatar,
+                  userId: res.memberInfo.user_id,
+                  isPromoter: res.is_promoter
+                };
+
+                if (!resUser || resUser.username !== userObj.username || resUser.avatar !== userObj.avatar) {
+                  _index2.default.setStorageSync('userinfo', userObj);
+                  this.setState({
+                    info: {
+                      username: res.memberInfo.username,
+                      avatar: res.memberInfo.avatar,
+                      isPromoter: res.is_promoter
+                    }
+                  });
+                }
+                this.setState({
+                  vipgrade: {
+                    grade_name: res.vipgrade.grade_name,
+                    end_date: res.vipgrade.end_time,
+                    is_vip: res.vipgrade.is_vip,
+                    vip_type: res.vipgrade.vip_type,
+                    is_open: res.vipgrade.is_open,
+                    background_pic_url: res.vipgrade.background_pic_url
+                  },
+                  gradeInfo: {
+                    user_card_code: res.memberInfo.user_card_code,
+                    grade_name: res.memberInfo.gradeInfo.grade_name,
+                    background_pic_url: res.memberInfo.gradeInfo.background_pic_url
+                  }
+                });
+
+              case 13:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function fetch() {
+        return _ref5.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          ordersCount = _state.ordersCount,
+          info = _state.info;
+
+      var isAvatatImg = void 0;
+      if (info.avatar) {
+        isAvatatImg = true;
+      }
+
+      Object.assign(this.__state, {});
+      return this.__state;
+    }
+  }]);
+
+  return MemberIndex;
+}(_index.Component), _class2.properties = {
+  "__fn_onFetchFavs": {
+    "type": null,
+    "value": null
+  }
+}, _class2.$$events = ["viewOrder", "viewAftersales", "beDistributor"], _temp2)) || _class) || _class);
+exports.default = MemberIndex;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(MemberIndex, true));

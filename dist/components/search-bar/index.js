@@ -1,1 +1,163 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function a(e,t){for(var n=0;n<t.length;n++){var a=t[n];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,a.key,a)}}return function(e,t,n){return t&&a(e.prototype,t),n&&a(e,n),e}}(),_get=function e(t,n,a){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var r=Object.getPrototypeOf(t);return null===r?void 0:e(r,n,a)}if("value"in o)return o.value;var s=o.get;return void 0!==s?s.call(a):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../utils/index.js");function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var SearchBar=(_temp2=_class=function(e){function s(){var e,t,o;_classCallCheck(this,s);for(var n=arguments.length,a=Array(n),r=0;r<n;r++)a[r]=arguments[r];return(t=o=_possibleConstructorReturn(this,(e=s.__proto__||Object.getPrototypeOf(s)).call.apply(e,[this].concat(a)))).$usedState=["anonymousState__temp","anonymousState__temp2","searchValue","isShowAction","historyList","showSearchDailog","__fn_onConfirm","isFixed"],o.handleFocusSearchHistory=function(e){o.setState({showSearchDailog:e,isShowAction:!0,searchValue:" "}),_index2.default.getStorage({key:"searchHistory"}).then(function(e){var t=e.data.split(",");o.setState({historyList:t})}).catch(function(){})},o.handleChangeSearch=function(e){e=e.replace(/\s+/g,""),o.setState({searchValue:e})},o.handleConfirm=function(){o.state.searchValue&&(_index2.default.getStorage({key:"searchHistory"}).then(function(e){var t=e.data.split(","),n=[].concat(t);n.unshift(o.state.searchValue);var a=(n=Array.from(new Set(n))).join(",");_index2.default.setStorage({key:"searchHistory",data:a}),o.setState({searchValue:""})}).catch(function(){var e=[];e.push(o.state.searchValue);var t=e.join(",");_index2.default.setStorage({key:"searchHistory",data:t})}),o.__triggerPropsFn("onConfirm",[null].concat([o.state.searchValue]))),o.setState({showSearchDailog:!1,isShowAction:!1})},o.handleClickCancel=function(e){o.setState({showSearchDailog:e,searchValue:"",isShowAction:!1})},o.handleClickDelete=function(){_index2.default.removeStorage({key:"searchHistory"}).then(function(){o.setState({historyList:[]})})},o.handleClickTag=function(e){o.__triggerPropsFn("onConfirm",[null].concat([e])),o.setState({showSearchDailog:!1,isShowAction:!1})},o.handleClickHotItem=function(){console.log("热门搜索",100)},o.$$refs=[],_possibleConstructorReturn(o,t)}return _inherits(s,_index.Component),_createClass(s,[{key:"_constructor",value:function(e){_get(s.prototype.__proto__||Object.getPrototypeOf(s.prototype),"_constructor",this).call(this,e),this.state={searchValue:"",showSearchDailog:!1,historyList:[],isShowAction:!1}}},{key:"componentDidMount",value:function(){}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props.isFixed,t=this.__state,n=t.showSearchDailog,a=(t.historyList,t.isShowAction,t.searchValue,(0,_index3.classNames)("search-input",e?"search-input-fixed":null,n?"search-input__focus":null)),o=(0,_index3.classNames)(n?"search-input__history":"search-input__history-none");return Object.assign(this.__state,{anonymousState__temp:a,anonymousState__temp2:o}),this.__state}}]),s}(),_class.properties={__fn_onConfirm:{type:null,value:null},isFixed:{type:null,value:null}},_class.$$events=["handleFocusSearchHistory","handleChangeSearch","handleConfirm","handleClickCancel","handleClickDelete","handleClickTag"],_class.defaultProps={isOpened:!1},_class.options={addGlobalClass:!0},_temp2);exports.default=SearchBar,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(SearchBar));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../utils/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SearchBar = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(SearchBar, _BaseComponent);
+
+  function SearchBar() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, SearchBar);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SearchBar.__proto__ || Object.getPrototypeOf(SearchBar)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "anonymousState__temp2", "searchValue", "isShowAction", "historyList", "showSearchDailog", "__fn_onConfirm", "isFixed"], _this.handleFocusSearchHistory = function (isOpened) {
+      _this.setState({
+        showSearchDailog: isOpened,
+        isShowAction: true,
+        searchValue: ' '
+      });
+      _index2.default.getStorage({ key: 'searchHistory' }).then(function (res) {
+        var stringArr = res.data.split(',');
+        _this.setState({ historyList: stringArr });
+      }).catch(function () {});
+    }, _this.handleChangeSearch = function (value) {
+      value = value.replace(/\s+/g, '');
+      _this.setState({
+        searchValue: value
+      });
+    }, _this.handleConfirm = function () {
+      if (_this.state.searchValue) {
+        _index2.default.getStorage({ key: 'searchHistory' }).then(function (res) {
+          var stringArr = res.data.split(',');
+          var arr = [].concat(stringArr);
+          arr.unshift(_this.state.searchValue);
+          arr = Array.from(new Set(arr));
+          var arrString = arr.join(',');
+          _index2.default.setStorage({ key: 'searchHistory', data: arrString });
+          _this.setState({ searchValue: '' });
+        }).catch(function () {
+          var arr = [];
+          arr.push(_this.state.searchValue);
+          var arrString = arr.join(',');
+          _index2.default.setStorage({ key: 'searchHistory', data: arrString });
+        });
+        _this.__triggerPropsFn("onConfirm", [null].concat([_this.state.searchValue]));
+        /*Taro.navigateTo({
+          url: `/pages/item/list?keywords=${this.state.searchValue}`
+        })*/
+      }
+      _this.setState({
+        showSearchDailog: false,
+        isShowAction: false
+      });
+    }, _this.handleClickCancel = function (isOpened) {
+      _this.setState({
+        showSearchDailog: isOpened,
+        searchValue: '',
+        isShowAction: false
+      });
+    }, _this.handleClickDelete = function () {
+      _index2.default.removeStorage({ key: 'searchHistory' }).then(function () {
+        _this.setState({ historyList: [] });
+      });
+    }, _this.handleClickTag = function (item) {
+      // console.log(item, 100)
+      _this.__triggerPropsFn("onConfirm", [null].concat([item]));
+      _this.setState({
+        showSearchDailog: false,
+        isShowAction: false
+      });
+      /*Taro.navigateTo({
+        url: `/pages/item/list?keywords=${item}`
+      })*/
+    }, _this.handleClickHotItem = function () {
+      console.log('热门搜索', 100);
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(SearchBar, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(SearchBar.prototype.__proto__ || Object.getPrototypeOf(SearchBar.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        searchValue: '',
+        showSearchDailog: false,
+        historyList: [],
+        isShowAction: false
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {}
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var isFixed = this.__props.isFixed;
+      var _state = this.__state,
+          showSearchDailog = _state.showSearchDailog,
+          historyList = _state.historyList,
+          isShowAction = _state.isShowAction,
+          searchValue = _state.searchValue;
+
+      var anonymousState__temp = (0, _index3.classNames)('search-input', isFixed ? 'search-input-fixed' : null, showSearchDailog ? 'search-input__focus' : null);
+      var anonymousState__temp2 = (0, _index3.classNames)(showSearchDailog ? 'search-input__history' : 'search-input__history-none');
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        anonymousState__temp2: anonymousState__temp2
+      });
+      return this.__state;
+    }
+  }]);
+
+  return SearchBar;
+}(_index.Component), _class.properties = {
+  "__fn_onConfirm": {
+    "type": null,
+    "value": null
+  },
+  "isFixed": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["handleFocusSearchHistory", "handleChangeSearch", "handleConfirm", "handleClickCancel", "handleClickDelete", "handleClickTag"], _class.defaultProps = {
+  isOpened: false
+}, _class.options = {
+  addGlobalClass: true
+}, _temp2);
+exports.default = SearchBar;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(SearchBar));

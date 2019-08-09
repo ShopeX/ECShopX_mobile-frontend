@@ -33,6 +33,7 @@ class App extends Component {
       'pages/item/group-list',
       'pages/item/seckill-list',
       'pages/item/seckill-goods-list',
+      'pages/item/package-list',
       'pages/home/coupon-home',
 
       'pages/cart/espier-index',

@@ -64,6 +64,7 @@ export default class GoodsBuyPanel extends Component {
       marketing,
       selection
     })
+    console.log(111,selection)
 
     if (!spec_items || !spec_items.length) {
       this.noSpecs = true

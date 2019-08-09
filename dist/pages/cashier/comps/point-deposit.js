@@ -1,1 +1,161 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function n(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,r){return t&&n(e.prototype,t),r&&n(e,r),e}}(),_get=function e(t,r,n){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,r);if(void 0===o){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,r,n)}if("value"in o)return o.value;var s=o.get;return void 0!==s?s.call(n):void 0},_index=require("../../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../../api/index.js"),_index4=_interopRequireDefault(_index3);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var i=e.apply(this,arguments);return new Promise(function(a,s){return function t(e,r){try{var n=i[e](r),o=n.value}catch(e){return void s(e)}if(!n.done)return Promise.resolve(o).then(function(e){t("next",e)},function(e){t("throw",e)});a(o)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var PointDepositBtn=(_temp2=_class=function(e){function p(){var e,t,n,r,o=this;_classCallCheck(this,p);for(var a=arguments.length,s=Array(a),i=0;i<a;i++)s[i]=arguments[i];return(t=n=_possibleConstructorReturn(this,(e=p.__proto__||Object.getPrototypeOf(p)).call.apply(e,[this].concat(s)))).$usedState=["payType","isOpened","pay_pay_type","orderID","orderType"],n.handleClickPayment=(r=_asyncToGenerator(regeneratorRuntime.mark(function e(t){return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:n.setState({isOpened:!0,pay_pay_type:t});case 1:case"end":return e.stop()}},e,o)})),function(e){return r.apply(this,arguments)}),n.handleClosePay=function(){n.setState({isOpened:!1})},n.handleConfirmPay=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,r;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=n.state.pay_pay_type,r={order_id:n.props.orderID,pay_type:t,order_type:n.props.orderType},e.prev=2,e.next=5,_index4.default.cashier.getPayment(r);case 5:_index2.default.redirectTo({url:"/pages/cashier/cashier-result?payStatus=success&order_id="+n.props.orderID}),e.next=12;break;case 8:e.prev=8,e.t0=e.catch(2),console.log(e.t0),n.setState({isOpened:!1});case 12:case"end":return e.stop()}},e,o,[[2,8]])})),n.$$refs=[],_possibleConstructorReturn(n,t)}return _inherits(p,_index.Component),_createClass(p,[{key:"_constructor",value:function(e){_get(p.prototype.__proto__||Object.getPrototypeOf(p.prototype),"_constructor",this).call(this,e),this.state={isOpened:!1,pay_pay_type:""}}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props.payType;this.__state.isOpened;return Object.assign(this.__state,{payType:e}),this.__state}}]),p}(),_class.properties={orderID:{type:null,value:null},orderType:{type:null,value:null},payType:{type:null,value:null}},_class.$$events=["handleClickPayment","handleClosePay","handleConfirmPay"],_class.options={addGlobalClass:!0},_temp2);exports.default=PointDepositBtn,Component(require("../../../npm/@tarojs/taro-weapp/index.js").default.createComponent(PointDepositBtn));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../../api/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PointDepositBtn = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(PointDepositBtn, _BaseComponent);
+
+  function PointDepositBtn() {
+    var _ref,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, PointDepositBtn);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PointDepositBtn.__proto__ || Object.getPrototypeOf(PointDepositBtn)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["payType", "isOpened", "pay_pay_type", "orderID", "orderType"], _this.handleClickPayment = function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.setState({
+                  isOpened: true,
+                  pay_pay_type: type
+                });
+
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, _this2);
+      }));
+
+      return function (_x) {
+        return _ref2.apply(this, arguments);
+      };
+    }(), _this.handleClosePay = function () {
+      _this.setState({
+        isOpened: false
+      });
+    }, _this.handleConfirmPay = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      var pay_pay_type, query;
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              pay_pay_type = _this.state.pay_pay_type;
+              query = {
+                order_id: _this.props.orderID,
+                pay_type: pay_pay_type,
+                order_type: _this.props.orderType
+              };
+              _context2.prev = 2;
+              _context2.next = 5;
+              return _index4.default.cashier.getPayment(query);
+
+            case 5:
+              _index2.default.redirectTo({
+                url: "/pages/cashier/cashier-result?payStatus=success&order_id=" + _this.props.orderID
+              });
+              _context2.next = 12;
+              break;
+
+            case 8:
+              _context2.prev = 8;
+              _context2.t0 = _context2["catch"](2);
+
+              console.log(_context2.t0);
+              _this.setState({
+                isOpened: false
+              });
+
+            case 12:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, _this2, [[2, 8]]);
+    })), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(PointDepositBtn, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(PointDepositBtn.prototype.__proto__ || Object.getPrototypeOf(PointDepositBtn.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        isOpened: false,
+        pay_pay_type: ''
+      };
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var payType = this.__props.payType;
+      var isOpened = this.__state.isOpened;
+
+
+      Object.assign(this.__state, {
+        payType: payType
+      });
+      return this.__state;
+    }
+  }]);
+
+  return PointDepositBtn;
+}(_index.Component), _class.properties = {
+  "orderID": {
+    "type": null,
+    "value": null
+  },
+  "orderType": {
+    "type": null,
+    "value": null
+  },
+  "payType": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["handleClickPayment", "handleClosePay", "handleConfirmPay"], _class.options = {
+  addGlobalClass: true
+}, _temp2);
+exports.default = PointDepositBtn;
+
+Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(PointDepositBtn));

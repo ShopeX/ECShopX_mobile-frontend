@@ -1,1 +1,275 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _dec,_class,_class2,_temp2,_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,n,r)}if("value"in o)return o.value;var i=o.get;return void 0!==i?i.call(r):void 0},_index=require("../../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../../npm/@tarojs/redux/index.js"),_index4=require("../../../api/index.js"),_index5=_interopRequireDefault(_index4);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(a,i){return function t(e,n){try{var r=s[e](n),o=r.value}catch(e){return void i(e)}if(!r.done)return Promise.resolve(o).then(function(e){t("next",e)},function(e){t("throw",e)});a(o)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var WgtGoods=(_dec=(0,_index3.connect)(function(e){return{cart:e.cart,favs:e.member.favs}},function(n){return{onFastbuy:function(e){return n({type:"cart/fastbuy",payload:{item:e}})},onAddCart:function(e){return n({type:"cart/add",payload:{item:e}})},onAddFav:function(e){var t=e.item_id;return n({type:"member/addFav",payload:{item_id:t}})},onDelFav:function(e){var t=e.item_id;return n({type:"member/delFav",payload:{item_id:t}})}}}))((_temp2=_class2=function(e){function u(){var e,t,o,r,a=this;_classCallCheck(this,u);for(var n=arguments.length,i=Array(n),s=0;s<n;s++)i[s]=arguments[s];return(t=o=_possibleConstructorReturn(this,(e=u.__proto__||Object.getPrototypeOf(u)).call.apply(e,[this].concat(i)))).$usedState=["info","base","data","curIdx","is_fav","count","__fn_onAddFav","__fn_onDelFav","__fn_onClick"],o.handleClickItem=function(e){try{_index2.default.navigateTo({url:"/pages/item/espier-detail?id="+e})}catch(e){console.log(e)}},o.handleSwiperChange=function(e){var t=e.detail.current;o.setState({curIdx:t})},o.handleClickOperate=(r=_asyncToGenerator(regeneratorRuntime.mark(function e(t,n,r){return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(o.props.info,r.stopPropagation(),"collect"!==n){e.next=15;break}if(t.favStatus){e.next=10;break}return e.next=6,_index5.default.member.addFav(t.item_id);case 6:o.__triggerPropsFn("onAddFav",[null].concat([t])),_index2.default.showToast({title:"已加入收藏",icon:"none"}),e.next=14;break;case 10:return e.next=12,_index5.default.member.delFav(t.item_id);case 12:o.__triggerPropsFn("onDelFav",[null].concat([t])),_index2.default.showToast({title:"已移出收藏",icon:"none"});case 14:o.__triggerPropsFn("onClick",[null].concat([]));case 15:if("buy"===n)return e.prev=16,e.next=19,_index5.default.cart.add({item_id:t.item_id,num:1});e.next=25;break;case 19:_index2.default.showToast({title:"成功加入购物车",icon:"success"}),e.next=25;break;case 22:e.prev=22,e.t0=e.catch(16),console.log(e.t0);case 25:case"end":return e.stop()}},e,a,[[16,22]])})),function(e,t,n){return r.apply(this,arguments)}),o.$$refs=[],_possibleConstructorReturn(o,t)}return _inherits(u,_index.Component),_createClass(u,[{key:"_constructor",value:function(e){_get(u.prototype.__proto__||Object.getPrototypeOf(u.prototype),"_constructor",this).call(this,e),this.state={curIdx:0,is_fav:!1,count:0}}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props.info,t=this.__state,n=t.curIdx;t.is_fav;if(!e)return null;e.config;var r=e.base,o=e.data;(o[n]||{}).content;return Object.assign(this.__state,{info:e,base:r,data:o}),this.__state}}]),u}(),_class2.properties={info:{type:null,value:null},__fn_onAddFav:{type:null,value:null},__fn_onDelFav:{type:null,value:null},__fn_onClick:{type:null,value:null}},_class2.$$events=["handleClickItem","handleClickOperate"],_class2.options={addGlobalClass:!0},_class2.defaultProps={info:null},_class=_temp2))||_class;exports.default=WgtGoods,Component(require("../../../npm/@tarojs/taro-weapp/index.js").default.createComponent(WgtGoods));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _dec, _class, _class2, _temp2;
+
+var _index = require("../../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../../npm/@tarojs/redux/index.js");
+
+var _index4 = require("../../../api/index.js");
+
+var _index5 = _interopRequireDefault(_index4);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
+  var cart = _ref.cart,
+      member = _ref.member;
+  return {
+    cart: cart,
+    favs: member.favs
+  };
+}, function (dispatch) {
+  return {
+    onFastbuy: function onFastbuy(item) {
+      return dispatch({ type: 'cart/fastbuy', payload: { item: item } });
+    },
+    onAddCart: function onAddCart(item) {
+      return dispatch({ type: 'cart/add', payload: { item: item } });
+    },
+    onAddFav: function onAddFav(_ref2) {
+      var item_id = _ref2.item_id;
+      return dispatch({ type: 'member/addFav', payload: { item_id: item_id } });
+    },
+    onDelFav: function onDelFav(_ref3) {
+      var item_id = _ref3.item_id;
+      return dispatch({ type: 'member/delFav', payload: { item_id: item_id } });
+    }
+  };
+}), _dec(_class = (_temp2 = _class2 = function (_BaseComponent) {
+  _inherits(WgtGoods, _BaseComponent);
+
+  function WgtGoods() {
+    var _ref4,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, WgtGoods);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = WgtGoods.__proto__ || Object.getPrototypeOf(WgtGoods)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["info", "base", "data", "curIdx", "is_fav", "count", "__fn_onAddFav", "__fn_onDelFav", "__fn_onClick"], _this.handleClickItem = function (id) {
+      // const { info } = this.props
+
+      /*if(info.data) {
+        let onsale = true
+        info.data.map(item => {
+          if(id === item.item_id){
+            if(!item.isOnsale){
+              onsale = false
+            }
+          }
+        })
+        if(!onsale){
+          return false
+        }
+      }*/
+      try {
+        _index2.default.navigateTo({
+          url: "/pages/item/espier-detail?id=" + id
+        });
+      } catch (error) {
+        console.log(error);
+        /*Taro.navigateTo({
+          url: `/pages/iwp/item-detail?id=${id}`
+        })*/
+      }
+    }, _this.handleSwiperChange = function (e) {
+      var current = e.detail.current;
+
+
+      _this.setState({
+        curIdx: current
+      });
+    }, _this.handleClickOperate = function () {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(item_data, type, e) {
+        var info;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                info = _this.props.info;
+
+                e.stopPropagation();
+
+                /*if(info.data) {
+                  let onsale = true
+                  info.data.map(item => {
+                    if(item_data.item_id === item.item_id){
+                      if(!item.isOnsale){
+                        onsale = false
+                      }
+                    }
+                  })
+                  if(!onsale){
+                    return false
+                  }
+                }*/
+
+                if (!(type === 'collect')) {
+                  _context.next = 15;
+                  break;
+                }
+
+                if (item_data.favStatus) {
+                  _context.next = 10;
+                  break;
+                }
+
+                _context.next = 6;
+                return _index5.default.member.addFav(item_data.item_id);
+
+              case 6:
+                _this.__triggerPropsFn("onAddFav", [null].concat([item_data]));
+                _index2.default.showToast({
+                  title: '已加入收藏',
+                  icon: 'none'
+                });
+                _context.next = 14;
+                break;
+
+              case 10:
+                _context.next = 12;
+                return _index5.default.member.delFav(item_data.item_id);
+
+              case 12:
+                _this.__triggerPropsFn("onDelFav", [null].concat([item_data]));
+                _index2.default.showToast({
+                  title: '已移出收藏',
+                  icon: 'none'
+                });
+
+              case 14:
+                _this.__triggerPropsFn("onClick", [null].concat([]));
+
+              case 15:
+                if (!(type === 'buy')) {
+                  _context.next = 25;
+                  break;
+                }
+
+                _context.prev = 16;
+                _context.next = 19;
+                return _index5.default.cart.add({
+                  item_id: item_data.item_id,
+                  num: 1
+                });
+
+              case 19:
+                _index2.default.showToast({
+                  title: '成功加入购物车',
+                  icon: 'success'
+                });
+                _context.next = 25;
+                break;
+
+              case 22:
+                _context.prev = 22;
+                _context.t0 = _context["catch"](16);
+
+                console.log(_context.t0);
+
+              case 25:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, _this2, [[16, 22]]);
+      }));
+
+      return function (_x, _x2, _x3) {
+        return _ref5.apply(this, arguments);
+      };
+    }(), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(WgtGoods, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(WgtGoods.prototype.__proto__ || Object.getPrototypeOf(WgtGoods.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        curIdx: 0,
+        is_fav: false,
+        count: 0
+      };
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var info = this.__props.info;
+      var _state = this.__state,
+          curIdx = _state.curIdx,
+          is_fav = _state.is_fav;
+
+      if (!info) {
+        return null;
+      }
+
+      var config = info.config,
+          base = info.base,
+          data = info.data;
+
+      var curContent = (data[curIdx] || {}).content;
+
+      Object.assign(this.__state, {
+        info: info,
+        base: base,
+        data: data
+      });
+      return this.__state;
+    }
+  }]);
+
+  return WgtGoods;
+}(_index.Component), _class2.properties = {
+  "info": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onAddFav": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onDelFav": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClick": {
+    "type": null,
+    "value": null
+  }
+}, _class2.$$events = ["handleClickItem", "handleClickOperate"], _class2.options = {
+  addGlobalClass: true
+}, _class2.defaultProps = {
+  info: null
+}, _temp2)) || _class);
+exports.default = WgtGoods;
+
+Component(require('../../../npm/@tarojs/taro-weapp/index.js').default.createComponent(WgtGoods));

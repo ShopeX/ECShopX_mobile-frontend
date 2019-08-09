@@ -1,1 +1,972 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _dec,_dec2,_class,_class2,_temp2,_extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var a=Object.getOwnPropertyDescriptor(t,n);if(void 0===a){var o=Object.getPrototypeOf(t);return null===o?void 0:e(o,n,r)}if("value"in a)return a.value;var i=a.get;return void 0!==i?i.call(r):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../npm/@tarojs/redux/index.js"),_index4=require("../../api/index.js"),_index5=_interopRequireDefault(_index4),_index6=require("../../spx/index.js"),_index7=_interopRequireDefault(_index6),_index8=require("../../hocs/index.js"),_index9=require("../../utils/index.js"),_dom=require("../../utils/dom.js"),_find=require("../../npm/lodash/find.js"),_find2=_interopRequireDefault(_find),_cloneDeep2=require("../../npm/lodash/cloneDeep.js"),_cloneDeep3=_interopRequireDefault(_cloneDeep2);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _defineProperty(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(o,i){return function t(e,n){try{var r=s[e](n),a=r.value}catch(e){return void i(e)}if(!r.done)return Promise.resolve(a).then(function(e){t("next",e)},function(e){t("throw",e)});o(a)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var transformCartList=function(e){return(0,_index9.pickBy)(e,{item_id:"item_id",cart_id:"cart_id",title:"item_name",curSymbol:"fee_symbol",discount_info:"discount_info",order_item_type:"order_item_type",pics:"pic",price:function(e){return(+e.price/100).toFixed(2)},num:"num"}).sort(function(e){return"gift"!==e.order_item_type?-1:1})},CartCheckout=(_dec=(0,_index3.connect)(function(e){var t=e.address,n=e.cart;return{address:t.current,coupon:n.coupon}},function(t){return{onClearFastbuy:function(){return t({type:"cart/clearFastbuy"})},onClearCart:function(){return t({type:"cart/clear"})},onClearCoupon:function(){return t({type:"cart/clearCoupon"})},onAddressChoose:function(e){return t({type:"address/choose",payload:e})}}}))(_class=(_dec2=(0,_index8.withLogin)())((_temp2=_class2=function(e){function i(){var e,t,p,n,_=this;_classCallCheck(this,i);for(var r=arguments.length,a=Array(r),o=0;o<r;o++)a[o]=arguments[o];return(t=p=_possibleConstructorReturn(this,(e=i.__proto__||Object.getPrototypeOf(i)).call.apply(e,[this].concat(a)))).$usedState=["info","showAddressPicker","address","payType","couponText","isDrug","drug","total","showCheckoutItems","curCheckoutItems","submitLoading","isBtnDisabled","isDrugInfoOpend","isPaymentOpend","disabledPayment","address_list","shop","showShippingPicker","showCoupons","coupons","invoiceTitle","__fn_onClearFastbuy","defaultAddress","__fn_onClearCoupon","__fn_onAddressChoose","coupon","__fn_onClearCart"],p.handleAddressChange=function(e){e&&(e=(0,_index9.pickBy)(e,{state:"province",city:"city",district:"county",address_id:"address_id",mobile:"telephone",name:"username",zip:"postalCode",address:"adrdetail",area:"area"}),p.setState({address:e},function(){p.calcOrder()}),e||p.setState({showAddressPicker:!0}))},p.handleShippingChange=function(e){console.log(e)},p.handleInvoiceClick=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n,r,a,o,i,s,u;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,_index2.default.chooseInvoiceTitle();case 2:"chooseInvoiceTitle:ok"===(t=e.sent).errMsg&&(_index9.log.debug("[invoice] info:",t),n=t.type,r=t.title,a=t.companyAddress,o=t.taxNumber,i=t.bankName,s=t.bankAccount,u=t.telephone,p.params=_extends({},p.params,{invoice_type:"normal",invoice_content:{title:0!==n?"individual":"unit",content:r,company_address:a,registration_number:o,bankname:i,bankaccount:s,company_phone:u}}),p.setState({invoiceTitle:r}));case 4:case"end":return e.stop()}},e,_)})),p.handleChange=function(e){var t=null,n=Object.values(e);console.log(n),0<n.length&&n.find(function(e){return""!==e})&&(t=e),p.setState({drug:t,isDrugInfoOpend:!1})},p.handlePaymentShow=_asyncToGenerator(regeneratorRuntime.mark(function e(){return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:p.setState({isPaymentOpend:!0,isDrugInfoOpend:!1});case 1:case"end":return e.stop()}},e,_)})),p.handleDrugInfoShow=_asyncToGenerator(regeneratorRuntime.mark(function e(){return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:p.setState({isPaymentOpend:!1,isDrugInfoOpend:!0});case 1:case"end":return e.stop()}},e,_)})),p.handlePay=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n,r,a,o,i,s,u,c,d,l;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(p.state.address){e.next=2;break}return e.abrupt("return",_index7.default.toast("请选择地址"));case 2:if(t=p.state,n=t.payType,r=t.total,"dhpoint"===n)return e.prev=4,e.next=7,_index2.default.showModal({title:"积分支付",content:"确认使用"+r.remainpt+"积分全额抵扣商品总价吗",confirmColor:"#0b4137",confirmText:"确认使用",cancelText:"取消"});e.next=17;break;case 7:if(a=e.sent,a.confirm){e.next=11;break}return e.abrupt("return");case 11:e.next=17;break;case 13:return e.prev=13,e.t0=e.catch(4),console.log(e.t0),e.abrupt("return");case 17:return _index2.default.showLoading({title:"正在提交",mask:!0}),p.setState({submitLoading:!0}),i=o=void 0,e.prev=20,s=p.getParams(),"dhpoint"===n&&(delete s.invoice_type,delete s.invoice_content),e.next=25,_index5.default.trade.create(s);case 25:i=e.sent,o=i.trade_info.order_id,e.next=34;break;case 29:e.prev=29,e.t1=e.catch(20),_index2.default.showToast({title:e.t1.message,icon:"none"}),p.resolvePayError(e.t1),"dhpoint"===n&&p.setState({submitLoading:!1});case 34:if(_index2.default.hideLoading(),o){e.next=37;break}return e.abrupt("return");case 37:return u={order_id:o,pay_type:p.state.payType,order_type:i.order_type},d=c=void 0,e.prev=39,e.next=42,_index5.default.cashier.getPayment(u);case 42:c=e.sent,console.log(c,449),e.next=50;break;case 46:e.prev=46,e.t2=e.catch(39),d=e.t2,console.log(e.t2);case 50:if(p.setState({submitLoading:!1}),"dhpoint"===n)return d||(_index2.default.showToast({title:"支付成功",icon:"none"}),p.__triggerPropsFn("onClearCart",[null].concat([])),_index2.default.redirectTo({url:"/pages/trade/detail?id="+o})),e.abrupt("return");e.next=54;break;case 54:return d=null,e.prev=55,e.next=58,_index2.default.requestPayment(c);case 58:l=e.sent,_index9.log.debug("[order pay]: ",l),e.next=66;break;case 62:e.prev=62,e.t3=e.catch(55),d=e.t3,_index2.default.showToast({title:e.t3.err_desc||e.t3.errMsg||"支付失败",icon:"none"});case 66:if(d){e.next=73;break}return e.next=69,_index2.default.showToast({title:"支付成功",icon:"success"});case 69:p.__triggerPropsFn("onClearCart",[null].concat([])),_index2.default.redirectTo({url:"/pages/trade/detail?id="+o}),e.next=74;break;case 73:0<=d.errMsg.indexOf("fail cancel")&&_index2.default.redirectTo({url:"/pages/trade/detail?id="+o});case 74:return e.abrupt("return");case 75:case"end":return e.stop()}},e,_,[[4,13],[20,29],[39,46],[55,62]])})),p.handleCouponsClick=function(){if("dhpoint"!==p.state.payType){var e=p.params.items.filter(function(e){return"gift"!==e.order_item_type}).map(function(e){return{item_id:e.item_id,num:e.num}});_index2.default.navigateTo({url:"/pages/cart/coupon-picker?items="+JSON.stringify(e)})}},p.handlePaymentChange=(n=_asyncToGenerator(regeneratorRuntime.mark(function e(t){return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:"dhpoint"===t&&p.__triggerPropsFn("onClearCoupon",[null].concat([])),p.setState({payType:t,isPaymentOpend:!1},function(){p.calcOrder()});case 2:case"end":return e.stop()}},e,_)})),function(e){return n.apply(this,arguments)}),p.handleLayoutClose=function(){p.setState({isPaymentOpend:!1,isDrugInfoOpend:!1})},p.$$refs=[],_possibleConstructorReturn(p,t)}var t,n;return _inherits(i,_index.Component),_createClass(i,[{key:"_constructor",value:function(e){_get(i.prototype.__proto__||Object.getPrototypeOf(i.prototype),"_constructor",this).call(this,e),this.state={info:null,submitLoading:!1,address_list:[],shop:null,showShippingPicker:!1,showAddressPicker:!1,showCheckoutItems:!1,showCoupons:!1,curCheckoutItems:[],coupons:[],drug:null,total:{items_count:"",total_fee:"0.00",item_fee:"",freight_fee:"",member_discount:"",coupon_discount:"",point:""},payType:"wxpay",disabledPayment:null,isPaymentOpend:!1,isDrugInfoOpend:!1,invoiceTitle:""}}},{key:"componentDidShow",value:function(){this.fetchAddress()}},{key:"componentDidMount",value:function(){var e=this.$router.params,t=e.cart_type,n=e.pay_type,r=null;"fastbuy"===t?(this.__triggerPropsFn("onClearFastbuy",[null].concat([])),r=null):"cart"===t&&(this.__triggerPropsFn("onClearFastbuy",[null].concat([])),r=null),this.setState({info:r,payType:n||this.state.payType});var a=0,o=0,i=r&&r.cart?r.cart[0].list.map(function(e){var t=e.item_id,n=e.num;return a+=+e.price,o+=+e.num,{item_id:t,num:n}}):[];this.params={cart_type:t,items:i,pay_type:n||"wxpay"},this.setState({total:{items_count:o,total_fee:a.toFixed(2)}}),this.handleAddressChange(this.props.defaultAddress)}},{key:"componentWillUnmount",value:function(){this.__triggerPropsFn("onClearCoupon",[null].concat([]))}},{key:"componentWillReceiveProps",value:function(e){e.address!==this.props.address&&this.fetchAddress()}},{key:"fetchAddress",value:(n=_asyncToGenerator(regeneratorRuntime.mark(function e(t){var n,r,a,o=this;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return n=this.$router.params.type,"drug"===n,_index2.default.showLoading({mask:!0}),e.next=5,_index5.default.member.addressList();case 5:r=e.sent,a=r.list,this.setState({address_list:a},function(){o.changeSelection(),t&&t(a)}),_index2.default.hideLoading();case 9:case"end":return e.stop()}},e,this)})),function(e){return n.apply(this,arguments)})},{key:"changeSelection",value:function(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{},t=this.state.address_list;if(0===t.length)return this.__triggerPropsFn("onAddressChoose",[null].concat([null])),this.setState({address:null}),void this.calcOrder();var n=this.props.address;if(!n){var r=e.address_id;n=(0,_find2.default)(t,function(e){return r?r===e.address_id:0<e.is_def})||t[0]||null}_index9.log.debug("[address picker] selection: ",n),this.__triggerPropsFn("onAddressChoose",[null].concat([n])),this.handleAddressChange(n)}},{key:"getParams",value:function(){var e="drug"===this.$router.params.type,t=null;t=e?(0,_index9.pickBy)(this.state.address,{receiver_name:"name",receiver_mobile:"mobile",receiver_state:"state",receiver_city:"city",receiver_district:"district",receiver_address:"address",receiver_zip:"zip"}):(0,_index9.pickBy)(this.state.drug,{drug_buyer_name:"name",drug_buyer_id_card:"id_card",drug_list_image:"imgs"});var n=this.state.payType,r=this.props.coupon,a=_extends({},this.params,t,{receipt_type:"logistics",order_type:e?"normal_drug":"normal",promotion:"normal",member_discount:0,coupon_discount:0,pay_type:n});return _index9.log.debug("[checkout] params: ",a),r&&("coupon"===r.type&&r.value.code?a.coupon_discount=r.value.code:"member"===r.type&&(a.member_discount=r.value?1:0)),this.params=a,(0,_cloneDeep3.default)(a)}},{key:"calcOrder",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n,r,a,o,i,s,u,c,d,l,p,_,f,h,m,y,g,v,x,b,C;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return _index2.default.showLoading({title:"加载中",mask:!0}),t=this.getParams(),n=void 0,e.prev=3,e.next=6,_index5.default.cart.total(t);case 6:n=e.sent,e.next=12;break;case 9:e.prev=9,e.t0=e.catch(3),this.resolvePayError(e.t0);case 12:if(n){e.next=14;break}return e.abrupt("return");case 14:a=(r=n).items,o=r.item_fee,i=r.totalItemNum,s=r.member_discount,u=void 0===s?0:s,c=r.coupon_discount,d=void 0===c?0:c,l=r.discount_fee,p=r.freight_fee,_=void 0===p?0:p,f=r.freight_point,h=void 0===f?0:f,m=r.point,y=void 0===m?0:m,g=r.total_fee,v=r.remainpt,x=r.deduction,b=_extends({},this.state.total,{item_fee:o,discount_fee:-1*l,member_discount:-1*u,coupon_discount:-1*d,freight_fee:_,total_fee:"dhpoint"===t.pay_type?0:g,items_count:i,point:y,freight_point:h,remainpt:v,deduction:x}),C=this.state.info,a&&!this.state.info&&(C={cart:[{list:transformCartList(a),cart_total_num:a.reduce(function(e,t){return+t.num+e},0)}]},this.params.items=a),_index2.default.hideLoading(),this.setState({total:b,info:C});case 20:case"end":return e.stop()}},e,this,[[3,9]])})),function(){return t.apply(this,arguments)})},{key:"handleClickItems",value:function(e){this.setState({curCheckoutItems:e}),this.toggleCheckoutItems()}},{key:"toggleCheckoutItems",value:function(e){void 0===e&&(e=!this.state.showCheckoutItems),(0,_dom.lockScreen)(e),this.setState({showCheckoutItems:e})}},{key:"toggleState",value:function(e,t){void 0===t&&(t=!this.state[e]),this.setState(_defineProperty({},e,t))}},{key:"resolvePayError",value:function(e){var t=this;"dhpoint"===this.state.payType&&this.setState({disabledPayment:{name:"dhpoint",message:e.message},payType:"wxpay"},function(){t.calcOrder()})}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props.coupon,t=this.__state,n=t.info,r=t.address,a=(t.total,t.showAddressPicker,t.showCheckoutItems,t.curCheckoutItems,t.payType,t.invoiceTitle,t.submitLoading,t.disabledPayment,t.isPaymentOpend,"drug"===this.$router.params.type);if(!n)return null;var o=e?"member"===e.type?"会员折扣":e.value&&e.value.title||"":"",i=!r;return Object.assign(this.__state,{address:r,couponText:o,isDrug:a,isBtnDisabled:i}),this.__state}}]),i}(),_class2.properties={__fn_onClearFastbuy:{type:null,value:null},defaultAddress:{type:null,value:null},__fn_onClearCoupon:{type:null,value:null},address:{type:null,value:null},__fn_onAddressChoose:{type:null,value:null},coupon:{type:null,value:null},__fn_onClearCart:{type:null,value:null}},_class2.$$events=["handleCouponsClick","handleDrugInfoShow","handlePaymentShow","toggleCheckoutItems","handlePay","handleLayoutClose","handleChange","handlePaymentChange"],_class2.defaultProps={list:[]},_class=_temp2))||_class)||_class;exports.default=CartCheckout,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(CartCheckout,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _dec, _dec2, _class, _class2, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../npm/@tarojs/redux/index.js");
+
+var _index4 = require("../../api/index.js");
+
+var _index5 = _interopRequireDefault(_index4);
+
+var _index6 = require("../../spx/index.js");
+
+var _index7 = _interopRequireDefault(_index6);
+
+var _index8 = require("../../hocs/index.js");
+
+var _index9 = require("../../utils/index.js");
+
+var _dom = require("../../utils/dom.js");
+
+var _find = require("../../npm/lodash/find.js");
+
+var _find2 = _interopRequireDefault(_find);
+
+var _cloneDeep2 = require("../../npm/lodash/cloneDeep.js");
+
+var _cloneDeep3 = _interopRequireDefault(_cloneDeep2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var transformCartList = function transformCartList(list) {
+  return (0, _index9.pickBy)(list, {
+    item_id: 'item_id',
+    cart_id: 'cart_id',
+    title: 'item_name',
+    curSymbol: 'fee_symbol',
+    discount_info: 'discount_info',
+    order_item_type: 'order_item_type',
+    pics: 'pic',
+    price: function price(_ref) {
+      var _price = _ref.price;
+      return (+_price / 100).toFixed(2);
+    },
+    num: 'num'
+  }).sort(function (a) {
+    return a.order_item_type !== 'gift' ? -1 : 1;
+  });
+};
+
+var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
+  var address = _ref2.address,
+      cart = _ref2.cart;
+  return {
+    address: address.current,
+    coupon: cart.coupon
+  };
+}, function (dispatch) {
+  return {
+    onClearFastbuy: function onClearFastbuy() {
+      return dispatch({ type: 'cart/clearFastbuy' });
+    },
+    onClearCart: function onClearCart() {
+      return dispatch({ type: 'cart/clear' });
+    },
+    onClearCoupon: function onClearCoupon() {
+      return dispatch({ type: 'cart/clearCoupon' });
+    },
+    onAddressChoose: function onAddressChoose(address) {
+      return dispatch({ type: 'address/choose', payload: address });
+    }
+  };
+}), _dec2 = (0, _index8.withLogin)(), _dec(_class = _dec2(_class = (_temp2 = _class2 = function (_BaseComponent) {
+  _inherits(CartCheckout, _BaseComponent);
+
+  function CartCheckout() {
+    var _ref3,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, CartCheckout);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref3 = CartCheckout.__proto__ || Object.getPrototypeOf(CartCheckout)).call.apply(_ref3, [this].concat(args))), _this), _this.$usedState = ["info", "showAddressPicker", "address", "payType", "couponText", "isDrug", "drug", "total", "showCheckoutItems", "curCheckoutItems", "submitLoading", "isBtnDisabled", "isDrugInfoOpend", "isPaymentOpend", "disabledPayment", "address_list", "shop", "showShippingPicker", "showCoupons", "coupons", "invoiceTitle", "__fn_onClearFastbuy", "defaultAddress", "__fn_onClearCoupon", "__fn_onAddressChoose", "coupon", "__fn_onClearCart"], _this.handleAddressChange = function (address) {
+      if (!address) {
+        return;
+      }
+      address = (0, _index9.pickBy)(address, {
+        state: 'province',
+        city: 'city',
+        district: 'county',
+        address_id: 'address_id',
+        mobile: 'telephone',
+        name: 'username',
+        zip: 'postalCode',
+        address: 'adrdetail',
+        area: 'area'
+      });
+
+      _this.setState({
+        address: address
+      }, function () {
+        _this.calcOrder();
+      });
+      if (!address) {
+        _this.setState({
+          showAddressPicker: true
+        });
+      }
+    }, _this.handleShippingChange = function (type) {
+      console.log(type);
+    }, _this.handleInvoiceClick = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var res, type, content, company_address, registration_number, bankname, bankaccount, company_phone;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return _index2.default.chooseInvoiceTitle();
+
+            case 2:
+              res = _context.sent;
+
+
+              if (res.errMsg === 'chooseInvoiceTitle:ok') {
+                _index9.log.debug('[invoice] info:', res);
+                type = res.type, content = res.title, company_address = res.companyAddress, registration_number = res.taxNumber, bankname = res.bankName, bankaccount = res.bankAccount, company_phone = res.telephone;
+
+                _this.params = _extends({}, _this.params, {
+                  invoice_type: 'normal',
+                  invoice_content: {
+                    title: type !== 0 ? 'individual' : 'unit',
+                    content: content,
+                    company_address: company_address,
+                    registration_number: registration_number,
+                    bankname: bankname,
+                    bankaccount: bankaccount,
+                    company_phone: company_phone
+                  }
+                });
+                _this.setState({
+                  invoiceTitle: content
+                });
+              }
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2);
+    })), _this.handleChange = function (val) {
+      var drug = null;
+      var arr = Object.values(val);
+      console.log(arr);
+      var isNan = arr.length > 0 && arr.find(function (item) {
+        return item !== '';
+      });
+      if (isNan) {
+        drug = val;
+      }_this.setState({
+        drug: drug,
+        isDrugInfoOpend: false
+      });
+    }, _this.handlePaymentShow = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              _this.setState({
+                isPaymentOpend: true,
+                isDrugInfoOpend: false
+              });
+
+            case 1:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2, _this2);
+    })), _this.handleDrugInfoShow = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _this.setState({
+                isPaymentOpend: false,
+                isDrugInfoOpend: true
+              });
+
+            case 1:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, _this2);
+    })), _this.handlePay = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+      var _this$state, payType, total, _ref8, confirm, order_id, orderInfo, params, paymentParams, config, payErr, payRes;
+
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              if (_this.state.address) {
+                _context4.next = 2;
+                break;
+              }
+
+              return _context4.abrupt("return", _index7.default.toast('请选择地址'));
+
+            case 2:
+              _this$state = _this.state, payType = _this$state.payType, total = _this$state.total;
+
+              if (!(payType === 'dhpoint')) {
+                _context4.next = 17;
+                break;
+              }
+
+              _context4.prev = 4;
+              _context4.next = 7;
+              return _index2.default.showModal({
+                title: '积分支付',
+                content: "\u786E\u8BA4\u4F7F\u7528" + total.remainpt + "\u79EF\u5206\u5168\u989D\u62B5\u6263\u5546\u54C1\u603B\u4EF7\u5417",
+                confirmColor: '#0b4137',
+                confirmText: '确认使用',
+                cancelText: '取消'
+              });
+
+            case 7:
+              _ref8 = _context4.sent;
+              confirm = _ref8.confirm;
+
+              if (confirm) {
+                _context4.next = 11;
+                break;
+              }
+
+              return _context4.abrupt("return");
+
+            case 11:
+              _context4.next = 17;
+              break;
+
+            case 13:
+              _context4.prev = 13;
+              _context4.t0 = _context4["catch"](4);
+
+              console.log(_context4.t0);
+              return _context4.abrupt("return");
+
+            case 17:
+
+              _index2.default.showLoading({
+                title: '正在提交',
+                mask: true
+              });
+
+              _this.setState({
+                submitLoading: true
+              });
+
+              order_id = void 0, orderInfo = void 0;
+              _context4.prev = 20;
+              params = _this.getParams();
+              // 积分不开票
+
+              if (payType === 'dhpoint') {
+                delete params.invoice_type;
+                delete params.invoice_content;
+              }
+              _context4.next = 25;
+              return _index5.default.trade.create(params);
+
+            case 25:
+              orderInfo = _context4.sent;
+
+              order_id = orderInfo.trade_info.order_id;
+              _context4.next = 34;
+              break;
+
+            case 29:
+              _context4.prev = 29;
+              _context4.t1 = _context4["catch"](20);
+
+              _index2.default.showToast({
+                title: _context4.t1.message,
+                icon: 'none'
+              });
+
+              _this.resolvePayError(_context4.t1);
+
+              // dhpoint 判断
+              if (payType === 'dhpoint') {
+                _this.setState({
+                  submitLoading: false
+                });
+              }
+
+            case 34:
+
+              _index2.default.hideLoading();
+
+              if (order_id) {
+                _context4.next = 37;
+                break;
+              }
+
+              return _context4.abrupt("return");
+
+            case 37:
+              // 爱茉pay流程
+              paymentParams = {
+                order_id: order_id,
+                pay_type: _this.state.payType,
+                order_type: orderInfo.order_type
+              };
+              config = void 0, payErr = void 0;
+              _context4.prev = 39;
+              _context4.next = 42;
+              return _index5.default.cashier.getPayment(paymentParams);
+
+            case 42:
+              config = _context4.sent;
+
+              console.log(config, 449);
+              _context4.next = 50;
+              break;
+
+            case 46:
+              _context4.prev = 46;
+              _context4.t2 = _context4["catch"](39);
+
+              payErr = _context4.t2;
+              console.log(_context4.t2);
+
+            case 50:
+
+              _this.setState({
+                submitLoading: false
+              });
+              // 积分流程
+
+              if (!(payType === 'dhpoint')) {
+                _context4.next = 54;
+                break;
+              }
+
+              if (!payErr) {
+                _index2.default.showToast({
+                  title: '支付成功',
+                  icon: 'none'
+                });
+
+                _this.__triggerPropsFn("onClearCart", [null].concat([]));
+                _index2.default.redirectTo({
+                  url: "/pages/trade/detail?id=" + order_id
+                });
+              }
+
+              return _context4.abrupt("return");
+
+            case 54:
+
+              payErr = null;
+              _context4.prev = 55;
+              _context4.next = 58;
+              return _index2.default.requestPayment(config);
+
+            case 58:
+              payRes = _context4.sent;
+
+              _index9.log.debug("[order pay]: ", payRes);
+              _context4.next = 66;
+              break;
+
+            case 62:
+              _context4.prev = 62;
+              _context4.t3 = _context4["catch"](55);
+
+              payErr = _context4.t3;
+              _index2.default.showToast({
+                title: _context4.t3.err_desc || _context4.t3.errMsg || '支付失败',
+                icon: 'none'
+              });
+
+            case 66:
+              if (payErr) {
+                _context4.next = 73;
+                break;
+              }
+
+              _context4.next = 69;
+              return _index2.default.showToast({
+                title: '支付成功',
+                icon: 'success'
+              });
+
+            case 69:
+
+              _this.__triggerPropsFn("onClearCart", [null].concat([]));
+              _index2.default.redirectTo({
+                url: "/pages/trade/detail?id=" + order_id
+              });
+
+              /*this.props.onClearCart()
+              Taro.redirectTo({
+                url: `/pages/trade/detail?id=${order_id}`
+              })*/
+              _context4.next = 74;
+              break;
+
+            case 73:
+              if (payErr.errMsg.indexOf('fail cancel') >= 0) {
+                _index2.default.redirectTo({
+                  url: "/pages/trade/detail?id=" + order_id
+                });
+              }
+
+            case 74:
+              return _context4.abrupt("return");
+
+            case 75:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4, _this2, [[4, 13], [20, 29], [39, 46], [55, 62]]);
+    })), _this.handleCouponsClick = function () {
+      if (_this.state.payType === 'dhpoint') {
+        return;
+      }
+
+      var items = _this.params.items.filter(function (item) {
+        return item.order_item_type !== 'gift';
+      }).map(function (item) {
+        var item_id = item.item_id,
+            num = item.num;
+
+        return {
+          item_id: item_id,
+          num: num
+        };
+      });
+
+      _index2.default.navigateTo({
+        url: "/pages/cart/coupon-picker?items=" + JSON.stringify(items)
+      });
+    }, _this.handlePaymentChange = function () {
+      var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(payType) {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                if (payType === 'dhpoint') {
+                  _this.__triggerPropsFn("onClearCoupon", [null].concat([]));
+                }
+                _this.setState({
+                  payType: payType,
+                  isPaymentOpend: false
+                }, function () {
+                  _this.calcOrder();
+                });
+
+              case 2:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, _this2);
+      }));
+
+      return function (_x) {
+        return _ref9.apply(this, arguments);
+      };
+    }(), _this.handleLayoutClose = function () {
+      _this.setState({
+        isPaymentOpend: false,
+        isDrugInfoOpend: false
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(CartCheckout, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(CartCheckout.prototype.__proto__ || Object.getPrototypeOf(CartCheckout.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        info: null,
+        submitLoading: false,
+        address_list: [],
+        shop: null,
+        showShippingPicker: false,
+        showAddressPicker: false,
+        showCheckoutItems: false,
+        showCoupons: false,
+        curCheckoutItems: [],
+        coupons: [],
+        drug: null,
+        total: {
+          items_count: '',
+          total_fee: '0.00',
+          item_fee: '',
+          freight_fee: '',
+          member_discount: '',
+          coupon_discount: '',
+          point: ''
+        },
+        payType: 'wxpay',
+        disabledPayment: null,
+        isPaymentOpend: false,
+        isDrugInfoOpend: false,
+        invoiceTitle: ''
+      };
+    }
+  }, {
+    key: "componentDidShow",
+    value: function componentDidShow() {
+      this.fetchAddress();
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      // this.fetchAddress()
+
+      var _$router$params = this.$router.params,
+          cart_type = _$router$params.cart_type,
+          payType = _$router$params.pay_type;
+
+      var info = null;
+
+      if (cart_type === 'fastbuy') {
+        this.__triggerPropsFn("onClearFastbuy", [null].concat([]));
+        info = null;
+      } else if (cart_type === 'cart') {
+        // 积分购买不在此种情况
+
+        this.__triggerPropsFn("onClearFastbuy", [null].concat([]));
+        info = null;
+      }
+
+      this.setState({
+        info: info,
+        payType: payType || this.state.payType
+      });
+
+      var total_fee = 0;
+      var items_count = 0;
+      var items = info && info.cart ? info.cart[0].list.map(function (item) {
+        var item_id = item.item_id,
+            num = item.num;
+
+        total_fee += +item.price;
+        items_count += +item.num;
+        return {
+          item_id: item_id,
+          num: num
+        };
+      }) : [];
+
+      this.params = {
+        cart_type: cart_type,
+        items: items,
+        pay_type: payType || 'wxpay'
+      };
+
+      this.setState({
+        total: {
+          items_count: items_count,
+          total_fee: total_fee.toFixed(2)
+        }
+      });
+      this.handleAddressChange(this.props.defaultAddress);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      // teardown clean
+      this.__triggerPropsFn("onClearCoupon", [null].concat([]));
+    }
+  }, {
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      if (nextProps.address !== this.props.address) {
+        this.fetchAddress();
+      }
+    }
+  }, {
+    key: "fetchAddress",
+    value: function () {
+      var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(cb) {
+        var _this3 = this;
+
+        var type, isDrug, _ref11, list;
+
+        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                type = this.$router.params.type;
+                isDrug = type === 'drug';
+
+                _index2.default.showLoading({
+                  mask: true
+                });
+                // if (!isDrug) {
+                _context6.next = 5;
+                return _index5.default.member.addressList();
+
+              case 5:
+                _ref11 = _context6.sent;
+                list = _ref11.list;
+
+                this.setState({
+                  address_list: list
+                }, function () {
+                  _this3.changeSelection();
+                  cb && cb(list);
+                });
+                /* } else {
+                  const { store_name, store_address, shop_id, hour } = await api.shop.getShop()
+                  this.setState({
+                    shop: {
+                      store_name,
+                      store_address,
+                      shop_id,
+                      hour
+                    }
+                  }, () => {
+                    this.calcOrder()
+                  })
+                } */
+                _index2.default.hideLoading();
+
+              case 9:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      function fetchAddress(_x2) {
+        return _ref10.apply(this, arguments);
+      }
+
+      return fetchAddress;
+    }()
+  }, {
+    key: "changeSelection",
+    value: function changeSelection() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var address_list = this.state.address_list;
+
+      if (address_list.length === 0) {
+        // this.props.address = {
+        //   current: null
+        // }
+        this.__triggerPropsFn("onAddressChoose", [null].concat([null]));
+        this.setState({
+          address: null
+        });
+        // this.handleAddressChange()
+        this.calcOrder();
+        /*Taro.navigateTo({
+          url: '/pages/member/edit-address'
+        })*/
+        return;
+      }
+
+      var address = this.props.address;
+      if (!address) {
+        var address_id = params.address_id;
+
+        address = (0, _find2.default)(address_list, function (addr) {
+          return address_id ? address_id === addr.address_id : addr.is_def > 0;
+        }) || address_list[0] || null;
+      }
+
+      _index9.log.debug('[address picker] selection: ', address);
+      this.__triggerPropsFn("onAddressChoose", [null].concat([address]));
+      this.handleAddressChange(address);
+    }
+  }, {
+    key: "getParams",
+    value: function getParams() {
+      var type = this.$router.params.type;
+
+      var isDrug = type === 'drug';
+      var receiver = null;
+      if (isDrug) {
+        receiver = (0, _index9.pickBy)(this.state.address, {
+          receiver_name: 'name',
+          receiver_mobile: 'mobile',
+          receiver_state: 'state',
+          receiver_city: 'city',
+          receiver_district: 'district',
+          receiver_address: 'address',
+          receiver_zip: 'zip'
+        });
+      } else {
+        receiver = (0, _index9.pickBy)(this.state.drug, {
+          drug_buyer_name: 'name',
+          drug_buyer_id_card: 'id_card',
+          drug_list_image: 'imgs'
+        });
+      }
+      var payType = this.state.payType;
+      var coupon = this.props.coupon;
+
+
+      var params = _extends({}, this.params, receiver, {
+        receipt_type: 'logistics',
+        order_type: isDrug ? 'normal_drug' : 'normal',
+        promotion: 'normal',
+        member_discount: 0,
+        coupon_discount: 0,
+        pay_type: payType
+      });
+
+      _index9.log.debug('[checkout] params: ', params);
+
+      if (coupon) {
+        if (coupon.type === 'coupon' && coupon.value.code) {
+          params.coupon_discount = coupon.value.code;
+        } else if (coupon.type === 'member') {
+          params.member_discount = coupon.value ? 1 : 0;
+        }
+      }
+
+      this.params = params;
+
+      return (0, _cloneDeep3.default)(params);
+    }
+  }, {
+    key: "calcOrder",
+    value: function () {
+      var _ref12 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7() {
+        var params, data, _data, items, item_fee, totalItemNum, _data$member_discount, member_discount, _data$coupon_discount, coupon_discount, discount_fee, _data$freight_fee, freight_fee, _data$freight_point, freight_point, _data$point, point, total_fee, remainpt, deduction, total, info;
+
+        return regeneratorRuntime.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _index2.default.showLoading({
+                  title: '加载中',
+                  mask: true
+                });
+                params = this.getParams();
+                data = void 0;
+                _context7.prev = 3;
+                _context7.next = 6;
+                return _index5.default.cart.total(params);
+
+              case 6:
+                data = _context7.sent;
+                _context7.next = 12;
+                break;
+
+              case 9:
+                _context7.prev = 9;
+                _context7.t0 = _context7["catch"](3);
+
+                this.resolvePayError(_context7.t0);
+
+              case 12:
+                if (data) {
+                  _context7.next = 14;
+                  break;
+                }
+
+                return _context7.abrupt("return");
+
+              case 14:
+                _data = data, items = _data.items, item_fee = _data.item_fee, totalItemNum = _data.totalItemNum, _data$member_discount = _data.member_discount, member_discount = _data$member_discount === undefined ? 0 : _data$member_discount, _data$coupon_discount = _data.coupon_discount, coupon_discount = _data$coupon_discount === undefined ? 0 : _data$coupon_discount, discount_fee = _data.discount_fee, _data$freight_fee = _data.freight_fee, freight_fee = _data$freight_fee === undefined ? 0 : _data$freight_fee, _data$freight_point = _data.freight_point, freight_point = _data$freight_point === undefined ? 0 : _data$freight_point, _data$point = _data.point, point = _data$point === undefined ? 0 : _data$point, total_fee = _data.total_fee, remainpt = _data.remainpt, deduction = _data.deduction;
+                total = _extends({}, this.state.total, {
+                  item_fee: item_fee,
+                  discount_fee: -1 * discount_fee,
+                  member_discount: -1 * member_discount,
+                  coupon_discount: -1 * coupon_discount,
+                  freight_fee: freight_fee,
+                  total_fee: params.pay_type === 'dhpoint' ? 0 : total_fee,
+                  items_count: totalItemNum,
+                  point: point,
+                  freight_point: freight_point,
+                  remainpt: remainpt, // 总积分
+                  deduction: deduction // 抵扣
+                });
+                info = this.state.info;
+
+                if (items && !this.state.info) {
+                  // 从后端获取订单item
+                  info = {
+                    cart: [{
+                      list: transformCartList(items),
+                      cart_total_num: items.reduce(function (acc, item) {
+                        return +item.num + acc;
+                      }, 0)
+                    }]
+                  };
+                  this.params.items = items;
+                }
+
+                _index2.default.hideLoading();
+                this.setState({
+                  total: total,
+                  info: info
+                });
+
+              case 20:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, this, [[3, 9]]);
+      }));
+
+      function calcOrder() {
+        return _ref12.apply(this, arguments);
+      }
+
+      return calcOrder;
+    }()
+  }, {
+    key: "handleClickItems",
+    value: function handleClickItems(items) {
+      this.setState({
+        curCheckoutItems: items
+      });
+      this.toggleCheckoutItems();
+    }
+  }, {
+    key: "toggleCheckoutItems",
+    value: function toggleCheckoutItems(isOpened) {
+      if (isOpened === undefined) {
+        isOpened = !this.state.showCheckoutItems;
+      }
+
+      (0, _dom.lockScreen)(isOpened);
+      this.setState({ showCheckoutItems: isOpened });
+    }
+  }, {
+    key: "toggleState",
+    value: function toggleState(key, val) {
+      if (val === undefined) {
+        val = !this.state[key];
+      }
+
+      this.setState(_defineProperty({}, key, val));
+    }
+  }, {
+    key: "resolvePayError",
+    value: function resolvePayError(e) {
+      var _this4 = this;
+
+      var payType = this.state.payType;
+
+      if (payType === 'dhpoint') {
+        // let payTypeNeedsChange = ['当前积分不足以支付本次订单费用', '当月使用积分已达限额'].includes(e.message)
+        this.setState({
+          disabledPayment: { name: 'dhpoint', message: e.message },
+          payType: 'wxpay'
+        }, function () {
+          _this4.calcOrder();
+        });
+      }
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var coupon = this.__props.coupon;
+      var _state = this.__state,
+          info = _state.info,
+          address = _state.address,
+          total = _state.total,
+          showAddressPicker = _state.showAddressPicker,
+          showCheckoutItems = _state.showCheckoutItems,
+          curCheckoutItems = _state.curCheckoutItems,
+          payType = _state.payType,
+          invoiceTitle = _state.invoiceTitle,
+          submitLoading = _state.submitLoading,
+          disabledPayment = _state.disabledPayment,
+          isPaymentOpend = _state.isPaymentOpend;
+      var type = this.$router.params.type;
+
+      var isDrug = type === 'drug';
+
+      if (!info) {
+        return null;
+      }
+
+      var couponText = !coupon ? '' : coupon.type === 'member' ? '会员折扣' : coupon.value && coupon.value.title || '';
+      var isBtnDisabled = !address;
+
+      Object.assign(this.__state, {
+        address: address,
+        couponText: couponText,
+        isDrug: isDrug,
+        isBtnDisabled: isBtnDisabled
+      });
+      return this.__state;
+    }
+  }]);
+
+  return CartCheckout;
+}(_index.Component), _class2.properties = {
+  "__fn_onClearFastbuy": {
+    "type": null,
+    "value": null
+  },
+  "defaultAddress": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClearCoupon": {
+    "type": null,
+    "value": null
+  },
+  "address": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onAddressChoose": {
+    "type": null,
+    "value": null
+  },
+  "coupon": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClearCart": {
+    "type": null,
+    "value": null
+  }
+}, _class2.$$events = ["handleCouponsClick", "handleDrugInfoShow", "handlePaymentShow", "toggleCheckoutItems", "handlePay", "handleLayoutClose", "handleChange", "handlePaymentChange"], _class2.defaultProps = {
+  list: []
+}, _temp2)) || _class) || _class);
+exports.default = CartCheckout;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(CartCheckout, true));

@@ -1,1 +1,184 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_class2,_temp2,_extends=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n])}return e},_createClass=function(){function n(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,r){return t&&n(e.prototype,t),r&&n(e,r),e}}(),_get=function e(t,r,n){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,r);if(void 0===o){var i=Object.getPrototypeOf(t);return null===i?void 0:e(i,r,n)}if("value"in o)return o.value;var a=o.get;return void 0!==a?a.call(n):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../api/index.js"),_index4=_interopRequireDefault(_index3),_index5=require("../../hocs/index.js"),_index6=require("../../utils/index.js");function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _toConsumableArray(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}function _asyncToGenerator(e){return function(){var s=e.apply(this,arguments);return new Promise(function(i,a){return function t(e,r){try{var n=s[e](r),o=n.value}catch(e){return void a(e)}if(!n.done)return Promise.resolve(o).then(function(e){t("next",e)},function(e){t("throw",e)});i(o)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var DistributionSubordinate=(0,_index5.withPager)((_temp2=_class2=function(e){function a(){var e,t,r;_classCallCheck(this,a);for(var n=arguments.length,o=Array(n),i=0;i<n;i++)o[i]=arguments[i];return(t=r=_possibleConstructorReturn(this,(e=a.__proto__||Object.getPrototypeOf(a)).call.apply(e,[this].concat(o)))).$usedState=["loopArray0","curTabIdx","tabList","scrollTop","list","page"],r.handleClickTab=function(e){r.state.page.isLoading||(e!==r.state.curTabIdx&&(r.resetPage(),r.setState({list:[]})),r.setState({curTabIdx:e},function(){r.nextPage()}))},r.$$refs=[],_possibleConstructorReturn(r,t)}var t;return _inherits(a,_index.Component),_createClass(a,[{key:"_constructor",value:function(e){_get(a.prototype.__proto__||Object.getPrototypeOf(a.prototype),"_constructor",this).call(this,e),this.state=_extends({},this.state,{list:[],curTabIdx:0,tabList:[{title:"已购买",num:0},{title:"未购买",num:0}]})}},{key:"componentDidMount",value:function(){this.nextPage()}},{key:"fetch",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(t){var r,n,o,i,a,s,u,l,c,p;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return r=this.state.curTabIdx,n=t.page_no,o=t.page_size,i={page:n,pageSize:o},e.next=5,_index4.default.distribution.subordinate(i);case 5:return a=e.sent,s=a.buy,u=a.not_buy,l=r?u.total_count:s.total_count,c=l.total,p=(0,_index6.pickBy)(r?u.list:s.list,{relationship_depth:"relationship_depth",headimgurl:"headimgurl",username:"username",is_open_promoter_grade:"is_open_promoter_grade",promoter_grade_name:"promoter_grade_name",mobile:"mobile",bind_date:"bind_date"}),this.setState({list:[].concat(_toConsumableArray(this.state.list),_toConsumableArray(p))}),e.abrupt("return",{total:c});case 12:case"end":return e.stop()}},e,this)})),function(e){return t.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state,t=e.list,r=e.page,n=(e.curTabIdx,e.tabList,e.scrollTop),o=t.map(function(e){return e={$original:(0,_index.internal_get_original)(e)},{$loopState__temp2:(0,_index6.classNames)("list-item",1==e.$original.relationship_depth&&"child",2==e.$original.relationship_depth&&"Gchild",3==e.$original.relationship_depth&&"GGchild"),$original:e.$original}});return Object.assign(this.__state,{loopArray0:o,scrollTop:n,page:r}),this.__state}}]),a}(),_class2.properties={},_class2.$$events=["handleClickTab","nextPage"],_class=_temp2))||_class;exports.default=DistributionSubordinate,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(DistributionSubordinate,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _class2, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../api/index.js");
+
+var _index4 = _interopRequireDefault(_index3);
+
+var _index5 = require("../../hocs/index.js");
+
+var _index6 = require("../../utils/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DistributionSubordinate = (0, _index5.withPager)(_class = (_temp2 = _class2 = function (_BaseComponent) {
+  _inherits(DistributionSubordinate, _BaseComponent);
+
+  function DistributionSubordinate() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, DistributionSubordinate);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DistributionSubordinate.__proto__ || Object.getPrototypeOf(DistributionSubordinate)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["loopArray0", "curTabIdx", "tabList", "scrollTop", "list", "page"], _this.handleClickTab = function (idx) {
+      if (_this.state.page.isLoading) {
+        return;
+      }if (idx !== _this.state.curTabIdx) {
+        _this.resetPage();
+        _this.setState({
+          list: []
+        });
+      }
+
+      _this.setState({
+        curTabIdx: idx
+      }, function () {
+        _this.nextPage();
+      });
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(DistributionSubordinate, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(DistributionSubordinate.prototype.__proto__ || Object.getPrototypeOf(DistributionSubordinate.prototype), "_constructor", this).call(this, props);
+
+      this.state = _extends({}, this.state, {
+        list: [],
+        curTabIdx: 0,
+        tabList: [{ title: '已购买', num: 0 }, { title: '未购买', num: 0 }]
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.nextPage();
+    }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(params) {
+        var curTabIdx, page, pageSize, query, _ref3, buy, not_buy, _ref4, total, nList;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                curTabIdx = this.state.curTabIdx;
+                page = params.page_no, pageSize = params.page_size;
+                query = {
+                  page: page,
+                  pageSize: pageSize
+                };
+                _context.next = 5;
+                return _index4.default.distribution.subordinate(query);
+
+              case 5:
+                _ref3 = _context.sent;
+                buy = _ref3.buy;
+                not_buy = _ref3.not_buy;
+                _ref4 = curTabIdx ? not_buy.total_count : buy.total_count, total = _ref4.total;
+                nList = (0, _index6.pickBy)(curTabIdx ? not_buy.list : buy.list, {
+                  relationship_depth: 'relationship_depth',
+                  headimgurl: 'headimgurl',
+                  username: 'username',
+                  is_open_promoter_grade: 'is_open_promoter_grade',
+                  promoter_grade_name: 'promoter_grade_name',
+                  mobile: 'mobile',
+                  bind_date: 'bind_date'
+                });
+
+
+                this.setState({
+                  list: [].concat(_toConsumableArray(this.state.list), _toConsumableArray(nList))
+                });
+
+                return _context.abrupt("return", {
+                  total: total
+                });
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetch(_x) {
+        return _ref2.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          list = _state.list,
+          page = _state.page,
+          curTabIdx = _state.curTabIdx,
+          tabList = _state.tabList,
+          scrollTop = _state.scrollTop;
+
+
+      var loopArray0 = list.map(function (item) {
+        item = {
+          $original: (0, _index.internal_get_original)(item)
+        };
+        var $loopState__temp2 = (0, _index6.classNames)('list-item', item.$original.relationship_depth == 1 && 'child', item.$original.relationship_depth == 2 && 'Gchild', item.$original.relationship_depth == 3 && 'GGchild');
+        return {
+          $loopState__temp2: $loopState__temp2,
+          $original: item.$original
+        };
+      });
+      Object.assign(this.__state, {
+        loopArray0: loopArray0,
+        scrollTop: scrollTop,
+        page: page
+      });
+      return this.__state;
+    }
+  }]);
+
+  return DistributionSubordinate;
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleClickTab", "nextPage"], _temp2)) || _class;
+
+exports.default = DistributionSubordinate;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(DistributionSubordinate, true));

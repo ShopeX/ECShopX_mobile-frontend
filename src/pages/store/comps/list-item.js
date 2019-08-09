@@ -5,8 +5,7 @@ import './list-item.scss'
 
 export default class StoreListItem extends Component {
   static defaultProps = {
-    onClick: () => {},
-    info: null
+    onClick: () => {}
   }
 
   static options = {

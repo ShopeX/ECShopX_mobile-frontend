@@ -1,0 +1,21 @@
+<block>
+    <view class="page-package-goods">
+        <scroll-view class="package-goods__scroll" scroll-y="{{true}}" scroll-top="{{scrollTop}}" scroll-with-animation="{{true}}" bindscroll="handleScroll" bindscrolltolower="nextPage">
+            <view class="package-goods__list">
+                <view class="package-goods__item" wx:key="package_id" wx:for="{{list}}" wx:for-item="item" wx:for-index="_anonIdx">
+                    <package-item info="{{item}}" __triggerObserer="{{ _triggerObserer }}" current="{{currentPackage}}" bindonclick="handleItemClick" bindonaddcart="handleCartAdd" bindonshowbuypanel="handleShowBuyPanel" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{item.package_id}}" __fn_onAddCart="{{true}}" data-e-onaddcart-so="this" __fn_onShowBuyPanel="{{true}}" data-e-onshowbuypanel-so="this"></package-item>
+                </view>
+            </view>
+            <block wx:if="{{page.isLoading}}">
+                <loading __triggerObserer="{{ _triggerObserer }}">正在加载...</loading>
+            </block>
+            <block wx:if="{{!page.isLoading && !page.hasNext && !list.length}}">
+                <sp-note img="trades_empty.png" __triggerObserer="{{ _triggerObserer }}">暂无数据~</sp-note>
+            </block>
+        </scroll-view>
+        <block wx:if="{{info}}">
+            <goods-buy-panel info="{{info}}" __triggerObserer="{{ _triggerObserer }}" type="{{buyPanelType}}" isOpened="{{showBuyPanel}}" bindonclose="anonymousFunc0" bindonchange="handleSkuChange" bindonaddcart="handleBuyAction" bindonfastbuy="handleBuyAction" __fn_onClose="{{true}}" __fn_onChange="{{true}}" __fn_onAddCart="{{true}}" data-e-onaddcart-so="this" data-e-onaddcart-a-a="cart" __fn_onFastbuy="{{true}}" data-e-onfastbuy-so="this" data-e-onfastbuy-a-a="fastbuy"></goods-buy-panel>
+        </block>
+        <back-to-top show="{{showBackToTop}}" __triggerObserer="{{ _triggerObserer }}" bindonclick="scrollBackToTop" __fn_onClick="{{true}}"></back-to-top>
+    </view>
+</block>

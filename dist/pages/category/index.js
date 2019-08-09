@@ -1,1 +1,215 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _dec,_class,_class2,_temp2,_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var i=Object.getOwnPropertyDescriptor(t,n);if(void 0===i){var a=Object.getPrototypeOf(t);return null===a?void 0:e(a,n,r)}if("value"in i)return i.value;var s=i.get;return void 0!==s?s.call(r):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../npm/@tarojs/redux/index.js"),_index4=require("../../utils/index.js"),_index5=require("../../api/index.js"),_index6=_interopRequireDefault(_index5);function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var o=e.apply(this,arguments);return new Promise(function(a,s){return function t(e,n){try{var r=o[e](n),i=r.value}catch(e){return void s(e)}if(!r.done)return Promise.resolve(i).then(function(e){t("next",e)},function(e){t("throw",e)});a(i)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var Category=(_dec=(0,_index3.connect)(function(e){return{store:e}}))((_temp2=_class2=function(e){function s(){var e,t,r;_classCallCheck(this,s);for(var n=arguments.length,i=Array(n),a=0;a<n;a++)i[a]=arguments[a];return(t=r=_possibleConstructorReturn(this,(e=s.__proto__||Object.getPrototypeOf(s)).call.apply(e,[this].concat(i)))).$usedState=["tabList","curTabIdx","hasSeries","isChanged","list","contentList"],r.handleClickTab=function(e){var t=r.state.contentList[e],n=(0,_index4.pickBy)(t,{name:"name",img:"img",children:"children"});r.setState({curTabIdx:e,list:n}),e===r.state.curTabIdx?r.setState({isChanged:!1}):r.setState({isChanged:!0})},r.$$refs=[],_possibleConstructorReturn(r,t)}var t;return _inherits(s,_index.Component),_createClass(s,[{key:"_constructor",value:function(e){_get(s.prototype.__proto__||Object.getPrototypeOf(s.prototype),"_constructor",this).call(this,e),this.state={curTabIdx:0,tabList:[],contentList:[],list:null,hasSeries:!1,isChanged:!1}}},{key:"componentDidMount",value:function(){this.fetch()}},{key:"fetch",value:(t=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n,r,i,a,s,o,c,u,l;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t={template_name:"yykweishop",version:"v1.0.1",page_name:"category"},e.next=3,_index6.default.category.getCategory(t);case 3:if(n=e.sent,r=n.list,(i=r[0]?r[0].params.data:[]).length)return e.next=9,_index6.default.category.get();e.next=14;break;case 9:a=e.sent,s=(0,_index4.pickBy)(a,{name:"category_name",img:"image_url",children:function(e){var t=e.children;return(0,_index4.pickBy)(t,{name:"category_name",img:"image_url"})}}),this.setState({list:s,hasSeries:!1}),e.next=20;break;case 14:o=[],c=[],r[0].params.hasSeries?i.map(function(e){o.push({title:e.title,status:e.name}),c.push(e.content)}):c.push(i),u=c[this.state.curTabIdx],l=(0,_index4.pickBy)(u,{name:"name",img:"img",children:"children"}),this.setState({tabList:o,contentList:c,hasSeries:!0,list:l});case 20:case"end":return e.stop()}},e,this)})),function(){return t.apply(this,arguments)})},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__state;e.curTabIdx,e.tabList,e.list,e.hasSeries,e.isChanged;return Object.assign(this.__state,{}),this.__state}}]),s}(),_class2.properties={},_class2.$$events=["handleClickTab"],_class=_temp2))||_class;exports.default=Category,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(Category,!0));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _dec, _class, _class2, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../npm/@tarojs/redux/index.js");
+
+var _index4 = require("../../utils/index.js");
+
+var _index5 = require("../../api/index.js");
+
+var _index6 = _interopRequireDefault(_index5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Category = (_dec = (0, _index3.connect)(function (store) {
+  return {
+    store: store
+  };
+}), _dec(_class = (_temp2 = _class2 = function (_BaseComponent) {
+  _inherits(Category, _BaseComponent);
+
+  function Category() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Category);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Category.__proto__ || Object.getPrototypeOf(Category)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["tabList", "curTabIdx", "hasSeries", "isChanged", "list", "contentList"], _this.handleClickTab = function (idx) {
+      var curIndexList = _this.state.contentList[idx];
+
+      var nList = (0, _index4.pickBy)(curIndexList, {
+        name: 'name',
+        img: 'img',
+        children: 'children'
+      });
+      _this.setState({
+        curTabIdx: idx,
+        list: nList
+      });
+      if (idx === _this.state.curTabIdx) {
+        _this.setState({
+          isChanged: false
+        });
+      } else {
+        _this.setState({
+          isChanged: true
+        });
+      }
+    }, _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(Category, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(Category.prototype.__proto__ || Object.getPrototypeOf(Category.prototype), "_constructor", this).call(this, props);
+
+      this.state = {
+        curTabIdx: 0,
+        tabList: [],
+        contentList: [],
+        list: null,
+        hasSeries: false,
+        isChanged: false
+      };
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.fetch();
+    }
+  }, {
+    key: "fetch",
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var query, _ref3, list, seriesList, res, nList, tabList, contentList, curIndexList, _nList;
+
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                /*const nList = pickBy(res, {
+                  category_name: 'category_name',
+                  image_url: 'image_url',
+                  children: 'children'
+                })*/
+
+                query = { template_name: 'yykweishop', version: 'v1.0.1', page_name: 'category' };
+                _context.next = 3;
+                return _index6.default.category.getCategory(query);
+
+              case 3:
+                _ref3 = _context.sent;
+                list = _ref3.list;
+                seriesList = list[0] ? list[0].params.data : [];
+
+                if (!seriesList.length) {
+                  _context.next = 14;
+                  break;
+                }
+
+                _context.next = 9;
+                return _index6.default.category.get();
+
+              case 9:
+                res = _context.sent;
+                nList = (0, _index4.pickBy)(res, {
+                  name: 'category_name',
+                  img: 'image_url',
+                  children: function children(_ref4) {
+                    var _children = _ref4.children;
+                    return (0, _index4.pickBy)(_children, {
+                      name: 'category_name',
+                      img: 'image_url'
+                    });
+                  }
+                });
+
+                this.setState({
+                  list: nList,
+                  hasSeries: false
+                });
+                _context.next = 20;
+                break;
+
+              case 14:
+                tabList = [];
+                contentList = [];
+
+                if (list[0].params.hasSeries) {
+                  seriesList.map(function (item) {
+                    tabList.push({ title: item.title, status: item.name });
+                    contentList.push(item.content);
+                  });
+                } else {
+                  contentList.push(seriesList);
+                }
+                curIndexList = contentList[this.state.curTabIdx];
+                _nList = (0, _index4.pickBy)(curIndexList, {
+                  name: 'name',
+                  img: 'img',
+                  children: 'children'
+                });
+
+                this.setState({
+                  tabList: tabList,
+                  contentList: contentList,
+                  hasSeries: true,
+                  list: _nList
+                });
+
+              case 20:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetch() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _state = this.__state,
+          curTabIdx = _state.curTabIdx,
+          tabList = _state.tabList,
+          list = _state.list,
+          hasSeries = _state.hasSeries,
+          isChanged = _state.isChanged;
+
+
+      Object.assign(this.__state, {});
+      return this.__state;
+    }
+  }]);
+
+  return Category;
+}(_index.Component), _class2.properties = {}, _class2.$$events = ["handleClickTab"], _temp2)) || _class);
+exports.default = Category;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(Category, true));

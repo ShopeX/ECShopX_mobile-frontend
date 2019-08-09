@@ -1,1 +1,172 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0});var _class,_temp2,_createClass=function(){function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}}(),_get=function e(t,n,r){null===t&&(t=Function.prototype);var o=Object.getOwnPropertyDescriptor(t,n);if(void 0===o){var l=Object.getPrototypeOf(t);return null===l?void 0:e(l,n,r)}if("value"in o)return o.value;var a=o.get;return void 0!==a?a.call(r):void 0},_index=require("../../npm/@tarojs/taro-weapp/index.js"),_index2=_interopRequireDefault(_index),_index3=require("../../utils/index.js");function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}function _asyncToGenerator(e){return function(){var i=e.apply(this,arguments);return new Promise(function(l,a){return function t(e,n){try{var r=i[e](n),o=r.value}catch(e){return void a(e)}if(!r.done)return Promise.resolve(o).then(function(e){t("next",e)},function(e){t("throw",e)});l(o)}("next")})}}function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _possibleConstructorReturn(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function _inherits(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var GoodsItem=(_temp2=_class=function(e){function i(){var e,t,o,l=this;_classCallCheck(this,i);for(var n=arguments.length,r=Array(n),a=0;a<n;a++)r[a]=arguments[a];return(t=o=_possibleConstructorReturn(this,(e=i.__proto__||Object.getPrototypeOf(i)).call.apply(e,[this].concat(r)))).$usedState=["anonymousState__temp","info","img","type","showMarketPrice","noCurSymbol","noCurDecimal","appendText","className","isPointDraw","children","renderFooter"],o.handleFavClick=_asyncToGenerator(regeneratorRuntime.mark(function e(){var t,n,r;return regeneratorRuntime.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:t=o.props.info,n=t.item_id,r=t.is_fav,console.log(r,n);case 2:case"end":return e.stop()}},e,l)})),o.$$refs=[],_possibleConstructorReturn(o,t)}return _inherits(i,_index.Component),_createClass(i,[{key:"_constructor",value:function(e){_get(i.prototype.__proto__||Object.getPrototypeOf(i.prototype),"_constructor",this).call(this,e)}},{key:"_createData",value:function(){this.__state=arguments[0]||this.state||{},this.__props=arguments[1]||this.props||{};arguments[2];var e=this.__props,t=e.info,n=(e.showMarketPrice,e.noCurSymbol,e.noCurDecimal,e.onClick,e.appendText,e.className),r=(e.isPointDraw,e.type);if(!t)return null;(0,_index3.isObject)(t.price)?t.price.total_price:t.price;var o=t.img||t.image_default_id,l=(0,_index3.classNames)("goods-item",n);return Object.assign(this.__state,{anonymousState__temp:l,info:t,img:o,type:r}),this.__state}},{key:"funPrivatelCHva",value:function(){this.__triggerPropsFn("onClick",[].concat(Array.prototype.slice.call(arguments)))}}]),i}(),_class.properties={info:{type:null,value:null},showMarketPrice:{type:null,value:null},noCurSymbol:{type:null,value:null},noCurDecimal:{type:null,value:null},onClick:{type:null,value:null},appendText:{type:null,value:null},className:{type:null,value:null},isPointDraw:{type:null,value:null},type:{type:null,value:null},__fn_onClick:{type:null,value:null}},_class.$$events=["funPrivatelCHva","handleFavClick","handleLikeClick"],_class.defaultProps={onClick:function(){},showMarketPrice:!0,noCurSymbol:!1,type:"item"},_class.options={addGlobalClass:!0},_class.multipleSlots=!0,_temp2);exports.default=GoodsItem,Component(require("../../npm/@tarojs/taro-weapp/index.js").default.createComponent(GoodsItem));
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _class, _temp2;
+
+var _index = require("../../npm/@tarojs/taro-weapp/index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _index3 = require("../../utils/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GoodsItem = (_temp2 = _class = function (_BaseComponent) {
+  _inherits(GoodsItem, _BaseComponent);
+
+  function GoodsItem() {
+    var _ref,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, GoodsItem);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = GoodsItem.__proto__ || Object.getPrototypeOf(GoodsItem)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp", "info", "img", "showFav", "type", "showMarketPrice", "noCurSymbol", "noCurDecimal", "appendText", "className", "isPointDraw", "renderCheckbox", "renderSpec", "renderFooter"], _this.handleFavClick = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var _this$props$info, item_id, is_fav;
+
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _this$props$info = _this.props.info, item_id = _this$props$info.item_id, is_fav = _this$props$info.is_fav;
+
+              console.log(is_fav, item_id);
+              // await api.item.collect(item_id)
+
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2);
+    })), _this.$$refs = [], _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(GoodsItem, [{
+    key: "_constructor",
+    value: function _constructor(props) {
+      _get(GoodsItem.prototype.__proto__ || Object.getPrototypeOf(GoodsItem.prototype), "_constructor", this).call(this, props);
+    }
+  }, {
+    key: "_createData",
+    value: function _createData() {
+      this.__state = arguments[0] || this.state || {};
+      this.__props = arguments[1] || this.props || {};
+      var __isRunloopRef = arguments[2];
+      ;
+
+      var _props = this.__props,
+          info = _props.info,
+          showMarketPrice = _props.showMarketPrice,
+          showFav = _props.showFav,
+          noCurSymbol = _props.noCurSymbol,
+          noCurDecimal = _props.noCurDecimal,
+          onClick = _props.onClick,
+          appendText = _props.appendText,
+          className = _props.className,
+          isPointDraw = _props.isPointDraw,
+          type = _props.type;
+
+      if (!info) {
+        return null;
+      }
+
+      var price = (0, _index3.isObject)(info.price) ? info.price.total_price : info.price;
+      var img = info.img || info.image_default_id;
+
+      var anonymousState__temp = (0, _index3.classNames)('goods-item', 'classes');
+      Object.assign(this.__state, {
+        anonymousState__temp: anonymousState__temp,
+        info: info,
+        img: img,
+        showFav: showFav,
+        type: type
+      });
+      return this.__state;
+    }
+  }, {
+    key: "funPrivateDkfvm",
+    value: function funPrivateDkfvm() {
+      this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
+    }
+  }]);
+
+  return GoodsItem;
+}(_index.Component), _class.properties = {
+  "info": {
+    "type": null,
+    "value": null
+  },
+  "showMarketPrice": {
+    "type": null,
+    "value": null
+  },
+  "showFav": {
+    "type": null,
+    "value": null
+  },
+  "noCurSymbol": {
+    "type": null,
+    "value": null
+  },
+  "noCurDecimal": {
+    "type": null,
+    "value": null
+  },
+  "onClick": {
+    "type": null,
+    "value": null
+  },
+  "appendText": {
+    "type": null,
+    "value": null
+  },
+  "className": {
+    "type": null,
+    "value": null
+  },
+  "isPointDraw": {
+    "type": null,
+    "value": null
+  },
+  "type": {
+    "type": null,
+    "value": null
+  },
+  "__fn_onClick": {
+    "type": null,
+    "value": null
+  }
+}, _class.$$events = ["funPrivateDkfvm", "handleFavClick", "handleLikeClick"], _class.defaultProps = {
+  onClick: function onClick() {},
+  showMarketPrice: true,
+  showFav: true,
+  showSku: false,
+  noCurSymbol: false,
+  type: 'item'
+}, _class.options = {
+  addGlobalClass: true
+}, _class.externalClasses = ['classes'], _class.multipleSlots = true, _temp2);
+exports.default = GoodsItem;
+
+Component(require('../../npm/@tarojs/taro-weapp/index.js').default.createComponent(GoodsItem));

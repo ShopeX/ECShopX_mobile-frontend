@@ -1,1 +1,21 @@
-.drug-info{padding:30rpx 30rpx 130rpx}.drug-info .drug-describe{margin-top:20rpx;background:#fff;-webkit-box-sizing:border-box;box-sizing:border-box}.drug-info .drug-describe__img{margin-top:40rpx}.drug-info .drug-describe__imgupload{margin-left:-15rpx}.drug-info .drug-describe__imgupload_text{display:block;padding:30rpx;color:#b3b3b3}
+
+.drug-info {
+  padding: 30rpx 30rpx 130rpx;
+}
+.drug-info .drug-describe {
+  margin-top: 20rpx;
+  background: #ffffff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.drug-info .drug-describe__img {
+  margin-top: 40rpx;
+}
+.drug-info .drug-describe__imgupload {
+  margin-left: -15rpx;
+}
+.drug-info .drug-describe__imgupload_text {
+  display: block;
+  padding: 30rpx;
+  color: #b3b3b3;
+}

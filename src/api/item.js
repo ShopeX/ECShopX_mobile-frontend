@@ -36,3 +36,11 @@ export function seckillCheck ({ item_id, num = 1, seckill_id }) {
 export function seckillCancelCheck () {
   return req.delete('/promotion/seckillactivity/cancelTicket')
 }
+
+export function packageList (params = {}) {
+  return req.get('/promotions/package', params)
+}
+
+export function packageDetail (item_id) {
+  return req.get(`/promotions/package/${item_id}`)
+}
