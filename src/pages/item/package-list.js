@@ -16,7 +16,6 @@ export default class PackageList extends Component {
 
     this.state = {
       ...this.state,
-      query: null,
       currentPackage: 0,
       list: []
     }
@@ -41,22 +40,23 @@ export default class PackageList extends Component {
     }
     const { list, total_count: total } = await api.item.packageList(query)
 
-    const nList = pickBy(list, {
-      package_id: 'package_id',
-      package_name: 'package_name',
-      curSku: null,
-      open: false
-    })
-
-    this.setState({
-      list: [...this.state.list, ...nList],
-      query
-    })
-
-    if (!currentPackage) {
-      this.setState({
-        currentPackage: nList[0].package_id
+    if (list.length) {
+      const nList = pickBy(list, {
+        package_id: 'package_id',
+        package_name: 'package_name',
+        open: false
       })
+
+      this.setState({
+        list: [...this.state.list, ...nList]
+      })
+
+
+      if (!currentPackage) {
+        this.setState({
+          currentPackage: nList[0].package_id
+        })
+      }
     }
 
     return {
@@ -72,7 +72,6 @@ export default class PackageList extends Component {
 
   render () {
     const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType } = this.state
-    const { curSku } = this.props
 
     return (
       <View className='page-package-goods'>
@@ -101,16 +100,16 @@ export default class PackageList extends Component {
                   )
                 })
               }
+              {
+                page.isLoading
+                  ? <Loading>正在加载...</Loading>
+                  : null
+              }
+              {
+                !page.isLoading && !page.hasNext && !list.length
+                  && (<SpNote img='trades_empty.png'>活动已结束~</SpNote>)
+              }
             </View>
-          {
-            page.isLoading
-              ? <Loading>正在加载...</Loading>
-              : null
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-          }
         </ScrollView>
 
         <BackToTop

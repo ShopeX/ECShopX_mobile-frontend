@@ -13,13 +13,7 @@ export function count (params) {
 }
 
 export function add (params) {
-  const { item_id, num = 1, isAccumulate = false, shop_type = 'distributor' } = params
-  return req.post(`/cart`, {
-    item_id,
-    num,
-    isAccumulate,
-    shop_type
-  })
+  return req.post(`/cart`, params)
 }
 
 export function fastBuy (params) {
