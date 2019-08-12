@@ -132,7 +132,7 @@ export default class CartIndex extends Component {
       const tDict = list.reduce((acc, val) => {
         acc[val.cart_id] = val
         return acc
-      }, {})
+			}, {})
       const activityGrouping = shopCart.activity_grouping
       const group = used_activity.map((act) => {
         const activity = activityGrouping.find(a => String(a.activity_id) === String(act.activity_id))
@@ -140,19 +140,13 @@ export default class CartIndex extends Component {
           const cartItem = tDict[id]
           delete tDict[id]
           return cartItem
-        })
-
-        return {
-          activity,
-          list: itemList
-        }
+				})
+								
+        return Object.assign(shopCart,{activity,list: itemList})
       })
 
       // 无活动列表
-      group.push({
-        activity: null,
-        list: Object.values(tDict)
-      })
+			group.push(Object.assign(shopCart,{activity: null, list: Object.values(tDict) }))
 
       return group
     })
@@ -184,7 +178,347 @@ export default class CartIndex extends Component {
     const { type = 'distributor' } = this.$router.params
     const params = {shop_type: type}
     try {
-      const res = await api.cart.get(params)
+			// const res = await api.cart.get(params)
+			const res = {
+				"invalid_cart":[
+						{
+								"cart_id":"183",
+								"company_id":"1",
+								"user_id":"6",
+								"user_ident":null,
+								"shop_type":"distributor",
+								"shop_id":"4",
+								"activity_type":"normal",
+								"activity_id":null,
+								"marketing_type":null,
+								"marketing_id":null,
+								"item_type":"normal",
+								"item_id":"99",
+								"items_id":[
+
+								],
+								"item_name":"测试商品26",
+								"pics":"http://mmbiz.qpic.cn/mmbiz_png/MUQsdY0GdK5ae4n1MtSjK0aksB7yCoufslMJhO5zyE0PRUdYElo6CSicOnJEbkpnbvHtfdd39LVtknSdMEFpOHQ/0?wx_fmt=png",
+								"price":1,
+								"num":1,
+								"wxa_appid":null,
+								"is_checked":false,
+								"is_plus_buy":false,
+								"created":1565507373,
+								"updated":1565507373
+						},
+						{
+								"cart_id":"182",
+								"company_id":"1",
+								"user_id":"6",
+								"user_ident":null,
+								"shop_type":"distributor",
+								"shop_id":"4",
+								"activity_type":"normal",
+								"activity_id":null,
+								"marketing_type":null,
+								"marketing_id":null,
+								"item_type":"normal",
+								"item_id":"98",
+								"items_id":[
+
+								],
+								"item_name":"测试商品25",
+								"pics":"http://mmbiz.qpic.cn/mmbiz_png/MUQsdY0GdK5ae4n1MtSjK0aksB7yCoufNBh17xk9Vq1dR5Vuh6vv9EEt61rKKv2DjW40VGV5JFOic77XyurzNsA/0?wx_fmt=png",
+								"price":100,
+								"num":1,
+								"wxa_appid":null,
+								"is_checked":false,
+								"is_plus_buy":false,
+								"created":1565497994,
+								"updated":1565497994
+						},
+						{
+								"cart_id":"161",
+								"company_id":"1",
+								"user_id":"6",
+								"user_ident":null,
+								"shop_type":"distributor",
+								"shop_id":"4",
+								"activity_type":"normal",
+								"activity_id":null,
+								"marketing_type":null,
+								"marketing_id":null,
+								"item_type":"normal",
+								"item_id":"100",
+								"items_id":[
+
+								],
+								"item_name":" 云南白药 云丰 蒲地蓝消炎片 48片（消肿 咽炎 扁桃腺炎",
+								"pics":"http://bbctest.aixue7.com/1/2019/07/09/8400174a0ba5e5b3577e719196cf5c1chvjL9AZcwdtqZ8dujNNxqGLoaCTfYpBR",
+								"price":10000,
+								"num":3,
+								"wxa_appid":null,
+								"is_checked":false,
+								"is_plus_buy":false,
+								"created":1565348713,
+								"updated":1565348748
+						}
+				],
+				"valid_cart":[
+								{
+										"shop_name":"怡康医药·广电智慧社区大兴东路店",
+										"address":"安市莲湖区永安路9号龙湖水晶郦城",
+										"shop_id":"4",
+										"cart_total_price":100,
+										"item_fee":100,
+										"cart_total_num":1,
+										"cart_total_count":1,
+										"discount_fee":0,
+										"total_fee":"100",
+										"list":[
+												{
+														"cart_id":"184",
+														"company_id":"1",
+														"user_id":"6",
+														"user_ident":null,
+														"shop_type":"distributor",
+														"shop_id":"4",
+														"activity_type":"normal",
+														"activity_id":null,
+														"marketing_type":null,
+														"marketing_id":null,
+														"item_type":"normal",
+														"item_id":"207",
+														"items_id":[
+		
+														],
+														"item_name":"yao072901",
+														"pics":"http://mmbiz.qpic.cn/mmbiz_jpg/MUQsdY0GdK4avNsaHHwqSumaBer5LDj0oWwuebbnzibRsgcickolK72CzfGArmp80LLgmibFov5dfTMwTwoMFtQqw/0?wx_fmt=jpeg",
+														"price":100,
+														"num":1,
+														"wxa_appid":null,
+														"is_checked":true,
+														"is_plus_buy":false,
+														"created":1565540165,
+														"updated":1565540165,
+														"is_last_price":true,
+														"discount_fee":0,
+														"total_fee":"100",
+														"store":221,
+														"market_price":100,
+														"brief":"072901",
+														"approve_status":"onsale",
+														"item_spec_desc":"颜色:绿",
+														"parent_id":0,
+														"limitedTimeSaleAct":{
+																"activity_id":"5",
+																"marketing_type":"limited_time_sale",
+																"marketing_name":"测试活动",
+																"limit_total_money":200,
+																"limit_money":1,
+																"validity_period":15,
+																"is_free_shipping":false,
+																"third_params":null,
+																"promotion_tag":"限时优惠"
+														},
+														"total_price":"100"
+												}
+										],
+										"used_activity":[
+		
+										],
+										"used_activity_ids":[
+		
+										],
+										"activity_grouping":[
+		
+										],
+										"vipgrade_guide_title":{
+												"guide_title_desc":""
+										}
+								},
+								{
+										"shop_id":"0",
+										"cart_total_price":0,
+										"item_fee":0,
+										"cart_total_num":0,
+										"cart_total_count":0,
+										"discount_fee":0,
+										"total_fee":0,
+										"list":[
+												{
+														"cart_id":"179",
+														"company_id":"1",
+														"user_id":"6",
+														"user_ident":null,
+														"shop_type":"distributor",
+														"shop_id":"0",
+														"activity_type":"normal",
+														"activity_id":null,
+														"marketing_type":null,
+														"marketing_id":null,
+														"item_type":"normal",
+														"item_id":"213",
+														"items_id":[
+		
+														],
+														"item_name":"兔兔5",
+														"pics":"http://mmbiz.qpic.cn/mmbiz_jpg/MUQsdY0GdK7oJEMdx5fIyCIXwHkpN5ovseyoDNFo6ZiaicRJaPIyx3diaibjlia8JangYlLZMoLHpC5YTibbAqpAmHBg/0?wx_fmt=jpeg",
+														"price":"1",
+														"num":1,
+														"wxa_appid":null,
+														"is_checked":false,
+														"is_plus_buy":false,
+														"created":1565496251,
+														"updated":1565496251,
+														"is_last_price":false,
+														"discount_fee":0,
+														"total_fee":1,
+														"store":96,
+														"market_price":0,
+														"brief":"",
+														"approve_status":"onsale",
+														"item_spec_desc":"",
+														"parent_id":0,
+														"original_price":1,
+														"discount_price":0,
+														"grade_name":"高级会员",
+														"discount_desc":"",
+														"total_price":"1"
+												},
+												{
+														"cart_id":"178",
+														"company_id":"1",
+														"user_id":"6",
+														"user_ident":null,
+														"shop_type":"distributor",
+														"shop_id":"0",
+														"activity_type":"normal",
+														"activity_id":null,
+														"marketing_type":null,
+														"marketing_id":null,
+														"item_type":"normal",
+														"item_id":"212",
+														"items_id":[
+		
+														],
+														"item_name":"兔兔4",
+														"pics":"http://mmbiz.qpic.cn/mmbiz_png/MUQsdY0GdK5RFlB9L9G7RAp9MD1iaCIqa7gcuY6cKaicg0v8xvrUGMtYkxhtNkpXOJaE6zYw48JD7xad39nicGmZw/0?wx_fmt=png",
+														"price":"1",
+														"num":1,
+														"wxa_appid":null,
+														"is_checked":false,
+														"is_plus_buy":false,
+														"created":1565495984,
+														"updated":1565496050,
+														"is_last_price":false,
+														"discount_fee":0,
+														"total_fee":1,
+														"store":97,
+														"market_price":0,
+														"brief":"",
+														"approve_status":"onsale",
+														"item_spec_desc":"",
+														"parent_id":0,
+														"original_price":1,
+														"discount_price":0,
+														"grade_name":"高级会员",
+														"discount_desc":"",
+														"total_price":"1"
+												},
+												{
+														"cart_id":"177",
+														"company_id":"1",
+														"user_id":"6",
+														"user_ident":null,
+														"shop_type":"distributor",
+														"shop_id":"0",
+														"activity_type":"normal",
+														"activity_id":null,
+														"marketing_type":null,
+														"marketing_id":null,
+														"item_type":"normal",
+														"item_id":"118",
+														"items_id":[
+		
+														],
+														"item_name":"兔兔1 有规格",
+														"pics":"http://mmbiz.qpic.cn/mmbiz_jpg/MUQsdY0GdK7UY4x0PKJXNwsFp6Cic9RXsXOQszthYBhUibEEXOLHCNzwFBVZpMHqBHUQR2Wwjd0ftFia5sC0Wwv8g/0?wx_fmt=jpeg",
+														"price":"500",
+														"num":1,
+														"wxa_appid":null,
+														"is_checked":false,
+														"is_plus_buy":false,
+														"created":1565495559,
+														"updated":1565495559,
+														"is_last_price":false,
+														"discount_fee":0,
+														"total_fee":500,
+														"store":92,
+														"market_price":0,
+														"brief":"",
+														"approve_status":"onsale",
+														"item_spec_desc":"100cm大图:aaa,200cm大图:一",
+														"parent_id":0,
+														"original_price":500,
+														"discount_price":0,
+														"grade_name":"高级会员",
+														"discount_desc":"加入svip立省1元",
+														"total_price":"500"
+												},
+												{
+														"cart_id":"175",
+														"company_id":"1",
+														"user_id":"6",
+														"user_ident":null,
+														"shop_type":"distributor",
+														"shop_id":"0",
+														"activity_type":"normal",
+														"activity_id":null,
+														"marketing_type":null,
+														"marketing_id":null,
+														"item_type":"normal",
+														"item_id":"134",
+														"items_id":[
+		
+														],
+														"item_name":"兔兔3",
+														"pics":"http://mmbiz.qpic.cn/mmbiz_jpg/MUQsdY0GdK5ae4n1MtSjK0aksB7yCoufgw0qmw3TGmiarsWAViaZNn0bx2GaFIia50pkWkTl16kB80URxibt3ubOyg/0?wx_fmt=jpeg",
+														"price":"2000",
+														"num":3,
+														"wxa_appid":null,
+														"is_checked":false,
+														"is_plus_buy":false,
+														"created":1565494811,
+														"updated":1565498543,
+														"is_last_price":false,
+														"discount_fee":0,
+														"total_fee":6000,
+														"store":97,
+														"market_price":0,
+														"brief":"",
+														"approve_status":"onsale",
+														"item_spec_desc":"",
+														"parent_id":0,
+														"original_price":2000,
+														"discount_price":0,
+														"grade_name":"高级会员",
+														"discount_desc":"加入svip立省12元",
+														"total_price":"6000"
+												}
+										],
+										"used_activity":[
+		
+										],
+										"used_activity_ids":[
+		
+										],
+										"activity_grouping":[
+		
+										],
+										"vipgrade_guide_title":{
+												"guide_title_desc":"是是是"
+										}
+								}
+						]				
+		}
+		console.log('res',res)
       valid_cart = res.valid_cart || valid_cart
       invalid_cart = res.invalid_cart || invalid_cart
     } catch (e) {
@@ -197,7 +531,6 @@ export default class CartIndex extends Component {
       valid_cart,
       invalid_cart
     })
-
     cb && cb(list)
   }
 
@@ -426,7 +759,7 @@ export default class CartIndex extends Component {
     const totalSelection = selection.size
     const totalItems = totalSelection
     const isEmpty = !list.length
-
+		console.log('groups',groups)
     return (
       <View className={classNames('page-cart-index', isDrug && 'is-drug')}>
         <NavBar
@@ -452,22 +785,27 @@ export default class CartIndex extends Component {
           }
           <View className='cart-list'>
             {
+							
               groups.map((activityGroup, idx) => {
+
+								console.log(1111,{activityGroup})
                 return (
                   <View
                     className='cart-list__shop'
                     key={idx}
-                  >
+									>
                     {
                       activityGroup.map(shopCart => {
-                        console.log(shopCart)
+												console.log(2222,shopCart)
                         const { activity } = shopCart
 
+												
                         return shopCart.list.length > 0 && (
                           <View
                             className='cart-group'
                             key={shopCart.shop_id}
-                          >
+													>
+													<Text>{shopCart.shop_name}</Text>
                             {activity && (
                               <View className='cart-group__activity'>
                                 <View
@@ -525,7 +863,54 @@ export default class CartIndex extends Component {
                                   })}
                                 </View>
                               </View>
-                            )}
+														)}
+
+														<View className={`toolbar cart-toolbar ${isEmpty && 'hidden'}`}>
+														<View className='cart-toolbar__hd'>
+															<SpCheckbox
+																checked={this.isTotalChecked}
+																onChange={this.handleAllSelect.bind(this,shopCart.shop_id)}
+															>全选</SpCheckbox>
+														</View>
+															{
+																cartMode !== 'edit'
+																	? <View className='cart-toolbar__bd'>
+																			<View className='cart-total'>
+																				{list.length && list[0].discount_fee > 0 && (
+																					<View className='cart-total__discount'>
+																						<Text className='cart-total__hint'>优惠：</Text>
+																						<Price
+																							primary
+																							value={-1 * list[0].discount_fee}
+																							unit='cent'
+																						/>
+																					</View>
+																				)}
+																				<View className='cart-total__total'>
+																					<Text className='cart-total__hint'>总计：</Text>
+																					<Price
+																						primary
+																						value={totalPrice}
+																					/>
+																				</View>
+																			</View>
+																			<AtButton
+																				type='primary'
+																				className='btn-checkout'
+																				disabled={totalItems <= 0}
+																				onClick={this.handleCheckout}
+																			>{isDrug ? '立即预约' : '结算'}</AtButton>
+																		</View>
+																	: <View className='cart-toolbar__bd'>
+																			<AtButton
+																				type='primary'
+																				className='btn-checkout'
+																				onClick={this.handleDelect}
+																			>删除</AtButton>
+																		</View>
+															}
+														</View>
+
                           </View>
                         )
                       })
@@ -606,54 +991,6 @@ export default class CartIndex extends Component {
             && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
           }
         </ScrollView>
-
-        <View
-          className={`toolbar cart-toolbar ${isEmpty && 'hidden'}`}
-        >
-          <View className='cart-toolbar__hd'>
-            <SpCheckbox
-              checked={this.isTotalChecked}
-              onChange={this.handleAllSelect}
-            >全选</SpCheckbox>
-          </View>
-          {
-            cartMode !== 'edit'
-              ? <View className='cart-toolbar__bd'>
-                  <View className='cart-total'>
-                    {list.length && list[0].discount_fee > 0 && (
-                      <View className='cart-total__discount'>
-                        <Text className='cart-total__hint'>优惠：</Text>
-                        <Price
-                          primary
-                          value={-1 * list[0].discount_fee}
-                          unit='cent'
-                        />
-                      </View>
-                    )}
-                    <View className='cart-total__total'>
-                      <Text className='cart-total__hint'>总计：</Text>
-                      <Price
-                        primary
-                        value={totalPrice}
-                      />
-                    </View>
-                  </View>
-                  <AtButton
-                    type='primary'
-                    className='btn-checkout'
-                    disabled={totalItems <= 0}
-                    onClick={this.handleCheckout}
-                  >{isDrug ? '立即预约' : '结算'}</AtButton>
-                </View>
-              : <View className='cart-toolbar__bd'>
-                    <AtButton
-                      type='primary'
-                      className='btn-checkout'
-                      onClick={this.handleDelect}
-                    >删除</AtButton>
-                  </View>
-          }
-        </View>
 
         <AtActionSheet
           title='请选择商品优惠'

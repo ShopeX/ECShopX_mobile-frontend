@@ -96,8 +96,8 @@ var PaymentPicker = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivateVdInw",
-    value: function funPrivateVdInw() {
+    key: "funPrivateZWeBN",
+    value: function funPrivateZWeBN() {
       this.__triggerPropsFn("onChange", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -136,7 +136,7 @@ var PaymentPicker = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["handleCancel", "handlePaymentChange", "funPrivateVdInw"], _class.defaultProps = {
+}, _class.$$events = ["handleCancel", "handlePaymentChange", "funPrivateZWeBN"], _class.defaultProps = {
   isOpened: false,
   type: 'wxpay',
   disabledPayment: null

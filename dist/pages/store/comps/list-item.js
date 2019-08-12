@@ -70,8 +70,8 @@ var StoreListItem = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivateKTlBS",
-    value: function funPrivateKTlBS() {
+    key: "funPrivateljsmx",
+    value: function funPrivateljsmx() {
       this.__triggerPropsFn("onClick", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -90,7 +90,7 @@ var StoreListItem = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivateKTlBS", "handleMap"], _class.defaultProps = {
+}, _class.$$events = ["funPrivateljsmx", "handleMap"], _class.defaultProps = {
   onClick: function onClick() {}
 }, _class.options = {
   addGlobalClass: true

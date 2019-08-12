@@ -211,7 +211,8 @@
 }
 
 .cart-toolbar {
-  bottom: $tabbar-height;
+	// bottom: $tabbar-height;
+	position: initial;
   padding: 0 0 0 $edge-size;
   &__hd {
   }

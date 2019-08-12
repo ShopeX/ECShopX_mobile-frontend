@@ -289,7 +289,7 @@
 }
 
 .cart-toolbar {
-  bottom: 110rpx;
+  position: initial;
   padding: 0 0 0 30rpx;
 }
 .cart-toolbar__bd {

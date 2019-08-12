@@ -230,17 +230,11 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
             return cartItem;
           });
 
-          return {
-            activity: activity,
-            list: itemList
-          };
+          return Object.assign(shopCart, { activity: activity, list: itemList });
         });
 
         // 无活动列表
-        group.push({
-          activity: null,
-          list: Object.values(tDict)
-        });
+        group.push(Object.assign(shopCart, { activity: null, list: Object.values(tDict) }));
 
         return group;
       });
@@ -286,41 +280,329 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
                 valid_cart = [], invalid_cart = [];
                 _$router$params$type = this.$router.params.type, type = _$router$params$type === undefined ? 'distributor' : _$router$params$type;
                 params = { shop_type: type };
-                _context2.prev = 3;
-                _context2.next = 6;
-                return _index6.default.cart.get(params);
 
-              case 6:
-                res = _context2.sent;
+                try {
+                  // const res = await api.cart.get(params)
+                  res = {
+                    "invalid_cart": [{
+                      "cart_id": "183",
+                      "company_id": "1",
+                      "user_id": "6",
+                      "user_ident": null,
+                      "shop_type": "distributor",
+                      "shop_id": "4",
+                      "activity_type": "normal",
+                      "activity_id": null,
+                      "marketing_type": null,
+                      "marketing_id": null,
+                      "item_type": "normal",
+                      "item_id": "99",
+                      "items_id": [],
+                      "item_name": "测试商品26",
+                      "pics": "http://mmbiz.qpic.cn/mmbiz_png/MUQsdY0GdK5ae4n1MtSjK0aksB7yCoufslMJhO5zyE0PRUdYElo6CSicOnJEbkpnbvHtfdd39LVtknSdMEFpOHQ/0?wx_fmt=png",
+                      "price": 1,
+                      "num": 1,
+                      "wxa_appid": null,
+                      "is_checked": false,
+                      "is_plus_buy": false,
+                      "created": 1565507373,
+                      "updated": 1565507373
+                    }, {
+                      "cart_id": "182",
+                      "company_id": "1",
+                      "user_id": "6",
+                      "user_ident": null,
+                      "shop_type": "distributor",
+                      "shop_id": "4",
+                      "activity_type": "normal",
+                      "activity_id": null,
+                      "marketing_type": null,
+                      "marketing_id": null,
+                      "item_type": "normal",
+                      "item_id": "98",
+                      "items_id": [],
+                      "item_name": "测试商品25",
+                      "pics": "http://mmbiz.qpic.cn/mmbiz_png/MUQsdY0GdK5ae4n1MtSjK0aksB7yCoufNBh17xk9Vq1dR5Vuh6vv9EEt61rKKv2DjW40VGV5JFOic77XyurzNsA/0?wx_fmt=png",
+                      "price": 100,
+                      "num": 1,
+                      "wxa_appid": null,
+                      "is_checked": false,
+                      "is_plus_buy": false,
+                      "created": 1565497994,
+                      "updated": 1565497994
+                    }, {
+                      "cart_id": "161",
+                      "company_id": "1",
+                      "user_id": "6",
+                      "user_ident": null,
+                      "shop_type": "distributor",
+                      "shop_id": "4",
+                      "activity_type": "normal",
+                      "activity_id": null,
+                      "marketing_type": null,
+                      "marketing_id": null,
+                      "item_type": "normal",
+                      "item_id": "100",
+                      "items_id": [],
+                      "item_name": " 云南白药 云丰 蒲地蓝消炎片 48片（消肿 咽炎 扁桃腺炎",
+                      "pics": "http://bbctest.aixue7.com/1/2019/07/09/8400174a0ba5e5b3577e719196cf5c1chvjL9AZcwdtqZ8dujNNxqGLoaCTfYpBR",
+                      "price": 10000,
+                      "num": 3,
+                      "wxa_appid": null,
+                      "is_checked": false,
+                      "is_plus_buy": false,
+                      "created": 1565348713,
+                      "updated": 1565348748
+                    }],
+                    "valid_cart": [{
+                      "shop_name": "怡康医药·广电智慧社区大兴东路店",
+                      "address": "安市莲湖区永安路9号龙湖水晶郦城",
+                      "shop_id": "4",
+                      "cart_total_price": 100,
+                      "item_fee": 100,
+                      "cart_total_num": 1,
+                      "cart_total_count": 1,
+                      "discount_fee": 0,
+                      "total_fee": "100",
+                      "list": [{
+                        "cart_id": "184",
+                        "company_id": "1",
+                        "user_id": "6",
+                        "user_ident": null,
+                        "shop_type": "distributor",
+                        "shop_id": "4",
+                        "activity_type": "normal",
+                        "activity_id": null,
+                        "marketing_type": null,
+                        "marketing_id": null,
+                        "item_type": "normal",
+                        "item_id": "207",
+                        "items_id": [],
+                        "item_name": "yao072901",
+                        "pics": "http://mmbiz.qpic.cn/mmbiz_jpg/MUQsdY0GdK4avNsaHHwqSumaBer5LDj0oWwuebbnzibRsgcickolK72CzfGArmp80LLgmibFov5dfTMwTwoMFtQqw/0?wx_fmt=jpeg",
+                        "price": 100,
+                        "num": 1,
+                        "wxa_appid": null,
+                        "is_checked": true,
+                        "is_plus_buy": false,
+                        "created": 1565540165,
+                        "updated": 1565540165,
+                        "is_last_price": true,
+                        "discount_fee": 0,
+                        "total_fee": "100",
+                        "store": 221,
+                        "market_price": 100,
+                        "brief": "072901",
+                        "approve_status": "onsale",
+                        "item_spec_desc": "颜色:绿",
+                        "parent_id": 0,
+                        "limitedTimeSaleAct": {
+                          "activity_id": "5",
+                          "marketing_type": "limited_time_sale",
+                          "marketing_name": "测试活动",
+                          "limit_total_money": 200,
+                          "limit_money": 1,
+                          "validity_period": 15,
+                          "is_free_shipping": false,
+                          "third_params": null,
+                          "promotion_tag": "限时优惠"
+                        },
+                        "total_price": "100"
+                      }],
+                      "used_activity": [],
+                      "used_activity_ids": [],
+                      "activity_grouping": [],
+                      "vipgrade_guide_title": {
+                        "guide_title_desc": ""
+                      }
+                    }, {
+                      "shop_id": "0",
+                      "cart_total_price": 0,
+                      "item_fee": 0,
+                      "cart_total_num": 0,
+                      "cart_total_count": 0,
+                      "discount_fee": 0,
+                      "total_fee": 0,
+                      "list": [{
+                        "cart_id": "179",
+                        "company_id": "1",
+                        "user_id": "6",
+                        "user_ident": null,
+                        "shop_type": "distributor",
+                        "shop_id": "0",
+                        "activity_type": "normal",
+                        "activity_id": null,
+                        "marketing_type": null,
+                        "marketing_id": null,
+                        "item_type": "normal",
+                        "item_id": "213",
+                        "items_id": [],
+                        "item_name": "兔兔5",
+                        "pics": "http://mmbiz.qpic.cn/mmbiz_jpg/MUQsdY0GdK7oJEMdx5fIyCIXwHkpN5ovseyoDNFo6ZiaicRJaPIyx3diaibjlia8JangYlLZMoLHpC5YTibbAqpAmHBg/0?wx_fmt=jpeg",
+                        "price": "1",
+                        "num": 1,
+                        "wxa_appid": null,
+                        "is_checked": false,
+                        "is_plus_buy": false,
+                        "created": 1565496251,
+                        "updated": 1565496251,
+                        "is_last_price": false,
+                        "discount_fee": 0,
+                        "total_fee": 1,
+                        "store": 96,
+                        "market_price": 0,
+                        "brief": "",
+                        "approve_status": "onsale",
+                        "item_spec_desc": "",
+                        "parent_id": 0,
+                        "original_price": 1,
+                        "discount_price": 0,
+                        "grade_name": "高级会员",
+                        "discount_desc": "",
+                        "total_price": "1"
+                      }, {
+                        "cart_id": "178",
+                        "company_id": "1",
+                        "user_id": "6",
+                        "user_ident": null,
+                        "shop_type": "distributor",
+                        "shop_id": "0",
+                        "activity_type": "normal",
+                        "activity_id": null,
+                        "marketing_type": null,
+                        "marketing_id": null,
+                        "item_type": "normal",
+                        "item_id": "212",
+                        "items_id": [],
+                        "item_name": "兔兔4",
+                        "pics": "http://mmbiz.qpic.cn/mmbiz_png/MUQsdY0GdK5RFlB9L9G7RAp9MD1iaCIqa7gcuY6cKaicg0v8xvrUGMtYkxhtNkpXOJaE6zYw48JD7xad39nicGmZw/0?wx_fmt=png",
+                        "price": "1",
+                        "num": 1,
+                        "wxa_appid": null,
+                        "is_checked": false,
+                        "is_plus_buy": false,
+                        "created": 1565495984,
+                        "updated": 1565496050,
+                        "is_last_price": false,
+                        "discount_fee": 0,
+                        "total_fee": 1,
+                        "store": 97,
+                        "market_price": 0,
+                        "brief": "",
+                        "approve_status": "onsale",
+                        "item_spec_desc": "",
+                        "parent_id": 0,
+                        "original_price": 1,
+                        "discount_price": 0,
+                        "grade_name": "高级会员",
+                        "discount_desc": "",
+                        "total_price": "1"
+                      }, {
+                        "cart_id": "177",
+                        "company_id": "1",
+                        "user_id": "6",
+                        "user_ident": null,
+                        "shop_type": "distributor",
+                        "shop_id": "0",
+                        "activity_type": "normal",
+                        "activity_id": null,
+                        "marketing_type": null,
+                        "marketing_id": null,
+                        "item_type": "normal",
+                        "item_id": "118",
+                        "items_id": [],
+                        "item_name": "兔兔1 有规格",
+                        "pics": "http://mmbiz.qpic.cn/mmbiz_jpg/MUQsdY0GdK7UY4x0PKJXNwsFp6Cic9RXsXOQszthYBhUibEEXOLHCNzwFBVZpMHqBHUQR2Wwjd0ftFia5sC0Wwv8g/0?wx_fmt=jpeg",
+                        "price": "500",
+                        "num": 1,
+                        "wxa_appid": null,
+                        "is_checked": false,
+                        "is_plus_buy": false,
+                        "created": 1565495559,
+                        "updated": 1565495559,
+                        "is_last_price": false,
+                        "discount_fee": 0,
+                        "total_fee": 500,
+                        "store": 92,
+                        "market_price": 0,
+                        "brief": "",
+                        "approve_status": "onsale",
+                        "item_spec_desc": "100cm大图:aaa,200cm大图:一",
+                        "parent_id": 0,
+                        "original_price": 500,
+                        "discount_price": 0,
+                        "grade_name": "高级会员",
+                        "discount_desc": "加入svip立省1元",
+                        "total_price": "500"
+                      }, {
+                        "cart_id": "175",
+                        "company_id": "1",
+                        "user_id": "6",
+                        "user_ident": null,
+                        "shop_type": "distributor",
+                        "shop_id": "0",
+                        "activity_type": "normal",
+                        "activity_id": null,
+                        "marketing_type": null,
+                        "marketing_id": null,
+                        "item_type": "normal",
+                        "item_id": "134",
+                        "items_id": [],
+                        "item_name": "兔兔3",
+                        "pics": "http://mmbiz.qpic.cn/mmbiz_jpg/MUQsdY0GdK5ae4n1MtSjK0aksB7yCoufgw0qmw3TGmiarsWAViaZNn0bx2GaFIia50pkWkTl16kB80URxibt3ubOyg/0?wx_fmt=jpeg",
+                        "price": "2000",
+                        "num": 3,
+                        "wxa_appid": null,
+                        "is_checked": false,
+                        "is_plus_buy": false,
+                        "created": 1565494811,
+                        "updated": 1565498543,
+                        "is_last_price": false,
+                        "discount_fee": 0,
+                        "total_fee": 6000,
+                        "store": 97,
+                        "market_price": 0,
+                        "brief": "",
+                        "approve_status": "onsale",
+                        "item_spec_desc": "",
+                        "parent_id": 0,
+                        "original_price": 2000,
+                        "discount_price": 0,
+                        "grade_name": "高级会员",
+                        "discount_desc": "加入svip立省12元",
+                        "total_price": "6000"
+                      }],
+                      "used_activity": [],
+                      "used_activity_ids": [],
+                      "activity_grouping": [],
+                      "vipgrade_guide_title": {
+                        "guide_title_desc": "是是是"
+                      }
+                    }]
+                  };
 
-                valid_cart = res.valid_cart || valid_cart;
-                invalid_cart = res.invalid_cart || invalid_cart;
-                _context2.next = 14;
-                break;
+                  console.log('res', res);
+                  valid_cart = res.valid_cart || valid_cart;
+                  invalid_cart = res.invalid_cart || invalid_cart;
+                } catch (e) {
+                  this.setState({
+                    error: e
+                  });
+                }
 
-              case 11:
-                _context2.prev = 11;
-                _context2.t0 = _context2["catch"](3);
-
-                this.setState({
-                  error: _context2.t0
-                });
-
-              case 14:
                 list = this.processCart({
                   valid_cart: valid_cart,
                   invalid_cart: invalid_cart
                 });
 
-
                 cb && cb(list);
 
-              case 16:
+              case 6:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[3, 11]]);
+        }, _callee2, this);
       }));
 
       function fetchCart(_x2) {
@@ -484,24 +766,26 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       var totalSelection = selection.size;
       var totalItems = totalSelection;
       var isEmpty = !list.length;
-
+      console.log('groups', groups);
       var anonymousState__temp = (0, _index4.classNames)('page-cart-index', isDrug && 'is-drug');
-      var anonymousState__temp4 = list.length && list[0].discount_fee > 0 ? cartMode !== 'edit' ? -1 * list[0].discount_fee : null : null;
-      var anonymousState__temp5 = cartMode !== 'edit' ? totalItems <= 0 : null;
-      var anonymousState__temp6 = Boolean(curPromotions);
+      var anonymousState__temp8 = Boolean(curPromotions);
       var loopArray0 = groups.map(function (activityGroup, idx) {
         activityGroup = {
           $original: (0, _index.internal_get_original)(activityGroup)
         };
+
+        console.log(1111, { activityGroup: activityGroup.$original });
         var $anonymousCallee__1 = activityGroup.$original.map(function (shopCart) {
           shopCart = {
             $original: (0, _index.internal_get_original)(shopCart)
           };
 
-          console.log(shopCart.$original);
+          console.log(2222, shopCart.$original);
           var activity = shopCart.$original.activity;
 
 
+          var $loopState__temp5 = list.length && list[0].discount_fee > 0 ? cartMode !== 'edit' ? -1 * list[0].discount_fee : null : null;
+          var $loopState__temp7 = shopCart.$original.list.length > 0 ? cartMode !== 'edit' ? totalItems <= 0 : null : null;
           var $anonymousCallee__0 = shopCart.$original.list.length > 0 ? shopCart.$original.list.map(function (item) {
             item = {
               $original: (0, _index.internal_get_original)(item)
@@ -515,6 +799,8 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
           }) : [];
           return {
             activity: activity,
+            $loopState__temp5: $loopState__temp5,
+            $loopState__temp7: $loopState__temp7,
             $anonymousCallee__0: $anonymousCallee__0,
             $original: shopCart.$original
           };
@@ -526,15 +812,13 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
       });
       Object.assign(this.__state, {
         anonymousState__temp: anonymousState__temp,
-        anonymousState__temp4: anonymousState__temp4,
-        anonymousState__temp5: anonymousState__temp5,
-        anonymousState__temp6: anonymousState__temp6,
+        anonymousState__temp8: anonymousState__temp8,
         loopArray0: loopArray0,
         isEmpty: isEmpty,
         list: list,
+        totalPrice: totalPrice,
         isDrug: isDrug,
         page: page,
-        totalPrice: totalPrice,
         isTotalChecked: this.isTotalChecked
       });
       return this.__state;
@@ -576,13 +860,13 @@ var CartIndex = (_dec = (0, _index3.connect)(function (_ref) {
     "type": null,
     "value": null
   }
-}, _class2.$$events = ["nextPage", "handleQuantityChange", "handleClickPromotion", "handleClickToDetail", "handleSelectionChange", "handleDelect", "navigateTo", "handleClickItem", "handleAllSelect", "handleCheckout", "handleClosePromotions", "handleSelectPromotion"], _class2.defaultProps = {
+}, _class2.$$events = ["nextPage", "handleQuantityChange", "handleClickPromotion", "handleClickToDetail", "handleSelectionChange", "handleDelect", "handleAllSelect", "handleCheckout", "navigateTo", "handleClickItem", "handleClosePromotions", "handleSelectPromotion"], _class2.defaultProps = {
   totalPrice: '0.00',
   list: null
 }, _initialiseProps = function _initialiseProps() {
   var _this4 = this;
 
-  this.$usedState = ["anonymousState__temp", "anonymousState__temp4", "anonymousState__temp5", "anonymousState__temp6", "loopArray0", "loading", "isEmpty", "groups", "list", "invalidList", "isDrug", "likeList", "page", "cartMode", "totalPrice", "curPromotions", "selection", "error", "defaultAllSelect", "__fn_onUpdateCart", "cartIds", "__fn_onCartSelection", "__fn_onUpdateCartNum", "isTotalChecked"];
+  this.$usedState = ["anonymousState__temp", "anonymousState__temp8", "loopArray0", "loading", "isEmpty", "groups", "cartMode", "list", "totalPrice", "invalidList", "isDrug", "likeList", "page", "curPromotions", "selection", "error", "defaultAllSelect", "__fn_onUpdateCart", "cartIds", "__fn_onCartSelection", "__fn_onUpdateCartNum", "isTotalChecked"];
 
   this.handleClickItem = function (item) {
     var url = "/pages/item/espier-detail?id=" + item.item_id;
