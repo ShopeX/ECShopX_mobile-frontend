@@ -6,7 +6,7 @@
         <view class="goods-item__hd">
             <slot name="checkbox"></slot>
         </view>
-        <view class="goods-item__bd" bindtap="funPrivatefoyyh">
+        <view class="goods-item__bd" bindtap="funPrivateHQZsn">
             <view class="goods-item__img-wrap">
                 <image class="goods-item__img" mode="aspectFix" src="{{img}}"></image>
             </view>

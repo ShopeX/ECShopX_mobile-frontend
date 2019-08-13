@@ -1,12 +1,13 @@
 const path = require('path')
 const pkg = require('../package.json')
+const host = require('./host')
 
 const [TARO_CMD, TARO_ENV] = process.env.npm_lifecycle_event.split(':')
 const DIST_PATH = TARO_ENV === 'h5'
   ? (process.env.NODE_ENV === 'production' ? 'h5_dist' : '.h5_dev_dist' )
   : 'dist'
-const API_HOST = 'ecshopx.shopex123.com'
 
+const API_HOST = process.env.NODE_ENV === 'production' ? host[TARO_ENV].prod : process.env.NODE_ENV === 'development' ? host[TARO_ENV].test : host[TARO_ENV].preissue
 const config = {
   projectName: pkg.name,
   date: '2019-7-31',

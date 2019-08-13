@@ -10,7 +10,7 @@
                     </view>
                 </view>
             </view>
-            <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivaterCySx" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{info}}">确定</at-button>
+            <at-button type="primary" __triggerObserer="{{ _triggerObserer }}" bindonclick="funPrivateVEjBo" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="{{info}}">确定</at-button>
         </view>
     </at-float-layout>
 </block>

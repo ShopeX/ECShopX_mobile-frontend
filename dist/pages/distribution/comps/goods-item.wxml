@@ -15,7 +15,7 @@
                 </view>
                 <view class="goods-item__extra">
                     <view class="goods-item__author">
-                        <at-button bindonclick="funPrivateSMQng" __triggerObserer="{{ _triggerObserer }}" size="small" __fn_onClick="{{true}}">
+                        <at-button bindonclick="funPrivateETGZw" __triggerObserer="{{ _triggerObserer }}" size="small" __fn_onClick="{{true}}">
                             <block>
                                 <block wx:if="{{isRelease}}"><text>下架</text>
                                 </block>

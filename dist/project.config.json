@@ -1,43 +1,16 @@
 {
-	"projectname": "mshop-taro",
-	"description": "taro app for bbc",
-	"appid": "wx912913df9fef6ddd",
-	"setting": {
-		"urlCheck": false,
-		"es6": false,
-		"postcss": false,
-		"minified": false
-	},
-	"compileType": "miniprogram",
-	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {},
-	"condition": {
-		"search": {
-			"current": -1,
-			"list": []
-		},
-		"conversation": {
-			"current": -1,
-			"list": []
-		},
-		"plugin": {
-			"current": -1,
-			"list": []
-		},
-		"game": {
-			"list": []
-		},
-		"miniprogram": {
-			"current": 0,
-			"list": [
-				{
-					"id": 0,
-					"name": "pages/item/espier-detail",
-					"pathName": "pages/item/espier-detail",
-					"query": "id=221",
-					"scene": null
-				}
-			]
-		}
-	}
+  "miniprogramRoot": "./",
+  "projectname": "mshop-taro",
+  "description": "taro app for bbc",
+  "appid": "wx912913df9fef6ddd",
+  "setting": {
+    "urlCheck": false,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {}
 }
