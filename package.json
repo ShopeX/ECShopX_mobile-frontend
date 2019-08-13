@@ -78,5 +78,10 @@
 		"fs-extra": "^8.0.1",
 		"glob": "^7.1.4",
 		"webpack-dev-server": "^2.9.7"
+	},
+	"cdn": {
+		"publicPath": "//b-cdn.pjinjin.com/",
+		"bucket": "espier-vue",
+		"path": "h5/"
 	}
 }
