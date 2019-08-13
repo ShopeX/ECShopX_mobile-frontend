@@ -1,5 +1,5 @@
 <block>
-    <button class="{{'float-menu__item ' + (hide ? 'hidden' : '')}}" bindtap="funPrivateieLpg" open-type="{{openType}}" session-from="{{sessionFrom || ''}}">
+    <button class="{{'float-menu__item ' + (hide ? 'hidden' : '')}}" bindtap="funPrivateNDVxv" open-type="{{openType}}" session-from="{{sessionFrom || ''}}">
         <view class="{{iconPrefixClass + ' ' + iconPrefixClass + '-' + icon}}"></view>
         <slot></slot>
     </button>

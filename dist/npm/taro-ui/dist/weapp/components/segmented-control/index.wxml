@@ -1,5 +1,0 @@
-<block>
-    <view class="{{rootCls}}" style="{{anonymousState__temp}}">
-        <view class="{{value.$loopState__temp3}}" style="{{value.$loopState__temp5}}" wx:key="$original" bindtap="handleClick" wx:for="{{loopArray0}}" wx:for-item="value" wx:for-index="i" data-e-tap-so="this" data-e-tap-a-a="{{i}}">{{value.$original}}</view>
-    </view>
-</block>

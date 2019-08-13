@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "loading": "../../components/loading/index",
-    "nav-bar": "../../components/nav-bar/index"
-  }
-}

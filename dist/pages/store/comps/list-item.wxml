@@ -2,7 +2,7 @@
     <block wx:if="{{!info}}">
         <view></view>
     </block>
-    <view class="store-item" bindtap="funPrivateljsmx" wx:else>
+    <view class="store-item" bindtap="funPrivateEYplJ" wx:else>
         <view class="store-content">
             <view class="store-name">{{info.store_name}}</view>
             <view class="store-address">{{info.store_address}}</view>

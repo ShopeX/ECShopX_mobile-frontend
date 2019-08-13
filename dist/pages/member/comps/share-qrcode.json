@@ -1,8 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "at-curtain": "../../../npm/taro-ui/dist/weapp/components/curtain/index",
-    "loading": "../../../components/loading/index",
-    "sp-toast": "../../../components/toast/index"
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "nav-bar": "../../components/nav-bar/index",
-    "price": "../../components/price/index",
-    "back-to-top": "../../components/back-to-top/index"
-  }
-}

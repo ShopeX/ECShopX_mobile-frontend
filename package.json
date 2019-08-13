@@ -80,8 +80,8 @@
 		"webpack-dev-server": "^2.9.7"
 	},
 	"cdn": {
-		"publicPath": "//b-cdn.pjinjin.com/",
-		"bucket": "espier-vue",
+		"publicPath": "//b-cdn.yuanyuanke.cn/",
+		"bucket": "espier-shop-vue",
 		"path": "h5/"
 	}
 }

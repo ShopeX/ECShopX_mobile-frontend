@@ -70,8 +70,8 @@ var CheckoutItems = (_temp2 = _class = function (_BaseComponent) {
       return this.__state;
     }
   }, {
-    key: "funPrivatexXvEt",
-    value: function funPrivatexXvEt() {
+    key: "funPrivateYLbwV",
+    value: function funPrivateYLbwV() {
       this.__triggerPropsFn("onClickBack", [].concat(Array.prototype.slice.call(arguments)));
     }
   }]);
@@ -98,7 +98,7 @@ var CheckoutItems = (_temp2 = _class = function (_BaseComponent) {
     "type": null,
     "value": null
   }
-}, _class.$$events = ["funPrivatexXvEt"], _class.defaultProps = {
+}, _class.$$events = ["funPrivateYLbwV"], _class.defaultProps = {
   isOpened: false,
   list: [],
   onClickBack: function onClickBack() {}

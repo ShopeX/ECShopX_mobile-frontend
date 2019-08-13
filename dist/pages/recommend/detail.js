@@ -226,7 +226,7 @@ var recommendDetail = (0, _index5.withPager)(_class = (_temp2 = _class2 = functi
       _this.detailInfo(id);
     }, _this.handleToGiftMiniProgram = function () {
       _index2.default.navigateToMiniProgram({
-        appId: "wx2fb97cb696f68d22", // 要跳转的小程序的appid
+        appId: APP_GIFT_APPID, // 要跳转的小程序的appid
         path: '/pages/index/index', // 跳转的目标页面
         success: function success(res) {
           // 打开成功

@@ -100,7 +100,7 @@ var MemberIndex = (_dec = (0, _index3.connect)(function () {
       }, _callee, _this2);
     })), _this.handleClickGiftApp = function () {
       _index2.default.navigateToMiniProgram({
-        appId: "wx2fb97cb696f68d22",
+        appId: APP_GIFT_APPID,
         path: '/pages/index/index'
       });
     }, _this.handleClickPhone = function () {

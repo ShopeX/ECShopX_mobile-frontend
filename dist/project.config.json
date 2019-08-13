@@ -11,5 +11,33 @@
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"condition": {}
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 0,
+			"list": [
+				{
+					"id": 0,
+					"name": "pages/item/espier-detail",
+					"pathName": "pages/item/espier-detail",
+					"query": "id=221",
+					"scene": null
+				}
+			]
+		}
+	}
 }
