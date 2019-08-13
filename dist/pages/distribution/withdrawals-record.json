@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "loading": "../../components/loading/index",
-    "sp-note": "../../components/note/index"
-  }
-}

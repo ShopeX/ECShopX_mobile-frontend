@@ -12,7 +12,7 @@ import _pickBy from 'lodash/pickBy'
 import debounce from 'lodash/debounce'
 import throttle from 'lodash/throttle'
 import log from './log'
-
+import calCommonExp from './calCommonExp'
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
 
 export function isFunction (val) {
@@ -209,5 +209,6 @@ export {
   styleNames,
   log,
   debounce,
-  throttle
+	throttle,
+	calCommonExp
 }

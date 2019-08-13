@@ -2,7 +2,8 @@ import { createReducer } from 'redux-create-reducer'
 // import dotProp from 'dot-prop-immutable'
 
 function walkCart (state, fn) {
-  state.list.forEach(shopCart => {
+  state.list.forEach((shopCart,shopIndex) => {
+		// console.log('1walkCart',shopCart,shopIndex)
     shopCart.list.forEach(fn)
   })
 }
@@ -52,10 +53,11 @@ const cart = createReducer(initState, {
   },
   ['cart/update'](state, action) {
     const list = action.payload
-    let cartIds = []
-    walkCart({ list }, t => {
-      cartIds.push(t.cart_id)
-    })
+		let cartIds = []
+		cartIds = list.map((shopCart,shopIndex)=>{
+			return shopCart.list.map(v=>v.cart_id)
+		})
+		console.log('cartIds',cartIds)
 
     return {
       ...state,
@@ -112,15 +114,21 @@ export function getTotalCount (state, isAll) {
 }
 
 export function getTotalPrice (state) {
-  let total = 0
-
-  walkCart(state, (item) => {
-    if (!state.selection.includes(item.cart_id)) return
-
-    total += (+item.price) * (+item.num)
-  })
-
-  return (total).toFixed(2)
+  // let total = 0
+  // walkCart(state, (item) => {
+  //   if (!state.selection.includes(item.cart_id)) return
+  //   total += (+item.price) * (+item.num)
+  // })
+	// return (total).toFixed(2)
+	const total = state.list.map((shopCart,shopIndex)=>{
+		let shop_total = 0
+		shopCart.list.map(item=>{
+			if(!state.selection.length || !state.selection[shopIndex].size) return
+			state.selection[shopIndex].has(item.cart_id) && (shop_total += (+item.price) * (+item.num))
+		})
+		return (shop_total).toFixed(2)
+	})
+	return total
 }
 
 export function getSelectedCart (state) {

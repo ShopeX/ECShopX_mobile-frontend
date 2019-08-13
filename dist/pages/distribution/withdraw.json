@@ -1,5 +1,0 @@
-{
-  "usingComponents": {
-    "at-input": "../../npm/taro-ui/dist/weapp/components/input/index"
-  }
-}

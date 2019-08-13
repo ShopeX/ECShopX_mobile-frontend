@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "list-search": "../recommend/comps/list-search",
-    "store-list-item": "./comps/list-item",
-    "back-to-top": "../../components/back-to-top/index",
-    "sp-toast": "../../components/toast/index"
-  }
-}

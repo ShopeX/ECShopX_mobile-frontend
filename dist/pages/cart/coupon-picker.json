@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "coupon-item": "../../components/coupon-item/index",
-    "sp-checkbox": "../../components/checkbox/index"
-  }
-}

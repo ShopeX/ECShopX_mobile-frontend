@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "at-input": "../../npm/taro-ui/dist/weapp/components/input/index",
-    "at-textarea": "../../npm/taro-ui/dist/weapp/components/textarea/index",
-    "at-image-picker": "../../npm/taro-ui/dist/weapp/components/image-picker/index"
-  }
-}

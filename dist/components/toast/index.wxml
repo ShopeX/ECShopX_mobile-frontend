@@ -1,3 +1,0 @@
-<block>
-    <at-toast icon="{{icon}}" __triggerObserer="{{ _triggerObserer }}" image="{{image}}" status="{{status}}" duration="{{duration}}" hasMask="{{hasMask}}" isOpened="{{showToast}}" bindonclose="handleClose" text="{{newText}}" __fn_onClose="{{true}}"></at-toast>
-</block>

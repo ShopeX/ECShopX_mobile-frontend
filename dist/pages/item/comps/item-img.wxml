@@ -1,5 +1,0 @@
-<block>
-    <view class="item-img">
-        <image class="item-img__img" mode="aspectFill" src="{{src}}"></image>
-    </view>
-</block>

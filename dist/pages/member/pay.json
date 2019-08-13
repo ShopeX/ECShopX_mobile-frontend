@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "nav-bar": "../../components/nav-bar/index",
-    "at-tag": "../../npm/taro-ui/dist/weapp/components/tag/index",
-    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index",
-    "sp-toast": "../../components/toast/index"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "usingComponents": {
-    "package-item": "./comps/package-item",
-    "loading": "../../components/loading/index",
-    "sp-note": "../../components/note/index",
-    "back-to-top": "../../components/back-to-top/index"
-  },
-  "navigationBarTitleText": "优惠组合"
-}

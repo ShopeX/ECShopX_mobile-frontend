@@ -1,9 +1,0 @@
-<block>
-    <view class="{{anonymousState__temp}}">
-        <block wx:if="{{custom}}">
-            <view class="{{item.$loopState__temp3}}" bindtap="handleClickItem" wx:key="$original.title" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="idx" data-e-tap-so="this" data-e-tap-a-a="{{idx}}"><text class="filter-bar__item-text">{{item.$original.title}}</text>
-            </view>
-        </block>
-        <slot></slot>
-    </view>
-</block>

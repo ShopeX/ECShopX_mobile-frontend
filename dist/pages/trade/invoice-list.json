@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "nav-bar": "../../components/nav-bar/index",
-    "trade-item": "./comps/item",
-    "loading": "../../components/loading/index",
-    "sp-note": "../../components/note/index"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "at-float-layout": "../../../npm/taro-ui/dist/weapp/components/float-layout/index",
-    "sp-checkbox": "../../../components/checkbox/index",
-    "at-button": "../../../npm/taro-ui/dist/weapp/components/button/index"
-  }
-}

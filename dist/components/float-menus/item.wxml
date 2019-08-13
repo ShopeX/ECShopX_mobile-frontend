@@ -1,6 +1,0 @@
-<block>
-    <button class="{{'float-menu__item ' + (hide ? 'hidden' : '')}}" bindtap="funPrivateZFTkj" open-type="{{openType}}" session-from="{{sessionFrom || ''}}">
-        <view class="{{iconPrefixClass + ' ' + iconPrefixClass + '-' + icon}}"></view>
-        <slot></slot>
-    </button>
-</block>

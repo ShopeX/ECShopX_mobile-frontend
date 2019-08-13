@@ -1,7 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "at-list": "../list/index",
-    "at-list-item": "../list/item/index"
-  }
-}

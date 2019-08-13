@@ -1,9 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "at-float-layout": "../../../npm/taro-ui/dist/weapp/components/float-layout/index",
-    "at-input": "../../../npm/taro-ui/dist/weapp/components/input/index",
-    "at-image-picker": "../../../npm/taro-ui/dist/weapp/components/image-picker/index",
-    "at-button": "../../../npm/taro-ui/dist/weapp/components/button/index"
-  }
-}

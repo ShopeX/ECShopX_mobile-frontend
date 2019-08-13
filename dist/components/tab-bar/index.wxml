@@ -1,3 +1,0 @@
-<block>
-    <at-tab-bar fixed="{{true}}" __triggerObserer="{{ _triggerObserer }}" color="{{color}}" backgroundColor="{{backgroundColor}}" selectedColor="{{selectedColor}}" tabList="{{tabList}}" bindonclick="handleClick" current="{{current}}" __fn_onClick="{{true}}"></at-tab-bar>
-</block>

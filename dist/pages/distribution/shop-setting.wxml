@@ -1,9 +1,0 @@
-<block>
-    <view class="page-distribution-shop-setting">
-        <sp-cell title="小店名称" __triggerObserer="{{ _triggerObserer }}" value="{{info.shop_name}}" bindonclick="handleClick" border="{{true}}" isLink="{{true}}" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="shop_name"></sp-cell>
-        <sp-cell title="小店描述" __triggerObserer="{{ _triggerObserer }}" value="{{info.brief}}" bindonclick="handleClick" border="{{true}}" isLink="{{true}}" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="brief"></sp-cell>
-        <sp-cell title="小店店招" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleClick" isLink="{{true}}" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="shop_pic">
-            <image class="shop-sign" src="{{info.shop_pic || 'https://fakeimg.pl/320x100/EFEFEF/CCC/?font=lobster'}}" mode="widthFix"></image>
-        </sp-cell>
-    </view>
-</block>
