@@ -1,0 +1,71 @@
+<block>
+    <block wx:if="{{!info}}">
+        <loading __triggerObserer="{{ _triggerObserer }}"></loading>
+    </block>
+    <view class="{{anonymousState__temp}}" wx:else>
+        <nav-bar title="订单详情" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" fixed="true"></nav-bar>
+        <view class="trade-detail__status"><text class="trade-detail__status-text">{{info.status_desc_name}}</text>
+            <image mode="aspectFill" class="trade-detail__status-ico" src="{{'/assets/imgs/trade/' + info.status_img}}"></image>
+        </view>
+        <block wx:if="{{info.lucky_status === 'lucky'}}">
+            <view class="trade-detail__addr" bindtap="handleAddressClick" data-e-tap-so="this">
+                <sp-cell icon="map-pin" __triggerObserer="{{ _triggerObserer }}">
+                    <block>
+                        <block wx:if="{{info.address_id}}">
+                            <view class="address-info__bd"><text class="address-info__receiver">收货人：{{info.receiver_name}}{{info.receiver_mobile}}</text><text class="address-info__addr">收货地址：{{info.receiver_state}}{{info.receiver_city}}{{info.receiver_district}}{{info.receiver_address}}</text>
+                            </view>
+                        </block>
+                        <block wx:else>
+                            <view class="address-info__bd"><text class="address-info__null">请选择收货地址</text>
+                            </view>
+                        </block>
+                    </block>
+                </sp-cell>
+            </view>
+        </block>
+        <view class="sec sec-orders">
+            <block wx:if="{{info.shop_name}}">
+                <view class="sec-orders__hd"><text>{{info.shop_name}}</text>
+                </view>
+            </block>
+            <view class="sec-orders__bd">
+                <order-item payType="point" __triggerObserer="{{ _triggerObserer }}" info="{{info}}"></order-item>
+                <view class="trade-detail__total">
+                    <block wx:if="{{info.point > 0}}">
+                        <sp-cell className="trade-detail__total-item" __triggerObserer="{{ _triggerObserer }}" title="积分" border="{{false}}">
+                            <price noSymbol="{{true}}" __triggerObserer="{{ _triggerObserer }}" noDecimal="{{true}}" value="{{info.point}}"></price>
+                        </sp-cell>
+                    </block>
+                </view>
+            </view>
+        </view>
+        <view class="sec trade-extra">
+            <view class="trade-extra__bd"><text>订单编号：{{info.luckydraw_trade_id}}</text><text>创建时间：{{info.created}}</text>
+            </view>
+            <view class="trade-extra__ft">
+                <at-button size="small" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleCopy" __fn_onClick="{{true}}">复制</at-button>
+            </view>
+        </view>
+        <block wx:if="{{info.ship_corp && info.ship_code}}">
+            <view class="sec trade-extra">
+                <view class="trade-extra__bd"><text>物流公司：{{info.ship_corp}}</text><text>物流单号：{{info.ship_code}}</text>
+                </view>
+                <view class="trade-extra__ft">
+                    <at-button size="small" __triggerObserer="{{ _triggerObserer }}" bindonclick="handleClickDelivery" __fn_onClick="{{true}}" data-e-onclick-so="this">查看</at-button>
+                </view>
+            </view>
+        </block>
+        <block wx:if="{{info.ship_status === 'waitreceive'}}">
+            <view class="toolbar toolbar-actions">
+                <at-button circle="{{true}}" __triggerObserer="{{ _triggerObserer }}" type="secondary" bindonclick="handleClickBtn" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="confirm">确认收货</at-button>
+            </view>
+        </block>
+        <block wx:if="{{info.ship_status === 'waitaddress'}}">
+            <view class="toolbar toolbar-actions">
+                <at-button circle="{{true}}" __triggerObserer="{{ _triggerObserer }}" type="secondary" bindonclick="handleClickBtn" __fn_onClick="{{true}}" data-e-onclick-so="this" data-e-onclick-a-a="address">提交地址</at-button>
+            </view>
+        </block>
+        <address-picker isOpened="{{showAddressPicker}}" __triggerObserer="{{ _triggerObserer }}" value="{{address}}" bindonchange="handleAddressChange" bindonclickback="toggleState" __fn_onChange="{{true}}" __fn_onClickBack="{{true}}" data-e-onclickback-so="this" data-e-onclickback-a-a="showAddressPicker" data-e-onclickback-a-b="{{false}}"></address-picker>
+        <sp-toast __triggerObserer="{{ _triggerObserer }}"></sp-toast>
+    </view>
+</block>
