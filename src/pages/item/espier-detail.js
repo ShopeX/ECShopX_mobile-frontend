@@ -50,6 +50,7 @@ export default class Detail extends Component {
       curSku: null,
       promotion_activity: [],
       promotion_package: [],
+      itemParams: [],
       screenWidth: 0,
       sessionFrom: ''
     }
@@ -156,6 +157,12 @@ export default class Detail extends Component {
       })
     }
 
+    const { item_params } = info
+    const itemParams = pickBy(item_params, {
+      label: 'attribute_name',
+      value: 'attribute_value_name'
+    })
+
     info.is_fav = Boolean(this.props.favs[info.item_id])
     const specImgsDict = this.resolveSpecImgs(info.item_spec_desc)
     const sixSpecImgsDict = pickBy(info.spec_images, {
@@ -182,6 +189,7 @@ export default class Detail extends Component {
       sixSpecImgsDict,
       promotion_activity,
       promotion_package,
+      itemParams,
       sessionFrom
     }, () => {
       this.fetchCartCount()
@@ -341,6 +349,7 @@ export default class Detail extends Component {
       curSku,
       promotion_activity,
       promotion_package,
+      itemParams,
       sessionFrom,
       currentImgs
     } = this.state
@@ -550,6 +559,11 @@ export default class Detail extends Component {
                 onClick={this.handlePackageClick}
                 value={`共${promotion_package}种组合随意搭配`}
               />
+          }
+
+          {
+            itemParams
+
           }
 
           {

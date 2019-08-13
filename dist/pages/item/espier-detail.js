@@ -78,7 +78,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp3", "anonymousState__temp4", "anonymousState__temp5", "anonymousState__temp6", "loopArray0", "info", "scrollTop", "curImgIdx", "imgs", "sixSpecImgsDict", "timer", "marketing", "isPromoter", "promotion_activity", "promotion_package", "buyPanelType", "curSku", "store", "desc", "screenWidth", "sessionFrom", "hasStock", "startSecKill", "cartCount", "showBuyPanel", "windowWidth", "specImgsDict", "currentImgs", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref4 = Detail.__proto__ || Object.getPrototypeOf(Detail)).call.apply(_ref4, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp3", "anonymousState__temp4", "anonymousState__temp5", "anonymousState__temp6", "loopArray0", "info", "scrollTop", "curImgIdx", "imgs", "sixSpecImgsDict", "timer", "marketing", "isPromoter", "promotion_activity", "promotion_package", "buyPanelType", "curSku", "store", "desc", "screenWidth", "sessionFrom", "hasStock", "startSecKill", "cartCount", "showBuyPanel", "itemParams", "windowWidth", "specImgsDict", "currentImgs", "favs", "__fn_onAddFav", "__fn_onDelFav"], _this.handleMenuClick = function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type) {
         var info, isAuth, favRes;
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -267,6 +267,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
         curSku: null,
         promotion_activity: [],
         promotion_package: [],
+        itemParams: [],
         screenWidth: 0,
         sessionFrom: ''
       };
@@ -380,7 +381,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
       var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
         var _this4 = this;
 
-        var id, info, promotion_package, _ref9, list, desc, promotion_activity, marketing, timer, hasStock, startSecKill, sessionFrom, specImgsDict, sixSpecImgsDict;
+        var id, info, promotion_package, _ref9, list, desc, promotion_activity, marketing, timer, hasStock, startSecKill, sessionFrom, item_params, itemParams, specImgsDict, sixSpecImgsDict;
 
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
@@ -439,6 +440,13 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
                   });
                 }
 
+                item_params = info.item_params;
+                itemParams = (0, _index7.pickBy)(item_params, {
+                  label: 'attribute_name',
+                  value: 'attribute_value_name'
+                });
+
+
                 info.is_fav = Boolean(this.props.favs[info.item_id]);
                 specImgsDict = this.resolveSpecImgs(info.item_spec_desc);
                 sixSpecImgsDict = (0, _index7.pickBy)(info.spec_images, {
@@ -466,6 +474,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
                   sixSpecImgsDict: sixSpecImgsDict,
                   promotion_activity: promotion_activity,
                   promotion_package: promotion_package,
+                  itemParams: itemParams,
                   sessionFrom: sessionFrom
                 }, function () {
                   _this4.fetchCartCount();
@@ -473,7 +482,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
 
                 _index7.log.debug('fetch: done', info);
 
-              case 28:
+              case 30:
               case "end":
                 return _context4.stop();
             }
@@ -531,6 +540,7 @@ var Detail = (_dec = (0, _index3.connect)(function (_ref) {
           curSku = _state.curSku,
           promotion_activity = _state.promotion_activity,
           promotion_package = _state.promotion_package,
+          itemParams = _state.itemParams,
           sessionFrom = _state.sessionFrom,
           currentImgs = _state.currentImgs;
       var _state2 = this.__state,

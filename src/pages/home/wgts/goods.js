@@ -134,8 +134,11 @@ export default class WgtGoods extends Component {
 
     if(type === 'buy') {
       try {
+        const { distributor_id } = Taro.getStorageSync('curStore')
+
         await api.cart.add({
           item_id:item_data.item_id,
+          distributor_id,
           num: 1
         })
         Taro.showToast({

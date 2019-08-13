@@ -6,10 +6,13 @@ node version >= v9.10.0
 ```js
 npm install
 npm run dev:h5
+npm run dev:weapp
 ```
 
 # 发布
 
 ```js
+npm run build:h5
+npm run build:weapp
 QINIU_TOKEN=xxx npm run release
 ````

@@ -132,7 +132,7 @@ var PackageItem = (_temp2 = _class = function (_BaseComponent) {
         });
       }
     }, _this.handleAddCart = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var _this$state2, selection, mainItem, packageId, query, res;
+      var _this$state2, selection, mainItem, packageId, _Taro$getStorageSync, distributor_id, query, res;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -157,6 +157,7 @@ var PackageItem = (_temp2 = _class = function (_BaseComponent) {
             case 4:
               _this$state2 = _this.state, selection = _this$state2.selection, mainItem = _this$state2.mainItem;
               packageId = _this.props.current;
+              _Taro$getStorageSync = _index2.default.getStorageSync('curStore'), distributor_id = _Taro$getStorageSync.distributor_id;
               query = {
                 isAccumulate: false,
                 item_id: mainItem.id,
@@ -164,10 +165,9 @@ var PackageItem = (_temp2 = _class = function (_BaseComponent) {
                 num: 1,
                 shop_type: 'distributor',
                 activity_id: packageId,
-                activity_type: 'package'
+                activity_type: 'package',
+                distributor_id: distributor_id
               };
-
-              console.log(query);
               _context.next = 10;
               return _index7.default.cart.add(query);
 

@@ -1,0 +1,45 @@
+
+/*==============================
+=            colors            =
+==============================*/
+/*===============================
+=            z-index            =
+===============================*/
+@-webkit-keyframes sp-anim-popup {
+  0% {
+    -webkit-transform: translate3D(0, 100%, 0);
+            transform: translate3D(0, 100%, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate3D(0, 0, 0);
+            transform: translate3D(0, 0, 0);
+  }
+}
+@keyframes sp-anim-popup {
+  0% {
+    -webkit-transform: translate3D(0, 100%, 0);
+            transform: translate3D(0, 100%, 0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate3D(0, 0, 0);
+            transform: translate3D(0, 0, 0);
+  }
+}
+@-webkit-keyframes sp-anim-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes sp-anim-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

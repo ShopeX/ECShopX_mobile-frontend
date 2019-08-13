@@ -131,11 +131,13 @@ var Category = (_dec = (0, _index3.connect)(function (store) {
                 nList = (0, _index4.pickBy)(res, {
                   name: 'category_name',
                   img: 'image_url',
+                  category_id: 'category_id',
                   children: function children(_ref4) {
                     var _children = _ref4.children;
                     return (0, _index4.pickBy)(_children, {
                       name: 'category_name',
-                      img: 'image_url'
+                      img: 'image_url',
+                      category_id: 'category_id'
                     });
                   }
                 });

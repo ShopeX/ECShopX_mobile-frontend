@@ -30,7 +30,6 @@ export function regRule () {
 }
 
 export function regImg (params = {}) {
-  // return req.post('http://pjj.aixue7.com/index.php/api/weapp/deposit/rechargeruleshttp://api.espier.local/index.php/api/h5app/wxapp/member', data)
   return req.get('/member/image/code', params)
 }
 

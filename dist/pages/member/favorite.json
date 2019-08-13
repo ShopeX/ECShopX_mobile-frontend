@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "at-nav-bar": "../../npm/taro-ui/dist/weapp/components/nav-bar/index",
+    "goods-item": "../../components/goods-item/index",
+    "sp-checkbox": "../../components/checkbox/index",
+    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index"
+  }
+}

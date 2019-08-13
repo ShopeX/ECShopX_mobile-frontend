@@ -461,10 +461,12 @@ var CartCheckout = (_dec = (0, _index3.connect)(function (_ref2) {
         return item.order_item_type !== 'gift';
       }).map(function (item) {
         var item_id = item.item_id,
-            num = item.num;
+            num = item.num,
+            price = item.price;
 
         return {
           item_id: item_id,
+          price: price,
           num: num
         };
       });

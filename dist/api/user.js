@@ -57,7 +57,6 @@ function regRule() {
 function regImg() {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-  // return req.post('http://pjj.aixue7.com/index.php/api/weapp/deposit/rechargeruleshttp://api.espier.local/index.php/api/h5app/wxapp/member', data)
   return _req2.default.get('/member/image/code', params);
 }
 

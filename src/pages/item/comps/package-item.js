@@ -158,6 +158,7 @@ export default class PackageItem extends Component {
 
     const { selection, mainItem } = this.state
     const packageId = this.props.current
+    const { distributor_id } = Taro.getStorageSync('curStore')
 
     const query = {
       isAccumulate: false,
@@ -166,9 +167,9 @@ export default class PackageItem extends Component {
       num: 1,
       shop_type: 'distributor',
       activity_id: packageId,
-      activity_type: 'package'
+      activity_type: 'package',
+      distributor_id
     }
-    console.log(query)
     const res = await api.cart.add(query)
     if (res) {
       Taro.showToast({

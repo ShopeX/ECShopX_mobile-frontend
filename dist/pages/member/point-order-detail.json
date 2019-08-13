@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "loading": "../../components/loading/index",
+    "nav-bar": "../../components/nav-bar/index",
+    "sp-cell": "../../components/cell/index",
+    "order-item": "../trade/comps/order-item",
+    "price": "../../components/price/index",
+    "at-button": "../../npm/taro-ui/dist/weapp/components/button/index",
+    "address-picker": "../../components/address/picker",
+    "sp-toast": "../../components/toast/index"
+  }
+}

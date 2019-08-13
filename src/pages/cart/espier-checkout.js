@@ -571,9 +571,10 @@ export default class CartCheckout extends Component {
     const items = this.params.items
       .filter(item => item.order_item_type !== 'gift')
       .map(item => {
-        const { item_id, num } = item
+        const { item_id, num, price } = item
         return {
           item_id,
+          price,
           num
         }
       })

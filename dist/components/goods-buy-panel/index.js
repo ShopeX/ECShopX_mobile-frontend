@@ -94,7 +94,7 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
       _this.props.onClose && _this.__triggerPropsFn("onClose", [null].concat([]));
     }, _this.handleBuyClick = function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(type, skuInfo, num) {
-        var _this$state, marketing, info, special_type, isDrug, _ref3, item_id, url, groups_activity_id, seckill_id, _ref4, ticket;
+        var _this$state, marketing, info, special_type, isDrug, _ref3, item_id, _Taro$getStorageSync, distributor_id, url, groups_activity_id, seckill_id, _ref4, ticket;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -112,6 +112,7 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
                 special_type = info.special_type;
                 isDrug = special_type === 'drug';
                 _ref3 = _this.noSpecs ? info : skuInfo, item_id = _ref3.item_id;
+                _Taro$getStorageSync = _index2.default.getStorageSync('curStore'), distributor_id = _Taro$getStorageSync.distributor_id;
                 url = "/pages/cart/espier-checkout";
 
 
@@ -120,31 +121,32 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
                 });
 
                 if (!(type === 'cart')) {
-                  _context.next = 21;
+                  _context.next = 22;
                   break;
                 }
 
                 url = "/pages/cart/espier-index";
 
-                _context.prev = 10;
-                _context.next = 13;
+                _context.prev = 11;
+                _context.next = 14;
                 return _index5.default.cart.add({
                   item_id: item_id,
                   num: num,
+                  distributor_id: distributor_id,
                   shop_type: isDrug ? 'drug' : 'distributor'
                 });
 
-              case 13:
-                _context.next = 18;
+              case 14:
+                _context.next = 19;
                 break;
 
-              case 15:
-                _context.prev = 15;
-                _context.t0 = _context["catch"](10);
+              case 16:
+                _context.prev = 16;
+                _context.t0 = _context["catch"](11);
 
                 console.log(_context.t0);
 
-              case 18:
+              case 19:
 
                 _index2.default.showToast({
                   title: '成功加入购物车',
@@ -157,60 +159,60 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
 
                 _this.__triggerPropsFn("onAddCart", [null].concat([item_id, num]));
 
-              case 21:
+              case 22:
                 if (!(type === 'fastbuy')) {
-                  _context.next = 46;
+                  _context.next = 47;
                   break;
                 }
 
                 url += '?cart_type=fastbuy';
 
                 if (!(marketing === 'group')) {
-                  _context.next = 28;
+                  _context.next = 29;
                   break;
                 }
 
                 groups_activity_id = info.group_activity.groups_activity_id;
 
                 url += "&type=" + marketing + "&group_id=" + groups_activity_id;
-                _context.next = 35;
+                _context.next = 36;
                 break;
 
-              case 28:
+              case 29:
                 if (!(marketing === 'seckill')) {
-                  _context.next = 35;
+                  _context.next = 36;
                   break;
                 }
 
                 seckill_id = info.seckill_activity.seckill_id;
-                _context.next = 32;
+                _context.next = 33;
                 return _index5.default.item.seckillCheck({ item_id: item_id, seckill_id: seckill_id, num: num });
 
-              case 32:
+              case 33:
                 _ref4 = _context.sent;
                 ticket = _ref4.ticket;
 
                 url += "&type=" + marketing + "&seckill_id=" + seckill_id + "&ticket=" + ticket;
 
-              case 35:
-                _context.prev = 35;
-                _context.next = 38;
+              case 36:
+                _context.prev = 36;
+                _context.next = 39;
                 return _index5.default.cart.fastBuy({
                   item_id: item_id,
                   num: num
                 });
 
-              case 38:
-                _context.next = 43;
+              case 39:
+                _context.next = 44;
                 break;
 
-              case 40:
-                _context.prev = 40;
-                _context.t1 = _context["catch"](35);
+              case 41:
+                _context.prev = 41;
+                _context.t1 = _context["catch"](36);
 
                 console.log(_context.t1);
 
-              case 43:
+              case 44:
 
                 _this.setState({
                   busy: false
@@ -221,7 +223,7 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
                   url: url
                 });
 
-              case 46:
+              case 47:
 
                 if (type === 'pick') {
                   _this.__triggerPropsFn("onSubmit", [null].concat([skuInfo]));
@@ -233,12 +235,12 @@ var GoodsBuyPanel = (_temp2 = _class = function (_BaseComponent) {
                   });
                 }
 
-              case 47:
+              case 48:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, _this2, [[10, 15], [35, 40]]);
+        }, _callee, _this2, [[11, 16], [36, 41]]);
       }));
 
       return function (_x, _x2, _x3) {

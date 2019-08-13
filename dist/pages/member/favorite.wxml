@@ -1,0 +1,19 @@
+<block>
+    <view class="{{anonymousState__temp}}">
+        <at-nav-bar fixed="{{true}}" __triggerObserer="{{ _triggerObserer }}" leftIconType="chevron-left" rightFirstIconType="bullet-list" title="我的收藏" bindonclicklefticon="handleGoBack" bindonclickrgiconst="anonymousFunc0" __fn_onClickLeftIcon="{{true}}" __fn_onClickRgIconSt="{{true}}"></at-nav-bar>
+        <scroll-view class="favorite-items__scroll" scroll-y="{{true}}">
+            <goods-item wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" info="{{item.$original}}" bindonclick="onClickItem" wx:for="{{loopArray0}}" wx:for-item="item" wx:for-index="_anonIdx" __fn_onClick="{{true}}">
+                <block wx:if="{{mode == 'edit'}}">
+                    <sp-checkbox wx:key="$original.item_id" __triggerObserer="{{ _triggerObserer }}" checked="{{item.$loopState__temp3}}" bindonchange="handleSelectionChange" __fn_onChange="{{true}}" data-e-onchange-so="this" data-e-onchange-a-a="{{item.$original.item_id}}"></sp-checkbox>
+                </block>
+            </goods-item>
+        </scroll-view>
+        <view class="toolbar">
+            <view class="toolbar-hd"><text>已选择<text class="lnk">{{totalSelection}}</text>项内容</text>
+            </view>
+            <view class="toolbar-bd">
+                <at-button circle="{{true}}" __triggerObserer="{{ _triggerObserer }}" type="primary" className="btn-checkout" bindonclick="handleDelect" __fn_onClick="{{true}}">删除</at-button>
+            </view>
+        </view>
+    </view>
+</block>

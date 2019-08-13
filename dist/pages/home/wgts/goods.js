@@ -104,7 +104,8 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
       });
     }, _this.handleClickOperate = function () {
       var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(item_data, type, e) {
-        var info;
+        var info, _Taro$getStorageSync, distributor_id;
+
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -165,37 +166,39 @@ var WgtGoods = (_dec = (0, _index3.connect)(function (_ref) {
 
               case 15:
                 if (!(type === 'buy')) {
-                  _context.next = 25;
+                  _context.next = 26;
                   break;
                 }
 
                 _context.prev = 16;
-                _context.next = 19;
+                _Taro$getStorageSync = _index2.default.getStorageSync('curStore'), distributor_id = _Taro$getStorageSync.distributor_id;
+                _context.next = 20;
                 return _index5.default.cart.add({
                   item_id: item_data.item_id,
+                  distributor_id: distributor_id,
                   num: 1
                 });
 
-              case 19:
+              case 20:
                 _index2.default.showToast({
                   title: '成功加入购物车',
                   icon: 'success'
                 });
-                _context.next = 25;
+                _context.next = 26;
                 break;
 
-              case 22:
-                _context.prev = 22;
+              case 23:
+                _context.prev = 23;
                 _context.t0 = _context["catch"](16);
 
                 console.log(_context.t0);
 
-              case 25:
+              case 26:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, _this2, [[16, 22]]);
+        }, _callee, _this2, [[16, 23]]);
       }));
 
       return function (_x, _x2, _x3) {

@@ -47,9 +47,7 @@ const config = {
     // APP_AUTH_PAGE: '"/pages/auth/login"',
     APP_AUTH_PAGE: TARO_ENV === 'weapp'
       ? '"/pages/auth/wxauth"'
-      : '"/pages/auth/login"',
-
-    APP_GIFT_APPID: 'wx2fb97cb696f68d22' // 礼品小程序 appid
+      : '"/pages/auth/login"'
   },
   alias: {
     '@': path.join(__dirname, '../src')

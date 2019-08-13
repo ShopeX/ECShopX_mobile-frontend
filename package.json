@@ -16,7 +16,8 @@
 		"dev:alipay": "npm run build:alipay -- --watch",
 		"dev:tt": "npm run build:tt -- --watch",
 		"dev:h5": "npm run build:h5 -- --watch",
-		"dev:rn": "npm run build:rn -- --watch"
+		"dev:rn": "npm run build:rn -- --watch",
+		"release:h5": "RELEASE=h5 npm run build:h5"
 	},
 	"author": "",
 	"license": "MIT",
@@ -77,5 +78,10 @@
 		"fs-extra": "^8.0.1",
 		"glob": "^7.1.4",
 		"webpack-dev-server": "^2.9.7"
+	},
+	"cdn": {
+		"publicPath": "//b-cdn.pjinjin.com/",
+		"bucket": "espier-vue",
+		"path": "h5/"
 	}
 }
