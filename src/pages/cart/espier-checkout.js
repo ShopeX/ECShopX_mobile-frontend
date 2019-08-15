@@ -205,7 +205,7 @@ export default class CartCheckout extends Component {
     const { type,shop_id } = this.$router.params
     const isDrug = type === 'drug'
     let receiver = null
-    if (isDrug) { 
+    if (isDrug) {
       receiver = pickBy(this.state.address, {
         receiver_name: 'name',
         receiver_mobile: 'mobile',
@@ -571,7 +571,7 @@ export default class CartCheckout extends Component {
     const items = this.params.items
       .filter(item => item.order_item_type !== 'gift')
       .map(item => {
-        const { item_id, num, price } = item
+        const { item_id, num, total_fee: price } = item
         return {
           item_id,
           price,
