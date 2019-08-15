@@ -107,6 +107,7 @@ export default class HomeIndex extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
+      price: ({ price }) => { return (price/100).toFixed(2)},
       desc: 'brief',
     })
 

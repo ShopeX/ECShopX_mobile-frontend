@@ -1,0 +1,38 @@
+@import '../../../style/imports';
+.fav-store__item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+  background: #fff;
+  &::after {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 100px;
+    height: 1px;
+    content: "";
+    background: $color-border-gray-light;
+  }
+  &-brand {
+    width: 100px;
+    height: 100px;
+  }
+  &-info {
+    flex: 1;
+    padding-left: 10px;
+    .store-fav-count {
+      font-size: 24px;
+      color: $color-gray;
+    }
+  }
+  &-cancel {
+    width: 150px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    box-shadow: 0 0 0 1PX $color-border-gray;
+    border-radius: 42px;
+    font-size: 24px;
+  }
+}

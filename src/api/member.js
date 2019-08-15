@@ -209,3 +209,23 @@ export function pointCheckLucky (luckydraw_id) {
 export function pointComputeResult (luckydraw_id) {
   return req.get(`/promotion/luckydraw/luckylogic/${luckydraw_id}`)
 }
+
+export function storeFav (id) {
+  return req.post(`/member/collect/distribution/${id}`)
+}
+
+export function storeFavDel (id) {
+  return req.delete('/member/collect/distribution', {distributor_id: id})
+}
+
+export function storeFavList () {
+  return req.get('/member/collect/distribution')
+}
+
+export function storeFavCount (params = {}) {
+  return req.get('/member/collect/distribution/num', params)
+}
+
+export function storeIsFav (id) {
+  return req.get('/member/collect/distribution/check', {distributor_id: id})
+}

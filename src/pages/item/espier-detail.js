@@ -10,6 +10,7 @@ import S from '@/spx'
 import GoodsBuyToolbar from './comps/buy-toolbar'
 import ItemImg from './comps/item-img'
 import Params from './comps/params-item'
+import StoreInfo from './comps/store-info'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
@@ -317,12 +318,6 @@ export default class Detail extends Component {
   handleShare () {
   }
 
-  handleClickLink = () => {
-    Taro.navigateTo({
-      url: '/pages/store/index'
-    })
-  }
-
   handleToGiftMiniProgram = () => {
     Taro.navigateToMiniProgram({
       appId: APP_GIFT_APPID, // 要跳转的小程序的appid
@@ -592,27 +587,10 @@ export default class Detail extends Component {
           }
 
           {
-            store
-            && <View className='goods-sec-specs store-info'>
-                <View className="view-flex view-flex-middle">
-                  <Image className="store-brand" src={store.imgUrl || 'https://fakeimg.pl/120x120/EFEFEF/CCC/?text=brand&font=lobster'} mode="aspectFit" />
-                  <View>
-                    <View className="store-name">{store.name}</View>
-                  </View>
-                </View>
-                <View className='view-flex'>
-                  <View className='view-flex-item'>
-                    <View className="store-attention-btn">关注店铺</View>
-                  </View>
-                  <View className='view-flex-item'>
-                    <View
-                      className="store-enter-btn"
-                      onClick={this.handleClickLink}
-                    >进入店铺</View>
-                  </View>
-                </View>
-
-              </View>
+            store &&
+              <StoreInfo
+                info={store}
+              />
           }
 
           {
@@ -637,9 +615,6 @@ export default class Detail extends Component {
                 content={desc}
               />
           }
-
-
-
 
           {/*<View className='goods-sec-tabs'>
             <View className='sec-tabs'>

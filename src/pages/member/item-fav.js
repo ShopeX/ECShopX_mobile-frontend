@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, GoodsItem, NavBar, SpNote, RecommendItem } from '@/components'
+import StoreFavItem from './comps/store-fav-item'
 import api from '@/api'
 import { pickBy } from '@/utils'
 
@@ -25,7 +26,8 @@ export default class ItemFav extends Component {
       curTabIdx: 0,
       tabList: [
         {title: '商品', status: '0'},
-        {title: '种草', status: '1'}
+        {title: '软文', status: '1'},
+        {title: '店铺', status: '2'},
       ],
       list: []
     }
@@ -42,42 +44,57 @@ export default class ItemFav extends Component {
       pageSize
     }
 
-    const { list, total_count: total } = this.state.curTabIdx === 0 ? await api.member.favsList(query) : await api.article.totalCollectArticle(query)
     const { favs } = this.props
 
-    if(this.state.curTabIdx === 0){
-      const nList = pickBy(list, {
-        img: 'item_image',
-        fav_id: 'fav_id',
-        item_id: 'item_id',
-        title: 'item_name',
-        desc: 'brief',
-        price: ({ price }) => (price/100).toFixed(2),
-        market_price: ({ market_price }) => (market_price/100).toFixed(2),
-        is_fav: ({ item_id }) => Boolean(favs[item_id])
-      })
+    const { list, total } = await (async () => {
+      let list = []
+      let total = 0
+      let res = null
+      switch (this.state.curTabIdx) {
+        case 0:
+          res = await api.member.favsList(query)
+          list = pickBy(res.list, {
+            img: 'item_image',
+            fav_id: 'fav_id',
+            item_id: 'item_id',
+            title: 'item_name',
+            desc: 'brief',
+            price: ({ item_price }) => (item_price/100).toFixed(2),
+            is_fav: ({ item_id }) => Boolean(favs[item_id])
+          })
+          total = res.total_count
+          break;
+        case 1:
+          res = await api.article.totalCollectArticle(query)
+          list = pickBy(res.list, {
+            img: 'image_url',
+            fav_id: 'fav_id',
+            item_id: 'article_id',
+            title: 'title',
+            summary: 'summary',
+            head_portrait: 'head_portrait',
+            author: 'author',
+          })
+          total = res.total_count
+          break;
+        case 2:
+          res = await api.member.storeFavList(query)
+          list = pickBy(res.list, {
+            distributor_id: 'distributor_id',
+            fav_num: 'fav_num',
+            name: 'name'
+          })
+          total = res.total_count
+          break;
+        default:
+      }
+      return { list, total }
+    })()
 
-      this.setState({
-        list: [...this.state.list, ...nList],
-        query
-      })
-    } else {
-      const nList = pickBy(list, {
-        img: 'image_url',
-        fav_id: 'fav_id',
-        item_id: 'article_id',
-        title: 'title',
-        summary: 'summary',
-        head_portrait: 'head_portrait',
-        author: 'author',
-      })
-
-      this.setState({
-        list: [...this.state.list, ...nList],
-        query
-      })
-    }
-
+    this.setState({
+      list: [...this.state.list, ...list],
+      query
+    })
 
     return {
       total
@@ -85,7 +102,24 @@ export default class ItemFav extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = this.state.curTabIdx === 0 ? `/pages/item/espier-detail?id=${item.item_id}` : `/pages/recommend/detail?id=${item.item_id}`
+    const url = (() => {
+      let link = null
+      switch (this.state.curTabIdx) {
+        case 0:
+          link = `/pages/item/espier-detail?id=${item.item_id}`
+          break;
+        case 1:
+          link = `/pages/recommend/detail?id=${item.item_id}`
+          break;
+        case 2:
+          link = `/pages/store/index?id=${item.distributor_id}`
+          break;
+        default:
+          link = ''
+      }
+      return url
+    })()
+
     Taro.navigateTo({
       url
     })
@@ -147,7 +181,7 @@ export default class ItemFav extends Component {
           <View className='goods-list goods-list__type-grid'>
             {
               curTabIdx === 0
-                ? <View>
+                && <View>
                     {
                       list.map(item => {
                         return (
@@ -160,7 +194,10 @@ export default class ItemFav extends Component {
                       })
                     }
                   </View>
-                : <View>
+            }
+            {
+              curTabIdx === 1
+                && <View>
                     {
                       list.map(item => {
                         return (
@@ -174,7 +211,22 @@ export default class ItemFav extends Component {
                     }
                   </View>
             }
-
+            {
+              curTabIdx === 2
+                && <View>
+                    {
+                      list.map(item => {
+                        return (
+                          <StoreFavItem
+                            key={item.distributor_id}
+                            info={item}
+                            onClick={() => this.handleClickItem(item)}
+                          />
+                        )
+                      })
+                    }
+                  </View>
+            }
           </View>
           {
             page.isLoading
