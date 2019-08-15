@@ -45,8 +45,8 @@ export default class SeckillGoodsList extends Component {
     //   }
     // }, () => {
     //   this.nextPage()
-    // })
-    this.fetch()
+		// })
+		this.nextPage()
   }
 
   calcTimer (totalSec) {
@@ -60,44 +60,48 @@ export default class SeckillGoodsList extends Component {
     const ss = Math.floor(remainingSec)
 
     return {
+			dd,
+			hh,
       mm,
       ss
     }
   }
-
+  handleClickItem (id) {
+		Taro.navigateTo({
+			url: `/pages/item/espier-detail?id=${id}`
+		})
+	}
   async fetch (params) {
-    // const { page_no: page, page_size: pageSize } = params
-    // const query = {
-    //   status: this.state.curTabIdx === 0 ? 'valid' : 'notice',
-    //   page,
-    //   pageSize
-    // }
+    const { page_no: page, page_size: pageSize } = params
+    const query = {
+      seckill_id: this.$router.params.seckill_id,
+      page,
+      pageSize
+    }
 
-    // const { list, total_count: total } = await api.seckill.seckillList(query)
-    const { list, last_seconds } = this.state
+		const { items:list,total_count: total ,ad_pic:imgurl,last_seconds} = await api.seckill.seckillGoodsList(query)
+
     let timer = null
     timer = this.calcTimer(last_seconds)
-    this.setState({
-      timer
+    	
+		const nList = pickBy(list, {
+      img: 'pics[0]',
+      item_id: 'item_id',
+      title: 'itemName',
+      desc: 'brief',
+      price: ({ price }) => (price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2)
     })
-    // console.log(this.state.list, 53)
 
-    // const nList = pickBy(list, {
-    //   img: 'pics[0]',
-    //   item_id: 'item_id',
-    //   title: 'itemName',
-    //   desc: 'brief',
-    //   price: 'point',
-    // })
-    //
-    // this.setState({
-    //   list: [...this.state.list, ...nList],
-    //   query
-    // })
-
-    // return {
-    //   total
-    // }
+    this.setState({
+			timer,
+      list: [...this.state.list, ...nList],
+			imgurl,
+			last_seconds
+    })
+    return {
+      total
+    }
   }
 
 
@@ -111,15 +115,20 @@ export default class SeckillGoodsList extends Component {
           scrollTop={scrollTop}
           scrollWithAnimation
           onScroll={this.handleScroll}
-          // onScrollToLower={this.nextPage}
+          onScrollToLower={this.nextPage}
         >
           <Image className='seckill-goods__swiper' src={imgurl} mode='widthFix' />
-          <View className=''>
-            <AtCountdown
-              minutes={timer.mm}
-              seconds={timer.ss}
-            />
-            后结束
+					<View className='seckill-goods__timer'>
+						<View>
+							<AtCountdown
+							  isShowDay
+								day={timer.dd}
+  							hours={timer.hh}
+								minutes={timer.mm}
+								seconds={timer.ss}
+							/>
+							<Text>后结束</Text>
+						</View>
           </View>
           <View className='seckill-goods__list'>
             {
@@ -127,22 +136,21 @@ export default class SeckillGoodsList extends Component {
                 return (
                   <GoodsItem
                     key={item.item_id}
-                    info={item}
-                    onClick={() => this.handleClickItem(item)}
-                  />
+										info={item}
+										showFav={false}
+                    onClick={() => this.handleClickItem(item.item_id)}
+									>
+									<View className='seckill-goods__list-btn'>马上抢</View>
+									</GoodsItem>
                 )
               })
             }
           </View>
-          {/*{*/}
-          {/*page.isLoading*/}
-          {/*? <Loading>正在加载...</Loading>*/}
-          {/*: null*/}
-          {/*}*/}
-          {/*{*/}
-          {/*!page.isLoading && !page.hasNext && !list.length*/}
-          {/*&& (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)*/}
-          {/*}*/}
+          { page.isLoading ? <Loading>正在加载...</Loading> : null }
+          {
+						!page.isLoading && !page.hasNext && !list.length
+						&& (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
+          }
         </ScrollView>
 
         <BackToTop

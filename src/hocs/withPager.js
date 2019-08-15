@@ -19,8 +19,8 @@ export default function withPager (Component) {
     }
 
     nextPage = async () => {
+			
       const { page } = this.state
-
       if (!page.hasNext || page.isLoading) return
 
       page.isLoading = true
@@ -33,20 +33,19 @@ export default function withPager (Component) {
       const { total } = await this.fetch({
         page_no: curPage,
         page_size
-      })
-
+			})
       if (!total || curPage >= Math.ceil(+total / page_size)) {
         page.hasNext = false
       }
-
+			
       this.setState({
         page: {
           ...page,
           total,
           page_no: curPage,
-          isLoading: false
+					isLoading: false,
         }
-      })
+			})
     }
 
     resetPage (cb = () => {}) {

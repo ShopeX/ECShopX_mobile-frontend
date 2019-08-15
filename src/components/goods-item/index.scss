@@ -29,7 +29,10 @@ $item-img-size: 240px !default;
   align-items: center;
   border-radius: $item-border-radius;
   overflow: hidden;
-  margin: 0 0 $edge-margin;
+	margin: 0 0 $edge-margin*2;
+	position: relative;
+	box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+
   &__hd {
   }
   &__bd {
@@ -43,8 +46,9 @@ $item-img-size: 240px !default;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: $edge-margin 20px;
-    flex: 1;
+    padding: $edge-margin*2 20px;
+		flex: 1;
+
   }
   &__img {
     width: $item-img-size;

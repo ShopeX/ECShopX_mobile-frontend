@@ -65,7 +65,8 @@ export default class GoodsItem extends Component {
                 <Text className='goods-item__cur'>¥</Text>
                 <Text>{info.price}</Text>
                 <Text className='goods-item__price-market'>{info.market_price}</Text>
-              </View>
+							</View>
+							{this.props.children}
               {
                  showFav &&
                    (<View className='goods-item__actions'>
