@@ -82,7 +82,8 @@ export default class ItemFav extends Component {
           list = pickBy(res.list, {
             distributor_id: 'distributor_id',
             fav_num: 'fav_num',
-            name: 'name'
+            name: 'name',
+            logo: 'logo'
           })
           total = res.total_count
           break;

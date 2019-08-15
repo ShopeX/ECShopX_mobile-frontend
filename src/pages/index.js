@@ -8,7 +8,9 @@ import { pickBy } from '@/utils'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
-import { HeaderHome, WgtSearchHome, WgtSlider, WgtLimittimeSlider, WgtImgHotZone, WgtGoodsFaverite, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from './home/wgts'
+import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
+import { HomeWgts } from './home/comps/home-wgts'
+import { resolveFavsList } from './item/helper'
 
 import './home/index.scss'
 import PointDrawCompute from "./member/point-draw-compute";
@@ -25,6 +27,7 @@ export default class HomeIndex extends Component {
     this.state = {
       ...this.state,
       wgts: null,
+      goodsFavWgt: null,
       authStatus: false,
       likeList: [],
       isShowAddTip: false,
@@ -162,55 +165,24 @@ export default class HomeIndex extends Component {
           scrollY
         >
           <View className='wgts-wrap__cont'>
-            {/*<WgtLimittimeSlider />*/}
-            {
-              wgts.map((item, idx) => {
-                return (
-                  <View className='wgt-wrap' key={idx}>
-                    {item.name === 'search' && <WgtSearchHome info={item} />}
-                    {item.name === 'slider' && <WgtSlider info={item} />}
-                    {item.name === 'marquees' && <WgtMarquees info={item} />}
-                    {item.name === 'navigation' && <WgtNavigation info={item} />}
-                    {item.name === 'coupon' && <WgtCoupon info={item} />}
-                    {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
-                    {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} />}
-                    {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} />}
-                    {item.name === 'showcase' && <WgtShowcase info={item} />}
-                    {idx === 1 && (
-                      <WgtPointLuck />
-                    )}
-                  </View>
-                )
-              })
-            }
-            {
-              wgts.map((item, idx) => {
-                return (
-                  <View className='wgt-wrap faverite-content' key={idx}>
-                    {item.name === 'setting' && item.config.faverite
-                      ? (
-                        <View>
-                          <WgtGoodsFaverite info={likeList} />
-                          {
-                            page.isLoading
-                              ? <Loading>正在加载...</Loading>
-                              : null
-                          }
-                          {
-                            !page.isLoading && !page.hasNext && !likeList.length
-                            && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-                          }
-                        </View>
-                      )
-                      : null
-                    }
-                    {idx === 1 && (
-                      <WgtPointLuck />
-                    )}
-                  </View>
-                )
-              })
-            }
+            <HomeWgts
+              wgts={wgts}
+            />
+            {!!goodsFavWgt && (
+              <View>
+                <WgtGoodsFaverite info={likeList} />
+                {
+                  page.isLoading
+                    ? <Loading>正在加载...</Loading>
+                    : null
+                }
+                {
+                  !page.isLoading && !page.hasNext && !likeList.length
+                  && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
+                }
+              </View>
+            )}
+
           </View>
         </ScrollView>
 
