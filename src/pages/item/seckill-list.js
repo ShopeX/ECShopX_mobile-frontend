@@ -22,16 +22,7 @@ export default class SeckillList extends Component {
         {title: '未开始', status: 'notice'}
       ],
       query: null,
-      list: [
-        {
-          last_seconds: 1759242,
-          ad_pic: 'http://mmbiz.qpic.cn/mmbiz_jpg/1nDJByqmW2f7v2eYIjM9lKBnyGsyZyCUDmZEE648cE7VZlvlNkFJMQcic6VtG6YnElMYJzWV2nJDtFU09xibhxgg/0?wx_fmt=jpeg'
-        },
-        {
-          last_seconds: 1775245,
-          ad_pic: 'http://mmbiz.qpic.cn/mmbiz_jpg/1nDJByqmW2f7v2eYIjM9lKBnyGsyZyCUDmZEE648cE7VZlvlNkFJMQcic6VtG6YnElMYJzWV2nJDtFU09xibhxgg/0?wx_fmt=jpeg'
-        },
-      ],
+      list: [],
       timeCountDown: []
     }
   }
@@ -41,15 +32,14 @@ export default class SeckillList extends Component {
   }
 
   componentDidMount () {
-    // this.setState({
-    //   query: {
-    //     status: this.state.curTabIdx === 0 ? 'valid' : 'notice',
-    //     item_type: 'normal'
-    //   }
-    // }, () => {
-    //   this.nextPage()
-    // })
-    this.fetch()
+    this.setState({
+      query: {
+        status: this.state.curTabIdx === 0 ? 'valid' : 'notice',
+        item_type: 'normal'
+      }
+    }, () => {
+      this.nextPage()
+		})
   }
 
   calcTimer (t_index, totalSec) {
@@ -76,16 +66,16 @@ export default class SeckillList extends Component {
   }
 
   async fetch (params) {
-    // const { page_no: page, page_size: pageSize } = params
-    // const query = {
-    //   status: this.state.curTabIdx === 0 ? 'valid' : 'notice',
-    //   page,
-    //   pageSize
-    // }
-    //
-    // const { list, total_count: total } = await api.seckill.seckillList(query)
-    const { list } = this.state
-    let timeCountDown = []
+    const { page_no: page, page_size: pageSize } = params
+    const query = {
+      status: this.state.curTabIdx === 0 ? 'valid' : 'notice',
+      page,
+      pageSize
+    }
+    
+    const { list, total_count: total } = await api.seckill.seckillList(query)
+		
+		let timeCountDown = []
     list.map(item => {
       timeCountDown.push({
         timer: null,
@@ -95,7 +85,7 @@ export default class SeckillList extends Component {
     })
 
     this.setState({
-      timeCountDown: timeCountDown
+      timeCountDown,
     },()=>{
       timeCountDown.map((t_item,t_index) => {
         if (t_item.micro_second === 0) {
@@ -106,25 +96,14 @@ export default class SeckillList extends Component {
       })
     })
 
+    this.setState({
+      list: [...this.state.list, ...list],
+      query
+    })
 
-    // console.log(this.state.list, 53)
-
-    // const nList = pickBy(list, {
-    //   img: 'pics[0]',
-    //   item_id: 'item_id',
-    //   title: 'itemName',
-    //   desc: 'brief',
-    //   price: 'point',
-    // })
-    //
-    // this.setState({
-    //   list: [...this.state.list, ...nList],
-    //   query
-    // })
-
-    // return {
-    //   total
-    // }
+    return {
+      total
+    }
   }
 
   handleClickTab = (idx) => {
@@ -132,9 +111,9 @@ export default class SeckillList extends Component {
 
     if (idx !== this.state.curTabIdx) {
       this.resetPage()
-      // this.setState({
-      //   list: []
-      // })
+      this.setState({
+        list: []
+      })
     }
 
     this.setState({
@@ -144,9 +123,9 @@ export default class SeckillList extends Component {
     })
   }
 
-  handleClickItem = () => {
+  handleClickItem = (seckill_id) => {
     Taro.navigateTo({
-      url: '/pages/item/seckill-goods-list'
+      url: `/pages/item/seckill-goods-list?seckill_id=${seckill_id}`
     })
   }
 
@@ -177,13 +156,13 @@ export default class SeckillList extends Component {
           scrollTop={scrollTop}
           scrollWithAnimation
           onScroll={this.handleScroll}
-          // onScrollToLower={this.nextPage}
+          onScrollToLower={this.nextPage}
         >
           <View>
             {
               list.map((item, index) => {
                 return (
-                  <View className='seckill-list' key={index} onClick={this.handleClickItem.bind(this, item)}>
+                  <View className='seckill-list' key={index} onClick={this.handleClickItem.bind(this, item.seckill_id)}>
                     <View className='seckill-list__title'>离结束还有：
                       <AtCountdown
                         isShowDay
@@ -192,28 +171,35 @@ export default class SeckillList extends Component {
                         minutes={timeCountDown[index].mm}
                         seconds={timeCountDown[index].ss}
                       />
-                      </View>
+										</View>
                     <Image className='seckill-list__banner' mode='widthFix' src={item.ad_pic} />
-                    <View className='seckill-goods'>
-                      <View className='seckill-goods__item'>
-                        <Image className='seckill-goods__img' mode='widthFix' src={item.ad_pic} />
-                        <Text className='seckill-goods__title'>标题标题标题标题标题标题标题标题</Text>
-                      </View>
+										<View className='seckill-goods'>
+										{
+											item.items.map(seckill=>{
+												return (
+													<View className='seckill-goods__item'>
+														<Image className='seckill-goods__img' mode='aspectFill' src={seckill.pics[0]} />
+														<Text className='seckill-goods__title'>{seckill.item_title}</Text>
+													</View>
+												)
+											})
+											
+										} 
                     </View>
                   </View>
                 )
               })
             }
           </View>
-          {/*{*/}
-            {/*page.isLoading*/}
-              {/*? <Loading>正在加载...</Loading>*/}
-              {/*: null*/}
-          {/*}*/}
-          {/*{*/}
-            {/*!page.isLoading && !page.hasNext && !list.length*/}
-            {/*&& (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)*/}
-          {/*}*/}
+          {
+            page.isLoading
+              ? <Loading>正在加载...</Loading>
+              : null
+          }
+          {
+            !page.isLoading && !page.hasNext && !list.length
+            && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
+          }
         </ScrollView>
 
         <BackToTop

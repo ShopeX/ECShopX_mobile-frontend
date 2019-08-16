@@ -22,6 +22,12 @@ export default class GoodsItem extends Component {
     addGlobalClass: true
   }
 
+	// onNumChange= (val) => {
+	// 	console.log('onNumChange',val)
+  //   this.setState({
+  //     [info.num]: val
+  //   })
+  // }
   render () {
     const { num,info, showMarketPrice, noCurSymbol, noCurDecimal, onClick, appendText, className, isDisabled, isPointDraw } = this.props
     if (!info) {
