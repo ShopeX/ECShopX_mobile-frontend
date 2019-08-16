@@ -206,22 +206,22 @@ export default class MemberIndex extends Component {
             <View className="avatar">
               <Image className="avatar-img" src={info.avatar} mode="aspectFill"/>
               {
-                /* (vipgrade.vip_type === 'vip' || vipgrade.vip_type === 'svip')
-                && <Image className="icon-vip" src="/assets/imgs/svip.png" /> */
+                (vipgrade.vip_type === 'vip' || vipgrade.vip_type === 'svip')
+                && <Image className="icon-vip" src="/assets/imgs/svip.png" /> 
               }
             </View>
             <View>
-              <View className="nickname">Hi, {info.username} { /* <Text className="icon-qrcode"></Text> */ }</View>
+              <View className="nickname">Hi, {info.username} {  <Text className="icon-qrcode"></Text> }</View>
               {
-                /* !vipgrade.is_vip
+                !vipgrade.is_vip
                 ? <View className="gradename">{gradeInfo.grade_name}</View>
-                : <View className="gradename">{vipgrade.grade_name}</View> */
+                : <View className="gradename">{vipgrade.grade_name}</View> 
               }
             </View>
-            { /*<View className="icon-arrowRight"></View>*/ }
+            { <View className="icon-arrowRight"></View> }
           </View>
           {
-            /* <View className="member-card {{vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip ? 'opened' : ''}}">
+            <View className="member-card {{vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip ? 'opened' : ''}}">
               {
                 vipgrade.is_open && !vipgrade.is_vip
                 && (
@@ -257,7 +257,7 @@ export default class MemberIndex extends Component {
               {
                 vipgrade.is_open && !vipgrade.is_vip && (<Image className="member-info-bg" src={gradeInfo.background_pic_url} />)
               }
-            </View> */
+            </View>
           }
           <View className="section section-card order-box">
             <View className="section-title no-foot-padded view-flex view-flex-middle">
