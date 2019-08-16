@@ -5,12 +5,10 @@ import { AtCountdown } from 'taro-ui'
 import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell } from '@/components'
 import api from '@/api'
 import { withBackToTop } from '@/hocs'
-import { log, calcTimer, isArray, pickBy, classNames } from '@/utils'
+import { log, calcTimer, isArray, pickBy, classNames, canvasExp } from '@/utils'
+import entry from '@/utils/entry'
 import S from '@/spx'
-import GoodsBuyToolbar from './comps/buy-toolbar'
-import ItemImg from './comps/item-img'
-import Params from './comps/params-item'
-import StoreInfo from './comps/store-info'
+import { GoodsBuyToolbar, ItemImg, Params, StoreInfo, SharePanel } from './comps'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
@@ -38,13 +36,13 @@ export default class Detail extends Component {
       info: null,
       desc: null,
       curImgIdx: 0,
-      windowWidth: 320,
       isPromoter: false,
       timer: null,
       startSecKill: true,
       hasStock: true,
       cartCount: '',
       showBuyPanel: false,
+      showSharePanel: false,
       buyPanelType: null,
       specImgsDict: {},
       currentImgs: -1,
@@ -53,20 +51,19 @@ export default class Detail extends Component {
       promotion_activity: [],
       promotion_package: [],
       itemParams: [],
-      screenWidth: 0,
       sessionFrom: ''
     }
   }
 
-  componentDidMount () {
-    this.handleResize()
-    this.fetch()
-    Taro.getSystemInfo()
-      .then(res =>{
-        this.setState({
-          screenWidth: res.screenWidth
-        })
-      })
+  async componentDidMount () {
+    const options = this.$router.params
+    const { store, uid } = await entry.entryLaunch(options, true)
+    if (store) {
+      this.fetch()
+    }
+    if (uid) {
+      this.uid = uid
+    }
     // 浏览记录
     if (S.getAuthToken()) {
       try {
@@ -87,17 +84,9 @@ export default class Detail extends Component {
 
     return {
       title: info.item_name,
-      path: `/pages/item/espier-detail?id=${info.item_id}`
+      path: `/pages/item/espier-detail?id=${info.item_id}` + this.uid && `&uid=${this.uid}`
     }
 
-
-  }
-
-  handleResize () {
-    const { windowWidth } = Taro.getSystemInfoSync()
-    this.setState({
-      windowWidth
-    })
   }
 
   async fetchCartCount () {
@@ -316,6 +305,9 @@ export default class Detail extends Component {
   }
 
   handleShare () {
+    this.setState({
+      showSharePanel: true
+    })
   }
 
   handleToGiftMiniProgram = () => {
@@ -333,8 +325,6 @@ export default class Detail extends Component {
     const store = Taro.getStorageSync('curStore')
     const {
       info,
-      windowWidth,
-      screenWidth,
       isGreaterSix,
       sixSpecImgsDict,
       curImgIdx,
@@ -347,20 +337,24 @@ export default class Detail extends Component {
       promotion_package,
       itemParams,
       sessionFrom,
-      currentImgs
+      currentImgs,
+      marketing,
+      timer,
+      isPromoter,
+      startSecKill,
+      hasStock,
+      showBuyPanel,
+      buyPanelType,
+      showSharePanel
     } = this.state
-    const { marketing, timer, isPromoter, startSecKill, hasStock, showBuyPanel, buyPanelType } = this.state
+
+    const uid = this.uid
 
     if (!info) {
       return (
         <Loading />
       )
     }
-
-    // const imgInfo = {
-    //   img: info.pics[0],
-    //   width: windowWidth + 'px'
-    // }
 
     const { pics: imgs } = info
 
@@ -601,7 +595,7 @@ export default class Detail extends Component {
                     return (
                       <View className='wgt-wrap' key={idx}>
                         {item.name === 'film' && <WgtFilm info={item} />}
-                        {item.name === 'slider' && <WgtSlider info={item} width={screenWidth} />}
+                        {item.name === 'slider' && <WgtSlider info={item} />}
                         {item.name === 'writing' && <WgtWriting info={item} />}
                         {item.name === 'heading' && <WgtHeading info={item} />}
                         {item.name === 'goods' && <WgtGoods info={item} />}
@@ -668,8 +662,7 @@ export default class Detail extends Component {
           <FloatMenuItem
             iconPrefixClass='in-icon'
             icon='fenxiang1'
-            openType='share'
-            onClick={this.handleShare}
+            onClick={this.handleShare.bind(this)}
           />
           <FloatMenuItem
             iconPrefixClass='in-icon'
@@ -724,6 +717,14 @@ export default class Detail extends Component {
             onChange={this.handleSkuChange}
             onAddCart={this.handleBuyAction.bind(this, 'cart')}
             onFastbuy={this.handleBuyAction.bind(this, 'fastbuy')}
+          />
+        }
+
+        {
+          <SharePanel
+            info={uid}
+            isOpen={showSharePanel}
+            onClose={() => this.setState({ showSharePanel: false })}
           />
         }
 

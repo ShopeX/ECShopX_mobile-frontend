@@ -43,11 +43,13 @@ class API {
     let newText = ''
     if(errMsg.length > 11) {
       newText = errMsg.substring(0, 11)+ '\n' + errMsg.substring(11)
+    } else {
+      newText = errMsg
     }
     setTimeout(() => {
       Taro.showToast({
         icon: 'none',
-				title: newText
+        title: newText
       })
     }, 200)
   }

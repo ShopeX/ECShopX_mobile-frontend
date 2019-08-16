@@ -4,6 +4,21 @@
   .wgts-wrap__cont {
     background: #ffffff;
   }
+  .at-float-layout {
+    .layout-header {
+      height: 80px;
+      background-color: transparent;
+    }
+    .at-float-layout__container {
+      min-height: auto;
+    }
+    .layout-body {
+      min-height: auto;
+    }
+    .layout-body__content {
+      min-height: auto;
+    }
+  }
 }
 
 .wgt {
