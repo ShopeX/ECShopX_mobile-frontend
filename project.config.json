@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 3,
 			"list": [
 				{
 					"id": 0,
@@ -50,6 +50,13 @@
 					"name": "pages/member/index",
 					"pathName": "pages/member/index",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/cart/espier-index",
+					"pathName": "pages/cart/espier-index",
+					"query": "seckill_id=12",
 					"scene": null
 				}
 			]

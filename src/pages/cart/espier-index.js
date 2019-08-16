@@ -85,11 +85,19 @@ export default class CartIndex extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+		console.log('componentWillReceiveProps')
     if (nextProps.list !== this.props.list) {
-      const groups = this.resolveActivityGroup(nextProps.list)
-      this.setState({
-        groups
-      })
+			const groups = this.resolveActivityGroup(nextProps.list)
+			// setTimeout(()=> {
+			// 	this.setState({
+			// 		...this.state.groups,
+			// 		groups
+			// 	})
+			// }, 1000)
+				this.setState({
+					groups
+				})
+      
     }
   }
 
@@ -201,10 +209,16 @@ export default class CartIndex extends Component {
     })
     this.updating = true
     try {
-      await this.fetchCart()
+			await this.fetchCart()
+			// setTimeout(() => {
+			// 	this.setState({
+			// 		groups,
+			// 		loading: false
+			// 	})
+			// }, 40)
     } catch (e) {
       console.log(e)
-    }
+		}
     this.updating = false
     Taro.hideLoading()
   }
@@ -234,17 +248,17 @@ export default class CartIndex extends Component {
   }
 
   async handleSelectionChange (shopIndex,cart_id, checked) {
-		const selection = this.state.selection
-		console.log('handleSelectionChange',selection,selection[shopIndex])
-    selection[shopIndex][checked ? 'add' : 'delete'](cart_id)
-    this.updateSelection([...selection])
+		// const selection = this.state.selection
+		// console.log('handleSelectionChange',selection,selection[shopIndex])
+    // selection[shopIndex][checked ? 'add' : 'delete'](cart_id)
+    // this.updateSelection([...selection])
 
     await api.cart.select({
       cart_id,
       is_checked: checked
     })
 
-    log.debug(`[cart change] item: ${cart_id}, selection:`, selection)
+    // log.debug(`[cart change] item: ${cart_id}, selection:`, selection)
     this.updateCart()
   }
 
@@ -285,25 +299,21 @@ export default class CartIndex extends Component {
   }
 
   handleQuantityChange = async (shop_id,item, num, e) => {
-		console.log('a')
-    e.stopPropagation()
+		// console.log('a')
+    // e.stopPropagation()
 
-    const { item_id, cart_id } = item
-    Taro.showLoading({
-      mask: true
-    })
+    // const { item_id, cart_id } = item
+    // Taro.showLoading({
+    //   mask: true
+    // })
 
-		this.props.onUpdateCartNum(cart_id, num)
-		console.log('b')
-		await this.changeCartNum(shop_id,cart_id, num)
-    Taro.hideLoading()
-    // this.updateCart.cancel()
-    // if (this.lastCartId === cart_id || this.lastCartId === undefined) {
-    //   await this.debounceChangeCartNum(cart_id, num)
-    // } else {
-    //   this.lastCartId = cart_id
-    //   await this.changeCartNum(cart_id, num)
-    // }
+		// this.props.onUpdateCartNum(cart_id, num)
+		// console.log('b')
+		// await this.changeCartNum(shop_id,cart_id, num)
+		const { type = 'distributor' } = this.$router.params
+		await api.cart.updateNum(shop_id,item.cart_id, num, type)
+		this.updateCart()
+    // Taro.hideLoading()
   }
 
   handleAllSelect = async (checked,shopIndex) => {
@@ -498,7 +508,7 @@ export default class CartIndex extends Component {
 															)}
 															{
 																activityGroup.list.map((item) => {
-																	console.log(3333,item)
+																	console.log('item',item)
 																	return (
 																		<View className='cart-group__item-wrap'>
 																			<CartItem
@@ -511,7 +521,7 @@ export default class CartIndex extends Component {
 																				<View className='cart-item__act'>
 																					<SpCheckbox
 																						key={item.item_id}
-																						checked={selection[shopIndex]?selection[shopIndex].has(item.cart_id):false}
+																						checked={item.is_checked}
 																						onChange={this.handleSelectionChange.bind(this,shopIndex, item.cart_id)}
 																					/>
 																					<View
