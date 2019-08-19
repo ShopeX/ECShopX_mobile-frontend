@@ -11,23 +11,27 @@ const canvasExp = {
       ctx.fillText(text, x, y)
     }
   },
-  textSpliceFill: (ctx, arr, center, x, y) => {
+  textSpliceFill: (ctx, arr, align, x, y) => {
     let _x = x
     let _w = 0
     if (align === 'center') {
       arr.map(item => {
-        _w += item.width
+        const width = ctx.measureText(item.text).width
+        _w += width
       })
+      _x = x - _w/2
     }
+
     arr.map(item => {
-      const { text, size, color, bold, align, valign } = item
+      const { text, size, color, bold, valign } = item
       ctx.setFontSize(size)
       ctx.setFillStyle(color)
       if (align) ctx.setTextAlign(align)
       if (valign) ctx.setTextBaseline(valign)
       const width = ctx.measureText(text).width
       if (align === 'center') {
-        
+        _x += width/2
+        ctx.fillText(text, _x, y)
       } else if (align === 'right') {
         _x -= width
         ctx.fillText(text, _x, y)
@@ -74,11 +78,14 @@ const canvasExp = {
       }
     })
   },
+  drawImageFill: (ctx, img, x, y, w, h) => {
+    ctx.drawImage(img, x, y, w, h)
+    ctx.save()
+  },
   imgCircleClip: (ctx, img, w, h, x, y) => {
     ctx.beginPath()
     ctx.arc(w / 2 + x, h / 2 + y, w / 2, 0, Math.PI * 2, false)
     ctx.clip()
-    ctx.drawImage(img, x, y, w, h)
   },
   roundRect: (ctx, color, x, y, w, h, r) => {
     ctx.beginPath()

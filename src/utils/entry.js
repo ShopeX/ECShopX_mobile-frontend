@@ -143,9 +143,9 @@ function trackViewNum (monitor_id, source_id) {
 function handleDistributorId(distributorId) {
   const res = api.shop.getShop({distributor_id: distributorId})
   if (res.status === false) {
-    Taro.setStorageSync('trackIdentity', {distributor_id: distributorId})
+    Taro.setStorageSync('curStore', res)
   } else {
-    Taro.setStorageSync('trackIdentity', '')
+    Taro.setStorageSync('curStore', '')
   }
   return res
 }
