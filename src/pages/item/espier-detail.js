@@ -322,7 +322,7 @@ export default class Detail extends Component {
     const { distributor_id } = Taro.getStorageSync('curStore')
     const pic = pics[0].replace('http:', 'https:')
 
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appId}&company_id=${company_id}&id=${item_id}&dtid=${distributor_id}&uid=${userId}`
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${distributor_id}&uid=${userId}`
     const avatarImg = await Taro.getImageInfo({src: avatar})
     const goodsImg = await Taro.getImageInfo({src: pic})
     const codeImg = await Taro.getImageInfo({src: wxappCode})
