@@ -221,11 +221,11 @@ export default class MemberIndex extends Component {
             { <View className="icon-arrowRight"></View> }
           </View>
           {
-            <View className="member-card {{vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip ? 'opened' : ''}}">
+            /*<View className="member-card {{vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip ? 'opened' : ''}}">
               {
                 vipgrade.is_open && !vipgrade.is_vip
                 && (
-                  <Navigator url="vipgrades" className="vip-btn">
+                  <Navigator url="/pages/vip/vipgrades" className="vip-btn">
                     <Text className="icon-crown"></Text> 开通VIP会员
                   </Navigator>
                 )
@@ -257,7 +257,7 @@ export default class MemberIndex extends Component {
               {
                 vipgrade.is_open && !vipgrade.is_vip && (<Image className="member-info-bg" src={gradeInfo.background_pic_url} />)
               }
-            </View>
+            </View>*/
           }
           <View className="section section-card order-box">
             <View className="section-title no-foot-padded view-flex view-flex-middle">

@@ -107,7 +107,9 @@ class App extends Component {
       'pages/trade/refund-sendback',
       'pages/trade/invoice-list',
 
-      'pages/protocol/privacy'
+			'pages/protocol/privacy',
+			
+			'pages/vip/vipgrades'
     ],
     permission: {
       "scope.userLocation": {
