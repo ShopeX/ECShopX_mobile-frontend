@@ -453,6 +453,13 @@
   }
 }
 
+.canvas {
+  position: fixed;
+  width: 300px;
+  height: 534px;
+  top: -10000px;
+}
+
 .at-divider__line {
   width: 38%;
   left: 50%;
