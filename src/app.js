@@ -54,7 +54,6 @@ class App extends Component {
       'pages/member/index',
       'pages/member/pay',
       'pages/member/pay-rule',
-      'pages/member/recharge',
       'pages/member/coupon',
       'pages/member/address',
       'pages/member/edit-address',
@@ -93,7 +92,7 @@ class App extends Component {
       'pages/trade/invoice-list',
 
 			'pages/protocol/privacy',
-			
+
 			'pages/vip/vipgrades'
     ],
     permission: {
