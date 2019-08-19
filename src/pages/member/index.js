@@ -221,7 +221,7 @@ export default class MemberIndex extends Component {
             { <View className="icon-arrowRight"></View> }
           </View>
           {
-            /*<View className="member-card {{vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip ? 'opened' : ''}}">
+           /* <View className="member-card {{vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip ? 'opened' : ''}}">
               {
                 vipgrade.is_open && !vipgrade.is_vip
                 && (

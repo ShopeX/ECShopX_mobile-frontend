@@ -13,6 +13,8 @@ import * as wx from './wx'
 import * as shop from './shop'
 import * as distribution from './distribution'
 import * as track from './track'
+import * as vip from './vip'
+
 
 export default {
   article,
@@ -29,5 +31,6 @@ export default {
   wx,
   shop,
   distribution,
-  track
+	track,
+	vip
 }
