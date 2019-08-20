@@ -60,7 +60,12 @@ export default class GoodsItem extends Component {
                 className='cart-item__title'
                 onClick={this.props.onClickImgAndTitle}
               >{info.title}</Text>
-              <Text className='cart-item__desc'>{info.desc}</Text>
+							<Text className='cart-item__desc'>{info.desc}</Text>
+							{
+								info.item_spec_desc && (
+									<Text className='cart-item__desc'>{info.item_spec_desc}</Text>
+								)
+							}
               {curPromotion && (
                 <View
                   className='cart-item__promotion'
