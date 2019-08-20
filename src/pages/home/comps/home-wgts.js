@@ -1,6 +1,6 @@
 import Taro, { PureComponent } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { WgtSearchHome, WgtFilm, WgtSlider, WgtImgHotZone, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase } from '../wgts'
+import { WgtSearchHome, WgtFilm, WgtMarquees, WgtSlider, WgtImgHotZone, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase } from '../wgts'
 
 export default class HomeWgts extends PureComponent {
   state = {
@@ -25,7 +25,7 @@ export default class HomeWgts extends PureComponent {
   }
 
   render () {
-    const { wgts } = this.props
+    const { wgts, location } = this.props
     const { screenWidth } = this.state
 
     return (
@@ -34,7 +34,7 @@ export default class HomeWgts extends PureComponent {
           wgts.map((item, idx) => {
             return (
               <View className='wgt-wrap' key={idx}>
-                {item.name === 'search' && <WgtSearchHome info={item} />}
+                {item.name === 'search' && <WgtSearchHome withLocation={location} info={item} />}
                 {item.name === 'film' && <WgtFilm info={item} />}
                 {item.name === 'marquees' && <WgtMarquees info={item} />}
                 {item.name === 'slider' && <WgtSlider isHomeSearch info={item} width={screenWidth} />}
@@ -44,9 +44,6 @@ export default class HomeWgts extends PureComponent {
                 {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} />}
                 {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} />}
                 {item.name === 'showcase' && <WgtShowcase info={item} />}
-                {idx === 1 && (
-                  <WgtPointLuck />
-                )}
               </View>
             )
           })

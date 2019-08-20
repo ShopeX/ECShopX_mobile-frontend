@@ -31,7 +31,8 @@ export default class HomeIndex extends Component {
       authStatus: false,
       likeList: [],
       isShowAddTip: false,
-      curStore: null
+      curStore: null,
+      positionStatus: false
     }
   }
 
@@ -55,12 +56,14 @@ export default class HomeIndex extends Component {
 
   async componentDidMount () {
     const options = this.$router.params
+    const positionStatus = await entry.getLocalSetting()
     const res = await entry.entryLaunch(options, true)
     console.log(res)
     const { store } = res
     if (store) {
       this.setState({
-        curStore: store
+        curStore: store,
+        positionStatus
       }, () => {
         this.fetchInfo()
       })
@@ -144,7 +147,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore } = this.state
+    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus } = this.state
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
@@ -155,11 +158,14 @@ export default class HomeIndex extends Component {
 
     return (
       <View className='page-index'>
-        <HeaderHome
-          storeName={curStore.name}
-        />
+        {
+          positionStatus &&
+            <HeaderHome
+              storeName={curStore.name}
+            />
+        }
         <ScrollView
-          className='wgts-wrap wgts-wrap__fixed'
+          className={`wgts-wrap wgts-wrap__fixed ${positionStatus ? 'with-location' : ''}`}
           scrollTop={scrollTop}
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
@@ -167,6 +173,7 @@ export default class HomeIndex extends Component {
         >
           <View className='wgts-wrap__cont'>
             <HomeWgts
+              location={positionStatus}
               wgts={wgts}
             />
             {!!goodsFavWgt && (

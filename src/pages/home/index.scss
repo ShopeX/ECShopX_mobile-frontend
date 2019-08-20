@@ -1,7 +1,6 @@
 @import "../../style/imports";
 
 .page-index {
-  padding-bottom: $tabbar-height;
   background: #fff;
   height: 100%;
   box-sizing: border-box;
@@ -60,13 +59,22 @@
 }
 
 .wgts-wrap {
+  $self: &;
   &__fixed {
     background: #fff;
-    @include page-scroll($home-header-height, $tabbar-height);
+    @include page-scroll(0, $tabbar-height);
+    &.with-location {
+      @include page-scroll($home-header-height, $tabbar-height);
+    }
+    #{$self}__cont {
+      padding-top: $home-header-height;
+    }
   }
   &__is-distributor {
   }
 }
+
+
 .faverite-content {
   padding: 0 24px;
   box-sizing: border-box;

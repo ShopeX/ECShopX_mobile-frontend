@@ -54,15 +54,20 @@ export default class Detail extends Component {
       itemParams: [],
       sessionFrom: '',
       posterImgs: null,
-      poster: null
+      poster: null,
+      positionStatus: false
     }
   }
 
   async componentDidMount () {
     const options = this.$router.params
-    const { store, uid } = await entry.entryLaunch(options, true)
+    const { store, uid, positionStatus } = await entry.entryLaunch(options, true)
     if (store) {
-      this.fetch()
+      this.setState({
+        positionStatus
+      }, () => {
+        this.fetch()
+      })
     }
     if (uid) {
       this.uid = uid
@@ -718,7 +723,7 @@ export default class Detail extends Component {
           }
 
           {
-            store &&
+            (store && positionStatus) &&
               <StoreInfo
                 info={store}
               />

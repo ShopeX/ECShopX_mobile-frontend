@@ -169,5 +169,6 @@ function parseUrlStr (urlStr) {
 
 export default {
   entryLaunch,
-  getLocal
+  getLocal,
+  getLocalSetting
 }
