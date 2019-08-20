@@ -358,7 +358,8 @@ export default class CartIndex extends Component {
       price: ({ price }) => (+price / 100).toFixed(2),
       market_price: ({ market_price }) => (+market_price / 100).toFixed(2),
 			num: 'num',
-			packages: (item) => item.packages && item.packages.length && this.transformCartList(item.packages)
+			packages: (item) => item.packages && item.packages.length && this.transformCartList(item.packages),
+			item_spec_desc:'item_spec_desc'
     })
   }
 

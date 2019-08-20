@@ -1,4 +1,4 @@
-	
+@import "../../style/layout";
 .header {
     position: relative;
     padding: 30rpx 30rpx 10rpx 30rpx;
@@ -35,12 +35,15 @@
 			&.at-tabs{
 				position: relative;
 			}
+			.at-tabs__item-underline{
+				height: 8px;
+			}
 			.at-tabs__header{
 				background: transparent;
 				.at-tabs__item{
 					color: #7a7867;
 					&.at-tabs__item--active {
-						color: #ff593d;
+						color: $color-brand-primary;
 					}
 				}
 			}
@@ -77,7 +80,7 @@
         content: none;
       }
     }
-  }
+}
 
 .grade-list {
 	display: flex;

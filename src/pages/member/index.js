@@ -221,7 +221,7 @@ export default class MemberIndex extends Component {
             { <View className="icon-arrowRight"></View> }
           </View>
           {
-           /* <View className="member-card {{vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip ? 'opened' : ''}}">
+            <View className="member-card {{vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip ? 'opened' : ''}}">
               {
                 vipgrade.is_open && !vipgrade.is_vip
                 && (
@@ -237,7 +237,7 @@ export default class MemberIndex extends Component {
                     <View className="view-flex view-flex-middle content-v-padded">
                       <View>{vipgrade.end_date} 到期</View>
                       {
-                        vipgrade.is_open && <Navigator url="vipgrades" className="renewals-btn">续费</Navigator>
+                        vipgrade.is_open && <Navigator url="/pages/vip/vipgrades" className="renewals-btn">续费</Navigator>
                       }
                     </View>
                     <View className="view-flex view-flex-middle vip-sign">
@@ -257,7 +257,7 @@ export default class MemberIndex extends Component {
               {
                 vipgrade.is_open && !vipgrade.is_vip && (<Image className="member-info-bg" src={gradeInfo.background_pic_url} />)
               }
-            </View>*/
+            </View>
           }
           <View className="section section-card order-box">
             <View className="section-title no-foot-padded view-flex view-flex-middle">
