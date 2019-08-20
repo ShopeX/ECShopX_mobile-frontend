@@ -188,7 +188,7 @@ export default class Detail extends Component {
       sessionFrom
     }, () => {
       this.fetchCartCount()
-      this.downloadPosterImg()
+      // this.downloadPosterImg()
     })
 
     log.debug('fetch: done', info)
@@ -317,12 +317,13 @@ export default class Detail extends Component {
     const { avatar, userId } = userinfo
     const { info } = this.state
     const { pics, company_id, item_id } = info
-    const host = req.baseURL.replace('api/','')
+    const host = req.baseURL.replace('/api/h5app/wxapp/','')
+    console.log(host)
     const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
     const { distributor_id } = Taro.getStorageSync('curStore')
     const pic = pics[0].replace('http:', 'https:')
 
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appId}&company_id=${company_id}&id=${item_id}&dtid=${distributor_id}&uid=${userId}`
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${distributor_id}&uid=${userId}`
     const avatarImg = await Taro.getImageInfo({src: avatar})
     const goodsImg = await Taro.getImageInfo({src: pic})
     const codeImg = await Taro.getImageInfo({src: wxappCode})
