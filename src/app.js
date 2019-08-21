@@ -28,6 +28,7 @@ class App extends Component {
       'pages/category/index',
       'pages/item/list',
       'pages/item/espier-detail',
+      'pages/item/item-params',
       'pages/item/group-list',
       'pages/item/seckill-list',
       'pages/item/seckill-goods-list',

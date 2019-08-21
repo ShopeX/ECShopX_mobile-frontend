@@ -3,7 +3,7 @@ import { View } from '@tarojs/components'
 
 import './params-item.scss';
 
-export default class Params extends Component {
+export default class ParamsItem extends Component {
   static options = {
     addGlobalClass: true
   }

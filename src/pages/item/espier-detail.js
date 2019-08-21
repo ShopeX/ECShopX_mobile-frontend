@@ -9,7 +9,7 @@ import { withBackToTop } from '@/hocs'
 import { log, calcTimer, isArray, pickBy, classNames, canvasExp } from '@/utils'
 import entry from '@/utils/entry'
 import S from '@/spx'
-import { GoodsBuyToolbar, ItemImg, Params, StoreInfo, SharePanel } from './comps'
+import { GoodsBuyToolbar, ItemImg, ImgSpec, Params, StoreInfo, SharePanel } from './comps'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
@@ -275,6 +275,14 @@ export default class Detail extends Component {
 
     Taro.navigateTo({
       url: `/pages/item/package-list?id=${info.item_id}`
+    })
+  }
+
+  handleParamsClick = () => {
+    const { id } = this.$router.params
+
+    Taro.navigateTo({
+      url: `/pages/item/item-params?id=${id}`
     })
   }
 
@@ -549,29 +557,11 @@ export default class Detail extends Component {
 
           {
             !info.nospec && sixSpecImgsDict.length
-              ? <View className='goods-sec-specs'>
-                <ScrollView
-                  className='specs-scroller'
-                  scrollX
-                >
-                  <View className='specs-imgs'>
-                    <Text>{sixSpecImgsDict.length}色可选</Text>
-                    {
-                      sixSpecImgsDict.map((item, index) => {
-                        return (
-                          <Image
-                            className={classNames('specs-imgs__item', currentImgs === index && 'specs-imgs__item-active')}
-                            src={item.url}
-                            key={item.specValueId}
-                            mode='aspectFill'
-                            onClick={this.handleSepcImgClick.bind(this, index)}
-                          />
-                        )
-                      })
-                    }
-                  </View>
-                </ScrollView>
-              </View>
+              ? <ImgSpec
+                  info={sixSpecImgsDict}
+                  current={currentImgs}
+                  onClick={this.handleSepcImgClick}
+                />
               : null
           }
 
@@ -695,20 +685,12 @@ export default class Detail extends Component {
 
           {
             itemParams.length &&
-              <View className="goods-sec-specs">
-                <View className="goods-params">
-                  {
-                    itemParams.map((item, idx) => {
-                      return (
-                        <Params
-                          key={idx}
-                          info={item}
-                        />
-                      )
-                    })
-                  }
-                </View>
-              </View>
+              <SpCell
+                className='goods-sec-specs'
+                isLink
+                title='商品参数'
+                onClick={this.handleParamsClick.bind(this)}
+              />
           }
 
           {
