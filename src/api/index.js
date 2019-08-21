@@ -14,6 +14,7 @@ import * as shop from './shop'
 import * as distribution from './distribution'
 import * as track from './track'
 import * as vip from './vip'
+import * as group from './group'
 
 
 export default {
@@ -32,5 +33,6 @@ export default {
   shop,
   distribution,
 	track,
-	vip
+	vip,
+	group
 }

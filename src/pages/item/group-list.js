@@ -162,7 +162,7 @@ export default class GroupList extends Component {
                         </View>
                       )}
                       {curTabIdx === 0
-                        ? <View className='btn-go'>去开团</View>
+                        ? <Navigator url="group-detail"><View className='btn-go'>去开团</View></Navigator>
                         : <View className='btn-go disabled'>未开始</View>
                       }
                     </View>

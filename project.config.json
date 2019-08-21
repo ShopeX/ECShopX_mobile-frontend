@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 5,
+			"current": 7,
 			"list": [
 				{
 					"id": 0,
@@ -70,6 +70,28 @@
 					"id": -1,
 					"name": "pages/vip/vipgrades",
 					"pathName": "pages/vip/vipgrades",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/item/group-list",
+					"pathName": "pages/item/group-list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 7,
+					"name": "pages/item/group-detail",
+					"pathName": "pages/item/group-detail",
+					"query": "group_id=2789566000030050",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/item/group-list",
+					"pathName": "pages/item/group-list",
+					"query": "",
 					"scene": null
 				}
 			]

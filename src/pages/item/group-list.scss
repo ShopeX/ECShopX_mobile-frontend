@@ -12,9 +12,10 @@ $item-img-size: 240px !default;
     display: flex;
     align-items: stretch;
     background: #fff;
-    border-radius: $item-border-radius;
+    border-radius: $cart-border-radius;
     overflow: hidden;
     margin: 0 $edge-size $edge-margin;
+		box-shadow: 0 5rpx 5rpx rgba(0,0,0,0.1);
 
     &__hd {
       text-align: center;
