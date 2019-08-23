@@ -60,7 +60,7 @@
 
 .wgts-wrap {
   $self: &;
-  @include page-scroll($home-header-height, $tabbar-height);
+  @include page-scroll(0, 0);
   background: #fff;
   #{$self}__cont {
     padding-top: 0;
