@@ -21,6 +21,9 @@ export function linkPage (type, id) {
     case 'link':
       url = id
       break;
+    case 'seckill':
+      url = '/pages/custom/custom-page?id=' + id
+      break;
     case 'custom':
       url = id
       break;

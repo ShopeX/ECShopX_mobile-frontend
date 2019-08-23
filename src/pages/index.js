@@ -10,6 +10,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
 import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
 import { HomeWgts } from './home/comps/home-wgts'
+import Automatic from './home/comps/automatic'
 import { resolveFavsList } from './item/helper'
 
 import './home/index.scss'
@@ -31,7 +32,8 @@ export default class HomeIndex extends Component {
       likeList: [],
       isShowAddTip: false,
       curStore: null,
-      positionStatus: false
+      positionStatus: false,
+      automatic: null
     }
   }
 
@@ -54,12 +56,28 @@ export default class HomeIndex extends Component {
   }
 
   async componentDidMount () {
+    const userinfo = Taro.getStorageSync('userinfo')
     const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
     const fixSetting = await req.get(url)
+    const automatic = await api.promotion.automatic({register_type: 'all'})
+
+    if (automatic.is_open === 'true' && automatic.register_type === 'membercard' && userinfo) {
+      const { is_open, is_vip, is_had_vip, vip_type } = await api.vip.getUserVipInfo()
+      this.setState({
+        automatic: {
+          isSetVip: is_open,
+          isVip: is_vip,
+          isHadVip: is_had_vip,
+          vipType: vip_type,
+          isOpen: automatic.is_open === 'true',
+          adPic: automatic.ad_pic
+        }
+      })
+    }
 
     const options = this.$router.params
     const res = await entry.entryLaunch(options, true)
-    console.log(res)
+
     const { store } = res
     if (store) {
       this.setState({
@@ -134,6 +152,41 @@ export default class HomeIndex extends Component {
     })
   }
 
+  handleGift = async () => {
+    if (!S.getAuthToken()) {
+      Taro.showToast({
+        title: '请先登录再购买',
+        icon: 'none'
+      })
+
+      setTimeout(() => {
+        S.login(this)
+      }, 2000)
+
+      return
+    }
+
+    const status = await api.member.receiveVip()
+    if (status) {
+      const msg = status.card_type.desc + status.title
+      const vip = {
+        isVip: true,
+        isHadVip: true,
+        vipType: status.lv_type
+      }
+      this.setState({
+        vip
+      }, () => {
+        Taro.showToast({
+          title: '领取成功',
+          icon: 'success'
+        })
+      })
+    } else {
+      S.toast('活动已过期')
+    }
+  }
+
   handleClickCloseAddTip = () => {
     Taro.setStorage({ key: 'addTipIsShow', data: {isShowAddTip: false} })
     this.setState({
@@ -148,7 +201,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus } = this.state
+    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic } = this.state
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
@@ -194,7 +247,7 @@ export default class HomeIndex extends Component {
           </View>
         </ScrollView>
 
-        {
+        {/*
           (isPromoter || distributionShopId)
           && <FloatMenus>
               <Image
@@ -204,6 +257,14 @@ export default class HomeIndex extends Component {
                 onClick={this.handleClickShop}
               />
             </FloatMenus>
+        */}
+
+        {
+          automatic && automatic.isOpen &&
+            <Automatic
+              info={automatic}
+              onClick={this.handleGift.bind(this)}
+            />
         }
 
         <BackToTop
