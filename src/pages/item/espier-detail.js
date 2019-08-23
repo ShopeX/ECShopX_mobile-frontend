@@ -140,17 +140,17 @@ export default class Detail extends Component {
       }
     }
 
-    if (info.group_activity) {
+    if (info.activity_info) {
       //团购
-      marketing = 'group'
-      timer = calcTimer(info.group_activity.remaining_time)
-      hasStock = info.group_activity.store && info.group_activity.store > 0
-    } else if (info.seckill_activity) {
+      //   marketing = 'group'
+      //   timer = calcTimer(info.group_activity.remaining_time)
+      //   hasStock = info.group_activity.store && info.group_activity.store > 0
+      // } else if (info.seckill_activity) {
       //秒杀
       marketing = 'seckill'
-      timer = calcTimer(info.seckill_activity.last_seconds)
-      hasStock = info.seckill_activity.activity_store && info.seckill_activity.activity_store > 0
-      startSecKill = info.seckill_activity.status === 'in_sale'
+      timer = calcTimer(info.activity_info.last_seconds)
+      hasStock = info.activity_info.item_total_store && info.activity_info.item_total_store > 0
+      startSecKill = info.activity_info.status === 'in_sale'
     }
 
     Taro.setNavigationBarTitle({
@@ -592,15 +592,25 @@ export default class Detail extends Component {
                     symbol={info.cur.symbol}
                     value={info.mkt_price}
                   />
-                  <View className='goods-prices__ft'>
-                    <Text className='goods-prices__type'>团购</Text>
-                    <Text className='goods-prices__rule'>{info.group_activity.person_num}人团</Text>
-                  </View>
+                  {
+                    marketing === 'group' &&
+                      <View className='goods-prices__ft'>
+                        <Text className='goods-prices__type'>团购</Text>
+                        <Text className='goods-prices__rule'>{info.activity_info.person_num}人团</Text>
+                      </View>
+                  }
+                  {
+                    marketing === 'seckill' &&
+                      <View className='goods-prices__ft'>
+                        <Text className='goods-prices__type'>秒杀</Text>
+                      </View>
+                  }
                 </View>
               </View>
               <View className='goods-timer__bd'>
                 <Text className='goods-timer__label'>距结束还剩</Text>
                 <AtCountdown
+                  className="countdown__time"
                   isShowDay
                   day={timer.dd}
                   hours={timer.hh}
@@ -809,7 +819,7 @@ export default class Detail extends Component {
           icon='float-gift'
           onClick={this.handleToGiftMiniProgram.bind(this)}
         /> */}
-        { /* <FloatMenus>
+        <FloatMenus>
           <FloatMenuItem
             iconPrefixClass='in-icon'
             icon='fenxiang1'
@@ -827,7 +837,7 @@ export default class Detail extends Component {
             hide={!showBackToTop}
             onClick={this.scrollBackToTop}
           />
-        </FloatMenus> */ }
+        </FloatMenus>
 
         {(info.distributor_sale_status && hasStock && startSecKill)
           ?

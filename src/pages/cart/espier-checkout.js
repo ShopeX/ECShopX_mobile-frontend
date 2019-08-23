@@ -89,7 +89,7 @@ export default class CartCheckout extends Component {
   componentDidMount () {
     // this.fetchAddress()
 
-    const { cart_type, pay_type: payType,shop_id } = this.$router.params
+    const { cart_type, pay_type: payType, shop_id } = this.$router.params
     let info = null
 
     if (cart_type === 'fastbuy') {
@@ -206,8 +206,29 @@ export default class CartCheckout extends Component {
   }
 
   getParams () {
-    const { type, shop_id } = this.$router.params
-    const isDrug = type === 'drug'
+    const { type, seckill_id = null, ticket = null, group_id = null, shop_id } = this.$router.params
+    let orderType = ''
+    let activity = {}
+    orderType = (() => {
+      const key = type
+      let value = ''
+      switch (key) {
+        case 'drug':
+          value = 'normal_drug'
+          break;
+        case 'group':
+          value = 'normal_group'
+          activity = Object.assign(activity, {group_id: seckill_id})
+          break;
+        case 'seckill':
+          value = 'normal_seckill'
+          activity = Object.assign(activity, {seckill_id: seckill_id, seckill_ticket: ticket})
+          break;
+        default:
+          value = 'normal'
+      }
+      return value
+    })()
     const receiver = pickBy(this.state.address, {
       receiver_name: 'name',
       receiver_mobile: 'mobile',
@@ -218,7 +239,7 @@ export default class CartCheckout extends Component {
       receiver_zip: 'zip'
     })
     let buyerInfo = {}
-    if (isDrug) {
+    if (type === 'drug') {
       buyerInfo = pickBy(this.state.drug, {
         drug_buyer_name: 'name',
         drug_buyer_id_card: 'id_card',
@@ -231,8 +252,9 @@ export default class CartCheckout extends Component {
       ...this.params,
       ...receiver,
       ...buyerInfo,
+      ...activity,
       receipt_type: 'logistics',
-      order_type: isDrug ? 'normal_drug' : 'normal',
+      order_type: orderType,
       promotion: 'normal',
       member_discount: 0,
       coupon_discount: 0,

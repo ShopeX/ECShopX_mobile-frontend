@@ -18,6 +18,7 @@ export default class GoodsBuyPanel extends Component {
     info: null,
     isOpened: false,
     type: 'fastbuy',
+    orderType: 'normal',
     fastBuyText: '立即购买',
     busy: false,
     onClose: () => {},
@@ -44,11 +45,9 @@ export default class GoodsBuyPanel extends Component {
   componentDidMount () {
     const { info } = this.props
     const { spec_items } = info
-    const marketing = info.group_activity
-      ? 'group'
-      : info.seckill_activity
-        ? 'seckill'
-        : 'normal'
+    const marketing = info.activity_type
+      ? info.activity_type
+      : 'normal'
     const skuDict = {}
 
     spec_items.forEach(t => {
@@ -248,8 +247,12 @@ export default class GoodsBuyPanel extends Component {
         const { groups_activity_id } = info.group_activity
         url += `&type=${marketing}&group_id=${groups_activity_id}`
       } else if (marketing === 'seckill') {
-        const { seckill_id } = info.seckill_activity
-        const { ticket } = await api.item.seckillCheck({ item_id, seckill_id, num })
+        const { seckill_id } = info.activity_info
+        const { ticket } = await api.item.seckillCheck({ item_id, seckill_id, num }).catch(res => {
+          this.setState({
+            busy: false
+          })
+        })
         url += `&type=${marketing}&seckill_id=${seckill_id}&ticket=${ticket}`
       }
 
