@@ -68,7 +68,7 @@ export default class WgtCoupon extends Component {
               > {
                   item.imgUrl
                   ? <QnImg
-                      className='coupon_img'
+                      img-class='coupon_img'
                       src={item.imgUrl}
                       mode='widthFix'
                       width='320'

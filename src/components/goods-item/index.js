@@ -67,7 +67,7 @@ export default class GoodsItem extends Component {
                 <Text className='goods-item__cur'>¥</Text>
                 <Text>{info.price}</Text>
                 {
-                  info.market_price &&
+                  parseInt(info.market_price) &&
                     <Text className='goods-item__price-market'>{info.market_price}</Text>
                 }
 							</View>
