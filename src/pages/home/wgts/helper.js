@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro'
 import { WGTS_NAV_MAP } from '@/consts'
 
 export function linkPage (type, id) {
+  console.log(type, id)
   let url = ''
 
   switch (type) {

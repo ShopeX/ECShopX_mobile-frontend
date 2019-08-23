@@ -16,6 +16,8 @@ export default class WgtShowCase extends Component {
 
   navigateTo = navigateTo
 
+  handleClickItem = linkPage
+
   render () {
     const { info } = this.props
     if (!info) {
@@ -44,7 +46,7 @@ export default class WgtShowCase extends Component {
           <View className='scheme-item'>
             <View
               className='layout layout-1'
-              onClick={linkPage.bind(this, data[0].linkPage, data[0].id)}
+              onClick={this.handleClickItem.bind(this, data[0].linkPage, data[0].id)}
             >
               <QnImg
                 img-class='show-img'
@@ -58,7 +60,7 @@ export default class WgtShowCase extends Component {
           <View className='scheme-item'>
             <View
               className='layout layout-2'
-              onClick={linkPage.bind(this, data[1].linkPage, data[1].id)}
+              onClick={this.handleClickItem.bind(this, data[1].linkPage, data[1].id)}
             >
               <QnImg
                 img-class='show-img'
@@ -70,7 +72,7 @@ export default class WgtShowCase extends Component {
             </View>
             <View
               className='layout layout-3'
-              onClick={linkPage.bind(this, data[2].linkPage, data[2].id)}
+              onClick={this.handleClickItem.bind(this, data[2].linkPage, data[2].id)}
             >
               <QnImg
                 img-class='show-img'
