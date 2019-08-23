@@ -568,7 +568,7 @@ export default class Detail extends Component {
           </View>
 
           {
-            !info.nospec && sixSpecImgsDict.length
+            !info.nospec && sixSpecImgsDict.length && info.is_show_specimg
               ? <ImgSpec
                   info={sixSpecImgsDict}
                   current={currentImgs}

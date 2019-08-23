@@ -223,7 +223,7 @@ export default class HomeIndex extends Component {
         {
           curStore &&
             <HeaderHome
-              storeName={curStore.name}
+              store={curStore}
             />
         }
         <ScrollView

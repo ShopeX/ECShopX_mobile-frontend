@@ -130,7 +130,7 @@ export default class StoreList extends Component {
               {
                 loading
                   ? <Text className="loading">定位中...</Text>
-                  : <Text>{current ? current.store_name : '定位失败...'}</Text>
+                  : <Text>{current ? current.name : '定位失败...'}</Text>
               }
             </View>
             <View
