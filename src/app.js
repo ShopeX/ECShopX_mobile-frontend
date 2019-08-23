@@ -94,7 +94,9 @@ class App extends Component {
 
 			'pages/protocol/privacy',
 
-			'pages/vip/vipgrades'
+			'pages/vip/vipgrades',
+
+      'pages/custom/custom-page'
     ],
     permission: {
       "scope.userLocation": {

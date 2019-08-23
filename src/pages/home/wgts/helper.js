@@ -14,6 +14,9 @@ export function linkPage (type, id) {
     case 'planting':
       url = '/pages/recommend/detail?id=' + id
       break;
+    case 'custom_page':
+      url = '/pages/custom/custom-page?id=' + id
+      break;
     case 'link':
       url = id
       break;

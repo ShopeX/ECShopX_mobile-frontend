@@ -13,7 +13,6 @@ import { HomeWgts } from './home/comps/home-wgts'
 import { resolveFavsList } from './item/helper'
 
 import './home/index.scss'
-import PointDrawCompute from "./member/point-draw-compute";
 
 @connect(store => ({
   store
@@ -65,7 +64,7 @@ export default class HomeIndex extends Component {
     if (store) {
       this.setState({
         curStore: store,
-        positionStatus: fixSetting[0].params.config.fixTop
+        positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
       }, () => {
         this.fetchInfo()
       })

@@ -584,13 +584,13 @@ export default class Detail extends Component {
                   <Price
                     unit='cent'
                     symbol={info.cur.symbol}
-                    value={info.price}
+                    value={info.act_price}
                   />
                   <Price
                     unit='cent'
                     className='goods-prices__market'
                     symbol={info.cur.symbol}
-                    value={info.mkt_price}
+                    value={info.price}
                   />
                   {
                     marketing === 'group' &&
@@ -641,7 +641,9 @@ export default class Detail extends Component {
                   />
                 </View>
 
-                {/* info.approve_status !== 'only_show' && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>) */}
+                {
+                  info.sales && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>)
+                }
               </View>
             )}
           </View>
