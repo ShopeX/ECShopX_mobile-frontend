@@ -20,7 +20,8 @@ export default class SeckillGoodsList extends Component {
       last_seconds: 1759242,
       timer: null,
       list: [],
-      imgurl: ''
+      imgurl: '',
+      status: ''
     }
   }
 
@@ -70,11 +71,11 @@ export default class SeckillGoodsList extends Component {
       pageSize
     }
 
-		const { items:list,total_count: total ,ad_pic:imgurl,last_seconds} = await api.seckill.seckillGoodsList(query)
+		const { items: list, total_count: total, ad_pic: imgurl, last_seconds, status} = await api.seckill.seckillGoodsList(query)
 
     let timer = null
     timer = this.calcTimer(last_seconds)
-    	
+
 		const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
@@ -88,6 +89,7 @@ export default class SeckillGoodsList extends Component {
 			timer,
       list: [...this.state.list, ...nList],
 			imgurl,
+      status,
 			last_seconds
     })
     return {
@@ -97,7 +99,7 @@ export default class SeckillGoodsList extends Component {
 
 
   render () {
-    const { list, imgurl, showBackToTop, scrollTop, page, timer } = this.state
+    const { list, imgurl, showBackToTop, scrollTop, page, timer, status } = this.state
     return (
       <View className='page-seckill-goods'>
         <ScrollView
@@ -109,18 +111,23 @@ export default class SeckillGoodsList extends Component {
           onScrollToLower={this.nextPage}
         >
           <Image className='seckill-goods__swiper' src={imgurl} mode='widthFix' />
-					<View className='seckill-goods__timer'>
-						<View>
-							<AtCountdown
-							  isShowDay
-								day={timer.dd}
-  							hours={timer.hh}
-								minutes={timer.mm}
-								seconds={timer.ss}
-							/>
-							<Text>后结束</Text>
-						</View>
-          </View>
+          {
+            status === 'it_has_ended'
+              ? <View className='seckill-goods__timer'><Text>活动已结束</Text></View>
+    					: <View className='seckill-goods__timer'>
+      						<View>
+      							<AtCountdown
+      							  isShowDay
+      								day={timer.dd}
+        							hours={timer.hh}
+      								minutes={timer.mm}
+      								seconds={timer.ss}
+      							/>
+                    {status === 'in_the_notice' && <Text>后开始</Text>}
+      							{status === 'in_sale' && <Text>后结束</Text>}
+      						</View>
+                </View>
+          }
           <View className='seckill-goods__list'>
             {
               list.map((item, index) => {
@@ -131,7 +138,11 @@ export default class SeckillGoodsList extends Component {
 										showFav={false}
                     onClick={() => this.handleClickItem(item.item_id)}
 									>
-									<View className='seckill-goods__list-btn'>马上抢</View>
+									<View className='seckill-goods__list-btn'>
+                    {status === 'in_the_notice' && <Text>去看看</Text>}
+                    {status === 'in_sale' && <Text>马上抢</Text>}
+                    {status === 'it_has_ended' && <Text>原价买</Text>}
+                  </View>
 									</GoodsItem>
                 )
               })

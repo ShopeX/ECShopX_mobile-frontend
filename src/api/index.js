@@ -3,18 +3,19 @@ import * as aftersales from './aftersales'
 import * as cart from './cart'
 import * as cashier from './cashier'
 import * as category from './category'
+import * as distribution from './distribution'
 import * as item from './item'
 import * as member from './member'
+import * as promotion from './promotion'
 import * as region from './region'
+import * as seckill from './seckill'
+import * as shop from './shop'
+import * as track from './track'
 import * as trade from './trade'
 import * as user from './user'
-import * as seckill from './seckill'
-import * as wx from './wx'
-import * as shop from './shop'
-import * as distribution from './distribution'
-import * as track from './track'
 import * as vip from './vip'
 import * as group from './group'
+import * as wx from './wx'
 
 
 export default {
@@ -25,6 +26,7 @@ export default {
   category,
   item,
   member,
+  promotion,
   region,
   trade,
   user,

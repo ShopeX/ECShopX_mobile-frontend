@@ -51,15 +51,22 @@ export default class Series extends Component {
     })
   }
 
+  handleCustomClick = (id) => {
+    Taro.navigateTo({
+      url: `/pages/custom/custom-page?id=${id}`
+    })
+  }
+
   render () {
     const { info, isChanged, pluralType, imgType } = this.props
     const { currentIndex } = this.state
-    let items, itemsImg
+    let items, itemsImg, id
     if (!info) {
       return <Loading />
     }
     if(info) {
       items = info[currentIndex].children
+      id = info[currentIndex].id
       itemsImg = info[currentIndex].img
     }
 
@@ -92,7 +99,7 @@ export default class Series extends Component {
           <View className={classNames(pluralType ? 'category-content' : 'category-content-no')}>
             {
               itemsImg
-              && <Image src={itemsImg} mode='aspectFill' className='category__banner' />
+              && <Image src={itemsImg} mode='aspectFill' onClick={this.handleCustomClick.bind(this, id)} className='category__banner' />
             }
             {
               items.map(item =>

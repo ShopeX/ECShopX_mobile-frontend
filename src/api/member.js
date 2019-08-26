@@ -229,3 +229,7 @@ export function storeFavCount (params = {}) {
 export function storeIsFav (id) {
   return req.get('/member/collect/distribution/check', {distributor_id: id})
 }
+
+export function receiveVip () {
+  return req.get('/promotion/getMemberCard')
+}

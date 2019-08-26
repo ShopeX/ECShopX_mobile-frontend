@@ -30,6 +30,7 @@ class App extends Component {
       'pages/item/espier-detail',
 			'pages/item/group-list',
       'pages/item/group-detail',			
+      'pages/item/item-params',
       'pages/item/seckill-list',
       'pages/item/seckill-goods-list',
       'pages/item/package-list',
@@ -94,7 +95,9 @@ class App extends Component {
 
 			'pages/protocol/privacy',
 
-			'pages/vip/vipgrades'
+			'pages/vip/vipgrades',
+
+      'pages/custom/custom-page'
     ],
     permission: {
       "scope.userLocation": {

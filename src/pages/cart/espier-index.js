@@ -11,7 +11,7 @@ import CartItem from './comps/cart-item'
 
 import './espier-index.scss'
 
-@connect(({ cart }) => ({ 
+@connect(({ cart }) => ({
   list: cart.list,
   cartIds: cart.cartIds,
 }), (dispatch) => ({
@@ -67,7 +67,7 @@ export default class CartIndex extends Component {
 
   componentWillReceiveProps (nextProps) {
 		console.log('componentWillReceiveProps',nextProps.list , this.props.list,nextProps.list !== this.props.list)
-		
+
     // if (nextProps.list !== this.props.list) {
 		// 	const groups = this.resolveActivityGroup(nextProps.list)
 		// 		this.setState({
@@ -98,6 +98,7 @@ export default class CartIndex extends Component {
     const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
+      price: ({price}) => (price/100).toFixed(2),
       title: 'itemName',
 			desc: 'brief',
 			price: ({ price }) => { return (price/100).toFixed(2)}
@@ -120,7 +121,7 @@ export default class CartIndex extends Component {
         acc[val.cart_id] = val
         return acc
 			}, {})
-			const activityGrouping = shopCart.activity_grouping			
+			const activityGrouping = shopCart.activity_grouping
 			// 活动列表
       const group = used_activity.map((act) => {
         const activity = activityGrouping.find(a => String(a.activity_id) === String(act.activity_id))
@@ -128,8 +129,8 @@ export default class CartIndex extends Component {
           const cartItem = tDict[id]
           delete tDict[id]
           return cartItem
-				})		
-				// return Object.assign({},shopCart,{list: itemList,activity})	
+				})
+				// return Object.assign({},shopCart,{list: itemList,activity})
 				return {list: itemList,activity}
 			})
       // 无活动列表
@@ -248,7 +249,7 @@ export default class CartIndex extends Component {
 				title: e.message,
 				duration: 5000
 			})
-		}		
+		}
     this.updateCart()
   }
 
@@ -260,7 +261,7 @@ export default class CartIndex extends Component {
 
   handleAllSelect = async (checked,shopIndex) => {
 		const  {cartIds}  = this.props
-		
+
     Taro.showLoading()
     try {
       await api.cart.select({
@@ -404,7 +405,7 @@ export default class CartIndex extends Component {
           }
           <View className='cart-list'>
             {
-							
+
               groups.map((shopCart, shopIndex) => {
 								// console.log('shopCart---->',shopCart)
 								const checked_all = shopCart.shopInfo.cart_total_count == shopCart.shopInfo.list.length
@@ -419,7 +420,7 @@ export default class CartIndex extends Component {
 												shopCart.group.map(activityGroup => {
 													// console.log('activityGroup---->',activityGroup)
 													const { activity } = activityGroup
-													
+
 													return activityGroup.list.length > 0 && (
 														<View
 															className='cart-group'
@@ -504,7 +505,7 @@ export default class CartIndex extends Component {
 												})
 											}
 										</View>
-                    
+
 									<View className={`toolbar cart-toolbar ${isEmpty && 'hidden'}`}>
 									<View className='cart-toolbar__hd'>
 										<SpCheckbox
@@ -552,12 +553,12 @@ export default class CartIndex extends Component {
 													</View>
 										}
 								</View>
-					
+
                   </View>
                 )
               })
             }
-					
+
             {
               (!groups.length || this.state.error) && (
                 <View>

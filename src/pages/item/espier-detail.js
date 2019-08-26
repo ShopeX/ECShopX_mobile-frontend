@@ -9,7 +9,7 @@ import { withBackToTop } from '@/hocs'
 import { log, calcTimer, isArray, pickBy, classNames, canvasExp } from '@/utils'
 import entry from '@/utils/entry'
 import S from '@/spx'
-import { GoodsBuyToolbar, ItemImg, Params, StoreInfo, SharePanel } from './comps'
+import { GoodsBuyToolbar, ItemImg, ImgSpec, Params, StoreInfo, SharePanel, VipGuide } from './comps'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
@@ -49,6 +49,7 @@ export default class Detail extends Component {
       currentImgs: -1,
       sixSpecImgsDict: {},
       curSku: null,
+      vip: null,
       promotion_activity: [],
       promotion_package: [],
       itemParams: [],
@@ -117,11 +118,11 @@ export default class Detail extends Component {
   async fetch () {
     const { id } = this.$router.params
     const info = await api.item.detail(id)
-    let promotion_package = null
-    const { list } = await api.item.packageList({item_id: id})
-    if (list.length) {
-      promotion_package = list.length
-    }
+    // let promotion_package = null
+    // const { list } = await api.item.packageList({item_id: id})
+    // if (list.length) {
+    //   promotion_package = list.length
+    // }
     const { intro: desc, promotion_activity: promotion_activity } = info
     let marketing = 'normal'
     let timer = null
@@ -129,17 +130,27 @@ export default class Detail extends Component {
     let startSecKill = true
     let sessionFrom = ''
 
-    if (info.group_activity) {
+    let vip = null
+    if (info.is_vip_grade) {
+      const { grade_name, member_price, guide_title_desc } = info
+      vip = {
+        gradeName: grade_name,
+        memberPrice: member_price,
+        guideTitleDesc: guide_title_desc
+      }
+    }
+
+    if (info.activity_info) {
       //团购
-      marketing = 'group'
-      timer = calcTimer(info.group_activity.remaining_time)
-      hasStock = info.group_activity.store && info.group_activity.store > 0
-    } else if (info.seckill_activity) {
+      //   marketing = 'group'
+      //   timer = calcTimer(info.group_activity.remaining_time)
+      //   hasStock = info.group_activity.store && info.group_activity.store > 0
+      // } else if (info.seckill_activity) {
       //秒杀
       marketing = 'seckill'
-      timer = calcTimer(info.seckill_activity.last_seconds)
-      hasStock = info.seckill_activity.activity_store && info.seckill_activity.activity_store > 0
-      startSecKill = info.seckill_activity.status === 'in_sale'
+      timer = calcTimer(info.activity_info.last_seconds)
+      hasStock = info.activity_info.item_total_store && info.activity_info.item_total_store > 0
+      startSecKill = info.activity_info.status === 'in_sale'
     }
 
     Taro.setNavigationBarTitle({
@@ -188,7 +199,7 @@ export default class Detail extends Component {
       specImgsDict,
       sixSpecImgsDict,
       promotion_activity,
-      promotion_package,
+      // promotion_package,
       itemParams,
       sessionFrom
     }, () => {
@@ -275,6 +286,14 @@ export default class Detail extends Component {
 
     Taro.navigateTo({
       url: `/pages/item/package-list?id=${info.item_id}`
+    })
+  }
+
+  handleParamsClick = () => {
+    const { id } = this.$router.params
+
+    Taro.navigateTo({
+      url: `/pages/item/item-params?id=${id}`
     })
   }
 
@@ -475,6 +494,7 @@ export default class Detail extends Component {
       scrollTop,
       showBackToTop,
       curSku,
+      vip,
       promotion_activity,
       promotion_package,
       itemParams,
@@ -548,30 +568,12 @@ export default class Detail extends Component {
           </View>
 
           {
-            !info.nospec && sixSpecImgsDict.length
-              ? <View className='goods-sec-specs'>
-                <ScrollView
-                  className='specs-scroller'
-                  scrollX
-                >
-                  <View className='specs-imgs'>
-                    <Text>{sixSpecImgsDict.length}色可选</Text>
-                    {
-                      sixSpecImgsDict.map((item, index) => {
-                        return (
-                          <Image
-                            className={classNames('specs-imgs__item', currentImgs === index && 'specs-imgs__item-active')}
-                            src={item.url}
-                            key={item.specValueId}
-                            mode='aspectFill'
-                            onClick={this.handleSepcImgClick.bind(this, index)}
-                          />
-                        )
-                      })
-                    }
-                  </View>
-                </ScrollView>
-              </View>
+            !info.nospec && sixSpecImgsDict.length && info.is_show_specimg
+              ? <ImgSpec
+                  info={sixSpecImgsDict}
+                  current={currentImgs}
+                  onClick={this.handleSepcImgClick}
+                />
               : null
           }
 
@@ -582,23 +584,34 @@ export default class Detail extends Component {
                   <Price
                     unit='cent'
                     symbol={info.cur.symbol}
-                    value={info.price}
+                    value={info.act_price}
                   />
                   <Price
                     unit='cent'
                     className='goods-prices__market'
                     symbol={info.cur.symbol}
-                    value={info.mkt_price}
+                    value={info.price}
                   />
-                  <View className='goods-prices__ft'>
-                    <Text className='goods-prices__type'>团购</Text>
-                    <Text className='goods-prices__rule'>{info.group_activity.person_num}人团</Text>
-                  </View>
+                  {
+                    marketing === 'group' &&
+                      <View className='goods-prices__ft'>
+                        <Text className='goods-prices__type'>团购</Text>
+                        <Text className='goods-prices__rule'>{info.activity_info.person_num}人团</Text>
+                      </View>
+                  }
+                  {
+                    marketing === 'seckill' &&
+                      <View className='goods-prices__ft'>
+                        <Text className='goods-prices__type'>秒杀</Text>
+                      </View>
+                  }
                 </View>
               </View>
               <View className='goods-timer__bd'>
-                <Text className='goods-timer__label'>距结束还剩</Text>
+                {info.activity_info.status === 'in_the_notice' && <Text className='goods-timer__label'>距开始还剩</Text>}
+  							{info.activity_info.status === 'in_sale' && <Text className='goods-timer__label'>距结束还剩</Text>}
                 <AtCountdown
+                  className="countdown__time"
                   isShowDay
                   day={timer.dd}
                   hours={timer.hh}
@@ -629,10 +642,28 @@ export default class Detail extends Component {
                   />
                 </View>
 
-                {/* info.approve_status !== 'only_show' && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>) */}
+                {
+                  info.sales && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>)
+                }
               </View>
             )}
           </View>
+
+          {
+            info.vipgrade_guide_title &&
+              <VipGuide
+                info={info.vipgrade_guide_title}
+              />
+          }
+
+          {
+            info.is_vip_grade &&
+              <VipGuide
+                info={vip}
+                isVip={true}
+              />
+          }
+
           {isPromoter && (
             <View className='goods-income'>
               <View className='sp-icon sp-icon-jifen'></View>
@@ -682,7 +713,7 @@ export default class Detail extends Component {
               : null
           }
 
-          {
+          {/*
             promotion_package &&
               <SpCell
                 className='goods-sec-specs'
@@ -691,24 +722,16 @@ export default class Detail extends Component {
                 onClick={this.handlePackageClick}
                 value={`共${promotion_package}种组合随意搭配`}
               />
-          }
+          */}
 
           {
             itemParams.length &&
-              <View className="goods-sec-specs">
-                <View className="goods-params">
-                  {
-                    itemParams.map((item, idx) => {
-                      return (
-                        <Params
-                          key={idx}
-                          info={item}
-                        />
-                      )
-                    })
-                  }
-                </View>
-              </View>
+              <SpCell
+                className='goods-sec-specs'
+                isLink
+                title='商品参数'
+                onClick={this.handleParamsClick.bind(this)}
+              />
           }
 
           {

@@ -150,9 +150,6 @@ export default class StoreIndex extends Component {
                     {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} />}
                     {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} />}
                     {item.name === 'showcase' && <WgtShowcase info={item} />}
-                    {idx === 1 && (
-                      <WgtPointLuck />
-                    )}
                   </View>
                 )
               })

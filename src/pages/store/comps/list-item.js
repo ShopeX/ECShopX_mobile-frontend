@@ -30,7 +30,7 @@ export default class StoreListItem extends Component {
         onClick={onClick}
       >
         <View className='store-content'>
-          <View className="store-name">{info.store_name}</View>
+          <View className="store-name">{info.name}</View>
           <View className="store-address">{info.store_address}</View>
         </View>
         {

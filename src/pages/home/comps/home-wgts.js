@@ -25,7 +25,7 @@ export default class HomeWgts extends PureComponent {
   }
 
   render () {
-    const { wgts, location } = this.props
+    const { wgts } = this.props
     const { screenWidth } = this.state
 
     return (
@@ -34,7 +34,7 @@ export default class HomeWgts extends PureComponent {
           wgts.map((item, idx) => {
             return (
               <View className='wgt-wrap' key={idx}>
-                {item.name === 'search' && <WgtSearchHome withLocation={location} info={item} />}
+                {item.name === 'search' && <WgtSearchHome info={item} />}
                 {item.name === 'film' && <WgtFilm info={item} />}
                 {item.name === 'marquees' && <WgtMarquees info={item} />}
                 {item.name === 'slider' && <WgtSlider isHomeSearch info={item} width={screenWidth} />}

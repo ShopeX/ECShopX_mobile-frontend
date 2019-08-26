@@ -47,8 +47,8 @@
     height: 0;
   }
   .float-menus {
-    // width: 180px;
-    // right: 20px;
+    width: 180px;
+    right: 20px;
     bottom: 190px;
     .distribution-shop {
       width: 100%;
@@ -60,7 +60,7 @@
 
 .wgts-wrap {
   $self: &;
-  @include page-scroll($home-header-height, $tabbar-height);
+  @include page-scroll(0, 0);
   background: #fff;
   #{$self}__cont {
     padding-top: 0;

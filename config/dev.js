@@ -1,7 +1,6 @@
 module.exports = {
   env: {
-    NODE_ENV: '"development"',
-    IMG_HOST: '"bbctest.aixue7.com"'
+    NODE_ENV: '"development"'
   },
   defineConstants: {
   },

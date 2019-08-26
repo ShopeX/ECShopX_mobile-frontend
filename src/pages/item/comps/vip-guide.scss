@@ -1,0 +1,52 @@
+@import '../../../style/imports';
+
+.vip-guide {
+  display: flex;
+  align-items: center;
+  background: #fffdf1;
+  padding: 30px;
+  margin-bottom: 10px;
+  color: #9e8d66;
+  &-content {
+    flex: 1;
+    padding-right: 20px;
+  }
+  .vip-price {
+    display: flex;
+    align-items: center;
+    .cur {
+      font-size: 24px;
+    }
+    .vip-price-amount {
+      font-size: 34px;
+      letter-spacing: 0;
+      @include text-overflow();
+    }
+  }
+  .vip-guide-text {
+  	padding-top: 15px;
+    line-height: 1.2;
+    font-size: 26px;
+  }
+  .vip-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    padding: 0 15px;
+    margin-right: 20px;
+    border-radius: 5px;
+    background: #c3b086;
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  .vip-apply {
+    padding: 0 20px;
+    height: 60px;
+    line-height: 58px;
+    border: 1px solid rgba(158,141,102,0.3);
+    border-radius: 8px;
+    font-size: 24px;
+  }
+}

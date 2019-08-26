@@ -65,21 +65,23 @@ export default class PaymentPicker extends Component {
             ></View>
           </View>
           <View className='payment-picker__bd'>
-            <View
-              className={`payment-item ${!!disabledPayment ? 'is-disabled' : ''}`}
-              onClick={this.handlePaymentChange.bind(this, 'dhpoint')}
-            >
-              <View className='payment-item__bd'>
-                <Text className='payment-item__title'>积分支付</Text>
-                <Text className='payment-item__desc'>{disabledPayment ? disabledPayment.message : '使用积分支付'}</Text>
+            {/*
+              <View
+                className={`payment-item ${!!disabledPayment ? 'is-disabled' : ''}`}
+                onClick={this.handlePaymentChange.bind(this, 'dhpoint')}
+              >
+                <View className='payment-item__bd'>
+                  <Text className='payment-item__title'>积分支付</Text>
+                  <Text className='payment-item__desc'>{disabledPayment ? disabledPayment.message : '使用积分支付'}</Text>
+                </View>
+                <View className='payment-item__ft'>
+                  <SpCheckbox
+                    disabled={!!disabledPayment}
+                    checked={localType === 'dhpoint'}
+                  ></SpCheckbox>
+                </View>
               </View>
-              <View className='payment-item__ft'>
-                <SpCheckbox
-                  disabled={!!disabledPayment}
-                  checked={localType === 'dhpoint'}
-                ></SpCheckbox>
-              </View>
-            </View>
+            */}
             <View
               className='payment-item no-border'
               onClick={this.handlePaymentChange.bind(this, 'wxpay')}

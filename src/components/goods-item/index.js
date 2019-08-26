@@ -66,7 +66,10 @@ export default class GoodsItem extends Component {
               <View className='goods-item__price'>
                 <Text className='goods-item__cur'>¥</Text>
                 <Text>{info.price}</Text>
-                <Text className='goods-item__price-market'>{info.market_price}</Text>
+                {
+                  parseInt(info.market_price) &&
+                    <Text className='goods-item__price-market'>{info.market_price}</Text>
+                }
 							</View>
 							{this.props.children}
               {

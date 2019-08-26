@@ -79,13 +79,17 @@ export default class CartCheckout extends Component {
   }
 
   componentDidShow () {
+    this.setState({
+      isPaymentOpend: false,
+      isDrugInfoOpend: false
+    })
     this.fetchAddress()
   }
 
   componentDidMount () {
     // this.fetchAddress()
 
-    const { cart_type, pay_type: payType,shop_id } = this.$router.params
+    const { cart_type, pay_type: payType, shop_id } = this.$router.params
     let info = null
 
     if (cart_type === 'fastbuy') {
@@ -202,21 +206,41 @@ export default class CartCheckout extends Component {
   }
 
   getParams () {
-    const { type,shop_id } = this.$router.params
-    const isDrug = type === 'drug'
-    let receiver = null
-    if (isDrug) {
-      receiver = pickBy(this.state.address, {
-        receiver_name: 'name',
-        receiver_mobile: 'mobile',
-        receiver_state: 'state',
-        receiver_city: 'city',
-        receiver_district: 'district',
-        receiver_address: 'address',
-        receiver_zip: 'zip'
-      })
-    } else {
-      receiver = pickBy(this.state.drug, {
+    const { type, seckill_id = null, ticket = null, group_id = null, shop_id } = this.$router.params
+    let orderType = ''
+    let activity = {}
+    orderType = (() => {
+      const key = type
+      let value = ''
+      switch (key) {
+        case 'drug':
+          value = 'normal_drug'
+          break;
+        case 'group':
+          value = 'normal_group'
+          activity = Object.assign(activity, {group_id: seckill_id})
+          break;
+        case 'seckill':
+          value = 'normal_seckill'
+          activity = Object.assign(activity, {seckill_id: seckill_id, seckill_ticket: ticket})
+          break;
+        default:
+          value = 'normal'
+      }
+      return value
+    })()
+    const receiver = pickBy(this.state.address, {
+      receiver_name: 'name',
+      receiver_mobile: 'mobile',
+      receiver_state: 'state',
+      receiver_city: 'city',
+      receiver_district: 'district',
+      receiver_address: 'address',
+      receiver_zip: 'zip'
+    })
+    let buyerInfo = {}
+    if (type === 'drug') {
+      buyerInfo = pickBy(this.state.drug, {
         drug_buyer_name: 'name',
         drug_buyer_id_card: 'id_card',
         drug_list_image: 'imgs',
@@ -227,8 +251,10 @@ export default class CartCheckout extends Component {
     const params = {
       ...this.params,
       ...receiver,
+      ...buyerInfo,
+      ...activity,
       receipt_type: 'logistics',
-      order_type: isDrug ? 'normal_drug' : 'normal',
+      order_type: orderType,
       promotion: 'normal',
       member_discount: 0,
       coupon_discount: 0,
@@ -257,7 +283,7 @@ export default class CartCheckout extends Component {
       mask: true
     })
     const params = this.getParams()
-
+    console.log(params)
     let data
     try {
       data = await api.cart.total(params)
@@ -431,6 +457,8 @@ export default class CartCheckout extends Component {
     }
 
     const { payType, total } = this.state
+    const { type } = this.$router.params
+    const isDrug = type === 'drug'
 
     if (payType === 'dhpoint') {
       try {
@@ -459,14 +487,15 @@ export default class CartCheckout extends Component {
 
     let order_id, orderInfo
     try {
-      const params = this.getParams()
+      let params = this.getParams()
+      delete params.items
       // 积分不开票
       if (payType === 'dhpoint') {
         delete params.invoice_type
         delete params.invoice_content
       }
       orderInfo = await api.trade.create(params)
-      order_id = orderInfo.trade_info.order_id
+      order_id = isDrug ? orderInfo.order_id : orderInfo.trade_info.order_id
     } catch (e) {
       Taro.showToast({
         title: e.message,
@@ -485,7 +514,14 @@ export default class CartCheckout extends Component {
 
     Taro.hideLoading()
     if (!order_id) return
-    // 爱茉pay流程
+
+    if (isDrug) {
+      Taro.redirectTo({
+        url: '/pages/trade/list'
+      })
+      return
+    }
+    // 支付流程
     const paymentParams = {
       order_id,
       pay_type: this.state.payType,
@@ -789,17 +825,19 @@ export default class CartCheckout extends Component {
                   value={total.freight_point}
                 />
               </SpCell>
-              <SpCell
-                className='trade-sub-total__item'
-                title='积分'
-              >
-                <Price
-                  noSymbol
-                  noDecimal
-                  appendText='积分'
-                  value={total.point}
-                />
-              </SpCell>
+              {/*
+                <SpCell
+                  className='trade-sub-total__item'
+                  title='积分'
+                >
+                  <Price
+                    noSymbol
+                    noDecimal
+                    appendText='积分'
+                    value={total.point}
+                  />
+                </SpCell>
+              */}
             </View>
           )}
 

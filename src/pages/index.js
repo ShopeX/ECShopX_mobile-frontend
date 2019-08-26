@@ -10,10 +10,10 @@ import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
 import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
 import { HomeWgts } from './home/comps/home-wgts'
+import Automatic from './home/comps/automatic'
 import { resolveFavsList } from './item/helper'
 
 import './home/index.scss'
-import PointDrawCompute from "./member/point-draw-compute";
 
 @connect(store => ({
   store
@@ -32,7 +32,9 @@ export default class HomeIndex extends Component {
       likeList: [],
       isShowAddTip: false,
       curStore: null,
-      positionStatus: false
+      positionStatus: false,
+      automatic: null,
+      showAuto: true
     }
   }
 
@@ -55,15 +57,30 @@ export default class HomeIndex extends Component {
   }
 
   async componentDidMount () {
+    const userinfo = Taro.getStorageSync('userinfo')
+    const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
+    const fixSetting = await req.get(url)
+
+    // if (automatic.is_open === 'true' && automatic.register_type === 'membercard' && userinfo) {
+    //   const { is_open, is_vip, is_had_vip, vip_type } = await api.vip.getUserVipInfo()
+    //   this.setState({
+    //     vip: {
+    //       isSetVip: is_open,
+    //       isVip: is_vip,
+    //       isHadVip: is_had_vip,
+    //       vipType: vip_type
+    //     }
+    //   })
+    // }
+
     const options = this.$router.params
-    const positionStatus = await entry.getLocalSetting()
     const res = await entry.entryLaunch(options, true)
-    console.log(res)
+
     const { store } = res
     if (store) {
       this.setState({
         curStore: store,
-        positionStatus
+        positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
       }, () => {
         this.fetchInfo()
       })
@@ -83,6 +100,15 @@ export default class HomeIndex extends Component {
   async fetchInfo () {
     const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
     const info = await req.get(url)
+
+    const { is_open, ad_pic, ad_title } = await api.promotion.automatic({register_type: 'general'})
+    this.setState({
+      automatic: {
+        title: ad_title,
+        isOpen: is_open === 'true',
+        adPic: ad_pic
+      }
+    })
 
     if (!S.getAuthToken()) {
       this.setState({
@@ -133,6 +159,42 @@ export default class HomeIndex extends Component {
     })
   }
 
+  handleGift = async () => {
+    if (!S.getAuthToken()) {
+      setTimeout(() => {
+        S.login(this)
+      }, 1000)
+      return
+    }
+
+    // const status = await api.member.receiveVip()
+    // if (status) {
+    //   const msg = status.card_type.desc + status.title
+    //   const vip = {
+    //     isVip: true,
+    //     isHadVip: true,
+    //     vipType: status.lv_type
+    //   }
+    //   this.setState({
+    //     vip
+    //   }, () => {
+    //     Taro.showToast({
+    //       title: '领取成功',
+    //       icon: 'success'
+    //     })
+    //   })
+    // } else {
+    //   S.toast('活动已过期')
+    // }
+  }
+
+  handleAutoClick = () => {
+    const { showAuto } = this.state
+    this.setState({
+      showAuto: !showAuto
+    })
+  }
+
   handleClickCloseAddTip = () => {
     Taro.setStorage({ key: 'addTipIsShow', data: {isShowAddTip: false} })
     this.setState({
@@ -147,7 +209,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus } = this.state
+    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic } = this.state
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
@@ -159,13 +221,13 @@ export default class HomeIndex extends Component {
     return (
       <View className='page-index'>
         {
-          positionStatus &&
+          curStore &&
             <HeaderHome
-              storeName={curStore.name}
+              store={curStore}
             />
         }
         <ScrollView
-          className={`wgts-wrap wgts-wrap__fixed ${positionStatus ? 'with-location' : ''}`}
+          className={`wgts-wrap ${positionStatus ? 'wgts-wrap__fixed' : ''}`}
           scrollTop={scrollTop}
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
@@ -173,7 +235,6 @@ export default class HomeIndex extends Component {
         >
           <View className='wgts-wrap__cont'>
             <HomeWgts
-              location={positionStatus}
               wgts={wgts}
             />
             {!!goodsFavWgt && (
@@ -195,15 +256,35 @@ export default class HomeIndex extends Component {
         </ScrollView>
 
         {
-          (isPromoter || distributionShopId)
-          && <FloatMenus>
+          <FloatMenus>
+            {/*
+              (isPromoter || distributionShopId) &&
               <Image
                 className='distribution-shop'
                 src='/assets/imgs/gift_mini.png'
                 mode='widthFix'
                 onClick={this.handleClickShop}
               />
-            </FloatMenus>
+            */}
+            {
+              automatic.isOpen && !S.getAuthToken() &&
+                <FloatMenuItem
+                  iconPrefixClass='in-icon'
+                  icon='gift'
+                  onClick={this.handleAutoClick.bind(this)}
+                />
+            }
+          </FloatMenus>
+        }
+
+        {
+          automatic.isOpen && !S.getAuthToken() &&
+            <Automatic
+              info={automatic}
+              isShow={showAuto}
+              onClick={this.handleGift.bind(this)}
+              onClose={this.handleAutoClick.bind(this)}
+            />
         }
 
         <BackToTop

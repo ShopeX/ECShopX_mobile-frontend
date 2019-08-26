@@ -6,6 +6,7 @@
       @include clearfix();
       .goods-item {
         width: 48%;
+        height: 520px;
         float: left;
         overflow: hidden;
         margin-left: 1%;
@@ -53,7 +54,7 @@
 		}
     &__scroll {
 			// @include page-scroll($navigate-height, $toolbar-height + $tabbar-height);
-      @include page-scroll($navigate-height, $tabbar-height);			
+      @include page-scroll($navigate-height, $tabbar-height);
     }
     &__actions {
       display: flex;

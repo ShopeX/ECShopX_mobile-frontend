@@ -10,7 +10,8 @@ import './drug-info.scss'
 export default class DrugInfo extends Component {
   static defaultProps = {
     isOpened: false,
-    onChange: () => {}
+    onChange: () => {},
+    onClose: () => {}
   }
 
   static options = {
@@ -59,12 +60,13 @@ export default class DrugInfo extends Component {
   }
 
   render () {
-    const { isOpened, onChange, onImgChange, onImageClick } = this.props
+    const { isOpened, onChange, onImgChange, onImageClick, onClose } = this.props
     const { info } = this.state
 
     return (
       <AtFloatLayout
         isOpened={isOpened}
+        onClose={onClose}
       >
         <View class="drug-info">
           <AtInput

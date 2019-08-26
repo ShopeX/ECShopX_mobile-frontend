@@ -12,6 +12,9 @@
   display: flex;
   align-items: center;
   box-shadow: 0 0 -5px rgba(#000, 0.3);
+  button {
+    border: none;
+  }
   &__menus {
     flex: 1;
     display: flex;
@@ -70,7 +73,7 @@
     }
   }
   .btn-add-cart {
-    background: #131313;
+    background: $color-brand-accent;
   }
   .btn-fast-buy {
     margin-left: -1px;

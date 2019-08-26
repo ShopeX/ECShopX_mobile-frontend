@@ -44,6 +44,7 @@ export default class Category extends Component {
       const nList = pickBy(res, {
         name: 'category_name',
         img: 'image_url',
+        id: 'id',
         category_id: 'category_id',
         children: ({ children }) => pickBy(children, {
           name: 'category_name',
