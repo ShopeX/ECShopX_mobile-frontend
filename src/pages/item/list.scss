@@ -33,7 +33,14 @@
         [class^=icon] {
           color: #ccc;
           display: inline-block;
-        }
+				}
+				&.region-picker{
+					display: flex;
+					line-height: 75rpx;
+				}
+				.icon-close{
+					line-height: 75px;
+				}
       }
       .filter-bar__item-active {
         color: $color-brand-primary;

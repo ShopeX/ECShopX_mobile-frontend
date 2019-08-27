@@ -38,7 +38,7 @@ export default class List extends Component {
       selectParams: [],
       info: {},
       areaList: [],
-      multiIndex: []
+			multiIndex: []
     }
   }
 
@@ -169,8 +169,28 @@ export default class List extends Component {
     })
   }
 
+	handleClickRefresh = (e) => {
+		console.log('handleClickRefresh')
+		e.stopPropagation()
+    this.resetPage()
+    const {query} = this.state
+		query.regions_id = []
+    this.setState({
+      multiIndex: [],
+      areaList:[],
+      list: [],
+			info:{
+				city: {label: "", id: ""},
+				county: {label: "", id: ""},
+				province: {label: "", id: ""}
+			},
+      query
+    }, () => {
+      this.nextPage()
+    })
+	}
+	
   handleFilterChange = (data) => {
-    console.log(111)
     this.setState({
       showDrawer: false
     })
@@ -306,9 +326,10 @@ export default class List extends Component {
   }
 
   bindMultiPickerChange = async (e) => {
-    const { info } = this.state
+		const { info } = this.state
+		console.log(1,info)
     this.addList.map((item, index) => {
-      console.log(item)
+      console.log('bindMultiPickerChange',item)
       if(index === e.detail.value[0]) {
         info.province = {
           label: item.label,
@@ -331,7 +352,8 @@ export default class List extends Component {
           }
         })
       }
-    })
+		})
+		console.log(2,info)
 
     let regions = [
       info.province.id,
@@ -351,8 +373,11 @@ export default class List extends Component {
       }, () => {
         this.nextPage()
       })
-    })
-    this.setState({ info })
+		})
+		console.log(3,info)
+		this.setState({ 
+			info:Object.assign({},info) 
+		})
   }
 
   bindMultiPickerColumnChange = (e) => {
@@ -418,7 +443,12 @@ export default class List extends Component {
         this.nextPage()
       })
     })
-  }
+	}
+	
+	componentDidUpdate(){
+		console.log("this------------")
+		console.log(this.state)
+	}
 
   render () {
     const {
@@ -436,13 +466,15 @@ export default class List extends Component {
       areaList,
       tagsList,
       curTagId,
-      info
+			info
     } = this.state
+		console.log(4,info)
+		console.info(info, 'render')
 
-    return (
-      <View className='page-goods-list'>
-        <View className='goods-list__toolbar'>
-          <SearchBar
+		return (
+			<View className='page-goods-list'>
+				<View className='goods-list__toolbar'>
+				<SearchBar
             onConfirm={this.handleConfirm.bind(this)}
           />
           {
@@ -464,7 +496,7 @@ export default class List extends Component {
               <View className='icon-filter'></View>
               <Text>筛选</Text>
             </View>
-            <View className='filter-bar__item'>
+            <View className='filter-bar__item region-picker'>
               <Picker
                 mode='multiSelector'
                 onClick={this.handleClickPicker}
@@ -472,11 +504,12 @@ export default class List extends Component {
                 onColumnChange={this.bindMultiPickerColumnChange}
                 value={multiIndex}
                 range={areaList}
-              >
-                <View className='icon-periscope'></View>
-                <Text>{info.city && info.city.label || '产地'}</Text>
-              </Picker>
-            </View>
+							>
+								<View className='icon-periscope'></View>
+								<Text>{info.city && info.city.label || '产地'}</Text>
+							</Picker>
+							{info.city && info.city.label  && <Text className='icon-close' onClick={this.handleClickRefresh.bind(this)}></Text>}
+						</View>
           </FilterBar>
         </View>
 
