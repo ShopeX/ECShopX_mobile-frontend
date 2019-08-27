@@ -8,7 +8,7 @@ import { classNames } from '@/utils'
 // }
 
 const hasImageView = (src) => {
-  return src.indexOf('imageView2/') >= 0
+  return src && src.indexOf('imageView2/') >= 0
 }
 
 export default class QnImg extends Component {

@@ -338,7 +338,7 @@ export default class MemberIndex extends Component {
                 </View>
               )
             }
-            { <Navigator className="view-flex-item view-flex view-flex-vertical view-flex-middle" url="/pages/item/group-list">
+            { <Navigator className="view-flex-item view-flex view-flex-vertical view-flex-middle" url="/pages/item/my-group-list">
               <Image className="icon-img" src="/assets/imgs/group.png" mode="aspectFit" />
               <View>我的拼团</View>
             </Navigator> }

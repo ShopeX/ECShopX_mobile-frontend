@@ -48,7 +48,7 @@ export default class GroupList extends Component {
       return key
     })
 
-    const { list, total_count: total } = await api.item.groupList(params)
+    const { list, total_count: total } = await api.group.groupList(params)
     list.forEach(t => {
       if (t.remaining_time > 0) {
         t.remaining_time_obj = calcTimer(t.remaining_time)
@@ -162,7 +162,7 @@ export default class GroupList extends Component {
                         </View>
                       )}
                       {curTabIdx === 0
-                        ? <Navigator url="group-detail"><View className='btn-go'>去开团</View></Navigator>
+                        ?<View className='btn-go'>去开团</View>
                         : <View className='btn-go disabled'>未开始</View>
                       }
                     </View>

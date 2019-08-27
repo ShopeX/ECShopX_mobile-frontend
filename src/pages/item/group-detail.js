@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View} from '@tarojs/components'
+import { View,Image,Text,Form} from '@tarojs/components'
+import { AtButton,AtCountdown } from 'taro-ui'
 import { classNames, log, isNumber } from '@/utils'
 import api from '@/api'
 import './group-detail.scss'
@@ -27,7 +28,9 @@ export default class GroupDetail extends Component {
 		const {group_id} = this.$router.params
 		const params = {distributor_id:Taro.getStorageSync('trackIdentity')|| ''}
 		const detail = await api.group.groupDetail(group_id,params)
-		const {activity_info,over_time:total_micro_second,team_info,member_list} = detail
+		const {activity_info,team_info,member_list} = detail
+
+		const {over_time:total_micro_second} = activity_info
 
 		const userInfo = Taro.getStorageSync('userinfo')
 		const user_id = userInfo && userInfo.userId || 0
@@ -72,7 +75,8 @@ render () {
 		<View>
 			<View className={classNames('status-icon',{'success icon-over-group':detail && detail.team_info.team_status == 2,'fail icon-ungroup':detail && detail.team_info.team_status == 3})}></View>
       {detail.team_info.team_status == 1 && (
-        <View className='activity-time  View-flex View-flex-middle'>离结束还有：
+				<View className='activity-time  view-flex view-flex-middle'>
+					<Text>距结束还剩</Text>
 					<AtCountdown
 						isShowDay
 						day={timer.dd}
@@ -84,20 +88,20 @@ render () {
       )}
       <View className='content-padded-b'>
         <View className='group-goods'>
-          <View className='View-flex'>
-            <image className='goods-img' src={detail.activity_info.pics[0]} mode='aspectFill' />
-            <View className='View-flex-item View-flex View-flex-vertical View-flex-justify content-padded'>
+          <View className='view-flex'>
+            <Image className='goods-img' src={detail.activity_info.pics[0]} mode='aspectFill' />
+            <View className='view-flex-item view-flex view-flex-vertical view-flex-justify content-padded'>
               <View>
                 <View className='goods-title'>{detail.activity_info.itemName}</View>
                 {
                   detail.activity_info && (
-                    <View className='price-label'><text className='num'>{detail.activity_info.person_num}</text><text className='label'>人团</text></View>
+                    <View className='price-label'><Text className='num'>{detail.activity_info.person_num}</Text><Text className='label'>人团</Text></View>
                     )
                 }
               </View>
               {
                 detail.activity_info && (
-                  <View className='activity-amount'><text className='cur'>￥</text>{detail.activity_info.act_price/100}<text className='activity-market-price text-overline'>{detail.activity_info.price/100}</text></View>
+                  <View className='activity-amount'><Text className='cur'>￥</Text>{detail.activity_info.act_price/100}<Text className='activity-market-price text-overline'>{detail.activity_info.price/100}</Text></View>
                 )
               }
             </View>
@@ -105,12 +109,19 @@ render () {
         </View>
       </View>
       <View className='content-padded content-center'>
-        {detail.team_info.team_status == 1 && ( <View>还差<text className='group-num'>{detail.activity_info.person_num - detail.team_info.join_person_num}</text>人拼团成功</View>)}
+        {detail.team_info.team_status == 1 && ( <View>还差<Text className='group-num'>{detail.activity_info.person_num - detail.team_info.join_person_num}</Text>人拼团成功</View>)}
         {detail.team_info.team_status == 2 && (<View>团长人气爆棚，已经拼团成功啦</View>)}
         {detail.team_info.team_status == 3 && (<View>团长人气不足，拼团失败</View>)}
         
-        <View className='group-member View-flex View-flex-center View-flex-wrap'>
-          
+				<View className='group-member view-flex view-flex-center view-flex-wrap'>
+				{detail && [...Array(detail.activity_info.person_num).keys()].map((item,index)=>{
+					return (
+						<View key={index} className={classNames('group-member-item',{'wait-member':detail.member_list.list[index]})}>
+						{detail.member_list.list[index] && (<Image className='member-avatar'src={detail.member_list.list[index].member_info.headimgurl} mode='aspectFill' />) } 
+						{detail.team_info.head_mid === detail.member_list.list[index].member_id && 	(<View className='leader-icon'>团长</View>)}
+						</View>
+					)
+				})}
         </View> 
       </View>
       <View className='content-padded-b'>
@@ -120,21 +131,21 @@ render () {
             {
               (!isLeader && !isSelf) && (
                 <View>
-                  <form report-submit bindsubmit='formSubmit'>
-                    <button className='btn-submit' form-type='submit'>我要参团</button>
-                  </form>
+                  <Form report-submit bindsubmit='formSubmit'>
+                    <AtButton className='btn-submit' form-type='submit'>我要参团</AtButton>
+                  </Form>
                 </View>
               )
             }
-            {isLeader && (<button className='btn-submit' open-type='share'>邀请好友参团</button>)}
-            {(!isLeader && isSelf) && (<button className='btn-submit' onClick='toOpen'>我也要开团</button>)}
+            {isLeader && (<AtButton className='btn-submit' open-type='share'>邀请好友参团</AtButton>)}
+            {(!isLeader && isSelf) && (<AtButton className='btn-submit' onClick='toOpen'>我也要开团</AtButton>)}
           </View>
           : 
           <View>
             <View className='content-bottom-padded-b'>
-              {!isLeader ? (<button className='btn-submit' onClick='toOpen'>我也要开团</button>) : (<button className='btn-submit' onClick='toOpen'>重新开团</button>)}
+              {!isLeader ? (<AtButton className='btn-submit' onClick='toOpen'>我也要开团</AtButton>) : (<AtButton className='btn-submit' onClick='toOpen'>重新开团</AtButton>)}
             </View>
-            <button className='btn-default' onClick='toHome'>更多活动爆品</button>
+            <AtButton className='btn-default' onClick='toHome'>更多活动爆品</AtButton>
           </View>
         }
       </View>

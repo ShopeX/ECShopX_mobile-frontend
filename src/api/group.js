@@ -7,3 +7,7 @@ export function groupList (params = {}) {
 export function groupDetail ( id,params={}) {
 	return req.get(`/groupOrders/${id}`, params)	
 }
+
+export function myGroupList (params = {}) {
+  return req.get('/groupOrders', params)
+}

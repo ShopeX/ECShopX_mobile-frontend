@@ -21,9 +21,6 @@ export function category () {
   return req.get('/category.itemCategory')
 }
 
-export function groupList (params) {
-  return req.get('/promotions/groups', params)
-}
 
 export function seckillCheck ({ item_id, num = 1, seckill_id }) {
   return req.get('/promotion/seckillactivity/geticket', {
