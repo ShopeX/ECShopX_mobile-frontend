@@ -89,7 +89,7 @@ export default class WgtGoodsGrid extends Component {
                       />
                     )}
                     <View className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.title}</View>
-                    <View className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.brief}</View>
+                    {item.brief && <View className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.brief}</View>}
                     {
                       config.showPrice
                       && <View className="goods-price">
