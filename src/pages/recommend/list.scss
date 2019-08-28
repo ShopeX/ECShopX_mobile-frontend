@@ -30,5 +30,13 @@
   }
   .goods-item__cont{
     height: 250px !important;
-  }
+	}
+	.region-picker{
+		display: flex;
+		justify-content: center;
+		line-height: 75rpx;
+		.icon-close{
+			line-height: 75px;
+		}
+	}
 }

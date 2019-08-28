@@ -182,7 +182,21 @@ export default class RecommendList extends Component {
       selectColumn
     })
   }
-
+	handleRegionRefresh = (e) => {
+		e.stopPropagation()
+    this.resetPage()
+		let {query} = this.state
+		Object.assign(query,{regions_id:[],province:'',city:'',area:''})
+    this.setState({
+      multiIndex: [],
+      areaList:[],
+      list: [],
+			info:{ city: '', county: '', province: '' },
+      query
+    }, () => {
+      this.nextPage()
+    })
+	}
   handleClickSearchParams = (type) => {
     this.setState({
       showDrawer: false
@@ -333,7 +347,7 @@ export default class RecommendList extends Component {
     const { list, showBackToTop, scrollTop, page, showDrawer, info, columnList, selectColumn, multiIndex, areaList } = this.state
     let address = info.province + info.city
 
-    return (
+		return (
       <View className='page-goods-list page-recommend-list'>
         <View className='recommend-list__toolbar'>
           <View class="search-bar">
@@ -348,7 +362,7 @@ export default class RecommendList extends Component {
               <View className='icon-menu'></View>
               <Text>{ selectColumn.name || '栏目' }</Text>
             </View>
-            <View className='filter-bar__item'>
+            <View className='filter-bar__item region-picker'>
               <Picker
                 mode='multiSelector'
                 onClick={this.handleClickPicker}
@@ -359,7 +373,8 @@ export default class RecommendList extends Component {
               >
                 <View className='icon-periscope'></View>
                 <Text>{address || '地区'}</Text>
-              </Picker>
+							</Picker>
+							{address && <Text className='icon-close' onClick={this.handleRegionRefresh.bind(this)}></Text>}
             </View>
           </FilterBar>
         </View>
