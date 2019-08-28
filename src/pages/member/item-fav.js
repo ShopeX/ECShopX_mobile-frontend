@@ -107,7 +107,7 @@ export default class ItemFav extends Component {
       let link = null
       switch (this.state.curTabIdx) {
         case 0:
-          link = `/pages/item/espier-detail?id=${item.item_id}`
+					link = `/pages/item/espier-detail?id=${item.item_id}`
           break;
         case 1:
           link = `/pages/recommend/detail?id=${item.item_id}`
@@ -117,10 +117,9 @@ export default class ItemFav extends Component {
           break;
         default:
           link = ''
-      }
-      return url
+			}
+      return link
     })()
-
     Taro.navigateTo({
       url
     })

@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 8,
+			"current": 9,
 			"list": [
 				{
 					"id": 0,
@@ -91,6 +91,13 @@
 					"id": -1,
 					"name": "pages/category/index",
 					"pathName": "pages/category/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/member/item-fav",
+					"pathName": "pages/member/item-fav",
 					"scene": null
 				}
 			]
