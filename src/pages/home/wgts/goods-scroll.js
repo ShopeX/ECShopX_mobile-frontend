@@ -62,8 +62,14 @@ export default class WgtGoodsScroll extends Component {
                     mode='aspectFill'
                     width='120'
                     lazyLoad
-                  />
-                </View>
+									/>
+								</View>
+								{
+									config.showPrice
+									&& <View className="goods-price">
+											<Text className="cur">¥</Text>{item.price ? item.price/100 : '0.00'}
+										</View>
+								}
               </View>
             ))}
           </ScrollView>
