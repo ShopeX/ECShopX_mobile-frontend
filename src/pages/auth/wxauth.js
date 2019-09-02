@@ -50,9 +50,13 @@ export default class WxAuth extends Component {
     if (!iv || !encryptedData) {
       Taro.showModal({
         title: '授权提示',
-        content: `需要您的授权才能正常运行`,
+        content: `需要您的授权才能购物`,
         showCancel: false,
         confirmText: '知道啦'
+      }).then(res => {
+        Taro.redirectTo({
+          url: '/pages/index'
+        })
       })
 
       return
