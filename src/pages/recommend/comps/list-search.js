@@ -86,7 +86,7 @@ export default class ListSearch extends Component {
           <AtSearchBar
             className='home-search__bar'
             value={searchValue}
-            placeholder='文章标题'
+            placeholder='请输入关键字'
             actionName='取消'
             showActionButton={isShowAction}
             onFocus={this.handleFocusSearchHistory.bind(this, true)}

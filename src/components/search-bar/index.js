@@ -160,7 +160,7 @@ export default class SearchBar extends Component {
           <AtSearchBar
             className='search-input__bar'
             value={searchValue}
-            placeholder='护肤/彩妆/面膜/指甲油'
+            placeholder='请输入关键字'
             actionName='取消'
             showActionButton={isShowAction}
             onFocus={this.handleFocusSearchHistory.bind(this, true)}
