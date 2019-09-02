@@ -76,7 +76,19 @@ export default class RecommendList extends Component {
         name: 'category_name',
         id: 'category_id'
       })
-      let defaultItem = {id: '', name: '全部', isChooseColumn: true}
+      let defaultItem = {}
+      if (!selectColumn.id) {
+        defaultItem = {id: '', name: '全部', isChooseColumn: true}
+      } else {
+        defaultItem = {id: '', name: '全部', isChooseColumn: false}
+        clist.map(item => {
+          if(item.id === selectColumn.id) {
+            item.isChooseColumn = true
+          } else {
+            item.isChooseColumn = false
+          }
+        })
+      }
       selectColumn = Object.assign({}, defaultItem)
       clist.unshift(defaultItem)
       this.setState({
