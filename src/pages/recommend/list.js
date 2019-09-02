@@ -34,6 +34,17 @@ export default class RecommendList extends Component {
   }
 
   componentDidShow () {
+    const params = this.$router.params
+    if (params) {
+      const { id, name } = params
+      this.setState({
+        selectColumn: {
+          id,
+          name,
+          isChooseColumn: true
+        }
+      })
+    }
     Taro.showLoading()
     this.resetPage()
     this.setState({
@@ -147,6 +158,7 @@ export default class RecommendList extends Component {
 
   handleConfirm = (val) => {
     this.setState({
+      showDrawer: false,
       query: {
         ...this.state.query,
         title: val,

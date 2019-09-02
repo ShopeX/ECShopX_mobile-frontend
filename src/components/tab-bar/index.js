@@ -15,6 +15,9 @@ export default class TabBar extends Component {
     addGlobalClass: true
   }
 
+  static defaultProps = {
+  }
+
   constructor (props) {
     super(props)
 

@@ -47,7 +47,7 @@ export default class DetailItem extends Component {
     return (
       <View className='detail-item'>
         {
-          info.orders.map((item, idx) =>
+          info && info.orders.map((item, idx) =>
             <View className='detail-item-good' key={idx}>
               <Text className='detail-item__title'>第{idx+1}件商品</Text>
               <OrderItem

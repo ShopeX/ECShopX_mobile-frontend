@@ -260,7 +260,7 @@ export default class DistributionShopHome extends Component {
   }
 
   render () {
-    const { list, page, showDrawer, paramsList, selectParams, scrollTop, goodsIds } = this.state
+    const { list, page, showDrawer, paramsList, selectParams, scrollTop, goodsIds, curFilterIdx, filterList } = this.state
 
     return (
       <View className="page-distribution-shop">

@@ -74,32 +74,32 @@ export default class Cashier extends Component {
             <View className='cashier-money__content-number'>{ info.pay_type === 'point' ? info.point : info.total_fee }</View>
           </View>
         </View>
-
-        <View className='pay-status'>
-          {
-            info.order_type === 'recharge'
-              ? <View>
-                  <AlipayPay
-                    orderID={info.order_id}
-                    payType='alipayh5'
-                    orderType={info.order_type}
-                  />
-                  <WeH5Pay orderID={info.order_id} />
-                </View>
-              : <View>
-                <PointDepositPay
-                  orderID={info.order_id}
-                  payType={info.pay_type}
-                  orderType={info.order_type}
-                />
-                <WePay
-                  info={info}
-                />
-              </View>
-          }
-
-
-        </View>
+        {
+          info &&
+            <View className='pay-status'>
+              {
+                info.order_type === 'recharge'
+                  ? <View>
+                      <AlipayPay
+                        orderID={info.order_id}
+                        payType='alipayh5'
+                        orderType={info.order_type}
+                      />
+                      <WeH5Pay orderID={info.order_id} />
+                    </View>
+                  : <View>
+                    <PointDepositPay
+                      orderID={info.order_id}
+                      payType={info.pay_type}
+                      orderType={info.order_type}
+                    />
+                    <WePay
+                      info={info}
+                    />
+                  </View>
+              }
+            </View>
+        }
       </View>
     )
   }

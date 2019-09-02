@@ -89,6 +89,7 @@ export default class DrugInfo extends Component {
                 <AtImagePicker
                   mode='aspectFill'
                   multiple
+                  count={3}
                   length={3}
                   files={info.imgs}
                   onChange={this.handleImageChange.bind(this)}

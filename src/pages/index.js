@@ -34,7 +34,6 @@ export default class HomeIndex extends Component {
     this.state = {
       ...this.state,
       wgts: null,
-      goodsFavWgt: null,
       authStatus: false,
       likeList: [],
       isShowAddTip: false,
@@ -115,7 +114,7 @@ export default class HomeIndex extends Component {
   async fetchInfo () {
     const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
     const info = await req.get(url)
-		
+
 		const show_likelist = info.config.find(item=>item.name=='setting'&&item.config.faverite)
 		this.props.onUpdateLikeList(show_likelist?true:false)
 
@@ -256,7 +255,7 @@ export default class HomeIndex extends Component {
             <HomeWgts
               wgts={wgts}
             />
-            {!!goodsFavWgt && (
+            {likeList.length > 0 && (
               <View>
                 <WgtGoodsFaverite info={likeList} />
                 {
