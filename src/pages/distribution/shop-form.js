@@ -3,6 +3,7 @@ import { View, Image } from '@tarojs/components'
 import { AtInput, AtTextarea, AtImagePicker, AtButton } from 'taro-ui'
 import { SpCell } from '@/components'
 import imgUploader from '@/utils/qiniu'
+import S from '@/spx'
 import api from '@/api'
 import req from '@/api/req'
 
@@ -28,9 +29,10 @@ export default class DistributionShopForm extends Component {
       }
     })
     if (key === 'shop_pic' && val) {
-      imgs.push(val)
       this.setState({
-        imgs
+        imgs: [{
+          url: val
+        }]
       })
     }
   }
@@ -60,17 +62,15 @@ export default class DistributionShopForm extends Component {
 
     if (type === 'remove') {
       this.setState({
-        info: {
-          imgs: data
-        }
+        imgs: data
       })
       return
     }
 
-    if (data.length > 3) {
+    if (data.length > 1) {
       S.toast('最多上传3张图片')
     }
-    const imgFiles = data.slice(0, 3)
+    const imgFiles = data.slice(0, 1)
     const res = await imgUploader.uploadImageFn(imgFiles, req.baseURL + 'espier/image_upload_token', 'qiniu', 'jpg/png', 'z2')
     this.setState({
       imgs: res
@@ -117,7 +117,6 @@ export default class DistributionShopForm extends Component {
                       <Text className='pic-upload__imgupload_text'>图片建议尺寸：320*100</Text>
                       <AtImagePicker
                         mode='aspectFill'
-                        multiple
                         count={1}
                         length={3}
                         files={imgs}

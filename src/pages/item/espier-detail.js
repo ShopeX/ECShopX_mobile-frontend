@@ -91,10 +91,11 @@ export default class Detail extends Component {
   onShareAppMessage () {
     const { info } = this.state
     const { distributor_id } = Taro.getStorageSync('curStore')
+    const { userId } = Taro.getStorageSync('userinfo')
 
     return {
       title: info.item_name,
-      path: `/pages/item/espier-detail?id=${info.item_id}&dtid=${distributor_id}` + this.uid && `&uid=${this.uid}`
+      path: `/pages/item/espier-detail?id=${info.item_id}&dtid=${distributor_id}` + this.uid && `&uid=${userId}`
     }
 
   }
@@ -507,7 +508,8 @@ export default class Detail extends Component {
       hasStock,
       showBuyPanel,
       buyPanelType,
-      showSharePanel
+      showSharePanel,
+      positionStatus
     } = this.state
 
     const uid = this.uid
