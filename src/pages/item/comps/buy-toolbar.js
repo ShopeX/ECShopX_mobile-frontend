@@ -68,22 +68,22 @@ export default class GoodsBuyToolbar extends Component {
           : (<View className='goods-buy-toolbar__btns'>
               {type === 'normal' && (
                 <FormIdCollector
-                  style='flex: 1'
                   sync
                   onClick={onClickAddCart}
                 >
-                  <View className='goods-buy-toolbar__btn btn-add-cart'>
+                  <View className={`goods-buy-toolbar__btn btn-add-cart ${isDrug && 'drug-btn'}`}>
                     {isDrug ? '加入药品清单' : '添加至购物车'}
                   </View>
                 </FormIdCollector>
               )}
-              {!isDrug && <FormIdCollector
-                  style='flex: 1'
-                  sync
-                  onClick={onClickFastBuy}
-                >
-                  <View className='goods-buy-toolbar__btn btn-fast-buy'>{fastBuyText}</View>
-                </FormIdCollector>
+              {!isDrug && (
+                  <FormIdCollector
+                    sync
+                    onClick={onClickFastBuy}
+                  >
+                    <View className='goods-buy-toolbar__btn btn-fast-buy'>{fastBuyText}</View>
+                  </FormIdCollector>
+                )
               }
             </View>)
         }
