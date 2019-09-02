@@ -22,20 +22,20 @@ export default class NavBar extends Component {
 
     render () {
       const { title, leftIconType, fixed } = this.props
-
-      if (Taro.getEnv() === Taro.ENV_TYPE.WEAPP) {
-        return null
-      }
-
       return (
-        <View className='nav-bar-height'>
-          <AtNavBar
-            fixed={fixed}
-            color='#000'
-            title={title}
-            leftIconType={leftIconType}
-            onClickLeftIcon={this.handleClickLeftIcon.bind(this)}
-          />
+        <View>
+          {
+            Taro.getEnv() !== Taro.ENV_TYPE.WEAPP &&
+            <View className='nav-bar-height'>
+              <AtNavBar
+                fixed={fixed}
+                color='#000'
+                title={title}
+                leftIconType={leftIconType}
+                onClickLeftIcon={this.handleClickLeftIcon.bind(this)}
+              />
+            </View>
+          }
         </View>
       )
     }

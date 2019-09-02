@@ -62,6 +62,7 @@ export default class Detail extends Component {
 
   async componentDidMount () {
     const options = this.$router.params
+    console.log(options)
     const { store, uid, positionStatus } = await entry.entryLaunch(options, true)
     if (store) {
       this.setState({
@@ -95,7 +96,7 @@ export default class Detail extends Component {
 
     return {
       title: info.item_name,
-      path: `/pages/item/espier-detail?id=${info.item_id}&dtid=${distributor_id}` + this.uid && `&uid=${userId}`
+      path: '/pages/item/espier-detail?id=' + info.item_id + '&dtid=' + distributor_id + (userId && '&uid=${userId}')
     }
 
   }
@@ -335,10 +336,8 @@ export default class Detail extends Component {
   }
 
   downloadPosterImg = async () => {
-    console.log(222)
     const userinfo = Taro.getStorageSync('userinfo')
     if (!userinfo) return
-    console.log(111)
     const { avatar, userId } = userinfo
     const { info } = this.state
     const { pics, company_id, item_id } = info

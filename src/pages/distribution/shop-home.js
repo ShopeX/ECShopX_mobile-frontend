@@ -51,9 +51,12 @@ export default class DistributionShopHome extends Component {
   }
 
   async fetchInfo () {
-    const distributionShopId = Taro.getStorageSync('distribution_shop_id')
-    const param = distributionShopId && {
+    const { userId } = Taro.getStorageSync('userinfo')
+    const { distribution_shop_id = '' } = this.$router.params
+    const param = distribution_shop_id ? {
       user_id: distributionShopId
+    } : {
+      user_id: userId
     }
 
     const res = await api.distribution.info(param || null)
