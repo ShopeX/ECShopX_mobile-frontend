@@ -81,7 +81,7 @@ export default class GoodsBuyToolbar extends Component {
                     sync
                     onClick={onClickFastBuy}
                   >
-                    <View className='goods-buy-toolbar__btn btn-fast-buy'>{fastBuyText}</View>
+                    <View className={`goods-buy-toolbar__btn btn-fast-buy ${type !== 'normal' && 'marketing-btn'}`}>{fastBuyText}</View>
                   </FormIdCollector>
                 )
               }

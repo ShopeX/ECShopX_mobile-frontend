@@ -62,7 +62,6 @@ export default class Detail extends Component {
 
   async componentDidMount () {
     const options = this.$router.params
-    console.log(options)
     const { store, uid, positionStatus } = await entry.entryLaunch(options, true)
     if (store) {
       this.setState({
@@ -582,23 +581,17 @@ export default class Detail extends Component {
             <View className='goods-timer'>
               <View className='goods-timer__hd'>
                 <View className='goods-prices'>
-                  {
-                    info.cur &&
-                      <Price
-                        unit='cent'
-                        symbol={info.cur.symbol}
-                        value={info.act_price}
-                      />
-                  }
-                  {
-                    info.cur &&
-                      <Price
-                        unit='cent'
-                        className='goods-prices__market'
-                        symbol={info.cur.symbol}
-                        value={info.price}
-                      />
-                  }
+                  <Price
+                    unit='cent'
+                    symbol={(info.cur && info.cur.symbol) || ''}
+                    value={info.act_price}
+                  />
+                  <Price
+                    unit='cent'
+                    className='goods-prices__market'
+                    symbol={(info.cur && info.cur.symbol) || ''}
+                    value={info.price}
+                  />
                   {
                     marketing === 'group' &&
                       <View className='goods-prices__ft'>

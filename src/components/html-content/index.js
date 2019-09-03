@@ -21,8 +21,9 @@ export default class HtmlContent extends Component {
   componentDidMount () {
     if (process.env.TARO_ENV === 'weapp') {
       const { content } = this.props
+      console.log(this.$scope)
       // console.log(content, 24)
-      wxParse.wxParse('content', 'html', content, this.$scope, )
+      wxParse.wxParse('article', 'html', content, this.$scope, 5)
     }
   }
 
@@ -33,7 +34,7 @@ export default class HtmlContent extends Component {
     return process.env.TARO_ENV === 'weapp'
       ? (<View className={classes}>
           <import src='../../components/wxParse/wxParse.wxml' />
-          <template is='wxParse' data='{{wxParseData:content.nodes}}' />
+          <template is='wxParse' data='{{wxParseData:article.nodes}}' />
         </View>)
       : (<View className={classes} dangerouslySetInnerHTML={{ __html: this.props.content }} />)
   }
