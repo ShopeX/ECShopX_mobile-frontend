@@ -1,5 +1,5 @@
 const canvasExp = {
-  textFill: (ctx, text, size, color, bold, align, valign, x, y) => {
+  textFill: (ctx, text, x, y, size, color, bold, align, valign) => {
     ctx.setFontSize(size)
     ctx.setFillStyle(color)
     if (align) ctx.setTextAlign(align)
@@ -23,25 +23,58 @@ const canvasExp = {
     }
 
     arr.map(item => {
-      const { text, size, color, bold, valign } = item
+      const { text, size, color, bold, lineThrough, valign } = item
       ctx.setFontSize(size)
       ctx.setFillStyle(color)
       if (align) ctx.setTextAlign(align)
       if (valign) ctx.setTextBaseline(valign)
       const width = ctx.measureText(text).width
+      const w = Math.ceil(width)
       if (align === 'center') {
-        _x += width/2
         ctx.fillText(text, _x, y)
+        if (bold) {
+          ctx.fillText(text, _x+0.5, y+0.5)
+        }
+        if (lineThrough) {
+          ctx.moveTo (_x, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
+          ctx.lineTo (_x + w, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
+          ctx.setLineWidth(1)
+          ctx.setStrokeStyle(color)
+          ctx.stroke()
+        }
+        _x += w/2 - 3
       } else if (align === 'right') {
-        _x -= width
         ctx.fillText(text, _x, y)
+        if (bold) {
+          ctx.fillText(text, _x+0.5, y+0.5)
+        }
+        if (lineThrough) {
+          ctx.moveTo (_x, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
+          ctx.lineTo (_x + w, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
+          ctx.setLineWidth(1)
+          ctx.setStrokeStyle(color)
+          ctx.stroke()
+        }
+        _x -= w + 3
       } else {
-        _x += width
         ctx.fillText(text, _x, y)
+        if (bold) {
+          ctx.fillText(text, _x+0.5, y+0.5)
+        }
+        if (lineThrough) {
+          ctx.moveTo (_x, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
+          ctx.lineTo (_x + w, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
+          ctx.setLineWidth(1)
+          ctx.setStrokeStyle(color)
+          ctx.stroke()
+        }
+        _x += w + 3
       }
     })
   },
-  textOverflowFill: (ctx, text, x, y, w) => {
+  textOverflowFill: (ctx, text, x, y, size, color) => {
+    ctx.setFontSize(size)
+    ctx.setFillStyle(color)
     let chr = text.split('')
     let temp = ''
     for (let a = 0; a < chr.length; a++) {
@@ -52,45 +85,56 @@ const canvasExp = {
         break
       }
     }
-    ctx.fillText(temp, x, y, w)
+    ctx.fillText(temp, x, y)
   },
-  textMultipleOverflowFill: (ctx, text, num, rows, x, y, w) => {
+  textMultipleOverflowFill: (ctx, text, num, rows, x, y, size, color) => {
+    ctx.setFontSize(size)
+    ctx.setFillStyle(color)
     let chr = text.split('')
     let temp = ''
     let row = []
     chr.map(item =>{
-      if(temp.length < num+1) {
+      if(temp.length <= num+1) {
         temp += item
       } else {
         row.push(temp)
         temp = ''
+        temp += item
       }
     })
     row.push(temp)
     let _y = y
     row.forEach((item, index) => {
-      _y = _y+20
-      if (index < rows-1) {
-        ctx.fillText(item, x, _y, w)
+      if (index < rows) {
+        ctx.fillText(item, x, _y)
       }
-      if (index === rows-1) {
-        this.textOverflowFill(ctx, item, x, _y, w)
+      if (index === rows) {
+        this.textOverflowFill(ctx, item, x, _y, size, color)
       }
+      _y = _y+24
     })
   },
   drawImageFill: (ctx, img, x, y, w, h) => {
     ctx.drawImage(img, x, y, w, h)
     ctx.save()
   },
-  imgCircleClip: (ctx, img, w, h, x, y) => {
+  circleClip: (ctx, x, y, w, h) => {
     ctx.beginPath()
     ctx.arc(w / 2 + x, h / 2 + y, w / 2, 0, Math.PI * 2, false)
     ctx.clip()
+    ctx.restore()
+  },
+  imgCircleClip: (ctx, img, x, y, w, h) => {
+    ctx.beginPath()
+    ctx.arc(w / 2 + x, h / 2 + y, w / 2, 0, Math.PI * 2, false)
+    ctx.clip()
+    ctx.drawImage(img, x, y, w, h)
+    ctx.restore()
   },
   roundRect: (ctx, color, x, y, w, h, r) => {
     ctx.beginPath()
     ctx.setFillStyle(color)
-    ctx.setStrokeStyle(color)
+    // ctx.setStrokeStyle(color)
     ctx.arc(x + r, y + r, r, Math.PI, Math.PI * 1.5)
 
     ctx.moveTo(x + r, y)
@@ -118,6 +162,4 @@ const canvasExp = {
   }
 }
 
-export default {
-  canvasExp
-}
+export default canvasExp

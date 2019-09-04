@@ -11,19 +11,11 @@ export default class SharePanel extends Component {
 
   static defaultProps = {
     info: null,
-    onClose: () => {}
+    onClose: () => {},
+    onClick: () => {}
   }
-
-  componentDidMount () {
-
-  }
-
-  handleDraw = () => {
-
-  }
-
   render () {
-    const { info, isOpen, onClose } = this.props
+    const { info, isOpen, onClose, onClick } = this.props
 
     return (
       <AtFloatLayout
@@ -34,11 +26,8 @@ export default class SharePanel extends Component {
         scrollY={false}
         >
         <View className="share-panel">
-          <View className="share-panel__item">
-            <View
-              className="icon-picture1"
-              onClick={this.handleDraw}
-            ></View>
+          <View className="share-panel__item" onClick={onClick}>
+            <View className="icon-picture1"></View>
             <View>分享到朋友圈</View>
           </View>
           <View className="share-panel__item">

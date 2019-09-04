@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image, Video, Navigator, Canvas } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtCountdown } from 'taro-ui'
+import { AtCountdown, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
@@ -56,7 +56,8 @@ export default class Detail extends Component {
       sessionFrom: '',
       posterImgs: null,
       poster: null,
-      positionStatus: false
+      positionStatus: false,
+      showPoster: false
     }
   }
 
@@ -119,11 +120,11 @@ export default class Detail extends Component {
   async fetch () {
     const { id } = this.$router.params
     const info = await api.item.detail(id)
-    // let promotion_package = null
-    // const { list } = await api.item.packageList({item_id: id})
-    // if (list.length) {
-    //   promotion_package = list.length
-    // }
+    let promotion_package = null
+    const { list } = await api.item.packageList({item_id: id})
+    if (list.length) {
+      promotion_package = list.length
+    }
     const { intro: desc, promotion_activity: promotion_activity } = info
     let marketing = 'normal'
     let timer = null
@@ -200,12 +201,12 @@ export default class Detail extends Component {
       specImgsDict,
       sixSpecImgsDict,
       promotion_activity,
-      // promotion_package,
+      promotion_package,
       itemParams,
       sessionFrom
     }, () => {
       this.fetchCartCount()
-      // this.downloadPosterImg()
+      this.downloadPosterImg()
     })
 
     log.debug('fetch: done', info)
@@ -346,109 +347,90 @@ export default class Detail extends Component {
     const { distributor_id } = Taro.getStorageSync('curStore')
     const pic = pics[0].replace('http:', 'https:')
 
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${distributor_id}&uid=${userId}`
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${distributor_id}&uid=${userId}`
     const avatarImg = await Taro.getImageInfo({src: avatar})
     const goodsImg = await Taro.getImageInfo({src: pic})
     const codeImg = await Taro.getImageInfo({src: wxappCode})
 
-    const posterImgs = {
-      avatar: avatarImg.path,
-      goods: goodsImg.path,
-      code: codeImg.path
-    }
+    if (avatarImg && goodsImg && codeImg) {
+      const posterImgs = {
+        avatar: avatarImg.path,
+        goods: goodsImg.path,
+        code: codeImg.path
+      }
 
-    this.setState({
-      posterImgs
-    })
-    // this.drawCanvas()
-    // setTimeout(() => {
-    //  // 将生成的canvas图片，转为真实图片
-    //   wx.canvasToTempFilePath({
-    //     x: 0,
-    //     y: 0,
-    //     canvasId: 'myCanvas',
-    //     success: function (res) {
-    //       let shareImg = res.tempFilePath;
-    //       that.poster.imgUrl = shareImg
-    //       that.$apply()
-    //     },
-    //     fail: function (res) {
-    //     }
-    //   })
-    // }, 500)
+      this.setState({
+        posterImgs
+      }, () => {
+        this.drawImage()
+      })
+    }
   }
 
   drawImage = () => {
     const { posterImgs } = this.state
-    if (!posterImgs) {
-      Taro.showToast({
-        title: '请登录后再收藏',
-        icon: 'none'
-      })
-    }
+    if (!posterImgs) return
+    const { avatar, goods, code } = posterImgs
     const { info } = this.state
-    const { pics, item_name, act_price = null, member_price = null, price } = info
-    const mainPrice = act_price ? act_price : member_price ? member_price : price
+    const { item_name, act_price = null, member_price = null, price, marketing_price } = info
+    let mainPrice = act_price ? act_price : member_price ? member_price : price
+    let sePrice = act_price ? price : member_price ? price : marketing_price
+    mainPrice = (mainPrice/100).toFixed(2)
+    sePrice = (sePrice/100).toFixed(2)
 
-    const { username, avatar, userId } = Taro.getStorageSync('userinfo')
+    const { username, userId } = Taro.getStorageSync('userinfo')
     const ctx = Taro.createCanvasContext('myCanvas')
 
-    canvasExp.roundRect(ctx, 0, 0, 300, 534)
-    canvasExp.drawImageFill(ctx, avatar, 15, 60, 270, 270)
+    canvasExp.roundRect(ctx, '#fff', 0, 0, 375, 640, 5)
+    canvasExp.textFill(ctx, username, 90, 45, 18, '#333')
+    canvasExp.textFill(ctx, '给你推荐好货好物', 90, 65, 14, '#999')
+    canvasExp.drawImageFill(ctx, goods, 15, 95, 345, 345)
+    canvasExp.imgCircleClip(ctx, avatar, 15, 15, 65, 65)
+    canvasExp.textMultipleOverflowFill(ctx, item_name, 20, 2, 15, 470, 18, '#333')
+    canvasExp.textSpliceFill(ctx, [{
+      text: '¥',
+      size: 16,
+      color: '#ff5000',
+      bold: false,
+      lineThrough: false,
+      valign: 'bottom'
+    },
+    {
+      text: mainPrice,
+      size: 24,
+      color: '#ff5000',
+      bold: true,
+      lineThrough: false,
+      valign: 'bottom'
+    },
+    {
+      text: sePrice,
+      size: 16,
+      color: '#999',
+      bold: false,
+      lineThrough: true,
+      valign: 'bottom'
+    }], 'left', 15, 600)
+    canvasExp.drawImageFill(ctx, code, 250, 500, 100, 100)
+    canvasExp.textFill(ctx, '保存并分享到朋友圈', 245, 620, 12, '#999')
+    if (act_price) {
+      canvasExp.roundRect(ctx, '#ff5000', 15, 540, 70, 25, 5)
+      canvasExp.textFill(ctx, '限时活动', 22, 559, 14, '#fff')
+    }
 
-
-    // ctx.drawImage('../images/share_bg.jpg', 0, 0, 300, 534);
-    // // ctx.drawImage('../images/logo.png', 11, 15, 89, 28);
-    // ctx.save()
-    // this.roundRect(ctx, 12, 57, 276, 365, 5);
-    // ctx.restore()
-    // ctx.drawImage(this.poster.goodsImg, 15, 60, 270, 270);
-    //
-    // ctx.setFontSize(15);
-    // ctx.setFillStyle('#333333');
-    // ctx.setTextAlign('center');
-    // ctx.setTextBaseline('middle');
-    // this.textOverflowFill(ctx, this.current.item_name, 150, 346, 227);
-    //
-    // ctx.drawImage('../images/vip_tag.png', 123, 364, 53, 16);
-    //
-    // let vipPrice = this.activityData.item.svip_pric e != 0 ? this.activityData.item.svip_price : this.activityData.item.vip_price
-    // let activityPrice = this.activityData.item.activity_price
-    // let mainPrice = vipPrice != 0 ? vipPrice : activityPrice
-    // ctx.setFontSize(18);
-    // ctx.setFillStyle('#928869');
-    // ctx.setTextAlign('right');
-    // ctx.setTextBaseline('bottom');
-    // ctx.fillText(mainPrice/100, 160, 410);
-    // let vipPriceWidth = ctx.measureText(`${mainPrice/100}`).width
-    // ctx.setFontSize(11);
-    // ctx.fillText('¥', 160-vipPriceWidth, 409);
-    // if (vipPrice != 0) {
-    //   ctx.setFontSize(10);
-    //   ctx.setFillStyle('#999999');
-    //   ctx.setTextAlign('left');
-    //   ctx.fillText(activityPrice/100, 161, 409);
-    // }
-    //
-    // ctx.setFontSize(10);
-    // ctx.setFillStyle('#333333');
-    // ctx.setTextAlign('left');
-    // ctx.setTextBaseline('middle');
-    // ctx.fillText(`小区团长: ${this.communityData.leader_name}`, 12, 440);
-    // ctx.fillText(`预计送达: ${this.activityData.delivery_date}`, 12, 460);
-    // this.textOverflowFill(ctx, `提货地址: ${this.communityData.address}`, 12, 480, 200);
-    //
-    // ctx.setFontSize(12);
-    // ctx.setFillStyle('#333333');
-    // ctx.setTextBaseline('middle');
-    // ctx.fillText('保存图片扫一扫，优惠拼团', 12, 505.5);
-    // ctx.fillText('保存图片扫一扫，优惠拼团', 11.5, 506);
-    //
-    // ctx.save()
-    // this.imgCircleClip(ctx, this.poster.qrcode, 80, 80, 208, 441);
-    // ctx.restore()
-    //
-    // ctx.draw();
+    ctx.draw(true, () => {
+      Taro.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        canvasId: 'myCanvas'
+      }).then(res => {
+        const shareImg = res.tempFilePath;
+        console.log(shareImg)
+        this.setState({
+          poster: shareImg
+        })
+      })
+    })
   }
 
   handleShare () {
@@ -470,6 +452,45 @@ export default class Detail extends Component {
     })
   }
 
+  handleSavePoster () {
+    const { poster } = this.state
+    Taro.getSetting().then(res => {
+      if (!res.authSetting['scope.writePhotosAlbum']) {
+        Taro.authorize({
+          scope: 'scope.writePhotosAlbum'
+        })
+        .then(res => {
+          this.savePoster(poster)
+        })
+        .catch(res => {
+          this.setState({
+            showPoster: false
+          })
+        })
+      } else {
+        this.savePoster(poster)
+      }
+    })
+  }
+
+  savePoster = (poster) => {
+    Taro.saveImageToPhotosAlbum({
+      filePath: poster
+    })
+    .then(res => {
+      Taro.showToast({
+        title: '保存成功',
+        icon: 'success'
+      })
+    })
+    .catch(res => {
+      Taro.showToast({
+        title: '保存失败',
+        icon: 'error'
+      })
+    })
+  }
+
   handleToGiftMiniProgram = () => {
     Taro.navigateToMiniProgram({
       appId: APP_GIFT_APPID, // 要跳转的小程序的appid
@@ -478,6 +499,18 @@ export default class Detail extends Component {
         // 打开成功
         console.log(res)
       }
+    })
+  }
+
+  handleShowPoster = () => {
+    this.setState({
+      showPoster: true
+    })
+  }
+
+  handleHidePoster = () => {
+    this.setState({
+      showPoster: false
     })
   }
 
@@ -507,7 +540,9 @@ export default class Detail extends Component {
       showBuyPanel,
       buyPanelType,
       showSharePanel,
-      positionStatus
+      positionStatus,
+      poster,
+      showPoster
     } = this.state
 
     const uid = this.uid
@@ -713,7 +748,7 @@ export default class Detail extends Component {
               : null
           }
 
-          {/*
+          {
             promotion_package &&
               <SpCell
                 className='goods-sec-specs'
@@ -722,7 +757,7 @@ export default class Detail extends Component {
                 onClick={this.handlePackageClick}
                 value={`共${promotion_package}种组合随意搭配`}
               />
-          */}
+          }
 
           {
             itemParams.length &&
@@ -890,7 +925,19 @@ export default class Detail extends Component {
             info={uid}
             isOpen={showSharePanel}
             onClose={() => this.setState({ showSharePanel: false })}
+            onClick={this.handleShowPoster.bind(this)}
           />
+        }
+
+        {
+          showPoster &&
+            <View className="poster-modal">
+              <Image className="poster" src={poster} mode="widthFix" />
+              <View className="view-flex view-flex-middle">
+                <View className="icon-close poster-close-btn" onClick={this.handleHidePoster.bind(this)}></View>
+                <View className="icon-download poster-save-btn" onClick={this.handleSavePoster.bind(this)}>保存至相册</View>
+              </View>
+            </View>
         }
 
         <Canvas className="canvas" canvas-id="myCanvas"></Canvas>
