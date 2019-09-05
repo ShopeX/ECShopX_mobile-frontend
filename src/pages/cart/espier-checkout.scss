@@ -295,6 +295,8 @@
     border-radius: 0;
     font-weight: bold;
     font-size: $font-size;
+    background: $color-brand-primary;
+    border-color: $color-brand-primary;
     &:before, &:after {
       border: none;
     }
