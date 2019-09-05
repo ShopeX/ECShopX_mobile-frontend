@@ -774,7 +774,7 @@ export default class Detail extends Component {
           }
 
           {
-            (store && positionStatus) &&
+            store &&
               <StoreInfo
                 info={store}
               />
