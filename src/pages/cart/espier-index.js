@@ -630,10 +630,6 @@ export default class CartIndex extends Component {
               ? <Loading>正在加载...</Loading>
               : null
           }
-          {
-            !page.isLoading && !page.hasNext && !likeList.length && showLikeList
-            && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-          }
         </ScrollView>
 
         <AtActionSheet
