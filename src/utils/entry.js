@@ -95,6 +95,8 @@ async function getLocal (isNeedLocate) {
             param.lng = locationData.longitude
           }
           store = await api.shop.getShop(param)
+        } else {
+          store = await api.shop.getShop()
         }
       } else {
         store = await api.shop.getShop()

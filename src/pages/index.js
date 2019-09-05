@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy,classNames } from '@/utils'
+import { pickBy, classNames, isArray } from '@/utils'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
@@ -83,14 +83,20 @@ export default class HomeIndex extends Component {
     const res = await entry.entryLaunch(options, true)
 
     const { store } = res
-    if (store) {
+    if (!isArray(store)) {
       this.setState({
         curStore: store,
         positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
       }, () => {
         this.fetchInfo()
       })
-		}
+		} else {
+      this.setState({
+        positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
+      }, () => {
+        this.fetchInfo()
+      })
+    }
 		this.fetchCartcount()
   }
 
@@ -249,7 +255,7 @@ export default class HomeIndex extends Component {
             />
         }
 				<ScrollView
-          className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !show_location&&'wgts-wrap-nolocation')}
+          className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , (!curStore || !show_location) && 'wgts-wrap-nolocation')}
           scrollTop={scrollTop}
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
