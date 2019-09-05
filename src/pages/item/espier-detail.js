@@ -120,11 +120,11 @@ export default class Detail extends Component {
   async fetch () {
     const { id } = this.$router.params
     const info = await api.item.detail(id)
-    // let promotion_package = null
-    // const { list } = await api.item.packageList({item_id: id})
-    // if (list.length) {
-    //   promotion_package = list.length
-    // }
+    let promotion_package = null
+    const { list } = await api.item.packageList({item_id: id})
+    if (list.length) {
+      promotion_package = list.length
+    }
     const { intro: desc, promotion_activity: promotion_activity } = info
     let marketing = 'normal'
     let timer = null
@@ -201,7 +201,7 @@ export default class Detail extends Component {
       specImgsDict,
       sixSpecImgsDict,
       promotion_activity,
-      // promotion_package,
+      promotion_package,
       itemParams,
       sessionFrom
     }, () => {
@@ -741,7 +741,7 @@ export default class Detail extends Component {
               : null
           }
 
-          {/*
+          {
             promotion_package &&
               <SpCell
                 className='goods-sec-specs'
@@ -750,7 +750,7 @@ export default class Detail extends Component {
                 onClick={this.handlePackageClick}
                 value={`共${promotion_package}种组合随意搭配`}
               />
-          */}
+          }
 
           {
             itemParams.length &&
