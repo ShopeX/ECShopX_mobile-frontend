@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 10,
+			"current": 11,
 			"list": [
 				{
 					"id": 0,
@@ -105,6 +105,14 @@
 					"id": -1,
 					"name": "pages/recommend/list",
 					"pathName": "pages/recommend/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/item/espier-detail",
+					"pathName": "pages/item/espier-detail",
+					"query": "id=118",
 					"scene": null
 				}
 			]

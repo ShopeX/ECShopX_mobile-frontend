@@ -30,15 +30,10 @@ async function entryLaunch(data, isNeedLocate) {
     dtidValid = store.status ? false : true
   }
 
-  console.log('是否需要定位', dtidValid)
-
   // 如果需要定位,并且店铺无效，
   if (!dtidValid) {
-    console.log('进行定位处理')
     store = await getLocal(isNeedLocate)
   }
-
-  console.log('定位或返回值', store)
 
   if (!store.status) {
     options.store = store
@@ -54,7 +49,6 @@ async function entryLaunch(data, isNeedLocate) {
     Taro.setStorageSync('trackParams', {source_id: options.s, monitor_id: options.m})
     trackViewNum(options.m, options.s)
   }
-  console.log('接收出来后参数', options)
   return options
 }
 
@@ -142,7 +136,6 @@ function trackViewNum (monitor_id, source_id) {
 // distributorId 店铺ID
 async function handleDistributorId(distributorId) {
   const res = await api.shop.getShop({distributor_id: distributorId})
-  console.log(res)
   if (res.status === false) {
     Taro.setStorageSync('curStore', res)
   } else {

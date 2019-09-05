@@ -263,6 +263,12 @@ export default class Reg extends Component {
     })
   }
 
+  handleBackHome = () => {
+    Taro.redirectTo({
+      url: '/pages/index'
+    })
+  }
+
   render () {
     const { info, isVisible, isHasValue, list, imgVisible, imgInfo } = this.state
     return (
@@ -408,10 +414,10 @@ export default class Reg extends Component {
           <View className='btns'>
             {
               process.env.TARO_ENV === 'weapp'
-                ? (<View className=''>
+                ? <View>
                     <AtButton type='primary' formType='submit'>同意协议并注册</AtButton>
                     <AtButton type='default' onClick={this.handleBackHome.bind(this)}>我再想想</AtButton>
-                    </View>)
+                  </View>
                 : <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>同意协议并注册</AtButton>
             }
             <View className='accountAgreement'>

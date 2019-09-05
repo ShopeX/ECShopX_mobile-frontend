@@ -57,6 +57,7 @@
     height: $toolbar-height;
   }
   &__btn {
+    width: 250px;
     background: $color-brand-primary;
     font-size: $font-size;
     flex: 1;
@@ -68,12 +69,18 @@
     border-radius: 0;
     font-weight: bold;
     white-space: nowrap;
+    &.drug-btn {
+      width: 500px;
+    }
+    &.marketing-btn {
+      width: 500px;
+    }
     &:before, &:after {
       display: none;
     }
   }
   .btn-add-cart {
-    background: $color-brand-accent;
+    background: #131313;
   }
   .btn-fast-buy {
     margin-left: -1px;

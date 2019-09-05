@@ -78,7 +78,7 @@ export default class DistributionTrade extends Component {
   }
 
   render () {
-    const { list, page, tabList, curFilterIdx, scrollTop } = this.state
+    const { list, page, tabList, curFilterIdx, scrollTop, curTabIdx } = this.state
 
     return (
       <View className="page-distribution-trade">

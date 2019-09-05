@@ -115,17 +115,20 @@ export default class SeckillGoodsList extends Component {
             status === 'it_has_ended'
               ? <View className='seckill-goods__timer'><Text>活动已结束</Text></View>
     					: <View className='seckill-goods__timer'>
-      						<View>
-      							<AtCountdown
-      							  isShowDay
-      								day={timer.dd}
-        							hours={timer.hh}
-      								minutes={timer.mm}
-      								seconds={timer.ss}
-      							/>
-                    {status === 'in_the_notice' && <Text>后开始</Text>}
-      							{status === 'in_sale' && <Text>后结束</Text>}
-      						</View>
+                  {
+                    timer &&
+                      <View>
+          							<AtCountdown
+          							  isShowDay
+          								day={timer.dd}
+            							hours={timer.hh}
+          								minutes={timer.mm}
+          								seconds={timer.ss}
+          							/>
+                        {status === 'in_the_notice' && <Text>后开始</Text>}
+          							{status === 'in_sale' && <Text>后结束</Text>}
+          						</View>
+                  }
                 </View>
           }
           <View className='seckill-goods__list'>

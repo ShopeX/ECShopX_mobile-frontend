@@ -14,7 +14,8 @@ import './goods.scss'
   onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
   onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
   onAddFav: ({ item_id }) => dispatch({ type: 'member/addFav', payload: { item_id } }),
-  onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
+	onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } }),
+	onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
 }))
 export default class WgtGoods extends Component {
   static options = {
@@ -146,13 +147,22 @@ export default class WgtGoods extends Component {
         Taro.showToast({
           title: '成功加入购物车',
           icon: 'success'
-        })
+				})
+				this.fetchCartcount()
       } catch (error) {
         console.log(error)
       }
     }
 
   }
+	async fetchCartcount() {
+    try {
+      const { item_count } = await api.cart.count({shop_type: 'distributor'})
+      this.props.onUpdateCartCount(item_count)
+    } catch (e) {
+      console.error(e)
+    }
+	}
 
   render () {
     const { info } = this.props

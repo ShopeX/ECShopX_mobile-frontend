@@ -48,6 +48,10 @@ export default class PaymentPicker extends Component {
     })
   }
 
+  handleChange = (type) => {
+    this.props.onChange(type)
+  }
+
   render () {
     const { isOpened, loading, disabledPayment } = this.props
     const { localType } = this.state
@@ -100,7 +104,7 @@ export default class PaymentPicker extends Component {
             <AtButton
               type='primary'
               loading={loading}
-              onClick={this.props.onChange.bind(this, localType)}
+              onClick={this.handleChange.bind(this, localType)}
             >确定</AtButton>
           </View>
         </View>

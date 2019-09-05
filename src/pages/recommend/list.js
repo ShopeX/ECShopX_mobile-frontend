@@ -170,6 +170,7 @@ export default class RecommendList extends Component {
 
   handleConfirm = (val) => {
     this.setState({
+      showDrawer: false,
       query: {
         showDrawer: false,
         ...this.state.query,

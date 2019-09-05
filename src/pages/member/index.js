@@ -207,15 +207,15 @@ export default class MemberIndex extends Component {
               <Image className="avatar-img" src={info.avatar} mode="aspectFill"/>
               {
                 (vipgrade.vip_type === 'vip' || vipgrade.vip_type === 'svip')
-                && <Image className="icon-vip" src="/assets/imgs/svip.png" /> 
+                && <Image className="icon-vip" src="/assets/imgs/svip.png" />
               }
             </View>
             <View>
-              <View className="nickname">Hi, {info.username} {  <Text className="icon-qrcode"></Text> }</View>
+              <View className="nickname">Hi, {info.username} {/*  <Text className="icon-qrcode"></Text> */}</View>
               {
                 !vipgrade.is_vip
                 ? <View className="gradename">{gradeInfo.grade_name}</View>
-                : <View className="gradename">{vipgrade.grade_name}</View> 
+                : <View className="gradename">{vipgrade.grade_name}</View>
               }
             </View>
             { <View className="icon-arrowRight"></View> }
@@ -317,7 +317,7 @@ export default class MemberIndex extends Component {
             <View className="view-flex-item view-flex view-flex-vertical view-flex-middle" onClick={this.toPay.bind(this)}>
               <Image className="icon-img" src="/assets/imgs/buy.png" mode="aspectFit" />
               <View>买单</View>
-            </View> 
+            </View>
             <Navigator className="view-flex-item view-flex view-flex-vertical view-flex-middle" url="/pages/member/coupon">
               <Image className="icon-img" src="/assets/imgs/coupons.png" mode="aspectFit" />
               <View>优惠券</View>

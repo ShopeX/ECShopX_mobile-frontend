@@ -56,14 +56,14 @@ export default class VipIndex extends Component {
       curTabIdx: idx
     })
 	}
-	
+
 	checkHandle = ( index ) =>{
 		this.setState({
 			curCellIdx:index
 		})
 	}
 
-	async handleCharge () {		
+	async handleCharge () {
 
 		if (!S.getAuthToken()) {
       Taro.showToast({
@@ -77,21 +77,21 @@ export default class VipIndex extends Component {
 
       return
 		}
-		
+
 		const {list,curTabIdx,curCellIdx} = this.state
 		const vip_grade = list[curTabIdx]
 		const params = {
 			vip_grade_id: vip_grade.vip_grade_id,
 			card_type: vip_grade.price_list[curCellIdx].name,
 			distributor_id: Taro.getStorageSync('trackIdentity').distributor_id || ''
-		}		
+		}
 
 		Taro.showLoading({ mask: true })
 
 		const data = await api.vip.charge(params)
-		
+
 		Taro.hideLoading()
-		
+
 		var config = data
 		var that = this
 		wx.requestPayment({
@@ -120,7 +120,7 @@ export default class VipIndex extends Component {
 			}
 		})
 	}
-	
+
 	async fetchUserVipInfo() {
 		const userVipInfo = await api.vip.getUserVipInfo()
 		this.setState({
@@ -129,14 +129,14 @@ export default class VipIndex extends Component {
 	}
 
 	render () {
-		const { userInfo,list,cur,curTabIdx,userVipInfo} = this.state
+		const { userInfo, list, cur, curTabIdx, userVipInfo, tabList } = this.state
 		return (
 			<View>
 				<View className='header'>
 					<View className='header-isauth'>
 						<Image className='header-isauth__avatar' src={userInfo.avatar} mode='aspectFill'/>
 						<View className='header-isauth__info'>
-							<View className='nickname'>{userInfo.username} 
+							<View className='nickname'>{userInfo.username}
 								<Image  className='icon-vip' src='/assets/imgs/svip.png' />
 							</View>
 							<View className='mcode'>{userVipInfo.end_time} 到期，购买后有效期将延续</View>

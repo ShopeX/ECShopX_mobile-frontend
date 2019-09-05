@@ -39,7 +39,7 @@ export default class Category extends Component {
     const query = {template_name: 'yykweishop', version: 'v1.0.1', page_name: 'category'}
     const { list } = await api.category.getCategory(query)
     let seriesList = list[0] ? list[0].params.data : []
-    // if (seriesList.length) {
+    if (!seriesList.length) {
       const res = await api.category.get()
       const nList = pickBy(res, {
         name: 'category_name',
@@ -56,30 +56,30 @@ export default class Category extends Component {
         list: nList,
         hasSeries: false
       })
-    // } else {
-    //   let tabList = []
-    //   let contentList = []
-    //   if (list[0].params.hasSeries) {
-    //     seriesList.map(item => {
-    //       tabList.push({ title: item.title, status: item.name })
-    //       contentList.push(item.content)
-    //     })
-    //   } else {
-    //     contentList.push(seriesList)
-    //   }
-    //   const curIndexList = contentList[this.state.curTabIdx]
-    //   const nList = pickBy(curIndexList, {
-    //     name: 'name',
-    //     img: 'img',
-    //     children: 'children'
-    //   })
-    //   this.setState({
-    //     tabList,
-    //     contentList,
-    //     hasSeries: true,
-    //     list: nList,
-    //   })
-    // }
+    } else {
+      let tabList = []
+      let contentList = []
+      if (list[0].params.hasSeries) {
+        seriesList.map(item => {
+          tabList.push({ title: item.title, status: item.name })
+          contentList.push(item.content)
+        })
+      } else {
+        contentList.push(seriesList)
+      }
+      const curIndexList = contentList[this.state.curTabIdx]
+      const nList = pickBy(curIndexList, {
+        name: 'name',
+        img: 'img',
+        children: 'children'
+      })
+      this.setState({
+        tabList,
+        contentList,
+        hasSeries: true,
+        list: nList,
+      })
+    }
   }
 
   handleClickTab = (idx) => {

@@ -641,7 +641,7 @@ export default class CartCheckout extends Component {
 
   render () {
     const { coupon } = this.props
-    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend } = this.state
+    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug } = this.state
     const { type } = this.$router.params
     const isDrug = type === 'drug'
 

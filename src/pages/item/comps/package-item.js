@@ -5,9 +5,14 @@ import { GoodsItem, SpCheckbox, GoodsBuyPanel } from '@/components'
 import { classNames, formatTime, pickBy } from '@/utils'
 import S from '@/spx'
 import api from '@/api'
+import { connect } from '@tarojs/redux'
 
 import './package-item.scss';
-
+@connect(({ cart }) => ({
+  cart,
+}), (dispatch) => ({
+	onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
+}))
 export default class PackageItem extends Component {
   static options = {
     addGlobalClass: true
@@ -169,15 +174,27 @@ export default class PackageItem extends Component {
       activity_id: packageId,
       activity_type: 'package',
       distributor_id
-    }
-    const res = await api.cart.add(query)
+		}
+		const res = await api.cart.add(query)
+		
     if (res) {
       Taro.showToast({
         title: '成功加入购物车',
         icon: 'success'
-      })
+			})
+			this.fetchCartcount()
     }
   }
+	
+	async fetchCartcount() {
+    try {
+      const { item_count } = await api.cart.count({shop_type: 'distributor'})
+      this.props.onUpdateCartCount(item_count)
+    } catch (e) {
+      console.error(e)
+    }
+	}
+
 
   countPackageTotal () {
     const { selection, packagePrices, mainItem } = this.state

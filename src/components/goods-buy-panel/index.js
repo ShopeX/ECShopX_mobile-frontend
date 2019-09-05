@@ -231,7 +231,7 @@ export default class GoodsBuyPanel extends Component {
 				})
       } catch (e) {
         console.log(e)
-      } 
+      }
 
       this.setState({
         busy: false
@@ -289,7 +289,7 @@ export default class GoodsBuyPanel extends Component {
 
   render () {
     const { info, type, fastBuyText } = this.props
-		const { curImg, quantity, selection, isActive, busy, curSku } = this.state
+		const { curImg, quantity, selection, isActive, busy, curSku, marketing } = this.state
     if (!info) {
       return null
     }
