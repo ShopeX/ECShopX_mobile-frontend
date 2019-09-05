@@ -485,7 +485,7 @@ export default class CartCheckout extends Component {
       submitLoading: true
     })
 
-    let order_id, orderInfo
+    let order_id, config, payErr
     try {
       let params = this.getParams()
       delete params.items
@@ -494,14 +494,14 @@ export default class CartCheckout extends Component {
         delete params.invoice_type
         delete params.invoice_content
       }
-      orderInfo = await api.trade.create(params)
-      order_id = isDrug ? orderInfo.order_id : orderInfo.trade_info.order_id
+      config = await api.trade.create(params)
+      order_id = isDrug ? config.order_id : config.trade_info.order_id
     } catch (e) {
       Taro.showToast({
         title: e.message,
         icon: 'none'
       })
-
+      payErr = e
       this.resolvePayError(e)
 
       // dhpoint 判断
@@ -525,16 +525,7 @@ export default class CartCheckout extends Component {
     const paymentParams = {
       order_id,
       pay_type: this.state.payType,
-      order_type: orderInfo.order_type
-    }
-
-    let config, payErr
-    try {
-      config = await api.cashier.getPayment(paymentParams)
-      console.log(config, 449)
-    } catch (e) {
-      payErr = e
-      console.log(e)
+      order_type: config.order_type
     }
 
     this.setState({

@@ -201,7 +201,7 @@ export default class Detail extends Component {
       specImgsDict,
       sixSpecImgsDict,
       promotion_activity,
-      promotion_package,
+      // promotion_package,
       itemParams,
       sessionFrom
     }, () => {
@@ -521,7 +521,7 @@ export default class Detail extends Component {
       curSku,
       vip,
       promotion_activity,
-      // promotion_package,
+      promotion_package,
       itemParams,
       sessionFrom,
       currentImgs,
