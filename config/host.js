@@ -5,7 +5,7 @@ module.exports = {
     test: 'ecshopx.shopex123.com/index.php'
   },
   weapp: {
-    prod: 'b.xiaokanglongjiang.com',
+    prod: 'ecshopx.shopex123.com/index.php',
     preissue: 'ecshopx.shopex123.com/index.php',
     test: 'ecshopx.shopex123.com/index.php'
   }
