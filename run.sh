@@ -3,7 +3,7 @@
 version=$(git describe --tags `git rev-list --tags --max-count=1`)
 appid="wx4721629519a8f25b"
 baseUrl="preissue-b.yuanyuanke.cn"
-desc="新版微商城命令行提交测试，不要加到模板中"
+desc="新版微商城"
 
 # 需要被替换的小程序appid，在./src/ext.json和 ./project.config.json
 oldAppid="wx912913df9fef6ddd"
