@@ -6,7 +6,6 @@
       @include clearfix();
       .goods-item {
         width: 48%;
-        height: 520px;
         float: left;
         overflow: hidden;
         margin-left: 1%;
@@ -33,11 +32,10 @@
           padding-right: floor($edge-size / 2);
         }
         &__bd {
-          flex-direction: column;
-          flex: 1;
+          display: block;
         }
         &__cont {
-          height: 210px;
+          height: 250px;
         }
       }
     }

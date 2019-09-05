@@ -401,7 +401,6 @@ export default class TradeDetail extends Component {
         }
         {
           info.status === 'WAIT_BUYER_CONFIRM_GOODS' && <View className='trade-detail__footer'>
-            /* <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'contact')}>联系客服</Text> */
             <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'confirm')}>确认收货</Text>
           </View>
         }
