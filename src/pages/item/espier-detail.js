@@ -117,7 +117,7 @@ export default class Detail extends Component {
     }
   }
 
-  async fetch () {
+  async fetch (itemId) {
     let id = ''
     if (itemId) {
       id = itemId
