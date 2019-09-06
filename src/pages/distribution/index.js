@@ -140,11 +140,11 @@ export default class DistributionDashboard extends Component {
             <View className="list-item-txt">我的二维码</View>
             <View className="icon-arrowRight item-icon-go"></View>
           </Navigator>
-          <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/shop">
+          {/*<Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/shop">
             <View className="item-icon icon-shop"></View>
             <View className="list-item-txt">我的小店</View>
             <View className="icon-arrowRight item-icon-go"></View>
-          </Navigator>
+          </Navigator>*/}
           <Button className="share-btn list-item" open-type="share">
             <View className="item-icon icon-share1"></View>
             <View className="list-item-txt">分享给好友</View>

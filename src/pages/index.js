@@ -46,7 +46,7 @@ export default class HomeIndex extends Component {
 
   componentDidShow = () => {
     const curStore = Taro.getStorageSync('curStore')
-    if (curStore) {
+    if (!isArray(curStore)) {
       this.setState({
         curStore
       })
@@ -285,7 +285,7 @@ export default class HomeIndex extends Component {
 
         {
           <FloatMenus>
-            {
+            {/*
               (isPromoter || distributionShopId) &&
               <Image
                 className='distribution-shop'
@@ -293,7 +293,7 @@ export default class HomeIndex extends Component {
                 mode='widthFix'
                 onClick={this.handleClickShop}
               />
-            }
+            */}
             {
               automatic.isOpen && !S.getAuthToken() &&
                 <FloatMenuItem

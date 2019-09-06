@@ -362,22 +362,14 @@ export default class Detail extends Component {
     if (!posterImgs) return
     const { avatar, goods, code } = posterImgs
     const { info } = this.state
-    const { item_name, act_price = null, member_price = null, price, marketing_price } = info
+    const { item_name, act_price = null, member_price = null, price, market_price } = info
     let mainPrice = act_price ? act_price : member_price ? member_price : price
-    let sePrice = act_price ? price : member_price ? price : marketing_price
+    let sePrice = market_price
     mainPrice = (mainPrice/100).toFixed(2)
-    sePrice = (sePrice/100).toFixed(2)
-
-    const { username, userId } = Taro.getStorageSync('userinfo')
-    const ctx = Taro.createCanvasContext('myCanvas')
-
-    canvasExp.roundRect(ctx, '#fff', 0, 0, 375, 640, 5)
-    canvasExp.textFill(ctx, username, 90, 45, 18, '#333')
-    canvasExp.textFill(ctx, '给你推荐好货好物', 90, 65, 14, '#999')
-    canvasExp.drawImageFill(ctx, goods, 15, 95, 345, 345)
-    canvasExp.imgCircleClip(ctx, avatar, 15, 15, 65, 65)
-    canvasExp.textMultipleOverflowFill(ctx, item_name, 20, 2, 15, 470, 18, '#333')
-    canvasExp.textSpliceFill(ctx, [{
+    if (sePrice) {
+      sePrice = (sePrice/100).toFixed(2)
+    }
+    let prices = [{
       text: '¥',
       size: 16,
       color: '#ff5000',
@@ -392,15 +384,28 @@ export default class Detail extends Component {
       bold: true,
       lineThrough: false,
       valign: 'bottom'
-    },
-    {
-      text: sePrice,
-      size: 16,
-      color: '#999',
-      bold: false,
-      lineThrough: true,
-      valign: 'bottom'
-    }], 'left', 15, 600)
+    }]
+    if (sePrice) {
+      prices.push({
+        text: sePrice,
+        size: 16,
+        color: '#999',
+        bold: false,
+        lineThrough: true,
+        valign: 'bottom'
+      })
+    }
+
+    const { username, userId } = Taro.getStorageSync('userinfo')
+    const ctx = Taro.createCanvasContext('myCanvas')
+
+    canvasExp.roundRect(ctx, '#fff', 0, 0, 375, 640, 5)
+    canvasExp.textFill(ctx, username, 90, 45, 18, '#333')
+    canvasExp.textFill(ctx, '给你推荐好货好物', 90, 65, 14, '#999')
+    canvasExp.drawImageFill(ctx, goods, 15, 95, 345, 345)
+    canvasExp.imgCircleClip(ctx, avatar, 15, 15, 65, 65)
+    canvasExp.textMultipleOverflowFill(ctx, item_name, 20, 2, 15, 470, 18, '#333')
+    canvasExp.textSpliceFill(ctx, prices, 'left', 15, 600)
     canvasExp.drawImageFill(ctx, code, 250, 500, 100, 100)
     canvasExp.textFill(ctx, '保存并分享到朋友圈', 245, 620, 12, '#999')
     if (act_price) {
@@ -423,7 +428,7 @@ export default class Detail extends Component {
     })
   }
 
-  handleShare () {
+  handleShare = async () => {
     if (!S.getAuthToken()) {
       S.toast('请先登录再分享')
 
@@ -433,7 +438,14 @@ export default class Detail extends Component {
 
       return
     }
-
+    const res = await api.member.memberInfo()
+    const userObj = {
+      username: res.memberInfo.username,
+      avatar: res.memberInfo.avatar,
+      userId: res.memberInfo.user_id,
+      isPromoter: res.is_promoter
+    }
+    Taro.setStorageSync('userinfo', userObj)
     this.setState({
       showSharePanel: true
     })
@@ -491,8 +503,6 @@ export default class Detail extends Component {
         this.setState({
           showPoster: true
         })
-      } else {
-        S.toast('海报生成失败，请稍后再试')
       }
     } else {
       this.setState({
@@ -773,12 +783,12 @@ export default class Detail extends Component {
               />
           }
 
-          {
+          {/*
             store &&
               <StoreInfo
                 info={store}
               />
-          }
+          */}
 
           {
             isArray(desc)

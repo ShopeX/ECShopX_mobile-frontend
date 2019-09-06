@@ -415,10 +415,14 @@ export default class CartIndex extends Component {
                     className='cart-list__shop'
                     key={shopIndex}
 									>
-										<View className='shop__name'>
-                      <Text className='icon-shop'></Text>
-                      {shopCart.shopInfo.shop_name}
-                    </View>
+                    {
+                      shopCart.shopInfo.shop_name
+  										? <View className='shop__name'>
+                          <Text className='icon-shop'></Text>
+                          {shopCart.shopInfo.shop_name}
+                        </View>
+                      : null
+                    }
 										<View className='shop__wrap'>
 											{
 												shopCart.group.map(activityGroup => {

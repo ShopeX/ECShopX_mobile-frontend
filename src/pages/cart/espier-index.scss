@@ -105,7 +105,17 @@
 			margin:0;
 		}
     &__activity {
-      margin: 0 0 8px;
+      position: relative;
+      padding: $edge-margin $edge-size;
+      &::after {
+        position: absolute;
+        left: $edge-size;
+        right: $edge-size;
+        height: 1PX;
+        bottom: 0;
+        background: #f5f5f5;
+        content: "";
+      }
       &-label {
         background: $color-brand-primary;
         color: #fff;
