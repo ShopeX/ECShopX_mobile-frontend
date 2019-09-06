@@ -285,15 +285,15 @@ export default class HomeIndex extends Component {
 
         {
           <FloatMenus>
-            {/*
-              (isPromoter || distributionShopId) &&
+            {
+              (isPromoter || !!distributionShopId) &&
               <Image
                 className='distribution-shop'
                 src='/assets/imgs/gift_mini.png'
                 mode='widthFix'
                 onClick={this.handleClickShop}
               />
-            */}
+            }
             {
               automatic.isOpen && !S.getAuthToken() &&
                 <FloatMenuItem
