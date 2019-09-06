@@ -42,9 +42,9 @@ npm run build:weapp
 
 echo "【SUCCESS】编译完成"
 
-echo "【SUCCESS】准备上传小程序"
-echo "/Applications/wechatwebdevtools.app/Contents/MacOS/cli -u ${version}@`pwd`/dist --upload-desc '${desc}'"
-/Applications/wechatwebdevtools.app/Contents/MacOS/cli -u ${version}@`pwd`/dist --upload-desc "${desc}"
+#echo "【SUCCESS】准备上传小程序"
+#echo "/Applications/wechatwebdevtools.app/Contents/MacOS/cli -u ${version}@`pwd`/dist --upload-desc '${desc}'"
+#/Applications/wechatwebdevtools.app/Contents/MacOS/cli -u ${version}@`pwd`/dist --upload-desc "${desc}"
 
 git checkout .
 
