@@ -242,7 +242,7 @@ export default class GoodsBuyPanel extends Component {
 
 
     if (type === 'fastbuy') {
-      url += '?cart_type=fastbuy'
+      url += `?cart_type=fastbuy&shop_id=${distributor_id}`
       if (marketing === 'group') {
         const { groups_activity_id } = info.group_activity
         url += `&type=${marketing}&group_id=${groups_activity_id}`
