@@ -130,11 +130,11 @@ export default class Detail extends Component {
       id = this.$router.params.id
     }
     const info = await api.item.detail(id)
-    // let promotion_package = null
-    // const { list } = await api.item.packageList({item_id: id})
-    // if (list.length) {
-    //   promotion_package = list.length
-    // }
+    let promotion_package = null
+    const { list } = await api.item.packageList({item_id: id})
+    if (list.length) {
+      promotion_package = list.length
+    }
     const { intro: desc, promotion_activity: promotion_activity } = info
     let marketing = 'normal'
     let timer = null
@@ -211,7 +211,7 @@ export default class Detail extends Component {
       specImgsDict,
       sixSpecImgsDict,
       promotion_activity,
-      // promotion_package,
+      promotion_package,
       itemParams,
       sessionFrom
     }, () => {
@@ -494,16 +494,16 @@ export default class Detail extends Component {
     })
   }
 
-  handleToGiftMiniProgram = () => {
-    Taro.navigateToMiniProgram({
-      appId: APP_GIFT_APPID, // 要跳转的小程序的appid
-      path: '/pages/index/index', // 跳转的目标页面
-      success(res) {
-        // 打开成功
-        console.log(res)
-      }
-    })
-  }
+  // handleToGiftMiniProgram = () => {
+  //   Taro.navigateToMiniProgram({
+  //     appId: APP_GIFT_APPID, // 要跳转的小程序的appid
+  //     path: '/pages/index/index', // 跳转的目标页面
+  //     success(res) {
+  //       // 打开成功
+  //       console.log(res)
+  //     }
+  //   })
+  // }
 
   handleShowPoster = async () => {
     const { posterImgs } = this.state
@@ -524,6 +524,12 @@ export default class Detail extends Component {
   handleHidePoster = () => {
     this.setState({
       showPoster: false
+    })
+  }
+
+  handleBackHome = () => {
+    Taro.redirectTo({
+      url: '/pages/index'
     })
   }
 
@@ -674,10 +680,6 @@ export default class Detail extends Component {
             <View className='goods-title__wrap'>
               <Text className='goods-title'>{info.item_name}</Text>
               <Text className='goods-title__desc'>{info.brief}</Text>
-              {/*<View className='goods-fav'>
-                <View className='at-icon at-icon-star'></View>
-                <Text className='goods-fav__text'>收藏</Text>
-              </View>*/}
             </View>
 
             {marketing === 'normal' && (
@@ -761,7 +763,7 @@ export default class Detail extends Component {
               : null
           }
 
-          {/*
+          {
             promotion_package &&
               <SpCell
                 className='goods-sec-specs'
@@ -770,7 +772,7 @@ export default class Detail extends Component {
                 onClick={this.handlePackageClick}
                 value={`共${promotion_package}种组合随意搭配`}
               />
-          */}
+          }
 
           {
             itemParams.length &&
@@ -793,12 +795,12 @@ export default class Detail extends Component {
               />
           }
 
-          {/*
+          {
             store &&
               <StoreInfo
                 info={store}
               />
-          */}
+          }
 
           {
             isArray(desc)
@@ -822,70 +824,28 @@ export default class Detail extends Component {
                 content={desc}
               />
           }
-
-          {/*<View className='goods-sec-tabs'>
-            <View className='sec-tabs'>
-              {detailTabs.map((tab, idx) => {
-                return (
-                  <View
-                    key={tab.title}
-                    className={`sec-tab__item ${idx === curTabIdx ? 'is-active' : ''}`}
-                    onClick={this.handleTabClick.bind(this, idx)}
-                  >{tab.title}</View>
-                )
-              })}
-            </View>
-
-            <View className={`goods-sec-detail sec-tab__panel ${curTabIdx === 0 ? 'is-show' : ''}`}>
-              <SpHtmlContent
-                className='goods-detail__content'
-                content={desc}
-              />
-            </View>
-
-            <View className={`goods-sec-props sec-tab__panel ${curTabIdx === 1 ? 'is-show' : ''}`}>
-              <View className='goods-props__wrap'>
-                <View className='prop-item'>
-                  <Text className='prop-item__label'>品牌：</Text>
-                  <Text className='prop-item__cont'>{info.goods_brand || '--'}</Text>
-                </View>
-                <View className='prop-item'>
-                  <Text className='prop-item__label'>颜色：</Text>
-                  <Text className='prop-item__cont'>{info.goods_color || '--'}</Text>
-                </View>
-                <View className='prop-item'>
-                  <Text className='prop-item__label'>功能：</Text>
-                  <Text className='prop-item__cont'>{info.goods_function || '--'}</Text>
-                </View>
-                <View className='prop-item'>
-                  <Text className='prop-item__label'>材质：</Text>
-                  <Text className='prop-item__cont'>{info.goods_series || '--'}</Text>
-                </View>
-              </View>
-            </View>
-          </View>*/}
         </ScrollView>
 
-        {/* <FloatMenuItem
-          iconPrefixClass='in-icon'
-          icon='float-gift'
-          onClick={this.handleToGiftMiniProgram.bind(this)}
-        /> */}
         <FloatMenus>
           <FloatMenuItem
-            iconPrefixClass='in-icon'
-            icon='fenxiang1'
+            iconPrefixClass='icon'
+            icon='home1'
+            onClick={this.handleBackHome.bind(this)}
+          />
+          <FloatMenuItem
+            iconPrefixClass='icon'
+            icon='share'
             onClick={this.handleShare.bind(this)}
           />
           <FloatMenuItem
-            iconPrefixClass='in-icon'
-            icon='kefu'
+            iconPrefixClass='icon'
+            icon='headphones'
             openType='contact'
             sessionFrom={sessionFrom}
           />
           <FloatMenuItem
-            iconPrefixClass='in-icon'
-            icon='back-top'
+            iconPrefixClass='icon'
+            icon='arrow-up'
             hide={!showBackToTop}
             onClick={this.scrollBackToTop}
           />

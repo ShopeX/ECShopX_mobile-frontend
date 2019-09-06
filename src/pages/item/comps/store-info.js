@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import S from '@/spx'
 import api from '@/api'
 
 import './store-info.scss';
@@ -22,6 +23,10 @@ export default class StoreInfo extends Component {
   }
 
   componentDidMount() {
+    if (!S.getAuthToken()) {
+      return
+    }
+
     const { info } = this.props
     api.member.storeIsFav(info.distributor_id).then(res => {
       if (res.is_fav) {
@@ -39,6 +44,16 @@ export default class StoreInfo extends Component {
   }
 
   handleStoreFav = async (id) => {
+    if (!S.getAuthToken()) {
+      S.toast('请先登录')
+
+      setTimeout(() => {
+        S.login(this)
+      }, 2000)
+
+      return
+    }
+
     const { isFav } = this.state
     if (isFav) return
 

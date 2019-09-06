@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem } from '@/components'
+import { SpToast, TabBar, Loading, SpNote, BackToTop } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
 import { pickBy } from '@/utils'
