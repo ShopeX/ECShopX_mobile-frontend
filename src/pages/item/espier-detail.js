@@ -68,7 +68,7 @@ export default class Detail extends Component {
       this.setState({
         positionStatus
       }, () => {
-        this.fetch()
+        this.fetch(id)
       })
     }
     if (uid) {
