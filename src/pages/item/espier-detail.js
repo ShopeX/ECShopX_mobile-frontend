@@ -356,12 +356,12 @@ export default class Detail extends Component {
         code: codeImg.path
       }
 
-      this.setState({
+      await this.setState({
         posterImgs
       }, () => {
         this.drawImage()
-        return posterImgs
       })
+      return posterImgs
     } else {
       return null
     }
