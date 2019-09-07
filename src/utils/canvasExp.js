@@ -105,10 +105,10 @@ const canvasExp = {
     row.push(temp)
     let _y = y
     row.forEach((item, index) => {
-      if (index < rows) {
+      if (index+1 < rows) {
         ctx.fillText(item, x, _y)
       }
-      if (index === rows) {
+      if (index+1 === rows) {
         this.textOverflowFill(ctx, item, x, _y, w, size, color)
       }
       _y = _y+24
