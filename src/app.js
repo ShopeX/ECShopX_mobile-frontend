@@ -28,8 +28,9 @@ class App extends Component {
       'pages/category/index',
       'pages/item/list',
       'pages/item/espier-detail',
+			'pages/item/group-list',
+			'pages/item/group-detail',
       'pages/item/item-params',
-      'pages/item/group-list',
       'pages/item/seckill-list',
       'pages/item/seckill-goods-list',
       'pages/item/package-list',
@@ -63,6 +64,7 @@ class App extends Component {
       'pages/member/item-history',
       'pages/member/item-fav',
       'pages/member/item-guess',
+      'pages/member/group-list',
 
       'pages/distribution/index',
       'pages/distribution/setting',

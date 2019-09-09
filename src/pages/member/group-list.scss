@@ -2,7 +2,7 @@
 
 $item-img-size: 240px !default;
 
-.page-group-list {
+.page-my-group-list {
   .groups-list__scroll {
     box-sizing: border-box;
     @include page-scroll($tabbar-height + $edge-size/2, 0);
@@ -14,7 +14,7 @@ $item-img-size: 240px !default;
     background: #fff;
     border-radius: $cart-border-radius;
     overflow: hidden;
-    margin: 0 $edge-size $edge-margin;
+    margin: $edge-size;
 		box-shadow: 0 5px 5px rgba(0,0,0,0.1);
 
     &__hd {
@@ -25,8 +25,34 @@ $item-img-size: 240px !default;
       flex-direction: column;
       justify-content: space-between;
       padding: $edge-margin $edge-size;
-      flex: 1;
-    }
+			flex: 1;
+			position: relative;
+			.icon{
+				position: absolute;
+				right: -15px;
+				bottom: -15px;
+				font-size: 170px;
+				opacity: 0.5;
+				&.icon-over-group{
+					color: #ff4856;
+				}
+				&.icon-ungroup{
+					color:#ccc;
+				}
+			}
+		}
+		&__avatar {
+			display: flex;
+			padding-left: 28px;
+			.user-avatar {
+				display: block;
+				width: 50px;
+				height: 50px;
+				margin-left: -25px;
+				border-radius: 100%;
+				box-shadow: 0 0 0 3px #fff;
+			}
+		}
     &__cont {
       flex: 1;
     }
@@ -114,5 +140,5 @@ $item-img-size: 240px !default;
         opacity: 0.3;
       }
     }
-  }
+	}
 }

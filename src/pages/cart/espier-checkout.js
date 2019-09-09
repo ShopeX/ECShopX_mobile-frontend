@@ -206,7 +206,7 @@ export default class CartCheckout extends Component {
   }
 
   getParams () {
-    const { type, seckill_id = null, ticket = null, group_id = null, shop_id } = this.$router.params
+    const { type, seckill_id = null, ticket = null, group_id = null, team_id = null, shop_id } = this.$router.params
     let orderType = ''
     let activity = {}
     orderType = (() => {
@@ -217,8 +217,11 @@ export default class CartCheckout extends Component {
           value = 'normal_drug'
           break;
         case 'group':
-          value = 'normal_group'
-          activity = Object.assign(activity, {group_id: seckill_id})
+          value = 'normal_groups'
+          activity = Object.assign(activity, { bargain_id: group_id})
+          if (team_id) {
+            activity = Object.assign(activity, {team_id})
+          }
           break;
         case 'seckill':
           value = 'normal_seckill'
@@ -259,7 +262,7 @@ export default class CartCheckout extends Component {
       member_discount: 0,
       coupon_discount: 0,
 			pay_type: payType,
-			distributor_id: shop_id==='undefined'?0:shop_id
+			distributor_id: shop_id === 'undefined' ? 0 : shop_id
     }
 
     log.debug('[checkout] params: ', params)
@@ -569,7 +572,7 @@ export default class CartCheckout extends Component {
 
       this.props.onClearCart()
       Taro.redirectTo({
-        url: `/pages/trade/detail?id=${order_id}`
+        url: type === 'group' ? `/pages/item/group-detail?team_id=${config.team_id}` : `/pages/trade/detail?id=${order_id}`
       })
 
       /*this.props.onClearCart()

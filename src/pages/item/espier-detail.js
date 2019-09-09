@@ -39,7 +39,7 @@ export default class Detail extends Component {
       curImgIdx: 0,
       isPromoter: false,
       timer: null,
-      startSecKill: true,
+      startActivity: true,
       hasStock: true,
       cartCount: '',
       showBuyPanel: false,
@@ -139,7 +139,7 @@ export default class Detail extends Component {
     let marketing = 'normal'
     let timer = null
     let hasStock = info.store && info.store > 0
-    let startSecKill = true
+    let startActivity = true
     let sessionFrom = ''
 
     let vip = null
@@ -153,16 +153,18 @@ export default class Detail extends Component {
     }
 
     if (info.activity_info) {
-      //团购
-      //   marketing = 'group'
-      //   timer = calcTimer(info.group_activity.remaining_time)
-      //   hasStock = info.group_activity.store && info.group_activity.store > 0
-      // } else if (info.seckill_activity) {
-      //秒杀
-      marketing = 'seckill'
-      timer = calcTimer(info.activity_info.last_seconds)
-      hasStock = info.activity_info.item_total_store && info.activity_info.item_total_store > 0
-      startSecKill = info.activity_info.status === 'in_sale'
+      if (info.activity_type === 'group') {
+        marketing = 'group'
+        timer = calcTimer(info.activity_info.remaining_time)
+        hasStock = info.activity_info.store && info.activity_info.store > 0
+        startActivity = info.activity_info.show_status === 'noend'
+      }
+      if (info.activity_type === 'seckill') {
+        marketing = 'seckill'
+        timer = calcTimer(info.activity_info.last_seconds)
+        hasStock = info.activity_info.item_total_store && info.activity_info.item_total_store > 0
+        startActivity = info.activity_info.status === 'in_sale'
+      }
     }
 
     Taro.setNavigationBarTitle({
@@ -207,7 +209,7 @@ export default class Detail extends Component {
       marketing,
       timer,
       hasStock,
-      startSecKill,
+      startActivity,
       specImgsDict,
       sixSpecImgsDict,
       promotion_activity,
@@ -554,7 +556,7 @@ export default class Detail extends Component {
       marketing,
       timer,
       isPromoter,
-      startSecKill,
+      startActivity,
       hasStock,
       showBuyPanel,
       buyPanelType,
@@ -662,8 +664,20 @@ export default class Detail extends Component {
                 </View>
               </View>
               <View className='goods-timer__bd'>
-                {info.activity_info.status === 'in_the_notice' && <Text className='goods-timer__label'>距开始还剩</Text>}
-  							{info.activity_info.status === 'in_sale' && <Text className='goods-timer__label'>距结束还剩</Text>}
+                {
+                  marketing === 'seckill' &&
+                    <View>
+                      {info.activity_info.status === 'in_the_notice' && <Text className='goods-timer__label'>距开始还剩</Text>}
+        							{info.activity_info.status === 'in_sale' && <Text className='goods-timer__label'>距结束还剩</Text>}
+                    </View>
+                }
+                {
+                  marketing === 'group' &&
+                    <View>
+                      {info.activity_info.show_status === 'nostart' && <Text className='goods-timer__label'>距开始还剩</Text>}
+        							{info.activity_info.show_status === 'noend' && <Text className='goods-timer__label'>距结束还剩</Text>}
+                    </View>
+                }
                 <AtCountdown
                   className="countdown__time"
                   isShowDay
@@ -851,7 +865,7 @@ export default class Detail extends Component {
           />
         </FloatMenus>
 
-        {(info.distributor_sale_status && hasStock && startSecKill)
+        {(info.distributor_sale_status && hasStock && startActivity)
           ?
             (<GoodsBuyToolbar
               info={info}
@@ -873,7 +887,7 @@ export default class Detail extends Component {
                 style='width: 60%; text-align: center'
               >
                 {
-                  !startSecKill
+                  !startActivity
                     ? <Text>活动即将开始</Text>
                     : <Text>当前商品无货</Text>
                 }
@@ -887,6 +901,7 @@ export default class Detail extends Component {
             type={buyPanelType}
             isOpened={showBuyPanel}
             onClose={() => this.setState({ showBuyPanel: false })}
+            fastBuyText={marketing === 'group' ? '我要开团' : '立即购买'}
             onChange={this.handleSkuChange}
             onAddCart={this.handleBuyAction.bind(this, 'cart')}
             onFastbuy={this.handleBuyAction.bind(this, 'fastbuy')}

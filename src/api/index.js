@@ -14,6 +14,7 @@ import * as track from './track'
 import * as trade from './trade'
 import * as user from './user'
 import * as vip from './vip'
+import * as group from './group'
 import * as wx from './wx'
 
 
@@ -34,5 +35,6 @@ export default {
   shop,
   distribution,
 	track,
-	vip
+	vip,
+	group
 }

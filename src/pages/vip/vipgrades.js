@@ -106,9 +106,6 @@ export default class VipIndex extends Component {
 					showCancel: false,
 					success: function(res) {
 						console.log('success')
-						// wx.navigateTo({
-						// 	url: 'pay_success?amount=' + Number(that.checkedPrice)*100
-						// })
 					}
 				})
 			},
