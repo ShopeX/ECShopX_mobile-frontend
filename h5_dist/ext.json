@@ -5,5 +5,11 @@
     "company_id": "1",
     "appid": "wx912913df9fef6ddd",
     "wxa_name": "通用小程序"
+  },
+  "window": {
+      "backgroundTextStyle": "light",
+      "navigationBarBackgroundColor": "#fff",
+      "navigationBarTitleText": "微商城",
+      "navigationBarTextStyle": "black"
   }
 }
