@@ -1,8 +1,7 @@
-@import "../../style/imports";
+@import '../../components/wxParse/wxParse.wxss';
 
 .html-content {
   img, .wxParse-img {
-    width: 100% !important;
-    height: auto;
+    width: 100vw !important;
   }
 }
