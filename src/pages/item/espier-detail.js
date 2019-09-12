@@ -244,6 +244,11 @@ export default class Detail extends Component {
     if (type === 'fav') {
       if (!isAuth) {
         S.toast('请登录后再收藏')
+
+        setTimeout(() => {
+          S.login(this)
+        }, 2000)
+
         return
       }
 

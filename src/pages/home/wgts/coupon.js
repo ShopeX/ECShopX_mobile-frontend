@@ -24,11 +24,14 @@ export default class WgtCoupon extends Component {
   handleGetCard = (cardId) => {
     if (!S.getAuthToken()) {
       S.toast('请先登录再领取')
+
       setTimeout(() => {
         S.login(this)
-      }, 1000)
+      }, 2000)
+
       return
     }
+
     req.get('/user/receiveCard', { card_id: cardId })
       .then(res => {
         if(res.status) {
