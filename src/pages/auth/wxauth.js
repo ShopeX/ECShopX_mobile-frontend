@@ -66,14 +66,19 @@ export default class WxAuth extends Component {
     })
 
     try {
-      const { token, open_id, union_id, user_id } = await api.wx.prelogin({
+      const uid = Taro.getStorageSync('distribution_shop_id')
+      let params = {
         code,
         iv,
         encryptedData,
         rawData,
         signature,
         userInfo
-      })
+      }
+      if (uid) {
+        Object.assign(params, {inviter_id: uid})
+      }
+      const { token, open_id, union_id, user_id } = await api.wx.prelogin(params)
 
       S.setAuthToken(token)
 

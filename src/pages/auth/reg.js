@@ -117,14 +117,19 @@ export default class Reg extends Component {
 
     try {
       if (isWeapp) {
+        const uid = Taro.getStorageSync('distribution_shop_id')
         const { union_id, open_id } = this.$router.params
-        const res = await api.user.reg({
+        let params = {
           ...data,
           user_type: 'wechat',
           auth_type: 'wxapp',
           union_id,
           open_id
-        })
+        }
+        if (uid) {
+          Object.assign(params, {uid})
+        }
+        const res = await api.user.reg(params)
 
         const { code } = await Taro.login()
         const { token } = await api.wx.login({ code })
