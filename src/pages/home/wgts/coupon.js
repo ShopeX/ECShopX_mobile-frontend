@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
-import { QnImg } from '@/components'
+import { QnImg, SpToast } from '@/components'
 import req from '@/api/req'
 import S from '@/spx'
 import { classNames } from '@/utils'
@@ -22,6 +22,13 @@ export default class WgtCoupon extends Component {
   }
 
   handleGetCard = (cardId) => {
+    if (!S.getAuthToken()) {
+      S.toast('请先登录再领取')
+      setTimeout(() => {
+        S.login(this)
+      }, 1000)
+      return
+    }
     req.get('/user/receiveCard', { card_id: cardId })
       .then(res => {
         if(res.status) {
@@ -150,6 +157,7 @@ export default class WgtCoupon extends Component {
             )
           })}
         </View>*/}
+        <SpToast />
       </View>
     )
   }
