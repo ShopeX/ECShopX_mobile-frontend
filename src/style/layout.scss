@@ -11,9 +11,8 @@ $md-grey-600            : #757575;
 $md-grey-700            : #616161;
 $md-grey-800            : #424242;
 $md-grey-900            : #212121;
-$card-edge:30px;
-$card-edge-s:20px;
 $content-edge:15px;
+
 scroll-view, view, text {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
@@ -80,11 +79,11 @@ scroll-view, view, text {
 .section {
   position: relative;
   background: #fff;
-  margin-bottom: $card-edge-s;
+  margin-bottom: $edge-margin;
 }
 .section.section-card {
-  margin-left: $card-edge;
-  margin-right: $card-edge;
+  margin-left: $edge-size;
+  margin-right: $edge-size;
   border-radius: $content-edge;
   overflow: hidden;
   box-shadow: 0 5px 5px rgba(0,0,0,.1);
@@ -109,7 +108,7 @@ scroll-view, view, text {
   color: #666;
 }
 .section-footer {
-  padding: $card-edge-s;
+  padding: $edge-margin;
 }
 .section-footer.with-border {
   border-top: 1px solid #efefef;
@@ -126,10 +125,10 @@ scroll-view, view, text {
   padding:$content-edge 0;
 }
 .content-padded {
-  padding: $card-edge-s;
+  padding: $edge-margin;
 }
 .content-h-padded {
-  padding: 0 $card-edge-s;
+  padding: 0 $edge-margin;
 }
 .content-40-padded-left{
   padding-left:40px;
@@ -138,7 +137,7 @@ scroll-view, view, text {
   padding: 0 15px;
 }
 .content-v-padded {
-  padding: $card-edge-s 0;
+  padding: $edge-margin 0;
 }
 .content-padded-b {
   padding: 40px;
@@ -150,10 +149,10 @@ scroll-view, view, text {
   padding-bottom: 16px;
 }
 .content-padded-right {
-  padding-right: $card-edge-s;
+  padding-right: $edge-margin;
 }
 .content-margin-top {
-  margin-top: $card-edge-s;
+  margin-top: $edge-margin;
 }
 .content-padded-right-reset {
   padding-right: 0px;
@@ -204,7 +203,7 @@ scroll-view, view, text {
 
     .list-item-txt {
       flex: 1;
-      padding: 0 $card-edge-s 0 0;
+      padding: 0 $edge-margin 0 0;
       font-size: 28px;
       color: #333;
     }
@@ -214,10 +213,10 @@ scroll-view, view, text {
       color: #999;
     }
     .item-icon + .label, .item-icon + .list-item-txt {
-      padding: 0 $card-edge-s;
+      padding: 0 $edge-margin;
     }
     .list-txt {
-      padding: 0 $card-edge-s;
+      padding: 0 $edge-margin;
       font-size: 28px;
       color: #333;
     }
@@ -324,7 +323,7 @@ scroll-view, view, text {
   font-size: 28px;
 }
 .input.input-lg {
-  padding: $content-edge $card-edge-s;
+  padding: $content-edge $edge-margin;
   height: 80px;
   font-size: 40px;
 }
@@ -421,7 +420,7 @@ scroll-view, view, text {
   display: flex;
   align-items: center;
   min-height: 100px;
-  padding: $card-edge-s;
+  padding: $edge-margin;
 }
 .form-item::after {
   position: absolute;
@@ -449,7 +448,7 @@ scroll-view, view, text {
   color: #fff;
 }
 .page-tip {
-  padding: $card-edge-s 0 30px 0;
+  padding: $edge-margin 0 30px 0;
   font-size: 28px;
   color: #999;
 }

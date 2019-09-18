@@ -671,9 +671,7 @@ export default class CartIndex extends Component {
 
         {
           !isDrug
-          && <TabBar
-            current={3}
-          />
+          && <TabBar />
         }
       </View>
     )

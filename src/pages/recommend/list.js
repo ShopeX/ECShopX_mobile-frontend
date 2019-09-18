@@ -473,7 +473,7 @@ export default class RecommendList extends Component {
           onClick={this.scrollBackToTop}
         />
 
-      <TabBar current={2} />
+      <TabBar />
       </View>
     )
   }

@@ -137,9 +137,7 @@ export default class Category extends Component {
             info={list}
           />
         </View>
-        <TabBar
-          current={1}
-				/>
+        <TabBar />
       </View>
     )
   }

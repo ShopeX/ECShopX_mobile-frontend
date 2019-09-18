@@ -6,7 +6,7 @@ import { Loading, Price, SpCell, AddressChoose, SpToast, NavBar } from '@/compon
 import api from '@/api'
 import S from '@/spx'
 import { withLogin } from '@/hocs'
-import { pickBy, log } from '@/utils'
+import { pickBy, log, classNames } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import find from 'lodash/find'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -58,6 +58,8 @@ export default class CartCheckout extends Component {
       showAddressPicker: false,
       showCheckoutItems: false,
       showCoupons: false,
+      express: true,
+      receiptType: 'logistics',
       curCheckoutItems: [],
       coupons: [],
       drug: null,
@@ -249,14 +251,14 @@ export default class CartCheckout extends Component {
         drug_list_image: 'imgs',
       })
     }
-    const { payType } = this.state
+    const { payType, receiptType } = this.state
     const { coupon } = this.props
     const params = {
       ...this.params,
       ...receiver,
       ...buyerInfo,
       ...activity,
-      receipt_type: 'logistics',
+      receipt_type: receiptType,
       order_type: orderType,
       promotion: 'normal',
       member_discount: 0,
@@ -331,6 +333,16 @@ export default class CartCheckout extends Component {
     })
   }
 
+  handleSwitchExpress = (key) => {
+    const receiptType = JSON.parse(key) ? 'logistics' : 'ziti'
+
+    this.setState({
+      express: JSON.parse(key),
+      receiptType
+    }, () => {
+      this.calcOrder()
+    })
+  }
 
   handleAddressChange = (address) => {
     if (!address) {
@@ -635,7 +647,8 @@ export default class CartCheckout extends Component {
 
   render () {
     const { coupon } = this.props
-    const { info, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug } = this.state
+    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug } = this.state
+    const curStore = Taro.getStorageSync('curStore')
     const { type } = this.$router.params
     const isDrug = type === 'drug'
 
@@ -665,25 +678,33 @@ export default class CartCheckout extends Component {
           scrollY
           className='checkout__wrap'
         >
-          <AddressChoose
-            isAddress={address}
-          />
           {
-            /* !isDrug
-            ? <AddressChoose
-              isAddress={address}
-            />
-            : <View className='address-info'>
-                <View className='address-info__label'>自提地址</View>
-                <View className='view-flex view-flex-middle'>
-                  <View className='address-info__icon icon-periscope'></View>
-                  <View>
-                    <View className='address-info__receiver'>{shop.store_name}</View>
-                    <View className='address-info__addr'>{shop.store_address}</View>
-                    <View className='address-info__addr'>营业时间：{shop.hour}</View>
+            curStore && curStore.is_ziti &&
+              <View className="switch-tab">
+                <View
+                  className={classNames('switch-item', express ? 'active' : '')}
+                  onClick={this.handleSwitchExpress.bind(this, true)}>配送</View>
+                <View
+                  className={classNames('switch-item', !express ? 'active' : '')}
+                  onClick={this.handleSwitchExpress.bind(this, false)}>自提</View>
+              </View>
+          }
+          {
+            express
+              ? <AddressChoose
+                  isAddress={address}
+                />
+              : <View className='address-info'>
+                  <View className='address-info__label'>自提地址</View>
+                  <View className='view-flex view-flex-middle'>
+                    <View className='address-info__icon icon-periscope'></View>
+                    <View>
+                      <View className='address-info__receiver'>{shop.store_name}</View>
+                      <View className='address-info__addr'>{shop.store_address}</View>
+                      <View className='address-info__addr'>营业时间：{shop.hour}</View>
+                    </View>
                   </View>
                 </View>
-              </View> */
           }
 
           {(payType !== 'point' && payType !== 'dhpoint') && (

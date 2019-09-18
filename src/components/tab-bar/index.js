@@ -15,14 +15,11 @@ export default class TabBar extends Component {
     addGlobalClass: true
   }
 
-  static defaultProps = {
-  }
-
   constructor (props) {
     super(props)
 
     this.state = {
-      current: 0,
+      localCurrent: 0,
       backgroundColor: '',
       color: '',
       selectedColor: '',
@@ -81,7 +78,7 @@ export default class TabBar extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.current !== undefined) {
-      this.setState({ current: nextProps.current })
+      this.setState({ localCurrent: nextProps.current })
     }
   }
 
@@ -92,13 +89,13 @@ export default class TabBar extends Component {
 
   updateCurTab () {
     this.fetchCart()
-    const { tabList, current } = this.state
-    const { fullPath } = getCurrentRoute(this.$router)
-    const { url } = tabList[current]
+    const { tabList, localCurrent } = this.state
+    const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+    const { url } = tabList[localCurrent]
     if (url && url !== fullPath) {
       const nCurrent = tabList.findIndex((t) => t.url === fullPath) || 0
       this.setState({
-        current: nCurrent
+        localCurrent: nCurrent
       })
     }
   }
@@ -123,12 +120,12 @@ export default class TabBar extends Component {
   }
 
   handleClick = (current) => {
-    const cur = this.state.current
+    const cur = this.state.localCurrent
 
     if (cur !== current) {
       const curTab = this.state.tabList[current]
       const { url, urlRedirect, withLogin } = curTab
-      const { fullPath } = getCurrentRoute(this.$router)
+      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
 
       if (withLogin && !S.getAuthToken()) {
         return Taro.navigateTo({
@@ -147,7 +144,7 @@ export default class TabBar extends Component {
   }
 
   render () {
-    const { color, backgroundColor, selectedColor, tabList, current } = this.state
+    const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
 
     // eslint-disable-next-line
     if (APP_INTEGRATION) {
@@ -162,7 +159,7 @@ export default class TabBar extends Component {
         selectedColor={selectedColor}
         tabList={tabList}
         onClick={this.handleClick}
-        current={current}
+        current={localCurrent}
       />
     )
   }

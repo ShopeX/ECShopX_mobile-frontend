@@ -380,11 +380,10 @@ export default class MemberIndex extends Component {
                 </SpCell>
             }
             <SpCell
-              title="处方药订单"
+              title="我的拼团"
               isLink
-              iconPrefix='icon'
-              icon='drug'
-              onClick={this.handleClick.bind(this, '/pages/trade/drug-list')}
+              img='/assets/imgs/group.png'
+              onClick={this.handleClick.bind(this, '/pages/member/group-list')}
               >
             </SpCell>
             <SpCell
@@ -417,9 +416,7 @@ export default class MemberIndex extends Component {
 
         <SpToast />
 
-        <TabBar
-          current={5}
-        />
+        <TabBar />
       </View>
     )
   }

@@ -58,7 +58,7 @@ export default class myGroupList extends Component {
     const { team_id } = item
 
     Taro.navigateTo({
-      url: `/pages/item/group-detail?group_id=${team_id}`
+      url: `/pages/item/group-detail?team_id=${team_id}`
 		})
 
   }

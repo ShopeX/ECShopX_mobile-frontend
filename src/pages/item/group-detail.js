@@ -27,9 +27,10 @@ export default class GroupDetail extends Component {
 	}
 
   async fetchDetail() {
-		const { group_id } = this.$router.params
-		const params = { distributor_id:Taro.getStorageSync('trackIdentity') || '' }
-		const detail = await api.group.groupDetail(group_id,params)
+		const { team_id } = this.$router.params
+    const { distributor_id } = Taro.getStorageSync('curStore')
+		const params = { distributor_id }
+		const detail = await api.group.groupDetail(team_id, params)
 		const { activity_info, team_info, member_list } = detail
 
 		const { over_time: total_micro_second } = activity_info

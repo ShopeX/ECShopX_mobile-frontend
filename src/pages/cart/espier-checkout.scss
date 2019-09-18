@@ -1,6 +1,31 @@
 @import '../../style/imports';
 
 .page-checkout {
+  margin: $edge-size $edge-margin;
+  .switch-tab {
+    display: flex;
+    align-items: flex-end;
+    height: 100px;
+    .switch-item {
+      flex: 4;
+      height: 80px;
+      line-height: 80px;
+      transition: all 0.2s ease;
+      background: #fff;
+      text-align: center;
+      opacity: .5;
+      font-size: 32px;
+      border-radius: 10px 10px 0 0;
+      &.active {
+        flex: 5;
+        height: 100px;
+        line-height: 100px;
+        opacity: 1;
+        font-size: 36px;
+      }
+    }
+  }
+
   .checkout {
     &__wrap {
       height: 100vh;
