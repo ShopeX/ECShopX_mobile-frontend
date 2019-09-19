@@ -41,6 +41,7 @@ const config = {
     APP_BASE_URL: TARO_ENV === 'h5'
       ? `'//${API_HOST}/api/h5app/wxapp'`
       : `https://${API_HOST}/api/h5app/wxapp`,
+    APP_WEBSOCKET_URL: `${host.websocket[process.env.NODE_ENV]}`,
     APP_COMPANY_ID: '1',
     APP_INTEGRATION: process.env.INTEGRATION_APP,
 

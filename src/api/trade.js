@@ -42,3 +42,7 @@ export function imgUpload (params = {}) {
 export function involiceList (params = {}) {
   return req.get(`/orders/invoice`, params)
 }
+
+export function zitiCode (params = {}) {
+  return req.get(`/ziticode`, params)
+}

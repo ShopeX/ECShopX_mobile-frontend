@@ -372,6 +372,16 @@ export default class CartCheckout extends Component {
     }
   }
 
+  handleMapClick = () => {
+    const { lat, lng } = Taro.getStorageSync('curStore')
+    
+    Taro.openLocation({
+      latitude: Number(lat),
+      longitude: Number(lng),
+      scale: 18
+    })
+  }
+
   handleShippingChange = (type) => {
     console.log(type)
   }
@@ -694,14 +704,25 @@ export default class CartCheckout extends Component {
               ? <AddressChoose
                   isAddress={address}
                 />
-              : <View className='address-info'>
-                  <View className='address-info__label'>自提地址</View>
-                  <View className='view-flex view-flex-middle'>
-                    <View className='address-info__icon icon-periscope'></View>
-                    <View>
-                      <View className='address-info__receiver'>{shop.store_name}</View>
-                      <View className='address-info__addr'>{shop.store_address}</View>
-                      <View className='address-info__addr'>营业时间：{shop.hour}</View>
+              : <View className="address-module">
+                  <View className="addr">
+                    <View className='view-flex-item'>
+                      <View className="addr-title">{curStore.name}</View>
+                      <View className="addr-detail">{curStore.store_address}</View>
+                    </View>
+                    <View
+                      className='icon-location'
+                      onClick={this.handleMapClick.bind(this)}
+                      ></View>
+                  </View>
+                  <View className="view-flex">
+                    <View className="view-flex-item">
+                      <View className="text-muted">营业时间：</View>
+                      <View>{curStore.hour}</View>
+                    </View>
+                    <View className="view-flex-item">
+                      <View className="text-muted">联系电话：</View>
+                      <View>{curStore.phone}</View>
                     </View>
                   </View>
                 </View>

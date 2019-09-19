@@ -7,6 +7,9 @@
 
 .address-picker {
   //@include page-view();
+  .address {
+    margin: 0 0 $edge-margin;
+  }
   .add_address {
     text-align: right;
     padding: 10px 30px;
@@ -54,12 +57,21 @@
       flex: 1;
     }
     .user-info-trade {
-      display: flex;
-      justify-content: space-between;
-      line-height: 36px;
+      color: #666;
+      font-size: 26px;
+      .name {
+        margin-right: $edge-margin;
+      }
     }
     .address-detail {
-      color: #999999;
+      padding: $edge-margin/2 0;
+      color: #333;
+      font-weight: 500;
+      font-size: 32px;
+    }
+    .address-area {
+      color: #666;
+      font-size: 26px;
     }
   }
   .other-address {

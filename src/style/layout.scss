@@ -84,6 +84,7 @@ scroll-view, view, text {
 .section.section-card {
   margin-left: $edge-size;
   margin-right: $edge-size;
+  margin-bottom: $edge-margin;
   border-radius: $content-edge;
   overflow: hidden;
   box-shadow: 0 5px 5px rgba(0,0,0,.1);

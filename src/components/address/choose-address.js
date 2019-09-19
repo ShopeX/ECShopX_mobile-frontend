@@ -43,7 +43,7 @@ export default class AddressChoose extends Component {
     return (
       <View className='address-picker'>
         <View
-          className='address-info'
+          className='address'
           onClick={this.clickTo.bind(this, 'choose')}
         >
           <SpCell
@@ -54,23 +54,19 @@ export default class AddressChoose extends Component {
               isAddress
                 ? <View className='address-picker__bd'>
                     <View className='address-receive'>
-                      <Text>收货地址：</Text>
                       <View className='info-trade'>
+                        <View className='address-area'>{isAddress.province}{isAddress.state}{isAddress.district}</View>
+                        <View className='address-detail'>{isAddress.address}</View>
                         <View className='user-info-trade'>
-                          <Text>{isAddress.name}</Text>
+                          <Text className='name'>{isAddress.name}</Text>
                           <Text>{isAddress.mobile}</Text>
                         </View>
-                        <Text className='address-detail'>{isAddress.province}{isAddress.state}{isAddress.district}{isAddress.address}</Text>
                       </View>
                     </View>
                   </View>
                 : <View className='address-info__bd'>请选择收货地址</View>
             }
           </SpCell>
-          <View className='other-address'>
-            <Text className='in-icon in-icon-xinzeng icon-add'> </Text>
-            <Text>使用其他地址</Text>
-          </View>
         </View>
       </View>
     )

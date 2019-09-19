@@ -31,12 +31,20 @@ export default class TradeDetail extends Component {
       info: null,
       timer: null,
       payLoading: false,
-      sessionFrom: ''
+      sessionFrom: '',
+      interval: null,
+      webSocketIsOpen: false,
+      restartOpenWebsoect: true
     }
   }
 
-  componentDidShow () {
+  componentDidMount () {
+    console.log(APP_BASE_URL)
     this.fetch()
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.interval)
   }
 
   calcTimer (totalSec) {
@@ -75,6 +83,9 @@ export default class TradeDetail extends Component {
       receiver_address: 'receiver_address',
       status_desc: 'order_status_msg',
       delivery_code: 'delivery_code',
+      receipt_type: 'receipt_type',
+      ziti_status: 'ziti_status',
+      qrcode_url: 'qrcode_url',
       delivery_corp: 'delivery_corp',
       order_type: 'order_type',
       order_status_msg: 'order_status_msg',
@@ -101,6 +112,34 @@ export default class TradeDetail extends Component {
         num: 'num'
       })
     })
+
+    const ziti = pickBy(data.distributor, {
+      store_name: 'store_name',
+      store_address: 'store_address',
+      store_name: 'store_name',
+      hour: 'hour',
+      phone: 'phone',
+    })
+
+    if (info.receipt_type == 'ziti' && info.ziti_status === 'PENDING') {
+      const { qrcode_url } = await api.trade.zitiCode({ order_id: id })
+      this.setState({
+        qrcode: qrcode_url
+      }, () => {
+        const interval = setInterval(async() => {
+            const { qrcode_url } = await api.trade.zitiCode({ order_id: id })
+            this.setState({
+              qrcode: qrcode_url
+            })
+        }, 10000)
+
+        this.setState({
+          interval
+        }, () => {
+          this.zitiWebsocket()
+        })
+      })
+    }
 
     let timer = null
     if(info.auto_cancel_seconds){
@@ -129,7 +168,8 @@ export default class TradeDetail extends Component {
 
     this.setState({
       info,
-      sessionFrom
+      sessionFrom,
+      ziti
     })
   }
 
@@ -150,7 +190,6 @@ export default class TradeDetail extends Component {
       payLoading: true
     })
 
-    // 爱茉pay流程
     const { tid: order_id, order_type } = info
     const paymentParams = {
       pay_type: 'wxpay',
@@ -248,17 +287,6 @@ export default class TradeDetail extends Component {
     })*/
   }
 
-  // handleClickAfterSale= () => {
-  //   const { info: { tid: order_id } } = this.state
-  //   Taro.navigateTo({
-  //     url: `/pages/trade/refund?order_id=${order_id}`
-  //   })
-  // }
-
-  handleClickToDelivery = () => {
-
-  }
-
   handleClickCopy = (val) => {
     copyText(val)
     S.toast('复制成功')
@@ -268,8 +296,91 @@ export default class TradeDetail extends Component {
     this.fetch()
   }
 
+  zitiWebsocket = () => {
+    const { id } = this.$router.params
+    const { webSocketIsOpen, restartOpenWebsoect } = this.state
+    // websocket 开始
+    if (!webSocketIsOpen) {
+      const token = S.getAuthToken()
+      Taro.connectSocket({
+        url: APP_WEBSOCKET_URL,
+        header: {
+          'content-type': 'application/json',
+          'x-wxapp-session': token,
+          'x-wxapp-sockettype': 'orderzitimsg'
+        },
+        method: 'GET'
+      }).then(task => {
+        task.onOpen(() => {
+          this.setState({
+            webSocketIsOpen: true
+          })
+        })
+        task.onError(() => {
+          this.setState({
+            webSocketIsOpen: false
+          })
+        })
+        task.onMessage((res) => {
+          if (res.data === '401001') {
+            S.toast('未登录，请登录后再试')
+            this.setState({
+              webSocketIsOpen: false
+            }, () => {
+              setTimeout(()=>{
+                Taro.redirectTo({
+                  url: '/pages/member/index'
+                })
+              }, 700)
+            })
+          } else {
+            const result = JSON.parse(res.data)
+            if (result.status === 'success') {
+              S.toast('核销成功')
+              setTimeout(() => {
+                this.fetch()
+              }, 700)
+            }
+          }
+        })
+        task.onClose(() => {
+          this.setState({
+            webSocketIsOpen: false
+          })
+          if (restartOpenWebsoect) {
+            this.restartOpenWebsocket()
+          }
+        })
+      })
+    }
+  }
+
+  restartOpenWebsocket = () => {
+    const { restartOpenWebsoect } = this.state
+    this.setState({
+      restartOpenWebsoect: false
+    }, () => {
+      const token = S.getAuthToken()
+      Taro.connectSocket({
+        url: APP_WEBSOCKET_URL,
+        header: {
+          'content-type': 'application/json',
+          'x-wxapp-session': token,
+          'x-wxapp-sockettype': 'orderzitimsg'
+        },
+        method: 'GET'
+      }).then(task => {
+        task.onOpen(() => {
+          this.setState({
+            restartOpenWebsoect: true
+          })
+        })
+      })
+    })
+  }
+
   render () {
-    const { info, timer, payLoading } = this.state
+    const { info, ziti, qrcode, timer, payLoading } = this.state
     if (!info) {
       return <Loading></Loading>
     }
@@ -286,7 +397,7 @@ export default class TradeDetail extends Component {
           leftIconType='chevron-left'
           fixed='true'
         />
-        <View className={classNames('trade-detail-header', `trade-detail-header__waitpay`)}>
+        <View className={classNames('trade-detail-header', info.status === 'WAIT_BUYER_PAY' ? 'trade-detail-header__waitpay' : '')}>
           {
             info.order_class === 'drug'
               ? <View>
@@ -313,43 +424,55 @@ export default class TradeDetail extends Component {
                           分钟
                         </View>
                   }
+                  {
+                    info.status !== 'WAIT_BUYER_PAY' &&
+                      <View className='trade-detail-waitdeliver'>
+                        <View></View>
+                        <View className='delivery-infos'>
+                          <View className='delivery-infos__status'>
+                            <Text className='delivery-infos__text text-status'>{info.order_status_msg}</Text>
+                            <Text className='delivery-infos__text'>
+                              { info.status === 'WAIT_SELLER_SEND_GOODS' ? '正在审核订单' : null}
+                              { info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '正在派送中' : null }
+                              { info.status === 'TRADE_CLOSED' ? '订单已取消' : null }
+                              { info.status === 'TRADE_SUCCESS' ? `物流单号：${info.delivery_code}` : null }
+                            </Text>
+                          </View>
+                          {/*{
+                            info.status !== 'TRADE_SUCCESS' ? <Text className='delivery-infos__text'>2019-04-30 11:30:21</Text> : null
+                          }*/}
+                        </View>
+                      </View>
+                  }
                 </View>
           }
         </View>
         {
-          info.status !== 'WAIT_BUYER_PAY' && <View className={classNames('trade-detail-header')}>
-            <View className='trade-detail-waitdeliver'>
-              <View></View>
-              <View className='delivery-infos'>
-                <View className='delivery-infos__status'>
-                  <Text className='delivery-infos__text text-status'>{info.order_status_msg}</Text>
-                  <Text className='delivery-infos__text'>
-                    { info.status === 'WAIT_SELLER_SEND_GOODS' ? '正在审核订单' : null}
-                    { info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '正在派送中' : null }
-                    { info.status === 'TRADE_CLOSED' ? '订单已取消' : null }
-                    { info.status === 'TRADE_SUCCESS' ? `物流单号：${info.delivery_code}` : null }
-                  </Text>
+          info.receipt_type === 'ziti'
+            ? <View className='ziti-content'>
+                {
+                  info.status === 'WAIT_SELLER_SEND_GOODS' && info.ziti_status === 'PENDING' &&
+                    <Image className="ziti-qrcode" src={ qrcode } />
+                }
+                <View className="ziti-text">
+                  <View className="ziti-text-name">{ ziti.store_name }</View>
+                  <View>营业时间：{ ziti.hour }</View>
+                  <View>{ ziti.store_address }</View>
                 </View>
-                {/*{
-                  info.status !== 'TRADE_SUCCESS' ? <Text className='delivery-infos__text'>2019-04-30 11:30:21</Text> : null
-                }*/}
               </View>
-            </View>
-          </View>
+            : <View className='trade-detail-address' onClick={this.handleClickDelivery.bind(this)}>
+                <View className='address-receive'>
+                  <Text>收货地址：</Text>
+                  <View className='info-trade'>
+                    <View className='user-info-trade'>
+                      <Text>{info.receiver_name}</Text>
+                      <Text>{info.receiver_mobile}</Text>
+                    </View>
+                    <Text className='address-detail'>{info.receiver_state}{info.receiver_city}{info.receiver_district}{info.receiver_address}</Text>
+                  </View>
+                </View>
+              </View>
         }
-
-        <View className='trade-detail-address' onClick={this.handleClickDelivery.bind(this)}>
-          <View className='address-receive'>
-            <Text>收货地址：</Text>
-            <View className='info-trade'>
-              <View className='user-info-trade'>
-                <Text>{info.receiver_name}</Text>
-                <Text>{info.receiver_mobile}</Text>
-              </View>
-              <Text className='address-detail'>{info.receiver_state}{info.receiver_city}{info.receiver_district}{info.receiver_address}</Text>
-            </View>
-          </View>
-        </View>
         <View className='trade-detail-goods'>
           <DetailItem
             info={info}

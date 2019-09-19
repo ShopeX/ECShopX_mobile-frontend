@@ -41,31 +41,33 @@
     }
   }
 
-  .address-info {
-    // padding: $edge-margin $edge-size $edge-size;
+  .address-module {
+    padding: $edge-size $edge-margin*2;
     margin: 0 0 $edge-margin;
     background: #fff;
-    &__label {
-      padding-bottom: $edge-size;
+    .adr-icon {
+      width: 46px;
+      height: 46px;
     }
-    &__icon {
-      margin-right: $edge-margin;
-      font-size: 52px;
-      color: #ccc;
-    }
-    &__receiver {
-      color: #111;
-      display: block;
-      font-size: $font-size-large;
-      margin: 0 0 16px;
-      line-height: 1;
-    }
-    &__addr {
-      margin: 0 0 10px;
-      color: #666;
-      line-height: 1;
-      font-size: 26px;
-      display: block;
+    .addr {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      margin-bottom: 20px;
+      .addr-title {
+        font-size: 32px;
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+      .addr-detail {
+        font-size: 26px;
+        color: #666;
+      }
+      [class^="icon-"] {
+        margin-right: 10px;
+        font-size: 42px;
+        color: #666;
+      }
     }
   }
 
