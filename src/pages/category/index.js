@@ -139,7 +139,6 @@ export default class Category extends Component {
 				}
         <View className={`${hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'}`}>
           <Series
-            hasSeries={hasSeries}
             isChanged={isChanged}
             info={list}
           />

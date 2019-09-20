@@ -58,7 +58,7 @@ export default class Series extends Component {
   }
 
   render () {
-    const { info, isChanged, hasSeries, pluralType, imgType } = this.props
+    const { info, isChanged, pluralType, imgType } = this.props
     const { currentIndex } = this.state
     let items, itemsImg, id
     if (!info) {
@@ -102,36 +102,7 @@ export default class Series extends Component {
               && <Image src={itemsImg} mode='aspectFill' onClick={this.handleCustomClick.bind(this, id)} className='category__banner' />
             }
             {
-              hasSeries && items.map(item =>
-                <View key={item.category_id}>
-                  <View className='group-title'>{item.name}</View>
-                  <View className='content-group'>
-                    {
-                      item.children.map(child =>
-                        <View
-                          className='category-content__img'
-                          key={item.category_id}
-                          onClick={this.handleClickItem.bind(this, child)}
-                        >
-                          {
-                            child.img
-                            && <Image
-                                  className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
-                                  mode='aspectFit'
-                                  src={child.img}
-                                />
-                          }
-                          <View className='img-cat-name'>{child.name}</View>
-                        </View>
-                      )
-                    }
-                  </View>
-                </View>
-              )
-            }
-
-            {
-              !hasSeries && items.map(item =>
+              items.map(item =>
                 item.children.length > 0
                   ? <View>
                       <View className='group-title'>{item.name}</View>
@@ -148,10 +119,10 @@ export default class Series extends Component {
                               && <Image
                                     className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
                                     mode='aspectFit'
-                                    src={item.img}
+                                    src={child.img}
                                   />
                             }
-                            <View className='img-cat-name'>{item.name}</View>
+                            <View className='img-cat-name'>{child.name}</View>
                           </View>
                         )
                       }
