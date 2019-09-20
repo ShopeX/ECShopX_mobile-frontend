@@ -306,7 +306,8 @@ export default class TradeDetail extends Component {
         url: APP_WEBSOCKET_URL,
         header: {
           'content-type': 'application/json',
-          'x-wxapp-session': token,
+          'authorization': `Bearer ${token}`,
+          'guard': 'h5api',
           'x-wxapp-sockettype': 'orderzitimsg'
         },
         method: 'GET'

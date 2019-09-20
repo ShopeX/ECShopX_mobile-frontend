@@ -49,7 +49,13 @@ export default class Category extends Component {
         children: ({ children }) => pickBy(children, {
           name: 'category_name',
           img: 'image_url',
-          category_id: 'category_id'
+          id: 'id',
+          category_id: 'category_id',
+          children: ({ children }) => pickBy(children, {
+            name: 'category_name',
+            img: 'image_url',
+            category_id: 'category_id'
+          })
         })
       })
       this.setState({
@@ -133,6 +139,7 @@ export default class Category extends Component {
 				}
         <View className={`${hasSeries ? 'category-comps' : 'category-comps-not'}`}>
           <Series
+            hasSeries={hasSeries}
             isChanged={isChanged}
             info={list}
           />

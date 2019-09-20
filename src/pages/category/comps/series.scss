@@ -53,18 +53,23 @@
   }
 }
 .category-content {
-  display: flex;
-  flex-wrap: wrap;
-  padding-top: 20px;
   margin: 0 3vw;
+  padding: 3vw 0;
   box-sizing: border-box;
-  text-align: center;
   color: #3e4044;
+  .group-title {
+    padding: 20px 20px 0;
+  }
+  .content-group {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 20px;
+  }
   .category__banner {
     display: block;
     width: 100%;
     height: 183px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
   &__img {
     width: 23vw;
@@ -75,8 +80,8 @@
     justify-content: center;
     align-items: center;
     .cat-img {
-      width: 100px;
-      max-height: 117px;
+      width: 20vw;
+      height: 20vw
     }
     .cat-img-no {
       display: none;
