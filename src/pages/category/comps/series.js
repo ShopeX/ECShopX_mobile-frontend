@@ -132,52 +132,46 @@ export default class Series extends Component {
 
             {
               !hasSeries && items.map(item =>
-                <View
-                  className={!item.children.length ? 'content-group' : ''}
-                  key={item.category_id}>
-                  {
-                    item.children.length > 0
-                      ? <View>
-                          <View className='group-title'>{item.name}</View>
-                          <View className='content-group'>
-                          {
-                            item.children.map(child =>
-                              <View
-                                className='category-content__img'
-                                key={child.category_id}
-                                onClick={this.handleClickItem.bind(this, child)}
-                              >
-                                {
-                                  item.img
-                                  && <Image
-                                        className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
-                                        mode='aspectFit'
-                                        src={item.img}
-                                      />
-                                }
-                                <View className='img-cat-name'>{item.name}</View>
-                              </View>
-                            )
-                          }
+                item.children.length > 0
+                  ? <View>
+                      <View className='group-title'>{item.name}</View>
+                      <View className='content-group'>
+                      {
+                        item.children.map(child =>
+                          <View
+                            className='category-content__img'
+                            key={child.category_id}
+                            onClick={this.handleClickItem.bind(this, child)}
+                          >
+                            {
+                              item.img
+                              && <Image
+                                    className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
+                                    mode='aspectFit'
+                                    src={item.img}
+                                  />
+                            }
+                            <View className='img-cat-name'>{item.name}</View>
                           </View>
-                        </View>
-                    : <View
-                        className='category-content__img'
-                        key={item.category_id}
-                        onClick={this.handleClickItem.bind(this, item)}
-                      >
-                        {
-                          item.img
-                          && <Image
-                                className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
-                                mode='aspectFit'
-                                src={item.img}
-                              />
-                        }
-                        <View className='img-cat-name'>{item.name}</View>
+                        )
+                      }
                       </View>
-                  }
-                </View>
+                    </View>
+                  : <View
+                      className='category-content__img'
+                      key={item.category_id}
+                      onClick={this.handleClickItem.bind(this, item)}
+                    >
+                      {
+                        item.img
+                        && <Image
+                              className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
+                              mode='aspectFit'
+                              src={item.img}
+                            />
+                      }
+                      <View className='img-cat-name'>{item.name}</View>
+                    </View>
               )
             }
 

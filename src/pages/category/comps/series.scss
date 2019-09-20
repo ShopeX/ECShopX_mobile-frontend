@@ -53,12 +53,14 @@
   }
 }
 .category-content {
+  display: flex;
+  flex-wrap: wrap;
   margin: 0 3vw;
   padding: 3vw 0;
   box-sizing: border-box;
   color: #3e4044;
   .group-title {
-    padding: 20px 20px 0;
+    padding-top: 20px;
   }
   .content-group {
     display: flex;
