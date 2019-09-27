@@ -1,8 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
-import './params-item.scss';
-
 export default class ParamsItem extends Component {
   static options = {
     addGlobalClass: true

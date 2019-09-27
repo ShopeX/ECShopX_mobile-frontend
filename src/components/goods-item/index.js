@@ -34,11 +34,12 @@ export default class GoodsItem extends Component {
       return null
     }
 
-    let price = ''
+    let price = '', marketPrice = ''
     if (isObject(info.price)) {
       price = info.price.total_price
     } else {
       price = info.act_price ? info.act_price : info.member_price ? info.member_price : info.price
+      marketPrice = info.act_price || info.member_price ? info.price : info.market_price
     }
     const img = info.img || info.image_default_id
 
@@ -70,10 +71,10 @@ export default class GoodsItem extends Component {
             <View className='goods-item__extra'>
               <View className='goods-item__price'>
                 <Text className='goods-item__cur'>¥</Text>
-                <Text>{info.price}</Text>
+                <Text>{price}</Text>
                 {
-                  parseInt(info.market_price) &&
-                    <Text className='goods-item__price-market'>{info.market_price}</Text>
+                  parseInt(marketPrice) &&
+                    <Text className='goods-item__price-market'>{marketPrice}</Text>
                 }
 							</View>
 							{this.props.children}

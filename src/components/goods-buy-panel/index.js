@@ -34,8 +34,10 @@ export default class GoodsBuyPanel extends Component {
       marketing: 'normal',
       selection: [],
       promotions: [],
+      activity: null,
       curSku: null,
       curImg: null,
+      curLimit: false,
       quantity: 1,
       isActive: props.isOpened
     }
@@ -45,7 +47,7 @@ export default class GoodsBuyPanel extends Component {
 
   componentDidMount () {
 		const { info } = this.props
-    const { spec_items, promotion_activity } = info
+    const { spec_items, promotion_activity, activity_info = null, activity_type } = info
 
     if (promotion_activity) {
       const promotions = pickBy(promotion_activity, {
@@ -55,6 +57,16 @@ export default class GoodsBuyPanel extends Component {
       })
       this.setState({
         promotions
+      })
+    }
+
+    if (activity_info && activity_type === 'limited_buy') {
+      const activity = pickBy([activity_info], {
+        items: 'items',
+        rule: 'rule'
+      })
+      this.setState({
+        activity: activity[0]
       })
     }
 
@@ -161,6 +173,10 @@ export default class GoodsBuyPanel extends Component {
   }
 
   updateCurSku (selection) {
+    const { info } = this.props
+    const { activity } = this.state
+    const { activity_type } = info
+
     selection = selection || this.state.selection
     this.calcDisabled(selection)
     if (selection.some(s => !s)) {
@@ -174,10 +190,18 @@ export default class GoodsBuyPanel extends Component {
 
     const curSku = this.skuDict[selection.join('_')]
     const curImg = this.getCurSkuImg(curSku)
+
     this.setState({
       curSku,
       curImg
     })
+
+    if (activity && info.activity_type === 'limited_buy') {
+      const validItem = activity.items.find(n => n.item_id === curSku.item_id)
+      this.setState({
+        curLimit: validItem ? true : false
+      })
+    }
 
     this.props.onChange(curSku)
     log.debug('[goods-buy-panel] updateCurSku: ', curSku)
@@ -322,7 +346,7 @@ export default class GoodsBuyPanel extends Component {
 
   render () {
     const { info, type, fastBuyText } = this.props
-		const { curImg, quantity, selection, isActive, busy, curSku, marketing, promotions } = this.state
+		const { curImg, quantity, selection, isActive, busy, curSku, marketing, promotions, activity, curLimit } = this.state
     if (!info) {
       return null
     }
@@ -334,15 +358,17 @@ export default class GoodsBuyPanel extends Component {
     const maxStore = +(curSkus ? curSkus.store : (info.store || 99999))
     const hasStore = curSkus ? curSkus.store > 0 : info.store > 0
 
-    let price = '', marketPrice = ''
+    let price = '', marketPrice = '', ruleDay = 0
     if (curSkus) {
       price = curSkus.act_price ? curSkus.act_price : curSkus.member_price ? curSkus.member_price : curSkus.price
       marketPrice = curSkus.act_price || curSkus.member_price ? curSkus.price : curSkus.market_price
+      if (info.activity_type === 'limited_buy') {
+        ruleDay = JSON.parse(activity.rule.day)
+      }
     } else {
       price = info.act_price ? info.act_price : info.member_price ? info.member_price : info.price
       marketPrice = info.act_price || info.member_price ? info.price : info.market_price
     }
-
 
     return (
       <View className={classNames('goods-buy-panel', isActive ? 'goods-buy-panel__active' : null)}>
@@ -367,9 +393,8 @@ export default class GoodsBuyPanel extends Component {
 						<View className='goods-sku__price'>
 						  <Price
 								primary
+                symbol='¥'
 								unit='cent'
-								noSymbol
-								appendText='元'
 								value={price}
 							/>
             {
@@ -391,7 +416,22 @@ export default class GoodsBuyPanel extends Component {
                     </Text>)
               }
               {
-                curSku && <Text className='goods-sku__stock'>库存{curSku.store}{info.unit}</Text>
+                curSku &&
+                  <View className='goods-sku__limit'>
+                    <Text className='goods-sku__stock'>库存{curSku.store}{info.unit}</Text>
+                    {
+                      activity && curLimit
+                        ? <Text>
+                            {
+                              ruleDay
+                                ? <Text>每{ruleDay}天</Text>
+                                : null
+                            }
+                            <Text>限购{activity.rule.limit}件</Text>
+                          </Text>
+                        : null
+                    }
+                  </View>
               }
             </View>
           </View>

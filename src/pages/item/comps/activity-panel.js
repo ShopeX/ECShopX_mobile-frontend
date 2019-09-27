@@ -40,6 +40,7 @@ export default class ActivityPanel extends Component {
               })
             }
           </View>
+          <View className='goods-sec-specs__activity-icon at-icon at-icon-chevron-right'></View>
         </View>
 
         <AtFloatLayout

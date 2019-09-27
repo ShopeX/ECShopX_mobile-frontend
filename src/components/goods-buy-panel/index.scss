@@ -128,9 +128,13 @@
       display: flex;
       margin-bottom: 10px;
     }
-    &__stock {
+    &__limit {
       margin-top: 10px;
-      display: block;
+      font-size: $font-size-small;
+    }
+    &__stock {
+      padding-right: 10px;
+      font-size: $font-size-small;
     }
     &__props {
       display: block;

@@ -9,7 +9,7 @@ import { withBackToTop } from '@/hocs'
 import { log, calcTimer, isArray, pickBy, classNames, canvasExp } from '@/utils'
 import entry from '@/utils/entry'
 import S from '@/spx'
-import { GoodsBuyToolbar, ItemImg, ImgSpec, Params, StoreInfo, ActivityPanel, SharePanel, VipGuide, ParamsItem } from './comps'
+import { GoodsBuyToolbar, ItemImg, ImgSpec, Params, StoreInfo, ActivityPanel, SharePanel, VipGuide, ParamsItem, GroupingItem } from './comps'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
@@ -459,6 +459,12 @@ export default class Detail extends Component {
     })
   }
 
+  handleGroupClick = (tid) => {
+    Taro.navigateTo({
+      url: `/pages/item/group-detail?team_id=${tid}`
+    })
+  }
+
   handlePromotionClick = () => {
     this.setState({
       showPromotions: true
@@ -573,6 +579,11 @@ export default class Detail extends Component {
       return (
         <Loading />
       )
+    }
+
+    let ruleDay = 0
+    if (info.activity_type === 'limited_buy') {
+      ruleDay = JSON.parse(info.activity_info.rule.day)
     }
 
     const { pics: imgs } = info
@@ -713,30 +724,45 @@ export default class Detail extends Component {
                 : null
             }
 
-            {marketing === 'normal' && (
-              <View className='goods-prices__wrap'>
-                <View className='goods-prices'>
-                  <Price
-                    primary
-                    unit='cent'
-                    value={info.member_price && info.is_vip_grade ? info.member_price : info.price}
-                  />
+            {
+              marketing === 'normal' && (
+                <View className='goods-prices__wrap'>
+                  <View className='goods-prices'>
+                    <View className='view-flex-item'>
+                      <Price
+                        primary
+                        unit='cent'
+                        value={info.member_price && info.is_vip_grade ? info.member_price : info.price}
+                      />
+                      {
+                        info.market_price
+                          ? <Price
+                              lineThrough
+                              unit='cent'
+                              value={info.market_price}
+                            />
+                          : null
+                      }
+                    </View>
+                    {
+                      info.nospec &&
+                        <View className='limited-buy-rule'>
+                          {
+                            ruleDay
+                              ? <Text>每{ruleDay}天</Text>
+                              : null
+                          }
+                          <Text>限购{info.activity_info.rule.limit}件</Text>
+                        </View>
+                    }
+                  </View>
+
                   {
-                    info.market_price
-                      ? <Price
-                          lineThrough
-                          unit='cent'
-                          value={info.market_price}
-                        />
-                      : null
+                    info.sales && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>)
                   }
                 </View>
-
-                {
-                  info.sales && (<Text className='goods-sold'>{info.sales || 0}人已购</Text>)
-                }
-              </View>
-            )}
+              )
+            }
           </View>
 
           {isPromoter && (
@@ -745,6 +771,26 @@ export default class Detail extends Component {
               <Text>预计收益：{(info.promoter_price/100).toFixed(2)}</Text>
             </View>
           )}
+
+          {
+            marketing === 'group' && info.groups_list.length > 0 &&
+              <View className='goods-sec-specs'>
+                <View className='goods-sec-value'>
+                  <Text className='title-inner'>正在进行中的团</Text>
+                  <View className='grouping'>
+                    {
+                      info.groups_list.map(item =>
+                        <GroupingItem
+                          total={info.activity_info.person_num}
+                          info={item}
+                          onClick={this.handleGroupClick.bind(this, item.team_id)}
+                        />
+                      )
+                    }
+                  </View>
+                </View>
+              </View>
+          }
 
           {
             promotion_activity && promotion_activity.length > 0
@@ -785,6 +831,7 @@ export default class Detail extends Component {
                     )
                   }
                 </View>
+                <View className='goods-sec-icon at-icon at-icon-chevron-right'></View>
               </View>
           }
 

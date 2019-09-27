@@ -186,6 +186,11 @@
     font-weight: normal;
     margin-left: 16px;
   }
+
+  .limited-buy-rule {
+    color: $color-gray;
+    font-size: 24px;
+  }
 }
 
 .goods-sold {
@@ -321,6 +326,16 @@
   }
   .goods-sec-value{
     flex: 1;
+  }
+  .goods-sec-icon {
+    display: block;
+    margin-right: -8px;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    color: rgba($color-gray-light, 0.8);
+    font-size: 40px;
+    text-align: center;
   }
   .sp-cell__hd {
     width: 120px;
@@ -479,6 +494,28 @@
     &::before {
       margin-right: 10px;
     }
+  }
+}
+
+.grouping {
+  .at-countdown {
+    color: $color-gray;
+    line-height: 1;
+    vertical-align: middle;
+    display: inline-block;
+  }
+  .at-countdown__time-box {
+    font-family: "Helvetica";
+    background: transparent;
+    width: 40px;
+    height: 40px;
+    line-height: 42px;
+    color: $color-brand-primary;
+    font-size: 26px;
+  }
+  .at-countdown__separator {
+    padding: 0;
+    font-size: 26px;
   }
 }
 
