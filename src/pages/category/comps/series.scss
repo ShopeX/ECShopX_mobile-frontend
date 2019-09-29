@@ -23,7 +23,7 @@
 
 .category-nav {
   &__content {
-    width: 120px;
+    width: 160px;
     height: 95px;
     overflow: hidden;
     white-space: nowrap;
@@ -50,6 +50,19 @@
   }
   &__content-checked + &__content {
     border-top: 1PX solid transparent;
+  }
+  .hot-tag {
+    margin-right: 6px;
+    padding: 4px;
+    vertical-align: super;
+    text-align: center;
+    background: #ff5000;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 20px;
+    &::after {
+      content: "热"
+    }
   }
 }
 .category-content {

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, ScrollView, Image} from '@tarojs/components'
+import {View, Text, ScrollView, Image} from '@tarojs/components'
 import { connect } from "@tarojs/redux";
 import { Loading, SearchBar, TabBar } from '@/components'
 import { classNames, pickBy } from '@/utils'
@@ -60,15 +60,12 @@ export default class Series extends Component {
   render () {
     const { info, isChanged, pluralType, imgType } = this.props
     const { currentIndex } = this.state
-    let items, itemsImg, id
     if (!info) {
       return <Loading />
     }
-    if(info) {
-      items = info[currentIndex].children
-      id = info[currentIndex].id
-      itemsImg = info[currentIndex].img
-    }
+    const items = info[currentIndex].children
+    const id = info[currentIndex].id
+    const itemsImg = info[currentIndex].img
 
 
     return (
@@ -85,7 +82,7 @@ export default class Series extends Component {
                   key={index}
                   onClick={this.handleClickCategoryNav.bind(this, index)}
                 >
-                  {item.name}
+                  { item.hot && <Text className='hot-tag'></Text> }{item.name}
                 </View>
               )
             }
@@ -115,7 +112,7 @@ export default class Series extends Component {
                             onClick={this.handleClickItem.bind(this, child)}
                           >
                             {
-                              item.img
+                              child.img
                               && <Image
                                     className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
                                     mode='aspectFit'

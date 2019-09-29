@@ -52,7 +52,22 @@ export default class WgtMarquees extends Component {
     const { config, base, data } = info
 
     return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
+      <View
+        className={`wgt ${base.padded ? 'wgt__padded' : null} ${config.direction === 'vertical' ? 'marquees-vertical' : 'marquees-horizontal'}`}
+        style={`background:${config.bgcolor}`}>
+        <View
+          className='marquees-label'
+          style={`background:${config.bgcolor}; color:${config.labelcolor}`}>
+          {
+            config.label
+              ? <Text
+                  className='label-text'
+                  style={`border-color:${config.labelcolor}`}
+                  >{config.label}</Text>
+              : null
+          }
+          <Text className='icon-sound'></Text>
+        </View>
         {
           config.direction === 'vertical'
             ? <Swiper
@@ -81,9 +96,11 @@ export default class WgtMarquees extends Component {
                     )
                   })}
                 </Swiper>
-            : <AtNoticebar marquee>
-                <Text>{announce}</Text>
-              </AtNoticebar>
+            : <View style={`background:${config.bgcolor}; color:${config.fontcolor}`}>
+                <AtNoticebar marquee>
+                  <Text>{announce}</Text>
+                </AtNoticebar>
+              </View>
         }
       </View>
     )

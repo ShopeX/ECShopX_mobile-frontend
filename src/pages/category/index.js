@@ -77,7 +77,8 @@ export default class Category extends Component {
       const nList = pickBy(curIndexList, {
         name: 'name',
         img: 'img',
-        children: 'children'
+        children: 'children',
+        hot: 'hot'
       })
       this.setState({
         tabList,

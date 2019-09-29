@@ -333,8 +333,6 @@ export default class GoodsBuyPanel extends Component {
     }
 
     if (type === 'pick') {
-      this.props.onSubmit(skuInfo)
-
       this.setState({
         busy: false
       }, () => {
