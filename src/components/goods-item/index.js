@@ -38,11 +38,13 @@ export default class GoodsItem extends Component {
     if (isObject(info.price)) {
       price = info.price.total_price
     } else {
-      price = info.act_price ? info.act_price : info.member_price ? info.member_price : info.price
-      marketPrice = info.act_price || info.member_price ? info.price : info.market_price
+      price = Boolean(+info.act_price) ? info.act_price : Boolean(+info.member_price) ? info.member_price : info.price
+      marketPrice = Boolean(+info.act_price) || Boolean(+info.member_price) ? info.price : info.market_price
     }
+    console.log(info.act_price, info.member_price, info.price, info.market_price)
+    console.log('--------', price, marketPrice, '--------')
     const img = info.img || info.image_default_id
-    console.log(info.title, price, marketPrice)
+
     return (
       <View className={classNames('goods-item', 'classes')}>
         <View className='goods-item__hd'>
@@ -73,7 +75,7 @@ export default class GoodsItem extends Component {
                 <Text className='goods-item__cur'>¥</Text>
                 <Text>{price}</Text>
                 {
-                  Number(marketPrice) > 0 &&
+                  Boolean(+marketPrice) &&
                     <Text className='goods-item__price-market'>{marketPrice}</Text>
                 }
 							</View>

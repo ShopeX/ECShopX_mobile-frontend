@@ -239,6 +239,8 @@ export default class Detail extends Component {
       item_id: 'item_id',
       title: 'itemName',
       price: ({ price }) => { return (price/100).toFixed(2)},
+      member_price: ({ member_price }) => (member_price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2),
       desc: 'brief',
     })
 

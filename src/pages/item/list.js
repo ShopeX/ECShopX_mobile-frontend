@@ -44,7 +44,7 @@ export default class List extends Component {
 
   componentDidMount () {
     this.firstStatus = true
-   
+
     this.setState({
       query: {
         keywords: this.$router.params.keywords,
@@ -126,6 +126,7 @@ export default class List extends Component {
       title: 'itemName',
       desc: 'brief',
       price: ({ price }) => (price/100).toFixed(2),
+      member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
       is_fav: ({ item_id }) => Boolean(favs[item_id])
     })
@@ -189,7 +190,7 @@ export default class List extends Component {
       this.nextPage()
     })
 	}
-	
+
   handleFilterChange = (data) => {
     this.setState({
       showDrawer: false
@@ -371,7 +372,7 @@ export default class List extends Component {
         this.nextPage()
       })
 		})
-		this.setState({ 
+		this.setState({
 			info
 		})
   }

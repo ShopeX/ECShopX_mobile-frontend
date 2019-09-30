@@ -46,7 +46,7 @@ export default class CartIndex extends Component {
 
   componentDidMount () {
     this.nextPage()
-    
+
     if (!S.getAuthToken()) return
 
     this.fetchCart((list) => {
@@ -104,6 +104,8 @@ export default class CartIndex extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       price: ({price}) => (price/100).toFixed(2),
+      member_price: ({ member_price }) => (member_price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2),
       title: 'itemName',
 			desc: 'brief'
     })
