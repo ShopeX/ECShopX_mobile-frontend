@@ -25,13 +25,15 @@ export default class CouponPicker extends Component {
   }
 
   async fetch () {
-    const { items, use_platform = 'mall' } = this.$router.params
+    const { items, is_checkout, cart_type, use_platform = 'mall' } = this.$router.params
 
     const params = {
       items: JSON.parse(items),
       use_platform,
       page_type: 'picker',
-      valid: true
+      valid: true,
+      is_checkout,
+      cart_type
     }
 
     const couponsData = await api.cart.coupons(params)
