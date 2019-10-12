@@ -43,6 +43,21 @@ export default class GoodsItem extends Component {
     }
     const img = info.img || info.image_default_id
 
+    let promotion_activity = null
+    if( info.promotion_activity && info.promotion_activity.length > 1 ) {
+      info.promotion_activity.map(tag_item => {
+        if(tag_item.tag_type === 'single_group' || tag_item.tag_type === 'normal' || tag_item.tag_type === 'limited_time_sale') {
+          promotion_activity = tag_item.tag_type
+          return
+        }
+      })
+    } else if( info.promotion_activity && info.promotion_activity.length === 1 ) {
+      promotion_activity = info.promotion_activity[0].tag_type
+    } else {
+      promotion_activity = null
+    }
+    
+
     return (
       <View className={classNames('goods-item', 'classes')}>
         <View className='goods-item__hd'>
@@ -53,7 +68,8 @@ export default class GoodsItem extends Component {
           onClick={onClick}
         >
           <View
-            className='goods-item__img-wrap'>
+            className='goods-item__img-wrap'
+          >
             <QnImg
               img-class='goods-item__img'
               src={img}
@@ -63,6 +79,20 @@ export default class GoodsItem extends Component {
             />
           </View>
           <View className='goods-item__cont'>
+            {
+              promotion_activity !== null 
+              ? <View>
+                  <Text className={promotion_activity === 'single_group' ? 'goods-item__tag goods-item__group' : 'goods-item__tag'}>
+                  {promotion_activity === 'single_group' ? '团购' : ''}
+                  {promotion_activity === 'full_minus' ? '满减' : ''}
+                  {promotion_activity === 'full_discount' ? '满折' : ''}
+                  {promotion_activity === 'full_gift' ? '满赠' : ''}
+                  {promotion_activity === 'normal' ? '秒杀' : ''}
+                  {promotion_activity === 'limited_time_sale' ? '限时特惠' : ''}
+                  </Text>
+                </View>
+              : null
+            }
             <View>
               <Text className='goods-item__title'>{info.title}</Text>
               <Text className='goods-item__desc'>{info.desc}</Text>

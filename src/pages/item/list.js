@@ -125,6 +125,7 @@ export default class List extends Component {
       item_id: 'item_id',
       title: 'itemName',
       desc: 'brief',
+      promotion_activity: 'promotion_activity',
       price: ({ price }) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
@@ -465,8 +466,8 @@ export default class List extends Component {
 			<View className='page-goods-list'>
 				<View className='goods-list__toolbar'>
 				<SearchBar
-            onConfirm={this.handleConfirm.bind(this)}
-          />
+  onConfirm={this.handleConfirm.bind(this)}
+				/>
           {
             tagsList.length &&
               <TagsBar
@@ -494,7 +495,7 @@ export default class List extends Component {
                 onColumnChange={this.bindMultiPickerColumnChange}
                 value={multiIndex}
                 range={areaList}
-							>
+              >
 								<View className='icon-periscope'></View>
 								<Text>{info.city && info.city.label || '产地'}</Text>
 							</Picker>
