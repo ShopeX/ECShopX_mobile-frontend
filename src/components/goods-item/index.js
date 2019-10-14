@@ -43,16 +43,18 @@ export default class GoodsItem extends Component {
     }
     const img = info.img || info.image_default_id
 
+    console.log(info.promotion_activity_tag, 46)
+
     let promotion_activity = null
-    if( info.promotion_activity && info.promotion_activity.length > 1 ) {
-      info.promotion_activity.map(tag_item => {
+    if( info.promotion_activity_tag && info.promotion_activity_tag.length > 1 ) {
+      info.promotion_activity_tag.map(tag_item => {
         if(tag_item.tag_type === 'single_group' || tag_item.tag_type === 'normal' || tag_item.tag_type === 'limited_time_sale') {
           promotion_activity = tag_item.tag_type
           return
         }
       })
-    } else if( info.promotion_activity && info.promotion_activity.length === 1 ) {
-      promotion_activity = info.promotion_activity[0].tag_type
+    } else if( info.promotion_activity_tag && info.promotion_activity_tag.length === 1 ) {
+      promotion_activity = info.promotion_activity_tag[0].tag_type
     } else {
       promotion_activity = null
     }

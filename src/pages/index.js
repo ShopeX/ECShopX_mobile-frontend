@@ -168,6 +168,7 @@ export default class HomeIndex extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
+      promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
@@ -259,12 +260,12 @@ export default class HomeIndex extends Component {
             />
         }
 				<ScrollView
-          className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}
-          scrollTop={scrollTop}
-          onScroll={this.handleScroll}
-          onScrollToLower={this.nextPage}
-          scrollY
-        >
+  className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}
+  scrollTop={scrollTop}
+  onScroll={this.handleScroll}
+  onScrollToLower={this.nextPage}
+  scrollY
+				>
           <View className='wgts-wrap__cont'>
             <HomeWgts
               wgts={wgts}
@@ -325,7 +326,7 @@ export default class HomeIndex extends Component {
         />
         {
           isShowAddTip ? <View className='add_tip'>
-            <View class="tip-text">点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺</View>
+            <View class='tip-text'>点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺</View>
             <View className='icon-close icon-view' onClick={this.handleClickCloseAddTip.bind(this)}> </View>
           </View> : null
         }

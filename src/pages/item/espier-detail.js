@@ -238,6 +238,7 @@ export default class Detail extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
+      promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => { return (price/100).toFixed(2)},
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
@@ -681,10 +682,10 @@ export default class Detail extends Component {
           {
             !info.nospec && sixSpecImgsDict.length && info.is_show_specimg
               ? <ImgSpec
-                  info={sixSpecImgsDict}
-                  current={currentImgs}
-                  onClick={this.handleSepcImgClick}
-                />
+                info={sixSpecImgsDict}
+                current={currentImgs}
+                onClick={this.handleSepcImgClick}
+              />
               : null
           }
 
@@ -734,7 +735,7 @@ export default class Detail extends Component {
                     </View>
                 }
                 <AtCountdown
-                  className="countdown__time"
+                  className='countdown__time'
                   isShowDay
                   day={timer.dd}
                   hours={timer.hh}
@@ -753,7 +754,8 @@ export default class Detail extends Component {
               </View>
               <View
                 className='goods-share__wrap'
-                onClick={this.handleShare.bind(this)}>
+                onClick={this.handleShare.bind(this)}
+              >
                 <View className='icon-share'></View>
                 <View className='share-label'>分享</View>
               </View>
@@ -762,8 +764,8 @@ export default class Detail extends Component {
             {
               info.vipgrade_guide_title
                 ? <VipGuide
-                    info={info.vipgrade_guide_title}
-                  />
+                  info={info.vipgrade_guide_title}
+                />
                 : null
             }
 
@@ -780,10 +782,10 @@ export default class Detail extends Component {
                       {
                         info.market_price
                           ? <Price
-                              lineThrough
-                              unit='cent'
-                              value={info.market_price}
-                            />
+                            lineThrough
+                            unit='cent'
+                            value={info.market_price}
+                          />
                           : null
                       }
                     </View>
@@ -838,11 +840,11 @@ export default class Detail extends Component {
           {
             promotion_activity && promotion_activity.length > 0
               ? <ActivityPanel
-                  info={promotion_activity}
-                  isOpen={showPromotions}
-                  onClick={this.handlePromotionClick.bind(this)}
-                  onClose={() => this.setState({ showPromotions: false })}
-                />
+                info={promotion_activity}
+                isOpen={showPromotions}
+                onClick={this.handlePromotionClick.bind(this)}
+                onClose={() => this.setState({ showPromotions: false })}
+              />
               : null
           }
 
@@ -1016,16 +1018,16 @@ export default class Detail extends Component {
 
         {
           showPoster &&
-            <View className="poster-modal">
-              <Image className="poster" src={poster} mode="widthFix" />
-              <View className="view-flex view-flex-middle">
-                <View className="icon-close poster-close-btn" onClick={this.handleHidePoster.bind(this)}></View>
-                <View className="icon-download poster-save-btn" onClick={this.handleSavePoster.bind(this)}>保存至相册</View>
+            <View className='poster-modal'>
+              <Image className='poster' src={poster} mode='widthFix' />
+              <View className='view-flex view-flex-middle'>
+                <View className='icon-close poster-close-btn' onClick={this.handleHidePoster.bind(this)}></View>
+                <View className='icon-download poster-save-btn' onClick={this.handleSavePoster.bind(this)}>保存至相册</View>
               </View>
             </View>
         }
 
-        <Canvas className="canvas" canvas-id="myCanvas"></Canvas>
+        <Canvas className='canvas' canvas-id='myCanvas'></Canvas>
 
         <SpToast />
       </View>

@@ -125,7 +125,7 @@ export default class List extends Component {
       item_id: 'item_id',
       title: 'itemName',
       desc: 'brief',
-      promotion_activity: 'promotion_activity',
+      promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
@@ -461,6 +461,7 @@ export default class List extends Component {
       curTagId,
 			info
     } = this.state
+    console.log(list, 135)
 
 		return (
 			<View className='page-goods-list'>

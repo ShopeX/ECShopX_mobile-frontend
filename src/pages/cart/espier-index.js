@@ -103,6 +103,7 @@ export default class CartIndex extends Component {
     const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
+      promotion_activity_tag: 'promotion_activity',
       price: ({price}) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
@@ -401,9 +402,9 @@ export default class CartIndex extends Component {
         />
         {
           !S.getAuthToken()
-            ? <View className="login-header">
+            ? <View className='login-header'>
                 <View>授权登录后同步购物车的商品</View>
-                <View className="btn-login" onClick={this.handleLoginClick.bind(this)}>授权登录</View>
+                <View className='btn-login' onClick={this.handleLoginClick.bind(this)}>授权登录</View>
               </View>
             : null
         }
@@ -433,7 +434,7 @@ export default class CartIndex extends Component {
                   <View
                     className='cart-list__shop'
                     key={shopIndex}
-									>
+                  >
                     {
                       shopCart.shopInfo.shop_name
   										? <View className='shop__name'>
@@ -450,13 +451,13 @@ export default class CartIndex extends Component {
 
 													return activityGroup.list.length > 0 && (
 														<View
-															className='cart-group'
-															key={shopCart.shopInfo.shop_id}
+  className='cart-group'
+  key={shopCart.shopInfo.shop_id}
 														>
 															{activity && (
 																<View className='cart-group__activity'>
 																	<View
-																		className='cart-group__activity-item'
+  className='cart-group__activity-item'
 																	>
 																		<Text className='cart-group__activity-label'>{activity.activity_tag}</Text>
 																		<Text>{activity.activity_name}</Text>
@@ -469,33 +470,33 @@ export default class CartIndex extends Component {
 																	return (
 																		<View className='cart-group__item-wrap'>
 																			<CartItem
-																				key={item.cart_id}
-																				info={item}
-																				onNumChange={this.handleQuantityChange.bind(this, shopCart.shopInfo.shop_id,item)}
-																				onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
-																				onClickImgAndTitle={this.handleClickToDetail.bind(this, item.item_id)}
+  key={item.cart_id}
+  info={item}
+  onNumChange={this.handleQuantityChange.bind(this, shopCart.shopInfo.shop_id,item)}
+  onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
+  onClickImgAndTitle={this.handleClickToDetail.bind(this, item.item_id)}
 																			>
 																				<View className='cart-item__act'>
 																					<SpCheckbox
-																						key={item.item_id}
-																						checked={item.is_checked}
-																						onChange={this.handleSelectionChange.bind(this,shopIndex, item.cart_id)}
+  key={item.item_id}
+  checked={item.is_checked}
+  onChange={this.handleSelectionChange.bind(this,shopIndex, item.cart_id)}
 																					/>
 																					<View
-																						className='in-icon in-icon-close'
-																						onClick={this.handleDelect.bind(this, item.cart_id,shopIndex)}
+  className='in-icon in-icon-close'
+  onClick={this.handleDelect.bind(this, item.cart_id,shopIndex)}
 																					/>
 																				</View>
 																			</CartItem>
 																			{item.packages && item.packages.length && (
-																				<View class="cart-item__packages">
+																				<View class='cart-item__packages'>
 																				{item.packages.map(pack => {
 																					return (
 																						<CartItem
-																							isDisabled
-																							num={true}
-                                              key={pack.package_id}
-																						  info={pack}
+  isDisabled
+  num
+  key={pack.package_id}
+  info={pack}
 																						></CartItem>
 																					)
 																				})}
@@ -512,13 +513,13 @@ export default class CartIndex extends Component {
 																		{activity.gifts.map(gift => {
 																			return (
 																				<View
-																					className='gift-item'
-																					key={gift.item_id}
+  className='gift-item'
+  key={gift.item_id}
 																				>
 																					<Image
-																						className='gift-item__img'
-																						src={gift.pics[0]}
-																						mode='aspectFill'
+  className='gift-item__img'
+  src={gift.pics[0]}
+  mode='aspectFill'
 																					/>
 																					<View className='gift-item__title'>{gift.item_name}</View>
 																					<Text className='gift-item__num'>x{gift.gift_num}</Text>
@@ -538,8 +539,8 @@ export default class CartIndex extends Component {
       									<View className='cart-toolbar__hd'>
       										<SpCheckbox
       											// checked={this.isTotalChecked[shopIndex]}
-      											checked={checked_all}
-      											onChange={this.handleAllSelect.bind(this,!checked_all,shopIndex)}
+        checked={checked_all}
+        onChange={this.handleAllSelect.bind(this,!checked_all,shopIndex)}
       										>全选</SpCheckbox>
       									</View>
       										{
@@ -550,33 +551,33 @@ export default class CartIndex extends Component {
       																<View className='cart-total__discount'>
       																	<Text className='cart-total__hint'>优惠：</Text>
       																	<Price
-      																		primary
-      																		value={-1 * Number(shopCart.shopInfo.discount_fee )}
-      																		unit='cent'
+        primary
+        value={-1 * Number(shopCart.shopInfo.discount_fee )}
+        unit='cent'
       																	/>
       																</View>
       															)}
       															<View className='cart-total__total'>
       																<Text className='cart-total__hint'>总计：</Text>
       																<Price
-      																	primary
-      																	value={Number(shopCart.shopInfo.total_fee)}
-      																	unit='cent'
+        primary
+        value={Number(shopCart.shopInfo.total_fee)}
+        unit='cent'
       																/>
       															</View>
       														</View>
       														<AtButton
-      															type='primary'
-      															className='btn-checkout'
-      															disabled={shopCart.shopInfo.cart_total_count <= 0}
-      															onClick={this.handleCheckout.bind(this,shopCart.shopInfo.shop_id)}
+        type='primary'
+        className='btn-checkout'
+        disabled={shopCart.shopInfo.cart_total_count <= 0}
+        onClick={this.handleCheckout.bind(this,shopCart.shopInfo.shop_id)}
       														>{isDrug ? '立即预约' : '结算'}</AtButton>
       													</View>
       												: <View className='cart-toolbar__bd'>
       														<AtButton
-      															type='primary'
-      															className='btn-checkout'
-      															onClick={this.handleDelect}
+        type='primary'
+        className='btn-checkout'
+        onClick={this.handleDelect}
       														>删除</AtButton>
       													</View>
       										}
