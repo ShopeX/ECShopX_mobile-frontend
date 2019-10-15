@@ -29,7 +29,7 @@ export default class CouponHome extends Component {
       end_date: 1,
       item_id: this.$router.params ? (this.$router.params.item_id ? this.$router.params.item_id : '') : ''
     }
-    const { list, total_count: { total: total } } = await api.member.homeCouponList(params)
+    const { list, pagers: { total: total } } = await api.member.homeCouponList(params)
     const nList = pickBy(list, {
       status: 'status',
       reduce_cost: 'reduce_cost',
@@ -52,23 +52,28 @@ export default class CouponHome extends Component {
         item.getted = 1
       } else if(item.quantity - item.get_num <= 0) {
         item.getted = 2
+      } else {
+        item.getted = 0
       }
+
     })
 
     this.setState({
       list: [...this.state.list, ...nList],
     })
 
+
     return { total }
   }
 
-  handleGetCard = async (cardId, idx) => {
+  handleGetCard = async (card_item, idx) => {
     const { list } = this.state
+
     if(list[idx].getted === 2 || list[idx].getted === 1) {
       return
     }
     const query = {
-      card_id: cardId
+      card_id: card_item.$original.card_id
     }
     try {
       const data = await api.member.homeCouponGet(query)
@@ -114,7 +119,10 @@ export default class CouponHome extends Component {
                     info={item}
                     key={item.card_id}
                     renderFooter={
-                      <Text className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`} onClick={this.handleGetCard.bind(this, item.card_id, idx)}>{item.getted === 1 ? '已领取' : ''}{item.getted === 2 ? '已领完' : ''}{(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}</Text>
+                      <Text 
+                        className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`} 
+                        onClick={this.handleGetCard.bind(this, item, idx)}
+                      >{item.getted === 1 ? '已领取' : ''}{item.getted === 2 ? '已领完' : ''}{(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}</Text>
                     }
                   >
                   </CouponItem>

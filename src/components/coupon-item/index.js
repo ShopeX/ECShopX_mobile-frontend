@@ -38,7 +38,7 @@ export default class CouponItem extends Component {
   }
 
   render () {
-    const { info, isShowCheckout, isChoosed, onClick } = this.props
+    const { info, isShowCheckout, isChoosed, onClick, renderFooter } = this.props
     const { isItemChecked } = this.state
 
     if (!info) {
@@ -116,6 +116,7 @@ export default class CouponItem extends Component {
             {info.begin_date && info.end_date && (
               <View className='coupon-item___time'><Text>{info.begin_date} ~ {info.end_date}</Text></View>
             )}
+            {this.props.renderFooter}
             <View className='radius-view radius-right-top'> </View>
             <View className='radius-view radius-right-bottom'> </View>
           </View>
