@@ -26,15 +26,16 @@ export default class CouponHome extends Component {
   async fetch (params) {
     params = {
       ...params,
-      end_date: 1
+      end_date: 1,
+      item_id: this.$router.params ? (this.$router.params.item_id ? this.$router.params.item_id : '') : ''
     }
-    const { list, pagers: { total: total } } = await api.member.homeCouponList(params)
+    const { list, total_count: { total: total } } = await api.member.homeCouponList(params)
     const nList = pickBy(list, {
       status: 'status',
       reduce_cost: 'reduce_cost',
       least_cost: 'least_cost',
-      begin_date: 'begin_date',
-      end_date: ({ end_date }) => formatTime(end_date * 1000, 'YYYY-MM-DD HH:mm:ss'),
+      begin_date: ({ begin_date }) => formatTime(begin_date * 1000),
+      end_date: ({ end_date }) => formatTime(end_date * 1000),
       fixed_term: 'fixed_term',
       card_type: 'card_type',
       tagClass: 'tagClass',
@@ -61,20 +62,11 @@ export default class CouponHome extends Component {
     return { total }
   }
 
-  handleGetCard = (cardId) => {
-    Taro.navigateToMiniProgram({
-      appId: 'wx4721629519a8f25b', // 要跳转的小程序的appid
-      path: `pages/recommend/detail?id=${cardId}`, // 跳转的目标页面
-      extraData: {
-        id: cardId
-      },
-      envVersion: 'trial',
-      success(res) {
-        // 打开成功
-        console.log(res)
-      }
-    })
-    /*const { list } = this.state
+  handleGetCard = async (cardId, idx) => {
+    const { list } = this.state
+    if(list[idx].getted === 2 || list[idx].getted === 1) {
+      return
+    }
     const query = {
       card_id: cardId
     }
@@ -94,7 +86,7 @@ export default class CouponHome extends Component {
       }
     } catch (e) {
 
-    }*/
+    }
 
   }
 
@@ -116,13 +108,16 @@ export default class CouponHome extends Component {
         >
           <View className='coupon-list-ticket'>
             {
-              list.map(item => {
+              list.map((item, idx) => {
                 return (
                   <CouponItem
                     info={item}
-                    key={item.id}
-                    onClickBtn={this.handleGetCard.bind(this)}
-                  />
+                    key={item.card_id}
+                    renderFooter={
+                      <Text className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`} onClick={this.handleGetCard.bind(this, item.card_id, idx)}>{item.getted === 1 ? '已领取' : ''}{item.getted === 2 ? '已领完' : ''}{(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}</Text>
+                    }
+                  >
+                  </CouponItem>
                 )
               })
             }

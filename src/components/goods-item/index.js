@@ -82,7 +82,7 @@ export default class GoodsItem extends Component {
             {
               promotion_activity !== null 
               ? <View>
-                  <Text className={promotion_activity === 'single_group' ? 'goods-item__tag goods-item__group' : 'goods-item__tag'}>
+                  <Text className={(promotion_activity === 'single_group' || promotion_activity === 'limited_time_sale' || promotion_activity === 'normal') ? 'goods-item__tag goods-item__group' : 'goods-item__tag'}>
                   {promotion_activity === 'single_group' ? '团购' : ''}
                   {promotion_activity === 'full_minus' ? '满减' : ''}
                   {promotion_activity === 'full_discount' ? '满折' : ''}

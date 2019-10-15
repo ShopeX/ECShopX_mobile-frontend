@@ -22,77 +22,23 @@
   }
 }
 
-/*.coupon-list-ticket {
-  padding-top: 20px;
-  .coupon-item {
-    min-height:180px;
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    margin: 0 $edge-size $edge-margin;
-    &__name {
-      width:210px;
-      text-align: center;
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      background:linear-gradient(315deg,rgba(255,77,24,1) 0%,rgba(253,130,30,1) 100%);
-    }
-    &__name-not {
-      background:linear-gradient(315deg,rgba(136,136,136,1) 0%,rgba(170,170,170,1) 100%);
-    }
-    &__name:before {
-      content: ' ';
-      width: 0;
-      height: 100%;
-      position: absolute;
-      top: 10px;
-    }
-    &__name:before {
-      border-right: 10px dotted $color-bg-gray;
-      left: -5px;
-    }
-    &___number {
-      font-size: 36px;
-      &_text {
-        font-size: 60px;
-      }
-    }
-    &___info {
-      font-size: 24px;
-      margin: 0 auto;
-    }
-    &__content {
-      background: #fff;
-      font-size: 24px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      border:1px solid #DDDDDD;
-      box-sizing: border-box;
-      padding-left: 20px;
-    }
-    &___description {
-      color: #666;
-      font-size: 24px;
-      display: flex;
-      justify-content: space-between;
-      position: relative;
-    }
-    &___time {
-      font-size: 24px;
-      color: $color-gray-light;
-    }
-    &___used {
-      text-align: right;
-      padding-right: 20px;
-      .btn-receive {
-        color: $color-brand-primary;
-      }
-    }
+.coupon-item___time {
+  font-size: 22px !important;
+  color: #999999 !important;
+}
+
+.coupon-btn {
+  position: absolute;
+  top: 77px;
+  background: $color-brand-primary;
+  color: #ffffff;
+  font-size: 19px;
+  border-radius: 18px;
+  padding: 4px 18px;
+  right: 20px;
+  &__done {
+    background: #c4c4c4;
+    color: #ffffff;
+    opacity: 0.8;
   }
-}*/
+}

@@ -22,7 +22,7 @@ export default class WgtGoodsScroll extends Component {
         url: `/pages/item/seckill-goods-list?seckill_type=limited_time_sale&seckill_id=${seckillId}`
       })
     } else {
-      this.navigateTo({
+      Taro.navigateTo({
         url: `/pages/item/seckill-goods-list?seckill_type=normal&seckill_id=${seckillId}`
       })     
     }
