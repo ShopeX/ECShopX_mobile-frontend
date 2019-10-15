@@ -14,6 +14,20 @@ export default class WgtGoodsScroll extends Component {
     Taro.navigateTo({ url })
   }
 
+  navigateToList = (type, seckillId) => {
+    if(type === 'goods') {
+      this.navigateTo('/pages/item/list')
+    } else if (type === 'limitTimeSale') {
+      Taro.navigateTo({
+        url: `/pages/item/seckill-goods-list?seckill_type=limited_time_sale&seckill_id=${seckillId}`
+      })
+    } else {
+      this.navigateTo({
+        url: `/pages/item/seckill-goods-list?seckill_type=normal&seckill_id=${seckillId}`
+      })     
+    }
+  }
+
   render () {
     const { info } = this.props
     if (!info) {
@@ -32,7 +46,7 @@ export default class WgtGoodsScroll extends Component {
             </View>
             <View
               className='wgt__more'
-              onClick={this.navigateTo.bind(this, '/pages/item/list')}
+              onClick={this.navigateToList.bind(this, config.type, config.seckillId)}
             >
               <View className='three-dot'></View>
             </View>
@@ -57,17 +71,17 @@ export default class WgtGoodsScroll extends Component {
                 )}
                 <View className='thumbnail'>
                   <QnImg
-                    img-class="goods-img"
+                    img-class='goods-img'
                     src={item.imgUrl}
                     mode='aspectFill'
                     width='240'
                     lazyLoad
-									/>
+                  />
 								</View>
 								{
 									config.showPrice
-									&& <View className="goods-price">
-											<Text className="cur">¥</Text>{item.price ? item.price/100 : '0.00'}
+									&& <View className='goods-price'>
+											<Text className='cur'>¥</Text>{item.price ? item.price/100 : '0.00'}
 										</View>
 								}
               </View>

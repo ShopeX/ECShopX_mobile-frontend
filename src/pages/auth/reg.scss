@@ -3,6 +3,7 @@
 .auth-reg {
   height: 100vh;
   padding-top: 92px;
+  position: relative;
   box-sizing: border-box;
   background: $color-brand-primary-text;
   &__form {
@@ -50,4 +51,36 @@
 }
 .pay-rule-style {
   padding: 30px;
+}
+
+.checkBoxPanel {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background: #ffffff;
+  height: 600px;
+  overflow: scroll;
+  z-index: $z-index-modal;
+  &-content {
+    padding: 40px;
+  }
+  &-item {
+    height: 50px;
+    line-height: 50px;
+  }
+  .panel-btns {
+    box-shadow: 0 2px 2px 2px #808080;
+    .panel-btn {
+      height: 80px;
+      line-height: 80px;
+      display: inline-block;
+      text-align: center;
+      width: 50%;
+    }
+    .require-btn {
+      background: $color-price;
+      color: #ffffff;
+    }
+  }
 }

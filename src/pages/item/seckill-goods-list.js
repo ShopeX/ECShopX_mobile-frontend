@@ -37,7 +37,8 @@ export default class SeckillGoodsList extends Component {
     //   }
     // }, () => {
     //   this.nextPage()
-		// })
+    // })
+    console.log(this.$router.params, 41)
 		this.nextPage()
   }
 
@@ -67,6 +68,7 @@ export default class SeckillGoodsList extends Component {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       seckill_id: this.$router.params.seckill_id,
+      type: this.$router.params.seckill_type,
       page,
       pageSize
     }
@@ -119,11 +121,11 @@ export default class SeckillGoodsList extends Component {
                     timer &&
                       <View>
           							<AtCountdown
-          							  isShowDay
-          								day={timer.dd}
+            isShowDay
+            day={timer.dd}
             							hours={timer.hh}
-          								minutes={timer.mm}
-          								seconds={timer.ss}
+            minutes={timer.mm}
+            seconds={timer.ss}
           							/>
                         {status === 'in_the_notice' && <Text>后开始</Text>}
           							{status === 'in_sale' && <Text>后结束</Text>}
@@ -137,10 +139,10 @@ export default class SeckillGoodsList extends Component {
                 return (
                   <GoodsItem
                     key={item.item_id}
-										info={item}
-										showFav={false}
+                    info={item}
+                    showFav={false}
                     onClick={() => this.handleClickItem(item.item_id)}
-									>
+                  >
 									<View className='seckill-goods__list-btn'>
                     {status === 'in_the_notice' && <Text>去看看</Text>}
                     {status === 'in_sale' && <Text>马上抢</Text>}

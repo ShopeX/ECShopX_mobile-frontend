@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Picker, Image } from '@tarojs/components'
 import { connect } from "@tarojs/redux";
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { SpToast, Timer, NavBar, FormIdCollector } from '@/components'
+import { SpToast, Timer, NavBar, FormIdCollector, SpCheckbox } from '@/components'
 import { classNames, isString } from '@/utils'
 import S from '@/spx'
 import api from '@/api'
@@ -24,7 +24,9 @@ export default class Reg extends Component {
       list: [],
       imgVisible: false,
       imgInfo: {},
-      isHasValue: false
+      isHasValue: false,
+      option_list: [],
+      showCheckboxPanel: false
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -152,7 +154,7 @@ export default class Reg extends Component {
   }
 
   handleChange = (name, val) => {
-    // console.log(name, val, 126)
+    console.log(name, val, 126)
     const { info, list } = this.state
     info[name] = val
     if(name === 'mobile') {
@@ -163,7 +165,9 @@ export default class Reg extends Component {
         })
       }
     }
-    if(!isString(val)) {
+    
+    if(!isString(val) && name !== 'habbit') {
+      console.log(val, 169)
       list.map(item => {
         item.key === name ? info[name] = val.detail.value : null
         if(name === 'birthday') {
@@ -175,6 +179,15 @@ export default class Reg extends Component {
     } else {
       list.map(item => {
         item.key === name ? item.value = val : null
+        if(name === 'habbit') {
+          let new_option_list = []
+          val.map(option_item => {
+            if(option_item.ischecked === true) {
+              new_option_list.push(option_item.name)
+            }
+          })
+          item.key === name ? item.value = new_option_list.join("，") : null
+        }
       })
     }
     this.setState({ list });
@@ -274,8 +287,44 @@ export default class Reg extends Component {
     })
   }
 
+  showCheckboxPanel = (options, type) => {
+    this.setState({
+      option_list: options,
+      showCheckboxPanel: true
+    })
+    this.type = type
+  }
+
+  // 多选结果确认
+  btnClick = (btn_type) => {
+    this.setState({
+      showCheckboxPanel: false
+    })
+    const { option_list } = this.state
+    if(btn_type === 'cancel') {
+      // let new_type = this.type
+      option_list.map(item => {
+        item.ischecked = false
+      })
+    } 
+    this.handleChange(this.type, option_list)
+  }
+
+  handleSelectionChange = (name) => {
+    const { option_list } = this.state
+    option_list.map(item => {
+      if(item.name === name) {
+        item.ischecked = !item.ischecked
+      }
+    })
+    this.setState({
+      option_list
+    })
+  }
+
   render () {
-    const { info, isVisible, isHasValue, list, imgVisible, imgInfo } = this.state
+    const { info, isVisible, isHasValue, list, imgVisible, imgInfo, option_list, showCheckboxPanel } = this.state
+
     return (
       <View className='auth-reg'>
         <NavBar
@@ -373,6 +422,20 @@ export default class Reg extends Component {
                 return (
                   <View key={index}>
                     {
+                      item.key === 'habbit'
+                        ? <View className='page-section'>
+                            <AtInput
+                              key={index}
+                              title={item.name}
+                              name={`${item.key}`}
+                              placeholder={`请选择${item.name}`}
+                              value={item.value}
+                              onFocus={this.showCheckboxPanel.bind(this, item.items, item.key)}
+                            />
+                          </View>
+                        : null
+                    }
+                   {
                       item.items
                         ? <View className='page-section'>
                           <View key={index}>
@@ -409,7 +472,7 @@ export default class Reg extends Component {
                             ref={(input) => { this.textInput = input }}
                           />
                         </View>
-                    }
+                    } 
                   </View>
                 )
               })
@@ -420,9 +483,9 @@ export default class Reg extends Component {
             {
               process.env.TARO_ENV === 'weapp'
                 ? <FormIdCollector
-                    sync
-                  >
-                    <AtButton className="submit-btn" type='primary' formType='submit'>同意协议并注册</AtButton>
+                  sync
+                >
+                    <AtButton className='submit-btn' type='primary' formType='submit'>同意协议并注册</AtButton>
                     <AtButton type='default' onClick={this.handleBackHome.bind(this)}>暂不注册，随便逛逛</AtButton>
                   </FormIdCollector>
                 : <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>同意协议并注册</AtButton>
@@ -438,8 +501,34 @@ export default class Reg extends Component {
             </View>
           </View>
         </AtForm>
-
-        <SpToast />
+        {
+          showCheckboxPanel 
+            ? <View className='checkBoxPanel'>
+                <View className='checkBoxPanel-content'>
+                  {
+                    option_list.map((item, index) => {
+                      return (
+                        <View 
+                          className='checkBoxPanel-item'
+                          key={index}
+                        >
+                          <SpCheckbox
+                            checked={item.ischecked}
+                            onChange={this.handleSelectionChange.bind(this, item.name)}
+                          >{item.name}</SpCheckbox>
+                        </View>
+                      )
+                    })
+                  }
+                </View>
+                <View className='panel-btns'>
+                  <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>取消</View>
+                  <View className='panel-btn require-btn' onClick={this.btnClick.bind(this, 'require')}>确定</View>
+                </View>
+              </View>   
+          : null
+        }                  
+        <SpToast />                  
       </View>
     )
   }
