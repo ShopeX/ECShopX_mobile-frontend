@@ -161,8 +161,8 @@ export default class Detail extends Component {
         hasStock = info.activity_info.store && info.activity_info.store > 0
         startActivity = info.activity_info.show_status === 'noend'
       }
-      if (info.activity_type === 'seckill') {
-        marketing = 'seckill'
+      if (info.activity_type === 'seckill' || info.activity_type === 'limited_time_sale') {
+        marketing = info.activity_type
         timer = calcTimer(info.activity_info.last_seconds)
         hasStock = info.activity_info.item_total_store && info.activity_info.item_total_store > 0
         startActivity = info.activity_info.status === 'in_sale'
@@ -173,7 +173,7 @@ export default class Detail extends Component {
       title: info.item_name
     })
 
-    if (marketing === 'group' || marketing === 'seckill') {
+    if (marketing === 'group' || marketing === 'seckill' || marketing === 'limited_time_sale') {
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
         backgroundColor: '#0b4137',
@@ -712,23 +712,30 @@ export default class Detail extends Component {
                     value={info.price}
                   />
                   {
-                    marketing === 'group' &&
+                    marketing !== 'normal' &&
                       <View className='goods-prices__ft'>
-                        <Text className='goods-prices__type'>团购</Text>
-                        <Text className='goods-prices__rule'>{info.activity_info.person_num}人团</Text>
-                      </View>
-                  }
-                  {
-                    marketing === 'seckill' &&
-                      <View className='goods-prices__ft'>
-                        <Text className='goods-prices__type'>秒杀</Text>
+                        {
+                          marketing === 'group' &&
+                            <View>
+                              <Text className='goods-prices__type'>团购</Text>
+                              <Text className='goods-prices__rule'>{info.activity_info.person_num}人团</Text>
+                            </View>
+                        }
+                        {
+                          marketing === 'seckill' &&
+                            <Text className='goods-prices__type'>秒杀</Text>
+                        }
+                        {
+                          marketing === 'limited_time_sale' &&
+                            <Text className='goods-prices__type'>限时特惠</Text>
+                        }
                       </View>
                   }
                 </View>
               </View>
               <View className='goods-timer__bd'>
                 {
-                  marketing === 'seckill' &&
+                  (marketing === 'seckill' || marketing === 'limited_time_sale') &&
                     <View>
                       {info.activity_info.status === 'in_the_notice' && <Text className='goods-timer__label'>距开始还剩</Text>}
         							{info.activity_info.status === 'in_sale' && <Text className='goods-timer__label'>距结束还剩</Text>}
@@ -844,9 +851,9 @@ export default class Detail extends Component {
               </View>
           }
 
-          <SpCell 
-            className='goods-sec-specs' 
-            title='领券' 
+          <SpCell
+            className='goods-sec-specs'
+            title='领券'
             isLink
             onClick={this.handleCouponClick.bind(this)}
           >
@@ -917,12 +924,12 @@ export default class Detail extends Component {
               />
           }
 
-          {/*
+          {
             !isArray(store) &&
               <StoreInfo
                 info={store}
               />
-          */}
+          }
 
           {
             isArray(desc)
