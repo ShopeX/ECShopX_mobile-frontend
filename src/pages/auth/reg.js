@@ -3,7 +3,7 @@ import { View, Text, Picker, Image } from '@tarojs/components'
 import { connect } from "@tarojs/redux";
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpToast, Timer, NavBar, FormIdCollector, SpCheckbox } from '@/components'
-import { classNames, isString } from '@/utils'
+import { classNames, isString, isArray } from '@/utils'
 import S from '@/spx'
 import api from '@/api'
 
@@ -78,6 +78,7 @@ export default class Reg extends Component {
         }
         arr.push({
           key: key,
+          element_type: res[key].element_type,
           name: res[key].name,
           is_required: res[key].is_required,
           items: res[key].items ? res[key].items : null
@@ -154,7 +155,6 @@ export default class Reg extends Component {
   }
 
   handleChange = (name, val) => {
-    console.log(name, val, 126)
     const { info, list } = this.state
     info[name] = val
     if(name === 'mobile') {
@@ -166,8 +166,7 @@ export default class Reg extends Component {
       }
     }
     
-    if(!isString(val) && name !== 'habbit') {
-      console.log(val, 169)
+    if(!isString(val) && !isArray(val)) {
       list.map(item => {
         item.key === name ? info[name] = val.detail.value : null
         if(name === 'birthday') {
@@ -176,28 +175,22 @@ export default class Reg extends Component {
           item.key === name ? (item.items ? item.value = item.items[val.detail.value] : item.value = val.detail.value) : null
         }
       })
+    } else if(isArray(val)) {
+      list.map(item => {
+        let new_option_list = []
+        val.map(option_item => {
+          if(option_item.ischecked === true) {
+            new_option_list.push(option_item.name)
+          }
+        })
+        item.key === name ? item.value = new_option_list.join("，") : null
+      })
     } else {
       list.map(item => {
         item.key === name ? item.value = val : null
-        if(name === 'habbit') {
-          let new_option_list = []
-          val.map(option_item => {
-            if(option_item.ischecked === true) {
-              new_option_list.push(option_item.name)
-            }
-          })
-          item.key === name ? item.value = new_option_list.join("，") : null
-        }
       })
     }
-    this.setState({ list });
-    // if(name === 'sex') {
-    //   if(val.detail.value === 0) {
-    //     info[name] = 1
-    //   } else {
-    //     info[name] = 2
-    //   }
-    // }
+    this.setState({ list })
   }
 
   handleClickIconpwd = () => {
@@ -422,7 +415,50 @@ export default class Reg extends Component {
                 return (
                   <View key={index}>
                     {
-                      item.key === 'habbit'
+                      item.element_type === 'input'
+                        ? <View key={index}>
+                            <AtInput
+                              key={index}
+                              title={item.name}
+                              name={`${item.key}`}
+                              placeholder={`请输入${item.name}`}
+                              value={item.value}
+                              onFocus={this.handleErrorToastClose}
+                              onChange={this.handleChange.bind(this, `${item.key}`)}
+                              ref={(input) => { this.textInput = input }}
+                            />
+                          </View>
+                        : null
+                    }
+                    {
+                      item.element_type === 'select'
+                        ? <View className='page-section'>
+                            <View key={index}>
+                              {
+                                item.key === 'birthday'
+                                  ? <Picker mode='date' onChange={this.handleChange.bind(this, `${item.key}`)}>
+                                    <View className='picker'>
+                                      <View className='picker__title'>{item.name}</View>
+                                      <Text
+                                        className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
+                                      >{item.value ? item.value : `请选择${item.name}`}</Text>
+                                    </View>
+                                  </Picker>
+                                  : <Picker mode='selector' range={item.items} key={index} data-item={item} onChange={this.handleChange.bind(this, `${item.key}`)}>
+                                    <View className='picker'>
+                                      <View className='picker__title'>{item.name}</View>
+                                      <Text
+                                        className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
+                                      >{item.value ? item.value : `请选择${item.name}`}</Text>
+                                    </View>
+                                  </Picker>
+                              }
+                            </View>
+                          </View>
+                        : null
+                    }
+                    {
+                      item.element_type === 'checkbox'
                         ? <View className='page-section'>
                             <AtInput
                               key={index}
@@ -435,44 +471,6 @@ export default class Reg extends Component {
                           </View>
                         : null
                     }
-                   {
-                      item.items
-                        ? <View className='page-section'>
-                          <View key={index}>
-                            {
-                              item.key === 'birthday'
-                                ? <Picker mode='date' onChange={this.handleChange.bind(this, `${item.key}`)}>
-                                  <View className='picker'>
-                                    <View className='picker__title'>{item.name}</View>
-                                    <Text
-                                      className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
-                                    >{item.value ? item.value : `请选择${item.name}`}</Text>
-                                  </View>
-                                </Picker>
-                                : <Picker mode='selector' range={item.items} key={index} data-item={item} onChange={this.handleChange.bind(this, `${item.key}`)}>
-                                  <View className='picker'>
-                                    <View className='picker__title'>{item.name}</View>
-                                    <Text
-                                      className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
-                                    >{item.value ? item.value : `请选择${item.name}`}</Text>
-                                  </View>
-                                </Picker>
-                            }
-                          </View>
-                        </View>
-                        : <View key={index}>
-                          <AtInput
-                            key={index}
-                            title={item.name}
-                            name={`${item.key}`}
-                            placeholder={`请输入${item.name}`}
-                            value={item.value}
-                            onFocus={this.handleErrorToastClose}
-                            onChange={this.handleChange.bind(this, `${item.key}`)}
-                            ref={(input) => { this.textInput = input }}
-                          />
-                        </View>
-                    } 
                   </View>
                 )
               })
