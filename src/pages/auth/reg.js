@@ -71,7 +71,7 @@ export default class Reg extends Component {
     Object.keys(res).forEach(key => {
       if(res[key].is_open) {
         if(key === 'sex'){
-          res[key].items = ['男', '女']
+          res[key].items = ['未知', '男', '女']
         }
         if(key === 'birthday'){
           res[key].items = []
@@ -191,13 +191,13 @@ export default class Reg extends Component {
       })
     }
     this.setState({ list });
-    if(name === 'sex') {
-      if(val.detail.value === 0) {
-        info[name] = 1
-      } else {
-        info[name] = 2
-      }
-    }
+    // if(name === 'sex') {
+    //   if(val.detail.value === 0) {
+    //     info[name] = 1
+    //   } else {
+    //     info[name] = 2
+    //   }
+    // }
   }
 
   handleClickIconpwd = () => {

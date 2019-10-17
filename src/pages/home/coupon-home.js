@@ -69,6 +69,7 @@ export default class CouponHome extends Component {
   handleGetCard = async (card_item, idx) => {
     const { list } = this.state
 
+    // console.log(card_item, idx, 72)
     if(list[idx].getted === 2 || list[idx].getted === 1) {
       return
     }

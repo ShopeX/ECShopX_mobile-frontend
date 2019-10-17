@@ -47,6 +47,7 @@ export default class OrderItem extends Component {
             <View className='order-item__extra'>
               <Text className='order-item__desc'>{info.goods_props}</Text>
               {info.num && <Text className='order-item__num'>数量：{info.num}</Text>}
+              {info.item_spec_desc && <Text className='order-item__desc'>{info.item_spec_desc}</Text>}
             </View>
           )}
         </View>

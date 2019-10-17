@@ -107,6 +107,7 @@ export default class TradeList extends Component {
         item_id: 'item_id',
         pic_path: 'pic',
         title: 'item_name',
+        item_spec_desc: 'item_spec_desc',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
         item_fee: 'item_fee',
         point: 'item_point',
