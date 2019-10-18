@@ -303,7 +303,7 @@ export default class GoodsBuyPanel extends Component {
       if (marketing === 'group') {
         const { groups_activity_id } = info.activity_info
         url += `&type=${marketing}&group_id=${groups_activity_id}`
-      } else if (marketing === 'seckill') {
+      } else if (marketing === 'seckill' || marketing === 'limited_time_sale') {
         const { seckill_id } = info.activity_info
         const { ticket } = await api.item.seckillCheck({ item_id, seckill_id, num }).catch(res => {
           this.setState({
