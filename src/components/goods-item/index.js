@@ -34,29 +34,32 @@ export default class GoodsItem extends Component {
       return null
     }
 
-    let price = '', marketPrice = ''
-    if (isObject(info.price)) {
-      price = info.price.total_price
-    } else {
-      price = Boolean(+info.act_price) ? info.act_price : Boolean(+info.member_price) ? info.member_price : info.price
-      marketPrice = Boolean(+info.act_price) || Boolean(+info.member_price) ? info.price : info.market_price
-    }
     const img = info.img || info.image_default_id
 
-    let promotion_activity = null
+    let promotion_activity = null, act_price = null
     if( info.promotion_activity_tag && info.promotion_activity_tag.length > 1 ) {
       info.promotion_activity_tag.map(tag_item => {
         if(tag_item.tag_type === 'single_group' || tag_item.tag_type === 'normal' || tag_item.tag_type === 'limited_time_sale') {
           promotion_activity = tag_item.tag_type
+          act_price = tag_item.activity_price
           return
         }
       })
     } else if( info.promotion_activity_tag && info.promotion_activity_tag.length === 1 ) {
       promotion_activity = info.promotion_activity_tag[0].tag_type
+      act_price = info.promotion_activity_tag[0].activity_price
     } else {
       promotion_activity = null
+      act_price = null
     }
-    
+    act_price = (act_price/100).toFixed(2)
+    let price = '', marketPrice = ''
+    if (isObject(info.price)) {
+      price = info.price.total_price
+    } else {
+      price = Boolean(+act_price) ? act_price : Boolean(+info.member_price) ? info.member_price : info.price
+      marketPrice = Boolean(+act_price) || Boolean(+info.member_price) ? info.price : info.market_price
+    }
 
     return (
       <View className={classNames('goods-item', 'classes')}>
@@ -80,7 +83,7 @@ export default class GoodsItem extends Component {
           </View>
           <View className='goods-item__cont'>
             {
-              promotion_activity !== null 
+              promotion_activity !== null
               ? <View>
                   <Text className={(promotion_activity === 'single_group' || promotion_activity === 'limited_time_sale' || promotion_activity === 'normal') ? 'goods-item__tag goods-item__group' : 'goods-item__tag'}>
                   {promotion_activity === 'single_group' ? '团购' : ''}
