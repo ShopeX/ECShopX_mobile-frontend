@@ -282,9 +282,9 @@ export default class TradeDetail extends Component {
   }
 
   handleClickDelivery = () => {
-    /*Taro.navigateTo({
-      url: '/pages/trade/delivery-info?order_id='+this.state.info.tid
-    })*/
+    Taro.navigateTo({
+      url: `/pages/trade/delivery-info?order_type=${this.state.info.order_type}&order_id=${this.state.info.tid}&delivery_code=${this.state.info.delivery_code}&delivery_corp=${this.state.info.delivery_corp}`
+    })
   }
 
   handleClickCopy = (val) => {
@@ -453,10 +453,10 @@ export default class TradeDetail extends Component {
             ? <View className='ziti-content'>
                 {
                   info.status === 'WAIT_SELLER_SEND_GOODS' && info.ziti_status === 'PENDING' &&
-                    <Image className="ziti-qrcode" src={ qrcode } />
+                    <Image className='ziti-qrcode' src={qrcode} />
                 }
-                <View className="ziti-text">
-                  <View className="ziti-text-name">{ ziti.store_name }</View>
+                <View className='ziti-text'>
+                  <View className='ziti-text-name'>{ ziti.store_name }</View>
                   <View>营业时间：{ ziti.hour }</View>
                   <View>{ ziti.store_address }</View>
                 </View>

@@ -149,6 +149,10 @@ export default class HomeIndex extends Component {
       if(info.config) {
         info.config.map(item => {
           if(item.name === 'setting' && item.config.faverite) {
+            this.resetPage()
+            this.setState({
+              likeList: []
+            })
             this.nextPage()
           }
         })
@@ -157,6 +161,7 @@ export default class HomeIndex extends Component {
   }
 
   async fetch (params) {
+    console.log(params, 160)
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -239,6 +244,11 @@ export default class HomeIndex extends Component {
     })
   }
 
+  onScrollToUpper = () => {
+    this.fetchInfo()
+    console.log(243)
+  }
+
   render () {
     const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto } = this.state
     const { showLikeList } = this.props
@@ -263,6 +273,7 @@ export default class HomeIndex extends Component {
   className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}
   scrollTop={scrollTop}
   onScroll={this.handleScroll}
+  onScrollToUpper={this.onScrollToUpper.bind(this)}
   onScrollToLower={this.nextPage}
   scrollY
 				>

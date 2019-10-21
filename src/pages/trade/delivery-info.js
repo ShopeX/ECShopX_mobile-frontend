@@ -13,38 +13,38 @@ export default class TradeDetail extends Component {
     super(props)
 
     this.state = {
-      list: []
+      list: [],
+      deliverycorp:'',
+      deliverycode:''
     }
   }
 
   componentDidMount () {
-    // this.fetch()
+    this.fetch()
   }
 
   async fetch () {
     Taro.showLoading()
-    const list = await api.trade.deliveryInfo(this.$router.params.order_id)
+    const list = await api.trade.deliveryInfo(this.$router.params.order_type, this.$router.params.order_id)
     const nList = pickBy(list,{
-      title: 'opeTime',
-      content: ({ opeRemark, opeTitle }) => [opeTitle, opeRemark]
+      title:'AcceptStation',
+      content:({AcceptTime})=>[AcceptTime]
+
     })
     this.setState({
-      list: nList
+      list: nList,
+      deliverycorp:this.$router.params.delivery_corp,
+      deliverycode:this.$router.params.delivery_code
     })
     Taro.hideLoading()
+
   }
 
   render () {
-    // const { list } = this.state
-    // if (!list) {
-    //   return <Loading></Loading>
-    // }
-    let lists = [
-      { title: '刷牙洗脸' },
-      { title: '吃早餐' },
-      { title: '上班' },
-      { title: '睡觉' }
-    ]
+    const { list, deliverycorp, deliverycode } = this.state
+    if (!list) {
+      return <Loading></Loading>
+    }
 
     return (
       <View className='delivery-detail'>
@@ -54,14 +54,16 @@ export default class TradeDetail extends Component {
           fixed='true'
         />
         <View className='delivery-detail__status'>
-          <Text className='delivery-detail__status-text'>物流信息</Text>
+          <View className='delivery-detail__status-text'>物流公司：{deliverycorp!=='undefined'&&deliverycorp!=='null'?LOGISTICS_CODE[deliverycorp]:''}</View>
+           <View className='delivery-detail__status-ordertext'>物流信单号：{deliverycode!=='undefined'&&deliverycode!=='null'?deliverycode:''}</View>
+          {/* <Text className='delivery-detail__status-text'>物流信息</Text> */}
         </View>
 
         <View className='delivery-info'>
           {
-            lists.length === 0
+            list.length === 0
               ? <SpNote img='plane.png'>目前暂无物流信息~</SpNote>
-              : <AtTimeline items={lists} ></AtTimeline>
+              : <AtTimeline items={list} ></AtTimeline>
 
           }
 
