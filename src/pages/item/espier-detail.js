@@ -801,14 +801,14 @@ export default class Detail extends Component {
                       <Price
                         primary
                         unit='cent'
-                        value={info.member_price && info.is_vip_grade ? info.member_price : info.price}
+                        value={info.member_price ? info.member_price : info.price}
                       />
                       {
                         info.market_price
                           ? <Price
                             lineThrough
                             unit='cent'
-                            value={info.market_price}
+                            value={info.member_price ? info.price : info.market_price}
                           />
                           : null
                       }
