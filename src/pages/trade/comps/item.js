@@ -154,7 +154,7 @@ export default class TradeItem extends Component {
             >订单详情</AtButton>
           </View>
         </View>}
-        {!customFooter && info.status === 'WAIT_RATE' && <View className='trade-item__ft'>
+        {/* {!customFooter && info.status === 'WAIT_RATE' && <View className='trade-item__ft'>
           <View className='trade-item__ft-actions'>
             <Text className='trade-item__acts'>更多</Text>
             <View className={classNames('trade-item__dropdown', { 'is-active': showActions })}>
@@ -177,7 +177,7 @@ export default class TradeItem extends Component {
               onClick={this.handleClickBtn.bind(this, 'detail')}
             >订单详情</AtButton>
           </View>
-        </View>}
+        </View>} */}
       </View>
     )
   }

@@ -461,7 +461,7 @@ export default class TradeDetail extends Component {
                   <View>{ ziti.store_address }</View>
                 </View>
               </View>
-            : <View className='trade-detail-address' onClick={this.handleClickDelivery.bind(this)}>
+            : <View className='trade-detail-address'>
                 <View className='address-receive'>
                   <Text>收货地址：</Text>
                   <View className='info-trade'>
@@ -501,7 +501,8 @@ export default class TradeDetail extends Component {
             info.delivery_code
               ? <View className='delivery_code_copy'>
                   <Text className='info-text'>物流单号：{info.delivery_code}</Text>
-                  <Text className='info-text' onClick={this.handleClickCopy.bind(this, info.delivery_code)}>复制</Text>
+                  <Text className='info-text-btn' onClick={this.handleClickDelivery.bind(this)}>查看物流</Text>
+                  <Text className='info-text-btn' onClick={this.handleClickCopy.bind(this, info.delivery_code)}>复制</Text>
                 </View>
               : null
           }
