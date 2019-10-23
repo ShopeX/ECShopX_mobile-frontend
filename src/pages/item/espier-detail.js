@@ -641,6 +641,12 @@ export default class Detail extends Component {
     }
 
     const { pics: imgs, kaquan_list: coupon_list } = info
+    let new_coupon_list = []
+    if(coupon_list && coupon_list.list.length > 3) {
+      new_coupon_list = coupon_list.list.slice(0,3)
+    }
+
+    console.log(new_coupon_list, 649)
 
     return (
       <View className='page-goods-detail'>
@@ -862,7 +868,7 @@ export default class Detail extends Component {
             onClick={this.handleCouponClick.bind(this)}
           >
             {
-              coupon_list && coupon_list.list.map(kaquan_item => {
+              coupon_list && new_coupon_list.map(kaquan_item => {
                 return (
                   <View key={kaquan_item.id} className='coupon_tag'>
                     <View className='coupon_tag_circle circle_left'></View>

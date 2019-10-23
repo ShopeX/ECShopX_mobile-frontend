@@ -144,7 +144,10 @@
         flex: 1;
         font-size: 24px;
       }
-      .info-text:last-child {
+      .info-text-btn {
+        font-size: 24px;
+        display: inline-block;
+        width: 120px;
         text-align: right;
       }
     }
