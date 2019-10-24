@@ -29,6 +29,10 @@ import './home/index.scss'
 @withPager
 @withBackToTop
 export default class HomeIndex extends Component {
+  config = {
+    enablePullDownRefresh: true
+  }
+
   constructor (props) {
     super(props)
 
@@ -43,6 +47,19 @@ export default class HomeIndex extends Component {
       automatic: null,
       showAuto: true
     }
+  }
+
+  onPullDownRefresh = () => {
+    this.resetPage()
+    this.setState({
+      likeList: []
+    }, () => {
+      this.fetchInfo()
+    })
+  }
+
+  onReachBottom = () => {
+    this.nextPage()
   }
 
   componentDidShow = () => {
@@ -244,11 +261,6 @@ export default class HomeIndex extends Component {
     })
   }
 
-  onScrollToUpper = () => {
-    this.fetchInfo()
-    console.log(243)
-  }
-
   render () {
     const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto } = this.state
     const { showLikeList } = this.props
@@ -269,14 +281,15 @@ export default class HomeIndex extends Component {
               store={curStore}
             />
         }
-				<ScrollView
+				{/*<ScrollView
   className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}
   scrollTop={scrollTop}
   onScroll={this.handleScroll}
   onScrollToUpper={this.onScrollToUpper.bind(this)}
   onScrollToLower={this.nextPage}
   scrollY
-				>
+				>*/}
+        <View className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}>
           <View className='wgts-wrap__cont'>
             <HomeWgts
               wgts={wgts}
@@ -297,7 +310,8 @@ export default class HomeIndex extends Component {
             )}
 
           </View>
-        </ScrollView>
+        </View>
+        {/*</ScrollView>*/}
 
         {
           <FloatMenus>

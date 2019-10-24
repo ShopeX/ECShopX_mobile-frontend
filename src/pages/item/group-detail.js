@@ -130,7 +130,7 @@ export default class GroupDetail extends Component {
   }
 
   render () {
-  	const { detail, timer, isLeader } = this.state
+  	const { detail, timer, isLeader, isSelf } = this.state
     if (!detail) return null
     const { team_info, activity_info, member_list } = detail
 

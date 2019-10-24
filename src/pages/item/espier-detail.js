@@ -181,7 +181,7 @@ export default class Detail extends Component {
     if (marketing === 'group' || marketing === 'seckill' || marketing === 'limited_time_sale') {
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
-        backgroundColor: '#0b4137',
+        backgroundColor: '#fc4a5c',
         animation: {
           duration: 400,
           timingFunc: 'easeIn'
