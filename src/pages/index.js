@@ -47,7 +47,8 @@ export default class HomeIndex extends Component {
       curStore: null,
       positionStatus: false,
       automatic: null,
-      showAuto: true
+      showAuto: true,
+      top: 0
     }
   }
 
@@ -58,6 +59,14 @@ export default class HomeIndex extends Component {
       wgts: null
     }, () => {
       this.fetchInfo()
+    })
+  }
+
+  onPageScroll = (res) => {
+    console.log(res)
+    const { scrollTop } = res
+    this.setState({
+      top: scrollTop
     })
   }
 
@@ -266,7 +275,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto } = this.state
+    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, top } = this.state
     const { showLikeList } = this.props
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
@@ -278,7 +287,7 @@ export default class HomeIndex extends Component {
 		const show_location = wgts.find(item=>item.name=='setting'&&item.config.location)
 
     return (
-      <View className='page-index'>
+      <View className={`page-index ${top < 1 ? 'onTop' : '' }`}>
         {
           curStore &&
             <HeaderHome

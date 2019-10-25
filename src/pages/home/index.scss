@@ -5,7 +5,7 @@
   background: #fff;
   box-sizing: border-box;
   .home-header {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -70,6 +70,14 @@
   .at-noticebar {
     background: inherit;
     color: inherit;
+  }
+  &.onTop {
+    .search.fixed {
+      position: absolute;
+    }
+    .home-header {
+      position: absolute;
+    }
   }
 }
 
