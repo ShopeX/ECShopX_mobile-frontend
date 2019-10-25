@@ -1,9 +1,17 @@
 @import "../../style/imports";
 
 .page-index {
+  position: relative;
   background: #fff;
-  height: 100%;
   box-sizing: border-box;
+  .home-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $home-header-height;
+    z-index: 20;
+  }
   .at-toast {
 
   }
@@ -67,7 +75,8 @@
 
 .wgts-wrap {
   $self: &;
-  @include page-scroll($home-header-height, $tabbar-height);
+  padding-top: $home-header-height;
+  padding-bottom: $tabbar-height;
   background: #fff;
   #{$self}__cont {
     padding-top: 0;
@@ -76,11 +85,16 @@
     #{$self}__cont {
       padding-top: $home-search-height;
     }
+    .search {
+      &.fixed {
+        top: $home-header-height;
+      }
+    }
   }
   &__is-distributor {
 	}
 	&.wgts-wrap-nolocation {
-		@include page-scroll(0, $tabbar-height);
+		padding-top: 0;
 	}
 }
 

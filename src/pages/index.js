@@ -30,7 +30,9 @@ import './home/index.scss'
 @withBackToTop
 export default class HomeIndex extends Component {
   config = {
-    enablePullDownRefresh: true
+    enablePullDownRefresh: true,
+    backgroundTextStyle: 'dark',
+    onReachBottomDistance: 50
   }
 
   constructor (props) {
@@ -52,7 +54,8 @@ export default class HomeIndex extends Component {
   onPullDownRefresh = () => {
     this.resetPage()
     this.setState({
-      likeList: []
+      likeList: [],
+      wgts: null
     }, () => {
       this.fetchInfo()
     })
@@ -163,6 +166,7 @@ export default class HomeIndex extends Component {
     this.setState({
       wgts: info.config
     },()=>{
+      Taro.stopPullDownRefresh()
       if(info.config) {
         info.config.map(item => {
           if(item.name === 'setting' && item.config.faverite) {
