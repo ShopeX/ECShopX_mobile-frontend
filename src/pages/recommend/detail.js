@@ -220,11 +220,11 @@ export default class recommendDetail extends Component {
         <View className='recommend-detail__title'>{info.title}</View>
         <View className='recommend-detail-info'>
           <View className='recommend-detail-info__time'>
-            <Text className={`in-icon in-icon-shijian ${info.is_like ? '' : ''}`}> </Text>
+            <Text className={`icon-time ${info.is_like ? '' : ''}`}> </Text>
             {info.updated_str}
           </View>
           <View className='recommend-detail-info__time'>
-            <Text className={`in-icon in-icon-xingzhuang ${info.is_like ? '' : ''}`}> </Text>
+            <Text className={`icon-eye ${info.is_like ? '' : ''}`}> </Text>
             {info.articleFocusNum.count ? info.articleFocusNum.count : 0}关注
           </View>
         </View>
@@ -270,15 +270,15 @@ export default class recommendDetail extends Component {
         </FloatMenus>
         <View className='recommend-detail__bar'>
           <View className={`recommend-detail__bar-item ${info.isPraise ? 'check-true': ''}`} onClick={this.handleClickBar.bind(this, 'like')}>
-            <Text className='in-icon in-icon-like'> </Text>
+            <Text className='icon-like'> </Text>
             <Text>{info.isPraise ? '已赞' : '点赞'} · {info.articlePraiseNum.count ? info.articlePraiseNum.count : 0}</Text>
           </View>
           <View className={`recommend-detail__bar-item ${collectArticleStatus ? 'check-true': ''}`} onClick={this.handleClickBar.bind(this, 'mark')}>
-            <Text className='in-icon in-icon-jiarushoucang'> </Text>
+            <Text className='icon-star-on'> </Text>
             <Text>{collectArticleStatus ? '已加入' : '加入心愿'}</Text>
           </View>
           <Button  openType='share' className='recommend-detail__bar-item' onClick={this.handleClickBar.bind(this, 'share')}>
-            <Text className='in-icon in-icon-fenxiang'> </Text>
+            <Text className='icon-article-share'> </Text>
             <Text>分享</Text>
           </Button>
         </View>

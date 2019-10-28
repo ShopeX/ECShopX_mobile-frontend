@@ -29,6 +29,12 @@ import './home/index.scss'
 @withPager
 @withBackToTop
 export default class HomeIndex extends Component {
+  config = {
+    enablePullDownRefresh: true,
+    backgroundTextStyle: 'dark',
+    onReachBottomDistance: 50
+  }
+
   constructor (props) {
     super(props)
 
@@ -41,8 +47,31 @@ export default class HomeIndex extends Component {
       curStore: null,
       positionStatus: false,
       automatic: null,
-      showAuto: true
+      showAuto: true,
+      top: 0
     }
+  }
+
+  onPullDownRefresh = () => {
+    this.resetPage()
+    this.setState({
+      likeList: [],
+      wgts: null
+    }, () => {
+      this.fetchInfo()
+    })
+  }
+
+  onPageScroll = (res) => {
+    console.log(res)
+    const { scrollTop } = res
+    this.setState({
+      top: scrollTop
+    })
+  }
+
+  onReachBottom = () => {
+    this.nextPage()
   }
 
   componentDidShow = () => {
@@ -146,6 +175,7 @@ export default class HomeIndex extends Component {
     this.setState({
       wgts: info.config
     },()=>{
+      Taro.stopPullDownRefresh()
       if(info.config) {
         info.config.map(item => {
           if(item.name === 'setting' && item.config.faverite) {
@@ -244,13 +274,8 @@ export default class HomeIndex extends Component {
     })
   }
 
-  onScrollToUpper = () => {
-    this.fetchInfo()
-    console.log(243)
-  }
-
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto } = this.state
+    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, top } = this.state
     const { showLikeList } = this.props
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
@@ -262,21 +287,22 @@ export default class HomeIndex extends Component {
 		const show_location = wgts.find(item=>item.name=='setting'&&item.config.location)
 
     return (
-      <View className='page-index'>
+      <View className={`page-index ${top < 1 ? 'onTop' : '' }`}>
         {
           curStore &&
             <HeaderHome
               store={curStore}
             />
         }
-				<ScrollView
+				{/*<ScrollView
   className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}
   scrollTop={scrollTop}
   onScroll={this.handleScroll}
   onScrollToUpper={this.onScrollToUpper.bind(this)}
   onScrollToLower={this.nextPage}
   scrollY
-				>
+				>*/}
+        <View className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}>
           <View className='wgts-wrap__cont'>
             <HomeWgts
               wgts={wgts}
@@ -297,7 +323,8 @@ export default class HomeIndex extends Component {
             )}
 
           </View>
-        </ScrollView>
+        </View>
+        {/*</ScrollView>*/}
 
         {
           <FloatMenus>

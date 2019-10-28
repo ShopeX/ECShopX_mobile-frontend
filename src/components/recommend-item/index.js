@@ -65,7 +65,7 @@ export default class RecommendItem extends Component {
               </View>
               <View className={`goods-item__actions ${info.isPraise ? 'is_like__active' : ''}`}>
                 <View
-                  className='in-icon in-icon-like'
+                  className='icon-like'
                 ><Text>{info.articlePraiseNum}</Text></View>
               </View>
             </View>

@@ -483,7 +483,7 @@ export default class CartIndex extends Component {
   onChange={this.handleSelectionChange.bind(this,shopIndex, item.cart_id)}
 																					/>
 																					<View
-  className='in-icon in-icon-close'
+  className='icon-close'
   onClick={this.handleDelect.bind(this, item.cart_id,shopIndex)}
 																					/>
 																				</View>
@@ -618,7 +618,7 @@ export default class CartIndex extends Component {
                       <View className='cart-item__act'>
                         <View></View>
                         <View
-                          className='in-icon in-icon-close'
+                          className='icon-close'
                           onClick={this.handleDelect.bind(this, item.cart_id)}
                         />
                       </View>

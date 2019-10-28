@@ -22,7 +22,7 @@
   &.is-show {
     opacity: 0.8;
   }
-  .in-icon {
+  [class^="icon-"] {
     font-size: 42px;
   }
   &__text {

@@ -116,13 +116,13 @@ export default class GoodsItem extends Component {
                    (<View className='goods-item__actions'>
                      {(type === 'item') && (
                        <View
-                         className={`in-icon ${info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav'}`}
+                         className={`${info.is_fav ? 'icon-star-on' : 'icon-star'}`}
                          onClick={this.handleFavClick}
                        />
                      )}
                      {type === 'recommend' && (
                        <View
-                         className='in-icon in-icon-like'
+                         className='icon-like'
                          onClick={this.handleLikeClick}
                        ><Text>666</Text></View>
                      )}

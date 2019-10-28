@@ -172,7 +172,7 @@ export default class SearchBar extends Component {
         <View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>
           <View className='search-input__history-title'>
             <Text>最近搜索</Text>
-            <Text className='in-icon in-icon-trash2 icon-del' onClick={this.handleClickDelete.bind(this)}></Text>
+            <Text className='icon-trash icon-del' onClick={this.handleClickDelete.bind(this)}></Text>
           </View>
           <View className='search-input__history-list'>
            {

@@ -82,7 +82,7 @@
 .at-tab-bar {
   box-shadow: -20px 5px 15px rgba(#000, .1);
   height: $tabbar-height;
-  .in-icon {
+  [class^="icon-"] {
     font-size: $at-tab-bar-icon-font-size;
   }
   &__title {

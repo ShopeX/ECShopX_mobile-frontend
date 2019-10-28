@@ -48,7 +48,7 @@ export default class GoodsBuyToolbar extends Component {
             className='goods-buy-toolbar__menu-item'
             onClick={this.props.onFavItem}
           >
-            <View className={`in-icon ${info.is_fav ? 'in-icon-fav-f' : 'in-icon-fav'}`} />
+            <View className={`${info.is_fav ? 'icon-star-on' : 'icon-star'}`} />
           </View>
           {/*{process.env.TARO_ENV === 'weapp' && (
             <Button className='goods-buy-toolbar__menu-item' openType='contact'>
@@ -62,7 +62,7 @@ export default class GoodsBuyToolbar extends Component {
             <AtBadge
               value={cartCount || null}
             >
-              <View className='in-icon in-icon-cart'></View>
+              <View className='icon-cart'></View>
             </AtBadge>
           </View>
         </View>

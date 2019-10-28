@@ -112,19 +112,19 @@ $item-img-size: 240px !default;
   &__actions {
     color: #d0d0d0;
     font-size: $font-size-small;
-    .in-icon {
+    [class^="icon-"] {
       color: #d0d0d0;
-      font-size: 28px;
+      font-size: 32px;
       &:before {
         margin-right: 8px;
       }
     }
-    .in-icon-fav-f, .in-icon-like-f {
+    .icon-star-on, .icon-like-on {
       color: $color-brand-primary;
     }
   }
   .is_like__active{
-    .in-icon {
+    [class^="icon-"] {
       color: $color-brand-primary;
     }
   }

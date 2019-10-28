@@ -57,7 +57,7 @@ export default class CouponItem extends Component {
             {
 
               isChoosed === info.id && isItemChecked
-                ? <Text className='in-icon in-icon-check coupon-item__checked'> </Text>
+                ? <Text className='icon-check coupon-item__checked'> </Text>
                 : <Text className='coupon-item__unchecked'> </Text>
             }
           </View>

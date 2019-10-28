@@ -114,14 +114,14 @@ $item-img-size: 270px !default;
   &__actions {
     color: #d0d0d0;
     font-size: $font-size-small;
-    .in-icon {
+    [class^="icon-"] {
       color: #d0d0d0;
       font-size: 28px;
       &:before {
         margin-right: 8px;
       }
     }
-    .in-icon-fav-f, .in-icon-like-f {
+    .icon-star-on, .icon-like {
       color: $color-brand-primary;
     }
   }
