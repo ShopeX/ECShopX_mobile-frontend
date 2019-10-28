@@ -32,6 +32,12 @@ export default class DistributionDashboard extends Component {
     }
   }
 
+  handleClick = () => {
+    let { isOpenShop } = this.state.info
+    Taro.navigateTo({
+      url: `/pages/distribution/qrcode?isOpenShop=${isOpenShop}`
+    })
+  }
 
   async fetch() {
     const resUser = Taro.getStorageSync('userinfo')
@@ -53,7 +59,8 @@ export default class DistributionDashboard extends Component {
       shop_name: 'shop_name',
       shop_pic: 'shop_pic',
       is_open_promoter_grade: 'is_open_promoter_grade',
-      promoter_grade_name: 'promoter_grade_name'
+      promoter_grade_name: 'promoter_grade_name',
+      isOpenShop: 'isOpenShop'
     })
 
     const info = {username, avatar, ...base, ...pInfo}
@@ -135,16 +142,19 @@ export default class DistributionDashboard extends Component {
           </View>
         </View>
         <View className="section list share">
-          <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/qrcode">
+          <View className="list-item" onClick={this.handleClick}>
             <View className="item-icon icon-qrcode1"></View>
             <View className="list-item-txt">我的二维码</View>
             <View className="icon-arrowRight item-icon-go"></View>
-          </Navigator>
-          <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/shop">
-            <View className="item-icon icon-shop"></View>
-            <View className="list-item-txt">我的小店</View>
-            <View className="icon-arrowRight item-icon-go"></View>
-          </Navigator>
+          </View>
+          {
+            info.isOpenShop === 'true' &&
+              <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/shop">
+                <View className="item-icon icon-shop"></View>
+                <View className="list-item-txt">我的小店</View>
+                <View className="icon-arrowRight item-icon-go"></View>
+              </Navigator>
+          }
           <Button className="share-btn list-item" open-type="share">
             <View className="item-icon icon-share1"></View>
             <View className="list-item-txt">分享给好友</View>
