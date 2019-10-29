@@ -1,6 +1,6 @@
 import Taro, { PureComponent } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { WgtSearchHome, WgtFilm, WgtMarquees, WgtSlider, WgtImgHotZone, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase } from '../wgts'
+import { WgtSearchHome, WgtFilm, WgtMarquees, WgtSlider, WgtImgHotZone, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtStore } from '../wgts'
 
 export default class HomeWgts extends PureComponent {
   state = {
@@ -44,6 +44,7 @@ export default class HomeWgts extends PureComponent {
                 {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} />}
                 {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} />}
                 {item.name === 'showcase' && <WgtShowcase info={item} />}
+                {item.name === 'store' && <WgtStore info={item} />}
               </View>
             )
           })
