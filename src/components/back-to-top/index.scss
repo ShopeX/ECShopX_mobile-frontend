@@ -1,19 +1,18 @@
 @import '../../style/imports';
 
 .back-to-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(#fff, 0.8);
-  color: $color-brand-primary;
+  color: $color-gray;
   width: 64px;
   height: 64px;
-  line-height: 64px;
-  border-radius: 64px;
+  border-radius: 100%;
   position: fixed;
   bottom: $tabbar-height + floor($edge-size / 2);
   right: $edge-size;
   z-index: $z-index-tooltip;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   border: 1px solid rgba($color-brand-primary, 0.1);
   box-shadow: 0 0 5px rgba(#000, 0.15);
   box-sizing: border-box;
