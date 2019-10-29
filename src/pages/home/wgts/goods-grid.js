@@ -63,43 +63,49 @@ export default class WgtGoodsGrid extends Component {
         )}
         <View className='wgt__body with-padding'>
           <View className='grid-goods out-padding grid-goods__type-grid'>
-            {data.map((item, idx) => (
-              <View
-								key={idx}
-                className={classNames('grid-item',{'grid-item-three': config.style=='grids'})}
-                onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
-              >
-                <View className='goods-wrap'>
-                  <View className='thumbnail'>
-                    <QnImg
-                      img-class='goods-img'
-                      src={item.imgUrl}
-                      mode='aspectFill'
-                      width='400'
-                      lazyLoad
-                    />
+            {
+              data.map((item, idx) => {
+                const price = ((item.act_price ? item.act_price : item.member_price ? item.member_price : item.price)/100).toFixed(2)
+                const marketPrice = ((item.act_price ? item.price : item.member_price ? item.price : item.market_price)/100).toFixed(2)
+                return (
+                  <View
+    								key={idx}
+                    className={classNames('grid-item',{'grid-item-three': config.style=='grids'})}
+                    onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
+                  >
+                    <View className='goods-wrap'>
+                      <View className='thumbnail'>
+                        <QnImg
+                          img-class='goods-img'
+                          src={item.imgUrl}
+                          mode='aspectFill'
+                          width='400'
+                          lazyLoad
+                        />
+                      </View>
+                      <View className='caption'>
+                        {config.brand && item.brand && (
+                          <QnImg
+                            img-class='goods-brand'
+                            src={item.brand}
+                            mode='aspectFill'
+                            width='300'
+                          />
+                        )}
+                        <View className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.title}</View>
+                        {item.brief && <View className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.brief}</View>}
+                        {
+                          config.showPrice
+                          && <View className="goods-price">
+                              <Text className="cur">¥</Text>{price}
+                            </View>
+                        }
+                      </View>
+                    </View>
                   </View>
-                  <View className='caption'>
-                    {config.brand && item.brand && (
-                      <QnImg
-                        img-class='goods-brand'
-                        src={item.brand}
-                        mode='aspectFill'
-                        width='300'
-                      />
-                    )}
-                    <View className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.title}</View>
-                    {item.brief && <View className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.brief}</View>}
-                    {
-                      config.showPrice
-                      && <View className="goods-price">
-                          <Text className="cur">¥</Text>{item.price ? item.price/100 : '0.00'}
-                        </View>
-                    }
-                  </View>
-                </View>
-              </View>
-            ))}
+                )
+              })
+            }
           </View>
         </View>
       </View>

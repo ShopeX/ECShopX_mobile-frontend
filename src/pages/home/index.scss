@@ -181,6 +181,22 @@
   button {
     font-size: 26px;
   }
+  .countdown__time {
+    margin-left: 50px;
+  }
+  .at-countdown__time-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0 6px;
+    background: #333;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 24px;
+    font-family: sans-serif;
+  }
 }
 
 .grid-goods {
