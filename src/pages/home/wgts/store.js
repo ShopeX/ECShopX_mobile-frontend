@@ -17,9 +17,20 @@ export default class WgtStore extends Component {
 
   constructor (props) {
     super(props)
+  }
 
-    this.state = {
-    }
+  handleStoreClick = (id) => {
+    const url = `/pages/store/index?id=${id}`
+    Taro.navigateTo({
+      url
+    })
+  }
+
+  handleGoodsClick = (id) => {
+    const url = `/pages/item/espier-detail?id=${id}`
+    Taro.navigateTo({
+      url
+    })
   }
 
   render () {
@@ -41,7 +52,10 @@ export default class WgtStore extends Component {
         {
           data.map(item =>
             <View className='store-wrap'>
-              <View className='store-info'>
+              <View
+                className='store-info'
+                onClick={this.handleStoreClick.bind(this, item.id)}
+                >
                 <Image className='store-logo' src={item.logo} mode='scaleToFill' />
                 <View className='store-name'>{item.name}</View>
               </View>
@@ -51,7 +65,10 @@ export default class WgtStore extends Component {
                 >
                 {
                   item.items.map(goods =>
-                    <View className='store-goods__item'>
+                    <View
+                      className='store-goods__item'
+                      onClick={this.handleGoodsClick.bind(this, goods.id)}
+                      >
                       <Image className='store-goods__item-thumbnail' src={goods.imgUrl} mode='scaleToFill'/>
                       <View className='store-goods__item-price'>¥{(goods.price/100).toFixed(2)}</View>
                     </View>
