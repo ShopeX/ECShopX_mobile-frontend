@@ -77,7 +77,7 @@ export default class MemberIndex extends Component {
         }
       })
     }
-    const [res, { list: favs }] = await Promise.all([api.member.memberInfo(), api.member.favsList()])
+    const [res, { list: favs }, orderCount] = await Promise.all([api.member.memberInfo(), api.member.favsList(), api.trade.getCount()])
     this.props.onFetchFavs(favs)
     this.setState({
       isOpenPopularize: res.is_open_popularize
@@ -111,7 +111,8 @@ export default class MemberIndex extends Component {
         user_card_code: res.memberInfo.user_card_code,
         grade_name: res.memberInfo.gradeInfo.grade_name,
         background_pic_url: res.memberInfo.gradeInfo.background_pic_url
-      }
+      },
+      orderCount
     })
   }
 

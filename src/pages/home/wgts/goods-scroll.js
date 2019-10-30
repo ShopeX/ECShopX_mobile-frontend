@@ -66,14 +66,20 @@ export default class WgtGoodsScroll extends Component {
               {
                 config.type === 'goods'
                   ? <View className='wgt__subtitle'>{base.subtitle}</View>
-                  : <AtCountdown
-                      className='countdown__time'
-                      isShowDay
-                      day={timer.dd}
-                      hours={timer.hh}
-                      minutes={timer.mm}
-                      seconds={timer.ss}
-                    />
+                  : <View>
+                      {
+                        config.lastSeconds != 0
+                          ? <AtCountdown
+                              className='countdown__time'
+                              isShowDay
+                              day={timer.dd}
+                              hours={timer.hh}
+                              minutes={timer.mm}
+                              seconds={timer.ss}
+                            />
+                          : <View className='countdown__time'>活动已结束</View>
+                      }
+                    </View>
               }
             </View>
             <View
@@ -118,7 +124,10 @@ export default class WgtGoodsScroll extends Component {
     									config.showPrice
     									&& <View className='goods-price'>
     											<Text className='cur'>¥</Text>{price}
-                          <Text className='market-price'>{marketPrice}</Text>
+                          {
+                            marketPrice != 0 &&
+                            <Text className='market-price'>{marketPrice}</Text>
+                          }
     										</View>
     								}
                   </View>

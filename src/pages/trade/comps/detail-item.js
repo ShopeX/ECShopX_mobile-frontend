@@ -62,7 +62,10 @@ export default class DetailItem extends Component {
                   onClick={this.handleClickAfterSale.bind(this, item)}
                 >
                   {
-                    (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
+                    item.aftersales_status && '售后详情'
+                  }
+                  {
+                    ((!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') && item.status !== 'TRADE_SUCCESS') && '申请售后'
                   }
                 </AtButton>
               </View>}

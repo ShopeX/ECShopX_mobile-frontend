@@ -84,6 +84,13 @@
           width: 100%;
           color: #ff5000;
           font-size: 30px;
+          .market-price {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 20px;
+            color: #ccc;
+            text-decoration: line-through;
+          }
         }
         .cur {
           font-size: 20px;
