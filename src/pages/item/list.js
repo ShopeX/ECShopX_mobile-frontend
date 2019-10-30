@@ -489,10 +489,19 @@ export default class List extends Component {
             list={filterList}
             onChange={this.handleFilterChange}
           >
+<<<<<<< HEAD
             <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
               <View className='icon-filter'></View>
               <Text>筛选</Text>
             </View>
+=======
+            {/*
+              <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
+                <View className='icon-filter'></View>
+                <Text>筛选</Text>
+              </View>
+            */}
+>>>>>>> 8d6d6621... 上传图片
             <View className='filter-bar__item region-picker'>
               <Picker
                 mode='multiSelector'

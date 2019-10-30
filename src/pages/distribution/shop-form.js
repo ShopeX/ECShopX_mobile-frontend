@@ -37,6 +37,19 @@ export default class DistributionShopForm extends Component {
     }
   }
 
+  uploadURLFromRegionCode = (code) => {
+    let uploadURL = null;
+    switch(code) {
+        case 'z0': uploadURL = 'https://up.qiniup.com'; break;
+        case 'z1': uploadURL = 'https://up-z1.qiniup.com'; break;
+        case 'z2': uploadURL = 'https://up-z2.qiniup.com'; break;
+        case 'na0': uploadURL = 'https://up-na0.qiniup.com'; break;
+        case 'as0': uploadURL = 'https://up-as0.qiniup.com'; break;
+        default: console.error('please make the region is with one of [z0, z1, z2, na0, as0]');
+    }
+    return uploadURL;
+  }
+
   handleChange = (e) => {
     let value = e.detail ? e.detail.value : e
     const { key, val } = this.state.info
@@ -71,15 +84,61 @@ export default class DistributionShopForm extends Component {
       S.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 1)
-    const res = await imgUploader.uploadImageFn(imgFiles, req.baseURL + 'espier/image_upload_token', 'qiniu', 'jpg/png', 'z2')
+    let promises = []
+
+    for (let item of imgFiles) {
+      const promise = new Promise(async (resolve, reject) => {
+        if (!item.file) {
+          resolve(item)
+        } else {
+          const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+          const { region, token, key, domain } = await req.get('/espier/image_upload_token', {
+            filesystem: 'qiniu',
+            filetype: 'aftersales',
+            filename
+          })
+
+          let uploadUrl = this.uploadURLFromRegionCode(region)
+          Taro.uploadFile({
+            url: uploadUrl,
+            filePath: item.url,
+            name: 'file',
+            formData:{
+              'token': token,
+              'key': key
+            },
+            success: res => {
+              let imgData = JSON.parse(res.data)
+              resolve({
+                url: `${domain}/${imgData.key}`
+              })
+            },
+            fail: error => reject(error)
+          })
+        }
+      })
+      promises.push(promise)
+    }
+
+    const results = await Promise.all(promises)
     this.setState({
-      imgs: res
+      imgs: results
     })
+<<<<<<< HEAD
     const params = {
       [key]: res[0].url
     }
     const { list } = await api.distribution.update(params)
     if ( list[0] ) Taro.navigateBack()
+=======
+
+    this.setState({
+      info: {
+        key,
+        val: results[0].url
+      }
+    })
+>>>>>>> 8d6d6621... 上传图片
   }
 
   render () {

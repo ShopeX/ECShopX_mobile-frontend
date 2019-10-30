@@ -449,18 +449,22 @@ export default class CartCheckout extends Component {
     })
   }
 
-  handlePaymentShow = async () => {
+  handlePaymentShow = () => {
     this.setState({
       isPaymentOpend: true,
       isDrugInfoOpend: false
     })
   }
 
-  handleDrugInfoShow = async () => {
+  handleDrugInfoShow = () => {
     this.setState({
       isPaymentOpend: false,
       isDrugInfoOpend: true
     })
+  }
+
+  handleDrugChange = (val) => {
+    console.log(val)
   }
 
   resolvePayError (e) {
@@ -796,6 +800,7 @@ export default class CartCheckout extends Component {
                         className='coupons-list'
                         title='用药人信息'
                         onClick={this.handleDrugInfoShow}
+                        onChange={this.handleDrugChange.bind(this)}
                         value={drug ? '已上传' : '用药人及处方上传'}
                       />
                     }
