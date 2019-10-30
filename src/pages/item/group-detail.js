@@ -124,7 +124,7 @@ export default class GroupDetail extends Component {
     }
     return {
       title: `【拼团】${activity_info.share_desc}`,
-      path: `/pages/group_detail?teamId=${team_info.team_id}&dtid=${distributor_id}&uid=${userId}`,
+      path: `/pages/item/group-detail?teamId=${team_info.team_id}&dtid=${distributor_id}&uid=${userId}`,
       imageUrl: activity_info.pics[0]
     }
   }
