@@ -152,10 +152,35 @@ class App extends Component {
 
   async fetchTabs () {
     const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=tabs'
+    const defaultTabs = {
+      config: {
+        backgroundColor: "#ffffff",
+        color: "#333333",
+        selectedColor: "#E33420"
+      },
+      data: [{
+        name: "home",
+        pagePath: "/pages/index",
+        text: "首页"
+      },{
+        name: "category",
+        pagePath: "/pages/category/index",
+        text: "分类"
+      },{
+        name: "cart",
+        pagePath: "/pages/cart/espier-index",
+        text: "购物车"
+      },{
+        name: "member",
+        pagePath: "/pages/member/index",
+        text: "我"
+      }],
+      name: "tabs"
+    }
     const info = await req.get(url)
     store.dispatch({
       type: 'tabBar',
-      payload: info.list[0].params
+      payload: info.list.length ? info.list[0].params : defaultTabs
     })
   }
 
