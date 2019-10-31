@@ -52,7 +52,7 @@ export default class VipIndex extends Component {
 			tabList,
 			cur,
 			list,
-			curTabIdx
+			curTabIdx: curTabIdx === -1 ? 0 : curTabIdx
 		})
 	}
 

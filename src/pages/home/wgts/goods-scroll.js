@@ -24,10 +24,12 @@ export default class WgtGoodsScroll extends Component {
     const { info } = this.props
     const { config } = info
 
-    const timer = calcTimer(config.lastSeconds)
-    this.setState({
-      timer
-    })
+    if (config.lastSeconds) {
+      const timer = calcTimer(config.lastSeconds)
+      this.setState({
+        timer
+      })
+    }
   }
 
   navigateTo (url) {
