@@ -28,7 +28,7 @@ export function linkPage (type, id) {
       url = '/pages/item/seckill-goods-list?seckill_id=' + id
       break;
     case 'link':
-      url = id === 'vipgrade' ? '/pages/vip/vipgrade' : '/pages/floorguide/index'
+      url = id === 'vipgrades' ? '/pages/vip/vipgrades' : '/pages/floorguide/index'
 			break;
 		case 'tag':
       url = '/pages/item/list?tag_id=' + id
