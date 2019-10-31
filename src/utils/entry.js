@@ -56,7 +56,7 @@ async function entryLaunch(data, isNeedLocate) {
 async function getLocalSetting() {
   const filter = {template_name: 'yykweishop', version: 'v1.0.1', name: 'setting'}
   const res = await api.category.getCategory(filter)
-  const data = res[0].params
+  const data = res.length ? res[0].params : null
   if (res.length > 0) {
     if (!data || !data.config) {
       return true
