@@ -34,13 +34,13 @@ export default class DistributionTrade extends Component {
     const { type } = this.$router.params
     const { page_no: page, page_size: pageSize } = params
     const query = {
-      type,
+      brokerage_source: type,
       page,
       pageSize
     }
 
     const { close, noClose } = await api.distribution.commission(query)
-    const { total } = curTabIdx ? noClose.total_count : close.total_count
+    const total = curTabIdx == 0 ? noClose.total_count : close.total_count
 
     const nList = pickBy(curTabIdx == 0 ? noClose.list : close.list, {
       order_id: 'order_id',
