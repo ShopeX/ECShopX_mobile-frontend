@@ -9,6 +9,10 @@ cat <<MENU
   [ 4 ] => 华信（小康龙江）
   [ 5 ] => 云尚（医贵欣网上商城）
   [ 6 ] => 锦联华
+  [ 7 ] => 屈臣氏
+  [ 8 ] => 国药测试
+  [ 9 ] => 善元荣锦
+  [ 10 ] => 大润发飞牛
 MENU
 echo "请选择主机组:"
 read number
@@ -36,6 +40,22 @@ case "$number" in
   6)
     appid="wx744bbfebf3e71459"
     baseUrl="b.jlhshop.com"
+    ;;
+  7)
+    appid="wxd5b9d92177f661af"
+    baseUrl="mrn.watsonsvip.com.cn"
+    ;;
+  8)
+    appid="wx65360bb6a2712c5d"
+    baseUrl="guoyao.shopex123.com"
+    ;;
+  9)
+    appid="wxf745fb6c158b302a"
+    baseUrl="b.shanyuan-rj.com"
+    ;;
+  10)
+    appid="wxf713653c6a98eff8"
+    baseUrl="scpt.feiniugo.com"
     ;;
   *)
     echo "选择的序号不存在"
