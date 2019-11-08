@@ -69,25 +69,24 @@ export default class CouponHome extends Component {
   handleGetCard = async (card_item, idx) => {
     const { list } = this.state
 
-    // console.log(card_item, idx, 72)
     if(list[idx].getted === 2 || list[idx].getted === 1) {
       return
     }
+    console.log(card_item, 75)
     const query = {
-      card_id: card_item.$original.card_id
+      card_id: card_item.card_id ? card_item.card_id : card_item.$original.card_id
     }
     try {
       const data = await api.member.homeCouponGet(query)
       S.toast('优惠券领取成功')
       if (data.status) {
-        console.log(74 ,222)
         if (data.status.total_lastget_num <= 0 ) {
           list[idx].getted = 2
         } else if (data.status.lastget_num <= 0 ) {
           list[idx].getted = 1
         }
         this.setState({
-          list
+          list: list
         })
       }
     } catch (e) {
@@ -119,13 +118,15 @@ export default class CouponHome extends Component {
                   <CouponItem
                     info={item}
                     key={item.card_id}
-                    renderFooter={
-                      <Text 
-                        className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`} 
-                        onClick={this.handleGetCard.bind(this, item, idx)}
-                      >{item.getted === 1 ? '已领取' : ''}{item.getted === 2 ? '已领完' : ''}{(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}</Text>
-                    }
                   >
+                    <Text 
+                      className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`} 
+                      onClick={this.handleGetCard.bind(this, item, idx)}
+                    >
+                      {item.getted === 1 ? '已领取' : ''}
+                      {item.getted === 2 ? '已领完' : ''}
+                      {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
+                    </Text>
                   </CouponItem>
                 )
               })

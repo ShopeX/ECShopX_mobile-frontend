@@ -627,9 +627,13 @@ export default class CartCheckout extends Component {
   }
 
   handleCouponsClick = () => {
-    if (this.state.payType === 'dhpoint') {
+    console.log(this.params.order_type, 630)
+    if (this.state.payType === 'dhpoint'){
       return
     }
+    // if (this.params.order_type === 'normal' || this.params.order_type === 'normal_seckill' || this.params.order_type === 'single_group' || this.params.order_type === 'limited_time_sale') {
+    //   return S.toast('该活动不支持使用优惠券')
+    // }
 
     const items = this.params.items
       .filter(item => item.order_item_type !== 'gift')
@@ -701,45 +705,47 @@ export default class CartCheckout extends Component {
         >
           {
             !isArray(curStore) && curStore.is_ziti &&
-              <View className="switch-tab">
+              <View className='switch-tab'>
                 <View
                   className={classNames('switch-item', express ? 'active' : '')}
-                  onClick={this.handleSwitchExpress.bind(this, true)}>配送</View>
+                  onClick={this.handleSwitchExpress.bind(this, true)}
+                >配送</View>
                 <View
                   className={classNames('switch-item', !express ? 'active' : '')}
-                  onClick={this.handleSwitchExpress.bind(this, false)}>自提</View>
+                  onClick={this.handleSwitchExpress.bind(this, false)}
+                >自提</View>
               </View>
           }
           {
             express
               ? <AddressChoose
-                  isAddress={address}
-                />
-              : <View className="address-module">
-                  <View className="addr">
+                isAddress={address}
+              />
+              : <View className='address-module'>
+                  <View className='addr'>
                     <View className='view-flex-item'>
-                      <View className="addr-title">{curStore.name}</View>
-                      <View className="addr-detail">{curStore.store_address}</View>
+                      <View className='addr-title'>{curStore.name}</View>
+                      <View className='addr-detail'>{curStore.store_address}</View>
                     </View>
                     <View
                       className='icon-location'
                       onClick={this.handleMapClick.bind(this)}
-                      ></View>
+                    ></View>
                   </View>
-                  <View className="view-flex">
-                    <View className="view-flex-item">
-                      <View className="text-muted">营业时间：</View>
+                  <View className='view-flex'>
+                    <View className='view-flex-item'>
+                      <View className='text-muted'>营业时间：</View>
                       <View>{curStore.hour}</View>
                     </View>
-                    <View className="view-flex-item">
-                      <View className="text-muted">联系电话：</View>
+                    <View className='view-flex-item'>
+                      <View className='text-muted'>联系电话：</View>
                       <View>{curStore.phone}</View>
                     </View>
                   </View>
                 </View>
           }
 
-          {(payType !== 'point' && payType !== 'dhpoint') && (
+          {(payType !== 'point' && payType !== 'dhpoint' && type !== 'group' && type !== 'seckill' && type !== 'limited_time_sale') && (
             <SpCell
               isLink
               className='coupons-list'

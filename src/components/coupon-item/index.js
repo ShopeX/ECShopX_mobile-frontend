@@ -38,7 +38,7 @@ export default class CouponItem extends Component {
   }
 
   render () {
-    const { info, isShowCheckout, isChoosed, onClick, renderFooter } = this.props
+    const { info, isShowCheckout, isChoosed, onClick } = this.props
     const { isItemChecked } = this.state
 
     if (!info) {
