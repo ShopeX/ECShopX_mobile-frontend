@@ -45,7 +45,7 @@ export default class WgtCoupon extends Component {
   }
 
   render () {
-    const { info } = this.props
+    const { info, dis_id } = this.props
     if (!info) {
       return null
     }
@@ -62,7 +62,7 @@ export default class WgtCoupon extends Component {
             </View>
             <View
               className='wgt__more'
-              onClick={this.navigateTo.bind(this, '/pages/home/coupon-home')}
+              onClick={this.navigateTo.bind(this, `/pages/home/coupon-home?dis_id=${dis_id}`)}
             >
               <View className='three-dot'></View>
             </View>
@@ -77,11 +77,11 @@ export default class WgtCoupon extends Component {
               > {
                   item.imgUrl
                   ? <QnImg
-                      img-class='coupon_img'
-                      src={item.imgUrl}
-                      mode='widthFix'
-                      width='750'
-                    />
+                    img-class='coupon_img'
+                    src={item.imgUrl}
+                    mode='widthFix'
+                    width='750'
+                  />
                   : <View className='coupon-body'>
                       <View className='coupon__amount'>
                         <Text>{item.amount}</Text>

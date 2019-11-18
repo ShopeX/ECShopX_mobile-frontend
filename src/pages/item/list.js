@@ -50,6 +50,7 @@ export default class List extends Component {
         keywords: this.$router.params.keywords,
         item_type: 'normal',
         is_point: 'false',
+        distributor_id: this.$router.params.dis_id,
         approve_status: 'onsale,only_show',
         category: this.$router.params.cat_id
 			},

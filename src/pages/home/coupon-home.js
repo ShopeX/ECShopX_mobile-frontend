@@ -27,6 +27,7 @@ export default class CouponHome extends Component {
     params = {
       ...params,
       end_date: 1,
+      distributor_id: this.$router.params.dis_id,
       item_id: this.$router.params ? (this.$router.params.item_id ? this.$router.params.item_id : '') : ''
     }
     const { list, pagers: { total: total } } = await api.member.homeCouponList(params)

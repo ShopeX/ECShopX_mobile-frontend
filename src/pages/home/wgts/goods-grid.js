@@ -22,12 +22,13 @@ export default class WgtGoodsGrid extends Component {
   }
 
   render () {
-    const { info } = this.props
+    const { info, dis_id } = this.props
     if (!info) {
       return null
     }
 
-		const { base, data, config } = info
+    const { base, data, config } = info
+    console.log(info, 31)
     /*let listData = []
     data.map(item => {
       listData.push({
@@ -55,7 +56,7 @@ export default class WgtGoodsGrid extends Component {
             </View>*/}
             <View
               className='wgt__goods__more'
-              onClick={this.navigateTo.bind(this, '/pages/item/list')}
+              onClick={this.navigateTo.bind(this, `/pages/item/list?dis_id=${dis_id}`)}
             >
               <View className='all-goods'>全部商品</View>
             </View>
@@ -69,7 +70,7 @@ export default class WgtGoodsGrid extends Component {
                 const marketPrice = ((item.act_price ? item.price : item.member_price ? item.price : item.market_price)/100).toFixed(2)
                 return (
                   <View
-    								key={idx}
+                    key={idx}
                     className={classNames('grid-item',{'grid-item-three': config.style=='grids'})}
                     onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
                   >
@@ -96,8 +97,8 @@ export default class WgtGoodsGrid extends Component {
                         {item.brief && <View className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.brief}</View>}
                         {
                           config.showPrice
-                          && <View className="goods-price">
-                              <Text className="cur">¥</Text>{price}
+                          && <View className='goods-price'>
+                              <Text className='cur'>¥</Text>{price}
                               {
                                 marketPrice != 0 &&
                                 <Text className='market-price'>{marketPrice}</Text>

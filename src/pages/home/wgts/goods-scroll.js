@@ -38,14 +38,14 @@ export default class WgtGoodsScroll extends Component {
 
   navigateToList = (type, seckillId) => {
     if(type === 'goods') {
-      this.navigateTo('/pages/item/list')
+      this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id}`)
     } else if (type === 'limitTimeSale') {
       Taro.navigateTo({
-        url: `/pages/item/seckill-goods-list?seckill_type=limited_time_sale&seckill_id=${seckillId}`
+        url: `/pages/item/seckill-goods-list?seckill_type=limited_time_sale&seckill_id=${seckillId}&dis_id=${this.props.dis_id}`
       })
     } else {
       Taro.navigateTo({
-        url: `/pages/item/seckill-goods-list?seckill_type=normal&seckill_id=${seckillId}`
+        url: `/pages/item/seckill-goods-list?seckill_type=normal&seckill_id=${seckillId}&dis_id=${this.props.dis_id}`
       })
     }
   }
@@ -72,13 +72,13 @@ export default class WgtGoodsScroll extends Component {
                       {
                         config.lastSeconds != 0
                           ? <AtCountdown
-                              className='countdown__time'
-                              isShowDay
-                              day={timer.dd}
-                              hours={timer.hh}
-                              minutes={timer.mm}
-                              seconds={timer.ss}
-                            />
+                            className='countdown__time'
+                            isShowDay
+                            day={timer.dd}
+                            hours={timer.hh}
+                            minutes={timer.mm}
+                            seconds={timer.ss}
+                          />
                           : <View className='countdown__time'>活动已结束</View>
                       }
                     </View>
