@@ -122,6 +122,7 @@ export default class Reg extends Component {
       if (isWeapp) {
         const uid = Taro.getStorageSync('distribution_shop_id')
         const { union_id, open_id } = this.$router.params
+        const trackParams = Taro.getStorageSync('trackParams')
         let params = {
           ...data,
           user_type: 'wechat',
@@ -131,6 +132,9 @@ export default class Reg extends Component {
         }
         if (uid) {
           Object.assign(params, {uid})
+        }
+        if (trackParams) {
+          Object.assign(params, {source_id: trackParams.source_id, monitor_id: trackParams.monitor_id})
         }
         const res = await api.user.reg(params)
 
@@ -165,7 +169,7 @@ export default class Reg extends Component {
         })
       }
     }
-    
+
     if(!isString(val) && !isArray(val)) {
       list.map(item => {
         item.key === name ? info[name] = val.detail.value : null
@@ -299,7 +303,7 @@ export default class Reg extends Component {
       option_list.map(item => {
         item.ischecked = false
       })
-    } 
+    }
     this.handleChange(this.type, option_list)
   }
 
@@ -500,13 +504,13 @@ export default class Reg extends Component {
           </View>
         </AtForm>
         {
-          showCheckboxPanel 
+          showCheckboxPanel
             ? <View className='checkBoxPanel'>
                 <View className='checkBoxPanel-content'>
                   {
                     option_list.map((item, index) => {
                       return (
-                        <View 
+                        <View
                           className='checkBoxPanel-item'
                           key={index}
                         >
@@ -523,10 +527,10 @@ export default class Reg extends Component {
                   <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>取消</View>
                   <View className='panel-btn require-btn' onClick={this.btnClick.bind(this, 'require')}>确定</View>
                 </View>
-              </View>   
+              </View>
           : null
-        }                  
-        <SpToast />                  
+        }
+        <SpToast />
       </View>
     )
   }
