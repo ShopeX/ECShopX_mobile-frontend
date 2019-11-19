@@ -251,12 +251,21 @@ export default class CartCheckout extends Component {
         drug_list_image: 'imgs',
       })
     }
+    const trackParams = Taro.getStorageSync('trackParams')
+    let tracks = {}
+    if (trackParams) {
+      tracks = {
+        source_id: trackParams.source_id,
+        monitor_id: trackParams.monitor_id
+      }
+    }
     const { payType, receiptType } = this.state
     const { coupon } = this.props
     const params = {
       ...this.params,
       ...receiver,
       ...buyerInfo,
+      ...tracks,
       ...activity,
       receipt_type: receiptType,
       order_type: orderType,
