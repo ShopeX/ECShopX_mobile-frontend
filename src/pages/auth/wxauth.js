@@ -75,6 +75,10 @@ export default class WxAuth extends Component {
         signature,
         userInfo
       }
+      const trackParams = Taro.getStorageSync('trackParams')
+      if (trackParams) {
+        Object.assign(params, {source_id: trackParams.source_id, monitor_id: trackParams.monitor_id})
+      }
       if (uid) {
         Object.assign(params, {inviter_id: uid})
       }
