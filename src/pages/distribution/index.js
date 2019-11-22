@@ -21,6 +21,27 @@ export default class DistributionDashboard extends Component {
     this.fetch()
   }
 
+  handleOpenApply () {
+    Taro.showModal({
+      title: '申请开店',
+      content: '是否申请开启小店推广',
+      cancelText: '取消',
+      confirmText: '确定'
+    })
+    .then(async res => {
+      const { status } = await api.distribution.update({shop_status: 2})
+      if (status) {
+        Taro.showToast({
+          title: '开启成功',
+          icon: 'success',
+          duration: 2000
+        })
+        .then(res => this.fetch())
+      }
+    })
+
+  }
+
   onShareAppMessage () {
     const { username, userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
@@ -60,7 +81,8 @@ export default class DistributionDashboard extends Component {
       shop_pic: 'shop_pic',
       is_open_promoter_grade: 'is_open_promoter_grade',
       promoter_grade_name: 'promoter_grade_name',
-      isOpenShop: 'isOpenShop'
+      isOpenShop: 'isOpenShop',
+      shop_status: 'shop_status'
     })
 
     const info = {username, avatar, ...base, ...pInfo}
@@ -75,27 +97,32 @@ export default class DistributionDashboard extends Component {
 
     return (
       <View class="page-distribution-index">
-        <View className="header view-flex view-flex-middle">
-          <Image className="header-avatar"
-            src={info.avatar}
-            mode="aspectFill"
-          />
-          <View className="header-info view-flex-item">
-            <View className="mcode">昵称：{info.username}
+        <View className="header">
+          <View className='view-flex view-flex-middle'>
+            <Image className="header-avatar"
+              src={info.avatar}
+              mode="aspectFill"
+            />
+            <View className="header-info view-flex-item">
+              <View className="mcode">{info.username}
+                {
+                  info.is_open_promoter_grade &&
+                  <Text>（{info.promoter_grade_name}）</Text>
+                }
+              </View>
               {
                 info.is_open_promoter_grade &&
                 <Text>（{info.promoter_grade_name}）</Text>
               }
             </View>
-            {
-              info.shop_name &&
-              <View className="nickname">{info.shop_name}</View>
-            }
+            <Navigator className="view-flex view-flex-middle" url="/pages/distribution/setting">
+              <Text className='icon-info'></Text>
+            </Navigator>
           </View>
-          <Navigator className="view-flex view-flex-middle" url="/pages/distribution/setting">
-            <View className="member-acount">账户管理</View>
-            <View className="icon-arrowRight"></View>
-          </Navigator>
+          {
+            info.isOpenShop === 'true' && info.shop_status === 0 &&
+              <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>申请开启我的小店</View>
+          }
         </View>
         <View className="section achievement">
           <View className="section-body view-flex">
@@ -148,7 +175,7 @@ export default class DistributionDashboard extends Component {
             <View className="icon-arrowRight item-icon-go"></View>
           </View>
           {
-            info.isOpenShop === 'true' &&
+            info.isOpenShop === 'true' && info.shop_status === 1 &&
               <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/shop">
                 <View className="item-icon icon-shop"></View>
                 <View className="list-item-txt">我的小店</View>

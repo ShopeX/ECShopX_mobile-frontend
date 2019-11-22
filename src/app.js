@@ -83,6 +83,9 @@ class App extends Component {
       'pages/distribution/shop-form',
       'pages/distribution/qrcode',
       'pages/distribution/shop-home',
+      'pages/distribution/shop-goods',
+      'pages/distribution/shop-trade',
+      'pages/distribution/shop-achievement',
 
       'pages/store/index',
       'pages/store/list',

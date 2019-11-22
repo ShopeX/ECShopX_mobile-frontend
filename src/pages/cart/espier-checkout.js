@@ -259,6 +259,13 @@ export default class CartCheckout extends Component {
         monitor_id: trackParams.monitor_id
       }
     }
+    const distributionShopId = Taro.getStorageSync('distribution_shop_id')
+    let miniShopId = {}
+    if (distributionShopId) {
+      miniShopId = {
+        promoter_shop_id: distributionShopId
+      }
+    }
     const { payType, receiptType } = this.state
     const { coupon } = this.props
     const params = {
@@ -266,6 +273,7 @@ export default class CartCheckout extends Component {
       ...receiver,
       ...buyerInfo,
       ...tracks,
+      ...miniShopId,
       ...activity,
       receipt_type: receiptType,
       order_type: orderType,
