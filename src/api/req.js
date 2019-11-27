@@ -66,7 +66,12 @@ class API {
     if (!methodIsGet) {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
     }
-    header['Authorization'] = `Bearer ${S.getAuthToken()}`
+
+    const token = S.getAuthToken()
+
+    if (token) {
+      header['Authorization'] = `Bearer ${S.getAuthToken()}`
+    }
 
     const { company_id, appid } = this.options
     if (process.env.TARO_ENV === 'weapp') {
