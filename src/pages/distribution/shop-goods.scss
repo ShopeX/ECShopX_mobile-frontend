@@ -24,7 +24,34 @@
         height: 30vw;
       }
       &__caption {
-        padding: 20px;
+        display: flex;
+        padding: 30px 20px;
+      }
+      &__task {
+        position: relative;
+        padding-left: 30px;
+        margin-left: 20px;
+        text-align: center;
+        &::after {
+          position: absolute;
+          left: 0;
+          top: 5px;
+          bottom: 5px;
+          width: 1PX;
+          background: #efefef;
+          content: ""
+        }
+        &-label {
+          margin-bottom: 5px;
+          font-size: 24px;
+          color: #999;
+        }
+        &-type {
+          padding: 0 15px;
+          font-size: 22px;
+          color: #00c3ff;
+          border: 1px solid #00c3ff;
+        }
       }
       &__title {
         font-size: 28px;
@@ -34,12 +61,43 @@
         font-size: 24px;
         color: $color-gray;
       }
+      &__price {
+        font-size: 32px;
+        color: $color-price;
+        .cur {
+          font-size: 24px;
+        }
+      }
       &__detail {
         padding: 20px;
-        color: #00c3ff;
         text-align: center;
         border-top: 1PX solid #efefef;
         font-size: 24px;
+        color: #00c3ff;
+        &-item {
+          display: flex;
+          padding: 15px 0;
+          border-top: 1px dashed #efefef;
+          color: #666;
+          .sku-item {
+            padding-right: 10px;
+            display: inline-block;
+            vertical-align: middle;
+          }
+          .sku-img {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+          }
+          .view-flex-item {
+            font-size: 24px;
+            padding: 0 10px;
+          }
+        }
+        &-skus {
+          text-align: left;
+        }
       }
     }
     .shop-goods__footer {

@@ -19,7 +19,8 @@ export default class DistributionShopGoods extends Component {
       ...this.state,
       query: null,
       list: [],
-      goodsIds: []
+      goodsIds: [],
+      curIdx: ''
     }
   }
 
@@ -53,8 +54,12 @@ export default class DistributionShopGoods extends Component {
       goods_id: 'goods_id',
       title: 'itemName',
       desc: 'brief',
+      rebate_type: 'rebate_type',
       price: ({ price }) => (price/100).toFixed(2),
-      market_price: ({ market_price }) => (market_price/100).toFixed(2)
+      market_price: ({ market_price }) => (market_price/100).toFixed(2),
+      cost_price: 'cost_price',
+      details: null,
+      view_detail: false,
     })
 
     let ids = []
@@ -80,16 +85,31 @@ export default class DistributionShopGoods extends Component {
     }
   }
 
-  handleViewDetail = async (id) => {
-    const query = {
-      is_default: false,
-      goods_id: id,
-      item_type: 'normal',
-      pageSize: 50,
-      page: 1
-    }
-    const res = api.item.search(query)
-    console.log(res)
+  handleViewDetail = (idx, id) => {
+    const { list } = this.state
+    this.setState({
+      curIdx: idx
+    }, async () => {
+      const query = {
+        is_default: false,
+        goods_id: id,
+        item_type: 'normal',
+        pageSize: 50,
+        page: 1
+      }
+      const res = await api.item.search(query)
+      const details = pickBy(res.list, {
+        item_spec: 'item_spec',
+        rebate_task_type: ({rebate_conf}) => rebate_conf.rebate_task_type,
+        task: ({rebate_conf}) => rebate_conf.rebate_task
+      })
+      console.log(details)
+      list[idx].details = details
+      list[idx].view_detail = true
+      this.setState({
+        list
+      })
+    })
   }
 
   handleItemRelease = async (id) => {
@@ -168,15 +188,73 @@ export default class DistributionShopGoods extends Component {
                     <View className='shop-goods'>
                       <Image className='shop-goods__thumbnail' src={item.img} mode='aspectFill' />
                       <View className='shop-goods__caption'>
-                        <View className='shop-goods__title'>{item.title}</View>
-                        <View className='shop-goods__desc'>{item.desc}</View>
+                        <View className='view-flex-item'>
+                          <View className='shop-goods__title'>{item.title}</View>
+                          <View className='shop-goods__desc'>{item.desc}</View>
+                          <View className='shop-goods__price'><Text className='cur'>¥</Text> {item.price}</View>
+                        </View>
+                        <View className='shop-goods__task'>
+                          <View className='shop-goods__task-label'>任务模式</View>
+                          { item.rebate_type === 'total_num' && <View className='shop-goods__task-type'>按售出总量</View> }
+                          { item.rebate_type === 'total_money' && <View className='shop-goods__task-type'>按总销售金额</View> }
+                        </View>
                       </View>
-                      <View
-                        className='shop-goods__detail'
-                        onClick={this.handleViewDetail.bind(this, item.item_id)}
-                        >
-                        <Text className='icon-search'></Text> 查看指标明细
-                      </View>
+                      {
+                        !item.view_detail
+                          ? <View
+                              className='shop-goods__detail'
+                              onClick={this.handleViewDetail.bind(this, index, item.item_id)}
+                              >
+                              <Text className='icon-search'></Text> 查看指标明细
+                            </View>
+                          : <View
+                              className='shop-goods__detail'
+                              >
+                              <View className='content-bottom-padded view-flex'>
+                                <View className='view-flex-item2'>规格</View>
+                                <View className='view-flex-item'>指标</View>
+                                <View className='view-flex-item'>奖金</View>
+                              </View>
+                              {
+                                item.details && item.details.map(detail =>
+                                  <View class="shop-goods__detail-item">
+                                    <View className='shop-goods__detail-skus view-flex-item2'>
+                                      {
+                                        detail.item_spec
+                                          ? detail.item_spec.map(sku =>
+                                              <View className='sku-item'>
+                                                {
+                                                  sku.spec_image_url &&
+                                                    <Image className='sku-img' src={sku.spec_image_url} mode="aspectFill"/>
+                                                }
+                                                {sku.spec_custom_value_name}
+                                              </View>
+                                            )
+                                          : <Text>单规格</Text>
+                                      }
+                                    </View>
+                                    <View className='view-flex-item2'>
+                                      {
+                                        detail.task.map(task =>
+                                          <View className='view-flex'>
+                                            <View className='view-flex-item'>{task.filter}</View>
+                                            <View className='view-flex-item'>
+                                              {
+                                                task.money &&
+                                                  <Text>¥</Text>
+                                              }
+                                              {task.money}
+                                            </View>
+                                          </View>
+                                        )
+                                      }
+                                    </View>
+                                  </View>
+                                )
+                              }
+                            </View>
+                      }
+
                     </View>
                     <View className='shop-goods__footer'>
                       <View

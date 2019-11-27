@@ -1,7 +1,5 @@
 @import "../../style/imports";
 
-$banner-height: 250px !default;
-
 .page-distribution-shop {
   background: $color-bg-gray;
   .trade-list {
@@ -10,18 +8,29 @@ $banner-height: 250px !default;
       @include page-scroll(0, 0);
     }
     &__item {
-      padding: 20px;
-      margin-bottom: 20px;
-      background: #fff;
       &-code {
         font-size: 24px;
         color: #666;
       }
+      &-date {
+        font-size: 24px;
+        color: #666;
+      }
+      &-title {
+        margin-bottom: 5px;
+        font-size: 28px;
+        color: #333;
+      }
       &-price {
-
+        color: $color-price;
+        .cur {
+          font-size: 20px;
+        }
       }
       &-count {
-
+        padding-top: 5px;
+        padding-left: 20px;
+        font-size: 22px;
       }
     }
   }

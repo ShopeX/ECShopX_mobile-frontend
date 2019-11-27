@@ -5,7 +5,7 @@ import { SpToast, BackToTop, Loading, FilterBar, SpNote, GoodsItem } from '@/com
 import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { classNames, pickBy } from '@/utils'
+import { classNames, pickBy, formatDataTime } from '@/utils'
 import entry from '@/utils/entry'
 
 import './shop-trade.scss'
@@ -71,17 +71,17 @@ export default class DistributionShopTrade extends Component {
           <View className='trade-list'>
             {
               list.map((item, index) =>
-                <View className='trade-list__item'>
-                  <View className='view-flex'>
+                <View className='section trade-list__item'>
+                  <View className='section-title view-flex view-flex-middle with-border'>
                     <View className='view-flex-item trade-list__item-code'>{item.order_id}</View>
-                    <View className='trade-list__item-date'>{item.created}</View>
+                    <View className='trade-list__item-date'><Text className='icon-clock muted'></Text> {formatDataTime(item.created*1000)}</View>
                   </View>
-                  <View className='view-flex'>
-                    <View>
+                  <View className='section-body view-flex'>
+                    <View className='view-flex-item'>
                       <View className='trade-list__item-title'>{item.title}</View>
-                      <View></View>
+                      <View className='trade-list__item-price'><Text className='cur'>¥</Text> {item.price}</View>
                     </View>
-                    <View></View>
+                    <View className='trade-list__item-count'>x{item.num}</View>
                   </View>
                 </View>
               )
