@@ -72,7 +72,8 @@ export default class DistributionDashboard extends Component {
       promoter_grade_order_count: 'promoter_grade_order_count',
       rebateTotal: 'rebateTotal',
       isbuy_promoter: 'isbuy_promoter',
-      notbuy_promoter: 'notbuy_promoter'
+      notbuy_promoter: 'notbuy_promoter',
+      taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee'
     })
 
     const promoter = await api.distribution.info()
@@ -185,7 +186,7 @@ export default class DistributionDashboard extends Component {
           </Navigator>
           {
             info.isOpenShop === 'true' && info.shop_status === 1 &&
-              <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/shop">
+              <Navigator className="list-item" open-type="navigateTo" url={`/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}`}>
                 <View className="item-icon icon-shop"></View>
                 <View className="list-item-txt">我的小店</View>
                 <View className="icon-arrowRight item-icon-go"></View>
