@@ -49,7 +49,7 @@ export default class DistributionDashboard extends Component {
     return {
       title: info.shop_name || `${username}的小店`,
       imageUrl: info.shop_pic,
-      path: `/pages/distribution/shop-home?uid=${userId}`
+      path: `/pages/index?uid=${userId}`
     }
   }
 
@@ -105,12 +105,7 @@ export default class DistributionDashboard extends Component {
               mode="aspectFill"
             />
             <View className="header-info view-flex-item">
-              <View className="mcode">{info.username}
-                {
-                  info.is_open_promoter_grade &&
-                  <Text>（{info.promoter_grade_name}）</Text>
-                }
-              </View>
+              {info.username}
               {
                 info.is_open_promoter_grade &&
                 <Text>（{info.promoter_grade_name}）</Text>
@@ -192,11 +187,14 @@ export default class DistributionDashboard extends Component {
                 <View className="icon-arrowRight item-icon-go"></View>
               </Navigator>
           }
-          <Button className="share-btn list-item" open-type="share">
-            <View className="item-icon icon-share1"></View>
-            <View className="list-item-txt">分享给好友</View>
-            <View className="icon-arrowRight item-icon-go"></View>
-          </Button>
+          {
+            info.isOpenShop === 'true' && info.shop_status !== 1 &&
+              <Button className="share-btn list-item" open-type="share">
+                <View className="item-icon icon-share1"></View>
+                <View className="list-item-txt">分享给好友</View>
+                <View className="icon-arrowRight item-icon-go"></View>
+              </Button>
+          }
         </View>
       </View>
     )
