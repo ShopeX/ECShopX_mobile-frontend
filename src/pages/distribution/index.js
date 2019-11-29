@@ -28,15 +28,18 @@ export default class DistributionDashboard extends Component {
       cancelText: '取消',
       confirmText: '确定'
     })
-    .then(async res => {
-      const { status } = await api.distribution.update({shop_status: 2})
-      if (status) {
-        Taro.showToast({
-          title: '开启成功',
-          icon: 'success',
-          duration: 2000
+    .then(res => {
+      if (res.confirm) {
+        api.distribution.update({shop_status: 2}).then(res => {
+          if (res.status) {
+            Taro.showToast({
+              title: '开启成功',
+              icon: 'success',
+              duration: 2000
+            })
+            .then(res => this.fetch())
+          }
         })
-        .then(res => this.fetch())
       }
     })
 
@@ -117,8 +120,9 @@ export default class DistributionDashboard extends Component {
             </Navigator>
           </View>
           {
-            info.isOpenShop === 'true' && info.shop_status === 0 &&
-              <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>申请开启我的小店</View>
+            (info.isOpenShop === 'true' && info.shop_status === 0) || (info.isOpenShop === 'true' && info.shop_status === 4)
+              ? <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>申请开启我的小店</View>
+              : null
           }
           {
             info.isOpenShop === 'true' && info.shop_status === 2 &&
