@@ -151,6 +151,7 @@ export default class DistributionShopGoods extends Component {
   }
 
   render () {
+    const { status } = this.$router.params
     const { list, goodsIds, page, scrollTop } = this.state
 
     return (
@@ -261,10 +262,16 @@ export default class DistributionShopGoods extends Component {
                         className={classNames('shop-goods__footer-item', !isRelease ? 'unreleased' : null)}
                         onClick={this.handleItemRelease.bind(this, item.item_id)}
                       >
-                        {
-                          isRelease
-                            ? <Text className='icon-moveDown'> 从小店下架</Text>
-                            : <Text className='icon-moveUp'> 上架到小店</Text>
+                      {
+                        status
+                          ? <View>
+                              {
+                                isRelease
+                                  ? <Text className='icon-moveDown'> 从小店下架</Text>
+                                  : <Text className='icon-moveUp'> 上架到小店</Text>
+                              }
+                            </View>
+                          : null
                         }
                       </View>
                       <Button

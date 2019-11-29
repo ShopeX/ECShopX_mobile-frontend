@@ -43,11 +43,12 @@ export default class DistributionDashboard extends Component {
   }
 
   onShareAppMessage () {
+    const { window } = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
     const { username, userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
 
     return {
-      title: info.shop_name || `${username}的小店`,
+      title: window.navigationBarTitleText,
       imageUrl: info.shop_pic,
       path: `/pages/index?uid=${userId}`
     }
@@ -174,7 +175,7 @@ export default class DistributionDashboard extends Component {
             <View className="list-item-txt">我的二维码</View>
             <View className="icon-arrowRight item-icon-go"></View>
           </View>
-          <Navigator className="list-item" open-type="navigateTo" url="/pages/distribution/goods">
+          <Navigator className="list-item" open-type="navigateTo" url={`/pages/distribution/goods?status=${info.isOpenShop === 'true' && info.shop_status === 1}`}>
             <View className="item-icon icon-weChart"></View>
             <View className="list-item-txt">推广商品</View>
             <View className="icon-arrowRight item-icon-go"></View>
