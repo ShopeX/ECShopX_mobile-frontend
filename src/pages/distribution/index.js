@@ -57,7 +57,7 @@ export default class DistributionDashboard extends Component {
   handleClick = () => {
     let { isOpenShop } = this.state.info
     Taro.navigateTo({
-      url: `/pages/distribution/qrcode?isOpenShop=${isOpenShop}`
+      url: `/pages/distribution/qrcode?isOpenShop=${isOpenShop}&status=${info.shop_status === 1}`
     })
   }
 
