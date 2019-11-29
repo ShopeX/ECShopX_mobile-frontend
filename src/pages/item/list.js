@@ -45,7 +45,7 @@ export default class List extends Component {
   componentDidMount () {
     const { cat_id = null, main_cat_id = null } = this.$router.params
     this.firstStatus = true
-
+    console.log(this.$router.params)
     this.setState({
       query: {
         keywords: this.$router.params.keywords,

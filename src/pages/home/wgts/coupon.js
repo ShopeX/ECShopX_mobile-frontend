@@ -45,7 +45,7 @@ export default class WgtCoupon extends Component {
   }
 
   render () {
-    const { info, dis_id } = this.props
+    const { info, dis_id = '' } = this.props
     if (!info) {
       return null
     }

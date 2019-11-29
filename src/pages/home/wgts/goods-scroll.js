@@ -37,15 +37,16 @@ export default class WgtGoodsScroll extends Component {
   }
 
   navigateToList = (type, seckillId) => {
+    const { dis_id = '' } = this.props
     if(type === 'goods') {
-      this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id}`)
+      this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id || ''}`)
     } else if (type === 'limitTimeSale') {
       Taro.navigateTo({
-        url: `/pages/item/seckill-goods-list?seckill_type=limited_time_sale&seckill_id=${seckillId}&dis_id=${this.props.dis_id}`
+        url: `/pages/item/seckill-goods-list?seckill_type=limited_time_sale&seckill_id=${seckillId}&dis_id=${this.props.dis_id || ''}`
       })
     } else {
       Taro.navigateTo({
-        url: `/pages/item/seckill-goods-list?seckill_type=normal&seckill_id=${seckillId}&dis_id=${this.props.dis_id}`
+        url: `/pages/item/seckill-goods-list?seckill_type=normal&seckill_id=${seckillId}&dis_id=${this.props.dis_id || ''}`
       })
     }
   }

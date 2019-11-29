@@ -22,7 +22,8 @@ export default class WgtGoodsGrid extends Component {
   }
 
   render () {
-    const { info, dis_id } = this.props
+    const { info, dis_id = '' } = this.props
+    console.log(dis_id)
     if (!info) {
       return null
     }
@@ -58,7 +59,7 @@ export default class WgtGoodsGrid extends Component {
               className='wgt__goods__more'
               onClick={this.navigateTo.bind(this, `/pages/item/list?dis_id=${dis_id}`)}
             >
-              <View className='all-goods'>全部商品</View>
+              <View className='all-goods'>全部商品{dis_id}</View>
             </View>
           </View>
         )}
