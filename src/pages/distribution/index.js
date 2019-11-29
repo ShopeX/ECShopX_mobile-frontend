@@ -33,7 +33,7 @@ export default class DistributionDashboard extends Component {
         api.distribution.update({shop_status: 2}).then(res => {
           if (res.status) {
             Taro.showToast({
-              title: '开启成功',
+              title: '申请成功等待审核',
               icon: 'success',
               duration: 2000
             })
@@ -87,7 +87,8 @@ export default class DistributionDashboard extends Component {
       is_open_promoter_grade: 'is_open_promoter_grade',
       promoter_grade_name: 'promoter_grade_name',
       isOpenShop: 'isOpenShop',
-      shop_status: 'shop_status'
+      shop_status: 'shop_status',
+      reason: 'reason'
     })
 
     const info = {username, avatar, ...base, ...pInfo}
@@ -120,8 +121,16 @@ export default class DistributionDashboard extends Component {
             </Navigator>
           </View>
           {
-            (info.isOpenShop === 'true' && info.shop_status === 0) || (info.isOpenShop === 'true' && info.shop_status === 4)
+            info.isOpenShop === 'true' && info.shop_status === 0
               ? <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>申请开启我的小店</View>
+              : null
+          }
+          {
+            info.isOpenShop === 'true' && info.shop_status === 4
+              ? <View>
+                  <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>审核驳回，再次申请开启小店</View>
+                  <View className='mini-store-reason'>驳回理由：{info.reason}</View>
+                </View>
               : null
           }
           {
