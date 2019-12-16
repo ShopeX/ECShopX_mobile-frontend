@@ -243,7 +243,7 @@ export default class MemberIndex extends Component {
                     </View>
                     <View className='view-flex'>
                       <View className='icon-qrcode' onClick={this.handleCodeClick.bind(this)}></View>
-                      <View className='icon-setting' onClick={this.handleClick.bind(this, '/marketing/pages/member/user-info')}></View>
+                      {/*<View className='icon-setting' onClick={this.handleClick.bind(this, '/marketing/pages/member/user-info')}></View>*/}
                     </View>
                   </View>
                   <View className='member-assets view-flex'>
@@ -273,7 +273,7 @@ export default class MemberIndex extends Component {
                 </View>
             }
           {
-            (vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip) && memberDiscount &&
+            (vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip) && memberDiscount !== '' &&
               <View
                 className='member-card'
                 onClick={this.handleClick.bind(this, '/pages/vip/vipgrades')}
