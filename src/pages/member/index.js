@@ -226,7 +226,7 @@ export default class MemberIndex extends Component {
           {
             S.getAuthToken()
               ?
-                <View className={`page-member-header ${!memberDiscount ? 'no-card' : ''}`}>
+                <View className={`page-member-header ${memberDiscount === '' ? 'no-card' : ''}`}>
                   <View className='user-info'>
                     <View className='view-flex view-flex-middle'>
                       <View className='avatar'>
