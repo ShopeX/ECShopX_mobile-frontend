@@ -24,7 +24,8 @@ export default class GoodsBuyPanel extends Component {
     onClose: () => {},
     onChange: () => {},
     onClickAddCart: () => {},
-    onClickFastBuy: () => {}
+    onClickFastBuy: () => {},
+    onSubmit: () => {}
   }
 
   constructor (props) {
@@ -337,6 +338,7 @@ export default class GoodsBuyPanel extends Component {
         busy: false
       }, () => {
         this.props.onClose()
+        this.props.onSubmit(skuInfo)
       })
     }
 

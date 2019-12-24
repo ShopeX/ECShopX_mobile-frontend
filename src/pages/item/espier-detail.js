@@ -150,6 +150,14 @@ export default class Detail extends Component {
     let hasStock = info.store && info.store > 0
     let startActivity = true
     let sessionFrom = ''
+    let contentDesc =''
+    if(!isArray(desc)){
+      if(info.videos_url){
+        contentDesc += `<video src=${info.videos} controls style='width:100%'></video>`+ desc
+      }            
+    }else {
+      contentDesc = desc
+    }
 
     if (info.activity_info) {
       if (info.activity_type === 'group') {
@@ -211,7 +219,7 @@ export default class Detail extends Component {
 
     this.setState({
       info,
-      desc,
+      desc:contentDesc,
       marketing,
       timer,
       hasStock,
@@ -962,6 +970,11 @@ export default class Detail extends Component {
             isArray(desc)
               ? <View className='wgts-wrap__cont'>
                 {
+                   info.videos_url && (
+                     <Video src={info.videos} controls style='width:100%'></Video>
+                   )
+                 }
+                {                  
                   desc.map((item, idx) => {
                     return (
                       <View className='wgt-wrap' key={idx}>

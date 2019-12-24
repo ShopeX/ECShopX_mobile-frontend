@@ -216,7 +216,7 @@ export default class PackageItem extends Component {
     if (!info) {
       return null
     }
-    const { list, selection, packagePrice, curSku } = this.state
+    const { list, selection, packagePrice, curSku,showBuyPanel,buyPanelType } = this.state
     const { package_id, package_name } = info
 
     return (
