@@ -2,16 +2,6 @@
 
 $item-img-size: 240px !default;
 
-.goods-list__type-grid {
-  .goods-item {
-    flex-direction: column;
-    align-items: flex-start;
-    &__bd {
-      width: 100%;
-    }
-  }
-}
-
 .draw-item__ft-inner {
   display: flex;
   justify-content: space-between;
@@ -25,30 +15,21 @@ $item-img-size: 240px !default;
 
 .goods-item {
   $self: &;
-  display: flex;
-  align-items: center;
+	position: relative;
   border-radius: $item-border-radius;
   overflow: hidden;
-	margin: 0 0 $edge-margin*2;
-	position: relative;
 	box-shadow: 0 5px 5px rgba(0,0,0,0.1);
 
   &__hd {
   }
   &__bd {
-    background: #fff;
-    display: flex;
-    flex: 1;
     border-radius: $item-border-radius;
+    background: #fff;
     overflow: hidden;
   }
-  &__cont{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: $edge-margin*2 20px;
-		flex: 1;
-
+  &__cont {
+    height: 320px;
+    padding: 20px;
   }
   &__img {
     display: block;
@@ -58,20 +39,27 @@ $item-img-size: 240px !default;
     width: 100%;
     height: 100%;
     &-wrap {
+      display: flex;
       position: relative;
-      width: $item-img-size;
-      height: $item-img-size;
-      display: block;
-      text-align: center;
+      &::after {
+        padding-top: 100%;
+        content: ""
+      }
     }
   }
+  &__caption {
+    height: 180px;
+  }
+  &__tag-list {
+    padding-bottom: 10px;
+    display: flex;
+  }
   &__tag {
-    margin: 0 0 10px;
-    padding: 2px 4px;
-    font-size: 20px;
+    padding: 0 3px;
+    font-size: 18px;
     border-radius: 4px;
+    line-height: 1.2;
     border: 2px solid #FF5000;
-    line-height: 1.4;
     color: #FF5000;
   }
   &__group {
@@ -81,15 +69,17 @@ $item-img-size: 240px !default;
     color: #fff;
   }
   &__title {
-    margin: 0 0 10px;
+    margin: 0 0 5px;
     max-height: 80px;
     @include multi-ellipsis(2);
-    line-height: 1.4;
-    color: #111;
+    line-height: 1.2;
+    font-size: 26px;
+    color: #333;
+    font-family: Arial;
   }
   &__desc {
-    margin: 0 0 10px;
-    line-height: 1.4;
+    margin: 0 0 15px;
+    line-height: 1.3;
     @include multi-ellipsis(2);
     color: $color-gray;
     font-size: $font-size-small;
@@ -99,9 +89,12 @@ $item-img-size: 240px !default;
     font-size: 20px;
   }
   &__price {
-    font-size: floor(1.2 * $font-size);
-    margin-right: 24px;
+    flex: 1;
+    padding-right: 24px;
+    line-height: 1;
+    font-size: floor(1.1 * $font-size);
     color: $color-price;
+    font-family: Arial;
   }
   &__point {
     color: $color-brand-primary;
@@ -109,14 +102,13 @@ $item-img-size: 240px !default;
   &__price-market {
     padding-left: 5px;
     font-size: $font-size-small;
-    color: $color-gray;
+    color: $color-gray-light;
     text-decoration: line-through;
   }
 
   &__extra {
     display: flex;
     align-items: center;
-    justify-content: space-between;
   }
   &__author {
     font-size: $font-size-small;
@@ -141,15 +133,25 @@ $item-img-size: 240px !default;
   &__actions {
     color: #d0d0d0;
     font-size: $font-size-small;
+    text-align: right;
     [class^="icon-"] {
       color: #d0d0d0;
       font-size: 36px;
       &:before {
-        margin-right: 8px;
+        margin-left: 8px;
       }
     }
     .icon-star-on, .icon-like-on {
       color: $color-brand-primary;
+    }
+  }
+  &__store {
+    padding-top: 10px;
+    color: $color-gray;
+    font-size: 20px;
+    letter-spacing: 0;
+    &-entry {
+      color: #333;
     }
   }
 }
