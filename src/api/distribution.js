@@ -59,3 +59,14 @@ export function shopAchievement (params) {
 export function shopTrade (params) {
   return req.get('/promoter/taskBrokerage/logs', params)
 }
+export function shopBanner (params) {
+  return req.get('/promoter/banner', params)
+}
+
+export function getCategorylevel (params) {
+  return req.get('/goods/categorylevel',params)
+}
+
+export function getCustompage () {
+  return req.get('/promoter/custompage')
+}

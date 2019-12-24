@@ -1,12 +1,15 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Image, Navigator } from '@tarojs/components'
-import { AtDrawer } from 'taro-ui'
+import { AtDrawer, AtTabBar  } from 'taro-ui'
 import { SpToast, BackToTop, Loading, FilterBar, SpNote, GoodsItem } from '@/components'
 import S from '@/spx'
+import req from '@/api/req'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { classNames, pickBy } from '@/utils'
+import { classNames, pickBy, getCurrentRoute} from '@/utils'
 import entry from '@/utils/entry'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading, WgtGoodsFaverite } from '../home/wgts'
+import { HomeWgts } from '../home/comps/home-wgts'
 
 import './shop-home.scss'
 
@@ -21,7 +24,7 @@ export default class DistributionShopHome extends Component {
       info: {},
       curFilterIdx: 0,
       filterList: [
-        { title: '综合' },
+        { title: '综合1' },
         { title: '销量' },
         { title: '价格', sort: -1 }
       ],
@@ -30,7 +33,14 @@ export default class DistributionShopHome extends Component {
       paramsList: [],
       selectParams: [],
       list: [],
-      goodsIds: []
+      goodsIds: [],
+      tabList: [
+        { title: '重点推荐', iconType: 'home', iconPrefixClass: 'icon',url: '/pages/distribution/shop-home',urlRedirect: true },
+        { title: '分类', iconType: 'category', iconPrefixClass: 'icon', url: '/marketing/pages/distribution/shop-category', urlRedirect: true },
+      ],
+      wgts:null,
+      authStatus: false,
+      positionStatus: false
     }
   }
 
@@ -51,7 +61,8 @@ export default class DistributionShopHome extends Component {
         }
       }, async () => {
         await this.fetchInfo()
-        await this.nextPage()
+        await this.fetch()
+        // await this.nextPage()
       })
     }
   }
@@ -60,15 +71,16 @@ export default class DistributionShopHome extends Component {
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
     const param = distributionShopId ? {
-      user_id: distributionShopId
+      user_id: distributionShopId,
     } : {
-      user_id: userId
+      user_id: userId,
     }
 
     const res = await api.distribution.info(param || null)
     const {shop_name, brief, shop_pic, username, headimgurl } = res
 
     this.setState({
+      localCurrent: 0,
       info: {
         username,
         headimgurl,
@@ -79,55 +91,34 @@ export default class DistributionShopHome extends Component {
     })
   }
 
-  async fetch (params) {
-    const { page_no: page, page_size: pageSize } = params
-    const { selectParams } = this.state
-    const query = {
-      ...this.state.query,
-      page,
-      pageSize
-    }
-
-    const { list, total_count: total, item_params_list = []} = await api.item.search(query)
-
-    item_params_list.map(item => {
-      if (selectParams.length < 4) {
-        selectParams.push({
-          attribute_id: item.attribute_id,
-          attribute_value_id: 'all'
-        })
-      }
-      item.attribute_values.unshift({attribute_value_id: 'all', attribute_value_name: '全部', isChooseParams: true})
-    })
-
-    const nList = pickBy(list, {
-      img: 'pics[0]',
-      item_id: 'item_id',
-      goods_id: 'goods_id',
-      title: 'itemName',
-      desc: 'brief',
-      price: ({ price }) => (price/100).toFixed(2),
-      market_price: ({ market_price }) => (market_price/100).toFixed(2)
-    })
+  async fetch () {
+    const { custompage_template_id } = await api.distribution.getCustompage()
+    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${custompage_template_id}&name=search`
+    const fixSetting = await req.get(url)
 
     this.setState({
-      list: [...this.state.list, ...nList],
-      showDrawer: false,
-      query
-    })
-
-    if (this.firstStatus) {
-      this.setState({
-        paramsList: item_params_list,
-        selectParams
-      })
-      this.firstStatus = false
-    }
-
-    return {
-      total
-    }
+      positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
+    }, () => {
+      this.fetchTpl()
+    })  
   }
+  async fetchTpl () {
+    const { custompage_template_id } = await api.distribution.getCustompage()
+    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${custompage_template_id}`
+    const info = await req.get(url)
+
+    if (!S.getAuthToken()) {
+      this.setState({
+        authStatus: true
+      })
+    }
+    this.setState({
+      wgts: info.config
+    })
+    
+  }
+
+  
 
   handleFilterChange = (data) => {
     this.setState({
@@ -227,9 +218,29 @@ export default class DistributionShopHome extends Component {
       url
     })
   }
+  handleClick = (current) => {
+    const cur = this.state.localCurrent
+
+    if (cur !== current) {
+      const curTab = this.state.tabList[current]
+      const { url, urlRedirect } = curTab
+      
+      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]      
+      if (url && fullPath !== url) {
+        if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
+          Taro.navigateTo({ url })
+        } else {
+          Taro.redirectTo({ url })
+        }
+      }
+    }
+  }
 
   render () {
-    const { list, page, showDrawer, paramsList, selectParams, scrollTop, goodsIds, curFilterIdx, filterList } = this.state
+    const { wgts,positionStatus,authStatus,showBackToTop, list,tabList, page, showDrawer,localCurrent, paramsList, selectParams, scrollTop, goodsIds, curFilterIdx, filterList } = this.state
+    if (!wgts) {
+      return <Loading />
+    }
 
     return (
       <View className="page-distribution-shop">
@@ -244,29 +255,35 @@ export default class DistributionShopHome extends Component {
               <View className='shop-name'>{info.shop_name || `${info.username}的小店`}</View>
               <View className='shop-desc'>{info.brief || '店主很懒什么都没留下'}</View>
             </View>
-          </View>
-          <Image
-            className='banner-img'
-            src={info.shop_pic}
-            mode='aspectFill'
-          />
+          </View>    
         </View>
-        <FilterBar
+        <ScrollView
+          className={`wgts-wrap ${positionStatus ? 'wgts-wrap__fixed' : ''}`}
+          scrollTop={scrollTop}
+          scrollY
+        >
+          <View className='wgts-wrap__cont'>
+            <HomeWgts
+              wgts={wgts}
+            />
+          </View>
+        </ScrollView>
+        {/* <FilterBar
           className='goods-list__tabs'
           custom
           current={curFilterIdx}
           list={filterList}
           onChange={this.handleFilterChange}
         >
-          {/*
+          
             <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
               <View className='icon-filter'></View>
               <Text>筛选</Text>
             </View>
-          */}
-        </FilterBar>
+         
+        </FilterBar> */}
 
-        <AtDrawer
+        {/* <AtDrawer
           show={showDrawer}
           right
           mask
@@ -307,17 +324,17 @@ export default class DistributionShopHome extends Component {
             <Text className='drawer-footer__btn' onClick={this.handleClickSearchParams.bind(this, 'reset')}>重置</Text>
             <Text className='drawer-footer__btn drawer-footer__btn_active' onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定</Text>
           </View>
-        </AtDrawer>
+        </AtDrawer> */}
 
-        <ScrollView
+        {/* <ScrollView
           className='goods-list__scroll'
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
-        >
-          <View className='goods-list'>
+        > */}
+          {/* <View className='goods-list'>
             {
               list.map((item, index) =>
                 <GoodsItem
@@ -327,8 +344,27 @@ export default class DistributionShopHome extends Component {
                 />
               )
             }
-          </View>
-          {
+          </View> */}
+          {/* {
+            isArray(desc) &&
+              <View className='wgts-wrap__cont'>
+                {
+                  desc.map((item, idx) => {
+                    return (
+                      <View className='wgt-wrap' key={idx}>                      
+                        {item.name === 'slider' && <WgtSlider info={item} />}
+                        {item.name === 'goods' && <WgtGoods info={item} />}
+                      </View>
+                    )
+                  })
+                }
+              </View>
+              
+          } */}
+
+
+
+          {/* {
             page.isLoading
               ? <Loading>正在加载...</Loading>
               : null
@@ -337,8 +373,27 @@ export default class DistributionShopHome extends Component {
             !page.isLoading && !page.hasNext && !list.length
               && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
           }
-        </ScrollView>
+        </ScrollView> */}
+        <BackToTop
+          show={showBackToTop}
+          onClick={this.scrollBackToTop}
+        />
         <SpToast />
+        <AtTabBar
+          fixed
+          tabList={tabList}
+          onClick={this.handleClick}  
+          current={localCurrent}   
+        />
+              {/* <AtTabBar
+                fixed
+                color={color}
+                backgroundColor={backgroundColor}
+                selectedColor={selectedColor}
+                tabList={tabList}
+                onClick={this.handleClick}
+                current={localCurrent}
+              /> */}
       </View>
     )
   }
