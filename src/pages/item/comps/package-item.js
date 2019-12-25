@@ -163,8 +163,8 @@ export default class PackageItem extends Component {
 
     const { selection, mainItem } = this.state
     const packageId = this.props.current
-    const { distributor_id } = Taro.getStorageSync('curStore')
-
+    //const { distributor_id } = Taro.getStorageSync('curStore')
+    const { distributor_id }= this.props
     const query = {
       isAccumulate: false,
       item_id: mainItem.id,
