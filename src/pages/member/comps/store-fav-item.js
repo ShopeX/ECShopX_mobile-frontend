@@ -36,7 +36,7 @@ export default class StoreFavItem extends Component {
         <Image
           className="fav-store__item-brand"
           src={info.logo}
-          mode="aspectFit"
+          mode="aspectFill"
         />
         <View className="fav-store__item-info">
           <View>{info.name}</View>

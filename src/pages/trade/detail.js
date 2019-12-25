@@ -406,12 +406,12 @@ export default class TradeDetail extends Component {
         <View className='trade-detail-header'>
           {
             info.order_class === 'drug'
-              ? <View className='trade-detail-drug'>
+              ? <View className='trade-detail-waitdeliver'>
                   {
                     info.order_status_des === 'CANCEL'
                       ? <View>
                           <View>订单状态：</View>
-                          <View>已取消</View>
+                          <View>已拒绝</View>
                         </View>
                       : <View>
                           <View>订单状态：</View>

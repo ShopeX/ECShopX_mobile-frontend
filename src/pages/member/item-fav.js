@@ -187,57 +187,61 @@ export default class ItemFav extends Component {
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          <View className='goods-list goods-list__type-grid'>
-            {
-              curTabIdx === 0
-                && <View>
-                    {
-                      list.map(item => {
-                        return (
+          {
+            curTabIdx === 0
+              && <View className='goods-list goods-list__type-grid'>
+                  {
+                    list.map(item => {
+                      return (
+                        <View className='goods-list__item'>
                           <GoodsItem
                             key={item.item_id}
                             info={item}
                             onClick={() => this.handleClickItem(item)}
                           />
-                        )
-                      })
-                    }
-                  </View>
-            }
-            {
-              curTabIdx === 1
-                && <View>
-                    {
-                      list.map(item => {
-                        return (
+                        </View>
+                      )
+                    })
+                  }
+                </View>
+          }
+          {
+            curTabIdx === 1
+              && <View className='goods-list goods-list__type-grid'>
+                  {
+                    list.map(item => {
+                      return (
+                        <View className='goods-list__item'>
                           <RecommendItem
                             key={item.item_id}
                             info={item}
                             onClick={() => this.handleClickItem(item)}
                           />
-                        )
-                      })
-                    }
-                  </View>
-            }
-            {
-              curTabIdx === 2
-                && <View>
-                    {
-                      list.map(item => {
-                        return (
+                        </View>
+                      )
+                    })
+                  }
+                </View>
+          }
+          {
+            curTabIdx === 2
+              && <View className='goods-list'>
+                  {
+                    list.map(item => {
+                      return (
+                        <View className='goods-list__item'>
                           <StoreFavItem
                             key={item.distributor_id}
                             info={item}
                             onClick={() => this.handleClickItem(item)}
                             onCancel={this.handleFavRemoved}
                           />
-                        )
-                      })
-                    }
-                  </View>
-            }
-          </View>
+                        </View>
+                      )
+                    })
+                  }
+                </View>
+          }
           {
             page.isLoading
               ? <Loading>正在加载...</Loading>

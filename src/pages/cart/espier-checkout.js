@@ -563,7 +563,7 @@ export default class CartCheckout extends Component {
 
     if (isDrug) {
       Taro.redirectTo({
-        url: '/pages/trade/list'
+        url: '/pages/trade/drug-list'
       })
       return
     }
@@ -663,7 +663,7 @@ export default class CartCheckout extends Component {
         }
       })
       const { shop_id } = this.$router.params
-      
+
     Taro.navigateTo({
       url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}&is_checkout=true&cart_type=${this.params.cart_type}&distributor_id=${shop_id}`
     })
