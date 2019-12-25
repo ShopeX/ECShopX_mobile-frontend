@@ -83,7 +83,8 @@ export default class DistributionShopCategory extends Component {
       page,
       pageSize,
       distribution_shop_id,
-      promoter_onsale:true
+      promoter_onsale:true,
+      approve_status: 'onsale,only_show'
     }
     //console.warn('83',params)
       const { list: goodsList, total_count: total} = await api.item.search(query)
