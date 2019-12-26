@@ -108,7 +108,7 @@ export default class MemberIndex extends Component {
         background_pic_url: res.memberInfo.gradeInfo.background_pic_url
       },
       orderCount,
-      memberDiscount: memberDiscount.length > 0 ? memberDiscount[memberDiscount.length-1].privileges.discount : '',
+      memberDiscount: memberDiscount.length > 0 ? memberDiscount[memberDiscount.length-1].privileges.discount_desc : '',
       memberAssets: assets
     })
   }
