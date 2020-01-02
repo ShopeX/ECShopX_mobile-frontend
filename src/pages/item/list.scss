@@ -62,8 +62,10 @@
     &__type-grid {
       display: flex;
       flex-wrap: wrap;
-      .goods-list__item {
+      .goods-list__group {
         width: 50%;
+      }
+      .goods-list__item {
         padding: 10px;
       }
     }

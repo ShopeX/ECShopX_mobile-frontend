@@ -31,6 +31,8 @@ export default class List extends Component {
       ],
       query: null,
       list: [],
+      oddList: [],
+      evenList: [],
       tagsList: [],
       paramsList: [],
       listType: 'grid',
@@ -135,8 +137,19 @@ export default class List extends Component {
       is_fav: ({ item_id }) => Boolean(favs[item_id])
     })
 
+    let odd = [], even = []
+    nList.map((item, idx) => {
+      if (idx % 2 == 0) {
+        odd.push(item)
+      } else {
+        even.push(item)
+      }
+    })
+
     this.setState({
       list: [...this.state.list, ...nList],
+      oddList: [...this.state.oddList, ...odd],
+      evenList: [...this.state.evenList, ...even],
       showDrawer: false,
       query
     })
@@ -165,7 +178,9 @@ export default class List extends Component {
 
     this.resetPage()
     this.setState({
-      list: []
+      list: [],
+      oddList: [],
+      evenList: []
     })
 
     this.setState({
@@ -184,6 +199,8 @@ export default class List extends Component {
       multiIndex: [],
       areaList:[],
       list: [],
+      oddList: [],
+      evenList: [],
 			info:{
 				city: {label: "", id: ""},
 				county: {label: "", id: ""},
@@ -213,7 +230,9 @@ export default class List extends Component {
     if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
       this.resetPage()
       this.setState({
-        list: []
+        list: [],
+        oddList: [],
+        evenList: []
       })
     }
 
@@ -303,7 +322,9 @@ export default class List extends Component {
 
     this.resetPage()
     this.setState({
-      list: []
+      list: [],
+      oddList: [],
+      evenList: []
     }, () => {
       this.nextPage()
     })
@@ -471,7 +492,9 @@ export default class List extends Component {
     }, () =>{
       this.resetPage()
       this.setState({
-        list: []
+        list: [],
+        oddList: [],
+        evenList: []
       }, () => {
         this.nextPage()
       })
@@ -481,6 +504,8 @@ export default class List extends Component {
   render () {
     const {
       list,
+      oddList,
+      evenList,
       listType,
       curFilterIdx,
       filterList,
@@ -605,22 +630,62 @@ export default class List extends Component {
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          <View className={`goods-list goods-list__type-${listType}`}>
-            {
-              list.map(item => {
-                return (
-                  <View className='goods-list__item'>
-                    <GoodsItem
-                      key={item.item_id}
-                      info={item}
-                      onClick={() => this.handleClickItem(item)}
-                      onStoreClick={() => this.handleClickStore(item)}
-                    />
+          {
+            listType === 'grid' &&
+              <View className={`goods-list goods-list__type-grid`}>
+                  <View className='goods-list__group'>
+                    {
+                      oddList.map(item => {
+                        return (
+                          <View className='goods-list__item'>
+                            <GoodsItem
+                              key={item.item_id}
+                              info={item}
+                              onClick={() => this.handleClickItem(item)}
+                              onStoreClick={() => this.handleClickStore(item)}
+                            />
+                          </View>
+                        )
+                      })
+                    }
                   </View>
-                )
-              })
-            }
-          </View>
+                  <View className='goods-list__group'>
+                    {
+                      evenList.map(item => {
+                        return (
+                          <View className='goods-list__item'>
+                            <GoodsItem
+                              key={item.item_id}
+                              info={item}
+                              onClick={() => this.handleClickItem(item)}
+                              onStoreClick={() => this.handleClickStore(item)}
+                            />
+                          </View>
+                        )
+                      })
+                    }
+                  </View>
+              </View>
+          }
+          {
+            listType === 'list' &&
+              <View className={`goods-list goods-list__type-list`}>
+                {
+                  list.map(item => {
+                    return (
+                      <View className='goods-list__item'>
+                        <GoodsItem
+                          key={item.item_id}
+                          info={item}
+                          onClick={() => this.handleClickItem(item)}
+                          onStoreClick={() => this.handleClickStore(item)}
+                        />
+                      </View>
+                    )
+                  })
+                }
+              </View>
+          }
           {
             page.isLoading
               ? <Loading>正在加载...</Loading>
