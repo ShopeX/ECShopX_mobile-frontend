@@ -94,7 +94,7 @@ export default class StoreList extends Component {
       isShowSearch: false,
       query: {
         ...this.state.query,
-        title: ''
+        name: ''
       }
     }, () =>{
       this.resetPage()
@@ -126,6 +126,7 @@ export default class StoreList extends Component {
     this.setState({
       loading: true
     })
+    Taro.removeStorageSync('lnglat')
     const store = await entry.getLocal(true)
     if (store) {
       Taro.setStorageSync('curStore', store)
@@ -158,7 +159,7 @@ export default class StoreList extends Component {
         <View class="store-list__search">
           <SearchBar
             showDailog={false}
-            keyword={query ? query.title : ''}
+            keyword={query ? query.name : ''}
             onFocus={this.handleSearchOn}
             onChange={this.handleSearchChange}
             onClear={this.handleSearchClear}
