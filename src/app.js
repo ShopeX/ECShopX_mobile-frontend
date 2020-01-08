@@ -53,6 +53,7 @@ class App extends Component {
       'pages/cart/espier-index',
       'pages/cart/espier-checkout',
       'pages/cart/coupon-picker',
+      'pages/cart/drug-info',
       'pages/article/index',
 
       'pages/recommend/list',
