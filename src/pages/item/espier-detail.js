@@ -424,7 +424,8 @@ export default class Detail extends Component {
     const { avatar, goods, code } = posterImgs
     const { info } = this.state
     const { item_name, act_price = null, member_price = null, price, market_price } = info
-    let mainPrice = act_price ? act_price : member_price ? member_price : price
+    //let mainPrice = act_price ? act_price : member_price ? member_price : price
+    let mainPrice = act_price ? act_price : price
     let sePrice = market_price
     mainPrice = (mainPrice/100).toFixed(2)
     if (sePrice) {
@@ -824,7 +825,7 @@ export default class Detail extends Component {
                             <Price
                               lineThrough
                               unit='cent'
-                              value={info.price}
+                              value={info.market_price}
                             />
                           </View>
                         : <View className='view-flex-item'>
@@ -838,7 +839,7 @@ export default class Detail extends Component {
                                 <Price
                                   lineThrough
                                   unit='cent'
-                                  value={info.price}
+                                  value={info.market_price}
                                 />
                             }
                           </View>

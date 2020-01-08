@@ -242,7 +242,7 @@ export default class CartIndex extends Component {
     this.updateCart()
   }
 
-  handleDelect = async (cart_id,shopIndex) => {
+  handleDelect = async (cart_id) => {
     const res = await Taro.showModal({
       title: '提示',
       content: '将当前商品移出购物车?',
@@ -255,7 +255,7 @@ export default class CartIndex extends Component {
 
     await api.cart.del({ cart_id })
 
-    const cartIds = this.props.cartIds[shopIndex].filter(t => t !== cart_id)
+    const cartIds = this.props.cartIds.filter(t => t !== cart_id)
 
 		this.updateCart()
   }

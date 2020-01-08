@@ -75,7 +75,7 @@ export default class DetailItem extends Component {
                 info={item}
               />
               {
-                !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS') && <View className='order-item__ft'>
+                !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>
                  {
                     info.delivery_code
                     ? null
