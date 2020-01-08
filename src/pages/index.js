@@ -41,7 +41,6 @@ export default class HomeIndex extends Component {
     this.state = {
       ...this.state,
       wgts: null,
-      authStatus: false,
       likeList: [],
       isShowAddTip: false,
       curStore: null,
@@ -92,42 +91,43 @@ export default class HomeIndex extends Component {
       })
   }
 
-  async componentDidMount () {
-    const userinfo = Taro.getStorageSync('userinfo')
-    const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
-    const fixSetting = await req.get(url)
+  componentDidMount () {
+    this.fetchInfo(async (info) => {
+      const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
+      const [fixSetting, { is_open, ad_pic, ad_title }] = await Promise.all([req.get(url), api.promotion.automatic({register_type: 'general'})])
 
-    // if (automatic.is_open === 'true' && automatic.register_type === 'membercard' && userinfo) {
-    //   const { is_open, is_vip, is_had_vip, vip_type } = await api.vip.getUserVipInfo()
-    //   this.setState({
-    //     vip: {
-    //       isSetVip: is_open,
-    //       isVip: is_vip,
-    //       isHadVip: is_had_vip,
-    //       vipType: vip_type
-    //     }
-    //   })
-    // }
-
-    const options = this.$router.params
-    const res = await entry.entryLaunch(options, true)
-
-    const { store } = res
-    if (!isArray(store)) {
       this.setState({
-        curStore: store,
+        automatic: {
+          title: ad_title,
+          isOpen: is_open === 'true',
+          adPic: ad_pic
+        },
         positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
-      }, () => {
-        this.fetchInfo()
       })
-		} else {
-      this.setState({
-        positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
-      }, () => {
-        this.fetchInfo()
-      })
-    }
-		this.fetchCartcount()
+
+      // const userinfo = Taro.getStorageSync('userinfo')
+      // if (automatic.is_open === 'true' && automatic.register_type === 'membercard' && userinfo) {
+      //   const { is_open, is_vip, is_had_vip, vip_type } = await api.vip.getUserVipInfo()
+      //   this.setState({
+      //     vip: {
+      //       isSetVip: is_open,
+      //       isVip: is_vip,
+      //       isHadVip: is_had_vip,
+      //       vipType: vip_type
+      //     }
+      //   })
+      // }
+
+      const options = this.$router.params
+      const res = await entry.entryLaunch(options, true)
+
+      const { store } = res
+      if (!isArray(store)) {
+        this.setState({
+          curStore: store
+        })
+  		}
+    })
   }
 
   onShareAppMessage (res) {
@@ -151,41 +151,27 @@ export default class HomeIndex extends Component {
       console.error(e)
     }
 	}
-  async fetchInfo () {
+  async fetchInfo (cb) {
     const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
     const info = await req.get(url)
 
-		const show_likelist = info.config.find(item=>item.name=='setting'&&item.config.faverite)
-		this.props.onUpdateLikeList(show_likelist?true:false)
-
-    const { is_open, ad_pic, ad_title } = await api.promotion.automatic({register_type: 'general'})
-    this.setState({
-      automatic: {
-        title: ad_title,
-        isOpen: is_open === 'true',
-        adPic: ad_pic
-      }
-    })
-
-    if (!S.getAuthToken()) {
-      this.setState({
-        authStatus: true
-      })
-    }
     this.setState({
       wgts: info.config
     },()=>{
+      if (cb) {
+        cb(info)
+      }
       Taro.stopPullDownRefresh()
       if(info.config) {
-        info.config.map(item => {
-          if(item.name === 'setting' && item.config.faverite) {
-            this.resetPage()
-            this.setState({
-              likeList: []
-            })
-            this.nextPage()
-          }
-        })
+        const show_likelist = info.config.find(item => item.name == 'setting' && item.config.faverite)
+        this.props.onUpdateLikeList(show_likelist ? true : false)
+        if (show_likelist) {
+          this.resetPage()
+          this.setState({
+            likeList: []
+          })
+          this.nextPage()
+        }
       }
     })
   }
@@ -275,7 +261,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, top } = this.state
+    const { wgts, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, top } = this.state
     const { showLikeList } = this.props
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
@@ -332,7 +318,7 @@ export default class HomeIndex extends Component {
               />
             }
             {
-              automatic.isOpen && !S.getAuthToken() &&
+              automatic && automatic.isOpen && !S.getAuthToken() &&
                 <FloatMenuItem
                   iconPrefixClass='icon'
                   icon='present'
@@ -343,7 +329,7 @@ export default class HomeIndex extends Component {
         }
 
         {
-          automatic.isOpen && !S.getAuthToken() &&
+          automatic && automatic.isOpen && !S.getAuthToken() &&
             <Automatic
               info={automatic}
               isShow={showAuto}

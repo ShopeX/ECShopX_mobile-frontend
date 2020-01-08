@@ -15,8 +15,9 @@ import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading, WgtGoodsFaverite 
 
 import './espier-detail.scss'
 
-@connect(({ cart, member }) => ({
+@connect(({ cart, member, colors }) => ({
   cart,
+  colors: colors.current,
   favs: member.favs,
   showLikeList: cart.showLikeList
 }), (dispatch) => ({
@@ -138,29 +139,16 @@ export default class Detail extends Component {
     } else {
       id = this.$router.params.id
     }
-    const info = await api.item.detail(id, {goods_id: goodsId})
-    let promotion_package = null
-    const { list } = await api.item.packageList({item_id: id})
-    if (list.length) {
-      promotion_package = list.length
-    }
+    let { distributor_id } = Taro.getStorageSync('curStore')
+
+    const info = await api.item.detail(id, {goods_id: goodsId, distributor_id })
     const { intro: desc, promotion_activity: promotion_activity } = info
     let marketing = 'normal'
     let timer = null
     let hasStock = info.store && info.store > 0
     let startActivity = true
     let sessionFrom = ''
-    let contentDesc =''
-    
-    if(!isArray(desc)){
-      if(info.videos_url){
-        contentDesc += `<video src=${info.videos} controls style='width:100%'></video>`+ desc
-      }else {
-        contentDesc = desc
-      }
-    }else {
-      contentDesc = desc
-    }
+
     if (info.activity_info) {
       if (info.activity_type === 'group') {
         marketing = 'group'
@@ -187,9 +175,10 @@ export default class Detail extends Component {
     })
 
     if (marketing === 'group' || marketing === 'seckill' || marketing === 'limited_time_sale') {
+      const { colors } = this.props
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
-        backgroundColor: '#d42f29',
+        backgroundColor: colors.data[0].primary,
         animation: {
           duration: 400,
           timingFunc: 'easeIn'
@@ -219,6 +208,7 @@ export default class Detail extends Component {
     sessionFrom += `"商品": "${info.item_name}"`
     sessionFrom += '}'
 
+
     this.setState({
       info,
       desc:contentDesc,
@@ -229,10 +219,30 @@ export default class Detail extends Component {
       specImgsDict,
       sixSpecImgsDict,
       promotion_activity,
-      promotion_package,
       itemParams,
       sessionFrom
-    }, () => {
+    }, async () => {
+      let contentDesc =''
+
+      if(!isArray(desc)){
+        if(info.videos_url){
+          contentDesc += `<video src=${info.videos} controls style='width:100%'></video>`+ desc
+        }else {
+          contentDesc = desc
+        }
+      }else {
+        contentDesc = desc
+      }
+      console.log(contentDesc)
+      let promotion_package = null
+      const { list } = await api.item.packageList({item_id: id})
+      if (list.length) {
+        promotion_package = list.length
+      }
+      this.setState({
+        desc: contentDesc,
+        promotion_package
+      })
       this.fetchCartCount()
       this.downloadPosterImg()
     })
@@ -636,7 +646,7 @@ export default class Detail extends Component {
       page
     } = this.state
 
-    const { showLikeList } = this.props
+    const { showLikeList, colors } = this.props
 
     const uid = this.uid
 
@@ -718,7 +728,7 @@ export default class Detail extends Component {
           }
 
           {timer && (
-            <View className='goods-timer' style='background: linear-gradient(to left, #d42f29, #d42f29);'>
+            <View className='goods-timer' style={colors ? `background: linear-gradient(to left, ${colors.data[0].primary}, ${colors.data[0].primary});` :  `background: linear-gradient(to left, #d42f29, #d42f29);`}>
               <View className='goods-timer__hd'>
                 <View className='goods-prices'>
                   <View className='view-flex view-flex-middle'>
@@ -994,10 +1004,16 @@ export default class Detail extends Component {
                   })
                 }
               </View>
-              : <SpHtmlContent
-                className='goods-detail__content'
-                content={desc}
-              />
+              : <View>
+                  {
+                    desc &&
+                      <SpHtmlContent
+                        className='goods-detail__content'
+                        content={desc}
+                      />
+                  }
+                </View>
+
           }
           {
             likeList.length > 0 && showLikeList
@@ -1105,7 +1121,10 @@ export default class Detail extends Component {
               <Image className='poster' src={poster} mode='widthFix' />
               <View className='view-flex view-flex-middle'>
                 <View className='icon-close poster-close-btn' onClick={this.handleHidePoster.bind(this)}></View>
-                <View className='icon-download poster-save-btn' onClick={this.handleSavePoster.bind(this)}>保存至相册</View>
+                <View
+                  className='icon-download poster-save-btn'
+                  style={`background: ${colors.data[0].primary}`}
+                  onClick={this.handleSavePoster.bind(this)}>保存至相册</View>
               </View>
             </View>
         }

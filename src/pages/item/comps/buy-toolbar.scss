@@ -44,9 +44,6 @@
     [class^="icon-star"] {
       font-size: 55px;
     }
-    .icon-star-on {
-      color: $color-brand-primary;
-    }
     &-text {
       font-size: $font-size-small;
       color: #555;
@@ -61,7 +58,6 @@
   }
   &__btn {
     width: 250px;
-    background: $color-brand-primary;
     font-size: $font-size;
     flex: 1;
     text-align: center;
@@ -83,11 +79,9 @@
     }
   }
   .btn-add-cart {
-    background: $color-brand-accent;
   }
   .btn-fast-buy {
     margin-left: -1px;
-    background: $color-brand-primary;
   }
   .form-id-collector {
     flex: 1;

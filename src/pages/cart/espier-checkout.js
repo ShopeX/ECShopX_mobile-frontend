@@ -31,10 +31,14 @@ const transformCartList = (list) => {
   }).sort((a) => a.order_item_type !== 'gift' ? -1 : 1)
 }
 
-@connect(({ address, cart }) => ({
+@connect(({ address, cart, colors }) => ({
   address: address.current,
   coupon: cart.coupon,
+<<<<<<< HEAD
   drugInfo: cart.drugInfo
+=======
+  colors: colors.current
+>>>>>>> 55f048795d543f4d3f661f52f5ee176fd57e0a08
 }), (dispatch) => ({
   onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' }),
   onClearCart: () => dispatch({ type: 'cart/clear' }),
@@ -94,19 +98,34 @@ export default class CartCheckout extends Component {
     // this.fetchAddress()
 
     const { cart_type, pay_type: payType, shop_id } = this.$router.params
-    let info = null
+    let curStore = null, info = null
 
     if (cart_type === 'fastbuy') {
+      curStore = Taro.getStorageSync('curStore')
       this.props.onClearFastbuy()
       info = null
     } else if (cart_type === 'cart') {
+      const { shop_id, name, store_address, is_delivery, is_ziti, lat, lng, hour, phone } = this.$router.params
       // 积分购买不在此种情况
-
+      curStore = {
+        shop_id,
+        name,
+        store_address,
+        is_delivery: JSON.parse(is_delivery),
+        is_ziti: JSON.parse(is_ziti),
+        lat,
+        lng,
+        hour,
+        phone
+      }
       this.props.onClearFastbuy()
       info = null
     }
 
     this.setState({
+      curStore,
+      express: JSON.parse(curStore.is_delivery) ? true : false,
+      receiptType: JSON.parse(curStore.is_delivery) ? 'logistics' : 'ziti',
       info,
       payType: payType || this.state.payType
     })
@@ -705,8 +724,13 @@ export default class CartCheckout extends Component {
   }
 
   render () {
+<<<<<<< HEAD
     const { coupon } = this.props
     const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug,third_params } = this.state
+=======
+    const { coupon, colors } = this.props
+    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug } = this.state
+>>>>>>> 55f048795d543f4d3f661f52f5ee176fd57e0a08
     const curStore = Taro.getStorageSync('curStore')
     const { type } = this.$router.params
     const isDrug = type === 'drug'
@@ -737,7 +761,7 @@ export default class CartCheckout extends Component {
           scrollY
           className='checkout__wrap'
         >
-          {/*
+          {
             !isArray(curStore) && curStore.is_ziti &&
               <View className='switch-tab'>
                 <View
@@ -749,7 +773,7 @@ export default class CartCheckout extends Component {
                   onClick={this.handleSwitchExpress.bind(this, false)}
                 >自提</View>
               </View>
-          */}
+          }
           {
             express
               ? <AddressChoose
@@ -991,6 +1015,7 @@ export default class CartCheckout extends Component {
           <AtButton
             type='primary'
             className='btn-confirm-order'
+            customStyle={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
             loading={submitLoading}
             disabled={isBtnDisabled}
             onClick={this.handlePay}

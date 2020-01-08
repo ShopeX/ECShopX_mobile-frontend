@@ -1,10 +1,15 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import { AtBadge } from 'taro-ui'
 import { navigateTo } from '@/utils'
 import { FormIdCollector } from '@/components'
 
 import './buy-toolbar.scss'
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 export default class GoodsBuyToolbar extends Component {
   static options = {
@@ -21,13 +26,13 @@ export default class GoodsBuyToolbar extends Component {
   }
 
   handleClickCart = (id, type) => {
-    Taro.navigateTo({
+    Taro.reLaunch({
       url: `/pages/cart/espier-index?type=${type}`
     })
   }
 
   render () {
-    const { onClickAddCart, onClickFastBuy, cartCount, type, info } = this.props
+    const { onClickAddCart, onClickFastBuy, cartCount, type, info, colors } = this.props
 
     if (!info) {
       return null
@@ -36,9 +41,9 @@ export default class GoodsBuyToolbar extends Component {
     let special_type = info.special_type
 
     const isDrug = special_type === 'drug'
-    const fastBuyText = type === 'normal'
+    const fastBuyText = (type === 'normal' || type === 'limited_time_sale')
       ? '立即购买'
-      : (type === 'seckill' || type === 'limited_time_sale')
+      : (type === 'seckill')
         ? '立即抢购' : '我要开团'
 
     return (
@@ -48,7 +53,11 @@ export default class GoodsBuyToolbar extends Component {
             className='goods-buy-toolbar__menu-item'
             onClick={this.props.onFavItem}
           >
-            <View className={`${info.is_fav ? 'icon-star-on' : 'icon-star'}`} />
+            {
+              info.is_fav
+                ? <View className='icon-star-on' style={`color: ${colors.data[0].primary}`} />
+                : <View className='icon-star' />
+            }
           </View>
           {/*{process.env.TARO_ENV === 'weapp' && (
             <Button className='goods-buy-toolbar__menu-item' openType='contact'>
@@ -69,12 +78,12 @@ export default class GoodsBuyToolbar extends Component {
         {this.props.customRender
           ? this.props.children
           : (<View className='goods-buy-toolbar__btns'>
-              {type === 'normal' && (
+              {(type === 'normal' || type === 'limited_time_sale') && (
                 <FormIdCollector
                   sync
                   onClick={onClickAddCart}
                 >
-                  <View className={`goods-buy-toolbar__btn btn-add-cart ${isDrug && 'drug-btn'}`}>
+                  <View className={`goods-buy-toolbar__btn btn-add-cart ${isDrug && 'drug-btn'}`} style={'background: ' + colors.data[0].accent}>
                     {isDrug ? '加入药品清单' : '添加至购物车'}
                   </View>
                 </FormIdCollector>
@@ -84,7 +93,7 @@ export default class GoodsBuyToolbar extends Component {
                     sync
                     onClick={onClickFastBuy}
                   >
-                    <View className={`goods-buy-toolbar__btn btn-fast-buy ${type !== 'normal' && 'marketing-btn'}`}>{fastBuyText}</View>
+                    <View className={`goods-buy-toolbar__btn btn-fast-buy ${type !== 'normal' && type !== 'limited_time_sale' && 'marketing-btn'}`} style={'background: ' + colors.data[0].primary}>{fastBuyText}</View>
                   </FormIdCollector>
                 )
               }
