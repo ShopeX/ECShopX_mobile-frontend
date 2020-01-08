@@ -84,7 +84,7 @@ export default class StoreList extends Component {
     this.setState({
       query: {
         ...this.state.query,
-        title: val
+        name: val
       }
     })
   }

@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
+import { connect } from "@tarojs/redux";
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote, NavBar } from '@/components'
@@ -9,6 +10,10 @@ import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
 import TradeItem from './comps/item'
 
 import './list.scss'
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 @withPager
 @withLogin()
@@ -195,6 +200,7 @@ export default class TradeList extends Component {
   }
 
   render () {
+    const { colors } = this.props
     const { curTabIdx, curItemActionsId, tabList, list, page } = this.state
 
     return (

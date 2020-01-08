@@ -1,11 +1,16 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpCell, SpToast, NavBar } from '@/components'
+import { connect } from '@tarojs/redux'
 import S from '@/spx'
 import api from '@/api'
 import { AtTag, AtTextarea, AtButton } from 'taro-ui'
 
 import './cancel.scss';
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 export default class TradeCancel extends Component {
   static config = {
@@ -60,6 +65,7 @@ export default class TradeCancel extends Component {
 
   render () {
     const { reason, curReasonIdx, otherReason, textCount } = this.state
+    const { colors } = this.props
 
     return (
       <View className='page-trade-cancel'>
@@ -96,7 +102,11 @@ export default class TradeCancel extends Component {
         </View>
 
         <View className='trade-cancel-footer'>
-          <View onClick={this.handleSubmit} className='toolbar_btn'> 确定取消</View>
+          <View
+            onClick={this.handleSubmit}
+            className='toolbar_btn'
+            style={`background: ${colors.data[0].primary}`}
+            >确定取消</View>
         </View>
 
         <SpToast />

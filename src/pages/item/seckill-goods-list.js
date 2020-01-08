@@ -3,10 +3,15 @@ import { View, ScrollView, Text, Image } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote, GoodsItem } from '@/components'
 import {AtCountdown, AtTabs, AtTabsPane} from 'taro-ui'
+import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { pickBy } from '@/utils'
 
 import './seckill-goods-list.scss'
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 @withPager
 @withBackToTop
@@ -101,6 +106,7 @@ export default class SeckillGoodsList extends Component {
 
 
   render () {
+    const { colors } = this.props
     const { list, imgurl, showBackToTop, scrollTop, page, timer, status } = this.state
     return (
       <View className='page-seckill-goods'>
@@ -133,22 +139,27 @@ export default class SeckillGoodsList extends Component {
                   }
                 </View>
           }
-          <View className='seckill-goods__list'>
+          <View className='seckill-goods__list seckill-goods__type-list'>
             {
               list.map((item, index) => {
                 return (
-                  <GoodsItem
-                    key={item.item_id}
-                    info={item}
-                    showFav={false}
-                    onClick={() => this.handleClickItem(item.item_id)}
-                  >
-									<View className='seckill-goods__list-btn'>
-                    {status === 'in_the_notice' && <Text>去看看</Text>}
-                    {status === 'in_sale' && <Text>马上抢</Text>}
-                    {status === 'it_has_ended' && <Text>原价买</Text>}
+                  <View className='goods-list__item'>
+                    <GoodsItem
+                      key={item.item_id}
+                      info={item}
+                      showFav={false}
+                      onClick={() => this.handleClickItem(item.item_id)}
+                    >
+    									<View
+                        className='seckill-goods__list-btn'
+                        style={`background: ${colors.data[0].primary}`}
+                        >
+                        {status === 'in_the_notice' && <Text>去看看</Text>}
+                        {status === 'in_sale' && <Text>马上抢</Text>}
+                        {status === 'it_has_ended' && <Text>原价买</Text>}
+                      </View>
+  									</GoodsItem>
                   </View>
-									</GoodsItem>
                 )
               })
             }

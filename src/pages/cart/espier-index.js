@@ -348,7 +348,8 @@ export default class CartIndex extends Component {
     })
   }
 
-  handleCheckout = (shop_id) => {
+  handleCheckout = (shopCart) => {
+    const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = shopCart.shopInfo
     const { type } = this.$router.params
     if (this.updating) {
       Taro.showToast({
@@ -358,7 +359,7 @@ export default class CartIndex extends Component {
       return
     }
     Taro.navigateTo({
-      url: `/pages/cart/espier-checkout?cart_type=cart&type=${type}&shop_id=${shop_id}`
+      url: `/pages/cart/espier-checkout?cart_type=cart&type=${type}&shop_id=${shop_id}&is_delivery=${is_delivery}&is_ziti=${is_ziti}&name=${shop_name}&store_address=${address}&lat=${lat}&lng=${lng}&hour=${hour}&phone=${mobile}`
     })
   }
 
@@ -583,12 +584,13 @@ export default class CartIndex extends Component {
       															</View>
       														</View>
       														<Button
-        type='primary'
-        className='btn-checkout'
-        style={`background: ${colors.data[0].primary}`}
-        disabled={shopCart.shopInfo.cart_total_count <= 0}
-        onClick={this.handleCheckout.bind(this,shopCart.shopInfo.shop_id)}
-      														>{isDrug ? '立即预约' : '结算'}</Button>
+                                    type='primary'
+                                    className='btn-checkout'
+                                    style={`background: ${colors.data[0].primary}`}
+                                    disabled={shopCart.shopInfo.cart_total_count <= 0}
+                                    onClick={this.handleCheckout.bind(this, shopCart)}>
+                                      {isDrug ? '立即预约' : '结算'}
+                                    </Button>
       													</View>
       												: <View className='cart-toolbar__bd'>
       														<AtButton

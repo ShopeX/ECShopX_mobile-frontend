@@ -7,6 +7,7 @@ import {
   AtTabsPane, AtTabs
 } from 'taro-ui'
 import { SpCell, SpToast } from '@/components'
+import { connect } from '@tarojs/redux'
 import api from '@/api'
 import req from '@/api/req'
 import { log, pickBy, classNames } from '@/utils'
@@ -27,6 +28,10 @@ function uploadURLFromRegionCode(code) {
   }
   return uploadURL;
 }
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 
 export default class TradeRefund extends Component {
@@ -258,6 +263,7 @@ export default class TradeRefund extends Component {
   }
 
   render () {
+    const { colors } = this.props
     const { segTypes, curSegIdx, reason, curReasonIdx,
       goodStatus, curGoodIdx, isShowSegGoodSheet, isSameCurSegGood, curSegGoodValue, description, imgs } = this.state
 
@@ -348,7 +354,10 @@ export default class TradeRefund extends Component {
               : null
           }
         </View>
-        <View className='refund-btn' onClick={this.handleSubmit}>提交</View>
+        <View
+          className='refund-btn'
+          style={`background: ${colors.data[0].primary}`}
+          onClick={this.handleSubmit}>提交</View>
         {/*<SpCell border={false}>
           <AtSegmentedControl
             onClick={this.handleChangeType}

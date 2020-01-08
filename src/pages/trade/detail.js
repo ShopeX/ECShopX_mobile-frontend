@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import { AtButton, AtCountdown} from 'taro-ui'
 import { Loading, SpCell, SpToast, FloatMenus, FloatMenuItem, Price, NavBar } from '@/components'
 import { classNames, log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
@@ -9,6 +10,10 @@ import { AFTER_SALE_STATUS } from '@/consts'
 import DetailItem from './comps/detail-item'
 
 import './detail.scss'
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 // function resolveTradeOrders (info) {
 //   return info.orders.map(order => {
@@ -386,6 +391,7 @@ export default class TradeDetail extends Component {
   }
 
   render () {
+    const { colors } = this.props
     const { info, ziti, qrcode, timer, payLoading } = this.state
     if (!info) {
       return <Loading></Loading>
@@ -403,7 +409,10 @@ export default class TradeDetail extends Component {
           leftIconType='chevron-left'
           fixed='true'
         />
-        <View className='trade-detail-header'>
+        <View
+          className='trade-detail-header'
+          style={`background: ${colors.data[0].primary}`}
+          >
           {
             info.order_class === 'drug'
               ? <View className='trade-detail-waitdeliver'>
@@ -528,12 +537,22 @@ export default class TradeDetail extends Component {
                 {
                   !isDhPoint && info.status === 'WAIT_BUYER_PAY' && <View className='trade-detail__footer'>
                     <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
-                    <AtButton className='trade-detail__footer__btn trade-detail__footer_active' type='primary' loading={payLoading} onClick={this.handleClickBtn.bind(this, 'pay')}>立即支付</AtButton>
+                    <Button
+                      className='trade-detail__footer__btn trade-detail__footer_active'
+                      type='primary'
+                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                      loading={payLoading}
+                      onClick={this.handleClickBtn.bind(this, 'pay')}>立即支付</Button>
                   </View>
                 }
                 {
                   isDhPoint && info.status === 'WAIT_BUYER_PAY' && <View className='trade-detail__footer'>
-                    <AtButton className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active' type='primary' loading={payLoading} onClick={this.handleClickBtn.bind(this, 'pay')}>立即支付</AtButton>
+                    <Button
+                      className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active'
+                      type='primary'
+                      loading={payLoading}
+                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                      onClick={this.handleClickBtn.bind(this, 'pay')}>立即支付</Button>
                   </View>
                 }
                 {
@@ -543,23 +562,34 @@ export default class TradeDetail extends Component {
                     }
                     <Text
                       className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_status_des === 'PAYED_WAIT_PROCESS' ? 'trade-detail__footer_allWidthBtn' : ''} `}
+                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                       onClick={this.handleClickBtn.bind(this, 'home')}
                     >继续购物</Text>
                   </View>
                 }
                 {
                   isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS' && <View className='trade-detail__footer'>
-                    <Text className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'home')}>继续购物</Text>
+                    <Text
+                      className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active'
+                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                      onClick={this.handleClickBtn.bind(this, 'home')}>继续购物</Text>
                   </View>
                 }
                 {
                   info.status === 'WAIT_BUYER_CONFIRM_GOODS' && <View className='trade-detail__footer'>
-                    <Text className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'confirm')}>确认收货</Text>
+                    <Text
+                      className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active'
+                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                      onClick={this.handleClickBtn.bind(this, 'confirm')}>确认收货</Text>
                   </View>
                 }
                 {
                   info.status === 'TRADE_SUCCESS' && <View className='trade-detail__footer'>
-                    <Button openType='contact' className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'>联系客服</Button>
+                    <Button
+                      openType='contact'
+                      className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'
+                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                      >联系客服</Button>
                   </View>
                 }
               </View>

@@ -319,7 +319,7 @@ export default class CartCheckout extends Component {
         params.member_discount = coupon.value ? 1 : 0
       }
     }
-    
+
 
     this.params = params
 
@@ -723,13 +723,8 @@ export default class CartCheckout extends Component {
   }
 
   render () {
-<<<<<<< HEAD
-    const { coupon } = this.props
-    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug,third_params } = this.state
-=======
     const { coupon, colors } = this.props
-    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug } = this.state
->>>>>>> 55f048795d543f4d3f661f52f5ee176fd57e0a08
+    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug, third_params } = this.state
     const curStore = Taro.getStorageSync('curStore')
     const { type } = this.$router.params
     const isDrug = type === 'drug'
