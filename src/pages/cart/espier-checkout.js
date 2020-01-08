@@ -34,15 +34,13 @@ const transformCartList = (list) => {
 @connect(({ address, cart, colors }) => ({
   address: address.current,
   coupon: cart.coupon,
-<<<<<<< HEAD
-  drugInfo: cart.drugInfo
-=======
+  drugInfo: cart.drugInfo,
   colors: colors.current
->>>>>>> 55f048795d543f4d3f661f52f5ee176fd57e0a08
 }), (dispatch) => ({
   onClearFastbuy: () => dispatch({ type: 'cart/clearFastbuy' }),
   onClearCart: () => dispatch({ type: 'cart/clear' }),
   onClearCoupon: () => dispatch({ type: 'cart/clearCoupon' }),
+  onClearDrugInfo: () => dispatch({ type: 'cart/clearDrugInfo' }),
   onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address }),
   //onChangeDrugInfo: (drugInfo) => dispatch({ type: 'cart/changeDrugInfo', payload: drugInfo })
 }))
@@ -161,6 +159,7 @@ export default class CartCheckout extends Component {
   componentWillUnmount() {
     // teardown clean
     this.props.onClearCoupon()
+    this.props.onClearDrugInfo()
   }
 
   componentWillReceiveProps (nextProps) {

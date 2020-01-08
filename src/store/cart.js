@@ -13,6 +13,7 @@ const initState = {
   cartIds: [],
   fastbuy: null,
   coupon: null,
+  drugInfo:null,
   selection: [],
 	cartCount:0,
 	showLikeList:true //展示猜你喜欢
@@ -79,6 +80,12 @@ const cart = createReducer(initState, {
     }
   },
   ['cart/clearCoupon'](state) {
+    return {
+      ...state,
+      drugInfo: null
+    }
+  },
+  ['cart/clearDrugInfo'](state) {
     return {
       ...state,
       coupon: null
