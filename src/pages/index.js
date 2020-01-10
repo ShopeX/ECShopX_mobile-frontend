@@ -47,7 +47,8 @@ export default class HomeIndex extends Component {
       positionStatus: false,
       automatic: null,
       showAuto: true,
-      top: 0
+      top: 0,
+      isShop:null
     }
   }
 
@@ -120,6 +121,12 @@ export default class HomeIndex extends Component {
 
       const options = this.$router.params
       const res = await entry.entryLaunch(options, true)
+          if(S.getAuthToken()){
+              const promoterInfo = await api.distribution.info()
+              this.setState({
+                isShop:promoterInfo
+              })
+            }
 
       const { store } = res
       if (!isArray(store)) {
@@ -261,7 +268,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, top } = this.state
+    const { wgts, page, isShop, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, top } = this.state
     const { showLikeList } = this.props
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
@@ -309,6 +316,7 @@ export default class HomeIndex extends Component {
         {
           <FloatMenus>
             {
+              isShop && isShop.isOpenShop === 'true' && isShop.shop_status === 1 &&
               distributionShopId &&
               <Image
                 className='distribution-shop'
