@@ -428,7 +428,7 @@ export default class TradeDetail extends Component {
                         </View>
                   }
                 </View>
-              : <View>
+              : <View className='trade-detail-waitdeliver'>
                   {
                     info.status === 'WAIT_BUYER_PAY'
                       && <View>该订单将为您保留
@@ -444,7 +444,7 @@ export default class TradeDetail extends Component {
                   }
                   {
                     info.status !== 'WAIT_BUYER_PAY' &&
-                      <View className='trade-detail-waitdeliver'>
+                      <View>
                         <View></View>
                         <View className='delivery-infos'>
                           <View className='delivery-infos__status'>
