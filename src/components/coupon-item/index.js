@@ -72,7 +72,7 @@ export default class CouponItem extends Component {
             info.card_type === 'cash'
               ? <View
                   className={classNames('coupon-item__name', isDisabled ? 'coupon-item__name-not' : null)}
-                  style={`background: ${colors.data[0].primary}`}
+                  style={isDisabled ? `background: #d7d7d7` : `background: ${colors.data[0].primary}`}
                   >
                   <View className='coupon-item___number'>￥<Text className='coupon-item___number_text'>{info.reduce_cost/100}</Text></View>
                   <View className='coupon-item___info'>满{info.least_cost > 0 ? info.least_cost/100 : 0.01}可用</View>
@@ -85,7 +85,7 @@ export default class CouponItem extends Component {
             info.card_type === 'gift'
               ? <View
                   className={classNames('coupon-item__name', isDisabled ? 'coupon-item__name-not' : null)}
-                  style={`background: ${colors.data[0].primary}`}
+                  style={isDisabled ? `background: #d7d7d7` : `background: ${colors.data[0].primary}`}
                   >
                   <View className='coupon-item___number'>兑换券</View>
                   <View className='radius-view radius-left-top'> </View>
@@ -97,7 +97,7 @@ export default class CouponItem extends Component {
             info.card_type === 'discount'
               ? <View
                   className={classNames('coupon-item__name', isDisabled ? 'coupon-item__name-not' : null)}
-                  style={`background: ${colors.data[0].primary}`}
+                  style={isDisabled ? `background: #d7d7d7` : `background: ${colors.data[0].primary}`}
                   >
                 <View className='coupon-item___number'><Text className='coupon-item___number_text'>{(100-info.discount)/10}</Text>折</View>
                 <View className='coupon-item___info'>满{info.least_cost > 0 ? info.least_cost/100 : 0.01}可用</View>
@@ -110,7 +110,7 @@ export default class CouponItem extends Component {
             info.card_type === 'member' && (
               <View
                 className={classNames('coupon-item__name', info.status === '2' ? 'coupon-item__name-not' : null)}
-                style={`background: ${colors.data[0].primary}`}
+                style={isDisabled ? `background: #d7d7d7` : `background: ${colors.data[0].primary}`}
                 >
                 <View className='coupon-item___number'><Text className='coupon-item___number_text'>会员折扣</Text></View>
                 <View className='radius-view radius-left-top'> </View>
