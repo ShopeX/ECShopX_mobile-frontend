@@ -41,7 +41,6 @@ export default class DetailItem extends Component {
     }
   }
     handleLookDelivery = (value) => {
-      console.log('vv',value)
     Taro.navigateTo({
       url: `/pages/trade/delivery-info?order_type=${this.props.info.order_type}&order_id=${this.props.info.tid}&delivery_code=${value.delivery_code}&delivery_corp=${value.delivery_corp}&delivery_name=${value.delivery_name}`
     })
