@@ -18,8 +18,8 @@ export default class DistributionSubordinate extends Component {
       list: [],
       curTabIdx: 0,
       tabList: [
-        { title: '已购买', num: 0 },
-        { title: '未购买', num: 0 }
+        { title: '已购买', num: 0, type:'buy' },
+        { title: '未购买', num: 0, type:'not_buy' }
       ]
     }
   }
@@ -29,17 +29,18 @@ export default class DistributionSubordinate extends Component {
   }
 
   async fetch (params) {
-    const { curTabIdx } = this.state
+    const { curTabIdx,tabList } = this.state
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
-      pageSize
+      pageSize,
+      buy_type:tabList[curTabIdx].type
     }
 
-    const { buy, not_buy } = await api.distribution.subordinate(query)
-    const total  = curTabIdx ? not_buy.total_count : buy.total_count
+    const { list, total_count } = await api.distribution.subordinate(query)
+    const total  = total_count
 
-    const nList = pickBy(curTabIdx ? not_buy.list : buy.list, {
+    const nList = pickBy(list, {
       relationship_depth: 'relationship_depth',
       headimgurl: 'headimgurl',
       username: 'username',
