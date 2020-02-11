@@ -91,7 +91,7 @@ export default class DetailItem extends Component {
                       </AtButton>                   
                   }
                   {
-                    info.status !== 'TRADE_SUCCESS' &&
+                    (info.status !== 'WAIT_SELLER_SEND_GOODS' && info.status !== 'WAIT_SELLER_SEND_GOODS')  &&
                       <AtButton
                         circle
                         type='primary'
