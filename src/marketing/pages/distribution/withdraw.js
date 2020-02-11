@@ -48,7 +48,7 @@ export default class DistributionWithdraw extends Component {
     const { cashWithdrawalRebate } = this.state
     if (!cashWithdrawalRebate) return
     this.setState({
-      amount: cashWithdrawalRebate
+      amount: (cashWithdrawalRebate/100).toFixed(2)
     })
   }
 
