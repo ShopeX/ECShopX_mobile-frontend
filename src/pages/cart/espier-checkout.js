@@ -173,10 +173,13 @@ export default class CartCheckout extends Component {
   async fetchZiTiShop () {
     const { shop_id } = this.$router.params
     const {curStore} = this.state
-    const shopInfo = await api.shop.getShop({distributor_id: shop_id})
-    this.setState({
-        curStore:shopInfo
-    })
+    if(shop_id != '0'){
+      const shopInfo = await api.shop.getShop({distributor_id: shop_id})
+      this.setState({
+          curStore:shopInfo
+      })
+    }
+
     
   }
 
