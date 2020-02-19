@@ -121,7 +121,8 @@ export default class TradeDetail extends Component {
         delivery_status: 'delivery_status',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
         point: 'item_point',
-        num: 'num'
+        num: 'num',
+        item_spec_desc:'item_spec_desc'
       })
     })
 

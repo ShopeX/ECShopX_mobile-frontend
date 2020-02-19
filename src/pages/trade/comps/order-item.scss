@@ -14,6 +14,7 @@
   }
   &__bd {
     width: 50%;
+    margin-bottom: 30px;
   }
   &__ft {
     flex: 1;
@@ -27,6 +28,10 @@
     margin: 0 0 4px;
   }
   &__desc {
+    color: $color-gray;
+    font-size: $font-size-small;
+  }
+  &__spec {
     color: $color-gray;
     font-size: $font-size-small;
   }

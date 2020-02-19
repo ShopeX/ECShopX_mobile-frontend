@@ -27,7 +27,8 @@ const transformCartList = (list) => {
     order_item_type: 'order_item_type',
     pics: 'pic',
     price: ({ price }) => (+price / 100).toFixed(2),
-    num: 'num'
+    num: 'num',
+    item_spec_desc:'item_spec_desc'
   }).sort((a) => a.order_item_type !== 'gift' ? -1 : 1)
 }
 
@@ -881,6 +882,7 @@ export default class CartCheckout extends Component {
                               <OrderItem
                                 info={item}
                                 showExtra={false}
+                                showDesc={true}
                                 renderDesc={
                                   <View className='order-item__desc'>
                                     {item.discount_info && item.discount_info.map((discount) =>
