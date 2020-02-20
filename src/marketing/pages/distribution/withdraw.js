@@ -44,22 +44,22 @@ export default class DistributionWithdraw extends Component {
       })
     }
    
-    //const { alipay_account, config } = await api.distribution.info()
-    const dataInfo = await api.distribution.info()
+    const { alipay_account, config } = await api.distribution.info()
+    //const dataInfo = await api.distribution.info()
   
-    if (dataInfo.alipay_account) {
+    if (alipay_account) {
       this.setState({
-        alipay_account:dataInfo.alipay_account,
+        alipay_account,
       })
     }
-    // if (config.limit_rebate) {
-    //   this.setState({
-    //     limit_rebate: config.limit_rebate,
-    //   })
-    // }
-    this.setState({
-      accountInfo:dataInfo
-    })
+    if (config.limit_rebate) {
+      this.setState({
+        limit_rebate: config.limit_rebate,
+      })
+     }
+    // this.setState({
+    //   accountInfo:dataInfo
+    // })
   }
 
   handleWithdrawAll = () => {
@@ -70,15 +70,12 @@ export default class DistributionWithdraw extends Component {
     })
   }
   goWithdraw = async () =>{ 
+    //const r = await api.wx.getuserinfo()
+    //console.log('3334',r)
+    
     const { accountInfo ,amount,curIdx} = this.state
     const query = {
-      mobile:accountInfo.mobile,
-      company_id:accountInfo.company_id,
-      open_id:accountInfo.open_id,
-      user_id:accountInfo.user_id,
-      wxa_appid:accountInfo.wxa_appid,
       money: amount*100
-      //money:(amount/100).toFixed(2)
     }
     //await api.distribution.withdrawRecord(query)
     Taro.showLoading({
