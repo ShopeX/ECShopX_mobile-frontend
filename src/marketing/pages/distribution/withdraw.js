@@ -12,16 +12,29 @@ export default class DistributionWithdraw extends Component {
     this.state = {
       limit_rebate: 0,
       cashWithdrawalRebate: 0,
+      submitLoading: false,
       amount: null,
       curIdx: 0,
       payList: ['微信(金额 ≦ 800)', '支付宝'],
-      alipay_account: ''
+      alipay_account: '',
+      accountInfo:{}
     }
   }
 
   componentDidShow () {
     this.fetch()
   }
+
+  // async getUserInfo () {
+  //   let userInfo = this.get('userInfo')
+  //   const token = this.getAuthToken()
+  //   if (!userInfo && token) {
+  //     userInfo = await api.user.info()
+  //     this.set('userInfo', userInfo)
+  //   }
+
+  //   return userInfo
+  // }
 
   async fetch() {
     const { cashWithdrawalRebate } = await api.distribution.statistics()
@@ -30,18 +43,23 @@ export default class DistributionWithdraw extends Component {
         cashWithdrawalRebate,
       })
     }
-
-    const { alipay_account, config } = await api.distribution.info()
-    if (alipay_account) {
+   
+    //const { alipay_account, config } = await api.distribution.info()
+    const dataInfo = await api.distribution.info()
+  
+    if (dataInfo.alipay_account) {
       this.setState({
-        alipay_account,
+        alipay_account:dataInfo.alipay_account,
       })
     }
-    if (config.limit_rebate) {
-      this.setState({
-        limit_rebate: config.limit_rebate,
-      })
-    }
+    // if (config.limit_rebate) {
+    //   this.setState({
+    //     limit_rebate: config.limit_rebate,
+    //   })
+    // }
+    this.setState({
+      accountInfo:dataInfo
+    })
   }
 
   handleWithdrawAll = () => {
@@ -50,6 +68,32 @@ export default class DistributionWithdraw extends Component {
     this.setState({
       amount: (cashWithdrawalRebate/100).toFixed(2)
     })
+  }
+  goWithdraw = async () =>{ 
+    const { accountInfo ,amount,curIdx} = this.state
+    const query = {
+      mobile:accountInfo.mobile,
+      company_id:accountInfo.company_id,
+      open_id:accountInfo.open_id,
+      user_id:accountInfo.user_id,
+      wxa_appid:accountInfo.wxa_appid,
+      money: amount*100
+      //money:(amount/100).toFixed(2)
+    }
+    //await api.distribution.withdrawRecord(query)
+    Taro.showLoading({
+      title: '正在提现',
+      mask: true
+    })
+
+    this.setState({
+      submitLoading: true
+    })
+    await api.distribution.getCash(query)
+    this.setState({
+      submitLoading: false
+    })
+
   }
 
   handleChange = (val) => {
@@ -114,7 +158,7 @@ export default class DistributionWithdraw extends Component {
           <Button
             className="g-button {{isClick ? '_off' : ''}}"
             type="primary"
-            onClick="goWithdraw"
+            onClick={this.goWithdraw}
             disabled={!curIdx && amount > 800}>提现</Button>
         </View>
         <View className="g-ul">

@@ -70,3 +70,7 @@ export function getCategorylevel (params) {
 export function getCustompage () {
   return req.get('/promoter/custompage')
 }
+
+export function getCash(params) {
+  return req.post('/cash_withdrawal',params)
+}

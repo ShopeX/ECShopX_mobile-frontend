@@ -475,7 +475,7 @@ export default class Detail extends Component {
     canvasExp.textMultipleOverflowFill(ctx, item_name, 22, 2, 15, 470, 345, 18, '#333')
     canvasExp.textSpliceFill(ctx, prices, 'left', 15, 600)
     canvasExp.drawImageFill(ctx, code, 250, 500, 100, 100)
-    canvasExp.textFill(ctx, '保存并分享到朋友圈', 245, 620, 12, '#999')
+    canvasExp.textFill(ctx, '长按识别小程序码', 245, 620, 12, '#999')
     if (act_price) {
       canvasExp.roundRect(ctx, '#ff5000', 15, 540, 70, 25, 5)
       canvasExp.textFill(ctx, '限时活动', 22, 559, 14, '#fff')

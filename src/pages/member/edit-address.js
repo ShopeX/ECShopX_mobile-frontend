@@ -22,7 +22,8 @@ export default class AddressIndex extends Component {
       info: {},
       areaList: [],
       multiIndex: [],
-      listLength: 0
+      listLength: 0,
+      ubmitLoading: false,
     }
   }
 
@@ -239,6 +240,14 @@ export default class AddressIndex extends Component {
       return S.toast('请输入详细地址')
     }
     console.log(data)
+    Taro.showLoading({
+      title: '正在提现',
+      mask: true
+    })
+
+    this.setState({
+      submitLoading: true
+    })
     try {
       await api.member.addressCreateOrUpdate(data)
       if(data.address_id) {
@@ -252,6 +261,9 @@ export default class AddressIndex extends Component {
     } catch (error) {
       return false
     }
+    this.setState({
+      submitLoading: false
+    })
   }
 
   render () {
