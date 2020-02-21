@@ -241,7 +241,7 @@ export default class AddressIndex extends Component {
     }
     console.log(data)
     Taro.showLoading({
-      title: '正在提现',
+      title: '正在提交',
       mask: true
     })
 

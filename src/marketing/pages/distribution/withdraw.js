@@ -14,7 +14,7 @@ export default class DistributionWithdraw extends Component {
       cashWithdrawalRebate: 0,
       submitLoading: false,
       amount: null,
-      curIdx: 0,
+      curIdx: '0',
       payList: ['微信(金额 ≦ 800)', '支付宝'],
       alipay_account: '',
       accountInfo:{}
@@ -70,29 +70,26 @@ export default class DistributionWithdraw extends Component {
     })
   }
   goWithdraw = async () =>{ 
-    //const r = await api.wx.getuserinfo()
-    //console.log('3334',r)
-    
-    const { accountInfo ,amount,curIdx} = this.state
+    const {amount,curIdx} = this.state
     const query = {
-      money: amount*100
-    }
-    //await api.distribution.withdrawRecord(query)
-    Taro.showLoading({
-      title: '正在提现',
-      mask: true
-    })
-
-    this.setState({
-      submitLoading: true
-    })
-    await api.distribution.getCash(query)
-    this.setState({
-      submitLoading: false
-    })
+      money: amount*100,
+      pay_type:curIdx === '0' ? 'wechat' : 'alipay'
+      //money:(amount/100).toFixed(2)
+    }  
+  
+      const { confirm } = await Taro.showModal({
+        title: '确定提现？',
+        content: ''
+      })
+      if (confirm) {
+        await api.distribution.getCash(query)
+        setTimeout(()=>{
+          Taro.navigateBack()
+        }, 700)
+      }
+      return
 
   }
-
   handleChange = (val) => {
     this.setState({
       amount: val

@@ -72,5 +72,5 @@ export function getCustompage () {
 }
 
 export function getCash(params) {
-  return req.post('/cash_withdrawal',params)
+  return req.post('/promoter/cash_withdrawal',params)
 }
