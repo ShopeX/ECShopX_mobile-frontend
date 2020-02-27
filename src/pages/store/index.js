@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { SpToast, TabBar, Loading, SpNote, BackToTop } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy } from '@/utils'
+import { pickBy,normalizeQuerys } from '@/utils'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
@@ -39,9 +39,9 @@ export default class StoreIndex extends Component {
       })
   }
 
-  componentDidMount () {
-    this.fetchInfo()
-  }
+  // componentDidMount () {
+  //   this.fetchInfo()
+  // }
 
   onShareAppMessage (res) {
     if (res.from === 'button') {
@@ -53,22 +53,26 @@ export default class StoreIndex extends Component {
     }
   }
 
-  async fetchInfo () {
-    const options = this.$router.params
-    const { id } = this.$router.params
-    let storeInfo = null
-    if (!id) {
-      const { store } = entry.entryLaunch(options, true)
-      storeInfo = store
-    } else {
-      const { name, logo } = await api.shop.getShop({distributor_id: id})
-      storeInfo = {
-        name,
-        brand: logo
-      }
-    }
-    console.log(storeInfo, 70)
+  async componentDidMount () {
+    const options = normalizeQuerys(this.$router.params)
+    const { dtid } = await entry.entryLaunch(options, true)
+     if(dtid){
+      this.fetchInfo(dtid)
+     }
+   }
 
+  async fetchInfo (distributorId) {
+    let id = ''
+    if (distributorId) {
+      id = distributorId
+    } else {
+      id = await Taro.getStorageSync('curStore').distributor_id
+    }
+
+    const options = this.$router.params
+    const res = await entry.entryLaunch(options, true)
+
+    //const { distributor_id } = await Taro.getStorageSync('curStore')
     const url = `/pageparams/setting?template_name=yykweishop&version=shop_${id}&page_name=shop_home`
     const info = await req.get(url)
 
@@ -78,8 +82,7 @@ export default class StoreIndex extends Component {
       })
     }
     this.setState({
-      wgts: info.config,
-      storeInfo: storeInfo
+      wgts: info.config
     },()=>{
       if(info.config) {
         info.config.map(item => {
@@ -90,6 +93,43 @@ export default class StoreIndex extends Component {
       }
     })
   }
+  // async fetchInfo () {
+  //   const options = this.$router.params
+  //   const { id } = this.$router.params
+  //   let storeInfo = null
+  //   if (!id) {
+  //     const { store } = entry.entryLaunch(options, true)
+  //     storeInfo = store
+  //   } else {
+  //     const { name, logo } = await api.shop.getShop({distributor_id: id})
+  //     storeInfo = {
+  //       name,
+  //       brand: logo
+  //     }
+  //   }
+  //   console.log(storeInfo, 70)
+
+  //   const url = `/pageparams/setting?template_name=yykweishop&version=shop_${id}&page_name=shop_home`
+  //   const info = await req.get(url)
+
+  //   if (!S.getAuthToken()) {
+  //     this.setState({
+  //       authStatus: true
+  //     })
+  //   }
+  //   this.setState({
+  //     wgts: info.config,
+  //     storeInfo: storeInfo
+  //   },()=>{
+  //     if(info.config) {
+  //       info.config.map(item => {
+  //         if(item.name === 'setting' && item.config.faverite) {
+  //           this.nextPage()
+  //         }
+  //       })
+  //     }
+  //   })
+  // }
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
