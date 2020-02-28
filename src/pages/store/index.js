@@ -184,8 +184,6 @@ export default class StoreIndex extends Component {
     if (!wgts || !this.props.store) {
       return <Loading />
     }
-
-      console.log('180',storeInfo)
     return (
       <View className='page-store-index'>
         <ScrollView
