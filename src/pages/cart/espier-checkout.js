@@ -850,8 +850,8 @@ export default class CartCheckout extends Component {
                   </View>
                 </View>
           }
-
-          {(payType !== 'point' && payType !== 'dhpoint' && type !== 'group' && type !== 'seckill' && type !== 'limited_time_sale') && (
+{/* type !== 'limited_time_sale' */}
+          {(payType !== 'point' && payType !== 'dhpoint' && type !== 'group' && type !== 'seckill' ) && (
             <SpCell
               isLink
               className='coupons-list'
