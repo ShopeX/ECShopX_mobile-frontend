@@ -63,11 +63,17 @@ export default class StoreIndex extends Component {
 
   async fetchInfo (distributorId) {
     let id = ''
+    let storeInfo = null
     if (distributorId) {
       id = distributorId
     } else {
       id = await Taro.getStorageSync('curStore').distributor_id
     }
+    const { name, logo } = await api.shop.getShop({distributor_id: id})
+        storeInfo = {
+          name,
+          brand: logo
+        }
 
     const options = this.$router.params
     const res = await entry.entryLaunch(options, true)
@@ -82,7 +88,8 @@ export default class StoreIndex extends Component {
       })
     }
     this.setState({
-      wgts: info.config
+      wgts: info.config,
+      storeInfo: storeInfo
     },()=>{
       if(info.config) {
         info.config.map(item => {
@@ -93,11 +100,12 @@ export default class StoreIndex extends Component {
       }
     })
   }
-  // async fetchInfo () {
-  //   const options = this.$router.params
-  //   const { id } = this.$router.params
+  // async fetchInfo (distributorId) {
+  //   //const options = this.$router.params
+  //   //const { id } = this.$router.params
+  //   let id = ''
   //   let storeInfo = null
-  //   if (!id) {
+  //   if (!distributorId) {
   //     const { store } = entry.entryLaunch(options, true)
   //     storeInfo = store
   //   } else {
@@ -177,6 +185,7 @@ export default class StoreIndex extends Component {
       return <Loading />
     }
 
+      console.log('180',storeInfo)
     return (
       <View className='page-store-index'>
         <ScrollView
