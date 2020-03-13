@@ -65,7 +65,8 @@ export default class DistributionSubordinate extends Component {
     if (idx !== this.state.curTabIdx) {
       this.resetPage()
       this.setState({
-        list: []
+        list: [],
+        scrollTop: 0
       })
     }
 

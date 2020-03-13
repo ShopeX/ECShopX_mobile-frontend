@@ -55,9 +55,12 @@ export default class StoreIndex extends Component {
 
   async componentDidMount () {
     const options = normalizeQuerys(this.$router.params)
-    const { dtid } = await entry.entryLaunch(options, true)
-     if(dtid){
-      this.fetchInfo(dtid)
+    // console.log(options)
+    // const { dtid } = await entry.entryLaunch(options, true)
+    // console.log(dtid)
+    const id = options.id || options.dtid
+     if(id){
+      this.fetchInfo(id)
      }
    }
 
@@ -75,8 +78,8 @@ export default class StoreIndex extends Component {
           brand: logo
         }
 
-    const options = this.$router.params
-    const res = await entry.entryLaunch(options, true)
+    // const options = this.$router.params
+    // const res = await entry.entryLaunch(options, true)
 
     //const { distributor_id } = await Taro.getStorageSync('curStore')
     const url = `/pageparams/setting?template_name=yykweishop&version=shop_${id}&page_name=shop_home`
