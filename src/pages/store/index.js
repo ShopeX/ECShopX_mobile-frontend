@@ -58,7 +58,7 @@ export default class StoreIndex extends Component {
     // console.log(options)
     // const { dtid } = await entry.entryLaunch(options, true)
     // console.log(dtid)
-    const { id } = options
+    const id = options.id || options.dtid
      if(id){
       this.fetchInfo(id)
      }
