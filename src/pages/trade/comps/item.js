@@ -129,10 +129,10 @@ export default class TradeItem extends Component {
         </View>)}
         {!customFooter && info.status === 'WAIT_BUYER_CONFIRM_GOODS' && <View className='trade-item__ft'>
           <View className='trade-item__ft-actions'>
-            <Text
+            {/* <Text
               className='trade-item__acts'
               onClick={this.props.onActionBtnClick.bind(this)}
-            >更多</Text>
+            >更多</Text> */}
             <View className={classNames('trade-item__dropdown', { 'is-active': showActions })}>
               <Text className='trade-item__dropdown-item' onClick={this.props.onActionClick.bind(this, 'confirm-receive')}>确认收货</Text>
               <Text className='trade-item__dropdown-item' onClick={this.props.onActionClick.bind(this, 'view-express')}>查看物流</Text>
