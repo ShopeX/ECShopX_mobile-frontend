@@ -33,7 +33,7 @@ export default class DistributionSubordinate extends Component {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
-      pageSize,
+      pageSize: 15,
       buy_type:tabList[curTabIdx].type
     }
 
@@ -102,43 +102,46 @@ export default class DistributionSubordinate extends Component {
         <ScrollView
           className='subordinate-list__scroll'
           scrollY
+          lower-threshold={100}
           scrollTop={scrollTop}
           onScrollToLower={this.nextPage}
         >
-          <View className="section list">
-            {
-              list.map(item => {
-                return (
-                  <View
-                    className={classNames('list-item', item.relationship_depth == 1 && 'child', item.relationship_depth == 2 && 'Gchild', item.relationship_depth == 3 && 'GGchild')}
-                  >
-                    <Image className="avatar"
-                      src={item.headimgurl ? item.headimgurl : 'images/default.png'}
-                    />
-                    <View className="list-item-txt">
-                      <View className="name">
-                        {item.username}
-                        {
-                          item.is_open_promoter_grade
-                          && <Text className="level-name">({item.promoter_grade_name})</Text>
-                        }
+          { list.length &&
+            <View className="section list">
+              {
+                list.map(item => {
+                  return (
+                    <View
+                      className={classNames('list-item', item.relationship_depth == 1 && 'child', item.relationship_depth == 2 && 'Gchild', item.relationship_depth == 3 && 'GGchild')}
+                    >
+                      <Image className="avatar"
+                        src={item.headimgurl ? item.headimgurl : 'images/default.png'}
+                      />
+                      <View className="list-item-txt">
+                        <View className="name">
+                          {item.username}
+                          {
+                            item.is_open_promoter_grade
+                            && <Text className="level-name">({item.promoter_grade_name})</Text>
+                          }
+                        </View>
+                        <View className="mobile">
+                          {
+                            item.mobile
+                            && <Text>{item.mobile}</Text>
+                          }
+                        </View>
                       </View>
-                      <View className="mobile">
-                        {
-                          item.mobile
-                          && <Text>{item.mobile}</Text>
-                        }
+                      <View className="bind-date">
+                        <View>绑定时间</View>
+                        <View>{item.bind_date}</View>
                       </View>
                     </View>
-                    <View className="bind-date">
-                      <View>绑定时间</View>
-                      <View>{item.bind_date}</View>
-                    </View>
-                  </View>
-                )
-              })
-            }
-          </View>
+                  )
+                })
+              }
+            </View>
+          }
           {
             page.isLoading
               ? <Loading>正在加载...</Loading>
