@@ -108,6 +108,7 @@ export default class TradeList extends Component {
       point: 'point',
       is_rate: 'is_rate',
       create_date: 'create_date',
+      latest_aftersale_time: 'latest_aftersale_time',
       order: ({ items }) => pickBy(items, {
         order_id: 'order_id',
         item_id: 'item_id',
