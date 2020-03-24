@@ -364,7 +364,7 @@ export default class CartCheckout extends Component {
       member_discount: -1 * member_discount,
       coupon_discount: -1 * coupon_discount,
       freight_fee,
-      total_fee: params.pay_type === 'dhpoint' ? 0 : total_fee,
+      total_fee: params.pay_type === 'point' ? 0 : total_fee,
       items_count: totalItemNum,
       point,
       freight_point,
@@ -534,10 +534,10 @@ export default class CartCheckout extends Component {
 
   resolvePayError (e) {
     const { payType } = this.state
-    if (payType === 'dhpoint') {
+    if (payType === 'point') {
       // let payTypeNeedsChange = ['当前积分不足以支付本次订单费用', '当月使用积分已达限额'].includes(e.message)
       this.setState({
-        disabledPayment: { name: 'dhpoint', message: e.message },
+        disabledPayment: { name: 'point', message: e.message },
         payType: 'wxpay'
       }, () => {
         this.calcOrder()
@@ -594,7 +594,7 @@ export default class CartCheckout extends Component {
     const { type } = this.$router.params
     const isDrug = type === 'drug'
 
-    if (payType === 'dhpoint') {
+    if (payType === 'point') {
       try {
         const { confirm } = await Taro.showModal({
           title: '积分支付',
@@ -632,7 +632,7 @@ export default class CartCheckout extends Component {
       let params = this.getParams()
       delete params.items
       // 积分不开票
-      if (payType === 'dhpoint') {
+      if (payType === 'point') {
         delete params.invoice_type
         delete params.invoice_content
       }
@@ -647,7 +647,7 @@ export default class CartCheckout extends Component {
       this.resolvePayError(e)
 
       // dhpoint 判断
-      if (payType === 'dhpoint') {
+      if (payType === 'point') {
         this.setState({
           submitLoading: false
         })
@@ -674,7 +674,7 @@ export default class CartCheckout extends Component {
       submitLoading: false
     })
     // 积分流程
-    if (payType === 'dhpoint') {
+    if (payType === 'point') {
       if (!payErr) {
         Taro.showToast({
           title: '支付成功',
@@ -741,7 +741,7 @@ export default class CartCheckout extends Component {
 
   handleCouponsClick = () => {
     console.log(this.params.order_type, 630)
-    if (this.state.payType === 'dhpoint'){
+    if (this.state.payType === 'point'){
       return
     }
     // if (this.params.order_type === 'normal' || this.params.order_type === 'normal_seckill' || this.params.order_type === 'single_group' || this.params.order_type === 'limited_time_sale') {
@@ -766,7 +766,7 @@ export default class CartCheckout extends Component {
   }
 
   handlePaymentChange = async (payType) => {
-    if (payType === 'dhpoint') {
+    if (payType === 'point') {
       this.props.onClearCoupon()
     }
     this.setState({
@@ -785,6 +785,12 @@ export default class CartCheckout extends Component {
   }
 
   render () {
+    // 支付方式文字
+    const payTypeText = {
+      point: '积分支付',
+      wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
+      balance: '余额支付'
+    }    
     const { coupon, colors } = this.props
     const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug, third_params } = this.state
     //const curStore = Taro.getStorageSync('curStore')
@@ -863,7 +869,7 @@ export default class CartCheckout extends Component {
                 </View>
           }
 {/* type !== 'limited_time_sale' */}
-          {(payType !== 'point' && payType !== 'dhpoint' && type !== 'group' && type !== 'seckill' ) && (
+          {(payType !== 'point' && payType !== 'point' && type !== 'group' && type !== 'seckill' ) && (
             <SpCell
               isLink
               className='coupons-list'
@@ -911,9 +917,11 @@ export default class CartCheckout extends Component {
                                 customFooter
                                 renderFooter={
                                   <View className='order-item__ft'>
-                                    {payType === 'point'
-                                      ? <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={item.point}></Price>
-                                      : <Price className='order-item__price' value={item.price}></Price>
+                                    {
+                                      // payType === 'point'
+                                      // ? <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={item.point}></Price>
+                                      // : <Price className='order-item__price' value={item.price}></Price>
+                                      <Price className='order-item__price' value={item.price}></Price>
                                     }
                                     <Text className='order-item__num'>x {item.num}</Text>
                                   </View>
@@ -978,7 +986,7 @@ export default class CartCheckout extends Component {
               title='支付方式'
               onClick={this.handlePaymentShow}
             >
-              <Text>{payType === 'dhpoint' ? '积分支付' : '微信支付'}</Text>
+              <Text>{payTypeText[payType]}</Text>
             </SpCell>
             {total.deduction && (
               <View className='trade-payment__hint'>
@@ -1095,6 +1103,8 @@ export default class CartCheckout extends Component {
         <PaymentPicker
           isOpened={isPaymentOpend}
           type={payType}
+          isShowPoint
+          isShowBalance={false}
           disabledPayment={disabledPayment}
           onClose={this.handleLayoutClose}
           onChange={this.handlePaymentChange}

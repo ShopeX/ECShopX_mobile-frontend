@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtIcon, AtFloatLayout, AtButton } from 'taro-ui'
 import { SpCheckbox } from '@/components'
@@ -58,7 +58,7 @@ export default class PaymentPicker extends Component {
   }
 
   render () {
-    const { isOpened, loading, disabledPayment, colors } = this.props
+    const { isOpened, loading, disabledPayment, colors, isShowPoint = true, isShowBalance = true  } = this.props
     const { localType } = this.state
 
     return (
@@ -74,23 +74,44 @@ export default class PaymentPicker extends Component {
             ></View>
           </View>
           <View className='payment-picker__bd'>
-            {/*
+          {
+              isShowPoint && process.env.TARO_ENV === 'weapp' &&
               <View
-                className={`payment-item ${!!disabledPayment ? 'is-disabled' : ''}`}
-                onClick={this.handlePaymentChange.bind(this, 'dhpoint')}
+                className={`payment-item ${disabledPayment && disabledPayment.name === 'point' ? 'is-disabled' : ''}`}
+                onClick={this.handlePaymentChange.bind(this, 'point')}
               >
                 <View className='payment-item__bd'>
                   <Text className='payment-item__title'>积分支付</Text>
-                  <Text className='payment-item__desc'>{disabledPayment ? disabledPayment.message : '使用积分支付'}</Text>
+                  <Text className='payment-item__desc'>{disabledPayment && disabledPayment.name === 'point' ? disabledPayment.message : '使用积分支付'}</Text>
                 </View>
                 <View className='payment-item__ft'>
                   <SpCheckbox
                     disabled={!!disabledPayment}
-                    checked={localType === 'dhpoint'}
+                    colors={colors}
+                    checked={localType === 'point'}
                   ></SpCheckbox>
                 </View>
               </View>
-            */}
+            }
+            {
+              isShowBalance && process.env.TARO_ENV === 'weapp' &&
+              <View
+                className={`payment-item ${disabledPayment && disabledPayment.name === 'balance' ? 'is-disabled' : ''}`}
+                onClick={this.handlePaymentChange.bind(this, 'balance')}
+              >
+                <View className='payment-item__bd'>
+                  <Text className='payment-item__title'>余额支付</Text>
+                  <Text className='payment-item__desc'>{disabledPayment && disabledPayment.name === 'balance' ? disabledPayment.message : '使用余额支付'}</Text>
+                </View>
+                <View className='payment-item__ft'>
+                  <SpCheckbox
+                    disabled={!!disabledPayment}
+                    colors={colors}
+                    checked={localType === 'balance'}
+                  ></SpCheckbox>
+                </View>
+              </View>
+            }
             <View
               className='payment-item no-border'
               onClick={this.handlePaymentChange.bind(this, 'wxpay')}
