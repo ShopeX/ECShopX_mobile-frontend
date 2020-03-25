@@ -830,10 +830,12 @@ export default class CartCheckout extends Component {
           {
             !isArray(curStore) && curStore.is_ziti &&
               <View className='switch-tab'>
-                <View
-                  className={classNames('switch-item', express ? 'active' : '')}
-                  onClick={this.handleSwitchExpress.bind(this, true)}
-                >配送</View>
+                {
+                  curStore.is_delivery && <View
+                    className={classNames('switch-item', express ? 'active' : '')}
+                    onClick={this.handleSwitchExpress.bind(this, true)}
+                  >配送</View>
+                }
                 <View
                   className={classNames('switch-item', !express ? 'active' : '')}
                   onClick={this.handleSwitchExpress.bind(this, false)}
