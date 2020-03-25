@@ -828,14 +828,12 @@ export default class CartCheckout extends Component {
           className='checkout__wrap'
         >
           {
-            !isArray(curStore) && curStore.is_ziti &&
+            !isArray(curStore) && curStore.is_ziti && curStore.is_delivery &&
               <View className='switch-tab'>
-                {
-                  curStore.is_delivery && <View
-                    className={classNames('switch-item', express ? 'active' : '')}
-                    onClick={this.handleSwitchExpress.bind(this, true)}
-                  >配送</View>
-                }
+                <View
+                  className={classNames('switch-item', express ? 'active' : '')}
+                  onClick={this.handleSwitchExpress.bind(this, true)}
+                >配送</View>
                 <View
                   className={classNames('switch-item', !express ? 'active' : '')}
                   onClick={this.handleSwitchExpress.bind(this, false)}
@@ -843,7 +841,7 @@ export default class CartCheckout extends Component {
               </View>
           }
           {
-            express
+            express && curStore.is_delivery
               ? <AddressChoose
                 isAddress={address}
               />
