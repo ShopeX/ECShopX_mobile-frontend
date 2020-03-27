@@ -102,7 +102,7 @@ export default class TradeDetail extends Component {
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
       freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
-      payment: ({ pay_type, total_fee }) => pay_type === 'dhpoint' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2), // 积分向下取整
+      payment: ({ pay_type, total_fee }) => pay_type === 'point' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2), // 积分向下取整
       pay_type: 'pay_type',
       invoice_content: 'invoice.content',
       point: 'point',
@@ -401,7 +401,7 @@ export default class TradeDetail extends Component {
       return <Loading></Loading>
     }
 
-    const isDhPoint = info.pay_type === 'dhpoint'
+    const isDhPoint = info.pay_type === 'point'
 
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
@@ -522,7 +522,7 @@ export default class TradeDetail extends Component {
           <Text className='info-text'>运费：￥{info.freight_fee}</Text>
           <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
           {isDhPoint
-            ? (<Text className='info-text' space>支付：{info.payment} {' 积分支付'}</Text>)
+            ? (<Text className='info-text' space>支付：{info.payment}积分 {' 积分支付'}</Text>)
             : (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>)}
 
           {

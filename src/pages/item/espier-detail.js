@@ -1038,10 +1038,10 @@ export default class Detail extends Component {
             isArray(desc)
               ? <View className='wgts-wrap__cont'>
                 {
-                   info.videos_url && (
-                     <Video src={info.videos} controls style='width:100%'></Video>
-                   )
-                 }
+                  info.videos_url && (
+                    <Video src={info.videos} controls style='width:100%'></Video>
+                  )
+                }
                 {
                   desc.map((item, idx) => {
                     return (
