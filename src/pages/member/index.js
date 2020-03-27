@@ -389,10 +389,12 @@ export default class MemberIndex extends Component {
                 </View>
                 <Text>已完成</Text>
               </View>
-              <View className='member-trade__item' onClick={this.handleTradeClick.bind(this, 3)}>
-                <View className='icon-daipingjia'></View>
-                <Text className='trade-status'>待评价</Text>
-              </View>
+              {/* {
+                false && <View className='member-trade__item' onClick={this.handleTradeClick.bind(this, 3)}>
+                  <View className='icon-daipingjia'></View>
+                  <Text className='trade-status'>待评价</Text>
+                </View>
+              } */}
               <View className='member-trade__item' onClick={this.viewAftersales.bind(this)}>
                 <View className='icon-repeat'>
                   {

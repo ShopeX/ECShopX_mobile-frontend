@@ -1012,25 +1012,27 @@ export default class Detail extends Component {
               />
           }
 
-          <View className='goods-evaluation'>
-            <View className='goods-sec-specs' onClick={this.handleToRateList.bind(this)}>
-              <Text className='goods-sec-label'>评价</Text>
-              <Text className='goods-sec-value'>({evaluationTotal})</Text>
-              <View className='goods-sec-icon apple-arrow'></View>
+          {/* {
+            <View className='goods-evaluation'>
+              <View className='goods-sec-specs' onClick={this.handleToRateList.bind(this)}>
+                <Text className='goods-sec-label'>评价</Text>
+                <Text className='goods-sec-value'>({evaluationTotal})</Text>
+                <View className='goods-sec-icon apple-arrow'></View>
+              </View>
+              <View className='evaluation-list'>
+                {evaluationList.map(item => {
+                  return (
+                    <GoodsEvaluation
+                      info={item}
+                      key={item.rate_id}
+                      pathRoute='detail'
+                      onChange={this.handleClickViewAllEvaluation.bind(this)}
+                    />
+                  )
+                })}
+              </View>
             </View>
-            <View className='evaluation-list'>
-              {evaluationList.map(item => {
-                return (
-                  <GoodsEvaluation
-                    info={item}
-                    key={item.rate_id}
-                    pathRoute='detail'
-                    onChange={this.handleClickViewAllEvaluation.bind(this)}
-                  />
-                )
-              })}
-            </View>
-          </View>        
+          }       */}
 
           {
             isArray(desc)

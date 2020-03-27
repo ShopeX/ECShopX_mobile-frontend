@@ -165,7 +165,7 @@ export default class TradeItem extends Component {
           </View>
           <View className='trade-item__ft-bd'>
             <Text className='trade-item__status'>{info.status_desc}</Text>
-            {
+            {/* {
               info.is_rate == 0
                 ?<Button
                   className='btn-action'
@@ -173,7 +173,7 @@ export default class TradeItem extends Component {
                   onClick={this.handleClickBtn.bind(this, 'rate')}
                 >评价</Button>
                 : null
-            }
+            } */}
 
             <Button
               className='btn-action'
