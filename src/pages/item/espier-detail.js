@@ -1012,11 +1012,16 @@ export default class Detail extends Component {
               />
           }
 
-          {/* {
+          {
+            info.rate_status &&
             <View className='goods-evaluation'>
               <View className='goods-sec-specs' onClick={this.handleToRateList.bind(this)}>
                 <Text className='goods-sec-label'>评价</Text>
-                <Text className='goods-sec-value'>({evaluationTotal})</Text>
+                {
+                  evaluationTotal > 0 ?
+                  <Text className='goods-sec-value'>({evaluationTotal})</Text>
+                  : <Text className='goods-sec-value'>暂无评价</Text>
+                }
                 <View className='goods-sec-icon apple-arrow'></View>
               </View>
               <View className='evaluation-list'>
@@ -1032,7 +1037,7 @@ export default class Detail extends Component {
                 })}
               </View>
             </View>
-          }       */}
+          }      
 
           {
             isArray(desc)

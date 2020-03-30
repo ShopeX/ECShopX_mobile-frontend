@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { connect } from "@tarojs/redux";
 import { Price } from '@/components'
@@ -25,6 +25,7 @@ export default class TradeItem extends Component {
     showActions: false,
     payType: '',
     info: null,
+    rateStatus: false,
     onClickBtn: () => {},
     onClick: () => {}
   }
@@ -35,7 +36,7 @@ export default class TradeItem extends Component {
   }
 
   render () {
-    const { customHeader, customFooter, noHeader, onClick, info, payType, showActions, colors } = this.props
+    const { customHeader, customFooter, noHeader, onClick, info, payType, showActions, colors, rateStatus } = this.props
     if (!info) {
       return null
     }
@@ -165,15 +166,15 @@ export default class TradeItem extends Component {
           </View>
           <View className='trade-item__ft-bd'>
             <Text className='trade-item__status'>{info.status_desc}</Text>
-            {/* {
-              info.is_rate == 0
+            {
+              rateStatus && info.is_rate == 0
                 ?<Button
                   className='btn-action'
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
                   onClick={this.handleClickBtn.bind(this, 'rate')}
                 >评价</Button>
                 : null
-            } */}
+            }
 
             <Button
               className='btn-action'
