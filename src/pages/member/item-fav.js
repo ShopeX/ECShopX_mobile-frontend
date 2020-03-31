@@ -59,7 +59,8 @@ export default class ItemFav extends Component {
             item_id: 'item_id',
             title: 'item_name',
             desc: 'brief',
-            price: ({ price }) => (price/100).toFixed(2),
+            // price: ({ price }) => (price/100).toFixed(2),
+            price: ({ price, item_price }) => ((price || item_price)/100).toFixed(2),
             is_fav: ({ item_id }) => Boolean(favs[item_id])
           })
           total = res.total_count
