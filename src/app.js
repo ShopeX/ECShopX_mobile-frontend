@@ -142,6 +142,7 @@ class App extends Component {
 
           'pages/wheel/index',
           'pages/item/espier-evaluation',
+          'pages/item/espier-evaluation-detail',
           'pages/item/rate',
           'pages/item/success'
         ],

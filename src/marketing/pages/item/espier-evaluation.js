@@ -129,12 +129,19 @@ export default class Evaluation extends Component {
     })*/
   }
 
-  showComment =(item) => {
-    this.itemComment = item
-    this.setState({
-      showCommentPanel: true
+  // showComment =(item) => {
+  //   this.itemComment = item
+  //   this.setState({
+  //     showCommentPanel: true
+  //   })
+  // }
+
+  handleClickViewEvaluation = (item) => {
+    Taro.navigateTo({
+      url: `/marketing/pages/item/espier-evaluation-detail?id=${this.$router.params.id}&rate_id=${item.rate_id}&company_id=${item.company_id}&item_id=${item.item_id}`
     })
   }
+
 
 
 
@@ -163,7 +170,7 @@ export default class Evaluation extends Component {
                     key={item.rate_id}
                     pathRoute='espier-evaluation'
                     showComment={true}
-                    onReplyRate={this.showComment.bind(this, item)}
+                    onReplyRate={this.handleClickViewEvaluation.bind(this, item)}
                   />
                 )
               })}
