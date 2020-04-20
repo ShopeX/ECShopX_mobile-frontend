@@ -134,7 +134,7 @@ export default class GoodsItem extends Component {
               }
             </View>
             {
-              info.distributor_info && !Array.isArray(info.distributor_info) &&
+              APP_PLATFORM !== 'standard' && info.distributor_info && !Array.isArray(info.distributor_info) &&
                 <View
                   className='goods-item__store'
                   onClick={onStoreClick}>

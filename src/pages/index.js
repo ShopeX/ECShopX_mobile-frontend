@@ -295,7 +295,7 @@ export default class HomeIndex extends Component {
   onScrollToLower={this.nextPage}
   scrollY
 				>*/}
-        <View className={classNames('wgts-wrap', positionStatus && APP_PLATFORM !== 'standard' ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard' , !curStore && 'wgts-wrap-nolocation')}>
+        <View className={classNames('wgts-wrap', positionStatus && (APP_PLATFORM !== 'standard' ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard') , !curStore && 'wgts-wrap-nolocation')}>
           <View className='wgts-wrap__cont'>
             <HomeWgts
               wgts={wgts}

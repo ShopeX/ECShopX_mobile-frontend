@@ -44,7 +44,7 @@ export default class HomeWgts extends PureComponent {
                 {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} />}
                 {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} />}
                 {item.name === 'showcase' && <WgtShowcase info={item} />}
-                {item.name === 'store' && <WgtStore info={item} />}
+                {APP_PLATFORM !== 'standard' && item.name === 'store' && <WgtStore info={item} />}
               </View>
             )
           })
