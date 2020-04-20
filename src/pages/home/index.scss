@@ -91,7 +91,7 @@
   }
   &__fixed {
     #{$self}__cont {
-      padding-top: $home-search-height;
+      padding-top: 0;
     }
     .search {
       &.fixed {
