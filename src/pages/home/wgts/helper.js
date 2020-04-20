@@ -42,6 +42,8 @@ export function linkPage (type, id) {
         url = '/marketing/pages/service/online-guide'
       } else if (id == 'hottopic') {
         url = '/pages/recommend/list'
+      } else if (id === 'floorguide'){
+        url = '/pages/floorguide/index'
       } else {
         url = ''
       }

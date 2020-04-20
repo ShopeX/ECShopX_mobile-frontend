@@ -281,6 +281,12 @@ export default class HomeIndex extends Component {
 
     return (
       <View className={`page-index ${top < 1 ? 'onTop' : '' }`}>
+        {
+          APP_PLATFORM === 'standard' && curStore &&
+            <HeaderHome
+              store={curStore}
+            />
+        }        
 				{/*<ScrollView
   className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}
   scrollTop={scrollTop}
@@ -289,7 +295,7 @@ export default class HomeIndex extends Component {
   onScrollToLower={this.nextPage}
   scrollY
 				>*/}
-        <View className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}>
+        <View className={classNames('wgts-wrap', positionStatus && APP_PLATFORM !== 'standard' ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard' , !curStore && 'wgts-wrap-nolocation')}>
           <View className='wgts-wrap__cont'>
             <HomeWgts
               wgts={wgts}

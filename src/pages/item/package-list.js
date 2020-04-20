@@ -72,7 +72,7 @@ export default class PackageList extends Component {
   }
 
   render () {
-    const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType,distributor_id } = this.state
+    const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType, distributor_id } = this.state
 
     return (
       <View className='page-package-goods'>

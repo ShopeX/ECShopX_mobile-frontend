@@ -761,11 +761,16 @@ export default class CartCheckout extends Component {
           num
         }
       })
-      const { shop_id } = this.$router.params
-
-    Taro.navigateTo({
-      url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}&is_checkout=true&cart_type=${this.params.cart_type}&distributor_id=${shop_id}`
-    })
+      let id = ''
+      if (APP_PLATFORM === 'standard') {
+        const { distributor_id } = Taro.getStorageSync('curStore')
+        id = distributor_id
+      } else {
+        id = this.$router.params.shop_id
+      }
+      Taro.navigateTo({
+        url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}&is_checkout=true&cart_type=${this.params.cart_type}&distributor_id=${id}`
+      })
   }
 
   handlePaymentChange = async (payType) => {

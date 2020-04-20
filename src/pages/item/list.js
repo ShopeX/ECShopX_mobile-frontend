@@ -66,7 +66,8 @@ export default class List extends Component {
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, tagsList, curTagId } = this.state
- 
+    const { distributor_id } = Taro.getStorageSync('curStore')
+
     const query = {
       ...this.state.query,
       item_params: selectParams,
@@ -74,9 +75,13 @@ export default class List extends Component {
       page,
       pageSize
     }
+
+    if (APP_PLATFORM === 'standard') {
+      query.distributor_id =  distributor_id 
+    }
+  
     const { list, total_count: total, item_params_list = [], select_tags_list = []} = await api.item.search(query)
     const { favs } = this.props
-
 
     item_params_list.map(item => {
       if(selectParams.length < 4){

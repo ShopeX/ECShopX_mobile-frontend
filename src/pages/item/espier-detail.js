@@ -73,6 +73,7 @@ export default class Detail extends Component {
     const options = this.$router.params
     const { uid, id, gid = '' } = await entry.entryLaunch(options, true)
     this.fetchInfo(id, gid)
+    this.getEvaluationList(id)
     if (uid) {
       this.uid = uid
     }
@@ -105,14 +106,13 @@ export default class Detail extends Component {
       Taro.setStorageSync('userinfo', userObj)
     }
     this.fetchCartCount()
-    this.getEvaluationList()
   }
 
-  async getEvaluationList () {
+  async getEvaluationList (id) {
     const {list, total_count} = await api.item.evaluationList({
       page: 1,
       pageSize: 2,
-      item_id: this.$router.params.id
+      item_id: id || this.$router.params.id
     })
     list.map(item => {
       item.picList = item.rate_pic ? item.rate_pic.split(',') : []
@@ -153,6 +153,7 @@ export default class Detail extends Component {
   }
 
   async fetchInfo (itemId, goodsId) {
+    const { distributor_id } = Taro.getStorageSync('curStore')
     let id = ''
     if (itemId) {
       id = itemId
@@ -160,7 +161,13 @@ export default class Detail extends Component {
       id = this.$router.params.id
     }
 
-    const info = await api.item.detail(id, {goods_id: goodsId})
+    const param = {goods_id: goodsId}
+    
+    if (APP_PLATFORM === 'standard') {
+      param.distributor_id = distributor_id 
+    }
+    const info = await api.item.detail(id, param)
+
     const { intro: desc, promotion_activity: promotion_activity } = info
     let marketing = 'normal'
     let timer = null
@@ -624,10 +631,17 @@ export default class Detail extends Component {
 
   handleCouponClick = () => {
     // const { distributor_id } = Taro.getStorageSync('curStore')
-    const { info } = this.state
-
+    let id = ''
+    if (APP_PLATFORM === 'standard') {
+      const { distributor_id } = Taro.getStorageSync('curStore')
+      id = distributor_id
+    } else {
+      const { info } = this.state
+      const { distributor_id } = info 
+      id = distributor_id
+    }
     Taro.navigateTo({
-      url: `/pages/home/coupon-home?item_id=${this.state.info.item_id}&distributor_id=${info.distributor_id}`
+      url: `/pages/home/coupon-home?item_id=${this.state.info.item_id}&distributor_id=${id}`
     })
   }
   handleClickViewAllEvaluation () {
