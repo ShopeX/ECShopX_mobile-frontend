@@ -296,6 +296,10 @@ export default class GoodsBuyPanel extends Component {
 				})
       } catch (e) {
         console.log(e)
+        this.setState({
+          busy: false
+        })
+        return
       }
 
       this.setState({
@@ -328,6 +332,10 @@ export default class GoodsBuyPanel extends Component {
         })
       } catch (e) {
         console.log(e)
+        this.setState({
+          busy: false
+        })
+        return
       }
 
       this.setState({
