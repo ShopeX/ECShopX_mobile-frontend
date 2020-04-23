@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/others/pages/meiqia/index.js
  * @Date: 2020-04-20 10:54:05
  * @LastEditors: Arvin
- * @LastEditTime: 2020-04-20 13:33:37
+ * @LastEditTime: 2020-04-23 14:46:35
  */
 
 import Taro, { Component } from '@tarojs/taro'
@@ -40,7 +40,8 @@ export default class MeiQia extends Component {
   render () {
     const {metadata, clientid, agentid} = this.state
     return (
-      <WebView src={`http://sz.hnwanquan.com/meiqia.html?metadata=${metadata}&clientid=${clientid}&agentid=${agentid}`}></WebView>
+      // <WebView src={`http://localhost:10086/others/pages/meiqia/index?metadata=${metadata}&clientid=${clientid}&agentid=${agentid}`}></WebView>
+      <WebView src={`http://ecshopx-wap.shopex123.com/others/pages/meiqia/index?metadata=${metadata}&clientid=${clientid}&agentid=${agentid}`}></WebView>
       )
   }
 }

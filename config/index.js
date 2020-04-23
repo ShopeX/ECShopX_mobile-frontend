@@ -45,8 +45,10 @@ const config = {
     APP_COMPANY_ID: '1',
     APP_INTEGRATION: process.env.INTEGRATION_APP,
     // 平台判断（standard 标准版 platform平台版）
-    APP_PLATFORM: 'standard',
-    // APP_PLATFORM: 'platform',
+    // APP_PLATFORM: 'standard',
+    APP_PLATFORM: 'platform',
+    // 判断是否启用第三方客服服务 wxapp腾讯客服，meiqia美洽客服
+    APP_CUSTOM_SERVER: 'meiqia',
     APP_HOME_PAGE: '"/pages/index"',
     // APP_AUTH_PAGE: '"/pages/auth/login"',
     APP_AUTH_PAGE: TARO_ENV === 'weapp'
