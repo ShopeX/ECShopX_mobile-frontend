@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image, Video, Navigator, Canvas, GoodsItem } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
-import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell, GoodsEvaluation } from '@/components'
+import { Loading, Price, BackToTop, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell, GoodsEvaluation, FloatMenuMeiQia } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
 import { withPager, withBackToTop } from '@/hocs'
@@ -95,7 +95,7 @@ export default class Detail extends Component {
 
   async componentDidShow () {
     const userInfo = Taro.getStorageSync('userinfo')
-    if (S.getAuthToken() && !userInfo) {
+    if (S.getAuthToken() && (!userInfo || !userInfo.userId)) {
       const res = await api.member.memberInfo()
       const userObj = {
         username: res.memberInfo.username,
@@ -419,8 +419,18 @@ export default class Detail extends Component {
   }
 
   downloadPosterImg = async () => {
-    const userinfo = Taro.getStorageSync('userinfo')
-    if (!userinfo) return
+    let userinfo = Taro.getStorageSync('userinfo')
+    if (S.getAuthToken() && (!userinfo || !userinfo.userId)) {
+      const res = await api.member.memberInfo()
+      const userObj = {
+        username: res.memberInfo.username,
+        avatar: res.memberInfo.avatar,
+        userId: res.memberInfo.user_id,
+        isPromoter: res.is_promoter
+      }
+      Taro.setStorageSync('userinfo', userObj)
+      userinfo = userObj
+    }
     const { avatar, userId } = userinfo
     const { info } = this.state
     const { pics, company_id, item_id } = info
@@ -658,24 +668,6 @@ export default class Detail extends Component {
       })
     }
   }
-
-  // 美恰客服
-  contactMeiQia = () => {
-    Taro.navigateTo({
-      url: '/others/pages/meiqia/index',
-      events: {
-        // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-        acceptDataFromOpenedPage: function (data) {
-          console.log(data)
-        },
-      },
-      success: function (res) {
-        // 通过eventChannel向被打开页面传送数据
-        res.eventChannel.emit('acceptDataFromOpenerPage', { agentid: "84d43a9c161029791736a74726265778", metadata: '%7b%22name%22%3a%22%e8%80%81%e7%8e%8b%22%2c%22tel%22%3a%2213888888888%22%2c%22address%22%3a%22%e6%b9%96%e5%8d%97%e9%95%bf%e6%b2%99%22%2c%22gender%22%3a%22%e7%94%b7%22%2c%22goodsName%22%3a%22%e5%8f%8c%e6%b0%af%e8%8a%ac%e9%85%b8%e9%92%a0%22%2c%22goodsNumber%22%3a%221112%22%2c%22goodsType%22%3a%22%e5%a4%84%e6%96%b9%e8%8d%af%22%2c%22target%22%3a%22%e5%8c%bb%e7%94%9f%22%7d', clientid:"123"})
-      }
-    });
-  }
-
 
   render () {
     const {
@@ -1133,13 +1125,17 @@ export default class Detail extends Component {
             icon='home1'
             onClick={this.handleBackHome.bind(this)}
           />
-          <FloatMenuItem
-            iconPrefixClass='icon'
-            icon='headphones'
-            // openType='contact'
-            // sessionFrom={sessionFrom}
-            onClick={this.contactMeiQia}
-          />
+          {
+            APP_CUSTOM_SERVER === 'meiqia'
+              ? <FloatMenuMeiQia /> 
+              : <FloatMenuItem
+                iconPrefixClass='icon'
+                icon='headphones'
+                openType='contact'
+                sessionFrom={sessionFrom}
+              />
+
+          }
           <FloatMenuItem
             iconPrefixClass='icon'
             icon='arrow-up'

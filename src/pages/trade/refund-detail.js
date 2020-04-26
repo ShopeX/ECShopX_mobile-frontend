@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
 import { formatTime } from '@/utils'
-import { SpCell, Price, FloatMenus, FloatMenuItem, Loading, NavBar } from '@/components'
+import { SpCell, Price, FloatMenus, FloatMenuItem, Loading, NavBar, FloatMenuMeiQia } from '@/components'
 import api from '@/api'
 
 import './refund-detail.scss'
@@ -75,6 +75,23 @@ export default class TradeRefundDetail extends Component {
     }
   }
 
+  // 美恰客服
+  contactMeiQia = () => {
+    Taro.navigateTo({
+      url: '/others/pages/meiqia/index',
+      events: {
+        // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+        acceptDataFromOpenedPage: function (data) {
+          console.log(data)
+        },
+      },
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('acceptDataFromOpenerPage', { agentid: "ab543d0fe418e33b8ce26a133db8ddcf", metadata: '%7b%22name%22%3a%22%e8%80%81%e7%8e%8b%22%2c%22tel%22%3a%2213888888888%22%2c%22address%22%3a%22%e6%b9%96%e5%8d%97%e9%95%bf%e6%b2%99%22%2c%22gender%22%3a%22%e7%94%b7%22%2c%22goodsName%22%3a%22%e5%8f%8c%e6%b0%af%e8%8a%ac%e9%85%b8%e9%92%a0%22%2c%22goodsNumber%22%3a%221112%22%2c%22goodsType%22%3a%22%e5%a4%84%e6%96%b9%e8%8d%af%22%2c%22target%22%3a%22%e5%8c%bb%e7%94%9f%22%7d', clientid:"123"})
+      }
+    });
+  }  
+
   render () {
     const { info, orderInfo, progress } = this.state
 
@@ -143,7 +160,11 @@ export default class TradeRefundDetail extends Component {
           <View className='info-name'>退款编号：<Text className='info-value'>{info.aftersales_bn}</Text></View>
           <View className='info-name'>驳回原因：<Text className='info-value'>{info.refuse_reason}</Text></View>
         </View>
-        <Button openType='contact' className='refund-detail-btn'>联系客服</Button>
+        {
+          APP_CUSTOM_SERVER === 'meiqia'
+            ? <Button onClick={this.contactMeiQia} className='refund-detail-btn'>联系客服</Button>
+            : <Button openType='contact' className='refund-detail-btn'>联系客服</Button>
+        }
         {/*
           <View className='refund-status'>
           {
@@ -202,11 +223,15 @@ export default class TradeRefundDetail extends Component {
           </View>
         )}*/}
         <FloatMenus>
-          <FloatMenuItem
-            iconPrefixClass='icon'
-            icon='headphones'
-            openType='contact'
-          />
+        {
+          APP_CUSTOM_SERVER === 'meiqia'
+            ? <FloatMenuMeiQia /> 
+            : <FloatMenuItem
+              iconPrefixClass='icon'
+              icon='headphones'
+              openType='contact'
+            />
+          }
         </FloatMenus>
       </View>
     )
