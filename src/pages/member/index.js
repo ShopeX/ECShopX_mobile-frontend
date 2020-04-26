@@ -391,7 +391,7 @@ export default class MemberIndex extends Component {
               </View>
               {
                 orderCount.rate_status && <View className='member-trade__item' onClick={this.handleTradeClick.bind(this, 3)}>
-                  <View className='icon-daipingjia'></View>
+                  <View className='icon-message'></View>
                   <Text className='trade-status'>待评价</Text>
                 </View>
               }
