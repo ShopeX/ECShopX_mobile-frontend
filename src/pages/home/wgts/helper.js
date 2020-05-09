@@ -1,3 +1,13 @@
+/*
+ * @Author: Arvin
+ * @GitHub: https://github.com/973749104
+ * @Blog: https://liuhgxu.com
+ * @Description: 说明
+ * @FilePath: /unite-vshop/src/pages/home/wgts/helper.js
+ * @Date: 2020-04-30 17:12:45
+ * @LastEditors: Arvin
+ * @LastEditTime: 2020-05-07 14:29:44
+ */
 import Taro from '@tarojs/taro'
 import { WGTS_NAV_MAP } from '@/consts'
 
@@ -56,6 +66,9 @@ export function linkPage (type, id) {
       break;
     case 'liverooms':
       url = 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id='+id
+      break;
+    case 'store':
+      url = `/pages/store/index?id=${id}`
       break;
     case 'custom':
       url = id
