@@ -175,11 +175,12 @@ export default class CartCheckout extends Component {
     const { shop_id } = this.$router.params
     const {curStore} = this.state
     const shopInfo = await api.shop.getShop({distributor_id: shop_id})
-      this.setState({
-          curStore:shopInfo
-      })
 
-
+    this.setState({
+      curStore:shopInfo,
+      receiptType: shopInfo.is_delivery ? 'logistics' : 'ziti',
+      express: shopInfo.is_delivery ? true : false
+    })
   }
 
   async fetchAddress (cb) {
@@ -346,7 +347,7 @@ export default class CartCheckout extends Component {
       mask: true
     })
     const params = this.getParams()
-    console.log(params)
+
     let data
     try {
       data = await api.cart.total(params)
