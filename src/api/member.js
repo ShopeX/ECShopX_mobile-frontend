@@ -250,3 +250,49 @@ export function storeIsFav (id) {
 export function receiveVip () {
   return req.get('/promotion/getMemberCard')
 }
+
+// 获取导购信息
+export function getSalesperson (params = {}) {
+  return req.get('/salesperson', params)
+}
+
+// 获取导购投诉列表
+export function getComplaintsList (params = {}) {
+  return req.get('/salesperson/complaintsList', params)
+}
+
+// 导购投诉
+export function setComplaints (params = {}) {
+  return req.post('/salesperson/complaints', params)
+}
+
+// 获取导购投诉详情
+export function getComplaintsDetail (id,params = {}) {
+  return req.get(`/salesperson/complaintsDetail/${id}`, params)
+}
+
+// 获取导购
+export function getUsersalespersonrel (params = {}) {
+  return req.get('/usersalespersonrel', params)
+}
+
+// 绑定导购
+export function setUsersalespersonrel (params = {}) {
+  return req.post('/usersalespersonrel', params)
+}
+
+// 获取积分列表
+export function getPointList (params = {}) {
+  return req.get('/member/pointLogList', params)
+}
+
+
+//
+export function getSalespersonNologin (params = {}) {
+  return req.get('/salesperson/nologin', params)
+}
+
+//
+export function getUserNewGetCardDetail (params = {}) {
+  return req.get('/user/newGetCardDetail', params)
+}

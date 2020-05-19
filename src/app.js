@@ -141,6 +141,8 @@ class App extends Component {
           'pages/member/item-activity',
           'pages/member/activity-detail',
           'pages/member/user-info',
+          'pages/member/complaint',
+          'pages/member/complaint-record',
 
           'pages/wheel/index',
           'pages/item/espier-evaluation',
@@ -152,7 +154,7 @@ class App extends Component {
           "live-player-plugin": {
             "version": "1.0.7", // 填写该直播组件版本号
             "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          },
+          }
           // "meiqia": {
           //   "version": "1.1.0",
           //   "provider": "wx2d2cd5fd79396601"
@@ -178,7 +180,13 @@ class App extends Component {
       'wx4721629519a8f25b',
       'wx2fb97cb696f68d22',
       'wxf91925e702efe3e3'
-    ]
+    ],
+    plugins: {
+      contactPlugin: {
+        version: "1.3.0",
+        provider: "wx104a1a20c3f81ec2"
+      }
+    }
   }
 
   componentDidShow (options) {

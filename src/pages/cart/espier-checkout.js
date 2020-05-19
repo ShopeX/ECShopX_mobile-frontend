@@ -6,7 +6,7 @@ import { Loading, Price, SpCell, AddressChoose, SpToast, NavBar } from '@/compon
 import api from '@/api'
 import S from '@/spx'
 import { withLogin } from '@/hocs'
-import { pickBy, log, classNames, isArray, authSetting } from '@/utils'
+import { pickBy, log, classNames, isArray, authSetting, normalizeQuerys } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import find from 'lodash/find'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -83,6 +83,8 @@ export default class CartCheckout extends Component {
       isDrugInfoOpend: false,
       invoiceTitle: '',
       curStore:{},
+      shoppingGuideData:null, //代客下单导购信息
+      shopData:null, //店铺信息
     }
   }
 
@@ -97,7 +99,24 @@ export default class CartCheckout extends Component {
 
   componentDidMount () {
     // this.fetchAddress()
+    if (this.$router.params.scene) {
+      Taro.setStorageSync('espierCheckoutData', normalizeQuerys(this.$router.params))
+    }
 
+    let token = S.getAuthToken()
+    if (!token) {
+
+      let source = ''
+      if (this.$router.params.scene) {
+        source = 'other_pay'
+      }
+
+      Taro.redirectTo({
+        url: `/pages/auth/wxauth?source=${source}`
+      })
+
+      return
+    }
     const { cart_type, pay_type: payType, shop_id } = this.$router.params
     let curStore = null, info = null
 
@@ -157,6 +176,8 @@ export default class CartCheckout extends Component {
       }
     })
     this.handleAddressChange(this.props.defaultAddress)
+    this.getSalespersonNologin()
+    this.getShop()
   }
 
   componentWillUnmount() {
@@ -175,11 +196,11 @@ export default class CartCheckout extends Component {
     const { shop_id } = this.$router.params
     const {curStore} = this.state
     const shopInfo = await api.shop.getShop({distributor_id: shop_id})
-      this.setState({
-          curStore:shopInfo
-      })
-
-
+    this.setState({
+      curStore:shopInfo,
+      receiptType: shopInfo.is_delivery ? 'logistics' : 'ziti',
+      express: shopInfo.is_delivery ? true : false
+    })
   }
 
   async fetchAddress (cb) {
@@ -210,6 +231,48 @@ export default class CartCheckout extends Component {
       })
     } */
     Taro.hideLoading()
+  }
+
+    /**
+   * 获取代下单导购
+   * */
+  async getSalespersonNologin() {
+    const { source, scene } = this.$router.params
+    let salesperson_id = ''
+    if (source === 'other_pay' || scene) {
+      let espierCheckoutData = {}
+      if (source === 'other_pay') {
+        espierCheckoutData = Taro.getStorageSync('espierCheckoutData')
+      } else {
+        espierCheckoutData = normalizeQuerys(this.$router.params)
+      }
+      salesperson_id = espierCheckoutData.smid
+    }
+
+    if(!salesperson_id)return;
+
+    let shoppingGuideData = await api.member.getSalespersonNologin({
+      salesperson_id
+    })
+
+    shoppingGuideData.store_name = shoppingGuideData.store_name.length > 4 ? shoppingGuideData.store_name.substring(0,4)+'...' : shoppingGuideData.store_name
+
+    this.setState({
+      shoppingGuideData
+    })
+  }
+
+  getShopId(){
+    const {  source, scene } = this.$router.params
+    if (source === 'other_pay' || scene) {
+      let espierCheckoutData = {}
+      if (source === 'other_pay') {
+        espierCheckoutData = Taro.getStorageSync('espierCheckoutData')
+      } else {
+        espierCheckoutData = normalizeQuerys(this.$router.params)
+      }
+      return espierCheckoutData.dtid
+    }
   }
 
   changeSelection (params = {}) {
@@ -761,6 +824,25 @@ export default class CartCheckout extends Component {
           num
         }
       })
+
+
+      let distributor_id = null
+      const { shop_id, source, scene } = this.$router.params
+
+      distributor_id = shop_id
+
+      let m_source = ''
+      if (source === 'other_pay' || scene) {
+        m_source = 'other_pay'
+      }
+
+      let { point_use, shopData } = this.state
+
+      S.set('point_use',point_use)
+
+      if(shopData){
+        distributor_id = shopData.distributor_id
+      }
       let id = ''
       if (APP_PLATFORM === 'standard') {
         const { distributor_id } = Taro.getStorageSync('curStore')
@@ -769,8 +851,11 @@ export default class CartCheckout extends Component {
         id = this.$router.params.shop_id
       }
       Taro.navigateTo({
-        url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}&is_checkout=true&cart_type=${this.params.cart_type}&distributor_id=${id}`
+        url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}&is_checkout=true&cart_type=${this.params.cart_type}&distributor_id=${distributor_id || id}&source=${m_source}`
       })
+      // Taro.navigateTo({
+      //   url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}&is_checkout=true&cart_type=${this.params.cart_type}&distributor_id=${id}`
+      // })
   }
 
   handlePaymentChange = async (payType) => {
@@ -841,9 +926,15 @@ export default class CartCheckout extends Component {
       delivery: '货到付款'
     }    
     const { coupon, colors } = this.props
-    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug, third_params } = this.state
+    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug, third_params, shoppingGuideData, shopData } = this.state
+    let curStore = {}
+    if (shopData) {
+      curStore = shopData
+    } else {
+      curStore = this.state.curStore
+    }
     //const curStore = Taro.getStorageSync('curStore')
-    const { curStore } = this.state
+    // const { curStore } = this.state
     const { type } = this.$router.params
     const isDrug = type === 'drug'
 
@@ -872,6 +963,11 @@ export default class CartCheckout extends Component {
             />
             : null
         }
+        {
+          shoppingGuideData ? <View className='shopping-guide-header'>
+            此订单商品来自“{shoppingGuideData.store_name}”导购“{shoppingGuideData.name}”的推荐
+          </View> : null
+        }        
         <ScrollView
           scrollY
           className='checkout__wrap'

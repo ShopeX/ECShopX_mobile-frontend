@@ -1,0 +1,69 @@
+.exclusive-customer-service{
+  margin: 0 30px 16px 30px;
+  border-radius: 15px;
+  box-shadow: 0 5rpx 5rpx rgba(0, 0, 0, 0.1);
+  background: #fff;
+  .flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.exclusive{
+  &-title{
+    padding: 25px;
+    // font-size: 30px;
+    color: #333;
+  }
+  &-con{
+    display: flex;
+    padding: 0 25px 25px 25px;
+
+    &__avatar{
+
+    }
+    &__info{
+      margin-left: 25px;
+      flex: 1;
+      &-name{
+        font-size: 28px;
+        margin-right: 15px;
+      }
+      &-store_name{
+        font-size: 24px;
+      }
+      &-store_address{
+        font-size: 24px;
+        color: #999;
+        margin-top: 10px;
+      }
+    }
+  }
+  &-button{
+    margin: 0 25px 25px 25px;
+    border-top: 1px solid #e8e8e8;
+    padding:10px 0;
+
+    .d-button{
+      width: 48.8888%;
+      text-align: center;
+      text-align: center;
+      background: #fff;
+    }
+    .border-r{
+      border-right: 1px solid #e8e8e8;
+      position: relative;
+    }
+
+    .contact-ta__text{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      z-index: 1;
+    }
+  }
+  button::after{
+    border: none;
+  }
+}

@@ -144,6 +144,14 @@ export default class Reg extends Component {
         if (trackParams) {
           Object.assign(params, {source_id: trackParams.source_id, monitor_id: trackParams.monitor_id})
         }
+
+        // 导购id
+        let salesperson_id = Taro.getStorageSync('s_smid')
+        if(salesperson_id){
+          params.distributor_id = Taro.getStorageSync('s_dtid')
+          params.salesperson_id = salesperson_id
+        }
+        
         const res = await api.user.reg(params)
 
         const { code } = await Taro.login()
