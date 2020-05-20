@@ -91,7 +91,7 @@ export default class ExclusiveCustomerService extends Component {
             />
           </View>
           <View className='d-button' onClick={() => { Taro.navigateTo({ url: '/marketing/pages/member/complaint' }) }}>
-            <Image src='/assets/imgs/complaint_icon.png' />
+            <Image className='img' src='/assets/imgs/complaint_icon.png' />
           </View>
 
         </View>

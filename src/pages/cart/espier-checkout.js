@@ -99,7 +99,9 @@ export default class CartCheckout extends Component {
 
   componentDidMount () {
     // this.fetchAddress()
+    console.log(this.$router.params)
     if (this.$router.params.scene) {
+      console.log(normalizeQuerys(this.$router.params))
       Taro.setStorageSync('espierCheckoutData', normalizeQuerys(this.$router.params))
     }
 
@@ -144,8 +146,6 @@ export default class CartCheckout extends Component {
 
     this.setState({
       curStore,
-      express: JSON.parse(curStore.is_delivery) ? true : false,
-      receiptType: JSON.parse(curStore.is_delivery) ? 'logistics' : 'ziti',
       info,
       payType: payType || this.state.payType
     })
@@ -260,6 +260,28 @@ export default class CartCheckout extends Component {
     this.setState({
       shoppingGuideData
     })
+  }
+
+  async getShop() {
+    const { source, scene } = this.$router.params
+    let distributor_id = ''
+    if (source === 'other_pay' || scene) {
+      let espierCheckoutData = {}
+      if (source === 'other_pay') {
+        espierCheckoutData = Taro.getStorageSync('espierCheckoutData')
+      } else {
+        espierCheckoutData = normalizeQuerys(this.$router.params)
+      }
+      distributor_id = espierCheckoutData.dtid
+    }
+
+    if(!distributor_id)return;
+
+    let shopData = await api.shop.getShop({
+      distributor_id
+    })
+
+    this.setState({shopData})
   }
 
   getShopId(){
@@ -409,6 +431,10 @@ export default class CartCheckout extends Component {
       mask: true
     })
     const params = this.getParams()
+    let salesperson_id = Taro.getStorageSync('s_smid')
+    if (salesperson_id) {
+      params.salesperson_id = salesperson_id
+    }
     console.log(params)
     let data
     try {
@@ -420,6 +446,7 @@ export default class CartCheckout extends Component {
     if (!data) return
 
     const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params } = data
+    
     const total = {
       ...this.state.total,
       item_fee,

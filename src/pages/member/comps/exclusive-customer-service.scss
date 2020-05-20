@@ -43,16 +43,22 @@
     margin: 0 25px 25px 25px;
     border-top: 1px solid #e8e8e8;
     padding:10px 0;
-
     .d-button{
       width: 48.8888%;
       text-align: center;
       text-align: center;
       background: #fff;
+      flex: 1;
+      .img {
+        width: 96px;
+        height: 96px;
+      }
     }
     .border-r{
       border-right: 1px solid #e8e8e8;
       position: relative;
+      flex: 1;
+      text-align: center;
     }
 
     .contact-ta__text{
