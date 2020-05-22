@@ -60,6 +60,9 @@ export default class MemberIndex extends Component {
       frontColor: '#ffffff'
     })
     this.fetch()
+  }
+
+  componentDidShow () {
     this.getSalesperson()
   }
 

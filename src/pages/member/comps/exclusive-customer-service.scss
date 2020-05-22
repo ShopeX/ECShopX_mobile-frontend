@@ -40,25 +40,69 @@
     }
   }
   &-button{
-    margin: 0 25px 25px 25px;
+    // margin: 0 25px 25px 25px;
     border-top: 1px solid #e8e8e8;
-    padding:10px 0;
+    // padding:10px 0;
+    height: 90px;
     .d-button{
-      width: 48.8888%;
-      text-align: center;
-      text-align: center;
       background: #fff;
       flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
       .img {
-        width: 96px;
-        height: 96px;
+        width: 50px;
+        height: 50px;
       }
+      .text {
+        margin-left: 20rpx;
+        color: #333;
+      } 
     }
     .border-r{
       border-right: 1px solid #e8e8e8;
       position: relative;
       flex: 1;
       text-align: center;
+      overflow: hidden;
+      height: 100%;
+      .cell {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        .contact {
+          position: absolute;
+          z-index: 999;
+          height: 100%;
+          color: #000;
+          width: 100%;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .img {
+            width: 50px;
+            height: 50px;
+          }
+          .text {
+            margin-left: 20rpx;
+            color: #333;
+          } 
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #fff;
+          z-index: 99;
+        }
+      }
     }
 
     .contact-ta__text{

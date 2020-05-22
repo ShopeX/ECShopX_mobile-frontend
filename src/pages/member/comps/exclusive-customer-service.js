@@ -83,15 +83,22 @@ export default class ExclusiveCustomerService extends Component {
 
         <View className='exclusive-button flex'>
           <View className='border-r contact-ta' onClick={() => Taro.showToast({title:'请查看服务通知',icon:'none'})}>
-            <cell
-              styleType='2'
-              startmessage={this.startmessage.bind(this)}
-              completemessage={this.completemessage.bind(this)}
-              plugid={info.work_configid}
-            />
+            <View className='cell'> 
+              <cell
+                styleType='2'
+                startmessage={this.startmessage.bind(this)}
+                completemessage={this.completemessage.bind(this)}
+                plugid={info.work_configid}
+              />
+              <View className='contact'>
+                <Image className='img' src='/assets/imgs/complaint_icon.png' />
+                <View className='text'>联系我</View>
+              </View>
+            </View>
           </View>
           <View className='d-button' onClick={() => { Taro.navigateTo({ url: '/marketing/pages/member/complaint' }) }}>
             <Image className='img' src='/assets/imgs/complaint_icon.png' />
+            <View className='text'>投诉</View>
           </View>
 
         </View>
