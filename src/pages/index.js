@@ -332,7 +332,9 @@ export default class HomeIndex extends Component {
   onScrollToLower={this.nextPage}
   scrollY
 				>*/}
-        <View className={classNames('wgts-wrap', positionStatus && (APP_PLATFORM !== 'standard' || curStore.distributor_id === 0 ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard') , !curStore && 'wgts-wrap-nolocation')}>
+        <View className={classNames('wgts-wrap', APP_PLATFORM !== 'standard' && 
+        'wgts-wrap_platform', positionStatus && (APP_PLATFORM !== 'standard' || curStore.distributor_id === 0 ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard') , !curStore && 'wgts-wrap-nolocation')}
+        >
           <View className='wgts-wrap__cont'>
             <HomeWgts
               wgts={wgts}

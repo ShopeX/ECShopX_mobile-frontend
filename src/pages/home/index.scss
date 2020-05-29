@@ -86,6 +86,9 @@
   padding-top: $home-header-height;
   padding-bottom: $tabbar-height;
   background: #fff;
+  &_platform {
+    padding-top: 0;
+  }
   #{$self}__cont {
     padding-top: 0;
   }

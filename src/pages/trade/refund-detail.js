@@ -91,9 +91,9 @@ export default class TradeRefundDetail extends Component {
           {progress == 2 ? <Text className='refund-status__text'>客户已回寄，等待商家收货确认</Text> : null}
           {progress == 3 ? <Text className='refund-status__text'>申请已驳回</Text> : null}
           {progress == 4 ? <Text className='refund-status__text'>物流信息：已发货</Text> : null}
-          {progress == 5 ? <Text className='refund-status__text'>时间</Text> : null}
-          {progress == 6 ? <Text className='refund-status__text'>时间</Text> : null}
-          {progress == 7 ? <Text className='refund-status__text'>时间</Text> : null}
+          {progress == 5 ? <Text className='refund-status__text'>退款驳回</Text> : null}
+          {progress == 6 ? <Text className='refund-status__text'>退款已处理</Text> : null}
+          {progress == 7 ? <Text className='refund-status__text'>售后关闭</Text> : null}
 
         </View>
         <View className='refund-detail'>
