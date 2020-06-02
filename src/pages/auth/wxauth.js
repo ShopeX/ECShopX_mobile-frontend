@@ -26,8 +26,18 @@ export default class WxAuth extends Component {
     try {
       const { token } = await api.wx.login({ code })
       if (!token) throw new Error(`token is not defined: ${token}`)
-
       S.setAuthToken(token)
+      if (this.$router.params.redirect) {
+        const memberInfo = await api.member.memberInfo()
+        const userObj = {
+          username: memberInfo.memberInfo.username,
+          avatar: memberInfo.memberInfo.avatar,
+          userId: memberInfo.memberInfo.user_id,
+          isPromoter: memberInfo.is_promoter,
+          mobile: memberInfo.memberInfo.mobile
+        }
+        Taro.setStorageSync('userinfo', userObj)
+      }
       return this.redirect()
     } catch (e) {
       console.log(e)
@@ -49,7 +59,6 @@ export default class WxAuth extends Component {
         ? decodeURIComponent(redirect)
         : '/pages/member/index'
     }
-
     Taro.redirectTo({
       url: redirect_url
     })

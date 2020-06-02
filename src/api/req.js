@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import S from '@/spx'
 import qs from 'qs'
+import { getCurrentRoute } from '@/utils'
 
 function addQuery (url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
@@ -138,9 +139,7 @@ class API {
           //   data.err_msg = data.err_msg || '登录过期正在重新登录'
           //   this.errorToast(data)
           // }
-          Taro.navigateTo({
-            url: APP_AUTH_PAGE
-          })
+          S.login(this, true)
           return Promise.reject(this.reqError(res))
         }
 
