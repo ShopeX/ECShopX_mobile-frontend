@@ -749,14 +749,27 @@ export default class CartCheckout extends Component {
     let order_id, config, payErr
     try {
       let params = this.getParams()
+
+      const { distributor_id } = Taro.getStorageSync('curStore')
+
+      params.distributor_id = this.getShopId() || distributor_id
+
       delete params.items
       // 积分不开票
       if (payType === 'point') {
         delete params.invoice_type
         delete params.invoice_content
       }
+
+      let salesman_id = Taro.getStorageSync('s_smid')
+      if (salesman_id) {
+        params.salesman_id = salesman_id
+      }
+
+
       config = await api.trade.create(params)
       order_id = isDrug ? config.order_id : config.trade_info.order_id
+
     } catch (e) {
       Taro.showToast({
         title: e.message,
