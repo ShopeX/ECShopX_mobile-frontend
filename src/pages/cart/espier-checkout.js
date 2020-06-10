@@ -93,8 +93,6 @@ export default class CartCheckout extends Component {
       isPaymentOpend: false,
       isDrugInfoOpend: false
     })
-    this.fetchAddress()
-    this.fetchZiTiShop()
   }
 
   componentDidMount () {
@@ -125,7 +123,7 @@ export default class CartCheckout extends Component {
       this.props.onClearFastbuy()
       info = null
     } else if (cart_type === 'cart') {
-      const { shop_id, name, store_address, is_delivery, is_ziti, lat, lng, hour, phone } = this.$router.params
+      const { shop_id, name, store_address, is_delivery, is_ziti = {}, lat, lng, hour, phone } = this.$router.params
       // 积分购买不在此种情况
       curStore = {
         shop_id,
@@ -176,6 +174,8 @@ export default class CartCheckout extends Component {
     this.handleAddressChange(this.props.defaultAddress)
     this.getSalespersonNologin()
     // this.getShop()
+    this.fetchAddress()
+    this.fetchZiTiShop()
   }
 
   componentWillUnmount() {
@@ -1038,7 +1038,7 @@ export default class CartCheckout extends Component {
           className='checkout__wrap'
         >
           {
-            !isArray(curStore) && curStore.is_ziti && curStore.is_delivery &&
+            curStore && !isArray(curStore) && curStore.is_ziti && curStore.is_delivery &&
               <View className='switch-tab'>
                 <View
                   className={classNames('switch-item', express ? 'active' : '')}
@@ -1051,7 +1051,7 @@ export default class CartCheckout extends Component {
               </View>
           }
           {
-            (express && curStore.is_delivery) || (!curStore.is_delivery && !curStore.is_ziti)
+            (express && curStore && curStore.is_delivery) || (curStore && !curStore.is_delivery && !curStore.is_ziti)
               ? <AddressChoose
                 isAddress={address}
               />
