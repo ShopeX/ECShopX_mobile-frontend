@@ -1,0 +1,109 @@
+@import "../../../style/imports";
+.delivery-detail {
+  width: 100%;
+  padding:20px 28px;
+  box-sizing: border-box;
+
+  &__logo {
+    width: 56px;
+    height: 56px;
+    margin-top: 34px;
+    border-radius: 50%;
+  }
+
+  &__status {
+    background: #ffffff;
+    height: 118px;
+    box-sizing: border-box;
+    padding-left: 21px;
+    margin-bottom: 14px;
+    border-radius: 6px;
+    padding-top: 20px;
+   
+    view{
+      font-size: 24px;
+    }
+
+    &-ordertext {
+      color: $color-gray;
+    }
+
+  }
+
+  &__ordernumber {
+    margin: 25px 0 0 21px;
+  }
+}
+
+.delivery-info {
+  padding: 49px 30px 64px 39px;
+  background: #ffffff;
+  border-radius: 10px;
+}
+
+.at-timeline-item:nth-of-type(1) {
+  // color: $color-brand-primary;
+
+  .at-timeline-item__dot::after {
+    background: $color-brand-primary;
+    border-color: $color-brand-primary;
+  }
+
+  .at-timeline-item__content-item {
+    
+    color: $color-brand-primary;
+  }
+
+  .at-timeline-item__content--sub {
+    color: #999;
+   
+  }
+}
+
+.at-timeline-item {
+  padding: 0 0 19px;
+  .at-timeline-item__content-item {
+    font-size: 24px;
+  }
+  .at-timeline-item__content--sub {
+    color: #999;
+    font-size: 22px;
+  }
+
+  &__tail {
+    top: 37px;
+    bottom: 8px;
+    left:15PX;
+    border-left: 1PX solid $color-border-gray;
+  }
+
+  &__icon {
+    color: $color-brand-primary;
+    background: #999;
+  }
+
+  &__dot,
+  &__icon {
+    top: 9px;
+    width: 30PX;
+
+  }
+
+  .at-timeline-item__dot .at-icon,
+  .at-timeline-item__icon .at-icon {
+    font-size: 30px;
+  }
+
+  .at-timeline-item__dot::after {
+    width: 20px;
+    height: 20px;
+    background-color: #999;
+    border-color: #999;
+  }
+
+  
+  &__content {
+    margin-left: 40PX;
+  }
+}
+

@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Picker } from '@tarojs/components'
-import {AtButton, AtForm, AtImagePicker, AtInput, AtAvatar} from 'taro-ui'
+import { View, Text, Picker } from '@tarojs/components'
+import {AtButton, AtForm, AtInput, AtAvatar} from 'taro-ui'
 import { NavBar, SpToast, SpCheckbox } from '@/components'
 import api from '@/api'
 import { withLogin } from '@/hocs'

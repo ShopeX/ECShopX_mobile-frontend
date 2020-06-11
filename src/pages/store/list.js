@@ -1,12 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-import { SpToast, Loading, SpNote, SearchBar, BackToTop } from '@/components'
-import StoreListItem from './comps/list-item'
+import { View, ScrollView, Text } from '@tarojs/components'
+import { SpToast, SearchBar, BackToTop } from '@/components'
 import api from '@/api'
-import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import entry from '@/utils/entry'
+import StoreListItem from './comps/list-item'
 
 import './list.scss'
 

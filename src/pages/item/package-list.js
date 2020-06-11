@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView, Text, Image } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote } from '@/components'
-import PackageItem from './comps/package-item'
 import api from '@/api'
 import { pickBy } from '@/utils'
+import PackageItem from './comps/package-item'
 
 import './package-list.scss'
 

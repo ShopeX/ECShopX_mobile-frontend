@@ -1,1 +1,0 @@
-var assocIndexOf=require("./_assocIndexOf.js"),arrayProto=Array.prototype,splice=arrayProto.splice;function listCacheDelete(e){var r=this.__data__,s=assocIndexOf(r,e);return!(s<0)&&(s==r.length-1?r.pop():splice.call(r,s,1),--this.size,!0)}module.exports=listCacheDelete;

@@ -1,8 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text, Image, Progress} from '@tarojs/components'
-import { Price, QnImg } from '@/components'
-import { isObject, classNames, isArray } from '@/utils'
-import api from '@/api'
+import {View, Text} from '@tarojs/components'
+import { QnImg } from '@/components'
+import { isObject, classNames } from '@/utils'
 
 import './index.scss'
 

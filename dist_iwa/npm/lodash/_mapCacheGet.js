@@ -1,1 +1,0 @@
-var getMapData=require("./_getMapData.js");function mapCacheGet(a){return getMapData(this,a).get(a)}module.exports=mapCacheGet;

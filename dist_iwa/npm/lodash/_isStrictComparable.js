@@ -1,1 +1,0 @@
-var isObject=require("./isObject.js");function isStrictComparable(e){return e==e&&!isObject(e)}module.exports=isStrictComparable;

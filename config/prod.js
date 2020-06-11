@@ -1,3 +1,4 @@
+/* eslint-disable import/no-commonjs */
 const path = require('path')
 
 const isIntegration = process.env.INTEGRATION_APP
@@ -10,12 +11,10 @@ module.exports = {
     NODE_ENV: '"production"',
     INTEGRATION_APP: isIntegration
   },
-  plugins: {
-    sass: {
-      resource,
-      // projectDirectory 需要配置，插件中做为~的别名
-      projectDirectory: path.resolve(__dirname, '..')
-    }
+  sass: {
+    resource,
+    // projectDirectory 需要配置，插件中做为~的别名
+    projectDirectory: path.resolve(__dirname, '..')
   },
   h5: process.env.RELEASE === 'h5'
     ? {

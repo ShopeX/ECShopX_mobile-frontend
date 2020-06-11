@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Form, Button, Text, Picker, Image } from '@tarojs/components'
-import { connect } from "@tarojs/redux";
+import { View, Form, Text } from '@tarojs/components'
 import { AtInput, AtSwitch, AtButton } from 'taro-ui'
 import { SpToast, NavBar, TimePicker } from '@/components'
 import { classNames, isString } from '@/utils'

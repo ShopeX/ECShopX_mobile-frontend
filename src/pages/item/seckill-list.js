@@ -1,10 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text, Image } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, SpNote, NavBar } from '@/components'
+import { BackToTop, Loading, SpNote } from '@/components'
 import {AtCountdown, AtTabs, AtTabsPane} from 'taro-ui'
 import api from '@/api'
-import { pickBy } from '@/utils'
 
 import './seckill-list.scss'
 

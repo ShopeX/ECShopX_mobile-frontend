@@ -9,7 +9,7 @@
  * @LastEditTime: 2020-05-07 14:29:44
  */
 import Taro from '@tarojs/taro'
-import { WGTS_NAV_MAP } from '@/consts'
+// import { WGTS_NAV_MAP } from '@/consts'
 
 export function linkPage (type, id) {
   console.log(type, id)

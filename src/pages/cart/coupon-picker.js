@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { Price, SpCheckbox, CouponItem } from '@/components'
+import { SpCheckbox, CouponItem } from '@/components'
 import { pickBy } from '@/utils'
 import api from '@/api'
 

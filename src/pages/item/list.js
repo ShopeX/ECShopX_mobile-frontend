@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Picker } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
-import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, NavBar, SpNote } from '@/components'
+import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, SpNote } from '@/components'
 import api from '@/api'
 import { pickBy, classNames } from '@/utils'
 

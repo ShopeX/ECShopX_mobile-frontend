@@ -1,14 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView, Text } from '@tarojs/components'
+import { View, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, Loading, SpNote, BackToTop } from '@/components'
+import { SpToast, Loading, BackToTop } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
 import { pickBy,normalizeQuerys } from '@/utils'
-import entry from '@/utils/entry'
-import { withPager, withBackToTop } from '@/hocs'
+import { withBackToTop } from '@/hocs'
 import S from "@/spx";
-import { WgtSlider, WgtLimittimeSlider, WgtImgHotZone, WgtGoodsFaverite, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from '../home/wgts'
+import { WgtSlider, WgtImgHotZone, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase } from '../home/wgts'
 
 import './index.scss'
 

@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { ParamsItem } from './comps'
-import { pickBy } from '@/utils'
 import api from '@/api'
+import { pickBy } from '@/utils'
+import { ParamsItem } from './comps'
 
 import './item-params.scss'
 

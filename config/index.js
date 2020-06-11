@@ -1,15 +1,28 @@
-const path = require('path')
-const pkg = require('../package.json')
-const host = require('./host')
+import { join } from 'path'
+import dotenvFlow from 'dotenv-flow'
+import { name as _name, app_name, version } from '../package.json'
 
-const [TARO_CMD, TARO_ENV] = process.env.npm_lifecycle_event.split(':')
-const DIST_PATH = TARO_ENV === 'h5'
-  ? (process.env.NODE_ENV === 'production' ? 'h5_dist' : '.h5_dev_dist' )
-  : 'dist'
+dotenvFlow.config()
 
-const API_HOST = process.env.NODE_ENV === 'production' ? host[TARO_ENV].prod : process.env.NODE_ENV === 'development' ? host[TARO_ENV].test : host[TARO_ENV].preissue
+const {
+  TARO_ENV = 'weapp',
+  NODE_ENV = 'development',
+  APP_BASE_URL,
+  APP_WEBSOCKET,
+  APP_COMPANY_ID,
+  APP_PLATFORM,
+  APP_CUSTOM_SERVER,
+  APP_HOME_PAGE,
+  INTEGRATION_APP
+} = process.env
+
+// 是否为web
+const isWeb = TARO_ENV === 'h5'
+// 是否为生产模式
+const isPro = NODE_ENV === 'production'
+
 const config = {
-  projectName: pkg.name,
+  projectName: _name,
   date: '2019-7-31',
   designWidth: 750,
   deviceRatio: {
@@ -18,85 +31,129 @@ const config = {
     '828': 1.81 / 2
   },
   sourceRoot: 'src',
-  outputRoot: DIST_PATH,
-  plugins: {
-    babel: {
-      sourceMap: true,
-      presets: [
-        ['env', {
-          modules: false
-        }]
-      ],
-      plugins: [
-        'transform-decorators-legacy',
-        'transform-class-properties',
-        'transform-object-rest-spread'
-      ]
-    }
+  outputRoot: `dist/${TARO_ENV}`,
+  babel: {
+    sourceMap: true,
+    presets: [
+      ['env', {
+        modules: false
+      }]
+    ],
+    plugins: [
+      'lodash',
+      'transform-decorators-legacy',
+      'transform-class-properties',
+      'transform-object-rest-spread',
+      ['transform-runtime', {
+        "helpers": false,
+        "polyfill": false,
+        "regenerator": true,
+        "moduleName": 'babel-runtime'
+      }]
+    ]
   },
   defineConstants: {
-    APP_NAME: `'${pkg.app_name}'`,
-    APP_VERSION: `'${pkg.version}'`,
-    API_HOST: `'${API_HOST}'`,
-    APP_BASE_URL: TARO_ENV === 'h5'
-      ? `'//${API_HOST}/api/h5app/wxapp'`
-      : `https://${API_HOST}/api/h5app/wxapp`,
-    APP_WEBSOCKET_URL: `${host.websocket[process.env.NODE_ENV]}`,
-    APP_COMPANY_ID: '1',
-    APP_INTEGRATION: process.env.INTEGRATION_APP,
-    // 平台判断（standard 标准版 platform平台版）
-    APP_PLATFORM: 'standard',
-    // APP_PLATFORM: 'platform',
-    // 美洽客服URL
-    APP_CUSTOM_SERVER: 'https://ecshopx-wap.shopex123.com',
-    APP_HOME_PAGE: '"/pages/index"',
-    // APP_AUTH_PAGE: '"/pages/auth/login"',
-    APP_AUTH_PAGE: TARO_ENV === 'weapp'
-      ? '"/pages/auth/wxauth"'
-      : '"/pages/auth/login"'
+    APP_NAME: app_name,
+    APP_VERSION: version,
+    API_HOST: APP_BASE_URL,
+    APP_BASE_URL: APP_BASE_URL,
+    APP_WEBSOCKET_URL: APP_WEBSOCKET,
+    APP_INTEGRATION: INTEGRATION_APP,
+    APP_COMPANY_ID,
+    APP_PLATFORM,
+    APP_CUSTOM_SERVER,
+    APP_HOME_PAGE,
+    APP_AUTH_PAGE: !isWeb ? '/pages/auth/wxauth' : '/pages/auth/login'
   },
   alias: {
-    '@': path.join(__dirname, '../src')
+    '@': join(__dirname, '../src')
   },
   copy: {
     patterns: [
-      { from: 'src/assets', to: `${DIST_PATH}/assets` },
-      { from: 'src/ext.json', to: `${DIST_PATH}/ext.json` }
+      { from: 'src/assets', to: `dist/${TARO_ENV}/assets` },
+      { from: 'src/ext.json', to: `dist/${TARO_ENV}/ext.json` }
     ],
     options: {
     }
   },
-  weapp: {
-    module: {
-      postcss: {
-        autoprefixer: {
-          enable: true,
-          config: {
-            browsers: [
-              'last 3 versions',
-              'Android >= 4.1',
-              'ios >= 8'
-            ]
+  // 开启压缩
+  uglify: {
+    enable: true,
+    config: {
+      // 配置项同 https://github.com/mishoo/UglifyJS2#minify-options
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    }
+  },  
+  mini: {
+    webpackChain (chain, webpack) {
+      chain.merge({
+        optimization: {
+          splitChunks: {
+            cacheGroups: {
+              lodash: {
+                name: 'lodash',
+                priority: 1000,
+                test (module) {
+                  return /node_modules[\\/]lodash/.test(module.context)
+                }
+              },
+              moment: {
+                name: 'date-fns',
+                priority: 1000,
+                test (module) {
+                  return /node_modules[\\/]date-fns/.test(module.context)
+                }
+              }           
+            }
           }
-        },
-        pxtransform: {
-          enable: true,
-          config: {
+        }
+      })
+      chain.plugin('analyzer')
+        .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
+      chain.plugin('IgnorePlugin')
+        .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/])
+      chain.plugin('LodashModuleReplacementPlugin')
+        .use(require('lodash-webpack-plugin'), [{
+          'coercions': true,
+          'paths': true
+        }])
+    },
+    commonChunks (commonChunks) {
+      commonChunks.push('lodash')
+      commonChunks.push('date-fns')
+      return commonChunks
+    },
+    postcss: {
+      autoprefixer: {
+        enable: true,
+        config: {
+          browsers: [
+            'last 3 versions',
+            'Android >= 4.1',
+            'ios >= 8'
+          ]
+        }
+      },
+      pxtransform: {
+        enable: true,
+        config: {
 
-          }
-        },
-        url: {
-          enable: true,
-          config: {
-            limit: 10240 // 设定转换尺寸上限
-          }
-        },
-        cssModules: {
-          enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
-          config: {
-            namingPattern: 'module', // 转换模式，取值为 global/module
-            generateScopedName: '[name]__[local]___[hash:base64:5]'
-          }
+        }
+      },
+      url: {
+        enable: true,
+        config: {
+          limit: 10240 // 设定转换尺寸上限
+        }
+      },
+      cssModules: {
+        enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
+        config: {
+          namingPattern: 'module', // 转换模式，取值为 global/module
+          generateScopedName: '[name]__[local]___[hash:base64:5]'
         }
       }
     }
@@ -145,8 +202,8 @@ const config = {
   }
 }
 
-module.exports = function (merge) {
-  if (process.env.NODE_ENV === 'development') {
+export default function (merge) {
+  if (!isPro) {
     return merge({}, config, require('./dev'))
   }
   return merge({}, config, require('./prod'))

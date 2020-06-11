@@ -1,13 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, ScrollView, Image} from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { connect } from "@tarojs/redux";
-import { Loading, SearchBar, TabBar } from '@/components'
-import Series from './comps/series'
-import { classNames, pickBy } from '@/utils'
+import {AtTabs, AtTabsPane} from "taro-ui"
 import api from '@/api'
+import { pickBy } from '@/utils'
+import { TabBar } from '@/components'
+import Series from './comps/series'
 
 import './index.scss'
-import {AtTabs, AtTabsPane} from "taro-ui";
 @connect(store => ({
   store
 }))

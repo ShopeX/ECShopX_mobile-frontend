@@ -4,7 +4,6 @@ import { connect } from '@tarojs/redux'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
 import S from '@/spx'
-import { log } from '@/utils'
 
 import './wxauth.scss'
 

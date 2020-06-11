@@ -2,9 +2,9 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { SpToast, TabBar, SpCell} from '@/components'
-import ExclusiveCustomerService from './comps/exclusive-customer-service'
-import api from '@/api'
 import S from '@/spx'
+import api from '@/api'
+import ExclusiveCustomerService from './comps/exclusive-customer-service'
 
 import './index.scss'
 
@@ -168,7 +168,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: '/pages/trade/customer-pickup-list'
+      url: '/subpage/pages/trade/customer-pickup-list'
     })
   }
 
@@ -207,7 +207,7 @@ export default class MemberIndex extends Component {
         mobile,
         isPromoter: true
       }
-      console.log(userinfo)
+      // console.log(userinfo)
       Taro.setStorageSync('userinfo', userinfo)
       this.setState({
         info: userinfo
@@ -220,7 +220,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: `/pages/trade/list?status=${type}`
+      url: `/subpage/pages/trade/list?status=${type}`
     })
   }
 
@@ -229,7 +229,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: '/pages/trade/drug-list'
+      url: '/subpage/pages/trade/drug-list'
     })
   }
 
@@ -242,7 +242,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: `/pages/trade/after-sale`
+      url: `/subpage/pages/trade/after-sale`
     })
   }
 

@@ -1,11 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
-import { QnImg } from '@/components'
-import { classNames } from '@/utils'
-import { linkPage } from './helper'
-import api from '@/api'
-
+import { View, Image, ScrollView } from '@tarojs/components'
 import './store.scss'
+
 export default class WgtStore extends Component {
   static options = {
     addGlobalClass: true

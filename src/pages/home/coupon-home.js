@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { Loading, SpNote, NavBar, SpToast, CouponItem } from '@/components'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import S from '@/spx'
 import { withPager } from '@/hocs'
-import { classNames, pickBy, formatTime } from '@/utils'
+import { pickBy, formatTime } from '@/utils'
 
 import '../home/coupon-home.scss'
 @connect(({ colors }) => ({

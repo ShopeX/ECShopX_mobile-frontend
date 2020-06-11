@@ -1,12 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Image, Navigator } from '@tarojs/components'
-import { AtDrawer } from 'taro-ui'
-import { SpToast, BackToTop, Loading, FilterBar, SpNote, GoodsItem } from '@/components'
-import S from '@/spx'
+import { View, Text, ScrollView } from '@tarojs/components'
+import { SpToast, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { classNames, pickBy, formatDataTime } from '@/utils'
-import entry from '@/utils/entry'
+import { pickBy, formatDataTime } from '@/utils'
 
 import './shop-trade.scss'
 

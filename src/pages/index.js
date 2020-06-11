@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView, Text } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem } from '@/components'
 import req from '@/api/req'
@@ -11,7 +11,7 @@ import S from "@/spx";
 import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
 import { HomeWgts } from './home/comps/home-wgts'
 import Automatic from './home/comps/automatic'
-import { resolveFavsList } from './item/helper'
+// import { resolveFavsList } from './item/helper'
 
 import './home/index.scss'
 @connect(({ cart }) => ({

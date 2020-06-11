@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Button } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { QnImg, SpToast } from '@/components'
 import req from '@/api/req'
 import S from '@/spx'

@@ -1,7 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import api from '@/api'
-import S from '@/spx'
 
 import './we.scss'
 

@@ -1,1 +1,0 @@
-var baseIsEqualDeep=require("./_baseIsEqualDeep.js"),isObjectLike=require("./isObjectLike.js");function baseIsEqual(e,s,a,u,i){return e===s||(null==e||null==s||!isObjectLike(e)&&!isObjectLike(s)?e!=e&&s!=s:baseIsEqualDeep(e,s,a,u,baseIsEqual,i))}module.exports=baseIsEqual;

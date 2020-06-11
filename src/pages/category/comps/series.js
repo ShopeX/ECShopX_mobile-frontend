@@ -1,12 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, ScrollView, Image} from '@tarojs/components'
 import { connect } from "@tarojs/redux";
-import { Loading, SearchBar, TabBar } from '@/components'
-import { classNames, pickBy } from '@/utils'
-import api from '@/api'
+import { Loading } from '@/components'
+import { classNames } from '@/utils'
 
 import './series.scss'
-import {AtTabs, AtTabsPane} from "taro-ui";
 @connect(({store, colors}) => ({
   store,
   colors: colors.current

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtIcon, AtFloatLayout, AtButton } from 'taro-ui'
+import { AtFloatLayout } from 'taro-ui'
 import { SpCheckbox } from '@/components'
 
 import './payment-picker.scss'

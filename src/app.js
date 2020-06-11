@@ -6,7 +6,7 @@ import useHooks from '@/hooks'
 import req from '@/api/req'
 import api from '@/api'
 import { normalizeQuerys } from '@/utils'
-import { FormIds, WxAuth } from '@/service'
+import { FormIds } from '@/service'
 import Index from './pages/index'
 
 import './app.scss'
@@ -104,19 +104,6 @@ class App extends Component {
       'pages/store/index',
       'pages/store/list',
 
-      'pages/trade/list',
-      'pages/trade/customer-pickup-list',
-      'pages/trade/drug-list',
-      'pages/trade/detail',
-      'pages/trade/delivery-info',
-      'pages/trade/rate',
-      'pages/trade/cancel',
-      'pages/trade/after-sale',
-      'pages/trade/refund',
-      'pages/trade/refund-detail',
-      'pages/trade/refund-sendback',
-      'pages/trade/invoice-list',
-
       'pages/vip/vipgrades',
 
       'pages/custom/custom-page'
@@ -172,6 +159,23 @@ class App extends Component {
           //   "provider": "wx2d2cd5fd79396601"
           // }
         }
+      },
+      {
+        root: 'subpage',
+        pages: [
+          'pages/trade/list',
+          'pages/trade/customer-pickup-list',
+          'pages/trade/drug-list',
+          'pages/trade/detail',
+          'pages/trade/delivery-info',
+          'pages/trade/rate',
+          'pages/trade/cancel',
+          'pages/trade/after-sale',
+          'pages/trade/refund',
+          'pages/trade/refund-detail',
+          'pages/trade/refund-sendback',
+          'pages/trade/invoice-list',
+        ]
       },
       {
         root: 'others',

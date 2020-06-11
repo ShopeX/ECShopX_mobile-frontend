@@ -1,0 +1,51 @@
+@import "../../../../style/imports";
+
+.order-item {
+  display: flex;
+  align-items: flex-start;
+  padding: $edge-size;
+  &__img {
+    width: 120px;
+    height: 120px;
+    margin-right: 35px;
+    border-radius: 6px;
+  }
+  &__hd {
+  }
+  &__bd {
+    width: 50%;
+    margin-bottom: 30px;
+  }
+  &__ft {
+    flex: 1;
+    text-align: right;
+    font-size: $font-size-small;
+  }
+  &__title {
+    font-size: floor(0.95 * $font-size);
+    @include multi-ellipsis(2);
+    line-height: 1.4;
+    margin: 0 0 4px;
+  }
+  &__desc {
+    color: $color-gray;
+    font-size: $font-size-small;
+  }
+  &__spec {
+    color: $color-gray;
+    font-size: $font-size-small;
+  }
+  &__price {
+    color: $color-primary-text;
+  }
+  &__num {
+    display: block;
+    color: $color-gray;
+  }
+  &__pay-type {
+    display: block;
+    margin-top: 42px;
+    font-size: 20px;
+    color: #c1c1c1;
+  }
+}

@@ -2,8 +2,6 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
-import S from '@/spx'
-import { log, normalizeQuerys } from '@/utils'
 import './pclogin.scss'
 
 function parseUrlStr (urlStr) {

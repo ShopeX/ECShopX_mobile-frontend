@@ -1,8 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Video, SwiperItem } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { QnImg } from '@/components'
-import { classNames } from '@/utils'
-import { linkPage } from './helper'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 

@@ -1,1 +1,0 @@
-function stackHas(a){return this.__data__.has(a)}module.exports=stackHas;

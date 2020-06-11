@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 // import EditAddress from '@/components/new-address/edit-address'
 import { View, Switch, Text, Picker } from '@tarojs/components'
-import { AtForm, AtInput, AtButton } from 'taro-ui'
+import { AtForm, AtInput } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { SpCell, SpToast } from '@/components'
 import api from '@/api'
-import { pickBy, log } from '@/utils'
+import { pickBy } from '@/utils'
 import S from '@/spx'
 
 import './edit-address.scss'

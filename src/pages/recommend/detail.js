@@ -1,12 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text, Button, ScrollView} from '@tarojs/components'
+import {View, Text, Button} from '@tarojs/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { FloatMenus, FloatMenuItem } from '@/components'
 import { connect } from '@tarojs/redux'
 import { formatTime } from '@/utils'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 import S from '@/spx'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './detail.scss'
 
@@ -100,7 +100,7 @@ export default class recommendDetail extends Component {
   detailInfo = async (id) => {
     const info = S.getAuthToken() ? await api.article.detailAuth(id) : await api.article.detail(id)
 
-    info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD')
+    info.updated_str = formatTime(info.updated * 1000, 'yyyy-MM-dd')
 
     this.setState({
       info

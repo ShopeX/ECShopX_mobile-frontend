@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import S from '@/spx'
 import qs from 'qs'
-import { getCurrentRoute } from '@/utils'
+// import { getCurrentRoute } from '@/utils'
 
 function addQuery (url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query

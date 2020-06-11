@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text,Image,Button } from '@tarojs/components'
+import { View, Image, Button } from '@tarojs/components'
 import { Price } from '@/components'
 import { connect } from '@tarojs/redux'
 import { AtTabs, AtTabsPane} from 'taro-ui'
 import api from '@/api'
 import S from '@/spx'
-import { classNames, pickBy } from '@/utils'
+import { pickBy } from '@/utils'
 import './vipgrades.scss'
 
 @connect(({ colors }) => ({

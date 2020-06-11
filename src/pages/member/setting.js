@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpCell, NavBar } from '@/components'
 import { goToPage } from '@/utils'
