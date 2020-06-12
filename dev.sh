@@ -6,7 +6,7 @@
  # @FilePath: /unite-vshop/dev.sh
 # @Date: 2020-06-10 10:15:51
  # @LastEditors: Arvin
- # @LastEditTime: 2020-06-12 15:02:05
+ # @LastEditTime: 2020-06-12 15:07:13
 ### 
 #/usr/bash
 
@@ -101,8 +101,7 @@ then
 echo "npm run dev:weapp"
 npm run dev:weapp
 
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]
-then
+else
 
 echo "npm run dev:weapp:windows"
 npm run dev:weapp:windows
