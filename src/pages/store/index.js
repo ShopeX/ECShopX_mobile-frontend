@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { SpToast, TabBar, Loading, SpNote, BackToTop } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy } from '@/utils'
+import { pickBy,normalizeQuerys } from '@/utils'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
@@ -23,7 +23,8 @@ export default class StoreIndex extends Component {
     this.state = {
       wgts: null,
       authStatus: false,
-      isShowAddTip: false
+      isShowAddTip: false,
+      storeInfo: null
     }
   }
 
@@ -38,26 +39,50 @@ export default class StoreIndex extends Component {
       })
   }
 
-  componentDidMount () {
-    this.fetchInfo()
-  }
+  // componentDidMount () {
+  //   this.fetchInfo()
+  // }
 
   onShareAppMessage (res) {
     if (res.from === 'button') {
       console.log(res.target)
     }
     return {
-      title: '首页',
-      path: '/pages/index'
+      title: this.state.storeInfo ? this.state.storeInfo.name : '店铺商品',
+      path: `/pages/store/index?id=${this.$router.params.id}`
     }
   }
 
-  async fetchInfo () {
-    const options = this.$router.params
-    const res = await entry.entryLaunch(options, true)
+  async componentDidMount () {
+    const options = normalizeQuerys(this.$router.params)
+    // console.log(options)
+    // const { dtid } = await entry.entryLaunch(options, true)
+    // console.log(dtid)
+    const id = options.id || options.dtid
+     if(id){
+      this.fetchInfo(id)
+     }
+   }
 
-    const { distributor_id } = await Taro.getStorageSync('curStore')
-    const url = `/pageparams/setting?template_name=yykweishop&version=shop_${distributor_id}&page_name=shop_home`
+  async fetchInfo (distributorId) {
+    let id = ''
+    let storeInfo = null
+    if (distributorId) {
+      id = distributorId
+    } else {
+      id = await Taro.getStorageSync('curStore').distributor_id
+    }
+    const { name, logo } = await api.shop.getShop({distributor_id: id})
+        storeInfo = {
+          name,
+          brand: logo
+        }
+
+    // const options = this.$router.params
+    // const res = await entry.entryLaunch(options, true)
+
+    //const { distributor_id } = await Taro.getStorageSync('curStore')
+    const url = `/pageparams/setting?template_name=yykweishop&version=shop_${id}&page_name=shop_home`
     const info = await req.get(url)
 
     if (!S.getAuthToken()) {
@@ -66,7 +91,8 @@ export default class StoreIndex extends Component {
       })
     }
     this.setState({
-      wgts: info.config
+      wgts: info.config,
+      storeInfo: storeInfo
     },()=>{
       if(info.config) {
         info.config.map(item => {
@@ -77,6 +103,44 @@ export default class StoreIndex extends Component {
       }
     })
   }
+  // async fetchInfo (distributorId) {
+  //   //const options = this.$router.params
+  //   //const { id } = this.$router.params
+  //   let id = ''
+  //   let storeInfo = null
+  //   if (!distributorId) {
+  //     const { store } = entry.entryLaunch(options, true)
+  //     storeInfo = store
+  //   } else {
+  //     const { name, logo } = await api.shop.getShop({distributor_id: id})
+  //     storeInfo = {
+  //       name,
+  //       brand: logo
+  //     }
+  //   }
+  //   console.log(storeInfo, 70)
+
+  //   const url = `/pageparams/setting?template_name=yykweishop&version=shop_${id}&page_name=shop_home`
+  //   const info = await req.get(url)
+
+  //   if (!S.getAuthToken()) {
+  //     this.setState({
+  //       authStatus: true
+  //     })
+  //   }
+  //   this.setState({
+  //     wgts: info.config,
+  //     storeInfo: storeInfo
+  //   },()=>{
+  //     if(info.config) {
+  //       info.config.map(item => {
+  //         if(item.name === 'setting' && item.config.faverite) {
+  //           this.nextPage()
+  //         }
+  //       })
+  //     }
+  //   })
+  // }
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
@@ -116,16 +180,13 @@ export default class StoreIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip } = this.state
-    const { name, brand = '' } = Taro.getStorageSync('curStore')
+    const { wgts, storeInfo, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip } = this.state
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
-    const distributionShopId = Taro.getStorageSync('distribution_shop_id')
 
     if (!wgts || !this.props.store) {
       return <Loading />
     }
-
     return (
       <View className='page-store-index'>
         <ScrollView
@@ -138,9 +199,9 @@ export default class StoreIndex extends Component {
           <View className='wgts-wrap__cont'>
             <View className='store-header'>
               <View>
-                <Image className='store-brand' src={brand || 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'} />
+                <Image className='store-brand' src={storeInfo.brand || 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'} />
               </View>
-              <View className="store-name">{name}</View>
+              <View className='store-name'>{storeInfo.name}</View>
             </View>
             {
               wgts.map((item, idx) => {
@@ -149,10 +210,10 @@ export default class StoreIndex extends Component {
                     {item.name === 'slider' && <WgtSlider info={item} />}
                     {item.name === 'marquees' && <WgtMarquees info={item} />}
                     {item.name === 'navigation' && <WgtNavigation info={item} />}
-                    {item.name === 'coupon' && <WgtCoupon info={item} />}
+                    {item.name === 'coupon' && <WgtCoupon info={item} dis_id={this.$router.params.id} />}
                     {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
-                    {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} />}
-                    {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} />}
+                    {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} dis_id={this.$router.params.id} />}
+                    {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} dis_id={this.$router.params.id} />}
                     {item.name === 'showcase' && <WgtShowcase info={item} />}
                   </View>
                 )

@@ -2,8 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
-import { BackToTop, Loading, RecommendItem, NavBar, TabBar, SpNote, FilterBar } from '@/components'
-import ListSearch from './comps/list-search'
+import { BackToTop, Loading, RecommendItem, SearchBar, NavBar, TabBar, SpNote, FilterBar } from '@/components'
 import api from '@/api'
 import { classNames, pickBy } from '@/utils'
 import S from '@/spx'
@@ -29,7 +28,8 @@ export default class RecommendList extends Component {
       columnList: [],
       info: {},
       areaList: [],
-      multiIndex: []
+      multiIndex: [],
+      isShowSearch: false
     }
   }
 
@@ -222,6 +222,45 @@ export default class RecommendList extends Component {
       this.nextPage()
     })
 	}
+
+  handleSearchOn = () => {
+    this.setState({
+      isShowSearch: true
+    })
+  }
+
+  handleSearchOff = () => {
+    this.setState({
+      isShowSearch: false
+    })
+  }
+
+  handleSearchChange = (val) => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        title: val
+      }
+    })
+  }
+
+  handleSearchClear = () => {
+    this.setState({
+      isShowSearch: false,
+      query: {
+        ...this.state.query,
+        title: ''
+      }
+    }, () =>{
+      this.resetPage()
+      this.setState({
+        list: []
+      }, () => {
+        this.nextPage()
+      })
+    })
+  }
+
   handleClickSearchParams = (type) => {
     this.setState({
       showDrawer: false
@@ -369,19 +408,25 @@ export default class RecommendList extends Component {
   }
 
   render () {
-    const { list, showBackToTop, scrollTop, page, showDrawer, info, columnList, selectColumn, multiIndex, areaList } = this.state
+    const { list, showBackToTop, scrollTop, page, showDrawer, info, columnList, selectColumn, multiIndex, areaList, query, isShowSearch } = this.state
     let address = info.province + info.city
 
 		return (
-      <View className='page-goods-list page-recommend-list'>
+      <View className='page-recommend-list'>
         <View className='recommend-list__toolbar'>
-          <View class="search-bar">
-            <ListSearch
+          <View className={`recommend-list__search ${(query && query.title && isShowSearch) ? 'on-search' : null}`}>
+            <SearchBar
+              showDailog={false}
+              keyword={query ? query.title : ''}
+              onFocus={this.handleSearchOn}
+              onChange={this.handleSearchChange}
+              onClear={this.handleSearchClear}
+              onCancel={this.handleSearchOff}
               onConfirm={this.handleConfirm.bind(this)}
             />
           </View>
           <FilterBar
-            className='goods-list__tabs'
+            className='recommend-list__tabs'
           >
             <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
               <View className='icon-menu'></View>
@@ -437,22 +482,24 @@ export default class RecommendList extends Component {
         </AtDrawer>
 
         <ScrollView
-          className='goods-list__scroll'
+          className='recommend-list__scroll'
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          <View className='goods-list goods-list__type-grid'>
+          <View className='recommend-list recommend-list__type-grid'>
             {
               list.map(item => {
                 return (
-                  <RecommendItem
-                    key={item.item_id}
-                    info={item}
-                    onClick={() => this.handleClickItem(item)}
-                  />
+                  <View className='recommend-list__item'>
+                    <RecommendItem
+                      key={item.item_id}
+                      info={item}
+                      onClick={() => this.handleClickItem(item)}
+                    />
+                  </View>
                 )
               })
             }

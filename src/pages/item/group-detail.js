@@ -18,7 +18,7 @@ export default class GroupDetail extends Component {
 			isSelf: false,
 			detail: null,
 			isLeader: false,
-			timer:null
+			timer: null
 		}
 	}
 
@@ -124,13 +124,13 @@ export default class GroupDetail extends Component {
     }
     return {
       title: `【拼团】${activity_info.share_desc}`,
-      path: `/pages/group_detail?teamId=${team_info.team_id}&dtid=${distributor_id}&uid=${userId}`,
+      path: `/pages/item/group-detail?team_id=${team_info.team_id}&dtid=${distributor_id}&uid=${userId}`,
       imageUrl: activity_info.pics[0]
     }
   }
 
   render () {
-  	const { detail, timer, isLeader } = this.state
+  	const { detail, timer, isLeader, isSelf } = this.state
     if (!detail) return null
     const { team_info, activity_info, member_list } = detail
 

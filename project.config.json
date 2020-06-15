@@ -1,7 +1,7 @@
 {
 	"miniprogramRoot": "dist/",
-	"projectname": "mshop-taro",
-	"description": "taro app for bbc",
+	"projectname": "微商城平台版",
+	"description": "weshop for platform",
 	"appid": "wx912913df9fef6ddd",
 	"setting": {
 		"urlCheck": false,

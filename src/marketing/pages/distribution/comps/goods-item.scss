@@ -1,0 +1,142 @@
+@import '../../../../style/imports';
+
+$item-img-size: 270px !default;
+
+.draw-item__ft-inner {
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-small;
+  color: $color-gray;
+  .weui-progress {
+    flex: 1;
+    margin-left: 10px;
+  }
+}
+
+.goods-item {
+  $self: &;
+  display: flex;
+  align-items: center;
+  border-radius: $item-border-radius;
+  overflow: hidden;
+  margin: 0 0 $edge-margin;
+  &__hd {
+  }
+  &__bd {
+    background: #fff;
+    display: flex;
+    flex: 1;
+    border-radius: $item-border-radius;
+    overflow: hidden;
+  }
+  &__cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: $edge-margin 20px;
+    flex: 1;
+  }
+  &__img {
+    width: $item-img-size;
+    height: $item-img-size;
+    &-wrap {
+      width: $item-img-size;
+      height: $item-img-size;
+      display: block;
+      text-align: center;
+    }
+  }
+  &__title {
+    @include multi-ellipsis(2);
+    line-height: 1.4;
+    max-height: 80px;
+    color: #111;
+    margin: 0 0 5px;
+  }
+  &__desc {
+    line-height: 1.4;
+    @include multi-ellipsis(2);
+    color: $color-gray;
+    font-size: $font-size-small;
+  }
+  &__price {
+    font-size: floor($font-size);
+  }
+  &__promoter-price {
+    font-size: floor(0.9 * $font-size);
+    color: $color-red;
+  }
+  &__point {
+    color: $color-brand-primary;
+  }
+  &__price-market {
+    font-size: $font-size-small;
+    color: $color-gray;
+    text-decoration: line-through;
+  }
+  &__share-btn {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+    line-height: 1;
+    color: #21c4fc;
+    &::after {
+      border: none;
+    }
+  }
+  &__extra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__author {
+    font-size: $font-size-small;
+    color: #000;
+    &-avatar {
+      background: $color-bg-gray;
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+      margin-right: 12px;
+      display: inline-block;
+      vertical-align: middle;
+      overflow: hidden;
+    }
+    &-name {
+      width: 140px;
+      display: inline-block;
+      vertical-align: middle;
+      @include text-overflow();
+    }
+  }
+  &__release-btn {
+    padding: 0 20px;
+    height: 50px;
+    line-height: 48px;
+    text-align: center;
+    border: 1px solid #00c3ff;
+    color: #00c3ff;
+    border-radius: 60px;
+    font-size: 24px;
+    &.released {
+      border: 1px solid #ccc;
+      color: #666;
+    }
+  }
+  &__actions {
+    color: #d0d0d0;
+    font-size: $font-size-small;
+    [class^="icon-"] {
+      color: #00c3ff;
+      font-size: 36px;
+      &:before {
+        margin-right: 8px;
+      }
+    }
+    .icon-star-on, .icon-like {
+      color: $color-brand-primary;
+    }
+  }
+}

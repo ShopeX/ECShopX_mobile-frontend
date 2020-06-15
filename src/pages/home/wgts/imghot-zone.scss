@@ -1,6 +1,7 @@
 .img-hotzone {
   position: relative;
   &_img {
+    display: block;
     width: 100%;
   }
   &_zone {

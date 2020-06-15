@@ -2,14 +2,12 @@
 @import "../../style/imports";
 
 .trade-detail {
-  background: #ffffff;
   box-sizing: border-box;
   min-height: 100vh;
   padding-bottom: 84px;
   &-header {
     width: 100%;
     height: 150px;
-    background: $color-brand-primary;
     color: #ffffff;
     &__waitpay {
       text-align: center;
@@ -72,9 +70,9 @@
   }
   &-address {
     width: 100%;
-    height: 143px;
-    padding: 38px 38px 49px 30px;
+    padding: 30px;
     box-sizing: border-box;
+    background: #fff;
     /*.trade-info {
       font-size: 20px;
       line-height: 36px;
@@ -88,7 +86,6 @@
       justify-content: flex-start;
       color: #555555;
       font-size: 22px;
-      margin-bottom: 18px;
     }
     .info-trade {
       flex: 1;
@@ -105,9 +102,10 @@
     }
   }
   &-goods {
-    border-top: 14px solid #f6f6f6  ;
+    border-top: 14px solid #f6f6f6;
     width: 100%;
     min-height: 100px;
+    background: #fff;
   }
   .order-item__pay-type {
     display: none;
@@ -120,6 +118,7 @@
     font-size: 26px;
     color: #5b5b5b;
     border-top: 1PX solid #ececec;
+    background: #fff;
     &__num {
       font-size: 36px;
       color: $color-brand-primary;
@@ -133,6 +132,7 @@
     color: #999999;
     border-top: 14px solid #f6f6f6;
     padding: 42px 30px;
+    background: #fff;
     .info-text {
       display: block;
     }
@@ -144,9 +144,26 @@
         flex: 1;
         font-size: 24px;
       }
-      .info-text:last-child {
+      .info-text-btn {
+        font-size: 24px;
+        display: inline-block;
+        width: 120px;
         text-align: right;
       }
+    }
+  }
+  &-remark {
+    padding-top: 21px;
+    &__header {
+      padding: 20px 30px;
+      font-size: 26px;
+      background: #fff;
+      border-bottom: 1px solid #efefef;
+    }
+    &__body {
+      padding: 20px 30px;
+      font-size: 24px;
+      background: #fff;
     }
   }
   &__footer {
@@ -176,8 +193,6 @@
       vertical-align: middle;
     }
     &_active {
-      background: $color-brand-primary;
-      border-color: $color-brand-primary;
       color: #ffffff;
     }
     &_allWidthBtn {
@@ -283,3 +298,6 @@
     }
   }
 }*/
+.delivery-btn{
+  margin-right: 15px;
+}

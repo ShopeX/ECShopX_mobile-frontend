@@ -41,10 +41,14 @@ const config = {
     APP_BASE_URL: TARO_ENV === 'h5'
       ? `'//${API_HOST}/api/h5app/wxapp'`
       : `https://${API_HOST}/api/h5app/wxapp`,
-    APP_WEBSOCKET_URL: `'${host.websocket[process.env.NODE_ENV]}'`,
+    APP_WEBSOCKET_URL: `${host.websocket[process.env.NODE_ENV]}`,
     APP_COMPANY_ID: '1',
     APP_INTEGRATION: process.env.INTEGRATION_APP,
-
+    // 平台判断（standard 标准版 platform平台版）
+    APP_PLATFORM: 'standard',
+    // APP_PLATFORM: 'platform',
+    // 美洽客服URL
+    APP_CUSTOM_SERVER: 'https://ecshopx-wap.shopex123.com',
     APP_HOME_PAGE: '"/pages/index"',
     // APP_AUTH_PAGE: '"/pages/auth/login"',
     APP_AUTH_PAGE: TARO_ENV === 'weapp'

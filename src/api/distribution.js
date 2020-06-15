@@ -51,3 +51,26 @@ export function release (params) {
 export function unreleased (params) {
   return req.delete('/promoter/relgoods', params)
 }
+
+export function shopAchievement (params) {
+  return req.get('/promoter/taskBrokerage/count', params)
+}
+
+export function shopTrade (params) {
+  return req.get('/promoter/taskBrokerage/logs', params)
+}
+export function shopBanner (params) {
+  return req.get('/promoter/banner', params)
+}
+
+export function getCategorylevel (params) {
+  return req.get('/goods/categorylevel',params)
+}
+
+export function getCustompage () {
+  return req.get('/promoter/custompage')
+}
+
+export function getCash(params) {
+  return req.post('/promoter/cash_withdrawal',params)
+}

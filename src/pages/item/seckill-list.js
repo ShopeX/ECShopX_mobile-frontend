@@ -28,7 +28,7 @@ export default class SeckillList extends Component {
   }
 
   config = {
-    navigationBarTitleText: '限时秒杀'
+    navigationBarTitleText: ''
   }
 
   componentDidMount () {
@@ -72,9 +72,9 @@ export default class SeckillList extends Component {
       page,
       pageSize
     }
-    
+
     const { list, total_count: total } = await api.seckill.seckillList(query)
-		
+
 		let timeCountDown = []
     list.map(item => {
       timeCountDown.push({
@@ -183,8 +183,8 @@ export default class SeckillList extends Component {
 													</View>
 												)
 											})
-											
-										} 
+
+										}
                     </View>
                   </View>
                 )

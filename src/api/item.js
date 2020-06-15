@@ -41,3 +41,23 @@ export function packageList (params = {}) {
 export function packageDetail (item_id) {
   return req.get(`/promotions/package/${item_id}`)
 }
+
+export function evaluationList (params) {
+  return req.get('/order/rate/list', params)
+}
+
+export function replyRate (params) {
+  return req.post('/order/replyRate', params)
+}
+
+export function getEvaluationDetail (rate_id,params = {}){
+  return req.get(`/order/rate/detail/${rate_id}`,params)
+}
+export function getreplyRateList (params = {}){
+  return req.get(`/order/replyRate/list`,params)
+}
+export function getRatePraiseStatus (params = {}){
+  return req.get(`/order/ratePraise/status`,params)
+}
+
+

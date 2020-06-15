@@ -31,18 +31,20 @@ export default class List extends Component {
       ],
       query: null,
       list: [],
+      oddList: [],
+      evenList: [],
       tagsList: [],
       paramsList: [],
       listType: 'grid',
+      isShowSearch: false,
       showDrawer: false,
       selectParams: [],
-      info: {},
-      areaList: [],
-			multiIndex: []
+      info: {}
     }
   }
 
   componentDidMount () {
+    const { cat_id = null, main_cat_id = null } = this.$router.params
     this.firstStatus = true
 
     this.setState({
@@ -50,8 +52,10 @@ export default class List extends Component {
         keywords: this.$router.params.keywords,
         item_type: 'normal',
         is_point: 'false',
+        distributor_id: this.$router.params.dis_id,
         approve_status: 'onsale,only_show',
-        category: this.$router.params.cat_id
+        category: cat_id ? cat_id : '',
+        main_category: main_cat_id ? main_cat_id : ''
 			},
 			curTagId:this.$router.params.tag_id
     }, () => {
@@ -61,54 +65,23 @@ export default class List extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-    const { selectParams, areaList, tagsList, curTagId } = this.state
+    const { selectParams, tagsList, curTagId } = this.state
     const { distributor_id } = Taro.getStorageSync('curStore')
+
     const query = {
       ...this.state.query,
       item_params: selectParams,
       tag_id: curTagId,
-      distributor_id,
       page,
       pageSize
     }
-    const { list, total_count: total, item_params_list = [], select_tags_list = [], select_address_list = []} = await api.item.search(query)
-    const { favs } = this.props
 
-    if (areaList.length === 0) {
-      let res = await api.member.areaList()
-      let regions = []
-      select_address_list.map(item => {
-        let match = res.find(area => item == area.id)
-        if (match) {
-          regions.push(match)
-        }
-      })
-      const addList = pickBy(regions, {
-        label: 'label',
-        id: 'id',
-        children: 'children',
-      })
-      this.addList = addList
-      let arrProvice = []
-      let arrCity = []
-      let arrCounty = []
-      addList.map((item, index) => {
-        arrProvice.push(item.label)
-        if(index === 0) {
-          item.children.map((c_item, c_index) => {
-            arrCity.push(c_item.label)
-            if(c_index === 0) {
-              c_item.children.map(cny_item => {
-                arrCounty.push(cny_item.label)
-              })
-            }
-          })
-        }
-      })
-      this.setState({
-        areaList: [arrProvice, arrCity, arrCounty]
-      })
+    if (APP_PLATFORM === 'standard') {
+      query.distributor_id =  distributor_id 
     }
+
+    const { list, total_count: total, item_params_list = [], select_tags_list = []} = await api.item.search(query)
+    const { favs } = this.props
 
     item_params_list.map(item => {
       if(selectParams.length < 4){
@@ -121,18 +94,31 @@ export default class List extends Component {
     })
 
     const nList = pickBy(list, {
-      img: 'pics[0]',
+      img: ({ pics }) => typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0],
       item_id: 'item_id',
-      title: 'itemName',
+      title: ({ itemName, item_name }) => itemName ? itemName : item_name,
       desc: 'brief',
+      distributor_info: 'distributor_info',
+      promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
       is_fav: ({ item_id }) => Boolean(favs[item_id])
     })
 
+    let odd = [], even = []
+    nList.map((item, idx) => {
+      if (idx % 2 == 0) {
+        odd.push(item)
+      } else {
+        even.push(item)
+      }
+    })
+
     this.setState({
       list: [...this.state.list, ...nList],
+      oddList: [...this.state.oddList, ...odd],
+      evenList: [...this.state.evenList, ...even],
       showDrawer: false,
       query
     })
@@ -146,8 +132,14 @@ export default class List extends Component {
     }
 
     if (tagsList.length === 0) {
+      let tags = select_tags_list
+      tags.unshift({
+        tag_id: 0,
+        tag_name: '全部'
+      })
       this.setState({
-        tagsList: select_tags_list,
+        //curTagId: 0,
+        tagsList: tags
       })
     }
 
@@ -158,10 +150,11 @@ export default class List extends Component {
 
   handleTagChange = (data) => {
     const { current } = data
-
     this.resetPage()
     this.setState({
-      list: []
+      list: [],
+      oddList: [],
+      evenList: []
     })
 
     this.setState({
@@ -170,26 +163,6 @@ export default class List extends Component {
       this.nextPage()
     })
   }
-
-	handleRegionRefresh = (e) => {
-		e.stopPropagation()
-    this.resetPage()
-    const {query} = this.state
-		query.regions_id = []
-    this.setState({
-      multiIndex: [],
-      areaList:[],
-      list: [],
-			info:{
-				city: {label: "", id: ""},
-				county: {label: "", id: ""},
-				province: {label: "", id: ""}
-			},
-      query
-    }, () => {
-      this.nextPage()
-    })
-	}
 
   handleFilterChange = (data) => {
     this.setState({
@@ -209,7 +182,9 @@ export default class List extends Component {
     if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
       this.resetPage()
       this.setState({
-        list: []
+        list: [],
+        oddList: [],
+        evenList: []
       })
     }
 
@@ -231,6 +206,13 @@ export default class List extends Component {
 
   handleClickItem = (item) => {
     const url = `/pages/item/espier-detail?id=${item.item_id}`
+    Taro.navigateTo({
+      url
+    })
+  }
+
+  handleClickStore = (item) => {
+    const url = `/pages/store/index?id=${item.distributor_info.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -292,142 +274,70 @@ export default class List extends Component {
 
     this.resetPage()
     this.setState({
-      list: []
+      list: [],
+      oddList: [],
+      evenList: []
     }, () => {
       this.nextPage()
     })
   }
 
-  // 选定开户地区
-  handleClickPicker = () => {
-    let arrProvice = []
-    let arrCity = []
-    let arrCounty = []
-    if(this.addList){
-      this.addList.map((item, index) => {
-        arrProvice.push(item.label)
-        if(index === 0) {
-          item.children.map((c_item, c_index) => {
-            arrCity.push(c_item.label)
-            if(c_index === 0) {
-              c_item.children.map(cny_item => {
-                arrCounty.push(cny_item.label)
-              })
-            }
-          })
-        }
-      })
+  handleViewChange = () => {
+    const { listType } = this.state
+    if (listType === 'grid') {
       this.setState({
-        showDrawer: false,
-        areaList: [arrProvice, arrCity, arrCounty],
-        multiIndex: [0, 0, 0]
+        listType: 'list'
+      })
+    } else {
+      this.setState({
+        listType: 'grid'
       })
     }
-
   }
 
-  bindMultiPickerChange = async (e) => {
-		const { info } = this.state
-    this.addList.map((item, index) => {
-      if(index === e.detail.value[0]) {
-        info.province = {
-          label: item.label,
-          id: item.id
-        }
-        item.children.map((s_item,sIndex) => {
-          if(sIndex === e.detail.value[1]) {
-            info.city = {
-              label: s_item.label,
-              id: s_item.id
-            }
-            s_item.children.map((th_item,thIndex) => {
-              if(thIndex === e.detail.value[2]) {
-                info.county = {
-                  label: th_item.label,
-                  id: th_item.id
-                }
-              }
-            })
-          }
-        })
-      }
-		})
+  handleSearchOn = () => {
+    this.setState({
+      isShowSearch: true
+    })
+  }
 
-    let regions = [
-      info.province.id,
-      info.city.id,
-      info.county.id
-    ]
+  handleSearchOff = () => {
+    this.setState({
+      isShowSearch: false
+    })
+  }
 
+  handleSearchChange = (val) => {
     this.setState({
       query: {
         ...this.state.query,
-        regions_id: regions
+        keywords: val
       }
-    }, () => {
+    })
+  }
+
+  handleSearchClear = () => {
+    this.setState({
+      isShowSearch: false,
+      query: {
+        ...this.state.query,
+        keywords: ''
+      }
+    }, () =>{
       this.resetPage()
       this.setState({
-        list: []
+        list: [],
+        oddList: [],
+        evenList: []
       }, () => {
         this.nextPage()
       })
-		})
-		this.setState({
-			info
-		})
-  }
-
-  bindMultiPickerColumnChange = (e) => {
-    const { areaList, multiIndex } = this.state
-    if(e.detail.column === 0) {
-      this.setState({
-        multiIndex: [e.detail.value,0,0]
-      })
-      this.addList.map((item, index) => {
-        if(index === e.detail.value) {
-          let arrCity = []
-          let arrCounty = []
-          item.children.map((c_item, c_index) => {
-            arrCity.push(c_item.label)
-            if(c_index === 0) {
-              c_item.children.map(cny_item => {
-                arrCounty.push(cny_item.label)
-              })
-            }
-          })
-          areaList[1] = arrCity
-          areaList[2] = arrCounty
-          this.setState({ areaList })
-        }
-      })
-    } else if (e.detail.column === 1) {
-      multiIndex[1] = e.detail.value
-      multiIndex[2] = 0
-      this.setState({
-        multiIndex
-      },()=>{
-        this.addList[multiIndex[0]].children.map((c_item, c_index)  => {
-          if(c_index === e.detail.value) {
-            let arrCounty = []
-            c_item.children.map(cny_item => {
-              arrCounty.push(cny_item.label)
-            })
-            areaList[2] = arrCounty
-            this.setState({ areaList })
-          }
-        })
-      })
-
-    } else {
-      multiIndex[2] = e.detail.value
-      this.setState({
-        multiIndex
-      })
-    }
+    })
   }
 
   handleConfirm = (val) => {
     this.setState({
+      isShowSearch: false,
       query: {
         ...this.state.query,
         keywords: val,
@@ -435,7 +345,9 @@ export default class List extends Component {
     }, () =>{
       this.resetPage()
       this.setState({
-        list: []
+        list: [],
+        oddList: [],
+        evenList: []
       }, () => {
         this.nextPage()
       })
@@ -445,6 +357,8 @@ export default class List extends Component {
   render () {
     const {
       list,
+      oddList,
+      evenList,
       listType,
       curFilterIdx,
       filterList,
@@ -454,19 +368,34 @@ export default class List extends Component {
       showDrawer,
       paramsList,
       selectParams,
-      multiIndex,
-      areaList,
       tagsList,
       curTagId,
-			info
+			info,
+      isShowSearch,
+      query
     } = this.state
 
 		return (
 			<View className='page-goods-list'>
 				<View className='goods-list__toolbar'>
-				<SearchBar
-            onConfirm={this.handleConfirm.bind(this)}
-          />
+          <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
+    				<SearchBar
+              keyword={query ? query.keywords : ''}
+              onFocus={this.handleSearchOn}
+              onChange={this.handleSearchChange}
+              onClear={this.handleSearchClear}
+              onCancel={this.handleSearchOff}
+              onConfirm={this.handleConfirm.bind(this)}
+    				/>
+            {
+              !isShowSearch &&
+                <View
+                  className={classNames('goods-list__type', listType === 'grid' ? 'icon-list' : 'icon-grid')}
+                  onClick={this.handleViewChange}
+                  >
+                </View>
+            }
+          </View>
           {
             tagsList.length &&
               <TagsBar
@@ -482,24 +411,12 @@ export default class List extends Component {
             list={filterList}
             onChange={this.handleFilterChange}
           >
-            <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
-              <View className='icon-filter'></View>
-              <Text>筛选</Text>
-            </View>
-            <View className='filter-bar__item region-picker'>
-              <Picker
-                mode='multiSelector'
-                onClick={this.handleClickPicker}
-                onChange={this.bindMultiPickerChange}
-                onColumnChange={this.bindMultiPickerColumnChange}
-                value={multiIndex}
-                range={areaList}
-							>
-								<View className='icon-periscope'></View>
-								<Text>{info.city && info.city.label || '产地'}</Text>
-							</Picker>
-							{info.city && info.city.label  && <Text className='icon-close' onClick={this.handleRegionRefresh.bind(this)}></Text>}
-						</View>
+            {/*
+              <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
+                <View className='icon-filter'></View>
+                <Text>筛选</Text>
+              </View>
+            */}
           </FilterBar>
         </View>
 
@@ -554,19 +471,62 @@ export default class List extends Component {
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          <View className={`goods-list goods-list__type-${listType}`}>
-            {
-              list.map(item => {
-                return (
-                  <GoodsItem
-                    key={item.item_id}
-                    info={item}
-                    onClick={() => this.handleClickItem(item)}
-                  />
-                )
-              })
-            }
-          </View>
+          {
+            listType === 'grid' &&
+              <View className={`goods-list goods-list__type-grid`}>
+                  <View className='goods-list__group'>
+                    {
+                      oddList.map(item => {
+                        return (
+                          <View className='goods-list__item'>
+                            <GoodsItem
+                              key={item.item_id}
+                              info={item}
+                              onClick={() => this.handleClickItem(item)}
+                              onStoreClick={() => this.handleClickStore(item)}
+                            />
+                          </View>
+                        )
+                      })
+                    }
+                  </View>
+                  <View className='goods-list__group'>
+                    {
+                      evenList.map(item => {
+                        return (
+                          <View className='goods-list__item'>
+                            <GoodsItem
+                              key={item.item_id}
+                              info={item}
+                              onClick={() => this.handleClickItem(item)}
+                              onStoreClick={() => this.handleClickStore(item)}
+                            />
+                          </View>
+                        )
+                      })
+                    }
+                  </View>
+              </View>
+          }
+          {
+            listType === 'list' &&
+              <View className={`goods-list goods-list__type-list`}>
+                {
+                  list.map(item => {
+                    return (
+                      <View className='goods-list__item'>
+                        <GoodsItem
+                          key={item.item_id}
+                          info={item}
+                          onClick={() => this.handleClickItem(item)}
+                          onStoreClick={() => this.handleClickStore(item)}
+                        />
+                      </View>
+                    )
+                  })
+                }
+              </View>
+          }
           {
             page.isLoading
               ? <Loading>正在加载...</Loading>
@@ -581,6 +541,7 @@ export default class List extends Component {
         <BackToTop
           show={showBackToTop}
           onClick={this.scrollBackToTop}
+          bottom={30}
         />
       </View>
     )

@@ -54,7 +54,7 @@ export default class Coupon extends Component {
       page,
       pageSize
     }
-    const { list, count: total } = await api.member.couponList(params)
+    const { list, total_count: total } = await api.member.couponList(params)
     const nList = pickBy(list, {
       id: 'id',
       status: 'status',
@@ -63,6 +63,8 @@ export default class Coupon extends Component {
       begin_date: 'begin_date',
       end_date: 'end_date',
       card_type: 'card_type',
+      card_id: 'card_id',
+      code: 'code',
       tagClass: 'tagClass',
       title: 'title',
       discount: 'discount'
@@ -89,6 +91,13 @@ export default class Coupon extends Component {
       curTabIdx: idx
     }, () => {
       this.nextPage()
+    })
+  }
+
+  handleClick = (card_id, code) => {
+    const url = `/pages/member/coupon-detail?card_id=${card_id}&code=${code}`
+    Taro.navigateTo({
+      url
     })
   }
 
@@ -139,6 +148,7 @@ export default class Coupon extends Component {
                   <CouponItem
                     info={item}
                     key={item.id}
+                    onClick={this.handleClick.bind(this, item.card_id, item.code)}
                   />
                 )
               })

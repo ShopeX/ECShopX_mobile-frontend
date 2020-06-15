@@ -1,0 +1,84 @@
+@import "../../../style/imports";
+
+.shopping-guide-card{
+  background: #fff;
+  .flex{
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+  }
+  .page-header{
+    padding: 30px;
+    &__info{
+      &-name{
+
+        Text{
+          font-size: 24px;
+          color: $color-brand-primary;
+          border: 1px solid $color-brand-primary;
+          padding: 2px 15px;
+          margin-left: 15px;
+        }
+      }
+
+      &-shop{
+        margin-top: 20px;
+        font-size: 26px;
+      }
+
+      &-address{
+        margin-top: 5px;
+        font-size: 24px;
+      }
+    }
+  }
+
+  .page-button{
+    padding: 60px 30px;
+    .at-button{
+      margin-bottom: 30px;
+      border: 1PX solid $color-brand-primary;
+    }
+  }
+
+  .page-button{
+
+    &__button{
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+  }
+
+  .page-cell{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    .button-text{
+      // position: absolute;
+      // top: 0;
+      opacity: 1;
+    }
+    image,text{
+      opacity: 0;
+      background: transparent;
+    }
+    view{
+      background: transparent;
+    }
+    button{
+      // opacity: 0;
+      background: transparent;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      opacity: 0;
+    }
+  }
+}

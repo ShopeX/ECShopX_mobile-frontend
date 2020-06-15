@@ -6,6 +6,9 @@
   height: $home-header-height;
   padding: 0 20px;
   background: #fff;
+  .shop-view {
+    width: 1%;
+  }
   &.fixed {
     position: fixed;
     left: 0;

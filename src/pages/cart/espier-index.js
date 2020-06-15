@@ -12,10 +12,11 @@ import CartItem from './comps/cart-item'
 
 import './espier-index.scss'
 
-@connect(({ cart }) => ({
+@connect(({ cart, colors }) => ({
   list: cart.list,
 	cartIds: cart.cartIds,
-	showLikeList: cart.showLikeList
+	showLikeList: cart.showLikeList,
+  colors: colors.current
 }), (dispatch) => ({
   onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
   onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
@@ -37,7 +38,8 @@ export default class CartIndex extends Component {
       groups: [],
       likeList: [],
       invalidList: [],
-      error: null
+      error: null,
+      isPathQrcode: false
     }
 
     this.updating = false
@@ -45,6 +47,12 @@ export default class CartIndex extends Component {
   }
 
   componentDidMount () {
+    console.log(this.$router.params, 48)
+    if(this.$router.params && this.$router.params.path === 'qrcode') {
+      this.setState({
+        isPathQrcode: true
+      })
+    }
     this.nextPage()
 
     if (!S.getAuthToken()) return
@@ -103,6 +111,7 @@ export default class CartIndex extends Component {
     const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
+      promotion_activity_tag: 'promotion_activity',
       price: ({price}) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
@@ -156,7 +165,7 @@ export default class CartIndex extends Component {
   processCart ({ valid_cart = [], invalid_cart = [] }) {
 		let cartCount = 0
     const list = valid_cart.map(shopCart => {
-			cartCount += shopCart.cart_total_count
+			cartCount += shopCart.cart_total_num
       const tList = this.transformCartList(shopCart.list)
       return {
         ...shopCart,
@@ -233,7 +242,7 @@ export default class CartIndex extends Component {
     this.updateCart()
   }
 
-  handleDelect = async (cart_id,shopIndex) => {
+  handleDelect = async (cart_id) => {
     const res = await Taro.showModal({
       title: '提示',
       content: '将当前商品移出购物车?',
@@ -246,7 +255,7 @@ export default class CartIndex extends Component {
 
     await api.cart.del({ cart_id })
 
-    const cartIds = this.props.cartIds[shopIndex].filter(t => t !== cart_id)
+    const cartIds = this.props.cartIds.filter(t => t !== cart_id)
 
 		this.updateCart()
   }
@@ -339,7 +348,8 @@ export default class CartIndex extends Component {
     })
   }
 
-  handleCheckout = (shop_id) => {
+  handleCheckout = (shopCart) => {
+    const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = shopCart.shopInfo
     const { type } = this.$router.params
     if (this.updating) {
       Taro.showToast({
@@ -349,7 +359,7 @@ export default class CartIndex extends Component {
       return
     }
     Taro.navigateTo({
-      url: `/pages/cart/espier-checkout?cart_type=cart&type=${type}&shop_id=${shop_id}`
+      url: `/pages/cart/espier-checkout?cart_type=cart&type=${type}&shop_id=${shop_id}&is_delivery=${is_delivery}&is_ziti=${is_ziti}&name=${shop_name}&store_address=${address}&lat=${lat}&lng=${lng}&hour=${hour}&phone=${mobile}`
     })
   }
 
@@ -382,9 +392,13 @@ export default class CartIndex extends Component {
     navigateTo.apply(this, args)
   }
 
+  handleToQrcode = () => {
+    Taro.navigateBack()
+  }
+
   render () {
-    const { groups, invalidList, cartMode, loading, curPromotions, likeList, page } = this.state
-    const { list, showLikeList } = this.props
+    const { groups, invalidList, cartMode, loading, curPromotions, likeList, page, isPathQrcode } = this.state
+    const { list, showLikeList, colors } = this.props
 
     if (loading) {
       return <Loading />
@@ -401,9 +415,13 @@ export default class CartIndex extends Component {
         />
         {
           !S.getAuthToken()
-            ? <View className="login-header">
+            ? <View className='login-header'>
                 <View>授权登录后同步购物车的商品</View>
-                <View className="btn-login" onClick={this.handleLoginClick.bind(this)}>授权登录</View>
+                <View
+                  className='btn-login'
+                  onClick={this.handleLoginClick.bind(this)}
+                  style={`background: ${colors.data[0].primary}`}
+                  >授权登录</View>
               </View>
             : null
         }
@@ -433,7 +451,7 @@ export default class CartIndex extends Component {
                   <View
                     className='cart-list__shop'
                     key={shopIndex}
-									>
+                  >
                     {
                       shopCart.shopInfo.shop_name
   										? <View className='shop__name'>
@@ -450,13 +468,13 @@ export default class CartIndex extends Component {
 
 													return activityGroup.list.length > 0 && (
 														<View
-															className='cart-group'
-															key={shopCart.shopInfo.shop_id}
+  className='cart-group'
+  key={shopCart.shopInfo.shop_id}
 														>
 															{activity && (
 																<View className='cart-group__activity'>
 																	<View
-																		className='cart-group__activity-item'
+  className='cart-group__activity-item'
 																	>
 																		<Text className='cart-group__activity-label'>{activity.activity_tag}</Text>
 																		<Text>{activity.activity_name}</Text>
@@ -469,33 +487,33 @@ export default class CartIndex extends Component {
 																	return (
 																		<View className='cart-group__item-wrap'>
 																			<CartItem
-																				key={item.cart_id}
-																				info={item}
-																				onNumChange={this.handleQuantityChange.bind(this, shopCart.shopInfo.shop_id,item)}
-																				onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
-																				onClickImgAndTitle={this.handleClickToDetail.bind(this, item.item_id)}
+  key={item.cart_id}
+  info={item}
+  onNumChange={this.handleQuantityChange.bind(this, shopCart.shopInfo.shop_id,item)}
+  onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
+  onClickImgAndTitle={this.handleClickToDetail.bind(this, item.item_id)}
 																			>
 																				<View className='cart-item__act'>
 																					<SpCheckbox
-																						key={item.item_id}
-																						checked={item.is_checked}
-																						onChange={this.handleSelectionChange.bind(this,shopIndex, item.cart_id)}
+  key={item.item_id}
+  checked={item.is_checked}
+  onChange={this.handleSelectionChange.bind(this,shopIndex, item.cart_id)}
 																					/>
 																					<View
-																						className='in-icon in-icon-close'
-																						onClick={this.handleDelect.bind(this, item.cart_id,shopIndex)}
+  className='icon-close'
+  onClick={this.handleDelect.bind(this, item.cart_id,shopIndex)}
 																					/>
 																				</View>
 																			</CartItem>
 																			{item.packages && item.packages.length && (
-																				<View class="cart-item__packages">
+																				<View class='cart-item__packages'>
 																				{item.packages.map(pack => {
 																					return (
 																						<CartItem
-																							isDisabled
-																							num={true}
-                                              key={pack.package_id}
-																						  info={pack}
+  isDisabled
+  num
+  key={pack.package_id}
+  info={pack}
 																						></CartItem>
 																					)
 																				})}
@@ -512,13 +530,13 @@ export default class CartIndex extends Component {
 																		{activity.gifts.map(gift => {
 																			return (
 																				<View
-																					className='gift-item'
-																					key={gift.item_id}
+  className='gift-item'
+  key={gift.item_id}
 																				>
 																					<Image
-																						className='gift-item__img'
-																						src={gift.pics[0]}
-																						mode='aspectFill'
+  className='gift-item__img'
+  src={gift.pics[0]}
+  mode='aspectFill'
 																					/>
 																					<View className='gift-item__title'>{gift.item_name}</View>
 																					<Text className='gift-item__num'>x{gift.gift_num}</Text>
@@ -538,8 +556,8 @@ export default class CartIndex extends Component {
       									<View className='cart-toolbar__hd'>
       										<SpCheckbox
       											// checked={this.isTotalChecked[shopIndex]}
-      											checked={checked_all}
-      											onChange={this.handleAllSelect.bind(this,!checked_all,shopIndex)}
+        checked={checked_all}
+        onChange={this.handleAllSelect.bind(this,!checked_all,shopIndex)}
       										>全选</SpCheckbox>
       									</View>
       										{
@@ -550,33 +568,35 @@ export default class CartIndex extends Component {
       																<View className='cart-total__discount'>
       																	<Text className='cart-total__hint'>优惠：</Text>
       																	<Price
-      																		primary
-      																		value={-1 * Number(shopCart.shopInfo.discount_fee )}
-      																		unit='cent'
+        primary
+        value={-1 * Number(shopCart.shopInfo.discount_fee )}
+        unit='cent'
       																	/>
       																</View>
       															)}
       															<View className='cart-total__total'>
       																<Text className='cart-total__hint'>总计：</Text>
       																<Price
-      																	primary
-      																	value={Number(shopCart.shopInfo.total_fee)}
-      																	unit='cent'
+        primary
+        value={Number(shopCart.shopInfo.total_fee)}
+        unit='cent'
       																/>
       															</View>
       														</View>
-      														<AtButton
-      															type='primary'
-      															className='btn-checkout'
-      															disabled={shopCart.shopInfo.cart_total_count <= 0}
-      															onClick={this.handleCheckout.bind(this,shopCart.shopInfo.shop_id)}
-      														>{isDrug ? '立即预约' : '结算'}</AtButton>
+      														<Button
+                                    type='primary'
+                                    className='btn-checkout'
+                                    style={`background: ${colors.data[0].primary}`}
+                                    disabled={shopCart.shopInfo.cart_total_count <= 0}
+                                    onClick={this.handleCheckout.bind(this, shopCart)}>
+                                      {isDrug ? '立即预约' : '结算'}
+                                    </Button>
       													</View>
       												: <View className='cart-toolbar__bd'>
       														<AtButton
-      															type='primary'
-      															className='btn-checkout'
-      															onClick={this.handleDelect}
+        type='primary'
+        className='btn-checkout'
+        onClick={this.handleDelect}
       														>删除</AtButton>
       													</View>
       										}
@@ -617,7 +637,7 @@ export default class CartIndex extends Component {
                       <View className='cart-item__act'>
                         <View></View>
                         <View
-                          className='in-icon in-icon-close'
+                          className='icon-close'
                           onClick={this.handleDelect.bind(this, item.cart_id)}
                         />
                       </View>
@@ -636,11 +656,13 @@ export default class CartIndex extends Component {
                     {
                       likeList.map(item => {
                         return (
-                          <GoodsItem
-                            key={item.item_id}
-                            info={item}
-                            onClick={this.handleClickItem.bind(this, item)}
-                          />
+                          <View className='goods-list__item'>
+                            <GoodsItem
+                              key={item.item_id}
+                              info={item}
+                              onClick={this.handleClickItem.bind(this, item)}
+                            />
+                          </View>
                         )
                       })
                     }
@@ -654,6 +676,15 @@ export default class CartIndex extends Component {
               : null
           }
         </ScrollView>
+
+          {
+            isPathQrcode && (
+              <View className='qrcode-bg' onClick={this.handleToQrcode.bind(this)}>
+                <Image mode='widthFix' src='/assets/imgs/ic_scanning.png' className='qrcode-bg__img'></Image>
+                <Text>继续添加</Text>
+              </View>
+            )
+          }
 
         <AtActionSheet
           title='请选择商品优惠'

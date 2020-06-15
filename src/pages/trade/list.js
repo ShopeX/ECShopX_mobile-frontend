@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
+import { connect } from "@tarojs/redux";
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote, NavBar } from '@/components'
@@ -9,6 +10,10 @@ import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
 import TradeItem from './comps/item'
 
 import './list.scss'
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 @withPager
 @withLogin()
@@ -26,6 +31,7 @@ export default class TradeList extends Component {
         {title: '已完成', status: '3'}
       ],
       list: [],
+      rate_status: false,
       curItemActionsId: null
     }
   }
@@ -90,7 +96,7 @@ export default class TradeList extends Component {
       return key
     })
 
-    const { list, pager: { count: total } } = await api.trade.list(params)
+    const { list, pager: { count: total }, rate_status } = await api.trade.list(params)
     let nList = pickBy(list, {
       tid: 'order_id',
       status_desc: 'order_status_msg',
@@ -101,12 +107,14 @@ export default class TradeList extends Component {
       total_fee: 'total_fee',
       pay_type: 'pay_type',
       point: 'point',
+      is_rate: 'is_rate',
       create_date: 'create_date',
       order: ({ items }) => pickBy(items, {
         order_id: 'order_id',
         item_id: 'item_id',
         pic_path: 'pic',
         title: 'item_name',
+        item_spec_desc: 'item_spec_desc',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
         item_fee: 'item_fee',
         point: 'item_point',
@@ -117,7 +125,8 @@ export default class TradeList extends Component {
     log.debug('[trade list] list fetched and processed: ', nList)
 
     this.setState({
-      list: [...this.state.list, ...nList]
+      list: [...this.state.list, ...nList],
+      rateStatus: rate_status
     })
 
     Taro.stopPullDownRefresh()
@@ -168,6 +177,11 @@ export default class TradeList extends Component {
           url: `/pages/trade/cancel?order_id=${tid}`
         })
         break
+      case 'rate':
+        Taro.navigateTo({
+          url: `/marketing/pages/item/rate?id=${tid}`
+        })
+        break  
       default:
         Taro.navigateTo({
           url: `/pages/trade/detail?id=${tid}`
@@ -194,7 +208,8 @@ export default class TradeList extends Component {
   }
 
   render () {
-    const { curTabIdx, curItemActionsId, tabList, list, page } = this.state
+    const { colors } = this.props
+    const { curTabIdx, curItemActionsId, tabList, list, page, rateStatus } = this.state
 
     return (
       <View className='page-trade-list'>
@@ -233,6 +248,7 @@ export default class TradeList extends Component {
                 <TradeItem
                   payType={item.pay_type}
                   key={item.tid}
+                  rateStatus={rateStatus}
                   info={item}
                   showActions={curItemActionsId === item.tid}
                   onClick={this.handleClickItem.bind(this, item)}

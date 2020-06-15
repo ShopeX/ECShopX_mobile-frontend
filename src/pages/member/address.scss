@@ -59,6 +59,8 @@
     }
     .default__icon {
       margin-right: 14px;
+      vertical-align: middle;
+      font-size: 32px;
     }
     .default__checked {
       color: $color-brand-primary;
@@ -84,7 +86,6 @@
     position: fixed;
     bottom: 0;
     height: 80px;
-    background: $color-brand-primary;
     color: #ffffff;
     text-align: center;
     line-height: 80px;

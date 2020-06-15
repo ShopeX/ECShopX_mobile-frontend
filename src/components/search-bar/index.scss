@@ -9,6 +9,12 @@
   &__focus{
     height: 100vh;
     z-index: $z-index-dropdown;
+    &.without-dialog {
+      height: auto;
+    }
+    .at-search-bar {
+      padding-right: 0 !important;
+    }
   }
   &__history {
     background: #fff;
@@ -33,11 +39,12 @@
       flex-wrap: wrap;
       padding: 0 30px;
       &__btn {
-        padding: 10px 21px;
+        padding: 8px 16px;
         background: #F2F2F2;
-        margin: 29px 22px 0 0;
-        border-radius: 3px;
+        margin: 25px 20px 0 0;
+        border-radius: 4px;
         color: #333333;
+        font-size: 24px;
       }
       &__btn:nth-child(-n+3) {
         background: $color-brand-primary;

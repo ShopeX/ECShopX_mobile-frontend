@@ -1,0 +1,48 @@
+@import "../../../style/imports";
+
+.reservation-list {
+  background: #f6f6f6;
+  &__scroll {
+    @include page-scroll(0, $edge-margin);
+    box-sizing: border-box;
+  }
+  &__list {
+    margin-top: 2px;
+  }
+  &__item {
+    background: #ffffff;
+    margin: 0 0 20px;
+    position: relative;
+    padding: 20px 30px;
+    &_title {
+      display: flex;
+      padding: 10px 0 20px;
+      justify-content: space-between;
+      border-bottom: 1PX solid #e4e3e4;
+    }
+    &_btn {
+      position: absolute;
+      right: 30px;
+      bottom: 30px;
+      display: block;
+      height: 50px;
+      line-height: 48px;
+      width: 130px;
+      text-align: center;
+      font-size: 22px;
+      border: 1PX solid #000000;
+      color: #000;
+    }
+  }
+  &__item_content {
+    padding: 30px 0 70px;
+    .content_data {
+      font-size: 22px;
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+

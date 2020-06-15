@@ -18,7 +18,7 @@
       top: 0;
       width: 80px;
       height: 80px;
-      z-index: 90;
+      z-index: 15;
       .subscript-img {
         width: 100%;
         height: 100%;
@@ -48,12 +48,19 @@
         width: 100%;
         height: 100%;
 			}
-			
+
     }
 	}
 	.goods-price {
 		color: #ff5000;
-		text-align: center;
 		padding:5px 0;
+    font-size: 30px;
+    .market-price {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 20px;
+      color: #ccc;
+      text-decoration: line-through;
+    }
 	}
 }

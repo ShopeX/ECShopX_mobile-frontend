@@ -14,5 +14,6 @@ export { default as WgtGoods } from './goods'
 export { default as WgtGoodsFaverite } from './goods-faverite'
 export { default as WgtImgHotZone } from './imghot-zone'
 export { default as WgtMarquees } from './marquees'
+export { default as WgtStore } from './store'
 
 export default {}

@@ -8,7 +8,9 @@ import './index.scss'
 
 export default class SearchBar extends Component {
   static defaultProps = {
-    isOpened: false
+    isOpened: false,
+    keyword: '',
+    showDailog: true
   }
 
   constructor (props) {
@@ -33,10 +35,10 @@ export default class SearchBar extends Component {
   }
 
   handleFocusSearchHistory = (isOpened) => {
+    this.props.onFocus()
     this.setState({
       showSearchDailog: isOpened,
-      isShowAction: true,
-      searchValue: ' '
+      isShowAction: true
     })
     Taro.getStorage({ key: 'searchHistory' })
       .then(res => {
@@ -47,23 +49,24 @@ export default class SearchBar extends Component {
   }
 
   handleChangeSearch = (value) => {
-    value = value.replace(/\s+/g,'')
-    this.setState({
-      searchValue: value,
-    })
+    // value = value.replace(/\s+/g,'')
+    this.props.onChange(value)
   }
 
-  handleConfirm = () => {
-    if (this.state.searchValue) {
+  handleClear = () => {
+    this.props.onClear()
+  }
+
+  handleConfirm = (e) => {
+    if (e.detail.value) {
       Taro.getStorage({ key: 'searchHistory' })
         .then(res => {
           let stringArr = res.data.split(',')
           let arr = [].concat(stringArr);
-          arr.unshift(this.state.searchValue)
+          arr.unshift(e.detail.value)
           arr = Array.from(new Set(arr))
           let arrString = arr.join(',')
           Taro.setStorage({ key: 'searchHistory', data: arrString })
-          this.setState({ searchValue: '' })
         })
         .catch(() => {
           let arr = []
@@ -71,7 +74,7 @@ export default class SearchBar extends Component {
           let arrString = arr.join(',')
           Taro.setStorage({ key: 'searchHistory', data: arrString })
         })
-      this.props.onConfirm(this.state.searchValue)
+      this.props.onConfirm(e.detail.value)
       /*Taro.navigateTo({
         url: `/pages/item/list?keywords=${this.state.searchValue}`
       })*/
@@ -83,9 +86,9 @@ export default class SearchBar extends Component {
   }
 
   handleClickCancel = (isOpened) => {
+    this.props.onCancel()
     this.setState({
       showSearchDailog: isOpened,
-      searchValue: '',
       isShowAction: false
     })
   }
@@ -98,15 +101,11 @@ export default class SearchBar extends Component {
   }
 
   handleClickTag = (item) => {
-    // console.log(item, 100)
     this.props.onConfirm(item)
     this.setState({
       showSearchDailog: false,
       isShowAction: false
     })
-    /*Taro.navigateTo({
-      url: `/pages/item/list?keywords=${item}`
-    })*/
   }
 
   handleClickHotItem = () => {
@@ -114,11 +113,11 @@ export default class SearchBar extends Component {
   }
 
   render () {
-    const { isFixed } = this.props
+    const { isFixed, keyword, showDailog } = this.props
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
       <View
-        className={classNames('search-input', isFixed ? 'search-input-fixed' : null, showSearchDailog ? 'search-input__focus' : null)}
+        className={classNames('search-input', isFixed ? 'search-input-fixed' : null, showSearchDailog ? 'search-input__focus' : null, !showDailog && 'without-dialog')}
       >
 
         {/*<View*/}
@@ -159,36 +158,40 @@ export default class SearchBar extends Component {
         <Form className='search-input__form'>
           <AtSearchBar
             className='search-input__bar'
-            value={searchValue}
+            value={keyword}
             placeholder='请输入关键词'
             actionName='取消'
             showActionButton={isShowAction}
             onFocus={this.handleFocusSearchHistory.bind(this, true)}
+            onClear={this.handleClear}
             onChange={this.handleChangeSearch.bind(this)}
             onConfirm={this.handleConfirm.bind(this)}
             onActionClick={this.handleClickCancel.bind(this, false)}
           />
         </Form>
-        <View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>
-          <View className='search-input__history-title'>
-            <Text>最近搜索</Text>
-            <Text className='in-icon in-icon-trash2 icon-del' onClick={this.handleClickDelete.bind(this)}></Text>
-          </View>
-          <View className='search-input__history-list'>
-           {
-              historyList.map((item, index) => <View className='search-input__history-list__btn' key={index} onClick={this.handleClickTag.bind(this, item)}>{item}</View> )
-           }
-          </View>
-          {/*<View className='search-input__history-title hot-title'>
-            <Text>热门搜索</Text>
-          </View>
-          <View className='hot-list'>
-            <View className='hot-list__item' onClick={this.handleClickHotItem.bind(this)}>
-              <Text>#绿茶籽小绿瓶#</Text>
-              <View className='at-icon at-icon-chevron-right'></View>
+        {
+          showDailog &&
+          <View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>
+            <View className='search-input__history-title'>
+              <Text>最近搜索</Text>
+              <Text className='icon-trash icon-del' onClick={this.handleClickDelete.bind(this)}></Text>
             </View>
-          </View>*/}
-        </View>
+            <View className='search-input__history-list'>
+             {
+                historyList.map((item, index) => <View className='search-input__history-list__btn' key={index} onClick={this.handleClickTag.bind(this, item)}>{item}</View> )
+             }
+            </View>
+            {/*<View className='search-input__history-title hot-title'>
+              <Text>热门搜索</Text>
+            </View>
+            <View className='hot-list'>
+              <View className='hot-list__item' onClick={this.handleClickHotItem.bind(this)}>
+                <Text>#绿茶籽小绿瓶#</Text>
+                <View className='at-icon at-icon-chevron-right'></View>
+              </View>
+            </View>*/}
+          </View>
+        }
       </View>
     )
   }

@@ -3,7 +3,7 @@
 .coupon-item-index {
   display: flex;
   justify-content: space-between;
-  padding-left: 30px;
+  padding: 0 10px;
   box-sizing: border-box;
   .coupon-item {
     flex: 1;
@@ -11,7 +11,7 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    margin: 0 $edge-size $edge-margin 0;
+    margin-bottom: $edge-margin;
 
     &__check {
       width: 32px;
@@ -44,7 +44,6 @@
       flex-direction: column;
       justify-content: space-around;
       border-radius: 10px 0 0 10px;
-      background: $color-brand-primary;
       //background:linear-gradient(315deg,rgba(255,77,24,1) 0%,rgba(253,130,30,1) 100%);
     }
     .radius-view {
@@ -89,6 +88,7 @@
     //  left: -5px;
     //}
     &___number {
+      padding-top: 20px;
       font-size: 36px;
       color: #fefefe;
       &_text {
@@ -100,37 +100,33 @@
       margin: 0 auto;
     }
     &__content {
+      display: flex;
+      align-items: center;
+      position: relative;
+      flex: 1;
+      padding: 0 20px;
       background: #fff;
       font-size: 24px;
-      flex: 1;
-      display: flex;
-      position: relative;
-      flex-direction: column;
-      justify-content: space-around;
-      box-sizing: border-box;
-      padding-left: 20px;
       border-radius: 0 10px 10px 0;
     }
     &___description {
+      padding-right: 20px;
+      flex: 1;
       color: #666;
       font-size: 24px;
-      display: flex;
-      justify-content: space-between;
-      position: relative;
     }
     &___time {
-      font-size: 24px;
+      font-size: 20px;
       color: $color-gray-light;
     }
     &___used {
       text-align: right;
       .icon-used {
         position: absolute;
-        top: -20px;
-        right: 30px;
+        top: 5px;
+        right: 15px;
         font-size: 80px;
       }
     }
   }
 }
-

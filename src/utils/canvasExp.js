@@ -93,8 +93,18 @@ const canvasExp = {
     let chr = text.split('')
     let temp = ''
     let row = []
-    chr.map(item =>{
-      if(temp.length < num) {
+    // chr.map(item =>{
+    //   if(temp.length < num) {
+    //     temp += item
+    //   } else {
+    //     row.push(temp)
+    //     temp = ''
+    //     temp += item
+    //   }
+    // })
+
+    chr.map((item,index) =>{
+      if(ctx.measureText(temp).width < w) {
         temp += item
       } else {
         row.push(temp)
@@ -102,14 +112,27 @@ const canvasExp = {
         temp += item
       }
     })
-    row.push(temp)
+
+    // for (var a = 0; a < chr.length; a++) {
+    //   if (ctx.measureText(temp).width < w) {
+    //     temp += chr[a];
+    //   } else {
+    //     a--; //这里添加了a-- 是为了防止字符丢失
+    //     row.push(temp);
+    //     temp = "";
+    //   }
+    // }
+
+   row.push(temp)
     let _y = y
     row.forEach((item, index) => {
+      console.log('index',index,rows)
       if (index+1 < rows) {
         ctx.fillText(item, x, _y)
       }
       if (index+1 === rows) {
-        this.textOverflowFill(ctx, item, x, _y, w, size, color)
+        canvasExp.textOverflowFill(ctx, item, x, _y, w, size, color)
+        //this.textOverflowFill(ctx, item, x, _y, w, size, color)
       }
       _y = _y+24
     })

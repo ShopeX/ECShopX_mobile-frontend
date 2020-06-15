@@ -1,0 +1,38 @@
+@import "../../../style/imports";
+
+.store-wrap {
+  margin: 20px 20px 0;
+  padding: 20px;
+  background: #FFFFFF;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  .store-info {
+    display: flex;
+    align-items: center;
+    .store-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 100%;
+      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+    }
+    .store-name {
+      padding-left: 20px;
+    }
+  }
+  .store-goods {
+    padding-top: 20px;
+    white-space: nowrap;
+    &__item {
+      display: inline-block;
+      margin-right: 20px;
+      &-thumbnail {
+        width: 150px;
+        height: 150px;
+      }
+      &-price {
+        font-size: 24px;
+        color: $color-price;
+      }
+    }
+  }
+}

@@ -163,8 +163,17 @@ export default class PackageItem extends Component {
 
     const { selection, mainItem } = this.state
     const packageId = this.props.current
-    const { distributor_id } = Taro.getStorageSync('curStore')
+    let id = ''
+    if ( APP_PLATFORM === 'standard') {
+      const { distributor_id } = Taro.getStorageSync('curStore')
+      id = distributor_id
+    } else {
+      const { distributor_id }= this.props
+      id = distributor_id
+    }
 
+    //const { distributor_id } = Taro.getStorageSync('curStore')
+    // const { distributor_id }= this.props
     const query = {
       isAccumulate: false,
       item_id: mainItem.id,
@@ -173,7 +182,7 @@ export default class PackageItem extends Component {
       shop_type: 'distributor',
       activity_id: packageId,
       activity_type: 'package',
-      distributor_id
+      distributor_id: id
 		}
 		const res = await api.cart.add(query)
 
@@ -216,7 +225,7 @@ export default class PackageItem extends Component {
     if (!info) {
       return null
     }
-    const { list, selection, packagePrice, curSku } = this.state
+    const { list, selection, packagePrice, curSku,showBuyPanel,buyPanelType } = this.state
     const { package_id, package_name } = info
 
     return (

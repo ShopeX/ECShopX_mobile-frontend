@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
 import { formatTime } from '@/utils'
-import { SpCell, Price, FloatMenus, FloatMenuItem, Loading, NavBar } from '@/components'
+import { SpCell, Price, FloatMenus, FloatMenuItem, Loading, NavBar, FloatMenuMeiQia } from '@/components'
 import api from '@/api'
 
 import './refund-detail.scss'
@@ -77,7 +77,7 @@ export default class TradeRefundDetail extends Component {
 
   render () {
     const { info, orderInfo, progress } = this.state
-
+    const meiqia = Taro.getStorageSync('meiqia')
     if (!info) {
       return <Loading />
     }
@@ -91,9 +91,9 @@ export default class TradeRefundDetail extends Component {
           {progress == 2 ? <Text className='refund-status__text'>客户已回寄，等待商家收货确认</Text> : null}
           {progress == 3 ? <Text className='refund-status__text'>申请已驳回</Text> : null}
           {progress == 4 ? <Text className='refund-status__text'>物流信息：已发货</Text> : null}
-          {progress == 5 ? <Text className='refund-status__text'>时间</Text> : null}
-          {progress == 6 ? <Text className='refund-status__text'>时间</Text> : null}
-          {progress == 7 ? <Text className='refund-status__text'>时间</Text> : null}
+          {progress == 5 ? <Text className='refund-status__text'>退款驳回</Text> : null}
+          {progress == 6 ? <Text className='refund-status__text'>退款已处理</Text> : null}
+          {progress == 7 ? <Text className='refund-status__text'>售后关闭</Text> : null}
 
         </View>
         <View className='refund-detail'>
@@ -141,8 +141,15 @@ export default class TradeRefundDetail extends Component {
           <View className='info-name'>退款原因：<Text className='info-value'>{info.reason}</Text></View>
           <View className='info-name'>申请时间：<Text className='info-value'>{info.creat_time_str}</Text></View>
           <View className='info-name'>退款编号：<Text className='info-value'>{info.aftersales_bn}</Text></View>
+          <View className='info-name'>驳回原因：<Text className='info-value'>{info.refuse_reason}</Text></View>
         </View>
-        <Button openType='contact' className='refund-detail-btn'>联系客服</Button>
+        {
+          meiqia.is_open === 'true'
+            ? <FloatMenuMeiQia storeId={orderInfo.distributor_id} info={{orderId: orderInfo.order_id}} isFloat={false}> 
+              <Button className='refund-detail-btn'>联系客服</Button>
+            </FloatMenuMeiQia>
+            : <Button openType='contact' className='refund-detail-btn'>联系客服</Button>
+        }
         {/*
           <View className='refund-status'>
           {
@@ -200,13 +207,17 @@ export default class TradeRefundDetail extends Component {
             <AtButton type='primary' circle onClick={this.handleBtnClick.bind(this, 'refund_send')}>填写物流信息</AtButton>
           </View>
         )}*/}
-        <FloatMenus>
-          <FloatMenuItem
-            iconPrefixClass='icon'
-            icon='headphones'
-            openType='contact'
-          />
-        </FloatMenus>
+        {/* <FloatMenus>
+        {
+          meiqia.is_open === 'meiqia'
+            ? <FloatMenuMeiQia storeId={orderInfo.distributor_id} info={{orderId: orderInfo.order_id}} /> 
+            : <FloatMenuItem
+              iconPrefixClass='icon'
+              icon='headphones'
+              openType='contact'
+            />
+          }
+        </FloatMenus> */}
       </View>
     )
   }

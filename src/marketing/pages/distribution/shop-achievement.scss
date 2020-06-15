@@ -1,0 +1,57 @@
+@import "../../../style/imports";
+
+$page-header: 80px !default;
+
+.page-distribution-shop {
+  background: $color-bg-gray;
+  .page-header {
+    padding: 15px 0;
+    height: $page-header;
+    background: #fff;
+    text-align: center;
+  }
+  .achievement-list {
+    padding: 24px $edge-margin;
+    &__scroll {
+      @include page-scroll($page-header, 0);
+    }
+    &__item {
+      &-label {
+        font-size: 24px;
+        color: #999;
+      }
+      &-title {
+        margin-bottom: 10px;
+        font-size: 28px;
+        color: #333;
+      }
+      &-target {
+        padding: 10px;
+        margin: 0 20px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #00c3ff;
+        text-align: center;
+        border: 1PX solid #efefef;
+      }
+      &-status {
+        .status-label {
+          font-size: 24px;
+          color: #999;
+        }
+        .status-value {
+          font-size: 32px;
+          color: #00c3ff;
+          font-weight: bold;
+          &.price {
+            color: $color-price;
+            .cur {
+              font-size: 20px;
+              font-weight: normal;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+@import '../../../style/imports';
+
+.page-goods-evaluation {
+  .goods-detail__scroll {
+    @include page-scroll($navigate-height);
+  }
+  .goods-evaluation-wrap {
+    background: #fff;
+    padding: 30px 32px;
+    .evaluation-title {
+      font-size: 28px;
+      font-weight: bold;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ebebeb;
+    }
+    .evaluation-list {
+      .at-rate__icon--on {
+        color: $color-brand-primary;
+      }
+    }
+    .all-evaluation {
+      font-size: 22px;
+      color: $color-brand-primary;
+      width: 207px;
+      height: 54px;
+      line-height: 54px;
+      border: 1px solid $color-brand-primary;
+      text-align: center;
+      margin: 60px auto 0;
+    }
+  }
+}

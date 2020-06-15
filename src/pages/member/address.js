@@ -10,8 +10,9 @@ import './address.scss'
 
 const ADDRESS_ID = 'address_id'
 
-@connect(( { address } ) => ({
+@connect(( { address, colors } ) => ({
   address: address.current,
+  colors: colors.current
 }), (dispatch) => ({
   onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address }),
 }))
@@ -112,6 +113,7 @@ export default class AddressIndex extends Component {
   }
 
   render () {
+    const { colors } = this.props
     const { selectedId, isItemChecked, isPicker, list } = this.state
     return (
       <View className='page-address-index'>
@@ -135,7 +137,7 @@ export default class AddressIndex extends Component {
                     isPicker && <View className='address-item__check' onClick={this.handleClickChecked.bind(this, item)}>
                       {
                         item[ADDRESS_ID] === selectedId
-                          ? <Text className='in-icon in-icon-check address-item__checked'></Text>
+                          ? <Text className='icon-check address-item__checked'></Text>
                           : <Text className='address-item__unchecked'> </Text>
                       }
                     </View>
@@ -151,18 +153,18 @@ export default class AddressIndex extends Component {
                       <View className='address-item__footer_default' onClick={this.handleChangeDefault.bind(this, item)}>
                         {
                           item.is_def
-                            ? <Text className='in-icon in-icon-check default__icon default__checked'> </Text>
-                            : <Text className='in-icon in-icon-check default__icon'> </Text>
+                            ? <Text className='icon-check default__icon default__checked'> </Text>
+                            : <Text className='icon-check default__icon'> </Text>
                         }
                         <Text className='default-text'>设为默认</Text>
                       </View>
                       <View className='address-item__footer_edit'>
                         <View className='footer-text' onClick={this.handleClickToEdit.bind(this, item)}>
-                          <Text className='in-icon in-icon-edit footer-icon'> </Text>
+                          <Text className='icon-edit footer-icon'> </Text>
                           <Text>编辑</Text>
                         </View>
                         <View className='footer-text' onClick={this.handleDelete.bind(this, item)}>
-                          <Text className='in-icon in-icon-trash footer-icon'> </Text>
+                          <Text className='icon-trash footer-icon'> </Text>
                           <Text>删除</Text>
                         </View>
                       </View>
@@ -173,7 +175,10 @@ export default class AddressIndex extends Component {
             })
           }
         </View>
-        <View className='member-address-add' onClick={this.handleClickToEdit.bind(this)}>添加新地址</View>
+        <View
+          className='member-address-add'
+          style={'background: ' + colors.data[0].primary}
+          onClick={this.handleClickToEdit.bind(this)}>添加新地址</View>
 
         <SpToast />
       </View>

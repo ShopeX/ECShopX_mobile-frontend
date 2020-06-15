@@ -7,8 +7,9 @@ import api from '@/api'
 
 import './series.scss'
 import {AtTabs, AtTabsPane} from "taro-ui";
-@connect(store => ({
-  store
+@connect(({store, colors}) => ({
+  store,
+  colors: colors.current
 }))
 export default class Series extends Component {
   static options = {
@@ -43,28 +44,37 @@ export default class Series extends Component {
   }
 
   handleClickItem = (item) => {
-    const { category_id } = item
-    const url = `/pages/item/list?cat_id=${category_id || ''}`
-
-    Taro.navigateTo({
-      url
-    })
+    const { category_id, main_category_id } = item
+    let url = ''
+    if (category_id) {
+      url = `/pages/item/list?cat_id=${category_id || ''}`
+    }
+    if (main_category_id) {
+      url = `/pages/item/list?main_cat_id=${main_category_id || ''}`
+    }
+    if (url) {
+      Taro.navigateTo({
+        url
+      })
+    }
   }
 
   handleCustomClick = (id) => {
-    Taro.navigateTo({
-      url: `/pages/custom/custom-page?id=${id}`
-    })
+    if (id) {
+      Taro.navigateTo({
+        url: `/pages/custom/custom-page?id=${id}`
+      })
+    }
   }
 
   render () {
-    const { info, isChanged, pluralType, imgType } = this.props
+    const { info, isChanged, pluralType, imgType, colors } = this.props
     const { currentIndex } = this.state
     if (!info) {
       return <Loading />
     }
     const items = info[currentIndex].children
-    const id = info[currentIndex].id
+    const id = info[currentIndex].id || ''
     const itemsImg = info[currentIndex].img
 
 
@@ -79,6 +89,7 @@ export default class Series extends Component {
               info.map((item, index) =>
                 <View
                   className={classNames('category-nav__content', currentIndex == index ? 'category-nav__content-checked' : null)}
+                  style={currentIndex == index ? `border-left: 7rpx solid ${colors.data[0].primary};` : null}
                   key={index}
                   onClick={this.handleClickCategoryNav.bind(this, index)}
                 >
@@ -100,8 +111,8 @@ export default class Series extends Component {
             }
             {
               items.map(item =>
-                item.children.length > 0
-                  ? <View>
+                item.children
+                  ? <View className='new'>
                       <View className='group-title'>{item.name}</View>
                       <View className='content-group'>
                       {
@@ -114,10 +125,10 @@ export default class Series extends Component {
                             {
                               child.img
                               && <Image
-                                    className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
-                                    mode='aspectFit'
-                                    src={child.img}
-                                  />
+                                className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
+                                mode='aspectFit'
+                                src={child.img}
+                              />
                             }
                             <View className='img-cat-name'>{child.name}</View>
                           </View>
@@ -126,17 +137,17 @@ export default class Series extends Component {
                       </View>
                     </View>
                   : <View
-                      className='category-content__img'
-                      key={item.category_id}
-                      onClick={this.handleClickItem.bind(this, item)}
-                    >
+                    className='category-content__img'
+                    key={item.category_id}
+                    onClick={this.handleClickItem.bind(this, item)}
+                  >
                       {
                         item.img
                         && <Image
-                              className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
-                              mode='aspectFit'
-                              src={item.img}
-                            />
+                          className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
+                          mode='aspectFit'
+                          src={item.img}
+                        />
                       }
                       <View className='img-cat-name'>{item.name}</View>
                     </View>

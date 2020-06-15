@@ -1,8 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, Loading, SpNote, BackToTop } from '@/components'
-import ListSearch from '../recommend/comps/list-search'
+import { SpToast, Loading, SpNote, SearchBar, BackToTop } from '@/components'
 import StoreListItem from './comps/list-item'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -69,6 +68,44 @@ export default class StoreList extends Component {
     }
   }
 
+  handleSearchOn = () => {
+    this.setState({
+      isShowSearch: true
+    })
+  }
+
+  handleSearchOff = () => {
+    this.setState({
+      isShowSearch: false
+    })
+  }
+
+  handleSearchChange = (val) => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        name: val
+      }
+    })
+  }
+
+  handleSearchClear = () => {
+    this.setState({
+      isShowSearch: false,
+      query: {
+        ...this.state.query,
+        name: ''
+      }
+    }, () =>{
+      this.resetPage()
+      this.setState({
+        list: []
+      }, () => {
+        this.nextPage()
+      })
+    })
+  }
+
   handleConfirm = (val) => {
     this.setState({
       query: {
@@ -89,7 +126,8 @@ export default class StoreList extends Component {
     this.setState({
       loading: true
     })
-    const store = await entry.getLocal()
+    Taro.removeStorageSync('lnglat')
+    const store = await entry.getLocal(true)
     if (store) {
       Taro.setStorageSync('curStore', store)
       this.resetPage()
@@ -114,12 +152,18 @@ export default class StoreList extends Component {
   }
 
   render () {
-    const { list, scrollTop, showBackToTop, loading, current } = this.state
+    const { list, scrollTop, showBackToTop, loading, current, query } = this.state
 
     return (
       <View className='page-store-list'>
-        <View class="search-bar">
-          <ListSearch
+        <View class="store-list__search">
+          <SearchBar
+            showDailog={false}
+            keyword={query ? query.name : ''}
+            onFocus={this.handleSearchOn}
+            onChange={this.handleSearchChange}
+            onClear={this.handleSearchClear}
+            onCancel={this.handleSearchOff}
             onConfirm={this.handleConfirm.bind(this)}
           />
         </View>

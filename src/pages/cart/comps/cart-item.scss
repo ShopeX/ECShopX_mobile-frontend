@@ -122,7 +122,7 @@ $item-img-height: 200px !default;
   &__actions {
     color: #d0d0d0;
     font-size: $font-size-small;
-    .in-icon {
+    [class^="icon-"] {
       color: #d0d0d0;
       font-size: $font-size-small;
       &:before {

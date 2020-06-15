@@ -17,7 +17,7 @@ export default class OrderItem extends Component {
   }
 
   render () {
-    const { info, onClick, payType, showExtra, customFooter } = this.props
+    const { info, onClick, payType, showExtra,showDesc, customFooter } = this.props
     if (!info) return null
 
     const img = info.pic_path
@@ -42,11 +42,13 @@ export default class OrderItem extends Component {
         </View>
         <View className='order-item__bd'>
           <Text className='order-item__title'>{info.title}</Text>
+          {showDesc && info.item_spec_desc && <Text className='order-item__spec'>{info.item_spec_desc}</Text>}
           {this.props.renderDesc}
           {showExtra && (
             <View className='order-item__extra'>
               <Text className='order-item__desc'>{info.goods_props}</Text>
               {info.num && <Text className='order-item__num'>数量：{info.num}</Text>}
+              {info.item_spec_desc && <Text className='order-item__desc'>{info.item_spec_desc}</Text>}
             </View>
           )}
         </View>

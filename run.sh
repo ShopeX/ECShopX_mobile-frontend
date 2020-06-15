@@ -1,50 +1,38 @@
 #/usr/bash
 
-#!/bin/bash
-cat <<MENU
-客户列表：
-  [ 1 ] => 测试环境
-  [ 2 ] => 预发布
-  [ 3 ] => 正式环境
-  [ 4 ] => 华信（小康龙江）
-  [ 5 ] => 云尚（医贵欣网上商城）
-  [ 6 ] => 锦联华
-MENU
-echo "请选择主机组:"
-read number
-case "$number" in
-  1)
-    appid="wx912913df9fef6ddd"
-    baseUrl="ecshopx.shopex123.com/index.php"
-    ;;
-  2)
-    appid="wx4721629519a8f25b"
-    baseUrl="preissue-b.yuanyuanke.cn"
-    ;;
-  3)
-    appid="wx5e27f0cc25fa9898"
-    baseUrl="b.yuanyuanke.cn"
-    ;;
-  4)
-    appid="wx22de6bb6f56392c1"
-    baseUrl="b.xiaokanglongjiang.com"
-    ;;
-  5)
-    appid="wxca119bea37be983c"
-    baseUrl="b.eguixin.com"
-    ;;
-  6)
-    appid="wx744bbfebf3e71459"
-    baseUrl="b.jlhshop.com"
-    ;;
-  *)
-    echo "选择的序号不存在"
-    exit
-    ;;
-esac
+cd $(dirname "$0")
+
+conf="companys.conf"
+if [ ! -n "$1" ]
+then
+  if [ ! -f ${conf} ]
+  then
+      echo  "not find companys.conf"
+      exit
+  else
+      sections=`sed -n '/\[*\]/p' ${conf}  |grep -v '^#'|tr -d []`
+  fi
+
+  COLUMNS=1
+  echo "选择需要发布的客户"
+  select var in ${sections};
+  do
+    if [ ! -n "$var" ]
+    then
+      echo  "请选择正确的数字"
+      exit
+    fi
+    appid=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^appid/{print $3}')
+    baseUrl=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^base_url/{print $3}')
+    break
+  done
+else
+  appid=${1}
+  baseUrl=${2}
+fi
 
 version=$(git describe --tags `git rev-list --tags --max-count=1`)
-desc="新版微商城"
+desc="微商城小程序"
 
 # 需要被替换的小程序appid，在./src/ext.json和 ./project.config.json
 oldAppid="wx912913df9fef6ddd"

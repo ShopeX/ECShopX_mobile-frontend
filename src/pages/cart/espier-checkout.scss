@@ -2,6 +2,16 @@
 
 .page-checkout {
   margin: $edge-size $edge-margin;
+  
+  .shopping-guide-header{
+    padding: 20px;
+    text-align: center;
+    color: $color-brand-accent;
+    margin: -30px -20px 20px -20px;
+    background-color: #fff;
+    font-size: 24px;
+  }
+
   .switch-tab {
     display: flex;
     align-items: flex-end;
@@ -38,6 +48,23 @@
     &-toolbar {
       display: flex;
       justify-content: flex-end;
+    }
+  }
+
+  .invoice-title{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .invoice-guanbi{
+      width: 28px;
+      height: 28px;
+      text-align: center;
+      border-radius: 50%;
+      // background: #000;
+      color:#000;
+      font-size:28px;
+      line-height: 30px;
+      margin-right:10px;
     }
   }
 
@@ -322,8 +349,6 @@
     border-radius: 0;
     font-weight: bold;
     font-size: $font-size;
-    background: $color-brand-primary;
-    border-color: $color-brand-primary;
     &:before, &:after {
       border: none;
     }

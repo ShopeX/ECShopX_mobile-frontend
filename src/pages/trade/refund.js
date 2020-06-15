@@ -1,24 +1,38 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import {
-  AtActionSheet,
-  AtActionSheetItem,
-  AtSegmentedControl,
   AtImagePicker,
   AtTag,
-  AtButton,
   AtTextarea,
   AtTabsPane, AtTabs
 } from 'taro-ui'
 import { SpCell, SpToast } from '@/components'
+import { connect } from '@tarojs/redux'
 import api from '@/api'
 import req from '@/api/req'
 import { log, pickBy, classNames } from '@/utils'
 import S from '@/spx'
-import imgUploader from '@/utils/qiniu'
+import * as qiniu from 'qiniu-js'
 
 import './refund.scss'
-import DetailItem from "./detail";
+
+function uploadURLFromRegionCode(code) {
+  let uploadURL = null;
+  switch(code) {
+      case 'z0': uploadURL = 'https://up.qiniup.com'; break;
+      case 'z1': uploadURL = 'https://up-z1.qiniup.com'; break;
+      case 'z2': uploadURL = 'https://up-z2.qiniup.com'; break;
+      case 'na0': uploadURL = 'https://up-na0.qiniup.com'; break;
+      case 'as0': uploadURL = 'https://up-as0.qiniup.com'; break;
+      default: console.error('please make the region is with one of [z0, z1, z2, na0, as0]');
+  }
+  return uploadURL;
+}
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
+
 
 export default class TradeRefund extends Component {
   constructor (props) {
@@ -97,8 +111,7 @@ export default class TradeRefund extends Component {
     })
   }
 
-  handleImageChange = (data, type) => {
-
+  handleImageChange = async (data, type) => {
     if (type === 'remove') {
       this.setState({
         imgs: data
@@ -111,12 +124,71 @@ export default class TradeRefund extends Component {
       S.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 3)
-    imgUploader.uploadImageFn(imgFiles)
-      .then(res => {
-        this.setState({
-          imgs: res
-        })
+    let promises = []
+
+    for (let item of imgFiles) {
+      const promise = new Promise(async (resolve, reject) => {
+        if (!item.file) {
+          resolve(item)
+        } else {
+          const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+          const { region, token, key, domain } = await req.get('/espier/image_upload_token', {
+            filesystem: 'qiniu',
+            filetype: 'aftersales',
+            filename
+          })
+
+          console.log(item, region, token, key, domain, 132)
+          let uploadUrl = uploadURLFromRegionCode(region)
+          Taro.uploadFile({
+            url: uploadUrl,
+            filePath: item.url,
+            name: 'file',
+            formData:{
+              'token': token,
+              'key': key
+            },
+            success: res => {
+              let imgData = JSON.parse(res.data)
+              resolve({
+                url: `${domain}/${imgData.key}`
+              })
+            },
+            fail: error => reject(error)
+          })
+
+          // let observable
+          // try {
+          //   const blobImg = await resolveBlobFromFile(item.url, item.file.type)
+          //   observable = qiniu.upload(blobImg, key, token, {}, {
+          //     region: qiniu.region[region]
+          //   })
+          // } catch (e) {
+          //   console.log(e)
+          // }
+
+          // observable.subscribe({
+          //   next (res) {},
+          //   error (err) {
+          //     reject(err)
+          //   },
+          //   complete (res) {
+          //     resolve({
+          //       url: `${domain}/${res.key}`
+          //     })
+          //   }
+          // })
+        }
       })
+      promises.push(promise)
+    }
+
+    const results = await Promise.all(promises)
+    log.debug('[qiniu uploaded] results: ', results)
+
+    this.setState({
+      imgs: results
+    })
   }
 
   handleImageClick = () => {
@@ -162,7 +234,7 @@ export default class TradeRefund extends Component {
     }
   }
 
-  handleSubmit = async () => {
+  aftersalesAxios = async () => {
     const { segTypes, curSegIdx, curReasonIdx, description } = this.state
     const reason = this.state.reason[curReasonIdx]
     const aftersales_type = segTypes[curSegIdx].status
@@ -190,7 +262,35 @@ export default class TradeRefund extends Component {
     }, 700)
   }
 
+  handleSubmit = () => {
+    let _this=this
+    let templeparams = {
+      'temp_name': 'yykweishop',
+      'source_type': 'after_refund',
+    }
+    api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
+      console.log('templeparams---1', tmlres)
+      if (tmlres.template_id && tmlres.template_id.length > 0) {
+        wx.requestSubscribeMessage({
+          tmplIds: tmlres.template_id,
+          success() {
+            _this.aftersalesAxios()
+          },
+          fail(){
+            _this.aftersalesAxios()
+          }
+        })
+      } else {
+        _this.aftersalesAxios()
+      }
+    },()=>{
+      _this.aftersalesAxios()
+    })
+  }
+
+
   render () {
+    const { colors } = this.props
     const { segTypes, curSegIdx, reason, curReasonIdx,
       goodStatus, curGoodIdx, isShowSegGoodSheet, isSameCurSegGood, curSegGoodValue, description, imgs } = this.state
 
@@ -280,9 +380,11 @@ export default class TradeRefund extends Component {
                 </View>
               : null
           }
-
         </View>
-        <View className='refund-btn' onClick={this.handleSubmit}>提交</View>
+        <View
+          className='refund-btn'
+          style={`background: ${colors.data[0].primary}`}
+          onClick={this.handleSubmit}>提交</View>
         {/*<SpCell border={false}>
           <AtSegmentedControl
             onClick={this.handleChangeType}

@@ -1,9 +1,14 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import { AtIcon, AtFloatLayout, AtButton } from 'taro-ui'
 import { SpCheckbox } from '@/components'
 
 import './payment-picker.scss'
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 export default class PaymentPicker extends Component {
   static defaultProps = {
@@ -53,7 +58,7 @@ export default class PaymentPicker extends Component {
   }
 
   render () {
-    const { isOpened, loading, disabledPayment } = this.props
+    const { isOpened, loading, disabledPayment, colors, isShowPoint = true, isShowBalance = true, isShowDelivery = true } = this.props
     const { localType } = this.state
 
     return (
@@ -69,23 +74,64 @@ export default class PaymentPicker extends Component {
             ></View>
           </View>
           <View className='payment-picker__bd'>
-            {/*
+          {
+              isShowPoint &&
               <View
-                className={`payment-item ${!!disabledPayment ? 'is-disabled' : ''}`}
-                onClick={this.handlePaymentChange.bind(this, 'dhpoint')}
+                className={`payment-item ${disabledPayment && disabledPayment.name === 'point' ? 'is-disabled' : ''}`}
+                onClick={this.handlePaymentChange.bind(this, 'point')}
               >
                 <View className='payment-item__bd'>
                   <Text className='payment-item__title'>积分支付</Text>
-                  <Text className='payment-item__desc'>{disabledPayment ? disabledPayment.message : '使用积分支付'}</Text>
+                  <Text className='payment-item__desc'>{disabledPayment && disabledPayment.name === 'point' ? disabledPayment.message : '使用积分支付'}</Text>
                 </View>
                 <View className='payment-item__ft'>
                   <SpCheckbox
                     disabled={!!disabledPayment}
-                    checked={localType === 'dhpoint'}
+                    colors={colors}
+                    checked={localType === 'point'}
                   ></SpCheckbox>
                 </View>
               </View>
-            */}
+            }
+            {
+              isShowBalance &&
+              <View
+                className={`payment-item ${disabledPayment && disabledPayment.name === 'balance' ? 'is-disabled' : ''}`}
+                onClick={this.handlePaymentChange.bind(this, 'balance')}
+              >
+                <View className='payment-item__bd'>
+                  <Text className='payment-item__title'>余额支付</Text>
+                  <Text className='payment-item__desc'>{disabledPayment && disabledPayment.name === 'balance' ? disabledPayment.message : '使用余额支付'}</Text>
+                </View>
+                <View className='payment-item__ft'>
+                  <SpCheckbox
+                    disabled={!!disabledPayment}
+                    colors={colors}
+                    checked={localType === 'balance'}
+                  ></SpCheckbox>
+                </View>
+              </View>
+            }
+            {
+              isShowDelivery &&
+              <View
+                className={`payment-item ${disabledPayment && disabledPayment.name === 'delivery' ? 'is-disabled' : ''}`}
+                onClick={this.handlePaymentChange.bind(this, 'delivery')}
+              >
+                <View className='payment-item__bd'>
+                  <Text className='payment-item__title'>货到付款</Text>
+                  <Text className='payment-item__desc'>{disabledPayment && disabledPayment.name === 'delivery' ? disabledPayment.message : '货到付款'}</Text>
+                </View>
+                <View className='payment-item__ft'>
+                  <SpCheckbox
+                    disabled={!!disabledPayment}
+                    colors={colors}
+                    checked={localType === 'delivery'}
+                  ></SpCheckbox>
+                </View>
+              </View>
+            }
+            
             <View
               className='payment-item no-border'
               onClick={this.handlePaymentChange.bind(this, 'wxpay')}
@@ -100,13 +146,14 @@ export default class PaymentPicker extends Component {
                 ></SpCheckbox>
               </View>
             </View>
-
-            <AtButton
-              type='primary'
-              loading={loading}
-              onClick={this.handleChange.bind(this, localType)}
-            >确定</AtButton>
           </View>
+          <Button
+            type='primary'
+            className='btn-submit'
+            style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
+            loading={loading}
+            onClick={this.handleChange.bind(this, localType)}
+          >确定</Button>
         </View>
       </AtFloatLayout>
     )

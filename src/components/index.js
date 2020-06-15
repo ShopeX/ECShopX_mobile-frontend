@@ -10,6 +10,7 @@ export { default as TagsBar } from './tags-bar'
 export { default as FilterBar } from './filter-bar'
 export { default as FloatMenus } from './float-menus'
 export { default as FloatMenuItem } from './float-menus/item'
+export { default as FloatMenuMeiQia } from './float-menus/meiqia'
 export { default as FormIdCollector } from './form-id-collector'
 
 export { default as SearchBar } from './search-bar'
@@ -26,5 +27,11 @@ export { default as RecommendItem } from './recommend-item'
 
 export { default as AddressChoose } from './address/choose-address'
 export { default as CouponItem } from './coupon-item'
+export { default as TimePicker } from './time-picker/index.js'
+
+
+export { default as GoodsEvaluation } from './goods-evaluation'
+export { default as GoodsComment } from './goods-comment'
+
 
 export default {}

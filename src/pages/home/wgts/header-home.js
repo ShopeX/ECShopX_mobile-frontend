@@ -52,11 +52,11 @@ export default class HeaderHome extends Component {
   render () {
     const { store } = this.props
     return (
-      <View>
+      <View class="home-header">
         {
           store.name &&
             <View className="nearly-shop">
-              <View className="view-flex-item view-flex view-flex-middle" onClick={this.handlePickStore.bind(this)}>
+              <View className="shop-view view-flex-item view-flex view-flex-middle" onClick={this.handlePickStore.bind(this)}>
                 <View className="icon-periscope"></View>
                 <View className="shop-name">{store.name || '选择店铺'}</View>
                 <View className="icon-arrowDown"></View>

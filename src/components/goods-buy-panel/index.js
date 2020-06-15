@@ -1,5 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
+import { connect } from '@tarojs/redux'
 // import { AtInputNumber } from 'taro-ui'
 // import find from 'lodash/find'
 import { Price } from '@/components'
@@ -8,6 +10,10 @@ import { classNames, pickBy, log, isNumber } from '@/utils'
 import api from '@/api'
 
 import './index.scss'
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 export default class GoodsBuyPanel extends Component {
   static options = {
@@ -24,7 +30,8 @@ export default class GoodsBuyPanel extends Component {
     onClose: () => {},
     onChange: () => {},
     onClickAddCart: () => {},
-    onClickFastBuy: () => {}
+    onClickFastBuy: () => {},
+    onSubmit: () => {}
   }
 
   constructor (props) {
@@ -39,7 +46,8 @@ export default class GoodsBuyPanel extends Component {
       curImg: null,
       curLimit: false,
       quantity: 1,
-      isActive: props.isOpened
+      isActive: props.isOpened,
+      colorStyle: ''
     }
 
     this.disabledSet = new Set()
@@ -212,12 +220,12 @@ export default class GoodsBuyPanel extends Component {
     if (!curSku) return
 
     const { item_spec } = curSku
-    const { item_image_url } = item_spec[0]
+    const { item_image_url, spec_image_url } = item_spec[0]
     const { pics } = info
-
+    
     let imgs = []
-    if (item_image_url.length) {
-      imgs = item_image_url
+    if (item_image_url.length || spec_image_url) {
+      imgs = item_image_url.length > 0 ? item_image_url : [spec_image_url]
     } else {
       imgs = pics
     }
@@ -265,7 +273,7 @@ export default class GoodsBuyPanel extends Component {
     const { special_type } = info
     const isDrug = special_type === 'drug'
     const { item_id } = this.noSpecs ? info : skuInfo
-    const { distributor_id } = Taro.getStorageSync('curStore')
+    const { distributor_id } = info
     let url = `/pages/cart/espier-checkout`
 
     this.setState({
@@ -288,6 +296,10 @@ export default class GoodsBuyPanel extends Component {
 				})
       } catch (e) {
         console.log(e)
+        this.setState({
+          busy: false
+        })
+        return
       }
 
       this.setState({
@@ -303,7 +315,7 @@ export default class GoodsBuyPanel extends Component {
       if (marketing === 'group') {
         const { groups_activity_id } = info.activity_info
         url += `&type=${marketing}&group_id=${groups_activity_id}`
-      } else if (marketing === 'seckill') {
+      } else if (marketing === 'seckill' || marketing === 'limited_time_sale') {
         const { seckill_id } = info.activity_info
         const { ticket } = await api.item.seckillCheck({ item_id, seckill_id, num }).catch(res => {
           this.setState({
@@ -320,6 +332,10 @@ export default class GoodsBuyPanel extends Component {
         })
       } catch (e) {
         console.log(e)
+        this.setState({
+          busy: false
+        })
+        return
       }
 
       this.setState({
@@ -337,13 +353,14 @@ export default class GoodsBuyPanel extends Component {
         busy: false
       }, () => {
         this.props.onClose()
+        this.props.onSubmit(skuInfo)
       })
     }
 
   }
 
   render () {
-    const { info, type, fastBuyText } = this.props
+    const { info, type, fastBuyText, colors } = this.props
 		const { curImg, quantity, selection, isActive, busy, curSku, marketing, promotions, activity, curLimit } = this.state
     if (!info) {
       return null
@@ -359,13 +376,15 @@ export default class GoodsBuyPanel extends Component {
     let price = '', marketPrice = '', ruleDay = 0
     if (curSkus) {
       price = curSkus.act_price ? curSkus.act_price : curSkus.member_price ? curSkus.member_price : curSkus.price
-      marketPrice = curSkus.act_price || curSkus.member_price ? curSkus.price : curSkus.market_price
+      //marketPrice = curSkus.act_price || curSkus.member_price ? curSkus.price : curSkus.market_price
+      marketPrice = curSkus.market_price
       if (info.activity_type === 'limited_buy') {
         ruleDay = JSON.parse(activity.rule.day)
       }
     } else {
       price = info.act_price ? info.act_price : info.member_price ? info.member_price : info.price
-      marketPrice = info.act_price || info.member_price ? info.price : info.market_price
+      //marketPrice = info.act_price || info.member_price ? info.price : info.market_price
+      marketPrice = info.market_price
     }
 
     return (
@@ -439,7 +458,7 @@ export default class GoodsBuyPanel extends Component {
                 {
                   promotions.map(item =>
                     item.items[curSkus.item_id] &&
-                      <View className='promotions__item'>
+                      <View key={item.items[curSkus.item_id]} className='promotions__item'>
                         <Text className='promotions__item-tag'>{item.promotion_tag}</Text>
                         <Text className='promotions__item-title'>{item.condition_rules}</Text>
                       </View>
@@ -498,6 +517,7 @@ export default class GoodsBuyPanel extends Component {
                 <Button
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-add-cart', { 'is-disabled': !curSkus })}
+                  style={`background: ${colors.data[0].accent}`}
                   onClick={this.handleBuyClick.bind(this, 'cart', curSkus, quantity)}
                   disabled={Boolean(!curSkus)}
                 >{isDrug ? '加入药品清单' : '加入购物车'}</Button>
@@ -506,6 +526,7 @@ export default class GoodsBuyPanel extends Component {
                 <Button
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSkus })}
+                  style={`background: ${colors.data[0].primary}`}
                   onClick={this.handleBuyClick.bind(this, 'fastbuy', curSkus, quantity)}
                   disabled={Boolean(!curSkus)}
                 >{fastBuyText}</Button>
@@ -514,6 +535,7 @@ export default class GoodsBuyPanel extends Component {
                 <Button
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSkus })}
+                  style={`background: ${colors.data[0].primary}`}
                   onClick={this.handleBuyClick.bind(this, 'pick', curSkus, quantity)}
                   disabled={Boolean(!curSkus)}
                 >确定</Button>

@@ -1,17 +1,20 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text,Image,Button } from '@tarojs/components'
 import { Price } from '@/components'
+import { connect } from '@tarojs/redux'
 import { AtTabs, AtTabsPane} from 'taro-ui'
 import api from '@/api'
 import S from '@/spx'
 import { classNames, pickBy } from '@/utils'
 import './vipgrades.scss'
 
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
+
 export default class VipIndex extends Component {
 	static config = {
 		navigationBarTitleText: '会员购买',
-		navigationBarBackgroundColor: '#2f3030',
-		navigationBarTextStyle: 'white',
 		backgroundColor: '#2f3030',
 		backgroundTextStyle: 'light'
   }
@@ -29,6 +32,11 @@ export default class VipIndex extends Component {
   }
 
 	componentDidMount () {
+		const { colors } = this.props
+		Taro.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: colors.data[0].marketing
+    })
 		const userInfo = Taro.getStorageSync('userinfo')
 		this.setState({
 			userInfo
@@ -52,7 +60,7 @@ export default class VipIndex extends Component {
 			tabList,
 			cur,
 			list,
-			curTabIdx
+			curTabIdx: curTabIdx === -1 ? 0 : curTabIdx
 		})
 	}
 
@@ -131,10 +139,11 @@ export default class VipIndex extends Component {
 	}
 
 	render () {
+		const { colors } = this.props
 		const { userInfo, list, cur, curTabIdx, userVipInfo, tabList } = this.state
 		return (
 			<View>
-				<View className='header'>
+				<View className='header' style={'background: ' + colors.data[0].marketing}>
 					<View className='header-isauth'>
 						<Image className='header-isauth__avatar' src={userInfo.avatar} mode='aspectFill'/>
 						<View className='header-isauth__info'>

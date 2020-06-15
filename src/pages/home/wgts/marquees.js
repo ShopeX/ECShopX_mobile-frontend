@@ -54,16 +54,18 @@ export default class WgtMarquees extends Component {
     return (
       <View
         className={`wgt ${base.padded ? 'wgt__padded' : null} ${config.direction === 'vertical' ? 'marquees-vertical' : 'marquees-horizontal'}`}
-        style={`background:${config.bgcolor}`}>
+        style={`background:${config.bgcolor}`}
+      >
         <View
           className='marquees-label'
-          style={`background:${config.bgcolor}; color:${config.labelcolor}`}>
+          style={`background:${config.bgcolor}; color:${config.labelcolor}`}
+        >
           {
             config.label
               ? <Text
-                  className='label-text'
-                  style={`border-color:${config.labelcolor}`}
-                  >{config.label}</Text>
+                className='label-text'
+                style={`border-color:${config.labelcolor}`}
+              >{config.label}</Text>
               : null
           }
           <Text className='icon-sound'></Text>
@@ -71,14 +73,14 @@ export default class WgtMarquees extends Component {
         {
           config.direction === 'vertical'
             ? <Swiper
-                  className='marquees'
-                  autoplay
-                  circular
-                  interval={3000}
-                  duration={300}
-                  vertical={config.direction}
-                  style={`background-color:${config.bgcolor}`}
-                >
+              className='marquees'
+              autoplay
+              circular
+              interval={3000}
+              duration={300}
+              vertical={config.direction}
+              style={`background-color:${config.bgcolor}`}
+            >
                   {data.map((item, idx) => {
                     return (
                       <SwiperItem

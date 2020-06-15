@@ -59,7 +59,8 @@ export default class ItemFav extends Component {
             item_id: 'item_id',
             title: 'item_name',
             desc: 'brief',
-            price: ({ item_price }) => (item_price/100).toFixed(2),
+            // price: ({ price }) => (price/100).toFixed(2),
+            price: ({ price, item_price }) => ((price || item_price)/100).toFixed(2),
             is_fav: ({ item_id }) => Boolean(favs[item_id])
           })
           total = res.total_count
@@ -126,7 +127,6 @@ export default class ItemFav extends Component {
   }
 
   handleFavRemoved = () => {
-    console.log(111)
     this.resetPage()
     this.setState({
       list: []
@@ -188,57 +188,61 @@ export default class ItemFav extends Component {
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          <View className='goods-list goods-list__type-grid'>
-            {
-              curTabIdx === 0
-                && <View>
-                    {
-                      list.map(item => {
-                        return (
+          {
+            curTabIdx === 0
+              && <View className='goods-list goods-list__type-grid'>
+                  {
+                    list.map(item => {
+                      return (
+                        <View className='goods-list__item'>
                           <GoodsItem
                             key={item.item_id}
                             info={item}
                             onClick={() => this.handleClickItem(item)}
                           />
-                        )
-                      })
-                    }
-                  </View>
-            }
-            {
-              curTabIdx === 1
-                && <View>
-                    {
-                      list.map(item => {
-                        return (
+                        </View>
+                      )
+                    })
+                  }
+                </View>
+          }
+          {
+            curTabIdx === 1
+              && <View className='goods-list goods-list__type-grid'>
+                  {
+                    list.map(item => {
+                      return (
+                        <View className='goods-list__item'>
                           <RecommendItem
                             key={item.item_id}
                             info={item}
                             onClick={() => this.handleClickItem(item)}
                           />
-                        )
-                      })
-                    }
-                  </View>
-            }
-            {
-              curTabIdx === 2
-                && <View>
-                    {
-                      list.map(item => {
-                        return (
+                        </View>
+                      )
+                    })
+                  }
+                </View>
+          }
+          {
+            curTabIdx === 2
+              && <View className='goods-list'>
+                  {
+                    list.map(item => {
+                      return (
+                        <View className='goods-list__item'>
                           <StoreFavItem
                             key={item.distributor_id}
                             info={item}
                             onClick={() => this.handleClickItem(item)}
                             onCancel={this.handleFavRemoved}
                           />
-                        )
-                      })
-                    }
-                  </View>
-            }
-          </View>
+                        </View>
+                      )
+                    })
+                  }
+                </View>
+          }
           {
             page.isLoading
               ? <Loading>正在加载...</Loading>

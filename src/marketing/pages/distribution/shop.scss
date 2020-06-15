@@ -1,0 +1,85 @@
+@import "../../../style/imports";
+
+.page-distribution-shop {
+  background: $color-bg-gray;
+  .shop-banner {
+    display: flex;
+    align-items: center;
+    padding: 30px 40px;
+    .shop-info {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      .shopkeeper-avatar {
+        margin-right: 20px;
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+      }
+      .shop-name {
+        font-size: 30px;
+        color: #fff;
+      }
+      .shop-desc {
+        color: #999;
+        font-size: 24px;
+      }
+    }
+    .shop-setting {
+      color: #fff;
+      font-size: 50px;
+      opacity: 0.6;
+    }
+  }
+  .banner-img {
+    display: block;
+    width: 100%;
+  }
+  .shop-achievement {
+    .achievement-label {
+      font-size: 26px;
+      color: #666;
+    }
+    .achievement-amount {
+      font-size: 60px;
+      color: $color-brand-primary;
+      font-weight: 600;
+      font-family: 'Helvetica Neue';
+      .amount-cur {
+        font-size: 24px;
+      }
+    }
+  }
+  .shop-nav-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 28vw;
+    line-height: 1;
+    &::after {
+      border: none;
+      box-shadow: none;
+    }
+    [class^='icon-'] {
+      margin-bottom: 20px;
+      font-size: 60px;
+      color: #00c3ff;
+    }
+    &::after {
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      right: 1px;
+      bottom: 1px;
+      background: #fff;
+      content: "";
+      z-index: 0;
+    }
+    view {
+      position: relative;
+      z-index: 1;
+    }
+  }
+}

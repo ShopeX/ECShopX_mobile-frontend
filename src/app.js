@@ -5,6 +5,7 @@ import configStore from '@/store'
 import useHooks from '@/hooks'
 import req from '@/api/req'
 import api from '@/api'
+import { normalizeQuerys } from '@/utils'
 import { FormIds, WxAuth } from '@/service'
 import Index from './pages/index'
 
@@ -20,25 +21,53 @@ const { store } = configStore()
 useHooks()
 
 class App extends Component {
+  // eslint-disable-next-line react/sort-comp
+  componentWillMount () {
+  }
+  componentDidMount () {
+    const promoterExp = Taro.getStorageSync('distribution_shop_exp')
+    if (Date.parse(new Date()) - promoterExp > 86400000 * 3) {
+      Taro.setStorageSync('distribution_shop_id', '')
+      Taro.setStorageSync('distribution_shop_exp', '')
+    }
+    const { query } = this.$router.params
+    if (query && query.scene) {
+      const { smid , dtid } = normalizeQuerys(query)
+      if (smid) {
+        Taro.setStorageSync('s_smid', smid)
+      }
+  
+      if (dtid) {
+        Taro.setStorageSync('s_dtid', dtid)
+      }
+    }
+    this.fetchTabs()
+    this.fetchColors()
+    // 美洽客服插件
+    this.fetchMeiQia()
+  }
+
   config = {
     pages: [
       'pages/index',
       'pages/home/landing',
-      'pages/home/license',
       'pages/category/index',
+      'pages/floorguide/index',
+
       'pages/item/list',
       'pages/item/espier-detail',
-			'pages/item/group-list',
-			'pages/item/group-detail',
       'pages/item/item-params',
+      'pages/item/package-list',
+      'pages/item/group-list',
+      'pages/item/group-detail',
       'pages/item/seckill-list',
       'pages/item/seckill-goods-list',
-      'pages/item/package-list',
       'pages/home/coupon-home',
 
       'pages/cart/espier-index',
       'pages/cart/espier-checkout',
       'pages/cart/coupon-picker',
+      'pages/cart/drug-info',
       'pages/article/index',
 
       'pages/recommend/list',
@@ -49,7 +78,8 @@ class App extends Component {
       'pages/auth/login',
       'pages/auth/forgotpwd',
       'pages/auth/wxauth',
-
+      'pages/auth/pclogin',
+      'pages/auth/store-reg',
       'pages/cashier/index',
       'pages/cashier/cashier-result',
 
@@ -57,6 +87,7 @@ class App extends Component {
       'pages/member/pay',
       'pages/member/pay-rule',
       'pages/member/coupon',
+      'pages/member/coupon-detail',
       'pages/member/address',
       'pages/member/edit-address',
       'pages/member/setting',
@@ -66,19 +97,8 @@ class App extends Component {
       'pages/member/item-guess',
       'pages/member/group-list',
       'pages/member/member-code',
+      'pages/qrcode-buy',
 
-      'pages/distribution/index',
-      'pages/distribution/setting',
-      'pages/distribution/statistics',
-      'pages/distribution/trade',
-      'pages/distribution/subordinate',
-      'pages/distribution/withdraw',
-      'pages/distribution/withdrawals-record',
-      'pages/distribution/withdrawals-acount',
-      'pages/distribution/shop',
-      'pages/distribution/shop-setting',
-      'pages/distribution/shop-form',
-      'pages/distribution/qrcode',
       'pages/distribution/shop-home',
 
       'pages/store/index',
@@ -97,11 +117,71 @@ class App extends Component {
       'pages/trade/refund-sendback',
       'pages/trade/invoice-list',
 
-			'pages/protocol/privacy',
-
-			'pages/vip/vipgrades',
+      'pages/vip/vipgrades',
 
       'pages/custom/custom-page'
+    ],
+    subpackages: [
+      {
+        root: 'marketing',
+        pages: [
+          'pages/distribution/index',
+          'pages/distribution/setting',
+          'pages/distribution/statistics',
+          'pages/distribution/trade',
+          'pages/distribution/subordinate',
+          'pages/distribution/withdraw',
+          'pages/distribution/withdrawals-record',
+          'pages/distribution/withdrawals-acount',
+          'pages/distribution/goods',
+          'pages/distribution/shop',
+          'pages/distribution/shop-setting',
+          'pages/distribution/shop-form',
+          'pages/distribution/qrcode',
+          'pages/distribution/shop-category',
+          'pages/distribution/shop-goods',
+          'pages/distribution/shop-trade',
+          'pages/distribution/shop-achievement',
+
+          'pages/reservation/brand-list',
+          'pages/reservation/brand-detail',
+          'pages/reservation/brand-result',
+          'pages/reservation/reservation-list',
+          'pages/reservation/goods-reservate',
+          'pages/reservation/reservation-detail',
+
+          'pages/member/item-activity',
+          'pages/member/activity-detail',
+          'pages/member/user-info',
+          'pages/member/complaint',
+          'pages/member/complaint-record',
+
+          'pages/wheel/index',
+          'pages/item/espier-evaluation',
+          'pages/item/espier-evaluation-detail',
+          'pages/item/rate',
+          'pages/item/success'
+        ],
+        "plugins": {
+          "live-player-plugin": {
+            "version": "1.0.7", // 填写该直播组件版本号
+            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
+          }
+          // "meiqia": {
+          //   "version": "1.1.0",
+          //   "provider": "wx2d2cd5fd79396601"
+          // }
+        }
+      },
+      {
+        root: 'others',
+        pages: [
+          'pages/home/license',
+          'pages/protocol/privacy',
+          // 美恰客服
+          'pages/meiqia/index'
+        ]
+      }
     ],
     permission: {
       "scope.userLocation": {
@@ -112,13 +192,15 @@ class App extends Component {
       'wx4721629519a8f25b',
       'wx2fb97cb696f68d22',
       'wxf91925e702efe3e3'
-    ]
+    ],
+    plugins: {
+      contactPlugin: {
+        version: "1.3.0",
+        provider: "wx104a1a20c3f81ec2"
+      }
+    }
   }
-  componentWillMount () {
-  }
-  componentDidMount () {
-    this.fetchTabs()
-  }
+
   componentDidShow (options) {
     if (process.env.TARO_ENV === 'weapp') {
       FormIds.startCollectingFormIds()
@@ -149,11 +231,61 @@ class App extends Component {
 
   async fetchTabs () {
     const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=tabs'
+    const defaultTabs = {
+      config: {
+        backgroundColor: "#ffffff",
+        color: "#333333",
+        selectedColor: "#E33420"
+      },
+      data: [{
+        name: "home",
+        pagePath: "/pages/index",
+        text: "首页"
+      },{
+        name: "category",
+        pagePath: "/pages/category/index",
+        text: "分类"
+      },{
+        name: "cart",
+        pagePath: "/pages/cart/espier-index",
+        text: "购物车"
+      },{
+        name: "member",
+        pagePath: "/pages/member/index",
+        text: "我"
+      }],
+      name: "tabs"
+    }
     const info = await req.get(url)
     store.dispatch({
       type: 'tabBar',
-      payload: info.list[0].params
+      payload: info.list.length ? info.list[0].params : defaultTabs
     })
+  }
+
+  async fetchColors () {
+    const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=color_style'
+    const defaultColors = {
+      data: [
+        {
+          primary: '#d42f29',
+          accent: '#fba629',
+          marketing: '#2e3030'
+        }
+      ],
+      name: 'base'
+    }
+    const info = await req.get(url)
+    store.dispatch({
+      type: 'colors',
+      payload: info.list.length ? info.list[0].params : defaultColors
+    })
+  }
+
+  // 获取美洽客服配置
+  async fetchMeiQia () {
+    const info = await api.user.imConfig()
+    Taro.setStorageSync('meiqia', info)
   }
 
   componentDidCatchError () {}

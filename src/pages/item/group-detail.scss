@@ -178,6 +178,14 @@
   color: #fff;
 }
 
+.page-group-detail {
+  .btn-submit {
+    background: $color-brand-primary;
+    text-align: center;
+    border-radius: 6px;
+  }
+}
+
 .view-flex {
   display: flex;
 }

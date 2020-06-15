@@ -1,0 +1,35 @@
+@import "../../style/imports";
+
+.page-wxauth {
+  padding: 60px 0 0;
+  text-align: center;
+  .auth-title {
+    margin: 20px;
+    font-weight: 700;
+    font-size: 30px;
+  }
+  .icon-style {
+    font-size: 300px;
+    color: $color-brand-primary;
+  }
+  .at-button--primary {
+    background: $color-brand-primary;
+    border-color: $color-brand-primary;
+  }
+  .sec-auth {
+    padding: 100px 100px 0;
+  }
+  .auth-hint {
+    margin: 0 0 20px;
+    font-size: 26px;
+    color: rgba(155, 152, 152, 0.925);
+    display: block;
+  }
+  .auth-btns {
+    padding: 200px 50px 0;
+  }
+  .back-btn {
+    margin-top: 20px;
+  }
+ 
+}

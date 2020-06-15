@@ -1,0 +1,45 @@
+@import "../../../style/imports";
+
+.brand-result {
+  .sp-cell {
+    @include hairline($color-border-gray-light, 30px, bottom);
+  }
+  &__title {
+    background: #ffffff;
+    text-align: center;
+    padding: 40px 0;
+    &_img {
+      width: 200px;
+    }
+    &_status {
+      display: block;
+      margin: 10px 0;
+      font-size: 30px;
+      font-weight: 700;
+    }
+    &_tip {
+      display: block;
+      color: #7c7c7c;
+      font-size: 22px;
+    }
+  }
+  &__info {
+    margin-top: 20px;
+  }
+  &__btn {
+    width: 92%;
+    margin: 40px auto 20px;
+    height: 80px;
+    border-radius: 2px;
+    line-height: 80px;
+    color: #ffffff;
+    text-align: center;
+    border: 1PX solid $color-brand-primary;
+    background: $color-brand-primary;
+  }
+  .cancel_btn {
+    background: transparent;
+    color: #000000;
+    border: 1PX solid #000000;
+  }
+}

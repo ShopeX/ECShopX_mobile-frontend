@@ -36,13 +36,13 @@
     &:before, &:after {
       border: none;
     }
-    .in-icon {
-      font-size: 42px;
+    [class^="icon-"] {
+      font-size: 50px;
       margin: 0 0 8px;
       color: #9d9d9d;
     }
-    .in-icon-fav-f {
-      color: $color-brand-primary;
+    [class^="icon-star"] {
+      font-size: 55px;
     }
     &-text {
       font-size: $font-size-small;
@@ -58,7 +58,6 @@
   }
   &__btn {
     width: 250px;
-    background: $color-brand-primary;
     font-size: $font-size;
     flex: 1;
     text-align: center;
@@ -80,11 +79,9 @@
     }
   }
   .btn-add-cart {
-    background: #131313;
   }
   .btn-fast-buy {
     margin-left: -1px;
-    background: $color-brand-primary;
   }
   .form-id-collector {
     flex: 1;

@@ -38,8 +38,10 @@ export default class StoreInfo extends Component {
   }
 
   handleClickLink = () => {
+    const { distributor_id } = this.props.info
+    console.log(1111111, distributor_id)
     Taro.navigateTo({
-      url: '/pages/store/index'
+      url: `/pages/store/index?id=${distributor_id}`
     })
   }
 
@@ -76,7 +78,7 @@ export default class StoreInfo extends Component {
     return (
       <View className='store-info'>
         <View className="view-flex view-flex-middle">
-          <Image className="store-brand" src={info.imgUrl || 'https://fakeimg.pl/120x120/EFEFEF/CCC/?text=brand&font=lobster'} mode="aspectFit" />
+          <Image className="store-brand" src={info.logo || 'https://fakeimg.pl/120x120/EFEFEF/CCC/?text=brand&font=lobster'} mode="aspectFit" />
           <View>
             <View className="store-name">{info.name}</View>
           </View>

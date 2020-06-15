@@ -17,7 +17,8 @@ export default class PackageList extends Component {
     this.state = {
       ...this.state,
       currentPackage: 0,
-      list: []
+      list: [],
+      distributor_id:0
     }
   }
 
@@ -31,7 +32,7 @@ export default class PackageList extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-    const { id } = this.$router.params
+    const { id,distributor_id } = this.$router.params
     const { currentPackage } = this.state
     const query = {
       item_id: id,
@@ -48,9 +49,9 @@ export default class PackageList extends Component {
       })
 
       this.setState({
-        list: [...this.state.list, ...nList]
+        list: [...this.state.list, ...nList],
+        distributor_id:distributor_id
       })
-
 
       if (!currentPackage) {
         this.setState({
@@ -71,7 +72,7 @@ export default class PackageList extends Component {
   }
 
   render () {
-    const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType } = this.state
+    const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType, distributor_id } = this.state
 
     return (
       <View className='page-package-goods'>
@@ -94,6 +95,7 @@ export default class PackageList extends Component {
                       <PackageItem
                         info={item}
                         current={currentPackage}
+                        distributor_id={distributor_id}
                         onClick={this.handleItemClick.bind(this, item.package_id)}
                       />
                     </View>

@@ -1,8 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import { classNames } from '@/utils'
 
 import './index.scss'
+
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 export default class TagsBar extends Component {
   static options = {
@@ -33,7 +38,7 @@ export default class TagsBar extends Component {
   }
 
   render () {
-    const { list } = this.props
+    const { list, colors } = this.props
 
     return (
       <ScrollView
@@ -47,7 +52,8 @@ export default class TagsBar extends Component {
 
             return (
               <View
-                className={classNames('tag-item', isCurrent && 'active')}
+                className="tag-item"
+                style={isCurrent ? `color: ${colors.data[0].primary}` : `color: inherit;`}
                 onClick={this.handleClickItem.bind(this, item.tag_id)}
                 key={item.tag_id}
               >

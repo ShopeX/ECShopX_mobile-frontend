@@ -1,0 +1,52 @@
+@import "../../../style/imports";
+
+.reservation-detail {
+  &__status {
+    background: #ffffff;
+    padding: 40px 30px;
+    display: flex;
+    justify-content: flex-start;
+    &_img {
+      width: 100px;
+      margin-right: 20px;
+    }
+    &_name {
+      font-size: 22px;
+      color: #828282;
+      .status-title {
+        display: block;
+        font-size: 26px;
+        color: #000000;
+      }
+    }
+  }
+
+  &__address {
+    background: #ffffff;
+    padding: 40px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    &_info {
+      font-size: 22px;
+      color: #828282;
+      .address-title {
+        display: block;
+        font-size: 26px;
+        color: #000000;
+      }
+    }
+  }
+
+  &__info {
+    background: #ffffff;
+    margin-top: 20px;
+    &_title {
+      display: block;
+      padding: 30px;
+      border-bottom: 1Px solid #f5f5f5;
+    }
+  }
+  
+}

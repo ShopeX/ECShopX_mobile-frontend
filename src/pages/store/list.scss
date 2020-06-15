@@ -10,6 +10,55 @@ $current-shop-height: 150px !default;
   &__scroll {
     @include page-scroll($searchbar-height + $current-shop-height + 10, 0);
   }
+  .store-list__search {
+    .at-search-bar {
+      padding-right: 30px !important;
+    }
+    .search-input {
+      &__focus{
+        .at-search-bar {
+          padding-right: 30px !important;
+        }
+      }
+    }
+    .at-search-bar__input {
+      height: $searchbar-height !important;
+    }
+    .at-search-bar__input-cnt {
+      flex: none;
+      border-radius: $searchbar-height;
+    }
+    .at-search-bar__clear {
+      height: $searchbar-height;
+    }
+    .at-search-bar__action {
+      display: none;
+    }
+  }
+  .store-list {
+    .store-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 20px;
+      background: #fff;
+      .store-content {
+        padding-right: 20px;
+        flex: 1;
+        .store-name {
+          font-size: 32px;
+        }
+        .store-address {
+          font-size: $font-size-small;
+          color: $color-gray;
+        }
+      }
+      .store-location {
+        font-size: 46px;
+        color: $color-gray;
+      }
+    }
+  }
   .current-store {
     padding-top: 20px;
     height: $current-shop-height;

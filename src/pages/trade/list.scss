@@ -53,20 +53,19 @@
 
   .trade-item {
     position: relative;
-    .at-button {
+    .btn-action {
+      margin-left: 20rpx;
+      padding: 0 22px;
+      height: 42px;
+      line-height: 42px;
+      border-radius: 8px;
       font-size: $font-size-small;
-      padding-left: 26px;
-      padding-right: 26px;
-      margin-left: 20px;
-    }
-    .at-button--primary {
-      background: $color-brand-primary;
-      border-color: $color-brand-primary;
-    }
-    .at-button--secondary {
+      color: #fff;
       background: #fff;
-      border-color: $color-brand-accent-light;
-      color: $color-brand-primary;
+      &::after {
+        background: none;
+        border: none;
+      }
     }
     &__ft-drug {
       position: absolute;
@@ -102,4 +101,7 @@
       color: #000;
     }
   }
+}
+.page-after-sale{
+  padding-top: $tabs-height;
 }

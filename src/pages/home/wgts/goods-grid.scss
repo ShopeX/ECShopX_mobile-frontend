@@ -64,7 +64,7 @@
         }
         .goods-title {
 					width: 100%;
-					height: 90px;
+					height: 79px;
           line-height: 1.4;
           @include multi-ellipsis(2);
           margin: 0 0 10px;
@@ -81,7 +81,16 @@
           margin: 0 0 10px;
         }
         .goods-price {
+          width: 100%;
           color: #ff5000;
+          font-size: 30px;
+          .market-price {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 20px;
+            color: #ccc;
+            text-decoration: line-through;
+          }
         }
         .cur {
           font-size: 20px;

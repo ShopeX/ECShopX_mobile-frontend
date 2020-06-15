@@ -7,7 +7,8 @@ export default class QnImg extends Component {
   }
 
   static defaultProps = {
-    onLoad: () => {}
+    onLoad: () => {},
+    onError: () => {}
   }
 
   static externalClasses = ['img-class']
@@ -24,7 +25,7 @@ export default class QnImg extends Component {
 
     return (
       <Image
-        className="img-class"
+        className='img-class'
         src={rSrc}
         mode={mode}
         onError={onError}

@@ -1,0 +1,38 @@
+@import '../../../style/imports';
+
+.page-distribution-shop-form {
+  .shop-form {
+    padding: 20px;
+    background: #fff;
+    .at-input {
+      margin: 0;
+      padding: 0;
+      input {
+        padding: 20px;
+        background: #f8f8f8;
+      }
+      &:after {
+        border: 0;
+      }
+    }
+    .at-textarea {
+      background: #f8f8f8;
+      border: 0;
+    }
+    .pic-upload {
+      &__img {
+        margin-top: 40px;
+      }
+      &__imgupload {
+        &_text {
+          display: block;
+          padding: 20px 0;
+          color: #b3b3b3;
+        }
+      }
+    }
+    .shop_pic-btn {
+      padding: 60px 20px 20px 20px;
+    }
+  }
+}

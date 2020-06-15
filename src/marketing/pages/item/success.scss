@@ -1,0 +1,26 @@
+@import "../../../style/imports";
+
+.trade-rate-success {
+    text-align: center;
+    padding-top: 45%;
+    .in-icon-icon-test {
+        font-size: 80px;
+        color: #aaa;
+    }
+    .text {
+        display: block;
+        font-size: 22px;
+        margin: 55px 0 45px;
+        color: #000;
+    }
+    .btn-wrap {
+        width: 200px;
+        height: 66px;
+        line-height: 66px;
+        background: $color-brand-primary;;
+        color: #fff;
+        font-size: 26px;
+        margin: 0 auto;
+        border-radius: 6px;
+    }
+}

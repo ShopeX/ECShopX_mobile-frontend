@@ -1,0 +1,37 @@
+.other-orders-item{
+  background: #fff;
+  border-radius: 8px;
+  margin: 0 0 16px;
+  padding: 30px;
+
+  .flex{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .item-info{
+    height: 100px;
+    font-size: 24px;
+    View{
+      font-size: 24px;
+    }
+  }
+
+  .align-right{
+    text-align: right;
+  }
+
+  .d-button{
+    background: #d42f29;
+    border-color: #d42f29;
+    font-size: 25px;
+    padding-left: 26px;
+    padding-right: 26px;
+    margin-left: 20px;
+    color: #fff;
+    height: 42px;
+    line-height: 42px;
+    font-size: 22px;
+  }
+}

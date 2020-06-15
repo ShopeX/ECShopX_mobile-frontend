@@ -16,6 +16,7 @@
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      opacity: 0.3;
       border-bottom: 1PX solid rgba($color-brand-primary, 0.2);
       margin-bottom: 20px;
       .avatar-user-text {
@@ -26,5 +27,65 @@
       height: 150px;
       width: 150px;
     }
+    .picker {
+      padding: 16px 0;
+      margin: 0 0 $edge-size;
+      display: flex;
+      justify-content: flex-start;
+      border-bottom: 1PX solid rgba($color-brand-primary, 0.2);
+      &__title {
+        font-size: $font-size;
+        margin-right:16px;
+        width:172px;
+      }
+      .pick-value {
+        color: #333;
+      }
+      span.pick-value-null {
+        color: #ccc;
+      }
+      text.pick-value-null {
+        color: #808080;
+      }
+    }  
+  }
+}
+
+.page-member-setting {
+  .checkBoxPanel {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background: #ffffff;
+    height: 600px;
+    z-index: $z-index-modal;
+    display: flex;
+    flex-direction: column;
+    &-content {
+      padding: 40px;
+      flex: 1;
+      overflow: scroll;
+    }
+    &-item {
+      height: 50px;
+      line-height: 50px;
+    }
+    .panel-btns {
+      box-shadow: 0 2px 2px 2px #808080;
+      width: 100%;
+      .panel-btn {
+        height: 80px;
+        line-height: 80px;
+        display: inline-block;
+        text-align: center;
+        width: 50%;
+      }
+      .require-btn {
+        background: $color-price;
+        color: #ffffff;
+      }
+    }
+  
   }
 }

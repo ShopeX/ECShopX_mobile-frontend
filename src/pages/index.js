@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, classNames, isArray } from '@/utils'
+import { pickBy, classNames, isArray, normalizeQuerys } from '@/utils'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
@@ -29,23 +29,54 @@ import './home/index.scss'
 @withPager
 @withBackToTop
 export default class HomeIndex extends Component {
+  config = {
+    enablePullDownRefresh: true,
+    backgroundTextStyle: 'dark',
+    onReachBottomDistance: 50
+  }
+
   constructor (props) {
     super(props)
 
     this.state = {
       ...this.state,
       wgts: null,
-      authStatus: false,
       likeList: [],
       isShowAddTip: false,
       curStore: null,
       positionStatus: false,
       automatic: null,
-      showAuto: true
+      showAuto: true,
+      top: 0,
+      isShop:null,
+      salesperson_id: ''
     }
   }
 
+  onPullDownRefresh = () => {
+    this.resetPage()
+    this.setState({
+      likeList: [],
+      wgts: null
+    }, () => {
+      this.fetchInfo()
+    })
+  }
+
+  onPageScroll = (res) => {
+    console.log(res)
+    const { scrollTop } = res
+    this.setState({
+      top: scrollTop
+    })
+  }
+
+  onReachBottom = () => {
+    this.nextPage()
+  }
+
   componentDidShow = () => {
+    const options = this.$router.params
     const curStore = Taro.getStorageSync('curStore')
     if (!isArray(curStore)) {
       this.setState({
@@ -61,44 +92,86 @@ export default class HomeIndex extends Component {
           isShowAddTip: true
         })
       })
+
+    const { smid , dtid} = normalizeQuerys(options)
+
+    if (smid) {
+      Taro.setStorageSync('s_smid', smid)
+    }
+
+    if (dtid) {
+      Taro.setStorageSync('s_dtid', dtid)
+    }
+    
+    this.isShoppingGuide()
   }
 
-  async componentDidMount () {
-    const userinfo = Taro.getStorageSync('userinfo')
-    const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
-    const fixSetting = await req.get(url)
+  componentDidMount () {
+    this.fetchInfo(async (info) => {
+      const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
+      const [fixSetting, { is_open, ad_pic, ad_title }] = await Promise.all([req.get(url), api.promotion.automatic({register_type: 'general'})])
 
-    // if (automatic.is_open === 'true' && automatic.register_type === 'membercard' && userinfo) {
-    //   const { is_open, is_vip, is_had_vip, vip_type } = await api.vip.getUserVipInfo()
-    //   this.setState({
-    //     vip: {
-    //       isSetVip: is_open,
-    //       isVip: is_vip,
-    //       isHadVip: is_had_vip,
-    //       vipType: vip_type
-    //     }
-    //   })
-    // }
-
-    const options = this.$router.params
-    const res = await entry.entryLaunch(options, true)
-
-    const { store } = res
-    if (!isArray(store)) {
       this.setState({
-        curStore: store,
+        automatic: {
+          title: ad_title,
+          isOpen: is_open === 'true',
+          adPic: ad_pic
+        },
         positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
-      }, () => {
-        this.fetchInfo()
       })
-		} else {
-      this.setState({
-        positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
-      }, () => {
-        this.fetchInfo()
-      })
-    }
-		this.fetchCartcount()
+
+      // const userinfo = Taro.getStorageSync('userinfo')
+      // if (automatic.is_open === 'true' && automatic.register_type === 'membercard' && userinfo) {
+      //   const { is_open, is_vip, is_had_vip, vip_type } = await api.vip.getUserVipInfo()
+      //   this.setState({
+      //     vip: {
+      //       isSetVip: is_open,
+      //       isVip: is_vip,
+      //       isHadVip: is_had_vip,
+      //       vipType: vip_type
+      //     }
+      //   })
+      // }
+
+      const options = this.$router.params
+      const res = await entry.entryLaunch(options, true)
+//           if(S.getAuthToken()){
+//               const promoterInfo = await api.distribution.info()
+//               this.setState({
+//                 isShop:promoterInfo
+//               })
+//             }
+
+      const { store } = res
+      if (!isArray(store)) {
+        this.setState({
+          curStore: store
+        })
+  		}
+    })
+  }
+
+    /**
+   * 检测有没有绑定导购员
+   * */
+  async isShoppingGuide(){
+    let token = S.getAuthToken()
+    if (!token) return;
+
+    let salesperson_id = Taro.getStorageSync('s_smid')
+    if(!salesperson_id)return;
+
+    // 判断是否已经绑定导购员
+    let info = await api.member.getUsersalespersonrel({
+      salesperson_id
+    })
+    console.log('getUsersalespersonrel --- val:',info)
+    if(info.is_bind === '1')return
+
+    // 绑定导购
+    await api.member.setUsersalespersonrel({
+      salesperson_id
+    })
   }
 
   onShareAppMessage (res) {
@@ -122,41 +195,33 @@ export default class HomeIndex extends Component {
       console.error(e)
     }
 	}
-  async fetchInfo () {
+  async fetchInfo (cb) {
     const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
     const info = await req.get(url)
 
-		const show_likelist = info.config.find(item=>item.name=='setting'&&item.config.faverite)
-		this.props.onUpdateLikeList(show_likelist?true:false)
-
-    const { is_open, ad_pic, ad_title } = await api.promotion.automatic({register_type: 'general'})
-    this.setState({
-      automatic: {
-        title: ad_title,
-        isOpen: is_open === 'true',
-        adPic: ad_pic
-      }
-    })
-
-    if (!S.getAuthToken()) {
-      this.setState({
-        authStatus: true
-      })
-    }
     this.setState({
       wgts: info.config
     },()=>{
+      if (cb) {
+        cb(info)
+      }
+      Taro.stopPullDownRefresh()
       if(info.config) {
-        info.config.map(item => {
-          if(item.name === 'setting' && item.config.faverite) {
-            this.nextPage()
-          }
-        })
+        const show_likelist = info.config.find(item => item.name == 'setting' && item.config.faverite)
+        this.props.onUpdateLikeList(show_likelist ? true : false)
+        if (show_likelist) {
+          this.resetPage()
+          this.setState({
+            likeList: []
+          })
+          this.nextPage()
+        }
       }
     })
   }
 
   async fetch (params) {
+    console.log(params, 160)
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -168,6 +233,7 @@ export default class HomeIndex extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
+      promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
@@ -239,7 +305,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto } = this.state
+    const { wgts, page, isShop, likeList, showBackToTop, scrollTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, top } = this.state
     const { showLikeList } = this.props
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
@@ -251,26 +317,30 @@ export default class HomeIndex extends Component {
 		const show_location = wgts.find(item=>item.name=='setting'&&item.config.location)
 
     return (
-      <View className='page-index'>
+      <View className={`page-index ${top < 1 ? 'onTop' : '' }`}>
         {
-          curStore &&
+          APP_PLATFORM === 'standard' && curStore &&
             <HeaderHome
               store={curStore}
             />
-        }
-				<ScrollView
-          className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}
-          scrollTop={scrollTop}
-          onScroll={this.handleScroll}
-          onScrollToLower={this.nextPage}
-          scrollY
+        }        
+				{/*<ScrollView
+  className={classNames('wgts-wrap', positionStatus && 'wgts-wrap__fixed' , !curStore && 'wgts-wrap-nolocation')}
+  scrollTop={scrollTop}
+  onScroll={this.handleScroll}
+  onScrollToUpper={this.onScrollToUpper.bind(this)}
+  onScrollToLower={this.nextPage}
+  scrollY
+				>*/}
+        <View className={classNames('wgts-wrap', APP_PLATFORM !== 'standard' && 
+        'wgts-wrap_platform', positionStatus && (APP_PLATFORM !== 'standard' || curStore.distributor_id === 0 ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard') , !curStore && 'wgts-wrap-nolocation')}
         >
           <View className='wgts-wrap__cont'>
             <HomeWgts
               wgts={wgts}
             />
             {likeList.length > 0 && showLikeList && (
-              <View>
+              <View className='faverite-list'>
                 <WgtGoodsFaverite info={likeList} />
                 {
                   page.isLoading
@@ -285,12 +355,14 @@ export default class HomeIndex extends Component {
             )}
 
           </View>
-        </ScrollView>
+        </View>
+        {/*</ScrollView>*/}
 
         {
           <FloatMenus>
             {
-              (isPromoter || !!distributionShopId) &&
+              // isShop && isShop.isOpenShop === 'true' && isShop.shop_status === 1 &&
+              distributionShopId &&
               <Image
                 className='distribution-shop'
                 src='/assets/imgs/gift_mini.png'
@@ -299,10 +371,10 @@ export default class HomeIndex extends Component {
               />
             }
             {
-              automatic.isOpen && !S.getAuthToken() &&
+              automatic && automatic.isOpen && !S.getAuthToken() &&
                 <FloatMenuItem
-                  iconPrefixClass='in-icon'
-                  icon='gift'
+                  iconPrefixClass='icon'
+                  icon='present'
                   onClick={this.handleAutoClick.bind(this)}
                 />
             }
@@ -310,7 +382,7 @@ export default class HomeIndex extends Component {
         }
 
         {
-          automatic.isOpen && !S.getAuthToken() &&
+          automatic && automatic.isOpen && !S.getAuthToken() &&
             <Automatic
               info={automatic}
               isShow={showAuto}
@@ -325,7 +397,7 @@ export default class HomeIndex extends Component {
         />
         {
           isShowAddTip ? <View className='add_tip'>
-            <View class="tip-text">点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺</View>
+            <View class='tip-text'>点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺</View>
             <View className='icon-close icon-view' onClick={this.handleClickCloseAddTip.bind(this)}> </View>
           </View> : null
         }

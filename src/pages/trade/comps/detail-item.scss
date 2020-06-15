@@ -5,18 +5,42 @@
   &-good {
     position: relative;
   }
+  &__fix{
+    display: flex;
+    border-bottom: 1PX solid #ececec;
+    padding: 0 38px 0 27px;
+  }
   &__title {
+    flex: 0 0 200px 0;
+    width: 200px;
     display: block;
     font-size: 22px;
     line-height: 36px;
     color: #333333;
-    border-bottom: 1PX solid #ececec;
+   
+  }
+  &__title {
+    display: block;
+    font-size: 22px;
+    line-height: 36px;
+    color: #333333;   
     padding: 0 38px 17px 27px;
+  }
+  &__code{
+    flex:1;
+    display: block;
+    font-size: 22px;
+    color: #999999;
+    text-align: right;
+    .btn{
+      margin-left: 20px;
+    }
   }
   .order-item__ft {
     position: absolute;
     bottom: 20px;
     right: 30px;
+    display: flex;
     //z-index: 999;
   }
 }

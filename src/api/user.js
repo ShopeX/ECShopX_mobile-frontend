@@ -53,3 +53,53 @@ export function forgotPwd (params = {}) {
 export function prelogin (data) {
   return req.post('/prelogin', data)
 }
+
+export function checkpclogin (data) {
+  return req.post('/oauthlogin', data)
+}
+
+export function pclogin (data) {
+  return req.post('/oauth/login/authorize', data)
+}
+
+export function reg_pclogin (data) {
+  return req.post('/member/decryptPhoneOauth', data)
+}
+
+export function registrationActivity (data) {
+  return req.get('/registrationActivity', data)
+}
+
+export function registrationSubmit (data) {
+  return req.post('/registrationSubmit', data)
+}
+
+export function registrationRecordList (data) {
+  return req.get('/registrationRecordList', data)
+}
+
+export function registrationRecordInfo (data) {
+  return req.get('/registrationRecordInfo', data)
+}
+
+export function scancodeAddcart (data) {
+  return req.post('/goods/scancodeAddcart', data)
+}
+
+export function newWxaMsgTmpl (params = {}) {
+  return req.get('/newtemplate', params)
+}
+
+export function storeReg (data) {
+  return req.post('/distributor', data)
+}
+// 客服 
+export function im (id) {
+  return req.get(`/im/meiqia/distributor/${id}`)
+}
+
+// 客服默认配置
+export function imConfig () {
+  return req.get(`/im/meiqia`)
+}
+

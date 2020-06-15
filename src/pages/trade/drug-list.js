@@ -76,6 +76,7 @@ export default class TradePickList extends Component {
       pay_type: 'pay_type',
       point: 'point',
       create_date: 'create_date',
+      ziti_status: 'ziti_status',
       order: ({ items }) => pickBy(items, {
         order_id: 'order_id',
         item_id: 'item_id',
@@ -181,7 +182,7 @@ export default class TradePickList extends Component {
                     <View className='trade-item__ft-drug'>
                       {
                         item.order_status_des === 'CANCEL'
-                          ? <Text className='trade-item__status'>{item.order_status_des}</Text>
+                          ? <Text className='trade-item__status'>已拒绝</Text>
                           : <Text className='trade-item__status'>
                               { item.ziti_status == 'APPROVE' ? '审核通过' : '待审核' }
                             </Text>

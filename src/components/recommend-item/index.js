@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Image, Progress} from '@tarojs/components'
-import { Price } from '@/components'
+import { Price, QnImg } from '@/components'
 import { isObject, classNames } from '@/utils'
 import api from '@/api'
 
@@ -36,42 +36,46 @@ export default class RecommendItem extends Component {
     const img_head = info.head_portrait || info.image_default_id
 
     return (
-      <View className={classNames('goods-item', className)}>
-        <View className='goods-item__hd'>
+      <View className={classNames('recommend-item', className)}>
+        <View className='recommend-item__hd'>
           {this.props.children}
         </View>
         <View
-          className='goods-item__bd'
+          className='recommend-item__bd'
           onClick={onClick}
         >
-          <View className='goods-item__img-wrap'>
-            <Image
-              className='goods-item__img'
-              mode='aspectFill'
+          <View className='recommend-item__img-wrap'>
+            <QnImg
+              img-class='recommend-item__img'
               src={img}
+              mode='aspectFill'
+              width='400'
+              lazyLoad
             />
           </View>
-          <View className='goods-item__cont'>
-            <Text className='goods-item__title'>{info.title}</Text>
-            <Text className='goods-item__desc'>{info.summary}</Text>
-            <View className='goods-item__extra'>
-              <View className='goods-item__author'>
-                <Image
-                  className='goods-item__author-avatar'
+          <View className='recommend-item__cont'>
+            <View className='recommend-item__caption'>
+              <Text className='recommend-item__title'>{info.title}</Text>
+              <Text className='recommend-item__desc'>{info.summary}</Text>
+            </View>
+            <View className='recommend-item__extra'>
+              <View className='recommend-item__author'>
+                {img_head && <Image
+                  className='recommend-item__author-avatar'
                   src={img_head}
                   mode='aspectFill'
-                />
-                <Text className='goods-item__author-name'>{info.author}</Text>
+                />}
+                {info.author && <Text className='recommend-item__author-name'>{info.author}</Text>}
               </View>
-              <View className={`goods-item__actions ${info.isPraise ? 'is_like__active' : ''}`}>
+              <View className={`recommend-item__actions ${info.isPraise ? 'is_like__active' : ''}`}>
                 <View
-                  className='in-icon in-icon-like'
+                  className='icon-like'
                 ><Text>{info.articlePraiseNum}</Text></View>
               </View>
             </View>
           </View>
         </View>
-        <View className='goods-item__ft'>
+        <View className='recommend-item__ft'>
           {this.props.renderFooter}
         </View>
       </View>

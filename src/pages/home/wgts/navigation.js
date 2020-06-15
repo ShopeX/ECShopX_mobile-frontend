@@ -40,7 +40,7 @@ export default class WgtNavigation extends Component {
                     <QnImg
                       img-class='nav-img'
                       src={item.imgUrl}
-                      mode='widthFix'
+                      // mode='widthFix'
                       width='200'
                       lazyLoad
                     />

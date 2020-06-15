@@ -42,9 +42,12 @@ export default class VipGuide extends Component {
       <View className="vip-guide">
         <View className="vip-guide-content">
           <View className="vip-price">
-            <View className="vip-tag">
-              {info.vipgrade_desc}
-            </View>
+            {
+              info.gradeDiscount &&
+                <View className="vip-tag">
+                  {info.vipgrade_desc}
+                </View>
+            }
             {
               (info.memberPrice || info.gradeDiscount) &&
                 <View className="vip-price-amount">

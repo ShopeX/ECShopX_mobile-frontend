@@ -1,0 +1,40 @@
+@import "../../../style/imports";
+
+.activity-detail {
+  &__tip {
+    background: #ffffff;
+    color: #7b7c7e;
+    font-size: 24px;
+    display: block;
+    padding: 40px 30px;
+  }
+  &__list {
+    background: #ffffff;
+  }
+  &__item {
+    margin: 0 30px 10px;
+    padding: 20px 0;
+    border-bottom: 1PX solid #f5f5f5;
+    display: flex;
+    justify-content: flex-start;
+    &_title {
+      display: inline-block;
+      width: 180px;
+      margin-right: 30px;
+    }
+    &_value {
+      flex: 1;
+    }
+  }
+  
+  &__btn {
+    width: 92%;
+    margin: 40px auto;
+    height: 80px;
+    border-radius: 10px;
+    line-height: 80px;
+    color: #ffffff;
+    text-align: center;
+    background: $color-brand-primary;
+  }
+}
