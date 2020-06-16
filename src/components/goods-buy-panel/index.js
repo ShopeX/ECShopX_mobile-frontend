@@ -1,12 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+// import { AtButton } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 // import { AtInputNumber } from 'taro-ui'
 // import find from 'lodash/find'
 import { Price } from '@/components'
 import InputNumber from '@/components/input-number'
-import { classNames, pickBy, log, isNumber } from '@/utils'
+import { classNames, pickBy, log } from '@/utils'
 import api from '@/api'
 
 import './index.scss'
@@ -222,7 +222,7 @@ export default class GoodsBuyPanel extends Component {
     const { item_spec } = curSku
     const { item_image_url, spec_image_url } = item_spec[0]
     const { pics } = info
-    
+
     let imgs = []
     if (item_image_url.length || spec_image_url) {
       imgs = item_image_url.length > 0 ? item_image_url : [spec_image_url]
@@ -251,6 +251,8 @@ export default class GoodsBuyPanel extends Component {
       selection[idx] = item.spec_value_id
     }
 
+    console.log(selection,254)
+
     this.updateCurSku(selection)
     this.setState({
       selection
@@ -267,6 +269,7 @@ export default class GoodsBuyPanel extends Component {
   }
 
   handleBuyClick = async (type, skuInfo, num) => {
+    console.warn(this.props)
     if (this.state.busy) return
 
     const { marketing, info } = this.state
@@ -349,6 +352,9 @@ export default class GoodsBuyPanel extends Component {
     }
 
     if (type === 'pick') {
+      const { info } = this.props
+      // console.log(skuInfo, info, 346)
+      //info.checked_spec = skuInfo
       this.setState({
         busy: false
       }, () => {
@@ -360,7 +366,9 @@ export default class GoodsBuyPanel extends Component {
   }
 
   render () {
-    const { info, type, fastBuyText, colors } = this.props
+    // packItem={packagePrices}
+    //                 mainItem={mainPackagePrice}
+    const { info, type, fastBuyText, colors, isPackage, packItem, mainpackItem } = this.props
 		const { curImg, quantity, selection, isActive, busy, curSku, marketing, promotions, activity, curLimit } = this.state
     if (!info) {
       return null
@@ -368,7 +376,7 @@ export default class GoodsBuyPanel extends Component {
 
     const { special_type } = info
     const isDrug = special_type === 'drug'
-		const curSkus = this.noSpecs ? info : curSku
+    const curSkus = this.noSpecs ? info : curSku
 
     const maxStore = +(curSkus ? curSkus.store : (info.store || 99999))
     const hasStore = curSkus ? curSkus.store > 0 : info.store > 0
@@ -376,16 +384,31 @@ export default class GoodsBuyPanel extends Component {
     let price = '', marketPrice = '', ruleDay = 0
     if (curSkus) {
       price = curSkus.act_price ? curSkus.act_price : curSkus.member_price ? curSkus.member_price : curSkus.price
-      //marketPrice = curSkus.act_price || curSkus.member_price ? curSkus.price : curSkus.market_price
+      //marketPrice = curSkus.act_price || curSkus.member_price ? curSkus.member_price : curSkus.market_price
       marketPrice = curSkus.market_price
       if (info.activity_type === 'limited_buy') {
         ruleDay = JSON.parse(activity.rule.day)
       }
     } else {
       price = info.act_price ? info.act_price : info.member_price ? info.member_price : info.price
-      //marketPrice = info.act_price || info.member_price ? info.price : info.market_price
+      //marketPrice = info.act_price || info.member_price ? info.member_price : info.market_price
       marketPrice = info.market_price
     }
+
+    if(isPackage === 'package') {
+      price = info.price * 100
+      marketPrice = info.market_price * 100
+      if(curSkus) {
+        console.log(curSkus.item_id, packItem[curSkus.item_id],mainpackItem[curSkus.item_id], 394)
+        price = (packItem[curSkus.item_id] && packItem[curSkus.item_id].price) || (mainpackItem[curSkus.item_id] && mainpackItem[curSkus.item_id].price)
+        marketPrice = (packItem[curSkus.item_id] && packItem[curSkus.item_id].market_price) || (mainpackItem[curSkus.item_id] && mainpackItem[curSkus.item_id].market_price)
+      } else {
+        price = info.price * 100
+        marketPrice = info.market_price * 100
+      }
+    }
+    console.log(price, marketPrice, 399)
+
 
     return (
       <View className={classNames('goods-buy-panel', isActive ? 'goods-buy-panel__active' : null)}>
@@ -400,7 +423,7 @@ export default class GoodsBuyPanel extends Component {
             <View
               className='goods-img__wrap'
               onClick={this.handleImgClick.bind(this)}
-              >
+            >
               <Image
                 className='goods-img'
                 mode='aspectFill'
@@ -408,21 +431,19 @@ export default class GoodsBuyPanel extends Component {
               />
             </View>
 						<View className='goods-sku__price'>
-						  <Price
-								primary
-                symbol='¥'
-								unit='cent'
-								value={price}
-							/>
-            {
-              marketPrice &&
-                <Price
-                  className='price-market'
-                  symbol='¥'
-                  unit='cent'
-                  value={marketPrice}
-                />
-            }
+						  <Price primary symbol='¥' unit='cent' value={price} />
+              <View className='goods-sku__price-market'>
+              {
+                marketPrice &&
+                  <Price
+                    className='price-market'
+                    symbol='¥'
+                    unit='cent'
+                    lineThrough
+                    value={marketPrice}
+                  />
+              }
+              </View>
             </View>
             <View className='goods-sku__info'>
               {
@@ -453,7 +474,7 @@ export default class GoodsBuyPanel extends Component {
             </View>
           </View>
           {
-            curSkus &&
+            curSkus && promotions && promotions.length > 0 &&
               <View className='promotions'>
                 {
                   promotions.map(item =>

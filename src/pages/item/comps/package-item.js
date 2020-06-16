@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { AtAccordion, AtButton } from 'taro-ui'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { GoodsItem, SpCheckbox, GoodsBuyPanel } from '@/components'
-import { classNames, formatTime, pickBy } from '@/utils'
+import { pickBy } from '@/utils'
 import S from '@/spx'
 import api from '@/api'
 import { connect } from '@tarojs/redux'
@@ -31,9 +31,11 @@ export default class PackageItem extends Component {
       showBuyPanel: false,
       packageTotalPrice: 0,
       curSku: null,
+      skuInfo:null,
       curId: null,
       fromCheck: false,
       packagePrices: null,
+      mainPackagePrice: null,
       selection: new Set()
     }
   }
@@ -44,13 +46,16 @@ export default class PackageItem extends Component {
 
   async fetch () {
     const { package_id } = this.props.info
-    const { itemLists, main_item_id, main_item_price, package_price } = await api.item.packageDetail(package_id)
+    // const { itemLists, main_item_id, main_item_price, package_price } = await api.item.packageDetail(package_id)
+    const res = await api.item.packageDetail(package_id)
+    const { itemLists, mainItem, main_package_price, package_price: packagePrice } = res
     const nList = pickBy(itemLists, {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
       desc: 'brief',
       pics: 'pics',
+      store: 'store',
       spec_items: 'spec_items',
       item_spec_desc: 'item_spec_desc',
       checked_spec: null,
@@ -58,33 +63,81 @@ export default class PackageItem extends Component {
       market_price: ({ price }) => (price/100).toFixed(2)
     })
 
+    console.log(packagePrice, main_package_price, 66)
+
+    const main_item = pickBy(mainItem, {
+      img: 'pics[0]',
+        item_id: 'item_id',
+        title: 'itemName',
+        desc: 'brief',
+        pics: 'pics',
+        store: 'store',
+        spec_items: 'spec_items',
+        item_spec_desc: 'item_spec_desc',
+        checked_spec: null,
+        price: ({ package_price }) => (package_price/100).toFixed(2),
+        market_price: ({ price }) => (price/100).toFixed(2)
+    })
+
     this.setState({
       list: nList,
-      packagePrices: package_price,
-      mainItem: {
-        id: main_item_id,
-        price: main_item_price
-      }
+      mainPackagePrice: main_package_price,
+      packagePrices: packagePrice,
+      mainItem: main_item
     })
+
+    console.log(main_item,89)
+    if(main_item.spec_items && main_item.spec_items.length <= 1) {
+      const selection = this.state.selection
+      selection['add'](main_item.item_id)
+      this.setState({
+        selection: new Set(selection)
+      }, () => {
+        this.countPackageTotal()
+      })
+    }
   }
 
   handlePackageClick = (pid) => {
     const cur = this.props.current
-    const { selection } = this.state
     if (cur !== pid) {
+      const { list, mainItem } = this.state
+      Object.assign(mainItem, {checked_spec: null})
+      list.map(item => {
+        Object.assign(item, {checked_spec: null})
+      })
       this.setState({
-        selection: new Set()
+        selection: new Set(),
+        mainItem,
+        list
+      },() => {
+        this.initMainPackage()
       })
     }
     this.props.onClick()
+  }
+
+  initMainPackage = () => {
+    const { mainItem } = this.state
+    if(mainItem.spec_items && mainItem.spec_items.length <= 1) {
+      const selection = this.state.selection
+      selection['add'](mainItem.item_id)
+      this.setState({
+        selection: new Set(selection)
+      }, () => {
+        this.countPackageTotal()
+      })
+    }
   }
 
   handleSelectionChange = (item, checked) => {
     const selection = this.state.selection
     if (!item.checked_spec && item.spec_items.length) {
       this.showBuyPanel(item, true)
+      console.log(item, checked, 106)
       return
     }
+    console.log(item, checked, 108)
     selection[checked ? 'add' : 'delete']((item.checked_spec && item.checked_spec.item_id) || item.item_id)
     this.setState({
       selection: new Set(selection)
@@ -93,58 +146,100 @@ export default class PackageItem extends Component {
     })
   }
 
+  handleMainSkuSelection = () => {
+    this.showBuyPanel(this.state.mainItem, 'main')
+
+  }
+
   handleSkuSelection = (data) => {
     this.showBuyPanel(data)
   }
 
   showBuyPanel = (data, fromCheck) => {
-    console.log(!!fromCheck)
-    const { curSku } = this.state
     this.setState({
       curSku: data,
       curId: data.item_id,
       showBuyPanel: true,
       buyPanelType: 'pick',
-      fromCheck: !!fromCheck
+      fromCheck: fromCheck
     })
+  }
+
+  handleSpecClose = () => {
+    this.setState({ showBuyPanel: false })
   }
 
   handleSpecSubmit = (res) => {
     const { curId, fromCheck } = this.state
-    let { list } = this.state
-    const idx = list.findIndex(item => item.item_id === curId)
+    let { list, mainItem } = this.state
     let checked = null
-    if (list[idx].checked_spec) {
-      checked = list[idx].checked_spec.item_id
+    const selection = this.state.selection
+
+    if(fromCheck === 'main') {
+      if(mainItem.spec_items && mainItem.spec_items.length > 0) {
+        mainItem.spec_items.map(spec_item => {
+          if(curId === spec_item.item_id) {
+            Object.assign(mainItem, {checked_spec: res})
+          }
+        })
+        if( mainItem.checked_spec && (res.item_id === mainItem.checked_spec.item_id)) {
+          mainItem.price = this.state.mainPackagePrice[res.item_id].price / 100
+          mainItem.market_price = this.state.mainPackagePrice[res.item_id].market_price / 100
+        }
+      }
+      if(mainItem.spec_items && mainItem.spec_items.length > 1) {
+        mainItem.spec_items.map(spec_item => {
+          selection['delete'](spec_item.item_id)
+        })
+      }
+      selection['add'](res.item_id)
+      this.setState({
+        selection: new Set(selection)
+      }, () => {
+        this.countPackageTotal()
+      })
+    } else {
+      if(list.length > 0) {
+        list.map(item => {
+          if(item.spec_items && item.spec_items.length > 0) {
+            item.spec_items.map(spec_item => {
+              if(curId === spec_item.item_id) {
+                Object.assign(item, {checked_spec: res})
+              }
+              if(spec_item.item_id === res.item_id) {
+                item.price = this.state.packagePrices[res.item_id].price / 100
+                item.market_price = this.state.packagePrices[res.item_id].market_price / 100
+              }
+            })
+          }
+          if(item.checked_spec) {
+            checked = item.checked_spec.item_id
+          }
+          if(item.spec_items && item.spec_items.length > 1) {
+            item.spec_items.map(spec_item => {
+              if(res.item_id === spec_item.item_id) {
+                item.spec_items.map(del_item => {
+                  selection['delete'](del_item.item_id)
+                })
+              }
+            })
+          }
+          selection['add'](res.item_id)
+          this.setState({
+            selection: new Set(selection)
+          }, () => {
+            this.countPackageTotal()
+          })
+        })
+      }
     }
-    Object.assign(list[idx], {checked_spec: res})
 
     this.setState({
       list,
+      mainItem,
       showBuyPanel: false
     })
 
-    const selection = this.state.selection
-    const id = [...selection].find(item => item === checked)
-
-    if (id) {
-      selection.delete(id, res.item_id)
-      selection.add(res.item_id)
-      this.setState({
-        selection: new Set(selection)
-      }, () => {
-        this.countPackageTotal()
-      })
-    }
-
-    if (fromCheck && !([...selection].find(n => res.item_id === n))) {
-      selection.add(res.item_id)
-      this.setState({
-        selection: new Set(selection)
-      }, () => {
-        this.countPackageTotal()
-      })
-    }
   }
 
   handleAddCart = async () => {
@@ -162,27 +257,38 @@ export default class PackageItem extends Component {
     }
 
     const { selection, mainItem } = this.state
+    console.log(selection, 198)
     const packageId = this.props.current
-    let id = ''
-    if ( APP_PLATFORM === 'standard') {
-      const { distributor_id } = Taro.getStorageSync('curStore')
-      id = distributor_id
-    } else {
-      const { distributor_id }= this.props
-      id = distributor_id
+    if(!mainItem.checked_spec && mainItem.spec_items.length > 1) {
+      Taro.showToast({
+        title: '请选择主商品规格',
+        icon: 'none'
+      })
+      return
+    }
+    const id =  (mainItem.checked_spec && mainItem.checked_spec.item_id) || mainItem.item_id
+
+    let item_selected = []
+    const selected = [...selection]
+    if(selected) {
+      selected.map(item => {
+        if(item !== id){
+          item_selected.push(item)
+        }
+      })
     }
 
-    //const { distributor_id } = Taro.getStorageSync('curStore')
-    // const { distributor_id }= this.props
+    const { distributor_id } = Taro.getStorageSync('curStore')
+
     const query = {
       isAccumulate: false,
-      item_id: mainItem.id,
-      items_id: [...selection],
+      item_id: id,
+      items_id: item_selected,
       num: 1,
       shop_type: 'distributor',
       activity_id: packageId,
       activity_type: 'package',
-      distributor_id: id
+      distributor_id
 		}
 		const res = await api.cart.add(query)
 
@@ -204,15 +310,16 @@ export default class PackageItem extends Component {
     }
 	}
 
-
   countPackageTotal () {
-    const { selection, packagePrices, mainItem } = this.state
+    const { selection, packagePrices, mainPackagePrice } = this.state
     let packageTotalPrice = 0
     const selected = [...selection]
+    console.log(selected,packagePrices, mainPackagePrice,361)
     if (selected.length) {
-      packageTotalPrice += Number(mainItem.price)
+      // packageTotalPrice += Number(mainItem.price * 100)
       selected.map(id => {
-        packageTotalPrice += Number(packagePrices[id])
+
+        packageTotalPrice += Number(packagePrices[id] && packagePrices[id].price) || Number( mainPackagePrice[id] && mainPackagePrice[id].price)
       })
     }
     this.setState({
@@ -225,9 +332,9 @@ export default class PackageItem extends Component {
     if (!info) {
       return null
     }
-    const { list, selection, packagePrice, curSku,showBuyPanel,buyPanelType } = this.state
-    const { package_id, package_name } = info
+    const { list, selection, packagePrice,skuInfo ,curSku,showBuyPanel,buyPanelType,packageTotalPrice, packagePrices, mainPackagePrice, mainItem  } = this.state
 
+    const { package_id, package_name } = info
     return (
       <View>
         <AtAccordion
@@ -237,6 +344,36 @@ export default class PackageItem extends Component {
           title={package_name}
         >
           <View className='package-goods__list'>
+            <View>主商品</View>
+            <GoodsItem
+              img-class='package-goods__item'
+              showFav={false}
+              showSku
+              key={mainItem.item_id}
+              info={mainItem}
+              renderCheckbox={
+                <View className='cart-item__act'>
+                  <SpCheckbox
+                    key={mainItem.item_id}
+                    checked='true'
+                    disabled
+                  />
+                </View>
+              }
+              renderSpec={
+                <View
+                  className='goods-item__sku'
+                  style={mainItem.spec_items && mainItem.spec_items.length ? '' : 'display: none;'}
+                  onClick={this.handleMainSkuSelection.bind(this, mainItem)}
+                >
+                  <Text className='goods-item__sku-text'>{mainItem.checked_spec ? mainItem.checked_spec.propsText : '请选择规格'}</Text>
+                  <Text className='icon-arrowDown'></Text>
+                </View>
+              }
+            />
+          </View>
+          <View className='package-goods__list'>
+            <View>组合商品</View>
             {
               list.map(item => {
                 return (
@@ -271,7 +408,7 @@ export default class PackageItem extends Component {
             }
           </View>
 
-          <View class="package-goods__item-footer">
+          <View class='package-goods__item-footer'>
             <View className='package-amount'>组合价：<Text className='amount-number'>¥{packageTotalPrice}</Text></View>
             <AtButton
               type='primary'
@@ -285,9 +422,12 @@ export default class PackageItem extends Component {
             (curSku && showBuyPanel) &&
               <GoodsBuyPanel
                 info={curSku}
+                isPackage='package'
+                packItem={packagePrices}
+                mainpackItem={mainPackagePrice}
                 type={buyPanelType}
                 isOpened={showBuyPanel}
-                onClose={() => this.setState({ showBuyPanel: false })}
+                onClose={this.handleSpecClose.bind(this)}
                 onSubmit={this.handleSpecSubmit.bind(this)}
               />
           }
@@ -298,7 +438,7 @@ export default class PackageItem extends Component {
               className='package-goods__thumbnails'
               scrollX
               scrollWithAnimation
-              >
+            >
               {
                 list.map(item => {
                   return (
