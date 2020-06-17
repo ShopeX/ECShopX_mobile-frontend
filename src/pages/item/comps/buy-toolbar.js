@@ -101,7 +101,7 @@ export default class GoodsBuyToolbar extends Component {
                       )
                     }
                   </View>
-                  : <Text>暂不可售</Text>
+                  : <View className='goods-buy-toolbar__btns'><Text>暂不可售</Text></View>
               }
 
             </View>)
