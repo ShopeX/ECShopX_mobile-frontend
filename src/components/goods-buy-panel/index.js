@@ -534,7 +534,7 @@ export default class GoodsBuyPanel extends Component {
           </View>
           <View className='goods-buy-panel__ft'>
             <View className='goods-buy-panel__btns'>
-              {(type === 'cart' && hasStore && (info.is_can_sale !== false)) && (
+              {(type === 'cart' && hasStore && (info.approve_status === 'onsale')) && (
                 <Button
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-add-cart', { 'is-disabled': !curSkus })}
@@ -543,7 +543,7 @@ export default class GoodsBuyPanel extends Component {
                   disabled={Boolean(!curSkus)}
                 >{isDrug ? '加入药品清单' : '加入购物车'}</Button>
               )}
-              {(type === 'fastbuy' && hasStore && (info.is_can_sale !== false)) && (
+              {(type === 'fastbuy' && hasStore && (info.approve_status === 'onsale')) && (
                 <Button
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSkus })}
@@ -552,7 +552,7 @@ export default class GoodsBuyPanel extends Component {
                   disabled={Boolean(!curSkus)}
                 >{fastBuyText}</Button>
               )}
-              {(type === 'pick' && hasStore && (info.is_can_sale !== false)) && (
+              {(type === 'pick' && hasStore && (info.approve_status === 'onsale')) && (
                 <Button
                   loading={busy}
                   className={classNames('goods-buy-panel__btn btn-fast-buy', { 'is-disabled': !curSkus })}
@@ -561,7 +561,7 @@ export default class GoodsBuyPanel extends Component {
                   disabled={Boolean(!curSkus)}
                 >确定</Button>
               )}
-              {(!hasStore || (info.is_can_sale === false)) && (<Button disabled className='goods-buy-panel__btn btn-fast-buy'>当前商品无货</Button>)}
+              {(!hasStore || (info.approve_status !== 'onsale')) && (<Button disabled className='goods-buy-panel__btn btn-fast-buy'>当前商品无货</Button>)}
             </View>
           </View>
         </View>
