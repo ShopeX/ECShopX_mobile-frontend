@@ -77,26 +77,37 @@ export default class GoodsBuyToolbar extends Component {
         </View>
         {this.props.customRender
           ? this.props.children
-          : (<View className='goods-buy-toolbar__btns'>
-              {(type === 'normal' || type === 'limited_time_sale') && (
-                <FormIdCollector
-                  sync
-                  onClick={onClickAddCart}
-                >
-                  <View className={`goods-buy-toolbar__btn btn-add-cart ${isDrug && 'drug-btn'}`} style={'background: ' + colors.data[0].accent}>
-                    {isDrug ? '加入药品清单' : '添加至购物车'}
+          : (<View>
+              {
+                info.approve_status === 'onsale' ?
+                  <View className='goods-buy-toolbar__btns'>
+                    {(type === 'normal' || type === 'limited_time_sale') && (
+                      <FormIdCollector
+                        sync
+                        onClick={onClickAddCart}
+                      >
+                        <View className={`goods-buy-toolbar__btn btn-add-cart ${isDrug && 'drug-btn'}`} style={'background: ' + colors.data[0].accent}>
+                          {isDrug ? '加入药品清单' : '添加至购物车'}
+                        </View>
+                      </FormIdCollector>
+                    )}
+                    {!isDrug && (
+                        <FormIdCollector
+                          sync
+                          onClick={onClickFastBuy}
+                        >
+                          <View className={`goods-buy-toolbar__btn btn-fast-buy ${type !== 'normal' && type !== 'limited_time_sale' && 'marketing-btn'}`} style={'background: ' + colors.data[0].primary}>{fastBuyText}</View>
+                        </FormIdCollector>
+                      )
+                    }
                   </View>
-                </FormIdCollector>
-              )}
-              {!isDrug && (
-                  <FormIdCollector
-                    sync
-                    onClick={onClickFastBuy}
-                  >
-                    <View className={`goods-buy-toolbar__btn btn-fast-buy ${type !== 'normal' && type !== 'limited_time_sale' && 'marketing-btn'}`} style={'background: ' + colors.data[0].primary}>{fastBuyText}</View>
-                  </FormIdCollector>
-                )
+                  : <View className='goods-buy-toolbar__btns btn-disabled'>
+                      <Button disabled className={`goods-buy-toolbar__btn btn-fast-buy ${isDrug && 'drug-btn'}`}>
+                        暂不可售
+                      </Button>
+                    </View>
               }
+
             </View>)
         }
       </View>
