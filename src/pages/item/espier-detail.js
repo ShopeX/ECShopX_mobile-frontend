@@ -1171,15 +1171,9 @@ export default class Detail extends Component {
                 style='width: 60%; text-align: center'
               >
                 {
-                  info.approve_status !== 'onsale'
-                    ? <Text>当前商品已下架</Text>
-                    : <Text>
-                        {
-                          !startActivity
-                            ? 活动即将开始
-                            : 当前商品无货
-                        }
-                      </Text>
+                  !startActivity
+                    ? <Text>活动即将开始</Text>
+                    : <Text>当前商品无货</Text>
                 }
               </View>
             </GoodsBuyToolbar>)
