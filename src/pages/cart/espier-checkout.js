@@ -758,9 +758,14 @@ export default class CartCheckout extends Component {
     try {
       let params = this.getParams()
 
-      const { distributor_id } = Taro.getStorageSync('curStore')
-
-      params.distributor_id = this.getShopId() || distributor_id
+      
+      if (APP_PLATFORM === 'standard') {
+        const { distributor_id } = Taro.getStorageSync('curStore')
+        params.distributor_id = this.getShopId() || distributor_id
+      } else {
+        const { shop_id } = this.$router.params
+        params.distributor_id = this.getShopId() || shop_id
+      }
 
       delete params.items
       // 积分不开票
