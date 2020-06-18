@@ -3,10 +3,10 @@
  * @GitHub: https://github.com/973749104
  * @Blog: https://liuhgxu.com
  * @Description: 团购首页
- * @FilePath: /feat-Unite-group-by/src/groupBy/pages/home/index.js
+ * @FilePath: /unite-vshop/src/groupBy/pages/home/index.js
  * @Date: 2020-04-23 16:38:16
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-15 11:34:13
+ * @LastEditTime: 2020-06-18 11:55:28
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Swiper, SwiperItem } from '@tarojs/components'
@@ -61,6 +61,7 @@ export default class GroupByIndex extends Component {
   config = {
     navigationBarTitleText: '团购'
   }
+  
   // 获取定位
   init = async () => {
     if (!S.getAuthToken()) {
@@ -99,12 +100,15 @@ export default class GroupByIndex extends Component {
   // 获取附近活动社区
   getNearBuyCommunity = () => {
     const currentCommunity = Taro.getStorageSync('community')
+    const { current } = this.state
     if (currentCommunity) {
-      this.setState({
-        current: currentCommunity
-      }, () => {
-        this.getActiveData(true)
-      })
+      if (currentCommunity.community_id !== current.community_id) {
+        this.setState({
+          current: currentCommunity
+        }, () => {
+          this.handleRefresh(true)
+        })
+      }
     } else {
       const { lbs } = this.state
       api.groupBy.activityCommunity(lbs).then(res => {
@@ -112,7 +116,7 @@ export default class GroupByIndex extends Component {
         this.setState({
           current: res
         }, () => {
-          this.getActiveData(true)
+          this.handleRefresh(true)
         })
       })
     }
@@ -123,6 +127,7 @@ export default class GroupByIndex extends Component {
     const { current, category, param, list } = this.state
     // 原列表数据
     const oldList = isRefrsh ? [] : list[0].good
+
     api.groupBy.activityDetail({
       ...param,
       community_id: current.community_id,
@@ -166,8 +171,11 @@ export default class GroupByIndex extends Component {
 
   // 下拉刷新
   handleRefresh = () => {
+    const { param } = this.state
+    param.page = 1
     this.setState({
-      isRefresh: true
+      isRefresh: true,
+      param
     })
     this.getActiveData(true)
   }
