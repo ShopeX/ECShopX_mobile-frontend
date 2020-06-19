@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/component/orderItem/index.js
  * @Date: 2020-05-09 15:10:18
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-17 14:28:47
+ * @LastEditTime: 2020-06-18 18:19:18
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
@@ -54,7 +54,7 @@ export default class OrderItem extends Component {
             title: '支付成功',
             mask: true,
             complete: () => {
-              Taro.redirectTo({
+              Taro.navigateTo({
                 url: `/groupBy/pages/orderDetail/index?orderId=${info.orderId}`
               })
             }
@@ -69,6 +69,7 @@ export default class OrderItem extends Component {
       })
     })
   }
+  
   render () {
     const { info } = this.props
     return (

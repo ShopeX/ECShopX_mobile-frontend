@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/orderDetail/index.js
  * @Date: 2020-05-08 15:07:31
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-17 14:41:57
+ * @LastEditTime: 2020-06-18 18:25:09
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
@@ -31,7 +31,8 @@ export default class OrderDetail extends Component {
       currtent: {},
       activityStatus: '',
       deliveryDate: '',
-      qrcodeUrl: ''
+      qrcodeUrl: '',
+      orderId: ''
     }
   }
   
@@ -65,6 +66,7 @@ export default class OrderDetail extends Component {
       // 清除倒计时
       timeId = ''
       clearTimeout(timeId)
+      console.log('执行回调')
     }
     this.setState({
       timeId
@@ -91,9 +93,10 @@ export default class OrderDetail extends Component {
     }).then(res => {
       const { orderInfo } = res
       this.setState({
+        orderId: orderInfo.order_id,
         list: orderInfo.items,
         // currtent: currentCommunity,
-        totalItemNum: orderInfo.totalItemNum,
+        totalItemNum: orderInfo.items.reduce((total, val) => total += val.num, 0),
         totalFee: (orderInfo.total_fee / 100).toFixed(2),
         itemFee: (orderInfo.item_fee / 100).toFixed(2),
         cancelTime: orderInfo.auto_cancel_seconds,
@@ -107,6 +110,42 @@ export default class OrderDetail extends Component {
       })
     })
   }
+
+  // 立即支付
+  handlePay = (e) => {
+    e.stopPropagation()
+    const { orderId } = this.state
+    api.groupBy.payConfig({
+      order_id: orderId,
+      order_type: 'normal_community',
+      pay_type: 'wxpay'
+    }).then(res => {
+      Taro.requestPayment({
+        timeStamp: res.timeStamp,
+        nonceStr: res.nonceStr,
+        package: res.package,
+        signType: res.signType,
+        paySign: res.paySign,
+        success: () => { 
+          Taro.showToast({
+            title: '支付成功',
+            mask: true,
+            complete: () => {
+              Taro.redirectTo({
+                url: `/groupBy/pages/orderDetail/index?orderId=${orderId}`
+              })
+            }
+          })
+        },
+        fail: () => { 
+          Taro.showModal({
+            content: '支付失败',
+            showCancel: false
+          })
+        }
+      })
+    })
+  }  
 
   render () {
     const { 
@@ -175,7 +214,10 @@ export default class OrderDetail extends Component {
               <View>-¥7.50</View>
             </View>
             <View className='infoLine flexEnd'>
-              <Text>{ orderStatus === 'NOTPAY' ? '需支付' : '实际支付' }： <Text className='price'>¥{ totalFee }</Text></Text>
+              <Text>
+                { orderStatus === 'NOTPAY' ? '需支付' : '合计' }： 
+                <Text className='price'>¥{ totalFee }</Text>
+              </Text>
             </View>
           </View>
           {/* 订单详情 */}
@@ -206,7 +248,7 @@ export default class OrderDetail extends Component {
           }
           {
             orderStatus === 'NOTPAY' && <View className='btnGroup'>
-              <View className='btn pay'>
+              <View className='btn pay' onClick={this.handlePay.bind(this)}>
                 去支付
               </View>
               <View className='btn'>

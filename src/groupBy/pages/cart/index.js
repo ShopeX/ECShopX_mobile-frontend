@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/cart/index.js
  * @Date: 2020-04-23 16:38:16
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-17 11:05:15
+ * @LastEditTime: 2020-06-18 17:40:45
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
@@ -88,7 +88,7 @@ export default class GroupByIndex extends Component {
   calcSum = () => {
     const { list } = this.state
     const sum = list.reduce((total, val) => {
-      const price = Number(val.price) * 10 * 10
+      const price = Number(val.price) * 10 * 10 * val.num
       const add = val.isChecked ? price : 0
       return total += add
     }, 0)
