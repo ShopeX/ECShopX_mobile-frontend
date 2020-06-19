@@ -24,7 +24,7 @@ export default class TradeRefundDetail extends Component {
 
   async fetch () {
     const { aftersales_bn, item_id, order_id } = this.$router.params
-    const { aftersales: info, orderInfo, aftersalesAddress } = await api.aftersales.info({
+    const { aftersales: info, orderInfo } = await api.aftersales.info({
       aftersales_bn,
       item_id,
       order_id
@@ -37,7 +37,7 @@ export default class TradeRefundDetail extends Component {
       orderInfo,
       info,
       progress,
-      aftersalesAddress
+      aftersalesAddress: info.aftersales_address
     })
   }
 
@@ -148,16 +148,16 @@ export default class TradeRefundDetail extends Component {
             progress === 1 ?
             <View>
               {
-                aftersalesAddress.aftersales_name ?
-                <View className='info-name'>售后联系人：<Text className='info-value'>{aftersalesAddress.aftersales_name}</Text></View> : null
+                aftersalesAddress.contact ?
+                <View className='info-name'>售后联系人：<Text className='info-value'>{aftersalesAddress.contact}</Text></View> : null
               }
               {
-                aftersalesAddress.aftersales_mobile ?
-                <View className='info-name'>售后电话：<Text className='info-value'>{aftersalesAddress.aftersales_mobile}</Text></View> : null
+                aftersalesAddress.mobile ?
+                <View className='info-name'>售后电话：<Text className='info-value'>{aftersalesAddress.mobile}</Text></View> : null
               }
               {
-                aftersalesAddress.aftersales_address ?
-                <View className='info-name'>售后地址：<Text className='info-value'>{aftersalesAddress.aftersales_address}</Text></View> : null
+                aftersalesAddress.address ?
+                <View className='info-name'>售后地址：<Text className='info-value'>{aftersalesAddress.address}</Text></View> : null
               }
             </View> : null
           }
