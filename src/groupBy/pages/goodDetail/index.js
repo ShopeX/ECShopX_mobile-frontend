@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/goodDetail/index.js
  * @Date: 2020-05-07 09:58:08
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-23 11:53:25
+ * @LastEditTime: 2020-06-23 15:23:17
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Swiper, SwiperItem, Image, Text, Canvas } from '@tarojs/components'
@@ -236,7 +236,10 @@ export default class GoodDetail extends Component {
           {/* 商品名称 */}
           <View className='goodName'>
           <View className='name'>{ goodInfo.goodName }</View>
-            <View className='saled' onClick={this.showPoster}>已售: 9210</View>
+            <View className='saled' onClick={this.showPoster}>
+              <AtIcon value='share' size='20' color='#999'></AtIcon>
+              分享
+            </View>
           </View>
           {/* 商品说明 */}
           <View className='desc'>

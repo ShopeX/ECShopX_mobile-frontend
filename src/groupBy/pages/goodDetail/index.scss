@@ -60,6 +60,8 @@
         font-size: 32px;
       }
       .saled {
+        display: flex;
+        flex-direction: column;
         font-size: 22px;
         color: #999;
         overflow: hidden;
