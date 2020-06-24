@@ -6,13 +6,14 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/cart/index.js
  * @Date: 2020-04-23 16:38:16
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-22 14:28:33
+ * @LastEditTime: 2020-06-24 16:23:22
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import { NavBar } from '@/components'
 import api from '@/api'
+import S from '@/spx'
 import { formatGood } from '../../utils'
 import TabBar from '../../component/tabBar'
 import CartList from '../../component/cartList'
@@ -37,7 +38,18 @@ export default class GroupByIndex extends Component {
   }
 
   componentDidShow () {
-    this.getCartData()
+    if (S.getAuthToken()) {
+      this.getCartData()
+    } else {
+      Taro.showToast({
+        icon: 'none',
+        title: '请登录'
+      })
+      setTimeout(() => {
+        S.login(this, true)
+      }, 1000)
+      return
+    }
   }
 
   config = {

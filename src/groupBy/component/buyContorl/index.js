@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/component/buyContorl/index.js
  * @Date: 2020-04-26 16:01:13
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-22 10:10:54
+ * @LastEditTime: 2020-06-24 16:02:20
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
@@ -37,6 +37,9 @@ export default class buyContorl extends Component {
         icon: 'none',
         title: '请登录'
       })
+      setTimeout(() => {
+        S.login(this, true)
+      }, 1000)
       return
     }
     const { addQuantity, reduceQuantity, quantity, isCanReduce, limit, store } = this.props

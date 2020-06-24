@@ -23,11 +23,12 @@ page {
     align-items: center;
     border-bottom: solid 1px #e5e5e5;
     z-index: 9;
+    padding: 0 32px;
     .avatar {
       width: 85px;
       height: 85px;
       border-radius: 100%;
-      margin: 0 32px;
+      margin-right: 32px;
     }
     .info {
       flex: 1;
@@ -37,6 +38,12 @@ page {
       flex-direction: column;
       justify-content: space-around;
       .address {
+        &.noLogin {
+          font-size: 28px;
+          color: #333;
+        }
+        display: flex;
+        align-items: center;
         font-size: 26px;
         color: #999;
         overflow: hidden;

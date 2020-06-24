@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/home/index.js
  * @Date: 2020-04-23 16:38:16
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-23 14:59:49
+ * @LastEditTime: 2020-06-24 16:24:16
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Swiper, SwiperItem } from '@tarojs/components'
@@ -42,7 +42,10 @@ export default class GroupByIndex extends Component {
         pageSize: 10
       },
       // 当前地区
-      current: {},
+      current: {
+        city: '',
+        area: ''
+      },
       // 分类
       category: 1,
       // 定位信息
@@ -66,17 +69,17 @@ export default class GroupByIndex extends Component {
   
   // 获取定位
   init = async () => {
-    if (!S.getAuthToken()) {
-      Taro.showToast({
-        icon: 'none',
-        title: '请登录'
-      }).then(() => {
-        S.login(this, true)
-      })
-      return
-    }
+    // if (!S.getAuthToken()) {
+    //   Taro.showToast({
+    //     icon: 'none',
+    //     title: '请登录'
+    //   }).then(() => {
+    //     S.login(this, true)
+    //   })
+    //   return
+    // }
     let userInfo = Taro.getStorageSync('userinfo')
-    if (!userInfo) {
+    if (S.getAuthToken() && !userInfo) {
       const info = await api.groupBy.info()
       userInfo = {
         username: info.memberInfo.username,
@@ -151,8 +154,13 @@ export default class GroupByIndex extends Component {
       community_id: current.community_id,
       activity_goods_category_key: category
     }).then(res => {
-      if (!res) {
+      if (!res.status) {
         this.setState({
+          list: [],
+          banner: [],
+          isRefresh: false,
+          isLoading: false,
+          isEnd: false,
           isEmpty: true
         })
         Taro.hideLoading()
@@ -250,10 +258,13 @@ export default class GroupByIndex extends Component {
           fixed='true'
         />
         <View className='header' onClick={this.goCommunity}>
-          <Image className='avatar' src={userInfo.avatar}></Image>
+          { userInfo.avatar && <Image className='avatar' src={userInfo.avatar}></Image> }
           <View className='info'>
-            <View className='name'>{userInfo.username}</View>
-            <View className='address'>提货: {current.community_name}</View>
+            <View className='name'>{userInfo.username || '当前社区：'}</View>
+            <View className={`address ${ !userInfo.username && 'noLogin'}`}>
+              { !userInfo.username ? <View className='icon icon-periscope'></View> : '提货:'}
+              { current.city + current.area }({current.community_name})
+            </View>
           </View>
         </View>
         <ScrollView

@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/orderList/index.js
  * @Date: 2020-05-09 10:17:35
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-19 17:05:08
+ * @LastEditTime: 2020-06-24 15:50:29
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
@@ -118,7 +118,6 @@ export default class OrderList extends Component {
       status: 3
     }]
     const { list, param, isRefresh, isLoading, isEnd, isEmpty } = this.state
-    console.log('刷新绘制')
     return (
       <View className='orderList'>
         <NavBar
