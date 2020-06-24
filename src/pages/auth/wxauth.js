@@ -56,7 +56,11 @@ export default class WxAuth extends Component {
       })
       return this.redirect()
     } catch (e) {
-      console.log(e)
+      if (e.res.data.error.code === 401002) {
+        setTimeout(() => {
+          Taro.navigateBack()
+        }, 1500)
+      }
       this.setState({
         isAuthShow: true
       })

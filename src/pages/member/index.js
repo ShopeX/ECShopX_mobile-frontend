@@ -63,7 +63,9 @@ export default class MemberIndex extends Component {
   }
 
   componentDidShow () {
-    this.getSalesperson()
+    if (S.getAuthToken()) {
+      this.getSalesperson()
+    }
   }
 
   async fetch () {
@@ -297,6 +299,13 @@ export default class MemberIndex extends Component {
                       <View className='member-assets__label'>积分</View>
                       <View className='member-assets__value'>{memberAssets.point_total_count}</View>
                     </View>
+                    {/* <View
+                      className='view-flex-item'
+                      onClick={this.handleClick.bind(this, `/pages/member/recharge?deposit=${memberAssets.point_total_count}`)}
+                    >
+                      <View className='member-assets__label'>储值</View>
+                      <View className='member-assets__value'>{memberAssets.point_total_count / 100}</View>
+                    </View>                  */}
                     <View
                       className='view-flex-item'
                       onClick={this.handleClick.bind(this, '/pages/member/item-fav')}

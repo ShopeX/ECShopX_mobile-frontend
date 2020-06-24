@@ -134,6 +134,12 @@ class API {
         }
 
         if (statusCode === 401) {
+          if (data.error && data.error.code === 401002) {
+            this.errorToast({
+              msg: '帐号已被禁用'
+            })
+            return Promise.reject(this.reqError(res, '帐号已被禁用'))
+          }
           S.logout()
           // if (showError) {
           //   data.err_msg = data.err_msg || '登录过期正在重新登录'

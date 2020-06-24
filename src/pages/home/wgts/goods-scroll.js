@@ -83,7 +83,7 @@ export default class WgtGoodsScroll extends Component {
                   ? <View className='wgt__subtitle'>{base.subtitle}</View>
                   : <View>
                       {
-                        config.lastSeconds != 0
+                        timer && config.lastSeconds != 0
                           ? <AtCountdown
                             className='countdown__time'
                             isShowDay
