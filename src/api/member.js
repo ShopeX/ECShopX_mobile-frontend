@@ -95,6 +95,11 @@ export function getRechargeNumber () {
   return req.get('/deposit/rechargerules')
 }
 
+// 充值
+export function rehcargePay (params) {
+  return req.post('/deposit/recharge', params)
+}
+
 export function qrcodeData () {
   return req.get('/promoter/qrcode')
 }
