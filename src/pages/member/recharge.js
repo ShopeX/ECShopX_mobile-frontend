@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/pages/member/recharge.js
  * @Date: 2020-01-13 17:38:42
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-28 10:38:48
+ * @LastEditTime: 2020-06-28 15:14:45
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Input } from '@tarojs/components'
@@ -196,6 +196,13 @@ export default class Recharge extends Component {
     })
   }
 
+  // 前往充值协议
+  toRule = () => {
+    Taro.navigateTo({
+      url: '/pages/auth/reg-rule?type=1'
+    })
+  }
+
   // H5支付
   // h5Pay = (param) => {
   // }
@@ -227,7 +234,7 @@ export default class Recharge extends Component {
           <View className='price'>充值金额</View>
           <View className='pro'>
             点击“立即充值”即表示阅读并同意
-            《<Text className='proText'>充值协议</Text>》
+            《<Text className='proText' onClick={this.toRule.bind(this)}>充值协议</Text>》
           </View>
         </View>
         <View className='main'>

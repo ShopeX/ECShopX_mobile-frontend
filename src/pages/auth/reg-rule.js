@@ -18,7 +18,12 @@ export default class RegRule extends Component {
   }
 
   componentDidMount () {
-    this.fetch()
+    const { type } = this.$router.params
+    if (type) {
+      this.topUpRule()
+    } else {
+      this.fetch()
+    }
   }
 
   async fetch () {
@@ -27,6 +32,14 @@ export default class RegRule extends Component {
       info: content
     })
     console.log(content)
+  }
+
+  // 充值协议
+  async topUpRule () {
+    const { content } = await api.member.depositPayRule()
+    this.setState({
+      info: content
+    })
   }
 
   render () {

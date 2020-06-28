@@ -658,18 +658,15 @@ export default class CartCheckout extends Component {
 
   resolvePayError (e) {
     const { payType } = this.state
-    if (payType === 'point') {
+    if (payType === 'point' || payType === 'deposit') {
       // let payTypeNeedsChange = ['当前积分不足以支付本次订单费用', '当月使用积分已达限额'].includes(e.message)
       this.setState({
-        disabledPayment: { name: 'point', message: e.message },
+        disabledPayment: { name: payType, message: e.message },
         payType: 'wxpay'
       }, () => {
         this.calcOrder()
       })
     }
-
-
-    // 如果是余额支付
   }
 
   submitPay = () => {
