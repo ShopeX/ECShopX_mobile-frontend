@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/nextNotice/index.js
  * @Date: 2020-06-22 15:22:59
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-28 16:07:52
+ * @LastEditTime: 2020-06-28 16:16:02
  */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
@@ -73,6 +73,7 @@ export default class nextNotice extends Component {
         this.setState({
           isNotData: true
         })
+        return
       }
       const total_count = res.items.total_count
       const isEnd = param.page >= (total_count / param.pageSize)
