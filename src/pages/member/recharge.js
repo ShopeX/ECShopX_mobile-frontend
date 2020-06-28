@@ -6,13 +6,14 @@
  * @FilePath: /unite-vshop/src/pages/member/recharge.js
  * @Date: 2020-01-13 17:38:42
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-24 10:27:36
+ * @LastEditTime: 2020-06-28 10:38:48
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Input } from '@tarojs/components'
 import { NavBar } from '@/components'
 import { connect } from '@tarojs/redux'
 import { withLogin } from '@/hocs'
+import S from '@/spx'
 import { classNames } from '@/utils'
 import api from '../../api/index'
 // import InputNumber from '@/components/input-number'
@@ -52,20 +53,15 @@ export default class Recharge extends Component {
     }
   }
 
-  componentWillMount () {
-
-  }
-
   componentDidMount () {
+    this.getMemberInfo()
     // 获取充值金额列表
     api.member.getRechargeNumber().then(res => {
-      const { deposit = 0 } = this.$router.params
       const amounts = res.list
       amounts.push({
         money: '其他金额'
       })
       this.setState({
-        deposit,
         amounts
       })
     })    
@@ -75,6 +71,14 @@ export default class Recharge extends Component {
     this.setStore()
   }
 
+  // 获取会员详情
+  getMemberInfo () {
+    api.member.memberInfo().then(res => {
+      this.setState({
+        deposit: res.deposit
+      })
+    })
+  }
   // 设置门店
   setStore = (isChange = false) => {
     const store = Taro.getStorageSync('curStore')
@@ -118,14 +122,16 @@ export default class Recharge extends Component {
     this.setState({
       value
     })
-
     return value
   }
 
   // 支付
   recharge = () => {
+    if (!S.getAuthToken()) {
+      return S.toast('请先登录')
+    }
+    // const userInfo = Taro.getStorageSync('userinfo')
     const { recharge_rule_id, currentShop, value } = this.state
-    console.log(currentShop)
     const { poiid = '', shop_id = '', store_name = '' } = currentShop
     // 判断充值金额
     if (!value) {
@@ -141,35 +147,58 @@ export default class Recharge extends Component {
       shop_id,
       shop_name: store_name,
       recharge_rule_id,
-      totalFee: Number(value) * 100,
+      total_fee: Number(value) * 100,
       member_card_code: '',
       body: `${store_name}充值`,
       detail: '充值'
     }
     // 请求
-    console.log(param)
+    Taro.showLoading({
+      title: '拉起支付...',
+      mask: true
+    })
     api.member.rehcargePay(param).then(res => {
-      console.log(res)
+      Taro.hideLoading()
+      this.weappPay(res)
     })
   }
 
   // 微信支付
   weappPay = (param) => {
     Taro.requestPayment({
-      timeStamp: '',
-      nonceStr: '',
-      package: '',
-      signType: 'MD5',
-      paySign: '',
-      success: () => {},
-      fail: () => {}
+      timeStamp: param.timeStamp,
+      nonceStr: param.nonceStr,
+      package: param.package,
+      signType: param.signType,
+      paySign: param.paySign,
+      success: () => {
+        Taro.showModal({
+          content: '支付成功',
+          showCancel: false,
+          success: res => {
+            if (res.confirm) {
+              this.getMemberInfo()
+            }
+          }
+        })
+      },
+      fail: () => {
+        Taro.showModal({
+          content: '支付失败',
+          showCancel: false,
+          success: res => {
+            if (res.confirm) {
+              this.getMemberInfo()
+            }
+          }
+        })
+      }
     })
   }
 
   // H5支付
-  h5Pay = (param) => {
-
-  }
+  // h5Pay = (param) => {
+  // }
 
   render () {
     const { currentShop, deposit, amounts, active, value, ruleValue } = this.state
@@ -226,7 +255,7 @@ export default class Recharge extends Component {
                 type='number'
                 placeholder='请输入金额'
                 value={value}
-                onChange={this.handleQuantityChange.bind(this)}
+                onInput={this.handleQuantityChange.bind(this)}
               />
             </View>
           }

@@ -122,7 +122,7 @@ export default class MemberIndex extends Component {
       },
       orderCount,
       memberDiscount: memberDiscount.length > 0 ? memberDiscount[memberDiscount.length-1].privileges.discount_desc : '',
-      memberAssets: assets
+      memberAssets: {...assets, deposit: res.deposit}
     })
   }
 
@@ -301,10 +301,10 @@ export default class MemberIndex extends Component {
                     </View>
                     <View
                       className='view-flex-item'
-                      onClick={this.handleClick.bind(this, `/pages/member/recharge?deposit=${memberAssets.point_total_count}`)}
+                      onClick={this.handleClick.bind(this, `/pages/member/recharge`)}
                     >
                       <View className='member-assets__label'>储值</View>
-                      <View className='member-assets__value'>{memberAssets.point_total_count / 100}</View>
+                      <View className='member-assets__value'>{(memberAssets.deposit || 0) / 100}</View>
                     </View>                 
                     <View
                       className='view-flex-item'
