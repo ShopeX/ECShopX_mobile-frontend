@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/nextNotice/index.js
  * @Date: 2020-06-22 15:22:59
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-28 18:18:38
+ * @LastEditTime: 2020-06-28 18:30:37
  */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
@@ -69,6 +69,7 @@ export default class nextNotice extends Component {
       ...param,
       community_id: currentCommunity.community_id
     }).then(res => {
+      Taro.hideLoading()
       if (!res.status) {
         this.setState({
           isNotData: false
@@ -89,7 +90,6 @@ export default class nextNotice extends Component {
       }, () => {
         this.countdown()
       })
-      Taro.hideLoading()
     })
   }
   
