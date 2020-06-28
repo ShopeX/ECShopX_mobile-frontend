@@ -96,18 +96,18 @@ export default class PaymentPicker extends Component {
             {
               isShowBalance &&
               <View
-                className={`payment-item ${disabledPayment && disabledPayment.name === 'balance' ? 'is-disabled' : ''}`}
-                onClick={this.handlePaymentChange.bind(this, 'balance')}
+                className={`payment-item ${disabledPayment && disabledPayment.name === 'deposit' ? 'is-disabled' : ''}`}
+                onClick={this.handlePaymentChange.bind(this, 'deposit')}
               >
                 <View className='payment-item__bd'>
                   <Text className='payment-item__title'>余额支付</Text>
-                  <Text className='payment-item__desc'>{disabledPayment && disabledPayment.name === 'balance' ? disabledPayment.message : '使用余额支付'}</Text>
+                  <Text className='payment-item__desc'>{disabledPayment && disabledPayment.name === 'deposit' ? disabledPayment.message : '使用余额支付'}</Text>
                 </View>
                 <View className='payment-item__ft'>
                   <SpCheckbox
                     disabled={!!disabledPayment}
                     colors={colors}
-                    checked={localType === 'balance'}
+                    checked={localType === 'deposit'}
                   ></SpCheckbox>
                 </View>
               </View>
