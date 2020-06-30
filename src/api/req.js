@@ -150,7 +150,7 @@ class API {
         }
 
         if (statusCode >= 400) {
-          if (showError) {
+          if (showError && data.error.message !== '当前余额不足以支付本次订单费用，请充值！') {
             this.errorToast(data)
           }
           return Promise.reject(this.reqError(res))

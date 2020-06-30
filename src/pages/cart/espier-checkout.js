@@ -660,13 +660,15 @@ export default class CartCheckout extends Component {
     const { payType } = this.state
     if (payType === 'point' || payType === 'deposit') {
       if (payType === 'deposit') {
+        Taro.hideLoading()
+
         Taro.showModal({
           content: e.message,
           confirmText: '去充值',
           success: res => {
             if (res.confirm) {
               Taro.redirectTo({
-                url: '/pages/member/recharge'
+                url: '/others/pages/recharge/index'
               })
             } else {
               this.setState({
