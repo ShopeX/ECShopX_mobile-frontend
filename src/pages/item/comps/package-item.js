@@ -19,6 +19,7 @@ export default class PackageItem extends Component {
   }
 
   static defaultProps = {
+    distributorId: 0
   }
 
   constructor(props) {
@@ -278,8 +279,7 @@ export default class PackageItem extends Component {
       })
     }
 
-    const { distributor_id } = Taro.getStorageSync('curStore')
-
+    const { distributorId } = this.props
     const query = {
       isAccumulate: false,
       item_id: id,
@@ -288,7 +288,7 @@ export default class PackageItem extends Component {
       shop_type: 'distributor',
       activity_id: packageId,
       activity_type: 'package',
-      distributor_id
+      distributor_id: distributorId
 		}
 		const res = await api.cart.add(query)
 

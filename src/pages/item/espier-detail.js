@@ -372,9 +372,12 @@ export default class Detail extends Component {
 
   handlePackageClick = () => {
     const { info } = this.state
-
+    let { distributor_id } = info
+    if (APP_PLATFORM === 'standard') {
+      distributor_id = Taro.getStorageSync('curStore').distributor_id
+    }
     Taro.navigateTo({
-      url: `/pages/item/package-list?id=${info.item_id}&distributor_id=${info.distributor_id}`
+      url: `/pages/item/package-list?id=${info.item_id}&distributor_id=${distributor_id}`
     })
   }
 

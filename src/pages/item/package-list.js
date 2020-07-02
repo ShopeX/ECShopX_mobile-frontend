@@ -72,7 +72,7 @@ export default class PackageList extends Component {
 
   render () {
     const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType } = this.state
-
+    const { distributor_id } = this.$router.params
     return (
       <View className='page-package-goods'>
         <ScrollView
@@ -93,6 +93,7 @@ export default class PackageList extends Component {
                     >
                       <PackageItem
                         info={item}
+                        distributorId={distributor_id}
                         current={currentPackage}
                         onClick={this.handleItemClick.bind(this, item.package_id)}
                       />
