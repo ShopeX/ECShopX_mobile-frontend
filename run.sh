@@ -1,3 +1,13 @@
+###
+# @Author: Arvin
+# @GitHub: https://github.com/973749104
+# @Blog: https://liuhgxu.com
+# @Description: 说明
+ # @FilePath: /unite-vshop/run.sh
+# @Date: 2020-06-10 10:15:51
+ # @LastEditors: Arvin
+ # @LastEditTime: 2020-06-11 09:56:44
+### 
 #/usr/bash
 
 cd $(dirname "$0")
@@ -24,55 +34,59 @@ then
     fi
     appid=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^appid/{print $3}')
     baseUrl=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^base_url/{print $3}')
+    appName=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^app_name/{print $3}')
+    websocket=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^websocket/{print $3}')
+    comppany_id=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^comppany_id/{print $3}')
+    platform=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^platform/{print $3}')
+    custom_server=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^custom_server/{print $3}')
+    home_page=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^home_page/{print $3}')
     break
   done
-else
-  appid=${1}
-  baseUrl=${2}
-fi
+    else
+      appid=${1}
+      baseUrl=${2}
+      appName=${3}
+      websocket=${4}
+      comppany_id=${5}
+      platform=${6}
+      custom_server=${7}
+      home_page=${8}
+    fi
 
-version=$(git describe --tags `git rev-list --tags --max-count=1`)
-desc="微商城小程序"
+# version=$(git describe --tags `git rev-list --tags --max-count=1`)
+# desc="微商城小程序"
 
 # 需要被替换的小程序appid，在./src/ext.json和 ./project.config.json
-oldAppid="wx912913df9fef6ddd"
-#需要被替换的 config/host.js 中prod环境域名
-oladBaseUrl="ecshopx.shopex123.com/index.php"
+# oldAppid="wx912913df9fef6ddd"
+# oldAppName="通用小程序"
 
-git pull > /dev/null
-echo "【SUCCESS】更新代码成功"
+# if  grep -q ${oldAppid} ./src/ext.json
+# then
+#   sed -i "" "s#${oldAppid}#${appid}#g" ./src/ext.json
+#   sed -i "" "s#${oldAppName}#${appName}#g" ./src/ext.json
+#   sed -i "" "s#${oldAppid}#${appid}#g" ./project.config.json
+#   echo "【SUCCESS】替换appid成功"
+# else
+#   echo "【ERROR】待替换的小程序APPID ${oldAppid} 在./src/ext.json 中不存在"
+#   exit
+# fi
 
-if  grep -q ${oldAppid} ./src/ext.json
-then
-  sed -i "" "s#${oldAppid}#${appid}#g" ./src/ext.json
-  echo "【SUCCESS】替换ext.json成功"
-else
-  echo "【ERROR】待替换的小程序APPID ${oldAppid} 在./src/ext.json 中不存在"
-  git checkout .
-  exit
-fi
+echo '{
+  "extEnable": true,
+  "extAppid": "'${appid}'",
+  "ext": {
+    "company_id": "1",
+    "appid": "'${appid}'",
+    "wxa_name": "'${appName}'"
+  },
+  "window": {
+      "backgroundTextStyle": "light",
+      "navigationBarBackgroundColor": "#fff",
+      "navigationBarTitleText": "微商城",
+      "navigationBarTextStyle": "black"
+  }
+}' > ./src/ext.json
 
-# 替换请求的URL地址
-sed -i "" "s#${oladBaseUrl}#${baseUrl}#g" ./config/host.js
-
-if  grep -q ${oldAppid} ./project.config.json
-then
-  sed -i "" "s#${oldAppid}#${appid}#g" ./project.config.json
-  echo "【SUCCESS】替换project.config.json成功"
-else
-  echo "【ERROR】待替换的小程序APPID ${oldAppid} 在./project.config.json 中不存在"
-  git checkout .
-  exit
-fi
-
-echo "【SUCCESS】编译开始......"
+echo "npm run build:weapp"
 
 npm run build:weapp
-
-echo "【SUCCESS】编译完成"
-
-# echo "【SUCCESS】准备上传小程序"
-# echo "/Applications/wechatwebdevtools.app/Contents/MacOS/cli -u ${version}@`pwd`/dist --upload-desc '${desc}'"
-# /Applications/wechatwebdevtools.app/Contents/MacOS/cli -u ${version}@`pwd`/dist --upload-desc "${desc}"
-
-git checkout .

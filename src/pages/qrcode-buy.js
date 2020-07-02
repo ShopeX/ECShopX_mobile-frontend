@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
-import { AtInput, AtFloatLayout } from 'taro-ui'
+import { AtFloatLayout } from 'taro-ui'
 import { SpToast, CouponItem, SpCheckbox, SpHtmlContent } from '@/components'
 import api from '@/api'
 import { pickBy, normalizeQuerys } from '@/utils'
@@ -146,7 +146,7 @@ export default class QrcodeBuy extends Component {
 
     handleTrade = () => {
         Taro.navigateTo({
-            url: '/pages/trade/list'
+            url: '/subpage/pages/trade/list'
         })
     }
 

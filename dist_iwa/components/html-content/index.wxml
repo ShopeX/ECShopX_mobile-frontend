@@ -1,6 +1,0 @@
-<block>
-    <view class="{{classes}}">
-        <import src="../../components/wxParse/wxParse.wxml" __triggerObserer="{{ _triggerObserer }}" />
-        <template is="wxParse" __triggerObserer="{{ _triggerObserer }}" data="{{wxParseData:content.nodes}}"></template>
-    </view>
-</block>

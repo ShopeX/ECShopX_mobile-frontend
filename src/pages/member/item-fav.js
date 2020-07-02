@@ -3,10 +3,10 @@ import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, GoodsItem, NavBar, SpNote, RecommendItem } from '@/components'
-import StoreFavItem from './comps/store-fav-item'
 import api from '@/api'
 import { pickBy } from '@/utils'
+import { BackToTop, Loading, GoodsItem, NavBar, SpNote, RecommendItem } from '@/components'
+import StoreFavItem from './comps/store-fav-item'
 
 import './item-fav.scss'
 

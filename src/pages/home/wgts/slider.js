@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
+import { View, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { QnImg } from '@/components'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'

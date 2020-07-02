@@ -15,6 +15,7 @@ import * as trade from './trade'
 import * as user from './user'
 import * as vip from './vip'
 import * as group from './group'
+import * as groupBy from './groupBy'
 import * as wx from './wx'
 
 
@@ -36,5 +37,6 @@ export default {
   distribution,
 	track,
 	vip,
-	group
+  group,
+  groupBy
 }

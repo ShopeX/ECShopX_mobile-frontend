@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Video, SwiperItem } from '@tarojs/components'
+import { View, Video } from '@tarojs/components'
 import { styleNames } from '@/utils'
 import { linkPage } from './helper'
 

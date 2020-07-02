@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, NavBar, CouponItem } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
-import { classNames, pickBy } from '@/utils'
+import { pickBy } from '@/utils'
 
 import './coupon.scss'
 

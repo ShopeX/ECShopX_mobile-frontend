@@ -1,7 +1,7 @@
 
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text } from '@tarojs/components'
-import {AtButton, AtTag, AtInput} from 'taro-ui'
+import { View, Text } from '@tarojs/components'
+import { AtButton, AtTag } from 'taro-ui'
 import { NavBar, SpToast } from '@/components'
 import { withPager } from '@/hocs'
 import api from '@/api'

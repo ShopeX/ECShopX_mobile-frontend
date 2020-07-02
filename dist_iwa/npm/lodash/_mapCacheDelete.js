@@ -1,1 +1,0 @@
-var getMapData=require("./_getMapData.js");function mapCacheDelete(e){var a=getMapData(this,e).delete(e);return this.size-=a?1:0,a}module.exports=mapCacheDelete;

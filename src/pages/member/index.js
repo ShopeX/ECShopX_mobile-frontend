@@ -170,7 +170,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: '/pages/trade/customer-pickup-list'
+      url: '/subpage/pages/trade/customer-pickup-list'
     })
   }
 
@@ -209,7 +209,7 @@ export default class MemberIndex extends Component {
         mobile,
         isPromoter: true
       }
-      console.log(userinfo)
+      // console.log(userinfo)
       Taro.setStorageSync('userinfo', userinfo)
       this.setState({
         info: userinfo
@@ -222,7 +222,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: `/pages/trade/list?status=${type}`
+      url: `/subpage/pages/trade/list?status=${type}`
     })
   }
 
@@ -231,7 +231,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: '/pages/trade/drug-list'
+      url: '/subpage/pages/trade/drug-list'
     })
   }
 
@@ -244,7 +244,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: `/pages/trade/after-sale`
+      url: `/subpage/pages/trade/after-sale`
     })
   }
 
@@ -459,6 +459,13 @@ export default class MemberIndex extends Component {
               isLink
               img='/assets/imgs/group.png'
               onClick={this.handleClick.bind(this, '/pages/member/group-list')}
+            >
+            </SpCell>
+            <SpCell
+              title='我的社区团购'
+              isLink
+              img='/assets/imgs/group.png'
+              onClick={this.handleClick.bind(this, '/groupBy/pages/orderList/index')}
             >
             </SpCell>
             <SpCell

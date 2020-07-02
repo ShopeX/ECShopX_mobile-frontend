@@ -7,6 +7,17 @@
   "parser": "babel-eslint",
   "globals": {
     "TARO_APP": 1,
-    "wx": 1
+    "wx": 1,
+    "APP_NAME": 1,
+    "APP_VERSION": 1,
+    "API_HOST": 1,
+    "APP_BASE_URL": 1,
+    "APP_WEBSOCKET_URL": 1,
+    "APP_INTEGRATION": 1,
+    "APP_COMPANY_ID": 1,
+    "APP_PLATFORM": 1,
+    "APP_CUSTOM_SERVER": 1,
+    "APP_HOME_PAGE": 1,
+    "APP_AUTH_PAGE": 1
   }
 }

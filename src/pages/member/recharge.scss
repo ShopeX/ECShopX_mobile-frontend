@@ -1,0 +1,99 @@
+@import '../../style/imports.scss';
+
+.recharge {
+  .shopName {
+    padding: 15px 10px;
+    font-size: 28px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .balance {
+    padding: 30px;
+    background: #fff;
+    display: flex;
+    .balanceImg {
+      width: 100px;
+      height: 100px;
+      margin-right: 30px;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .balancePrice {
+        font-size: 38px;
+      }
+      .balanceTip {
+        font-size: 24px;
+        color: #999;
+      }
+    }
+  }
+  .balancePro {
+    padding: 30px;
+    .price {
+      font-size: 32px;
+    }
+    .pro {
+      font-size: 24px;
+      color: #999;
+    }
+    .proText {
+      color: #5dade2;
+    }
+  }
+  .main {
+    background: #fff;
+    height: auto;
+    padding-bottom: 10px;
+    .priceList {
+      padding: 15px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      // justify-content: space-around;
+      .default {
+        width: 30%;
+        height: 60px;
+        margin: 10px 1.66%;
+        line-height: 60px;
+        text-align: center;
+        background: #efefef;
+        border-radius: 10px;
+        &.primary {
+          background: $color-brand-primary;
+          color: #fff;
+        }
+      }
+    }
+    .priceInput {
+      width: 95%;
+      margin: 15px auto 25px auto;
+      padding: 0 15px;
+      box-sizing: border-box;
+      border: 1px solid #efefef;
+      height: 65px;
+      line-height: 65px;
+      border-radius: 10px;
+    }
+    .ruleValue {
+      text-align: center;
+      margin: 10px 0;
+      .text{
+        color: #5dade2;
+        font-size: 26px;
+        margin-left: 10px;
+      }
+    }
+    .submit {
+      width: 95%;
+      height: 80px;
+      line-height: 80px;
+      margin: 20px auto 10px auto;
+      text-align: center;
+      color: #fff;
+      border-radius: 15px;
+      background: $color-brand-primary;
+    }
+  }
+}

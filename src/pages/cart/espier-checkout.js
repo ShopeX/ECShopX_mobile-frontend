@@ -13,7 +13,7 @@ import _cloneDeep from 'lodash/cloneDeep'
 import CheckoutItems from './checkout-items'
 import PaymentPicker from './comps/payment-picker'
 // import DrugInfo from './drug-info'
-import OrderItem from '../trade/comps/order-item'
+import OrderItem from '../../components/orderItem/order-item'
 
 import './espier-checkout.scss'
 
@@ -824,7 +824,7 @@ export default class CartCheckout extends Component {
 
     if (isDrug) {
       Taro.redirectTo({
-        url: '/pages/trade/drug-list'
+        url: '/subpage/pages/trade/drug-list'
       })
       return
     }
@@ -848,7 +848,7 @@ export default class CartCheckout extends Component {
 
         this.props.onClearCart()
         Taro.redirectTo({
-          url: `/pages/trade/detail?id=${order_id}`
+          url: `/subpage/pages/trade/detail?id=${order_id}`
         })
       }
 
@@ -876,17 +876,17 @@ export default class CartCheckout extends Component {
 
       this.props.onClearCart()
       Taro.redirectTo({
-        url: type === 'group' ? `/pages/item/group-detail?team_id=${config.team_id}` : `/pages/trade/detail?id=${order_id}`
+        url: type === 'group' ? `/pages/item/group-detail?team_id=${config.team_id}` : `/subpage/pages/trade/detail?id=${order_id}`
       })
 
       /*this.props.onClearCart()
       Taro.redirectTo({
-        url: `/pages/trade/detail?id=${order_id}`
+        url: `/subpage/pages/trade/detail?id=${order_id}`
       })*/
     } else {
       if (payErr.errMsg.indexOf('fail cancel') >= 0) {
         Taro.redirectTo({
-          url: `/pages/trade/detail?id=${order_id}`
+          url: `/subpage/pages/trade/detail?id=${order_id}`
         })
       }
     }

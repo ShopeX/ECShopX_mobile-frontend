@@ -1,1 +1,0 @@
-function baseHasIn(n,e){return null!=n&&e in Object(n)}module.exports=baseHasIn;

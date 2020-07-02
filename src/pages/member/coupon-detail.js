@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Input } from '@tarojs/components'
+import { View, Image, Input } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { Loading, SpNote, NavBar } from '@/components'
+// import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
-import { classNames, pickBy } from '@/utils'
+// import { classNames, pickBy } from '@/utils'
 
 import './coupon-detail.scss'
 
@@ -252,7 +252,7 @@ export default class CouponDetail extends Component {
                       <View className="view-flex">
                         <View className="view-flex-item red">仅限商户操作</View>
                         <View className="view-flex-item content-right">
-                          <Image src="../images/code.png" />
+                          {/* <Image src={require('../images/code.png')} /> */}
                         </View>
                       </View>
                     </View>

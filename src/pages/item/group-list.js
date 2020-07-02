@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtTabs, AtTabsPane, AtButton, AtCountdown } from 'taro-ui'
+import { AtTabs, AtTabsPane, AtCountdown } from 'taro-ui'
 import { Loading, SpNote, Price } from '@/components'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'

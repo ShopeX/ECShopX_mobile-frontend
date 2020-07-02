@@ -1,7 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Form, Text, Image} from '@tarojs/components'
-import { AtSearchBar } from 'taro-ui'
-import { classNames } from '@/utils'
+import { View } from '@tarojs/components'
 import { toggleTouchMove } from '@/utils/dom'
 
 import './header-home.scss'

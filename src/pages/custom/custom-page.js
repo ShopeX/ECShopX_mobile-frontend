@@ -1,10 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-import { SpToast, Loading, SpNote, BackToTop } from '@/components'
+import { View, ScrollView } from '@tarojs/components'
+import { SpToast, Loading, BackToTop } from '@/components'
 import req from '@/api/req'
-import api from '@/api'
-import { pickBy } from '@/utils'
 import { withBackToTop } from '@/hocs'
 import S from "@/spx";
 import { HomeWgts } from '../home/comps/home-wgts'

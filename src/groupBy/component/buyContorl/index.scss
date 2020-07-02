@@ -1,0 +1,65 @@
+// @import '../../../style/iconfont';
+@import '../../styles/index';
+
+.buyContorl {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .buyButton {
+    padding: 2px 35px;
+    border-radius: 35px;
+    font-size: 24px;
+    height: 50px;
+    line-height: 46px;
+    box-sizing: border-box;
+    color: #fff;
+    background: $theme-color;
+    outline: none;
+    border: none;
+    &.disabled {
+      background: #999;
+    }
+    &::after {
+      content: '';
+      display: none;
+    }
+  }
+  .content {
+    display: flex;
+    align-items: center;
+    .reduceBtn, .addBtn {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100%;
+      padding: 0;
+      margin: 0;
+      color: #fff;
+      background: $theme-color;
+      overflow: hidden;
+      line-height: none;
+      outline: none;
+      border: none;
+      line-height: 0;
+      &.disable {
+        color: #dfdfdf;
+        border: 2px solid #dfdfdf;
+      }
+      &::after {
+        content: '';
+        display: none;
+      }
+    }
+    .reduceBtn {
+      color: $theme-color;
+      background: #fff;
+      border: 2px solid $theme-color;
+    }
+    .num {
+      padding: 0 12px;
+      font-size: 26px;
+    }
+  }
+}

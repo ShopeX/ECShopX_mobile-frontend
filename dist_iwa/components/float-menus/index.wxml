@@ -1,5 +1,0 @@
-<block>
-    <view class="float-menus" style="{{anonymousState__temp}}">
-        <slot></slot>
-    </view>
-</block>

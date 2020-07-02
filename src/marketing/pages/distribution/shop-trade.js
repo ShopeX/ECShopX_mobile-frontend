@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { SpToast, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { pickBy, formatDataTime, resolveOrderStatus } from '@/utils'
+import { pickBy, formatDataTime } from '@/utils'
 
 import './shop-trade.scss'
 

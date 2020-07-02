@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {  AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
+import {  AtModal } from 'taro-ui'
 
 import api from '@/api'
 

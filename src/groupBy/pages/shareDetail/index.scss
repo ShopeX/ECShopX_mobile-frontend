@@ -1,0 +1,150 @@
+@import '../../styles/index';
+
+.shareDetail {
+  width: 100%;
+  background: #fff;
+  .shareHeader {
+    padding: 35px 20px;
+    background: $theme-color;
+    .community {
+      font-size: 32px;
+    }
+    .address {
+      font-size: 26px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    .goodInfo {
+      width: 100%;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      .goodImg {
+        width: 100%;
+      }
+      .timeDown {
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff5e0;
+        color: #968b6d;
+        .title {
+          margin-right: 10px;
+        }
+      }
+      .info {
+        padding: 10px 20px;
+        background: #fff;
+        box-sizing: border-box;
+        .goodName {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          overflow-x: hidden;
+          .name {
+            flex: 1;
+            align-self: flex-end;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 32px;
+          }
+          .saled {
+            font-size: 22px;
+            color: #999;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+        .desc {
+          width: 100%;
+          font-size: 24px;
+          color: #999;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          /* autoprefixer: ignore next */
+          -webkit-box-orient: vertical;
+        }
+        .arrivals {
+          padding: 10px 0;
+          font-size: 26px;
+        }
+        .price {
+          font-size: 22px;
+          color: #928869;
+          .now {
+            font-size: 32px;
+            margin: 0 5px;
+            font-weight: bold;
+          }
+          .old {
+            margin-left: 8px;
+            text-decoration: line-through;
+            color: #999;
+          }
+        }
+      }
+      .buyBtn {
+        width: 80%;
+        margin: 20px auto;
+        padding: 20px 0;
+        border-radius: 40px;
+        color: #fff;
+        text-align: center;
+        background: $theme-color;
+      }
+    }
+  }
+  .recommend {
+    padding: 20px 0;
+    .recommendTitle {
+      font-weight: bold;
+      margin-bottom: 20px;
+      padding: 0 20px;
+    }
+    .recommendGood {
+      white-space: nowrap;
+      .goodItem {
+        display: inline-block;
+        text-align: center;
+        margin: 0 15px;
+        width: 240px;
+        .goodImg {
+          width: 240px;
+          height: 240px;
+        }
+        .goodName {
+          width: 100%;
+          font-size: 26px;
+          color: #666;
+          text-align: left;
+          .name, .price {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            .text {
+              color: #928869;
+            }
+          }
+          .price {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  }
+  .buyNumNow {
+    padding: 10px 0;
+    text-align: center;
+    color: #666;
+    font-size: 24px;
+    .num {
+      font-size: 32px;
+      color: #333;
+    }
+  }
+}

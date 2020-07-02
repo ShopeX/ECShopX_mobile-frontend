@@ -6,10 +6,10 @@
  * @FilePath: /unite-vshop/src/pages/home/wgts/helper.js
  * @Date: 2020-04-30 17:12:45
  * @LastEditors: Arvin
- * @LastEditTime: 2020-05-07 14:29:44
+ * @LastEditTime: 2020-06-23 11:16:50
  */
 import Taro from '@tarojs/taro'
-import { WGTS_NAV_MAP } from '@/consts'
+// import { WGTS_NAV_MAP } from '@/consts'
 
 export function linkPage (type, id) {
   console.log(type, id)
@@ -54,6 +54,8 @@ export function linkPage (type, id) {
         url = '/pages/recommend/list'
       } else if (id === 'floorguide'){
         url = '/pages/floorguide/index'
+      } else if (id === 'grouppurchase'){
+        url = '/groupBy/pages/home/index'
       } else {
         url = ''
       }
