@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/others/pages/recharge/index.js
  * @Date: 2020-01-13 17:38:42
  * @LastEditors: Arvin
- * @LastEditTime: 2020-07-01 16:15:58
+ * @LastEditTime: 2020-07-03 15:40:22
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Input } from '@tarojs/components'
@@ -95,7 +95,7 @@ export default class Recharge extends Component {
         }
       })
     } else {
-      Taro.navigateTo({url: '../store/list'})
+      Taro.navigateTo({url: '/pages/store/list'})
     }
   }
 
