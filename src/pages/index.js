@@ -49,7 +49,7 @@ export default class HomeIndex extends Component {
   }
 
   componentDidMount () {
-    this.fetchInfo(async (info) => {
+    this.fetchInfo(async () => {
       const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
       const [fixSetting, { is_open, ad_pic, ad_title }] = await Promise.all([req.get(url), api.promotion.automatic({register_type: 'general'})])
 
@@ -136,7 +136,29 @@ export default class HomeIndex extends Component {
       likeList: [],
       wgts: null
     }, () => {
-      this.fetchInfo()
+      this.fetchInfo(async () => {
+        const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
+        const [fixSetting, { is_open, ad_pic, ad_title }] = await Promise.all([req.get(url), api.promotion.automatic({register_type: 'general'})])
+  
+        this.setState({
+          automatic: {
+            title: ad_title,
+            isOpen: is_open === 'true',
+            adPic: ad_pic
+          },
+          positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
+        })
+  
+        const options = this.$router.params
+        const res = await entry.entryLaunch(options, true)
+  
+        const { store } = res
+        if (!isArray(store)) {
+          this.setState({
+            curStore: store
+          })
+        }
+      })
     })
   }
 
