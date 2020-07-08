@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/utils/canvas.js
  * @Date: 2020-05-11 11:05:05
  * @LastEditors: Arvin
- * @LastEditTime: 2020-07-08 18:50:52
+ * @LastEditTime: 2020-07-08 18:54:23
  */
 
 export default class Canvas {
@@ -232,8 +232,8 @@ async createGoodList (data, x, y, w) {
     this.ctx.closePath()
     this.ctx.clip()
     await this.drawImage(data.img, imgX, imgY, w, h)
-    const splitName = this.splitString(data.name, w - 200)
-    console.log(splitName)
+    this.ctx.setFontSize(`23px Arial`)
+    const splitName = this.splitString(data.name, w)
     this.drawText((w + imgX * 2) / 2, imgY + h + 15, splitName, '#333', 23, 'center')
     this.createShowPrice(data.symbol, data.nPrice, data.oPrice, (w + imgX * 2) / 2, imgY + h + 80, 22, true)
     this.ctx.restore()
