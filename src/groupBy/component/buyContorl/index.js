@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/component/buyContorl/index.js
  * @Date: 2020-04-26 16:01:13
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-24 16:02:20
+ * @LastEditTime: 2020-07-08 17:26:06
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
@@ -47,11 +47,13 @@ export default class buyContorl extends Component {
       if (limit > 0 && quantity >= limit) {
         Taro.showToast({
           title: '超出限购数量',
+          icon: 'none',
           mask: true
         })
       } else if (quantity >= store) {
         Taro.showToast({
           title: '库存不足',
+          icon: 'none',
           mask: true
         })
       } else {
