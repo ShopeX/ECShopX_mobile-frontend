@@ -25,7 +25,8 @@ export default class GroupList extends Component {
         { title: '进行中', status: 0 },
         { title: '未开始', status: 1 }
       ],
-      list: []
+      list: [],
+      shareInfo: {}
     }
   }
 
@@ -35,6 +36,11 @@ export default class GroupList extends Component {
       menus: ['shareAppMessage', 'shareTimeline']
     })      
     this.nextPage()
+    api.wx.shareSetting({shareindex: 'group'}).then(res => {
+      this.setState({
+        shareInfo: res
+      })
+    })
   }
 
   async fetch (params) {
@@ -91,16 +97,16 @@ export default class GroupList extends Component {
     })
   }
 
-  async onShareAppMessage () {
-    const res = await api.wx.shareSetting({shareindex: 'group'})
+  onShareAppMessage () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl
     }
   }
 
-  async onShareTimeline () {
-    const res = await api.wx.shareSetting({shareindex: 'group'})
+  onShareTimeline () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl

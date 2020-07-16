@@ -14,7 +14,6 @@ import Automatic from './home/comps/automatic'
 // import { resolveFavsList } from './item/helper'
 
 import './home/index.scss'
-import { isValid } from 'date-fns'
 
 @connect(({ cart }) => ({
   list: cart.list,
@@ -47,7 +46,9 @@ export default class HomeIndex extends Component {
       isShop:null,
       salesperson_id: '',
       // 店铺精选id
-      featuredshop: ''
+      featuredshop: '',
+      // 分享配置
+      shareInfo: {}
     }
   }
 
@@ -97,6 +98,12 @@ export default class HomeIndex extends Component {
           curStore: store
         })
   		}
+    })
+
+    api.wx.shareSetting({shareindex: 'index'}).then(res => {
+      this.setState({
+        shareInfo: res
+      })
     })
   }
 
@@ -233,16 +240,16 @@ export default class HomeIndex extends Component {
     })
   }
 
-  async onShareAppMessage () {
-    const res = await api.wx.shareSetting({shareindex: 'index'})
+  onShareAppMessage () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl
     }
   }
 
-  async onShareTimeline () {
-    const res = await api.wx.shareSetting({shareindex: 'index'})
+  onShareTimeline () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl

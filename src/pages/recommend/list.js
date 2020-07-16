@@ -29,8 +29,18 @@ export default class RecommendList extends Component {
       info: {},
       areaList: [],
       multiIndex: [],
-      isShowSearch: false
+      isShowSearch: false,
+      shareInfo: {}
     }
+  }
+
+
+  componentDidMount () {
+    api.wx.shareSetting({shareindex: 'planting'}).then(res => {
+      this.setState({
+        shareInfo: res
+      })
+    })
   }
 
   componentDidShow () {
@@ -58,6 +68,22 @@ export default class RecommendList extends Component {
     // this.praiseNum()
   }
 
+  onShareAppMessage () {
+    const res = this.state.shareInfo
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl
+    }
+  }
+
+  onShareTimeline () {
+    const res = this.state.shareInfo
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl
+    }
+  }
+  
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const { columnList, areaList } = this.state

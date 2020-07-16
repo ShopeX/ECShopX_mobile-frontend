@@ -8,6 +8,7 @@ import { withPager } from '@/hocs'
 import { pickBy, formatTime } from '@/utils'
 
 import '../home/coupon-home.scss'
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
@@ -19,24 +20,30 @@ export default class CouponHome extends Component {
 
     this.state = {
       ...this.state,
-      list: []
+      list: [],
+      shareInfo: {}
     }
   }
 
   componentDidMount () {
     this.nextPage()
+    api.wx.shareSetting({shareindex: 'coupon'}).then(res => {
+      this.setState({
+        shareInfo: res
+      })
+    })
   }
 
-  async onShareAppMessage () {
-    const res = await api.wx.shareSetting({shareindex: 'coupon'})
+  onShareAppMessage () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl
     }
   }
 
-  async onShareTimeline () {
-    const res = await api.wx.shareSetting({shareindex: 'coupon'})
+  onShareTimeline () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl

@@ -26,7 +26,8 @@ export default class SeckillGoodsList extends Component {
       timer: null,
       list: [],
       imgurl: '',
-      status: ''
+      status: '',
+      shareInfo: {}
     }
   }
 
@@ -44,19 +45,24 @@ export default class SeckillGoodsList extends Component {
     //   this.nextPage()
     // })
     console.log(this.$router.params, 41)
-		this.nextPage()
+    this.nextPage()
+    api.wx.shareSetting({shareindex: 'seckill'}).then(res => {
+      this.setState({
+        shareInfo: res
+      })
+    })
   }
 
-  async onShareAppMessage () {
-    const res = await api.wx.shareSetting({shareindex: 'seckill'})
+  onShareAppMessage () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl
     }
   }
 
-  async onShareTimeline () {
-    const res = await api.wx.shareSetting({shareindex: 'seckill'})
+  onShareTimeline () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl

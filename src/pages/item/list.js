@@ -39,7 +39,8 @@ export default class List extends Component {
       isShowSearch: false,
       showDrawer: false,
       selectParams: [],
-      info: {}
+      info: {},
+      shareInfo: {}
     }
   }
 
@@ -64,19 +65,24 @@ export default class List extends Component {
 			curTagId:this.$router.params.tag_id
     }, () => {
       this.nextPage()
+      api.wx.shareSetting({shareindex: 'itemlist'}).then(res => {
+        this.setState({
+          shareInfo: res
+        })
+      })
     })
   }
 
-  async onShareAppMessage () {
-    const res = await api.wx.shareSetting({shareindex: 'itemlist'})
+  onShareAppMessage () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl
     }
   }
 
-  async onShareTimeline () {
-    const res = await api.wx.shareSetting({shareindex: 'itemlist'})
+  onShareTimeline () {
+    const res = this.state.shareInfo
     return {
       title: res.title,
       imageUrl: res.imageUrl
