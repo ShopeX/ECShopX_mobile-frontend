@@ -58,7 +58,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  async onShareTimeline () {
+  onShareTimeline () {
     const { shareInfo } = this.state
     return {
       title: shareInfo.title,
