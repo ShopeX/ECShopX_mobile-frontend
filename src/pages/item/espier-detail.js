@@ -146,14 +146,9 @@ export default class Detail extends Component {
     const { info } = this.state
     const { distributor_id } = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = {
-      id: info.item_id,
-      dtid: distributor_id
-    }
-    if (userId) { query.uid = userId }
     return {
       title: info.item_name,
-      query,
+      query: `id=${info.item_id}&dtid=${distributor_id}&uid=${userId}`,
       imageUrl: info.pics[0]
     }
   }

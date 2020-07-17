@@ -137,11 +137,7 @@ export default class GroupDetail extends Component {
     const { team_info, activity_info } = detail
     return {
       title: `【拼团】${activity_info.share_desc}`,
-      query: {
-        team_id: team_info.team_id,
-        dtid: distributor_id,
-        uid: userId
-      },
+      query: `team_id=${team_info.team_id}&dtid=${distributor_id}&uid=${userId}`,
       imageUrl: activity_info.pics[0]
     }
   }

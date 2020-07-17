@@ -60,12 +60,9 @@ export default class recommendDetail extends Component {
 
   onShareTimeline () {
     const { info } = this.state
-    const query = {
-      id: info.article_id
-    }
     return {
       title: info.title,
-      query,
+      query: `id=${info.article_id}`,
       imageUrl: info.share_image_url || info.image_url
     }
   }   
