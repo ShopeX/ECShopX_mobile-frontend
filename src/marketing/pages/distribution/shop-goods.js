@@ -26,7 +26,6 @@ export default class DistributionShopGoods extends Component {
   
   componentDidMount () {
     Taro.hideShareMenu({
-      withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     })     
     this.setState({

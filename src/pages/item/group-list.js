@@ -30,11 +30,7 @@ export default class GroupList extends Component {
     }
   }
 
-  componentDidMount () {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    })      
+  componentDidMount () {     
     this.nextPage()
     api.wx.shareSetting({shareindex: 'group'}).then(res => {
       this.setState({

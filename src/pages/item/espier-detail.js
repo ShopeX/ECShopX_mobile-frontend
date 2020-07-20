@@ -69,11 +69,7 @@ export default class Detail extends Component {
     }
   }
 
-  async componentDidMount () {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    })    
+  async componentDidMount () {  
     const options = this.$router.params
     const { uid, id, gid = '' } = await entry.entryLaunch(options, true)
     this.fetchInfo(id, gid)

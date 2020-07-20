@@ -19,11 +19,7 @@ export default class DistributionDashboard extends Component {
     }
   }
 
-  componentDidMount () {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage']
-    })     
+  componentDidMount () {   
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',

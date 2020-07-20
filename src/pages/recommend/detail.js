@@ -37,10 +37,6 @@ export default class recommendDetail extends Component {
   }
 
   componentDidMount () {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    })    
     Taro.getSystemInfo()
       .then(res =>{
         this.setState({

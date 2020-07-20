@@ -23,10 +23,6 @@ export default class GroupDetail extends Component {
 	}
 
 	componentDidMount() {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    })  
 		this.fetchDetail()
 	}
 

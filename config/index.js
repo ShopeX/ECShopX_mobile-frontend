@@ -85,6 +85,9 @@ const config = {
       )
     ]
   },
+  plugins: [
+    '@tarojs/plugin-sass'
+  ],
   // 开启压缩
   uglify: {
     enable: true,

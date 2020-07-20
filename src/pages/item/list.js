@@ -45,10 +45,6 @@ export default class List extends Component {
   }
 
   componentDidMount () {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    })     
     const { cat_id = null, main_cat_id = null } = this.$router.params
     this.firstStatus = true
 

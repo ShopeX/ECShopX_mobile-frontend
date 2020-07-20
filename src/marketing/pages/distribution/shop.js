@@ -24,11 +24,7 @@ export default class DistributionShop extends Component {
     }
   }
 
-  componentDidMount () {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage']
-    })     
+  componentDidMount () { 
     this.fetch()
   }
 
