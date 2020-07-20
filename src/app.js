@@ -9,6 +9,7 @@ import { normalizeQuerys } from '@/utils'
 import { FormIds } from '@/service'
 import Index from './pages/index'
 import LBS from './utils/lbs'
+import entry from '@/utils/entry'
 
 import './app.scss'
 
@@ -263,7 +264,7 @@ class App extends Component {
   }
 
   async fetchTabs () {
-    const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=tabs'
+    // const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=tabs'
     const defaultTabs = {
       config: {
         backgroundColor: "#ffffff",
@@ -289,11 +290,22 @@ class App extends Component {
       }],
       name: "tabs"
     }
-    const info = await req.get(url)
+    const options = this.$router.params
+    const res = await entry.entryLaunch(options, true)
+    let defultStore = res.store
+    let info = {}
+    if (defultStore.distributor_id) {
+      const url = '/pagestemplate/detail?weapp_pages=index&distributor_id=' + defultStore.distributor_id
+      info = await req.get(url)
+    }
     store.dispatch({
       type: 'tabBar',
-      payload: info.list.length ? info.list[0].params : defaultTabs
+      payload: info && info.tabBar ? info.tabBar : defaultTabs
     })
+    // store.dispatch({
+    //   type: 'tabBar',
+    //   payload: info.list.length ? info.list[0].params : defaultTabs
+    // })
   }
 
   async fetchColors () {

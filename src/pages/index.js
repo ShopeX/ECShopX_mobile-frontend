@@ -52,54 +52,54 @@ export default class HomeIndex extends Component {
     }
   }
 
-  componentDidMount () {
+  async componentDidMount () {
     Taro.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     })     
-    this.fetchInfo(async () => {
-      const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
-      const [fixSetting, { is_open, ad_pic, ad_title }] = await Promise.all([req.get(url), api.promotion.automatic({register_type: 'general'})])
-
-      this.setState({
-        automatic: {
-          title: ad_title,
-          isOpen: is_open === 'true',
-          adPic: ad_pic
-        },
-        positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
-      })
-
-      // const userinfo = Taro.getStorageSync('userinfo')
-      // if (automatic.is_open === 'true' && automatic.register_type === 'membercard' && userinfo) {
-      //   const { is_open, is_vip, is_had_vip, vip_type } = await api.vip.getUserVipInfo()
-      //   this.setState({
-      //     vip: {
-      //       isSetVip: is_open,
-      //       isVip: is_vip,
-      //       isHadVip: is_had_vip,
-      //       vipType: vip_type
-      //     }
-      //   })
-      // }
-
-      const options = this.$router.params
-      const res = await entry.entryLaunch(options, true)
+    
+    const options = this.$router.params
+    const res = await entry.entryLaunch(options, true)
 //           if(S.getAuthToken()){
 //               const promoterInfo = await api.distribution.info()
 //               this.setState({
 //                 isShop:promoterInfo
 //               })
 //             }
-
-      const { store } = res
-      if (!isArray(store)) {
-        this.setState({
-          curStore: store
+    const { store } = res
+    if (!isArray(store)) {
+      this.setState({
+        curStore: store
+      }, () => {
+        this.fetchInfo(async () => {
+          const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
+          const [fixSetting, { is_open, ad_pic, ad_title }] = await Promise.all([req.get(url), api.promotion.automatic({register_type: 'general'})])
+    
+          this.setState({
+            automatic: {
+              title: ad_title,
+              isOpen: is_open === 'true',
+              adPic: ad_pic
+            },
+            positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
+          })
+    
+          // const userinfo = Taro.getStorageSync('userinfo')
+          // if (automatic.is_open === 'true' && automatic.register_type === 'membercard' && userinfo) {
+          //   const { is_open, is_vip, is_had_vip, vip_type } = await api.vip.getUserVipInfo()
+          //   this.setState({
+          //     vip: {
+          //       isSetVip: is_open,
+          //       isVip: is_vip,
+          //       isHadVip: is_had_vip,
+          //       vipType: vip_type
+          //     }
+          //   })
+          // }
+    
         })
-  		}
-    })
-
+      })
+    }
     api.wx.shareSetting({shareindex: 'index'}).then(res => {
       this.setState({
         shareInfo: res
@@ -269,18 +269,23 @@ export default class HomeIndex extends Component {
     }
 	}
   async fetchInfo (cb) {
-    const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
-    const info = await req.get(url)
+    const { curStore } = this.state
+    if (!curStore.distributor_id) {
+      return
+    }
 
+    // const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
+    const url = '/pagestemplate/detail?weapp_pages=index&distributor_id='+curStore.distributor_id
+    const info = await req.get(url)
     this.setState({
-      wgts: info.config
+      wgts: info.content
     },()=>{
       if (cb) {
         cb(info)
       }
       Taro.stopPullDownRefresh()
-      if(info.config) {
-        const show_likelist = info.config.find(item => item.name == 'setting' && item.config.faverite)
+      if(info.content) {
+        const show_likelist = info.content.find(item => item.name == 'setting' && item.config.faverite)
         this.props.onUpdateLikeList(show_likelist ? true : false)
         if (show_likelist) {
           this.resetPage()
