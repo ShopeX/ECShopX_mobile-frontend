@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/home/index.js
  * @Date: 2020-04-23 16:38:16
  * @LastEditors: Arvin
- * @LastEditTime: 2020-07-08 18:01:56
+ * @LastEditTime: 2020-07-20 15:43:53
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Swiper, SwiperItem } from '@tarojs/components'
@@ -18,6 +18,7 @@ import { formatGood } from '../../utils'
 import GroupGood from '../../component/grouoGood'
 import LoadingMore from '../../component/loadingMore'
 import TabBar from '../../component/tabBar'
+import entry from '../../../utils/entry'
 import Classification from '../../component/classification'
 
 import './index.scss'
@@ -90,22 +91,7 @@ export default class GroupByIndex extends Component {
       }
       Taro.setStorageSync('userinfo', userInfo)
     }
-    const lbs = await Taro.getLocation({type: 'gcj02'}).catch(() => {
-      Taro.showModal({
-        content: '您未授权访问您的定位信息，请先更改您的授权设置',
-        showCancel: false,
-        success: res => {
-          if (res.confirm) {
-            Taro.openSetting({
-              success: resSet => {
-                console.log(resSet)
-              }
-            })
-          }
-        }
-      })
-      return false
-    })
+    const lbs = await this.getLoacl()
     if (!lbs) return
     const { latitude, longitude } = lbs
     this.getSetting()
@@ -118,6 +104,31 @@ export default class GroupByIndex extends Component {
     }, () => {
       this.getNearBuyCommunity()
     })
+  }
+  // 定位
+  getLoacl = async () => {
+    let lbs = ''
+    if (Taro.getEnv() === 'WEAPP') {
+      lbs = await Taro.getLocation({type: 'gcj02'}).catch(() => {
+        Taro.showModal({
+          content: '您未授权访问您的定位信息，请先更改您的授权设置',
+          showCancel: false,
+          success: res => {
+            if (res.confirm) {
+              Taro.openSetting({
+                success: () => {
+                  this.init()
+                }
+              })
+            }
+          }
+        })
+        return false
+      })
+    } else {
+      lbs = await entry.getWebLocal(false).catch(() => false)
+    }
+    return lbs
   }
   // 获取附近活动社区
   getNearBuyCommunity = () => {

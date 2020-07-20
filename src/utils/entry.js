@@ -126,7 +126,7 @@ async function getLoc () {
 }
 
 // web定位获取
-function getWebLocal () {
+function getWebLocal (isSetStorage = true) {
   const { qq } = window
   // let geolocation = new qq.maps.Geolocation('PVUBZ-E24HK-7SXJY-AGQZC-DN3IT-6EB6V', 'oneX新零售门店定位')
   let geolocation = new qq.maps.Geolocation(APP_MAP_KEY, APP_MAP_NAME)
@@ -137,7 +137,9 @@ function getWebLocal () {
         latitude: r.lat,
         longitude: r.lng
       }
-      Taro.setStorage({ key: 'lnglat', data: param })
+      if (isSetStorage) {
+        Taro.setStorage({ key: 'lnglat', data: param })
+      }
       resolve(param)
     }, () => {
       console.log('定位失败')
@@ -197,5 +199,6 @@ function parseUrlStr (urlStr) {
 export default {
   entryLaunch,
   getLocal,
-  getLocalSetting
+  getLocalSetting,
+  getWebLocal
 }

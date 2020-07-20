@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { AtTabs, AtTabsPane, AtCountdown } from 'taro-ui'
-import { Loading, SpNote, Price } from '@/components'
+import { Loading, SpNote, Price, NavBar } from '@/components'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
 import { withPager } from '@/hocs'
@@ -114,6 +114,11 @@ export default class GroupList extends Component {
 
     return (
       <View className='page-group-list'>
+        <NavBar
+          title='团购'
+          leftIconType='chevron-left'
+          fixed='true'
+        />        
         <AtTabs
           className='group-list__tabs'
           current={curTabIdx}
