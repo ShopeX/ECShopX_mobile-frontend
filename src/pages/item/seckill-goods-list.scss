@@ -1,9 +1,15 @@
 @import "../../style/imports";
 
 .page-seckill-goods {
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */  
   .seckill-goods{
     &__scroll {
       @include page-scroll(0, 0);
+      /*  #ifdef  h5  */  
+      @include page-scroll($navigate-height-h5, 0);
+      /*  #endif  */        
     }
     &__swiper {
       box-sizing: border-box;

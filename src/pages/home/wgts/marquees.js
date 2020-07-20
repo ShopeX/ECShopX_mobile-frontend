@@ -49,7 +49,7 @@ export default class WgtMarquees extends Component {
     if (!info) {
       return null
     }
-    const { config, base, data } = info
+    const { config, base, data, announce } = info
 
     return (
       <View
