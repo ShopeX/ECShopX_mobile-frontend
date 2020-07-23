@@ -28,7 +28,7 @@ export default class Login extends Component {
   }
 
   handleSubmit = async (e) => {
-    const { value } = e.detail
+    const { value } = e.detail || e[0].detail
     const data = {
       ...this.state.info,
       ...value
@@ -111,9 +111,7 @@ export default class Login extends Component {
         <View className='auth-login__reg'>
           <Text onClick={this.handleClickReg}>快速注册</Text>
         </View>
-        <AtForm
-          onSubmit={this.handleSubmit}
-        >
+        <AtForm>
           <View className='sec auth-login__form'>
             <AtInput
               title='手机号码'
@@ -145,11 +143,7 @@ export default class Login extends Component {
           </View>
 
           <View className='btns'>
-            {
-              process.env.TARO_ENV === 'weapp'
-                ? <AtButton type='primary' formType='submit'>登录</AtButton>
-                : <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>登录</AtButton>
-            }
+            <AtButton type='primary' onClick={this.handleSubmit.bind(this)}>登录</AtButton>
           </View>
         </AtForm>
 
