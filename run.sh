@@ -6,7 +6,7 @@
  # @FilePath: /unite-vshop/run.sh
 # @Date: 2020-06-10 10:15:51
  # @LastEditors: Arvin
- # @LastEditTime: 2020-07-23 11:16:20
+ # @LastEditTime: 2020-07-23 11:28:24
 ### 
 #/usr/bash
 
@@ -107,11 +107,10 @@ buildType="WEAPP H5"
 
 select type in $buildType
 do
-if [ "$type" = 'H5' ]
+if [ "$type" == 'H5' ]
+  then
   echo "npm run build:H5"
   npm run build:h5 
-then
-exit
 else
   echo "npm run build:weapp"
   npm run build:weapp

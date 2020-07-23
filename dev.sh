@@ -6,7 +6,7 @@
  # @FilePath: /unite-vshop/dev.sh
 # @Date: 2020-06-10 10:15:51
  # @LastEditors: Arvin
- # @LastEditTime: 2020-07-23 11:17:04
+ # @LastEditTime: 2020-07-23 11:28:49
 ### 
 #/usr/bash
 
@@ -111,19 +111,14 @@ do
 if [ "$type" = 'WEAPP' ];then
   if [ "$(uname)" == "Darwin" ]
   then
-
-  echo "npm run dev:weapp"
-  npm run dev:weapp
-
+    echo "npm run dev:weapp"
+    npm run dev:weapp
   else
-
-  echo "npm run dev:weapp:windows"
-  npm run dev:weapp:windows
-
+    echo "npm run dev:weapp:windows"
+    npm run dev:weapp:windows
   fi
-exit
 else
- npm run dev:h5 
+  npm run dev:h5 
 fi
 done
 
