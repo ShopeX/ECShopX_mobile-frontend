@@ -33,7 +33,7 @@ export default class RateItem extends Component {
               ? <View className='rate-item__imgs'>
                   {
                     info.rate_pic.map((img, idx) =>
-                      <Image key={idx} mode='aspectFill' className='rate-item__img' src={img} />
+                      <Image key={`${idx}1`} mode='aspectFill' className='rate-item__img' src={img} />
                     )
                   }
                 </View>

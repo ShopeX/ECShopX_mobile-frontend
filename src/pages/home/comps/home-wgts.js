@@ -33,7 +33,7 @@ export default class HomeWgts extends PureComponent {
         {
           wgts.map((item, idx) => {
             return (
-              <View className='wgt-wrap' key={idx}>
+              <View className='wgt-wrap' key={`${item.name}${idx}`}>
                 {item.name === 'search' && <WgtSearchHome info={item} />}
                 {item.name === 'film' && <WgtFilm info={item} />}
                 {item.name === 'marquees' && <WgtMarquees info={item} />}

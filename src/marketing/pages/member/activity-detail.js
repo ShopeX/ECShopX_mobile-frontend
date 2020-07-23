@@ -65,7 +65,7 @@ export default class ActivityDetail extends Component {
           {
             cur_activity_info.map((item, index) => {
               return (
-                <View key={index} className='activity-detail__item'>
+                <View key={`${index}1`} className='activity-detail__item'>
                   <Text className='activity-detail__item_title'>{item.field_title}</Text>
                   <Text className='activity-detail__item_value'>{item.answer}</Text>
                 </View>

@@ -88,7 +88,7 @@ export default class Series extends Component {
                 <View
                   className={classNames('category-nav__content', currentIndex == index ? 'category-nav__content-checked' : null)}
                   style={currentIndex == index ? `border-left: 7rpx solid ${colors.data[0].primary};` : null}
-                  key={index}
+                  key={`${item.name}${index}`}
                   onClick={this.handleClickCategoryNav.bind(this, index)}
                 >
                   { item.hot && <Text className='hot-tag'></Text> }{item.name}

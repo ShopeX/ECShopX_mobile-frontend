@@ -27,18 +27,24 @@ export default class WeappBtn extends Component {
   }
 
   handleClickPay = async () => {
-    const { order_id, order_type = 'normal' } = this.$router.params
+    const { order_id } = this.$router.params;
+    const { orderType = 'normal' } = this.props;
+
+
     const params = {
       pay_type: 'wxpayh5',
       order_id,
-      order_type
+      order_type:orderType
     }
+
     const res = await api.cashier.getPayment(params)
+    console.log("res-------------")
+    console.log(res)
     // eslint-disable-next-line
     const loc = location
     const redirect_url = `${loc.protocol}//${loc.host}/pages/cashier/cashier-result?order_id=${order_id}`
     const form = document.createElement('form')
-    const [action, search] = res.payment.mweb_url.split('?')
+    const [action, search] = res.mweb_url.split('?')
     const queryPair = `${search}&redirect_url=${redirect_url}`.split('&')
 
     form.setAttribute('method', 'get')

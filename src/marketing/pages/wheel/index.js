@@ -118,7 +118,7 @@ export default class MarketingIndex extends Component {
               {
                 list.map((item, index) => {
                   return (<View
-                    key={index}
+                    key={`${index}1`}
                     style={{ transform: `rotate(${(360 / list.length) * (index + 1)}deg)` }}
                   ></View>)
                 })
@@ -130,7 +130,7 @@ export default class MarketingIndex extends Component {
                 list.map((item, index) => {
                   return (
                     <View
-                      key={index}
+                      key={`${index}1`}
                       style={{ transform: `rotate(${(360 / list.length) * (index + 1)}deg)` }}
                     >
                       <View className='div-text'>

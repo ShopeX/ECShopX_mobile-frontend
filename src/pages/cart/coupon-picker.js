@@ -106,7 +106,7 @@ export default class CouponPicker extends Component {
           coupons.map((coupon, idx) => {
             return (
               <CouponItem
-                key={idx}
+                key={`${idx}1`}
                 info={coupon}
                 isDisabled={!coupon.valid}
                 onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
@@ -118,7 +118,7 @@ export default class CouponPicker extends Component {
               </CouponItem>
 
               // <View
-              //   key={idx}
+              //   key={`${idx}1`}
               //   className='coupon-item'
               //   onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
               // >

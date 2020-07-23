@@ -299,13 +299,13 @@ export default class GoodsReservate extends Component {
           {
             formdata && formdata.content && formdata.content.map((item,index) => {
               return (
-                <View className='goods-reservate__userinfo' key={index}>
+                <View className='goods-reservate__userinfo' key={`${index}1`}>
                   {
                     item.formdata && item.formdata.length > 0
                       ? item.formdata.map((i_data, i_index) => {
                           return (
                             // eslint-disable-next-line react/jsx-key
-                            <View key={i_index}>
+                            <View key={`${i_index}1`}>
                               {
                                 i_data.form_element === 'select' || i_data.form_element === 'radio'
                                   ? <Picker mode='selector' range={i_data.options} rangeKey='value' onChange={this.handleCell.bind(this, i_data.field_name)}>

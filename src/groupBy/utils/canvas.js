@@ -90,7 +90,7 @@ export default class Canvas {
 
   // 文字超长截取
   splitString (str, limitWidth) {
-    if (!str) return ''
+    if (!str) return null
     // 文字长度
     const width = this.measureText(str)
     // 文字个数
@@ -135,7 +135,7 @@ export default class Canvas {
    */  
   // 绘制图片
   async drawImage (img, x, y, w, h, isClip = false) {
-    if (!img) return ''
+    if (!img) return null
     // 判断是否是网络图片
     const isHttps = img.indexOf('https://') !== -1 || img.indexOf('http://') !== -1
     let useImg = {

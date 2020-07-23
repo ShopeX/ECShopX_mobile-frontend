@@ -96,7 +96,7 @@ export default class DistributionTrade extends Component {
             tabList.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curTabIdx}
-                key={pIdx}
+                key={pIdx.title}
                 index={pIdx}
               >
               </AtTabsPane>)

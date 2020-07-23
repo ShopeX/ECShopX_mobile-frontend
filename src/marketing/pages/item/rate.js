@@ -180,7 +180,7 @@ export default class TradeRate extends Component {
         <View className='rate-list'>
           {goodsList.map((item, idx) => {
             return (
-              <View className='rate-item' key={idx}>
+              <View className='rate-item' key={`${idx}1`}>
                 <View className='goods-item'>
                   <View className='goods-item__hd'>
                     {Array.isArray(item.pic_path) && <Image

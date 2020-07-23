@@ -107,7 +107,7 @@ export default class Category extends Component {
                 tabList.map((panes, pIdx) =>
                   (<AtTabsPane
                     current={curTabIdx}
-                    key={pIdx}
+                    key={panes.status}
                     index={pIdx}
                   >
                   </AtTabsPane>)

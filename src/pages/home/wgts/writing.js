@@ -61,7 +61,7 @@ export default class WgtWriting extends Component {
           {
             contentArr.map((item, index) => {
               return (
-                <View className='writing-view' key={index}>{item}</View>
+                <View className='writing-view' key={`${index}1`}>{item}</View>
               )
             })
           }

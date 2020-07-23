@@ -133,7 +133,7 @@ export default class AfterSale extends Component {
             tabList.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curTabIdx}
-                key={pIdx}
+                key={panes.status}
                 index={pIdx}
               >
               </AtTabsPane>)
@@ -150,7 +150,7 @@ export default class AfterSale extends Component {
             list.map((item, idx) => {
               return (
                 <TradeItem
-                  key={idx}
+                  key={`${idx}1`}
                   payType={item.pay_type}
                   customHeader
                   renderHeader={

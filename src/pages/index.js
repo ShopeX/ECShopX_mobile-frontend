@@ -52,36 +52,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  async componentDidMount () {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    })     
-    
-   const options = this.$router.params
-   const res = await entry.entryLaunch(options, true)
-   // if(S.getAuthToken()){
-   //   const promoterInfo = await api.distribution.info()
-   //     this.setState({
-   //     isShop:promoterInfo
-   //   })
-   // }
-   const { store } = res
-   if (!isArray(store)) {
-      this.setState({
-        curStore: store
-      }, () => {
-        this.fetchData()
-      })
-    }
-    api.wx.shareSetting({shareindex: 'index'}).then(res => {
-      this.setState({
-        shareInfo: res
-      })
-    })
-  }
-
-  fetchData() {
+  componentDidMount () {   
     this.fetchInfo(async () => {
       const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
       const [fixSetting, { is_open, ad_pic, ad_title }] = await Promise.all([req.get(url), api.promotion.automatic({register_type: 'general'})])

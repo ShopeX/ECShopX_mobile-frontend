@@ -332,7 +332,7 @@ export default class DistributionShopHome extends Component {
                           <View
                             className={classNames('drawer-item__options__item' ,v_item.isChooseParams ? 'drawer-item__options__checked' : '')}
                             // className='drawer-item__options__item'
-                            key={v_index}
+                            key={`${v_index}1`}
                             onClick={this.handleClickParmas.bind(this, item.attribute_id, v_item.attribute_value_id)}
                           >
                             {v_item.attribute_value_name}
@@ -379,7 +379,7 @@ export default class DistributionShopHome extends Component {
                 {
                   desc.map((item, idx) => {
                     return (
-                      <View className='wgt-wrap' key={idx}>                      
+                      <View className='wgt-wrap' key={`${idx}1`}>                      
                         {item.name === 'slider' && <WgtSlider info={item} />}
                         {item.name === 'goods' && <WgtGoods info={item} />}
                       </View>

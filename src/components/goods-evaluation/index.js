@@ -84,7 +84,7 @@ export default class GoodsEvaluation extends Component {
             {info.picList.map((imgUrl, index) => {
               return (
                 <View
-                  key={index}
+                  key={`${index}1`}
                   style={styleNames(styles)}
                   className={`img-box ${pathRoute === 'detail' ? '' : 'marginBottom10'}`}
                 >

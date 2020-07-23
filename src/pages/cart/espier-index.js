@@ -452,7 +452,7 @@ export default class CartIndex extends Component {
                 return (
                   <View
                     className='cart-list__shop'
-                    key={shopIndex}
+                    key={`${shopIndex}1`}
                   >
                     {
                       shopCart.shopInfo.shop_name

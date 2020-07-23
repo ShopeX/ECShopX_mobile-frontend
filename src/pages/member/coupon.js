@@ -128,7 +128,7 @@ export default class Coupon extends Component {
             tabList.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curTabIdx}
-                key={pIdx}
+                key={panes.status}
                 index={pIdx}
               >
               </AtTabsPane>)

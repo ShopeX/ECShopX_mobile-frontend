@@ -2378,7 +2378,7 @@ showdown.subParser('stripLinkDefinitions', function (text, options, globals) {
       }
     }
     // Completely remove the definition from the text
-    return '';
+    return null;
   });
 
   // attacklab: strip sentinel
@@ -2404,7 +2404,7 @@ showdown.subParser('tables', function (text, options, globals) {
     } else if (/^:[ \t]*--*[ \t]*:$/.test(sLine)) {
       return ' style="text-align:center;"';
     } else {
-      return '';
+      return null;
     }
   }
 

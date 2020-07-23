@@ -113,13 +113,13 @@ export default class GoodsBuyPanel extends Component {
 
   getSkuProps = () => {
     const { info } = this.props
-    if (!info) return ''
+    if (!info) return null
 
     const { curSku } = this.state
     let propsText = ''
 
     if (this.noSpecs) {
-      return ''
+      return null
     }
 
     if (!curSku) {
@@ -434,7 +434,7 @@ export default class GoodsBuyPanel extends Component {
 						  <Price primary symbol='¥' unit='cent' value={price} />
               <View className='goods-sku__price-market'>
               {
-                marketPrice &&
+                marketPrice !== 0 && marketPrice &&
                   <Price
                     className='price-market'
                     symbol='¥'

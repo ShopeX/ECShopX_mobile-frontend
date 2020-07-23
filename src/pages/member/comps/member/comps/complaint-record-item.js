@@ -74,7 +74,7 @@ export default class ComplaintRecordItem extends Component {
             {
               info.imgList.map((item, idx) => {
                 return (
-                  <View onClick={()=>onClick(item)} key={idx} className='item-info__img-box'>
+                  <View onClick={()=>onClick(item)} key={`${idx}1`} className='item-info__img-box'>
                     <Image
                       mode='aspectFit'
                       src={item}
@@ -92,7 +92,7 @@ export default class ComplaintRecordItem extends Component {
         {
           replyList.map((item, idx) => {
             return (
-              <View key={idx} className='item-reply'>
+              <View key={`${idx}1`} className='item-reply'>
                 <View className='item-reply__title'>商家回复：</View>
 
                 <View className='item-reply__con'>

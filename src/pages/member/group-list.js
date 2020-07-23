@@ -106,7 +106,7 @@ export default class myGroupList extends Component {
   									<View className='group-item__avatar'>
   										{item.member_list.map((avatar, index) => {
   											return(
-  												<Image key={index}  mode='aspectFill' className='user-avatar' src={avatar.member_info.headimgurl}/>
+  												<Image key={`${index}1`}  mode='aspectFill' className='user-avatar' src={avatar.member_info.headimgurl}/>
   												)
   										})}
   									</View>

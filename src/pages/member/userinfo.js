@@ -288,12 +288,12 @@ export default class UserInfo extends Component {
             {
               isHasData && list.map((item, index) => {
                 return (
-                  <View key={index}>
+                  <View key={`${index}1`}>
                     {
                       item.element_type === 'input'
-                        ? <View key={index}>
+                        ? <View key={`${index}1`}>
                             <AtInput
-                              key={index}
+                              key={`${index}1`}
                               title={item.name}
                               name={`${item.key}`}
                               placeholder={`请输入${item.name}`}
@@ -308,7 +308,7 @@ export default class UserInfo extends Component {
                     {
                       item.element_type === 'select'
                         ? <View className='page-section'>
-                            <View key={index}>
+                            <View key={`${index}1`}>
                               {
                                 item.key === 'birthday'
                                   ? <Picker mode='date' onChange={this.handleChange.bind(this, `${item.key}`)}>
@@ -319,7 +319,7 @@ export default class UserInfo extends Component {
                                       >{item.value ? item.value : `请选择${item.name}`}</Text>
                                     </View>
                                   </Picker>
-                                  : <Picker mode='selector' range={item.items} key={index} data-item={item} onChange={this.handleChange.bind(this, `${item.key}`)}>
+                                  : <Picker mode='selector' range={item.items} key={`${index}1`} data-item={item} onChange={this.handleChange.bind(this, `${item.key}`)}>
                                     <View className='picker'>
                                       <View className='picker__title'>{item.name}</View>
                                       <Text
@@ -336,7 +336,7 @@ export default class UserInfo extends Component {
                       item.element_type === 'checkbox'
                         ? <View className='page-section'>
                             <AtInput
-                              key={index}
+                              key={`${index}1`}
                               title={item.name}
                               name={`${item.key}`}
                               placeholder={`请选择${item.name}`}
@@ -368,7 +368,7 @@ export default class UserInfo extends Component {
                       return (
                         <View
                           className='checkBoxPanel-item'
-                          key={index}
+                          key={`${index}1`}
                         >
                           <SpCheckbox
                             checked={item.ischecked}

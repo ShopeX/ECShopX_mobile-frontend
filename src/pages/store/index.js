@@ -52,11 +52,7 @@ export default class StoreIndex extends Component {
     }
   }
 
-  async componentDidMount () {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    })    
+  async componentDidMount () { 
     const options = normalizeQuerys(this.$router.params)
     // console.log(options)
     // const { dtid } = await entry.entryLaunch(options, true)
@@ -209,7 +205,7 @@ export default class StoreIndex extends Component {
             {
               wgts.map((item, idx) => {
                 return (
-                  <View className='wgt-wrap' key={idx}>
+                  <View className='wgt-wrap' key={`${item.name}${idx}`}>
                     {item.name === 'slider' && <WgtSlider info={item} />}
                     {item.name === 'marquees' && <WgtMarquees info={item} />}
                     {item.name === 'navigation' && <WgtNavigation info={item} />}

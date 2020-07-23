@@ -33,7 +33,7 @@ export default class WgtNavigation extends Component {
               return (
                 <View
                   className='nav-item'
-                  key={idx}
+                  key={`${idx}1`}
                   onClick={this.handleClickItem.bind(this, item.linkPage, item.id)}
                 >
                   <View className='nav-img-wrap'>

@@ -1,12 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, ScrollView, Image} from '@tarojs/components'
+import {View, ScrollView, Image, Text} from '@tarojs/components'
 import { Loading,GoodsItem,SpNote} from '@/components'
 import { classNames, pickBy,getCurrentRoute } from '@/utils'
+import {AtTabBar} from "taro-ui"
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 
 import './shop-category.scss'
-import {AtTabBar, AtTabsPane} from "taro-ui";
+
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
@@ -197,7 +198,7 @@ handleClickCategoryNav = (idx,value) => {
               list.map((item, index) =>
                 <View
                   className={classNames('category-nav__content', currentIndex == index ? 'category-nav__content-checked' : null)}
-                  key={index}
+                  key={`${item.name}${index}`}
                   onClick={this.handleClickCategoryNav.bind(this,index,item)}
                 >
                   { item.hot && <Text className='hot-tag'></Text> }{item.name}

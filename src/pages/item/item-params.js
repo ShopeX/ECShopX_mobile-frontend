@@ -48,10 +48,10 @@ export default class ItemParams extends Component {
         />	          
         <View className="goods-params">
           {
-            list.map((item, idx) => {
+            list.map((item) => {
               return (
                 <ParamsItem
-                  key={idx}
+                  key={item.attribute_id}
                   info={item}
                 />
               )

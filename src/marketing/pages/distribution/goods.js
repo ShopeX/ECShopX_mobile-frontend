@@ -34,7 +34,6 @@ export default class DistributionGoods extends Component {
 
   componentDidMount () {
     Taro.hideShareMenu({
-      withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     })    
     this.firstStatus = true
@@ -276,12 +275,12 @@ export default class DistributionGoods extends Component {
         >
           <View className='goods-list'>
             {
-              list.map((item, index) => {
+              list.map((item) => {
                 const isRelease = goodsIds.findIndex(n => item.goods_id == n) !== -1
                 console.log(isRelease)
                 return (
                   <DistributionGoodsItem
-                    key={index}
+                    key={item.goods_id}
                     info={item}
                     isRelease={isRelease}
                     status={status}

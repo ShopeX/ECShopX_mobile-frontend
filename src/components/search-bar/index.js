@@ -178,7 +178,7 @@ export default class SearchBar extends Component {
             </View>
             <View className='search-input__history-list'>
              {
-                historyList.map((item, index) => <View className='search-input__history-list__btn' key={index} onClick={this.handleClickTag.bind(this, item)}>{item}</View> )
+                historyList.map((item, index) => <View className='search-input__history-list__btn' key={`${index}1`} onClick={this.handleClickTag.bind(this, item)}>{item}</View> )
              }
             </View>
             {/*<View className='search-input__history-title hot-title'>

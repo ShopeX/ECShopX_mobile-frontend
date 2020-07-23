@@ -55,7 +55,7 @@ export default class DetailItem extends Component {
       <View className='detail-item'>
         {
           info && info.orders.map((item, idx) =>
-            <View className='detail-item-good' key={idx}>
+            <View className='detail-item-good' key={`${idx}1`}>
             <View className='detail-item__fix'>
                 <Text className='detail-item__title'>第{idx+1}件商品</Text>
                 {
@@ -70,7 +70,7 @@ export default class DetailItem extends Component {
                 }               
             </View>  
               <OrderItem
-                key={idx}
+                key={`${idx}1`}
                 info={item}
               />
               {

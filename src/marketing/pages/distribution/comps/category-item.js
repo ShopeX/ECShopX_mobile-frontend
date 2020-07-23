@@ -108,7 +108,7 @@ export default class SeriesItem extends Component {
               info.map((item, index) =>
                 <View
                   className={classNames('category-nav__content', currentIndex == index ? 'category-nav__content-checked' : null)}
-                  key={index}
+                  key={`${item.name}${index}`}
                   onClick={this.handleClickCategoryNav.bind(this, index,item)}                  
                 >
                   { item.hot && <Text className='hot-tag'></Text> }{item.name}

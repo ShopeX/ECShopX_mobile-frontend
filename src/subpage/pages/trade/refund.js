@@ -306,7 +306,7 @@ export default class TradeRefund extends Component {
             segTypes.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curSegIdx}
-                key={pIdx}
+                key={panes.status}
                 index={pIdx}
               >
               </AtTabsPane>)

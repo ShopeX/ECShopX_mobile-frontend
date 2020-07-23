@@ -488,7 +488,7 @@ export default class RecommendList extends Component {
                     <View
                       className={classNames('drawer-item__options__item' ,item.isChooseColumn ? 'drawer-item__options__checked' : '')}
                       // className='drawer-item__options__item'
-                      key={index}
+                      key={`${index}1`}
                       onClick={this.handleClickParmas.bind(this, item.id)}
                     >
                       {item.name}

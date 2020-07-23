@@ -168,7 +168,7 @@ export default class VipIndex extends Component {
 						tabList.map((panes, pIdx) =>
 							(<AtTabsPane
   current={curTabIdx}
-  key={pIdx}
+  key={panes.title}
   index={pIdx}
 							>
 							</AtTabsPane>)
@@ -190,7 +190,7 @@ export default class VipIndex extends Component {
 							list[curTabIdx]&&list[curTabIdx].price_list.map((item,index) => {
 								return (
 									(item.price != 0 && item.price != null)&&(
-										<View className={`grade-item ${index == curCellIdx && 'active'}`} key={index} onClick={this.checkHandle.bind(this,index)}>
+										<View className={`grade-item ${index == curCellIdx && 'active'}`} key={`${index}1`} onClick={this.checkHandle.bind(this,index)}>
 											<View className='item-content'>
 												<View className='desc'>{item.desc}</View>
 												<View className='amount'>
@@ -209,7 +209,7 @@ export default class VipIndex extends Component {
 							{
 								list[curTabIdx] && list[curTabIdx].description.split('\n').map((item,index)=> {
 									return (
-										<View key={index}>{item}</View>
+										<View key={`${index}1`}>{item}</View>
 									)
 								})
 							}

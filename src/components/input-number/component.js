@@ -11,7 +11,7 @@ const objectToString = style => {
   } else if (style && typeof style === 'string') {
     return style
   }
-  return ''
+  return null
 }
 
 export default class AtComponent extends Component {

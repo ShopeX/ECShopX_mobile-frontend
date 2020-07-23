@@ -1,3 +1,13 @@
+/*
+ * @Author: Arvin
+ * @GitHub: https://github.com/973749104
+ * @Blog: https://liuhgxu.com
+ * @Description: 说明
+ * @FilePath: /unite-vshop/src/marketing/pages/reservation/brand-list.js
+ * @Date: 2020-04-30 17:12:45
+ * @LastEditors: Arvin
+ * @LastEditTime: 2020-07-21 11:34:44
+ */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
@@ -73,7 +83,7 @@ export default class BrandList extends Component {
             return (
               // eslint-disable-next-line react/jsx-key
               <View className='brand-item'>
-                <View className='brand-item__title' key={index} onClick={this.changeIntroductionView.bind(this, item.id)}>
+                <View className='brand-item__title' key={`${index}1`} onClick={this.changeIntroductionView.bind(this, item.id)}>
                   <Image mode='widthFix' src='/assets/imgs/pay_fail.png' className='brand-item__title_img' />
                 </View>
                 <Text className='brand-item__btn' onClick={this.reservate.bind(this, 1)}>立即预约</Text>

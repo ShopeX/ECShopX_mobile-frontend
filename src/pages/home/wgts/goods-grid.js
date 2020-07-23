@@ -81,7 +81,7 @@ export default class WgtGoodsGrid extends Component {
                 const marketPrice = ((item.market_price)/100).toFixed(2)
                 return (
                   <View
-                    key={idx}
+                    key={`${idx}1`}
                     className={classNames('grid-item',{'grid-item-three': config.style=='grids'})}
                     onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
                   >

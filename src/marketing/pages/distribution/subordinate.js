@@ -97,7 +97,7 @@ export default class DistributionSubordinate extends Component {
             tabList.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curTabIdx}
-                key={pIdx}
+                key={panes.type}
                 index={pIdx}
               >
               </AtTabsPane>)

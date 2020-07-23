@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Image, Navigator } from '@tarojs/components'
-import { SpToast, BackToTop, Loading, FilterBar, SpNote, GoodsItem } from '@/components'
+import { View, Text, ScrollView, Image } from '@tarojs/components'
+import { SpToast, Loading, SpNote } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
-import entry from '@/utils/entry'
+import DistributionGoodsItem from './comps/goods-item'
 
 import './shop-goods.scss'
 
@@ -26,7 +26,6 @@ export default class DistributionShopGoods extends Component {
   
   componentDidMount () {
     Taro.hideShareMenu({
-      withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     })     
     this.setState({
@@ -183,12 +182,12 @@ export default class DistributionShopGoods extends Component {
         >
           <View className='goods-list'>
           {
-            list.map((item, index) => {
+            list.map((item) => {
               const isRelease = goodsIds.findIndex(n => item.goods_id == n) !== -1
               console.log(isRelease)
               return (
                 <DistributionGoodsItem
-                  key={index}
+                  key={item.goods_id}
                   info={item}
                   isRelease={isRelease}
                   onClick={() => this.handleClickItem(item.goods_id)}

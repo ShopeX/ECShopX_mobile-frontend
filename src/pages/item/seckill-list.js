@@ -142,7 +142,7 @@ export default class SeckillList extends Component {
              tabList.map((panes, pIdx) =>
                (<AtTabsPane
                  current={curTabIdx}
-                 key={pIdx}
+                 key={panes.status}
                  index={pIdx}
                >
                </AtTabsPane>)
@@ -161,7 +161,7 @@ export default class SeckillList extends Component {
             {
               list.map((item, index) => {
                 return (
-                  <View className='seckill-list' key={index} onClick={this.handleClickItem.bind(this, item.seckill_id)}>
+                  <View className='seckill-list' key={`${index}1`} onClick={this.handleClickItem.bind(this, item.seckill_id)}>
                     <View className='seckill-list__title'>离结束还有：
                       <AtCountdown
                         isShowDay

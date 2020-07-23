@@ -111,7 +111,7 @@ export default class Pay extends Component {
                       return (
                         <AtTag
                           className={classNames('member-pay__list-item',  item.money === isActiveName ? 'member-pay__list-active' : null)}
-                          key={index}
+                          key={`${index}1`}
                           name={item.money}
                           active={item.money === isActiveName ? true : false}
                           onClick={this.handleClickTag.bind(this, item.ruleData, item.ruleType)}

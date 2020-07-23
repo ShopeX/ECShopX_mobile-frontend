@@ -59,7 +59,7 @@ export default class TradeItem extends Component {
           {
             info.order.map((item, idx) =>
               <OrderItem
-                key={idx}
+                key={`${idx}1`}
                 info={item}
                 payType={payType}
               />

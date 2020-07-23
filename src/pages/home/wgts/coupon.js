@@ -73,7 +73,7 @@ export default class WgtCoupon extends Component {
             return (
               <View
                 className={classNames('coupon-wgt', item.imgUrl && 'with-img')}
-                key={idx}
+                key={`${idx}1`}
               > {
                   item.imgUrl
                   ? <QnImg
@@ -131,7 +131,7 @@ export default class WgtCoupon extends Component {
             return (
               <View
                 className='coupon-wgt'
-                key={idx}
+                key={`${idx}1`}
               >
                 <View className='coupon-brand'>
                   <Image

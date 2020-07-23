@@ -707,30 +707,33 @@ export default class CartCheckout extends Component {
     this.setState({
       submitLoading: true
     })
-
-    let _this=this
-    let templeparams = {
-      'temp_name': 'yykweishop',
-      'source_type': receiptType === 'logistics' ? 'logistics_order' : 'ziti_order',
-    }
-    api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
-      console.log('templeparams---1', tmlres)
-      if (tmlres.template_id && tmlres.template_id.length > 0) {
-        wx.requestSubscribeMessage({
-          tmplIds: tmlres.template_id,
-          success() {
-            _this.handlePay()
-          },
-          fail(){
-            _this.handlePay()
-          }
-        })
-      } else {
-        _this.handlePay()
+    let _this = this
+    if (Taro.getEnv() === 'WEAPP') {
+      let templeparams = {
+        'temp_name': 'yykweishop',
+        'source_type': receiptType === 'logistics' ? 'logistics_order' : 'ziti_order',
       }
-    },()=>{
+      api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
+        console.log('templeparams---1', tmlres)
+        if (tmlres.template_id && tmlres.template_id.length > 0) {
+          wx.requestSubscribeMessage({
+            tmplIds: tmlres.template_id,
+            success() {
+              _this.handlePay()
+            },
+            fail(){
+              _this.handlePay()
+            }
+          })
+        } else {
+          _this.handlePay()
+        }
+      },()=>{
+        _this.handlePay()
+      })
+    } else {
       _this.handlePay()
-    })
+    }
   }
 
 
@@ -803,9 +806,17 @@ export default class CartCheckout extends Component {
       }
 
 
-      config = await api.trade.create(params)
-      order_id = isDrug ? config.order_id : config.trade_info.order_id
-
+      if(process.env.TARO_ENV === 'h5' && payType !== 'point' &&  payType !== 'deposit' && !isDrug){
+        console.log(11111)
+        config = await api.trade.h5create(params)
+        Taro.redirectTo({
+          url: `/pages/cashier/index?order_id=${config.order_id}`
+        })
+        return
+      } else {
+        config = await api.trade.create(params)
+        order_id = isDrug ? config.order_id : config.trade_info.order_id
+      }
     } catch (e) {
       Taro.showToast({
         title: e.message,

@@ -6,13 +6,14 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/community/index.js
  * @Date: 2020-06-11 11:39:49
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-22 18:10:36
+ * @LastEditTime: 2020-07-20 15:41:16
  */ 
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Input } from '@tarojs/components'
 import { NavBar } from '@/components'
 import { debounce } from '@/utils'
 import api from '@/api'
+import entry from '../../../utils/entry'
 import LoadingMore from '../../component/loadingMore'
 
 import './index.scss'
@@ -58,22 +59,7 @@ export default class Community extends Component {
 
   // 获取定位
   init = async () => {
-    const lbs = await Taro.getLocation({type: 'gcj02'}).catch(() => {
-      Taro.showModal({
-        content: '您未授权访问您的定位信息，请先更改您的授权设置',
-        showCancel: false,
-        success: res => {
-          if (res.confirm) {
-            Taro.openSetting({
-              success: () => {
-                this.init()
-              }
-            })
-          }
-        }
-      })
-      return false
-    })
+    const lbs = this.getLoacl()
     if (!lbs) return false
     const { latitude, longitude } = lbs
     this.setState({
@@ -85,6 +71,32 @@ export default class Community extends Component {
       this.getCommunity(true)
       this.getNearBuyCommunity()
     })
+  }
+
+  // 定位
+  getLoacl = async () => {
+    let lbs = ''
+    if (Taro.getEnv() === 'WEAPP') {
+      lbs = await Taro.getLocation({type: 'gcj02'}).catch(() => {
+        Taro.showModal({
+          content: '您未授权访问您的定位信息，请先更改您的授权设置',
+          showCancel: false,
+          success: res => {
+            if (res.confirm) {
+              Taro.openSetting({
+                success: () => {
+                  this.init()
+                }
+              })
+            }
+          }
+        })
+        return false
+      })
+    } else {
+      lbs = await entry.getWebLocal(false).catch(() => false)
+    }
+    return lbs
   }
 
   // 获取社区列表

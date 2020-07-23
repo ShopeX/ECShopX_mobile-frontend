@@ -43,7 +43,7 @@ export default class DistributionShopTrade extends Component {
           case 'wait': return '未收货'
           case 'finish': return '已完成'
           case 'close': return '已取消'
-          default: return ''
+          default: return null
         }
       },
       num: 'num',

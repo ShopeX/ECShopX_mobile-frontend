@@ -116,7 +116,7 @@ export default class WgtGoodsScroll extends Component {
                 const marketPrice = ((item.act_price ? item.price : item.member_price ? item.price : item.market_price)/100).toFixed(2)
                 return (
                   <View
-                    key={idx}
+                    key={`${idx}1`}
                     className='scroll-item'
                     onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
                   >
