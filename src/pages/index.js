@@ -50,8 +50,7 @@ export default class HomeIndex extends Component {
       // 分享配置
       shareInfo: {},
       is_open_recommend: null,
-      is_open_scan_qrcode: null,
-      is_open_wechatapp_location: null
+      is_open_scan_qrcode: null
     }
   }
 
@@ -84,11 +83,10 @@ export default class HomeIndex extends Component {
 
   async fetchSetInfo () {
     const setUrl = '/pagestemplate/setInfo'
-    const {is_open_recommend, is_open_scan_qrcode, is_open_wechatapp_location} = await req.get(setUrl)
+    const {is_open_recommend, is_open_scan_qrcode} = await req.get(setUrl)
     this.setState({
       is_open_recommend: is_open_recommend,
-      is_open_scan_qrcode: is_open_scan_qrcode,
-      is_open_wechatapp_location: is_open_wechatapp_location
+      is_open_scan_qrcode: is_open_scan_qrcode
     })
   }
 
@@ -395,7 +393,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, page, likeList, showBackToTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, featuredshop, is_open_recommend, is_open_wechatapp_location, is_open_scan_qrcode } = this.state
+    const { wgts, page, likeList, showBackToTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, featuredshop, is_open_recommend, is_open_scan_qrcode } = this.state
     // const { showLikeList } = this.props
     // const user = Taro.getStorageSync('userinfo')
     // const isPromoter = user && user.isPromoter
@@ -410,15 +408,14 @@ export default class HomeIndex extends Component {
     return (
       <View className='page-index'>
         {
-          APP_PLATFORM === 'standard' && curStore && (is_open_scan_qrcode==1 || is_open_wechatapp_location==1) && 
+          APP_PLATFORM === 'standard' && curStore && 
             <HeaderHome
               store={curStore}
               isOpenScanQrcode={is_open_scan_qrcode}
-              isOpenWechatappLocation={is_open_wechatapp_location}
             />
         }        
 
-        <View className={classNames('wgts-wrap', is_open_scan_qrcode == 2 && is_open_wechatapp_location == 2 ? 'no-location' : null, APP_PLATFORM !== 'standard' && 
+        <View className={classNames('wgts-wrap', APP_PLATFORM !== 'standard' && 
         'wgts-wrap_platform', positionStatus && (APP_PLATFORM !== 'standard' || curStore.distributor_id == 0 ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard') , !curStore && 'wgts-wrap-nolocation')}
         >
           <View className='wgts-wrap__cont'>

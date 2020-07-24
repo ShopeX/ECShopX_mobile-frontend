@@ -7,7 +7,6 @@ import './header-home.scss'
 export default class HeaderHome extends Component {
   static defaultProps = {
     storeName: null,
-    isOpenWechatappLocation: 2,
     isOpenScanQrcode: 2
   }
 
@@ -50,19 +49,18 @@ export default class HeaderHome extends Component {
   }
 
   render () {
-    const { store, isOpenWechatappLocation, isOpenScanQrcode } = this.props
+    const { store, isOpenScanQrcode } = this.props
     
     return (
       <View className='home-header'>
         {
           store.name && 
             <View className='nearly-shop'>
-              {isOpenWechatappLocation==1 && <View className='shop-view view-flex-item view-flex view-flex-middle' onClick={this.handlePickStore.bind(this)}>
+              <View className='shop-view view-flex-item view-flex view-flex-middle' onClick={this.handlePickStore.bind(this)}>
                 <View className='icon-periscope'></View>
                 <View className='shop-name'>{store.name || '选择店铺'}</View>
                 <View className='icon-arrowDown'></View>
-              </View>}
-              {isOpenWechatappLocation==2 && <View className='shop-view view-flex-item view-flex view-flex-middle'></View>}
+              </View>
               {
                 Taro.getEnv() !== 'WEB' && isOpenScanQrcode==1 && <View className='scancode' onClick={this.handleScanCode.bind(this)}>
                   <View className='iconfont icon-scan'></View>

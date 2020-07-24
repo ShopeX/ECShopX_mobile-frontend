@@ -53,22 +53,31 @@ async function entryLaunch(data, isNeedLocate) {
 }
 
 //获取定位配置
+// async function getLocalSetting() {
+//   const filter = {template_name: 'yykweishop', version: 'v1.0.1', name: 'setting'}
+//   const res = await api.category.getCategory(filter)
+//   const data = res.length ? res[0].params : null
+//   if (res.length > 0) {
+//     if (!data || !data.config) {
+//       return true
+//     } else if(data.config.location){
+//       return true
+//     } else {
+//       return false
+//     }
+//   } else {
+//     return true
+//   }
+//   return positionStatus
+// }
 async function getLocalSetting() {
-  const filter = {template_name: 'yykweishop', version: 'v1.0.1', name: 'setting'}
-  const res = await api.category.getCategory(filter)
-  const data = res.length ? res[0].params : null
-  if (res.length > 0) {
-    if (!data || !data.config) {
-      return true
-    } else if(data.config.location){
-      return true
-    } else {
-      return false
-    }
-  } else {
+  const url = '/pagestemplate/setInfo'
+  const {is_open_wechatapp_location} = await req.get(url)
+  if (is_open_wechatapp_location == 1) {
     return true
+  } else {
+    return false
   }
-  return positionStatus
 }
 
 async function getLocal (isNeedLocate) {
