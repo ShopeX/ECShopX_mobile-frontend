@@ -105,8 +105,11 @@ export default class TabBar extends Component {
     this.fetchCart()
     const { tabList, localCurrent } = this.state
     const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+    if (tabList.length == 0) {
+      return
+    }
     const { url } = tabList[localCurrent]
-    if (tabList.length>0 && url && url !== fullPath) {
+    if (url && url !== fullPath) {
       const nCurrent = tabList.findIndex((t) => t.url === fullPath) || 0
       this.setState({
         localCurrent: nCurrent
