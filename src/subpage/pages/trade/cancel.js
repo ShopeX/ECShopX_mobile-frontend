@@ -37,7 +37,7 @@ export default class TradeCancel extends Component {
   }
 
   handleTextChange = (e) => {
-    const { value } = e.target
+    const value = e
     this.setState({
       otherReason: value
     })

@@ -165,7 +165,8 @@ export default class CartCheckout extends Component {
         total_fee: total_fee.toFixed(2)
       }
     })
-    this.handleAddressChange(this.props.defaultAddress)
+    // this.handleAddressChange(this.props.defaultAddress)
+    this.props.onAddressChoose(null)
     this.getSalespersonNologin()
     // this.getShop()
     this.fetchAddress()

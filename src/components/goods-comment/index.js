@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { classNames, styleNames } from '@/utils'
+import { classNames } from '@/utils'
 import { AtTextarea } from 'taro-ui'
 import './index.scss'
 
