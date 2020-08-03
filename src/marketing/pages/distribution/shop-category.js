@@ -158,10 +158,10 @@ handleClickCategoryNav = (idx,value) => {
   }
   handleClickItem = (item) => {
     console.warn(item)
-    const { goods_id} = item
+    const { goods_id, distributor_id} = item
     let url = ''
     if (goods_id) {
-      url = `/pages/item/espier-detail?id=${goods_id || ''}`
+      url = `/pages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}`
     }
     if (url) {
       Taro.navigateTo({

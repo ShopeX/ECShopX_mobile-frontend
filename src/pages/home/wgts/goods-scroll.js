@@ -118,7 +118,7 @@ export default class WgtGoodsScroll extends Component {
                   <View
                     key={`${idx}1`}
                     className='scroll-item'
-                    onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
+                    onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`)}
                   >
                     {config.leaderboard && (
                       <View className='subscript'>

@@ -130,10 +130,11 @@ export default class Detail extends Component {
     const { info } = this.state
     const { distributor_id } = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
-
+    const infoId = info.distributor_id
+    const id = APP_PLATFORM === 'standard' ? distributor_id : infoId
     return {
       title: info.item_name,
-      path: '/pages/item/espier-detail?id='+ info.item_id + '&dtid=' + distributor_id + (userId && '&uid=' + userId),
+      path: '/pages/item/espier-detail?id='+ info.item_id + '&dtid=' + id + (userId && '&uid=' + userId),
       imageUrl: info.pics[0]
     }
   }
@@ -142,9 +143,11 @@ export default class Detail extends Component {
     const { info } = this.state
     const { distributor_id } = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
+    const infoId = info.distributor_id
+    const id = APP_PLATFORM === 'standard' ? distributor_id : infoId
     return {
       title: info.item_name,
-      query: `id=${info.item_id}&dtid=${distributor_id}&uid=${userId}`,
+      query: `id=${info.item_id}&dtid=${id}&uid=${userId}`,
       imageUrl: info.pics[0]
     }
   }
@@ -178,7 +181,10 @@ export default class Detail extends Component {
 
     if (APP_PLATFORM === 'standard') {
       param.distributor_id = distributor_id 
+    } else {
+      param.distributor_id  = this.$router.params.dtid
     }
+
     const info = await api.item.detail(id, param)
 
     const { intro: desc, promotion_activity: promotion_activity } = info
@@ -333,7 +339,6 @@ export default class Detail extends Component {
   handleMenuClick = async (type) => {
     const { info } = this.state
     const isAuth = S.getAuthToken()
-    console.log('收藏')
     if (type === 'fav') {
       if (!isAuth) {
         S.toast('请登录后再收藏')
@@ -456,8 +461,9 @@ export default class Detail extends Component {
     const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
     const { distributor_id } = Taro.getStorageSync('curStore')
     const pic = pics[0].replace('http:', 'https:')
-
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${distributor_id}&uid=${userId}`
+    const infoId = info.distributor_id
+    const id = APP_PLATFORM === 'standard' ? distributor_id : infoId
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${id}&uid=${userId}`
     const avatarImg = await Taro.getImageInfo({src: avatar})
     const goodsImg = await Taro.getImageInfo({src: pic})
     const codeImg = await Taro.getImageInfo({src: wxappCode})
@@ -651,7 +657,7 @@ export default class Detail extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })

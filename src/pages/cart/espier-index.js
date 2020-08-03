@@ -94,7 +94,7 @@ export default class CartIndex extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -316,13 +316,13 @@ export default class CartIndex extends Component {
     })
   }
 
-  handleClickToDetail = (item_id) => {
+  handleClickToDetail = (item) => {
     if(this.isTodetail === 0){
       return false
     }
     this.isTodetail = 1
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item_id}`
+      url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     })
   }
 
@@ -493,7 +493,7 @@ export default class CartIndex extends Component {
                                         info={item}
                                         onNumChange={this.handleQuantityChange.bind(this, shopCart.shopInfo.shop_id,item)}
                                         onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
-                                        onClickImgAndTitle={this.handleClickToDetail.bind(this, item.item_id)}
+                                        onClickImgAndTitle={this.handleClickToDetail.bind(this, item)}
                                       >
 																				<View className='cart-item__act'>
                                           <SpCheckbox

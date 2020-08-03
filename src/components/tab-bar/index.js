@@ -129,7 +129,7 @@ export default class TabBar extends Component {
     }
 
     const { path } = getCurrentRoute(this.$router)
-    if (path === this.state.tabList[cartTabIdx].url) {
+    if (this.state.tabList[cartTabIdx] && (path === this.state.tabList[cartTabIdx].url)) {
       updateCartCount('')
       return
     }

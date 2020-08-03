@@ -108,7 +108,7 @@ export default class ItemFav extends Component {
       let link = null
       switch (this.state.curTabIdx) {
         case 0:
-					link = `/pages/item/espier-detail?id=${item.item_id}`
+					link = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
           break;
         case 1:
           link = `/pages/recommend/detail?id=${item.item_id}`

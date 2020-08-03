@@ -93,9 +93,9 @@ export default class SeckillGoodsList extends Component {
       ss
     }
   }
-  handleClickItem (id) {
+  handleClickItem (item) {
 		Taro.navigateTo({
-			url: `/pages/item/espier-detail?id=${id}`
+			url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
 		})
 	}
   async fetch (params) {
@@ -175,7 +175,7 @@ export default class SeckillGoodsList extends Component {
             {
               list.map((item) => {
                 return (
-                  <View key={item.item_id} className='goods-list__item' onClick={() => this.handleClickItem(item.item_id)}>
+                  <View key={item.item_id} className='goods-list__item' onClick={() => this.handleClickItem(item)}>
                     <GoodsItem
                       key={item.item_id}
                       info={item}
