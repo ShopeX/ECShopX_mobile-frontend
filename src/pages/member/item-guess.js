@@ -40,6 +40,7 @@ export default class ItemGuess extends Component {
       item_id: 'item_id',
       title: 'itemName',
       desc: 'brief',
+      distributor_id: 'distributor_id'
     })
 
     this.setState({

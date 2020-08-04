@@ -117,6 +117,7 @@ export default class SeckillGoodsList extends Component {
       item_id: 'item_id',
       title: 'itemName',
       desc: 'brief',
+      distributor_id: 'distributor_id',
       price: ({ activity_price }) => (activity_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2)
     })

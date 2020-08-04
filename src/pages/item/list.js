@@ -126,6 +126,7 @@ export default class List extends Component {
       item_id: 'item_id',
       title: ({ itemName, item_name }) => itemName ? itemName : item_name,
       desc: 'brief',
+      distributor_id: 'distributor_id',
       distributor_info: 'distributor_info',
       promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => (price/100).toFixed(2),

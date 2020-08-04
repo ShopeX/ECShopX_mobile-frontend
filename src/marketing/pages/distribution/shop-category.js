@@ -95,6 +95,7 @@ export default class DistributionShopCategory extends Component {
         goods_id: 'goods_id',
         title: 'itemName',
         desc: 'brief',
+        distributor_id: 'distributor_id',
         price: ({ price }) => (price/100).toFixed(2),
         //promoter_price: ({ promoter_price }) => (promoter_price/100).toFixed(2),
         market_price: ({ market_price }) => (market_price/100).toFixed(2)
@@ -222,10 +223,10 @@ handleClickCategoryNav = (idx,value) => {
               contentList.length && contentList.map(item =>{
                 return (
                   <GoodsItem
-                  key={item.item_id}
-                  info={item}
-                  onClick={() => this.handleClickItem(item)}
-                />
+                    key={item.item_id}
+                    info={item}
+                    onClick={() => this.handleClickItem(item)}
+                  />
                 )
               })
             }

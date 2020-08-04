@@ -112,6 +112,7 @@ export default class CartIndex extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       promotion_activity_tag: 'promotion_activity',
+      distributor_id: 'distributor_id',
       price: ({price}) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
@@ -375,6 +376,7 @@ export default class CartIndex extends Component {
       is_checked: 'is_checked',
       store: 'store',
       curSymbol: 'cur.symbol',
+      distributor_id: 'distributor_id',
       promotions: ({ promotions = [], cart_id }) => promotions.map(p => {
         p.cart_id = cart_id
         return p

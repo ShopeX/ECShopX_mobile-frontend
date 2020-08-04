@@ -71,12 +71,19 @@ export default class Detail extends Component {
 
   async componentDidMount () {  
     const options = this.$router.params
-    const { uid, id, gid = '' } = await entry.entryLaunch(options, true)
-    this.fetchInfo(id, gid)
-    this.getEvaluationList(id)
+    console.log(options)
+    let id = options.id
+    let uid = ''
+    if (APP_PLATFORM === 'standard') {
+      const entryData = await entry.entryLaunch(options, true)
+      id = entryData.id
+      uid = entryData.uid
+    }
     if (uid) {
       this.uid = uid
     }
+    this.fetchInfo(id)
+    this.getEvaluationList(id)
     // 浏览记录
     if (S.getAuthToken()) {
       try {
@@ -86,7 +93,7 @@ export default class Detail extends Component {
         } else {
           itemId = this.$router.params.id
         }
-        api.member.itemHistorySave(id)
+        api.member.itemHistorySave(itemId)
       } catch (e) {
         console.log(e)
       }
@@ -305,6 +312,7 @@ export default class Detail extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
+      distributor_id: 'distributor_id',
       promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => { return (price/100).toFixed(2)},
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
@@ -657,7 +665,8 @@ export default class Detail extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    const id = APP_PLATFORM === 'standard' ? Taro.getStorageSync('curStore').distributor_id : item.distributor_id
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}`
     Taro.navigateTo({
       url
     })

@@ -134,10 +134,10 @@ export default class SeriesItem extends Component {
             content.length && content.map(item =>{
               return (
                 <GoodsItem
-                key={item.item_id}
-                info={item}
-                onClick={() => this.handleClickItem(item)}
-              />
+                  key={item.item_id}
+                  info={item}
+                  onClick={() => this.handleClickItem(item)}
+                />
               )
             })
           }
