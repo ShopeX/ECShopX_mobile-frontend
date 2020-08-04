@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { styleNames } from '@/utils'
 import { AtRate } from 'taro-ui'
 
 import './index.scss'
@@ -85,10 +84,10 @@ export default class GoodsEvaluation extends Component {
               return (
                 <View
                   key={index}
-                  style={styleNames(styles)}
+                  style={`height: ${styles.height}`}
                   className={`img-box ${pathRoute === 'detail' ? '' : 'marginBottom10'}`}
                 >
-                  <Image className='img-rate' style={styleNames(styles)} src={imgUrl} mode='aspectFill' />
+                  <Image className='img-rate' style={`height: ${styles.height}`} src={imgUrl} mode='aspectFill' />
                 </View>
               )
             })}

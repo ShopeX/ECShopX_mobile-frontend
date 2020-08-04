@@ -1,7 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
-import { styleNames } from '@/utils'
 
 import './index.scss'
 
@@ -45,7 +44,7 @@ export default class IconMenu extends Component {
       >
         <View className='sp-iconmenu__icon'>
           {img && (<Image mode='aspectFill' className='sp-iconmenu__img' src={img} />)}
-          {icon && (<AtIcon value={icon} prefixClass={iconPrefixClass} style={styleNames(iconStyle)} size={size} />)}
+          {icon && (<AtIcon value={icon} prefixClass={iconPrefixClass} style={iconStyle} size={size} />)}
         </View>
         <Text className='sp-iconmenu__title'>{title}</Text>
       </Button>

@@ -1,6 +1,5 @@
 import Taro from '@tarojs/taro'
 import classNames from 'classnames'
-import styleNames from 'stylenames'
 import qs from 'qs'
 // import moment from 'moment'
 import format from 'date-fns/format'
@@ -227,7 +226,6 @@ export const meiqiaInit = () => {
 
 export {
   classNames,
-  styleNames,
   log,
   debounce,
 	throttle,
