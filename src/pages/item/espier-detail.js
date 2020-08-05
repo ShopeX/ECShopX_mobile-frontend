@@ -1201,6 +1201,7 @@ export default class Detail extends Component {
           info && <GoodsBuyPanel
             info={info}
             type={buyPanelType}
+            marketing={marketing}
             isOpened={showBuyPanel}
             onClose={() => this.setState({ showBuyPanel: false })}
             fastBuyText={marketing === 'group' ? '我要开团' : '立即购买'}
