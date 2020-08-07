@@ -90,7 +90,7 @@ export default class CartIndex extends Component {
   }
 
   handleLoginClick = () => {
-    S.login(this)
+    S.login(this, true)
   }
 
   handleClickItem = (item) => {

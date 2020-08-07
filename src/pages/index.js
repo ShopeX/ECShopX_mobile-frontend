@@ -88,8 +88,8 @@ export default class HomeIndex extends Component {
 
   fetchData() {
     this.fetchInfo(async () => {
-      const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
-      const [fixSetting, { is_open, ad_pic, ad_title }] = await Promise.all([req.get(url), api.promotion.automatic({register_type: 'general'})])
+      // const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index&name=search'
+      const { is_open, ad_pic, ad_title } = await api.promotion.automatic({register_type: 'general'})
       this.setState({
         automatic: {
           title: ad_title,
@@ -280,7 +280,6 @@ export default class HomeIndex extends Component {
     if (!curStore.distributor_id) {
       return
     }
-
     // const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
     const url = '/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id='+curStore.distributor_id
     const info = await req.get(url)

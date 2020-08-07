@@ -141,9 +141,8 @@ export default class TabBar extends Component {
 
     if (cur !== current) {
       const curTab = this.state.tabList[current]
-      const { url, urlRedirect, withLogin } = curTab
+      const { url, withLogin } = curTab
       const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
-
       if (withLogin && !S.getAuthToken()) {
         return Taro.navigateTo({
           url: APP_AUTH_PAGE
@@ -151,11 +150,11 @@ export default class TabBar extends Component {
       }
 
       if (url && fullPath !== url) {
-        if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
-          Taro.navigateTo({ url })
-        } else {
-          Taro.redirectTo({ url })
-        }
+        // if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
+        //   Taro.navigateTo({ url })
+        // } else {
+        Taro.redirectTo({ url })
+        // }
       }
     }
   }
