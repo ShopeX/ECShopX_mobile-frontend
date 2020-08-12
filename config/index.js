@@ -124,10 +124,10 @@ const config = {
           }
         }
       })
-      if (isPro) {
-        chain.plugin('analyzer')
-          .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
-      }
+      // if (isPro) {
+      //   chain.plugin('analyzer')
+      //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
+      // }
       chain.plugin('IgnorePlugin')
         .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/])
       chain.plugin('LodashModuleReplacementPlugin')
@@ -223,10 +223,10 @@ const config = {
           }
         }
       })
-      if (!isPro) {
-        chain.plugin('analyzer')
-          .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
-      }
+      // if (!isPro) {
+      //   chain.plugin('analyzer')
+      //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
+      // }
       chain.plugin('IgnorePlugin')
         .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/])
       chain.plugin('LodashModuleReplacementPlugin')
