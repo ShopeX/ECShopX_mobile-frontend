@@ -323,6 +323,7 @@ export default class HomeIndex extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
+      distributor_id: 'distributor_id',
       promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),

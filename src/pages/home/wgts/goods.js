@@ -34,7 +34,7 @@ export default class WgtGoods extends Component {
     }
   }
 
-  handleClickItem = (id) => {
+  handleClickItem = (item) => {
     // const { info } = this.props
 
     /*if(info.data) {
@@ -52,7 +52,7 @@ export default class WgtGoods extends Component {
     }*/
     try {
       Taro.navigateTo({
-        url: `/pages/item/espier-detail?id=${id}`
+        url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
       })
     } catch (error) {
       console.log(error)
@@ -184,7 +184,7 @@ export default class WgtGoods extends Component {
           {
             data.map(item => {
               return (
-                <View className='goods-content' key={item.item_id} onClick={this.handleClickItem.bind(this, item.item_id)}>
+                <View className='goods-content' key={item.item_id} onClick={this.handleClickItem.bind(this, item)}>
                   <View className='goods-content__info'>
                     <View className='goods-content__info_img'>
                       <QnImg

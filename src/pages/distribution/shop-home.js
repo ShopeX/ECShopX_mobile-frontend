@@ -233,8 +233,8 @@ export default class DistributionShopHome extends Component {
     })
   }
 
-  handleClickItem = (id) => {
-    const url = `/pages/item/espier-detail?id=${id}`
+  handleClickItem = (item) => {
+    const url = `/pages/item/espier-detail?id=${item.goods_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -368,7 +368,7 @@ export default class DistributionShopHome extends Component {
                 <GoodsItem
                   key={index}
                   info={item}
-                  onClick={this.handleClickItem.bind(this, item.goods_id)}
+                  onClick={this.handleClickItem.bind(this, item)}
                 />
               )
             }

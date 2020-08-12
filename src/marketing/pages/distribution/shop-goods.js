@@ -58,6 +58,7 @@ export default class DistributionShopGoods extends Component {
       title: 'itemName',
       desc: 'brief',
       rebate_type: 'rebate_type',
+      distributor_id: 'distributor_id',
       price: ({ price }) => (price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
       cost_price: 'cost_price',
@@ -145,11 +146,10 @@ export default class DistributionShopGoods extends Component {
   onShareAppMessage (res) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
-
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}`
     }
   }
 

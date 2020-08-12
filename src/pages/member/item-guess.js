@@ -40,6 +40,7 @@ export default class ItemGuess extends Component {
       item_id: 'item_id',
       title: 'itemName',
       desc: 'brief',
+      distributor_id: 'distributor_id'
     })
 
     this.setState({
@@ -53,7 +54,7 @@ export default class ItemGuess extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
