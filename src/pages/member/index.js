@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, SpCell} from '@/components'
+import { SpToast, TabBar, SpCell,AccountOfficial} from '@/components'
 // import ExclusiveCustomerService from './comps/exclusive-customer-service'
 import api from '@/api'
 import S from '@/spx'
@@ -43,7 +43,8 @@ export default class MemberIndex extends Component {
       memberDiscount: '',
       isOpenPopularize: false,
       salespersonData: null,
-      memberAssets: {}
+      memberAssets: {},
+      show_official:false
     }
   }
 
@@ -57,11 +58,17 @@ export default class MemberIndex extends Component {
   }
 
   componentDidShow () {
+    const {sence} = this.$router.params
+    if(sence && sence === '1047' || sence === '1124' || sence === '1089' || sence ==='1038' || sence ==='1011'){
+        this.setState({
+          show_official:true
+        })
+    }
     if (S.getAuthToken()) {
       this.getSalesperson()
     }
   }
-
+  
   config = {
     navigationBarTitleText: ''
   }
@@ -178,6 +185,7 @@ export default class MemberIndex extends Component {
     Taro.navigateTo({
       url: '/subpage/pages/trade/customer-pickup-list'
     })
+
   }
 
 
@@ -260,13 +268,29 @@ export default class MemberIndex extends Component {
       url: `/pages/member/member-code`
     })
   }
+  handleOfficialError=()=>{
+    
+  }
+  handleOfficialClose =()=>{
+    this.setState({
+      show_official:false
+    })
+  }
 
   render () {
     const { colors } = this.props
-    const { vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize, salespersonData } = this.state
+    const { vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize, salespersonData ,show_official} = this.state
 
     return (
       <View className='page-member-index'>
+        {
+          show_official && (
+            <AccountOfficial
+              onHandleError={this.handleOfficialError.bind(this)}
+              onClick={this.handleOfficialClose.bind(this)}
+           />
+          )
+        }
         <ScrollView
           className='member__scroll'
           scrollY

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem } from '@/components'
+import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem,AccountOfficial } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
 import { pickBy, classNames, isArray, normalizeQuerys } from '@/utils'
@@ -50,13 +50,19 @@ export default class HomeIndex extends Component {
       // 分享配置
       shareInfo: {},
       is_open_recommend: null,
-      is_open_scan_qrcode: null
+      is_open_scan_qrcode: null,
+      show_official:false
     }
   }
 
   async componentDidMount () {
+    const {sence} = this.$router.params
+    if(sence && sence === '1047' || sence === '1124' || sence === '1089' || sence ==='1038' || sence ==='1011'){
+        this.setState({
+          show_official:true
+        })
+    }
     this.fetchSetInfo()
-
     api.wx.shareSetting({shareindex: 'index'}).then(res => {
       this.setState({
         shareInfo: res
@@ -394,9 +400,17 @@ export default class HomeIndex extends Component {
       url: `/pages/distribution/shop-home?featuredshop=${featuredshop}`
     })
   }
+  handleOfficialError=()=>{
+   
+  }
+  handleOfficialClose =()=>{
+    this.setState({
+      show_official:false
+    })
+  }
 
   render () {
-    const { wgts, page, likeList, showBackToTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, featuredshop, is_open_recommend, is_open_scan_qrcode } = this.state
+    const { wgts, page, likeList, showBackToTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, featuredshop, is_open_recommend, is_open_scan_qrcode,show_official } = this.state
     // const { showLikeList } = this.props
     // const user = Taro.getStorageSync('userinfo')
     // const isPromoter = user && user.isPromoter
@@ -410,6 +424,18 @@ export default class HomeIndex extends Component {
 
     return (
       <View className='page-index'>
+        {
+          show_official && (
+            <AccountOfficial
+              onHandleError={this.handleOfficialError.bind(this)}
+              onClick={this.handleOfficialClose.bind(this)}
+           />
+          )
+        }
+       
+        {/* <View className="official-wrap">
+          
+        </View> */}
         {
           APP_PLATFORM === 'standard' && curStore && 
             <HeaderHome
