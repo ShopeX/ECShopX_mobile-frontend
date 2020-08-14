@@ -82,7 +82,7 @@ export default class DistributionGoods extends Component {
     })
 
     const nList = pickBy(list, {
-      img: 'pics',
+      img: 'pics[0]',
       item_id: 'item_id',
       goods_id: 'goods_id',
       title: 'item_name',

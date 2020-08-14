@@ -89,7 +89,7 @@ export default class DistributionShopCategory extends Component {
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const { defaultId } = this.state
-    let distribution_shop_id = Taro.getStorageSync('distribution_shop_id')
+    // let distribution_shop_id = Taro.getStorageSync('distribution_shop_id')
 
     const query = {
       ...this.state.query,
@@ -97,7 +97,7 @@ export default class DistributionShopCategory extends Component {
       item_type:'normal',
       page,
       pageSize,
-      promoter_shop_id:distribution_shop_id,
+      // promoter_shop_id:distribution_shop_id,
       promoter_onsale:true,
       approve_status: 'onsale,only_show',
       is_promoter: true
@@ -157,7 +157,7 @@ handleClickCategoryNav = (idx,value) => {
   console.warn(idx)
   if (this.state.page.isLoading) return
 
-  if (idx !== this.state.curTabIdx) {
+  if (idx !== this.state.currentIndex) {
     this.resetPage()
     this.setState({
       contentList: []

@@ -124,7 +124,7 @@ handleClickCategoryNav = (idx,value) => {
   console.warn(idx)
   if (this.state.page.isLoading) return
 
-  if (idx !== this.state.curTabIdx) {
+  if (idx !== this.state.currentIndex) {
     this.resetPage()
     this.setState({
       contentList: []
