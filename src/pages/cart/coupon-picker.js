@@ -69,11 +69,14 @@ export default class CouponPicker extends Component {
 
   handleCouponSelect (type = 'coupon', value) {
     if (value && !value.valid) return
+    console.log('value')
     console.log(value)
 
     const payload = value
       ? { type, value }
-      : null
+      : {
+        not_use_coupon: 1
+      }
     this.props.onChangeCoupon(payload)
     setTimeout(() => {
       Taro.navigateBack()

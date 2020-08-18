@@ -447,6 +447,11 @@ export default class CartCheckout extends Component {
     }
 
     if (coupon) {
+      if (coupon.not_use_coupon === 1){
+        params.not_use_coupon = 1
+      } else {
+        params.not_use_coupon = 0
+      }
       if (coupon.type === 'coupon' && coupon.value.code) {
         params.coupon_discount = coupon.value.code
       } else if (coupon.type === 'member') {
@@ -510,7 +515,7 @@ export default class CartCheckout extends Component {
     }
 
     let info = this.state.info
-    if (items && !this.state.info) {
+    if (items) {
       // 从后端获取订单item
       info = {
         cart: [{
