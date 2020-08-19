@@ -181,7 +181,7 @@ export default class Reg extends Component {
       }
 
       S.toast('注册成功')
-      const { isBack, source } = this.$router.params
+      const { redirect, source } = this.$router.params
       setTimeout(()=>{
         if(Taro.getStorageSync('isqrcode') === 'true') {
           Taro.redirectTo({
@@ -193,8 +193,10 @@ export default class Reg extends Component {
           })
         } else {
           // 如果返回
-          if (isBack) {
-            Taro.navigateBack()
+          if (redirect) {
+            Taro.redirectTo({
+              url: decodeURIComponent(redirect)
+            })
           } else {
             Taro.redirectTo({
               url: '/pages/member/index'

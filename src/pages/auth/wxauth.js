@@ -115,9 +115,6 @@ export default class WxAuth extends Component {
 
 
   handleGetUserInfo = async (res) => {
-    // 判断是否回跳back
-    let redirect = this.$router.params.redirect
-    const isBack = redirect ? true : false
     const loginParams = res.detail
     const { iv, encryptedData, rawData, signature, userInfo } = loginParams
 
@@ -165,10 +162,11 @@ export default class WxAuth extends Component {
         await this.autoLogin()
         return
       }
-      const { source } = this.$router.params
+      const { source, redirect } = this.$router.params
+      const redirectUrl= encodeURIComponent(redirect)
       // 跳转注册绑定
       Taro.redirectTo({
-        url: `/pages/auth/reg?code=${code}&open_id=${open_id}&union_id=${union_id}&isBack=${isBack}&source=${source}`
+        url: `/pages/auth/reg?code=${code}&open_id=${open_id}&union_id=${union_id}&redirect=${redirectUrl}&source=${source}`
       })
     } catch (e) {
       console.info(e)

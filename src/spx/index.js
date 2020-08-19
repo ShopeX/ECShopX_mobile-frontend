@@ -149,7 +149,6 @@ class Spx {
     if (path === APP_AUTH_PAGE) {
       return
     }
-
     const authUrl = APP_AUTH_PAGE + `?redirect=${encodedRedirect}`
 
     Taro[isRedirect ? 'redirectTo' : 'navigateTo']({
