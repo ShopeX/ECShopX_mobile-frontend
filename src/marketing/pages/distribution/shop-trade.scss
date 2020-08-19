@@ -32,6 +32,16 @@
         padding-left: 20px;
         font-size: 22px;
       }
+      .section-info {
+        align-items: center;
+        padding-top: 10px;
+        .avatar {
+          width: 80px;
+          height: 80px;
+          border-radius: 100%;
+          margin-right: 20px;
+        }
+      }
     }
   }
 }

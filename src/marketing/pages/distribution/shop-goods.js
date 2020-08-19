@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
-import { SpToast, Loading, SpNote } from '@/components'
+import { SpToast, Loading, SpNote, SearchBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { classNames, pickBy } from '@/utils'
+import { classNames, pickBy, getCurrentRoute } from '@/utils'
 
 import './shop-goods.scss'
 
@@ -88,6 +88,47 @@ export default class DistributionShopGoods extends Component {
     }
   }
 
+  handleSearchChange = (val) => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        keywords: val
+      }
+    })
+  }
+
+  handleConfirm = (val = '') => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        keywords: val,
+      }
+    }, () =>{
+      this.resetPage()
+      this.setState({
+        list: []
+      }, () => {
+        this.nextPage()
+      })
+    })
+  }
+  
+  handleClick = (current) => {
+    const cur = this.state.localCurrent
+
+    if (cur !== current) {
+      const curTab = this.state.tabList[current]
+      const { url } = curTab
+
+      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+      if (url && fullPath !== url) {
+        Taro.redirectTo({ url })
+      }
+    }
+  }  
+
+
+
   handleViewDetail = (idx, id) => {
     const { list } = this.state
     this.setState({
@@ -167,10 +208,21 @@ export default class DistributionShopGoods extends Component {
   // }
 
   render () {
-    const { list, goodsIds, page, scrollTop } = this.state
+    const { list, goodsIds, page, scrollTop, query } = this.state
 
     return (
       <View className='page-distribution-shop'>
+        <View className='searchBar'>
+          <SearchBar
+            showDailog={false}
+            keyword={query ? query.keywords : ''}
+            onFocus={() => false}
+            onCancel={() => {}}
+            onChange={this.handleSearchChange}
+            onClear={this.handleConfirm.bind(this)}
+            onConfirm={this.handleConfirm.bind(this)}
+          />             
+        </View>
         <ScrollView
           className='goods-list__scroll'
           scrollY
