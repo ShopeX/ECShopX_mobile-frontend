@@ -51,18 +51,28 @@ export default class HomeIndex extends Component {
       shareInfo: {},
       is_open_recommend: null,
       is_open_scan_qrcode: null,
-      show_official:false
+      is_open_official_account:null,
+      show_official:true,
+      showCloseBtn:false
     }
   }
 
   async componentDidMount () {
-    const {sence} = this.$router.params
-    if(sence && sence === '1047' || sence === '1124' || sence === '1089' || sence ==='1038' || sence ==='1011'){
-        this.setState({
-          show_official:true
-        })
-    }
     this.fetchSetInfo()
+    const isCloseOfficial = Taro.getStorageSync('close_official')//是否关闭
+    if(isCloseOfficial){
+      this.setState({
+        show_official:false
+      })
+    }
+    if(this.$router.params.scene){
+      const query = decodeURIComponent(this.$router.params.scene)
+      const queryStr = decodeURIComponent(query)
+      this.setState({
+        showCloseBtn:true
+      })
+     // const res = parseUrlStr(queryStr)
+  }
     api.wx.shareSetting({shareindex: 'index'}).then(res => {
       this.setState({
         shareInfo: res
@@ -72,11 +82,12 @@ export default class HomeIndex extends Component {
 
   async fetchSetInfo () {
     const setUrl = '/pagestemplate/setInfo'
-    const {is_open_recommend, is_open_scan_qrcode, is_open_wechatapp_location} = await req.get(setUrl)
+    const {is_open_recommend, is_open_scan_qrcode, is_open_wechatapp_location,is_open_official_account} = await req.get(setUrl)
     this.setState({
       is_open_recommend: is_open_recommend,
       is_open_scan_qrcode: is_open_scan_qrcode,
-      is_open_wechatapp_location: is_open_wechatapp_location
+      is_open_wechatapp_location: is_open_wechatapp_location,
+      is_open_official_account:is_open_official_account
     }, async() => {
       let isNeedLoacate = is_open_wechatapp_location == 1 ? true : false
       const options = this.$router.params
@@ -407,10 +418,11 @@ export default class HomeIndex extends Component {
     this.setState({
       show_official:false
     })
+    Taro.setStorageSync('close_official',true)
   }
 
   render () {
-    const { wgts, page, likeList, showBackToTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, featuredshop, is_open_recommend, is_open_scan_qrcode,show_official } = this.state
+    const { wgts, page, likeList, showBackToTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, featuredshop, is_open_recommend, is_open_scan_qrcode,is_open_official_account,show_official,showCloseBtn } = this.state
     // const { showLikeList } = this.props
     // const user = Taro.getStorageSync('userinfo')
     // const isPromoter = user && user.isPromoter
@@ -421,21 +433,26 @@ export default class HomeIndex extends Component {
       return <Loading />
     }
 		// const show_location = wgts.find(item=>item.name=='setting'&&item.config.location)
-
     return (
       <View className='page-index'>
         {
-          show_official && (
-            <AccountOfficial
-              onHandleError={this.handleOfficialError.bind(this)}
-              onClick={this.handleOfficialClose.bind(this)}
-           />
+          showCloseBtn && (
+          <View>
+          {
+            is_open_official_account === 1 && show_official && (
+              <AccountOfficial
+                onHandleError={this.handleOfficialError.bind(this)}
+                onClick={this.handleOfficialClose.bind(this)}
+                isClose={true}
+            >
+
+          </AccountOfficial>
+            )
+          }
+        </View>
           )
         }
-       
-        {/* <View className="official-wrap">
-          
-        </View> */}
+
         {
           APP_PLATFORM === 'standard' && curStore && 
             <HeaderHome

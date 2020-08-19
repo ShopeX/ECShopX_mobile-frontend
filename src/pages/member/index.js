@@ -44,7 +44,6 @@ export default class MemberIndex extends Component {
       isOpenPopularize: false,
       salespersonData: null,
       memberAssets: {},
-      show_official:false
     }
   }
 
@@ -58,12 +57,6 @@ export default class MemberIndex extends Component {
   }
 
   componentDidShow () {
-    const {sence} = this.$router.params
-    if(sence && sence === '1047' || sence === '1124' || sence === '1089' || sence ==='1038' || sence ==='1011'){
-        this.setState({
-          show_official:true
-        })
-    }
     if (S.getAuthToken()) {
       this.getSalesperson()
     }
@@ -272,25 +265,14 @@ export default class MemberIndex extends Component {
     
   }
   handleOfficialClose =()=>{
-    this.setState({
-      show_official:false
-    })
   }
 
   render () {
     const { colors } = this.props
-    const { vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize, salespersonData ,show_official} = this.state
-
+    const { vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize, salespersonData} = this.state
+    const is_open_official_account = Taro.getStorageSync('isOpenOfficial')
     return (
       <View className='page-member-index'>
-        {
-          show_official && (
-            <AccountOfficial
-              onHandleError={this.handleOfficialError.bind(this)}
-              onClick={this.handleOfficialClose.bind(this)}
-           />
-          )
-        }
         <ScrollView
           className='member__scroll'
           scrollY
@@ -399,6 +381,18 @@ export default class MemberIndex extends Component {
                 }
               </View>
           }
+          {
+            is_open_official_account === 1 && (
+              <View className='page-member-section'>
+              <AccountOfficial
+                  onHandleError={this.handleOfficialError.bind(this)}
+                  onClick={this.handleOfficialClose.bind(this)}
+                  isClose={false}
+              />
+            </View>
+            )
+          }
+        
           <View className='page-member-section order-box'>
             <View className='section-title view-flex view-flex-middle'>
               <View className='view-flex-item'>订单</View>

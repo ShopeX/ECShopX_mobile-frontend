@@ -22,6 +22,15 @@ export default class AccountOfficial extends Component {
     onClick: () => {},
     onHandleError: () => {}
   }
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      isShowAccount:false
+    }
+  }
+  componentDidMount(){
+  }
 
   componentDidShow() {
     this.handleClickError()
@@ -47,28 +56,23 @@ export default class AccountOfficial extends Component {
   }
 
   render () {
-    const { colors } = this.props
+    const { isShowAccount } = this.state
+    const { colors,isClose } = this.props
     return (
+     
       <View className='account-view'>
-       {/* <View className='account-view__show' style={`background: ${colors.data[0].primary}`}>
-          <View className='account-view__title'>Marionnaud  Paris 玛莉娜商城关联的公众号</View>
-          <View className='account-view__content'>
-            <View className='account-view__left'>
-              <Image src='/assets/imgs/logo.png' mode='aspectFit' className='account-view__img'></Image>
-              <View className='account-view__left_text'>
-                <View className='title_text'>Marionnaud  Paris 玛莉娜</View>
-                <View className='tip_text'>Beauty is mine</View>
-              </View>
-            </View>
-            <View className='account-view__btn'>关注</View>
-          </View>
-        </View> */}
         <OfficialAccount
           className='account-view__official'
           onLoad={(res) => this.handleClickLoad(res)}
           onError={(error) => this.handleClickError(error)}
         />
-        <View className='zoom-btn icon-close' onClick={this.handleClickClose.bind(this)}></View>
+        
+        {
+          isClose && (
+            <View className='zoom-btn icon-close' onClick={this.handleClickClose.bind(this)}></View>
+
+          )
+        }
       </View>
     )
   }

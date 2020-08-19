@@ -292,12 +292,13 @@ class App extends Component {
       name: "tabs"
     }
     const setUrl = '/pagestemplate/setInfo'
-    const { tab_bar } = await req.get(setUrl)
+    const { tab_bar,is_open_official_account } = await req.get(setUrl)
     store.dispatch({
       type: 'tabBar',
       payload: tab_bar ? JSON.parse(tab_bar) : defaultTabs
     })
     Taro.setStorageSync('initTabBar', true)
+    Taro.setStorageSync('isOpenOfficial',is_open_official_account)
     // store.dispatch({
     //   type: 'tabBar',
     //   payload: info.list.length ? info.list[0].params : defaultTabs
