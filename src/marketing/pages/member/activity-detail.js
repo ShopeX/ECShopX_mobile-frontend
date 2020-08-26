@@ -1,3 +1,13 @@
+/*
+ * @Author: Arvin
+ * @GitHub: https://github.com/973749104
+ * @Blog: https://liuhgxu.com
+ * @Description: 说明
+ * @FilePath: /unite-vshop/src/marketing/pages/member/activity-detail.js
+ * @Date: 2020-08-14 15:33:36
+ * @LastEditors: Arvin
+ * @LastEditTime: 2020-08-17 15:34:00
+ */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
@@ -63,7 +73,7 @@ export default class ActivityDetail extends Component {
       <View className='activity-detail'>
         <View className='activity-detail__list'>
           {
-            cur_activity_info.map((item, index) => {
+            cur_activity_info && cur_activity_info.map((item, index) => {
               return (
                 <View key={`${index}1`} className='activity-detail__item'>
                   <Text className='activity-detail__item_title'>{item.field_title}</Text>

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { SpToast, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
@@ -38,6 +38,8 @@ export default class DistributionShopTrade extends Component {
       order_id: 'order_id',
       created: 'created',
       title: 'item_name',
+      username: 'username',
+      avatar: 'avatar',
       status: ({ status }) => {
         switch (status) {
           case 'wait': return '未收货'
@@ -64,7 +66,7 @@ export default class DistributionShopTrade extends Component {
     const { list, page, scrollTop } = this.state
 
     return (
-      <View className="page-distribution-shop">
+      <View className='page-distribution-shop'>
         <ScrollView
           className='trade-list__scroll'
           scrollY
@@ -75,21 +77,29 @@ export default class DistributionShopTrade extends Component {
         >
           <View className='trade-list'>
             {
-              list.map((item, index) =>
+              list.map((item) =>
                 <View className='section trade-list__item' key={item.order_id}>
                   <View className='section-title view-flex view-flex-middle with-border'>
                     <View className='view-flex-item trade-list__item-code'>{item.order_id}</View>
                     <View className='trade-list__item-date'><Text className='icon-clock muted'></Text> {formatDataTime(item.created*1000)}</View>
                   </View>
-                  <View className='section-body view-flex'>
-                    <View className='view-flex-item'>
-                      <View className='trade-list__item-title'>{item.title}</View>
-                      <View className='trade-list__item-price'><Text className='cur'>¥</Text> {item.price}</View>
+                  <View className='section-body'>
+                    <View className='view-flex'>
+                      <View className='view-flex-item'>
+                        <View className='trade-list__item-title'>{item.title}</View>
+                        <View className='trade-list__item-price'><Text className='cur'>¥</Text> {item.price}</View>
+                      </View>
+                      <View className='view-flex-item' style='text-align: right'>
+                        <View className='trade-list__item-count'>x{item.num}</View>
+                        <View className='trade-list__item-count' style='color: #ff5000'>{item.status}</View>
+                      </View>
                     </View>
-                    <View className='view-flex-item' style='text-align: right'>
-                      <View className='trade-list__item-count'>x{item.num}</View>
-                      <View className='trade-list__item-count' style='color: #ff5000'>{item.status}</View>
-                    </View>
+                    {
+                      item.avatar && <View className='section-info view-flex'>
+                        <Image src={item.avatar} className='avatar'></Image>
+                        <View>{ item.username }</View>
+                      </View>
+                    }
                   </View>
                 </View>
               )
