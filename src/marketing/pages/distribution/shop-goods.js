@@ -276,7 +276,7 @@ export default class DistributionShopGoods extends Component {
                                     <View className='shop-goods__detail-skus view-flex-item2'>
                                       {
                                         detail.item_spec
-                                          ? detail.item_spec.map((sku, sindex) =>
+                                          ? (detail.item_spec && detail.item_spec.map((sku, sindex) =>
                                               <View className='sku-item' key={`sku${sindex}`}>
                                                 {
                                                   sku.spec_image_url &&
@@ -284,7 +284,7 @@ export default class DistributionShopGoods extends Component {
                                                 }
                                                 {sku.spec_custom_value_name}
                                               </View>
-                                            )
+                                            ))
                                           : <Text>单规格</Text>
                                       }
                                     </View>
