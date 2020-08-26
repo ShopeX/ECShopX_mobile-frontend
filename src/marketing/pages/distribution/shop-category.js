@@ -3,6 +3,7 @@ import {View, ScrollView, Image, Text} from '@tarojs/components'
 import { Loading,GoodsItem,SpNote} from '@/components'
 import { classNames, pickBy,getCurrentRoute } from '@/utils'
 import {AtTabBar} from "taro-ui"
+import S from '@/spx'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 
@@ -124,7 +125,7 @@ handleClickCategoryNav = (idx,value) => {
   console.warn(idx)
   if (this.state.page.isLoading) return
 
-  if (idx !== this.state.curTabIdx) {
+  if (idx !== this.state.currentIndex) {
     this.resetPage()
     this.setState({
       contentList: []
@@ -171,7 +172,7 @@ handleClickCategoryNav = (idx,value) => {
     }
   }
   render () {
-    const { list, isChanged,tabList,localCurrent, contentList ,defaultId ,shop_pic ,currentIndex, page, scrollTop } = this.state
+    const { list, hasSeries, tabList, localCurrent, contentList, shop_pic, currentIndex, page, scrollTop } = this.state
     return (
       <View className='page-category-index'>
         <View className='category-banner'>

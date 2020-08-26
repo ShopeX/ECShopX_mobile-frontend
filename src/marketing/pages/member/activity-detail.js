@@ -9,9 +9,9 @@
  * @LastEditTime: 2020-08-17 15:34:00
  */
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { withPager, withBackToTop } from '@/hocs'
+// import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 import { isArray } from '@/utils'
 

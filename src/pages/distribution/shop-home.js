@@ -258,22 +258,22 @@ export default class DistributionShopHome extends Component {
   }
 
   render () {
-    const { wgts,def_pic,positionStatus,authStatus,showBackToTop, list,tabList, page, showDrawer,localCurrent, paramsList, selectParams, scrollTop, goodsIds, curFilterIdx, filterList } = this.state
+    const { wgts,def_pic,positionStatus ,showBackToTop,tabList,localCurrent, scrollTop, info } = this.state
     if (!wgts) {
       return <Loading />
     }
-    console.warn(def_pic)
+
     return (
-      <View className="page-distribution-shop">
-        <View className="shop-banner">
+      <View className='page-distribution-shop'>
+        <View className='shop-banner'>
           <View className='shop-def'>
           <Image
-                className='banner-img'
-                src={def_pic || null}
-                mode='aspectFill'
+            className='banner-img'
+            src={def_pic || null}
+            mode='aspectFill'
           />
           </View>
-          <View className="shop-info">
+          <View className='shop-info'>
             <Image
               className='shopkeeper-avatar'
               src={info.headimgurl}
@@ -296,112 +296,7 @@ export default class DistributionShopHome extends Component {
             />
           </View>
         </ScrollView>
-        {/* <FilterBar
-          className='goods-list__tabs'
-          custom
-          current={curFilterIdx}
-          list={filterList}
-          onChange={this.handleFilterChange}
-        >
-          
-            <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
-              <View className='icon-filter'></View>
-              <Text>筛选</Text>
-            </View>
-         
-        </FilterBar> */}
 
-        {/* <AtDrawer
-          show={showDrawer}
-          right
-          mask
-          width={`${Taro.pxTransform(570)}`}
-        >
-          {
-            paramsList.map((item, index) => {
-              return (
-                <View className='drawer-item' key={index}>
-                  <View className='drawer-item__title'>
-                    <Text>{item.attribute_name}</Text>
-                    <View className='at-icon at-icon-chevron-down'> </View>
-                  </View>
-                  <View className='drawer-item__options'>
-                    {
-                      item.attribute_values.map((v_item, v_index) => {
-                        return (
-                          <View
-                            className={classNames('drawer-item__options__item' ,v_item.isChooseParams ? 'drawer-item__options__checked' : '')}
-                            // className='drawer-item__options__item'
-                            key={`${v_index}1`}
-                            onClick={this.handleClickParmas.bind(this, item.attribute_id, v_item.attribute_value_id)}
-                          >
-                            {v_item.attribute_value_name}
-                          </View>
-                        )
-                      })
-                    }
-                    <View className='drawer-item__options__none'> </View>
-                    <View className='drawer-item__options__none'> </View>
-                    <View className='drawer-item__options__none'> </View>
-                  </View>
-                </View>
-              )
-            })
-          }
-          <View className='drawer-footer'>
-            <Text className='drawer-footer__btn' onClick={this.handleClickSearchParams.bind(this, 'reset')}>重置</Text>
-            <Text className='drawer-footer__btn drawer-footer__btn_active' onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定</Text>
-          </View>
-        </AtDrawer> */}
-
-        {/* <ScrollView
-          className='goods-list__scroll'
-          scrollY
-          scrollTop={scrollTop}
-          scrollWithAnimation
-          onScroll={this.handleScroll}
-          onScrollToLower={this.nextPage}
-        > */}
-          {/* <View className='goods-list'>
-            {
-              list.map((item, index) =>
-                <GoodsItem
-                  key={index}
-                  info={item}
-                  onClick={this.handleClickItem.bind(this, item)}
-                />
-              )
-            }
-          </View> */}
-          {/* {
-            isArray(desc) &&
-              <View className='wgts-wrap__cont'>
-                {
-                  desc.map((item, idx) => {
-                    return (
-                      <View className='wgt-wrap' key={`${idx}1`}>                      
-                        {item.name === 'slider' && <WgtSlider info={item} />}
-                        {item.name === 'goods' && <WgtGoods info={item} />}
-                      </View>
-                    )
-                  })
-                }
-              </View>
-              
-          } */}
-
-
-
-          {/* {
-            page.isLoading
-              ? <Loading>正在加载...</Loading>
-              : null
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-          }
-        </ScrollView> */}
         <BackToTop
           show={showBackToTop}
           onClick={this.scrollBackToTop}
@@ -413,15 +308,6 @@ export default class DistributionShopHome extends Component {
           onClick={this.handleClick}  
           current={localCurrent}   
         />
-              {/* <AtTabBar
-                fixed
-                color={color}
-                backgroundColor={backgroundColor}
-                selectedColor={selectedColor}
-                tabList={tabList}
-                onClick={this.handleClick}
-                current={localCurrent}
-              /> */}
       </View>
     )
   }
