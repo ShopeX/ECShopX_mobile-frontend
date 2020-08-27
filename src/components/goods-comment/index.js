@@ -58,7 +58,7 @@ export default class GoodsComment extends Component {
   }
 
   handleChange (e) {
-    let comment = e.target.value
+    let comment = e
     this.setState({
         comment,
         count: comment ? comment.length : 0

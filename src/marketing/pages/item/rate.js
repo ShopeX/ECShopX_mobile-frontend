@@ -86,7 +86,7 @@ export default class TradeRate extends Component {
 
   handleChangeComment (index, e) {
     const { goodsList } = this.state
-    goodsList[index].content = e.detail.value
+    goodsList[index].content = e
     this.setState({
       goodsList
     })

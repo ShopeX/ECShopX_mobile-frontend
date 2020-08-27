@@ -50,7 +50,7 @@ export default class Complaint extends Component {
    * */
   handleChangeReason(e) {
     this.setState({
-      complaintReason: e.target.value
+      complaintReason: e
     })
   }
 

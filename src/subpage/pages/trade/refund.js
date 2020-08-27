@@ -105,6 +105,7 @@ export default class TradeRefund extends Component {
   }
 
   handleTextChange = (e) => {
+    console.log(e)
     const { value } = e.target
     this.setState({
       description: value
