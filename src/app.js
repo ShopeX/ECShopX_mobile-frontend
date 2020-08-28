@@ -164,7 +164,7 @@ class App extends Component {
         ],
         "plugins": {
           "live-player-plugin": {
-            "version": "1.1.1", // 填写该直播组件版本号
+            "version": "1.1.8", // 填写该直播组件版本号
             "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
           }
           // "meiqia": {
