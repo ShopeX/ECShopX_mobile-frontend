@@ -288,22 +288,24 @@ export default class DistributionShopGoods extends Component {
                                           : <Text>单规格</Text>
                                       }
                                     </View>
-                                    <View className='view-flex-item2'>
-                                      {
-                                        detail.task.map((task, tindex) =>
-                                          <View className='view-flex' key={`task${tindex}`}>
-                                            <View className='view-flex-item'>{task.filter}</View>
-                                            <View className='view-flex-item'>
-                                              {
-                                                task.money &&
-                                                  <Text>¥</Text>
-                                              }
-                                              {task.money}
+                                    {
+                                      detail.task && <View className='view-flex-item2'>
+                                        {
+                                          detail.task.map((task, tindex) =>
+                                            <View className='view-flex' key={`task${tindex}`}>
+                                              <View className='view-flex-item'>{task.filter}</View>
+                                              <View className='view-flex-item'>
+                                                {
+                                                  task.money &&
+                                                    <Text>¥</Text>
+                                                }
+                                                {task.money}
+                                              </View>
                                             </View>
-                                          </View>
-                                        )
-                                      }
-                                    </View>
+                                          )
+                                        }
+                                      </View>
+                                    }
                                   </View>
                                 )
                               }
