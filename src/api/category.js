@@ -1,7 +1,7 @@
 import req from './req'
 
-export function get () {
-  return req.get('/goods/category')
+export function get (params) {
+  return req.get('/goods/category', params)
 }
 
 export function getCategory (params = {}) {

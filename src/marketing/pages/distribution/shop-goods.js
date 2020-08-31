@@ -1,11 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Image } from '@tarojs/components'
-import { SpToast, Loading, SpNote } from '@/components'
+import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
+import { SpToast, Loading, SpNote, SearchBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { classNames, pickBy } from '@/utils'
-import DistributionGoodsItem from './comps/goods-item'
+import { classNames, pickBy, getCurrentRoute } from '@/utils'
 
 import './shop-goods.scss'
 
@@ -58,6 +57,7 @@ export default class DistributionShopGoods extends Component {
       title: 'itemName',
       desc: 'brief',
       rebate_type: 'rebate_type',
+      distributor_id: 'distributor_id',
       price: ({ price }) => (price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
       cost_price: 'cost_price',
@@ -87,6 +87,47 @@ export default class DistributionShopGoods extends Component {
       total
     }
   }
+
+  handleSearchChange = (val) => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        keywords: val
+      }
+    })
+  }
+
+  handleConfirm = (val = '') => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        keywords: val,
+      }
+    }, () =>{
+      this.resetPage()
+      this.setState({
+        list: []
+      }, () => {
+        this.nextPage()
+      })
+    })
+  }
+  
+  handleClick = (current) => {
+    const cur = this.state.localCurrent
+
+    if (cur !== current) {
+      const curTab = this.state.tabList[current]
+      const { url } = curTab
+
+      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+      if (url && fullPath !== url) {
+        Taro.redirectTo({ url })
+      }
+    }
+  }  
+
+
 
   handleViewDetail = (idx, id) => {
     const { list } = this.state
@@ -145,11 +186,10 @@ export default class DistributionShopGoods extends Component {
   onShareAppMessage (res) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
-
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}`
     }
   }
 
@@ -168,10 +208,21 @@ export default class DistributionShopGoods extends Component {
   // }
 
   render () {
-    const { list, goodsIds, page, scrollTop } = this.state
+    const { list, goodsIds, page, scrollTop, query } = this.state
 
     return (
-      <View className="page-distribution-shop">
+      <View className='page-distribution-shop'>
+        <View className='searchBar'>
+          <SearchBar
+            showDailog={false}
+            keyword={query ? query.keywords : ''}
+            onFocus={() => false}
+            onCancel={() => {}}
+            onChange={this.handleSearchChange}
+            onClear={this.handleConfirm.bind(this)}
+            onConfirm={this.handleConfirm.bind(this)}
+          />             
+        </View>
         <ScrollView
           className='goods-list__scroll'
           scrollY
@@ -181,30 +232,17 @@ export default class DistributionShopGoods extends Component {
           onScrollToLower={this.nextPage}
         >
           <View className='goods-list'>
-          {
-            list.map((item) => {
-              const isRelease = goodsIds.findIndex(n => item.goods_id == n) !== -1
-              console.log(isRelease)
-              return (
-                <DistributionGoodsItem
-                  key={item.goods_id}
-                  info={item}
-                  isRelease={isRelease}
-                  onClick={() => this.handleClickItem(item.goods_id)}
-                />
-              )
-            })
-          }
             {
               list.map((item, index) => {
                 const isRelease = goodsIds.findIndex(n => item.goods_id == n) !== -1
                 return (
                   <View
                     className='shop-goods-item'
-                    >
+                    key={item.goods_id}
+                  >
                     <View className='shop-goods'>
-                      <Image className='shop-goods__thumbnail' src={item.img} mode='aspectFill' />
                       <View className='shop-goods__caption'>
+                        <Image className='shop-goods__thumbnail' src={item.img} mode='aspectFill' />
                         <View className='view-flex-item'>
                           <View className='shop-goods__title'>{item.title}</View>
                           <View className='shop-goods__desc'>{item.desc}</View>
@@ -219,53 +257,55 @@ export default class DistributionShopGoods extends Component {
                       {
                         !item.view_detail
                           ? <View
-                              className='shop-goods__detail'
-                              onClick={this.handleViewDetail.bind(this, index, item.item_id)}
-                              >
+                            className='shop-goods__detail'
+                            onClick={this.handleViewDetail.bind(this, index, item.item_id)}
+                          >
                               <Text className='icon-search'></Text> 查看指标明细
                             </View>
                           : <View
-                              className='shop-goods__detail'
-                              >
+                            className='shop-goods__detail'
+                          >
                               <View className='content-bottom-padded view-flex'>
                                 <View className='view-flex-item2'>规格</View>
                                 <View className='view-flex-item'>指标</View>
                                 <View className='view-flex-item'>奖金</View>
                               </View>
                               {
-                                item.details && item.details.map(detail =>
-                                  <View class="shop-goods__detail-item">
+                                item.details && item.details.map((detail, dindex) =>
+                                  <View class='shop-goods__detail-item' key={`detail4${dindex}`}>
                                     <View className='shop-goods__detail-skus view-flex-item2'>
                                       {
                                         detail.item_spec
-                                          ? detail.item_spec.map(sku =>
-                                              <View className='sku-item'>
+                                          ? (detail.item_spec && detail.item_spec.map((sku, sindex) =>
+                                              <View className='sku-item' key={`sku${sindex}`}>
                                                 {
                                                   sku.spec_image_url &&
-                                                    <Image className='sku-img' src={sku.spec_image_url} mode="aspectFill"/>
+                                                    <Image className='sku-img' src={sku.spec_image_url} mode='aspectFill' />
                                                 }
                                                 {sku.spec_custom_value_name}
                                               </View>
-                                            )
+                                            ))
                                           : <Text>单规格</Text>
                                       }
                                     </View>
-                                    <View className='view-flex-item2'>
-                                      {
-                                        detail.task.map(task =>
-                                          <View className='view-flex'>
-                                            <View className='view-flex-item'>{task.filter}</View>
-                                            <View className='view-flex-item'>
-                                              {
-                                                task.money &&
-                                                  <Text>¥</Text>
-                                              }
-                                              {task.money}
+                                    {
+                                      detail.task && <View className='view-flex-item2'>
+                                        {
+                                          detail.task.map((task, tindex) =>
+                                            <View className='view-flex' key={`task${tindex}`}>
+                                              <View className='view-flex-item'>{task.filter}</View>
+                                              <View className='view-flex-item'>
+                                                {
+                                                  task.money &&
+                                                    <Text>¥</Text>
+                                                }
+                                                {task.money}
+                                              </View>
                                             </View>
-                                          </View>
-                                        )
-                                      }
-                                    </View>
+                                          )
+                                        }
+                                      </View>
+                                    }
                                   </View>
                                 )
                               }
@@ -288,7 +328,7 @@ export default class DistributionShopGoods extends Component {
                         className='shop-goods__footer-item'
                         dataInfo={item}
                         openType='share'
-                        size="small"
+                        size='small'
                       >
                         <Text className='icon-share2'> 分享给好友</Text>
                       </Button>

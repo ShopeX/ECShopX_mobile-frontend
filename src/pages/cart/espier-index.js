@@ -94,7 +94,7 @@ export default class CartIndex extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -112,6 +112,7 @@ export default class CartIndex extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       promotion_activity_tag: 'promotion_activity',
+      distributor_id: 'distributor_id',
       price: ({price}) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
@@ -316,13 +317,13 @@ export default class CartIndex extends Component {
     })
   }
 
-  handleClickToDetail = (item_id) => {
+  handleClickToDetail = (item) => {
     if(this.isTodetail === 0){
       return false
     }
     this.isTodetail = 1
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item_id}`
+      url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     })
   }
 
@@ -375,6 +376,7 @@ export default class CartIndex extends Component {
       is_checked: 'is_checked',
       store: 'store',
       curSymbol: 'cur.symbol',
+      distributor_id: 'shop_id',
       promotions: ({ promotions = [], cart_id }) => promotions.map(p => {
         p.cart_id = cart_id
         return p
@@ -493,7 +495,7 @@ export default class CartIndex extends Component {
                                         info={item}
                                         onNumChange={this.handleQuantityChange.bind(this, shopCart.shopInfo.shop_id,item)}
                                         onClickPromotion={this.handleClickPromotion.bind(this, item.cart_id)}
-                                        onClickImgAndTitle={this.handleClickToDetail.bind(this, item.item_id)}
+                                        onClickImgAndTitle={this.handleClickToDetail.bind(this, item)}
                                       >
 																				<View className='cart-item__act'>
                                           <SpCheckbox

@@ -2,10 +2,10 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
-import { AtDrawer } from 'taro-ui'
+import { AtDrawer, AtTabBar } from 'taro-ui'
 import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, SpNote, NavBar } from '@/components'
 import api from '@/api'
-import { pickBy, classNames } from '@/utils'
+import { pickBy, classNames, getCurrentRoute } from '@/utils'
 
 import './list.scss'
 
@@ -40,7 +40,13 @@ export default class List extends Component {
       showDrawer: false,
       selectParams: [],
       info: {},
-      shareInfo: {}
+      shareInfo: {},
+      localCurrent: 1,
+      tabList: [
+        { title: '店铺首页', iconType: 'home', iconPrefixClass: 'icon', url: '/pages/store/index' },
+        { title: '商品列表', iconType: 'list', iconPrefixClass: 'icon', url: '/others/pages/store/list' },
+        { title: '商品分类', iconType: 'category', iconPrefixClass: 'icon', url: '/others/pages/store/category' }
+      ]      
     }
   }
 
@@ -71,9 +77,8 @@ export default class List extends Component {
 
   onShareAppMessage () {
     const res = this.state.shareInfo
-    const { cat_id = null, main_cat_id = null } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`     
+    const query = userId ? `?uid=${userId}` : ''     
     return {
       title: res.title,
       imageUrl: res.imageUrl,
@@ -83,9 +88,8 @@ export default class List extends Component {
 
   onShareTimeline () {
     const res = this.state.shareInfo
-    const { cat_id = null, main_cat_id = null } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `cat_id=${cat_id}&main_cat_id=${main_cat_id}` 
+    const query = userId ? `uid=${userId}` : '' 
     return {
       title: res.title,
       imageUrl: res.imageUrl,
@@ -128,8 +132,8 @@ export default class List extends Component {
       item_id: 'item_id',
       title: ({ itemName, item_name }) => itemName ? itemName : item_name,
       desc: 'brief',
-      distributor_id: 'distributor_id',
       distributor_info: 'distributor_info',
+      distributor_id: 'distributor_id',
       promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
@@ -383,10 +387,27 @@ export default class List extends Component {
         this.nextPage()
       })
     })
-	}
+  }
+  
+  handleClick = (current) => {
+    const cur = this.state.localCurrent
+    if (cur !== current) {
+      const curTab = this.state.tabList[current]
+      const { url } = curTab
+      const options = this.$router.params
+      const id = options.dis_id
+      const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
+      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+      if (url && fullPath !== url) {
+        Taro.redirectTo({ url: `${url}${param}` })
+      }
+    }
+  }  
 
   render () {
     const {
+      localCurrent,
+      tabList,
       list,
       oddList,
       evenList,
@@ -579,6 +600,12 @@ export default class List extends Component {
           onClick={this.scrollBackToTop}
           bottom={30}
         />
+        <AtTabBar
+          fixed
+          tabList={tabList}
+          onClick={this.handleClick}
+          current={localCurrent}
+        />           
       </View>
     )
   }

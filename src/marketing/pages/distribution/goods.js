@@ -1,11 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Image, Navigator } from '@tarojs/components'
-import { SpToast, BackToTop, Loading, FilterBar, SpNote, NavBar } from '@/components'
-import DistributionGoodsItem from './comps/goods-item'
+import { View, ScrollView } from '@tarojs/components'
+import { AtTabBar } from "taro-ui";
+import { SpToast, Loading, FilterBar, SpNote, NavBar, SearchBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { classNames, pickBy } from '@/utils'
+import { pickBy, getCurrentRoute } from '@/utils'
+import DistributionGoodsItem from './comps/goods-item'
 
 import './goods.scss'
 
@@ -24,6 +25,11 @@ export default class DistributionGoods extends Component {
         { title: '销量' },
         { title: '价格', sort: -1 }
       ],
+      tabList: [
+        { title: '推广商品', iconType: 'home', iconPrefixClass: 'icon',url: '/marketing/pages/distribution/goods',urlRedirect: true },
+        { title: '分类', iconType: 'category', iconPrefixClass: 'icon', url: '/marketing/pages/distribution/good-category', urlRedirect: true },
+      ],  
+      localCurrent: 0,    
       query: null,
       paramsList: [],
       selectParams: [],
@@ -34,15 +40,20 @@ export default class DistributionGoods extends Component {
 
   componentDidMount () {
     Taro.hideShareMenu({
+      withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     })    
     this.firstStatus = true
+    const { status } = this.$router.params
+    const { tabList } = this.state
+    tabList[1].url += `?status=${status}` 
     this.setState({
       query: {
         item_type: 'normal',
         approve_status: 'onsale,only_show',
         is_promoter: true
-      }
+      },
+      tabList
     }, () => {
       this.nextPage()
     })
@@ -74,7 +85,7 @@ export default class DistributionGoods extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       goods_id: 'goods_id',
-      title: 'itemName',
+      title: 'item_name',
       desc: 'brief',
       price: ({ price }) => (price/100).toFixed(2),
       promoter_price: ({ promoter_price }) => (promoter_price/100).toFixed(2),
@@ -193,7 +204,6 @@ export default class DistributionGoods extends Component {
   }
 
   handleClickItem = async (id) => {
-    console.log(id)
     const { goodsIds } = this.state
     const goodsId = {goods_id: id}
     const idx = goodsIds.findIndex(item => id === item)
@@ -227,7 +237,7 @@ export default class DistributionGoods extends Component {
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}`
     }
   }
 
@@ -244,18 +254,65 @@ export default class DistributionGoods extends Component {
   //     query
   //   }
   // }
+  handleSearchChange = (val) => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        keywords: val
+      }
+    })
+  }
+
+  handleConfirm = (val = '') => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        keywords: val,
+      }
+    }, () =>{
+      this.resetPage()
+      this.setState({
+        list: []
+      }, () => {
+        this.nextPage()
+      })
+    })
+  }
+  
+  handleClick = (current) => {
+    const cur = this.state.localCurrent
+
+    if (cur !== current) {
+      const curTab = this.state.tabList[current]
+      const { url } = curTab
+
+      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+      if (url && fullPath !== url) {
+        Taro.redirectTo({ url })
+      }
+    }
+  }  
 
   render () {
     const { status } = this.$router.params
-    const { list, page, paramsList, selectParams, scrollTop, goodsIds, curFilterIdx, filterList } = this.state
+    const { list, page, scrollTop, goodsIds, curFilterIdx, filterList, query, tabList, localCurrent } = this.state
 
     return (
-      <View className="page-distribution-shop">
+      <View className='page-distribution-shop'>
         <NavBar
           title='推广商品'
           leftIconType='chevron-left'
           fixed='true'
-        />        
+        />  
+        <SearchBar
+          showDailog={false}
+          keyword={query ? query.keywords : ''}
+          onFocus={() => false}
+          onCancel={() => {}}
+          onChange={this.handleSearchChange}
+          onClear={this.handleConfirm.bind(this)}
+          onConfirm={this.handleConfirm.bind(this)}
+        />             
         <FilterBar
           className='goods-list__tabs'
           custom
@@ -277,7 +334,6 @@ export default class DistributionGoods extends Component {
             {
               list.map((item) => {
                 const isRelease = goodsIds.findIndex(n => item.goods_id == n) !== -1
-                console.log(isRelease)
                 return (
                   <DistributionGoodsItem
                     key={item.goods_id}
@@ -301,6 +357,12 @@ export default class DistributionGoods extends Component {
           }
         </ScrollView>
         <SpToast />
+        <AtTabBar
+          fixed
+          tabList={tabList}
+          onClick={this.handleClick}  
+          current={localCurrent}   
+        />        
       </View>
     )
   }

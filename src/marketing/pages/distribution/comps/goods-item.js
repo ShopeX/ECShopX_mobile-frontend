@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Image, Button} from '@tarojs/components'
-import { AtButton } from 'taro-ui'
-import { isObject, classNames } from '@/utils'
-import api from '@/api'
+// import { AtButton } from 'taro-ui'
+import { classNames } from '@/utils'
+// import api from '@/api'
 
 import './goods-item.scss'
 
@@ -36,8 +36,8 @@ export default class DistributionGoodsItem extends Component {
           <View className='goods-item__cont'>
             <View>
               <View className='goods-item__title'>{info.title}</View>
-              <View className='goods-item__price'><Text className="cur">¥</Text>{info.price}</View>
-              <View className='goods-item__promoter-price'>预计收益：<Text className="cur">¥</Text>{info.promoter_price}</View>
+              <View className='goods-item__price'><Text className='cur'>¥</Text>{info.price}</View>
+              <View className='goods-item__promoter-price'>预计收益：<Text className='cur'>¥</Text>{info.promoter_price}</View>
             </View>
             <View className='goods-item__extra'>
               <View className='goods-item__author'>
@@ -57,9 +57,9 @@ export default class DistributionGoodsItem extends Component {
                   className='goods-item__share-btn'
                   dataInfo={info}
                   openType='share'
-                  size="small"
+                  size='small'
                 >
-                  <Text class="icon-share2"></Text>
+                  <Text class='icon-share2'></Text>
                 </Button>
               </View>
             </View>

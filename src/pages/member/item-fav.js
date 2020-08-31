@@ -59,6 +59,7 @@ export default class ItemFav extends Component {
             item_id: 'item_id',
             title: 'item_name',
             desc: 'brief',
+            distributor_id: 'distributor_id',
             // price: ({ price }) => (price/100).toFixed(2),
             price: ({ price, item_price }) => ((price || item_price)/100).toFixed(2),
             is_fav: ({ item_id }) => Boolean(favs[item_id])
@@ -108,7 +109,7 @@ export default class ItemFav extends Component {
       let link = null
       switch (this.state.curTabIdx) {
         case 0:
-					link = `/pages/item/espier-detail?id=${item.item_id}`
+					link = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
           break;
         case 1:
           link = `/pages/recommend/detail?id=${item.item_id}`

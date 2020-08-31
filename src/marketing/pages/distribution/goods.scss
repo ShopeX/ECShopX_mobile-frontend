@@ -5,11 +5,17 @@
   /*  #ifdef  h5  */  
   padding-top: $navigate-height-h5;
   /*  #endif  */     
+  .at-search-bar__action {
+    display: none;
+  }
   .goods-list {
     padding: 24px $edge-margin;
     &__toolbar {
       position: fixed;
       top: 0;
+      /*  #ifdef  h5  */  
+      top: $navigate-height-h5;
+      /*  #endif  */        
       left: 0;
       width: 100%;
       z-index: $z-index-toolbar;
@@ -43,9 +49,9 @@
       }
     }
     &__scroll {
-      @include page-scroll($tabs-height + $navigate-height, 0);
+      @include page-scroll($tabs-height + $navigate-height + $searchbar-height,  $tabbar-height);
       /*  #ifdef  h5  */  
-      @include page-scroll($tabs-height + $navigate-height-h5, 0);
+      @include page-scroll($tabs-height + $navigate-height-h5 + $searchbar-height,  $tabbar-height);
       /*  #endif  */         
     }
     &__type-grid {

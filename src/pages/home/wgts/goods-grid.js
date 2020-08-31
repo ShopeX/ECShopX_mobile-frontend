@@ -15,7 +15,7 @@ export default class WgtGoodsGrid extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -83,7 +83,7 @@ export default class WgtGoodsGrid extends Component {
                   <View
                     key={`${idx}1`}
                     className={classNames('grid-item',{'grid-item-three': config.style=='grids'})}
-                    onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
+                    onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`)}
                   >
                     <View className='goods-wrap'>
                       <View className='thumbnail'>

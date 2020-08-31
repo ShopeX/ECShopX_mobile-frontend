@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, SpCell} from '@/components'
+import { SpToast, TabBar, SpCell,AccountOfficial} from '@/components'
 // import ExclusiveCustomerService from './comps/exclusive-customer-service'
 import api from '@/api'
 import S from '@/spx'
@@ -43,7 +43,7 @@ export default class MemberIndex extends Component {
       memberDiscount: '',
       isOpenPopularize: false,
       salespersonData: null,
-      memberAssets: {}
+      memberAssets: {},
     }
   }
 
@@ -61,7 +61,7 @@ export default class MemberIndex extends Component {
       this.getSalesperson()
     }
   }
-
+  
   config = {
     navigationBarTitleText: ''
   }
@@ -178,6 +178,7 @@ export default class MemberIndex extends Component {
     Taro.navigateTo({
       url: '/subpage/pages/trade/customer-pickup-list'
     })
+
   }
 
 
@@ -260,11 +261,16 @@ export default class MemberIndex extends Component {
       url: `/pages/member/member-code`
     })
   }
+  handleOfficialError=()=>{
+    
+  }
+  handleOfficialClose =()=>{
+  }
 
   render () {
     const { colors } = this.props
-    const { vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize, salespersonData } = this.state
-
+    const { vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize, salespersonData} = this.state
+    const is_open_official_account = Taro.getStorageSync('isOpenOfficial')
     return (
       <View className='page-member-index'>
         <ScrollView
@@ -375,6 +381,18 @@ export default class MemberIndex extends Component {
                 }
               </View>
           }
+          {
+            is_open_official_account === 1 && (
+              <View className='page-member-section'>
+              <AccountOfficial
+                  onHandleError={this.handleOfficialError.bind(this)}
+                  onClick={this.handleOfficialClose.bind(this)}
+                  isClose={false}
+              />
+            </View>
+            )
+          }
+        
           <View className='page-member-section order-box'>
             <View className='section-title view-flex view-flex-middle'>
               <View className='view-flex-item'>订单</View>

@@ -7,7 +7,7 @@
 # @Date: 2020-06-10 10:15:51
  # @LastEditors: Arvin
  # @LastEditTime: 2020-07-23 11:28:24
-### 
+###
 #/usr/bash
 
 cd $(dirname "$0")
@@ -79,7 +79,7 @@ echo '{
   "extEnable": true,
   "extAppid": "'${appid}'",
   "ext": {
-    "company_id": "1",
+    "company_id": "'${company_id}'",
     "appid": "'${appid}'",
     "wxa_name": "'${appName}'"
   },
@@ -110,11 +110,10 @@ do
 if [ "$type" == 'H5' ]
   then
   echo "npm run build:H5"
-  npm run build:h5 
+  npm run build:h5
 else
   echo "npm run build:weapp"
   npm run build:weapp
 fi
 break
 done
-

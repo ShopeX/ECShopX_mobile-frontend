@@ -41,6 +41,7 @@ export default class ItemHistory extends Component {
       item_id: 'itemData.item_id',
       title: 'itemData.itemName',
       desc: 'itemData.brief',
+      distributor_id: 'distributor_id',
       price: ({ itemData }) => (itemData.price/100).toFixed(2),
       market_price: ({ itemData }) => (itemData.market_price/100).toFixed(2)
     })
@@ -56,7 +57,7 @@ export default class ItemHistory extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })

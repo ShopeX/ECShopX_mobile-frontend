@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Form, Button, Text, Picker, Image } from '@tarojs/components'
 import { connect } from "@tarojs/redux";
 import { AtInput, AtButton } from 'taro-ui'
-import { SpToast, Timer, NavBar, SpCheckbox } from '@/components'
+import { SpToast, Timer, NavBar, SpCheckbox,AccountOfficial } from '@/components'
 import { classNames, isString, isArray } from '@/utils'
 import S from '@/spx'
 import api from '@/api'
@@ -28,7 +28,8 @@ export default class Reg extends Component {
       isHasValue: false,
       option_list: [],
       showCheckboxPanel: false,
-      isHasData: true
+      isHasData: true,
+      show_official:false
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -370,13 +371,29 @@ export default class Reg extends Component {
       option_list
     })
   }
+  handleOfficialError=()=>{
+    
+  }
+  handleOfficialClose =()=>{
+    this.setState({
+      show_official:false
+    })
+  }
 
   render () {
     const { colors } = this.props
-    const { info, isHasValue, isVisible, isHasData, list, imgVisible, imgInfo, option_list, showCheckboxPanel } = this.state
+    const { info, isHasValue, isVisible, isHasData, list, imgVisible, imgInfo, option_list, showCheckboxPanel,show_official } = this.state
 
     return (
       <View className='auth-reg'>
+        {
+          show_official && (
+            <AccountOfficial
+              onHandleError={this.handleOfficialError.bind(this)}
+              onClick={this.handleOfficialClose.bind(this)}
+           />
+          )
+        }
         <NavBar
           title='注册'
           leftIconType='chevron-left'

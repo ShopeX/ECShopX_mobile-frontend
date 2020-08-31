@@ -3,6 +3,7 @@ import {View, ScrollView, Image, Text} from '@tarojs/components'
 import { Loading,GoodsItem,SpNote} from '@/components'
 import { classNames, pickBy,getCurrentRoute } from '@/utils'
 import {AtTabBar} from "taro-ui"
+import S from '@/spx'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 
@@ -95,6 +96,7 @@ export default class DistributionShopCategory extends Component {
         goods_id: 'goods_id',
         title: 'itemName',
         desc: 'brief',
+        distributor_id: 'distributor_id',
         price: ({ price }) => (price/100).toFixed(2),
         //promoter_price: ({ promoter_price }) => (promoter_price/100).toFixed(2),
         market_price: ({ market_price }) => (market_price/100).toFixed(2)
@@ -123,7 +125,7 @@ handleClickCategoryNav = (idx,value) => {
   console.warn(idx)
   if (this.state.page.isLoading) return
 
-  if (idx !== this.state.curTabIdx) {
+  if (idx !== this.state.currentIndex) {
     this.resetPage()
     this.setState({
       contentList: []
@@ -158,10 +160,10 @@ handleClickCategoryNav = (idx,value) => {
   }
   handleClickItem = (item) => {
     console.warn(item)
-    const { goods_id} = item
+    const { goods_id, distributor_id} = item
     let url = ''
     if (goods_id) {
-      url = `/pages/item/espier-detail?id=${goods_id || ''}`
+      url = `/pages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}`
     }
     if (url) {
       Taro.navigateTo({
@@ -170,7 +172,7 @@ handleClickCategoryNav = (idx,value) => {
     }
   }
   render () {
-    const { list, isChanged,tabList,localCurrent, contentList ,defaultId ,shop_pic ,currentIndex, page, scrollTop } = this.state
+    const { list, hasSeries, tabList, localCurrent, contentList, shop_pic, currentIndex, page, scrollTop } = this.state
     return (
       <View className='page-category-index'>
         <View className='category-banner'>
@@ -222,10 +224,10 @@ handleClickCategoryNav = (idx,value) => {
               contentList.length && contentList.map(item =>{
                 return (
                   <GoodsItem
-                  key={item.item_id}
-                  info={item}
-                  onClick={() => this.handleClickItem(item)}
-                />
+                    key={item.item_id}
+                    info={item}
+                    onClick={() => this.handleClickItem(item)}
+                  />
                 )
               })
             }
