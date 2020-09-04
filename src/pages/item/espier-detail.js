@@ -71,10 +71,13 @@ export default class Detail extends Component {
 
   async componentDidMount () {  
     const options = this.$router.params
-    console.log(options)
     let id = options.id
     let uid = ''
     if (APP_PLATFORM === 'standard') {
+      const { distributor_id } = Taro.getStorageInfoSync('curStore')
+      if (!options.dtid) {
+        options.dtid = distributor_id
+      }
       const entryData = await entry.entryLaunch(options, true)
       id = entryData.id
       uid = entryData.uid
