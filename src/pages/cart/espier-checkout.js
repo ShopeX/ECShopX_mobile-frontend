@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtInput } from 'taro-ui'
 import { Loading, Price, SpCell, AddressChoose, SpToast, NavBar } from '@/components'
@@ -87,6 +87,11 @@ export default class CartCheckout extends Component {
       shouldCalcOrder: false,
       shoppingGuideData:null, //代客下单导购信息
       // shopData:null, //店铺信息
+      // 身份信息
+      identity: {
+        name: '',
+        cardId: ''
+      }
     }
   }
 
@@ -1048,6 +1053,13 @@ export default class CartCheckout extends Component {
     delete this.params.invoice_content
   }
 
+  // 复制链接
+  copyLink = () => {
+    Taro.setClipboardData({
+      data: '复制的链接'
+    })
+  }
+
 
   render () {
     // 支付方式文字
@@ -1058,9 +1070,26 @@ export default class CartCheckout extends Component {
       delivery: '货到付款'
     }    
     const { coupon, colors } = this.props
-    console.log('coupon')
-    console.log(coupon)
-    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug, third_params, shoppingGuideData, curStore } = this.state
+    const {
+      info,
+      express,
+      address,
+      total,
+      showAddressPicker,
+      showCheckoutItems,
+      curCheckoutItems,
+      payType,
+      invoiceTitle,
+      submitLoading,
+      disabledPayment,
+      isPaymentOpend,
+      isDrugInfoOpend,
+      drug,
+      third_params,
+      shoppingGuideData,
+      curStore,
+      identity
+    } = this.state
     // let curStore = {}
     // if (shopData) {
     //   curStore = shopData
@@ -1148,6 +1177,32 @@ export default class CartCheckout extends Component {
                   </View>
                 </View>
           }
+          {
+            1 && <SpCell 
+              border={false}
+              className='coupons-list'
+            >
+                <AtInput
+                  name='name'
+                  title='订购人'
+                  type='text'
+                  className='identity'
+                  border={false}
+                  placeholder='请输入身份证上的姓名'
+                  value={identity.name}
+                />                    
+                <AtInput
+                  name='cardId'
+                  title='身份证号'
+                  type='idcard'
+                  className='identity'
+                  border={false}
+                  placeholder='请输入身份证号码'
+                  value={identity.cardId}
+                />
+                <Text className='extDesc'>根据海关规定，购买人身份信息需与支付软件认证信息一致才可通关。本信息仅作通关用户，将被严格保密</Text>
+            </SpCell>
+          }
 {/* type !== 'limited_time_sale' */}
           {(payType !== 'point' && payType !== 'point' && type !== 'group' && type !== 'seckill' ) && (
             <SpCell
@@ -1178,7 +1233,17 @@ export default class CartCheckout extends Component {
                               {
                                 item.order_item_type === 'gift'
                                   ? (<View className='order-item__idx'><Text>赠品</Text></View>)
-                                  : (<View className='order-item__idx'><Text>第{idx + 1}件商品</Text></View>)
+                                  : (<View className='order-item__idx national'>
+                                    <Text>第{idx + 1}件商品</Text>
+                                    {
+                                      item.origincountry_name && <View className='nationalInfo'>
+                                          <Image className='nationalFlag' src={item.origincountry_img_url}  mode='aspectFill' lazyLoad />
+                                          <Text className='nationalTitle'>
+                                            { item.origincountry_name }
+                                          </Text>
+                                      </View>
+                                    }                                    
+                                  </View>)
                               }
                               <OrderItem
                                 info={item}
@@ -1197,12 +1262,7 @@ export default class CartCheckout extends Component {
                                 customFooter
                                 renderFooter={
                                   <View className='order-item__ft'>
-                                    {
-                                      // payType === 'point'
-                                      // ? <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={item.point}></Price>
-                                      // : <Price className='order-item__price' value={item.price}></Price>
-                                      <Price className='order-item__price' value={item.price}></Price>
-                                    }
+                                    <Price className='order-item__price' value={item.price}></Price>
                                     <Text className='order-item__num'>x {item.num}</Text>
                                   </View>
                                 }
@@ -1212,7 +1272,6 @@ export default class CartCheckout extends Component {
                         })
                       }
                     </View>
-                    {/*<View className='cart-group__shop'>{cart.shop_name}</View>*/}
                     {
                       isDrug &&
                       <SpCell
@@ -1355,8 +1414,27 @@ export default class CartCheckout extends Component {
                   value={total.freight_fee}
                 />
               </SpCell>
+              <SpCell
+                className='trade-sub-total__item'
+                title='税费：'
+              >
+                <Price
+                  unit='cent'
+                  value={total.freight_fee}
+                />
+              </SpCell>
             </View>
           )}
+
+          {
+            1 && <View className='nationalNotice'>
+              <View className='title'>关于跨境电子商务年度个人额度注意事项</View>
+              <View className='info'>
+                依据《关于跨境电子商务零售进口税收政策的通知》个人单次跨境消费购物消费额度未5000元。跨境消费年度交易额未2万6千元。超过限额将会无法清关。
+              </View>
+              <View className='copyLink' onClick={this.copyLink}>跨境电子商务年度个人额度查询  点我复制</View>
+            </View>
+          }
         </ScrollView>
 
         <CheckoutItems

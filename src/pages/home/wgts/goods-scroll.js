@@ -135,6 +135,14 @@ export default class WgtGoodsScroll extends Component {
                         lazyLoad
                       />
     								</View>
+                    {
+                      item.origincountry_name && <View className='nationalInfo'>
+                          <Image className='nationalFlag' src={item.origincountry_img_url}  mode='aspectFill' lazyLoad />
+                          <Text className='nationalTitle'>
+                            { item.origincountry_name }
+                          </Text>
+                      </View>
+                    }                      
     								{
     									config.showPrice
     									&& <View className='goods-price'>

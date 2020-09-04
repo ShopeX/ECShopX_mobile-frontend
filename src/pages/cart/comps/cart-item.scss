@@ -34,6 +34,19 @@ $item-img-height: 200px !default;
     padding: 0 20px;
     flex: 1;
     overflow: hidden;
+    // 跨境
+    .nationalInfo {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      padding-bottom: 10px;
+      .nationalFlag {
+        width: 45px;
+        height: 45px;
+        border-radius: 100%;
+        margin-right: 15px;
+      }
+    }    
     &-hd {
       flex: 3;
     }

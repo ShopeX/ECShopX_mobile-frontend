@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
+import { View, Text, Button, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown} from 'taro-ui'
 import { Loading, SpToast, NavBar, FloatMenuMeiQia } from '@/components'
@@ -522,6 +522,7 @@ export default class TradeDetail extends Component {
           <Text className='info-text'>商品金额：￥{info.item_fee}</Text>
           {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
           <Text className='info-text'>运费：￥{info.freight_fee}</Text>
+          <Text className='info-text'>税费：￥{info.discount_fee}</Text>
           <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
           { isDhPoint && (<Text className='info-text' space>支付：{info.payment}积分 {' 积分支付'}</Text>) }
           { isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>) }

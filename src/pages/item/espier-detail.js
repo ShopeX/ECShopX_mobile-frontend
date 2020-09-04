@@ -860,7 +860,7 @@ export default class Detail extends Component {
                   (marketing === 'seckill' || marketing === 'limited_time_sale') &&
                     <View>
                       {info.activity_info.status === 'in_the_notice' && <Text className='goods-timer__label'>距开始还剩</Text>}
-        							{info.activity_info.status === 'in_sale' && <Text className='goods-timer__label'>距结束还剩</Text>}
+                      {info.activity_info.status === 'in_sale' && <Text className='goods-timer__label'>距结束还剩</Text>}
                     </View>
                 }
                 {
@@ -961,6 +961,19 @@ export default class Detail extends Component {
                 </View>
               )
             }
+            {/* 跨境商品 */}
+            {
+              info.origincountry_name &&
+                <View className='nationalInfo'>
+                  <View className='nationalInfoLeft'>
+                    <Image src={info.origincountry_img_url}  className='nationalImg' />
+                    <Text>{ info.origincountry_name }</Text>
+                    <Image src='https://bkimg.cdn.bcebos.com/pic/8718367adab44aed30126fffbe1c8701a18bfb49' className='nationalImg last' />
+                    <Text>跨境</Text>
+                  </View>
+                  <View>预计税费：¥10</View>
+                </View>
+            }              
           </View>
 
           {isPromoter && (
@@ -988,7 +1001,7 @@ export default class Detail extends Component {
                   </View>
                 </View>
               </View>
-          }
+          }        
 
           <SpCell
             className='goods-sec-specs'

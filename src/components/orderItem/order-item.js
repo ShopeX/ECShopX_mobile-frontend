@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { Price, QnImg } from '@/components'
 
 import './order-item.scss'
@@ -9,7 +9,8 @@ export default class OrderItem extends Component {
     onClick: () => {},
     payType: '',
     showExtra: true,
-    info: null
+    info: null,
+    isShowNational: false
   }
 
   static options = {
@@ -17,7 +18,7 @@ export default class OrderItem extends Component {
   }
 
   render () {
-    const { info, onClick, payType, showExtra,showDesc, customFooter } = this.props
+    const { info, onClick, payType, showExtra,showDesc, customFooter, isShowNational } = this.props
     if (!info) return null
 
     const img = info.pic_path
@@ -41,6 +42,14 @@ export default class OrderItem extends Component {
           />
         </View>
         <View className='order-item__bd'>
+          {
+            (isShowNational && info.origincountry_name) && <View className='nationalInfo'>
+                <Image className='nationalFlag' src={info.origincountry_img_url} mode='aspectFill' lazyLoad />
+                <Text className='nationalTitle'>
+                  { info.origincountry_name }
+                </Text>
+            </View>
+          }            
           <Text className='order-item__title'>{info.title}</Text>
           {showDesc && info.item_spec_desc && <Text className='order-item__spec'>{info.item_spec_desc}</Text>}
           {this.props.renderDesc}

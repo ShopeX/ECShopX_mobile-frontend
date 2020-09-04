@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text} from '@tarojs/components'
+import {View, Text, Image} from '@tarojs/components'
 import { QnImg } from '@/components'
 import { isObject, classNames } from '@/utils'
 
@@ -81,6 +81,14 @@ export default class GoodsItem extends Component {
             />
           </View>
           <View className='goods-item__cont'>
+            {
+              info.origincountry_name && <View className='nationalInfo'>
+                  <Image className='nationalFlag' src={info.origincountry_img_url} mode='aspectFill' lazyLoad />
+                  <Text className='nationalTitle'>
+                    info.origincountry_name
+                  </Text>
+              </View>
+            }            
             <View className='goods-item__caption'>
               {
                 promotion_activity !== null

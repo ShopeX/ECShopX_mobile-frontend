@@ -62,5 +62,19 @@
       color: #ccc;
       text-decoration: line-through;
     }
-	}
+  }
+  // 跨境
+  .nationalInfo {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-size: 24px;
+    padding-top: 10px;
+    .nationalFlag {
+      width: 45px;
+      height: 45px;
+      border-radius: 100%;
+      margin-right: 15px;
+    }
+  }   
 }
