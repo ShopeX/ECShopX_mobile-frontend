@@ -75,7 +75,7 @@ class Tracker {
   }
 
   @enable
-  use(provider, config) {
+  use( provider, config ) {
     this._tracker = Trackers.get(provider, config);
   }
 
