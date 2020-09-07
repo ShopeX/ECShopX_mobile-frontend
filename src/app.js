@@ -6,7 +6,7 @@ import useHooks from '@/hooks'
 import req from '@/api/req'
 import api from '@/api'
 import { normalizeQuerys } from '@/utils'
-import { FormIds } from '@/service'
+import { FormIds, Tracker } from "@/service";
 import Index from './pages/index'
 import LBS from './utils/lbs'
 import entry from '@/utils/entry'
@@ -21,6 +21,14 @@ import './app.scss'
 
 const { store } = configStore()
 useHooks()
+
+if (process.env.APP_TRACK) {
+  const system = Taro.getSystemInfoSync();
+  if (!(system && system.environment && system.environment === "wxwork")) {
+    Tracker.use(process.env.APP_TRACK);
+  }
+}
+
 
 class App extends Component {
   // eslint-disable-next-line react/sort-comp
