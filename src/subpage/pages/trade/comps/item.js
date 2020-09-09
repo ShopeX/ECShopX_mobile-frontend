@@ -49,7 +49,8 @@ export default class TradeItem extends Component {
               : <View className='trade-item__hd'>
                   <Text className='time'>{info.create_date}</Text>
                   <View className='right'>
-                    跨境
+                    <Text className='iconfont icon-globe'></Text>
+                    <Text>跨境</Text>
                     <Text className='trade-item__shop'>订单号：{info.tid}</Text>
                   </View>
                 </View>

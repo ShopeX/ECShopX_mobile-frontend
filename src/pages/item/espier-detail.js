@@ -741,6 +741,12 @@ export default class Detail extends Component {
     const { showLikeList, colors } = this.props
     const meiqia = Taro.getStorageSync('meiqia')
     const uid = this.uid
+    const taxRate = info ? info.crossborder_tax_rate : 0
+    const mainPrice = info ? (info.act_price ? info.act_price : info.price) : 0
+    const skuPrice = curSku ? (curSku.act_price ? curSku.act_price : curSku.price) : mainPrice
+    const crossPrice =  (((skuPrice) * taxRate) / 100).toFixed(2)
+
+    const lnglat = Taro.getStorageSync('lnglat')
 
     if (!info) {
       return (
@@ -968,13 +974,30 @@ export default class Detail extends Component {
             {
               info.type == '1' &&
                 <View className='nationalInfo'>
+                  <View>
+                    预计税费:
+                    <Price
+                      unit='cent'
+                      symbol={(info.cur && info.cur.symbol) || ''}
+                      value={curSku ? curSku.price : crossPrice}
+                    />
+                  </View>                  
                   <View className='nationalInfoLeft'>
-                    <Image src={info.origincountry_img_url}  className='nationalImg' />
-                    <Text>{ info.origincountry_name }</Text>
-                    <View className='iconfont icon-globe'></View>
-                    <Text>跨境</Text>
+                    <View className='item'>
+                      <Image src={info.origincountry_img_url}  className='nationalImg' />
+                      <Text>{ info.origincountry_name }</Text>
+                    </View>
+                    <View className='line'></View>
+                    <View className='item'>
+                      <View className='iconfont icon-matou'></View>
+                      <Text>自有保税区</Text>
+                    </View>
+                    <View className='line'></View>
+                    <View className='item'>
+                      <View className='iconfont icon-periscope'></View>
+                      <Text>{ lnglat.city }</Text>
+                    </View>
                   </View>
-                  <View>预计税费：¥10</View>
                 </View>
             }              
           </View>

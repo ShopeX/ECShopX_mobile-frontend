@@ -89,8 +89,8 @@ export default class CartCheckout extends Component {
       // shopData:null, //店铺信息
       // 身份信息
       identity: {
-        name: '',
-        cardId: ''
+        identity_name: '',
+        identity_id: ''
       }
     }
   }
@@ -771,7 +771,7 @@ export default class CartCheckout extends Component {
     //   return S.toast('请选择地址')
     // }
 
-    const { payType, total, delivery } = this.state
+    const { payType, total, identity } = this.state
     const { type, goodType } = this.$router.params
     const isDrug = type === 'drug'
 
@@ -836,7 +836,7 @@ export default class CartCheckout extends Component {
 
       // 如果是跨境商品
       if (goodType === 'cross') {
-        params = {...params, ...delivery}
+        params = {...params, ...identity}
       }
 
 
@@ -1207,8 +1207,8 @@ export default class CartCheckout extends Component {
                   className='identity'
                   border={false}
                   placeholder='请输入身份证上的姓名'
-                  value={identity.name}
-                  onChange={this.inputChange.bind(this, 'name')}
+                  value={identity.identity_name}
+                  onChange={this.inputChange.bind(this, 'identity_name')}
                 />                    
                 <AtInput
                   name='cardId'
@@ -1217,9 +1217,9 @@ export default class CartCheckout extends Component {
                   className='identity'
                   border={false}
                   placeholder='请输入身份证号码'
-                  value={identity.cardId}
+                  value={identity.identity_id}
                   ticket
-                  onChange={this.inputChange.bind(this, 'cardId')}
+                  onChange={this.inputChange.bind(this, 'identity_id')}
                 />
                 <Text className='extDesc'>根据海关规定，购买人身份信息需与支付软件认证信息一致才可通关。本信息仅作通关用户，将被严格保密</Text>
             </SpCell>

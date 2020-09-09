@@ -70,7 +70,7 @@ const config = {
     APP_CUSTOM_SERVER: isWeb ? `'${APP_CUSTOM_SERVER}'` : APP_CUSTOM_SERVER,
     APP_HOME_PAGE: isWeb ? `'${APP_HOME_PAGE}'` : APP_HOME_PAGE,
     APP_AUTH_PAGE: isWeb ? `'${APP_AUTH_PAGE}'` : APP_AUTH_PAGE,
-    APP_MAP_KEY: `'${APP_MAP_KEY}'`,
+    APP_MAP_KEY: isWeb ? `'${APP_MAP_KEY}'` : APP_MAP_KEY,
     APP_MAP_NAME: `'${APP_MAP_NAME}'`
   },
   alias: {

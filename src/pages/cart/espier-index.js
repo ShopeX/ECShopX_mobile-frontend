@@ -39,7 +39,8 @@ export default class CartIndex extends Component {
       likeList: [],
       invalidList: [],
       error: null,
-      isPathQrcode: false
+      isPathQrcode: false,
+      cartType: 'normal'
     }
 
     this.updating = false
@@ -163,7 +164,7 @@ export default class CartIndex extends Component {
     return groups
   }
 
-  processCart ({ valid_cart = [], invalid_cart = [] }) {
+  processCart ({ valid_cart = [], invalid_cart = [], cartType }) {
 		let cartCount = 0
     const list = valid_cart.map(shopCart => {
 			cartCount += shopCart.cart_total_num
@@ -176,7 +177,8 @@ export default class CartIndex extends Component {
 
     const invalidList = this.transformCartList(invalid_cart)
     this.setState({
-      invalidList
+      invalidList,
+      cartType
     })
 
     log.debug('[cart fetchCart]', list)
@@ -210,7 +212,8 @@ export default class CartIndex extends Component {
 
     const list = this.processCart({
       valid_cart,
-      invalid_cart
+      invalid_cart,
+      cartType
     })
     cb && cb(list)
   }
@@ -422,7 +425,7 @@ export default class CartIndex extends Component {
     this.setState({
       cartType
     }, async () => {
-      Taro.showLoading()
+      Taro.showLoading({mask: true})
       await this.fetchCart()
       Taro.hideLoading()
       // console.log(111)
