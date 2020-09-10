@@ -5,6 +5,10 @@
   border-radius: $item-border-radius;
   margin: 0 0 $edge-margin;
   padding: 30px;
+  .icon-globe {
+    font-size: 32px;
+    margin-right: 10px;
+  }
   &__hd {
     padding: 28px $edge-size 0;
     line-height: 1;

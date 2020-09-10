@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtInput } from 'taro-ui'
-import { Loading, Price, SpCell, AddressChoose, SpToast, NavBar } from '@/components'
+import { Loading, Price, SpCell, AddressChoose, SpToast, NavBar, SpHtmlContent } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 // import { withLogin } from '@/hocs'
@@ -86,6 +86,8 @@ export default class CartCheckout extends Component {
       curStore:{},
       shouldCalcOrder: false,
       shoppingGuideData:null, //代客下单导购信息
+      // 跨境富文本
+      quota_tip: '',
       // shopData:null, //店铺信息
       // 身份信息
       identity: {
@@ -496,7 +498,7 @@ export default class CartCheckout extends Component {
 
     if (!data) return
 
-    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info, total_tax } = data
+    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info, total_tax, quota_tip } = data
 
     if (coupon_info) {
       this.props.onChangeCoupon({
@@ -542,7 +544,8 @@ export default class CartCheckout extends Component {
     this.setState({
       total,
       info,
-      third_params
+      third_params,
+      quota_tip
     })
   }
 
@@ -836,6 +839,17 @@ export default class CartCheckout extends Component {
 
       // 如果是跨境商品
       if (goodType === 'cross') {
+        if (!identity.identity_id || !identity.identity_name) {
+          Taro.showToast({
+            title: identity.identity_id ? '请填写订购人姓名' : '请填写订购人身份证号',
+            icon: 'none',
+            mask: true
+          })
+          this.setState({
+            submitLoading: false
+          })
+          return false
+        }
         params = {...params, ...identity}
       }
 
@@ -1107,7 +1121,8 @@ export default class CartCheckout extends Component {
       third_params,
       shoppingGuideData,
       curStore,
-      identity
+      identity,
+      quota_tip
     } = this.state
     // let curStore = {}
     // if (shopData) {
@@ -1452,9 +1467,7 @@ export default class CartCheckout extends Component {
           {
             goodType === 'cross' && <View className='nationalNotice'>
               <View className='title'>关于跨境电子商务年度个人额度注意事项</View>
-              <View className='info'>
-                依据《关于跨境电子商务零售进口税收政策的通知》个人单次跨境消费购物消费额度未5000元。跨境消费年度交易额未2万6千元。超过限额将会无法清关。
-              </View>
+              <SpHtmlContent content={quota_tip} className='info' />
               <View className='copyLink' onClick={this.copyLink}>跨境电子商务年度个人额度查询  点我复制</View>
             </View>
           }
