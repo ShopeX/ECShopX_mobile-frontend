@@ -871,11 +871,14 @@ export default class CartCheckout extends Component {
     } catch (e) {
       Taro.showToast({
         title: e.message,
-        icon: 'none'
+        icon: 'none',
+        mask: true
       })
       payErr = e
       this.resolvePayError(e)
-
+      this.setState({
+        submitLoading: false
+      })
       // dhpoint 判断
       if (payType === 'point') {
         this.setState({
@@ -1084,7 +1087,7 @@ export default class CartCheckout extends Component {
   // 复制链接
   copyLink = () => {
     Taro.setClipboardData({
-      data: '复制的链接'
+      data: 'https://app.singlewindow.cn/ceb2pubweb/sw/personalAmount'
     })
   }
 
