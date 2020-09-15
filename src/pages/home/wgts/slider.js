@@ -55,11 +55,13 @@ export default class WgtSlider extends Component {
         {
           config
             ? <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
-                <Image
-                  mode='widthFix'
-                  className='scale-placeholder'
-                  src={data[0].imgUrl}
-                />
+                {
+                  data[0] && <Image
+                    mode='widthFix'
+                    className='scale-placeholder'
+                    src={data[0].imgUrl}
+                  />
+                }
                 <Swiper
                   className='slider-img'
                   circular

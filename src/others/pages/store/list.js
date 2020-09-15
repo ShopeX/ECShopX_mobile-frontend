@@ -2,11 +2,10 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
-import { AtDrawer } from 'taro-ui'
+import { AtDrawer, AtTabBar } from 'taro-ui'
 import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, SpNote, NavBar } from '@/components'
 import api from '@/api'
-import { Tracker } from "@/service";
-import { pickBy, classNames } from '@/utils'
+import { pickBy, classNames, getCurrentRoute } from '@/utils'
 
 import './list.scss'
 
@@ -18,7 +17,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class List extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -41,11 +40,17 @@ export default class List extends Component {
       showDrawer: false,
       selectParams: [],
       info: {},
-      shareInfo: {}
+      shareInfo: {},
+      localCurrent: 1,
+      tabList: [
+        { title: '店铺首页', iconType: 'home', iconPrefixClass: 'icon', url: '/pages/store/index' },
+        { title: '商品列表', iconType: 'list', iconPrefixClass: 'icon', url: '/others/pages/store/list' },
+        { title: '商品分类', iconType: 'category', iconPrefixClass: 'icon', url: '/others/pages/store/category' }
+      ]      
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { cat_id = null, main_cat_id = null } = this.$router.params
     this.firstStatus = true
 
@@ -58,11 +63,11 @@ export default class List extends Component {
         approve_status: 'onsale,only_show',
         category: cat_id ? cat_id : '',
         main_category: main_cat_id ? main_cat_id : ''
-      },
-      curTagId: this.$router.params.tag_id
+			},
+			curTagId:this.$router.params.tag_id
     }, () => {
       this.nextPage()
-      api.wx.shareSetting({ shareindex: 'itemlist' }).then(res => {
+      api.wx.shareSetting({shareindex: 'itemlist'}).then(res => {
         this.setState({
           shareInfo: res
         })
@@ -70,11 +75,10 @@ export default class List extends Component {
     })
   }
 
-  onShareAppMessage() {
+  onShareAppMessage () {
     const res = this.state.shareInfo
-    const { cat_id = null, main_cat_id = null } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`     
+    const query = userId ? `?uid=${userId}` : ''     
     return {
       title: res.title,
       imageUrl: res.imageUrl,
@@ -82,19 +86,18 @@ export default class List extends Component {
     }
   }
 
-  onShareTimeline() {
+  onShareTimeline () {
     const res = this.state.shareInfo
-    const { cat_id = null, main_cat_id = null } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `cat_id=${cat_id}&main_cat_id=${main_cat_id}` 
+    const query = userId ? `uid=${userId}` : '' 
     return {
       title: res.title,
       imageUrl: res.imageUrl,
       query: query
     }
-  }
+  }     
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, tagsList, curTagId } = this.state
     const { distributor_id } = Taro.getStorageSync('curStore')
@@ -108,20 +111,20 @@ export default class List extends Component {
     }
 
     if (APP_PLATFORM === 'standard') {
-      query.distributor_id = distributor_id
+      query.distributor_id =  distributor_id 
     }
 
-    const { list, total_count: total, item_params_list = [], select_tags_list = [] } = await api.item.search(query)
+    const { list, total_count: total, item_params_list = [], select_tags_list = []} = await api.item.search(query)
     const { favs } = this.props
 
     item_params_list.map(item => {
-      if (selectParams.length < 4) {
+      if(selectParams.length < 4){
         selectParams.push({
           attribute_id: item.attribute_id,
           attribute_value_id: 'all'
         })
       }
-      item.attribute_values.unshift({ attribute_value_id: 'all', attribute_value_name: '全部', isChooseParams: true })
+      item.attribute_values.unshift({attribute_value_id: 'all', attribute_value_name: '全部', isChooseParams: true})
     })
 
     const nList = pickBy(list, {
@@ -129,12 +132,12 @@ export default class List extends Component {
       item_id: 'item_id',
       title: ({ itemName, item_name }) => itemName ? itemName : item_name,
       desc: 'brief',
-      distributor_id: 'distributor_id',
       distributor_info: 'distributor_info',
+      distributor_id: 'distributor_id',
       promotion_activity_tag: 'promotion_activity',
-      price: ({ price }) => (price / 100).toFixed(2),
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+      price: ({ price }) => (price/100).toFixed(2),
+      member_price: ({ member_price }) => (member_price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2),
       is_fav: ({ item_id }) => Boolean(favs[item_id])
     })
 
@@ -205,10 +208,10 @@ export default class List extends Component {
     const query = {
       ...this.state.query,
       goodsSort: current === 0
-        ? null
-        : current === 1
-          ? 1
-          : (sort > 0 ? 3 : 2)
+          ? null
+          : current === 1
+            ? 1
+            : (sort > 0 ? 3 : 2)
     }
 
     if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
@@ -259,9 +262,9 @@ export default class List extends Component {
   handleClickParmas = (id, child_id) => {
     const { paramsList, selectParams } = this.state
     paramsList.map(item => {
-      if (item.attribute_id === id) {
+      if(item.attribute_id === id) {
         item.attribute_values.map(v_item => {
-          if (v_item.attribute_value_id === child_id) {
+          if(v_item.attribute_value_id === child_id) {
             v_item.isChooseParams = true
           } else {
             v_item.isChooseParams = false
@@ -270,7 +273,7 @@ export default class List extends Component {
       }
     })
     selectParams.map(item => {
-      if (item.attribute_id === id) {
+      if(item.attribute_id === id) {
         item.attribute_value_id = child_id
       }
     })
@@ -284,11 +287,11 @@ export default class List extends Component {
     this.setState({
       showDrawer: false
     })
-    if (type === 'reset') {
+    if(type === 'reset') {
       const { paramsList, selectParams } = this.state
       this.state.paramsList.map(item => {
         item.attribute_values.map(v_item => {
-          if (v_item.attribute_value_id === 'all') {
+          if(v_item.attribute_value_id === 'all') {
             v_item.isChooseParams = true
           } else {
             v_item.isChooseParams = false
@@ -355,7 +358,7 @@ export default class List extends Component {
         ...this.state.query,
         keywords: ''
       }
-    }, () => {
+    }, () =>{
       this.resetPage()
       this.setState({
         list: [],
@@ -368,17 +371,13 @@ export default class List extends Component {
   }
 
   handleConfirm = (val) => {
-
-    Tracker.dispatch("SEARCH_RESULT", {
-      keywords: val
-    });
     this.setState({
       isShowSearch: false,
       query: {
         ...this.state.query,
         keywords: val,
       }
-    }, () => {
+    }, () =>{
       this.resetPage()
       this.setState({
         list: [],
@@ -389,9 +388,26 @@ export default class List extends Component {
       })
     })
   }
+  
+  handleClick = (current) => {
+    const cur = this.state.localCurrent
+    if (cur !== current) {
+      const curTab = this.state.tabList[current]
+      const { url } = curTab
+      const options = this.$router.params
+      const id = options.dis_id
+      const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
+      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+      if (url && fullPath !== url) {
+        Taro.redirectTo({ url: `${url}${param}` })
+      }
+    }
+  }  
 
-  render() {
+  render () {
     const {
+      localCurrent,
+      tabList,
       list,
       oddList,
       evenList,
@@ -406,19 +422,19 @@ export default class List extends Component {
       selectParams,
       tagsList,
       curTagId,
-      info,
+			info,
       isShowSearch,
       query
     } = this.state
 
-    return (
-      <View className='page-goods-list'>
-        <NavBar
+		return (
+			<View className='page-goods-list'>
+        <NavBar 
           title='商品列表'
           leftIconType='chevron-left'
           fixed='true'
         />
-        <View className='goods-list__toolbar'>
+				<View className='goods-list__toolbar'>
           <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
             <SearchBar
               keyword={query ? query.keywords : ''}
@@ -430,20 +446,20 @@ export default class List extends Component {
             />
             {
               !isShowSearch &&
-              <View
-                className={classNames('goods-list__type', listType === 'grid' ? 'icon-list' : 'icon-grid')}
-                onClick={this.handleViewChange}
-              >
-              </View>
+                <View
+                  className={classNames('goods-list__type', listType === 'grid' ? 'icon-list' : 'icon-grid')}
+                  onClick={this.handleViewChange}
+                  >
+                </View>
             }
           </View>
           {
             tagsList.length &&
-            <TagsBar
-              current={curTagId}
-              list={tagsList}
-              onChange={this.handleTagChange.bind(this)}
-            />
+              <TagsBar
+                current={curTagId}
+                list={tagsList}
+                onChange={this.handleTagChange.bind(this)}
+              />
           }
           <FilterBar
             className='goods-list__tabs'
@@ -480,7 +496,7 @@ export default class List extends Component {
                       item.attribute_values.map((v_item, v_index) => {
                         return (
                           <View
-                            className={classNames('drawer-item__options__item', v_item.isChooseParams ? 'drawer-item__options__checked' : '')}
+                            className={classNames('drawer-item__options__item' ,v_item.isChooseParams ? 'drawer-item__options__checked' : '')}
                             // className='drawer-item__options__item'
                             key={`${v_index}1`}
                             onClick={this.handleClickParmas.bind(this, item.attribute_id, v_item.attribute_value_id)}
@@ -514,59 +530,59 @@ export default class List extends Component {
         >
           {
             listType === 'grid' &&
-            <View className='goods-list goods-list__type-grid'>
-              <View className='goods-list__group'>
-                {
-                  oddList.map(item => {
-                    return (
-                      <View className='goods-list__item' key={item.item_id}>
-                        <GoodsItem
-                          key={item.item_id}
-                          info={item}
-                          onClick={() => this.handleClickItem(item)}
-                          onStoreClick={() => this.handleClickStore(item)}
-                        />
-                      </View>
-                    )
-                  })
-                }
+              <View className='goods-list goods-list__type-grid'>
+                  <View className='goods-list__group'>
+                    {
+                      oddList.map(item => {
+                        return (
+                          <View className='goods-list__item' key={item.item_id}>
+                            <GoodsItem
+                              key={item.item_id}
+                              info={item}
+                              onClick={() => this.handleClickItem(item)}
+                              onStoreClick={() => this.handleClickStore(item)}
+                            />
+                          </View>
+                        )
+                      })
+                    }
+                  </View>
+                  <View className='goods-list__group'>
+                    {
+                      evenList.map(item => {
+                        return (
+                          <View className='goods-list__item' key={item.item_id}>
+                            <GoodsItem
+                              key={item.item_id}
+                              info={item}
+                              onClick={() => this.handleClickItem(item)}
+                              onStoreClick={() => this.handleClickStore(item)}
+                            />
+                          </View>
+                        )
+                      })
+                    }
+                  </View>
               </View>
-              <View className='goods-list__group'>
-                {
-                  evenList.map(item => {
-                    return (
-                      <View className='goods-list__item' key={item.item_id}>
-                        <GoodsItem
-                          key={item.item_id}
-                          info={item}
-                          onClick={() => this.handleClickItem(item)}
-                          onStoreClick={() => this.handleClickStore(item)}
-                        />
-                      </View>
-                    )
-                  })
-                }
-              </View>
-            </View>
           }
           {
             listType === 'list' &&
-            <View className={`goods-list goods-list__type-list`}>
-              {
-                list.map(item => {
-                  return (
-                    <View className='goods-list__item'>
-                      <GoodsItem
-                        key={item.item_id}
-                        info={item}
-                        onClick={() => this.handleClickItem(item)}
-                        onStoreClick={() => this.handleClickStore(item)}
-                      />
-                    </View>
-                  )
-                })
-              }
-            </View>
+              <View className={`goods-list goods-list__type-list`}>
+                {
+                  list.map(item => {
+                    return (
+                      <View className='goods-list__item'>
+                        <GoodsItem
+                          key={item.item_id}
+                          info={item}
+                          onClick={() => this.handleClickItem(item)}
+                          onStoreClick={() => this.handleClickStore(item)}
+                        />
+                      </View>
+                    )
+                  })
+                }
+              </View>
           }
           {
             page.isLoading
@@ -575,7 +591,7 @@ export default class List extends Component {
           }
           {
             !page.isLoading && !page.hasNext && !list.length
-            && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
+              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
           }
         </ScrollView>
 
@@ -584,6 +600,12 @@ export default class List extends Component {
           onClick={this.scrollBackToTop}
           bottom={30}
         />
+        <AtTabBar
+          fixed
+          tabList={tabList}
+          onClick={this.handleClick}
+          current={localCurrent}
+        />           
       </View>
     )
   }

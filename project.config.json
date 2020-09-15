@@ -21,7 +21,8 @@
 		"enhance": false,
 		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false,
-		"showShadowRootInWxmlPanel": true
+		"showShadowRootInWxmlPanel": true,
+		"checkSiteMap": false
 	},
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",

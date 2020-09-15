@@ -44,6 +44,7 @@ const transformCartList = (list) => {
   onClearCoupon: () => dispatch({ type: 'cart/clearCoupon' }),
   onClearDrugInfo: () => dispatch({ type: 'cart/clearDrugInfo' }),
   onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address }),
+  onChangeCoupon: (coupon) => dispatch({ type: 'cart/changeCoupon', payload: coupon })
   //onChangeDrugInfo: (drugInfo) => dispatch({ type: 'cart/changeDrugInfo', payload: drugInfo })
 }))
 // @withLogin()
@@ -415,7 +416,7 @@ export default class CartCheckout extends Component {
     }
     const { payType, receiptType } = this.state
     const { coupon, drugInfo } = this.props
-    if (drugInfo) {
+    if(drugInfo){
       this.setState({
         drug: drugInfo
       })
@@ -447,6 +448,11 @@ export default class CartCheckout extends Component {
     }
 
     if (coupon) {
+      if (coupon.not_use_coupon === 1){
+        params.not_use_coupon = 1
+      } else {
+        params.not_use_coupon = 0
+      }
       if (coupon.type === 'coupon' && coupon.value.code) {
         params.coupon_discount = coupon.value.code
       } else if (coupon.type === 'member') {
@@ -481,8 +487,19 @@ export default class CartCheckout extends Component {
 
     if (!data) return
 
-    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction, third_params } = data
+    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info } = data
 
+    if (coupon_info) {
+      this.props.onChangeCoupon({
+        type: coupon_info.type,
+        value: {
+          title: coupon_info.info,
+          card_id: coupon_info.id,
+          code: coupon_info.coupon_code,
+          discount: coupon_info.discount_fee
+        }
+      })
+    }
     const total = {
       ...this.state.total,
       item_fee,
@@ -499,7 +516,7 @@ export default class CartCheckout extends Component {
     }
 
     let info = this.state.info
-    if (items && !this.state.info) {
+    if (items) {
       // 从后端获取订单item
       info = {
         cart: [{
@@ -937,8 +954,7 @@ export default class CartCheckout extends Component {
   }
 
   handleCouponsClick = () => {
-    console.log(this.params.order_type, 630)
-    if (this.state.payType === 'point') {
+    if (this.state.payType === 'point'){
       return
     }
     // if (this.params.order_type === 'normal' || this.params.order_type === 'normal_seckill' || this.params.order_type === 'single_group' || this.params.order_type === 'limited_time_sale') {
@@ -1059,6 +1075,8 @@ export default class CartCheckout extends Component {
       delivery: '货到付款'
     }
     const { coupon, colors } = this.props
+    console.log('coupon')
+    console.log(coupon)
     const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug, third_params, shoppingGuideData, curStore } = this.state
     // let curStore = {}
     // if (shopData) {

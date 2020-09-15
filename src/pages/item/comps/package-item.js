@@ -57,6 +57,7 @@ export default class PackageItem extends Component {
       desc: 'brief',
       pics: 'pics',
       store: 'store',
+      distributor_id: 'distributor_id',
       spec_items: 'spec_items',
       item_spec_desc: 'item_spec_desc',
       checked_spec: null,
@@ -75,6 +76,7 @@ export default class PackageItem extends Component {
         store: 'store',
         spec_items: 'spec_items',
         item_spec_desc: 'item_spec_desc',
+        distributor_id: 'distributor_id',
         checked_spec: null,
         price: ({ package_price }) => (package_price/100).toFixed(2),
         market_price: ({ price }) => (price/100).toFixed(2)

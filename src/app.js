@@ -145,6 +145,7 @@ class App extends Component {
           'pages/distribution/shop-form',
           'pages/distribution/qrcode',
           'pages/distribution/shop-category',
+          'pages/distribution/good-category',
           'pages/distribution/shop-goods',
           'pages/distribution/shop-trade',
           'pages/distribution/shop-achievement',
@@ -170,7 +171,7 @@ class App extends Component {
         ],
         "plugins": {
           "live-player-plugin": {
-            "version": "1.1.1", // 填写该直播组件版本号
+            "version": "1.1.8", // 填写该直播组件版本号
             "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
           }
           // "meiqia": {
@@ -221,6 +222,9 @@ class App extends Component {
           // 储值
           'pages/recharge/index',
           'pages/recharge/history',
+          // 店铺首页
+          'pages/store/list',
+          'pages/store/category'
         ]
       }
     ],
@@ -299,12 +303,13 @@ class App extends Component {
       name: "tabs"
     }
     const setUrl = '/pagestemplate/setInfo'
-    const { tab_bar } = await req.get(setUrl)
+    const { tab_bar,is_open_official_account } = await req.get(setUrl)
     store.dispatch({
       type: 'tabBar',
       payload: tab_bar ? JSON.parse(tab_bar) : defaultTabs
     })
     Taro.setStorageSync('initTabBar', true)
+    Taro.setStorageSync('isOpenOfficial',is_open_official_account)
     // store.dispatch({
     //   type: 'tabBar',
     //   payload: info.list.length ? info.list[0].params : defaultTabs

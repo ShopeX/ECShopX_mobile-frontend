@@ -35,6 +35,7 @@ export { default as TimePicker } from './time-picker/index.js'
 
 export { default as GoodsEvaluation } from './goods-evaluation'
 export { default as GoodsComment } from './goods-comment'
+export { default as AccountOfficial } from './account-official'
 
 
 export default {}

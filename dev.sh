@@ -6,7 +6,7 @@
  # @FilePath: /unite-vshop/dev.sh
 # @Date: 2020-06-10 10:15:51
  # @LastEditors: Arvin
- # @LastEditTime: 2020-07-23 11:28:49
+ # @LastEditTime: 2020-09-03 10:00:52
 ### 
 #/usr/bash
 
@@ -79,7 +79,7 @@ echo '{
   "extEnable": true,
   "extAppid": "'${appid}'",
   "ext": {
-    "company_id": "1",
+    "company_id": "'${company_id}'",
     "appid": "'${appid}'",
     "wxa_name": "'${appName}'"
   },

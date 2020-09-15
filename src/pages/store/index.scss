@@ -74,7 +74,7 @@
 .wgts-wrap {
   &__fixed {
     background: #fff;
-    @include page-scroll(0, 0);
+    @include page-scroll(0, $tabbar-height);
   }
   &__is-distributor {
   }

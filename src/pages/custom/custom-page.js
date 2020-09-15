@@ -52,8 +52,10 @@ export default class HomeIndex extends Component {
 
   async onShareAppMessage () {
     const { shareInfo } = this.state
+    const { id } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `?uid=${userId}` : ''     
+    const query = userId ? `?uid=${userId}&id=${id}` : `?id=${id}`
+    console.log(query)    
     return {
       title: shareInfo.page_share_title,
       imageUrl: shareInfo.page_share_imageUrl,
@@ -63,8 +65,9 @@ export default class HomeIndex extends Component {
 
   onShareTimeline () {
     const { shareInfo } = this.state
+    const { id } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `uid=${userId}` : ''     
+    const query = userId ? `uid=${userId}&id=${id}` : `id=${id}`     
     return {
       title: shareInfo.page_share_title,
       imageUrl: shareInfo.page_share_imageUrl,

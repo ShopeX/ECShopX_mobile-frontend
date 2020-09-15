@@ -105,7 +105,7 @@ export default class GroupDetail extends Component {
     const { activity_info, team_info } = detail
 
     Taro.redirectTo({
-      url: `/pages/item/espier-detail?id=${activity_info.goods_id}`
+      url: `/pages/item/espier-detail?id=${activity_info.goods_id}&dtid=${activity_info.distributor_id}`
     })
   }
 

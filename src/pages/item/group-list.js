@@ -86,10 +86,10 @@ export default class GroupList extends Component {
   }
 
   handleClickItem = (item) => {
-    const { goods_id } = item
+    const { goods_id, distributor_id } = item
 
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${goods_id}`
+      url: `/pages/item/espier-detail?id=${goods_id}&dtid=${distributor_id}`
     })
   }
 

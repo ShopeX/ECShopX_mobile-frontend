@@ -131,23 +131,18 @@ const config = {
             }
           }
         }
-      });
-      if (isPro) {
-        chain
-          .plugin("analyzer")
-          .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin, []);
-      }
-      chain
-        .plugin("IgnorePlugin")
-        .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/]);
-      chain
-        .plugin("LodashModuleReplacementPlugin")
-        .use(require("lodash-webpack-plugin"), [
-          {
-            coercions: true,
-            paths: true
-          }
-        ]);
+      })
+      // if (isPro) {
+      //   chain.plugin('analyzer')
+      //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
+      // }
+      chain.plugin('IgnorePlugin')
+        .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/])
+      chain.plugin('LodashModuleReplacementPlugin')
+        .use(require('lodash-webpack-plugin'), [{
+          'coercions': true,
+          'paths': true
+        }])
     },
     commonChunks(commonChunks) {
       commonChunks.push("lodash");
@@ -225,23 +220,18 @@ const config = {
             }
           }
         }
-      });
-      if (!isPro) {
-        chain
-          .plugin("analyzer")
-          .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin, []);
-      }
-      chain
-        .plugin("IgnorePlugin")
-        .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/]);
-      chain
-        .plugin("LodashModuleReplacementPlugin")
-        .use(require("lodash-webpack-plugin"), [
-          {
-            coercions: true,
-            paths: true
-          }
-        ]);
+      })
+      // if (!isPro) {
+      //   chain.plugin('analyzer')
+      //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
+      // }
+      chain.plugin('IgnorePlugin')
+        .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/])
+      chain.plugin('LodashModuleReplacementPlugin')
+        .use(require('lodash-webpack-plugin'), [{
+          'coercions': true,
+          'paths': true
+        }])      
     }
   }
 };
