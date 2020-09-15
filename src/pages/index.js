@@ -53,12 +53,13 @@ export default class HomeIndex extends Component {
       is_open_scan_qrcode: null,
       is_open_official_account:null,
       show_official:true,
-      showCloseBtn:false
+      showCloseBtn:false,
+      // 是否有跳转至店铺页
+      isGoStore: false
     }
   }
 
   async componentDidMount () {
-    this.fetchSetInfo()
     const isCloseOfficial = Taro.getStorageSync('close_official')//是否关闭
     if(isCloseOfficial){
       this.setState({
@@ -73,6 +74,7 @@ export default class HomeIndex extends Component {
   //     })
   //    // const res = parseUrlStr(queryStr)
   // }
+    this.fetchSetInfo()
     api.wx.shareSetting({shareindex: 'index'}).then(res => {
       this.setState({
         shareInfo: res
@@ -132,16 +134,19 @@ export default class HomeIndex extends Component {
 
   componentDidShow = () => {
     const options = this.$router.params
-    const {curStore} = this.state
+    const { curStore } = this.state
     const curStoreLocal = Taro.getStorageSync('curStore')
-    if (!isArray(curStoreLocal)) {
+    if (!isArray(curStoreLocal) && this.state.isGoStore) {
+      this.setState({
+        isGoStore: false
+      })
       if (!curStore || (curStoreLocal.distributor_id != curStore.distributor_id) ) {
         this.setState({
           curStore: curStoreLocal,
           likeList: [],
           wgts: null
         }, () => {
-          this.fetchData()
+          this.fetchSetInfo()
         })
       }
     }
@@ -318,8 +323,9 @@ export default class HomeIndex extends Component {
           this.resetPage()
           this.setState({
             likeList: []
+          }, () => {
+            this.nextPage()
           })
-          this.nextPage()
         } else {
           this.props.onUpdateLikeList(false)
         }
@@ -413,13 +419,18 @@ export default class HomeIndex extends Component {
     })
   }
   handleOfficialError=()=>{
-   
   }
   handleOfficialClose =()=>{
     this.setState({
       show_official:false
     })
     Taro.setStorageSync('close_official',true)
+  }
+
+  goStore = () => {
+    this.setState({
+      isGoStore: true
+    })
   }
 
   render () {
@@ -443,7 +454,6 @@ export default class HomeIndex extends Component {
                 onClick={this.handleOfficialClose.bind(this)}
                 isClose={true}
             >
-
           </AccountOfficial>
             )
           }
@@ -451,6 +461,7 @@ export default class HomeIndex extends Component {
           APP_PLATFORM === 'standard' && curStore && 
             <HeaderHome
               store={curStore}
+              onClickItem={this.goStore.bind(this)}
               isOpenScanQrcode={is_open_scan_qrcode}
             />
         }        
@@ -462,7 +473,8 @@ export default class HomeIndex extends Component {
             {wgts && <HomeWgts
               wgts={wgts}
             />}
-            {likeList.length > 0 && is_open_recommend==1 && (
+            {
+            (likeList.length > 0 && is_open_recommend==1) && (
               <View className='faverite-list'>
                 <WgtGoodsFaverite info={likeList} />
                 {

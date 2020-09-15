@@ -488,7 +488,7 @@ export default class CartCheckout extends Component {
 
     const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info } = data
 
-    if (coupon_info) {
+    if (coupon_info && !this.coupon) {
       this.props.onChangeCoupon({
         type: coupon_info.type,
         value: {
