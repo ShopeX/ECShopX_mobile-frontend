@@ -31,6 +31,9 @@ export default class HeaderHome extends Component {
   }
 
   handlePickStore = () => {
+    if (this.props.onClickItem) {
+      this.props.onClickItem()
+    }
     Taro.navigateTo({
       url: '/pages/store/list'
     })

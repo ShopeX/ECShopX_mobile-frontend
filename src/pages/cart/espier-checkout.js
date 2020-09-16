@@ -491,7 +491,6 @@ export default class CartCheckout extends Component {
     if (salesperson_id) {
       params.salesperson_id = salesperson_id
     }
-    console.log(params)
     let data
     try {
       data = await api.cart.total(params)
@@ -503,9 +502,9 @@ export default class CartCheckout extends Component {
 
     const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info, total_tax, quota_tip, identity_name = '', identity_id = '' } = data
 
-    if (coupon_info) {
+    if (coupon_info && !this.props.coupon) {
       this.props.onChangeCoupon({
-        type: coupon_info.type,
+        type: 'coupon',
         value: {
           title: coupon_info.info,
           card_id: coupon_info.id,
@@ -822,8 +821,6 @@ export default class CartCheckout extends Component {
     let order_id, config, payErr
     try {
       let params = this.getParams()
-
-      
       if (APP_PLATFORM === 'standard') {
         const { distributor_id } = Taro.getStorageSync('curStore')
         params.distributor_id = this.getShopId() || distributor_id
