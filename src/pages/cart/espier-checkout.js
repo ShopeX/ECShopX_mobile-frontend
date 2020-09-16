@@ -779,7 +779,7 @@ export default class CartCheckout extends Component {
     // if (!this.state.address) {
     //   return S.toast('请选择地址')
     // }
-    const { payType, total } = this.state
+    const { payType, total, identity } = this.state
     const { type, goodType, cart_type } = this.$router.params
     const isDrug = type === 'drug'
 

@@ -309,7 +309,7 @@ export default class GoodsBuyPanel extends Component {
         busy: false
       })
       // 设置添加商品的类型，决定购物车展示的商品类型
-      const cartType = info ? 'cross' : 'normal'
+      const cartType = info.type == '1' ? 'cross' : 'normal'
       Taro.setStorageSync('cartType', cartType)
       this.props.onAddCart(item_id, num)
     }

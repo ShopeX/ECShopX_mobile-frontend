@@ -40,7 +40,8 @@ export default class CartIndex extends Component {
       invalidList: [],
       error: null,
       isPathQrcode: false,
-      cartType: 'normal'
+      cartType: 'normal',
+      crossborder_show: false
     }
 
     this.updating = false
@@ -122,7 +123,7 @@ export default class CartIndex extends Component {
     })
 
     this.setState({
-      likeList: [...this.state.likeList, ...nList],
+      likeList: [...this.state.likeList, ...nList]
     })
 
     if (!S.getAuthToken()) {
@@ -164,7 +165,7 @@ export default class CartIndex extends Component {
     return groups
   }
 
-  processCart ({ valid_cart = [], invalid_cart = [], cartType }) {
+  processCart ({ valid_cart = [], invalid_cart = [], cartType, crossborder_show }) {
 		let cartCount = 0
     const list = valid_cart.map(shopCart => {
 			cartCount += shopCart.cart_total_num
@@ -175,10 +176,15 @@ export default class CartIndex extends Component {
       }
     })
 
+    if (!crossborder_show) {
+      Taro.setStorageSync('cartType', 'normal')
+    }
+
     const invalidList = this.transformCartList(invalid_cart)
     this.setState({
       invalidList,
-      cartType
+      cartType: !crossborder_show ? 'normal' : cartType,
+      crossborder_show
     })
 
     log.debug('[cart fetchCart]', list)
@@ -189,7 +195,7 @@ export default class CartIndex extends Component {
   }
 
   async fetchCart (cb) {
-    let valid_cart = [], invalid_cart = []
+    let valid_cart = [], invalid_cart = [], crossborder_show = false
     const cartType = Taro.getStorageSync('cartType')
     const { type = 'distributor' } = this.$router.params
     const params = {
@@ -204,6 +210,7 @@ export default class CartIndex extends Component {
 			const res = await api.cart.get(params)
       valid_cart = res.valid_cart || valid_cart
       invalid_cart = res.invalid_cart || invalid_cart
+      crossborder_show = !!res.crossborder_show
     } catch (e) {
       this.setState({
         error: e.message
@@ -213,7 +220,8 @@ export default class CartIndex extends Component {
     const list = this.processCart({
       valid_cart,
       invalid_cart,
-      cartType
+      cartType,
+      crossborder_show
     })
     cb && cb(list)
   }
@@ -433,7 +441,7 @@ export default class CartIndex extends Component {
   }
 
   render () {
-    const { groups, invalidList, cartMode, loading, curPromotions, likeList, page, isPathQrcode, cartType } = this.state
+    const { groups, invalidList, cartMode, loading, curPromotions, likeList, page, isPathQrcode, cartType, crossborder_show } = this.state
     const { list, showLikeList, colors } = this.props
 
     if (loading) {
@@ -479,12 +487,15 @@ export default class CartIndex extends Component {
             //   </View>
             // )
           }
-          <View className='changeCross'>
-            <View className='content' onClick={this.onChangeCartType.bind(this)}>
-              <View className={`iconfont ${cartType === 'cross' ? 'icon-flight' : 'icon-shop-cart-1'}`}></View>
-              <View className='iconfont icon-repeat'></View>
+          {
+            crossborder_show && 
+            <View className='changeCross'>
+              <View className='content' onClick={this.onChangeCartType.bind(this)}>
+                <View className={`iconfont ${cartType === 'cross' ? 'icon-flight' : 'icon-shop-cart-1'}`}></View>
+                <View className='iconfont icon-repeat'></View>
+              </View>
             </View>
-          </View>
+          }
           <View className='cart-list'>
             {
 
