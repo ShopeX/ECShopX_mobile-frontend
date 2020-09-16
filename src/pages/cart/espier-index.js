@@ -166,7 +166,7 @@ export default class CartIndex extends Component {
   }
 
   processCart ({ valid_cart = [], invalid_cart = [], cartType, crossborder_show }) {
-		let cartCount = 0
+    let cartCount = 0
     const list = valid_cart.map(shopCart => {
 			cartCount += shopCart.cart_total_num
       const tList = this.transformCartList(shopCart.list)
@@ -175,10 +175,6 @@ export default class CartIndex extends Component {
         list: tList
       }
     })
-
-    if (!crossborder_show) {
-      Taro.setStorageSync('cartType', 'normal')
-    }
 
     const invalidList = this.transformCartList(invalid_cart)
     this.setState({
@@ -196,18 +192,32 @@ export default class CartIndex extends Component {
 
   async fetchCart (cb) {
     let valid_cart = [], invalid_cart = [], crossborder_show = false
-    const cartType = Taro.getStorageSync('cartType')
+    const cartTypeLocal = Taro.getStorageSync('cartType')
     const { type = 'distributor' } = this.$router.params
     const params = {
       shop_type: type
     }
-    if (cartType === 'cross') {
+    if (cartTypeLocal === 'cross') {
       params.iscrossborder = 1
     } else {
       delete params.iscrossborder
     }
     try {
-			const res = await api.cart.get(params)
+      const res = await api.cart.get(params)
+      if (!res.crossborder_show && cartTypeLocal !== 'normal') {
+        Taro.setStorageSync('cartType', 'normal')
+        this.fetchCart((list) => {
+          const groups = this.resolveActivityGroup(list)
+          // this.props.list 此时为空数组
+          setTimeout(() => {
+            this.setState({
+              groups,
+              loading: false
+            })
+          }, 40)
+        })
+        return false
+      }
       valid_cart = res.valid_cart || valid_cart
       invalid_cart = res.invalid_cart || invalid_cart
       crossborder_show = !!res.crossborder_show
@@ -220,7 +230,7 @@ export default class CartIndex extends Component {
     const list = this.processCart({
       valid_cart,
       invalid_cart,
-      cartType,
+      cartType: cartTypeLocal,
       crossborder_show
     })
     cb && cb(list)

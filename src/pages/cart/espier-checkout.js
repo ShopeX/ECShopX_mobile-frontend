@@ -988,7 +988,7 @@ export default class CartCheckout extends Component {
       })
 
 
-      const { shop_id, source, scene, cart_type} = this.$router.params
+      const { shop_id, source, scene, cart_type, goodType} = this.$router.params
 
       let m_source = ''
       if (source === 'other_pay' || scene) {
@@ -1013,7 +1013,7 @@ export default class CartCheckout extends Component {
         shouldCalcOrder: true
       }, () => {
         Taro.navigateTo({
-          url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}&is_checkout=true&cart_type=${this.params.cart_type}&distributor_id=${id}&source=${m_source}`
+          url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}&is_checkout=true&cart_type=${this.params.cart_type}&distributor_id=${id}&source=${m_source}&goodType=${goodType}`
         })
       })
       // Taro.navigateTo({
