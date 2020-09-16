@@ -988,7 +988,7 @@ export default class CartCheckout extends Component {
       })
 
 
-      const { shop_id, source, scene } = this.$router.params
+      const { shop_id, source, scene, cart_type} = this.$router.params
 
       let m_source = ''
       if (source === 'other_pay' || scene) {
@@ -998,9 +998,8 @@ export default class CartCheckout extends Component {
       // let { point_use, shopData } = this.state
 
       // S.set('point_use',point_use)
-
       let id = ''
-      if (APP_PLATFORM === 'standard') {
+      if (APP_PLATFORM === 'standard' && cart_type !== 'cart') {
         const { distributor_id } = Taro.getStorageSync('curStore')
         id = distributor_id
       } else {
