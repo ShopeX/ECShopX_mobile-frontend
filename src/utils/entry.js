@@ -120,11 +120,7 @@ async function getLocal (isNeedLocate) {
 async function getLoc () {
   if (process.env.TARO_ENV === 'weapp') {
     return await Taro.getLocation({type: 'gcj02'}).then(async locationData => {
-      const { latitude, longitude } = locationData
-      const cityInfo = await Taro.request({
-        url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${APP_MAP_KEY}`
-      })
-      Taro.setStorageSync('lnglat', {...locationData, ...cityInfo.data.result.address_component})
+      InverseAnalysis(locationData)
       return locationData
     }, () => {
       return null
@@ -209,9 +205,19 @@ function parseUrlStr (urlStr) {
   return kvObj
 }
 
+// 逆解析地址
+async function InverseAnalysis (locationData) {
+  const { latitude, longitude } = locationData
+  const cityInfo = await Taro.request({
+    url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${APP_MAP_KEY}`
+  })
+  Taro.setStorageSync('lnglat', {...locationData, ...cityInfo.data.result.address_component})
+}
+
 export default {
   entryLaunch,
   getLocal,
   getLocalSetting,
-  getWebLocal
+  getWebLocal,
+  InverseAnalysis
 }

@@ -101,6 +101,12 @@ export default class Detail extends Component {
         console.log(e)
       }
     }
+
+    // 处理定位
+    const lnglat = Taro.getStorageSync('lnglat')
+    if (lnglat && !lnglat.city) {
+      entry.InverseAnalysis(lnglat)
+    }
   }
 
   async componentDidShow () {
@@ -741,10 +747,11 @@ export default class Detail extends Component {
     const { showLikeList, colors } = this.props
     const meiqia = Taro.getStorageSync('meiqia')
     const uid = this.uid
-    const taxRate = info ? info.crossborder_tax_rate : 0
+    const taxRate = info ? info.cross_border_tax_rate : 0
     const mainPrice = info ? (info.act_price ? info.act_price : info.price) : 0
     const skuPrice = curSku ? (curSku.act_price ? curSku.act_price : curSku.price) : mainPrice
-    const crossPrice =  (((skuPrice) * taxRate) / 100).toFixed(2)
+    console.log(mainPrice)
+    const crossPrice =  ((skuPrice * taxRate) / 10000).toFixed(2)
 
     const lnglat = Taro.getStorageSync('lnglat')
 
@@ -830,7 +837,7 @@ export default class Detail extends Component {
                     <Price
                       unit='cent'
                       symbol={(info.cur && info.cur.symbol) || ''}
-                      value={curSku ? curSku.act_price : info.priceinfo.act_price}
+                      value={curSku ? curSku.act_price : info.act_price}
                     />
                     {
                       marketing !== 'normal' &&
@@ -979,7 +986,7 @@ export default class Detail extends Component {
                     <Price
                       unit='cent'
                       symbol={(info.cur && info.cur.symbol) || ''}
-                      value={curSku ? curSku.price : crossPrice}
+                      value={crossPrice}
                     />
                   </View>                  
                   <View className='nationalInfoLeft'>
