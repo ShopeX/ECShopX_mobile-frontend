@@ -751,7 +751,7 @@ export default class Detail extends Component {
     const mainPrice = info ? (info.act_price ? info.act_price : info.price) : 0
     const skuPrice = curSku ? (curSku.act_price ? curSku.act_price : curSku.price) : mainPrice
     console.log(mainPrice)
-    const crossPrice =  ((skuPrice * taxRate) / 10000).toFixed(2)
+    const crossPrice =  ((skuPrice * taxRate) / 100).toFixed(2)
 
     const lnglat = Taro.getStorageSync('lnglat')
 
