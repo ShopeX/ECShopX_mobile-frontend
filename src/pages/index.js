@@ -299,7 +299,7 @@ export default class HomeIndex extends Component {
 	}
   async fetchInfo (cb) {
     const { curStore } = this.state
-    if (!curStore.distributor_id) {
+    if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
     // const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
