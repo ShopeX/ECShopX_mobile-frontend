@@ -208,6 +208,14 @@ class App extends Component {
           'pages/community/index'
         ]
       },
+      // 助力
+      {
+        root: 'boost',
+        pages: [
+          'pages/home/index',
+          'pages/detail/index'
+        ]
+      },
       {
         root: 'others',
         pages: [
