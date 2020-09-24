@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/pay/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-24 11:55:06
+ * @LastEditTime: 2020-09-24 15:28:37
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Textarea, View, Image, Text, Button } from '@tarojs/components'
@@ -149,20 +149,25 @@ export default class Pay extends Component {
       remark,
       ...receiver
     }
-    try {
-      const res = await api.boost.pay(param)
-      if (res.order_id) {
-        const payRes = Taro.requestPayment(res)
-        console.log(payRes)
+    const res = await api.boost.pay(param)
+    if (res.order_id) {
+      try {
+        await Taro.requestPayment(res)
+      } catch (e) {
+        let errMsg = '支付失败'
+        if (e.errMsg === 'requestPayment:fail cancel') {
+          errMsg = '取消支付'
+        }
+        Taro.showToast({
+          title: errMsg,
+          icon: 'none',
+          mask: true
+        })
       }
-      this.setState({
-        isLoading: false
-      })
-    } catch (e) {
-      this.setState({
-        isLoading: false
-      })
-    }
+    } 
+    this.setState({
+      isLoading: false
+    })      
   }
 
   render () {

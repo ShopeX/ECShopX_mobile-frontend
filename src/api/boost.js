@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/api/boost.js
  * @Date: 2020-09-22 16:37:29
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-24 11:36:59
+ * @LastEditTime: 2020-09-24 14:50:28
  */
 import req from './req'
 
@@ -24,3 +24,6 @@ export const postUserBargain = (param = {}) => req.post('/promotion/userbargain'
 
 // 支付
 export const pay = (param = {}) => req.post('/order', param)
+
+// 获取支付配置
+export const getPayConfig = (param = {}) => req.get('/payment/config', param)

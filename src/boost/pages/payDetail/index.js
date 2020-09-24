@@ -6,10 +6,10 @@
  * @FilePath: /unite-vshop/src/boost/pages/payDetail/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-24 14:00:15
+ * @LastEditTime: 2020-09-24 15:26:55
  */
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image, Button } from '@tarojs/components'
 import { pickBy, formatDataTime } from '@/utils'
 import api from '@/api'
 import { NavBar } from '@/components'
@@ -21,7 +21,8 @@ export default class PayDetail extends Component {
     super(props)
 
     this.state = {
-      info: {}
+      info: {},
+      isLoading: false
     }
   }
 
@@ -60,14 +61,53 @@ export default class PayDetail extends Component {
         receiver_district: 'receiver_district',
         receiver_address: 'receiver_address',
         remark: 'remark',
+        num_total: 'total_fee',
         create_time: ({ create_time }) => formatDataTime(create_time),
         total_fee: ({ total_fee }) => (total_fee / 100).toFixed(2),
+        item_fee: ({ item_fee }) => (item_fee / 100).toFixed(2)
       })
     })
   }  
+
+  handlePay = async () => {
+    this.setState({
+      isLoading: true
+    })
+    const { info } = this.state
+    const param = {
+      pay_type: 'wxpay',
+      order_id: info.order_id,
+      total_fee: info.num_total
+    }
+    const res = await api.boost.getPayConfig(param)
+    if (res.appId) {
+      try {
+        await Taro.requestPayment(res)
+      } catch (e) {
+        let errMsg = '支付失败'
+        if (e.errMsg === 'requestPayment:fail cancel') {
+          errMsg = '取消支付'
+        }
+        Taro.showToast({
+          title: errMsg,
+          icon: 'none',
+          mask: true
+        })
+      }
+    } else {
+      Taro.showToast({
+        title: '获取支付信息失败',
+        icon: 'none',
+        mask: true
+      })
+    }
+    this.setState({
+      isLoading: false
+    })
+  }
   
   render () {
-    const { info } = this.state
+    const { info, isLoading } = this.state
     return (
       <View className='payDetail'>
         <NavBar
@@ -90,6 +130,32 @@ export default class PayDetail extends Component {
             { info.receiver_address }
           </View>
         </View>
+        <View className='goods'>
+          <Image src={info.item_pics} mode='aspectFill' className='img' />
+          <View>{ info.item_name }</View>
+        </View>
+        <View className='other'>
+          <View className='line'>
+            <View className='title'>支付金额:</View>
+            <View className='content'>
+              <Text className='text'>¥{ info.total_fee }</Text>
+              <Text className='through'>原价 ¥{ info.item_fee }</Text>
+            </View>
+          </View>
+          <View className='line'>
+            <View className='title'>下单时间:</View>
+            <View className='content'>{ info.create_time }</View>
+          </View>
+          <View className='line'>
+            <View className='title'>订单编号:</View>
+            <View className='content'>{ info.order_id }</View>
+          </View>
+          <View className='line'>
+            <View className='title'>备注:</View>
+            <View className='content'>{ info.remark }</View>
+          </View>
+        </View>
+        <Button className='btn' disabled={isLoading} loading={isLoading} onClick={this.handlePay.bind(this)}>立即支付</Button>
       </View>
     )
   }  

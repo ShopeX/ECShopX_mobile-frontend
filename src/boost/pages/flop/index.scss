@@ -1,0 +1,102 @@
+page {
+  width: 100%;
+  height: 100%;
+}
+
+.flop {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  .goods {
+    width: 100%;
+    display: flex;
+    padding: 20px 30px;
+    background: #fff;
+    .img {
+      width: 180px;
+      height: 180px;
+      border: 2px solid #efefef;
+    }
+    .info {
+      flex: 1;
+      font-size: 24px;
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .title {
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .interval {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .text {
+          font-size: 20px;
+        }
+      }
+    }    
+  }
+  .boostMain {
+    padding: 20px;
+    background: #fff;
+    border-top: 2px dashed #efefef;
+    .title {
+      font-size: 36px;
+      padding: 10px 0 20px 0;
+      text-align: center;
+    }
+    .boostList {
+      &.noHelp {
+        text-align: center;
+        height: 100px;
+        line-height: 100px;
+        color: #666;
+      }
+      .boostItem {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        .left {          
+          margin-right: 20px;
+          .img {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            border: 2px solid #efefef;
+          }
+        }
+        .right {
+          flex: 1;
+        }
+        .tag {
+          background: #a2564c;
+          color: #fff;
+          font-size: 20px;
+          border-radius: 10px;
+          display: inline-block;
+          padding: 2px 10px;
+        }        
+      }
+    }
+  }
+  .showBtn {
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    background: #a2564c;
+    left: 0;
+    bottom: 0;
+    color: #fff;
+    font-size: 32px;
+    outline: none;
+    border: none;
+    .isDisabled {
+      background-color: #7b6f73;
+    }
+  }   
+}
