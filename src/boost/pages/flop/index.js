@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/flop/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-25 11:40:01
+ * @LastEditTime: 2020-09-25 16:56:55
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Progress, Text, Button } from '@tarojs/components'
@@ -87,9 +87,11 @@ export default class Flop extends Component {
       headimgurl: userInfo.avatar
     }
     try {
-      await api.boost.postDiscount(param)
+      const res = await api.boost.postDiscount(param)
+      const price = Math.abs(res.cutdown_num / 100).toFixed(2)
+      const msg = res.cutdown_num > 0 ? `太棒了！成功助力好友` : `对不起，助力失败！增加${price}`
       Taro.showToast({
-        title: '助力成功',
+        title: msg,
         mask: true
       })
       this.getBoostDetail()

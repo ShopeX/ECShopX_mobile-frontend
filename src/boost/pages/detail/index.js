@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/detail/index.js
  * @Date: 2020-09-22 14:08:32
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-25 13:38:46
+ * @LastEditTime: 2020-09-25 16:11:28
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
@@ -135,14 +135,16 @@ export default class Detail extends Component {
   // 绘制海报
   drawPoster = async () => {
     const { info, adPic, userInfo } = this.state
-    const host = APP_BASE_URL.replace('api/h5app/wxapp', '')
-    const codeUrl = `${host}${api.boost.codeUrl}`
+    // const codeUrl = `${APP_BASE_URL}${api.boost.codeUrl}?bargain_id=${info.bargain_id}&user_id=${userInfo.user_id}`
+    const codeUrl = adPic
     const adImg = await Taro.getImageInfo({src: adPic})
     const codeImg = await Taro.getImageInfo({src: codeUrl})
-    const context = wx.createCanvasContext('cardCanvas')
+    console.log(adImg)
+    console.log(codeImg)
+    const context = Taro.createCanvasContext('poster', this)
     context.drawImage(adImg.path, 0, 0, 375, 380)
     context.save()
-    var bgBox = context.createLinearGradient(0, 0, 0, 600)
+    const bgBox = context.createLinearGradient(0, 0, 0, 600)
     bgBox.addColorStop(0, '#f4eee3')
     bgBox.addColorStop(1, 'white')
     context.setFillStyle(bgBox)
@@ -165,13 +167,51 @@ export default class Detail extends Component {
     context.setFillStyle('#a2564c')
     context.fillText(info.item_name, 187, 504)
     context.restore()
-    context.draw()
+    context.draw(true, () => {
+      Taro.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        canvasId: 'poster',
+      }).then(res => {
+        this.setState({
+          posterImg: res.tempFilePath
+        })
+      }).catch(err => console.log(err))  
+    })
   }
 
   // 显示海报
   showPoster = () => {
-    this.setState({
-      showPoster: true
+    Taro.showLoading({
+      title: '海报生成中',
+      mask: true
+    })
+    if (this.posterImg) {
+      this.setState({
+        showPoster: true
+      })
+      Taro.hideLoading()
+      return false
+    }
+    this.drawPoster().then(() => {
+      this.setState({
+        showPoster: true
+      })
+      Taro.hideLoading()
+    }).catch(() => {
+      Taro.hideLoading()
+      Taro.showToast({
+        title: '生成海报错误',
+        icon: 'none',
+        mask: true
+      })
+    })
+  }
+
+  // 预览海报
+  previewImage = (posterImg) => {
+    Taro.previewImage({
+      urls: [posterImg]
     })
   }
 
