@@ -710,7 +710,7 @@ export default class CartCheckout extends Component {
                 url: '/others/pages/recharge/index'
               })
             } else {
-              
+
               this.setState({
                 disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
                 payType: 'wxpay'
@@ -785,7 +785,7 @@ export default class CartCheckout extends Component {
 
     if (payType === 'point' || payType === 'deposit') {
       try {
-        const content = payType === 'point' ? `确认使用${total.remainpt}积分全额抵扣商品总价吗` : '确认使用余额支付吗？'
+        const content = payType === 'point' ? `确认使用积分全额抵扣商品总价吗` : '确认使用余额支付吗？'
         const { confirm } = await Taro.showModal({
           title: payType === 'point' ? '积分支付' : '余额支付',
           content,
@@ -1069,7 +1069,7 @@ export default class CartCheckout extends Component {
       }
 
     })
-    
+
   }
 
   resetInvoice = (e) => {
@@ -1103,7 +1103,7 @@ export default class CartCheckout extends Component {
       wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款'
-    }    
+    }
     const { coupon, colors } = this.props
     const {
       info,
@@ -1166,7 +1166,7 @@ export default class CartCheckout extends Component {
           shoppingGuideData ? <View className='shopping-guide-header'>
             此订单商品来自“{shoppingGuideData.store_name}”导购“{shoppingGuideData.name}”的推荐
           </View> : null
-        }        
+        }
         <ScrollView
           scrollY
           className='checkout__wrap'
@@ -1213,7 +1213,7 @@ export default class CartCheckout extends Component {
                 </View>
           }
           {
-            goodType === 'cross' && <SpCell 
+            goodType === 'cross' && <SpCell
               border={false}
               className='coupons-list'
             >
@@ -1226,7 +1226,7 @@ export default class CartCheckout extends Component {
                   placeholder='请输入身份证上的姓名'
                   value={identity.identity_name}
                   onChange={this.inputChange.bind(this, 'identity_name')}
-                />                    
+                />
                 <AtInput
                   name='cardId'
                   title='身份证号'
@@ -1280,7 +1280,7 @@ export default class CartCheckout extends Component {
                                             { item.origincountry_name }
                                           </Text>
                                       </View>
-                                    }                                    
+                                    }
                                   </View>)
                               }
                               <OrderItem
@@ -1379,19 +1379,16 @@ export default class CartCheckout extends Component {
               title='支付方式'
               onClick={this.handlePaymentShow}
             >
+              {total.deduction && (
+                <Text className='trade-payment__hint'>{total.remainpt}积分可用</Text>
+              )}
               <Text>{payTypeText[payType]}</Text>
             </SpCell>
-            {total.deduction && (
-              <View className='trade-payment__hint'>
-                可用{total.remainpt}积分，抵扣 <Price unit='cent' value={total.deduction} /> (包含运费 <Price unit='cent' value={total.freight_fee}></Price>)
-              </View>
-            )}
           </View>
 
           {payType === 'point' && (
             <View className='sec trade-sub-total'>
               <SpCell
-                className='trade-sub-total__item'
                 title='运费'
               >
                 <Price

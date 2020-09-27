@@ -2,7 +2,7 @@
 
 .page-checkout {
   margin: $edge-size $edge-margin;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   .shopping-guide-header{
@@ -170,7 +170,7 @@
             border-radius: 100%;
             margin-right: 15px;
           }
-        }          
+        }
       }
     }
     &__img {
@@ -265,8 +265,7 @@
   .trade-payment {
     background: #fff;
     &__hint {
-      padding: 0 $edge-size 10px;
-      margin-top: -5px;
+      padding: 0 $edge-size;
       color: $color-orange;
     }
   }
@@ -284,17 +283,11 @@
 
   .trade-sub-total {
     padding: $edge-margin 0;
-    &__item {
+    .sp-cell {
       padding-top: 8px;
       padding-bottom: 8px;
-    }
-    .sp-cell {
       &:before {
         border: none;
-      }
-      &__hd {
-        width: 140px;
-        text-align: right;
       }
       &__bd {
         color: $color-brand-primary;
