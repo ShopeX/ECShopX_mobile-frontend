@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/payDetail/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-25 15:16:10
+ * @LastEditTime: 2020-09-27 18:25:37
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
@@ -15,7 +15,6 @@ import api from '@/api'
 import { NavBar } from '@/components'
 
 import './index.scss'
-import { findLast } from 'lodash'
 
 export default class PayDetail extends Component {
   constructor (props) {
@@ -28,7 +27,12 @@ export default class PayDetail extends Component {
   }
 
   componentWillMount () {
-    this.getOrderInfo()
+    const { order_id } = this.$router.params
+    if (order_id) {
+      this.getOrderInfo()
+    } else {
+      this.getOrderDetail()
+    }
   }
 
 
@@ -36,7 +40,7 @@ export default class PayDetail extends Component {
     navigationBarTitleText: '结算页面'
   }
   
-  // 获取订单信息
+  // 获取支付订单信息
   getOrderInfo = async () => {
     const { bargain_id } = this.$router.params
     const {
@@ -70,13 +74,24 @@ export default class PayDetail extends Component {
     })
   }  
 
+  // 获取订单详情
+  getOrderDetail = async () => {
+    const { order_id, bargain_id } = this.$router.params
+    const detail = await api.boost.getOrderDetail({
+      order_id,
+      bargain_id
+    })
+
+    console.log(detail)
+  }
+
   handlePay = async () => {
     this.setState({
       isLoading: true
     })
     const { info } = this.state
     const param = {
-      pay_type: 'wxpay1111',
+      pay_type: 'wxpay',
       order_id: info.order_id,
       total_fee: info.num_total
     }
@@ -110,6 +125,7 @@ export default class PayDetail extends Component {
   
   render () {
     const { info, isLoading } = this.state
+    const { order_id } = this.$router.params
     return (
       <View className='payDetail'>
         <NavBar
@@ -157,7 +173,10 @@ export default class PayDetail extends Component {
             <View className='content'>{ info.remark }</View>
           </View>
         </View>
-        <Button className='btn' disabled={isLoading} loading={isLoading} onClick={this.handlePay.bind(this)}>立即支付</Button>
+        {
+          order_id &&
+            <Button className='btn' disabled={isLoading} loading={isLoading} onClick={this.handlePay.bind(this)}>立即支付</Button>
+        }
       </View>
     )
   }  
