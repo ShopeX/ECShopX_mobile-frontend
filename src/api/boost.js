@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/api/boost.js
  * @Date: 2020-09-22 16:37:29
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-25 15:23:32
+ * @LastEditTime: 2020-09-27 14:50:32
  */
 import req from './req'
 
@@ -32,4 +32,7 @@ export const getPayConfig = (param = {}) => req.get('/payment/config', param)
 export const postDiscount = (param = {}) => req.post('/promotion/bargainlog', param)
 
 // 小程序码
-export const codeUrl = '/promotion/bargainfriendwxappcode'
+export const getCodeUrl = (param = {}) => req.get('/promotion/bargainfriendwxappcode', param)
+
+// 获取订单列表
+export const getOrderList = (param = {}) => req.get('/orders', param)

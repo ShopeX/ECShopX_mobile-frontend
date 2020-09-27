@@ -217,6 +217,7 @@ class App extends Component {
           'pages/flop/index',
           'pages/pay/index',
           'pages/payDetail/index',
+          'pages/order/index',
         ]
       },
       {

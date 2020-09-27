@@ -2,11 +2,11 @@
  * @Author: Arvin
  * @GitHub: https://github.com/973749104
  * @Blog: https://liuhgxu.com
- * @Description: 助力详情
- * @FilePath: /unite-vshop/src/boost/pages/home/index.js
- * @Date: 2020-09-22 14:08:32
+ * @Description: 订单列表
+ * @FilePath: /unite-vshop/src/boost/pages/order/index.js
+ * @Date: 2020-09-27 14:08:06
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-27 15:50:56
+ * @LastEditTime: 2020-09-27 15:52:28
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
@@ -14,17 +14,18 @@ import { NavBar } from '@/components'
 import api from '@/api'
 import { debounce, pickBy } from '@/utils'
 import LoadingMore from '../../component/loadingMore'
-import BargainItem from '../../component/bargainItem'
 
 import './index.scss'
 
-export default class Home extends Component {
+export default class Order extends Component {
   constructor (props) {
     super(props)
     this.state = {
       param: {
         page: 1,
-        pageSize: 10
+        pageSize: 10,
+        order_type: 'bargain',
+        order_status: 'DONE'
       },
       list: [],
       scrollTop: 0,
@@ -39,13 +40,13 @@ export default class Home extends Component {
   }
   
   config = {
-    navigationBarTitleText: '助力首页'
+    navigationBarTitleText: '我的助力订单'
   }
 
   getList = async (isRefrsh = false) => {
     Taro.showLoading({title: '正在加载中', mask: true})
     const { param, list } = this.state
-    const data = await api.boost.getList(param)
+    const data = await api.boost.getOrderList(param)
     const total_count = data.total_count
     const isEnd = param.page >= (total_count / param.pageSize)
     const newList = pickBy(data.list, {
@@ -109,7 +110,7 @@ export default class Home extends Component {
       isEmpty
     } = this.state
     return (
-      <View className='home'>
+      <View className='order'>
         <NavBar
           title={this.config.navigationBarTitleText}
           leftIconType='chevron-left'
@@ -130,7 +131,8 @@ export default class Home extends Component {
           {/* 列表图 */}
           {
             list.map(item => <View className='item' key={item.bargain_id}>
-              <BargainItem info={item} />
+              {/* <BargainItem info={item} /> */}
+              111111111111111
             </View>)
           }
           {/* 加载更多 */}

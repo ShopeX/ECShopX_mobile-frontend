@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/detail/index.js
  * @Date: 2020-09-22 14:08:32
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-25 16:11:28
+ * @LastEditTime: 2020-09-27 11:13:58
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
@@ -135,8 +135,10 @@ export default class Detail extends Component {
   // 绘制海报
   drawPoster = async () => {
     const { info, adPic, userInfo } = this.state
-    // const codeUrl = `${APP_BASE_URL}${api.boost.codeUrl}?bargain_id=${info.bargain_id}&user_id=${userInfo.user_id}`
-    const codeUrl = adPic
+    const codeUrl = await api.boost.getCodeUrl({
+      bargain_id: info.bargain_id,
+      user_id: userInfo.user_id
+    })
     const adImg = await Taro.getImageInfo({src: adPic})
     const codeImg = await Taro.getImageInfo({src: codeUrl})
     console.log(adImg)
