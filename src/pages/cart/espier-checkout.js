@@ -420,7 +420,7 @@ export default class CartCheckout extends Component {
         promoter_shop_id: distributionShopId
       }
     }
-    const { payType, receiptType,point_use } = this.state
+    const { payType, receiptType,pointInfo,point_use } = this.state
     console.log('point_use==========>',point_use)
     const { coupon, drugInfo } = this.props
     if(drugInfo){
@@ -443,7 +443,7 @@ export default class CartCheckout extends Component {
 			pay_type: payType,
       distributor_id: this.getShopId() || (shop_id === 'undefined' ? 0 : shop_id),
       ...drugInfo,
-      point_use:point_use
+      //point_use:0
     }
 
     log.debug('[checkout] params: ', params)
@@ -453,6 +453,9 @@ export default class CartCheckout extends Component {
       params.cart_type = 'cxd'
       params.order_type = 'normal_shopguide'
       params.salesman_id = smid
+    }
+    if(point_use){
+      params.point_use = point_use
     }
 
     if (coupon) {
@@ -494,7 +497,7 @@ export default class CartCheckout extends Component {
 
     if (!data) return
 
-    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info,point_fee=0,point_use = 0, user_point = 0,max_point = 0 ,is_open_deduct_point,deduct_point_rule,real_use_point } = data      // 测试数据
+    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info,point_fee=0,point_use, user_point = 0,max_point = 0 ,is_open_deduct_point,deduct_point_rule,real_use_point } = data      // 测试数据
     if (coupon_info && !this.props.coupon) {
       this.props.onChangeCoupon({
         type: 'coupon',
@@ -508,7 +511,6 @@ export default class CartCheckout extends Component {
       
     }else{
       this.clearPoint()
-      console.log('this.props.coupon',this.props.coupon)
     }
     const total = {
       ...this.state.total,
@@ -524,7 +526,6 @@ export default class CartCheckout extends Component {
       remainpt, // 总积分
       deduction, // 抵扣
       point_fee: -1 * point_fee,//积分抵扣金额   
-      point_use: point_use,       //抵扣积分数
     }
 
     let info = this.state.info
@@ -542,10 +543,12 @@ export default class CartCheckout extends Component {
         is_open_deduct_point,
         user_point, //用户现有积分
         max_point, //最大可使用积分
-        real_use_point
+        real_use_point:real_use_point,
+        point_use:point_use
       },
 
       this.params.items = items
+      //this.params.pointInfo = pointInfo
     }
     //console.warn('third_params',third_params)
 
