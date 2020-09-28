@@ -420,7 +420,7 @@ export default class CartCheckout extends Component {
         promoter_shop_id: distributionShopId
       }
     }
-    const { payType, receiptType,pointInfo,point_use } = this.state
+    const { payType, receiptType,point_use } = this.state
     console.log('point_use==========>',point_use)
     const { coupon, drugInfo } = this.props
     if(drugInfo){
@@ -454,8 +454,10 @@ export default class CartCheckout extends Component {
       params.order_type = 'normal_shopguide'
       params.salesman_id = smid
     }
-    if(point_use){
+    if(point_use > 0){
       params.point_use = point_use
+    }else {
+      params.point_use = 0
     }
 
     if (coupon) {
