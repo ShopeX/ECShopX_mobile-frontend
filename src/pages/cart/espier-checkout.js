@@ -443,7 +443,6 @@ export default class CartCheckout extends Component {
 			pay_type: payType,
       distributor_id: this.getShopId() || (shop_id === 'undefined' ? 0 : shop_id),
       ...drugInfo,
-      //point_use:0
     }
 
     log.debug('[checkout] params: ', params)
@@ -454,11 +453,10 @@ export default class CartCheckout extends Component {
       params.order_type = 'normal_shopguide'
       params.salesman_id = smid
     }
-    if(point_use > 0){
+    if(point_use){
       params.point_use = point_use
-    }else {
-      params.point_use = 0
     }
+   
 
     if (coupon) {
       if (coupon.not_use_coupon === 1){
@@ -511,8 +509,6 @@ export default class CartCheckout extends Component {
         }
       })
       
-    }else{
-      this.clearPoint()
     }
     const total = {
       ...this.state.total,
@@ -788,7 +784,8 @@ export default class CartCheckout extends Component {
     //   return S.toast('请选择地址')
     // }
 
-    const { payType, total } = this.state
+    const { payType, total,point_use } = this.state
+    console.log('point_use------->',point_use)
     const { type } = this.$router.params
     const isDrug = type === 'drug'
 
@@ -1129,7 +1126,6 @@ export default class CartCheckout extends Component {
     // }
     //const curStore = Taro.getStorageSync('curStore')
     // const { curStore } = this.state
-    console.log('pointInfo',pointInfo)
     const { type } = this.$router.params
     const isDrug = type === 'drug'
 

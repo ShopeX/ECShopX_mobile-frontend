@@ -23,7 +23,7 @@ export default class PointUse extends Component {
 
     this.state = {
       isOpenRule:false,
-      point:0,
+      point:null,
       localType:props.type
     }
   }
@@ -43,7 +43,7 @@ export default class PointUse extends Component {
   handleCancel = () => {
     this.setState({
       localType: this.props.type,
-      point:0
+      point:null
     })
     this.props.onClose()
   }
@@ -73,7 +73,7 @@ export default class PointUse extends Component {
   handleUseFullAmount = (checked)=>{
     const { info } = this.props
     this.setState({
-      point:checked ? info.user_point : 0,
+      point:checked ? info.user_point : null,
       disabledPoint: checked ? true : false,
       localType: checked ? 'point' : this.props.type
     })
