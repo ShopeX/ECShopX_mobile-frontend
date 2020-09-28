@@ -14,16 +14,15 @@ page {
     padding: 20px 0;
     background: #fff;
     .title {
-      padding: 10px 0;
       font-size: 32px;
-      padding: 0 20px;
+      padding: 10px 20px 20px 20px;
       border-bottom: 2px dashed #efefef;
     }
     .info {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 20px;
+      padding: 20px 20px;
     }
     .add {
       padding: 0 20px;
@@ -49,7 +48,7 @@ page {
       display: flex;
       padding: 10px 0;
       .title {
-        margin-right: 10px;
+        margin-right: 20px;
       }
       .text {
         color: #e50909

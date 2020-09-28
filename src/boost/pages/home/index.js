@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/home/index.js
  * @Date: 2020-09-22 14:08:32
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-27 15:50:56
+ * @LastEditTime: 2020-09-28 10:53:38
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
@@ -57,7 +57,7 @@ export default class Home extends Component {
       diff_price: ({ mkt_price, price }) => ((mkt_price - price) / 100).toFixed(2)
     })
     this.setState({
-      list: isRefrsh ? data.list : [...list, ...newList],
+      list: isRefrsh ? newList : [...list, ...newList],
       isRefresh: false,
       isLoading: false,
       isEnd,

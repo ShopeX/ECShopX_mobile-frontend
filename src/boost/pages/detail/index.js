@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/detail/index.js
  * @Date: 2020-09-22 14:08:32
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-27 11:13:58
+ * @LastEditTime: 2020-09-28 13:57:41
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
@@ -14,6 +14,7 @@ import { NavBar, SpHtmlContent } from '@/components'
 import { pickBy, calcTimer } from '@/utils'
 import { AtCountdown, AtIcon } from 'taro-ui'
 import api from '@/api'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
 
 import './index.scss'
 
@@ -352,16 +353,32 @@ export default class Detail extends Component {
               </View>
             </View>
           }   
-          <View className='goodDetail'>
-            <View className='h5'>
-              <Text>商品详情</Text>
+        { info.item_intro && 
+            <View className='goodDetail'>
+              <View className='h5'>
+                <Text className='text'>商品详情</Text>
+              </View>
+              {
+                !Array.isArray(info.item_intro)
+                  ? <SpHtmlContent content={info.item_intro} className='richText' />
+                  : <View className='wgt'>
+                    {
+                      info.item_intro.map((item, idx) => {
+                        return (
+                          <View className='wgt-wrap' key={`${item.name}${idx}`}>
+                            {item.name === 'film' && <WgtFilm info={item} />}
+                            {item.name === 'slider' && <WgtSlider info={item} />}
+                            {item.name === 'writing' && <WgtWriting info={item} />}
+                            {item.name === 'heading' && <WgtHeading info={item} />}
+                            {item.name === 'goods' && <WgtGoods info={item} />}
+                          </View>
+                        )
+                      })
+                    }
+                  </View>
+              }
             </View>
-            {
-              (info.item_intro && Array.isArray(info.item_intro)) 
-                ? <SpHtmlContent content={info.item_intro || []} className='richText' />
-                : <View>{ info.item_intro ? info.item_intro : '暂无详情'}</View>
-            }
-          </View>
+        }
         </View>
         <Button
           disabled={isDisabled}

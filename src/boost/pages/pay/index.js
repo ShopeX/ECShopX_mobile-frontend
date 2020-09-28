@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/pay/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-25 15:16:19
+ * @LastEditTime: 2020-09-28 11:03:54
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Textarea, View, Image, Text, Button } from '@tarojs/components'
@@ -149,6 +149,7 @@ export default class Pay extends Component {
       remark,
       ...receiver
     }
+    let jumpUrl = `/boost/pages/payDetail/index?bargain_id=${goodInfo.bargain_id}`
     try {
       const res = await api.boost.pay(param)
       if (res.appId) {
@@ -157,6 +158,7 @@ export default class Pay extends Component {
           title: '支付成功',
           mask: true
         })
+        jumpUrl += `&order_id=${res.trade_info.order_id}`
       }
     } catch (e) {
       if (!e.res) {
@@ -174,6 +176,9 @@ export default class Pay extends Component {
     }
     this.setState({
       isLoading: false
+    })
+    Taro.redirectTo({
+      url: jumpUrl
     })
   }
 

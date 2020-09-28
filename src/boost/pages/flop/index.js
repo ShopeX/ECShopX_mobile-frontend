@@ -6,11 +6,12 @@
  * @FilePath: /unite-vshop/src/boost/pages/flop/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-25 16:56:55
+ * @LastEditTime: 2020-09-28 14:33:44
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Progress, Text, Button } from '@tarojs/components'
 import { pickBy } from '@/utils'
+import { NavBar } from '@/components'
 import api from '@/api'
 import './index.scss'
 
@@ -24,12 +25,17 @@ export default class Flop extends Component {
       boostList: [],
       // userInfo: {},
       // isJoin: false,
-      isDiscount: false
+      isDiscount: false,
+      cutPercent: 0
     }
   }
 
   componentDidMount () {
     this.getBoostDetail()
+  }
+
+  config = {
+    navigationBarTitleText: '帮砍'
   }
 
   // 获取助力详情wechat-taroturntable
@@ -38,14 +44,16 @@ export default class Flop extends Component {
     const { bargain_id } = this.$router.params
     const {
       bargain_info = {},
-      // user_bargain_info = {},
+      user_bargain_info = {},
       bargain_log = {},
       // user_info = {}
     } = await api.boost.getUserBargain({
       bargain_id,
       has_order: true
     })
-
+    const { mkt_price: mPrice, price: pPrice } = bargain_info
+    const { cutdown_amount } = user_bargain_info
+    const cutPercent = cutdown_amount / (mPrice - pPrice)
     this.setState({
       info: pickBy(bargain_info, {
         bargain_id: 'bargain_id',
@@ -61,6 +69,7 @@ export default class Flop extends Component {
         isOver: ({ left_micro_second }) => left_micro_second <= 0,
       }),
       boostList: bargain_log.list || [],
+      cutPercent
       // userInfo: user_info,
       // isJoin: !!user_bargain_info.user_id
     }, () => {
@@ -120,15 +129,20 @@ export default class Flop extends Component {
   }
 
   render () {
-    const { info, boostList, isDisabled } = this.state
+    const { info, boostList, isDisabled, cutPercent } = this.state
     return (
       <View className='flop'>
+        <NavBar
+          title={this.config.navigationBarTitleText}
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='goods'>
           <Image className='img' src={info.item_pics} mode='aspectFill' />
           <View className='info'>
             <View className='title'>{ info.item_name }</View>
             <View className='progress'>
-              <Progress percent={20} activeColor='#a2564c' backgroundColor='#f0eeed' strokeWidth={6} active />
+              <Progress percent={cutPercent} activeColor='#a2564c' backgroundColor='#f0eeed' strokeWidth={6} active />
               <View className='interval'>
                 <Text className='text'>¥{ info.mkt_price }</Text>
                 <Text className='text'>¥{ info.price }</Text>

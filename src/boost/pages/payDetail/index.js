@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/payDetail/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-27 18:25:37
+ * @LastEditTime: 2020-09-28 09:59:30
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
@@ -29,9 +29,9 @@ export default class PayDetail extends Component {
   componentWillMount () {
     const { order_id } = this.$router.params
     if (order_id) {
-      this.getOrderInfo()
-    } else {
       this.getOrderDetail()
+    } else {
+      this.getOrderInfo()
     }
   }
 
@@ -170,11 +170,11 @@ export default class PayDetail extends Component {
           </View>
           <View className='line'>
             <View className='title'>备注:</View>
-            <View className='content'>{ info.remark }</View>
+            <View className='content'>{ info.remark || '暂无备注'}</View>
           </View>
         </View>
         {
-          order_id &&
+          !order_id &&
             <Button className='btn' disabled={isLoading} loading={isLoading} onClick={this.handlePay.bind(this)}>立即支付</Button>
         }
       </View>
