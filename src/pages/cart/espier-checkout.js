@@ -1234,17 +1234,24 @@ export default class CartCheckout extends Component {
                                 showExtra={false}
                                 showDesc={true}
                                 renderDesc={
-                                  payType === 'point' 
-                                  ? ''
-                                  : <View className='order-item__desc'>
-                                  {item.discount_info && item.discount_info.map((discount) =>
-                                      <Text
-                                        className='order-item__discount'
-                                        key={discount.type}
-                                      >{discount.info}</Text>
-                                    )}
+                                  <View className='order-item__desc'>
+                                    {
+                                      payType === 'point' 
+                                      ? ''
+                                      :<View>
+                                        {item.discount_info && item.discount_info.map((discount) =>
+                                          <Text
+                                            className='order-item__discount'
+                                            key={discount.type}
+                                          >
+                                            {discount.info}
+                                          </Text>
+                                            )}
+                                      </View>
+
+                                    }
+                                  
                                 </View>
-                                 
                                 }
                                 customFooter
                                 renderFooter={
