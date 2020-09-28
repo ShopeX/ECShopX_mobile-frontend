@@ -782,7 +782,6 @@ export default class CartCheckout extends Component {
     const { payType, total,point_use } = this.state
     const { type } = this.$router.params
     const isDrug = type === 'drug'
-    console.log('total',total)
     if (payType === 'point' || payType === 'deposit') {
       try {
         const content = payType === 'point' ? `确认使用${total.point}积分全额抵扣商品总价吗` : '确认使用余额支付吗？'
@@ -1235,14 +1234,17 @@ export default class CartCheckout extends Component {
                                 showExtra={false}
                                 showDesc={true}
                                 renderDesc={
-                                  <View className='order-item__desc'>
-                                    {item.discount_info && item.discount_info.map((discount) =>
-                                        <Text
-                                          className='order-item__discount'
-                                          key={discount.type}
-                                        >{discount.info}</Text>
-                                      )}
-                                  </View>
+                                  payType === 'point' 
+                                  ? ''
+                                  : <View className='order-item__desc'>
+                                  {item.discount_info && item.discount_info.map((discount) =>
+                                      <Text
+                                        className='order-item__discount'
+                                        key={discount.type}
+                                      >{discount.info}</Text>
+                                    )}
+                                </View>
+                                 
                                 }
                                 customFooter
                                 renderFooter={

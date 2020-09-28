@@ -67,7 +67,6 @@ export default class PointUse extends Component {
 
   handleUseFullAmount = (checked)=>{
     const { info } = this.props
-    console.log('this.props.type',this.props.type)
     this.setState({
       point:null,
       disabledPoint: checked ? true : false,
@@ -171,7 +170,7 @@ export default class PointUse extends Component {
            使用数量
            </View>
            <View>
-           2.{deduct_point_rule.deduct_point} 积分抵 1 元；
+           1.{deduct_point_rule.deduct_point} 积分抵 1 元；
            </View>
         </AtModalContent>
         <AtModalAction>
