@@ -92,7 +92,7 @@ export default class CartCheckout extends Component {
       //积分相关
       isPointOpen:false,
       point_use:0,
-      pointInfo:null
+      pointInfo:null,
     }
   }
 
@@ -421,7 +421,6 @@ export default class CartCheckout extends Component {
       }
     }
     const { payType, receiptType,point_use } = this.state
-    console.log('point_use==========>',point_use)
     const { coupon, drugInfo } = this.props
     if(drugInfo){
       this.setState({
@@ -781,7 +780,6 @@ export default class CartCheckout extends Component {
     // }
 
     const { payType, total,point_use } = this.state
-    console.log('point_use------->',point_use)
     const { type } = this.$router.params
     const isDrug = type === 'drug'
 
@@ -1083,7 +1081,7 @@ export default class CartCheckout extends Component {
   clearPoint = () =>{
     this.setState({
       point_use:0,
-      payType:this.state.payType
+      payType:'wxpay'
     })
   }
 
@@ -1097,7 +1095,7 @@ export default class CartCheckout extends Component {
     e.stopPropagation()
     this.setState({
       point_use:0,
-      payType:this.state.payType
+      payType:'wxpay',
     },()=>{
       this.calcOrder()
     })
@@ -1334,8 +1332,8 @@ export default class CartCheckout extends Component {
               onClick={this.handlePointShow}
               >
               <View className='invoice-title'>
-                {(pointInfo.point_use > 0 )&& (<View className='icon-close invoice-guanbi' onClick={this.resetPoint.bind(this)}></View>)}
-                {pointInfo.point_use > 0 ? `已使用${pointInfo.real_use_point}积分` : '使用积分'}
+                {(pointInfo.point_use > 0 || payType === 'point' )&& (<View className='icon-close invoice-guanbi' onClick={this.resetPoint.bind(this)}></View>)}
+                {payType === 'point' ? '全额抵扣' : pointInfo.point_use > 0 ? `已使用${pointInfo.real_use_point}积分` : '使用积分'}
               </View>
               </SpCell>
 
