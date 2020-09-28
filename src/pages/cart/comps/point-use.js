@@ -87,6 +87,11 @@ export default class PointUse extends Component {
   render () {
     const { info,isOpened, loading, disabledPayment, colors } = this.props
     const { point, isOpenRule,disabledPoint,localType } = this.state
+    if (!info) {
+      return null
+    }
+    const { deduct_point_rule } = info
+   
     return (
       <View>
         <AtFloatLayout
@@ -133,7 +138,7 @@ export default class PointUse extends Component {
               </View>
            </View>
            {
-             info.deduct_point_rule.full_amount && (
+             deduct_point_rule.full_amount && (
               <View className='point-item'>
               <View className='point-item__title'>
               <SpCheckbox
@@ -165,13 +170,13 @@ export default class PointUse extends Component {
             使用条件
            </View>
            <View>
-          1.积分支付不得超出订单应付总金额的 {info.deduct_point_rule.deduct_proportion_limit}%；
+          1.积分支付不得超出订单应付总金额的 {deduct_point_rule.deduct_proportion_limit}%；
            </View>
            <View>
            使用数量
            </View>
            <View>
-           2.{info.deduct_point_rule.deduct_point} 积分抵 1 元；
+           2.{deduct_point_rule.deduct_point} 积分抵 1 元；
            </View>
         </AtModalContent>
         <AtModalAction>

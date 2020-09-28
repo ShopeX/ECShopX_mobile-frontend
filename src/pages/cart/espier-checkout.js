@@ -77,7 +77,8 @@ export default class CartCheckout extends Component {
         freight_fee: '',
         member_discount: '',
         coupon_discount: '',
-        point: ''
+        point: '',
+        point_fee:''
       },
       payType: 'wxpay',
       disabledPayment: null,
@@ -90,7 +91,8 @@ export default class CartCheckout extends Component {
       // shopData:null, //店铺信息
       //积分相关
       isPointOpen:false,
-      point_use:0
+      point_use:0,
+      pointInfo:null
     }
   }
 
@@ -203,6 +205,7 @@ export default class CartCheckout extends Component {
       })
     }
   }
+  
 
   async fetchZiTiShop () {
     const { shop_id, scene } = this.$router.params
@@ -418,6 +421,7 @@ export default class CartCheckout extends Component {
       }
     }
     const { payType, receiptType,point_use } = this.state
+    console.log('point_use==========>',point_use)
     const { coupon, drugInfo } = this.props
     if(drugInfo){
       this.setState({
@@ -490,7 +494,7 @@ export default class CartCheckout extends Component {
 
     if (!data) return
 
-    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info,point_fee=0 } = data      // 测试数据
+    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info,point_fee=0,point_use = 0, user_point = 0,max_point = 0 ,is_open_deduct_point,deduct_point_rule,real_use_point } = data      // 测试数据
     if (coupon_info && !this.props.coupon) {
       this.props.onChangeCoupon({
         type: 'coupon',
@@ -501,6 +505,10 @@ export default class CartCheckout extends Component {
           discount: coupon_info.discount_fee
         }
       })
+      
+    }else{
+      this.clearPoint()
+      console.log('this.props.coupon',this.props.coupon)
     }
     const total = {
       ...this.state.total,
@@ -515,33 +523,28 @@ export default class CartCheckout extends Component {
       freight_point,
       remainpt, // 总积分
       deduction, // 抵扣
-      point_fee: -1 * 3,//积分抵扣金额   
-      point_use: 1,       //抵扣积分数
-      real_use_point:1   //实际抵扣积分数
+      point_fee: -1 * point_fee,//积分抵扣金额   
+      point_use: point_use,       //抵扣积分数
     }
 
     let info = this.state.info
+    let pointInfo = this.state.pointInfo
     if (items) {
       // 从后端获取订单item
       info = {
         cart: [{
           list: transformCartList(items),
           cart_total_num: items.reduce((acc, item) => (+item.num) + acc, 0)
-        }],
-
-        pointInfo: {
-          deduct_point_rule:{
-            deduct_proportion_limit: "50", //抵扣最大比例
-            deduct_point: "100", //xx积分抵扣1元
-            full_amount: true
-          },
-          is_open_deduct_point:true,
-          user_point:200, //用户现有积分
-          max_point:30, //最大可使用积分
- 
-        },
-              
+        }],              
       }
+      pointInfo= {
+        deduct_point_rule,
+        is_open_deduct_point,
+        user_point, //用户现有积分
+        max_point, //最大可使用积分
+        real_use_point
+      },
+
       this.params.items = items
     }
     //console.warn('third_params',third_params)
@@ -550,13 +553,14 @@ export default class CartCheckout extends Component {
     this.setState({
       total,
       info,
-      third_params
+      third_params,
+      pointInfo
     })
   }
 
   handleSwitchExpress = (key) => {
     const receiptType = JSON.parse(key) ? 'logistics' : 'ziti'
-
+    this.clearPoint()
     this.setState({
       express: JSON.parse(key),
       receiptType
@@ -580,9 +584,9 @@ export default class CartCheckout extends Component {
       address: 'adrdetail',
       area: 'area'
     })
-
+    this.clearPoint()
     this.setState({
-      address
+      address,
     }, () => {
       this.calcOrder()
     })
@@ -1074,7 +1078,14 @@ export default class CartCheckout extends Component {
     },()=>{
       this.calcOrder()
     })
-
+  }
+  
+  //清除使用积分
+  clearPoint = () =>{
+    this.setState({
+      point_use:0,
+      payType:this.state.payType
+    })
   }
 
   resetInvoice = (e) => {
@@ -1082,6 +1093,15 @@ export default class CartCheckout extends Component {
     this.setState({ invoiceTitle: '' })
     delete this.params.invoice_type
     delete this.params.invoice_content
+  }
+  resetPoint = (e) =>{
+    e.stopPropagation()
+    this.setState({
+      point_use:0,
+      payType:this.state.payType
+    },()=>{
+      this.calcOrder()
+    })
   }
 
 
@@ -1095,7 +1115,7 @@ export default class CartCheckout extends Component {
     }    
     const { coupon, colors } = this.props
 
-    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug, third_params, shoppingGuideData, curStore, isPointOpen} = this.state
+    const { info, express, address, total, showAddressPicker, showCheckoutItems, curCheckoutItems, payType, invoiceTitle, submitLoading, disabledPayment, isPaymentOpend, isDrugInfoOpend, drug, third_params, shoppingGuideData, curStore, pointInfo,isPointOpen} = this.state
     // let curStore = {}
     // if (shopData) {
     //   curStore = shopData
@@ -1104,7 +1124,7 @@ export default class CartCheckout extends Component {
     // }
     //const curStore = Taro.getStorageSync('curStore')
     // const { curStore } = this.state
-    console.log(curStore)
+    console.log('pointInfo',pointInfo)
     const { type } = this.$router.params
     const isDrug = type === 'drug'
 
@@ -1183,7 +1203,7 @@ export default class CartCheckout extends Component {
                 </View>
           }
 {/* type !== 'limited_time_sale' */}
-          {(payType !== 'point' && payType !== 'point' && type !== 'group' && type !== 'seckill' ) && (
+          {(payType !== 'point' && type !== 'group' && type !== 'seckill' ) && (
             <SpCell
               isLink
               className='coupons-list'
@@ -1308,15 +1328,19 @@ export default class CartCheckout extends Component {
           >
           </SpCell>*/}
           {
-            info.pointInfo.is_open_deduct_point && (
+            pointInfo.is_open_deduct_point && (
               <SpCell
-              className='trade-invoice'
               isLink
+              className='trade-invoice'
               title='积分抵扣'
               onClick={this.handlePointShow}
-              value='使用积分'
-            >
-            </SpCell>
+              >
+              <View className='invoice-title'>
+                {pointInfo.real_use_point && (<View className='icon-close invoice-guanbi' onClick={this.resetPoint.bind(this)}></View>)}
+                {pointInfo.real_use_point ? `已使用${pointInfo.real_use_point}积分` : '使用积分'}
+              </View>
+              </SpCell>
+
             )
           }
          
@@ -1464,7 +1488,7 @@ export default class CartCheckout extends Component {
         <PointUse
           isOpened={isPointOpen}
           type={payType}
-          info={info.pointInfo}
+          info={pointInfo}
           onClose={this.handleLayoutClose}
           onChange={this.handlePointUseChange}
         ></PointUse>
