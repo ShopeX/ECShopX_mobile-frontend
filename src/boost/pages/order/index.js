@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/order/index.js
  * @Date: 2020-09-27 14:08:06
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-29 16:07:58
+ * @LastEditTime: 2020-09-29 17:49:04
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
@@ -110,7 +110,7 @@ export default class Order extends Component {
   handleItem = (item) => {
     const { order_id, bargain_id } = item
     Taro.navigateTo({
-      url: `/boost/pages/payDetail/index?bargain_id=${bargain_id}&order_id=${order_id}`
+      url: `/subpage/pages/trade/detail?id=${order_id}?bargain_id=${bargain_id}`
     })
   }
   

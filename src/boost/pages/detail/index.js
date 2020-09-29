@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/detail/index.js
  * @Date: 2020-09-22 14:08:32
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-29 15:03:04
+ * @LastEditTime: 2020-09-29 18:05:16
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
@@ -102,6 +102,7 @@ export default class Detail extends Component {
     this.setState({
       adPic: data[0].params.ad_pic,
       info: pickBy(bargain_info, {
+        item_id: 'item_id',
         bargain_id: 'bargain_id',
         item_name: 'item_name',
         item_pics: 'item_pics',
@@ -226,9 +227,18 @@ export default class Detail extends Component {
     const isDisabled = (info.isOver || info.isSaleOut || orderInfo.order_status === 'DONE') 
     if (isDisabled) return false
     if (isJoin) {
-      let url = `/boost/pages/pay/index?bargain_id=${info.bargain_id}`
+      let url = `/pages/cart/espier-checkout?bargain_id=${info.bargain_id}`
       if (orderInfo.order_id) {
-        url = `/boost/pages/payDetail/index?bargain_id=${info.bargain_id}`
+        url = `/subpage/pages/trade/detail?id=${orderInfo.order_id}?bargain_id=${info.bargain_id}`
+      } else {
+        try {
+          await api.cart.fastBuy({
+            item_id: info.item_id,
+            num: 1
+          })
+        } catch (e){
+          return false
+        }
       }
       Taro.navigateTo({ url })
     } else {

@@ -73,7 +73,7 @@ export default class TradeDetail extends Component {
     const { id } = this.$router.params
     const data = await api.trade.detail(id)
     let sessionFrom = ''
-
+    console.log(data.orderInfo.item_fee)
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
       created_time_str: ({ create_time }) => formatTime(create_time*1000),
@@ -109,7 +109,7 @@ export default class TradeDetail extends Component {
       invoice_content: 'invoice.content',
       point: 'point',
       status: ({ order_status }) => resolveOrderStatus(order_status),
-      orders: ({ items }) => pickBy(items, {
+      orders: ({ items = [] }) => pickBy(items, {
         order_id: 'order_id',
         item_id: 'item_id',
         // aftersales_status: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
