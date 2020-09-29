@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/flop/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-29 09:58:47
+ * @LastEditTime: 2020-09-29 17:08:12
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Progress, Text, Button } from '@tarojs/components'
@@ -103,6 +103,7 @@ export default class Flop extends Component {
       Taro.hideLoading()
       Taro.showToast({
         title: msg,
+        icon: 'none',
         mask: true
       })
       setTimeout(() => {
