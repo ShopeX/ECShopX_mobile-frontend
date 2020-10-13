@@ -156,9 +156,9 @@ export default class DistributionWithdraw extends Component {
             disabled={!curIdx && amount > 800}>提现</Button>
         </View>
         <View className="g-ul">
-          <View className="g-ul-li">每月只能提取2次，每次需大于等于1元</View>
-          <View className="g-ul-li">金额低于{limit_rebate}元时不可提现</View>
-          <View className="g-ul-li">预计三个工作日到账</View>
+          <View className="g-ul-li">每月只能提取2次，每次需大于等于{limit_rebate}元</View>
+          <View className="g-ul-li">仅实名认证且绑卡会员才可提现</View>
+          <View className="g-ul-li">提现申请提交成功后1个工作日后到账</View>
           <View className="g-ul-li">未实名认证的微信用户，将无法提现到收款账户</View>
         </View>
       </View>

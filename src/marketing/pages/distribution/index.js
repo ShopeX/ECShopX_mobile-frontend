@@ -15,10 +15,13 @@ export default class DistributionDashboard extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      info: {}
+      info: {},
+      
     }
   }
-
+  config = {
+    navigationBarTitleText: '推广管理'
+  }
   componentDidMount () {   
     const { colors } = this.props
     Taro.setNavigationBarColor({
@@ -111,8 +114,11 @@ export default class DistributionDashboard extends Component {
       shop_status: 'shop_status',
       reason: 'reason'
     })
-
-    const info = {username, avatar, ...base, ...pInfo}
+    const res2 = await api.member.hfpayUserApply()
+        const userInfo = pickBy(res2, {
+          applyStatus: 'status',
+        })
+    const info = {username, avatar, ...base, ...pInfo,...userInfo}
 
     this.setState({
       info
@@ -165,13 +171,13 @@ export default class DistributionDashboard extends Component {
               <View className='mini-store-apply'>申请开店审核中</View>
           }
         </View>
-        <View className='bandCardInfo'>
+        {info.applyStatus!=3?<View className='bandCardInfo'>
           <View className='iconfont icon-info'></View>
           <View className='info'>
             <View className='title'>您还没实名认证</View>
             <View className='content'>未实名认证账号将无法收到分销佣金，请尽快实名认证</View>
           </View>
-        </View>
+        </View>:null}
         <View className='section achievement'>
           <View className='section-body view-flex'>
             <View className='view-flex-item content-center'>
@@ -243,6 +249,11 @@ export default class DistributionDashboard extends Component {
                 <View className='icon-arrowRight item-icon-go'></View>
               </Button>
           }
+          <Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/verified-card/index`}>
+            <View className='item-icon icon-weChart'></View>
+            <View className='list-item-txt'>实名认证以及绑卡</View>
+            <View className='icon-arrowRight item-icon-go'></View>
+          </Navigator>
         </View>
       </View>
     )

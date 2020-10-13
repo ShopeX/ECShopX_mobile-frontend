@@ -1,0 +1,51 @@
+.page-distribution-index {
+  .page-bd {
+    background-color: #fff;
+    padding: 30px;
+    height: 100vh;
+  }
+  .at-input {
+    padding: 16px 0;
+    margin: 0 0 20px;
+
+    // &:after {
+    //   border-color: #d6e4ef;
+    // }
+    // border-bottom: 1px solid;
+  }
+  .btn {
+    margin-top: 30px;
+  }
+  .bt {
+    .picker {
+        padding: 16px 0;
+        margin: 0 0 $edge-size;
+        display: flex;
+        justify-content: flex-start;
+        border-bottom: 1PX solid rgba($color-brand-primary, 0.2);
+        &__title {
+          font-size: $font-size;
+          margin-right:16px;
+          width:172px;
+        }
+        .pick-value {
+          color: #333;
+        }
+        span.pick-value-null {
+          color: #ccc;
+        }
+        text.pick-value-null {
+          color: #808080;
+        }
+      }
+    // .pick-value {
+    //     color: #333;
+    //   }
+    //   span.pick-value-null {
+    //     color: #ccc;
+    //   }
+    //   text.pick-value-null {
+    //     color: #808080;
+    //   }
+  }
+}

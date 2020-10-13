@@ -145,7 +145,9 @@ class App extends Component {
           'pages/distribution/shop-goods',
           'pages/distribution/shop-trade',
           'pages/distribution/shop-achievement',
-
+          'pages/verified-card/index',
+          'pages/verified-card/verified',
+          'pages/verified-card/card',
           'pages/reservation/brand-list',
           'pages/reservation/brand-detail',
           'pages/reservation/brand-result',
@@ -165,16 +167,16 @@ class App extends Component {
           'pages/item/rate',
           'pages/item/success'
         ],
-        "plugins": {
-          "live-player-plugin": {
-            "version": "1.1.8", // 填写该直播组件版本号
-            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          }
-          // "meiqia": {
-          //   "version": "1.1.0",
-          //   "provider": "wx2d2cd5fd79396601"
-          // }
-        }
+        // "plugins": {
+        //   // "live-player-plugin": {
+        //   //   "version": "1.1.8", // 填写该直播组件版本号
+        //   //   "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
+        //   // }
+        //   // "meiqia": {
+        //   //   "version": "1.1.0",
+        //   //   "provider": "wx2d2cd5fd79396601"
+        //   // }
+        // }
       },
       {
         root: 'subpage',

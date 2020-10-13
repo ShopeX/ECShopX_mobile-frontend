@@ -81,7 +81,7 @@ export default class CartCheckout extends Component {
         coupon_discount: '',
         point: ''
       },
-      payType: 'wxpay',
+      payType: 'hfpay',
       disabledPayment: null,
       isPaymentOpend: false,
       isDrugInfoOpend: false,
@@ -1102,7 +1102,8 @@ export default class CartCheckout extends Component {
       point: '积分支付',
       wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
       deposit: '余额支付',
-      delivery: '货到付款'
+      delivery: '货到付款',
+      hfpay:'汇付支付'
     }    
     const { coupon, colors } = this.props
     const {

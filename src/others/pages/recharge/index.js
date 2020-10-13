@@ -16,7 +16,8 @@ import { withLogin } from '@/hocs'
 import S from '@/spx'
 import { classNames } from '@/utils'
 import api from '@/api'
-
+import PaymentPicker from '../../../pages/cart/comps/payment-picker'
+// /Users/zhangqing/projectTwo/ecshopx-vshop/src/pages/cart/comps/payment-picker.js
 import './index.scss'
 
 @connect(({ address, colors }) => ({
@@ -27,7 +28,7 @@ import './index.scss'
 @withLogin()
 
 export default class Recharge extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     /**
      * @description: state字段说明
@@ -47,8 +48,10 @@ export default class Recharge extends Component {
       amounts: [],
       currentShop: {},
       ruleValue: '',
-      deposit: 0 ,
-      recharge_rule_id: ''     
+      deposit: 0,
+      recharge_rule_id: '',
+      payType: 'hfpay',
+      isPaymentOpend: false
     }
   }
 
@@ -63,7 +66,7 @@ export default class Recharge extends Component {
       this.setState({
         amounts
       })
-    })    
+    })
   }
 
   componentDidShow () {
@@ -95,7 +98,7 @@ export default class Recharge extends Component {
         }
       })
     } else {
-      Taro.navigateTo({url: '/pages/store/list'})
+      Taro.navigateTo({ url: '/pages/store/list' })
     }
   }
 
@@ -110,7 +113,7 @@ export default class Recharge extends Component {
       const sendType = value.ruleType === 'money' ? '元' : '积分'
       setValue = value.money
       rule_id = value.id
-      ruleValue = value.ruleType && value.ruleData > 0 ? `充值${ value.money }元送${ value.ruleData }${sendType}` : ''
+      ruleValue = value.ruleType && value.ruleData > 0 ? `充值${value.money}元送${value.ruleData}${sendType}` : ''
     }
     this.setState({
       active: index,
@@ -121,7 +124,7 @@ export default class Recharge extends Component {
   }
 
   // 输入其他金额
-  handleQuantityChange = ({detail}) => {
+  handleQuantityChange = ({ detail }) => {
     const { value } = detail
     this.setState({
       value
@@ -135,7 +138,7 @@ export default class Recharge extends Component {
       return S.toast('请先登录')
     }
     // const userInfo = Taro.getStorageSync('userinfo')
-    const { recharge_rule_id, currentShop, value } = this.state
+    const { recharge_rule_id, currentShop, value ,payType} = this.state
     const { poiid = '', shop_id = '', store_name = '' } = currentShop
     // 判断充值金额
     if (!value) {
@@ -154,7 +157,8 @@ export default class Recharge extends Component {
       total_fee: Number(value) * 100,
       member_card_code: '',
       body: `${store_name}充值`,
-      detail: '充值'
+      detail: '充值',
+      pay_type:payType
     }
     // 请求
     Taro.showLoading({
@@ -212,7 +216,25 @@ export default class Recharge extends Component {
       url: '/pages/auth/reg-rule?type=1'
     })
   }
+  handleLayoutClose = () => {
+    this.setState({
+      isPaymentOpend: false,
+    })
+  }
+  handlePaymentChange = async (payType) => {
 
+    this.setState({
+      payType,
+      isPaymentOpend: false
+    }, () => {
+
+    })
+  }
+  handlePaymentShow = () => {
+    this.setState({
+      isPaymentOpend: true,
+    })
+  }
   // 前往记录
   toHistory = (type) => {
     Taro.navigateTo({
@@ -229,9 +251,16 @@ export default class Recharge extends Component {
   }
 
   render () {
-    const { currentShop, deposit, amounts, active, value, ruleValue } = this.state
+    const { currentShop, deposit, amounts, active, value, ruleValue, payType,isPaymentOpend } = this.state
     const { colors } = this.props
     const amountLength = (amounts.length - 1)
+    const payTypeText = {
+      point: '积分支付',
+      wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
+      deposit: '余额支付',
+      delivery: '货到付款',
+      hfpay: '汇付支付'
+    }
     return (
       <View className='recharge'>
         {/* NavBar */}
@@ -239,14 +268,14 @@ export default class Recharge extends Component {
         {/* 当前门店 */}
         {
           currentShop && <View className='shopName' onClick={this.setStore.bind(this, true)}>
-            当前门店: { currentShop.name }
+            当前门店: {currentShop.name}
           </View>
         }
         {/* 余额 */}
         <View className='balance'>
           <Image className='balanceImg' src={require('../../../assets/imgs/buy.png')}></Image>
           <View className='content'>
-            <View className='balancePrice'>¥{ deposit / 100}</View>
+            <View className='balancePrice'>¥{deposit / 100}</View>
             <View className='balanceTip'>卡内余额</View>
           </View>
         </View>
@@ -262,6 +291,24 @@ export default class Recharge extends Component {
           onClick={this.toHistory.bind(this, 1)}
         >
         </SpCell>
+        <SpCell
+          isLink
+          border={false}
+          title='支付方式'
+          onClick={this.handlePaymentShow}
+        >
+          <Text>{payTypeText[payType]}</Text>
+        </SpCell>
+        <PaymentPicker
+          isOpened={isPaymentOpend}
+          type={payType}
+          isShowPoint={false}
+          isShowBalance={false}
+          isShowDelivery={false}
+          // disabledPayment={disabledPayment}
+          onClose={this.handleLayoutClose}
+          onChange={this.handlePaymentChange}
+        ></PaymentPicker>
         {/* 充值协议 */}
         <View className='balancePro'>
           <View className='price'>充值金额</View>
@@ -273,14 +320,14 @@ export default class Recharge extends Component {
         <View className='main'>
           <View className='priceList'>
             {
-              amounts.map((item, index)=> (
+              amounts.map((item, index) => (
                 <View
                   key={item.money}
-                  className={classNames('default', {'primary': index === active})}
+                  className={classNames('default', { 'primary': index === active })}
                   style={`background: ${index === active ? colors.data[0].primary : '#efefef'}`}
                   onClick={this.handleClickItem.bind(this, index, item)}
                 >
-                  { index !== amountLength ? `${item.money}元` : item.money }
+                  { index !== amountLength ? `${item.money}元` : item.money}
                 </View>
               ))
             }
@@ -302,7 +349,7 @@ export default class Recharge extends Component {
           {/* 额外奖励 */}
           {
             ruleValue && <View className='ruleValue'>
-              额外奖励: <Text className='text'>{ ruleValue }</Text>
+              额外奖励: <Text className='text'>{ruleValue}</Text>
             </View>
           }
           <View className='submit' style={`background: ${colors.data[0].primary}`} onClick={this.recharge.bind(this)}>立即充值</View>

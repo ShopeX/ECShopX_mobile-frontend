@@ -301,3 +301,23 @@ export function getSalespersonNologin (params = {}) {
 export function getUserNewGetCardDetail (params = {}) {
   return req.get('/user/newGetCardDetail', params)
 }
+// 经销商入驻申请
+export function hfpayApplySave (params = {}) {
+  return req.post('/hfpay/applysave', params)
+}
+// 经销商入驻详情
+export function hfpayUserApply (params = {}) {
+  return req.get('/hfpay/userapply', params)
+}
+// 绑定银行卡
+export function hfpayBankSave (params = {}) {
+  return req.post('/hfpay/banksave', params)
+}
+// 获取绑定银行卡
+export function hfpayBankInfo (params = {}) {
+  return req.get('/hfpay/bankinfo', params)
+}
+// 获取获取支付方式
+export function getTradePaymentList (params = {}) {
+  return req.get('/trade/payment/list', params)
+}

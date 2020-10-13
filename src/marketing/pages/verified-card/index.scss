@@ -1,0 +1,120 @@
+@import '../../../style/imports';
+
+.page-distribution-index {
+  .text-primary{
+    // flex: 1;
+    display: inline;
+      // padding: 0 $edge-margin 0 0;
+      font-size: 20px;
+      color: #999;
+  }
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  .header {
+    position: relative;
+    padding: 30px;
+    color: #ffffff;
+    .header-avatar {
+      width: 114px !important;
+      height: 114px !important;
+      border-radius: 50%;
+    }
+    .header-info {
+      padding-left: 26px;
+      .mcode {
+        font-size: 28px;
+        margin-bottom: 6px;
+        color: #eaeaea;
+      }
+      .nickname {
+        font-size: 14PX;
+      }
+    }
+    .icon-info {
+      color: #eaeaea;
+      font-size: 50px;
+    }
+    .mini-store-apply {
+      margin: 40px 100px 20px 100px;
+      border: 1px solid #ccc;
+      border-radius: 60px;
+      height: 72px;
+      line-height: 72px;
+      font-size: 28px;
+      color: #ccc;
+      text-align: center;
+    }
+    .mini-store-reason {
+      padding-top: 20px;
+      margin: 0 80px;
+      font-size: 24px;
+      color: #ccc;
+      text-align: center;
+    }
+  }
+  .bandCardInfo {
+    display: flex;
+    align-items: center;
+    color: #e6a23b;
+    background: #fff;
+    padding: 20px 0;
+    .icon-info {
+      font-size: 56px;
+      padding: 0 30px;
+    }
+    .info {
+      flex: 1;
+      padding-right: 60px;
+      .title {
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+      .content {
+        font-size: 24px;
+      }
+    }
+  }
+  .achievement {
+    .section-body {
+      font-size: 24px;
+    }
+    .amount {
+      margin-bottom: 5px;
+      .count {
+        font-size: 50px;
+        margin-right: 10px;
+      }
+    }
+  }
+  .member {
+    font-size: 30px;
+    color: #333;
+  }
+  .analysis {
+    [class^="icon-"] {
+      color: #00c3ff;
+      font-size: 50px;
+    }
+    .label {
+      padding: 15px 0;
+      font-size: 24px;
+    }
+  }
+  .share {
+    .item-icon {
+      color: #00c3ff;
+    }
+    .share-btn {
+      margin: 0;
+      line-height: 1;
+      background: none;
+      font-size: inherit;
+      color: inherit;
+      text-align: left;
+      &::after {
+        content: none;
+      }
+    }
+  }
+}

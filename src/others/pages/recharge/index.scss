@@ -100,4 +100,8 @@
       background: $color-brand-primary;
     }
   }
+  .sp-cell__bd {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
