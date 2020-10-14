@@ -449,7 +449,7 @@ export default class CartCheckout extends Component {
       ...miniShopId,
       ...activity,
       receipt_type: receiptType,
-      order_type: orderType,
+      order_type: bargain_id ? 'bargain' : orderType,
       promotion: 'normal',
       member_discount: 0,
       coupon_discount: 0,
