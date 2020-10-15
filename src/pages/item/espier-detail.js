@@ -749,8 +749,13 @@ export default class Detail extends Component {
     const uid = this.uid
     const taxRate = info ? info.cross_border_tax_rate : 0
     const mainPrice = info ? (info.act_price ? info.act_price : info.price) : 0
-    const skuPrice = curSku ? (curSku.act_price ? curSku.act_price : curSku.price) : mainPrice
-    console.log(mainPrice)
+    const memberPrice = info ? (info.member_price ? info.member_price : info.price) : 0
+    const endPrice = marketing === 'normal' ? memberPrice : mainPrice
+    const skuActprice = curSku ? curSku.act_price : endPrice
+    const skuMemprice = curSku ? curSku.member_price : endPrice
+    const skuEndprice = marketing === 'normal' ? skuMemprice : skuActprice
+    const skuPrice = curSku ? skuEndprice : endPrice
+
     const crossPrice =  ((skuPrice * taxRate) / 100).toFixed(2)
 
     const lnglat = Taro.getStorageSync('lnglat')
