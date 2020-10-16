@@ -37,7 +37,7 @@ export default class PayOrder extends Component {
         member_discount: false,
         coupon_discount: '',
       },
-      payType:'hfpay',
+      payType:'',
       isPaymentOpend:false
     }
   }
