@@ -50,7 +50,7 @@ export default class Recharge extends Component {
       ruleValue: '',
       deposit: 0,
       recharge_rule_id: '',
-      payType: 'hfpay',
+      payType: '',
       isPaymentOpend: false
     }
   }

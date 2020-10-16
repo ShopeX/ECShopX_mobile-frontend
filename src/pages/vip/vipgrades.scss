@@ -2,6 +2,10 @@
 
 
 .vipgrades {
+	.sp-cell__bd {
+		display: flex;
+		justify-content: flex-end;
+	  }
   /*  #ifdef  h5  */  
   padding-top: $navigate-height-h5;
   /*  #endif  */

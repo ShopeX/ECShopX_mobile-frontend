@@ -14,7 +14,7 @@ import './payment-picker.scss'
 export default class PaymentPicker extends Component {
   static defaultProps = {
     isOpened: false,
-    type: 'wxpay',
+    type: '',
     disabledPayment: null
   }
 
@@ -23,7 +23,7 @@ export default class PaymentPicker extends Component {
 
     this.state = {
       localType: props.type,
-      typeList:[]
+      typeList: []
     }
   }
   componentDidMount () {
@@ -43,7 +43,14 @@ export default class PaymentPicker extends Component {
   async fatch () {
     let res = await api.member.getTradePaymentList()
     this.setState({
-      typeList:res
+      typeList: res
+    }, () => {
+      if (res[0]) {
+        console.log(111);
+        this.handlePaymentChange(res[0].pay_type_code)
+        this.handleChange(res[0].pay_type_code)
+
+      }
     })
   }
   handleCancel = () => {
@@ -54,6 +61,7 @@ export default class PaymentPicker extends Component {
   }
 
   handlePaymentChange = (type) => {
+  
     const { disabledPayment } = this.props
     if (disabledPayment && disabledPayment[type]) return
 
@@ -68,7 +76,7 @@ export default class PaymentPicker extends Component {
 
   render () {
     const { isOpened, loading, disabledPayment, colors, isShowPoint = true, isShowBalance = true, isShowDelivery = true } = this.props
-    const { localType ,typeList} = this.state
+    const { localType, typeList } = this.state
 
     return (
       <AtFloatLayout
@@ -146,16 +154,16 @@ export default class PaymentPicker extends Component {
                 className='payment-item no-border'
                 onClick={this.handlePaymentChange.bind(this, item.pay_type_code)}
               >
-              <View className='payment-item__bd'>
+                <View className='payment-item__bd'>
                   <Text className='payment-item__title'>{item.pay_type_name}</Text>
-                <Text className='payment-item__desc'>使用{item.pay_type_name}</Text>
-              </View>
-              <View className='payment-item__ft'>
-                <SpCheckbox
-                  checked={localType === item.pay_type_code}
-                ></SpCheckbox>
-              </View>
-            </View>)
+                  <Text className='payment-item__desc'>使用{item.pay_type_name}</Text>
+                </View>
+                <View className='payment-item__ft'>
+                  <SpCheckbox
+                    checked={localType === item.pay_type_code}
+                  ></SpCheckbox>
+                </View>
+              </View>)
             })}
           </View>
           <Button

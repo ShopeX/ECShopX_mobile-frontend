@@ -39,10 +39,11 @@ export default class OrderItem extends Component {
     e.stopPropagation()
     Taro.showLoading({title: '拉起支付中...', mask: true})
     const { info } = this.props
+    
     api.groupBy.payConfig({
       order_id: info.orderId,
       order_type: 'normal_community',
-      pay_type: 'wxpay'
+      pay_type: info.pay_type
     }).then(res => {
       Taro.hideLoading()
       Taro.requestPayment({

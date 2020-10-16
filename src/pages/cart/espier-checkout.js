@@ -81,7 +81,7 @@ export default class CartCheckout extends Component {
         coupon_discount: '',
         point: ''
       },
-      payType: 'hfpay',
+      payType: '',
       disabledPayment: null,
       isPaymentOpend: false,
       isDrugInfoOpend: false,
@@ -713,7 +713,7 @@ export default class CartCheckout extends Component {
               
               this.setState({
                 disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
-                payType: 'wxpay'
+                payType: ''
               }, () => {
                 this.calcOrder()
               })
@@ -725,7 +725,7 @@ export default class CartCheckout extends Component {
       // let payTypeNeedsChange = ['当前积分不足以支付本次订单费用', '当月使用积分已达限额'].includes(e.message)
       this.setState({
         disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
-        payType: 'wxpay'
+        payType: ''
       }, () => {
         this.calcOrder()
       })

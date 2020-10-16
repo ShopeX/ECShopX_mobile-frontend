@@ -125,6 +125,7 @@ export default class OrderDetail extends Component {
         symbol: orderInfo.fee_symbol,
         endDate: orderInfo.end_date,
         payDate: tradeInfo.payDate,
+        pay_type:orderInfo.pay_type,
         createTime: formatDataTime(orderInfo.create_time),
         qrcodeUrl
       }, () => {
@@ -139,11 +140,11 @@ export default class OrderDetail extends Component {
   handlePay = (e) => {
     e.stopPropagation()
     Taro.showLoading({title: '拉起支付中...', mask: true})
-    const { orderId } = this.state
+    const { orderId,pay_type } = this.state
     api.groupBy.payConfig({
       order_id: orderId,
       order_type: 'normal_community',
-      pay_type: 'wxpay'
+      pay_type
     }).then(res => {
       Taro.hideLoading()
       Taro.requestPayment({
