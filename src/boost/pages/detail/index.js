@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/detail/index.js
  * @Date: 2020-09-22 14:08:32
  * @LastEditors: Arvin
- * @LastEditTime: 2020-10-12 15:32:12
+ * @LastEditTime: 2020-10-15 16:17:21
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
@@ -226,7 +226,7 @@ export default class Detail extends Component {
   handleSubmit = async () => {
     const { info, isJoin, orderInfo } = this.state
 
-    const isDisabled = (info.isOver || info.isSaleOut || orderInfo.order_status === 'DONE') 
+    const isDisabled = (info.isOver || info.isSaleOut || orderInfo.order_status === 'DONE' || orderInfo.order_status === 'CANCEL') 
     if (isDisabled) return false
     if (isJoin) {
       let url = `/pages/cart/espier-checkout?bargain_id=${info.bargain_id}&cart_type=fastbuy`
@@ -277,7 +277,7 @@ export default class Detail extends Component {
       posterImg
     } = this.state
 
-    const isDisabled = info.isOver || info.isSaleOut || orderInfo.order_status === 'DONE' || orderInfo.order_status === 'PAYED' 
+    const isDisabled = info.isOver || info.isSaleOut || orderInfo.order_status === 'DONE' || orderInfo.order_status === 'CANCEL'
 
     return (
       <View className='detail'>
@@ -407,7 +407,8 @@ export default class Detail extends Component {
             isDisabled ? <Text>
               { info.isOver ? '已过期' : ''}
               { info.isSaleOut ? '已售罄' : ''}
-              { (orderInfo.order_status === 'DONE' || orderInfo.order_status === 'PAYED')? '已购买' : '' }
+              { orderInfo.order_status === 'DONE' ? '已购买' : '' }
+              { orderInfo.order_status === 'CANCEL' ? '已参与' : '' }
             </Text> :
             <Text>{ isJoin ? `¥${purchasePrice} 优惠购买` : '发起助力' }</Text>
           }
