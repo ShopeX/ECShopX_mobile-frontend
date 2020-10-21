@@ -399,6 +399,20 @@ export default class TradeDetail extends Component {
     })
   }
 
+  // 发送验证码
+  sendCode = async () => {
+    Taro.showLoading({
+      title: '发送中',
+      mask: true
+    })
+    const { info }  = this.state
+    const res = await api.trade.sendCode(info.tid)
+    Taro.showToast({
+      title: `${res.status ? '发送成功' : '发送失败'}`,
+      icon: 'none'
+    })
+  }
+
   render () {
     const { colors } = this.props
     const { info, ziti, qrcode, timer, payLoading } = this.state
@@ -481,7 +495,16 @@ export default class TradeDetail extends Component {
             ? <View className='ziti-content'>
                 {
                   info.status === 'WAIT_SELLER_SEND_GOODS' && info.ziti_status === 'PENDING' &&
+                  <View>
                     <Image className='ziti-qrcode' src={qrcode} />
+                    {
+                        info.pickupcode_status &&
+                        <View>
+                          <View className='sendCode' onClick={this.sendCode.bind(this)}>发送提货码</View>
+                          <View className='sendCodeTips'>提货时请出告知店员提货验证码</View>
+                        </View>
+                      }
+                  </View>
                 }
                 <View className='ziti-text'>
                   <View className='ziti-text-name'>{ ziti.store_name }</View>

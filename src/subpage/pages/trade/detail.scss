@@ -70,6 +70,22 @@
         color: #333;
       }
     }
+    .sendCode {
+      width: 208px;
+      height: 60px;
+      line-height: 60px;
+      background: #101010;
+      color: #fff;
+      border-radius: 100px;
+      text-align: center;
+      margin: 20px auto 34px;
+    }
+    .sendCodeTips {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 24px;
+      color: #666;
+    }
   }
   &-address {
     width: 100%;
