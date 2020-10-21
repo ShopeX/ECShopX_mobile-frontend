@@ -119,6 +119,7 @@ export default class Detail extends Component {
         userId: res.memberInfo.user_id,
         mobile: res.memberInfo.mobile,
         isPromoter: res.is_promoter,
+        openid: res.memberInfo.open_id,
         vip: res.vipgrade ? res.vipgrade.vip_type : '',
       }
       Taro.setStorageSync('userinfo', userObj)
@@ -466,6 +467,7 @@ export default class Detail extends Component {
         userId: res.memberInfo.user_id,
         mobile: res.memberInfo.mobile,
         isPromoter: res.is_promoter,
+        openid: res.memberInfo.open_id,
         vip: res.vipgrade ? res.vipgrade.vip_type : ''
       }
       Taro.setStorageSync('userinfo', userObj)

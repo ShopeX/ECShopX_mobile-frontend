@@ -91,12 +91,12 @@ const config = {
   ],
   // 开启压缩
   uglify: {
-    enable: true,
+    enable: isPro,
     config: {
       // 配置项同 https://github.com/mishoo/UglifyJS2#minify-options
       compress: {
-        drop_console: true,
-        drop_debugger: true
+        drop_console: isPro,
+        drop_debugger: isPro
       }
     }
   },  

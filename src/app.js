@@ -9,7 +9,7 @@ import { normalizeQuerys } from '@/utils'
 import { FormIds } from '@/service'
 import Index from './pages/index'
 import LBS from './utils/lbs'
-import entry from '@/utils/entry'
+// import entry from '@/utils/entry'
 
 import './app.scss'
 
@@ -206,6 +206,18 @@ class App extends Component {
           'pages/shareDetail/index',
           'pages/nextNotice/index',
           'pages/community/index'
+        ]
+      },
+      // 助力
+      {
+        root: 'boost',
+        pages: [
+          'pages/home/index',
+          'pages/detail/index',
+          'pages/flop/index',
+          'pages/pay/index',
+          'pages/payDetail/index',
+          'pages/order/index',
         ]
       },
       {

@@ -1,0 +1,158 @@
+page {
+  width: 100%;
+  height: 100%;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+.flop {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  overflow-x: hidden;
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  padding-bottom: 120px;
+  .goods {
+    width: 100%;
+    display: flex;
+    padding: 20px 30px;
+    background: #fff;
+    .img {
+      width: 180px;
+      height: 180px;
+      border: 2px solid #efefef;
+    }
+    .info {
+      flex: 1;
+      font-size: 24px;
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .title {
+        font-weight: bold;
+      }
+      .interval {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        .text {
+          font-size: 20px;
+        }
+      }
+    }    
+  }
+  .discount {
+    width: 100%;
+    background: #fff;
+    padding: 0 20px;
+    .imgs {
+      padding: 30px 20px;
+      width: 100%;
+      position: relative;
+      height: 250px;
+      .banners {
+        width: 70%;
+        display: block;
+        height: 130px;
+        margin: 0 auto;
+      }
+      .logo {
+        width: 172px;
+        height: 95px;
+        margin: 0 auto;
+        display: block;
+        position: absolute;
+        top: 120px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    .tip {
+      color: #333;
+      text-align: center;
+      padding-bottom: 20px;
+    }
+    .discountImg {
+      padding: 20px 0;
+      display: flex;
+      justify-content: center;
+      background: #efefef;
+      flex-wrap: wrap;
+      .img {
+        width: 180px;
+        height: 180px;
+        margin: 8px;
+        flex-shrink: 0;
+      }
+    }
+  }
+  .boostMain {
+    padding: 20px;
+    background: #fff;
+    border-top: 2px dashed #efefef;
+    .title {
+      font-size: 36px;
+      padding: 10px 0 20px 0;
+      text-align: center;
+    }
+    .boostList {
+      &.noHelp {
+        text-align: center;
+        height: 100px;
+        line-height: 100px;
+        color: #666;
+      }
+      .boostItem {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        .left {          
+          margin-right: 20px;
+          .img {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            border: 2px solid #efefef;
+          }
+        }
+        .right {
+          flex: 1;
+        }
+        .tag {
+          background: #a2564c;
+          color: #fff;
+          font-size: 20px;
+          border-radius: 10px;
+          display: inline-block;
+          padding: 2px 10px;
+        }        
+      }
+    }
+  }
+  .showBtn {
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    background: #a2564c;
+    left: 0;
+    bottom: 0;
+    color: #fff;
+    font-size: 32px;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    .isDisabled {
+      background-color: #7b6f73;
+    }
+  }   
+}

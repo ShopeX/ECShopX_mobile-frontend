@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/api/index.js
  * @Date: 2020-09-24 16:08:41
  * @LastEditors: Arvin
- * @LastEditTime: 2020-09-25 13:59:40
+ * @LastEditTime: 2020-10-21 10:29:54
  */
 import * as article from './article'
 import * as aftersales from './aftersales'
@@ -26,6 +26,7 @@ import * as user from './user'
 import * as vip from './vip'
 import * as group from './group'
 import * as groupBy from './groupBy'
+import * as boost from './boost'
 import * as wx from './wx'
 import * as wheel from './wheel'
 
@@ -50,5 +51,6 @@ export default {
 	vip,
   group,
   groupBy,
-  wheel
+  wheel,
+  boost
 }

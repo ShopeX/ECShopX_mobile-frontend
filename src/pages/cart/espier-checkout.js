@@ -351,7 +351,18 @@ export default class CartCheckout extends Component {
   }
 
   getParams () {
-    const { type, seckill_id = null, ticket = null, group_id = null, team_id = null, shop_id, source, scene, goodType } = this.$router.params
+    const {
+      type,
+      seckill_id = null,
+      ticket = null,
+      group_id = null,
+      team_id = null,
+      shop_id,
+      source,
+      scene,
+      goodType,
+      bargain_id = ''
+    } = this.$router.params
     let cxdid = null
     let dtid = null
     let smid = null
@@ -438,7 +449,7 @@ export default class CartCheckout extends Component {
       ...miniShopId,
       ...activity,
       receipt_type: receiptType,
-      order_type: orderType,
+      order_type: bargain_id ? 'bargain' : orderType,
       promotion: 'normal',
       member_discount: 0,
       coupon_discount: 0,
@@ -472,6 +483,12 @@ export default class CartCheckout extends Component {
       params.iscrossborder = 1
     } else {
       delete params.iscrossborder
+    }
+
+    if (bargain_id) {
+      params.bargain_id = bargain_id
+    } else {
+      delete params.bargain_id
     }
 
 
@@ -1134,7 +1151,7 @@ export default class CartCheckout extends Component {
     // }
     //const curStore = Taro.getStorageSync('curStore')
     // const { curStore } = this.state
-    const { type, goodType } = this.$router.params
+    const { type, goodType, bargain_id } = this.$router.params
     const isDrug = type === 'drug'
 
     if (!info) {
@@ -1172,7 +1189,7 @@ export default class CartCheckout extends Component {
           className='checkout__wrap'
         >
           {
-            curStore && !isArray(curStore) && curStore.is_ziti && curStore.is_delivery &&
+            curStore && !isArray(curStore) && curStore.is_ziti && curStore.is_delivery && !bargain_id &&
               <View className='switch-tab'>
                 <View
                   className={classNames('switch-item', express ? 'active' : '')}
@@ -1185,7 +1202,7 @@ export default class CartCheckout extends Component {
               </View>
           }
           {
-            (express && curStore && curStore.is_delivery) || (curStore && !curStore.is_delivery && !curStore.is_ziti)
+            bargain_id || (express && curStore && curStore.is_delivery) || (curStore && !curStore.is_delivery && !curStore.is_ziti)
               ? <AddressChoose
                 isAddress={address}
               />
@@ -1242,7 +1259,7 @@ export default class CartCheckout extends Component {
             </SpCell>
           }
 {/* type !== 'limited_time_sale' */}
-          {(payType !== 'point' && payType !== 'point' && type !== 'group' && type !== 'seckill' ) && (
+          {(payType !== 'point' && payType !== 'point' && type !== 'group' && type !== 'seckill' && !bargain_id) && (
             <SpCell
               isLink
               className='coupons-list'
@@ -1342,7 +1359,7 @@ export default class CartCheckout extends Component {
           </View>
 
           {
-            process.env.TARO_ENV === 'weapp' &&
+            process.env.TARO_ENV === 'weapp' && !bargain_id &&
             <SpCell
               isLink
               className='trade-invoice'
@@ -1372,7 +1389,8 @@ export default class CartCheckout extends Component {
           >
           </SpCell>*/}
 
-          <View className='trade-payment'>
+          {
+            !bargain_id && <View className='trade-payment'>
             <SpCell
               isLink
               border={false}
@@ -1386,7 +1404,7 @@ export default class CartCheckout extends Component {
             </SpCell>
           </View>
 
-          {payType === 'point' && (
+          {payType === 'point' && !bargain_id && (
             <View className='sec trade-sub-total'>
               <SpCell
                 title='运费'

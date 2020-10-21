@@ -1,0 +1,62 @@
+.bargainItem {
+  width: 100%;
+  display: flex;
+  padding: 20px 20px 20px 30px;
+  background: #fff;
+  box-sizing: border-box;
+  align-items: center;
+  .img {
+    width: 180px;
+    height: 180px;
+    border: 2px solid #efefef;
+  }
+  .info {
+    flex: 1;
+    font-size: 24px;
+    margin-left: 20px;
+    display: flex;
+    margin-right: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 180px;
+    overflow: hidden;
+    .title {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: bold;
+    }
+    .price {
+      // margin: 20px 0;
+      .text {
+        display: block;
+        &.diff {
+          color: #e1240b;
+        }
+      }
+    }
+    .interval {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .text {
+        font-size: 20px;
+      }
+    }
+  }
+  .act {
+    padding: 0 10px;
+    .btn {
+      width: 180px;
+      background: #a2564c;
+      color: #fff;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      margin: 0;
+      padding: 0;
+      font-size: 28px;
+    }
+  }
+}
