@@ -37,13 +37,13 @@ export default class Order extends Component {
       isRefresh: false,
       isLoading: false,
       isEnd: false,
-      isEmpty: false,    
+      isEmpty: false,
     }
   }
   componentDidMount () {
     this.getList()
   }
-  
+
   config = {
     navigationBarTitleText: '我的助力订单'
   }
@@ -56,8 +56,7 @@ export default class Order extends Component {
     const isEnd = param.page >= (total_count / param.pageSize)
     const newList = pickBy(data.list, {
       order_id: 'order_id',
-      item_pics: 'item_pics',
-      item_name: 'item_name',
+      items: 'items',
       order_status: 'order_status',
       create_time: ({create_time}) => formatDataTime(create_time),
       bargain_id: 'bargain_id',
@@ -69,7 +68,7 @@ export default class Order extends Component {
       isRefresh: false,
       isLoading: false,
       isEnd,
-      isEmpty: data.list.length <= 0  
+      isEmpty: data.list.length <= 0
     })
     Taro.hideLoading()
   }
@@ -91,7 +90,7 @@ export default class Order extends Component {
       param
     })
     this.getList(true)
-  }  
+  }
 
   // 上拉加载
   handleLoadMore = () => {
@@ -105,7 +104,7 @@ export default class Order extends Component {
       isLoading: true
     })
     this.getList()
-  }  
+  }
 
   handleItem = (item) => {
     const { order_id, bargain_id } = item
@@ -113,12 +112,12 @@ export default class Order extends Component {
       url: `/subpage/pages/trade/detail?id=${order_id}?bargain_id=${bargain_id}`
     })
   }
-  
+
   render () {
     const {
       list,
       scrollTop,
-      isRefresh, 
+      isRefresh,
       isLoading,
       isEnd,
       isEmpty
@@ -151,9 +150,9 @@ export default class Order extends Component {
                 <View className='text'>订单号：{ item.order_id }</View>
               </View>
               <View className='info'>
-                <Image src={item.item_pics} mode='aspectFill' className='img' />
+                <Image src={item.items[0].pic} mode='aspectFill' className='img' />
                 <View className='detail'>
-                  <View className='title'>{ item.item_name }</View>
+                  <View className='title'>{ item.items[0].item_name }</View>
                   <View className='price'>
                     支付金额: ¥{ item.total_fee }
                   </View>
