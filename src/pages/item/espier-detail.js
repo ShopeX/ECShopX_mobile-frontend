@@ -759,7 +759,7 @@ export default class Detail extends Component {
     const skuPrice = curSku ? skuEndprice : endPrice
 
     const crossPrice =  ((skuPrice * taxRate) / 100).toFixed(2)
-
+    const showPrice = ((skuPrice * (1 + taxRate)) / 100).toFixed(2)
     const lnglat = Taro.getStorageSync('lnglat')
 
     if (!info) {
@@ -844,7 +844,7 @@ export default class Detail extends Component {
                     <Price
                       unit='cent'
                       symbol={(info.cur && info.cur.symbol) || ''}
-                      value={curSku ? curSku.act_price : info.act_price}
+                      value={showPrice}
                     />
                     {
                       marketing !== 'normal' &&
@@ -935,36 +935,27 @@ export default class Detail extends Component {
               marketing === 'normal' && (
                 <View className='goods-prices__wrap'>
                   <View className='goods-prices'>
+                  <View className='view-flex-item'>
+                    <Price
+                      primary
+                      unit='cent'
+                      value={showPrice}
+                    />
                     {
-                      info.member_price
-                        ? <View className='view-flex-item'>
-                            <Price
-                              primary
-                              unit='cent'
-                              value={curSku ? curSku.member_price : info.member_price}
-                            />
-                            <Price
-                              lineThrough
-                              unit='cent'
-                              value={curSku ? curSku.market_price : info.market_price}
-                            />
-                          </View>
-                        : <View className='view-flex-item'>
-                            <Price
-                              primary
-                              unit='cent'
-                              value={curSku ? curSku.price : info.price}
-                            />
-                            {
-                              info.market_price !== 0 && info.market_price &&
-                                <Price
-                                  lineThrough
-                                  unit='cent'
-                                  value={curSku ? curSku.market_price : info.market_price}
-                                />
-                            }
-                          </View>
+                      info.type !== '1' &&  info.cross_border_tax_rate !== 0 ? <Price
+                        lineThrough
+                        unit='cent'
+                        value={curSku ? curSku.market_price : info.market_price}
+                      /> : <View>
+                        (含税¥{ crossPrice })
+                        <Price
+                          lineThrough
+                          unit='cent'
+                          value={curSku ? curSku.market_price : info.market_price}
+                        />
+                      </View>
                     }
+                  </View>
                     {
                       info.nospec && info.activity_type === 'limited_buy' &&
                         <View className='limited-buy-rule'>
@@ -989,12 +980,12 @@ export default class Detail extends Component {
               info.type == '1' &&
                 <View className='nationalInfo'>
                   <View>
-                    预计税费:
-                    <Price
+                    进口税:商品包税
+                    {/* <Price
                       unit='cent'
                       symbol={(info.cur && info.cur.symbol) || ''}
                       value={crossPrice}
-                    />
+                    /> */}
                   </View>                  
                   <View className='nationalInfoLeft'>
                     <View className='item'>

@@ -1529,8 +1529,8 @@ export default class CartCheckout extends Component {
         <PaymentPicker
           isOpened={isPaymentOpend}
           type={payType}
-          isShowPoint
-          isShowBalance
+          isShowPoint={goodType !== 'cross'}
+          isShowBalance={goodType !== 'cross'}
           isShowDelivery={false}
           disabledPayment={disabledPayment}
           onClose={this.handleLayoutClose}
