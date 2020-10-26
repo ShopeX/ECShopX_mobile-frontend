@@ -409,6 +409,8 @@ export default class TradeDetail extends Component {
     const isDhPoint = info.pay_type === 'point'
     // 是否为余额支付
     const isDeposit = info.pay_type === 'deposit'
+    const isHf = info.pay_type === 'hfpay'
+
     const meiqia = Taro.getStorageSync('meiqia')
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
@@ -530,8 +532,9 @@ export default class TradeDetail extends Component {
           {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
           <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
           { isDhPoint && (<Text className='info-text' space>支付：{info.payment}积分 {' 积分支付'}</Text>) }
-          { isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>) }
-          { !isDhPoint && !isDeposit && (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>) }
+          {isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>)}
+          {isHf && (<Text className='info-text' space>支付：¥{info.payment} {'汇付支付'}</Text>)}
+          { !isDhPoint && !isDeposit &&!isHf (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>) }
           {
             info.delivery_code
               ? <View className='delivery_code_copy'>
