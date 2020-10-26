@@ -29,7 +29,9 @@ export default class ActivityPanel extends Component {
 
   render () {
     const { info, isOpen, onClick, onClose } = this.props
-    console.log('info',info)
+    if (!info) {
+      return <Loading></Loading>
+    }
 
     return (
       <View>
@@ -93,7 +95,7 @@ export default class ActivityPanel extends Component {
                           <View className='promotion-rule-goods'>
                             <View className='promotion-rule-goods__list'>
                             {
-                                item.plusitems.map((plus,index) =>{                                                                  
+                                item.plusitems && item.plusitems.map((plus,index) =>{                                                                  
                                   return(
                                   <View className='item'>
                                     <View className='item-img'>

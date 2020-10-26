@@ -139,7 +139,6 @@ export default class CartIndex extends Component {
 
   // 活动分组
   resolveActivityGroup (cartList) {
-    console.log('cartList--------->',cartList)
     const groups = cartList.map(shopCart => {
       const { list, used_activity = [],plus_buy_activity =[] } = shopCart
       const tDict = list.reduce((acc, val) => {

@@ -25,6 +25,7 @@ export default class DetailPluspriceList extends Component {
       last_seconds: 1759242,
       timer: null,
       list: [],
+      promotion_activity:{},
     }
   }
 
@@ -96,11 +97,11 @@ export default class DetailPluspriceList extends Component {
       pageSize
     }
 
-    const { list, total_count: total} = await api.promotion.getpluspriceList(query)
-    console.log('list',list)
+    const { list, total_count: total,promotion_activity={}} = await api.promotion.getpluspriceList(query)
+    const { end_time } = promotion_activity
 
-    // let timer = null
-    // timer = this.calcTimer(last_seconds)
+    let timer = null
+    timer = this.calcTimer(end_time)
 
 		const nList = pickBy(list, {
       img: 'pics[0]',
@@ -115,6 +116,8 @@ export default class DetailPluspriceList extends Component {
 
     this.setState({
       list: [...this.state.list, ...nList],
+      promotion_activity,
+      timer,
     })
     return {
       total
@@ -124,34 +127,39 @@ export default class DetailPluspriceList extends Component {
 
   render () {
     const { colors } = this.props
-    const { list, showBackToTop, scrollTop, page } = this.state
-
+    const { list, showBackToTop, scrollTop, page,promotion_activity,timer } = this.state
     return (
       <View className='page-plusprice'>
         <NavBar
           title='微商城'
         />
         <View className='plusprice-goods__info'>
-            <View className='title'> 满 XX 元/个 享换购优惠</View>
+            <View className='title'> {promotion_activity.marketing_name} </View>
             <View className='plusprice-goods__timer'>
                   
-                      <View>
-          							{/* <AtCountdown
-                          isShowDay
-                          day={timer.dd}
-            							hours={timer.hh}
-                          minutes={timer.mm}
-                          seconds={timer.ss}
-          							/> */}
+                      <View>          				
                         <Text className='time-text'>距结束</Text>
-                        <AtCountdown
+                      {timer && (
+                              <AtCountdown
+                              format={{ day:'天',hours: ':', minutes: ':', seconds: '' }}
+                              isShowDay
+                              day={timer.dd}
+                              hours={timer.hh}
+                              minutes={timer.mm}
+                              seconds={timer.ss}
+                            />
+                      )
+                      
+                      }
+                        
+                        {/* <AtCountdown
                          format={{ day:'天',hours: ':', minutes: ':', seconds: '' }}
                           isShowDay
                           day={2}
                           hours={1}
                           minutes={1}
                           seconds={10}
-                        />
+                        /> */}
                         
           						</View>
                  
