@@ -7,7 +7,7 @@
 # @Date: 2020-06-10 10:15:51
  # @LastEditors: Arvin
  # @LastEditTime: 2020-09-03 10:57:24
-### 
+###
 #/usr/bash
 
 cd $(dirname "$0")
@@ -106,14 +106,38 @@ echo "请选择编译方式"
 buildType="WEAPP H5"
 
 select type in $buildType
+
+do
+
+echo "请选择cdn服务商"
+
+buildOss="qn ali"
+
+select oss in $buildOss
 do
 if [ "$type" == 'H5' ]
+then
+  if [ "$oss" == 'ali' ]
   then
-  echo "npm run build:H5"
-  npm run build:h5
+    echo "npm run build:H5:ali"
+    npm run build:h5:ali
+  else
+    echo "npm run build:H5"
+    npm run build:h5
+  fi
+  break
+  done
 else
-  echo "npm run build:weapp"
-  npm run build:weapp
+  if [ "$oss" == 'ali' ]
+  then
+    echo "npm run build:weapp:ali"
+    npm run build:weapp:ali
+  else
+    echo "npm run build:weapp"
+    npm run build:weapp
+  fi
+  break
+  done
 fi
 break
 done
