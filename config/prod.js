@@ -9,8 +9,7 @@ const resource = (isIntegration
 module.exports = {
   env: {
     NODE_ENV: '"production"',
-    INTEGRATION_APP: isIntegration,
-    STORAGE: JSON.stringify(process.env.STORAGE)
+    INTEGRATION_APP: isIntegration
   },
   plugins: {
     sass: {

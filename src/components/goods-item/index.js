@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Image} from '@tarojs/components'
-import { QnImg } from '@/components'
+import { SpImg } from '@/components'
 import { isObject, classNames } from '@/utils'
 
 import './index.scss'
@@ -72,7 +72,7 @@ export default class GoodsItem extends Component {
             className='goods-item__img-wrap'
             onClick={onClick}
           >
-            <QnImg
+            <SpImg
               img-class='goods-item__img'
               src={img}
               mode='aspectFill'

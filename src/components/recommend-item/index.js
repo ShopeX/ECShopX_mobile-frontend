@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Image, Progress} from '@tarojs/components'
-import { Price, QnImg } from '@/components'
+import { Price, SpImg } from '@/components'
 import { isObject, classNames } from '@/utils'
 import api from '@/api'
 
@@ -45,7 +45,7 @@ export default class RecommendItem extends Component {
           onClick={onClick}
         >
           <View className='recommend-item__img-wrap'>
-            <QnImg
+            <SpImg
               img-class='recommend-item__img'
               src={img}
               mode='aspectFill'

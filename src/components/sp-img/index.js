@@ -3,10 +3,10 @@
  * @GitHub: https://github.com/973749104
  * @Blog: https://liuhgxu.com
  * @Description: img组件
- * @FilePath: /ossVshop/src/components/sp-img/index.js
+ * @FilePath: /unite-vshop/src/components/sp-img/index.js
  * @Date: 2020-03-04 17:27:15
  * @LastEditors: Arvin
- * @LastEditTime: 2020-03-10 16:53:23
+ * @LastEditTime: 2020-10-28 10:13:30
  */
 import Taro, { Component } from '@tarojs/taro'
 import QnImg from '../qn-img'
@@ -45,7 +45,7 @@ export default class SpImg extends Component {
     } = this.props
 
     return (
-      process.env.STORAGE !== 'ali'
+      (STORAGE !== 'ali')
       ? <QnImg
         img-class='img-class'
         src={src}
