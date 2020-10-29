@@ -21,3 +21,21 @@
     }
   }
 }
+.search {
+  display: flex;
+  .content-padded {
+    flex: 1;
+  }
+  .scancode {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+    font-size: 20px;
+    color: #666;
+    line-height: 1;
+    .icon-scan {
+      font-size: 42px;
+      margin-right: 6px;
+    }
+  }  
+}

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Icon} from '@tarojs/components'
 import { toggleTouchMove } from '@/utils/dom'
-
+import { getQueryVariable } from '@/utils'
 import './search-home.scss'
 
 export default class WgtSearchHome extends Component {
@@ -43,9 +43,16 @@ export default class WgtSearchHome extends Component {
       var path = scene.replace('pages/', '')
       path = path.replace('scene=', '')
       //格式化二维码参数
-      Taro.navigateTo({
-        url: path
-      })
+      const query = getQueryVariable(path)
+      if (query.cid && query.t) {
+        Taro.navigateTo({
+          url: `/others/pages/auth/index?cid=${query.cid}&token=${query.t}`
+        })
+      } else {
+        Taro.navigateTo({
+          url: path
+        })
+      }
     })
   }  
 
@@ -65,13 +72,13 @@ export default class WgtSearchHome extends Component {
               <Icon className='iconfont search-icon' type='search' size='14' color='#999999'></Icon>
               <View>输入商品名称</View>
             </View>
-            {
-                Taro.getEnv() !== 'WEB' && config.isOpenScanQrcode == 1 && <View className='scancode' onClick={this.handleScanCode.bind(this)}>
-                  <View className='iconfont icon-scan'></View>
-                  <View>扫码</View>
-                </View>
-              }            
           </View>
+          {
+              Taro.getEnv() !== 'WEB' && config.scanCode == 1 && <View className='scancode' onClick={this.handleScanCode.bind(this)}>
+                <View className='iconfont icon-scan'></View>
+                <View>扫码</View>
+              </View>
+            }            
         </View>
       </View>
     )

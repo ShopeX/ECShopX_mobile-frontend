@@ -1,6 +1,17 @@
+/*
+ * @Author: Arvin
+ * @GitHub: https://github.com/973749104
+ * @Blog: https://liuhgxu.com
+ * @Description: 说明
+ * @FilePath: /unite-vshop/src/pages/home/wgts/header-home.js
+ * @Date: 2020-10-26 11:03:06
+ * @LastEditors: Arvin
+ * @LastEditTime: 2020-10-29 16:55:56
+ */
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { toggleTouchMove } from '@/utils/dom'
+import { getQueryVariable } from '@/utils'
 
 import './header-home.scss'
 
@@ -45,9 +56,16 @@ export default class HeaderHome extends Component {
       var path = scene.replace('pages/', '')
       path = path.replace('scene=', '')
       //格式化二维码参数
-      Taro.navigateTo({
-        url: path
-      })
+      const query = getQueryVariable(path)
+      if (query.cid && query.t) {
+        Taro.navigateTo({
+          url: `/others/pages/auth/index?cid=${query.cid}&token=${query.t}`
+        })
+      } else {
+        Taro.navigateTo({
+          url: path
+        })
+      }
     })
   }
 

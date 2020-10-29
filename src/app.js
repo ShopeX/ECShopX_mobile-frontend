@@ -227,6 +227,8 @@ class App extends Component {
           'pages/protocol/privacy',
           // 美恰客服
           'pages/meiqia/index',
+          // 扫码授权登录
+          'pages/auth/index',
           // 储值
           'pages/recharge/index',
           'pages/recharge/history',

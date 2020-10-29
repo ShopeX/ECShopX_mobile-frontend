@@ -243,11 +243,27 @@ export const meiqiaInit = () => {
   })(window, document, 'script', '_MEIQIA');
 }
 
+// 解析字符串
+function  getQueryVariable(herf) {
+  const url = herf.split('?')
+  let query = {}
+  if (url[1]) {
+      const str = url[1]
+      // const str = url.substr(1)
+      const pairs = str.split("&")
+      for(let i = 0; i < pairs.length; i ++) {
+          const pair = pairs[i].split("=")
+          query[pair[0]] = pair[1]
+      }
+  }
+  return query
+}
 export {
   classNames,
   log,
   debounce,
 	throttle,
 	calCommonExp,
-  canvasExp
+  canvasExp,
+  getQueryVariable
 }
