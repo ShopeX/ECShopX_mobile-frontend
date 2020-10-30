@@ -81,6 +81,7 @@ export default class TradeDetail extends Component {
       receiver_name: 'receiver_name',
       receiver_mobile: 'receiver_mobile',
       receiver_state: 'receiver_state',
+      estimate_get_points:'estimate_get_points',
       discount_fee: ({ discount_fee }) => (+discount_fee / 100).toFixed(2),
       point_fee:({ point_fee }) => (+point_fee / 100).toFixed(2),
       receiver_city: 'receiver_city',
@@ -531,6 +532,7 @@ export default class TradeDetail extends Component {
           { isDhPoint && (<Text className='info-text' space>支付：{info.payment}积分 {' 积分支付'}</Text>) }
           { isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>) }
           { !isDhPoint && !isDeposit && (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>) }
+          <Text className='info-text' space>预计可获取积分：{info.estimate_get_points}</Text>
           {
             info.delivery_code
               ? <View className='delivery_code_copy'>
