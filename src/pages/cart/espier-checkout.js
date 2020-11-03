@@ -517,7 +517,7 @@ export default class CartCheckout extends Component {
 
     if (!data) return
 
-    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info, total_tax, quota_tip, identity_name = '', identity_id = '' } = data
+    const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info, total_tax, quota_tip, identity_name = '', identity_id = '', taxable_fee } = data
 
     if (coupon_info && !this.props.coupon) {
       this.props.onChangeCoupon({
@@ -536,6 +536,7 @@ export default class CartCheckout extends Component {
       discount_fee: -1 * discount_fee,
       member_discount: -1 * member_discount,
       coupon_discount: -1 * coupon_discount,
+      taxable_fee,
       freight_fee,
       total_tax,
       total_fee: params.pay_type === 'point' ? 0 : total_fee,
@@ -1189,7 +1190,13 @@ export default class CartCheckout extends Component {
           className='checkout__wrap'
         >
           {
-            curStore && !isArray(curStore) && curStore.is_ziti && curStore.is_delivery && !bargain_id &&
+            curStore
+            && !isArray(curStore)
+            && curStore.is_ziti
+            && curStore.is_delivery
+            && !bargain_id
+            && (goodType !== 'cross')
+            &&
               <View className='switch-tab'>
                 <View
                   className={classNames('switch-item', express ? 'active' : '')}
@@ -1202,7 +1209,7 @@ export default class CartCheckout extends Component {
               </View>
           }
           {
-            bargain_id || (express && curStore && curStore.is_delivery) || (curStore && !curStore.is_delivery && !curStore.is_ziti)
+            (bargain_id || (express && curStore && curStore.is_delivery) || (curStore && !curStore.is_delivery && !curStore.is_ziti))|| goodType === 'cross'
               ? <AddressChoose
                 isAddress={address}
               />
@@ -1442,6 +1449,17 @@ export default class CartCheckout extends Component {
                   value={total.item_fee}
                 />
               </SpCell>
+              {
+                goodType === 'cross' && <SpCell
+                  className='trade-sub-total__item'
+                  title='应税商品金额'
+                >
+                  <Price
+                    unit='cent'
+                    value={total.taxable_fee}
+                  />
+                </SpCell>
+              }
               {/*<SpCell
                 className='trade-sub-total__item'
                 title='会员折扣：'
