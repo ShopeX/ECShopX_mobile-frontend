@@ -40,6 +40,7 @@ export default class TradeItem extends Component {
     if (!info) {
       return null
     }
+    console.log('info',info)
 
     return (
       <View className='trade-item'>

@@ -81,7 +81,10 @@ export default class TradeDetail extends Component {
       receiver_name: 'receiver_name',
       receiver_mobile: 'receiver_mobile',
       receiver_state: 'receiver_state',
+      estimate_get_points:'estimate_get_points',
       discount_fee: ({ discount_fee }) => (+discount_fee / 100).toFixed(2),
+      point_fee:({ point_fee }) => (+point_fee / 100).toFixed(2),
+      point_use:'point_use',
       receiver_city: 'receiver_city',
       receiver_district: 'receiver_district',
       receiver_address: 'receiver_address',
@@ -426,7 +429,7 @@ export default class TradeDetail extends Component {
     const meiqia = Taro.getStorageSync('meiqia')
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
-
+    console.log('info',info)
     return (
       <View className='trade-detail'>
         <NavBar
@@ -552,9 +555,14 @@ export default class TradeDetail extends Component {
           <Text className='info-text'>运费：￥{info.freight_fee}</Text>
           {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
           <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
-          { isDhPoint && (<Text className='info-text' space>支付：{info.payment}积分 {' 积分支付'}</Text>) }
+          {
+            info.pay_type !='point' && ( <Text className='info-text'>积分抵扣：-¥{info.point_fee}</Text>)
+           
+          }
+          { isDhPoint && (<Text className='info-text' space>支付：{info.point_use}积分 {' 积分支付'}</Text>) }
           { isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>) }
           { !isDhPoint && !isDeposit && (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>) }
+          <Text className='info-text' space>预计可获取积分：{info.estimate_get_points}</Text>
           {
             info.delivery_code
               ? <View className='delivery_code_copy'>

@@ -85,6 +85,11 @@ export default class Detail extends Component {
     if (uid) {
       this.uid = uid
     }
+    if(!S.getAuthToken()){
+      setTimeout(() => {
+        this.checkWhite()
+      }, 1000)
+    }
     this.fetchInfo(id)
     this.getEvaluationList(id)
     // 浏览记录
@@ -182,6 +187,14 @@ export default class Detail extends Component {
       })
     } catch (e) {
       console.log(e)
+    }
+  }
+  async checkWhite () {
+    const { status } = await api.wx.getWhiteList()
+    if(status == true){
+      setTimeout(() => {
+        S.login(this, true)
+      }, 1000)
     }
   }
 

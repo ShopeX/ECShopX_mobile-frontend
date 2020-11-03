@@ -95,6 +95,11 @@ export default class HomeIndex extends Component {
       const options = this.$router.params
       const res = await entry.entryLaunch(options, isNeedLoacate)
       const { store } = res
+      if(!S.getAuthToken()){
+        setTimeout(() => {
+          this.checkWhite()
+        }, 1000)
+      }
       if (!isArray(store)) {
         this.setState({
           curStore: store
@@ -365,8 +370,15 @@ export default class HomeIndex extends Component {
       total
     }
   }
-
-  handleClickLicense = () => {
+  async checkWhite () {
+    const { status } = await api.wx.getWhiteList()
+    if(status == true){
+      setTimeout(() => {
+        S.login(this, true)
+      }, 1000)
+    }
+  }
+    handleClickLicense = () => {
     Taro.navigateTo({
       url: '/pages/home/license'
     })
