@@ -6,7 +6,8 @@ import { withLogin } from '@/hocs'
 import { pickBy, classNames } from '@/utils'
 import { AtRate, AtTextarea, AtButton, AtImagePicker } from 'taro-ui'
 import S from '@/spx'
-import azureUploader from '@/utils/azure-wry'
+// import azureUploader from '@/utils/azure-wry'
+import imgUploader from '@/utils/upload'
 
 import './rate.scss'
 
@@ -92,7 +93,7 @@ export default class TradeRate extends Component {
     })
   }
 
-  handleImageChange = (index, files, type) => {
+  handleImageChange = async (index, files, type) => {
     const { goodsList } = this.state
     if (type === 'remove') {
       goodsList[index].pics = files
@@ -108,13 +109,11 @@ export default class TradeRate extends Component {
       return
     }
     const imgFiles = files.slice(0, 6)
-    azureUploader.uploadImagesFn(imgFiles)
-      .then(res => {
-        goodsList[index].pics = res
-        this.setState({
-          goodsList
-        })
-      })
+    const results = await imgUploader.uploadImageFn(imgFiles)
+    goodsList[index].pics = results
+    this.setState({
+      goodsList
+    })
   }
 
   handleClickSubmit = async () => {

@@ -71,7 +71,7 @@ export default class DistributionShopForm extends Component {
       S.toast('最多上传1张图片')
     }
     const imgFiles = data.slice(0, 1)
-    const res = await imgUploader.uploadImageFn(imgFiles, 'espier/image_upload_token', 'jpg/png', 'z2')
+    const res = await imgUploader.uploadImageFn(imgFiles)
     this.setState({
       imgs: res
     })

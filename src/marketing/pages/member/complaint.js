@@ -3,24 +3,9 @@ import { View } from '@tarojs/components'
 import { AtAvatar, AtTextarea, AtButton, AtImagePicker } from 'taro-ui'
 import { Loading, NavBar } from '@/components'
 import api from '@/api'
-import req from '@/api/req'
+import imgUploader from '@/utils/upload'
 
 import './complaint.scss'
-
-
-function uploadURLFromRegionCode(code) {
-  let uploadURL = null;
-  switch(code) {
-      case 'z0': uploadURL = 'https://up.qiniup.com'; break;
-      case 'z1': uploadURL = 'https://up-z1.qiniup.com'; break;
-      case 'z2': uploadURL = 'https://up-z2.qiniup.com'; break;
-      case 'na0': uploadURL = 'https://up-na0.qiniup.com'; break;
-      case 'as0': uploadURL = 'https://up-as0.qiniup.com'; break;
-      default: console.error('please make the region is with one of [z0, z1, z2, na0, as0]');
-  }
-  return uploadURL;
-}
-
 
 export default class Complaint extends Component {
   constructor(props) {
@@ -72,49 +57,7 @@ export default class Complaint extends Component {
     }
 
     const imgFiles = files.slice(0, 3)
-
-    let promises = []
-
-    for (let item of imgFiles) {
-      const promise = new Promise(async (resolve, reject) => {
-        if (!item.file) {
-          resolve(item)
-        } else {
-          const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-          const { region, token, key, domain } = await req.get('/espier/image_upload_token', {
-            filesystem: 'qiniu',
-            filetype: 'complaint',
-            filename
-          })
-
-          console.log(item, region, token, key, domain, 132)
-          let uploadUrl = uploadURLFromRegionCode(region)
-
-          console.log('uploadUrl --- val:',uploadUrl)
-
-          // resolve()
-          Taro.uploadFile({
-            url: uploadUrl,
-            filePath: item.url,
-            name: 'file',
-            formData:{
-              'token': token,
-              'key': key
-            },
-            success: res => {
-              let imgData = JSON.parse(res.data)
-              resolve({
-                url: `${domain}/${imgData.key}`
-              })
-            },
-            fail: error => reject(error)
-          })
-        }
-      })
-      promises.push(promise)
-    }
-
-    const results = await Promise.all(promises)
+    const results = await imgUploader.uploadImageFn(imgFiles)
     // log.debug('[qiniu uploaded] results: ', results)
 
     this.setState({

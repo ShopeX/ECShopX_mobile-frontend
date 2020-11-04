@@ -9,8 +9,8 @@ import {
 import { SpCell, SpToast } from '@/components'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
-import req from '@/api/req'
-import { log, pickBy, classNames } from '@/utils'
+// import req from '@/api/req'
+import { pickBy, classNames } from '@/utils'
 import S from '@/spx'
 import imgUploader from '@/utils/upload'
 
@@ -111,7 +111,7 @@ export default class TradeRefund extends Component {
       S.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 3)
-    imgUploader.uploadImageFn(imgFiles, 'espier/image_upload_token', 'jpg/png', 'z2')
+    imgUploader.uploadImageFn(imgFiles)
       .then(res => {
         this.setState({
           imgs: res
