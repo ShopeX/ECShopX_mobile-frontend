@@ -6,7 +6,7 @@
  # @FilePath: /unite-vshop/run.sh
 # @Date: 2020-06-10 10:15:51
  # @LastEditors: Arvin
- # @LastEditTime: 2020-10-28 13:51:17
+ # @LastEditTime: 2020-11-05 15:12:08
 ### 
 #/usr/bash
 
@@ -105,27 +105,15 @@ echo "请选择编译方式"
 
 buildType='weapp h5'
 
-runBuildType=h5
-
 select type in $buildType
 do
-  runBuildType=$type
-break
-done
-echo $runBuildType
-echo "请选择服务商"
-
-ossType="qn ali"
-
-select type in $ossType
-do
-if [ "$type" == 'ali' ]
-  then
-  echo "npm run build:${runBuildType}:ali"
-  npm run build:$runBuildType:ali
-else
-  echo "npm run build:${runBuildType}"
-  npm run build:$runBuildType
-fi
-break
+  if [ "$type" == 'weapp' ]
+    then
+    echo "npm run build:weapp"
+    npm run build:weapp
+  else
+    echo "npm run build:h5"
+    npm run build:h5
+  fi
+  break
 done
