@@ -4,7 +4,6 @@ import { connect } from '@tarojs/redux'
 import { AtFloatLayout,AtInput,AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import { SpCheckbox } from '@/components'
 import './point-use.scss'
-import { tr } from 'date-fns/locale'
 
 @connect(({ colors }) => ({
   colors: colors.current
