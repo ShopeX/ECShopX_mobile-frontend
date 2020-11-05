@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, ScrollView, Image, Text} from '@tarojs/components'
-import { Loading,GoodsItem,SpNote} from '@/components'
+import { Loading, GoodsItem, SpNote, NavBar} from '@/components'
 import { classNames, pickBy,getCurrentRoute } from '@/utils'
 import {AtTabBar} from "taro-ui"
 import S from '@/spx'
@@ -175,11 +175,16 @@ handleClickCategoryNav = (idx,value) => {
     const { list, hasSeries, tabList, localCurrent, contentList, shop_pic, currentIndex, page, scrollTop } = this.state
     return (
       <View className='page-category-index'>
+        <NavBar
+          title='分类'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='category-banner'>
-              <Image
-                className='banner-img'
-                src={shop_pic || null}
-                mode='aspectFill'
+          <Image
+            className='banner-img'
+            src={shop_pic || null}
+            mode='aspectFill'
           />
       </View>
         <View className={`${hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'}`}>
@@ -221,7 +226,7 @@ handleClickCategoryNav = (idx,value) => {
           >
             <View className='grid-goods'>
             {
-              contentList.length && contentList.map(item =>{
+              (contentList.length > 0) && contentList.map(item =>{
                 return (
                   <GoodsItem
                     key={item.item_id}

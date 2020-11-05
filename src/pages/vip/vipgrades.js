@@ -17,7 +17,8 @@ export default class VipIndex extends Component {
 		navigationBarTitleText: '会员购买',
 		backgroundColor: '#2f3030',
 		backgroundTextStyle: 'light'
-  }
+	}
+	
   constructor (props) {
     super(props)
 
@@ -203,7 +204,7 @@ export default class VipIndex extends Component {
 							})
 						}
 						</View>
-						<Button className='pay-btn' onClick={this.handleCharge}>立即支付</Button>
+						<Button className='pay-btn' onClick={this.handleCharge.bind(this)}>立即支付</Button>
 						<View className='content-v-padded'>会员权益</View>
 						<View className='text-muted'>
 							{

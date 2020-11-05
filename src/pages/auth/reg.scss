@@ -107,3 +107,9 @@
   }
 
 }
+
+.page-member-integral {
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+}

@@ -4,6 +4,10 @@
   width: 100%;
   height: 100vh;
   background: #ffffff;
+  box-sizing: border-box;
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   &.good-category {
     .category-comps-not {
       box-sizing: border-box;
@@ -24,12 +28,22 @@
   .category-comps {
     box-sizing: border-box;
     background: #ffffff;
+    /*  #ifdef  weapp  */  
     @include page-scroll($tabs-height + 10px, $tabbar-height);
+    /*  #endif  */
+    /*  #ifdef  h5  */  
+    @include page-scroll($tabs-height + $navigate-height-h5 + 10px, $tabbar-height);
+    /*  #endif  */
   }
   .category-comps-not {
     box-sizing: border-box;
     background: #ffffff;
+    /*  #ifdef  weapp  */  
     @include page-scroll(260px, $tabbar-height);
+    /*  #endif  */
+    /*  #ifdef  h5  */  
+    @include page-scroll($navigate-height-h5 + 260px, $tabbar-height);
+    /*  #endif  */
   }
   .category-banner{
     width: 100%;
@@ -81,6 +95,9 @@
   .shop-category__wrap{
     .category-list__scroll{
       @include page-scroll($tabs-height + $navigate-height, 0);
+      /*  #ifdef  h5  */  
+      @include page-scroll($tabs-height + $navigate-height-h5, 0);
+      /*  #endif  */
       top:0;
       left: 25vw;
       width: 75vw;

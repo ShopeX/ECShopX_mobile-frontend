@@ -99,8 +99,8 @@ class App extends Component {
       'pages/cashier/cashier-result',
 
       'pages/member/index',
-      'pages/member/pay',
-      'pages/member/pay-rule',
+      // 'pages/member/pay',
+      // 'pages/member/pay-rule',
       'pages/member/coupon',
       'pages/member/coupon-detail',
       'pages/member/address',

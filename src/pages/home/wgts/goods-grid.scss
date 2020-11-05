@@ -14,103 +14,103 @@
     border-bottom: 1PX solid $color-brand-primary;
     color: $color-brand-primary;
   }
-}
-
-.grid-goods {
-  display: flex;
-  flex-wrap: wrap;
-  &.out-padding {
-    margin: 0 -6px;
-  }
-  .grid-item {
-    width: 50%;
-    padding: 6px;
-		box-sizing: border-box;
-		&.grid-item-three{
-			width:33.3%;
-		}
-    .goods-wrap {
-      border-radius: 12px;
-      border: 1px solid #f5f5f5;
-      .thumbnail {
-        position: relative;
-        &::after {
-          display: flex;
-          padding-top: 100%;
-          content: "";
-        }
-        .goods-img {
-          display: block;
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .caption {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 0 20px 20px 20px;
-        box-sizing: border-box;
-        font-size: 24px;
-        .goods-brand {
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          margin-top: -50px;
-          margin-bottom: 10px;
-        }
-        .goods-title {
-					width: 100%;
-					height: 79px;
-          line-height: 1.4;
-          @include multi-ellipsis(2);
-          margin: 0 0 10px;
-          &.no-brand {
-            padding-top: 10px;
-          }
-        }
-        .goods-brief{
-          width: 100%;
-          line-height: 1.4;
-          @include multi-ellipsis(3);
-          color: $color-gray;
-          font-size: $font-size-small;
-          margin: 0 0 10px;
-        }
-        .goods-price {
-          width: 100%;
-          color: #ff5000;
-          font-size: 30px;
-          .market-price {
-            display: inline-block;
-            margin-left: 5px;
-            font-size: 20px;
-            color: #ccc;
-            text-decoration: line-through;
-          }
-        }
-        .cur {
-          font-size: 20px;
-        }
-      }
-    }
-  }
-
-  // 跨境
-  .nationalInfo {
+  
+  .grid-goods {
     display: flex;
-    align-items: center;
-    width: 100%;
-    font-size: 24px;
-    padding-top: 10px;
-    .nationalFlag {
-      width: 45px;
-      height: 45px;
-      border-radius: 100%;
-      margin-right: 15px;
+    flex-wrap: wrap;
+    &.out-padding {
+      margin: 0 -6px;
     }
-  }  
+    .grid-item {
+      width: 50%;
+      padding: 6px;
+      box-sizing: border-box;
+      &.grid-item-three{
+        width:33.3%;
+      }
+      .goods-wrap {
+        border-radius: 12px;
+        border: 1px solid #f5f5f5;
+        .thumbnail {
+          position: relative;
+          &::after {
+            display: flex;
+            padding-top: 100%;
+            content: "";
+          }
+          .goods-img {
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .caption {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 0 20px 20px 20px;
+          box-sizing: border-box;
+          font-size: 24px;
+          .goods-brand {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-top: -50px;
+            margin-bottom: 10px;
+          }
+          .goods-title {
+            width: 100%;
+            height: 79px;
+            line-height: 1.4;
+            @include multi-ellipsis(2);
+            margin: 0 0 10px;
+            &.no-brand {
+              padding-top: 10px;
+            }
+          }
+          .goods-brief{
+            width: 100%;
+            line-height: 1.4;
+            @include multi-ellipsis(3);
+            color: $color-gray;
+            font-size: $font-size-small;
+            margin: 0 0 10px;
+          }
+          .goods-price {
+            width: 100%;
+            color: #ff5000;
+            font-size: 30px;
+            .market-price {
+              display: inline-block;
+              margin-left: 5px;
+              font-size: 20px;
+              color: #ccc;
+              text-decoration: line-through;
+            }
+          }
+          .cur {
+            font-size: 20px;
+          }
+        }
+      }
+    }
+  
+    // 跨境
+    .nationalInfo {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      font-size: 24px;
+      padding-top: 10px;
+      .nationalFlag {
+        width: 45px;
+        height: 45px;
+        border-radius: 100%;
+        margin-right: 15px;
+      }
+    }  
+  }
 }

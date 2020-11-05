@@ -98,7 +98,7 @@ export default class PointUse extends Component {
     if (!info) {
       return null
     }
-    const { deduct_point_rule } = info
+    const { deduct_point_rule = {} } = info
     return (
       <View>
         <AtFloatLayout
@@ -147,17 +147,16 @@ export default class PointUse extends Component {
            </View>
    
            {
-             deduct_point_rule.full_amount && (info.max_point > 0) && (
+             deduct_point_rule && deduct_point_rule.full_amount && (info.max_point > 0) && (
               <View className='point-item'>
               <View className='point-item__title'>
               <SpCheckbox
-                  colors={colors}
-                  checked={localType === 'point'}
-                  onChange={this.handleUseFullAmount}
-                  >
-                    全额抵扣
-                  </SpCheckbox>
-                  
+                colors={colors}
+                checked={localType === 'point'}
+                onChange={this.handleUseFullAmount}
+              >
+                全额抵扣
+              </SpCheckbox>
               </View>
            </View>
              )

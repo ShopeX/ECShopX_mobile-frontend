@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { AtTabBar  } from 'taro-ui'
-import { SpToast, BackToTop, Loading } from '@/components'
+import { SpToast, BackToTop, Loading, NavBar } from '@/components'
 import S from '@/spx'
 import req from '@/api/req'
 import api from '@/api'
@@ -265,6 +265,11 @@ export default class DistributionShopHome extends Component {
 
     return (
       <View className='page-distribution-shop'>
+        <NavBar
+          title='小店'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='shop-banner'>
           <View className='shop-def'>
           <Image

@@ -495,34 +495,43 @@ export default class MemberIndex extends Component {
                 >
                 </SpCell>
             }
-            <SpCell
-              title='我的拼团'
-              isLink
-              img={require('../../assets/imgs/group.png')}
-              onClick={this.handleClick.bind(this, '/pages/member/group-list')}
-            >
-            </SpCell>
-            <SpCell
-              title='我的社区团购'
-              isLink
-              img={require('../../assets/imgs/group.png')}
-              onClick={this.handleClick.bind(this, '/groupBy/pages/orderList/index')}
-            >
-            </SpCell>
-            <SpCell
-              title='助力活动'
-              isLink
-              img={require('../../assets/imgs/group.png')}
-              onClick={this.handleClick.bind(this, '/boost/pages/home/index')}
-            >
-            </SpCell>
-            <SpCell
-              title='助力订单'
-              isLink
-              img={require('../../assets/imgs/group.png')}
-              onClick={this.handleClick.bind(this, '/boost/pages/order/index')}
-            >
-            </SpCell>
+            {
+              Taro.getEnv() !== 'WEB' && <View>
+                <SpCell
+                  title='我的拼团'
+                  isLink
+                  img={require('../../assets/imgs/group.png')}
+                  onClick={this.handleClick.bind(this, '/pages/member/group-list')}
+                >
+                </SpCell>
+                <SpCell
+                  title='我的社区团购'
+                  isLink
+                  img={require('../../assets/imgs/group.png')}
+                  onClick={this.handleClick.bind(this, '/groupBy/pages/orderList/index')}
+                >
+                </SpCell>
+              </View>
+              
+            }
+            {
+              Taro.getEnv() !== 'WEB' && <View>
+                <SpCell
+                  title='助力活动'
+                  isLink
+                  img={require('../../assets/imgs/group.png')}
+                  onClick={this.handleClick.bind(this, '/boost/pages/home/index')}
+                >
+                </SpCell>
+                <SpCell
+                  title='助力订单'
+                  isLink
+                  img={require('../../assets/imgs/group.png')}
+                  onClick={this.handleClick.bind(this, '/boost/pages/order/index')}
+                >
+                </SpCell>
+              </View>
+            }
             <SpCell
               title='投诉记录'
               isLink

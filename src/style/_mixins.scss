@@ -119,10 +119,15 @@
   bottom: $padding-bottom;
   overflow-y: auto;
   overflow-x: hidden;
-  transform: translate3d(0,0,0);
+  // transform: translate3d(0,0,0);
   z-index: 1;
+  /*  #ifdef  weapp  */
+  transform: translate3d(0,0,0);
+  /*  #endif  */
   > div, > view {
+    /*  #ifdef  weapp  */
     transform: translate3d(0,0,0);
+    /*  #endif  */
   }
 }
 

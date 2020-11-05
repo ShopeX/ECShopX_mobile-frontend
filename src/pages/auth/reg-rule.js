@@ -44,11 +44,12 @@ export default class RegRule extends Component {
 
   render () {
     const { info } = this.state
+    const { type } = this.$router.params
 
     return (
       <View className='page-member-integral'>
         <NavBar
-          title='注册协议'
+          title={`${type === '1' ? '充值协议' : '注册协议'}`}
           leftIconType='chevron-left'
         />
         {

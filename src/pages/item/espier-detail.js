@@ -773,7 +773,7 @@ export default class Detail extends Component {
 
     const crossPrice =  ((skuPrice * taxRate) / 100).toFixed(2)
     const showPrice = (skuPrice * (1 + taxRate))
-    console.log(showPrice)
+
     const lnglat = Taro.getStorageSync('lnglat')
 
     if (!info) {
@@ -1212,7 +1212,7 @@ export default class Detail extends Component {
             onClick={this.handleBackHome.bind(this)}
           />
           {
-            meiqia.is_open === 'true'
+            (meiqia.is_open === 'true' || Taro.getEnv() === 'WEB')
               ? <FloatMenuMeiQia storeId={info.distributor_id} info={{goodId: info.item_id, goodName: info.itemName}} />
               : <FloatMenuItem
                 iconPrefixClass='icon'

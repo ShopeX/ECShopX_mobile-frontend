@@ -3,6 +3,9 @@
 $banner-height: 250px !default;
 
 .page-distribution-shop {
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   background: $color-bg-gray;
   .shop-banner {
     position: relative;

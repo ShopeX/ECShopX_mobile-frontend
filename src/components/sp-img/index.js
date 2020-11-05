@@ -6,20 +6,26 @@
  * @FilePath: /unite-vshop/src/components/sp-img/index.js
  * @Date: 2020-03-04 17:27:15
  * @LastEditors: Arvin
- * @LastEditTime: 2020-11-05 15:01:53
+ * @LastEditTime: 2020-11-05 16:16:53
  */
 import Taro, { Component } from '@tarojs/taro'
+import { Image } from '@tarojs/components'
+import { h5 } from '../../../config/dev'
 // import QnImg from '../qn-img'
-import AliYunImg from '../aliyun-img'
+// import AliYunImg from '../aliyun-img'
 
 export default class SpImg extends Component {
 
-  // static options = {
-  //   addGlobalClass: true
-  // }
+  static defaultProps = {
+    onLoad: () => {}
+  }
+
+  static options = {
+    addGlobalClass: true
+  }
 
   static externalClasses = ['img-class']
-  
+
   render () {
     const {
       src,
@@ -44,22 +50,38 @@ export default class SpImg extends Component {
       p
     } = this.props
 
-    return <AliYunImg
-      img-class='img-class'
-      src={src}
-      mode={mode}
-      lazyLoad={lazyLoad}
-      qnMode={qnMode}
-      onLoad={onLoad}
-      onError={onError}
-      width={width}
-      height={height}
-      m={m}
-      l={l}
-      s={s}
-      limit={limit}
-      color={color}
-      p={p}
-    />
+    if (!src) return null
+
+    let url = src
+
+    if (!qnMode) {
+      // 处理阿里云的图片缩放参数
+      const mod = m ? `m_${m},` : ''
+      const w = width ? `w_${width},` : ''
+      const h = height ? `h_${height},` : ''
+      const ll = l ? `l_${l},` : ''
+      const ss = s ? `s_${s},` : ''
+      const lim = limit ? `limit_${limit},` : ''
+      const col = color ? `color_${limit},` : ''
+      const per = p ? `p_${p},` : ''
+      // 是否需要处理
+      const isMode = mod || width || height || ll || ss || lim || col || per
+      url += isMode ? `?x-oss-process=image/resize,${mod}${w}${h}${ll}${ss}${lim}${col}${per}` : ''
+    } else {
+      url += qnMode
+    }
+
+    const imgClass = Taro.getEnv() !== 'WEB' ? 'img-class' : this.props['img-class']
+
+    return (
+      <Image 
+        className={imgClass}
+        src={url}
+        mode={mode}
+        onError={onError}
+        onLoad={onLoad}
+        lazyLoad={lazyLoad}
+      />
+    )
   }
 }

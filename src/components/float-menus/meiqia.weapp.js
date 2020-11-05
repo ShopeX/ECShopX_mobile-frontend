@@ -3,10 +3,10 @@
  * @GitHub: https://github.com/973749104
  * @Blog: https://liuhgxu.com
  * @Description: 说明
- * @FilePath: /unite-vshop/src/components/float-menus/meiqia.js
+ * @FilePath: /unite-vshop/src/components/float-menus/meiqia.weapp.js
  * @Date: 2020-04-20 16:57:55
  * @LastEditors: Arvin
- * @LastEditTime: 2020-04-30 21:14:15
+ * @LastEditTime: 2020-11-05 17:35:12
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
@@ -95,11 +95,11 @@ export default class Index extends Component {
         {
           isFloat ? <Button
             className='float-menu__item'
-            onClick={this.contactMeiQia}
+            onClick={this.contactMeiQia.bind(this)}
           >
             <View className='icon icon-headphones'></View>
           </Button>
-          : <View onClick={this.contactMeiQia} className='refund-detail-btn'>
+          : <View onClick={this.contactMeiQia.bind(this)} className='refund-detail-btn'>
             { this.props.children }
           </View>
         }
