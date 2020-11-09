@@ -6,18 +6,19 @@
  * @FilePath: /unite-vshop/src/components/sp-img/index.js
  * @Date: 2020-03-04 17:27:15
  * @LastEditors: Arvin
- * @LastEditTime: 2020-11-05 16:16:53
+ * @LastEditTime: 2020-11-09 18:28:54
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Image } from '@tarojs/components'
-import { h5 } from '../../../config/dev'
+// import { h5 } from '../../../config/dev'
 // import QnImg from '../qn-img'
 // import AliYunImg from '../aliyun-img'
 
 export default class SpImg extends Component {
 
   static defaultProps = {
-    onLoad: () => {}
+    onLoad: () => {},
+    onError: () => {}
   }
 
   static options = {
