@@ -112,3 +112,13 @@ export function codeAuth (param = {}) {
 export function codeAuthConfirm (param = {}) {
   return req.post('/oauth/login/authorize', param)
 }
+
+// 订阅到货通知
+export function subscribeGoods (item_id) {
+  return req.post(`/member/subscribe/item/${item_id}`)
+}
+
+// 检测是否订阅
+export function isSubscribeGoods (item_id) {
+  return req.get(`/member/item/is_subscribe/${item_id}`)
+}
