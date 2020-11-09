@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/groupBy/pages/goodDetail/index.js
  * @Date: 2020-05-07 09:58:08
  * @LastEditors: Arvin
- * @LastEditTime: 2020-11-09 15:28:43
+ * @LastEditTime: 2020-11-09 16:54:42
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Swiper, SwiperItem, Image, Text, Canvas } from '@tarojs/components'
@@ -169,11 +169,12 @@ export default class GoodDetail extends Component {
     const host = APP_BASE_URL.replace('api/h5app/wxapp', '')
 
     const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+
     const { goodInfo } = this.state
     //  二维码链接
-    const qrCode = `${host}/h5app/wechatAuth/shopwxapp/community/qrcode.png?appid=${extConfig.appid}&company_id=${goodInfo.companyId}&aid=${goodInfo.activityId}&cid=${goodInfo.currentId}&id=${goodInfo.itemId}`
+    const qrCode = `${host}wechatAuth/shopwxapp/community/qrcode.png?appid=${extConfig.appid}&company_id=${goodInfo.companyId}&aid=${goodInfo.activityId}&cid=${goodInfo.currentId}&id=${goodInfo.itemId}`
 
-    const ctx = Taro.createCanvasContext('poster', this)
+    const ctx = Taro.createCanvasContext('poster')
     const canvas = new CanvasUtil(ctx, Taro)
     canvas.drawCanvas(375, 640, {...goodInfo, qrCode}, () => {
       Taro.canvasToTempFilePath({
