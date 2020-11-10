@@ -1071,6 +1071,7 @@ export default class CartCheckout extends Component {
     //   this.props.onClearCoupon()
     // }
     this.setState({
+      point_use:0,
       payType,
       isPaymentOpend: false
     }, () => {
