@@ -773,7 +773,7 @@ export default class Detail extends Component {
 
     const crossPrice =  (skuPrice * taxRate)
     const showPrice = (skuPrice * (1 + taxRate))
-
+    
     const lnglat = Taro.getStorageSync('lnglat')
 
     if (!info) {
@@ -855,6 +855,7 @@ export default class Detail extends Component {
               <View className='goods-timer__hd'>
                 <View className='goods-prices'>
                   <View className='view-flex view-flex-middle'>
+                    { info.type == '1' && <Text className='crossTitleAct'>含税销售价</Text>}
                     <Price
                       unit='cent'
                       symbol={(info.cur && info.cur.symbol) || ''}
@@ -950,16 +951,25 @@ export default class Detail extends Component {
                 <View className='goods-prices__wrap'>
                   <View className='goods-prices'>
                   <View className='view-flex-item'>
+                    { info.type == '1' && <Text className='crossTitle'>含税销售价</Text>}
                     <Price
                       primary
                       unit='cent'
                       value={showPrice}
                     />
-                    <Price
-                      lineThrough
-                      unit='cent'
-                      value={curSku ? curSku.price : info.price}
-                    />
+                    {
+                      info.type == '1' ?
+                        <Price
+                          lineThrough
+                          unit='cent'
+                          value={curSku ? curSku.price : info.price}
+                        /> : 
+                        <Price
+                          lineThrough
+                          unit='cent'
+                          value={curSku ? curSku.market_price : info.market_price}
+                        />
+                    }
                   </View>
                     {
                       info.nospec && info.activity_type === 'limited_buy' &&

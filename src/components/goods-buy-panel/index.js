@@ -413,8 +413,12 @@ export default class GoodsBuyPanel extends Component {
         marketPrice = info.market_price * 100
       }
     }
-    console.log(curSkus, 399)
 
+    const taxRate = info ? (Number(info.cross_border_tax_rate || 0) / 100) : 0
+    if (info.type == '1') {
+      price = price * (1 + taxRate)
+      marketPrice = info.price
+    }
 
     return (
       <View className={classNames('goods-buy-panel', isActive ? 'goods-buy-panel__active' : null)}>
@@ -437,7 +441,7 @@ export default class GoodsBuyPanel extends Component {
               />
             </View>
 						<View className='goods-sku__price'>
-						  <Price primary symbol='¥' unit='cent' value={price} />
+						<Price primary symbol='¥' unit='cent' value={price} />
               <View className='goods-sku__price-market'>
               {
                 marketPrice !== 0 && marketPrice &&
