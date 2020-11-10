@@ -771,7 +771,7 @@ export default class Detail extends Component {
     const skuEndprice = marketing === 'normal' ? skuMemprice : skuActprice
     const skuPrice = curSku ? skuEndprice : endPrice
 
-    const crossPrice =  ((skuPrice * taxRate) / 100).toFixed(2)
+    const crossPrice =  (skuPrice * taxRate)
     const showPrice = (skuPrice * (1 + taxRate))
 
     const lnglat = Taro.getStorageSync('lnglat')
@@ -904,7 +904,7 @@ export default class Detail extends Component {
                   marketing === 'group' &&
                     <View>
                       {info.activity_info.show_status === 'nostart' && <Text className='goods-timer__label'>距开始还剩</Text>}
-        							{info.activity_info.show_status === 'noend' && <Text className='goods-timer__label'>距结束还剩</Text>}
+                      {info.activity_info.show_status === 'noend' && <Text className='goods-timer__label'>距结束还剩</Text>}
                     </View>
                 }
                 <AtCountdown
@@ -955,13 +955,11 @@ export default class Detail extends Component {
                       unit='cent'
                       value={showPrice}
                     />
-                    {
-                      (info.type != 1 ||  info.cross_border_tax_rate == 0) ? <Price
-                        lineThrough
-                        unit='cent'
-                        value={curSku ? curSku.market_price : info.market_price}
-                      /> : `(含税¥ ${ crossPrice })`
-                    }
+                    <Price
+                      lineThrough
+                      unit='cent'
+                      value={curSku ? curSku.price : info.price}
+                    />
                   </View>
                     {
                       info.nospec && info.activity_type === 'limited_buy' &&
@@ -987,12 +985,12 @@ export default class Detail extends Component {
               info.type == '1' &&
                 <View className='nationalInfo'>
                   <View>
-                    进口税: 商品包税
-                    {/* <Price
+                    跨境综合税: 
+                    <Price
                       unit='cent'
                       symbol={(info.cur && info.cur.symbol) || ''}
                       value={crossPrice}
-                    /> */}
+                    />
                   </View>                  
                   <View className='nationalInfoLeft'>
                     <View className='item'>
