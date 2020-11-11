@@ -105,6 +105,8 @@ export default class TradeDetail extends Component {
       type: 'type',
       // 是否有拆单
       is_logistics: 'is_logistics',
+      // 是否大屏
+      is_shopscreen: 'is_shopscreen',
       total_tax: ({total_tax}) => (+total_tax / 100).toFixed(2),
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
@@ -130,6 +132,7 @@ export default class TradeDetail extends Component {
         origincountry_name: 'origincountry_name',
         origincountry_img_url: 'origincountry_img_url',
         delivery_status: 'delivery_status',
+        is_logistics: 'is_logistics',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
         point: 'item_point',
         num: 'num',
@@ -600,7 +603,7 @@ export default class TradeDetail extends Component {
                   </View>
                 }
                 {
-                  !isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS' && info.is_logistics != '1' && <View className='trade-detail__footer'>
+                  !isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS' && !info.is_shopscreen && <View className='trade-detail__footer'>
                     {
                       info.order_status_des !== 'PAYED_WAIT_PROCESS' && <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
                     }
@@ -612,7 +615,7 @@ export default class TradeDetail extends Component {
                   </View>
                 }
                 {
-                  (isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS') || info.is_logistics != '1' && <View className='trade-detail__footer'>
+                  (isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS') || (info.is_shopscreen && info.is_logistics) && <View className='trade-detail__footer'>
                     <Text
                       className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active'
                       style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
