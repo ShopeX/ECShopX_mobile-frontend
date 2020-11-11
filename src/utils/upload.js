@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/utils/upload.js
  * @Date: 2020-03-06 16:32:07
  * @LastEditors: Arvin
- * @LastEditTime: 2020-11-05 14:48:14
+ * @LastEditTime: 2020-11-11 10:59:21
  */
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
@@ -105,15 +105,62 @@ const upload = {
     } catch (e) {
       throw new Error (e)
     }
+  },
+  awsUpload: async (item, tokenRes) => {
+    const {
+      filetype,
+      Region = 'cn-northwest-1',
+      Bucket = 'wemall-media-dev',
+      AccessKeyId = 'ASIA4MSC276FYEFHONOI',
+      effectiveUri = 'https://wemall-media-dev.danielwellington.cn',
+      SecretAccessKey = 'TKDlUPINVnBzy6LtXD9fkqHloCe2fxf6cnftSQkX',
+      SessionToken = 'IQoJb3JpZ2luX2VjEAUaDmNuLW5vcnRod2VzdC0xIkgwRgIhALcp021bQYb9gkwivXyaT9bQ2ZAlcBDbO4Wwxfsv5o95AiEAziUCO0fqEGU1uq9UBz8/Pc2IEc0KgDifEEmnxmzuIfAq6wEIMxACGgw4NTE2MTc0NDc4MTkiDItbL+wnGY0uKKN0birIAbmP3onqD7U66YB0wtkVkLDMiCsWfNSpQqruvw07wq+Q/nhgeTlqtNlIKtoZgpmyN0F/Y65zcVsB/pW0LXdjcdLjBNziLMZLa58My6ulCHmS3uzcurqzmkIenLdDHgQHm+yYOir1cGvxxepcNQzKf+gkGQ+Gan/JGbNJz+l9yHQjANzJtEFPffUEXPBhwXeLQASPc5a7hK4bmU50lf3bD1Mwn+MlMcoQfkYxGtxnhFv/O8c8zc8LZcHIk/anNCILE07VdHWwoa61MIHwp/0FOpcBdsKoDWMjeM7SeyssWBzy2z0sIWCAzAX/zRtFcdMx76obTyNnV2A0YpjTfArshq7c//Po01J9Qn9KdL3iMnA52rSWlry3fPDa94WnX8mCFLBOyNMLn3wIsTpA8/lF6ztleIc1xSWyCg7PGsTCZL2gG52z9N89X4FMIFfgYVwRxAML2+k58f4ruVd6fFeQNf5qkf9tpn6lNQ=='      
+    } = tokenRes
+    const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+    try {
+      const dateNow = new Date().toISOString()
+      const dateNowRaw = dateNow.substr(0, dateNow.indexOf("T")).replace(/-/g, "")
+      const res = await Taro.uploadFile({
+        url: effectiveUri,
+        filePath: item.url,
+        name: 'file',
+        formData:{
+          acl: 'public-read',
+          name: filename,
+          key: '/key',
+          Bucket,
+          'x-amz-credential': `${AccessKeyId}/${dateNowRaw}/${Region}/s3/aws4_request`,
+          policy: SecretAccessKey,
+          'x-amz-algorithm': 'AWS4-HMAC-SHA256',
+          Signature: SecretAccessKey,
+          'x-amz-signature': SecretAccessKey,
+          AWSAccessKeyId: AccessKeyId,
+          filetype
+        }
+      })
+      const data = JSON.parse(res.data)
+      const { image_url } = data.data
+      if (!image_url) {
+        return false
+      }
+      return {
+        url: ``
+      }
+    } catch (e) {
+      throw new Error (e)
+    }
   }
 }
 
 const getUploadFun = (dirver) => {
-  switch (dirver) {
+  const type = 'aws' || dirver
+  switch (type) {
     case 'oss':
       return 'aliUpload'
     case 'local':
       return 'localUpload'
+    case 'aws':
+      return 'awsUpload'
     default:
       return 'qiNiuUpload'
   }
