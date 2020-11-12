@@ -65,10 +65,11 @@ export default class OrderItem extends Component {
           ? this.props.renderFooter
           : (
             <View className='order-item__ft'>
-              {payType === 'point'
+              {/* {payType === 'point'
                 ? <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={info.point}></Price>
                 : <Price className='order-item__price' value={info.price}></Price>
-              }
+              } */}
+              <Price className='order-item__price' value={info.price}></Price>
               <Text className='order-item__pay-type'>{payType === 'dhpoint' ? '积分支付' : '微信支付'}</Text>
             </View>
           )
