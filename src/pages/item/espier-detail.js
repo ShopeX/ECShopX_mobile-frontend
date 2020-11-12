@@ -791,8 +791,8 @@ export default class Detail extends Component {
     const mainPrice = info ? (info.act_price ? info.act_price : info.price) : 0
     const memberPrice = info ? (info.member_price ? info.member_price : info.price) : 0
     const endPrice = marketing === 'normal' ? memberPrice : mainPrice
-    const skuActprice = curSku ? curSku.act_price : endPrice
-    const skuMemprice = curSku ? curSku.member_price : endPrice
+    const skuActprice = curSku ? curSku.act_price ? curSku.act_price : curSku.price : endPrice
+    const skuMemprice = curSku ? curSku.member_price ? curSku.member_price : curSku.price : endPrice
     const skuEndprice = marketing === 'normal' ? skuMemprice : skuActprice
     const skuPrice = curSku ? skuEndprice : endPrice
 

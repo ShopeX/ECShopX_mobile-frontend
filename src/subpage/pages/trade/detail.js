@@ -109,6 +109,7 @@ export default class TradeDetail extends Component {
       freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
       payment: ({ pay_type, total_fee }) => pay_type === 'point' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2), // 积分向下取整
       pay_type: 'pay_type',
+      pickupcode_status: 'pickupcode_status',
       invoice_content: 'invoice.content',
       point: 'point',
       status: ({ order_status }) => resolveOrderStatus(order_status),
