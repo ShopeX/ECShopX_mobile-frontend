@@ -49,3 +49,6 @@ export function shareSetting (params) {
     ...params
   })
 }
+export function getWhiteList () {
+  return req.get('/whitelist/status')
+}

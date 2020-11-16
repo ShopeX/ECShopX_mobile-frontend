@@ -26,7 +26,7 @@ export default class CouponPicker extends Component {
 
   async fetch () {
     //const { distributor_id } = Taro.getStorageSync('curStore')
-    const { items, is_checkout, cart_type, use_platform = 'mall',distributor_id, source } = this.$router.params
+    const { items, is_checkout, cart_type, use_platform = 'mall',distributor_id, source, goodType } = this.$router.params
 
     const params = {
       items: JSON.parse(items),
@@ -35,8 +35,13 @@ export default class CouponPicker extends Component {
       distributor_id,
       valid: true,
       is_checkout,
-      cart_type
+      cart_type,
+      iscrossborder: 0
     }
+
+    if (goodType === 'cross') {
+      params.iscrossborder = 1
+    } 
     
     if(source === 'other_pay'){
       let { cxdid, dtid, smid } = Taro.getStorageSync('espierCheckoutData')

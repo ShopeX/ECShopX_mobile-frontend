@@ -72,9 +72,9 @@ export default class List extends Component {
 
   onShareAppMessage() {
     const res = this.state.shareInfo
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = '', main_cat_id = '' } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`     
+    const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
     return {
       title: res.title,
       imageUrl: res.imageUrl,
@@ -86,7 +86,7 @@ export default class List extends Component {
     const res = this.state.shareInfo
     const { cat_id = null, main_cat_id = null } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `cat_id=${cat_id}&main_cat_id=${main_cat_id}` 
+    const query = userId ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `cat_id=${cat_id}&main_cat_id=${main_cat_id}`
     return {
       title: res.title,
       imageUrl: res.imageUrl,
@@ -125,16 +125,19 @@ export default class List extends Component {
     })
 
     const nList = pickBy(list, {
-      img: ({ pics }) => typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0],
+      img: ({ pics }) => pics ? typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0] : '',
       item_id: 'item_id',
       title: ({ itemName, item_name }) => itemName ? itemName : item_name,
       desc: 'brief',
       distributor_id: 'distributor_id',
       distributor_info: 'distributor_info',
       promotion_activity_tag: 'promotion_activity',
-      price: ({ price }) => (price / 100).toFixed(2),
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+      origincountry_name: 'origincountry_name',
+      origincountry_img_url: 'origincountry_img_url',
+      type: 'type',
+      price: ({ price }) => (price/100).toFixed(2),
+      member_price: ({ member_price }) => (member_price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2),
       is_fav: ({ item_id }) => Boolean(favs[item_id])
     })
 
@@ -455,8 +458,8 @@ export default class List extends Component {
       query
     } = this.state
 
-    return (
-      <View className='page-goods-list'>
+		return (
+			<View className='page-goods-list'>
         <NavBar
           title='商品列表'
           leftIconType='chevron-left'

@@ -17,14 +17,18 @@ export function add (params) {
 }
 
 export function fastBuy (params) {
-  const { item_id, num = 1 } = params
-  return req.post('/cart', {
+  const { item_id, num = 1, bargain_id } = params
+  const query = {
     cart_type: 'fastbuy',
     item_id,
     num,
     isAccumulate: false,
     shop_type: 'distributor'
-  })
+  }
+  if (bargain_id) {
+    query.bargain_id = bargain_id
+  }
+  return req.post('/cart', query)
 }
 
 export function del ({ cart_id }) {

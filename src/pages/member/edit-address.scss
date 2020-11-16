@@ -1,6 +1,8 @@
 @import '../../style/imports';
 
 .page-address-edit {
+  width: 100%;
+  overflow-x: hidden;
   /*  #ifdef  h5  */  
   padding-top: $navigate-height-h5;
   /*  #endif  */

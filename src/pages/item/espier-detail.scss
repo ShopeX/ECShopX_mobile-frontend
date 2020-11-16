@@ -110,7 +110,10 @@
     flex: 1;
     align-items: baseline;
     font-size: $font-size * 2;
-  
+    .view-flex-item {
+      display: flex;
+      align-items: center;
+    }
     .price {
       margin-right: 15px;
       font-size: 40px;
@@ -660,4 +663,40 @@
       margin: 60px auto 0;
     }
   }  
+  // 跨境信息
+  .nationalInfo {
+    margin-top: 20px;
+    font-size: 18px;
+    .nationalInfoLeft {
+      margin-top: 20px;
+      display: flex;
+      // align-items: center;
+      justify-content: center;
+      .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        width: 120px;
+      }
+      .nationalImg {
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        margin-bottom: 15px;
+      }
+      .line {
+        width: 120px;
+        position: relative;
+        top: 32px;
+        border-top: 2px solid #333;
+      }
+      .iconfont {
+        font-size: 60px;
+        color: #666;
+        margin-bottom: 15px;
+      }
+    }
+  }
 }

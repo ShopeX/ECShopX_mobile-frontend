@@ -11,10 +11,12 @@ module.exports = {
     NODE_ENV: '"production"',
     INTEGRATION_APP: isIntegration
   },
-  sass: {
-    resource,
-    // projectDirectory 需要配置，插件中做为~的别名
-    projectDirectory: path.resolve(__dirname, '..')
+  plugins: {
+    sass: {
+      resource,
+      // projectDirectory 需要配置，插件中做为~的别名
+      projectDirectory: path.resolve(__dirname, '..')
+    }
   },
   h5: process.env.RELEASE === 'h5'
     ? {

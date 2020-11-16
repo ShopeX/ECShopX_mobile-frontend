@@ -11,9 +11,9 @@ $current-shop-height: 150px !default;
   padding-top: $navigate-height-h5;
   /*  #endif  */     
   &__scroll {
-    @include page-scroll($searchbar-height + $current-shop-height + $navigate-height + 10, $tabbar-height); 
+    @include page-scroll($searchbar-height + $current-shop-height + $navigate-height + 10); 
     /*  #ifdef  h5  */  
-    @include page-scroll($searchbar-height + $current-shop-height + $navigate-height-h5 + 10, $tabbar-height); 
+    @include page-scroll($searchbar-height + $current-shop-height + $navigate-height-h5 + 10); 
     /*  #endif  */    
   }
   .store-list__search {  

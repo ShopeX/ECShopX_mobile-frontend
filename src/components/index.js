@@ -1,8 +1,8 @@
 import FloatMenuMeiQia from './float-menus/meiqia'
 
+export { default as SpImg } from './sp-img'
 export { FloatMenuMeiQia }
 
-export { default as QnImg } from './qn-img'
 export { default as Loading } from './loading'
 export { default as Price } from './price'
 export { default as BackToTop } from './back-to-top'

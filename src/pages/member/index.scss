@@ -19,6 +19,17 @@
     overflow: hidden;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
   }
+
+  .wheel-to{
+    position: fixed;
+    right: 5px;
+    bottom: 180px;
+    z-index: $z-index-toast;
+    Image{
+      height: 100px;
+      width: 100px;
+    }
+  }
 }
 .user-info {
   display: flex;
@@ -394,7 +405,6 @@
     content: none;
   }
 }
-
 .card-img{
 	width:45px;
 	height:45px;

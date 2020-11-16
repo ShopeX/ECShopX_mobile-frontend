@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { QnImg } from '@/components'
+import { SpImg } from '@/components'
 import { linkPage } from './helper'
 
 import './imghot-zone.scss'
@@ -47,7 +47,7 @@ export default class WgtImgHotZone extends Component {
           </View>
         )}
         <View className={`slider-wra img-hotzone ${config.padded ? 'padded' : ''}`}>
-          <QnImg
+          <SpImg
             img-class='img-hotzone_img'
             src={config.imgUrl}
             mode='widthFix'

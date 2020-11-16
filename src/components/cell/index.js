@@ -27,7 +27,7 @@ export default class SpCell extends Component {
         onClick={onClick}
       >
         {img && (
-          <Image className='sp-cell__icon' src={img} mode='' />
+          <Image className='sp-cell__icon' src={img} mode="aspectFit"/>
         )}
         {icon && (
           <View className={`sp-cell__icon ${iconPrefix ? iconPrefix + ' ' + iconPrefix + '-' + icon : 'at-icon at-icon-' + icon}`}></View>

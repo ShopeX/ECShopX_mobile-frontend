@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { QnImg } from '@/components'
+import { View, Text, Image } from '@tarojs/components'
+import { SpImg } from '@/components'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
 import { Tracker } from "@/service";
@@ -115,7 +115,7 @@ export default class WgtGoodsGrid extends Component {
                   >
                     <View className='goods-wrap'>
                       <View className='thumbnail'>
-                        <QnImg
+                        <SpImg
                           img-class='goods-img'
                           src={item.imgUrl}
                           mode='aspectFill'
@@ -125,13 +125,21 @@ export default class WgtGoodsGrid extends Component {
                       </View>
                       <View className='caption'>
                         {config.brand && item.brand && (
-                          <QnImg
+                          <SpImg
                             img-class='goods-brand'
                             src={item.brand}
                             mode='aspectFill'
                             width='300'
                           />
                         )}
+                        {
+                          item.type === '1' && <View className='nationalInfo'>
+                              <Image className='nationalFlag' src={item.origincountry_img_url} mode='aspectFill' lazyLoad />
+                              <Text className='nationalTitle'>
+                                { item.origincountry_name }
+                              </Text>
+                          </View>
+                        }
                         <View className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.title}</View>
                         {item.brief && <View className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.brief}</View>}
                         {

@@ -109,6 +109,7 @@ export default class TradeList extends Component {
       total_fee: 'total_fee',
       pay_type: 'pay_type',
       point: 'point',
+      type: 'type',
       is_rate: 'is_rate',
       create_date: 'create_date',
       order: ({ items }) => pickBy(items, {
@@ -116,6 +117,9 @@ export default class TradeList extends Component {
         item_id: 'item_id',
         pic_path: 'pic',
         title: 'item_name',
+        origincountry_name: 'origincountry_name',
+        origincountry_img_url: 'origincountry_img_url',
+        type: 'type',
         item_spec_desc: 'item_spec_desc',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
         item_fee: 'item_fee',

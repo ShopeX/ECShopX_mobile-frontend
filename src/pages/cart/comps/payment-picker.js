@@ -74,7 +74,7 @@ export default class PaymentPicker extends Component {
             ></View>
           </View>
           <View className='payment-picker__bd'>
-          {
+          {/* {
               isShowPoint &&
               <View
                 className={`payment-item ${disabledPayment && disabledPayment['point'] ? 'is-disabled' : ''}`}
@@ -92,7 +92,7 @@ export default class PaymentPicker extends Component {
                   ></SpCheckbox>
                 </View>
               </View>
-            }
+            } */}
             {
               isShowBalance &&
               <View

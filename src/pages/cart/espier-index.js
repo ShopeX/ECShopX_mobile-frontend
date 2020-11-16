@@ -40,7 +40,9 @@ export default class CartIndex extends Component {
       likeList: [],
       invalidList: [],
       error: null,
-      isPathQrcode: false
+      isPathQrcode: false,
+      cartType: 'normal',
+      crossborder_show: false
     }
 
     this.updating = false
@@ -122,7 +124,7 @@ export default class CartIndex extends Component {
     })
 
     this.setState({
-      likeList: [...this.state.likeList, ...nList],
+      likeList: [...this.state.likeList, ...nList]
     })
 
     if (!S.getAuthToken()) {
@@ -164,7 +166,7 @@ export default class CartIndex extends Component {
     return groups
   }
 
-  processCart({ valid_cart = [], invalid_cart = [] }) {
+  processCart ({ valid_cart = [], invalid_cart = [], cartType, crossborder_show }) {
     let cartCount = 0
     const list = valid_cart.map(shopCart => {
       cartCount += shopCart.cart_total_num
@@ -177,7 +179,9 @@ export default class CartIndex extends Component {
 
     const invalidList = this.transformCartList(invalid_cart)
     this.setState({
-      invalidList
+      invalidList,
+      cartType: !crossborder_show ? 'normal' : cartType,
+      crossborder_show
     })
 
     log.debug('[cart fetchCart]', list)
@@ -187,14 +191,37 @@ export default class CartIndex extends Component {
     return list
   }
 
-  async fetchCart(cb) {
-    let valid_cart = [], invalid_cart = []
+  async fetchCart (cb) {
+    let valid_cart = [], invalid_cart = [], crossborder_show = false
+    const cartTypeLocal = Taro.getStorageSync('cartType')
     const { type = 'distributor' } = this.$router.params
-    const params = { shop_type: type }
+    const params = {
+      shop_type: type
+    }
+    if (cartTypeLocal === 'cross') {
+      params.iscrossborder = 1
+    } else {
+      delete params.iscrossborder
+    }
     try {
       const res = await api.cart.get(params)
+      if (!res.crossborder_show && cartTypeLocal !== 'normal') {
+        Taro.setStorageSync('cartType', 'normal')
+        this.fetchCart((list) => {
+          const groups = this.resolveActivityGroup(list)
+          // this.props.list 此时为空数组
+          setTimeout(() => {
+            this.setState({
+              groups,
+              loading: false
+            })
+          }, 40)
+        })
+        return false
+      }
       valid_cart = res.valid_cart || valid_cart
       invalid_cart = res.invalid_cart || invalid_cart
+      crossborder_show = !!res.crossborder_show
     } catch (e) {
       this.setState({
         error: e.message
@@ -203,7 +230,9 @@ export default class CartIndex extends Component {
 
     const list = this.processCart({
       valid_cart,
-      invalid_cart
+      invalid_cart,
+      cartType: cartTypeLocal,
+      crossborder_show
     })
     cb && cb(list)
   }
@@ -361,6 +390,7 @@ export default class CartIndex extends Component {
 
   handleCheckout = (shopCart) => {
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = shopCart.shopInfo
+    const { cartType } = this.state
     const { type } = this.$router.params
     if (this.updating) {
       Taro.showToast({
@@ -370,7 +400,7 @@ export default class CartIndex extends Component {
       return
     }
     Taro.navigateTo({
-      url: `/pages/cart/espier-checkout?cart_type=cart&type=${type}&shop_id=${shop_id}&is_delivery=${is_delivery}&is_ziti=${is_ziti}&name=${shop_name}&store_address=${address}&lat=${lat}&lng=${lng}&hour=${hour}&phone=${mobile}`
+      url: `/pages/cart/espier-checkout?cart_type=cart&type=${type}&shop_id=${shop_id}&is_delivery=${is_delivery}&is_ziti=${is_ziti}&name=${shop_name}&store_address=${address}&lat=${lat}&lng=${lng}&hour=${hour}&phone=${mobile}&goodType=${cartType}`
     })
   }
 
@@ -387,6 +417,9 @@ export default class CartIndex extends Component {
       store: 'store',
       curSymbol: 'cur.symbol',
       distributor_id: 'shop_id',
+      type: 'type',
+      origincountry_name: 'origincountry_name',
+      origincountry_img_url: 'origincountry_img_url',
       promotions: ({ promotions = [], cart_id }) => promotions.map(p => {
         p.cart_id = cart_id
         return p
@@ -408,8 +441,27 @@ export default class CartIndex extends Component {
     Taro.navigateBack()
   }
 
-  render() {
-    const { groups, invalidList, cartMode, loading, curPromotions, likeList, page, isPathQrcode } = this.state
+  // 切换购物车类型
+  onChangeCartType = () => {
+    let { cartType } = this.state
+    if(cartType === 'cross') {
+      cartType = 'normal'
+    } else {
+      cartType = 'cross'
+    }
+    Taro.setStorageSync('cartType', cartType)
+    this.setState({
+      cartType
+    }, async () => {
+      Taro.showLoading({mask: true})
+      await this.fetchCart()
+      Taro.hideLoading()
+      // console.log(111)
+    })
+  }
+
+  render () {
+    const { groups, invalidList, cartMode, loading, curPromotions, likeList, page, isPathQrcode, cartType, crossborder_show } = this.state
     const { list, showLikeList, colors } = this.props
 
     if (loading) {
@@ -454,6 +506,15 @@ export default class CartIndex extends Component {
             //     >{cartMode === 'edit' ? '完成' : '编辑'}</Text>
             //   </View>
             // )
+          }
+          {
+            crossborder_show && 
+            <View className='changeCross'>
+              <View className='content' onClick={this.onChangeCartType.bind(this)}>
+                <View className={`iconfont ${cartType === 'cross' ? 'icon-flight' : 'icon-shop-cart-1'}`}></View>
+                <View className='iconfont icon-repeat'></View>
+              </View>
+            </View>
           }
           <View className='cart-list'>
             {

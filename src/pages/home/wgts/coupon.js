@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { QnImg, SpToast } from '@/components'
+import { SpImg, SpToast } from '@/components'
 import req from '@/api/req'
 import S from '@/spx'
 import { classNames } from '@/utils'
@@ -76,12 +76,12 @@ export default class WgtCoupon extends Component {
                 key={`${idx}1`}
               > {
                   item.imgUrl
-                  ? <QnImg
-                    img-class='coupon_img'
-                    src={item.imgUrl}
-                    mode='widthFix'
-                    width='750'
-                  />
+                  ? <SpImg
+                      img-class='coupon_img'
+                      src={item.imgUrl}
+                      mode='widthFix'
+                      width='750'
+                    />
                   : <View className='coupon-body'>
                       <View className='coupon__amount'>
                         <Text>{item.amount}</Text>

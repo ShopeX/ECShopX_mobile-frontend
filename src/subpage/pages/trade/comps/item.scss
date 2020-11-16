@@ -5,6 +5,10 @@
   border-radius: $item-border-radius;
   margin: 0 0 $edge-margin;
   padding: 30px;
+  .icon-globe {
+    font-size: 32px;
+    margin-right: 10px;
+  }
   &__hd {
     padding: 28px $edge-size 0;
     line-height: 1;
@@ -15,6 +19,10 @@
       color: $color-link;
       font-size: small;
       text-align: right;
+    }
+    .right {
+      display: flex;
+      align-items: center;
     }
   }
 
@@ -34,6 +42,13 @@
     justify-content: space-between;
     font-size: 22px;
     color: #a6a6a6;
+    .right {
+      font-size: 22px;
+      color: #a6a6a6;
+      .trade-item__shop {
+        margin-left: 20px;
+      }
+    }
   }
   &__total {
     padding: 20px 0;

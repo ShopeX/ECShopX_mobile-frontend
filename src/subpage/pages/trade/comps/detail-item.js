@@ -72,6 +72,7 @@ export default class DetailItem extends Component {
               <OrderItem
                 key={`${idx}1`}
                 info={item}
+                isShowNational
               />
               {
                 !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>

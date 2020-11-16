@@ -12,23 +12,10 @@ import api from '@/api'
 import req from '@/api/req'
 import { log, pickBy, classNames } from '@/utils'
 import S from '@/spx'
-import { Tracker } from "@/service";
-// import * as qiniu from 'qiniu-js'
+import imgUploader from '@/utils/upload'
 
 import './refund.scss'
 
-function uploadURLFromRegionCode(code) {
-  let uploadURL = null;
-  switch (code) {
-    case 'z0': uploadURL = 'https://up.qiniup.com'; break;
-    case 'z1': uploadURL = 'https://up-z1.qiniup.com'; break;
-    case 'z2': uploadURL = 'https://up-z2.qiniup.com'; break;
-    case 'na0': uploadURL = 'https://up-na0.qiniup.com'; break;
-    case 'as0': uploadURL = 'https://up-as0.qiniup.com'; break;
-    default: console.error('please make the region is with one of [z0, z1, z2, na0, as0]');
-  }
-  return uploadURL;
-}
 
 @connect(({ colors }) => ({
   colors: colors.current
@@ -106,10 +93,8 @@ export default class TradeRefund extends Component {
   }
 
   handleTextChange = (e) => {
-    console.log(e)
-    const { value } = e.target
     this.setState({
-      description: value
+      description: e
     })
   }
 
@@ -126,71 +111,12 @@ export default class TradeRefund extends Component {
       S.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 3)
-    let promises = []
-
-    for (let item of imgFiles) {
-      const promise = new Promise(async (resolve, reject) => {
-        if (!item.file) {
-          resolve(item)
-        } else {
-          const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-          const { region, token, key, domain } = await req.get('/espier/image_upload_token', {
-            filesystem: 'qiniu',
-            filetype: 'aftersales',
-            filename
-          })
-
-          console.log(item, region, token, key, domain, 132)
-          let uploadUrl = uploadURLFromRegionCode(region)
-          Taro.uploadFile({
-            url: uploadUrl,
-            filePath: item.url,
-            name: 'file',
-            formData: {
-              'token': token,
-              'key': key
-            },
-            success: res => {
-              let imgData = JSON.parse(res.data)
-              resolve({
-                url: `${domain}/${imgData.key}`
-              })
-            },
-            fail: error => reject(error)
-          })
-
-          // let observable
-          // try {
-          //   const blobImg = await resolveBlobFromFile(item.url, item.file.type)
-          //   observable = qiniu.upload(blobImg, key, token, {}, {
-          //     region: qiniu.region[region]
-          //   })
-          // } catch (e) {
-          //   console.log(e)
-          // }
-
-          // observable.subscribe({
-          //   next (res) {},
-          //   error (err) {
-          //     reject(err)
-          //   },
-          //   complete (res) {
-          //     resolve({
-          //       url: `${domain}/${res.key}`
-          //     })
-          //   }
-          // })
-        }
+    imgUploader.uploadImageFn(imgFiles, 'espier/image_upload_token', 'jpg/png', 'z2')
+      .then(res => {
+        this.setState({
+          imgs: res
+        })
       })
-      promises.push(promise)
-    }
-
-    const results = await Promise.all(promises)
-    log.debug('[qiniu uploaded] results: ', results)
-
-    this.setState({
-      imgs: results
-    })
   }
 
   handleImageClick = () => {

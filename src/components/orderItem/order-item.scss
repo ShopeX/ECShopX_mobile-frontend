@@ -10,11 +10,25 @@
     margin-right: 35px;
     border-radius: 6px;
   }
-  &__hd {
-  }
+  // &__hd {     
+  // }
   &__bd {
     width: 50%;
     margin-bottom: 30px;
+    // 跨境
+    .nationalInfo {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      font-size: 24px;
+      padding: 10px 0;
+      .nationalFlag {
+        width: 45px;
+        height: 45px;
+        border-radius: 100%;
+        margin-right: 15px;
+      }
+    }    
   }
   &__ft {
     flex: 1;

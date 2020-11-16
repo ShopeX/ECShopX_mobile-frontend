@@ -15,7 +15,7 @@
 		"autoAudits": false,
 		"newFeature": false,
 		"uglifyFileName": false,
-		"uploadWithSourceMap": true,
+		"uploadWithSourceMap": false,
 		"useIsolateContext": true,
 		"nodeModules": false,
 		"enhance": false,

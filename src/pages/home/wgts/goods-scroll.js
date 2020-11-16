@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
 import { calcTimer } from '@/utils'
-import { QnImg } from '@/components'
+import { SpImg } from '@/components'
 import { linkPage } from './helper'
 
 import './goods-scroll.scss'
@@ -127,7 +127,7 @@ export default class WgtGoodsScroll extends Component {
                       </View>
                     )}
                     <View className='thumbnail'>
-                      <QnImg
+                      <SpImg
                         img-class='goods-img'
                         src={item.imgUrl}
                         mode='aspectFill'
@@ -135,6 +135,14 @@ export default class WgtGoodsScroll extends Component {
                         lazyLoad
                       />
     								</View>
+                    {
+                      item.type === '1' && <View className='nationalInfo'>
+                          <Image className='nationalFlag' src={item.origincountry_img_url}  mode='aspectFill' lazyLoad />
+                          <Text className='nationalTitle'>
+                            { item.origincountry_name }
+                          </Text>
+                      </View>
+                    }
     								{
     									config.showPrice
     									&& <View className='goods-price'>

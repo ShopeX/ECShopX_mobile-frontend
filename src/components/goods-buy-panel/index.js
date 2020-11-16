@@ -309,15 +309,17 @@ export default class GoodsBuyPanel extends Component {
 
       this.setState({
         busy: false
-      });
+      })
+      // 设置添加商品的类型，决定购物车展示的商品类型
+      const cartType = info.type == '1' ? 'cross' : 'normal'
+      Taro.setStorageSync( 'cartType', cartType )
       // 首次加入购物车
       Tracker.dispatch("GOODS_ADD_TO_CART", {
         ...info,
         ...skuInfo,
         goods_num: +num
       });
-
-      this.props.onAddCart(item_id, num);
+      this.props.onAddCart(item_id, num)
     }
 
     if (type === "fastbuy") {
@@ -335,6 +337,10 @@ export default class GoodsBuyPanel extends Component {
             });
           });
         url += `&type=${marketing}&seckill_id=${seckill_id}&ticket=${ticket}`;
+      }
+
+      if (info.type == '1') {
+        url+= '&goodType=cross'
       }
 
       try {

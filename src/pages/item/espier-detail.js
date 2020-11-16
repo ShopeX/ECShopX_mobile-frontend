@@ -86,6 +86,11 @@ export default class Detail extends Component {
     if (uid) {
       this.uid = uid
     }
+    if(!S.getAuthToken()){
+      setTimeout(() => {
+        this.checkWhite()
+      }, 1000)
+    }
     this.fetchInfo(id)
     this.getEvaluationList(id)
     // 浏览记录
@@ -102,6 +107,12 @@ export default class Detail extends Component {
         console.log(e)
       }
     }
+
+    // 处理定位
+    const lnglat = Taro.getStorageSync('lnglat')
+    if (lnglat && !lnglat.city) {
+      entry.InverseAnalysis(lnglat)
+    }
   }
 
   async componentDidShow() {
@@ -114,6 +125,7 @@ export default class Detail extends Component {
         userId: res.memberInfo.user_id,
         mobile: res.memberInfo.mobile,
         isPromoter: res.is_promoter,
+        openid: res.memberInfo.open_id,
         vip: res.vipgrade ? res.vipgrade.vip_type : '',
       }
       Taro.setStorageSync('userinfo', userObj)
@@ -180,6 +192,14 @@ export default class Detail extends Component {
       })
     } catch (e) {
       console.log(e)
+    }
+  }
+  async checkWhite () {
+    const { status } = await api.wx.getWhiteList()
+    if(status == true){
+      setTimeout(() => {
+        S.login(this, true)
+      }, 1000)
     }
   }
 
@@ -466,6 +486,7 @@ export default class Detail extends Component {
         userId: res.memberInfo.user_id,
         mobile: res.memberInfo.mobile,
         isPromoter: res.is_promoter,
+        openid: res.memberInfo.open_id,
         vip: res.vipgrade ? res.vipgrade.vip_type : ''
       }
       Taro.setStorageSync('userinfo', userObj)
@@ -480,7 +501,7 @@ export default class Detail extends Component {
     const pic = pics[0].replace('http:', 'https:')
     const infoId = info.distributor_id
     const id = APP_PLATFORM === 'standard' ? distributor_id : infoId
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${id}&uid=${userId}`
+    const wxappCode = `${host}/h5app/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${id}&uid=${userId}`
     const avatarImg = await Taro.getImageInfo({src: avatar})
     const goodsImg = await Taro.getImageInfo({src: pic})
     const codeImg = await Taro.getImageInfo({src: wxappCode})
@@ -747,6 +768,19 @@ export default class Detail extends Component {
     const { showLikeList, colors } = this.props
     const meiqia = Taro.getStorageSync('meiqia')
     const uid = this.uid
+    const taxRate = info ? (Number(info.cross_border_tax_rate || 0) / 100) : 0
+    const mainPrice = info ? (info.act_price ? info.act_price : info.price) : 0
+    const memberPrice = info ? (info.member_price ? info.member_price : info.price) : 0
+    const endPrice = marketing === 'normal' ? memberPrice : mainPrice
+    const skuActprice = curSku ? curSku.act_price : endPrice
+    const skuMemprice = curSku ? curSku.member_price : endPrice
+    const skuEndprice = marketing === 'normal' ? skuMemprice : skuActprice
+    const skuPrice = curSku ? skuEndprice : endPrice
+
+    const crossPrice =  ((skuPrice * taxRate) / 100).toFixed(2)
+    const showPrice = (skuPrice * (1 + taxRate))
+    console.log(showPrice)
+    const lnglat = Taro.getStorageSync('lnglat')
 
     if (!info) {
       return (
@@ -830,7 +864,7 @@ export default class Detail extends Component {
                     <Price
                       unit='cent'
                       symbol={(info.cur && info.cur.symbol) || ''}
-                      value={info.act_price}
+                      value={showPrice}
                     />
                     {
                       marketing !== 'normal' &&
@@ -859,7 +893,7 @@ export default class Detail extends Component {
                       unit='cent'
                       className='goods-prices__market'
                       symbol={(info.cur && info.cur.symbol) || ''}
-                      value={info.price}
+                      value={curSku ? curSku.price : info.price}
                     />
                   </View>
                 </View>
@@ -867,10 +901,10 @@ export default class Detail extends Component {
               <View className='goods-timer__bd'>
                 {
                   (marketing === 'seckill' || marketing === 'limited_time_sale') &&
-                  <View>
-                    {info.activity_info.status === 'in_the_notice' && <Text className='goods-timer__label'>距开始还剩</Text>}
-                    {info.activity_info.status === 'in_sale' && <Text className='goods-timer__label'>距结束还剩</Text>}
-                  </View>
+                    <View>
+                      {info.activity_info.status === 'in_the_notice' && <Text className='goods-timer__label'>距开始还剩</Text>}
+                      {info.activity_info.status === 'in_sale' && <Text className='goods-timer__label'>距结束还剩</Text>}
+                    </View>
                 }
                 {
                   marketing === 'group' &&
@@ -921,36 +955,20 @@ export default class Detail extends Component {
               marketing === 'normal' && (
                 <View className='goods-prices__wrap'>
                   <View className='goods-prices'>
+                  <View className='view-flex-item'>
+                    <Price
+                      primary
+                      unit='cent'
+                      value={showPrice}
+                    />
                     {
-                      info.member_price
-                        ? <View className='view-flex-item'>
-                          <Price
-                            primary
-                            unit='cent'
-                            value={info.member_price}
-                          />
-                          <Price
-                            lineThrough
-                            unit='cent'
-                            value={info.market_price}
-                          />
-                        </View>
-                        : <View className='view-flex-item'>
-                          <Price
-                            primary
-                            unit='cent'
-                            value={info.price}
-                          />
-                          {
-                            info.market_price !== 0 && info.market_price &&
-                            <Price
-                              lineThrough
-                              unit='cent'
-                              value={info.market_price}
-                            />
-                          }
-                        </View>
+                      (info.type != 1 ||  info.cross_border_tax_rate == 0) ? <Price
+                        lineThrough
+                        unit='cent'
+                        value={curSku ? curSku.market_price : info.market_price}
+                      /> : `(含税¥ ${ crossPrice })`
                     }
+                  </View>
                     {
                       info.nospec && info.activity_type === 'limited_buy' &&
                       <View className='limited-buy-rule'>
@@ -970,6 +988,36 @@ export default class Detail extends Component {
                 </View>
               )
             }
+            {/* 跨境商品 */}
+            {
+              info.type == '1' &&
+                <View className='nationalInfo'>
+                  <View>
+                    进口税: 商品包税
+                    {/* <Price
+                      unit='cent'
+                      symbol={(info.cur && info.cur.symbol) || ''}
+                      value={crossPrice}
+                    /> */}
+                  </View>                  
+                  <View className='nationalInfoLeft'>
+                    <View className='item'>
+                      <Image src={info.origincountry_img_url}  className='nationalImg' />
+                      <Text>{ info.origincountry_name }</Text>
+                    </View>
+                    <View className='line'></View>
+                    <View className='item'>
+                      <View className='iconfont icon-matou'></View>
+                      <Text>自有保税区</Text>
+                    </View>
+                    <View className='line'></View>
+                    <View className='item'>
+                      <View className='iconfont icon-periscope'></View>
+                      <Text>{ lnglat.city }</Text>
+                    </View>
+                  </View>
+                </View>
+            }              
           </View>
 
           {isPromoter && (
@@ -996,8 +1044,8 @@ export default class Detail extends Component {
                   }
                 </View>
               </View>
-            </View>
-          }
+            </View>  
+          }        
 
           <SpCell
             className='goods-sec-specs'

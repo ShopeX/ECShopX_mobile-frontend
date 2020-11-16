@@ -18,8 +18,9 @@ const {
   APP_MAP_NAME,
   APP_TRACK,
   APP_ID,
-  APP_YOUSHU_TOKEN
-} = process.env;
+  APP_YOUSHU_TOKEN,
+  STORAGE
+} = process.env
 
 // 是否为web
 const isWeb = TARO_ENV === 'h5'
@@ -79,11 +80,12 @@ const config = {
     APP_CUSTOM_SERVER: isWeb ? `'${APP_CUSTOM_SERVER}'` : APP_CUSTOM_SERVER,
     APP_HOME_PAGE: isWeb ? `'${APP_HOME_PAGE}'` : APP_HOME_PAGE,
     APP_AUTH_PAGE: isWeb ? `'${APP_AUTH_PAGE}'` : APP_AUTH_PAGE,
-    APP_MAP_KEY: `'${APP_MAP_KEY}'`,
-    APP_MAP_NAME: `'${APP_MAP_NAME}'`,
     APP_TRACK: `${APP_TRACK}`,
     APP_ID: `${APP_ID}`,
-    APP_YOUSHU_TOKEN: `${APP_YOUSHU_TOKEN}`
+    APP_YOUSHU_TOKEN: `${APP_YOUSHU_TOKEN}`,
+    APP_MAP_KEY: isWeb ? `'${APP_MAP_KEY}'` : APP_MAP_KEY,
+    APP_MAP_NAME: `'${APP_MAP_NAME}'`,
+    STORAGE: isWeb ? `'${STORAGE}'` : STORAGE,
   },
   alias: {
     "@": join(__dirname, "../src")
@@ -99,12 +101,12 @@ const config = {
   plugins: ["@tarojs/plugin-sass", "@tarojs/plugin-uglify"],
   // 开启压缩
   uglify: {
-    enable: true,
+    enable: isPro,
     config: {
       // 配置项同 https://github.com/mishoo/UglifyJS2#minify-options
       compress: {
-        drop_console: true,
-        drop_debugger: true
+        drop_console: isPro,
+        drop_debugger: isPro
       }
     }
   },

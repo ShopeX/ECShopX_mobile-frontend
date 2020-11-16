@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text} from '@tarojs/components'
-import { QnImg } from '@/components'
+import {View, Text, Image} from '@tarojs/components'
+import { SpImg } from '@/components'
 import { isObject, classNames } from '@/utils'
 
 import './index.scss'
@@ -72,7 +72,7 @@ export default class GoodsItem extends Component {
             className='goods-item__img-wrap'
             onClick={onClick}
           >
-            <QnImg
+            <SpImg
               img-class='goods-item__img'
               src={img}
               mode='aspectFill'
@@ -81,6 +81,14 @@ export default class GoodsItem extends Component {
             />
           </View>
           <View className='goods-item__cont'>
+            {
+              info.type === '1' && <View className='nationalInfo'>
+                  <Image className='nationalFlag' src={info.origincountry_img_url} mode='aspectFill' lazyLoad />
+                  <Text className='nationalTitle'>
+                    {info.origincountry_name}
+                  </Text>
+              </View>
+            }            
             <View className='goods-item__caption'>
               {
                 promotion_activity !== null

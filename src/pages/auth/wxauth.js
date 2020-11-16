@@ -44,6 +44,7 @@ export default class WxAuth extends Component {
           avatar: memberInfo.memberInfo.avatar,
           userId: memberInfo.memberInfo.user_id,
           isPromoter: memberInfo.is_promoter,
+          openid: memberInfo.memberInfo.open_id,
           vip: memberInfo.vipgrade ? memberInfo.vipgrade.vip_type : '',
           mobile: memberInfo.memberInfo.mobile
         }

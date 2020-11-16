@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { QnImg } from '@/components'
+import { SpImg } from '@/components'
 import { connect } from '@tarojs/redux'
 import { Tracker } from "@/service";
 import api from '@/api'
@@ -191,7 +191,7 @@ export default class WgtGoods extends Component {
                 <View className='goods-content' key={item.item_id} onClick={this.handleClickItem.bind(this, item)}>
                   <View className='goods-content__info'>
                     <View className='goods-content__info_img'>
-                      <QnImg
+                      <SpImg
                         img-class='img-style'
                         src={item.img_url}
                         mode='aspectFill'

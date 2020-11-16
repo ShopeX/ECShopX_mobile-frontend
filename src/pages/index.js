@@ -54,12 +54,13 @@ export default class HomeIndex extends Component {
       is_open_scan_qrcode: null,
       is_open_official_account:null,
       show_official:true,
-      showCloseBtn:false
+      showCloseBtn:false,
+      // 是否有跳转至店铺页
+      isGoStore: false
     }
   }
 
-  async componentDidMount() {
-    this.fetchSetInfo()
+  async componentDidMount () {
     const isCloseOfficial = Taro.getStorageSync('close_official')//是否关闭
     if(isCloseOfficial){
       this.setState({
@@ -74,6 +75,7 @@ export default class HomeIndex extends Component {
   //     })
   //    // const res = parseUrlStr(queryStr)
   // }
+    this.fetchSetInfo()
     api.wx.shareSetting({shareindex: 'index'}).then(res => {
       this.setState({
         shareInfo: res
@@ -94,6 +96,11 @@ export default class HomeIndex extends Component {
       const options = this.$router.params
       const res = await entry.entryLaunch(options, isNeedLoacate)
       const { store } = res
+      if(!S.getAuthToken()){
+        setTimeout(() => {
+          this.checkWhite()
+        }, 1000)
+      }
       if (!isArray(store)) {
         this.setState({
           curStore: store
@@ -135,8 +142,11 @@ export default class HomeIndex extends Component {
     const options = this.$router.params
     const { curStore } = this.state
     const curStoreLocal = Taro.getStorageSync('curStore')
-    if (!isArray(curStoreLocal)) {
-      if (!curStore || (curStoreLocal.distributor_id != curStore.distributor_id)) {
+    if (!isArray(curStoreLocal) && this.state.isGoStore) {
+      this.setState({
+        isGoStore: false
+      })
+      if (!curStore || (curStoreLocal.distributor_id != curStore.distributor_id) ) {
         this.setState({
           curStore: curStoreLocal,
           likeList: [],
@@ -296,7 +306,7 @@ export default class HomeIndex extends Component {
   }
   async fetchInfo(cb) {
     const { curStore } = this.state
-    if (!curStore.distributor_id) {
+    if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
     // const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
@@ -320,8 +330,9 @@ export default class HomeIndex extends Component {
           this.resetPage()
           this.setState({
             likeList: []
+          }, () => {
+            this.nextPage()
           })
-          this.nextPage()
         } else {
           this.props.onUpdateLikeList(false)
         }
@@ -343,10 +354,13 @@ export default class HomeIndex extends Component {
       item_id: 'item_id',
       title: 'itemName',
       distributor_id: 'distributor_id',
+      origincountry_name: 'origincountry_name',
+      origincountry_img_url: 'origincountry_img_url',
       promotion_activity_tag: 'promotion_activity',
-      price: ({ price }) => (price / 100).toFixed(2),
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+      type: 'type',
+      price: ({ price }) => (price/100).toFixed(2),
+      member_price: ({ member_price }) => (member_price/100).toFixed(2),
+      market_price: ({ market_price }) => (market_price/100).toFixed(2),
       desc: 'brief',
     })
 
@@ -358,8 +372,15 @@ export default class HomeIndex extends Component {
       total
     }
   }
-
-  handleClickLicense = () => {
+  async checkWhite () {
+    const { status } = await api.wx.getWhiteList()
+    if(status == true){
+      setTimeout(() => {
+        S.login(this, true)
+      }, 1000)
+    }
+  }
+    handleClickLicense = () => {
     Taro.navigateTo({
       url: '/pages/home/license'
     })
@@ -415,13 +436,18 @@ export default class HomeIndex extends Component {
     })
   }
   handleOfficialError=()=>{
-   
   }
   handleOfficialClose =()=>{
     this.setState({
       show_official:false
     })
     Taro.setStorageSync('close_official',true)
+  }
+
+  goStore = () => {
+    this.setState({
+      isGoStore: true
+    })
   }
 
   render () {
@@ -445,26 +471,27 @@ export default class HomeIndex extends Component {
                 onClick={this.handleOfficialClose.bind(this)}
                 isClose={true}
             >
-
           </AccountOfficial>
             )
           }
         {
-          APP_PLATFORM === 'standard' && curStore &&
-          <HeaderHome
-            store={curStore}
-            isOpenScanQrcode={is_open_scan_qrcode}
-          />
-        }
+          APP_PLATFORM === 'standard' && curStore && 
+            <HeaderHome
+              store={curStore}
+              onClickItem={this.goStore.bind(this)}
+              isOpenScanQrcode={is_open_scan_qrcode}
+            />
+        }        
 
-        <View className={classNames('wgts-wrap', APP_PLATFORM !== 'standard' &&
-          'wgts-wrap_platform', positionStatus && (APP_PLATFORM !== 'standard' || curStore.distributor_id == 0 ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard'), !curStore && 'wgts-wrap-nolocation')}
+        <View className={classNames('wgts-wrap', APP_PLATFORM !== 'standard' && 
+        'wgts-wrap_platform', positionStatus && (APP_PLATFORM !== 'standard' || curStore.distributor_id == 0 ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard') , !curStore && 'wgts-wrap-nolocation')}
         >
           <View className='wgts-wrap__cont'>
             {wgts && <HomeWgts
               wgts={wgts}
             />}
-            {likeList.length > 0 && is_open_recommend == 1 && (
+            {
+            (likeList.length > 0 && is_open_recommend==1) && (
               <View className='faverite-list'>
                 <WgtGoodsFaverite info={likeList} />
                 {
