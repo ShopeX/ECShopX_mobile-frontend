@@ -30,7 +30,7 @@ export default class TradeRefund extends Component {
       // reason: ['多拍/拍错/不想要', '缺货', '买多了', '质量问题', '卖家发错货', '商品破损', '描述不符', '其他'],
       description: '',
       imgs: [],
-      reason: ['物流破损', '产品描述与实物不符', '质量问题', '皮肤过敏'],
+      reason: [],
       curReasonIdx: null,
       goodStatus: ['未收到货', '已收到货'],
       curGoodIdx: null,
@@ -60,6 +60,7 @@ export default class TradeRefund extends Component {
     const { aftersales_bn, item_id, order_id } = this.$router.params
     // 获取售后原因
     const reasonList = await api.aftersales.reasonList()
+
     const res = await api.aftersales.info({
       aftersales_bn,
       item_id,
@@ -67,22 +68,28 @@ export default class TradeRefund extends Component {
     })
     Taro.hideLoading()
 
-    if (!res.aftersales) return
+    const { reason: oldReason } = this.state
+    const newReason = [...oldReason, ...reasonList]
+
+    if (!res.aftersales) {
+      this.setState({
+        reason: newReason
+      })
+      return 
+    }
 
     const params = pickBy(res.aftersales, {
       curSegIdx: ({ aftersales_type }) => this.state.segTypes.findIndex(t => t.status === aftersales_type) || 0,
       curSegTypeValue: ({ aftersales_type }) => this.state.segTypes[this.state.segTypes.findIndex(t => t.status === aftersales_type)].title,
-      curReasonIdx: ({ reason }) => this.state.reason.indexOf(reason) || 0,
+      curReasonIdx: ({ reason }) => newReason.indexOf(reason) || 0,
       curSegReasonValue: 'reason',
       description: 'description',
       imgs: ({ evidence_pic }) => evidence_pic.map(url => ({ url }))
     })
 
-    // console.log(params, 70)
-    const { reason } = this.state
     this.setState({
       ...params,
-      reason: [...reason, ...reasonList]
+      reason: newReason
     })
   }
 
