@@ -58,6 +58,8 @@ export default class TradeRefund extends Component {
     })
 
     const { aftersales_bn, item_id, order_id } = this.$router.params
+    // 获取售后原因
+    const reasonList = await api.aftersales.reasonList()
     const res = await api.aftersales.info({
       aftersales_bn,
       item_id,
@@ -77,8 +79,11 @@ export default class TradeRefund extends Component {
     })
 
     // console.log(params, 70)
-
-    this.setState(params)
+    const { reason } = this.state
+    this.setState({
+      ...params,
+      reason: [...reason, ...reasonList]
+    })
   }
 
 

@@ -344,9 +344,11 @@ export default class GoodsBuyPanel extends Component {
       }
 
       try {
+
         await api.cart.fastBuy({
           item_id,
-          num
+          num,
+          distributor_id
         });
       } catch (e) {
         console.log(e);
