@@ -33,7 +33,6 @@ export default class GoodsItem extends Component {
     if (!info) {
       return null
     }
-    console.log('info----->',info)
 
     const img = info.img || info.image_default_id
 
