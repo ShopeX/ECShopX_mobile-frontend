@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/utils/upload.js
  * @Date: 2020-03-06 16:32:07
  * @LastEditors: Arvin
- * @LastEditTime: 2020-11-12 17:24:10
+ * @LastEditTime: 2020-11-16 15:38:12
  */
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
@@ -109,14 +109,14 @@ const upload = {
   awsUpload: async (item, tokenRes) => {
     const {
       key, 
-      XAmzCredential = 'AKIA4MSC276F5NBR4P7G/20201112/cn-northwest-1/s3/aws4_request',
-      XAmzAlgorithm = 'AWS4-HMAC-SHA256',
-      XAmzDate = '20201112T082518Z',
-      Policy = 'eyJleHBpcmF0aW9uIjoiMjAyMC0xMS0xMlQxMDoyNToxOFoiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJ3ZW1hbGwtbWVkaWEtZGV2In0seyJrZXkiOiJpbWFnZVwvMVwvMjAyMFwvMTFcLzEyXC9hOTMxN2FkOTNkNmI4MThhNzQyOTQ0NmU1MzM4YzY4Y3Rlc3QuanBnIn0seyJYLUFtei1EYXRlIjoiMjAyMDExMTJUMDgyNTE4WiJ9LHsiWC1BbXotQ3JlZGVudGlhbCI6IkFLSUE0TVNDMjc2RjVOQlI0UDdHXC8yMDIwMTExMlwvY24tbm9ydGh3ZXN0LTFcL3MzXC9hd3M0X3JlcXVlc3QifSx7IlgtQW16LUFsZ29yaXRobSI6IkFXUzQtSE1BQy1TSEEyNTYifV19',
+      XAmzCredential,
+      XAmzAlgorithm,
+      XAmzDate,
+      Policy,
       formAttributes = {
-        action: 'https://wemall-media-dev.s3.cn-northwest-1.amazonaws.com.cn'
+        action: ''
       },
-      XAmzSignature = '2a2b5560a48e36c29c65ab4144dc2cc570c125dbf20833ba9d16ca060be01cf9' 
+      XAmzSignature 
     } = tokenRes
 
     try {
@@ -150,8 +150,7 @@ const upload = {
 }
 
 const getUploadFun = (dirver) => {
-  const type = 'aws' || dirver
-  switch (type) {
+  switch (dirver) {
     case 'oss':
       return 'aliUpload'
     case 'local':
