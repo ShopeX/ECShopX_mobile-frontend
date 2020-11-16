@@ -33,6 +33,7 @@ export default class GoodsItem extends Component {
     if (!info) {
       return null
     }
+    console.log('info----->',info)
 
     const img = info.img || info.image_default_id
 
@@ -100,6 +101,7 @@ export default class GoodsItem extends Component {
                     {promotion_activity === 'full_gift' ? '满赠' : ''}
                     {promotion_activity === 'normal' ? '秒杀' : ''}
                     {promotion_activity === 'limited_time_sale' ? '限时特惠' : ''}
+                    {promotion_activity === 'plus_price_buy' ? '换购' : ''}
                     </Text>
                   </View>
                 : null

@@ -124,7 +124,8 @@ export default class TradeList extends Component {
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
         item_fee: 'item_fee',
         point: 'item_point',
-        num: 'num'
+        num: 'num',
+        order_item_type:'order_item_type'
       })
     })
 

@@ -170,7 +170,10 @@ class App extends Component {
           'pages/item/espier-evaluation',
           'pages/item/espier-evaluation-detail',
           'pages/item/rate',
-          'pages/item/success'
+          'pages/item/success',
+
+          'pages/plusprice/detail-plusprice-list',
+          'pages/plusprice/cart-plusprice-list',
         ],
         "plugins": {
           "live-player-plugin": {

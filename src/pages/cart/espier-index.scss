@@ -127,6 +127,17 @@
         background: #f5f5f5;
         content: "";
       }
+      &-item{
+        position: relative;
+        display: flex;
+        &-left{
+          flex: 1;
+        }
+        &-right{
+          flex-basis: 150px;
+          text-align: right;
+        }
+      }
       &-label {
         background: $color-brand-primary;
         color: #fff;

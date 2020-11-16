@@ -70,3 +70,7 @@ export function coupons (params) {
 export function likeList (params) {
   return req.get('/promotions/recommendlike', params)
 }
+
+export function selectedPlusitem (params) {
+  return req.post('/cart/check/plusitem', params)
+}

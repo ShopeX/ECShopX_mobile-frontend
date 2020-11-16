@@ -806,6 +806,8 @@ export default class Detail extends Component {
     const showPrice = (skuPrice * (1 + taxRate))
     
     const lnglat = Taro.getStorageSync('lnglat')
+    console.log('promotion_activity----->',promotion_activity)
+
 
     if (!info) {
       return (

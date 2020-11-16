@@ -62,7 +62,7 @@ export default class SpCheckbox extends Component {
         >
           <View className='at-icon at-icon-check'></View>
         </View>
-        <Text className='sp-checkbox__label'>{this.props.children}</Text>
+        <View className='sp-checkbox__label'>{this.props.children}</View>
       </View>
     )
   }

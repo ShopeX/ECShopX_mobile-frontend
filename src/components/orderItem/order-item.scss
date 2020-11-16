@@ -40,6 +40,15 @@
     @include multi-ellipsis(2);
     line-height: 1.4;
     margin: 0 0 4px;
+    &-tag{
+      display: inline-block;
+      background:$color-brand-primary;
+      color:#ffffff;
+      padding: 3px 4px;
+      font-size: $font-size-small;
+      margin-right: 10px;
+      
+    }
   }
   &__desc {
     color: $color-gray;

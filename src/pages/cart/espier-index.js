@@ -3,7 +3,7 @@ import { View, Text, Image, ScrollView, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import { SpCheckbox, SpNote, TabBar, Loading, Price, NavBar, GoodsItem } from '@/components'
-import { log, navigateTo, pickBy, classNames } from '@/utils'
+import { log, navigateTo, pickBy, classNames} from '@/utils'
 import debounce from 'lodash/debounce'
 import api from '@/api'
 import S from '@/spx'
@@ -49,9 +49,9 @@ export default class CartIndex extends Component {
     this.lastCartId = null
   }
 
-  componentDidMount() {
+  componentDidMount () {
     console.log(this.$router.params, 48)
-    if (this.$router.params && this.$router.params.path === 'qrcode') {
+    if(this.$router.params && this.$router.params.path === 'qrcode') {
       this.setState({
         isPathQrcode: true
       })
@@ -72,13 +72,13 @@ export default class CartIndex extends Component {
     })
   }
 
-  componentDidShow() {
+  componentDidShow () {
     if (!S.getAuthToken() || this.state.loading) return
     this.updateCart()
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps.list, this.props.list, nextProps.list !== this.props.list)
+  componentWillReceiveProps (nextProps) {
+		console.log('componentWillReceiveProps',nextProps.list , this.props.list,nextProps.list !== this.props.list)
 
     // if (nextProps.list !== this.props.list) {
     // 	const groups = this.resolveActivityGroup(nextProps.list)
@@ -103,7 +103,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -139,9 +139,11 @@ export default class CartIndex extends Component {
   }
 
   // 活动分组
-  resolveActivityGroup(cartList) {
+  resolveActivityGroup (cartList) {
     const groups = cartList.map(shopCart => {
-      const { list, used_activity = [] } = shopCart
+      console.log('shopCart0---->',shopCart)
+      const { list, used_activity = [],plus_buy_activity =[] } = shopCart
+      console.log('plus_buy_activity---->',plus_buy_activity)
       const tDict = list.reduce((acc, val) => {
         acc[val.cart_id] = val
         return acc
@@ -154,14 +156,32 @@ export default class CartIndex extends Component {
           const cartItem = tDict[id]
           delete tDict[id]
           return cartItem
-        })
-        // return Object.assign({},shopCart,{list: itemList,activity})
-        return { list: itemList, activity }
+				})
+				// return Object.assign({},shopCart,{list: itemList,activity})
+				return {list: itemList,activity}
+      })
+      //加价购商品
+      const plusBuyList=[]
+      plus_buy_activity.map(pitem =>{
+        const {plus_item} = pitem
+        if(plus_item){
+          const items = pickBy(plus_item, {
+            item_id: 'item_id',
+            activity_id:pitem.activity_id,
+            title: 'item_name',
+            img: ({ pics }) => pics[0],
+            price: ({ price }) => (+price / 100).toFixed(2),
+            market_price: ({ market_price }) => (+market_price / 100).toFixed(2),
+            num: 1,
+            is_plus_buy:true, //加价购
+          })
+          plusBuyList.push(items)
+        }
+       
       })
       // 无活动列表
-      group.push({ activity: null, list: Object.values(tDict) })
-      // console.log('group',group)
-      return { shopInfo: shopCart, group }
+			group.push({activity: null, list: Object.values(tDict) })
+      return {shopInfo:shopCart,plusBuyList:[...plusBuyList],group}
     })
     return groups
   }
@@ -264,8 +284,7 @@ export default class CartIndex extends Component {
   }
 
 
-  async handleSelectionChange(shopIndex, cart_id, checked) {
-
+  async handleSelectionChange (shopIndex,cart_id, checked) {
     await api.cart.select({
       cart_id,
       is_checked: checked
@@ -306,7 +325,7 @@ export default class CartIndex extends Component {
     this.updateCart()
   }
 
-  async changeCartNum(shop_id, cart_id, num) {
+  async changeCartNum(shop_id,cart_id, num) {
     const { type = 'distributor' } = this.$router.params
     try {
       const res = await api.cart.updateNum(shop_id, cart_id, num, type)
@@ -429,7 +448,7 @@ export default class CartIndex extends Component {
       market_price: ({ market_price }) => (+market_price / 100).toFixed(2),
       num: 'num',
       packages: (item) => item.packages && item.packages.length && this.transformCartList(item.packages),
-      item_spec_desc: 'item_spec_desc'
+      item_spec_desc:'item_spec_desc'
     })
   }
 
@@ -459,10 +478,26 @@ export default class CartIndex extends Component {
       // console.log(111)
     })
   }
+//加价购
+handleSelectPlusprice = (marketing_id) => {
+  const url = `/marketing/pages/plusprice/cart-plusprice-list?marketing_id=${marketing_id}`
+  Taro.navigateTo({
+    url: url
+  })
+}
+handleLookPlusprice = (marketing_id) =>{
+  const url = `/marketing/pages/plusprice/detail-plusprice-list?marketing_id=${marketing_id}`
+  Taro.navigateTo({
+    url: url
+  })
+}
+
+
 
   render () {
     const { groups, invalidList, cartMode, loading, curPromotions, likeList, page, isPathQrcode, cartType, crossborder_show } = this.state
     const { list, showLikeList, colors } = this.props
+    console.log('groups',groups)
 
     if (loading) {
       return <Loading />
@@ -535,6 +570,26 @@ export default class CartIndex extends Component {
                         </View>
                         : null
                     }
+                      {
+                      shopCart.shopInfo.plus_buy_activity && shopCart.shopInfo.plus_buy_activity.map (plus_item =>{
+                        const { discount_desc } = plus_item
+                        return (
+                          <View className='cart-group__activity' style='background:#ffffff;'>
+                            <View
+                              className='cart-group__activity-item'
+                            >
+                              <View className='cart-group__activity-item-left' onClick={this.handleLookPlusprice.bind(this,plus_item.activity_id)}>
+                                <Text className='cart-group__activity-label'>换购</Text>
+                                <Text>{discount_desc.info}</Text>
+                              </View>
+                              <View className='cart-group__activity-item-right' onClick={this.handleSelectPlusprice.bind(this,plus_item.activity_id)}>
+                                  去选择<Text className='at-icon at-icon-chevron-right'></Text>
+                              </View>
+                            </View>    
+                      </View>
+                        )
+                      })     
+                    }
                     <View className='shop__wrap'>
                       {
                         shopCart.group.map(activityGroup => {
@@ -554,6 +609,7 @@ export default class CartIndex extends Component {
                                     <Text className='cart-group__activity-label'>{activity.activity_tag}</Text>
                                     <Text>{activity.activity_name}</Text>
                                   </View>
+                               
                                 </View>
                               )}
                               {
@@ -625,8 +681,23 @@ export default class CartIndex extends Component {
                           )
                         })
                       }
+                      {
+                        shopCart.plusBuyList && shopCart.plusBuyList.map(item =>{
+                          return (
+                            <CartItem
+                                isDisabled
+                                num
+                                key={item.item.item_id}
+                                info={item}
+                              >                           
+                          </CartItem>
+                          )
+                        })
+                      }
 
-
+                      <View >
+                      
+                      </View>
                       <View className={`toolbar cart-toolbar ${isEmpty && 'hidden'}`}>
                         <View className='cart-toolbar__hd'>
                           <SpCheckbox
