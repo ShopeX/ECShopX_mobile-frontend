@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
-import { QnImg } from '@/components'
+import { SpImg } from '@/components'
 
 import './activity-panel.scss';
 
@@ -99,12 +99,19 @@ export default class ActivityPanel extends Component {
                                   return(
                                   <View className='item'>
                                     <View className='item-img'>
-                                    <QnImg
+                                    <SpImg
+                                      img-class='goods-item__img'
+                                      src={plus.pics[0]}
+                                      mode='aspectFill'
+                                      width='400'
+                                      lazyLoad
+                                    />
+                                    {/* <QnImg
                                       img-class='goods-item__img'
                                       src={plus.pics[0]}
                                       mode='aspectFill'            
                                       lazyLoad
-                                    />
+                                    /> */}
                                     </View>
                                   <View className='title'>{plus.item_name}</View>
                                 </View>
