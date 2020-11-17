@@ -369,17 +369,17 @@ export default class HomeIndex extends Component {
     }
   }
   async checkWhite () {
-    const { status } = await api.wx.getWhiteList()
-    if(status == true){
-      if(!S.getAuthToken()){
+    if(!S.getAuthToken()){
+      const { status } = await api.wx.getWhiteList()
+      if(status == true){
+        this.setState({
+          show_tabBar:false
+        })
+      }
         setTimeout(() => {
           S.login(this, true)
         }, 1000)
-      }
-      this.setState({
-        show_tabBar:false
-      })
-    }else{
+    }else {
       this.fetchSetInfo()
     }
   }
