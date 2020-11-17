@@ -3,6 +3,7 @@ import { View, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { SpImg } from '@/components'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
+import { WgtPlateType } from './index'
 
 import './slider.scss'
 
@@ -16,7 +17,8 @@ export default class WgtSlider extends Component {
     super(props)
 
     this.state = {
-      curIdx: 0
+      curIdx: 0,
+      index: 0
     }
   }
 
@@ -26,17 +28,24 @@ export default class WgtSlider extends Component {
 
   handleClickItem = linkPage
 
-  handleSwiperChange = (e) => {
-    const { current  } = e.detail
+  // handleSwiperChange = (e) => {
+  //   const { current  } = e.detail
 
+  //   this.setState({
+  //     curIdx: current
+  //   })
+  // }
+  handleSwiperChange = (e) => {
+    const { current } = e.detail
     this.setState({
-      curIdx: current
+        curIdx: current,
+        index: e.target.current
     })
-  }
+}
 
   render () {
     const { info } = this.props
-    const { curIdx } = this.state
+    const { curIdx,index } = this.state
 
     if (!info) {
       return null
@@ -81,6 +90,7 @@ export default class WgtSlider extends Component {
                           style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
                           onClick={this.handleClickItem.bind(this, item.linkPage, item.id)}
                         >
+                           <WgtPlateType info={item} index={index} num={idx} base={base} />
                           <SpImg
                             img-class='slider-item__img'
                             src={item.imgUrl}
