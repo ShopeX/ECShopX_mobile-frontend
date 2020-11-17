@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/components/float-menus/meiqia.h5.js
  * @Date: 2020-04-20 16:57:55
  * @LastEditors: Arvin
- * @LastEditTime: 2020-11-05 17:36:04
+ * @LastEditTime: 2020-11-17 16:18:22
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
@@ -34,35 +34,38 @@ export default class Index extends Component {
 
   async componentDidMount() {
     const meiqia = Taro.getStorageSync('meiqia') || {}
-    const { enterprise_id, group_id, persion_ids } = meiqia
-    const info = Taro.getStorageSync('curStore')
-    let id = info.distributor_id
-    const { storeId } = this.props
-    // 如果不是标准版
-    if (APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
-      id = storeId
-    }
-    if (enterprise_id) {
-      this.setState({
-        meiqia_id: enterprise_id,
-        meiqia_token: persion_ids,
-        groupid: group_id
-      })
-      // if (type) {        
-      //   const { meiqia_id, meiqia_token, clientid = '', groupid = '' } = await api.user.im(id)
-      //   this.setState({
-      //     meiqia_id,
-      //     meiqia_token,
-      //     clientid,
-      //     groupid
-      //   })
-      // } else {
-      //   this.setState({
-      //     meiqia_id: enterprise_id,
-      //     meiqia_token: persion_ids,
-      //     groupid: group_id
-      //   })
-      // }
+    if (meiqia.is_open === 'true') {
+      const { enterprise_id, group_id, persion_ids } = meiqia
+      const info = Taro.getStorageSync('curStore')
+      let id = info.distributor_id
+      const { storeId } = this.props
+      // 如果不是标准版
+      if (APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
+        id = storeId
+      }
+      console.log(id)
+      if (enterprise_id) {
+        this.setState({
+          meiqia_id: enterprise_id,
+          meiqia_token: persion_ids,
+          groupid: group_id
+        })
+        // if (type) {        
+        //   const { meiqia_id, meiqia_token, clientid = '', groupid = '' } = await api.user.im(id)
+        //   this.setState({
+        //     meiqia_id,
+        //     meiqia_token,
+        //     clientid,
+        //     groupid
+        //   })
+        // } else {
+        //   this.setState({
+        //     meiqia_id: enterprise_id,
+        //     meiqia_token: persion_ids,
+        //     groupid: group_id
+        //   })
+        // }
+      }      
     }
   }
 
