@@ -106,7 +106,7 @@ export default class DetailPluspriceList extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
-      desc: 'brief',
+      desc: 'item_spec_desc',
       distributor_id: 'distributor_id',
       marketing_id:'marketing_id',
       price: ({ price }) => (price/100).toFixed(2),
@@ -127,6 +127,7 @@ export default class DetailPluspriceList extends Component {
   render () {
     const { colors } = this.props
     const { list, showBackToTop, scrollTop, page,promotion_activity,timer } = this.state
+    console.log('list---->',list)
     return (
       <View className='page-plusprice'>
         <NavBar

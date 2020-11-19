@@ -108,7 +108,7 @@ export default class DetailPluspriceList extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
-      desc: 'brief',
+      desc: 'item_spec_desc',
       distributor_id: 'distributor_id',
       marketing_id:'marketing_id',
       price: ({ price }) => (price/100).toFixed(2),
