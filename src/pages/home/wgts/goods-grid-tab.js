@@ -53,6 +53,9 @@ export default class WgtGoodsGridTab extends Component {
         this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id || ''}`)
       }
     }
+    navigateTo (url) {
+      Taro.navigateTo({ url })
+    }
 
     render() {
         const { info,colors } = this.props
