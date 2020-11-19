@@ -98,11 +98,10 @@ export default class DetailPluspriceList extends Component {
     }
 
     const { list, total_count: total,promotion_activity={}} = await api.promotion.getpluspriceList(query)
-    const { end_time } = promotion_activity
+    const { left_time } = promotion_activity
 
     let timer = null
-    timer = this.calcTimer(end_time)
-
+    timer = this.calcTimer(left_time)
 		const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
