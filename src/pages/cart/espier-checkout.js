@@ -144,7 +144,7 @@ export default class CartCheckout extends Component {
         source = "other_pay";
       }
       Taro.redirectTo({
-        url: `/pages/auth/wxauth?source=${source}`
+        url: `/subpage/pages/auth/wxauth?source=${source}`
       });
 
       return;
@@ -1027,7 +1027,7 @@ export default class CartCheckout extends Component {
       ) {
         config = await api.trade.h5create(params);
         Taro.redirectTo({
-          url: `/pages/cashier/index?order_id=${config.order_id}`
+          url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
         });
         return;
       } else {

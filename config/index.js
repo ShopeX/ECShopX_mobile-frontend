@@ -26,7 +26,7 @@ const {
 const isWeb = TARO_ENV === 'h5'
 // 是否为生产模式
 const isPro = NODE_ENV === 'production'
-const APP_AUTH_PAGE = !isWeb ? '/pages/auth/wxauth' : '/pages/auth/login' 
+const APP_AUTH_PAGE = !isWeb ? '/subpage/pages/auth/wxauth' : '/subpage/pages/auth/login' 
 const config = {
   projectName: _name,
   date: "2019-7-31",

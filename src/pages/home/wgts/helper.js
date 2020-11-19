@@ -39,7 +39,7 @@ export function linkPage (type, id) {
       break;
     case 'link':
       if (id == 'vipgrades') {
-        url = '/pages/vip/vipgrades'
+        url = '/subpage/pages/vip/vipgrades'
       } else if (id == 'serviceH5Coach') {
         url = '/marketing/pages/service/wap-link?tp=o'
       } else if (id == 'serviceH5Sales') {
@@ -51,7 +51,7 @@ export function linkPage (type, id) {
       } else if (id == 'mycoach') {
         url = '/marketing/pages/service/online-guide'
       } else if (id == 'hottopic') {
-        url = '/pages/recommend/list'
+        url = '/subpage/pages/recommend/list'
       } else if (id === 'floorguide'){
         url = '/pages/floorguide/index'
       } else if (id === 'grouppurchase'){

@@ -94,22 +94,7 @@ class App extends Component {
       'pages/cart/drug-info',
       'pages/article/index',
 
-      'pages/recommend/list',
-      'pages/recommend/detail',
-
-      'pages/auth/reg',
-      'pages/auth/reg-rule',
-      'pages/auth/login',
-      'pages/auth/forgotpwd',
-      'pages/auth/wxauth',
-      'pages/auth/pclogin',
-      'pages/auth/store-reg',
-      'pages/cashier/index',
-      'pages/cashier/cashier-result',
-
       'pages/member/index',
-      // 'pages/member/pay',
-      // 'pages/member/pay-rule',
       'pages/member/coupon',
       'pages/member/coupon-detail',
       'pages/member/address',
@@ -121,14 +106,10 @@ class App extends Component {
       'pages/member/item-guess',
       'pages/member/group-list',
       'pages/member/member-code',
-      'pages/qrcode-buy',
-
       'pages/distribution/shop-home',
 
       'pages/store/index',
       'pages/store/list',
-
-      'pages/vip/vipgrades',
 
       'pages/custom/custom-page'
     ],
@@ -179,7 +160,7 @@ class App extends Component {
         ],
         "plugins": {
           "live-player-plugin": {
-            "version": "1.1.8", // 填写该直播组件版本号
+            "version": "1.2.3", // 填写该直播组件版本号
             "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
           }
           // "meiqia": {
@@ -203,6 +184,19 @@ class App extends Component {
           'pages/trade/refund-detail',
           'pages/trade/refund-sendback',
           'pages/trade/invoice-list',
+          'pages/cashier/index',
+          'pages/cashier/cashier-result',
+          'pages/recommend/list',
+          'pages/recommend/detail',
+          'pages/qrcode-buy',
+          'pages/vip/vipgrades',
+          'pages/auth/reg',
+          'pages/auth/reg-rule',
+          'pages/auth/login',
+          'pages/auth/forgotpwd',
+          'pages/auth/wxauth',
+          'pages/auth/pclogin',
+          'pages/auth/store-reg',
         ]
       },
       // 团购

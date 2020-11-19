@@ -253,7 +253,7 @@ export default class Reg extends Component {
 
   handleClickAgreement = () => {
     Taro.navigateTo({
-      url: '/pages/auth/reg-rule'
+      url: '/subpage/pages/auth/reg-rule'
     })
   }
 

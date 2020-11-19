@@ -173,7 +173,7 @@ export default class ShoppingGuideCard extends Component {
     Taro.setStorageSync('isShoppingGuideCard', 'true')
 
     Taro.redirectTo({
-      url: '/pages/auth/wxauth'
+      url: '/subpage/pages/auth/wxauth'
     })
   }
 
