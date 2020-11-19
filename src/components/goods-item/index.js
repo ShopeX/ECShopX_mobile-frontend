@@ -107,7 +107,7 @@ export default class GoodsItem extends Component {
               }
               <View onClick={onClick}>
                 <Text className='goods-item__title'>{info.title}</Text>
-                <Text className='goods-item__desc'>{info.desc}</Text>
+                <Text className='goods-item__desc'>{info.desc || ''}</Text>
                 {this.props.renderSpec}
               </View>
             </View>
