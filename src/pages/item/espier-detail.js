@@ -114,6 +114,20 @@ export default class Detail extends Component {
     if (lnglat && !lnglat.city) {
       entry.InverseAnalysis(lnglat)
     }
+    this.getDetailShare()
+  }
+  async getDetailShare(){
+    const options = this.$router.params
+    let id = options.dtid
+    let salesperson_id = Taro.getStorageSync('s_smid')
+    if(salesperson_id){
+        const params = {
+          salesperson_id:salesperson_id,
+          type:'item',
+          id:id
+        }
+      await api.item.getDetailShare(params)
+    }    
   }
 
   async componentDidShow() {
