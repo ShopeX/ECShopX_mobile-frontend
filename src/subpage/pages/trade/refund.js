@@ -10,6 +10,7 @@ import { SpCell, SpToast } from '@/components'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 // import req from '@/api/req'
+import { Tracker } from "@/service";
 import { pickBy, classNames } from '@/utils'
 import S from '@/spx'
 import imgUploader from '@/utils/upload'
