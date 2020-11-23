@@ -71,7 +71,7 @@ export default class RecommendList extends Component {
   onShareAppMessage () {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `/subpage/pages/recommend/list?uid=${userId}` : '/subpage/pages/recommend/list'
+    const query = userId ? `/pages/recommend/list?uid=${userId}` : '/pages/recommend/list'
     return {
       title: res.title,
       imageUrl: res.imageUrl,
