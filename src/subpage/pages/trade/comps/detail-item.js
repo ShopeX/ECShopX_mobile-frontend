@@ -46,68 +46,136 @@ export default class DetailItem extends Component {
   }
   handleCodeCopy = (val) => {
     copyText(val)
-    S.toast('复制成功')
+    // S.toast('复制成功')
+    Taro.showToast({
+      title: '复制成功',
+      icon: 'none'
+    })
   }
 
   render () {
     const { customHeader, customFooter, noHeader, onClick, info, showActions } = this.props
     return (
-      <View className='detail-item'>
+      <View className='detailList'>
         {
-          info && info.orders.map((item, idx) =>
-            <View className='detail-item-good' key={`${idx}1`}>
-            <View className='detail-item__fix'>
-                <Text className='detail-item__title'>第{idx+1}件商品</Text>
-                {
-                  info.delivery_code
-                  ? null
-                  : item.delivery_code
-                    ? <View className='detail-item__code'>
-                        <Text className='code'>物流单号：{item.delivery_code}</Text>
-                        <Text className='btn' onClick={this.handleCodeCopy.bind(this, item.delivery_code)}>复制</Text>
-                      </View>
-                    : null
-                }               
-            </View>  
-              <OrderItem
-                key={`${idx}1`}
-                info={item}
-                isShowNational
-              />
-              {
-                !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>
-                 {
-                    info.delivery_code
-                    ? null
-                    : item.delivery_code && 
-                    <AtButton
-                        circle
-                        type='text'
-                        size='small'
-                        className='delivery-btn'                        
-                        onClick={this.handleLookDelivery.bind(this, item)}
-                      >
-                       查看物流
-                      </AtButton>                   
-                  }
+          info && info.orders && <View className='detail-item'>
+            { info.is_shopscreen && <View className='title'>自提商品</View>}
+            {
+              info.orders.map((item, idx) =>
+                <View className='detail-item-good' key={`${idx}1`}>
+                <View className='detail-item__fix'>
+                    <Text className='detail-item__title'>第{idx+1}件商品</Text>
+                    {
+                      info.delivery_code
+                      ? null
+                      : item.delivery_code
+                        ? <View className='detail-item__code'>
+                            <Text className='code'>物流单号：{item.delivery_code}</Text>
+                            <Text className='btn' onClick={this.handleCodeCopy.bind(this, item.delivery_code)}>复制</Text>
+                          </View>
+                        : null
+                    }               
+                </View>  
+                  <OrderItem
+                    key={`${idx}1`}
+                    info={item}
+                    isShowNational
+                  />
                   {
-                    (info.status !== 'WAIT_SELLER_SEND_GOODS' && info.latest_aftersale_time >= 0) || (info.is_shopscreen && item.is_logistics) &&
-                      <AtButton
-                        circle
-                        type='primary'
-                        size='small'
-                        onClick={this.handleClickAfterSale.bind(this, item)}
-                      >
-                        {
-                          (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
-                        }
-                      </AtButton>
+                    !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>
+                    {
+                        info.delivery_code
+                        ? null
+                        : item.delivery_code && 
+                        <AtButton
+                            circle
+                            type='text'
+                            size='small'
+                            className='delivery-btn'                        
+                            onClick={this.handleLookDelivery.bind(this, item)}
+                          >
+                          查看物流
+                          </AtButton>                   
+                      }
+                      {
+                        (info.status !== 'WAIT_SELLER_SEND_GOODS' && info.latest_aftersale_time >= 0) || (info.is_shopscreen && item.is_logistics) &&
+                          <AtButton
+                            circle
+                            type='primary'
+                            size='small'
+                            onClick={this.handleClickAfterSale.bind(this, item)}
+                          >
+                            {
+                              (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
+                            }
+                          </AtButton>
+                      }
+                    </View>
                   }
                 </View>
-              }
-            </View>
-
-          )
+              )
+            }
+          </View>
+        }
+        {
+          info && info.express_orders && <View className='detail-item'>
+            { info.is_shopscreen && <View className='title'>快递商品</View>}
+            {
+              info.express_orders.map((item, idx) =>
+                <View className='detail-item-good' key={`${idx}1`}>
+                <View className='detail-item__fix'>
+                    <Text className='detail-item__title'>第{idx+1}件商品</Text>
+                    {
+                      info.delivery_code
+                      ? null
+                      : item.delivery_code
+                        ? <View className='detail-item__code'>
+                            <Text className='code'>物流单号：{item.delivery_code}</Text>
+                            <Text className='btn' onClick={this.handleCodeCopy.bind(this, item.delivery_code)}>复制</Text>
+                          </View>
+                        : null
+                    }               
+                </View>  
+                  <OrderItem
+                    key={`${idx}1`}
+                    info={item}
+                    isShowNational
+                  />
+                  {
+                    !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>
+                    {
+                        info.delivery_code
+                        ? null
+                        : item.delivery_code && 
+                        <AtButton
+                            circle
+                            type='text'
+                            size='small'
+                            className='delivery-btn'                        
+                            onClick={this.handleLookDelivery.bind(this, item)}
+                          >
+                          查看物流
+                          </AtButton>                   
+                      }
+                      {
+                        (info.status !== 'WAIT_SELLER_SEND_GOODS' && info.latest_aftersale_time >= 0) || (info.is_shopscreen && item.is_logistics) &&
+                          <AtButton
+                            circle
+                            type='primary'
+                            size='small'
+                            onClick={this.handleClickAfterSale.bind(this, item)}
+                          >
+                            {
+                              (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
+                            }
+                          </AtButton>
+                      }
+                    </View>
+                  }
+                </View>
+              )
+            }
+          </View>
         }
       </View>
     )

@@ -500,7 +500,7 @@ export default class TradeDetail extends Component {
         </View>
         {
           info.receipt_type === 'ziti'
-            ? <View className='ziti-content'>
+            && <View className='ziti-content'>
                 {
                   info.status === 'WAIT_SELLER_SEND_GOODS' && info.ziti_status === 'PENDING' &&
                   <View>
@@ -520,18 +520,20 @@ export default class TradeDetail extends Component {
                   <View>{ ziti.store_address }</View>
                 </View>
               </View>
-            : <View className='trade-detail-address'>
-                <View className='address-receive'>
-                  <Text>收货地址：</Text>
-                  <View className='info-trade'>
-                    <View className='user-info-trade'>
-                      <Text>{info.receiver_name}</Text>
-                      <Text>{info.receiver_mobile}</Text>
-                    </View>
-                    <Text className='address-detail'>{info.receiver_state}{info.receiver_city}{info.receiver_district}{info.receiver_address}</Text>
-                  </View>
+        }
+        {
+          info.receipt_type !== 'ziti' || (info.is_shopscreen && info.is_logistics) && <View className='trade-detail-address'>
+            <View className='address-receive'>
+              <Text>收货地址：</Text>
+              <View className='info-trade'>
+                <View className='user-info-trade'>
+                  <Text>{info.receiver_name}</Text>
+                  <Text>{info.receiver_mobile}</Text>
                 </View>
+                <Text className='address-detail'>{info.receiver_state}{info.receiver_city}{info.receiver_district}{info.receiver_address}</Text>
               </View>
+            </View>
+          </View>
         }
         <View className='trade-detail-goods'>
           <DetailItem
