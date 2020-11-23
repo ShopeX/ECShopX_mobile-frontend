@@ -135,7 +135,9 @@ class App extends Component {
           'pages/distribution/shop-goods',
           'pages/distribution/shop-trade',
           'pages/distribution/shop-achievement',
-
+          'pages/verified-card/index',
+          'pages/verified-card/verified',
+          'pages/verified-card/card',
           'pages/reservation/brand-list',
           'pages/reservation/brand-detail',
           'pages/reservation/brand-result',

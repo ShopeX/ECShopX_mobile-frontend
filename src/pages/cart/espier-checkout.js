@@ -104,7 +104,7 @@ export default class CartCheckout extends Component {
         point: "",
         point_fee: ""
       },
-      payType: "wxpay",
+      payType: '',
       disabledPayment: null,
       isPaymentOpend: false,
       isDrugInfoOpend: false,
@@ -857,33 +857,25 @@ export default class CartCheckout extends Component {
                 url: "/others/pages/recharge/index"
               });
             } else {
-              this.setState(
-                {
-                  disabledPayment: {
-                    ...disabledPaymentMes,
-                    ...disabledPayment
-                  },
-                  payType: "wxpay"
-                },
-                () => {
-                  this.calcOrder();
-                }
-              );
+              
+              this.setState({
+                disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
+                payType: ''
+              }, () => {
+                this.calcOrder()
+              })
             }
           }
         });
         return;
       }
       // let payTypeNeedsChange = ['当前积分不足以支付本次订单费用', '当月使用积分已达限额'].includes(e.message)
-      this.setState(
-        {
-          disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
-          payType: "wxpay"
-        },
-        () => {
-          this.calcOrder();
-        }
-      );
+      this.setState({
+        disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
+        payType: ''
+      }, () => {
+        this.calcOrder()
+      })
     }
   }
 
@@ -1349,12 +1341,13 @@ export default class CartCheckout extends Component {
   render() {
     // 支付方式文字
     const payTypeText = {
-      point: "积分支付",
-      wxpay: process.env.TARO_ENV === "weapp" ? "微信支付" : "现金支付",
-      deposit: "余额支付",
-      delivery: "货到付款"
-    };
-    const { coupon, colors } = this.props;
+      point: '积分支付',
+      wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
+      deposit: '余额支付',
+      delivery: '货到付款',
+      hfpay:'汇付支付'
+    }    
+    const { coupon, colors } = this.props
     const {
       info,
       express,

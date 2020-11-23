@@ -216,9 +216,9 @@ export default class TradeDetail extends Component {
       payLoading: true
     })
 
-    const { tid: order_id, order_type } = info
+    const { tid: order_id, order_type ,pay_type} = info
     const paymentParams = {
-      pay_type: 'wxpay',
+      pay_type,
       order_id,
       order_type
     }
@@ -442,6 +442,8 @@ export default class TradeDetail extends Component {
     const isDhPoint = info.pay_type === 'point'
     // 是否为余额支付
     const isDeposit = info.pay_type === 'deposit'
+    const isHf = info.pay_type === 'hfpay'
+
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')
     // TODO: orders 多商铺
@@ -582,49 +584,22 @@ export default class TradeDetail extends Component {
 
           <Text className="info-text">商品金额：￥{info.item_fee}</Text>
           {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
-          <Text className="info-text">运费：￥{info.freight_fee}</Text>
-          {info.type == "1" && (
-            <Text className="info-text">税费：￥{info.total_tax}</Text>
-          )}
-          <Text className="info-text">优惠：-￥{info.discount_fee}</Text>
-          {info.pay_type != "point" && (
-            <Text className="info-text">积分抵扣：-¥{info.point_fee}</Text>
-          )}
-          {isDhPoint && (
-            <Text className="info-text" space>
-              支付：{info.point_use}积分 {" 积分支付"}
-            </Text>
-          )}
-          {isDeposit && (
-            <Text className="info-text" space>
-              支付：¥{info.payment} {" 余额支付"}
-            </Text>
-          )}
-          {!isDhPoint && !isDeposit && (
-            <Text className="info-text" space>
-              支付：￥{info.payment} {" 微信支付"}
-            </Text>
-          )}
-          <Text className="info-text" space>
-            预计可获取积分：{info.estimate_get_points}
-          </Text>
-          {info.delivery_code ? (
-            <View className="delivery_code_copy">
-              <Text className="info-text">物流单号：{info.delivery_code}</Text>
-              <Text
-                className="info-text-btn"
-                onClick={this.handleClickDelivery.bind(this)}
-              >
-                查看物流
-              </Text>
-              <Text
-                className="info-text-btn"
-                onClick={this.handleClickCopy.bind(this, info.delivery_code)}
-              >
-                复制
-              </Text>
-            </View>
-          ) : null}
+          <Text className='info-text'>运费：￥{info.freight_fee}</Text>
+          {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
+          <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
+          { isDhPoint && (<Text className='info-text' space>支付：{info.payment}积分 {' 积分支付'}</Text>) }
+          {isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>)}
+          {isHf && (<Text className='info-text' space>支付：¥{info.payment} {'汇付支付'}</Text>)}
+          { !isDhPoint && !isDeposit &&!isHf &&(<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>) }
+          {
+            info.delivery_code
+              ? <View className='delivery_code_copy'>
+                  <Text className='info-text'>物流单号：{info.delivery_code}</Text>
+                  <Text className='info-text-btn' onClick={this.handleClickDelivery.bind(this)}>查看物流</Text>
+                  <Text className='info-text-btn' onClick={this.handleClickCopy.bind(this, info.delivery_code)}>复制</Text>
+                </View>
+              : null
+          }
         </View>
         {info.order_class !== "drug" && (
           <View>

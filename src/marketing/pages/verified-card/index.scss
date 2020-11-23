@@ -1,6 +1,13 @@
 @import '../../../style/imports';
 
 .page-distribution-index {
+  .text-primary{
+    // flex: 1;
+    display: inline;
+      // padding: 0 $edge-margin 0 0;
+      font-size: 20px;
+      color: #999;
+  }
   /*  #ifdef  h5  */  
   padding-top: $navigate-height-h5;
   /*  #endif  */

@@ -51,7 +51,8 @@ const formatOrder = (data) => {
       items: formatGood(item.items, item.fee_symbol),
       symbol: item.fee_symbol,
       orderStatus: item.order_status,
-      orderStatusMsg: item.order_status_msg
+      orderStatusMsg: item.order_status_msg,
+      pay_type: item.pay_type
     }
   })
   return list

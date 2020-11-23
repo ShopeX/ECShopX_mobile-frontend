@@ -11,8 +11,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
-import { NavBar } from '@/components'
-
+import { NavBar,SpCell } from '@/components'
+import PaymentPicker from '@/pages/cart/comps/payment-picker'
 import './index.scss'
 
 export default class PayOrder extends Component {
@@ -36,7 +36,9 @@ export default class PayOrder extends Component {
         community_activity_id: '',
         member_discount: false,
         coupon_discount: '',
-      }
+      },
+      payType:'',
+      isPaymentOpend:false
     }
   }
   
@@ -78,7 +80,8 @@ export default class PayOrder extends Component {
   }
   // 去支付
   handlePay = () => {
-    const { param } = this.state
+    const { param ,payType} = this.state
+    param.pay_type=payType
     Taro.showLoading({title: '拉起支付中...', mask: true})
     api.groupBy.createOrder(param).then(res => {
       Taro.hideLoading()
@@ -113,7 +116,25 @@ export default class PayOrder extends Component {
       })
     })
   }
-  
+  handlePaymentShow = () => {
+    this.setState({
+      isPaymentOpend: true,
+    })
+  }
+  handleLayoutClose = () => {
+    this.setState({
+      isPaymentOpend: false,
+    })
+  }
+  handlePaymentChange = async (payType) => {
+
+    this.setState({
+      payType,
+      isPaymentOpend: false
+    }, () => {
+
+    })
+  }
   render () {
     const { 
       currtent,
@@ -121,9 +142,17 @@ export default class PayOrder extends Component {
       totalFee,
       totalItemNum,
       itemFee,
-      symbol
+      symbol,
+      payType,
+      isPaymentOpend
     } = this.state
-        
+    const payTypeText = {
+      point: '积分支付',
+      wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
+      deposit: '余额支付',
+      delivery: '货到付款',
+      hfpay:'汇付支付'
+    } 
     return (
       <View className='payOrder'>
         <NavBar
@@ -156,6 +185,14 @@ export default class PayOrder extends Component {
             <Text>商品总价</Text>
             <Text>{ symbol }{ itemFee }</Text>
           </View>
+          <SpCell
+              isLink
+              border={false}
+              title='支付方式'
+              onClick={this.handlePaymentShow}
+            >
+              <Text>{payTypeText[payType]}</Text>
+            </SpCell>
           {/* <View className='infoLine'>
             <View>会员优惠</View>
             <View>-¥7.50</View>
@@ -169,6 +206,16 @@ export default class PayOrder extends Component {
           <View className='sum'>合计: <Text className='price'>{ symbol }{ totalFee }</Text></View>
           <View className='goPay' onClick={this.handlePay.bind(this)}>去支付</View>
         </View>
+        <PaymentPicker
+          isOpened={isPaymentOpend}
+          type={payType}
+          isShowPoint={false}
+          isShowBalance={false}
+          isShowDelivery={false}
+          // disabledPayment={disabledPayment}
+          onClose={this.handleLayoutClose}
+          onChange={this.handlePaymentChange}
+        ></PaymentPicker>
       </View>
     )
   }
