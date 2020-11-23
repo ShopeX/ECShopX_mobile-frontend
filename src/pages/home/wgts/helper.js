@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/pages/home/wgts/helper.js
  * @Date: 2020-04-30 17:12:45
  * @LastEditors: Arvin
- * @LastEditTime: 2020-06-23 11:16:50
+ * @LastEditTime: 2020-11-23 14:47:15
  */
 import Taro from '@tarojs/taro'
 // import { WGTS_NAV_MAP } from '@/consts'
@@ -51,7 +51,7 @@ export function linkPage (type, id) {
       } else if (id == 'mycoach') {
         url = '/marketing/pages/service/online-guide'
       } else if (id == 'hottopic') {
-        url = '/subpage/pages/recommend/list'
+        url = '/pages/recommend/list'
       } else if (id === 'floorguide'){
         url = '/pages/floorguide/index'
       } else if (id === 'grouppurchase'){

@@ -93,7 +93,7 @@ class App extends Component {
       'pages/cart/coupon-picker',
       'pages/cart/drug-info',
       'pages/article/index',
-
+      'pages/recommend/list',
       'pages/member/index',
       'pages/member/coupon',
       'pages/member/coupon-detail',
@@ -188,7 +188,6 @@ class App extends Component {
           'pages/trade/invoice-list',
           'pages/cashier/index',
           'pages/cashier/cashier-result',
-          'pages/recommend/list',
           'pages/recommend/detail',
           'pages/qrcode-buy',
           'pages/vip/vipgrades',
