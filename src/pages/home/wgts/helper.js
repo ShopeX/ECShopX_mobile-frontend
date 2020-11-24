@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/pages/home/wgts/helper.js
  * @Date: 2020-04-30 17:12:45
  * @LastEditors: Arvin
- * @LastEditTime: 2020-11-23 14:47:15
+ * @LastEditTime: 2020-11-24 10:37:21
  */
 import Taro from '@tarojs/taro'
 // import { WGTS_NAV_MAP } from '@/consts'
@@ -26,7 +26,7 @@ export function linkPage (type, id) {
       url = '/pages/article/index?id=' + id
       break;
     case 'planting':
-      url = '/pages/recommend/detail?id=' + id
+      url = '/subpage/pages/recommend/detail?id=' + id
       break;
     case 'custom_page':
       url = '/pages/custom/custom-page?id=' + id

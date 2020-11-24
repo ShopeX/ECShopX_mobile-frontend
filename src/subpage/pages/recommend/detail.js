@@ -56,7 +56,7 @@ export default class recommendDetail extends Component {
     });
     return {
       title: info.title,
-      path: `/pages/recommend/detail?id=${info.article_id}${query}`,
+      path: `/subpage/pages/recommend/detail?id=${info.article_id}${query}`,
       imageUrl: info.share_image_url || info.image_url
     }
   }
