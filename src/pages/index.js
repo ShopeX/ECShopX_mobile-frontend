@@ -375,10 +375,10 @@ export default class HomeIndex extends Component {
         this.setState({
           show_tabBar:false
         })
-      }
         setTimeout(() => {
           S.login(this, true)
         }, 1000)
+      }
     }else {
       this.fetchSetInfo()
     }
