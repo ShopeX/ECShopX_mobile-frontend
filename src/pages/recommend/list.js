@@ -194,7 +194,7 @@ export default class RecommendList extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/pages/recommend/detail?id=${item.item_id}`
+    const url = `/subpage/pages/recommend/detail?id=${item.item_id}`
     Taro.navigateTo({
       url
     })
