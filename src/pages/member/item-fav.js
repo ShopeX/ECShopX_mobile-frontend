@@ -112,7 +112,7 @@ export default class ItemFav extends Component {
 					link = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
           break;
         case 1:
-          link = `/pages/recommend/detail?id=${item.item_id}`
+          link = `/subpage/pages/recommend/detail?id=${item.item_id}`
           break;
         case 2:
           link = `/pages/store/index?id=${item.distributor_id}`
