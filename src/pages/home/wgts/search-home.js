@@ -74,7 +74,7 @@ export default class WgtSearchHome extends Component {
             </View>
           </View>
           {
-              Taro.getEnv() !== 'WEB' && config.scanCode == 1 && <View className='scancode' onClick={this.handleScanCode.bind(this)}>
+              Taro.getEnv() !== 'WEB' && config.scanCode == 1 && APP_PLATFORM !== 'standard' && <View className='scancode' onClick={this.handleScanCode.bind(this)}>
                 <View className='iconfont icon-scan'></View>
                 <View>扫码</View>
               </View>

@@ -508,8 +508,10 @@ export default class TradeDetail extends Component {
                               { info.status === 'WAIT_SELLER_SEND_GOODS' ? '正在审核订单' : null}
                               { info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '正在派送中' : null }
                               { info.status === 'TRADE_CLOSED' ? '订单已取消' : null }
-                              { info.status === 'TRADE_SUCCESS' ? `物流单号：${info.delivery_code}` : null }
-                            </Text>
+                              { 
+                                (info.status === 'TRADE_SUCCESS' && (info.receipt_type !== 'ziti' || (info.is_shopscreen && info.is_logistics)))
+                                ? `物流单号：${info.delivery_code}` : null }
+                            </Text> 
                           </View>
                           {/*{
                             info.status !== 'TRADE_SUCCESS' ? <Text className='delivery-infos__text'>2019-04-30 11:30:21</Text> : null
@@ -544,7 +546,7 @@ export default class TradeDetail extends Component {
               </View>
         }
         {
-          info.receipt_type !== 'ziti' || (info.is_shopscreen && info.is_logistics) && <View className='trade-detail-address'>
+          ((info.is_shopscreen && info.is_logistics) || (info.receipt_type !== 'ziti')) && <View className='trade-detail-address'>
             <View className='address-receive'>
               <Text>收货地址：</Text>
               <View className='info-trade'>
@@ -627,7 +629,7 @@ export default class TradeDetail extends Component {
                   </View>
                 }
                 {
-                  !isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS' && !info.is_shopscreen && <View className='trade-detail__footer'>
+                  (!isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS' && !info.is_shopscreen) && <View className='trade-detail__footer'>
                     {
                       info.order_status_des !== 'PAYED_WAIT_PROCESS' && <Text className='trade-detail__footer__btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>取消订单</Text>
                     }
@@ -639,7 +641,7 @@ export default class TradeDetail extends Component {
                   </View>
                 }
                 {
-                  (isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS') || (info.is_shopscreen && info.is_logistics) && <View className='trade-detail__footer'>
+                  ((isDhPoint && info.status === 'WAIT_SELLER_SEND_GOODS') || (info.is_shopscreen && info.is_logistics) )&& <View className='trade-detail__footer'>
                     <Text
                       className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active'
                       style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
