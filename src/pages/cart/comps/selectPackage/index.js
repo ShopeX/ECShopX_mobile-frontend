@@ -35,14 +35,14 @@ export default class SelectPackage extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { isChecked } = this.props
     this.setState({
       checked: isChecked
     })
   }
 
-  componentWillReceiveProps (next) {
+  componentWillReceiveProps(next) {
     const { checked } = this.state
     if (next.isChecked !== checked) {
       setTimeout(() => {
@@ -79,8 +79,12 @@ export default class SelectPackage extends Component {
       this.props.onHanleChange && this.props.onHanleChange(checked)
     })
   }
-
-  render () {
+  handleClose=()=>{
+    this.setState({
+      isOpend: false
+    })
+  }
+  render() {
     const { isOpend, checked } = this.state
     const { isChecked, packInfo, colors } = this.props
     return (
@@ -98,42 +102,46 @@ export default class SelectPackage extends Component {
         </SpCell>
         <AtActionSheet
           isOpened={isOpend}
+          onClose={ this.handleClose }
         >
           <View className='payment-picker'>
             <View className='payment-picker__hd'>
               <Text>礼包</Text>
             </View>
-            <View className='payment-item no-border' onClick={this.handleChange.bind(this, false)}>
-              <View className='payment-item__ft'>
-                <Text className='payment-item__title'>不需要</Text>
-                <View className='payment-item__ft'></View>
-                <SpCheckbox
-                  colors={colors}
-                  checked={!checked}
-                />
+            <View className='payment-picker__bd'>
+              <View className='payment-item no-border' onClick={this.handleChange.bind(this, false)}>
+                <View className='payment-item__bd'>
+                  <Text className='payment-item__title'>不需要</Text>
+                </View>
+                <View className='payment-item__ft'>
+                  <SpCheckbox
+                    colors={colors}
+                    checked={!checked}
+                  />
+                </View>
+
               </View>
-            </View>
-          
-          <View className='payment-item no-border' onClick={this.handleChange.bind(this, true)}>
-            <View className='payment-item__bd'>
-              <Text className='payment-item__title'>需要</Text>
-              <Text className='payment-item__desc'>{packInfo.packDes}</Text>
-            </View>
-            <View className='payment-item__ft'>
-              <SpCheckbox
-                colors={colors}
-                checked={checked}
-              />
-            </View>
 
-
+              <View className='payment-item no-border' onClick={this.handleChange.bind(this, true)}>
+                <View className='payment-item__bd'>
+                  <Text className='payment-item__title'>需要</Text>
+                </View>
+                <View className='payment-item__ft'>
+                  <SpCheckbox
+                    colors={colors}
+                    checked={checked}
+                  />
+                </View>
+              </View>
+              <View className='payment-item__desc'>{packInfo.packDes}</View>
+            </View>
             <Button
               type='primary'
               className='btn-submit'
               style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
               onClick={this.handleConfrim.bind(this)}
             >确定</Button>
-          </View>
+
           </View>
         </AtActionSheet>
       </View>
