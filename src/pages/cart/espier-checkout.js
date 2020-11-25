@@ -1626,7 +1626,7 @@ export default class CartCheckout extends Component {
             value='[快递免邮]'
           >
           </SpCell>*/}
-          {goodType !== "cross" && pointInfo.is_open_deduct_point && (
+          {pointInfo.is_open_deduct_point && (
             <SpCell
               isLink
               className="trade-invoice"
