@@ -100,7 +100,7 @@ export default class GroupList extends Component {
     return {
       title: res.title,
       imageUrl: res.imageUrl,
-      path: `/pages/item/group-list${query}`
+      path: `/marketing/pages/item/group-list${query}`
     }
   }
 

@@ -32,10 +32,10 @@ export function linkPage (type, id) {
       url = '/pages/custom/custom-page?id=' + id
       break;
     case 'marketing':
-      url = '/pages/item/group-list'
+      url = '/marketing/pages/item/group-list'
       break;
     case 'seckill':
-      url = '/pages/item/seckill-goods-list?seckill_id=' + id
+      url = '/marketing/pages/item/seckill-goods-list?seckill_id=' + id
       break;
     case 'link':
       if (id == 'vipgrades') {

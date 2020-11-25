@@ -76,7 +76,8 @@ export default class HomeIndex extends Component {
   //     })
   //    // const res = parseUrlStr(queryStr)
   // }
-    this.checkWhite()
+    //this.checkWhite()
+    this.fetchSetInfo()
     api.wx.shareSetting({shareindex: 'index'}).then(res => {
       this.setState({
         shareInfo: res

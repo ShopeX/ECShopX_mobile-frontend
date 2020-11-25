@@ -99,7 +99,7 @@ export default class Coupon extends Component {
   }
 
   handleClick = (card_id, code) => {
-    const url = `/pages/member/coupon-detail?card_id=${card_id}&code=${code}`
+    const url = `/marketing/pages/member/coupon-detail?card_id=${card_id}&code=${code}`
     Taro.navigateTo({
       url
     })

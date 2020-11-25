@@ -60,7 +60,7 @@ export default class SeckillGoodsList extends Component {
     return {
       title: res.title,
       imageUrl: res.imageUrl,
-      path: `/pages/item/seckill-goods-list${query}`
+      path: `/marketing/pages/item/seckill-goods-list${query}`
     }
   }
 

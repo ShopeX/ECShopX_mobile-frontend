@@ -124,7 +124,7 @@ export default class SeckillList extends Component {
 
   handleClickItem = (seckill_id) => {
     Taro.navigateTo({
-      url: `/pages/item/seckill-goods-list?seckill_id=${seckill_id}`
+      url: `/marketing/pages/item/seckill-goods-list?seckill_id=${seckill_id}`
     })
   }
 

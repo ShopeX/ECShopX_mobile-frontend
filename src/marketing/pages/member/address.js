@@ -89,11 +89,11 @@ export default class AddressIndex extends Component {
   handleClickToEdit = (item) => {
     if (item.address_id) {
       Taro.navigateTo({
-        url: `/pages/member/edit-address?address_id=${item.address_id}`
+        url: `/marketing/pages/member/edit-address?address_id=${item.address_id}`
       })
     } else {
       Taro.navigateTo({
-        url: '/pages/member/edit-address'
+        url: '/marketing/pages/member/edit-address'
       })
     }
   }
@@ -108,7 +108,7 @@ export default class AddressIndex extends Component {
 
   wxAddress = () => {
     Taro.navigateTo({
-      url: `/pages/member/edit-address?isWechatAddress=true`
+      url: `/marketing/pages/member/edit-address?isWechatAddress=true`
     })
   }
 
