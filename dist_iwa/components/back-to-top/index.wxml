@@ -1,5 +1,0 @@
-<block>
-    <view class="{{anonymousState__temp}}" style="{{anonymousState__temp2}}" bindtap="funPrivatezqEaX">
-        <view class="in-icon in-icon-back-top"></view>
-    </view>
-</block>

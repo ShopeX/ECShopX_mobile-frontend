@@ -1,14 +1,14 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView, Text } from '@tarojs/components'
+import { View, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, Loading, SpNote, BackToTop } from '@/components'
+import { SpToast, Loading, BackToTop } from '@/components'
+import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy,normalizeQuerys } from '@/utils'
-import entry from '@/utils/entry'
-import { withPager, withBackToTop } from '@/hocs'
+import { pickBy, normalizeQuerys, getCurrentRoute } from '@/utils'
+import { withBackToTop } from '@/hocs'
 import S from "@/spx";
-import { WgtSlider, WgtLimittimeSlider, WgtImgHotZone, WgtGoodsFaverite, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck } from '../home/wgts'
+import { WgtSlider, WgtImgHotZone, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtSearchHome, WgtFilm } from '../home/wgts'
 
 import './index.scss'
 
@@ -24,8 +24,23 @@ export default class StoreIndex extends Component {
       wgts: null,
       authStatus: false,
       isShowAddTip: false,
-      storeInfo: null
+      localCurrent: 0,
+      storeInfo: null,
+      tabList: [
+        { title: '店铺首页', iconType: 'home', iconPrefixClass: 'icon', url: '/pages/store/index' },
+        { title: '商品列表', iconType: 'list', iconPrefixClass: 'icon', url: '/others/pages/store/list' },
+        { title: '商品分类', iconType: 'category', iconPrefixClass: 'icon', url: '/others/pages/store/category' }
+      ]
     }
+  }
+
+
+  async componentDidMount () { 
+    const options = normalizeQuerys(this.$router.params)
+    const id = options.id || options.dtid
+      if(id){
+      this.fetchInfo(id)
+      }
   }
 
   componentDidShow = () => {
@@ -39,10 +54,6 @@ export default class StoreIndex extends Component {
       })
   }
 
-  // componentDidMount () {
-  //   this.fetchInfo()
-  // }
-
   onShareAppMessage (res) {
     if (res.from === 'button') {
       console.log(res.target)
@@ -51,18 +62,7 @@ export default class StoreIndex extends Component {
       title: this.state.storeInfo ? this.state.storeInfo.name : '店铺商品',
       path: `/pages/store/index?id=${this.$router.params.id}`
     }
-  }
-
-  async componentDidMount () {
-    const options = normalizeQuerys(this.$router.params)
-    // console.log(options)
-    // const { dtid } = await entry.entryLaunch(options, true)
-    // console.log(dtid)
-    const id = options.id || options.dtid
-     if(id){
-      this.fetchInfo(id)
-     }
-   }
+  }  
 
   async fetchInfo (distributorId) {
     let id = ''
@@ -82,7 +82,8 @@ export default class StoreIndex extends Component {
     // const res = await entry.entryLaunch(options, true)
 
     //const { distributor_id } = await Taro.getStorageSync('curStore')
-    const url = `/pageparams/setting?template_name=yykweishop&version=shop_${id}&page_name=shop_home`
+
+    const url = `pagestemplate/shopDetail?template_name=yykweishop&weapp_pages=index&distributor_id=${id}`
     const info = await req.get(url)
 
     if (!S.getAuthToken()) {
@@ -179,10 +180,29 @@ export default class StoreIndex extends Component {
     })
   }
 
+  handleClick = (current) => {
+    const cur = this.state.localCurrent
+    if (cur !== current) {
+      const curTab = this.state.tabList[current]
+      const { url } = curTab
+      const options = normalizeQuerys(this.$router.params)
+      const id = options.id || options.dtid
+      const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
+      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+      if (url && fullPath !== url) {
+        Taro.redirectTo({ url: `${url}${param}` })
+      }
+    }
+  }
+
   render () {
-    const { wgts, storeInfo, authStatus, page, likeList, showBackToTop, scrollTop, isShowAddTip } = this.state
+    const { wgts, storeInfo, showBackToTop, scrollTop, tabList, localCurrent, isShowAddTip, authStatus } = this.state
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
+
+    console.log(isPromoter)
+    console.log(isShowAddTip)
+    console.log(authStatus)
 
     if (!wgts || !this.props.store) {
       return <Loading />
@@ -206,8 +226,10 @@ export default class StoreIndex extends Component {
             {
               wgts.map((item, idx) => {
                 return (
-                  <View className='wgt-wrap' key={idx}>
+                  <View className='wgt-wrap' key={`${item.name}${idx}`}>
+                    {item.name === 'search' && <WgtSearchHome info={item} dis_id={this.$router.params.id} />}
                     {item.name === 'slider' && <WgtSlider info={item} />}
+                    {item.name === 'film' && <WgtFilm info={item} />}
                     {item.name === 'marquees' && <WgtMarquees info={item} />}
                     {item.name === 'navigation' && <WgtNavigation info={item} />}
                     {item.name === 'coupon' && <WgtCoupon info={item} dis_id={this.$router.params.id} />}
@@ -228,6 +250,12 @@ export default class StoreIndex extends Component {
         />
 
         <SpToast />
+        <AtTabBar
+          fixed
+          tabList={tabList}
+          onClick={this.handleClick}
+          current={localCurrent}
+        />        
       </View>
     )
   }

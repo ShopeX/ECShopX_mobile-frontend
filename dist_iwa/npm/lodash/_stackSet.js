@@ -1,1 +1,0 @@
-var ListCache=require("./_ListCache.js"),Map=require("./_Map.js"),MapCache=require("./_MapCache.js"),LARGE_ARRAY_SIZE=200;function stackSet(e,a){var t=this.__data__;if(t instanceof ListCache){var s=t.__data__;if(!Map||s.length<199)return s.push([e,a]),this.size=++t.size,this;t=this.__data__=new MapCache(s)}return t.set(e,a),this.size=t.size,this}module.exports=stackSet;

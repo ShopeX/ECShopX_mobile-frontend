@@ -55,7 +55,7 @@
   &.cover {
     padding: 0;
     position: absolute;
-    top: -20px;
+    // top: -20px;
     z-index: 20;
   }
   &.cover.center {
@@ -119,6 +119,14 @@
     }
   }
 }
+
+/*  #ifdef weapp  */
+.slider-dot {
+  &.cover {
+    top: -20px;
+  }
+}
+/*  #endif  */  
 
 .slider-count {
   display: flex;

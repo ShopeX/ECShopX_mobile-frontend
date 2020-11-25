@@ -6,6 +6,10 @@
   justify-content: center;
   width: 100vw;
   height: 100vh;
+  /*  #ifdef  h5  */  
+  box-sizing: border-box;
+  padding-top: $navigate-height-h5;
+  /*  #endif  */  
   .qrcode-bg {
     display: flex;
     flex-direction: column;

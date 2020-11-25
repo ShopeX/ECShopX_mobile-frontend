@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView, Text, Image } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote } from '@/components'
-import PackageItem from './comps/package-item'
 import api from '@/api'
 import { pickBy } from '@/utils'
+import PackageItem from './comps/package-item'
 
 import './package-list.scss'
 
@@ -17,8 +17,7 @@ export default class PackageList extends Component {
     this.state = {
       ...this.state,
       currentPackage: 0,
-      list: [],
-      distributor_id:0
+      list: []
     }
   }
 
@@ -32,7 +31,7 @@ export default class PackageList extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-    const { id,distributor_id } = this.$router.params
+    const { id } = this.$router.params
     const { currentPackage } = this.state
     const query = {
       item_id: id,
@@ -49,9 +48,9 @@ export default class PackageList extends Component {
       })
 
       this.setState({
-        list: [...this.state.list, ...nList],
-        distributor_id:distributor_id
+        list: [...this.state.list, ...nList]
       })
+
 
       if (!currentPackage) {
         this.setState({
@@ -72,8 +71,8 @@ export default class PackageList extends Component {
   }
 
   render () {
-    const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType, distributor_id } = this.state
-
+    const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType } = this.state
+    const { distributor_id } = this.$router.params
     return (
       <View className='page-package-goods'>
         <ScrollView
@@ -94,8 +93,8 @@ export default class PackageList extends Component {
                     >
                       <PackageItem
                         info={item}
+                        distributorId={distributor_id}
                         current={currentPackage}
-                        distributor_id={distributor_id}
                         onClick={this.handleItemClick.bind(this, item.package_id)}
                       />
                     </View>

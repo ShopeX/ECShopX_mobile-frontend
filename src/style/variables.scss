@@ -10,7 +10,8 @@ $edge-margin        : 10px * 2 !default;
 
 $navigation-height  : 80px !default;
 $toolbar-height     : 120px !default;
-$navigate-height    : 92px !default;
+$navigate-height    : 0 !default;
+$navigate-height-h5 : 92px !default;
 $tags-height        : 90px !default;
 $tabs-height        : 72px !default;
 $toolbar-shadow     : 0 -2px 3px rgba(#000, 0.05);

@@ -1,8 +1,8 @@
 import Taro from '@tarojs/taro'
 import classNames from 'classnames'
-import styleNames from 'stylenames'
 import qs from 'qs'
-import moment from 'moment'
+// import moment from 'moment'
+import format from 'date-fns/format'
 import copy from 'copy-to-clipboard'
 import S from '@/spx'
 import { STATUS_TYPES_MAP } from '@/consts'
@@ -14,6 +14,7 @@ import throttle from 'lodash/throttle'
 import log from './log'
 import canvasExp from './canvasExp'
 import calCommonExp from './calCommonExp'
+
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
 
 export function isFunction (val) {
@@ -116,12 +117,14 @@ export function resolvePath (baseUrl, params = {}) {
   return `${baseUrl}${baseUrl.indexOf('?') >= 0 ? '&' : '?'}${queryStr}`
 }
 
-export function formatTime (time, formatter = 'YYYY-MM-DD') {
-  return moment(time).format(formatter)
+export function formatTime (time, formatter = 'yyyy-MM-dd') {
+  const newTime = time.toString().length < 13 ? time * 1000 : time
+  return format(newTime, formatter)
 }
 
-export function formatDataTime (time, formatter = 'YYYY-MM-DD HH:mm:ss') {
-  return moment(time).format(formatter)
+export function formatDataTime (time, formatter = 'yyyy-MM-dd HH:mm:ss') {
+  const newTime = time.toString().length < 13 ? time * 1000 : time
+  return format(newTime, formatter)
 }
 
 export function copyText (text, msg = '内容已复制') {
@@ -205,9 +208,61 @@ export function imgCompression (url) {
   return url +  rule
 }
 
+
+export const browser = (() => {
+  if (process.env.TARO_ENV === 'h5') {
+    var ua = navigator.userAgent
+    return {
+      trident: ua.indexOf('Trident') > -1, //IE内核
+      presto: ua.indexOf('Presto') > -1, //opera内核
+      webKit: ua.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') == -1,//火狐内核
+      mobile: !!ua.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1, //android终端
+      weixin: ua.match(/MicroMessenger/i),
+      qq: ua.match(/\sQQ/i) == " qq", //是否QQ
+      isWeapp: (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) || global.__wxjs_environment === 'miniprogram',
+      isAlipay: ua.match(/AlipayClient/i)
+    }
+  }
+})()
+
+// 注入美洽客服插件
+export const meiqiaInit = () => {
+  (function(m, ei, q, i, a, j, s) {
+    m[i] = m[i] || function() {
+        (m[i].a = m[i].a || []).push(arguments)
+    };
+    j = ei.createElement(q),
+        s = ei.getElementsByTagName(q)[0];
+    j.async = true;
+    j.charset = 'UTF-8';
+    j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
+    s.parentNode.insertBefore(j, s);
+  })(window, document, 'script', '_MEIQIA');
+}
+
+export function tokenParse(token) {
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var arr_base64 = wx.base64ToArrayBuffer(base64);
+  arr_base64 = String.fromCharCode.apply(null, new Uint8Array(arr_base64));
+  var jsonPayload = decodeURIComponent(
+    arr_base64
+      .split("")
+      .map(function(c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+
+  return JSON.parse(jsonPayload);
+}
+
+
 export {
   classNames,
-  styleNames,
   log,
   debounce,
 	throttle,

@@ -1,13 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, NavBar, CouponItem } from '@/components'
 import api from '@/api'
+import { connect } from '@tarojs/redux'
 import { withPager } from '@/hocs'
-import { classNames, pickBy } from '@/utils'
+import { pickBy } from '@/utils'
 
 import './coupon.scss'
 
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 @withPager
 export default class Coupon extends Component {
   constructor (props) {
@@ -128,7 +132,7 @@ export default class Coupon extends Component {
             tabList.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curTabIdx}
-                key={pIdx}
+                key={panes.status}
                 index={pIdx}
               >
               </AtTabsPane>)

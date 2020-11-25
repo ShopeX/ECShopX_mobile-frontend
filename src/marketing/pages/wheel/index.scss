@@ -1,112 +1,195 @@
 // @import '../../components/wheel/wheel.wxss'
 .page-wheel-index {
   background-color: #fff;
-  height: 100vh;
-  padding-top: 40px;
-  overflow: hidden;
+  // height: 100vh;
+  // overflow: hidden;
   box-sizing: border-box;
-  .wheel {
-    width: 500px;
-    height: 500px;
-    position: relative;
-    margin: 0px auto;
 
-    .turntable {
+  .background-img {
+    width: 100%;
+    image {
+      width: 100%;
+    }
+  }
+
+  .wheel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    &-title {
+      font-size: 70px;
+      color: #fff;
+      margin-top: 60px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    &-msg {
+      text-align: center;
+      font-weight: 700;
+      font-size: 29px;
+      color: #ffffff;
+    }
+
+    &-turntable {
       width: 500px;
       height: 500px;
-      border: 6px solid #c13f07;
-      border-radius: 50%;
-      box-shadow: 0px 0px 6px 10px #feea95;
+      margin: 0px auto;
+      margin-top: 160px;
       position: relative;
-      overflow: hidden;
 
-      &-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #fff;
+      .turntable {
+        width: 500px;
+        height: 500px;
         border-radius: 50%;
-        transform: rotate(90deg);
+        position: relative;
         overflow: hidden;
 
-        View {
+        &-bg {
           position: absolute;
           top: 0;
           left: 0;
-          right: 0;
-          margin: 0 auto;
-          width: 1px;
+          width: 100%;
           height: 100%;
-          background: #feea95;
-          transform-origin: center center;
-        }
-      }
+          background: #fff;
+          border-radius: 50%;
+          transform: rotate(90deg);
+          overflow: hidden;
 
-      &-gift {
-        position: relative;
-        width: 100%;
-        height: 100%;
-
-        // transform: rotate(45deg);
-        >View {
-          position: absolute;
-          top: 0%;
-          left: 0%;
-          width: 50%;
-          height: 50%;
-          transform-origin: right bottom;
-
-          // background-color: #fff;
-          Image {
-            width: 80px;
-            height: 80px;
-          }
-
-          .div-text {
+          View {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            display: block;
-            width: 100px;
-            height: 140px;
-            margin: auto;
-            // background: yellow;
-            transform: rotate(-45deg);
-            text-align: center;
-            line-height: 64px;
-            border-radius: 5px;
-            // background: #f23c3c;
-            // color: #fff;
-            font-size: 12px;
-            color: #000;
+            margin: 0 auto;
+            width: 1px;
+            height: 100%;
+            transform-origin: center center;
+          }
+        }
 
-            View {
-              height: 68px;
-              line-height: 68px;
-              font-size: 24px;
+        &-gift {
+          position: relative;
+          width: 100%;
+          height: 100%;
+
+          // transform: rotate(45deg);
+          > View {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+            width: 50%;
+            height: 50%;
+            transform-origin: right bottom;
+
+            // background-color: #fff;
+            image {
+              width: 80px;
+              height: 80px;
+            }
+
+            .div-text {
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              display: block;
+              width: 100px;
+              height: 140px;
+              margin: auto;
+              // background: yellow;
+              transform: rotate(-45deg);
+              text-align: center;
+              line-height: 64px;
+              border-radius: 5px;
+              // background: #f23c3c;
+              // color: #fff;
+              font-size: 12px;
+              color: #000;
+
+              View {
+                height: 68px;
+                line-height: 68px;
+                font-size: 24px;
+              }
             }
           }
         }
       }
+
+      &__pointer {
+        position: absolute;
+        width: 100px;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -50px;
+
+        image {
+          width: 100%;
+          // height: 100%;
+        }
+      }
+
     }
 
-    &-pointer {
-      position: absolute;
-      width: 80px;
-      top: 50%;
-      left: 50%;
-      margin-top: -76px;
-      margin-left: -40px;
-
-      Image {
-        width: 100%;
-        // height: 100%;
-      }
+    &-describe{
+      max-width: 80%;
+      margin: 0 auto;
+      margin-top: 80px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-sizing: border-box;
+      padding: 20px;
+      padding-bottom: 40px;
+      font-size: 22px;
+      line-height: 40px;
+      color: #666666;
     }
   }
 
+  .wheel-prize {
+    .at-modal__container {
+      background-color: transparent;
+      width: 75%;
+    }
+
+    &__modal {
+      position: relative;
+
+      &-con {
+        position: absolute;
+        bottom: 50px;
+        text-align: center;
+        width: 100%;
+
+        &__text {
+          font-size: 32px;
+          margin-bottom: 40px;
+          color: #fff;
+        }
+
+        .at-button {
+          width: 224px;
+          height: 80px;
+          background: #f8e437;
+          margin: 0 auto;
+          border: 0 none;
+          border-radius: 40px;
+
+          &__text {
+            font-size: 32px;
+            color: #d42f29;
+          }
+        }
+
+        .button-regret {
+          background-color: #fff;
+        }
+      }
+    }
+  }
 }

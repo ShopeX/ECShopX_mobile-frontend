@@ -1,13 +1,16 @@
 @import '../../../style/imports';
 
 .page-distribution-index {
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   .header {
     position: relative;
     padding: 30px;
     color: #ffffff;
     .header-avatar {
-      width: 114px;
-      height: 114px;
+      width: 114px !important;
+      height: 114px !important;
       border-radius: 50%;
     }
     .header-info {

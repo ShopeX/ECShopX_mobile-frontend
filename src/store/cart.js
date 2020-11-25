@@ -30,7 +30,6 @@ const cart = createReducer(initState, {
   },
   ['cart/fastbuy'](state, action) {
     const { item , num = 1 } = action.payload
-
     return {
       ...state,
       fastbuy: {

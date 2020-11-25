@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
-import { Loading, FloatMenus, FloatMenuItem, GoodsEvaluation, GoodsComment } from '@/components'
+import { View, ScrollView } from '@tarojs/components'
+import { Loading, FloatMenus, FloatMenuItem, GoodsEvaluation, GoodsComment, NavBar } from '@/components'
 import api from '@/api'
 import { withBackToTop, withPager } from '@/hocs'
 import { normalizeQuerys } from '@/utils'
@@ -156,6 +156,10 @@ export default class Evaluation extends Component {
 
     return (
       <View className='page-goods-evaluation'>
+        <NavBar
+          title='评论列表'
+          leftIconType='chevron-left'
+        />              
         <ScrollView
           className='goods-detail__scroll'
           onScrollToLower={this.nextPage}

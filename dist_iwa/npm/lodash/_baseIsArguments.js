@@ -1,1 +1,0 @@
-var baseGetTag=require("./_baseGetTag.js"),isObjectLike=require("./isObjectLike.js"),argsTag="[object Arguments]";function baseIsArguments(e){return isObjectLike(e)&&baseGetTag(e)==argsTag}module.exports=baseIsArguments;

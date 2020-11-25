@@ -1,13 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-import { SpToast, Loading, SpNote, BackToTop } from '@/components'
+import { View, ScrollView } from '@tarojs/components'
+import { SpToast, Loading, BackToTop, NavBar } from '@/components'
 import req from '@/api/req'
-import api from '@/api'
-import { pickBy } from '@/utils'
 import { withBackToTop } from '@/hocs'
 import S from "@/spx";
-import { HomeWgts } from '../home/comps/home-wgts'
+import HomeWgts from '../home/comps/home-wgts'
 
 import './custom-page.scss'
 
@@ -19,6 +16,7 @@ export default class HomeIndex extends Component {
     this.state = {
       ...this.state,
       wgts: null,
+      shareInfo: null,
       authStatus: false,
       positionStatus: false
     }
@@ -47,9 +45,36 @@ export default class HomeIndex extends Component {
       })
     }
     this.setState({
+      shareInfo: info.share,
       wgts: info.config
     })
   }
+
+  async onShareAppMessage () {
+    const { shareInfo } = this.state
+    const { id } = this.$router.params
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `?uid=${userId}&id=${id}` : `?id=${id}`
+    console.log(query)    
+    return {
+      title: shareInfo.page_share_title,
+      imageUrl: shareInfo.page_share_imageUrl,
+      path: `/pages/custom/custom-page${query}`
+    }
+  }
+
+  onShareTimeline () {
+    const { shareInfo } = this.state
+    const { id } = this.$router.params
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `uid=${userId}&id=${id}` : `id=${id}`     
+    return {
+      title: shareInfo.page_share_title,
+      imageUrl: shareInfo.page_share_imageUrl,
+      query: query
+    }
+  }   
+    
 
   render () {
     const { wgts, authStatus, scrollTop, showBackToTop, positionStatus } = this.state
@@ -59,7 +84,10 @@ export default class HomeIndex extends Component {
     }
 
     return (
-      <View className='page-index'>
+      <View className='page-index-custom'>
+        <NavBar 
+          title='微商城'
+        />
         <ScrollView
           className={`wgts-wrap ${positionStatus ? 'wgts-wrap__fixed' : ''}`}
           scrollTop={scrollTop}

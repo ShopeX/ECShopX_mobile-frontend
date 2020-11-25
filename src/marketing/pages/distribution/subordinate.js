@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { BackToTop, Loading, SpNote } from '@/components'
+import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
@@ -82,6 +82,11 @@ export default class DistributionSubordinate extends Component {
 
     return (
       <View className="page-distribution-subordinate">
+        <NavBar
+          title='我的会员'
+          leftIconType='chevron-left'
+          fixed='true'
+        />	          
         <AtTabs
           className='client-list__tabs'
           current={curTabIdx}
@@ -92,7 +97,7 @@ export default class DistributionSubordinate extends Component {
             tabList.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curTabIdx}
-                key={pIdx}
+                key={panes.type}
                 index={pIdx}
               >
               </AtTabsPane>)
@@ -106,7 +111,7 @@ export default class DistributionSubordinate extends Component {
           scrollTop={scrollTop}
           onScrollToLower={this.nextPage}
         >
-          { list.length &&
+          { list.length > 0 &&
             <View className="section list">
               {
                 list.map(item => {

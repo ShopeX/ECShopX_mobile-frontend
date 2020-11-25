@@ -54,6 +54,9 @@
       }
       .img-rate {
         width: 100%;
+        /*  #ifdef  h5  */  
+        height: 240px;
+        /*  #endif  */
       }
     }
   }

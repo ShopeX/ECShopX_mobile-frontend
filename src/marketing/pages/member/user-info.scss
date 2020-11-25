@@ -2,7 +2,9 @@
 
 .auth-reg {
   height: 100vh;
-  padding-top: 92px;
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */  
   position: relative;
   box-sizing: border-box;
   background: $color-brand-primary-text;

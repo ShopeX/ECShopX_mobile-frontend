@@ -1,8 +1,16 @@
 @import '../../../style/imports';
 
 .page-distribution-trade {
+  .trade-list__tabs {
+    /*  #ifdef  h5  */  
+    top: $navigate-height-h5;
+    /*  #endif  */  
+  }
   .trade-list__scroll {
     @include page-scroll($tabs-height + $navigate-height, 0);
+    /*  #ifdef  h5  */  
+    @include page-scroll($tabs-height + $navigate-height-h5, 0);
+    /*  #endif  */      
   }
   .order-no {
     font-size: 30px;

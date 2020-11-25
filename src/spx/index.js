@@ -1,5 +1,4 @@
 import Taro from '@tarojs/taro'
-import '@tarojs/async-await'
 import api from '@/api'
 import { getCurrentRoute, log } from '@/utils'
 
@@ -150,7 +149,6 @@ class Spx {
     if (path === APP_AUTH_PAGE) {
       return
     }
-
     const authUrl = APP_AUTH_PAGE + `?redirect=${encodedRedirect}`
 
     Taro[isRedirect ? 'redirectTo' : 'navigateTo']({

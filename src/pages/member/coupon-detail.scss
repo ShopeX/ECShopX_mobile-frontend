@@ -64,17 +64,21 @@
         .hr {
           border-bottom: 1px dashed #fd7832;
         }
-        &::after {
-          content: '';
-          width: 130px;
-          height: 100px;
-          background: #2f3030;
-          position: absolute;
-          left: 50%;
-          top: -65px;
-          transform: translateX(-50%);
-          border-radius: 50%;
-        }
+        // &::after {
+        //   content: '';
+        //   width: 130px;
+        //   height: 100px;
+        //   background: #2f3030;
+        //   position: absolute;
+        //   left: 50%;
+        //   top: -65px;
+        //   transform: translateX(-50%);
+        //   border-radius: 50%;
+        // }
+        .card-decorate {
+          height: 0;
+          padding: 0;
+        } 
         .card-decorate::before, .card-decorate::after {
           content: '';
           position: absolute;
@@ -82,7 +86,7 @@
           width: 45px;
           height: 45px;
           border-radius: 50%;
-          background: #2f3030;
+          background: inherit;
           z-index: 2;
         }
         .card-decorate::before {

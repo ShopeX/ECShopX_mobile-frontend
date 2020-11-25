@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { Price, SpCheckbox, CouponItem } from '@/components'
+import { SpCheckbox, CouponItem } from '@/components'
 import { pickBy } from '@/utils'
 import api from '@/api'
 
@@ -26,7 +26,7 @@ export default class CouponPicker extends Component {
 
   async fetch () {
     //const { distributor_id } = Taro.getStorageSync('curStore')
-    const { items, is_checkout, cart_type, use_platform = 'mall',distributor_id } = this.$router.params
+    const { items, is_checkout, cart_type, use_platform = 'mall',distributor_id, source, goodType } = this.$router.params
 
     const params = {
       items: JSON.parse(items),
@@ -35,7 +35,22 @@ export default class CouponPicker extends Component {
       distributor_id,
       valid: true,
       is_checkout,
-      cart_type
+      cart_type,
+      iscrossborder: 0
+    }
+
+    if (goodType === 'cross') {
+      params.iscrossborder = 1
+    } 
+    
+    if(source === 'other_pay'){
+      let { cxdid, dtid, smid } = Taro.getStorageSync('espierCheckoutData')
+
+      params.cxdid = cxdid
+      params.distributor_id = dtid
+      params.cart_type = 'cxd'
+      params.order_type = 'normal_shopguide'
+      params.salesman_id = smid
     }
 
     const couponsData = await api.cart.coupons(params)
@@ -62,7 +77,9 @@ export default class CouponPicker extends Component {
 
     const payload = value
       ? { type, value }
-      : null
+      : {
+        not_use_coupon: 1
+      }
     this.props.onChangeCoupon(payload)
     setTimeout(() => {
       Taro.navigateBack()
@@ -72,7 +89,7 @@ export default class CouponPicker extends Component {
   render () {
     const { coupons } = this.state
     const { curCoupon } = this.props
-
+    console.log(curCoupon)
     if (!coupons) {
       return null
     }
@@ -96,19 +113,19 @@ export default class CouponPicker extends Component {
           coupons.map((coupon, idx) => {
             return (
               <CouponItem
-                key={idx}
+                key={`${idx}1`}
                 info={coupon}
                 isDisabled={!coupon.valid}
                 onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
               >
                 <SpCheckbox
-                  checked={curCoupon && curCoupon.type === 'coupon' && curCoupon.value.code === coupon.code}
+                  checked={curCoupon && curCoupon.value && curCoupon.value.code === coupon.code}
                   disabled={!coupon.valid}
                 />
               </CouponItem>
 
               // <View
-              //   key={idx}
+              //   key={`${idx}1`}
               //   className='coupon-item'
               //   onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
               // >

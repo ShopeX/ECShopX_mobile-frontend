@@ -1,11 +1,17 @@
+/*
+ * @Author: Arvin
+ * @GitHub: https://github.com/973749104
+ * @Blog: https://liuhgxu.com
+ * @Description: 说明
+ * @FilePath: /unite-vshop/src/pages/home/wgts/store.js
+ * @Date: 2020-07-08 20:08:58
+ * @LastEditors: Arvin
+ * @LastEditTime: 2020-08-03 17:20:34
+ */
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
-import { QnImg } from '@/components'
-import { classNames } from '@/utils'
-import { linkPage } from './helper'
-import api from '@/api'
-
+import { View, Image, ScrollView } from '@tarojs/components'
 import './store.scss'
+
 export default class WgtStore extends Component {
   static options = {
     addGlobalClass: true
@@ -26,8 +32,8 @@ export default class WgtStore extends Component {
     })
   }
 
-  handleGoodsClick = (id) => {
-    const url = `/pages/item/espier-detail?id=${id}`
+  handleGoodsClick = (item) => {
+    const url = `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -67,7 +73,7 @@ export default class WgtStore extends Component {
                   item.items.map(goods =>
                     <View
                       className='store-goods__item'
-                      onClick={this.handleGoodsClick.bind(this, goods.goodsId)}
+                      onClick={this.handleGoodsClick.bind(this, goods)}
                       >
                       <Image className='store-goods__item-thumbnail' src={goods.imgUrl} mode='scaleToFill'/>
                       <View className='store-goods__item-price'>¥{(goods.price/100).toFixed(2)}</View>

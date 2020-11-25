@@ -3,6 +3,9 @@
 $item-img-size: 240px !default;
 
 .page-my-group-list {
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   .groups-list__scroll {
     box-sizing: border-box;
     @include page-scroll($tabbar-height + $edge-size/2, 0);

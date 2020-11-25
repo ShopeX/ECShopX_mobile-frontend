@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { classNames, styleNames } from '@/utils'
+import { classNames } from '@/utils'
 import { AtTextarea } from 'taro-ui'
 import './index.scss'
 
@@ -58,7 +58,7 @@ export default class GoodsComment extends Component {
   }
 
   handleChange (e) {
-    let comment = e.target.value
+    let comment = e
     this.setState({
         comment,
         count: comment ? comment.length : 0

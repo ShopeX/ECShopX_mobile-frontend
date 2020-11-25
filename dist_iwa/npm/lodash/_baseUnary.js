@@ -1,1 +1,0 @@
-function baseUnary(r){return function(n){return r(n)}}module.exports=baseUnary;

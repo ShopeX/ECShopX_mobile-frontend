@@ -1,8 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { QnImg } from '@/components'
+import { SpImg } from '@/components'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
+import { Tracker } from "@/service";
 import './goods-grid.scss'
 
 export default class WgtGoodsGrid extends Component {
@@ -10,15 +11,16 @@ export default class WgtGoodsGrid extends Component {
     addGlobalClass: true
   }
 
-  navigateTo (url) {
-    Taro.navigateTo({ url })
+  componentDidMount() {
+    this.startTrack();
   }
 
-  handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}`
-    Taro.navigateTo({
-      url
-    })
+  navigateTo(url, item) {
+    Taro.navigateTo({ url })
+    if (item) {
+      // 商品卡触发
+      Tracker.dispatch("TRIGGER_SKU_COMPONENT", item);
+    }
   }
 
   handleClickMore = () => {
@@ -30,7 +32,32 @@ export default class WgtGoodsGrid extends Component {
     }
   }
 
-  render () {
+  startTrack() {
+    this.endTrack();
+    const observer = Taro.createIntersectionObserver(this.$scope, {
+      observeAll: true
+    });
+    observer.relativeToViewport({ bottom: 0 }).observe(".grid-item", res => {
+      console.log("res.intersectionRatio:", res.intersectionRatio);
+      if (res.intersectionRatio > 0) {
+        const { id } = res.dataset;
+        const { data } = this.state.info;
+        const curGoods = data.find( item => item.goodsId == id );
+        Tracker.dispatch("EXPOSE_SKU_COMPONENT", curGoods);
+      }
+    });
+
+    this.observe = observer;
+  }
+
+  endTrack() {
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observe = null;
+    }
+  }
+
+  render() {
     const { info, dis_id = '' } = this.props
     console.log(dis_id)
     if (!info) {
@@ -76,18 +103,19 @@ export default class WgtGoodsGrid extends Component {
           <View className='grid-goods out-padding grid-goods__type-grid'>
             {
               data.map((item, idx) => {
-                const price = ((item.act_price ? item.act_price : item.member_price ? item.member_price : item.price)/100).toFixed(2)
+                const price = ((item.act_price ? item.act_price : item.member_price ? item.member_price : item.price) / 100).toFixed(2)
                 //const marketPrice = ((item.act_price ? item.price : item.member_price ? item.price : item.market_price)/100).toFixed(2)
-                const marketPrice = ((item.market_price)/100).toFixed(2)
+                const marketPrice = ((item.market_price) / 100).toFixed(2)
                 return (
                   <View
-                    key={idx}
+                    key={`${idx}1`}
                     className={classNames('grid-item',{'grid-item-three': config.style=='grids'})}
-                    onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}`)}
+                    onClick={this.navigateTo.bind(this, `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`, item)}
+                    data-id={item.goodsId}
                   >
                     <View className='goods-wrap'>
                       <View className='thumbnail'>
-                        <QnImg
+                        <SpImg
                           img-class='goods-img'
                           src={item.imgUrl}
                           mode='aspectFill'
@@ -97,24 +125,32 @@ export default class WgtGoodsGrid extends Component {
                       </View>
                       <View className='caption'>
                         {config.brand && item.brand && (
-                          <QnImg
+                          <SpImg
                             img-class='goods-brand'
                             src={item.brand}
                             mode='aspectFill'
                             width='300'
                           />
                         )}
+                        {
+                          item.type === '1' && <View className='nationalInfo'>
+                              <Image className='nationalFlag' src={item.origincountry_img_url} mode='aspectFill' lazyLoad />
+                              <Text className='nationalTitle'>
+                                { item.origincountry_name }
+                              </Text>
+                          </View>
+                        }
                         <View className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.title}</View>
                         {item.brief && <View className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.brief}</View>}
                         {
                           config.showPrice
                           && <View className='goods-price'>
-                              <Text className='cur'>¥</Text>{price}
-                              {
-                                marketPrice != 0 &&
-                                <Text className='market-price'>{marketPrice}</Text>
-                              }
-                            </View>
+                            <Text className='cur'>¥</Text>{price}
+                            {
+                              marketPrice != 0 &&
+                              <Text className='market-price'>{marketPrice}</Text>
+                            }
+                          </View>
                         }
                       </View>
                     </View>

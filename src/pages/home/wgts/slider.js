@@ -1,15 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
-import { QnImg } from '@/components'
+import { View, Image, Swiper, SwiperItem } from '@tarojs/components'
+import { SpImg } from '@/components'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
+import { WgtPlateType } from './index'
 
 import './slider.scss'
 
 export default class WgtSlider extends Component {
-  static options = {
-    addGlobalClass: true
-  }
 
   static defaultProps = {
     info: null
@@ -19,23 +17,35 @@ export default class WgtSlider extends Component {
     super(props)
 
     this.state = {
-      curIdx: 0
+      curIdx: 0,
+      index: 0
     }
+  }
+
+  static options = {
+    addGlobalClass: true
   }
 
   handleClickItem = linkPage
 
-  handleSwiperChange = (e) => {
-    const { current  } = e.detail
+  // handleSwiperChange = (e) => {
+  //   const { current  } = e.detail
 
+  //   this.setState({
+  //     curIdx: current
+  //   })
+  // }
+  handleSwiperChange = (e) => {
+    const { current } = e.detail
     this.setState({
-      curIdx: current
+        curIdx: current,
+        index: e.target.current
     })
-  }
+}
 
   render () {
     const { info } = this.props
-    const { curIdx } = this.state
+    const { curIdx,index } = this.state
 
     if (!info) {
       return null
@@ -54,11 +64,13 @@ export default class WgtSlider extends Component {
         {
           config
             ? <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
-                <Image
-                  mode='widthFix'
-                  className='scale-placeholder'
-                  src={data[0].imgUrl}
-                />
+                {
+                  data[0] && <Image
+                    mode='widthFix'
+                    className='scale-placeholder'
+                    src={data[0].imgUrl}
+                  />
+                }
                 <Swiper
                   className='slider-img'
                   circular
@@ -71,14 +83,15 @@ export default class WgtSlider extends Component {
                   {data.map((item, idx) => {
                     return (
                       <SwiperItem
-                        key={idx}
+                        key={`${idx}1`}
                         className={`slider-item ${config.rounded ? 'rounded' : null}`}
                       >
                         <View
                           style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
                           onClick={this.handleClickItem.bind(this, item.linkPage, item.id)}
                         >
-                          <QnImg
+                           <WgtPlateType info={item} index={index} num={idx} base={base} />
+                          <SpImg
                             img-class='slider-item__img'
                             src={item.imgUrl}
                             mode='widthFix'
@@ -96,7 +109,7 @@ export default class WgtSlider extends Component {
                     {data.map((dot, dotIdx) =>
                       <View
                         className={classNames('dot', { active: curIdx === dotIdx })}
-                        key={dotIdx}
+                        key={`${dotIdx}1`}
                       ></View>
                     )}
                   </View>

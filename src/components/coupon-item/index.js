@@ -8,7 +8,6 @@ import './index.scss'
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 export default class CouponItem extends Component {
   static options = {
     addGlobalClass: true

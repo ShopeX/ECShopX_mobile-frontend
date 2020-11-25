@@ -15,7 +15,7 @@
       }
     }
     &.rounded {
-      .slider-item {
+      .slider-item__img {
         border-radius: 10px;
       }
     }
@@ -127,6 +127,7 @@
 }
 
 .slider-wrap {
+  width: 100%;
   position: relative;
   background: #ffffff;
   &.padded {

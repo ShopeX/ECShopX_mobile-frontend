@@ -22,6 +22,9 @@ $checkbox-size: 32px;
     display: inline-block;
     vertical-align: middle;
   }
+  &__label{
+    display: inline-block;
+  }
   .at-icon {
     // opacity: 1;
     transform: scale(0.96);

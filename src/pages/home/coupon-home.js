@@ -1,33 +1,63 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { Loading, SpNote, NavBar, SpToast, CouponItem } from '@/components'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import S from '@/spx'
 import { withPager } from '@/hocs'
-import { classNames, pickBy, formatTime } from '@/utils'
+import { pickBy, formatTime } from '@/utils'
+import { Tracker } from "@/service";
 
 import '../home/coupon-home.scss'
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 
 @withPager
 export default class CouponHome extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
       ...this.state,
-      list: []
+      list: [],
+      shareInfo: {}
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
+    api.wx.shareSetting({ shareindex: 'coupon' }).then(res => {
+      this.setState({
+        shareInfo: res
+      })
+    })
   }
 
-  async fetch (params) {
+  onShareAppMessage() {
+    const res = this.state.shareInfo
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `?uid=${userId}` : ''
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      path: `/pages/home/coupon-home${query}`
+    }
+  }
+
+  onShareTimeline() {
+    const res = this.state.shareInfo
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `uid=${userId}` : ''
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      query: query
+    }
+  }
+
+  async fetch(params) {
     let { distributor_id } = this.$router.params
 
     params = {
@@ -55,9 +85,9 @@ export default class CouponHome extends Component {
       card_id: 'card_id'
     })
     nList.map(item => {
-      if(item.get_limit - item.user_get_num <= 0) {
+      if (item.get_limit - item.user_get_num <= 0) {
         item.getted = 1
-      } else if(item.quantity - item.get_num <= 0) {
+      } else if (item.quantity - item.get_num <= 0) {
         item.getted = 2
       } else {
         item.getted = 0
@@ -78,7 +108,7 @@ export default class CouponHome extends Component {
       'temp_name': 'yykweishop',
       'source_type': 'coupon',
     }
-    let _this=this
+    let _this = this
     api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
       console.log('templeparams---1', tmlres)
       if (tmlres.template_id && tmlres.template_id.length > 0) {
@@ -87,14 +117,14 @@ export default class CouponHome extends Component {
           success() {
             _this.handleGetCard(card_item, idx)
           },
-          fail(){
+          fail() {
             _this.handleGetCard(card_item, idx)
           }
         })
       } else {
         _this.handleGetCard(card_item, idx)
       }
-    },()=>{
+    }, () => {
       _this.handleGetCard(card_item, idx)
     })
   }
@@ -103,7 +133,7 @@ export default class CouponHome extends Component {
   handleGetCard = async (card_item, idx) => {
     const { list } = this.state
 
-    if(list[idx].getted === 2 || list[idx].getted === 1) {
+    if (list[idx].getted === 2 || list[idx].getted === 1) {
       return
     }
     console.log(card_item, 75)
@@ -112,11 +142,15 @@ export default class CouponHome extends Component {
     }
     try {
       const data = await api.member.homeCouponGet(query)
+
+      Tracker.dispatch("GET_COUPON", card_item);
+
+
       S.toast('优惠券领取成功')
       if (data.status) {
-        if (data.status.total_lastget_num <= 0 ) {
+        if (data.status.total_lastget_num <= 0) {
           list[idx].getted = 2
-        } else if (data.status.lastget_num <= 0 ) {
+        } else if (data.status.lastget_num <= 0) {
           list[idx].getted = 1
         }
         this.setState({
@@ -129,7 +163,7 @@ export default class CouponHome extends Component {
 
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { list, page } = this.state
 
@@ -162,11 +196,11 @@ export default class CouponHome extends Component {
                       {item.getted === 2 ? '已领完' : ''}
                       {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
                     </Text> */}
-                     <View
-                       className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
-                       style={`background: ${colors.data[0].primary}`}
-                       onClick={this.handleClickNews.bind(this, item, idx)}
-                     >
+                    <View
+                      className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
+                      style={`background: ${colors.data[0].primary}`}
+                      onClick={this.handleClickNews.bind(this, item, idx)}
+                    >
                       {item.getted === 1 ? '已领取' : ''}
                       {item.getted === 2 ? '已领完' : ''}
                       {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}

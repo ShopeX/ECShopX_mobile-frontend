@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
-import { AtInput } from 'taro-ui'
+import { View, Text } from '@tarojs/components'
+import { NavBar } from '@/components'
 import api from '@/api'
 
 import './setting.scss'
@@ -55,6 +55,10 @@ export default class DistributionSetting extends Component {
 
     return (
       <View className='page-distribution-setting'>
+        <NavBar
+          title='会员资料'
+          leftIconType='chevron-left'
+        />	          
         <View className="content-padded">会员资料</View>
         <View className="section">
           <View className="list">

@@ -3,18 +3,25 @@
 
 $current-shop-height: 150px !default;
 
+
 .page-store-list {
-  background: #fff;
   height: 100%;
   box-sizing: border-box;
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */     
   &__scroll {
-    @include page-scroll($searchbar-height + $current-shop-height + 10, 0);
+    @include page-scroll($searchbar-height + $current-shop-height + $navigate-height + 10); 
+    /*  #ifdef  h5  */  
+    @include page-scroll($searchbar-height + $current-shop-height + $navigate-height-h5 + 10); 
+    /*  #endif  */    
   }
-  .store-list__search {
+  .store-list__search {  
     .at-search-bar {
       padding-right: 30px !important;
     }
     .search-input {
+      box-shadow: none;
       &__focus{
         .at-search-bar {
           padding-right: 30px !important;
@@ -60,8 +67,9 @@ $current-shop-height: 150px !default;
     }
   }
   .current-store {
-    padding-top: 20px;
-    height: $current-shop-height;
+    background: #fff;
+    padding-top: 10px;
+    // height: $current-shop-height;
     .label {
       padding: 0 30px;
       height: 50px;

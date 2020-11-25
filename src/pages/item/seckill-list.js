@@ -1,10 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text, Image } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, SpNote, NavBar } from '@/components'
+import { BackToTop, Loading, SpNote } from '@/components'
 import {AtCountdown, AtTabs, AtTabsPane} from 'taro-ui'
 import api from '@/api'
-import { pickBy } from '@/utils'
 
 import './seckill-list.scss'
 
@@ -143,7 +142,7 @@ export default class SeckillList extends Component {
              tabList.map((panes, pIdx) =>
                (<AtTabsPane
                  current={curTabIdx}
-                 key={pIdx}
+                 key={panes.status}
                  index={pIdx}
                >
                </AtTabsPane>)
@@ -162,7 +161,7 @@ export default class SeckillList extends Component {
             {
               list.map((item, index) => {
                 return (
-                  <View className='seckill-list' key={index} onClick={this.handleClickItem.bind(this, item.seckill_id)}>
+                  <View className='seckill-list' key={`${index}1`} onClick={this.handleClickItem.bind(this, item.seckill_id)}>
                     <View className='seckill-list__title'>离结束还有：
                       <AtCountdown
                         isShowDay

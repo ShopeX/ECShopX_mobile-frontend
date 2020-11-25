@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Video, SwiperItem } from '@tarojs/components'
-import { styleNames } from '@/utils'
+import { View, Video } from '@tarojs/components'
 import { linkPage } from './helper'
 
 import './film.scss'
@@ -69,7 +68,7 @@ export default class WgtFilm extends Component {
       return null
     }
 
-    const { config, base, data } = info
+    const { config = {}, base, data } = info
     const { width, height, objectFit } = this.resolveSize(config, screenWidth)
 
     return (
@@ -80,11 +79,13 @@ export default class WgtFilm extends Component {
             <View className='wgt__subtitle'>{base.subtitle}</View>
           </View>
         )}
-        <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
+        <View 
+          className={`slider-wrap ${config.padded ? 'padded' : ''}`}
+          style={`width: ${width}; height: ${height}`}
+        >
           <Video
             className='flim-video'
             src={data[0].url}
-            style={styleNames({ width, height })}
             controls
           />
         </View>

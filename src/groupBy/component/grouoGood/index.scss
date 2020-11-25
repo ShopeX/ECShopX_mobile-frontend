@@ -1,0 +1,23 @@
+.groupGood {
+  background: #fff;
+  .info {
+    padding: 5px 30px;
+    .time {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #000;
+      font-size: 26px;
+      padding: 10px 0;
+      .left {
+        font-size: 30px;
+        font-weight: bold;
+      }
+      .right {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
+    }
+  }
+}

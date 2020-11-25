@@ -1,0 +1,131 @@
+.complaint-record-item{
+  margin-top: 20px;
+  background: #fff;
+  padding: 25px;
+
+  .item-header{
+    display: flex;
+   &__info{
+     margin-left: 30px;
+     &-name{
+       font-size: 34px;
+     }
+     &-store_name{
+      margin-top: 20px;
+     }
+   }
+  }
+
+  .item-info{
+     margin-top: 40px;
+     &__con{
+       margin-top: 20px;
+       display: flex;
+
+      .triangle-box{
+        width: 40px;
+        height: 40px;
+        // border-top: 1px solid #efefef;
+        // overflow: hidden;
+        position: relative;
+        .triangle{
+          position: relative;
+          width: 0;
+          height: 0;
+          border-width: 35px;
+          border-style: solid;
+          border-color: transparent #efefef transparent transparent;
+          transform: rotate(135deg);
+          top: -33px;
+          left: 9px;
+
+          View{
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-width: 33px;
+            border-style: solid;
+            border-color: transparent #f9f9f9 transparent transparent;
+            transform: rotate(0deg);
+            top: -33px;
+            left: -31px;
+          }
+         }
+      }
+
+       &-text{
+        flex: 1;
+       }
+     }
+
+     &__img{
+      margin-left: 40px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      display: flex;
+      &-box{
+        height: 150px;
+        width: 150px;
+        padding: 5px;
+        margin-block: 5px;
+        border:1px solid #efefef;
+        margin: 5px;
+      }
+     }
+
+     &__date{
+       margin-left: 40px;
+     }
+  }
+
+  .item-reply{
+    margin-top: 30px;
+    &__title{
+      text-align: right;
+    }
+
+    &__con{
+      margin-top: 20px;
+      display: flex;
+      &-text{
+        flex: 1;
+      }
+      .triangle-box{
+        width: 40px;
+        height: 40px;
+        // border-top: 1px solid #efefef;
+        // overflow: hidden;
+        position: relative;
+        .triangle{
+          position: relative;
+          width: 0;
+          height: 0;
+          border-width: 35px;
+          border-style: solid;
+          border-color: transparent #efefef transparent transparent;
+          transform: rotate(45deg);
+          top: -36px;
+          left: -39px;
+
+          View{
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-width: 33px;
+            border-style: solid;
+            border-color: transparent #f9f9f9 transparent transparent;
+            transform: rotate(0deg);
+            top: -26px;
+            left: -32px;
+          }
+         }
+      }
+    }
+
+    &__date{
+      text-align: right;
+      margin-right: 40px;
+      margin-top: 20px;
+    }
+  }
+}

@@ -34,6 +34,19 @@ $item-img-height: 200px !default;
     padding: 0 20px;
     flex: 1;
     overflow: hidden;
+    // 跨境
+    .nationalInfo {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      padding-bottom: 10px;
+      .nationalFlag {
+        width: 45px;
+        height: 45px;
+        border-radius: 100%;
+        margin-right: 15px;
+      }
+    }    
     &-hd {
       flex: 3;
     }
@@ -60,6 +73,14 @@ $item-img-height: 200px !default;
     line-height: 1.4;
     color: #333;
     margin: 0 0 16px;
+  }
+  &__tag {
+    display: inline-block;
+    border:1px solid  $color-brand-primary;
+    color:  $color-brand-primary;
+    padding: 3px 4px;
+    font-size: $font-size-small;
+    margin-right: 10px;
   }
   &__desc {
     line-height: 1;

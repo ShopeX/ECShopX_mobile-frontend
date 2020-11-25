@@ -1,12 +1,14 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, ScrollView, Image} from '@tarojs/components'
-import { Loading,GoodsItem,SpNote} from '@/components'
+import {View, ScrollView, Image, Text} from '@tarojs/components'
+import { Loading, GoodsItem, SpNote, NavBar} from '@/components'
 import { classNames, pickBy,getCurrentRoute } from '@/utils'
+import {AtTabBar} from "taro-ui"
+import S from '@/spx'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 
 import './shop-category.scss'
-import {AtTabBar, AtTabsPane} from "taro-ui";
+
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
@@ -94,6 +96,7 @@ export default class DistributionShopCategory extends Component {
         goods_id: 'goods_id',
         title: 'itemName',
         desc: 'brief',
+        distributor_id: 'distributor_id',
         price: ({ price }) => (price/100).toFixed(2),
         //promoter_price: ({ promoter_price }) => (promoter_price/100).toFixed(2),
         market_price: ({ market_price }) => (market_price/100).toFixed(2)
@@ -122,7 +125,7 @@ handleClickCategoryNav = (idx,value) => {
   console.warn(idx)
   if (this.state.page.isLoading) return
 
-  if (idx !== this.state.curTabIdx) {
+  if (idx !== this.state.currentIndex) {
     this.resetPage()
     this.setState({
       contentList: []
@@ -157,10 +160,10 @@ handleClickCategoryNav = (idx,value) => {
   }
   handleClickItem = (item) => {
     console.warn(item)
-    const { goods_id} = item
+    const { goods_id, distributor_id} = item
     let url = ''
     if (goods_id) {
-      url = `/pages/item/espier-detail?id=${goods_id || ''}`
+      url = `/pages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}`
     }
     if (url) {
       Taro.navigateTo({
@@ -169,14 +172,19 @@ handleClickCategoryNav = (idx,value) => {
     }
   }
   render () {
-    const { list, isChanged,tabList,localCurrent, contentList ,defaultId ,shop_pic ,currentIndex, page, scrollTop } = this.state
+    const { list, hasSeries, tabList, localCurrent, contentList, shop_pic, currentIndex, page, scrollTop } = this.state
     return (
       <View className='page-category-index'>
+        <NavBar
+          title='分类'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='category-banner'>
-              <Image
-                className='banner-img'
-                src={shop_pic || null}
-                mode='aspectFill'
+          <Image
+            className='banner-img'
+            src={shop_pic || null}
+            mode='aspectFill'
           />
       </View>
         <View className={`${hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'}`}>
@@ -197,7 +205,7 @@ handleClickCategoryNav = (idx,value) => {
               list.map((item, index) =>
                 <View
                   className={classNames('category-nav__content', currentIndex == index ? 'category-nav__content-checked' : null)}
-                  key={index}
+                  key={`${item.name}${index}`}
                   onClick={this.handleClickCategoryNav.bind(this,index,item)}
                 >
                   { item.hot && <Text className='hot-tag'></Text> }{item.name}
@@ -218,13 +226,13 @@ handleClickCategoryNav = (idx,value) => {
           >
             <View className='grid-goods'>
             {
-              contentList.length && contentList.map(item =>{
+              (contentList.length > 0) && contentList.map(item =>{
                 return (
                   <GoodsItem
-                  key={item.item_id}
-                  info={item}
-                  onClick={() => this.handleClickItem(item)}
-                />
+                    key={item.item_id}
+                    info={item}
+                    onClick={() => this.handleClickItem(item)}
+                  />
                 )
               })
             }

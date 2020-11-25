@@ -1,12 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, ScrollView, Image} from '@tarojs/components'
 import { connect } from "@tarojs/redux";
-import { Loading, SearchBar, TabBar } from '@/components'
-import { classNames, pickBy } from '@/utils'
-import api from '@/api'
+import { Loading } from '@/components'
+import { classNames } from '@/utils'
 
 import './series.scss'
-import {AtTabs, AtTabsPane} from "taro-ui";
 @connect(store => ({
   store
 }))
@@ -80,7 +78,7 @@ export default class Series extends Component {
               info.map((item, index) =>
                 <View
                   className={classNames('category-nav__content', currentIndex == index ? 'category-nav__content-checked' : null)}
-                  key={index}
+                  key={`${item.name}${index}`}
                   onClick={this.handleClickCategoryNav.bind(this, index)}
                 >
                   {item.name}

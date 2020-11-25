@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "at-tab-bar": "../../npm/taro-ui/dist/weapp/components/tab-bar/index"
-  }
-}

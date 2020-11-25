@@ -1,1 +1,0 @@
-var baseHasIn=require("./_baseHasIn.js"),hasPath=require("./_hasPath.js");function hasIn(a,s){return null!=a&&hasPath(a,s,baseHasIn)}module.exports=hasIn;

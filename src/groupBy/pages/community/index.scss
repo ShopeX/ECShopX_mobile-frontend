@@ -1,0 +1,99 @@
+@import '../../styles/index';
+
+$communityHeader: 370px;
+
+.community {
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  .header {
+    width: 100%;
+    height: $communityHeader;
+    background: #fff;
+    .search {
+      padding: 20px 30px;
+      .content {
+        background: #efefef;
+        border-radius: 35px;
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        .iconfont {
+          margin-right: 15px;
+          font-size: 32px;
+          color: #999;
+        }
+      }
+    }
+    .myZiti {
+      margin-top: 20px;
+      .title {
+        padding: 10px 30px;
+        background: #efefef;
+        color: #000;
+      }
+      .myCommunity {
+        padding: 35px 30px;
+        font-size: 30px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        overflow: hidden;
+        .location {
+          flex: 1;
+          white-space: nowrap;
+          text-overflow:ellipsis;
+          overflow: hidden;
+        }
+        .distance {
+          font-size: 24px;
+          font-weight: normal;
+          margin-left: 10px;
+        }
+      }
+    }
+    .nearBy {
+      border-top: 2px solid $theme-color;
+      display: flex;
+      padding: 15px 30px;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 24px;
+      background: #efefef;
+    }
+  }
+  .list {
+    width: 100%;
+    height: calc(100% - #{$communityHeader});
+    background: #fff;
+    .item {
+      padding: 35px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+      border-top: 1px solid #dfdfdf;
+      &:first-child {
+        border: none;
+      }
+      .name {
+        flex: 1;
+        white-space: nowrap;
+        text-overflow:ellipsis;
+        overflow: hidden;
+        margin-right: 10px;
+      }
+      .distance {
+        font-size: 22px;
+      }
+    }
+  }
+}
+
+/*  #ifdef  h5  */
+.community {
+  padding-top: $navBarHeight;
+}
+/*  #endif  */

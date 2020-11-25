@@ -43,3 +43,12 @@ export function decryptPhone (params) {
     appid
   })
 }
+
+export function shareSetting (params) {
+  return req.get('/share/setting', {
+    ...params
+  })
+}
+export function getWhiteList () {
+  return req.get('/whitelist/status')
+}

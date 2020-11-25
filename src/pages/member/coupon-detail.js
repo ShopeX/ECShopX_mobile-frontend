@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Input } from '@tarojs/components'
+import { View, Image, Input } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { Loading, SpNote, NavBar } from '@/components'
+// import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
-import { classNames, pickBy } from '@/utils'
+// import { classNames, pickBy } from '@/utils'
 
 import './coupon-detail.scss'
 
@@ -245,14 +245,14 @@ export default class CouponDetail extends Component {
                           </View>
                       }
                       <View className={`icon-used use-icon ${show ? '' : 'show'}`}></View>
-                      <View className="card-decorate"></View>
+                      <View className="card-decorate"  style={`background:  ${colors.data[0].marketing};`}></View>
                     </View>
                     <View className={`content-padded card-footer ${show ? '' : 'act'}`} onTouchStart={this.handletouchtart.bind(this)} onTouchMove={this.handletouchmove.bind(this)} onTouchEnd={this.handletouchend.bind(this)}>
                       <View className="gray remind-txt">划开副券确认使用</View>
                       <View className="view-flex">
                         <View className="view-flex-item red">仅限商户操作</View>
                         <View className="view-flex-item content-right">
-                          <Image src="../images/code.png" />
+                          {/* <Image src={require('../images/code.png')} /> */}
                         </View>
                       </View>
                     </View>

@@ -23,3 +23,7 @@ export function sendback (params) {
 export function close (params) {
   return req.post('/aftersales/close', params)
 }
+
+export function reasonList (params = {}) {
+  return req.get('/aftersales/reason/list', params)
+}

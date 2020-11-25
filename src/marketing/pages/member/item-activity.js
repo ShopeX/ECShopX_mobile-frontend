@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
-import { Loading, SpNote } from '@/components'
+import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { pickBy } from '@/utils'
@@ -24,7 +24,6 @@ export default class ItemActivity extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-   
     params = {
       page,
       pageSize
@@ -60,6 +59,11 @@ export default class ItemActivity extends Component {
 
     return (
       <View className='reservation-list'>
+        <NavBar
+          title='活动预约'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <ScrollView
           scrollY
           className='reservation-list__scroll'

@@ -69,7 +69,7 @@ export default class WgtLimittimeSlider extends Component {
             {data.map((item, idx) => {
               return (
                 <SwiperItem
-                  key={idx}
+                  key={`${idx}1`}
                   className={`slider-item ${config.rounded ? 'rounded' : null}`}
                 >
                   <View
@@ -92,7 +92,7 @@ export default class WgtLimittimeSlider extends Component {
               {data.map((dot, dotIdx) =>
                 <View
                   className={classNames('dot', { active: curIdx === dotIdx })}
-                  key={dotIdx}
+                  key={`${dotIdx}1`}
                 ></View>
               )}
             </View>

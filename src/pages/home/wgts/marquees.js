@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
+import { View, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { AtNoticebar } from 'taro-ui'
 
 import './marquees.scss'
@@ -49,7 +49,7 @@ export default class WgtMarquees extends Component {
     if (!info) {
       return null
     }
-    const { config, base, data } = info
+    const { config, base, data, announce } = info
 
     return (
       <View
@@ -79,12 +79,12 @@ export default class WgtMarquees extends Component {
               interval={3000}
               duration={300}
               vertical={config.direction}
-              style={`background-color:${config.bgcolor}`}
+              // style={`background-color:${config.bgcolor}`}
             >
                   {data.map((item, idx) => {
                     return (
                       <SwiperItem
-                        key={idx}
+                        key={`${idx}1`}
                         className='marquees-item'
                       >
                         <View
@@ -98,7 +98,7 @@ export default class WgtMarquees extends Component {
                     )
                   })}
                 </Swiper>
-            : <View style={`background:${config.bgcolor}; color:${config.fontcolor}`}>
+            : <View style={`background:${config.bgcolor}; color:${config.fontcolor}`} className='marqueContent'>
                 <AtNoticebar marquee>
                   <Text>{announce}</Text>
                 </AtNoticebar>

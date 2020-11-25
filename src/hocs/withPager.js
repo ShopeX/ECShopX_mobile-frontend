@@ -1,9 +1,9 @@
 // this.fetch 方法需要返回条数总量: { total }，用来计算页数
 // this.state.page 存放page相关的状态
-
-export default function withPager (Component) {
+import { Tracker } from "@/service";
+export default function withPager(Component) {
   return class WithPagerComponent extends Component {
-    constructor (props) {
+    constructor(props) {
       super(props)
       const { pageSize = 10, pageNo = 0, pageTotal = 0 } = props || {}
 
@@ -19,10 +19,14 @@ export default function withPager (Component) {
     }
 
     nextPage = async () => {
-			
-			const { page } = this.state
+
+      const { page } = this.state
       if (!page.hasNext || page.isLoading) return
 
+      // 上拉触底
+      if (page.page_no > 0) {
+        Tracker.dispatch("PAGE_REACH_BOTTOM");
+      }
       page.isLoading = true
       this.setState({
         page
@@ -33,22 +37,22 @@ export default function withPager (Component) {
       const { total } = await this.fetch({
         page_no: curPage,
         page_size
-			})
+      })
       if (!total || curPage >= Math.ceil(+total / page_size)) {
         page.hasNext = false
       }
-			
+
       this.setState({
         page: {
           ...page,
           total,
           page_no: curPage,
-					isLoading: false,
+          isLoading: false,
         }
-			})
+      })
     }
 
-    resetPage (cb = () => {}) {
+    resetPage(cb = () => { }) {
       const page = {
         ...(this.state.page || {}),
         page_no: 0,

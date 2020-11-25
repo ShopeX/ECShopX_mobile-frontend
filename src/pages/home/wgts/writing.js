@@ -1,6 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Video, SwiperItem } from '@tarojs/components'
-import { classNames } from '@/utils'
+import { View } from '@tarojs/components'
 import { linkPage } from './helper'
 
 import './writing.scss'
@@ -62,7 +61,7 @@ export default class WgtWriting extends Component {
           {
             contentArr.map((item, index) => {
               return (
-                <View className='writing-view' key={index}>{item}</View>
+                <View className='writing-view' key={`${index}1`}>{item}</View>
               )
             })
           }

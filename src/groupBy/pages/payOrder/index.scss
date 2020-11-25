@@ -1,0 +1,106 @@
+@import '../../../style/iconfont';
+@import '../../styles/index';
+
+.payOrder {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding-bottom: 100px;
+  /*  #ifdef  h5  */  
+  padding-top: $navBarHeight;
+  /*  #endif  */
+  .orderInfo {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    .address {
+      margin: 20px 0;
+      background: #fff;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 500;
+      .time {
+        padding: 25px 0;
+      }
+      .community {
+        font-size: 32px;
+        padding-top: 25px;
+      }
+      .unit {
+        font-weight: normal;
+        color: #333;
+        padding: 25px 0;
+      }
+    }
+    .infoLine {
+      padding: 30px 35px;
+      background: #fff;
+      border-bottom: 1px solid #efefef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+      .goodImg {
+        flex: 1;
+        display: flex;
+        overflow-x: scroll;
+        .img {
+          border: 2px solid #efefef;
+          width: 184px;
+          height: 184px;
+          flex-shrink: 0;
+          margin-left: 30px;
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
+      .sum {
+        margin-left: 15px;
+        .iconfont {
+          display: inline;
+          margin-left: 5px;
+        }
+      }
+      .price {
+        font-size: 32px;
+        font-weight: bold;
+      }
+      &.flexEnd {
+        justify-content: flex-end;
+      }
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+  .payBar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background: #fff;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border-top: 1px solid #efefef;
+    .sum {
+      margin: 0 25px;
+      font-size: 30px;
+      .price {
+        font-weight: bold;
+        margin-left: 10px;
+      }
+    }
+    .goPay {
+      padding: 15px 70px;
+      border-radius: 55px;
+      background: $theme-color;
+      color: #fff;
+      font-size: 32px;
+    }
+  }
+}

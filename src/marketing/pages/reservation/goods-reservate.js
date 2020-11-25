@@ -158,6 +158,7 @@ export default class GoodsReservate extends Component {
 
   handleCell = (name, e) => {
     const { cur_activity_info } = this.state
+    const eValue = e.detail ? e.detail.value : e
     cur_activity_info && cur_activity_info.formdata.content.map(item => {
       if(item.formdata && item.formdata.length > 0) {
         item.formdata.map(sec_item => {
@@ -167,11 +168,11 @@ export default class GoodsReservate extends Component {
                 let new_answer = [].concat(e)
                 sec_item.answer = new_answer
               } else if(sec_item.form_element === 'select' || sec_item.form_element === 'radio'){
-                sec_item.answer = sec_item.options[e.detail.value].value
+                sec_item.answer = sec_item.options[eValue].value
               }
             } else {
               if(sec_item.form_element === 'date' || sec_item.form_element === 'time' || sec_item.form_element === 'textarea') {
-                sec_item.answer = e.detail.value
+                sec_item.answer = eValue
               } else if(sec_item.form_element === 'area') {
                 sec_item.answer = e
               }else if(sec_item.form_element === 'text' || sec_item.form_element === 'number') {
@@ -299,13 +300,13 @@ export default class GoodsReservate extends Component {
           {
             formdata && formdata.content && formdata.content.map((item,index) => {
               return (
-                <View className='goods-reservate__userinfo' key={index}>
+                <View className='goods-reservate__userinfo' key={`${index}1`}>
                   {
                     item.formdata && item.formdata.length > 0
                       ? item.formdata.map((i_data, i_index) => {
                           return (
                             // eslint-disable-next-line react/jsx-key
-                            <View key={i_index}>
+                            <View key={`${i_index}1`}>
                               {
                                 i_data.form_element === 'select' || i_data.form_element === 'radio'
                                   ? <Picker mode='selector' range={i_data.options} rangeKey='value' onChange={this.handleCell.bind(this, i_data.field_name)}>

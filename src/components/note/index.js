@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { classNames, styleNames } from '@/utils'
+import { classNames } from '@/utils'
 
 import './index.scss'
 
@@ -19,13 +19,13 @@ export default class NoteIndex extends Component {
     return (
       <View
         className={classNames('note', img ? 'note__has-img' : null, className)}
-        style={styleNames(styles)}
+        // style={styleNames(styles)}
       >
         {
           img && (<Image
             className='note__img'
             mode='aspectFill'
-            style={styleNames(imgStyle)}
+            // style={styleNames(imgStyle)}
             src={this.resolveUrl(img)}
           />)
         }

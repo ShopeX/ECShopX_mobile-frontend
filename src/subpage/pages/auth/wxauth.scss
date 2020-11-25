@@ -1,0 +1,27 @@
+@import "../../../style/imports";
+
+.page-wxauth {
+  padding: 60px 0 0;
+  text-align: center;
+  .auth-title {
+    margin-bottom: 50px;
+    font-size: 52px;
+  }
+  .at-button--primary {
+    background: $color-brand-primary;
+    border-color: $color-brand-primary;
+  }
+  .sec-auth {
+    padding: 100px 100px 0;
+  }
+  .auth-hint {
+    margin: 0 0 20px;
+    display: block;
+  }
+  .auth-btns {
+    padding: 200px 50px 0;
+  }
+  .back-btn {
+    margin-top: 20px;
+  }
+}

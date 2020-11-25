@@ -2,6 +2,18 @@
 
 .page-checkout {
   margin: $edge-size $edge-margin;
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  .shopping-guide-header{
+    padding: 20px;
+    text-align: center;
+    color: $color-brand-accent;
+    margin: -30px -20px 20px -20px;
+    background-color: #fff;
+    font-size: 24px;
+  }
+
   .switch-tab {
     display: flex;
     align-items: flex-end;
@@ -143,6 +155,23 @@
       height: 36px;
       line-height: 36px;
       display: block;
+      &.national {
+        display: flex;
+        align-items: center;
+        // 跨境
+        .nationalInfo {
+          margin-left: 50px;
+          display: flex;
+          align-items: center;
+          font-size: 24px;
+          .nationalFlag {
+            width: 45px;
+            height: 45px;
+            border-radius: 100%;
+            margin-right: 15px;
+          }
+        }
+      }
     }
     &__img {
       width: 200px;
@@ -236,8 +265,7 @@
   .trade-payment {
     background: #fff;
     &__hint {
-      padding: 0 $edge-size 10px;
-      margin-top: -5px;
+      padding: 0 $edge-size;
       color: $color-orange;
     }
   }
@@ -255,17 +283,11 @@
 
   .trade-sub-total {
     padding: $edge-margin 0;
-    &__item {
+    .sp-cell {
       padding-top: 8px;
       padding-bottom: 8px;
-    }
-    .sp-cell {
       &:before {
         border: none;
-      }
-      &__hd {
-        width: 140px;
-        text-align: right;
       }
       &__bd {
         color: $color-brand-primary;
@@ -277,6 +299,13 @@
 
   .coupons-list {
     margin: 0 0 $edge-margin;
+    .identity {
+      margin: 0;
+    }
+    .extDesc {
+      color: #e54210;
+      font-size: 24px;
+    }
   }
 
   .coupon-item {
@@ -341,6 +370,25 @@
     font-size: $font-size;
     &:before, &:after {
       border: none;
+    }
+  }
+  .nationalNotice {
+    padding: $edge-margin $edge-size;
+    .title {
+      font-size: 28px;
+      text-align: center;
+      padding: 10px 0;
+      color: #333;
+      border-bottom: 1px solid #7f7f7f;
+    }
+    background: #fff;
+    .info {
+      color: #7f7f7f;
+      padding: 15px 0;
+    }
+    .copyLink {
+      font-size: 26px;
+      color: #169bd5;
     }
   }
 }

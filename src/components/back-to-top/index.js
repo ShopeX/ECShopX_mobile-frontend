@@ -1,16 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { classNames, styleNames } from '@/utils'
+import { View } from '@tarojs/components'
+import { classNames } from '@/utils'
 
 import './index.scss'
 
 export default class BackToTop extends Component {
-  static options = {
-    addGlobalClass: true
-  }
 
   static defaultProps = {
     onClick: () => {}
+  }
+
+  static options = {
+    addGlobalClass: true
   }
 
   render () {
@@ -19,7 +20,7 @@ export default class BackToTop extends Component {
     return (
       <View
         className={classNames('back-to-top', { 'is-show': show })}
-        style={styleNames(bottom ? { bottom: `${Taro.pxTransform(bottom)}` } : null)}
+        style={`${bottom ? `bottom: ${Taro.pxTransform(bottom)}` : ''}`}
         onClick={onClick}
       >
         <View className='icon-arrow-up'></View>

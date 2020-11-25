@@ -1,0 +1,40 @@
+@import "../../../style/imports";
+
+.history {
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  width: 100%;
+  min-height: 100vh;
+  background: #fff;
+  .item {
+    padding: 20px 35px;
+    border-bottom: 2px solid #efefef;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #666;
+    .left {
+      .title {
+        color: #000;
+        font-size: 28px;
+      }
+      .date {
+        margin-top: 8px;
+        font-size: 24px;
+      }
+    }
+    .right {
+      .price {
+        margin-right: 5px;
+        color: #0fd21f;
+        &.outcome {
+          color: #f8552f;
+        }
+      }
+      .iconfont {
+        display: inline;
+      }
+    }
+  }
+}

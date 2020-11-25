@@ -4,16 +4,13 @@ import { connect } from '@tarojs/redux'
 import { AtTabBar } from 'taro-ui'
 import { navigateTo, getCurrentRoute } from '@/utils'
 import S from '@/spx'
-import { getTotalCount } from '@/store/cart'
+// import { getTotalCount } from '@/store/cart'
 
 @connect(({ tabBar,cart }) => ({
   tabBar: tabBar.current,
   cartCount: cart.cartCount
 }))
 export default class TabBar extends Component {
-  static options = {
-    addGlobalClass: true
-  }
 
   constructor (props) {
     super(props)
@@ -22,13 +19,17 @@ export default class TabBar extends Component {
       localCurrent: 0,
       backgroundColor: '',
       color: '',
-      selectedColor: '',
+      selectedColor: '#1f82e0',
       tabList: []
     }
   }
-
+  
   componentDidMount () {
-		const { tabBar } = this.props
+    this.initTabbarData()
+  }
+
+  initTabbarData () {
+    const { tabBar } = this.props
     let list = []
 
     if (tabBar) {
@@ -64,16 +65,10 @@ export default class TabBar extends Component {
     }
 
     this.setState({
-      tabList: list
+      tabList: list,
     }, () => {
       this.updateCurTab()
     })
-  }
-
-  componentDidShow () {
-    if (this.state.tabList.length > 0) {
-      this.fetchCart()
-    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -82,15 +77,37 @@ export default class TabBar extends Component {
     }
   }
 
+  componentDidShow () {
+    if (this.state.tabList.length > 0) {
+      this.fetchCart()
+    }
+  }
+
+  static options = {
+    addGlobalClass: true
+  }
+
+
   get cartCount () {
     // console.log('computed')
     return this.props.cartCount
+  }
+
+  get tabBar () {
+    let initTabBar = Taro.getStorageSync('initTabBar')
+    if (this.props.tabBar && initTabBar == true) {
+      Taro.setStorageSync('initTabBar', false)
+      this.initTabbarData()
+    }
   }
 
   updateCurTab () {
     this.fetchCart()
     const { tabList, localCurrent } = this.state
     const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+    if (tabList.length == 0) {
+      return
+    }
     const { url } = tabList[localCurrent]
     if (url && url !== fullPath) {
       const nCurrent = tabList.findIndex((t) => t.url === fullPath) || 0
@@ -112,7 +129,7 @@ export default class TabBar extends Component {
     }
 
     const { path } = getCurrentRoute(this.$router)
-    if (path === this.state.tabList[cartTabIdx].url) {
+    if (this.state.tabList[cartTabIdx] && (path === this.state.tabList[cartTabIdx].url)) {
       updateCartCount('')
       return
     }
@@ -121,12 +138,15 @@ export default class TabBar extends Component {
 
   handleClick = (current) => {
     const cur = this.state.localCurrent
+    const {showbar = true} = this.props
+    if(!showbar){
+      return false
+    }
 
     if (cur !== current) {
       const curTab = this.state.tabList[current]
-      const { url, urlRedirect, withLogin } = curTab
+      const { url, withLogin } = curTab
       const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
-
       if (withLogin && !S.getAuthToken()) {
         return Taro.navigateTo({
           url: APP_AUTH_PAGE
@@ -134,11 +154,11 @@ export default class TabBar extends Component {
       }
 
       if (url && fullPath !== url) {
-        if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
-          Taro.navigateTo({ url })
-        } else {
-          Taro.redirectTo({ url })
-        }
+        // if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
+        //   Taro.navigateTo({ url })
+        // } else {
+        Taro.redirectTo({ url })
+        // }
       }
     }
   }
@@ -146,7 +166,6 @@ export default class TabBar extends Component {
   render () {
     const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
 
-    // eslint-disable-next-line
     if (APP_INTEGRATION) {
       return <View></View>
     }

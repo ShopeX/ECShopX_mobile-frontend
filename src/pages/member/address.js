@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 // import AddressList from '@/components/new-address/address'
 import { connect } from "@tarojs/redux";
-import { SpToast, SpCell } from '@/components'
+import { SpToast, SpCell, NavBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 
@@ -114,23 +114,28 @@ export default class AddressIndex extends Component {
 
   render () {
     const { colors } = this.props
-    const { selectedId, isItemChecked, isPicker, list } = this.state
+    const { selectedId, isPicker, list } = this.state
     return (
       <View className='page-address-index'>
         {
           process.env.TARO_ENV === 'weapp'
             ? <SpCell
-                isLink
-                iconPrefix='sp-icon'
-                icon='weixin'
-                title='获取微信收货地址'
-                onClick={this.wxAddress.bind(this)}
-              />
+              isLink
+              iconPrefix='sp-icon'
+              icon='weixin'
+              title='获取微信收货地址'
+              onClick={this.wxAddress.bind(this)}
+            />
             : null
         }
+        <NavBar 
+          title='收货地址'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <View className='member-address-list'>
           {
-            list.map((item, index) => {
+            list.map(item => {
               return (
                 <View key={item[ADDRESS_ID]} className='address-item'>
                   {

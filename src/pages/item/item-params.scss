@@ -7,6 +7,9 @@
 .goods-params {
   background: $color-bg-gray;
   padding: 1px;
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */        
   &__item {
     padding: 1px;
     display: flex;

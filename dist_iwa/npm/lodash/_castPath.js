@@ -1,1 +1,0 @@
-var isArray=require("./isArray.js"),isKey=require("./_isKey.js"),stringToPath=require("./_stringToPath.js"),toString=require("./toString.js");function castPath(r,t){return isArray(r)?r:isKey(r,t)?[r]:stringToPath(toString(r))}module.exports=castPath;

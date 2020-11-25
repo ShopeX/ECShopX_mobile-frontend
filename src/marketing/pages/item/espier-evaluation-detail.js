@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { Loading, GoodsEvaluation, GoodsComment, SpToast } from '@/components'
+import { Loading, GoodsEvaluation, GoodsComment, SpToast, NavBar } from '@/components'
 import api from '@/api'
 import { connect } from '@tarojs/redux'
 import { withPager } from '@/hocs'
@@ -169,6 +169,10 @@ export default class EvaluationDetail extends Component {
 
     return (
       <View className='page-goods-evaluation'>
+        <NavBar
+          title='评论'
+          leftIconType='chevron-left'
+        />        
         <View className='goods-evaluation-wrap'>
           <View className='evaluation-list'>
             <GoodsEvaluation

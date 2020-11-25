@@ -1,1 +1,0 @@
-var isFunction=require("./isFunction.js"),isLength=require("./isLength.js");function isArrayLike(i){return null!=i&&isLength(i.length)&&!isFunction(i)}module.exports=isArrayLike;

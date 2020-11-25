@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { AtTabs, AtTabsPane, AtButton, AtCountdown } from 'taro-ui'
-import { Loading, SpNote, Price } from '@/components'
+import { View, Text, ScrollView, Image } from '@tarojs/components'
+import { AtTabs, AtTabsPane, AtCountdown } from 'taro-ui'
+import { Loading, SpNote, Price, NavBar } from '@/components'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
 import { withPager } from '@/hocs'
@@ -25,12 +25,18 @@ export default class GroupList extends Component {
         { title: '进行中', status: 0 },
         { title: '未开始', status: 1 }
       ],
-      list: []
+      list: [],
+      shareInfo: {}
     }
   }
 
-  componentDidMount () {
+  componentDidMount () {     
     this.nextPage()
+    api.wx.shareSetting({shareindex: 'group'}).then(res => {
+      this.setState({
+        shareInfo: res
+      })
+    })
   }
 
   async fetch (params) {
@@ -80,18 +86,45 @@ export default class GroupList extends Component {
   }
 
   handleClickItem = (item) => {
-    const { goods_id } = item
+    const { goods_id, distributor_id } = item
 
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${goods_id}`
+      url: `/pages/item/espier-detail?id=${goods_id}&dtid=${distributor_id}`
     })
   }
+
+  onShareAppMessage () {
+    const res = this.state.shareInfo
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `?uid=${userId}` : ''      
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      path: `/pages/item/group-list${query}`
+    }
+  }
+
+  onShareTimeline () {
+    const res = this.state.shareInfo
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `uid=${userId}` : ''      
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      query: query
+    }
+  }   
 
   render () {
     const { tabList, curTabIdx, list, page } = this.state
 
     return (
       <View className='page-group-list'>
+        <NavBar
+          title='团购'
+          leftIconType='chevron-left'
+          fixed='true'
+        />        
         <AtTabs
           className='group-list__tabs'
           current={curTabIdx}
@@ -102,7 +135,7 @@ export default class GroupList extends Component {
             tabList.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curTabIdx}
-                key={pIdx}
+                key={panes.status}
                 index={pIdx}
               >
               </AtTabsPane>)

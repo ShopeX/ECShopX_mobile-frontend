@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { BackToTop, Loading, SpNote } from '@/components'
+import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
@@ -82,6 +82,10 @@ export default class DistributionTrade extends Component {
 
     return (
       <View className="page-distribution-trade">
+        <NavBar
+          title='订单'
+          leftIconType='chevron-left'
+        />        
         <AtTabs
           className='trade-list__tabs'
           current={curTabIdx}
@@ -92,7 +96,7 @@ export default class DistributionTrade extends Component {
             tabList.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curTabIdx}
-                key={pIdx}
+                key={pIdx.title}
                 index={pIdx}
               >
               </AtTabsPane>)

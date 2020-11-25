@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
-import { QnImg } from '@/components'
+import { View, Text } from '@tarojs/components'
+import { SpImg } from '@/components'
 import { linkPage } from './helper'
 
 import './navigation.scss'
@@ -33,11 +33,11 @@ export default class WgtNavigation extends Component {
               return (
                 <View
                   className='nav-item'
-                  key={idx}
+                  key={`${idx}1`}
                   onClick={this.handleClickItem.bind(this, item.linkPage, item.id)}
                 >
-                  <View class='nav-img-wrap'>
-                    <QnImg
+                  <View className='nav-img-wrap'>
+                    <SpImg
                       img-class='nav-img'
                       src={item.imgUrl}
                       // mode='widthFix'

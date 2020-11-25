@@ -1,4 +1,8 @@
-export { default as QnImg } from './qn-img'
+import FloatMenuMeiQia from './float-menus/meiqia'
+
+export { default as SpImg } from './sp-img'
+export { FloatMenuMeiQia }
+
 export { default as Loading } from './loading'
 export { default as Price } from './price'
 export { default as BackToTop } from './back-to-top'
@@ -10,7 +14,6 @@ export { default as TagsBar } from './tags-bar'
 export { default as FilterBar } from './filter-bar'
 export { default as FloatMenus } from './float-menus'
 export { default as FloatMenuItem } from './float-menus/item'
-export { default as FloatMenuMeiQia } from './float-menus/meiqia'
 export { default as FormIdCollector } from './form-id-collector'
 
 export { default as SearchBar } from './search-bar'
@@ -32,6 +35,8 @@ export { default as TimePicker } from './time-picker/index.js'
 
 export { default as GoodsEvaluation } from './goods-evaluation'
 export { default as GoodsComment } from './goods-comment'
+export { default as AccountOfficial } from './account-official'
+export { default as AtTabslist } from './at-tabs'
 
 
 export default {}

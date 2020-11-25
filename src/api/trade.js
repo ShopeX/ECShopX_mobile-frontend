@@ -50,3 +50,7 @@ export function zitiCode (params = {}) {
 export function createOrderRate (params = {}) {
   return req.post(`/order/rate/create`, params)
 }
+
+export function h5create (data) {
+  return req.post('/order_new', data)
+}

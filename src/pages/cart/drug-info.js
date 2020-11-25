@@ -1,9 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtIcon, AtFloatLayout, AtButton, AtInput, AtImagePicker } from 'taro-ui'
-import { SpCheckbox } from '@/components'
-import imgUploader from '@/utils/qiniu'
+import { AtButton, AtInput, AtImagePicker } from 'taro-ui'
 import S from '@/spx'
 import req from '@/api/req'
 

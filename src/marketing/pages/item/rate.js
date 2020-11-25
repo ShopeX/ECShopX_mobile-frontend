@@ -6,7 +6,8 @@ import { withLogin } from '@/hocs'
 import { pickBy, classNames } from '@/utils'
 import { AtRate, AtTextarea, AtButton, AtImagePicker } from 'taro-ui'
 import S from '@/spx'
-import azureUploader from '@/utils/azure-wry'
+// import azureUploader from '@/utils/azure-wry'
+import imgUploader from '@/utils/upload'
 
 import './rate.scss'
 
@@ -86,13 +87,13 @@ export default class TradeRate extends Component {
 
   handleChangeComment (index, e) {
     const { goodsList } = this.state
-    goodsList[index].content = e.detail.value
+    goodsList[index].content = e
     this.setState({
       goodsList
     })
   }
 
-  handleImageChange = (index, files, type) => {
+  handleImageChange = async (index, files, type) => {
     const { goodsList } = this.state
     if (type === 'remove') {
       goodsList[index].pics = files
@@ -108,13 +109,11 @@ export default class TradeRate extends Component {
       return
     }
     const imgFiles = files.slice(0, 6)
-    azureUploader.uploadImagesFn(imgFiles)
-      .then(res => {
-        goodsList[index].pics = res
-        this.setState({
-          goodsList
-        })
-      })
+    const results = await imgUploader.uploadImageFn(imgFiles)
+    goodsList[index].pics = results
+    this.setState({
+      goodsList
+    })
   }
 
   handleClickSubmit = async () => {
@@ -180,7 +179,7 @@ export default class TradeRate extends Component {
         <View className='rate-list'>
           {goodsList.map((item, idx) => {
             return (
-              <View className='rate-item' key={idx}>
+              <View className='rate-item' key={`${idx}1`}>
                 <View className='goods-item'>
                   <View className='goods-item__hd'>
                     {Array.isArray(item.pic_path) && <Image

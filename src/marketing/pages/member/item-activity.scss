@@ -1,9 +1,15 @@
 @import "../../../style/imports";
 
 .reservation-list {
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   background: #f6f6f6;
   &__scroll {
-    @include page-scroll(0, $edge-margin);
+    @include page-scroll($navigate-height, $edge-margin);
+    /*  #ifdef  h5  */  
+    @include page-scroll($navigate-height-h5, $edge-margin);
+    /*  #endif  */
     box-sizing: border-box;
   }
   &__list {

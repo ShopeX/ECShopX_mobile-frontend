@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text, Image } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, SpNote, GoodsItem } from '@/components'
-import {AtCountdown, AtTabs, AtTabsPane} from 'taro-ui'
+import { BackToTop, Loading, SpNote, GoodsItem, NavBar } from '@/components'
+import { AtCountdown } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -26,7 +26,8 @@ export default class SeckillGoodsList extends Component {
       timer: null,
       list: [],
       imgurl: '',
-      status: ''
+      status: '',
+      shareInfo: {}
     }
   }
 
@@ -44,8 +45,36 @@ export default class SeckillGoodsList extends Component {
     //   this.nextPage()
     // })
     console.log(this.$router.params, 41)
-		this.nextPage()
+    this.nextPage()
+    api.wx.shareSetting({shareindex: 'seckill'}).then(res => {
+      this.setState({
+        shareInfo: res
+      })
+    })
   }
+
+  onShareAppMessage () {
+    const res = this.state.shareInfo
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `?uid=${userId}` : ''    
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      path: `/pages/item/seckill-goods-list${query}`
+    }
+  }
+
+  onShareTimeline () {
+    const res = this.state.shareInfo
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `uid=${userId}` : ''      
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      query: query
+    }
+  }   
+    
 
   calcTimer (totalSec) {
     let remainingSec = totalSec
@@ -64,9 +93,9 @@ export default class SeckillGoodsList extends Component {
       ss
     }
   }
-  handleClickItem (id) {
+  handleClickItem (item) {
 		Taro.navigateTo({
-			url: `/pages/item/espier-detail?id=${id}`
+			url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
 		})
 	}
   async fetch (params) {
@@ -88,6 +117,7 @@ export default class SeckillGoodsList extends Component {
       item_id: 'item_id',
       title: 'itemName',
       desc: 'brief',
+      distributor_id: 'distributor_id',
       price: ({ activity_price }) => (activity_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2)
     })
@@ -110,6 +140,9 @@ export default class SeckillGoodsList extends Component {
     const { list, imgurl, showBackToTop, scrollTop, page, timer, status } = this.state
     return (
       <View className='page-seckill-goods'>
+        <NavBar
+          title='微商城'
+        />
         <ScrollView
           className='seckill-goods__scroll'
           scrollY
@@ -141,9 +174,9 @@ export default class SeckillGoodsList extends Component {
           }
           <View className='seckill-goods__list seckill-goods__type-list'>
             {
-              list.map((item, index) => {
+              list.map((item) => {
                 return (
-                  <View className='goods-list__item' onClick={() => this.handleClickItem(item.item_id)}>
+                  <View key={item.item_id} className='goods-list__item' onClick={() => this.handleClickItem(item)}>
                     <GoodsItem
                       key={item.item_id}
                       info={item}

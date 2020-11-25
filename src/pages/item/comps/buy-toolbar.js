@@ -1,8 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtBadge } from 'taro-ui'
-import { navigateTo } from '@/utils'
 import { FormIdCollector } from '@/components'
 
 import './buy-toolbar.scss'
@@ -22,7 +21,7 @@ export default class GoodsBuyToolbar extends Component {
     onClickFastBuy: () => {},
     onFavItem: () => {},
     cartCount: '',
-    info: null
+    info: {}
   }
 
   handleClickCart = (id, type) => {
@@ -77,26 +76,33 @@ export default class GoodsBuyToolbar extends Component {
         </View>
         {this.props.customRender
           ? this.props.children
-          : (<View className='goods-buy-toolbar__btns'>
-              {(type === 'normal' || type === 'limited_time_sale') && (
-                <FormIdCollector
-                  sync
-                  onClick={onClickAddCart}
-                >
-                  <View className={`goods-buy-toolbar__btn btn-add-cart ${isDrug && 'drug-btn'}`} style={'background: ' + colors.data[0].accent}>
-                    {isDrug ? '加入药品清单' : '添加至购物车'}
+          : (<View>
+              {
+                info.approve_status === 'onsale' ?
+                  <View className='goods-buy-toolbar__btns'>
+                    {(type === 'normal' || type === 'limited_time_sale') && (
+                      <FormIdCollector
+                        sync
+                        onClick={onClickAddCart}
+                      >
+                        <View className={`goods-buy-toolbar__btn btn-add-cart ${isDrug && 'drug-btn'}`} style={'background: ' + colors.data[0].accent}>
+                          {isDrug ? '加入药品清单' : '添加至购物车'}
+                        </View>
+                      </FormIdCollector>
+                    )}
+                    {!isDrug && (
+                        <FormIdCollector
+                          sync
+                          onClick={onClickFastBuy}
+                        >
+                          <View className={`goods-buy-toolbar__btn btn-fast-buy ${type !== 'normal' && type !== 'limited_time_sale' && 'marketing-btn'}`} style={'background: ' + colors.data[0].primary}>{fastBuyText}</View>
+                        </FormIdCollector>
+                      )
+                    }
                   </View>
-                </FormIdCollector>
-              )}
-              {!isDrug && (
-                  <FormIdCollector
-                    sync
-                    onClick={onClickFastBuy}
-                  >
-                    <View className={`goods-buy-toolbar__btn btn-fast-buy ${type !== 'normal' && type !== 'limited_time_sale' && 'marketing-btn'}`} style={'background: ' + colors.data[0].primary}>{fastBuyText}</View>
-                  </FormIdCollector>
-                )
+                  : <View className='goods-buy-toolbar__btns'><View className="goods-buy-toolbar__btn disabled">暂不可售</View></View>
               }
+
             </View>)
         }
       </View>

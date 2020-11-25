@@ -55,11 +55,24 @@ export default class GoodsItem extends Component {
             />
           </View>
           <View className='cart-item__cont'>
+            {
+              info.type == '1' && <View className='nationalInfo'>
+                  <Image className='nationalFlag' src={info.origincountry_img_url}  mode='aspectFill' lazyLoad />
+                  <Text className='nationalTitle'>
+                    { info.origincountry_name }
+                  </Text>
+              </View>
+            }              
             <View className='cart-item__cont-hd'>
-              <Text
+              <View
                 className='cart-item__title'
                 onClick={this.props.onClickImgAndTitle}
-              >{info.title}</Text>
+          > 
+          {
+            info.is_plus_buy && (
+              <Text className='cart-item__tag'> 换购 </Text>
+            )
+          }{info.title}</View>
 							<Text className='cart-item__desc'>{info.desc}</Text>
 							{
 								info.item_spec_desc && (

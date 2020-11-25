@@ -1,1 +1,0 @@
-var ListCache=require("./_ListCache.js");function stackClear(){this.__data__=new ListCache,this.size=0}module.exports=stackClear;

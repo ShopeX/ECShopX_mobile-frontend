@@ -103,3 +103,27 @@ export function imConfig () {
   return req.get(`/im/meiqia`)
 }
 
+// 客服默认配置
+export function echatConfig () {
+  return req.get(`/im/echat`)
+}
+
+// 扫码登录
+export function codeAuth (param = {}) {
+  return req.post('/oauthlogin', param)
+}
+
+// 确认登录
+export function codeAuthConfirm (param = {}) {
+  return req.post('/oauth/login/authorize', param)
+}
+
+// 订阅到货通知
+export function subscribeGoods (item_id) {
+  return req.post(`/member/subscribe/item/${item_id}`)
+}
+
+// 检测是否订阅
+export function isSubscribeGoods (item_id) {
+  return req.get(`/member/item/is_subscribe/${item_id}`)
+}

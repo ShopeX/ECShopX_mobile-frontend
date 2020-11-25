@@ -1,10 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView, Text, Image, Navigator, Button } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, SpCell} from '@/components'
+import { SpToast, TabBar, SpCell,AccountOfficial} from '@/components'
+// import ExclusiveCustomerService from './comps/exclusive-customer-service'
+import MemberBanner from './comps/member-banner'
 import api from '@/api'
 import S from '@/spx'
+import req from '@/api/req'
 
 import './index.scss'
 
@@ -14,13 +16,11 @@ import './index.scss'
   onFetchFavs: (favs) => dispatch({ type: 'member/favs', payload: favs })
 }))
 export default class MemberIndex extends Component {
-  config = {
-    navigationBarTitleText: ''
-  }
 
   constructor (props) {
     super(props)
     this.state = {
+      turntable_open: 0,
       info: {
         deposit: '',
         point: '',
@@ -42,14 +42,14 @@ export default class MemberIndex extends Component {
         grade_name: '',
         background_pic_url: ''
       },
+      memberBanner:[],
+      redirectInfo:{},
       orderCount: '',
       memberDiscount: '',
-      isOpenPopularize: false
+      isOpenPopularize: false,
+      salespersonData: null,
+      memberAssets: {},
     }
-  }
-
-  navigateTo (url) {
-    Taro.navigateTo({ url })
   }
 
   componentDidMount () {
@@ -59,8 +59,25 @@ export default class MemberIndex extends Component {
       frontColor: '#ffffff'
     })
     this.fetch()
-
+    this.getWheel()
+    this.fetchBanner()
+    this.fetchRedirect()
   }
+
+  componentDidShow () {
+    if (S.getAuthToken()) {
+      this.getSalesperson()
+    }
+  }
+  
+  config = {
+    navigationBarTitleText: ''
+  }
+
+  navigateTo (url) {
+    Taro.navigateTo({ url })
+  }
+
 
   async fetch () {
     if (!S.getAuthToken()) return
@@ -73,7 +90,8 @@ export default class MemberIndex extends Component {
           username: resUser.username,
           avatar: resUser.avatar,
           isPromoter: resUser.isPromoter,
-          mobile: resUser.mobile
+          mobile: resUser.mobile,
+          vip: resUser.vipgrade ? resUser.vipgrade.vip_type : ''
         }
       })
     }
@@ -87,7 +105,9 @@ export default class MemberIndex extends Component {
       avatar: res.memberInfo.avatar,
       userId: res.memberInfo.user_id,
       isPromoter: res.is_promoter,
-      mobile: res.memberInfo.mobile
+      mobile: res.memberInfo.mobile,
+      openid: res.memberInfo.open_id,
+      vip: res.vipgrade ? res.vipgrade.vip_type : ''
     }
     if(!resUser || resUser.username !== userObj.username || resUser.avatar !== userObj.avatar) {
       Taro.setStorageSync('userinfo', userObj)
@@ -96,7 +116,9 @@ export default class MemberIndex extends Component {
           username: res.memberInfo.username,
           avatar: res.memberInfo.avatar,
           mobile: res.memberInfo.mobile,
-          isPromoter: res.is_promoter
+          isPromoter: res.is_promoter,
+          openid: res.memberInfo.open_id,
+          vip: res.vipgrade ? res.vipgrade.vip_type : ''
         }
       })
     }
@@ -116,8 +138,50 @@ export default class MemberIndex extends Component {
       },
       orderCount,
       memberDiscount: memberDiscount.length > 0 ? memberDiscount[memberDiscount.length-1].privileges.discount_desc : '',
-      memberAssets: assets
+      memberAssets: {...assets, deposit: res.deposit}
     })
+  }
+
+// 获取banner
+  async fetchBanner(){
+    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=member_center_setting`
+    const { list } = await req.get(url)
+    this.setState({
+      memberBanner:list
+    })
+  }
+
+  // 获取积分个人信息跳转
+  async fetchRedirect(){
+    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=member_center_redirect_setting`
+    const {list = []} = await req.get(url)
+    if(list[0].params){
+      this.setState({
+        redirectInfo:list[0].params
+      })
+    }
+    // this.setState({
+    //   memberBanner:list
+    // })
+  }
+    /**
+   * 获取导购信息
+   * */
+  async getSalesperson() {
+    let data = await api.member.getSalesperson()
+    this.setState({
+      salespersonData: Array.isArray(data) ? false : data
+    })
+  }
+
+  // 转盘抽奖
+  async getWheel() {
+    if (!S.getAuthToken()) return false
+    const data = await api.wheel.getTurntableconfig()
+    this.setState({
+      turntable_open: data.turntable_open
+    })
+    console.log('大转盘', data.turntable_open)
   }
 
   handleClickRecommend = async () => {
@@ -154,14 +218,15 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: '/pages/trade/customer-pickup-list'
+      url: '/subpage/pages/trade/customer-pickup-list'
     })
+
   }
 
 
   beDistributor = async () => {
     const { info } = this.state
-    const { username, avatar, isPromoter, mobile } = info
+    const { username, avatar, isPromoter, mobile, openid } = info
     if ( isPromoter ) {
       Taro.navigateTo({
         url: '/marketing/pages/distribution/index'
@@ -191,9 +256,11 @@ export default class MemberIndex extends Component {
         username,
         avatar,
         mobile,
-        isPromoter: true
+        isPromoter: true,
+        openid,
+        vip: info.vipgrade ? info.vipgrade.vip_type : '',
       }
-      console.log(userinfo)
+      // console.log(userinfo)
       Taro.setStorageSync('userinfo', userinfo)
       this.setState({
         info: userinfo
@@ -206,7 +273,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: `/pages/trade/list?status=${type}`
+      url: `/subpage/pages/trade/list?status=${type}`
     })
   }
 
@@ -215,7 +282,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: '/pages/trade/drug-list'
+      url: '/subpage/pages/trade/drug-list'
     })
   }
 
@@ -228,7 +295,7 @@ export default class MemberIndex extends Component {
       return S.toast('请先登录')
     }
     Taro.navigateTo({
-      url: `/pages/trade/after-sale`
+      url: `/subpage/pages/trade/after-sale`
     })
   }
 
@@ -237,11 +304,34 @@ export default class MemberIndex extends Component {
       url: `/pages/member/member-code`
     })
   }
-
+  handleOfficialError=()=>{
+    
+  }
+  handleOfficialClose =()=>{
+  }
+  handleClickPoint=()=>{
+    const { redirectInfo } = this.state
+    if(redirectInfo.data.point_url_is_open){
+      Taro.navigateToMiniProgram({
+        appId: redirectInfo.data.point_app_id,
+        path: redirectInfo.data.point_page,
+      })
+    }
+  }
+  handleClickInfo=()=>{
+    const { redirectInfo } = this.state
+    if(redirectInfo.data.info_url_is_open){
+      Taro.navigateToMiniProgram({
+        appId: redirectInfo.data.info_app_id,
+        path: redirectInfo.data.info_page,
+      })
+    }
+  }
   render () {
     const { colors } = this.props
-    const { vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize } = this.state
-
+    const { vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize, salespersonData, turntable_open,memberBanner} = this.state
+    const is_open_official_account = Taro.getStorageSync('isOpenOfficial')
+    const bannerInfo = memberBanner.length ? memberBanner[0].params : null
     return (
       <View className='page-member-index'>
         <ScrollView
@@ -253,7 +343,7 @@ export default class MemberIndex extends Component {
               ?
                 <View className={`page-member-header ${memberDiscount === '' ? 'no-card' : ''}`} style={'background: ' + colors.data[0].marketing}>
                   <View className='user-info'>
-                    <View className='view-flex view-flex-middle'>
+                    <View className='view-flex view-flex-middle' onClick={this.handleClickInfo}>
                       <View className='avatar'>
                         <Image className='avatar-img' src={info.avatar} mode='aspectFill' />
                       </View>
@@ -279,10 +369,17 @@ export default class MemberIndex extends Component {
                       <View className='member-assets__label'>优惠券</View>
                       <View className='member-assets__value'>{memberAssets.discount_total_count}</View>
                     </View>
-                    <View className='view-flex-item'>
+                    <View className='view-flex-item' onClick={this.handleClickPoint}>
                       <View className='member-assets__label'>积分</View>
                       <View className='member-assets__value'>{memberAssets.point_total_count}</View>
                     </View>
+                    <View
+                      className='view-flex-item'
+                      onClick={this.handleClick.bind(this, `/others/pages/recharge/index`)}
+                    >
+                      <View className='member-assets__label'>储值</View>
+                      <View className='member-assets__value'>{(memberAssets.deposit || 0) / 100}</View>
+                    </View>                 
                     <View
                       className='view-flex-item'
                       onClick={this.handleClick.bind(this, '/pages/member/item-fav')}
@@ -292,10 +389,11 @@ export default class MemberIndex extends Component {
                     </View>
                   </View>
                 </View>
-              : <View
+                : <View
                   className='page-member-header view-flex view-flex-vertical view-flex-middle view-flex-center'
                   style={'background: ' + colors.data[0].marketing}
-                  onClick={this.handleLoginClick.bind(this)}>
+                  onClick={this.handleLoginClick.bind(this)}
+                >
                   <View className='avatar-placeholder icon-member'></View>
                   <View className='unlogin' style={'background: ' + colors.data[0].primary}>请登录</View>
                 </View>
@@ -304,7 +402,7 @@ export default class MemberIndex extends Component {
             (vipgrade.is_open || !vipgrade.is_open && vipgrade.is_vip) && memberDiscount !== '' &&
               <View
                 className='member-card'
-                onClick={this.handleClick.bind(this, '/pages/vip/vipgrades')}
+                onClick={this.handleClick.bind(this, '/subpage/pages/vip/vipgrades')}
               >
                 {
                   vipgrade.is_open && !vipgrade.is_vip
@@ -344,12 +442,24 @@ export default class MemberIndex extends Component {
                 }
               </View>
           }
+          {
+            is_open_official_account === 1 && (
+              <View className='page-member-section'>
+              <AccountOfficial
+                  onHandleError={this.handleOfficialError.bind(this)}
+                  onClick={this.handleOfficialClose.bind(this)}
+                  isClose={false}
+              />
+            </View>
+            )
+          }
+        
           <View className='page-member-section order-box'>
             <View className='section-title view-flex view-flex-middle'>
               <View className='view-flex-item'>订单</View>
               <View class='section-more' onClick={this.handleTradeClick.bind(this)}>全部订单<Text className='forward-icon icon-arrowRight'></Text></View>
             </View>
-            <View className="member-trade__ziti" onClick={this.handleTradeDrugClick.bind(this)}>
+            {/* <View className="member-trade__ziti" onClick={this.handleTradeDrugClick.bind(this)}>
               <View className="view-flex-item" >
                 <View className='member-trade__ziti-title'>处方单</View>
               </View>
@@ -360,7 +470,7 @@ export default class MemberIndex extends Component {
                 <View className='member-trade__ziti-title'>药品清单</View>
               </View>
               <View className="icon-arrowRight item-icon-go"></View>
-            </View>
+            </View> */}
             <View className='member-trade__ziti' onClick={this.handleTradePickClick.bind(this)}>
               <View className='view-flex-item'>
                 <View className='member-trade__ziti-title'>自提订单</View>
@@ -415,28 +525,80 @@ export default class MemberIndex extends Component {
               <View>买单</View>
             </View>
           </View>*/}
+          {/*
+            salespersonData && salespersonData.is_show == 1 ?
+              <ExclusiveCustomerService info={salespersonData} />
+              : null
+          */}
+          {
+            bannerInfo && bannerInfo.data.is_show && (
+              <View className="page-member-section">
+                <MemberBanner
+                  info={bannerInfo.data}
+                />
+              </View>
+            )
+          }
+
           <View className='page-member-section'>
             {
               isOpenPopularize &&
                 <SpCell
                   title={!info.isPromoter ? '我要推广' : '推广管理'}
                   isLink
-                  img='/assets/imgs/store.png'
+                  img={require('../../assets/imgs/store.png')}
                   onClick={this.beDistributor.bind(this)}
                 >
                 </SpCell>
             }
+            {
+              Taro.getEnv() !== 'WEB' && <View>
+                <SpCell
+                  title='我的拼团'
+                  isLink
+                  img={require('../../assets/imgs/group.png')}
+                  onClick={this.handleClick.bind(this, '/pages/member/group-list')}
+                >
+                </SpCell>
+                <SpCell
+                  title='我的社区团购'
+                  isLink
+                  img={require('../../assets/imgs/group.png')}
+                  onClick={this.handleClick.bind(this, '/groupBy/pages/orderList/index')}
+                >
+                </SpCell>
+              </View>
+              
+            }
+            {
+              Taro.getEnv() !== 'WEB' && <View>
+                <SpCell
+                  title='助力活动'
+                  isLink
+                  img={require('../../assets/imgs/group.png')}
+                  onClick={this.handleClick.bind(this, '/boost/pages/home/index')}
+                >
+                </SpCell>
+                <SpCell
+                  title='助力订单'
+                  isLink
+                  img={require('../../assets/imgs/group.png')}
+                  onClick={this.handleClick.bind(this, '/boost/pages/order/index')}
+                >
+                </SpCell>
+              </View>
+            }
             <SpCell
-              title='我的拼团'
+              title='投诉记录'
               isLink
-              img='/assets/imgs/group.png'
-              onClick={this.handleClick.bind(this, '/pages/member/group-list')}
+              img={require('../../assets/imgs/group.png')}
+              onClick={this.handleClick.bind(this, '/marketing/pages/member/complaint-record')}
             >
             </SpCell>
             <SpCell
               title='活动预约'
               isLink
-              img='/assets/imgs/buy.png'
+              img={require('../../assets/imgs/buy.png')}
               onClick={this.handleClick.bind(this, '/marketing/pages/member/item-activity')}
             >
             </SpCell>
@@ -444,18 +606,20 @@ export default class MemberIndex extends Component {
               title='入驻申请'
               isLink
               img='/assets/imgs/buy.png'
-              onClick={this.handleClick.bind(this, '/pages/auth/store-reg')}
+              onClick={this.handleClick.bind(this, '/subpage/pages/auth/store-reg')}
             >
             </SpCell>*/}
 
           </View>
           <View className='page-member-section'>
-            <SpCell
-              title='我要分享'
-              isLink
-            >
+            {
+              Taro.getEnv() !== 'WEB' && <SpCell
+                title='我要分享'
+                isLink
+              >
               <Button className='btn-share' open-type='share'></Button>
             </SpCell>
+            }
             <SpCell
               title='地址管理'
               isLink
@@ -468,9 +632,23 @@ export default class MemberIndex extends Component {
               onClick={this.handleClick.bind(this, '/pages/member/userinfo')}
             >
             </SpCell>
+            {
+              process.env.TARO_ENV === 'h5' &&
+              <SpCell
+                title='设置'
+                isLink
+                onClick={this.handleClick.bind(this, '/pages/member/setting')}
+              >
+              </SpCell>
+            }            
           </View>
+          {
+            turntable_open === '1' ?
+              <View className='wheel-to' onClick={this.handleClick.bind(this, '/marketing/pages/wheel/index')} >
+                <Image src='/assets/imgs/wheel_modal_icon.png' />
+              </View> : null
+          }
         </ScrollView>
-
         <SpToast />
 
         <TabBar />

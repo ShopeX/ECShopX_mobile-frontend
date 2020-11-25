@@ -3,10 +3,10 @@ import { View, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, GoodsItem, NavBar, SpNote, RecommendItem } from '@/components'
-import StoreFavItem from './comps/store-fav-item'
 import api from '@/api'
 import { pickBy } from '@/utils'
+import { BackToTop, Loading, GoodsItem, NavBar, SpNote, RecommendItem } from '@/components'
+import StoreFavItem from './comps/store-fav-item'
 
 import './item-fav.scss'
 
@@ -59,6 +59,7 @@ export default class ItemFav extends Component {
             item_id: 'item_id',
             title: 'item_name',
             desc: 'brief',
+            distributor_id: 'distributor_id',
             // price: ({ price }) => (price/100).toFixed(2),
             price: ({ price, item_price }) => ((price || item_price)/100).toFixed(2),
             is_fav: ({ item_id }) => Boolean(favs[item_id])
@@ -108,7 +109,7 @@ export default class ItemFav extends Component {
       let link = null
       switch (this.state.curTabIdx) {
         case 0:
-					link = `/pages/item/espier-detail?id=${item.item_id}`
+					link = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
           break;
         case 1:
           link = `/pages/recommend/detail?id=${item.item_id}`
@@ -159,6 +160,7 @@ export default class ItemFav extends Component {
       <View className='page-goods-list page-goods-fav'>
         <View className='goods-list__toolbar'>
           <NavBar
+            title='收藏'
             leftIconType='chevron-left'
             fixed='true'
           />
@@ -173,7 +175,7 @@ export default class ItemFav extends Component {
             tabList.map((panes, pIdx) =>
               (<AtTabsPane
                 current={curTabIdx}
-                key={pIdx}
+                key={panes.status}
                 index={pIdx}
               >
               </AtTabsPane>)
@@ -194,7 +196,7 @@ export default class ItemFav extends Component {
                   {
                     list.map(item => {
                       return (
-                        <View className='goods-list__item'>
+                        <View className='goods-list__item' key={item.item_id}>
                           <GoodsItem
                             key={item.item_id}
                             info={item}
@@ -212,7 +214,7 @@ export default class ItemFav extends Component {
                   {
                     list.map(item => {
                       return (
-                        <View className='goods-list__item'>
+                        <View className='goods-list__item' key={item.item_id}>
                           <RecommendItem
                             key={item.item_id}
                             info={item}
@@ -230,7 +232,7 @@ export default class ItemFav extends Component {
                   {
                     list.map(item => {
                       return (
-                        <View className='goods-list__item'>
+                        <View className='goods-list__item' key={item.distributor_id}>
                           <StoreFavItem
                             key={item.distributor_id}
                             info={item}

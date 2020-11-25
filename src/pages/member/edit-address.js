@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 // import EditAddress from '@/components/new-address/edit-address'
-import { View, Switch, Text, Picker } from '@tarojs/components'
-import { AtForm, AtInput, AtButton } from 'taro-ui'
+import { View, Switch, Text, Picker, Button } from '@tarojs/components'
+import { AtForm, AtInput } from 'taro-ui'
 import { connect } from '@tarojs/redux'
-import { SpCell, SpToast } from '@/components'
+import { SpCell, SpToast, NavBar } from '@/components'
 import api from '@/api'
-import { pickBy, log } from '@/utils'
+import { pickBy } from '@/utils'
 import S from '@/spx'
 
 import './edit-address.scss'
@@ -23,7 +23,7 @@ export default class AddressIndex extends Component {
       areaList: [],
       multiIndex: [],
       listLength: 0,
-      ubmitLoading: false,
+      // ubmitLoading: false,
     }
   }
 
@@ -74,16 +74,16 @@ export default class AddressIndex extends Component {
     })
 
     if (this.$router.params.isWechatAddress){
-      const res = await Taro.chooseAddress()
+      const resAddress = await Taro.chooseAddress()
       const query = {
-        province: res.provinceName,
-        city: res.cityName,
-        county: res.countyName,
-        adrdetail: res.detailInfo,
+        province: resAddress.provinceName,
+        city: resAddress.cityName,
+        county: resAddress.countyName,
+        adrdetail: resAddress.detailInfo,
         is_def: 0,
-        postalCode: res.postalCode,
-        telephone: res.telNumber,
-        username: res.userName,
+        postalCode: resAddress.postalCode,
+        telephone: resAddress.telNumber,
+        username: resAddress.userName,
       }
       this.setState({
         info: query
@@ -276,6 +276,11 @@ export default class AddressIndex extends Component {
           {/*address={this.$router.params.address}*/}
           {/*addressID={this.$router.params.address_id}*/}
         {/*/>*/}
+        <NavBar 
+          title='编辑地址'
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         <AtForm
           onSubmit={this.handleSubmit}
         >
@@ -346,17 +351,19 @@ export default class AddressIndex extends Component {
             {
               process.env.TARO_ENV === 'weapp'
                 ? <Button
-                    type='primary'
-                    onClick={this.handleSubmit}
-                    formType='submit'
-                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                    >提交</Button>
+                  type='primary'
+                  onClick={this.handleSubmit}
+                  formType='submit'
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                >
+                  提交
+                </Button>
                 : <Button
-                    type='primary'
-                    onClick={this.handleSubmit}
-                    formType='submit'
-                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                    >提交</Button>
+                  type='primary'
+                  onClick={this.handleSubmit}
+                  formType='submit'
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                >提交</Button>
             }
           </View>
         </AtForm>

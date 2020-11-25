@@ -1,1 +1,0 @@
-var isKeyable=require("./_isKeyable.js");function getMapData(a,e){var t=a.__data__;return isKeyable(e)?t["string"==typeof e?"string":"hash"]:t.map}module.exports=getMapData;

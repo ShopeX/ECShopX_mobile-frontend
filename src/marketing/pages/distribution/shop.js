@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { AtDrawer } from 'taro-ui'
 import api from '@/api'
 import { classNames, pickBy } from '@/utils'
-
+import { Tracker } from "@/service";
 import './shop.scss'
 
 @connect(({ colors }) => ({
@@ -16,7 +16,7 @@ export default class DistributionShop extends Component {
     navigationBarTitleText: '我的小店'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,19 +24,19 @@ export default class DistributionShop extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { turnover } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const param =  {
+    const param = {
       user_id: userId
     }
 
     const res = await api.distribution.info(param || null)
-    const {shop_name, brief, shop_pic, username, headimgurl } = res
+    const { shop_name, brief, shop_pic, username, headimgurl } = res
 
     this.setState({
       info: {
@@ -50,7 +50,7 @@ export default class DistributionShop extends Component {
     })
   }
 
-  handleClick (key) {
+  handleClick(key) {
     let url = ''
     switch (key) {
       case 'achievement':
@@ -70,10 +70,13 @@ export default class DistributionShop extends Component {
     })
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const { username, userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
-
+    Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
+      ...info,
+      shareType: "分享给好友"
+    });
     return {
       title: info.shop_name || `${username}的小店`,
       imageUrl: info.shop_pic,
@@ -81,7 +84,20 @@ export default class DistributionShop extends Component {
     }
   }
 
-  render () {
+  // onShareTimeline () {
+  //   const { username, userId } = Taro.getStorageSync('userinfo')
+  //   const { info } = this.state
+
+  //   return {
+  //     title: info.shop_name || `${username}的小店`,
+  //     imageUrl: info.shop_pic,
+  //     query: {
+  //       uid: userId
+  //     }
+  //   }
+  // }
+
+  render() {
     const { colors } = this.props
     const { info } = this.state
 
@@ -105,13 +121,13 @@ export default class DistributionShop extends Component {
         </View>
         {
           info.shop_pic &&
-            <View>
-              <Image
-                className='banner-img'
-                src={info.shop_pic}
-                mode='widthFix'
-              />
-            </View>
+          <View>
+            <Image
+              className='banner-img'
+              src={info.shop_pic}
+              mode='widthFix'
+            />
+          </View>
         }
         <View className='section content-center'>
           <View className='content-padded-b shop-achievement'>

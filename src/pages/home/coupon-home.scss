@@ -1,9 +1,15 @@
 @import "../../style/imports";
 
 .coupon-list {
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */     
   .at-tabs__header {
     position: absolute;
     top: $navigate-height;
+    /*  #ifdef  h5  */  
+    top: $navigate-height-h5;
+    /*  #endif  */   
     width: 100%;
     z-index: $z-index-toolbar;
   }

@@ -1,8 +1,14 @@
 @import '../../../style/imports';
 
-.page-goods-evaluation {
+.page-goods-evaluation { 
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */       
   .goods-detail__scroll {
     @include page-scroll($navigate-height);
+    /*  #ifdef  h5  */  
+    @include page-scroll($navigate-height-h5);
+    /*  #endif  */    
   }
   .goods-evaluation-wrap {
     background: #fff;

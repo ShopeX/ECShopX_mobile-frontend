@@ -1,6 +1,10 @@
 @import '../../../style/imports';
 
 .page-distribution-statistics {
+  /*  #ifdef  h5  */  
+  box-sizing: border-box;
+  padding-top: $navigate-height-h5;
+  /*  #endif  */    
   .header {
     color: #fff;
     background-image: linear-gradient(to top left, #cca76a, #e8cb97);

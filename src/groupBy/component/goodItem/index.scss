@@ -1,0 +1,123 @@
+@import '../../styles/index';
+
+.goodItem {
+  width: 100%;
+  // height: 320px;
+  box-sizing: border-box;
+  padding: 10px 30px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  .checkBox {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    border: 2px solid #c1c1c1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    &.isChecked {
+      background: $theme-color;
+      border: none;
+    }
+  }
+  .left {
+    padding-left: 10px;
+    padding-right: 20px;
+    .goodImg {
+      width: 200px;
+      height: 200px;
+    }
+  }
+  .right {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    overflow: hidden;
+    .goodItem-info {
+      width: 100%;
+      .name, .desc {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 30px;
+      }
+      .desc {
+        font-size: 26px;
+        color: #999;
+      }
+    }
+    .otherInfo {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px;
+      .otherInfoLeft {
+        .vipTag {
+          color: sandybrown;
+        }
+        .price {
+          color: #928869;
+          font-weight: bold;
+          font-size: 28px;
+          .symbol {
+            font-size: 20px;
+          }
+          .oldPrice {
+            margin-left: 10px;
+            font-size: 22px;
+            display: inline-block;
+            text-decoration: line-through;
+            color: #999;
+          }
+        }
+      }
+      .otherInfoRight {
+        align-self: flex-end;
+        min-width: 158rpx;
+        .limit {
+          font-size: 24px;
+          text-align: center;
+          margin-bottom: 5px;
+          color: #999;
+        }
+      }
+      .otherInfoExpired {
+        align-self: flex-end;
+        padding: 5px 10px;
+        background: #c1c1c1;
+        color: #fff;
+        border-radius: 6px;
+        flex-shrink: 0;
+      }
+    }
+    .buyer {
+      display: flex;
+      align-items: center;
+      height: 80px;
+      .recent {
+        flex: 1;
+        box-sizing: border-box;
+        margin: 0 10px;
+        overflow-x: hidden;
+        white-space: nowrap;
+        .buyAvatar {
+          position: relative;
+          top: 0;
+          width: 60px;
+          height: 60px;
+          border-radius: 100%;
+        }
+      }
+      .num {
+        font-size: 22px;
+        align-self: flex-end;
+      }
+    }
+  }
+}

@@ -1,8 +1,0 @@
-<block>
-    <view class="item-img">
-        <image class="item-img__img" mode="aspectFill" src="{{info.img}}"></image>
-        <view class="item-img__blured-wrap">
-            <image src="{{info.img}}" mode="aspectFill" class="item-img__blured"></image>
-        </view>
-    </view>
-</block>

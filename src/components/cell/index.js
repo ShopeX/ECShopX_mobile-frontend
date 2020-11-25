@@ -1,13 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
 
 import './index.scss'
 
 export default class SpCell extends Component {
-  static options = {
-    addGlobalClass: true
-  }
 
   static defaultProps = {
     isLink: false,
@@ -16,6 +13,10 @@ export default class SpCell extends Component {
     title: '',
     arrow: 'right',
     onClick: () => {}
+  }
+
+    static options = {
+    addGlobalClass: true
   }
 
   render () {

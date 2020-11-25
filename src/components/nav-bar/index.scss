@@ -1,5 +1,18 @@
 @import "../../style/imports";
 
 .nav-bar-height {
+  width: 100%;
   height: $navigate-height;
+  /*  #ifdef  h5  */  
+  height: $navigate-height-h5;
+  /*  #endif  */    
+  &.fiexd {
+    /*  #ifdef  h5  */  
+    position: fixed;
+    top: 0;
+    left: 0;  
+    z-index: 999;
+    background: #fff;
+    /*  #endif  */      
+  }
 }

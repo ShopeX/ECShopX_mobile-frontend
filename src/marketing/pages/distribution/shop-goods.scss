@@ -2,10 +2,23 @@
 
 .page-distribution-shop {
   background: $color-bg-gray;
+  .at-search-bar__action {
+    display: none;
+  }
+  .searchBar {
+    padding: 5px 0;
+    background: #fff;
+    .search-input {
+      box-shadow: none;
+    }
+    .at-search-bar__input-cnt {
+      height: auto;
+    }
+  }
   .goods-list {
-    padding: 30px;
+    padding: 10px 30px;
     &__scroll {
-      @include page-scroll(0, 0);
+      @include page-scroll($searchbar-height + 10, 0);
     }
     .shop-goods-item {
       margin-bottom: 30px;
@@ -20,8 +33,9 @@
       }
       &__thumbnail {
         display: block;
-        width: 100%;
-        height: 30vw;
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
       }
       &__caption {
         display: flex;

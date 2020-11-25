@@ -60,4 +60,7 @@ export function getRatePraiseStatus (params = {}){
   return req.get(`/order/ratePraise/status`,params)
 }
 
+export function getDetailShare (params) {
+  return req.post('/salesperson/task/share', params)
+}
 

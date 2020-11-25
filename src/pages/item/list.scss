@@ -2,11 +2,18 @@
 
 .page-goods-list {
   background: $color-bg-gray;
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   .goods-list {
     margin: 0 -10px;
     &__toolbar {
       position: fixed;
-      top: 0;
+      padding-top: 10px;
+      top: 0; 
+      /*  #ifdef  h5  */  
+      top: $navigate-height-h5;
+      /*  #endif  */      
       left: 0;
       width: 100%;
       z-index: $z-index-toolbar;
@@ -16,6 +23,7 @@
         padding-right: 100px !important;
       }
       .search-input {
+        box-shadow: none;
         &__focus{
           .at-search-bar {
             padding-right: 0 !important;
@@ -67,14 +75,29 @@
       }
     }
     &__scroll {
-      @include page-scroll($tabs-height + $searchbar-height + $navigate-height, 0);
+      @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 8, 0);
+      /*  #ifdef  h5  */  
+      @include page-scroll($tabs-height + $searchbar-height + $navigate-height-h5 + 8, 0);
+      /*  #endif  */      
       &.with-tag-bar {
-        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height, 0);
+        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height + 8, 0);
+        /*  #ifdef  h5  */  
+        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height-h5 + 8, 0);
+        /*  #endif  */        
       }
     }
+
+    /*  #ifdef  h5  */  
+    .taro-img {
+      img {
+        width: 100% !important;
+        height: auto;
+      }
+    }
+    /*  #endif  */   
     &__type-grid {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: wrap;      
       .goods-list__group {
         width: 50%;
       }
@@ -83,12 +106,18 @@
       }
     }
     &__type-list {
+      /*  #ifdef  h5  */  
+      .taro-img {
+        height: 100%;
+      }
+      /*  #endif  */         
       .goods-item__bd {
         display: flex;
+        align-items: center;
         &::after {
           content: "";
         }
-      }
+      }   
       .goods-item__img-wrap {
         width: 35vw;
         height: 35vw;

@@ -52,6 +52,9 @@
 }
 
 .page-member-setting {
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   .checkBoxPanel {
     position: fixed;
     width: 100%;
