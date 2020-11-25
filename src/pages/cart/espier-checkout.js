@@ -20,7 +20,8 @@ import {
   classNames,
   isArray,
   authSetting,
-  normalizeQuerys
+  normalizeQuerys,
+  redirectUrl
 } from "@/utils";
 import { lockScreen } from "@/utils/dom";
 import { Tracker } from "@/service";
@@ -1018,9 +1019,10 @@ export default class CartCheckout extends Component {
         !isDrug
       ) {
         config = await api.trade.h5create(params);
-        Taro.redirectTo({
-          url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
-        });
+        redirectUrl(api, `/subpage/pages/cashier/index?order_id=${config.order_id}`)
+        // Taro.redirectTo({
+        //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
+        // });
         return;
       } else {
         config = await api.trade.create(params);
@@ -1626,7 +1628,7 @@ export default class CartCheckout extends Component {
             value='[快递免邮]'
           >
           </SpCell>*/}
-          {pointInfo.is_open_deduct_point && (
+          {goodType !== "cross" && pointInfo.is_open_deduct_point && (
             <SpCell
               isLink
               className="trade-invoice"
