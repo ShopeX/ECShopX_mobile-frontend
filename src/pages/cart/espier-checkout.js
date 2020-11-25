@@ -1123,7 +1123,7 @@ export default class CartCheckout extends Component {
       Taro.redirectTo({
         url:
           type === "group"
-            ? `/pages/item/group-detail?team_id=${config.team_id}`
+            ? `/marketing/pages/item/group-detail?team_id=${config.team_id}`
             : `/subpage/pages/trade/detail?id=${order_id}`
       });
 

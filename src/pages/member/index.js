@@ -301,7 +301,7 @@ export default class MemberIndex extends Component {
 
   handleCodeClick = () => {
     Taro.navigateTo({
-      url: `/pages/member/member-code`
+      url: `/marketing/pages/member/member-code`
     })
   }
   handleOfficialError=()=>{
@@ -364,7 +364,7 @@ export default class MemberIndex extends Component {
                   <View className='member-assets view-flex'>
                     <View
                       className='view-flex-item'
-                      onClick={this.handleClick.bind(this, '/pages/member/coupon')}
+                      onClick={this.handleClick.bind(this, '/marketing/pages/member/coupon')}
                     >
                       <View className='member-assets__label'>优惠券</View>
                       <View className='member-assets__value'>{memberAssets.discount_total_count}</View>
@@ -557,7 +557,7 @@ export default class MemberIndex extends Component {
                   title='我的拼团'
                   isLink
                   img={require('../../assets/imgs/group.png')}
-                  onClick={this.handleClick.bind(this, '/pages/member/group-list')}
+                  onClick={this.handleClick.bind(this, '/marketing/pages/member/group-list')}
                 >
                 </SpCell>
                 <SpCell
@@ -623,13 +623,13 @@ export default class MemberIndex extends Component {
             <SpCell
               title='地址管理'
               isLink
-              onClick={this.handleClick.bind(this, '/pages/member/address')}
+              onClick={this.handleClick.bind(this, '/marketing/pages/member/address')}
             >
             </SpCell>
             <SpCell
               title='个人信息'
               isLink
-              onClick={this.handleClick.bind(this, '/pages/member/userinfo')}
+              onClick={this.handleClick.bind(this, '/marketing/pages/member/userinfo')}
             >
             </SpCell>
             {
@@ -637,7 +637,7 @@ export default class MemberIndex extends Component {
               <SpCell
                 title='设置'
                 isLink
-                onClick={this.handleClick.bind(this, '/pages/member/setting')}
+                onClick={this.handleClick.bind(this, '/marketing/pages/member/setting')}
               >
               </SpCell>
             }            

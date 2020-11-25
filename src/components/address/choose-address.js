@@ -33,7 +33,7 @@ export default class AddressChoose extends Component {
 
   clickTo = (choose) => {
     Taro.navigateTo({
-      url: `/pages/member/address?isPicker=${choose}`
+      url: `/marketing/pages/member/address?isPicker=${choose}`
     })
   }
 

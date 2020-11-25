@@ -3,7 +3,7 @@
  * @GitHub: https://github.com/973749104
  * @Blog: https://liuhgxu.com
  * @Description: 说明
- * @FilePath: /unite-vshop/src/pages/member/setting.js
+ * @FilePath: /unite-vshop/src/marketing/pages/member/setting.js
  * @Date: 2020-03-25 16:31:52
  * @LastEditors: Arvin
  * @LastEditTime: 2020-07-14 18:01:19
@@ -27,7 +27,7 @@ export default class MemberSetting extends Component {
 
   handleClickSetting = () => {
     Taro.navigateTo({
-      url: '/pages/member/userinfo'
+      url: '/marketing/pages/member/userinfo'
     })
   }
 

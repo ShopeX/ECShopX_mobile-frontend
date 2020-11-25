@@ -111,7 +111,7 @@ export default class GroupDetail extends Component {
 
   handleBackActivity = () => {
     Taro.redirectTo({
-      url: '/pages/item/group-list'
+      url: '/marketing/pages/item/group-list'
     })
   }
 
@@ -128,7 +128,7 @@ export default class GroupDetail extends Component {
 
     return {
       title: `【拼团】${activity_info.share_desc}`,
-      path: `/pages/item/group-detail?team_id=${team_info.team_id}&dtid=${distributor_id}&uid=${userId}`,
+      path: `/marketing/pages/item/group-detail?team_id=${team_info.team_id}&dtid=${distributor_id}&uid=${userId}`,
       imageUrl: activity_info.pics[0]
     }
   }

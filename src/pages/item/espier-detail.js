@@ -87,11 +87,11 @@ export default class Detail extends Component {
     if (uid) {
       this.uid = uid
     }
-    if(!S.getAuthToken()){
-      setTimeout(() => {
-        this.checkWhite()
-      }, 1000)
-    }
+    // if(!S.getAuthToken()){
+    //   setTimeout(() => {
+    //     this.checkWhite()
+    //   }, 1000)
+    // }
     this.fetchInfo(id)
     this.getEvaluationList(id)
     // 浏览记录
@@ -238,7 +238,7 @@ export default class Detail extends Component {
     // 商品详情
     const info = await api.item.detail(id, param)
     // 是否订阅
-    const { user_id: subscribe } = await api.user.isSubscribeGoods(id)
+   // const { user_id: subscribe } = await api.user.isSubscribeGoods(id)
     const { intro: desc, promotion_activity: promotion_activity } = info
     let marketing = 'normal'
     let timer = null
@@ -317,7 +317,7 @@ export default class Detail extends Component {
       promotion_activity,
       itemParams,
       sessionFrom,
-      isSubscribeGoods: !!subscribe
+      //isSubscribeGoods: !!subscribe
     }, async () => {
       let contentDesc = ''
 
@@ -630,7 +630,7 @@ export default class Detail extends Component {
 
   handleGroupClick = (tid) => {
     Taro.navigateTo({
-      url: `/pages/item/group-detail?team_id=${tid}`
+      url: `/marketing/pages/item/group-detail?team_id=${tid}`
     })
   }
 
