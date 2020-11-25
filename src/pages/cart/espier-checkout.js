@@ -123,14 +123,17 @@ export default class CartCheckout extends Component {
       //积分相关
       isPointOpen: false,
       point_use: 0,
-      pointInfo: null
+      pointInfo: null,
+      isPack: false,
+      packName: '',
+      packDes:''
     };
   }
 
   componentDidMount() {
     // this.fetchAddress()
     if (this.$router.params.scene) {
-      console.log(normalizeQuerys(this.$router.params));
+     
       Taro.setStorageSync(
         "espierCheckoutData",
         normalizeQuerys(this.$router.params)
@@ -211,14 +214,17 @@ export default class CartCheckout extends Component {
       items,
       pay_type: payType || "wxpay"
     };
-
+  
     this.setState({
+     
       total: {
         items_count,
         total_fee: total_fee.toFixed(2)
       }
     });
     // this.handleAddressChange(this.props.defaultAddress)
+    
+    
     this.props.onAddressChoose(null);
     this.getSalespersonNologin();
     // this.getShop()
@@ -408,7 +414,7 @@ export default class CartCheckout extends Component {
 
   getParams() {
     // console.log('/////////////////')
-    console.log(this.$router.params);
+  
     const {
       type,
       seckill_id = null,
@@ -521,7 +527,6 @@ export default class CartCheckout extends Component {
       point_use: point_use
     };
 
-    log.debug("[checkout] params: ", params);
     if (cxdid) {
       params.cxdid = cxdid;
       params.distributor_id = dtid;
@@ -562,8 +567,7 @@ export default class CartCheckout extends Component {
       mask: true
     });
     const params = this.getParams();
-    console.log("params////////////////////////");
-    console.log(params);
+  tradeSetting
     let salesperson_id = Taro.getStorageSync("s_smid");
     if (salesperson_id) {
       params.salesperson_id = salesperson_id;
