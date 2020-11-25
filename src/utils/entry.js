@@ -16,9 +16,9 @@ async function entryLaunch(data, isNeedLocate) {
 
   // 如果没有带店铺id
   if (!options.dtid) {
-    let { distributor_id } = Taro.getStorageSync('curStore')
+    let { distributor_id,isNostores,store_id } = Taro.getStorageSync('curStore')
     if (distributor_id) {
-      options.dtid = distributor_id
+      options.dtid =isNostores === 1 ? "" : distributor_id
     }
   }
   let dtidValid = false
@@ -114,18 +114,18 @@ async function getLocal (isNeedLocate) {
       }
     }
   }
-  if(isOpenStore){
-    store = {
-      distributor_id:0
-    }
-    Taro.setStorageSync('curStore', store)
-  }else{
     if (!store.status) {
+      if(isOpenStore){ //新增逻辑，如果开启了非门店自提流程，新增字段
+          store.store_id=0, //总店distribution_id
+          store.isNostores=1  //是否开启1，代表开启
+      }else{
+          //store.store_id=-1
+          store.isNostores=0 //0 未开启
+      }
       Taro.setStorageSync('curStore', store)
     } else {
       Taro.setStorageSync('curStore', [])
     }
-  }
 
 
   return store

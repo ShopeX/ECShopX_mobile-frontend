@@ -1021,8 +1021,8 @@ export default class CartCheckout extends Component {
     try {
       let params = this.getParams();
       if (APP_PLATFORM === "standard" && cart_type !== "cart") {
-        const { distributor_id } = Taro.getStorageSync("curStore");
-        params.distributor_id = this.getShopId() || distributor_id;
+        const { distributor_id,isNostores,store_id } = Taro.getStorageSync("curStore");
+        params.distributor_id = this.getShopId() || isNostores === 1 ? store_id :distributor_id;
       }
 
       delete params.items;

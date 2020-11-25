@@ -59,7 +59,7 @@ export default class HeaderHome extends Component {
 
             <View className='nearly-shop'>
               {
-                store.name && (
+                store.name && (store.isNostores === 0) && (
                   <View className='shop-view view-flex-item view-flex view-flex-middle' onClick={this.handlePickStore.bind(this)}>
                   <View className='icon-periscope'></View>
                   <View className='shop-name'>{store.name || '选择店铺'}</View>

@@ -279,6 +279,8 @@ export default class GoodsBuyPanel extends Component {
     const isDrug = special_type === "drug";
     const { item_id } = this.noSpecs ? info : skuInfo;
     const { distributor_id } = info;
+    const curStore = Taro.getStorageSync('curStore');
+    let id = curStore.isNostores == 1 ? curStore.store_id: distributor_id 
     let url = `/pages/cart/espier-checkout`;
 
     this.setState({
@@ -323,7 +325,7 @@ export default class GoodsBuyPanel extends Component {
     }
 
     if (type === "fastbuy") {
-      url += `?cart_type=fastbuy&shop_id=${distributor_id}`;
+      url += `?cart_type=fastbuy&shop_id=${id}`;
       if (marketing === "group") {
         const { groups_activity_id } = info.activity_info;
         url += `&type=${marketing}&group_id=${groups_activity_id}`;
@@ -348,7 +350,7 @@ export default class GoodsBuyPanel extends Component {
         await api.cart.fastBuy({
           item_id,
           num,
-          distributor_id
+          distributor_id:id
         });
       } catch (e) {
         console.log(e);

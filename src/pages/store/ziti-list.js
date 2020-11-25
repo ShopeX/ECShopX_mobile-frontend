@@ -90,6 +90,7 @@ export default class StoreZitiList extends Component {
     let res = await api.member.areaList()
     const nAreaList = pickBy(res, {
       label: 'label',
+      id: 'id',
       children: 'children',
     })
     this.nAreaList = nAreaList
@@ -180,7 +181,7 @@ export default class StoreZitiList extends Component {
       loading: true
     })
     Taro.removeStorageSync('lnglat')
-    const store = await entry.getLocal(true,'0')
+    const store = await entry.getLocal(true)
     console.log('store---->',store)
     if (store) {
      // Taro.setStorageSync('curStore', store)
@@ -220,6 +221,120 @@ export default class StoreZitiList extends Component {
   //   Taro.setStorageSync('curStore', val)
   //   Taro.navigateBack()
   // }
+
+// 选定开户地区
+handleClickPicker = () => {
+  let arrProvice = []
+  let arrCity = []
+  let arrCounty = []
+  if(this.nAreaList){
+    this.nAreaList.map((item, index) => {
+      arrProvice.push(item.label)
+      if(index === 0) {
+        item.children.map((c_item, c_index) => {
+          arrCity.push(c_item.label)
+          if(c_index === 0) {
+            c_item.children.map(cny_item => {
+              arrCounty.push(cny_item.label)
+            })
+          }
+        })
+      }
+    })
+    this.setState({
+      showDrawer: false,
+      areaList: [arrProvice, arrCity, arrCounty],
+      multiIndex: [0, 0, 0]
+    })
+  }
+
+}
+
+bindMultiPickerChange = async (e) => {
+  const { info } = this.state
+  this.nAreaList.map((item, index) => {
+    if(index === e.detail.value[0]) {
+      info.province = item.label
+      item.children.map((s_item,sIndex) => {
+        if(sIndex === e.detail.value[1]) {
+          info.city = s_item.label
+          s_item.children.map((th_item,thIndex) => {
+            if(thIndex === e.detail.value[2]) {
+              info.county = th_item.label
+            }
+          })
+        }
+      })
+    }
+  })
+
+  const { province, city, area } = info
+  this.setState({
+    query: {
+      ...this.state.query,
+      province,
+      city,
+      area
+    }
+  }, () => {
+    this.resetPage()
+    this.setState({
+      list: []
+    }, () => {
+      this.nextPage()
+    })
+  })
+  this.setState({ list })
+}
+bindMultiPickerColumnChange = (e) => {
+  const { areaList, multiIndex } = this.state
+  if(e.detail.column === 0) {
+    this.setState({
+      multiIndex: [e.detail.value,0,0]
+    })
+    this.nAreaList.map((item, index) => {
+      if(index === e.detail.value) {
+        let arrCity = []
+        let arrCounty = []
+        item.children.map((c_item, c_index) => {
+          arrCity.push(c_item.label)
+          if(c_index === 0) {
+            c_item.children.map(cny_item => {
+              arrCounty.push(cny_item.label)
+            })
+          }
+        })
+        areaList[1] = arrCity
+        areaList[2] = arrCounty
+        this.setState({ areaList })
+      }
+    })
+  } else if (e.detail.column === 1) {
+    multiIndex[1] = e.detail.value
+    multiIndex[2] = 0
+    this.setState({
+      multiIndex
+    },()=>{
+      this.nAreaList[multiIndex[0]].children.map((c_item, c_index)  => {
+        if(c_index === e.detail.value) {
+          let arrCounty = []
+          c_item.children.map(cny_item => {
+            arrCounty.push(cny_item.label)
+          })
+          areaList[2] = arrCounty
+          this.setState({ areaList })
+        }
+      })
+    })
+
+  } else {
+    multiIndex[2] = e.detail.value
+    this.setState({
+      multiIndex
+    })
+  }
+}
+
   handleChangeStore = ()=>{
     let { list } = this.state
     if(!list.length) return
@@ -258,11 +373,11 @@ export default class StoreZitiList extends Component {
             onConfirm={this.handleConfirm.bind(this)}
           />
         </View> */}
-        <Picker
+          <Picker
               mode='multiSelector'
-              //onClick={this.handleClickPicker}
-              //onChange={this.bindMultiPickerChange}
-              //onColumnChange={this.bindMultiPickerColumnChange}
+              onClick={this.handleClickPicker}
+              onChange={this.bindMultiPickerChange}
+              onColumnChange={this.bindMultiPickerColumnChange}
               value={multiIndex}
               range={areaList}
             >

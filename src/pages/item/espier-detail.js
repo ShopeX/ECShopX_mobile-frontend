@@ -82,14 +82,22 @@ export default class Detail extends Component {
     },async()=>{
       const { is_open_store_status }= this.state
       if (APP_PLATFORM === 'standard') {
-        const { distributor_id } = Taro.getStorageSync('curStore')
+       // const { distributor_id } = Taro.getStorageSync('curStore')
+        const curStore = Taro.getStorageSync('curStore')
+        console.log('curStoredfdf---->',curStore)
         if (!options.dtid  || options.dtid !== 0) {
-          options.dtid = is_open_store_status ? '' : distributor_id 
+          options.dtid = curStore.isNostores == 1 ? '': curStore.distributor_id 
         }
-        // if(is_open_store_status){
-        //   delete options.dtid
-        // }
         const entryData = await entry.entryLaunch(options, true)
+        const{store} = entryData
+        if(is_open_store_status){ //新增逻辑，如果开启了非门店自提流程，新增字段
+          store.store_id=0, //总店distribution_id
+          store.isNostores=1  //是否开启1，代表开启
+          }else{
+              //store.store_id=-1
+              store.isNostores=0 //0 未开启
+          }
+          Taro.setStorageSync('curStore', store)
         id = entryData.id
         uid = entryData.uid
       }
@@ -177,10 +185,11 @@ export default class Detail extends Component {
 
   onShareAppMessage() {
     const { info } = this.state
-    const { distributor_id } = Taro.getStorageSync('curStore')
+   // const { distributor_id } = Taro.getStorageSync('curStore')
+   const curStore = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const infoId = info.distributor_id
-    const id = APP_PLATFORM === 'standard' ? distributor_id : infoId
+    const id = APP_PLATFORM === 'standard' ? curStore.isNostores === 1 ? curStore.store_id: curStore.distributor_id : infoId
     Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
       ...info,
       shareType: "分享给好友"
@@ -194,10 +203,11 @@ export default class Detail extends Component {
 
   onShareTimeline() {
     const { info } = this.state
-    const { distributor_id } = Taro.getStorageSync('curStore')
+   // const { distributor_id } = Taro.getStorageSync('curStore')
+   const curStore = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const infoId = info.distributor_id
-    const id = APP_PLATFORM === 'standard' ? distributor_id : infoId
+    const id = APP_PLATFORM === 'standard' ? curStore.isNostores === 1 ? curStore.store_id: curStore.distributor_id : infoId
     return {
       title: info.item_name,
       query: `id=${info.item_id}&dtid=${id}&uid=${userId}`,
@@ -230,7 +240,7 @@ export default class Detail extends Component {
   }
 
   async fetchInfo(itemId, goodsId) {
-    const { distributor_id } = Taro.getStorageSync('curStore')
+    const { distributor_id,isNostores,store_id } = Taro.getStorageSync('curStore')
     let id = ''
     if (itemId) {
       id = itemId
@@ -241,7 +251,7 @@ export default class Detail extends Component {
     const param = { goods_id: goodsId }
 
     if (APP_PLATFORM === 'standard') {
-      param.distributor_id = distributor_id 
+      param.distributor_id = isNostores == 1 ? store_id : distributor_id 
     } else {
       param.distributor_id  = this.$router.params.dtid
     }
@@ -456,8 +466,10 @@ export default class Detail extends Component {
   handlePackageClick = () => {
     const { info } = this.state
     let { distributor_id } = info
+    const curStore = Taro.getStorageSync('curStore')
     if (APP_PLATFORM === 'standard') {
-      distributor_id = Taro.getStorageSync('curStore').distributor_id
+      //distributor_id = Taro.getStorageSync('curStore').distributor_id
+      distributor_id = curStore.isNostores === 1 ? curStore.store_id : curStore.distributor_id
     }
     Taro.navigateTo({
       url: `/pages/item/package-list?id=${info.item_id}&distributor_id=${distributor_id}`
@@ -526,10 +538,10 @@ export default class Detail extends Component {
     const { pics, company_id, item_id } = info
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
     const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
-    const { distributor_id } = Taro.getStorageSync('curStore')
+    const { distributor_id,isNostores,store_id } = Taro.getStorageSync('curStore')
     const pic = pics[0].replace('http:', 'https:')
     const infoId = info.distributor_id
-    const id = APP_PLATFORM === 'standard' ? distributor_id : infoId
+    const id = APP_PLATFORM === 'standard' ? isNostores === 1 ? store_id : distributor_id : infoId
     const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${id}&uid=${userId}`
     const avatarImg = await Taro.getImageInfo({src: avatar})
     const goodsImg = await Taro.getImageInfo({src: pic})
@@ -724,7 +736,8 @@ export default class Detail extends Component {
   }
 
   handleClickItem = (item) => {
-    const id = APP_PLATFORM === 'standard' ? Taro.getStorageSync('curStore').distributor_id : item.distributor_id
+    const curStore = Taro.getStorageSync('curStore')
+    const id = APP_PLATFORM === 'standard' ? curStore.isNostores === 1 ? curStore.store_id :curStore.distributor_id : item.distributor_id
     const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}`
     Taro.navigateTo({
       url
@@ -735,8 +748,8 @@ export default class Detail extends Component {
     // const { distributor_id } = Taro.getStorageSync('curStore')
     let id = ''
     if (APP_PLATFORM === 'standard') {
-      const { distributor_id } = Taro.getStorageSync('curStore')
-      id = distributor_id
+      const { distributor_id,isNostores,store_id } = Taro.getStorageSync('curStore')
+      id = isNostores === 1 ? store_id : distributor_id
     } else {
       const { info } = this.state
       const { distributor_id } = info

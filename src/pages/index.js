@@ -98,21 +98,19 @@ export default class HomeIndex extends Component {
       is_open_official_account:is_open_official_account,
       is_open_store_status:isOpenStore
     }, async() => {
-      if(this.state.is_open_store_status){
-        store.distributor_id = 0
-        if (!isArray(store)) {
-          this.setState({
-            curStore: store
-          }, () => {
-            this.fetchData()
-          })
-        }
-       
-      }else {
         let isNeedLoacate = is_open_wechatapp_location == 1 ? true : false
         const options = this.$router.params
         const res = await entry.entryLaunch(options, isNeedLoacate)
         const { store } = res
+        const { is_open_store_status } = this.state
+        if(is_open_store_status){ //新增逻辑，如果开启了非门店自提流程，新增字段
+          store.store_id=0, //总店distribution_id
+          store.isNostores=1  //是否开启1，代表开启
+          }else{
+              //store.store_id=-1
+              store.isNostores=0 //0 未开启
+          }
+          Taro.setStorageSync('curStore', store)
         if (!isArray(store)) {
           this.setState({
             curStore: store
@@ -120,7 +118,6 @@ export default class HomeIndex extends Component {
             this.fetchData()
           })
         }
-      }
 
     })
   }
@@ -154,12 +151,16 @@ export default class HomeIndex extends Component {
   componentDidShow = () => {
     const options = this.$router.params
     const { curStore } = this.state
+    console.log('curStore---->',curStore)
     const curStoreLocal = Taro.getStorageSync('curStore')
+    const localdis_id = curStoreLocal && curStoreLocal.isNostores == 1 ? curStoreLocal.store_id : curStoreLocal.distributor_id //非自提门店判断
+    //const curdis_id = curStore && curStore.isNostores == 1 ? curStore.store_id : curStore.distributor_id
+
     if (!isArray(curStoreLocal) && this.state.isGoStore) {
       this.setState({
         isGoStore: false
       })
-      if (!curStore || (curStoreLocal.distributor_id != curStore.distributor_id) ) {
+      if (!curStore || (localdis_id != curStore.distributor_id) ) {
         this.setState({
           curStore: curStoreLocal,
           likeList: [],
@@ -319,11 +320,13 @@ export default class HomeIndex extends Component {
   }
   async fetchInfo(cb) {
     const { curStore } = this.state
+    console.log('curStore ----dfd',curStore)
+    const curdis_id = curStore.isNostores && curStore.isNostores == 1 ? curStore.store_id : curStore.distributor_id
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
     // const url = '/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=index'
-    const url = '/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=' + curStore.distributor_id
+    const url = '/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=' + curdis_id
     const info = await req.get(url)
     this.setState({
       wgts: isArray(info) ? [] : info.config
@@ -481,7 +484,7 @@ export default class HomeIndex extends Component {
     if (!this.props.store) {
       return <Loading />
     }
-		// const show_location = wgts.find(item=>item.name=='setting'&&item.config.location)
+    // const show_location = wgts.find(item=>item.name=='setting'&&item.config.location)
     return (
       <View className='page-index'>
           {
