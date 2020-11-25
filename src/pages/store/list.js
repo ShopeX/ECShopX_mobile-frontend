@@ -53,9 +53,16 @@ export default class StoreList extends Component {
       page,
       pageSize
     }
-
     const { list, total_count: total} = await api.shop.list(query)
-
+    const isOpenStore = await entry.getStoreStatus()
+    list.map(item=>{
+      if(isOpenStore){
+        item.store_id = 0
+        item.isNostores = 1
+      }else{
+        item.isNostores = 0
+      }
+    })
     this.setState({
       list: [...this.state.list, ...list],
       query

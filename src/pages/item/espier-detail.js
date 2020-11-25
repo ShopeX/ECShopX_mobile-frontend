@@ -84,20 +84,19 @@ export default class Detail extends Component {
       if (APP_PLATFORM === 'standard') {
        // const { distributor_id } = Taro.getStorageSync('curStore')
         const curStore = Taro.getStorageSync('curStore')
-        console.log('curStoredfdf---->',curStore)
         if (!options.dtid  || options.dtid !== 0) {
           options.dtid = curStore.isNostores == 1 ? '': curStore.distributor_id 
         }
         const entryData = await entry.entryLaunch(options, true)
-        const{store} = entryData
-        if(is_open_store_status){ //新增逻辑，如果开启了非门店自提流程，新增字段
-          store.store_id=0, //总店distribution_id
-          store.isNostores=1  //是否开启1，代表开启
-          }else{
-              //store.store_id=-1
-              store.isNostores=0 //0 未开启
-          }
-          Taro.setStorageSync('curStore', store)
+        // const{store} = entryData
+        // if(is_open_store_status){ //新增逻辑，如果开启了非门店自提流程，新增字段
+        //   store.store_id=0, //总店distribution_id
+        //   store.isNostores=1  //是否开启1，代表开启
+        //   }else{
+        //       //store.store_id=-1
+        //       store.isNostores=0 //0 未开启
+        //   }
+        //   Taro.setStorageSync('curStore', store)
         id = entryData.id
         uid = entryData.uid
       }
@@ -105,11 +104,17 @@ export default class Detail extends Component {
         this.uid = uid
       }
       if(!S.getAuthToken()){
-        setTimeout(() => {
-          this.checkWhite()
-        }, 1000)
-      }
-      this.fetchInfo(id)
+        const { status } = await api.wx.getWhiteList()
+        if(status == true){
+          setTimeout(() => {
+            S.login(this, true)
+          }, 1000)
+        }else{
+          this.fetchInfo(id)
+        }
+      }else{
+        this.fetchInfo(id)
+      }      
       this.getEvaluationList(id)
       // 浏览记录
       if (S.getAuthToken()) {
@@ -230,14 +235,14 @@ export default class Detail extends Component {
       console.log(e)
     }
   }
-  async checkWhite () {
-    const { status } = await api.wx.getWhiteList()
-    if(status == true){
-      setTimeout(() => {
-        S.login(this, true)
-      }, 1000)
-    }
-  }
+  // async checkWhite () {
+  //   const { status } = await api.wx.getWhiteList()
+  //   if(status == true){
+  //     setTimeout(() => {
+  //       S.login(this, true)
+  //     }, 1000)
+  //   }
+  // }
 
   async fetchInfo(itemId, goodsId) {
     const { distributor_id,isNostores,store_id } = Taro.getStorageSync('curStore')

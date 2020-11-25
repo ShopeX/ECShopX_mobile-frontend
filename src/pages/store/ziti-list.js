@@ -60,6 +60,7 @@ export default class StoreZitiList extends Component {
 
   async fetch (params) {
     const isOpenStore = await entry.getStoreStatus()
+    const{ shop_id } =this.$router.params
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, areaList, tagsList, curTagId } = this.state
     const { cart_type} = this.$router.params
@@ -85,7 +86,9 @@ export default class StoreZitiList extends Component {
       distance:({ distance }) => (distance*1).toFixed(2),
       distance_show:({ distance_show }) => (distance_show*1).toFixed(2),
       distance_unit:'distance_unit',
-      is_checked:'is_checked'
+      is_checked:'is_checked',
+      store_id:isOpenStore ? '' : 0,
+      isNostores:isOpenStore ? 1 : 0
     })
     let res = await api.member.areaList()
     const nAreaList = pickBy(res, {
@@ -202,7 +205,6 @@ export default class StoreZitiList extends Component {
   }
   handleSelectStore = (item) =>{
     const { list } = this.state
-    const{ shop_id } =this.$router.params
     list.map(v =>{
       v.is_checked = false,
       v.distributor_id == item.distributor_id && (v.is_checked = true)

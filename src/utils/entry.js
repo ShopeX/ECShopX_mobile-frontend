@@ -13,6 +13,7 @@ async function entryLaunch(data, isNeedLocate) {
   } else {
     options = data
   }
+  console.log('options---->',options)
 
   // 如果没有带店铺id
   if (!options.dtid) {
@@ -202,7 +203,15 @@ function trackViewNum (monitor_id, source_id) {
 // distributorId 店铺ID
 async function handleDistributorId(distributorId) {
   const res = await api.shop.getShop({distributor_id: distributorId})
+  const isOpenStore = await getStoreStatus()
   if (res.status === false) {
+    if(isOpenStore){ //新增逻辑，如果开启了非门店自提流程，新增字段
+      res.store_id=0, //总店distribution_id为0
+      res.isNostores=1  //是否开启，1，代表开启
+      }else{
+          //store.store_id=-1
+          res.isNostores=0 //0 未开启
+      }
     Taro.setStorageSync('curStore', res)
   } else {
     Taro.setStorageSync('curStore', [])
