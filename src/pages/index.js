@@ -378,6 +378,8 @@ export default class HomeIndex extends Component {
         setTimeout(() => {
           S.login(this, true)
         }, 1000)
+      } else {
+        this.fetchSetInfo()
       }
     }else {
       this.fetchSetInfo()
