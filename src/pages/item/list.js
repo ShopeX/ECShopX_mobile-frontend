@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
-import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, SpNote, NavBar } from '@/components'
+import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, SpNote, NavBar, TabBar } from '@/components'
 import api from '@/api'
 import { Tracker } from "@/service";
 import { pickBy, classNames } from '@/utils'
@@ -457,14 +457,17 @@ export default class List extends Component {
       isShowSearch,
       query
     } = this.state
-
+    const { isTabBar = '' } = this.$router.params
+    console.log(!isTabBar)
 		return (
 			<View className='page-goods-list'>
-        <NavBar
-          title='商品列表'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        {
+          !isTabBar && <NavBar
+            title='商品列表'
+            leftIconType='chevron-left'
+            fixed='true'
+          />
+        }
         <View className='goods-list__toolbar'>
           <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
             <SearchBar
@@ -639,6 +642,7 @@ export default class List extends Component {
           onClick={this.scrollBackToTop}
           bottom={30}
         />
+        { isTabBar && <TabBar />}
       </View>
     )
   }
