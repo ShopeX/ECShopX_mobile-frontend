@@ -1707,11 +1707,11 @@ export default class CartCheckout extends Component {
             </View>
           )}
 
-          {payType === "point" && !bargain_id && (
+          {/* {payType === "point" && !bargain_id && (
             <View className="sec trade-sub-total">
               <SpCell title="运费">
                 <Price unit="cent" value={total.freight_fee} />
-              </SpCell>
+              </SpCell> */}
               {/*
                 <SpCell
                   className='trade-sub-total__item'
@@ -1725,10 +1725,10 @@ export default class CartCheckout extends Component {
                   />
                 </SpCell>
               */}
-            </View>
-          )}
+            {/* </View>
+          )} */}
 
-          {payType !== "point" && (
+          
             <View className="sec trade-sub-total">
               <SpCell className="trade-sub-total__item" title="商品金额：">
                 <Price unit="cent" value={total.item_fee} />
@@ -1764,7 +1764,6 @@ export default class CartCheckout extends Component {
                 </SpCell>
               )}
             </View>
-          )}
 
           {goodType === "cross" && (
             <View className="nationalNotice">
@@ -1827,7 +1826,7 @@ export default class CartCheckout extends Component {
         <PaymentPicker
           isOpened={isPaymentOpend}
           type={payType}
-          isShowPoint={goodType !== "cross"}
+          isShowPoint={false}
           isShowBalance={goodType !== "cross"}
           isShowDelivery={false}
           disabledPayment={disabledPayment}
