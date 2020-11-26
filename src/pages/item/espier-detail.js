@@ -7,7 +7,7 @@ import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavB
 import api from '@/api'
 import req from '@/api/req'
 import { withPager, withBackToTop } from '@/hocs'
-import { log, calcTimer, isArray, pickBy, canvasExp } from '@/utils'
+import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys } from '@/utils'
 import entry from '@/utils/entry'
 import S from '@/spx'
 import { Tracker } from "@/service"
@@ -86,6 +86,13 @@ export default class Detail extends Component {
     }
     if (uid) {
       this.uid = uid
+    }
+    if (options.scene) {
+      const query = normalizeQuerys(options)
+      if (query.id) {
+        id = query.id
+        uid = query.uid
+      }
     }
     if(!S.getAuthToken()){
       this.checkWhite()
@@ -230,7 +237,17 @@ export default class Detail extends Component {
     if (APP_PLATFORM === 'standard') {
       param.distributor_id = distributor_id 
     } else {
-      param.distributor_id  = this.$router.params.dtid
+      if (this.$router.params.dtid) {
+        param.distributor_id  = this.$router.params.dtid
+      } else {
+        const options = this.$router.params
+        if (options.scene) {
+          const query = normalizeQuerys(options)
+          if (query.dtid) {
+            param.distributor_id  = query.dtid
+          }
+        }
+      }
     }
 
     // 商品详情
