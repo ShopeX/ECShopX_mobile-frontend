@@ -9,6 +9,7 @@ import { pickBy } from '@/utils'
 import { connect} from '@tarojs/redux'
 
 import './ziti-list.scss'
+import { de } from 'date-fns/locale'
 @connect(({ cart }) => ({
   curZitiShop: cart.zitiShop
 }), (dispatch) => ({
@@ -29,6 +30,7 @@ export default class StoreZitiList extends Component {
       is_open_store_status:false,
       multiIndex:[],
       areaList: [],
+      info: {},
     }
   }
   config = {
@@ -60,15 +62,16 @@ export default class StoreZitiList extends Component {
 
   async fetch (params) {
     const isOpenStore = await entry.getStoreStatus()
-    const{ shop_id } =this.$router.params
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, areaList, tagsList, curTagId } = this.state
-    const { cart_type} = this.$router.params
+    const { shop_id,order_type, cart_type} = this.$router.params
     const query = {
       ...this.state.query,
       page,
       pageSize,
-      cart_type
+      cart_type,
+      order_type,
+      isNostores:isOpenStore ? 1 : 0
     }
 
     const { list, total_count: total} = await api.shop.list(query)
@@ -93,7 +96,6 @@ export default class StoreZitiList extends Component {
     let res = await api.member.areaList()
     const nAreaList = pickBy(res, {
       label: 'label',
-      id: 'id',
       children: 'children',
     })
     this.nAreaList = nAreaList
@@ -226,6 +228,7 @@ export default class StoreZitiList extends Component {
 
 // 选定开户地区
 handleClickPicker = () => {
+  console.log('handleClickPicker')
   let arrProvice = []
   let arrCity = []
   let arrCounty = []
@@ -253,7 +256,8 @@ handleClickPicker = () => {
 }
 
 bindMultiPickerChange = async (e) => {
-  const { info } = this.state
+  console.log('bindMultiPickerChange')
+  const { info,query } = this.state
   this.nAreaList.map((item, index) => {
     if(index === e.detail.value[0]) {
       info.province = item.label
@@ -271,12 +275,14 @@ bindMultiPickerChange = async (e) => {
   })
 
   const { province, city, area } = info
+  delete query.lat
+  delete query.lng
   this.setState({
     query: {
       ...this.state.query,
       province,
       city,
-      area
+      area,
     }
   }, () => {
     this.resetPage()
@@ -286,7 +292,7 @@ bindMultiPickerChange = async (e) => {
       this.nextPage()
     })
   })
-  this.setState({ list })
+ // this.setState({ list })
 }
 bindMultiPickerColumnChange = (e) => {
   const { areaList, multiIndex } = this.state

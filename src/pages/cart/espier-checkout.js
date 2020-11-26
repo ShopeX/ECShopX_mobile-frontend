@@ -777,8 +777,9 @@ export default class CartCheckout extends Component {
   };
   handleEditZitiClick =(id) =>{
     const {cart_type} = this.$router.params;
+    const params = this.getParams()
     Taro.navigateTo({
-      url: `/pages/store/ziti-list?shop_id=${id}&cart_type=${cart_type}`
+      url: `/pages/store/ziti-list?shop_id=${id}&cart_type=${cart_type}&order_type=${params.order_type}`
     })
   }
 
