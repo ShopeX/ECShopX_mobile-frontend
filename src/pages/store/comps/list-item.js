@@ -23,8 +23,7 @@ export default class StoreListItem extends Component {
   render () {
     const { info, onClick,isStore } = this.props
     if (!info) return null
-    const distance = info.distance && (info.distance*1).toFixed(2)
-
+    const distance = info.distance ? (info.distance*1).toFixed(2) : false
     return (
       <View
         className='store-item'
@@ -39,7 +38,7 @@ export default class StoreListItem extends Component {
           </View>
 
           {
-            info.distance && (
+            distance && (
             <View className="store-content_distance">
               {distance}{info.distance_unit}
             </View>

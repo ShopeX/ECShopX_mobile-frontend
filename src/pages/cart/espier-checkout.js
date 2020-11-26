@@ -265,7 +265,11 @@ export default class CartCheckout extends Component {
   }
 
   async fetchZiTiShop() {
-    const { shop_id, scene,cart_type} = this.$router.params;
+    const { shop_id, scene,cart_type,seckill_id = null,ticket = null,    
+      source,
+      goodType,
+      bargain_id = ""
+    } = this.$router.params;
     const isOpenStore = await entry.getStoreStatus()
     const { zitiShop } = this.props;
     const params = this.getParams()
@@ -281,6 +285,9 @@ export default class CartCheckout extends Component {
         ztparams.cart_type = cart_type
         ztparams.order_type = params.order_type
         ztparams.isNostores = 1
+        ztparams.seckill_id = seckill_id
+        ztparams.seckill_ticket = ticket
+        ztparams.iscrossborder = goodType === 'cross' ? 1 : ''
         
       }else{
         ztparams.isNostores = 0
@@ -293,6 +300,10 @@ export default class CartCheckout extends Component {
         ztparams.cart_type = cart_type
         ztparams.order_type = params.order_type
         ztparams.isNostores = 1
+        ztparams.seckill_id = seckill_id
+        ztparams.seckill_ticket = ticket
+        ztparams.iscrossborder = goodType === 'cross' ? 1 : ''
+
       }else{
         ztparams.distributor_id = id
         ztparams.isNostores = 0
@@ -785,10 +796,10 @@ export default class CartCheckout extends Component {
     });
   };
   handleEditZitiClick =(id) =>{
-    const {cart_type} = this.$router.params;
+    const {cart_type,seckill_id = null,ticket = null,goodType} = this.$router.params;
     const params = this.getParams()
     Taro.navigateTo({
-      url: `/pages/store/ziti-list?shop_id=${id}&cart_type=${cart_type}&order_type=${params.order_type}`
+      url: `/pages/store/ziti-list?shop_id=${id}&cart_type=${cart_type}&order_type=${params.order_type}&seckill_id=${seckill_id}&ticket=${ticket}&goodType=${goodType}`
     })
   }
 
@@ -984,7 +995,7 @@ export default class CartCheckout extends Component {
     // if (!this.state.address) {
     //   return S.toast('请选择地址')
     // }
-    const { payType, total, identity,isOpenStore,receiptType } = this.state;
+    const { payType, total, identity,isOpenStore,curStore } = this.state;
     const { type, goodType, cart_type } = this.$router.params;
 
     // const { payType, total,point_use } = this.state
@@ -1031,18 +1042,8 @@ export default class CartCheckout extends Component {
     try {
       let params = this.getParams();
       if (APP_PLATFORM === "standard" && cart_type !== "cart") {
-        const { distributor_id,isNostores,store_id } = Taro.getStorageSync("curStore");
-        params.distributor_id = this.getShopId() || isNostores === 1 ? store_id :distributor_id;
-
-      //   distributor_id:isOpenStore 
-      //   ? receiptType === 'logistics' 
-      //     ? curStorageStore.store_id 
-      //     : zitiShop 
-      //       ? zitiShop.distributor_id 
-      //       : curStore 
-      //         ? curStore.distributor_id 
-      //         : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id) 
-      // : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id),
+        const { distributor_id } = Taro.getStorageSync("curStore");
+        params.distributor_id = isOpenStore ? curStore.distributor_id : this.getShopId() || distributor_id;
 
       }
 
@@ -1448,6 +1449,7 @@ export default class CartCheckout extends Component {
     // const { curStore } = this.state
     const { type, goodType, bargain_id } = this.$router.params;
     const isDrug = type === "drug";
+    console.log('isOpenStore---->',isOpenStore)
 
     if (!info) {
       return <Loading />;

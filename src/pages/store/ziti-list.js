@@ -64,14 +64,17 @@ export default class StoreZitiList extends Component {
     const isOpenStore = await entry.getStoreStatus()
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, areaList, tagsList, curTagId } = this.state
-    const { shop_id,order_type, cart_type} = this.$router.params
+    const { shop_id,order_type, cart_type,seckill_id,ticket,goodType} = this.$router.params
     const query = {
       ...this.state.query,
       page,
       pageSize,
       cart_type,
       order_type,
-      isNostores:isOpenStore ? 1 : 0
+      seckill_id,
+      seckill_ticket:ticket,
+      isNostores:isOpenStore ? 1 : 0,
+      iscrossborder:goodType ==='cross' ? 1 : ''
     }
 
     const { list, total_count: total} = await api.shop.list(query)
@@ -86,8 +89,8 @@ export default class StoreZitiList extends Component {
       lat:'lat',
       lng:'lng',
       distributor_self:'distributor_self',
-      distance:({ distance }) => (distance*1).toFixed(2),
-      distance_show:({ distance_show }) => (distance_show*1).toFixed(2),
+      distance:'distance',
+      distance_show:'distance_show',
       distance_unit:'distance_unit',
       is_checked:'is_checked',
       store_id:isOpenStore ? '' : 0,
@@ -258,6 +261,7 @@ handleClickPicker = () => {
 bindMultiPickerChange = async (e) => {
   console.log('bindMultiPickerChange')
   const { info,query } = this.state
+  console.log('info---->',info)
   this.nAreaList.map((item, index) => {
     if(index === e.detail.value[0]) {
       info.province = item.label
@@ -273,8 +277,7 @@ bindMultiPickerChange = async (e) => {
       })
     }
   })
-
-  const { province, city, area } = info
+  const { province, city, area,county } = info
   delete query.lat
   delete query.lng
   this.setState({
@@ -282,7 +285,7 @@ bindMultiPickerChange = async (e) => {
       ...this.state.query,
       province,
       city,
-      area,
+      area:county,
     }
   }, () => {
     this.resetPage()
@@ -364,6 +367,8 @@ bindMultiPickerColumnChange = (e) => {
   render () {
     const { list, scrollTop, showBackToTop, loading, current, query,is_open_store_status,areaList,multiIndex,page } = this.state
     const { shop_id } = this.$router.params
+    console.log('areaList---->',areaList)
+    console.log('multiIndex--->',multiIndex)
     return (
       <View className='page-store-list'>
         <NavBar
@@ -398,7 +403,9 @@ bindMultiPickerColumnChange = (e) => {
                   ? <Text className='loading'>定位中...</Text>
                   : <Text>
                      {
-                       current
+                      multiIndex.length > 0
+                      ? <Text>{areaList[0][multiIndex[0]]}{areaList[1][multiIndex[1]]}{areaList[2][multiIndex[2]]}</Text>
+                      : current
                        ? <Text> {current.regions[0]}{current.regions[1]}{current.regions[2]} </Text>
                        :'定位失败'
                      }
