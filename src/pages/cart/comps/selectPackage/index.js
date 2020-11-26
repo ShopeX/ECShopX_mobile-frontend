@@ -94,7 +94,7 @@ export default class SelectPackage extends Component {
         <SpCell
           isLink
           className="trade-invoice"
-          title="礼包"
+          title={packInfo.packName}
           onClick={this.showSheet.bind(this)}
         >
           <View className="invoice-title">
@@ -107,7 +107,7 @@ export default class SelectPackage extends Component {
         >
           <View className='payment-picker'>
             <View className='payment-picker__hd'>
-              <Text>礼包</Text>
+              <Text>{packInfo.packName}</Text>
             </View>
             <View className='payment-picker__bd'>
               <View className='payment-item no-border' onClick={this.handleChange.bind(this, false)}>

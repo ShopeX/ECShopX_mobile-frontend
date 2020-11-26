@@ -571,7 +571,7 @@ export default class CartCheckout extends Component {
   async tradeSetting () {
     let res = await api.trade.tradeSetting()
     let { is_open ,packName,packDes} = res
-    is_open=true
+    
     this.setState({
       isPackage: is_open,
       pack: {
@@ -1642,7 +1642,7 @@ export default class CartCheckout extends Component {
               </View>
             </SpCell>
           )}
-          {isPackage&&<SelectPackage isChecked={isNeedPackage} onHanleChange={this.changeNeedPackage.bind(this)} packInfo={pack} />}
+          {(isPackage&&express)&&<SelectPackage isChecked={isNeedPackage} onHanleChange={this.changeNeedPackage.bind(this)} packInfo={pack} />}
                   
           {/*<SpCell
             isLink
