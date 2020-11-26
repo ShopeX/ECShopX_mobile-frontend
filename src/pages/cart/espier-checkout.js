@@ -277,13 +277,11 @@ export default class CartCheckout extends Component {
       id = dtid;
     }
     if(zitiShop){
+      ztparams.distributor_id = zitiShop.distributor_id
       if(isOpenStore){
-        ztparams.lat = zitiShop.lat
-        ztparams.lng = zitiShop.lng
         ztparams.cart_type = cart_type
         ztparams.isNostores = 1
       }else{
-        ztparams.distributor_id = zitiShop.distributor_id
         ztparams.isNostores = 0
       }
     }else{
@@ -298,14 +296,12 @@ export default class CartCheckout extends Component {
         ztparams.isNostores = 0
       }
     }
-    console.log('params33---------->',ztparams)
     const shopInfo = await api.shop.getShop(ztparams);
-    console.log('shopInfo------>',shopInfo)
     this.setState({
       curStore: shopInfo,
-      receiptType: shopInfo.is_delivery ? "logistics" : "ziti",
-      express: shopInfo.is_delivery ? true : false,
-      isOpenStore
+      receiptType: zitiShop ? 'ziti' : shopInfo.is_delivery ? "logistics" : "ziti",
+      express: zitiShop ? false :  shopInfo.is_delivery ? true : false,
+      isOpenStore,
     },()=>{
       this.calcOrder()
     });
@@ -528,15 +524,15 @@ export default class CartCheckout extends Component {
       };
     }
     const distributionShopId = Taro.getStorageSync("distribution_shop_id");
+    const curStorageStore = Taro.getStorageSync('curStore')
     let miniShopId = {};
     if (distributionShopId) {
       miniShopId = {
         promoter_shop_id: distributionShopId
       };
     }
-    const { payType, receiptType, point_use } = this.state;
+    const { payType, receiptType, point_use,isOpenStore,curStore } = this.state;
     const { coupon, drugInfo,zitiShop } = this.props;
-    console.log('zitiShop----->',zitiShop)
     if (drugInfo) {
       this.setState({
         drug: drugInfo
@@ -555,7 +551,8 @@ export default class CartCheckout extends Component {
       member_discount: 0,
       coupon_discount: 0,
       pay_type: payType,
-      distributor_id:zitiShop ? zitiShop.distributor_id : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id),
+     //distributor_id:this.getShopId() || (shop_id === "undefined" ? 0 : shop_id),
+     distributor_id:isOpenStore ? receiptType === 'logistics' ? curStorageStore.store_id : zitiShop ? zitiShop.distributor_id : curStore ? curStore.distributor_id : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id) : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id),
       ...drugInfo,
       point_use: point_use
     };
@@ -723,11 +720,12 @@ export default class CartCheckout extends Component {
 
   handleSwitchExpress = key => {
     const receiptType = JSON.parse(key) ? "logistics" : "ziti";
+    const { curStore } = Taro.getStorageSync('curStore')
     this.clearPoint();
     this.setState(
       {
         express: JSON.parse(key),
-        receiptType
+        receiptType,
       },
       () => {
         this.calcOrder();
@@ -1439,7 +1437,6 @@ export default class CartCheckout extends Component {
       : (coupon.value && coupon.value.title) || "";
     //const isBtnDisabled = !address
     const isBtnDisabled = express ? !address : false;
-    console.log('curStorer44555--->',curStore)
     return (
       <View className="page-checkout">
         {showAddressPicker === false ? (
