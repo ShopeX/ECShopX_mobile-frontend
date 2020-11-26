@@ -6,11 +6,11 @@
  * @FilePath: /unite-vshop/src/boost/pages/flop/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: Arvin
- * @LastEditTime: 2020-10-21 10:35:26
+ * @LastEditTime: 2020-11-27 00:11:50
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Progress, Text, Button } from '@tarojs/components'
-import { pickBy } from '@/utils'
+import { pickBy, normalizeQuerys } from '@/utils'
 import { NavBar } from '@/components'
 import api from '@/api'
 import './index.scss'
@@ -41,7 +41,13 @@ export default class Flop extends Component {
   // 获取助力详情wechat-taroturntable
   getBoostDetail = async () => {
     Taro.showLoading({mask: true})
-    const { bargain_id, user_id } = this.$router.params
+    let { bargain_id, user_id } = this.$router.params
+    if (this.$router.params.scene) {
+      const query = normalizeQuerys(this.$router.params)
+      if (query.bid) {
+        bargain_id = query.bid
+      }
+    }
     const {
       bargain_info = {},
       user_bargain_info = {},
