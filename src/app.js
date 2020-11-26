@@ -163,10 +163,10 @@ class App extends Component {
           'pages/plusprice/cart-plusprice-list',
         ],
         "plugins": {
-          // "live-player-plugin": {
-          //   "version": "1.2.3", // 填写该直播组件版本号
-          //   "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          // }
+          "live-player-plugin": {
+            "version": "1.2.3", // 填写该直播组件版本号
+            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
+          }
           // "meiqia": {
           //   "version": "1.1.0",
           //   "provider": "wx2d2cd5fd79396601"
@@ -237,6 +237,8 @@ class App extends Component {
           // 美恰客服
           'pages/meiqia/index',
           'pages/echat/index',
+          // 扫码授权登录
+          'pages/auth/index',
           // 储值
           'pages/recharge/index',
           'pages/recharge/history',
