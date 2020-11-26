@@ -553,8 +553,17 @@ export default class CartCheckout extends Component {
       member_discount: 0,
       coupon_discount: 0,
       pay_type: payType,
+      isNostores: isOpenStore ? 1 : 0,
      //distributor_id:this.getShopId() || (shop_id === "undefined" ? 0 : shop_id),
-     distributor_id:isOpenStore ? receiptType === 'logistics' ? curStorageStore.store_id : zitiShop ? zitiShop.distributor_id : curStore ? curStore.distributor_id : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id) : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id),
+     distributor_id:isOpenStore 
+                      ? receiptType === 'logistics' 
+                        ? curStorageStore.store_id 
+                        : zitiShop 
+                          ? zitiShop.distributor_id 
+                          : curStore 
+                            ? curStore.distributor_id 
+                            : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id) 
+                    : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id),
       ...drugInfo,
       point_use: point_use
     };
@@ -975,7 +984,7 @@ export default class CartCheckout extends Component {
     // if (!this.state.address) {
     //   return S.toast('请选择地址')
     // }
-    const { payType, total, identity } = this.state;
+    const { payType, total, identity,isOpenStore,receiptType } = this.state;
     const { type, goodType, cart_type } = this.$router.params;
 
     // const { payType, total,point_use } = this.state
@@ -1024,6 +1033,17 @@ export default class CartCheckout extends Component {
       if (APP_PLATFORM === "standard" && cart_type !== "cart") {
         const { distributor_id,isNostores,store_id } = Taro.getStorageSync("curStore");
         params.distributor_id = this.getShopId() || isNostores === 1 ? store_id :distributor_id;
+
+      //   distributor_id:isOpenStore 
+      //   ? receiptType === 'logistics' 
+      //     ? curStorageStore.store_id 
+      //     : zitiShop 
+      //       ? zitiShop.distributor_id 
+      //       : curStore 
+      //         ? curStore.distributor_id 
+      //         : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id) 
+      // : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id),
+
       }
 
       delete params.items;
