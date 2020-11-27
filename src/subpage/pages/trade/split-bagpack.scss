@@ -1,0 +1,63 @@
+@import "../../../style/imports";
+.wuliu-detail{.title-status {
+  background-color: #f7e5e4;
+  height: 65px;
+  padding: 10px;
+  color: #82565d;
+  font-weight: 500;
+}
+
+.wuliu-detail {
+  .wuliu-detail-item {
+    @include clearfix();
+    padding: 0 20px 30px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    .wuliu-status {
+      padding-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 10px 10px 10px;
+
+      .biao-icon {
+        color: #ba0c29;
+        //   padding: 10px;
+        font-size: 34px;
+        .icon-text {
+          margin-left: 20px;
+          font-size: 30px;
+        }
+      }
+      .wuliu-order {
+        color: #909399;
+      }
+    }
+    .wuliu-info {
+      padding: 10px;
+      //   margin-top: 10px;
+      //   font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .good-list {
+      @include clearfix();
+      padding: 10px 10px 20px;
+
+      margin: 15px 0;
+      overflow-x: auto;
+      height: 130px;
+      white-space: nowrap;
+      .order-item__img {
+        width: 120px;
+        height: 120px;
+        margin-right: 35px;
+        border-radius: 6px;
+      }
+    }
+    .ft-tips {
+      margin-top: 25px;
+      color: #909399;
+    }
+  }
+}}
