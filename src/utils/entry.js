@@ -87,7 +87,6 @@ async function getLocalSetting() {
   //   }
   //   Taro.setStorageSync('curStore', store)
 async function getLocal (isNeedLocate) {
-  //const isOpenStore = await getStoreStatus()
   let store = null
   const positionStatus = await getLocalSetting()
   if (!positionStatus) {

@@ -314,7 +314,7 @@ export default class CartCheckout extends Component {
     }
   }
     const shopInfo = await api.shop.getShop(ztparams);
-    Taro.setStorageSync('ztStore',shopInfo)
+    isOpenStore && Taro.setStorageSync('ztStore',shopInfo)
     this.setState({
       curStore: shopInfo,
       receiptType: zitiShop ? 'ziti' : shopInfo.is_delivery ? "logistics" : "ziti",
@@ -746,7 +746,6 @@ export default class CartCheckout extends Component {
 
   handleSwitchExpress = key => {
     const receiptType = JSON.parse(key) ? "logistics" : "ziti";
-    const { curStore } = Taro.getStorageSync('curStore')
     this.clearPoint();
     this.setState(
       {

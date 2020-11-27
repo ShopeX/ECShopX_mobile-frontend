@@ -31,7 +31,6 @@ export default class StoreZitiList extends Component {
       multiIndex:[],
       areaList: [],
       info: {},
-      currCityinfo:{}
     }
   }
   config = {
@@ -43,7 +42,6 @@ export default class StoreZitiList extends Component {
     const cityInfo = Taro.getStorageSync('ztStore')
     let query = {}
     if (lnglat) {
-      const { latitude, longitude } = lnglat
       query = {
         lat: lnglat.latitude,
         lng: lnglat.longitude
@@ -59,14 +57,15 @@ export default class StoreZitiList extends Component {
     const store = Taro.getStorageSync('curStore')
     if (store) {
       this.setState({
-        current: store,
         query,
-        currCityinfo:cityInfo ? cityInfo : {}
+        current:cityInfo ? cityInfo : store
       }, () => {
         this.nextPage()
       })
+    }else{
+      this.handleGetLocation()
     }
-    //this.handleGetLocation()
+   
 
   }
 
@@ -74,8 +73,7 @@ export default class StoreZitiList extends Component {
     const isOpenStore = await entry.getStoreStatus()
     const  cityInfo = Taro.getStorageSync('cityInfo')
     const { page_no: page, page_size: pageSize } = params
-    const { selectParams, areaList, tagsList, curTagId } = this.state
-    const { shop_id,order_type, cart_type,seckill_id,ticket,goodType} = this.$router.params
+    const { shop_id,order_type, cart_type,seckill_id,ticket} = this.$router.params
     const query = {
       ...this.state.query,
       page,
@@ -85,7 +83,6 @@ export default class StoreZitiList extends Component {
       seckill_id,
       seckill_ticket:ticket,
       isNostores:isOpenStore ? 1 : 0,
-      iscrossborder:goodType ==='cross' ? 1 : ''
     }
 
     const { list, total_count: total} = await api.shop.list(query)
@@ -105,7 +102,6 @@ export default class StoreZitiList extends Component {
       distance_show:'distance_show',
       distance_unit:'distance_unit',
       store_id:isOpenStore ? '' : 0,
-      isNostores:isOpenStore ? 1 : 0
     })
     let res = await api.member.areaList()
     const nAreaList = pickBy(res, {
@@ -134,7 +130,6 @@ export default class StoreZitiList extends Component {
       query,
       is_open_store_status:isOpenStore,
       areaList: [arrProvice, arrCity, arrCounty],
-      //info:cityInfo ? cityInfo : {}
     })
 
     return {
@@ -203,7 +198,6 @@ export default class StoreZitiList extends Component {
     Taro.removeStorageSync('lnglat')
     const store = await entry.getLocal(true)
     if (store) {
-     // Taro.setStorageSync('curStore', store)
       this.resetPage()
       this.setState({
         list: [],
@@ -270,7 +264,6 @@ handleClickPicker = () => {
 }
 
 bindMultiPickerChange = async (e) => {
-  console.log('bindMultiPickerChange')
   const { info,query } = this.state
   this.nAreaList.map((item, index) => {
     if(index === e.detail.value[0]) {
@@ -288,8 +281,8 @@ bindMultiPickerChange = async (e) => {
     }
   })
   const { province, city,county } = info
-  delete query.lat
-  delete query.lng
+  // delete query.lat
+  // delete query.lng
   this.setState({
     query: {
       ...this.state.query,
@@ -375,7 +368,7 @@ bindMultiPickerColumnChange = (e) => {
   }
 
   render () {
-    const { list, scrollTop, showBackToTop, loading, current, query,is_open_store_status,areaList,multiIndex,page,info,currCityinfo } = this.state
+    const { list, scrollTop, showBackToTop, loading, current, query,is_open_store_status,areaList,multiIndex,page,info } = this.state
     return (
       <View className='page-store-list'>
         <NavBar
@@ -409,11 +402,12 @@ bindMultiPickerColumnChange = (e) => {
                 loading
                   ? <Text className='loading'>定位中...</Text>
                   : <Text>
+                     <Text className='icon-periscope'></Text>
                      {
                       info && info.province
                      ? <Text>{info.province}{info.city}{info.county}</Text>
-                      : currCityinfo
-                       ? <Text> {currCityinfo.regions[0]}{currCityinfo.regions[1]}{currCityinfo.regions[2]} </Text>
+                      : current
+                       ? <Text> {current.regions[0]}{current.regions[1]}{current.regions[2]} </Text>
                        :'定位失败'
                      }
                     </Text>
