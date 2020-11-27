@@ -77,8 +77,11 @@ export default class HomeIndex extends Component {
   //     })
   //    // const res = parseUrlStr(queryStr)
   // }
+    const isOpenStore = await entry.getStoreStatus()
+    this.setState({
+      is_open_store_status:isOpenStore
+    })
     this.checkWhite()
-    //this.fetchStoreStatus()
     api.wx.shareSetting({shareindex: 'index'}).then(res => {
       this.setState({
         shareInfo: res
@@ -89,28 +92,17 @@ export default class HomeIndex extends Component {
   async fetchSetInfo() {
     const setUrl = '/pagestemplate/setInfo'
     const {is_open_recommend, is_open_scan_qrcode, is_open_wechatapp_location,is_open_official_account} = await req.get(setUrl)
-    //const isOpenStore = await entry.getStoreStatus()
-    let store = {}
     this.setState({
       is_open_recommend: is_open_recommend,
       is_open_scan_qrcode: is_open_scan_qrcode,
       is_open_wechatapp_location: is_open_wechatapp_location,
       is_open_official_account:is_open_official_account,
-      //is_open_store_status:isOpenStore
+     
     }, async() => {
         let isNeedLoacate = is_open_wechatapp_location == 1 ? true : false
         const options = this.$router.params
         const res = await entry.entryLaunch(options, isNeedLoacate)
         const { store } = res
-        // const { is_open_store_status } = this.state
-        // if(is_open_store_status){ //新增逻辑，如果开启了非门店自提流程，新增字段
-        //   store.store_id=0, //总店distribution_id
-        //   store.isNostores=1  //是否开启1，代表开启
-        //   }else{
-        //       //store.store_id=-1
-        //       store.isNostores=0 //0 未开启
-        //   }
-        //   Taro.setStorageSync('curStore', store)
         if (!isArray(store)) {
           this.setState({
             curStore: store
@@ -150,9 +142,9 @@ export default class HomeIndex extends Component {
 
   componentDidShow = () => {
     const options = this.$router.params
-    const { curStore } = this.state
+    const { curStore,is_open_store_status } = this.state
     const curStoreLocal = Taro.getStorageSync('curStore')
-    const localdis_id = curStoreLocal && curStoreLocal.isNostores == 1 ? curStoreLocal.store_id : curStoreLocal.distributor_id //非自提门店判断
+    const localdis_id = curStoreLocal && is_open_store_status ? curStoreLocal.store_id : curStoreLocal.distributor_id //非自提门店判断
     //const curdis_id = curStore && curStore.isNostores == 1 ? curStore.store_id : curStore.distributor_id
 
     if (!isArray(curStoreLocal) && this.state.isGoStore) {
@@ -318,8 +310,8 @@ export default class HomeIndex extends Component {
     }
   }
   async fetchInfo(cb) {
-    const { curStore } = this.state
-    const curdis_id = curStore.isNostores && curStore.isNostores == 1 ? curStore.store_id : curStore.distributor_id
+    const { curStore,is_open_store_status } = this.state
+    const curdis_id = curStore && is_open_store_status ? curStore.store_id : curStore.distributor_id
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
@@ -474,7 +466,7 @@ export default class HomeIndex extends Component {
   }
 
   render () {
-    const { wgts, page, likeList, showBackToTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, featuredshop, is_open_recommend, is_open_scan_qrcode,is_open_official_account,show_official,showCloseBtn,show_tabBar } = this.state
+    const { wgts, page, likeList, showBackToTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, featuredshop, is_open_recommend, is_open_scan_qrcode,is_open_official_account,show_official,showCloseBtn,show_tabBar,is_open_store_status } = this.state
     // const { showLikeList } = this.props
     // const user = Taro.getStorageSync('userinfo')
     // const isPromoter = user && user.isPromoter
@@ -503,6 +495,7 @@ export default class HomeIndex extends Component {
               store={curStore}
               onClickItem={this.goStore.bind(this)}
               isOpenScanQrcode={is_open_scan_qrcode}
+              isOpenStoreStatus={is_open_store_status}
             />
         }        
 

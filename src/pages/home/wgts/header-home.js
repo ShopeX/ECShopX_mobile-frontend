@@ -52,22 +52,22 @@ export default class HeaderHome extends Component {
   }
 
   render () {
-    const { store, isOpenScanQrcode } = this.props
-    
+    const { store, isOpenScanQrcode,isOpenStoreStatus } = this.props
+    const isNoStores = isOpenStoreStatus ? false : true    
     return (
       <View className='home-header'>
 
             <View className='nearly-shop'>
-              {
-                store.name && (store.isNostores === 0) && (
-                  <View className='shop-view view-flex-item view-flex view-flex-middle' onClick={this.handlePickStore.bind(this)}>
-                  <View className='icon-periscope'></View>
-                  <View className='shop-name'>{store.name || '选择店铺'}</View>
-                  <View className='icon-arrowDown'></View>
-                </View>
-                )
-              }
-
+                  {
+                    isNoStores && store.name && (
+                      <View className='shop-view view-flex-item view-flex view-flex-middle' onClick={this.handlePickStore.bind(this)}>
+                      <View className='icon-periscope'></View>
+                      <View className='shop-name'>{store.name || '选择店铺'}</View>
+                      <View className='icon-arrowDown'></View>
+                    </View>
+                    )
+                  }
+    
               {
                 Taro.getEnv() !== 'WEB' && isOpenScanQrcode==1 && <View className='scancode' onClick={this.handleScanCode.bind(this)}>
                   <View className='iconfont icon-scan'></View>

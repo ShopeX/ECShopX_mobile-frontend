@@ -80,23 +80,14 @@ export default class Detail extends Component {
     this.setState({
       is_open_store_status:isOpenStore
     },async()=>{
-      const { is_open_store_status }= this.state
       if (APP_PLATFORM === 'standard') {
+        const { is_open_store_status } = this.state
        // const { distributor_id } = Taro.getStorageSync('curStore')
         const curStore = Taro.getStorageSync('curStore')
         if (!options.dtid  || options.dtid !== 0) {
-          options.dtid = curStore.isNostores == 1 ? '': curStore.distributor_id 
+          options.dtid = is_open_store_status ? '': curStore.distributor_id 
         }
         const entryData = await entry.entryLaunch(options, true)
-        // const{store} = entryData
-        // if(is_open_store_status){ //新增逻辑，如果开启了非门店自提流程，新增字段
-        //   store.store_id=0, //总店distribution_id
-        //   store.isNostores=1  //是否开启1，代表开启
-        //   }else{
-        //       //store.store_id=-1
-        //       store.isNostores=0 //0 未开启
-        //   }
-        //   Taro.setStorageSync('curStore', store)
         id = entryData.id
         uid = entryData.uid
       }
@@ -104,17 +95,9 @@ export default class Detail extends Component {
         this.uid = uid
       }
       if(!S.getAuthToken()){
-        const { status } = await api.wx.getWhiteList()
-        if(status == true){
-          setTimeout(() => {
-            S.login(this, true)
-          }, 1000)
-        }else{
-          this.fetchInfo(id)
-        }
-      }else{
-        this.fetchInfo(id)
-      }      
+        this.checkWhite()
+      }  
+      this.fetchInfo(id)
       this.getEvaluationList(id)
       // 浏览记录
       if (S.getAuthToken()) {
@@ -194,7 +177,8 @@ export default class Detail extends Component {
    const curStore = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const infoId = info.distributor_id
-    const id = APP_PLATFORM === 'standard' ? curStore.isNostores === 1 ? curStore.store_id: curStore.distributor_id : infoId
+    const { is_open_store_status} = this.state
+    const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId
     Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
       ...info,
       shareType: "分享给好友"
@@ -211,8 +195,9 @@ export default class Detail extends Component {
    // const { distributor_id } = Taro.getStorageSync('curStore')
    const curStore = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
+    const { is_open_store_status} = this.state
     const infoId = info.distributor_id
-    const id = APP_PLATFORM === 'standard' ? curStore.isNostores === 1 ? curStore.store_id: curStore.distributor_id : infoId
+    const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId
     return {
       title: info.item_name,
       query: `id=${info.item_id}&dtid=${id}&uid=${userId}`,
@@ -235,17 +220,18 @@ export default class Detail extends Component {
       console.log(e)
     }
   }
-  // async checkWhite () {
-  //   const { status } = await api.wx.getWhiteList()
-  //   if(status == true){
-  //     setTimeout(() => {
-  //       S.login(this, true)
-  //     }, 1000)
-  //   }
-  // }
+  async checkWhite () {
+    const { status } = await api.wx.getWhiteList()
+    if(status == true){
+      setTimeout(() => {
+        S.login(this, true)
+      }, 1000)
+    }
+  }
 
   async fetchInfo(itemId, goodsId) {
-    const { distributor_id,isNostores,store_id } = Taro.getStorageSync('curStore')
+    const { distributor_id,store_id } = Taro.getStorageSync('curStore')
+    const { is_open_store_status } = this.state
     let id = ''
     if (itemId) {
       id = itemId
@@ -256,11 +242,10 @@ export default class Detail extends Component {
     const param = { goods_id: goodsId }
 
     if (APP_PLATFORM === 'standard') {
-      param.distributor_id = isNostores == 1 ? store_id : distributor_id 
+      param.distributor_id = is_open_store_status ? store_id : distributor_id 
     } else {
-      param.distributor_id  = this.$router.params.dtid
+      param.distributor_id = is_open_store_status ? store_id : this.$router.params.dtid
     }
-
     // 商品详情
     const info = await api.item.detail(id, param)
     // 是否订阅
@@ -469,12 +454,12 @@ export default class Detail extends Component {
   }
 
   handlePackageClick = () => {
-    const { info } = this.state
+    const { info,is_open_store_status } = this.state
     let { distributor_id } = info
     const curStore = Taro.getStorageSync('curStore')
     if (APP_PLATFORM === 'standard') {
       //distributor_id = Taro.getStorageSync('curStore').distributor_id
-      distributor_id = curStore.isNostores === 1 ? curStore.store_id : curStore.distributor_id
+      distributor_id = is_open_store_status ? curStore.store_id : curStore.distributor_id
     }
     Taro.navigateTo({
       url: `/pages/item/package-list?id=${info.item_id}&distributor_id=${distributor_id}`
@@ -539,14 +524,14 @@ export default class Detail extends Component {
       userinfo = userObj
     }
     const { avatar, userId } = userinfo
-    const { info } = this.state
+    const { info,is_open_store_status } = this.state
     const { pics, company_id, item_id } = info
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
     const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
-    const { distributor_id,isNostores,store_id } = Taro.getStorageSync('curStore')
+    const { distributor_id,store_id } = Taro.getStorageSync('curStore')
     const pic = pics[0].replace('http:', 'https:')
     const infoId = info.distributor_id
-    const id = APP_PLATFORM === 'standard' ? isNostores === 1 ? store_id : distributor_id : infoId
+    const id = APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : infoId
     const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${id}&uid=${userId}`
     const avatarImg = await Taro.getImageInfo({src: avatar})
     const goodsImg = await Taro.getImageInfo({src: pic})
@@ -742,7 +727,8 @@ export default class Detail extends Component {
 
   handleClickItem = (item) => {
     const curStore = Taro.getStorageSync('curStore')
-    const id = APP_PLATFORM === 'standard' ? curStore.isNostores === 1 ? curStore.store_id :curStore.distributor_id : item.distributor_id
+    const { is_open_store_status } = this.state
+    const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id :curStore.distributor_id : item.distributor_id
     const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}`
     Taro.navigateTo({
       url
@@ -751,10 +737,11 @@ export default class Detail extends Component {
 
   handleCouponClick = () => {
     // const { distributor_id } = Taro.getStorageSync('curStore')
+    const { is_open_store_status } = this.state
     let id = ''
     if (APP_PLATFORM === 'standard') {
-      const { distributor_id,isNostores,store_id } = Taro.getStorageSync('curStore')
-      id = isNostores === 1 ? store_id : distributor_id
+      const { distributor_id,store_id } = Taro.getStorageSync('curStore')
+      id = is_open_store_status ? store_id : distributor_id
     } else {
       const { info } = this.state
       const { distributor_id } = info
@@ -866,6 +853,8 @@ export default class Detail extends Component {
       new_coupon_list = coupon_list.list.slice(0, 3)
     }
 
+
+    console.log('info---->',info)
     return (
       <View className="page-goods-detail">
         <NavBar

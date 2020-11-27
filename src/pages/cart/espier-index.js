@@ -219,12 +219,8 @@ export default class CartIndex extends Component {
     const { type = 'distributor' } = this.$router.params
     const isOpenStore = await entry.getStoreStatus()//非门店自提
     const params = {
-      shop_type: type
-    }
-    if(isOpenStore){
-      params.isNostores = 1
-    }else{
-      params.isNostores = 0
+      shop_type: type,
+      isNostores: isOpenStore ? 1 : 0//是否开启非门店自提流程
     }
     if (cartTypeLocal === 'cross') {
       params.iscrossborder = 1

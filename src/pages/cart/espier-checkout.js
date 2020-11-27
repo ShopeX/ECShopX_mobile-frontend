@@ -132,7 +132,7 @@ export default class CartCheckout extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // this.fetchAddress()
     if (this.$router.params.scene) {
       console.log(normalizeQuerys(this.$router.params));
@@ -154,6 +154,10 @@ export default class CartCheckout extends Component {
 
       return;
     }
+    const isOpenStore = await entry.getStoreStatus()
+    this.setState({
+      isOpenStore
+    })
     const { cart_type, pay_type: payType, shop_id } = this.$router.params;
     let curStore = null,
       info = null;
@@ -266,59 +270,57 @@ export default class CartCheckout extends Component {
   }
 
   async fetchZiTiShop() {
-    const { shop_id, scene,cart_type,seckill_id = null,ticket = null,    
-      source,
-      goodType,
-      bargain_id = ""
-    } = this.$router.params;
-    const isOpenStore = await entry.getStoreStatus()
+    const { shop_id, scene,cart_type,seckill_id = null,ticket = null} = this.$router.params;
     const { zitiShop } = this.props;
     const params = this.getParams()
+    const { isOpenStore} = this.state
     let id = shop_id;
     let ztparams ={}
     if (scene) {
       const { dtid } = normalizeQuerys(this.$router.params);
       id = dtid;
     }
-    if(zitiShop){
-      ztparams.distributor_id = zitiShop.distributor_id
-      if(isOpenStore){
-        ztparams.cart_type = cart_type
-        ztparams.order_type = params.order_type
-        ztparams.isNostores = 1
-        ztparams.seckill_id = seckill_id
-        ztparams.seckill_ticket = ticket
-        ztparams.iscrossborder = goodType === 'cross' ? 1 : ''
-        
-      }else{
-        ztparams.isNostores = 0
+    if(isOpenStore) {//是否开启非门店自提
+      ztparams = {
+        sNostores: 1,//1 开启
+        order_type : params.order_type, 
+        seckill_id: seckill_id,
+        seckill_ticket: ticket
       }
-    }else{
-      if(isOpenStore){
+      if(zitiShop){
+          ztparams = {
+            ...ztparams,
+            distributor_id:zitiShop.distributor_id,
+          
+          }
+      }else {
         let lnglat = Taro.getStorageSync('lnglat')
-        ztparams.lat = lnglat.latitude
-        ztparams.lng = lnglat.longitude
-        ztparams.cart_type = cart_type
-        ztparams.order_type = params.order_type
-        ztparams.isNostores = 1
-        ztparams.seckill_id = seckill_id
-        ztparams.seckill_ticket = ticket
-        ztparams.iscrossborder = goodType === 'cross' ? 1 : ''
-
-      }else{
-        ztparams.distributor_id = id
-        ztparams.isNostores = 0
+          ztparams = {
+            ...ztparams,
+            lat: lnglat.latitude,
+            lng:lnglat.longitude,
+            cart_type: cart_type,
+          }
+      }
+    } else {
+      ztparams ={
+        isNostores: 0//0 未开启
+      }
+    if(!zitiShop){
+      ztparams ={
+        ...ztparams,
+        distributor_id: id
       }
     }
+  }
     const shopInfo = await api.shop.getShop(ztparams);
     Taro.setStorageSync('ztStore',shopInfo)
     this.setState({
       curStore: shopInfo,
       receiptType: zitiShop ? 'ziti' : shopInfo.is_delivery ? "logistics" : "ziti",
       express: zitiShop ? false :  shopInfo.is_delivery ? true : false,
-      isOpenStore,
     },()=>{
-      this.calcOrder()
+      isOpenStore && this.calcOrder()
     });
   }
 

@@ -87,7 +87,7 @@ async function getLocalSetting() {
   //   }
   //   Taro.setStorageSync('curStore', store)
 async function getLocal (isNeedLocate) {
-  const isOpenStore = await getStoreStatus()
+  //const isOpenStore = await getStoreStatus()
   let store = null
   const positionStatus = await getLocalSetting()
   if (!positionStatus) {
@@ -116,13 +116,8 @@ async function getLocal (isNeedLocate) {
     }
   }
     if (!store.status) {
-      if(isOpenStore){ //新增逻辑，如果开启了非门店自提流程，新增字段
-          store.store_id=0, //总店distribution_id
-          store.isNostores=1  //是否开启1，代表开启
-      }else{
-          //store.store_id=-1
-          store.isNostores=0 //0 未开启
-      }
+      // 新增逻辑，如果开启了非门店自提流程，新增字段,开启非门店自提流程，所有的distribution_id 取值为0，store_id
+      store.store_id = 0
       Taro.setStorageSync('curStore', store)
     } else {
       Taro.setStorageSync('curStore', [])
@@ -203,15 +198,18 @@ function trackViewNum (monitor_id, source_id) {
 // distributorId 店铺ID
 async function handleDistributorId(distributorId) {
   const res = await api.shop.getShop({distributor_id: distributorId})
-  const isOpenStore = await getStoreStatus()
+  //const isOpenStore = await getStoreStatus()
   if (res.status === false) {
-    if(isOpenStore){ //新增逻辑，如果开启了非门店自提流程，新增字段
-      res.store_id=0, //总店distribution_id为0
-      res.isNostores=1  //是否开启，1，代表开启
-      }else{
-          //store.store_id=-1
-          res.isNostores=0 //0 未开启
-      }
+    // if(isOpenStore){ //新增逻辑，如果开启了非门店自提流程，新增字段
+    //   res.store_id=0, //总店distribution_id为0
+    //   res.isNostores=1  //是否开启，1，代表开启
+    //   }else{
+    //       //store.store_id=-1
+    //       res.isNostores=0 //0 未开启
+    //   }
+
+    // 新增逻辑，如果开启了非门店自提流程，新增字段,开启非门店自提流程，所有的distribution_id 取值为0，store_id
+    res.store_id = 0
     Taro.setStorageSync('curStore', res)
   } else {
     Taro.setStorageSync('curStore', [])
