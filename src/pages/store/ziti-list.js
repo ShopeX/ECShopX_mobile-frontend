@@ -39,19 +39,21 @@ export default class StoreZitiList extends Component {
 
   componentDidMount () {
     const lnglat = Taro.getStorageSync('lnglat')
-    const cityInfo = Taro.getStorageSync('ztStore')
+    const cityInfo = Taro.getStorageSync('selectShop')
     let query = {}
-    if (lnglat) {
-      query = {
-        lat: lnglat.latitude,
-        lng: lnglat.longitude
-      }
-    }
+    // if (lnglat) {
+    //   query = {
+    //     lat: lnglat.latitude,
+    //     lng: lnglat.longitude
+    //   }
+    // }
     if(cityInfo){
       query = {
+        lat: lnglat.latitude,
+        lng: lnglat.longitude,
         province:cityInfo.province,
         city:cityInfo.city,
-        area:cityInfo.county,
+        area:cityInfo.area,
       }
     }
     const store = Taro.getStorageSync('curStore')
@@ -65,13 +67,10 @@ export default class StoreZitiList extends Component {
     }else{
       this.handleGetLocation()
     }
-   
 
   }
-
   async fetch (params) {
     const isOpenStore = await entry.getStoreStatus()
-    const  cityInfo = Taro.getStorageSync('cityInfo')
     const { page_no: page, page_size: pageSize } = params
     const { shop_id,order_type, cart_type,seckill_id,ticket} = this.$router.params
     const query = {
@@ -361,6 +360,7 @@ bindMultiPickerColumnChange = (e) => {
       return
     }
     this.props.onChangeZitiStore(selected[0])
+    Taro.setStorageSync('selectShop',selected[0])
     setTimeout(() => {
       Taro.navigateBack()
     }, 300)

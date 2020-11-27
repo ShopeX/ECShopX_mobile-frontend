@@ -65,7 +65,6 @@ export default class WgtGoodsGrid extends Component {
     }
 
     const { base, data, config } = info
-    console.log(info, 31)
     /*let listData = []
     data.map(item => {
       listData.push({

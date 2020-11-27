@@ -274,13 +274,13 @@ export default class GoodsBuyPanel extends Component {
     console.warn(this.props);
     if (this.state.busy) return;
 
-    const { marketing, info } = this.props;
+    const { marketing, info,isOpenStores } = this.props;
     const { special_type } = info;
     const isDrug = special_type === "drug";
     const { item_id } = this.noSpecs ? info : skuInfo;
     const { distributor_id } = info;
     const curStore = Taro.getStorageSync('curStore');
-    let id = curStore.isNostores === 1 ? curStore.store_id: curStore.distributor_id 
+    let id = isOpenStores ? curStore.store_id: curStore.distributor_id 
     let url = `/pages/cart/espier-checkout`;
 
     this.setState({

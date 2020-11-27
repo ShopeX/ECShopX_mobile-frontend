@@ -84,8 +84,10 @@ export default class Detail extends Component {
         const { is_open_store_status } = this.state
        // const { distributor_id } = Taro.getStorageSync('curStore')
         const curStore = Taro.getStorageSync('curStore')
-        if (!options.dtid  || options.dtid !== 0) {
-          options.dtid = is_open_store_status ? '': curStore.distributor_id 
+        if(!is_open_store_status){
+          if (!options.dtid  || options.dtid !== 0) {
+            options.dtid = curStore.distributor_id 
+          }
         }
         const entryData = await entry.entryLaunch(options, true)
         id = entryData.id
@@ -817,7 +819,8 @@ export default class Detail extends Component {
       page,
       evaluationTotal,
       evaluationList,
-      isSubscribeGoods
+      isSubscribeGoods,
+      is_open_store_status
     } = this.state
 
     const { showLikeList, colors } = this.props
@@ -1326,6 +1329,7 @@ export default class Detail extends Component {
             type={buyPanelType}
             marketing={marketing}
             isOpened={showBuyPanel}
+            isOpenStores={is_open_store_status}
             onClose={() => this.setState({ showBuyPanel: false })}
             fastBuyText={marketing === "group" ? "我要开团" : "立即购买"}
             onChange={this.handleSkuChange}

@@ -154,10 +154,6 @@ export default class CartCheckout extends Component {
 
       return;
     }
-    const isOpenStore = await entry.getStoreStatus()
-    this.setState({
-      isOpenStore
-    })
     const { cart_type, pay_type: payType, shop_id } = this.$router.params;
     let curStore = null,
       info = null;
@@ -230,7 +226,7 @@ export default class CartCheckout extends Component {
     // this.handleAddressChange(this.props.defaultAddress)
     this.props.onAddressChoose(null);
     this.props.onChangeZitiStore(null);
-    Taro.removeStorageSync('cityInfo')
+    Taro.removeStorageSync('selectShop')
     this.getSalespersonNologin();
     // this.getShop()
     this.fetchAddress();
@@ -250,6 +246,7 @@ export default class CartCheckout extends Component {
     // teardown clean
     this.props.onClearCoupon();
     this.props.onClearDrugInfo();
+    Taro.removeStorageSync('selectShop')
   }
 
   componentDidShow() {
@@ -270,27 +267,33 @@ export default class CartCheckout extends Component {
   }
 
   async fetchZiTiShop() {
-    const { shop_id, scene,cart_type,seckill_id = null,ticket = null} = this.$router.params;
-    const { zitiShop } = this.props;
+    const { shop_id, scene,cart_type,seckill_id = null,ticket = null,order_type} = this.$router.params;
+    //const { zitiShop } = this.props;
     const params = this.getParams()
-    const { isOpenStore} = this.state
+    const selectShop = Taro.getStorageSync('selectShop')
     let id = shop_id;
     let ztparams ={}
     if (scene) {
       const { dtid } = normalizeQuerys(this.$router.params);
       id = dtid;
     }
+    const isOpenStore = await entry.getStoreStatus()
+    this.setState({
+      isOpenStore
+    })
     if(isOpenStore) {//是否开启非门店自提
+      console.log('111111')
       ztparams = {
         sNostores: 1,//1 开启
         order_type : params.order_type, 
+        cart_type,
         seckill_id: seckill_id,
-        seckill_ticket: ticket
+        seckill_ticket: ticket,
       }
-      if(zitiShop){
+      if(selectShop){
           ztparams = {
             ...ztparams,
-            distributor_id:zitiShop.distributor_id,
+            distributor_id:selectShop.distributor_id,
           
           }
       }else {
@@ -306,21 +309,22 @@ export default class CartCheckout extends Component {
       ztparams ={
         isNostores: 0//0 未开启
       }
-    if(!zitiShop){
+    if(!selectShop){
       ztparams ={
         ...ztparams,
         distributor_id: id
       }
     }
   }
+    //console.log('zitiShop---->',zitiShop)
     const shopInfo = await api.shop.getShop(ztparams);
-    isOpenStore && Taro.setStorageSync('ztStore',shopInfo)
+     Taro.setStorageSync('selectShop',shopInfo)
     this.setState({
       curStore: shopInfo,
-      receiptType: zitiShop ? 'ziti' : shopInfo.is_delivery ? "logistics" : "ziti",
-      express: zitiShop ? false :  shopInfo.is_delivery ? true : false,
+      receiptType: selectShop ? 'ziti' : shopInfo.is_delivery ? "logistics" : "ziti",
+      express: selectShop ? false :  shopInfo.is_delivery ? true : false,
     },()=>{
-      isOpenStore && this.calcOrder()
+       this.calcOrder()
     });
   }
 
@@ -1452,7 +1456,6 @@ export default class CartCheckout extends Component {
     // const { curStore } = this.state
     const { type, goodType, bargain_id } = this.$router.params;
     const isDrug = type === "drug";
-    console.log('isOpenStore---->',isOpenStore)
 
     if (!info) {
       return <Loading />;
