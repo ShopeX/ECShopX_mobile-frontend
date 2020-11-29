@@ -83,8 +83,8 @@ export default class Detail extends Component {
     this.setState({
       is_open_store_status:isOpenStore
     },async()=>{
+      const { is_open_store_status } = this.state
       if (APP_PLATFORM === 'standard') {
-        const { is_open_store_status } = this.state
        // const { distributor_id } = Taro.getStorageSync('curStore')
         const curStore = Taro.getStorageSync('curStore')
         if(is_open_store_status){
