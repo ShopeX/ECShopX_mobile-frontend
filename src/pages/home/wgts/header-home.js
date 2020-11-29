@@ -76,15 +76,17 @@ export default class HeaderHome extends Component {
       <View className='home-header'>
 
             <View className='nearly-shop'>
-                  {
+              <View className='shop-view view-flex-item view-flex view-flex-middle'>
+                {
                     isNoStores && store.name && (
-                      <View className='shop-view view-flex-item view-flex view-flex-middle' onClick={this.handlePickStore.bind(this)}>
+                      <View  onClick={this.handlePickStore.bind(this)}>
                       <View className='icon-periscope'></View>
                       <View className='shop-name'>{store.name || '选择店铺'}</View>
                       <View className='icon-arrowDown'></View>
                     </View>
                     )
                   }
+              </View>
     
               {
                 Taro.getEnv() !== 'WEB' && isOpenScanQrcode==1 && <View className='scancode' onClick={this.handleScanCode.bind(this)}>

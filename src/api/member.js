@@ -324,3 +324,8 @@ export function hfpayBankInfo (params = {}) {
 export function getTradePaymentList (params = {}) {
   return req.get('/trade/payment/list', params)
 }
+
+//获取是否开启获取crm地址
+export function getCrmsetting () {
+  return req.get('/member/crmsetting')
+}

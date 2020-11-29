@@ -44,15 +44,30 @@ export default class CrmAddressList extends Component {
     })
   }
 
-  handleClickChecked = (item) => {
+  handleClickChecked = async(item) => {
     this.setState({
       selectedId: item[ADDRESS_ID]
     })
-    if (item.third_data) {
-      Taro.navigateTo({
-        url: `/marketing/pages/member/crm-address?address_id=${item.third_data}`
-      })
+    // if (item.third_data) {
+    //   Taro.navigateTo({
+    //     url: `/marketing/pages/member/crm-address?address_id=${item.third_data}`
+    //   })
+    // }
+    this.setState({
+      submitLoading: true
+    })
+    try {
+      await api.member.addressCreateOrUpdate(item)
+      S.toast('创建成功')
+      setTimeout(()=>{
+        Taro.navigateBack()
+      }, 700)
+    } catch (error) {
+      return false
     }
+    this.setState({
+      submitLoading: false
+    })
   }
   render () {
     const { colors } = this.props

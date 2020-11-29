@@ -143,7 +143,6 @@ class App extends Component {
           'pages/member/address',
           'pages/member/edit-address',
           'pages/member/crm-address-list',
-          'pages/member/crm-address',
           'pages/member/setting',
           'pages/member/userinfo',
           'pages/member/item-history',
