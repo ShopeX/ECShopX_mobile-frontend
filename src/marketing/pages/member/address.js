@@ -111,6 +111,11 @@ export default class AddressIndex extends Component {
       url: `/marketing/pages/member/edit-address?isWechatAddress=true`
     })
   }
+  crmAddress = () =>{
+    Taro.navigateTo({
+      url: `/marketing/pages/member/crm-address-list?isCrmAddress=true`
+    })
+  }
 
   render () {
     const { colors } = this.props
@@ -128,6 +133,13 @@ export default class AddressIndex extends Component {
             />
             : null
         }
+        <SpCell
+              isLink
+              iconPrefix='sp-icon'
+              icon='weixin'
+              title='获取CRM收货地址'
+              onClick={this.crmAddress.bind(this)}
+            />
         <NavBar 
           title='收货地址'
           leftIconType='chevron-left'
