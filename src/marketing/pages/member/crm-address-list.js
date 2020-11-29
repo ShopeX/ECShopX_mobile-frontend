@@ -40,7 +40,7 @@ export default class CrmAddressList extends Component {
     let selectedId = data.find(addr => addr.is_def > 0) || null
     this.setState({
       list:data,
-      selectedId:selectedId[ADDRESS_ID]
+      selectedId:selectedId && selectedId[ADDRESS_ID]
     })
   }
 
@@ -103,11 +103,6 @@ export default class CrmAddressList extends Component {
             })
           }
         </View>
-        {/* <View
-          className='member-address-add'
-          style={'background: ' + colors.data[0].primary}
-          onClick={this.handleClickToEdit.bind(this)}>确认
-        </View> */}
         <SpToast />
       </View>
     )
