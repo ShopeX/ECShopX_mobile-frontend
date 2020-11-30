@@ -59,7 +59,7 @@ export default class TradeRefund extends Component {
       mask: true
     })
 
-    const { aftersales_bn, item_id, order_id } = this.$router.params
+    const { aftersales_bn, item_id, order_id, isDelivery, delivery_status } = this.$router.params
     // 获取售后原因
     const reasonList = await api.aftersales.reasonList()
 
@@ -72,8 +72,15 @@ export default class TradeRefund extends Component {
     Taro.hideLoading()
 
     const { reason: oldReason } = this.state
+
     const newReason = [...oldReason, ...reasonList]
     let remind = await api.aftersales.remindDetail()
+    console.log(this.$router.params)
+    if (isDelivery === 'false' && delivery_status !== 'DONE') {
+      this.setState({
+        segTypes: [{ title: '仅退款', status: 'ONLY_REFUND' }]
+      })
+    }
     if (!res.aftersales) {
       this.setState({
         reason: newReason,

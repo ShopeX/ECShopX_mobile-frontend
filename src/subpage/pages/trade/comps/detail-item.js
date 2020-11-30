@@ -28,19 +28,18 @@ export default class DetailItem extends Component {
   // }
 
   handleClickAfterSale= (item) => {
-    const { info: { tid: order_id } } = this.props
+    const { info: { tid: order_id, is_all_delivery, delivery_status } } = this.props
     if (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') {
       Taro.navigateTo({
-        url: `/subpage/pages/trade/refund?order_id=${order_id}&item_id=${item.item_id}`
+        url: `/subpage/pages/trade/refund?order_id=${order_id}&item_id=${item.item_id}&isDelivery=${is_all_delivery}&delivery_status=${delivery_status}`
       })
     } else {
       Taro.navigateTo({
-        url: `/subpage/pages/trade/refund-detail?order_id=${order_id}&item_id=${item.item_id}`
+        url: `/subpage/pages/trade/refund-detail?order_id=${order_id}&item_id=${item.item_id}&isDelivery=${is_all_delivery}&delivery_status=${delivery_status}`
       })
     }
   }
     handleLookDelivery = (value) => {
-     
       if(value.delivery_type=='new'){
         Taro.navigateTo({
           url: `/subpage/pages/trade/split-bagpack?order_type=${this.props.info.order_type}&order_id=${this.props.info.tid}&delivery_code=${value.delivery_code}&delivery_corp=${value.delivery_corp}&delivery_name=${value.delivery_name}`
