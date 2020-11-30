@@ -24,7 +24,7 @@ export default class TradeItem extends Component {
     showActions: false,
     isShowNational: false,
     payType: '',
-    info: null,
+    info: {},
     rateStatus: false,
     onClickBtn: () => {},
     onClick: () => {}
@@ -36,12 +36,11 @@ export default class TradeItem extends Component {
   }
 
   render () {
-    const { customHeader, customFooter, noHeader, onClick, info, payType, showActions, colors, rateStatus, isShowNational } = this.props
+    const { customHeader, customFooter, noHeader, onClick, info = {}, payType, showActions, colors, rateStatus, isShowNational } = this.props
+
     if (!info) {
       return null
     }
-    console.log('info111',info)
-    info.status='WAIT_SELLER_SEND_GOODS'
     return (
       <View className='trade-item'>
         {
@@ -120,7 +119,7 @@ export default class TradeItem extends Component {
                 >取消订单</Button>
                 : null
             }
-          {(info.delivery_type=='new' && info.pay_status === 'PAYED' && info.delivery_status != 'PENDING')&&<Button
+          {(info.delivery_type=='new' && info.pay_status === 'PAYED' && info.delivery_status != 'PENDING') && <Button
               className='btn-action'
               style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
               onClick={this.handleClickBtn.bind(this, 'delivery')}
@@ -130,13 +129,13 @@ export default class TradeItem extends Component {
               style={`background: ${colors.data[0].primary}`}
               onClick={this.handleClickBtn.bind(this, 'detail')}
             >订单详情</Button>
-            {
+            {/* {
               info.delivery_status === 'DONE' && info.status === 'WAIT_BUYER_CONFIRM_GOODS' && <Button
                 className='btn-action'
                 style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
                 onClick={this.handleClickBtn.bind(this, 'confirm')}
               >确认收货</Button>
-            }
+            } */}
           </View>
         </View>)}
         {!customFooter && info.status === 'TRADE_CLOSED' && (<View className='trade-item__ft'>

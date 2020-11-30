@@ -239,7 +239,7 @@ export default class TradeList extends Component {
 
   render () {
     const { colors } = this.props
-    const { curTabIdx, curItemActionsId, tabList, list, page, rateStatus } = this.state
+    const { curTabIdx, curItemActionsId, tabList, list = [], page, rateStatus } = this.state
 
     return (
       <View className='page-trade-list'>
