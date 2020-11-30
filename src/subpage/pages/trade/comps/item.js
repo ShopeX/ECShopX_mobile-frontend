@@ -154,6 +154,11 @@ export default class TradeItem extends Component {
             <Button
               className='btn-action'
               style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
+              onClick={this.handleClickBtn.bind(this, 'aftersales')}
+            >申请售后</Button>
+            <Button
+              className='btn-action'
+              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
               onClick={this.handleClickBtn.bind(this, 'confirm')}
             >确认收货</Button>
             <Button

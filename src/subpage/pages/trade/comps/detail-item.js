@@ -3,6 +3,7 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { copyText } from '@/utils'
 import OrderItem from  '../../../../components/orderItem/order-item'
+import InputNumber from '@/components/input-number'
 
 import './detail-item.scss'
 
@@ -51,6 +52,7 @@ export default class DetailItem extends Component {
 
   render () {
     const { customHeader, customFooter, noHeader, onClick, info, showActions } = this.props
+    console.log('detail-info---======>',info)
     return (
       <View className='detail-item'>
         {
@@ -103,6 +105,12 @@ export default class DetailItem extends Component {
                         }
                       </AtButton>
                   }
+                  <InputNumber
+                    min={1}
+                    max={item.num}
+                    value={item.num}
+                    onChange={this.props.onNumChange}
+                  />
                 </View>
               }
             </View>
