@@ -298,6 +298,7 @@ export default class CartCheckout extends Component {
         cart_type,
         seckill_id: seckill_id,
         seckill_ticket: ticket,
+        bargain_id:params.bargain_id||''
       }
       if(selectShop){
           ztparams = {
@@ -311,7 +312,7 @@ export default class CartCheckout extends Component {
             ...ztparams,
             lat: lnglat.latitude,
             lng:lnglat.longitude,
-            cart_type: cart_type,
+            //cart_type: cart_type,
           }
       }
     } else {
@@ -827,7 +828,7 @@ export default class CartCheckout extends Component {
     const {cart_type,seckill_id = null,ticket = null,goodType} = this.$router.params;
     const params = this.getParams()
     Taro.navigateTo({
-      url: `/pages/store/ziti-list?shop_id=${id}&cart_type=${cart_type}&order_type=${params.order_type}&seckill_id=${seckill_id}&ticket=${ticket}&goodType=${goodType}`
+      url: `/pages/store/ziti-list?shop_id=${id}&cart_type=${cart_type}&order_type=${params.order_type}&seckill_id=${seckill_id}&ticket=${ticket}&goodType=${goodType}&bargain_id=${params.bargain_id || ''}`
     })
   }
 

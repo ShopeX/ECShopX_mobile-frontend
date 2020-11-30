@@ -72,7 +72,7 @@ export default class StoreZitiList extends Component {
   async fetch (params) {
     const isOpenStore = await entry.getStoreStatus()
     const { page_no: page, page_size: pageSize } = params
-    const { shop_id,order_type, cart_type,seckill_id,ticket} = this.$router.params
+    const { shop_id,order_type, cart_type,seckill_id,ticket,bargain_id} = this.$router.params
     const query = {
       ...this.state.query,
       page,
@@ -82,6 +82,7 @@ export default class StoreZitiList extends Component {
       seckill_id,
       seckill_ticket:ticket,
       isNostores:isOpenStore ? 1 : 0,
+      bargain_id
     }
 
     const { list, total_count: total} = await api.shop.list(query)
