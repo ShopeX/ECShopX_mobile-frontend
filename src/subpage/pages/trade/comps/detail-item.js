@@ -99,7 +99,7 @@ export default class DetailItem extends Component {
                       </AtButton> )                  
                   }
                   {
-                    (info.status !== 'WAIT_SELLER_SEND_GOODS' && info.latest_aftersale_time >= 0 &&item.aftersales_status !== 'CLOSED')  &&
+                    (info.status !== 'WAIT_SELLER_SEND_GOODS' && info.latest_aftersale_time >= 0 &&item.aftersales_status !== 'CLOSED' && item.delivery_status === 'DONE')  &&
                       <AtButton
                         circle
                         type='primary'

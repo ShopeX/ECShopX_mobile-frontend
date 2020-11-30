@@ -116,6 +116,7 @@ export default class TradeDetail extends Component {
       pay_type: 'pay_type',
       pickupcode_status: 'pickupcode_status',
       invoice_content: 'invoice.content',
+      delivery_status: 'delivery_status',
       point: 'point',
       status: ({ order_status }) => resolveOrderStatus(order_status),
       orders: ({ items = [] }) => pickBy(items, {
@@ -132,6 +133,7 @@ export default class TradeDetail extends Component {
         pic_path: 'pic',
         title: 'item_name',
         type: 'type',
+        delivery_status: 'delivery_status',
         origincountry_name: 'origincountry_name',
         origincountry_img_url: 'origincountry_img_url',
         price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
@@ -675,7 +677,7 @@ export default class TradeDetail extends Component {
                 </Text>
               </View>
             )}
-            {info.status === "WAIT_BUYER_CONFIRM_GOODS" && (
+            {info.status === "WAIT_BUYER_CONFIRM_GOODS" && info.delivery_status === 'DONE' && (
               <View className="trade-detail__footer">
                 <Text
                   className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active"
