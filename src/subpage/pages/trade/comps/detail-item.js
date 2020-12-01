@@ -4,6 +4,8 @@ import { AtButton } from 'taro-ui'
 import { copyText } from '@/utils'
 import OrderItem from  '../../../../components/orderItem/order-item'
 import InputNumber from '@/components/input-number'
+import SpCheckbox from '@/components/checkbox'
+
 
 import './detail-item.scss'
 
@@ -56,16 +58,44 @@ export default class DetailItem extends Component {
     copyText(val)
     S.toast('复制成功')
   }
+  handleSelectionChange (item_id, checked) {//选择要申请售后的商品
+    const { info } = this.props
+    info.orders.map(item=>{
+      item.item_id == item_id && (item.is_checked = checked)
+    })
+    this.setState({
+      info
+    })
+  }
+  handleQuantityChange(item,val){   //改变售后商品的数量
+    const { info } = this.props
+    info.orders.map(v=>{
+      v.item_id == item.item_id && (v.store_num = val)
+    })
+    this.setState({
+      info
+    })
+  }
 
   render () {
     const { customHeader, customFooter, noHeader, onClick, info, showActions } = this.props
-    console.log('detail-info---======>',info)
     return (
       <View className='detail-item'>
         {
           info && info.orders.map((item, idx) =>
             <View className='detail-item-good' key={`${idx}1`}>
             <View className='detail-item__fix'>
+
+                {
+                    ((info.is_all_delivery && info.status !== 'WAIT_SELLER_SEND_GOODS' || !info.is_all_delivery)&& info.latest_aftersale_time >= 0 &&item.aftersales_status !== 'CLOSED') && (info.is_all_delivery || (!info.is_all_delivery && item.delivery_status === 'DONE'))  &&
+                    <SpCheckbox
+                    key={item.item_id}
+                    checked={item.is_checked}
+                    onChange={this.handleSelectionChange.bind(this, item.item_id)}
+                  />
+
+                }
+              
                 <Text className='detail-item__title'>第{idx+1}件商品</Text>
                 {
                   info.delivery_code
@@ -104,23 +134,36 @@ export default class DetailItem extends Component {
                   </View>
                   {
                     ((info.is_all_delivery && info.status !== 'WAIT_SELLER_SEND_GOODS' || !info.is_all_delivery)&& info.latest_aftersale_time >= 0 &&item.aftersales_status !== 'CLOSED') && (info.is_all_delivery || (!info.is_all_delivery && item.delivery_status === 'DONE'))  &&
-                      <AtButton
-                        circle
-                        type='primary'
-                        size='small'
-                        onClick={this.handleClickAfterSale.bind(this, item)}
-                      >
+                      // <AtButton
+                      //   circle
+                      //   type='primary'
+                      //   size='small'
+                      //   onClick={this.handleClickAfterSale.bind(this, item)}
+                      // >
+                      //   {
+                      //     (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
+                      //   }
+                      // </AtButton>
+                      <View>
                         {
-                          (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
+                           (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') 
+                           ? <InputNumber
+                           min={1}
+                           max={item.num}
+                           value={item.store_num}
+                          // onChange={this.props.onNumChange}
+                           onChange={this.handleQuantityChange.bind(this,item)}
+
+                           />
+                           :null
                         }
-                      </AtButton>
+                        
+                      </View>
+
+                     
+
                   }
-                  <InputNumber
-                    min={1}
-                    max={item.num}
-                    value={item.num}
-                    onChange={this.props.onNumChange}
-                  />
+              
                 </View>
               }
             </View>

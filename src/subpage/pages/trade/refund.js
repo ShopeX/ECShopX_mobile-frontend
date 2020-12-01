@@ -52,6 +52,15 @@ export default class TradeRefund extends Component {
 
   componentDidMount () {
     this.fetch()
+    const { status } = this.$router.params
+    const { segTypes,curSegIdx } = this.state
+    let curIndex = 0
+    segTypes.map((item,index)=>{
+      item.status == status && (curIndex = index)
+    })
+    this.setState({
+      curSegIdx:curIndex
+    })
   }
 
   async fetch () {
@@ -59,7 +68,8 @@ export default class TradeRefund extends Component {
       mask: true
     })
 
-    const { aftersales_bn, item_id, order_id, isDelivery, delivery_status } = this.$router.params
+    const { aftersales_bn, item_id, order_id, isDelivery, delivery_status,deliverData } = this.$router.params
+    console.log('deliverData---->',JSON.parse(deliverData))
     // 获取售后原因
     const reasonList = await api.aftersales.reasonList()
 
