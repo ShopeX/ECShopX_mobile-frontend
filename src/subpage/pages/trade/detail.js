@@ -577,7 +577,7 @@ export default class TradeDetail extends Component {
         </View>
         
         <View className="trade-money">
-         <View>总计：<Text className="trade-money__num">￥{info.item_fee}</Text></View>
+         <View>总计：<Text className="trade-money__num">￥{info.payment}</Text></View>
         </View>
         {info.remark && (
           <View className="trade-detail-remark">
