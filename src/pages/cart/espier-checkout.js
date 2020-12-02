@@ -1202,11 +1202,12 @@ export default class CartCheckout extends Component {
       log.debug(`[order pay]: `, payRes);
     } catch (e) {
       payErr = e;
-      Taro.showToast({
-        //title: e.err_desc || e.errMsg || "支付失败",
-        title:"支付失败",
-        icon: "none"
-      });
+      console.log(e)
+      // Taro.showToast({
+      //   //title: e.err_desc || e.errMsg || "支付失败",
+      //   title:"支付失败",
+      //   icon: "none"
+      // });
     }
 
     if (!payErr) {
