@@ -77,10 +77,11 @@ export default class HomeIndex extends Component {
   //     })
   //    // const res = parseUrlStr(queryStr)
   // }
-    const isOpenStore = await entry.getStoreStatus()
-    this.setState({
-      is_open_store_status:isOpenStore
-    })
+  const isOpenStore = await entry.getStoreStatus()
+  this.setState({
+    is_open_store_status:isOpenStore
+  })
+
     this.checkWhite()
     //this.fetchSetInfo()
     api.wx.shareSetting({shareindex: 'index'}).then(res => {
@@ -148,7 +149,6 @@ export default class HomeIndex extends Component {
     const { curStore,is_open_store_status } = this.state
     const curStoreLocal = Taro.getStorageSync('curStore')
     const localdis_id = curStoreLocal && is_open_store_status ? curStoreLocal.store_id : curStoreLocal.distributor_id //非自提门店判断
-    //const curdis_id = curStore && curStore.isNostores == 1 ? curStore.store_id : curStore.distributor_id
 
     if (!isArray(curStoreLocal) && this.state.isGoStore) {
       this.setState({

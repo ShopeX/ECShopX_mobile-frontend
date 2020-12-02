@@ -82,12 +82,11 @@ class App extends Component {
       'pages/item/espier-detail',
       'pages/item/item-params',
       'pages/item/package-list',
-      'pages/home/coupon-home',
+     
 
       'pages/cart/espier-index',
       'pages/cart/espier-checkout',
-      'pages/cart/coupon-picker',
-      'pages/cart/drug-info',
+
       'pages/article/index',
       'pages/recommend/list',
       'pages/member/index',
@@ -236,6 +235,7 @@ class App extends Component {
         root: 'others',
         pages: [
           'pages/home/license',
+          'pages/home/coupon-home',
           'pages/protocol/privacy',
           // 美恰客服
           'pages/meiqia/index',
@@ -247,7 +247,10 @@ class App extends Component {
           'pages/recharge/history',
           // 店铺首页
           'pages/store/list',
-          'pages/store/category'
+          'pages/store/category',
+          // cart
+          'pages/cart/coupon-picker',
+          'pages/cart/drug-info',
         ]
       }
     ],

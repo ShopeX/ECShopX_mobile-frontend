@@ -42,7 +42,7 @@ export default class CouponHome extends Component {
     return {
       title: res.title,
       imageUrl: res.imageUrl,
-      path: `/pages/home/coupon-home${query}`
+      path: `/others/pages/home/coupon-home${query}`
     }
   }
 

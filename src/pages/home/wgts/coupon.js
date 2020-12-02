@@ -62,7 +62,7 @@ export default class WgtCoupon extends Component {
             </View>
             <View
               className='wgt__more'
-              onClick={this.navigateTo.bind(this, `/pages/home/coupon-home?distributor_id=${dis_id}`)}
+              onClick={this.navigateTo.bind(this, `/others/pages/home/coupon-home?distributor_id=${dis_id}`)}
             >
               <View className='three-dot'></View>
             </View>

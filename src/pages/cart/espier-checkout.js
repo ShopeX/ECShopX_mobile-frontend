@@ -326,6 +326,9 @@ export default class CartCheckout extends Component {
       }
     }
   }
+  if(APP_PLATFORM === 'platform'){
+    delete ztparams.isNostores
+  }
     const shopInfo = await api.shop.getShop(ztparams);
     isOpenStore && Taro.setStorageSync('selectShop',shopInfo)
     this.setState({
@@ -608,6 +611,9 @@ export default class CartCheckout extends Component {
     }
     if (payType === "point") {
       delete params.point_use;
+    }
+    if(APP_PLATFORM === 'platform'){
+      delete params.isNostores
     }
     if (coupon) {
       if (coupon.not_use_coupon === 1) {
@@ -925,7 +931,7 @@ export default class CartCheckout extends Component {
     // })
     const { drug } = this.state;
     Taro.navigateTo({
-      url: `/pages/cart/drug-info`
+      url: `/others/pages/cart/drug-info`
     });
   };
 
@@ -1295,7 +1301,7 @@ export default class CartCheckout extends Component {
       },
       () => {
         Taro.navigateTo({
-          url: `/pages/cart/coupon-picker?items=${JSON.stringify(
+          url: `/others/pages/cart/coupon-picker?items=${JSON.stringify(
             items
           )}&is_checkout=true&cart_type=${this.params.cart_type
             }&distributor_id=${id}&source=${m_source}&goodType=${goodType}`
@@ -1549,7 +1555,7 @@ export default class CartCheckout extends Component {
                   <View className="addr-detail">{curStore.store_address}</View>
                 </View>
                 {
-                  isOpenStore 
+                  isOpenStore && (APP_PLATFORM === 'standard') 
                   ?<View
                     className="icon-edit"
                     onClick={this.handleEditZitiClick.bind(this,curStore.distributor_id)}>

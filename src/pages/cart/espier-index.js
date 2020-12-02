@@ -222,6 +222,9 @@ export default class CartIndex extends Component {
       shop_type: type,
       isNostores: isOpenStore ? 1 : 0//是否开启非门店自提流程
     }
+    if(APP_PLATFORM === 'platform'){
+      delete params.isNostores
+    }
     if (cartTypeLocal === 'cross') {
       params.iscrossborder = 1
     } else {
