@@ -71,23 +71,6 @@ export default class TradeDetail extends Component {
       ss
     }
   }
-  selectionGoods(list){
-    const selected = list.filter(v=>v.is_checked)
-    let params = {}
-    let refund= []
-    selected.map(item=>{
-      params = {
-        //is_all_delivery:item.is_all_delivery,
-        delivery_status:item.delivery_status,
-        order_id:item.orders,
-       item_id:item.item_id,
-       store_num:item.store_num
-      }
-      refund.push(params)
-    })
-    return refund
-  }
-
   async fetch () {
     const { id } = this.$router.params
     const data = await api.trade.detail(id)
@@ -325,32 +308,6 @@ export default class TradeDetail extends Component {
       }
       return
     }
-    if (type === 'ONLY_REFUND' || type === 'REFUND_GOODS') {//仅退款
-      let { info } = this.state 
-      const selected = this.selectionGoods(info.orders)
-      if(!selected.length){
-        Taro.showToast({
-          title: '请选择商品～',
-          icon: 'none'
-        })
-        return
-      }
-      const deliverData = JSON.stringify(selected)
-      Taro.navigateTo({
-        url: `/subpage/pages/trade/refund?deliverData=${deliverData}&status=${type}`
-      })
-    }
-    // if (type === 'REFUND_GOODS') {//refund_goods
-    //   let { info } = this.state 
-    //   const selected = this.selectionGoods(info.orders)
-    //   if(!selected.length){
-    //     Taro.showToast({
-    //       title: '请选择商品～',
-    //       icon: 'none'
-    //     })
-    //     return
-    //   }
-    // }
   }
 
   async handleClickRefund (type, item_id) {
@@ -739,34 +696,15 @@ export default class TradeDetail extends Component {
               </View>
             )}
             {info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
-              // <View className="trade-detail__footer">
-              //   <Text
-              //     className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active"
-              //     style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-              //     onClick={this.handleClickBtn.bind(this, "confirm")}
-              //   >
-              //     确认收货
-              //   </Text>
-              // </View>
               <View className="trade-detail__footer">
-              <Text
-                  className="trade-detail__footer__btn"
-                  onClick={this.handleClickBtn.bind(this, "ONLY_REFUND")}
+                <Text
+                  className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active"
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  onClick={this.handleClickBtn.bind(this, "confirm")}
                 >
-                  仅退款
+                  确认收货
                 </Text>
-               <Text
-                className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_status_des === "PAYED_WAIT_PROCESS"
-                    ? "trade-detail__footer_allWidthBtn"
-                    : ""
-                  }`}
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
-                onClick={this.handleClickBtn.bind(this, "REFUND_GOODS")}
-              >
-                退货退款
-              </Text>
-              
-            </View>
+              </View>
             )}
             {info.status === "TRADE_SUCCESS" && (
               <View className="trade-detail__footer">

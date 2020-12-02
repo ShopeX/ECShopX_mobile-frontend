@@ -9,7 +9,7 @@ import SpCheckbox from '@/components/checkbox'
 
 import './detail-item.scss'
 
-export default class DetailItem extends Component {
+export default class AfterDetailItem extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -30,18 +30,18 @@ export default class DetailItem extends Component {
   //   this.props.onClickBtn && this.props.onClickBtn(type, info)
   // }
 
-  handleClickAfterSale= (item) => {
-    const { info: { tid: order_id, is_all_delivery, delivery_status } } = this.props
-    if (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') {
-      Taro.navigateTo({
-        url: `/subpage/pages/trade/refund?order_id=${order_id}&item_id=${item.item_id}&isDelivery=${is_all_delivery}&delivery_status=${delivery_status}`
-      })
-    } else {
-      Taro.navigateTo({
-        url: `/subpage/pages/trade/refund-detail?order_id=${order_id}&item_id=${item.item_id}&isDelivery=${is_all_delivery}&delivery_status=${delivery_status}`
-      })
-    }
-  }
+  // handleClickAfterSale= (item) => {
+  //   const { info: { tid: order_id, is_all_delivery, delivery_status } } = this.props
+  //   if (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') {
+  //     Taro.navigateTo({
+  //       url: `/subpage/pages/trade/refund?order_id=${order_id}&item_id=${item.item_id}&isDelivery=${is_all_delivery}&delivery_status=${delivery_status}`
+  //     })
+  //   } else {
+  //     Taro.navigateTo({
+  //       url: `/subpage/pages/trade/refund-detail?order_id=${order_id}&item_id=${item.item_id}&isDelivery=${is_all_delivery}&delivery_status=${delivery_status}`
+  //     })
+  //   }
+  // }
     handleLookDelivery = (value) => {
       if(value.delivery_type=='new'){
         Taro.navigateTo({
@@ -103,11 +103,27 @@ export default class DetailItem extends Component {
                     : null
                 }               
             </View>
-            <OrderItem
+            <View className="order-flex">
+            {
+                ((info.is_all_delivery && info.status !== 'WAIT_SELLER_SEND_GOODS' || !info.is_all_delivery)&& info.latest_aftersale_time >= 0 &&item.aftersales_status !== 'CLOSED') && (info.is_all_delivery || (!info.is_all_delivery && item.delivery_status === 'DONE'))  &&
+                <View className="order-flex_checkbox">
+                <SpCheckbox
+                  key={item.item_id}
+                  checked={item.is_checked}
+                  onChange={this.handleSelectionChange.bind(this, item.item_id)}
+                />
+                </View>
+
+            }
+              <View className="order-flex_goods">
+              <OrderItem
                   key={`${idx}1`}
                   info={item}
                   isShowNational
                 />
+              </View>
+            </View>  
+
               {
                 !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>
                  {
@@ -128,20 +144,37 @@ export default class DetailItem extends Component {
                     
                   </View>
                   
-                  {/* {
+                  {
                     ((info.is_all_delivery && info.status !== 'WAIT_SELLER_SEND_GOODS' || !info.is_all_delivery)&& info.latest_aftersale_time >= 0 &&item.aftersales_status !== 'CLOSED') && (info.is_all_delivery || (!info.is_all_delivery && item.delivery_status === 'DONE'))  &&
-                      <AtButton
-                        circle
-                        type='primary'
-                        size='small'
-                        onClick={this.handleClickAfterSale.bind(this, item)}
-                      >
+                      // <AtButton
+                      //   circle
+                      //   type='primary'
+                      //   size='small'
+                      //   onClick={this.handleClickAfterSale.bind(this, item)}
+                      // >
+                      //   {
+                      //     (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
+                      //   }
+                      // </AtButton>
+                      <View>
                         {
-                          (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
-                        }
-                      </AtButton>   
+                           (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') 
+                           ? <InputNumber
+                           min={1}
+                           max={item.num}
+                           value={item.store_num}
+                          // onChange={this.props.onNumChange}
+                           onChange={this.handleQuantityChange.bind(this,item)}
 
-                  } */}
+                           />
+                           :null
+                        }
+                        
+                      </View>
+
+                     
+
+                  }
               
                 </View>
               }

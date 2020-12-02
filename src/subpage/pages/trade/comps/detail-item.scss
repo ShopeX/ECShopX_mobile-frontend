@@ -43,4 +43,16 @@
     display: flex;
     //z-index: 999;
   }
+  .order-flex{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &_checkbox{
+      flex:0 0 100px;
+      text-align: center;
+    }
+    &_goods{
+      flex:1;
+    }
+  }
 }

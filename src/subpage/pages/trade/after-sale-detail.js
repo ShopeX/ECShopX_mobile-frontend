@@ -7,7 +7,7 @@ import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute 
 import { Tracker } from "@/service";
 import api from '@/api'
 import S from '@/spx'
-import DetailItem from './comps/detail-item'
+import AfterDetailItem from './comps/after-detail-item'
 
 import './detail.scss'
 import { echatConfig } from '../../../api/user'
@@ -290,43 +290,8 @@ export default class TradeDetail extends Component {
 
   async handleClickBtn (type,val) {
     const { info } = this.state
-
-    if (type === 'home') {
-      Taro.redirectTo({
-        url: APP_HOME_PAGE
-      })
-      return
-    }
-
-    if (type === 'pay') {
-      await this.handlePay()
-      return
-    }
-
-    if (type === 'cancel') {
-      console.log(val,'valvalvalval');
-      Taro.navigateTo({
-        url: `/subpage/pages/trade/cancel?order_id=${info.tid}`
-      })
-      return
-    }
-
-    if (type === 'confirm') {
-      const { confirm } = await Taro.showModal({
-        title: '确认收货？',
-        content: ''
-      })
-      if (confirm) {
-        await api.trade.confirm(info.tid)
-        const { fullPath } = getCurrentRoute(this.$router)
-        Taro.redirectTo({
-          url: fullPath
-        })
-      }
-      return
-    }
-    if (type === 'ONLY_REFUND' || type === 'REFUND_GOODS') {//仅退款
-      let { info } = this.state 
+    if (type === 'REFUND') {//仅退款
+      //let { info } = this.state 
       const selected = this.selectionGoods(info.orders)
       if(!selected.length){
         Taro.showToast({
@@ -340,42 +305,6 @@ export default class TradeDetail extends Component {
         url: `/subpage/pages/trade/refund?deliverData=${deliverData}&status=${type}`
       })
     }
-    // if (type === 'REFUND_GOODS') {//refund_goods
-    //   let { info } = this.state 
-    //   const selected = this.selectionGoods(info.orders)
-    //   if(!selected.length){
-    //     Taro.showToast({
-    //       title: '请选择商品～',
-    //       icon: 'none'
-    //     })
-    //     return
-    //   }
-    // }
-  }
-
-  async handleClickRefund (type, item_id) {
-    const { info: { tid: order_id } } = this.state
-
-    if (type === 'refund') {
-      Taro.navigateTo({
-        url: `/subpage/pages/trade/refund?order_id=${order_id}&item_id=${item_id}`
-      })
-    } else if (type === 'refundDetail') {
-      Taro.navigateTo({
-        url: `/subpage/pages/trade/refund-detail?order_id=${order_id}&item_id=${item_id}`
-      })
-    }
-  }
-
-  handleClickDelivery = () => {
-    Taro.navigateTo({
-      url: `/subpage/pages/trade/delivery-info?order_type=${this.state.info.order_type}&order_id=${this.state.info.tid}&delivery_code=${this.state.info.delivery_code}&delivery_corp=${this.state.info.delivery_corp}&delivery_name=${this.state.info.delivery_name}`
-    })
-  }
-
-  handleClickCopy = (val) => {
-    copyText(val)
-    S.toast('复制成功')
   }
 
   countDownEnd = () => {
@@ -492,24 +421,18 @@ export default class TradeDetail extends Component {
       return <Loading></Loading>
     }
     console.log(info,'info');
-    const isDhPoint = info.pay_type === 'point'
-    // 是否为余额支付
-    const isDeposit = info.pay_type === 'deposit'
-    const isHf = info.pay_type === 'hfpay'
-
-    const meiqia = Taro.getStorageSync('meiqia')
-    const echat = Taro.getStorageSync('echat')
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
     console.log('info', info)
     return (
       <View className="trade-detail">
-        <NavBar title="订单详情" leftIconType="chevron-left" fixed="true" />
+        <NavBar title="售后详情" leftIconType="chevron-left" fixed="true" />
         <View
           className="trade-detail-header"
           style={`background: ${colors.data[0].primary}`}
         >
-          {info.order_class === "drug" ? (
+          {info.order_class === "drug" 
+          ? (
             <View className="trade-detail-waitdeliver">
               {info.order_status_des === "CANCEL" ? (
                 <View>
@@ -617,7 +540,7 @@ export default class TradeDetail extends Component {
             </View>
           )}
         <View className="trade-detail-goods">
-          <DetailItem 
+          <AfterDetailItem 
           info={info} 
           />
         </View>
@@ -625,193 +548,22 @@ export default class TradeDetail extends Component {
         <View className="trade-money">
          <View>总计：<Text className="trade-money__num">￥{info.item_fee}</Text></View>
         </View>
-        {info.remark && (
-          <View className="trade-detail-remark">
-            <View className="trade-detail-remark__header">订单备注</View>
-            <View className="trade-detail-remark__body">{info.remark}</View>
-          </View>
-        )}
-        <View className="trade-detail-info">
-          <Text className="info-text">订单号：{info.tid}</Text>
-          <Text className="info-text">下单时间：{info.created_time_str}</Text>
-          {info.invoice_content ? (
-            <Text className="info-text">发票信息：{info.invoice_content}</Text>
-          ) : null}
-
-          <Text className="info-text">商品金额：￥{info.item_fee}</Text>
-          {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
-          <Text className='info-text'>运费：￥{info.freight_fee}</Text>
-          {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
-          <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
-          {isDhPoint && (<Text className='info-text' space>支付：{info.payment}积分 {' 积分支付'}</Text>)}
-          {isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>)}
-          {isHf && (<Text className='info-text' space>支付：¥{info.payment} {'汇付支付'}</Text>)}
-          {!isDhPoint && !isDeposit && !isHf && (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>)}
-          {
-            info.delivery_code
-              ? <View className='delivery_code_copy'>
-                <Text className='info-text'>物流单号：{info.delivery_code}</Text>
-                <Text className='info-text-btn' onClick={this.handleClickDelivery.bind(this)}>查看物流</Text>
-                <Text className='info-text-btn' onClick={this.handleClickCopy.bind(this, info.delivery_code)}>复制</Text>
-              </View>
-              : null
-          }
-        </View>
         {info.order_class !== "drug" && (
           <View>
-            {!isDhPoint && info.status === "WAIT_BUYER_PAY" && (
-              <View className="trade-detail__footer">
-                <Text
-                  className="trade-detail__footer__btn"
-                  onClick={this.handleClickBtn.bind(this, "cancel",1)}
-                >
-                  取消订单
-                </Text>
-                <Button
-                  className="trade-detail__footer__btn trade-detail__footer_active"
-                  type="primary"
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  loading={payLoading}
-                  onClick={this.handleClickBtn.bind(this, "pay")}
-                >
-                  立即支付
-                </Button>
-              </View>
-            )}
-            {isDhPoint && info.status === "WAIT_BUYER_PAY" && (
-              <View className="trade-detail__footer">
-                <Button
-                  className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active"
-                  type="primary"
-                  loading={payLoading}
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, "pay")}
-                >
-                  立即支付
-                </Button>
-              </View>
-            )}
-            {!isDhPoint && info.status === "WAIT_SELLER_SEND_GOODS" && (
-              <View className="trade-detail__footer">
-                {info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL" && (
-                  <Text
-                    className="trade-detail__footer__btn"
-                    onClick={this.handleClickBtn.bind(this, "cancel",111)}
-                  >
-                    取消订单
-                  </Text>
-                )}
-                {
-                  (info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL") 
-                  ? <Text
-                  className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_status_des === "PAYED_WAIT_PROCESS"
-                      ? "trade-detail__footer_allWidthBtn"
-                      : ""
-                    }`}
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
-                  onClick={this.handleClickBtn.bind(this, "home")}
-                >
-                  继续购物
-                </Text>
-                : <Text
-                className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_status_des === "PAYED_WAIT_PROCESS"
-                    ? "trade-detail__footer_allWidthBtn"
-                    : ""
-                  }`}
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};width: 100% !important;`}
-                onClick={this.handleClickBtn.bind(this, "home")}
-              >
-                继续购物
-              </Text>
-                }
-                
-              </View>
-            )}
-            {isDhPoint && info.status === "WAIT_SELLER_SEND_GOODS" && (
-              <View className="trade-detail__footer">
-                <Text
-                  className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active"
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, "home")}
-                >
-                  继续购物
-                </Text>
-              </View>
-            )}
             {info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
-              // <View className="trade-detail__footer">
-              //   <Text
-              //     className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active"
-              //     style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-              //     onClick={this.handleClickBtn.bind(this, "confirm")}
-              //   >
-              //     确认收货
-              //   </Text>
-              // </View>
               <View className="trade-detail__footer">
-              <Text
-                  className="trade-detail__footer__btn"
-                  onClick={this.handleClickBtn.bind(this, "ONLY_REFUND")}
+                <Button
+                  className="trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn"
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  onClick={this.handleClickBtn.bind(this, "REFUND")}
                 >
-                  仅退款
-                </Text>
-               <Text
-                className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_status_des === "PAYED_WAIT_PROCESS"
-                    ? "trade-detail__footer_allWidthBtn"
-                    : ""
-                  }`}
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
-                onClick={this.handleClickBtn.bind(this, "REFUND_GOODS")}
-              >
-                退货退款
-              </Text>
+                  退货退款
+                </Button>
               
             </View>
             )}
-            {info.status === "TRADE_SUCCESS" && (
-              <View className="trade-detail__footer">
-                {meiqia.is_open === "true" || echat.is_open === 'true' ? (
-                  <FloatMenuMeiQia
-                    storeId={info.distributor_id}
-                    info={{ orderId: info.order_id }}
-                    isFloat={false}
-                  >
-                    <Button
-                      className="trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn"
-                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                    >
-                      联系客服
-                    </Button>
-                  </FloatMenuMeiQia>
-                ) : (
-                    <Button
-                      openType="contact"
-                      className="trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn"
-                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                    >
-                      联系客服
-                    </Button>
-                  )}
-              </View>
-            )}
           </View>
         )}
-        {/*{
-          info.order_status_des === 'PAYED_WAIT_PROCESS' && <View className='trade-detail__footer'>
-            <Text className='trade-detail__footer__btn trade-detail__footer_active' onClick={this.handleClickBtn.bind(this, 'home')}>继续购物</Text>
-          </View>
-        }*/}
-        {/* <FloatMenus>
-        {
-          meiqia.is_open === 'meiqia'
-            ? <FloatMenuMeiQia storeId={info.distributor_id} info={{orderId: info.order_id}} /> 
-            : <FloatMenuItem
-              iconPrefixClass='icon'
-              icon='headphones'
-              openType='contact'
-            />
-        }
-        </FloatMenus> */}
         <SpToast></SpToast>
       </View>
     );
