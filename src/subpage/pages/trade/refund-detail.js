@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
 import { formatTime } from '@/utils'
-import { Loading, FloatMenuMeiQia } from '@/components'
+import { Loading, FloatMenuMeiQia,SpHtmlContent } from '@/components'
 import api from '@/api'
 
 import './refund-detail.scss'
@@ -14,7 +14,8 @@ export default class TradeRefundDetail extends Component {
     this.state = {
       info: null,
       progress: 0,
-      aftersalesAddress: {}
+      aftersalesAddress: {},
+      remind:{}
     }
   }
 
@@ -24,19 +25,26 @@ export default class TradeRefundDetail extends Component {
 
   async fetch () {
     const { aftersales_bn, item_id, order_id } = this.$router.params
-    const { aftersales: info, orderInfo } = await api.aftersales.info({
+    // const { detail: info, order_info:orderInfo,progress,reason} = await api.aftersales.info({
+    //   aftersales_bn,
+    //   item_id,
+    //   order_id
+    // })
+      const info = await api.aftersales.info({
       aftersales_bn,
       item_id,
       order_id
     })
+    let prog = +info.progress
+    info.status_str = REFUND_STATUS[String(prog)]
+    info.creat_time_str = formatTime(info.create_time * 1000,'yyyy-MM-dd HH:mm')
+    let remind = await api.aftersales.remindDetail()
 
-    const progress = +info.progress
-    info.status_str = REFUND_STATUS[String(progress)]
-    info.creat_time_str = formatTime(info.create_time * 1000)
     this.setState({
-      orderInfo,
+      remind,
+      //orderInfo,
       info,
-      progress,
+      progress:prog,
       aftersalesAddress: info.aftersales_address
     })
   }
@@ -78,52 +86,56 @@ export default class TradeRefundDetail extends Component {
   }
 
   render () {
-    const { info, orderInfo, progress, aftersalesAddress } = this.state
+    const { info, remind, progress, aftersalesAddress } = this.state
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')
     if (!info) {
       return <Loading />
     }
+    //console.log('orderorderInfo===>',orderInfo)
 
     return (
       <View className='trade-refund-detail'>
         <View className='refund-status'>
-          <Text className='refund-status__text text-status'>{info.status_str}</Text>
-          {progress == 0 ? <Text className='refund-status__text'>正在审核订单</Text> : null}
-          {progress == 1 ? <Text className='refund-status__text'>已接受申请，等回寄</Text> : null}
-          {progress == 2 ? <Text className='refund-status__text'>客户已回寄，等待商家收货确认</Text> : null}
-          {progress == 3 ? <Text className='refund-status__text'>申请已驳回</Text> : null}
-          {progress == 4 ? <Text className='refund-status__text'>物流信息：已发货</Text> : null}
-          {progress == 5 ? <Text className='refund-status__text'>退款驳回</Text> : null}
-          {progress == 6 ? <Text className='refund-status__text'>退款已处理</Text> : null}
-          {progress == 7 ? <Text className='refund-status__text'>售后关闭</Text> : null}
+          {/* <Text className='refund-status__text text-status'>{info.status_str}</Text> */}
+          {progress == 0 ? <Text className='refund-status__text text-status'>等待商家处理</Text> : null}
+          {progress == 1 ? <Text className='refund-status__text text-status'>商家接受申请，等待消费者回寄</Text> : null}
+          {progress == 2 ? <Text className='refund-status__text text-status'>消费者回寄，等待商家收货确认</Text> : null}
+          {progress == 3 ? <Text className='refund-status__text text-status'>售后已驳回</Text> : null}
+          {progress == 4 ? <Text className='refund-status__text text-status'>售后已处理</Text> : null}
+          {progress == 5 ? <Text className='refund-status__text text-status'>退款驳回</Text> : null}
+          {progress == 6 ? <Text className='refund-status__text text-status'>退款已处理</Text> : null}
+          {progress == 7 ? <Text className='refund-status__text text-status'>售后关闭</Text> : null}
+          {progress == 8 ? <Text className='refund-status__text text-status'>商家确认收货</Text> : null}
+          {progress == 9 ? <Text className='refund-status__text text-status'>退款处理中</Text> : null}
 
         </View>
         <View className='refund-detail'>
-          {progress == 0 ?  <Text className='refund-detail__title'>您已成功发起退款申请，请耐心等待商家处理</Text> : null}
-          <Text className='refund-detail__descr'>{info.description}</Text>
+          {progress == 0 ? <Text className='refund-detail__title'>您已成功发起售后申请，请耐心等待商家处理</Text> : null}
+          {progress == 7 ? <Text className='refund-detail__title'>您已成功撤销本次退款申请</Text> : null}
+          {<Text className='refund-detail__descr'>{info.description || ''}</Text>}
           {
             progress == 0
               ? <View>
-                  <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'edit')}>修改申请</Text>
-                  <Text className='refund-detail__btn refund-detail__cancel' onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</Text>
-                </View>
+                {/* <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'edit')}>修改申请</Text> */}
+                <Text className='refund-detail__btn refund-detail__cancel' onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</Text>
+              </View>
               : null
           }
-          {
+          {/* {
             (progress == 3 || progress == 5)
               ? <View>
                   <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'refund')}>再次申请</Text>
-                  <Text className='refund-detail__btn refund-detail__cancel' onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</Text>
+                 
                 </View>
               : null
-          }
+          } */}
           {
             progress == 1
               ? <View>
-                  <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'refund_send')}>填写物流信息</Text>
-                  <Text className='refund-detail__btn refund-detail__cancel' onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</Text>
-                </View>
+                <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'refund_send')}>填写物流信息</Text>
+                <Text className='refund-detail__btn refund-detail__cancel' onClick={this.handleBtnClick.bind(this, 'cancel')}>撤销申请</Text>
+              </View>
               : null
           }
         </View>
@@ -144,7 +156,7 @@ export default class TradeRefundDetail extends Component {
           <View className='info-name'>退款原因：<Text className='info-value'>{info.reason}</Text></View>
           <View className='info-name'>申请时间：<Text className='info-value'>{info.creat_time_str}</Text></View>
           <View className='info-name'>退款编号：<Text className='info-value'>{info.aftersales_bn}</Text></View>
-          <View className='info-name'>驳回原因：<Text className='info-value'>{info.refuse_reason}</Text></View>
+          {info.refuse_reason && <View className='info-name'>驳回原因：<Text className='info-value'>{info.refuse_reason}</Text></View>}
           {
             progress === 1 ?
             <View>
@@ -162,11 +174,22 @@ export default class TradeRefundDetail extends Component {
               }
             </View> : null
           }
-
         </View>
         {
+        remind && remind.is_open && <View className='remind-wrap'>
+          <Text className='biao-icon biao-icon-tishi'>  售后提醒</Text>
+
+          <View className='remind-text'>
+            <SpHtmlContent
+              className="goods-detail__content"
+              content={remind.intro}
+            />
+          </View>
+        </View>
+        }
+        {
           meiqia.is_open === 'true' || echat.is_open === 'true'
-            ? <FloatMenuMeiQia storeId={orderInfo.distributor_id} info={{orderId: orderInfo.order_id}} isFloat={false}> 
+            ? <FloatMenuMeiQia storeId={info.distributor_id} info={{orderId: info.order_id}} isFloat={false}> 
               <Button className='refund-detail-btn'>联系客服</Button>
             </FloatMenuMeiQia>
             : <Button openType='contact' className='refund-detail-btn'>联系客服</Button>

@@ -24,7 +24,7 @@
     font-size: 22px;
     line-height: 36px;
     color: #333333;   
-    padding: 0 38px 17px 27px;
+    padding: 0 38px 17px 17px;
   }
   &__code{
     flex:1;
@@ -42,5 +42,17 @@
     right: 30px;
     display: flex;
     //z-index: 999;
+  }
+  .order-flex{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &_checkbox{
+      flex:0 0 100px;
+      text-align: center;
+    }
+    &_goods{
+      flex:1;
+    }
   }
 }

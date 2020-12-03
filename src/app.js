@@ -181,6 +181,7 @@ class App extends Component {
           'pages/trade/customer-pickup-list',
           'pages/trade/drug-list',
           'pages/trade/detail',
+          'pages/trade/after-sale-detail',
           'pages/trade/delivery-info',
           'pages/trade/split-bagpack',
           'pages/trade/rate',

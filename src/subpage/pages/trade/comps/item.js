@@ -79,10 +79,10 @@ export default class TradeItem extends Component {
             this.props.customRender
               ? this.props.customRender
               : payType === 'point'
-                ? (<View className='trade-item__total'>共{info.totalItems}件商品 合计: <Price appendText='积分' noSymbol noDecimal value={info.point} /></View>)
+                ? (<View className='trade-item__total'> 合计: <Price appendText='积分' noSymbol noDecimal value={info.point} /></View>)
                 : payType === 'dhpoint'
-                  ? (<View className='trade-item__total'>共{info.totalItems}件商品 合计: <Price appendText='积分' noSymbol noDecimal value={info.total_fee} /></View>)
-                  : (<View className='trade-item__total'>共{info.totalItems}件商品 合计: <Price value={info.payment} /></View>)
+                  ? (<View className='trade-item__total'> 合计: <Price appendText='积分' noSymbol noDecimal value={info.total_fee} /></View>)
+                  : (<View className='trade-item__total'> 合计: <Price value={info.payment} /></View>)
           }
         </View>
         {customFooter && (<View className='trade-item__ft'>{this.props.renderFooter}</View>)}
@@ -169,6 +169,16 @@ export default class TradeItem extends Component {
                 onClick={this.handleClickBtn.bind(this, 'delivery')}
               >查看物流</Button>
             }
+           {/* <Button
+              className='btn-action'
+              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
+              onClick={this.handleClickBtn.bind(this, 'aftersales-list')}
+            >查看售后</Button>
+            <Button
+              className='btn-action'
+              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
+              onClick={this.handleClickBtn.bind(this, 'aftersales')}
+            >申请售后</Button> */}
             <Button
               className='btn-action'
               style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
