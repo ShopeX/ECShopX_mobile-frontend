@@ -113,7 +113,7 @@ export default class TradeDetail extends Component {
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
       freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
-      totalpayment:({ point_use, total_fee ,discount_fee}) =>   ((Number(point_use)+Number(total_fee)+Number(discount_fee)) / 100).toFixed(2),
+      totalpayment:({ point_use, total_fee ,discount_fee}) =>   ((+Number(total_fee)) / 100).toFixed(2),
       payment: ({ pay_type, total_fee }) => pay_type === 'point' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2), // 积分向下取整
       pay_type: 'pay_type',
       pickupcode_status: 'pickupcode_status',
@@ -449,7 +449,9 @@ export default class TradeDetail extends Component {
       return <Loading></Loading>
     }
     console.log(info,'info');
-    const isDhPoint = info.point_fee!=0?'point':''
+    //const isDhPoint = info.point_fee!=0?'point':''
+    const isDhPoint = info.pay_type === 'point'
+
     // 是否为余额支付
     const isDeposit = info.pay_type === 'deposit'
     const isHf = info.pay_type === 'hfpay'
