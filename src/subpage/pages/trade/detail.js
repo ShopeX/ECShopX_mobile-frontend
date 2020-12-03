@@ -113,6 +113,7 @@ export default class TradeDetail extends Component {
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
       freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
+      totalpayment:({ point_use, total_fee }) =>   ((point_use+total_fee) / 100).toFixed(2),
       payment: ({ pay_type, total_fee }) => pay_type === 'point' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2), // 积分向下取整
       pay_type: 'pay_type',
       pickupcode_status: 'pickupcode_status',
@@ -448,7 +449,7 @@ export default class TradeDetail extends Component {
       return <Loading></Loading>
     }
     console.log(info,'info');
-    const isDhPoint = info.pay_type === 'point'
+    const isDhPoint = info.point_fee!=0?'point':''
     // 是否为余额支付
     const isDeposit = info.pay_type === 'deposit'
     const isHf = info.pay_type === 'hfpay'
@@ -577,7 +578,7 @@ export default class TradeDetail extends Component {
         </View>
         
         <View className="trade-money">
-         <View>总计：<Text className="trade-money__num">￥{info.payment}</Text></View>
+         <View>总计：<Text className="trade-money__num">￥{info.totalpayment}</Text></View>
         </View>
         {info.remark && (
           <View className="trade-detail-remark">
@@ -597,7 +598,7 @@ export default class TradeDetail extends Component {
           <Text className='info-text'>运费：￥{info.freight_fee}</Text>
           {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
           <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
-          {isDhPoint && (<Text className='info-text' space>支付：{info.payment}积分 {' 积分支付'}</Text>)}
+          {isDhPoint && (<Text className='info-text' space>支付：{info.point_fee}积分 {' 积分支付'}</Text>)}
           {isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>)}
           {isHf && (<Text className='info-text' space>支付：¥{info.payment} {'汇付支付'}</Text>)}
           {!isDhPoint && !isDeposit && !isHf && (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>)}
