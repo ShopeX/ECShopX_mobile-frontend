@@ -28,7 +28,6 @@ export default class OrderItem extends Component {
         : info.pics
 
 
-      console.log('info---->',info)
     return (
       <View
         className='order-item'

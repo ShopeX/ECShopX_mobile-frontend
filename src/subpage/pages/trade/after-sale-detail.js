@@ -155,6 +155,7 @@ export default class TradeDetail extends Component {
         point: 'item_point',
         num: 'num',
         left_aftersales_num:'left_aftersales_num',
+        left_applay_num:'left_aftersales_num',
         item_spec_desc: 'item_spec_desc',
         order_item_type: 'order_item_type'
       })

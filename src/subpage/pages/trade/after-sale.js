@@ -21,7 +21,7 @@ export default class AfterSale extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        { title: '全部', status: '0' },
+        { title: '待处理', status: '0' },
         { title: '处理中', status: '1' },
         { title: '已处理', status: '2' },
         { title: '已驳回', status: '3' },
@@ -147,7 +147,7 @@ export default class AfterSale extends Component {
           onScrollToLower={this.nextPage}
         >
           {
-            list.map((item, idx) => {
+            list && list.map((item, idx) => {
               return (
                 <TradeItem
                   key={`${idx}1`}
@@ -155,7 +155,7 @@ export default class AfterSale extends Component {
                   customHeader
                   renderHeader={
                     <View className='trade-item__hd-cont'>
-                      <Text className='trade-item__shop'>订单号：{item.id}</Text>
+                      <Text className='trade-item__shop'>退款单号：{item.id}&#12288;</Text>
                       <Text className='more'>{item.status_desc}</Text>
                     </View>
                   }

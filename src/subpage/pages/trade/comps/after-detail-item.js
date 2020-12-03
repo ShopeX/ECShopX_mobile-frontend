@@ -163,7 +163,7 @@ export default class AfterDetailItem extends Component {
                            (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') 
                            ? <InputNumber
                            min={1}
-                           max={item.left_aftersales_num}
+                           max={item.left_applay_num}
                            value={item.left_aftersales_num}
                           // onChange={this.props.onNumChange}
                            onChange={this.handleQuantityChange.bind(this,item)}

@@ -310,12 +310,6 @@ export default class TradeDetail extends Component {
       }
       return
     }
-    if(type === 'aftersales-list'){
-      Taro.navigateTo({
-        url: `/subpage/pages/trade/after-sale-list?id=${info.tid}`
-      })
-      return
-    }
     if(type==="aftersales"){
         Taro.navigateTo({
           url: `/subpage/pages/trade/after-sale-detail?id=${info.tid}`
@@ -614,7 +608,8 @@ export default class TradeDetail extends Component {
           <Text className='info-text'>运费：￥{info.freight_fee}</Text>
           {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
           <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
-          {isDhPoint && (<Text className='info-text' space>支付：{info.point_use}积分 {' 积分支付'}</Text>)}
+          {/* {isDhPoint && (<Text className='info-text' space>支付：{info.point_use}积分 {' 积分支付'}</Text>)} */}
+          {info.point_use > 0 && (<Text className='info-text' space>支付：{info.point_use}积分 {' 积分支付'}</Text>)}
           {isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>)}
           {isHf && (<Text className='info-text' space>支付：¥{info.payment} {'汇付支付'}</Text>)}
           {!isDhPoint && !isDeposit && !isHf && (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>)}
@@ -760,17 +755,6 @@ export default class TradeDetail extends Component {
             </View>
               )
             }
-
-            {/* <View className="trade-detail__footer">
-                <Button
-                  className="trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn"
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, "aftersales-list")}
-                >
-                  查看售后
-                </Button>
-              
-            </View>           */}
           </View>
         )}
         {/*{
