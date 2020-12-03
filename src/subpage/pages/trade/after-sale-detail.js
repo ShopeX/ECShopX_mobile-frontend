@@ -479,9 +479,9 @@ export default class TradeDetail extends Component {
                           ? "正在派送中"
                           : null}
                         {info.status === "TRADE_CLOSED" ? "订单已取消" : null}
-                        {info.status === "TRADE_SUCCESS" && info.receipt_type !== 'ziti' 
+                        {/* {info.status === "TRADE_SUCCESS" && info.receipt_type !== 'ziti' 
                           ? `物流单号：${info.delivery_code}`
-                          : null}
+                          : null} */}
                       </Text>
                     </View>
                       {/*{
