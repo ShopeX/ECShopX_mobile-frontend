@@ -1059,19 +1059,14 @@ export default class Detail extends Component {
                       <Text className="crossTitle">含税销售价</Text>
                     )}
                     <Price primary unit="cent" value={showPrice} />
-                    {info.type == "1" ? (
+                    {
+                      curSku && curSku[info.type == "1" ? 'price' : 'market_price'] > 0 &&
                       <Price
                         lineThrough
-                        unit="cent"
-                        value={curSku ? curSku.price : info.price}
+                        unit='cent'
+                        value={curSku ? curSku[info.type == "1" ? 'price' :'market_price'] : info[info.type == "1" ? 'price' :'market_price']}
                       />
-                    ) : (
-                      <Price
-                        lineThrough
-                        unit="cent"
-                        value={curSku ? curSku.market_price : info.market_price}
-                      />
-                    )}
+                    }
                   </View>
                   {info.nospec && info.activity_type === "limited_buy" && (
                     <View className="limited-buy-rule">
