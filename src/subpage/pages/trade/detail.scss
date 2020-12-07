@@ -323,3 +323,35 @@
 .delivery-btn{
   margin-right: 15px;
 }
+.at-input-number {
+  $input-size: 40px;
+  border: none;
+  border-radius: 0;
+  height: $input-size;
+  overflow: hidden;
+  &__btn {
+    border: 1PX solid $color-border-gray;
+    &:before, &:after {
+      border: none;
+    }
+    width: $input-size;
+    height: $input-size;
+    box-sizing: border-box;
+    padding: 0;
+    text-align: center;
+    overflow: hidden;
+    &-subtract, &-add {
+      font-size: 20px;
+    }
+  }
+  &__input, input {
+    line-height: $input-size;
+    height: $input-size !important;
+    min-height: $input-size;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    font-size: $font-size-small;
+    border: none;
+  }
+}

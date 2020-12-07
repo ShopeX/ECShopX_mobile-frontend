@@ -52,6 +52,15 @@ export default class TradeRefund extends Component {
 
   componentDidMount () {
     this.fetch()
+    const { status } = this.$router.params
+    const { segTypes,curSegIdx } = this.state
+    let curIndex = 0
+    segTypes.map((item,index)=>{
+      item.status == status && (curIndex = index)
+    })
+    this.setState({
+      curSegIdx:curIndex
+    })
   }
 
   async fetch () {
@@ -59,44 +68,47 @@ export default class TradeRefund extends Component {
       mask: true
     })
 
-    const { aftersales_bn, item_id, order_id, isDelivery, delivery_status } = this.$router.params
+    const { aftersales_bn, order_id, isDelivery, delivery_status,deliverData } = this.$router.params
+    let detail = deliverData ? JSON.parse(deliverData) :null
     // 获取售后原因
     const reasonList = await api.aftersales.reasonList()
+    let params = null
+    if(aftersales_bn){
+      const res = await api.aftersales.info({
+        aftersales_bn,
+        detail,
+        order_id
+      })
+      if (!res) {
+      this.setState({
+        reason: newReason,
+        remind,
+      })
+        return
+      }
+        params = pickBy(res, {
+        curSegIdx: ({ aftersales_type }) => this.state.segTypes.findIndex(t => t.status === aftersales_type) || 0,
+        curSegTypeValue: ({ aftersales_type }) => this.state.segTypes[this.state.segTypes.findIndex(t => t.status === aftersales_type)].title,
+        curReasonIdx: ({ reason }) => reasonList.indexOf(reason) || 0,
+        curSegReasonValue: 'reason',
+        description: 'description',
+        imgs: ({ evidence_pic }) => evidence_pic.map(url => ({ url }))
+      })
+    }
+ 
 
 
-    const res = await api.aftersales.info({
-      aftersales_bn,
-      item_id,
-      order_id
-    })
     Taro.hideLoading()
 
     const { reason: oldReason } = this.state
 
     const newReason = [...oldReason, ...reasonList]
     let remind = await api.aftersales.remindDetail()
-    console.log(this.$router.params)
     if (isDelivery === 'false' && delivery_status !== 'DONE') {
       this.setState({
         segTypes: [{ title: '仅退款', status: 'ONLY_REFUND' }]
       })
     }
-    if (!res.aftersales) {
-      this.setState({
-        reason: newReason,
-        remind,
-      })
-      return
-    }
-
-    const params = pickBy(res.aftersales, {
-      curSegIdx: ({ aftersales_type }) => this.state.segTypes.findIndex(t => t.status === aftersales_type) || 0,
-      curSegTypeValue: ({ aftersales_type }) => this.state.segTypes[this.state.segTypes.findIndex(t => t.status === aftersales_type)].title,
-      curReasonIdx: ({ reason }) => newReason.indexOf(reason) || 0,
-      curSegReasonValue: 'reason',
-      description: 'description',
-      imgs: ({ evidence_pic }) => evidence_pic.map(url => ({ url }))
-    })
 
     this.setState({
       ...params,
@@ -191,9 +203,10 @@ export default class TradeRefund extends Component {
     const reason = this.state.reason[curReasonIdx]
     const aftersales_type = segTypes[curSegIdx].status
     const evidence_pic = this.state.imgs.map(({ url }) => url)
-    const { item_id, order_id, aftersales_bn } = this.$router.params
+    const { order_id, aftersales_bn,deliverData } = this.$router.params
+    let detail = deliverData
     const data = {
-      item_id,
+      detail,
       order_id,
       aftersales_bn,
       aftersales_type,
@@ -269,7 +282,7 @@ export default class TradeRefund extends Component {
           }
         </AtTabs>
         <SpCell className='trade-refund__reason' title='请选择退款理由'>
-          {reason.map((item, idx) => {
+          {reason && reason.map((item, idx) => {
             return (
               <AtTag
                 key={item}
@@ -337,7 +350,7 @@ export default class TradeRefund extends Component {
           }
         </View>
 
-        {remind.is_open && <View className='remind-wrap'>
+        {remind && remind.is_open && <View className='remind-wrap'>
           <Text className='biao-icon biao-icon-tishi'>  售后提醒</Text>
 
           <View className='remind-text'>

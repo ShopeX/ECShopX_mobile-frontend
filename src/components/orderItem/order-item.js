@@ -27,6 +27,7 @@ export default class OrderItem extends Component {
         ? info.pics[0]
         : info.pics
 
+
     return (
       <View
         className='order-item'
@@ -78,8 +79,8 @@ export default class OrderItem extends Component {
               } */}
               <Price className='order-item__price' value={info.price}></Price>
               
-              {payType=='hfpay'&&<Text className='order-item__pay-type'>汇付支付</Text>}
-              {payType!='hfpay'&&<Text className='order-item__pay-type'>{payType === 'dhpoint' ? '积分支付' : '微信支付'}</Text>}
+              {/* {payType=='hfpay'&&<Text className='order-item__pay-type'>汇付支付</Text>}
+              {payType!='hfpay'&&<Text className='order-item__pay-type'>{payType === 'dhpoint' ? '积分支付' : '微信支付'}</Text>} */}
             </View>
           )
         }
