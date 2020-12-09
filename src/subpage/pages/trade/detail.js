@@ -98,6 +98,7 @@ export default class TradeDetail extends Component {
       discount_fee: ({ discount_fee }) => (+discount_fee / 100).toFixed(2),
       point_fee: ({ point_fee }) => (+point_fee / 100).toFixed(2),
       point_use: 'point_use',
+      mobile: 'mobile',
       receiver_city: 'receiver_city',
       receiver_district: 'receiver_district',
       receiver_address: 'receiver_address',
@@ -144,8 +145,7 @@ export default class TradeDetail extends Component {
       store_address: 'store_address',
       store_name: 'store_name',
       hour: 'hour',
-      phone: 'phone',
-      contract_phone: 'contract_phone'
+      phone: 'phone'
     })
 
     if (info.receipt_type == 'ziti' && info.ziti_status === 'PENDING') {
@@ -633,7 +633,7 @@ export default class TradeDetail extends Component {
                 <View className='trade-detail-waitdeliver column'>
                   <View className='line'>线下订单</View>
                   <View className='line'>销售门店：{ ziti.store_name }</View>
-                  <View className='line'>购买者：{ ziti.contract_phone }</View>
+                  <View className='line'>购买者：{ info.mobile }</View>
                 </View>
               </View>
               <View className='trade-detail-goods'>
