@@ -113,7 +113,7 @@ export default class TradeList extends Component {
       is_rate: 'is_rate',
       create_date: 'create_date',
       is_all_delivery: "is_all_delivery",
-      is_logistics: 'is_logistics',
+      is_logistics: 'is_split',
       delivery_type: 'delivery_type',
       pay_status: 'pay_status',
       delivery_status: "delivery_status",

@@ -138,7 +138,7 @@ export default class TradeDetail extends Component {
       type: 'type',
       mobile: 'mobile',
       is_shopscreen: 'is_shopscreen',
-      is_logistics: 'is_logistics',
+      is_logistics: 'is_split',
       total_tax: ({ total_tax }) => (+total_tax / 100).toFixed(2),
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
@@ -151,7 +151,7 @@ export default class TradeDetail extends Component {
       point: 'point',
       status: ({ order_status }) => resolveOrderStatus(order_status),
       can_apply_aftersales:'can_apply_aftersales',
-      orders: ({ items = [], logistics_items = [], is_logistics  }) => pickBy((is_logistics ? logistics_items : items), pickItem),
+      orders: ({ items = [], logistics_items = [], is_split  }) => pickBy((is_split ? logistics_items : items), pickItem),
       log_orders: ({ items = [] }) => pickBy(items, pickItem)
     })
 
