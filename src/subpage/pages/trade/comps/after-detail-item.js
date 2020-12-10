@@ -2,9 +2,9 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { copyText } from '@/utils'
-import OrderItem from  '../../../../components/orderItem/order-item'
 import InputNumber from '@/components/input-number'
 import SpCheckbox from '@/components/checkbox'
+import OrderItem from  '../../../../components/orderItem/order-item'
 
 
 import './detail-item.scss'
@@ -17,6 +17,7 @@ export default class AfterDetailItem extends Component {
   static defaultProps = {
     // customHeader: false
     customFooter: false,
+    showType: 'orders'
     // customRender: false,
     // noHeader: false,
     // showActions: false,
@@ -59,8 +60,8 @@ export default class AfterDetailItem extends Component {
     S.toast('复制成功')
   }
   handleSelectionChange (item_id, checked) {//选择要申请售后的商品
-    const { info } = this.props
-    info.orders.map(item=>{
+    const { info, showType } = this.props
+    info[showType].map(item=>{
       item.item_id == item_id && (item.is_checked = checked)
     })
     this.setState({
@@ -68,9 +69,9 @@ export default class AfterDetailItem extends Component {
     })
   }
   handleQuantityChange(item,val){   //改变售后商品的数量
-    const { info } = this.props
-    info.orders.map(v=>{
-      v.item_id == item.item_id && (v.left_aftersales_num = val)
+    const { info, showType } = this.props
+    info[showType].map(v=>{
+      v.item_id == item.item_id && (v.apply_num = val)
     })
     this.setState({
       info
@@ -78,20 +79,14 @@ export default class AfterDetailItem extends Component {
   }
 
   render () {
-    const { customHeader, customFooter, noHeader, onClick, info, showActions } = this.props
+    const { customHeader, customFooter, noHeader, onClick, info, showActions, showType } = this.props
     return (
       <View className='detail-item'>
         {
-          info && info.orders.map((item, idx) =>
+          info && info[showType] && info[showType].map((item, idx) =>
             <View className='detail-item-good' key={`${idx}1`}>
             <View className='detail-item__fix'>
-                {
-                  (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') 
-                   ? null
-                   : <Text className='detail-item__title'>第{idx+1}件商品</Text>
-
-                }
-              
+                <Text className='detail-item__title'>第{idx+1}件商品</Text>
                 {
                   info.delivery_code
                   ? null
@@ -108,17 +103,17 @@ export default class AfterDetailItem extends Component {
                     {
                       item.left_aftersales_num > 0 
                       ?  <SpCheckbox
-                      key={item.item_id}
-                      checked={item.is_checked}
-                      onChange={this.handleSelectionChange.bind(this, item.item_id)}
-                    />
+                        key={item.item_id}
+                        checked={item.is_checked}
+                        onChange={this.handleSelectionChange.bind(this, item.item_id)}
+                      />
                     : null
                     }
                 </View>
 
             
               <View className="order-flex_goods">
-              <OrderItem
+                <OrderItem
                   key={`${idx}1`}
                   info={item}
                   isShowNational
@@ -133,51 +128,24 @@ export default class AfterDetailItem extends Component {
                     ? null
                     : item.delivery_code && 
                     <AtButton
-                        circle
-                        type='text'
-                        size='small'
-                        className='delivery-btn'                        
-                        onClick={this.handleLookDelivery.bind(this, item)}
-                      >
+                      circle
+                      type='text'
+                      size='small'
+                      className='delivery-btn'                        
+                      onClick={this.handleLookDelivery.bind(this, item)}
+                    >
                        查看物流
                       </AtButton> )                  
                   }
-                  <View>
-                    
-                  </View>
-                  
                   {
-                    ((info.is_all_delivery && info.status !== 'WAIT_SELLER_SEND_GOODS' || !info.is_all_delivery)&& info.latest_aftersale_time >= 0 &&item.aftersales_status !== 'CLOSED') && (info.is_all_delivery || (!info.is_all_delivery && item.delivery_status === 'DONE'))  &&
-                      // <AtButton
-                      //   circle
-                      //   type='primary'
-                      //   size='small'
-                      //   onClick={this.handleClickAfterSale.bind(this, item)}
-                      // >
-                      //   {
-                      //     (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
-                      //   }
-                      // </AtButton>
-                      <View>
-                        {
-                           (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') 
-                           ? <InputNumber
-                           min={1}
-                           max={item.left_applay_num}
-                           value={item.left_aftersales_num}
-                          // onChange={this.props.onNumChange}
-                           onChange={this.handleQuantityChange.bind(this,item)}
-
-                           />
-                           :null
-                        }
-                        
-                      </View>
-
-                     
-
+                    item.left_aftersales_num && <InputNumber
+                      min={1}
+                      max={item.left_aftersales_num}
+                      value={item.apply_num}
+                    // onChange={this.props.onNumChange}
+                      onChange={this.handleQuantityChange.bind(this,item)}
+                    />
                   }
-              
                 </View>
               }
             </View>

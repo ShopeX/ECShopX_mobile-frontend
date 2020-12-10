@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/components/float-menus/meiqia.weapp.js
  * @Date: 2020-04-20 16:57:55
  * @LastEditors: Arvin
- * @LastEditTime: 2020-11-17 16:07:02
+ * @LastEditTime: 2020-12-09 14:38:53
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
@@ -108,6 +108,7 @@ export default class Index extends Component {
     const { isFloat } = this.props
     const { meiqia_id } = this.state
     const echat = Taro.getStorageSync('echat')
+
     return (
       (meiqia_id || echat.is_open === 'true') ? <View>
         {

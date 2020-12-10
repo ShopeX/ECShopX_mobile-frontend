@@ -17,6 +17,7 @@ export default class DetailItem extends Component {
   static defaultProps = {
     // customHeader: false
     customFooter: false,
+    showType: 'orders'
     // customRender: false,
     // noHeader: false,
     // showActions: false,
@@ -81,39 +82,33 @@ export default class DetailItem extends Component {
   }
 
   render () {
-    const { customHeader, customFooter, noHeader, onClick, info, showActions } = this.props
+    const { customHeader, customFooter, noHeader, onClick, info, showActions, showType } = this.props
     return (
       <View className='detail-item'>
         {
-          info && info.orders.map((item, idx) =>
+          info && info[showType] && info[showType].map((item, idx) =>
             <View className='detail-item-good' key={`${idx}1`}>
-            <View className='detail-item__fix'>
-                {
-                  (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') 
-                   ? null
-                   : <Text className='detail-item__title'>第{idx+1}件商品</Text>
-
-                }
-              
-                {
-                  info.delivery_code
-                  ? null
-                  : item.delivery_code
-                    ? <View className='detail-item__code'>
-                        <Text className='code'>物流单号：{item.delivery_code}</Text>
-                        <Text className='btn' onClick={this.handleCodeCopy.bind(this, item.delivery_code)}>复制</Text>
-                      </View>
-                    : null
-                }               
-            </View>
-            <OrderItem
-                  key={`${idx}1`}
-                  info={item}
-                  isShowNational
-                />
+              <View className='detail-item__fix'>
+                  <Text className='detail-item__title'>第{idx+1}件商品</Text>
+                  {
+                    info.delivery_code
+                    ? null
+                    : item.delivery_code
+                      ? <View className='detail-item__code'>
+                          <Text className='code'>物流单号：{item.delivery_code}</Text>
+                          <Text className='btn' onClick={this.handleCodeCopy.bind(this, item.delivery_code)}>复制</Text>
+                        </View>
+                      : null
+                  }               
+              </View>
+              <OrderItem
+                key={`${idx}1`}
+                info={item}
+                isShowNational
+              />
               {
                 !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>
-                 {
+                {
                     info.delivery_type=='old'&&(info.delivery_code
                     ? null
                     : item.delivery_code && 
@@ -124,7 +119,7 @@ export default class DetailItem extends Component {
                         className='delivery-btn'                        
                         onClick={this.handleLookDelivery.bind(this, item)}
                       >
-                       查看物流
+                      查看物流
                       </AtButton> )                  
                   }
                   <View>
