@@ -579,19 +579,6 @@ export default class TradeDetail extends Component {
             />
           </View>
           {
-            info.is_logistics && <View className='logConfirm'>
-              {info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
-                  <View
-                    className='btn'
-                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                    onClick={this.handleClickBtn.bind(this, "confirm")}
-                  >
-                    确认收货
-                  </View>
-              )}
-            </View>
-          }
-          {
             info.is_logistics && <View className='screenZiti' id='order-1'>
               <View
                 className='trade-detail-header'
