@@ -66,7 +66,7 @@ export default class TradeItem extends Component {
           onClick={onClick}
         >
           {
-            info.order.map((item, idx) =>
+            (info && info.order) && info.order.map((item, idx) =>
               <OrderItem
                 // isShowNational={isShowNational}
                 key={`${idx}1`}
