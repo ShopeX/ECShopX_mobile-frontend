@@ -129,6 +129,7 @@ export default class TradeDetail extends Component {
       qrcode_url: 'qrcode_url',
       delivery_corp: 'delivery_corp',
       order_type: 'order_type',
+      totalpayment:({ total_fee}) =>   ((+Number(total_fee)) / 100).toFixed(2),
       order_status_msg: 'order_status_msg',
       order_status_des: 'order_status_des',
       order_class: 'order_class',
@@ -599,7 +600,7 @@ export default class TradeDetail extends Component {
             </View>
           }
           <View className="trade-money">
-          <View>总计：<Text className="trade-money__num">￥{info.item_fee}</Text></View>
+          <View>总计：<Text className="trade-money__num">￥{info.totalpayment}</Text></View>
           </View>
         </ScrollView>
         
