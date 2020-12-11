@@ -49,7 +49,7 @@ export default class CouponItem extends Component {
       return null
     }
 
-    const isDisabled = info.status === '2' || this.props.isDisabled
+    const isDisabled = info.status === '2' || info.tagClass === 'overdue' || this.props.isDisabled
 
     return (
       <View
@@ -121,9 +121,9 @@ export default class CouponItem extends Component {
             <View className='coupon-item___description'>
               <View>{info.title}</View>
               {
-                info.tagClass === 'used'
+                (info.tagClass === 'used' || info.tagClass === 'overdue')
                   ? <View className='coupon-item___used'>
-                      <Text className='sp-icon sp-icon-yishiyong icon-used'></Text>
+                      <Text className={`sp-icon sp-icon-yishiyong icon-${info.tagClass === 'used' ? 'used' : 'yiguoqi'}`}></Text>
                     </View>
                     : null
               }

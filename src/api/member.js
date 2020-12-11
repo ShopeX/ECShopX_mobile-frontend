@@ -38,6 +38,10 @@ export function couponList (params = {}) {
   return req.get('/user/newGetCardList', params)
 }
 
+export function getUserCardList (params = {}) {
+  return req.get('/user/getUserCardList', params)
+}
+
 export function homeCouponList (params = {}) {
   return req.get('/getCardList', params)
 }

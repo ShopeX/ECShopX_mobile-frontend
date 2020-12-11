@@ -22,7 +22,8 @@ export default class Coupon extends Component {
       curTabIdx: 0,
       tabList: [
         {title: '可用优惠券', status: '1'},
-        {title: '过期和已使用', status: '2'}
+        {title: '已使用', status: '2'},
+        {title: '已过期', status: '3'}
       ],
       list: [],
       curId: null
@@ -45,20 +46,21 @@ export default class Coupon extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-    const { curTabIdx } = this.state
-    let vaildStatus
-    if(curTabIdx === 0) {
-      vaildStatus = true
-    }else {
-      vaildStatus = false
-    }
+    const { curTabIdx, tabList } = this.state
+    // let vaildStatus
+    // if(curTabIdx === 0) {
+    //   vaildStatus = true
+    // }else {
+    //   vaildStatus = false
+    // }
+    const status = tabList[curTabIdx].status
     params = {
       ...params,
-      valid: vaildStatus,
+      status,
       page,
       pageSize
     }
-    const { list, total_count: total } = await api.member.couponList(params)
+    const { list, total_count: total } = await api.member.getUserCardList(params)
     const nList = pickBy(list, {
       id: 'id',
       status: 'status',
