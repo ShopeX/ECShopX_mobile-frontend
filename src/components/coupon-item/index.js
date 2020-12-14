@@ -130,6 +130,7 @@ export default class CouponItem extends Component {
               {info.begin_date && info.end_date && (
                 <View className='coupon-item___time'><Text>{info.begin_date} ~ {info.end_date}</Text></View>
               )}
+              <View className='detail'>详细信息</View>
             </View>
             {this.props.children}
             <View className='radius-view radius-right-top'> </View>
