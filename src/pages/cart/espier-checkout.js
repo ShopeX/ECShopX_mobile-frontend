@@ -961,7 +961,7 @@ export default class CartCheckout extends Component {
 
               this.setState({
                 disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
-                payType: ''
+                payType: 'wxpay'
               }, () => {
                 this.calcOrder()
               })
