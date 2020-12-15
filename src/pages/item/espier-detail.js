@@ -223,9 +223,9 @@ export default class Detail extends Component {
     try {
       const res = await api.cart.count({ shop_type: isDrug ? 'drug' : 'distributor' })
       this.setState({
-        cartCount: res.cart_count || ''
+        cartCount: res.item_count || ''
       }, () => {
-        this.props.onUpdateCount(res.cart_count)
+        this.props.onUpdateCount(res.item_count)
       })
     } catch (e) {
       console.log(e)
