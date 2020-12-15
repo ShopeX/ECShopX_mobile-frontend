@@ -141,7 +141,7 @@ export default class CouponItem extends Component {
                 {info.begin_date && info.end_date && (
                   <View className='coupon-item___time'><Text>{info.begin_date} ~ {info.end_date}</Text></View>
                 )}
-                <View className='checkDetail' onClick={this.changeDetail.bind(this)}>详细信息</View>
+                {/* <View className='checkDetail' onClick={this.changeDetail.bind(this)}>详细信息</View> */}
               </View>
               {this.props.children}
               <View className='radius-view radius-right-top'> </View>
@@ -150,7 +150,7 @@ export default class CouponItem extends Component {
             {this.props.renderFooter}
           </View>
         </View>
-        <View className={`detail ${showDetail && 'show'}`}>优惠券详情</View>
+        {/* <View className={`detail ${showDetail && 'show'}`}>使用范围: </View> */}
       </View>
     )
   }
