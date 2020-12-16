@@ -41,7 +41,7 @@ export default class TradeRefundSendback extends Component {
     this.state = {
       express,
       curExpressIdx: 0,
-      corp_code: '',
+      corp_code: 'SF',
       logi_no: ''
     }
   }
