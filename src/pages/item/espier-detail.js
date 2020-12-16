@@ -24,6 +24,7 @@ import './espier-detail.scss'
 }), (dispatch) => ({
   onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
   onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
+  onUpdateCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),
   onAddFav: ({ item_id, fav_id }) => dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
   onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
 }))
@@ -223,6 +224,8 @@ export default class Detail extends Component {
       const res = await api.cart.count({ shop_type: isDrug ? 'drug' : 'distributor' })
       this.setState({
         cartCount: res.item_count || ''
+      }, () => {
+        this.props.onUpdateCount(res.item_count)
       })
     } catch (e) {
       console.log(e)

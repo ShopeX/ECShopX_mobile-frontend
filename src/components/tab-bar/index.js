@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtTabBar } from 'taro-ui'
-import { navigateTo, getCurrentRoute } from '@/utils'
+import { getCurrentRoute } from '@/utils'
 import S from '@/spx'
 // import { getTotalCount } from '@/store/cart'
 
@@ -26,6 +26,27 @@ export default class TabBar extends Component {
   
   componentDidMount () {
     this.initTabbarData()
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.current !== undefined) {
+      this.setState({ localCurrent: nextProps.current })
+    }
+    if (this.props.cartCount !== nextProps.cartCount) {
+      setTimeout(() => {
+        this.initTabbarData()
+      })
+    }
+  }
+
+  componentDidShow () {
+    if (this.state.tabList.length > 0) {
+      this.fetchCart()
+    }
+  }
+
+  static options = {
+    addGlobalClass: true
   }
 
   initTabbarData () {
@@ -71,23 +92,6 @@ export default class TabBar extends Component {
     })
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.current !== undefined) {
-      this.setState({ localCurrent: nextProps.current })
-    }
-  }
-
-  componentDidShow () {
-    if (this.state.tabList.length > 0) {
-      this.fetchCart()
-    }
-  }
-
-  static options = {
-    addGlobalClass: true
-  }
-
-
   get cartCount () {
     // console.log('computed')
     return this.props.cartCount
@@ -108,7 +112,7 @@ export default class TabBar extends Component {
     if (tabList.length == 0) {
       return
     }
-    const { url } = tabList[localCurrent]
+    const { url } = tabList[localCurrent] || {}
     if (url && url !== fullPath) {
       const nCurrent = tabList.findIndex((t) => t.url === fullPath) || 0
       this.setState({

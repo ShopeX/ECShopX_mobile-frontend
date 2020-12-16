@@ -593,7 +593,7 @@ export default class GoodsBuyPanel extends Component {
                 );
               })}
             </ScrollView>
-            {type !== "pick" && (
+            {(type !== "pick" && isActive) && (
               <View className="goods-quantity__wrap">
                 <Text className="goods-quantity__hd"></Text>
                 <View className="goods-quantity__bd">
