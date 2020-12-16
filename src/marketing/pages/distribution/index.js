@@ -107,7 +107,7 @@ export default class DistributionDashboard extends Component {
       notbuy_promoter: 'notbuy_promoter',
       taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee'
     })
-
+     
     const promoter = await api.distribution.info()
     const pInfo = pickBy(promoter, {
       shop_name: 'shop_name',
@@ -122,8 +122,11 @@ export default class DistributionDashboard extends Component {
         const userInfo = pickBy(res2, {
           applyStatus: 'status',
         })
-    const info = {username, avatar, ...base, ...pInfo,...userInfo}
-
+    const res3 = await api.member.getIsHf()
+    let isHf=res3.hfpay_version_status=='open'
+    const info = { username, avatar, ...base, ...pInfo, ...userInfo,isHf }
+   
+    
     this.setState({
       info
     })
@@ -175,7 +178,7 @@ export default class DistributionDashboard extends Component {
             <View className='mini-store-apply'>申请开店审核中</View>
           }
         </View>
-        {info.applyStatus!=3?<View className='bandCardInfo'>
+        {info.applyStatus!=3&&info.isHf?<View className='bandCardInfo'>
           <View className='iconfont icon-info'></View>
           <View className='info'>
             <View className='title'>您还没实名认证</View>
@@ -253,11 +256,11 @@ export default class DistributionDashboard extends Component {
                 <View className='icon-arrowRight item-icon-go'></View>
               </Button>
           }
-          <Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/verified-card/index`}>
+          {info.isHf&&<Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/verified-card/index`}>
             <View className='item-icon icon-weChart'></View>
             <View className='list-item-txt'>实名认证以及绑卡</View>
             <View className='icon-arrowRight item-icon-go'></View>
-          </Navigator>
+          </Navigator>}
         </View>
       </View>
     )

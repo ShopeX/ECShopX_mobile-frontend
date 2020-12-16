@@ -128,7 +128,7 @@ export default class DistributionWithdraw extends Component {
     const { cashWithdrawalRebate, limit_rebate, amount, curIdx, payList, alipay_account } = this.state
     let payText = {
       'alipay': '支付宝',
-      'wxpay': '微信(<=800)',
+      'wechat': '微信(<=800)',
       "hfpay": '汇付天下'
     }
     return (
