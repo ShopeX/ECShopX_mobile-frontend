@@ -325,6 +325,8 @@ export default class MemberIndex extends Component {
         appId: redirectInfo.data.info_app_id,
         path: redirectInfo.data.info_page,
       })
+    } else {
+      this.handleClick('/marketing/pages/member/userinfo')
     }
   }
   render () {
@@ -629,7 +631,7 @@ export default class MemberIndex extends Component {
             <SpCell
               title='个人信息'
               isLink
-              onClick={this.handleClick.bind(this, '/marketing/pages/member/userinfo')}
+              onClick={this.handleClickInfo.bind(this)}
             >
             </SpCell>
             {
