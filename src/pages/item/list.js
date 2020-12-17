@@ -105,7 +105,7 @@ export default class List extends Component {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, tagsList, curTagId,isOpenStore } = this.state
     const { distributor_id,store_id } = Taro.getStorageSync('curStore')
-
+    const { cardId } = this.$router.params
     const query = {
       ...this.state.query,
       item_params: selectParams,
@@ -116,6 +116,10 @@ export default class List extends Component {
 
     if (APP_PLATFORM === 'standard') {
       query.distributor_id = isOpenStore ? store_id : distributor_id
+    }
+
+    if (cardId) {
+      query.card_id = cardId
     }
 
     const { list, total_count: total, item_params_list = [], select_tags_list = [] } = await api.item.search(query)

@@ -38,6 +38,10 @@ export function couponList (params = {}) {
   return req.get('/user/newGetCardList', params)
 }
 
+export function getUserCardList (params = {}) {
+  return req.get('/user/getUserCardList', params)
+}
+
 export function homeCouponList (params = {}) {
   return req.get('/getCardList', params)
 }
@@ -324,6 +328,10 @@ export function hfpayBankInfo (params = {}) {
 export function getTradePaymentList (params = {}) {
   return req.get('/trade/payment/list', params)
 }
+export function getIsHf (params = {}) {
+  return req.get('/trade/payment/hfpayversionstatus', params)
+}
+
 
 //获取是否开启获取crm地址
 export function getCrmsetting () {

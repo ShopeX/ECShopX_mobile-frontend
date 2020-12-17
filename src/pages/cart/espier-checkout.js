@@ -961,7 +961,7 @@ export default class CartCheckout extends Component {
 
               this.setState({
                 disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
-                payType: ''
+                payType: 'wxpay'
               }, () => {
                 this.calcOrder()
               })
@@ -1835,7 +1835,7 @@ export default class CartCheckout extends Component {
               <SpCell className="trade-sub-total__item" title="优惠金额：">
                 <Price unit="cent" value={total.discount_fee} />
               </SpCell>
-              {goodType !== "cross" && (
+              {goodType !== "cross" && pointInfo.is_open_deduct_point && (
                 <SpCell className="trade-sub-total__item" title="积分抵扣：">
                   <Price unit="cent" value={total.point_fee} />
                 </SpCell>

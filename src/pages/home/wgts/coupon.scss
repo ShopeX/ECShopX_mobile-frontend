@@ -61,6 +61,7 @@
     .coupon-caption {
       flex: 1;
       padding-right: 120px;
+      overflow: hidden;
       .coupon-content {
         padding-top: 5px;
         .coupon-content__brand-name {

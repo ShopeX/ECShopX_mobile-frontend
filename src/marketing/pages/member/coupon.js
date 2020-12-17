@@ -21,8 +21,9 @@ export default class Coupon extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '可用优惠券', status: '1'},
-        {title: '过期和已使用', status: '2'}
+        {title: '未使用', status: '1'},
+        {title: '已使用', status: '2'},
+        {title: '已过期', status: '3'}
       ],
       list: [],
       curId: null
@@ -45,20 +46,21 @@ export default class Coupon extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-    const { curTabIdx } = this.state
-    let vaildStatus
-    if(curTabIdx === 0) {
-      vaildStatus = true
-    }else {
-      vaildStatus = false
-    }
+    const { curTabIdx, tabList } = this.state
+    // let vaildStatus
+    // if(curTabIdx === 0) {
+    //   vaildStatus = true
+    // }else {
+    //   vaildStatus = false
+    // }
+    const status = tabList[curTabIdx].status
     params = {
       ...params,
-      valid: vaildStatus,
+      status,
       page,
       pageSize
     }
-    const { list, total_count: total } = await api.member.couponList(params)
+    const { list, total_count: total } = await api.member.getUserCardList(params)
     const nList = pickBy(list, {
       id: 'id',
       status: 'status',
@@ -98,8 +100,15 @@ export default class Coupon extends Component {
     })
   }
 
-  handleClick = (card_id, code) => {
-    const url = `/marketing/pages/member/coupon-detail?card_id=${card_id}&code=${code}`
+  handleClick = (item) => {
+    const { card_id, code, card_type, status, tagClass } = item
+    if (status === '2' || tagClass === 'overdue') {
+      return false
+    }
+    let url = `/pages/item/list?cardId=${card_id}`
+    if (card_type === 'gift') {
+      url = `/marketing/pages/member/coupon-detail?card_id=${card_id}&code=${code}`
+    }
     Taro.navigateTo({
       url
     })
@@ -152,7 +161,7 @@ export default class Coupon extends Component {
                   <CouponItem
                     info={item}
                     key={item.id}
-                    onClick={this.handleClick.bind(this, item.card_id, item.code)}
+                    onClick={this.handleClick.bind(this, item)}
                   />
                 )
               })

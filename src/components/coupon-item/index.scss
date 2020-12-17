@@ -1,18 +1,21 @@
 @import "../../style/imports";
 
 .coupon-item-index {
-  display: flex;
-  justify-content: space-between;
+  width: 100%;
   padding: 0 10px;
   box-sizing: border-box;
+  margin-bottom: $edge-margin;
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .coupon-item {
-    flex: 1;
+    width: 100%;
     min-height:180px;
     position: relative;
     display: flex;
     justify-content: space-between;
-    margin-bottom: $edge-margin;
-
     &__check {
       width: 32px;
       margin-right:10px;
@@ -114,6 +117,12 @@
       flex: 1;
       color: #666;
       font-size: 24px;
+      .checkDetail {
+        margin-top: 20px;
+        font-size: 22px;
+        height: 50px;
+        line-height: 50px;
+      }
     }
     &___time {
       font-size: 20px;
@@ -121,12 +130,23 @@
     }
     &___used {
       text-align: right;
-      .icon-used {
+      .icon-used, .icon-yiguoqi {
         position: absolute;
         top: 5px;
         right: 15px;
         font-size: 80px;
       }
+    }
+  }
+  .detail {
+    box-sizing: border-box;
+    max-height: 0;
+    font-size: 22px;
+    overflow: hidden;
+    transition: all 0.3s;
+    &.show {
+      max-height: 100px;
+      padding: $edge-margin;
     }
   }
 }

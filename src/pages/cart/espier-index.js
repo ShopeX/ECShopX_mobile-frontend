@@ -140,7 +140,8 @@ export default class CartIndex extends Component {
   }
 
   // 活动分组
-  resolveActivityGroup (cartList) {
+  resolveActivityGroup (cartList = []) {
+    console.log(cartList)
     const groups = cartList.map(shopCart => {
       console.log('shopCart0---->',shopCart)
       const { list, used_activity = [],plus_buy_activity =[] } = shopCart
@@ -188,7 +189,8 @@ export default class CartIndex extends Component {
     return groups
   }
 
-  processCart ({ valid_cart = [], invalid_cart = [], cartType, crossborder_show }) {
+  processCart ({ valid_cart = [], invalid_cart = [], cartType, crossborder_show, item_count = 0 }) {
+    // const res = await api.cart.count({ shop_type: 'distributor' })
     let cartCount = 0
     const list = valid_cart.map(shopCart => {
       cartCount += shopCart.cart_total_num
@@ -208,7 +210,7 @@ export default class CartIndex extends Component {
 
     log.debug('[cart fetchCart]', list)
     this.props.onUpdateCart(list)
-    this.props.onUpdateCartCount(cartCount)
+    this.props.onUpdateCartCount(item_count)
 
     return list
   }
@@ -254,10 +256,11 @@ export default class CartIndex extends Component {
         error: e.message
       })
     }
-
+    const { item_count } = await api.cart.count({ shop_type: 'distributor' })
     const list = this.processCart({
       valid_cart,
       invalid_cart,
+      item_count,
       cartType: cartTypeLocal,
       crossborder_show
     })
