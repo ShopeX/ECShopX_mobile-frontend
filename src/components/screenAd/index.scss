@@ -12,19 +12,21 @@
   }
   .countDown {
     position: absolute;
-    right: 10px;
-    padding: 5px 20px;
+    right: 30px;
+    padding: 0 20px;
     font-size: 24px;
-    border-radius: 15px;
-    background: rgba($color: #000000, $alpha: 0.6);
+    height: 65px;
+    line-height: 65px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background: rgba($color: #333, $alpha: 0.8);
     color: #fff;
     z-index: 9999;
     &.top {
-      top: 20px;
+      top: 50px;
     }
     &.bottom {
-      bottom: 30px;
-      right: 20px;
+      bottom: 100px;
     }
   }
   .adImg, .adVideo {

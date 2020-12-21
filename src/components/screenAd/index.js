@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/components/screenAd/index.js
  * @Date: 2020-12-21 11:03:55
  * @LastEditors: Arvin
- * @LastEditTime: 2020-12-21 15:29:51
+ * @LastEditTime: 2020-12-21 16:09:29
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Video } from '@tarojs/components'
