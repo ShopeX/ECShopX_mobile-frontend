@@ -29,10 +29,10 @@ export default class WgtGoodsGridTab extends Component {
     }
 
     componentDidMount() {
-        const { info } = this.props
+        const { info = {} } = this.props
         let { current } = this.state
         this.setState({
-            goodsList: info.list[current].goodsList,
+            goodsList: info.list[current] ? info.list[current].goodsList : [],
             moreLink: info.config.moreLink
         })
     }

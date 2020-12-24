@@ -22,10 +22,10 @@
     background: rgba($color: #333, $alpha: 0.8);
     color: #fff;
     z-index: 9999;
-    &.top {
+    &.right_top {
       top: 50px;
     }
-    &.bottom {
+    &.right_bottom {
       bottom: 100px;
     }
   }

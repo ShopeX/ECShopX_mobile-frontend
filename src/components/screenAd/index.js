@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/components/screenAd/index.js
  * @Date: 2020-12-21 11:03:55
  * @LastEditors: Arvin
- * @LastEditTime: 2020-12-24 12:04:18
+ * @LastEditTime: 2020-12-24 14:29:52
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Video } from '@tarojs/components'
@@ -25,7 +25,13 @@ export default class ScreenAd extends Component {
       // 是否为视频
       isVideo: true,
       // 按钮位置
-      position: 'bottom'
+      position: 'right_top',
+      // 是否允许跳过
+      isJump: true,
+      // 跳转链接
+      jumpUrl: '',
+      // 图片/视频链接
+      url: ''
     }
   }
 
@@ -38,12 +44,24 @@ export default class ScreenAd extends Component {
   getSetting = async () => {
     // const isInit = Taro.getStorageSync('initAdv')
     const res = await api.promotion.getScreenAd()
-    console.log('%c ------------------------res-----------------', 'font-size: 24px; color: red')
-    console.log(res)
+    const env = process.env.TARO_ENV
+    const client = {
+      weapp: 'wapp',
+      h5: 'h5'
+    }
+    const isHave = (res.is_enable === 1) && ((res.app === 'all') || (res.app.indexOf(client[env]) !== -1))
     this.setState({
-      isShow: true
+      isShow: isHave,
+      position: res.position,
+      isVideo: res.material_type === 2,
+      isJump: res.is_jump === 1,
+      downTime: res.waiting_time,
+      jumpUrl: res.ad_url,
+      url: res.ad_material
     }, () => {
-      // this.countDown()
+      setTimeout(() => {
+        this.countDown() 
+      }, 1000)
     })
   }
   
@@ -56,7 +74,15 @@ export default class ScreenAd extends Component {
   // 点击广告
   clickAd = (e) => {
     e && e.stopPropagation()
-    this.timeId && clearTimeout(this.timeId)
+    const { jumpUrl } = this.state
+    if (jumpUrl) {
+      Taro.navigateTo({
+        url: jumpUrl
+      })
+      setTimeout(() => {
+        this.jumpAd() 
+      }, 300)
+    }
   }
 
   // 跳过广告
@@ -65,8 +91,6 @@ export default class ScreenAd extends Component {
     this.timeId && clearTimeout(this.timeId)
     this.setState({
       isShow: false
-    }, () => {
-      // Taro.setStorageSync('initAdv', true)
     })
   }
 
@@ -88,7 +112,7 @@ export default class ScreenAd extends Component {
   }
 
   render () {
-    const { downTime, isShow, position, isVideo } = this.state
+    const { downTime, isShow, position, isVideo, isJump, url } = this.state
 
     return (
       <View
@@ -97,11 +121,13 @@ export default class ScreenAd extends Component {
         onTouchMove={this.disableTouch.bind(this)}
       >
         {/* 倒计时 */}
-        <View className={`countDown ${position}`} onClick={this.jumpAd.bind(this)}>
-          跳过 { downTime }s
-        </View>
         {
-          !isVideo ? <Image className='adImg' src='https://img.zcool.cn/community/018b575b57d793a801206a35e88b26.jpg@1280w_1l_2o_100sh.jpg' />
+          isJump && <View className={`countDown ${position}`} onClick={this.jumpAd.bind(this)}>
+            跳过 { downTime }s
+          </View>
+        }
+        {
+          !isVideo ? <Image className='adImg' src={url} />
           : <Video
             autoplay
             loop
@@ -112,7 +138,7 @@ export default class ScreenAd extends Component {
             showFullscreenBtn={false}
             showPlayBtn={false}
             showCenterPlayBtn={false}
-            src='http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4'
+            src={url}
           /> 
         }
       </View>
