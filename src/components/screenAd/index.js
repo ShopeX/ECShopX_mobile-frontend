@@ -6,10 +6,11 @@
  * @FilePath: /unite-vshop/src/components/screenAd/index.js
  * @Date: 2020-12-21 11:03:55
  * @LastEditors: Arvin
- * @LastEditTime: 2020-12-21 16:09:29
+ * @LastEditTime: 2020-12-24 12:04:18
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Video } from '@tarojs/components'
+import api from '@/api'
 
 import './index.scss'
 
@@ -35,14 +36,15 @@ export default class ScreenAd extends Component {
 
   // 获取后端配置信息
   getSetting = async () => {
-    const isInit = Taro.getStorageSync('initAdv')
-    if (!isInit) {
-      this.setState({
-        isShow: true
-      }, () => {
-        // this.countDown()
-      })
-    }
+    // const isInit = Taro.getStorageSync('initAdv')
+    const res = await api.promotion.getScreenAd()
+    console.log('%c ------------------------res-----------------', 'font-size: 24px; color: red')
+    console.log(res)
+    this.setState({
+      isShow: true
+    }, () => {
+      // this.countDown()
+    })
   }
   
   // 禁止触摸穿透
