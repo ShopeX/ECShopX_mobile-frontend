@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/others/pages/auth/index.js
  * @Date: 2020-10-29 15:36:41
  * @LastEditors: Arvin
- * @LastEditTime: 2020-12-23 14:53:48
+ * @LastEditTime: 2020-12-24 11:12:42
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
@@ -38,9 +38,9 @@ export default class AuthLogin extends Component {
 
   // 扫码
   scanCode = async () => {
-    let { token, query } = this.$router.params
-    if (!token && query && query.scene) {
-      const { t } = normalizeQuerys(query)
+    let { token, scene } = this.$router.params
+    if (!token && scene) {
+      const t = normalizeQuerys(this.$router.params)
       token = t
     }
     const { code } = await Taro.login()
@@ -65,9 +65,9 @@ export default class AuthLogin extends Component {
 
   // 确认登录
   comfimLogin = async () => {
-    let { token, query } = this.$router.params
-    if (!token && query && query.scene) {
-      const { t } = normalizeQuerys(query)
+    let { token, scene } = this.$router.params
+    if (!token && scene) {
+      const t = normalizeQuerys(this.$router.params)
       token = t
     }
     const { code } = await Taro.login()
