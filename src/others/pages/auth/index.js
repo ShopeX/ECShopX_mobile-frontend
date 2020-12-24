@@ -6,13 +6,14 @@
  * @FilePath: /unite-vshop/src/others/pages/auth/index.js
  * @Date: 2020-10-29 15:36:41
  * @LastEditors: Arvin
- * @LastEditTime: 2020-10-29 16:52:07
+ * @LastEditTime: 2020-12-24 11:12:42
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { Loading } from '@/components'
 import api from '@/api'
 import S from '@/spx'
+import { normalizeQuerys } from '@/utils'
 
 import './index.scss'
 
@@ -37,7 +38,11 @@ export default class AuthLogin extends Component {
 
   // 扫码
   scanCode = async () => {
-    const { token } = this.$router.params
+    let { token, scene } = this.$router.params
+    if (!token && scene) {
+      const t = normalizeQuerys(this.$router.params)
+      token = t
+    }
     const { code } = await Taro.login()
     const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
     try {
@@ -60,7 +65,11 @@ export default class AuthLogin extends Component {
 
   // 确认登录
   comfimLogin = async () => {
-    const { token } = this.$router.params
+    let { token, scene } = this.$router.params
+    if (!token && scene) {
+      const t = normalizeQuerys(this.$router.params)
+      token = t
+    }
     const { code } = await Taro.login()
     const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}    
     try {

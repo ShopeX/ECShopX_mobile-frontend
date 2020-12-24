@@ -82,7 +82,7 @@ const upload = {
     }
   },
   localUpload: async (item, tokenRes) => {
-    const { filetype, domain } = tokenRes
+    const { filetype="image", domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
     try {
       const res = await Taro.uploadFile({

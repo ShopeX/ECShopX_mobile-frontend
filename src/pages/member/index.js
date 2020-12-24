@@ -3,10 +3,10 @@ import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { SpToast, TabBar, SpCell,AccountOfficial} from '@/components'
 // import ExclusiveCustomerService from './comps/exclusive-customer-service'
-import MemberBanner from './comps/member-banner'
 import api from '@/api'
 import S from '@/spx'
 import req from '@/api/req'
+import MemberBanner from './comps/member-banner'
 
 import './index.scss'
 

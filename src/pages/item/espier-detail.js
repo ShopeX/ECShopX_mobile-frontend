@@ -1062,11 +1062,11 @@ export default class Detail extends Component {
                     )}
                     <Price primary unit="cent" value={showPrice} />
                     {
-                      curSku && curSku[info.type == "1" ? 'price' : 'market_price'] > 0 &&
+                      (curSku && curSku.market_price > 0) || (info && info.market_price > 0) &&
                       <Price
                         lineThrough
                         unit='cent'
-                        value={curSku ? curSku[info.type == "1" ? 'price' :'market_price'] : info[info.type == "1" ? 'price' :'market_price']}
+                        value={curSku ? curSku.market_price : info.market_price}
                       />
                     }
                   </View>
@@ -1105,7 +1105,7 @@ export default class Detail extends Component {
                   <View className="line"></View>
                   <View className="item">
                     <View className="iconfont icon-matou"></View>
-                    <Text>自有保税区</Text>
+                    <Text>保税仓</Text>
                   </View>
                   <View className="line"></View>
                   <View className="item">
