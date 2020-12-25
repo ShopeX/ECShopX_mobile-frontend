@@ -75,7 +75,6 @@ export default class Detail extends Component {
 
   async componentDidMount() {
     const options = this.$router.params
-    console.log('options=====>',options)
     let id = options.id
     let uid = ''
     if(!S.getAuthToken()){
@@ -112,8 +111,7 @@ export default class Detail extends Component {
       }
       this.fetchInfo(id)
       this.getEvaluationList(id)
-    }) 
-    // 浏览记录
+       // 浏览记录
     if (S.getAuthToken()) {
       try {
         let itemId = ''
@@ -133,6 +131,8 @@ export default class Detail extends Component {
       entry.InverseAnalysis(lnglat)
     }
     this.getDetailShare()
+    }) 
+   
   }
   async getDetailShare(){
     const options = this.$router.params
