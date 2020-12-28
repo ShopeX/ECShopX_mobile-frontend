@@ -591,6 +591,13 @@ export default class MemberIndex extends Component {
               </View>
             }
             <SpCell
+              title='线下订单关联'
+              isLink
+              img={require('../../assets/imgs/group.png')}
+              onClick={this.handleClick.bind(this, '/others/pages/bindOrder/index')}
+            >
+            </SpCell>            
+            <SpCell
               title='投诉记录'
               isLink
               img={require('../../assets/imgs/group.png')}
