@@ -63,3 +63,8 @@ export function tradeSetting (data) {
 export function deliveryLists (data) {
   return req.get('/delivery/lists', data)
 }
+
+// 绑定订单
+export function bindOrder (data) {
+  return req.post(`/order/bind/${data.order_id}`, data)
+}

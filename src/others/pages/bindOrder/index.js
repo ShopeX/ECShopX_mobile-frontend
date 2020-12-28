@@ -6,12 +6,13 @@
  * @FilePath: /unite-vshop/src/others/pages/bindOrder/index.js
  * @Date: 2020-12-28 09:46:33
  * @LastEditors: Arvin
- * @LastEditTime: 2020-12-28 12:01:24
+ * @LastEditTime: 2020-12-28 14:17:42
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Input, Image } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
-import { connect } from "@tarojs/redux"
+import { connect } from '@tarojs/redux'
+import api from '@/api'
 import { NavBar } from '@/components'
 
 
@@ -63,7 +64,7 @@ export default class BindOrder extends Component {
     })
   }
 
-  bindOrder = () => {
+  bindOrder = async () => {
     const { barCode, randomCode } = this.state
     if (!barCode || !randomCode) {
       Taro.showToast({
@@ -73,10 +74,20 @@ export default class BindOrder extends Component {
       return false
     }
     const params = {
-      barCode,
-      randomCode
+      order_id: barCode,
+      auth_code: randomCode
     }
-    console.log(params)
+    try {
+      await api.trade.bindOrder(params)
+      this.setState({
+        barCode: '',
+        randomCode: ''
+      })
+      Taro.showToast({
+        title: '关联成功，请至订单列表查看',
+        icon:'none'
+      })
+    } catch (e) {}
   }
   
   render () {
