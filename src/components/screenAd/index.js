@@ -6,11 +6,12 @@
  * @FilePath: /unite-vshop/src/components/screenAd/index.js
  * @Date: 2020-12-21 11:03:55
  * @LastEditors: Arvin
- * @LastEditTime: 2020-12-24 14:29:52
+ * @LastEditTime: 2020-12-28 16:58:02
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Video } from '@tarojs/components'
 import api from '@/api'
+import { linkPage } from '../../pages/home/wgts/helper'
 
 import './index.scss'
 
@@ -29,7 +30,7 @@ export default class ScreenAd extends Component {
       // 是否允许跳过
       isJump: true,
       // 跳转链接
-      jumpUrl: '',
+      jumpUrl: {},
       // 图片/视频链接
       url: ''
     }
@@ -75,9 +76,10 @@ export default class ScreenAd extends Component {
   clickAd = (e) => {
     e && e.stopPropagation()
     const { jumpUrl } = this.state
-    if (jumpUrl) {
+    if (jumpUrl && jumpUrl.linkPage) {
+      const url = linkPage(jumpUrl.linkPage, jumpUrl.id)
       Taro.navigateTo({
-        url: jumpUrl
+        url
       })
       setTimeout(() => {
         this.jumpAd() 
