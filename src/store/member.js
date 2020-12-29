@@ -2,7 +2,9 @@ import { createReducer } from 'redux-create-reducer'
 // import dotProp from 'dot-prop-immutable'
 
 const initState = {
-  favs: {}
+  favs: {},
+  // 是否显示广告
+  showAdv: true
 }
 
 const member = createReducer(initState, {
@@ -43,6 +45,12 @@ const member = createReducer(initState, {
     return {
       ...state,
       favs
+    }
+  },
+  ['member/closeAdv'](state) {
+    return {
+      ...state,
+      showAdv: false
     }
   }
 })

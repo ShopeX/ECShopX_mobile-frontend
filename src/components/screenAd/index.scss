@@ -1,0 +1,37 @@
+.screenAd {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  background: #fff;
+  display: none;
+  &.show {
+    display: block;
+  }
+  .countDown {
+    position: absolute;
+    right: 30px;
+    padding: 0 20px;
+    font-size: 24px;
+    height: 65px;
+    line-height: 65px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background: rgba($color: #333, $alpha: 0.8);
+    color: #fff;
+    z-index: 9999;
+    &.right_top {
+      top: 50px;
+    }
+    &.right_bottom {
+      bottom: 100px;
+    }
+  }
+  .adImg, .adVideo {
+    width: 100%;
+    height: 100%;
+  }
+}
+

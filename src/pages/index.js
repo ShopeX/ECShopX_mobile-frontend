@@ -1,26 +1,27 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem,AccountOfficial } from '@/components'
+import { SpToast, TabBar, Loading, SpNote, BackToTop, FloatMenus, FloatMenuItem,AccountOfficial, ScreenAd } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
 import { pickBy, classNames, isArray, normalizeQuerys } from '@/utils'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx";
+import { Tracker } from "@/service"
 import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
-import { Tracker } from "@/service";
 import HomeWgts from './home/comps/home-wgts'
 import Automatic from './home/comps/automatic'
 // import { resolveFavsList } from './item/helper'
 
 import './home/index.scss'
 
-@connect(({ cart }) => ({
+@connect(({ cart, member }) => ({
   list: cart.list,
   cartIds: cart.cartIds,
   cartCount: cart.cartCount,
-  showLikeList: cart.showLikeList
+  showLikeList: cart.showLikeList,
+  showAdv: member.showAdv
 }), (dispatch) => ({
   onUpdateLikeList: (show_likelist) => dispatch({ type: 'cart/updateLikeList', payload: show_likelist }),
   onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
@@ -470,7 +471,7 @@ export default class HomeIndex extends Component {
 
   render () {
     const { wgts, page, likeList, showBackToTop, isShowAddTip, curStore, positionStatus, automatic, showAuto, featuredshop, is_open_recommend, is_open_scan_qrcode,is_open_official_account,show_official,showCloseBtn,show_tabBar,is_open_store_status } = this.state
-    // const { showLikeList } = this.props
+    const { showAdv } = this.props
     // const user = Taro.getStorageSync('userinfo')
     // const isPromoter = user && user.isPromoter
     // const distributionShopId = Taro.getStorageSync('distribution_shop_id')
@@ -575,6 +576,8 @@ export default class HomeIndex extends Component {
         <TabBar
           showbar={show_tabBar}
         />
+        {/* 开屏广告 */}
+        { showAdv && <ScreenAd /> }
         
       </View>
     )
