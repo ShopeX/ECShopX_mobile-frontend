@@ -252,6 +252,8 @@ class App extends Component {
           // cart
           'pages/cart/coupon-picker',
           'pages/cart/drug-info',
+          // 绑定订单
+          'pages/bindOrder/index'
         ]
       }
     ],

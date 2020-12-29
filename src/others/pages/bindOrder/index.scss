@@ -1,0 +1,57 @@
+@import '../../../style/imports';
+
+.bindOrder {
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  box-sizing: border-box;
+  padding-top: 20px;
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  .barCode {
+    width: 80%;
+    margin: 0 auto;
+    .input, .line {
+      display: flex;
+      align-items: center;
+      .text {
+        flex: 1;
+      }
+      .iconfont {
+        font-size: 42px;
+        color: #149bd5;
+      }
+    }
+    .line {
+      padding: 20px 0;
+      justify-content: space-between;
+      .iconfont {
+        font-size: 38px;
+      }
+    }
+  }
+  .btn {
+    width: 50%;
+    margin: 60px auto 0 auto;
+    text-align: center;
+    height: 80px;
+    line-height: 80px;
+    color: #fff;
+    border-radius: 10px;
+  }
+  .tipsModal {
+    .img {
+      width: 80%;
+      margin: 20px auto;
+      display: block;
+    }
+    .confirm {
+      width: 100%;
+      height: 80px;
+      line-height: 80px;
+      color: #fff;
+      text-align: center;
+    }
+  }
+}
