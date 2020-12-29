@@ -6,15 +6,19 @@
  * @FilePath: /unite-vshop/src/components/screenAd/index.js
  * @Date: 2020-12-21 11:03:55
  * @LastEditors: Arvin
- * @LastEditTime: 2020-12-28 16:58:02
+ * @LastEditTime: 2020-12-29 10:54:42
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Video } from '@tarojs/components'
 import api from '@/api'
+import { connect } from '@tarojs/redux'
 import { linkPage } from '../../pages/home/wgts/helper'
 
 import './index.scss'
 
+@connect(() => ({}), (dispatch) => ({
+  onUpdateShowAdv: () => dispatch({ type: 'member/closeAdv'})
+}))
 export default class ScreenAd extends Component {
 
   constructor (props) {
@@ -93,6 +97,8 @@ export default class ScreenAd extends Component {
     this.timeId && clearTimeout(this.timeId)
     this.setState({
       isShow: false
+    }, () => {
+      this.props.onUpdateShowAdv()
     })
   }
 
