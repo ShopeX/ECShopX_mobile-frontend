@@ -2,15 +2,25 @@
 
 .coupon-picker {
   padding: $edge-margin 0;
+  padding-top: 100px;
+  height: 100vh;
+  .coupon-list__scroll {
+    width: 100%;
+    height: 100%;
+  }
   .coupon-item {
     &__nil {
-      margin: 0 10px;
+      // margin: 0 10px;
       background: #fff;
       display: flex;
       padding: 20px;
       align-items: center;
-      border-radius: 10px;
+      // border-radius: 10px;
       justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
     }
   }
 }
