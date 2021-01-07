@@ -409,7 +409,6 @@ export default class Reg extends Component {
   render() {
     const { colors } = this.props
     const { info, isHasValue, isVisible, isHasData, list, imgVisible, imgInfo, option_list, showCheckboxPanel,show_official,show_kuangkuang } = this.state
-    console.log('list--->',list)
 
     return (
       <View className="auth-reg">

@@ -262,7 +262,8 @@ export default class CartCheckout extends Component {
   componentDidShow () {
     this.setState({
       isPaymentOpend: false,
-      isDrugInfoOpend: false
+      isDrugInfoOpend: false,
+      isPointOpen:false
     });
     if (this.state.shouldCalcOrder) {
       this.setState(
@@ -920,7 +921,8 @@ export default class CartCheckout extends Component {
   handlePaymentShow = () => {
     this.setState({
       isPaymentOpend: true,
-      isDrugInfoOpend: false
+      isDrugInfoOpend: false,
+      isPointOpen:false
     });
   };
 
