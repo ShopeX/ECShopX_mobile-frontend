@@ -5,7 +5,7 @@
     background: $color-brand-primary;
     color: #ffffff;
     padding: 30px;
-    height: 138px;
+    min-height: 138px;
     box-sizing: border-box;
     &__text {
       display: block;
@@ -13,6 +13,17 @@
     }
     .text-status {
       margin-bottom: 10px;
+    }
+  }
+  // 回寄地址
+  .aftersalesAddress {
+    font-size: 20px;
+    .address, .contact {
+      padding-top: 5px;
+    }
+    .contact {
+      display: flex;
+      justify-content: space-between;
     }
   }
   .refund-detail {

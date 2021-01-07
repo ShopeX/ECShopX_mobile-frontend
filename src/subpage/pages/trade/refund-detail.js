@@ -44,7 +44,7 @@ export default class TradeRefundDetail extends Component {
       remind,
       //orderInfo,
       info,
-      progress:prog,
+      progress: Number(prog),
       aftersalesAddress: info.aftersales_address
     })
   }
@@ -89,6 +89,23 @@ export default class TradeRefundDetail extends Component {
     const { info, remind, progress, aftersalesAddress } = this.state
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')
+
+    // 状态
+    const statusList = [
+      '等待商家处理',
+      '商家接受申请，等待消费者回寄',
+      '消费者回寄，等待商家收货确认',
+      '售后已驳回',
+      '售后已处理',
+      '退款驳回',
+      '退款已处理',
+      '售后关闭',
+      '商家确认收货',
+      '退款处理中'
+    ]
+
+    const status = (progress >= 0 && progress <= 9) ? statusList[progress] : ''
+
     if (!info) {
       return <Loading />
     }
@@ -97,18 +114,20 @@ export default class TradeRefundDetail extends Component {
     return (
       <View className='trade-refund-detail'>
         <View className='refund-status'>
-          {/* <Text className='refund-status__text text-status'>{info.status_str}</Text> */}
-          {progress == 0 ? <Text className='refund-status__text text-status'>等待商家处理</Text> : null}
-          {progress == 1 ? <Text className='refund-status__text text-status'>商家接受申请，等待消费者回寄</Text> : null}
-          {progress == 2 ? <Text className='refund-status__text text-status'>消费者回寄，等待商家收货确认</Text> : null}
-          {progress == 3 ? <Text className='refund-status__text text-status'>售后已驳回</Text> : null}
-          {progress == 4 ? <Text className='refund-status__text text-status'>售后已处理</Text> : null}
-          {progress == 5 ? <Text className='refund-status__text text-status'>退款驳回</Text> : null}
-          {progress == 6 ? <Text className='refund-status__text text-status'>退款已处理</Text> : null}
-          {progress == 7 ? <Text className='refund-status__text text-status'>售后关闭</Text> : null}
-          {progress == 8 ? <Text className='refund-status__text text-status'>商家确认收货</Text> : null}
-          {progress == 9 ? <Text className='refund-status__text text-status'>退款处理中</Text> : null}
-
+          <Text className='refund-status__text text-status'>{ status }</Text>
+          {
+            (progress == 1 || progress == 2) && info.aftersales_address && <View className='aftersalesAddress'>
+              <View className='address'>
+                寄回地址: { info.aftersales_address.aftersales_address || '请联系客服' }
+              </View>
+              {
+                info.aftersales_address.aftersales_address && <View className='contact'>
+                  <View>收件人: { info.aftersales_address.aftersales_contact }</View>
+                  <View>联系方式: { info.aftersales_address.aftersales_mobile }</View>
+                </View>
+              }
+            </View>
+          }
         </View>
         <View className='refund-detail'>
           {progress == 0 ? <Text className='refund-detail__title'>您已成功发起售后申请，请耐心等待商家处理</Text> : null}
