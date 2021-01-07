@@ -309,8 +309,10 @@ export default class HomeIndex extends Component {
     const url = '/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=' + curdis_id
     const info = await req.get(url)
     const wgts = isArray(info) ? [] : info.config
+    console.log('---------------')
+    console.log(wgts.slice(0, 5))
     this.setState({
-      wgts: wgts.length > 5 ? wgts.slice[0, 5] : wgts
+      wgts: wgts.length > 5 ? wgts.slice(0, 3) : wgts
     }, () => {
       if (cb) {
         cb(info)
