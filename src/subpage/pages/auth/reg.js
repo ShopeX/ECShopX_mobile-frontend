@@ -315,7 +315,6 @@ export default class Reg extends Component {
     resolve()
   }
 
-
   handleTimerStop = () => {
 
   }
