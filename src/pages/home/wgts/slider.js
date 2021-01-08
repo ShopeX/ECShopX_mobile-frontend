@@ -68,6 +68,7 @@ export default class WgtSlider extends Component {
                   data[0] && <Image
                     mode='widthFix'
                     className='scale-placeholder'
+                    lazyLoad
                     src={data[0].imgUrl}
                   />
                 }

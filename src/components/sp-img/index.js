@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/components/sp-img/index.js
  * @Date: 2020-03-04 17:27:15
  * @LastEditors: Arvin
- * @LastEditTime: 2021-01-06 18:25:44
+ * @LastEditTime: 2021-01-08 18:09:50
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Image } from '@tarojs/components'
@@ -31,7 +31,7 @@ export default class SpImg extends Component {
     const {
       src,
       mode,
-      lazyLoad,
+      lazyLoad = true,
       qnMode = true,
       onLoad,
       onError,

@@ -34,14 +34,14 @@ if (APP_TRACK) {
 class App extends Component {
   // eslint-disable-next-line react/sort-comp
   componentWillMount () {
+    this.init()
   }
   componentDidMount () {
-    this.init()
   }
 
   config = {
     pages: [
-      'pages/newindex',
+      'pages/index',
       'pages/home/landing',
       'pages/category/index',
       'pages/floorguide/index',
@@ -258,19 +258,19 @@ class App extends Component {
     // 获取收藏列表
     if (process.env.TARO_ENV === 'weapp') {
       FormIds.startCollectingFormIds()
-      if (S.getAuthToken()) {
-        api.member.favsList()
-          .then(({ list }) => {
-            if (!list) return
-            store.dispatch({
-              type: 'member/favs',
-              payload: list
-            })
+    }
+    if (S.getAuthToken()) {
+      api.member.favsList()
+        .then(({ list }) => {
+          if (!list) return
+          store.dispatch({
+            type: 'member/favs',
+            payload: list
           })
-          .catch(e => {
-            console.info(e)
-          })
-      }
+        })
+        .catch(e => {
+          console.info(e)
+        })
     }
     // H5定位
     if (APP_PLATFORM === 'standard' && Taro.getEnv() === 'WEB') {
@@ -293,7 +293,6 @@ class App extends Component {
       if (smid) {
         Taro.setStorageSync('s_smid', smid)
       }
-  
       if (dtid) {
         Taro.setStorageSync('s_dtid', dtid)
       }

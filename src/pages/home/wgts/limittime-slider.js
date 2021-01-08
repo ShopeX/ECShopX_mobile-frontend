@@ -80,6 +80,7 @@ export default class WgtLimittimeSlider extends Component {
                       mode='widthFix'
                       className='slider-item__img'
                       src={item.imgUrl}
+                      lazyLoad
                     />
                   </View>
                 </SwiperItem>

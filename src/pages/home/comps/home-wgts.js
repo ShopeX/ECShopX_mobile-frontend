@@ -1,7 +1,24 @@
 import Taro, { PureComponent } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { Tracker } from "@/service"
-import { WgtSearchHome, WgtFilm, WgtMarquees, WgtSlider, WgtImgHotZone, WgtNavigation, WgtCoupon, WgtGoodsScroll,WgtGoodsGrid, WgtGoodsGridTab, WgtShowcase, WgtStore, WgtHeadline, WgtImgGif,WgtHotTopic,WgtFloorImg} from '../wgts'
+import {
+  WgtSearchHome,
+  WgtFilm,
+  WgtMarquees,
+  WgtSlider,
+  WgtImgHotZone,
+  WgtNavigation,
+  WgtCoupon,
+  WgtGoodsScroll,
+  WgtGoodsGrid,
+  WgtGoodsGridTab,
+  WgtShowcase,
+  WgtStore,
+  WgtHeadline,
+  WgtImgGif,
+  WgtHotTopic,
+  WgtFloorImg
+} from '../wgts'
 
 
 export default class HomeWgts extends PureComponent {
@@ -87,10 +104,10 @@ export default class HomeWgts extends PureComponent {
                 {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} />}
                 {item.name === 'goodsGridTab' && <WgtGoodsGridTab info={item} />}
                 {item.name === 'showcase' && <WgtShowcase info={item} />}
-                {item.name === 'headline' && <WgtHeadline info={item}/>}
-                {item.name === 'img-gif' && <WgtImgGif info={item}/>}
-                {item.name === 'hotTopic' && <WgtHotTopic info={item}/>}
-                {item.name === 'floorImg' && <WgtFloorImg info={item}/>}
+                {item.name === 'headline' && <WgtHeadline info={item} />}
+                {item.name === 'img-gif' && <WgtImgGif info={item} />}
+                {item.name === 'hotTopic' && <WgtHotTopic info={item} />}
+                {item.name === 'floorImg' && <WgtFloorImg info={item} />}
                 {APP_PLATFORM !== 'standard' && item.name === 'store' && <WgtStore info={item} />}
               </View>
             )

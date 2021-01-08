@@ -51,6 +51,7 @@ export default class WgtFloorImg extends Component {
 														return (
 																<View className='lis' key={item.id} onClick={this.onRoute.bind(this, item.linkPage, item.id)}>
 																		<Image
+																				lazyLoad
 																				className='img'
 																				src={item.imgUrl}
 																		></Image>
