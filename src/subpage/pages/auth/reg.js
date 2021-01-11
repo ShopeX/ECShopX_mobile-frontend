@@ -209,9 +209,13 @@ export default class Reg extends Component {
         })
       }
 
-      S.toast('注册成功')
+      // S.toast('注册成功')
       const { redirect, source } = this.$router.params
+      Taro.showLoading({
+        title: '注册成功, 跳转中'
+      })
       setTimeout(()=>{
+        Taro.hideLoading()
         if(Taro.getStorageSync('isqrcode') === 'true') {
           Taro.redirectTo({
             url: '/subpage/pages/qrcode-buy'
