@@ -54,9 +54,11 @@ export default class MemberIndex extends Component {
       // 菜单配置
       menuSetting: {
         activity: false,
+        offline_order: false,
         boost_activity: false,
         boost_order: false,
         complaint: false,
+        community_order: false,
         ext_info: false,
         group: false,
         member_code: false,
@@ -597,7 +599,7 @@ export default class MemberIndex extends Component {
                   </SpCell>
                 }
                 {
-                  menuSetting.ext_info && <SpCell
+                  menuSetting.community_order && <SpCell
                     title='我的社区团购'
                     isLink
                     img={require('../../assets/imgs/group.png')}
@@ -630,13 +632,15 @@ export default class MemberIndex extends Component {
                 }
               </View>
             }
-            <SpCell
-              title='线下订单关联'
-              isLink
-              img={require('../../assets/imgs/group.png')}
-              onClick={this.handleClick.bind(this, '/others/pages/bindOrder/index')}
-            >
-            </SpCell>            
+            {
+              menuSetting.offline_order && <SpCell
+                title='线下订单关联'
+                isLink
+                img={require('../../assets/imgs/group.png')}
+                onClick={this.handleClick.bind(this, '/others/pages/bindOrder/index')}
+              >
+              </SpCell>
+            }            
             {
               menuSetting.complaint && <SpCell
                 title='投诉记录'
