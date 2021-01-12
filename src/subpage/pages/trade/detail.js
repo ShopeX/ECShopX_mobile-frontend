@@ -448,6 +448,13 @@ export default class TradeDetail extends Component {
     })
   }
 
+  // 复制orderid
+  copyOrderId = (orderid) => {
+    Taro.setClipboardData({
+      data: orderid
+    })
+  }
+
   render () {
     const { colors } = this.props
     const { info, ziti, qrcode, timer, payLoading, scrollIntoView } = this.state
@@ -655,7 +662,10 @@ export default class TradeDetail extends Component {
             </View>
           )}
           <View className="trade-detail-info">
-            <Text className="info-text">订单号：{info.tid}</Text>
+            <View className="info-text">
+              订单号：{info.tid}
+              <Text className='iconfont icon-fuzhi' onClick={this.copyOrderId.bind(this, info.tid)}></Text>
+            </View>
             <Text className="info-text">下单时间：{info.created_time_str}</Text>
             {info.invoice_content ? (
               <Text className="info-text">发票信息：{info.invoice_content}</Text>

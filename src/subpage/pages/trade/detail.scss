@@ -197,6 +197,7 @@ $custabs: 80px;
     background: #fff;
     .info-text {
       display: block;
+      font-size: 24px;
     }
     .delivery_code_copy {
       display: flex;
@@ -212,6 +213,9 @@ $custabs: 80px;
         width: 120px;
         text-align: right;
       }
+    }
+    .icon-fuzhi {
+      margin-left: 20px;
     }
   }
   &-remark {
