@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/pages/index.js
  * @Date: 2021-01-06 15:46:54
  * @LastEditors: Arvin
- * @LastEditTime: 2021-01-18 18:42:30
+ * @LastEditTime: 2021-01-18 19:05:41
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
@@ -270,7 +270,7 @@ export default class Home extends Component {
 
   // 获取首页配置
   getHomeSetting = async () => {
-    const  { is_open_store_status } = await entry.getStoreStatus()
+    const { nostores_status } = await api.shop.getStoreStatus()
     const {
       is_open_recommend,
       is_open_scan_qrcode,
@@ -279,7 +279,7 @@ export default class Home extends Component {
     } = Taro.getStorageSync('settingInfo')
     const isNeedLoacate = is_open_wechatapp_location == 1
     const options = this.$router.params
-    options.isStore = is_open_store_status
+    options.isStore = nostores_status
     const res = await entry.entryLaunch(options, isNeedLoacate)
     const { store } = res
     if (!isArray(store)) {
@@ -287,7 +287,7 @@ export default class Home extends Component {
         curStore: store,
         is_open_recommend,
         is_open_scan_qrcode,
-        is_open_store_status,
+        is_open_store_status: nostores_status,
         is_open_wechatapp_location,
         is_open_official_account
       }, () => {
