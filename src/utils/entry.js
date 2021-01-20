@@ -142,9 +142,9 @@ async function getLoc () {
 }
 
 async function getStoreStatus(){
+  const { nostores_status } = Taro.getStorageSync('otherSetting')
   if (APP_PLATFORM === 'standard') {
-    const {nostores_status} = await api.shop.getStoreStatus()
-    if(nostores_status === 'true'){
+    if (nostores_status === true) {
       return true
     } else {
       return false

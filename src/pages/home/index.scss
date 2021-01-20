@@ -94,19 +94,18 @@
       padding-top: 0;
     }
     &__fixed {
-      #{$self}__cont {
-        padding-top: $home-header-height;
-      }
+      padding-top: $home-header-height;
       .search {
         &.fixed {
           top: 0;
         }
       }
     }
+    &.platform {
+      padding-top: 0;
+    }
     &__fixed_standard {
-      #{$self}__cont {
-        padding-top: $home-search-height;
-      }
+        padding-top: calc(#{$home-header-height} + #{$home-search-height});
       .search {
         &.fixed {
           top: $home-header-height;
