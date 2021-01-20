@@ -219,9 +219,9 @@ export default class MemberIndex extends Component {
   }
 
   handleClick = (url) => {
-    if (!S.getAuthToken()) {
-      return S.toast('请先登录')
-    }
+    // if (!S.getAuthToken()) {
+    //   return S.toast('请先登录')
+    // }
     Taro.navigateTo({url})
   }
   handleListClick =(e)=>{
@@ -658,7 +658,7 @@ export default class MemberIndex extends Component {
                 onClick={this.handleClick.bind(this, '/marketing/pages/member/item-activity')}
               >
               </SpCell>
-            }
+            } 
             {/* <SpCell
               title='入驻申请'
               isLink
