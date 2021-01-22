@@ -111,6 +111,30 @@
       background: #fff;
       font-size: 24px;
       border-radius: 0 10px 10px 0;
+
+      &__bottom{
+        position: absolute;
+        bottom: 10rpx;
+        right: 10rpx;
+        font-size: 24rpx;
+        display: flex;
+        align-items: center;
+        color: #aaa;
+        line-height: 1;
+      
+        .text{
+          margin-right: 6rpx;
+          font-size:inherit;
+        }
+        .iconfont{
+          transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+          font-size:inherit;
+
+          &.bottom{
+            transform:rotate(180deg);
+          }
+        }
+      }
     }
     &___description {
       padding-right: 20px;
@@ -144,9 +168,17 @@
     font-size: 22px;
     overflow: hidden;
     transition: all 0.3s;
+    background-color: white;
+    margin-top:10rpx; 
+    margin-bottom:30rpx;
+    padding-left:16rpx;
+    padding-right:16rpx; 
+
     &.show {
-      max-height: 100px;
-      padding: $edge-margin;
+      max-height: 100px;  
+      padding-top:16rpx;
+      padding-bottom:16rpx;
     }
+ 
   }
 }

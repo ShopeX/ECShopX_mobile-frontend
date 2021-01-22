@@ -23,9 +23,10 @@ export default class CouponItem extends Component {
 
   constructor (props) {
     super(props)
-
+    //this.transitionCloseDetail=null;
     this.state = {
       isItemChecked: false,
+      isExpanded:false, 
     }
   }
 
@@ -51,9 +52,18 @@ export default class CouponItem extends Component {
     })
   }
 
+  changeExpand=(e)=>{
+    e.stopPropagation()
+    const { isExpanded }=this.state; 
+    this.setState({
+      isExpanded:!isExpanded
+    })
+  }
+
   render () {
     const { info, isShowCheckout, isChoosed, onClick, colors } = this.props
     const { isItemChecked, showDetail } = this.state
+ 
 
     if (!info) {
       return null
@@ -146,11 +156,22 @@ export default class CouponItem extends Component {
               {this.props.children}
               <View className='radius-view radius-right-top'> </View>
               <View className='radius-view radius-right-bottom'> </View>
+
+              <View className='coupon-item__content__bottom' onClick={this.changeExpand}>
+                  <View className='text'>{"使用规则"}</View>
+                  <View className={`iconfont .icon-arrow-up ${!isExpanded && 'bottom'}`}>
+
+                  </View>
+              </View>
             </View>
             {this.props.renderFooter}
           </View>
         </View>
-        {/* <View className={`detail ${showDetail && 'show'}`}>使用范围: </View> */}
+        <View className={`detail ${isExpanded && 'show'} `}> 
+          {info.use_condition}
+        </View> 
+
+        
       </View>
     )
   }
