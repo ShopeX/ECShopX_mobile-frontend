@@ -57,17 +57,20 @@
     &__list{
       flex:1;
       overflow: hidden;
-      height: 190px;
+      // height: 190px;
       .item{
         float: left;
-        width: 150px;
-        margin-right: 30px;
+        width: 100%;
+        // margin-right: 30px;
+        display: flex;
+        // align-items: center;
         &:nth-child(3n){
           margin-right: 0;
         }
         &-img{
           width: 150px;
           height: 150px;
+          margin-right: 10px;
           image{
             width: 150px;
             height: 150px;
@@ -75,10 +78,11 @@
         }
       }
       .title{
-        @include multi-ellipsis(1);
+        // @include multi-ellipsis(1);
         font-size: 20px;
         height: 30px;
-        margin-top: 10px;
+        flex: 1;
+        // margin-top: 10px;
       }
     }
   }

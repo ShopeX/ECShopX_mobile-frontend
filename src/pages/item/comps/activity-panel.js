@@ -97,23 +97,17 @@ export default class ActivityPanel extends Component {
                             {
                                 item.plusitems && item.plusitems.map((plus,index) =>{                                                                  
                                   return(
-                                  <View className='item'>
+                                  <View className='item' key={`promotion${index}`}>
                                     <View className='item-img'>
-                                    <SpImg
-                                      img-class='goods-item__img'
-                                      src={plus.pics[0]}
-                                      mode='aspectFill'
-                                      width='400'
-                                      lazyLoad
-                                    />
-                                    {/* <QnImg
-                                      img-class='goods-item__img'
-                                      src={plus.pics[0]}
-                                      mode='aspectFill'            
-                                      lazyLoad
-                                    /> */}
+                                      <SpImg
+                                        img-class='goods-item__img'
+                                        src={plus.pics[0]}
+                                        mode='aspectFill'
+                                        width='400'
+                                        lazyLoad
+                                      />
                                     </View>
-                                  <View className='title'>{plus.item_name}</View>
+                                    <View className='title'>{plus.item_name}</View>
                                 </View>
                                   )
                                 })
