@@ -659,6 +659,15 @@ export default class MemberIndex extends Component {
               >
               </SpCell>
             } 
+            {
+              menuSetting.activity && <SpCell
+                title='活动预约'
+                isLink
+                img={require('../../assets/imgs/buy.png')}
+                onClick={this.handleClick.bind(this, '/marketing/pages/member/coupon')}
+              >
+              </SpCell>
+            } 
             {/* <SpCell
               title='入驻申请'
               isLink
