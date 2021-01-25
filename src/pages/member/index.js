@@ -659,7 +659,7 @@ export default class MemberIndex extends Component {
               >
               </SpCell>
             } 
-            {
+            {/* {
               menuSetting.activity && <SpCell
                 title='活动预约'
                 isLink
@@ -667,7 +667,7 @@ export default class MemberIndex extends Component {
                 onClick={this.handleClick.bind(this, '/marketing/pages/member/coupon')}
               >
               </SpCell>
-            } 
+            }  */}
             {/* <SpCell
               title='入驻申请'
               isLink

@@ -73,7 +73,9 @@ export default class Coupon extends Component {
       code: 'code',
       tagClass: 'tagClass',
       title: 'title',
-      discount: 'discount'
+      discount: 'discount',
+      use_condition:'use_condition',
+      description:'description'
     })
 
     this.setState({
