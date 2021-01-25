@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-01-18 11:15:55
+ * @LastEditTime: 2021-01-25 15:45:23
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/tracks/platform/youshu/conf.js
+ */
 const conf = {
   /**
    * 有数 - ka‘接入测试用’ 分配的 app_id，对应的业务接口人负责

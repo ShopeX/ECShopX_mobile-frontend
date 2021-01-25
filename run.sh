@@ -98,7 +98,7 @@ APP_PLATFORM='${platform}'
 APP_CUSTOM_SERVER='${custom_server}'
 APP_HOME_PAGE='${home_page}'
 APP_TRACK=youshu
-APP_YOUSHU_TOKEN=bid2ebfbfc47054696
+APP_YOUSHU_TOKEN=
 APP_MAP_KEY='${map_key}'
 APP_MAP_NAME='${map_name}'
 ' > ./.env
