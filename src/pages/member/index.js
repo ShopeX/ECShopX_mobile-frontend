@@ -79,7 +79,7 @@ export default class MemberIndex extends Component {
     this.getWheel()
     this.fetchBanner()
     this.fetchRedirect()
-    //this.getDefaultImg()
+    this.getDefaultImg()
   }
 
   componentDidShow () {
@@ -90,8 +90,11 @@ export default class MemberIndex extends Component {
   }
 
   async getDefaultImg(){
-    const url = `/distributors/info?distributor_id=0`
-    const data= await req.get(url) 
+    const url = `/distributor/getDistributorInfo?distributor_id=0`
+    const { logo }= await req.get(url)   
+    this.setState({
+      imgUrl:logo
+    }) 
   }
   
   config = {
@@ -369,9 +372,10 @@ export default class MemberIndex extends Component {
 
     const url = `/memberCenterShare/getInfo`
     const {share_title,share_pic_wechatapp,share_description}= await req.get(url) 
+ 
     return {
       title: share_title?share_title:'震惊！这店绝了！',
-      imageUrl: share_pic_wechatapp?share_pic_wechatapp:this.imgUrl,
+      imageUrl: share_pic_wechatapp?share_pic_wechatapp:this.state.imgUrl,
       path:'/pages/index'
     }    
   }
