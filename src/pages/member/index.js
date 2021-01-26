@@ -357,6 +357,19 @@ export default class MemberIndex extends Component {
       })
     }
   }
+
+  async onShareAppMessage () { 
+
+    const url = `/memberCenterShare/getInfo`
+    const {share_title,share_pic_wechatapp,share_description}= await req.get(url)
+   
+    return {
+      title: share_title,
+      imageUrl: share_pic_wechatapp,
+      path:'/pages/index'
+    }    
+  }
+
   render () {
     const { colors } = this.props
     const { vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize, salespersonData, turntable_open,memberBanner, menuSetting, rechargeStatus } = this.state
