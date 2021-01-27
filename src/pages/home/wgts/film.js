@@ -26,12 +26,17 @@ export default class WgtFilm extends Component {
 
   handleClickItem = linkPage
 
-  resolveSize ({ width, height, ratio: tRatio, proportion = (16 / 9) } = {}, screenWidth) {
-    // let ratio = 16 / 9
-    let ratio = proportion
-    // let ratio = 3 / 4
-    // let ratio = 4 / 3
-    // let ratio = 1 / 1
+  resolveSize ({ width, height, ratio: tRatio } = {}, screenWidth, base = {}) {
+    const aspectRatios = [
+      16 / 9,
+      9 / 16,
+      4 / 3,
+      3 / 4,
+      1 / 1
+    ]
+    const { proportion = 0 } = base
+    let ratio = aspectRatios[proportion]
+    
     let w = '100%', h
     let objectFit = 'contain'
     const defaultHeight = Math.round(screenWidth / ratio)
@@ -73,7 +78,7 @@ export default class WgtFilm extends Component {
     }
 
     const { config = {}, base, data } = info
-    const { width, height, objectFit } = this.resolveSize(config, screenWidth)
+    const { width, height, objectFit } = this.resolveSize(config, screenWidth, base)
 
     return (
       <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
