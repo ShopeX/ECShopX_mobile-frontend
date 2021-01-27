@@ -148,7 +148,7 @@ export default class WgtGoods extends Component {
         }
 
         await api.cart.add({
-          item_id: id,
+          item_id: item_data.item_id,
           distributor_id: id,
           num: 1,
           shop_type: 'distributor'
