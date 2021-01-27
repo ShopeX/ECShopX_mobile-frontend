@@ -64,6 +64,12 @@ export function deliveryLists (data) {
   return req.get('/delivery/lists', data)
 }
 
+// 发送验证码
+export function sendCode (orderId) {
+  return req.get(`/pickupcode/${orderId}`)
+}
+
+
 // 绑定订单
 export function bindOrder (data) {
   return req.post(`/order/bind/${data.order_id}`, data)
