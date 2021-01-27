@@ -82,7 +82,8 @@ export default class CouponHome extends Component {
       user_get_num: 'user_get_num',
       quantity: 'quantity',
       get_num: 'get_num',
-      card_id: 'card_id'
+      card_id: 'card_id',
+      description:'description'
     })
     nList.map(item => {
       if (item.get_limit - item.user_get_num <= 0) {
