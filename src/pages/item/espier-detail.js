@@ -153,7 +153,7 @@ export default class Detail extends Component {
     if (S.getAuthToken() && (!userInfo || !userInfo.userId)) {
       const res = await api.member.memberInfo()
       const userObj = {
-        username: res.memberInfo.username,
+        username: res.memberInfo.nickname,
         avatar: res.memberInfo.avatar,
         userId: res.memberInfo.user_id,
         mobile: res.memberInfo.mobile,
@@ -556,7 +556,7 @@ export default class Detail extends Component {
     if (S.getAuthToken() && (!userinfo || !userinfo.userId)) {
       const res = await api.member.memberInfo()
       const userObj = {
-        username: res.memberInfo.username,
+        username: res.memberInfo.nickname,
         avatar: res.memberInfo.avatar,
         userId: res.memberInfo.user_id,
         mobile: res.memberInfo.mobile,
