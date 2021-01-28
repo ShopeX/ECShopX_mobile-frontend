@@ -123,6 +123,7 @@ export default class TradeList extends Component {
       delivery_corp_name: 'delivery_corp_name',
       delivery_id: 'delivery_id',
       orders_delivery_id: 'orders_delivery_id',
+      order_type: 'order_type',
       order: ({ items }) => pickBy(items, {
         order_id: 'order_id',
         item_id: 'item_id',
@@ -202,10 +203,10 @@ export default class TradeList extends Component {
         break
       case 'delivery':
         {
-          let { delivery_code, delivery_corp, delivery_corp_name, orders_delivery_id, delivery_type, is_all_delivery, tid ,order_type} = trade
-          if (is_all_delivery) {
+          let { delivery_code, delivery_corp, delivery_corp_name, orders_delivery_id, delivery_type, is_all_delivery, tid, order_type} = trade
+          if (is_all_delivery || delivery_type === 'old') {
             Taro.navigateTo({
-              url: `/subpage/pages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name}&delivery_type=${delivery_type}`
+              url: `/subpage/pages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name || delivery_corp}&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
             })
           } else {
             Taro.navigateTo({

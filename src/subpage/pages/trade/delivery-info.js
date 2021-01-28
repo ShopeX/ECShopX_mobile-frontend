@@ -29,12 +29,12 @@ export default class TradeDetail extends Component {
 
   async fetch () {
     Taro.showLoading()
-    let { delivery_type,delivery_id} = this.$router.params
+    let { delivery_type,delivery_id, order_type, order_id} = this.$router.params
     let list
     if (delivery_type == 'new') {
       list =await api.trade.deliveryInfoNew({delivery_id})
     } else {
-      list = await api.trade.deliveryInfo(this.$router.params.order_type, this.$router.params.order_id)
+      list = await api.trade.deliveryInfo(order_type, order_id)
     }
     
     const nList = pickBy(list,{
