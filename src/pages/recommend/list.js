@@ -439,9 +439,16 @@ export default class RecommendList extends Component {
     }
   }
 
+  handleClose=(e)=>{
+    this.setState({
+      showDrawer:false
+    })
+  }
+
   render () {
     const { list, showBackToTop, scrollTop, page, showDrawer, info, columnList, selectColumn, multiIndex, areaList, query, isShowSearch } = this.state
     let address = info.province + info.city
+ 
 
 		return (
       <View className='page-recommend-list'>
@@ -485,6 +492,7 @@ export default class RecommendList extends Component {
           right
           mask
           width={`${Taro.pxTransform(570)}`}
+          onClose={this.handleClose}
         >
           <View className='drawer-item'>
             <View className='drawer-item__options'>

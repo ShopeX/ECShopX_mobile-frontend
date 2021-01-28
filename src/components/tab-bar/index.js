@@ -167,8 +167,11 @@ export default class TabBar extends Component {
     }
   }
 
+ 
+
   render () {
     const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
+ 
 
     if (APP_INTEGRATION) {
       return <View></View>
