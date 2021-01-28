@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/pages/index.js
  * @Date: 2021-01-06 15:46:54
  * @LastEditors: Arvin
- * @LastEditTime: 2021-01-19 11:31:49
+ * @LastEditTime: 2021-01-28 14:29:47
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
@@ -31,7 +31,8 @@ import './home/index.scss'
   cartIds: cart.cartIds,
   cartCount: cart.cartCount,
   showLikeList: cart.showLikeList,
-  showAdv: member.showAdv
+  showAdv: member.showAdv,
+  favs: member.favs
 }), (dispatch) => ({
   onUpdateLikeList: (show_likelist) => dispatch({ type: 'cart/updateLikeList', payload: show_likelist }),
   onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
@@ -78,6 +79,21 @@ export default class Home extends Component {
     this.getHomeSetting()
     this.getShareSetting()
     this.isShowTips()
+  }
+
+  // 检测收藏变化
+  componentWillReceiveProps (next) {
+    if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
+      setTimeout(() => {
+        const likeList = this.state.likeList.map(item => {
+          item.is_fav = Boolean(next.favs[item.item_id])
+          return item
+        })
+        this.setState({
+          likeList
+        }) 
+      })
+    }
   }
 
   componentDidShow () {
@@ -357,6 +373,7 @@ export default class Home extends Component {
       pageSize
     }
     const { list, total_count: total } = await api.cart.likeList(query)
+    const { favs } = this.props
 
     const nList = pickBy(list, {
       img: 'pics[0]',
@@ -371,6 +388,7 @@ export default class Home extends Component {
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
       desc: 'brief',
+      is_fav: ({ item_id }) => Boolean(favs[item_id])
     })
 
     this.setState({
