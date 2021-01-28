@@ -39,7 +39,7 @@ export default class UserInfo extends Component {
     const { memberInfo } = await api.member.memberInfo()
     let res = await api.user.regParam()
     const info = {
-      user_name: memberInfo.username,
+      user_name: memberInfo.nickname,
       avatar: memberInfo.avatar
     }
     let avatarArr = []

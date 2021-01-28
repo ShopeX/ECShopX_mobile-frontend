@@ -128,7 +128,7 @@ export default class MemberIndex extends Component {
       isOpenPopularize: res.is_open_popularize
     })
     const userObj = {
-      username: res.memberInfo.username,
+      username: res.memberInfo.nickname,
       avatar: res.memberInfo.avatar,
       userId: res.memberInfo.user_id,
       isPromoter: res.is_promoter,
@@ -140,7 +140,7 @@ export default class MemberIndex extends Component {
       Taro.setStorageSync('userinfo', userObj)
       this.setState({
         info: {
-          username: res.memberInfo.username,
+          username: res.memberInfo.nickname,
           avatar: res.memberInfo.avatar,
           mobile: res.memberInfo.mobile,
           isPromoter: res.is_promoter,
