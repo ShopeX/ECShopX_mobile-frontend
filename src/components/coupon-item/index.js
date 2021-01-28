@@ -169,8 +169,9 @@ export default class CouponItem extends Component {
         </View>
         <View className={`detail ${isExpanded && 'show'} `}> 
           <View>{`卡劵使用说明：${info.description?info.description:'无'}`}</View>
-          { info.use_bound!=='0' && info.use_bound=='1' && <View>{'此优惠券只适合指定商品可用'}</View>}
-          { info.use_bound!=='0' && info.use_bound=='2' && <View>{'此优惠券只适合指定分类商品可用'}</View>}
+          { info.use_bound!=='0' && info.use_bound=='1' && <View>{'此优惠券仅适合指定商品使用。'}</View>}
+          { info.use_bound!=='0' && (info.use_bound=='2' || info.use_bound=='3') && <View>{'此优惠券仅适合指定分类商品使用。'}</View>}
+          { info.use_bound!=='0' && info.use_bound=='4' && <View>{'此优惠券仅适合指定品牌商品使用。'}</View>}
         </View> 
 
         
