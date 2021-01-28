@@ -71,7 +71,9 @@ export default class CouponPicker extends Component {
       least_cost: 'least_cost',
       discount: 'discount',
       begin_date: 'begin_date',
-      end_date: 'end_date'
+      end_date: 'end_date',
+      description:'description',
+      use_bound:'use_bound'
     })
     const list = [...this.state.coupons, ...coupons]
     this.setState({

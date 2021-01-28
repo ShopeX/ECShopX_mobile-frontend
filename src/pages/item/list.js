@@ -400,6 +400,7 @@ export default class List extends Component {
   }
 
   handleSearchOn = () => {
+    console.log("handleSearchOn")
     this.setState({
       isShowSearch: true
     })
