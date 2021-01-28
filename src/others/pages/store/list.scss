@@ -74,15 +74,17 @@
         color: $color-brand-primary;
       }
     }
+
+    // 0 替换为 $tabbar-height
     &__scroll {
-      @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 8, 0);
+      @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 8, $tabbar-height);
       /*  #ifdef  h5  */  
-      @include page-scroll($tabs-height + $searchbar-height + $navigate-height-h5 + 8, 0);
+      @include page-scroll($tabs-height + $searchbar-height + $navigate-height-h5 + 8, $tabbar-height);
       /*  #endif  */      
       &.with-tag-bar {
-        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height + 8, 0);
+        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height + 8, $tabbar-height);
         /*  #ifdef  h5  */  
-        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height-h5 + 8, 0);
+        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height-h5 + 8, $tabbar-height);
         /*  #endif  */        
       }
     }
