@@ -6,7 +6,7 @@
  # @FilePath: /unite-vshop/run.sh
 # @Date: 2020-06-10 10:15:51
  # @LastEditors: Please set LastEditors
- # @LastEditTime: 2021-01-27 16:28:45
+ # @LastEditTime: 2021-01-29 16:05:29
 ### 
 #/usr/bash
 
@@ -99,6 +99,7 @@ APP_CUSTOM_SERVER='${custom_server}'
 APP_HOME_PAGE='${home_page}'
 APP_TRACK=youshu
 APP_YOUSHU_TOKEN=bid2ebfbfc47054696
+APP_ID=wx912913df9fef6ddd
 APP_MAP_KEY='${map_key}'
 APP_MAP_NAME='${map_name}'
 ' > ./.env
