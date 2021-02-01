@@ -57,7 +57,7 @@ export default class WgtGoodsScroll extends Component {
     const { config } = this.props.info
     const { moreLink } = config
     if (moreLink) {
-      linkPage(moreLink.linkPage, moreLink.id)
+      linkPage(moreLink.linkPage, moreLink)
     } else {
       this.navigateToList(config.type, config.seckillId)
     }

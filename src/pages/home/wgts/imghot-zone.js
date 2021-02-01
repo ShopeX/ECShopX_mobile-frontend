@@ -61,7 +61,7 @@ export default class WgtImgHotZone extends Component {
                   key={`${index}1`}
                   className='img-hotzone_zone'
                   style={`width: ${item.widthPer*100}%; height: ${item.heightPer*100}%; top: ${item.topPer*100}%; left: ${item.leftPer*100}%`}
-                  onClick={this.handleClickItem.bind(this, item.linkPage, item.id)}
+                  onClick={this.handleClickItem.bind(this, item.linkPage, item)}
                 >
                 </View>
               )

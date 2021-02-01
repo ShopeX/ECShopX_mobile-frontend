@@ -89,7 +89,7 @@ export default class WgtSlider extends Component {
                       >
                         <View
                           style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
-                          onClick={this.handleClickItem.bind(this, item.linkPage, item.id)}
+                          onClick={this.handleClickItem.bind(this, item.linkPage, item)}
                         >
                            <WgtPlateType info={item} index={index} num={idx} base={base} />
                           <SpImg

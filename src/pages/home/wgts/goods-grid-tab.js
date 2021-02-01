@@ -48,7 +48,7 @@ export default class WgtGoodsGridTab extends Component {
     handleClickMore = () => {
       const { moreLink } = this.props.info.config
       if (moreLink) {
-        linkPage(moreLink.linkPage, moreLink.id)
+        linkPage(moreLink.linkPage, moreLink)
       } else {
         this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id || ''}`)
       }
