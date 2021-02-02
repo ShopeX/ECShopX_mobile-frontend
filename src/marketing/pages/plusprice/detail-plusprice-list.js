@@ -26,6 +26,7 @@ export default class DetailPluspriceList extends Component {
       timer: null,
       list: [],
       promotion_activity:{},
+      isSetBackground:false
     }
   }
 
@@ -35,6 +36,7 @@ export default class DetailPluspriceList extends Component {
   
 
   componentDidMount () {
+    console.log('---componentDidMount---')
     // const { marketing_id } = this.$router.params
     // this.setState({
     //   query: {
@@ -43,15 +45,19 @@ export default class DetailPluspriceList extends Component {
     // }, () => {
     //   this.nextPage()
     // })
+   
+    this.nextPage()
+  } 
+
+  setNavBar=(navbar_color)=>{
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
-      backgroundColor: '#FC7239',
+      backgroundColor: navbar_color && typeof navbar_color==='string'?navbar_color:'#FC7239',
       animation: {
         duration: 400,
         timingFunc: 'easeIn'
       }
     })
-    this.nextPage()
   }
 
   // onShareAppMessage () {
@@ -88,8 +94,9 @@ export default class DetailPluspriceList extends Component {
 		Taro.navigateTo({
 			url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
 		})
-	}
-  async fetch (params) {
+  }
+  
+  async fetch (params) { 
     const { page_no: page, page_size: pageSize } = params
     const query = {
       marketing_id: this.$router.params.marketing_id,
@@ -98,7 +105,9 @@ export default class DetailPluspriceList extends Component {
     }
 
     const { list, total_count: total,promotion_activity={}} = await api.promotion.getpluspriceList(query)
-    const { left_time } = promotion_activity
+    const { left_time,navbar_color,activity_background } = promotion_activity
+
+    this.setNavBar(navbar_color);
 
     let timer = null
     timer = this.calcTimer(left_time)
@@ -110,13 +119,15 @@ export default class DetailPluspriceList extends Component {
       distributor_id: 'distributor_id',
       marketing_id:'marketing_id',
       price: ({ price }) => (price/100).toFixed(2),
-      market_price: ({ market_price }) => (market_price/100).toFixed(2)
+      market_price: ({ market_price }) => (market_price/100).toFixed(2),
+     
     })
 
     this.setState({
       list: [...this.state.list, ...nList],
       promotion_activity,
       timer,
+      isSetBackground:activity_background?activity_background:false
     })
     return {
       total
@@ -126,10 +137,10 @@ export default class DetailPluspriceList extends Component {
 
   render () {
     const { colors } = this.props
-    const { list, showBackToTop, scrollTop, page,promotion_activity,timer } = this.state
-    console.log('list---->',list)
+    const { list, showBackToTop, scrollTop, page,promotion_activity,timer,isSetBackground } = this.state
+    console.log('list---->',isSetBackground)
     return (
-      <View className='page-plusprice'>
+      <View className={`page-plusprice${isSetBackground?' is-set-background':''}`} style={{backgroundImage:isSetBackground?`url(${isSetBackground})`:'auto',backgroundSize:isSetBackground?'cover':'contain'}}>
         <NavBar
           title='微商城'
         />
@@ -205,7 +216,7 @@ export default class DetailPluspriceList extends Component {
          show={showBackToTop}
           onClick={this.scrollBackToTop}
         />
-        <View className='scroll-footer'></View>
+        {!isSetBackground && <View className='scroll-footer'></View>}
       </View>
     )
   }
