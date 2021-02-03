@@ -5,8 +5,8 @@
 # @Description: 说明
  # @FilePath: /unite-vshop/run.sh
 # @Date: 2020-06-10 10:15:51
- # @LastEditors: Please set LastEditors
- # @LastEditTime: 2021-01-29 16:05:29
+ # @LastEditors: Arvin
+ # @LastEditTime: 2021-02-03 18:28:44
 ### 
 #/usr/bash
 
@@ -98,7 +98,7 @@ APP_PLATFORM='${platform}'
 APP_CUSTOM_SERVER='${custom_server}'
 APP_HOME_PAGE='${home_page}'
 APP_TRACK=youshu
-APP_YOUSHU_TOKEN=bid2ebfbfc47054696
+APP_YOUSHU_TOKEN=bi281e87ab2424481a
 APP_ID=wx912913df9fef6ddd
 APP_MAP_KEY='${map_key}'
 APP_MAP_NAME='${map_name}'
