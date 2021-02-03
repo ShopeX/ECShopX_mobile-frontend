@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpToast, NavBar } from '@/components'
 import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
+import { diviCalc, } from '@/utils/precision'
 import { Tracker } from "@/service";
 import api from '@/api'
 import S from '@/spx'
@@ -73,6 +74,16 @@ export default class TradeDetail extends Component {
     return refund
   }
 
+  getParamsAboutItem=(oldInfo)=>{
+    const newInfo=JSON.parse(JSON.stringify(oldInfo));
+    //是否有积分商品
+    const is_has_point=newInfo.orders.reduce((item,total)=>total+item.point_fee,0);
+    //是否有普通商品
+    const is_has_normal=newInfo.orders.reduce((item,total)=>total+item.point_fee,0);
+
+
+  }
+
   async fetch () {
     const { id } = this.$router.params
     const data = await api.trade.detail(id)
@@ -101,7 +112,9 @@ export default class TradeDetail extends Component {
       item_spec_desc: 'item_spec_desc',
       order_item_type: 'order_item_type',
       show_aftersales:'show_aftersales',
-      apply_num: 'left_aftersales_num'
+      apply_num: 'left_aftersales_num',
+      point_fee:'point_fee',
+      total_fee:'total_fee'
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
@@ -205,9 +218,10 @@ export default class TradeDetail extends Component {
     }
     sessionFrom += `"商品": "${info.orders[0].title}"`
     sessionFrom += `"订单号": "${info.orders[0].order_id}"`
-    sessionFrom += '}'
+    sessionFrom += '}' 
+
     this.setState({
-      info,
+      info:this.getParamsAboutItem(info),
       sessionFrom,
       ziti
     })
@@ -430,9 +444,12 @@ export default class TradeDetail extends Component {
   render () {
     const { colors } = this.props
     const { info, ziti, qrcode, timer, payLoading, scrollIntoView } = this.state
+
     if (!info) {
       return <Loading></Loading>
     }
+
+    console.log(info['orders'])
 
     return (
       <View className={`trade-detail ${info.is_logistics && 'islog'}`}>
