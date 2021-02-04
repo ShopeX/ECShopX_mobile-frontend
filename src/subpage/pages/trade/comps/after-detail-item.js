@@ -60,26 +60,38 @@ export default class AfterDetailItem extends Component {
     S.toast('复制成功')
   }
   handleSelectionChange (item_id, checked) {//选择要申请售后的商品
-    const { info, showType } = this.props
-    info[showType].map(item=>{
-      item.item_id == item_id && (item.is_checked = checked)
-    })
-    this.setState({
-      info
-    })
+    const { info, showType,onCheckChange } = this.props
+    // info[showType].map(item=>{
+    //   item.item_id == item_id && (item.is_checked = checked);
+    //   if(item.is_checked){
+        
+    //   }
+    // })
+    // this.setState({
+    //   info
+    // })
+    if(onCheckChange){
+      onCheckChange(item_id,checked)
+    }
   }
-  handleQuantityChange(item,val){   //改变售后商品的数量
-    const { info, showType } = this.props
-    info[showType].map(v=>{
-      v.item_id == item.item_id && (v.apply_num = val)
-    })
-    this.setState({
-      info
-    })
+  handleQuantityChange(item,val){   //改变售后商品的数量 
+    const { info, showType,onInputNumberChange } = this.props 
+    // info[showType].map(v=>{
+    //   v.item_id == item.item_id && (v.apply_num = val)
+    // })
+    // this.setState({
+    //   info
+    // })
+    if(onInputNumberChange){
+      onInputNumberChange(item,val)
+    }
   }
 
   render () {
-    const { customHeader, customFooter, noHeader, onClick, info, showActions, showType } = this.props
+    const { customHeader, customFooter, noHeader, onClick, info, showActions, showType } = this.props;
+
+ 
+
     return (
       <View className='detail-item'>
         {

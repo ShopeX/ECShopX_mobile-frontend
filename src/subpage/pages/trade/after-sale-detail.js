@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpToast, NavBar } from '@/components'
 import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
+import { diviCalc, } from '@/utils/precision'
 import { Tracker } from "@/service";
 import api from '@/api'
 import S from '@/spx'
@@ -73,6 +74,102 @@ export default class TradeDetail extends Component {
     return refund
   }
 
+  handleInputNumberChange=(item,val)=>{ 
+    const { info }=this.state;
+    info['orders'].forEach(v=>{
+      v.item_id == item.item_id && (v.apply_num = val)
+    })
+    const _this=this;
+    this.setState({
+      info:_this.getParamsAboutItem(info)
+    })
+  }
+
+  handleCheckChange=(item_id,checked)=>{
+    const { info }=this.state;
+    info['orders'].map(item=>{
+      item.item_id == item_id && (item.is_checked = checked); 
+    })
+    const _this=this;
+    this.setState({
+      info:_this.getParamsAboutItem(info)
+    })
+  }
+
+  /** 计算每一行总值 */
+  computed=(item)=>{
+    const newItemTotal=item.normal_unit*item.apply_num;
+    if(newItemTotal>0 && newItemTotal<1){/** 如果是分数以下的值 */
+      return Number(newItemTotal.toFixed());
+    }else if(newItemTotal>=1){
+      return newItemTotal;
+    }else{
+      return 0;
+    } 
+  }
+
+  /** 计算每一行总值 */
+  computedInit=(item,type)=>{
+    /** 如果数量相等 直接返回总值 */
+    if(item.left_aftersales_num===item.apply_num){
+      return item[type];
+    } 
+  }
+
+  getParamsAboutItem=(oldInfo,isInit=false)=>{
+    const newInfo=JSON.parse(JSON.stringify(oldInfo));
+    /** 是否有积分商品 */
+    let is_has_point;
+    /** 是否有普通商品 */
+    let is_has_normal;
+    /** 计算新的订单 */
+    let newOrders;
+
+    /** 初始化时所有数值为0 */
+    if(isInit){
+      is_has_point=newInfo.orders.reduce((total,item)=>total+item.remain_point,0)>0;
+      is_has_normal=newInfo.orders.reduce((total,item)=>total+item.remain_fee,0)>0;
+
+      newOrders=newInfo.orders.map(item=>({
+        ...item,
+        /** 单个商品的积分 */
+        point_unit:item.remain_point/item.left_aftersales_num,
+        /** 单个商品的价格 */
+        normal_unit:item.remain_fee/item.left_aftersales_num,
+        /** 每行选中的积分 */
+        selected_point_total:this.computedInit(item,'remain_point'),
+        /** 每行选中的价格 */
+        selected_normal_total:this.computedInit(item,'remain_fee'),
+      })) 
+    }else{
+
+      is_has_point=newInfo.is_has_point;
+      is_has_normal=newInfo.is_has_normal;
+
+      newOrders=newInfo.orders.map(item=>({
+        ...item, 
+        /** 每行选中的积分 */
+        selected_point_total:item.point_unit*item.apply_num,
+        /** 每行选中的价格 */
+        selected_normal_total:this.computed(item)
+      })) 
+
+    }  
+
+    let total_point_money=newOrders.reduce((total,i)=>total+(i.is_checked?i.selected_point_total:0),0); 
+
+    let total_normal_money=newOrders.reduce((total,i)=>total+(i.is_checked?i.selected_normal_total:0),0); 
+     
+    return Object.assign(newInfo,{
+      is_has_point,
+      is_has_normal, 
+      total_point_money,
+      total_normal_money,
+      orders:newOrders
+    })
+
+  }
+
   async fetch () {
     const { id } = this.$router.params
     const data = await api.trade.detail(id)
@@ -101,7 +198,11 @@ export default class TradeDetail extends Component {
       item_spec_desc: 'item_spec_desc',
       order_item_type: 'order_item_type',
       show_aftersales:'show_aftersales',
-      apply_num: 'left_aftersales_num'
+      apply_num: 'left_aftersales_num',
+      point_fee:'point_fee',
+      total_fee:'total_fee',
+      remain_fee:'remain_fee',
+
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
@@ -128,8 +229,7 @@ export default class TradeDetail extends Component {
       ziti_status: 'ziti_status',
       qrcode_url: 'qrcode_url',
       delivery_corp: 'delivery_corp',
-      order_type: 'order_type',
-      totalpayment:({ total_fee}) =>   ((+Number(total_fee)) / 100).toFixed(2),
+      order_type: 'order_type', 
       order_status_msg: 'order_status_msg',
       order_status_des: 'order_status_des',
       order_class: 'order_class',
@@ -205,9 +305,10 @@ export default class TradeDetail extends Component {
     }
     sessionFrom += `"商品": "${info.orders[0].title}"`
     sessionFrom += `"订单号": "${info.orders[0].order_id}"`
-    sessionFrom += '}'
+    sessionFrom += '}' 
+    const _this=this;
     this.setState({
-      info,
+      info:_this.getParamsAboutItem(info,true),
       sessionFrom,
       ziti
     })
@@ -430,9 +531,10 @@ export default class TradeDetail extends Component {
   render () {
     const { colors } = this.props
     const { info, ziti, qrcode, timer, payLoading, scrollIntoView } = this.state
+
     if (!info) {
       return <Loading></Loading>
-    }
+    } 
 
     return (
       <View className={`trade-detail ${info.is_logistics && 'islog'}`}>
@@ -577,6 +679,8 @@ export default class TradeDetail extends Component {
           <View className='trade-detail-goods'>
             <AfterDetailItem 
               info={info}
+              onInputNumberChange={this.handleInputNumberChange}
+              onCheckChange={this.handleCheckChange}
             />
           </View>
           {
@@ -595,12 +699,14 @@ export default class TradeDetail extends Component {
                 <AfterDetailItem 
                   info={info}
                   showType='log_orders'
+                 
                 />
               </View>
             </View>
           }
           <View className="trade-money">
-          <View>总计：<Text className="trade-money__num">￥{info.totalpayment}</Text></View>
+            {info.is_has_normal && <View>总计金额：<Text className="trade-money__num">￥{(info.total_normal_money/100).toFixed(2)}</Text></View>}
+            {info.is_has_point && <View>总计积分：<Text className="trade-money__num">￥{info.total_point_money}</Text></View>}
           </View>
         </ScrollView>
         

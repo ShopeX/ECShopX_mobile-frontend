@@ -99,6 +99,7 @@ export default function withTracker(Component) {
     }
 
     report(path, track, args) {
+      console.log('-------report ---------')
       const { element, method, dataKeys } = track;
       const logger = [];
       if (Object.prototype.toString.call(dataKeys) == "[object Function]") {

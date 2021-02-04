@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/pages/home/wgts/showcase.js
  * @Date: 2020-10-28 09:58:46
  * @LastEditors: Arvin
- * @LastEditTime: 2020-10-28 10:19:36
+ * @LastEditTime: 2021-02-01 14:03:42
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
@@ -56,7 +56,7 @@ export default class WgtShowCase extends Component {
           <View className='scheme-item'>
             <View
               className='layout layout-1'
-              onClick={this.handleClickItem.bind(this, data[0].linkPage, data[0].id)}
+              onClick={this.handleClickItem.bind(this, data[0].linkPage, data[0])}
             >
               <SpImg
                 img-class='show-img'
@@ -70,7 +70,7 @@ export default class WgtShowCase extends Component {
           <View className='scheme-item'>
             <View
               className='layout layout-2'
-              onClick={this.handleClickItem.bind(this, data[1].linkPage, data[1].id)}
+              onClick={this.handleClickItem.bind(this, data[1].linkPage, data[1])}
             >
               <SpImg
                 img-class='show-img'
@@ -82,7 +82,7 @@ export default class WgtShowCase extends Component {
             </View>
             <View
               className='layout layout-3'
-              onClick={this.handleClickItem.bind(this, data[2].linkPage, data[2].id)}
+              onClick={this.handleClickItem.bind(this, data[2].linkPage, data[2])}
             >
               <SpImg
                 img-class='show-img'

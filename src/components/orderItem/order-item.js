@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-02-03 17:40:22
+ * @LastEditTime: 2021-02-04 16:49:16
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/components/orderItem/order-item.js
+ */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { Price, SpImg } from '@/components'

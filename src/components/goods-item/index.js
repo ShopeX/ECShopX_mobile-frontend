@@ -115,7 +115,12 @@ export default class GoodsItem extends Component {
               <View className='goods-item__price'>
                 <View className='package-price'>
                   <Text className='goods-item__cur'>¥</Text>
-                  <Text>{price}</Text>
+                  <Text>
+                    {price}
+                    {
+                      info.type === '1' && <Text className='taxText'>（含税）</Text>
+                    }
+                  </Text>
                 </View>
                 {
                   Boolean(+marketPrice) &&

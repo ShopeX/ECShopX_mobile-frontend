@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-01-25 10:54:19
+ * @LastEditTime: 2021-01-29 17:07:46
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/service/tracker/platform/youshu/index.js
+ */
 import sr from "sr-sdk-wxapp";
 import S from "@/spx";
 import Base from "../base";
@@ -12,6 +20,9 @@ export default class Youshu extends Base {
     super(options);
     // const { onBeforeInit } = options;
 
+    console.log('---------init--------')
+    console.log(config)
+
     sr.init(config);
 
     this.actions = actions;
@@ -20,6 +31,8 @@ export default class Youshu extends Base {
     const token = S.getAuthToken();
     if (token) {
       const userInfo = tokenParse(token);
+      console.log("------useInfo------")
+      console.log(userInfo)
       this.setVar({
         user_id: userInfo.user_id,
         open_id: userInfo.openid,
@@ -40,7 +53,7 @@ export default class Youshu extends Base {
     sr.track(action, data);
   }
 
-  setVar(params) {
+  setVar(params) { 
     sr.setUser({
       user_id: params.user_id,
       open_id: params.open_id,

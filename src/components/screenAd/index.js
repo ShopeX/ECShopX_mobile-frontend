@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/components/screenAd/index.js
  * @Date: 2020-12-21 11:03:55
  * @LastEditors: Arvin
- * @LastEditTime: 2020-12-30 14:31:23
+ * @LastEditTime: 2021-02-01 14:00:53
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Video } from '@tarojs/components'
@@ -81,7 +81,7 @@ export default class ScreenAd extends Component {
     e && e.stopPropagation()
     const { jumpUrl } = this.state
     if (jumpUrl && jumpUrl.linkPage) {
-      linkPage(jumpUrl.linkPage, jumpUrl.id)
+      linkPage(jumpUrl.linkPage, jumpUrl)
       setTimeout(() => {
         this.jumpAd() 
       })

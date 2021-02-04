@@ -6,13 +6,14 @@
  * @FilePath: /unite-vshop/src/pages/home/wgts/helper.js
  * @Date: 2020-04-30 17:12:45
  * @LastEditors: Arvin
- * @LastEditTime: 2020-11-24 10:37:21
+ * @LastEditTime: 2021-02-01 14:00:21
  */
 import Taro from '@tarojs/taro'
 // import { WGTS_NAV_MAP } from '@/consts'
 
-export function linkPage (type, id) {
-  console.log(type, id)
+export function linkPage (type, data) {
+  const { id, title } = data
+  console.log(type, data)
   let url = ''
 
   switch (type) {
@@ -78,9 +79,16 @@ export function linkPage (type, id) {
     default:
   }
 
-  Taro.navigateTo({
-    url
-  })
+  if (type === 'other_wxapp') {
+    Taro.navigateToMiniProgram({
+      appId: id,
+      path: title,
+    })
+  } else {
+    Taro.navigateTo({
+      url
+    })
+  }
 }
 
 export default {}

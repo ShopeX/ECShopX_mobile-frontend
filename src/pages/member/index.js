@@ -339,7 +339,7 @@ export default class MemberIndex extends Component {
   }
   handleClickPoint=()=>{
     const { redirectInfo } = this.state
-    if(redirectInfo.data.point_url_is_open){
+    if(redirectInfo.data && redirectInfo.data.point_url_is_open){
       Taro.navigateToMiniProgram({
         appId: redirectInfo.data.point_app_id,
         path: redirectInfo.data.point_page,
@@ -348,7 +348,7 @@ export default class MemberIndex extends Component {
   }
   handleClickInfo=()=>{
     const { redirectInfo } = this.state
-    if(redirectInfo.data.info_url_is_open){
+    if(redirectInfo.data && redirectInfo.data.info_url_is_open){
       Taro.navigateToMiniProgram({
         appId: redirectInfo.data.info_app_id,
         path: redirectInfo.data.info_page,
@@ -665,7 +665,7 @@ export default class MemberIndex extends Component {
               </SpCell>
             }            
             {
-              menuSetting.complaint && <SpCell
+              (menuSetting.complaint && salespersonData && salespersonData.distributor )&& <SpCell
                 title='投诉记录'
                 isLink
                 img={require('../../assets/imgs/group.png')}

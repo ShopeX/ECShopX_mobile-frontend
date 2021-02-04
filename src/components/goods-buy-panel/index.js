@@ -12,6 +12,7 @@ import api from "@/api";
 import entry from '@/utils/entry'
 
 import "./index.scss";
+import { floor } from "lodash";
 
 @connect(({ colors }) => ({
   colors: colors.current
@@ -472,7 +473,7 @@ export default class GoodsBuyPanel extends Component {
 
     const taxRate = info ? ( Number( info.cross_border_tax_rate || 0 ) / 100 ) : 0
     if ( info.type == '1' ) {
-      price = price * ( 1 + taxRate )
+      price = floor(price * ( 1 + taxRate ))
       marketPrice = info.price
     }
 

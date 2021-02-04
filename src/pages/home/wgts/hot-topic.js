@@ -46,7 +46,7 @@ export default class WgtHotTopic extends Component {
                     {
                         list.map((item, idx) => {
                             return (
-                                <View key={item.id} className={classNames('gambit', idx === current ? 'checked' : '')} onClick={this.handleClick.bind(this, idx, item.linkPage, item.id)}>{item.topic}</View>
+                                <View key={item.id} className={classNames('gambit', idx === current ? 'checked' : '')} onClick={this.handleClick.bind(this, idx, item.linkPage, item)}>{item.topic}</View>
                             )
                         })
                     }
