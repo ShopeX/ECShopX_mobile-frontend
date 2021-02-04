@@ -119,7 +119,7 @@ export default class TradeItem extends Component {
                 >取消订单</Button>
                 : null
             }
-          {(info.delivery_type=='new' && info.pay_status === 'PAYED' && info.delivery_status != 'PENDING') && <Button
+          {(info.pay_status === 'PAYED' && info.delivery_status != 'PENDING') && <Button
               className='btn-action'
               style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
               onClick={this.handleClickBtn.bind(this, 'delivery')}
@@ -162,13 +162,11 @@ export default class TradeItem extends Component {
           </View>
           <View className='trade-item__ft-bd'>
             <Text className='trade-item__status'>{info.status_desc}</Text>
-            {
-              info.delivery_type=='new' && <Button
-                className='btn-action'
-                style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-                onClick={this.handleClickBtn.bind(this, 'delivery')}
-              >查看物流</Button>
-            }
+            <Button
+              className='btn-action'
+              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
+              onClick={this.handleClickBtn.bind(this, 'delivery')}
+            >查看物流</Button>
            {/* <Button
               className='btn-action'
               style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
