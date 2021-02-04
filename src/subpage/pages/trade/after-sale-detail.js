@@ -127,19 +127,19 @@ export default class TradeDetail extends Component {
 
     /** 初始化时所有数值为0 */
     if(isInit){
-      is_has_point=newInfo.orders.reduce((total,item)=>total+item.point_fee,0)>0;
-      is_has_normal=newInfo.orders.reduce((total,item)=>total+item.total_fee,0)>0;
+      is_has_point=newInfo.orders.reduce((total,item)=>total+item.remain_point,0)>0;
+      is_has_normal=newInfo.orders.reduce((total,item)=>total+item.remain_fee,0)>0;
 
       newOrders=newInfo.orders.map(item=>({
         ...item,
         /** 单个商品的积分 */
-        point_unit:item.point_fee/item.left_aftersales_num,
+        point_unit:item.remain_point/item.left_aftersales_num,
         /** 单个商品的价格 */
-        normal_unit:item.total_fee/item.left_aftersales_num,
+        normal_unit:item.remain_fee/item.left_aftersales_num,
         /** 每行选中的积分 */
-        selected_point_total:this.computedInit(item,'point_fee'),
+        selected_point_total:this.computedInit(item,'remain_point'),
         /** 每行选中的价格 */
-        selected_normal_total:this.computedInit(item,'total_fee'),
+        selected_normal_total:this.computedInit(item,'remain_fee'),
       })) 
     }else{
 
@@ -200,7 +200,9 @@ export default class TradeDetail extends Component {
       show_aftersales:'show_aftersales',
       apply_num: 'left_aftersales_num',
       point_fee:'point_fee',
-      total_fee:'total_fee'
+      total_fee:'total_fee',
+      remain_fee:'remain_fee',
+
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
