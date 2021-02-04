@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-03 17:40:22
- * @LastEditTime: 2021-02-04 09:58:54
+ * @LastEditTime: 2021-02-04 16:49:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/components/orderItem/order-item.js
@@ -72,7 +72,7 @@ export default class OrderItem extends Component {
           {showExtra && (
             <View className='order-item__extra'>
               <Text className='order-item__desc'>{info.goods_props}</Text>
-              {info.num && <Text className='order-item__num'>数量：{info.left_aftersales_num}</Text>}
+              {info.num && <Text className='order-item__num'>数量：{info.num}</Text>}
               {info.item_spec_desc && <Text className='order-item__desc'>{info.item_spec_desc}</Text>}
             </View>
           )}
