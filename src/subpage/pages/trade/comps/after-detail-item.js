@@ -90,8 +90,7 @@ export default class AfterDetailItem extends Component {
   render () {
     const { customHeader, customFooter, noHeader, onClick, info, showActions, showType } = this.props;
 
-    console.log("-----props-----")
-    console.log(info) 
+ 
 
     return (
       <View className='detail-item'>
