@@ -84,64 +84,31 @@ export default class StoreIndex extends Component {
     //const { distributor_id } = await Taro.getStorageSync('curStore')
 
     const url = `pagestemplate/shopDetail?template_name=yykweishop&weapp_pages=index&distributor_id=${id}`
-    const info = await req.get(url)
-
-    if (!S.getAuthToken()) {
-      this.setState({
-        authStatus: true
-      })
-    }
-    this.setState({
-      wgts: info.config,
-      storeInfo: storeInfo
-    },()=>{
-      if(info.config) {
-        info.config.map(item => {
-          if(item.name === 'setting' && item.config.faverite) {
-            this.nextPage()
-          }
+    try {
+      const info = await req.get(url)
+      if (!S.getAuthToken()) {
+        this.setState({
+          authStatus: true
         })
       }
-    })
+      this.setState({
+        wgts: info.config,
+        storeInfo: storeInfo
+      },()=>{
+        if(info.config) {
+          info.config.map(item => {
+            if(item.name === 'setting' && item.config.faverite) {
+              this.nextPage()
+            }
+          })
+        }
+      })
+    } catch (e) {
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 1500)
+    }
   }
-  // async fetchInfo (distributorId) {
-  //   //const options = this.$router.params
-  //   //const { id } = this.$router.params
-  //   let id = ''
-  //   let storeInfo = null
-  //   if (!distributorId) {
-  //     const { store } = entry.entryLaunch(options, true)
-  //     storeInfo = store
-  //   } else {
-  //     const { name, logo } = await api.shop.getShop({distributor_id: id})
-  //     storeInfo = {
-  //       name,
-  //       brand: logo
-  //     }
-  //   }
-  //   console.log(storeInfo, 70)
-
-  //   const url = `/pageparams/setting?template_name=yykweishop&version=shop_${id}&page_name=shop_home`
-  //   const info = await req.get(url)
-
-  //   if (!S.getAuthToken()) {
-  //     this.setState({
-  //       authStatus: true
-  //     })
-  //   }
-  //   this.setState({
-  //     wgts: info.config,
-  //     storeInfo: storeInfo
-  //   },()=>{
-  //     if(info.config) {
-  //       info.config.map(item => {
-  //         if(item.name === 'setting' && item.config.faverite) {
-  //           this.nextPage()
-  //         }
-  //       })
-  //     }
-  //   })
-  // }
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
