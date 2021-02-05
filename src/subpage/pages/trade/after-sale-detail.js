@@ -100,9 +100,9 @@ export default class TradeDetail extends Component {
   computed=(item)=>{
     const newItemTotal=item.normal_unit*item.apply_num;
     if(newItemTotal>0 && newItemTotal<1){/** 如果是分数以下的值 */
-      return Number(newItemTotal.toFixed());
+      return 0;
     }else if(newItemTotal>=1){
-      return newItemTotal;
+      return Math.floor(newItemTotal);
     }else{
       return 0;
     } 
@@ -149,7 +149,7 @@ export default class TradeDetail extends Component {
       newOrders=newInfo.orders.map(item=>({
         ...item, 
         /** 每行选中的积分 */
-        selected_point_total:item.point_unit*item.apply_num,
+        selected_point_total:Math.floor(item.point_unit*item.apply_num),
         /** 每行选中的价格 */
         selected_normal_total:this.computed(item)
       })) 
