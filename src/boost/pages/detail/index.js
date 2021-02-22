@@ -5,8 +5,8 @@
  * @Description: 助力详情
  * @FilePath: /unite-vshop/src/boost/pages/detail/index.js
  * @Date: 2020-09-22 14:08:32
- * @LastEditors: Arvin
- * @LastEditTime: 2021-02-02 16:15:41
+ * @LastEditors: PrendsMoi
+ * @LastEditTime: 2021-02-22 18:18:35
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
@@ -42,7 +42,6 @@ export default class Detail extends Component {
         isSaleOut: false,
         isOver: false
       },
-      imgBase: '',
       userInfo: {},
       isJoin: false,
       boostList: [],
@@ -142,25 +141,19 @@ export default class Detail extends Component {
 
   base64Tosrc = (base64data) => {
     const fsm = Taro.getFileSystemManager()
-    const FILE_BASE_NAME = 'tmp_base64src'
+    const FILE_BASE_NAME = `tmp_base64src_${new Date().getTime()}`
     return new Promise((resolve, reject) => {
     const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || []
     if (!format) {
       reject(new Error('ERROR_BASE64SRC_PARSE'))
     }
     const filePath = `${Taro.env.USER_DATA_PATH}/${FILE_BASE_NAME}.${format}`
-    const buffer = Taro.base64ToArrayBuffer(bodyData)
-    const that = this
+    // const buffer = Taro.base64ToArrayBuffer(bodyData)
     fsm.writeFile({
       filePath,
-      data: buffer,
-      encoding: 'binary',
-      success(s) {
-        console.log(s)
-        console.log(filePath)
-        that.setState({
-          imgBase: base64data
-        })
+      data: bodyData,
+      encoding: 'base64',
+      success() {
         Taro.getImageInfo({
           src: filePath,
           success(res){
@@ -230,10 +223,10 @@ export default class Detail extends Component {
 
   // 显示海报
   showPoster = () => {
-    // Taro.showLoading({
-    //   title: '海报生成中',
-    //   mask: true
-    // })
+    Taro.showLoading({
+      title: '海报生成中',
+      mask: true
+    })
     if (this.posterImg) {
       this.setState({
         showPoster: true
@@ -307,7 +300,6 @@ export default class Detail extends Component {
     const {
       adPic,
       info,
-      imgBase,
       isJoin,
       boostList,
       orderInfo,
@@ -454,7 +446,6 @@ export default class Detail extends Component {
             <Text>{ isJoin ? `¥${purchasePrice} 优惠购买` : '发起助力' }</Text>
           }
         </Button>
-        <Image src={imgBase} />
         {/* 海报 */}
         <Canvas canvasId='poster' style='width: 375px; height: 640px;' className='posterCanvas' />
         {
