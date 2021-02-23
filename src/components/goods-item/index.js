@@ -1,10 +1,18 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Image} from '@tarojs/components'
 import { SpImg } from '@/components'
+import api from '@/api'
+import { connect } from '@tarojs/redux'
+
 import { isObject, classNames } from '@/utils'
 
 import './index.scss'
 
+@connect(() => ({
+}), (dispatch) => ({
+  onAddFav: ({ item_id, fav_id }) => dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
+  onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
+}))
 export default class GoodsItem extends Component {
   static defaultProps = {
     onClick: () => {},
@@ -24,8 +32,17 @@ export default class GoodsItem extends Component {
 
   handleFavClick = async () => {
     const { item_id, is_fav } = this.props.info
-    console.log(is_fav, item_id)
-    // await api.item.collect(item_id)
+    if (!is_fav) {
+      const favRes = await api.member.addFav(item_id)
+      this.props.onAddFav(favRes)
+    } else {
+      await api.member.delFav(item_id)
+      this.props.onDelFav(this.props.info)
+    }
+    Taro.showToast({
+      title: is_fav ? '已移出收藏' : '已加入收藏',
+      mask: true
+    })
   }
 
   render () {
@@ -129,29 +146,30 @@ export default class GoodsItem extends Component {
 							</View>
 							{this.props.children}
               {
-                 showFav &&
-                   (<View className='goods-item__actions'>
-                     {(type === 'item') && (
-                       <View
-                         className={`${info.is_fav ? 'icon-star-on' : 'icon-star'}`}
-                         onClick={this.handleFavClick}
-                       />
-                     )}
-                     {type === 'recommend' && (
-                       <View
-                         className='icon-like'
-                         onClick={this.handleLikeClick}
-                       ><Text>666</Text></View>
-                     )}
-                   </View>)
+                showFav &&
+                  (<View className='goods-item__actions'>
+                    {(type === 'item') && (
+                      <View
+                        className={`${info.is_fav ? 'icon-star-on' : 'icon-star'}`}
+                        onClick={this.handleFavClick}
+                      />
+                    )}
+                    {type === 'recommend' && (
+                      <View
+                        className='icon-like'
+                        onClick={this.handleLikeClick}
+                      ><Text>666</Text></View>
+                    )}
+                  </View>)
               }
             </View>
             {
               APP_PLATFORM !== 'standard' && info.distributor_info && !Array.isArray(info.distributor_info) &&
                 <View
                   className='goods-item__store'
-                  onClick={onStoreClick}>
-                  {info.distributor_info.name} <Text class="goods-item__store-entry">进店<Text className='icon-arrowRight'></Text></Text>
+                  onClick={onStoreClick}
+                >
+                  {info.distributor_info.name} <Text class='goods-item__store-entry'>进店<Text className='icon-arrowRight'></Text></Text>
                 </View>
             }
           </View>
