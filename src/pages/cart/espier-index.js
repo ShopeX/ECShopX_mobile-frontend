@@ -43,7 +43,9 @@ export default class CartIndex extends Component {
       error: null,
       isPathQrcode: false,
       cartType: 'normal',
-      crossborder_show: false
+      crossborder_show: false,
+      // 消息通知
+      remindInfo: {}
     }
 
     this.updating = false
@@ -57,6 +59,7 @@ export default class CartIndex extends Component {
         isPathQrcode: true
       })
     }
+    this.getRemind()
     this.nextPage()
 
     if (!S.getAuthToken()) return
@@ -73,11 +76,6 @@ export default class CartIndex extends Component {
     })
   }
 
-  componentDidShow () {
-    if (!S.getAuthToken() || this.state.loading) return
-    this.updateCart()
-  }
-
   componentWillReceiveProps (nextProps) {
 		console.log('componentWillReceiveProps',nextProps.list , this.props.list,nextProps.list !== this.props.list)
 
@@ -91,6 +89,11 @@ export default class CartIndex extends Component {
     this.setState({
       groups
     })
+  }
+
+  componentDidShow () {
+    if (!S.getAuthToken() || this.state.loading) return
+    this.updateCart()
   }
 
   handleLoginClick = () => {
@@ -293,6 +296,14 @@ export default class CartIndex extends Component {
     })
   }
 
+  // 获取购物车消息通知
+  async getRemind () {
+    const res = await api.cart.getCartRemind()
+    this.setState({
+      remindInfo: res
+    })
+  }
+
 
   async handleSelectionChange (shopIndex,cart_id, checked) {
     await api.cart.select({
@@ -488,24 +499,25 @@ export default class CartIndex extends Component {
       // console.log(111)
     })
   }
-//加价购
-handleSelectPlusprice = (marketing_id) => {
-  const url = `/marketing/pages/plusprice/cart-plusprice-list?marketing_id=${marketing_id}`
-  Taro.navigateTo({
-    url: url
-  })
-}
-handleLookPlusprice = (marketing_id) =>{
-  const url = `/marketing/pages/plusprice/detail-plusprice-list?marketing_id=${marketing_id}`
-  Taro.navigateTo({
-    url: url
-  })
-}
+  //加价购
+  handleSelectPlusprice = (marketing_id) => {
+    const url = `/marketing/pages/plusprice/cart-plusprice-list?marketing_id=${marketing_id}`
+    Taro.navigateTo({
+      url: url
+    })
+  }
+
+  handleLookPlusprice = (marketing_id) =>{
+    const url = `/marketing/pages/plusprice/detail-plusprice-list?marketing_id=${marketing_id}`
+    Taro.navigateTo({
+      url: url
+    })
+  }
 
 
 
   render () {
-    const { groups, invalidList, cartMode, loading, curPromotions, likeList, page, isPathQrcode, cartType, crossborder_show } = this.state
+    const { groups, invalidList, cartMode, loading, curPromotions, likeList, page, isPathQrcode, cartType, crossborder_show, remindInfo } = this.state
     const { list, showLikeList, colors } = this.props
     console.log('groups',groups)
 
@@ -552,17 +564,21 @@ handleLookPlusprice = (marketing_id) =>{
             //   </View>
             // )
           }
-          <View
-            style={`background: ${colors.data[0].primary}`}
-          >            
-            <AtNoticebar
-              marquee
-              className='notice'
-              single
-            >
-              消息通知消息通知消息通知消息通知消息通知消息通知消息通知
-            </AtNoticebar>
-          </View>
+          {
+            remindInfo.is_open && <View
+              className={`${!S.getAuthToken() && 'paddingTop'}`}
+              style={`background: ${colors.data[0].primary}`}
+            >            
+              <AtNoticebar
+                marquee
+                icon='volume-plus'
+                className='notice'
+                single
+              >
+                { remindInfo.remind_content }
+              </AtNoticebar>
+            </View>
+          }
           
           {
             crossborder_show && 

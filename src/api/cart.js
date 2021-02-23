@@ -75,3 +75,8 @@ export function likeList (params) {
 export function selectedPlusitem (params) {
   return req.post('/cart/check/plusitem', params)
 }
+
+// 消息通知
+export function getCartRemind (params) {
+  return req.get('/cartremind/setting', params)
+}
