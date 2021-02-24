@@ -1,17 +1,17 @@
 /*
  * @Author: your name
  * @Date: 2021-01-25 10:54:19
- * @LastEditTime: 2021-01-29 17:07:46
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-02-24 11:05:24
+ * @LastEditors: PrendsMoi
  * @Description: In User Settings Edit
- * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/service/tracker/platform/youshu/index.js
+ * @FilePath: /unite-vshop/src/service/tracker/platform/youshu/index.js
  */
 import sr from "sr-sdk-wxapp";
 import S from "@/spx";
+import { tokenParse } from "@/utils";
 import Base from "../base";
 import actions from "./actions";
 import config from "./config";
-import { tokenParse } from "@/utils";
 
 export default class Youshu extends Base {
   name = "youshu";

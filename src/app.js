@@ -23,16 +23,6 @@ const { store } = configStore()
 
 useHooks()
 
-if (APP_TRACK) {
-  const system = Taro.getSystemInfoSync();
-  if (!(system && system.environment && system.environment === "wxwork")) {
-    console.log('----------------aa--------------')
-    console.log(Tracker)
-    Tracker.use(APP_TRACK);
-  }
-}
-
-
 class App extends Component {
   // eslint-disable-next-line react/sort-comp
   componentWillMount () {
@@ -387,6 +377,7 @@ class App extends Component {
     const {
       echat = {},
       meiqia = {},
+      youshu = {},
       disk_driver = 'qiniu',
       whitelist_status =  false,
       nostores_status = false
@@ -395,13 +386,23 @@ class App extends Component {
     Taro.setStorageSync('meiqia', meiqia)
     // 一洽客服配置
     Taro.setStorageSync('echat', echat)
-    // 白名单配置、门店配置、图片存储信息
+    // 白名单配置、门店配置、图片存储信息、有数配置
     Taro.setStorageSync('otherSetting', {
       whitelist_status,
       nostores_status,
       disk_driver,
-      nostores_status
+      nostores_status,
+      youshu
     })
+    if (APP_TRACK) {
+      const system = Taro.getSystemInfoSync();
+      if (!(system && system.environment && system.environment === "wxwork")) {
+        console.log('----------------aa--------------')
+        console.log(Tracker)
+        Tracker.use(APP_TRACK);
+      }
+    }
+      
   }
 
   componentDidCatchError () {}

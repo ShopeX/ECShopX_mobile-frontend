@@ -1,13 +1,17 @@
+import Taro from '@tarojs/taro'
+
+const { youshu = {} } =  Taro.getStorageSync('otherSetting') || {}
+
 export default {
   /**
    * 有数 - ka‘接入测试用’ 分配的 app_id，对应的业务接口人负责
    */
-  token: APP_YOUSHU_TOKEN,
+  token: youshu.app_secret || '',
 
   /**
    * 微信小程序appID，以wx开头
    */
-  appid: APP_ID,
+  appid: youshu.app_id || '',
 
   /**
    * 如果使用了小程序插件，需要设置为 true
