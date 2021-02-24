@@ -26,19 +26,19 @@ useHooks();
 if (APP_TRACK) {
   const system = Taro.getSystemInfoSync();
   if (!(system && system.environment && system.environment === "wxwork")) {
-    console.log("----------------aa--------------");
+    console.log("----------------企业微信环境--------------");
     console.log(Tracker);
     Tracker.use(APP_TRACK);
   }
 }
 
 class App extends Component {
+  system = Taro.getSystemInfoSync();
   // eslint-disable-next-line react/sort-comp
   componentWillMount() {
-    let system = Taro.getSystemInfoSync();
-    console.log("get - system", system);
-    console.log("get - system APP_TRACK", APP_TRACK);
+    console.log("get - system", this.system);
 
+    console.log("get - system APP_TRACK", APP_TRACK);
     this.init();
   }
   componentDidMount() {}
@@ -347,6 +347,36 @@ class App extends Component {
       ],
       name: "tabs"
     };
+    console.log("this.system2", this.system);
+    if (this.system.environment == "wxwork")
+      defaultTabs.data = [
+        {
+          name: "home",
+          pagePath: "/pages/index",
+          text: "首页"
+        },
+        {
+          name: "category",
+          pagePath: "/pages/category/index",
+          text: "分类"
+        },
+        {
+          name: "coupon",
+          // pagePath: "/pages/category/index",marketing/pages/member/coupon
+          pagePath: "/pages/member/index",
+          text: "优惠券"
+        },
+        {
+          name: "category",
+          pagePath: "/pages/category/index",
+          text: "种草"
+        },
+        {
+          name: "cart",
+          pagePath: "/pages/cart/espier-index",
+          text: "购物车"
+        }
+      ];
     const setUrl = "/pagestemplate/setInfo";
     req
       .get(setUrl)
@@ -360,7 +390,10 @@ class App extends Component {
         }) => {
           store.dispatch({
             type: "tabBar",
-            payload: tab_bar ? JSON.parse(tab_bar) : defaultTabs
+            payload:
+              tab_bar && this.system.environment != "wxwork"
+                ? JSON.parse(tab_bar)
+                : defaultTabs
           });
           Taro.setStorageSync("initTabBar", true);
           Taro.setStorageSync("settingInfo", {
