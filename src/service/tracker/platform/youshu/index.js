@@ -1,28 +1,31 @@
 /*
  * @Author: your name
  * @Date: 2021-01-25 10:54:19
- * @LastEditTime: 2021-01-29 17:07:46
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-02-24 16:56:29
+ * @LastEditors: PrendsMoi
  * @Description: In User Settings Edit
- * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/service/tracker/platform/youshu/index.js
+ * @FilePath: /unite-vshop/src/service/tracker/platform/youshu/index.js
  */
+import Taro from '@tarojs/taro'
 import sr from "sr-sdk-wxapp";
 import S from "@/spx";
+import { tokenParse } from "@/utils";
 import Base from "../base";
 import actions from "./actions";
 import config from "./config";
-import { tokenParse } from "@/utils";
 
 export default class Youshu extends Base {
   name = "youshu";
 
   constructor(options = {}) {
     super(options);
-    // const { onBeforeInit } = options;
 
     console.log('---------init--------')
+    const { youshu = {} } =  Taro.getStorageSync('otherSetting') || {}
+    config.appid = youshu.app_id
+    config.token = youshu.token
     console.log(config)
-
+    
     sr.init(config);
 
     this.actions = actions;

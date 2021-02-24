@@ -2,12 +2,12 @@ export default {
   /**
    * 有数 - ka‘接入测试用’ 分配的 app_id，对应的业务接口人负责
    */
-  token: APP_YOUSHU_TOKEN,
+  token: '',
 
   /**
    * 微信小程序appID，以wx开头
    */
-  appid: APP_ID,
+  appid: '',
 
   /**
    * 如果使用了小程序插件，需要设置为 true
