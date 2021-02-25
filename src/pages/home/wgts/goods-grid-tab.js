@@ -1,11 +1,13 @@
 
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView, Swiper, SwiperItem } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import { AtTabslist, SpImg} from '@/components'
-import { linkPage } from './helper'
-import { classNames } from '@/utils'
 import { connect } from '@tarojs/redux'
+import { classNames } from '@/utils'
+import { linkPage } from './helper'
+
 import './goods-grid-tab.scss'
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
@@ -94,7 +96,7 @@ export default class WgtGoodsGridTab extends Component {
               goodsList.map((item, idx) => {
                 const price = ((item.act_price ? item.act_price : item.member_price ? item.member_price : item.price) / 100).toFixed(2)
                 //const marketPrice = ((item.act_price ? item.price : item.member_price ? item.price : item.market_price)/100).toFixed(2)
-                const marketPrice = ((item.market_price) / 100).toFixed(2)
+                const marketPrice = ((item.market_price || 0) / 100).toFixed(2)
                 return (
                   <View
                     key={`${idx}1`}
@@ -136,7 +138,7 @@ export default class WgtGoodsGridTab extends Component {
                           && <View className='goods-price'>
                             <Text className='cur'>¥</Text>{price}
                             {
-                              marketPrice != 0 &&
+                              (marketPrice && marketPrice != 0) &&
                               <Text className='market-price'>{marketPrice}</Text>
                             }
                           </View>

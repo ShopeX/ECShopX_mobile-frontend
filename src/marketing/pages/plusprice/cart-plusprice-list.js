@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView, Text, Image } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote, GoodsItem, NavBar,SpCheckbox } from '@/components'
-import { AtCountdown } from 'taro-ui'
+// import { AtCountdown } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -129,7 +129,10 @@ export default class DetailPluspriceList extends Component {
     const { colors } = this.props
     const { list, showBackToTop, scrollTop, page } = this.state
     return (
-      <View className='page-plusprice cart-page-plusprice'>
+      <View
+        className='page-plusprice cart-page-plusprice'
+        style={`background: ${colors.data[0].primary}`}
+      >
         <NavBar
           title='微商城'
         />
@@ -144,38 +147,32 @@ export default class DetailPluspriceList extends Component {
           {
             list && list.length > 0 && (
             <View className='plusprice-goods__list plusprice-goods__type-list'>
-            {
-              list.map((item) => {
-                return (
-                  <View key={item.item_id} className='goods-list__item'>
-                    <View className='item-check'>
-                      <SpCheckbox
-                        checked={item.is_checked}
-                        onChange={this.handleSelectGoods.bind(this,item)}
-                      >
-                      </SpCheckbox>
+              {
+                list.map((item) => {
+                  return (
+                    <View key={item.item_id} className='goods-list__item'>
+                      <View className='item-check'>
+                        <SpCheckbox
+                          checked={item.is_checked}
+                          onChange={this.handleSelectGoods.bind(this,item)}
+                        >
+                        </SpCheckbox>
+                      </View>
+                      <View className='item-goodsItem'>
+                        <GoodsItem
+                          key={item.item_id}
+                          info={item}
+                          showFav={false}
+                          onClick={this.handleClickItem.bind(this)}
+                        >
+                        </GoodsItem>
+                      </View>
+                      
                     </View>
-                    <View className='item-goodsItem'>
-                    <GoodsItem
-                        key={item.item_id}
-                        info={item}
-                        showFav={false}
-                        onClick={this.handleClickItem.bind(this)}
-                      >
-                      </GoodsItem>
-                    </View>
-                    
-                  </View>
-                )
-              })
-            }
-           <View className='plusprice-footer'>
-             <View className='footer-list'>
-             <View className='footer-item no-use' onClick={this.handleClickConfirm.bind(this,'cancel')}>不使用换购</View>
-                <View className='footer-item' onClick={this.handleClickConfirm.bind(this,'confirm')}>确定</View>
-             </View>
-          </View>
-          </View>
+                  )
+                })
+              }
+            </View>
             )
           }
           
@@ -185,9 +182,26 @@ export default class DetailPluspriceList extends Component {
 						&& (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
           }
         </ScrollView>
-
+        <View className='plusprice-footer'>
+          <View className='footer-list'>
+            <View
+              className='footer-item no-use'
+              style={`background: ${colors.data[0].accent}`}
+              onClick={this.handleClickConfirm.bind(this,'cancel')}
+            >
+              不使用换购
+            </View>
+            <View 
+              className='footer-item'
+              style={`background: ${colors.data[0].primary}`}
+              onClick={this.handleClickConfirm.bind(this,'confirm')}
+            >
+              确定
+            </View>
+          </View>
+        </View>
         <BackToTop
-         show={showBackToTop}
+          show={showBackToTop}
           onClick={this.scrollBackToTop}
         />
       </View>

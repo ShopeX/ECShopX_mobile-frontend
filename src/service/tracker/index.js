@@ -1,4 +1,4 @@
-import Taro, { Component } from "@tarojs/taro";
+import Taro from "@tarojs/taro";
 import { log } from "@/utils";
 import Trackers from "./platform";
 

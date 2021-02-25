@@ -146,7 +146,7 @@ export default class WgtGoodsGrid extends Component {
                           && <View className='goods-price'>
                             <Text className='cur'>¥</Text>{price}
                             {
-                              marketPrice != 0 &&
+                              (marketPrice && marketPrice != 0)&&
                               <Text className='market-price'>{marketPrice}</Text>
                             }
                           </View>

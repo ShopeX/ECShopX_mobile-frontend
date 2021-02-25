@@ -59,12 +59,12 @@ export default class ActivityPanel extends Component {
         </View>
 
         <AtFloatLayout
+          scrollY
           isOpened={isOpen}
           onClose={onClose}
-          title="促销优惠"
+          title='促销优惠'
           scrollX={false}
-          scrollY={false}
-          >
+        >
           <View className='goods-sec-specs'>
             <View className='goods-sec-specs__activity'>
               {

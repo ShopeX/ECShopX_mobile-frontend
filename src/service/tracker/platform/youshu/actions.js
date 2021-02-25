@@ -38,13 +38,13 @@ function resolveCartInfo(params, action_type) {
     },
     spu: {
       spu_id: params.goods_id,
-      spu_name: params.goods_title
+      spu_name: params.goods_title||params.item_name
     },
     sale: {
       original_price: params.market_price / 100,
       current_price: params.price / 100
     },
-    goods_title: params.goods_title
+    goods_title: params.goods_title||params.item_name
   };
   if (action_type) {
     Object.assign(baseData, { action_type });
@@ -323,11 +323,12 @@ const actions = {
       market_price,
       price,
       goods_id,
-      itemName: goods_title
+      itemName: goods_title,
+      item_name
     } = params;
 
     const data = resolveCartInfo(
-      { sku_id, sku_name, num, market_price, price, goods_id, goods_title },
+      { sku_id, sku_name, num, market_price, price, goods_id, goods_title,item_name },
       "first_add_to_cart"
     );
     Tracker.trackEvents("add_to_cart", "首次加车", data);

@@ -1,11 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView, Text, Image } from '@tarojs/components'
+import { View, ScrollView, Text } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote, GoodsItem, NavBar } from '@/components'
 import { AtCountdown } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { pickBy,validColor,isString } from '@/utils'
+import NormalBackground from '../../../assets/imgs/plusprice-head.png'
 
 import './plusprice.scss'
 
@@ -128,8 +129,8 @@ export default class DetailPluspriceList extends Component {
       list: [...this.state.list, ...nList],
       promotion_activity,
       timer,
-      isSetBackground:activity_background?activity_background:false,
-      timeBackgroundColor:timeBackgroundColor?timeBackgroundColor:undefined
+      isSetBackground: activity_background ? activity_background: NormalBackground,
+      timeBackgroundColor: timeBackgroundColor ? timeBackgroundColor : undefined
     })
     return {
       total
@@ -140,9 +141,12 @@ export default class DetailPluspriceList extends Component {
   render () {
     const { colors } = this.props
     const { list, showBackToTop, scrollTop, page,promotion_activity,timer,isSetBackground ,timeBackgroundColor} = this.state
-    console.log('list---->',isSetBackground)
+    if (!promotion_activity.marketing_name) return <Loading />
     return (
-      <View className={`page-plusprice${isSetBackground?' is-set-background':''}`} style={{backgroundImage:isSetBackground?`url(${isSetBackground})`:'auto',backgroundSize:isSetBackground?'cover':'contain'}}>
+      <View
+        className='page-plusprice'
+        style={{backgroundImage: `url(${isSetBackground})`, backgroundSize:isSetBackground?'cover':'contain'}}
+      >
         <NavBar
           title='微商城'
         />
@@ -153,29 +157,27 @@ export default class DetailPluspriceList extends Component {
                       <View>          				
                         <Text className='time-text'>距结束</Text>
                       {timer && (
-                              <AtCountdown
-                              format={{ day:'天',hours: ':', minutes: ':', seconds: '' }}
-                              isShowDay
-                              day={timer.dd}
-                              hours={timer.hh}
-                              minutes={timer.mm}
-                              seconds={timer.ss}
-                            />
+                          <AtCountdown
+                            format={{ day:'天',hours: ':', minutes: ':', seconds: '' }}
+                            isShowDay
+                            day={timer.dd}
+                            hours={timer.hh}
+                            minutes={timer.mm}
+                            seconds={timer.ss}
+                          />
                       )
                       
                       }
                         
                         {/* <AtCountdown
-                         format={{ day:'天',hours: ':', minutes: ':', seconds: '' }}
+                        format={{ day:'天',hours: ':', minutes: ':', seconds: '' }}
                           isShowDay
                           day={2}
                           hours={1}
                           minutes={1}
                           seconds={10}
                         /> */}
-                        
-          						</View>
-                 
+                  </View>
                 </View>
           </View>
         <ScrollView
@@ -215,7 +217,7 @@ export default class DetailPluspriceList extends Component {
         </ScrollView>
 
         <BackToTop
-         show={showBackToTop}
+          show={showBackToTop}
           onClick={this.scrollBackToTop}
         />
         {!isSetBackground && <View className='scroll-footer'></View>}

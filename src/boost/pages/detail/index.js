@@ -5,8 +5,8 @@
  * @Description: 助力详情
  * @FilePath: /unite-vshop/src/boost/pages/detail/index.js
  * @Date: 2020-09-22 14:08:32
- * @LastEditors: Arvin
- * @LastEditTime: 2020-11-26 23:03:01
+ * @LastEditors: PrendsMoi
+ * @LastEditTime: 2021-02-22 18:18:35
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
@@ -76,11 +76,11 @@ export default class Detail extends Component {
   getBoostDetail = async () => {
     Taro.showLoading({mask: true})
     const { bargain_id } = this.$router.params
-    const data = await api.boost.getDetail({
-      template_name: 'yykcutdown',
-      name: 'banner',
-      page_name: 'pages/kanjia'
-    })
+    // const data = await api.boost.getDetail({
+    //   template_name: 'yykweishop',
+    //   name: 'banner',
+    //   page_name: 'pages/kanjia'
+    // })
     const {
       bargain_info = {},
       user_bargain_info = {},
@@ -102,7 +102,7 @@ export default class Detail extends Component {
     }
 
     this.setState({
-      adPic: data[0] ? data[0].params.ad_pic : '',
+      adPic: bargain_info ? bargain_info.ad_pic : '',
       info: pickBy(bargain_info, {
         item_id: 'item_id',
         bargain_id: 'bargain_id',
@@ -141,24 +141,27 @@ export default class Detail extends Component {
 
   base64Tosrc = (base64data) => {
     const fsm = Taro.getFileSystemManager()
-    const FILE_BASE_NAME = 'tmp_base64src'
+    const FILE_BASE_NAME = `tmp_base64src_${new Date().getTime()}`
     return new Promise((resolve, reject) => {
     const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || []
     if (!format) {
       reject(new Error('ERROR_BASE64SRC_PARSE'))
     }
     const filePath = `${Taro.env.USER_DATA_PATH}/${FILE_BASE_NAME}.${format}`
-    const buffer = Taro.base64ToArrayBuffer(bodyData)
+    // const buffer = Taro.base64ToArrayBuffer(bodyData)
     fsm.writeFile({
       filePath,
-      data: buffer,
-      encoding: 'binary',
+      data: bodyData,
+      encoding: 'base64',
       success() {
         Taro.getImageInfo({
           src: filePath,
           success(res){
             resolve(res.path)
           },
+          fail(e) {
+            console.log(e)
+          }
         })
       },
       fail() {

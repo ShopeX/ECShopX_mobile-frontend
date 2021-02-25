@@ -15,7 +15,6 @@ import { GoodsBuyToolbar, ItemImg, ImgSpec, StoreInfo, ActivityPanel, SharePanel
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
-import { floor } from 'lodash'
 
 @connect(({ cart, member, colors }) => ({
   cart,
@@ -154,7 +153,7 @@ export default class Detail extends Component {
     if (S.getAuthToken() && (!userInfo || !userInfo.userId)) {
       const res = await api.member.memberInfo()
       const userObj = {
-        username: res.memberInfo.nickname,
+        username: res.memberInfo.nickname || res.memberInfo.username || res.memberInfo.mobile,
         avatar: res.memberInfo.avatar,
         userId: res.memberInfo.user_id,
         mobile: res.memberInfo.mobile,
@@ -557,7 +556,7 @@ export default class Detail extends Component {
     if (S.getAuthToken() && (!userinfo || !userinfo.userId)) {
       const res = await api.member.memberInfo()
       const userObj = {
-        username: res.memberInfo.nickname,
+        username: res.memberInfo.nickname || res.memberInfo.username || res.memberInfo.mobile,
         avatar: res.memberInfo.avatar,
         userId: res.memberInfo.user_id,
         mobile: res.memberInfo.mobile,
@@ -878,9 +877,9 @@ export default class Detail extends Component {
     const skuEndprice = marketing === 'normal' ? skuMemprice : skuActprice
     const skuPrice = curSku ? skuEndprice : endPrice
 
-    const crossPrice = floor(skuPrice * taxRate)
+    const crossPrice = Math.floor(skuPrice * taxRate)
 
-    const showPrice = floor(skuPrice * (1 + taxRate))
+    const showPrice = Math.floor(skuPrice * (1 + taxRate))
     
     const lnglat = Taro.getStorageSync('lnglat')
     if (!info) {
@@ -1067,7 +1066,7 @@ export default class Detail extends Component {
                     )}
                     <Price primary unit="cent" value={showPrice} />
                     {
-                      (curSku && curSku.market_price > 0) || (info && info.market_price > 0) &&
+                      ((curSku && curSku.market_price > 0) || (info && info.market_price > 0)) &&
                       <Price
                         lineThrough
                         unit='cent'

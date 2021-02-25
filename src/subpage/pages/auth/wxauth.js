@@ -55,7 +55,7 @@ export default class WxAuth extends Component {
       if (this.$router.params.redirect) {
         const memberInfo = await api.member.memberInfo()
         const userObj = {
-          username: memberInfo.memberInfo.nickname,
+          username: memberInfo.memberInfo.nickname || memberInfo.memberInfo.username || memberInfo.memberInfo.mobile,
           avatar: memberInfo.memberInfo.avatar,
           userId: memberInfo.memberInfo.user_id,
           isPromoter: memberInfo.is_promoter,
