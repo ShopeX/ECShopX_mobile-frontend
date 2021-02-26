@@ -3,7 +3,9 @@
     /*  #ifdef  h5  */  
     padding-top: $navigate-height-h5;
     /*  #endif  */  
-    background: #FC7239 url(../../../assets/imgs/plusprice-head.png) center top no-repeat;
+    // background: #FC7239 url(../../../assets/imgs/plusprice-head.png) center top no-repeat;
+    background-repeat: no-repeat;
+    background-position: center top;
     height: 100vh;
     width: 100%;
     background-size: contain;
@@ -33,7 +35,7 @@
 
       &__list {
 					padding: 20px;
-          background: #eeeeee;
+          // background: #eeeeee;
           border-radius: 8px;
           }
 			&__timer {
@@ -115,11 +117,12 @@
 				width: 100%;
 				bottom: 0;
 				left:0;
-				height: 160px;
+				height: 130px;
         background: #ffffff;
         padding-left: 15px;
         padding-right: 15px;
         padding-top: 10px;
+        z-index: 9;
         .footer-list{
           display: flex;
           height: 80px;
@@ -132,10 +135,11 @@
 					flex: 1;
 					text-align: center;
           color: #ffffff;
+          border-radius: 0 40px 40px 0;
           &.no-use{
-          background: linear-gradient(90deg, #FAD961 0%, #F7A31C 100%);
-          box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1);
-          border-radius: 40px 0 0 40px;
+            // background: linear-gradient(90deg, #FAD961 0%, #F7A31C 100%);
+            box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1);
+            border-radius: 40px 0 0 40px;
           }
 				}
       }
@@ -149,33 +153,37 @@
         bottom:0;
       }
   }
-  .cart-page-plusprice{
-    background: #FC7239;
-    .plusprice-goods__scroll{
-      top:20px;
-      bottom: 0;
-      .goods-list__item{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #ffffff;
-        margin-bottom: 20px;
-        padding-left:15px;
-        .item-check{
-          flex-basis: 60px;
-        }
-        .item-goodsItem{
-          flex:1;
-        }
-        .goods-item{
-          box-shadow: none;
-          margin-bottom: 0;
-          
+.cart-page-plusprice{
+  // background: #FC7239;
+  .plusprice-goods__scroll{
+    top: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    padding-bottom: 120px;
+    .goods-list__item{
+      display: flex;
+      border-radius: 10px;
+      padding: 20px 0 20px 15px;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffffff;
+      margin-bottom: 20px;
+      .goods-item__cont {
+        padding: 0 20px;
+        &::after{
+          display: none;
         }
       }
+      .item-check{
+        flex-basis: 60px;
+      }
+      .item-goodsItem{
+        flex:1;
+      }
+      .goods-item{
+        box-shadow: none;
+        margin-bottom: 0;
+      }
     }
-    .plusprice-goods__list{
-      padding-bottom: 160px;
-    }
-
   }
+}

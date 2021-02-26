@@ -484,7 +484,6 @@ export default class List extends Component {
       query
     } = this.state
     const { isTabBar = '' } = this.$router.params
-    console.log(!isTabBar)
 		return (
 			<View className='page-goods-list'>
         {
@@ -596,7 +595,7 @@ export default class List extends Component {
                   oddList.map(item => {
                     return (
                       <View
-                        className="goods-list__item"
+                        className='goods-list__item'
                         key={item.item_id}
                         data-id={item.item_id}
                       >
@@ -616,7 +615,7 @@ export default class List extends Component {
                   evenList.map(item => {
                     return (
                       <View
-                        className="goods-list__item"
+                        className='goods-list__item'
                         key={item.item_id}
                         data-id={item.item_id}
                       >
@@ -635,13 +634,12 @@ export default class List extends Component {
           }
           {
             listType === 'list' &&
-            <View className={`goods-list goods-list__type-list`}>
+            <View className='goods-list goods-list__type-list'>
               {
                 list.map(item => {
                   return (
-                    <View className='goods-list__item'>
+                    <View className='goods-list__item' key={item.item_id}>
                       <GoodsItem
-                        key={item.item_id}
                         info={item}
                         onClick={() => this.handleClickItem(item)}
                         onStoreClick={() => this.handleClickStore(item)}

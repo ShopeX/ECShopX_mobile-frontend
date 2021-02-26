@@ -15,7 +15,6 @@ import { GoodsBuyToolbar, ItemImg, ImgSpec, StoreInfo, ActivityPanel, SharePanel
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
-import { floor } from 'lodash'
 
 @connect(({ cart, member, colors }) => ({
   cart,
@@ -878,9 +877,9 @@ export default class Detail extends Component {
     const skuEndprice = marketing === 'normal' ? skuMemprice : skuActprice
     const skuPrice = curSku ? skuEndprice : endPrice
 
-    const crossPrice = floor(skuPrice * taxRate)
+    const crossPrice = Math.floor(skuPrice * taxRate)
 
-    const showPrice = floor(skuPrice * (1 + taxRate))
+    const showPrice = Math.floor(skuPrice * (1 + taxRate))
     
     const lnglat = Taro.getStorageSync('lnglat')
     if (!info) {
