@@ -188,7 +188,7 @@ export default class TradeList extends Component {
         url: fullPath
       })
       return
-    }
+    } 
 
     switch (type) {
       case 'cancel':

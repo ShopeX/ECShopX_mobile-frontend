@@ -34,7 +34,7 @@ function resolveCartInfo(params, action_type) {
   const baseData = {
     sku: {
       sku_id: params.sku_id,
-      sku_name: params.sku_name
+      sku_name: params.sku_name||params.item_name
     },
     spu: {
       spu_id: params.goods_id,
@@ -315,7 +315,7 @@ const actions = {
     Tracker.trackEvents("add_to_cart", "购物车追加", data);
   },
   // 首次加车
-  ["GOODS_ADD_TO_CART"](params) {
+  ["GOODS_ADD_TO_CART"](params) { 
     const {
       item_id: sku_id,
       propsText: sku_name,

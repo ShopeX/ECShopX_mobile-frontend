@@ -11,8 +11,7 @@ export default function withTracker(Component) {
   return class WithTrackerComponent extends Component {
     constructor(props) {
       super(props);
-      this.page = this;
-      debugger;
+      this.page = this; 
     }
 
     async componentDidMount() {
