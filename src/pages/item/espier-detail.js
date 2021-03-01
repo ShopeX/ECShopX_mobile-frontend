@@ -76,7 +76,7 @@ export default class Detail extends Component {
   }
 
   async componentDidMount() {
-    const options = this.$router.params
+    const options = this.$router.params 
     let id = options.id
     let uid = ''
     if(!S.getAuthToken()){
@@ -244,14 +244,14 @@ export default class Detail extends Component {
   }
 
   isPointitemGood(){
-    console.log('----------isPointitemGood-------',this.$router.params)
+    console.log('----------isPointitemGood-------',this.$router)
     const options = this.$router.params;
     return options.type==='pointitem';
   }
 
   async goodInfo(id,param){
     let info;
-    if(this.isPointitemGood){
+    if(this.isPointitemGood()){
       info = await api.pointitem.detail(id, param)
     }else{
       info = await api.item.detail(id, param)
@@ -1141,8 +1141,8 @@ export default class Detail extends Component {
             )}
             {
               this.isPointitemGood() && <View class="goods_point">
-                <View class="number"></View>
-                <View class="text"></View>
+                <View class="number">{info.point}</View>
+                <View class="text">积分</View>
               </View>
             }
           </View>
@@ -1172,7 +1172,7 @@ export default class Detail extends Component {
           )}
 
           {
-            !info.is_gift && <SpCell
+            !info.is_gift && !this.isPointitemGood() && <SpCell
               className="goods-sec-specs"
               title="领券"
               isLink
@@ -1352,6 +1352,7 @@ export default class Detail extends Component {
             onFavItem={this.handleMenuClick.bind(this, "fav")}
             onClickAddCart={this.handleBuyBarClick.bind(this, "cart")}
             onClickFastBuy={this.handleBuyBarClick.bind(this, "fastbuy")}
+            isPointitem={this.isPointitemGood()}
           >
             <View>{marketing}</View>
           </GoodsBuyToolbar>
@@ -1362,6 +1363,7 @@ export default class Detail extends Component {
             cartCount={cartCount}
             type={marketing}
             onFavItem={this.handleMenuClick.bind(this, "fav")}
+            isPointitem={this.isPointitemGood()}
           >
             <View
               className="goods-buy-toolbar__btns"
@@ -1391,7 +1393,8 @@ export default class Detail extends Component {
             marketing={marketing}
             isOpened={showBuyPanel}
             onClose={() => this.setState({ showBuyPanel: false })}
-            fastBuyText={marketing === "group" ? "我要开团" : "立即购买"}
+            fastBuyText={this.isPointitemGood()?"立即兑换":marketing === "group" ? "我要开团" : "立即购买"}
+            isPointitem={this.isPointitemGood()}
             onChange={this.handleSkuChange}
             onAddCart={this.handleBuyAction.bind(this, "cart")}
             onFastbuy={this.handleBuyAction.bind(this, "fastbuy")}

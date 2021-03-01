@@ -298,8 +298,7 @@ export default class List extends Component {
     this.setState({ 
       list: [],
       query
-    }, () => {
-      console.log(this.state)
+    }, () => { 
       this.nextPage()
     })
   }
@@ -313,7 +312,7 @@ export default class List extends Component {
       price: price * 100,
       imgUrl: img
     });
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&type=pointitem`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })

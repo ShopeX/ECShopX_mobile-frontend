@@ -33,7 +33,8 @@ export default class GoodsBuyPanel extends Component {
     onChange: () => {},
     onClickAddCart: () => {},
     onClickFastBuy: () => {},
-    onSubmit: () => {}
+    onSubmit: () => {},
+    isPointitem:false
   };
 
   constructor(props) {
@@ -276,7 +277,7 @@ export default class GoodsBuyPanel extends Component {
     console.warn(this.props);
     if (this.state.busy) return;
     const isOpenStore = await entry.getStoreStatus()
-    const { marketing, info } = this.props;
+    const { marketing, info ,isPointitem} = this.props;
     const { special_type } = info;
     const isDrug = special_type === "drug";
     const { item_id } = this.noSpecs ? info : skuInfo;
@@ -352,8 +353,8 @@ export default class GoodsBuyPanel extends Component {
         await api.cart.fastBuy({
           item_id,
           num,
-          distributor_id:id
-        });
+          distributor_id:id,
+        },isPointitem);
       } catch (e) {
         console.log(e);
         this.setState({
@@ -368,7 +369,7 @@ export default class GoodsBuyPanel extends Component {
 
       this.props.onFastbuy(item_id, num);
       Taro.navigateTo({
-        url
+        url:`${url}&type=pointitem`
       });
     }
 
@@ -398,7 +399,8 @@ export default class GoodsBuyPanel extends Component {
       colors,
       isPackage,
       packItem,
-      mainpackItem
+      mainpackItem,
+      isPointitem
     } = this.props;
     const {
       curImg,
@@ -502,7 +504,11 @@ export default class GoodsBuyPanel extends Component {
                 src={curImg || info.pics[0]}
               />
             </View>
-            <View className="goods-sku__price">
+            {isPointitem && <View className="goods-point">
+              <View className="number">{info.point}</View>
+              <View className="text">积分</View>
+            </View>}
+            {!isPointitem && <View className="goods-sku__price">
               <Price primary symbol="¥" unit="cent" value={price} />
               <View className="goods-sku__price-market">
                 {marketPrice !== 0 && marketPrice && (
@@ -515,7 +521,7 @@ export default class GoodsBuyPanel extends Component {
                   />
                 )}
               </View>
-            </View>
+            </View>}
             <View className="goods-sku__info">
               {this.noSpecs ? (
                 <Text className="goods-sku__props">{info.item_name}</Text>
