@@ -623,6 +623,7 @@ export default class CartCheckout extends Component {
 
     if (this.isPointitemGood()) {
       params.order_type = "normal_pointsmall";
+      params.pay_type='point';
       //params.distributor_id=0;
     }
 
@@ -1202,6 +1203,7 @@ export default class CartCheckout extends Component {
     this.setState({
       submitLoading: false
     });
+    console.log("---------Check--------")
     // 积分流程
     if (payType === "point" || payType === "deposit") {
       if (!payErr) {
@@ -1220,6 +1222,7 @@ export default class CartCheckout extends Component {
     }
 
     payErr = null;
+    console.log("-----config-----",config)
     try {
       const payRes = await Taro.requestPayment(config);
       // 支付上报
