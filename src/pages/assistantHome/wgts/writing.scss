@@ -1,0 +1,36 @@
+@import "../../../style/imports";
+
+.wgt {
+  &__padded {
+    padding: 40px 0;
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 10px 20px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: flex-end;
+    flex: 1;
+    font-size: 32px;
+  }
+
+  &__subtitle {
+    padding-left: 10px;
+    font-size: 24px;
+    color: #999;
+  }
+}
+.wgt-writing {
+  background: #ffffff;
+  padding: 20px 0;
+}
+
+.writing-view {
+  font-size: 30px;
+  line-height: 44px;
+  min-height: 30px;
+  padding: 0 20px;
+}

@@ -59,7 +59,9 @@ useHooks();
 getHomeSetting();
 
 class App extends Component {
+  //Taro.getSystemInfoSync().environment == "wxwork"
   system = Taro.getSystemInfoSync();
+
   // eslint-disable-next-line react/sort-comp
   componentWillMount() {
     console.log("get - system", this.system);
@@ -72,6 +74,14 @@ class App extends Component {
   config = {
     pages: [
       "pages/index",
+      "pages/assistantCeshi/index",
+
+      "pages/assistantCategory/index",
+      "pages/assistantLike/index",
+      "pages/assistantCoupon/index",
+      "pages/assistantHome/landing",
+      "pages/assistantCart/espier-index",
+
       "pages/home/landing",
       "pages/category/index",
       "pages/floorguide/index",
@@ -252,6 +262,11 @@ class App extends Component {
           // 绑定订单
           "pages/bindOrder/index"
         ]
+      },
+      // 导购
+      {
+        root: "assistant",
+        pages: ["pages/index"]
       }
     ],
     permission: {
@@ -374,10 +389,15 @@ class App extends Component {
     };
     console.log("this.system2", this.system);
     if (this.system.environment == "wxwork")
+      // "pages/assistantCategory/index",
+      //   "pages/assistantLike/index",
+      //   "pages/assistantCoupon/index",
+      //   "pages/assistantHome/landing",
+      //   "pages/assistantCart/espier-index"
       defaultTabs.data = [
         {
           name: "home",
-          pagePath: "/pages/index",
+          pagePath: "/pages/assistantCeshi/index",
           text: "首页"
         },
         {
@@ -393,12 +413,12 @@ class App extends Component {
         },
         {
           name: "category",
-          pagePath: "/pages/category/index",
+          pagePath: "/pages/assistantLike/index",
           text: "种草"
         },
         {
           name: "cart",
-          pagePath: "/pages/cart/espier-index",
+          pagePath: "/pages/assistantCart/espier-index",
           text: "购物车"
         }
       ];

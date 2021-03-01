@@ -1,0 +1,29 @@
+@import "../../style/imports";
+@import "../item/list";
+
+.page-goods-fav { 
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  .trade-list__tabs {
+    /*  #ifdef  h5  */  
+    padding-top: $navigate-height-h5;
+    /*  #endif  */
+  }
+  .goods-list {
+    &__scroll {
+      @include page-scroll($navigate-height + $tabs-height + 10px, 0);
+      /*  #ifdef  h5  */  
+      @include page-scroll($navigate-height-h5 + $tabs-height + 10px, 0);
+      /*  #endif  */      
+    }
+    &__type-grid {
+      display: flex;
+      flex-wrap: wrap;
+      .goods-list__item {
+        width: 50%;
+        padding: 10px;
+      }
+    }
+  }
+}

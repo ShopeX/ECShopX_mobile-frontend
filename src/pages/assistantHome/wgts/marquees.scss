@@ -1,0 +1,51 @@
+@import "../../../style/imports";
+
+.marquees-label {
+  .label-text {
+    padding: 0 15px;
+    border-right: 1px solid #333;
+  }
+  .icon-sound {
+    padding: 0 15px;
+  }
+}
+
+.marquees-vertical {
+  display: flex;
+  align-items: center;
+  .marquees {
+    flex: 1;
+    height: 60px;
+    .marquees-item {
+      padding: 0 30px;
+      box-sizing: border-box;
+      line-height: 60px;
+      .item-text {
+        font-size: 28px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.marquees-horizontal {
+  position: relative;
+  display: flex;
+  align-items: center;
+  .marquees-label {
+    // position: absolute;
+    // left: 0;
+    // top: 50%;
+    // padding-right: 15px;
+    flex-shrink: 0;
+    // transform: translateY(-50%);
+    // z-index: 100 !important;
+  }
+  .marqueContent {
+    // display: block !important;
+    flex: 1;
+    overflow: hidden;
+  }
+}

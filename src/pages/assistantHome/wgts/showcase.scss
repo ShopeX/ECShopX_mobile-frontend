@@ -1,0 +1,55 @@
+.showcase-scheme-1 {
+  display: flex;
+  .scheme-item {
+    flex: 1;
+  }
+  .layout {
+    position: relative;
+    width: 100%;
+    &::after {
+      display: flex;
+      content: "";
+    }
+    &.layout-1 {
+      &::after {
+        padding-top: 150%;
+      }
+      &::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 1px;
+        background: #fff;
+        content: "";
+        z-index: 99;
+      }
+    }
+    &.layout-2 {
+      &::after {
+        padding-top: 85%;
+      }
+      &::before {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: #fff;
+        content: "";
+        z-index: 99;
+      }
+    }
+    &.layout-3 {
+      &::after {
+        padding-top: 65%;
+      }
+    }
+    .show-img {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

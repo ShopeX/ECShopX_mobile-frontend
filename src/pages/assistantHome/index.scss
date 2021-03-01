@@ -1,0 +1,235 @@
+@import "../../style/imports";
+
+.page-index {
+  position: relative;
+  background: #fff;
+  box-sizing: border-box;
+  .home-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $home-header-height;
+    z-index: 99;
+  }
+  .add_tip {
+    display: flex;
+    position: fixed;
+    padding: 20px;
+    width: 70%;
+    top: 30px;
+    right: 60px;
+    z-index: $z-index-toast;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+    .tip-text {
+      flex: 1;
+    }
+    .icon-view {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 50%;
+      font-size: 24px;
+      color: #fff;
+    }
+
+  }
+  .add_tip:after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    border: 20px solid transparent;
+    border-bottom-color: #ffffff;
+    top: -40px;
+    left: 80%;
+    margin-left: -10px;
+    width: 0;
+    height: 0;
+  }
+  .float-menus {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 180px;
+    right: $edge-size;
+    bottom: 190px;
+    .distribution-shop {
+      width: 180px;
+      border-radius: 60px;
+      box-shadow: 0 0 20px rgba(0,0,0,.2);
+    }
+  }
+  .at-noticebar {
+    background: inherit;
+    color: inherit;
+  }
+  &.onTop {
+    .search.fixed {
+      position: absolute;
+    }
+    .home-header {
+      position: absolute;
+    }
+  }
+
+  .wgts-wrap {
+    $self: &;
+    padding-top: $home-header-height;
+    padding-bottom: $tabbar-height;
+    background: #fff;
+    /*  #ifdef  h5  */
+    .taro-img {
+      width: 100%;
+    }
+    /*  #endif  */
+    &_platform {
+      padding-top: 0;
+    }
+    #{$self}__cont {
+      padding-top: 0;
+    }
+    &__fixed {
+      padding-top: $home-header-height;
+      .search {
+        &.fixed {
+          top: 0;
+        }
+      }
+    }
+    &.platform {
+      padding-top: 0;
+    }
+    &__fixed_standard {
+        padding-top: calc(#{$home-header-height} + #{$home-search-height});
+      .search {
+        &.fixed {
+          top: $home-header-height;
+        }
+      }
+    }
+    &__is-distributor {
+    }
+    &.wgts-wrap-nolocation {
+      padding-top: 0;
+    }
+  }
+  
+  
+  .faverite-content {
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+  
+  .slider-search {
+    position: relative;
+  }
+  
+  .wgt {
+    &__padded {
+      padding: 40px 0;
+    }
+    &__header {
+      display: flex;
+      align-items: center;
+      padding: 0 20px 10px 20px;
+    }
+    &__title {
+      display: flex;
+      align-items: flex-end;
+      flex: 1;
+      font-size: 32px;
+    }
+    &__subtitle {
+      padding-left: 10px;
+      font-size: 24px;
+      color: #999;
+    }
+    &__body {
+      &.with-padding {
+        padding: 0 20px;
+      }
+    }
+    &__goods__more {
+      display: flex;
+      text-align: right;
+      align-items: center;
+      justify-content: center;
+      height: 24px;
+      border-radius: 60px;
+    }
+    &__more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 24px;
+      border-radius: 60px;
+      .three-dot {
+        position: relative;
+        width: 8px;
+        height: 8px;
+        background: #333;
+        border-radius: 50%;
+        &::before, &::after {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          background: #333;
+          border-radius: 50%;
+          content: "";
+        }
+        &::before {
+          transform: translateX(-160%);
+        }
+        &::after {
+          transform: translateX(160%);
+        }
+      }
+    }
+    button {
+      font-size: 26px;
+    }
+    .countdown__time {
+      margin-left: 50px;
+    }
+    .at-countdown__time-box{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0 6px;
+      background: #333;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 24px;
+      font-family: sans-serif;
+    }
+  }
+  
+  .grid-goods {
+    margin: 0 -10px;
+    display: flex;
+    flex-wrap: wrap;
+    .goods-list__item {
+      width: 50%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+  
+  }
+  
+  .faverite-list {
+    .goods-item__cont {
+      height: 345px;
+    }
+    .goods-item__caption {
+      height: 200px;
+    }
+  }
+}
