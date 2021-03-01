@@ -271,15 +271,35 @@ export default class List extends Component {
           : (sort > 0 ? 3 : 2)
     } 
 
+    console.log("-----query-----",query);
+
     if(this.state.curFilterIdx===current){
       //点击相同菜单项不用操作
       return ;
     }
 
+    this.resetPage()
+
     this.setState({
       curFilterIdx: current,
+      query,
+      list: [],
+    }, () => {
+      this.nextPage()
+    })
+  }
+
+  handleInputConfirm=(value)=>{
+    const query = {
+      ...this.state.query,
+      keywords:value
+    } 
+    this.resetPage()
+    this.setState({ 
+      list: [],
       query
     }, () => {
+      console.log(this.state)
       this.nextPage()
     })
   }
@@ -373,10 +393,10 @@ export default class List extends Component {
     } = this.state
     const { isTabBar = '' } = this.$router.params
     const noData=!page.isLoading && !page.hasNext && !list.length;
-    console.log('-----isTabBar----', !isTabBar)
-    console.log('-----page----', page)
-    console.log('-----useInfo----', useInfo)
-    console.log('-----filterConfig----', this.state.filterConfig)
+    // console.log('-----isTabBar----', !isTabBar)
+    // console.log('-----page----', page)
+    // console.log('-----useInfo----', useInfo)
+    // console.log('-----filterConfig----', this.state.filterConfig)
     return (
       <View className='page-goods-list'>
         {
@@ -399,6 +419,7 @@ export default class List extends Component {
             current={curFilterIdx}
             list={filterList}
             onChange={this.handleFilterChange}
+            onInputConfirm={this.handleInputConfirm}
           >
 
           </Tabs>

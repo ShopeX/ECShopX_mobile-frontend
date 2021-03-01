@@ -21,6 +21,7 @@ export default function withPager(Component) {
     nextPage = async () => {
 
       const { page } = this.state
+      console.log("--page--",page)
       if (!page.hasNext || page.isLoading) return
 
       // 上拉触底

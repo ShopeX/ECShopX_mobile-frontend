@@ -71,6 +71,7 @@ export default class Detail extends Component {
       // 是否订阅
       isSubscribeGoods: false,
       is_open_store_status:null,
+      goodType:'normal'
     }
   }
 
@@ -83,7 +84,8 @@ export default class Detail extends Component {
     }
     const isOpenStore = await entry.getStoreStatus()
     this.setState({
-      is_open_store_status:isOpenStore
+      is_open_store_status:isOpenStore,
+      goodType:options.type==="pointitem"?"pointitem":"normal"
     },async()=>{
       const { is_open_store_status } = this.state
       if (APP_PLATFORM === 'standard') {
@@ -241,6 +243,22 @@ export default class Detail extends Component {
     }
   }
 
+  isPointitemGood(){
+    console.log('----------isPointitemGood-------',this.$router.params)
+    const options = this.$router.params;
+    return options.type==='pointitem';
+  }
+
+  async goodInfo(id,param){
+    let info;
+    if(this.isPointitemGood){
+      info = await api.pointitem.detail(id, param)
+    }else{
+      info = await api.item.detail(id, param)
+    }
+    return info;
+  }
+
   async fetchInfo(itemId, goodsId) {
     const { distributor_id,store_id } = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
@@ -291,8 +309,9 @@ export default class Detail extends Component {
       delete param.distributor_id
     }
     console.log('param',param)
-    // 商品详情
-    const info = await api.item.detail(id, param)
+    // 商品详情 
+    const info = await this.goodInfo(id,param);
+    console.log(info);
     // 是否订阅
     const { user_id: subscribe } = await api.user.isSubscribeGoods(id)
     const { intro: desc, promotion_activity: promotion_activity } = info
@@ -1058,7 +1077,7 @@ export default class Detail extends Component {
               <VipGuide info={info.vipgrade_guide_title} />
             ) : null}
 
-            {marketing === "normal" && (
+            {marketing === "normal" && !this.isPointitemGood() && (
               <View className="goods-prices__wrap">
                 <View className="goods-prices">
                   <View className="view-flex-item">
@@ -1089,7 +1108,7 @@ export default class Detail extends Component {
               </View>
             )}
             {/* 跨境商品 */}
-            {info.type == "1" && (
+            {info.type == "1" && !this.isPointitemGood() && (
               <View className="nationalInfo">
                 <View>
                   跨境综合税:
@@ -1120,6 +1139,12 @@ export default class Detail extends Component {
                 </View>
               </View>
             )}
+            {
+              this.isPointitemGood() && <View class="goods_point">
+                <View class="number"></View>
+                <View class="text"></View>
+              </View>
+            }
           </View>
 
           {isPromoter && (

@@ -14,6 +14,10 @@ import './goods_item.scss';
 
 export default class GoodsItem extends Component{
 
+    static defaultProps = {
+        onClick: () => {}, 
+    }
+
     constructor(props){
         super(props);
 
@@ -22,13 +26,19 @@ export default class GoodsItem extends Component{
         }
     }
     
+    handleClick=()=>{ 
+        const { onClick }=this.props;
+        if(onClick){
+            onClick()
+        }
+    }
 
     render(){
-        const {info,onClick}=this.props;
+        const { info }=this.props;
         
         return (
-            <View class="goods_item" onClick={onClick}>
-                <View class="goods_item_image">
+            <View class="goods_item" onClick={this.handleClick}>
+                <View class="goods_item_image" >
                     <Image src={info.imgUrl} />
                 </View>
                 <View class="goods_item_name">

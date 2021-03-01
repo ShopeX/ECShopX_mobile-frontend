@@ -27,3 +27,7 @@ export function getMypoint (params = {}) {
   // return req.get('/item.search', params)
   return req.get('/point/member/info', params)
 }
+
+export function detail (item_id, params = {}) {
+  return req.get(`/pointsmall/goods/items/${item_id}`, params)
+}

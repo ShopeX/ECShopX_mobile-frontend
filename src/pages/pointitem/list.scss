@@ -39,6 +39,7 @@
       align-items: center;
 
       .at-input{
+
         padding:0;
         margin:0;
         width: 250rpx;
@@ -206,9 +207,9 @@
     &__type-grid {
       display: flex;
       flex-wrap: wrap;
-      padding: 0 3%;
+      padding: 0 20rpx;
       justify-content: space-between;
-      margin-top: 2%;
+      margin-top: 30rpx;
 
       .goods-list__group {
         width: 50%;

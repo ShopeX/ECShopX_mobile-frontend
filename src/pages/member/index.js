@@ -702,7 +702,7 @@ export default class MemberIndex extends Component {
                 title="积分商城"
                 isLink
                 img={require('../../assets/imgs/score.png')}
-                onClick={this.handleClick.bind(this, '/pages/pointitem/list')}
+                onClick={this.handleClick.bind(this, '/pointitem/pages/list')}
               > 
               </SpCell>
             }

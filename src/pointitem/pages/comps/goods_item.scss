@@ -1,0 +1,41 @@
+.goods_item{
+    width: 100%;
+    background: #FFFFFF;
+    border-radius: 20rpx;
+    overflow: hidden;
+
+    &_image{
+        height: 340rpx;
+        image{
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &_name{
+        font-size: 24rpx;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #222222;
+        padding: 24rpx 15rpx;
+    }
+
+    &_score{
+        padding: 4rpx 15rpx 27rpx 15rpx;
+        display: flex;
+        justify-items: flex-end;
+
+        .number{
+            font-size: 36rpx;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #D92128;
+        }
+        .title{
+            font-size: 24rpx;
+            margin-left: 5rpx;
+            margin-top: 13rpx;
+            font-weight: 500;
+        }
+    }
+}
