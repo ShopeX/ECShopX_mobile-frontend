@@ -74,13 +74,6 @@ class App extends Component {
   config = {
     pages: [
       "pages/index",
-      "pages/assistantCeshi/index",
-
-      "pages/assistantCategory/index",
-      "pages/assistantLike/index",
-      "pages/assistantCoupon/index",
-      "pages/assistantHome/landing",
-      "pages/assistantCart/espier-index",
 
       "pages/home/landing",
       "pages/category/index",
@@ -239,6 +232,7 @@ class App extends Component {
           "pages/order/index"
         ]
       },
+
       {
         root: "others",
         pages: [
@@ -262,11 +256,6 @@ class App extends Component {
           // 绑定订单
           "pages/bindOrder/index"
         ]
-      },
-      // 导购
-      {
-        root: "assistant",
-        pages: ["pages/index"]
       }
     ],
     permission: {
@@ -387,41 +376,7 @@ class App extends Component {
       ],
       name: "tabs"
     };
-    console.log("this.system2", this.system);
-    if (this.system.environment == "wxwork")
-      // "pages/assistantCategory/index",
-      //   "pages/assistantLike/index",
-      //   "pages/assistantCoupon/index",
-      //   "pages/assistantHome/landing",
-      //   "pages/assistantCart/espier-index"
-      defaultTabs.data = [
-        {
-          name: "home",
-          pagePath: "/pages/assistantCeshi/index",
-          text: "首页"
-        },
-        {
-          name: "category",
-          pagePath: "/pages/category/index",
-          text: "分类"
-        },
-        {
-          name: "coupon",
-          // pagePath: "/pages/category/index",marketing/pages/member/coupon
-          pagePath: "/pages/member/index",
-          text: "优惠券"
-        },
-        {
-          name: "category",
-          pagePath: "/pages/assistantLike/index",
-          text: "种草"
-        },
-        {
-          name: "cart",
-          pagePath: "/pages/assistantCart/espier-index",
-          text: "购物车"
-        }
-      ];
+
     const setUrl = "/pagestemplate/setInfo";
     req
       .get(setUrl)
