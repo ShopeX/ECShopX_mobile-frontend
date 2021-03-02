@@ -311,7 +311,7 @@ export default class Detail extends Component {
     console.log('param',param)
     // 商品详情 
     const info = await this.goodInfo(id,param);
-    console.log(info);
+    console.log('---info----',info);
     // 是否订阅
     const { user_id: subscribe } = await api.user.isSubscribeGoods(id)
     const { intro: desc, promotion_activity: promotion_activity } = info
@@ -421,18 +421,33 @@ export default class Detail extends Component {
     log.debug('fetch: done', info)
   }
 
+  async goodLikeList(query){ 
+    const {item_id} =this.state.info;
+    let info;
+    if(this.isPointitemGood()){
+      info = await api.pointitem.likeList({
+        item_id
+      })
+    }else{
+      info = await api.cart.likeList(query)
+    }
+    return info;
+  }
+
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
       pageSize
     }
-    const { list, total_count: total } = await api.cart.likeList(query)
+ 
+    const { list, total_count: total } = await this.goodLikeList(query)
 
     const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
+      point:'point',
       distributor_id: 'distributor_id',
       promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => { return (price / 100).toFixed(2) },
@@ -480,7 +495,9 @@ export default class Detail extends Component {
       }
 
       if (!info.is_fav) {
-        const favRes = await api.member.addFav(info.item_id)
+        const favRes = await api.member.addFav(info.item_id,{
+          item_type:this.isPointitemGood()?"pointsmall":undefined
+        })
         Tracker.dispatch("GOODS_COLLECT", info);
         this.props.onAddFav(favRes)
         S.toast('已加入收藏')
@@ -793,7 +810,7 @@ export default class Detail extends Component {
     const curStore = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id :curStore.distributor_id : item.distributor_id
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}&type=pointitem`
     Taro.navigateTo({
       url
     })
@@ -1308,6 +1325,7 @@ export default class Detail extends Component {
                         key={item.item_id}
                         info={item}
                         onClick={this.handleClickItem.bind(this, item)}
+                        isPointitem={this.isPointitemGood()}
                       />
                     </View>
                   );

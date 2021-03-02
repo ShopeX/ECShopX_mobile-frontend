@@ -13,21 +13,29 @@ export function search (params = {}) {
   return req.get('/pointsmall/goods/items', params)
 }
 
+//获取商城配置
 export function getPointitemSetting (params = {}) {
   // return req.get('/item.search', params)
   return req.get('/pointsmall/setting', params)
 }
-
+//获取分类
 export function getPointitemCategory (params = {}) {
   // return req.get('/item.search', params)
   return req.get('/pointsmall/goods/category', params)
 }
 
+//获取我的积分
 export function getMypoint (params = {}) {
   // return req.get('/item.search', params)
   return req.get('/point/member/info', params)
 }
 
+//商品详情
 export function detail (item_id, params = {}) {
   return req.get(`/pointsmall/goods/items/${item_id}`, params)
+}
+//猜你喜欢
+export function likeList (params) {
+  return req.get(`/pointsmall/lovely/goods/items`,params)
+  
 }
