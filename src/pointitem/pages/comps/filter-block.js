@@ -8,6 +8,7 @@
  */
 import Taro ,{ Component } from '@tarojs/taro';
 import { View,Image } from '@tarojs/components';
+import { classNames } from '@/utils'
 
 import './filter-block.scss';
 
@@ -57,7 +58,7 @@ export default class FilterBlock extends Component{
         const name=this.getName(); 
         
         return (
-            <View className={`filter-block${this.props.active ? ' active' : ''}`} onClick={this.handleClickItem}>
+            <View className={classNames('filter-block',{'active':this.props.active,'ellipsis2':type==='brand' })} onClick={this.handleClickItem}>
                 {name}
             </View>
         )
