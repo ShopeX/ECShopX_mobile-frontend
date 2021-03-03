@@ -142,7 +142,7 @@ export default class List extends Component {
     //获取分类的叶子节点
     function queryList(json,arr) {
       for (var i = 0; i < json.length; i++) {
-          var sonList = json[i].children;
+          var sonList = json[i].children||[];
           if (sonList.length == 0) {
               arr.push(json[i]);
           } else {
