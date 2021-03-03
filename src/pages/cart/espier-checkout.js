@@ -1049,7 +1049,33 @@ export default class CartCheckout extends Component {
     }
   };
 
-  handlePay = async () => {
+  async createByType(params){  
+    let info;
+    if(this.isPointitemGood()){
+      info = await api.trade.create({
+        ...params,
+        pay_type:'point'
+      })
+    }else{
+      info = await api.trade.create(params)
+    } 
+    return info;
+  }
+
+  async h5CreateByType(params){  
+    let info;
+    if(this.isPointitemGood()){
+      info = await api.trade.h5create({
+        ...params,
+        pay_type:'point'
+      })
+    }else{
+      info = await api.trade.h5create(params)
+    } 
+    return info;
+  }
+
+  handlePay = async () => {/*  */
     // if (!this.state.address) {
     //   return S.toast('请选择地址')
     // }
@@ -1142,14 +1168,14 @@ export default class CartCheckout extends Component {
         payType !== "deposit" &&
         !isDrug
       ) {
-        config = await api.trade.h5create(params);
-        redirectUrl(api, `/subpage/pages/cashier/index?order_id=${config.order_id}`)
+        config = await this.h5CreateByType(params);
+        redirectUrl(api, `/subpage/pages/cashier/index?order_id=${config.order_id}&type=pointitem`)
         // Taro.redirectTo({
         //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
         // });
         return;
       } else {
-        config = await api.trade.create(params);
+        config = await this.createByType(params);
         order_id = isDrug ? config.order_id : config.trade_info.order_id;
       }
 
@@ -1205,7 +1231,7 @@ export default class CartCheckout extends Component {
     });
     console.log("---------Check--------")
     // 积分流程
-    if (payType === "point" || payType === "deposit") {
+    if (payType === "point" || payType === "deposit" || this.isPointitemGood()) {
       if (!payErr) {
         Taro.showToast({
           title: "支付成功",
@@ -1214,7 +1240,7 @@ export default class CartCheckout extends Component {
 
         this.props.onClearCart();
         Taro.redirectTo({
-          url: `/subpage/pages/trade/detail?id=${order_id}`
+          url: `/subpage/pages/trade/detail?id=${order_id}&type=pointitem`
         });
       }
 

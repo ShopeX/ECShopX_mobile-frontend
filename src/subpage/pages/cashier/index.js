@@ -21,6 +21,13 @@ export default class Cashier extends Component {
 
   }
 
+  isPointitemGood() {
+    console.log('----------isPointitemGood-------', this.$router)
+    const options = this.$router.params;
+    return options.type === 'pointitem';
+  }
+
+
   async fetch() {
     const { order_id } = this.$router.params;
 
@@ -59,6 +66,8 @@ export default class Cashier extends Component {
 
   render() {
     const { info, env, appPay } = this.state;
+
+    console.log("---cashierInfo---",info);
 
     if (!info) {
       return  <Loading />;

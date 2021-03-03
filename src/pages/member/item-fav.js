@@ -59,7 +59,9 @@ export default class ItemFav extends Component {
             item_id: 'item_id',
             title: 'item_name',
             desc: 'brief',
+            item_type:'item_type',
             distributor_id: 'distributor_id',
+            point:'point',
             // price: ({ price }) => (price/100).toFixed(2),
             price: ({ price, item_price }) => ((price || item_price)/100).toFixed(2),
             is_fav: ({ item_id }) => Boolean(favs[item_id])
@@ -76,6 +78,7 @@ export default class ItemFav extends Component {
             summary: 'summary',
             head_portrait: 'head_portrait',
             author: 'author',
+            item_type:'item_type'
           })
           total = res.total_count
           break;
@@ -85,7 +88,8 @@ export default class ItemFav extends Component {
             distributor_id: 'distributor_id',
             fav_num: 'fav_num',
             name: 'name',
-            logo: 'logo'
+            logo: 'logo',
+            item_type:'item_type'
           })
           total = res.total_count
           break;
@@ -201,6 +205,7 @@ export default class ItemFav extends Component {
                             key={item.item_id}
                             info={item}
                             onClick={() => this.handleClickItem(item)}
+                            isPointitem={item.item_type==="pointsmall"}
                           />
                         </View>
                       )

@@ -19,7 +19,8 @@ export default class OrderItem extends Component {
     showExtra: true,
     info: null,
     isShowNational: false,
-    isPointitemGood:false
+    isPointitemGood:false,
+    
   }
 
   static options = {
@@ -87,10 +88,7 @@ export default class OrderItem extends Component {
                 : <Price className='order-item__price' value={info.price}></Price>
               } */}
               {
-                isPointitemGood?<View class="order-item__point">
-                  <View class="number">{info.item_point}</View>
-                  <View class="text">积分</View>
-                </View>:<Price className='order-item__price' value={info.price}></Price>
+                isPointitemGood?<Price className='order-item__price' appendText='积分' noSymbol noDecimal value={info.item_point||info.point}></Price>:<Price className='order-item__price' value={info.price}></Price>
               }
               
               

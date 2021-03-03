@@ -4,10 +4,12 @@ import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpToast, NavBar, FloatMenuMeiQia } from '@/components'
 import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
+import { transformTextByPoint } from '@/utils/helper'
 import { Tracker } from "@/service";
 import api from '@/api'
 import S from '@/spx'
 import DetailItem from './comps/detail-item'
+
 
 import './detail.scss'
 
@@ -35,6 +37,12 @@ export default class TradeDetail extends Component {
   componentDidShow () {
     console.log(APP_BASE_URL)
     this.fetch()
+  }
+
+  isPointitemGood() {
+    console.log('----------isPointitemGood-------', this.$router)
+    const options = this.$router.params;
+    return options.type === 'pointitem';
   }
 
   componentWillUnmount () {
@@ -458,6 +466,9 @@ export default class TradeDetail extends Component {
   render () {
     const { colors } = this.props
     const { info, ziti, qrcode, timer, payLoading, scrollIntoView } = this.state
+
+    console.log("----Tradedetail---",info);
+
     if (!info) {
       return <Loading></Loading>
     }
@@ -616,6 +627,7 @@ export default class TradeDetail extends Component {
           <View className='trade-detail-goods'>
             <DetailItem 
               info={info}
+              isPointitem={this.isPointitemGood()}
             />
           </View>
           {
@@ -653,7 +665,9 @@ export default class TradeDetail extends Component {
           }
 
           <View className="trade-money">
-            <View>总计：<Text className="trade-money__num">￥{info.totalpayment}</Text></View>
+            <View>总计：{this.isPointitemGood()?<Text className="trade-money__point">
+              {info.point} 积分
+            </Text>:<Text className="trade-money__num">￥{info.totalpayment}</Text>}</View>
           </View>
           {info.remark && (
             <View className="trade-detail-remark">
@@ -671,7 +685,7 @@ export default class TradeDetail extends Component {
               <Text className="info-text">发票信息：{info.invoice_content}</Text>
             ) : null}
 
-            <Text className="info-text">商品金额：￥{info.item_fee}</Text>
+            <Text className="info-text">商品金额：{transformTextByPoint(this.isPointitemGood(),info.item_fee,info.point)}</Text>
             {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
             <Text className='info-text'>运费：￥{info.freight_fee}</Text>
             {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
