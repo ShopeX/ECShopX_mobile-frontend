@@ -83,9 +83,6 @@ class App extends Component {
       'pages/recommend/list',
       'pages/member/index',
       'pages/member/item-fav',
-
-      'pages/distribution/shop-home',
-
       'pages/store/index',
       'pages/store/list',
       'pages/store/ziti-list',
@@ -98,6 +95,7 @@ class App extends Component {
         pages: [
           'pages/distribution/index',
           'pages/distribution/setting',
+          'pages/distribution/shop-home',
           'pages/distribution/statistics',
           'pages/distribution/trade',
           'pages/distribution/subordinate',
@@ -156,10 +154,10 @@ class App extends Component {
           'pages/plusprice/cart-plusprice-list',
         ],
         "plugins": {
-          "live-player-plugin": {
-            "version": "1.2.6", // 填写该直播组件版本号
-            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          }
+          // "live-player-plugin": {
+          //   "version": "1.2.6", // 填写该直播组件版本号
+          //   "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
+          // }
           // "meiqia": {
           //   "version": "1.1.0",
           //   "provider": "wx2d2cd5fd79396601"

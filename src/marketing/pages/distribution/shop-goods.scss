@@ -67,9 +67,15 @@
           border: 1px solid #00c3ff;
         }
       }
+      .view-flex-item {
+        overflow: hidden;
+      }
       &__title {
         font-size: 28px;
         color: #333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       &__desc {
         font-size: 24px;

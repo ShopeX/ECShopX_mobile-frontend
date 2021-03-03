@@ -32,7 +32,8 @@ export default class DistributionShopGoods extends Component {
         query: {
           item_type: "normal",
           approve_status: "onsale,only_show",
-          rebate_type: ["total_money", "total_num"]
+          rebate_type: ["total_money", "total_num"],
+          is_promoter: true
         }
       },
       () => {

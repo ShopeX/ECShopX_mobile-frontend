@@ -453,7 +453,7 @@ export default class Home extends Component {
   handleClickShop = () => {
     const { featuredshop } = this.state
     Taro.navigateTo({
-      url: `/pages/distribution/shop-home?featuredshop=${featuredshop}`
+      url: `/marketing/pages/distribution/shop-home?featuredshop=${featuredshop}`
     })
   }
 
