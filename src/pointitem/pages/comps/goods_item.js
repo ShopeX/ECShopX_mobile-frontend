@@ -9,6 +9,7 @@
 import Taro ,{ Component } from '@tarojs/taro';
 import { View,Image } from '@tarojs/components';
 import { classNames } from '@/utils'
+import { SpImg ,PointLine} from '@/components'
 
 import './goods_item.scss';
 
@@ -35,8 +36,9 @@ export default class GoodsItem extends Component{
                     {info.item_name}
                 </View>
                 <View class="goods_item_score">
-                    <View class="number">{info.point}</View>
-                    <View class="title">积分</View>
+                    <PointLine 
+                        point={info.point} 
+                    /> 
                 </View>
 
                 {isStoreOut && <View class="block">已兑完</View>}

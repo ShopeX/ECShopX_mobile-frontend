@@ -120,6 +120,7 @@ $item-img-size: 240px !default;
   &__extra {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
   &__author {
     font-size: $font-size-small;

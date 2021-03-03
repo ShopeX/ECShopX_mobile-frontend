@@ -109,11 +109,17 @@ export default class ItemFav extends Component {
   }
 
   handleClickItem = (item) => {
+    let detailUrl;
+    if(item.item_type==="pointsmall"){//积分商城
+      detailUrl=`/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&type=pointitem`
+    }else{
+      detailUrl=`/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    }
     const url = (() => {
       let link = null
       switch (this.state.curTabIdx) {
         case 0:
-					link = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+					link = detailUrl
           break;
         case 1:
           link = `/subpage/pages/recommend/detail?id=${item.item_id}`

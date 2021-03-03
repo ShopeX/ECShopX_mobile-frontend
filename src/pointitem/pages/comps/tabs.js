@@ -54,7 +54,7 @@ export default class FilterBar extends Component {
         }
 
         this.setState({
-            curIdx: idx,
+            curIdx: idx!==3?idx:this.state.curIdx,
             sortOrder
         })
 
@@ -104,6 +104,7 @@ export default class FilterBar extends Component {
         const { sortOrder, curIdx,active,inputValue } = this.state
 
         console.log("---active---",active)
+        console.log("---curIdx---",curIdx)
 
         return (
             <View className={classNames('filter-bar',{'active':active}, className)}>

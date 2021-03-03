@@ -39,8 +39,7 @@ export default class TradeDetail extends Component {
     this.fetch()
   }
 
-  isPointitemGood() {
-    console.log('----------isPointitemGood-------', this.$router)
+  isPointitemGood() { 
     const options = this.$router.params;
     return options.type === 'pointitem';
   }
@@ -266,7 +265,7 @@ export default class TradeDetail extends Component {
         icon: 'success'
       })
 
-      const { fullPath } = getCurrentRoute(this.$router)
+      const { fullPath } = getCurrentRoute(this.$router) 
       Taro.redirectTo({
         url: fullPath
       })
@@ -612,7 +611,7 @@ export default class TradeDetail extends Component {
                   <View className="info-trade">
                     <View className="user-info-trade">
                       <Text>{info.receiver_name}</Text>
-                      <Text>{info.receiver_mobile}</Text>
+                      {!this.isPointitemGood() && <Text>{info.receiver_mobile}</Text>}
                     </View>
                     <Text className="address-detail">
                       {info.receiver_state}

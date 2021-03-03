@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image, Video, Canvas } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
-import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell, GoodsEvaluation, FloatMenuMeiQia, GoodsItem } from '@/components'
+import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell, GoodsEvaluation, FloatMenuMeiQia, GoodsItem ,PointLine} from '@/components'
 import api from '@/api'
 import req from '@/api/req'
 import { withPager, withBackToTop } from '@/hocs'
@@ -243,8 +243,7 @@ export default class Detail extends Component {
     }
   }
 
-  isPointitemGood(){
-    console.log('----------isPointitemGood-------',this.$router)
+  isPointitemGood(){ 
     const options = this.$router.params;
     return options.type==='pointitem';
   }
@@ -1170,8 +1169,10 @@ export default class Detail extends Component {
             )}
             {
               this.isPointitemGood() && <View class="goods_point">
-                <View class="number">{info.point}</View>
-                <View class="text">积分</View>
+                    <PointLine 
+                        point={info.point} 
+                        plus
+                    /> 
               </View>
             }
           </View>

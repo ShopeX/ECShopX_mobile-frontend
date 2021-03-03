@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Image} from '@tarojs/components'
-import { SpImg } from '@/components'
+import { SpImg ,PointLine} from '@/components'
 import { isObject, classNames } from '@/utils'
 
 import './index.scss'
@@ -117,14 +117,9 @@ export default class GoodsItem extends Component {
             </View>
             <View className='goods-item__extra'>
             {
-              isPointitem && <View  className='goods-item__point'> 
-                  <View class="goods-item__point-number">
-                    {info.point} 
-                  </View>
-                  <View class="goods-item__point-text">
-                    积分
-                  </View>
-              </View>
+              isPointitem && <PointLine 
+                point={info.point} 
+              />
             }
             { !isPointitem && <View className='goods-item__price'>
                 <View className='package-price'>
@@ -143,7 +138,7 @@ export default class GoodsItem extends Component {
 							</View>}
 							{this.props.children}
               {
-                 showFav && !isPointitem &&
+                 showFav &&
                    (<View className='goods-item__actions'>
                      {(type === 'item') && (
                        <View

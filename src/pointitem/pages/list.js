@@ -318,10 +318,10 @@ export default class List extends Component {
 
     console.log("-----query-----",query);
 
-    if(this.state.curFilterIdx===current){
-      //点击相同菜单项不用操作
-      return ;
-    }
+    // if(this.state.curFilterIdx===current){
+    //   //点击相同菜单项不用操作
+    //   return ;
+    // }
 
     this.resetPage()
 

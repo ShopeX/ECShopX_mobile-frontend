@@ -6,11 +6,13 @@
 
 $font-size-base: $font-size;
 $hd: 2 !default; // 基本单位
-$color-brand: $color-brand-primary;
+$color-brand: $color-brand-primary; 
 $color-brand-light: $color-brand-accent;
 $color-brand-dark: $color-brand-accent-light;
 $color-text-base: $color-primary-text;
 $at-button-border-color-secondary: $color-border-gray;
+
+
 
 @import "~taro-ui/dist/style/index.scss";
 @import "./style/taro-ui-mod.scss";

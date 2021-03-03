@@ -1,0 +1,28 @@
+@import '../../style/imports';
+
+
+.point-line {
+
+  &.plus {
+    .number {
+      font-size: 30px;
+    }
+
+    .text {
+      font-size: 26px;
+    }
+  }
+
+  .number {
+    color: $color-point-color;
+    display: inline-block;
+    vertical-align: baseline;
+  }
+
+  .text {
+    font-size: 24px;
+    margin-left: 5px;
+    display: inline-block;
+    vertical-align: baseline;
+  }
+}

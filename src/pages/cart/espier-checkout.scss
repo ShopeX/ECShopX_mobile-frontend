@@ -205,6 +205,10 @@
         font-size: $font-size-small;
       }
     }
+    &__plus{
+      font-size: 24px;
+      color:$color-brand-accent;
+    }
     &__desc {
       margin: 0 0 10px;
     }

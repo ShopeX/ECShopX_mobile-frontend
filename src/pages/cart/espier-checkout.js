@@ -1056,8 +1056,7 @@ export default class CartCheckout extends Component {
     let info;
     if(this.isPointitemGood()){
       info = await api.trade.create({
-        ...params,
-        pay_type:'point'
+        ...params, 
       })
     }else{
       info = await api.trade.create(params)
@@ -1069,8 +1068,7 @@ export default class CartCheckout extends Component {
     let info;
     if(this.isPointitemGood()){
       info = await api.trade.h5create({
-        ...params,
-        pay_type:'point'
+        ...params, 
       })
     }else{
       info = await api.trade.h5create(params)
@@ -1171,14 +1169,21 @@ export default class CartCheckout extends Component {
         payType !== "deposit" &&
         !isDrug
       ) {
-        config = await this.h5CreateByType(params);
+        config = await this.h5CreateByType({
+          ...params,
+          pay_type:this.state.total.freight_type==="point"?'point':'wxpay'
+        });
         redirectUrl(api, `/subpage/pages/cashier/index?order_id=${config.order_id}&type=pointitem`)
         // Taro.redirectTo({
         //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
         // });
         return;
       } else {
-        config = await this.createByType(params);
+        console.log("----this.state.total---",this.state.total)
+        config = await this.createByType({
+          ...params,
+          pay_type:this.state.total.freight_type==="point"?'point':'wxpay'
+        });
         order_id = isDrug ? config.order_id : config.trade_info.order_id;
       }
 
@@ -1234,7 +1239,7 @@ export default class CartCheckout extends Component {
     });
     console.log("---------Check--------")
     // 积分流程
-    if (payType === "point" || payType === "deposit" || this.isPointitemGood()) {
+    if (payType === "point" || payType === "deposit" || (this.isPointitemGood() && this.state.total.freight_type==="point")) {
       if (!payErr) {
         Taro.showToast({
           title: "支付成功",
@@ -1283,7 +1288,7 @@ export default class CartCheckout extends Component {
         url:
           type === "group"
             ? `/marketing/pages/item/group-detail?team_id=${config.team_id}`
-            : `/subpage/pages/trade/detail?id=${order_id}`
+            : `/subpage/pages/trade/detail?id=${order_id}&type=pointitem`
       });
 
       /*this.props.onClearCart()
@@ -1957,6 +1962,7 @@ export default class CartCheckout extends Component {
                 total.point && (
                   <View class="last_price">
                     <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={total.point} />
+                    {!total.freight_fee==0 && total.freight_type==="cash" && <Price unit="cent" plus value={total.freight_fee} className='order-item__plus'/>}
                   </View>
                 )
               )}
