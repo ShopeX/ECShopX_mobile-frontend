@@ -47,37 +47,7 @@ export default class GoodsBuyToolbar extends Component {
 
     return (
       <View className='goods-buy-toolbar'>
-        <View className='goods-buy-toolbar__menus'>
-          <View
-            className='goods-buy-toolbar__menu-item'
-            onClick={this.props.onFavItem}
-          >
-            {
-              info.is_fav
-                ? <View className='icon-star-on' style={`color: ${colors.data[0].primary}`} />
-                : <View className='icon-star' />
-            }
-          </View>
-          {/*{process.env.TARO_ENV === 'weapp' && (
-            <Button className='goods-buy-toolbar__menu-item' openType='contact'>
-              <View className='in-icon in-icon-kefu'></View>
-            </Button>
-          )}*/}
-          <View
-            className='goods-buy-toolbar__menu-item'
-            onClick={this.handleClickCart.bind(this, info.item_id, isDrug ? 'drug' : 'distributor')}
-          >
-            <AtBadge
-              value={cartCount || null}
-            >
-              <View className='icon-cart'></View>
-            </AtBadge>
-          </View>
-        </View>
-        {this.props.customRender
-          ? this.props.children
-          : (<View>
-              {
+        {
                 info.approve_status === 'onsale' ?
                   <View className='goods-buy-toolbar__btns'>
                     {(type === 'normal' || type === 'limited_time_sale') && (
@@ -95,16 +65,13 @@ export default class GoodsBuyToolbar extends Component {
                           sync
                           onClick={onClickFastBuy}
                         >
-                          <View className={`goods-buy-toolbar__btn btn-fast-buy ${type !== 'normal' && type !== 'limited_time_sale' && 'marketing-btn'}`} style={'background: ' + colors.data[0].primary}>{fastBuyText}</View>
+                          <View className={`goods-buy-toolbar__btn btn-fast-buy ${type !== 'normal' && type !== 'limited_time_sale' && 'marketing-btn'}`} style={'background: ' + colors.data[0].primary}>分享给顾客</View>
                         </FormIdCollector>
                       )
                     }
                   </View>
                   : <View className='goods-buy-toolbar__btns'><View className="goods-buy-toolbar__btn disabled">暂不可售</View></View>
-              }
-
-            </View>)
-        }
+          }
       </View>
     )
   }

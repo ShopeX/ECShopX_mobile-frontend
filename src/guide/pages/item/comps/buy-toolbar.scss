@@ -50,14 +50,18 @@
     }
   }
   &__btns {
-    width: 500px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     overflow: hidden;
     height: $toolbar-height;
+    width: 100%;
+    form-id-collector {
+      flex: 1;
+      overflow: hidden;
+    }
   }
   &__btn {
-    width: 250px;
     font-size: $font-size;
     flex: 1;
     text-align: center;
@@ -85,9 +89,5 @@
   }
   .btn-fast-buy {
     margin-left: -1px;
-  }
-  .form-id-collector {
-    flex: 1;
-    overflow: hidden;
   }
 }

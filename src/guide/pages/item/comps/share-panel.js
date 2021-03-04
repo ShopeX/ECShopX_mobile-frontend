@@ -26,16 +26,16 @@ export default class SharePanel extends Component {
         scrollY={false}
         >
         <View className="share-panel">
-          <View className="share-panel__item" onClick={onClick}>
-            <View className="icon-picture1"></View>
-            <View>分享到朋友圈</View>
-          </View>
-          <View className="share-panel__item">
+        <View className="share-panel__item">
             <Button
               openType='share'
               className="icon-weChart">
             </Button>
             <View>分享给微信好友</View>
+          </View>
+          <View className="share-panel__item" onClick={onClick}>
+            <View className="icon-picture1"></View>
+            <View>生成分享图片</View>
           </View>
         </View>
       </AtFloatLayout>
