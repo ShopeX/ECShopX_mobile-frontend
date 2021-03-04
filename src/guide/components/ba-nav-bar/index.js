@@ -42,6 +42,7 @@ export default class BaNavBar extends Component {
         right,
         titleWidth
        })
+       console.log('navbarHeight',navbarHeight)
         S.set('navbar_height',navbarHeight,true)
 
     }
@@ -54,20 +55,20 @@ export default class BaNavBar extends Component {
     //回首页
     navHome(){
         Taro.redirectTo({
-            url:'/guide/index'
+            url:'/guide/pages/index'
         }) 
     }
    
 
     render() {
-        const {navbarHeight,right,leftWidth,titleWidth}=this.state
-        const {title,fixed,icon,jumpType}=this.props
+        const { navbarHeight, right, leftWidth, titleWidth }=this.state
+        const {title, fixed, jumpType }=this.props
         if(!navbarHeight) return 
        
         return (
             <View className={classNames('ba-nav-bar',fixed?'ba-nav-bar__fixed':'')} style={styleNames({'height':`${navbarHeight}px`,'line-height':`${navbarHeight}px`,'padding-left':`${right}px`})} >
                 <View className='nav-left'  style={styleNames({'width':`${leftWidth}PX`})}>
-                    <View className={classNames('icon-sty',icon)} onClick={jumpType=='home'?this.navHome:this.navBack}></View>
+                    <View className={classNames('icon-sty,icon',jumpType === 'home' ? 'icon-home' : 'icon-arrowDown')} onClick={jumpType=='home'?this.navHome:this.navBack}></View>
                 </View>
                 
                 <View className='ba-nav-bar__title' style={styleNames({'width':`${titleWidth}PX`})}>

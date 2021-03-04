@@ -3,8 +3,9 @@ import { View } from '@tarojs/components'
 import { connect } from "@tarojs/redux";
 import {AtTabs, AtTabsPane} from "taro-ui"
 import api from '@/api'
-import { pickBy } from '@/utils'
-import { BaTabBar } from '../../components'
+import S from '@/spx'
+import { pickBy, styleNames } from '@/utils'
+import { BaTabBar,BaNavBar } from '../../components'
 import Series from './comps/series'
 
 import './index.scss'
@@ -12,6 +13,9 @@ import './index.scss'
   store
 }))
 export default class BaCategory extends Component {
+  config ={
+    navigationStyle:'custom'
+  }
   constructor (props) {
     super(props)
 
@@ -118,12 +122,17 @@ export default class BaCategory extends Component {
 
   render () {
     const { curTabIdx, tabList, list, hasSeries, isChanged } = this.state
-
+    const n_ht = S.get('navbar_height', true)
+    const c_ht = n_ht * 2 - 10
     return (
       <View className='page-category-index'>
+        <BaNavBar title='导购商城' fixed jumpType='home'/>
+        
         {
+        
           tabList.length !== 0
-            ? <AtTabs
+            ?<View className="category__wrap" style={styleNames({'top': `${n_ht}px`})}>
+              <AtTabs
               className='category__tabs'
               current={curTabIdx}
               tabList={tabList}
@@ -140,9 +149,11 @@ export default class BaCategory extends Component {
                 )
               }
             </AtTabs>
+            </View>
             : null
 				}
-        <View className={`${hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'}`}>
+
+        <View className={`${hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'}`} style={styleNames({'top': `${c_ht}px`})}>
           <Series
             isChanged={isChanged}
             info={list}

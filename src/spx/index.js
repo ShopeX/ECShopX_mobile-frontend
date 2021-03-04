@@ -79,12 +79,20 @@ class Spx {
     return userInfo
   }
 
-  get (key) {
-    return globalData[key]
+  get (key,forceLocal) {
+    let val = globalData[key]
+    if (forceLocal) {
+      val = Taro.getStorageSync(key)
+      this.set(key, val)
+    }
+    return val
   }
 
-  set (key, val) {
+  set (key, val,forceLocal) {
     globalData[key] = val
+    if (forceLocal) {
+      Taro.setStorageSync(key, val)
+    }
   }
 
   hasHook (name) {

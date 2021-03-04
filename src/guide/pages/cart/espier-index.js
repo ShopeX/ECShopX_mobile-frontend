@@ -24,7 +24,7 @@ import { Tracker } from "@/service";
 import { withPager } from "@/hocs";
 import entry from "@/utils/entry";
 import CartItem from "./comps/cart-item";
-import { BaTabBar } from "@/guide/components";
+import { BaTabBar, BaNavBar } from "@/guide/components";
 import "./espier-index.scss";
 
 @connect(
@@ -42,6 +42,9 @@ import "./espier-index.scss";
 )
 @withPager
 export default class CartIndex extends Component {
+  config = {
+    navigationStyle: "custom"
+  };
   static defaultProps = {
     list: null
   };
@@ -583,9 +586,10 @@ export default class CartIndex extends Component {
     const isEmpty = !list.length;
     return (
       <View className={classNames("page-cart-index", isDrug && "is-drug")}>
-        {isDrug && (
+        <BaNavBar title="购物车" fixed jumpType={"home"} />
+        {/* {isDrug && (
           <NavBar title="购物车" leftIconType="chevron-left" fixed="true" />
-        )}
+        )} */}
         {!S.getAuthToken() ? (
           <View className="login-header">
             <View>授权登录后同步购物车的商品</View>

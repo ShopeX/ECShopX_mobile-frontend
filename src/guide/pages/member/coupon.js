@@ -6,7 +6,8 @@ import api from "@/api";
 import { connect } from "@tarojs/redux";
 import { withPager } from "@/hocs";
 import { pickBy } from "@/utils";
-import BaTabBar from "@/guide/components";
+// import BaTabBar from "@/guide/components";
+import { BaTabBar, BaNavBar } from "@/guide/components";
 import "./coupon.scss";
 
 @connect(({ colors }) => ({
@@ -14,6 +15,9 @@ import "./coupon.scss";
 }))
 @withPager
 export default class Coupon extends Component {
+  config = {
+    navigationStyle: "custom"
+  };
   constructor(props) {
     super(props);
 
@@ -136,7 +140,8 @@ export default class Coupon extends Component {
 
     return (
       <View className="coupon-list">
-        <NavBar title="优惠券列表" leftIconType="chevron-left" fixed="true" />
+        <BaNavBar title="优惠券列表" fixed jumpType={"home"} />
+        {/* <NavBar title="优惠券列表" leftIconType="chevron-left" fixed="true" /> */}
         <AtTabs
           className="coupon-list__tabs"
           current={curTabIdx}

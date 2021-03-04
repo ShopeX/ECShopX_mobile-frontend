@@ -7,11 +7,18 @@
   .search-input-fixed {
     z-index: $z-index-toolbar + 1;
   }
-  .category__tabs {
+  .category__wrap{
     background: #fff;
     position: fixed;
     padding-top: 10px;
     top: 0;
+    width: 100%;
+    height: $tabs-height + 10px;
+  }
+  .category__tabs {
+    background: #fff;
+    position: static !important;
+    padding-top: 10px;
     height: $tabs-height + 10px;
   }
   .category-comps {

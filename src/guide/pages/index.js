@@ -30,7 +30,7 @@ import { Tracker } from "@/service";
 import { WgtGoodsFaverite, HeaderHome } from "../../pages/home/wgts";
 import HomeWgts from "../../pages/home/comps/home-wgts";
 import Automatic from "../../pages/home/comps/automatic";
-import BaTabBar from "../components"
+import { BaTabBar, BaNavBar} from "../components"
 
 import "../../pages/home/index.scss";
 
@@ -53,7 +53,11 @@ import "../../pages/home/index.scss";
 )
 @withPager
 @withBackToTop
-export default class Home extends Component {
+export default class BaGuideHomeIndex extends Component {
+  config = {
+    navigationStyle:'custom',
+    navigationBarTitleText: '导购商城'
+  }
   constructor(props) {
     super(props);
     this.autoCloseTipId = null;
@@ -535,7 +539,7 @@ export default class Home extends Component {
 
     return (
       <View className="page-index">
-        <View>导购测试</View>
+        <BaNavBar title='导购商城' fixed jumpType='home'/>
         {is_open_official_account === 1 && show_official && (
           <AccountOfficial
             isClose
