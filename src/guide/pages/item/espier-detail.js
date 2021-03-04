@@ -13,6 +13,7 @@ import S from '@/spx'
 import { Tracker } from "@/service"
 import { GoodsBuyToolbar, ItemImg, ImgSpec, StoreInfo, ActivityPanel, SharePanel, VipGuide, ParamsItem, GroupingItem } from './comps'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
+import { BaGoodsBuyPanel } from '../../components'
 
 import './espier-detail.scss'
 
@@ -1053,9 +1054,9 @@ export default class Detail extends Component {
               )}
             </View>
 
-            { !info.is_gift && info.vipgrade_guide_title ? (
+            {/* { !info.is_gift && info.vipgrade_guide_title ? (
               <VipGuide info={info.vipgrade_guide_title} />
-            ) : null}
+            ) : null} */}
 
             {marketing === "normal" && (
               <View className="goods-prices__wrap">
@@ -1325,7 +1326,7 @@ export default class Detail extends Component {
             cartCount={cartCount}
             onFavItem={this.handleMenuClick.bind(this, "fav")}
             onClickAddCart={this.handleBuyBarClick.bind(this, "cart")}
-            onClickFastBuy={this.handleBuyBarClick.bind(this, "fastbuy")}
+            onClickFastBuy={this.handleShare.bind(this)}
           >
             <View>{marketing}</View>
           </GoodsBuyToolbar>
@@ -1359,7 +1360,7 @@ export default class Detail extends Component {
         )}
 
         {info && (
-          <GoodsBuyPanel
+          <BaGoodsBuyPanel
             info={info}
             type={buyPanelType}
             marketing={marketing}
