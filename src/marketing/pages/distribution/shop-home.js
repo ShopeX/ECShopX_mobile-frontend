@@ -130,6 +130,14 @@ export default class DistributionShopHome extends Component {
     }
     tabList[0].url += `?featuredshop=${param.user_id}` 
     tabList[1].url += `?featuredshop=${param.user_id}` 
+    // 是否当前页面
+    const isCurrentPage = this.$router.path.indexOf('distribution/shop-home') !== -1
+    if (isCurrentPage) {
+      Taro.setNavigationBarTitle({
+        title: shop_name || `${username}的小店`
+      })
+    }
+
     this.setState({
       info: {
         username,
@@ -370,14 +378,14 @@ export default class DistributionShopHome extends Component {
             <Image
               mode='aspectFill'
               className='banner-img'
-              src={info.shop_pic || require('./assets/black.png')}
+              src={info.shop_pic || require('../../assets/black.png')}
             />
           </View>
           <View className='shop-info'>
             <View className='left'>
               <Image
                 className='shopkeeper-avatar'
-                src={info.headimgurl ||require('./assets/shop.png')}
+                src={info.headimgurl || require('../../assets/shop.png')}
                 mode='aspectFill'
               />
               <View className='shop-name-goods'>

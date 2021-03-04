@@ -18,8 +18,7 @@ const {
   APP_MAP_NAME,
   APP_TRACK,
   APP_ID,
-  APP_YOUSHU_TOKEN,
-  STORAGE
+  APP_YOUSHU_TOKEN
 } = process.env
 
 // 是否为web

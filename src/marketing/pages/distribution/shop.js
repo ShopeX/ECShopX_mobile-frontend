@@ -161,7 +161,7 @@ export default class DistributionShop extends Component {
             <Image
               className='img'
               mode='aspectFill'
-              src={require('./assets/shop.png')}
+              src={require('../../assets/shop.png')}
             />
             <View className='title'>
               预览小店

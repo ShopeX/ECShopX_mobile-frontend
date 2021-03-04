@@ -44,6 +44,11 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
+  // 配置信息
+  config = {
+    navigationBarTitleText: ''
+  }
+
   async fetchInfo (){
     const options = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
