@@ -242,6 +242,7 @@ class App extends Component {
           "pages/item/espier-detail",
           "pages/item/item-params",
           "pages/item/package-list",
+          "pages/recommend/list"
         ]
       },
 
