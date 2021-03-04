@@ -121,7 +121,7 @@ export default class DistributionShopHome extends Component {
     }
 
     const res = await api.distribution.info(param)
-    const { shop_name, brief, shop_pic = '', username, headimgurl, is_valid } = res
+    const { shop_name, brief, shop_pic = '', username = '', headimgurl, is_valid, nickname = '', mobile = '' } = res
 
     if (!is_valid) {
       Taro.reLaunch({
@@ -140,7 +140,7 @@ export default class DistributionShopHome extends Component {
 
     this.setState({
       info: {
-        username,
+        username: nickname || username || mobile,
         headimgurl,
         shop_name,
         brief,

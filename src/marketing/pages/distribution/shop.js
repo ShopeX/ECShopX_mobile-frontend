@@ -35,11 +35,11 @@ export default class DistributionShop extends Component {
     }
 
     const res = await api.distribution.info(param || null)
-    const { shop_name, brief, shop_pic, username, headimgurl } = res
+    const { shop_name, brief, shop_pic, username = '', headimgurl, nickname = '', mobile = '' } = res
 
     this.setState({
       info: {
-        username,
+        username: nickname || username || mobile,
         headimgurl,
         shop_name,
         brief,
