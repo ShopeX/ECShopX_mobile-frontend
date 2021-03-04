@@ -60,8 +60,10 @@ export default class FilterBlock extends Component{
         const { type }=this.props;
         
         return (
-            <View className={classNames('filter-block',{'active':this.props.active,'ellipsis2':type==='brand' })} onClick={this.handleClickItem}>
-                {name}
+            <View className={classNames('filter-block',{'active':this.props.active })} onClick={this.handleClickItem}>
+                <View className={classNames({'ellipsis2':type==='brand'})}>
+                    {name}
+                </View>
             </View>
         )
     }

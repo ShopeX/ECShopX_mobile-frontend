@@ -28,10 +28,8 @@ export default class HomeCapsule extends Component {
     const { className,style } = this.props
     const classes = classNames('home-capsule', className)
 
-    return process.env.TARO_ENV === 'weapp'
-      ? (<View className={classes} style={style} onClick={this.handleClick}>
+    return  <View className={classes} style={style} onClick={this.handleClick}>
             <View className='iconfont icon-home'></View> 
-        </View>)
-      : null
+        </View> 
   }
 }

@@ -8,7 +8,7 @@
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { Price, SpImg } from '@/components'
+import { Price, SpImg,PointTag } from '@/components'
 
 import './order-item.scss'
 
@@ -20,7 +20,7 @@ export default class OrderItem extends Component {
     info: null,
     isShowNational: false,
     isPointitemGood:false,
-    
+    isShowPointTag:false
   }
 
   static options = {
@@ -28,7 +28,7 @@ export default class OrderItem extends Component {
   }
 
   render () {
-    const { info, onClick, payType, showExtra,showDesc, customFooter, isShowNational,isPointitemGood } = this.props
+    const { info, onClick, isShowPointTag, showExtra,showDesc, customFooter, isShowNational,isPointitemGood } = this.props
     if (!info) return null
     
     const img = info.pic_path
@@ -60,7 +60,10 @@ export default class OrderItem extends Component {
                   { info.origincountry_name }
                 </Text>
             </View>
-          }            
+          }          
+          {
+            isShowPointTag && <PointTag />
+          }  
           <View className='order-item__title'>
             {
               info.order_item_type === 'plus_buy' && (

@@ -189,6 +189,12 @@ $custabs: 80px;
     &__point {
       font-size: 36px;
       color: $color-brand-primary;
+
+
+      .cash{
+        font-size: 30px;
+        color: $color-brand-accent;
+      }
     }
   }
   &-info {

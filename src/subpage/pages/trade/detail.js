@@ -665,7 +665,7 @@ export default class TradeDetail extends Component {
 
           <View className="trade-money">
             <View>总计：{this.isPointitemGood()?<Text className="trade-money__point">
-              {info.point} 积分
+              {info.point} 积分 {(info.order_class==="pointsmall") && info.freight_fee!=0 && info.freight_fee>0 && <Text class="cash">+ {info.freight_fee}</Text>}
             </Text>:<Text className="trade-money__num">￥{info.totalpayment}</Text>}</View>
           </View>
           {info.remark && (
