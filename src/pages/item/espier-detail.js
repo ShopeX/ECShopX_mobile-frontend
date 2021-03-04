@@ -322,9 +322,11 @@ export default class Detail extends Component {
       }
     }
 
-    Taro.setNavigationBarTitle({
-      title: info.item_name
-    })
+    if (this.$router.path === '/pages/item/espier-detail') {
+      Taro.setNavigationBarTitle({
+        title: info.item_name
+      })
+    }
 
     if (marketing === 'group' || marketing === 'seckill' || marketing === 'limited_time_sale') {
       const { colors } = this.props

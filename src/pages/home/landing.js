@@ -5,8 +5,8 @@
  * @Description: 说明
  * @FilePath: /unite-vshop/src/pages/home/landing.js
  * @Date: 2020-11-19 14:22:17
- * @LastEditors: Arvin
- * @LastEditTime: 2020-11-19 15:32:50
+ * @LastEditors: PrendsMoi
+ * @LastEditTime: 2021-03-01 16:19:20
  */
 
 import Taro, { Component } from '@tarojs/taro'
@@ -15,6 +15,7 @@ import { connect } from "@tarojs/redux";
 import { normalizeQuerys } from '@/utils'
 
 import './landing.scss'
+
 @connect(() => ({}), (dispatch) => ({
   onUserLanding: (land_params) => dispatch({ type: 'user/landing', payload: land_params })
 }))

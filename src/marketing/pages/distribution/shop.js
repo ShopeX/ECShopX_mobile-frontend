@@ -1,10 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Image, Navigator, Button } from '@tarojs/components'
+import { View, Text, Image, Navigator, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtDrawer } from 'taro-ui'
 import api from '@/api'
-import { classNames, pickBy } from '@/utils'
-import { Tracker } from "@/service";
+import { Tracker } from "@/service"
+
 import './shop.scss'
 
 @connect(({ colors }) => ({
@@ -12,10 +11,6 @@ import './shop.scss'
 }))
 
 export default class DistributionShop extends Component {
-  static config = {
-    navigationBarTitleText: '我的小店'
-  }
-
   constructor(props) {
     super(props)
 
@@ -28,6 +23,10 @@ export default class DistributionShop extends Component {
     this.fetch()
   }
 
+  config = {
+    navigationBarTitleText: '我的小店'
+  }
+
   async fetch() {
     const { turnover } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -36,11 +35,11 @@ export default class DistributionShop extends Component {
     }
 
     const res = await api.distribution.info(param || null)
-    const { shop_name, brief, shop_pic, username, headimgurl } = res
+    const { shop_name, brief, shop_pic, username = '', headimgurl, nickname = '', mobile = '' } = res
 
     this.setState({
       info: {
-        username,
+        username: nickname || username || mobile,
         headimgurl,
         shop_name,
         brief,
@@ -51,6 +50,7 @@ export default class DistributionShop extends Component {
   }
 
   handleClick(key) {
+    const { userId } = Taro.getStorageSync('userinfo')
     let url = ''
     switch (key) {
       case 'achievement':
@@ -61,6 +61,9 @@ export default class DistributionShop extends Component {
         break;
       case 'trade':
         url = '/marketing/pages/distribution/shop-trade'
+        break;
+      case 'miniShop':
+        url = `/marketing/pages/distribution/shop-home?uid=${userId}`
         break;
       default:
         url = ''
@@ -80,7 +83,7 @@ export default class DistributionShop extends Component {
     return {
       title: info.shop_name || `${username}的小店`,
       imageUrl: info.shop_pic,
-      path: `/pages/distribution/shop-home?uid=${userId}`
+      path: `/marketing/pages/distribution/shop-home?uid=${userId}`
     }
   }
 
@@ -152,6 +155,18 @@ export default class DistributionShop extends Component {
             <View className='icon-share2'></View>
             <View>分享小店</View>
           </Button>
+        </View>
+        <View className='preview' onClick={this.handleClick.bind(this, 'miniShop')}>
+          <View className='main'>
+            <Image
+              className='img'
+              mode='aspectFill'
+              src={require('../../assets/shop.png')}
+            />
+            <View className='title'>
+              预览小店
+            </View>
+          </View>
         </View>
       </View>
     )

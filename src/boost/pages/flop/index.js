@@ -5,8 +5,8 @@
  * @Description: 翻牌助力
  * @FilePath: /unite-vshop/src/boost/pages/flop/index.js
  * @Date: 2020-09-23 16:49:53
- * @LastEditors: Arvin
- * @LastEditTime: 2021-01-27 18:01:50
+ * @LastEditors: PrendsMoi
+ * @LastEditTime: 2021-03-04 17:43:19
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Progress, Text, Button } from '@tarojs/components'
@@ -161,8 +161,8 @@ export default class Flop extends Component {
         </View>
         <View className='discount'>
           <View className='imgs'>
-            <Image src={require('../../../assets/imgs/discount_random_bg.png')} mode='aspectFill' className='banners' />
-            <Image src={require('../../../assets/imgs/icon_3.png')} mode='aspectFill' className='logo' />
+            <Image src={require('../../assets/discount_random_bg.png')} mode='aspectFill' className='banners' />
+            <Image src={require('../../assets/icon_3.png')} mode='aspectFill' className='logo' />
           </View>
           <View className='tip'>
             <View>点击任意一张卡片</View>

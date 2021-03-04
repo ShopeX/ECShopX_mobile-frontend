@@ -56,7 +56,7 @@ export default class SeriesItem extends Component {
   //   const id = categoryId === 0 ? defaultId : categoryId
   //   let url = ''
   //   if (id){
-  //       url = `/pages/distribution/shop-home?id=${id}`
+  //       url = `/marketing/pages/distribution/shop-home?id=${id}`
   //   }
   //   if (url) {
   //     Taro.navigateTo({

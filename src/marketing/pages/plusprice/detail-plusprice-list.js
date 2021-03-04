@@ -6,7 +6,7 @@ import { AtCountdown } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { pickBy,validColor,isString } from '@/utils'
-import NormalBackground from '../../../assets/imgs/plusprice-head.png'
+import NormalBackground from '../../assets/plusprice-head.png'
 
 import './plusprice.scss'
 

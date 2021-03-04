@@ -58,10 +58,6 @@
     justify-content: center;
     height: 28vw;
     line-height: 1;
-    &::after {
-      border: none;
-      box-shadow: none;
-    }
     [class^='icon-'] {
       margin-bottom: 20px;
       font-size: 60px;
@@ -73,6 +69,8 @@
       top: 1px;
       right: 1px;
       bottom: 1px;
+      border: none;
+      box-shadow: none;
       background: #fff;
       content: "";
       z-index: 0;
@@ -80,6 +78,28 @@
     view {
       position: relative;
       z-index: 1;
+    }
+  }
+  .preview {
+    width: 100%;
+    padding: 35px 0;
+    background: #fff;
+    text-align: center;
+    border-top: 2px solid $color-bg-gray;
+    margin-bottom: 50px;
+    .main {
+      margin: 0 auto;
+      display: inline-block;
+    }
+    .img, .title {
+      margin: 0 auto;
+      display: block;
+      font-size: 30px;
+    }
+    .img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 10px;
     }
   }
 }

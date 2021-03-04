@@ -6,10 +6,6 @@ import api from '@/api'
 
 import './index.scss'
 
-const WHEEL_MODAL_PRIZE = '/assets/imgs/wheel_modal_prize.png'
-const WHEEL_MODAL_REGRET = '/assets/imgs/wheel_modal_regret.png'
-
-
 export default class MarketingIndex extends Component {
   constructor(props) {
     super(props)
@@ -246,7 +242,7 @@ export default class MarketingIndex extends Component {
           <View className='wheel-prize__modal'>
             <Image
               style='width:100%;'
-              src={WHEEL_MODAL_PRIZE}
+              src={require('../../assets/wheel_modal_prize.png')}
             />
 
             <View className='wheel-prize__modal-con'>
@@ -262,7 +258,7 @@ export default class MarketingIndex extends Component {
           <View className='wheel-prize__modal'>
             <Image
               style='width:100%;'
-              src={WHEEL_MODAL_REGRET}
+              src={require('../../assets/wheel_modal_regret.png')}
             />
 
             <View className='wheel-prize__modal-con'>
