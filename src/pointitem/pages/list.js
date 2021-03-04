@@ -298,19 +298,16 @@ export default class List extends Component {
     })
   }
 
-
+  handleOpenFilter=()=>{
+    this.filterOpen(true);
+  }
 
   handleFilterChange = (data) => {
     // this.setState({
     //   showDrawer: true
     // })
     const { current, sort } = data
-    //goodsSort null-综合 1-销量倒序（暂时无正序） 2-积分价格倒序 3-积分价格正序
-
-    if(current===3){//如果点击筛选
-      this.filterOpen(true);
-      return ;
-    }
+    //goodsSort null-综合 1-销量倒序（暂时无正序） 2-积分价格倒序 3-积分价格正序 
     
     const query = {
       ...this.state.query,
@@ -320,8 +317,7 @@ export default class List extends Component {
           ? 1
           : (sort > 0 ? 3 : 2)
     } 
-
-    console.log("-----query-----",query);
+ 
 
     // if(this.state.curFilterIdx===current){
     //   //点击相同菜单项不用操作
@@ -512,6 +508,7 @@ export default class List extends Component {
             list={filterList}
             onChange={this.handleFilterChange}
             onInputConfirm={this.handleInputConfirm}
+            onOpenFilter={this.handleOpenFilter}
           >
 
           </Tabs>

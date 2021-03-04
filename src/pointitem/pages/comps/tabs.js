@@ -47,8 +47,7 @@ export default class FilterBar extends Component {
   
     handleClickItem(idx) {
         const item = this.props.list[idx]||{}
-
-        console.log("---handleClickItem----",idx,item)
+ 
         let sortOrder = null
 
         if (item.sort) {
@@ -56,7 +55,7 @@ export default class FilterBar extends Component {
         }
 
         this.setState({
-            curIdx: idx!==3?idx:this.state.curIdx,
+            curIdx:idx ,
             sortOrder
         })
 
@@ -100,6 +99,12 @@ export default class FilterBar extends Component {
         }
     }
 
+    handleOpenFilter=()=>{
+        const { onOpenFilter }=this.props;
+        if(onOpenFilter){
+            onOpenFilter()
+        }
+    }
 
     render() {
         const { list, className, custom, colors } = this.props
@@ -132,7 +137,7 @@ export default class FilterBar extends Component {
                     }
                 </View>
                 <View class='action'>
-                    <View class="filter"  onClick={this.handleClickItem.bind(this, 3)}><View class="textFilter">筛选</View><View className={"iconfont icon-filter"}></View></View>
+                    <View class="filter"  onClick={this.handleOpenFilter}><View class="textFilter">筛选</View><View className={"iconfont icon-filter"}></View></View>
                     <View class="searchInput"> 
 
                     </View>
