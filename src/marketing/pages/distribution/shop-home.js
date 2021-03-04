@@ -134,7 +134,7 @@ export default class DistributionShopHome extends Component {
     const isCurrentPage = this.$router.path.indexOf('distribution/shop-home') !== -1
     if (isCurrentPage) {
       Taro.setNavigationBarTitle({
-        title: shop_name || `${username}的小店`
+        title: shop_name || `${nickname || username || mobile}的小店`
       })
     }
 
