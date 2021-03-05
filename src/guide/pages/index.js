@@ -30,7 +30,7 @@ import { Tracker } from "@/service";
 import { WgtGoodsFaverite, HeaderHome } from "../../pages/home/wgts";
 import HomeWgts from "../../pages/home/comps/home-wgts";
 import Automatic from "../../pages/home/comps/automatic";
-import { BaTabBar, BaNavBar} from "../components"
+import { BaTabBar, BaNavBar } from "../components";
 
 import "../../pages/home/index.scss";
 
@@ -55,9 +55,9 @@ import "../../pages/home/index.scss";
 @withBackToTop
 export default class BaGuideHomeIndex extends Component {
   config = {
-    navigationStyle:'custom',
-    navigationBarTitleText: '导购商城'
-  }
+    navigationStyle: "custom",
+    navigationBarTitleText: "导购商城"
+  };
   constructor(props) {
     super(props);
     this.autoCloseTipId = null;
@@ -91,10 +91,156 @@ export default class BaGuideHomeIndex extends Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const options = this.$router.params;
+    const res = await entry.entryLaunch(options, false);
+
+    let shops = [];
+    if (S.getAuthToken()) {
+      let ba_params = S.get("ba_params", true);
+      console.log("======获取导购信息====", ba_params);
+      let ba_info = await api.user.getGuideInfo({
+        guide_code: ba_params.guide_code,
+        wxshop_bn: ba_params.store_code || ""
+      });
+      ba_params.ba_info = ba_info;
+      ba_params.store_code = ba_info.wxshop_bn;
+      S.set("ba_params", ba_params, true);
+      let defaultStore = ba_info.wxshop_name
+        ? {
+            wxshop_name: ba_info.wxshop_name,
+            wxshop_id: ba_info.wxshop_id,
+            wxshop_bn: ba_info.wxshop_bn
+          }
+        : null;
+      shops = await this.getStoreList();
+      let currentIndex =
+        (shops &&
+          shops.findIndex(s_item => s_item.wxshop_bn == ba_info.wxshop_bn)) ||
+        0;
+      this.setState(
+        {
+          defaultStore,
+          currentIndex
+        },
+        () => {
+          // let ba_params=S.get('ba_params',true)
+          ba_params.ba_store = defaultStore;
+          S.set("ba_params", ba_params, true);
+        }
+      );
+    }
+    let version = res.version;
+    this.fetchInfo(version);
+    let system = await Taro.getSystemInfoSync();
+    if (system && system.environment === "wxwork") {
+      //企业微信登录接口
+      this.isAppWxWork();
+    }
+
     this.getHomeSetting();
     this.getShareSetting();
     this.isShowTips();
+  }
+  async getStoreList(params = {}) {
+    let ba_params = S.get("ba_params", true);
+    let ba_info = ba_params ? ba_params.ba_info : null;
+    let n_parems = {
+      ...params,
+      guide_id: ba_info.guide_id
+    };
+    const { shops } = await api.user.getGuideShops(n_parems);
+
+    this.setState({
+      shopList: shops
+    });
+    return shops;
+  }
+  async fetchInfo(version = "") {
+    const url = `/pageparams/setting?template_name=yykweishopamore&version=${version}&page_name=dgindex`;
+    const info = await req.get(url);
+    // if (!S.getAuthToken()) {
+    //   this.setState({
+    //     authStatus: true
+    //   })
+    // }
+    const bkg_item = info.config.find(
+      item => item.name === "background" && item.config.background
+    );
+    const tabSet = info.config.find(item => item.name === "tabSet" && item);
+    const { ontabSet, dispatch } = this.props;
+    const scrollInputConfig = info.config.find(
+      item => item.name === "scroll_input" && item
+    );
+    const sliderIndex = info.config.findIndex(
+      item => item.name === "slider" || item.name === "slider-hotzone"
+    );
+    if (sliderIndex > -1) {
+      let sliderFirstData = info.config[sliderIndex].data[0];
+      if (sliderFirstData && sliderFirstData.imgUrl) {
+        await Taro.getImageInfo({
+          src: sliderFirstData.imgUrl
+        }).then(res => {
+          let width = res.width;
+          let height = res.height;
+          let ratio = width / height;
+          let imgHeight = +(Taro.$systemSize.screenWidth / ratio).toFixed(2);
+          info.config[sliderIndex].config.imgHeight = imgHeight;
+        });
+      }
+    }
+    ontabSet(tabSet);
+    let tagnavIndex = -1;
+    info.config.forEach(wgt_item => {
+      if (wgt_item.name === "tagNavigation") {
+        tagnavIndex++;
+        wgt_item.tagnavIndex = tagnavIndex;
+      }
+    });
+    let ba_params = S.get("ba_params", true);
+    this.setState({
+      wgts: info.config,
+      background: (bkg_item && bkg_item.config.background) || null,
+      scrollInputConfig,
+      ba_info: ba_params ? ba_params.ba_info : ""
+    });
+  }
+  async isAppWxWork() {
+    let _this = this;
+
+    const checkSession = await this.checkSession();
+    console.log("=====checkSession检查结果返回====", checkSession);
+    if (checkSession.errMsg == "qy.checkSession:ok") {
+      const chatId = await _this.getQyChatId();
+
+      console.log("获取群信息------0", chatId);
+      let entry_form = S.get("entry_form", true);
+      if (chatId) {
+        S.set("qw_chatId", chatId, true);
+      } else if (
+        entry_form &&
+        entry_form.entry === "group_chat_tools" &&
+        !chatId
+      ) {
+        let newchatId = await _this.getNewQyChatId();
+        S.set("qw_chatId", newchatId, true);
+      }
+    } else {
+      S.setQwSession();
+      const chatId = await _this.getQyChatId();
+      let entry_form = S.get("entry_form", true);
+      console.log("获取群信息------1", chatId);
+      if (chatId) {
+        S.set("qw_chatId", chatId, true);
+      } else if (
+        entry_form &&
+        entry_form.entry === "group_chat_tools" &&
+        !chatId
+      ) {
+        let newchatId = await _this.getNewQyChatId();
+        S.set("qw_chatId", newchatId, true);
+      }
+    }
   }
 
   // 检测收藏变化
@@ -539,7 +685,7 @@ export default class BaGuideHomeIndex extends Component {
 
     return (
       <View className="page-index">
-        <BaNavBar title='导购商城' fixed jumpType='home'/>
+        <BaNavBar title="导购商城" fixed jumpType="home" />
         {is_open_official_account === 1 && show_official && (
           <AccountOfficial
             isClose
