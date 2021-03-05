@@ -27,12 +27,12 @@ import entry from "@/utils/entry";
 import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
 import { Tracker } from "@/service";
-import { WgtGoodsFaverite, HeaderHome } from "../../pages/home/wgts";
-import HomeWgts from "../../pages/home/comps/home-wgts";
-import Automatic from "../../pages/home/comps/automatic";
-import { BaTabBar, BaNavBar} from "../components"
+import { WgtGoodsFaverite, HeaderHome } from "../pages/home/wgts";
+import HomeWgts from "../pages/home/comps/home-wgts";
+import Automatic from "../pages/home/comps/automatic";
+import { BaTabBar, BaNavBar} from "./components"
 
-import "../../pages/home/index.scss";
+import "../pages/home/index.scss";
 
 @connect(
   ({ cart, member, store }) => ({

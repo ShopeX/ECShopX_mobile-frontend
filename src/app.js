@@ -236,12 +236,12 @@ class App extends Component {
       {
         root: "guide",
         pages: [
-          "pages/index",
-          "pages/category/index",
-          "pages/item/list",
-          "pages/item/espier-detail",
-          "pages/item/item-params",
-          "pages/item/package-list",
+          "index",
+          "category/index",
+          "item/list",
+          "item/espier-detail",
+          "item/item-params",
+          "item/package-list",
           "pages/cart/espier-index",
           "pages/cart/espier-checkout",
           "pages/member/coupon",

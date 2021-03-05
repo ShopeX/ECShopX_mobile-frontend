@@ -5,7 +5,7 @@ import {AtTabs, AtTabsPane} from "taro-ui"
 import api from '@/api'
 import S from '@/spx'
 import { pickBy, styleNames } from '@/utils'
-import { BaTabBar,BaNavBar } from '../../components'
+import { BaTabBar,BaNavBar } from '../components'
 import Series from './comps/series'
 
 import './index.scss'

@@ -55,7 +55,7 @@ export default class BaNavBar extends Component {
     //回首页
     navHome(){
         Taro.redirectTo({
-            url:'/guide/pages/index'
+            url:'/guide/index'
         }) 
     }
    

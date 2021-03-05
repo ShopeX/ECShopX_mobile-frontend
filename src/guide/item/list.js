@@ -7,7 +7,7 @@ import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, SpNote, N
 import api from '@/api'
 import { Tracker } from "@/service";
 import { pickBy, classNames } from '@/utils'
-import entry from "../../../utils/entry";
+import entry from "../../utils/entry";
 
 import './list.scss'
 
@@ -309,7 +309,7 @@ export default class List extends Component {
       price: price * 100,
       imgUrl: img
     });
-    const url = `/guide/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    const url = `/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })

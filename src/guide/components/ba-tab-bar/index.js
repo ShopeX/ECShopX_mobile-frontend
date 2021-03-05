@@ -56,14 +56,14 @@ export default class TabBar extends Component {
         title: "首页",
         iconType: "home",
         iconPrefixClass: "icon",
-        url: "/guide/pages/index",
+        url: "/guide/index",
         urlRedirect: true
       },
       {
         title: "分类",
         iconType: "category",
         iconPrefixClass: "icon",
-        url: "/guide/pages/category/index",
+        url: "/guide/category/index",
         urlRedirect: true
       },
       {
