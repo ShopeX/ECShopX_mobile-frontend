@@ -1,4 +1,5 @@
 export { default as WgtSlider } from './slider'
+export { default as WgtPlateType } from './plate-type'
 export { default as WgtLimittimeSlider } from './limittime-slider'
 export { default as WgtNavigation } from './navigation'
 export { default as WgtCoupon } from './coupon'
