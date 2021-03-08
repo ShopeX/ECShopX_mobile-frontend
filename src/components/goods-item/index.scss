@@ -52,6 +52,13 @@ $item-img-size: 240px !default;
   &__tag-list {
     padding-bottom: 10px;
     display: flex;
+    .tagitem {
+      margin-right: 10px;
+    }
+    .member_preference {
+      background: rgb(247, 106, 13);
+      color: #fff;
+    }
   }
   &__tag {
     padding: 4px 4px 3px 4px;

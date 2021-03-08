@@ -662,7 +662,32 @@
       text-align: center;
       margin: 60px auto 0;
     }
-  }  
+  }
+  // 会员优先购
+  .vipLimit {
+    background: #fffaee;
+    color: #d5c591;
+    margin-bottom: 20px;
+    padding: 20px;
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      .tag {
+        color: #fff;
+        background: rgba(213, 196, 145, 1);
+        padding: 10px;
+        margin-right: 10px;
+      }
+    }
+    .vipList {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 5px;
+      .item {
+        margin: 10px 15px 0 0;
+      }
+    }
+  }
   // 跨境信息
   .nationalInfo {
     margin-top: 20px;
@@ -716,6 +741,10 @@
     background: inherit;
     &.noNotice {
       color: #000;
+    }
+    &.limit {
+      background: #eaeaea;
+      color: #c3c3c3;
     }
   }
 }

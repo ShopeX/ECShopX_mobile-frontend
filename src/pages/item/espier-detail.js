@@ -255,24 +255,10 @@ export default class Detail extends Component {
 
     const param = { goods_id: goodsId }
 
-    // if (APP_PLATFORM === 'standard') {
-    //   param.distributor_id = is_open_store_status ? store_id : distributor_id 
-    // } else {
-    //   if (this.$router.params.dtid) {
-    //     param.distributor_id  = is_open_store_status ? store_id : this.$router.params.dtid
-    //   } else {
-    //     const options = this.$router.params
-    //     if (options.scene) {
-    //       const query = normalizeQuerys(options)
-    //       if (query.dtid) {
-    //         param.distributor_id = is_open_store_status ? store_id : query.dtid
-    //       }
-    //     }
-    //   }
-    // }
     if(!param.goods_id){
       delete param.goods_id
     }
+
     if (APP_PLATFORM === 'standard') {
       param.distributor_id = distributor_id 
     } else {
@@ -729,10 +715,10 @@ export default class Detail extends Component {
         Taro.authorize({
           scope: 'scope.writePhotosAlbum'
         })
-          .then(res => {
+          .then(() => {
             this.savePoster(poster)
           })
-          .catch(res => {
+          .catch(() => {
             this.setState({
               showPoster: false
             })
@@ -906,14 +892,18 @@ export default class Detail extends Component {
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')
     const uid = this.uid
+    // 计算价格
     const { showPrice, crossPrice } = this.calcCrossPrice(info, marketing, curSku)
-    
+    // 定位逆解析
     const lnglat = Taro.getStorageSync('lnglat')
     if (!info) {
       return (
         <Loading />
       )
     }
+    // 会员优先购限制
+    const vipLimit = info.memberpreference_activity && !info.memberpreference_activity.user_grade_valid
+
     let ruleDay = 0
     if (info.activity_type === 'limited_buy') {
       ruleDay = JSON.parse(info.activity_info.rule.day)
@@ -1084,9 +1074,23 @@ export default class Detail extends Component {
               <VipGuide info={{...info.vipgrade_guide_title, type: info.type, tax_rate: info.cross_border_tax_rate}} />
             ) : null}
 
-            <View className='vipLimit'>
-              会员限购
-            </View>
+            {
+              info.memberpreference_activity && <View className='vipLimit'>
+                <View className='title'>
+                  <Text className='tag'>会员优先购</Text>以下会员等级可购买
+                </View>
+                <View className='vipList'>
+                  {
+                    info.memberpreference_activity.member_grade.map((item, index) => <View
+                      key={`vipList${index}`}
+                      className='item'
+                    >
+                      {item}
+                    </View>)
+                  }
+                </View>
+              </View>
+            }
 
             {marketing === 'normal' && (
               <View className='goods-prices__wrap'>
@@ -1349,7 +1353,7 @@ export default class Detail extends Component {
           />
         </FloatMenus>
 
-        {info.distributor_sale_status && hasStock && startActivity && !info.is_gift ? (
+        {(info.distributor_sale_status && hasStock && startActivity && !info.is_gift && !vipLimit) ? (
           <GoodsBuyToolbar
             info={info}
             type={marketing}
@@ -1372,14 +1376,18 @@ export default class Detail extends Component {
               className='goods-buy-toolbar__btns'
               style='width: 60%; text-align: center'
             >
-              {!startActivity || info.is_gift ? (
-                <Text>{ info.is_gift ? '赠品不可购买' : '活动即将开始' }</Text>
+              {!startActivity || info.is_gift || vipLimit ? (
+                <View className='arrivalNotice noNotice limit'>
+                  { info.is_gift ? '赠品不可购买' : '' }
+                  { !startActivity ? '活动即将开始' : '' }
+                  { vipLimit ? '仅限特定会员购买' : '' }
+                </View>
               ) : (
                 <View
                   style={`background: ${
-                    !isSubscribeGoods ? colors.data[0].primary : "inherit"
+                    !isSubscribeGoods ? colors.data[0].primary : 'inherit'
                   }`}
-                  className={`arrivalNotice ${isSubscribeGoods && "noNotice"}`}
+                  className={`arrivalNotice ${isSubscribeGoods && 'noNotice'}`}
                   onClick={this.handleSubscription.bind(this)}
                 >
                   {isSubscribeGoods ? "已订阅到货通知" : "到货通知"}
