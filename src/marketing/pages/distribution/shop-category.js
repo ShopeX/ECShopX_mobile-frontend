@@ -59,7 +59,7 @@ export default class DistributionShopCategory extends Component {
     }
 
     if (options.featuredshop || options.uid) {
-      query.shop_user_id = options.featuredshop
+      query.shop_user_id = options.featuredshop || options.uid
     }
 
     const { list } = await api.distribution.getShopCategorylevel(query)
@@ -98,7 +98,7 @@ export default class DistributionShopCategory extends Component {
     }
 
     if (options.featuredshop || options.uid) {
-      query.shop_user_id = options.featuredshop
+      query.shop_user_id = options.featuredshop || options.uid
     }
     
     const { list: goodsList, total_count: total} = await api.distribution.getShopGoods(query)
@@ -167,12 +167,20 @@ export default class DistributionShopCategory extends Component {
 
 
   handleClickItem = (item) => {
-    console.warn(item)
+    const options = this.$router.params
+    const { userId } = Taro.getStorageSync('userinfo')
+    const distributionShopId = Taro.getStorageSync('distribution_shop_id')
+    let id = distributionShopId || userId
+
+    if (options.featuredshop || options.uid) {
+      id = options.featuredshop || options.uid
+    }
+
     const { goods_id, distributor_id} = item
     let url = ''
     if (item.isOutSale) return false
     if (goods_id) {
-      url = `/pages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}`
+      url = `/pages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}&uid=${id}`
     }
     if (url) {
       Taro.navigateTo({

@@ -191,7 +191,9 @@ export default class DistributionShopHome extends Component {
       tabList,
       userId: param.user_id
     }, () => {
-      this.resetGet()
+      setTimeout(() => {
+        this.resetGet() 
+      })
     })
   }
 
@@ -202,8 +204,8 @@ export default class DistributionShopHome extends Component {
     const query = {
       page,
       pageSize,
-      shop_user_id: userId,
-      ...this.state.params
+      ...this.state.params,
+      shop_user_id: userId
     }
 
     const { list, total_count: total, goods_total = 0 } = await api.distribution.getShopGoods(query)
@@ -237,7 +239,8 @@ export default class DistributionShopHome extends Component {
   // 点击商品跳转
   handleClickItem = (item) => {
     if (item.isOutSale) return false
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    const { userId } = this.state
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&uid=${userId}`
     setTimeout(() => {      
       Taro.navigateTo({
         url
