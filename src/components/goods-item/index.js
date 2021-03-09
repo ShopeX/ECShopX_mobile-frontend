@@ -1,13 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Image} from '@tarojs/components'
-<<<<<<< HEAD
-import { SpImg ,PointLine} from '@/components'
-=======
-import { SpImg } from '@/components'
+import { SpImg ,PointLine} from '@/components' 
 import api from '@/api'
 import { connect } from '@tarojs/redux'
 
->>>>>>> feat-Unite
 import { isObject, classNames } from '@/utils'
 
 import './index.scss'

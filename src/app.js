@@ -21,18 +21,6 @@ import './app.scss'
 
 const { store } = configStore()
 
-<<<<<<< HEAD
-useHooks()
-
-// if (APP_TRACK) {
-//   const system = Taro.getSystemInfoSync();
-//   if (!(system && system.environment && system.environment === "wxwork")) {
-//     console.log('----------------aa--------------')
-//     console.log(Tracker)
-//     Tracker.use(APP_TRACK);
-//   }
-// }
-=======
 // 获取首页配置
 const getHomeSetting = async () => {
   const {
@@ -64,7 +52,6 @@ const getHomeSetting = async () => {
     }
   }
 }
->>>>>>> feat-Unite
 
 useHooks()
 
@@ -171,17 +158,10 @@ class App extends Component {
           'pages/plusprice/cart-plusprice-list',
         ],
         "plugins": {
-<<<<<<< HEAD
           // "live-player-plugin": {
           //   "version": "1.2.6", // 填写该直播组件版本号
           //   "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          // }
-=======
-          "live-player-plugin": {
-            "version": "1.2.8", // 填写该直播组件版本号
-            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          }
->>>>>>> feat-Unite
+          // } 
           // "meiqia": {
           //   "version": "1.1.0",
           //   "provider": "wx2d2cd5fd79396601"

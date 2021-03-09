@@ -269,14 +269,9 @@ export default class Detail extends Component {
     return info;
   }
 
-  async fetchInfo(itemId, goodsId) {
-<<<<<<< HEAD
-    console.log("---fetchInfo---")
+  async fetchInfo(itemId, goodsId) { 
     this.nextPage();
-    const { distributor_id,store_id } = Taro.getStorageSync('curStore')
-=======
-    const { distributor_id } = Taro.getStorageSync('curStore')
->>>>>>> feat-Unite
+    const { distributor_id,store_id } = Taro.getStorageSync('curStore') 
     const { is_open_store_status } = this.state
     //const isOpenStore = await entry.getStoreStatus()
     let id = ''
@@ -997,17 +992,7 @@ export default class Detail extends Component {
                 );
               })}
             </Swiper>
-
-            {
-              // info.videos_url && (<Video
-              //   src={info.videos_url}
-              //   className='video'
-              //   controls
-              // />)
-            }
-            {/*<ItemImg
-              info={imgInfo}
-            />*/}
+ 
           </View>
 
           {!info.nospec &&
@@ -1125,14 +1110,7 @@ export default class Detail extends Component {
               <VipGuide info={{...info.vipgrade_guide_title, type: info.type, tax_rate: info.cross_border_tax_rate}} />
             ) : null}
 
-<<<<<<< HEAD
-            {marketing === "normal" && !this.isPointitemGood() && (
-              <View className="goods-prices__wrap">
-                <View className="goods-prices">
-                  <View className="view-flex-item">
-                    {info.type == "1" && (
-                      <Text className="crossTitle">含税销售价</Text>
-=======
+           
             {
               info.memberpreference_activity && <View className='vipLimit'>
                 <View className='title'>
@@ -1151,13 +1129,12 @@ export default class Detail extends Component {
               </View>
             }
 
-            {marketing === 'normal' && (
+            {marketing === 'normal' && !this.isPointitemGood() && (
               <View className='goods-prices__wrap'>
                 <View className='goods-prices'>
                   <View className='view-flex-item'>
                     {info.type == '1' && (
                       <Text className='crossTitle'>含税销售价</Text>
->>>>>>> feat-Unite
                     )}
                     <Price primary unit='cent' value={showPrice} />
                     {
@@ -1183,13 +1160,8 @@ export default class Detail extends Component {
               </View>
             )}
             {/* 跨境商品 */}
-<<<<<<< HEAD
             {info.type == "1" && !this.isPointitemGood() && (
-              <View className="nationalInfo">
-=======
-            {info.type == '1' && (
-              <View className='nationalInfo'>
->>>>>>> feat-Unite
+              <View className="nationalInfo"> 
                 <View>
                   跨境综合税:
                   <Price
@@ -1236,7 +1208,7 @@ export default class Detail extends Component {
             </View>
           )}
 
-          {marketing === "group" && info.groups_list.length > 0 && (
+          {marketing === "group" && info.groups_list.length > 0 && !this.isPointitemGood() && (
             <View className='goods-sec-specs'>
               <View className='goods-sec-value'>
                 <Text className='title-inner'>正在进行中的团</Text>
@@ -1253,16 +1225,9 @@ export default class Detail extends Component {
             </View>
           )}
 
-          {
-<<<<<<< HEAD
-            !info.is_gift && !this.isPointitemGood() && <SpCell
-              className="goods-sec-specs"
-              title="领券"
-=======
-            !info.is_gift && <SpCell
+          { !info.is_gift && !this.isPointitemGood() &&  <SpCell
               className='goods-sec-specs'
               title='领券'
->>>>>>> feat-Unite
               isLink
               onClick={this.handleCouponClick.bind(this)}
             >
@@ -1288,7 +1253,7 @@ export default class Detail extends Component {
             />
           ) : null}
 
-          {promotion_package && !this.isPointitemGood() && (
+          {promotion_package &&  !this.isPointitemGood() (
             <SpCell
               className='goods-sec-specs'
               isLink
