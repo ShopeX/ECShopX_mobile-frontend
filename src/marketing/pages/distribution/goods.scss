@@ -1,10 +1,10 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-distribution-shop {
   background: $color-bg-gray;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
-  /*  #endif  */     
+  /*  #endif  */
   .at-search-bar__action {
     display: none;
   }
@@ -13,9 +13,9 @@
     &__toolbar {
       position: fixed;
       top: 0;
-      /*  #ifdef  h5  */  
+      /*  #ifdef  h5  */
       top: $navigate-height-h5;
-      /*  #endif  */        
+      /*  #endif  */
       left: 0;
       width: 100%;
       z-index: $z-index-toolbar;
@@ -23,7 +23,7 @@
       box-shadow: $box-shadow;
       &-title {
         width: 60%;
-        margin:0 auto;
+        margin: 0 auto;
         height: 84px;
         line-height: 84px;
         text-align: center;
@@ -39,7 +39,7 @@
         text-align: center;
         color: #666666;
         font-size: 26px;
-        [class^=icon] {
+        [class^="icon"] {
           color: #ccc;
           display: inline-block;
         }
@@ -49,10 +49,16 @@
       }
     }
     &__scroll {
-      @include page-scroll($tabs-height + $navigate-height + $searchbar-height,  $tabbar-height);
-      /*  #ifdef  h5  */  
-      @include page-scroll($tabs-height + $navigate-height-h5 + $searchbar-height,  $tabbar-height);
-      /*  #endif  */         
+      @include page-scroll(
+        $tabs-height + $navigate-height + $searchbar-height,
+        $tabbar-height
+      );
+      /*  #ifdef  h5  */
+      @include page-scroll(
+        $tabs-height + $navigate-height-h5 + $searchbar-height,
+        $tabbar-height
+      );
+      /*  #endif  */
     }
     &__type-grid {
       @include clearfix();

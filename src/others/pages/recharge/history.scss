@@ -1,7 +1,7 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .history {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   width: 100%;

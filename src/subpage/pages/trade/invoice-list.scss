@@ -1,10 +1,10 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 @import "list.scss";
 
 .page-invoice-list {
   .trade-list {
     &__scroll {
-      @include page-scroll($navigate-height, 0)
+      @include page-scroll($navigate-height, 0);
     }
   }
 

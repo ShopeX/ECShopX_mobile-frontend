@@ -1,10 +1,10 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .auth-reg {
   height: 100vh;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
-  /*  #endif  */  
+  /*  #endif  */
   position: relative;
   box-sizing: border-box;
   background: $color-brand-primary-text;
@@ -12,7 +12,7 @@
     padding: $edge-size;
     margin: 0 0 $edge-margin;
   }
-  .accountAgreement{
+  .accountAgreement {
     width: 100%;
     text-align: center;
     &__text {
@@ -24,11 +24,11 @@
     margin: 0 0 $edge-size;
     display: flex;
     justify-content: flex-start;
-    border-bottom: 1PX solid rgba($color-brand-primary, 0.2);
+    border-bottom: 1px solid rgba($color-brand-primary, 0.2);
     &__title {
       font-size: $font-size;
-      margin-right:16px;
-      width:172px;
+      margin-right: 16px;
+      width: 172px;
     }
     .pick-value {
       color: #333;

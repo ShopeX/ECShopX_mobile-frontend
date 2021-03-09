@@ -1,166 +1,167 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 .page-plusprice {
-    /*  #ifdef  h5  */  
-    padding-top: $navigate-height-h5;
-    /*  #endif  */  
-    // background: #FC7239 url(../../../assets/imgs/plusprice-head.png) center top no-repeat;
-    background-repeat: no-repeat;
-    background-position: center top;
-    height: 100vh;
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  // background: #FC7239 url(../../../assets/imgs/plusprice-head.png) center top no-repeat;
+  background-repeat: no-repeat;
+  background-position: center top;
+  height: 100vh;
+  width: 100%;
+  background-size: contain;
+  position: relative;
+
+  .plusprice-goods {
+    &__scroll {
+      @include page-scroll(381px, 70px);
+      left: 15px;
+      width: 96%;
+      /*  #ifdef  h5  */
+      @include page-scroll($navigate-height-h5, 0);
+      /*  #endif  */
+    }
+    &__info {
+      text-align: center;
+      padding-top: 137px;
+      .title {
+        font-size: 52px;
+        font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+        font-weight: bold;
+        color: #fff797;
+        line-height: 69px;
+        text-shadow: 0px 13px 11px rgba(255, 75, 31, 0.81);
+      }
+    }
+
+    &__list {
+      padding: 20px;
+      // background: #eeeeee;
+      border-radius: 8px;
+    }
+    &__timer {
+      display: flex;
+      justify-content: center;
+      margin: $edge-margin * 2 auto;
+      border-radius: 50px;
+      width: 640px;
+      height: 100px;
+      padding-top: 20px;
+      .time-text {
+        color: #ffffff;
+        font-size: 30px;
+        font-weight: bold;
+        padding-right: 15px;
+      }
+    }
+    margin: 0 -10px;
+    &__type-list {
+      .goods-item {
+        margin-bottom: 20px;
+      }
+      .goods-item__bd {
+        display: flex;
+        &::after {
+          content: "";
+        }
+      }
+      .goods-item__img-wrap {
+        width: 35vw;
+        height: 35vw;
+      }
+      .goods-item__cont {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 35vw;
+        height: auto;
+        flex: 1;
+        &::after {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 1px;
+          background: #efefef;
+          content: "";
+        }
+      }
+      .goods-item__caption {
+        flex: 1;
+        height: auto;
+      }
+    }
+  }
+  .at-countdown__time-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    height: 60px;
+    padding: 0 6px;
+    background: #ffffff;
+    color: #fe3d00;
+    border-radius: 8px;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: sans-serif;
+  }
+  .at-countdown__separator {
+    font-size: 30px;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 0 8px;
+  }
+  .plusprice-footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 130px;
+    background: #ffffff;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    z-index: 9;
+    .footer-list {
+      display: flex;
+      height: 80px;
+      line-height: 80px;
+      background: #fc7239;
+      box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 40px;
+    }
+    .footer-item {
+      flex: 1;
+      text-align: center;
+      color: #ffffff;
+      border-radius: 0 40px 40px 0;
+      &.no-use {
+        // background: linear-gradient(90deg, #FAD961 0%, #F7A31C 100%);
+        box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 40px 0 0 40px;
+      }
+    }
+  }
+  .scroll-footer {
+    background: #fc7239 url(../../../assets/imgs/plusprice-footer.png) center
+      top no-repeat;
+    height: 249px;
     width: 100%;
     background-size: contain;
-    position: relative;
-	
-    .plusprice-goods{
-      &__scroll {
-        @include page-scroll(381px, 70px);
-        left:15px;
-        width: 96%;
-        /*  #ifdef  h5  */  
-        @include page-scroll($navigate-height-h5, 0);
-				/*  #endif  */    
-      }
-      &__info{
-          text-align: center;
-          padding-top: 137px;
-          .title{
-            font-size: 52px;
-            font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
-            font-weight: bold;
-            color: #FFF797;
-            line-height: 69px;
-            text-shadow: 0px 13px 11px rgba(255, 75, 31, 0.81);
-          }
-      }
-
-      &__list {
-					padding: 20px;
-          // background: #eeeeee;
-          border-radius: 8px;
-          }
-			&__timer {
-					display: flex;
-					justify-content: center;
-          margin: $edge-margin*2 auto; 
-          border-radius: 50px;
-          width: 640px;
-          height: 100px;
-          padding-top: 20px;
-          .time-text{
-            color: #ffffff;
-            font-size: 30px;
-            font-weight: bold;
-            padding-right: 15px;
-          }
-			}
-      margin: 0 -10px;
-      &__type-list {
-				.goods-item{
-					margin-bottom: 20px;
-				}
-        .goods-item__bd {
-          display: flex;
-          &::after {
-            content: "";
-          }
-        }
-        .goods-item__img-wrap {
-          width: 35vw;
-          height: 35vw;
-        }
-        .goods-item__cont {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          min-height: 35vw;
-          height: auto;
-          flex: 1;
-          &::after {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 1px;
-            background: #efefef;
-            content: '';
-          }
-        }
-        .goods-item__caption {
-          flex: 1;
-          height: auto;
-        }
-      }
-      }
-      .at-countdown__time-box{
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          min-width: 70px;
-          height: 60px;
-          padding: 0 6px;
-          background: #ffffff;
-          color: #FE3D00;
-          border-radius: 8px;
-          font-size: 30px;
-          font-weight: bold;
-          font-family: sans-serif;
-      }
-      .at-countdown__separator{
-        font-size: 30px;
-        color: #ffffff;
-        font-weight: bold;
-        padding:0 8px;
-      }
-			.plusprice-footer{
-				position: fixed;
-				width: 100%;
-				bottom: 0;
-				left:0;
-				height: 130px;
-        background: #ffffff;
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-top: 10px;
-        z-index: 9;
-        .footer-list{
-          display: flex;
-          height: 80px;
-          line-height: 80px;
-          background: #FC7239;
-          box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1);
-          border-radius: 40px;
-        }
-				.footer-item{
-					flex: 1;
-					text-align: center;
-          color: #ffffff;
-          border-radius: 0 40px 40px 0;
-          &.no-use{
-            // background: linear-gradient(90deg, #FAD961 0%, #F7A31C 100%);
-            box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1);
-            border-radius: 40px 0 0 40px;
-          }
-				}
-      }
-      .scroll-footer{
-        background: #FC7239 url(../../../assets/imgs/plusprice-footer.png) center top no-repeat;
-        height: 249px;
-        width: 100%;
-        background-size: contain;
-        position: absolute;
-        left:0;
-        bottom:0;
-      }
+    position: absolute;
+    left: 0;
+    bottom: 0;
   }
-.cart-page-plusprice{
+}
+.cart-page-plusprice {
   // background: #FC7239;
-  .plusprice-goods__scroll{
+  .plusprice-goods__scroll {
     top: 0;
     bottom: 0;
     box-sizing: border-box;
     padding-bottom: 120px;
-    .goods-list__item{
+    .goods-list__item {
       display: flex;
       border-radius: 10px;
       padding: 20px 0 20px 15px;
@@ -170,17 +171,17 @@
       margin-bottom: 20px;
       .goods-item__cont {
         padding: 0 20px;
-        &::after{
+        &::after {
           display: none;
         }
       }
-      .item-check{
+      .item-check {
         flex-basis: 60px;
       }
-      .item-goodsItem{
-        flex:1;
+      .item-goodsItem {
+        flex: 1;
       }
-      .goods-item{
+      .goods-item {
         box-shadow: none;
         margin-bottom: 0;
       }

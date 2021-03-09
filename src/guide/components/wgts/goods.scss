@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .goods-content {
   margin: 0 35px;
@@ -42,7 +42,6 @@
       color: $color-brand-primary;
       margin-bottom: 20px;
     }
-
   }
   .disabled__operate {
     color: $color-brand-accent-light;

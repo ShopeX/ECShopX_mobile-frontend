@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .wgt-limit {
   &__header {
@@ -75,7 +75,7 @@
   }
   &.light {
     .dot {
-      background: rgba(255,255,255,0.7);
+      background: rgba(255, 255, 255, 0.7);
     }
   }
   &.circle {
@@ -137,11 +137,11 @@
     right: 20px;
   }
   &.dark {
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     color: #fff;
   }
   &.light {
-    background: rgba(255,255,255,0.7);
+    background: rgba(255, 255, 255, 0.7);
     color: #555;
   }
   &.circle {

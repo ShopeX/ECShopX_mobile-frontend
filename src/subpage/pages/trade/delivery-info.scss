@@ -1,7 +1,7 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 .delivery-detail {
   width: 100%;
-  padding:20px 28px;
+  padding: 20px 28px;
   box-sizing: border-box;
 
   &__logo {
@@ -19,15 +19,14 @@
     margin-bottom: 14px;
     border-radius: 6px;
     padding-top: 20px;
-   
-    view{
+
+    view {
       font-size: 24px;
     }
 
     &-ordertext {
       color: $color-gray;
     }
-
   }
 
   &__ordernumber {
@@ -50,13 +49,11 @@
   }
 
   .at-timeline-item__content-item {
-    
     color: $color-brand-primary;
   }
 
   .at-timeline-item__content--sub {
     color: #999;
-   
   }
 }
 
@@ -73,8 +70,8 @@
   &__tail {
     top: 37px;
     bottom: 8px;
-    left:15PX;
-    border-left: 1PX solid $color-border-gray;
+    left: 15px;
+    border-left: 1px solid $color-border-gray;
   }
 
   &__icon {
@@ -85,8 +82,7 @@
   &__dot,
   &__icon {
     top: 9px;
-    width: 30PX;
-
+    width: 30px;
   }
 
   .at-timeline-item__dot .at-icon,
@@ -101,9 +97,7 @@
     border-color: #999;
   }
 
-  
   &__content {
-    margin-left: 40PX;
+    margin-left: 40px;
   }
 }
-

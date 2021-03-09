@@ -1,5 +1,4 @@
-@import "../../../style/imports";
-
+@import "@/style/imports";
 
 .wgt-grid {
   &__header {
@@ -11,10 +10,10 @@
     font-size: 32px;
     line-height: 40px;
     padding-bottom: 5px;
-    border-bottom: 1PX solid $color-brand-primary;
+    border-bottom: 1px solid $color-brand-primary;
     color: $color-brand-primary;
   }
-  
+
   .grid-goods {
     display: flex;
     flex-wrap: wrap;
@@ -25,8 +24,8 @@
       width: 50%;
       padding: 6px;
       box-sizing: border-box;
-      &.grid-item-three{
-        width:33.3%;
+      &.grid-item-three {
+        width: 33.3%;
       }
       .goods-wrap {
         border-radius: 12px;
@@ -71,7 +70,7 @@
               padding-top: 10px;
             }
           }
-          .goods-brief{
+          .goods-brief {
             width: 100%;
             line-height: 1.4;
             @include multi-ellipsis(3);
@@ -97,7 +96,7 @@
         }
       }
     }
-  
+
     // 跨境
     .nationalInfo {
       display: flex;
@@ -111,6 +110,6 @@
         border-radius: 100%;
         margin-right: 15px;
       }
-    }  
+    }
   }
 }

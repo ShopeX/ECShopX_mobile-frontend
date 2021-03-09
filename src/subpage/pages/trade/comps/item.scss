@@ -1,4 +1,4 @@
-@import "../../../../style/imports";
+@import "@/style/imports";
 
 .trade-item {
   background: #fff;
@@ -69,12 +69,12 @@
     &-bd {
       display: flex;
       justify-content: flex-end;
-      /*  #ifdef  h5  */  
+      /*  #ifdef  h5  */
       button {
         border: none;
         margin-left: 15px;
       }
-      /*  #endif  */      
+      /*  #endif  */
     }
   }
   &__status {
@@ -101,7 +101,7 @@
     z-index: $z-index-dropdown;
     line-height: 40px;
     &.is-active {
-      transition: all .2s ease-in;
+      transition: all 0.2s ease-in;
       font-size: $font-size;
       opacity: 1;
       visibility: visible;

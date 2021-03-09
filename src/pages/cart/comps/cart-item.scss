@@ -1,4 +1,4 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 $item-img-width: 200px !default;
 $item-img-height: 200px !default;
@@ -8,8 +8,8 @@ $item-img-height: 200px !default;
   align-items: center;
   background: #fff;
   overflow: hidden;
-	padding: 0 0 30px;
-	position: relative;
+  padding: 0 0 30px;
+  position: relative;
   &.is-disabled {
     background: #fafafa;
     opacity: 0.8;
@@ -27,7 +27,7 @@ $item-img-height: 200px !default;
     display: flex;
     flex: 1;
   }
-  &__cont{
+  &__cont {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -46,7 +46,7 @@ $item-img-height: 200px !default;
         border-radius: 100%;
         margin-right: 15px;
       }
-    }    
+    }
     &-hd {
       flex: 3;
     }
@@ -76,8 +76,8 @@ $item-img-height: 200px !default;
   }
   &__tag {
     display: inline-block;
-    border:1px solid  $color-brand-primary;
-    color:  $color-brand-primary;
+    border: 1px solid $color-brand-primary;
+    color: $color-brand-primary;
     padding: 3px 4px;
     font-size: $font-size-small;
     margin-right: 10px;

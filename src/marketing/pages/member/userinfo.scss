@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .auth-login {
   height: 100vh;
@@ -17,7 +17,7 @@
       justify-content: flex-start;
       align-items: center;
       opacity: 0.3;
-      border-bottom: 1PX solid rgba($color-brand-primary, 0.2);
+      border-bottom: 1px solid rgba($color-brand-primary, 0.2);
       margin-bottom: 20px;
       .avatar-user-text {
         width: 170px;
@@ -32,11 +32,11 @@
       margin: 0 0 $edge-size;
       display: flex;
       justify-content: flex-start;
-      border-bottom: 1PX solid rgba($color-brand-primary, 0.2);
+      border-bottom: 1px solid rgba($color-brand-primary, 0.2);
       &__title {
         font-size: $font-size;
-        margin-right:16px;
-        width:172px;
+        margin-right: 16px;
+        width: 172px;
       }
       .pick-value {
         color: #333;
@@ -47,12 +47,12 @@
       text.pick-value-null {
         color: #808080;
       }
-    }  
+    }
   }
 }
 
 .page-member-setting {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   .checkBoxPanel {
@@ -89,6 +89,5 @@
         color: #ffffff;
       }
     }
-  
   }
 }

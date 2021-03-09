@@ -1,5 +1,5 @@
-@import '../../../style/iconfont';
-@import '../../styles/index';
+@import "@/style/iconfont";
+@import "../../styles/index";
 
 .goodDetail {
   width: 100%;
@@ -192,8 +192,8 @@
     }
   }
   .posterCanvas {
-    width: 375PX;
-    height: 640PX;
+    width: 375px;
+    height: 640px;
     position: fixed;
     top: -200%;
     left: -200%;

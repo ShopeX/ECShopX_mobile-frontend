@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-trade-refund {
   overflow: auto;
@@ -110,20 +110,20 @@
     padding: 30px;
     margin-bottom: 30px;
   }
-  .biao-icon-tishi{
+  .biao-icon-tishi {
     color: #853c3b;
     // color:#f6e7e5;
   }
-  .remind-icon{
+  .remind-icon {
     background-color: #f6e7e5;
     width: 20px;
     height: 20px;
     border-radius: 50%;
   }
-  .remind-icon-text{
+  .remind-icon-text {
     color: #853c3b;
   }
-  .remind-text{
+  .remind-text {
     margin-top: 30px;
     color: #666;
   }

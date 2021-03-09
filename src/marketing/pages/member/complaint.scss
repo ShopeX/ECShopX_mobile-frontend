@@ -1,53 +1,52 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
-.page-complaint{
+.page-complaint {
   background: #fff;
   margin: 30px;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
-  .flex{
+  .flex {
     display: flex;
   }
 
-  .pege-header{
+  .pege-header {
     background: #fff;
     padding: 25px;
 
-    .exclusive-header{
+    .exclusive-header {
       margin-top: 20px;
-      &__info{
+      &__info {
         flex: 1;
         margin-left: 30px;
-        &-name{
+        &-name {
           font-size: 34px;
         }
-        &-store_name{
-         margin-top: 20px;
+        &-store_name {
+          margin-top: 20px;
         }
       }
     }
-
   }
 
-  .complaint-reason{
+  .complaint-reason {
     margin-top: 40px;
     background-color: #fff;
     padding: 25px;
-    &__textarea{
+    &__textarea {
       margin-top: 20px;
-      background-color:#f9f9f9;
+      background-color: #f9f9f9;
       border-color: #efefef;
     }
   }
 
-  .complaint-upload{
+  .complaint-upload {
     margin-top: 40px;
     background: #fff;
     padding: 25px;
   }
 
-  .complaint-button{
+  .complaint-button {
     margin-top: 40px;
     padding: 25px;
     padding-bottom: 70px;

@@ -1,15 +1,15 @@
-@import '../../../style/imports.scss';
+@import "@/style/imports.scss";
 
 .recharge {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   .shopName {
     padding: 15px 10px;
     font-size: 28px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .balance {
     padding: 30px;
@@ -83,7 +83,7 @@
     .ruleValue {
       text-align: center;
       margin: 10px 0;
-      .text{
+      .text {
         color: #5dade2;
         font-size: 26px;
         margin-left: 10px;

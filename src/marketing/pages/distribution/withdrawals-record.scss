@@ -1,4 +1,4 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .page-distribution-record {
   .record-list__scroll {
@@ -10,7 +10,7 @@
     vertical-align: middle;
   }
   .status-header {
-    transition: opacity .3s;
+    transition: opacity 0.3s;
     &.open {
       // opacity: .4;
     }
@@ -18,7 +18,7 @@
   .status-content {
     opacity: 0;
     transform: translateY(-50%);
-    transition: .3s;
+    transition: 0.3s;
     padding-top: 20px;
     font-size: 28px;
     color: #999;
@@ -30,8 +30,8 @@
   .status-body {
     height: 0;
     overflow: hidden;
-    &.open{
-        height: auto;
+    &.open {
+      height: auto;
     }
   }
 }

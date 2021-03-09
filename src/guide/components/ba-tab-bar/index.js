@@ -70,7 +70,7 @@ export default class TabBar extends Component {
         title: "优惠券",
         iconType: "member",
         iconPrefixClass: "icon",
-        url: "/guide/pages/member/coupon",
+        url: "/guide/member/coupon",
         urlRedirect: true
       },
       {
@@ -84,7 +84,7 @@ export default class TabBar extends Component {
         title: "购物车",
         iconType: "cart",
         iconPrefixClass: "icon",
-        url: "/guide/pages/cart/espier-index",
+        url: "/guide/cart/espier-index",
         text: this.cartCount || "",
         max: "99",
         urlRedirect: true

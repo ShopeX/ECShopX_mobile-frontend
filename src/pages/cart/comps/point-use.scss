@@ -1,4 +1,4 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .point-use {
   &__hd {
@@ -18,10 +18,10 @@
       top: 50%;
       margin-top: -15px;
     }
-    .rule-title{
-        color: $color-gray;
-        font-size: 26px;
-        padding-left: 30px;
+    .rule-title {
+      color: $color-gray;
+      font-size: 26px;
+      padding-left: 30px;
     }
   }
   &__bd {
@@ -37,7 +37,7 @@
     margin: 0 40px;
     //@include hairline();
     &.border {
-        @include hairline()
+      @include hairline();
     }
     &.is-disabled {
       opacity: 0.6;
@@ -54,7 +54,7 @@
       flex-basis: 45%;
     }
     &__desc {
-        flex: 1;
+      flex: 1;
       line-height: 1;
     }
   }

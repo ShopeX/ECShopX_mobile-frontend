@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .auth-login {
   height: 100vh;
@@ -17,7 +17,7 @@
     .icon-pwd {
       line-height: 40px;
     }
-    .forgotPwd{
+    .forgotPwd {
       font-size: 28px;
     }
   }

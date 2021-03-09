@@ -1,5 +1,4 @@
-@import "../../../style/imports";
-
+@import "@/style/imports";
 
 .wgt-grid {
   &__header {
@@ -11,7 +10,7 @@
     font-size: 32px;
     line-height: 40px;
     padding-bottom: 5px;
-    border-bottom: 1PX solid $color-brand-primary;
+    border-bottom: 1px solid $color-brand-primary;
     color: $color-brand-primary;
   }
 }
@@ -70,7 +69,7 @@
             padding-top: 10px;
           }
         }
-        .goods-brief{
+        .goods-brief {
           width: 100%;
           line-height: 1.4;
           @include multi-ellipsis(3);

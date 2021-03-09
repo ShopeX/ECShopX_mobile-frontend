@@ -1,9 +1,9 @@
-@import "../../style/imports";
+@import "@/style/imports";
 
 .page-wxauth {
   // overflow: hidden;
   // height: 100vh;
- 
+
   text-align: center;
   .login-bg_img {
     width: 100%;
@@ -40,41 +40,36 @@
       width: 340px;
       height: 84px;
       background-color: #ffffff;
-      box-shadow: 4px 7px 6px 0px 
-        rgba(0, 0, 0, 0.29);
+      box-shadow: 4px 7px 6px 0px rgba(0, 0, 0, 0.29);
       border-radius: 10px;
       left: 50%;
       margin-left: -170px;
       border: none;
-      
+
       // border: 1PX solid #ffffff;
       color: $color-brand-primary;
-      .at-button__text{
+      .at-button__text {
         font-size: 45px;
       }
-     
-      button::after{
+
+      button::after {
         border: none;
       }
-     
-      
     }
-  
+
     //margin: 0 0 20px;
-
   }
- 
-	.auth-more {
-		display: block;
-		text-align: center;
-		color: $color-brand-primary;;
-		text-decoration-line: underline;
-		position: absolute;
-		top: 1150px;
-		margin: 0 auto;
-		left: 0;
-		right: 0;
-		// font-size:$font-size-small ;
 
-	}
+  .auth-more {
+    display: block;
+    text-align: center;
+    color: $color-brand-primary;
+    text-decoration-line: underline;
+    position: absolute;
+    top: 1150px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    // font-size:$font-size-small ;
+  }
 }

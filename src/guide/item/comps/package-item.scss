@@ -1,4 +1,4 @@
-//@import '../../../style/imports';
+//@import '@/style/imports';
 
 .package-goods {
   &__list {
@@ -41,7 +41,7 @@
   padding: 0 10px;
   color: $color-gray;
   font-size: $font-size-small;
-  box-shadow: 0 0 0 1PX #efefef;
+  box-shadow: 0 0 0 1px #efefef;
   [class^="icon-"] {
     margin-left: 10px;
   }

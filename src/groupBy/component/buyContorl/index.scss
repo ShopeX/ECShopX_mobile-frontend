@@ -1,5 +1,5 @@
-// @import '../../../style/iconfont';
-@import '../../styles/index';
+// @import '@/style/iconfont';
+@import "../../styles/index";
 
 .buyContorl {
   width: 100%;
@@ -20,14 +20,15 @@
       background: #999;
     }
     &::after {
-      content: '';
+      content: "";
       display: none;
     }
   }
   .content {
     display: flex;
     align-items: center;
-    .reduceBtn, .addBtn {
+    .reduceBtn,
+    .addBtn {
       width: 50px;
       height: 50px;
       display: flex;
@@ -48,7 +49,7 @@
         border: 2px solid #dfdfdf;
       }
       &::after {
-        content: '';
+        content: "";
         display: none;
       }
     }

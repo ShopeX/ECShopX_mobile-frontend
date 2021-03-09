@@ -1,13 +1,13 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .page-distribution-setting {
   line-height: 1;
   background: #f5f5f5;
   color: #000;
   font-size: 28px;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
-  /*  #endif  */  
+  /*  #endif  */
   .container {
     font-size: 28px;
   }

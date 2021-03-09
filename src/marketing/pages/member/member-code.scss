@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .member-code-wrap {
   display: flex;
@@ -52,7 +52,8 @@
       font-size: 32px;
       font-weight: 800;
     }
-    .code-num, .code-tip {
+    .code-num,
+    .code-tip {
       font-size: 28px;
     }
     &-bar {

@@ -1,4 +1,4 @@
-//@import "../../../style/imports";
+//@import "@/style/imports";
 
 .specs {
   &-title {
@@ -34,11 +34,11 @@
       margin-left: 20px;
       overflow: hidden;
       transition: all 0.2s ease;
-      box-shadow: 0 0 0 1PX $color-border-gray;
+      box-shadow: 0 0 0 1px $color-border-gray;
       &-active {
         width: 85px;
         height: 85px;
-        box-shadow: 0 0 0 1PX #ff5000;
+        box-shadow: 0 0 0 1px #ff5000;
       }
     }
   }

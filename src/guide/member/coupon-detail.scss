@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-coupon-detail {
   min-height: 100vh;
@@ -78,9 +78,10 @@
         .card-decorate {
           height: 0;
           padding: 0;
-        } 
-        .card-decorate::before, .card-decorate::after {
-          content: '';
+        }
+        .card-decorate::before,
+        .card-decorate::after {
+          content: "";
           position: absolute;
           bottom: -25px;
           width: 45px;
@@ -110,7 +111,8 @@
           }
         }
       }
-      &-title, &-val {
+      &-title,
+      &-val {
         padding-left: 30px;
       }
       &-title {
@@ -136,21 +138,26 @@
           transition: 0.8s;
         }
         &::after {
-          content: '';
+          content: "";
           position: absolute;
           bottom: -3px;
           width: 94%;
           height: 3px;
           left: 50%;
           transform: translateX(-50%);
-          background: radial-gradient(circle at bottom, transparent 3px, #fff 3px);
+          background: radial-gradient(
+            circle at bottom,
+            transparent 3px,
+            #fff 3px
+          );
           background-size: 20rpx 100%;
         }
         .remind-txt {
           position: relative;
           text-align: center;
           padding-bottom: 20px;
-          &::before, &::after {
+          &::before,
+          &::after {
             content: "";
             position: absolute;
             left: 70px;
@@ -165,7 +172,6 @@
           &::after {
             left: 85px;
           }
-
         }
         .red {
           color: #fc5936;
@@ -191,7 +197,7 @@
       margin: 0 auto;
       padding: 70rpx 0 60rpx 0;
       border-radius: 5px;
-      box-shadow: 0 0 5px rgba(255, 255, 255, .2);
+      box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
       image {
         width: 400px;
         height: 400px;

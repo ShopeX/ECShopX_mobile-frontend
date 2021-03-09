@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-trade-list {
   height: 100vh;
@@ -15,14 +15,14 @@
   .at-tabs {
     height: $tabs-height;
     box-shadow: 0 10px 10px rgba(#000, 0.05);
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     top: $navigate-height-h5;
-    /*  #endif  */    
+    /*  #endif  */
     &__header {
       position: fixed;
       left: 0;
       top: $navigate-height;
-      /*  #ifdef  h5  */  
+      /*  #ifdef  h5  */
       top: $navigate-height-h5;
       /*  #endif  */
       width: 100%;
@@ -42,20 +42,25 @@
     }
   }
 
-
   .trade-list {
     &__scroll {
       box-sizing: border-box;
       @include page-scroll($navigate-height, $edge-margin);
-      /*  #ifdef  h5  */  
+      /*  #ifdef  h5  */
       @include page-scroll($navigate-height-h5, $edge-margin);
-      /*  #endif  */      
+      /*  #endif  */
       z-index: 2;
       &.with-tabs {
-        @include page-scroll($navigate-height + $tabs-height + 10px, $edge-margin);
-        /*  #ifdef  h5  */  
-        @include page-scroll($navigate-height-h5 + $tabs-height + 10px, $edge-margin);
-        /*  #endif  */        
+        @include page-scroll(
+          $navigate-height + $tabs-height + 10px,
+          $edge-margin
+        );
+        /*  #ifdef  h5  */
+        @include page-scroll(
+          $navigate-height-h5 + $tabs-height + 10px,
+          $edge-margin
+        );
+        /*  #endif  */
       }
     }
   }
@@ -111,7 +116,7 @@
     }
   }
 }
-.page-after-sale{
+.page-after-sale {
   padding-top: $tabs-height;
 }
 // .trade-item__hd-cont{

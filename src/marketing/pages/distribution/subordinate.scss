@@ -1,25 +1,25 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .page-distribution-subordinate {
   height: 100%;
   .client-list__tabs {
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     top: $navigate-height-h5;
-    /*  #endif  */    
+    /*  #endif  */
   }
   .subordinate-list__scroll {
     @include page-scroll($tabs-height + $navigate-height, 0);
     height: calc(100vh - #{$tabs-height + $navigate-height});
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     @include page-scroll($tabs-height + $navigate-height-h5, 0);
     height: calc(100vh - #{$tabs-height + $navigate-height-h5});
-    /*  #endif  */    
+    /*  #endif  */
   }
   .list {
     min-height: calc(100vh - #{$tabs-height + $navigate-height});
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     min-height: calc(100vh - #{$tabs-height + $navigate-height-h5});
-    /*  #endif  */        
+    /*  #endif  */
   }
   .avatar {
     width: 70px;

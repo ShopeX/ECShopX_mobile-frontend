@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 $page-header: 80px !default;
 
@@ -32,7 +32,7 @@ $page-header: 80px !default;
         font-weight: bold;
         color: #00c3ff;
         text-align: center;
-        border: 1PX solid #efefef;
+        border: 1px solid #efefef;
       }
       &-status {
         .status-label {

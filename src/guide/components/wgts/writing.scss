@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .wgt {
   &__padded {
@@ -23,7 +23,8 @@
     color: #999;
   }
 }
-.wgt-writing, .heading-view {
+.wgt-writing,
+.heading-view {
   background: #ffffff;
   padding: 0 30px;
 }
