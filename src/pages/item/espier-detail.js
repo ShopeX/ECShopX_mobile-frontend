@@ -1253,7 +1253,7 @@ export default class Detail extends Component {
             />
           ) : null}
 
-          {promotion_package &&  !this.isPointitemGood() (
+          {promotion_package &&  !this.isPointitemGood() && (
             <SpCell
               className='goods-sec-specs'
               isLink
@@ -1261,7 +1261,7 @@ export default class Detail extends Component {
               onClick={this.handlePackageClick}
               value={`共${promotion_package}种组合随意搭配`}
             />
-          )}
+          )} 
 
           {itemParams.length > 0 && (
             <View
@@ -1286,7 +1286,7 @@ export default class Detail extends Component {
               onClick={this.handleBuyBarClick.bind(this, "pick")}
               value={curSku ? curSku.propsText : "请选择"}
             />
-          )}
+          )} 
 
           {APP_PLATFORM !== 'standard' && !isArray(info.distributor_info) && (
             <StoreInfo info={info.distributor_info} />
@@ -1348,6 +1348,7 @@ export default class Detail extends Component {
               )}
             </View>
           )}
+
           {likeList.length > 0 && showLikeList ? (
             <View className='cart-list cart-list__disabled'>
               <View className='cart-list__hd like__hd'>

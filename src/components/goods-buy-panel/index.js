@@ -368,8 +368,9 @@ export default class GoodsBuyPanel extends Component {
       });
 
       this.props.onFastbuy(item_id, num);
+      let pointitem=isPointitem?`&type=pointitem`:''
       Taro.navigateTo({
-        url:`${url}&type=pointitem`
+        url:`${url}${pointitem}`
       });
     }
 

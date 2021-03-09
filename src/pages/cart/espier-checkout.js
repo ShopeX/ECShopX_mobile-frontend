@@ -1287,7 +1287,7 @@ export default class CartCheckout extends Component {
         url:
           type === "group"
             ? `/marketing/pages/item/group-detail?team_id=${config.team_id}`
-            : `/subpage/pages/trade/detail?id=${order_id}&type=pointitem`
+            : `/subpage/pages/trade/detail?id=${order_id}`
       });
 
       /*this.props.onClearCart()
