@@ -528,10 +528,12 @@ export default class GoodsBuyPanel extends Component {
               )}
               {curSku && (
                 <View className="goods-sku__limit">
-                  <Text className="goods-sku__stock">
-                    库存{curSku.store}
-                    {info.unit}
-                  </Text>
+                  {
+                    info.store_setting && <Text className="goods-sku__stock">
+                      库存{curSku.store}
+                      {info.unit}
+                    </Text>
+                  }
                   {activity && curLimit ? (
                     <Text>
                       {ruleDay ? <Text>每{ruleDay}天</Text> : null}

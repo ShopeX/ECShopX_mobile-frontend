@@ -1117,7 +1117,7 @@ export default class Detail extends Component {
                   )}
                 </View>
 
-                {info.sales && (
+                {info.sales_setting && info.sales && (
                   <Text className='goods-sold'>{info.sales || 0}人已购</Text>
                 )}
               </View>

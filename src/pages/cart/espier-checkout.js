@@ -698,7 +698,8 @@ export default class CartCheckout extends Component {
       max_point = 0,
       is_open_deduct_point,
       deduct_point_rule,
-      real_use_point
+      real_use_point,
+      invoice_status
     } = data;
 
     //const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info,point_fee=0,point_use, user_point = 0,max_point = 0 ,is_open_deduct_point,deduct_point_rule,real_use_point } = data      // 测试数据
@@ -726,6 +727,8 @@ export default class CartCheckout extends Component {
       items_count: totalItemNum,
       point,
       freight_point,
+      // 是否开启开发票
+      invoice_status,
       remainpt, // 总积分
       deduction, // 抵扣
       point_fee: -1 * point_fee //积分抵扣金额
@@ -1710,7 +1713,7 @@ export default class CartCheckout extends Component {
             })}
           </View>
 
-          {process.env.TARO_ENV === "weapp" && !bargain_id && (
+          {process.env.TARO_ENV === "weapp" && total.invoice_status && !bargain_id && (
             <SpCell
               isLink
               className="trade-invoice"
