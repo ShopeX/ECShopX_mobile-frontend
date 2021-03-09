@@ -3,10 +3,11 @@ import { View, Text, Button, Image, Input } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { BackToTop, Loading, NavBar, SpImg, SpNote } from '@/components'
 import S from '@/spx'
-import throttle from 'lodash/throttle'
 import api from '@/api'
+import throttle from 'lodash/throttle'
 import { withPager } from '@/hocs'
 import { getCurrentRoute, pickBy } from '@/utils'
+import CustomHeader from './comps/header'
 
 import './shop-home.scss'
 
@@ -26,6 +27,7 @@ export default class DistributionShopHome extends Component {
         { title: '小店首页', iconType: 'home', iconPrefixClass: 'icon',url: '/marketing/pages/distribution/shop-home',urlRedirect: true },
         { title: '分类', iconType: 'category', iconPrefixClass: 'icon', url: '/marketing/pages/distribution/shop-category', urlRedirect: true },
       ],
+      userId: '',
       // 商品总数
       goods_total: 0,
       // 搜索参数
@@ -43,12 +45,18 @@ export default class DistributionShopHome extends Component {
       // 价格排序, true为升 false为降
       sort: true,
       // 是否加载
-      isLoading: false
+      isLoading: false,
+      // 状态栏高度
+      statusBarHeight: 44,
+      paddindTop: 0,
+      // 是否首页
+      isHome: false
     }
   }
 
   componentDidMount () {
     this.getShopInfo()
+    this.init()
   }
 
   componentDidShow () {
@@ -60,17 +68,19 @@ export default class DistributionShopHome extends Component {
     enablePullDownRefresh: true,
     onReachBottomDistance: 80,
     backgroundTextStyle: 'dark',
-    navigationBarTitleText: ''
+    navigationBarTitleText: '',
+    navigationBarTextStyle: 'white',
+    navigationStyle: 'custom'
   }
 
   // 分享
   onShareAppMessage() {
-    const { params, info: shopInfo } = this.state
+    const { info: shopInfo, userId } = this.state
     const title = shopInfo.shop_name || `${shopInfo.username}的小店`
     return {
       title: title,
       imageUrl: shopInfo.shop_pic,
-      path: `/marketing/pages/distribution/shop-home?featuredshop=${params.user_id}`
+      path: `/marketing/pages/distribution/shop-home?featuredshop=${userId}`
     }
   }
 
@@ -81,8 +91,28 @@ export default class DistributionShopHome extends Component {
 
   // 页面滚动
   onPageScroll = throttle((res) => {
-    const { showBackToTop } = this.state
+    const { showBackToTop, statusBarHeight, paddindTop } = this.state
     const { scrollTop } = res
+    const topOffset = statusBarHeight + 40
+    const query = Taro.createSelectorQuery()
+    query.select('.filter').boundingClientRect(({ top }) => {
+      if (
+        top <= topOffset
+        && (paddindTop < topOffset || paddindTop > 0)
+      ) {
+        const diffTop = Math.abs(top - topOffset)
+        if (diffTop !== paddindTop) {
+          this.setState({
+            paddindTop: top > 0 ? diffTop : topOffset
+          })
+        }
+      }  else if (paddindTop !== 0){
+        this.setState({
+          paddindTop: 0
+        })
+      }
+    }).exec()
+
     if (scrollTop > 300 && !showBackToTop) {
       this.setState({
         showBackToTop: true
@@ -92,7 +122,7 @@ export default class DistributionShopHome extends Component {
         showBackToTop: false
       })
     }
-  })
+  }, 100)
 
   // 触底事件
   onReachBottom = () => {
@@ -103,6 +133,17 @@ export default class DistributionShopHome extends Component {
   scrollBackToTop = () => {
     Taro.pageScrollTo({
       scrollTop: 0
+    })
+  }
+
+  // 获取设备信息
+  init = async () => {
+    const pages = Taro.getCurrentPages()
+    const isHome = pages[pages.length - 2]
+    const { statusBarHeight = 44 } = await Taro.getSystemInfo()
+    this.setState({
+      statusBarHeight,
+      isHome: !isHome
     })
   }
 
@@ -147,28 +188,24 @@ export default class DistributionShopHome extends Component {
         is_valid,
         shop_pic
       },
-      tabList
+      tabList,
+      userId: param.user_id
     }, () => {
-      this.resetGet()
+      setTimeout(() => {
+        this.resetGet() 
+      })
     })
   }
 
   // 获取小店商品列表
   fetch = async (params) => {
-    const options = this.$router.params
-    const { userId } = Taro.getStorageSync('userinfo')
-    const distributionShopId = Taro.getStorageSync('distribution_shop_id')
+    const { userId } = this.state
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
       pageSize,
-      ...this.state.params
-    }
-
-    if (options.featuredshop || options.uid) {
-      query.shop_user_id = options.featuredshop || options.uid
-    } else {
-      query.shop_user_id = userId || distributionShopId
+      ...this.state.params,
+      shop_user_id: userId
     }
 
     const { list, total_count: total, goods_total = 0 } = await api.distribution.getShopGoods(query)
@@ -202,7 +239,8 @@ export default class DistributionShopHome extends Component {
   // 点击商品跳转
   handleClickItem = (item) => {
     if (item.isOutSale) return false
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    const { userId } = this.state
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&uid=${userId}`
     setTimeout(() => {      
       Taro.navigateTo({
         url
@@ -347,7 +385,10 @@ export default class DistributionShopHome extends Component {
       showSearch,
       keywords,
       curFilterIdx,
-      isFocus
+      isFocus,
+      statusBarHeight,
+      paddindTop,
+      isHome
     } = this.state
 
     // 筛选选项
@@ -368,6 +409,7 @@ export default class DistributionShopHome extends Component {
 
     return (
       <View className='page-distribution-shop'>
+        <CustomHeader isWhite={paddindTop > 0} isHome={isHome} statusBarHeight={statusBarHeight} />
         <NavBar
           title='小店'
           leftIconType='chevron-left'
@@ -406,49 +448,55 @@ export default class DistributionShopHome extends Component {
             </View>
           </View>   
         </View>
-        <View className='filter'>
-          {
-            filterList.map(item =>
-              <View
-                className={`filterItem ${curFilterIdx === item.type && 'active'}`}
-                key={item.type}
-                onClick={this.handleFilterChange.bind(this, item)}
-              >
-                { item.title }
-                {
-                  (item.type === 2 && item.title === '价格') &&
-                  <View className={`sort ${sort ? 'down' : 'up'}`}></View>
-                }
-              </View>
-            )
-          }
-          <View
-            className={`searchContent ${showSearch && 'unfold'}`}
-            onClick={this.handleShowSearch.bind(this)}
-          >
-            <View
-              className='iconfont icon-search'
-            >
-              <Text className='txt'>{ params.keywords }</Text>
-            </View>
+        <View
+          className='filter'
+          style={`padding-top: ${paddindTop}px; transition: padding ${paddindTop > 20 ? paddindTop * 3.5 : 300 }ms linear;`}
+        >
+          <View className='filterMain'>
             {
-              showSearch && <View className='inputContent'>
-                <Input
-                  className='keywords'
-                  value={keywords}
-                  focus={isFocus}
-                  placeholder='搜索小店商品'
-                  confirmType='search'
-                  onConfirm={this.handleConfirm.bind(this)}
-                  onBlur={this.handleCloseSearch.bind(this)}
-                  onInput={this.searchInput.bind(this)}
-                />
+              filterList.map(item =>
                 <View
-                  className={`at-icon at-icon-close-circle ${(keywords.length > 0) && 'show'}`}
-                  onClick={this.handleClear.bind(this)}
-                ></View>
-              </View>
+                  className={`filterItem ${curFilterIdx === item.type && 'active'}`}
+                  key={item.type}
+                  onClick={this.handleFilterChange.bind(this, item)}
+                >
+                  { item.title }
+                  {
+                    (item.type === 2 && item.title === '价格') &&
+                    <View className={`sort ${sort ? 'down' : 'up'}`}></View>
+                  }
+                </View>
+              )
             }
+
+            <View
+              className={`searchContent ${showSearch && 'unfold'}`}
+              onClick={this.handleShowSearch.bind(this)}
+            >
+              <View
+                className='iconfont icon-search'
+              >
+                <Text className='txt'>{ params.keywords }</Text>
+              </View>
+              {
+                showSearch && <View className='inputContent'>
+                  <Input
+                    className='keywords'
+                    value={keywords}
+                    focus={isFocus}
+                    placeholder='搜索小店商品'
+                    confirmType='search'
+                    onConfirm={this.handleConfirm.bind(this)}
+                    onBlur={this.handleCloseSearch.bind(this)}
+                    onInput={this.searchInput.bind(this)}
+                  />
+                  <View
+                    className={`at-icon at-icon-close-circle ${(keywords.length > 0) && 'show'}`}
+                    onClick={this.handleClear.bind(this)}
+                  ></View>
+                </View>
+              }
+            </View>
           </View>
         </View> 
         <View className='main'>

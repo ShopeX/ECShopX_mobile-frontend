@@ -275,39 +275,41 @@ handleClickCategoryNav = (idx,value) => {
               contentList.length && contentList.map(item =>{
                 const isRelease = goodIds.findIndex(n => item.goods_id == n) !== -1
                 return (
-                  <View key={item.goods_id} className='goodItem'>
-                    <Image className='itemImg'
-                      mode='aspectFix'
-                      src={item.img}
-                    />
-                    <View className='itemTitle'>
-                      { item.title }
+                  <View key={item.goods_id} className='goodItem category'>
+                    <View className='left'>
+                      <Image className='itemImg'
+                        mode='aspectFix'
+                        src={item.img}
+                      />
                     </View>
-                    <View className='itemPrice'><Text className='cur'>¥</Text>{item.price}</View>    
-                    <View className='itemextra'>
-                      <View className='itemStatus'>
-                        {
-                          status === 'true' &&
-                            <View className={classNames('goods-item__release-btn', isRelease ? 'released' : null)} onClick={this.handleClickItem.bind(this, item.item_id)}>
-                              {
-                                isRelease
-                                  ? <Text>从小店下架</Text>
-                                  : <Text>上架到小店</Text>
-                              }
-                            </View>
-                        }
+                    <View className='right'>
+                      <View className='goodName'>
+                        { item.title }
                       </View>
-                      <View className='itemActions'>
-                        <Button
-                          className='itemShareBtn'
-                          dataInfo={item}
-                          openType='share'
-                          size='small'
-                        >
-                          <Text class='iconfont icon-share2'></Text>
-                        </Button>
-                      </View>
-                  </View>                                
+                      <View className='goodPrice'><Text className='symbol'>¥</Text>{item.price}</View>    
+                      <View className='itemextra'>
+                        <View className='itemStatus'>
+                            {
+                              status === 'true' &&
+                                <View className={classNames('goods-item__release-btn', isRelease ? 'released' : null)} onClick={this.handleClickItem.bind(this, item.item_id)}>
+                                  {
+                                    isRelease
+                                      ? <Text>从小店下架</Text>
+                                      : <Text>上架到小店</Text>
+                                  }
+                                </View>
+                            }
+                          </View>
+                          <Button
+                            className='itemShareBtn'
+                            dataInfo={item}
+                            openType='share'
+                            size='small'
+                          >
+                            <Text class='iconfont icon-share2'></Text>
+                          </Button>
+                      </View>    
+                    </View>                            
                   </View>
                 )
               })
