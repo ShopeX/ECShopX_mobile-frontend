@@ -6,7 +6,7 @@ import S from '@/spx'
 import api from '@/api'
 import throttle from 'lodash/throttle'
 import { withPager } from '@/hocs'
-import { getCurrentRoute, pickBy } from '@/utils'
+import { getCurrentRoute, pickBy, entry } from '@/utils'
 import CustomHeader from './comps/header'
 
 import './shop-home.scss'
@@ -80,7 +80,7 @@ export default class DistributionShopHome extends Component {
     return {
       title: title,
       imageUrl: shopInfo.shop_pic,
-      path: `/marketing/pages/distribution/shop-home?featuredshop=${userId}`
+      path: `/marketing/pages/distribution/shop-home?uid=${userId}`
     }
   }
 
@@ -153,6 +153,8 @@ export default class DistributionShopHome extends Component {
     const { tabList } = this.state
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
+    // 执行全局绑定
+    entry.entryLaunch(options)
     const param = {
       user_id: distributionShopId || userId
     }
