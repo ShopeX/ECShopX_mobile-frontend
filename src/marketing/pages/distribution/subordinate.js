@@ -43,7 +43,7 @@ export default class DistributionSubordinate extends Component {
     const nList = pickBy(list, {
       relationship_depth: 'relationship_depth',
       headimgurl: 'headimgurl',
-      username: 'username',
+      username: ({ username, nickname }) => nickname || username,
       is_open_promoter_grade: 'is_open_promoter_grade',
       promoter_grade_name: 'promoter_grade_name',
       mobile: 'mobile',

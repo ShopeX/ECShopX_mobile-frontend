@@ -1,8 +1,8 @@
 @import "../../../style/imports";
 
-$banner-height: 580px !default;
+$banner-height: 570px !default;
 
-$height-percent: 80%;
+$height-percent: 82%;
 
 .page-distribution-shop {
   width: 100%;
@@ -11,6 +11,7 @@ $height-percent: 80%;
   padding-top: $navigate-height-h5;
   /*  #endif  */
   .shop-banner {
+    width: 100%;
     position: relative;
     height: $banner-height;
     background: #fff;
@@ -121,124 +122,129 @@ $height-percent: 80%;
     }
   }
   .filter {
-    box-sizing: border-box;
-    padding: 6px 240px 10px 30px;
-    display: flex;
+    width: 100%;
     position: sticky;
     top: 0;
     z-index: 9;
-    align-items: flex-end;
-    justify-content: space-around;
     background: #fff;
     border-bottom: 4px solid #efefee;
-    .filterItem {
-      padding: 5px 10px;
-      display: flex;
-      align-items: center;
+    .filterMain {
+      width: 100%;
       position: relative;
-      transition: color 0.3s;
-      border: 10px solid transparent;
-      font-size: 30px;
-      color: #666;
-      // &::after {
-      //   width: 0px;
-      //   content: '';
-      //   position: absolute;
-      //   left: 50%;
-      //   bottom: 0;
-      //   transform: translateX(-50%);
-      //   transition: width 0.3s;
-      //   border-bottom: 4px solid #fff;
-      // }
-      .sort {
+      display: flex;
+      box-sizing: border-box;
+      padding: 6px 240px 10px 30px;
+      align-items: flex-end;
+      justify-content: space-around;
+      .filterItem {
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
         position: relative;
-        margin-left: 10px;
-        &::before, &::after {
-          @include arrow(5px);
-          position: absolute;
-          transition: border 0.5s;
-        }
-        &::before {
-          // up
-          transform: translateY(-100%) rotate(-135deg);
-        }
-        &::after {
-          // down
-          transform: translateY(20%) rotate(45deg);
-        }
-      }
-      &.active {
-        color: #d92128;
+        transition: color 0.3s;
+        border: 10px solid transparent;
+        font-size: 30px;
+        color: #666;
         // &::after {
-        //   width: 100%;
-        //   border-color: #d9011b !important;
+        //   width: 0px;
+        //   content: '';
+        //   position: absolute;
+        //   left: 50%;
+        //   bottom: 0;
+        //   transform: translateX(-50%);
+        //   transition: width 0.3s;
+        //   border-bottom: 4px solid #fff;
         // }
         .sort {
-          border-color: #d92128;
-          &.up:before {
-            border-color: initial;
+          position: relative;
+          margin-left: 10px;
+          &::before, &::after {
+            @include arrow(5px);
+            position: absolute;
+            transition: border 0.5s;
           }
-          &.down:after {
-            border-color: initial;
+          &::before {
+            // up
+            transform: translateY(-100%) rotate(-135deg);
+          }
+          &::after {
+            // down
+            transform: translateY(20%) rotate(45deg);
+          }
+        }
+        &.active {
+          color: #d92128;
+          // &::after {
+          //   width: 100%;
+          //   border-color: #d9011b !important;
+          // }
+          .sort {
+            border-color: #d92128;
+            &.up:before {
+              border-color: initial;
+            }
+            &.down:after {
+              border-color: initial;
+            }
           }
         }
       }
-    }
-    .searchContent {
-      width: 210px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 30px;
-      border: 2px solid #ddd;
-      background: #fff;
-      height: 60px;
-      transition: all 0.3s;
-      position: absolute;
-      top: 50%;
-      right: 30px;
-      transform: translateY(-50%);
-      .icon-search {
-        font-size: 40px;
-        padding: 15px 10px;
-        color: #999;
+      .searchContent {
+        width: 210px;
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
-        .txt {
-          font-size: 24px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-      }
-      .inputContent {
-        width: calc(100% - 60px);
-        height: 100%;
-        display: flex;
+        border-radius: 30px;
+        border: 2px solid #ddd;
+        background: #fff;
+        height: 60px;
+        transition: all 0.3s;
         position: absolute;
-        left: 55px;
-        flex: 1;
-        align-items: center;
-        .keywords {
-          flex: 1;
-        }
-        .at-icon-close-circle {
+        top: 50%;
+        right: 30px;
+        transform: translateY(-50%);
+        .icon-search {
+          font-size: 40px;
+          padding: 15px 10px;
           color: #999;
-          display: none;
-          border: 10px solid transparent;
-          &.show {
-            display: block;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          .txt {
+            font-size: 24px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
-      }
-      &.unfold {
-        width: calc(100% - 60px);
-        justify-content: flex-start;
-        z-index: 9;
-        .txt {
-          display: none;
+        .inputContent {
+          width: calc(100% - 60px);
+          height: 100%;
+          display: flex;
+          position: absolute;
+          left: 55px;
+          flex: 1;
+          align-items: center;
+          .keywords {
+            flex: 1;
+          }
+          .at-icon-close-circle {
+            color: #999;
+            display: none;
+            border: 10px solid transparent;
+            &.show {
+              display: block;
+            }
+          }
+        }
+        &.unfold {
+          width: calc(100% - 60px);
+          justify-content: flex-start;
+          z-index: 9;
+          .txt {
+            display: none;
+          }
         }
       }
     }
