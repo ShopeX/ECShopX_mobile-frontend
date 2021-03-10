@@ -33,7 +33,7 @@ export default class DistributionQrcode extends Component {
     let { isOpenShop, status } = this.$router.params
     isOpenShop = JSON.parse(isOpenShop)
     status = JSON.parse(status)
-    const url = isOpenShop && status ? `marketing/pages/distribution/shop-home?uid=${userId}` : `pages/index?uid=${userId}`
+    const url = isOpenShop && status ? `marketing/pages/distribution/shop-home` : `pages/index?uid=${userId}`
     const res = await api.distribution.qrcode({path: url})
     const { qrcode } = res
 
