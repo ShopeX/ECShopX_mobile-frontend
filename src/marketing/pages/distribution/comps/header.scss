@@ -1,0 +1,39 @@
+.customHeader {
+  height: 40PX;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  z-index: 993;
+  transition: background 0.5s;
+  .menu {
+    margin-left: 20PX;
+    width: 36PX;
+    height: 36PX;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    color: #fff;
+    background: rgba(9, 9, 9, .3);
+    overflow: hidden;
+    position: relative;
+    &.roate {
+      transform: rotate(-90deg);
+    }
+    .icon {
+      font-size: 38px;
+      &::after {
+        width: 36PX;
+        height: 36PX;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+}

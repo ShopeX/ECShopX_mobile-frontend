@@ -108,19 +108,25 @@ export default class GoodsItem extends Component {
             }            
             <View className='goods-item__caption'>
               {
-                promotion_activity !== null
-                ? <View className='goods-item__tag-list'>
-                    <Text className={(promotion_activity === 'single_group' || promotion_activity === 'limited_time_sale' || promotion_activity === 'normal') ? 'goods-item__tag goods-item__group' : 'goods-item__tag'}>
-                    {promotion_activity === 'single_group' ? '团购' : ''}
-                    {promotion_activity === 'full_minus' ? '满减' : ''}
-                    {promotion_activity === 'full_discount' ? '满折' : ''}
-                    {promotion_activity === 'full_gift' ? '满赠' : ''}
-                    {promotion_activity === 'normal' ? '秒杀' : ''}
-                    {promotion_activity === 'limited_time_sale' ? '限时特惠' : ''}
-                    {promotion_activity === 'plus_price_buy' ? '换购' : ''}
-                    </Text>
-                  </View>
-                : null
+                info.promotion_activity_tag && <View className='goods-item__tag-list'>
+                  {
+                    info.promotion_activity_tag.map(item =>
+                      <Text
+                        key={item.promotion_id}
+                        className={`tagitem ${(item.tag_type === 'single_group' || item.tag_type === 'limited_time_sale' || item.tag_type === 'normal') ? 'goods-item__tag goods-item__group' : 'goods-item__tag'} ${item.tag_type === 'member_preference' && 'member_preference'}`}
+                      >
+                        {item.tag_type === 'single_group' ? '团购' : ''}
+                        {item.tag_type === 'full_minus' ? '满减' : ''}
+                        {item.tag_type === 'full_discount' ? '满折' : ''}
+                        {item.tag_type === 'full_gift' ? '满赠' : ''}
+                        {item.tag_type === 'normal' ? '秒杀' : ''}
+                        {item.tag_type === 'limited_time_sale' ? '限时特惠' : ''}
+                        {item.tag_type === 'plus_price_buy' ? '换购' : ''}
+                        {item.tag_type === 'member_preference' ? '会员限购' : ''}
+                      </Text>
+                    )
+                  }
+                </View>
               }
               <View onClick={onClick}>
                 <Text className='goods-item__title'>{info.title}</Text>

@@ -5,8 +5,8 @@
  * @Description: 首页
  * @FilePath: /unite-vshop/src/pages/index.js
  * @Date: 2021-01-06 15:46:54
- * @LastEditors: Arvin
- * @LastEditTime: 2021-01-28 14:36:15
+ * @LastEditors: PrendsMoi
+ * @LastEditTime: 2021-03-05 11:10:41
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
@@ -56,7 +56,7 @@ export default class Home extends Component {
       positionStatus: false,
       automatic: null,
       showAuto: true,
-      top: 0,
+      // top: 0,
       isShop: null,
       salesperson_id: '',
       // 店铺精选id
@@ -138,12 +138,12 @@ export default class Home extends Component {
   }
 
   // 页面滚动
-  onPageScroll = (res) => {
-    const { scrollTop } = res
-    this.setState({
-      top: scrollTop
-    })
-  }
+  // onPageScroll = (res) => {
+  //   const { scrollTop } = res
+  //   this.setState({
+  //     top: scrollTop
+  //   })
+  // }
 
   // 触底事件
   onReachBottom = () => {

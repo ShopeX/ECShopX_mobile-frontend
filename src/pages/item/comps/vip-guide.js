@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/pages/item/comps/vip-guide.js
  * @Date: 2020-11-19 14:22:17
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-03-04 15:41:59
+ * @LastEditTime: 2021-03-05 13:54:30
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
@@ -55,21 +55,21 @@ export default class VipGuide extends Component {
     }
 
     return (
-      <View className="vip-guide">
-        <View className="vip-guide-content">
-          <View className="vip-price">
+      <View className='vip-guide'>
+        <View className='vip-guide-content'>
+          <View className='vip-price'>
             {
               info.gradeDiscount &&
-                <View className="vip-tag">
+                <View className='vip-tag'>
                   {info.vipgrade_desc}
                 </View>
             }
             {
               (info.memberPrice || info.gradeDiscount) &&
-                <View className="vip-price-amount">
+                <View className='vip-price-amount'>
                   {
                     info.memberPrice &&
-                      <View className="vip-price-amount"><Text className="cur">¥ </Text>{price}</View>
+                      <View className='vip-price-amount'><Text className='cur'>¥ </Text>{price}</View>
                   }
                   {
                     info.gradeDiscount &&
@@ -78,9 +78,9 @@ export default class VipGuide extends Component {
                 </View>
             }
           </View>
-          <View className="vip-guide-text">{info.guide_title_desc}</View>
+          <View className='vip-guide-text'>{info.guide_title_desc}</View>
         </View>
-        <View className="vip-apply" onClick={this.handleClick.bind(this)}>立即加入</View>
+        <View className='vip-apply' onClick={this.handleClick.bind(this)}>立即加入</View>
       </View>
     )
   }

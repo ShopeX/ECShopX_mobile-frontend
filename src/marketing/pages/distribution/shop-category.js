@@ -59,7 +59,7 @@ export default class DistributionShopCategory extends Component {
     }
 
     if (options.featuredshop || options.uid) {
-      query.shop_user_id = options.featuredshop
+      query.shop_user_id = options.featuredshop || options.uid
     }
 
     const { list } = await api.distribution.getShopCategorylevel(query)
@@ -98,7 +98,7 @@ export default class DistributionShopCategory extends Component {
     }
 
     if (options.featuredshop || options.uid) {
-      query.shop_user_id = options.featuredshop
+      query.shop_user_id = options.featuredshop || options.uid
     }
     
     const { list: goodsList, total_count: total} = await api.distribution.getShopGoods(query)
@@ -167,12 +167,20 @@ export default class DistributionShopCategory extends Component {
 
 
   handleClickItem = (item) => {
-    console.warn(item)
+    const options = this.$router.params
+    const { userId } = Taro.getStorageSync('userinfo')
+    const distributionShopId = Taro.getStorageSync('distribution_shop_id')
+    let id = distributionShopId || userId
+
+    if (options.featuredshop || options.uid) {
+      id = options.featuredshop || options.uid
+    }
+
     const { goods_id, distributor_id} = item
     let url = ''
     if (item.isOutSale) return false
     if (goods_id) {
-      url = `/pages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}`
+      url = `/pages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}&uid=${id}`
     }
     if (url) {
       Taro.navigateTo({
@@ -182,6 +190,7 @@ export default class DistributionShopCategory extends Component {
   }
   render () {
     const { list, hasSeries, tabList, localCurrent, contentList, currentIndex, page, scrollTop } = this.state
+    const isHaveLeft = list.length > 0
     return (
       <View className='page-category-index'>
         <NavBar
@@ -191,26 +200,28 @@ export default class DistributionShopCategory extends Component {
         />
         <View className={`${hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'}`}>
           <View className='category-list'>
-            <ScrollView
-              className='category-list__nav'
-              scrollY
-            >
-              <View className='category-nav'>
-                {
-                  list.map((item, index) =>
-                    <View
-                      className={classNames('category-nav__content', currentIndex == index ? 'category-nav__content-checked' : null)}
-                      key={`${item.name}${index}`}
-                      onClick={this.handleClickCategoryNav.bind(this,index,item)}
-                    >
-                      { item.hot && <Text className='hot-tag'></Text> }{item.name}
-                    </View>
-                  )
-                }
-              </View>
-            </ScrollView>
+            {
+              isHaveLeft > 0 && <ScrollView
+                className='category-list__nav'
+                scrollY
+              >
+                <View className='category-nav'>
+                  {
+                    list.map((item, index) =>
+                      <View
+                        className={classNames('category-nav__content', currentIndex == index ? 'category-nav__content-checked' : null)}
+                        key={`${item.name}${index}`}
+                        onClick={this.handleClickCategoryNav.bind(this,index,item)}
+                      >
+                        { item.hot && <Text className='hot-tag'></Text> }{item.name}
+                      </View>
+                    )
+                  }
+                </View>
+              </ScrollView>
+            }
             {/*右*/}
-            <View className='shop-category__wrap'>
+            <View className={`shop-category__wrap ${!isHaveLeft && 'all'}`}>
               <ScrollView
                 className='category-list__scroll'
                 scrollY

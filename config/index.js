@@ -149,6 +149,10 @@ const config = {
       commonChunks.push("date-fns");
       return commonChunks;
     },
+    // 图片转换base64
+    imageUrlLoaderOption: {
+      limit: 0
+    },
     postcss: {
       autoprefixer: {
         enable: true,
