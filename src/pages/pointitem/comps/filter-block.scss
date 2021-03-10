@@ -15,13 +15,6 @@
     }
 
     .ellipsis2{
-        overflow: hidden;
-        display: -webkit-box;
-        text-overflow: ellipsis;
-        word-wrap: break-word; 
-        -webkit-line-clamp: 2;
-        /* autoprefixer: ignore next */ 
-        -webkit-box-orient: vertical;
-        white-space: normal !important; 
+        @include multi-ellipsis(2);
     }
 }

@@ -11,14 +11,17 @@ import Header from './comps/header'
 import Tabs from './comps/tabs'
 import GoodsItem from './comps/goods_item'
 import FilterBlock from './comps/filter-block'
+import throttle from 'lodash/throttle'
 import CustomHeader from './comps/headerContainer'
 import S from '@/spx'
 import './list.scss'
 
 @connect(({
-  member
+  member,
+  colors
 }) => ({
-  favs: member.favs
+  favs: member.favs,
+  colors: colors.current
 }))
 @withPager
 @withBackToTop
@@ -67,7 +70,11 @@ export default class List extends Component {
       },
       paddindTop: 0,
       // 是否首页
-      isHome: false
+      isHome: false,
+      filterDom: null,
+      filterActive: false,
+      inputValue:'',
+      sortOrder: null,
     }
   }
 
@@ -359,6 +366,27 @@ export default class List extends Component {
     })
   }
 
+  handleClickItemF(idx) {
+    const item = this.state.filterList[idx] || {}
+
+    let sortOrder = null
+
+    if (item.sort) {
+        sortOrder = idx === this.state.curFilterIdx ? this.state.sortOrder * -1 : item.sort
+    }
+
+    this.setState({
+        curFilterIdx: idx,
+        sortOrder
+    })
+
+    this.handleFilterChange({
+        current: idx,
+        sort: sortOrder
+    })
+}
+
+
   handleClickItem = (item) => {
     if (item.store === 0) {
       return;
@@ -503,7 +531,37 @@ export default class List extends Component {
   // 触底事件
   onReachBottom = () => {
     this.nextPage()
-  }    
+  }
+
+  cartNode = node => this.filterRef = node
+
+  handleFocus = () => {
+    this.activeRef = true;
+    this.setState({
+      filterActive: true
+    })
+  }
+
+  handleBlur = () => {
+    this.activeRef = false;
+    this.setState({
+      filterActive: false,
+      inputValue: ''
+    })
+  }
+
+  handleInputChange=()=>{
+    let value;
+    if (this.activeRef) {
+        value = e;
+    } else {
+        value = "";
+    }
+    this.setState({
+        inputValue: value
+    })
+  } 
+  
 
   render() {
     const {
@@ -532,12 +590,20 @@ export default class List extends Component {
       homeIconInfo,
       statusBarHeight,
       paddindTop,
-      isHome
+      isHome,
+      filterActive,
+      inputValue,
+      sortOrder
     } = this.state
+    const isHidden=!brandVisible && !categoryVisible && !pointVisible;
+
+    const {
+      colors
+    } =this.props;
     const { isTabBar = '' } = this.$router.params
     const noData = !page.isLoading && !page.hasNext && !list.length;
 
-    console.log('-----homeIconInfo----', homeIconInfo)
+    console.log('-----sortOrder----', sortOrder)
     // console.log('-----useInfo----', useInfo)
     // console.log('-----filterConfig----', this.state.filterConfig)
     return (
@@ -565,17 +631,56 @@ export default class List extends Component {
           }}/>
         }  */}
 
-        <Tabs
-          className='goods-list__tabs'
+        {/* <Tabs
+          className='goods-list__tabs filter'
           custom
           current={curFilterIdx}
           list={filterList}
           onChange={this.handleFilterChange}
           onInputConfirm={this.handleInputConfirm}
-          onOpenFilter={this.handleOpenFilter}
+          onOpenFilter={this.handleOpenFilter}  
+          ref={this.cartNode}
         >
-        </Tabs>
 
+        
+        </Tabs> */}
+
+        <View className={classNames('filter-bar', { 'active': filterActive }, `goods-list__tabs filter`)} id="filter" style={`padding-top: ${paddindTop}px; transition: padding ${paddindTop > 20 ? paddindTop * 3.5 : 300 }ms linear;`}>
+          {/* <Icon className='iconfont search-icon' type='search' size='14' color='#999999'></Icon> */}
+          <View class="text">
+            { 
+              filterList.map((item, idx) => {
+                const isCurrent = curFilterIdx === idx
+
+                return (
+                  <View
+                    className={classNames('filter-bar__item', isCurrent && 'filter-bar__item-active', item.key && `filter-bar__item-${item.key}`, item.sort ? `filter-bar__item-sort filter-bar__item-sort-${sortOrder > 0 ? 'asc' : 'desc'}` : null)}
+                    style={isCurrent ? 'color: #d42f29' : 'color: #666'}
+                    onClick={this.handleClickItemF.bind(this, idx)}
+                    key={item.title}
+                  >
+                    <Text className='filter-bar__item-text'>{item.title}</Text>
+                    {/* <View className='active-bar' style={'background: ' + colors.data[0].primary}></View> */}
+                  </View>
+                )
+              })
+            }
+          </View>
+          <View class='action' >
+            {!isHidden && <View class="filter" onClick={this.handleOpenFilter}><View class="textFilter">筛选</View><View className={"iconfont icon-filter"}></View></View>}
+            <View class="searchInput">
+
+            </View>
+
+          </View>
+          <View className="searchInput searchInput-P">
+
+            <AtInput value={inputValue} onFocus={this.handleFocus} onBlur={this.handleBlur} onConfirm={this.handleInputConfirm} onChange={this.handleInputChange} />
+
+            {!filterActive && <Icon className='iconfont search-icon' type='search' size='14' color='#999999'></Icon>}
+          </View>
+          {this.props.children}
+        </View>
 
         <View className='main'>
           {
@@ -599,7 +704,7 @@ export default class List extends Component {
           }
           {
             page.isLoading
-              ? <Loading>正在加载...</Loading>
+              ? <Loading  className='loadingContent'>正在加载...</Loading>
               : null
           }
           {

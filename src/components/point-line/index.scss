@@ -25,4 +25,20 @@
     display: inline-block;
     vertical-align: baseline;
   }
+
+  &.isGoodCard{
+    .number {
+      color: $color-point-color; 
+      font-size: 36px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+    }
+  
+    .text {
+      font-size: 24px;
+      margin-left: 5px;
+      display: inline-block;
+      vertical-align: baseline;
+    }
+  }
 }

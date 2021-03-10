@@ -38,6 +38,7 @@ export default class GoodsItem extends Component{
                 <View class="goods_item_score">
                     <PointLine 
                         point={info.point} 
+                        isGoodCard
                     /> 
                 </View>
 

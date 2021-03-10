@@ -11,11 +11,13 @@ export default class HomeCapsule extends Component {
     } 
 
     render() {
-        const { className,point,plus } = this.props
+        const { className,point,plus,isGoodCard } = this.props
         const classes = classNames('point-line', className,{"plus":plus})
 
         return (
-            <View className={classes}>
+            <View className={classNames(classes,[
+                {'isGoodCard':isGoodCard}
+            ])}>
                 <View class="number">
                     {point}
                 </View>

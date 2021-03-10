@@ -43,29 +43,24 @@
     }
 
     &_name{
-        font-size: 24rpx;
+        font-size: 24px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
-        color: #222222;
-        padding: 24rpx 15rpx;
+        color: #222222; 
+        @include multi-ellipsis(2);
+        min-height:66px;
+        max-height: 66px;
+        padding-left:15px;
+        padding-right:15px;
+        margin-top: 24px;
     }
 
     &_score{
-        padding: 4rpx 15rpx 27rpx 15rpx;
+        padding: 23px 15px 27px 15px;
         display: flex;
         justify-items: flex-end;
 
-        .number{
-            font-size: 36rpx;
-            font-family: PingFangSC-Medium, PingFang SC;
-            font-weight: 500;
-            color: #D92128;
-        }
-        .title{
-            font-size: 24rpx;
-            margin-left: 5rpx;
-            margin-top: 13rpx;
-            font-weight: 500;
-        }
+        
+        
     }
 }

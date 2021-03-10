@@ -28,8 +28,8 @@ export default class FilterBar extends Component {
         sort: {},
         current: 0,
         list: [],
-        inputRef:null,
-        activeRef:false
+        inputRef: null,
+        activeRef: false
     }
 
     constructor(props) {
@@ -39,15 +39,15 @@ export default class FilterBar extends Component {
         this.state = {
             curIdx: current,
             sortOrder: null,
-            active:false,
-            inputValue:'',
+            active: false,
+            inputValue: '',
         }
     }
 
-  
+
     handleClickItem(idx) {
-        const item = this.props.list[idx]||{}
- 
+        const item = this.props.list[idx] || {}
+
         let sortOrder = null
 
         if (item.sort) {
@@ -55,7 +55,7 @@ export default class FilterBar extends Component {
         }
 
         this.setState({
-            curIdx:idx ,
+            curIdx: idx,
             sortOrder
         })
 
@@ -65,56 +65,65 @@ export default class FilterBar extends Component {
         })
     }
 
-    handleFocus=()=>{  
-        this.activeRef=true;
+    handleFocus = () => {
+        this.activeRef = true;
         this.setState({
-            active:true
+            active: true
         })
     }
 
-    handleBlur=()=>{  
-        this.activeRef=false;
+    handleBlur = () => {
+        this.activeRef = false;
         this.setState({
-            active:false,
-            inputValue:''
+            active: false,
+            inputValue: ''
         })
     }
 
-    handleInputChange=(e)=>{  
+    handleInputChange = (e) => {
         let value;
-        if(this.activeRef){
-            value=e;
-        }else{
-            value="";
+        if (this.activeRef) {
+            value = e;
+        } else {
+            value = "";
         }
         this.setState({
-            inputValue:value
+            inputValue: value
         })
     }
 
-    handleConfirm=(value)=>{
-        const { onInputConfirm }=this.props;
-        if(onInputConfirm){
+    handleConfirm = (value) => {
+        const { onInputConfirm } = this.props;
+        if (onInputConfirm) {
             onInputConfirm(value);
         }
     }
 
-    handleOpenFilter=()=>{
-        const { onOpenFilter }=this.props;
-        if(onOpenFilter){
+    handleOpenFilter = () => {
+        const { onOpenFilter } = this.props;
+        if (onOpenFilter) {
             onOpenFilter()
         }
     }
 
+    getDomTop = (callback) => {
+        const query = Taro.createSelectorQuery().in(this);
+        console.log("-----query----getDomTop", query.select('#filter'))
+        console.log("-----query----getDomTop-boundingClientRect", query.select('#filter').boundingClientRect)
+
+        query.select('#filter').boundingClientRect((rect) => {
+            console.log("-----getDomTop----getDomTop", rect)
+            callback(rect)
+        })
+    }
+ 
+
     render() {
         const { list, className, custom, colors } = this.props
-        const { sortOrder, curIdx,active,inputValue } = this.state
-
-        console.log("---active---",active)
-        console.log("---curIdx---",curIdx)
+        const { sortOrder, curIdx, active, inputValue } = this.state 
 
         return (
-            <View className={classNames('filter-bar',{'active':active}, className)}>
+            <View className={classNames('filter-bar', { 'active': active }, className)} id="filter">
                 {/* <Icon className='iconfont search-icon' type='search' size='14' color='#999999'></Icon> */}
                 <View class="text">
                     {
@@ -137,17 +146,17 @@ export default class FilterBar extends Component {
                     }
                 </View>
                 <View class='action'>
-                    <View class="filter"  onClick={this.handleOpenFilter}><View class="textFilter">筛选</View><View className={"iconfont icon-filter"}></View></View>
-                    <View class="searchInput"> 
+                    <View class="filter" onClick={this.handleOpenFilter}><View class="textFilter">筛选</View><View className={"iconfont icon-filter"}></View></View>
+                    <View class="searchInput">
 
                     </View>
-                   
+
                 </View>
                 <View class="searchInput searchInput-P">
-                       
-                       <AtInput value={inputValue} onFocus={this.handleFocus} onBlur={this.handleBlur} onConfirm={this.handleConfirm} onChange={this.handleInputChange} />
-                      
-                       {!active && <Icon className='iconfont search-icon' type='search' size='14' color='#999999'></Icon>}
+
+                    <AtInput value={inputValue} onFocus={this.handleFocus} onBlur={this.handleBlur} onConfirm={this.handleConfirm} onChange={this.handleInputChange} />
+
+                    {!active && <Icon className='iconfont search-icon' type='search' size='14' color='#999999'></Icon>}
                 </View>
                 {this.props.children}
             </View>
