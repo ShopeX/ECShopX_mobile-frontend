@@ -276,6 +276,13 @@ export default class TradeDetail extends Component {
   async handleClickBtn (type,val) {
     const { info } = this.state
 
+    if(this.isPointitemGood()){
+      Taro.redirectTo({
+        url: "/pointitem/pages/list"
+      });
+      return ;
+    }
+
     if (type === 'home') {
       Taro.redirectTo({
         url: APP_HOME_PAGE
@@ -468,6 +475,7 @@ export default class TradeDetail extends Component {
     const { info, ziti, qrcode, timer, payLoading, scrollIntoView } = this.state
 
     console.log("----Tradedetail---",info);
+    console.log("----isPointitemGood---",this.isPointitemGood());
 
     if (!info) {
       return <Loading></Loading>

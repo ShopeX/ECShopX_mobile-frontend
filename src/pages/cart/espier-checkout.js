@@ -143,8 +143,7 @@ export default class CartCheckout extends Component {
   }
 
 
-  isPointitemGood() {
-    console.log('----------isPointitemGood-------', this.$router)
+  isPointitemGood() { 
     const options = this.$router.params;
     return options.type === 'pointitem';
   }
@@ -1235,12 +1234,13 @@ export default class CartCheckout extends Component {
 
     this.setState({
       submitLoading: false
-    });
-    console.log("---------Check--------")
+    }); 
 
     const isExtraPoint=this.isPointitemGood() && this.state.total.freight_type==="point";
+ 
     // 积分流程
     if (payType === "point" || payType === "deposit" || isExtraPoint ) {
+      debugger;
       if (!payErr) {
         Taro.showToast({
           title: "支付成功",
@@ -1254,7 +1254,7 @@ export default class CartCheckout extends Component {
         if(isExtraPoint){
           url+="&type=pointitem";
         }
-
+  
         Taro.redirectTo({
           url
         });
@@ -1292,11 +1292,18 @@ export default class CartCheckout extends Component {
       });
 
       this.props.onClearCart();
+
+      let purl=`/subpage/pages/trade/detail?id=${order_id}`;
+
+      if(this.isPointitemGood()){
+        purl+="&type=pointitem";
+      } 
+      
       Taro.redirectTo({
         url:
           type === "group"
             ? `/marketing/pages/item/group-detail?team_id=${config.team_id}`
-            : `/subpage/pages/trade/detail?id=${order_id}`
+            : purl
       });
 
       /*this.props.onClearCart()
