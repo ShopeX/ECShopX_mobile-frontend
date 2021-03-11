@@ -46,10 +46,10 @@ export default class FilterBlock extends Component{
     }
 
     handleClickItem=()=>{
-        const { type }=this.props;
+        const { type,active }=this.props;
         const id=this.getId();
         if(this.props.onClickItem){
-            this.props.onClickItem({id,type});
+            this.props.onClickItem({id,type,active});
         }
     }
 

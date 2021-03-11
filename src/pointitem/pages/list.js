@@ -437,31 +437,50 @@ export default class List extends Component {
   }
 
 
-  handleClickFilterBlock = ({ id, type, start, end }) => {
+  handleClickFilterBlock = ({ id, type, start, end,active }) => {
     const { filterParams } = this.state;
     let newFilterParams;
     if (type === 'brand') {
       if (filterParams.brand[0] === id) {
-        return;
+        newFilterParams = {
+          ...filterParams,
+          brand: [],
+        }
+      }else{
+        newFilterParams = {
+          ...filterParams,
+          brand: [id],
+        }
       }
-      newFilterParams = {
-        ...filterParams,
-        brand: [id],
-      }
+     
     } else if (type === 'category') {
       if (filterParams.category[0] === id) {
-        return;
+        newFilterParams = {
+          ...filterParams,
+          category: [],
+        }
+      }else{
+        newFilterParams = {
+          ...filterParams,
+          category: [id],
+        }
       }
-      newFilterParams = {
-        ...filterParams,
-        category: [id],
+     
+    } else if (type === 'point') { 
+      if(active){
+        newFilterParams = {
+          ...filterParams,
+          start_price: undefined,
+          end_price: undefined
+        }
+      }else{
+        newFilterParams = {
+          ...filterParams,
+          start_price: start,
+          end_price: end
+        }
       }
-    } else if (type === 'point') {
-      newFilterParams = {
-        ...filterParams,
-        start_price: start,
-        end_price: end
-      }
+      
     }
     this.setState({
       filterParams: newFilterParams
@@ -746,7 +765,7 @@ export default class List extends Component {
                 {
                   scoreInternel.map((item, index) => {
                     return (
-                      <FilterBlock info={item} type="score" active={start_price == item[0] && end_price == item[1]} onClickItem={this.handleClickFilterBlock.bind(this, { type: "point", start: item[0], end: item[1] })} />
+                      <FilterBlock info={item} type="score" active={start_price == item[0] && end_price == item[1]} onClickItem={this.handleClickFilterBlock.bind(this, { type: "point", start: item[0], end: item[1],active:start_price == item[0] && end_price == item[1]})} />
                     )
                   })
                 }
