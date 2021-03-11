@@ -192,6 +192,13 @@ export default class TradeList extends Component {
 
   handleClickItemBtn = async (trade, type) => {
     const { tid } = trade
+
+    let detailUrl=`/subpage/pages/trade/detail?id=${tid}`;
+
+    if(trade.order_class==="pointsmall"){
+      detailUrl+=`&type=pointitem`
+    }
+
     if (type === 'confirm') {
       await api.trade.confirm(tid)
       const { fullPath } = getCurrentRoute(this.$router)
@@ -228,7 +235,7 @@ export default class TradeList extends Component {
         break
       default:
         Taro.navigateTo({
-          url: `/subpage/pages/trade/detail?id=${tid}`
+          url:detailUrl
         })
     }
   }
