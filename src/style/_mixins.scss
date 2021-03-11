@@ -18,6 +18,7 @@
   -webkit-line-clamp: $line;
   /* autoprefixer: ignore next */
   -webkit-box-orient: vertical;
+  word-break: break-all;
 }
 
 @mixin arrow ($size:4px, $color: $color-border-gray) {

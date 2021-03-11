@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { connect } from "@tarojs/redux";
 import { Price } from '@/components'
-import { classNames } from '@/utils'
+import { classNames,formatPriceToHundred } from '@/utils'
 import OrderItem from '../../../../components/orderItem/order-item'
 
 import './item.scss'
@@ -33,6 +33,32 @@ export default class TradeItem extends Component {
   handleClickBtn (type) {
     const { info } = this.props
     this.props.onClickBtn && this.props.onClickBtn(type, info)
+  }
+
+  computeTotalPrice(){
+    let total;
+    const {info:{point,order_class,freight_fee,freight_type,total_fee,payment},payType}=this.props;
+    console.log("---point---",point)
+    console.log("---order_class---",order_class)
+    console.log("---freight_fee---",freight_fee)
+    console.log("---freight_type---",freight_type)
+    console.log("---total_fee---",total_fee)
+    console.log("---payment---",payment)
+    console.log("---payType---",payType)
+    if(order_class==="pointsmall"){
+      if(freight_type==="point" ||  (freight_type==="cash" && freight_fee==0)){
+        total= `合计：${point} 积分`
+      }else if(freight_type==="cash" && freight_fee!=0){
+        total= `合计：${point} 积分 + ￥${formatPriceToHundred(total_fee)}`
+      }
+    }else{
+      if(payType==="dhpoint"){
+        total= `合计：${total_fee}积分`
+      }else{
+        total= `合计：￥${formatPriceToHundred(payment)}`
+      } 
+    }
+    return <View className='trade-item__total'>{total}</View>
   }
 
   render () {
@@ -72,17 +98,15 @@ export default class TradeItem extends Component {
                 key={`${idx}1`}
                 info={item}
                 payType={payType}
+                isPointitemGood={info.order_class==="pointsmall"}
+                isShowPointTag={info.order_class==="pointsmall"}
               />
             )
           }
           {
             this.props.customRender
               ? this.props.customRender
-              : payType === 'point'
-                ? (<View className='trade-item__total'> 合计: <Price appendText='积分' noSymbol noDecimal value={info.point} /></View>)
-                : payType === 'dhpoint'
-                  ? (<View className='trade-item__total'> 合计: <Price appendText='积分' noSymbol noDecimal value={info.total_fee} /></View>)
-                  : (<View className='trade-item__total'> 合计: <Price value={info.payment} /></View>)
+              : this.computeTotalPrice()
           }
         </View>
         {customFooter && (<View className='trade-item__ft'>{this.props.renderFooter}</View>)}

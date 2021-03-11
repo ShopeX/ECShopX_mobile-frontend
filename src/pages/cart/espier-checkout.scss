@@ -14,6 +14,10 @@
     font-size: 24px;
   }
 
+  .last_price{
+    display: inline-block; 
+  }
+
   .switch-tab {
     display: flex;
     align-items: flex-end;
@@ -185,7 +189,7 @@
       position: absolute;
       bottom: 20px;
       right: 50px;
-      left: 280px;
+      left: 200px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -200,6 +204,10 @@
       .price__symbol {
         font-size: $font-size-small;
       }
+    }
+    &__plus{
+      font-size: 24px;
+      color:$color-brand-accent;
     }
     &__desc {
       margin: 0 0 10px;

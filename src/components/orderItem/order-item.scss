@@ -15,6 +15,7 @@
   &__bd {
     width: 50%;
     margin-bottom: 30px;
+    position: relative;
     // 跨境
     .nationalInfo {
       display: flex;
@@ -59,6 +60,9 @@
     font-size: $font-size-small;
   }
   &__price {
+    color: $color-primary-text;
+  }
+  &__point {
     color: $color-primary-text;
   }
   &__num {

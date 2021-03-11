@@ -143,6 +143,22 @@
       font-size: 24px;
     }
   }
+
+  .goods_point{
+    display: flex;
+
+    .number{
+      font-size: 34rpx;
+      font-weight: 600;
+      color: #d42f29;
+    }
+    .text{
+      font-size: 26rpx;
+      line-height: 2;
+      margin-top: 4rpx;
+      margin-left: 4rpx;
+    }
+  }
   
   .goods-timer {
     display: flex;

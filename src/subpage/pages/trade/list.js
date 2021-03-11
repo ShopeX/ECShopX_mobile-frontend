@@ -109,6 +109,9 @@ export default class TradeList extends Component {
       total_fee: 'total_fee',
       pay_type: 'pay_type',
       point: 'point',
+      order_class:'order_class',
+      freight_fee:'freight_fee',
+      freight_type:'freight_type', 
       type: 'type',
       is_rate: 'is_rate',
       create_date: 'create_date',
@@ -172,15 +175,30 @@ export default class TradeList extends Component {
   }
 
   handleClickItem = (trade) => {
-    const { tid } = trade
+    const { tid } = trade;
+
+    console.log("----handleClickItem----",trade)
+
+    let url=`/subpage/pages/trade/detail?id=${tid}`;
+
+    if(trade.order_class==="pointsmall"){
+      url+=`&type=pointitem`
+    }
 
     Taro.navigateTo({
-      url: `/subpage/pages/trade/detail?id=${tid}`
+      url
     })
   }
 
   handleClickItemBtn = async (trade, type) => {
     const { tid } = trade
+
+    let detailUrl=`/subpage/pages/trade/detail?id=${tid}`;
+
+    if(trade.order_class==="pointsmall"){
+      detailUrl+=`&type=pointitem`
+    }
+
     if (type === 'confirm') {
       await api.trade.confirm(tid)
       const { fullPath } = getCurrentRoute(this.$router)
@@ -217,7 +235,7 @@ export default class TradeList extends Component {
         break
       default:
         Taro.navigateTo({
-          url: `/subpage/pages/trade/detail?id=${tid}`
+          url:detailUrl
         })
     }
   }

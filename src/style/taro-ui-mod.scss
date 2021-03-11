@@ -4,9 +4,11 @@
   &__overlay {
     background-color: rgba(#000, 0.8);
   }
+
   &__container {
     width: 86%;
   }
+
   &__header {
     &:after {
       border: none !important;
@@ -17,6 +19,7 @@
 .at-form {
   padding-left: 0;
   background-color: transparent;
+
   &:after {
     border: none !important;
   }
@@ -25,19 +28,72 @@
 .at-input {
   padding: 16px 0;
   margin: 0 0 $edge-size;
+
   &__title {
     font-size: $font-size;
   }
+
   &:after {
     border-color: rgba($color-brand-primary, 0.5);
   }
+
   input {
     font-size: $font-size;
   }
 }
 
+.isHidden{
+
+  &.searchInput {
+    .at-input {
+      width:300px;
+    }
+  }
+
+}
+.searchInput {
+  .at-input {
+
+    width: 140rpx ;
+    height: 60rpx !important;
+    background: #FFFFFF !important;
+    border-radius: 30rpx !important;
+    border: 1px solid #DDDDDD !important;
+    margin: 0 !important;
+    padding:0;
+    padding-left: 15rpx;
+
+    &__container{
+      height:100%;
+    }
+
+    &::after {
+      border-color: transparent !important;
+    }
+
+  }
+}
+
+.active{
+  .search-icon{
+    display: none;
+  }
+  .at-input{
+    width: 716rpx!important;
+   
+  }
+}
+
+.searchInput-P{
+  .at-input{
+    transition: width 0.3s; 
+  }
+ 
+}
+
 .at-button {
   margin: 0;
+
   &--primary {
     font-size: $font-size;
     background: $color-brand-primary;
@@ -48,6 +104,7 @@
   &__title {
     font-size: $font-size-large;
   }
+
   &__item--active {
     color: $color-brand-primary;
   }
@@ -56,6 +113,7 @@
 .at-tab-bar {
   padding: 0;
   align-items: center;
+
   &__item {
     padding: 0 12px;
     line-height: 1;
@@ -67,12 +125,14 @@
   color: $color-primary-text;
   margin-left: 0;
 }
+
 .at-search-bar::after {
   border: 0;
 }
 
 .taro__toast {
   font-size: $font-size !important;
+
   p {
     font-size: $font-size !important;
   }
@@ -83,9 +143,11 @@
 .at-tab-bar {
   box-shadow: -20px 5px 15px rgba(#000, .1);
   height: $tabbar-height;
+
   [class^="icon-"] {
     font-size: $at-tab-bar-icon-font-size;
   }
+
   &__title {
     margin-top: -4px;
   }
@@ -100,16 +162,19 @@
   top: $navigate-height;
   width: 100%;
   z-index: $z-index-toolbar;
-  &__header {
-  }
+
+  &__header {}
+
   .at-tabs__body {
     height: 0;
   }
+
   .at-tabs__item {
     height: $tabs-height;
     line-height: $tabs-height;
     padding: 0;
   }
+
   .at-tabs__item-underline {
     height: 2PX;
     width: 20%;
@@ -120,16 +185,19 @@
 .search-input__bar.at-search-bar {
   padding: 0 35px 0 30px !important;
   height: 65px;
+
   .at-search-bar__input-cnt {
     border-radius: 0;
     height: 65px;
     line-height: 65px;
     background-color: #eff0f0;
   }
+
   .at-search-bar__placeholder-wrap {
     justify-content: flex-start;
     padding-left: 23px;
   }
+
   .at-search-bar__placeholder-wrap .at-icon {
     font-size: 17PX;
   }
@@ -141,19 +209,23 @@
   height: 54px;
   z-index: 99;
   background: transparent !important;
+
   .at-search-bar__input-cnt {
     height: 54px;
     line-height: 54px;
   }
+
   .at-search-bar__placeholder-wrap {
     justify-content: flex-start;
     align-items: center;
     padding-left: 23px;
     height: 54px;
   }
+
   .at-search-bar__placeholder-wrap .at-icon {
     font-size: 17PX;
   }
+
   .at-search-bar__input {
     height: 54px;
     padding: 0 30PX;
@@ -166,14 +238,17 @@
     color: #fff;
     background: #c1c1c1;
   }
+
   &--small {
     height: 42px;
     line-height: 38px;
     padding: 0 22px;
     font-size: 22px;
+
     .at-button__text {
       font-size: 22px;
     }
+
     &.at-button--circle {
       border-radius: 8px;
     }

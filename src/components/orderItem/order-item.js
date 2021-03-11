@@ -8,7 +8,7 @@
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { Price, SpImg } from '@/components'
+import { Price, SpImg,PointTag } from '@/components'
 
 import './order-item.scss'
 
@@ -18,7 +18,9 @@ export default class OrderItem extends Component {
     payType: '',
     showExtra: true,
     info: null,
-    isShowNational: false
+    isShowNational: false,
+    isPointitemGood:false,
+    isShowPointTag:false
   }
 
   static options = {
@@ -26,7 +28,7 @@ export default class OrderItem extends Component {
   }
 
   render () {
-    const { info, onClick, payType, showExtra,showDesc, customFooter, isShowNational } = this.props
+    const { info, onClick, isShowPointTag, showExtra,showDesc, customFooter, isShowNational,isPointitemGood } = this.props
     if (!info) return null
     
     const img = info.pic_path
@@ -58,7 +60,10 @@ export default class OrderItem extends Component {
                   { info.origincountry_name }
                 </Text>
             </View>
-          }            
+          }          
+          {
+            isShowPointTag && <PointTag />
+          }  
           <View className='order-item__title'>
             {
               info.order_item_type === 'plus_buy' && (
@@ -85,7 +90,10 @@ export default class OrderItem extends Component {
                 ? <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={info.point}></Price>
                 : <Price className='order-item__price' value={info.price}></Price>
               } */}
-              <Price className='order-item__price' value={info.price}></Price>
+              {
+                isPointitemGood?<Price className='order-item__price' appendText='积分' noSymbol noDecimal value={info.item_point||info.point}></Price>:<Price className='order-item__price' value={info.price}></Price>
+              }
+              
               
               {/* {payType=='hfpay'&&<Text className='order-item__pay-type'>汇付支付</Text>}
               {payType!='hfpay'&&<Text className='order-item__pay-type'>{payType === 'dhpoint' ? '积分支付' : '微信支付'}</Text>} */}

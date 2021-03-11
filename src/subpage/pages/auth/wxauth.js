@@ -77,6 +77,7 @@ export default class WxAuth extends Component {
       if(info.is_bind === '1'){
         return this.redirect()
       }
+      console.log("------a-----")
       // 绑定导购
       await api.member.setUsersalespersonrel({
         salesperson_id

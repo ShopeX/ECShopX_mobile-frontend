@@ -15,6 +15,15 @@
   button {
     border: none;
   }
+  .icon-home{
+    font-size: 55rpx;
+    margin: 0 0 8rpx;
+  }
+  &.goods-isPointitem{
+    .goods-buy-toolbar__btn{
+      width:500rpx!important;
+    }
+  }
   &__menus {
     flex: 1;
     display: flex;

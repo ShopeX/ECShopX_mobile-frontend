@@ -5,8 +5,8 @@
  * @Description: 说明
  * @FilePath: /unite-vshop/src/api/index.js
  * @Date: 2020-09-24 16:08:41
- * @LastEditors: Arvin
- * @LastEditTime: 2020-10-21 10:29:54
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-02-25 14:41:21
  */
 import * as article from './article'
 import * as aftersales from './aftersales'
@@ -29,6 +29,7 @@ import * as groupBy from './groupBy'
 import * as boost from './boost'
 import * as wx from './wx'
 import * as wheel from './wheel'
+import * as pointitem from './pointitem'
 
 
 export default {
@@ -52,5 +53,6 @@ export default {
   group,
   groupBy,
   wheel,
-  boost
+  boost,
+  pointitem
 }

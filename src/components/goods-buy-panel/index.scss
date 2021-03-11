@@ -9,6 +9,18 @@
   width: 100%;
   height: 100%;
   transform: translate3D(0, 110%, 0);
+  .goods-point{
+    display: flex;
+    .number{
+      font-size: 35rpx;
+      color: #d42f29;
+    }
+    .text{
+      font-size: 24rpx;
+      margin-top: 10rpx;
+      margin-left: 4rpx; 
+    }
+  }
   &__active {
     transform: translate3D(0, 0, 0);
     #{$self}__overlay {
