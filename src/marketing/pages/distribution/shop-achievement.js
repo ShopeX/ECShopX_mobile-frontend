@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Image, Picker } from '@tarojs/components'
-import { SpToast, BackToTop, Loading, SpNote } from '@/components'
-import S from '@/spx'
+import { View, Text, ScrollView, Picker } from '@tarojs/components'
+import { SpToast, Loading, SpNote } from '@/components'
+// import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { classNames, pickBy } from '@/utils'
-import entry from '@/utils/entry'
+import { pickBy } from '@/utils'
+// import entry from '@/utils/entry'
 
 import './shop-achievement.scss'
 
@@ -42,7 +42,7 @@ export default class DistributionShopAchievement extends Component {
     const nList = pickBy(list, {
       title: 'item_name',
       limit_desc: 'limit_desc',
-      total_fee: 'total_fee',
+      total_fee: ({ total_fee }) => (total_fee / 100).toFixed(2),
       close_num: 'close_num',
       finish_num: 'finish_num',
       wait_num: 'wait_num',
