@@ -66,7 +66,10 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/index',
+      
+      //'{"path":"pages/pointitem/list","style":{"navigationStyle":"custom"}}',
+      
+      'pages/index', 
       'pages/home/landing',
       'pages/category/index',
       'pages/floorguide/index',
@@ -154,10 +157,10 @@ class App extends Component {
           'pages/plusprice/cart-plusprice-list',
         ],
         "plugins": {
-          "live-player-plugin": {
-            "version": "1.2.8", // 填写该直播组件版本号
-            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          }
+          // "live-player-plugin": {
+          //   "version": "1.2.6", // 填写该直播组件版本号
+          //   "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
+          // } 
           // "meiqia": {
           //   "version": "1.1.0",
           //   "provider": "wx2d2cd5fd79396601"
@@ -245,6 +248,12 @@ class App extends Component {
           // 绑定订单
           'pages/bindOrder/index'
         ]
+      },
+      {
+        root:'pointitem',
+        pages:[
+          'pages/list',
+        ]
       }
     ],
     permission: {
@@ -312,7 +321,7 @@ class App extends Component {
     // 根据路由参数
     const { query } = this.$router.params
     if (query && query.scene) {
-      const { smid , dtid, id, aid, cid  } = normalizeQuerys(query)
+      const { smid , dtid, id, aid, cid,type  } = normalizeQuerys(query)
       if (smid) {
         Taro.setStorageSync('s_smid', smid)
       }

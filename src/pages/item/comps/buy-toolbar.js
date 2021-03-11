@@ -3,7 +3,7 @@ import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtBadge } from 'taro-ui'
 import { FormIdCollector } from '@/components'
-
+import { classNames } from '@/utils' 
 import './buy-toolbar.scss'
 
 @connect(({ colors }) => ({
@@ -21,7 +21,8 @@ export default class GoodsBuyToolbar extends Component {
     onClickFastBuy: () => {},
     onFavItem: () => {},
     cartCount: '',
-    info: {}
+    info: {},
+    isPointitem:false
   }
 
   handleClickCart = (id, type) => {
@@ -30,8 +31,15 @@ export default class GoodsBuyToolbar extends Component {
     })
   }
 
+  handleNaviationToHome=()=>{
+    const url = `/pages/index`
+    Taro.navigateTo({
+      url
+    })
+  }
+
   render () {
-    const { onClickAddCart, onClickFastBuy, cartCount, type, info, colors } = this.props
+    const { onClickAddCart, onClickFastBuy, cartCount, type, info, colors ,isPointitem} = this.props
 
     if (!info) {
       return null
@@ -40,13 +48,13 @@ export default class GoodsBuyToolbar extends Component {
     let special_type = info.special_type
 
     const isDrug = special_type === 'drug'
-    const fastBuyText = (type === 'normal' || type === 'limited_time_sale')
+    const fastBuyText = isPointitem? '立即兑换':(type === 'normal' || type === 'limited_time_sale')
       ? '立即购买'
       : (type === 'seckill')
         ? '立即抢购' : '我要开团'
 
     return (
-      <View className='goods-buy-toolbar'>
+      <View className={classNames(isPointitem ? 'goods-isPointitem' : null,  'goods-buy-toolbar')}>
         <View className='goods-buy-toolbar__menus'>
           <View
             className='goods-buy-toolbar__menu-item'
@@ -63,7 +71,7 @@ export default class GoodsBuyToolbar extends Component {
               <View className='in-icon in-icon-kefu'></View>
             </Button>
           )}*/}
-          <View
+          {!isPointitem ? <View
             className='goods-buy-toolbar__menu-item'
             onClick={this.handleClickCart.bind(this, info.item_id, isDrug ? 'drug' : 'distributor')}
           >
@@ -72,7 +80,12 @@ export default class GoodsBuyToolbar extends Component {
             >
               <View className='icon-cart'></View>
             </AtBadge>
-          </View>
+          </View>:<View
+            className='goods-buy-toolbar__menu-item'
+            onClick={this.handleNaviationToHome}
+          > 
+            <View className='iconfont icon-home'></View> 
+          </View>}
         </View>
         {this.props.customRender
           ? this.props.children
@@ -80,7 +93,7 @@ export default class GoodsBuyToolbar extends Component {
               {
                 info.approve_status === 'onsale' ?
                   <View className='goods-buy-toolbar__btns'>
-                    {(type === 'normal' || type === 'limited_time_sale') && (
+                    {(type === 'normal' || type === 'limited_time_sale') && !isPointitem && (
                       <FormIdCollector
                         sync
                         onClick={onClickAddCart}

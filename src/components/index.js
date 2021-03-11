@@ -39,5 +39,9 @@ export { default as AccountOfficial } from './account-official'
 export { default as AtTabslist } from './at-tabs'
 export { default as ScreenAd } from './ScreenAd'
 
+export { default as HomeCapsule } from './home-capsule'
+export { default as PointLine } from './point-line'
+export { default as PointTag } from './point-tag'
+
 
 export default {}

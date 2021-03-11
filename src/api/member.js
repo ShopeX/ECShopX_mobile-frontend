@@ -16,8 +16,8 @@ export function favsList (params = {}) {
   return req.get('/member/collect/item', params,null, { showError: false })
 }
 
-export function addFav (item_id) {
-  return req.post(`/member/collect/item/${item_id}`)
+export function addFav (item_id,params) {
+  return req.post(`/member/collect/item/${item_id}`,params)
 }
 
 export function delFav (item_ids, params = {}) {

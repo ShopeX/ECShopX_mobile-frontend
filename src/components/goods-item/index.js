@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Text, Image} from '@tarojs/components'
-import { SpImg } from '@/components'
+import { SpImg ,PointLine} from '@/components' 
 import api from '@/api'
 import { connect } from '@tarojs/redux'
 
@@ -21,7 +21,8 @@ export default class GoodsItem extends Component {
     showFav: true,
     showSku: false,
     noCurSymbol: false,
-    type: 'item'
+    type: 'item',
+    isPointitem:false
   }
 
   static options = {
@@ -46,7 +47,10 @@ export default class GoodsItem extends Component {
   }
 
   render () {
-    const { info, showMarketPrice, showFav, noCurSymbol, noCurDecimal, onClick, onStoreClick, appendText, className, isPointDraw, type } = this.props
+    const { info, showMarketPrice, showFav, noCurSymbol, noCurDecimal, onClick, onStoreClick, appendText, className, isPointDraw, type ,isPointitem} = this.props
+
+    console.log(info);
+
     if (!info) {
       return null
     }
@@ -135,7 +139,12 @@ export default class GoodsItem extends Component {
               </View>
             </View>
             <View className='goods-item__extra'>
-              <View className='goods-item__price'>
+            {
+              isPointitem && <PointLine 
+                point={info.point} 
+              />
+            }
+            { !isPointitem && <View className='goods-item__price'>
                 <View className='package-price'>
                   <Text className='goods-item__cur'>¥</Text>
                   <Text>
@@ -149,7 +158,7 @@ export default class GoodsItem extends Component {
                   Boolean(+marketPrice) &&
                     <Text className='goods-item__price-market'>¥{marketPrice}</Text>
                 }
-							</View>
+							</View>}
 							{this.props.children}
               {
                 showFav &&
@@ -169,6 +178,9 @@ export default class GoodsItem extends Component {
                   </View>)
               }
             </View>
+
+          
+
             {
               APP_PLATFORM !== 'standard' && info.distributor_info && !Array.isArray(info.distributor_info) &&
                 <View

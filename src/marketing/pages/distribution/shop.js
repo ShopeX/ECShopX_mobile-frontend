@@ -63,7 +63,7 @@ export default class DistributionShop extends Component {
         url = '/marketing/pages/distribution/shop-trade'
         break;
       case 'miniShop':
-        url = `/marketing/pages/distribution/shop-home?uid=${userId}`
+        url = `/marketing/pages/distribution/shop-home?featuredshop=${userId}`
         break;
       default:
         url = ''

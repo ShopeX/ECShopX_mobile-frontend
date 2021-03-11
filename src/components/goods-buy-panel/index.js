@@ -33,7 +33,8 @@ export default class GoodsBuyPanel extends Component {
     onChange: () => {},
     onClickAddCart: () => {},
     onClickFastBuy: () => {},
-    onSubmit: () => {}
+    onSubmit: () => {},
+    isPointitem:false
   };
 
   constructor(props) {
@@ -46,6 +47,7 @@ export default class GoodsBuyPanel extends Component {
       activity: null,
       curSku: null,
       curImg: null,
+      curPoint:null,
       curLimit: false,
       quantity: 1,
       isActive: props.isOpened,
@@ -185,6 +187,7 @@ export default class GoodsBuyPanel extends Component {
   }
 
   updateCurSku(selection) {
+    console.log("----updateCurSku---",selection)
     const { info } = this.props;
     const { activity } = this.state;
     const { activity_type } = info;
@@ -207,6 +210,8 @@ export default class GoodsBuyPanel extends Component {
       curSku,
       curImg
     });
+
+    console.log("----curSku---",curSku)
 
     if (activity && info.activity_type === "limited_buy") {
       const validItem = activity.items.find(n => n.item_id === curSku.item_id);
@@ -276,7 +281,7 @@ export default class GoodsBuyPanel extends Component {
     console.warn(this.props);
     if (this.state.busy) return;
     const isOpenStore = await entry.getStoreStatus()
-    const { marketing, info } = this.props;
+    const { marketing, info ,isPointitem} = this.props;
     const { special_type } = info;
     const isDrug = special_type === "drug";
     const { item_id } = this.noSpecs ? info : skuInfo;
@@ -352,8 +357,8 @@ export default class GoodsBuyPanel extends Component {
         await api.cart.fastBuy({
           item_id,
           num,
-          distributor_id:id
-        });
+          distributor_id:id,
+        },isPointitem);
       } catch (e) {
         console.log(e);
         this.setState({
@@ -367,8 +372,9 @@ export default class GoodsBuyPanel extends Component {
       });
 
       this.props.onFastbuy(item_id, num);
+      let pointitem=isPointitem?`&type=pointitem`:''
       Taro.navigateTo({
-        url
+        url:`${url}${pointitem}`
       });
     }
 
@@ -398,7 +404,8 @@ export default class GoodsBuyPanel extends Component {
       colors,
       isPackage,
       packItem,
-      mainpackItem
+      mainpackItem,
+      isPointitem
     } = this.props;
     const {
       curImg,
@@ -477,6 +484,8 @@ export default class GoodsBuyPanel extends Component {
       marketPrice = info.price
     }
 
+    console.log("-------gbp---",info)
+
     return (
       <View
         className={classNames(
@@ -502,7 +511,11 @@ export default class GoodsBuyPanel extends Component {
                 src={curImg || info.pics[0]}
               />
             </View>
-            <View className="goods-sku__price">
+            {isPointitem && <View className="goods-point">
+              <View className="number">{curSku?curSku.point:info.point}</View>
+              <View className="text">积分</View>
+            </View>}
+            {!isPointitem && <View className="goods-sku__price">
               <Price primary symbol="¥" unit="cent" value={price} />
               <View className="goods-sku__price-market">
                 {marketPrice !== 0 && marketPrice && (
@@ -515,7 +528,7 @@ export default class GoodsBuyPanel extends Component {
                   />
                 )}
               </View>
-            </View>
+            </View>}
             <View className="goods-sku__info">
               {this.noSpecs ? (
                 <Text className="goods-sku__props">{info.item_name}</Text>
@@ -526,12 +539,14 @@ export default class GoodsBuyPanel extends Component {
                   </Text>
                 </Text>
               )}
-              {curSku && (
+              {curSku ? (
                 <View className="goods-sku__limit">
-                  <Text className="goods-sku__stock">
-                    库存{curSku.store}
-                    {info.unit}
-                  </Text>
+                  {
+                    info.store_setting && <Text className="goods-sku__stock">
+                      库存{curSku.store}
+                      {info.unit}
+                    </Text>
+                  }
                   {activity && curLimit ? (
                     <Text>
                       {ruleDay ? <Text>每{ruleDay}天</Text> : null}
@@ -539,7 +554,13 @@ export default class GoodsBuyPanel extends Component {
                     </Text>
                   ) : null}
                 </View>
-              )}
+              ):<View className="goods-sku__limit">
+              <Text className="goods-sku__stock">
+                库存：{info.store}
+                {info.unit}
+              </Text>
+             
+            </View>}
             </View>
           </View>
           {curSkus && promotions && promotions.length > 0 && (

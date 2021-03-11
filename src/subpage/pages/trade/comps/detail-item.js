@@ -17,13 +17,14 @@ export default class DetailItem extends Component {
   static defaultProps = {
     // customHeader: false
     customFooter: false,
-    showType: 'orders'
+    showType: 'orders',
     // customRender: false,
     // noHeader: false,
     // showActions: false,
     // payType: '',
     // onClickBtn: () => {},
     // onClick: () => {}
+    isPointitem:false
   }
 
   // handleClickBtn (type) {
@@ -82,7 +83,7 @@ export default class DetailItem extends Component {
   }
 
   render () {
-    const { customHeader, customFooter, noHeader, onClick, info, showActions, showType } = this.props
+    const { customHeader, customFooter, noHeader, onClick, info, isPointitem, showType } = this.props
     return (
       <View className='detail-item'>
         {
@@ -105,6 +106,7 @@ export default class DetailItem extends Component {
                 key={`${idx}1`}
                 info={item}
                 isShowNational
+                isPointitemGood={isPointitem}
               />
               {
                 !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>

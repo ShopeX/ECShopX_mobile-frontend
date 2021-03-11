@@ -59,6 +59,15 @@ export function getCurrentRoute (router) {
   }
 }
 
+// 除以100以后的千分符
+export function formatPriceToHundred (price) {
+  if (price) {
+    return (Number(price)/100).toFixed(2).toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
+  } else {
+    return 0
+  } 
+}
+
 export function normalizeQuerys (params = {}) {
   const { scene, ...rest } = params
   const queryStr = decodeURIComponent(scene)

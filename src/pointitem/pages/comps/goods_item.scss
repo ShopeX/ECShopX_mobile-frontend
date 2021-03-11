@@ -1,0 +1,82 @@
+.goods_item{
+    width: 100%;
+    background: #FFFFFF;
+    border-radius: 20rpx;
+    overflow: hidden;
+
+    &.isStoreOut{
+        position: relative; 
+
+        .goods_item_name,.goods_item_score{
+            color:#999999;
+
+            .point-line{
+                .number{
+                    color:#999999!important;
+                }
+            }
+        }
+
+        .goods_item_image{
+            image{
+                opacity: 0.8;
+            }
+        }
+
+        &:not(.block){
+            // -webkit-filter: grayscale(80%);
+            // -moz-filter: grayscale(80%);
+            // -ms-filter: grayscale(80%);
+            // -o-filter: grayscale(80%);
+            // filter: grayscale(80%);
+            // filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=0.8);
+        }
+
+        .block{
+            width: 200rpx;
+            height: 200rpx;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 51%;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 50%;
+            top: 100rpx;
+            transform: translateX(-50%);
+            font-size: 32rpx;
+            font-weight: 600;
+        }
+    }
+
+    &_image{
+        height: 340rpx;
+        image{
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &_name{
+        font-size: 24px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #222222; 
+        @include multi-ellipsis(2);
+        min-height:66px;
+        max-height: 66px;
+        padding-left:15px;
+        padding-right:15px;
+        margin-top: 24px;
+    }
+
+    &_score{
+        padding: 23px 15px 27px 15px;
+        display: flex;
+        justify-items: flex-end;
+
+        
+        
+    }
+}

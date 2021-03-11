@@ -16,7 +16,7 @@ export function add (params) {
   return req.post(`/cart`, params)
 }
 
-export function fastBuy (params) {
+export function fastBuy (params,isPointitem) {
   const { item_id, num = 1, bargain_id,distributor_id } = params
   const query = {
     cart_type: 'fastbuy',
@@ -24,7 +24,7 @@ export function fastBuy (params) {
     num,
     distributor_id,
     isAccumulate: false,
-    shop_type: 'distributor'
+    shop_type: isPointitem?'pointsmall':'distributor'
   }
   if (bargain_id) {
     query.bargain_id = bargain_id

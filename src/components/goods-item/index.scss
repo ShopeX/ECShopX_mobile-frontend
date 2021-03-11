@@ -52,8 +52,11 @@ $item-img-size: 240px !default;
   &__tag-list {
     padding-bottom: 10px;
     display: flex;
+    flex-wrap: wrap;
     .tagitem {
+      margin-top: 10px;
       margin-right: 10px;
+      flex-shrink: 0;
     }
     .member_preference {
       background: rgb(247, 106, 13);
@@ -102,6 +105,19 @@ $item-img-size: 240px !default;
     font-family: Arial;
   }
   &__point {
+    display: flex;
+    &-number{
+      font-weight: 500;
+      font-size: 30rpx;
+    }
+    &-text{
+      font-size: 22rpx;
+      margin-left: 5rpx;
+      margin-top: 6rpx;
+      color: #333;
+    }
+  }
+  &__point {
     color: $color-brand-primary;
   }
   &__price-market {
@@ -114,6 +130,7 @@ $item-img-size: 240px !default;
   &__extra {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
   &__author {
     font-size: $font-size-small;

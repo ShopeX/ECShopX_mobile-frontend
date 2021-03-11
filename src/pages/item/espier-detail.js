@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image, Video, Canvas } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
-import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell, GoodsEvaluation, FloatMenuMeiQia, GoodsItem } from '@/components'
+import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell, GoodsEvaluation, FloatMenuMeiQia, GoodsItem ,PointLine} from '@/components'
 import api from '@/api'
 import req from '@/api/req'
 import { withPager, withBackToTop } from '@/hocs'
@@ -67,12 +67,13 @@ export default class Detail extends Component {
       // 是否订阅
       isSubscribeGoods: false,
       is_open_store_status:null,
+      goodType:'normal'
     }
   }
   
 
   async componentDidMount() {
-    const options = this.$router.params
+    const options = this.$router.params 
     let id = options.id
     let uid = ''
     if(!S.getAuthToken()){
@@ -80,7 +81,8 @@ export default class Detail extends Component {
     }
     const isOpenStore = await entry.getStoreStatus()
     this.setState({
-      is_open_store_status:isOpenStore
+      is_open_store_status:isOpenStore,
+      goodType:options.type==="pointitem"?"pointitem":"normal"
     },async()=>{
       const { is_open_store_status } = this.state
       if (APP_PLATFORM === 'standard') {
@@ -242,8 +244,34 @@ export default class Detail extends Component {
     }
   }
 
-  async fetchInfo(itemId, goodsId) {
-    const { distributor_id } = Taro.getStorageSync('curStore')
+  isPointitemGood(){ 
+    const options = this.$router.params;
+    return options.type==='pointitem';
+  }
+
+  async goodInfo(id,param){
+    let info;
+    if(this.isPointitemGood()){
+      info = await api.pointitem.detail(id, param)
+    }else{
+      info = await api.item.detail(id, param)
+    }
+    return info;
+  }
+
+  async goodPackageList(id){
+    let info;
+    if(this.isPointitemGood()){
+      info={list:[]};
+    }else{
+      info=await api.item.packageList({ item_id: id })
+    }
+    return info;
+  }
+
+  async fetchInfo(itemId, goodsId) { 
+    this.nextPage();
+    const { distributor_id,store_id } = Taro.getStorageSync('curStore') 
     const { is_open_store_status } = this.state
     //const isOpenStore = await entry.getStoreStatus()
     let id = ''
@@ -278,8 +306,9 @@ export default class Detail extends Component {
       delete param.distributor_id
     }
     console.log('param',param)
-    // 商品详情
-    const info = await api.item.detail(id, param)
+    // 商品详情 
+    const info = await this.goodInfo(id,param);
+    console.log('---info----',info);
     // 是否订阅
     const { user_id: subscribe } = await api.user.isSubscribeGoods(id)
     const { intro: desc, promotion_activity: promotion_activity } = info
@@ -376,7 +405,7 @@ export default class Detail extends Component {
         contentDesc = desc
       }
       let promotion_package = null
-      const { list } = await api.item.packageList({ item_id: id })
+      const { list } = await this.goodPackageList(id);
       if (list.length) {
         promotion_package = list.length
       }
@@ -391,18 +420,33 @@ export default class Detail extends Component {
     log.debug('fetch: done', info)
   }
 
-  async fetch(params) {
+  async goodLikeList(query){ 
+    const { id } = this.$router.params;
+    let info;
+    if(this.isPointitemGood()){
+      info = await api.pointitem.likeList({
+        item_id:id
+      })
+    }else{
+      info = await api.cart.likeList(query)
+    }
+    return info;
+  }
+
+  async fetch(params) { 
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
       pageSize
     }
-    const { list, total_count: total } = await api.cart.likeList(query)
+ 
+    const { list, total_count: total } = await this.goodLikeList(query)
 
     const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
+      point:'point',
       distributor_id: 'distributor_id',
       promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => { return (price / 100).toFixed(2) },
@@ -452,7 +496,9 @@ export default class Detail extends Component {
       }
 
       if (!info.is_fav) {
-        const favRes = await api.member.addFav(info.item_id)
+        const favRes = await api.member.addFav(info.item_id,{
+          item_type:this.isPointitemGood()?"pointsmall":undefined
+        })
         Tracker.dispatch("GOODS_COLLECT", info);
         this.props.onAddFav(favRes)
         Taro.showToast({
@@ -778,7 +824,7 @@ export default class Detail extends Component {
     const curStore = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id :curStore.distributor_id : item.distributor_id
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}&type=pointitem`
     Taro.navigateTo({
       url
     })
@@ -946,17 +992,7 @@ export default class Detail extends Component {
                 );
               })}
             </Swiper>
-
-            {
-              // info.videos_url && (<Video
-              //   src={info.videos_url}
-              //   className='video'
-              //   controls
-              // />)
-            }
-            {/*<ItemImg
-              info={imgInfo}
-            />*/}
+ 
           </View>
 
           {!info.nospec &&
@@ -1074,6 +1110,7 @@ export default class Detail extends Component {
               <VipGuide info={{...info.vipgrade_guide_title, type: info.type, tax_rate: info.cross_border_tax_rate}} />
             ) : null}
 
+           
             {
               info.memberpreference_activity && <View className='vipLimit'>
                 <View className='title'>
@@ -1092,7 +1129,7 @@ export default class Detail extends Component {
               </View>
             }
 
-            {marketing === 'normal' && (
+            {marketing === 'normal' && !this.isPointitemGood() && (
               <View className='goods-prices__wrap'>
                 <View className='goods-prices'>
                   <View className='view-flex-item'>
@@ -1117,14 +1154,14 @@ export default class Detail extends Component {
                   )}
                 </View>
 
-                {info.sales && (
+                {info.sales_setting && info.sales && (
                   <Text className='goods-sold'>{info.sales || 0}人已购</Text>
                 )}
               </View>
             )}
             {/* 跨境商品 */}
-            {info.type == '1' && (
-              <View className='nationalInfo'>
+            {info.type == "1" && !this.isPointitemGood() && (
+              <View className="nationalInfo"> 
                 <View>
                   跨境综合税:
                   <Price
@@ -1154,6 +1191,14 @@ export default class Detail extends Component {
                 </View>
               </View>
             )}
+            {
+              this.isPointitemGood() && <View class="goods_point">
+                    <PointLine 
+                        point={info.point} 
+                        plus
+                    /> 
+              </View>
+            }
           </View>
 
           {isPromoter && (
@@ -1163,7 +1208,7 @@ export default class Detail extends Component {
             </View>
           )}
 
-          {marketing === "group" && info.groups_list.length > 0 && (
+          {marketing === "group" && info.groups_list.length > 0 && !this.isPointitemGood() && (
             <View className='goods-sec-specs'>
               <View className='goods-sec-value'>
                 <Text className='title-inner'>正在进行中的团</Text>
@@ -1180,8 +1225,7 @@ export default class Detail extends Component {
             </View>
           )}
 
-          {
-            !info.is_gift && <SpCell
+          { !info.is_gift && !this.isPointitemGood() &&  <SpCell
               className='goods-sec-specs'
               title='领券'
               isLink
@@ -1209,7 +1253,7 @@ export default class Detail extends Component {
             />
           ) : null}
 
-          {promotion_package && (
+          {promotion_package &&  !this.isPointitemGood() && (
             <SpCell
               className='goods-sec-specs'
               isLink
@@ -1217,7 +1261,7 @@ export default class Detail extends Component {
               onClick={this.handlePackageClick}
               value={`共${promotion_package}种组合随意搭配`}
             />
-          )}
+          )} 
 
           {itemParams.length > 0 && (
             <View
@@ -1242,7 +1286,7 @@ export default class Detail extends Component {
               onClick={this.handleBuyBarClick.bind(this, "pick")}
               value={curSku ? curSku.propsText : "请选择"}
             />
-          )}
+          )} 
 
           {APP_PLATFORM !== 'standard' && !isArray(info.distributor_info) && (
             <StoreInfo info={info.distributor_info} />
@@ -1304,6 +1348,7 @@ export default class Detail extends Component {
               )}
             </View>
           )}
+
           {likeList.length > 0 && showLikeList ? (
             <View className='cart-list cart-list__disabled'>
               <View className='cart-list__hd like__hd'>
@@ -1317,6 +1362,7 @@ export default class Detail extends Component {
                         key={item.item_id}
                         info={item}
                         onClick={this.handleClickItem.bind(this, item)}
+                        isPointitem={this.isPointitemGood()}
                       />
                     </View>
                   );
@@ -1361,6 +1407,7 @@ export default class Detail extends Component {
             onFavItem={this.handleMenuClick.bind(this, "fav")}
             onClickAddCart={this.handleBuyBarClick.bind(this, "cart")}
             onClickFastBuy={this.handleBuyBarClick.bind(this, "fastbuy")}
+            isPointitem={this.isPointitemGood()}
           >
             <View>{marketing}</View>
           </GoodsBuyToolbar>
@@ -1371,6 +1418,7 @@ export default class Detail extends Component {
             cartCount={cartCount}
             type={marketing}
             onFavItem={this.handleMenuClick.bind(this, "fav")}
+            isPointitem={this.isPointitemGood()}
           >
             <View
               className='goods-buy-toolbar__btns'
@@ -1404,7 +1452,8 @@ export default class Detail extends Component {
             marketing={marketing}
             isOpened={showBuyPanel}
             onClose={() => this.setState({ showBuyPanel: false })}
-            fastBuyText={marketing === "group" ? "我要开团" : "立即购买"}
+            fastBuyText={this.isPointitemGood()?"立即兑换":marketing === "group" ? "我要开团" : "立即购买"}
+            isPointitem={this.isPointitemGood()}
             onChange={this.handleSkuChange}
             onAddCart={this.handleBuyAction.bind(this, "cart")}
             onFastbuy={this.handleBuyAction.bind(this, "fastbuy")}
