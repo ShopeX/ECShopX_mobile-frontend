@@ -88,6 +88,7 @@ export default class TradeDetail extends Component {
       origincountry_img_url: 'origincountry_img_url',
       price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       point: 'item_point',
+      item_point:'item_point',
       num: 'num',
       left_aftersales_num:'left_aftersales_num',
       item_spec_desc: 'item_spec_desc',
@@ -142,6 +143,7 @@ export default class TradeDetail extends Component {
       invoice_content: 'invoice.content',
       delivery_status: 'delivery_status',
       point: 'point',
+      item_point:pickItem.item_point,
       can_apply_aftersales:'can_apply_aftersales',
       status: ({ order_status }) => resolveOrderStatus(order_status),
       orders: ({ items = [], logistics_items = [], is_split  }) => pickBy((is_split ? logistics_items : items), pickItem),
@@ -694,7 +696,7 @@ export default class TradeDetail extends Component {
               <Text className="info-text">发票信息：{info.invoice_content}</Text>
             ) : null}
 
-            <Text className="info-text">商品金额：{transformTextByPoint(this.isPointitemGood(),info.item_fee,info.point)}</Text>
+            <Text className="info-text">商品金额：{transformTextByPoint(this.isPointitemGood(),info.item_fee,info.item_point)}</Text>
             {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
             <Text className='info-text'>运费：{info.freight_type!=="point"?`¥ ${info.freight_fee}`:`${info.freight_fee*100}积分`}</Text>
             {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
