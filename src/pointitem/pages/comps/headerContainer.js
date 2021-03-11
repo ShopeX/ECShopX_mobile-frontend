@@ -26,7 +26,7 @@ export default class HeaderCustom extends Component {
     console.log("--handleBack--",type)
     if (type) {
    
-      Taro.redirectTo({
+      Taro.reLaunch({
         url: '/pages/index?isPoint=true'
       })
     } else {

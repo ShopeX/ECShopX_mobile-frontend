@@ -142,10 +142,7 @@ export default class List extends Component {
     this.fetchUserInfo()
 
     const options = this.$router.params;
-    console.log("this.$router.params",this.$router.params)
-    if(options.isPoint){
-      Taro.reLaunch()
-    }
+     
   }
 
   async fetchUserInfo() {
