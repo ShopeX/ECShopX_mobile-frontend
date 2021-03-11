@@ -1,5 +1,6 @@
 @import '../../style/imports';
 
+$disabled-color:#999999;
 
 .point-line {
 
@@ -39,6 +40,16 @@
       margin-left: 5px;
       display: inline-block;
       vertical-align: baseline;
+    }
+  }
+
+  &.isStoreOut{
+    .number {
+      color: $disabled-color;  
+    }
+  
+    .text {
+      color: $disabled-color;  
     }
   }
 }

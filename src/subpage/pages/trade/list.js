@@ -175,10 +175,18 @@ export default class TradeList extends Component {
   }
 
   handleClickItem = (trade) => {
-    const { tid } = trade
+    const { tid } = trade;
+
+    console.log("----handleClickItem----",trade)
+
+    let url=`/subpage/pages/trade/detail?id=${tid}`;
+
+    if(trade.order_class==="pointsmall"){
+      url+=`&type=pointitem`
+    }
 
     Taro.navigateTo({
-      url: `/subpage/pages/trade/detail?id=${tid}`
+      url
     })
   }
 

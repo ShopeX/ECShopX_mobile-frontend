@@ -563,16 +563,7 @@ export default class Home extends Component {
               mode='widthFix'
               onClick={this.handleClickShop.bind(this)}
             />
-          }
-          {
-            show_tabBar && featuredshop &&
-            <Image
-              className='distribution-shop'
-              src='/assets/imgs/gift_mini.png'
-              mode='widthFix'
-              onClick={this.handleClickShop2.bind(this)}
-            />
-          }
+          } 
           {
             automatic && automatic.isOpen && !S.getAuthToken() &&
             <FloatMenuItem

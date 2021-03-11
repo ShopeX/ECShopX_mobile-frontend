@@ -47,6 +47,7 @@ export default class GoodsBuyPanel extends Component {
       activity: null,
       curSku: null,
       curImg: null,
+      curPoint:null,
       curLimit: false,
       quantity: 1,
       isActive: props.isOpened,
@@ -186,6 +187,7 @@ export default class GoodsBuyPanel extends Component {
   }
 
   updateCurSku(selection) {
+    console.log("----updateCurSku---",selection)
     const { info } = this.props;
     const { activity } = this.state;
     const { activity_type } = info;
@@ -208,6 +210,8 @@ export default class GoodsBuyPanel extends Component {
       curSku,
       curImg
     });
+
+    console.log("----curSku---",curSku)
 
     if (activity && info.activity_type === "limited_buy") {
       const validItem = activity.items.find(n => n.item_id === curSku.item_id);
@@ -480,6 +484,8 @@ export default class GoodsBuyPanel extends Component {
       marketPrice = info.price
     }
 
+    console.log("-------gbp---",info)
+
     return (
       <View
         className={classNames(
@@ -506,7 +512,7 @@ export default class GoodsBuyPanel extends Component {
               />
             </View>
             {isPointitem && <View className="goods-point">
-              <View className="number">{info.point}</View>
+              <View className="number">{curSku?curSku.point:info.point}</View>
               <View className="text">积分</View>
             </View>}
             {!isPointitem && <View className="goods-sku__price">
@@ -533,7 +539,7 @@ export default class GoodsBuyPanel extends Component {
                   </Text>
                 </Text>
               )}
-              {curSku && (
+              {curSku ? (
                 <View className="goods-sku__limit">
                   <Text className="goods-sku__stock">
                     库存{curSku.store}
@@ -546,7 +552,13 @@ export default class GoodsBuyPanel extends Component {
                     </Text>
                   ) : null}
                 </View>
-              )}
+              ):<View className="goods-sku__limit">
+              <Text className="goods-sku__stock">
+                库存：{info.store}
+                {info.unit}
+              </Text>
+             
+            </View>}
             </View>
           </View>
           {curSkus && promotions && promotions.length > 0 && (

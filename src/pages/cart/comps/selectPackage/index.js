@@ -79,19 +79,19 @@ export default class SelectPackage extends Component {
       this.props.onHanleChange && this.props.onHanleChange(checked)
     })
   }
-  
-  handleClose=()=>{
+
+  handleClose = () => {
     this.setState({
       isOpend: false
     })
   }
   render() {
     const { isOpend, checked } = this.state
-    const { isChecked, packInfo = {}, colors } = this.props
+    const { isChecked, packInfo = {}, colors, isPointitem = false } = this.props
     return (
 
       <View className=''>
-        <SpCell
+        {!isPointitem && <SpCell
           isLink
           className="trade-invoice"
           title={packInfo.packName}
@@ -100,10 +100,11 @@ export default class SelectPackage extends Component {
           <View className="invoice-title">
             {isChecked ? '需要' : '不需要'}
           </View>
-        </SpCell>
+        </SpCell>}
+
         <AtActionSheet
           isOpened={isOpend}
-          onClose={ this.handleClose }
+          onClose={this.handleClose}
         >
           <View className='payment-picker'>
             <View className='payment-picker__hd'>

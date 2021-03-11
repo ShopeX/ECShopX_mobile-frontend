@@ -42,6 +42,15 @@
   }
 }
 
+.isHidden{
+
+  &.searchInput {
+    .at-input {
+      width:300px;
+    }
+  }
+
+}
 .searchInput {
   .at-input {
 
@@ -70,7 +79,7 @@
     display: none;
   }
   .at-input{
-    width: 716rpx;
+    width: 716rpx!important;
    
   }
 }

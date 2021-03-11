@@ -134,6 +134,7 @@ export default class TradeDetail extends Component {
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
       freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
+      freight_type:'freight_type',
       totalpayment:({ total_fee}) =>   ((+Number(total_fee)) / 100).toFixed(2),
       payment: ({ pay_type, total_fee }) => pay_type === 'point' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2), // 积分向下取整
       pay_type: 'pay_type',
@@ -665,7 +666,7 @@ export default class TradeDetail extends Component {
 
           <View className="trade-money">
             <View>总计：{this.isPointitemGood()?<Text className="trade-money__point">
-              {info.point} 积分 {(info.order_class==="pointsmall") && info.freight_fee!=0 && info.freight_fee>0 && <Text class="cash">+ {info.freight_fee}</Text>}
+              {info.point} 积分 {(info.order_class==="pointsmall") && info.freight_fee!=0 && info.freight_fee>0 && info.freight_type!=="point" && <Text class="cash">+ {info.freight_fee}</Text>}
             </Text>:<Text className="trade-money__num">￥{info.totalpayment}</Text>}</View>
           </View>
           {info.remark && (
@@ -686,9 +687,9 @@ export default class TradeDetail extends Component {
 
             <Text className="info-text">商品金额：{transformTextByPoint(this.isPointitemGood(),info.item_fee,info.point)}</Text>
             {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
-            <Text className='info-text'>运费：￥{info.freight_fee}</Text>
+            <Text className='info-text'>运费：{info.freight_type!=="point"?`¥ ${info.freight_fee}`:`${info.freight_fee*100}积分`}</Text>
             {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
-            <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>
+            {!this.isPointitemGood() && <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>}
             {/* {isDhPoint && (<Text className='info-text' space>支付：{info.point_use}积分 {' 积分支付'}</Text>)} */}
             {info.point_use > 0 && (<Text className='info-text' space>积分支付：{info.point_use}积分，抵扣：¥{info.point_fee}</Text>)}
             {isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>)}

@@ -1182,7 +1182,7 @@ export default class CartCheckout extends Component {
         console.log("----this.state.total---",this.state.total)
         config = await this.createByType({
           ...params,
-          pay_type:this.state.total.freight_type==="point"?'point':'wxpay'
+          pay_type:this.state.total.freight_type==="point"?'point':payType
         });
         order_id = isDrug ? config.order_id : config.trade_info.order_id;
       }  
@@ -1237,8 +1237,10 @@ export default class CartCheckout extends Component {
       submitLoading: false
     });
     console.log("---------Check--------")
+
+    const isExtraPoint=this.isPointitemGood() && this.state.total.freight_type==="point";
     // 积分流程
-    if (payType === "point" || payType === "deposit" || (this.isPointitemGood() && this.state.total.freight_type==="point")) {
+    if (payType === "point" || payType === "deposit" || isExtraPoint ) {
       if (!payErr) {
         Taro.showToast({
           title: "支付成功",
@@ -1246,8 +1248,15 @@ export default class CartCheckout extends Component {
         });
 
         this.props.onClearCart();
+
+        let url=`/subpage/pages/trade/detail?id=${order_id}`;
+
+        if(isExtraPoint){
+          url+="&type=pointitem";
+        }
+
         Taro.redirectTo({
-          url: `/subpage/pages/trade/detail?id=${order_id}&type=pointitem`
+          url
         });
       }
 
@@ -1796,7 +1805,7 @@ export default class CartCheckout extends Component {
               </View>
             </SpCell>
           )}
-          {(isPackage && express) && <SelectPackage isChecked={isNeedPackage} onHanleChange={this.changeNeedPackage.bind(this)} packInfo={pack} />}
+          {(isPackage && express) && <SelectPackage isPointitem={this.isPointitemGood()} isChecked={isNeedPackage} onHanleChange={this.changeNeedPackage.bind(this)} packInfo={pack} />}
 
           {/*<SpCell
             isLink
