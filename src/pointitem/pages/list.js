@@ -390,7 +390,7 @@ export default class List extends Component {
 
 
   handleClickItem = (item) => {
-    if (item.store === 0) {
+    if (item.goods_store == 0) {
       return;
     }
     const { item_id, title, market_price, price, img } = item;
@@ -680,7 +680,7 @@ export default class List extends Component {
                   <GoodsItem
                     key={item.item_id}
                     info={item}
-                    isStoreOut={item.store === 0}
+                    isStoreOut={item.goods_store == 0}
                     onClick={() => this.handleClickItem(item)}
                     onStoreClick={() => this.handleClickStore(item)}
                   />
