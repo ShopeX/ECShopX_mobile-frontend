@@ -23,9 +23,11 @@ export default class HeaderCustom extends Component {
   }
 
   handleBack = (type = '') => {
+    console.log("--handleBack--",type)
     if (type) {
+   
       Taro.redirectTo({
-        url: '/pages/index'
+        url: '/pages/index?isPoint=true'
       })
     } else {
       Taro.navigateBack()

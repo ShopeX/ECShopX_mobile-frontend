@@ -493,6 +493,9 @@ export default class Home extends Component {
       show_official
     } = this.state
 
+    const pages = Taro.getCurrentPages()
+    console.log("-----pages----",pages)
+
     // 广告屏
     const { showAdv } = this.props
     // 是否是标准版

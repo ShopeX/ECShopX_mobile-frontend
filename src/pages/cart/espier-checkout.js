@@ -755,6 +755,7 @@ export default class CartCheckout extends Component {
     let info = this.state.info;
     let pointInfo = this.state.pointInfo;
     if (items) {
+      //debugger ;
       console.log('--------items-------',items)
       // 从后端获取订单item
       info = {
@@ -1983,7 +1984,7 @@ export default class CartCheckout extends Component {
                 total.point && (
                   <View class="last_price">
                     <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={total.point} />
-                    {!total.freight_fee==0 && total.freight_type==="cash" && <Price unit="cent" plus value={total.freight_fee} className='order-item__plus'/>}
+                    {!total.freight_fee==0 && total.freight_type==="cash" && this.isPointitemGood() && <Price unit="cent" plus value={total.freight_fee} className='order-item__plus'/>}
                   </View>
                 )
               )}
