@@ -729,8 +729,7 @@ export default class List extends Component {
           width={`${Taro.pxTransform(630)}`}
           onClose={this.filterOpen.bind(false)}
           class='custom_drawer'
-        >
-          <View>
+        > 
           {
             <View class="wrapper-filter">
               {brandVisible && <View class="brand" >
@@ -778,8 +777,7 @@ export default class List extends Component {
           <View className='drawer-footer'>
             <Text className='drawer-footer__btn' onClick={this.handleResetFilter}>重置</Text>
             <Text className='drawer-footer__btn drawer-footer__btn_active' onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定并筛选</Text>
-          </View>
-        </View>
+          </View> 
         </AtDrawer>
 
  

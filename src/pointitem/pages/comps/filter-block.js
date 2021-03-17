@@ -25,12 +25,13 @@ export default class FilterBlock extends Component{
     
     getName=()=>{
         const { info,type }=this.props;
+
         if(type==='brand'){
             return info.attribute_name
         }else if(type==='category'){
             return info.label
         }else{
-            return `${info[0]} ~ ${info[1]}`
+            return info && Array.isArray(info) && info.length ? `${info[0]} ~ ${info[1]}`:""
         }
     }
 

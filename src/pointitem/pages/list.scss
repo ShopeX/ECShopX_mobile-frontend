@@ -282,7 +282,7 @@ $height-percent: 82%;
   }
 
   .wrapper-filter {
-    height: 90%;
+    height: 100%;
     overflow: auto;
 
     .title {
@@ -543,7 +543,7 @@ $height-percent: 82%;
 
   .drawer-footer {
     position: fixed;
-    bottom: 90rpx;
+    bottom: 26px;
     right: 0;
     width: 100%;
     padding: 0 25rpx;

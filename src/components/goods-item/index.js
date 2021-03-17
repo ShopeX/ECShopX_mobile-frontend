@@ -47,9 +47,7 @@ export default class GoodsItem extends Component {
   }
 
   render () {
-    const { info, showMarketPrice, showFav, noCurSymbol, noCurDecimal, onClick, onStoreClick, appendText, className, isPointDraw, type ,isPointitem} = this.props
-
-    console.log(info);
+    const { info, showMarketPrice, showFav, noCurSymbol, noCurDecimal, onClick, onStoreClick, appendText, className, isPointDraw, type ,isPointitem} = this.props 
 
     if (!info) {
       return null

@@ -25,7 +25,7 @@ export default class GoodsItem extends Component{
     } 
 
     render(){
-        const {info,onClick,isStoreOut}=this.props;
+        const {info={},onClick,isStoreOut}=this.props;
         
         return (
             <View class={classNames('goods_item',{'isStoreOut':isStoreOut})} onClick={onClick}>

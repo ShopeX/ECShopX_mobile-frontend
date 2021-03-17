@@ -24,7 +24,7 @@ export default class Header extends Component{
     
 
     render(){
-        const {useInfo:{username,avatar,point}}=this.props;
+        const {useInfo:{username,avatar,point}={}}=this.props;
         
         return (
             <View class="header">
