@@ -161,12 +161,12 @@ export default class DistributionDashboard extends Component {
             </Navigator>
           </View>
           {
-            info.isOpenShop === 'true' && info.shop_status === 0
+            info.isOpenShop && info.shop_status === 0
               ? <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>申请开启我的小店</View>
               : null
           }
           {
-            info.isOpenShop === 'true' && info.shop_status === 4
+            info.isOpenShop && info.shop_status === 4
               ? <View>
                 <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>审核驳回，再次申请开启小店</View>
                 <View className='mini-store-reason'>驳回理由：{info.reason}</View>
@@ -174,7 +174,7 @@ export default class DistributionDashboard extends Component {
               : null
           }
           {
-            info.isOpenShop === 'true' && info.shop_status === 2 &&
+            info.isOpenShop && info.shop_status === 2 &&
             <View className='mini-store-apply'>申请开店审核中</View>
           }
         </View>
@@ -235,13 +235,13 @@ export default class DistributionDashboard extends Component {
             <View className='list-item-txt'>我的二维码</View>
             <View className='icon-arrowRight item-icon-go'></View>
           </View>
-          <Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/distribution/goods?status=${info.isOpenShop === 'true' && info.shop_status === 1}`}>
+          <Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/distribution/goods?status=${info.isOpenShop && info.shop_status === 1}`}>
             <View className='item-icon icon-weChart'></View>
             <View className='list-item-txt'>推广商品</View>
             <View className='icon-arrowRight item-icon-go'></View>
           </Navigator>
           {
-            info.isOpenShop === 'true' && info.shop_status === 1 &&
+            (info.isOpenShop && info.shop_status === 1) &&
               <Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}`}>
                 <View className='item-icon icon-shop'></View>
                 <View className='list-item-txt'>我的小店</View>

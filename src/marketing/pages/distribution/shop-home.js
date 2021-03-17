@@ -79,8 +79,8 @@ export default class DistributionShopHome extends Component {
     const { info: shopInfo, userId } = this.state
     const title = shopInfo.shop_name || `${shopInfo.username}的小店`
     return {
-      title: title,
-      imageUrl: shopInfo.shop_pic,
+      title: shopInfo.share_title || title,
+      imageUrl: shopInfo.applets_share_img || shopInfo.shop_pic,
       path: `/marketing/pages/distribution/shop-home?uid=${userId}`
     }
   }
@@ -165,7 +165,21 @@ export default class DistributionShopHome extends Component {
     }
 
     const res = await api.distribution.info(param)
-    const { shop_name, brief, shop_pic = '', username = '', headimgurl, is_valid, nickname = '', mobile = '' } = res
+    const {
+      shop_name,
+      brief,
+      shop_pic = '',
+      username = '',
+      headimgurl,
+      is_valid,
+      nickname = '',
+      mobile = '',
+      banner_img = '',
+      share_title = '',
+      headquarters_logo = '',
+      applets_share_img = '',
+      isOpenPromoterInformation = true
+    } = res
 
     if (!is_valid) {
       Taro.reLaunch({
@@ -185,11 +199,13 @@ export default class DistributionShopHome extends Component {
     this.setState({
       info: {
         username: nickname || username || mobile,
-        headimgurl,
+        headimgurl: isOpenPromoterInformation ? headimgurl : headquarters_logo,
         shop_name,
         brief,
         is_valid,
-        shop_pic
+        shop_pic: isOpenPromoterInformation ? shop_pic : banner_img,
+        share_title,
+        applets_share_img
       },
       tabList,
       userId: param.user_id

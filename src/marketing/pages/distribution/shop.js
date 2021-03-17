@@ -35,7 +35,17 @@ export default class DistributionShop extends Component {
     }
 
     const res = await api.distribution.info(param || null)
-    const { shop_name, brief, shop_pic, username = '', headimgurl, nickname = '', mobile = '' } = res
+    const {
+      shop_name,
+      brief,
+      shop_pic,
+      username = '',
+      headimgurl,
+      nickname = '',
+      mobile = '',
+      share_title = '',
+      applets_share_img = ''
+    } = res
 
     this.setState({
       info: {
@@ -44,7 +54,9 @@ export default class DistributionShop extends Component {
         shop_name,
         brief,
         shop_pic,
-        turnover
+        turnover,
+        share_title,
+        applets_share_img
       }
     })
   }
@@ -81,8 +93,8 @@ export default class DistributionShop extends Component {
       shareType: "分享给好友"
     });
     return {
-      title: info.shop_name || `${username}的小店`,
-      imageUrl: info.shop_pic,
+      title: info.share_title || info.shop_name || `${username}的小店`,
+      imageUrl: info.applets_share_img || info.shop_pic,
       path: `/marketing/pages/distribution/shop-home?uid=${userId}`
     }
   }
