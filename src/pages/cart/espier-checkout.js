@@ -1266,15 +1266,18 @@ export default class CartCheckout extends Component {
     }
 
     payErr = null;
-    console.log("-----config-----",config)
+    console.log("-----configCheckout-----",config)
     try {
-      const payRes = await Taro.requestPayment(config);
-      // 支付上报
+
       const { total } = this.state;
       Tracker.dispatch("ORDER_PAY", {
         ...total,
         ...config
       });
+
+      const payRes = await Taro.requestPayment(config); 
+      // 支付上报
+    
 
       log.debug(`[order pay]: `, payRes);
     } catch (e) {

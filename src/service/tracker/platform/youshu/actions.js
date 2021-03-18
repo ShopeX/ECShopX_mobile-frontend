@@ -136,7 +136,7 @@ const actions = {
       order_id: params.trade_info.order_id,
       order_time: params.timeStamp,
       order_status: "pay",
-      pay_time: new Date().getTime(),
+      //pay_time: new Date().getTime(),
       sub_orders: [
         {
           sub_order_id: params.trade_info.order_id,
