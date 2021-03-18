@@ -254,7 +254,7 @@ export default class TradeDetail extends Component {
           icon: 'none'
         })
       } else {
-        debugger;
+     
         Tracker.dispatch("CANCEL_PAY", {
           ...info,
           item_fee: parseInt(info.item_fee) * 100,

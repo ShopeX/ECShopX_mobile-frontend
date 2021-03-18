@@ -80,8 +80,7 @@ const actions = {
    * refund：用户发起退货退款
    */
   // 用户提交订单
-  ["CREATE_ORDER"](params) {
-    debugger;
+  ["CREATE_ORDER"](params) { 
     const data = resolveOrderInfo({
       order_id: params.trade_info.order_id,
       order_time: params.timeStamp,

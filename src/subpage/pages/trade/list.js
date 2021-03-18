@@ -65,7 +65,7 @@ export default class TradeList extends Component {
 
   onPullDownRefresh = () => {
     Tracker.dispatch("PAGE_PULL_DOWN_REFRESH");
-    // debugger
+ 
     Taro.showLoading({
       title: '加载中',
       icon: 'none',

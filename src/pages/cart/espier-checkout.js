@@ -757,8 +757,7 @@ export default class CartCheckout extends Component {
 
     let info = this.state.info;
     let pointInfo = this.state.pointInfo;
-    if (items) {
-      //debugger ;
+    if (items) { 
       console.log('--------items-------',items)
       // 从后端获取订单item
       info = {
@@ -1195,8 +1194,7 @@ export default class CartCheckout extends Component {
         ...config
       });
 
-      this.cancelpay = () => {
-        debugger;
+      this.cancelpay = () => { 
         Tracker.dispatch("CANCEL_PAY", {
           ...total,
           ...config
