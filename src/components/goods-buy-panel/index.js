@@ -43,6 +43,7 @@ export default class GoodsBuyPanel extends Component {
     this.state = {
       // marketing: 'normal',
       selection: [],
+      selectionText:[],
       promotions: [],
       activity: null,
       curSku: null,
@@ -51,7 +52,7 @@ export default class GoodsBuyPanel extends Component {
       curLimit: false,
       quantity: 1,
       isActive: props.isOpened,
-      colorStyle: ""
+      colorStyle: "",
     };
 
     this.disabledSet = new Set();
@@ -98,10 +99,12 @@ export default class GoodsBuyPanel extends Component {
       skuDict[key] = t;
     });
     const selection = Array(info.item_spec_desc.length).fill(null);
+    const selectionText = Array(info.item_spec_desc.length).fill(null);
     this.skuDict = skuDict;
     this.setState({
       // marketing,
-      selection
+      selection,
+      selectionText
     });
 
     if (!spec_items || !spec_items.length) {
@@ -250,21 +253,28 @@ export default class GoodsBuyPanel extends Component {
     });
   };
 
-  handleSelectSku = (item, idx) => {
+  handleSelectSku = (item, idx,spec_name) => {
+    const {spec_value_name,spec_custom_value_name}=item;
+    const spec_full_text=`${spec_name}:${spec_value_name||spec_custom_value_name}`
+  
     if (this.disabledSet.has(item.spec_value_id)) return;
 
-    const { selection } = this.state;
+    const { selection,selectionText } = this.state;
     if (selection[idx] === item.spec_value_id) {
       selection[idx] = null;
+      selectionText[idx] = null;
     } else {
       selection[idx] = item.spec_value_id;
+      selectionText[idx] = spec_full_text;
     }
 
     console.log(selection, 254);
+    console.log("---selectionText---", selectionText);
 
     this.updateCurSku(selection);
     this.setState({
-      selection
+      selection,
+      selectionText
     });
   };
 
@@ -319,13 +329,20 @@ export default class GoodsBuyPanel extends Component {
       this.setState({
         busy: false
       })
+      const {
+        selectionText
+      }=this.state;
+   
+      const sku_name=selectionText && Array.isArray(selectionText) && selectionText.length && selectionText.every(item=>item!==null) ? selectionText.join(',') : undefined;
+      
       // 设置添加商品的类型，决定购物车展示的商品类型
       const cartType = info.type == '1' ? 'cross' : 'normal'
       Taro.setStorageSync( 'cartType', cartType )
-      // 首次加入购物车
+      // 首次加入购物车  
       Tracker.dispatch("GOODS_ADD_TO_CART", {
         ...info,
         ...skuInfo,
+        propsText:sku_name,
         goods_num: +num
       });
       this.props.onAddCart(item_id, num)
@@ -606,7 +623,7 @@ export default class GoodsBuyPanel extends Component {
                               )
                             })}
                             key={sku.spec_value_id}
-                            onClick={this.handleSelectSku.bind(this, sku, idx)}
+                            onClick={this.handleSelectSku.bind(this, sku, idx,spec.spec_name)}
                           >
                             {sku.spec_value_name}
                           </Text>

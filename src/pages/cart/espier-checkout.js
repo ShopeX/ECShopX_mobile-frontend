@@ -1196,6 +1196,7 @@ export default class CartCheckout extends Component {
       });
 
       this.cancelpay = () => {
+        debugger;
         Tracker.dispatch("CANCEL_PAY", {
           ...total,
           ...config

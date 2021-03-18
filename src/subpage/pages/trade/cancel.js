@@ -61,6 +61,7 @@ export default class TradeCancel extends Component {
 
     const { orderInfo } = await api.trade.detail(order_id);
     // 取消订单埋点 
+    debugger;
     Tracker.dispatch("CANCEL_ORDER", {
       orderInfo,
       orderCancel: res,
