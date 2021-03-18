@@ -557,10 +557,12 @@ export default class GoodsBuyPanel extends Component {
                   ) : null}
                 </View>
               ):<View className="goods-sku__limit">
-              <Text className="goods-sku__stock">
+             {
+              info.store_setting && <Text className="goods-sku__stock">
                 库存：{info.store}
                 {info.unit}
               </Text>
+             }
              
             </View>}
             </View>
