@@ -24,7 +24,6 @@ export default class WxAuth extends Component {
   }
 
   componentDidMount () {
-    console.log('this.$router----2',this.$router)
     this.autoLogin()
   
   }
@@ -42,7 +41,7 @@ export default class WxAuth extends Component {
  
     try {
      
-      const { token } = await api.wx.login(params)
+      const { token } = await api.wx.wxworkLogin(params)
       if (!token) throw new Error(`token is not defined: ${token}`)
       S.setAuthToken(token)
       let parseToken=tokenParse(token)

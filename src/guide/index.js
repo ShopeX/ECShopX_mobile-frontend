@@ -712,7 +712,7 @@ export default class BaGuideHomeIndex extends Component {
 
     return (
       <View className="page-index">
-        <BaNavBar title="导购商城" fixed jumpType="home" />
+        {/* <BaNavBar title="导购商城" fixed jumpType="home" /> */}
         <BaStore onClick={this.handleOpenStore}  defaultStore={defaultStore}  />
         {showStore&&<BaStoreList shopList={shopList} currentIndex={currentIndex} onStoreConfirm={this.handleStoreConfirm} onSearchStore={this.getStoreList.bind(this)} onChangeCurIndex={this.handleCurIndex.bind(this)}  onClose={this.handleOpenStore}/>}
         {is_open_official_account === 1 && show_official && (

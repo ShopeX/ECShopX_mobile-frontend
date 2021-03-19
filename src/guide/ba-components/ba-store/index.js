@@ -37,21 +37,29 @@ componentDidMount(){
       onClick(true)
   }
 
-
+  router(){
+    console.log('/guide/auth/wxauth')
+    navigateTo('/guide/auth/wxauth',true)
+  }
  
 
   render () {
     const {baInfo} = this.state
     const {defaultStore}=this.props
     const token=S.getAuthToken()
-    console.log('defaultStore----888',baInfo)
-    console.log('defaultStore=====1',defaultStore)
     return (
       <View
        className='ba-store'
+       onClick={this.router}
       >
         <Image className='ba-avatar' mode='widthFix' src={baInfo.avatar||'/assets/imgs/home-unloginhead.png'} />
-        {token?<View className={classNames('ba-username')}>悦诗风吟{baInfo.name}</View>:<View className={classNames('ba-username',!token?'undenline':'')} onClick={()=>{console.log('/guide/auth/wxauth'); navigateTo('/guide/auth/wxauth',true)}}>请点击授权登录</View>}
+        {token?
+          <View className={classNames('ba-username')}>悦诗风吟{baInfo.name}</View>:
+          <View className={classNames('ba-username',!token?'undenline':'')} 
+            onClick={this.router}>
+            请点击授权登录
+          </View>
+        }
 
         
         {defaultStore&&<View className='ba-store__info' onClick={this.handleClick}>
