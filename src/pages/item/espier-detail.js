@@ -95,10 +95,11 @@ export default class Detail extends Component {
         }else{
           delete options.dtid
         }
-        const entryData = await entry.entryLaunch(options, true)
-        id = entryData.id
-        uid = entryData.uid
       }
+      const entryData = await entry.entryLaunch({...options}, true)
+      id = entryData.id
+      uid = entryData.uid
+      
       if (uid) {
         this.uid = uid
       }
@@ -690,7 +691,7 @@ export default class Detail extends Component {
       })
     }
 
-    const { username, userId } = Taro.getStorageSync('userinfo')
+    const { username } = Taro.getStorageSync('userinfo')
     const ctx = Taro.createCanvasContext('myCanvas')
 
     canvasExp.roundRect(ctx, '#fff', 0, 0, 375, 640, 5)
