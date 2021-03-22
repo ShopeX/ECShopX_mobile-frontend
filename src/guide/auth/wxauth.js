@@ -24,58 +24,24 @@ export default class WxAuth extends Component {
   }
 
   componentDidMount () {
-    this.autoLogin()
-  
-  }
-
-  async autoLogin () {
-    const { code } = await Taro.login()
-    const qw_session = await S.setQwSession()
-    let params={
-      code,
-      wechat_user_id:qw_session.userid 
-    }
     this.setState({
-      qw_session
+      qw_session:S.get('qw_session', true)
     })
- 
-    try {
-     
-      const { token } = await api.wx.wxworkLogin(params)
-      if (!token) throw new Error(`token is not defined: ${token}`)
-      S.setAuthToken(token)
-      let parseToken=tokenParse(token)
-      console.log('parseToken-----1',parseToken)
-      let guide_code=parseToken.guide_code
-      console.log('999=====',guide_code)
-
-      let ba_params=S.get('ba_params',true)
-      if(guide_code){//b端的导购编号
-        let ba_info=await api.user.getGuideInfo({
-          guide_code:guide_code,
-          wxshop_bn:ba_params&&ba_params.store_code||''
-        })
-        S.set('ba_params',{
-          guide_code,
-          ba_info,
-          store_code:ba_info.wxshop_bn
-        },true)
-
-      }
-     
-      // 获取用户信息,更新数据，更新本地storage
-      const userInfo = await this.getUserInfo();
-      this.setUserInfoStorage(userInfo)
-      
-
-      return this.redirect()
-    } catch (e) {
-      console.log(e)
-      this.setState({
-        isAuthShow: true
-      })
-    }
   }
+
+  // async autoLogin () {
+  //   const { code } = await Taro.login()
+  //   const qw_session = await S.setQwSession()
+  //   let params={
+  //     code,
+  //     wechat_user_id:qw_session.userid 
+  //   }
+  //   this.setState({
+  //     qw_session
+  //   })
+ 
+    
+  // }
 
   // api获取用户信息
   async getUserInfo () {
@@ -133,8 +99,7 @@ export default class WxAuth extends Component {
    
     const { code } = await Taro.login()
     const qw_session=this.state.qw_session
-    // const qw_session = await S.setQwSession()
-     console.log('qw_session-----===',qw_session)
+    //  console.log('qw_session-----===',qw_session)
     Taro.showLoading({
       mask: true,
       title: '正在加载...'

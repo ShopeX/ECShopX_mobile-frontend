@@ -47,6 +47,8 @@ const getHomeSetting = async () => {
     const system = Taro.getSystemInfoSync();
     if (!(system && system.environment && system.environment === "wxwork")) {
       console.log("----------------aa--------------");
+      //企业微信录入
+      await S.setQwUserInfo()
       console.log(Tracker);
       Tracker.use(APP_TRACK);
     }

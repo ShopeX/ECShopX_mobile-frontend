@@ -167,9 +167,7 @@ export default class StoreIndex extends Component {
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
 
-    console.log(isPromoter)
-    console.log(isShowAddTip)
-    console.log(authStatus)
+    
 
     if (!wgts || !this.props.store) {
       return <Loading />

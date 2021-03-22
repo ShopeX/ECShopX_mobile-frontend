@@ -519,7 +519,6 @@ export default class CartIndex extends Component {
   render () {
     const { groups, invalidList, cartMode, loading, curPromotions, likeList, page, isPathQrcode, cartType, crossborder_show, remindInfo } = this.state
     const { list, showLikeList, colors } = this.props
-    console.log('groups',groups)
 
     if (loading) {
       return <Loading />

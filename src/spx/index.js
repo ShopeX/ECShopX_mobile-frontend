@@ -38,23 +38,24 @@ class Spx {
     }
   }
 
-  async setQwSession() {
+  async setQwUserInfo() {
     let { code } = await this.getQyLoginCode();
-    const r_session = await api.user.getSession({appname:`${APP_NAME}`,
+    const QwUserInfo = await api.user.getQwUserInfo({appname:`${APP_NAME}`,
       code
     });
-    console.log("r_session======setQwSession", r_session);
+    console.log('spx-setQwUserInfo',QwUserInfo)
     this.set(
-      QW_SESSION,
+      'QwUserInfo',
       {
-        ...r_session
+        ...QwUserInfo
       },
       true
     );
-    // this.set(QW_SESSION_KEY_TIMESTAMP,Date.now()+7200*1000,true)
-    this.set(QW_SESSION_KEY_TIMESTAMP, Date.now() + 7200 * 1000, true);
-
-    return r_session;
+    
+    let {salesperson_id,distributor_id,session3rd} = QwUserInfo
+    const res =  await api.guide.is_valid({salesperson_id,distributor_id},{header:{'x-wxapp-session':session3rd,'salesperson-type':'shopping_guide'}})
+      console.log('is_valid',res)
+    return QwUserInfo;
   }
 
   refreshQwUserinfo() {

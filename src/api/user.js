@@ -132,7 +132,7 @@ export function getGuideShops(params = {}) {
   return req.get("/guide/shops", params);
 }
 //获取导购session_key -> 用户登录
-export function getSession(params = {}) {
+export function getQwUserInfo(params = {}) {
   return req.post("/workwechatlogin", params);
 }
 // //导购登录

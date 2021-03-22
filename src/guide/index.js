@@ -244,7 +244,75 @@ export default class BaGuideHomeIndex extends Component {
       }
     }
   }
+  async getQyChatId() {
+    //客户群id
+   
+    let ground = null
+   
+    try {
+      const context = await new Promise((reslove, reject) => {
+        wx.qy.getContext({
+          success: (res) => {
+            reslove(res)
+          }
+         
+        })
+      })
+      console.log('群=====',context)
+      S.set('entry_form',context, true)
+      if (context.entry === 'group_chat_tools') {
+        ground = await new Promise((reslove, reject) => {
+          wx.qy.getCurExternalChat({
+            success: (res) => {
+              reslove(res)
+            }
+          })
+        })
+        return ground.chatId
+      } else {
+        S.delete('qw_chatId', true)
+        if(['contact_profile','single_chat_tools','chat_attachment'].includes(context.entry)){
+          wx.qy.getCurExternalContact ({
+            success: function(res) {
+              S.set('chat_uid', res.userId, true)
+             
+            }
+          })
+         
+        }
+      }
 
+      return ground
+
+    } catch (err) {
+      console.log('找不到函数---1', err)
+      S.delete('qw_chatId', true)
+      return false
+    }
+  }
+  checkSession() {
+   
+    return new Promise((reslove, reject) => {
+      try {
+        wx.qy.checkSession({
+          success: (res) => {
+            reslove(res)
+          },
+          fail: (err) => {
+           
+            reslove(err)
+          },
+          complete: (err2) => {
+          
+            reslove(err2)
+          }
+        })
+      } catch (err) {
+        reject(err)
+      }
+
+    })
+  }
   // 检测收藏变化
   componentWillReceiveProps(next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
@@ -428,27 +496,27 @@ export default class BaGuideHomeIndex extends Component {
 
   // 获取店铺精选
   getDistributionInfo = async () => {
-    const distributionShopId = Taro.getStorageSync("distribution_shop_id");
-    const { userId } = Taro.getStorageSync("userinfo");
-    let featuredshop = "";
-    if (!S.getAuthToken() && !distributionShopId) {
-      return;
-    }
-    const param = {
-      user_id: distributionShopId || userId
-    };
-    const res = await api.distribution.info(param);
-    const { user_id, is_valid, selfInfo = {}, parentInfo = {} } = res;
-    if (is_valid) {
-      featuredshop = user_id;
-    } else if (selfInfo.is_valid) {
-      featuredshop = selfInfo.user_id;
-    } else if (parentInfo.is_valid) {
-      featuredshop = parentInfo.user_id;
-    }
-    this.setState({
-      featuredshop
-    });
+    // const distributionShopId = Taro.getStorageSync("distribution_shop_id");
+    // const { userId } = Taro.getStorageSync("userinfo");
+    // let featuredshop = "";
+    // if (!S.getAuthToken() && !distributionShopId) {
+    //   return;
+    // }
+    // const param = {
+    //   user_id: distributionShopId || userId
+    // };
+    // const res = await api.distribution.info(param);
+    // const { user_id, is_valid, selfInfo = {}, parentInfo = {} } = res;
+    // if (is_valid) {
+    //   featuredshop = user_id;
+    // } else if (selfInfo.is_valid) {
+    //   featuredshop = selfInfo.user_id;
+    // } else if (parentInfo.is_valid) {
+    //   featuredshop = parentInfo.user_id;
+    // }
+    // this.setState({
+    //   featuredshop
+    // });
   };
   /**
    * 悦诗风饮 导购货架未备注代码  ---开始
