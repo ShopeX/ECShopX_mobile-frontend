@@ -1188,7 +1188,7 @@ export default class CartCheckout extends Component {
         });
         order_id = isDrug ? config.order_id : config.trade_info.order_id;
       }   
-      // 提交订单埋点
+      // 提交订单埋点 
       Tracker.dispatch("CREATE_ORDER", {
         ...total,
         ...config
