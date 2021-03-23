@@ -37,26 +37,44 @@ class Spx {
       this.refreshQwUserinfo();
     }
   }
-
-  async setQwSession() {
+  //写入企业微信用户详细身份
+  async setQwUserInfo() {
+    console.log("---------------SPX-企业微信录入--------------");
     let { code } = await this.getQyLoginCode();
-    const r_session = await api.user.getSession({
+
+    const QwUserInfo = await api.user.getQwUserInfo({
+      appname: `${APP_NAME}`,
       code
     });
-    console.log("r_session======setQwSession", r_session);
+    this.set("session3rd", QwUserInfo.session3rd);
+
+    return await this.initGuideInfo(QwUserInfo);
+  }
+  //初始化导购身份
+  async initGuideInfo(QwUserInfo) {
+    console.log("初始化导购身份-initGuideInfo", QwUserInfo);
+
+    if (!QwUserInfo) return;
+    let { salesperson_id, distributor_id, employee_status } = QwUserInfo;
+    //employee_status:1内部导购,2编外导购
+    if (employee_status == 1) {
+    } else {
+      await api.guide.distributorlist();
+    }
+    //查询当前导购门店信息是否有效
+    const res = await api.guide.is_valid({ salesperson_id, distributor_id });
+    console.log("查询当前导购门店信息是否有效-is_valid", res);
+    QwUserInfo.store_isValid = res;
+    
     this.set(
-      QW_SESSION,
+      "QwUserInfo",
       {
-        ...r_session
+        ...QwUserInfo
       },
       true
     );
-    // this.set(QW_SESSION_KEY_TIMESTAMP,Date.now()+7200*1000,true)
-    this.set(QW_SESSION_KEY_TIMESTAMP, Date.now() + 7200 * 1000, true);
-
-    return r_session;
+    return QwUserInfo;
   }
-
   refreshQwUserinfo() {
     if (this._refreshSessionKeyTimer) {
       clearTimeout(this._refreshSessionKeyTimer);

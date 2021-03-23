@@ -29,7 +29,7 @@ import * as groupBy from './groupBy'
 import * as boost from './boost'
 import * as wx from './wx'
 import * as wheel from './wheel'
-
+import * as guide from './guide'
 
 export default {
   article,
@@ -52,5 +52,6 @@ export default {
   group,
   groupBy,
   wheel,
-  boost
+  boost,
+  guide
 }

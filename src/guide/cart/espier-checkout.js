@@ -1,106 +1,75 @@
 import Taro, { Component } from "@tarojs/taro";
-import { View, Text, ScrollView, Image } from "@tarojs/components";
+import { View, Text, Button, Image, Canvas } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
-import { AtButton, AtInput } from "taro-ui";
+import { AtButton } from "taro-ui";
 import {
-  Loading,
   Price,
   SpCell,
-  AddressChoose,
   SpToast,
-  NavBar,
-  SpHtmlContent
+  
 } from "@/components";
+import {
+  Batoolbar,
+  BaOrderItem
+} from "../components";
+
 import api from "@/api";
 import S from "@/spx";
-// import { withLogin } from '@/hocs'
+import { withLogin } from "@/hocs";
 import {
   pickBy,
   log,
   classNames,
-  isArray,
-  authSetting,
-  normalizeQuerys,
-  redirectUrl
+  canvasExp,
+  styleNames,
+  returnFloat
 } from "@/utils";
-import { lockScreen } from "@/utils/dom";
-import { Tracker } from "@/service";
-import find from "lodash/find";
-import _cloneDeep from "lodash/cloneDeep";
-import CheckoutItems from "./checkout-items";
-import PaymentPicker from "./comps/payment-picker";
-import SelectPackage from "./comps/selectPackage";
 
-import PointUse from "./comps/point-use";
-// import DrugInfo from './drug-info'
-import OrderItem from "@/components/orderItem/order-item";
+import _cloneDeep from "lodash/cloneDeep";
+import debounce from "lodash/debounce";
+// import logoimg from '@/assets/imgs/logo.png'
 
 import "./espier-checkout.scss";
-import entry from "@/utils/entry";
+import { category } from "@/api/item";
 
-const transformCartList = list => {
+const transformCartList = (list, params = {}) => {
   return pickBy(list, {
     item_id: "item_id",
+    item_bn: "item_bn",
     cart_id: "cart_id",
     title: "item_name",
     curSymbol: "fee_symbol",
     discount_info: "discount_info",
     order_item_type: "order_item_type",
-    type: "type",
-    origincountry_img_url: "origincountry_img_url",
-    origincountry_name: "origincountry_name",
-    pics: "pic",
+    item_spec_desc: "item_spec_desc",
+    pics: ({ pics, pic }) => pics || pic,
     price: ({ price }) => (+price / 100).toFixed(2),
+    total_fee: ({ total_fee }) => (+total_fee / 100).toFixed(2),
+    item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
     num: "num",
-    item_spec_desc: "item_spec_desc"
-  }).sort(a => (a.order_item_type !== "gift" ? -1 : 1));
+    support_coupon: "support_coupon",
+    coupon_valid: "coupon_valid",
+    is_cart: "is_cart"
+  })
+    .sort(a => (a.order_item_type !== "gift" ? -1 : 1))
+    .map(t => ({
+      ...t,
+      ...params
+    }));
 };
 
-@connect(
-  ({ address, cart, colors }) => ({
-    address: address.current,
-    coupon: cart.coupon,
-    drugInfo: cart.drugInfo,
-    colors: colors.current,
-    zitiShop: cart.zitiShop
-  }),
-  dispatch => ({
-    onClearFastbuy: () => dispatch({ type: "cart/clearFastbuy" }),
-    onClearCart: () => dispatch({ type: "cart/clear" }),
-    onClearCoupon: () => dispatch({ type: "cart/clearCoupon" }),
-    onClearDrugInfo: () => dispatch({ type: "cart/clearDrugInfo" }),
-    onAddressChoose: address =>
-      dispatch({ type: "address/choose", payload: address }),
-    onChangeCoupon: coupon =>
-      dispatch({ type: "cart/changeCoupon", payload: coupon }),
-    onChangeZitiStore: zitiShop =>
-      dispatch({ type: "cart/changeZitiStore", payload: zitiShop })
-    //onChangeDrugInfo: (drugInfo) => dispatch({ type: 'cart/changeDrugInfo', payload: drugInfo })
-  })
-)
-// @withLogin()
-export default class CartCheckout extends Component {
-  static defaultProps = {
-    list: []
-  };
-
+export default class EspireCheckout extends Component {
+  // config = {
+  //   navigationBarTitleText: "innisfree 导购商城"
+  // };
   constructor(props) {
     super(props);
-
+    // const {
+    //   windowWidth
+    // } = Taro.$systemSize
+    const ratio = 750 / 375;
     this.state = {
-      info: null,
-      submitLoading: false,
-      address_list: [],
-      shop: null,
-      showShippingPicker: false,
-      showAddressPicker: false,
-      showCheckoutItems: false,
-      showCoupons: false,
-      express: true,
-      receiptType: "logistics",
-      curCheckoutItems: [],
-      coupons: [],
-      drug: null,
+      cart_type: "",
       total: {
         items_count: "",
         total_fee: "0.00",
@@ -108,585 +77,45 @@ export default class CartCheckout extends Component {
         freight_fee: "",
         member_discount: "",
         coupon_discount: "",
-        point: "",
-        point_fee: ""
+        point: ""
       },
-      payType: "",
-      disabledPayment: null,
-      isPaymentOpend: false,
-      isDrugInfoOpend: false,
-      invoiceTitle: "",
-      curStore: {},
-      shouldCalcOrder: false,
-      shoppingGuideData: null, //代客下单导购信息
-      // 跨境富文本
-      quota_tip: "",
-      // shopData:null, //店铺信息
-      // 身份信息
-      identity: {
-        identity_name: "",
-        identity_id: ""
-      },
-      //积分相关
-      isPointOpen: false,
-      point_use: 0,
-      pointInfo: null,
-      isPackage: false,
-      isPackageOpen: false,
-      isNeedPackage: false,
-      pick: {},
-      isOpenStore: null
+      payType: "amorepay",
+      errorMessage: null,
+      orderInfo: null,
+      cartlist: [],
+      goodsllist: [],
+      giftslist: [],
+      notgoodslist: [],
+      poster: "", // 生成的分享图片
+      ratio,
+      canvasWidth: 375 * ratio,
+      canvasHeight: 600 * ratio,
+      isShowQrcode: false // 分享订单图片显示状态
     };
   }
-
   componentDidMount() {
-    // this.fetchAddress()
-    if (this.$router.params.scene) {
-      Taro.setStorageSync(
-        "espierCheckoutData",
-        normalizeQuerys(this.$router.params)
-      );
-    }
-
-    let token = S.getAuthToken();
-    if (!token) {
-      let source = "";
-      if (this.$router.params.scene) {
-        source = "other_pay";
-      }
-      Taro.redirectTo({
-        url: `/subpage/pages/auth/wxauth?source=${source}`
-      });
-
-      return;
-    }
-    const { cart_type, pay_type: payType, shop_id } = this.$router.params;
-    let curStore = null,
-      info = null;
-
-    if (cart_type === "fastbuy") {
-      curStore = Taro.getStorageSync("curStore");
-      this.props.onClearFastbuy();
-      info = null;
-    } else if (cart_type === "cart") {
-      const {
-        shop_id,
-        name,
-        store_address,
-        is_delivery,
-        is_ziti = {},
-        lat,
-        lng,
-        hour,
-        phone
-      } = this.$router.params;
-      // 积分购买不在此种情况
-      curStore = {
-        shop_id,
-        name,
-        store_address,
-        is_delivery: JSON.parse(is_delivery),
-        is_ziti: JSON.parse(is_ziti),
-        lat,
-        lng,
-        hour,
-        phone
-      };
-      this.props.onClearFastbuy();
-      info = null;
-    }
-
-    this.setState({
-      curStore,
-      info,
-      payType: payType || this.state.payType
-    });
-
-    let total_fee = 0;
-    let items_count = 0;
-    const items =
-      info && info.cart
-        ? info.cart[0].list.map(item => {
-            const { item_id, num } = item;
-            total_fee += +item.price;
-            items_count += +item.num;
-            return {
-              item_id,
-              num
-            };
-          })
-        : [];
-
-    this.params = {
-      cart_type,
-      items,
-      pay_type: payType || "wxpay"
-    };
-
-    this.setState({
-      total: {
-        items_count,
-        total_fee: total_fee.toFixed(2)
-      }
-    });
-    // this.handleAddressChange(this.props.defaultAddress)
-
-    this.props.onAddressChoose(null);
-    this.props.onChangeZitiStore(null);
-    Taro.removeStorageSync("selectShop");
-    this.getSalespersonNologin();
-    this.tradeSetting();
-    // this.getShop()
-    this.fetchAddress();
-    this.fetchZiTiShop();
+    this.calcOrder();
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.address !== this.props.address) {
-      this.fetchAddress();
-    }
-    if (nextProps.zitiShop !== this.props.zitiShop) {
-      this.fetchZiTiShop();
-    }
-  }
-  componentWillUnmount() {
-    // teardown clean
-    this.props.onClearCoupon();
-    this.props.onClearDrugInfo();
-    Taro.removeStorageSync("selectShop");
-  }
-
-  componentDidShow() {
-    this.setState({
-      isPaymentOpend: false,
-      isDrugInfoOpend: false,
-      isPointOpen: false
-    });
-    if (this.state.shouldCalcOrder) {
-      this.setState(
-        {
-          shouldCalcOrder: false
-        },
-        () => {
-          this.calcOrder();
-        }
-      );
-    }
-  }
-
-  async fetchZiTiShop() {
-    const {
-      shop_id,
-      scene,
-      cart_type,
-      seckill_id = null,
-      ticket = null,
-      order_type
-    } = this.$router.params;
-    //const { zitiShop } = this.props;
-    const params = this.getParams();
-    const selectShop = Taro.getStorageSync("selectShop");
-    let id = shop_id;
-    let ztparams = {};
-    if (scene) {
-      const { dtid } = normalizeQuerys(this.$router.params);
-      id = dtid;
-    }
-    const isOpenStore = await entry.getStoreStatus();
-    this.setState({
-      isOpenStore
-    });
-    if (isOpenStore) {
-      //是否开启非门店自提
-      ztparams = {
-        isNostores: 1, //1 开启
-        order_type: params.order_type,
-        cart_type,
-        seckill_id: seckill_id,
-        seckill_ticket: ticket,
-        bargain_id: params.bargain_id || ""
-      };
-      if (selectShop) {
-        ztparams = {
-          ...ztparams,
-          distributor_id: selectShop.distributor_id
-        };
-      } else {
-        let lnglat = Taro.getStorageSync("lnglat");
-        ztparams = {
-          ...ztparams,
-          lat: lnglat.latitude,
-          lng: lnglat.longitude
-          //cart_type: cart_type,
-        };
-      }
-    } else {
-      ztparams = {
-        isNostores: 0 //0 未开启
-      };
-      if (!selectShop) {
-        ztparams = {
-          ...ztparams,
-          distributor_id: id
-        };
-      }
-    }
-    if (APP_PLATFORM === "platform") {
-      delete ztparams.isNostores;
-    }
-    const shopInfo = await api.shop.getShop(ztparams);
-    isOpenStore && Taro.setStorageSync("selectShop", shopInfo);
-    this.setState(
-      {
-        curStore: shopInfo,
-        receiptType: selectShop
-          ? "ziti"
-          : shopInfo.is_delivery
-          ? "logistics"
-          : "ziti",
-        express: selectShop ? false : shopInfo.is_delivery ? true : false
-      },
-      () => {
-        isOpenStore && this.calcOrder();
-      }
-    );
-  }
-
-  async fetchAddress(cb) {
-    const { type } = this.$router.params;
-    const isDrug = type === "drug";
-    Taro.showLoading({
-      mask: true
-    });
-    // if (!isDrug) {
-    const { list } = await api.member.addressList();
-    this.setState(
-      {
-        address_list: list
-      },
-      () => {
-        this.changeSelection();
-        cb && cb(list);
-      }
-    );
-    /* } else {
-      const { store_name, store_address, shop_id, hour } = await api.shop.getShop()
-      this.setState({
-        shop: {
-          store_name,
-          store_address,
-          shop_id,
-          hour
-        }
-      }, () => {
-        this.calcOrder()
-      })
-    } */
-    Taro.hideLoading();
-  }
-
-  /**
-   * 获取代下单导购
-   * */
-  async getSalespersonNologin() {
-    const { source, scene } = this.$router.params;
-    let salesperson_id = "";
-    if (source === "other_pay" || scene) {
-      let espierCheckoutData = {};
-      if (source === "other_pay") {
-        espierCheckoutData = Taro.getStorageSync("espierCheckoutData");
-      } else {
-        espierCheckoutData = normalizeQuerys(this.$router.params);
-      }
-      salesperson_id = espierCheckoutData.smid;
-    }
-
-    if (!salesperson_id) return;
-
-    let shoppingGuideData = await api.member.getSalespersonNologin({
-      salesperson_id
-    });
-
-    shoppingGuideData.store_name =
-      shoppingGuideData.store_name.length > 4
-        ? shoppingGuideData.store_name.substring(0, 4) + "..."
-        : shoppingGuideData.store_name;
-
-    this.setState({
-      shoppingGuideData
-    });
-  }
-
-  async getShop() {
-    const { source, scene } = this.$router.params;
-    let distributor_id = "";
-    if (source === "other_pay" || scene) {
-      let espierCheckoutData = {};
-      if (source === "other_pay") {
-        espierCheckoutData = Taro.getStorageSync("espierCheckoutData");
-      } else {
-        espierCheckoutData = normalizeQuerys(this.$router.params);
-      }
-      distributor_id = espierCheckoutData.dtid;
-    }
-
-    if (!distributor_id) return;
-
-    let shopData = await api.shop.getShop({
-      distributor_id
-    });
-
-    this.setState({ shopData });
-  }
-
-  getShopId() {
-    const { source, scene } = this.$router.params;
-    if (source === "other_pay" || scene) {
-      let espierCheckoutData = {};
-      if (source === "other_pay") {
-        espierCheckoutData = Taro.getStorageSync("espierCheckoutData");
-      } else {
-        espierCheckoutData = normalizeQuerys(this.$router.params);
-      }
-      return espierCheckoutData.dtid;
-    }
-  }
-
-  changeSelection(params = {}) {
-    const { address_list } = this.state;
-    if (address_list.length === 0) {
-      // this.props.address = {
-      //   current: null
-      // }
-      this.props.onAddressChoose(null);
-      this.setState({
-        address: null
-      });
-      // this.handleAddressChange()
-      this.calcOrder();
-      /*Taro.navigateTo({
-        url: '/pages/member/edit-address'
-      })*/
-      return;
-    }
-
-    let address = this.props.address;
-    if (!address) {
-      const { address_id } = params;
-      address =
-        find(address_list, addr =>
-          address_id ? address_id === addr.address_id : addr.is_def > 0
-        ) ||
-        address_list[0] ||
-        null;
-    }
-
-    log.debug("[address picker] selection: ", address);
-    this.props.onAddressChoose(address);
-    this.handleAddressChange(address);
-  }
-
-  getParams() {
-    // console.log('/////////////////')
-    let { isNeedPackage, pack } = this.state;
-
-    const {
-      type,
-      seckill_id = null,
-      ticket = null,
-      group_id = null,
-      team_id = null,
-      shop_id,
-      source,
-      scene,
-      goodType,
-      bargain_id = ""
-    } = this.$router.params;
-    let cxdid = null;
-    let dtid = null;
-    let smid = null;
-    if (source === "other_pay" || scene) {
-      let espierCheckoutData = {};
-      if (source === "other_pay") {
-        espierCheckoutData = Taro.getStorageSync("espierCheckoutData");
-      } else {
-        espierCheckoutData = normalizeQuerys(this.$router.params);
-      }
-      cxdid = espierCheckoutData.cxdid;
-      dtid = espierCheckoutData.dtid;
-      smid = espierCheckoutData.smid;
-    }
-    let orderType = "";
-    let activity = {};
-    orderType = (() => {
-      const key = type;
-      let value = "";
-      switch (key) {
-        case "drug":
-          value = "normal_drug";
-          break;
-        case "group":
-          value = "normal_groups";
-          activity = Object.assign(activity, { bargain_id: group_id });
-          if (team_id) {
-            activity = Object.assign(activity, { team_id });
-          }
-          break;
-        case "seckill":
-          value = "normal_seckill";
-          activity = Object.assign(activity, {
-            seckill_id: seckill_id,
-            seckill_ticket: ticket
-          });
-          break;
-        default:
-          value = "normal";
-      }
-      return value;
-    })();
-    const receiver = pickBy(this.state.address, {
-      receiver_name: "name",
-      receiver_mobile: "mobile",
-      receiver_state: "state",
-      receiver_city: "city",
-      receiver_district: "district",
-      receiver_address: "address",
-      receiver_zip: "zip"
-    });
-    let buyerInfo = {};
-    if (type === "drug") {
-      buyerInfo = pickBy(this.state.drug, {
-        drug_buyer_name: "name",
-        drug_buyer_id_card: "id_card",
-        drug_list_image: "imgs"
-      });
-    }
-    const trackParams = Taro.getStorageSync("trackParams");
-    let tracks = {};
-    if (trackParams) {
-      tracks = {
-        source_id: trackParams.source_id,
-        monitor_id: trackParams.monitor_id
-      };
-    }
-    const distributionShopId = Taro.getStorageSync("distribution_shop_id");
-    const curStorageStore = Taro.getStorageSync("curStore");
-    let miniShopId = {};
-    if (distributionShopId) {
-      miniShopId = {
-        promoter_shop_id: distributionShopId
-      };
-    }
-    const {
-      payType,
-      receiptType,
-      point_use,
-      isOpenStore,
-      curStore
-    } = this.state;
-    const { coupon, drugInfo, zitiShop } = this.props;
-    if (drugInfo) {
-      this.setState({
-        drug: drugInfo
-      });
-    }
-    let params = {
-      ...this.params,
-      ...receiver,
-      ...buyerInfo,
-      ...tracks,
-      ...miniShopId,
-      ...activity,
-      receipt_type: receiptType,
-      order_type: bargain_id ? "bargain" : orderType,
-      promotion: "normal",
-      member_discount: 0,
-      coupon_discount: 0,
-      pay_type: payType,
-      isNostores: isOpenStore ? 1 : 0,
-      //distributor_id:this.getShopId() || (shop_id === "undefined" ? 0 : shop_id),
-      distributor_id: isOpenStore
-        ? receiptType === "logistics"
-          ? curStorageStore.store_id
-          : zitiShop
-          ? zitiShop.distributor_id
-          : curStore
-          ? curStore.distributor_id
-          : this.getShopId() || (shop_id === "undefined" ? 0 : shop_id)
-        : this.getShopId() ||
-          (shop_id === "undefined" ? curStorageStore.distributor_id : shop_id),
-      ...drugInfo,
-      point_use: point_use
-    };
-    if (isNeedPackage) {
-      params.pack = pack;
-    }
-    if (cxdid) {
-      params.cxdid = cxdid;
-      params.distributor_id = dtid;
-      params.cart_type = "cxd";
-      params.order_type = "normal_shopguide";
-      params.salesman_id = smid;
-    }
-    if (payType === "point") {
-      delete params.point_use;
-    }
-    if (APP_PLATFORM === "platform") {
-      delete params.isNostores;
-    }
-    if (coupon) {
-      if (coupon.not_use_coupon === 1) {
-        params.not_use_coupon = 1;
-      } else {
-        params.not_use_coupon = 0;
-      }
-      if (coupon.type === "coupon" && coupon.value.code) {
-        params.coupon_discount = coupon.value.code;
-      } else if (coupon.type === "member") {
-        params.member_discount = coupon.value ? 1 : 0;
-      }
-    }
-    if (goodType === "cross") {
-      params.iscrossborder = 1;
-    } else {
-      delete params.iscrossborder;
-    }
-    if (bargain_id) {
-      params.bargain_id = bargain_id;
-    }
-    this.params = params;
-    return _cloneDeep(params);
-  }
-  async tradeSetting() {
-    let res = await api.trade.tradeSetting();
-    let { is_open, packName, packDes } = res;
-
-    this.setState({
-      isPackage: is_open,
-      pack: {
-        packName,
-        packDes
-      }
-    });
-
-    console.log(res, "res");
-  }
+  // 计算接口
   async calcOrder() {
     Taro.showLoading({
       title: "加载中",
       mask: true
     });
     const params = this.getParams();
-
-    let salesperson_id = Taro.getStorageSync("s_smid");
-    if (salesperson_id) {
-      params.salesperson_id = salesperson_id;
-    }
+    params.receipt_type = "logistics";
     let data;
+
     try {
+      delete params.items;
       data = await api.cart.total(params);
     } catch (e) {
+      if (e.status_code === 422) {
+        return Taro.navigateBack();
+      }
+
       this.resolvePayError(e);
+      Taro.hideLoading();
     }
 
     if (!data) return;
@@ -694,1305 +123,744 @@ export default class CartCheckout extends Component {
     const {
       items,
       item_fee,
+      gift_warning_item,
       totalItemNum,
       member_discount = 0,
       coupon_discount = 0,
       discount_fee,
+      freight_discount,
       freight_fee = 0,
       freight_point = 0,
       point = 0,
       total_fee,
       remainpt,
       deduction,
-      third_params,
-      coupon_info,
-      total_tax,
-      quota_tip,
-      identity_name = "",
-      identity_id = "",
-      taxable_fee,
-      point_fee = 0,
-      point_use,
-      user_point = 0,
-      max_point = 0,
-      is_open_deduct_point,
-      deduct_point_rule,
-      real_use_point
+      is_open_o2o,
+      advance_fee,
+      tail_fee,
+      tail_pay_time,
+      order_class,
+      order_status,
+      pay_status,
+      green_discount_fee = 0,
+      no_support_coupon_fee = 0,
+      support_coupon_fee = 0,
+      total_point
     } = data;
-
-    //const { items, item_fee, totalItemNum, member_discount = 0, coupon_discount = 0, discount_fee, freight_fee = 0, freight_point = 0, point = 0, total_fee, remainpt, deduction,third_params, coupon_info,point_fee=0,point_use, user_point = 0,max_point = 0 ,is_open_deduct_point,deduct_point_rule,real_use_point } = data      // 测试数据
-    if (coupon_info && !this.props.coupon) {
-      this.props.onChangeCoupon({
-        type: "coupon",
-        value: {
-          title: coupon_info.info,
-          card_id: coupon_info.id,
-          code: coupon_info.coupon_code,
-          discount: coupon_info.discount_fee
-        }
-      });
-    }
     const total = {
       ...this.state.total,
       item_fee,
       discount_fee: -1 * discount_fee,
+      freight_discount: -1 * freight_discount,
       member_discount: -1 * member_discount,
       coupon_discount: -1 * coupon_discount,
-      taxable_fee,
-      freight_fee,
-      total_tax,
-      total_fee: params.pay_type === "point" ? 0 : total_fee,
+      total_fee,
       items_count: totalItemNum,
-      point,
-      freight_point,
-      remainpt, // 总积分
-      deduction, // 抵扣
-      point_fee: -1 * point_fee //积分抵扣金额
+      goodsItems: items
     };
-
-    let info = this.state.info;
-    let pointInfo = this.state.pointInfo;
-    if (items) {
-      // 从后端获取订单item
-      info = {
-        cart: [
-          {
-            list: transformCartList(items),
-            cart_total_num: items.reduce((acc, item) => +item.num + acc, 0)
-          }
-        ]
-      };
-      pointInfo = {
-        deduct_point_rule,
-        is_open_deduct_point,
-        user_point, //用户现有积分
-        max_point, //最大可使用积分
-        real_use_point: real_use_point,
-        point_use: point_use
-      };
-      if (
-        pointInfo.real_use_point &&
-        pointInfo.real_use_point < pointInfo.point_use
-      ) {
-        S.toast("积分有调整");
-      }
-
-      this.params.items = items;
-      //this.params.pointInfo = pointInfo
-    }
-    //console.warn('third_params',third_params)
-
-    Taro.hideLoading();
-    this.setState({
-      total,
-      info,
-      third_params,
-      quota_tip,
-      identity: {
-        identity_id,
-        identity_name
-      },
-      pointInfo
-    });
-  }
-
-  handleSwitchExpress = key => {
-    const receiptType = JSON.parse(key) ? "logistics" : "ziti";
-    this.clearPoint();
-    this.setState(
-      {
-        express: JSON.parse(key),
-        receiptType
-      },
-      () => {
-        this.calcOrder();
-      }
-    );
-  };
-
-  handleAddressChange = address => {
-    if (!address) {
-      return;
-    }
-    address = pickBy(address, {
-      state: "province",
-      city: "city",
-      district: "county",
-      address_id: "address_id",
-      mobile: "telephone",
-      name: "username",
-      zip: "postalCode",
-      address: "adrdetail",
-      area: "area"
-    });
-    this.clearPoint();
-    this.setState(
-      {
-        address
-      },
-      () => {
-        this.calcOrder();
-      }
-    );
-    if (!address) {
-      this.setState({
-        showAddressPicker: true
-      });
-    }
-  };
-
-  handleMapClick = () => {
-    const { curStore } = this.state;
-    const { lat, lng } = curStore ? curStore : Taro.getStorageSync("curStore");
-    Taro.openLocation({
-      latitude: Number(lat),
-      longitude: Number(lng),
-      scale: 18
-    });
-  };
-  handleEditZitiClick = id => {
-    const {
-      cart_type,
-      seckill_id = null,
-      ticket = null,
-      goodType
-    } = this.$router.params;
-    const params = this.getParams();
-    Taro.navigateTo({
-      url: `/pages/store/ziti-list?shop_id=${id}&cart_type=${cart_type}&order_type=${
-        params.order_type
-      }&seckill_id=${seckill_id}&ticket=${ticket}&goodType=${goodType}&bargain_id=${params.bargain_id ||
-        ""}`
-    });
-  };
-
-  handleShippingChange = type => {
-    console.log(type);
-  };
-
-  handleClickItems(items) {
-    this.setState({
-      curCheckoutItems: items
-    });
-    this.toggleCheckoutItems();
-  }
-
-  handleInvoiceClick = async () => {
-    const res = await Taro.chooseInvoiceTitle();
-
-    if (res.errMsg === "chooseInvoiceTitle:ok") {
-      log.debug("[invoice] info:", res);
-      const {
-        type,
-        title: content,
-        companyAddress: company_address,
-        taxNumber: registration_number,
-        bankName: bankname,
-        bankAccount: bankaccount,
-        telephone: company_phone
-      } = res;
-      this.params = {
-        ...this.params,
-        invoice_type: "normal",
-        invoice_content: {
-          title: type !== 0 ? "individual" : "unit",
-          content,
-          company_address,
-          registration_number,
-          bankname,
-          bankaccount,
-          company_phone
-        }
-      };
-      this.setState({
-        invoiceTitle: content
-      });
-    }
-  };
-
-  handleChange = val => {
-    let drug = null;
-    const arr = Object.values(val);
-    const isNan = arr.length > 0 && arr.find(item => item !== "");
-    if (isNan) drug = val;
-    this.setState(
-      {
-        drug,
-        isDrugInfoOpend: false
-      },
-      () => {
-        this.calcOrder();
-      }
-    );
-  };
-
-  toggleCheckoutItems(isOpened) {
-    if (isOpened === undefined) {
-      isOpened = !this.state.showCheckoutItems;
-    }
-
-    lockScreen(isOpened);
-    this.setState({ showCheckoutItems: isOpened });
-  }
-
-  toggleState(key, val) {
-    if (val === undefined) {
-      val = !this.state[key];
-    }
-
-    this.setState({
-      [key]: val
-    });
-  }
-
-  handlePaymentShow = () => {
-    this.setState({
-      isPaymentOpend: true,
-      isDrugInfoOpend: false,
-      isPointOpen: false
-    });
-  };
-
-  handleDrugInfoShow = () => {
-    // this.setState({
-    //   isPaymentOpend: false,
-    //   isDrugInfoOpend: true
-    // })
-    const { drug } = this.state;
-    Taro.navigateTo({
-      url: `/others/pages/cart/drug-info`
-    });
-  };
-
-  handleDrugChange = val => {
-    console.log(val);
-  };
-
-  resolvePayError(e) {
-    const { payType, disabledPayment } = this.state;
-    if (payType === "point" || payType === "deposit") {
-      const disabledPaymentMes = {};
-      disabledPaymentMes[payType] = e.message;
-      if (
-        payType === "deposit" &&
-        e.message === "当前余额不足以支付本次订单费用，请充值！"
-      ) {
-        Taro.hideLoading();
-        Taro.showModal({
-          content: e.message,
-          confirmText: "去充值",
-          success: res => {
-            if (res.confirm) {
-              Taro.redirectTo({
-                url: "/others/pages/recharge/index"
-              });
-            } else {
-              this.setState(
-                {
-                  disabledPayment: {
-                    ...disabledPaymentMes,
-                    ...disabledPayment
-                  },
-                  payType: "wxpay"
-                },
-                () => {
-                  this.calcOrder();
-                }
-              );
-            }
-          }
-        });
-        return;
-      }
-      // let payTypeNeedsChange = ['当前积分不足以支付本次订单费用', '当月使用积分已达限额'].includes(e.message)
-      this.setState(
-        {
-          disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
-          payType: ""
-        },
-        () => {
-          this.calcOrder();
-        }
-      );
-    }
-  }
-
-  submitPay = () => {
-    let { receiptType, submitLoading } = this.state;
-    if (receiptType === "logistics") {
-      if (this.state.curStore.is_delivery && !this.state.address) {
-        return S.toast("请选择地址");
-      }
-    }
-    if (submitLoading) {
-      return false;
-    }
-    this.setState({
-      submitLoading: true
-    });
-    let _this = this;
-    if (Taro.getEnv() === "WEAPP") {
-      let templeparams = {
-        temp_name: "yykweishop",
-        source_type:
-          receiptType === "logistics" ? "logistics_order" : "ziti_order"
-      };
-      api.user.newWxaMsgTmpl(templeparams).then(
-        tmlres => {
-          console.log("templeparams---1", tmlres);
-          if (tmlres.template_id && tmlres.template_id.length > 0) {
-            wx.requestSubscribeMessage({
-              tmplIds: tmlres.template_id,
-              success() {
-                _this.handlePay();
-              },
-              fail() {
-                _this.handlePay();
-              }
-            });
-          } else {
-            _this.handlePay();
-          }
-        },
-        () => {
-          _this.handlePay();
-        }
-      );
-    } else {
-      _this.handlePay();
-    }
-  };
-
-  handlePay = async () => {
-    // if (!this.state.address) {
-    //   return S.toast('请选择地址')
+    // const info={
+    //     cart: [{
+    //         list: [
+    //           ...transformCartList(items),
+    //           ...transformCartList(gift_warning_item && gift_warning_item.length > 0 ? gift_warning_item : [], { disabled: true })
+    //         ],
+    //         cart_total_num: items.reduce((acc, item) => (+item.num) + acc, 0)
+    //       }]
     // }
-    const {
-      payType,
+
+    // let cartlist2 = [
+    //   ...transformCartList(items),
+    //   ...transformCartList(
+    //     gift_warning_item && gift_warning_item.length > 0
+    //       ? gift_warning_item
+    //       : [],
+    //     { disabled: true }
+    //   )
+    // ];
+
+    let cartlist = await api.guide.cartdatalist(params);
+    cartlist = cartlist.valid_cart[0].list
+    console.log('计算接口-cartlist',cartlist)
+    let goodsllist = [];
+    let giftslist = [];
+    let notgoodslist = [];
+    cartlist.forEach(item => {
+      // (item.order_item_type === 'normal' && !item.disabled) || (!item.order_item_type && !item.disabled)||(item.order_item_type === 'gift'&&item.is_cart&&!item.disabled)
+      //兑换券兑换的商品都视为赠品，如果赠品是普通商品，组合商品显示在商品区域（is_cart为true），如果是0元赠品显示在赠品区域（is_cart为false）
+      if (item.special_type === "normal") {
+        goodsllist.push(item);
+      } else if (item.special_type === "gift") {
+        giftslist.push(item);
+      } else if (item.special_type === "normal" && item.disabled) {
+        notgoodslist.push(item);
+      }
+    });
+    console.log('计算接口-goodsllist',goodsllist)
+    this.setState({
       total,
-      identity,
-      isOpenStore,
-      curStore,
-      receiptType
-    } = this.state;
-    const { type, goodType, cart_type } = this.$router.params;
-
-    // const { payType, total,point_use } = this.state
-    // const { type } = this.$router.params
-    const isDrug = type === "drug";
-    if (payType === "point" || payType === "deposit") {
-      try {
-        const content =
-          payType === "point"
-            ? `确认使用${total.point}积分全额抵扣商品总价吗`
-            : "确认使用余额支付吗？";
-        const { confirm } = await Taro.showModal({
-          title: payType === "point" ? "积分支付" : "余额支付",
-          content,
-          confirmColor: "#0b4137",
-          confirmText: "确认使用",
-          cancelText: "取消"
-        });
-        if (!confirm) {
-          this.setState({
-            submitLoading: false
-          });
-          return;
-        }
-      } catch (e) {
-        this.setState({
-          submitLoading: false
-        });
-        console.log(e);
-        return;
-      }
-    }
-
-    Taro.showLoading({
-      title: "正在提交",
-      mask: true
+      cartlist,
+      goodsllist,
+      giftslist,
+      notgoodslist
     });
-
-    this.setState({
-      submitLoading: true
-    });
-
-    let order_id, config, payErr;
-    try {
-      let params = this.getParams();
-      if (APP_PLATFORM === "standard" && cart_type !== "cart") {
-        const { distributor_id, store_id } = Taro.getStorageSync("curStore");
-        params.distributor_id = isOpenStore
-          ? receiptType === "ziti"
-            ? curStore.distributor_id
-            : store_id
-          : this.getShopId() || distributor_id;
-      }
-      delete params.items;
-      // 积分不开票
-      if (payType === "point") {
-        delete params.invoice_type;
-        delete params.invoice_content;
-        delete params.point_use;
-      }
-
-      let salesman_id = Taro.getStorageSync("s_smid");
-      if (salesman_id) {
-        params.salesman_id = salesman_id;
-      }
-
-      // 如果是跨境商品
-      if (goodType === "cross") {
-        if (!identity.identity_id || !identity.identity_name) {
-          Taro.showToast({
-            title: identity.identity_id
-              ? "请填写订购人姓名"
-              : "请填写订购人身份证号",
-            icon: "none",
-            mask: true
-          });
-          this.setState({
-            submitLoading: false
-          });
-          return false;
-        }
-        params = { ...params, ...identity };
-      }
-
-      if (
-        process.env.TARO_ENV === "h5" &&
-        payType !== "point" &&
-        payType !== "deposit" &&
-        !isDrug
-      ) {
-        config = await api.trade.h5create(params);
-        redirectUrl(
-          api,
-          `/subpage/pages/cashier/index?order_id=${config.order_id}`
-        );
-        // Taro.redirectTo({
-        //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
-        // });
-        return;
-      } else {
-        config = await api.trade.create(params);
-        order_id = isDrug ? config.order_id : config.trade_info.order_id;
-      }
-      // 提交订单埋点
-      Tracker.dispatch("CREATE_ORDER", {
-        ...total,
-        ...config
-      });
-
-      this.cancelpay = () => {
-        Tracker.dispatch("CANCEL_PAY", {
-          ...total,
-          ...config
-        });
-      };
-    } catch (e) {
-      Taro.showToast({
-        title: e.message,
-        icon: "none",
-        mask: true
-      });
-      payErr = e;
-      this.resolvePayError(e);
-      this.setState({
-        submitLoading: false
-      });
-      // dhpoint 判断
-      if (payType === "point") {
-        this.setState({
-          submitLoading: false
-        });
-      }
-    }
-
     Taro.hideLoading();
-    if (!order_id) return;
+  }
+  getParams() {
+    const { order_id } = this.$router.params;
+    const { payType: pay_type } = this.state;
+    const { freightCoupon } = this.props;
 
-    if (isDrug) {
-      Taro.redirectTo({
-        url: "/subpage/pages/trade/drug-list"
-      });
-      return;
+    const track = Taro.getStorageSync("trackParams");
+
+    let source_id = 0,
+      monitor_id = 0;
+    if (track) {
+      source_id = track.source_id;
+      monitor_id = track.monitor_id;
     }
-    // 支付流程
-    const paymentParams = {
-      order_id,
-      pay_type: this.state.payType,
-      order_type: config.order_type
-    };
+    const freight_discount = freightCoupon ? freightCoupon.value.code : null;
 
-    this.setState({
-      submitLoading: false
-    });
-    // 积分流程
-    if (payType === "point" || payType === "deposit") {
-      if (!payErr) {
-        Taro.showToast({
-          title: "支付成功",
-          icon: "none"
-        });
-
-        this.props.onClearCart();
-        Taro.redirectTo({
-          url: `/subpage/pages/trade/detail?id=${order_id}`
-        });
-      }
-
-      return;
-    }
-
-    payErr = null;
-    try {
-      const payRes = await Taro.requestPayment(config);
-      // 支付上报
-      const { total } = this.state;
-      Tracker.dispatch("ORDER_PAY", {
-        ...total,
-        ...config
-      });
-
-      log.debug(`[order pay]: `, payRes);
-    } catch (e) {
-      payErr = e;
-      console.log(e);
-      // Taro.showToast({
-      //   //title: e.err_desc || e.errMsg || "支付失败",
-      //   title:"支付失败",
-      //   icon: "none"
-      // });
-    }
-
-    if (!payErr) {
-      await Taro.showToast({
-        title: "支付成功",
-        icon: "success"
-      });
-
-      this.props.onClearCart();
-      Taro.redirectTo({
-        url:
-          type === "group"
-            ? `/marketing/pages/item/group-detail?team_id=${config.team_id}`
-            : `/subpage/pages/trade/detail?id=${order_id}`
-      });
-
-      /*this.props.onClearCart()
-      Taro.redirectTo({
-        url: `/subpage/pages/trade/detail?id=${order_id}`
-      })*/
-    } else {
-      if (payErr.errMsg.indexOf("fail cancel") >= 0) {
-        this.cancelpay();
-        Taro.redirectTo({
-          url: `/subpage/pages/trade/detail?id=${order_id}`
-        });
-      }
-    }
-    return;
-
-    // const url = `/pages/cashier/index?order_id=${order_id}`
-    // this.props.onClearCart()
-    // Taro.navigateTo({ url })
-  };
-
-  handleRemarkChange = val => {
-    this.params = {
+    const params = {
       ...this.params,
-      remark: val
+      order_type: "normal",
+      promotion: "normal",
+      member_discount: 0,
+      coupon_discount: 0,
+      freight_discount,
+      pay_type,
+      source_id,
+      monitor_id,
+      order_id
     };
+    this.params = params;
+    return _cloneDeep(params);
+  }
+
+  /**
+   * 分享订单
+   */
+  handleShare = async () => {
+    Taro.showLoading({
+      title: "加载中..."
+    });
+    try {
+      this.drawCanvas();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  handleCouponsClick = () => {
-    // if (this.state.payType === 'point'){
-    //   return
-    // }
-    // if (this.params.order_type === 'normal' || this.params.order_type === 'normal_seckill' || this.params.order_type === 'single_group' || this.params.order_type === 'limited_time_sale') {
-    //   return S.toast('该活动不支持使用优惠券')
-    // }
+  drawCanvas = async () => {
+    try {
+      const params = this.getParams();
+      params.receipt_type = "logistics";
+      delete params.items;
+      const ba_params = Taro.getStorageSync("ba_params");
+      const qw_chatId = S.get("qw_chatId", true);
+      let entry_form = S.get("entry_form", true);
+      let share_id = '888',
+        wxshop_name = 'wxshop_name',
+        item_total = '2',
+        gift_total = '3'
+      
+      const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+      const userinfo = Taro.getStorageSync("userinfo");
+      // https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?temp_name=yykweishop&page=pages/cart/espier-checkout&company_id=1&cxdid=159&smid=78&distributor_id=103
+      const url = `https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout`;
+      const { path: qrcode } = await Taro.getImageInfo({ src: url });
+      const { giftslist, total, ratio, canvasWidth, canvasHeight } = this.state;
+      let avatar = null;
+      if (userinfo.avatar) {
+        let avatarImgInfo = await Taro.getImageInfo({ src: userinfo.avatar });
+        avatar = avatarImgInfo.path;
+      }
 
-    const items = this.params.items
-      .filter(item => item.order_item_type !== "gift")
-      .map(item => {
-        const { item_id, num, total_fee: price } = item;
-        return {
-          item_id,
-          price,
-          num
-        };
+      console.log("======qrcode===", qrcode);
+      console.log("======avatar===", avatar);
+      const ctx = Taro.createCanvasContext("myCanvas");
+      ctx.setFillStyle('red')
+ctx.setFillStyle('red')
+ctx.fillRect(10, 10, 150, 100)
+ctx.draw()
+ctx.fillRect(50, 50, 150, 100)
+ctx.draw(true)
+// return
+
+      canvasExp.roundRect(ctx, 0, 0, canvasWidth, canvasHeight, 0);
+      ctx.save();
+      console.log("======ctx.save()===");
+      // 头部信息
+      if (avatar) {
+        canvasExp.imgCircleClip(
+          ctx,
+          avatar,
+          15 * ratio,
+          15 * ratio,
+          45 * ratio,
+          45 * ratio
+        );
+      }
+
+      ctx.restore();
+      
+      ctx.draw(true, async () => {
+        console.log('checkout-ctx.draw1-restore')
+        
+        Taro.hideLoading();
       });
+      canvasExp.textFill(
+        ctx,
+        userinfo.username || "",
+        75 * ratio,
+        25 * ratio,
+        14,
+        "#184337"
+      );
+      if (wxshop_name) {
+        canvasExp.textOverflowFill(
+          ctx,
+          wxshop_name,
+          75 * ratio,
+          42 * ratio,
+          160 * ratio,
+          12,
+          "#87C55C"
+        );
+        canvasExp.textFill(ctx, "为您推荐", 75 * ratio, 65 * ratio, 12, "#666");
+      } else {
+        canvasExp.textFill(ctx, "为您推荐", 75 * ratio, 45 * ratio, 12, "#666");
+      }
+      canvasExp.drawImageFill(
+        ctx,
+        "https://bbc-espier-images.amorepacific.com.cn/image/2/2021/02/28/c82701f15f42ee1743d3a779d6a38327Z4zMvCPbp2FhYwf4zzfLBmmaHSVOUqcD",
+        224 * ratio,
+        32 * ratio,
+        98 * ratio,
+        18 * ratio
+      );
 
-    const { shop_id, source, scene, cart_type, goodType } = this.$router.params;
+      // 总计
+      canvasExp.textFill(
+        ctx,
+        `共${item_total}件商品，${gift_total}件赠品`,
+        15 * ratio,
+        425 * ratio,
+        12,
+        "#101010"
+      );
+      canvasExp.textFill(ctx, "合计", 15 * ratio, 450 * ratio, 12, "#999");
+      canvasExp.textFill(
+        ctx,
+        `¥${returnFloat(total.item_fee / 100)}`,
+        64 * ratio,
+        450 * ratio,
+        12,
+        "#101010"
+      );
+      canvasExp.textFill(ctx, "为您省", 15 * ratio, 468 * ratio, 12, "#999");
+      canvasExp.textFill(
+        ctx,
+        `¥${returnFloat(total.discount_fee / 100)}`,
+        64 * ratio,
+        468 * ratio,
+        12,
+        "#101010"
+      );
+      canvasExp.textFill(ctx, "实付", 15 * ratio, 493 * ratio, 12, "#999");
+      canvasExp.textFill(
+        ctx,
+        `¥${returnFloat(total.total_fee / 100)}`,
+        64 * ratio,
+        493 * ratio,
+        14,
+        "#101010",
+        "blod"
+      );
+      canvasExp.drawImageFill(
+        ctx,
+        qrcode,
+        230 * ratio,
+        410 * ratio,
+        100 * ratio,
+        100 * ratio
+      );
+      canvasExp.textFill(
+        ctx,
+        "长按识别下单",
+        248 * ratio,
+        525 * ratio,
+        12,
+        "#999"
+      );
+      canvasExp.textFill(
+        ctx,
+        "长按图片可立即转发",
+        (canvasWidth / 2) * ratio,
+        535 * ratio,
+        12,
+        "#666",
+        "",
+        "center"
+      );
 
-    let m_source = "";
-    if (source === "other_pay" || scene) {
-      m_source = "other_pay";
-    }
+      // 商品信息
+      canvasExp.roundRect(
+        ctx,
+        14 * ratio,
+        84 * ratio,
+        canvasWidth - 14 * ratio * 2,
+        310 * ratio,
+        5,
+        "#f5f5f5"
+      );
+      ctx.save();
 
-    // let { point_use, shopData } = this.state
+      ctx.setTextAlign("left");
+      canvasExp.textFill(ctx, "商品", 30 * ratio, 112 * ratio, 12, "#666");
+      canvasExp.textFill(ctx, "单价", 206 * ratio, 112 * ratio, 12, "#666");
+      canvasExp.textFill(ctx, "数量", 284 * ratio, 112 * ratio, 12, "#666");
+      for (let i = 0; i < total.goodsItems.length; i++) {
+        if (i > 5) {
+          canvasExp.textFill(
+            ctx,
+            "······",
+            30 * ratio,
+            290 * ratio,
+            12,
+            "#101010"
+          );
+          break;
+        }
+        let item = total.goodsItems[i];
+        canvasExp.textOverflowFill(
+          ctx,
+          item.item_name,
+          30 * ratio,
+          (120 + 24 * (i + 1)) * ratio,
+          184 * ratio,
+          12,
+          "#101010"
+        );
+        canvasExp.textFill(
+          ctx,
+          `${item.fee_symbol}${returnFloat(item.price / 100)}`,
+          206 * ratio,
+          (120 + 24 * (i + 1)) * ratio,
+          12,
+          "#101010"
+        );
+        canvasExp.textFill(
+          ctx,
+          `x ${item.num}`,
+          284 * ratio,
+          (120 + 24 * (i + 1)) * ratio,
+          12,
+          "#666"
+        );
+      }
 
-    // S.set('point_use',point_use)
-    let id = "";
-    if (APP_PLATFORM === "standard" && cart_type !== "cart") {
-      const { distributor_id } = Taro.getStorageSync("curStore");
-      id = distributor_id;
-    } else {
-      id = shop_id;
-    }
-    if (scene) {
-      const espierCheckoutData = normalizeQuerys(this.$router.params);
-      id = espierCheckoutData.dtid;
-    }
-    this.clearPoint();
-    this.setState(
-      {
-        shouldCalcOrder: true
-      },
-      () => {
-        Taro.navigateTo({
-          url: `/others/pages/cart/coupon-picker?items=${JSON.stringify(
-            items
-          )}&is_checkout=true&cart_type=${
-            this.params.cart_type
-          }&distributor_id=${id}&source=${m_source}&goodType=${goodType}`
+      
+      
+      // 分割线
+      ctx.beginPath();
+      ctx.setStrokeStyle("#ddd");
+      ctx.setLineWidth(1);
+
+      ctx.moveTo(30 * ratio, 305 * ratio);
+      ctx.lineTo(310 * ratio, 305 * ratio);
+      ctx.stroke();
+
+      // 赠品
+      ctx.beginPath();
+      for (let i = 0; i < giftslist.length; i++) {
+        if (i > 1) {
+          canvasExp.textFill(
+            ctx,
+            "······",
+            30 * ratio,
+            380 * ratio,
+            12,
+            "#101010"
+          );
+          break;
+        }
+        let item = giftslist[i];
+        canvasExp.textOverflowFill(
+          ctx,
+          "【赠品】 " + item.title,
+          22 * ratio,
+          (310 + 24 * (i + 1)) * ratio,
+          220 * ratio,
+          12,
+          "#87C65C"
+        );
+        canvasExp.textFill(
+          ctx,
+          `x ${item.num}`,
+          284 * ratio,
+          (310 + 24 * (i + 1)) * ratio,
+          12,
+          "#666"
+        );
+      }
+      // ctx.draw()
+      console.log("======ctx.restore()===");
+      // ctx.draw(false, async () => {
+      //   console.log('checkout-ctx.draw-res2',ctx)
+      //   const res = await Taro.canvasToTempFilePath({
+      //     x: 0,
+      //     y: 0,
+      //     canvasId: "myCanvas"
+      //   });
+      //   console.log("======canvasToTempFilePath====", res);
+      //   this.setState({
+      //     poster: res.tempFilePath,
+      //     isShowQrcode: true
+      //   });
+      //   Taro.hideLoading();
+      // });
+      setTimeout(()=>{
+        console.log("======ctx.setTimeout()===");
+        ctx.draw(true, async () => {
+          console.log('checkout-ctx.draw-res2',ctx)
+          const res = await Taro.canvasToTempFilePath({
+            x: 0,
+            y: 0,
+            canvasId: "myCanvas"
+          });
+          console.log("======canvasToTempFilePath====", res);
+          this.setState({
+            poster: res.tempFilePath,
+            isShowQrcode: true
+          });
+          Taro.hideLoading();
         });
-      }
-    );
-    // Taro.navigateTo({
-    //   url: `/pages/cart/coupon-picker?items=${JSON.stringify(items)}&is_checkout=true&cart_type=${this.params.cart_type}&distributor_id=${id}`
-    // })
+      },2000)
+      
+    } catch (err) {
+      console.log(err);
+      Taro.hideLoading();
+    }
   };
 
-  handlePaymentChange = async payType => {
-    // if (payType === 'point') {
-    //   this.props.onClearCoupon()
-    // }
-    this.setState(
-      {
-        point_use: 0,
-        payType,
-        isPaymentOpend: false
-      },
-      () => {
-        this.calcOrder();
-      }
-    );
-  };
-
-  handleLayoutClose = () => {
+  handleClickHideImage = () => {
     this.setState({
-      isPaymentOpend: false,
-      isDrugInfoOpend: false,
-      isPointOpen: false
+      isShowQrcode: false
     });
   };
 
-  // 开发票
-  handleInvoiceClick = async () => {
-    authSetting("invoiceTitle", async () => {
-      const res = await Taro.chooseInvoiceTitle();
-
-      if (res.errMsg === "chooseInvoiceTitle:ok") {
-        log.debug("[invoice] info:", res);
-        const {
-          type,
-          title: content,
-          companyAddress: company_address,
-          taxNumber: registration_number,
-          bankName: bankname,
-          bankAccount: bankaccount,
-          telephone: company_phone
-        } = res;
-        console.log(type, 440);
-        this.params = {
-          ...this.params,
-          invoice_type: "normal",
-          invoice_content: {
-            title: type == 0 ? "unit" : "individual",
-            content,
-            company_address,
-            registration_number,
-            bankname,
-            bankaccount,
-            company_phone
-          }
-        };
-        this.setState({
-          invoiceTitle: content
-        });
+  handleDownloadImage = async () => {
+    const { poster } = this.state;
+    const res = await Taro.getSetting();
+    console.log(res);
+    try {
+      if (!res.authSetting["scope.writePhotosAlbum"]) {
+        await Taro.authorize({ scope: "scope.writePhotosAlbum" });
+        await Taro.saveImageToPhotosAlbum({ filePath: poster });
+      } else {
+        await Taro.saveImageToPhotosAlbum({ filePath: poster });
       }
-    });
+      Taro.showToast({ title: "保存成功" });
+    } catch (err) {
+      Taro.showToast({ title: "保存失败", icon: "none" });
+    }
   };
 
-  //使用积分
-  handlePointShow = () => {
+  resolvePayError = e => {
     this.setState({
-      isPointOpen: true,
-      isPaymentOpend: false,
-      isDrugInfoOpend: false
-    });
-  };
-  handlePointUseChange = async (point_use, payType) => {
-    this.setState(
-      {
-        point_use,
-        payType,
-        isPointOpen: false
-      },
-      () => {
-        this.calcOrder();
-      }
-    );
-  };
-
-  //清除使用积分
-  clearPoint = () => {
-    this.setState({
-      point_use: 0,
-      payType: "wxpay"
-    });
-  };
-  // 选择是否需要礼袋
-  changeNeedPackage = isChecked => {
-    this.setState({
-      isNeedPackage: isChecked
-    });
-  };
-  resetInvoice = e => {
-    e.stopPropagation();
-    this.setState({ invoiceTitle: "" });
-    delete this.params.invoice_type;
-    delete this.params.invoice_content;
-  };
-  resetPoint = e => {
-    e.stopPropagation();
-    const { pointInfo } = this.state;
-    pointInfo.point_use = 0;
-    this.setState(
-      {
-        point_use: 0,
-        payType: "wxpay",
-        pointInfo
-      },
-      () => {
-        this.calcOrder();
-      }
-    );
-  };
-
-  // 复制链接
-  copyLink = () => {
-    Taro.setClipboardData({
-      data: "https://app.singlewindow.cn/ceb2pubweb/sw/personalAmount"
-    });
-  };
-
-  // 输入跨境信息
-  inputChange = (type, e) => {
-    const { identity } = this.state;
-    identity[type] = e;
-    this.setState({
-      identity
+      errorMessage: e
     });
   };
 
   render() {
-    // 支付方式文字
-    const payTypeText = {
-      point: "积分支付",
-      wxpay: process.env.TARO_ENV === "weapp" ? "微信支付" : "现金支付",
-      deposit: "余额支付",
-      delivery: "货到付款",
-      hfpay: "汇付支付"
-    };
-    const { coupon, colors } = this.props;
     const {
-      info,
-      express,
-      address,
+      goodsllist,
+      notgoodslist,
+      giftslist,
       total,
-      showAddressPicker,
-      showCheckoutItems,
-      curCheckoutItems,
-      payType,
-      invoiceTitle,
-      submitLoading,
-      disabledPayment,
-      isPaymentOpend,
-      isDrugInfoOpend,
-      drug,
-      third_params,
-      shoppingGuideData,
-      curStore,
-      pointInfo,
-      isPointOpen,
-      identity,
-      quota_tip,
-      isNeedPackage,
-      isPackage,
-      pack,
-      isOpenStore
+      poster,
+      isShowQrcode,
+      canvasWidth,
+      canvasHeight
     } = this.state;
-    // let curStore = {}
-    // if (shopData) {
-    //   curStore = shopData
-    // } else {
-    //   curStore = this.state.curStore
-    // }
-    //const curStore = Taro.getStorageSync('curStore')
-    // const { curStore } = this.state
-    const { type, goodType, bargain_id } = this.$router.params;
-    const isDrug = type === "drug";
-
-    if (!info) {
-      return <Loading />;
-    }
-
-    const couponText = !coupon
-      ? ""
-      : coupon.type === "member"
-      ? "会员折扣"
-      : (coupon.value && coupon.value.title) || "";
-    //const isBtnDisabled = !address
-    const isBtnDisabled = express ? !address : false;
+    const ipxClass = S.get("ipxClass") || "";
+    console.log('checkout-goodsllist-render',goodsllist)
+    console.log('checkout-poster-render',poster)
     return (
-      <View className="page-checkout">
-        {showAddressPicker === false ? (
-          <NavBar
-            title="填写订单信息"
-            leftIconType="chevron-left"
-            fixed="true"
-          />
-        ) : null}
-        {shoppingGuideData ? (
-          <View className="shopping-guide-header">
-            此订单商品来自“{shoppingGuideData.store_name}”导购“
-            {shoppingGuideData.name}”的推荐
-          </View>
-        ) : null}
-        <ScrollView scrollY className="checkout__wrap">
-          {curStore &&
-            !isArray(curStore) &&
-            curStore.is_ziti &&
-            curStore.is_delivery &&
-            !bargain_id &&
-            goodType !== "cross" && (
-              <View className="switch-tab">
-                <View
-                  className={classNames("switch-item", express ? "active" : "")}
-                  onClick={this.handleSwitchExpress.bind(this, true)}
-                >
-                  配送
-                </View>
-                <View
-                  className={classNames(
-                    "switch-item",
-                    !express ? "active" : ""
-                  )}
-                  onClick={this.handleSwitchExpress.bind(this, false)}
-                >
-                  自提
-                </View>
-              </View>
-            )}
-          {bargain_id ||
-          (express && curStore && curStore.is_delivery) ||
-          (curStore && !curStore.is_delivery && !curStore.is_ziti) ||
-          goodType === "cross" ? (
-            <AddressChoose isAddress={address} />
-          ) : (
-            <View className="address-module">
-              <View className="addr">
-                <View className="view-flex-item">
-                  <View className="addr-title">{curStore.name}</View>
-                  <View className="addr-detail">{curStore.store_address}</View>
-                </View>
-                {isOpenStore && APP_PLATFORM === "standard" ? (
+      <View className={`page-checkout ${ipxClass}`}>
+        <View className="checkout__wrap">
+          {goodsllist.length && (
+            <View className="sec cart-group__cont">
+              {goodsllist.map((item, idx) => {
+                return (
                   <View
-                    className="icon-edit"
-                    onClick={this.handleEditZitiClick.bind(
-                      this,
-                      curStore.distributor_id
-                    )}
-                  ></View>
-                ) : (
-                  <View
-                    className="icon-location"
-                    onClick={this.handleMapClick.bind(this)}
-                  ></View>
-                )}
-              </View>
-              <View className="view-flex">
-                <View className="view-flex-item">
-                  <View className="text-muted">营业时间：</View>
-                  <View>{curStore.hour}</View>
-                </View>
-                <View className="view-flex-item">
-                  <View className="text-muted">联系电话：</View>
-                  <View>{curStore.phone}</View>
-                </View>
-              </View>
+                    className={classNames("order-item__wrap")}
+                    key="item_id"
+                  >
+                    <View className="order-item__idx">
+                      <Text>第{idx + 1}件商品</Text>
+                    </View>
+                    <BaOrderItem
+                      info={item}
+                      showExtra={false}
+                      renderDesc={
+                        <View className="order-item__desc">
+                          {item.discount_info &&
+                            item.discount_info.map(discount => (
+                              <View key="id" style="display:inline-block;">
+                                {discount.info && !discount.is_special ? (
+                                  <Text
+                                    className="order-item__discount"
+                                    key={discount.type}
+                                  >
+                                    {discount.info}
+                                  </Text>
+                                ) : (
+                                  discount.is_special && (
+                                    <Image
+                                      className="order-item__discount-vipimg"
+                                      mode="widthFix"
+                                      src={item.pics}
+                                    />
+                                  )
+                                )}
+                              </View>
+                            ))}
+                        </View>
+                      }
+                      renderActLimit={
+                        <View className="order-item__actlimit">
+                          {item.discount_info &&
+                            item.discount_info.map(
+                              discount =>
+                                discount.limited === "single" &&
+                                item.num > 1 && (
+                                  <View
+                                    key="id"
+                                    className="limit_warn"
+                                    style="display:inline-block;"
+                                  >
+                                    <Text>
+                                      任选专区单品限一件，超过部分原价购买
+                                    </Text>
+                                  </View>
+                                )
+                            )}
+                        </View>
+                      }
+                      customFooter
+                      renderFooter={
+                        <View className="order-item__ft">
+                          <View>
+                            <Price
+                              className="order-item__oragin-price"
+                              value={item.price}
+                            />
+                            <Price
+                              className="order-item__price"
+                              beforeText="实付"
+                              value={item.total_fee}
+                            />
+                          </View>
+                          {item.disabled ? (
+                            <Text className="order-item__notnum">无库存</Text>
+                          ) : (
+                            <Text className="order-item__num">
+                              x {item.num}
+                            </Text>
+                          )}
+                        </View>
+                      }
+                    />
+                  </View>
+                );
+              })}
             </View>
           )}
-          {goodType === "cross" && (
-            <SpCell border={false} className="coupons-list">
-              <AtInput
-                name="name"
-                title="订购人"
-                type="text"
-                className="identity"
-                border={false}
-                placeholder="请输入身份证上的姓名"
-                value={identity.identity_name}
-                onChange={this.inputChange.bind(this, "identity_name")}
-              />
-              <AtInput
-                name="cardId"
-                title="身份证号"
-                type="idcard"
-                className="identity"
-                border={false}
-                placeholder="请输入身份证号码"
-                value={identity.identity_id}
-                ticket
-                onChange={this.inputChange.bind(this, "identity_id")}
-              />
-              <Text className="extDesc">
-                根据海关规定，购买人身份信息需与支付软件认证信息一致才可通关。本信息仅作通关用户，将被严格保密
-              </Text>
-            </SpCell>
-          )}
-          {/* type !== 'limited_time_sale' */}
-          {type !== "group" && type !== "seckill" && !bargain_id && (
-            <SpCell
-              isLink
-              className="coupons-list"
-              title="选择优惠券"
-              onClick={this.handleCouponsClick}
-              value={couponText || ""}
-            />
+          {notgoodslist.length && (
+            <View className="sec cart-group__cont">
+              {notgoodslist.map((item, idx) => {
+                return (
+                  <View
+                    className={classNames("order-item__wrap")}
+                    key="item_id"
+                  >
+                    <View className="order-item__idx">
+                      <Text>第{idx + 1}件商品</Text>
+                    </View>
+                    <BaOrderItem
+                      info={item}
+                      showExtra={false}
+                      renderDesc={
+                        <View className="order-item__desc">
+                          {item.discount_info &&
+                            item.discount_info.map(discount => (
+                              <View key="id" style="display:inline-block;">
+                                {discount.info && !discount.is_special ? (
+                                  <Text
+                                    className="order-item__discount"
+                                    key={discount.type}
+                                  >
+                                    {discount.info}
+                                  </Text>
+                                ) : (
+                                  discount.is_special && (
+                                    <Image
+                                      className="order-item__discount-vipimg"
+                                      mode="widthFix"
+                                      src={item.pics}
+                                      // src={require("../../assets/imgs/vip-exclusive-discount.png")}
+                                    />
+                                  )
+                                )}
+                              </View>
+                            ))}
+                        </View>
+                      }
+                      customFooter
+                      renderFooter={
+                        <View className="order-item__ft">
+                          <View>
+                            <Price
+                              className="order-item__oragin-price"
+                              value={item.price}
+                            />
+                            <Price
+                              className="order-item__price"
+                              beforeText="实付"
+                              value={item.total_fee}
+                            />
+                          </View>
+                          {item.disabled ? (
+                            <Text className="order-item__notnum">无库存</Text>
+                          ) : (
+                            <Text className="order-item__num">
+                              x {item.num}
+                            </Text>
+                          )}
+                        </View>
+                      }
+                    />
+                  </View>
+                );
+              })}
+            </View>
           )}
 
-          <View className="cart-list">
-            {info.cart.map(cart => {
-              return (
-                <View className="cart-group" key={cart.shop_id}>
-                  <View className="sec cart-group__cont">
-                    {cart.list.map((item, idx) => {
+          {giftslist.length && (
+            <View className="sec cart-group__cont">
+              {giftslist.length > 0 && (
+                <View className="promotion-goods__giftstitle">赠品</View>
+              )}
+              {giftslist.length > 0 && (
+                <View className="promotion-goods">
+                  {giftslist.length > 0 &&
+                    giftslist.map((item, idx) => {
                       return (
-                        <View className="order-item__wrap" key={item.item_id}>
+                        <View key="item_id">
                           {item.order_item_type === "gift" ? (
-                            <View className="order-item__idx">
-                              <Text>赠品</Text>
+                            <View
+                              className={classNames({
+                                "is-disabled": item.disabled
+                              })}
+                            >
+                              <Text className="promotion-goods__tag">
+                                【赠品】
+                              </Text>
+                              <Text className="promotion-goods__name">
+                                {item.title}{" "}
+                              </Text>
+                              <Text className="promotion-goods__num">
+                                {" "}
+                                x{item.num}
+                              </Text>
                             </View>
-                          ) : (
-                            <View className="order-item__idx national">
-                              <Text>第{idx + 1}件商品</Text>
-                              {item.type == "1" && (
-                                <View className="nationalInfo">
-                                  <Image
-                                    className="nationalFlag"
-                                    src={item.origincountry_img_url}
-                                    mode="aspectFill"
-                                    lazyLoad
-                                  />
-                                  <Text className="nationalTitle">
-                                    {item.origincountry_name}
-                                  </Text>
-                                </View>
-                              )}
-                            </View>
-                          )}
-                          <OrderItem
-                            // isShowNational
-                            info={item}
-                            showExtra={false}
-                            showDesc={true}
-                            renderDesc={
-                              <View className="order-item__desc">
-                                {item.discount_info &&
-                                  item.order_item_type !== "gift" &&
-                                  item.discount_info.map(discount => (
-                                    <Text
-                                      className="order-item__discount"
-                                      key={discount.type}
-                                    >
-                                      {discount.info}
-                                    </Text>
-                                  ))}
-                              </View>
-                            }
-                            customFooter
-                            renderFooter={
-                              <View className="order-item__ft">
-                                <Price
-                                  className="order-item__price"
-                                  value={item.price}
-                                ></Price>
-                                <Text className="order-item__num">
-                                  x {item.num}
-                                </Text>
-                              </View>
-                            }
-                          />
+                          ) : null}
                         </View>
                       );
                     })}
-                  </View>
-                  {isDrug && (
-                    <SpCell
-                      isLink
-                      className="coupons-list"
-                      title="用药人信息"
-                      onClick={this.handleDrugInfoShow}
-                      //onChange={this.handleDrugChange}
-                      value={drug ? "已上传" : "用药人及处方上传"}
-                      drug={drug}
-                    />
-                  )}
-                  <View className="sec cart-group__cont">
-                    <SpCell className="sec trade-remark" border={false}>
-                      <AtInput
-                        className="trade-remark__input"
-                        placeholder="给商家留言：选填（50字以内）"
-                        onChange={this.handleRemarkChange.bind(this)}
-                      />
-                    </SpCell>
-                  </View>
-                </View>
-              );
-            })}
-          </View>
-
-          {process.env.TARO_ENV === "weapp" && !bargain_id && (
-            <SpCell
-              isLink
-              className="trade-invoice"
-              title="开发票"
-              onClick={this.handleInvoiceClick}
-            >
-              <View className="invoice-title">
-                {invoiceTitle && (
-                  <View
-                    className="icon-close invoice-guanbi"
-                    onClick={this.resetInvoice.bind(this)}
-                  ></View>
-                )}
-                {invoiceTitle || "否"}
-              </View>
-            </SpCell>
-          )}
-          {isPackage && express && (
-            <SelectPackage
-              isChecked={isNeedPackage}
-              onHanleChange={this.changeNeedPackage.bind(this)}
-              packInfo={pack}
-            />
-          )}
-
-          {/*<SpCell
-            isLink
-            className='trade-invoice'
-            title='开发票'
-            onClick={this.handleInvoiceClick}
-          >
-            <Text>{invoiceTitle || '否'}</Text>
-          </SpCell>*/}
-
-          {/*<SpCell
-            className='trade-shipping'
-            title='配送方式'
-            value='[快递免邮]'
-          >
-          </SpCell>*/}
-          {goodType !== "cross" &&
-            pointInfo.is_open_deduct_point &&
-            !bargain_id && (
-              <SpCell
-                isLink
-                className="trade-invoice"
-                title="积分抵扣"
-                onClick={this.handlePointShow}
-              >
-                <View className="invoice-title">
-                  {(pointInfo.point_use > 0 || payType === "point") && (
-                    <View
-                      className="icon-close invoice-guanbi"
-                      onClick={this.resetPoint.bind(this)}
-                    ></View>
-                  )}
-                  {payType === "point"
-                    ? "全额抵扣"
-                    : pointInfo.point_use > 0
-                    ? `已使用${pointInfo.real_use_point}积分`
-                    : "使用积分"}
-                </View>
-              </SpCell>
-            )}
-
-          {!bargain_id && (
-            <View className="trade-payment">
-              <SpCell
-                isLink
-                border={false}
-                title="支付方式"
-                onClick={this.handlePaymentShow}
-              >
-                {total.deduction && (
-                  <Text className="trade-payment__hint">
-                    {total.remainpt}积分可用
-                  </Text>
-                )}
-                <Text>{payTypeText[payType]}</Text>
-              </SpCell>
-              {total.deduction && (
-                <View className="trade-payment__hint">
-                  可用{total.point}积分，抵扣{" "}
-                  <Price unit="cent" value={total.deduction} /> (包含运费{" "}
-                  <Price unit="cent" value={total.freight_fee}></Price>)
                 </View>
               )}
             </View>
           )}
 
-          {/* {payType === "point" && !bargain_id && (
-            <View className="sec trade-sub-total">
-              <SpCell title="运费">
-                <Price unit="cent" value={total.freight_fee} />
-              </SpCell> */}
-          {/*
-                <SpCell
-                  className='trade-sub-total__item'
-                  title='积分'
-                >
-                  <Price
-                    noSymbol
-                    noDecimal
-                    appendText='积分'
-                    value={total.point}
-                  />
-                </SpCell>
-              */}
-          {/* </View>
-          )} */}
-
           <View className="sec trade-sub-total">
             <SpCell className="trade-sub-total__item" title="商品金额：">
               <Price unit="cent" value={total.item_fee} />
             </SpCell>
-            {goodType === "cross" && (
-              <SpCell className="trade-sub-total__item" title="应税商品金额">
-                <Price unit="cent" value={total.taxable_fee} />
-              </SpCell>
-            )}
-            {/*<SpCell
-                className='trade-sub-total__item'
-                title='会员折扣：'
-              >
-                <Price
-                  unit='cent'
-                  value={total.member_discount}
-                />
-              </SpCell>*/}
+
             <SpCell className="trade-sub-total__item" title="优惠金额：">
               <Price unit="cent" value={total.discount_fee} />
             </SpCell>
-            {goodType !== "cross" && pointInfo.is_open_deduct_point && (
-              <SpCell className="trade-sub-total__item" title="积分抵扣：">
-                <Price unit="cent" value={total.point_fee} />
+            {total.freight_discount && (
+              <SpCell className="trade-sub-total__item" title="运费优惠：">
+                <Price unit="cent" value={total.freight_discount} />
               </SpCell>
             )}
+
             <SpCell className="trade-sub-total__item" title="运费：">
               <Price unit="cent" value={total.freight_fee} />
             </SpCell>
-            {goodType === "cross" && (
-              <SpCell className="trade-sub-total__item" title="税费：">
-                <Price unit="cent" value={total.total_tax} />
-              </SpCell>
-            )}
+            {/* {info.order_class==='presale'&&<AtSwitch  title='我已同意定金不退预售协议：' color='#0b4137' border={false} checked={isAgreement} onChange={this.handleAgreement} />} */}
           </View>
-
-          {goodType === "cross" && (
-            <View className="nationalNotice">
-              <View className="title">
-                关于跨境电子商务年度个人额度注意事项
+          <Batoolbar>
+            <View className="checkout-toolbar">
+              <View className="checkout-toolbar__total">
+                <Text className="total-items">共{total.items_count}件商品</Text>
+                <View className="checkout-toolbar__prices">
+                  <View className="total-price">
+                    <Text className="price-text">总计:　</Text>
+                    <Price primary unit="cent" value={total.total_fee} />
+                  </View>
+                  <Text className="checkout-toolbar__hint">
+                    以实际支付金额为准
+                  </Text>
+                </View>
               </View>
-              <SpHtmlContent content={quota_tip} className="info" />
-              <View className="copyLink" onClick={this.copyLink}>
-                跨境电子商务年度个人额度查询 点我复制
-              </View>
+              <AtButton
+                type="primary"
+                className="btn-confirm-order"
+                onClick={this.handleShare}
+              >
+                分享订单
+              </AtButton>
+            </View>
+          </Batoolbar>
+          {isShowQrcode && (
+            <View
+              className="qrcode-index"
+              onClick={this.handleClickHideImage}
+              catchtouchmove={true}
+            >
+              <Image
+                onClick={e => e.stopPropagation()}
+                showMenuByLongpress
+                style={styleNames({
+                  width: 375 + "px",
+              height: 600 + "px"
+                })}
+                src={poster}
+              />
+              <AtButton
+                className="download-btn"
+                onClick={this.handleDownloadImage}
+                type="primary"
+              >
+                下载到相册
+              </AtButton>
             </View>
           )}
-        </ScrollView>
-
-        <CheckoutItems
-          isOpened={showCheckoutItems}
-          list={curCheckoutItems}
-          onClickBack={this.toggleCheckoutItems.bind(this, false)}
-        />
-
-        <View className="toolbar checkout-toolbar">
-          <View className="checkout__total">
-            共<Text className="total-items">{total.items_count}</Text>
-            件商品　总计:
-            {payType !== "point" ? (
-              <Price primary unit="cent" value={total.total_fee} />
-            ) : (
-              total.point && (
-                <Price
-                  primary
-                  value={total.point}
-                  noSymbol
-                  noDecimal
-                  appendText="积分"
-                />
-              )
-            )}
-          </View>
-          <AtButton
-            type="primary"
-            className="btn-confirm-order"
-            customStyle={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-            loading={submitLoading}
-            disabled={isBtnDisabled}
-            onClick={this.submitPay}
-          >
-            {isDrug ? "提交预约" : "提交订单"}
-          </AtButton>
+          {/* 'canvas' */}
+          <Canvas
+            className="canvas-tag"
+            style={styleNames({
+              width: 375 + "px",
+              height: 600 + "px"
+            })}
+            canvas-id="myCanvas"
+          ></Canvas>
+          <SpToast />
         </View>
-
-        {/* {
-          <DrugInfo
-            isOpened={isDrugInfoOpend}
-            info={drug}
-            onClose={this.handleLayoutClose}
-            onChange={this.handleChange}
-          />
-        } */}
-
-        <PaymentPicker
-          isOpened={isPaymentOpend}
-          type={payType}
-          isShowPoint={false}
-          isShowBalance={goodType !== "cross"}
-          isShowDelivery={false}
-          disabledPayment={disabledPayment}
-          onClose={this.handleLayoutClose}
-          onChange={this.handlePaymentChange}
-        ></PaymentPicker>
-        {/* 积分使用 */}
-        <PointUse
-          isOpened={isPointOpen}
-          type={payType}
-          info={pointInfo}
-          onClose={this.handleLayoutClose}
-          onChange={this.handlePointUseChange}
-        ></PointUse>
-
-        <SpToast />
       </View>
     );
   }

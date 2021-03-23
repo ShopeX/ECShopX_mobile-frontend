@@ -10,8 +10,11 @@ import {
 import {
   SpCheckbox,
   SpNote,
+  TabBar,
   Loading,
   Price,
+  NavBar,
+  GoodsItem
 } from "@/components";
 import { log, navigateTo, pickBy, classNames } from "@/utils";
 import debounce from "lodash/debounce";
@@ -118,9 +121,9 @@ export default class CartIndex extends Component {
     this.updateCart();
   }
 
-  // handleLoginClick = () => {
-  //   S.login(this, true);
-  // };
+  handleLoginClick = () => {
+    S.login(this, true);
+  };
 
   handleClickItem = item => {
     const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`;
@@ -269,7 +272,7 @@ export default class CartIndex extends Component {
     }
     try {
       let res = await api.guide.cartdatalist(params);
-      //  res = await api.cart.get(params);
+       res = await api.cart.get(params);
       if (!res.crossborder_show && cartTypeLocal !== "normal") {
         Taro.setStorageSync("cartType", "normal");
         this.fetchCart(list => {
@@ -457,7 +460,7 @@ export default class CartIndex extends Component {
       curPromotions: null
     });
   };
-  //结算
+
   handleCheckout = shopCart => {
     const {
       shop_id,
@@ -483,19 +486,7 @@ export default class CartIndex extends Component {
       url: `/pages/cart/espier-checkout?cart_type=cart&type=${type}&shop_id=${shop_id}&is_delivery=${is_delivery}&is_ziti=${is_ziti}&name=${shop_name}&store_address=${address}&lat=${lat}&lng=${lng}&hour=${hour}&phone=${mobile}&goodType=${cartType}`
     });
   };
-  //为顾客下单
-  handleCheckoutToGuide = () => {
-    if (this.updating) {
-      Taro.showToast({
-        title: '正在计算价格，请稍后',
-        icon: 'none'
-      })
-      return
-    }
-    Taro.navigateTo({
-      url: '/guide/cart/espier-checkout?cart_type=cart'
-    })
-  }
+
   transformCartList(list) {
     return pickBy(list, {
       item_id: "item_id",
@@ -750,7 +741,7 @@ export default class CartIndex extends Component {
         {/* {isDrug && (
           <NavBar title="购物车" leftIconType="chevron-left" fixed="true" />
         )} */}
-        {/* {!S.getAuthToken() ? (
+        {!S.getAuthToken() ? (
           <View className="login-header">
             <View>授权登录后同步购物车的商品</View>
             <View
@@ -761,7 +752,7 @@ export default class CartIndex extends Component {
               授权登录
             </View>
           </View>
-        ) : null} */}
+        ) : null}
 
         <ScrollView
           className={`${isEmpty ? "hidden-scroll" : "cart-list__scroll"}`}
@@ -1030,12 +1021,6 @@ export default class CartIndex extends Component {
                           >
                             {isDrug ? "立即预约" : "结算"}
                           </Button>
-                          <AtButton
-                        type='primary'
-                        className='btn-checkout'
-                        // disabled={totalItems <= 0}
-                        onClick={this.handleCheckoutToGuide}
-                      >为顾客下单</AtButton>
                         </View>
                       ) : (
                         <View className="cart-toolbar__bd">

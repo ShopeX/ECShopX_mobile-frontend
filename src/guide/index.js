@@ -30,8 +30,7 @@ import { Tracker } from "@/service";
 import { WgtGoodsFaverite, HeaderHome } from "../pages/home/wgts";
 import HomeWgts from "../pages/home/comps/home-wgts";
 import Automatic from "../pages/home/comps/automatic";
-import { BaTabBar, BaNavBar} from "./components"
-
+import { BaTabBar, BaNavBar,BaStore,BaStoreList} from "./components"
 import "../pages/home/index.scss";
 
 @connect(
@@ -87,7 +86,9 @@ export default class BaGuideHomeIndex extends Component {
       showCloseBtn: false,
       // 是否有跳转至店铺页
       isGoStore: false,
-      show_tabBar: true
+      show_tabBar: true,
+      defaultStore:null,
+      showStore:false,
     };
   }
 
@@ -242,7 +243,75 @@ export default class BaGuideHomeIndex extends Component {
       }
     }
   }
+  async getQyChatId() {
+    //客户群id
+   
+    let ground = null
+   
+    try {
+      const context = await new Promise((reslove, reject) => {
+        wx.qy.getContext({
+          success: (res) => {
+            reslove(res)
+          }
+         
+        })
+      })
+      console.log('群=====',context)
+      S.set('entry_form',context, true)
+      if (context.entry === 'group_chat_tools') {
+        ground = await new Promise((reslove, reject) => {
+          wx.qy.getCurExternalChat({
+            success: (res) => {
+              reslove(res)
+            }
+          })
+        })
+        return ground.chatId
+      } else {
+        S.delete('qw_chatId', true)
+        if(['contact_profile','single_chat_tools','chat_attachment'].includes(context.entry)){
+          wx.qy.getCurExternalContact ({
+            success: function(res) {
+              S.set('chat_uid', res.userId, true)
+             
+            }
+          })
+         
+        }
+      }
 
+      return ground
+
+    } catch (err) {
+      console.log('找不到函数---1', err)
+      S.delete('qw_chatId', true)
+      return false
+    }
+  }
+  checkSession() {
+   
+    return new Promise((reslove, reject) => {
+      try {
+        wx.qy.checkSession({
+          success: (res) => {
+            reslove(res)
+          },
+          fail: (err) => {
+           
+            reslove(err)
+          },
+          complete: (err2) => {
+          
+            reslove(err2)
+          }
+        })
+      } catch (err) {
+        reject(err)
+      }
+
+    })
+  }
   // 检测收藏变化
   componentWillReceiveProps(next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
@@ -426,29 +495,52 @@ export default class BaGuideHomeIndex extends Component {
 
   // 获取店铺精选
   getDistributionInfo = async () => {
-    const distributionShopId = Taro.getStorageSync("distribution_shop_id");
-    const { userId } = Taro.getStorageSync("userinfo");
-    let featuredshop = "";
-    if (!S.getAuthToken() && !distributionShopId) {
-      return;
-    }
-    const param = {
-      user_id: distributionShopId || userId
-    };
-    const res = await api.distribution.info(param);
-    const { user_id, is_valid, selfInfo = {}, parentInfo = {} } = res;
-    if (is_valid) {
-      featuredshop = user_id;
-    } else if (selfInfo.is_valid) {
-      featuredshop = selfInfo.user_id;
-    } else if (parentInfo.is_valid) {
-      featuredshop = parentInfo.user_id;
-    }
-    this.setState({
-      featuredshop
-    });
+    // const distributionShopId = Taro.getStorageSync("distribution_shop_id");
+    // const { userId } = Taro.getStorageSync("userinfo");
+    // let featuredshop = "";
+    // if (!S.getAuthToken() && !distributionShopId) {
+    //   return;
+    // }
+    // const param = {
+    //   user_id: distributionShopId || userId
+    // };
+    // const res = await api.distribution.info(param);
+    // const { user_id, is_valid, selfInfo = {}, parentInfo = {} } = res;
+    // if (is_valid) {
+    //   featuredshop = user_id;
+    // } else if (selfInfo.is_valid) {
+    //   featuredshop = selfInfo.user_id;
+    // } else if (parentInfo.is_valid) {
+    //   featuredshop = parentInfo.user_id;
+    // }
+    // this.setState({
+    //   featuredshop
+    // });
   };
-
+  /**
+   * 悦诗风饮 导购货架未备注代码  ---开始
+   */
+  handleStoreConfirm=()=>{
+    const {shopList,currentIndex}=this.state
+  
+    this.setState({
+      defaultStore:shopList[currentIndex],
+      showStore:false
+    })
+   let ba_params=S.get('ba_params',true)
+  
+   ba_params.ba_store=shopList[currentIndex]
+   ba_params.store_code=shopList[currentIndex].wxshop_bn
+   S.set('ba_params',ba_params,true)
+ }
+ handleOpenStore=(val)=>{
+  this.setState({
+    showStore:val
+  })
+}
+ /**
+   * 悦诗风饮 导购货架未备注代码  ---结束
+   */
   // 白名单
   checkWhite = () => {
     const setting = Taro.getStorageSync("otherSetting");
@@ -673,7 +765,9 @@ export default class BaGuideHomeIndex extends Component {
       is_open_official_account,
       is_open_scan_qrcode,
       is_open_store_status,
-      show_official
+      show_official,
+      defaultStore,
+      showStore
     } = this.state;
 
     // 广告屏
@@ -685,7 +779,9 @@ export default class BaGuideHomeIndex extends Component {
 
     return (
       <View className="page-index">
-        <BaNavBar title="导购商城" fixed jumpType="home" />
+        {/* <BaNavBar title="导购商城" fixed jumpType="home" /> */}
+        <BaStore onClick={this.handleOpenStore}  defaultStore={defaultStore}  />
+        {showStore&&<BaStoreList shopList={shopList} currentIndex={currentIndex} onStoreConfirm={this.handleStoreConfirm} onSearchStore={this.getStoreList.bind(this)} onChangeCurIndex={this.handleCurIndex.bind(this)}  onClose={this.handleOpenStore}/>}
         {is_open_official_account === 1 && show_official && (
           <AccountOfficial
             isClose

@@ -80,7 +80,6 @@ class API {
       header["content-type"] =
         header["content-type"] || "application/x-www-form-urlencoded";
     }
-
     const token = S.getAuthToken();
 
     if (token) {

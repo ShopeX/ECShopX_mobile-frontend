@@ -25,7 +25,24 @@ export function isFunction (val) {
 export function isNumber (val) {
   return isPrimitiveType(val, '[object Number]')
 }
-
+/**
+ * 保留两个位小数，不足补0 
+ * @param { Number } value 
+ */
+export const returnFloat = value => {
+	var value = Math.round(parseFloat(value)*100)/100;
+	var s = value.toString().split(".");
+	if(s.length == 1){
+		value=value.toString()+".00";
+		return value;
+	}
+	if(s.length > 1){
+		if(s[1].length < 2){
+			value=value.toString()+"0";
+		}
+		return value;
+	}
+}
 export function isObject (val) {
   return isPrimitiveType(val, '[object Object]')
 }

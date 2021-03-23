@@ -45,8 +45,12 @@ const getHomeSetting = async () => {
   });
   if (APP_TRACK) {
     const system = Taro.getSystemInfoSync();
+    console.log("----------------system--------------",system,system.environment);
+    await S.setQwUserInfo()
     if (!(system && system.environment && system.environment === "wxwork")) {
-      console.log("----------------aa--------------");
+      console.log("----------------企业微信录入--------------");
+      //企业微信录入
+      await S.setQwUserInfo()
       console.log(Tracker);
       Tracker.use(APP_TRACK);
     }
@@ -238,6 +242,7 @@ class App extends Component {
         pages: [
           "index",
           "category/index",
+          "auth/wxauth",
           "item/list",
           "item/espier-detail",
           "item/item-params",
