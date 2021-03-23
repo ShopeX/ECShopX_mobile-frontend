@@ -4,7 +4,7 @@ import { View, Text, Image } from '@tarojs/components'
 
 import './index.scss'
 
-export default class SpOrderItem extends Component {
+export default class BaOrderItem extends Component {
   static defaultProps = {
     onClick: () => { },
     payType: '',

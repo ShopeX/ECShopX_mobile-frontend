@@ -6,12 +6,13 @@ import {
   Price,
   SpCell,
   SpToast,
+  
 } from "@/components";
 import {
-  Batoolbar
+  Batoolbar,
+  BaOrderItem
 } from "../components";
 
-// import{BaOrderItem}from "./comps";
 import api from "@/api";
 import S from "@/spx";
 import { withLogin } from "@/hocs";
@@ -87,8 +88,8 @@ export default class EspireCheckout extends Component {
       notgoodslist: [],
       poster: "", // 生成的分享图片
       ratio,
-      canvasWidth: 340 * ratio,
-      canvasHeight: 550 * ratio,
+      canvasWidth: 375 * ratio,
+      canvasHeight: 600 * ratio,
       isShowQrcode: false // 分享订单图片显示状态
     };
   }
@@ -186,11 +187,11 @@ export default class EspireCheckout extends Component {
     cartlist.forEach(item => {
       // (item.order_item_type === 'normal' && !item.disabled) || (!item.order_item_type && !item.disabled)||(item.order_item_type === 'gift'&&item.is_cart&&!item.disabled)
       //兑换券兑换的商品都视为赠品，如果赠品是普通商品，组合商品显示在商品区域（is_cart为true），如果是0元赠品显示在赠品区域（is_cart为false）
-      if (item.order_item_type === "normal") {
+      if (item.special_type === "normal") {
         goodsllist.push(item);
-      } else if (item.order_item_type === "gift") {
+      } else if (item.special_type === "gift") {
         giftslist.push(item);
-      } else if (item.order_item_type === "normal" && item.disabled) {
+      } else if (item.special_type === "normal" && item.disabled) {
         notgoodslist.push(item);
       }
     });
@@ -277,10 +278,17 @@ export default class EspireCheckout extends Component {
       console.log("======qrcode===", qrcode);
       console.log("======avatar===", avatar);
       const ctx = Taro.createCanvasContext("myCanvas");
+      ctx.setFillStyle('red')
+ctx.setFillStyle('red')
+ctx.fillRect(10, 10, 150, 100)
+ctx.draw()
+ctx.fillRect(50, 50, 150, 100)
+ctx.draw(true)
+// return
 
       canvasExp.roundRect(ctx, 0, 0, canvasWidth, canvasHeight, 0);
       ctx.save();
-
+      console.log("======ctx.save()===");
       // 头部信息
       if (avatar) {
         canvasExp.imgCircleClip(
@@ -294,7 +302,12 @@ export default class EspireCheckout extends Component {
       }
 
       ctx.restore();
-
+      
+      ctx.draw(true, async () => {
+        console.log('checkout-ctx.draw1-restore')
+        
+        Taro.hideLoading();
+      });
       canvasExp.textFill(
         ctx,
         userinfo.username || "",
@@ -446,6 +459,8 @@ export default class EspireCheckout extends Component {
         );
       }
 
+      
+      
       // 分割线
       ctx.beginPath();
       ctx.setStrokeStyle("#ddd");
@@ -488,20 +503,40 @@ export default class EspireCheckout extends Component {
           "#666"
         );
       }
-
-      ctx.draw(false, async () => {
-        const res = await Taro.canvasToTempFilePath({
-          x: 0,
-          y: 0,
-          canvasId: "myCanvas"
+      // ctx.draw()
+      console.log("======ctx.restore()===");
+      // ctx.draw(false, async () => {
+      //   console.log('checkout-ctx.draw-res2',ctx)
+      //   const res = await Taro.canvasToTempFilePath({
+      //     x: 0,
+      //     y: 0,
+      //     canvasId: "myCanvas"
+      //   });
+      //   console.log("======canvasToTempFilePath====", res);
+      //   this.setState({
+      //     poster: res.tempFilePath,
+      //     isShowQrcode: true
+      //   });
+      //   Taro.hideLoading();
+      // });
+      setTimeout(()=>{
+        console.log("======ctx.setTimeout()===");
+        ctx.draw(true, async () => {
+          console.log('checkout-ctx.draw-res2',ctx)
+          const res = await Taro.canvasToTempFilePath({
+            x: 0,
+            y: 0,
+            canvasId: "myCanvas"
+          });
+          console.log("======canvasToTempFilePath====", res);
+          this.setState({
+            poster: res.tempFilePath,
+            isShowQrcode: true
+          });
+          Taro.hideLoading();
         });
-        console.log("======canvasToTempFilePath====", res);
-        this.setState({
-          poster: res.tempFilePath,
-          isShowQrcode: true
-        });
-        Taro.hideLoading();
-      });
+      },2000)
+      
     } catch (err) {
       console.log(err);
       Taro.hideLoading();
@@ -549,7 +584,8 @@ export default class EspireCheckout extends Component {
       canvasHeight
     } = this.state;
     const ipxClass = S.get("ipxClass") || "";
-    console.log('checkout-goodsllist',goodsllist)
+    console.log('checkout-goodsllist-render',goodsllist)
+    console.log('checkout-poster-render',poster)
     return (
       <View className={`page-checkout ${ipxClass}`}>
         <View className="checkout__wrap">
@@ -564,13 +600,11 @@ export default class EspireCheckout extends Component {
                     <View className="order-item__idx">
                       <Text>第{idx + 1}件商品</Text>
                     </View>
-                    renderDesc------222
-                    {/* <BaOrderItem
+                    <BaOrderItem
                       info={item}
                       showExtra={false}
                       renderDesc={
                         <View className="order-item__desc">
-                          renderDesc------111
                           {item.discount_info &&
                             item.discount_info.map(discount => (
                               <View key="id" style="display:inline-block;">
@@ -592,7 +626,6 @@ export default class EspireCheckout extends Component {
                                 )}
                               </View>
                             ))}
-                            111------renderDesc
                         </View>
                       }
                       renderActLimit={
@@ -638,8 +671,7 @@ export default class EspireCheckout extends Component {
                           )}
                         </View>
                       }
-                    /> */}
-                    renderDesc------222
+                    />
                   </View>
                 );
               })}
@@ -656,7 +688,7 @@ export default class EspireCheckout extends Component {
                     <View className="order-item__idx">
                       <Text>第{idx + 1}件商品</Text>
                     </View>
-                    {/* <BaOrderItem
+                    <BaOrderItem
                       info={item}
                       showExtra={false}
                       renderDesc={
@@ -708,7 +740,7 @@ export default class EspireCheckout extends Component {
                           )}
                         </View>
                       }
-                    /> */}
+                    />
                   </View>
                 );
               })}
@@ -804,8 +836,8 @@ export default class EspireCheckout extends Component {
                 onClick={e => e.stopPropagation()}
                 showMenuByLongpress
                 style={styleNames({
-                  width: canvasWidth + "px",
-                  height: canvasHeight + "px"
+                  width: 375 + "px",
+              height: 600 + "px"
                 })}
                 src={poster}
               />
@@ -822,8 +854,8 @@ export default class EspireCheckout extends Component {
           <Canvas
             className="canvas-tag"
             style={styleNames({
-              width: canvasWidth + "px",
-              height: canvasHeight + "px"
+              width: 375 + "px",
+              height: 600 + "px"
             })}
             canvas-id="myCanvas"
           ></Canvas>
