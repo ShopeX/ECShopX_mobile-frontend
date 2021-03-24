@@ -115,7 +115,9 @@ export default class GroupDetail extends Component {
     })
   }
 
-  onShareAppMessage() {
+  onShareAppMessage(res) {
+    console.log("--onShareAppMessage---",res)
+    const { from }=res;
     const { distributor_id } = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const { detail } = this.state
@@ -123,6 +125,7 @@ export default class GroupDetail extends Component {
 
     Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
       ...activity_info,
+      from_type:from,
       shareType: "分享给好友"
     });
 

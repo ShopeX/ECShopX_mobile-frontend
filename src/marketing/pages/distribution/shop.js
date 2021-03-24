@@ -85,11 +85,14 @@ export default class DistributionShop extends Component {
     })
   }
 
-  onShareAppMessage() {
+  onShareAppMessage(res) {
+    console.log("--onShareAppMessage---",res)
+    const { from }=res;
     const { username, userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
     Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
       ...info,
+      from_type:from,
       shareType: "分享给好友"
     });
     return {

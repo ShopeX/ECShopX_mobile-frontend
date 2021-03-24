@@ -367,10 +367,18 @@ export default class CartIndex extends Component {
     this.updateCart()
 
     // 购物车追加
-    if (item.num < parseInt(num)) {
+    if (item.num < parseInt(num)) {  
       Tracker.dispatch("APPEND_TO_CART_IN_CART", {
         ...item,
+        goods_id:item.goods_id||item.item_id,
         num: parseInt(num) - item.num,
+        goods_num: num
+      });
+    }else{ 
+      
+      Tracker.dispatch("REMOVE_FROM_CART_NUM", {
+        ...item,
+        num: item.num-parseInt(num),
         goods_num: num
       });
     }
@@ -458,6 +466,7 @@ export default class CartIndex extends Component {
       curSymbol: 'cur.symbol',
       distributor_id: 'shop_id',
       type: 'type',
+      goods_id:'goods_id',
       origincountry_name: 'origincountry_name',
       origincountry_img_url: 'origincountry_img_url',
       promotions: ({ promotions = [], cart_id }) => promotions.map(p => {

@@ -238,13 +238,16 @@ export default class TradeDetail extends Component {
 
     let payErr
     try {
-      const payRes = await Taro.requestPayment(config)
-      // 支付上报
+      
       Tracker.dispatch("ORDER_PAY", {
         ...info,
-        item_fee: parseInt(info.item_fee) * 100,
+        item_fee: info.item_fee * 100,
+        total_fee: info.item_fee * 100,
         ...config
-      });
+      }); 
+      const payRes = await Taro.requestPayment(config)
+      // 支付上报
+     
       log.debug(`[order pay]: `, payRes)
     } catch (e) {
       payErr = e
@@ -254,6 +257,7 @@ export default class TradeDetail extends Component {
           icon: 'none'
         })
       } else {
+     
         Tracker.dispatch("CANCEL_PAY", {
           ...info,
           item_fee: parseInt(info.item_fee) * 100,
