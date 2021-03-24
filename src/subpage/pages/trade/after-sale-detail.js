@@ -360,7 +360,7 @@ export default class TradeDetail extends Component {
           title: e.err_desc || e.errMsg || '支付失败',
           icon: 'none'
         })
-      } else {
+      } else { 
         Tracker.dispatch("CANCEL_PAY", {
           ...info,
           item_fee: parseInt(info.item_fee) * 100,

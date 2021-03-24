@@ -321,7 +321,7 @@ class App extends Component {
     // 根据路由参数
     const { query } = this.$router.params
     if (query && query.scene) {
-      const { smid , dtid, id, aid, cid,type  } = normalizeQuerys(query)
+      const { smid , dtid, id, aid, cid } = normalizeQuerys(query)
       if (smid) {
         Taro.setStorageSync('s_smid', smid)
       }

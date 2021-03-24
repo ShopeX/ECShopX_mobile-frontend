@@ -757,8 +757,7 @@ export default class CartCheckout extends Component {
 
     let info = this.state.info;
     let pointInfo = this.state.pointInfo;
-    if (items) {
-      //debugger ;
+    if (items) { 
       console.log('--------items-------',items)
       // 从后端获取订单item
       info = {
@@ -1188,14 +1187,14 @@ export default class CartCheckout extends Component {
           pay_type:this.state.total.freight_type==="point"?'point':payType
         });
         order_id = isDrug ? config.order_id : config.trade_info.order_id;
-      }  
-      // 提交订单埋点
+      }   
+      // 提交订单埋点 
       Tracker.dispatch("CREATE_ORDER", {
         ...total,
         ...config
       });
 
-      this.cancelpay = () => {
+      this.cancelpay = () => { 
         Tracker.dispatch("CANCEL_PAY", {
           ...total,
           ...config
@@ -1267,15 +1266,18 @@ export default class CartCheckout extends Component {
     }
 
     payErr = null;
-    console.log("-----config-----",config)
+    console.log("-----configCheckout-----",config)
     try {
-      const payRes = await Taro.requestPayment(config);
-      // 支付上报
+
       const { total } = this.state;
       Tracker.dispatch("ORDER_PAY", {
         ...total,
         ...config
       });
+
+      const payRes = await Taro.requestPayment(config); 
+      // 支付上报
+    
 
       log.debug(`[order pay]: `, payRes);
     } catch (e) {
