@@ -334,13 +334,14 @@ export default class CartIndex extends Component {
     });
   }
   //购物车商品选中变更
-  async handleSelectionChange(checked,item) {
-    console.log('handleSelectionChange-item',checked,item)
-    await api.guide.cartdataadd({
+  async handleSelectionChange(item) {
+    console.log('handleSelectionChange-item',item)
+    await api.guide.checkstatus({
+      cart_id:item.cart_id,
       num: item.num,
       item_id: item.item_id,
       is_accumulate: false,
-      is_checked: checked,
+      is_checked: item.is_checked =='1'?'false':'true',
     });
     this.updateCart();
   }
@@ -1027,11 +1028,10 @@ export default class CartIndex extends Component {
                                     <View className="cart-item__act">
                                       <SpCheckbox
                                         key={item.item_id}
-                                        checked={item.is_checked}
+                                        checked={item.is_checked=='1'}
                                         onChange={()=>
                                           this.handleSelectionChange(
-                                            item.is_checked,                                            
-                                            item
+                                            item                                                                               
                                           )
                                         }
                                       />

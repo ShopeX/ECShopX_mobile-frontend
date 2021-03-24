@@ -22,6 +22,13 @@ export function is_valid(params = {}, config = createHead()) {
 export function scancodeAddcart(params = {}, config = createHead()) {
   return req.post("/salesperson/scancodeAddcart", params, config);
 }
+
+// //计算导购分享订单商品金额
+// export function salesPromotion(params = {}, config = createHead()) {
+//   return req.post("/salesperson/salesPromotion", params, config);
+// }
+
+
 //导购员购物车新增
 export function cartdataadd(params = {}, config = createHead()) {
   return req.get("/salesperson/cartdataadd", params, config);
@@ -38,8 +45,13 @@ export function cartdatalist(params = {}, config = createHead()) {
 export function cartdatadel(params = {}, config = createHead()) {
   return req.get("/salesperson/cartdatadel", params, config);
 }
+//导购购物车选中状态变更
+export function checkstatus(params = {}, config = createHead()) {
+  return req.put("/salesperson/cartupdate/checkstatus", params, config);
+}
 
-//生成海报的二维码，增加一个参数 salesman_distributor_id:导购的店铺id
+//生成海报的二维码，增加一个参数 salesman_distributor_id:导购的店铺id 
+//计算导购分享订单商品金额
 export function salesPromotion(params = {}, config = createHead()) {
   return req.get("/salesperson/salesPromotion", params, config);
 }

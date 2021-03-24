@@ -97,7 +97,13 @@ export default class EspireCheckout extends Component {
 
     try {
       delete params.items;
+      //原悦诗风吟计算金额逻辑
       data = await api.cart.total(params);
+      data = await api.guide.salesPromotion(params);
+      data = data.valid_cart[0]
+      
+      
+      console.log('获取导购分享订单计算金额',data)
     } catch (e) {
       if (e.status_code === 422) {
         return Taro.navigateBack();
@@ -184,6 +190,7 @@ export default class EspireCheckout extends Component {
         notgoodslist.push(item);
       }
     });
+    total.goodsItems = cartlist
     console.log("计算接口-goodsllist", goodsllist);
     this.setState({
       total,
@@ -415,6 +422,7 @@ export default class EspireCheckout extends Component {
           break;
         }
         let item = total.goodsItems[i];
+        console.log('canvas-goodsList-item',item)
         guideCanvasExp.textOverflowFill(
           ctx,
           item.item_name,
@@ -426,7 +434,7 @@ export default class EspireCheckout extends Component {
         );
         guideCanvasExp.textFill(
           ctx,
-          `${item.fee_symbol}${returnFloat(item.price / 100)}`,
+          `${'¥'}${returnFloat(item.price / 100)}`,
           206 * ratio,
           (120 + 24 * (i + 1)) * ratio,
           12,
@@ -516,7 +524,7 @@ export default class EspireCheckout extends Component {
           });
           Taro.hideLoading();
         });
-      }, 2000);
+      }, 1000);
     } catch (err) {
       console.log('guideCanvasExp',guideCanvasExp)
       console.log(err);
@@ -565,9 +573,11 @@ export default class EspireCheckout extends Component {
       canvasWidth,
       canvasHeight
     } = this.state;
+
     const ipxClass = S.get("ipxClass") || "";
     console.log("checkout-goodsllist-render", goodsllist);
     console.log("checkout-poster-render", poster);
+    console.log("checkout-total-render", total);
     return (
       <View className={`page-checkout ${ipxClass}`}>
         <View className="checkout__wrap">
@@ -636,12 +646,12 @@ export default class EspireCheckout extends Component {
                           <View>
                             <Price
                               className="order-item__oragin-price"
-                              value={item.price}
+                              value={returnFloat(item.price / 100)}
                             />
                             <Price
                               className="order-item__price"
                               beforeText="实付"
-                              value={item.total_fee}
+                              value={returnFloat(item.total_fee / 100)}
                             />
                           </View>
                           {item.disabled ? (
@@ -705,12 +715,12 @@ export default class EspireCheckout extends Component {
                           <View>
                             <Price
                               className="order-item__oragin-price"
-                              value={item.price}
+                              value={returnFloat(item.price / 100)}
                             />
                             <Price
                               className="order-item__price"
                               beforeText="实付"
-                              value={item.total_fee}
+                              value={returnFloat(item.total_fee / 100)}
                             />
                           </View>
                           {item.disabled ? (
