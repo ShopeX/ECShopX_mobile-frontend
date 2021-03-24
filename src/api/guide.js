@@ -1,5 +1,6 @@
 import req from "./req";
 import S from "@/spx";
+
 function createHead() {
   return {
     header: {
@@ -54,5 +55,11 @@ export function checkstatus(params = {}, config = createHead()) {
 //计算导购分享订单商品金额
 export function salesPromotion(params = {}, config = createHead()) {
   return req.get("/salesperson/salesPromotion", params, config);
+}
+
+//获取导购货架商品列表 wxapp/goods/salesperson/items
+
+export function salespersonItems(params = {}, config = createHead()) {
+  return req.get("/goods/salesperson/items", params, config,{showLoading:true});
 }
  

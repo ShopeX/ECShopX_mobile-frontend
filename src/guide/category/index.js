@@ -9,13 +9,12 @@ import { BaTabBar,BaNavBar } from '../components'
 import Series from './comps/series'
 
 import './index.scss'
+
 @connect(store => ({
   store
 }))
 export default class BaCategory extends Component {
-  config ={
-    navigationStyle:'custom'
-  }
+  
   constructor (props) {
     super(props)
 
@@ -31,6 +30,9 @@ export default class BaCategory extends Component {
 
   componentDidMount () {
     this.fetch()
+  }
+  config ={
+    navigationStyle:'custom'
   }
 
   async fetch () {
@@ -126,18 +128,18 @@ export default class BaCategory extends Component {
     const c_ht = n_ht * 2 - 10
     return (
       <View className='page-category-index'>
-        <BaNavBar title='导购商城' fixed jumpType='home'/>
+        <BaNavBar title='导购商城' fixed jumpType='home' />
         
         {
         
           tabList.length !== 0
-            ?<View className="category__wrap" style={styleNames({'top': `${n_ht}px`})}>
+            ?<View className='category__wrap' style={styleNames({'top': `${n_ht}px`})}>
               <AtTabs
-              className='category__tabs'
-              current={curTabIdx}
-              tabList={tabList}
-              onClick={this.handleClickTab}
-            >
+                className='category__tabs'
+                current={curTabIdx}
+                tabList={tabList}
+                onClick={this.handleClickTab}
+              >
               {
                 tabList.map((panes, pIdx) =>
                   (<AtTabsPane

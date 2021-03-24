@@ -62,9 +62,10 @@ export default class List extends Component {
         item_type: 'normal',
         is_point: 'false',
         distributor_id:isOpenStore ? store_id : this.$router.params.dis_id,
-        approve_status: 'onsale,only_show',
+        //approve_status: 'onsale,only_show',
+        goodsSort:'onsale,only_show',
         category: cat_id ? cat_id : '',
-        main_category: main_cat_id ? main_cat_id : ''
+        main_category: main_cat_id ? main_cat_id : '',
       },
       curTagId: this.$router.params.tag_id
     }, () => {
@@ -135,8 +136,9 @@ export default class List extends Component {
     if (cardId) {
       query.card_id = cardId
     }
+    console.log('query---->',query)
 
-    const { list, total_count: total, item_params_list = [], select_tags_list = [] } = await api.item.search(query)
+    const { list, total_count: total, item_params_list = [], select_tags_list = [] } = await api.guide.salespersonItems(query)
     const { favs } = this.props
 
     item_params_list.map(item => {
@@ -265,6 +267,7 @@ export default class List extends Component {
       showDrawer: false
     })
     const { current, sort } = data
+    console.log('data---->',data)
 
     const query = {
       ...this.state.query,
