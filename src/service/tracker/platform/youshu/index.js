@@ -22,9 +22,10 @@ export default class Youshu extends Base {
 
     console.log('---------init--------')
     const { youshu = {} } =  Taro.getStorageSync('otherSetting') || {}
-    config.appid = youshu.app_id
-    config.token = youshu.token
-    console.log(config)
+    //后台配置的APP_ID是微信小程序需要用到的token 
+    config.token = youshu.app_id  
+     
+    console.log('---------config--------',config)
     
     sr.init(config);
 

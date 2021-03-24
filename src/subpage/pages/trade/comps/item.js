@@ -55,7 +55,7 @@ export default class TradeItem extends Component {
       if(payType==="dhpoint"){
         total= `合计：${total_fee}积分`
       }else{
-        total= `合计：￥${formatPriceToHundred(payment)}`
+        total= `合计：￥${payment}`
       } 
     }
     return <View className='trade-item__total'>{total}</View>

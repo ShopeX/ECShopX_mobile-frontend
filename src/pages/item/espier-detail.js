@@ -95,10 +95,11 @@ export default class Detail extends Component {
         }else{
           delete options.dtid
         }
-        const entryData = await entry.entryLaunch(options, true)
-        id = entryData.id
-        uid = entryData.uid
       }
+      const entryData = await entry.entryLaunch({...options}, true)
+      id = entryData.id
+      uid = entryData.uid
+      
       if (uid) {
         this.uid = uid
       }
@@ -186,7 +187,9 @@ export default class Detail extends Component {
     })
   }
 
-  onShareAppMessage() {
+  onShareAppMessage(res) {
+    console.log("--onShareAppMessage---",res)
+    const { from }=res;
     const { info } = this.state
     const curStore = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
@@ -195,6 +198,7 @@ export default class Detail extends Component {
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId
     Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
       ...info,
+      from_type:from,
       shareType: "分享给好友"
     });
     return {
@@ -378,6 +382,9 @@ export default class Detail extends Component {
     }
     sessionFrom += `"商品": "${info.item_name}"`
     sessionFrom += '}'
+
+    console.log("---GOODS_DETAIL_VIEW---",info);
+
     Tracker.dispatch("GOODS_DETAIL_VIEW", info);
 
     this.setState({
@@ -690,7 +697,7 @@ export default class Detail extends Component {
       })
     }
 
-    const { username, userId } = Taro.getStorageSync('userinfo')
+    const { username } = Taro.getStorageSync('userinfo')
     const ctx = Taro.createCanvasContext('myCanvas')
 
     canvasExp.roundRect(ctx, '#fff', 0, 0, 375, 640, 5)
@@ -933,6 +940,8 @@ export default class Detail extends Component {
       evaluationList,
       isSubscribeGoods
     } = this.state
+
+    console.log("--info--",info)
 
     const { showLikeList, colors } = this.props
     const meiqia = Taro.getStorageSync('meiqia')

@@ -49,8 +49,7 @@ class Tracker {
       };
 
       // const _onUnload = obj.methods["onUnload"];
-      obj.methods["onUnload"] = function() {
-        // debugger;
+      obj.methods["onUnload"] = function() { 
         // const result = _onUnload.apply(this);
         self._componentWillUnmount(this);
         // return result;

@@ -7,7 +7,7 @@ export default {
   /**
    * 微信小程序appID，以wx开头
    */
-  appid: '',
+  appid: APP_ID,
 
   /**
    * 如果使用了小程序插件，需要设置为 true
