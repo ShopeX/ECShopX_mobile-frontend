@@ -5,6 +5,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
 import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, SpNote, NavBar, TabBar } from '@/components'
 import api from '@/api'
+import S from "@/spx";
 import { Tracker } from "@/service";
 import { pickBy, classNames } from '@/utils'
 import entry from "../../utils/entry";
@@ -119,7 +120,7 @@ export default class List extends Component {
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, tagsList, curTagId,isOpenStore } = this.state
-    const { distributor_id,store_id } = Taro.getStorageSync('curStore')
+    //const { distributor_id,store_id } = Taro.getStorageSync('curStore')
     const { cardId } = this.$router.params
     const query = {
       ...this.state.query,
@@ -128,9 +129,10 @@ export default class List extends Component {
       page,
       pageSize
     }
-
+    let qwUserInfo = S.get('QwUserInfo',true)
     if (APP_PLATFORM === 'standard') {
-      query.distributor_id = isOpenStore ? store_id : distributor_id
+      //query.distributor_id = isOpenStore ? store_id : distributor_id
+      query.distributor_id = qwUserInfo.distributor_id //取导购门店id
     }
 
     if (cardId) {
