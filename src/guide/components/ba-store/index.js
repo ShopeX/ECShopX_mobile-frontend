@@ -45,11 +45,12 @@ componentDidMount(){
     const {baInfo} = this.state
     const {defaultStore}=this.props
     const token=S.getAuthToken()
+    const n_ht = S.get('navbar_height', true)
     return (
       <View
         className='ba-store'
-      //  onClick={this.router}
-        style='background:#3333'
+        // style={styleNames({'margin-top': `${n_ht}px`,'background':'#3333'})}   
+        style='margin-top:60px;background:#3333'           
       >
         <Image className='ba-avatar' mode='widthFix' src={baInfo.avatar||'/assets/imgs/home-unloginhead.png'} />
         {token?

@@ -7,16 +7,10 @@ import { Batoolbar, BaOrderItem } from "../components";
 
 import api from "@/api";
 import S from "@/spx";
-import req from '@/api/req'
+import req from "@/api/req";
 import { withLogin } from "@/hocs";
-import {
-  pickBy,
-  log,
-  classNames,
-  styleNames,
-  returnFloat
-} from "@/utils";
-import  guideCanvasExp from "./guideCanvasExp.js";
+import { pickBy, log, classNames, styleNames, returnFloat } from "@/utils";
+import guideCanvasExp from "./guideCanvasExp.js";
 import _cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 // import logoimg from '@/assets/imgs/logo.png'
@@ -81,7 +75,7 @@ export default class EspireCheckout extends Component {
       canvasWidth: 375 * ratio,
       canvasHeight: 600 * ratio,
       isShowQrcode: false, // 分享订单图片显示状态
-      cxdid:null,//获取二维码携带参数
+      cxdid: null //获取二维码携带参数
     };
   }
   componentDidMount() {
@@ -95,17 +89,17 @@ export default class EspireCheckout extends Component {
     });
     const params = this.getParams();
     params.receipt_type = "logistics";
-    let data,cxdid;
+    let data, cxdid;
 
     try {
       delete params.items;
       //原悦诗风吟计算金额逻辑
-      data = await api.cart.total(params);
+      // data = await api.cart.total(params);
       data = await api.guide.salesPromotion(params);
-      data = data.valid_cart[0]
-      cxdid = data.sales_promotion_id
-      
-      console.log('获取导购分享订单计算金额',data)
+      data = data.valid_cart[0];
+      cxdid = data.sales_promotion_id;
+
+      console.log("获取导购分享订单计算金额", data);
     } catch (e) {
       if (e.status_code === 422) {
         return Taro.navigateBack();
@@ -192,7 +186,7 @@ export default class EspireCheckout extends Component {
         notgoodslist.push(item);
       }
     });
-    total.goodsItems = cartlist
+    total.goodsItems = cartlist;
     console.log("计算接口-goodsllist", goodsllist);
     this.setState({
       total,
@@ -264,9 +258,15 @@ export default class EspireCheckout extends Component {
 
       const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
       const userinfo = Taro.getStorageSync("userinfo");
-      
-      
-      const { giftslist, total, ratio, canvasWidth, canvasHeight,cxdid } = this.state;
+
+      const {
+        giftslist,
+        total,
+        ratio,
+        canvasWidth,
+        canvasHeight,
+        cxdid
+      } = this.state;
       //qrcode参数
       /**
        * 导购参数
@@ -276,18 +276,11 @@ export default class EspireCheckout extends Component {
        * smid: 78,//导购id
        * distributor_id: 103,//门店id
        */
-      let qwUserInfo = S.get('QwUserInfo',true)
-      const qrcode_params = `appid=${extConfig.appid}
-                             &share_id=${share_id}
-                             &page=pages/cart/espier-checkout
-                             &cxdid=${cxdid}
-                             &company_id=${qwUserInfo.company_id}
-                             &smid=${qwUserInfo.salesperson_id}
-                             &distributor_id=${qwUserInfo.distributor_id}
-                             `
-       const host = req.baseURL.replace('/api/h5app/wxapp/', '')
+      let qwUserInfo = S.get("QwUserInfo", true);
+      const qrcode_params = `appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout&cxdid=${cxdid}&company_id=${qwUserInfo.company_id}&smid=${qwUserInfo.salesperson_id}&distributor_id=${qwUserInfo.distributor_id}`
+      const host = req.baseURL.replace("/api/h5app/wxapp/", "");
       // https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?temp_name=yykweishop&page=pages/cart/espier-checkout&company_id=1&cxdid=159&smid=78&distributor_id=103
-      const url = `${host}/wechatAuth/wxapp/qrcode.png?${qrcode_params}`;
+      const url = `${host}/wechatAuth/wxapp/qrcode.png?${qrcode_params}`
       const { path: qrcode } = await Taro.getImageInfo({ src: url });
       let avatar = null;
       if (userinfo.avatar) {
@@ -340,9 +333,23 @@ export default class EspireCheckout extends Component {
           12,
           "#87C55C"
         );
-        guideCanvasExp.textFill(ctx, "为您推荐", 75 * ratio, 65 * ratio, 12, "#666");
+        guideCanvasExp.textFill(
+          ctx,
+          "为您推荐",
+          75 * ratio,
+          65 * ratio,
+          12,
+          "#666"
+        );
       } else {
-        guideCanvasExp.textFill(ctx, "为您推荐", 75 * ratio, 45 * ratio, 12, "#666");
+        guideCanvasExp.textFill(
+          ctx,
+          "为您推荐",
+          75 * ratio,
+          45 * ratio,
+          12,
+          "#666"
+        );
       }
       guideCanvasExp.drawImageFill(
         ctx,
@@ -371,7 +378,14 @@ export default class EspireCheckout extends Component {
         12,
         "#101010"
       );
-      guideCanvasExp.textFill(ctx, "为您省", 15 * ratio, 468 * ratio, 12, "#999");
+      guideCanvasExp.textFill(
+        ctx,
+        "为您省",
+        15 * ratio,
+        468 * ratio,
+        12,
+        "#999"
+      );
       guideCanvasExp.textFill(
         ctx,
         `¥${returnFloat(total.discount_fee / 100)}`,
@@ -416,7 +430,7 @@ export default class EspireCheckout extends Component {
         "",
         "center"
       );
-      console.log('guideCanvasExp',guideCanvasExp)
+      console.log("guideCanvasExp", guideCanvasExp);
       // 商品信息
       guideCanvasExp.roundRect(
         ctx,
@@ -431,8 +445,22 @@ export default class EspireCheckout extends Component {
 
       ctx.setTextAlign("left");
       guideCanvasExp.textFill(ctx, "商品", 30 * ratio, 112 * ratio, 12, "#666");
-      guideCanvasExp.textFill(ctx, "单价", 206 * ratio, 112 * ratio, 12, "#666");
-      guideCanvasExp.textFill(ctx, "数量", 284 * ratio, 112 * ratio, 12, "#666");
+      guideCanvasExp.textFill(
+        ctx,
+        "单价",
+        206 * ratio,
+        112 * ratio,
+        12,
+        "#666"
+      );
+      guideCanvasExp.textFill(
+        ctx,
+        "数量",
+        284 * ratio,
+        112 * ratio,
+        12,
+        "#666"
+      );
       for (let i = 0; i < total.goodsItems.length; i++) {
         if (i > 5) {
           guideCanvasExp.textFill(
@@ -446,7 +474,7 @@ export default class EspireCheckout extends Component {
           break;
         }
         let item = total.goodsItems[i];
-        console.log('canvas-goodsList-item',item)
+        console.log("canvas-goodsList-item", item);
         guideCanvasExp.textOverflowFill(
           ctx,
           item.item_name,
@@ -458,7 +486,7 @@ export default class EspireCheckout extends Component {
         );
         guideCanvasExp.textFill(
           ctx,
-          `${'¥'}${returnFloat(item.price / 100)}`,
+          `${"¥"}${returnFloat(item.price / 100)}`,
           206 * ratio,
           (120 + 24 * (i + 1)) * ratio,
           12,
@@ -550,13 +578,12 @@ export default class EspireCheckout extends Component {
         });
       }, 1000);
     } catch (err) {
-      console.log('guideCanvasExp',guideCanvasExp)
+      console.log("guideCanvasExp", guideCanvasExp);
       console.log(err);
       Taro.hideLoading();
     }
   };
 
-  
   handleClickHideImage = () => {
     this.setState({
       isShowQrcode: false
@@ -604,29 +631,29 @@ export default class EspireCheckout extends Component {
     console.log("checkout-total-render", total);
     return (
       <View className={`page-checkout ${ipxClass}`}>
-        <View className='checkout__wrap'>
+        <View className="checkout__wrap">
           {goodsllist.length && (
-            <View className='sec cart-group__cont'>
+            <View className="sec cart-group__cont">
               {goodsllist.map((item, idx) => {
                 return (
                   <View
                     className={classNames("order-item__wrap")}
-                    key='item_id'
+                    key="item_id"
                   >
-                    <View className='order-item__idx'>
+                    <View className="order-item__idx">
                       <Text>第{idx + 1}件商品</Text>
                     </View>
                     <BaOrderItem
                       info={item}
                       showExtra={false}
                       renderDesc={
-                        <View className='order-item__desc'>
+                        <View className="order-item__desc">
                           {item.discount_info &&
                             item.discount_info.map(discount => (
-                              <View key='id' style='display:inline-block;'>
+                              <View key="id" style="display:inline-block;">
                                 {discount.info && !discount.is_special ? (
                                   <Text
-                                    className='order-item__discount'
+                                    className="order-item__discount"
                                     key={discount.type}
                                   >
                                     {discount.info}
@@ -634,8 +661,8 @@ export default class EspireCheckout extends Component {
                                 ) : (
                                   discount.is_special && (
                                     <Image
-                                      className='order-item__discount-vipimg'
-                                      mode='widthFix'
+                                      className="order-item__discount-vipimg"
+                                      mode="widthFix"
                                       src={item.pics}
                                     />
                                   )
@@ -645,16 +672,16 @@ export default class EspireCheckout extends Component {
                         </View>
                       }
                       renderActLimit={
-                        <View className='order-item__actlimit'>
+                        <View className="order-item__actlimit">
                           {item.discount_info &&
                             item.discount_info.map(
                               discount =>
                                 discount.limited === "single" &&
                                 item.num > 1 && (
                                   <View
-                                    key='id'
-                                    className='limit_warn'
-                                    style='display:inline-block;'
+                                    key="id"
+                                    className="limit_warn"
+                                    style="display:inline-block;"
                                   >
                                     <Text>
                                       任选专区单品限一件，超过部分原价购买
@@ -666,22 +693,22 @@ export default class EspireCheckout extends Component {
                       }
                       customFooter
                       renderFooter={
-                        <View className='order-item__ft'>
+                        <View className="order-item__ft">
                           <View>
                             <Price
-                              className='order-item__oragin-price'
+                              className="order-item__oragin-price"
                               value={returnFloat(item.price / 100)}
                             />
                             <Price
-                              className='order-item__price'
-                              beforeText='实付'
+                              className="order-item__price"
+                              beforeText="实付"
                               value={returnFloat(item.total_fee / 100)}
                             />
                           </View>
                           {item.disabled ? (
-                            <Text className='order-item__notnum'>无库存</Text>
+                            <Text className="order-item__notnum">无库存</Text>
                           ) : (
-                            <Text className='order-item__num'>
+                            <Text className="order-item__num">
                               x {item.num}
                             </Text>
                           )}
@@ -694,27 +721,27 @@ export default class EspireCheckout extends Component {
             </View>
           )}
           {notgoodslist.length && (
-            <View className='sec cart-group__cont'>
+            <View className="sec cart-group__cont">
               {notgoodslist.map((item, idx) => {
                 return (
                   <View
                     className={classNames("order-item__wrap")}
-                    key='item_id'
+                    key="item_id"
                   >
-                    <View className='order-item__idx'>
+                    <View className="order-item__idx">
                       <Text>第{idx + 1}件商品</Text>
                     </View>
                     <BaOrderItem
                       info={item}
                       showExtra={false}
                       renderDesc={
-                        <View className='order-item__desc'>
+                        <View className="order-item__desc">
                           {item.discount_info &&
                             item.discount_info.map(discount => (
-                              <View key='id' style='display:inline-block;'>
+                              <View key="id" style="display:inline-block;">
                                 {discount.info && !discount.is_special ? (
                                   <Text
-                                    className='order-item__discount'
+                                    className="order-item__discount"
                                     key={discount.type}
                                   >
                                     {discount.info}
@@ -722,8 +749,8 @@ export default class EspireCheckout extends Component {
                                 ) : (
                                   discount.is_special && (
                                     <Image
-                                      className='order-item__discount-vipimg'
-                                      mode='widthFix'
+                                      className="order-item__discount-vipimg"
+                                      mode="widthFix"
                                       src={item.pics}
                                       // src={require("../../assets/imgs/vip-exclusive-discount.png")}
                                     />
@@ -735,22 +762,22 @@ export default class EspireCheckout extends Component {
                       }
                       customFooter
                       renderFooter={
-                        <View className='order-item__ft'>
+                        <View className="order-item__ft">
                           <View>
                             <Price
-                              className='order-item__oragin-price'
+                              className="order-item__oragin-price"
                               value={returnFloat(item.price / 100)}
                             />
                             <Price
-                              className='order-item__price'
-                              beforeText='实付'
+                              className="order-item__price"
+                              beforeText="实付"
                               value={returnFloat(item.total_fee / 100)}
                             />
                           </View>
                           {item.disabled ? (
-                            <Text className='order-item__notnum'>无库存</Text>
+                            <Text className="order-item__notnum">无库存</Text>
                           ) : (
-                            <Text className='order-item__num'>
+                            <Text className="order-item__num">
                               x {item.num}
                             </Text>
                           )}
@@ -764,29 +791,29 @@ export default class EspireCheckout extends Component {
           )}
 
           {giftslist.length && (
-            <View className='sec cart-group__cont'>
+            <View className="sec cart-group__cont">
               {giftslist.length > 0 && (
-                <View className='promotion-goods__giftstitle'>赠品</View>
+                <View className="promotion-goods__giftstitle">赠品</View>
               )}
               {giftslist.length > 0 && (
-                <View className='promotion-goods'>
+                <View className="promotion-goods">
                   {giftslist.length > 0 &&
                     giftslist.map((item, idx) => {
                       return (
-                        <View key='item_id'>
+                        <View key="item_id">
                           {item.order_item_type === "gift" ? (
                             <View
                               className={classNames({
                                 "is-disabled": item.disabled
                               })}
                             >
-                              <Text className='promotion-goods__tag'>
+                              <Text className="promotion-goods__tag">
                                 【赠品】
                               </Text>
-                              <Text className='promotion-goods__name'>
+                              <Text className="promotion-goods__name">
                                 {item.title}{" "}
                               </Text>
-                              <Text className='promotion-goods__num'>
+                              <Text className="promotion-goods__num">
                                 {" "}
                                 x{item.num}
                               </Text>
@@ -800,42 +827,42 @@ export default class EspireCheckout extends Component {
             </View>
           )}
 
-          <View className='sec trade-sub-total'>
-            <SpCell className='trade-sub-total__item' title='商品金额：'>
-              <Price unit='cent' value={total.item_fee} />
+          <View className="sec trade-sub-total">
+            <SpCell className="trade-sub-total__item" title="商品金额：">
+              <Price unit="cent" value={total.item_fee} />
             </SpCell>
 
-            <SpCell className='trade-sub-total__item' title='优惠金额：'>
-              <Price unit='cent' value={total.discount_fee} />
+            <SpCell className="trade-sub-total__item" title="优惠金额：">
+              <Price unit="cent" value={total.discount_fee} />
             </SpCell>
             {total.freight_discount && (
-              <SpCell className='trade-sub-total__item' title='运费优惠：'>
-                <Price unit='cent' value={total.freight_discount} />
+              <SpCell className="trade-sub-total__item" title="运费优惠：">
+                <Price unit="cent" value={total.freight_discount} />
               </SpCell>
             )}
 
-            <SpCell className='trade-sub-total__item' title='运费：'>
-              <Price unit='cent' value={total.freight_fee} />
+            <SpCell className="trade-sub-total__item" title="运费：">
+              <Price unit="cent" value={total.freight_fee} />
             </SpCell>
             {/* {info.order_class==='presale'&&<AtSwitch  title='我已同意定金不退预售协议：' color='#0b4137' border={false} checked={isAgreement} onChange={this.handleAgreement} />} */}
           </View>
           <Batoolbar>
-            <View className='checkout-toolbar'>
-              <View className='checkout-toolbar__total'>
-                <Text className='total-items'>共{total.items_count}件商品</Text>
-                <View className='checkout-toolbar__prices'>
-                  <View className='total-price'>
-                    <Text className='price-text'>总计:　</Text>
-                    <Price primary unit='cent' value={total.total_fee} />
+            <View className="checkout-toolbar">
+              <View className="checkout-toolbar__total">
+                <Text className="total-items">共{total.items_count}件商品</Text>
+                <View className="checkout-toolbar__prices">
+                  <View className="total-price">
+                    <Text className="price-text">总计:　</Text>
+                    <Price primary unit="cent" value={total.total_fee} />
                   </View>
-                  <Text className='checkout-toolbar__hint'>
+                  <Text className="checkout-toolbar__hint">
                     以实际支付金额为准
                   </Text>
                 </View>
               </View>
               <AtButton
-                type='primary'
-                className='btn-confirm-order'
+                type="primary"
+                className="btn-confirm-order"
                 onClick={this.handleShare}
               >
                 分享订单
@@ -844,7 +871,7 @@ export default class EspireCheckout extends Component {
           </Batoolbar>
           {isShowQrcode && (
             <View
-              className='qrcode-index'
+              className="qrcode-index"
               onClick={this.handleClickHideImage}
               catchtouchmove
             >
@@ -858,9 +885,9 @@ export default class EspireCheckout extends Component {
                 src={poster}
               />
               <AtButton
-                className='download-btn'
+                className="download-btn"
                 onClick={this.handleDownloadImage}
-                type='primary'
+                type="primary"
               >
                 下载到相册
               </AtButton>
@@ -868,12 +895,12 @@ export default class EspireCheckout extends Component {
           )}
           {/* 'canvas' */}
           <Canvas
-            className='canvas-tag'
+            className="canvas-tag"
             style={styleNames({
               width: canvasWidth + "px",
               height: canvasHeight + "px"
             })}
-            canvas-id='myCanvas'
+            canvas-id="myCanvas"
           ></Canvas>
           <SpToast />
         </View>

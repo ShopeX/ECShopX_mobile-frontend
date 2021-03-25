@@ -190,12 +190,13 @@ export default class TabBar extends Component {
     if (cur !== current) {
       const curTab = this.state.tabList[current];
       const { url, withLogin } = curTab;
+      console.log('tabbar-withLogin',url,withLogin)
       const fullPath = getCurrentRoute(this.$router).fullPath.split("?")[0];
-      if (withLogin && !S.getAuthToken()) {
-        return Taro.navigateTo({
-          url: APP_AUTH_PAGE
-        });
-      }
+      // if (withLogin && !S.getAuthToken()) {
+      //   return Taro.navigateTo({
+      //     url: APP_AUTH_PAGE
+      //   });
+      // }
 
       if (url && fullPath !== url) {
         // if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
@@ -215,7 +216,7 @@ export default class TabBar extends Component {
       tabList,
       localCurrent
     } = this.state;
-
+    
     if (APP_INTEGRATION) {
       return <View></View>;
     }

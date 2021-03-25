@@ -22,7 +22,7 @@ import {
 } from "@/components";
 import req from "@/api/req";
 import api from "@/api";
-import { pickBy, classNames, isArray } from "@/utils";
+import { pickBy, classNames, isArray,styleNames } from "@/utils";
 import entry from "@/utils/entry";
 import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
@@ -54,8 +54,7 @@ import "../pages/home/index.scss";
 @withBackToTop
 export default class BaGuideHomeIndex extends Component {
   config = {
-    navigationStyle: "custom",
-    navigationBarTitleText: "导购商城"
+    navigationStyle: "custom"    
   };
   constructor(props) {
     super(props);
@@ -316,12 +315,7 @@ export default class BaGuideHomeIndex extends Component {
     this.fetchCartCount();
   }
 
-  // 配置信息
-  config = {
-    enablePullDownRefresh: true,
-    backgroundTextStyle: "dark",
-    onReachBottomDistance: 50
-  };
+  
 
   // 下拉刷新
   onPullDownRefresh = () => {
@@ -764,10 +758,12 @@ export default class BaGuideHomeIndex extends Component {
     const isStandard = APP_PLATFORM === "standard" && !is_open_store_status;
     // 否是fixed
     const isFixed = positionStatus;
-
+    const n_ht = S.get('navbar_height', true)
     return (
-      <View className="page-index">
-        <BaStore onClick={this.handleOpenStore} defaultStore={shopList[currentIndex]} />
+      <View className="page-index" >
+        <View  style={styleNames({'height': `${n_ht}px`,'width':'100%'})}></View>
+        <BaNavBar  title="导购货架" fixed jumpType={"home"} />
+        <BaStore  onClick={this.handleOpenStore} defaultStore={shopList[currentIndex]} />
         {showStore && (
           <BaStoreList
             shopList={shopList}

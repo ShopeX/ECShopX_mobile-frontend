@@ -1,12 +1,12 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, ScrollView } from "@tarojs/components";
-import { AtTabs, AtTabsPane } from "taro-ui";
-import { Loading, SpNote, NavBar, CouponItem } from "@/components";
-import api from "@/api";
+import { Loading, SpNote, NavBar, SpToast, CouponItem } from "@/components";
 import { connect } from "@tarojs/redux";
+import api from "@/api";
+import S from "@/spx";
 import { withPager } from "@/hocs";
-import { pickBy } from "@/utils";
-// import BaTabBar from "@/guide/components";
+import { pickBy, formatTime, styleNames } from "@/utils";
+import { Tracker } from "@/service";
 import { BaTabBar, BaNavBar } from "@/guide/components";
 import "./coupon.scss";
 
@@ -14,7 +14,7 @@ import "./coupon.scss";
   colors: colors.current
 }))
 @withPager
-export default class Coupon extends Component {
+export default class CouponHome extends Component {
   config = {
     navigationStyle: "custom"
   };
@@ -23,69 +23,86 @@ export default class Coupon extends Component {
 
     this.state = {
       ...this.state,
-      curTabIdx: 0,
-      tabList: [
-        { title: "未使用", status: "1" },
-        { title: "已使用", status: "2" },
-        { title: "已过期", status: "3" }
-      ],
       list: [],
-      curId: null
+      shareInfo: {}
     };
   }
 
   componentDidMount() {
-    const tabIdx = this.state.tabList.findIndex(tab => tab.status === "1");
+    this.nextPage();
+    api.wx.shareSetting({ shareindex: "coupon" }).then(res => {
+      this.setState({
+        shareInfo: res
+      });
+    });
+  }
 
-    if (tabIdx >= 0) {
-      this.setState(
-        {
-          curTabIdx: tabIdx
-        },
-        () => {
-          this.nextPage();
-        }
-      );
-    } else {
-      this.nextPage();
-    }
+  onShareAppMessage() {
+    const res = this.state.shareInfo;
+    const { userId } = Taro.getStorageSync("userinfo");
+    const query = userId ? `?uid=${userId}` : "";
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      path: `/others/pages/home/coupon-home${query}`
+    };
+  }
+
+  onShareTimeline() {
+    const res = this.state.shareInfo;
+    const { userId } = Taro.getStorageSync("userinfo");
+    const query = userId ? `uid=${userId}` : "";
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      query: query
+    };
   }
 
   async fetch(params) {
-    const { page_no: page, page_size: pageSize } = params;
-    const { curTabIdx, tabList } = this.state;
-    // let vaildStatus
-    // if(curTabIdx === 0) {
-    //   vaildStatus = true
-    // }else {
-    //   vaildStatus = false
-    // }
-    const status = tabList[curTabIdx].status;
+    let { distributor_id } = S.get("QwUserInfo", true);
+
     params = {
       ...params,
-      status,
-      page,
-      pageSize
+      end_date: 1,
+      distributor_id,
+      item_id: this.$router.params
+        ? this.$router.params.item_id
+          ? this.$router.params.item_id
+          : ""
+        : ""
     };
-    const { list, total_count: total } = await api.member.getUserCardList(
-      params
-    );
+    const {
+      list,
+      pagers: { total: total }
+    } = await api.member.homeCouponList(params);
     const nList = pickBy(list, {
-      id: "id",
       status: "status",
       reduce_cost: "reduce_cost",
       least_cost: "least_cost",
-      begin_date: "begin_date",
-      end_date: "end_date",
+      begin_date: ({ begin_date }) => formatTime(begin_date * 1000),
+      end_date: ({ end_date }) => formatTime(end_date * 1000),
+      fixed_term: "fixed_term",
       card_type: "card_type",
-      card_id: "card_id",
-      code: "code",
       tagClass: "tagClass",
       title: "title",
       discount: "discount",
-      use_condition: "use_condition",
+      get_limit: "get_limit",
+      user_get_num: "user_get_num",
+      quantity: "quantity",
+      get_num: "get_num",
+      card_id: "card_id",
       description: "description",
       use_bound: "use_bound"
+    });
+    nList.map(item => {
+      if (item.get_limit - item.user_get_num <= 0) {
+        item.getted = 1;
+      } else if (item.quantity - item.get_num <= 0) {
+        item.getted = 2;
+      } else {
+        item.getted = 0;
+      }
     });
 
     this.setState({
@@ -94,82 +111,115 @@ export default class Coupon extends Component {
 
     return { total };
   }
+  //分享该券
+  handleClickNews = (card_item, idx) => {
+    // let templeparams = {
+    //   'temp_name': 'yykweishop',
+    //   'source_type': 'coupon',
+    // }
+    // let _this = this
+    // api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
+    //   console.log('templeparams---1', tmlres)
+    //   if (tmlres.template_id && tmlres.template_id.length > 0) {
+    //     wx.requestSubscribeMessage({
+    //       tmplIds: tmlres.template_id,
+    //       success() {
+    //         _this.handleGetCard(card_item, idx)
+    //       },
+    //       fail() {
+    //         _this.handleGetCard(card_item, idx)
+    //       }
+    //     })
+    //   } else {
+    //     _this.handleGetCard(card_item, idx)
+    //   }
+    // }, () => {
+    //   _this.handleGetCard(card_item, idx)
+    // })
+  };
 
-  handleClickTab = idx => {
-    if (this.state.page.isLoading) return;
+  handleGetCard = async (card_item, idx) => {
+    const { list } = this.state;
 
-    if (idx !== this.state.curTabIdx) {
-      this.resetPage();
-      this.setState({
-        list: []
-      });
+    if (list[idx].getted === 2 || list[idx].getted === 1) {
+      return;
     }
+    console.log(card_item, 75);
+    const query = {
+      card_id: card_item.card_id
+        ? card_item.card_id
+        : card_item.$original.card_id
+    };
+    try {
+      const data = await api.member.homeCouponGet(query);
 
-    this.setState(
-      {
-        curTabIdx: idx
-      },
-      () => {
-        this.nextPage();
+      Tracker.dispatch("GET_COUPON", card_item);
+
+      S.toast("优惠券领取成功");
+      if (data.status) {
+        if (data.status.total_lastget_num <= 0) {
+          list[idx].getted = 2;
+        } else if (data.status.lastget_num <= 0) {
+          list[idx].getted = 1;
+        }
+        this.setState({
+          list: list
+        });
       }
-    );
+    } catch (e) {}
   };
-
-  handleClick = item => {
-    const { card_id, code, card_type, status, tagClass } = item;
-    if (status === "2" || tagClass === "overdue") {
-      return false;
-    }
-    let url = `/pages/item/list?cardId=${card_id}`;
-    if (card_type === "gift") {
-      url = `/marketing/pages/member/coupon-detail?card_id=${card_id}&code=${code}`;
-    }
-    Taro.navigateTo({
-      url
-    });
-  };
-
-  /*handleClickChecked = (id) => {
-    this.setState({
-      curId: id
-    })
-  }*/
 
   render() {
-    const { curTabIdx, tabList, list, page } = this.state;
-
+    const { colors } = this.props;
+    const { list, page } = this.state;
+    const n_ht = S.get("navbar_height", true);
     return (
       <View className="coupon-list">
         <BaNavBar title="优惠券列表" fixed jumpType={"home"} />
-        {/* <NavBar title="优惠券列表" leftIconType="chevron-left" fixed="true" /> */}
-        <AtTabs
-          className="coupon-list__tabs"
-          current={curTabIdx}
-          tabList={tabList}
-          onClick={this.handleClickTab}
-        >
-          {tabList.map((panes, pIdx) => (
-            <AtTabsPane
-              current={curTabIdx}
-              key={panes.status}
-              index={pIdx}
-            ></AtTabsPane>
-          ))}
-        </AtTabs>
+        {/* <NavBar
+          title='优惠券列表'
+          leftIconType='chevron-left'
+          fixed='true'
+        /> */}
 
         <ScrollView
+          style={styleNames({ top: `${n_ht}px` })}
           scrollY
-          className="coupon-list__scroll"
+          className="home_coupon-list__scroll"
           onScrollToLower={this.nextPage}
         >
           <View className="coupon-list-ticket">
-            {list.map(item => {
+            {list.map((item, idx) => {
               return (
-                <CouponItem
-                  info={item}
-                  key={item.id}
-                  onClick={this.handleClick.bind(this, item)}
-                />
+                <CouponItem info={item} key={item.card_id}>
+                  {/* <Text
+                      className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
+                      onClick={this.handleGetCard.bind(this, item, idx)}
+                    >
+                      {item.getted === 1 ? '已领取' : ''}
+                      {item.getted === 2 ? '已领完' : ''}
+                      {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
+                    </Text> */}
+                  <View
+                    className={`coupon-btn ${
+                      item.getted === 2 || item.getted === 1
+                        ? "coupon-btn__done"
+                        : ""
+                    }`}
+                    style={`background: ${colors.data[0].primary}`}
+                    onClick={this.handleClickNews.bind(this, item, idx)}
+                  >
+                    <View className="recommend-detail__bar">
+                      <Button
+                        openType="share"
+                        style={"background: " + colors.data[0].primary}
+                        className='shareCSS'
+                      >
+                        分享给顾客
+                      </Button>
+                    </View>
+                  </View>
+                </CouponItem>
               );
             })}
             {page.isLoading && <Loading>正在加载...</Loading>}
@@ -178,6 +228,7 @@ export default class Coupon extends Component {
             )}
           </View>
         </ScrollView>
+        <SpToast />
         <BaTabBar />
       </View>
     );

@@ -158,7 +158,7 @@ export default class Reg extends Component {
           code
 
         }
-      
+        return
         const { token } = await api.wx.login(loginParams)
         S.setAuthToken(token)
         let parseToken=tokenParse(token)
