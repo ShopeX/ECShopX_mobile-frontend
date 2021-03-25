@@ -658,6 +658,8 @@ export default class Detail extends Component {
       let ba_params = S.get('ba_params',true)
       let qw_chatId = S.get('qw_chatId',true)
       let gu = null
+      let smid = null
+      //let subtask_id = null
       let share_params = {
         appid:extConfig.appid,
         id:this.$router.params.id,
@@ -665,14 +667,15 @@ export default class Detail extends Component {
         share_type:'item_share'
       }
       if(ba_params) {
-        const store_code = ba_params.store_code
-        const guide_code = ba_params.guide_code
-        gu = guide_code+`${store_code?'_'+store_code:''}`
-        share_params.gu = gu
+        // const store_code = ba_params.store_code
+        // const guide_code = ba_params.guide_code
+        // gu = guide_code+`${store_code?'_'+store_code:''}`
+        // share_params.gu = gu
+        smid = ba_params.guide_code
       }
-      if(qw_chatId){
-        share_params.share_chatId = qw_chatId
-      }
+      // if(qw_chatId){
+      //   share_params.share_chatId = qw_chatId
+      // }
      
       if(entry_form){
         share_params.entrySource = entry_form.entry
@@ -692,8 +695,7 @@ export default class Detail extends Component {
     const pic = pics[0].replace('http:', 'https:')
     const infoId = info.distributor_id
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : infoId
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${id}&uid=${userId}&sid=2`
-    console.log('wxappCode---->',wxappCode)
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&itemid=${item_id}&distributor_id=${id}&smid=${smid}&subtask_id=${subtask_id}`
     try {
       const avatarImg = await Taro.getImageInfo({src: avatar})
       const goodsImg = await Taro.getImageInfo({src: pic})
