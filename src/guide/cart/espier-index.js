@@ -97,12 +97,6 @@ export default class CartIndex extends Component {
       nextProps.list !== this.props.list
     );
 
-    // if (nextProps.list !== this.props.list) {
-    // 	const groups = this.resolveActivityGroup(nextProps.list)
-    // 		this.setState({
-    // 			groups
-    // 		})
-    // }
     const groups = this.resolveActivityGroup(nextProps.list);
     this.setState({
       groups
@@ -113,10 +107,6 @@ export default class CartIndex extends Component {
     if (!S.getAuthToken() || this.state.loading) return;
     this.updateCart();
   }
-
-  // handleLoginClick = () => {
-  //   S.login(this, true);
-  // };
 
   handleClickItem = item => {
     const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`;
@@ -290,11 +280,11 @@ export default class CartIndex extends Component {
         error: e.message
       });
     }
-    const { item_count } = await api.cart.count({ shop_type: "distributor" });
+    // const { item_count } = await api.cart.count({ shop_type: "distributor" });
     const list = this.processCart({
       valid_cart,
       invalid_cart,
-      item_count,
+      // item_count,
       cartType: cartTypeLocal,
       crossborder_show
     });
@@ -388,20 +378,6 @@ export default class CartIndex extends Component {
     this.updateCart();
   };
 
-  // async changeCartNum(shop_id, cart_id, num) {
-  //   const { type = "distributor" } = this.$router.params;
-  //   try {
-  //     const res = await api.guide.cartdataadd(shop_id, cart_id, num, type);
-  //     this.processCart(res);
-  //   } catch (e) {
-  //     Taro.showToast({
-  //       icon: "none",
-  //       title: e.message,
-  //       duration: 5000
-  //     });
-  //   }
-  //   this.updateCart();
-  // }
 
   //购物车商品详情变更:数量、选中状态
   handleQuantityChange = async (shop_id, item, num, e) => {
@@ -616,22 +592,6 @@ export default class CartIndex extends Component {
     return (
       <View className={classNames("page-cart-index", isDrug && "is-drug")}>
         <BaNavBar title='购物车' fixed jumpType='home' />
-        {/* {isDrug && (
-          <NavBar title="购物车" leftIconType="chevron-left" fixed="true" />
-        )} */}
-        {/* {!S.getAuthToken() ? (
-          <View className="login-header">
-            <View>授权登录后同步购物车的商品</View>
-            <View
-              className="btn-login"
-              onClick={this.handleLoginClick.bind(this)}
-              style={`background: ${colors.data[0].primary}`}
-            >
-              授权登录
-            </View>
-          </View>
-        ) : null} */}
-
         <ScrollView
           style={styleNames({'top': `${n_ht}px`})}
           className={`${isEmpty ? "hidden-scroll" : "cart-list__scroll"}`}
@@ -886,16 +846,6 @@ export default class CartIndex extends Component {
                               />
                             </View>
                           </View>
-                          {/* <Button
-                            type="primary"
-                            className="btn-checkout"
-                            style={`background: ${colors.data[0].primary}`}
-                            disabled={shopCart.shopInfo.cart_total_count <= 0}
-                            onClick={this.handleCheckout.bind(this, shopCart)}
-                          >
-                            {isDrug ? "立即预约" : "结算"}
-                          </Button> */}
-                          
                           <AtButton
                             type='primary'
                             className='btn-checkout'
@@ -960,27 +910,6 @@ export default class CartIndex extends Component {
               </View>
             </View>
           )}
-
-          {/* {!isDrug && likeList.length && showLikeList ? (
-            <View className="cart-list cart-list__disabled">
-              <View className="cart-list__hd like__hd">
-                <Text className="cart-list__title">猜你喜欢</Text>
-              </View>
-              <View className="goods-list goods-list__type-grid">
-                {likeList.map(item => {
-                  return (
-                    <View className="goods-list__item" key={item.item_id}>
-                      <GoodsItem
-                        key={item.item_id}
-                        info={item}
-                        onClick={this.handleClickItem.bind(this, item)}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-            </View>
-          ) : null} */}
           {page.isLoading ? <Loading>正在加载...</Loading> : null}
         </ScrollView>
 
