@@ -49,7 +49,7 @@ export default class PaymentPicker extends Component {
         console.log(111);
         this.handlePaymentChange(res[0].pay_type_code)
         this.handleChange(res[0].pay_type_code)
-
+        this.props.onInitDefaultPayType(res[0].pay_type_code)
       }
     })
   }

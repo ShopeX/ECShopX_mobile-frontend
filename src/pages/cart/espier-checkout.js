@@ -114,8 +114,8 @@ export default class CartCheckout extends Component {
         point_fee: "",
         freight_type:""
       },
-      // 上次支付方式
-      lastPayType: '',
+      // 默认支付方式
+      defalutPaytype: 'wxpay',
       payType: '',
       disabledPayment: null,
       isPaymentOpend: false,
@@ -968,7 +968,7 @@ export default class CartCheckout extends Component {
   };
 
   resolvePayError(e) {
-    const { payType, disabledPayment, lastPayType } = this.state;
+    const { payType, disabledPayment, defalutPaytype } = this.state;
     if (payType === "point" || payType === "deposit") {
       const disabledPaymentMes = {};
       disabledPaymentMes[payType] = e.message;
@@ -988,7 +988,7 @@ export default class CartCheckout extends Component {
             } else {
               this.setState({
                 disabledPayment: { ...disabledPaymentMes, ...disabledPayment },
-                payType: lastPayType
+                payType: defalutPaytype
               }, () => {
                 this.calcOrder()
               })
@@ -1406,14 +1406,19 @@ export default class CartCheckout extends Component {
     //   this.props.onClearCoupon()
     // }
 
-    const { payType: lastPayType } = this.state
     this.setState({
       point_use: 0,
       payType,
-      lastPayType,
       isPaymentOpend: false
     }, () => {
       this.calcOrder()
+    })
+  }
+
+  // 设置初次paytype
+  initDefaultPaytype = (payType) => {
+    this.setState({
+      defalutPaytype: payType
     })
   }
 
@@ -1471,12 +1476,10 @@ export default class CartCheckout extends Component {
     });
   };
   handlePointUseChange = async (point_use, payType) => {
-    const { payType: lastPayType } = this.state
     this.setState(
       {
         point_use,
         payType,
-        lastPayType,
         isPointOpen: false
       },
       () => {
@@ -1487,8 +1490,10 @@ export default class CartCheckout extends Component {
 
   //清除使用积分
   clearPoint = () => {
+    const { defalutPaytype } = this.state
     this.setState({
-      point_use: 0
+      point_use: 0,
+      payType: defalutPaytype
     });
   };
   // 选择是否需要礼袋
@@ -1505,12 +1510,12 @@ export default class CartCheckout extends Component {
   };
   resetPoint = e => {
     e.stopPropagation();
-    const { pointInfo, lastPayType } = this.state;
+    const { pointInfo, defalutPaytype } = this.state;
     pointInfo.point_use = 0;
     this.setState(
       {
         point_use: 0,
-        payType: lastPayType,
+        payType: defalutPaytype,
         pointInfo
       },
       () => {
@@ -1570,7 +1575,8 @@ export default class CartCheckout extends Component {
       isNeedPackage,
       isPackage,
       pack,
-      isOpenStore
+      isOpenStore,
+      defalutPaytype
     } = this.state;
     console.log("---total---",total);
     console.log("---info---",info);
@@ -2026,11 +2032,13 @@ export default class CartCheckout extends Component {
           disabledPayment={disabledPayment}
           onClose={this.handleLayoutClose}
           onChange={this.handlePaymentChange}
+          onInitDefaultPayType={this.initDefaultPaytype.bind(this)}
         ></PaymentPicker>
         {/* 积分使用 */}
         <PointUse
           isOpened={isPointOpen}
           type={payType}
+          defalutPaytype={defalutPaytype}
           info={pointInfo}
           onClose={this.handleLayoutClose}
           onChange={this.handlePointUseChange}

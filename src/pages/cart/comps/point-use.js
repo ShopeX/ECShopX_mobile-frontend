@@ -56,12 +56,11 @@ export default class PointUse extends Component {
     })
   }
   handlePointChange = (value) =>{
-    const { info } = this.props
-    const { localType } = this.state
+    const { info, defalutPaytype } = this.props
     const max_point = Number(info.max_point)
     if(value >= max_point){
       this.setState({
-        localType: info.deduct_point_rule.full_amount ? 'point' : localType,
+        localType: info.deduct_point_rule.full_amount ? 'point' : defalutPaytype,
         point:max_point
       })
       return max_point
@@ -72,8 +71,8 @@ export default class PointUse extends Component {
       localType:info.deduct_point_rule.full_amount 
               ? Number(value) === max_point
               ? 'point' 
-              : localType 
-              : localType
+              : defalutPaytype 
+              : defalutPaytype
     },()=>{
       console.log(this.state.localType)
     })
