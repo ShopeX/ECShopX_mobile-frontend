@@ -328,6 +328,7 @@ export default class CartIndex extends Component {
     console.log("handleSelectionChange-item", type,item);
     if(type=='all'){
       
+      return
     }
 
     await api.guide.checkstatus({

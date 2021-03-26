@@ -98,20 +98,24 @@ export default class BaGuideHomeIndex extends Component {
     const options = this.$router.params;
     const res = await entry.entryLaunch(options, false);
     this.init(res);
-    //设置导购信息
+    
   }
   async init(entryData) {
+    //设置导购信息
     const QwUserInfo = S.get("QwUserInfo", true);
+    console.log('首页设置导购信息-QwUserInfo',QwUserInfo)
     this.setState({ QwUserInfo });
     let version = entryData.version;
-    this.fetchInfo(version);
+    // this.fetchInfo(version);
     let system = await Taro.getSystemInfoSync();
     if (system && system.environment === "wxwork") {
       //企业微信登录接口
       this.isAppWxWork();
     }
     //获取门店list
+    setTimeout(()=>{
     this.getStoreList();
+    },200)
     //获取首页配置
     this.getHomeSetting();
     //获取分享信息
@@ -140,6 +144,7 @@ export default class BaGuideHomeIndex extends Component {
     return shops.list;
   }
   async fetchInfo(version = "") {
+
     const url = `/pageparams/setting?template_name=yykweishopamore&version=${version}&page_name=dgindex`;
     const info = await req.get(url);
     // if (!S.getAuthToken()) {
@@ -723,6 +728,16 @@ export default class BaGuideHomeIndex extends Component {
   };
   //修改选中门店index
   handleCurIndex = currentIndex => {
+    //更新 导购的门店信息
+    let { QwUserInfo,shopList } = this.state
+    QwUserInfo.distributor_id = shopList[currentIndex].distributor_id
+    S.set(
+      "QwUserInfo",
+      {
+        ...QwUserInfo
+      },
+      true
+    );
     this.setState({
       currentIndex,
       showStore: false

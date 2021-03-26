@@ -5,8 +5,8 @@
   font-size: 24px !important;
   text-align: center !important;
   border: none !important;
-  background: #fff !important;
-  padding :0!important;
+  // background: #fff !important;
+  padding :0 10px !important;
   // margin-right: -20px !important;
 }
 .shareCSS:after{ border: none; }
@@ -46,7 +46,7 @@
   border-radius: 50px;
   padding: 0 10px;
   &__done {
-    background: #c4c4c4 !important;
+    // background: #c4c4c4 !important;
     color: #ffffff;
     opacity: 0.8;
   }

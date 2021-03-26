@@ -37,12 +37,15 @@ export default class CouponHome extends Component {
     });
   }
 
-  onShareAppMessage() {
+  onShareAppMessage(item) {
+    const { info } = item.target.dataset
     const res = this.state.shareInfo;
+    console.log('onShareAppMessage-item',res,info)
     const { userId } = Taro.getStorageSync("userinfo");
-    const query = userId ? `?uid=${userId}` : "";
+    const query = `?uid=${userId}&card_id=${info.card_id}` ;
+    
     return {
-      title: res.title,
+      title: info.title+'优惠券',
       imageUrl: res.imageUrl,
       path: `/others/pages/home/coupon-home${query}`
     };
@@ -206,14 +209,15 @@ export default class CouponHome extends Component {
                         ? "coupon-btn__done"
                         : ""
                     }`}
-                    style={`background: ${colors.data[0].primary}`}
+                    // style={`background: ${colors.data[0].primary}`}
                     onClick={this.handleClickNews.bind(this, item, idx)}
                   >
                     <View className="recommend-detail__bar">
                       <Button
                         openType="share"
-                        style={"background: " + colors.data[0].primary}
+                        // style={"background: " + colors.data[0].primary}
                         className='shareCSS'
+                        dataInfo={item}
                       >
                         分享给顾客
                       </Button>

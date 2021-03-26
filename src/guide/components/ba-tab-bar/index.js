@@ -70,7 +70,7 @@ export default class TabBar extends Component {
         title: "优惠券",
         iconType: "member",
         iconPrefixClass: "icon",
-        url: "/guide/member/coupon",
+        url: "/guide/coupon-home/index",
         urlRedirect: true
       },
       {
