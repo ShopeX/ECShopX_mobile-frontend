@@ -53,13 +53,14 @@ componentDidMount(){
         style='margin-top:60px;background:#3333'           
       >
         <Image className='ba-avatar' mode='widthFix' src={baInfo.avatar||'/assets/imgs/home-unloginhead.png'} />
-        {token?
+        <View className={classNames('ba-username')}>导购货架{baInfo.name}</View>
+        {/* {token?
           <View className={classNames('ba-username')}>导购货架{baInfo.name}</View>:null
           // <View className={classNames('ba-username',!token?'undenline':'')} 
           //   onClick={this.router}>
           //   请点击授权登录
           // </View>
-        }
+        } */}
 
         
         {defaultStore&&<View className='ba-store__info' onClick={this.handleClick}>

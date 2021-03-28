@@ -16,14 +16,17 @@ export default class BaStoreList extends Component {
     super(props);
     this.state = {
       keyWord: "",
-      storeList: []
+      storeList: [],
+      setIdx:0
     };
   }
+  //点击门店item
   handleClick = index => {
-    console.log("handleClick------999", index);
-    const { onChangeCurIndex } = this.props;
+    console.log("点击门店item-----", index);
+    this.setState({
+      setIdx:index
+    })
 
-    onChangeCurIndex(index);
   };
   async componentWillMount() {
     // this.setState({
@@ -32,17 +35,15 @@ export default class BaStoreList extends Component {
     //   console.log('componentWillMount-获取门店list',this.state.storeList)
     // })
   }
+  //搜索门店
   hanldeConfirm = () => {
     const { keyWord } = this.state;
 
     const { onSearchStore, onChangeCurIndex } = this.props;
-    onSearchStore({ shop_name: keyWord });
+    onSearchStore({ store_name: keyWord });
     onChangeCurIndex(0);
-    // onChangeCurIndex(0)
-    // // this.setState({
-    // //   currentIndex:0
-    // // })
   };
+  //搜索框
   hanldeInput = e => {
     const {
       detail: { value }
@@ -51,16 +52,18 @@ export default class BaStoreList extends Component {
       keyWord: value
     });
   };
-
+  //重制搜索框
   handleReset = () => {
     //   debugger
     this.setState({
       keyWord: ""
     });
   };
+  //提交当前选择
   hanldeStore = () => {
     const { onStoreConfirm } = this.props;
-    onStoreConfirm();
+    const {setIdx} = this.state
+    onStoreConfirm(setIdx);
   };
 
   render() {

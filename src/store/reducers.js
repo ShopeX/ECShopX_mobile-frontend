@@ -5,6 +5,8 @@ import address from './address'
 import member from './member'
 import tabBar from './tab-bar'
 import colors from './colors'
+import home from './home'
+import guide from './guide'
 
 export default combineReducers({
   cart,
@@ -12,5 +14,7 @@ export default combineReducers({
   address,
   member,
   tabBar,
-  colors
+  colors,
+  guide,
+  home
 })

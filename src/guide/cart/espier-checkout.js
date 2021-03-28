@@ -879,8 +879,8 @@ export default class EspireCheckout extends Component {
                 onClick={e => e.stopPropagation()}
                 showMenuByLongpress
                 style={styleNames({
-                  width: canvasWidth + "px",
-                  height: canvasHeight + "px"
+                  width: canvasWidth-35 + "px",
+                  height: canvasHeight-100 + "px"
                 })}
                 src={poster}
               />

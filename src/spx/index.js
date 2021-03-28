@@ -65,7 +65,7 @@ class Spx {
     const res = await api.guide.is_valid({ salesperson_id, distributor_id });
     console.log("查询当前导购门店信息是否有效-is_valid", res);
     QwUserInfo.store_isValid = res;
-    
+    QwUserInfo.ba_info = {...QwUserInfo}
     this.set(
       "QwUserInfo",
       {

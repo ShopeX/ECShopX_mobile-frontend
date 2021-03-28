@@ -59,7 +59,7 @@ export default class HomeWgts extends PureComponent {
                 {item.name === 'goodsGrid' && <WgtGoodsGrid source={source} componentIndex={idx} info={item} />}
                 {item.name === 'showcase' && <WgtShowcase source={source} componentIndex={idx} info={item} />}
                 {item.name === 'tagNavigation' &&<View id={`tag-hotzone_img${item.tagnavIndex}`} ><WgtTagNavigation source={source} componentIndex={idx} info={item} onClick={this.handleTagNavationTop}/></View> }
-                {item.name==='activityZone'&& <WgtActivityZone source={source} componentIndex={idx} info={item} />}
+                {/* {item.name==='activityZone'&& <WgtActivityZone source={source} componentIndex={idx} info={item} />} */}
                
                 {idx === 1 && (
                   <WgtPointLuck />
