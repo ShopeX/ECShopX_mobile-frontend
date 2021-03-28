@@ -195,10 +195,17 @@ export default class BaGuideHomeIndex extends Component {
       return false;
     }
   }
-
-  async fetchInfo(version = "") {
-    const url = `/pageparams/setting?template_name=yykweishopamore&version=${version}&page_name=dgindex`;
-    const info = await req.get(url);
+  //初始化首页模版
+  async fetchInfo(version = 'v1.0.1') {
+    console.log('初始化首页模版-fetchInfo-version',version)
+    // const url = `/pageparams/setting?template_name=yykweishopamore&version=${version}&page_name=dgindex`;
+    let params = {
+      template_name: 'yykweishop',
+      version: version,
+      page_name: 'custom_salesperson',
+      company_id: 1
+    }
+    const info = await api.guide.getHomeTmps(params);
 
     // if (!S.getAuthToken()) {
     //   this.setState({
@@ -255,18 +262,24 @@ export default class BaGuideHomeIndex extends Component {
   }
 
   async getStoreList(params = {}) {
-    let QwUserInfo = S.get("QwUserInfo", true);
+    let QwUserInfo = S.get("QwUserInfo", true),{currentIndex} = this.state
     console.log('getStoreList-QwUserInfo',QwUserInfo)
     
-    const { shops } = await api.guide.distributorlist({
+    const  shops  = await api.guide.distributorlist({
       page: 1,
       pageSize: 10000,
       store_type: "distributor",
       store_name: params.store_name
     });
-
+    shops.list.forEach((d,idx)=>{
+      if(d.distributor_id == QwUserInfo.distributor_id) currentIndex = idx
+    })
+    this.handleCurIndex(currentIndex)
+    
+    console.log('获取门店列表以及当前下标',shops,currentIndex)
     this.setState({
-      shopList: shops
+      shopList: shops.list,
+      defaultStore: shops.list[currentIndex]
     });
     return shops;
   }
@@ -288,8 +301,9 @@ export default class BaGuideHomeIndex extends Component {
       scrollTop: offsetTop
     });
   };
-
+  //点击Store
   handleOpenStore = val => {
+    console.log('点击Store-val',val)
     this.setState({
       showStore: val
     });
@@ -307,6 +321,7 @@ export default class BaGuideHomeIndex extends Component {
     QwUserInfo.store_code = shopList[currentIndex].wxshop_bn;
     S.set("QwUserInfo", QwUserInfo, true);
   };
+  //修改当前门店下标
   handleCurIndex = currentIndex => {
     this.setState({
       currentIndex
@@ -323,7 +338,7 @@ export default class BaGuideHomeIndex extends Component {
       currentIndex
     } = this.state;
     const isLoading = !wgts || !this.props.store;
-
+    console.log('render-isLoading',isLoading)
     const { homesearchfocus, showBuyPanel, goodsSkuInfo } = this.props;
     const ipxClass = S.get("ipxClass");
     const n_ht = S.get("navbar_height");
@@ -331,13 +346,18 @@ export default class BaGuideHomeIndex extends Component {
     // ${showhometabbar?'':'preventTouchMove'}
     return (
       <View className={!isLoading ? "page-index" : ""}>
-        我就是个试图
         <BaNavBar
           title="innisfree 导购商城"
           fixed
           jumpType="home"
           icon="in-icon in-icon-backhome"
         />
+        <View >
+         <BaStore
+                onClick={this.handleOpenStore}
+                defaultStore={defaultStore}
+              />
+              </View>
         {isLoading ? (
           <Loading></Loading>
         ) : (
@@ -355,10 +375,7 @@ export default class BaGuideHomeIndex extends Component {
                 onChangPageScroll={this.handlePageScroll}
               />
 
-              <BaStore
-                onClick={this.handleOpenStore}
-                defaultStore={defaultStore}
-              />
+             
             </View>
           </ScrollView>
         )}

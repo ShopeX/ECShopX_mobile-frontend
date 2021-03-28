@@ -30,10 +30,10 @@ componentDidMount(){
  
 
 }
-  handleClick=()=>{
-      const {onClick}=this.props
-      onClick(true)
-  }
+handleClick=()=>{
+  const {onClick}=this.props
+  onClick(true)
+}
 
   // router(){
   //   console.log('/guide/auth/wxauth')
