@@ -152,10 +152,15 @@ export default class Home extends Component {
   
   // 分享
   onShareAppMessage (params) {  
+    const shareInfo = this.shareInfo()
+  
     Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
       from_type:params.from_type,
       share_title:"分享给好友"
     }); 
+    return {
+      ...shareInfo
+    }
   }
   
   // 分享朋友圈
