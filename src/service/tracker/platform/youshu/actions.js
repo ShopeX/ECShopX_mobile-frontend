@@ -30,7 +30,7 @@ function resolveOrderInfo(params) {
   return baseData;
 }
 
-function resolveCartInfo(params, action_type) {
+function resolveCartInfo(params, action_type) {  
   const baseData = {
     sku: {
       sku_id: params.sku_id,
@@ -41,12 +41,12 @@ function resolveCartInfo(params, action_type) {
       spu_name: params.goods_title||params.item_name
     },
     sale: {
-      original_price: params.market_price / 100,
+      original_price: Number(params.market_price)?params.market_price / 100:params.price / 100,
       current_price: params.price / 100
     },
     goods_title: params.goods_title||params.item_name
   };
-  if (action_type) {
+  if (action_type) {     
     Object.assign(baseData, { action_type });
   }
   if (params.num) {
@@ -185,7 +185,7 @@ const actions = {
   ["GOODS_SHARE_TO_CHANNEL_CLICK"](params) {
     const data = {
       from_type: params.from_type || "button",
-      share_title: params.item_name,
+      share_title: params.item_name || params.share_title,
       share_image_url: params.pics ? params.pics[0] : "",
       shareType: params.shareType
     };
