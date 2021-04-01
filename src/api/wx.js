@@ -62,14 +62,14 @@ export function getShareId (params) {
 
 // 任务埋点上报
 export function taskReportData (params) {
-  return req.get('/salesperson/subtask/post', {
+  return req.post('/salesperson/subtask/post', {
     ...params
   })
 }
 
 // 互动埋点上报
 export function interactiveReportData (params) {
-  return req.get('/salesperson/relationshipcontinuity', {
+  return req.post('/salesperson/relationshipcontinuity', {
     ...params
   })
 }

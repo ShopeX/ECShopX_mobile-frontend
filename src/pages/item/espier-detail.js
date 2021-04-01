@@ -137,10 +137,11 @@ export default class Detail extends Component {
     if (lnglat && !lnglat.city) {
       entry.InverseAnalysis(lnglat)
     }
-    this.getDetailShare()
+    // this.getDetailShare()
     // 埋点处理
     buriedPoint.call(this, {
-      item_id: id
+      item_id: id,
+      event_type: 'activeItemDetail'
     })
   }
 

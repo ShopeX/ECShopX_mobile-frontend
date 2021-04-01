@@ -252,7 +252,9 @@ export default class CartCheckout extends Component {
     this.fetchAddress();
     this.fetchZiTiShop();
     // 埋点处理
-    buriedPoint.call(this)
+    buriedPoint.call(this, {
+      event_type: 'orderPaymentSuccess'
+    })
   }
 
   componentWillReceiveProps(nextProps) {

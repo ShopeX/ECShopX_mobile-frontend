@@ -35,7 +35,8 @@ export default class CouponHome extends Component {
     })
     const { distributor_id } = this.$router.params
     buriedPoint.call(this, {
-      distributor_id
+      distributor_id,
+      event_type: 'activeDiscountCoupon'
     })
   }
 

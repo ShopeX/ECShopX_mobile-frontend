@@ -305,7 +305,15 @@ function validColor(color) {
 
 /**
  * 导购埋点上报
- * @param {*} data 新增上报数据
+ * @param {
+ *  event_type: {
+ *  activeItemDetail 分享商品详情页
+ *  activeSeedingDetail 分享种草详情页
+ *  activeDiscountCoupon 分享优惠券
+ *  activeCustomPage 分享自定义页面
+ *  orderPaymentSuccess 订单支付成功
+ * }
+ * } data 新增上报数据
  */
 export async function buriedPoint (data) {
   const params = this.$router.params
@@ -337,8 +345,15 @@ export async function buriedPoint (data) {
     api.wx.taskReportData(newData)
   }
   // 互动埋点
-  if (data.event_type) {
-    api.wx.taskReportData(data)
+  const smid = Taro.getStorageSync('s_smid')
+  if (data.event_type && S.getAuthToken() && smid) {
+    const { userId } = Taro.getStorageSync('userinfo')
+    api.wx.interactiveReportData({
+      event_id: smid,
+      user_type: 'wechat',
+      user_id: userId,
+      event_type: data.event_type
+    })
   }
 }
 

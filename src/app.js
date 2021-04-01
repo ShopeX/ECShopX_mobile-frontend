@@ -48,8 +48,6 @@ const getHomeSetting = async () => {
   if (APP_TRACK) {
     const system = Taro.getSystemInfoSync();
     if (!(system && system.environment && system.environment === "wxwork")) {
-      console.log('----------------aa--------------')
-      console.log(Tracker)
       Tracker.use(APP_TRACK);
     }
   }

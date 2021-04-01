@@ -4,8 +4,8 @@ import { SpToast, Loading, BackToTop, NavBar } from '@/components'
 import req from '@/api/req'
 import { withBackToTop } from '@/hocs'
 import S from "@/spx";
+import { buriedPoint } from '@/utils'
 import HomeWgts from '../home/comps/home-wgts'
-
 import './custom-page.scss'
 
 @withBackToTop
@@ -31,6 +31,10 @@ export default class HomeIndex extends Component {
       positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
     }, () => {
       this.fetchInfo()
+    })
+    // 埋点处理
+    buriedPoint.call(this, {
+      event_type: 'activeSeedingDetail'
     })
   }
 
