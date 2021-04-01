@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-02-03 17:40:22
- * @LastEditTime: 2021-02-04 16:49:16
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-04-01 09:45:30
+ * @LastEditors: PrendsMoi
  * @Description: In User Settings Edit
- * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/components/orderItem/order-item.js
+ * @FilePath: /unite-vshop/src/components/orderItem/order-item.js
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
@@ -95,7 +95,7 @@ export default class OrderItem extends Component {
               }
               
               
-              {/* {payType=='hfpay'&&<Text className='order-item__pay-type'>汇付支付</Text>}
+              {/* {payType=='hfpay'&&<Text className='order-item__pay-type'>微信支付</Text>}
               {payType!='hfpay'&&<Text className='order-item__pay-type'>{payType === 'dhpoint' ? '积分支付' : '微信支付'}</Text>} */}
             </View>
           )

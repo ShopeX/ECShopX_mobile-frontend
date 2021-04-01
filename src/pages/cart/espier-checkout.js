@@ -1547,7 +1547,7 @@ export default class CartCheckout extends Component {
       wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款',
-      hfpay: '汇付支付'
+      hfpay: '微信支付'
     }
     const { coupon, colors } = this.props
     const {
