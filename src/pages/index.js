@@ -151,16 +151,25 @@ export default class Home extends Component {
   }
   
   // 分享
-  onShareAppMessage () {
+  onShareAppMessage (params) {  
     const shareInfo = this.shareInfo()
+  
+    Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
+      from_type:params.from_type,
+      share_title:"分享给好友"
+    }); 
     return {
       ...shareInfo
     }
   }
   
   // 分享朋友圈
-  onShareTimeline () {
-    const shareInfo = this.shareInfo('time')
+  onShareTimeline (params) {
+    const shareInfo = this.shareInfo('time') 
+    Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
+      from_type:params.from_type,
+      share_title:"分享到朋友圈"
+    }); 
     return {
       ...shareInfo
     }

@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Navigator, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { NavBar } from '@/components'
+import { NavBar, Loading } from "@/components";
 import api from '@/api'
 import { pickBy } from '@/utils'
 import { Tracker } from "@/service";
@@ -15,7 +15,7 @@ export default class DistributionDashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      info: {},
+      info: null
       
     }
   }
@@ -129,7 +129,6 @@ export default class DistributionDashboard extends Component {
     let isHf=res3.hfpay_version_status
     const info = { username, avatar, ...base, ...pInfo, ...userInfo,isHf }
    
-    
     this.setState({
       info
     })
@@ -138,7 +137,9 @@ export default class DistributionDashboard extends Component {
   render() {
     const { colors } = this.props
     const { info } = this.state
-
+    if ( !info ) {
+      return <Loading />
+    }
     return (
       <View className='page-distribution-index'>
         <NavBar
