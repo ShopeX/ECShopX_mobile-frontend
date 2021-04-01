@@ -5,8 +5,8 @@
  * @Description: 支付订单
  * @FilePath: /unite-vshop/src/groupBy/pages/payOrder/index.js
  * @Date: 2020-05-08 15:07:31
- * @LastEditors: Arvin
- * @LastEditTime: 2020-06-23 13:43:00
+ * @LastEditors: PrendsMoi
+ * @LastEditTime: 2021-04-01 09:44:54
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
@@ -151,7 +151,7 @@ export default class PayOrder extends Component {
       wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款',
-      hfpay:'汇付支付'
+      hfpay:'微信支付'
     } 
     return (
       <View className='payOrder'>

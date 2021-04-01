@@ -129,7 +129,7 @@ export default class DistributionWithdraw extends Component {
     let payText = {
       'alipay': '支付宝',
       'wechat': '微信(<=800)',
-      "hfpay": '汇付天下'
+      "hfpay": '微信支付'
     }
     return (
       <View className="page-distribution-withdraw">
