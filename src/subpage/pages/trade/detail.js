@@ -708,7 +708,7 @@ export default class TradeDetail extends Component {
             {/* {isDhPoint && (<Text className='info-text' space>支付：{info.point_use}积分 {' 积分支付'}</Text>)} */}
             {info.point_use > 0 && (<Text className='info-text' space>积分支付：{info.point_use}积分，抵扣：¥{info.point_fee}</Text>)}
             {isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>)}
-            {isHf && (<Text className='info-text' space>支付：¥{info.payment} {'汇付支付'}</Text>)}
+            {isHf && (<Text className='info-text' space>支付：¥{info.payment} {'微信支付'}</Text>)}
             {!isDhPoint && !isDeposit && !isHf && (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>)}
             {
               info.delivery_code
