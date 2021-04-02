@@ -6,7 +6,7 @@ import { AtCountdown } from 'taro-ui'
 import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell, GoodsEvaluation, FloatMenuMeiQia, GoodsItem ,PointLine} from '@/components'
 import api from '@/api'
 import req from '@/api/req'
-import { withPager, withBackToTop } from '@/hocs'
+import { withPager, withBackToTop,withPointitem } from '@/hocs'
 import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys } from '@/utils'
 import entry from '@/utils/entry'
 import S from '@/spx'
@@ -30,6 +30,7 @@ import './espier-detail.scss'
 }))
 @withPager
 @withBackToTop
+@withPointitem
 export default class Detail extends Component {
 
   constructor(props) {
@@ -831,9 +832,9 @@ export default class Detail extends Component {
     const curStore = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id :curStore.distributor_id : item.distributor_id
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}&type=pointitem`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}`
     Taro.navigateTo({
-      url
+      url:this.transformUrl(url,this.isPointitem())
     })
   }
 
