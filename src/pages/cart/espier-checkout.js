@@ -1190,12 +1190,14 @@ export default class CartCheckout extends Component {
       Tracker.dispatch("CREATE_ORDER", {
         ...total,
         ...config,
+        timeStamp:config.order_created,
       });
 
       this.cancelpay = () => {  
         Tracker.dispatch("CANCEL_PAY", {
           ...total,
-          ...config
+          ...config,
+          timeStamp:config.order_created,
         });
       };
     } catch (e) {
@@ -1269,7 +1271,8 @@ export default class CartCheckout extends Component {
       const { total } = this.state; 
       Tracker.dispatch("ORDER_PAY", {
         ...total,
-        ...config
+        ...config,
+        timeStamp:config.order_created,
       });
 
       const payRes = await Taro.requestPayment(config); 
