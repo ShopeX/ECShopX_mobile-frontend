@@ -1265,8 +1265,7 @@ export default class CartCheckout extends Component {
 
     payErr = null;
     console.log("-----configCheckout-----",config)
-    try {
-
+    try {  
       const { total } = this.state; 
       Tracker.dispatch("ORDER_PAY", {
         ...total,

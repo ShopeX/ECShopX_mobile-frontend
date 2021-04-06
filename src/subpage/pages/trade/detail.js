@@ -232,7 +232,7 @@ export default class TradeDetail extends Component {
       order_type
     }
     const config = await api.cashier.getPayment(paymentParams)
-
+ 
     this.setState({
       payLoading: false
     })

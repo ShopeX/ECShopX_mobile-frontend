@@ -336,8 +336,7 @@ export default class CartIndex extends Component {
           skuInfo = sitem;
         }
       })
-    })
-
+    }) 
     // 从购物车彻底移除
     Tracker.dispatch("REMOVE_FROM_CART", {
       ...skuInfo
@@ -374,7 +373,7 @@ export default class CartIndex extends Component {
         num: parseInt(num) - item.num,
         goods_num: num
       });
-    }else{  
+    }else{   
       Tracker.dispatch("REMOVE_FROM_CART_NUM", {
         ...item,
         goods_id:item.goods_id||item.item_id,

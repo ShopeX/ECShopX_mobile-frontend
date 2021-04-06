@@ -286,7 +286,8 @@ const actions = {
       num,
       market_price,
       price,
-      title
+      title,
+      goods_id
     } = params;
     const data = resolveCartInfo(
       {
@@ -295,7 +296,7 @@ const actions = {
         num,
         market_price: parseInt(market_price * 100),
         price: parseInt(price * 100),
-        goods_id: sku_id,
+        goods_id: goods_id,
         goods_title: title
       },
       "remove_from_cart"
