@@ -42,5 +42,6 @@ sh dev.sh
 #打包使用
 sh run.sh
 ```
+cicd test
 
 ## 关于插件问题
