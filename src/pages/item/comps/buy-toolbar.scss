@@ -1,4 +1,4 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .goods-buy-toolbar {
   background: #fff;
@@ -42,7 +42,8 @@
     line-height: 1;
     background: none;
     border: none;
-    &:before, &:after {
+    &:before,
+    &:after {
       border: none;
     }
     [class^="icon-"] {
@@ -86,7 +87,8 @@
     &.marketing-btn {
       width: 500px;
     }
-    &:before, &:after {
+    &:before,
+    &:after {
       display: none;
     }
   }

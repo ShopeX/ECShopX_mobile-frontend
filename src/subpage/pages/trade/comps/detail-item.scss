@@ -1,13 +1,13 @@
-@import "../../../../style/imports";
+@import "@/style/imports";
 
 .detail-item {
   padding: 36px 0 37px;
   &-good {
     position: relative;
   }
-  &__fix{
+  &__fix {
     display: flex;
-    border-bottom: 1PX solid #ececec;
+    border-bottom: 1px solid #ececec;
     padding: 0 38px 0 27px;
   }
   &__title {
@@ -17,22 +17,21 @@
     font-size: 22px;
     line-height: 36px;
     color: #333333;
-   
   }
   &__title {
     display: block;
     font-size: 22px;
     line-height: 36px;
-    color: #333333;   
+    color: #333333;
     padding: 0 38px 17px 17px;
   }
-  &__code{
-    flex:1;
+  &__code {
+    flex: 1;
     display: block;
     font-size: 22px;
     color: #999999;
     text-align: right;
-    .btn{
+    .btn {
       margin-left: 20px;
     }
   }
@@ -43,16 +42,16 @@
     display: flex;
     //z-index: 999;
   }
-  .order-flex{
+  .order-flex {
     display: flex;
     align-items: center;
     justify-content: center;
-    &_checkbox{
-      flex:0 0 100px;
+    &_checkbox {
+      flex: 0 0 100px;
       text-align: center;
     }
-    &_goods{
-      flex:1;
+    &_goods {
+      flex: 1;
     }
   }
 }

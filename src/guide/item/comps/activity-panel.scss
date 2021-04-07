@@ -1,0 +1,116 @@
+//@import '@/style/imports';
+
+.goods-sec-specs__activity {
+  flex: 1;
+  font-size: 26px;
+
+  &-label {
+    padding: 0 10px;
+    margin-right: 10px;
+    color: $color-price;
+    box-shadow: 0 0 0 1px $color-price;
+    border-radius: 6px;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 20px;
+  }
+  &-header {
+    display: flex;
+    &-title {
+      flex: 1;
+    }
+    &-icon {
+      flex-basis: 100px;
+      text-align: right;
+    }
+  }
+
+  .promotion-title {
+    vertical-align: middle;
+    font-size: 28px;
+  }
+
+  .promotion-text {
+    vertical-align: middle;
+    font-size: 26px;
+  }
+
+  .promotion-rule-content {
+    padding-top: 10px;
+    padding-left: 10px;
+
+    &__text {
+      font-size: 24px;
+      display: block;
+    }
+  }
+  .promotion-rule-goods {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    background: $color-border-gray-light;
+    padding: 15px;
+    &__more {
+      flex-basis: 90px;
+    }
+    &__list {
+      flex: 1;
+      overflow: hidden;
+      // height: 190px;
+      .item {
+        float: left;
+        width: 100%;
+        // margin-right: 30px;
+        display: flex;
+        // align-items: center;
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
+        &-img {
+          width: 150px;
+          height: 150px;
+          margin-right: 10px;
+          image {
+            width: 150px;
+            height: 150px;
+          }
+        }
+      }
+      .title {
+        // @include multi-ellipsis(1);
+        font-size: 20px;
+        height: 30px;
+        flex: 1;
+        // margin-top: 10px;
+      }
+    }
+  }
+
+  .promotion-goods {
+    &__tag {
+      font-size: 24px;
+      color: #fc7309;
+    }
+
+    &__name {
+      font-size: 24px;
+    }
+
+    &__num {
+      font-size: 24px;
+      margin-left: 30px;
+    }
+  }
+
+  &-icon {
+    display: block;
+    margin-right: -8px;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    color: rgba($color-gray-light, 0.8);
+    font-size: 40px;
+    text-align: center;
+  }
+}

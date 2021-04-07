@@ -31,6 +31,7 @@ import * as wx from './wx'
 import * as wheel from './wheel'
 import * as pointitem from './pointitem'
 
+import * as guide from './guide'
 
 export default {
   article,
@@ -54,5 +55,6 @@ export default {
   groupBy,
   wheel,
   boost,
-  pointitem
+  pointitem,
+  guide
 }

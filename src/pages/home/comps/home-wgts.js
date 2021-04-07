@@ -87,8 +87,6 @@ export default class HomeWgts extends PureComponent {
 
     if (!wgts || wgts.length <= 0) return null
 
-    console.log("-------a-a------")
-    console.log(wgts)
 
     return (
       <View>

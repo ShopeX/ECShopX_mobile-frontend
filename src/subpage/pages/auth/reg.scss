@@ -1,8 +1,8 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .auth-reg {
   height: 100vh;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   position: relative;
@@ -12,31 +12,30 @@
     padding: $edge-size;
     margin: 0 0 $edge-margin;
   }
-  .store-reg__input{
-    .at-input:after,.at-switch::after{
+  .store-reg__input {
+    .at-input:after,
+    .at-switch::after {
       border-color: $color-border-gray-light;
     }
-    .at-switch{
+    .at-switch {
       margin-left: 0;
     }
-  
- 
   }
-  .store-reg{
-    &__btn{
+  .store-reg {
+    &__btn {
       margin-top: 50px;
     }
-    button::after{
+    button::after {
       color: $color-brand-primary;
     }
-    &_time{
+    &_time {
       display: flex;
-      &-placeholder{
-        color:$color-gray;
+      &-placeholder {
+        color: $color-gray;
       }
     }
   }
-  .accountAgreement{
+  .accountAgreement {
     width: 100%;
     text-align: center;
     &__text {
@@ -48,11 +47,11 @@
     margin: 0 0 $edge-size;
     display: flex;
     justify-content: flex-start;
-    border-bottom: 1PX solid rgba($color-brand-primary, 0.2);
+    border-bottom: 1px solid rgba($color-brand-primary, 0.2);
     &__title {
       font-size: $font-size;
-      margin-right:16px;
-      width:172px;
+      margin-right: 16px;
+      width: 172px;
     }
     .pick-value {
       color: #333;
@@ -105,17 +104,16 @@
       color: #ffffff;
     }
   }
-
 }
-.require-text{
+.require-text {
   font-size: 28px;
-  color: #FF4949;
+  color: #ff4949;
   display: inline-block;
   margin-right: 8px;
   font-family: SimSun, sans-serif;
 }
 .page-member-integral {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
 }

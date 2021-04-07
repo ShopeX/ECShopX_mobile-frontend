@@ -1,8 +1,8 @@
-import path, { join } from 'path'
-import dotenvFlow from 'dotenv-flow'
-import { name as _name, app_name, version } from '../package.json'
+import path, { join } from "path";
+import dotenvFlow from "dotenv-flow";
+import { name as _name, app_name, version } from "../package.json";
 
-dotenvFlow.config()
+dotenvFlow.config();
 
 const {
   TARO_ENV = "weapp",
@@ -22,10 +22,12 @@ const {
 } = process.env
 
 // 是否为web
-const isWeb = TARO_ENV === 'h5'
+const isWeb = TARO_ENV === "h5";
 // 是否为生产模式
-const isPro = NODE_ENV === 'production'
-const APP_AUTH_PAGE = !isWeb ? '/subpage/pages/auth/wxauth' : '/subpage/pages/auth/login' 
+const isPro = NODE_ENV === "production";
+const APP_AUTH_PAGE = !isWeb
+  ? "/subpage/pages/auth/wxauth"
+  : "/subpage/pages/auth/login";
 const config = {
   projectName: _name,
   date: "2019-7-31",
@@ -96,7 +98,11 @@ const config = {
         : [])
     ]
   },
-  plugins: ["@tarojs/plugin-sass", "@tarojs/plugin-uglify"],
+  plugins: [
+    path.join(__dirname, "./modify-taro.js"),
+    "@tarojs/plugin-sass",
+    "@tarojs/plugin-uglify"
+  ],
   // 开启压缩
   uglify: {
     enable: isPro,
@@ -131,18 +137,22 @@ const config = {
             }
           }
         }
-      })
+      });
       // if (isPro) {
       //   chain.plugin('analyzer')
       //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
       // }
-      chain.plugin('IgnorePlugin')
-        .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/])
-      chain.plugin('LodashModuleReplacementPlugin')
-        .use(require('lodash-webpack-plugin'), [{
-          'coercions': true,
-          'paths': true
-        }])
+      chain
+        .plugin("IgnorePlugin")
+        .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/]);
+      chain
+        .plugin("LodashModuleReplacementPlugin")
+        .use(require("lodash-webpack-plugin"), [
+          {
+            coercions: true,
+            paths: true
+          }
+        ]);
     },
     commonChunks(commonChunks) {
       commonChunks.push("lodash");
@@ -224,25 +234,29 @@ const config = {
             }
           }
         }
-      })
+      });
       // if (!isPro) {
       //   chain.plugin('analyzer')
       //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
       // }
-      chain.plugin('IgnorePlugin')
-        .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/])
-      chain.plugin('LodashModuleReplacementPlugin')
-        .use(require('lodash-webpack-plugin'), [{
-          'coercions': true,
-          'paths': true
-        }])      
+      chain
+        .plugin("IgnorePlugin")
+        .use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/]);
+      chain
+        .plugin("LodashModuleReplacementPlugin")
+        .use(require("lodash-webpack-plugin"), [
+          {
+            coercions: true,
+            paths: true
+          }
+        ]);
     }
   }
 };
 
-module.exports =  function (merge) {
+module.exports = function(merge) {
   if (!isPro) {
-    return merge({}, config, require('./dev'))
+    return merge({}, config, require("./dev"));
   }
-  return merge({}, config, require('./prod'))
-}
+  return merge({}, config, require("./prod"));
+};

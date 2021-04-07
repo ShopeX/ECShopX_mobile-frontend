@@ -1,0 +1,60 @@
+.share-menu__mask{
+    width: 100%;
+    height: 100vh;
+    background-color: rgba($color: #000000, $alpha: 0.4);
+    position: fixed;
+    top:0;
+    bottom: 0;
+    z-index:900;
+    .share-menu__option{
+        width:100%;
+        height: 196px;
+        background-color: #ffffff;
+        position: absolute;
+        bottom: 0;
+        left:0;
+        .close-share{
+            display: flex;
+            justify-content: flex-end;
+            margin:10px 20px 0; 
+        
+        }
+
+    }
+    .option-btn{
+        display: flex;
+        justify-content:space-around;
+        margin-top: -10px;
+        .option-btn__item{
+            text-align: center;
+            .share-menu{
+            
+                text-align: center;
+                position: relative;
+                &__img{
+                    width: 110px;
+                    height: 110px;
+                }
+                .share-friend{
+                    width: 110px;
+                    height: 110px;
+                    position: absolute;
+                    top:0;
+                    left:0;
+                    opacity: 0;
+                }
+                .in-icon{
+                    font-size: 62px;
+                }
+             
+            }
+
+            .text{
+                font-size: 25px;
+            }
+        }
+    }
+  
+  
+
+}

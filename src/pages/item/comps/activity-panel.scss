@@ -1,4 +1,4 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .goods-sec-specs__activity {
   flex: 1;
@@ -8,18 +8,18 @@
     padding: 0 10px;
     margin-right: 10px;
     color: $color-price;
-    box-shadow: 0 0 0 1PX $color-price;
+    box-shadow: 0 0 0 1px $color-price;
     border-radius: 6px;
     display: inline-block;
     vertical-align: middle;
     font-size: 20px;
   }
-  &-header{
+  &-header {
     display: flex;
-    &-title{
+    &-title {
       flex: 1;
     }
-    &-icon{
+    &-icon {
       flex-basis: 100px;
       text-align: right;
     }
@@ -44,40 +44,40 @@
       display: block;
     }
   }
-  .promotion-rule-goods{
+  .promotion-rule-goods {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 15px;
     background: $color-border-gray-light;
-    padding:15px;
-    &__more{
+    padding: 15px;
+    &__more {
       flex-basis: 90px;
     }
-    &__list{
-      flex:1;
+    &__list {
+      flex: 1;
       overflow: hidden;
       // height: 190px;
-      .item{
+      .item {
         float: left;
         width: 100%;
         // margin-right: 30px;
         display: flex;
         // align-items: center;
-        &:nth-child(3n){
+        &:nth-child(3n) {
           margin-right: 0;
         }
-        &-img{
+        &-img {
           width: 150px;
           height: 150px;
           margin-right: 10px;
-          image{
+          image {
             width: 150px;
             height: 150px;
           }
         }
       }
-      .title{
+      .title {
         // @include multi-ellipsis(1);
         font-size: 20px;
         height: 30px;
@@ -90,7 +90,7 @@
   .promotion-goods {
     &__tag {
       font-size: 24px;
-      color: #FC7309;
+      color: #fc7309;
     }
 
     &__name {

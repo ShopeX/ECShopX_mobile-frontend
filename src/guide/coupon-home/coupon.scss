@@ -1,0 +1,53 @@
+@import "@/style/imports";
+
+.shareCSS {
+  margin-top: -8px!important;
+  font-size: 24px !important;
+  text-align: center !important;
+  border: none !important;
+  // background: #fff !important;
+  padding :0 10px !important;
+  // margin-right: -20px !important;
+}
+.shareCSS:after{ border: none; }
+.coupon-list {
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  .at-tabs__header {
+    position: absolute;
+    top: $navigate-height;
+    /*  #ifdef  h5  */
+    top: $navigate-height-h5;
+    /*  #endif  */
+    width: 100%;
+    z-index: $z-index-toolbar;
+  }
+  .home_coupon-list__scroll {
+    height: 100vh;
+    padding: 20px $edge-margin;
+    box-sizing: border-box;
+  }
+  &__tabs {
+    position: fixed;
+    z-index: $z-index-toolbar;
+    left: 0;
+    height: 100px;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.coupon-btn {
+  color: #ffffff;
+  font-size: 24px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50px;
+  padding: 0 10px;
+  &__done {
+    // background: #c4c4c4 !important;
+    color: #ffffff;
+    opacity: 0.8;
+  }
+}

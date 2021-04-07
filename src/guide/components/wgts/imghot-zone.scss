@@ -1,0 +1,33 @@
+.wgts {
+  &__header {
+    padding: 45px 30px 30px;
+  }
+  &__title {
+    line-height: 18px;
+    letter-spacing: 1px;
+    color: #000000;
+    font-size: 32px;
+  }
+  &__subtitle {
+    font-size: 22px;
+    line-height: 18px;
+    margin-top: 22px;
+    color: #8a8a8a;
+  }
+}
+
+.img-hotzone {
+  position: relative;
+  &_img {
+    width: 100%;
+    display: block!important;
+    margin-top: -1px;
+  }
+  image{
+    display: block!important;
+  }
+  &_zone {
+    position: absolute;
+  }
+  
+}

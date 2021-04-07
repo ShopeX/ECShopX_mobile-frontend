@@ -1,0 +1,40 @@
+.ba-nav-bar{
+    width: 100%;
+    box-sizing: border-box;
+    color: #000000;
+    font-size: 12PX;
+    display: flex;
+    &__fixed{
+        position: fixed;
+        background: #ffffff;
+        z-index: 8888;
+        top:0;
+        left:0;
+        width: 100%;
+    
+    }
+    .icon-sty{
+        font-size: 54px;
+        &.icon{
+            width: 32PX;
+            height: 32PX;
+            line-height: 32PX;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 33px;
+            margin-top:26PX ;
+        }
+        &.icon-home{
+            border:1px solid #dcdcdc;
+            background-color: #d9d9d9;
+        }
+        
+    }
+    &__title{
+       margin-top: 12PX;
+       text-overflow: ellipsis;
+       overflow: hidden;
+       white-space: nowrap;
+       text-align: center;
+    }
+}

@@ -1,0 +1,30 @@
+$checkbox-size: 23px;
+
+.reg-checkbox {
+  border-radius:5px;
+  width: $checkbox-size;
+  height: $checkbox-size;
+  line-height: $checkbox-size;
+  text-align: center;
+  transition: all .1s ease-in;
+  color: #0b4137;
+  border:1PX solid #a6a6a6;
+  margin-right: 12px;
+  display: inline-block;
+  &__wrap {
+    display: inline-block;
+    line-height: 1;
+  }
+  &__text {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .at-icon {
+    // opacity: 1;
+    transform: scale(0.96);
+    transition: all .1s ease-in;
+    font-size: 20px;
+    margin-top: -6px;
+  }
+}
+

@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .wgt {
   background: transparent;
@@ -21,7 +21,7 @@
     font-weight: 700;
     letter-spacing: 28px;
     padding: 56px 0 13px 28px;
-    border-bottom: 1PX solid $color-brand-primary;
+    border-bottom: 1px solid $color-brand-primary;
     color: $color-brand-primary;
   }
 }

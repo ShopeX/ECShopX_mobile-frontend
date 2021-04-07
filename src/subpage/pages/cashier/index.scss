@@ -1,13 +1,13 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-cashier-index {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
-  /*  #endif  */  
+  /*  #endif  */
   .cashier-money {
     border-top: 1px solid $color-border-gray-dark;
     background: $color-brand-primary-text;
-    padding: 50px $edge-size ;
+    padding: 50px $edge-size;
     &__tip {
       font-size: $font-size-large;
       color: $color-primary-text;
@@ -28,22 +28,22 @@
   .pay-status {
     //background: $color-brand-primary-text;
     margin-top: 20px;
-    padding: $edge-size ;
+    padding: $edge-size;
   }
   .pay-mode {
     background: $color-brand-primary;
     color: $color-brand-primary-text;
     border-radius: 6px;
     text-align: center;
-    padding:0 32px;
-    height:80px;
+    padding: 0 32px;
+    height: 80px;
     line-height: 80px;
     margin-bottom: 20px;
   }
   .at-modal__content {
     text-align: center;
-    display:flex;
-    align-items:center;
+    display: flex;
+    align-items: center;
   }
   .payItem {
     text-align: center;
@@ -59,4 +59,3 @@
     }
   }
 }
-

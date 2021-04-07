@@ -1,11 +1,11 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-category-index {
   width: 100%;
   height: 100vh;
   background: #ffffff;
   box-sizing: border-box;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   &.good-category {
@@ -28,11 +28,14 @@
   .category-comps {
     box-sizing: border-box;
     background: #ffffff;
-    /*  #ifdef  weapp  */  
+    /*  #ifdef  weapp  */
     @include page-scroll($tabs-height + 10px, $tabbar-height);
     /*  #endif  */
-    /*  #ifdef  h5  */  
-    @include page-scroll($tabs-height + $navigate-height-h5 + 10px, $tabbar-height);
+    /*  #ifdef  h5  */
+    @include page-scroll(
+      $tabs-height + $navigate-height-h5 + 10px,
+      $tabbar-height
+    );
     /*  #endif  */
   }
   .category-comps-not {
@@ -54,7 +57,7 @@
     }
     .category-list__scroll{
       @include page-scroll($tabs-height + $navigate-height, 0);
-      /*  #ifdef  h5  */  
+      /*  #ifdef  h5  */
       @include page-scroll($tabs-height + $navigate-height-h5, 0);
       /*  #endif  */
       top: 0;
@@ -82,7 +85,7 @@
       box-sizing: border-box;
     }
   }
-  
+
   .category-nav {
     &__content {
       width: 160px;
@@ -121,7 +124,7 @@
       color: #fff;
       font-size: 20px;
       &::after {
-        content: "热"
+        content: "热";
       }
     }
   }

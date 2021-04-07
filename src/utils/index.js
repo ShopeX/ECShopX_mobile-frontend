@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro'
 import classNames from 'classnames'
+import styleNames from 'stylenames'
 import qs from 'qs'
 // import moment from 'moment'
 import format from 'date-fns/format'
@@ -25,7 +26,24 @@ export function isFunction (val) {
 export function isNumber (val) {
   return isPrimitiveType(val, '[object Number]')
 }
-
+/**
+ * 保留两个位小数，不足补0 
+ * @param { Number } value 
+ */
+export const returnFloat = value => {
+	var value = Math.round(parseFloat(value)*100)/100;
+	var s = value.toString().split(".");
+	if(s.length == 1){
+		value=value.toString()+".00";
+		return value;
+	}
+	if(s.length > 1){
+		if(s[1].length < 2){
+			value=value.toString()+"0";
+		}
+		return value;
+	}
+}
 export function isObject (val) {
   return isPrimitiveType(val, '[object Object]')
 }
@@ -358,8 +376,36 @@ export async function buriedPoint (data) {
   }
 }
 
+/**
+ * 参数拼接
+ * 
+ */
+
+export function paramsSplice(params){
+  let str=''
+  let arr=[]
+  for(var key in params){
+    let p=`${key}=${params[key]}`
+    arr.push(p)
+    
+  }
+  str=arr.join('&')
+  return str
+
+}
+
+export function resolveFavsList (list, favs) {
+  return list.map(t => {
+    const { item_id } = t
+    return {
+      ...t,
+      is_fav: Boolean(favs[item_id])
+    }
+  })
+}
 export {
   classNames,
+  styleNames,
   log,
   debounce,
 	throttle,

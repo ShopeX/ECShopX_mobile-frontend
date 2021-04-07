@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-cashier-index {
   height: 100%;
@@ -7,8 +7,8 @@
     border-top: 1px solid $color-border-gray-dark;
     background: $color-brand-primary-text;
     .cashier-result {
-      border: 1PX solid #DDDDDD;
-      background: #F9F9F9;
+      border: 1px solid #dddddd;
+      background: #f9f9f9;
       padding: 20px 30px;
       box-sizing: border-box;
       display: flex;
@@ -48,15 +48,20 @@
       border-radius: 0;
       font-weight: bold;
 
-      &:before, &:after {
+      &:before,
+      &:after {
         display: none;
       }
     }
     .btn-add-cart {
-      background: linear-gradient(90deg, #FFBE1C, #FA7815);
+      background: linear-gradient(90deg, #ffbe1c, #fa7815);
     }
     .btn-fast-buy {
-      background: linear-gradient(90deg, $color-brand-primary, $color-brand-primary);
+      background: linear-gradient(
+        90deg,
+        $color-brand-primary,
+        $color-brand-primary
+      );
     }
   }
 }

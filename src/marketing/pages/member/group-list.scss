@@ -1,9 +1,9 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 $item-img-size: 240px !default;
 
 .page-my-group-list {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   .groups-list__scroll {
@@ -18,7 +18,7 @@ $item-img-size: 240px !default;
     border-radius: $cart-border-radius;
     overflow: hidden;
     margin: $edge-size;
-		box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 
     &__hd {
       text-align: center;
@@ -28,39 +28,39 @@ $item-img-size: 240px !default;
       flex-direction: column;
       justify-content: space-between;
       padding: $edge-size/1.5 $edge-size;
-			flex: 1;
-			position: relative;
-			.icon{
-				position: absolute;
-				right: -15px;
-				bottom: -15px;
-				font-size: 170px;
-				opacity: 0.5;
-				&.icon-over-group{
-					color: #ff4856;
-				}
-				&.icon-ungroup{
-					color:#ccc;
-				}
-			}
-		}
+      flex: 1;
+      position: relative;
+      .icon {
+        position: absolute;
+        right: -15px;
+        bottom: -15px;
+        font-size: 170px;
+        opacity: 0.5;
+        &.icon-over-group {
+          color: #ff4856;
+        }
+        &.icon-ungroup {
+          color: #ccc;
+        }
+      }
+    }
     &__footer {
       display: flex;
       align-items: center;
     }
-		&__avatar {
+    &__avatar {
       flex: 1;
-			display: flex;
-			padding-left: 28px;
-			.user-avatar {
-				display: block;
-				width: 50px;
-				height: 50px;
-				margin-left: -25px;
-				border-radius: 100%;
-				box-shadow: 0 0 0 3px #fff;
-			}
-		}
+      display: flex;
+      padding-left: 28px;
+      .user-avatar {
+        display: block;
+        width: 50px;
+        height: 50px;
+        margin-left: -25px;
+        border-radius: 100%;
+        box-shadow: 0 0 0 3px #fff;
+      }
+    }
     &__cont {
       flex: 1;
     }
@@ -160,5 +160,5 @@ $item-img-size: 240px !default;
         opacity: 0.3;
       }
     }
-	}
+  }
 }

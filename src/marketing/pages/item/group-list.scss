@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 $item-img-size: 240px !default;
 
@@ -10,7 +10,7 @@ $item-img-size: 240px !default;
       position: fixed;
       left: 0;
       top: $navigate-height;
-      /*  #ifdef  h5  */  
+      /*  #ifdef  h5  */
       top: $navigate-height-h5;
       /*  #endif  */
       width: 100%;
@@ -32,9 +32,12 @@ $item-img-size: 240px !default;
   .groups-list__scroll {
     box-sizing: border-box;
     @include page-scroll($tabbar-height + $edge-size/2, 0);
-    /*  #ifdef  h5  */  
-    @include page-scroll($tabbar-height + $edge-size/2 + $navigate-height-h5, 0);
-    /*  #endif  */    
+    /*  #ifdef  h5  */
+    @include page-scroll(
+      $tabbar-height + $edge-size/2 + $navigate-height-h5,
+      0
+    );
+    /*  #endif  */
   }
   .group-item {
     $self: &;
@@ -44,7 +47,7 @@ $item-img-size: 240px !default;
     border-radius: $cart-border-radius;
     overflow: hidden;
     margin: 0 $edge-size $edge-size;
-		box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 
     &__hd {
       text-align: center;

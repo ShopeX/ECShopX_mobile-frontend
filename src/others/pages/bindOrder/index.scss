@@ -1,4 +1,4 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .bindOrder {
   width: 100%;
@@ -6,13 +6,14 @@
   background: #fff;
   box-sizing: border-box;
   padding-top: 20px;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   .barCode {
     width: 80%;
     margin: 0 auto;
-    .input, .line {
+    .input,
+    .line {
       display: flex;
       align-items: center;
       .text {

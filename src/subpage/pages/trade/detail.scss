@@ -1,5 +1,4 @@
-
-@import "../../../style/imports";
+@import "@/style/imports";
 
 $custabs: 80px;
 
@@ -10,14 +9,14 @@ $custabs: 80px;
   &.paddingBottom {
     padding-bottom: 84px;
   }
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
-  /*  #endif  */  
+  /*  #endif  */
   &.islog {
     padding-top: $custabs;
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     padding-top: calc(#{$navigate-height-h5} + #{$custabs});
-    /*  #endif  */  
+    /*  #endif  */
   }
   .custabs {
     display: flex;
@@ -26,10 +25,11 @@ $custabs: 80px;
     background: #fff;
     top: 0;
     z-index: 99;
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     top: $navigate-height-h5;
-    /*  #endif  */  
-    .online, .offline {
+    /*  #endif  */
+    .online,
+    .offline {
       height: $custabs;
       line-height: $custabs;
       flex: 1;
@@ -92,7 +92,6 @@ $custabs: 80px;
       font-size: 28px;
       margin-bottom: 10px;
     }
-
   }
   .ziti-content {
     padding: 50px 0;
@@ -179,7 +178,7 @@ $custabs: 80px;
     padding: 34px 38px;
     font-size: 26px;
     color: #5b5b5b;
-    border-top: 1PX solid #ececec;
+    border-top: 1px solid #ececec;
     background: #fff;
     &__num {
       font-size: 36px;
@@ -279,8 +278,8 @@ $custabs: 80px;
   .allFooter_btn {
     width: 100%;
   }
-  
-  .delivery-btn{
+
+  .delivery-btn {
     margin-right: 15px;
   }
   .at-input-number {
@@ -290,8 +289,9 @@ $custabs: 80px;
     height: $input-size;
     overflow: hidden;
     &__btn {
-      border: 1PX solid $color-border-gray;
-      &:before, &:after {
+      border: 1px solid $color-border-gray;
+      &:before,
+      &:after {
         border: none;
       }
       width: $input-size;
@@ -300,11 +300,13 @@ $custabs: 80px;
       padding: 0;
       text-align: center;
       overflow: hidden;
-      &-subtract, &-add {
+      &-subtract,
+      &-add {
         font-size: 20px;
       }
     }
-    &__input, input {
+    &__input,
+    input {
       line-height: $input-size;
       height: $input-size !important;
       min-height: $input-size;

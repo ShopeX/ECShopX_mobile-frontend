@@ -1,13 +1,13 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .reservation-list {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   background: #f6f6f6;
   &__scroll {
     @include page-scroll($navigate-height, $edge-margin);
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     @include page-scroll($navigate-height-h5, $edge-margin);
     /*  #endif  */
     box-sizing: border-box;
@@ -24,7 +24,7 @@
       display: flex;
       padding: 10px 0 20px;
       justify-content: space-between;
-      border-bottom: 1PX solid #e4e3e4;
+      border-bottom: 1px solid #e4e3e4;
     }
     &_btn {
       position: absolute;
@@ -36,7 +36,7 @@
       width: 130px;
       text-align: center;
       font-size: 22px;
-      border: 1PX solid #000000;
+      border: 1px solid #000000;
       color: #000;
     }
   }
@@ -50,5 +50,3 @@
     }
   }
 }
-
-

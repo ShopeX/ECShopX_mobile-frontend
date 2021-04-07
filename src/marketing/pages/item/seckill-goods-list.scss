@@ -1,29 +1,29 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-seckill-goods {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
-  /*  #endif  */  
-  .seckill-goods{
+  /*  #endif  */
+  .seckill-goods {
     &__scroll {
       @include page-scroll(0, 0);
-      /*  #ifdef  h5  */  
+      /*  #ifdef  h5  */
       @include page-scroll($navigate-height-h5, 0);
-      /*  #endif  */        
+      /*  #endif  */
     }
     &__swiper {
       box-sizing: border-box;
       width: 100%;
     }
     &__list {
-			padding: 30px;
-			line-height: 1.3;
-		}
-		&__timer {
-			display: flex;
-			justify-content: center;
-			margin: $edge-margin*2 0;
-		}
+      padding: 30px;
+      line-height: 1.3;
+    }
+    &__timer {
+      display: flex;
+      justify-content: center;
+      margin: $edge-margin * 2 0;
+    }
     margin: 0 -10px;
     &__type-list {
       .goods-item__bd {
@@ -51,7 +51,7 @@
           bottom: 0;
           height: 1px;
           background: #efefef;
-          content: '';
+          content: "";
         }
       }
       .goods-item__caption {
@@ -59,33 +59,32 @@
         height: auto;
       }
     }
-	}
-	.seckill-goods__list{
-		&-btn {
-			position: absolute;
-			right: 40px;
-			bottom: 40px;
-			width: 130px;
-			margin-left: 20px;
-			padding: 6px 0;
-			text-align: center;
-			border-radius: 30px 30px 30px 0;
-			color: #fff;
-			font-size: 26px;
-		}
-	}
-	.at-countdown__time-box{
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		min-width: 50px;
-		height: 60px;
-		padding: 0 6px;
-		background: #333;
-		color: #fff;
-		border-radius: 6px;
-		font-size: 28px;
-		font-family: sans-serif;
-
-	}
+  }
+  .seckill-goods__list {
+    &-btn {
+      position: absolute;
+      right: 40px;
+      bottom: 40px;
+      width: 130px;
+      margin-left: 20px;
+      padding: 6px 0;
+      text-align: center;
+      border-radius: 30px 30px 30px 0;
+      color: #fff;
+      font-size: 26px;
+    }
+  }
+  .at-countdown__time-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    height: 60px;
+    padding: 0 6px;
+    background: #333;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 28px;
+    font-family: sans-serif;
+  }
 }

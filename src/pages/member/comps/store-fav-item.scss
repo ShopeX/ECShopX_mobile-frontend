@@ -1,4 +1,4 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 .fav-store__item {
   display: flex;
   align-items: center;
@@ -33,7 +33,7 @@
     height: 42px;
     line-height: 42px;
     text-align: center;
-    box-shadow: 0 0 0 1PX $color-border-gray;
+    box-shadow: 0 0 0 1px $color-border-gray;
     border-radius: 42px;
     font-size: 24px;
   }

@@ -1,0 +1,18 @@
+@import "@/style/imports";
+
+.hidden {
+  opacity: 0;
+}
+.home-search__bar {
+  width: 100%;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 99999;
+  background: #fff;
+}
+// .hh{
+//   color: #f2f2f1;
+// }

@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .goods-reservate {
   &__tip {
@@ -23,7 +23,7 @@
     display: flex;
     z-index: 999;
     align-items: center;
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, 0.5);
     justify-content: center;
     &__content {
       width: 70%;
@@ -41,13 +41,13 @@
       width: 60%;
       padding: 10px 20px;
       margin: 30px auto;
-      border: 1PX solid #ccc;
+      border: 1px solid #ccc;
     }
   }
   &__storeinfo {
     .at-input {
       margin: 0 30px 10px;
-      border-bottom: 1PX solid #f5f5f5;
+      border-bottom: 1px solid #f5f5f5;
       &:after {
         border-color: transparent;
       }
@@ -55,7 +55,7 @@
     .checkbox-input {
       margin: 0 30px 10px;
       padding: 20px 0;
-      border-bottom: 1PX solid #f5f5f5;
+      border-bottom: 1px solid #f5f5f5;
       &__title {
         display: inline-block;
         width: 172px;
@@ -66,17 +66,16 @@
       padding: 20px 0;
       margin: 0 30px;
       display: flex;
-      border-bottom: 1PX solid #f5f5f5;
+      border-bottom: 1px solid #f5f5f5;
       justify-content: space-between;
       &__title {
         font-size: $font-size;
-        margin-right:16px;
+        margin-right: 16px;
         &_name {
           display: inline-block;
           width: 172px;
           margin-right: 16px;
         }
-        
       }
       .pick-value {
         color: #333;
@@ -133,7 +132,7 @@
     }
   }
   .at-checkbox__option--selected .at-checkbox__icon-cnt {
-    color: #FFF;
+    color: #fff;
     border: none;
     background-color: $color-brand-primary;
   }

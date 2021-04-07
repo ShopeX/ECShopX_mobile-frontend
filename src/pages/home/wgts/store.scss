@@ -1,10 +1,10 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .store-wrap {
   margin: 20px 20px 0;
   padding: 20px;
-  background: #FFFFFF;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   .store-info {
     display: flex;
@@ -13,7 +13,7 @@
       width: 80px;
       height: 80px;
       border-radius: 100%;
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
     }
     .store-name {
       padding-left: 20px;
