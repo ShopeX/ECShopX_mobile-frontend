@@ -210,7 +210,13 @@ export default class Detail extends Component {
 
     this.fetchCartCount()
   }
-
+  onShareAppMessage() {
+    
+    return {
+      title: '商品分享',
+      path:  this.state.pageShareUrl,      
+    }
+  }
   async innitPageShareUrl(){
     const query = await normalizeQuerys(this.$router.params)
     const {entry_form,subtask_id } = this.state
@@ -534,15 +540,15 @@ export default class Detail extends Component {
     const { info } = this.state
     const isAuth = S.getAuthToken()
     if (type === 'fav') {
-      if (!isAuth) {
-        S.toast('请登录后再收藏')
+      // if (!isAuth) {
+      //   S.toast('请登录后再收藏')
 
-        setTimeout(() => {
-          S.login(this)
-        }, 2000)
+      //   setTimeout(() => {
+      //     S.login(this)
+      //   }, 2000)
 
-        return
-      }
+      //   return
+      // }
 
       if (!info.is_fav) {
         const favRes = await api.member.addFav(info.item_id)
@@ -776,15 +782,15 @@ export default class Detail extends Component {
   }
 
   handleShare = async () => {
-    if (!S.getAuthToken()) {
-      S.toast('请先登录再分享')
+    // if (!S.getAuthToken()) {
+    //   S.toast('请先登录再分享')
 
-      setTimeout(() => {
-        S.login(this)
-      }, 2000)
+    //   setTimeout(() => {
+    //     S.login(this)
+    //   }, 2000)
 
-      return
-    }
+    //   return
+    // }
 
     this.setState({
       showSharePanel: true
@@ -847,6 +853,7 @@ export default class Detail extends Component {
   //   })
   // }
 
+  //点击分享按钮
   handleShowPoster = async () => {
     const { posterImgs } = this.state
     if (!posterImgs || !posterImgs.avatar || !posterImgs.code || !posterImgs.goods) {
@@ -1056,7 +1063,7 @@ export default class Detail extends Component {
             />*/}
             
           </View>
-          <View>{pageShareUrl}</View>
+          {/* <View>{pageShareUrl}</View> */}
           {!info.nospec &&
           sixSpecImgsDict.length > 0 &&
           info.is_show_specimg ? (
