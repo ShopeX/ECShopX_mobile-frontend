@@ -9,6 +9,11 @@ export function login(data) {
   return req.post("/login", data);
 }
 
+// 绑定导购
+export function bindSaleperson (data) {
+  return req.post("/member/bindSalesperson", data)
+}
+
 export function logout() {
   return req.post("/user.logout");
 }

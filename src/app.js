@@ -394,6 +394,7 @@ class App extends Component {
       Taro.setStorageSync('s_smid', '')
       Taro.setStorageSync('chatId', '')
       Taro.setStorageSync('s_dtid', '')
+      Taro.setStorageSync('store_bn', '')
     }
     // 根据路由参数
     const { query } = this.$router.params;
@@ -410,7 +411,7 @@ class App extends Component {
       if (gu) {
         const [employee_number, store_bn] = gu.split('_')
         Taro.setStorageSync('s_smid', employee_number)
-        console.log(store_bn)
+        Taro.setStorageSync('store_bn', store_bn)
       }
       // 存储群id
       if (chatId) {

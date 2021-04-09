@@ -71,7 +71,9 @@ export default class WxAuth extends Component {
       if(!salesperson_id){
         return this.redirect()
       }
-
+      api.user.bindSaleperson({
+        work_userid: salesperson_id
+      })
       let info = await api.member.getUsersalespersonrel({
         salesperson_id
       })
