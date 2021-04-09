@@ -95,8 +95,8 @@ export default class Detail extends Component {
     const options = this.$router.params
     //判断是否是从b端小程序跳转
     let jumpType = 'home'
-    const { emp, sence } = options 
-    if(emp || sence){
+    const { gu, sence } = options 
+    if(gu || sence){
       jumpType = 'home'
     }else {
       jumpType = 'item'
@@ -982,7 +982,6 @@ export default class Detail extends Component {
       new_coupon_list = coupon_list.list.slice(0, 3)
     }
     const navbar_height = S.get('navbar_height',true)
-    console.log('navbar_height---->',navbar_height)
 
     return (
       <View 

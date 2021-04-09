@@ -9,6 +9,8 @@ import S from "@/spx";
 import { Tracker } from "@/service";
 import { pickBy, classNames } from '@/utils'
 import entry from "../../utils/entry";
+import { BaNavBar } from '../components'
+
 
 import './list.scss'
 
@@ -44,17 +46,26 @@ export default class List extends Component {
       selectParams: [],
       info: {},
       shareInfo: {},
-      isOpenStore:null
+      isOpenStore:null,
+      jumpType:'item',
     }
   }
 
   async componentDidMount() {
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = null, main_cat_id = null,gu, sence } = this.$router.params
+    //判断是否是从b端小程序跳转
+    let jumpType = 'home'
+    if(gu || sence){
+      jumpType = 'home'
+    }else {
+      jumpType = 'item'
+    }
     this.firstStatus = true
     const isOpenStore = await entry.getStoreStatus()
     const { store_id } = Taro.getStorageSync('curStore')
     this.setState({
-      isOpenStore
+      isOpenStore,
+      jumpType
     })
 
     this.setState({
@@ -93,6 +104,11 @@ export default class List extends Component {
     }
   }
 
+  config = {
+    navigationStyle:'custom',
+    navigationBarTitleText: '导购商城'
+  }
+
   onShareAppMessage() {
     const res = this.state.shareInfo
     const { cat_id = '', main_cat_id = '' } = this.$router.params
@@ -104,6 +120,7 @@ export default class List extends Component {
       path: `/pages/item/list${query}`
     }
   }
+  
 
   onShareTimeline() {
     const res = this.state.shareInfo
@@ -486,19 +503,15 @@ export default class List extends Component {
       curTagId,
       info,
       isShowSearch,
-      query
+      query,
+      jumpType
     } = this.state
     const { isTabBar = '' } = this.$router.params
+    const navbar_height = S.get('navbar_height',true)
 		return (
 			<View className='page-goods-list'>
-        {
-          !isTabBar && <NavBar
-            title='商品列表'
-            leftIconType='chevron-left'
-            fixed='true'
-          />
-        }
-        <View className='goods-list__toolbar'>
+        <BaNavBar title='导购商城' fixed jumpType={jumpType} />
+        <View className='goods-list__toolbar' style={`top:${navbar_height}PX`}>
           <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
             <SearchBar
               keyword={query ? query.keywords : ''}
@@ -591,6 +604,7 @@ export default class List extends Component {
           scrollWithAnimation
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
+          style={`padding-top:${navbar_height}PX`}
         >
           {
             listType === 'grid' &&
