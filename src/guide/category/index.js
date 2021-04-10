@@ -125,7 +125,7 @@ export default class BaCategory extends Component {
   render () {
     const { curTabIdx, tabList, list, hasSeries, isChanged } = this.state
     const n_ht = S.get('navbar_height', true)
-    const c_ht = n_ht * 2 - 10
+    const c_ht = tabList.length > 0 ?  n_ht * 2 - 10 : n_ht
     return (
       <View className='page-category-index'>
         <BaNavBar title='导购商城' fixed jumpType='home' />
