@@ -37,6 +37,13 @@ export default class CouponHome extends Component {
     });
   }
 
+  componentDidShow() {
+    Taro.hideShareMenu({
+      //禁用胶囊分享
+      menus: ["shareAppMessage", "shareTimeline"]
+    });
+  }
+
   onShareAppMessage(item) {
     const { info } = item.target.dataset
     const res = this.state.shareInfo;

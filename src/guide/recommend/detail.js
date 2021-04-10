@@ -53,6 +53,10 @@ export default class recommendDetail extends Component {
   }
 
   componentDidShow() {
+    Taro.hideShareMenu({
+      //禁用胶囊分享
+      menus: ["shareAppMessage", "shareTimeline"]
+    });
     this.fetchContent()
   }
 
@@ -75,7 +79,7 @@ export default class recommendDetail extends Component {
     });
     return {
       title: info.title,
-      path: `/guide/recommend/detail?id=${info.article_id}${query}${guideid}`,
+      path: `/recommend/detail?id=${info.article_id}${query}${guideid}`,
       imageUrl: info.share_image_url || info.image_url
     }
   }

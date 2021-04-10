@@ -109,17 +109,17 @@ export default class List extends Component {
     navigationBarTitleText: '导购商城'
   }
 
-  onShareAppMessage() {
-    const res = this.state.shareInfo
-    const { cat_id = '', main_cat_id = '' } = this.$router.params
-    const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
-    return {
-      title: res.title,
-      imageUrl: res.imageUrl,
-      path: `/pages/item/list${query}`
-    }
-  }
+  // onShareAppMessage() {
+  //   const res = this.state.shareInfo
+  //   const { cat_id = '', main_cat_id = '' } = this.$router.params
+  //   const { userId } = Taro.getStorageSync('userinfo')
+  //   const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
+  //   return {
+  //     title: res.title,
+  //     imageUrl: res.imageUrl,
+  //     path: `/pages/item/list${query}`
+  //   }
+  // }
   
 
   onShareTimeline() {
