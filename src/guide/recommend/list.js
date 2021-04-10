@@ -162,6 +162,7 @@ export default class RecommendList extends Component{
                     <RecommendItem
                       info={item}
                       onClick={() => this.handleClickItem(item)}
+                      noShowZan
                     />
                   </View>
                 )
