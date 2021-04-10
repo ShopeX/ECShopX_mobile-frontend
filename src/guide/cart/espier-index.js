@@ -621,7 +621,7 @@ export default class CartIndex extends Component {
           }
           {remindInfo.is_open && (
             <View
-              className={`${!S.getAuthToken() && "paddingTop"}`}
+              // className={`${!S.getAuthToken() && "paddingTop"}`}
               style={`background: ${colors.data[0].primary}`}
             >
               <AtNoticebar marquee icon='volume-plus' className='notice' single>
