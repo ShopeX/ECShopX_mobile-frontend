@@ -38,7 +38,7 @@ export default class ActivityPanel extends Component {
         <View
           className='goods-sec-specs'
           onClick={onClick}
-          >
+        >
           <View className='goods-sec-label'>优惠</View>
           <View className='goods-sec-specs__activity'>
             {
@@ -83,11 +83,11 @@ export default class ActivityPanel extends Component {
                       <Text className='goods-sec-specs__activity-label'>{item.promotion_tag}</Text>
                       <Text className='promotion-text'>{item.marketing_name}</Text>
                       </View>
-                      {
+                      {/* {
                         item.promotion_tag === '加价购' && (
                           <View className='goods-sec-specs__activity-header-icon at-icon at-icon-chevron-right'  onClick={this.handlePlusprice.bind(this,item.marketing_id)}></View>
                         )
-                      }
+                      } */}
                       
                     </View>
                     {
@@ -113,7 +113,7 @@ export default class ActivityPanel extends Component {
                                 })
                               }                 
                             </View>
-                              <View className='promotion-rule-goods__more' onClick={this.handlePlusprice.bind(this,item.marketing_id)}>更多<Text className='goods-sec-specs__activity-header-icon at-icon at-icon-chevron-right'></Text></View>
+                              {/* <View className='promotion-rule-goods__more' onClick={this.handlePlusprice.bind(this,item.marketing_id)}>更多<Text className='goods-sec-specs__activity-header-icon at-icon at-icon-chevron-right'></Text></View> */}
                           </View>
                       )
                     }

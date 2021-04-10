@@ -109,9 +109,9 @@ export default class Detail extends Component {
 
     let id = options.id
     let uid = ''
-    if(!S.getAuthToken()){
-      this.checkWhite()
-    }
+    // if(!S.getAuthToken()){
+    //   this.checkWhite()
+    // }
     const isOpenStore = await entry.getStoreStatus()
     this.setState({
       is_open_store_status:isOpenStore
@@ -212,6 +212,7 @@ export default class Detail extends Component {
   }
   onShareAppMessage() {
     const { info,pageShareUrl} = this.state
+    //console.log('pageShareUrl----->',pageShareUrl)
     return {
       title:info.item_name,
       path:pageShareUrl,
@@ -579,15 +580,15 @@ export default class Detail extends Component {
   }
 
   handleBuyBarClick = (type) => {
-    if (!S.getAuthToken()) {
-      S.toast('请先登录再购买')
+    // if (!S.getAuthToken()) {
+    //   S.toast('请先登录再购买')
 
-      setTimeout(() => {
-        S.login(this, true)
-      }, 2000)
+    //   setTimeout(() => {
+    //     S.login(this, true)
+    //   }, 2000)
 
-      return
-    }
+    //   return
+    // }
 
     this.setState({
       showBuyPanel: true,
@@ -1239,8 +1240,8 @@ export default class Detail extends Component {
             !info.is_gift && <SpCell
               className='goods-sec-specs'
               title='领券'
-              isLink
-              onClick={this.handleCouponClick.bind(this)}
+              //isLink
+              //onClick={this.handleCouponClick.bind(this)}
             >
               {coupon_list &&
                 new_coupon_list.map(kaquan_item => {
@@ -1267,9 +1268,9 @@ export default class Detail extends Component {
           {promotion_package && (
             <SpCell
               className='goods-sec-specs'
-              isLink
+              //isLink
               title='优惠组合'
-              onClick={this.handlePackageClick}
+              //onClick={this.handlePackageClick}
               value={`共${promotion_package}种组合随意搭配`}
             />
           )}

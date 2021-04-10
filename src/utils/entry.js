@@ -91,12 +91,12 @@ async function entryLaunch(data, isNeedLocate) {
     await S.delete("share_chat", true); //删除缓存的分享群id，新的进行替换
     await S.delete("entry_source", true); //删除缓存的导购入口来源，新的进行替换
     let ba_info = null;
-    if (S.getAuthToken()) {
-      ba_info = await api.user.getGuideInfo({
-        guide_code: guide_code,
-        wxshop_bn: store_code || ""
-      });
-    }
+    // if (S.getAuthToken()) {
+    //   ba_info = await api.user.getGuideInfo({
+    //     guide_code: guide_code,
+    //     wxshop_bn: store_code || ""
+    //   });
+    // }
 
     if (share_chatId) {
       S.set(
