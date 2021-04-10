@@ -28,6 +28,8 @@ export default class CouponHome extends Component {
   }
 
   async componentDidMount() {
+    const options = await normalizeQuerys(this.$router.params)
+    console.log('优惠券列表-options',options)
     api.wx.shareSetting({ shareindex: 'coupon' }).then(res => {
       this.setState({
         shareInfo: res
