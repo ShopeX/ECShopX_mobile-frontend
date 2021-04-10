@@ -22,7 +22,7 @@ export function linkPage (type, id,item) {
       url = '/guide/coupon-home/index?card_id=' + id
       break;
     case 'custom_page':
-      url =`/guide/custom/custom-page?page_id=${id}&version=${item.version}`
+      url = `/guide/custom/custom-page?id=${id}&version=${item.version}`;
       break;
     default:
   }

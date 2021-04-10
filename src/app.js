@@ -251,7 +251,6 @@ class App extends Component {
           "cart/espier-checkout",
           "coupon-home/index",
           "coupon-home/coupon-detail",
-          'custompage/index',
           "recommend/list",
           "recommend/detail",
           "custom/custom-page"
