@@ -120,8 +120,8 @@ export default class WgtCoupon extends Component {
           
         </View>
       
-          <View style={styleNames(config.background ? { background: config.background } : null)}>
-            {config.style==='row'&&data&&data.length>3?<View className='coupon-scroller__padding'>
+          <View style={styleNames(config&&config.background ? { 'background': config.background } : null)}>
+            {config&&config.style==='row'&&data&&data.length>3?<View className='coupon-scroller__padding'>
               {data&&data.length>3&&<View className='coupon-scroller__leftmask'>
                   <View className='at-icon at-icon-chevron-left left-icon' onClick={this.handleprescroll}></View>
               </View>}
@@ -157,8 +157,8 @@ export default class WgtCoupon extends Component {
 
             </View>
             : 
-            <View className={`wgt__body with-padding conpon-container ${config.style}`} 
-              style={styleNames(config.background ? { background: config.background } : null)}>
+            <View className={`wgt__body with-padding conpon-container ${config&&config.style}`} 
+              style={styleNames(config&&config.background ? { 'background': config.background } : null)}>
               {data.map((item, idx) => {
                 return (
                   <View className={classNames('coupon-wgt')} key='id'

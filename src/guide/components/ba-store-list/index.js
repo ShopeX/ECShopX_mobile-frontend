@@ -23,9 +23,13 @@ export default class BaStoreList extends Component {
   //点击门店item
   handleClick = index => {
     console.log("点击门店item-----", index);
+    const { onSearchStore, onChangeCurIndex } = this.props;
     this.setState({
       setIdx:index
+    },()=>{
+      onChangeCurIndex(index);
     })
+    
 
   };
   async componentWillMount() {
@@ -68,7 +72,7 @@ export default class BaStoreList extends Component {
 
   render() {
     const { shopList, currentIndex } = this.props;
-    const { keyWord } = this.state;
+    const { keyWord ,setIdx} = this.state;
     console.log("门店list-storeList", shopList);
     if(!shopList) return
     return (
@@ -100,7 +104,7 @@ export default class BaStoreList extends Component {
                   <View
                     className={classNames(
                       "store-item__name",
-                      currentIndex === index ? "active" : ""
+                      currentIndex === index || setIdx === index? "active" : ""
                     )}
                   >
                     {item.store_name + item.address}

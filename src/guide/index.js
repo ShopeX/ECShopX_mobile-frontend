@@ -68,10 +68,15 @@ export default class BaGuideHomeIndex extends Component {
     };
   }
 
-  componentDidShow = () => {};
-  componentWillMount() {}
+  componentDidShow(){
+    console.log('componentDidShow')
+  };
+  componentWillMount() {
+    console.log('componentWillMount')
+  }
 
   async componentDidMount() {
+    console.log('componentDidMount')
     const options = this.$router.params;
     const res = await entry.entryLaunch(options, false);
 
@@ -260,23 +265,21 @@ export default class BaGuideHomeIndex extends Component {
       ba_info: QwUserInfo ? QwUserInfo.ba_info : ""
     });
   }
-
+  //获取门店列表
   async getStoreList(params = {}) {
     let QwUserInfo = S.get("QwUserInfo", true),{currentIndex} = this.state
-    console.log('getStoreList-QwUserInfo',QwUserInfo)
-    
+    let storeId = QwUserInfo.ba_store ? QwUserInfo.ba_store.distributor_id : QwUserInfo.distributor_id
     const  shops  = await api.guide.distributorlist({
       page: 1,
       pageSize: 10000,
       store_type: "distributor",
       store_name: params.store_name
     });
+    
     shops.list.forEach((d,idx)=>{
-      if(d.distributor_id == QwUserInfo.distributor_id) currentIndex = idx
+      if(d.distributor_id == storeId) currentIndex = idx
     })
     this.handleCurIndex(currentIndex)
-    
-    console.log('获取门店列表以及当前下标',shops,currentIndex)
     this.setState({
       shopList: shops.list,
       defaultStore: shops.list[currentIndex]
@@ -319,10 +322,12 @@ export default class BaGuideHomeIndex extends Component {
 
     QwUserInfo.ba_store = shopList[currentIndex];
     QwUserInfo.store_code = shopList[currentIndex].wxshop_bn;
+    console.log('变更门店选择',QwUserInfo)
     S.set("QwUserInfo", QwUserInfo, true);
   };
   //修改当前门店下标
   handleCurIndex = currentIndex => {
+    
     this.setState({
       currentIndex
     });

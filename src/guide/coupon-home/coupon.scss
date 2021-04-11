@@ -1,13 +1,17 @@
 @import "@/style/imports";
 
 .shareCSS {
-  margin-top: -8px!important;
-  font-size: 24px !important;
+  margin-top: -8rpx !important;
+  font-size: 22rpx !important;
   text-align: center !important;
   border: none !important;
-  // background: #fff !important;
-  padding :0 10px !important;
-  // margin-right: -20px !important;
+  padding: 0!important;
+  background: #3E0F3C;
+  color: #fff;
+  height: 36rpx;
+  line-height: 36rpx;
+  border-radius: 30rpx;
+  width: 170rpx;
 }
 .shareCSS:after{ border: none; }
 .coupon-list {
@@ -28,6 +32,14 @@
     @include page-scroll($tabs-height + $searchbar-height + $navigate-height, $tabbar-height);
     padding: 0 $edge-margin;
     box-sizing: border-box;
+  }
+  .home_coupon-list_item{
+    position: relative;
+  }
+  .home_coupon-list_item__quantity{
+    position: absolute;
+    bottom: 4px;
+    font-size: 24px;
   }
   &__tabs {
     position: fixed;

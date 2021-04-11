@@ -10,7 +10,7 @@ import { classNames, pickBy, log } from "@/utils";
 import { Tracker } from "@/service";
 import api from "@/api";
 import entry from '@/utils/entry'
-
+import S from '@/spx'
 import "./index.scss";
 import { floor } from "lodash";
 
@@ -282,7 +282,16 @@ export default class GoodsBuyPanel extends Component {
     const { item_id } = this.noSpecs ? info : skuInfo;
     const { distributor_id } = info;
     const curStore = Taro.getStorageSync('curStore');
+    
     let id = isOpenStore ? curStore.store_id : distributor_id
+
+    //获取门店id
+    const QwUserInfo = S.get('QwUserInfo',true)
+    if(QwUserInfo){
+      console.log('QwUserInfo.ba_store',QwUserInfo)
+      id=QwUserInfo.ba_store&&QwUserInfo.ba_store.distributor_id || QwUserInfo.distributor_id
+    }
+
     let url = `/pages/cart/espier-checkout`;
 
     this.setState({
@@ -297,7 +306,7 @@ export default class GoodsBuyPanel extends Component {
           item_id,
           num,
           is_accumulate:'true',
-         // distributor_id:id,
+          distributor_id:id,
          // shop_type: isDrug ? "drug" : "distributor"
         });
         Taro.showToast({

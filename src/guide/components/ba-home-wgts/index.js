@@ -1,6 +1,7 @@
 import Taro, {PureComponent } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { WgtFilm, WgtSlider, WgtImgHotZone, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtPointLuck,WgtTagNavigation,WgtSliderHotzone,WgtActivityZone} from '../wgts'
+import {  WgtSearchHome } from '@/pages/home/wgts'
 
 export default class HomeWgts extends PureComponent {
   state = {
@@ -50,6 +51,7 @@ export default class HomeWgts extends PureComponent {
             return (
               <View className='wgt-wrap' key='indx'>
                 {item.name === 'slider' && <WgtSlider source={source} componentIndex={idx} isHomeSearch info={item} width={screenWidth} scrollTop={scrollTop} />}
+                {item.name === 'search' && <WgtSearchHome info={item} dis_id={this.$router.params.id} />}
                 {item.name === 'slider-hotzone' && <WgtSliderHotzone source={source} componentIndex={idx} info={item} />}
                 {item.name === 'film' && <WgtFilm source={source} componentIndex={idx} info={item}  />}
                 {item.name === 'navigation' && <WgtNavigation source={source} componentIndex={idx} info={item} />}

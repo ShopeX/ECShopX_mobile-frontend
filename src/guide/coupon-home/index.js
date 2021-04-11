@@ -50,7 +50,7 @@ export default class CouponHome extends Component {
     // console.log('onShareAppMessage-item',res,info)
     // const { userId } = Taro.getStorageSync("userinfo");
     const QwUserInfo = S.get('QwUserInfo',true)
-    const query = `?uid=${QwUserInfo.salesperson_id}&card_id=${info.card_id}&distributor_id=${QwUserInfo.distributor_id}`;
+    const query = `?uid=${QwUserInfo.salesperson_id}&card_id=${info.card_id}&distributor_id=${QwUserInfo.distributor_id}`;    
     return {
       title: info.title+'优惠券',
       imageUrl: res.imageUrl,
@@ -201,7 +201,8 @@ export default class CouponHome extends Component {
           <View className="coupon-list-ticket">
             {list.map((item, idx) => {
               return (
-                <CouponItem info={item} key={item.card_id}>
+                <CouponItem info={item} className='home_coupon-list_item'  key={item.card_id}>
+                  <View className="home_coupon-list_item__quantity">剩余{item.quantity}张</View>   
                   {/* <Text
                       className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
                       onClick={this.handleGetCard.bind(this, item, idx)}
@@ -210,7 +211,7 @@ export default class CouponHome extends Component {
                       {item.getted === 2 ? '已领完' : ''}
                       {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
                     </Text> */}
-                  <View
+                  {item.quantity*1>0&&<View
                     className={`coupon-btn ${
                       item.getted === 2 || item.getted === 1
                         ? "coupon-btn__done"
@@ -219,6 +220,7 @@ export default class CouponHome extends Component {
                     // style={`background: ${colors.data[0].primary}`}
                     onClick={this.handleClickNews.bind(this, item, idx)}
                   >
+                    
                     <View className="recommend-detail__bar">
                       <Button
                         openType="share"
@@ -229,7 +231,9 @@ export default class CouponHome extends Component {
                         分享给顾客
                       </Button>
                     </View>
-                  </View>
+                  </View>}
+                  
+                  
                 </CouponItem>
               );
             })}
