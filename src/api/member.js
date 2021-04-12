@@ -12,11 +12,11 @@ export function pointDetail () {
   return req.get('/member.point.detail')
 }
 
-export function favsList (params = {}) {
+export function favsList( params = {} ) {
   return req.get('/member/collect/item', params,null, { showError: false })
 }
 
-export function addFav (item_id,params) {
+export function addFav( item_id, params ) {
   return req.post(`/member/collect/item/${item_id}`,params)
 }
 

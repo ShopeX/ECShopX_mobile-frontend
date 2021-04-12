@@ -51,7 +51,7 @@ const getHomeSetting = async () => {
   if ((system && system.environment && system.environment === "wxwork")) {
     console.log("----------------企业微信录入--------------");
     //企业微信录入
-    await S.setQwUserInfo()
+    // await S.setQwUserInfo()
   } else if (APP_TRACK && youshu.appid) {
     Tracker.use(APP_TRACK);
   }
@@ -69,7 +69,13 @@ class App extends Component {
   componentWillMount() {
     console.log("get - system", this.system);
 
-    console.log("get - system APP_TRACK", APP_TRACK);
+    console.log( "get - system APP_TRACK", APP_TRACK );
+    
+    const system = Taro.getSystemInfoSync();
+    if ( ( system && system.environment && system.environment === "wxwork" ) ) {
+      S.set( 'isQW', true )
+    }
+
     this.init();
   }
   componentDidMount() {}
@@ -360,19 +366,19 @@ class App extends Component {
         console.log(e);
       }
     }
-    if (S.getAuthToken()) {
+    if ( S.getAuthToken() && !S.get( "isQW" )) {
       api.member
         .favsList()
-        .then(({ list }) => {
-          if (!list) return;
-          store.dispatch({
+        .then( ( { list } ) => {
+          if ( !list ) return;
+          store.dispatch( {
             type: "member/favs",
             payload: list
-          });
-        })
-        .catch(e => {
-          console.info(e);
-        });
+          } );
+        } )
+        .catch( e => {
+          console.info( e );
+        } );
     }
     // H5定位
     if (APP_PLATFORM === "standard" && Taro.getEnv() === "WEB") {

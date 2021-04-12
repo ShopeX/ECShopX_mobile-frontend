@@ -46,7 +46,8 @@ class Spx {
       appname: `${APP_NAME}`,
       code
     });
-    this.set("session3rd", QwUserInfo.session3rd);
+    this.set( "session3rd", QwUserInfo.session3rd );
+    this.setAuthToken(QwUserInfo.session3rd);
 
     return await this.initGuideInfo(QwUserInfo);
   }

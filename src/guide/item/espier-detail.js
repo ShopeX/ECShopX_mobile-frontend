@@ -143,20 +143,6 @@ export default class Detail extends Component {
       }
       this.fetchInfo(id)
       this.getEvaluationList(id)
-       // 浏览记录
-      if (S.getAuthToken()) {
-        try {
-          let itemId = ''
-          if (id) {
-            itemId = id
-          } else {
-            itemId = this.$router.params.id
-          }
-          api.member.itemHistorySave(itemId)
-        } catch (e) {
-          console.log(e)
-        }
-      }
     }) 
     // 处理定位
     const lnglat = Taro.getStorageSync('lnglat')
@@ -208,7 +194,7 @@ export default class Detail extends Component {
       })
 
 
-    this.fetchCartCount()
+    // this.fetchCartCount()
   }
   onShareAppMessage() {
     const { info,pageShareUrl} = this.state
@@ -455,7 +441,7 @@ export default class Detail extends Component {
         desc: contentDesc,
         promotion_package
       })
-      this.fetchCartCount()
+      // this.fetchCartCount()
       this.downloadPosterImg()
     })
 
@@ -605,7 +591,7 @@ export default class Detail extends Component {
 
   handleBuyAction = async (type) => {
     if (type === 'cart') {
-      this.fetchCartCount()
+      // this.fetchCartCount()
     }
     this.setState({
       showBuyPanel: false

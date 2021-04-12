@@ -77,8 +77,8 @@ export default class BaGuideHomeIndex extends Component {
 
   async componentDidMount() {
     console.log('componentDidMount')
-    const options = this.$router.params;
-    const res = await entry.entryLaunch(options, false);
+    const { version } = this.$router.params;
+    // const res = await entry.entryLaunch(options, false);
 
     let shops = [];
     //设置导购信息
@@ -87,18 +87,21 @@ export default class BaGuideHomeIndex extends Component {
     this.setState({ QwUserInfo });
     
     
-    let version = res.version;
+    // let version = res.version;
     this.fetchInfo(version);
 
     let system = await Taro.getSystemInfoSync();
     if (system && system.environment === "wxwork") {
       //企业微信登录接口
-      this.isAppWxWork();
+      // this.isAppWxWork();
+      await S.setQwUserInfo();
+      this.getStoreList();
+
     }
     //获取门店list
-    setTimeout(() => {
-      this.getStoreList();
-    }, 500);
+    // setTimeout(() => {
+    //   this.getStoreList();
+    // }, 500);
   
   }
   async isAppWxWork() {
@@ -108,18 +111,20 @@ export default class BaGuideHomeIndex extends Component {
     // console.log("=====checkSession检查结果返回====", checkSession);
     const chatId = await _this.getQyChatId();
 
-      console.log("获取群信息------0", chatId);
-      let entry_form = S.get("entry_form", true);
-      if (chatId) {
-        S.set("qw_chatId", chatId, true);
-      } else if (
-        entry_form &&
-        entry_form.entry === "group_chat_tools" &&
-        !chatId
-      ) {
-        let newchatId = await _this.getNewQyChatId();
-        S.set("qw_chatId", newchatId, true);
-      }
+    console.log("获取群信息------0", chatId);
+    let entry_form = S.get("entry_form", true);
+    if (chatId) {
+      S.set("qw_chatId", chatId, true);
+    } else if (
+      entry_form &&
+      entry_form.entry === "group_chat_tools" &&
+      !chatId
+    ) {
+      let newchatId = await _this.getNewQyChatId();
+      S.set("qw_chatId", newchatId, true);
+    }
+    
+    this.getStoreList();
   }
   checkSession() {
     return new Promise((reslove, reject) => {
