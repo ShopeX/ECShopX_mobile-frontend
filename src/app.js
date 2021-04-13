@@ -405,12 +405,14 @@ class App extends Component {
     }
     // 根据路由参数
     const { query } = this.$router.params;
-    if (query && query.scene) {
-      const { smid, dtid, id, aid, cid, gu, chatId } = await normalizeQuerys(
+    if ((query && query.scene) || query.gu_user_id) {
+      const { smid, dtid, id, aid, cid, gu, chatId, gu_user_id = ''} = await normalizeQuerys(
         query
-      );
+      )
+      let smid_temp = gu_user_id
       // 旧导购存放
       if (smid) {
+        smid_temp = smid
         Taro.setStorageSync("s_smid", smid);
       }
       if (dtid) {
@@ -418,14 +420,20 @@ class App extends Component {
       }
       // 新导购埋点数据存储导购员工工号
       if (gu) {
-        const [employee_number, store_bn] = gu.split("_");
-        Taro.setStorageSync("s_smid", employee_number);
-        Taro.setStorageSync("store_bn", store_bn);
-        if (S.getAuthToken()) {
-          api.user.bindSaleperson({
-            work_userid: employee_number
-          })
-        }
+        const [employee_number, store_bn] = gu.split("_")
+        smid_temp = employee_number
+        Taro.setStorageSync("s_smid", employee_number)
+        Taro.setStorageSync("store_bn", store_bn)
+      }
+      // 欢迎语小程序卡片分享参数处理
+      if (gu_user_id) {
+        Taro.setStorageSync("s_smid", gu_user_id)
+      }
+      // 如果是登录状态下打开分享且携带导购ID
+      if (S.getAuthToken() && smid_temp) {
+        api.user.bindSaleperson({
+          work_userid: smid_temp
+        })
       }
       // 存储群id
       if (chatId) {
