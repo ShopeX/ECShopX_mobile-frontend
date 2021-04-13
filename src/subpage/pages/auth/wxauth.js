@@ -74,12 +74,15 @@ export default class WxAuth extends Component {
       }
       
       let salesperson_id = Taro.getStorageSync('s_smid')
+      const gu_user_id = Taro.getStorageSync('gu_user_id')
+      if (gu_user_id) {
+        api.user.bindSaleperson({
+          work_userid: salesperson_id
+        })
+      }
       if(!salesperson_id){
         return this.redirect()
       }
-      api.user.bindSaleperson({
-        work_userid: salesperson_id
-      })
       let info = await api.member.getUsersalespersonrel({
         salesperson_id
       })
