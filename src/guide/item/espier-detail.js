@@ -151,10 +151,11 @@ export default class Detail extends Component {
     });
   }
 
-  onShareAppMessage() {
+  async onShareAppMessage () {
     const { info } = this.state;
     const { salesperson_id, distributor_id } = S.get("GUIDE_INFO", true);
-    const sharePath = `/pages/item/espier-detail?id=${info.item_id}&smid=${salesperson_id}&dtid=${distributor_id}`;
+    const query = await normalizeQuerys(this.$router.params);
+    const sharePath = `/pages/item/espier-detail?id=${info.item_id}&smid=${salesperson_id}&dtid=${distributor_id}&subtask_id=${query.subtask_id || ''}&gu=${query.gu || ''}`;
     log.debug(`【guide/item/espier-detail】onShareAppMessage path: ${sharePath}`);
     return {
       title: info.item_name,
