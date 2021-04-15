@@ -68,7 +68,9 @@ export default class Detail extends Component {
       // 是否订阅
       isSubscribeGoods: false,
       is_open_store_status:null,
-      goodType:'normal'
+      goodType:'normal',
+      // 是否能够转发
+      canShare: false
     }
   }
   
@@ -134,6 +136,7 @@ export default class Detail extends Component {
       entry.InverseAnalysis(lnglat)
     }
     this.getDetailShare()
+    this.isCanShare()
   }
 
   static options = {
@@ -912,7 +915,14 @@ export default class Detail extends Component {
 
   // 判断是否可以分享
   isCanShare = async () => {
-
+    if (!S.getAuthToken()) return false
+    const { status } = await api.user.getIsCanShare()
+    if (!status) {
+      Taro.hideShareMenu()
+    }
+    this.setState({
+      canShare: status
+    })
   }
 
   render() {
