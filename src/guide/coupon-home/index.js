@@ -5,7 +5,7 @@ import { connect } from "@tarojs/redux";
 import api from "@/api";
 import S from "@/spx";
 import { withPager } from "@/hocs";
-import { pickBy, formatTime, styleNames } from "@/utils";
+import { pickBy, formatTime, styleNames, classNames } from "@/utils";
 import { Tracker } from "@/service";
 import { BaTabBar, BaNavBar } from "@/guide/components";
 import "./coupon.scss";
@@ -202,7 +202,7 @@ export default class CouponHome extends Component {
             {list.map((item, idx) => {
               return (
                 <CouponItem info={item} className='home_coupon-list_item'  key={item.card_id}>
-                  <View className="home_coupon-list_item__quantity">剩余{item.quantity}张</View>   
+                  <View className="home_coupon-list_item__quantity">剩余{parseInt(item.quantity) - item.get_num}张</View>   
                   {/* <Text
                       className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
                       onClick={this.handleGetCard.bind(this, item, idx)}
@@ -225,8 +225,10 @@ export default class CouponHome extends Component {
                       <Button
                         openType="share"
                         // style={"background: " + colors.data[0].primary}
-                        className='shareCSS'
-                        dataInfo={item}
+                        className={classNames( 'shareCSS', {
+                          disabled: (parseInt(item.quantity) - item.get_num) <= 0
+                        }) }
+                        disabled={ (parseInt(item.quantity) - item.get_num) <= 0 }
                       >
                         分享给顾客
                       </Button>
