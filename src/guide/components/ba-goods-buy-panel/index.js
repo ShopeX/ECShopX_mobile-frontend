@@ -14,9 +14,10 @@ import S from '@/spx'
 import "./index.scss";
 import { floor } from "lodash";
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
+@connect(({ colors,guide }) => ({
+    colors: colors.current,
+    storeInfo: guide.storeInfo
+  }))
 export default class GoodsBuyPanel extends Component {
   static options = {
     addGlobalClass: true
@@ -283,17 +284,8 @@ export default class GoodsBuyPanel extends Component {
     const { distributor_id } = info;
     const curStore = Taro.getStorageSync('curStore');
     
-    let id = isOpenStore ? curStore.store_id : distributor_id
-
-    //获取门店id
-    const QwUserInfo = S.get('QwUserInfo',true)
-    if(QwUserInfo){
-      console.log('QwUserInfo.ba_store',QwUserInfo)
-      id=QwUserInfo.ba_store&&QwUserInfo.ba_store.distributor_id || QwUserInfo.distributor_id
-    }
-
+    let id = this.props.storeInfo&&this.props.storeInfo.distributor_id || 0
     let url = `/pages/cart/espier-checkout`;
-
     this.setState({
       busy: true
     });
@@ -629,7 +621,7 @@ export default class GoodsBuyPanel extends Component {
                     className={classNames("goods-buy-panel__btn btn-add-cart", {
                       "is-disabled": !curSkus
                     })}
-                    style={`background: ${colors.data[0].accent}`}
+                    style={`background: ${colors&&colors.data[0].accent}`}
                     onClick={this.handleBuyClick.bind(
                       this,
                       "cart",
@@ -650,7 +642,7 @@ export default class GoodsBuyPanel extends Component {
                     className={classNames("goods-buy-panel__btn btn-fast-buy", {
                       "is-disabled": !curSkus
                     })}
-                    style={`background: ${colors.data[0].primary}`}
+                    style={`background: ${colors&&colors.data[0].primary}`}
                     onClick={this.handleBuyClick.bind(
                       this,
                       "fastbuy",

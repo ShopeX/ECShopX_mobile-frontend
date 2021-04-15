@@ -260,7 +260,9 @@ export default class BaGuideHomeIndex extends Component {
     this.setState({
       shopList: list
     });
-    this.props.updateStoreInfo(fd);
+    console.log('获取门店列表getStoreList',this.props.storeInfo)
+    if(!this.props.storeInfo)
+      this.props.updateStoreInfo(fd);
   }
 
   handleCloseCart = () => {
