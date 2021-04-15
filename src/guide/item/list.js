@@ -81,7 +81,7 @@ export default class List extends Component {
           is_point: "false",
           distributor_id: storeInfo.distributor_id,
           //approve_status: 'onsale,only_show',
-          goodsSort: "onsale,only_show",
+          goodsSort: "",
           category: cat_id ? cat_id : "",
           main_category: main_cat_id ? main_cat_id : ""
         },
