@@ -67,11 +67,71 @@ class App extends Component {
 
   // eslint-disable-next-line react/sort-comp
   componentWillMount() {
-    console.log("get - system", this.system);
-    console.log( "get - system APP_TRACK", APP_TRACK );
-  
+    // 获取收藏列表
+    if (process.env.TARO_ENV === "weapp") {
+      FormIds.startCollectingFormIds();
+      try {
+        const {
+          model,
+          system,
+          windowWidth,
+          windowHeight,
+          screenHeight,
+          screenWidth,
+          pixelRatio,
+          brand
+        } = Taro.getSystemInfoSync();
+        const { networkType } = Taro.getNetworkType();
 
-    this.init();
+        let px = screenWidth / 750; //rpx换算px iphone5：1rpx=0.42px
+
+        Taro.$systemSize = {
+          windowWidth,
+          windowHeight,
+          screenHeight,
+          screenWidth,
+          model,
+          px,
+          pixelRatio,
+          brand,
+          system,
+          networkType
+        };
+
+        if (system.indexOf("iOS") !== -1) {
+          Taro.$system = "iOS";
+        }
+
+        S.set(
+          "ipxClass",
+          model.toLowerCase().indexOf("iphone x") >= 0 ? "is-ipx" : ""
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    if (S.getAuthToken() && !isGoodsShelves()) {
+      api.member
+        .favsList()
+        .then(({ list }) => {
+          if (!list) return;
+          store.dispatch({
+            type: "member/favs",
+            payload: list
+          });
+        })
+        .catch(e => {
+          console.info(e);
+        });
+    }
+    // H5定位
+    if (APP_PLATFORM === "standard" && Taro.getEnv() === "WEB") {
+      new LBS();
+    }
+    // 设置购物车默认类型
+    if (Taro.getStorageSync("cartType")) {
+      Taro.setStorageSync("cartType", "normal");
+    }
   }
   componentDidMount() {}
 
@@ -306,6 +366,7 @@ class App extends Component {
   };
 
   componentDidShow(options) {
+    this.init()
     const { referrerInfo } = options || {};
     if (referrerInfo) {
       console.log(referrerInfo);
@@ -318,71 +379,6 @@ class App extends Component {
 
   // 初始化
   async init() {
-    // 获取收藏列表
-    if (process.env.TARO_ENV === "weapp") {
-      FormIds.startCollectingFormIds();
-      try {
-        const {
-          model,
-          system,
-          windowWidth,
-          windowHeight,
-          screenHeight,
-          screenWidth,
-          pixelRatio,
-          brand
-        } = Taro.getSystemInfoSync();
-        const { networkType } = Taro.getNetworkType();
-
-        let px = screenWidth / 750; //rpx换算px iphone5：1rpx=0.42px
-
-        Taro.$systemSize = {
-          windowWidth,
-          windowHeight,
-          screenHeight,
-          screenWidth,
-          model,
-          px,
-          pixelRatio,
-          brand,
-          system,
-          networkType
-        };
-
-        if (system.indexOf("iOS") !== -1) {
-          Taro.$system = "iOS";
-        }
-
-        S.set(
-          "ipxClass",
-          model.toLowerCase().indexOf("iphone x") >= 0 ? "is-ipx" : ""
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    if (S.getAuthToken() && !isGoodsShelves()) {
-      api.member
-        .favsList()
-        .then(({ list }) => {
-          if (!list) return;
-          store.dispatch({
-            type: "member/favs",
-            payload: list
-          });
-        })
-        .catch(e => {
-          console.info(e);
-        });
-    }
-    // H5定位
-    if (APP_PLATFORM === "standard" && Taro.getEnv() === "WEB") {
-      new LBS();
-    }
-    // 设置购物车默认类型
-    if (Taro.getStorageSync("cartType")) {
-      Taro.setStorageSync("cartType", "normal");
-    }
     // 过期时间
     const promoterExp = Taro.getStorageSync("distribution_shop_exp");
     if (Date.parse(new Date()) - promoterExp > treeDay) {

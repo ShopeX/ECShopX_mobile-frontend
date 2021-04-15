@@ -184,7 +184,7 @@ export default class Reg extends Component {
 
         if (gu_user_id) {
           params.channel = 1
-          params.salesperson_id = gu_user_id 
+          params.gu_user_id = gu_user_id 
         }
 
         const res = await api.user.reg(params)
