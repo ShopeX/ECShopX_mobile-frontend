@@ -78,7 +78,7 @@ export default class recommendDetail extends Component {
       ...info,
       shareType: "分享给好友"
     } );
-    const sharePath = `/subpage/pages/recommend/detail?id=${info.article_id}&salesperson_id=${salesperson_id}&distributor_id=${distributor_id}`;
+    const sharePath = `/subpage/pages/recommend/detail?id=${info.article_id}&smid=${salesperson_id}&dtid=${distributor_id}`;
     log.debug(`【guide/recommend/detail】onShareAppMessage path: ${sharePath}` )
     return {
       title: info.title,

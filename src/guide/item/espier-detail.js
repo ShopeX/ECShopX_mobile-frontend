@@ -154,7 +154,7 @@ export default class Detail extends Component {
   onShareAppMessage() {
     const { info } = this.state;
     const { salesperson_id, distributor_id } = S.get("GUIDE_INFO", true);
-    const sharePath = `/pages/item/espier-detail?id=${info.item_id}&salesperson_id=${salesperson_id}&distributor_id=${distributor_id}`;
+    const sharePath = `/pages/item/espier-detail?id=${info.item_id}&smid=${salesperson_id}&dtid=${distributor_id}`;
     log.debug(`【guide/item/espier-detail】onShareAppMessage path: ${sharePath}`);
     return {
       title: info.item_name,
