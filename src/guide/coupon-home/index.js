@@ -5,7 +5,7 @@ import { connect } from "@tarojs/redux";
 import api from "@/api";
 import S from "@/spx";
 import { withPager } from "@/hocs";
-import { pickBy, formatTime, styleNames, classNames } from "@/utils";
+import { pickBy, formatTime, styleNames, classNames, normalizeQuerys } from "@/utils";
 import { Tracker } from "@/service";
 import { BaTabBar, BaNavBar } from "@/guide/components";
 import "./coupon.scss";
@@ -44,13 +44,15 @@ export default class CouponHome extends Component {
     });
   }
 
-  onShareAppMessage(item) {
+  async onShareAppMessage(item) {
     const { info } = item.target.dataset
     const res = this.state.shareInfo;
     // console.log('onShareAppMessage-item',res,info)
     // const { userId } = Taro.getStorageSync("userinfo");
-    const QwUserInfo = S.get('QwUserInfo',true)
-    const query = `?uid=${QwUserInfo.salesperson_id}&card_id=${info.card_id}&distributor_id=${QwUserInfo.distributor_id}`;    
+    const params = await normalizeQuerys(this.$router.params);
+
+    const { salesperson_id, distributor_id } = S.get("GUIDE_INFO", true);
+    const query = `?smid=${salesperson_id}&card_id=${info.card_id}&distributor_id=${distributor_id}&subtask_id=${params.subtask_id || ''}&gu=${params.gu || ''}`;    
     return {
       title: info.title+'优惠券',
       imageUrl: res.imageUrl,
@@ -71,11 +73,12 @@ export default class CouponHome extends Component {
 
   async fetch(params) {
     let { distributor_id } = S.get("GUIDE_INFO", true);
-
+    let { card_id = '' } = await normalizeQuerys(this.$router.params)
     params = {
       ...params,
       end_date: 1,
       distributor_id,
+      card_id,
       item_id: this.$router.params
         ? this.$router.params.item_id
           ? this.$router.params.item_id

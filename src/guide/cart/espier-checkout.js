@@ -234,8 +234,8 @@ export default class EspireCheckout extends Component {
       let entry_form = S.get("entry_form", true);
       let share_id = "888",
         wxshop_name = "wxshop_name",
-        item_total = "2",
-        gift_total = "3";
+        item_total = "2";
+        // gift_total = "3";
 
       const {
         giftslist,
@@ -346,7 +346,7 @@ export default class EspireCheckout extends Component {
       // 总计
       guideCanvasExp.textFill(
         ctx,
-        `共${item_total}件商品，${gift_total}件赠品`,
+        `共${total.items_count}件商品`,
         15 * ratio,
         425 * ratio,
         12,
