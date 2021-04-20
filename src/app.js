@@ -25,7 +25,7 @@ const { store } = configStore();
 // 三天时间戳
 const treeDay = 86400000 * 3
 // 获取首页配置
-const getHomeSetting = async () => {
+const getHomeSetting = async () => { 
   const {
     echat = {},
     meiqia = {},
@@ -46,9 +46,10 @@ const getHomeSetting = async () => {
     nostores_status,
     youshu
   })
+  console.log("APP_TRACK",youshu)
   if (APP_TRACK) {
-    const system = Taro.getSystemInfoSync();
-    if (!(system && system.environment && system.environment === "wxwork") && (youshu.appid || youshu.sandbox_app_id)) {
+    const system = Taro.getSystemInfoSync();   
+    if (!(system && system.environment && system.environment === "wxwork") && (youshu.app_id || youshu.sandbox_app_id)) {
       console.log('----------------aa--------------')
       console.log(Tracker)
       Tracker.use(APP_TRACK);

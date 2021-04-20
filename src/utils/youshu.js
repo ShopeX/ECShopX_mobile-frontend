@@ -11,6 +11,7 @@ async function youshuLogin() {
         if (token) {
             // 通过token解析openid
             const userInfo = tokenParse(token);
+            console.log("userInfo.openid",userInfo.openid)
             Tracker.setVar({
                 user_id: userInfo.user_id,
                 open_id: userInfo.openid,
