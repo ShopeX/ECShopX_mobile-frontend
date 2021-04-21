@@ -134,6 +134,7 @@ export default class TradeDetail extends Component {
       is_logistics: 'is_split',
       total_tax: ({ total_tax }) => (+total_tax / 100).toFixed(2),
       item_fee: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+      total_fee: ({ total_fee }) => (+total_fee / 100).toFixed(2),
       coupon_discount: ({ coupon_discount }) => (+coupon_discount / 100).toFixed(2),
       freight_fee: ({ freight_fee }) => (+freight_fee / 100).toFixed(2),
       freight_type:'freight_type',
@@ -242,7 +243,7 @@ export default class TradeDetail extends Component {
       Tracker.dispatch("ORDER_PAY", {
         ...info,
         item_fee: info.item_fee * 100,
-        total_fee: info.item_fee * 100,
+        total_fee: info.total_fee * 100,
         ...config,
         timeStamp:config.order_info.create_time,
       }); 
@@ -261,8 +262,9 @@ export default class TradeDetail extends Component {
         Tracker.dispatch("CANCEL_PAY", {
           ...info,
           item_fee: parseInt(info.item_fee) * 100,
-          total_fee: parseInt(info.item_fee) * 100,
-          ...config
+          total_fee: parseInt(info.total_fee) * 100,
+          ...config,
+          timeStamp:config.order_info.create_time
         });
       }
     }

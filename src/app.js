@@ -48,13 +48,13 @@ const getHomeSetting = async () => {
   })
   console.log("APP_TRACK",youshu)
   if (APP_TRACK) {
-    const system = Taro.getSystemInfoSync();   
-    if (!(system && system.environment && system.environment === "wxwork") && (youshu.app_id || youshu.sandbox_app_id)) {
-      console.log('----------------aa--------------')
-      console.log(Tracker)
-      Tracker.use(APP_TRACK);
-      youshuLogin();
-    }
+    // const system = Taro.getSystemInfoSync();   
+    // if (!(system && system.environment && system.environment === "wxwork") && (youshu.app_id || youshu.sandbox_app_id)) {
+    //   console.log('----------------aa--------------')
+    //   console.log(Tracker)
+    //   Tracker.use(APP_TRACK);
+    //   youshuLogin();
+    // }
   }
 };
 
@@ -68,6 +68,13 @@ class App extends Component {
 
   // eslint-disable-next-line react/sort-comp
   componentWillMount() {
+    if (APP_TRACK) {
+      const system = Taro.getSystemInfoSync();   
+      if (!(system && system.environment && system.environment === "wxwork")) { 
+        Tracker.use(APP_TRACK);
+        youshuLogin();
+      }
+    } 
     // 获取收藏列表
     if (process.env.TARO_ENV === "weapp") {
       FormIds.startCollectingFormIds();

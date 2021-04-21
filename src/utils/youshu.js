@@ -5,6 +5,7 @@ import { tokenParse } from "@/utils";
 
 async function youshuLogin() {
     const { code } = await Taro.login()
+    console.log("youshuLogin",code)
     try {
         const { token } = await api.wx.login({ code })
         if (!token) throw new Error(`token is not defined: ${token}`)
