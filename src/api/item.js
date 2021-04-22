@@ -64,3 +64,7 @@ export function getDetailShare (params) {
   return req.post('/salesperson/task/share', params)
 }
 
+//  获取分享配置 
+export function getShareSetting (id) {
+  return req.get(`/goods/share/items/${id}`)
+}

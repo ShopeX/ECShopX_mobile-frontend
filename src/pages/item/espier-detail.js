@@ -7,11 +7,12 @@ import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavB
 import api from '@/api'
 import req from '@/api/req'
 import { withPager, withBackToTop,withPointitem } from '@/hocs'
-import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys } from '@/utils'
+import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys, buriedPoint } from '@/utils'
 import entry from '@/utils/entry'
 import S from '@/spx'
 import { Tracker } from "@/service"
 import { GoodsBuyToolbar, ItemImg, ImgSpec, StoreInfo, ActivityPanel, SharePanel, VipGuide, ParamsItem, GroupingItem } from './comps'
+import { linkPage } from '../home/wgts/helper'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
@@ -69,6 +70,10 @@ export default class Detail extends Component {
       isSubscribeGoods: false,
       is_open_store_status:null,
       goodType:'normal',
+      // 是否能够转发
+      canShareInfo: {
+        status: false
+      }
     }
   }
   
@@ -139,6 +144,7 @@ export default class Detail extends Component {
       entry.InverseAnalysis(lnglat)
     }
     // this.getDetailShare()
+    this.isCanShare()
     // 埋点处理
     buriedPoint.call(this, {
       item_id: id,
@@ -755,7 +761,18 @@ export default class Detail extends Component {
 
       return
     }
-
+    const { canShareInfo } = this.state
+    const { status, msg, page } = canShareInfo
+    if (!status) {
+      Taro.showToast({
+        title: msg,
+        icon: 'none'
+      })
+      setTimeout(() => {
+        linkPage(page.linkPage, page)
+      }, 1000)
+      return
+    }
     this.setState({
       showSharePanel: true
     })
@@ -801,6 +818,9 @@ export default class Detail extends Component {
         Taro.showToast({
           icon:'none',
           title: '保存成功'
+        })
+        this.setState({
+          showPoster: false
         })
       })
       .catch(() => {
@@ -919,6 +939,29 @@ export default class Detail extends Component {
       crossPrice,
       showPrice
     }
+  }
+
+  // 判断是否可以分享
+  isCanShare = async () => {
+    if (!S.getAuthToken()) return false
+    const info = await api.user.getIsCanShare()
+    if (!info.status) {
+      Taro.hideShareMenu()
+    }
+    this.setState({
+      canShareInfo: info
+    })
+  }
+
+  // 编辑分享
+  goToEditShare = () => {
+    const { distributor_id,store_id } = Taro.getStorageSync('curStore')
+    const { info,is_open_store_status } = this.state
+    const { company_id, item_id } = info
+    const dtid = APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : info.distributor_id
+    Taro.navigateTo({
+      url: `/subpage/pages/editShare/index?id=${item_id}&dtid=${dtid}&company_id=${company_id}`
+    })
   }
 
   render() {
@@ -1486,6 +1529,7 @@ export default class Detail extends Component {
             <SharePanel
               info={uid}
               isOpen={showSharePanel}
+              onEditShare={this.goToEditShare.bind(this)}
               onClose={() => this.setState({ showSharePanel: false })}
               onClick={this.handleShowPoster.bind(this)}
             />

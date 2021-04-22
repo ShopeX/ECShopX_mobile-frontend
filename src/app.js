@@ -5,11 +5,11 @@ import configStore from "@/store";
 import useHooks from "@/hooks";
 import req from "@/api/req";
 import api from "@/api";
-import { normalizeQuerys, log, isGoodsShelves } from "@/utils";
+import { normalizeQuerys, isGoodsShelves } from "@/utils";
 import { FormIds, Tracker } from "@/service";
+import { youshuLogin } from '@/utils/youshu'
 import Index from './pages/index'
 import LBS from './utils/lbs'
-import { youshuLogin } from '@/utils/youshu'
 // import entry from '@/utils/entry'
 
 import "./app.scss";
@@ -275,7 +275,9 @@ class App extends Component {
           "pages/auth/forgotpwd",
           "pages/auth/wxauth",
           "pages/auth/pclogin",
-          "pages/auth/store-reg"
+          "pages/auth/store-reg",
+          // 编辑分享
+          'pages/editShare/index'
         ]
       },
       // 团购

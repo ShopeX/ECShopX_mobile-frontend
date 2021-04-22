@@ -129,6 +129,11 @@ export function isSubscribeGoods(item_id) {
   return req.get(`/member/item/is_subscribe/${item_id}`);
 }
 
+// 检测是否可以分享
+export function getIsCanShare (param = {}) {
+  return req.get('/goods/checkshare/items', param)
+}
+
 //ba导购端
 export function getGuideInfo(params = {}) {
   return req.get("/guide/info", params);
