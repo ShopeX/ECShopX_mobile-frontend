@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/subpage/pages/editShare/index.js
  * @Date: 2021-04-14 15:06:18
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-04-22 15:30:22
+ * @LastEditTime: 2021-04-22 16:47:37
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Textarea, View, Image, Canvas, Button } from '@tarojs/components'
@@ -225,9 +225,7 @@ export default class EditShare extends Component {
   }
 
   closeModal = () => {
-    this.setState({
-      showSuccess: false
-    })
+    Taro.navigateBack()
   }
 
   render () {
