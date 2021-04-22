@@ -819,6 +819,9 @@ export default class Detail extends Component {
           icon:'none',
           title: '保存成功'
         })
+        this.setState({
+          showPoster: false
+        })
       })
       .catch(() => {
         Taro.showToast({
