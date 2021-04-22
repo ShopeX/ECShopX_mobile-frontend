@@ -4,7 +4,7 @@ import api from '@/api'
 import { withPager } from '@/hocs'
 import { FloatMenus, FloatMenuItem, NavBar } from '@/components'
 import { connect } from '@tarojs/redux'
-import { formatTime } from '@/utils'
+import { formatTime, buriedPoint } from '@/utils'
 import S from '@/spx'
 import { Tracker } from "@/service";
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
@@ -43,6 +43,10 @@ export default class recommendDetail extends Component {
           screenWidth: res.screenWidth
         })
       })
+    // 埋点处理
+    buriedPoint.call(this, {
+      event_type: 'activeSeedingDetail'
+    })
   }
 
   onShareAppMessage(res) {

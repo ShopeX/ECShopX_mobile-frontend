@@ -58,7 +58,8 @@ export default class WxAuth extends Component {
           union_id: userInfo.unionid
         });
       }
-      if (this.$router.params.redirect) {
+      const { source, redirect } = this.$router.params
+      if (source || redirect) {
         const memberInfo = await api.member.memberInfo()
         const userObj = {
           username: memberInfo.memberInfo.nickname || memberInfo.memberInfo.username || memberInfo.memberInfo.mobile,
@@ -73,10 +74,15 @@ export default class WxAuth extends Component {
       }
       
       let salesperson_id = Taro.getStorageSync('s_smid')
+      const work_userid = Taro.getStorageSync('work_userid')
+      if (work_userid) {
+        api.user.bindSaleperson({
+          work_userid: work_userid
+        })
+      }
       if(!salesperson_id){
         return this.redirect()
       }
-
       let info = await api.member.getUsersalespersonrel({
         salesperson_id
       })

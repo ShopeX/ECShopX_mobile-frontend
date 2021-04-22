@@ -1,4 +1,4 @@
-@import '../../../../style/imports';
+@import "@/style/imports";
 
 $item-img-size: 270px !default;
 
@@ -29,7 +29,7 @@ $item-img-size: 270px !default;
     border-radius: $item-border-radius;
     overflow: hidden;
   }
-  &__cont{
+  &__cont {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -135,7 +135,8 @@ $item-img-size: 270px !default;
         margin-right: 8px;
       }
     }
-    .icon-star-on, .icon-like {
+    .icon-star-on,
+    .icon-like {
       color: $color-brand-primary;
     }
   }

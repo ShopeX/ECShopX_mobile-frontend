@@ -1,0 +1,46 @@
+.ba-nav-bar{
+    width: 100%;
+    box-sizing: border-box;
+    color: #000000;
+    font-size: 12PX;
+    display: flex;
+    align-items: center;
+    &__fixed{
+        position: fixed;
+        background: #ffffff;
+        z-index: 8888;
+        top:0;
+        left:0;
+        width: 100%;
+    
+    }
+    .icon-sty{
+        font-size: 54px;
+        &.icon{
+            width: 32PX;
+            height: 32PX;
+            line-height: 32PX;
+            text-align: center;
+            border-radius: 100%;
+            font-size: 33px;
+        }
+        &.icon-home{
+            border:1px solid #dcdcdc;
+            background-color: #d9d9d9;
+        }
+        &.icon-arrowDown {
+            transform: rotate(90deg) scale(1.2);
+            font-weight: bold;
+        }
+        
+    }
+    &__title{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+    }
+}

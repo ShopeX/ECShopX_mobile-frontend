@@ -1,0 +1,72 @@
+@import "@/style/imports";
+
+.shareCSS {
+  margin-top: -8rpx !important;
+  font-size: 22rpx !important;
+  text-align: center !important;
+  border: none !important;
+  padding: 0 !important;
+  background: #3E0F3C !important;
+  color: #fff;
+  height: 48rpx;
+  line-height: 48rpx;
+  border-radius: 30rpx;
+  width: 170rpx;
+  &.disabled {
+    background: #d3d3d3 !important;
+  }
+}
+.coupon-btn {
+  opacity: 1 !important;
+}
+.shareCSS:after{ border: none; }
+.coupon-list {
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  .at-tabs__header {
+    position: absolute;
+    top: $navigate-height;
+    /*  #ifdef  h5  */
+    top: $navigate-height-h5;
+    /*  #endif  */
+    width: 100%;
+    z-index: $z-index-toolbar;
+  }
+  .home_coupon-list__scroll {
+    // height: 100vh;
+    @include page-scroll($tabs-height + $searchbar-height + $navigate-height, $tabbar-height);
+    padding: 0 $edge-margin;
+    box-sizing: border-box;
+  }
+  .home_coupon-list_item{
+    position: relative;
+  }
+  .home_coupon-list_item__quantity{
+    position: absolute;
+    bottom: 4px;
+    font-size: 24px;
+  }
+  &__tabs {
+    position: fixed;
+    z-index: $z-index-toolbar;
+    left: 0;
+    height: 100px;
+    top: 0;
+    width: 100%;
+  }
+}
+
+.coupon-btn {
+  color: #ffffff;
+  font-size: 24px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50px;
+  padding: 0 10px;
+  &__done {
+    // background: #c4c4c4 !important;
+    color: #ffffff;
+    opacity: 0.8;
+  }
+}

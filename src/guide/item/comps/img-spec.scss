@@ -1,0 +1,52 @@
+//@import "@/style/imports";
+
+.specs {
+  &-title {
+    font-size: $font-size-large;
+    color: #000;
+    text-align: center;
+    margin: 0 0 26px;
+    line-height: 1;
+    text-align: center;
+  }
+
+  &-selected {
+    color: $color-primary-text;
+    font-size: $font-size-small;
+    margin-left: 18px;
+  }
+
+  &-scroller {
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+  }
+
+  &-imgs {
+    white-space: nowrap;
+
+    &__item {
+      width: 80px;
+      height: 80px;
+      box-sizing: border-box;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 20px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 0 1px $color-border-gray;
+      &-active {
+        width: 85px;
+        height: 85px;
+        box-shadow: 0 0 0 1px #ff5000;
+      }
+    }
+  }
+
+  &-text__item {
+    line-height: 80px;
+    text-align: center;
+    width: 80px;
+    font-size: 24px;
+  }
+}

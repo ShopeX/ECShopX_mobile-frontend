@@ -27,14 +27,23 @@ export function login (params) {
   }, { showError: false })
 }
 
-export function prelogin (params) {
-  const appid = getAppId()
-  return req.post('/prelogin', {
+export function prelogin(params) {
+  const appid = getAppId();
+  return req.post("/prelogin", {
     ...params,
     appid,
-    auth_type: 'wxapp'
-  })
+    auth_type: "wxapp"
+  });
 }
+
+// export function prelogin (params) {
+//   const appid = getAppId()
+//   return req.post('/workwechatlogin', {
+//     ...params,
+//     appid,
+//     auth_type: 'wxapp'
+//   })
+// }
 
 export function decryptPhone (params) {
   const appid = getAppId()
@@ -51,4 +60,25 @@ export function shareSetting (params) {
 }
 export function getWhiteList () {
   return req.get('/whitelist/status')
+}
+
+// 获取shareid解析
+export function getShareId (params) {
+  return req.get('/getbyshareid', {
+    ...params
+  })
+}
+
+// 任务埋点上报
+export function taskReportData (params) {
+  return req.post('/salesperson/subtask/post', {
+    ...params
+  })
+}
+
+// 互动埋点上报
+export function interactiveReportData (params) {
+  return req.post('/salesperson/relationshipcontinuity', {
+    ...params
+  })
 }

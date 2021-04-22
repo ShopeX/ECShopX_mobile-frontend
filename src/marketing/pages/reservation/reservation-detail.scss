@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .reservation-detail {
   &__status {
@@ -45,8 +45,7 @@
     &_title {
       display: block;
       padding: 30px;
-      border-bottom: 1Px solid #f5f5f5;
+      border-bottom: 1px solid #f5f5f5;
     }
   }
-  
 }

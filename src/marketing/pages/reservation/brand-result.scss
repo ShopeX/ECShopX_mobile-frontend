@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .brand-result {
   .sp-cell {
@@ -34,12 +34,12 @@
     line-height: 80px;
     color: #ffffff;
     text-align: center;
-    border: 1PX solid $color-brand-primary;
+    border: 1px solid $color-brand-primary;
     background: $color-brand-primary;
   }
   .cancel_btn {
     background: transparent;
     color: #000000;
-    border: 1PX solid #000000;
+    border: 1px solid #000000;
   }
 }

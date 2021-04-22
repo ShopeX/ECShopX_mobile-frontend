@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .trade-rate {
   background: #fff;
@@ -115,7 +115,7 @@
       }
     }
   }
-  .at-button__text  {
+  .at-button__text {
     font-size: 30px;
   }
 }

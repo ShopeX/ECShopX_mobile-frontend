@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .category-list {
   height: 100%;
@@ -31,9 +31,9 @@
     text-overflow: ellipsis;
     border-left: 7px solid transparent;
     line-height: 95px;
-    margin:0 auto;
+    margin: 0 auto;
     box-sizing: border-box;
-    border-top: 1PX solid #e7e8ea;
+    border-top: 1px solid #e7e8ea;
     background-color: #f5f5f5;
   }
   &__content:first-child {
@@ -46,10 +46,10 @@
     background-color: #fff;
     border-left: 7px solid $color-brand-primary;
     box-sizing: border-box;
-    border-top: 1PX solid transparent;
+    border-top: 1px solid transparent;
   }
   &__content-checked + &__content {
-    border-top: 1PX solid transparent;
+    border-top: 1px solid transparent;
   }
 }
 .tag-list {
@@ -79,7 +79,7 @@
     display: flex;
     .cat-img {
       width: 20vw;
-      height: 20vw
+      height: 20vw;
     }
     .img-cat-name {
       display: flex;

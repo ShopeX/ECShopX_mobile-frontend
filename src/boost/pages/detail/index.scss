@@ -1,11 +1,11 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .detail {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
   /*  #ifdef  h5  */
-    padding-top: $navigate-height-h5;
+  padding-top: $navigate-height-h5;
   /*  #endif  */
   box-sizing: border-box;
   padding-bottom: 120px;
@@ -120,7 +120,7 @@
           }
         }
       }
-    } 
+    }
     .boostMain {
       padding: 20px;
       background: #fff;
@@ -141,7 +141,7 @@
           display: flex;
           align-items: center;
           padding: 10px 0;
-          .left {          
+          .left {
             margin-right: 20px;
             .img {
               width: 86px;
@@ -160,10 +160,10 @@
             border-radius: 10px;
             display: inline-block;
             padding: 2px 10px;
-          }        
+          }
         }
       }
-    }  
+    }
     .goodDetail {
       margin-top: 20px;
       background: #fff;
@@ -180,7 +180,7 @@
         }
         &::after {
           position: absolute;
-          content: '';
+          content: "";
           z-index: 9;
           width: 60%;
           height: 2px;
@@ -222,12 +222,12 @@
     background: #a2564c;
   }
   .posterCanvas {
-    width: 375PX;
-    height: 640PX;
+    width: 375px;
+    height: 640px;
     position: fixed;
     top: -200%;
     left: -200%;
-  } 
+  }
   .imgContent {
     width: 100%;
     height: 100%;
@@ -251,5 +251,5 @@
       color: #fff;
       margin-top: 20px;
     }
-  }   
+  }
 }

@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/pages/home/landing.js
  * @Date: 2020-11-19 14:22:17
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-03-01 16:19:20
+ * @LastEditTime: 2021-03-26 13:59:19
  */
 
 import Taro, { Component } from '@tarojs/taro'
@@ -27,8 +27,8 @@ export default class Landing extends Component {
       ...this.state,
     }
   }
-  componentDidMount () {
-    const query = normalizeQuerys(this.$router.params)
+  async componentDidMount () {
+    const query = await normalizeQuerys(this.$router.params)
 
     this.props.onUserLanding(query)
 

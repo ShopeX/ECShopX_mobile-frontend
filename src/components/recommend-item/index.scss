@@ -115,6 +115,9 @@ $item-img-size: 240px !default;
       vertical-align: middle;
       @include text-overflow();
     }
+    &-long {
+      width: 200px;
+    }
   }
   &__actions {
     color: #d0d0d0;

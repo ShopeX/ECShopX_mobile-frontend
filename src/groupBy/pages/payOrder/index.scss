@@ -1,12 +1,12 @@
-@import '../../../style/iconfont';
-@import '../../styles/index';
+@import "@/style/iconfont";
+@import "../../styles/index";
 
 .payOrder {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   padding-bottom: 100px;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navBarHeight;
   /*  #endif  */
   .orderInfo {

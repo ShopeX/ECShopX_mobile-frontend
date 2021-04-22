@@ -1,4 +1,4 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .page-distribution-qrcode {
   display: flex;
@@ -6,10 +6,10 @@
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   box-sizing: border-box;
   padding-top: $navigate-height-h5;
-  /*  #endif  */  
+  /*  #endif  */
   .qrcode-bg {
     display: flex;
     flex-direction: column;
@@ -30,7 +30,7 @@
       right: 150%;
       width: 100px;
       height: 1px;
-      background: rgba(255,255,255,0.3);
+      background: rgba(255, 255, 255, 0.3);
       content: "";
     }
     &::after {
@@ -39,7 +39,7 @@
       left: 150%;
       width: 100px;
       height: 1px;
-      background: rgba(255,255,255,0.3);
+      background: rgba(255, 255, 255, 0.3);
       content: "";
     }
   }
@@ -59,7 +59,7 @@
   }
   .qrcode {
     width: 250px;
-    height:250px;
+    height: 250px;
     padding: 20px;
     margin-bottom: 20px;
     background: #fff;

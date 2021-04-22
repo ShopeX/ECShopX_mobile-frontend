@@ -1,16 +1,16 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .page-distribution-trade {
   .trade-list__tabs {
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     top: $navigate-height-h5;
-    /*  #endif  */  
+    /*  #endif  */
   }
   .trade-list__scroll {
     @include page-scroll($tabs-height + $navigate-height, 0);
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     @include page-scroll($tabs-height + $navigate-height-h5, 0);
-    /*  #endif  */      
+    /*  #endif  */
   }
   .order-no {
     font-size: 30px;
@@ -36,7 +36,7 @@
     height: 60px;
     border-radius: 50%;
     background: #eee;
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
   }
   .customer-name {
     font-size: 28px;

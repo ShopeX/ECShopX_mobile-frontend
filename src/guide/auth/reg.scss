@@ -1,0 +1,195 @@
+.auth-reg {
+  height: 100vh;
+  box-sizing: border-box;
+  color:#999999;
+  .regbg{
+    width: 100%;
+    height: 224px;
+    // background: url('data:image/png;base64,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') no-repeat;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+   &__phone{
+     display: flex;
+    padding-bottom: 12px;
+    border-bottom: 1PX solid rgba(0,0,0,0.2);
+    margin:0 0 30px;
+  }
+  &__form {
+    padding: 0 68px;
+    margin: 106px 0 $edge-margin;
+    color:#a6a6a6;
+    .at-input{
+      background-color: rgba(0, 0, 0, 0);
+      color:#a6a6a6;
+      margin:0;
+      padding:20px 0 10px 0;
+    }
+  }
+  &__title{
+    width:197px;
+    margin-top: 9px;
+    font-size: 24px;
+  }
+  &__input{
+    display: flex;
+    border-bottom: 1PX solid rgba(0,0,0, 0.2);
+    margin: 0 0 30px;
+    &-name{
+      color: #a6a6a6;
+    }
+    
+  }
+  &__icon{
+   margin-right: 18px;
+   margin-top: 23px;
+  }
+  &__selectedicon{
+    margin-right: 18px;
+    margin-top: 5px;
+   }
+ 
+  .placeholder-class{
+    color: #a6a6a6;
+  }
+
+  &__getPhoneBtn{
+    background-color:$color-brand-primary ;
+	  border-radius: 6px;
+    color: #fff;
+    height: 52px;
+    line-height: 52px;
+  
+    view{
+      font-size: 24px;
+    }
+   
+    }
+  
+  
+    .at-button{
+      border:none;
+    }
+  .accountAgreement{
+    width: 100%;
+    display: flex;
+    text-align: center;
+    margin:62px 0 82px;
+    padding:0 68px;
+    .agreen{
+      color: $color-brand-primary;
+    }
+    
+    &__checked {
+      transform: scale(0.5,0.5);
+      background-color: transparent;
+      color:#ffffff;
+    }
+   
+    &__text {
+      line-height: 47px;
+      font-size: 26px;
+    }
+  }
+  .picker {
+    display: flex;
+    padding: 16px 0;
+    margin: 0 0 $edge-size;
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1PX solid rgba(0,0,0, 0.2);
+    &__title {
+      font-size: $font-size;
+      margin-right:16px;
+      width:172px;
+    }
+    .pick-value {
+      color:#a6a6a6;
+      font-size: 24px;
+      margin-top: 8px;
+    }
+    span.pick-value-null {
+      color: #a6a6a6;
+      font-size: 24px;
+      margin-top: 6px;
+
+    }
+    text.pick-value-null {
+      color:#a6a6a6;
+      font-size: 24px;
+      margin-top: 6px;
+
+    }
+  }
+
+  .input-phone {
+    .at-input__input {
+      visibility: hidden;
+    }
+  }
+
+
+.reg-checkbox__wrap{
+  margin-top: 11px;
+}
+.in-icon-sex{
+  font-size: 38px!important;
+}
+
+.in-icon-birthday{
+  font-size: 28px!important;
+}
+.in-icon-email{
+  font-size: 22px!important;
+  margin-top: 29px;
+}
+.btns{
+  padding: 16px 68px;
+  .unactive{
+      background-color: rgba($color: #000000, $alpha: 0.2);
+  }
+}
+
+
+}
+.pay-rule-style {
+  width:100%;
+  padding: 25px;
+  font-size: 24px;
+  box-sizing:border-box;
+  .text{
+    &_undeline{
+      text-decoration: underline;
+      font-size: 24px;
+    }
+    &_title{
+      font-weight: bold;
+      margin:28px 0;
+    }
+    &_smTitle{
+      margin: 25px 0;
+      font-size: 24px;
+    }
+    &_ssTitle{
+      margin: 10px 0;
+      font-size: 24px;
+    }
+    &_lineHight{
+      // height:50px;
+      // line-height: 50px;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+  }
+
+  .at-input input{
+    color: #a6a6a6!important;
+    font-size: 24px;
+  }
+  
+}
+.at-input__input{
+  color: #a6a6a6!important;
+  font-size: 24px!important;
+}

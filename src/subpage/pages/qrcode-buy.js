@@ -36,7 +36,7 @@ export default class QrcodeBuy extends Component {
 
     async componentDidMount () {
         const options = this.$router.params
-        const query = normalizeQuerys(this.$router.params)
+        const query = await normalizeQuerys(this.$router.params)
         console.log(query, 38)
         Taro.setStorageSync('isqrcode', query.qrcode)
         Taro.setStorageSync('odtid', query.odtid)

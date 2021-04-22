@@ -110,7 +110,7 @@ export default class DistributionDashboard extends Component {
       notbuy_promoter: 'notbuy_promoter',
       taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee'
     })
-     
+
     const promoter = await api.distribution.info()
     const pInfo = pickBy(promoter, {
       shop_name: 'shop_name',

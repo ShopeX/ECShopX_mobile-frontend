@@ -36,7 +36,7 @@ export default class StoreIndex extends Component {
 
 
   async componentDidMount () { 
-    const options = normalizeQuerys(this.$router.params)
+    const options = await normalizeQuerys(this.$router.params)
     const id = options.id || options.dtid
       if(id){
       this.fetchInfo(id)
@@ -147,12 +147,12 @@ export default class StoreIndex extends Component {
     })
   }
 
-  handleClick = (current) => {
+  handleClick = async (current) => {
     const cur = this.state.localCurrent
     if (cur !== current) {
       const curTab = this.state.tabList[current]
       const { url } = curTab
-      const options = normalizeQuerys(this.$router.params)
+      const options = await normalizeQuerys(this.$router.params)
       const id = options.id || options.dtid
       const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
       const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
@@ -167,9 +167,7 @@ export default class StoreIndex extends Component {
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
 
-    console.log(isPromoter)
-    console.log(isShowAddTip)
-    console.log(authStatus)
+    
 
     if (!wgts || !this.props.store) {
       return <Loading />

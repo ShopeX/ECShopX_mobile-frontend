@@ -29,7 +29,7 @@ export default class Evaluation extends Component {
   }
 
   async componentWillMount() {
-    const query = normalizeQuerys(this.$router.params)
+    const query = await normalizeQuerys(this.$router.params)
     this.$router.params.id = query.id
     await entry.entryLaunch(this.$router.params, false)
   }

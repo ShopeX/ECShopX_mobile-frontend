@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/boost/pages/flop/index.js
  * @Date: 2020-09-23 16:49:53
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-03-04 17:43:19
+ * @LastEditTime: 2021-03-26 14:00:46
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Progress, Text, Button } from '@tarojs/components'
@@ -43,7 +43,7 @@ export default class Flop extends Component {
     Taro.showLoading({mask: true})
     let { bargain_id, user_id } = this.$router.params
     if (this.$router.params.scene) {
-      const query = normalizeQuerys(this.$router.params)
+      const query = await normalizeQuerys(this.$router.params)
       if (query.bid) {
         bargain_id = query.bid
       }

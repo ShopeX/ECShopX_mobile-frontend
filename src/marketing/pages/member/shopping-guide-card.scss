@@ -1,18 +1,17 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
-.shopping-guide-card{
+.shopping-guide-card {
   background: #fff;
-  .flex{
+  .flex {
     display: flex;
     align-items: center;
-    justify-content:space-between;
+    justify-content: space-between;
   }
-  .page-header{
+  .page-header {
     padding: 30px;
-    &__info{
-      &-name{
-
-        Text{
+    &__info {
+      &-name {
+        Text {
           font-size: 24px;
           color: $color-brand-primary;
           border: 1px solid $color-brand-primary;
@@ -21,55 +20,55 @@
         }
       }
 
-      &-shop{
+      &-shop {
         margin-top: 20px;
         font-size: 26px;
       }
 
-      &-address{
+      &-address {
         margin-top: 5px;
         font-size: 24px;
       }
     }
   }
 
-  .page-button{
+  .page-button {
     padding: 60px 30px;
-    .at-button{
+    .at-button {
       margin-bottom: 30px;
-      border: 1PX solid $color-brand-primary;
+      border: 1px solid $color-brand-primary;
     }
   }
 
-  .page-button{
-
-    &__button{
+  .page-button {
+    &__button {
       position: relative;
       z-index: 1;
       overflow: hidden;
     }
   }
 
-  .page-cell{
+  .page-cell {
     position: absolute;
     width: 100%;
     height: 100%;
     z-index: 99;
     left: 0;
     top: 0;
-    .button-text{
+    .button-text {
       // position: absolute;
       // top: 0;
       opacity: 1;
     }
-    image,text{
+    image,
+    text {
       opacity: 0;
       background: transparent;
     }
-    view{
+    view {
       background: transparent;
     }
-    button{
+    button {
       // opacity: 0;
       background: transparent;
       position: absolute;

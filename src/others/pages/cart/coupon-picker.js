@@ -60,6 +60,16 @@ export default class CouponPicker extends Component {
       params.salesman_id = smid
     }
 
+    // 新导购信息处理
+    const smid = Taro.getStorageSync('s_smid')
+    const chatId = Taro.getStorageSync('chatId')
+    if (smid) {
+      params.salesman_id = smid 
+    }
+    if (chatId) {
+      params.chat_id = chatId
+    }
+
     const couponsData = await api.cart.coupons(params)
     const coupons = pickBy(couponsData.list, {
       card_type: 'card_type',

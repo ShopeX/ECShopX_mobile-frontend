@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .trade-refund-detail {
   .refund-status {
@@ -18,7 +18,8 @@
   // 回寄地址
   .aftersalesAddress {
     font-size: 20px;
-    .address, .contact {
+    .address,
+    .contact {
       padding-top: 5px;
     }
     .contact {
@@ -34,7 +35,7 @@
       font-size: 24px;
       color: #666;
       padding: 30px;
-      border-bottom: 1PX solid #e6e6e6;
+      border-bottom: 1px solid #e6e6e6;
     }
     &__descr {
       display: block;
@@ -45,18 +46,18 @@
     &__btn {
       float: right;
       margin: 0 30px 30px 0;
-      border: 1PX solid $color-brand-primary;
+      border: 1px solid $color-brand-primary;
       color: $color-brand-primary;
       padding: 10px 30px;
     }
     &__cancel {
-      border: 1PX solid $color-brand-accent-light ;
-      color: $color-brand-accent-light ;
+      border: 1px solid $color-brand-accent-light;
+      color: $color-brand-accent-light;
     }
   }
   .refund-info {
     background: #ffffff;
-    border-top: 1PX solid #ebebeb;
+    border-top: 1px solid #ebebeb;
     width: 100%;
     padding: 35px 30px;
     box-sizing: border-box;
@@ -123,20 +124,20 @@
     padding: 30px;
     margin-bottom: 30px;
   }
-  .biao-icon-tishi{
+  .biao-icon-tishi {
     color: #853c3b;
     // color:#f6e7e5;
   }
-  .remind-icon{
+  .remind-icon {
     background-color: #f6e7e5;
     width: 20px;
     height: 20px;
     border-radius: 50%;
   }
-  .remind-icon-text{
+  .remind-icon-text {
     color: #853c3b;
   }
-  .remind-text{
+  .remind-text {
     margin-top: 30px;
     color: #666;
   }

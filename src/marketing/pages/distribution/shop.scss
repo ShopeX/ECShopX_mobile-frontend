@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-distribution-shop {
   background: $color-bg-gray;
@@ -44,7 +44,7 @@
       font-size: 60px;
       color: $color-brand-primary;
       font-weight: 600;
-      font-family: 'Helvetica Neue';
+      font-family: "Helvetica Neue";
       .amount-cur {
         font-size: 24px;
       }

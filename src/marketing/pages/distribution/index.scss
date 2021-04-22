@@ -1,7 +1,7 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 
 .page-distribution-index {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
   .header {
@@ -21,7 +21,7 @@
         color: #eaeaea;
       }
       .nickname {
-        font-size: 14PX;
+        font-size: 14px;
       }
     }
     .icon-info {

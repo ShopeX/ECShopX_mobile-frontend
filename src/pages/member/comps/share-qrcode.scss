@@ -1,4 +1,4 @@
-@import '../../../style/imports';
+@import "@/style/imports";
 .at-curtain__container {
   width: 70% !important;
 }
@@ -13,11 +13,9 @@
   &__copy {
     margin: 50px auto 0;
     color: $color-brand-primary;
-    border: 1PX solid $color-brand-primary;
+    border: 1px solid $color-brand-primary;
     padding: 20px 0;
     width: 60%;
     border-radius: 53px;
   }
-
 }
-

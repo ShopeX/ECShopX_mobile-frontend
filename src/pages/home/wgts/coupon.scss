@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .coupon-wgt {
   position: relative;
@@ -7,7 +7,8 @@
   z-index: 0;
   &.with-img {
     padding: 0;
-    &.coupon-body::before, &.coupon-body::after {
+    &.coupon-body::before,
+    &.coupon-body::after {
       content: none;
     }
   }
@@ -28,7 +29,11 @@
       top: 0;
       width: 50%;
       height: 100%;
-      background: radial-gradient(circle at left, transparent 10px, #f0f2f5 10px);
+      background: radial-gradient(
+        circle at left,
+        transparent 10px,
+        #f0f2f5 10px
+      );
       background-size: 100% 30px;
       content: "";
       z-index: -1;
@@ -40,7 +45,11 @@
       top: 0;
       width: 50%;
       height: 100%;
-      background: radial-gradient(circle at right, transparent 10px, #f0f2f5 10px);
+      background: radial-gradient(
+        circle at right,
+        transparent 10px,
+        #f0f2f5 10px
+      );
       background-size: 100% 30px;
       content: "";
       z-index: -1;

@@ -54,6 +54,24 @@
           padding: 0 20px 20px 20px;
           box-sizing: border-box;
           font-size: 24px;
+
+          .activity-label {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            align-self: flex-start;
+
+            .text {
+              background: #00081c;
+              border-radius: 2px;
+              -ms-flex-negative: 0;
+              flex-shrink: 0; 
+              color: #fff;
+              margin: 0 4px 5px 0;
+              padding: 2px 5px;
+            }
+          }
+          
           .goods-brand {
             width: 120px;
             height: 120px;

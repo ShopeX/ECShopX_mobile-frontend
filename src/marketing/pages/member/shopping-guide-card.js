@@ -31,7 +31,7 @@ export default class ShoppingGuideCard extends Component {
       token
     })
 
-    let { smid, dtid } = normalizeQuerys(this.$router.params)
+    let { smid, dtid } = await normalizeQuerys(this.$router.params)
 
     if (smid) {
       Taro.setStorageSync('s_smid', smid)

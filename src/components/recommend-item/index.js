@@ -27,7 +27,7 @@ export default class RecommendItem extends Component {
   }
 
   render () {
-    const { info, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw, type } = this.props
+    const { info, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw, type, noShowZan } = this.props
     if (!info) {
       return null
     }
@@ -65,13 +65,14 @@ export default class RecommendItem extends Component {
                   src={img_head}
                   mode='aspectFill'
                 />}
-                {info.author && <Text className='recommend-item__author-name'>{info.author}</Text>}
+                {info.author && <Text className={!noShowZan ?'recommend-item__author-name':'recommend-item__author-name recommend-item__author-long'}>{info.author}</Text>}
               </View>
-              <View className={`recommend-item__actions ${info.isPraise ? 'is_like__active' : ''}`}>
+              {!noShowZan && <View className={`recommend-item__actions ${info.isPraise ? 'is_like__active' : ''}`}>
                 <View
                   className='icon-like'
                 ><Text>{info.articlePraiseNum}</Text></View>
-              </View>
+              </View>}
+              
             </View>
           </View>
         </View>

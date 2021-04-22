@@ -1,11 +1,11 @@
-@import "../../../style/imports";
-$pege-header-height:155px;
+@import "@/style/imports";
+$pege-header-height: 155px;
 
-.page-complaint-record{
+.page-complaint-record {
   margin: 30px 30px 0 30px;
   padding-bottom: 40px;
 
-  .pege-header{
+  .pege-header {
     height: $pege-header-height;
     position: fixed;
     left: 0;
@@ -16,43 +16,43 @@ $pege-header-height:155px;
     overflow: hidden;
     display: flex;
     z-index: $z-index-level-4;
-    &__avatar{
-
+    &__avatar {
     }
-    &__info{
+    &__info {
       margin-left: 30px;
       flex: 1;
 
-      &-name{
+      &-name {
         font-size: 34px;
       }
-      &-store_name{
+      &-store_name {
         margin-left: 30px;
       }
-      &-store_address{
+      &-store_address {
         margin-top: 20px;
         display: flex;
         justify-content: space-between;
       }
-      .complaint-button{
+      .complaint-button {
         width: 100px;
       }
     }
   }
 
-  .page-main{
-    margin-top: $pege-header-height+30px;
-    .item-info__con-textarea,.item-reply__con-textarea{
-      background-color:#f9f9f9;
+  .page-main {
+    margin-top: $pege-header-height + 30px;
+    .item-info__con-textarea,
+    .item-reply__con-textarea {
+      background-color: #f9f9f9;
       border-color: #efefef;
     }
-    Image{
+    image {
       width: 100%;
       height: 100%;
     }
   }
 
-  .page-display{
+  .page-display {
     position: fixed;
     background: #000;
     top: 0;
@@ -60,16 +60,15 @@ $pege-header-height:155px;
     width: 100%;
     height: 100%;
     z-index: $z-index-level-6;
-    &__con{
+    &__con {
       width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      image{
+      image {
         display: block;
       }
     }
   }
 }
-

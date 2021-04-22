@@ -1,0 +1,48 @@
+.ba-store {
+  width: 684px;
+  height: 122px;
+  background-color: #ffffff;
+  position: fixed;
+  top: 80px;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  border-radius: 60px 0 0 60px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  .ba-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+  }
+  .ba-username {
+    color: $color-brand-primary;
+    font-size: 28px;
+    margin: 0 22px;
+    flex: 1;
+    height: 90px;
+    line-height: 90px;
+    @include text-overflow();
+  }
+  .undenline {
+    text-decoration: underline;
+  }
+  .ba-store__info {
+    height: 90px;
+    line-height: 90px;
+    display: flex;
+    align-items: center;
+    .ba-store__name {
+      display: inline-block;
+      width: 270px;
+      font-size: 26px;
+      color: #87c55c;
+      @include text-overflow();
+    }
+    .in-icon-sanjiaoxing02 {
+      font-size: 40px;
+      transform: rotate(90deg);
+    }
+  }
+}

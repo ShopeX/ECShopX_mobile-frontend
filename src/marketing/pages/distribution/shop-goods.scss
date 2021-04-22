@@ -1,4 +1,4 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .page-distribution-shop {
   background: $color-bg-gray;
@@ -24,7 +24,7 @@
       margin-bottom: 30px;
       background: #fff;
       border-radius: 10px;
-      box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
       overflow: hidden;
     }
     .shop-goods {
@@ -51,9 +51,9 @@
           left: 0;
           top: 5px;
           bottom: 5px;
-          width: 1PX;
+          width: 1px;
           background: #efefef;
-          content: ""
+          content: "";
         }
         &-label {
           margin-bottom: 5px;
@@ -91,7 +91,7 @@
       &__detail {
         padding: 20px;
         text-align: center;
-        border-top: 1PX solid #efefef;
+        border-top: 1px solid #efefef;
         font-size: 24px;
         color: #00c3ff;
         &-item {

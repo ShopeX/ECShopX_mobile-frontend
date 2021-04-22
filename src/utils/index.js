@@ -1,11 +1,13 @@
 import Taro from '@tarojs/taro'
 import classNames from 'classnames'
+import styleNames from 'stylenames'
 import qs from 'qs'
 // import moment from 'moment'
 import format from 'date-fns/format'
 import copy from 'copy-to-clipboard'
 import S from '@/spx'
 import { STATUS_TYPES_MAP } from '@/consts'
+import api from '@/api'
 import _get from 'lodash/get'
 import _findKey from 'lodash/findKey'
 import _pickBy from 'lodash/pickBy'
@@ -24,7 +26,24 @@ export function isFunction (val) {
 export function isNumber (val) {
   return isPrimitiveType(val, '[object Number]')
 }
-
+/**
+ * 保留两个位小数，不足补0 
+ * @param { Number } value 
+ */
+export const returnFloat = value => {
+	var value = Math.round(parseFloat(value)*100)/100;
+	var s = value.toString().split(".");
+	if(s.length == 1){
+		value=value.toString()+".00";
+		return value;
+	}
+	if(s.length > 1){
+		if(s[1].length < 2){
+			value=value.toString()+"0";
+		}
+		return value;
+	}
+}
 export function isObject (val) {
   return isPrimitiveType(val, '[object Object]')
 }
@@ -68,13 +87,22 @@ export function formatPriceToHundred (price) {
   } 
 }
 
-export function normalizeQuerys (params = {}) {
+export async function normalizeQuerys (params = {}) {
   const { scene, ...rest } = params
   const queryStr = decodeURIComponent(scene)
-
+  const obj = qs.parse(queryStr)
+  if (obj.sid || obj.share_id) {
+    const data = await api.wx.getShareId({
+      share_id: obj.sid || obj.share_id
+    })
+    return {
+      ...rest,
+      ...data
+    }
+  }
   const ret = {
     ...rest,
-    ...qs.parse(queryStr)
+    ...obj
   }
 
   return ret
@@ -293,13 +321,112 @@ function validColor(color) {
   return re2.test(color) || re1.test(color) || re3.test(color);
 }
 
+/**
+ * 导购埋点上报
+ * @param {
+ *  event_type: {
+ *  activeItemDetail 分享商品详情页
+ *  activeSeedingDetail 分享种草详情页
+ *  activeDiscountCoupon 分享优惠券
+ *  activeCustomPage 分享自定义页面
+ *  orderPaymentSuccess 订单支付成功
+ * }
+ * } data 新增上报数据
+ */
+export async function buriedPoint (data) {
+  const params = this.$router.params
+  let {
+    gu,
+    subtask_id = '',
+    dtid = '',
+    shop_code = '',
+    item_id = '',
+    smid = '',
+    gu_user_id = ''
+  } =  await normalizeQuerys(params)
+  let employee_number = smid, store_bn = ''
+  if (gu) {
+    [employee_number, store_bn] = gu.split('_')
+  }
+  if (gu_user_id) {
+    employee_number = gu_user_id
+  }
+  // 任务埋点
+  if (subtask_id) {
+    const { distributor_id: shopId } = Taro.getStorageSync('curStore') 
+    if (APP_PLATFORM === 'standard') {
+      dtid= shopId
+    }
+    const newData = {
+      employee_number,
+      store_bn,
+      subtask_id,
+      distributor_id: dtid,
+      shop_code,
+      item_id,
+      ...data
+    }
+    api.wx.taskReportData(newData)
+  }
+  if (data.event_type && S.getAuthToken() && employee_number) {
+    const { userId } = Taro.getStorageSync('userinfo')
+    api.wx.interactiveReportData({
+      event_id: employee_number,
+      user_type: 'wechat',
+      user_id: userId,
+      event_type: data.event_type,
+      store_bn
+    })
+  }
+}
+
+/**
+ * 参数拼接
+ * 
+ */
+
+export function paramsSplice(params){
+  let str=''
+  let arr=[]
+  for(var key in params){
+    let p=`${key}=${params[key]}`
+    arr.push(p)
+    
+  }
+  str=arr.join('&')
+  return str
+
+}
+
+export function resolveFavsList (list, favs) {
+  return list.map(t => {
+    const { item_id } = t
+    return {
+      ...t,
+      is_fav: Boolean(favs[item_id])
+    }
+  })
+}
+
+// 判断是否在导购货架
+export function isGoodsShelves() {
+  const system = Taro.getSystemInfoSync();
+  log.debug(`this system is: ${system.environment}`);
+  if ( system && system.environment && system.environment === "wxwork" ) {
+    return true
+  } else {
+    return false;
+  }
+}
+
 export {
   classNames,
+  styleNames,
   log,
   debounce,
-	throttle,
-	calCommonExp,
+  throttle,
+  calCommonExp,
   canvasExp,
   getQueryVariable,
   validColor
-}
+};

@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/subpage/pages/editShare/index.js
  * @Date: 2021-04-14 15:06:18
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-04-22 14:53:52
+ * @LastEditTime: 2021-04-22 15:30:22
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Textarea, View, Image, Canvas, Button } from '@tarojs/components'
@@ -196,14 +196,28 @@ export default class EditShare extends Component {
     Taro.getSetting().then(res => {
       if (!res.authSetting['scope.writePhotosAlbum']) {
         Taro.authorize({
-          scope: 'scope.writePhotosAlbum'
-        }).then(() => {
+          scope: 'scope.writePhotosAlbum',
+          success: async () => {
             saveToPhone()
-          }).catch(() => {
-            this.setState({
-              showPoster: false
+          },
+          fail: () => {
+            Taro.showModal({
+              title: '提示',
+              content: '请打开保存到相册权限',
+              success: async resConfirm => {
+                if (resConfirm.confirm) {
+                  await Taro.openSetting()
+                  const setting = await Taro.getSetting()
+                  if (setting.authSetting["scope.writePhotosAlbum"]) {
+                    saveToPhone()
+                  } else {
+                    Taro.showToast({ title: "保存失败", icon: "none" })
+                  }
+                }
+              }
             })
-          })
+          }
+        })
       } else {
         saveToPhone()
       }

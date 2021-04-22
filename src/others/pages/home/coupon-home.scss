@@ -1,15 +1,15 @@
-@import "../../../style/imports";
+@import "@/style/imports";
 
 .coupon-list {
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
-  /*  #endif  */     
+  /*  #endif  */
   .at-tabs__header {
     position: absolute;
     top: $navigate-height;
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     top: $navigate-height-h5;
-    /*  #endif  */   
+    /*  #endif  */
     width: 100%;
     z-index: $z-index-toolbar;
   }
@@ -22,7 +22,7 @@
     position: fixed;
     z-index: $z-index-toolbar;
     left: 0;
-    height: 100PX;
+    height: 100px;
     top: 0;
     width: 100%;
   }

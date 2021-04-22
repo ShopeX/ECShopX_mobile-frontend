@@ -5,7 +5,7 @@ import { connect } from '@tarojs/redux'
 import api from '@/api'
 import S from '@/spx'
 import { withPager } from '@/hocs'
-import { pickBy, formatTime } from '@/utils'
+import { pickBy, formatTime, buriedPoint, normalizeQuerys } from '@/utils'
 import { Tracker } from "@/service";
 
 import '../home/coupon-home.scss'
@@ -24,14 +24,21 @@ export default class CouponHome extends Component {
       list: [],
       shareInfo: {}
     }
+    this.routerParams = {}
   }
 
-  componentDidMount() {
-    this.nextPage()
+  async componentDidMount() {
     api.wx.shareSetting({ shareindex: 'coupon' }).then(res => {
       this.setState({
         shareInfo: res
       })
+    })
+    this.routerParams = await normalizeQuerys(this.$router.params)
+    this.nextPage()
+    const { distributor_id = '', dtid = '' } = this.routerParams
+    buriedPoint.call(this, {
+      distributor_id: distributor_id || dtid,
+      event_type: 'activeDiscountCoupon'
     })
   }
 
@@ -58,13 +65,13 @@ export default class CouponHome extends Component {
   }
 
   async fetch(params) {
-    let { distributor_id } = this.$router.params
-
+    let { distributor_id, dtid, item_id = '', itemid = '', card_id } = this.routerParams
     params = {
       ...params,
       end_date: 1,
-      distributor_id,
-      item_id: this.$router.params ? (this.$router.params.item_id ? this.$router.params.item_id : '') : ''
+      card_id,
+      distributor_id: distributor_id || dtid,
+      item_id: item_id || itemid
     }
     const { list, pagers: { total: total } } = await api.member.homeCouponList(params)
     const nList = pickBy(list, {
