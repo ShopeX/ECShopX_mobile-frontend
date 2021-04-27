@@ -192,7 +192,15 @@ export default class Reg extends Component {
 
         const { code } = await Taro.login()
         const { token } = await api.wx.login({ code })
+
+       
+        
         S.setAuthToken( token )
+        try{
+          await api.wx.newMarketing()
+        }catch(e){
+          console.error(e)
+        }
         // 通过token解析openid
         if ( token ) {
           const userInfo = tokenParse(token);
