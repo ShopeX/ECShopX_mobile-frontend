@@ -25,8 +25,25 @@ page {
     display: flex;
     align-items: center;
     background: #fff;
+    padding: 0 50px;
+    overflow: hidden;
     .btn {
+      width: 430px;
       height: 80px;
+      flex-shrink: 0;
+      line-height: 80px;
+      text-align: center;
+      border-radius: 40px;
+      color: #333;
+      border: 1px solid #bbb;
+      &.loginOut {
+        width: 396px;
+        padding-right: 176px;
+      }
+      &.save {
+        color: #fff;
+        transform: translateX(-176px);
+      }
     }
   }
 }

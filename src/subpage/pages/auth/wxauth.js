@@ -54,9 +54,7 @@ export default class WxAuth extends Component {
         ? decodeURIComponent(redirect)
         : `/pages/cart/espier-checkout?source=${source}`
     }else{
-      redirect_url = redirect
-        ? decodeURIComponent(redirect)
-        : '/pages/member/index'
+      redirect_url = redirect ? decodeURIComponent(redirect) : '/pages/member/index'
     }
     Taro.redirectTo({
       url: redirect_url
