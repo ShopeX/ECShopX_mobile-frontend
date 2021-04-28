@@ -411,7 +411,7 @@ class App extends Component {
     }
     // 根据路由参数
     const { query } = this.$router.params;
-    if ((query && query.scene) || query.gu_user_id) {
+    if ((query && query.scene) || query.gu_user_id || query.smid) {
       const { smid, dtid, id, aid, cid, gu, chatId, gu_user_id = ''} = await normalizeQuerys(
         query
       )
