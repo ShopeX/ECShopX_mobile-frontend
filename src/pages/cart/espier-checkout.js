@@ -1623,7 +1623,7 @@ export default class CartCheckout extends Component {
     const { type, goodType, bargain_id } = this.$router.params;
     const isDrug = type === "drug";
 
-    console.log("----cart.list-----",info)
+    console.log("----cart.list-----",goodType,pointInfo,bargain_id)
 
     if (!info) {
       return <Loading />;
@@ -1881,7 +1881,7 @@ export default class CartCheckout extends Component {
             value='[快递免邮]'
           >
           </SpCell>*/}
-          {goodType !== "cross" && !this.isPointitemGood() && pointInfo.is_open_deduct_point && !bargain_id && (
+          {goodType !== "cross" && !this.isPointitemGood() && pointInfo.is_open_deduct_point && (
             <SpCell
               isLink
               className="trade-invoice"
