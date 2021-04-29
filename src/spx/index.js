@@ -274,7 +274,7 @@ class Spx {
     // this.trigger("logout")
     // 回跳到会员登录页面
     Taro.redirectTo({
-      url: '/subpage/pages/auth/wxauth'
+      url: '/subpage/pages/auth/wxauth?source=loginout'
     })
   }
 

@@ -38,7 +38,7 @@ export default class WxAuth extends Component {
 
   redirect () {
     const redirect = this.$router.params.redirect
-    let { source } = this.$router.params
+    const { source } = this.$router.params
     Taro.hideLoading()
     let redirect_url = ''
     if (Taro.getStorageSync('isqrcode') === 'true') {
@@ -49,11 +49,14 @@ export default class WxAuth extends Component {
       redirect_url = redirect
         ? decodeURIComponent(redirect)
         : '/marketing/pages/member/shopping-guide-card'
-    } else if(source === 'other_pay'){
+    } else if (source === 'other_pay') {
         redirect_url = redirect
         ? decodeURIComponent(redirect)
         : `/pages/cart/espier-checkout?source=${source}`
-    }else{
+    } else if (source === 'loginout') {
+      Taro.navigateBack()
+      return
+    } else {
       redirect_url = redirect ? decodeURIComponent(redirect) : '/pages/member/index'
     }
     Taro.redirectTo({
@@ -200,13 +203,20 @@ export default class WxAuth extends Component {
           />
         </View>
         <View className='bottom'>
-          <Button
-            className='btn'
-            openType='getPhoneNumber'
-            onGetPhoneNumber={this.getPhoneNumber.bind(this)}
-          >
-            微信授权手机号一键登录
-          </Button>
+          {
+            isAgree ? <Button
+              className='btn'
+              openType='getPhoneNumber'
+              onGetPhoneNumber={this.getPhoneNumber.bind(this)}
+            >
+              微信授权手机号一键登录
+            </Button> : <Button
+              className='btn disabled'
+              onClick={this.getPhoneNumber.bind(this)}
+            >
+              微信授权手机号一键登录
+            </Button>
+          }
           <View 
             className='rule'
             onClick={this.changeAgreeRule.bind(this)}

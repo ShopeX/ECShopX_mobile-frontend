@@ -17,6 +17,38 @@ page {
   padding-top: $navigate-height-h5;
   height: 100vh;
   /*  #endif  */
+  .baseInfo, .basicInfo {
+    background: #fff;
+    color: #666;
+    .title {
+      font-size: 30px;
+      color: #333;
+      padding: 40px 50px;
+    }
+    .item {
+      padding: 40px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .getInfoBtn {
+        background: initial;
+        font-size: 28px;
+        outline: none;
+        color: #666;
+        &::after {
+          display: none;
+        }
+      }
+      .input {
+        background: #fff;
+        text-align: right;
+        border: none;
+      }
+    }
+  }
+  .basicInfo {
+    margin-top: 30px;
+  }
   .btns {
     width: 100%;
     height: $btnsHeight;

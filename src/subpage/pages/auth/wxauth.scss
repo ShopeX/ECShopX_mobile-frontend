@@ -31,6 +31,9 @@ page {
       color: #fff;
       border-radius: 40px;
       font-size: 28px;
+      &.disabled {
+        opacity: 0.6;
+      }
       &::after {
         display: none;
       }
