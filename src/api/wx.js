@@ -27,6 +27,10 @@ export function login (params) {
   }, { showError: false })
 }
 
+export function newMarketing () {
+  return req.get('/promotion/getMemberCard')
+}
+
 export function prelogin(params) {
   const appid = getAppId();
   return req.post("/prelogin", {

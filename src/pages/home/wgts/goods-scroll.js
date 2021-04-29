@@ -84,14 +84,17 @@ export default class WgtGoodsScroll extends Component {
               ) : (
                 <View>
                   {timer && config.lastSeconds != 0 ? (
-                    <AtCountdown
-                      className="countdown__time"
-                      isShowDay
-                      day={timer.dd}
-                      hours={timer.hh}
-                      minutes={timer.mm}
-                      seconds={timer.ss}
-                    />
+                    <View>
+                      <AtCountdown
+                        className="countdown__time"
+                        isShowDay
+                        day={timer.dd}
+                        hours={timer.hh}
+                        minutes={timer.mm}
+                        seconds={timer.ss}
+                      />
+                      {"后结束"}
+                    </View>
                   ) : (
                     <View className="countdown__time">活动已结束</View>
                   )}

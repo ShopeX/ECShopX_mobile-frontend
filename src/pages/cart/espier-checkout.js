@@ -1266,8 +1266,7 @@ export default class CartCheckout extends Component {
       submitLoading: false
     }); 
 
-    const isExtraPoint=this.isPointitemGood() && this.state.total.freight_type==="point";
- 
+    const isExtraPoint=this.isPointitemGood() && this.state.total.freight_type==="point"; 
     // 积分流程
     if (payType === "point" || payType === "deposit" || isExtraPoint ) { 
       if (!payErr) {
@@ -1283,6 +1282,14 @@ export default class CartCheckout extends Component {
         if(isExtraPoint){
           url+="&type=pointitem";
         }
+ 
+        if(type==="group"){
+          const groupUrl=`/marketing/pages/item/group-detail?team_id=${config.team_id}`
+          Taro.redirectTo({
+            url:groupUrl
+          });
+          return ;
+        }
   
         Taro.redirectTo({
           url
@@ -1293,7 +1300,7 @@ export default class CartCheckout extends Component {
     }
 
     payErr = null;
-    console.log("-----configCheckout-----",config)
+    console.log("-----configCheckout-----",config) 
     try {  
       const { total } = this.state; 
       Tracker.dispatch("ORDER_PAY", {
@@ -1304,8 +1311,7 @@ export default class CartCheckout extends Component {
 
       const payRes = await Taro.requestPayment(config); 
       // 支付上报
-    
-
+     
       log.debug(`[order pay]: `, payRes);
     } catch (e) {
       payErr = e;
@@ -1317,8 +1323,7 @@ export default class CartCheckout extends Component {
       // });
     }
 
-    if (!payErr) {
-
+    if (!payErr) { 
       TracksPayed(total,config,"espier-checkout")
 
       await Taro.showToast({
@@ -1332,8 +1337,7 @@ export default class CartCheckout extends Component {
 
       if(this.isPointitemGood()){
         purl+="&type=pointitem";
-      } 
-      
+      }  
       Taro.redirectTo({
         url:
           type === "group"
@@ -1623,7 +1627,7 @@ export default class CartCheckout extends Component {
     const { type, goodType, bargain_id } = this.$router.params;
     const isDrug = type === "drug";
 
-    console.log("----cart.list-----",info)
+    console.log("----cart.list-----",goodType,pointInfo,bargain_id)
 
     if (!info) {
       return <Loading />;
@@ -1881,7 +1885,7 @@ export default class CartCheckout extends Component {
             value='[快递免邮]'
           >
           </SpCell>*/}
-          {goodType !== "cross" && !this.isPointitemGood() && pointInfo.is_open_deduct_point && !bargain_id && (
+          {goodType !== "cross" && !this.isPointitemGood() && pointInfo.is_open_deduct_point && (
             <SpCell
               isLink
               className="trade-invoice"

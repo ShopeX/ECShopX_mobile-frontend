@@ -409,7 +409,8 @@ export default class MemberIndex extends Component {
   }
 
   async onShareAppMessage () { 
-
+    const url = `/memberCenterShare/getInfo`
+    const {share_title,share_pic_wechatapp,share_description}= await req.get(url) 
     return {
       title: share_title ? share_title : "震惊！这店绝了！",
       imageUrl: share_pic_wechatapp ? share_pic_wechatapp : this.state.imgUrl,
