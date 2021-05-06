@@ -26,18 +26,19 @@ page {
       padding: 40px 50px;
     }
     .item {
-      padding: 40px 50px;
+      padding: 20px 50px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .getInfoBtn {
-        background: initial;
-        font-size: 28px;
-        outline: none;
-        color: #666;
-        &::after {
-          display: none;
-        }
+      line-height: normal;
+      .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+        border: 1px solid #dfdfdf;
+      }
+      .picker {
+        padding: 15rpx;
       }
       .input {
         background: #fff;
@@ -75,6 +76,21 @@ page {
       &.save {
         color: #fff;
         transform: translateX(-176px);
+      }
+    }
+  }
+  .btnContent {
+    width: 100%;
+    .content {
+      .getInfoBtn {
+        background: initial;
+        font-size: 28px;
+        outline: none;
+        color: #666;
+        padding: 0;
+        &::after {
+          display: none;
+        }
       }
     }
   }

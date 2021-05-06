@@ -17,12 +17,13 @@ export default class WxAuth extends Component {
     super(props)
 
     this.state = {
-      isAgree: false
+      isAgree: true
     }
   }
 
   componentDidMount () {
   }
+
   componentDidShow (){
     this.checkWhite()
   }
@@ -117,7 +118,7 @@ export default class WxAuth extends Component {
         params.uid = uid
       }
 
-      const { token } = await api.wx.login_reg(params)
+      const { token } = await api.wx.login(params)
       if (token) {
         S.setAuthToken(token)
         Taro.showToast({
@@ -156,7 +157,7 @@ export default class WxAuth extends Component {
       })
       return
     }
-    const { encryptedData, iv } = res.detail
+    const { encryptedData, iv, cloudID } = res.detail
     if (!encryptedData || !iv) {
       Taro.showModal({
         title: '授权提示',
@@ -165,7 +166,7 @@ export default class WxAuth extends Component {
         confirmText: '知道啦'
       })
     }
-    this.login_reg({encryptedData, iv})
+    this.login_reg({encryptedData, iv, cloudID})
   }
 
   // 点击回到首页

@@ -34,9 +34,6 @@ export default class Timer extends Component {
     if (!this.timer) {
       this.start()
     }
-    this.setState({
-      sent: true
-    })
   }
 
   start = () => {
@@ -62,7 +59,11 @@ export default class Timer extends Component {
     }
 
     this.props.onStart((start) => {
-      if (start !== false) next()
+      if (start !== false) {
+        this.setState({
+          sent: true
+        }, () => next())
+      }
     }, this.state.countDur)
   }
 
@@ -76,7 +77,7 @@ export default class Timer extends Component {
   render () {
     const { timer } = this
     const { countDur, sent } = this.state
-    const { timerMsg, className } = this.props
+    const { timerMsg, className, style = '' } = this.props
 
     const msg = timerMsg || (timer
       ? `${countDur}s`
@@ -87,6 +88,7 @@ export default class Timer extends Component {
     return (
       <Text
         className={classNames('mobile-timer', { 'mobile-timer__counting': timer }, className)}
+        style={style}
         onClick={this.handleClick}
       >
         {msg}

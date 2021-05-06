@@ -6,15 +6,17 @@
  * @FilePath: /unite-vshop/src/marketing/pages/member/userinfo.js
  * @Date: 2021-04-28 14:13:43
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-04-29 16:14:32
+ * @LastEditTime: 2021-05-06 16:45:12
  */
 import Taro, { Component } from '@tarojs/taro'
-import { Input, View, Picker, Button } from '@tarojs/components'
+import { Input, View, Picker, Image } from '@tarojs/components'
 import { NavBar } from '@/components'
 import api from '@/api'
-// import { withLogin } from '@/hocs'
-import S from '@/spx'
 import { connect } from "@tarojs/redux"
+import S from '@/spx'
+import imgUploader from '@/utils/upload'
+import GetUserInfoBtn from './comps/getUserInfo'
+// import { withLogin } from '@/hocs'
 
 import './userinfo.scss'
 
@@ -47,49 +49,63 @@ export default class UserInfo extends Component {
           }
         ]
       },
-      canIUseGetUserProfile: false,
       // 是否获取过微信信息
       isGetWxInfo: false
     }
   }
 
   componentDidMount () {
-    // this.fetch()
-    if (wx.getUserProfile) {
-      this.setState({
-        canIUseGetUserProfile: true
-      })
-    }
+    this.getUserInfo()
   }
 
   config = {
     navigationBarTitleText: '个人信息'
   }
 
-  // getUserProfile 新事件
-  handleGetUserProfile = () => {
-    wx.getUserProfile({
-      desc: '用于完善会员资料',
-      success: data => {
-        const res = {
-          detail: data
-        }
-        this.handleGetUserInfo(res)
-      }
+
+  // 获取用户信息
+  getUserInfo = async () => {
+    const { memberInfo } = await api.member.memberInfo()
+    this.setState({
+      userInfo: memberInfo
     })
   }
 
-
-  handleGetUserInfo = async (res) => {
-    console.log(res)
+  // 获取微信用户信息
+  getWxUserInfo = (res) => {
+    const { userInfo } = res.detail
+    console.log(userInfo)
     this.setState({
       isGetWxInfo: true
     })
   }
 
-  // 获取用户信息
-  getUserInfo = async () => {
-    
+  // 上传头像
+  handleAvatar = async (e) => {
+    e.stopPropagation()
+    const { isGetWxInfo, userInfo } = this.state
+    if (isGetWxInfo) {
+      try {
+        const { tempFiles = [] } = await Taro.chooseImage({
+          count: 1
+        })
+        if (tempFiles.length > 0) {
+          const imgFiles = tempFiles.slice(0, 1).map(item => {
+            return {
+              file: item,
+              url: item.path
+            }
+          })
+          const res = await imgUploader.uploadImageFn(imgFiles)
+          userInfo.avatar = res[0].url
+          this.setState({
+            userInfo
+          })
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
   }
 
   // 获取表单字段
@@ -105,12 +121,15 @@ export default class UserInfo extends Component {
   // 保存用户信息
   saveInfo = (e) => {
     e && e.stopPropagation()
-    Taro.navigateBack()
+    // Taro.navigateBack()
+    Taro.navigateTo({
+      url: '/subpage/pages/auth/bindPhone'
+    })
     console.log('saveInfo')
   }
 
   render () {
-    const { canIUseGetUserProfile, isGetWxInfo, formItems } = this.state
+    const { formItems, userInfo, isGetWxInfo } = this.state
     const { colors } = this.props
     return (
       <View className='page-member-setting'>
@@ -118,39 +137,27 @@ export default class UserInfo extends Component {
           title='用户信息'
         />
         <View className='baseInfo'>
-          {
-            formItems.baseInfo.map(item => <View className='item' key={item.key}>
-              <View className='left'>{ item.name }</View>
-              {
-                !isGetWxInfo ? <View className='right'>
-                  {
-                    canIUseGetUserProfile ? <Button
-                      className='getInfoBtn'
-                      hoverClass='none'
-                      onClick={this.handleGetUserProfile.bind(this)}
-                    >
-                      授权允许
-                    </Button>
-                    : <Button
-                      className='getInfoBtn'
-                      openType='getUserInfo'
-                      hoverClass='none'
-                      onGetUserInfo={this.handleGetUserInfo.bind(this)}
-                    >
-                      授权允许
-                    </Button>
-                  }
-                </View> : <View className='right'>
+          <GetUserInfoBtn isGetUserInfo={isGetWxInfo} onGetUserInfo={this.getWxUserInfo.bind(this)}>
+            <View className='item'>
+              <View className='left'>我的头像</View>
+              <View className='right'>
+                <Image src={userInfo.avatar} mode='aspectFill' className='avatar' onClick={this.handleAvatar.bind(this)} />
+              </View>
+            </View>
+            {
+              formItems.baseInfo.map(item => <View className='item' key={item.key}>
+                <View className='left'>{ item.name }</View>
+                <View className='right'>
                   isGetWxInfo
                 </View>
-              }
-            </View>)
-          }
+              </View>)
+            }
+          </GetUserInfoBtn>
         </View>
         <View className='basicInfo'>
           <View className='title'>基础信息</View>
           {
-            [0, 1, 2, 3, 4].map(item => <View key={item} className='item'>
+            [0, 1, 2, 3].map(item => <View key={item} className='item'>
               <View className='left'>我的昵称</View>
               <View className='right'>
                 { item === 0 && <Input className='input' /> }
