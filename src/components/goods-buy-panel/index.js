@@ -9,10 +9,10 @@ import InputNumber from "@/components/input-number";
 import { classNames, pickBy, log } from "@/utils";
 import { Tracker } from "@/service";
 import api from "@/api";
+import { floor } from "lodash";
 import entry from '@/utils/entry'
 
 import "./index.scss";
-import { floor } from "lodash";
 
 @connect(({ colors }) => ({
   colors: colors.current
@@ -91,10 +91,15 @@ export default class GoodsBuyPanel extends Component {
     const marketing = info.activity_type ? info.activity_type : "normal";
 
     const skuDict = {};
-
+    const originSpecIds = info.item_spec_desc.map(item => item.spec_id)
     spec_items.forEach(t => {
-      const key = t.item_spec.map(s => s.spec_value_id).join("_");
+      const specValueId =  t.item_spec.map(s => s.spec_value_id)
+      const specIds = t.item_spec.map(s => s.spec_id);
       const propsText = t.item_spec.map(s => s.spec_value_name).join(" ");
+      if (specIds.join('') !== originSpecIds.join('')) {
+        specValueId.reverse()
+      }
+      const key = specValueId.join("_");
       t.propsText = propsText;
       skuDict[key] = t;
     });
@@ -110,6 +115,7 @@ export default class GoodsBuyPanel extends Component {
     if (!spec_items || !spec_items.length) {
       this.noSpecs = true;
     }
+    this.initSelect()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -154,7 +160,6 @@ export default class GoodsBuyPanel extends Component {
 
     const isNotDisabled = (sel, row, val) => {
       const reg = makeReg(sel, row, val);
-
       return Object.keys(skuDict).some(key => {
         return key.match(reg) && skuDict[key].store > 0;
       });
@@ -412,6 +417,41 @@ export default class GoodsBuyPanel extends Component {
       );
     }
   };
+
+  // 初始化多规格默认选项
+  initSelect = () => {
+    const { info } = this.props
+    const { activity } = this.state
+    const keyList = []
+    if (this.skuDict) {
+      for (let i in this.skuDict) {
+        keyList.push(i)
+      }
+    }
+    const last = keyList.length - 1
+    for (let i = last; i >= 0; i--) {
+      if (this.skuDict && this.skuDict[keyList[i]] && this.skuDict[keyList[i]].store > 0) {
+        const selection = keyList[i].split('_')
+        const curSku = this.skuDict[keyList[i]]
+        this.calcDisabled([...selection])
+        const curImg = this.getCurSkuImg(curSku)
+        this.setState({
+          curSku,
+          curImg,
+          selection
+        })
+        if (activity && info.activity_type === "limited_buy") {
+          const validItem = activity.items.find(n => n.item_id === curSku.item_id)
+          this.setState({
+            curLimit: validItem ? true : false
+          })
+        }
+    
+        this.props.onChange(curSku)
+        break
+      }
+    }
+  }
 
   render() {
     // packItem={packagePrices}
