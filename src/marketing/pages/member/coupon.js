@@ -126,6 +126,7 @@ export default class Coupon extends Component {
 
   render () {
     const { curTabIdx, tabList, list, page } = this.state
+    const { colors }=this.props
 
     return (
       <View className='coupon-list'>
@@ -135,10 +136,11 @@ export default class Coupon extends Component {
           fixed='true'
         />
         <AtTabs
-          className='coupon-list__tabs'
+          className={`coupon-list__tabs ${colors.data[0].primary?'customTabsStyle':''}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
+          customStyle={{color:colors.data[0].primary,backgroundColor:colors.data[0].primary}}
         >
           {
             tabList.map((panes, pIdx) =>

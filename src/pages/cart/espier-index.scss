@@ -1,6 +1,15 @@
 @import "../../style/imports";
+// @import "../../style/layout.scss";
 
 .page-cart-index {
+
+  .custom_botton_wrapper{
+    display: inline-block;
+    .btn-rand{
+      color:white;
+    }
+  }
+
   .login-header {
     display: flex;
     align-items: center;

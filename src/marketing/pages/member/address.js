@@ -169,8 +169,8 @@ export default class AddressIndex extends Component {
                     isPicker && <View className='address-item__check' onClick={this.handleClickChecked.bind(this, item)}>
                       {
                         item[ADDRESS_ID] === selectedId
-                          ? <Text className='icon-check address-item__checked'></Text>
-                          : <Text className='address-item__unchecked'> </Text>
+                          ? <Text className='icon-check address-item__checked' style={{color: colors.data[0].primary}}></Text>
+                          : <Text className='address-item__unchecked' style={{borderColor: colors.data[0].primary}}> </Text>
                       }
                     </View>
                   }
@@ -185,7 +185,7 @@ export default class AddressIndex extends Component {
                       <View className='address-item__footer_default' onClick={this.handleChangeDefault.bind(this, item)}>
                         {
                           item.is_def
-                            ? <Text className='icon-check default__icon default__checked'> </Text>
+                            ? <Text className='icon-check default__icon default__checked' style={{color: colors.data[0].primary}}> </Text>
                             : <Text className='icon-check default__icon'> </Text>
                         }
                         <Text className='default-text'>设为默认</Text>
