@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/marketing/pages/member/userinfo.js
  * @Date: 2021-04-28 14:13:43
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-08 09:51:02
+ * @LastEditTime: 2021-05-08 18:40:06
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Input, View, Picker, Image } from '@tarojs/components'
@@ -32,14 +32,7 @@ export default class UserInfo extends Component {
     this.state = {
       userInfo: {},
       formItems: {
-        baseInfo: [
-          {
-            name: '我的头像',
-            key: 'avatar',
-            isRequired: true,
-            type: 'image'
-          }
-        ],
+        baseInfo: [],
         basicInfo: [
           {
             name: '我的头像',
@@ -112,8 +105,22 @@ export default class UserInfo extends Component {
 
   // 获取表单字段
   getFormItem = async () => {
-    const res = await api.user.regParam()
-    console.log(res)
+    const { validate_fields } = await api.user.regParam()
+    const { formItems } = this.state
+    // 默认展示字段key
+    const normalKey = ['mobile', 'username', 'sex']
+    const normalFiled = []
+    for (let i = 0; i < normalKey.length; i++) {
+      const keyName = normalKey[i]
+      const data =  validate_fields.find(item => item.key_name === keyName)
+      if (data) {
+        normalFiled.push(data)
+      }
+    }
+    formItems.baseInfo = normalFiled
+    this.setState({
+      formItems
+    })
   }
 
   // 退出登录
@@ -160,15 +167,23 @@ export default class UserInfo extends Component {
                 <Image src={userInfo.avatar} mode='aspectFill' className='avatar' onClick={this.handleAvatar.bind(this)} />
               </View>
             </View>
-            <View className='item' onClick={this.editPhone.bind(this)}>
-              <View className='left'>手机号</View>
-              <View className='right'>
-                isGetWxInfo
-              </View>
-            </View>
             {
-              formItems.baseInfo.map(item => <View className='item' key={item.key}>
-                <View className='left'>{ item.name }</View>
+              formItems.baseInfo.map(item => item.key_name === 'mobile'
+              ? <View 
+                className='item'
+                key={item.key_name}
+                onClick={this.editPhone.bind(this)}
+              >
+                <View className='left'>{ item.label }</View>
+                <View className='right'>
+                  isGetWxInfo
+                </View>
+              </View>
+              :<View 
+                className='item'
+                key={item.key_name}
+              >
+                <View className='left'>{ item.label }</View>
                 <View className='right'>
                   isGetWxInfo
                 </View>
