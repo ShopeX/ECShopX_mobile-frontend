@@ -95,11 +95,12 @@ export default class EspireCheckout extends Component {
       delete params.items;
       //原悦诗风吟计算金额逻辑
       // data = await api.cart.total(params);
+      
+      
       data = await api.guide.salesPromotion(params);
       data = data.valid_cart[0];
       cxdid = data.sales_promotion_id;
 
-      console.log("获取导购分享订单计算金额", data);
     } catch (e) {
       if (e.status_code === 422) {
         return Taro.navigateBack();
@@ -148,11 +149,11 @@ export default class EspireCheckout extends Component {
       total_fee,
       items_count: totalItemNum,
       goodsItems: items,
-      items_count: data.list.length
+      items_count: data.list.length,
+      goodsConst:0
     };
 
     let cartlist = data.list;
-    console.log("计算接口-cartlist", cartlist);
     let goodsllist = [];
     let giftslist = [];
     let notgoodslist = [];
@@ -168,7 +169,8 @@ export default class EspireCheckout extends Component {
       }
     });
     total.goodsItems = cartlist;
-    console.log("计算接口-goodsllist", goodsllist);
+    total.goodsConst = 0
+    cartlist.forEach(d=>total.goodsConst+=(d.num*1))
     this.setState({
       total,
       cartlist,
@@ -347,7 +349,7 @@ export default class EspireCheckout extends Component {
       // 总计
       guideCanvasExp.textFill(
         ctx,
-        `共${total.items_count}件商品`,
+        `共${total.goodsConst}件商品`,
         15 * ratio,
         425 * ratio,
         12,
@@ -856,7 +858,7 @@ export default class EspireCheckout extends Component {
           <Batoolbar>
             <View className="checkout-toolbar">
               <View className="checkout-toolbar__total">
-                <Text className="total-items">共{total.items_count}件商品</Text>
+                <Text className="total-items">共{total.goodsConst}件商品</Text>
                 <View className="checkout-toolbar__prices">
                   <View className="total-price">
                     <Text className="price-text">总计:　</Text>
