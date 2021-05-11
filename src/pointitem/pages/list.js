@@ -15,7 +15,9 @@ import throttle from 'lodash/throttle'
 import CustomHeader from './comps/headerContainer'
 import S from '@/spx'
 import './list.scss'
-
+import {
+  customName
+} from '@/utils/point';
 @connect(({
   member,
   colors
@@ -757,11 +759,11 @@ export default class List extends Component {
                 </View>
               </View>}
               {pointVisible && <View class="score">
-                <View class="title">积分区间</View>
+                <View class="title">{customName("积分区间")}</View>
                 <View class="input-wrap">
-                  <AtInput placeholder="最低积分值" value={start_price} onChange={this.handleChangeStartprice} />
+                  <AtInput placeholder={customName("最低积分值")} value={start_price} onChange={this.handleChangeStartprice} />
                   <View class='text'>~</View>
-                  <AtInput placeholder="最高积分值" value={end_price} onChange={this.handleChangeEndprice} />
+                  <AtInput placeholder={customName("最高积分值")} value={end_price} onChange={this.handleChangeEndprice} />
                 </View>
                 {
                   scoreInternel.map((item, index) => {

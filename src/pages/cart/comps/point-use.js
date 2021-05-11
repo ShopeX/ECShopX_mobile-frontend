@@ -4,7 +4,9 @@ import { connect } from '@tarojs/redux'
 import { AtFloatLayout,AtInput,AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import { SpCheckbox } from '@/components'
 import './point-use.scss'
-
+import {
+  customName
+} from '@/utils/point';
 @connect(({ colors }) => ({
   colors: colors.current
 }))
@@ -108,7 +110,7 @@ export default class PointUse extends Component {
         
         <View className='point-use'>
           <View className='point-use__hd'>
-            <Text>积分</Text>
+            <Text>{customName("积分")}</Text>
             <Text className='rule-title' onClick={this.handleRuleOpen}>使用规则</Text>
             <View
               className='at-icon at-icon-close'
@@ -118,7 +120,7 @@ export default class PointUse extends Component {
           <View className='point-use__bd'>
            <View className='point-item'>
               <View className='point-item__title'>
-                  用户可用积分：
+                {customName("用户可用积分：")}
               </View>
               <View className='point-item__desc'>
                   {info.user_point}
@@ -126,7 +128,7 @@ export default class PointUse extends Component {
            </View>
            <View className='point-item border'>
               <View className='point-item__title'>
-                  本单最大可用积分：
+                {customName("本单最大可用积分：")}
               </View>
               <View className='point-item__desc'>
                   {info.max_point}
@@ -134,7 +136,7 @@ export default class PointUse extends Component {
            </View>
            <View className='point-item'>
               <View className='point-item__title'>
-                  请输入抵扣积分
+              {customName("请输入抵扣积分")}
               </View>
               <View className='point-item__desc'>
                 <AtInput
@@ -179,13 +181,13 @@ export default class PointUse extends Component {
             使用条件
            </View>
            <View>
-          1.积分支付不得超出订单应付总金额的 {deduct_point_rule.deduct_proportion_limit}%；
+           {customName(`1.积分支付不得超出订单应付总金额的 ${deduct_point_rule.deduct_proportion_limit}%；`)}
            </View>
            <View>
            使用数量
            </View>
            <View>
-           1.{deduct_point_rule.deduct_point} 积分抵 1 元；
+           {customName(`2.${deduct_point_rule.deduct_point} 积分抵 1 元；`)}
            </View>
         </AtModalContent>
         <AtModalAction>

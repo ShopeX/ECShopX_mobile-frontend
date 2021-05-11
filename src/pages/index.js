@@ -114,6 +114,7 @@ export default class Home extends Component {
     this.checkWhite();
     // 购物车数量
     this.fetchCartCount();
+    this.getPointSetting();
   }
 
   // 配置信息
@@ -216,6 +217,13 @@ export default class Home extends Component {
       shareInfo: res
     });
   };
+
+  //获取积分配置
+  getPointSetting=()=>{
+    api.pointitem.getPointSetting().then((pointRes)=>{ 
+      Taro.setStorageSync("custom_point_name", pointRes.name);
+    })
+  }
 
   // show显示初始化
   showInit = () => {
@@ -460,6 +468,7 @@ export default class Home extends Component {
       console.log(e);
     }
   }
+  
 
   // 跳转选择店铺
   goStore = () => {

@@ -12,6 +12,12 @@ export function search (params = {}) {
   // return req.get('/item.search', params)
   return req.get('/pointsmall/goods/items', params)
 }
+//获取积分配置
+export function getPointSetting (params = {}) {
+  // return req.get('/item.search', params)
+  return req.get('/point/rule', params)
+}
+
 
 //获取商城配置
 export function getPointitemSetting (params = {}) {

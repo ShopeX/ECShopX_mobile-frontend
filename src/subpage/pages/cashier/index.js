@@ -6,7 +6,9 @@ import { pickBy, browser } from '@/utils'
 import { withLogin } from '@/hocs'
 import { AlipayPay, WeH5Pay, WePay } from './comps'
 
-
+import {
+  customName
+} from '@/utils/point';
 import './index.scss'
 
 @withLogin()
@@ -88,7 +90,7 @@ export default class Cashier extends Component {
           <View className='cashier-money__content'>
             <View className='cashier-money__content-title'>订单编号： {info.order_id}</View>
             <View className='cashier-money__content-title'>订单名称：{info.title}</View>
-            <View className='cashier-money__content-title'>应付总额{info.pay_type === 'point' ? '（积分）' : '（元）'}</View>
+            <View className='cashier-money__content-title'>应付总额{info.pay_type === 'point' ? customName('（积分）') : '（元）'}</View>
             <View className='cashier-money__content-number'>{info.pay_type === 'point' ? info.point : info.total_fee}</View>
           </View>
         </View>

@@ -7,6 +7,9 @@ import api from '@/api'
 import S from '@/spx'
 import { pickBy } from '@/utils'
 import PaymentPicker from '@/pages/cart/comps/payment-picker'
+import {
+	customName
+  } from '@/utils/point';
 
 import './vipgrades.scss'
 
@@ -167,7 +170,7 @@ export default class VipIndex extends Component {
 		const { userInfo, list, cur, curTabIdx, userVipInfo, tabList, curCellIdx, payType,
 			isPaymentOpend } = this.state
 		const payTypeText = {
-			point: '积分支付',
+			point: customName('积分支付'),
 			wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
 			deposit: '余额支付',
 			delivery: '货到付款',

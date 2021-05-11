@@ -19,6 +19,9 @@ import api from "@/api";
 import PaymentPicker from "../../../pages/cart/comps/payment-picker";
 // /Users/zhangqing/projectTwo/ecshopx-vshop/src/pages/cart/comps/payment-picker.js
 import "./index.scss";
+import {
+  customName
+} from '@/utils/point';
 
 @connect(({ address, colors }) => ({
   address: address.current,
@@ -108,7 +111,7 @@ export default class Recharge extends Component {
     let rule_id = "";
     // 判断是否点击其他金额
     if (index !== amounts.length - 1) {
-      const sendType = value.ruleType === "money" ? "元" : "积分";
+      const sendType = value.ruleType === "money" ? "元" : customName("积分");
       setValue = value.money;
       rule_id = value.id;
       ruleValue =
@@ -268,7 +271,7 @@ export default class Recharge extends Component {
     const { colors } = this.props;
     const amountLength = amounts.length - 1;
     const payTypeText = {
-      point: '积分支付',
+      point: customName('积分支付'),
       wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款',

@@ -4,7 +4,9 @@ import { connect } from "@tarojs/redux";
 import { Price } from '@/components'
 import { classNames,formatPriceToHundred } from '@/utils'
 import OrderItem from '../../../../components/orderItem/order-item'
-
+import {
+  customName
+} from '@/utils/point';
 import './item.scss'
 
 @connect(({ colors }) => ({
@@ -47,13 +49,13 @@ export default class TradeItem extends Component {
     console.log("---payType---",payType)
     if(order_class==="pointsmall"){
       if(freight_type==="point" ||  (freight_type==="cash" && freight_fee==0)){
-        total= `合计：${point} 积分`
+        total= `合计：${point} ${customName("积分")}`
       }else if(freight_type==="cash" && freight_fee!=0){
-        total= `合计：${point} 积分 + ￥${formatPriceToHundred(total_fee)}`
+        total= `合计：${point} ${customName("积分")} + ￥${formatPriceToHundred(total_fee)}`
       }
     }else{
       if(payType==="dhpoint"){
-        total= `合计：${total_fee}积分`
+        total= `合计：${total_fee}${customName("积分")}`
       }else{
         total= `合计：￥${payment}`
       } 

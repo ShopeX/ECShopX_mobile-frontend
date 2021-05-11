@@ -10,7 +10,9 @@ import { classNames, pickBy, log } from "@/utils";
 import { Tracker } from "@/service";
 import api from "@/api";
 import entry from '@/utils/entry'
-
+import {
+  customName
+} from '@/utils/point';
 import "./index.scss";
 import { floor } from "lodash";
 
@@ -532,7 +534,7 @@ export default class GoodsBuyPanel extends Component {
             </View>
             {isPointitem && <View className="goods-point">
               <View className="number">{curSku?curSku.point:info.point}</View>
-              <View className="text">积分</View>
+              <View className="text">{customName('积分')}</View>
             </View>}
             {!isPointitem && <View className="goods-sku__price">
               <Price primary symbol="¥" unit="cent" value={price} />

@@ -4,7 +4,9 @@ import { REFUND_STATUS } from '@/consts'
 import { formatTime } from '@/utils'
 import { Loading, FloatMenuMeiQia,SpHtmlContent } from '@/components'
 import api from '@/api'
-
+import {
+  customName
+} from '@/utils/point';
 import './refund-detail.scss'
 
 export default class TradeRefundDetail extends Component {
