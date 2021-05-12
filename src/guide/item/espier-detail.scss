@@ -1,6 +1,17 @@
 //@import '../../style/imports';
 
 .page-goods-detail {
+  .toCart{
+    position: fixed;
+    top: 80%;
+    background: #fff;
+    right: 40px;
+    z-index: 999;
+    font-size: 42px;
+    border-radius: 50%;
+    padding: 20px;
+    box-shadow: 1px 1px 3px #999;
+  }
   /*  #ifdef  h5  */  
   padding-top: $navigate-height-h5;
   .swiper-container {
