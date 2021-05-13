@@ -832,19 +832,15 @@ export default class CartCheckout extends Component {
     }
   }
 
-  handleSwitchExpress = key => {
-    const receiptType = JSON.parse(key) ? "logistics" : "ziti";
+  // 切换配送模式
+  handleSwitchExpress = receiptType => {
     this.clearPoint();
-    this.setState(
-      {
-        express: JSON.parse(key),
-        receiptType
-      },
-      () => {
-        this.calcOrder();
-      }
-    );
-  };
+    this.setState({
+      receiptType
+    }, () => {
+      this.calcOrder()
+    })
+  }
 
   handleAddressChange = address => {
     if (!address) {
@@ -1602,7 +1598,7 @@ export default class CartCheckout extends Component {
       submitLoading,
       disabledPayment,
       isPaymentOpend,
-      isDrugInfoOpend,
+      receiptType,
       drug,
       third_params,
       shoppingGuideData,
@@ -1643,6 +1639,23 @@ export default class CartCheckout extends Component {
         : (coupon.value && coupon.value.title) || "";
     //const isBtnDisabled = !address
     const isBtnDisabled = express ? !address : false;
+
+    // 收货方式[快递，同城，自提]
+    const deliveryList = [{
+      type: 'logistics',
+      name: '普通快递',
+      isopen: curStore.is_delivery || (!curStore.is_delivery && !curStore.is_ziti) || goodType === "cross" ,
+    }, {
+      type: 'dada',
+      name: '同城配送',
+      isopen: curStore.is_dada && goodType !== "cross",
+    }, {
+      type: 'ziti',
+      name: '自提',
+      isopen: !this.isPointitemGood() && goodType !== "cross",
+    }]
+
+    const showSwitchDeliver = deliveryList.some(item => item.isopen)
     return (
       <View className="page-checkout">
         {showAddressPicker === false ? (
@@ -1659,66 +1672,52 @@ export default class CartCheckout extends Component {
           </View>
         ) : null}
         <ScrollView scrollY className="checkout__wrap">
-          {curStore &&
-            !isArray(curStore) &&
-            curStore.is_ziti &&
-            curStore.is_delivery &&
-            !bargain_id &&
-            goodType !== "cross" && (
-              <View className="switch-tab">
-                <View
-                  className={classNames("switch-item", express ? "active" : "")}
-                  onClick={this.handleSwitchExpress.bind(this, true)}
+          {
+            showSwitchDeliver && <View className='switch-tab'>
+              {
+                deliveryList.map(item => <View
+                  key={item.type}
+                  className={classNames("switch-item", receiptType === item.type ? "active" : "")}
+                  onClick={this.handleSwitchExpress.bind(this, item.type)}
                 >
-                  配送
+                  { item.name }
+                </View>)
+              }
+            </View>
+          }
+          { receiptType === 'logistics' && <AddressChoose isAddress={address} />}
+          { receiptType === 'ziti' && <View className='address-module'>
+              <View className='addr'>
+                <View className='view-flex-item'>
+                  <View className='addr-title'>{curStore.name}</View>
+                  <View className='addr-detail'>{curStore.store_address}</View>
                 </View>
-                {!this.isPointitemGood() && <View
-                  className={classNames(
-                    "switch-item",
-                    !express ? "active" : ""
-                  )}
-                  onClick={this.handleSwitchExpress.bind(this, false)}
-                >
-                  自提
-                </View>}
+                {
+                  isOpenStore && (APP_PLATFORM === 'standard')
+                    ? <View
+                      className='icon-edit'
+                      onClick={this.handleEditZitiClick.bind(this, curStore.distributor_id)}
+                    >
+                    </View>
+                    : <View
+                      className='icon-location'
+                      onClick={this.handleMapClick.bind(this)}
+                    ></View>
+                }
               </View>
-            )}
-          {bargain_id ||
-            (express && curStore && curStore.is_delivery) ||
-            (curStore && !curStore.is_delivery && !curStore.is_ziti) ||
-            goodType === "cross" ? (
-              <AddressChoose isAddress={address} />
-            ) : (
-              <View className="address-module">
-                <View className="addr">
-                  <View className="view-flex-item">
-                    <View className="addr-title">{curStore.name}</View>
-                    <View className="addr-detail">{curStore.store_address}</View>
-                  </View>
-                  {
-                    isOpenStore && (APP_PLATFORM === 'standard')
-                      ? <View
-                        className="icon-edit"
-                        onClick={this.handleEditZitiClick.bind(this, curStore.distributor_id)}>
-                      </View>
-                      : <View
-                        className="icon-location"
-                        onClick={this.handleMapClick.bind(this)}
-                      ></View>
-                  }
+              <View className='view-flex'>
+                <View className='view-flex-item'>
+                  <View className='text-muted'>营业时间：</View>
+                  <View>{curStore.hour}</View>
                 </View>
-                <View className="view-flex">
-                  <View className="view-flex-item">
-                    <View className="text-muted">营业时间：</View>
-                    <View>{curStore.hour}</View>
-                  </View>
-                  <View className="view-flex-item">
-                    <View className="text-muted">联系电话：</View>
-                    <View>{curStore.phone}</View>
-                  </View>
+                <View className='view-flex-item'>
+                  <View className='text-muted'>联系电话：</View>
+                  <View>{curStore.phone}</View>
                 </View>
               </View>
-            )}
+            </View>
+          }
+          { receiptType === 'dada' && <View className='cityDeliver'>同城配</View>}
           {goodType === "cross" && (
             <SpCell border={false} className="coupons-list">
               <AtInput
