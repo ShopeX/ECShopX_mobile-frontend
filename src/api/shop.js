@@ -29,3 +29,8 @@ export function getStoreBaseInfo (params = {}) {
 export function getRuleInfo (params = {}) {
   return req.get('/shops/protocol', params)
 }
+
+// 获取总店信息
+export function getHeadquarters (params = {}) {
+  return req.get('/distributor/self', params)
+}

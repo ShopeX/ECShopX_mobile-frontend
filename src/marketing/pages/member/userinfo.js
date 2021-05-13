@@ -146,6 +146,9 @@ export default class UserInfo extends Component {
   // 退出登录
   loginOut = () => {
     S.logout()
+    Taro.redirectTo({
+      url: '/subpage/pages/auth/wxauth?source=loginout'
+    })
   }
 
   // 更换手机号

@@ -271,11 +271,7 @@ class Spx {
     Taro.removeStorageSync(TOKEN_TIMESTAMP)
     this.delete(TOKEN_IDENTIFIER, true)
     Taro.removeStorageSync('userinfo')
-    // this.trigger("logout")
-    // 回跳到会员登录页面
-    Taro.redirectTo({
-      url: '/subpage/pages/auth/wxauth?source=loginout'
-    })
+    this.trigger("logout")
   }
 
   globalData() {

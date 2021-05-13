@@ -6,14 +6,15 @@
  * @FilePath: /unite-vshop/src/pages/store/list.js
  * @Date: 2021-05-06 17:14:15
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-12 16:16:43
+ * @LastEditTime: 2021-05-13 13:48:17
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Picker, Input, Image } from '@tarojs/components'
-import { NavBar, Loading } from '@/components'
+import { NavBar, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
+import S from "@/spx"
 import entry from '@/utils/entry'
 import StoreListItem from './comps/list-item'
 
@@ -34,10 +35,16 @@ export default class StoreList extends Component {
       ...this.state,
       query: {
         name: '',
-        area: [],
+        province: '',
+        city: '',
+        area: '',
         lat: '',
-        lng: ''
+        lng: '',
+        from_default_address: 0
       },
+      // 总店信息
+      headquarters: {},
+      baseInfo: {},
       // 当前位置信息
       location: {},
       // 收货地址信息
@@ -51,6 +58,7 @@ export default class StoreList extends Component {
 
   componentDidMount () {
     this.init()
+    this.getHeadquarters()
   }
 
   config = {
@@ -58,19 +66,23 @@ export default class StoreList extends Component {
   }
 
   // 定位并初始化处理位置信息
-  init = async () => {
+  init = async ( isUseDeliveryInfo = false) => {
     // 获取定位
     await entry.getLocal(true)
-    // 获取用户收货地址
     const { query } = this.state
     const lnglat = Taro.getStorageSync('lnglat') || {}
     const address = lnglat.latitude ? `${lnglat.city}${lnglat.district}${lnglat.street}${lnglat.street_number}` : ''
-    query.area = [lnglat.province || '', lnglat.city || '', lnglat.district || '']
+    query.province = lnglat.province || ''
+    query.city = lnglat.city || ''
+    query.area = lnglat.district || ''
+    query.from_default_address = isUseDeliveryInfo ? 1 : 0 
     this.setState({
       location: {
         ...lnglat,
         address
-      }
+      },
+      query,
+      isRecommedList: (!S.getAuthToken() && !lnglat.latitude)
     }, () => {
       this.resetPage(() => {
         this.setState({
@@ -82,15 +94,25 @@ export default class StoreList extends Component {
     })
   } 
 
+  // 获取总店信息
+  getHeadquarters = async () => {
+    const data = await api.shop.getHeadquarters()
+    const baseInfo = await api.shop.getStoreBaseInfo()
+    this.setState({
+      headquarters: data,
+      baseInfo
+    })
+  }
+
   // 省市区选择器
   regionChange = (region) => {
     const { value } = region.detail
     const { query } = this.state
+    query.province = value[0]
+    query.city = value[1]
+    query.area = value[2]
     this.setState({
-      query: {
-        ...query,
-        area: value
-      }
+      query
     }, () => {
       this.confirmSearch()
     })
@@ -133,7 +155,6 @@ export default class StoreList extends Component {
     const { query: searchParam, location } = this.state
     const { latitude = '', longitude = '' } = location
     const { page_no: page, page_size: pageSize } = params
-    const area = [...searchParam.area].join(',')
     const query = {
       ...searchParam,
       page,
@@ -141,14 +162,11 @@ export default class StoreList extends Component {
       lat: latitude,
       lng: longitude
     }
-    const { list, total_count: total} = await api.shop.list({
-      ...query,
-      area: ''
-    })
+    const { list, total_count: total, default_address} = await api.shop.list(query)
     this.setState({
-      list: [...this.state.list, ...list],
       query,
-      isRecommedList: total <= 0
+      list: [...this.state.list, ...list],
+      deliveryInfo: default_address
     })
     return {
       total
@@ -167,6 +185,7 @@ export default class StoreList extends Component {
   // 获取定位信息
   getLocation = async () => {
     const { authSetting } = await Taro.getSetting()
+
     if (!authSetting['scope.userLocation']) {
       Taro.authorize({
         scope: 'scope.userLocation',
@@ -197,7 +216,20 @@ export default class StoreList extends Component {
   }
 
   render () {
-    const { scrollTop, query, list, location, isRecommedList, deliveryInfo, page } = this.state
+    const {
+      scrollTop,
+      query,
+      list,
+      location,
+      isRecommedList,
+      deliveryInfo,
+      page,
+      headquarters,
+      baseInfo
+    } = this.state
+    const { province, city, area } = query
+    const areaData = [province, city, area]
+
     const { colors } = this.props
 
     return (
@@ -208,9 +240,9 @@ export default class StoreList extends Component {
         />
         <View className='search'>
           <View className='main'>
-            <Picker mode='region' value={query.area} onChange={this.regionChange.bind(this)}>
+            <Picker mode='region' value={areaData} onChange={this.regionChange.bind(this)}>
               <View className='filterArea'>
-                <View className='areaName'>{ query.area.join('') || '筛选地区' }</View>
+                <View className='areaName'>{ areaData.join('') || '筛选地区' }</View>
                 <View className='iconfont icon-arrowDown'></View>
               </View>
             </Picker>
@@ -244,7 +276,7 @@ export default class StoreList extends Component {
               </View>
             </View>
             {
-              !deliveryInfo.name && <View className='delivery'>
+              deliveryInfo.name && <View className='delivery' onClick={this.init.bind(this, true)}>
                 <View className='title'>按收货地址定位</View>
                 <View className='locationData'>
                   <View className='lngName'>上海市浦东新区陆家嘴西路3888-1上海市浦东新区陆家嘴西路3888-1</View>
@@ -254,7 +286,7 @@ export default class StoreList extends Component {
           </View> : <View className='noContent'>
             <Image
               className='img'
-              src='https://store-images.s-microsoft.com/image/apps.1081.13510798886607585.e5e9691e-c9bf-4ee0-ae21-cc7601c0cee5.03207cec-5f89-409c-aec9-3253099cfced?mode=scale&q=90&h=270&w=270&background=%230078D7'
+              src={baseInfo.logo}
               mode='aspectFill'
             />
             <View className='tip'>
@@ -262,10 +294,12 @@ export default class StoreList extends Component {
             </View>
           </View>
         }
-        <View className={`list ${ deliveryInfo.name && 'noDelivery'} ${isRecommedList && 'recommedList'}`}>
+        <View className={`list ${!deliveryInfo.name && 'noDelivery'} ${isRecommedList && 'recommedList'}`}>
           {
             !isRecommedList
-              ? <View className='title'>附近门店</View>
+              ? <View className='title'>
+                { (deliveryInfo.name || location.lnglat) ? '附近门店' : '全部门店' }
+              </View>
               : <View className='recommed'>
                 <View className='title'>推荐门店</View>
               </View>
@@ -286,13 +320,23 @@ export default class StoreList extends Component {
               />)
             }
             {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            {
+              !page.isLoading && !page.hasNext && !list.length
+              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
+            }
           </ScrollView>
         </View>
         <View
           className='bottom'
           style={`color: ${colors.data[0].primary}`}
-        >
-          我是旗舰店名称
+          onClick={this.handleClickItem.bind(this, headquarters)}
+        > 
+          <Image 
+            className='img'
+            src={baseInfo.logo}
+            mode='aspectFill'
+          />
+          { headquarters.store_name }
           <View className='iconfont icon-arrowRight'></View>
         </View>
       </View>
