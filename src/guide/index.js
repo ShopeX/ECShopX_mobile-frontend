@@ -4,7 +4,6 @@ import { connect } from "@tarojs/redux";
 import { Loading } from "@/components";
 import api from "@/api";
 import { pickBy, styleNames, resolveFavsList } from "@/utils";
-import entry from "@/utils/entry";
 import { withLogin, withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
 
@@ -63,27 +62,27 @@ export default class BaGuideHomeIndex extends Component {
   }
 
   componentDidShow() {
+    
+  }
+
+  async componentDidMount() {
     const { version } = this.$router.params;
     //设置导购信息
+    if(!this.state.wgts){
+      this.guideInit(version)
+    }
+  }
+
+  guideInit(version){
     const guideInfo = S.get("GUIDE_INFO", true);
+    console.log('导购 - componentDidShow - index ',guideInfo)
+    if(!guideInfo) return setTimeout(()=>{this.guideInit(version)},300)
     this.setState({ guideInfo }, () => {
       this.fetchInfo(version);
       this.getStoreList();
     });
   }
 
-  async componentDidMount() {
-    const { version } = this.$router.params;
-    console.log('componentDidMount',version)
-    //设置导购信息
-    if(!this.state.wgts){
-      const guideInfo = S.get("GUIDE_INFO", true);
-      this.setState({ guideInfo }, () => {
-        this.fetchInfo(version);
-        this.getStoreList();
-      });
-    }
-  }
 
   async isAppWxWork() {
     let _this = this;
@@ -287,7 +286,7 @@ export default class BaGuideHomeIndex extends Component {
       goodsSkuInfo,
       storeInfo
     } = this.props;
-
+    console.log('首页 - render - guideInfo',guideInfo)
     const ipxClass = S.get("ipxClass");
     const n_ht = S.get("navbar_height");
     return (
@@ -299,11 +298,11 @@ export default class BaGuideHomeIndex extends Component {
           icon="in-icon in-icon-backhome"
         />
         <View>
-          <BaStore
+          {guideInfo && <BaStore
             onClick={this.handleOpenStore}
             guideInfo={guideInfo}
             defaultStore={storeInfo}
-          />
+          />}
         </View>
         {isLoading ? (
           <Loading></Loading>

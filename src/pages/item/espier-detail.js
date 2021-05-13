@@ -902,6 +902,12 @@ export default class Detail extends Component {
   
   //订阅通知
   handleSubscription = async () => {
+
+    if(this.isPointitemGood()){
+      console.log("this.isPointitemGood()")
+      return ;
+    }
+
     const { isSubscribeGoods, info } = this.state
     if (isSubscribeGoods) return false
     await api.user.subscribeGoods(info.item_id)
@@ -1159,13 +1165,13 @@ export default class Detail extends Component {
                 <Text className='goods-title'>{info.item_name}</Text>
                 <Text className='goods-title__desc'>{info.brief}</Text>
               </View>
-              {Taro.getEnv() !== 'WEB' && (
+              {Taro.getEnv() !== 'WEB' && !this.isPointitem() && (
                 <View
                   className='goods-share__wrap'
                   onClick={this.handleShare.bind(this)}
                 >
                   <View className='icon-share'></View>
-                  <View className='share-label'>分享</View>
+                 <View className='share-label'>分享</View> 
                 </View>
               )}
             </View>
@@ -1497,12 +1503,12 @@ export default class Detail extends Component {
               ) : (
                 <View
                   style={`background: ${
-                    !isSubscribeGoods ? colors.data[0].primary : 'inherit'
+                    this.isPointitemGood()?'grey':!isSubscribeGoods ? colors.data[0].primary : 'inherit'
                   }`}
-                  className={`arrivalNotice ${isSubscribeGoods && 'noNotice'}`}
+                  className={`arrivalNotice ${isSubscribeGoods && 'noNotice'} ${this.isPointitemGood() && 'good_disabled'}`}
                   onClick={this.handleSubscription.bind(this)}
                 >
-                  {isSubscribeGoods ? "已订阅到货通知" : "到货通知"}
+                  {this.isPointitemGood()?'已兑完':isSubscribeGoods ? "已订阅到货通知" : "到货通知"}
                 </View>
               )}
             </View>

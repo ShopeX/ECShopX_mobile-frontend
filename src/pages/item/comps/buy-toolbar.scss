@@ -65,6 +65,11 @@
     align-items: center;
     overflow: hidden;
     height: $toolbar-height;
+
+    .good_disabled{
+      background: grey!important;
+      color:white;
+    }
   }
   &__btn {
     width: 250px;

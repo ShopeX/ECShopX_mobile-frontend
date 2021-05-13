@@ -1,6 +1,9 @@
 //@import '../../style/imports';
 
 .page-goods-detail {
+
+
+
   .toCart{
     position: fixed;
     top: 80%;
@@ -728,5 +731,7 @@
     &.noNotice {
       color: #000;
     }
+
+   
   }
 }
