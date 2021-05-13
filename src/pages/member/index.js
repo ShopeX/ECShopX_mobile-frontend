@@ -7,7 +7,9 @@ import api from "@/api";
 import S from "@/spx";
 import req from "@/api/req";
 import MemberBanner from "./comps/member-banner";
-
+import {
+  customName
+} from '@/utils/point';
 import "./index.scss";
 
 @connect(
@@ -481,7 +483,7 @@ export default class MemberIndex extends Component {
                   className="view-flex-item"
                   onClick={this.handleClickPoint}
                 >
-                  <View className="member-assets__label">积分</View>
+                  <View className="member-assets__label">{customName("积分")}</View>
                   <View className="member-assets__value">
                     {memberAssets.point_total_count}
                   </View>
@@ -813,7 +815,7 @@ export default class MemberIndex extends Component {
             )}
             {
               score_menu_open && <SpCell
-                title="积分商城"
+                title={customName("积分商城")}
                 isLink
                 img={require('../../assets/imgs/score.png')}
                 onClick={this.handleClick.bind(this, '/pointitem/pages/list')}

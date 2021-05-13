@@ -90,34 +90,6 @@ export default class TabBar extends Component {
         urlRedirect: true
       }
     ];
-
-    // if (tabBar) {
-    //   const { config, data } = tabBar
-    //   const { backgroundColor, color, selectedColor } = config
-    //   this.setState({
-    //     backgroundColor,
-    //     color,
-    //     selectedColor
-    //   })
-    //   data.map(item => {
-    //     let obj = {
-    //       title: item.text,
-    //       iconType: item.iconPath && item.selectedIconPath ? '' : item.name,
-    //       iconPrefixClass: 'icon',
-    //       image: item.iconPath,
-    //       selectedImage: item.selectedIconPath,
-    //       url: item.pagePath,
-    //       urlRedirect: true
-    //     }
-    //     if (item.name === 'cart') {
-    //       Object.assign(obj, {text: this.cartCount || '', max: '99'})
-    //     }
-    //     list.push(obj)
-    //   })
-    // } else {
-
-    // }
-
     this.setState(
       {
         tabList: list
@@ -129,7 +101,6 @@ export default class TabBar extends Component {
   }
 
   get cartCount() {
-    // console.log('computed')
     return this.props.cartCount;
   }
 

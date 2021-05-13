@@ -128,7 +128,7 @@ export default class Detail extends Component {
       // 是否订阅
       isSubscribeGoods: false,
       is_open_store_status: null,
-      jumpType: "home",
+      jumpType: "",
       shareMenu: false,
       entry_form: null,
       pageShareUrl: "",
@@ -880,7 +880,9 @@ export default class Detail extends Component {
       }
     });
   };
-
+  toCart(){
+    Taro.navigateTo({url:'/guide/cart/espier-index'})
+  }
   render() {
     const {
       info,
@@ -968,6 +970,7 @@ export default class Detail extends Component {
         style={`padding-top:${navbar_height}PX`}
       >
         <BaNavBar title='导购商城' fixed jumpType={jumpType} />
+        <View onClick={this.toCart} className='iconfont icon-cart toCart'></View>
         {/* <NavBar
           title={info.item_name}
           leftIconType="chevron-left"

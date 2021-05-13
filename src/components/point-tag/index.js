@@ -1,7 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
-
+import {
+    customName
+  } from '@/utils/point';
 import './index.scss';
 
 
@@ -16,7 +18,7 @@ export default class PointTag extends Component {
 
         return (
             <View className={classes}>
-                积
+                {customName("积")}
             </View>
         )
     }

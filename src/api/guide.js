@@ -4,7 +4,7 @@ import S from "@/spx";
 function createHead() {
   return {
     header: {
-      "x-wxapp-session": (S && S.get("session3rd")) || "",
+      "x-wxapp-session": (S && S.getAuthToken()) || "",
       "salesperson-type": "shopping_guide"
     }
   };
@@ -20,7 +20,6 @@ export function distributorlist(params = {}, config = createHead()) {
 }
 //验证导购员的店铺id是否有效
 export function is_valid(params = {}, config = createHead()) {
-  console.log("/salesperson/distributor/is_valid");
   return req.get("/salesperson/distributor/is_valid", params, config);
 }
 //扫条形码加入购物车
@@ -36,6 +35,7 @@ export function scancodeAddcart(params = {}, config = createHead()) {
 
 //导购员购物车新增
 export function cartdataadd(params = {}, config = createHead()) {
+  
   return req.get("/salesperson/cartdataadd", params, config);
 }
 //导购员购物车更新

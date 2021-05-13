@@ -14,7 +14,9 @@ import api from '@/api'
 import { NavBar,SpCell } from '@/components'
 import PaymentPicker from '@/pages/cart/comps/payment-picker'
 import './index.scss'
-
+import {
+  customName
+} from '@/utils/point';
 export default class PayOrder extends Component {
 
   constructor (props) {
@@ -147,7 +149,7 @@ export default class PayOrder extends Component {
       isPaymentOpend
     } = this.state
     const payTypeText = {
-      point: '积分支付',
+      point: customName('积分支付'),
       wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款',

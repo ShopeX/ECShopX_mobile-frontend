@@ -519,3 +519,16 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.customTabsStyle{
+  .at-tabs__item--active {
+    color: inherit!important; 
+  }
+  .at-tabs__item-underline{
+    color: inherit!important;
+    background-color: currentColor!important;
+  }
+}
+.inherit{
+  background-color: inherit!important;
+  border-color: inherit!important;
+}

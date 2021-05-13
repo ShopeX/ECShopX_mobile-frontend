@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
+import { connect } from '@tarojs/redux'
 import { AtDrawer } from 'taro-ui'
 import { BackToTop, Loading, RecommendItem, SearchBar, TabBar, SpNote, FilterBar } from '@/components'
 import api from '@/api'
@@ -8,7 +9,9 @@ import { classNames, pickBy } from '@/utils'
 import S from '@/spx'
 
 import './list.scss'
-
+@connect(({ colors }) => ({ 
+  colors: colors.current
+}))
 @withPager
 @withBackToTop
 export default class RecommendList extends Component {
@@ -447,6 +450,7 @@ export default class RecommendList extends Component {
 
   render () {
     const { list, showBackToTop, scrollTop, page, showDrawer, info, columnList, selectColumn, multiIndex, areaList, query, isShowSearch } = this.state
+    const { colors }=this.props;
     let address = info.province + info.city
  
 
@@ -502,6 +506,7 @@ export default class RecommendList extends Component {
                     <View
                       className={classNames('drawer-item__options__item' ,item.isChooseColumn ? 'drawer-item__options__checked' : '')}
                       // className='drawer-item__options__item'
+                      style={item.isChooseColumn ?{background: colors.data[0].primary}:{}}
                       key={`${index}1`}
                       onClick={this.handleClickParmas.bind(this, item.id)}
                     >
@@ -517,7 +522,7 @@ export default class RecommendList extends Component {
           </View>
           <View className='drawer-footer'>
             <Text className='drawer-footer__btn' onClick={this.handleClickSearchParams.bind(this, 'reset')}>重置</Text>
-            <Text className='drawer-footer__btn drawer-footer__btn_active' onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定</Text>
+            <Text className='drawer-footer__btn drawer-footer__btn_active'  style={{background: colors.data[0].primary}} onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定</Text>
           </View>
         </AtDrawer>
 

@@ -5,6 +5,9 @@ import {  AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import api from '@/api'
 
 import './point-deposit.scss'
+import {
+  customName
+} from '@/utils/point';
 
 export default class PointDepositBtn extends Component {
   static options = {
@@ -72,7 +75,7 @@ export default class PointDepositBtn extends Component {
         <View
           className='pay-mode'
           onClick={this.handleClickPayment.bind(this, payType)}
-        >{payType === 'deposit' ? '预存款支付' : '积分支付'}</View>
+        >{payType === 'deposit' ? '预存款支付' : customName('积分支付')}</View>
 
         <AtModal
           isOpened={isOpened}

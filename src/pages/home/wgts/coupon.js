@@ -1,9 +1,10 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Text, Button } from "@tarojs/components";
-import { SpImg, SpToast } from "@/components";
-import req from "@/api/req";
+import { SpImg, SpToast } from "@/components"; 
+import api from '@/api'
 import S from "@/spx";
 import { classNames } from "@/utils";
+import { Tracker } from "@/service";
 
 import "./coupon.scss";
 
@@ -21,7 +22,7 @@ export default class WgtCoupon extends Component {
     super(props);
   }
 
-  handleGetCard = cardId => {
+  handleClickNews = card_item => {
     if (!S.getAuthToken()) {
       S.toast("请先登录再领取");
 
@@ -32,12 +33,50 @@ export default class WgtCoupon extends Component {
       return;
     }
 
-    req.get("/user/receiveCard", { card_id: cardId }).then(res => {
-      if (res.status) {
-        S.toast("该券已经领取成功，赶快购物吧！");
+    let templeparams = {
+      'temp_name': 'yykweishop',
+      'source_type': 'coupon',
+    }
+
+    let _this = this
+    api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
+      console.log('templeparams---1', tmlres)
+      if (tmlres.template_id && tmlres.template_id.length > 0) {
+        wx.requestSubscribeMessage({
+          tmplIds: tmlres.template_id,
+          success() {
+            _this.handleGetCard(card_item)
+          },
+          fail() {
+            _this.handleGetCard(card_item)
+          }
+        })
+      } else {
+        _this.handleGetCard(card_item)
       }
-    });
+    }, () => {
+      _this.handleGetCard(card_item)
+    })
+
   };
+
+  handleGetCard = async (card_item) => { 
+    console.log("card_item",card_item)
+    const query = {
+      card_id: card_item.id  
+    }
+    try {
+      const data = await api.member.homeCouponGet(query)
+
+      Tracker.dispatch("GET_COUPON", card_item); 
+
+      S.toast('优惠券领取成功')
+      
+    } catch (e) {
+
+    }
+
+  }
 
   navigateTo(url) {
     Taro.navigateTo({ url });
@@ -108,7 +147,7 @@ export default class WgtCoupon extends Component {
                 )}
                 <Button
                   className="coupon-btn__getted"
-                  onClick={this.handleGetCard.bind(this, item.id)}
+                  onClick={this.handleClickNews.bind(this, item)}
                 >
                   领取
                 </Button>

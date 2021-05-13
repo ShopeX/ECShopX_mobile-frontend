@@ -62,17 +62,8 @@ export default class BaGuideHomeIndex extends Component {
     };
   }
 
-  // componentDidShow() {
-  //   console.log( "componentDidShow" );
-  // }
-  // componentWillMount() {
-  //   console.log("componentWillMount");
-  // }
-
-  async componentDidMount() {
+  componentDidShow() {
     const { version } = this.$router.params;
-    // const res = await entry.entryLaunch(options, false);
-
     //设置导购信息
     const guideInfo = S.get("GUIDE_INFO", true);
     this.setState({ guideInfo }, () => {
@@ -81,13 +72,22 @@ export default class BaGuideHomeIndex extends Component {
     });
   }
 
+  async componentDidMount() {
+    const { version } = this.$router.params;
+    console.log('componentDidMount',version)
+    //设置导购信息
+    if(!this.state.wgts){
+      const guideInfo = S.get("GUIDE_INFO", true);
+      this.setState({ guideInfo }, () => {
+        this.fetchInfo(version);
+        this.getStoreList();
+      });
+    }
+  }
+
   async isAppWxWork() {
     let _this = this;
-
-    // const checkSession = await this.checkSession();
-    // console.log("=====checkSession检查结果返回====", checkSession);
     const chatId = await _this.getQyChatId();
-
     console.log("获取群信息------0", chatId);
     let entry_form = S.get("entry_form", true);
     if (chatId) {
@@ -103,25 +103,7 @@ export default class BaGuideHomeIndex extends Component {
 
     this.getStoreList();
   }
-  // checkSession() {
-  //   return new Promise((reslove, reject) => {
-  //     try {
-  //       wx.qy.checkSession({
-  //         success: res => {
-  //           reslove(res);
-  //         },
-  //         fail: err => {
-  //           reslove(err);
-  //         },
-  //         complete: err2 => {
-  //           reslove(err2);
-  //         }
-  //       });
-  //     } catch (err) {
-  //       reject(err);
-  //     }
-  //   });
-  // }
+ 
   //客户群id
   async getQyChatId() {
     let ground = null;
@@ -194,21 +176,9 @@ export default class BaGuideHomeIndex extends Component {
     };
     const info = await api.guide.getHomeTmps(params);
 
-    // if (!S.getAuthToken()) {
-    //   this.setState({
-    //     authStatus: true
-    //   })
-    // }
-
     const bkg_item = info.config.find(
       item => item.name === "background" && item.config.background
     );
-    // const tabSet = info.config.find(item => item.name === "tabSet" && item);
-
-    // const { ontabSet, dispatch } = this.props;
-    // const scrollInputConfig = info.config.find(
-    //   item => item.name === "scroll_input" && item
-    // );
 
     const sliderIndex = info.config.findIndex(
       item => item.name === "slider" || item.name === "slider-hotzone"
@@ -222,14 +192,11 @@ export default class BaGuideHomeIndex extends Component {
           let width = res.width;
           let height = res.height;
           let ratio = width / height;
-
           let imgHeight = +(Taro.$systemSize.screenWidth / ratio).toFixed(2);
           info.config[sliderIndex].config.imgHeight = imgHeight;
         });
       }
     }
-
-    // ontabSet(tabSet);
 
     let tagnavIndex = -1;
     info.config.forEach(wgt_item => {

@@ -8,7 +8,8 @@ import { isObject, classNames } from '@/utils'
 
 import './index.scss'
 
-@connect(() => ({
+@connect(({colors}) => ({
+  colors: colors.current
 }), (dispatch) => ({
   onAddFav: ({ item_id, fav_id }) => dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
   onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
@@ -47,7 +48,8 @@ export default class GoodsItem extends Component {
   }
 
   render () {
-    const { info, showMarketPrice, showFav, noCurSymbol, noCurDecimal, onClick, onStoreClick, appendText, className, isPointDraw, type ,isPointitem} = this.props 
+    const { info, showMarketPrice, showFav, noCurSymbol, noCurDecimal, onClick, onStoreClick, appendText, className, isPointDraw, colors,type ,isPointitem} = this.props 
+    console.log('this.props',this.props)
 
     if (!info) {
       return null
@@ -56,6 +58,8 @@ export default class GoodsItem extends Component {
     const img = info.img || info.image_default_id
 
     let promotion_activity = null, act_price = null
+    console.log("act_price",act_price)
+    console.log("info.promotion_activity_tag",info.promotion_activity_tag)
     if( info.promotion_activity_tag && info.promotion_activity_tag.length > 1 ) {
       info.promotion_activity_tag.map(tag_item => {
         if(tag_item.tag_type === 'single_group' || tag_item.tag_type === 'normal' || tag_item.tag_type === 'limited_time_sale') {
@@ -71,6 +75,7 @@ export default class GoodsItem extends Component {
       promotion_activity = null
       act_price = null
     }
+
     act_price = (act_price/100).toFixed(2)
     let price = '', marketPrice = ''
     if (isObject(info.price)) {
@@ -80,6 +85,9 @@ export default class GoodsItem extends Component {
       //marketPrice = Boolean(+act_price) || Boolean(+info.member_price) ? info.price : info.market_price
       marketPrice = info.market_price
     }
+
+    console.log("price",price)
+  
 
     return (
       <View className={classNames('goods-item', 'classes')}>
@@ -116,6 +124,7 @@ export default class GoodsItem extends Component {
                       <Text
                         key={item.promotion_id}
                         className={`tagitem ${(item.tag_type === 'single_group' || item.tag_type === 'limited_time_sale' || item.tag_type === 'normal') ? 'goods-item__tag goods-item__group' : 'goods-item__tag'} ${item.tag_type === 'member_preference' && 'member_preference'}`}
+                        style={(item.tag_type === 'single_group' || item.tag_type === 'limited_time_sale' || item.tag_type === 'normal') ?{background:colors.data[0].primary,boxShadow: `0 0 0 1px ${colors.data[0].primary}`}:{color:colors.data[0].primary,boxShadow: `0 0 0 1px ${colors.data[0].primary}`}}
                       >
                         {item.tag_type === 'single_group' ? '团购' : ''}
                         {item.tag_type === 'full_minus' ? '满减' : ''}
@@ -165,6 +174,7 @@ export default class GoodsItem extends Component {
                       <View
                         className={`${info.is_fav ? 'icon-star-on' : 'icon-star'}`}
                         onClick={this.handleFavClick}
+                        style={info.is_fav ?{color: colors.data[0].primary}:{}}
                       />
                     )}
                     {type === 'recommend' && (

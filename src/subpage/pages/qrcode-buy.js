@@ -8,7 +8,9 @@ import api from '@/api'
 import { pickBy, normalizeQuerys } from '@/utils'
 import S from '@/spx'
 import entry from '@/utils/entry'
-
+import {
+    customName
+  } from '@/utils/point';
 import '../../pages/member/qrcode-buy.scss'
 
 @connect(({ colors }) => ({
@@ -189,7 +191,7 @@ export default class QrcodeBuy extends Component {
                                 <View>{userInfo.username}</View>
                                 <View>{userInfo.user_card_code}</View>
                             </View>
-                            <View className='islogin_user_right'>积分</View>
+                            <View className='islogin_user_right'>{customName("积分")}</View>
                         </View>
                     </View>
                 </View>

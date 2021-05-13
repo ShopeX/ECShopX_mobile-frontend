@@ -37,7 +37,7 @@ export default class TradeList extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     const { status } = this.$router.params
     const tabIdx = this.state.tabList.findIndex(tab => tab.status === status)
 
@@ -65,7 +65,7 @@ export default class TradeList extends Component {
 
   onPullDownRefresh = () => {
     Tracker.dispatch("PAGE_PULL_DOWN_REFRESH");
- 
+
     Taro.showLoading({
       title: '加载中',
       icon: 'none',
@@ -80,11 +80,11 @@ export default class TradeList extends Component {
   }
 
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.hideLayer()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { tabList, curTabIdx } = this.state
 
     params = _mapKeys({
@@ -109,9 +109,9 @@ export default class TradeList extends Component {
       total_fee: 'total_fee',
       pay_type: 'pay_type',
       point: 'point',
-      order_class:'order_class',
-      freight_fee:'freight_fee',
-      freight_type:'freight_type', 
+      order_class: 'order_class',
+      freight_fee: 'freight_fee',
+      freight_type: 'freight_type',
       type: 'type',
       is_rate: 'is_rate',
       create_date: 'create_date',
@@ -177,12 +177,12 @@ export default class TradeList extends Component {
   handleClickItem = (trade) => {
     const { tid } = trade;
 
-    console.log("----handleClickItem----",trade)
+    console.log("----handleClickItem----", trade)
 
-    let url=`/subpage/pages/trade/detail?id=${tid}`;
+    let url = `/subpage/pages/trade/detail?id=${tid}`;
 
-    if(trade.order_class==="pointsmall"){
-      url+=`&type=pointitem`
+    if (trade.order_class === "pointsmall") {
+      url += `&type=pointitem`
     }
 
     Taro.navigateTo({
@@ -193,10 +193,10 @@ export default class TradeList extends Component {
   handleClickItemBtn = async (trade, type) => {
     const { tid } = trade
 
-    let detailUrl=`/subpage/pages/trade/detail?id=${tid}`;
+    let detailUrl = `/subpage/pages/trade/detail?id=${tid}`;
 
-    if(trade.order_class==="pointsmall"){
-      detailUrl+=`&type=pointitem`
+    if (trade.order_class === "pointsmall") {
+      detailUrl += `&type=pointitem`
     }
 
     if (type === 'confirm') {
@@ -206,7 +206,7 @@ export default class TradeList extends Component {
         url: fullPath
       })
       return
-    } 
+    }
 
     switch (type) {
       case 'cancel':
@@ -221,7 +221,7 @@ export default class TradeList extends Component {
         break
       case 'delivery':
         {
-          let { delivery_code, delivery_corp, delivery_corp_name, orders_delivery_id, delivery_type, is_all_delivery, tid, order_type} = trade
+          let { delivery_code, delivery_corp, delivery_corp_name, orders_delivery_id, delivery_type, is_all_delivery, tid, order_type } = trade
           if (is_all_delivery || delivery_type === 'old') {
             Taro.navigateTo({
               url: `/subpage/pages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name || delivery_corp}&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
@@ -235,7 +235,7 @@ export default class TradeList extends Component {
         break
       default:
         Taro.navigateTo({
-          url:detailUrl
+          url: detailUrl
         })
     }
   }
@@ -258,7 +258,7 @@ export default class TradeList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { curTabIdx, curItemActionsId, tabList, list = [], page, rateStatus } = this.state
 
@@ -270,19 +270,20 @@ export default class TradeList extends Component {
           fixed='true'
         />
         <AtTabs
-          className='trade-list__tabs'
+          className={`trade-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
+          customStyle={{color:colors.data[0].primary,backgroundColor:colors.data[0].primary}}
         >
           {
             tabList.map((panes, pIdx) =>
-              (<AtTabsPane
-                current={curTabIdx}
-                key={panes.status}
-                index={pIdx}
-              >
-              </AtTabsPane>)
+            (<AtTabsPane
+              current={curTabIdx}
+              key={panes.status}
+              index={pIdx}
+            >
+            </AtTabsPane>)
             )
           }
         </AtTabs>

@@ -9,7 +9,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { Price, SpImg,PointTag } from '@/components'
-
+import {
+  customName
+} from '@/utils/point';
 import './order-item.scss'
 
 export default class OrderItem extends Component {
@@ -91,7 +93,7 @@ export default class OrderItem extends Component {
                 : <Price className='order-item__price' value={info.price}></Price>
               } */}
               {
-                isPointitemGood?<Price className='order-item__price' appendText='积分' noSymbol noDecimal value={info.item_point||info.point}></Price>:<Price className='order-item__price' value={info.price}></Price>
+                isPointitemGood?<Price className='order-item__price' appendText={customName('积分')} noSymbol noDecimal value={info.item_point||info.point}></Price>:<Price className='order-item__price' value={info.price}></Price>
               }
               
               

@@ -8,7 +8,9 @@
  */
 import Taro ,{ Component } from '@tarojs/taro';
 import { View,Image } from '@tarojs/components';
-
+import {
+    customName
+  } from '@/utils/point';
 import './header.scss';
 
 
@@ -34,7 +36,7 @@ export default class Header extends Component{
                 <View class='name'>{username}</View>
                 <View class='score'>
                     <View class='score_num'>{point}</View>
-                    <View class='score_description'>积分</View>
+                    <View class='score_description'>{customName("积分")}</View>
                 </View>
             </View>
         )

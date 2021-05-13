@@ -11,8 +11,7 @@ const colors = createReducer(initState, {
       ...state,
       current
     }
-  }
-
+  } 
 })
 
 export default colors

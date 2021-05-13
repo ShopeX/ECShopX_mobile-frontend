@@ -79,7 +79,9 @@ export default class Home extends Component {
       showCloseBtn: false,
       // 是否有跳转至店铺页
       isGoStore: false,
-      show_tabBar: true
+      show_tabBar: true,
+      advertList: [],
+      currentShowAdvert: 0
     };
   }
 
@@ -112,6 +114,7 @@ export default class Home extends Component {
     this.checkWhite();
     // 购物车数量
     this.fetchCartCount();
+    this.getPointSetting();
   }
 
   // 配置信息
@@ -165,26 +168,26 @@ export default class Home extends Component {
   };
 
   // 分享
-  onShareAppMessage (params) {  
+  onShareAppMessage(params) {
     const shareInfo = this.shareInfo()
-    
+
     console.log("--onShareAppMessage--")
     Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-      from_type:params.from_type,
-      share_title:"分享给好友"
-    }); 
+      from_type: params.from_type,
+      share_title: "分享给好友"
+    });
     return {
       ...shareInfo
     };
   }
 
   // 分享朋友圈
-  onShareTimeline (params) {
-    const shareInfo = this.shareInfo('time') 
+  onShareTimeline(params) {
+    const shareInfo = this.shareInfo('time')
     Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-      from_type:params.from_type,
-      share_title:"分享到朋友圈"
-    }); 
+      from_type: params.from_type,
+      share_title: "分享到朋友圈"
+    });
     return {
       ...shareInfo
     };
@@ -214,6 +217,13 @@ export default class Home extends Component {
       shareInfo: res
     });
   };
+
+  //获取积分配置
+  getPointSetting=()=>{
+    api.pointitem.getPointSetting().then((pointRes)=>{ 
+      Taro.setStorageSync("custom_point_name", pointRes.name);
+    })
+  }
 
   // show显示初始化
   showInit = () => {
@@ -402,15 +412,14 @@ export default class Home extends Component {
 
   // 获取弹窗广告配置
   getAutoMatic = async () => {
-    const { is_open, ad_pic, ad_title } = await api.promotion.automatic({
-      register_type: "general"
+    const { general, membercard } = await api.promotion.automatic({
+      register_type: "all"
     });
+
+    let openAdvertList = [general, membercard].filter(item => item.is_open === 'true').map(item=>({adPic:item.ad_pic,title:item.ad_title})); 
+
     this.setState({
-      automatic: {
-        title: ad_title,
-        isOpen: is_open === "true",
-        adPic: ad_pic
-      }
+      advertList: openAdvertList
     });
   };
 
@@ -459,6 +468,7 @@ export default class Home extends Component {
       console.log(e);
     }
   }
+  
 
   // 跳转选择店铺
   goStore = () => {
@@ -468,7 +478,7 @@ export default class Home extends Component {
   };
 
   // 订阅错误事件
-  handleOfficialError = () => {};
+  handleOfficialError = () => { };
 
   // 关闭订阅公众号
   handleOfficialClose = () => {
@@ -519,12 +529,20 @@ export default class Home extends Component {
     });
   };
 
+  handleSwitchAdvert = (showIdx) => {
+     this.setState({
+       currentShowAdvert:++showIdx
+     })
+  };
+
   render() {
     const {
       show_tabBar,
       isShowAddTip,
       showBackToTop,
       automatic,
+      advertList,
+      currentShowAdvert,
       showAuto,
       featuredshop,
       wgts,
@@ -540,7 +558,8 @@ export default class Home extends Component {
     } = this.state;
 
     const pages = Taro.getCurrentPages()
-    console.log("-----curStore----",curStore)
+    console.log("-----advertList----", advertList)
+    console.log("-----currentShowAdvert----", currentShowAdvert)
 
     // 广告屏
     const { showAdv } = this.props;
@@ -600,25 +619,25 @@ export default class Home extends Component {
               mode="widthFix"
               onClick={this.handleClickShop.bind(this)}
             />)
-          } 
+          }
           {
-            automatic && automatic.isOpen && !S.getAuthToken() &&
+            advertList && advertList.length && !S.getAuthToken() &&
             (<FloatMenuItem
               iconPrefixClass="icon"
               icon="present"
-              onClick={this.handleAutoClick.bind(this)}
+              onClick={this.handleSwitchAdvert.bind(this,-1)}
             />
           )}
         </FloatMenus>
         {/* 浮窗广告 */}
-        {automatic && automatic.isOpen && !S.getAuthToken() && (
-          <Automatic
-            info={automatic}
-            isShow={showAuto}
+        {advertList && advertList.length && !S.getAuthToken() && advertList.map((item,index) => { 
+          return (<Automatic
+            info={item}
+            isShow={currentShowAdvert===index}
             onClick={this.handleGift.bind(this)}
-            onClose={this.handleAutoClick.bind(this)}
-          />
-        )}
+            onClose={this.handleSwitchAdvert.bind(this,index)}
+          />)
+        })}
         {/* 返回顶部 */}
         <BackToTop
           show={showBackToTop}

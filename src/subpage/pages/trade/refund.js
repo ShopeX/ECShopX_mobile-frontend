@@ -265,10 +265,11 @@ export default class TradeRefund extends Component {
     return (
       <View className='page-trade-refund'>
         <AtTabs
-          className='trade-refund__tabs'
+          className={`trade-refund__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
           current={curSegIdx}
           tabList={segTypes}
           onClick={this.handleClickTab}
+          customStyle={{color:colors.data[0].primary,backgroundColor:colors.data[0].primary}}
         >
           {
             segTypes.map((panes, pIdx) =>
