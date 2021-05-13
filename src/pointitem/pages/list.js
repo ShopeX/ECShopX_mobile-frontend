@@ -395,9 +395,9 @@ export default class List extends Component {
 
 
   handleClickItem = (item) => {
-    // if (item.goods_store == 0) {
-    //   return;
-    // }
+    if (item.goods_store == 0) {
+      return;
+    }
     const { item_id, title, market_price, price, img } = item;
     Tracker.dispatch("TRIGGER_SKU_COMPONENT", {
       goodsId: item_id,
