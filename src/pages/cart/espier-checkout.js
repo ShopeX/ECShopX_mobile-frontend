@@ -257,7 +257,12 @@ export default class CartCheckout extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.address !== this.props.address) {
+    const nextAddress = nextProps.address || {}
+    const selfAddress = this.props.address || {}
+    console.log('%c componentWillReceiveProps', 'font-size: 18px; color: red')
+    console.log(nextAddress)
+    console.log(selfAddress)
+    if (nextAddress.address_id !== selfAddress.address_id) {
       this.fetchAddress()
     }
     if (nextProps.zitiShop !== this.props.zitiShop) {
@@ -461,6 +466,7 @@ export default class CartCheckout extends Component {
         address_list[0] ||
         null;
     }
+
     this.props.onAddressChoose(address)
     this.handleAddressChange(address)
   }
@@ -816,7 +822,7 @@ export default class CartCheckout extends Component {
       express: receiptType !== 'ziti'
     }, () => {
       if (receiptType !== 'ziti') {
-        this.props.onAddressChoose(null)
+        this.fetchAddress()
       } else {
         this.calcOrder()
       }
@@ -837,6 +843,7 @@ export default class CartCheckout extends Component {
       zip: "postalCode",
       address: "adrdetail",
       area: "area",
+      address_id: "address_id",
       is_def: "is_def"
     });
     this.clearPoint();

@@ -60,7 +60,7 @@ $custabs: 80px;
     }
   }
   &-waitdeliver {
-    width: 100%;
+    margin: 0 20px 20px 20px;
     padding: 34px 58px 39px 30px;
     box-sizing: border-box;
     display: flex;
@@ -95,6 +95,7 @@ $custabs: 80px;
   }
   .ziti-content {
     padding: 50px 0;
+    margin: 0 20px 20px 20px;
     .ziti-qrcode {
       display: block;
       margin: 0 auto 50px;
@@ -130,8 +131,9 @@ $custabs: 80px;
     }
   }
   &-address {
-    width: 100%;
+    margin: 0 20px 20px 20px;
     padding: 30px;
+    border-radius: 6px;
     box-sizing: border-box;
     background: #fff;
     /*.trade-info {
@@ -139,9 +141,6 @@ $custabs: 80px;
       line-height: 36px;
       color: #999999;
     }*/
-    .trader-info-val {
-      //margin-left: 20px;
-    }
     .address-receive {
       display: flex;
       justify-content: flex-start;
@@ -163,23 +162,23 @@ $custabs: 80px;
     }
   }
   &-goods {
-    border-top: 14px solid #f6f6f6;
-    width: 100%;
+    margin: 0 20px;
     min-height: 100px;
     background: #fff;
+    border-radius: 6px 6px 0 0;
   }
   .order-item__pay-type {
     display: none;
   }
   .trade-money {
     box-sizing: border-box;
-    width: 100%;
     text-align: right;
     padding: 34px 38px;
+    margin: 0 20px 20px 20px;
     font-size: 26px;
     color: #5b5b5b;
-    border-top: 1px solid #ececec;
     background: #fff;
+    border-radius: 0 0 6px 6px;
     &__num {
       font-size: 36px;
       color: $color-brand-primary;
@@ -197,31 +196,24 @@ $custabs: 80px;
     }
   }
   &-info {
-    width: 100%;
+    margin: 20px 20px 0 20px;
     box-sizing: border-box;
     font-size: $font-size-small;
-    line-height: 1.5;
-    color: #999999;
-    border-top: 14px solid #f6f6f6;
-    padding: 42px 30px;
+    padding: 15px 20px;
     background: #fff;
-    .info-text {
-      display: block;
-      font-size: 24px;
-    }
-    .delivery_code_copy {
+    border-radius: 6px;
+    .line {
       display: flex;
       justify-content: space-between;
-      width: 100%;
-      .info-text {
-        flex: 1;
-        font-size: 24px;
+      align-items: center;
+      padding: 15px;
+      .left {
+        font-size: 30px;
+        color: #333;
       }
-      .info-text-btn {
-        font-size: 24px;
-        display: inline-block;
-        width: 120px;
-        text-align: right;
+      .right {
+        color: #333;
+        font-size: 26px;
       }
     }
     .icon-fuzhi {
@@ -229,6 +221,8 @@ $custabs: 80px;
     }
   }
   &-remark {
+    margin: 0 20px 20px 20px;
+    border-radius: 6px;
     padding-top: 21px;
     &__header {
       padding: 20px 30px;

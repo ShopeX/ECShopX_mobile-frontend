@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
-import { Loading, SpToast, NavBar, FloatMenuMeiQia } from '@/components'
+import { Loading, NavBar, FloatMenuMeiQia } from '@/components'
 import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { Tracker } from "@/service"
@@ -31,7 +31,7 @@ export default class TradeDetail extends Component {
       interval: null,
       webSocketIsOpen: false,
       restartOpenWebsoect: true,
-      selections:[],
+      // selections:[],
       scrollIntoView: 'order-0'
     }
   }
@@ -67,6 +67,7 @@ export default class TradeDetail extends Component {
       ss
     }
   }
+
   async fetch () {
     const { id } = this.$router.params
     const data = await api.trade.detail(id)
@@ -361,7 +362,9 @@ export default class TradeDetail extends Component {
 
   handleClickCopy = (val) => {
     copyText(val)
-    S.toast('复制成功')
+    Taro.showToast({
+      title: '复制成功'
+    })
   }
 
   countDownEnd = () => {
@@ -396,7 +399,9 @@ export default class TradeDetail extends Component {
         })
         task.onMessage((res) => {
           if (res.data === '401001') {
-            S.toast('未登录，请登录后再试')
+            Taro.showToast({
+              title: '未登录，请登录后再试'
+            })
             this.setState({
               webSocketIsOpen: false
             }, () => {
@@ -409,7 +414,9 @@ export default class TradeDetail extends Component {
           } else {
             const result = JSON.parse(res.data)
             if (result.status === 'success') {
-              S.toast('核销成功')
+              Taro.showToast({
+                title: '核销成功'
+              })              
               setTimeout(() => {
                 this.fetch()
               }, 700)
@@ -601,20 +608,20 @@ export default class TradeDetail extends Component {
               )}
           </View>
           {info.receipt_type === "ziti" && !info.is_logistics ? (
-            <View className="ziti-content">
+            <View className='ziti-content'>
               {info.status === "WAIT_SELLER_SEND_GOODS" &&
                 info.ziti_status === "PENDING" && (
                   <View>
-                    <Image className="ziti-qrcode" src={qrcode} />
+                    <Image className='ziti-qrcode' src={qrcode} />
                     {info.pickupcode_status && (
                       <View>
                         <View
-                          className="sendCode"
+                          className='sendCode'
                           onClick={this.sendCode.bind(this)}
                         >
                           发送提货码
                         </View>
-                        <View className="sendCodeTips">
+                        <View className='sendCodeTips'>
                           提货时请出告知店员提货验证码
                         </View>
                       </View>
@@ -628,15 +635,15 @@ export default class TradeDetail extends Component {
               </View>
             </View>
           ) : (
-              <View className="trade-detail-address">
-                <View className="address-receive">
+              <View className='trade-detail-address'>
+                <View className='address-receive'>
                   <Text>收货地址：</Text>
-                  <View className="info-trade">
-                    <View className="user-info-trade">
+                  <View className='info-trade'>
+                    <View className='user-info-trade'>
                       <Text>{info.receiver_name}</Text>
                       {!this.isPointitemGood() && <Text>{info.receiver_mobile}</Text>}
                     </View>
-                    <Text className="address-detail">
+                    <Text className='address-detail'>
                       {info.receiver_state}
                       {info.receiver_city}
                       {info.receiver_district}
@@ -686,45 +693,100 @@ export default class TradeDetail extends Component {
             </View>
           }
 
-          <View className="trade-money">
-            <View>总计：{this.isPointitemGood()?<Text className="trade-money__point">
-              {info.point} {customName("积分")} {(info.order_class==="pointsmall") && info.freight_fee!=0 && info.freight_fee>0 && info.freight_type!=="point" && <Text class="cash">+ {info.freight_fee}</Text>}
-            </Text>:<Text className="trade-money__num">￥{info.totalpayment}</Text>}</View>
+          <View className='trade-money'>
+            <View>总计：{this.isPointitemGood()?<Text className='trade-money__point'>
+              {info.point} {customName("积分")} {(info.order_class==='pointsmall') && info.freight_fee!=0 && info.freight_fee>0 && info.freight_type!=="point" && <Text class='cash'>+ {info.freight_fee}</Text>}
+            </Text>:<Text className='trade-money__num'>￥{ info.totalpayment }</Text>}</View>
           </View>
           {info.remark && (
-            <View className="trade-detail-remark">
-              <View className="trade-detail-remark__header">订单备注</View>
-              <View className="trade-detail-remark__body">{info.remark}</View>
+            <View className='trade-detail-remark'>
+              <View className='trade-detail-remark__header'>订单备注</View>
+              <View className='trade-detail-remark__body'>{ info.remark }</View>
             </View>
           )}
-          <View className="trade-detail-info">
-            <View className="info-text">
-              订单号：{info.tid}
-              <Text className='iconfont icon-fuzhi' onClick={this.copyOrderId.bind(this, info.tid)}></Text>
+          <View className='trade-detail-info'>
+            <View className='line'>
+              <View className='left'>订单号</View>
+              <View className='right'>
+                { info.tid }
+                <Text className='iconfont icon-fuzhi' onClick={this.copyOrderId.bind(this, info.tid)}></Text>
+              </View>
             </View>
-            <Text className="info-text">下单时间：{info.created_time_str}</Text>
-            {info.invoice_content ? (
-              <Text className="info-text">发票信息：{info.invoice_content}</Text>
-            ) : null}
-
-            <Text className="info-text">商品金额：{transformTextByPoint(this.isPointitemGood(),info.item_fee,info.item_point)}</Text>
-            {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
-            <Text className='info-text'>运费：{info.freight_type!=="point"?`¥ ${info.freight_fee}`:`${info.freight_fee*100}${customName("积分")}`}</Text>
-            {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
-            {!this.isPointitemGood() && <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>}
-            {/* {isDhPoint && (<Text className='info-text' space>支付：{info.point_use}积分 {' 积分支付'}</Text>)} */}
-            {info.point_use > 0 && (<Text className='info-text' space>{customName("积分支付")}：{info.point_use}{customName("积分")}，抵扣：¥{info.point_fee}</Text>)}
-            {isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>)}
-            {isHf && (<Text className='info-text' space>支付：¥{info.payment} {'微信支付'}</Text>)}
-            {!isDhPoint && !isDeposit && !isHf && (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>)}
+            <View className='line'>
+              <View className='left'>下单时间</View>
+              <View className='right'>
+                { info.created_time_str }
+              </View>
+            </View>
             {
-              info.delivery_code
-                ? <View className='delivery_code_copy'>
-                  <Text className='info-text'>物流单号：{info.delivery_code}</Text>
+              info.invoice_content && <View className='line'>
+                <View className='left'>发票信息</View>
+                <View className='right'>
+                  { info.invoice_content }
+                </View>
+              </View>
+            }
+            <View className='line'>
+              <View className='left'>商品金额</View>
+              <View className='right'>
+                { transformTextByPoint(this.isPointitemGood(),info.item_fee,info.item_point) }
+              </View>
+            </View>
+            <View className='line'>
+              <View className='left'>运费</View>
+              <View className='right'>
+                { info.freight_type!=="point"?`¥ ${info.freight_fee}`:`${info.freight_fee*100}${customName("积分")}` }
+              </View>
+            </View>
+            {
+              info.type == '1' && <View className='line'>
+                <View className='left'>税费</View>
+                <View className='right'>
+                  ￥{ info.total_tax }
+                </View>
+              </View>
+            }            
+            {
+              !this.isPointitemGood() && <View className='line'>
+                <View className='left'>优惠</View>
+                <View className='right'>
+                  -￥{ info.discount_fee }
+                </View>
+              </View>
+            }            
+            {
+              info.point_use > 0 && <View className='line'>
+                <View className='left'>{ customName("积分支付") }</View>
+                <View className='right'>
+                  { info.point_use}{customName("积分")}，抵扣：¥{info.point_fee }
+                </View>
+              </View>
+            }
+            {
+              isDeposit && <View className='line'>
+                <View className='left'>支付</View>
+                <View className='right'>
+                  ¥{info.payment} {' 余额支付'}
+                </View>
+              </View>
+            }
+            {
+              !isDhPoint && !isDeposit && <View className='line'>
+                <View className='left'>支付</View>
+                <View className='right'>
+                  ¥{info.payment} {'微信支付'}
+                </View>
+              </View>
+            }
+            {
+              info.delivery_code && <View className='line'>
+                <View className='left'>物流单号</View>
+                <View className='right'>
+                  <Text className='info-text'>{info.delivery_code}</Text>
                   <Text className='info-text-btn' onClick={this.handleClickDelivery.bind(this)}>查看物流</Text>
                   <Text className='info-text-btn' onClick={this.handleClickCopy.bind(this, info.delivery_code)}>复制</Text>
                 </View>
-                : null
+              </View>
             }
           </View>
         </ScrollView>
@@ -885,7 +947,6 @@ export default class TradeDetail extends Component {
             )}
           </View>
         )}
-        <SpToast></SpToast>
       </View>
     );
   }
