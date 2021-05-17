@@ -772,6 +772,7 @@ export default class CartCheckout extends Component {
       item_point,
       freight_type
     };
+ 
 
     let info = this.state.info;
     let pointInfo = this.state.pointInfo;
@@ -1306,7 +1307,8 @@ export default class CartCheckout extends Component {
     console.log("-----configCheckout-----",config) 
     try {  
       const { total } = this.state; 
-      const notNeedPay=total.freight_type==='cash' && total.total_fee===0;
+      const notNeedPay=total.freight_type==='cash' && !config.package;
+      
       let payRes; 
       if(!notNeedPay){
         Tracker.dispatch("ORDER_PAY", {
