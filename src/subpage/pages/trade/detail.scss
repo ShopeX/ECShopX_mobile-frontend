@@ -41,8 +41,9 @@ $custabs: 80px;
   }
   &-header {
     width: 100%;
-    min-height: 150px;
-    color: #ffffff;
+    padding: 30px 20px;
+    background: #c4c4c4;
+    margin-bottom: 20px;
     &__waitpay {
       text-align: center;
       font-size: 26px;
@@ -53,19 +54,24 @@ $custabs: 80px;
       }
     }
     .at-countdown__time {
-      color: #fff;
+      color: #333;
+      font-weight: bold;
     }
     .at-countdown__time-box {
       font-family: $font-family;
     }
   }
   &-waitdeliver {
-    margin: 0 20px 20px 20px;
-    padding: 34px 58px 39px 30px;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px 30px;
+    min-height: 120px;
+    align-items: center;
+    font-weight: bold;
     .oneline {
       width: 100%;
       margin-left: 23px;
@@ -94,8 +100,10 @@ $custabs: 80px;
     }
   }
   .ziti-content {
-    padding: 50px 0;
-    margin: 0 20px 20px 20px;
+    padding-top: 20px;
+    margin: 0 20px;
+    background: #fff;
+    border-radius: 6px 6px 0 0;
     .ziti-qrcode {
       display: block;
       margin: 0 auto 50px;
@@ -141,6 +149,40 @@ $custabs: 80px;
       line-height: 36px;
       color: #999999;
     }*/
+    .store {
+      display: flex;
+      &.border {
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 2px solid #ddd;
+      }
+      .storeName{
+        font-size: 32px;
+        color: #333;
+        font-weight: bold;
+      }
+      .storeAddress {
+        font-size: 28px;
+        color: #666;
+        margin-top: 24px;
+      }
+      .storeHour {
+        margin-top: 16px;
+        font-size: 24px;
+      }
+      .storeMobile {
+        font-size: 24px;
+        margin-top: 5px;
+      }
+      .title {
+        color: #999;
+      }
+    }
+    .icon-periscope {
+      margin-right: 10px;
+      font-size: 42px;
+      color: #999;
+    }      
     .address-receive {
       display: flex;
       justify-content: flex-start;
@@ -152,13 +194,18 @@ $custabs: 80px;
     }
     .user-info-trade {
       display: flex;
-      justify-content: space-between;
-      font-size: 22px;
-      line-height: 36px;
+      font-size: 28px;
+      color: #666;
+      align-items: center;
+      margin-top: 24px;
+      .receiverName {
+        margin-right: 20px;
+      }
     }
     .address-detail {
-      font-size: 22px;
-      color: #999999;
+      font-size: 32px;
+      color: #333;
+      font-weight: bold;
     }
   }
   &-goods {
@@ -166,6 +213,16 @@ $custabs: 80px;
     min-height: 100px;
     background: #fff;
     border-radius: 6px 6px 0 0;
+    .line {
+      display: flex;
+      padding: 20px;
+      font-size: 24px;
+      color: #333;
+      .fuzhi {
+        margin-left: 20px;
+        color: #28a1ff;
+      }
+    }
   }
   .order-item__pay-type {
     display: none;
@@ -173,7 +230,7 @@ $custabs: 80px;
   .trade-money {
     box-sizing: border-box;
     text-align: right;
-    padding: 34px 38px;
+    padding: 10px 38px;
     margin: 0 20px 20px 20px;
     font-size: 26px;
     color: #5b5b5b;
@@ -202,6 +259,7 @@ $custabs: 80px;
     padding: 15px 20px;
     background: #fff;
     border-radius: 6px;
+    margin-bottom: 20px;
     .line {
       display: flex;
       justify-content: space-between;
@@ -326,6 +384,65 @@ $custabs: 80px;
       border-radius: 30px;
       text-align: center;
       color: #fff;
+    }
+  }
+
+  // 同城配送
+  .dadaInfo {
+    margin: 0 20px 20px 20px;
+    background: #fff;
+    border-radius: 6px;
+    padding: 20px;
+    .name {
+      display: flex;
+      font-size: 32px;
+      color: #333;
+      padding-bottom: 24px;
+      align-items: center;
+      border-bottom: 2px solid #ddd;
+      .avatar {
+        width: 80px;
+        height: 80px;
+        margin-right: 30px;
+      }
+    }
+    .tip {
+      color: #999;
+      font-size: 24px;
+      padding-top: 15px;
+    }
+  }
+
+  // 取消理由
+  .cancelData {
+    margin: 0 20px 20px 20px;
+    background: #fff;
+    padding: 30px 20px;
+    display: flex;
+    .title {
+      flex-shrink: 0;
+    }
+    .reason {
+      margin-left: 10px;
+    }
+  }
+
+  // 商品样式重置
+  .detail-item {
+    padding: 0; 
+    .detail-item__title {
+      padding: 10px 0;
+    }
+    .order-item__bd {
+      margin-bottom: 0;
+    }
+    .order-item__ft {
+      position: relative;
+      display: block;
+      left: auto;
+      top: auto;
+      right: auto;
+      bottom: auto;
     }
   }
 }

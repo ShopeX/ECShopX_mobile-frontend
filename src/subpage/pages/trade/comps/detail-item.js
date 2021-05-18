@@ -3,16 +3,11 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { copyText } from '@/utils'
 import OrderItem from  '../../../../components/orderItem/order-item'
-import InputNumber from '@/components/input-number'
-import SpCheckbox from '@/components/checkbox'
 
 
 import './detail-item.scss'
 
 export default class DetailItem extends Component {
-  static options = {
-    addGlobalClass: true
-  }
 
   static defaultProps = {
     // customHeader: false
@@ -25,6 +20,10 @@ export default class DetailItem extends Component {
     // onClickBtn: () => {},
     // onClick: () => {}
     isPointitem:false
+  }
+
+  static options = {
+    addGlobalClass: true
   }
 
   // handleClickBtn (type) {
@@ -114,7 +113,7 @@ export default class DetailItem extends Component {
                     info.delivery_type=='old'&&(info.delivery_code
                     ? null
                     : item.delivery_code && 
-                    <AtButton
+                      <AtButton
                         circle
                         type='text'
                         size='small'
