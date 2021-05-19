@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/marketing/pages/member/userinfo.js
  * @Date: 2021-04-28 14:13:43
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-17 18:05:52
+ * @LastEditTime: 2021-05-19 17:35:55
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Input, View, Picker, Image } from '@tarojs/components'
@@ -33,7 +33,8 @@ export default class UserInfo extends Component {
       baseInfo: {
         sex: {
           name: '性别',
-          select: ['未知', '男', '女']
+          select: ['未知', '男', '女'],
+          required_message: '性别必填'
         },
         username: {
           name: '姓名'
@@ -263,7 +264,7 @@ export default class UserInfo extends Component {
       }
       if (item.is_open && item.is_required && !data[key]) {
         Taro.showToast({
-          title: item.required_message,
+          title: `请完善${item.name}`,
           icon: 'none'
         })
         return false
@@ -308,7 +309,7 @@ export default class UserInfo extends Component {
               <View className='right'>
                 {
                   isGetWxInfo
-                    ? <Input className='input' placeholder={`请输入${baseInfo.username.name}`} value={userInfo.username} onInput={this.handleInput.bind(this, 'username')} disabled={!baseInfo.username.is_edit} />
+                    ? <Input className='input' placeholder={baseInfo.username.required_message} value={userInfo.username} onInput={this.handleInput.bind(this, 'username')} disabled={!baseInfo.username.is_edit} />
                     : userInfo.username 
                 }
               </View>
@@ -326,10 +327,10 @@ export default class UserInfo extends Component {
                       onChange={this.pickerChange.bind(this, baseInfo.sex)}
                     >
                       <View className='picker'>
-                        { userInfo.sex || `请选择${baseInfo.sex.name}`}
+                        { userInfo.sex || baseInfo.sex.required_message }
                       </View>
                     </Picker>
-                    : `${userInfo.sex || '无信息'}`
+                    : `${userInfo.sex || baseInfo.sex.required_message}`
                 }
               </View>
             </View>
@@ -341,8 +342,8 @@ export default class UserInfo extends Component {
             formItems.map(item => <View key={item.key} className='item'>
               <View className='left'>{ item.name }</View>
               <View className='right'>
-                { item.field_type === 1 && <Input className='input' value={userInfo[item.key]} placeholder={`请输入${item.name}`} onInput={this.handleInput.bind(this, item.key)} disabled={!item.is_edit} /> }
-                { item.field_type === 2 && <Input className='input' value={userInfo[item.key]} type='number' max={item.range.end} min={item.range.start} placeholder={`请输入${item.name}`} onInput={this.handleInput.bind(this, item.key)} disabled={!item.is_edit} /> }
+                { item.field_type === 1 && <Input className='input' value={userInfo[item.key]} placeholder={item.required_message} onInput={this.handleInput.bind(this, item.key)} disabled={!item.is_edit} /> }
+                { item.field_type === 2 && <Input className='input' value={userInfo[item.key]} type='number' max={item.range.end} min={item.range.start} placeholder={item.required_message} onInput={this.handleInput.bind(this, item.key)} disabled={!item.is_edit} /> }
                 { 
                   item.field_type === 3 && <Picker
                     mode='date'
@@ -351,7 +352,7 @@ export default class UserInfo extends Component {
                     onChange={this.pickerChange.bind(this, item)}
                   >
                     <View className='picker'>
-                      { userInfo[item.key] || `请选择${item.name}` }
+                      { userInfo[item.key] || item.required_message }
                     </View>
                   </Picker> 
                 }
@@ -364,13 +365,13 @@ export default class UserInfo extends Component {
                     onChange={this.pickerChange.bind(this, item)}
                   >
                     <View className='picker'>
-                      { userInfo[item.key] || `请选择${item.name}` }
+                      { userInfo[item.key] || item.required_message }
                     </View>
                   </Picker>
                 }
                 {
                   item.field_type === 5 && <View onClick={this.handleShowCheckboxPanel.bind(this, item)}>
-                    { userInfo[item.key].length > 0 ? this.showCheckBoxItem(userInfo[item.key]) : `请选择${item.name}` }
+                    { userInfo[item.key].length > 0 ? this.showCheckBoxItem(userInfo[item.key]) : item.required_message }
                   </View>
                 }
               </View>
@@ -390,7 +391,7 @@ export default class UserInfo extends Component {
         {
           showCheckboxPanel
             ? <View className='mask' onClick={this.btnClick.bind(this, 'cancel')}>
-                <View className='checkBoxPanel'>
+                <View className='checkBoxPanel' onClick={e => e.stopPropagation()}>
                   <View className='panel-btns'>
                     <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>取消</View>
                     <View

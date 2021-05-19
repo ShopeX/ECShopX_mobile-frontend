@@ -31,6 +31,15 @@ export function newMarketing () {
   return req.get('/promotion/getMemberCard')
 }
 
+export function newlogin (params) {
+  const appid = getAppId()
+  return req.post('/new_login', {
+    ...params,
+    appid,
+    auth_type: 'wxapp'
+  }, { showError: false })
+}
+
 export function prelogin(params) {
   const appid = getAppId();
   return req.post("/prelogin", {

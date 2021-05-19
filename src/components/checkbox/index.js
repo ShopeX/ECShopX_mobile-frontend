@@ -42,9 +42,7 @@ export default class SpCheckbox extends Component {
   }
 
   handleClick = (e) => {
-    e.stopPropagation()
     if (this.props.disabled) return
-
     const isChecked = !this.state.isChecked
     this.setState({
       isChecked
