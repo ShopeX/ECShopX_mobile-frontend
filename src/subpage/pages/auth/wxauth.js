@@ -137,7 +137,7 @@ export default class WxAuth extends Component {
         params.uid = uid
       }
 
-      const { token } = await api.wx.login(params)
+      const { token } = await api.wx.newlogin(params)
       if (token) {
         S.setAuthToken(token)
         Taro.hideLoading()

@@ -27,6 +27,15 @@ export function login (params) {
   }, { showError: false })
 }
 
+export function newlogin (params) {
+  const appid = getAppId()
+  return req.post('/new_login', {
+    ...params,
+    appid,
+    auth_type: 'wxapp'
+  }, { showError: false })
+}
+
 export function prelogin(params) {
   const appid = getAppId();
   return req.post("/prelogin", {
