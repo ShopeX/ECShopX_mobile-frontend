@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/marketing/pages/member/userinfo.js
  * @Date: 2021-04-28 14:13:43
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-18 18:55:07
+ * @LastEditTime: 2021-05-19 17:35:55
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Input, View, Picker, Image } from '@tarojs/components'
@@ -391,7 +391,7 @@ export default class UserInfo extends Component {
         {
           showCheckboxPanel
             ? <View className='mask' onClick={this.btnClick.bind(this, 'cancel')}>
-                <View className='checkBoxPanel'>
+                <View className='checkBoxPanel' onClick={e => e.stopPropagation()}>
                   <View className='panel-btns'>
                     <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>取消</View>
                     <View
