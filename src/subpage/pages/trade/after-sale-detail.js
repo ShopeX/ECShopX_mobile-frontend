@@ -12,7 +12,7 @@ import AfterDetailItem from './comps/after-detail-item'
 import {
   customName
 } from '@/utils/point';
-import './detail.scss'
+import './after-sale-detail.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current
