@@ -42,6 +42,11 @@
     display: flex;
     //z-index: 999;
   }
+  .order-item__btn {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 30px;
+  }
   .order-flex {
     display: flex;
     align-items: center;

@@ -259,9 +259,6 @@ export default class CartCheckout extends Component {
   componentWillReceiveProps(nextProps) {
     const nextAddress = nextProps.address || {}
     const selfAddress = this.props.address || {}
-    console.log('%c componentWillReceiveProps', 'font-size: 18px; color: red')
-    console.log(nextAddress)
-    console.log(selfAddress)
     if (nextAddress.address_id !== selfAddress.address_id) {
       this.fetchAddress()
     }

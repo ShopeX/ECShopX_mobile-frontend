@@ -708,7 +708,7 @@ export default class TradeDetail extends Component {
             </View>
             {
               !info.is_logistics &&
-              (!isDhPoint && info.status === "WAIT_BUYER_PAY" ||
+              (info.status === "WAIT_BUYER_PAY" ||
               (info.status === "WAIT_SELLER_SEND_GOODS" && 
               info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL")) && <View
                 className='cancel__btn'
@@ -830,149 +830,151 @@ export default class TradeDetail extends Component {
             </View>
           }
         </ScrollView>
-        {
-          info.status !== 'TRADE_CLOSED' && <View className='trade-detail__footer'>
-            {
-              info.status === "WAIT_BUYER_PAY" && <Button
-                className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active'
-                type='primary'
-                loading={payLoading}
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                onClick={this.handleClickBtn.bind(this, "pay")}
-              >
-              立即支付
-            </Button>
-            }
-            {
-              (info.status === "WAIT_SELLER_SEND_GOODS" && info.can_apply_aftersales === 1) && 
+        <View className='trade-detail__footer'>
+          
+        </View>
+        { info.status === "WAIT_BUYER_PAY" && (
+              <View className="trade-detail__footer">
+                {
+                  !info.is_logistics && <Text
+                    className='trade-detail__footer__btn'
+                    onClick={this.handleClickBtn.bind(this, "cancel",1)}
+                  >
+                    取消订单
+                  </Text>
+                }
                 <Button
-                  className='trade-detail__footer__btn'
-                  // style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, "aftersales")}
-                >
-                  申请售后
-                </Button>
-            }
-          </View>
-        }
-        {!isDhPoint && info.status === "WAIT_SELLER_SEND_GOODS" && (
-          <View className='trade-detail__footer'>
-            {info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL" && !info.is_logistics && (
-              <Text
-                className='trade-detail__footer__btn'
-                onClick={this.handleClickBtn.bind(this, "cancel")}
-              >
-                取消订单
-              </Text>
-            )}
-            {
-              info.can_apply_aftersales === 1 && (
-                <Button
-                  className='trade-detail__footer__btn'
-                  // style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, "aftersales")}
-                >
-                  申请售后
-                </Button>
-              )
-            }
-            {
-              (info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL" && !info.is_logistics) 
-              ? <Text
-                className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_status_des === "PAYED_WAIT_PROCESS"
-                    ? "trade-detail__footer_allWidthBtn"
-                    : ""
-                  }`}
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
-                onClick={this.handleClickBtn.bind(this, "home")}
-              >
-              继续购物
-            </Text>
-            : <Text
-              className={`trade-detail__footer__btn trade-detail__footer_active ${(info.order_status_des === "PAYED_WAIT_PROCESS" || info.can_apply_aftersales !== 1 )
-                  ? "trade-detail__footer_allWidthBtn"
-                  : ""
-                }`}
-              style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, "home")}
-            >
-              继续购物
-            </Text>
-            }
-            
-          </View>
-        )}
-        {isDhPoint && info.status === "WAIT_SELLER_SEND_GOODS" && (
-          <View className='trade-detail__footer'>
-            <Text
-              className='trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active'
-              style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, "home")}
-            >
-              继续购物
-            </Text>
-          </View>
-        )}
-        {info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
-          <View className='trade-detail__footer'>
-            {
-              info.can_apply_aftersales === 1 && (
-                <Button
-                  className={`trade-detail__footer__btn ${info.is_logistics && 'trade-detail__footer_active trade-detail__footer_allWidthBtn'}`}
-                  style={`background: ${ info.is_logistics ? colors.data[0].primary : '#fff'}; border-color: $${ info.is_logistics ? colors.data[0].primary : '#fff'}`}
-                  onClick={this.handleClickBtn.bind(this, "aftersales")}
-                >
-                  申请售后
-                </Button>
-              )
-            }
-            {
-              !info.is_logistics && <Text
-                className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                onClick={this.handleClickBtn.bind(this, "confirm")}
-              >
-                确认收货
-              </Text>
-            }
-          </View>
-        )}
-        {info.status === 'TRADE_SUCCESS' && (
-          <View className='trade-detail__footer'>
-            {
-              info.can_apply_aftersales === 1 && (
-                <Button
-                  className='trade-detail__footer__btn'
-                  onClick={this.handleClickBtn.bind(this, "aftersales")}
-                >
-                  申请售后
-                </Button>
-              )
-            }
-            {meiqia.is_open === "true" || echat.is_open === 'true' ? (
-              <View 
-                className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-              >
-                <FloatMenuMeiQia
-                  storeId={info.distributor_id}
-                  info={{ orderId: info.order_id }}
-                  isFloat={false}
-                >
-                    联系客服
-                </FloatMenuMeiQia>
-              </View>
-            ) : (
-                <Button
-                  openType='contact'
-                  className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
+                  className="trade-detail__footer__btn trade-detail__footer_active"
+                  type="primary"
                   style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  loading={payLoading}
+                  onClick={this.handleClickBtn.bind(this, "pay")}
                 >
-                  联系客服
+                  立即支付
                 </Button>
-              )}
-          </View>
-        )}
+              </View>
+            )}
+            {isDhPoint && info.status === "WAIT_BUYER_PAY" && (
+              <View className="trade-detail__footer">
+                <Button
+                  className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active"
+                  type="primary"
+                  loading={payLoading}
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  onClick={this.handleClickBtn.bind(this, "pay")}
+                >
+                  立即支付
+                </Button>
+              </View>
+            )}
+            {info.status === "WAIT_SELLER_SEND_GOODS" && (
+              <View className="trade-detail__footer">
+                {info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL" && !info.is_logistics && (
+                  <Text
+                    className="trade-detail__footer__btn"
+                    onClick={this.handleClickBtn.bind(this, "cancel",111)}
+                  >
+                    取消订单
+                  </Text>
+                )}
+                {
+                  info.can_apply_aftersales === 1 && (
+                    <Button
+                      className='trade-detail__footer__btn'
+                      // style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                      onClick={this.handleClickBtn.bind(this, "aftersales")}
+                    >
+                      申请售后
+                    </Button>
+                  )
+                }
+                {
+                  (info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL" && !info.is_logistics) 
+                  ? <Text
+                    className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_status_des === "PAYED_WAIT_PROCESS"
+                        ? "trade-detail__footer_allWidthBtn"
+                        : ""
+                      }`}
+                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
+                    onClick={this.handleClickBtn.bind(this, "home")}
+                  >
+                  继续购物
+                </Text>
+                : <Text
+                  className={`trade-detail__footer__btn trade-detail__footer_active ${(info.order_status_des === "PAYED_WAIT_PROCESS" || info.can_apply_aftersales !== 1 )
+                      ? "trade-detail__footer_allWidthBtn"
+                      : ""
+                    }`}
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  onClick={this.handleClickBtn.bind(this, "home")}
+                >
+                  继续购物
+                </Text>
+                }
+                
+              </View>
+            )}
+            {info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
+              <View className="trade-detail__footer">
+                {
+                  info.can_apply_aftersales === 1 && (
+                    <Button
+                      className={`trade-detail__footer__btn ${info.is_logistics && 'trade-detail__footer_active trade-detail__footer_allWidthBtn'}`}
+                      style={`background: ${ info.is_logistics ? colors.data[0].primary : '#fff'}; border-color: $${ info.is_logistics ? colors.data[0].primary : '#fff'}`}
+                      onClick={this.handleClickBtn.bind(this, "aftersales")}
+                    >
+                      申请售后
+                    </Button>
+                  )
+                }
+                {
+                  !info.is_logistics && <Text
+                    className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
+                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                    onClick={this.handleClickBtn.bind(this, "confirm")}
+                  >
+                    确认收货
+                  </Text>
+                }
+              </View>
+            )}
+            {info.status === "TRADE_SUCCESS" && (
+              <View className='trade-detail__footer'>
+                {
+                  info.can_apply_aftersales === 1 && (
+                    <Button
+                      className='trade-detail__footer__btn'
+                      // style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                      onClick={this.handleClickBtn.bind(this, "aftersales")}
+                    >
+                      申请售后
+                    </Button>
+                  )
+                }
+                {meiqia.is_open === "true" || echat.is_open === 'true' ? (
+                  <View 
+                    className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
+                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  >
+                    <FloatMenuMeiQia
+                      storeId={info.distributor_id}
+                      info={{ orderId: info.order_id }}
+                      isFloat={false}
+                    >
+                        联系客服
+                    </FloatMenuMeiQia>
+                  </View>
+                ) : (
+                    <Button
+                      openType='contact'
+                      className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
+                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                    >
+                      联系客服
+                    </Button>
+                  )}
+              </View>
+            )}
       </View>
     );
   }

@@ -108,7 +108,7 @@ export default class DetailItem extends Component {
                 isPointitemGood={isPointitem}
               />
               {
-                !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>
+                !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__btn'>
                 {
                     info.delivery_type=='old'&&(info.delivery_code
                     ? null
@@ -123,40 +123,18 @@ export default class DetailItem extends Component {
                       查看物流
                       </AtButton> )                  
                   }
-                  <View>
-                    
-                  </View>
                   {
                     (item.show_aftersales === 1) && (
-                      <AtButton
-                      circle
-                      type='primary'
-                      size='small'
-                      onClick={this.handleClickAfterSale.bind(this, item)}
-                    >
-                      售后详情
-                      {/* {
-                        (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
-                      } */}
-                    </AtButton>  
-                    )
-                  }
-                  
-                  {/* {
-                    ((info.is_all_delivery && info.status !== 'WAIT_SELLER_SEND_GOODS' || !info.is_all_delivery)&& info.latest_aftersale_time >= 0 &&item.aftersales_status !== 'CLOSED') && (info.is_all_delivery || (!info.is_all_delivery && item.delivery_status === 'DONE'))  &&
                       <AtButton
                         circle
                         type='primary'
                         size='small'
                         onClick={this.handleClickAfterSale.bind(this, item)}
                       >
-                        {
-                          (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
-                        }
-                      </AtButton>   
-
-                  } */}
-              
+                      售后详情
+                    </AtButton>  
+                    )
+                  }
                 </View>
               }
             </View>
