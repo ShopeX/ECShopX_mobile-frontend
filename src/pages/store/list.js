@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/pages/store/list.js
  * @Date: 2021-05-06 17:14:15
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-13 15:20:15
+ * @LastEditTime: 2021-05-20 09:52:07
  */
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Picker, Input, Image } from '@tarojs/components'
@@ -79,7 +79,7 @@ export default class StoreList extends Component {
     if (isUseDeliveryInfo) {
       const { province = '', city = '', county = '' } = deliveryInfo
       query.province = province
-      query.city = city === '市辖区' && province
+      query.city = (city === '市辖区' || !city) ? province : city
       query.area = county
     }
     query.from_default_address = isUseDeliveryInfo ? 1 : 0 
