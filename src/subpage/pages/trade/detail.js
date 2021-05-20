@@ -582,10 +582,10 @@ export default class TradeDetail extends Component {
             </View>
           </View>
           {
-            (info.dada && info.dada.id && (info.dada.dada_status > 0 && info.dada.dada_status < 5)) && <View className='dadaInfo'>
+            (info.dada && info.dada.id && (info.dada.dada_status > 1 && info.dada.dada_status < 5)) && <View className='dadaInfo'>
               <View className='name'>
                 <Image src='https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4264181808,2128553240&fm=26&gp=0.jpg' mode='aspectFill' className='avatar' />
-                <View>骑手：赵照兆</View>
+                <View>骑手：{ info.dada.dm_name } </View>
               </View>
               <View className='tip'>本单由达达同城为您服务</View>
             </View>
@@ -732,7 +732,7 @@ export default class TradeDetail extends Component {
                 { info.created_time_str }
               </View>
             </View>
-            <View className='line'>
+            {/* <View className='line'>
               <View className='left'>取货时间</View>
               <View className='right'>
                 { info.created_time_str }
@@ -749,7 +749,7 @@ export default class TradeDetail extends Component {
               <View className='right'>
                 { info.created_time_str }
               </View>
-            </View>            
+            </View>             */}
             {
               info.invoice_content && <View className='line'>
                 <View className='left'>发票信息</View>
