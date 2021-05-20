@@ -4,8 +4,14 @@ export function memberInfo () {
   return req.get('/member')
 }
 
+// 修改用户信息
 export function setMemberInfo (params = {}) {
   return req.put('/member', params)
+}
+
+// 更新会员手机号
+export function setMemberMobile (params = {}) {
+  return req.put('/member/mobile', params)
 }
 
 export function pointDetail () {

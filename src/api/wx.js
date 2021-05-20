@@ -1,11 +1,12 @@
 import Taro from '@tarojs/taro'
 import req from './req'
+import { getYoushuAppid } from '@/utils/youshu'
 
 const getAppId = () => {
   const { appid } = wx.getExtConfigSync? wx.getExtConfigSync(): {}
   return appid
 }
-
+  
 export function info (data) {
   return req.post('/wx.info', data)
 }
@@ -14,9 +15,18 @@ export function code (code) {
   return req.get('/wx.code', { code })
 }
 
+export function getYoushuOpenid (params) {
+  return req.post('/getopenid', {
+    ...params, 
+    appid:getYoushuAppid()
+  }, { showError: false })
+}
+
 export function userInfo () {
   return req.get('/wx.user.info')
 }
+
+
 
 export function login (params) {
   const appid = getAppId()
@@ -29,6 +39,15 @@ export function login (params) {
 
 export function newMarketing () {
   return req.get('/promotion/getMemberCard')
+}
+
+export function newlogin (params) {
+  const appid = getAppId()
+  return req.post('/new_login', {
+    ...params,
+    appid,
+    auth_type: 'wxapp'
+  }, { showError: false })
 }
 
 export function prelogin(params) {

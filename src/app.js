@@ -277,7 +277,8 @@ class App extends Component {
           "pages/auth/pclogin",
           "pages/auth/store-reg",
           // 编辑分享
-          'pages/editShare/index'
+          'pages/editShare/index',
+          'pages/auth/bindPhone'
         ]
       },
       // 团购

@@ -1,7 +1,7 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, ScrollView, Text, Image, Button } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
-import { SpToast, TabBar, SpCell, AccountOfficial } from "@/components";
+import { TabBar, SpCell, AccountOfficial } from "@/components";
 // import ExclusiveCustomerService from './comps/exclusive-customer-service'
 import api from "@/api";
 import S from "@/spx";
@@ -77,6 +77,12 @@ export default class MemberIndex extends Component {
   }
 
   componentDidMount() {
+  }
+
+  componentDidShow() {
+    if (S.getAuthToken()) {
+      this.getSalesperson();
+    }
     let sys = Taro.getSystemInfoSync();
     console.log("member - Taro.getSystemInfoSync().environment", sys);
     sys.environment == "wxwork" &&
@@ -87,19 +93,11 @@ export default class MemberIndex extends Component {
       backgroundColor: colors.data[0].marketing,
       frontColor: '#ffffff'
     })
-   
     this.fetch()
     this.getWheel()
     this.fetchBanner()
     this.fetchRedirect()
     this.getDefaultImg()
-    
-  }
-
-  componentDidShow() {
-    if (S.getAuthToken()) {
-      this.getSalesperson();
-    }
     this.getSettingCenter()
     this.getConfigPointitem()
   }
@@ -254,7 +252,10 @@ export default class MemberIndex extends Component {
   handleClickRecommend = async () => {
     const { info } = this.state;
     if (!info.is_open_popularize) {
-      S.toast("未开启推广");
+      Taro.showToast({
+        title: '未开启推广',
+        icon: 'none'
+      })
       return;
     }
 
@@ -267,11 +268,15 @@ export default class MemberIndex extends Component {
     });
   };
 
-  handleClick = url => {
-    // if (!S.getAuthToken()) {
-    //   return S.toast('请先登录')
-    // }
-    Taro.navigateTo({ url });
+  handleClick = (url, isLogin = false) => {
+    if (!S.getAuthToken() && isLogin) {
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return false
+    }
+    Taro.navigateTo({ url })
   };
   handleListClick = e => {
     e.stopPropagation();
@@ -281,7 +286,11 @@ export default class MemberIndex extends Component {
   };
   handleTradePickClick = () => {
     if (!S.getAuthToken()) {
-      return S.toast("请先登录");
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return false
     }
     Taro.navigateTo({
       url: "/subpage/pages/trade/customer-pickup-list"
@@ -334,7 +343,11 @@ export default class MemberIndex extends Component {
 
   handleTradeClick = type => {
     if (!S.getAuthToken()) {
-      return S.toast("请先登录");
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return false
     }
     Taro.navigateTo({
       url: `/subpage/pages/trade/list?status=${type}`
@@ -343,7 +356,11 @@ export default class MemberIndex extends Component {
 
   handleTradeDrugClick = () => {
     if (!S.getAuthToken()) {
-      return S.toast("请先登录");
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return false
     }
     Taro.navigateTo({
       url: "/subpage/pages/trade/drug-list"
@@ -351,12 +368,16 @@ export default class MemberIndex extends Component {
   };
 
   handleLoginClick = () => {
-    S.login(this, true);
+    S.login(this, false);
   };
 
   viewAftersales = () => {
     if (!S.getAuthToken()) {
-      return S.toast("请先登录");
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return false
     }
     Taro.navigateTo({
       url: `/subpage/pages/trade/after-sale`
@@ -387,7 +408,7 @@ export default class MemberIndex extends Component {
         path: redirectInfo.data.info_page
       });
     } else {
-      this.handleClick("/marketing/pages/member/userinfo");
+      this.handleClick("/marketing/pages/member/userinfo", true);
     }
   };
 
@@ -471,7 +492,8 @@ export default class MemberIndex extends Component {
                   className="view-flex-item"
                   onClick={this.handleClick.bind(
                     this,
-                    "/marketing/pages/member/coupon"
+                    "/marketing/pages/member/coupon",
+                    true
                   )}
                 >
                   <View className="member-assets__label">优惠券</View>
@@ -493,7 +515,8 @@ export default class MemberIndex extends Component {
                     className="view-flex-item"
                     onClick={this.handleClick.bind(
                       this,
-                      `/others/pages/recharge/index`
+                      `/others/pages/recharge/index`,
+                      true
                     )}
                   >
                     <View className="member-assets__label">储值</View>
@@ -506,7 +529,8 @@ export default class MemberIndex extends Component {
                   className="view-flex-item"
                   onClick={this.handleClick.bind(
                     this,
-                    "/pages/member/item-fav"
+                    "/pages/member/item-fav",
+                    true
                   )}
                 >
                   <View className="member-assets__label">收藏</View>
@@ -537,7 +561,8 @@ export default class MemberIndex extends Component {
                 className="member-card"
                 onClick={this.handleClick.bind(
                   this,
-                  "/subpage/pages/vip/vipgrades"
+                  "/subpage/pages/vip/vipgrades",
+                  true
                 )}
               >
                 {vipgrade.is_open && !vipgrade.is_vip && (
@@ -735,7 +760,8 @@ export default class MemberIndex extends Component {
                     img={require("../../assets/imgs/group.png")}
                     onClick={this.handleClick.bind(
                       this,
-                      "/marketing/pages/member/group-list"
+                      "/marketing/pages/member/group-list",
+                      true
                     )}
                   ></SpCell>
                 )}
@@ -746,7 +772,8 @@ export default class MemberIndex extends Component {
                     img={require("../../assets/imgs/group.png")}
                     onClick={this.handleClick.bind(
                       this,
-                      "/groupBy/pages/orderList/index"
+                      "/groupBy/pages/orderList/index",
+                      true
                     )}
                   ></SpCell>
                 )}
@@ -761,7 +788,8 @@ export default class MemberIndex extends Component {
                     img={require("../../assets/imgs/group.png")}
                     onClick={this.handleClick.bind(
                       this,
-                      "/boost/pages/home/index"
+                      "/boost/pages/home/index",
+                      true
                     )}
                   ></SpCell>
                 )}
@@ -772,7 +800,8 @@ export default class MemberIndex extends Component {
                     img={require("../../assets/imgs/group.png")}
                     onClick={this.handleClick.bind(
                       this,
-                      "/boost/pages/order/index"
+                      "/boost/pages/order/index",
+                      true
                     )}
                   ></SpCell>
                 )}
@@ -785,7 +814,8 @@ export default class MemberIndex extends Component {
                 img={require("../../assets/imgs/group.png")}
                 onClick={this.handleClick.bind(
                   this,
-                  "/others/pages/bindOrder/index"
+                  "/others/pages/bindOrder/index",
+                  true
                 )}
               ></SpCell>
             )}
@@ -798,7 +828,8 @@ export default class MemberIndex extends Component {
                   img={require("../../assets/imgs/group.png")}
                   onClick={this.handleClick.bind(
                     this,
-                    "/marketing/pages/member/complaint-record"
+                    "/marketing/pages/member/complaint-record",
+                    true
                   )}
                 ></SpCell>
               )}
@@ -809,7 +840,8 @@ export default class MemberIndex extends Component {
                 img={require("../../assets/imgs/buy.png")}
                 onClick={this.handleClick.bind(
                   this,
-                  "/marketing/pages/member/item-activity"
+                  "/marketing/pages/member/item-activity",
+                  true
                 )}
               ></SpCell>
             )}
@@ -818,7 +850,7 @@ export default class MemberIndex extends Component {
                 title={customName("积分商城")}
                 isLink
                 img={require('../../assets/imgs/score.png')}
-                onClick={this.handleClick.bind(this, '/pointitem/pages/list')}
+                onClick={this.handleClick.bind(this, '/pointitem/pages/list', true)}
               > 
               </SpCell>
             }
@@ -850,7 +882,8 @@ export default class MemberIndex extends Component {
               isLink
               onClick={this.handleClick.bind(
                 this,
-                "/marketing/pages/member/address"
+                "/marketing/pages/member/address",
+                true
               )}
             ></SpCell>
             <SpCell
@@ -864,7 +897,8 @@ export default class MemberIndex extends Component {
                 isLink
                 onClick={this.handleClick.bind(
                   this,
-                  "/marketing/pages/member/setting"
+                  "/marketing/pages/member/setting",
+                  false
                 )}
               ></SpCell>
             )}
@@ -874,15 +908,14 @@ export default class MemberIndex extends Component {
               className="wheel-to"
               onClick={this.handleClick.bind(
                 this,
-                "/marketing/pages/wheel/index"
+                "/marketing/pages/wheel/index",
+                true
               )}
             >
               <Image src="/assets/imgs/wheel_modal_icon.png" />
             </View>
           ) : null}
         </ScrollView>
-        <SpToast />
-
         <TabBar />
       </View>
     );

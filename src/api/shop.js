@@ -18,3 +18,19 @@ export function homeSetting (params = {
 }) {
   return req.get('common/setting', params)
 }
+
+// 总店店铺信息及协议
+export function getStoreBaseInfo (params = {}) {
+  return req.get('/shops/info', params)
+}
+
+
+// 协议信息获取
+export function getRuleInfo (params = {}) {
+  return req.get('/shops/protocol', params)
+}
+
+// 获取总店信息
+export function getHeadquarters (params = {}) {
+  return req.get('/distributor/self', params)
+}

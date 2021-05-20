@@ -1,92 +1,152 @@
 @import "@/style/imports";
 
-.auth-login {
-  height: 100vh;
-  //padding-top: 160px;
-  background: $color-brand-primary-text;
-  &__reg {
-    padding: $edge-size;
-    text-align: right;
-    box-sizing: border-box;
-  }
-  &__form {
-    padding: $edge-size;
-    margin: 0 0 $edge-margin;
-    .avatar-user {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      opacity: 0.3;
-      border-bottom: 1px solid rgba($color-brand-primary, 0.2);
-      margin-bottom: 20px;
-      .avatar-user-text {
-        width: 170px;
-      }
-    }
-    .at-image-picker {
-      height: 150px;
-      width: 150px;
-    }
-    .picker {
-      padding: 16px 0;
-      margin: 0 0 $edge-size;
-      display: flex;
-      justify-content: flex-start;
-      border-bottom: 1px solid rgba($color-brand-primary, 0.2);
-      &__title {
-        font-size: $font-size;
-        margin-right: 16px;
-        width: 172px;
-      }
-      .pick-value {
-        color: #333;
-      }
-      span.pick-value-null {
-        color: #ccc;
-      }
-      text.pick-value-null {
-        color: #808080;
-      }
-    }
-  }
+$btnsHeight: 120px;
+
+page {
+  width: 100%;
+  height: 100%;
 }
 
 .page-member-setting {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  padding-bottom: $btnsHeight;
   /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
+  height: 100vh;
   /*  #endif  */
-  .checkBoxPanel {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    bottom: 0;
-    background: #ffffff;
-    height: 600px;
-    z-index: $z-index-modal;
-    display: flex;
-    flex-direction: column;
-    &-content {
-      padding: 40px;
-      flex: 1;
-      overflow: scroll;
+  .baseInfo, .basicInfo {
+    background: #fff;
+    color: #666;
+    .title {
+      font-size: 30px;
+      color: #333;
+      padding: 40px 50px;
     }
-    &-item {
-      height: 50px;
-      line-height: 50px;
-    }
-    .panel-btns {
-      box-shadow: 0 2px 2px 2px #808080;
-      width: 100%;
-      .panel-btn {
-        height: 80px;
-        line-height: 80px;
-        display: inline-block;
-        text-align: center;
-        width: 50%;
+    .item {
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      line-height: normal;
+      overflow: hidden;
+      .right {
+        flex-shrink: 0;
+        max-width: 60%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
-      .require-btn {
-        background: $color-price;
-        color: #ffffff;
+      .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+        border: 1px solid #dfdfdf;
+      }
+      .picker {
+        padding: 0;
+      }
+      .input {
+        background: #fff;
+        text-align: right;
+        border: none;
+        padding: 0;
+        font-size: 28px;
+      }
+    }
+  }
+  .basicInfo {
+    margin-top: 30px;
+  }
+  .btns {
+    width: 100%;
+    height: $btnsHeight;
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 0 50px;
+    overflow: hidden;
+    .btn {
+      width: 430px;
+      height: 80px;
+      flex-shrink: 0;
+      line-height: 80px;
+      text-align: center;
+      border-radius: 40px;
+      color: #333;
+      border: 2px solid #bbb;
+      &.loginOut {
+        width: 396px;
+        padding-right: 176px;
+        position: relative;
+        z-index: 9;
+        background: #fff;
+      }
+      &.save {
+        color: #fff;
+        border: none;
+        position: relative;
+        z-index: 99;
+        transform: translateX(-176px);
+      }
+    }
+  }
+  .btnContent {
+    width: 100%;
+    .content {
+      .getInfoBtn {
+        background: initial;
+        font-size: 28px;
+        outline: none;
+        color: #666;
+        padding: 0;
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
+  .mask {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba($color: #000000, $alpha: 0.5);
+    .checkBoxPanel {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      background: #ffffff;
+      height: 600px;
+      z-index: $z-index-modal;
+      display: flex;
+      flex-direction: column;
+      &-content {
+        padding: 0 40px 40px 40px;
+        flex: 1;
+        overflow: auto;
+        .sp-checkbox__wrap {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-direction: row-reverse;
+        }
+      }
+      &-item {
+        height: 50px;
+        line-height: 50px;
+      }
+      .panel-btns {
+        display: flex;
+        width: 100%;
+        padding: 20px;
+        justify-content: space-between;
       }
     }
   }

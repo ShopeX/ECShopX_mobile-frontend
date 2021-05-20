@@ -1,26 +1,54 @@
 @import "@/style/imports";
 
 .store-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 20px;
+  // display: flex;
+  // align-items: center;
+  padding: 24px 30px;
   background: #fff;
+  position: relative;
+  overflow: hidden;
+  z-index: 999;
+  &::after {
+    content: '';
+    position: absolute;
+    width: calc(100% - 60px);
+    height: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    margin: 0 auto;
+    border-bottom: 2px solid #efefef;
+  }
   .store-content {
-    padding-right: 20px;
     flex: 1;
-    border-right: 1px solid #dddddd;
     display: flex;
+    overflow: hidden;
     &_left {
       flex: 1;
-    }
-    &_distance {
-      flex-basis: 100px;
-      color: #222222;
-      font-size: 20px;
+      overflow: hidden;
     }
     .store-name {
       font-size: 32px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      .store-content_distance {
+        font-size: 24px;
+        height: 33px;
+        line-height: 33px;
+        color: #f4811f;
+        padding: 0 5px;
+        border-radius: 6px;
+        margin-right: 10px;
+        border: 2px solid #f4811f;
+      }
+      .name {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
     .store-address {
       font-size: $font-size-small;
@@ -30,5 +58,7 @@
   .store-location {
     font-size: 46px;
     color: $color-gray;
+    flex-shrink: 0;
+    height: auto;
   }
 }

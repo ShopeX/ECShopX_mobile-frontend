@@ -42,8 +42,8 @@ export function regSmsCode(params = {}) {
   return req.get("/member/sms/code", params);
 }
 
-export function regParam() {
-  return req.get("/member/setting");
+export function regParam(params) {
+  return req.get("/member/setting", params);
 }
 
 export function info() {

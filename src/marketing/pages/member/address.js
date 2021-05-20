@@ -146,12 +146,12 @@ export default class AddressIndex extends Component {
         {
           is_open_crmAddress 
           ? <SpCell
-          isLink
-          iconPrefix='sp-icon'
-          icon='weixin'
-          title='获取CRM收货地址'
-          onClick={this.crmAddress.bind(this)}
-        />
+            isLink
+            iconPrefix='sp-icon'
+            icon='weixin'
+            title='获取CRM收货地址'
+            onClick={this.crmAddress.bind(this)}
+          />
         :null
         }
 

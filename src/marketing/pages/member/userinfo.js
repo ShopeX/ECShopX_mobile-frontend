@@ -1,13 +1,22 @@
+/*
+ * @Author: PrendsMoi
+ * @GitHub: https://github.com/PrendsMoi
+ * @Blog: https://liuhgxu.com
+ * @Description: 说明
+ * @FilePath: /unite-vshop/src/marketing/pages/member/userinfo.js
+ * @Date: 2021-04-28 14:13:43
+ * @LastEditors: PrendsMoi
+ * @LastEditTime: 2021-05-20 16:31:00
+ */
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Picker } from '@tarojs/components'
-import {AtButton, AtForm, AtInput, AtAvatar} from 'taro-ui'
-import { NavBar, SpToast, SpCheckbox } from '@/components'
+import { Input, View, Picker, Image } from '@tarojs/components'
+import { NavBar, SpCheckbox } from '@/components'
 import api from '@/api'
-import { withLogin } from '@/hocs'
-import S from '@/spx'
-import azureUploader from '@/utils/azure-wry'
-import { classNames, isArray, isString } from '@/utils'
 import { connect } from "@tarojs/redux"
+import S from '@/spx'
+import { withLogin } from '@/hocs'
+import imgUploader from '@/utils/upload'
+import GetUserInfoBtn from './comps/getUserInfo'
 
 import './userinfo.scss'
 
@@ -20,376 +29,405 @@ export default class UserInfo extends Component {
     super(props)
 
     this.state = {
-      isHasAvator: true,
-      imgs: [],
-      info: {},
-      list: [],
-      isHasData: true,
-      option_list: [],
-      showCheckboxPanel: false,
-    }
-  }
-
-  componentDidMount () {
-    this.fetch()
-  }
-
-  async fetch () {
-    let arr  = []
-    const { memberInfo } = await api.member.memberInfo()
-    let res = await api.user.regParam()
-    const info = {
-      user_name: memberInfo.nickname,
-      avatar: memberInfo.avatar
-    }
-    let avatarArr = []
-    if(memberInfo.avatar) {
-      avatarArr = [{url : memberInfo.avatar}]
-    }
-    if(!res) {
-      this.setState({
-        isHasData: false
-      })
-    } else {
-      Object.keys(res).forEach(key => {
-        if(res[key].is_open) {
-          if(key === 'sex'){
-            res[key].items = ['未知', '男', '女']
-          }
-          if(key === 'birthday'){
-            res[key].items = []
-          }
-          if (memberInfo[key] || memberInfo[key] === 0) {
-            // console.log(memberInfo[key])
-            if(key === 'sex'){
-              res[key].value = ['未知', '男', '女'][memberInfo[key]]
-            } else {
-              res[key].value = memberInfo[key]
-            }
-          } else {
-            res[key].value = ''
-          }
-          info[key] = memberInfo[key]
-          arr.push({
-            key: key,
-            element_type: res[key].element_type,
-            name: res[key].name,
-            value: res[key].value,
-            is_required: res[key].is_required,
-            items: res[key].items ? res[key].items : null
-          })
+      userInfo: {},
+      baseInfo: {
+        sex: {
+          name: '性别',
+          select: ['未知', '男', '女'],
+          required_message: '性别必填'
+        },
+        username: {
+          name: '姓名'
         }
-      })
+      },
+      option_list: [],
+      formItems: [],
+      // 是否获取过微信信息
+      isGetWxInfo: true,
+      showCheckboxPanel: false
     }
-    // console.log(arr)
-    // console.log(avatarArr, 38)
+
+    // option的type
+    this.optionsType = ''
+  }
+
+  componentDidShow () {
+    this.getFormItem()
+  }
+
+  config = {
+    navigationBarTitleText: '个人信息'
+  }
+
+  // 获取微信用户信息
+  getWxUserInfo = (res) => {
+    const { userInfo, baseInfo } = this.state
+    if (res.detail) {
+      const { userInfo: wxInfo } = res.detail
+      userInfo.avatar = wxInfo.avatarUrl
+      userInfo.username = wxInfo.nickName
+      userInfo.country = wxInfo.country
+      userInfo.city = wxInfo.city
+      userInfo.province = wxInfo.province
+      userInfo.sex = baseInfo.sex.select[wxInfo.gender]
+    }
     this.setState({
-      info,
-      imgs: avatarArr,
-      list: arr,
-      isHasData: true
+      isGetWxInfo: true
     })
   }
 
-  handleImageChange = async (data, type) => {
-    if (type === 'remove') {
-      this.setState({
-        imgs: data
-      })
-
-      return
-    }
-
-    if (data.length > 1) {
-      S.toast('最多上传1张图片')
-    }
-    const imgFiles = data.slice(0, 1)
-    azureUploader.uploadImagesFn(imgFiles)
-      .then(res => {
-        console.log(res)
-        this.setState({
-          imgs: res
+  // 上传头像
+  handleAvatar = async () => {
+    const { isGetWxInfo, userInfo } = this.state
+    if (isGetWxInfo) {
+      try {
+        const { tempFiles = [] } = await Taro.chooseImage({
+          count: 1
         })
-      })
-  }
-
-  handleImageClick = () => {
-  }
-
-  handleChange = (name, val) => {
-    const { info, list } = this.state
-    info[name] = val
-    // if(name === 'mobile') {
-    //   if(val.length === 11 && this.count === 0) {
-    //     this.count = 1
-    //     this.setState({
-    //       imgVisible: true
-    //     })
-    //   }
-    // }
-
-    if(!isString(val) && !isArray(val)) {
-      list.map(item => {
-        item.key === name ? info[name] = val.detail.value : null
-        if(name === 'birthday') {
-          item.key === name ? item.value = val.detail.value : null
-        } else {
-          item.key === name ? (item.items ? item.value = item.items[val.detail.value] : item.value = val.detail.value) : null
+        if (tempFiles.length > 0) {
+          const imgFiles = tempFiles.slice(0, 1).map(item => {
+            return {
+              file: item,
+              url: item.path
+            }
+          })
+          const res = await imgUploader.uploadImageFn(imgFiles)
+          userInfo.avatar = res[0].url
+          this.setState({
+            userInfo
+          })
         }
-      })
-    } else if(isArray(val)) {
-      list.map(item => {
-        let new_option_list = []
-        val.map(option_item => {
-          if(option_item.ischecked === true) {
-            new_option_list.push(option_item.name)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  // 获取表单字段
+  getFormItem = async () => {
+    const { memberInfo } = await api.member.memberInfo()
+    const userInfo = {
+      avatar: memberInfo.avatar,
+      mobile: memberInfo.mobile,
+      username: memberInfo.username
+    }
+    const data = await api.user.regParam({
+      is_edite_page: true
+    })
+    const { baseInfo } = this.state
+    const normalFiled = []
+    for (let key in data) {
+      const item = data[key]
+      if (item.is_open) {
+        userInfo[key] = (() => {
+          switch (item.field_type) {
+            case 5:
+              return memberInfo.requestFields[key] || []
+            default:
+              return memberInfo.requestFields[key] || ''
           }
-        })
-        item.key === name ? item.value = new_option_list.join("，") : null
-      })
-    } else {
-      list.map(item => {
-        item.key === name ? item.value = val : null
-      })
-    }
-    this.setState({ list })
-  }
-  handleSubmit = async (e) => {
-    const distributionShopId = Taro.getStorageSync('distribution_shop_id')
-    const { value } = e[0].detail
-    const data = {
-      ...this.state.info,
-      ...value,
-      inviter_id: distributionShopId
-    }
-    try {
-      await api.member.setMemberInfo(data)
-      S.toast('修改成功')
-      setTimeout(()=>{
-        Taro.redirectTo({
-          url: '/pages/member/index'
-        })
-      }, 500)
-
-
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  handleErrorToastClose = () => {
-    S.closeToast()
-  }
-
-  showCheckboxPanel = (options, type) => {
-    let value = []
-    if (isArray(this.state.info[type])) {
-      this.state.info[type].forEach(item => {
-        if (item.ischecked) {
-          value.push(item.name)
+        })()
+        if (key !== 'sex' && key !== 'username' && key !== 'mobile') {
+          normalFiled.push({...item})
+        } else {
+          baseInfo[key] = {...item}
         }
-      })
-    } else {
-      value = this.state.info[type] ? this.state.info[type].split(',') : []
+      }
     }
-    options.forEach(item => {
-      if (value.includes(item.name)) {
-        item.ischecked = true
+    this.setState({
+      formItems: normalFiled,
+      copyOldFormItems: data,
+      isGetWxInfo: memberInfo.isGetWxInfo,
+      userInfo,
+      baseInfo
+    })
+  }
+
+  // 退出登录
+  loginOut = () => {
+    S.logout()
+    Taro.redirectTo({
+      url: '/subpage/pages/auth/wxauth?source=loginout'
+    })
+  }
+
+  // 更换手机号
+  editPhone = (e) =>{
+    e && e.stopPropagation()
+    Taro.navigateTo({
+      url: '/subpage/pages/auth/bindPhone'
+    })
+  }
+
+  // 输入
+  handleInput = (type, e) => {
+    const { detail } = e
+    const { userInfo } = this.state
+    userInfo[type] = detail.value
+    this.setState({
+      userInfo
+    })
+  }
+
+  // 选择
+  pickerChange = (selectItem, e) => {
+    const { detail } = e
+    const { userInfo } = this.state
+    const { key, field_type, select } = selectItem
+    if (field_type === 4) {      
+      userInfo[key] = select[detail.value]
+    } else {
+      userInfo[key] = detail.value
+    }
+    this.setState({
+      userInfo
+    })
+  }
+
+  // 文字转下标
+  textToIndex = (text, select) => {
+    const findIndex = select.findIndex(item => item === text)
+    return findIndex >= 0 ? findIndex : ''
+  }
+
+  handleShowCheckboxPanel = (checkItem) => {
+    const { userInfo } = this.state
+    const { key, is_edit, checkbox } = checkItem
+    if (!is_edit) return false
+    this.optionsType = key
+    const data = checkbox.map(item => {
+      const itemUserInfo = userInfo[key].find(i => i.name === item.name)
+      return {
+        name: item.name,
+        ischecked: itemUserInfo ? itemUserInfo.ischecked : false
       }
     })
     this.setState({
-      option_list: options,
+      option_list: data,
       showCheckboxPanel: true
     })
-    this.type = type
   }
 
   handleSelectionChange = (name) => {
     const { option_list } = this.state
-    option_list.map(item => {
+    const newData = option_list.map(item => {
       if(item.name === name) {
         item.ischecked = !item.ischecked
       }
+      return item
     })
     this.setState({
-      option_list
+      option_list: newData
     })
   }
 
-  // 多选结果确认
-  btnClick = (btn_type) => {
+  btnClick = (btn_type, e) => {
+    e.stopPropagation()
     this.setState({
       showCheckboxPanel: false
     })
-    const { option_list } = this.state
     if(btn_type === 'cancel') {
-      let value = []
-      if (isArray(this.state.info[this.type])) {
-        this.state.info[this.type].forEach(item => {
-          if (item.ischecked) {
-            value.push(item.name)
-          }
-        })
-      } else {
-        value = this.state.info[this.type] ? this.state.info[this.type].split(',') : []
-      }
-      // let new_type = this.type
-      option_list.map(item => {
-        if (value.includes(item.name)) {
-          item.ischecked = true
-        } else {
-          item.ischecked = false
-        }
+      this.optionsType = ''
+      this.setState({
+        option_list: []
+      })
+    } else {
+      const { option_list, userInfo } = this.state
+      userInfo[this.optionsType] = [...option_list]
+      this.setState({
+        userInfo,
+        option_list: []
       })
     }
-    const list = option_list.map(item => {
-      return {
-        name: item.name,
-        ischecked: item.ischecked
+
+  }
+
+  // checkbox显示
+  showCheckBoxItem = (checkBoxs = []) => {
+    const data = []
+    for (let i = 0; i < checkBoxs.length; i++) {
+      if (checkBoxs[i].ischecked) {
+        data.push(checkBoxs[i].name)
       }
-    })
-    this.handleChange(this.type, list)
+    }
+    return data.join(',')
   }
 
 
+  // 保存用户信息
+  saveInfo = async (e) => {
+    e && e.stopPropagation()
+    const { userInfo, copyOldFormItems, isGetWxInfo } = this.state
+    const data = { ...userInfo }
+    for (let key in copyOldFormItems) {
+      const item = copyOldFormItems[key]
+      if (!item.is_edit) { continue }
+      if (item.is_open && item.is_required && !data[key]) {
+        Taro.showToast({
+          title: `请完善${item.name}`,
+          icon: 'none'
+        })
+        return false
+      }
+    }
+    await api.member.setMemberInfo({
+      ...data,
+      isGetWxInfo
+    })
+    Taro.showToast({
+      title: '修改成功',
+      mask: true
+    })
+    this.getFormItem()
+  }
+
   render () {
-    const { isHasAvator, info, imgs, isHasData, list, option_list, showCheckboxPanel } = this.state
+    const { formItems, userInfo, isGetWxInfo, baseInfo, showCheckboxPanel, option_list } = this.state
     const { colors } = this.props
+
     return (
       <View className='page-member-setting'>
         <NavBar
           title='用户信息'
         />
-
-        <AtForm
-          onSubmit={this.handleSubmit}
-        >
-          <View className='sec auth-login__form'>
-            <View className='avatar-user'>
-              <View className='avatar-user-text'>头像</View>
-              {/* <AtImagePicker
-                showAddBtn={isHasAvator}
-                mode='aspectFill'
-                length={1}
-                files={imgs}
-                onChange={this.handleImageChange}
-                onImageClick={this.handleImageClick}
-              > </AtImagePicker> */}
-              <AtAvatar mode='aspectFill' image={info.avatar}></AtAvatar>
+        <View className='baseInfo'>
+          <GetUserInfoBtn isGetUserInfo={isGetWxInfo} onGetUserInfo={this.getWxUserInfo.bind(this)}>
+            <View className='item'>
+              <View className='left'>我的头像</View>
+              <View className='right'>
+                <Image src={userInfo.avatar} mode='aspectFill' className='avatar' onClick={this.handleAvatar.bind(this)} />
+              </View>
             </View>
-            <AtInput
-              title='昵称'
-              value={info.user_name}
-              placeholder='请输入昵称'
-              editable={false}
-              onFocus={this.handleErrorToastClose}
-              onChange={this.handleChange.bind(this, 'user_name')}
-            />
+            <View  className='item' onClick={this.editPhone.bind(this)}>
+              <View className='left'>我的手机号</View>
+              <View className='right'>
+                { userInfo.mobile}
+              </View>
+            </View>
+            <View className='item'>
+              <View className='left'>{ baseInfo.username.name }</View>
+              <View className='right'>
+                {
+                  isGetWxInfo
+                    ? <Input className='input' placeholder={baseInfo.username.required_message} value={userInfo.username} onInput={this.handleInput.bind(this, 'username')} disabled={!baseInfo.username.is_edit} />
+                    : userInfo.username || '未知'
+                }
+              </View>
+            </View>
             {
-              isHasData && list.map((item, index) => {
-                return (
-                  <View key={`${index}1`}>
-                    {
-                      item.element_type === 'input'
-                        ? <View key={`${index}1`}>
-                            <AtInput
-                              key={`${index}1`}
-                              title={item.name}
-                              name={`${item.key}`}
-                              placeholder={`请输入${item.name}`}
-                              value={item.value}
-                              onFocus={this.handleErrorToastClose}
-                              onChange={this.handleChange.bind(this, `${item.key}`)}
-                              ref={(input) => { this.textInput = input }}
-                            />
-                          </View>
-                        : null
-                    }
-                    {
-                      item.element_type === 'select'
-                        ? <View className='page-section'>
-                            <View key={`${index}1`}>
-                              {
-                                item.key === 'birthday'
-                                  ? <Picker mode='date' onChange={this.handleChange.bind(this, `${item.key}`)}>
-                                    <View className='picker'>
-                                      <View className='picker__title'>{item.name}</View>
-                                      <Text
-                                        className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
-                                      >{item.value ? item.value : `请选择${item.name}`}</Text>
-                                    </View>
-                                  </Picker>
-                                  : <Picker mode='selector' range={item.items} key={`${index}1`} data-item={item} onChange={this.handleChange.bind(this, `${item.key}`)}>
-                                    <View className='picker'>
-                                      <View className='picker__title'>{item.name}</View>
-                                      <Text
-                                        className={classNames(item.value ? 'pick-value' : 'pick-value-null')}
-                                      >{item.value ? item.value : `请选择${item.name}`}</Text>
-                                    </View>
-                                  </Picker>
-                              }
-                            </View>
-                          </View>
-                        : null
-                    }
-                    {
-                      item.element_type === 'checkbox'
-                        ? <View className='page-section'>
-                            <AtInput
-                              key={`${index}1`}
-                              title={item.name}
-                              name={`${item.key}`}
-                              placeholder={`请选择${item.name}`}
-                              value={item.value}
-                              onFocus={this.showCheckboxPanel.bind(this, item.items, item.key)}
-                            />
-                          </View>
-                        : null
-                    }
-                  </View>
-                )
-              })
-            }
-          </View>
-          <View className='btns'>
-            {
-              process.env.TARO_ENV === 'weapp'
-                ? <AtButton type='primary' formType='submit'>保存</AtButton>
-                : <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>保存</AtButton>
-            }
-          </View>
-        </AtForm>
-        {
-          showCheckboxPanel
-            ? <View className='checkBoxPanel'>
-                <View className='checkBoxPanel-content'>
+              baseInfo.sex.is_open && <View className='item'>
+                <View className='left'>{ baseInfo.sex.name }</View>
+                <View className='right'>
                   {
-                    option_list.map((item, index) => {
-                      return (
-                        <View
-                          className='checkBoxPanel-item'
-                          key={`${index}1`}
-                        >
-                          <SpCheckbox
-                            checked={item.ischecked}
-                            onChange={this.handleSelectionChange.bind(this, item.name)}
-                          >{item.name}</SpCheckbox>
+                    isGetWxInfo
+                      ? <Picker
+                        mode='selector'
+                        disabled={!baseInfo.sex.is_edit}
+                        value={this.textToIndex(userInfo.sex, baseInfo.sex.select)}
+                        range={baseInfo.sex.select}
+                        onChange={this.pickerChange.bind(this, baseInfo.sex)}
+                      >
+                        <View className='picker'>
+                          { userInfo.sex || baseInfo.sex.required_message }
                         </View>
-                      )
-                    })
+                      </Picker>
+                      : `${userInfo.sex || baseInfo.sex.required_message}`
                   }
                 </View>
-                <View className='panel-btns'>
-                  <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>取消</View>
-                  <View
-                    className='panel-btn require-btn'
-                    style={`background: ${colors.data[0].primary}`}
-                    onClick={this.btnClick.bind(this, 'require')}>确定</View>
-                </View>
               </View>
-          : null
+            }
+          </GetUserInfoBtn>
+        </View>
+        <View className='basicInfo'>
+          <View className='title'>基础信息</View>
+          {
+            formItems.map(item => <View key={item.key} className='item'>
+              <View className='left'>{ item.name }</View>
+              <View className='right'>
+                { item.field_type === 1 && <Input className='input' value={userInfo[item.key]} placeholder={item.required_message} onInput={this.handleInput.bind(this, item.key)} disabled={!item.is_edit} /> }
+                { item.field_type === 2 && <Input className='input' value={userInfo[item.key]} type='number' max={item.range.end} min={item.range.start} placeholder={item.required_message} onInput={this.handleInput.bind(this, item.key)} disabled={!item.is_edit} /> }
+                { 
+                  item.field_type === 3 && <Picker
+                    mode='date'
+                    disabled={!item.is_edit}
+                    value={userInfo[item.key]}
+                    onChange={this.pickerChange.bind(this, item)}
+                  >
+                    <View className='picker'>
+                      { userInfo[item.key] || item.required_message }
+                    </View>
+                  </Picker> 
+                }
+                { 
+                  item.field_type === 4 && <Picker
+                    mode='selector'
+                    disabled={!item.is_edit}
+                    value={this.textToIndex(userInfo[item.key], item.select)}
+                    range={item.select}
+                    onChange={this.pickerChange.bind(this, item)}
+                  >
+                    <View className='picker'>
+                      { userInfo[item.key] || item.required_message }
+                    </View>
+                  </Picker>
+                }
+                {
+                  item.field_type === 5 && <View onClick={this.handleShowCheckboxPanel.bind(this, item)}>
+                    { userInfo[item.key].length > 0 ? this.showCheckBoxItem(userInfo[item.key]) : item.required_message }
+                  </View>
+                }
+              </View>
+            </View>)
+          }
+        </View>
+        <View className='btns'>
+          <View className='btn loginOut' onClick={this.loginOut.bind(this)}>退出登录</View>
+          <View
+            className='btn save'
+            style={`background: ${colors.data[0].primary}`}
+            onClick={this.saveInfo.bind(this)}
+          >
+            保存
+          </View>
+        </View>
+        {
+          showCheckboxPanel
+            ? <View className='mask' onClick={this.btnClick.bind(this, 'cancel')}>
+                <View className='checkBoxPanel' onClick={e => e.stopPropagation()}>
+                  <View className='panel-btns'>
+                    <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>取消</View>
+                    <View
+                      className='panel-btn require-btn'
+                      style={`color: ${colors.data[0].primary}`}
+                      onClick={this.btnClick.bind(this, 'require')}
+                    >
+                        确定
+                    </View>
+                  </View>
+                  <View className='checkBoxPanel-content'>
+                    {
+                      option_list.map((item, index) => {
+                        return (
+                          <View
+                            className='checkBoxPanel-item'
+                            key={`checkBoxPanel${index}`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <SpCheckbox
+                              checked={item.ischecked}
+                              onChange={this.handleSelectionChange.bind(this, item.name)}
+                            >
+                              <View>{item.name}</View>
+                            </SpCheckbox>
+                          </View>
+                        )
+                      })
+                    }
+                  </View>
+                </View>
+            </View>
+            : null
         }
-        <SpToast />
       </View>
     )
   }

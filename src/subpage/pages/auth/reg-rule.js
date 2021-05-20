@@ -18,38 +18,50 @@ export default class RegRule extends Component {
   }
 
   componentDidMount () {
-    const { type } = this.$router.params
-    if (type) {
-      this.topUpRule()
-    } else {
-      this.fetch()
-    }
+    this.fetch()
   }
 
   async fetch () {
-    const { content } = await api.user.regRule()
-    this.setState({
-      info: content
+    let data = ''
+    let navBarTitle = '协议'
+    const { type } = this.$router.params
+    Taro.showLoading()
+    if (type === '1') {
+      // 充值协议
+      const { content, title = '充值协议' } = await api.member.depositPayRule()
+      data = content
+      navBarTitle = title
+    } else if (type) {
+      // 隐私政策
+      const { content, title = '充值协议' } = await api.shop.getRuleInfo({
+        type
+      })
+      data = content
+      navBarTitle = title
+    } else {
+      // 注册协议
+      const { content, title = '注册协议' } = await api.user.regRule()
+      data = content
+      navBarTitle = title
+    }
+    Taro.hideLoading()
+    Taro.setNavigationBarTitle({
+      title: navBarTitle
     })
-    console.log(content)
+    this.setState({
+      info: data,
+      title: navBarTitle
+    })
   }
 
-  // 充值协议
-  async topUpRule () {
-    const { content } = await api.member.depositPayRule()
-    this.setState({
-      info: content
-    })
-  }
 
   render () {
-    const { info } = this.state
-    const { type } = this.$router.params
+    const { info, title } = this.state
 
     return (
       <View className='page-member-integral'>
         <NavBar
-          title={`${type === '1' ? '充值协议' : '注册协议'}`}
+          title={title}
           leftIconType='chevron-left'
         />
         {

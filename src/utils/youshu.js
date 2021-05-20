@@ -1,22 +1,21 @@
 import Taro from '@tarojs/taro';
 import api from '@/api';
-import { Tracker } from "@/service";
-import { tokenParse } from "@/utils";
+import { Tracker } from "@/service"; 
 
 async function youshuLogin() {
+
     const { code } = await Taro.login()
-    console.log("youshuLogin",code)
+
     try {
-        const { token } = await api.wx.login({ code })
-        if (!token) throw new Error(`token is not defined: ${token}`)
-        if (token) {
-            // 通过token解析openid
-            const userInfo = tokenParse(token);
-            console.log("userInfo.openid",userInfo.openid)
-            Tracker.setVar({
-                user_id: userInfo.user_id,
-                open_id: userInfo.openid,
-                union_id: userInfo.unionid
+        let { openid,unionid } = await api.wx.getYoushuOpenid({code});  
+
+        console.log("youshuLogin",openid,unionid)
+
+        if (open_id) {
+            // 通过token解析openid 
+            Tracker.setVar({  
+                open_id: openid,  
+                union_id: unionid
             });
         }
     } catch (e) {
@@ -42,7 +41,14 @@ function TracksPayed(info, config, moduleName) {
     });
 }
 
+function getYoushuAppid(){
+    const { appid } = wx.getExtConfigSync? wx.getExtConfigSync(): {}
+    const { youshu:{weapp_app_id}}=Taro.getStorageSync("otherSetting"); 
+    return weapp_app_id||appid;
+}
+
 export {
     youshuLogin,
-    TracksPayed
+    TracksPayed,
+    getYoushuAppid
 }

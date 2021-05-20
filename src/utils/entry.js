@@ -209,7 +209,7 @@ async function getLoc() {
   if (process.env.TARO_ENV === "weapp") {
     return await Taro.getLocation({ type: "gcj02" }).then(
       async locationData => {
-        InverseAnalysis(locationData);
+        await InverseAnalysis(locationData);
         return locationData;
       },
       () => {
@@ -329,6 +329,7 @@ async function InverseAnalysis(locationData) {
 export default {
   entryLaunch,
   getLocal,
+  getLoc,
   getLocalSetting,
   getWebLocal,
   InverseAnalysis,
