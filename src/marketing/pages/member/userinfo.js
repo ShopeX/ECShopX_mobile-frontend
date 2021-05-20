@@ -6,7 +6,7 @@
  * @FilePath: /unite-vshop/src/marketing/pages/member/userinfo.js
  * @Date: 2021-04-28 14:13:43
  * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-20 14:33:19
+ * @LastEditTime: 2021-05-20 16:31:00
  */
 import Taro, { Component } from '@tarojs/taro'
 import { Input, View, Picker, Image } from '@tarojs/components'
@@ -176,6 +176,8 @@ export default class UserInfo extends Component {
     const { key, field_type, select } = selectItem
     if (field_type === 4) {      
       userInfo[key] = select[detail.value]
+    } else {
+      userInfo[key] = detail.value
     }
     this.setState({
       userInfo
