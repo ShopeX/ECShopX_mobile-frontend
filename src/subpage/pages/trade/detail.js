@@ -3,7 +3,7 @@ import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, NavBar, FloatMenuMeiQia } from '@/components'
-import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
+import { log, pickBy, formatDataTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { Tracker } from "@/service"
 import api from '@/api'
@@ -33,7 +33,8 @@ export default class TradeDetail extends Component {
       restartOpenWebsoect: true,
       // selections:[],
       scrollIntoView: 'order-0',
-      cancelData: {}
+      cancelData: {},
+      tradeInfo: {}
     }
   }
 
@@ -101,7 +102,7 @@ export default class TradeDetail extends Component {
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
-      created_time_str: ({ create_time }) => formatTime(create_time * 1000),
+      created_time_str: ({ create_time }) => formatDataTime(create_time * 1000, ),
       auto_cancel_seconds: 'auto_cancel_seconds',
       receiver_name: 'receiver_name',
       receiver_mobile: 'receiver_mobile',
@@ -163,7 +164,10 @@ export default class TradeDetail extends Component {
       hour: 'hour',
       phone: 'phone'
     })
+
     const cancelData = data.cancelData
+
+    const tradeInfo = data.tradeInfo
 
     if (info.receipt_type == 'ziti' && info.ziti_status === 'PENDING') {
       const { qrcode_url } = await api.trade.zitiCode({ order_id: id })
@@ -211,7 +215,8 @@ export default class TradeDetail extends Component {
       info,
       sessionFrom,
       ziti,
-      cancelData
+      cancelData,
+      tradeInfo
     })
   }
 
@@ -497,7 +502,7 @@ export default class TradeDetail extends Component {
 
   render () {
     const { colors } = this.props
-    const { info, ziti, qrcode, timer, payLoading, scrollIntoView, cancelData} = this.state
+    const { info, ziti, qrcode, timer, payLoading, scrollIntoView, cancelData, tradeInfo } = this.state
 
     console.log("----Tradedetail---",info);
     console.log("----isPointitemGood---",this.isPointitemGood());
@@ -588,6 +593,7 @@ export default class TradeDetail extends Component {
               <View className='name'>
                 <Image src={require('../../assets/dada3.png')} mode='aspectFill' className='avatar' />
                 <View>骑手：{ info.dada.dm_name } </View>
+                <View className='iconfont icon-dianhua'></View>
               </View>
               <View className='tip'>本单由达达同城为您服务</View>
             </View>
@@ -734,7 +740,15 @@ export default class TradeDetail extends Component {
                 { info.created_time_str }
               </View>
             </View>
-            {/* <View className='line'>
+            {
+              (tradeInfo && tradeInfo.payDate) && <View className='line'>
+                <View className='left'>支付时间</View>
+                <View className='right'>
+                  { tradeInfo.payDate }
+                </View>
+              </View>
+            }
+            <View className='line'>
               <View className='left'>取货时间</View>
               <View className='right'>
                 { info.created_time_str }
@@ -751,7 +765,7 @@ export default class TradeDetail extends Component {
               <View className='right'>
                 { info.created_time_str }
               </View>
-            </View>             */}
+            </View>            
             {
               info.invoice_content && <View className='line'>
                 <View className='left'>发票信息</View>
