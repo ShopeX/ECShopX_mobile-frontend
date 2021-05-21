@@ -62,7 +62,7 @@ export default class SharePanel extends Component {
             </View>
             <View className='title'>海报分享</View>            
           </View>
-          <View className='share-panel__item' onClick={onEditShare}>
+          <View className='share-panel__item' onClick={onEditShare}>  
             <View className='imgBtn'>
               <Image className='img' mode='aspectFit' src={require('../../../assets/imgs/editshare.png')} />
             </View>

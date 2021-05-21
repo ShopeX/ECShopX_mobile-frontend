@@ -11,7 +11,7 @@ async function youshuLogin() {
 
         console.log("youshuLogin",openid,unionid)
 
-        if (open_id) {
+        if (openid) {
             // 通过token解析openid 
             Tracker.setVar({  
                 open_id: openid,  
