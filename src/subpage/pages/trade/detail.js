@@ -37,7 +37,7 @@ const statusImg = {
   5: Cancel,
   // 投递异常
   9: ErrorDaDa,
-  10: ErrorDaDa,
+  10: Success,
   // 骑士到店
   100: DadaGoStore,
 }
@@ -605,7 +605,7 @@ export default class TradeDetail extends Component {
               {info.status !== "WAIT_BUYER_PAY" && (
                 <View className='delivery-infos'>
                   <View className='delivery-infos__status'>
-                    <View className='delivery-infos__text text-status'>
+                    <View className={`delivery-infos__text text-status ${(info.receipt_type === 'dada' && info.dada.dada_status === 9) && 'red'}`}>
                       {info.order_status_msg}
                       {
                         (info.dada && info.dada.id && statusImg[info.dada.dada_status]) && <Image
@@ -788,18 +788,18 @@ export default class TradeDetail extends Component {
               </View>
             </View>
             {
-              info.status === 'TRADE_CLOSED' && <View className='line'>
-                <View className='left'>取消时间</View>
-                <View className='right'>
-                  { info.update_time_str }
-                </View>
-              </View>
-            }
-            {
               (tradeInfo && tradeInfo.tradeState === 'SUCCESS') && <View className='line'>
                 <View className='left'>支付时间</View>
                 <View className='right'>
                   { tradeInfo.payDate }
+                </View>
+              </View>
+            }
+            {
+              info.status === 'TRADE_CLOSED' && <View className='line'>
+                <View className='left'>取消时间</View>
+                <View className='right'>
+                  { info.update_time_str }
                 </View>
               </View>
             }
@@ -820,7 +820,7 @@ export default class TradeDetail extends Component {
               </View>            
             }
             {
-              (info.dada && info.dada.dada_status === 5) && <View className='line'>
+              (info.dada && (info.dada.dada_status === 10 || info.dada.dada_status === 4)) && <View className='line'>
                 <View className='left'>配送时长</View>
                 <View className='right'>
                   { info.dada.delivery_length }
@@ -935,7 +935,9 @@ export default class TradeDetail extends Component {
             }
             {
               // 继续购物
-              (info.status === "WAIT_SELLER_SEND_GOODS" || (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')) && <View
+              (info.status === "WAIT_SELLER_SEND_GOODS" || 
+              (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada') &&
+              info.receipt_type !== 'dada' || info.dada.dada_status !== 9) && <View
                 className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales !== 1 || (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')) ? 'trade-detail__footer_allWidthBtn' : ''
                   }`}
                 style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
@@ -956,8 +958,9 @@ export default class TradeDetail extends Component {
             }
             {
               // 联系客服
-              info.status === "TRADE_SUCCESS" && <View 
-                className={`trade-detail__footer__btn trade-detail__footer_active right ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
+              info.status === "TRADE_SUCCESS" ||
+              (info.receipt_type === 'dada' && info.dada.dada_status === 9) && <View 
+                className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales === 0 || (info.receipt_type === 'dada' && info.dada.dada_status === 9)) && 'trade-detail__footer_allWidthBtn'}`}
                 style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
               >
                 {
