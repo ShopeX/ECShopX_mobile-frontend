@@ -58,9 +58,7 @@ export default class WgtGoodsGrid extends Component {
   }
 
   render() {
-    const { info, dis_id = '' } = this.props
-    console.log(dis_id)
-    console.log('--goodsgridinfo--',info);
+    const { info, dis_id = '' } = this.props    
     if (!info) {
       return null;
     }

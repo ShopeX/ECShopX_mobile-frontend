@@ -727,7 +727,6 @@ export default class CartIndex extends Component {
       remindInfo
     } = this.state;
     const { list, showLikeList, colors } = this.props;
-    console.log("groups", groups);
 
     if (loading) {
       return <Loading />;
