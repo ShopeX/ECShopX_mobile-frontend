@@ -765,7 +765,8 @@ export default class TradeDetail extends Component {
               !info.is_logistics &&
               (info.status === "WAIT_BUYER_PAY" ||
               (info.status === "WAIT_SELLER_SEND_GOODS" && 
-              info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL")) && <View
+              info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL")) &&
+              (info.receipt_type !== 'dada' || (info.dada && info.dada.dada_status === 0)) && <View
                 className='cancel__btn'
               >
                 <View className='btn' onClick={this.handleClickBtn.bind(this, "cancel")}>
