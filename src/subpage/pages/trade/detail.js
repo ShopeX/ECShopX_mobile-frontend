@@ -925,7 +925,7 @@ export default class TradeDetail extends Component {
             {
               // 申请售后
               (((info.status === 'WAIT_SELLER_SEND_GOODS')||
-              info.status === "TRADE_SUCCESS" ||
+              (info.status === "TRADE_SUCCESS" && (info.receipt_type !== 'dada' || info.dada.dada_status === 4 || info.dada.dada_status === 10)) ||
               (info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE')) && info.receipt_type !== 'dada')) &&
               info.can_apply_aftersales === 1) && <Button
                 className={`trade-detail__footer__btn left ${info.is_logistics && 'trade-detail__footer_active trade-detail__footer_allWidthBtn'}`}
@@ -959,8 +959,8 @@ export default class TradeDetail extends Component {
             }
             {
               // 联系客服
-              info.status === "TRADE_SUCCESS" ||
-              (info.receipt_type === 'dada' && info.dada.dada_status === 9) && <View 
+              (info.status === "TRADE_SUCCESS" ||
+              (info.receipt_type === 'dada' && info.dada.dada_status === 9)) && <View 
                 className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales === 0 || (info.receipt_type === 'dada' && info.dada.dada_status === 9)) && 'trade-detail__footer_allWidthBtn'}`}
                 style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
               >
