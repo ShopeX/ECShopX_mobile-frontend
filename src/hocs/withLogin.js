@@ -23,7 +23,6 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
         if (lifeCycle === LIFE_CYCLE_TYPES.WILL_MOUNT) {
           const res = await this.$__autoLogin()
           if (!res) return
-
           if (super.componentWillMount) {
             super.componentWillMount()
           }
@@ -70,13 +69,14 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
       async $__autoLogin () {
         this.$__autoLogin_state = 'pending'
         let res
+        console.log('[$__autoLogin] --- run')
         try {
           res = await S.autoLogin(this)
           this.$__autoLogin_state = !res ? 'fail' : 'success'
         } catch (e) {
           this.$__autoLogin_state = 'fail'
         }
-
+        console.log('[$__autoLogin] --- res',res)
         return res
       }
 

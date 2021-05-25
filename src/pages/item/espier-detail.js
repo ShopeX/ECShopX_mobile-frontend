@@ -330,7 +330,7 @@ export default class Detail extends Component {
     console.log('param',param)
     // 商品详情 
     const info = await this.goodInfo(id, param);
-    console.log('---info----',info);
+
     // 是否订阅
     const { user_id: subscribe } = await api.user.isSubscribeGoods(id)
     const { intro: desc, promotion_activity: promotion_activity } = info
@@ -1001,8 +1001,6 @@ export default class Detail extends Component {
       evaluationList,
       isSubscribeGoods,
     } = this.state
-
-    console.log("--info--",info)
 
     const { showLikeList, colors } = this.props
     const meiqia = Taro.getStorageSync('meiqia')

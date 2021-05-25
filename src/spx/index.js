@@ -192,6 +192,7 @@ class Spx {
   }
 
   async loginQW( ctx ) {
+    console.log('[loginQW] 企微登录 执行')
     let { code } = await this.getQyLoginCode();
     const QwUserInfo = await api.user.getQwUserInfo({
       appname: `${APP_NAME}`,

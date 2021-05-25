@@ -313,8 +313,7 @@ class App extends Component {
         root: "guide",
         pages: [
           "index",
-          "category/index",
-          "auth/wxauth",
+          "category/index",          
           "item/list",
           "item/espier-detail",
           "item/item-params",

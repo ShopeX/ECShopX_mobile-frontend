@@ -34,7 +34,7 @@ export default class Youshu extends Base {
     
     if (token) {
       const userInfo = tokenParse(token);
-      console.log("------useInfo------")
+      console.log("[有数埋点]------useInfo------")
       console.log(userInfo)
       this.setVar({
         user_id: userInfo.user_id,

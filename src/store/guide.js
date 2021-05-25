@@ -23,9 +23,6 @@ const initState = {
   goodsSkuInfo: null,
   // 导购门店信息
   storeInfo: null
-
-  // receiptType: 'ziti',
-  // storeinfo: {"wxShopId":"1125","mapPoiId":null,"picList":null,"contractPhone":"02164879211","hour":"","credential":null,"companyName":null,"qualificationList":null,"cardId":null,"status":5,"companyId":"2","created":1575540642,"updated":1575540642,"lng":"121.440426","lat":"31.19286","address":"上海市上海市徐汇区肇嘉浜路6567号美罗城九层7-81,6-52a","category":null,"poiId":null,"errmsg":null,"auditId":null,"resourceId":null,"expiredAt":null,"isDefault":false,"storeName":"IF SH Metro City (美罗城)","addType":3,"country":null,"city":null,"isDomestic":1,"isDirectStore":1,"isOpen":true,"orgId":"200015","shopBn":"CN300031","customerId":"1015","ownNum":null,"onlineStatus":"1","startDate":"1990-01-01","endDate":"1990-01-01","isSelfPick":"1","isSfExpress":"1","isDelivery":"0","isAllChannels":"0","province":null,"district":null,"isDeleted":null,"is_valid":false,"store_notice":1,"out_limit":0,"distance":613.5,"distance_unit":"m","receiptType":"ziti"}
 }
 
 const guideCart = createReducer( initState, {

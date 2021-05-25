@@ -24,7 +24,6 @@ export default class BaNavBar extends Component {
     }
     async componentDidMount(){
        let MenuButton= await Taro.getMenuButtonBoundingClientRect()
-       console.log('MenuButton---1',MenuButton)
        let systemInfo= await Taro.getSystemInfoSync()
        let MenuButtonH=MenuButton.height
     //    let MenuButtonT= MenuButton.top
@@ -34,7 +33,6 @@ export default class BaNavBar extends Component {
        let navbarHeight = statusBarHeight + MenuButtonH + 9
        const {leftWidth}=this.state
        let titleWidth=systemInfo.windowWidth-(MenuButtonW+right*2)-leftWidth
-       console.log('systemInfo---1',navbarHeight,systemInfo)
    
        this.setState({ 
         navbarHeight,
@@ -43,7 +41,6 @@ export default class BaNavBar extends Component {
         statusBarHeight,
         MenuButtonH
        })
-       console.log('navbarHeight',navbarHeight)
         S.set('navbar_height',navbarHeight,true)
 
     }

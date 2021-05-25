@@ -701,8 +701,7 @@ export default class EspireCheckout extends Component {
       canvasHeight
     } = this.state;
     const ipxClass = S.get("ipxClass") || "";
-    console.log("checkout-goodsllist-render", goodsllist);
-    console.log("checkout-poster-render", poster);
+    
     return (
       <View className={`page-checkout ${ipxClass}`}>
         <View className="checkout__wrap">
