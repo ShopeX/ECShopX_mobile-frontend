@@ -27,7 +27,7 @@ const isProd = process.env.NODE_ENV === 'production'
 
 const middlewares = [
   thunkMiddleware,
-  // !isProd && createLogger()
+  !isProd && createLogger()
 ].filter(Boolean)
 
 const reducer = persistReducer({

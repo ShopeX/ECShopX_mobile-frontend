@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { withLogin, withPager, withBackToTop } from "@/hocs";
+import {  withPager, withBackToTop } from "@/hocs";
 import { SearchBar, RecommendItem, SpNote } from '@/components'
 import { BaTabBar, BaNavBar } from '../components'
 import api from '@/api'
@@ -8,7 +8,6 @@ import S from '@/spx'
 import { pickBy, styleNames } from '@/utils'
 import './list.scss'
 
-@withLogin()
 @withPager
 @withBackToTop
 export default class RecommendList extends Component {

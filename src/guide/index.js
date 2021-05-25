@@ -4,7 +4,7 @@ import { connect } from "@tarojs/redux";
 import { Loading } from "@/components";
 import api from "@/api";
 import { pickBy, styleNames, resolveFavsList } from "@/utils";
-import { withLogin, withPager, withBackToTop } from "@/hocs";
+import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
 
 import { WgtSearchHome } from "./components/wgts";
@@ -28,7 +28,6 @@ import "../pages/home/index.scss";
       dispatch({ type: "guide/updateStoreInfo", payload: { info } })
   })
 )
-@withLogin()
 @withPager
 @withBackToTop
 export default class BaGuideHomeIndex extends Component {
@@ -63,10 +62,15 @@ export default class BaGuideHomeIndex extends Component {
   componentDidShow() {
     console.log('[componentDidShow] ---- ',)
   }
-  componentDidMount() {
+  async componentDidMount() {
     console.log('[componentDidMount] ---- ',)
+    await S.autoLogin(this)
+
     const { version } = this.$router.params;
     console.log('[挂件包] this.state.wgts',this.state.wgts)
+
+
+
     //设置导购信息
     this.guideInit(version)
   }
@@ -274,78 +278,78 @@ export default class BaGuideHomeIndex extends Component {
     } = this.props;
     const ipxClass = S.get("ipxClass");
     const n_ht = S.get("navbar_height");
-    return (<View>
-      <BaNavBar
-          title="导购商城"
-          fixed
-          jumpType="home"
-          icon="in-icon in-icon-backhome"
-        />
-       <View>测试文本</View>  
-        <View>测试文本</View>  
-        <View>测试文本</View>  
-        <View>测试文本</View>  
-        <View>测试文本</View>  
-        <View>测试文本</View>  
-         <BaTabBar />
-    </View>)
-    // return (
-    //   <View className={!isLoading ? "page-index" : ""}>
-    //     <BaNavBar
+    // return (<View>
+    //   <BaNavBar
     //       title="导购商城"
     //       fixed
     //       jumpType="home"
     //       icon="in-icon in-icon-backhome"
     //     />
-    //     <View>
-    //       {guideInfo && <BaStore
-    //         onClick={this.handleOpenStore}
-    //         guideInfo={guideInfo}
-    //         defaultStore={storeInfo}
-    //       />}
-    //     </View>
-    //     {isLoading ? (
-    //       <Loading></Loading>
-    //     ) : (
-    //       <ScrollView
-    //         className={`wgts-wrap wgts-wrap__fixed `}
-    //         scrollTop={scrollTop}
-    //         onScroll={this.handleHomeScroll}
-    //         scrollY
-    //         style={styleNames({ top: n_ht + "PX" })}
-    //       >
-    //         <View className="wgts-wrap__cont">
-    //           <BaHomeWgts
-    //             wgts={wgts}
-    //             source="bahome"
-    //             onChangPageScroll={this.handlePageScroll}
-    //           />
-    //         </View>
-    //       </ScrollView>
-    //     )}
+    //    <View>测试文本</View>  
+    //     <View>测试文本</View>  
+    //     <View>测试文本</View>  
+    //     <View>测试文本</View>  
+    //     <View>测试文本</View>  
+    //     <View>测试文本</View>  
+    //      <BaTabBar />
+    // </View>)
+    return (
+      <View className={!isLoading ? "page-index" : ""}>
+        <BaNavBar
+          title="导购商城"
+          fixed
+          jumpType="home"
+          icon="in-icon in-icon-backhome"
+        />
+        <View>
+          {guideInfo && <BaStore
+            onClick={this.handleOpenStore}
+            guideInfo={guideInfo}
+            defaultStore={storeInfo}
+          />}
+        </View>
+        {isLoading ? (
+          <Loading></Loading>
+        ) : (
+          <ScrollView
+            className={`wgts-wrap wgts-wrap__fixed `}
+            scrollTop={scrollTop}
+            onScroll={this.handleHomeScroll}
+            scrollY
+            style={styleNames({ top: n_ht + "PX" })}
+          >
+            <View className="wgts-wrap__cont">
+              <BaHomeWgts
+                wgts={wgts}
+                source="bahome"
+                onChangPageScroll={this.handlePageScroll}
+              />
+            </View>
+          </ScrollView>
+        )}
 
-    //     {homesearchfocus && <WgtSearchHome isShow={homesearchfocus} />}
+        {homesearchfocus && <WgtSearchHome isShow={homesearchfocus} />}
 
-    //     <BaTabBar />
-    //     {showBuyPanel && (
-    //       <BaGoodsBuyPanel
-    //         info={goodsSkuInfo}
-    //         type="cart"
-    //         isOpened={showBuyPanel}
-    //         onClose={this.handleCloseCart}
-    //         onAddCart={this.handleCloseCart}
-    //       />
-    //     )}
+        <BaTabBar />
+        {showBuyPanel && (
+          <BaGoodsBuyPanel
+            info={goodsSkuInfo}
+            type="cart"
+            isOpened={showBuyPanel}
+            onClose={this.handleCloseCart}
+            onAddCart={this.handleCloseCart}
+          />
+        )}
 
-    //     {showStore && (
-    //       <BaStoreList
-    //         shopList={shopList}
-    //         currentIndex={currentIndex}
-    //         onStoreConfirm={this.handleStoreConfirm}
-    //         onClose={this.handleOpenStore}
-    //       />
-    //     )}
-    //   </View>
-    // );
+        {showStore && (
+          <BaStoreList
+            shopList={shopList}
+            currentIndex={currentIndex}
+            onStoreConfirm={this.handleStoreConfirm}
+            onClose={this.handleOpenStore}
+          />
+        )}
+      </View>
+    );
   }
 }
