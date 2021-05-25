@@ -28,7 +28,7 @@ import {
 } from "@/components";
 import api from "@/api";
 import req from "@/api/req";
-import { withLogin, withPager, withBackToTop } from "@/hocs";
+import {  withPager, withBackToTop } from "@/hocs";
 import {
   log,
   calcTimer,
@@ -81,7 +81,6 @@ import "./espier-detail.scss";
       dispatch({ type: "member/delFav", payload: { item_id } })
   })
 )
-@withLogin()
 @withPager
 @withBackToTop
 export default class Detail extends Component {
