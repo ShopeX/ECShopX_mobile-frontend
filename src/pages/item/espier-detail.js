@@ -625,7 +625,7 @@ export default class Detail extends Component {
   downloadPosterImg = async () => {
     let userinfo = Taro.getStorageSync('userinfo')
     if (S.getAuthToken() && (!userinfo || !userinfo.userId)) {
-      const res = await api.member.memberInfo()
+      const res = await api.member.memberInfo();
       const userObj = {
         username: res.memberInfo.nickname || res.memberInfo.username || res.memberInfo.mobile,
         avatar: res.memberInfo.avatar,
@@ -648,22 +648,30 @@ export default class Detail extends Component {
     const infoId = info.distributor_id
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : infoId
     const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&dtid=${id}&uid=${userId}`
-    const avatarImg = await Taro.getImageInfo({src: avatar})
-    const goodsImg = await Taro.getImageInfo({src: pic})
-    const codeImg = await Taro.getImageInfo({src: wxappCode})
+    let avatarImg;
+    if (avatar) {
+      avatarImg = await Taro.getImageInfo({src: avatar})
+    }
 
-    if (avatarImg && goodsImg && codeImg) {
+    const goodsImg = await Taro.getImageInfo({src: pic})
+    console.log('-------------------goodsImg:',goodsImg);
+    const codeImg = await Taro.getImageInfo({src: wxappCode})
+    console.log('-------------------codeImg:',codeImg);
+
+
+    if (avatarImg?(avatarImg && goodsImg && codeImg):goodsImg&&codeImg) {
       const posterImgs = {
-        avatar: avatarImg.path,
+        avatar: avatarImg.path || null,
         goods: goodsImg.path,
         code: codeImg.path
       }
-
       await this.setState({
         posterImgs
+      
       }, () => {
         this.drawImage()
       })
+      
       return posterImgs
     } else {
       return null
@@ -722,7 +730,10 @@ export default class Detail extends Component {
     canvasExp.textFill(ctx, username, 90, 45, 18, '#333')
     canvasExp.textFill(ctx, '给你推荐好货好物', 90, 65, 14, '#999')
     canvasExp.drawImageFill(ctx, goods, 15, 95, 345, 345)
-    canvasExp.imgCircleClip(ctx, avatar, 15, 15, 65, 65)
+    if (avatar) {
+      canvasExp.imgCircleClip(ctx, avatar, 15, 15, 65, 65)
+    }
+    
     canvasExp.textMultipleOverflowFill(ctx, item_name, 22, 2, 15, 470, 345, 18, '#333')
     if (type == '1') {
       canvasExp.textFill(ctx, '含税售价:', 15, 565, 16, '#666')
@@ -833,8 +844,10 @@ export default class Detail extends Component {
 
   handleShowPoster = async () => {
     const { posterImgs } = this.state
+    console.log(posterImgs);
     if (!posterImgs || !posterImgs.avatar || !posterImgs.code || !posterImgs.goods) {
       const imgs = await this.downloadPosterImg()
+      console.log(imgs);
       if (imgs && imgs.avatar && imgs.code && imgs.goods) {
         this.setState({
           showPoster: true
