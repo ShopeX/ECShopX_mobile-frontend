@@ -56,7 +56,7 @@ export default class WgtGoodsScroll extends Component {
 
   handleClickMore = () => {
     const { config } = this.props.info;
-    const { moreLink } = config;
+    const { moreLink } = config; 
     if (moreLink) {
       linkPage(moreLink.linkPage, moreLink);
     } else {

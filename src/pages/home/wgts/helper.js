@@ -82,6 +82,10 @@ export function linkPage (type, data) {
     default:
   }
 
+  if(id==="pointitems"){
+    url="/pointitem/pages/list"
+  }
+
   if (type === 'other_wxapp') {
     Taro.navigateToMiniProgram({
       appId: id,
