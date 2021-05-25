@@ -798,9 +798,10 @@ export default class CartCheckout extends Component {
     }, () => {
       // 额外信息展示
       if (extraTips) {
-        Taro.showToast({
-          title: extraTips,
-          icon: 'none'
+        Taro.showModal({
+          content: extraTips,
+          confirmText: '知道了',
+          showCancel: false
         })
       }
     })
