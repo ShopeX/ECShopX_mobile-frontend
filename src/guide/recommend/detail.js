@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import api from '@/api'
-import { withLogin, withPager } from "@/hocs";
+import {  withPager } from "@/hocs";
 import { BaNavBar } from '../components'
 import { connect } from '@tarojs/redux'
 import { formatTime, log } from '@/utils'
@@ -13,7 +13,7 @@ import './detail.scss'
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-@withLogin()
+
 @withPager
 export default class recommendDetail extends Component {
   constructor(props) {
