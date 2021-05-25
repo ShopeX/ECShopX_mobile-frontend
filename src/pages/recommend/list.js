@@ -506,7 +506,7 @@ export default class RecommendList extends Component {
                     <View
                       className={classNames('drawer-item__options__item' ,item.isChooseColumn ? 'drawer-item__options__checked' : '')}
                       // className='drawer-item__options__item'
-                      style={item.isChooseColumn ?{background: colors.data[0].primary}:{}}
+                      style={item.isChooseColumn ?{background:colors&&colors.data&&colors.data[0].primary||null}:{}}
                       key={`${index}1`}
                       onClick={this.handleClickParmas.bind(this, item.id)}
                     >
@@ -522,7 +522,7 @@ export default class RecommendList extends Component {
           </View>
           <View className='drawer-footer'>
             <Text className='drawer-footer__btn' onClick={this.handleClickSearchParams.bind(this, 'reset')}>重置</Text>
-            <Text className='drawer-footer__btn drawer-footer__btn_active'  style={{background: colors.data[0].primary}} onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定</Text>
+            <Text className='drawer-footer__btn drawer-footer__btn_active'  style={{background:colors&&colors.data&& colors.data[0].primary||null}} onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定</Text>
           </View>
         </AtDrawer>
 

@@ -50,7 +50,7 @@ export default class EspireCheckout extends Component {
   // };
   constructor(props) {
     super(props);
-    const { windowWidth } = Taro.$systemSize;
+    const { windowWidth } = Taro.$systemSize || 750;
     const ratio = windowWidth / 375;
     this.state = {
       cart_type: "",
@@ -635,9 +635,7 @@ export default class EspireCheckout extends Component {
     } = this.state;
 
     const ipxClass = S.get("ipxClass") || "";
-    console.log("checkout-goodsllist-render", goodsllist);
-    console.log("checkout-poster-render", poster);
-    console.log("checkout-total-render", total);
+    
     return (
       <View className={`page-checkout ${ipxClass}`}>
         <View className="checkout__wrap">

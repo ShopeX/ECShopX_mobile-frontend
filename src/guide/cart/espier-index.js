@@ -592,7 +592,6 @@ export default class CartIndex extends Component {
     } = this.state;
     const { list, showLikeList, colors } = this.props;
     const n_ht = S.get('navbar_height', true)
-    console.log("groups", groups);
 
     if (loading) {
       return <Loading />;

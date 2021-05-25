@@ -67,6 +67,8 @@ export default class BaGuideHomeIndex extends Component {
 
   async componentDidMount() {
     const { version } = this.$router.params;
+    console.log('[挂件包] this.state.wgts',this.state.wgts)
+    console.log('version',version)
     //设置导购信息
     if(!this.state.wgts){
       this.guideInit(version)
@@ -76,7 +78,8 @@ export default class BaGuideHomeIndex extends Component {
   guideInit(version){
     const guideInfo = S.get("GUIDE_INFO", true);
     console.log('导购 - componentDidShow - index ',guideInfo)
-    if(!guideInfo) return setTimeout(()=>{this.guideInit(version)},300)
+    console.log('导购 - componentDidShow - version ',version)
+    if(!guideInfo) return this.guideInit(version)
     this.setState({ guideInfo }, () => {
       this.fetchInfo(version);
       this.getStoreList();
@@ -84,85 +87,87 @@ export default class BaGuideHomeIndex extends Component {
   }
 
 
-  async isAppWxWork() {
-    let _this = this;
-    const chatId = await _this.getQyChatId();
-    console.log("获取群信息------0", chatId);
-    let entry_form = S.get("entry_form", true);
-    if (chatId) {
-      S.set("qw_chatId", chatId, true);
-    } else if (
-      entry_form &&
-      entry_form.entry === "group_chat_tools" &&
-      !chatId
-    ) {
-      let newchatId = await _this.getNewQyChatId();
-      S.set("qw_chatId", newchatId, true);
-    }
+  // async isAppWxWork() {
+  //   let _this = this;
+  //   const chatId = await _this.getQyChatId();
+  //   console.log("获取群信息------0", chatId);
+  //   let entry_form = S.get("entry_form", true);
+  //   if (chatId) {
+  //     S.set("qw_chatId", chatId, true);
+  //   } else if (
+  //     entry_form &&
+  //     entry_form.entry === "group_chat_tools" &&
+  //     !chatId
+  //   ) {
+  //     let newchatId = await _this.getNewQyChatId();
+  //     S.set("qw_chatId", newchatId, true);
+  //   }
 
-    this.getStoreList();
-  }
+  //   this.getStoreList();
+  // }
  
   //客户群id
-  async getQyChatId() {
-    let ground = null;
-    try {
-      const context = await new Promise((reslove, reject) => {
-        wx.qy.getContext({
-          success: res => {
-            reslove(res);
-          }
-        });
-      });
-      console.log("群=====", context);
-      S.set("entry_form", context, true);
-      if (context.entry === "group_chat_tools") {
-        ground = await new Promise((reslove, reject) => {
-          wx.qy.getCurExternalChat({
-            success: res => {
-              reslove(res);
-            }
-          });
-        });
-        return ground.chatId;
-      } else {
-        S.delete("qw_chatId", true);
-        if (
-          ["contact_profile", "single_chat_tools", "chat_attachment"].includes(
-            context.entry
-          )
-        ) {
-          wx.qy.getCurExternalContact({
-            success: function(res) {
-              S.set("chat_uid", res.userId, true);
-            }
-          });
-        }
-      }
+  // async getQyChatId() {
+  //   let ground = null;
+  //   try {
+  //     const context = await new Promise((reslove, reject) => {
+  //       wx.qy.getContext({
+  //         success: res => {
+  //           reslove(res);
+  //         }
+  //       });
+  //     });
+  //     console.log("群=====", context);
+  //     S.set("entry_form", context, true);
+  //     if (context.entry === "group_chat_tools") {
+  //       ground = await new Promise((reslove, reject) => {
+  //         wx.qy.getCurExternalChat({
+  //           success: res => {
+  //             reslove(res);
+  //           }
+  //         });
+  //       });
+  //       return ground.chatId;
+  //     } else {
+  //       S.delete("qw_chatId", true);
+  //       if (
+  //         ["contact_profile", "single_chat_tools", "chat_attachment"].includes(
+  //           context.entry
+  //         )
+  //       ) {
+  //         wx.qy.getCurExternalContact({
+  //           success: function(res) {
+  //             S.set("chat_uid", res.userId, true);
+  //           }
+  //         });
+  //       }
+  //     }
 
-      return ground;
-    } catch (err) {
-      console.log("找不到函数---1", err);
-      S.delete("qw_chatId", true);
-      return false;
-    }
-  }
-  async getNewQyChatId() {
-    try {
-      let ground = await new Promise((reslove, reject) => {
-        wx.qy.getCurExternalChat({
-          success: res => {
-            reslove(res);
-          }
-        });
-      });
-      return ground.chatId;
-    } catch (err) {
-      console.log("再次获取群ID错误====", err);
-      S.delete("qw_chatId", true);
-      return false;
-    }
-  }
+  //     return ground;
+  //   } catch (err) {
+  //     console.log("找不到函数---1", err);
+  //     S.delete("qw_chatId", true);
+  //     return false;
+  //   }
+  // }
+
+  // async getNewQyChatId() {
+  //   try {
+  //     let ground = await new Promise((reslove, reject) => {
+  //       wx.qy.getCurExternalChat({
+  //         success: res => {
+  //           reslove(res);
+  //         }
+  //       });
+  //     });
+  //     return ground.chatId;
+  //   } catch (err) {
+  //     console.log("再次获取群ID错误====", err);
+  //     S.delete("qw_chatId", true);
+  //     return false;
+  //   }
+  // }
+
   //初始化首页模版
   async fetchInfo(version = "v1.0.1") {
     console.log("初始化首页模版-fetchInfo-version", version);
@@ -182,20 +187,6 @@ export default class BaGuideHomeIndex extends Component {
     const sliderIndex = info.config.findIndex(
       item => item.name === "slider" || item.name === "slider-hotzone"
     );
-    if (sliderIndex > -1) {
-      let sliderFirstData = info.config[sliderIndex].data[0];
-      if (sliderFirstData && sliderFirstData.imgUrl) {
-        await Taro.getImageInfo({
-          src: sliderFirstData.imgUrl
-        }).then(res => {
-          let width = res.width;
-          let height = res.height;
-          let ratio = width / height;
-          let imgHeight = +(Taro.$systemSize.screenWidth / ratio).toFixed(2);
-          info.config[sliderIndex].config.imgHeight = imgHeight;
-        });
-      }
-    }
 
     let tagnavIndex = -1;
     info.config.forEach(wgt_item => {
@@ -204,7 +195,7 @@ export default class BaGuideHomeIndex extends Component {
         wgt_item.tagnavIndex = tagnavIndex;
       }
     } );
-    
+    console.log('info.config',info.config)
     this.setState({
       wgts: info.config,
       background: (bkg_item && bkg_item.config.background) || null,
@@ -286,7 +277,6 @@ export default class BaGuideHomeIndex extends Component {
       goodsSkuInfo,
       storeInfo
     } = this.props;
-    console.log('首页 - render - guideInfo',guideInfo)
     const ipxClass = S.get("ipxClass");
     const n_ht = S.get("navbar_height");
     return (

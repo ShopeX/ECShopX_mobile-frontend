@@ -1612,14 +1612,17 @@ export default class CartCheckout extends Component {
       pack,
       isOpenStore,
       defalutPaytype
-    } = this.state;
-    console.log("---total---",total);
-    console.log("---info---",info);
+    } = this.state; 
+    // let curStore = {}
+    // if (shopData) {
+    //   curStore = shopData
+    // } else {
+    //   curStore = this.state.curStore
+    // }
+    //const curStore = Taro.getStorageSync('curStore')
+    // const { curStore } = this.state
     const { type, goodType, bargain_id } = this.$router.params;
     const isDrug = type === "drug";
-
-    console.log("----cart.list-----",goodType,pointInfo,bargain_id)
-
     if (!info) {
       return <Loading />;
     }

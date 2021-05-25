@@ -558,8 +558,7 @@ export default class Home extends Component {
     } = this.state;
 
     const pages = Taro.getCurrentPages()
-    console.log("-----advertList----", advertList)
-    console.log("-----currentShowAdvert----", currentShowAdvert)
+   
 
     // 广告屏
     const { showAdv } = this.props;
