@@ -154,11 +154,13 @@ export default class TradeItem extends Component {
                 >取消订单</Button>
                 : null
             }
-          {(info.pay_status === 'PAYED' && info.delivery_status != 'PENDING') && <Button
-              className='btn-action'
-              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, 'delivery')}
-            >查看物流</Button>}
+            {
+              (info.pay_status === 'PAYED' && info.delivery_status != 'PENDING' && info.receipt_type !== 'dada') && <Button
+                className='btn-action'
+                style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
+                onClick={this.handleClickBtn.bind(this, 'delivery')}
+              >查看物流</Button>
+            }
             <Button
               className='btn-action'
               style={`background: ${colors.data[0].primary}`}
@@ -199,21 +201,13 @@ export default class TradeItem extends Component {
           </View>
           <View className='trade-item__ft-bd'>
             <Text className='trade-item__status'>{info.status_desc}</Text>
-            <Button
-              className='btn-action'
-              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, 'delivery')}
-            >查看物流</Button>
-           {/* <Button
-              className='btn-action'
-              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, 'aftersales-list')}
-            >查看售后</Button>
-            <Button
-              className='btn-action'
-              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, 'aftersales')}
-            >申请售后</Button> */}
+            {
+              info.receipt_type !== 'dada' && <Button
+                className='btn-action'
+                style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
+                onClick={this.handleClickBtn.bind(this, 'delivery')}
+              >查看物流</Button>
+            }
             {
               info.receipt_type !== 'dada' && <Button
                 className='btn-action'
