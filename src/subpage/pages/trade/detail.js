@@ -2,21 +2,45 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
-import { Loading, SpToast, NavBar, FloatMenuMeiQia } from '@/components'
-import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
+import { Loading, NavBar, FloatMenuMeiQia } from '@/components'
+import { log, pickBy, formatDataTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
-import { Tracker } from "@/service";
+import { Tracker } from "@/service"
 import api from '@/api'
-import S from '@/spx'
-import DetailItem from './comps/detail-item'
 import { TracksPayed } from '@/utils/youshu'
-
-import {
-  customName
-} from '@/utils/point';
+import S from '@/spx'
+import { customName } from '@/utils/point'
+import DetailItem from './comps/detail-item'
+// 图片引入
+import ErrorDaDa from '../../assets/dada0.png'
+import WaitStore from '../../assets/dada1.png'
+import WaitDaDa from '../../assets/dada2.png'
+import OnRoad from '../../assets/dada4.png'
+import Cancel from '../../assets/dada5.png'
+import Success from '../../assets/dada6.png'
+import DadaGoStore from '../../assets/dada7.png'
 
 import './detail.scss'
 
+// 订单状态和图片匹配
+const statusImg = {
+  // 等待商家接单
+  0: WaitStore,
+  // 等待骑手接单
+  1: WaitDaDa,
+  2: WaitDaDa,
+  // 配送中
+  3: OnRoad,
+  // 已完成
+  4: Success,
+  // 订单取消
+  5: Cancel,
+  // 投递异常
+  9: ErrorDaDa,
+  10: Success,
+  // 骑士到店
+  100: DadaGoStore,
+}
 @connect(({ colors }) => ({
   colors: colors.current
 }))
@@ -33,9 +57,15 @@ export default class TradeDetail extends Component {
       interval: null,
       webSocketIsOpen: false,
       restartOpenWebsoect: true,
-      selections:[],
-      scrollIntoView: 'order-0'
+      // selections:[],
+      scrollIntoView: 'order-0',
+      cancelData: {},
+      tradeInfo: {}
     }
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.state.interval)
   }
 
   componentDidShow () {
@@ -46,10 +76,6 @@ export default class TradeDetail extends Component {
   isPointitemGood() { 
     const options = this.$router.params;
     return options.type === 'pointitem';
-  }
-
-  componentWillUnmount () {
-    clearInterval(this.state.interval)
   }
 
   calcTimer (totalSec) {
@@ -69,6 +95,7 @@ export default class TradeDetail extends Component {
       ss
     }
   }
+
   async fetch () {
     const { id } = this.$router.params
     const data = await api.trade.detail(id)
@@ -101,7 +128,8 @@ export default class TradeDetail extends Component {
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
-      created_time_str: ({ create_time }) => formatTime(create_time * 1000),
+      created_time_str: ({ create_time }) => formatDataTime(create_time * 1000, ),
+      update_time_str: ({ update_time }) => formatDataTime(update_time * 1000, ),
       auto_cancel_seconds: 'auto_cancel_seconds',
       receiver_name: 'receiver_name',
       receiver_mobile: 'receiver_mobile',
@@ -111,6 +139,11 @@ export default class TradeDetail extends Component {
       point_fee: ({ point_fee }) => (+point_fee / 100).toFixed(2),
       point_use: 'point_use',
       mobile: 'mobile',
+      dada: ({ dada }) => {
+        console.log('dada')
+        console.log(dada)
+        return dada
+      },
       receiver_city: 'receiver_city',
       receiver_district: 'receiver_district',
       receiver_address: 'receiver_address',
@@ -163,6 +196,10 @@ export default class TradeDetail extends Component {
       phone: 'phone'
     })
 
+    const cancelData = data.cancelData
+
+    const tradeInfo = data.tradeInfo
+
     if (info.receipt_type == 'ziti' && info.ziti_status === 'PENDING') {
       const { qrcode_url } = await api.trade.zitiCode({ order_id: id })
       this.setState({
@@ -208,7 +245,9 @@ export default class TradeDetail extends Component {
     this.setState({
       info,
       sessionFrom,
-      ziti
+      ziti,
+      cancelData,
+      tradeInfo
     })
   }
 
@@ -288,11 +327,9 @@ export default class TradeDetail extends Component {
     }
   }
 
-  async handleClickBtn (type,val) {
+  async handleClickBtn (type, e) {
+    e.stopPropagation()
     const { info } = this.state
-
- 
-
     if (type === 'home') {
       if(this.isPointitemGood()){
         Taro.redirectTo({
@@ -312,7 +349,6 @@ export default class TradeDetail extends Component {
     }
 
     if (type === 'cancel') {
-      console.log(val,'valvalvalval');
       Taro.navigateTo({
         url: `/subpage/pages/trade/cancel?order_id=${info.tid}`
       })
@@ -363,7 +399,10 @@ export default class TradeDetail extends Component {
 
   handleClickCopy = (val) => {
     copyText(val)
-    S.toast('复制成功')
+    Taro.showToast({
+      title: '复制成功',
+      icon: 'none'
+    })
   }
 
   countDownEnd = () => {
@@ -398,7 +437,10 @@ export default class TradeDetail extends Component {
         })
         task.onMessage((res) => {
           if (res.data === '401001') {
-            S.toast('未登录，请登录后再试')
+            Taro.showToast({
+              title: '未登录，请登录后再试',
+              icon: 'none'
+            })
             this.setState({
               webSocketIsOpen: false
             }, () => {
@@ -411,7 +453,10 @@ export default class TradeDetail extends Component {
           } else {
             const result = JSON.parse(res.data)
             if (result.status === 'success') {
-              S.toast('核销成功')
+              Taro.showToast({
+                title: '核销成功',
+                icon: 'none'
+              })              
               setTimeout(() => {
                 this.fetch()
               }, 700)
@@ -479,6 +524,13 @@ export default class TradeDetail extends Component {
     })
   }
 
+  // 拨打电话
+  callDada = (mobile) => {
+    Taro.makePhoneCall({
+      phoneNumber: mobile
+    })
+  }
+
   // 复制orderid
   copyOrderId = (orderid) => {
     Taro.setClipboardData({
@@ -488,7 +540,7 @@ export default class TradeDetail extends Component {
 
   render () {
     const { colors } = this.props
-    const { info, ziti, qrcode, timer, payLoading, scrollIntoView } = this.state
+    const { info, ziti, qrcode, timer, payLoading, scrollIntoView, cancelData, tradeInfo } = this.state
 
     console.log("----Tradedetail---",info);
     console.log("----isPointitemGood---",this.isPointitemGood());
@@ -501,7 +553,7 @@ export default class TradeDetail extends Component {
     const isDhPoint = info.pay_type === 'point'
     // 是否为余额支付
     const isDeposit = info.pay_type === 'deposit'
-    const isHf = info.pay_type === 'hfpay'
+    // const isHf = info.pay_type === 'hfpay'
 
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')
@@ -534,121 +586,124 @@ export default class TradeDetail extends Component {
           className='content'
           scrollIntoView={scrollIntoView}
         >
-          <View
-            className='trade-detail-header'
-            style={`background: ${colors.data[0].primary}`}
-            id='order-0'
-          >
-            {info.order_class === "drug" ? (
-              <View className='trade-detail-waitdeliver'>
-                {info.is_logistics && <View className='oneline'>线上订单</View>}
-                {info.order_status_des === "CANCEL" ? (
+          <View className='trade-detail-header' id='order-0'>
+            <View className='trade-detail-waitdeliver'>
+              {info.is_logistics && <View className='oneline'>线上订单</View>}
+              {info.status === "WAIT_BUYER_PAY" && (
                   <View>
-                    <View>订单状态：</View>
-                    <View>已拒绝</View>
-                  </View>
-                ) : (
-                    <View>
-                      <View>订单状态：</View>
-                      <View>
-                        {info.ziti_status === "APPROVE" ? "审核通过" : "待审核"}
-                      </View>
-                    </View>
-                  )}
-              </View>
-            ) : (
-                <View className='trade-detail-waitdeliver'>
-                  {info.is_logistics && <View className='oneline'>线上订单</View>}
-                  {info.status === "WAIT_BUYER_PAY" && (
-                      <View>
-                        该订单将为您保留
-                        <AtCountdown
-                          format={{ hours: ":", minutes: ":", seconds: "" }}
-                          hours={timer.hh}
-                          minutes={timer.mm}
-                          seconds={timer.ss}
-                          onTimeUp={this.countDownEnd.bind(this)}
-                        />
-                      分钟
-                    </View>
-                  )}
-                  {info.status !== "WAIT_BUYER_PAY" && (
-                    <View>
-                      <View></View>
-                      <View className="delivery-infos">
-                        <View className="delivery-infos__status">
-                          <Text className="delivery-infos__text text-status">
-                            {info.order_status_msg}
-                          </Text>
-                          <Text className="delivery-infos__text">
-                            {info.status === "WAIT_SELLER_SEND_GOODS"
-                              ? "正在审核订单"
-                              : null}
-                            {info.status === "WAIT_BUYER_CONFIRM_GOODS"
-                              ? "正在派送中"
-                              : null}
-                            {info.status === "TRADE_CLOSED" ? "订单已取消" : null}
-                            {/* {info.status === "TRADE_SUCCESS" && info.receipt_type !== 'ziti' 
-                              ? `物流单号：${info.delivery_code}`
-                              : null} */}
-                          </Text>
-                        </View>
-                          {/*{
-                                info.status !== 'TRADE_SUCCESS' ? <Text className='delivery-infos__text'>2019-04-30 11:30:21</Text> : null
-                              }*/}
-                        </View>
-                      </View>
-                  )}
+                    该订单将为您保留
+                    <AtCountdown
+                      format={{ hours: ":", minutes: ":", seconds: "" }}
+                      hours={timer.hh}
+                      minutes={timer.mm}
+                      seconds={timer.ss}
+                      onTimeUp={this.countDownEnd.bind(this)}
+                    />
+                  分钟
                 </View>
               )}
+              {info.status !== "WAIT_BUYER_PAY" && (
+                <View className='delivery-infos'>
+                  <View className='delivery-infos__status'>
+                    <View className={`delivery-infos__text text-status ${(info.receipt_type === 'dada' && info.dada.dada_status === 9) && 'red'}`}>
+                      {info.order_status_msg}
+                      {
+                        (info.dada && info.dada.id && statusImg[info.dada.dada_status]) && <Image
+                          className='statusImg'
+                          src={statusImg[info.dada.dada_status]}
+                          mode='aspectFill'
+                        />
+                      }
+                    </View>
+                    {
+                      (!info.dada || !info.dada.id) &&  <Text className='delivery-infos__text'>
+                        {info.status === "WAIT_SELLER_SEND_GOODS"
+                          ? "正在审核订单"
+                          : null}
+                        {info.status === "WAIT_BUYER_CONFIRM_GOODS"
+                          ? "正在派送中"
+                          : null}
+                        {info.status === "TRADE_CLOSED" ? "订单已取消" : null}
+                      </Text>
+                    }
+                  </View>
+                </View>
+              )}
+            </View>
           </View>
-          {info.receipt_type === "ziti" && !info.is_logistics ? (
-            <View className="ziti-content">
+          {
+            (info.dada && info.dada.id && (info.dada.dada_status > 1 && info.dada.dada_status !==5)) && <View className='dadaInfo'>
+              <View className='name'>
+                <Image src={require('../../assets/dada3.png')} mode='aspectFill' className='avatar' />
+                <View>骑手：{ info.dada.dm_name } </View>
+                <View className='iconfont icon-dianhua' onClick={this.callDada.bind(this, info.dada.dm_mobile)}></View>
+              </View>
+              <View className='tip'>本单由达达同城为您服务</View>
+            </View>
+          }
+          {info.receipt_type === "ziti" && !info.is_logistics && (
+            <View className='ziti-content'>
               {info.status === "WAIT_SELLER_SEND_GOODS" &&
                 info.ziti_status === "PENDING" && (
                   <View>
-                    <Image className="ziti-qrcode" src={qrcode} />
+                    <Image className='ziti-qrcode' src={qrcode} />
                     {info.pickupcode_status && (
                       <View>
                         <View
-                          className="sendCode"
+                          className='sendCode'
                           onClick={this.sendCode.bind(this)}
                         >
                           发送提货码
                         </View>
-                        <View className="sendCodeTips">
+                        <View className='sendCodeTips'>
                           提货时请出告知店员提货验证码
                         </View>
                       </View>
                     )}
                   </View>
                 )}
-              <View className="ziti-text">
-                <View className="ziti-text-name">{ziti.store_name}</View>
-                <View>营业时间：{ziti.hour}</View>
-                <View>{ziti.store_address}</View>
-              </View>
             </View>
-          ) : (
-              <View className="trade-detail-address">
-                <View className="address-receive">
-                  <Text>收货地址：</Text>
-                  <View className="info-trade">
-                    <View className="user-info-trade">
-                      <Text>{info.receiver_name}</Text>
-                      {!this.isPointitemGood() && <Text>{info.receiver_mobile}</Text>}
+          )}
+          <View className='trade-detail-address'>
+            {
+              ((info.dada && info.dada.id) || (info.receipt_type === "ziti" && !info.is_logistics)) && <View className={`store ${info.dada && info.dada.id ? 'border' : ''}`}>
+                <Text className={`iconfont ${info.receipt_type === 'dada' ? 'icon-shangjiadizhi-01' : 'icon-dizhi-01'}`}></Text>
+                <View>
+                  <View className='storeName'>{ziti.store_name}</View>
+                  <View className='storeAddress'>{ziti.store_address}</View>                    
+                  <View className='storeHour'><Text className='title'>营业时间：</Text>{ziti.hour}</View>
+                  <View className='storeMobile'>
+                    <Text className='title'>门店电话：</Text>
+                    {ziti.phone}
+                    <View className='iconfont icon-dianhua' onClick={this.callDada.bind(this, ziti.phone)}></View>
                     </View>
-                    <Text className="address-detail">
-                      {info.receiver_state}
-                      {info.receiver_city}
-                      {info.receiver_district}
-                      {info.receiver_address}
-                    </Text>
+                </View>
+              </View>
+            }
+            {
+              ((info.dada && info.dada.id) || (info.receipt_type === "logistics")) && <View className='address-receive'>
+                <Text className={`iconfont ${info.receipt_type === 'dada' ? 'icon-shouhuodizhi-01' : 'icon-dizhi-01'}`}></Text>
+                <View className='info-trade'>
+                  <Text className='address-detail'>
+                    {info.receiver_state}{info.receiver_city}{info.receiver_district}{info.receiver_address}
+                  </Text>                    
+                  <View className='user-info-trade'>
+                    <Text className='receiverName'>{ info.receiver_name }</Text>
+                    {!this.isPointitemGood() && <Text>{info.receiver_mobile}</Text>}
                   </View>
                 </View>
               </View>
-            )}
+            }
+          </View>
+
           <View className='trade-detail-goods'>
+            <View className='line'>
+              <View className='left'>订单号：</View>
+              <View className='right'>
+                { info.tid }
+                <Text className='fuzhi' onClick={this.copyOrderId.bind(this, info.tid)}>复制</Text>
+              </View>
+            </View>
             <DetailItem 
               info={info}
               isPointitem={this.isPointitemGood()}
@@ -688,206 +743,244 @@ export default class TradeDetail extends Component {
             </View>
           }
 
-          <View className="trade-money">
-            <View>总计：{this.isPointitemGood()?<Text className="trade-money__point">
-              {info.point} {customName("积分")} {(info.order_class==="pointsmall") && info.freight_fee!=0 && info.freight_fee>0 && info.freight_type!=="point" && <Text class="cash">+ {info.freight_fee}</Text>}
-            </Text>:<Text className="trade-money__num">￥{info.totalpayment}</Text>}</View>
-          </View>
-          {info.remark && (
-            <View className="trade-detail-remark">
-              <View className="trade-detail-remark__header">订单备注</View>
-              <View className="trade-detail-remark__body">{info.remark}</View>
+          <View className='trade-money'>
+            <View>
+              总计：
+              {
+                this.isPointitemGood() ?
+                  <Text className='trade-money__point'>
+                    { info.point } { customName("积分") } 
+                    {
+                      (info.order_class==='pointsmall') &&
+                      info.freight_fee!=0 &&
+                      info.freight_fee > 0 &&
+                      info.freight_type!=="point" &&
+                      <Text class='cash'>+ {info.freight_fee}</Text>
+                    }
+                  </Text> : 
+                  <Text className='trade-money__num'>￥{ info.totalpayment }</Text>
+              }
             </View>
-          )}
-          <View className="trade-detail-info">
-            <View className="info-text">
-              订单号：{info.tid}
-              <Text className='iconfont icon-fuzhi' onClick={this.copyOrderId.bind(this, info.tid)}></Text>
-            </View>
-            <Text className="info-text">下单时间：{info.created_time_str}</Text>
-            {info.invoice_content ? (
-              <Text className="info-text">发票信息：{info.invoice_content}</Text>
-            ) : null}
-
-            <Text className="info-text">商品金额：{transformTextByPoint(this.isPointitemGood(),info.item_fee,info.item_point)}</Text>
-            {/*<Text className='info-text'>积分抵扣：-￥XX</Text>*/}
-            <Text className='info-text'>运费：{info.freight_type!=="point"?`¥ ${info.freight_fee}`:`${info.freight_fee*100}${customName("积分")}`}</Text>
-            {info.type == '1' && <Text className='info-text'>税费：￥{info.total_tax}</Text>}
-            {!this.isPointitemGood() && <Text className='info-text'>优惠：-￥{info.discount_fee}</Text>}
-            {/* {isDhPoint && (<Text className='info-text' space>支付：{info.point_use}积分 {' 积分支付'}</Text>)} */}
-            {info.point_use > 0 && (<Text className='info-text' space>{customName("积分支付")}：{info.point_use}{customName("积分")}，抵扣：¥{info.point_fee}</Text>)}
-            {isDeposit && (<Text className='info-text' space>支付：¥{info.payment} {' 余额支付'}</Text>)}
-            {isHf && (<Text className='info-text' space>支付：¥{info.payment} {'微信支付'}</Text>)}
-            {!isDhPoint && !isDeposit && !isHf && (<Text className='info-text' space>支付：￥{info.payment} {' 微信支付'}</Text>)}
             {
-              info.delivery_code
-                ? <View className='delivery_code_copy'>
-                  <Text className='info-text'>物流单号：{info.delivery_code}</Text>
-                  <Text className='info-text-btn' onClick={this.handleClickDelivery.bind(this)}>查看物流</Text>
-                  <Text className='info-text-btn' onClick={this.handleClickCopy.bind(this, info.delivery_code)}>复制</Text>
+              !info.is_logistics &&
+              (info.status === "WAIT_BUYER_PAY" ||
+              (info.status === "WAIT_SELLER_SEND_GOODS" && 
+              info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL")) &&
+              (info.receipt_type !== 'dada' || (info.dada && info.dada.dada_status === 0)) && <View
+                className='cancel__btn'
+              >
+                <View className='btn' onClick={this.handleClickBtn.bind(this, "cancel")}>
+                  取消订单
                 </View>
-                : null
+              </View>
             }
           </View>
-        </ScrollView>
-        {info.order_class !== "drug" && (
-          <View>
-            {!isDhPoint && info.status === "WAIT_BUYER_PAY" && (
-              <View className="trade-detail__footer">
-                {
-                  !info.is_logistics && <Text
-                    className='trade-detail__footer__btn'
-                    onClick={this.handleClickBtn.bind(this, "cancel",1)}
-                  >
-                    取消订单
-                  </Text>
-                }
-                <Button
-                  className="trade-detail__footer__btn trade-detail__footer_active"
-                  type="primary"
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  loading={payLoading}
-                  onClick={this.handleClickBtn.bind(this, "pay")}
-                >
-                  立即支付
-                </Button>
+          {info.remark && (
+            <View className='trade-detail-remark'>
+              <View className='trade-detail-remark__header'>订单备注</View>
+              <View className='trade-detail-remark__body'>{ info.remark }</View>
+            </View>
+          )}
+          <View className='trade-detail-info'>
+            <View className='line'>
+              <View className='left'>下单时间</View>
+              <View className='right'>
+                { info.created_time_str }
               </View>
-            )}
-            {isDhPoint && info.status === "WAIT_BUYER_PAY" && (
-              <View className="trade-detail__footer">
-                <Button
-                  className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active"
-                  type="primary"
-                  loading={payLoading}
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, "pay")}
-                >
-                  立即支付
-                </Button>
+            </View>
+            {
+              (tradeInfo && tradeInfo.tradeState === 'SUCCESS') && <View className='line'>
+                <View className='left'>支付时间</View>
+                <View className='right'>
+                  { tradeInfo.payDate }
+                </View>
               </View>
-            )}
-            {!isDhPoint && info.status === "WAIT_SELLER_SEND_GOODS" && (
-              <View className="trade-detail__footer">
-                {info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL" && !info.is_logistics && (
-                  <Text
-                    className="trade-detail__footer__btn"
-                    onClick={this.handleClickBtn.bind(this, "cancel",111)}
-                  >
-                    取消订单
-                  </Text>
-                )}
-                {
-                  info.can_apply_aftersales === 1 && (
-                    <Button
-                      className='trade-detail__footer__btn'
-                      // style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                      onClick={this.handleClickBtn.bind(this, "aftersales")}
-                    >
-                      申请售后
-                    </Button>
-                  )
-                }
-                {
-                  (info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL" && !info.is_logistics) 
-                  ? <Text
-                    className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_status_des === "PAYED_WAIT_PROCESS"
-                        ? "trade-detail__footer_allWidthBtn"
-                        : ""
-                      }`}
-                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
-                    onClick={this.handleClickBtn.bind(this, "home")}
-                  >
-                  继续购物
-                </Text>
-                : <Text
-                  className={`trade-detail__footer__btn trade-detail__footer_active ${(info.order_status_des === "PAYED_WAIT_PROCESS" || info.can_apply_aftersales !== 1 )
-                      ? "trade-detail__footer_allWidthBtn"
-                      : ""
-                    }`}
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, "home")}
-                >
-                  继续购物
-                </Text>
-                }
-                
+            }
+            {
+              info.status === 'TRADE_CLOSED' && <View className='line'>
+                <View className='left'>取消时间</View>
+                <View className='right'>
+                  { info.update_time_str }
+                </View>
               </View>
-            )}
-            {isDhPoint && info.status === "WAIT_SELLER_SEND_GOODS" && (
-              <View className="trade-detail__footer">
-                <Text
-                  className="trade-detail__footer__btn trade-detail__footer__btn-inline trade-detail__footer_active"
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, "home")}
-                >
-                  继续购物
-                </Text>
+            }
+            {
+              (info.dada && info.dada.pickup_time) && <View className='line'>
+                <View className='left'>取货时间</View>
+                <View className='right'>
+                  { formatDataTime(Number(info.dada.pickup_time)) }
+                </View>
+              </View> 
+            }
+            {
+              (info.dada && info.dada.delivered_time) && <View className='line'>
+                <View className='left'>送达时间</View>
+                <View className='right'>
+                  { formatDataTime(Number(info.dada.delivered_time)) }
+                </View>
+              </View>            
+            }
+            {
+              (info.dada && (info.dada.dada_status === 10 || info.dada.dada_status === 4)) && <View className='line'>
+                <View className='left'>配送时长</View>
+                <View className='right red'>
+                  { info.dada.delivery_length }
+                </View>
+              </View>            
+            }
+            {
+              info.invoice_content && <View className='line'>
+                <View className='left'>发票信息</View>
+                <View className='right'>
+                  { info.invoice_content }
+                </View>
               </View>
-            )}
-            {info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
-              <View className="trade-detail__footer">
-                {
-                  info.can_apply_aftersales === 1 && (
-                    <Button
-                      className={`trade-detail__footer__btn ${info.is_logistics && 'trade-detail__footer_active trade-detail__footer_allWidthBtn'}`}
-                      style={`background: ${ info.is_logistics ? colors.data[0].primary : '#fff'}; border-color: $${ info.is_logistics ? colors.data[0].primary : '#fff'}`}
-                      onClick={this.handleClickBtn.bind(this, "aftersales")}
-                    >
-                      申请售后
-                    </Button>
-                  )
-                }
-                {
-                  !info.is_logistics && <Text
-                    className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
-                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                    onClick={this.handleClickBtn.bind(this, "confirm")}
-                  >
-                    确认收货
-                  </Text>
-                }
+            }
+            <View className='line'>
+              <View className='left'>商品金额</View>
+              <View className='right'>
+                { transformTextByPoint(this.isPointitemGood(),info.item_fee,info.item_point) }
               </View>
-            )}
-            {info.status === "TRADE_SUCCESS" && (
-              <View className='trade-detail__footer'>
-                {
-                  info.can_apply_aftersales === 1 && (
-                    <Button
-                      className='trade-detail__footer__btn'
-                      // style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                      onClick={this.handleClickBtn.bind(this, "aftersales")}
-                    >
-                      申请售后
-                    </Button>
-                  )
-                }
-                {meiqia.is_open === "true" || echat.is_open === 'true' ? (
-                  <View 
-                    className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
-                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  >
-                    <FloatMenuMeiQia
-                      storeId={info.distributor_id}
-                      info={{ orderId: info.order_id }}
-                      isFloat={false}
-                    >
-                        联系客服
-                    </FloatMenuMeiQia>
-                  </View>
-                ) : (
-                    <Button
-                      openType='contact'
-                      className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
-                      style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                    >
-                      联系客服
-                    </Button>
-                  )}
+            </View>
+            <View className='line'>
+              <View className='left'>运费</View>
+              <View className='right'>
+                { info.freight_type!=="point"?`¥ ${info.freight_fee}`:`${info.freight_fee*100}${customName("积分")}` }
               </View>
-            )}
+            </View>
+            {
+              info.type == '1' && <View className='line'>
+                <View className='left'>税费</View>
+                <View className='right'>
+                  ￥{ info.total_tax }
+                </View>
+              </View>
+            }            
+            {
+              !this.isPointitemGood() && <View className='line'>
+                <View className='left'>优惠</View>
+                <View className='right'>
+                  -￥{ info.discount_fee }
+                </View>
+              </View>
+            }            
+            {
+              info.point_use > 0 && <View className='line'>
+                <View className='left'>{ customName("积分支付") }</View>
+                <View className='right'>
+                  { info.point_use}{customName("积分")}，抵扣：¥{info.point_fee }
+                </View>
+              </View>
+            }
+            {
+              isDeposit && <View className='line'>
+                <View className='left'>支付</View>
+                <View className='right'>
+                  ¥{info.payment} {' 余额支付'}
+                </View>
+              </View>
+            }
+            {
+              !isDhPoint && !isDeposit && <View className='line'>
+                <View className='left'>支付</View>
+                <View className='right'>
+                  ¥{info.payment} {'微信支付'}
+                </View>
+              </View>
+            }
+            {
+              info.delivery_code && <View className='line'>
+                <View className='left'>物流单号</View>
+                <View className='right'>
+                  <Text className='info-text'>{info.delivery_code}</Text>
+                  <Text className='info-text-btn' onClick={this.handleClickDelivery.bind(this)}>查看物流</Text>
+                  <Text className='iconfont icon-fuzhi info-text-btn' onClick={this.handleClickCopy.bind(this, info.delivery_code)}></Text>
+                </View>
+              </View>
+            }
           </View>
-        )}
-        <SpToast></SpToast>
+          {
+            cancelData.cancel_id && <View className='cancelData'>
+              <View className='title'>取消理由：</View>
+              <View className='reason'>
+                { cancelData.cancel_reason }
+              </View>
+            </View>
+          }
+        </ScrollView>
+        {
+          info.status !== 'TRADE_CLOSED' && <View className='trade-detail__footer'>
+            {
+              // 立即支付
+              info.status === 'WAIT_BUYER_PAY' && <Button
+                className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'
+                type='primary'
+                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                loading={payLoading}
+                onClick={this.handleClickBtn.bind(this, "pay")}
+              >
+              立即支付
+            </Button>
+            }
+            {
+              // 申请售后
+              (((info.status === 'WAIT_SELLER_SEND_GOODS')||
+              (info.status === "TRADE_SUCCESS" && (info.receipt_type !== 'dada' || info.dada.dada_status === 4 || info.dada.dada_status === 10)) ||
+              (info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE')) && info.receipt_type !== 'dada')) &&
+              info.can_apply_aftersales === 1) && <Button
+                className={`trade-detail__footer__btn left ${info.is_logistics && 'trade-detail__footer_active trade-detail__footer_allWidthBtn'}`}
+                onClick={this.handleClickBtn.bind(this, "aftersales")}
+              >
+                申请售后
+              </Button>
+            }
+            {
+              // 继续购物
+              (info.status === "WAIT_SELLER_SEND_GOODS" || 
+              (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada') &&
+              info.receipt_type !== 'dada' || info.dada.dada_status !== 9) && <View
+                className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales !== 1 || (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')) ? 'trade-detail__footer_allWidthBtn' : ''
+                  }`}
+                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
+                onClick={this.handleClickBtn.bind(this, "home")}
+              >
+                继续购物
+              </View>
+            }
+            {
+              // 确认收货
+              (info.receipt_type !== 'dada' && !info.is_logistics && info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE'))) && <View
+                className={`trade-detail__footer__btn trade-detail__footer_active right ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
+                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                onClick={this.handleClickBtn.bind(this, "confirm")}
+              >
+                确认收货
+              </View>
+            }
+            {
+              // 联系客服
+              (info.status === "TRADE_SUCCESS" ||
+              (info.receipt_type === 'dada' && info.dada.dada_status === 9)) && <View 
+                className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales === 0 || (info.receipt_type === 'dada' && info.dada.dada_status === 9)) && 'trade-detail__footer_allWidthBtn'}`}
+                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+              >
+                {
+                  meiqia.is_open === "true" || echat.is_open === 'true' ?
+                  <FloatMenuMeiQia
+                    storeId={info.distributor_id}
+                    info={{ orderId: info.order_id }}
+                    isFloat={false}
+                  >
+                    联系客服
+                  </FloatMenuMeiQia> :
+                  <Button openType='contact' className='contact'>
+                    联系客服
+                  </Button>
+                }
+              </View>
+            }
+          </View>
+        }
       </View>
     );
   }

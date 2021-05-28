@@ -45,8 +45,9 @@ export default class AddressIndex extends Component {
     })
   }
 
-  async fetch () {
-    if(this.$router.params.isPicker) {
+  async fetch (isDelete = false) {
+    const { isPicker, receipt_type = '', city = '' } = this.$router.params
+    if(isPicker) {
       this.setState({
         isPicker: true
       })
@@ -56,16 +57,21 @@ export default class AddressIndex extends Component {
     })
     const { list } = await api.member.addressList()
     Taro.hideLoading()
-
+    let newList = [...list]
+    if (receipt_type === 'dada' && city) {
+      newList = list.map(item => {
+        item.disabled = item.city !== city
+        return item
+      }).sort(first => first.disabled ? 1 : -1)
+    }
     let selectedId = null
     if (this.props.address) {
       selectedId = this.props.address[ADDRESS_ID]
     } else {
       selectedId = list.find(addr => addr.is_def > 0) || null
     }
-
     this.setState({
-      list,
+      list: newList,
       selectedId
     })
   }
@@ -109,10 +115,14 @@ export default class AddressIndex extends Component {
   }
 
   handleDelete = async (item) => {
+    const { selectedId } = this.state
     await api.member.addressDelete(item.address_id)
     S.toast('删除成功')
+    if (selectedId === item.address_id) {
+      this.props.onAddressChoose(null)
+    }
     setTimeout(() => {
-      this.fetch()
+      this.fetch(true)
     }, 700)
   }
 
@@ -164,9 +174,9 @@ export default class AddressIndex extends Component {
           {
             list.map(item => {
               return (
-                <View key={item[ADDRESS_ID]} className='address-item'>
+                <View key={item[ADDRESS_ID]} className={`address-item ${item.disabled ? 'disabled' : ''}`}>
                   {
-                    isPicker && <View className='address-item__check' onClick={this.handleClickChecked.bind(this, item)}>
+                    (isPicker && !item.disabled) && <View className='address-item__check' onClick={this.handleClickChecked.bind(this, item)}>
                       {
                         item[ADDRESS_ID] === selectedId
                           ? <Text className='icon-check address-item__checked' style={{color: colors.data[0].primary}}></Text>
@@ -210,8 +220,10 @@ export default class AddressIndex extends Component {
         <View
           className='member-address-add'
           style={'background: ' + colors.data[0].primary}
-          onClick={this.handleClickToEdit.bind(this)}>添加新地址</View>
-
+          onClick={this.handleClickToEdit.bind(this)}
+        >
+          添加新地址
+        </View>
         <SpToast />
       </View>
     )

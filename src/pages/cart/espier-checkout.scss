@@ -1,10 +1,19 @@
 @import '../../style/imports';
 
+page {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 .page-checkout {
-  margin: $edge-size $edge-margin;
+  width: 100%;
+  height: 100%;
+  padding: $edge-size $edge-margin $toolbar-height $edge-margin;
   /*  #ifdef  h5  */
-  padding-top: $navigate-height-h5;
+  padding-top: $navigate-height-h5 + $edge-size;
   /*  #endif  */
+  overflow-y: auto;
   .shopping-guide-header{
     padding: 20px;
     text-align: center;
@@ -18,43 +27,9 @@
     display: inline-block; 
   }
 
-  .switch-tab {
-    display: flex;
-    align-items: flex-end;
-    height: 100px;
-    .switch-item {
-      flex: 4;
-      height: 80px;
-      line-height: 80px;
-      transition: all 0.2s ease;
-      background: #fff;
-      text-align: center;
-      opacity: .5;
-      font-size: 32px;
-      border-radius: 10px 10px 0 0;
-      &.active {
-        flex: 5;
-        height: 100px;
-        line-height: 100px;
-        opacity: 1;
-        font-size: 36px;
-      }
-    }
-  }
-
-  .checkout {
-    &__wrap {
-      height: 100vh;
-      box-sizing: border-box;
-      padding-bottom: $toolbar-height;
-    }
-    &__total {
-      margin-right: 24px;
-    }
-    &-toolbar {
-      display: flex;
-      justify-content: flex-end;
-    }
+  .checkout__wrap {
+    width: 100%;
+    overflow: hidden;
   }
 
   .invoice-title{
@@ -71,39 +46,6 @@
       font-size:28px;
       line-height: 30px;
       margin-right:10px;
-    }
-  }
-
-  .address-module {
-    padding: $edge-size $edge-margin*2;
-    margin: 0 0 $edge-margin;
-    background: #fff;
-    .adr-icon {
-      width: 46px;
-      height: 46px;
-    }
-    .addr {
-      display: flex;
-      align-items: center;
-      flex: 1;
-      margin-bottom: 20px;
-      .addr-title {
-        font-size: 32px;
-        margin-bottom: 5px;
-        font-weight: 500;
-      }
-      .addr-detail {
-        font-size: 26px;
-        color: #666;
-      }
-      [class^="icon-"] {
-        margin-right: 10px;
-        font-size: 42px;
-        color: #666;
-      }
-    }
-    .icon-edit{
-      color: #D0021B !important;
     }
   }
 
@@ -354,9 +296,11 @@
   }
 
   .checkout-toolbar {
-    padding-left: 34px;
-    padding-right: 0;
+    width: 100%;
     justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     .checkout__total {
       white-space: nowrap;
       flex: 1;
@@ -371,12 +315,12 @@
   }
 
   .btn-confirm-order {
-    width: 256px;
+    width: 260px;
     margin: 0 0 0 24px;
-    height: $toolbar-height;
-    line-height: $toolbar-height;
+    height: 80px;
+    line-height: 80px;
     border: none;
-    border-radius: 0;
+    border-radius: 40px;
     font-weight: bold;
     font-size: $font-size;
     &:before, &:after {

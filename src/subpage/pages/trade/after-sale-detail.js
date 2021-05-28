@@ -4,15 +4,12 @@ import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpToast, NavBar } from '@/components'
 import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
-import { diviCalc, } from '@/utils/precision'
 import { Tracker } from "@/service";
 import api from '@/api'
 import S from '@/spx'
+import { customName } from '@/utils/point'
 import AfterDetailItem from './comps/after-detail-item'
-import {
-  customName
-} from '@/utils/point';
-import './detail.scss'
+import './after-sale-detail.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current
@@ -701,7 +698,6 @@ export default class TradeDetail extends Component {
                 <AfterDetailItem 
                   info={info}
                   showType='log_orders'
-                 
                 />
               </View>
             </View>

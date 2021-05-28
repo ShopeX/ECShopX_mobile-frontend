@@ -15,7 +15,7 @@ export default class SpCell extends Component {
     onClick: () => {}
   }
 
-    static options = {
+  static options = {
     addGlobalClass: true
   }
 

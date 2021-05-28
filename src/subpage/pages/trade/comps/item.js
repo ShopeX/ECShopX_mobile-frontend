@@ -1,12 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { connect } from "@tarojs/redux";
-import { Price } from '@/components'
+import { connect } from "@tarojs/redux"
 import { classNames,formatPriceToHundred } from '@/utils'
+import { customName } from '@/utils/point'
 import OrderItem from '../../../../components/orderItem/order-item'
-import {
-  customName
-} from '@/utils/point';
+
 import './item.scss'
 
 @connect(({ colors }) => ({
@@ -14,9 +12,6 @@ import './item.scss'
 }))
 
 export default class TradeItem extends Component {
-  static options = {
-    addGlobalClass: true
-  }
 
   static defaultProps = {
     customHeader: false,
@@ -31,6 +26,10 @@ export default class TradeItem extends Component {
     onClickBtn: () => {},
     onClick: () => {}
   }
+  
+  static options = {
+    addGlobalClass: true
+  }
 
   handleClickBtn (type) {
     const { info } = this.props
@@ -39,7 +38,7 @@ export default class TradeItem extends Component {
 
   computeTotalPrice(){
     let total;
-    const {info:{point,order_class,freight_fee,freight_type,total_fee,payment},payType}=this.props;
+    const {info:{point,order_class,freight_fee,freight_type,total_fee,payment, receipt_type},payType}=this.props;
     console.log("---point---",point)
     console.log("---order_class---",order_class)
     console.log("---freight_fee---",freight_fee)
@@ -60,7 +59,15 @@ export default class TradeItem extends Component {
         total= `合计：￥${payment}`
       } 
     }
-    return <View className='trade-item__total'>{total}</View>
+    return <View className={`trade-item__total ${receipt_type === 'dada' && 'dadaTotal'}`}>
+      {
+        receipt_type === 'dada' && <View className='dada'>
+          <Text className='iconfont icon-peisongxiangguan'></Text>
+          达达同城配送
+        </View>
+      }
+      {total}
+    </View>
   }
 
   render () {
@@ -117,7 +124,8 @@ export default class TradeItem extends Component {
           <View className='trade-item__ft-bd'>
             <Text className='trade-item__status'>{info.status_desc}</Text>
             {
-              (info.order_status_des === 'PAYED' || info.order_status_des === 'NOTPAY') && !info.is_logistics
+              (info.order_status_des === 'PAYED' || info.order_status_des === 'NOTPAY') && !info.is_logistics &&
+              (info.receipt_type !== 'dada' || (info.dada && info.dada.dada_status === 0))
                 ? <Button
                   className='btn-action'
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
@@ -137,7 +145,8 @@ export default class TradeItem extends Component {
           <View className='trade-item__ft-bd'>
             <Text className='trade-item__status'>{info.status_desc}</Text>
             {
-              (info.order_status_des === 'PAYED' || info.order_status_des === 'NOTPAY') && !info.is_logistics
+              (info.order_status_des === 'PAYED' || info.order_status_des === 'NOTPAY') &&
+              !info.is_logistics && (info.receipt_type !== 'dada' || (info.dada && info.dada.dada_status === 0))
                 ? <Button
                   className='btn-action'
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
@@ -145,11 +154,13 @@ export default class TradeItem extends Component {
                 >取消订单</Button>
                 : null
             }
-          {(info.pay_status === 'PAYED' && info.delivery_status != 'PENDING') && <Button
-              className='btn-action'
-              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, 'delivery')}
-            >查看物流</Button>}
+            {
+              (info.pay_status === 'PAYED' && info.delivery_status != 'PENDING' && info.receipt_type !== 'dada') && <Button
+                className='btn-action'
+                style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
+                onClick={this.handleClickBtn.bind(this, 'delivery')}
+              >查看物流</Button>
+            }
             <Button
               className='btn-action'
               style={`background: ${colors.data[0].primary}`}
@@ -181,33 +192,29 @@ export default class TradeItem extends Component {
               className='trade-item__acts'
               onClick={this.props.onActionBtnClick.bind(this)}
             >更多</Text> */}
-            <View className={classNames('trade-item__dropdown', { 'is-active': showActions })}>
-              <Text className='trade-item__dropdown-item' onClick={this.props.onActionClick.bind(this, 'confirm-receive')}>确认收货</Text>
-              <Text className='trade-item__dropdown-item' onClick={this.props.onActionClick.bind(this, 'view-express')}>查看物流</Text>
-            </View>
+            {
+              info.receipt_type !== 'dada' && <View className={classNames('trade-item__dropdown', { 'is-active': showActions })}>
+                <Text className='trade-item__dropdown-item' onClick={this.props.onActionClick.bind(this, 'confirm-receive')}>确认收货</Text>
+                <Text className='trade-item__dropdown-item' onClick={this.props.onActionClick.bind(this, 'view-express')}>查看物流</Text>
+              </View>
+            }
           </View>
           <View className='trade-item__ft-bd'>
             <Text className='trade-item__status'>{info.status_desc}</Text>
-            <Button
-              className='btn-action'
-              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, 'delivery')}
-            >查看物流</Button>
-           {/* <Button
-              className='btn-action'
-              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, 'aftersales-list')}
-            >查看售后</Button>
-            <Button
-              className='btn-action'
-              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, 'aftersales')}
-            >申请售后</Button> */}
-            <Button
-              className='btn-action'
-              style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
-              onClick={this.handleClickBtn.bind(this, 'confirm')}
-            >确认收货</Button>
+            {
+              info.receipt_type !== 'dada' && <Button
+                className='btn-action'
+                style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
+                onClick={this.handleClickBtn.bind(this, 'delivery')}
+              >查看物流</Button>
+            }
+            {
+              info.receipt_type !== 'dada' && <Button
+                className='btn-action'
+                style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
+                onClick={this.handleClickBtn.bind(this, 'confirm')}
+              >确认收货</Button>
+            }
             <Button
               className='btn-action'
               style={`background: ${colors.data[0].primary}`}

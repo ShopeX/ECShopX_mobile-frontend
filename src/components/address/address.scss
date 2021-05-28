@@ -6,83 +6,66 @@
 }
 
 .address-picker {
-  //@include page-view();
   .address {
-    margin: 0 0 $edge-margin;
-  }
-  .add_address {
-    text-align: right;
-    padding: 10px 30px;
-  }
-  .address-item {
     display: flex;
     align-items: center;
-    &__receiver {
-      flex: 1;
-      color: #111;
-    }
-    &__name {
-      font-weight: bold;
-      font-size: $font-size-large;
-      margin-right: 20px;
-    }
-    &__mobile {
-      color: $color-gray;
-    }
-    &__addr {
-      display: block;
-    }
-    &__ft {
-      width: 60px;
-      border-left: 1px solid $color-gray-light;
-      color: $color-gray-light;
-      padding-left: $edge-size;
-      margin-left: $edge-size;;
-      font-size: $font-size-small;
-      white-space: nowrap;
-      text-align: center;
-    }
+    padding: 20px 0;
   }
   // choose-address
   &__bd {
     width: 100%;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
     .address-receive {
       display: flex;
+      flex: 1;
       justify-content: flex-start;
       color: #555555;
       margin-right: 9px;
-    }
-    .info-trade {
-      flex: 1;
-    }
-    .user-info-trade {
-      color: #666;
-      font-size: 26px;
-      .name {
-        margin-right: $edge-margin;
+      .info-trade {
+        flex: 1;
+      }
+      .user-info-trade {
+        color: #666;
+        font-size: 28px;
+        .name {
+          margin-right: $edge-margin;
+        }
+      }
+      .address-detail {
+        color: #333;
+        font-weight: 500;
+        font-size: 32px;
+        padding: 24px 0;
+      }
+      .address-area {
+        color: #666;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        .def {
+          font-size: 20px;
+          color: #FFFFFF;
+          background: #d92128;
+          border-radius: 4px;
+          padding: 0 10px;
+          margin-right: 10px;
+        }
       }
     }
-    .address-detail {
-      padding: $edge-margin/2 0;
-      color: #333;
-      font-weight: 500;
-      font-size: 32px;
-    }
-    .address-area {
-      color: #666;
-      font-size: 26px;
-    }
   }
-  .other-address {
-    background: #ffffff;
-    border-top: 1PX solid #ececec;
-    padding: 28px 30px 21px;
-    color: #555555;
-    .icon-add {
-      color: #555555;
-      display: inline-block;
-      margin-right: 10px;
-    }
+  .address-info__bd {
+    width: 600px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    border: 3px dashed #aaa;
+    color: #666;
+    margin: 20px auto;
+  }
+  .at-icon-chevron-right {
+    font-size: 40px;
+    color: rgba(170, 170, 170, 0.8)
   }
 }

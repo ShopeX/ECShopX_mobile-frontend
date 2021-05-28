@@ -7,7 +7,7 @@ $custabs: 80px;
   height: 100vh;
   overflow: hidden;
   &.paddingBottom {
-    padding-bottom: 100px;
+    padding-bottom: 84px;
   }
   /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
@@ -41,9 +41,8 @@ $custabs: 80px;
   }
   &-header {
     width: 100%;
-    padding: 30px 20px;
-    background: #c4c4c4;
-    margin-bottom: 20px;
+    min-height: 150px;
+    color: #ffffff;
     &__waitpay {
       text-align: center;
       font-size: 26px;
@@ -54,24 +53,19 @@ $custabs: 80px;
       }
     }
     .at-countdown__time {
-      color: #333;
-      font-weight: bold;
+      color: #fff;
     }
     .at-countdown__time-box {
       font-family: $font-family;
     }
   }
   &-waitdeliver {
+    width: 100%;
+    padding: 34px 58px 39px 30px;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    background: #fff;
-    border-radius: 10px;
-    padding: 10px 30px;
-    min-height: 120px;
-    align-items: center;
-    font-weight: bold;
     .oneline {
       width: 100%;
       margin-left: 23px;
@@ -94,30 +88,13 @@ $custabs: 80px;
       display: block;
       font-size: 22px;
     }
-    .delivery-infos__status {
-      width: 100%;
-    }
     .text-status {
       font-size: 28px;
       margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      &.red {
-        color: red;
-      }
-      .statusImg {
-        width: 60px;
-        height: 60px;
-      }
     }
   }
   .ziti-content {
-    padding-top: 20px;
-    margin: 0 20px;
-    background: #fff;
-    border-radius: 6px 6px 0 0;
+    padding: 50px 0;
     .ziti-qrcode {
       display: block;
       margin: 0 auto 50px;
@@ -153,9 +130,8 @@ $custabs: 80px;
     }
   }
   &-address {
-    margin: 0 20px 20px 20px;
+    width: 100%;
     padding: 30px;
-    border-radius: 6px;
     box-sizing: border-box;
     background: #fff;
     /*.trade-info {
@@ -163,47 +139,9 @@ $custabs: 80px;
       line-height: 36px;
       color: #999999;
     }*/
-    .store {
-      display: flex;
-      &.border {
-        margin-bottom: 24px;
-        padding-bottom: 24px;
-        border-bottom: 2px solid #ddd;
-      }
-      .storeName{
-        font-size: 32px;
-        color: #333;
-        font-weight: bold;
-      }
-      .storeAddress {
-        font-size: 28px;
-        color: #666;
-        margin-top: 24px;
-      }
-      .storeHour {
-        margin-top: 16px;
-        font-size: 24px;
-      }
-      .storeMobile {
-        font-size: 24px;
-        margin-top: 5px;
-        display: flex;
-        align-items: center;
-        .icon-dianhua {
-          margin-left: 10px;
-          color: #0091ff;
-          font-size: 24px;
-        }
-      }
-      .title {
-        color: #999;
-      }
+    .trader-info-val {
+      //margin-left: 20px;
     }
-    .icon-shangjiadizhi-01, .icon-shouhuodizhi-01, .icon-dizhi-01 {
-      margin-right: 10px;
-      font-size: 42px;
-      color: #999;
-    }      
     .address-receive {
       display: flex;
       justify-content: flex-start;
@@ -215,49 +153,33 @@ $custabs: 80px;
     }
     .user-info-trade {
       display: flex;
-      font-size: 28px;
-      color: #666;
-      align-items: center;
-      margin-top: 24px;
-      .receiverName {
-        margin-right: 20px;
-      }
+      justify-content: space-between;
+      font-size: 22px;
+      line-height: 36px;
     }
     .address-detail {
-      font-size: 32px;
-      color: #333;
-      font-weight: bold;
+      font-size: 22px;
+      color: #999999;
     }
   }
   &-goods {
-    margin: 0 20px;
+    border-top: 14px solid #f6f6f6;
+    width: 100%;
     min-height: 100px;
     background: #fff;
-    border-radius: 6px 6px 0 0;
-    .line {
-      display: flex;
-      padding: 20px;
-      font-size: 24px;
-      color: #333;
-      .fuzhi {
-        margin-left: 20px;
-        color: #28a1ff;
-      }
-    }
-
   }
   .order-item__pay-type {
     display: none;
   }
   .trade-money {
     box-sizing: border-box;
+    width: 100%;
     text-align: right;
-    padding: 10px 38px;
-    margin: 0 20px 20px 20px;
+    padding: 34px 38px;
     font-size: 26px;
     color: #5b5b5b;
+    border-top: 1px solid #ececec;
     background: #fff;
-    border-radius: 0 0 6px 6px;
     &__num {
       font-size: 36px;
       color: $color-brand-primary;
@@ -273,49 +195,33 @@ $custabs: 80px;
         color: $color-brand-accent;
       }
     }
-    .cancel__btn {
-      display: flex;
-      justify-content: flex-end;
-      margin: 20px 0;
-      .btn {
-        width: 140px;
-        height: 50px;
-        line-height: 50px;
-        border-radius: 30px;
-        font-size: 24px;
-        text-align: center;
-        color: #999;
-        border: 2px solid #bbb;
-      }
-    }
   }
   &-info {
-    margin: 20px 20px 0 20px;
+    width: 100%;
     box-sizing: border-box;
     font-size: $font-size-small;
-    padding: 15px 20px;
+    line-height: 1.5;
+    color: #999999;
+    border-top: 14px solid #f6f6f6;
+    padding: 42px 30px;
     background: #fff;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    .line {
+    .info-text {
+      display: block;
+      font-size: 24px;
+    }
+    .delivery_code_copy {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      .left {
-        font-size: 30px;
-        color: #333;
+      width: 100%;
+      .info-text {
+        flex: 1;
+        font-size: 24px;
       }
-      .right {
-        color: #333;
-        font-size: 26px;
-        &.red {
-          color: red;
-        }
-        .info-text-btn {
-          margin-left: 15px;
-          color: #0091ff;
-        }
+      .info-text-btn {
+        font-size: 24px;
+        display: inline-block;
+        width: 120px;
+        text-align: right;
       }
     }
     .icon-fuzhi {
@@ -323,8 +229,6 @@ $custabs: 80px;
     }
   }
   &-remark {
-    margin: 0 20px 20px 20px;
-    border-radius: 6px;
     padding-top: 21px;
     &__header {
       padding: 20px 30px;
@@ -342,69 +246,37 @@ $custabs: 80px;
     position: fixed;
     left: 0;
     width: 100%;
-    height: 100px;
+    height: 84px;
     bottom: 0;
-    display: flex;
-    background: #fff;
-    align-items: center;
     &__btn {
-      width: 338px;
-      height: 84px;
-      flex-shrink: 0;
-      line-height: 84px;
+      width: 50%;
+      display: inline-block;
+      vertical-align: middle;
+      height: 87px;
+      line-height: 87px;
       text-align: center;
-      border-radius: 40px;
-      color: #333;
-      border: 2px solid #bbb;
-      overflow: hidden;
+      background-color: #fafafa;
       font-size: 26px;
-      &.left {
-        margin-left: 50px;
-        width: 396px;
-        padding-right: 84px;
-        position: relative;
-        z-index: 9;
-        background: #fff;
-      }
-      &.right {
-        margin-right: 50px;
-        color: #fff;
-        border: none;
-        position: relative;
-        z-index: 99;
-        transform: translateX(-84px);
+      border-radius: 0;
+      &-inline {
+        width: 100%;
       }
       &:before {
         border: none;
       }
+    }
+    .at-button__icon {
+      vertical-align: middle;
     }
     &_active {
       color: #ffffff;
     }
     &_allWidthBtn {
       width: 100%;
-      height: 100px;
-      line-height: 100px;
-      transform: translateX(0) !important;
-      border-radius: 0;
     }
   }
   .allFooter_btn {
     width: 100%;
-  }
-  .contact {
-    width: 100%;
-    background: inherit;
-    color: #fff;
-    font-size: 26px;
-    line-height: normal;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    &::after {
-      display: none;
-    }
   }
 
   .delivery-btn {
@@ -460,70 +332,6 @@ $custabs: 80px;
       border-radius: 30px;
       text-align: center;
       color: #fff;
-    }
-  }
-
-  // 同城配送
-  .dadaInfo {
-    margin: 0 20px 20px 20px;
-    background: #fff;
-    border-radius: 6px;
-    padding: 20px;
-    .name {
-      display: flex;
-      font-size: 32px;
-      color: #333;
-      padding-bottom: 24px;
-      align-items: center;
-      border-bottom: 2px solid #ddd;
-      .avatar {
-        width: 80px;
-        height: 80px;
-        margin-right: 30px;
-      }
-      .icon-dianhua {
-        margin-left: 16px;
-        font-size: 32px;
-        color: #0091ff;
-      }
-    }
-    .tip {
-      color: #999;
-      font-size: 24px;
-      padding-top: 15px;
-    }
-  }
-
-  // 取消理由
-  .cancelData {
-    margin: 0 20px 20px 20px;
-    background: #fff;
-    padding: 30px 20px;
-    display: flex;
-    .title {
-      flex-shrink: 0;
-    }
-    .reason {
-      margin-left: 10px;
-    }
-  }
-
-  // 商品样式重置
-  .detail-item {
-    padding: 0; 
-    .detail-item__title {
-      padding: 10px 0;
-    }
-    .order-item__bd {
-      margin-bottom: 0;
-    }
-    .order-item__ft {
-      position: relative;
-      display: block;
-      left: auto;
-      top: auto;
-      right: auto;
-      bottom: auto;
     }
   }
 }

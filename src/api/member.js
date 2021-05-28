@@ -64,8 +64,8 @@ export function userUsedCard (params = {}) {
   return req.get('/user/usedCard', params)
 }
 
-export function addressList () {
-  return req.get('/member/addresslist')
+export function addressList (params) {
+  return req.get('/member/addresslist', params)
 }
 export function crmAddressList (params = {}) {//获取crm地址
   return req.post('/member/crmaddresslist',params)

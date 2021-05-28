@@ -3,16 +3,11 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { copyText } from '@/utils'
 import OrderItem from  '../../../../components/orderItem/order-item'
-import InputNumber from '@/components/input-number'
-import SpCheckbox from '@/components/checkbox'
 
 
 import './detail-item.scss'
 
 export default class DetailItem extends Component {
-  static options = {
-    addGlobalClass: true
-  }
 
   static defaultProps = {
     // customHeader: false
@@ -25,6 +20,10 @@ export default class DetailItem extends Component {
     // onClickBtn: () => {},
     // onClick: () => {}
     isPointitem:false
+  }
+
+  static options = {
+    addGlobalClass: true
   }
 
   // handleClickBtn (type) {
@@ -109,12 +108,12 @@ export default class DetailItem extends Component {
                 isPointitemGood={isPointitem}
               />
               {
-                !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__ft'>
+                !customFooter && info.pay_type !== 'dhpoint' && (info.status === 'TRADE_SUCCESS' || info.status === 'WAIT_BUYER_CONFIRM_GOODS' || info.status === 'WAIT_SELLER_SEND_GOODS') && <View className='order-item__btn'>
                 {
                     info.delivery_type=='old'&&(info.delivery_code
                     ? null
                     : item.delivery_code && 
-                    <AtButton
+                      <AtButton
                         circle
                         type='text'
                         size='small'
@@ -124,40 +123,18 @@ export default class DetailItem extends Component {
                       查看物流
                       </AtButton> )                  
                   }
-                  <View>
-                    
-                  </View>
                   {
                     (item.show_aftersales === 1) && (
-                      <AtButton
-                      circle
-                      type='primary'
-                      size='small'
-                      onClick={this.handleClickAfterSale.bind(this, item)}
-                    >
-                      售后详情
-                      {/* {
-                        (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
-                      } */}
-                    </AtButton>  
-                    )
-                  }
-                  
-                  {/* {
-                    ((info.is_all_delivery && info.status !== 'WAIT_SELLER_SEND_GOODS' || !info.is_all_delivery)&& info.latest_aftersale_time >= 0 &&item.aftersales_status !== 'CLOSED') && (info.is_all_delivery || (!info.is_all_delivery && item.delivery_status === 'DONE'))  &&
                       <AtButton
                         circle
                         type='primary'
                         size='small'
                         onClick={this.handleClickAfterSale.bind(this, item)}
                       >
-                        {
-                          (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') ? '申请售后' : '售后详情'
-                        }
-                      </AtButton>   
-
-                  } */}
-              
+                      售后详情
+                    </AtButton>  
+                    )
+                  }
                 </View>
               }
             </View>

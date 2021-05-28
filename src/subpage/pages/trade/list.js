@@ -7,17 +7,16 @@ import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
+import { Tracker } from "@/service"
 import TradeItem from './comps/item'
-import { Tracker } from "@/service";
 
 import './list.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
-@withPager
 @withLogin()
+@withPager
 export default class TradeList extends Component {
   constructor(props) {
     super(props)
@@ -114,6 +113,7 @@ export default class TradeList extends Component {
       freight_type: 'freight_type',
       type: 'type',
       is_rate: 'is_rate',
+      dada: 'dada',
       create_date: 'create_date',
       is_all_delivery: "is_all_delivery",
       is_logistics: 'is_split',
@@ -191,6 +191,7 @@ export default class TradeList extends Component {
   }
 
   handleClickItemBtn = async (trade, type) => {
+    console.log(trade)
     const { tid } = trade
 
     let detailUrl = `/subpage/pages/trade/detail?id=${tid}`;

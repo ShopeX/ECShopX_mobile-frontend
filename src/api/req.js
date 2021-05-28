@@ -226,7 +226,8 @@ class API {
         if (statusCode >= 400) {
           if (
             showError &&
-            data.error.message !== "当前余额不足以支付本次订单费用，请充值！"
+            data.error.message !== "当前余额不足以支付本次订单费用，请充值！" &&
+            data.error.code !== 201
           ) {
             this.errorToast(data);
           }
@@ -244,6 +245,7 @@ class API {
     const errMsg = data.message || data.err_msg || msg;
     const err = new Error(errMsg);
     err.res = res;
+    err.code = res.data.error.code
     return err;
   }
 }

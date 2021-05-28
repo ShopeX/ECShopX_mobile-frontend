@@ -1,21 +1,20 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { Loading, Price, SpToast } from '@/components'
+import { Loading } from '@/components'
 import api from '@/api'
 import { withLogin } from '@/hocs'
-import { pickBy, classNames } from '@/utils'
-import { AtRate, AtTextarea, AtButton, AtImagePicker } from 'taro-ui'
-import S from '@/spx'
-// import azureUploader from '@/utils/azure-wry'
+import { connect } from "@tarojs/redux"
+import { pickBy } from '@/utils'
+import { AtRate, AtTextarea, AtImagePicker } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 
 import './rate.scss'
 
+@connect(( { colors } ) => ({
+  colors: colors.current
+}), () => ({}))
 @withLogin()
 export default class TradeRate extends Component {
-  config = {
-    navigationBarTitleText: '订单评价'
-  }
   constructor (props) {
     super(props)
 
@@ -28,6 +27,10 @@ export default class TradeRate extends Component {
 
   componentDidMount () {
     this.fetch()
+  }
+
+  config = {
+    navigationBarTitleText: '发表评价'
   }
 
   async fetch () {
@@ -116,7 +119,10 @@ export default class TradeRate extends Component {
     }
 
     if (files.length > 6) {
-      S.toast('最多上传6张图片')
+      Taro.showToast({
+        title: '最多上传6张图片',
+        icon: false
+      })
       return
     }
     const imgFiles = files.slice(0, 6)
@@ -127,8 +133,8 @@ export default class TradeRate extends Component {
     })
   }
 
-  handleClickSubmit = async () => {
-    const { goodsList, id, anonymousStatus } = this.state
+  handleClickSubmit = async (anonymousStatus = false) => {
+    const { goodsList, id } = this.state
     let rates = []
     let errText = ''
     for (let item of goodsList) {
@@ -156,7 +162,10 @@ export default class TradeRate extends Component {
     }
 
     if (errText) {
-      S.toast(errText)
+      Taro.showToast({
+        title: errText,
+        icon: 'none'
+      })
       return
     }
 
@@ -178,7 +187,10 @@ export default class TradeRate extends Component {
 
   // TODO: 确认原有功能
   render () {
-    const { goodsList, anonymousStatus } = this.state
+    const { goodsList } = this.state
+
+    const { colors } = this.props
+ 
     if (!goodsList.length) {
       return (
         <Loading />
@@ -190,34 +202,26 @@ export default class TradeRate extends Component {
         <View className='rate-list'>
           {goodsList.map((item, idx) => {
             return (
-              <View className='rate-item' key={`${idx}1`}>
+              <View className='rate-item' key={item.item_id}>
                 <View className='goods-item'>
                   <View className='goods-item__hd'>
-                    {Array.isArray(item.pic_path) && <Image
+                    <Image
                       mode='aspectFill'
                       className='goods-item__img'
-                      src={item.pic_path[0]}
-                    />}
-                    {!Array.isArray(item.pic_path) && <Image
-                      mode='aspectFill'
-                      className='goods-item__img'
-                      src={item.pic_path}
-                    />}
+                      src={Array.isArray(item.pic_path) ? item.pic_path[0] : item.pic_path}
+                    />
                   </View>
                   <View className='goods-item__bd'>
-                    <Text className='goods-item__title'>{item.title}</Text>
-                    {item.num && <Text className='goods-item__num'>数量：{item.num}</Text>}
-                  </View>
-                  <View className='goods-item__ft'>
-                    <Price className='goods-item__price' value={item.price}></Price>
-                    {item.item_spec_desc && <Text className='goods-item__spec'>{item.item_spec_desc}</Text>}
+                    { item.title }
                   </View>
                 </View>
-
-                <View className='split-line'></View>
-
                 <View className='rate-wrap'>
-                  <AtRate size='22' value={item.star} onChange={this.handleChange.bind(this, idx)} />
+                  <Text className='title'>商品评价</Text>
+                  <AtRate
+                    size='21' 
+                    value={item.star} 
+                    onChange={this.handleChange.bind(this, idx)}
+                  />
                   <Text className='rate-num'>{item.star ? (item.star + '.0') : 0}分</Text>
                 </View>
 
@@ -248,14 +252,15 @@ export default class TradeRate extends Component {
         </View>
 
         <View className='submit-btn'>
-          <View className='anonymous-checkbox' onClick={this.handleClickCheckbox}>
-            <View className={classNames('in-icon', anonymousStatus === 1 ? 'in-icon-checkbox' : 'in-icon-check-box')}></View>
-            <Text>匿名提交</Text>
+          <View className='btn noname' onClick={this.handleClickSubmit.bind(this, true)}>匿名评价</View>
+          <View
+            className='btn name'
+            style={`background: ${colors.data[0].primary}`}
+            onClick={this.handleClickSubmit.bind(this)}
+          >
+            立即评价
           </View>
-
-          <AtButton full type='primary' onClick={this.handleClickSubmit}>发布</AtButton>
         </View>
-        <SpToast />
       </View>
     )
   }
