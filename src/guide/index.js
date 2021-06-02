@@ -6,7 +6,7 @@ import api from "@/api";
 import { pickBy, styleNames, resolveFavsList } from "@/utils";
 import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
-
+import entry from "@/utils/entry";
 import { WgtSearchHome } from "./components/wgts";
 import {
   BaHomeWgts,
@@ -32,7 +32,8 @@ import "../pages/home/index.scss";
 @withBackToTop
 export default class BaGuideHomeIndex extends Component {
   config = {
-    navigationStyle: "custom"
+    navigationStyle: "custom",
+    onReachBottomDistance: 50
   };
   constructor(props) {
     super(props);
@@ -60,10 +61,14 @@ export default class BaGuideHomeIndex extends Component {
     };
   }
   componentDidShow() {
-    console.log('[componentDidShow] ---- ',)
+  }
+  async componentWillMount() {
+    const options = this.$router.params;
+    const res = await entry.entryLaunch(options, true);
+    console.log('[entry.entryLaunch]',res)
   }
   async componentDidMount() {
-    console.log('[componentDidMount] ---- ',)
+    console.log('[componentDidMount] ---- ',)    
     await S.autoLogin(this)
 
     const { version } = this.$router.params;
@@ -276,25 +281,9 @@ export default class BaGuideHomeIndex extends Component {
       goodsSkuInfo,
       storeInfo
     } = this.props;
-    const ipxClass = S.get("ipxClass");
-    const n_ht = S.get("navbar_height");
-    // return (<View>
-    //   <BaNavBar
-    //       title="导购商城"
-    //       fixed
-    //       jumpType="home"
-    //       icon="in-icon in-icon-backhome"
-    //     />
-    //    <View>测试文本</View>  
-    //     <View>测试文本</View>  
-    //     <View>测试文本</View>  
-    //     <View>测试文本</View>  
-    //     <View>测试文本</View>  
-    //     <View>测试文本</View>  
-    //      <BaTabBar />
-    // </View>)
+    const n_ht = S.get("navbar_height");    
     return (
-      <View className={!isLoading ? "page-index" : ""}>
+      <View style='padding-top:70rpx' className={!isLoading ? "page-index" : ""}>
         <BaNavBar
           title="导购商城"
           fixed

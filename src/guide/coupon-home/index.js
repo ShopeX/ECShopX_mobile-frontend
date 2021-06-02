@@ -55,6 +55,7 @@ export default class CouponHome extends Component {
 
     const { salesperson_id, distributor_id } = S.get("GUIDE_INFO", true);
     const query = `?smid=${salesperson_id}&card_id=${info.card_id}&distributor_id=${distributor_id}&subtask_id=${params.subtask_id || ''}&gu=${params.gu || ''}`;    
+    console.log(`/others/pages/home/coupon-home${query}`)
     return {
       title: info.title+'优惠券',
       imageUrl: res.imageUrl,

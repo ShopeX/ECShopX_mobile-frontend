@@ -14,7 +14,7 @@ async function entryLaunch(data, isNeedLocate) {
   } else {
     options = data;
   }
-
+  console.log('[entry-options]',options)
   // 如果没有带店铺id
   if (!options.dtid) {
     let { distributor_id, store_id } = Taro.getStorageSync("curStore");

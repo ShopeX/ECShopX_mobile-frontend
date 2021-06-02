@@ -28,7 +28,7 @@ import {
 } from "@/components";
 import api from "@/api";
 import req from "@/api/req";
-import {  withPager, withBackToTop } from "@/hocs";
+import { withPager, withBackToTop } from "@/hocs";
 import {
   log,
   calcTimer,
@@ -60,7 +60,6 @@ import {
   WgtHeading
 } from "../../pages/home/wgts";
 import { BaGoodsBuyPanel, BaNavBar } from "../components";
-
 import "./espier-detail.scss";
 
 @connect(
@@ -136,12 +135,21 @@ export default class Detail extends Component {
   }
 
   async componentWillMount() {
-
+    const options = this.$router.params;
+    const res = await entry.entryLaunch(options, true);
+    this.setState({ subtask_id: res.subtask_id });
+    console.log("[商详截取：entry.entryLaunch-guide/item/espier-detail]", res);
   }
 
   async componentDidMount() {
-    const { id } = this.$router.params;
+    const { id, subtask_id } = this.$router.params;
     this.fetchInfo(id);
+    console.log("subtask_id,subtask_id", subtask_id);
+    if (subtask_id) {
+      this.setState({
+        subtask_id
+      });
+    }
   }
 
   async componentDidShow() {
@@ -150,12 +158,17 @@ export default class Detail extends Component {
     });
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const { info } = this.state;
     const { salesperson_id, distributor_id } = S.get("GUIDE_INFO", true);
-    const query = this.$router.params
-    const sharePath = `/pages/item/espier-detail?id=${info.item_id}&smid=${salesperson_id}&dtid=${distributor_id}&subtask_id=${query.subtask_id || ''}&gu=${query.gu || ''}`;
-    log.debug(`【guide/item/espier-detail】onShareAppMessage path: ${sharePath}`);
+    const query = this.$router.params;
+    const sharePath = `/pages/item/espier-detail?id=${
+      info.item_id
+    }&smid=${salesperson_id}&dtid=${distributor_id}&subtask_id=${query.subtask_id ||
+      ""}&gu=${query.gu || ""}`;
+    log.debug(
+      `【guide/item/espier-detail】onShareAppMessage path: ${sharePath}`
+    );
     return {
       title: info.item_name,
       path: sharePath,
@@ -542,52 +555,20 @@ export default class Detail extends Component {
   };
 
   downloadPosterImg = async () => {
-    // let userinfo = Taro.getStorageSync("userinfo");
-    // if (S.getAuthToken() && (!userinfo || !userinfo.userId)) {
-    //   const res = await api.member.memberInfo();
-    //   const userObj = {
-    //     username:
-    //       res.memberInfo.nickname ||
-    //       res.memberInfo.username ||
-    //       res.memberInfo.mobile,
-    //     avatar: res.memberInfo.avatar,
-    //     userId: res.memberInfo.user_id,
-    //     mobile: res.memberInfo.mobile,
-    //     isPromoter: res.is_promoter,
-    //     openid: res.memberInfo.open_id,
-    //     vip: res.vipgrade ? res.vipgrade.vip_type : ""
-    //   };
-    //   Taro.setStorageSync("userinfo", userObj);
-    //   userinfo = userObj;
-    // }
-    // const { avatar } = userinfo;
-    // const { info } = this.state;
-    
-    // const extConfig =
-    //   Taro.getEnv() === "WEAPP" && wx.getExtConfigSync
-    //     ? wx.getExtConfigSync()
-    //     : {};
-    //const id = APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : infoId
     //新增导购信息
     const GUIDE_INFO = S.get("GUIDE_INFO", true);
-    // const qrcode_params = `page=pages/item/espier-detail
-    //                          &appid=${extConfig.appid}
-    //                          &company_id=${QwUserInfo.company_id}
-    //                          &itemid=${item_id}
-    //                          &distributor_id=${QwUserInfo.distributor_id}
-    //                          &smid=${QwUserInfo.salesperson_id}
-    //                          &subtask_id=${QwUserInfo.subtask_id}`;
 
-    //此处需要发送一个请求，获取分享id,将获取到的share_id  放到二维码链接上
-    //const {share_id}=await api.item.creatItemShare(share_params)
-    //导购信息结束
     const host = req.baseURL.replace("/api/h5app/wxapp/", "");
+    const { subtask_id } = this.state;
     //const { distributor_id,store_id } = Taro.getStorageSync('curStore')
     const { pics, item_id } = this.state.info;
-    const pic = pics[0].replace( "http:", "https:" );
-    const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
+    const pic = pics[0].replace("http:", "https:");
+    const extConfig =
+      Taro.getEnv() === "WEAPP" && wx.getExtConfigSync
+        ? wx.getExtConfigSync()
+        : {};
     //const infoId = info.distributor_id
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&distributor_id=${GUIDE_INFO.distributor_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${GUIDE_INFO.subtask_id}`;
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&distributor_id=${GUIDE_INFO.distributor_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${subtask_id}`;
     console.log("wxappCode========>", wxappCode);
     try {
       const avatarImg = await Taro.getImageInfo({
@@ -789,6 +770,7 @@ export default class Detail extends Component {
       !posterImgs.goods
     ) {
       const imgs = await this.downloadPosterImg();
+      console.log("[海报绘制-guide/item/espier-detail]", imgs);
       if (imgs && imgs.avatar && imgs.code && imgs.goods) {
         this.setState({
           showPoster: true
@@ -879,8 +861,8 @@ export default class Detail extends Component {
       }
     });
   };
-  toCart(){
-    Taro.navigateTo({url:'/guide/cart/espier-index'})
+  toCart() {
+    Taro.navigateTo({ url: "/guide/cart/espier-index" });
   }
   render() {
     const {
@@ -965,11 +947,14 @@ export default class Detail extends Component {
 
     return (
       <View
-        className='page-goods-detail'
+        className="page-goods-detail"
         style={`padding-top:${navbar_height}PX`}
       >
-        <BaNavBar title='导购商城' fixed jumpType={jumpType} />
-        <View onClick={this.toCart} className='iconfont icon-cart toCart'></View>
+        <BaNavBar title="导购商城" fixed jumpType={jumpType} />
+        <View
+          onClick={this.toCart}
+          className="iconfont icon-cart toCart"
+        ></View>
         {/* <NavBar
           title={info.item_name}
           leftIconType="chevron-left"
@@ -977,16 +962,16 @@ export default class Detail extends Component {
         /> */}
 
         <ScrollView
-          className='goods-detail__wrap'
+          className="goods-detail__wrap"
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          <View className='goods-imgs__wrap'>
+          <View className="goods-imgs__wrap">
             <Swiper
-              className='goods-imgs__swiper'
+              className="goods-imgs__swiper"
               indicator-dots
               current={curImgIdx}
               onChange={this.handleSwiperChange}
@@ -1024,77 +1009,77 @@ export default class Detail extends Component {
 
           {timer && (
             <View
-              className='goods-timer'
+              className="goods-timer"
               style={
                 colors
                   ? `background: linear-gradient(to left, ${colors.data[0].primary}, ${colors.data[0].primary});`
                   : `background: linear-gradient(to left, #d42f29, #d42f29);`
               }
             >
-              <View className='goods-timer__hd'>
-                <View className='goods-prices'>
-                  <View className='view-flex view-flex-middle'>
+              <View className="goods-timer__hd">
+                <View className="goods-prices">
+                  <View className="view-flex view-flex-middle">
                     {info.type == "1" && (
-                      <Text className='crossTitleAct'>含税销售价</Text>
+                      <Text className="crossTitleAct">含税销售价</Text>
                     )}
                     <Price
-                      unit='cent'
+                      unit="cent"
                       symbol={(info.cur && info.cur.symbol) || ""}
                       value={showPrice}
                     />
                     {marketing !== "normal" && (
-                      <View className='goods-prices__ft'>
+                      <View className="goods-prices__ft">
                         {marketing === "group" && (
-                          <Text className='goods-prices__type'>团购</Text>
+                          <Text className="goods-prices__type">团购</Text>
                         )}
                         {marketing === "group" && (
-                          <Text className='goods-prices__rule'>
+                          <Text className="goods-prices__rule">
                             {info.activity_info.person_num}人团
                           </Text>
                         )}
                         {marketing === "seckill" && (
-                          <Text className='goods-prices__type'>秒杀</Text>
+                          <Text className="goods-prices__type">秒杀</Text>
                         )}
                         {marketing === "limited_time_sale" && (
-                          <Text className='goods-prices__type'>限时特惠</Text>
+                          <Text className="goods-prices__type">限时特惠</Text>
                         )}
                       </View>
                     )}
                   </View>
-                  <View style='line-height: 1;'>
+                  <View style="line-height: 1;">
                     <Price
-                      unit='cent'
-                      className='goods-prices__market'
+                      unit="cent"
+                      className="goods-prices__market"
                       symbol={(info.cur && info.cur.symbol) || ""}
                       value={curSku ? curSku.price : info.price}
                     />
                   </View>
                 </View>
               </View>
-              <View className='goods-timer__bd'>
+              <View className="goods-timer__bd">
                 {(marketing === "seckill" ||
                   marketing === "limited_time_sale") && (
                   <View>
                     {info.activity_info.status === "in_the_notice" && (
-                      <Text className='goods-timer__label'>距开始还剩</Text>
+                      <Text className="goods-timer__label">距开始还剩</Text>
                     )}
                     {info.activity_info.status === "in_sale" && (
-                      <Text className='goods-timer__label'>距结束还剩</Text>
+                      <Text className="goods-timer__label">距结束还剩</Text>
                     )}
                   </View>
                 )}
                 {marketing === "group" && (
                   <View>
                     {info.activity_info.show_status === "nostart" && (
-                      <Text className='goods-timer__label'>距开始还剩</Text>
+                      <Text className="goods-timer__label">距开始还剩</Text>
                     )}
                     {info.activity_info.show_status === "noend" && (
-                      <Text className='goods-timer__label'>距结束还剩</Text>
+                      <Text className="goods-timer__label">距结束还剩</Text>
                     )}
                   </View>
                 )}
                 <AtCountdown
-                  className='countdown__time'
+                  className="countdown__time"
                   format={{ day: "天", hours: ":", minutes: ":", seconds: "" }}
                   isShowDay
                   day={timer.dd}
@@ -1106,11 +1091,11 @@ export default class Detail extends Component {
             </View>
           )}
 
-          <View className='goods-hd'>
-            <View className='goods-info__wrap'>
-              <View className='goods-title__wrap'>
-                <Text className='goods-title'>{info.item_name}</Text>
-                <Text className='goods-title__desc'>{info.brief}</Text>
+          <View className="goods-hd">
+            <View className="goods-info__wrap">
+              <View className="goods-title__wrap">
+                <Text className="goods-title">{info.item_name}</Text>
+                <Text className="goods-title__desc">{info.brief}</Text>
               </View>
               {/* {Taro.getEnv() !== "WEB" && (
                 <View
@@ -1128,24 +1113,24 @@ export default class Detail extends Component {
             ) : null} */}
 
             {marketing === "normal" && (
-              <View className='goods-prices__wrap'>
-                <View className='goods-prices'>
-                  <View className='view-flex-item'>
+              <View className="goods-prices__wrap">
+                <View className="goods-prices">
+                  <View className="view-flex-item">
                     {info.type == "1" && (
-                      <Text className='crossTitle'>含税销售价</Text>
+                      <Text className="crossTitle">含税销售价</Text>
                     )}
-                    <Price primary unit='cent' value={showPrice} />
+                    <Price primary unit="cent" value={showPrice} />
                     {((curSku && curSku.market_price > 0) ||
                       (info && info.market_price > 0)) && (
                       <Price
                         lineThrough
-                        unit='cent'
+                        unit="cent"
                         value={curSku ? curSku.market_price : info.market_price}
                       />
                     )}
                   </View>
                   {info.nospec && info.activity_type === "limited_buy" && (
-                    <View className='limited-buy-rule'>
+                    <View className="limited-buy-rule">
                       {ruleDay ? <Text>每{ruleDay}天</Text> : null}
                       <Text>限购{info.activity_info.rule.limit}件</Text>
                     </View>
@@ -1153,37 +1138,37 @@ export default class Detail extends Component {
                 </View>
 
                 {info.sales && (
-                  <Text className='goods-sold'>{info.sales || 0}人已购</Text>
+                  <Text className="goods-sold">{info.sales || 0}人已购</Text>
                 )}
               </View>
             )}
             {/* 跨境商品 */}
             {info.type == "1" && (
-              <View className='nationalInfo'>
+              <View className="nationalInfo">
                 <View>
                   跨境综合税:
                   <Price
-                    unit='cent'
+                    unit="cent"
                     symbol={(info.cur && info.cur.symbol) || ""}
                     value={crossPrice}
                   />
                 </View>
-                <View className='nationalInfoLeft'>
-                  <View className='item'>
+                <View className="nationalInfoLeft">
+                  <View className="item">
                     <Image
                       src={info.origincountry_img_url}
-                      className='nationalImg'
+                      className="nationalImg"
                     />
                     <Text>{info.origincountry_name}</Text>
                   </View>
-                  <View className='line'></View>
-                  <View className='item'>
-                    <View className='iconfont icon-matou'></View>
+                  <View className="line"></View>
+                  <View className="item">
+                    <View className="iconfont icon-matou"></View>
                     <Text>保税仓</Text>
                   </View>
-                  <View className='line'></View>
-                  <View className='item'>
-                    <View className='iconfont icon-periscope'></View>
+                  <View className="line"></View>
+                  <View className="item">
+                    <View className="iconfont icon-periscope"></View>
                     <Text>{lnglat.city}</Text>
                   </View>
                 </View>
@@ -1192,17 +1177,17 @@ export default class Detail extends Component {
           </View>
 
           {isPromoter && (
-            <View className='goods-income'>
-              <View className='sp-icon sp-icon-jifen'></View>
+            <View className="goods-income">
+              <View className="sp-icon sp-icon-jifen"></View>
               <Text>预计收益：{(info.promoter_price / 100).toFixed(2)}</Text>
             </View>
           )}
 
           {marketing === "group" && info.groups_list.length > 0 && (
-            <View className='goods-sec-specs'>
-              <View className='goods-sec-value'>
-                <Text className='title-inner'>正在进行中的团</Text>
-                <View className='grouping'>
+            <View className="goods-sec-specs">
+              <View className="goods-sec-value">
+                <Text className="title-inner">正在进行中的团</Text>
+                <View className="grouping">
                   {info.groups_list.map(item => (
                     <GroupingItem
                       total={info.activity_info.person_num}
@@ -1217,18 +1202,18 @@ export default class Detail extends Component {
 
           {!info.is_gift && (
             <SpCell
-              className='goods-sec-specs'
-              title='领券'
+              className="goods-sec-specs"
+              title="领券"
               //isLink
               //onClick={this.handleCouponClick.bind(this)}
             >
               {coupon_list &&
                 new_coupon_list.map(kaquan_item => {
                   return (
-                    <View key={kaquan_item.id} className='coupon_tag'>
-                      <View className='coupon_tag_circle circle_left'></View>
+                    <View key={kaquan_item.id} className="coupon_tag">
+                      <View className="coupon_tag_circle circle_left"></View>
                       <Text>{kaquan_item.title}</Text>
-                      <View className='coupon_tag_circle circle_right'></View>
+                      <View className="coupon_tag_circle circle_right"></View>
                     </View>
                   );
                 })}
@@ -1246,9 +1231,9 @@ export default class Detail extends Component {
 
           {promotion_package && (
             <SpCell
-              className='goods-sec-specs'
+              className="goods-sec-specs"
               //isLink
-              title='优惠组合'
+              title="优惠组合"
               //onClick={this.handlePackageClick}
               value={`共${promotion_package}种组合随意搭配`}
             />
@@ -1256,24 +1241,24 @@ export default class Detail extends Component {
 
           {itemParams.length > 0 && (
             <View
-              className='goods-sec-specs'
+              className="goods-sec-specs"
               onClick={this.handleParamsClick.bind(this)}
             >
-              <View className='goods-sec-label'>商品参数</View>
-              <View className='goods-sec-value'>
+              <View className="goods-sec-label">商品参数</View>
+              <View className="goods-sec-value">
                 {itemParams.map(item => (
                   <ParamsItem key={item.attribute_id} info={item} />
                 ))}
               </View>
-              <View className='goods-sec-icon at-icon at-icon-chevron-right'></View>
+              <View className="goods-sec-icon at-icon at-icon-chevron-right"></View>
             </View>
           )}
 
           {!info.nospec && (
             <SpCell
-              className='goods-sec-specs'
+              className="goods-sec-specs"
               isLink
-              title='规格'
+              title="规格"
               onClick={this.handleBuyBarClick.bind(this, "pick")}
               value={curSku ? curSku.propsText : "请选择"}
             />
@@ -1284,26 +1269,26 @@ export default class Detail extends Component {
           )}
 
           {info.rate_status && (
-            <View className='goods-evaluation'>
+            <View className="goods-evaluation">
               <View
-                className='goods-sec-specs'
+                className="goods-sec-specs"
                 onClick={this.handleToRateList.bind(this)}
               >
-                <Text className='goods-sec-label'>评价</Text>
+                <Text className="goods-sec-label">评价</Text>
                 {evaluationTotal > 0 ? (
-                  <Text className='goods-sec-value'>({evaluationTotal})</Text>
+                  <Text className="goods-sec-value">({evaluationTotal})</Text>
                 ) : (
-                  <Text className='goods-sec-value'>暂无评价</Text>
+                  <Text className="goods-sec-value">暂无评价</Text>
                 )}
-                <View className='goods-sec-icon apple-arrow'></View>
+                <View className="goods-sec-icon apple-arrow"></View>
               </View>
-              <View className='evaluation-list'>
+              <View className="evaluation-list">
                 {evaluationList.map(item => {
                   return (
                     <GoodsEvaluation
                       info={item}
                       key={item.rate_id}
-                      pathRoute='detail'
+                      pathRoute="detail"
                       onChange={this.handleClickViewAllEvaluation.bind(this)}
                     />
                   );
@@ -1313,13 +1298,13 @@ export default class Detail extends Component {
           )}
 
           {isArray(desc) ? (
-            <View className='wgts-wrap__cont'>
+            <View className="wgts-wrap__cont">
               {info.videos_url && (
-                <Video src={info.videos} controls style='width:100%'></Video>
+                <Video src={info.videos} controls style="width:100%"></Video>
               )}
               {desc.map((item, idx) => {
                 return (
-                  <View className='wgt-wrap' key={`${item.name}${idx}`}>
+                  <View className="wgt-wrap" key={`${item.name}${idx}`}>
                     {item.name === "film" && <WgtFilm info={item} />}
                     {item.name === "slider" && <WgtSlider info={item} />}
                     {item.name === "writing" && <WgtWriting info={item} />}
@@ -1333,7 +1318,7 @@ export default class Detail extends Component {
             <View>
               {desc && (
                 <SpHtmlContent
-                  className='goods-detail__content'
+                  className="goods-detail__content"
                   content={desc}
                 />
               )}
@@ -1363,8 +1348,8 @@ export default class Detail extends Component {
 
         <FloatMenus>
           <FloatMenuItem
-            iconPrefixClass='icon'
-            icon='arrow-up'
+            iconPrefixClass="icon"
+            icon="arrow-up"
             hide={!showBackToTop}
             onClick={this.scrollBackToTop}
           />
@@ -1393,8 +1378,8 @@ export default class Detail extends Component {
             onFavItem={this.handleMenuClick.bind(this, "fav")}
           >
             <View
-              className='goods-buy-toolbar__btns'
-              style='width: 60%; text-align: center'
+              className="goods-buy-toolbar__btns"
+              style="width: 60%; text-align: center"
             >
               {!startActivity || info.is_gift ? (
                 <Text>{info.is_gift ? "赠品不可购买" : "活动即将开始"}</Text>
@@ -1428,7 +1413,7 @@ export default class Detail extends Component {
         )}
 
         {
-          <View className='share'>
+          <View className="share">
             <SharePanel
               info={uid}
               isOpen={showSharePanel}
@@ -1439,15 +1424,15 @@ export default class Detail extends Component {
         }
 
         {showPoster && (
-          <View className='poster-modal'>
-            <Image className='poster' src={poster} mode='widthFix' />
-            <View className='view-flex view-flex-middle'>
+          <View className="poster-modal">
+            <Image className="poster" src={poster} mode="widthFix" />
+            <View className="view-flex view-flex-middle">
               <View
-                className='icon-close poster-close-btn'
+                className="icon-close poster-close-btn"
                 onClick={this.handleHidePoster.bind(this)}
               ></View>
               <View
-                className='icon-download poster-save-btn'
+                className="icon-download poster-save-btn"
                 style={`background: ${colors.data[0].primary}`}
                 onClick={this.handleSavePoster.bind(this)}
               >
@@ -1456,7 +1441,7 @@ export default class Detail extends Component {
             </View>
           </View>
         )}
-        <Canvas className='canvas' canvas-id='myCanvas'></Canvas>
+        <Canvas className="canvas" canvas-id="myCanvas"></Canvas>
 
         <SpToast />
       </View>

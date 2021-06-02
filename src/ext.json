@@ -1,9 +1,9 @@
 {
   "extEnable": true,
-  "extAppid": "wx912913df9fef6ddd",
+  "extAppid": "wx9d77ac57e211fdea",
   "ext": {
-    "company_id": "1",
-    "appid": "wx912913df9fef6ddd",
+    "company_id": "864",
+    "appid": "wx9d77ac57e211fdea",
     "wxa_name": "通用小程序"
   },
   "window": {

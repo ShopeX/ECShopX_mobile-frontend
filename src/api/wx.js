@@ -101,6 +101,7 @@ export function taskReportData (params) {
 
 // 互动埋点上报
 export function interactiveReportData (params) {
+  console.log('[触发互动埋点上报]',params)
   return req.post('/salesperson/relationshipcontinuity', {
     ...params
   })

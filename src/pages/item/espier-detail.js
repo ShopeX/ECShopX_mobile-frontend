@@ -81,6 +81,7 @@ export default class Detail extends Component {
   async componentDidMount() {
     const options = await normalizeQuerys(this.$router.params)
     console.log('options----->',options)
+    console.log('[商品详情-发互动埋点上报1]')
     if (options.itemid && !options.id) {
       options.id = options.itemid
     }
@@ -144,7 +145,7 @@ export default class Detail extends Component {
       entry.InverseAnalysis(lnglat)
     }
     // this.getDetailShare()
-    this.isCanShare()
+    this.isCanShare()    
     // 埋点处理
     buriedPoint.call(this, {
       item_id: id,
