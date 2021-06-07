@@ -440,7 +440,7 @@ export default class Detail extends Component {
         promotion_package
       })
       this.fetchCartCount()
-      this.downloadPosterImg()
+      // this.downloadPosterImg()
     })
 
     log.debug('fetch: done', info)
@@ -645,6 +645,7 @@ export default class Detail extends Component {
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
     const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
     const { distributor_id,store_id } = Taro.getStorageSync('curStore')
+    
     const pic = pics[0].replace('http:', 'https:')
     const infoId = info.distributor_id
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : infoId
@@ -656,16 +657,19 @@ export default class Detail extends Component {
 
     const goodsImg = await Taro.getImageInfo({src: pic})
     console.log('-------------------goodsImg:',goodsImg);
+
     const codeImg = await Taro.getImageInfo({src: wxappCode})
     console.log('-------------------codeImg:',codeImg);
 
 
     if (avatarImg?(avatarImg && goodsImg && codeImg):goodsImg&&codeImg) {
       const posterImgs = {
-        avatar: avatarImg.path || null,
+        avatar: avatarImg?avatarImg.path : null,
         goods: goodsImg.path,
         code: codeImg.path
       }
+      console.log('------------posterImgs-----------',posterImgs);
+
       await this.setState({
         posterImgs
       
@@ -680,6 +684,7 @@ export default class Detail extends Component {
   }
 
   drawImage = () => {
+    
     const { posterImgs, marketing } = this.state
     if (!posterImgs) return
     const { avatar, goods, code } = posterImgs
@@ -756,6 +761,10 @@ export default class Detail extends Component {
         const shareImg = res.tempFilePath;
         this.setState({
           poster: shareImg
+        },()=>{
+          this.setState({
+            showPoster:true
+          })
         })
       })
     })
