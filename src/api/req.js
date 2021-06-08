@@ -2,6 +2,7 @@ import Taro from "@tarojs/taro";
 import S from "@/spx";
 import qs from "qs";
 import { isGoodsShelves } from "@/utils";
+import api from '@/api'
 
 function addQuery(url, query) {
   return url + (url.indexOf("?") >= 0 ? "&" : "?") + query;
@@ -145,6 +146,8 @@ class API {
       console.log(ba_params);
     }
     let resData = {};
+    let isRefreshing = false;
+    let requests = [];
     return Taro.request(options)
       .then(res => {
         resData = res;
@@ -210,16 +213,46 @@ class API {
             });
             return Promise.reject(this.reqError(resData, "帐号已被禁用"));
           }
-          S.logout();
-          // if (showError) {
-          //   data.err_msg = data.err_msg || '登录过期正在重新登录'
-          //   this.errorToast(data)
-          // }
-          if ( isGoodsShelves() ) {
-            S.loginQW(this, true);
-          } else {
-            S.login(this, true);
+          if ( data.error && data.error.code === 401001 ) {
+            if ( isGoodsShelves() ) {
+              S.logout();
+              S.loginQW(this, true);
+            } else {
+              // 刷新token
+              const config = options;
+              if (isRefreshing) {
+                return new Promise(resolve => {
+                  requests.push(token => {
+                    resolve(API.makeReq(config));
+                  });
+                });
+              } else {
+                isRefreshing = true;
+                const token = S.getAuthToken();
+                return Taro.request({
+                  header: {
+                    Authorization: `Bearer ${token}`
+                  },
+                  method: "get",
+                  url: APP_BASE_URL + "/token/refresh"
+                })
+                .then(data => {
+                  console.log("/token/refresh", data);
+                  S.setAuthToken(data.header.Authorization.split(" ")[1]);
+                  requests.forEach(cb => cb());
+                  requests = [];
+                  return API.makeReq(config);
+                })
+                .catch(e => {
+                  console.log(e);
+                })
+                .finally(() => {
+                  isRefreshing = false;
+                });
+              }
+            }
           }
+          
           return Promise.reject(this.reqError(resData));
         }
 
