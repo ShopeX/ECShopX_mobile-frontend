@@ -126,9 +126,6 @@ export default class WxAuth extends Component {
       if (work_userid) {
         params.channel = 1
         params.work_userid = work_userid
-        api.user.uniquevisito({
-          work_userid: work_userid
-        });
       }
 
       if (trackParams) {
@@ -141,7 +138,15 @@ export default class WxAuth extends Component {
       }
 
       const { token } = await api.wx.newlogin(params)
-      if (token) {
+      if ( token ) {
+        if (work_userid) {
+          api.user.uniquevisito({
+            work_userid: work_userid
+          } );
+          api.user.bindSaleperson({
+            work_userid: work_userid
+          });
+        }
         S.setAuthToken(token)
         Taro.hideLoading()
         Taro.showToast({

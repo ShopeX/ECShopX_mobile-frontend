@@ -237,10 +237,10 @@ class App extends Component {
           "pages/plusprice/cart-plusprice-list"
         ],
         plugins: {
-          "live-player-plugin": {
-            "version": "1.2.10", // 填写该直播组件版本号
-            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          } 
+          // "live-player-plugin": {
+          //   "version": "1.2.10", // 填写该直播组件版本号
+          //   "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
+          // } 
           // "meiqia": {
           //   "version": "1.1.0",
           //   "provider": "wx2d2cd5fd79396601"
@@ -411,6 +411,9 @@ class App extends Component {
     }
     // 根据路由参数
     const { query } = this.$router.params;
+
+    // 初始化清楚s_smid
+    Taro.setStorageSync("s_smid", '');
     if ((query && query.scene) || query.gu_user_id || query.smid) {
       const { smid, dtid, id, aid, cid, gu, chatId, gu_user_id = ''} = await normalizeQuerys(
         query
@@ -418,7 +421,7 @@ class App extends Component {
       // 旧导购存放
       if (smid) {
         Taro.setStorageSync("s_smid", smid);
-      }
+      } 
       if (dtid) {
         Taro.setStorageSync("s_dtid", dtid);
       }
