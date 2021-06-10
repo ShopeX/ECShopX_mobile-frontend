@@ -2,7 +2,8 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtButton, AtCountdown } from 'taro-ui'
 import { FormIdCollector } from '@/components'
-import { classNames } from '@/utils'
+import { classNames, normalizeQuerys } from "@/utils";
+import entry from "@/utils/entry";
 import api from '@/api'
 import S from '@/spx'
 import { Tracker } from "@/service";
@@ -23,7 +24,10 @@ export default class GroupDetail extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const options = await normalizeQuerys( this.$router.params )
+    const curStore = Taro.getStorageSync( "curStore" );
+    if (!curStore) await entry.entryLaunch({ ...options }, true);
     this.fetchDetail()
   }
 
@@ -85,19 +89,20 @@ export default class GroupDetail extends Component {
 
     const { detail } = this.state
     const { activity_info, team_info } = detail
+    const { distributor_id } = Taro.getStorageSync("curStore");
 
     try {
       await api.cart.fastBuy({
         item_id: activity_info.goods_id,
+        distributor_id,
         num: 1
-      })
+      } )
+      Taro.navigateTo({
+        url: `/pages/cart/espier-checkout?type=group&team_id=${team_info.team_id}&group_id=${activity_info.groups_activity_id}`
+      });
     } catch (e) {
       console.log(e)
     }
-
-    Taro.navigateTo({
-      url: `/pages/cart/espier-checkout?type=group&team_id=${team_info.team_id}&group_id=${activity_info.groups_activity_id}`
-    })
   }
 
   handleDetailClick = () => {
