@@ -139,14 +139,7 @@ export default class WxAuth extends Component {
 
       const { token } = await api.wx.newlogin(params)
       if ( token ) {
-        if (work_userid) {
-          api.user.uniquevisito({
-            work_userid: work_userid
-          } );
-          api.user.bindSaleperson({
-            work_userid: work_userid
-          });
-        }
+        
         S.setAuthToken(token)
         Taro.hideLoading()
         Taro.showToast({
@@ -154,7 +147,20 @@ export default class WxAuth extends Component {
           icon: 'none',
           mask: true,
           duration: 2000
-        })
+        } )
+        
+        if (work_userid) {
+          api.user.uniquevisito({
+            work_userid: work_userid
+          } );
+          const gu_user_id = Taro.getStorageSync("gu_user_id");
+          if ( gu_user_id ) {
+            api.user.bindSaleperson( {
+              work_userid: work_userid
+            } );
+          }
+        }
+
         setTimeout(() => {
           this.redirect()
         }, 800)

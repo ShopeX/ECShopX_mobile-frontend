@@ -160,13 +160,17 @@ export default class Detail extends Component {
 
   onShareAppMessage() {
     const { info } = this.state;
-    const { salesperson_id, distributor_id } = S.get("GUIDE_INFO", true);
+    const { salesperson_id, distributor_id, work_userid, shop_code } = S.get(
+      "GUIDE_INFO",
+      true
+    );
     const query = this.$router.params;
-    const gu_user_id = Taro.getStorageSync("work_userid")
+    const gu = `${work_userid}_${shop_code}`;
+    // const gu_user_id = Taro.getStorageSync( "work_userid" )
     const sharePath = `/pages/item/espier-detail?id=${
       info.item_id
     }&smid=${salesperson_id}&dtid=${distributor_id}&subtask_id=${query.subtask_id ||
-      ""}&gu=${query.gu || ""}&gu_user_id=${gu_user_id}`;
+      ""}&gu=${gu}`;
     log.debug(
       `【guide/item/espier-detail】onShareAppMessage path: ${sharePath}`
     );
@@ -569,8 +573,9 @@ export default class Detail extends Component {
         ? wx.getExtConfigSync()
         : {};
     //const infoId = info.distributor_id
-    const gu_user_id = Taro.getStorageSync("work_userid");
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&distributor_id=${GUIDE_INFO.distributor_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${subtask_id}&gu_user_id=${gu_user_id}`;
+    const gu_user_id = Taro.getStorageSync( "work_userid" );
+    const gu = `${GUIDE_INFO.work_userid}_${GUIDE_INFO.shop_code}`; 
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&distributor_id=${GUIDE_INFO.distributor_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${subtask_id}&gu=${gu}`;
     console.log("wxappCode========>", wxappCode);
     try {
       const avatarImg = await Taro.getImageInfo({

@@ -53,12 +53,16 @@ export default class CouponHome extends Component {
     // const { userId } = Taro.getStorageSync("userinfo");
     const params = this.$router.params;
 
-    const { salesperson_id, distributor_id } = S.get( "GUIDE_INFO", true );
-    const gu_user_id = Taro.getStorageSync("work_userid");
+    const { salesperson_id, distributor_id, work_userid, shop_code } = S.get(
+      "GUIDE_INFO",
+      true
+    );
+    const gu = `${work_userid}_${shop_code}`;
+    // const gu_user_id = Taro.getStorageSync("work_userid");
     const query = `?smid=${salesperson_id}&card_id=${
       info.card_id
     }&distributor_id=${distributor_id}&subtask_id=${params.subtask_id ||
-      ""}&gu=${params.gu || ""}&gu_user_id=${gu_user_id}`;
+      ""}&gu=${gu}`;
     console.log(`/others/pages/home/coupon-home${query}`)
     return {
       title: info.title+'优惠券',

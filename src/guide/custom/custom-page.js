@@ -75,12 +75,16 @@ export default class HomeIndex extends Component {
   async onShareAppMessage() {
     const { shareInfo } = this.state;
     const { id } = this.$router.params;
-    const { salesperson_id, distributor_id } = S.get( "GUIDE_INFO", true );
-    const gu_user_id = Taro.getStorageSync("work_userid");
+    const { salesperson_id, distributor_id, work_userid, shop_code } = S.get(
+      "GUIDE_INFO",
+      true
+    );
+    const gu = `${work_userid}_${shop_code}`; 
+    // const gu_user_id = Taro.getStorageSync("work_userid");
     // const { userId } = Taro.getStorageSync("userinfo");
     const query = salesperson_id
-      ? `?smid=${salesperson_id}&dtid${distributor_id}&id=${id}&gu_user_id=${gu_user_id}`
-      : `?id=${id}&gu_user_id=${gu_user_id}`;
+      ? `?smid=${salesperson_id}&dtid${distributor_id}&id=${id}&gu=${gu}`
+      : `?id=${id}&gu=${gu}`;
     console.log(query);
     return {
       title: shareInfo.page_share_title,

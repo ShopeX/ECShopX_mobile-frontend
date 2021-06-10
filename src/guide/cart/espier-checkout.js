@@ -261,8 +261,9 @@ export default class EspireCheckout extends Component {
         wxshop_name = guideInfo.store_name;
       }
       const extConfig = ( Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync ) ? wx.getExtConfigSync() : {}
-      const gu_user_id = Taro.getStorageSync("work_userid");
-      const qrcode_params = `appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout&cxdid=${cxdid}&company_id=${guideInfo.company_id}&smid=${guideInfo.salesperson_id}&distributor_id=${guideInfo.distributor_id}&gu_user_id=${gu_user_id}`;
+      const gu_user_id = Taro.getStorageSync( "work_userid" );
+      const gu = `${guideInfo.work_userid}_${guideInfo.shop_code}`; 
+      const qrcode_params = `appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout&cxdid=${cxdid}&company_id=${guideInfo.company_id}&smid=${guideInfo.salesperson_id}&distributor_id=${guideInfo.distributor_id}&gu=${gu}`;
       const host = req.baseURL.replace("/api/h5app/wxapp/", "");
       // https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?temp_name=yykweishop&page=pages/cart/espier-checkout&company_id=1&cxdid=159&smid=78&distributor_id=103
       const url = `${host}/wechatAuth/wxapp/qrcode.png?${qrcode_params}`;

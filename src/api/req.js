@@ -236,15 +236,20 @@ class API {
                   method: "get",
                   url: APP_BASE_URL + "/token/refresh"
                 })
-                .then(data => {
-                  console.log("/token/refresh", data);
+                .then( data => {
+                  console.log( "/token/refresh", data );
+                  if ( data.statusCode == 401 ) {
+                    S.logout()
+                    S.login(this, true)
+                  }
                   S.setAuthToken(data.header.Authorization.split(" ")[1]);
                   requests.forEach(cb => cb());
                   requests = [];
                   return API.makeReq(config);
                 })
                 .catch(e => {
-                  console.log(e);
+                  console.log( e );
+                  
                 })
                 .finally(() => {
                   isRefreshing = false;
@@ -252,7 +257,6 @@ class API {
               }
             }
           }
-          
           return Promise.reject(this.reqError(resData));
         }
 
