@@ -72,19 +72,17 @@ export default class recommendDetail extends Component {
 
   onShareAppMessage() {
     const { info } = this.state;
-    const { salesperson_id, distributor_id } = S.get("GUIDE_INFO", true);
-    // const { userId } = Taro.getStorageSync("userinfo");
-    // const query = userId ? `&uid=${userId}` : "";
-    // const QwUserInfo = S.get("GUIDE_INFO", true);
-    // const { salesperson_id } = QwUserInfo;
-    // const guideid = salesperson_id ? `&salesperson_id=${salesperson_id}` : "";
-    
-    const gu_user_id = Taro.getStorageSync("work_userid");
+    const { salesperson_id, distributor_id, work_userid, shop_code } = S.get(
+      "GUIDE_INFO",
+      true
+    );
+    const gu = `${work_userid}_${shop_code}`;  
+    // const gu_user_id = Taro.getStorageSync("work_userid");
     Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
       ...info,
       shareType: "分享给好友"
     } );
-    const sharePath = `/subpage/pages/recommend/detail?id=${info.article_id}&smid=${salesperson_id}&dtid=${distributor_id}&gu_user_id=${gu_user_id}`;
+    const sharePath = `/subpage/pages/recommend/detail?id=${info.article_id}&smid=${salesperson_id}&dtid=${distributor_id}&gu=${gu}`;
     log.debug(`【guide/recommend/detail】onShareAppMessage path: ${sharePath}` )
     return {
       title: info.title,

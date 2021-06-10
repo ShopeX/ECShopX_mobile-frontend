@@ -413,14 +413,15 @@ class App extends Component {
     const { query } = this.$router.params;
 
     // 初始化清楚s_smid
-    Taro.setStorageSync("s_smid", '');
+    Taro.setStorageSync( "s_smid", '' );
+    Taro.setStorageSync("gu_user_id", "");
     if ((query && query.scene) || query.gu_user_id || query.smid) {
       const { smid, dtid, id, aid, cid, gu, chatId, gu_user_id = ''} = await normalizeQuerys(
         query
       )
       // 旧导购存放
       if (smid) {
-        Taro.setStorageSync("s_smid", smid);
+        Taro.setStorageSync( "s_smid", smid );
       } 
       if (dtid) {
         Taro.setStorageSync("s_dtid", dtid);
@@ -433,17 +434,21 @@ class App extends Component {
       }
       // 欢迎语小程序卡片分享参数处理
       if (gu_user_id) {
-        Taro.setStorageSync("work_userid", gu_user_id)
+        Taro.setStorageSync( "work_userid", gu_user_id )
+        Taro.setStorageSync("gu_user_id", gu_user_id);
         // 如果是登录状态下打开分享且携带导购ID
         if (S.getAuthToken()) {
           api.user.bindSaleperson({
             work_userid: gu_user_id
           } )
-          // uv 埋点
-          api.user.uniquevisito({
-            work_userid: gu_user_id
-          });
         }
+      }
+      
+      if ( Taro.getStorageSync( "work_userid" ) && S.getAuthToken() ) {
+        // uv 埋点
+        api.user.uniquevisito({
+          work_userid: Taro.getStorageSync("work_userid")
+        });
       }
       // 存储群id
       if (chatId) {
