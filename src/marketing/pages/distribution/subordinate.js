@@ -124,7 +124,7 @@ export default class DistributionSubordinate extends Component {
                       />
                       <View className="list-item-txt">
                         <View className="name">
-                          {item.username}
+                          {item.username || '匿名用户'}
                           {
                             item.is_open_promoter_grade
                             && <Text className="level-name">({item.promoter_grade_name})</Text>

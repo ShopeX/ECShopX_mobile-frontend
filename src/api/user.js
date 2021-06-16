@@ -171,3 +171,8 @@ export function uniquevisito(params) {
     ...params
   });
 }
+
+// 是否需要开启初次授权填写个人信息
+export function getIsMustOauth(params) {
+  return req.get('/espier/config/request_field_setting', params)
+}

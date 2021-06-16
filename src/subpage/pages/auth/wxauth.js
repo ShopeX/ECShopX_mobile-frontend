@@ -18,6 +18,8 @@ export default class WxAuth extends Component {
 
     this.state = {
       isAgree: true,
+      isMustOauth: false,
+      isNewOpen: true,
       baseInfo: {
         protocol: {}
       }
@@ -26,10 +28,14 @@ export default class WxAuth extends Component {
 
   componentDidMount () {
     this.getStoreSettingInfo()
+    this.getIsMustOauth();
   }
 
-  componentDidShow (){
+  componentDidShow(option) {
     this.checkWhite()
+    if (!this.state.isNewOpen) {
+      this.redirect();
+    }
   }
 
   // 获取总店配置信息
@@ -46,6 +52,13 @@ export default class WxAuth extends Component {
       setTimeout(() => {
         Taro.hideHomeButton()
       }, 1000)
+    }
+  }
+
+  async getIsMustOauth() {
+    const { switch_first_auth_force_validation } = await api.user.getIsMustOauth( { module_type: 1 } );
+    if (switch_first_auth_force_validation == 1) {
+      this.setState({ isMustOauth: true });
     }
   }
 
@@ -137,7 +150,7 @@ export default class WxAuth extends Component {
         params.uid = uid
       }
 
-      const { token } = await api.wx.newlogin(params)
+      const { token, is_new } = await api.wx.newlogin(params);
       if ( token ) {
         
         S.setAuthToken(token)
@@ -161,8 +174,18 @@ export default class WxAuth extends Component {
           }
         }
 
-        setTimeout(() => {
-          this.redirect()
+        setTimeout( () => {
+          if ( this.state.isMustOauth && is_new ) {
+            this.setState({
+              isNewOpen: false
+            }, () => {
+              Taro.navigateTo({
+                url: "/marketing/pages/member/userinfo"
+              });
+            });
+          } else {
+            this.redirect();
+          }
         }, 800)
         // 通过token解析openid
         const userInfo = tokenParse(token)
