@@ -576,6 +576,8 @@ export default class Home extends Component {
       styles = { paddingTop: Taro.pxTransform(90) }
     } else if (isHeader && isAccount) {
       styles = { paddingTop: Taro.pxTransform(240) }
+    } else {
+      styles = { paddingTop: Taro.pxTransform(0) }
     }
     return (
       <View className="page-index">
