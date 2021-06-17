@@ -3,9 +3,9 @@
     // top: 0;
     // left: 0;
     // right: 0;
-    position: relative;
-    z-index: 233;
-    opacity:0.9;
+    // position: relative;
+    // z-index: 233;
+    // opacity:0.9;
     // &__show {
     //   height: 168px;
     //   opacity: 0.8;
@@ -63,7 +63,7 @@
     //   opacity: 1;
     // }
     .zoom-btn {
-      position: absolute;
+      position: fixed;
       right: 20px;
       top: 20px;
       font-size: 30px;
@@ -71,7 +71,6 @@
       padding: 4px;
       border-radius: 50%;
       color: #000;
-  
     }
   }
   
