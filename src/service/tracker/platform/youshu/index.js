@@ -47,11 +47,11 @@ export default class Youshu extends Base {
   trackEvent({ category, action, label, value }) {
     action = category;
 
-    const name = typeof label === "string" ? label : "";
+    // const name = typeof label === "string" ? label : "";
     const data =
       typeof label === "string"
-        ? { name, ...value }
-        : { name, ...label, ...value };
+        ? { ...value }
+        : { ...label, ...value };
 
     sr.track(action, data);
   }

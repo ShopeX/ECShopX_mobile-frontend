@@ -49,7 +49,7 @@ export default class GoodsItem extends Component {
 
   render () {
     const { info, showMarketPrice, showFav, noCurSymbol, noCurDecimal, onClick, onStoreClick, appendText, className, isPointDraw, colors,type ,isPointitem} = this.props 
-    console.log('this.props',this.props)
+    // console.log('this.props',this.props)
 
     if (!info) {
       return null
@@ -58,8 +58,8 @@ export default class GoodsItem extends Component {
     const img = info.img || info.image_default_id
 
     let promotion_activity = null, act_price = null
-    console.log("act_price",act_price)
-    console.log("info.promotion_activity_tag",info.promotion_activity_tag)
+    // console.log("act_price",act_price)
+    // console.log("info.promotion_activity_tag",info.promotion_activity_tag)
     if( info.promotion_activity_tag && info.promotion_activity_tag.length > 1 ) {
       info.promotion_activity_tag.map(tag_item => {
         if(tag_item.tag_type === 'single_group' || tag_item.tag_type === 'normal' || tag_item.tag_type === 'limited_time_sale') {

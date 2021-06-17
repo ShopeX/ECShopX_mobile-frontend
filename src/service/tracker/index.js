@@ -23,39 +23,39 @@ class Tracker {
       this.use(options.provider, options.providerConfig);
     }
 
-    let _createComponent = Taro.createComponent;
-    var self = this;
-    Taro.createComponent = function(ComponentClass, isPage) {
-      let obj = _createComponent(ComponentClass, isPage);
-      const _onReady = obj.methods["onReady"];
-      obj.methods["onReady"] = function() {
-        const result = _onReady.apply(this);
-        self._componentDidMount(this);
-        return result;
-      };
+    // let _createComponent = Taro.createComponent;
+    // var self = this;
+    // Taro.createComponent = function(ComponentClass, isPage) {
+    //   let obj = _createComponent(ComponentClass, isPage);
+    //   const _onReady = obj.methods["onReady"];
+    //   obj.methods["onReady"] = function() {
+    //     const result = _onReady.apply(this);
+    //     self._componentDidMount(this);
+    //     return result;
+    //   };
 
-      const _onShow = obj.methods["onShow"];
-      obj.methods["onShow"] = function() {
-        const result = _onShow.apply(this);
-        self._componentDidShow(this);
-        return result;
-      };
+    //   const _onShow = obj.methods["onShow"];
+    //   obj.methods["onShow"] = function() {
+    //     const result = _onShow.apply(this);
+    //     self._componentDidShow(this);
+    //     return result;
+    //   };
 
-      const _onHide = obj.methods["onHide"];
-      obj.methods["onHide"] = function() {
-        const result = _onHide.apply(this);
-        self._componentDidHide(this);
-        return result;
-      };
+    //   const _onHide = obj.methods["onHide"];
+    //   obj.methods["onHide"] = function() {
+    //     const result = _onHide.apply(this);
+    //     self._componentDidHide(this);
+    //     return result;
+    //   };
 
-      // const _onUnload = obj.methods["onUnload"];
-      obj.methods["onUnload"] = function() { 
-        // const result = _onUnload.apply(this);
-        self._componentWillUnmount(this);
-        // return result;
-      };
-      return obj;
-    };
+    //   // const _onUnload = obj.methods["onUnload"];
+    //   obj.methods["onUnload"] = function() { 
+    //     // const result = _onUnload.apply(this);
+    //     self._componentWillUnmount(this);
+    //     // return result;
+    //   };
+    //   return obj;
+    // };
 
     // this.SOURCE_TYPE = SOURCE_TYPE;
   }
