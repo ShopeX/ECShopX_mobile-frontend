@@ -61,9 +61,15 @@ export default class AccountOfficial extends Component {
 
   render () {
     const { isShowAccount } = this.state
-    const { colors,isClose } = this.props
+    const { isClose } = this.props
+    let styles = {
+      position: 'fixed',
+      left: 0,
+      top: 0,
+      zIndex: 333
+    }
     return (
-      <View className='account-view'>
+      <View className='account-view' style={styles} >
       <OfficialAccount
         className='account-view__official'
         onLoad={(res) => this.handleClickLoad(res)}

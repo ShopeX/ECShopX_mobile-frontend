@@ -70,10 +70,22 @@ export default class HeaderHome extends Component {
   }
 
   render () {
-    const { store, isOpenScanQrcode,isOpenStoreStatus } = this.props
+    const { store, isOpenScanQrcode,isOpenStoreStatus, isOpenOfficialAccount } = this.props
     const isNoStores = isOpenStoreStatus ? false : true    
+    let tops = {
+      position: 'fixed',
+      left: 0,
+      top: '153rpx',
+      zIndex: 333
+    }
+    let notops = {
+      position: 'fixed',
+      left: 0,
+      top: 0,
+      zIndex: 333
+    }
     return (
-      <View className='home-header'>
+      <View className='home-header' style={isOpenOfficialAccount ? tops : notops}>
 
             <View className='nearly-shop'>
              

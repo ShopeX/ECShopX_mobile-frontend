@@ -567,23 +567,36 @@ export default class Home extends Component {
     // 否是fixed
     const isFixed = positionStatus;
 
+    let isHeader = is_open_official_account === 1 && show_official
+    let isAccount = isStandard && curStore
+    let styles = {}
+    if (isHeader) {
+      styles = { paddingTop: '153rpx' }
+    } else if (isAccount) {
+      styles = { paddingTop: '87rpx' }
+    } else if (isHeader && isAccount) {
+      styles = { paddingTop: '240rpx' }
+    }
     return (
       <View className="page-index">
-        {is_open_official_account === 1 && show_official && (
-          <AccountOfficial
-            isClose
-            onHandleError={this.handleOfficialError.bind(this)}
-            onClick={this.handleOfficialClose.bind(this)}
-          ></AccountOfficial>
-        )}
-        {isStandard && curStore && (
-          <HeaderHome
-            store={curStore}
-            onClickItem={this.goStore.bind(this)}
-            isOpenScanQrcode={is_open_scan_qrcode}
-            isOpenStoreStatus={is_open_store_status}
-          />
-        )}
+        <View>
+          {isHeader && (
+            <AccountOfficial
+              isClose
+              onHandleError={this.handleOfficialError.bind(this)}
+              onClick={this.handleOfficialClose.bind(this)}
+            ></AccountOfficial>
+          )}
+          {isAccount && (
+            <HeaderHome
+              store={curStore}
+              isOpenOfficialAccount={isHeader}
+              onClickItem={this.goStore.bind(this)}
+              isOpenScanQrcode={is_open_scan_qrcode}
+              isOpenStoreStatus={is_open_store_status}
+            />
+          )}
+        </View>
         <View
           className={classNames(
             "wgts-wrap",
@@ -594,6 +607,7 @@ export default class Home extends Component {
             !curStore && "wgts-wrap-nolocation",
             !isFixed && !isStandard && "platform"
           )}
+          style={styles}
         >
           {/* 挂件内容和猜你喜欢 */}
           <View className="wgts-wrap__cont">
