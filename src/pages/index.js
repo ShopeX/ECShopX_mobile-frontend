@@ -554,7 +554,8 @@ export default class Home extends Component {
       is_open_official_account,
       is_open_scan_qrcode,
       is_open_store_status,
-      show_official
+      show_official,
+      is_open_wechatapp_location
     } = this.state;
 
     const pages = Taro.getCurrentPages()
@@ -568,13 +569,12 @@ export default class Home extends Component {
     const isFixed = positionStatus;
 
     let isHeader = is_open_official_account === 1 && show_official
-    let isAccount = isStandard && curStore
     let styles = {}
-    if (isHeader && !isAccount) {
+    if (isHeader && !isStandard) {
       styles = { paddingTop: Taro.pxTransform(150) }
-    } else if (isAccount && !isHeader) {
+    } else if (isStandard && !isHeader) {
       styles = { paddingTop: Taro.pxTransform(90) }
-    } else if (isHeader && isAccount) {
+    } else if (isHeader && isStandard) {
       styles = { paddingTop: Taro.pxTransform(240) }
     } else {
       styles = { paddingTop: Taro.pxTransform(0) }
@@ -589,13 +589,13 @@ export default class Home extends Component {
               onClick={this.handleOfficialClose.bind(this)}
             ></AccountOfficial>
           )}
-          {isAccount && (
+          {isStandard && (
             <HeaderHome
               store={curStore}
               isOpenOfficialAccount={isHeader}
               onClickItem={this.goStore.bind(this)}
               isOpenScanQrcode={is_open_scan_qrcode}
-              isOpenStoreStatus={is_open_store_status}
+              isOpenStoreStatus={is_open_wechatapp_location === 1}
             />
           )}
         </View>
