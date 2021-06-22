@@ -51,7 +51,8 @@ export default class UserInfo extends Component {
     this.optionsType = ''
   }
 
-  componentDidShow () {
+  componentDidMount () {
+    console.log("componentDidMount")
     this.getFormItem()
   }
 
@@ -83,7 +84,7 @@ export default class UserInfo extends Component {
       try {
         const { tempFiles = [] } = await Taro.chooseImage({
           count: 1
-        })
+        }) 
         if (tempFiles.length > 0) {
           const imgFiles = tempFiles.slice(0, 1).map(item => {
             return {
@@ -105,6 +106,7 @@ export default class UserInfo extends Component {
 
   // 获取表单字段
   getFormItem = async () => {
+    
     const { memberInfo } = await api.member.memberInfo()
     const userInfo = {
       avatar: memberInfo.avatar,
@@ -227,6 +229,8 @@ export default class UserInfo extends Component {
   }
 
   btnClick = (btn_type, e) => {
+    console.log("btnClick") 
+    
     e.stopPropagation()
     this.setState({
       showCheckboxPanel: false
@@ -283,12 +287,15 @@ export default class UserInfo extends Component {
       title: '修改成功',
       mask: true
     })
+    console.log("saveInfo")
     this.getFormItem()
   }
 
   render () {
     const { formItems, userInfo, isGetWxInfo, baseInfo, showCheckboxPanel, option_list } = this.state
     const { colors } = this.props
+
+    console.log("--userInfo--",userInfo)
 
     return (
       <View className='page-member-setting'>

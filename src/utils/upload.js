@@ -184,7 +184,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
     } catch (e) {
       console.log(e)
     }
-  }
+  } 
   return imgs
 }
 
