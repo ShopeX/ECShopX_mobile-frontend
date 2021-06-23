@@ -17,6 +17,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import S from "@/spx"
 import entry from '@/utils/entry'
 import StoreListItem from './comps/list-item'
+import { classNames } from '@/utils'
 
 import './list.scss'
 
@@ -28,7 +29,7 @@ import './list.scss'
 @withBackToTop
 export default class StoreList extends Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -58,7 +59,7 @@ export default class StoreList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.init()
     this.getHeadquarters()
   }
@@ -103,7 +104,7 @@ export default class StoreList extends Component {
         })
       })
     })
-  } 
+  }
 
   // 获取总店信息
   getHeadquarters = async () => {
@@ -165,7 +166,7 @@ export default class StoreList extends Component {
     })
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { query: searchParam, location } = this.state
     const { latitude = '', longitude = '' } = location
     const { page_no: page, page_size: pageSize } = params
@@ -176,7 +177,7 @@ export default class StoreList extends Component {
       lat: latitude,
       lng: longitude
     }
-    const { list, total_count: total, defualt_address = {}, is_recommend} = await api.shop.list(query)
+    const { list, total_count: total, defualt_address = {}, is_recommend } = await api.shop.list(query)
     this.setState({
       query,
       list: [...this.state.list, ...list],
@@ -190,7 +191,7 @@ export default class StoreList extends Component {
 
   // 选择门店
   handleClickItem = (info) => {
-    if(info){
+    if (info) {
       info.store_id = 0 //新增非门店自提，开启distributor_id 取值为store_id
     }
     Taro.setStorageSync('curStore', info)
@@ -249,7 +250,7 @@ export default class StoreList extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       scrollTop,
       query,
@@ -265,11 +266,13 @@ export default class StoreList extends Component {
     const { province, city, area } = query
 
     let areaData = [province, city, area]
-    
+
     if (query.type === 0 && (!location.address && deliveryInfo.address_id)) {
       const { province: p = '', city: c = '', county: ct = '' } = deliveryInfo
       areaData = [p, (c === '市辖区' || !c) ? province : city, ct]
     }
+
+    const hasShop=headquarters.is_valid === 'true';
 
     const { colors } = this.props
 
@@ -283,7 +286,7 @@ export default class StoreList extends Component {
           <View className='main'>
             <Picker mode='region' value={areaData} onChange={this.regionChange.bind(this)}>
               <View className='filterArea'>
-                <View className='areaName'>{ areaData.join('') || '筛选地区' }</View>
+                <View className='areaName'>{areaData.join('') || '筛选地区'}</View>
                 <View className='iconfont icon-arrowDown'></View>
               </View>
             </Picker>
@@ -295,7 +298,7 @@ export default class StoreList extends Component {
               onInput={this.inputStoreName.bind(this)}
               onConfirm={this.confirmSearch.bind(this)}
             />
-            { (query.name && query.name.length > 0) && <View className='iconfont icon-close' onClick={this.clearName.bind(this)}></View> }
+            {(query.name && query.name.length > 0) && <View className='iconfont icon-close' onClick={this.clearName.bind(this)}></View>}
           </View>
         </View>
         <View className='content'>
@@ -303,16 +306,16 @@ export default class StoreList extends Component {
             <View className='title'>当前位置</View>
             <View className='locationData'>
               {
-                (query.type !== 2  && location.address) && <View className='lngName'>
-                  { location.address || '无法获取您的位置信息'}
+                (query.type !== 2 && location.address) && <View className='lngName'>
+                  {location.address || '无法获取您的位置信息'}
                 </View>
               }
               {
                 (query.type === 2 || (!location.address && deliveryInfo.address_id)) && <View className='lngName'>
-                  { deliveryInfo.province }
-                  { deliveryInfo.city }
-                  { deliveryInfo.county }
-                  { deliveryInfo.adrdetail }
+                  {deliveryInfo.province}
+                  {deliveryInfo.city}
+                  {deliveryInfo.county}
+                  {deliveryInfo.adrdetail}
                 </View>
               }
               {
@@ -325,17 +328,17 @@ export default class StoreList extends Component {
                   重新定位
                 </View>
               }
-              </View>
+            </View>
           </View>
           {
             deliveryInfo.address_id && <View className='delivery' onClick={this.getDeliver.bind(this)}>
               <View className='title'>按收货地址定位</View>
               <View className='locationData'>
                 <View className='lngName'>
-                  { deliveryInfo.province }
-                  { deliveryInfo.city }
-                  { deliveryInfo.county }
-                  { deliveryInfo.adrdetail }
+                  {deliveryInfo.province}
+                  {deliveryInfo.city}
+                  {deliveryInfo.county}
+                  {deliveryInfo.adrdetail}
                 </View>
               </View>
             </View>
@@ -357,14 +360,19 @@ export default class StoreList extends Component {
           {
             !isRecommedList
               ? <View className='title'>
-                { (deliveryInfo.address_id || location.latitude) ? '附近门店' : '全部门店' }
+                {(deliveryInfo.address_id || location.latitude) ? '附近门店' : '全部门店'}
               </View>
               : <View className='recommed'>
                 <View className='title'>推荐门店</View>
               </View>
           }
           <ScrollView
-            className='scroll'
+            className={classNames(
+              'scroll',
+              {
+                ['notHaveShop']:!hasShop
+              }
+            )}
             scrollY
             scrollTop={scrollTop}
             scrollWithAnimation
@@ -385,19 +393,20 @@ export default class StoreList extends Component {
             }
           </ScrollView>
         </View>
-        <View
+        {hasShop && <View
           className='bottom'
           style={`color: ${colors.data[0].primary}`}
           onClick={this.handleClickItem.bind(this, headquarters)}
-        > 
-          <Image 
+        >
+          <Image
             className='img'
             src={baseInfo.logo}
             mode='aspectFill'
           />
-          { headquarters.store_name }
+          {headquarters.store_name}
           <View className='iconfont icon-arrowRight'></View>
-        </View>
+        </View>}
+
       </View>
     )
   }

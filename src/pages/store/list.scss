@@ -169,6 +169,10 @@ page {
     }
     .scroll {
       height: calc(100% - 80px);
+
+      &.notHaveShop{
+        height: 100%;
+      }
     }
   }
   .bottom {

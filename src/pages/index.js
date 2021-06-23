@@ -85,7 +85,7 @@ export default class Home extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount() { 
     this.getHomeSetting();
     this.getShareSetting();
     this.isShowTips();
@@ -329,7 +329,7 @@ export default class Home extends Component {
   };
 
   // 获取首页配置
-  getHomeSetting = async () => {
+  getHomeSetting = async () => { 
     const is_open_store_status = await entry.getStoreStatus();
     const {
       is_open_recommend,
@@ -339,9 +339,10 @@ export default class Home extends Component {
     } = Taro.getStorageSync("settingInfo");
     const isNeedLoacate = is_open_wechatapp_location == 1;
     const options = this.$router.params;
-    options.isStore = is_open_store_status;
+    options.isStore = is_open_store_status; 
     const res = await entry.entryLaunch(options, isNeedLoacate);
-    const { store } = res;
+    const { store } = res; 
+ 
     if (!isArray(store)) {
       this.setState(
         {
