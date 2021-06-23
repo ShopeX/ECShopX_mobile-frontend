@@ -92,7 +92,7 @@ const upload = {
         filePath: item.url,
         header:{
           'Authorization': `Bearer ${S.getAuthToken()}`,
-          'company_id': extConfig.company_id
+          'authorizer-appid': extConfig.appid 
         },
         name: 'images',
         formData:{
