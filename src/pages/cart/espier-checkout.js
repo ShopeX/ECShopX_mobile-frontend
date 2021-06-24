@@ -1179,6 +1179,7 @@ export default class CartCheckout extends Component {
       let salesman_id = Taro.getStorageSync("s_smid");
       if (salesman_id) {
         params.salesman_id = salesman_id;
+        params.distributor_id = Taro.getStorageSync("s_dtid")||'';
       }
 
       // 如果是跨境商品
