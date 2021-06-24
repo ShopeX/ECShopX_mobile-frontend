@@ -317,7 +317,7 @@ function parseUrlStr(urlStr) {
 // 逆解析地址
 async function InverseAnalysis(locationData) {
   const { latitude, longitude } = locationData;
-  const cityInfo = await Taro.request({
+  let cityInfo = await Taro.request({
     url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${APP_MAP_KEY}`
   } );
   if ( cityInfo.data.result ) {

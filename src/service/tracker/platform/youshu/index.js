@@ -20,10 +20,13 @@ export default class Youshu extends Base {
   constructor(options = {}) {
     super(options);
     const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
-    const { youshu = {} } =  Taro.getStorageSync('otherSetting') || {}
+   
+    // const { youshu = {} } =  Taro.getStorageSync('otherSetting') || {}
 
-    config.token = youshu.app_id || youshu.sandbox_app_id
-    config.appid = youshu.weapp_app_id || extConfig.appid
+    config.token = extConfig.youshutoken;
+    config.appid = extConfig.appid;
+
+    console.log('extConfig',config)
 
     sr.init(config);
 
@@ -33,9 +36,7 @@ export default class Youshu extends Base {
     const token = S.getAuthToken();
     
     if (token) {
-      const userInfo = tokenParse(token);
-      console.log("[有数埋点]------useInfo------")
-      console.log(userInfo)
+      const userInfo = tokenParse(token); 
       this.setVar({
         user_id: userInfo.user_id,
         open_id: userInfo.openid,

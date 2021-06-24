@@ -10,6 +10,7 @@
  */
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
+import S from '@/spx'
 // import * as qiniu from 'qiniu-js'
 
 const getToken = (params) => {
@@ -84,14 +85,19 @@ const upload = {
   localUpload: async (item, tokenRes) => {
     const { filetype="image", domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+    const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
     try {
       const res = await Taro.uploadFile({
         url: `${req.baseURL}espier/uploadlocal`,
         filePath: item.url,
+        header:{
+          'Authorization': `Bearer ${S.getAuthToken()}`,
+          'authorizer-appid': extConfig.appid 
+        },
         name: 'images',
         formData:{
           name: filename,
-          filetype
+          filetype,  
         }
       })
       const data = JSON.parse(res.data)
@@ -184,7 +190,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
     } catch (e) {
       console.log(e)
     }
-  }
+  } 
   return imgs
 }
 

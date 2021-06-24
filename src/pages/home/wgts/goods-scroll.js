@@ -73,6 +73,8 @@ export default class WgtGoodsScroll extends Component {
     const { base, data, config } = info;
     const { timer } = this.state;
 
+    console.log("goodsScrollInfo",info)
+
     return (
       <View className={`wgt ${base.padded ? "wgt__padded" : null}`}>
         {base.title && (
@@ -93,7 +95,7 @@ export default class WgtGoodsScroll extends Component {
                         minutes={timer.mm}
                         seconds={timer.ss}
                       />
-                      {"后结束"}
+                      {config.status==="in_the_notice"?"后开始":"后结束"}
                     </View>
                   ) : (
                     <View className="countdown__time">活动已结束</View>

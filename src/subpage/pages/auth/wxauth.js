@@ -8,13 +8,15 @@ import { Tracker } from "@/service"
 
 import './wxauth.scss'
 
+let codeSetTime=1000 * 10;
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 
 export default class WxAuth extends Component {
   constructor (props) {
-    super(props)
+    super(props) 
 
     this.state = {
       isAgree: true,
@@ -22,13 +24,40 @@ export default class WxAuth extends Component {
       isNewOpen: true,
       baseInfo: {
         protocol: {}
-      }
+      },
+      code:''
     }
   }
 
   componentDidMount () {
     this.getStoreSettingInfo()
     this.getIsMustOauth();
+    this.setCode(true);
+    this.handleCodeTime();
+  }
+
+  setCode=async (init)=>{
+    let code  
+    let res = await Taro.login();
+    code=res.code; 
+    this.setState({
+      code
+    })
+  }
+
+  //处理code定时器
+  handleCodeTime=()=>{
+   
+    this.timer = setInterval(
+      () => {
+        this.setCode()
+      },
+      codeSetTime
+    );
+  }
+
+  componentWillUnmount(){
+    this.timer && clearInterval(this.timer);
   }
 
   componentDidShow(option) {
@@ -107,12 +136,8 @@ export default class WxAuth extends Component {
   }
 
   // 登录注册事件
-  login_reg = async (getParams) => {
-    let { code } = await Taro.login()
-    const isExpr = await Taro.checkSession()
-    if (isExpr.errMsg !== 'checkSession:ok') {
-      code = await Taro.login()
-    }
+  login_reg = async (getParams) => { 
+    const { code }=this.state;
     Taro.showLoading({
       mask: true,
       title: '正在登录...'
