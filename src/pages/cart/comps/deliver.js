@@ -71,7 +71,7 @@ export default class Deliver extends Component {
     }, {
       type: 'ziti',
       name: '自提',
-      isopen: type !== 'pointitem' && goodType !== "cross",
+      isopen: type !== 'pointitem' && goodType !== "cross" && curStore.is_ziti,
     }]
     const showSwitchDeliver = deliveryList.filter(item => item.isopen)
 
