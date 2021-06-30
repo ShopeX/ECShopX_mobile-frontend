@@ -10,6 +10,7 @@ import { FormIds, Tracker } from "@/service";
 import { youshuLogin } from '@/utils/youshu'
 import Index from './pages/index'
 import LBS from './utils/lbs'
+
 // import entry from '@/utils/entry'
 
 import "./app.scss";
@@ -63,6 +64,7 @@ useHooks();
 // 获取基础配置
 getHomeSetting();
 
+S.trigger("store", store);
 class App extends Component {
   //Taro.getSystemInfoSync().environment == "wxwork"
 
@@ -536,9 +538,7 @@ class App extends Component {
       );
   }
 
-  fetchColors() {
-    const url =
-      "/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=color_style";
+  async fetchColors() {
     const defaultColors = {
       data: [
         {
@@ -549,12 +549,26 @@ class App extends Component {
       ],
       name: "base"
     };
-    req.get(url).then(info => {
-      store.dispatch({
-        type: "colors",
-        payload: info.list.length ? info.list[0].params : defaultColors
-      });
+    const info = await api.shop.getPageParamsConfig( { page_name: 'color_style' } )
+    const themeColor = info.list.length ? info.list[0].params : defaultColors;
+    // 兼容老的主题
+    store.dispatch({
+      type: "colors",
+      payload: themeColor
     });
+    S.set("SYSTEM_THEME", {
+      colorPrimary: themeColor.data[0].primary,
+      colorMarketing: themeColor.data[0].marketing,
+      colorAccent: themeColor.data[0].accent
+    });
+
+
+    // req.get(`/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=color_style`).then(info => {
+    //   store.dispatch({
+    //     type: "colors",
+    //     payload: info.list.length ? info.list[0].params : defaultColors
+    //   });
+    // });
   }
 
   componentDidCatchError() {}

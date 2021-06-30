@@ -4,8 +4,7 @@
   "ext": {
     "company_id": "1",
     "appid": "wx912913df9fef6ddd",
-    "wxa_name": "通用小程序",
-    "youshutoken":"bi281e87ab2424481a"
+    "wxa_name": "通用小程序"
   },
   "window": {
       "backgroundTextStyle": "light",

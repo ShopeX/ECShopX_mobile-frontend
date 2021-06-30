@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux'
 import { NavBar, Loading } from "@/components";
 import api from '@/api'
 import { pickBy } from '@/utils'
+import userIcon from "@/assets/imgs/user-icon.png";
 import { Tracker } from "@/service";
 import './index.scss'
 
@@ -141,132 +142,177 @@ export default class DistributionDashboard extends Component {
       return <Loading />
     }
     return (
-      <View className='page-distribution-index'>
-        <NavBar
-          title='推广管理'
-          leftIconType='chevron-left'
-        />	        
-        <View className='header' style={'background: ' + colors.data[0].marketing}>
-          <View className='view-flex view-flex-middle'>
+      <View className="page-distribution-index">
+        <NavBar title="推广管理" leftIconType="chevron-left" />
+        <View
+          className="header"
+          style={"background: " + colors.data[0].marketing}
+        >
+          <View className="view-flex view-flex-middle">
             <Image
-              className='header-avatar'
-              src={info.avatar}
-              mode='aspectFill'
+              className="header-avatar"
+              src={info.avatar || userIcon}
+              mode="aspectFill"
             />
-            <View className='header-info view-flex-item'>
+            <View className="header-info view-flex-item">
               {info.username}
-              {
-                info.is_open_promoter_grade &&
+              {info.is_open_promoter_grade && (
                 <Text>（{info.promoter_grade_name}）</Text>
-              }
+              )}
             </View>
-            <Navigator className='view-flex view-flex-middle' url='/marketing/pages/distribution/setting'>
-              <Text className='icon-info'></Text>
+            <Navigator
+              className="view-flex view-flex-middle"
+              url="/marketing/pages/distribution/setting"
+            >
+              <Text className="icon-info"></Text>
             </Navigator>
           </View>
-          {
-            info.isOpenShop && info.shop_status === 0
-              ? <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>申请开启我的小店</View>
-              : null
-          }
-          {
-            info.isOpenShop && info.shop_status === 4
-              ? <View>
-                <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>审核驳回，再次申请开启小店</View>
-                <View className='mini-store-reason'>驳回理由：{info.reason}</View>
+          {info.isOpenShop && info.shop_status === 0 ? (
+            <View
+              className="mini-store-apply"
+              onClick={this.handleOpenApply.bind(this)}
+            >
+              申请开启我的小店
+            </View>
+          ) : null}
+          {info.isOpenShop && info.shop_status === 4 ? (
+            <View>
+              <View
+                className="mini-store-apply"
+                onClick={this.handleOpenApply.bind(this)}
+              >
+                审核驳回，再次申请开启小店
               </View>
-              : null
-          }
-          {
-            info.isOpenShop && info.shop_status === 2 &&
-            <View className='mini-store-apply'>申请开店审核中</View>
-          }
+              <View className="mini-store-reason">驳回理由：{info.reason}</View>
+            </View>
+          ) : null}
+          {info.isOpenShop && info.shop_status === 2 && (
+            <View className="mini-store-apply">申请开店审核中</View>
+          )}
         </View>
-        {info.applyStatus!=3&&info.isHf?<View className='bandCardInfo'>
-          <View className='iconfont icon-info'></View>
-          <View className='info'>
-            <View className='title'>您还没实名认证</View>
-            <View className='content'>未实名认证账号将无法收到分销佣金，请尽快实名认证</View>
+        {info.applyStatus != 3 && info.isHf ? (
+          <View className="bandCardInfo">
+            <View className="iconfont icon-info"></View>
+            <View className="info">
+              <View className="title">您还没实名认证</View>
+              <View className="content">
+                未实名认证账号将无法收到分销佣金，请尽快实名认证
+              </View>
+            </View>
           </View>
-        </View>:null}
-        <View className='section achievement'>
-          <View className='section-body view-flex'>
-            <View className='view-flex-item content-center'>
-              <View className='amount'><Text className='count'>{info.itemTotalPrice/100}</Text>元</View>
+        ) : null}
+        <View className="section achievement">
+          <View className="section-body view-flex">
+            <View className="view-flex-item content-center">
+              <View className="amount">
+                <Text className="count">{info.itemTotalPrice / 100}</Text>元
+              </View>
               <View>营业额</View>
             </View>
-            <View className='view-flex-item content-center'>
-              <View className='amount'><Text className='count'>{info.cashWithdrawalRebate/100}</Text>元</View>
+            <View className="view-flex-item content-center">
+              <View className="amount">
+                <Text className="count">{info.cashWithdrawalRebate / 100}</Text>
+                元
+              </View>
               <View>可提现</View>
             </View>
           </View>
         </View>
-        <View className='section analysis'>
-          <View className='section-body view-flex content-center'>
-            <Navigator className='view-flex-item' hover-class='none' url='/marketing/pages/distribution/trade?type=order'>
-              <View className='icon-list3'></View>
-              <View className='label'>提成订单</View>
+        <View className="section analysis">
+          <View className="section-body view-flex content-center">
+            <Navigator
+              className="view-flex-item"
+              hover-class="none"
+              url="/marketing/pages/distribution/trade?type=order"
+            >
+              <View className="icon-list3"></View>
+              <View className="label">提成订单</View>
               <View>{info.promoter_order_count}</View>
             </Navigator>
-            <Navigator className='view-flex-item' hover-class='none' url='/marketing/pages/distribution/trade?type=order_team'>
-              <View className='icon-list2'></View>
-              <View className='label'>津贴订单</View>
+            <Navigator
+              className="view-flex-item"
+              hover-class="none"
+              url="/marketing/pages/distribution/trade?type=order_team"
+            >
+              <View className="icon-list2"></View>
+              <View className="label">津贴订单</View>
               <View>{info.promoter_grade_order_count}</View>
             </Navigator>
-            <Navigator className='view-flex-item' hover-class='none' url='/marketing/pages/distribution/statistics'>
-              <View className='icon-money'></View>
-              <View className='label'>推广费</View>
-              <View className='mark'>{info.rebateTotal/100}</View>
+            <Navigator
+              className="view-flex-item"
+              hover-class="none"
+              url="/marketing/pages/distribution/statistics"
+            >
+              <View className="icon-money"></View>
+              <View className="label">推广费</View>
+              <View className="mark">{info.rebateTotal / 100}</View>
             </Navigator>
           </View>
         </View>
-        <View className='section'>
+        <View className="section">
           <Navigator
-            className='section-title with-border view-flex view-flex-middle'
+            className="section-title with-border view-flex view-flex-middle"
             url={`/marketing/pages/distribution/subordinate?hasBuy=${info.isbuy_promoter}&noBuy=${info.notbuy_promoter}`}
           >
-            <View className='view-flex-item'>我的会员</View>
-            <View className='section-more icon-arrowRight'></View>
+            <View className="view-flex-item">我的会员</View>
+            <View className="section-more icon-arrowRight"></View>
           </Navigator>
-          <View className='content-padded-b view-flex content-center member'>
-            <View className='view-flex-item'>已购买会员 <Text className='mark'>{info.isbuy_promoter}</Text> 人</View>
-            <View className='view-flex-item'>未购买会员 <Text className='mark'>{info.notbuy_promoter}</Text> 人</View>
+          <View className="content-padded-b view-flex content-center member">
+            <View className="view-flex-item">
+              已购买会员 <Text className="mark">{info.isbuy_promoter}</Text> 人
+            </View>
+            <View className="view-flex-item">
+              未购买会员 <Text className="mark">{info.notbuy_promoter}</Text> 人
+            </View>
           </View>
         </View>
-        <View className='section list share'>
-          <View className='list-item' onClick={this.handleClick}>
-            <View className='item-icon icon-qrcode1'></View>
-            <View className='list-item-txt'>我的二维码</View>
-            <View className='icon-arrowRight item-icon-go'></View>
+        <View className="section list share">
+          <View className="list-item" onClick={this.handleClick}>
+            <View className="item-icon icon-qrcode1"></View>
+            <View className="list-item-txt">我的二维码</View>
+            <View className="icon-arrowRight item-icon-go"></View>
           </View>
-          <Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/distribution/goods?status=${info.isOpenShop && info.shop_status === 1}`}>
-            <View className='item-icon icon-weChart'></View>
-            <View className='list-item-txt'>推广商品</View>
-            <View className='icon-arrowRight item-icon-go'></View>
+          <Navigator
+            className="list-item"
+            open-type="navigateTo"
+            url={`/marketing/pages/distribution/goods?status=${info.isOpenShop &&
+              info.shop_status === 1}`}
+          >
+            <View className="item-icon icon-weChart"></View>
+            <View className="list-item-txt">推广商品</View>
+            <View className="icon-arrowRight item-icon-go"></View>
           </Navigator>
-          {
-            (info.isOpenShop && info.shop_status === 1) &&
-              <Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}`}>
-                <View className='item-icon icon-shop'></View>
-                <View className='list-item-txt'>我的小店</View>
-                <View className='icon-arrowRight item-icon-go'></View>
-              </Navigator>
-          }
-          {
-            Taro.getEnv() !== 'WEB' && info.shop_status !== 1 &&
-              <Button className='share-btn list-item' open-type='share'>
-                <View className='item-icon icon-share1'></View>
-                <View className='list-item-txt'>分享给好友</View>
-                <View className='icon-arrowRight item-icon-go'></View>
-              </Button>
-          }
-          {info.isHf&&<Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/verified-card/index`}>
-            <View className='item-icon icon-weChart'></View>
-            <View className='list-item-txt'>实名认证以及绑卡</View>
-            <View className='icon-arrowRight item-icon-go'></View>
-          </Navigator>}
+          {info.isOpenShop && info.shop_status === 1 && (
+            <Navigator
+              className="list-item"
+              open-type="navigateTo"
+              url={`/marketing/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}`}
+            >
+              <View className="item-icon icon-shop"></View>
+              <View className="list-item-txt">我的小店</View>
+              <View className="icon-arrowRight item-icon-go"></View>
+            </Navigator>
+          )}
+          {Taro.getEnv() !== "WEB" && info.shop_status !== 1 && (
+            <Button className="share-btn list-item" open-type="share">
+              <View className="item-icon icon-share1"></View>
+              <View className="list-item-txt">分享给好友</View>
+              <View className="icon-arrowRight item-icon-go"></View>
+            </Button>
+          )}
+          {info.isHf && (
+            <Navigator
+              className="list-item"
+              open-type="navigateTo"
+              url={`/marketing/pages/verified-card/index`}
+            >
+              <View className="item-icon icon-weChart"></View>
+              <View className="list-item-txt">实名认证以及绑卡</View>
+              <View className="icon-arrowRight item-icon-go"></View>
+            </Navigator>
+          )}
         </View>
       </View>
-    )
+    );
   }
 }

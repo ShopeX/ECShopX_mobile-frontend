@@ -1,13 +1,3 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 首页
- * @FilePath: /unite-vshop/src/pages/index.js
- * @Date: 2021-01-06 15:46:54
- * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-03-05 11:10:41
- */
 import Taro, { Component } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
@@ -25,7 +15,7 @@ import req from "@/api/req";
 import api from "@/api";
 import { pickBy, classNames, isArray } from "@/utils";
 import entry from "@/utils/entry";
-import { withPager, withBackToTop } from "@/hocs";
+import { withLogin, withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
 import { Tracker } from "@/service"
 import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
@@ -46,7 +36,8 @@ import './home/index.scss'
 }), (dispatch) => ({
   onUpdateLikeList: (show_likelist) => dispatch({ type: 'cart/updateLikeList', payload: show_likelist }),
   onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
-}))
+} ) )
+// @withLogin()
 @withPager
 @withBackToTop
 export default class Home extends Component {

@@ -1,13 +1,3 @@
-/*
- * @Author: PrendsMoi
- * @GitHub: https://github.com/PrendsMoi
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/marketing/pages/member/userinfo.js
- * @Date: 2021-04-28 14:13:43
- * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-25 13:14:42
- */
 import Taro, { Component } from '@tarojs/taro'
 import { Input, View, Picker, Image } from '@tarojs/components'
 import { NavBar, SpCheckbox } from '@/components'
@@ -15,6 +5,7 @@ import api from '@/api'
 import { connect } from "@tarojs/redux"
 import S from '@/spx'
 import { withLogin } from '@/hocs'
+import userIcon from "@/assets/imgs/user-icon.png";
 import imgUploader from '@/utils/upload'
 import GetUserInfoBtn from './comps/getUserInfo'
 
@@ -298,172 +289,194 @@ export default class UserInfo extends Component {
     console.log("--userInfo--",userInfo)
 
     return (
-      <View className='page-member-setting'>
-        <NavBar
-          title='用户信息'
-        />
-        <View className='baseInfo'>
-          <GetUserInfoBtn isGetUserInfo={isGetWxInfo} onGetUserInfo={this.getWxUserInfo.bind(this)}>
-            <View className='item'>
-              <View className='left'>我的头像</View>
-              <View className='right'>
-                <Image src={userInfo.avatar} mode='aspectFill' className='avatar' onClick={this.handleAvatar.bind(this)} />
+      <View className="page-member-setting">
+        <NavBar title="用户信息" />
+        <View className="baseInfo">
+          <GetUserInfoBtn
+            isGetUserInfo={isGetWxInfo}
+            onGetUserInfo={this.getWxUserInfo.bind(this)}
+          >
+            <View className="item">
+              <View className="left">我的头像</View>
+              <View className="right">
+                <Image
+                  src={userInfo.avatar || userIcon}
+                  mode="aspectFill"
+                  className="avatar"
+                  onClick={this.handleAvatar.bind(this)}
+                />
               </View>
             </View>
-            <View  className='item' onClick={this.editPhone.bind(this)}>
-              <View className='left'>我的手机号</View>
-              <View className='right'>
-                { userInfo.mobile}
+            <View className="item" onClick={this.editPhone.bind(this)}>
+              <View className="left">我的手机号</View>
+              <View className="right">{userInfo.mobile}</View>
+            </View>
+            <View className="item">
+              <View className="left">{baseInfo.username.name}</View>
+              <View className="right">
+                {isGetWxInfo ? (
+                  <Input
+                    className="input"
+                    placeholder={baseInfo.username.required_message}
+                    value={userInfo.username}
+                    onInput={this.handleInput.bind(this, "username")}
+                    disabled={
+                      !baseInfo.username.is_edit &&
+                      baseInfo.username.isInitValue
+                    }
+                  />
+                ) : (
+                  userInfo.username || "未知"
+                )}
               </View>
             </View>
-            <View className='item'>
-              <View className='left'>{ baseInfo.username.name }</View>
-              <View className='right'>
-                {
-                  isGetWxInfo
-                    ? <Input
-                      className='input'
-                      placeholder={baseInfo.username.required_message}
-                      value={userInfo.username}
-                      onInput={this.handleInput.bind(this, 'username')}
-                      disabled={!baseInfo.username.is_edit && baseInfo.username.isInitValue}
-                    />
-                    : userInfo.username || '未知'
-                }
-              </View>
-            </View>
-            {
-              baseInfo.sex.is_open && <View className='item'>
-                <View className='left'>{ baseInfo.sex.name }</View>
-                <View className='right'>
-                  {
-                    isGetWxInfo
-                      ? <Picker
-                        mode='selector'
-                        disabled={!baseInfo.sex.is_edit && baseInfo.sex.isInitValue}
-                        value={this.textToIndex(userInfo.sex, baseInfo.sex.select)}
-                        range={baseInfo.sex.select}
-                        onChange={this.pickerChange.bind(this, baseInfo.sex)}
-                      >
-                        <View className='picker'>
-                          { userInfo.sex || baseInfo.sex.required_message }
-                        </View>
-                      </Picker>
-                      : `${userInfo.sex || baseInfo.sex.required_message}`
-                  }
+            {baseInfo.sex.is_open && (
+              <View className="item">
+                <View className="left">{baseInfo.sex.name}</View>
+                <View className="right">
+                  {isGetWxInfo ? (
+                    <Picker
+                      mode="selector"
+                      disabled={
+                        !baseInfo.sex.is_edit && baseInfo.sex.isInitValue
+                      }
+                      value={this.textToIndex(
+                        userInfo.sex,
+                        baseInfo.sex.select
+                      )}
+                      range={baseInfo.sex.select}
+                      onChange={this.pickerChange.bind(this, baseInfo.sex)}
+                    >
+                      <View className="picker">
+                        {userInfo.sex || baseInfo.sex.required_message}
+                      </View>
+                    </Picker>
+                  ) : (
+                    `${userInfo.sex || baseInfo.sex.required_message}`
+                  )}
                 </View>
               </View>
-            }
+            )}
           </GetUserInfoBtn>
         </View>
-        <View className='basicInfo'>
-          <View className='title'>基础信息</View>
-          {
-            formItems.map(item => <View key={item.key} className='item'>
-              <View className='left'>{ item.name }</View>
-              <View className='right'>
-                { item.field_type === 1 && <Input
-                  className='input'
-                  value={userInfo[item.key]}
-                  placeholder={item.required_message}
-                  onInput={this.handleInput.bind(this, item.key)}
-                  disabled={!item.is_edit && item.isInitValue}
-                />
-                }
-                { item.field_type === 2 && <Input
-                  className='input'
-                  value={userInfo[item.key]}
-                  type='number'
-                  max={item.range.end}
-                  min={item.range.start}
-                  placeholder={item.required_message}
-                  onInput={this.handleInput.bind(this, item.key)}
-                  disabled={!item.is_edit && item.isInitValue}
-                />
-                }
-                { 
-                  item.field_type === 3 && <Picker
-                    mode='date'
+        <View className="basicInfo">
+          <View className="title">基础信息</View>
+          {formItems.map(item => (
+            <View key={item.key} className="item">
+              <View className="left">{item.name}</View>
+              <View className="right">
+                {item.field_type === 1 && (
+                  <Input
+                    className="input"
+                    value={userInfo[item.key]}
+                    placeholder={item.required_message}
+                    onInput={this.handleInput.bind(this, item.key)}
+                    disabled={!item.is_edit && item.isInitValue}
+                  />
+                )}
+                {item.field_type === 2 && (
+                  <Input
+                    className="input"
+                    value={userInfo[item.key]}
+                    type="number"
+                    max={item.range.end}
+                    min={item.range.start}
+                    placeholder={item.required_message}
+                    onInput={this.handleInput.bind(this, item.key)}
+                    disabled={!item.is_edit && item.isInitValue}
+                  />
+                )}
+                {item.field_type === 3 && (
+                  <Picker
+                    mode="date"
                     disabled={!item.is_edit && item.isInitValue}
                     value={userInfo[item.key]}
                     onChange={this.pickerChange.bind(this, item)}
                   >
-                    <View className='picker'>
-                      { userInfo[item.key] || item.required_message }
+                    <View className="picker">
+                      {userInfo[item.key] || item.required_message}
                     </View>
-                  </Picker> 
-                }
-                { 
-                  item.field_type === 4 && <Picker
-                    mode='selector'
+                  </Picker>
+                )}
+                {item.field_type === 4 && (
+                  <Picker
+                    mode="selector"
                     disabled={!item.is_edit && item.isInitValue}
                     value={this.textToIndex(userInfo[item.key], item.select)}
                     range={item.select}
                     onChange={this.pickerChange.bind(this, item)}
                   >
-                    <View className='picker'>
-                      { userInfo[item.key] || item.required_message }
+                    <View className="picker">
+                      {userInfo[item.key] || item.required_message}
                     </View>
                   </Picker>
-                }
-                {
-                  item.field_type === 5 && <View onClick={this.handleShowCheckboxPanel.bind(this, item)}>
-                    { userInfo[item.key].length > 0 ? this.showCheckBoxItem(userInfo[item.key]) : item.required_message }
+                )}
+                {item.field_type === 5 && (
+                  <View onClick={this.handleShowCheckboxPanel.bind(this, item)}>
+                    {userInfo[item.key].length > 0
+                      ? this.showCheckBoxItem(userInfo[item.key])
+                      : item.required_message}
                   </View>
-                }
+                )}
               </View>
-            </View>)
-          }
+            </View>
+          ))}
         </View>
-        <View className='btns'>
-          <View className='btn loginOut' onClick={this.loginOut.bind(this)}>退出登录</View>
+        <View className="btns">
+          <View className="btn loginOut" onClick={this.loginOut.bind(this)}>
+            退出登录
+          </View>
           <View
-            className='btn save'
+            className="btn save"
             style={`background: ${colors.data[0].primary}`}
             onClick={this.saveInfo.bind(this)}
           >
             保存
           </View>
         </View>
-        {
-          showCheckboxPanel
-            ? <View className='mask' onClick={this.btnClick.bind(this, 'cancel')}>
-                <View className='checkBoxPanel' onClick={e => e.stopPropagation()}>
-                  <View className='panel-btns'>
-                    <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>取消</View>
-                    <View
-                      className='panel-btn require-btn'
-                      style={`color: ${colors.data[0].primary}`}
-                      onClick={this.btnClick.bind(this, 'require')}
-                    >
-                        确定
-                    </View>
-                  </View>
-                  <View className='checkBoxPanel-content'>
-                    {
-                      option_list.map((item, index) => {
-                        return (
-                          <View
-                            className='checkBoxPanel-item'
-                            key={`checkBoxPanel${index}`}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <SpCheckbox
-                              checked={item.ischecked}
-                              onChange={this.handleSelectionChange.bind(this, item.name)}
-                            >
-                              <View>{item.name}</View>
-                            </SpCheckbox>
-                          </View>
-                        )
-                      })
-                    }
-                  </View>
+        {showCheckboxPanel ? (
+          <View className="mask" onClick={this.btnClick.bind(this, "cancel")}>
+            <View className="checkBoxPanel" onClick={e => e.stopPropagation()}>
+              <View className="panel-btns">
+                <View
+                  className="panel-btn cancel-btn"
+                  onClick={this.btnClick.bind(this, "cancel")}
+                >
+                  取消
                 </View>
+                <View
+                  className="panel-btn require-btn"
+                  style={`color: ${colors.data[0].primary}`}
+                  onClick={this.btnClick.bind(this, "require")}
+                >
+                  确定
+                </View>
+              </View>
+              <View className="checkBoxPanel-content">
+                {option_list.map((item, index) => {
+                  return (
+                    <View
+                      className="checkBoxPanel-item"
+                      key={`checkBoxPanel${index}`}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <SpCheckbox
+                        checked={item.ischecked}
+                        onChange={this.handleSelectionChange.bind(
+                          this,
+                          item.name
+                        )}
+                      >
+                        <View>{item.name}</View>
+                      </SpCheckbox>
+                    </View>
+                  );
+                })}
+              </View>
             </View>
-            : null
-        }
+          </View>
+        ) : null}
       </View>
-    )
+    );
   }
 }

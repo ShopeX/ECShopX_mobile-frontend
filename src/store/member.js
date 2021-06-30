@@ -4,7 +4,8 @@ import { createReducer } from 'redux-create-reducer'
 const initState = {
   favs: {},
   // 是否显示广告
-  showAdv: true
+  showAdv: true,
+  member: {}
 }
 
 const member = createReducer(initState, {
@@ -51,6 +52,12 @@ const member = createReducer(initState, {
     return {
       ...state,
       showAdv: false
+    }
+  },
+  ['member/init']( state, { payload } ) {
+    return {
+      ...state,
+      member: payload
     }
   }
 })

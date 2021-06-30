@@ -1,20 +1,25 @@
-@import "../../style/imports";
-
 .page-member-index {
+  margin-bottom: 140px;
   .icon-daipingjia:before {
     content: "\e607";
   }  
   .page-member-header {
-    padding: 40px 60px 80px 60px;
-    margin-bottom: 30px;
+    padding: 160px 0 80px;
+    margin-bottom: 20px;
     color: #fff;
+    background: var(--color-marketing);
     &.no-card {
       padding-bottom: 30px;
     }
+    .user-icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
   }
   .page-member-section {
-    width: 92vw;
-    margin: 0 auto 25px auto;
+    margin: 0 20px 20px;
     background: #fff;
     overflow: hidden;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
@@ -23,13 +28,14 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    padding-bottom: 50px;
+    padding: 0 40px;
+    margin-bottom: 30px;
     .avatar {
       position: relative;
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      margin-right: 30px;
+      margin-right: 10px;
       z-index: 1;
       .icon-planet {
         width: 100%;
@@ -70,8 +76,8 @@
       border-radius: 50px;
     }
     .icon-qrcode {
-      margin-right: 20px;
-      font-size: 35px;
+      font-size: 40px;
+      margin-top: 10px;
     }
     .icon-setting {
       margin-left: 10px;
@@ -117,7 +123,6 @@
     padding: 0 20px;
     height: 48px;
     line-height: 48px;
-    margin-left: 10px;
     border-radius: 48px;
     background: $color-brand-primary;
     color: #FFFFFF;
@@ -127,12 +132,12 @@
   .member-assets {
     text-align: center;
     .member-assets__label {
-      margin-bottom: 10px;
       font-size: 24px;
       opacity: 0.7;
     }
     .member-assets__value {
       font-size: 36px;
+      font-family: 'PingFang SC';
     }
   }
   
@@ -141,8 +146,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: -80px auto 20px auto;
-    width: 92vw;
+    margin: -80px 20px 20px;
     height: 24vw;
     z-index: 1;
     overflow: hidden;
@@ -323,7 +327,7 @@
     }
     .member-trade {
       display: flex;
-      padding: 60px 20px 30px 20px;
+      padding: 30px 20px 30px 20px;
       font-size: 26px;
       .icons-status__img {
         width: 44px;
