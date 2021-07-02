@@ -64,7 +64,6 @@ useHooks();
 // 获取基础配置
 getHomeSetting();
 
-S.trigger("store", store);
 class App extends Component {
   //Taro.getSystemInfoSync().environment == "wxwork"
 

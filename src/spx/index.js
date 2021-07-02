@@ -8,6 +8,8 @@ const TOKEN_IDENTIFIER = "auth_token";
 const TOKEN_TIMESTAMP = "refresh_token_time";
 const QW_SESSION_KEY_TIMESTAMP = "refresh_session_key_time"; //企业微信session_key过期时间
 const QW_SESSION = "qw_session"; //企微用户信息
+const { store } = configStore()
+
 function remove(arr, item) {
   const idx = arr.indexOf(item);
   if (idx >= 0) {
@@ -180,7 +182,6 @@ class Spx {
   // 获取会员信息
   async getMemberInfo() {
     const memberInfo = await api.member.memberInfo();
-    const { store } = this.hooks
     store.dispatch({
       type: "member/init",
       payload: memberInfo
