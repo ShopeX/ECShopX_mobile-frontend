@@ -558,6 +558,8 @@ export default class Home extends Component {
       show_official
     } = this.state;
 
+    console.log("likeList",likeList)
+
     const pages = Taro.getCurrentPages()
    
 

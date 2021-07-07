@@ -1,4 +1,5 @@
 import req from './req'
+import { getDistributorId } from '@/utils/helper'
 
 export function get (params) {
   return req.get('/cart/list', params)
@@ -69,7 +70,13 @@ export function coupons (params) {
 }
 
 export function likeList (params) {
-  return req.get('/promotions/recommendlike', params)
+   
+  const distributor_id=getDistributorId();
+
+  return req.get('/promotions/recommendlike', {
+    distributor_id,
+    ...params,
+  })
 }
 
 export function selectedPlusitem (params) {
