@@ -126,7 +126,7 @@ export default class WgtGoodsGridTab extends Component {
                   )}
                   data-id={item.goodsId}
                 >
-                  {item.distributor_id}
+                  {/* {item.distributor_id} */}
                   <View className="goods-wrap">
                     <View className="thumbnail">
                       <SpImg
