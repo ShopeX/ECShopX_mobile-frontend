@@ -86,7 +86,7 @@ export default class GoodsItem extends Component {
       marketPrice = info.market_price
     }
 
-    console.log("price",price)
+    // console.log("price",price)
   
 
     return (

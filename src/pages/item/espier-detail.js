@@ -214,11 +214,11 @@ export default class Detail extends Component {
     const infoId = info.distributor_id
     const { is_open_store_status} = this.state
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId
-    Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-      ...info,
-      from_type:from,
-      shareType: "分享给好友"
-    });
+    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
+    //   ...info,
+    //   from_type:from,
+    //   shareType: "分享给好友"
+    // });
     return {
       title: info.item_name,
       path: '/pages/item/espier-detail?id='+ info.item_id + '&dtid=' + id + (userId && '&uid=' + userId),

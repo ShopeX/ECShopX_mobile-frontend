@@ -120,7 +120,7 @@ class Tracker {
 
       events.forEach(e => {
         const evt = this.resolveEvent.apply(this, Array.isArray(e) ? e : [e]);
-        log.debug("[tracker] trackEvents", evt);
+        // log.debug("[tracker] trackEvents", evt);
         if (!this._tracker) return;
         this._tracker.trackEvent(evt);
       });

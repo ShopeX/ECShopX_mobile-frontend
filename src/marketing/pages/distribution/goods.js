@@ -237,11 +237,11 @@ export default class DistributionGoods extends Component {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
 
-    Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-      ...info,
-      from_type:from,
-      shareType: "分享给好友"
-    });
+    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
+    //   ...info,
+    //   from_type:from,
+    //   shareType: "分享给好友"
+    // });
     return {
       title: info.title,
       imageUrl: info.img,

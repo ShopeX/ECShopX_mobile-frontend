@@ -218,7 +218,7 @@ export default class List extends Component {
     observer
       .relativeToViewport({ bottom: 0 })
       .observe(".goods-list__item", res => {
-        console.log("res.intersectionRatio:", res.intersectionRatio);
+        // console.log("res.intersectionRatio:", res.intersectionRatio);
         if (res.intersectionRatio > 0) {
           const { id } = res.dataset;
           const { list } = this.state

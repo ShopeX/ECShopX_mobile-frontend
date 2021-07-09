@@ -128,11 +128,11 @@ export default class GroupDetail extends Component {
     const { detail } = this.state
     const { team_info, activity_info } = detail
 
-    Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-      ...activity_info,
-      from_type:from,
-      shareType: "分享给好友"
-    });
+    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
+    //   ...activity_info,
+    //   from_type:from,
+    //   shareType: "分享给好友"
+    // });
 
     return {
       title: `【拼团】${activity_info.share_desc}`,

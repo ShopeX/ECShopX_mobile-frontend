@@ -56,11 +56,11 @@ export default class recommendDetail extends Component {
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `&uid=${userId}` : ''
 
-    Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-      ...info,
-      from_type:from,
-      shareType: "分享给好友"
-    });
+    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
+    //   ...info,
+    //   from_type:from,
+    //   shareType: "分享给好友"
+    // });
     return {
       title: info.title,
       path: `/subpage/pages/recommend/detail?id=${info.article_id}${query}`,
