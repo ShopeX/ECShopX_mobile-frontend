@@ -54,9 +54,13 @@ export default class SeckillGoodsList extends Component {
   }
 
   onShareAppMessage () {
+    const seckill_id=this.$router.params.seckill_id;
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `?uid=${userId}` : ''    
+    let query = userId ? `?uid=${userId}` : '' 
+    query=seckill_id?query?`${query}&seckill_id=${seckill_id}`:`${query}?seckill_id=${seckill_id}`:'';
+
+    console.log("query",query)
     return {
       title: res.title,
       imageUrl: res.imageUrl,
