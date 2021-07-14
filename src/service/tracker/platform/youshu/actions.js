@@ -198,7 +198,8 @@ const actions = {
     });
   },
   // 分享
-  ["GOODS_SHARE_TO_CHANNEL_CLICK"](params) {
+  ["GOODS_SHARE_TO_CHANNEL_CLICK"](params) { 
+    debugger;
     const data = {
       from_type: params.from_type || "button",
       share_title: params.item_name || params.share_title,

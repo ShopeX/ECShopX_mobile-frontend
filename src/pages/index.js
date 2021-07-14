@@ -171,7 +171,7 @@ export default class Home extends Component {
   onShareAppMessage(params) {
     const shareInfo = this.shareInfo()
 
-    console.log("--onShareAppMessage--")
+    console.log("--onShareAppMessage--") 
     // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
     //   from_type: params.from_type,
     //   share_title: "分享给好友"
