@@ -1340,7 +1340,7 @@ export default class CartCheckout extends Component {
     }
 
     if (!payErr) { 
-      TracksPayed(total,config,"espier-checkout")
+      TracksPayed(total,{...config,timeStamp:config.order_created},"espier-checkout")
 
       await Taro.showToast({
         title: "支付成功",

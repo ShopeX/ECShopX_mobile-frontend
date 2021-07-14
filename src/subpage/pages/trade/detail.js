@@ -313,7 +313,7 @@ export default class TradeDetail extends Component {
 
     if (!payErr) {
 
-      TracksPayed(info,config)
+      TracksPayed(info,{...config,timeStamp:config.order_info.create_time})
 
       await Taro.showToast({
         title: '支付成功',
