@@ -38,7 +38,6 @@ export default class MemberIndex extends Component {
         grade_name: "",
         background_pic_url: ""
       },
-
       redirectInfo: {},
       orderCount: null,
       memberDiscount: null,
@@ -259,6 +258,10 @@ export default class MemberIndex extends Component {
       menuSetting: menuSetting.list[0].params.data,
       score_menu_open: pointItemSetting.entrance.mobile_openstatus
     });
+  }
+
+  onChangeLoginSuccess = () => {
+    this.fetch()
   }
 
   // 获取积分个人信息跳转
@@ -534,7 +537,7 @@ export default class MemberIndex extends Component {
         ) : (
           <View className="page-member-header view-flex view-flex-vertical view-flex-middle view-flex-center">
             <Image className="user-icon" src={userIcon} mode="widthFix" />
-            <SpLogin>
+              <SpLogin onChange={ this.onChangeLoginSuccess.bind(this) }>
               <View className="unlogin">请登录</View>
             </SpLogin>
           </View>

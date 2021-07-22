@@ -157,19 +157,19 @@ class Spx {
   }
 
   async OAuthWxUserProfile( fn ) {
-    console.log( store );
-    debugger
-    const wxUserInfo = this.get("wxUserInfo", true);
-    if (wxUserInfo) {
-      return wxUserInfo;
+    const { member } = store.getState().member
+    const { avatar, username } = member.memberInfo;
+    if ( avatar && username ) {
+      fn()
     } else {
       return new Promise((reslove, reject) => {
         wx.getUserProfile({
           desc: "用于完善会员资料",
           success: data => {
             const { userInfo } = data;
+            debugger
             this.set("wxUserInfo", userInfo, true);
-            reslove( userInfo );
+            reslove(userInfo);
             fn && fn();
           },
           fail: e => {
