@@ -551,13 +551,9 @@ export default class Home extends Component {
       is_open_scan_qrcode,
       is_open_store_status,
       show_official
-    } = this.state;
+    } = this.state; 
 
-    console.log("likeList",likeList)
-
-    const pages = Taro.getCurrentPages()
-   
-
+    const pages = Taro.getCurrentPages() 
     // 广告屏
     const { showAdv } = this.props;
     // 是否是标准版
