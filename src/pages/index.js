@@ -171,11 +171,8 @@ export default class Home extends Component {
   onShareAppMessage(params) {
     const shareInfo = this.shareInfo()
 
-    console.log("--onShareAppMessage--") 
-    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-    //   from_type: params.from_type,
-    //   share_title: "分享给好友"
-    // });
+    console.log("--onShareAppMessage--",shareInfo) 
+ 
     return {
       ...shareInfo
     };
@@ -184,10 +181,7 @@ export default class Home extends Component {
   // 分享朋友圈
   onShareTimeline(params) {
     const shareInfo = this.shareInfo('time')
-    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-    //   from_type: params.from_type,
-    //   share_title: "分享到朋友圈"
-    // });
+   
     return {
       ...shareInfo
     };
@@ -205,7 +199,8 @@ export default class Home extends Component {
     const params = {
       title: res.title,
       imageUrl: res.imageUrl,
-      [path]: query
+      [path]: query,
+      share_title:res.title
     };
     return params;
   };
