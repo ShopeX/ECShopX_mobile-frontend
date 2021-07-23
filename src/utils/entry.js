@@ -2,6 +2,7 @@ import Taro from "@tarojs/taro";
 import api from "@/api";
 import req from "@/api/req";
 import S from "@/spx";
+import { getOpenId } from '@/utils/youshu'
 
 // 请在onload 中调用此函数，保证千人千码跟踪记录正常
 // 用户分享和接受参数处理
@@ -10,11 +11,12 @@ async function entryLaunch(data, isNeedLocate) {
   if (data.scene) {
     const scene = decodeURIComponent(data.scene);
     //格式化二维码参数
-    options = parseUrlStr(scene);
+    options = parseUrlStr(scene);  
   } else {
     options = data;
   }
-  console.log('[entry-options]',options)
+  console.log('[entry-options]',options) 
+  
   // 如果没有带店铺id
   if (!options.dtid) {
     let { distributor_id, store_id } = Taro.getStorageSync("curStore");
@@ -130,8 +132,41 @@ async function entryLaunch(data, isNeedLocate) {
       true
     );
   }
+  /** 如果有场景值记录日志 */
+  await logScene(data);
 
   return options;
+}
+
+async function logScene(data){
+    if(data.scene){
+      //扫码进来时
+      let logParams={}
+      const scene = decodeURIComponent(data.scene);
+      //格式化二维码参数
+      logParams = parseUrlStr(scene); 
+      const resIds=await getOpenId();
+      logParams={
+        ...logParams,
+        ...resIds,
+        ...({storageUid:Taro.getStorageSync("distribution_shop_id")}),
+        type:'in'
+      }
+      console.log("【logParams】",logParams)
+      await api.promotion.logQrcode(logParams)
+    }
+    if(data.register){
+      //当用户注册时
+      let logParams={}
+      const resIds=await getOpenId();
+      logParams={
+        ...({type:'register'}),
+        ...resIds,
+        ...({storageUid:Taro.getStorageSync("distribution_shop_id")})
+      }
+      console.log("【logParams】",logParams)
+      await api.promotion.logQrcode(logParams)
+    }
 }
 
 //获取定位配置
@@ -335,5 +370,6 @@ export default {
   getLocalSetting,
   getWebLocal,
   InverseAnalysis,
-  getStoreStatus
+  getStoreStatus,
+  logScene
 };

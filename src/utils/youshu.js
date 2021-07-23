@@ -4,9 +4,7 @@ import { Tracker } from "@/service";
 
 async function youshuLogin() {
   try {
-    const { code } = await Taro.login();
-    let { openid, unionid } = await api.wx.getYoushuOpenid({ code });
-    console.log("youshuLogin", openid, unionid);
+    const {openid,unionid}= await getOpenId();
     if (openid) {
       // 通过token解析openid
       Tracker.setVar({
@@ -16,6 +14,25 @@ async function youshuLogin() {
     }
   } catch (e) {
     console.error(e);
+  }
+}
+
+/**获取openid以及 unionid*/
+export async function getOpenId(){
+  let openid;
+  let unionid;
+  let code;
+  try{
+    let logRes = await Taro.login();
+    code=logRes.code;
+    let res = await api.wx.getYoushuOpenid({ code });
+    openid=res.openid;
+    unionid=res.unionid;
+  }catch(e){}
+  return {
+    openid,
+    unionid,
+    code
   }
 }
 
