@@ -6,6 +6,7 @@ import { AtCountdown } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { pickBy } from '@/utils'
+import { getDistributorId } from "@/utils/helper";
 
 import './seckill-goods-list.scss'
 
@@ -97,15 +98,19 @@ export default class SeckillGoodsList extends Component {
     }
   }
   handleClickItem (item) {
+    const { distributor_id } = item;
+    const dtid = distributor_id ? distributor_id : getDistributorId();
 		Taro.navigateTo({
-			url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+			url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
 		})
 	}
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
+    const dtid = getDistributorId();
     const query = {
       seckill_id: this.$router.params.seckill_id,
       type: this.$router.params.seckill_type,
+      distributor_id: dtid,
       page,
       pageSize
     }

@@ -3,6 +3,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtTabslist, SpImg } from '@/components'
 import { connect } from '@tarojs/redux'
+import { getDistributorId } from "@/utils/helper";
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
 
@@ -62,10 +63,18 @@ export default class WgtGoodsGridTab extends Component {
       this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id || ""}`);
     }
   };
-  navigateTo(url) {
-    Taro.navigateTo({ url });
-  }
+  // navigateTo(url) {
+  //   Taro.navigateTo({ url });
+  // }
 
+  handleClickItem(item) {
+    const { distributor_id } = item;
+    const dtid = distributor_id ? distributor_id : getDistributorId();
+    Taro.navigateTo({
+      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`,
+    });
+  }
+  
   render() {
     const { info, colors } = this.props;
     if (!info) {
@@ -118,11 +127,7 @@ export default class WgtGoodsGridTab extends Component {
                   className={classNames("grid-item", {
                     "grid-item-three": config && config.style == "grids"
                   })}
-                  onClick={this.navigateTo.bind(
-                    this,
-                    `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`,
-                    item
-                  )}
+                  onClick={() => this.handleClickItem(item)}
                   data-id={item.goodsId}
                 >
                   {/* {item.distributor_id} */}

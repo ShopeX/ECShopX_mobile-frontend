@@ -4,6 +4,7 @@ import { AtCountdown } from "taro-ui";
 import { calcTimer } from "@/utils";
 import { SpImg } from "@/components";
 import { linkPage } from "./helper";
+import { getDistributorId } from "@/utils/helper";
 
 import "./goods-scroll.scss";
 
@@ -35,6 +36,14 @@ export default class WgtGoodsScroll extends Component {
 
   navigateTo(url) {
     Taro.navigateTo({ url });
+  }
+
+  handleClickItem(item) { 
+    const { distributor_id } = item;
+    const dtid = distributor_id ? distributor_id : getDistributorId();
+    Taro.navigateTo({
+      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`,
+    });
   }
 
   navigateToList = (type, seckillId) => {
@@ -127,10 +136,7 @@ export default class WgtGoodsScroll extends Component {
                 <View
                   key={`${idx}1`}
                   className="scroll-item"
-                  onClick={this.navigateTo.bind(
-                    this,
-                    `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`
-                  )}
+                  onClick={() => this.handleClickItem(item)}
                 >
                   {config.leaderboard && (
                     <View className="subscript">

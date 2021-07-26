@@ -5,6 +5,7 @@ import req from '@/api/req'
 import { withBackToTop } from '@/hocs'
 import S from "@/spx";
 import { buriedPoint } from '@/utils'
+import { getDistributorId } from "@/utils/helper";
 import HomeWgts from '../home/comps/home-wgts'
 import './custom-page.scss'
 
@@ -40,7 +41,8 @@ export default class HomeIndex extends Component {
 
   async fetchInfo () {
     const { id } = this.$router.params
-    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${id}`
+    const dtid = getDistributorId();
+    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${id}&distributor_id=${dtid}`
     const info = await req.get(url)
 
     if (!S.getAuthToken()) {

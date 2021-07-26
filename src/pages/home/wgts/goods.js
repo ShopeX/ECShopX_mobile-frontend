@@ -4,6 +4,7 @@ import { SpImg } from "@/components";
 import { connect } from "@tarojs/redux";
 import { Tracker } from "@/service";
 import entry from "@/utils/entry";
+import { getDistributorId } from "@/utils/helper";
 import api from "@/api";
 
 import "./goods.scss";
@@ -60,10 +61,10 @@ export default class WgtGoods extends Component {
       }
     }*/
     try {
+      const { distributor_id } = item;
+      const dtid = distributor_id ? distributor_id : getDistributorId();
       Taro.navigateTo({
-        url: `/pages/item/espier-detail?id=${
-          item.item_id
-        }&dtid=${item.distributor_id || 0}`
+        url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`,
       });
     } catch (error) {
       console.log(error);
@@ -224,9 +225,8 @@ export default class WgtGoods extends Component {
                 </View>
                 <View className="goods-content__operate">
                   <View
-                    className={`goods-content__operate_btn ${
-                      item.itemStatus ? "" : "disabled__operate"
-                    }`}
+                    className={`goods-content__operate_btn ${item.itemStatus ? "" : "disabled__operate"
+                      }`}
                     onClick={this.handleClickOperate.bind(
                       this,
                       item,
@@ -237,9 +237,8 @@ export default class WgtGoods extends Component {
                   </View>
                   <Text>|</Text>
                   <View
-                    className={`goods-content__operate_btn ${
-                      item.itemStatus ? "" : "disabled__operate"
-                    }`}
+                    className={`goods-content__operate_btn ${item.itemStatus ? "" : "disabled__operate"
+                      }`}
                     onClick={this.handleClickOperate.bind(this, item, "buy")}
                   >
                     加入购买
