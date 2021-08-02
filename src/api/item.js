@@ -68,3 +68,4 @@ export function getDetailShare (params) {
 export function getShareSetting (id) {
   return req.get(`/goods/share/items/${id}`)
 }
+

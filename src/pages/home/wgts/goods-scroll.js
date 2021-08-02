@@ -1,12 +1,14 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Text, Image, ScrollView } from "@tarojs/components";
 import { AtCountdown } from "taro-ui";
-import { calcTimer } from "@/utils";
+import { calcTimer,classNames } from "@/utils";
 import { SpImg } from "@/components";
 import { linkPage } from "./helper";
+import { withLoadMore } from '@/hocs'; 
 
 import "./goods-scroll.scss";
 
+@withLoadMore
 export default class WgtGoodsScroll extends Component {
   static options = {
     addGlobalClass: true,
@@ -72,9 +74,7 @@ export default class WgtGoodsScroll extends Component {
 
     const { base, data, config } = info;
     const { timer } = this.state;
-
-    console.log("goodsScrollInfo",info)
-
+ 
     return (
       <View className={`wgt ${base.padded ? "wgt__padded" : null}`}>
         {base.title && (
@@ -127,8 +127,10 @@ export default class WgtGoodsScroll extends Component {
               ).toFixed(2);
               return (
                 <View
-                  key={`${idx}1`}
-                  className="scroll-item"
+                  key={`${idx}1`} 
+                  className={classNames("scroll-item", { 
+                    "lastItem":idx===data.length-1
+                  })}
                   onClick={this.navigateTo.bind(
                     this,
                     `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`

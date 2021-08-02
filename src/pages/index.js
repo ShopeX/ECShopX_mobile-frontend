@@ -28,7 +28,7 @@ import entry from "@/utils/entry";
 import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
 import { Tracker } from "@/service"
-import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
+import wgts, { WgtGoodsFaverite, HeaderHome } from './home/wgts'
 import HomeWgts from './home/comps/home-wgts'
 import Automatic from './home/comps/automatic'
 
@@ -53,9 +53,11 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.autoCloseTipId = null;
+    this.currentLoadIndex=-1;
     this.state = {
       ...this.state,
       wgts: [],
+      wgtsList:[],
       likeList: [],
       isShowAddTip: false,
       curStore: {
@@ -81,7 +83,7 @@ export default class Home extends Component {
       isGoStore: false,
       show_tabBar: true,
       advertList: [],
-      currentShowAdvert: 0
+      currentShowAdvert: 0, 
     };
   }
 
@@ -131,7 +133,8 @@ export default class Home extends Component {
     this.setState(
       {
         likeList: [],
-        wgts: []
+        wgts: [],
+        wgtsList:[]
       },
       () => {
         let { curStore } = this.state;
@@ -236,7 +239,8 @@ export default class Home extends Component {
             isGoStore: false,
             curStore: curStoreLocal,
             likeList: [],
-            wgts: []
+            wgts: [],
+            wgtsList:[]
           },
           () => {
             this.getWgts();
@@ -356,6 +360,22 @@ export default class Home extends Component {
     }
   };
 
+  //获取店铺id
+  getDistributionId=()=>{
+    const { curStore, is_open_store_status, is_open_recommend } = this.state;
+    let curdis_id =
+      curStore && is_open_store_status
+        ? curStore.store_id
+        : curStore.distributor_id;
+    if (!curStore.distributor_id && curStore.distributor_id !== 0) {
+      return;
+    }
+    if (APP_PLATFORM === 'platform') {
+      curdis_id=0;
+    }
+    return {distributor_id:curdis_id}
+  }
+
   // 获取挂件配置
   getWgts = async () => {
     const { curStore, is_open_store_status, is_open_recommend } = this.state;
@@ -372,15 +392,18 @@ export default class Home extends Component {
     const url = `/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=${curdis_id}`;
     const info = await req.get(url);
     const wgts = isArray(info) ? [] : info.config;
+    const wgtsList=isArray(info)? [] : info.list;
     this.setState(
       {
-        wgts: wgts.length > 5 ? wgts.slice(0, 5) : wgts
+        wgts: wgts.length > 5 ? wgts.slice(0, 5) : wgts,
+        wgtsList
       },
       () => {
         // 0.5s后补足缺失挂件
         setTimeout(() => {
           this.setState({
-            wgts
+            wgts,
+            wgtsList
           });
         }, 500);
         Taro.stopPullDownRefresh();
@@ -534,6 +557,20 @@ export default class Home extends Component {
      })
   };
 
+  handleLoadMore=async (currentIndex,compType)=>{
+    const { id }=this.state.wgtsList.find((item,index)=>currentIndex===index)||{}
+    this.currentLoadIndex=currentIndex;
+    let params={template_name:'yykweishop',weapp_pages:'index',page:1,page_size:100,weapp_setting_id:id,...this.getDistributionId()};
+    if(compType==='good-grid'||compType==='good-scroll'){ 
+      const loadData=await api.wx.loadMoreGoods(params) 
+      this.state.wgts.splice(this.currentLoadIndex,1,loadData.config[0])
+      this.setState({
+        wgts:[...this.state.wgts]
+      })
+    }
+    
+  }
+
   render() {
     const {
       show_tabBar,
@@ -594,7 +631,7 @@ export default class Home extends Component {
         >
           {/* 挂件内容和猜你喜欢 */}
           <View className="wgts-wrap__cont">
-            <HomeWgts wgts={wgts} />
+            <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} />
             {likeList.length > 0 && is_open_recommend == 1 && (
               <View className="faverite-list">
                 <WgtGoodsFaverite info={likeList} />

@@ -4,15 +4,17 @@ import { SpImg } from "@/components";
 import { classNames } from "@/utils";
 import { linkPage } from "./helper";
 import { Tracker } from "@/service";
+import { withLoadMore } from '@/hocs';
 import "./goods-grid.scss";
 
+@withLoadMore
 export default class WgtGoodsGrid extends Component {
   static options = {
     addGlobalClass: true
   };
 
   componentDidMount() {
-    this.startTrack();
+    this.startTrack(); 
   }
 
   navigateTo(url, item) {
@@ -37,8 +39,7 @@ export default class WgtGoodsGrid extends Component {
     const observer = Taro.createIntersectionObserver(this.$scope, {
       observeAll: true
     });
-    observer.relativeToViewport({ bottom: 0 }).observe(".grid-item", res => {
-      console.log("res.intersectionRatio:", res.intersectionRatio);
+    observer.relativeToViewport({ bottom: 0 }).observe(".grid-item", res => { 
       if (res.intersectionRatio > 0) {
         const { id } = res.dataset;
         const { data } = this.state.info;
@@ -48,7 +49,7 @@ export default class WgtGoodsGrid extends Component {
     });
 
     this.observe = observer;
-  }
+  }  
 
   endTrack() {
     if (this.observer) {
@@ -110,7 +111,8 @@ export default class WgtGoodsGrid extends Component {
                 <View
                   key={`${idx}1`}
                   className={classNames("grid-item", {
-                    "grid-item-three": config.style == "grids"
+                    "grid-item-three": config.style == "grids",
+                    "lastItem":idx===data.length-1
                   })}
                   onClick={this.navigateTo.bind(
                     this,
