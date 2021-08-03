@@ -5,7 +5,7 @@ import S from "@/spx";
 import api from "@/api";
 import { withPager, withBackToTop } from "@/hocs";
 import { classNames, pickBy, getCurrentRoute } from "@/utils";
-import { Tracker } from "@/service";
+import { getDtidIdUrl } from '@/utils/helper'
 import "./shop-goods.scss";
 
 @withPager
@@ -207,7 +207,7 @@ export default class DistributionShopGoods extends Component {
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+      path: getDtidIdUrl(`/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,info.distributor_id)
     };
   }
  

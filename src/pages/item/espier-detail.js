@@ -14,6 +14,7 @@ import { Tracker } from "@/service"
 import { GoodsBuyToolbar, ItemImg, ImgSpec, StoreInfo, ActivityPanel, SharePanel, VipGuide, ParamsItem, GroupingItem } from './comps'
 import { linkPage } from '../home/wgts/helper'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
+import { getDtidIdUrl } from '@/utils/helper'
 
 import './espier-detail.scss'
 
@@ -202,9 +203,11 @@ export default class Detail extends Component {
     const { is_open_store_status} = this.state
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId
  
+    console.log("onShareAppMessage",getDtidIdUrl('/pages/item/espier-detail?id='+ info.item_id ,userId || id))
+
     return {
       title: info.item_name,
-      path: '/pages/item/espier-detail?id='+ info.item_id + (userId && '&uid=' + userId),
+      path: getDtidIdUrl('/pages/item/espier-detail?id='+ info.item_id ,userId || id),
       imageUrl: info.pics[0]
     }
   }
@@ -218,7 +221,7 @@ export default class Detail extends Component {
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId
     return {
       title: info.item_name,
-      query: `id=${info.item_id}&uid=${userId}`,
+      query: getDtidIdUrl(`id=${info.item_id}&uid=${userId}`,id),
       imageUrl: info.pics[0]
     }
   }
@@ -630,7 +633,7 @@ export default class Detail extends Component {
     const pic = pics[0].replace('http:', 'https:')
     const infoId = info.distributor_id
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : infoId
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&uid=${userId}`
+    const wxappCode = getDtidIdUrl(`${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&uid=${userId}`,id)
     let avatarImg;
     if (avatar) {
       avatarImg = await Taro.getImageInfo({src: avatar})
@@ -831,8 +834,7 @@ export default class Detail extends Component {
   }
 
   handleShowPoster = async () => {
-    const { posterImgs } = this.state
-    console.log(posterImgs);
+    const { posterImgs } = this.state 
     if (!posterImgs || !posterImgs.avatar || !posterImgs.code || !posterImgs.goods) {
       const imgs = await this.downloadPosterImg()
       console.log("---imgs---",imgs);

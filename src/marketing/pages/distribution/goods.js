@@ -4,10 +4,10 @@ import { AtTabBar } from "taro-ui";
 import { SpToast, Loading, FilterBar, SpNote, NavBar, SearchBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
-import { withPager, withBackToTop } from '@/hocs'
-import { Tracker } from "@/service";
+import { withPager, withBackToTop } from '@/hocs' 
 import { pickBy, getCurrentRoute } from '@/utils'
 import DistributionGoodsItem from './comps/goods-item'
+import { getDtidIdUrl } from '@/utils/helper'
 
 import './goods.scss'
 
@@ -239,7 +239,7 @@ export default class DistributionGoods extends Component {
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+      path: getDtidIdUrl(`/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,info.distributor_id)
     }
   }
 

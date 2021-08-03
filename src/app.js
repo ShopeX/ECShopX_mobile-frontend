@@ -32,7 +32,8 @@ const getHomeSetting = async () => {
     youshu = {},
     disk_driver = "qiniu",
     whitelist_status = false,
-    nostores_status = false
+    nostores_status = false,
+    distributor_param_status=false
   } = await api.shop.homeSetting();
   // 美洽客服配置
   Taro.setStorageSync("meiqia", meiqia);
@@ -46,6 +47,8 @@ const getHomeSetting = async () => {
     nostores_status,
     youshu
   })
+  // 分享时是否携带参数
+  Taro.setStorageSync("distributor_param_status", distributor_param_status);
   console.log("APP_TRACK",youshu)
   if (APP_TRACK) {
     // const system = Taro.getSystemInfoSync();   

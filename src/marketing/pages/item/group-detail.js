@@ -6,7 +6,8 @@ import { classNames, normalizeQuerys } from "@/utils";
 import entry from "@/utils/entry";
 import api from '@/api'
 import S from '@/spx'
-import { Tracker } from "@/service";
+import { getDtidIdUrl } from '@/utils/helper'
+
 import './group-detail.scss'
 
 export default class GroupDetail extends Component {
@@ -127,7 +128,7 @@ export default class GroupDetail extends Component {
     const { team_info, activity_info } = detail 
     return {
       title: `【拼团】${activity_info.share_desc}`,
-      path: `/marketing/pages/item/group-detail?team_id=${team_info.team_id}&uid=${userId}`,
+      path: getDtidIdUrl(`/marketing/pages/item/group-detail?team_id=${team_info.team_id}&uid=${userId}`,distributor_id),
       imageUrl: activity_info.pics[0]
     }
   }
@@ -139,7 +140,7 @@ export default class GroupDetail extends Component {
     const { team_info, activity_info } = detail
     return {
       title: `【拼团】${activity_info.share_desc}`,
-      query: `team_id=${team_info.team_id}&uid=${userId}`,
+      query: getDtidIdUrl(`team_id=${team_info.team_id}&uid=${userId}`,distributor_id),
       imageUrl: activity_info.pics[0]
     }
   }

@@ -3,8 +3,7 @@ import { View, Text, Image, Navigator, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { NavBar, Loading } from "@/components";
 import api from '@/api'
-import { pickBy } from '@/utils'
-import { Tracker } from "@/service";
+import { pickBy } from '@/utils' 
 import './index.scss'
 
 @connect(({ colors }) => ({

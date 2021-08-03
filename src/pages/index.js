@@ -88,7 +88,7 @@ export default class Home extends Component {
   componentDidMount() { 
     this.getHomeSetting();
     this.getShareSetting();
-    this.isShowTips();
+    this.isShowTips(); 
   }
 
   // 检测收藏变化
@@ -198,8 +198,8 @@ export default class Home extends Component {
     this.setState({
       shareInfo: res
     });
-  };
-
+  }; 
+  
   //获取积分配置
   getPointSetting=()=>{
     api.pointitem.getPointSetting().then((pointRes)=>{ 

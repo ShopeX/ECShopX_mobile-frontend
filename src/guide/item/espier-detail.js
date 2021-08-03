@@ -60,6 +60,7 @@ import {
   WgtHeading
 } from "../../pages/home/wgts";
 import { BaGoodsBuyPanel, BaNavBar } from "../components";
+import { getDtidIdUrl } from '@/utils/helper'
 import "./espier-detail.scss";
 
 @connect(
@@ -168,10 +169,10 @@ export default class Detail extends Component {
     const query = this.$router.params;
     const gu = `${work_userid}_${shop_code}`;
     // const gu_user_id = Taro.getStorageSync( "work_userid" )
-    const sharePath = `/pages/item/espier-detail?id=${
+    const sharePath =getDtidIdUrl(`/pages/item/espier-detail?id=${
       info.item_id
     }&smid=${salesperson_id}&subtask_id=${query.subtask_id ||
-      ""}&gu=${gu}`;
+      ""}&gu=${gu}`,distributor_id);
     log.debug(
       `【guide/item/espier-detail】onShareAppMessage path: ${sharePath}`
     );

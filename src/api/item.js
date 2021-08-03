@@ -68,3 +68,9 @@ export function getDetailShare (params) {
 export function getShareSetting (id) {
   return req.get(`/goods/share/items/${id}`)
 }
+
+
+//  获取是否分享携带店铺id配置
+export function getShareDtidSetting () {
+  return req.get(`/common/setting`)
+}

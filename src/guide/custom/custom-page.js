@@ -6,6 +6,7 @@ import req from '@/api/req'
 import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
 import { buriedPoint } from '@/utils'
+import { getDtidIdUrl } from '@/utils/helper'
 import {
   BaHomeWgts
 } from "../components";
@@ -84,9 +85,9 @@ export default class HomeIndex extends Component {
     // const gu_user_id = Taro.getStorageSync("work_userid");
     // const { userId } = Taro.getStorageSync("userinfo");
     const query = salesperson_id
-      ? `?smid=${salesperson_id}&id=${id}&gu=${gu}`
+      ? getDtidIdUrl(`?smid=${salesperson_id}&id=${id}&gu=${gu}`,distributor_id)
       : `?id=${id}&gu=${gu}`;
-    console.log(query);
+ 
     return {
       title: shareInfo.page_share_title,
       imageUrl: shareInfo.page_share_imageUrl,
