@@ -2,7 +2,7 @@ import Taro, { Component } from "@tarojs/taro";
 import { View, Text, Image, ScrollView } from "@tarojs/components";
 import { AtCountdown } from "taro-ui";
 import { calcTimer,classNames } from "@/utils";
-import { SpImg } from "@/components";
+import { SpImg,SpMoreImg } from "@/components";
 import { linkPage } from "./helper";
 import { withLoadMore } from '@/hocs'; 
 
@@ -72,7 +72,7 @@ export default class WgtGoodsScroll extends Component {
       return null;
     }
 
-    const { base, data, config } = info;
+    const { base, data, config,more } = info;
     const { timer } = this.state;
  
     return (
@@ -180,6 +180,9 @@ export default class WgtGoodsScroll extends Component {
                 </View>
               );
             })}
+            
+            <SpMoreImg dataLength={data.length} config={config}  base={base} more={more} />
+
           </ScrollView>
         </View>
       </View>
