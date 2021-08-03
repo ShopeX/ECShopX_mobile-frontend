@@ -201,9 +201,7 @@ export default class Detail extends Component {
     const { userId } = Taro.getStorageSync('userinfo')
     const infoId = info.distributor_id
     const { is_open_store_status} = this.state
-    const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId
- 
-    console.log("onShareAppMessage",getDtidIdUrl('/pages/item/espier-detail?id='+ info.item_id ,userId || id))
+    const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId 
 
     return {
       title: info.item_name,
