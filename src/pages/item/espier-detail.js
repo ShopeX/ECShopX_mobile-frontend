@@ -81,6 +81,9 @@ export default class Detail extends Component {
 
   async componentDidMount() {
     const options = await normalizeQuerys(this.$router.params)
+    // Taro.showLoading({
+    //   mask: true
+    // });
     console.log('options----->',options)
     console.log('[商品详情-发互动埋点上报1]')
     if (options.itemid && !options.id) {
@@ -203,6 +206,8 @@ export default class Detail extends Component {
     const { is_open_store_status} = this.state
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId 
 
+    console.log("getDtidIdUrl",getDtidIdUrl('/pages/item/espier-detail?id='+ info.item_id ,userId || id))
+ 
     return {
       title: info.item_name,
       path: getDtidIdUrl('/pages/item/espier-detail?id='+ info.item_id ,userId || id),
@@ -217,6 +222,8 @@ export default class Detail extends Component {
     const { is_open_store_status} = this.state
     const infoId = info.distributor_id
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId
+
+    console.log("getDtidIdUrl 分享给好友",getDtidIdUrl(`id=${info.item_id}&uid=${userId}`,id))
     return {
       title: info.item_name,
       query: getDtidIdUrl(`id=${info.item_id}&uid=${userId}`,id),
@@ -812,6 +819,7 @@ export default class Detail extends Component {
   }
 
   savePoster = (poster) => {
+    console.log("poster",poster)
     Taro.saveImageToPhotosAlbum({
       filePath: poster
     }).then(() => {

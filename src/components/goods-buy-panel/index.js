@@ -471,7 +471,8 @@ export default class GoodsBuyPanel extends Component {
       isPackage,
       packItem,
       mainpackItem,
-      isPointitem
+      isPointitem,
+      marketing
     } = this.props;
     const {
       curImg,
@@ -687,7 +688,7 @@ export default class GoodsBuyPanel extends Component {
                 <View className="goods-quantity__bd">
                   <InputNumber
                     min={1}
-                    max={maxStore}
+                    max={marketing==='group'?1:maxStore}
                     value={quantity}
                     onChange={this.handleQuantityChange.bind(this)}
                   />

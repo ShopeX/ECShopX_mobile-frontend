@@ -577,7 +577,7 @@ export default class Detail extends Component {
     //const infoId = info.distributor_id
     const gu_user_id = Taro.getStorageSync( "work_userid" );
     const gu = `${GUIDE_INFO.work_userid}_${GUIDE_INFO.shop_code}`; 
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&distributor_id=${GUIDE_INFO.distributor_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${subtask_id}&gu=${gu}`;
+    const wxappCode = getDtidIdUrl(`${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${subtask_id}&gu=${gu}`,GUIDE_INFO.distributor_id);
     console.log("wxappCode========>", wxappCode);
     try {
       const avatarImg = await Taro.getImageInfo({

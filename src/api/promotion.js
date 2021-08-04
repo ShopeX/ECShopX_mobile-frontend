@@ -13,3 +13,8 @@ export function getScreenAd (params = {}) {
   return req.get('/openscreenad', params)
 }
 
+//增加扫码日志
+export function logQrcode (params) {
+  return req.post('/promoter/qrcode/log', params)
+}
+

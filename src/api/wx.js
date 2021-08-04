@@ -115,3 +115,11 @@ export function interactiveReportData (params) {
 export function refreshToken() {
   return req.get("/token/refresh");
 }
+
+
+//加载更多商品
+export function loadMoreGoods (params) {
+  return req.get(`/pagestemplate/detail`,{
+    ...params
+  })
+}

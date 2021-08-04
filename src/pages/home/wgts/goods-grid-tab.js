@@ -6,8 +6,9 @@ import { connect } from '@tarojs/redux'
 import { getDistributorId } from "@/utils/helper";
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
-
+import { withLoadMore } from '@/hocs';
 import './goods-grid-tab.scss'
+
 
 @connect(({ colors }) => ({
   colors: colors.current
@@ -31,20 +32,50 @@ export default class WgtGoodsGridTab extends Component {
   }
 
   componentDidMount() {
-    const { info = {} } = this.props;
-    let { current } = this.state;
+    const { info = {} } = this.props; 
+    let { current } = this.state; 
     this.setState({
       goodsList: info.list[current] ? info.list[current].goodsList : [],
       moreLink: info.config.moreLink
+    },()=>{
+      this.startWrapperTrack();
     });
   }
 
-  componentWillReceiveProps( nextProps ) {
+  startWrapperTrack() {
+    this.endWrapperTrack();
+    const observer = Taro.createIntersectionObserver(this.$scope, {
+      observeAll: true
+    });
+    
+    const { type,info: { list,data,more }, onLoadMore = () => { }, index } = this.props;
+    const { goodsList,current}=this.state;
+    let direction = type === 'good-scroll' ? 'right' : 'bottom'; 
+    observer.relativeToViewport({ [direction]: 0 }).observe(".lastItem", res => { 
+      if (res.intersectionRatio > 0) {  
+        if (list[current].more) { 
+          onLoadMore(index, type,current,goodsList.length);
+        }
+      }
+    });
+    this.wrapperobserver = observer;
+  }
+
+  endWrapperTrack() {
+    if (this.wrapperobserver) {
+      this.wrapperobserver.disconnect();
+      this.wrapperobserver = null;
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
     const { info = {} } = nextProps;
     let { current } = this.state;
     this.setState({
       goodsList: info.list[current] ? info.list[current].goodsList : [],
       moreLink: info.config.moreLink
+    },()=>{
+      this.startWrapperTrack();
     });
   }
 
@@ -52,6 +83,8 @@ export default class WgtGoodsGridTab extends Component {
     const { info } = this.props;
     this.setState({
       goodsList: info.list[value].goodsList
+    },()=>{
+      this.startWrapperTrack();
     });
   }
 
@@ -81,7 +114,14 @@ export default class WgtGoodsGridTab extends Component {
       return null;
     }
     const { config, base } = info;
+<<<<<<< HEAD
     const { goodsList, moreLink } = this.state; 
+=======
+    const { goodsList, moreLink } = this.state;
+
+    console.log("goodList", goodsList)
+
+>>>>>>> develop
     return (
       <View className={`wgt wgt-grid ${base.padded ? "wgt__padded" : null}`}>
         {base.title && (
@@ -116,8 +156,8 @@ export default class WgtGoodsGridTab extends Component {
                 (item.act_price
                   ? item.act_price
                   : item.member_price
-                  ? item.member_price
-                  : item.price) / 100
+                    ? item.member_price
+                    : item.price) / 100
               ).toFixed(2);
               //const marketPrice = ((item.act_price ? item.price : item.member_price ? item.price : item.market_price)/100).toFixed(2)
               const marketPrice = ((item.market_price || 0) / 100).toFixed(2);
@@ -125,7 +165,8 @@ export default class WgtGoodsGridTab extends Component {
                 <View
                   key={`${idx}1`}
                   className={classNames("grid-item", {
-                    "grid-item-three": config && config.style == "grids"
+                    "grid-item-three": config && config.style == "grids",
+                    "lastItem": idx === goodsList.length - 1
                   })}
                   onClick={() => this.handleClickItem(item)}
                   data-id={item.goodsId}
@@ -182,17 +223,15 @@ export default class WgtGoodsGridTab extends Component {
                           </View>
                         )}
                       <View
-                        className={`goods-title ${
-                          !config.brand || !item.brand ? "no-brand" : ""
-                        }`}
+                        className={`goods-title ${!config.brand || !item.brand ? "no-brand" : ""
+                          }`}
                       >
                         {item.title}
                       </View>
                       {item.brief && (
                         <View
-                          className={`goods-brief ${
-                            !config.brand || !item.brand ? "no-brand" : ""
-                          }`}
+                          className={`goods-brief ${!config.brand || !item.brand ? "no-brand" : ""
+                            }`}
                         >
                           {item.brief}
                         </View>

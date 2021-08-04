@@ -42,6 +42,7 @@ export { default as ScreenAd } from './ScreenAd'
 export { default as HomeCapsule } from './home-capsule'
 export { default as PointLine } from './point-line'
 export { default as PointTag } from './point-tag'
+export { default as SpMoreImg } from './more-img'
 
 
 export default {}

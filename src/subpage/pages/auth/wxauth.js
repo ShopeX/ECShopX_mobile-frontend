@@ -4,6 +4,7 @@ import { connect } from '@tarojs/redux'
 import api from '@/api'
 import S from '@/spx'
 import { tokenParse } from "@/utils"
+import entry from "@/utils/entry";
 import { Tracker } from "@/service"
 
 import './wxauth.scss'
@@ -174,8 +175,13 @@ export default class WxAuth extends Component {
         params.inviter_id = uid
         params.uid = uid
       }
-
+      
       const { token, is_new } = await api.wx.newlogin(params);
+      
+      if(is_new){
+        await entry.logScene({register:true})
+      }
+  
       if ( token ) {
         
         S.setAuthToken(token)
@@ -221,6 +227,7 @@ export default class WxAuth extends Component {
         })
       }
     } catch (e) {
+      console.log(e,'e')
       Taro.showToast({
         title: '授权失败，请稍后再试',
         icon: 'none'
