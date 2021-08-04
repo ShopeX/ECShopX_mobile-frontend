@@ -17,7 +17,6 @@ export const getDistributorId=()=>{
   return id;
 }
 
-<<<<<<< HEAD
 export const getDtidIdUrl=(url,distributor_id)=>{
   if(url.indexOf('dtid=')>-1){
     return url;
@@ -28,7 +27,6 @@ export const getDtidIdUrl=(url,distributor_id)=>{
   }
   return url;
 }
-=======
 /*
  * @Author: Arvin
  * @GitHub: https://github.com/973749104
@@ -129,4 +127,3 @@ export function linkPage (type, data) {
 }
 
 export default {}
->>>>>>> develop

@@ -4,11 +4,8 @@ import { AtCountdown } from "taro-ui";
 import { calcTimer,classNames } from "@/utils";
 import { SpImg,SpMoreImg } from "@/components";
 import { linkPage } from "./helper";
-<<<<<<< HEAD
 import { getDistributorId } from "@/utils/helper";
-=======
 import { withLoadMore } from '@/hocs'; 
->>>>>>> develop
 
 import "./goods-scroll.scss";
 
@@ -84,15 +81,9 @@ export default class WgtGoodsScroll extends Component {
       return null;
     }
 
-<<<<<<< HEAD
     const { base, data, config } = info;
-    const { timer } = this.state; 
-
-=======
-    const { base, data, config,more } = info;
-    const { timer } = this.state;
+    const { timer } = this.state;  
  
->>>>>>> develop
     return (
       <View className={`wgt ${base.padded ? "wgt__padded" : null}`}>
         {base.title && (
@@ -145,12 +136,7 @@ export default class WgtGoodsScroll extends Component {
               ).toFixed(2);
               return (
                 <View
-<<<<<<< HEAD
-                  key={`${idx}1`}
-                  className="scroll-item"
-                  onClick={() => this.handleClickItem(item)}
-=======
-                  key={`${idx}1`} 
+                  key={`${idx}1`}  
                   className={classNames("scroll-item", { 
                     "lastItem":idx===data.length-1
                   })}
@@ -158,7 +144,6 @@ export default class WgtGoodsScroll extends Component {
                     this,
                     `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`
                   )}
->>>>>>> develop
                 >
                   {config.leaderboard && (
                     <View className="subscript">

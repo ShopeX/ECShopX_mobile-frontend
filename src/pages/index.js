@@ -163,15 +163,11 @@ export default class Home extends Component {
   };
 
   // 分享
-  onShareAppMessage(params) {
-<<<<<<< HEAD
-    const shareInfo = this.shareInfo() 
-=======
+  onShareAppMessage(params) { 
     const shareInfo = this.shareInfo()
 
     console.log("--onShareAppMessage--",shareInfo) 
  
->>>>>>> develop
     return {
       ...shareInfo
     };
@@ -179,12 +175,8 @@ export default class Home extends Component {
 
   // 分享朋友圈
   onShareTimeline(params) {
-<<<<<<< HEAD
-    const shareInfo = this.shareInfo('time') 
-=======
-    const shareInfo = this.shareInfo('time')
+    const shareInfo = this.shareInfo('time')  
    
->>>>>>> develop
     return {
       ...shareInfo
     };
@@ -599,15 +591,10 @@ export default class Home extends Component {
       is_open_scan_qrcode,
       is_open_store_status,
       show_official
-<<<<<<< HEAD
     } = this.state;
  
 
-    const pages = Taro.getCurrentPages()
-   
-=======
-    } = this.state; 
->>>>>>> develop
+    
 
     const pages = Taro.getCurrentPages() 
     // 广告屏

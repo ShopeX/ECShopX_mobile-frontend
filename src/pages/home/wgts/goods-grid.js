@@ -4,11 +4,8 @@ import { SpImg } from "@/components";
 import { classNames } from "@/utils";
 import { linkPage } from "./helper";
 import { Tracker } from "@/service";
-<<<<<<< HEAD
 import { getDistributorId } from "@/utils/helper";
-=======
 import { withLoadMore } from '@/hocs';
->>>>>>> develop
 import "./goods-grid.scss";
 
 @withLoadMore
