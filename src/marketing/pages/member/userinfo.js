@@ -320,7 +320,7 @@ export default class UserInfo extends Component {
             </View>
           </View>
 
-          {regParams.sex.is_open && (
+          {regParams.sex && regParams.sex.is_open && (
             <View className="item">
               <View className="left">{regParams.sex.name}</View>
               <View className="right">
