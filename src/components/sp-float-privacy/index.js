@@ -22,6 +22,7 @@ export default class SpFloatPrivacy extends Component {
 
   static defaultProps = {
     isOpened: false,
+    wxUserInfo: true,
     callback: () => {},
     onClose: () => {},
     onConfirm: () => {},
@@ -54,9 +55,13 @@ export default class SpFloatPrivacy extends Component {
 
   handleConfirm() {
     this.handleCancel();
-    S.OAuthWxUserProfile(() => {
+    if ( this.props.wxUserInfo ) {
+      S.OAuthWxUserProfile( () => {
+        this.props.onChange();
+      }, true );
+    } else {
       this.props.onChange();
-    });
+    }
   }
 
   render() {
