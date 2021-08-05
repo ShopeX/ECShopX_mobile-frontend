@@ -206,6 +206,8 @@ export default class Detail extends Component {
     const { is_open_store_status} = this.state
     const id = APP_PLATFORM === 'standard' ? is_open_store_status ? curStore.store_id: curStore.distributor_id : infoId 
 
+    console.log("我是好友分享",getDtidIdUrl('/pages/item/espier-detail?id='+ info.item_id ,id))
+
     return {
       title: info.item_name,
       path: getDtidIdUrl('/pages/item/espier-detail?id='+ info.item_id ,id),
@@ -648,7 +650,6 @@ export default class Detail extends Component {
     const goodsImg = await Taro.getImageInfo({src: pic}) 
 
     const codeImg = await Taro.getImageInfo({src: wxappCode}) 
-
 
     if (avatarImg?(avatarImg && goodsImg && codeImg):goodsImg&&codeImg) {
       const posterImgs = {
