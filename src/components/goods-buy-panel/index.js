@@ -549,10 +549,8 @@ export default class GoodsBuyPanel extends Component {
     if ( info.type == '1' ) {
       price = floor(price * ( 1 + taxRate ))
       marketPrice = info.price
-    }
-
-    console.log("-------gbp---",info)
-
+    } 
+    
     return (
       <View
         className={classNames(

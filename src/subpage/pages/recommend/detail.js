@@ -49,18 +49,11 @@ export default class recommendDetail extends Component {
     })
   }
 
-  onShareAppMessage(res) {
-    console.log("--onShareAppMessage---",res)
-    const { from }=res;
+  onShareAppMessage(res) {  
     const { info } = this.state
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `&uid=${userId}` : ''
-
-    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-    //   ...info,
-    //   from_type:from,
-    //   shareType: "分享给好友"
-    // });
+ 
     return {
       title: info.title,
       path: `/subpage/pages/recommend/detail?id=${info.article_id}${query}`,
@@ -79,40 +72,7 @@ export default class recommendDetail extends Component {
     }
   }
 
-  /*async fetch (params) {
-    const { page_no: page, page_size: pageSize } = params
-    const query = {
-      page,
-      pageSize: 50,
-      item_type: 'normal',
-      item_id: this.state.item_id_List
-    }
-
-    const { list, total_count: total } = await api.item.search(query)
-
-    list.map(item => {
-      if(item.approve_status === 'onsale') {
-        this.state.info.content.map(info_item => {
-          if(info_item.name === 'goods') {
-            info_item.data.map(id_item => {
-              if(item.item_id === id_item.item_id) {
-                id_item.isOnsale = true
-              }
-            })
-          }
-        })
-        this.setState({
-          info: this.state.info
-        })
-      }
-    })
-    Taro.hideLoading()
-
-    return {
-      total
-    }
-  }*/
-
+  
   // 确认本人文章是否已收藏
   confirmCollectArticle = async () => {
     const { id } = this.$router.params

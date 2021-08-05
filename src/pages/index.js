@@ -81,7 +81,7 @@ export default class Home extends Component {
   componentDidMount() { 
     this.getHomeSetting();
     this.getShareSetting();
-    this.isShowTips();
+    this.isShowTips(); 
   }
 
   // 检测收藏变化
@@ -147,22 +147,14 @@ export default class Home extends Component {
       }
     );
   };
-
-  // 页面滚动
-  // onPageScroll = (res) => {
-  //   const { scrollTop } = res
-  //   this.setState({
-  //     top: scrollTop
-  //   })
-  // }
-
+ 
   // 触底事件
   onReachBottom = () => {
     this.nextPage();
   };
 
   // 分享
-  onShareAppMessage(params) {
+  onShareAppMessage(params) { 
     const shareInfo = this.shareInfo()
 
     console.log("--onShareAppMessage--",shareInfo) 
@@ -174,7 +166,7 @@ export default class Home extends Component {
 
   // 分享朋友圈
   onShareTimeline(params) {
-    const shareInfo = this.shareInfo('time')
+    const shareInfo = this.shareInfo('time')  
    
     return {
       ...shareInfo
@@ -205,8 +197,8 @@ export default class Home extends Component {
     this.setState({
       shareInfo: res
     });
-  };
-
+  }; 
+  
   //获取积分配置
   getPointSetting=()=>{
     api.pointitem.getPointSetting().then((pointRes)=>{ 
@@ -548,10 +540,10 @@ export default class Home extends Component {
      })
   };
 
-  handleLoadMore=async (currentIndex,compType,currentTabIndex)=>{
+  handleLoadMore=async (currentIndex,compType,currentTabIndex,currentLength)=>{
     const { id }=this.state.wgtsList.find((_,index)=>currentIndex===index)||{}
     this.currentLoadIndex=currentIndex;
-    let params={template_name:'yykweishop',weapp_pages:'index',page:1,page_size:100,weapp_setting_id:id,...this.getDistributionId()};
+    let params={template_name:'yykweishop',weapp_pages:'index',page:1,page_size:currentLength+50,weapp_setting_id:id,...this.getDistributionId()};
     let loadData;
     if(compType==='good-grid'||compType==='good-scroll'){ 
       loadData=await api.wx.loadMoreGoods(params);
@@ -590,7 +582,10 @@ export default class Home extends Component {
       is_open_scan_qrcode,
       is_open_store_status,
       show_official
-    } = this.state; 
+    } = this.state;
+ 
+
+    
 
     const pages = Taro.getCurrentPages() 
     // 广告屏

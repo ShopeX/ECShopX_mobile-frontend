@@ -20,6 +20,7 @@ import { Tracker } from "@/service";
 import { withPager, withLogin } from '@/hocs'
 import entry from '@/utils/entry'
 import CartItem from './comps/cart-item'
+import { getDistributorId } from "@/utils/helper";
 
 import './espier-index.scss'
 
@@ -123,8 +124,10 @@ export default class CartIndex extends Component {
   //   S.login(this, true)
   // }
 
-  handleClickItem = item => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`;
+  handleClickItem = (item) => {
+    const { distributor_id } = item;
+    const dtid = distributor_id ? distributor_id : getDistributorId();
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
     Taro.navigateTo({
       url
     });

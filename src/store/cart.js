@@ -122,16 +122,14 @@ const cart = createReducer(initState, {
       drugInfo
     }
   },
-  ['cart/updateCount'](state,action){
-    console.log('cart/updateCount',action.payload)
+  ['cart/updateCount'](state,action){ 
     const cartCount = action.payload
     return {
       ...state,
       cartCount
     }
 	},
-	['cart/updateLikeList'](state,action){ //猜你喜欢
-    console.log('likeList/update',action.payload)
+	['cart/updateLikeList'](state,action){ //猜你喜欢 
     const showLikeList = action.payload
     return {
       ...state,

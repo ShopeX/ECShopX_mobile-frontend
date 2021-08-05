@@ -82,9 +82,9 @@ export default class HomeWgts extends PureComponent {
     }
   }
 
-  handleLoadMore=(idx,goodType,currentTabIndex)=>{ 
+  handleLoadMore=(idx,goodType,currentTabIndex,currentLength)=>{ 
     const { loadMore=()=>{} }=this.props;
-    loadMore(idx,goodType,currentTabIndex)
+    loadMore(idx,goodType,currentTabIndex,currentLength)
   }
 
   render() {

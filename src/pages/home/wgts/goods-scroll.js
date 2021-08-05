@@ -4,6 +4,7 @@ import { AtCountdown } from "taro-ui";
 import { calcTimer,classNames } from "@/utils";
 import { SpImg,SpMoreImg } from "@/components";
 import { linkPage } from "./helper";
+import { getDistributorId } from "@/utils/helper";
 import { withLoadMore } from '@/hocs'; 
 
 import "./goods-scroll.scss";
@@ -39,8 +40,15 @@ export default class WgtGoodsScroll extends Component {
     Taro.navigateTo({ url });
   }
 
-  navigateToList = (type, seckillId) => {
-    const { dis_id = "" } = this.props;
+  handleClickItem(item) { 
+    const { distributor_id } = item;
+    const dtid = distributor_id ? distributor_id : getDistributorId();
+    Taro.navigateTo({
+      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`,
+    });
+  }
+
+  navigateToList = (type, seckillId) => { 
     if (type === "goods") {
       this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id || ""}`);
     } else if (type === "limitTimeSale") {
@@ -73,7 +81,7 @@ export default class WgtGoodsScroll extends Component {
     }
 
     const { base, data, config,more } = info;
-    const { timer } = this.state;
+    const { timer } = this.state;  
  
     return (
       <View className={`wgt ${base.padded ? "wgt__padded" : null}`}>
@@ -127,7 +135,7 @@ export default class WgtGoodsScroll extends Component {
               ).toFixed(2);
               return (
                 <View
-                  key={`${idx}1`} 
+                  key={`${idx}1`}  
                   className={classNames("scroll-item", { 
                     "lastItem":idx===data.length-1
                   })}

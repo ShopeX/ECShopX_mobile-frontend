@@ -5,6 +5,7 @@ import { BackToTop, Loading, SpNote, GoodsItem, NavBar,SpCheckbox } from '@/comp
 // import { AtCountdown } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
+import { getDistributorId } from "@/utils/helper";
 import { pickBy } from '@/utils'
 
 import './plusprice.scss'
@@ -35,20 +36,12 @@ export default class DetailPluspriceList extends Component {
   componentDidMount () {
     this.nextPage()
   }
-
-  // onShareAppMessage () {
-  //   const res = this.state.shareInfo
-  //   const { userId } = Taro.getStorageSync('userinfo')
-  //   const query = userId ? `?uid=${userId}` : ''    
-  //   return {
-  //     title: res.title,
-  //     imageUrl: res.imageUrl,
-  //     path: `/pages/item/seckill-goods-list${query}`
-  //   }
-  // }
+ 
   handleClickItem (item) {
+    const { distributor_id } = item;
+    const dtid = distributor_id ? distributor_id : getDistributorId();
 		Taro.navigateTo({
-			url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+			url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
 		})
   }
   handleSelectGoods = (item,checked)=>{

@@ -60,6 +60,7 @@ import {
   WgtHeading
 } from "../../pages/home/wgts";
 import { BaGoodsBuyPanel, BaNavBar } from "../components";
+import { getDtidIdUrl } from '@/utils/helper'
 import "./espier-detail.scss";
 
 @connect(
@@ -168,10 +169,10 @@ export default class Detail extends Component {
     const query = this.$router.params;
     const gu = `${work_userid}_${shop_code}`;
     // const gu_user_id = Taro.getStorageSync( "work_userid" )
-    const sharePath = `/pages/item/espier-detail?id=${
+    const sharePath =getDtidIdUrl(`/pages/item/espier-detail?id=${
       info.item_id
-    }&smid=${salesperson_id}&dtid=${distributor_id}&subtask_id=${query.subtask_id ||
-      ""}&gu=${gu}`;
+    }&smid=${salesperson_id}&subtask_id=${query.subtask_id ||
+      ""}&gu=${gu}`,distributor_id);
     log.debug(
       `【guide/item/espier-detail】onShareAppMessage path: ${sharePath}`
     );
@@ -576,7 +577,7 @@ export default class Detail extends Component {
     //const infoId = info.distributor_id
     const gu_user_id = Taro.getStorageSync( "work_userid" );
     const gu = `${GUIDE_INFO.work_userid}_${GUIDE_INFO.shop_code}`; 
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&distributor_id=${GUIDE_INFO.distributor_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${subtask_id}&gu=${gu}`;
+    const wxappCode = getDtidIdUrl(`${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${subtask_id}&gu=${gu}`,GUIDE_INFO.distributor_id);
     console.log("wxappCode========>", wxappCode);
     try {
       const avatarImg = await Taro.getImageInfo({
