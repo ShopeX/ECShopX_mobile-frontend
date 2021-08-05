@@ -1,13 +1,3 @@
-/*
- * @Author: PrendsMoi
- * @GitHub: https://github.com/PrendsMoi
- * @Blog: https://liuhgxu.com
- * @Description: 获取用户信息按钮封装
- * @FilePath: /unite-vshop/src/marketing/pages/member/comps/getUserInfo.js
- * @Date: 2021-05-06 15:34:03
- * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-07 14:44:26
- */
 import Taro, { Component } from '@tarojs/taro'
 import { Button, View } from '@tarojs/components'
 

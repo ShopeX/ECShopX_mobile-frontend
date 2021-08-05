@@ -253,6 +253,9 @@
       border-radius: 8px;
     }
   }
+  &--primary {
+    background: var(--color-primary);
+  }
 }
 
 .at-action-sheet {

@@ -419,6 +419,25 @@ export function isGoodsShelves() {
   }
 }
 
+export function getThemeStyle() {
+  const systemTheme = S.get( "SYSTEM_THEME" );
+  if ( systemTheme ) {
+    const { colorPrimary, colorMarketing, colorAccent } = systemTheme;
+    return {
+      "--color-primary": colorPrimary,
+      "--color-marketing": colorMarketing,
+      "--color-accent": colorAccent
+    };
+  }
+}
+
+export function showToast(title) {
+  Taro.showToast({
+    title,
+    icon: "none"
+  });
+}
+
 export {
   classNames,
   styleNames,
