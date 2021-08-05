@@ -58,7 +58,7 @@ export default class UserInfo extends Component {
   // 上传头像
   handleAvatar = async () => {
     const { showTimes, userInfo } = this.state;
-    if ( showTimes >= 1 ) {
+    if (showTimes >= 1) {
       try {
         const { tempFiles = [] } = await Taro.chooseImage({
           count: 1
@@ -110,7 +110,7 @@ export default class UserInfo extends Component {
         }
       }
     }
-    this.setState( {
+    this.setState({
       regParams: data,
       formItems,
       userInfo
@@ -121,10 +121,10 @@ export default class UserInfo extends Component {
   editPhone = e => {
     e && e.stopPropagation();
     const { regParams } = this.state;
-    if ( regParams.mobile.is_edit ) {
-      Taro.navigateTo( {
+    if (regParams.mobile.is_edit) {
+      Taro.navigateTo({
         url: "/subpage/pages/auth/bindPhone"
-      } );
+      });
     }
   };
 
@@ -162,13 +162,15 @@ export default class UserInfo extends Component {
   handleShowCheckboxPanel = checkItem => {
     const { userInfo } = this.state;
     const { key, checkbox } = checkItem;
-    this.optionsType = key
+    this.optionsType = key;
     const data = checkbox.map(item => {
-      const optionValue = userInfo[key].find(i => i.name == item.name && i.ischecked);
+      const optionValue = userInfo[key].find(
+        i => i.name == item.name && i.ischecked
+      );
       return {
         name: item.name,
         ischecked: !!optionValue
-      }
+      };
     });
     this.setState({
       option_list: data,
@@ -225,27 +227,27 @@ export default class UserInfo extends Component {
   saveInfo = async e => {
     // e && e.stopPropagation();
     const { userInfo, regParams, isAgree } = this.state;
-    if ( isAgree ) {
+    if (isAgree) {
       try {
-        Object.keys( regParams ).forEach( key => {
-          if ( regParams[key].is_required ) {
-            if ( !userInfo[key] ) {
+        Object.keys(regParams).forEach(key => {
+          if (regParams[key].is_required) {
+            if (!userInfo[key]) {
               throw regParams[key].name;
             }
           }
-        } );
+        });
 
-        await api.member.setMemberInfo( {
+        await api.member.setMemberInfo({
           ...userInfo
-        } );
-        showToast( "修改成功" );
+        });
+        showToast("修改成功");
 
         await S.getMemberInfo();
         // this.props.setMemberInfo({
         //   ...memberInfo
         // });
-      } catch ( e ) {
-        showToast( `请完善${e}` );
+      } catch (e) {
+        showToast(`请完善${e}`);
       }
     } else {
       this.setState({
@@ -254,6 +256,15 @@ export default class UserInfo extends Component {
       });
     }
   };
+
+  privacyOnChange() {
+    if ( this.state.wxUserInfo ) {
+      this.getFormItem()
+    }
+    this.setState({
+      isAgree: true
+    });
+  }
 
   render() {
     const {
@@ -458,12 +469,7 @@ export default class UserInfo extends Component {
               showTimes: this.state.showTimes + 1
             })
           }
-          onChange={() => {
-            this.setState({
-              isAgree: true
-            } );
-            this.getFormItem();
-          }}
+          onChange={this.privacyOnChange.bind(this)}
         />
       </View>
     );
