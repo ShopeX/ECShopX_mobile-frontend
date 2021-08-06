@@ -1,20 +1,25 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
-import api from '@/api'
-import {  withPager } from "@/hocs";
-import { BaNavBar } from '../components'
-import { connect } from '@tarojs/redux'
+import Taro, { Component } from "@tarojs/taro";
+import { View, Text, Button } from "@tarojs/components";
+import api from "@/api";
+import { withPager } from "@/hocs";
+import { BaNavBar } from "../components";
+import { connect } from "@tarojs/redux";
 import { formatTime, log, buriedPoint } from "@/utils";
-import S from '@/spx'
+import S from "@/spx";
 import { Tracker } from "@/service";
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../components/wgts'
-import { getDtidIdUrl } from '@/utils/helper'
-import './detail.scss'
+import {
+  WgtFilm,
+  WgtSlider,
+  WgtWriting,
+  WgtGoods,
+  WgtHeading
+} from "../components/wgts";
+import { getDtidIdUrl } from "@/utils/helper";
+import "./detail.scss";
 
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 @withPager
 export default class recommendDetail extends Component {
   constructor(props) {
@@ -26,32 +31,17 @@ export default class recommendDetail extends Component {
       ...this.state,
       info: null,
       item_id_List: [],
-      screenWidth: 0,
-      jumpType: "home"
+      screenWidth: 0
     };
   }
 
   async componentDidMount() {
-    await S.autoLogin(this)
+    await S.autoLogin(this);
     Taro.getSystemInfo().then(res => {
       this.setState({
         screenWidth: res.screenWidth
       });
     });
-
-    const options = this.$router.params;
-    //判断小程序跳转
-    let jumpType = "home";
-    const { salesperson_id, sence } = options;
-    if (salesperson_id || sence) {
-      jumpType = "home";
-    } else {
-      jumpType = "";
-    }
-    this.setState({
-      jumpType
-    } );
-    
     // 埋点处理
     buriedPoint.call(this, {
       event_type: "activeSeedingDetail"
@@ -73,18 +63,21 @@ export default class recommendDetail extends Component {
 
   onShareAppMessage() {
     const { info } = this.state;
-    const { salesperson_id, work_userid, distributor_id,shop_code } = S.get(
+    const { salesperson_id, work_userid, distributor_id, shop_code } = S.get(
       "GUIDE_INFO",
       true
     );
-    const gu = `${work_userid}_${shop_code}`;  
+    const gu = `${work_userid}_${shop_code}`;
     // const gu_user_id = Taro.getStorageSync("work_userid");
     // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
     //   ...info,
     //   shareType: "分享给好友"
     // } );
-    const sharePath = getDtidIdUrl(`/subpage/pages/recommend/detail?id=${info.article_id}&smid=${salesperson_id}&gu=${gu}`,distributor_id);
-    log.debug(`【guide/recommend/detail】onShareAppMessage path: ${sharePath}` )
+    const sharePath = getDtidIdUrl(
+      `/subpage/pages/recommend/detail?id=${info.article_id}&smid=${salesperson_id}&gu=${gu}`,
+      distributor_id
+    );
+    log.debug(`【guide/recommend/detail】onShareAppMessage path: ${sharePath}`);
     return {
       title: info.title,
       path: sharePath,
@@ -119,7 +112,7 @@ export default class recommendDetail extends Component {
 
   render() {
     const { colors } = this.props;
-    const { info, screenWidth, jumpType } = this.state;
+    const { info, screenWidth } = this.state;
     const navbar_height = S.get("navbar_height", true);
 
     if (!info) {
@@ -131,7 +124,7 @@ export default class recommendDetail extends Component {
         className="guide-recommend-detail"
         style={`padding-top:${navbar_height}PX`}
       >
-        <BaNavBar title="种草详情" fixed jumpType={jumpType} />
+        <BaNavBar title="种草详情" fixed />
         <View className="recommend-detail__title">{info.title}</View>
         <View className="recommend-detail-info">
           <View className="recommend-detail-info__time">

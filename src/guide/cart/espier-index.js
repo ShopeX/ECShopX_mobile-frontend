@@ -8,7 +8,7 @@ import {
   AtNoticebar
 } from "taro-ui";
 import { SpCheckbox, SpNote, Loading, Price } from "@/components";
-import { log, navigateTo, pickBy, classNames,styleNames } from "@/utils";
+import { log, navigateTo, pickBy, classNames, styleNames } from "@/utils";
 import debounce from "lodash/debounce";
 import api from "@/api";
 import S from "@/spx";
@@ -65,7 +65,7 @@ export default class CartIndex extends Component {
   }
 
   async componentDidMount() {
-    await S.autoLogin(this)
+    await S.autoLogin(this);
     if (this.$router.params && this.$router.params.path === "qrcode") {
       this.setState({
         isPathQrcode: true
@@ -94,7 +94,7 @@ export default class CartIndex extends Component {
       nextProps.list !== this.props.list
     );
 
-    const groups = this.resolveActivityGroup(nextProps.list)
+    const groups = this.resolveActivityGroup(nextProps.list);
     this.setState({
       groups
     });
@@ -251,8 +251,8 @@ export default class CartIndex extends Component {
       let res = await api.guide.cartdatalist(params);
       console.log("获取导购购物车列表-fetchCart-cartdatalist", res);
       //设置购物车当前全选状态
-      let shopCart = res.valid_cart[0]
-      shopCart.checked_all = shopCart.cart_total_count == shopCart.list.length
+      let shopCart = res.valid_cart[0];
+      shopCart.checked_all = shopCart.cart_total_count == shopCart.list.length;
       //  res = await api.cart.get(params);
       if (!res.crossborder_show && cartTypeLocal !== "normal") {
         Taro.setStorageSync("cartType", "normal");
@@ -320,25 +320,26 @@ export default class CartIndex extends Component {
     });
   }
   //购物车商品选中变更
-  async handleSelectionChange(type='item',item) {
-    
+  async handleSelectionChange(type = "item", item) {
     let params = {
-      cart_id: item && item.cart_id || '',
-      is_checked:item && item.is_checked == "1" ? "false" : "true"
-    }
-    if(type=='all'){
+      cart_id: (item && item.cart_id) || "",
+      is_checked: item && item.is_checked == "1" ? "false" : "true"
+    };
+    if (type == "all") {
       const { groups } = this.state,
-      shopCart = groups[0].shopInfo
-      console.log("购物车商品选中变更-handleSelectionChange-shopCart",shopCart);
+        shopCart = groups[0].shopInfo;
+      console.log(
+        "购物车商品选中变更-handleSelectionChange-shopCart",
+        shopCart
+      );
       params = {
-        cart_id:shopCart.list.map(d=>d.cart_id),
-        is_checked : !shopCart.checked_all
-      }
+        cart_id: shopCart.list.map(d => d.cart_id),
+        is_checked: !shopCart.checked_all
+      };
     }
-    console.log("购物车商品选中变更-handleSelectionChange-params",params);
-    await api.guide.checkstatus(params)
+    console.log("购物车商品选中变更-handleSelectionChange-params", params);
+    await api.guide.checkstatus(params);
     this.updateCart();
-    
   }
   //删除商品
   handleDelect = async (cart_id, shopIndex, item) => {
@@ -377,7 +378,6 @@ export default class CartIndex extends Component {
 
     this.updateCart();
   };
-
 
   //购物车商品详情变更:数量、选中状态
   handleQuantityChange = async (shop_id, item, num, e) => {
@@ -480,12 +480,12 @@ export default class CartIndex extends Component {
   };
   //为顾客下单
   handleCheckoutToGuide = () => {
-    let shopCart = this.state.groups[0].shopInfo
-    let is_checkedType = false
-    shopCart.list.forEach((d)=>{
-      is_checkedType = d.is_checked == 1 ?true:is_checkedType
-    })
-    if(!is_checkedType){
+    let shopCart = this.state.groups[0].shopInfo;
+    let is_checkedType = false;
+    shopCart.list.forEach(d => {
+      is_checkedType = d.is_checked == 1 ? true : is_checkedType;
+    });
+    if (!is_checkedType) {
       Taro.showToast({
         title: "当前未选中商品",
         icon: "none"
@@ -592,7 +592,7 @@ export default class CartIndex extends Component {
       remindInfo
     } = this.state;
     const { list, showLikeList, colors } = this.props;
-    const n_ht = S.get('navbar_height', true)
+    const n_ht = S.get("navbar_height", true);
 
     if (loading) {
       return <Loading />;
@@ -602,9 +602,9 @@ export default class CartIndex extends Component {
     const isEmpty = !list.length;
     return (
       <View className={classNames("page-cart-index", isDrug && "is-drug")}>
-        <BaNavBar title='购物车' fixed jumpType='home' />
+        <BaNavBar title="购物车" fixed />
         <ScrollView
-          style={styleNames({'top': `${n_ht}px`})}
+          style={styleNames({ top: `${n_ht}px` })}
           className={`${isEmpty ? "hidden-scroll" : "cart-list__scroll"}`}
           onScrollToLower={this.nextPage}
           scrollY
@@ -624,38 +624,38 @@ export default class CartIndex extends Component {
               // className={`${!S.getAuthToken() && "paddingTop"}`}
               style={`background: ${colors.data[0].primary}`}
             >
-              <AtNoticebar marquee icon='volume-plus' className='notice' single>
+              <AtNoticebar marquee icon="volume-plus" className="notice" single>
                 {remindInfo.remind_content}
               </AtNoticebar>
             </View>
           )}
 
           {crossborder_show && (
-            <View className='changeCross'>
-              <View className='content'>
+            <View className="changeCross">
+              <View className="content">
                 <View
                   className={`iconfont ${
                     cartType === "cross" ? "icon-flight" : "icon-shop-cart-1"
                   }`}
                 ></View>
                 <View
-                  className='iconfont icon-repeat'
+                  className="iconfont icon-repeat"
                   onClick={this.onChangeCartType.bind(this)}
                 ></View>
               </View>
             </View>
           )}
-          <View className='cart-list'>
+          <View className="cart-list">
             {groups.map((shopCart, shopIndex) => {
               // console.log('shopCart---->',shopCart)
               const checked_all =
                 shopCart.shopInfo.cart_total_count ==
                 shopCart.shopInfo.list.length;
               return (
-                <View className='cart-list__shop' key={`${shopIndex}1`}>
+                <View className="cart-list__shop" key={`${shopIndex}1`}>
                   {shopCart.shopInfo.shop_name ? (
-                    <View className='shop__name'>
-                      <Text className='icon-shop'></Text>
+                    <View className="shop__name">
+                      <Text className="icon-shop"></Text>
                       {shopCart.shopInfo.shop_name}
                     </View>
                   ) : null}
@@ -664,37 +664,37 @@ export default class CartIndex extends Component {
                       const { discount_desc } = plus_item;
                       return (
                         <View
-                          className='cart-group__activity'
-                          style='background:#ffffff;'
+                          className="cart-group__activity"
+                          style="background:#ffffff;"
                         >
-                          <View className='cart-group__activity-item'>
+                          <View className="cart-group__activity-item">
                             <View
-                              className='cart-group__activity-item-left'
+                              className="cart-group__activity-item-left"
                               onClick={this.handleLookPlusprice.bind(
                                 this,
                                 plus_item.activity_id
                               )}
                             >
-                              <Text className='cart-group__activity-label'>
+                              <Text className="cart-group__activity-label">
                                 换购
                               </Text>
                               <Text>{discount_desc.info}</Text>
                             </View>
                             <View
-                              className='cart-group__activity-item-right'
+                              className="cart-group__activity-item-right"
                               onClick={this.handleSelectPlusprice.bind(
                                 this,
                                 plus_item.activity_id
                               )}
                             >
                               去选择
-                              <Text className='at-icon at-icon-chevron-right'></Text>
+                              <Text className="at-icon at-icon-chevron-right"></Text>
                             </View>
                           </View>
                         </View>
                       );
                     })}
-                  <View className='shop__wrap'>
+                  <View className="shop__wrap">
                     {shopCart.group.map(activityGroup => {
                       // console.log('activityGroup---->',activityGroup)
                       const { activity } = activityGroup;
@@ -702,13 +702,13 @@ export default class CartIndex extends Component {
                       return (
                         activityGroup.list.length > 0 && (
                           <View
-                            className='cart-group'
+                            className="cart-group"
                             key={shopCart.shopInfo.shop_id}
                           >
                             {activity && (
-                              <View className='cart-group__activity'>
-                                <View className='cart-group__activity-item'>
-                                  <Text className='cart-group__activity-label'>
+                              <View className="cart-group__activity">
+                                <View className="cart-group__activity-item">
+                                  <Text className="cart-group__activity-label">
                                     {activity.activity_tag}
                                   </Text>
                                   <Text>{activity.activity_name}</Text>
@@ -719,7 +719,7 @@ export default class CartIndex extends Component {
                               // console.log('item',item)
                               return (
                                 <View
-                                  className='cart-group__item-wrap'
+                                  className="cart-group__item-wrap"
                                   key={item.cart_id}
                                 >
                                   <CartItem
@@ -739,16 +739,19 @@ export default class CartIndex extends Component {
                                     //   item
                                     // )}
                                   >
-                                    <View className='cart-item__act'>
+                                    <View className="cart-item__act">
                                       <SpCheckbox
                                         key={item.item_id}
                                         checked={item.is_checked == "1"}
                                         onChange={() =>
-                                          this.handleSelectionChange('item',item)
+                                          this.handleSelectionChange(
+                                            "item",
+                                            item
+                                          )
                                         }
                                       />
                                       <View
-                                        className='icon-close'
+                                        className="icon-close"
                                         onClick={this.handleDelect.bind(
                                           this,
                                           item.cart_id,
@@ -759,7 +762,7 @@ export default class CartIndex extends Component {
                                     </View>
                                   </CartItem>
                                   {item.packages && item.packages.length && (
-                                    <View class='cart-item__packages'>
+                                    <View class="cart-item__packages">
                                       {item.packages.map(pack => {
                                         return (
                                           <CartItem
@@ -776,26 +779,26 @@ export default class CartIndex extends Component {
                               );
                             })}
                             {activity && activity.gifts && (
-                              <View className='cart-group__gifts'>
-                                <View className='cart-group__gifts-hd'>
+                              <View className="cart-group__gifts">
+                                <View className="cart-group__gifts-hd">
                                   赠品
                                 </View>
-                                <View className='cart-group__gifts-bd'>
+                                <View className="cart-group__gifts-bd">
                                   {activity.gifts.map(gift => {
                                     return (
                                       <View
-                                        className='gift-item'
+                                        className="gift-item"
                                         key={gift.item_id}
                                       >
                                         <Image
-                                          className='gift-item__img'
+                                          className="gift-item__img"
                                           src={gift.pics[0]}
-                                          mode='aspectFill'
+                                          mode="aspectFill"
                                         />
-                                        <View className='gift-item__title'>
+                                        <View className="gift-item__title">
                                           {gift.item_name}
                                         </View>
-                                        <Text className='gift-item__num'>
+                                        <Text className="gift-item__num">
                                           x{gift.gift_num}
                                         </Text>
                                       </View>
@@ -824,42 +827,44 @@ export default class CartIndex extends Component {
                     <View
                       className={`toolbar cart-toolbar ${isEmpty && "hidden"}`}
                     >
-                      <View className='cart-toolbar__hd'>
+                      <View className="cart-toolbar__hd">
                         <SpCheckbox
                           // checked={this.isTotalChecked[shopIndex]}
                           checked={checked_all}
-                          onChange={()=>{this.handleSelectionChange('all')}}
+                          onChange={() => {
+                            this.handleSelectionChange("all");
+                          }}
                         >
                           全选
                         </SpCheckbox>
                       </View>
                       {cartMode !== "edit" ? (
-                        <View className='cart-toolbar__bd'>
-                          <View className='cart-total'>
+                        <View className="cart-toolbar__bd">
+                          <View className="cart-total">
                             {list.length && shopCart.shopInfo.discount_fee > 0 && (
-                              <View className='cart-total__discount'>
-                                <Text className='cart-total__hint'>优惠：</Text>
+                              <View className="cart-total__discount">
+                                <Text className="cart-total__hint">优惠：</Text>
                                 <Price
                                   primary
                                   value={
                                     -1 * Number(shopCart.shopInfo.discount_fee)
                                   }
-                                  unit='cent'
+                                  unit="cent"
                                 />
                               </View>
                             )}
-                            <View className='cart-total__total'>
-                              <Text className='cart-total__hint'>总计：</Text>
+                            <View className="cart-total__total">
+                              <Text className="cart-total__hint">总计：</Text>
                               <Price
                                 primary
                                 value={Number(shopCart.shopInfo.total_fee)}
-                                unit='cent'
+                                unit="cent"
                               />
                             </View>
                           </View>
                           <AtButton
-                            type='primary'
-                            className='btn-checkout'
+                            type="primary"
+                            className="btn-checkout"
                             // disabled={totalItems <= 0}
                             onClick={this.handleCheckoutToGuide}
                           >
@@ -867,10 +872,10 @@ export default class CartIndex extends Component {
                           </AtButton>
                         </View>
                       ) : (
-                        <View className='cart-toolbar__bd'>
+                        <View className="cart-toolbar__bd">
                           <AtButton
-                            type='primary'
-                            className='btn-checkout'
+                            type="primary"
+                            className="btn-checkout"
                             onClick={this.handleDelect}
                           >
                             删除
@@ -885,13 +890,13 @@ export default class CartIndex extends Component {
 
             {(!groups.length || this.state.error) && (
               <View>
-                <View style='margin-bottom: 20px'>
-                  <SpNote img='cart_empty.png'>快去给我挑点宝贝吧~</SpNote>
+                <View style="margin-bottom: 20px">
+                  <SpNote img="cart_empty.png">快去给我挑点宝贝吧~</SpNote>
                 </View>
                 <AtButton
-                  className='btn-rand'
-                  type='primary'
-                  onClick={this.navigateTo.bind(this, '/guide/index', true)}
+                  className="btn-rand"
+                  type="primary"
+                  onClick={this.navigateTo.bind(this, "/guide/index", true)}
                 >
                   随便逛逛
                 </AtButton>
@@ -900,18 +905,18 @@ export default class CartIndex extends Component {
           </View>
 
           {invalidList.length > 0 && (
-            <View className='cart-list cart-list__disabled'>
-              <View className='cart-list__hd'>
+            <View className="cart-list cart-list__disabled">
+              <View className="cart-list__hd">
                 <Text>已失效</Text>
               </View>
-              <View className='cart-list__bd'>
+              <View className="cart-list__bd">
                 {invalidList.map(item => {
                   return (
                     <CartItem isDisabled key={item.cart_id} info={item}>
-                      <View className='cart-item__act'>
+                      <View className="cart-item__act">
                         <View></View>
                         <View
-                          className='icon-close'
+                          className="icon-close"
                           onClick={this.handleDelect.bind(this, item.cart_id)}
                         />
                       </View>
@@ -925,18 +930,18 @@ export default class CartIndex extends Component {
         </ScrollView>
 
         {isPathQrcode && (
-          <View className='qrcode-bg' onClick={this.handleToQrcode.bind(this)}>
+          <View className="qrcode-bg" onClick={this.handleToQrcode.bind(this)}>
             <Image
-              mode='widthFix'
-              src='/assets/imgs/ic_scanning.png'
-              className='qrcode-bg__img'
+              mode="widthFix"
+              src="/assets/imgs/ic_scanning.png"
+              className="qrcode-bg__img"
             ></Image>
             <Text>继续添加</Text>
           </View>
         )}
 
         <AtActionSheet
-          title='请选择商品优惠'
+          title="请选择商品优惠"
           isOpened={Boolean(curPromotions)}
           onClose={this.handleClosePromotions}
         >
@@ -947,7 +952,7 @@ export default class CartIndex extends Component {
                   key={item.marketing_id}
                   onClick={this.handleSelectPromotion.bind(this, item)}
                 >
-                  <Text className='cart-promotion__label'>
+                  <Text className="cart-promotion__label">
                     {item.promotion_tag}
                   </Text>
                   <Text>{item.marketing_name}</Text>

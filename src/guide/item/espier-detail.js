@@ -60,7 +60,7 @@ import {
   WgtHeading
 } from "../../pages/home/wgts";
 import { BaGoodsBuyPanel, BaNavBar } from "../components";
-import { getDtidIdUrl } from '@/utils/helper'
+import { getDtidIdUrl } from "@/utils/helper";
 import "./espier-detail.scss";
 
 @connect(
@@ -127,7 +127,6 @@ export default class Detail extends Component {
       // 是否订阅
       isSubscribeGoods: false,
       is_open_store_status: null,
-      jumpType: "",
       shareMenu: false,
       entry_form: null,
       pageShareUrl: "",
@@ -137,13 +136,13 @@ export default class Detail extends Component {
 
   async componentWillMount() {
     const options = this.$router.params;
-    const res = await entry.entryLaunch(options, true);
+    const res = await entry.entryLaunch(options, false); //false 不可开启定位，直接读取导购带过来的店铺
     this.setState({ subtask_id: res.subtask_id });
     console.log("[商详截取：entry.entryLaunch-guide/item/espier-detail]", res);
   }
 
   async componentDidMount() {
-    await S.autoLogin(this)
+    await S.autoLogin(this);
     const { id, subtask_id } = this.$router.params;
     this.fetchInfo(id);
     console.log("subtask_id,subtask_id", subtask_id);
@@ -169,10 +168,12 @@ export default class Detail extends Component {
     const query = this.$router.params;
     const gu = `${work_userid}_${shop_code}`;
     // const gu_user_id = Taro.getStorageSync( "work_userid" )
-    const sharePath =getDtidIdUrl(`/pages/item/espier-detail?id=${
-      info.item_id
-    }&smid=${salesperson_id}&subtask_id=${query.subtask_id ||
-      ""}&gu=${gu}`,distributor_id);
+    const sharePath = getDtidIdUrl(
+      `/pages/item/espier-detail?id=${
+        info.item_id
+      }&smid=${salesperson_id}&subtask_id=${query.subtask_id || ""}&gu=${gu}`,
+      distributor_id
+    );
     log.debug(
       `【guide/item/espier-detail】onShareAppMessage path: ${sharePath}`
     );
@@ -575,9 +576,12 @@ export default class Detail extends Component {
         ? wx.getExtConfigSync()
         : {};
     //const infoId = info.distributor_id
-    const gu_user_id = Taro.getStorageSync( "work_userid" );
-    const gu = `${GUIDE_INFO.work_userid}_${GUIDE_INFO.shop_code}`; 
-    const wxappCode = getDtidIdUrl(`${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${subtask_id}&gu=${gu}`,GUIDE_INFO.distributor_id);
+    const gu_user_id = Taro.getStorageSync("work_userid");
+    const gu = `${GUIDE_INFO.work_userid}_${GUIDE_INFO.shop_code}`;
+    const wxappCode = getDtidIdUrl(
+      `${host}/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=${extConfig.appid}&company_id=${GUIDE_INFO.company_id}&itemid=${item_id}&smid=${GUIDE_INFO.salesperson_id}&subtask_id=${subtask_id}&gu=${gu}`,
+      GUIDE_INFO.distributor_id
+    );
     console.log("wxappCode========>", wxappCode);
     try {
       const avatarImg = await Taro.getImageInfo({
@@ -697,17 +701,7 @@ export default class Detail extends Component {
     });
   };
 
-  handleShare = async () => {
-    // if (!S.getAuthToken()) {
-    //   S.toast('请先登录再分享')
-
-    //   setTimeout(() => {
-    //     S.login(this)
-    //   }, 2000)
-
-    //   return
-    // }
-
+  handleShare = () => {
     this.setState({
       showSharePanel: true
     });
@@ -905,7 +899,6 @@ export default class Detail extends Component {
       evaluationTotal,
       evaluationList,
       isSubscribeGoods,
-      jumpType,
       pageShareUrl
     } = this.state;
 
@@ -953,13 +946,12 @@ export default class Detail extends Component {
       new_coupon_list = coupon_list.list.slice(0, 3);
     }
     const navbar_height = S.get("navbar_height", true);
-
     return (
       <View
         className="page-goods-detail"
         style={`padding-top:${navbar_height}PX`}
       >
-        <BaNavBar title="导购商城" fixed jumpType={jumpType} />
+        <BaNavBar title="导购商城" fixed />
         <View
           onClick={this.toCart}
           className="iconfont icon-cart toCart"

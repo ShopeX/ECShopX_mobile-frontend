@@ -1,12 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView } from '@tarojs/components'
-import {  withPager, withBackToTop } from "@/hocs";
-import { SearchBar, RecommendItem, SpNote } from '@/components'
-import { BaTabBar, BaNavBar } from '../components'
-import api from '@/api'
-import S from '@/spx'
-import { pickBy, styleNames } from '@/utils'
-import './list.scss'
+import Taro, { Component } from "@tarojs/taro";
+import { View, ScrollView } from "@tarojs/components";
+import { withPager, withBackToTop } from "@/hocs";
+import { SearchBar, RecommendItem, SpNote } from "@/components";
+import { BaTabBar, BaNavBar } from "../components";
+import api from "@/api";
+import S from "@/spx";
+import { pickBy, styleNames } from "@/utils";
+import "./list.scss";
 
 @withPager
 @withBackToTop
@@ -22,7 +22,7 @@ export default class RecommendList extends Component {
   }
 
   async componentDidMount() {
-    await S.autoLogin(this)
+    await S.autoLogin(this);
     this.nextPage();
   }
 
@@ -142,7 +142,7 @@ export default class RecommendList extends Component {
 
     return (
       <View className="guide-recommend-list">
-        <BaNavBar title="种草" fixed jumpType="home" />
+        <BaNavBar title="种草" fixed />
         <View style={styleNames({ height: `${n_ht}px` })}></View>
         <View
           className={`recommend-list__search ${

@@ -5,7 +5,13 @@ import { connect } from "@tarojs/redux";
 import api from "@/api";
 import S from "@/spx";
 import { withPager } from "@/hocs";
-import { pickBy, formatTime, styleNames, classNames, normalizeQuerys } from "@/utils";
+import {
+  pickBy,
+  formatTime,
+  styleNames,
+  classNames,
+  normalizeQuerys
+} from "@/utils";
 import { Tracker } from "@/service";
 import { BaTabBar, BaNavBar } from "@/guide/components";
 import "./coupon.scss";
@@ -27,9 +33,9 @@ export default class CouponHome extends Component {
       shareInfo: {}
     };
   }
-  
+
   async componentDidMount() {
-    await S.autoLogin(this)
+    await S.autoLogin(this);
     this.nextPage();
     api.wx.shareSetting({ shareindex: "coupon" }).then(res => {
       this.setState({
@@ -46,7 +52,7 @@ export default class CouponHome extends Component {
   }
 
   onShareAppMessage(item) {
-    const { info = {} } = item.target.dataset
+    const { info = {} } = item.target.dataset;
     const res = this.state.shareInfo;
     // console.log('item.target.dataset',item)
     // console.log('info',info)
@@ -64,9 +70,9 @@ export default class CouponHome extends Component {
       info.card_id
     }&distributor_id=${distributor_id}&subtask_id=${params.subtask_id ||
       ""}&gu=${gu}`;
-    console.log(`/others/pages/home/coupon-home${query}`)
+    console.log(`/others/pages/home/coupon-home${query}`);
     return {
-      title: info.title+'优惠券',
+      title: info.title + "优惠券",
       imageUrl: res.imageUrl,
       path: `/others/pages/home/coupon-home${query}`
     };
@@ -85,7 +91,7 @@ export default class CouponHome extends Component {
 
   async fetch(params) {
     let { distributor_id } = S.get("GUIDE_INFO", true);
-    let { card_id = '' } = await normalizeQuerys(this.$router.params)
+    let { card_id = "" } = await normalizeQuerys(this.$router.params);
     params = {
       ...params,
       end_date: 1,
@@ -199,8 +205,8 @@ export default class CouponHome extends Component {
     const { list, page } = this.state;
     const n_ht = S.get("navbar_height", true);
     return (
-      <View className='coupon-list'>
-        <BaNavBar title='优惠券列表' fixed jumpType='home' />
+      <View className="coupon-list">
+        <BaNavBar title="优惠券列表" fixed />
         {/* <NavBar
           title='优惠券列表'
           leftIconType='chevron-left'
@@ -210,14 +216,20 @@ export default class CouponHome extends Component {
         <ScrollView
           style={styleNames({ top: `${n_ht}px` })}
           scrollY
-          className='home_coupon-list__scroll'
+          className="home_coupon-list__scroll"
           onScrollToLower={this.nextPage}
         >
-          <View className='coupon-list-ticket'>
+          <View className="coupon-list-ticket">
             {list.map((item, idx) => {
               return (
-                <CouponItem info={item} className='home_coupon-list_item'  key={item.card_id}>
-                  <View className='home_coupon-list_item__quantity'>剩余{parseInt(item.quantity) - item.get_num}张</View>
+                <CouponItem
+                  info={item}
+                  className="home_coupon-list_item"
+                  key={item.card_id}
+                >
+                  <View className="home_coupon-list_item__quantity">
+                    剩余{parseInt(item.quantity) - item.get_num}张
+                  </View>
                   {/* <Text
                       className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
                       onClick={this.handleGetCard.bind(this, item, idx)}
@@ -226,38 +238,38 @@ export default class CouponHome extends Component {
                       {item.getted === 2 ? '已领完' : ''}
                       {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
                     </Text> */}
-                  {item.quantity*1>0&&<View
-                    className={`coupon-btn ${
-                      item.getted === 2 || item.getted === 1
-                        ? "coupon-btn__done"
-                        : ""
-                    }`}
-                    // style={`background: ${colors.data[0].primary}`}
-                    onClick={this.handleClickNews.bind(this, item, idx)}
-                  >
-
-                    <View className='recommend-detail__bar'>
-                      <Button
-                        openType='share'
-                        dataInfo={item}
-                        // style={"background: " + colors.data[0].primary}
-                        className={classNames( 'shareCSS', {
-                          disabled: (parseInt(item.quantity) - item.get_num) <= 0
-                        })}
-                        disabled={(parseInt(item.quantity) - item.get_num) <= 0}
-                      >
-                        分享给顾客
-                      </Button>
+                  {item.quantity * 1 > 0 && (
+                    <View
+                      className={`coupon-btn ${
+                        item.getted === 2 || item.getted === 1
+                          ? "coupon-btn__done"
+                          : ""
+                      }`}
+                      // style={`background: ${colors.data[0].primary}`}
+                      onClick={this.handleClickNews.bind(this, item, idx)}
+                    >
+                      <View className="recommend-detail__bar">
+                        <Button
+                          openType="share"
+                          dataInfo={item}
+                          // style={"background: " + colors.data[0].primary}
+                          className={classNames("shareCSS", {
+                            disabled:
+                              parseInt(item.quantity) - item.get_num <= 0
+                          })}
+                          disabled={parseInt(item.quantity) - item.get_num <= 0}
+                        >
+                          分享给顾客
+                        </Button>
+                      </View>
                     </View>
-                  </View>}
-
-
+                  )}
                 </CouponItem>
               );
             })}
             {page.isLoading && <Loading>正在加载...</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>
+              <SpNote img="trades_empty.png">赶快去添加吧~</SpNote>
             )}
           </View>
         </ScrollView>
