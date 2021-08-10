@@ -6,6 +6,7 @@ import { AtCountdown } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { pickBy,validColor,isString } from '@/utils'
+import { getDistributorId } from "@/utils/helper";
 import NormalBackground from '../../assets/plusprice-head.png'
 
 import './plusprice.scss'
@@ -93,8 +94,10 @@ export default class DetailPluspriceList extends Component {
     }
   }
   handleClickItem (item) {
+    const { distributor_id } = item;
+    const dtid = distributor_id ? distributor_id : getDistributorId();
 		Taro.navigateTo({
-			url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+			url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
 		})
   }
   

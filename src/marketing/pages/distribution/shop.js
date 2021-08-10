@@ -85,35 +85,16 @@ export default class DistributionShop extends Component {
     })
   }
 
-  onShareAppMessage(res) {
-    console.log("--onShareAppMessage---",res)
-    const { from }=res;
+  onShareAppMessage(res) {  
     const { username, userId } = Taro.getStorageSync('userinfo')
-    const { info } = this.state
-    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-    //   ...info,
-    //   from_type:from,
-    //   shareType: "分享给好友"
-    // });
+    const { info } = this.state 
     return {
       title: info.share_title || info.shop_name || `${username}的小店`,
       imageUrl: info.applets_share_img || info.shop_pic,
       path: `/marketing/pages/distribution/shop-home?uid=${userId}`
     }
   }
-
-  // onShareTimeline () {
-  //   const { username, userId } = Taro.getStorageSync('userinfo')
-  //   const { info } = this.state
-
-  //   return {
-  //     title: info.shop_name || `${username}的小店`,
-  //     imageUrl: info.shop_pic,
-  //     query: {
-  //       uid: userId
-  //     }
-  //   }
-  // }
+ 
 
   render() {
     const { colors } = this.props

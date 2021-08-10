@@ -6,6 +6,7 @@ import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { calcTimer } from '@/utils'
+import { getDistributorId } from "@/utils/helper";
 
 import './group-list.scss'
 
@@ -41,12 +42,13 @@ export default class GroupList extends Component {
 
   async fetch (params) {
     const { curTabIdx } = this.state
-
+    const dtid = getDistributorId();
     params = _mapKeys({
       ...params,
       group_goods_type: 'normal',
       view: curTabIdx === 0 ? '2' : '1',
-      team_status: '0'
+      team_status: '0',
+      distributor_id: dtid,
     }, function (val, key) {
       if (key === 'page_no') return 'page'
       if (key === 'page_size') return 'pageSize'
@@ -87,9 +89,9 @@ export default class GroupList extends Component {
 
   handleClickItem = (item) => {
     const { goods_id, distributor_id } = item
-
+    const dtid = distributor_id ? distributor_id : getDistributorId();
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${goods_id}&dtid=${distributor_id}`
+      url: `/pages/item/espier-detail?id=${goods_id}&dtid=${dtid}`
     })
   }
 

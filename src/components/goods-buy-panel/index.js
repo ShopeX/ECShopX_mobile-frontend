@@ -4,7 +4,7 @@ import { View, Text, Image, Button, ScrollView } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
 // import { AtInputNumber } from 'taro-ui'
 // import find from 'lodash/find'
-import { Price } from "@/components";
+import { Price, SpLogin } from "@/components";
 import InputNumber from "@/components/input-number";
 import { classNames, pickBy, log } from "@/utils";
 import { Tracker } from "@/service";
@@ -549,10 +549,8 @@ export default class GoodsBuyPanel extends Component {
     if ( info.type == '1' ) {
       price = floor(price * ( 1 + taxRate ))
       marketPrice = info.price
-    }
-
-    console.log("-------gbp---",info)
-
+    } 
+    
     return (
       <View
         className={classNames(
@@ -578,24 +576,30 @@ export default class GoodsBuyPanel extends Component {
                 src={curImg || info.pics[0]}
               />
             </View>
-            {isPointitem && <View className="goods-point">
-              <View className="number">{curSku?curSku.point:info.point}</View>
-              <View className="text">{customName('积分')}</View>
-            </View>}
-            {!isPointitem && <View className="goods-sku__price">
-              <Price primary symbol="¥" unit="cent" value={price} />
-              <View className="goods-sku__price-market">
-                {marketPrice !== 0 && marketPrice && (
-                  <Price
-                    className="price-market"
-                    symbol="¥"
-                    unit="cent"
-                    lineThrough
-                    value={marketPrice}
-                  />
-                )}
+            {isPointitem && (
+              <View className="goods-point">
+                <View className="number">
+                  {curSku ? curSku.point : info.point}
+                </View>
+                <View className="text">{customName("积分")}</View>
               </View>
-            </View>}
+            )}
+            {!isPointitem && (
+              <View className="goods-sku__price">
+                <Price primary symbol="¥" unit="cent" value={price} />
+                <View className="goods-sku__price-market">
+                  {marketPrice !== 0 && marketPrice && (
+                    <Price
+                      className="price-market"
+                      symbol="¥"
+                      unit="cent"
+                      lineThrough
+                      value={marketPrice}
+                    />
+                  )}
+                </View>
+              </View>
+            )}
             <View className="goods-sku__info">
               {this.noSpecs ? (
                 <Text className="goods-sku__props">{info.item_name}</Text>
@@ -608,12 +612,12 @@ export default class GoodsBuyPanel extends Component {
               )}
               {curSku ? (
                 <View className="goods-sku__limit">
-                  {
-                    info.store_setting && <Text className="goods-sku__stock">
+                  {info.store_setting && (
+                    <Text className="goods-sku__stock">
                       库存{curSku.store}
                       {info.unit}
                     </Text>
-                  }
+                  )}
                   {activity && curLimit ? (
                     <Text>
                       {ruleDay ? <Text>每{ruleDay}天</Text> : null}
@@ -621,15 +625,16 @@ export default class GoodsBuyPanel extends Component {
                     </Text>
                   ) : null}
                 </View>
-              ):<View className="goods-sku__limit">
-             {
-              info.store_setting && <Text className="goods-sku__stock">
-                库存：{info.store}
-                {info.unit}
-              </Text>
-             }
-             
-            </View>}
+              ) : (
+                <View className="goods-sku__limit">
+                  {info.store_setting && (
+                    <Text className="goods-sku__stock">
+                      库存：{info.store}
+                      {info.unit}
+                    </Text>
+                  )}
+                </View>
+              )}
             </View>
           </View>
           {curSkus && promotions && promotions.length > 0 && (
@@ -673,7 +678,12 @@ export default class GoodsBuyPanel extends Component {
                               )
                             })}
                             key={sku.spec_value_id}
-                            onClick={this.handleSelectSku.bind(this, sku, idx,spec.spec_name)}
+                            onClick={this.handleSelectSku.bind(
+                              this,
+                              sku,
+                              idx,
+                              spec.spec_name
+                            )}
                           >
                             {sku.spec_value_name}
                           </Text>
@@ -684,7 +694,7 @@ export default class GoodsBuyPanel extends Component {
                 );
               })}
             </ScrollView>
-            {(type !== "pick" && isActive) && (
+            {type !== "pick" && isActive && (
               <View className="goods-quantity__wrap">
                 <Text className="goods-quantity__hd"></Text>
                 <View className="goods-quantity__bd">
@@ -704,43 +714,55 @@ export default class GoodsBuyPanel extends Component {
                 hasStore &&
                 (!curSkus ||
                   (curSkus && curSkus.approve_status === "onsale")) && (
-                  <Button
-                    loading={busy}
-                    className={classNames("goods-buy-panel__btn btn-add-cart", {
-                      "is-disabled": !curSkus
-                    })}
-                    style={`background: ${colors.data[0].accent}`}
-                    onClick={this.handleBuyClick.bind(
+                  <SpLogin
+                    onChange={this.handleBuyClick.bind(
                       this,
                       "cart",
                       curSkus,
                       quantity
                     )}
-                    disabled={Boolean(!curSkus)}
                   >
-                    {isDrug ? "加入药品清单" : "加入购物车"}
-                  </Button>
+                    <Button
+                      loading={busy}
+                      className={classNames(
+                        "goods-buy-panel__btn btn-add-cart",
+                        {
+                          "is-disabled": !curSkus
+                        }
+                      )}
+                      style={`background: ${colors.data[0].accent}`}
+                      disabled={Boolean(!curSkus)}
+                    >
+                      {isDrug ? "加入药品清单" : "加入购物车"}
+                    </Button>
+                  </SpLogin>
                 )}
               {type === "fastbuy" &&
                 hasStore &&
                 (!curSkus ||
                   (curSkus && curSkus.approve_status === "onsale")) && (
-                  <Button
-                    loading={busy}
-                    className={classNames("goods-buy-panel__btn btn-fast-buy", {
-                      "is-disabled": !curSkus
-                    })}
-                    style={`background: ${colors.data[0].primary}`}
-                    onClick={this.handleBuyClick.bind(
+                  <SpLogin
+                    onChange={this.handleBuyClick.bind(
                       this,
                       "fastbuy",
                       curSkus,
                       quantity
                     )}
-                    disabled={Boolean(!curSkus)}
                   >
-                    {fastBuyText}
-                  </Button>
+                    <Button
+                      loading={busy}
+                      className={classNames(
+                        "goods-buy-panel__btn btn-fast-buy",
+                        {
+                          "is-disabled": !curSkus
+                        }
+                      )}
+                      style={`background: ${colors.data[0].primary}`}
+                      disabled={Boolean(!curSkus)}
+                    >
+                      {fastBuyText}
+                    </Button>
+                  </SpLogin>
                 )}
               {type === "pick" &&
                 hasStore &&

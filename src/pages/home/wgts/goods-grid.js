@@ -4,6 +4,7 @@ import { SpImg } from "@/components";
 import { classNames } from "@/utils";
 import { linkPage } from "./helper";
 import { Tracker } from "@/service";
+import { getDistributorId } from "@/utils/helper";
 import { withLoadMore } from '@/hocs';
 import "./goods-grid.scss";
 
@@ -55,6 +56,18 @@ export default class WgtGoodsGrid extends Component {
     if (this.observer) {
       this.observer.disconnect();
       this.observe = null;
+    }
+  }
+
+  handleClickItem(item) {
+    const { distributor_id } = item;
+    const dtid = distributor_id ? distributor_id : getDistributorId();
+    Taro.navigateTo({
+      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`,
+    });
+    if (item) {
+      // 商品卡触发
+      Tracker.dispatch("TRIGGER_SKU_COMPONENT", item);
     }
   }
 
@@ -114,11 +127,7 @@ export default class WgtGoodsGrid extends Component {
                     "grid-item-three": config.style == "grids",
                     "lastItem":idx===data.length-1
                   })}
-                  onClick={this.navigateTo.bind(
-                    this,
-                    `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`,
-                    item
-                  )}
+                  onClick={() => this.handleClickItem(item)}
                   data-id={item.goodsId}
                 >
                   <View className="goods-wrap">

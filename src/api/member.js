@@ -9,6 +9,10 @@ export function setMemberInfo (params = {}) {
   return req.put('/member', params)
 }
 
+export function updateMemberInfo(params = {}) {
+  return req.put("/memberinfo", params);
+}
+
 // 更新会员手机号
 export function setMemberMobile (params = {}) {
   return req.put('/member/mobile', params)

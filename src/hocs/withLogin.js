@@ -71,7 +71,7 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
         let res
         console.log('[$__autoLogin] --- run')
         try {
-          res = await S.autoLogin(this)
+          res = await S.autoLogin( this )
           this.$__autoLogin_state = !res ? 'fail' : 'success'
         } catch (e) {
           this.$__autoLogin_state = 'fail'

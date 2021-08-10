@@ -15,7 +15,6 @@ import './list.scss'
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-@withLogin()
 @withPager
 export default class TradeList extends Component {
   constructor(props) {

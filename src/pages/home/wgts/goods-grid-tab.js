@@ -3,6 +3,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtTabslist, SpImg } from '@/components'
 import { connect } from '@tarojs/redux'
+import { getDistributorId } from "@/utils/helper";
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
 import { withLoadMore } from '@/hocs';
@@ -47,13 +48,13 @@ export default class WgtGoodsGridTab extends Component {
       observeAll: true
     });
     
-    const { type,info: { data }, onLoadMore = () => { }, index } = this.props;
+    const { type,info: { list,data,more }, onLoadMore = () => { }, index } = this.props;
     const { goodsList,current}=this.state;
     let direction = type === 'good-scroll' ? 'right' : 'bottom'; 
     observer.relativeToViewport({ [direction]: 0 }).observe(".lastItem", res => { 
       if (res.intersectionRatio > 0) {  
-        if (goodsList.length === 50) {
-          onLoadMore(index, type,current);
+        if (list[current].more) { 
+          onLoadMore(index, type,current,goodsList.length);
         }
       }
     });
@@ -95,19 +96,26 @@ export default class WgtGoodsGridTab extends Component {
       this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id || ""}`);
     }
   };
-  navigateTo(url) {
-    Taro.navigateTo({ url });
-  }
+  // navigateTo(url) {
+  //   Taro.navigateTo({ url });
+  // }
 
+  handleClickItem(item) {
+    const { distributor_id } = item;
+    const dtid = distributor_id ? distributor_id : getDistributorId();
+    Taro.navigateTo({
+      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`,
+    });
+  }
+  
   render() {
     const { info, colors } = this.props;
     if (!info) {
       return null;
     }
     const { config, base } = info;
-    const { goodsList, moreLink } = this.state;
-
-    console.log("goodList", goodsList)
+    const { goodsList, moreLink } = this.state;  
+ 
 
     return (
       <View className={`wgt wgt-grid ${base.padded ? "wgt__padded" : null}`}>
@@ -155,11 +163,7 @@ export default class WgtGoodsGridTab extends Component {
                     "grid-item-three": config && config.style == "grids",
                     "lastItem": idx === goodsList.length - 1
                   })}
-                  onClick={this.navigateTo.bind(
-                    this,
-                    `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`,
-                    item
-                  )}
+                  onClick={() => this.handleClickItem(item)}
                   data-id={item.goodsId}
                 >
                   {/* {item.distributor_id} */}

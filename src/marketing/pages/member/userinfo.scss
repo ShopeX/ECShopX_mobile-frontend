@@ -71,7 +71,7 @@ page {
     padding: 0 50px;
     overflow: hidden;
     .btn {
-      width: 430px;
+      width: 100%;
       height: 80px;
       flex-shrink: 0;
       line-height: 80px;
@@ -79,19 +79,19 @@ page {
       border-radius: 40px;
       color: #333;
       border: 2px solid #bbb;
-      &.loginOut {
-        width: 396px;
-        padding-right: 176px;
-        position: relative;
-        z-index: 9;
-        background: #fff;
-      }
+      // &.loginOut {
+      //   width: 396px;
+      //   padding-right: 176px;
+      //   position: relative;
+      //   z-index: 9;
+      //   background: #fff;
+      // }
       &.save {
         color: #fff;
         border: none;
-        position: relative;
-        z-index: 99;
-        transform: translateX(-176px);
+        // position: relative;
+        // z-index: 99;
+        // transform: translateX(-176px);
       }
     }
   }
@@ -147,6 +147,13 @@ page {
         width: 100%;
         padding: 20px;
         justify-content: space-between;
+      }
+    }
+  }
+  .baseInfo {
+    .item {
+      .left {
+        color: #333;
       }
     }
   }
