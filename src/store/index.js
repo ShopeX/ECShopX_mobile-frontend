@@ -1,13 +1,3 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/store/index.js
- * @Date: 2020-04-30 17:12:45
- * @LastEditors: Arvin
- * @LastEditTime: 2020-07-02 18:03:51
- */ 
 import { createStore, applyMiddleware } from 'redux'
 import persistReducer from 'redux-persist/lib/persistReducer'
 import persistStore from 'redux-persist/lib/persistStore'
@@ -33,7 +23,7 @@ const middlewares = [
 const reducer = persistReducer({
   key: 'root',
   storage,
-  blacklist: ['cart', 'member', 'address','home','guide']
+  blacklist: ['cart', 'address','home','guide']
 }, reducers)
 
 let store, persistor

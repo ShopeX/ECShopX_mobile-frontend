@@ -1,19 +1,9 @@
-/*
- * @Author: PrendsMoi
- * @GitHub: https://github.com/PrendsMoi
- * @Blog: https://liuhgxu.com
- * @Description: 修改绑定手机号
- * @FilePath: /unite-vshop/src/subpage/pages/auth/bindPhone.js
- * @Date: 2021-05-06 10:59:01
- * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-18 17:34:35
- */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Input, Button } from '@tarojs/components'
 import { connect } from "@tarojs/redux"
 import api from '@/api'
 import { Timer } from '@/components'
-
+import S from "@/spx";
 
 import './bindPhone.scss'
 
@@ -143,7 +133,8 @@ export default class BindPhone extends Component {
       title: '修改成功',
       mask: true,
       duration: 2000
-    })
+    } )
+    await S.getMemberInfo();
     setTimeout(() => {
       Taro.navigateBack()
     }, 2000)

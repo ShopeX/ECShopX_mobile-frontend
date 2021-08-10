@@ -1,60 +1,57 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, ScrollView, Text, Image, Button } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
-import { TabBar, SpCell, AccountOfficial } from "@/components";
+import {
+  TabBar,
+  SpCell,
+  AccountOfficial,
+  SpLogin,
+  SpFloatPrivacy
+} from "@/components";
 // import ExclusiveCustomerService from './comps/exclusive-customer-service'
 import api from "@/api";
 import S from "@/spx";
 import req from "@/api/req";
-import MemberBanner from "./comps/member-banner";
+import { withLogin } from "@/hocs";
+import {
+  navigateTo,
+  getThemeStyle,
+  classNames
+} from "@/utils";
 import {
   customName
 } from '@/utils/point';
+import userIcon from '@/assets/imgs/user-icon.png'
+import MemberBanner from "./comps/member-banner";
 import "./index.scss";
 
 @connect(
-  ({ colors }) => ({
-    colors: colors.current
+  ({ colors, member }) => ({
+    colors: colors.current,
+    memberData: member.member
   }),
   dispatch => ({
-    onFetchFavs: favs => dispatch({ type: "member/favs", payload: favs })
+    onFetchFavs: favs => dispatch({ type: "member/favs", payload: favs }),
+    setMemberInfo: memberInfo =>
+      dispatch({ type: "member/init", payload: memberInfo })
   })
 )
+@withLogin()
 export default class MemberIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
       turntable_open: 0,
-      info: {
-        deposit: "",
-        point: "",
-        coupon: "",
-        luckdraw: "",
-        username: "",
-        user_card_code: ""
-      },
-      vipgrade: {
-        grade_name: "",
-        end_date: "",
-        is_vip: "",
-        vip_type: "",
-        is_open: "",
-        background_pic_url: ""
-      },
-      gradeInfo: {
-        user_card_code: "",
-        grade_name: "",
-        background_pic_url: ""
-      },
-      memberBanner: [],
       redirectInfo: {},
-      orderCount: "",
-      memberDiscount: "",
+      orderCount: null,
+      memberDiscount: null,
       isOpenPopularize: false,
       salespersonData: null,
-      memberAssets: {},
+      memberAssets: null,
       // 是否开启储值
       rechargeStatus: true,
+      // banner配置
+      bannerSetting: {},
       // 菜单配置
       menuSetting: {
         activity: false,
@@ -69,152 +66,125 @@ export default class MemberIndex extends Component {
         recharge: false,
         ziti_order: false,
         //是否开启积分链接
-        score_menu:false
+        score_menu: false
       },
-      imgUrl:'',
-      score_menu_open:false
-    }
-  }
-
-  componentDidMount() {
-  }
-
-  componentDidShow() {
-    if (S.getAuthToken()) {
-      this.getSalesperson();
-    }
-    let sys = Taro.getSystemInfoSync();
-    console.log("member - Taro.getSystemInfoSync().environment", sys);
-    sys.environment == "wxwork" &&
-      Taro.navigateTo({ url: "/assistant/pages/index" });
-
-    const { colors } = this.props;
-    Taro.setNavigationBarColor({
-      backgroundColor: colors.data[0].marketing,
-      frontColor: '#ffffff'
-    })
-    this.fetch()
-    this.getWheel()
-    this.fetchBanner()
-    this.fetchRedirect()
-    this.getDefaultImg()
-    this.getSettingCenter()
-    this.getConfigPointitem()
-  }
-
-  async getDefaultImg() {
-    const url = `/distributor/getDistributorInfo?distributor_id=0`;
-    const { logo } = await req.get(url);
-    this.setState({
-      imgUrl: logo
-    });
+      imgUrl: "",
+      // 积分商城菜单
+      score_menu_open: false,
+      // 是否显示隐私协议
+      showPrivacy: false,
+      showTimes: 0
+    };
   }
 
   config = {
-    navigationBarTitleText: ""
+    navigationBarTitleText: "",
+    enablePullDownRefresh: true,
+    onReachBottomDistance: 50,
+    backgroundTextStyle: "dark",
+    navigationStyle: "custom"
   };
 
-  navigateTo(url) {
-    Taro.navigateTo({ url });
+  componentWillMount() {
+    this.fetch();
+    this.getSetting();
+    // this.getWheel();
+    // this.fetchBanner();
+    // this.fetchRedirect();
+
+    // this.getSettingCenter();
+    // this.getConfigPointitem();
   }
+
+  async onShareAppMessage() {
+    const {
+      share_title = "震惊！这店绝了！",
+      share_pic_wechatapp
+    } = await req.get(`/memberCenterShare/getInfo`);
+    const { logo } = await req.get(
+      `/distributor/getDistributorInfo?distributor_id=0`
+    );
+    return {
+      title: share_title,
+      imageUrl: share_pic_wechatapp || logo,
+      path: "/pages/index"
+    };
+  }
+
+  onPullDownRefresh() {
+    this.fetch();
+  }
+
+  onRefresh() {
+    Taro.showNavigationBarLoading();
+    //显示 loading 提示框。需主动调用 wx.hideLoading 才能关闭提示框
+    Taro.showLoading({
+      title: "刷新中..."
+    });
+  }
+
+  navigateTo = navigateTo;
 
   async fetch() {
-    if (!S.getAuthToken()) return;
+    if (S.getAuthToken()) {
+      const [
+        salesPerson,
+        orderCount,
+        { list: memberDiscount },
+        assets,
+        wheelData
+      ] = await Promise.all([
+        api.member.getSalesperson(),
+        api.trade.getCount(),
+        api.vip.getList(),
+        api.member.memberAssets(),
+        // 大转盘
+        api.wheel.getTurntableconfig()
+      ]);
+      const { memberData } = this.props;
+      this.setState({
+        salespersonData: salesPerson,
+        orderCount,
+        memberDiscount:
+          memberDiscount.length > 0
+            ? memberDiscount[memberDiscount.length - 1].privileges.discount_desc
+            : "",
+        memberAssets: {
+          ...assets,
+          deposit: memberData.deposit
+        },
+        turntable_open: wheelData.turntable_open
+      });
+      await S.getMemberInfo();
+      // this.props.setMemberInfo(memberInfo);
+    }
+    Taro.stopPullDownRefresh();
+  }
 
-    let resUser = null;
-    if (Taro.getStorageSync("userinfo")) {
-      resUser = Taro.getStorageSync("userinfo");
-      this.setState({
-        info: {
-          username: resUser.username,
-          avatar: resUser.avatar,
-          isPromoter: resUser.isPromoter,
-          mobile: resUser.mobile,
-          vip: resUser.vipgrade ? resUser.vipgrade.vip_type : ""
-        }
-      });
-    }
-    const [
-      res,
-      { list: favs },
-      orderCount,
-      { list: memberDiscount },
-      assets
-    ] = await Promise.all([
-      api.member.memberInfo(),
-      api.member.favsList(),
-      api.trade.getCount(),
-      api.vip.getList(),
-      api.member.memberAssets()
-    ]);
-    this.props.onFetchFavs(favs);
+  async getSetting() {
+    const [bannerSetting, menuSetting, pointItemSetting] = await Promise.all([
+      // 会员中心banner
+      await api.shop.getPageParamsConfig({
+        page_name: "member_center_setting"
+      }),
+      // 菜单自定义
+      await api.shop.getPageParamsConfig({
+        page_name: "member_center_menu_setting"
+      }),
+      // 积分商城
+      await api.pointitem.getPointitemSetting()
+    ] );
+
     this.setState({
-      isOpenPopularize: res.is_open_popularize
-    });
-    const userObj = {
-      username:
-        res.memberInfo.nickname ||
-        res.memberInfo.username ||
-        res.memberInfo.mobile,
-      avatar: res.memberInfo.avatar,
-      userId: res.memberInfo.user_id,
-      isPromoter: res.is_promoter,
-      mobile: res.memberInfo.mobile,
-      openid: res.memberInfo.open_id,
-      vip: res.vipgrade ? res.vipgrade.vip_type : ""
-    };
-    if (
-      !resUser ||
-      resUser.username !== userObj.username ||
-      resUser.avatar !== userObj.avatar
-    ) {
-      Taro.setStorageSync("userinfo", userObj);
-      this.setState({
-        info: {
-          username:
-            res.memberInfo.nickname ||
-            res.memberInfo.username ||
-            res.memberInfo.mobile,
-          avatar: res.memberInfo.avatar,
-          mobile: res.memberInfo.mobile,
-          isPromoter: res.is_promoter,
-          openid: res.memberInfo.open_id,
-          vip: res.vipgrade ? res.vipgrade.vip_type : ""
-        }
-      });
-    }
-    this.setState({
-      vipgrade: {
-        grade_name: res.vipgrade.grade_name,
-        end_date: res.vipgrade.end_time,
-        is_vip: res.vipgrade.is_vip,
-        vip_type: res.vipgrade.vip_type,
-        is_open: res.vipgrade.is_open,
-        background_pic_url: res.vipgrade.background_pic_url
-      },
-      gradeInfo: {
-        user_card_code: res.memberInfo.user_card_code,
-        grade_name: res.memberInfo.gradeInfo.grade_name,
-        background_pic_url: res.memberInfo.gradeInfo.background_pic_url
-      },
-      rechargeStatus: res.is_recharge_status,
-      orderCount,
-      memberDiscount:
-        memberDiscount.length > 0
-          ? memberDiscount[memberDiscount.length - 1].privileges.discount_desc
-          : "",
-      memberAssets: { ...assets, deposit: res.deposit }
+      bannerSetting: bannerSetting.list[0].params.data,
+      menuSetting: menuSetting.list[0].params.data,
+      score_menu_open: pointItemSetting.entrance.mobile_openstatus
     });
   }
 
-  // 获取banner
-  async fetchBanner() {
-    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=member_center_setting`;
-    const { list } = await req.get(url);
-    this.setState({
-      memberBanner: list
-    });
-  }
+  onChangeLoginSuccess = () => {
+    this.fetch();
+  };
 
   // 获取积分个人信息跳转
   async fetchRedirect() {
@@ -225,37 +195,15 @@ export default class MemberIndex extends Component {
         redirectInfo: list[0].params
       });
     }
-    // this.setState({
-    //   memberBanner:list
-    // })
-  }
-  /**
-   * 获取导购信息
-   * */
-  async getSalesperson() {
-    let data = await api.member.getSalesperson();
-    this.setState({
-      salespersonData: Array.isArray(data) ? false : data
-    });
-  }
-
-  // 转盘抽奖
-  async getWheel() {
-    if (!S.getAuthToken()) return false;
-    const data = await api.wheel.getTurntableconfig();
-    this.setState({
-      turntable_open: data.turntable_open
-    });
-    console.log("大转盘", data.turntable_open);
   }
 
   handleClickRecommend = async () => {
     const { info } = this.state;
     if (!info.is_open_popularize) {
       Taro.showToast({
-        title: '未开启推广',
-        icon: 'none'
-      })
+        title: "未开启推广",
+        icon: "none"
+      });
       return;
     }
 
@@ -268,39 +216,9 @@ export default class MemberIndex extends Component {
     });
   };
 
-  handleClick = (url, isLogin = false) => {
-    if (!S.getAuthToken() && isLogin) {
-      Taro.showToast({
-        title: '请先登录',
-        icon: 'none'
-      })
-      return false
-    }
-    Taro.navigateTo({ url })
-  };
-  handleListClick = e => {
-    e.stopPropagation();
-    Taro.navigateTo({
-      url: "/pages/cart/espier-index?type=drug"
-    });
-  };
-  handleTradePickClick = () => {
-    if (!S.getAuthToken()) {
-      Taro.showToast({
-        title: '请先登录',
-        icon: 'none'
-      })
-      return false
-    }
-    Taro.navigateTo({
-      url: "/subpage/pages/trade/customer-pickup-list"
-    });
-  };
-
   beDistributor = async () => {
-    const { info } = this.state;
-    const { username, avatar, isPromoter, mobile, openid } = info;
-    if (isPromoter) {
+    const { is_promoter } = this.props.memberData;
+    if (is_promoter) {
       Taro.navigateTo({
         url: "/marketing/pages/distribution/index"
       });
@@ -325,72 +243,17 @@ export default class MemberIndex extends Component {
         showCancel: false,
         confirmText: "好"
       });
-      let userinfo = {
-        username,
-        avatar,
-        mobile,
-        isPromoter: true,
-        openid,
-        vip: info.vipgrade ? info.vipgrade.vip_type : ""
-      };
-      // console.log(userinfo)
-      Taro.setStorageSync("userinfo", userinfo);
-      this.setState({
-        info: userinfo
-      });
     }
   };
 
-  handleTradeClick = type => {
-    if (!S.getAuthToken()) {
-      Taro.showToast({
-        title: '请先登录',
-        icon: 'none'
-      })
-      return false
-    }
+  // 订单查看
+  async handleTradeClick(type) {
     Taro.navigateTo({
       url: `/subpage/pages/trade/list?status=${type}`
     });
-  };
+  }
 
-  handleTradeDrugClick = () => {
-    if (!S.getAuthToken()) {
-      Taro.showToast({
-        title: '请先登录',
-        icon: 'none'
-      })
-      return false
-    }
-    Taro.navigateTo({
-      url: "/subpage/pages/trade/drug-list"
-    });
-  };
-
-  handleLoginClick = () => {
-    S.login(this, false);
-  };
-
-  viewAftersales = () => {
-    if (!S.getAuthToken()) {
-      Taro.showToast({
-        title: '请先登录',
-        icon: 'none'
-      })
-      return false
-    }
-    Taro.navigateTo({
-      url: `/subpage/pages/trade/after-sale`
-    });
-  };
-
-  handleCodeClick = () => {
-    Taro.navigateTo({
-      url: `/marketing/pages/member/member-code`
-    });
-  };
-  handleOfficialError = () => {};
-  handleOfficialClose = () => {};
+  // 积分查看
   handleClickPoint = () => {
     const { redirectInfo } = this.state;
     if (redirectInfo.data && redirectInfo.data.point_url_is_open) {
@@ -400,6 +263,7 @@ export default class MemberIndex extends Component {
       });
     }
   };
+
   handleClickInfo = () => {
     const { redirectInfo } = this.state;
     if (redirectInfo.data && redirectInfo.data.info_url_is_open) {
@@ -408,453 +272,490 @@ export default class MemberIndex extends Component {
         path: redirectInfo.data.info_page
       });
     } else {
-      this.handleClick("/marketing/pages/member/userinfo", true);
+      Taro.navigateTo({
+        url: "/marketing/pages/member/userinfo"
+      });
     }
   };
 
-  // 获取个人中心配置
-  getSettingCenter = async () => {
-    const { list = [] } = await api.member.getSettingCenter();
-    if (list[0] && list[0].params && list[0].params.data) {
-      this.setState({
-        menuSetting: {
-          ...list[0].params.data, 
-        }
-      })
+  handleClickWxOAuth( fn ) {
+    if ( this.state.showTimes >= 1 ) {
+      fn && fn();
+    } else {
+      const { avatar, username } = this.props.memberData.memberInfo;
+      if (avatar && username) {
+        fn && fn();
+      } else {
+        this.setState({
+          showPrivacy: true
+        });
+      }
+    }  
+  }
+
+  render() {
+    const { colors, memberData } = this.props;
+    const {
+      score_menu_open,
+      gradeInfo,
+      orderCount,
+      memberDiscount,
+      memberAssets,
+      isOpenPopularize,
+      salespersonData,
+      turntable_open,
+      bannerSetting,
+      menuSetting,
+      rechargeStatus,
+      showPrivacy,
+      showTimes
+    } = this.state;
+    let memberInfo = null,
+      vipgrade = null;
+    if (memberData) {
+      memberInfo = memberData.memberInfo;
+      vipgrade = memberData.vipgrade;
     }
-  };
+    // const is_open_official_account = Taro.getStorageSync("isOpenOfficial");
 
-  getConfigPointitem=async ()=>{
-    const { entrance:{mobile_openstatus}   } = await api.pointitem.getPointitemSetting()
-    this.setState({
-      score_menu_open:mobile_openstatus
-    })
-  }
-
-  async onShareAppMessage () { 
-    const url = `/memberCenterShare/getInfo`
-    const {share_title,share_pic_wechatapp,share_description}= await req.get(url) 
-    return {
-      title: share_title ? share_title : "震惊！这店绝了！",
-      imageUrl: share_pic_wechatapp ? share_pic_wechatapp : this.state.imgUrl,
-      path: "/pages/index"
-    };
-  }
-
-  render () {
-    const { colors } = this.props
-    const { score_menu_open,vipgrade, gradeInfo, orderCount, memberDiscount, memberAssets, info, isOpenPopularize, salespersonData, turntable_open,memberBanner, menuSetting, rechargeStatus } = this.state
-    const is_open_official_account = Taro.getStorageSync('isOpenOfficial')
-    const bannerInfo = memberBanner.length ? memberBanner[0].params : null
     return (
-      <View className="page-member-index">
-        <ScrollView className="member__scroll" scrollY>
-          {S.getAuthToken() ? (
-            <View
-              className={`page-member-header ${
-                memberDiscount === "" ? "no-card" : ""
-              }`}
-              style={"background: " + colors.data[0].marketing}
-            >
-              <View className="user-info">
-                <View
-                  className="view-flex view-flex-middle"
-                  onClick={this.handleClickInfo}
-                >
-                  <View className="avatar">
-                    <Image
-                      className="avatar-img"
-                      src={info.avatar}
-                      mode="aspectFill"
-                    />
-                  </View>
-                  <View>
-                    <View className="nickname">Hi, {info.username}</View>
-                    {!vipgrade.is_vip ? (
-                      <View className="gradename">{gradeInfo.grade_name}</View>
-                    ) : (
-                      <View className="gradename">{vipgrade.grade_name}</View>
-                    )}
-                  </View>
-                </View>
-                {menuSetting.member_code && (
-                  <View className="view-flex">
-                    <View
-                      className="icon-qrcode"
-                      onClick={this.handleCodeClick.bind(this)}
-                    ></View>
-                    {/*<View className='icon-setting' onClick={this.handleClick.bind(this, '/marketing/pages/member/user-info')}></View>*/}
-                  </View>
-                )}
-              </View>
-              <View className="member-assets view-flex">
-                <View
-                  className="view-flex-item"
-                  onClick={this.handleClick.bind(
-                    this,
-                    "/marketing/pages/member/coupon",
-                    true
-                  )}
-                >
-                  <View className="member-assets__label">优惠券</View>
-                  <View className="member-assets__value">
-                    {memberAssets.discount_total_count}
-                  </View>
-                </View>
-                <View
-                  className="view-flex-item"
-                  onClick={this.handleClickPoint}
-                >
-                  <View className="member-assets__label">{customName("积分")}</View>
-                  <View className="member-assets__value">
-                    {memberAssets.point_total_count}
-                  </View>
-                </View>
-                {rechargeStatus && (
-                  <View
-                    className="view-flex-item"
-                    onClick={this.handleClick.bind(
-                      this,
-                      `/others/pages/recharge/index`,
-                      true
-                    )}
-                  >
-                    <View className="member-assets__label">储值</View>
-                    <View className="member-assets__value">
-                      {(memberAssets.deposit || 0) / 100}
-                    </View>
-                  </View>
-                )}
-                <View
-                  className="view-flex-item"
-                  onClick={this.handleClick.bind(
-                    this,
-                    "/pages/member/item-fav",
-                    true
-                  )}
-                >
-                  <View className="member-assets__label">收藏</View>
-                  <View className="member-assets__value">
-                    {memberAssets.fav_total_count}
-                  </View>
-                </View>
-              </View>
-            </View>
-          ) : (
-            <View
-              className="page-member-header view-flex view-flex-vertical view-flex-middle view-flex-center"
-              style={"background: " + colors.data[0].marketing}
-              onClick={this.handleLoginClick.bind(this)}
-            >
-              <View className="avatar-placeholder icon-member"></View>
+      <View className="page-member-index" style={getThemeStyle()}>
+        {S.getAuthToken() ? (
+          <View
+            className={classNames("page-member-header", {
+              "no-card": !memberDiscount
+            })}
+          >
+            <View className="user-info">
               <View
-                className="unlogin"
-                style={"background: " + colors.data[0].primary}
+                className="view-flex view-flex-middle"
+                onClick={() => {
+                  this.handleClickWxOAuth(this.handleClickInfo.bind(this));
+                }}
               >
-                请登录
-              </View>
-            </View>
-          )}
-          {(vipgrade.is_open || (!vipgrade.is_open && vipgrade.is_vip)) &&
-            memberDiscount !== "" && (
-              <View
-                className="member-card"
-                onClick={this.handleClick.bind(
-                  this,
-                  "/subpage/pages/vip/vipgrades",
-                  true
-                )}
-              >
-                {vipgrade.is_open && !vipgrade.is_vip && (
-                  <View className="vip-btn">
-                    <View className="vip-btn__title">
-                      开通VIP会员 <Text className="icon-arrowRight"></Text>
-                    </View>
-                    {memberDiscount && (
-                      <View className="vip-btn__desc">
-                        即可享受最高{memberDiscount}折会员优惠
-                      </View>
-                    )}
-                  </View>
-                )}
-                {vipgrade.is_vip && (
-                  <View className="grade-info">
-                    <View className="member-card-title">
-                      <Text className="vip-sign">
-                        {vipgrade.vip_type === "svip" ? (
-                          <Text>SVIP</Text>
-                        ) : (
-                          <Text>VIP</Text>
-                        )}
-                      </Text>
-                      会员卡
-                    </View>
-                    <View className="member-card-no">
-                      NO. {gradeInfo.user_card_code}
-                    </View>
-                    <View className="member-card-period">
-                      {vipgrade.end_date} 到期
-                    </View>
-                  </View>
-                )}
-                {vipgrade.is_vip && (
+                <View className="avatar">
                   <Image
-                    className="member-info-bg"
-                    src={vipgrade.background_pic_url}
-                    mode="widthFix"
+                    className="avatar-img"
+                    src={memberInfo.avatar || userIcon}
+                    mode="aspectFill"
                   />
-                )}
-                {vipgrade.is_open && !vipgrade.is_vip && (
-                  <Image
-                    className="member-info-bg"
-                    src={gradeInfo.background_pic_url}
-                    mode="widthFix"
-                  />
-                )}
+                </View>
+                <View>
+                  <View className="nickname">
+                    Hi, {memberInfo.username || memberInfo.mobile}
+                  </View>
+                  <View className="gradename">{`${
+                    !vipgrade.is_vip
+                      ? memberInfo.gradeInfo.grade_name
+                      : vipgrade.grade_name
+                  }`}</View>
+                </View>
               </View>
-            )}
-          {is_open_official_account === 1 && (
-            <View className="page-member-section">
-              <AccountOfficial
-                onHandleError={this.handleOfficialError.bind(this)}
-                onClick={this.handleOfficialClose.bind(this)}
-                isClose={false}
-              />
+              {menuSetting.member_code && (
+                <View
+                  className="icon-qrcode"
+                  onClick={() => {
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(
+                        this,
+                        "/marketing/pages/member/member-code"
+                      )
+                    );
+                  }}
+                ></View>
+              )}
             </View>
-          )}
 
-          <View className="page-member-section order-box">
-            <View className="section-title view-flex view-flex-middle">
-              <View className="view-flex-item">订单</View>
+            <View className="member-assets view-flex">
               <View
-                class="section-more"
-                onClick={this.handleTradeClick.bind(this)}
+                className="view-flex-item"
+                onClick={() => {
+                  this.handleClickWxOAuth(
+                    this.navigateTo.bind(this, "/marketing/pages/member/coupon")
+                  );
+                }}
               >
-                全部订单<Text className="forward-icon icon-arrowRight"></Text>
-              </View>
-            </View>
-            {/* <View className="member-trade__ziti" onClick={this.handleTradeDrugClick.bind(this)}>
-              <View className="view-flex-item" >
-                <View className='member-trade__ziti-title'>处方单</View>
-              </View>
-              <View className="icon-arrowRight item-icon-go"></View>
-            </View>
-            <View className="member-trade__ziti" onClick={this.handleListClick.bind(this)}>
-              <View className="view-flex-item" >
-                <View className='member-trade__ziti-title'>药品清单</View>
-              </View>
-              <View className="icon-arrowRight item-icon-go"></View>
-            </View> */}
-            {menuSetting.ziti_order && (
-              <View
-                className="member-trade__ziti"
-                onClick={this.handleTradePickClick.bind(this)}
-              >
-                <View className="view-flex-item">
-                  <View className="member-trade__ziti-title">自提订单</View>
-                  <View className="member-trade__ziti-desc">
-                    您有
-                    <Text className="mark">
-                      {orderCount.normal_payed_daiziti || 0}
-                    </Text>
-                    个等待自提的订单
-                  </View>
+                <View className="member-assets__label">优惠券</View>
+                <View className="member-assets__value">
+                  {memberAssets.discount_total_count}
                 </View>
-                <View className="icon-arrowRight item-icon-go"></View>
               </View>
-            )}
-            <View className="member-trade">
+
               <View
-                className="member-trade__item"
-                onClick={this.handleTradeClick.bind(this, 5)}
+                className="view-flex-item"
+                onClick={() => {
+                  this.handleClickWxOAuth(this.handleClickPoint.bind(this));
+                }}
               >
-                <View className="icon-wallet">
-                  {orderCount.normal_notpay_notdelivery > 0 && (
-                    <View className="trade-num">
-                      {orderCount.normal_notpay_notdelivery}
-                    </View>
-                  )}
+                <View className="member-assets__label">
+                  {customName("积分")}
                 </View>
-                <Text>待支付</Text>
-              </View>
-              <View
-                className="member-trade__item"
-                onClick={this.handleTradeClick.bind(this, 1)}
-              >
-                <View className="icon-delivery">
-                  {orderCount.normal_payed_notdelivery > 0 && (
-                    <View className="trade-num">
-                      {orderCount.normal_payed_notdelivery}
-                    </View>
-                  )}
+                <View className="member-assets__value">
+                  {memberAssets.point_total_count}
                 </View>
-                <Text>待收货</Text>
               </View>
-              <View
-                className="member-trade__item"
-                onClick={this.handleTradeClick.bind(this, 3)}
-              >
-                <View className="icon-office-box">
-                  {orderCount.normal_payed_delivered > 0 && (
-                    <View className="trade-num">
-                      {orderCount.normal_payed_delivered}
-                    </View>
-                  )}
-                </View>
-                <Text>已完成</Text>
-              </View>
-              {orderCount.rate_status && (
+
+              {rechargeStatus && (
                 <View
-                  className="member-trade__item"
-                  onClick={this.handleTradeClick.bind(this, 3)}
+                  className="view-flex-item"
+                  onClick={() => {
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(this, "/others/pages/recharge/index")
+                    );
+                  }}
                 >
-                  <View className="icon-message"></View>
-                  <Text className="trade-status">待评价</Text>
+                  <View className="member-assets__label">储值</View>
+                  <View className="member-assets__value">
+                    {(memberAssets.deposit || 0) / 100}
+                  </View>
                 </View>
               )}
+
               <View
-                className="member-trade__item"
-                onClick={this.viewAftersales.bind(this)}
+                className="view-flex-item"
+                onClick={() => {
+                  this.handleClickWxOAuth(
+                    this.navigateTo.bind(this, "/pages/member/item-fav")
+                  );
+                }}
               >
-                <View className="icon-repeat">
-                  {orderCount.aftersales > 0 && (
-                    <View className="trade-num">{orderCount.aftersales}</View>
-                  )}
+                <View className="member-assets__label">收藏</View>
+                <View className="member-assets__value">
+                  {memberAssets.fav_total_count}
                 </View>
-                <Text>售后</Text>
               </View>
             </View>
           </View>
-          {/*<View className="important-box view-flex">
-            <View className="view-flex-item view-flex view-flex-vertical view-flex-middle" onClick={this.toPay.bind(this)}>
-              <Image className="icon-img" src="/assets/imgs/buy.png" mode="aspectFit" />
-              <View>买单</View>
-            </View>
-          </View>*/}
-          {/*
-            salespersonData && salespersonData.is_show == 1 ?
-              <ExclusiveCustomerService info={salespersonData} />
-              : null
-          */}
-          {bannerInfo && bannerInfo.data.is_show && (
-            <View className="page-member-section">
-              <MemberBanner info={bannerInfo.data} />
+        ) : (
+          <View className="page-member-header view-flex view-flex-vertical view-flex-middle view-flex-center">
+            <Image className="user-icon" src={userIcon} mode="widthFix" />
+            <SpLogin onChange={this.onChangeLoginSuccess.bind(this)}>
+              <View className="unlogin">请登录</View>
+            </SpLogin>
+          </View>
+        )}
+
+        {(vipgrade.is_open || (!vipgrade.is_open && vipgrade.is_vip)) &&
+          memberDiscount !== "" && (
+            <View
+              className="member-card"
+              onClick={() => {
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, "/subpage/pages/vip/vipgrades")
+                );
+              }}
+            >
+              {vipgrade.is_open && !vipgrade.is_vip && (
+                <View className="vip-btn">
+                  <View className="vip-btn__title">
+                    开通VIP会员 <Text className="icon-arrowRight"></Text>
+                  </View>
+                  {memberDiscount && (
+                    <View className="vip-btn__desc">
+                      即可享受最高{memberDiscount}折会员优惠
+                    </View>
+                  )}
+                </View>
+              )}
+              {vipgrade.is_vip && (
+                <View className="grade-info">
+                  <View className="member-card-title">
+                    <Text className="vip-sign">
+                      {vipgrade.vip_type === "svip" ? (
+                        <Text>SVIP</Text>
+                      ) : (
+                        <Text>VIP</Text>
+                      )}
+                    </Text>
+                    会员卡
+                  </View>
+                  <View className="member-card-no">
+                    NO. {memberInfo.user_card_code}
+                  </View>
+                  <View className="member-card-period">
+                    {vipgrade.end_time} 到期
+                  </View>
+                </View>
+              )}
+              {vipgrade.is_vip && (
+                <Image
+                  className="member-info-bg"
+                  src={vipgrade.background_pic_url}
+                  mode="widthFix"
+                />
+              )}
+              {vipgrade.is_open && !vipgrade.is_vip && (
+                <Image
+                  className="member-info-bg"
+                  src={memberInfo.gradeInfo.background_pic_url}
+                  mode="widthFix"
+                />
+              )}
             </View>
           )}
 
+        {/* {is_open_official_account === 1 && (
           <View className="page-member-section">
-            {isOpenPopularize && (
-              <SpCell
-                title={!info.isPromoter ? "我要推广" : "推广管理"}
-                isLink
-                img={require("../../assets/imgs/store.png")}
-                onClick={this.beDistributor.bind(this)}
-              ></SpCell>
-            )}
-            {Taro.getEnv() !== "WEB" && (
-              <View>
-                {menuSetting.group && (
-                  <SpCell
-                    title="我的拼团"
-                    isLink
-                    img={require("../../assets/imgs/group.png")}
-                    onClick={this.handleClick.bind(
-                      this,
-                      "/marketing/pages/member/group-list",
-                      true
-                    )}
-                  ></SpCell>
-                )}
-                {menuSetting.community_order && (
-                  <SpCell
-                    title="我的社区团购"
-                    isLink
-                    img={require("../../assets/imgs/group.png")}
-                    onClick={this.handleClick.bind(
-                      this,
-                      "/groupBy/pages/orderList/index",
-                      true
-                    )}
-                  ></SpCell>
+            <AccountOfficial
+              onHandleError={this.handleOfficialError.bind(this)}
+              onClick={this.handleOfficialClose.bind(this)}
+              isClose={false}
+            />
+          </View>
+        )} */}
+
+        <View className="page-member-section order-box">
+          <View className="section-title view-flex view-flex-middle">
+            <View className="view-flex-item">订单</View>
+            <View
+              class="section-more"
+              onClick={() => {
+                this.handleClickWxOAuth(this.handleTradeClick.bind(this));
+              }}
+            >
+              全部订单<Text className="forward-icon icon-arrowRight"></Text>
+            </View>
+          </View>
+
+          {menuSetting.ziti_order && (
+            <View
+              className="member-trade__ziti"
+              onClick={() => {
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(
+                    this,
+                    "/subpage/pages/trade/customer-pickup-list"
+                  )
+                );
+              }}
+            >
+              <View className="view-flex-item">
+                <View className="member-trade__ziti-title">自提订单</View>
+                <View className="member-trade__ziti-desc">
+                  您有
+                  <Text className="mark">
+                    {orderCount.normal_payed_daiziti || 0}
+                  </Text>
+                  个等待自提的订单
+                </View>
+              </View>
+              <View className="icon-arrowRight item-icon-go"></View>
+            </View>
+          )}
+
+          <View className="member-trade">
+            <View
+              className="member-trade__item"
+              onClick={() =>
+                this.handleClickWxOAuth(this.handleTradeClick.bind(this, 5))
+              }
+            >
+              <View className="icon-wallet">
+                {orderCount.normal_notpay_notdelivery > 0 && (
+                  <View className="trade-num">
+                    {orderCount.normal_notpay_notdelivery}
+                  </View>
                 )}
               </View>
-            )}
-            {Taro.getEnv() !== "WEB" && (
-              <View>
-                {menuSetting.boost_activity && (
-                  <SpCell
-                    title="助力活动"
-                    isLink
-                    img={require("../../assets/imgs/group.png")}
-                    onClick={this.handleClick.bind(
-                      this,
-                      "/boost/pages/home/index",
-                      true
-                    )}
-                  ></SpCell>
-                )}
-                {menuSetting.boost_order && (
-                  <SpCell
-                    title="助力订单"
-                    isLink
-                    img={require("../../assets/imgs/group.png")}
-                    onClick={this.handleClick.bind(
-                      this,
-                      "/boost/pages/order/index",
-                      true
-                    )}
-                  ></SpCell>
+              <Text>待支付</Text>
+            </View>
+            <View
+              className="member-trade__item"
+              onClick={() => {
+                this.handleClickWxOAuth(this.handleTradeClick.bind(this, 1));
+              }}
+            >
+              <View className="icon-delivery">
+                {orderCount.normal_payed_notdelivery > 0 && (
+                  <View className="trade-num">
+                    {orderCount.normal_payed_notdelivery}
+                  </View>
                 )}
               </View>
-            )}
-            {menuSetting.offline_order && (
-              <SpCell
-                title="线下订单关联"
-                isLink
-                img={require("../../assets/imgs/group.png")}
-                onClick={this.handleClick.bind(
-                  this,
-                  "/others/pages/bindOrder/index",
-                  true
+              <Text>待收货</Text>
+            </View>
+            <View
+              className="member-trade__item"
+              onClick={() => {
+                this.handleClickWxOAuth(this.handleTradeClick.bind(this, 3));
+              }}
+            >
+              <View className="icon-office-box">
+                {orderCount.normal_payed_delivered > 0 && (
+                  <View className="trade-num">
+                    {orderCount.normal_payed_delivered}
+                  </View>
                 )}
-              ></SpCell>
+              </View>
+              <Text>已完成</Text>
+            </View>
+            {orderCount.rate_status && (
+              <View
+                className="member-trade__item"
+                onClick={() => {
+                  this.handleClickWxOAuth(this.handleTradeClick.bind(this, 3));
+                }}
+              >
+                <View className="icon-message"></View>
+                <Text className="trade-status">待评价</Text>
+              </View>
             )}
-            {menuSetting.complaint &&
-              salespersonData &&
-              salespersonData.distributor && (
+            <View
+              className="member-trade__item"
+              onClick={() =>
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, "/subpage/pages/trade/after-sale")
+                )
+              }
+            >
+              <View className="icon-repeat">
+                {orderCount.aftersales > 0 && (
+                  <View className="trade-num">{orderCount.aftersales}</View>
+                )}
+              </View>
+              <Text>售后</Text>
+            </View>
+          </View>
+        </View>
+
+        {bannerSetting && bannerSetting.is_show && (
+          <View className="page-member-section">
+            <MemberBanner info={bannerSetting} />
+          </View>
+        )}
+
+        <View className="page-member-section">
+          {memberData.is_open_popularize && (
+            <SpCell
+              title={!memberData.is_promoter ? "我要推广" : "推广管理"}
+              isLink
+              img={require("../../assets/imgs/store.png")}
+              onClick={() =>
+                this.handleClickWxOAuth(this.beDistributor.bind(this))
+              }
+            ></SpCell>
+          )}
+
+          {Taro.getEnv() !== "WEB" && (
+            <View>
+              {menuSetting.group && (
                 <SpCell
-                  title="投诉记录"
+                  title="我的拼团"
                   isLink
                   img={require("../../assets/imgs/group.png")}
-                  onClick={this.handleClick.bind(
-                    this,
-                    "/marketing/pages/member/complaint-record",
-                    true
-                  )}
+                  onClick={() =>
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(
+                        this,
+                        "/marketing/pages/member/group-list"
+                      )
+                    )
+                  }
                 ></SpCell>
               )}
-            {menuSetting.activity && (
+              {menuSetting.community_order && (
+                <SpCell
+                  title="我的社区团购"
+                  isLink
+                  img={require("../../assets/imgs/group.png")}
+                  onClick={() =>
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(
+                        this,
+                        "/groupBy/pages/orderList/index"
+                      )
+                    )
+                  }
+                ></SpCell>
+              )}
+            </View>
+          )}
+
+          {Taro.getEnv() !== "WEB" && (
+            <View>
+              {menuSetting.boost_activity && (
+                <SpCell
+                  title="助力活动"
+                  isLink
+                  img={require("../../assets/imgs/group.png")}
+                  onClick={() =>
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(this, "/boost/pages/home/index")
+                    )
+                  }
+                ></SpCell>
+              )}
+              {menuSetting.boost_order && (
+                <SpCell
+                  title="助力订单"
+                  isLink
+                  img={require("../../assets/imgs/group.png")}
+                  onClick={() =>
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(this, "/boost/pages/order/index")
+                    )
+                  }
+                ></SpCell>
+              )}
+            </View>
+          )}
+          {menuSetting.offline_order && (
+            <SpCell
+              title="线下订单关联"
+              isLink
+              img={require("../../assets/imgs/group.png")}
+              onClick={() =>
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, "/others/pages/bindOrder/index")
+                )
+              }
+            ></SpCell>
+          )}
+          {menuSetting.complaint &&
+            salespersonData &&
+            salespersonData.distributor && (
               <SpCell
-                title="活动预约"
+                title="投诉记录"
                 isLink
-                img={require("../../assets/imgs/buy.png")}
-                onClick={this.handleClick.bind(
-                  this,
-                  "/marketing/pages/member/item-activity",
-                  true
-                )}
+                img={require("../../assets/imgs/group.png")}
+                onClick={() =>
+                  this.handleClickWxOAuth(
+                    this.navigateTo.bind(
+                      this,
+                      "/marketing/pages/member/complaint-record"
+                    )
+                  )
+                }
               ></SpCell>
             )}
-            {
-              score_menu_open && <SpCell
-                title={customName("积分商城")}
-                isLink
-                img={require('../../assets/imgs/score.png')}
-                onClick={this.handleClick.bind(this, '/pointitem/pages/list', true)}
-              > 
-              </SpCell>
-            }
-            {/* {
+          {menuSetting.activity && (
+            <SpCell
+              title="活动预约"
+              isLink
+              img={require("../../assets/imgs/buy.png")}
+              onClick={() =>
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(
+                    this,
+                    "/marketing/pages/member/item-activity"
+                  )
+                )
+              }
+            ></SpCell>
+          )}
+          {score_menu_open && (
+            <SpCell
+              title={customName("积分商城")}
+              isLink
+              img={require("../../assets/imgs/score.png")}
+              onClick={() =>
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, "/pointitem/pages/list")
+                )
+              }
+            ></SpCell>
+          )}
+          {/* {
               menuSetting.activity && <SpCell
                 title='活动预约'
                 isLink
@@ -863,60 +764,73 @@ export default class MemberIndex extends Component {
               >
               </SpCell>
             }  */}
-            {/* <SpCell
+          {/* <SpCell
               title='入驻申请'
               isLink
               img='/assets/imgs/buy.png'
               onClick={this.handleClick.bind(this, '/subpage/pages/auth/store-reg')}
             >
             </SpCell>*/}
-          </View>
-          <View className="page-member-section">
-            {Taro.getEnv() !== "WEB" && (
-              <SpCell title="我要分享" isLink>
-                <Button className="btn-share" open-type="share"></Button>
-              </SpCell>
-            )}
+        </View>
+
+        <View className="page-member-section">
+          {Taro.getEnv() !== "WEB" && (
+            <SpCell title="我要分享" isLink>
+              <Button className="btn-share" open-type="share"></Button>
+            </SpCell>
+          )}
+          <SpCell
+            title="地址管理"
+            isLink
+            onClick={() =>
+              this.handleClickWxOAuth(
+                this.navigateTo.bind(this, "/marketing/pages/member/address")
+              )
+            }
+          ></SpCell>
+          <SpCell
+            title="个人信息"
+            isLink
+            onClick={() =>
+              this.handleClickWxOAuth(this.handleClickInfo.bind(this))
+            }
+          ></SpCell>
+          {process.env.TARO_ENV === "h5" && (
             <SpCell
-              title="地址管理"
+              title="设置"
               isLink
-              onClick={this.handleClick.bind(
-                this,
-                "/marketing/pages/member/address",
-                true
-              )}
+              onClick={() =>
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, "/marketing/pages/member/setting")
+                )
+              }
             ></SpCell>
-            <SpCell
-              title="个人信息"
-              isLink
-              onClick={this.handleClickInfo.bind(this)}
-            ></SpCell>
-            {process.env.TARO_ENV === "h5" && (
-              <SpCell
-                title="设置"
-                isLink
-                onClick={this.handleClick.bind(
-                  this,
-                  "/marketing/pages/member/setting",
-                  false
-                )}
-              ></SpCell>
-            )}
+          )}
+        </View>
+
+        {turntable_open === "1" ? (
+          <View
+            className="wheel-to"
+            onClick={() =>
+              this.handleClickWxOAuth(
+                this.navigateTo.bind(this, "/marketing/pages/wheel/index")
+              )
+            }
+          >
+            <Image src="/assets/imgs/wheel_modal_icon.png" />
           </View>
-          {turntable_open === "1" ? (
-            <View
-              className="wheel-to"
-              onClick={this.handleClick.bind(
-                this,
-                "/marketing/pages/wheel/index",
-                true
-              )}
-            >
-              <Image src="/assets/imgs/wheel_modal_icon.png" />
-            </View>
-          ) : null}
-        </ScrollView>
+        ) : null}
         <TabBar />
+
+        <SpFloatPrivacy
+          isOpened={showPrivacy}
+          onClose={() =>
+            this.setState({
+              showPrivacy: false,
+              showTimes: this.state.showTimes + 1
+            })
+          }
+        />
       </View>
     );
   }

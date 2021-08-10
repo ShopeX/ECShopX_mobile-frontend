@@ -10,6 +10,7 @@ import { FormIds, Tracker } from "@/service";
 import { youshuLogin } from '@/utils/youshu'
 import Index from './pages/index'
 import LBS from './utils/lbs'
+
 // import entry from '@/utils/entry'
 
 import "./app.scss";
@@ -32,7 +33,8 @@ const getHomeSetting = async () => {
     youshu = {},
     disk_driver = "qiniu",
     whitelist_status = false,
-    nostores_status = false
+    nostores_status = false,
+    distributor_param_status=false
   } = await api.shop.homeSetting();
 
   console.log("getHomeSetting1",echat);
@@ -48,7 +50,19 @@ const getHomeSetting = async () => {
     disk_driver,
     nostores_status,
     youshu
-  })  
+  })
+  // 分享时是否携带参数
+  Taro.setStorageSync("distributor_param_status", distributor_param_status);
+  console.log("APP_TRACK",youshu)
+  if (APP_TRACK) {
+    // const system = Taro.getSystemInfoSync();   
+    // if (!(system && system.environment && system.environment === "wxwork") && (youshu.app_id || youshu.sandbox_app_id)) {
+    //   console.log('----------------aa--------------')
+    //   console.log(Tracker)
+    //   Tracker.use(APP_TRACK);
+    //   youshuLogin();
+    // }
+  }
 };
 
 useHooks();
@@ -232,10 +246,10 @@ class App extends Component {
           "pages/plusprice/cart-plusprice-list"
         ],
         plugins: {
-          "live-player-plugin": {
-            "version": "1.2.10", // 填写该直播组件版本号
-            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          } 
+          // "live-player-plugin": {
+          //   "version": "1.2.10", // 填写该直播组件版本号
+          //   "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
+          // } 
           // "meiqia": {
           //   "version": "1.1.0",
           //   "provider": "wx2d2cd5fd79396601"
@@ -534,9 +548,7 @@ class App extends Component {
       );
   }
 
-  fetchColors() {
-    const url =
-      "/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=color_style";
+  async fetchColors() {
     const defaultColors = {
       data: [
         {
@@ -547,12 +559,26 @@ class App extends Component {
       ],
       name: "base"
     };
-    req.get(url).then(info => {
-      store.dispatch({
-        type: "colors",
-        payload: info.list.length ? info.list[0].params : defaultColors
-      });
+    const info = await api.shop.getPageParamsConfig( { page_name: 'color_style' } )
+    const themeColor = info.list.length ? info.list[0].params : defaultColors;
+    // 兼容老的主题
+    store.dispatch({
+      type: "colors",
+      payload: themeColor
     });
+    S.set("SYSTEM_THEME", {
+      colorPrimary: themeColor.data[0].primary,
+      colorMarketing: themeColor.data[0].marketing,
+      colorAccent: themeColor.data[0].accent
+    });
+
+
+    // req.get(`/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=color_style`).then(info => {
+    //   store.dispatch({
+    //     type: "colors",
+    //     payload: info.list.length ? info.list[0].params : defaultColors
+    //   });
+    // });
   }
 
   componentDidCatchError() {}

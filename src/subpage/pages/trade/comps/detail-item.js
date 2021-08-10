@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { copyText } from '@/utils'
+import { copyText,getThemeStyle } from '@/utils'
 import OrderItem from  '../../../../components/orderItem/order-item'
 
 
@@ -84,7 +84,7 @@ export default class DetailItem extends Component {
   render () {
     const { customHeader, customFooter, noHeader, onClick, info, isPointitem, showType } = this.props
     return (
-      <View className='detail-item'>
+      <View className='detail-item' style={getThemeStyle()}>
         {
           info && info[showType] && info[showType].map((item, idx) =>
             <View className='detail-item-good' key={`${idx}1`}>
@@ -130,6 +130,7 @@ export default class DetailItem extends Component {
                         type='primary'
                         size='small'
                         onClick={this.handleClickAfterSale.bind(this, item)}
+                        className={'customButton'}
                       >
                       售后详情
                     </AtButton>  

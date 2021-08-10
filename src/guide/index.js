@@ -60,31 +60,29 @@ export default class BaGuideHomeIndex extends Component {
       guideInfo: null
     };
   }
-  componentDidShow() {
-  }
+  componentDidShow() {}
   async componentWillMount() {
     const options = this.$router.params;
-    const res = await entry.entryLaunch(options, true);
-    console.log('[entry.entryLaunch]',res)
+    const res = await entry.entryLaunch(options, false); // 不能开启定位，直接读取导购带过来的店铺信息
+    console.log("[entry.entryLaunch]", res);
   }
-  async componentDidMount() {       
-    await S.autoLogin(this)
+  async componentDidMount() {
+    await S.autoLogin(this);
     const { version } = this.$router.params;
-    console.log('[挂件包] this.state.wgts',this.state.wgts)
+    console.log("[挂件包] this.state.wgts", this.state.wgts);
     //设置导购信息
-    this.guideInit(version)
+    this.guideInit(version);
   }
 
-  guideInit(version){
+  guideInit(version) {
     const guideInfo = S.get("GUIDE_INFO", true);
-    console.log('导购 - guideInit - guideInfo ',guideInfo)
+    console.log("导购 - guideInit - guideInfo ", guideInfo);
     this.setState({ guideInfo }, () => {
-      console.log('导购 - guideInit - fetchInfo ',version)
+      console.log("导购 - guideInit - fetchInfo ", version);
       this.fetchInfo(version);
       this.getStoreList();
     });
   }
-
 
   // async isAppWxWork() {
   //   let _this = this;
@@ -104,7 +102,7 @@ export default class BaGuideHomeIndex extends Component {
 
   //   this.getStoreList();
   // }
- 
+
   //客户群id
   // async getQyChatId() {
   //   let ground = null;
@@ -193,11 +191,11 @@ export default class BaGuideHomeIndex extends Component {
         tagnavIndex++;
         wgt_item.tagnavIndex = tagnavIndex;
       }
-    } );
-    console.log('info.config',info.config)
+    });
+    console.log("info.config", info.config);
     this.setState({
       wgts: info.config,
-      background: (bkg_item && bkg_item.config.background) || null,
+      background: (bkg_item && bkg_item.config.background) || null
       // scrollInputConfig
     });
   }
@@ -216,9 +214,8 @@ export default class BaGuideHomeIndex extends Component {
     this.setState({
       shopList: list
     });
-    console.log('[获取门店列表]-getStoreList',this.props.storeInfo)
-    if(!this.props.storeInfo)
-      this.props.updateStoreInfo(fd);
+    console.log("[获取门店列表]-getStoreList", this.props.storeInfo);
+    if (!this.props.storeInfo) this.props.updateStoreInfo(fd);
   }
 
   handleCloseCart = () => {
@@ -247,7 +244,7 @@ export default class BaGuideHomeIndex extends Component {
     });
   };
 
-  handleStoreConfirm = (index) => {
+  handleStoreConfirm = index => {
     const { shopList } = this.state;
     this.setState(
       {
@@ -269,28 +266,29 @@ export default class BaGuideHomeIndex extends Component {
       currentIndex,
       guideInfo
     } = this.state;
-    const isLoading = !wgts 
+    const isLoading = !wgts;
     const {
       homesearchfocus,
       showBuyPanel,
       goodsSkuInfo,
       storeInfo
     } = this.props;
-    const n_ht = S.get("navbar_height");    
+    const n_ht = S.get("navbar_height");
+    console.log("guideInfo0------->", guideInfo);
     return (
-      <View style='padding-top:70rpx' className={!isLoading ? "page-index" : ""}>
-        <BaNavBar
-          title="导购商城"
-          fixed
-          jumpType="home"
-          icon="in-icon in-icon-backhome"
-        />
+      <View
+        style="padding-top:70rpx"
+        className={!isLoading ? "page-index" : ""}
+      >
+        <BaNavBar title="导购商城" fixed icon="in-icon in-icon-backhome" />
         <View>
-          {guideInfo && <BaStore
-            onClick={this.handleOpenStore}
-            guideInfo={guideInfo}
-            defaultStore={storeInfo}
-          />}
+          {guideInfo && (
+            <BaStore
+              onClick={this.handleOpenStore}
+              guideInfo={guideInfo}
+              defaultStore={storeInfo}
+            />
+          )}
         </View>
         {isLoading ? (
           <Loading></Loading>

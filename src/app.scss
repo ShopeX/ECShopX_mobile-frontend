@@ -132,6 +132,11 @@ switch, .weui-switch {
   }
 }
 
-.img-class{
-  width: 100%;
+.sp-login {
+  .login-btn {
+    border-width: 0;
+    height: auto;
+    line-height: auto;
+    padding: 0;
+  }
 }

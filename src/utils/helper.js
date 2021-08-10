@@ -17,6 +17,16 @@ export const getDistributorId=()=>{
   return id;
 }
 
+export const getDtidIdUrl=(url,distributor_id)=>{
+  if(url.indexOf('dtid=')>-1){
+    return url;
+  }
+  const isShareDtid= Taro.getStorageSync("distributor_param_status")==true;
+  if(isShareDtid){
+    return url+`&dtid=${distributor_id}`
+  }
+  return url;
+}
 /*
  * @Author: Arvin
  * @GitHub: https://github.com/973749104

@@ -1,18 +1,27 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-import { withPager, withBackToTop } from '@/hocs'
-import { AtDrawer } from 'taro-ui'
-import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, SpNote, NavBar, TabBar } from '@/components'
-import api from '@/api'
+import Taro, { Component } from "@tarojs/taro";
+import { View, Text, ScrollView } from "@tarojs/components";
+import { connect } from "@tarojs/redux";
+import { withPager, withBackToTop } from "@/hocs";
+import { AtDrawer } from "taro-ui";
+import {
+  BackToTop,
+  Loading,
+  TagsBar,
+  FilterBar,
+  SearchBar,
+  GoodsItem,
+  SpNote,
+  NavBar,
+  TabBar
+} from "@/components";
+import api from "@/api";
 import S from "@/spx";
 import { Tracker } from "@/service";
-import { pickBy, classNames } from '@/utils'
+import { pickBy, classNames } from "@/utils";
 import entry from "../../utils/entry";
-import { BaNavBar } from '../components'
+import { BaNavBar } from "../components";
 
-
-import './list.scss'
+import "./list.scss";
 
 @connect(({ member, guide }) => ({
   favs: member.favs,
@@ -45,8 +54,7 @@ export default class List extends Component {
       selectParams: [],
       info: {},
       shareInfo: {},
-      isOpenStore: null,
-      jumpType: "item"
+      isOpenStore: null
     };
   }
 
@@ -57,22 +65,15 @@ export default class List extends Component {
       gu,
       sence
     } = this.$router.params;
-    //判断是否是从b端小程序跳转
-    let jumpType = "home";
-    if (gu || sence) {
-      jumpType = "home";
-    } else {
-      jumpType = "item";
-    }
+
     this.firstStatus = true;
     const isOpenStore = await entry.getStoreStatus();
-    const { store_id } = Taro.getStorageSync( "curStore" );
-    const { storeInfo } = this.props
+    const { store_id } = Taro.getStorageSync("curStore");
+    const { storeInfo } = this.props;
     this.setState({
-      isOpenStore,
-      jumpType
+      isOpenStore
     });
-    
+
     this.setState(
       {
         query: {
@@ -541,14 +542,13 @@ export default class List extends Component {
       curTagId,
       info,
       isShowSearch,
-      query,
-      jumpType
+      query
     } = this.state;
     const { isTabBar = "guide" } = this.$router.params;
     const navbar_height = S.get("navbar_height", true);
     return (
       <View className="page-goods-list">
-        <BaNavBar title="导购商城" fixed jumpType={jumpType} />
+        <BaNavBar title="导购商城" fixed />
         <View className="goods-list__toolbar" style={`top:${navbar_height}PX`}>
           <View
             className={`goods-list__search ${

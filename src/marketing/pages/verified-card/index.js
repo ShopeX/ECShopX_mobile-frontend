@@ -30,23 +30,7 @@ export default class Index extends Component {
         })
         this.fetch()
     }
-
-
-
-    // onShareAppMessage () {
-    //     const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
-    //     const { username, userId } = Taro.getStorageSync('userinfo')
-    //     const { info } = this.state
-
-    //     return {
-    //         title: extConfig.wxa_name,
-    //         imageUrl: info.shop_pic,
-    //         path: `/pages/index?uid=${userId}`
-    //     }
-    // }
-
-
-
+  
     handleClick = () => {
         let { status } = this.state.info
         if (status==3) {

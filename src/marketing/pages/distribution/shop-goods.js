@@ -5,7 +5,7 @@ import S from "@/spx";
 import api from "@/api";
 import { withPager, withBackToTop } from "@/hocs";
 import { classNames, pickBy, getCurrentRoute } from "@/utils";
-import { Tracker } from "@/service";
+import { getDtidIdUrl } from '@/utils/helper'
 import "./shop-goods.scss";
 
 @withPager
@@ -200,36 +200,17 @@ export default class DistributionShopGoods extends Component {
     }
   };
 
-  onShareAppMessage(res) {
-    console.log("--onShareAppMessage---",res)
-    const { from }=res;
+  onShareAppMessage(res) {  
     const { userId } = Taro.getStorageSync("userinfo");
     const { info } = res.target.dataset;
-    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-    //   ...info,
-    //   from_type:from,
-    //   shareType: "分享给好友"
-    // });
+ 
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}`
+      path: getDtidIdUrl(`/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,info.distributor_id)
     };
   }
-
-  // onShareTimeline (res) {
-  //   const { userId } = Taro.getStorageSync('userinfo')
-  //   const { info } = res.target.dataset
-
-  //   return {
-  //     title: info.title,
-  //     imageUrl: info.img,
-  //     query: {
-  //       id: info.item_id,
-  //       uid: userId
-  //     }
-  //   }
-  // }
+ 
 
   render() {
     const { list, goodsIds, page, scrollTop, query } = this.state;

@@ -19,10 +19,8 @@ export default function withPager(Component) {
       this.state.page = page
     }
 
-    nextPage = async () => {
-      console.log("---nextPage---")
-      const { page } = this.state
-      console.log("--page--",page)
+    nextPage = async () => { 
+      const { page } = this.state 
       if (!page.hasNext || page.isLoading) return
 
       // 上拉触底
