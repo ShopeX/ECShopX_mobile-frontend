@@ -51,26 +51,25 @@ export default class HomeWgts extends PureComponent {
 
     const { wgts } = this.props;
 
-    if (!wgts) return;
-
+    if (!wgts) return; 
     // const toExpose = wgts.map((t, idx) => String(idx))
 
-    const observer = Taro.createIntersectionObserver(this.$scope, { observeAll: true })
+    const observer = Taro.createIntersectionObserver({ observeAll: true })
 
-    observer.relativeToViewport({ bottom: 0 }).observe(".wgt-wrap", res => {
-      console.log("observer.relativeToViewport")
-      if (res.intersectionRatio > 0) {
-        const { name, idx } = res.dataset
-        if (name === "goodsGrid") {
-          const result = wgts.find((t, index) => index == idx);
-          if (result) {
-            result.data.forEach(goods => {
-              Tracker.dispatch("EXPOSE_SKU_COMPONENT", goods);
-            })
-          }
-        }
-      }
-    });
+    // observer.relativeToViewport({ bottom: 0 }).observe(".wgt-wrap", res => {
+     
+    //   if (res.intersectionRatio > 0) {
+    //     const { name, idx } = res.dataset
+    //     if (name === "goodsGrid") {
+    //       const result = wgts.find((t, index) => index == idx);
+    //       if (result) {
+    //         result.data.forEach(goods => {
+    //           Tracker.dispatch("EXPOSE_SKU_COMPONENT", goods);
+    //         })
+    //       }
+    //     }
+    //   }
+    // });
 
     this.observe = observer;
   }

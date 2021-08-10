@@ -76,7 +76,7 @@ export default class WgtSlider extends Component {
               autoplay
               current={curIdx}
               interval={config.interval}
-              duration={300}
+              duration={300000}
               onChange={this.handleSwiperChange}
             >
               {data.map((item, idx) => {
@@ -91,6 +91,7 @@ export default class WgtSlider extends Component {
                       style={`padding: 0 ${
                         config.padded ? Taro.pxTransform(20) : 0
                       }`}
+                      className={'wrapper-img'}
                       onClick={this.handleClickItem.bind(
                         this,
                         item.linkPage,

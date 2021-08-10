@@ -84,7 +84,7 @@
 
         .thumbnail {
           position: relative;
-
+          overflow: hidden;
           &::after {
             display: flex;
             padding-top: 100%;

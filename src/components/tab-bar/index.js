@@ -141,22 +141,23 @@ export default class TabBar extends Component {
   }
 
   handleClick = (current) => {
+    
     const cur = this.state.localCurrent
     const {showbar = true} = this.props
     if(!showbar){
       return false
     }
-
+    
     if (cur !== current) {
       const curTab = this.state.tabList[current]
       const { url, withLogin } = curTab
       const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+    
       if (withLogin && !S.getAuthToken()) {
         return Taro.navigateTo({
           url: APP_AUTH_PAGE
         })
-      }
-
+      } 
       if (url && fullPath !== url) {
         // if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
         //   Taro.navigateTo({ url })

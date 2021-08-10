@@ -484,8 +484,10 @@ export default class RecommendList extends Component {
                 value={multiIndex}
                 range={areaList}
               >
-                <View className='iconfont icon-periscope'></View>
-                <Text>{address || '地区'}</Text>
+                <View>
+                  <View className='iconfont icon-periscope'></View>
+                  <Text>{address || '地区'}</Text>
+                </View>
 							</Picker>
 							{address ? <Text className='icon-close' onClick={this.handleRegionRefresh.bind(this)}></Text> : ''}
             </View>

@@ -483,7 +483,7 @@ export default class List extends Component {
       isShowSearch,
       query
     } = this.state
-    const { isTabBar = '' } = this.$router.params
+    const { isTabBar = 'guide' } = this.$router.params
 		return (
 			<View className='page-goods-list'>
         {

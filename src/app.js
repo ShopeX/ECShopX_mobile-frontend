@@ -245,6 +245,7 @@ class App extends Component {
       {
         root: "subpage",
         pages: [
+          "pages/recommend/detail",
           "pages/trade/list",
           "pages/trade/customer-pickup-list",
           "pages/trade/drug-list",
@@ -260,8 +261,7 @@ class App extends Component {
           "pages/trade/refund-sendback",
           "pages/trade/invoice-list",
           "pages/cashier/index",
-          "pages/cashier/cashier-result",
-          "pages/recommend/detail",
+          "pages/cashier/cashier-result", 
           "pages/qrcode-buy",
           "pages/vip/vipgrades",
           "pages/auth/reg",

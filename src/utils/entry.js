@@ -241,7 +241,7 @@ async function getLocal(isNeedLocate) {
 }
 
 async function getLoc() {
-  if (process.env.TARO_ENV === "weapp") {
+  if (process.env.TARO_ENV === "weapp"||process.env.TARO_ENV === "alipay") {
     return await Taro.getLocation({ type: "gcj02" }).then(
       async locationData => {
         await InverseAnalysis(locationData);

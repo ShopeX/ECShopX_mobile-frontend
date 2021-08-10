@@ -14,11 +14,12 @@ export default function withLoadMore(Component) {
 
         startWrapperTrack() {
             this.endWrapperTrack();
-            const observer = Taro.createIntersectionObserver(this.$scope, {
-                observeAll: true
+            const observer = Taro.createIntersectionObserver({
+                selectAll: true
             });
+            console.log("observer",observer)
             const { type } = this.props;
-            let direction=type==='good-scroll'?'right':'bottom';
+            let direction=type==='good-scroll'?'right':'bottom'; 
             observer.relativeToViewport({ [direction]: 0}).observe(".lastItem", res => { 
                 if (res.intersectionRatio > 0) {
                     const { info: { data }, onLoadMore = () => { },index } = this.props;
