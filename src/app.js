@@ -181,7 +181,7 @@ class App extends Component {
 
       "pages/custom/custom-page"
     ],
-    subpackages: [
+    subPackages: [
       {
         root: "marketing",
         pages: [
