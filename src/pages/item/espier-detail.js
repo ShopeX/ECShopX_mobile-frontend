@@ -603,6 +603,7 @@ export default class Detail extends Component {
   }
 
   handleBuyAction = async (type) => {
+    console.log("handleBuyAction")
     if (type === 'cart') {
       this.fetchCartCount()
     }

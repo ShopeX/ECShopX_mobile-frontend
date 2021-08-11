@@ -57,7 +57,7 @@ export default class RecommendList extends Component {
           isChooseColumn: true
         }
       })
-    }
+    } 
     Taro.showLoading()
     this.resetPage()
     this.setState({

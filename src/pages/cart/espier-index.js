@@ -628,7 +628,7 @@ export default class CartIndex extends Component {
             //   </View>
             // )
           }
-          {remindInfo.is_open && (
+          {/* {remindInfo.is_open && (
             <View
               className={`${!S.getAuthToken() && "paddingTop"}`}
               style={`background: ${colors.data[0].primary}`}
@@ -637,7 +637,7 @@ export default class CartIndex extends Component {
                 {remindInfo.remind_content}
               </AtNoticebar>
             </View>
-          )}
+          )} */}
 
           {crossborder_show && (
             <View className="changeCross">
