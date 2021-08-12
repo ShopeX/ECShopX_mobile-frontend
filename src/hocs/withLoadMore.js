@@ -1,19 +1,20 @@
 import Taro, { Component } from "@tarojs/taro";
 
 export default function withLoadMore(Component) {
-    // let loadIndex=0;
+ 
     return class WithLoadMoreComponent extends Component {
         constructor(props) {
-            super(props);
-            
+            super(props);  
         }
 
         componentDidMount() { 
             this.startWrapperTrack();
+            this.setTimer && this.setTimer();
         }
 
         componentDidUpdate(){ 
             this.startWrapperTrack();
+           
         }
 
         startWrapperTrack() {
