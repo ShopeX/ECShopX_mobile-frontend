@@ -862,14 +862,15 @@ export default class CartIndex extends Component {
                               />
                             </View>
                           </View>
-                          <AtButton
+                          <Button
                             type="primary"
                             className="btn-checkout"
                             // disabled={totalItems <= 0}
+                            style={`background: ${colors.data[0].primary}`}
                             onClick={this.handleCheckoutToGuide}
                           >
                             为顾客下单
-                          </AtButton>
+                          </Button>
                         </View>
                       ) : (
                         <View className="cart-toolbar__bd">

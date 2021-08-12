@@ -43,7 +43,12 @@ const transformCartList = (list, params = {}) => {
       ...params
     }));
 };
-
+@connect(
+  ({ colors }) => ({
+    colors: colors.current
+  })
+  //dispatch => ({})
+)
 export default class EspireCheckout extends Component {
   // config = {
   //   navigationBarTitleText: "innisfree 导购商城"
@@ -95,12 +100,10 @@ export default class EspireCheckout extends Component {
       delete params.items;
       //原悦诗风吟计算金额逻辑
       // data = await api.cart.total(params);
-      
-      
+
       data = await api.guide.salesPromotion(params);
       data = data.valid_cart[0];
       cxdid = data.sales_promotion_id;
-
     } catch (e) {
       if (e.status_code === 422) {
         return Taro.navigateBack();
@@ -150,7 +153,7 @@ export default class EspireCheckout extends Component {
       items_count: totalItemNum,
       goodsItems: items,
       items_count: data.list.length,
-      goodsConst:0
+      goodsConst: 0
     };
 
     let cartlist = data.list;
@@ -169,8 +172,8 @@ export default class EspireCheckout extends Component {
       }
     });
     total.goodsItems = cartlist;
-    total.goodsConst = 0
-    cartlist.forEach(d=>total.goodsConst+=(d.num*1))
+    total.goodsConst = 0;
+    cartlist.forEach(d => (total.goodsConst += d.num * 1));
     this.setState({
       total,
       cartlist,
@@ -237,7 +240,7 @@ export default class EspireCheckout extends Component {
       let share_id = "888",
         wxshop_name = "wxshop_name",
         item_total = "2";
-        // gift_total = "3";
+      // gift_total = "3";
 
       const {
         giftslist,
@@ -260,9 +263,12 @@ export default class EspireCheckout extends Component {
       if (guideInfo && guideInfo.store_name) {
         wxshop_name = guideInfo.store_name;
       }
-      const extConfig = ( Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync ) ? wx.getExtConfigSync() : {}
-      const gu_user_id = Taro.getStorageSync( "work_userid" );
-      const gu = `${guideInfo.work_userid}_${guideInfo.shop_code}`; 
+      const extConfig =
+        Taro.getEnv() === "WEAPP" && wx.getExtConfigSync
+          ? wx.getExtConfigSync()
+          : {};
+      const gu_user_id = Taro.getStorageSync("work_userid");
+      const gu = `${guideInfo.work_userid}_${guideInfo.shop_code}`;
       const qrcode_params = `appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout&cxdid=${cxdid}&company_id=${guideInfo.company_id}&smid=${guideInfo.salesperson_id}&distributor_id=${guideInfo.distributor_id}&gu=${gu}`;
       const host = req.baseURL.replace("/api/h5app/wxapp/", "");
       // https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?temp_name=yykweishop&page=pages/cart/espier-checkout&company_id=1&cxdid=159&smid=78&distributor_id=103
@@ -584,15 +590,15 @@ export default class EspireCheckout extends Component {
     try {
       if (!res.authSetting["scope.writePhotosAlbum"]) {
         Taro.authorize({
-          scope: 'scope.writePhotosAlbum',
+          scope: "scope.writePhotosAlbum",
           success: async () => {
             await Taro.saveImageToPhotosAlbum({ filePath: poster });
             Taro.showToast({ title: "保存成功" });
           },
           fail: () => {
             Taro.showModal({
-              title: '提示',
-              content: '请打开保存到相册权限',
+              title: "提示",
+              content: "请打开保存到相册权限",
               success: async resConfirm => {
                 if (resConfirm.confirm) {
                   await Taro.openSetting();
@@ -605,15 +611,15 @@ export default class EspireCheckout extends Component {
                   }
                 }
               }
-            })
+            });
           }
-        })
+        });
       } else {
         await Taro.saveImageToPhotosAlbum({ filePath: poster });
         Taro.showToast({ title: "保存成功" });
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       Taro.showToast({ title: "保存失败", icon: "none" });
     }
   };
@@ -637,7 +643,8 @@ export default class EspireCheckout extends Component {
     } = this.state;
 
     const ipxClass = S.get("ipxClass") || "";
-    
+    const { colors } = this.props;
+
     return (
       <View className={`page-checkout ${ipxClass}`}>
         <View className="checkout__wrap">
@@ -872,6 +879,7 @@ export default class EspireCheckout extends Component {
               <AtButton
                 type="primary"
                 className="btn-confirm-order"
+                customStyle={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                 onClick={this.handleShare}
               >
                 分享订单
