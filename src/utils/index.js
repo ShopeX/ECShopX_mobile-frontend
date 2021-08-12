@@ -283,7 +283,8 @@ export const meiqiaInit = () => {
 export function tokenParse(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var arr_base64 = wx.base64ToArrayBuffer(base64);
+  console.log("Taro.base64ToArrayBuffer",Taro)
+  var arr_base64 = Taro.base64ToArrayBuffer(base64);
   arr_base64 = String.fromCharCode.apply(null, new Uint8Array(arr_base64));
   var jsonPayload = decodeURIComponent(
     arr_base64
