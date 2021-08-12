@@ -44,7 +44,7 @@ export default class MoreImg extends Component {
 
     render() {
 
-        const { dataLength = 0, config:{moreLink = {}}, base = {},more } = this.props;  
+        const { dataLength = 0, config:{moreLink = {}}={}, base = {},more } = this.props;  
 
         return (dataLength < 50 || (dataLength===50 && more===false) || dataLength>51) && moreLink.id && (<View className={classNames('more_img')} onClick={this.handleClickMore}>
             <View className='img'>
