@@ -450,3 +450,5 @@ export {
   getQueryVariable,
   validColor
 };
+
+export * from './platform';

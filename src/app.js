@@ -173,7 +173,7 @@ class App extends Component {
 
       // "pages/article/index",
       "pages/recommend/list",
-      // "pages/member/index",
+      "pages/member/index",
       // "pages/member/item-fav",
       // "pages/store/index",
       // "pages/store/list",

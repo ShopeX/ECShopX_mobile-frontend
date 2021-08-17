@@ -1,6 +1,6 @@
 import Taro from "@tarojs/taro";
 import api from "@/api";
-import { getCurrentRoute, log, isGoodsShelves, showToast } from "@/utils";
+import { isWeixin, isAlipay, log, isGoodsShelves, showToast } from "@/utils";
 import configStore from "@/store";
 
 const globalData = {};
@@ -156,8 +156,8 @@ class Spx {
     remove(fns, fn);
   }
 
-  async OAuthWxUserProfile( fn, require ) {
-    if ( !this.getAuthToken() ) {
+  async OAuthWxUserProfile(fn, require) {
+    if (!this.getAuthToken()) {
       showToast('请先登录')
       return
     }
@@ -236,10 +236,21 @@ class Spx {
   }
 
   async login(ctx, isRedirect = false) {
-    const { code } = await Taro.login()
-    const { token } = await api.wx.login( { code } )
-    if ( token ) {
-      this.setAuthToken( token, true )
+    let code, token;
+    if (isWeixin) {
+      const resLogin = await Taro.login() || {};
+      code=resLogin.code;
+      const tokenLogin = await api.wx.login({ code }) || {}
+      token=tokenLogin.token;
+    } else if (isAlipay) {
+      const authLogin=await my.getAuthCode({scopes: ['auth_base']});
+      code=authLogin.authCode; 
+      console.log("code",code)
+      const tokenLogin=await api.alipay.login({ code })
+      token=tokenLogin.token;
+    } 
+    if (token) {
+      this.setAuthToken(token, true)
       const userInfo = await this.getMemberInfo();
       return userInfo
     } else {

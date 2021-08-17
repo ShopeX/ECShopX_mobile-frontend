@@ -282,6 +282,7 @@ export default class MemberIndex extends Component {
     if ( this.state.showTimes >= 1 ) {
       fn && fn();
     } else {
+      console.log("this.props.memberData",this.props.memberData);
       const { avatar, username } = this.props.memberData.memberInfo;
       if (avatar && username) {
         fn && fn();
