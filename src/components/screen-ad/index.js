@@ -12,7 +12,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Video } from '@tarojs/components'
 import api from '@/api'
 import { connect } from '@tarojs/redux'
-import { linkPage } from '../../pages/home/wgts/helper'
+import { linkPage } from '@/pages/home/wgts/helper'
 
 import './index.scss'
 

@@ -24,16 +24,20 @@ export default class WgtGoodsScroll extends Component {
     };
   }
 
-  componentDidMount() {
+  setTimer(){
+    console.log("---setTimer---")
     const { info } = this.props;
-    const { config } = info;
-
+    const { config } = info; 
     if (config.lastSeconds) {
       const timer = calcTimer(config.lastSeconds);
       this.setState({
         timer
       });
     }
+  }
+
+  componentDidMount() {
+    this.setTimer() 
   }
 
   navigateTo(url) {
@@ -66,7 +70,7 @@ export default class WgtGoodsScroll extends Component {
 
   handleClickMore = () => {
     const { config } = this.props.info;
-    const { moreLink } = config; 
+    const { moreLink={} } = config; 
     if (moreLink) {
       linkPage(moreLink.linkPage, moreLink);
     } else {
@@ -75,6 +79,7 @@ export default class WgtGoodsScroll extends Component {
   };
 
   render() {
+ 
     const { info } = this.props;
     if (!info) {
       return null;
