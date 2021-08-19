@@ -13,3 +13,7 @@ export const getAppId = () => {
 
     return appid
 }
+
+export const closeClassName=isWeixin?'at-icon at-icon-close':'iconfont icon-close';
+
+export const checkClassName=isWeixin?'at-icon at-icon-check':'iconfont icon-check';

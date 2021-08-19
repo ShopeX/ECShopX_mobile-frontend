@@ -6,7 +6,7 @@ import { connect } from "@tarojs/redux";
 // import find from 'lodash/find'
 import { Price, SpLogin } from "@/components";
 import InputNumber from "@/components/input-number";
-import { classNames, pickBy, log } from "@/utils";
+import { classNames, pickBy, log,closeClassName } from "@/utils";
 import { Tracker } from "@/service";
 import api from "@/api";
 import { floor } from "lodash";
@@ -562,7 +562,7 @@ export default class GoodsBuyPanel extends Component {
 
         <View className="goods-buy-panel__wrap">
           <View
-            className="at-icon at-icon-close"
+            className={closeClassName}
             onClick={() => this.toggleShow(false)}
           />
           <View className="goods-buy-panel__hd">

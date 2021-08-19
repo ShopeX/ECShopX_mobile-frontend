@@ -1,5 +1,12 @@
 .img-hotzone {
   position: relative;
+  /*  #ifdef  alipay  */
+  .img-class {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
   &_img {
     display: block;
     width: 100%;

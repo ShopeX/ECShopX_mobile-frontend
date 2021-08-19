@@ -13,7 +13,6 @@ import './edit-address.scss'
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 export default class AddressIndex extends Component {
   constructor (props) {
     super(props)
@@ -298,14 +297,14 @@ export default class AddressIndex extends Component {
               value={info.telephone}
               onChange={this.handleChange.bind(this, 'telephone')}
             />
-            <Picker
+            {/* <Picker
               mode='multiSelector'
               onClick={this.handleClickPicker}
               onChange={this.bindMultiPickerChange}
               onColumnChange={this.bindMultiPickerColumnChange}
               value={multiIndex}
               range={areaList}
-            >
+            > */}
               <View className='picker'>
                 <View className='picker__title'>所在区域</View>
                 {
@@ -320,7 +319,7 @@ export default class AddressIndex extends Component {
                     </View>
                 }
               </View>
-            </Picker>
+            {/* </Picker> */}
 
             <AtInput
               title='详细地址'

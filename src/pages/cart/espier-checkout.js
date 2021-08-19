@@ -22,7 +22,8 @@ import {
   authSetting,
   normalizeQuerys,
   redirectUrl,
-  buriedPoint
+  buriedPoint,
+  isAlipay
 } from "@/utils";
 import { lockScreen } from "@/utils/dom";
 import { Tracker } from "@/service";
@@ -1706,7 +1707,7 @@ export default class CartCheckout extends Component {
             </SpCell>
           )}
           {/* type !== 'limited_time_sale' */}
-          {type !== "group" && type !== "seckill" && !bargain_id && !this.isPointitemGood() && (
+          {type !== "group" && type !== "seckill" && !bargain_id && !this.isPointitemGood() && !isAlipay && (
             <SpCell
               isLink
               className="coupons-list"

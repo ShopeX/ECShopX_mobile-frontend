@@ -18,6 +18,15 @@
       top: 50%;
       margin-top: -15px;
     }
+    /*  #ifdef  alipay  */
+    .icon-close {
+      font-size: 30px;
+      color: #555;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      margin-top: -15px;
+    }
     .rule-title {
       color: $color-gray;
       font-size: 26px;

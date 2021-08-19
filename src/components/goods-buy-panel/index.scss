@@ -116,6 +116,15 @@
     z-index: 10;
     padding: 16px;
   }
+      /*  #ifdef  alipay  */
+      .icon-close {
+        position: absolute;
+        right: $edge-size - 8px;
+        top: $edge-size - 8px;
+        color: $color-gray;
+        z-index: 10;
+        padding: 16px;
+      }
 
   .goods-img {
     width: 140px;

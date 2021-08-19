@@ -7,7 +7,7 @@ import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavB
 import api from '@/api'
 import req from '@/api/req'
 import { withPager, withBackToTop,withPointitem } from '@/hocs'
-import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys, buriedPoint } from '@/utils'
+import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys, buriedPoint,isAlipay } from '@/utils'
 import entry from '@/utils/entry'
 import S from '@/spx'
 import { Tracker } from "@/service"
@@ -1170,7 +1170,7 @@ export default class Detail extends Component {
                 <Text className="goods-title">{info.item_name}</Text>
                 <Text className="goods-title__desc">{info.brief}</Text>
               </View>
-              {Taro.getEnv() !== "WEB" && !this.isPointitem() && (
+              {Taro.getEnv() !== "WEB" && !this.isPointitem() && !isAlipay && (
                 <View
                   className="goods-share__wrap"
                   onClick={this.handleShare.bind(this)}
@@ -1181,7 +1181,7 @@ export default class Detail extends Component {
               )}
             </View>
 
-            {!info.is_gift && info.vipgrade_guide_title ? (
+            {!info.is_gift && info.vipgrade_guide_title && !isAlipay ? (
               <VipGuide
                 info={{
                   ...info.vipgrade_guide_title,
@@ -1303,7 +1303,7 @@ export default class Detail extends Component {
               </View>
             )}
 
-          {!info.is_gift && !this.isPointitemGood() && (
+          {!info.is_gift && !this.isPointitemGood() && !isAlipay && (
             <SpCell
               className="goods-sec-specs"
               title="领券"
@@ -1457,9 +1457,9 @@ export default class Detail extends Component {
             icon="home1"
             onClick={this.handleBackHome.bind(this)}
           />
-          {meiqia.is_open === "true" ||
+          {isAlipay ? null :(meiqia.is_open === "true" ||
           echat.is_open === "true" ||
-          Taro.getEnv() === "WEB" ? (
+          Taro.getEnv() === "WEB") ? (
             <FloatMenuMeiQia
               storeId={info.distributor_id}
               info={{ goodId: info.item_id, goodName: info.itemName }}
