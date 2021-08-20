@@ -138,14 +138,13 @@ export default class SpLogin extends Component {
       success:async  (res) => {
         const encryptedData = res.response;
 
-        const { authCode } = await my.getAuthCode({ scopes: ['auth_base'] });
-
-        console.log("---authCode--", authCode)
+        const { authCode } = await my.getAuthCode({ scopes: ['auth_base'] }); 
 
         const params = {
           encryptedData,
           code: authCode
         }
+        
         this.setSalespersonId(params);
 
         const { token } = await api.alipay.newlogin(params);

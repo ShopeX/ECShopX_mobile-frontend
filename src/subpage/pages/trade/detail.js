@@ -3,7 +3,7 @@ import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, NavBar, FloatMenuMeiQia } from '@/components'
-import { log, pickBy, formatDataTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
+import { log, pickBy, formatDataTime, resolveOrderStatus, copyText, getCurrentRoute,copy } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { Tracker } from "@/service"
 import api from '@/api'
@@ -533,9 +533,7 @@ export default class TradeDetail extends Component {
 
   // 复制orderid
   copyOrderId = (orderid) => {
-    Taro.setClipboardData({
-      data: orderid
-    })
+    copy(orderid);
   }
 
   render () {

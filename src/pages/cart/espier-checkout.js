@@ -1317,20 +1317,38 @@ export default class CartCheckout extends Component {
     }
 
     payErr = null;
-    console.log("-----configCheckout-----",config) 
+    console.log("-----configCheckout-----",config,total,config) 
     try {  
       const { total } = this.state; 
-      const notNeedPay=total.freight_type==='cash' && !config.package;
+      const notNeedPay=total.freight_type==='cash' && !config.package; 
+      //需要使用支付宝支付
+      const isAlipayRequirePay=isAlipay && this.state.payType==='wxpay';
       
       let payRes; 
-      if(!notNeedPay){
+      if(!notNeedPay || isAlipayRequirePay){
+
         Tracker.dispatch("ORDER_PAY", {
           ...total,
           ...config,
           timeStamp:config.order_created,
         });
-  
-        payRes = await Taro.requestPayment(config); 
+
+        console.log("我需要支付")
+
+        if(isAlipay){
+          payRes = await my.tradePay({tradeNO:config.trade_no}); 
+        }else{
+          payRes = await Taro.requestPayment(config); 
+        }  
+      }
+
+      if(!payRes.result){
+        Taro.showToast({  
+          title:"用户取消支付",
+          icon: "none"
+        });
+
+        payErr='用户取消支付'
       }
       
       // 支付上报
@@ -1338,7 +1356,7 @@ export default class CartCheckout extends Component {
       log.debug(`[order pay]: `, payRes);
     } catch (e) {
       payErr = e;
-      console.log(e)
+      console.log("我发生错误",e)
       // Taro.showToast({
       //   //title: e.err_desc || e.errMsg || "支付失败",
       //   title:"支付失败",
