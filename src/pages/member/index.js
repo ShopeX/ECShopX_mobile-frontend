@@ -16,7 +16,8 @@ import { withLogin } from "@/hocs";
 import {
   navigateTo,
   getThemeStyle,
-  classNames
+  classNames,
+  isAlipay
 } from "@/utils";
 import {
   customName
@@ -626,7 +627,7 @@ export default class MemberIndex extends Component {
           </View>
         )}
 
-        <View className="page-member-section">
+        {!isAlipay && <View className="page-member-section">
           {memberData.is_open_popularize && (
             <SpCell
               title={!memberData.is_promoter ? "我要推广" : "推广管理"}
@@ -773,7 +774,7 @@ export default class MemberIndex extends Component {
               onClick={this.handleClick.bind(this, '/subpage/pages/auth/store-reg')}
             >
             </SpCell>*/}
-        </View>
+        </View>}
 
         <View className="page-member-section">
           {Taro.getEnv() !== "WEB" && (
