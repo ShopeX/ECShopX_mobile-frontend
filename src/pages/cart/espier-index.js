@@ -587,9 +587,9 @@ export default class CartIndex extends Component {
     const { list, showLikeList, colors } = this.props;
     console.log("groups", groups);
 
-    if (loading) {
-      return <Loading />;
-    }
+    // if (loading) {
+    //   return <Loading />;
+    // }
     const { type = "distributor" } = this.$router.params;
     const isDrug = type === "drug";
     const isEmpty = !list.length;
