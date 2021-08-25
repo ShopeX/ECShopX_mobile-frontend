@@ -32,6 +32,7 @@ async function entryLaunch(data, isNeedLocate) {
     store = await handleDistributorId(options.dtid);
     dtidValid = store.status ? false : true;
   }
+
   debugger
 
   // 如果需要定位,并且店铺无效，
@@ -205,6 +206,7 @@ async function getLocalSetting() {
 async function getLocal(isNeedLocate) {
   let store = null;
   const positionStatus = await getLocalSetting();
+  debugger
   if (!positionStatus) {
     store = await api.shop.getShop();
   } else {

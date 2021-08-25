@@ -16,6 +16,7 @@ import throttle from 'lodash/throttle'
 import log from './log'
 import canvasExp from './canvasExp'
 import calCommonExp from './calCommonExp'
+import entryLaunch from './entryLaunch'
 
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
 
@@ -447,5 +448,6 @@ export {
   calCommonExp,
   canvasExp,
   getQueryVariable,
-  validColor
+  validColor,
+  entryLaunch
 };

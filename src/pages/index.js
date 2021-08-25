@@ -41,7 +41,6 @@ import "./home/index.scss";
       dispatch({ type: "cart/updateCount", payload: count })
   })
 )
-
 @withPager
 @withBackToTop
 export default class Home extends Component {
@@ -82,6 +81,13 @@ export default class Home extends Component {
     };
   }
 
+  // 配置信息
+  config = {
+    enablePullDownRefresh: true,
+    backgroundTextStyle: "dark",
+    onReachBottomDistance: 50
+  };
+  
   componentDidMount() {
     this.getHomeSetting();
     this.getShareSetting();
@@ -113,13 +119,6 @@ export default class Home extends Component {
     this.fetchCartCount();
     this.getPointSetting();
   }
-
-  // 配置信息
-  config = {
-    enablePullDownRefresh: true,
-    backgroundTextStyle: "dark",
-    onReachBottomDistance: 50
-  };
 
   // 下拉刷新
   onPullDownRefresh = () => {
