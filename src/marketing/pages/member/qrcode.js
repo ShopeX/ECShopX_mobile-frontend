@@ -30,7 +30,8 @@ export default class QRcode extends Component {
   handleClick = () => {
     const {card_id, user_card_id, code} = this.state
     Taro.redirectTo({
-      url: `/marketing/pages/member/new-gift-list?card_id=${card_id}&code=${code}&user_card_id=${user_card_id}`
+      url: `/pages/item/list?card_id=${card_id}&code=${code}&user_card_id=${user_card_id}&isNewGift=true`
+      // url: `/marketing/pages/member/new-gift-list?card_id=${card_id}&code=${code}&user_card_id=${user_card_id}`
     })
   }
 
