@@ -413,7 +413,6 @@ export default class PackageItem extends Component {
           <View class='package-goods__item-footer'>
             <View className='package-amount'>组合价：<Text className='amount-number'>¥{packageTotalPrice}</Text></View>
             <AtButton
-              type='primary'
               className='package-add-cart'
               size='small'
               onClick={this.handleAddCart.bind(this)}

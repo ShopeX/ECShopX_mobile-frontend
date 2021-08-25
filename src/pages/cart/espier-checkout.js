@@ -350,7 +350,7 @@ export default class CartCheckout extends Component {
     isOpenStore && Taro.setStorageSync('selectShop', shopInfo)
     this.setState({
       curStore: shopInfo,
-      receiptType: selectShop ? 'ziti' : shopInfo.is_delivery ? "logistics" : "ziti",
+      receiptType: selectShop ? 'ziti' : (shopInfo.is_delivery||id==0) ? "logistics" : "ziti",
       express: selectShop ? false : shopInfo.is_delivery ? true : false,
     }, () => {
       isOpenStore && this.calcOrder()
