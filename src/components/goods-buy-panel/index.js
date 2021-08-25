@@ -460,6 +460,20 @@ export default class GoodsBuyPanel extends Component {
     }
   }
 
+  //获得最大购物数量
+  getMaxNum=()=>{
+    const { curSku }=this.state;
+    const { info,marketing }=this.props;
+    const curSkus = this.noSpecs ? info : curSku; 
+    const maxStore = +( curSkus ? curSkus.store : info.store || 99999 ); 
+    if(marketing==='group'){
+      return 1;
+    }else if(marketing==='seckill'){
+      return info.limit_num;
+    }
+    return maxStore;
+  }
+
   render() {
     // packItem={packagePrices}
     //                 mainItem={mainPackagePrice}
@@ -471,8 +485,7 @@ export default class GoodsBuyPanel extends Component {
       isPackage,
       packItem,
       mainpackItem,
-      isPointitem,
-      marketing
+      isPointitem
     } = this.props;
     const {
       curImg,
@@ -489,11 +502,11 @@ export default class GoodsBuyPanel extends Component {
       return null;
     }
 
+    console.log("--info--",info)
+
     const { special_type } = info;
     const isDrug = special_type === "drug";
-    const curSkus = this.noSpecs ? info : curSku;
-
-    const maxStore = +( curSkus ? curSkus.store : info.store || 99999 );
+    const curSkus = this.noSpecs ? info : curSku; 
     const hasStore = curSkus ? curSkus.store > 0 : info.store > 0;
 
     let price = "",
@@ -700,7 +713,7 @@ export default class GoodsBuyPanel extends Component {
                 <View className="goods-quantity__bd">
                   <InputNumber
                     min={1}
-                    max={marketing==='group'?1:maxStore}
+                    max={this.getMaxNum()}
                     value={quantity}
                     onChange={this.handleQuantityChange.bind(this)}
                   />
