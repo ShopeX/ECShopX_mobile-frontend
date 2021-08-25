@@ -915,8 +915,7 @@ export default class Detail extends Component {
   //订阅通知
   handleSubscription = async () => {
 
-    if(this.isPointitemGood()){
-      console.log("this.isPointitemGood()")
+    if(this.isPointitemGood()||isAlipay){ 
       return ;
     }
 
@@ -1518,7 +1517,7 @@ export default class Detail extends Component {
               ) : (
                 <View
                   style={`background: ${
-                    this.isPointitemGood()
+                    (this.isPointitemGood()||isAlipay)
                       ? "grey"
                       : !isSubscribeGoods
                       ? colors.data[0].primary
@@ -1532,7 +1531,9 @@ export default class Detail extends Component {
                     ? "已兑完"
                     : isSubscribeGoods
                     ? "已订阅到货通知"
-                    : "到货通知"}
+                    : isAlipay
+                    ? "暂无可售"
+                    :"到货通知"}
                 </View>
               )}
             </View>
