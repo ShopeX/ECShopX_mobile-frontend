@@ -317,7 +317,6 @@ export default class Home extends Component {
   // 获取首页配置
   getHomeSetting = async () => {
     entryLaunch.getLocationInfo()
-    debugger
 
     const is_open_store_status = await entry.getStoreStatus();
     const {

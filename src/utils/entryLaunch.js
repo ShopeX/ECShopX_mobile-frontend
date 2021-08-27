@@ -59,25 +59,27 @@ class EntryLaunch {
         
       } else {
         console.log(process.env.APP_MAP_KEY, process.env.APP_MAP_NAME);
-        const geolocation = new qq.maps.Geolocation(
-          process.env.APP_MAP_KEY,
-          "ecshopx-saas"
-        );
-        geolocation.getIpLocation(
+        const geolocation = new qq.maps.Geolocation();
+        // geolocation.getIpLocation(
+        //   res => {
+        //     debugger;
+        //   },
+        //   error => {
+        //     debugger;
+        //   }
+        // );
+        geolocation.getLocation(
           res => {
             debugger;
           },
           error => {
-            debugger;
-          }
+            debugger
+            console.error(error);
+            showToast("获取定位失败");
+            reject();
+          },
+          { timeout: 9000 }
         );
-        geolocation.getLocation( res => {
-          debugger
-        }, error => {
-          console.error( error )
-          showToast( '获取定位失败' )
-          reject()
-        })
       }
     })
 

@@ -33,7 +33,6 @@ async function entryLaunch(data, isNeedLocate) {
     dtidValid = store.status ? false : true;
   }
 
-  debugger
 
   // 如果需要定位,并且店铺无效，
   if (!dtidValid) {
