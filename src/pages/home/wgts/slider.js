@@ -38,7 +38,7 @@ export default class WgtSlider extends Component {
     const { current } = e.detail;
     this.setState({
       curIdx: current,
-      index: e.target.current
+      // index: e.target.current
     });
   };
 
@@ -97,12 +97,12 @@ export default class WgtSlider extends Component {
                         item
                       )}
                     >
-                      <WgtPlateType
+                      {/* <WgtPlateType
                         info={item}
                         index={index}
                         num={idx}
                         base={base}
-                      />
+                      /> */}
                       <SpImg
                         img-class="slider-item__img"
                         src={item.imgUrl}

@@ -49,8 +49,15 @@ export function getPageParamsConfig({
   });
 }
 
-
 // 获取tabbars和小程序配置
 export function getAppConfig() {
   return req.get("/pagestemplate/setInfo");
+}
+
+export function getShopTemplate(params) {
+  return req.get( `/pagestemplate/detail`, {
+    template_name: 'yykweishop',
+    weapp_pages: 'index',
+    ...params
+  });
 }

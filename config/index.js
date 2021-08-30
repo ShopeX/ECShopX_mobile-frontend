@@ -169,6 +169,14 @@ const config = {
     router: {
       mode: "browser"
     },
+    // devServer: {
+    //   https: {
+    //     key: "../cert/ecshopx-server.key",
+    //     cert: "../cert/ecshopx-server.crt",
+    //     // passphrase: "webpack-dev-server",
+    //     requestCert: true
+    //   }
+    // },
     postcss: {
       autoprefixer: {
         enable: true,

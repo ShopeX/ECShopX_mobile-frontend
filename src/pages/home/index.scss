@@ -1,17 +1,25 @@
-@import "../../style/imports";
-
 .page-index {
   position: relative;
   background: #fff;
   box-sizing: border-box;
-  .home-header {
+
+  .header-block {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
     position: fixed;
     top: 0;
-    left: 0;
     right: 0;
-    height: $home-header-height;
-    z-index: 99;
+    left: 0;
+    height: 80px;
+    background: #fff;
+    z-index: 1000;
+    .block-bd {
+      display: flex;
+      align-items: center;
+    }
   }
+
   .add_tip {
     display: flex;
     position: fixed;
@@ -39,6 +47,7 @@
     }
 
   }
+
   .add_tip:after {
     content: '';
     display: inline-block;
@@ -51,6 +60,7 @@
     width: 0;
     height: 0;
   }
+
   .float-menus {
     display: flex;
     flex-direction: column;
@@ -64,6 +74,7 @@
       box-shadow: 0 0 20px rgba(0,0,0,.2);
     }
   }
+  
   .at-noticebar {
     background: inherit;
     color: inherit;
@@ -79,9 +90,11 @@
 
   .wgts-wrap {
     $self: &;
-    padding-top: $home-header-height;
     padding-bottom: $tabbar-height;
     background: #fff;
+    &.has-header-block {
+      padding-top: 80px;
+    }
     /*  #ifdef  h5  */
     .taro-img {
       width: 100%;

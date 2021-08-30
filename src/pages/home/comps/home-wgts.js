@@ -33,8 +33,10 @@ export default class HomeWgts extends PureComponent {
     Taro.getSystemInfo().then(res => {
       this.setState({
         screenWidth: res.screenWidth
-      });
-      this.startTrack();
+      } );
+      if ( process.env.TARO_ENV == "weapp" ) {
+        this.startTrack();
+      }
     });
   }
 

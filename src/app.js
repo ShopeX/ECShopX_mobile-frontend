@@ -46,6 +46,7 @@ const getHomeSetting = async () => {
   Taro.setStorageSync("otherSetting", {
     whitelist_status,
     nostores_status,
+    openStore: !nostores_status,
     disk_driver,
     youshu
   })

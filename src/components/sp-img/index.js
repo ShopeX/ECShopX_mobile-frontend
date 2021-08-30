@@ -1,13 +1,3 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: img组件
- * @FilePath: /unite-vshop/src/components/sp-img/index.js
- * @Date: 2020-03-04 17:27:15
- * @LastEditors: Arvin
- * @LastEditTime: 2021-01-12 17:37:18
- */
 import Taro, { Component } from '@tarojs/taro'
 import { Image } from '@tarojs/components'
 

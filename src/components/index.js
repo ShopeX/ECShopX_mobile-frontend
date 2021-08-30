@@ -44,6 +44,9 @@ export { default as PointLine } from './point-line'
 export { default as PointTag } from './point-tag'
 export { default as SpMoreImg } from './more-img'
 export { default as SpLogin } from "./sp-login";
+
+export { default as SpScancode } from "./sp-scancode";
+export { default as SpStorePicker } from "./sp-store-picker";
 export { default as SpFloatPrivacy } from "./sp-float-privacy";
 
 

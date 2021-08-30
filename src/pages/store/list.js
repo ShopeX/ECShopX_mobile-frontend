@@ -1,13 +1,3 @@
-/*
- * @Author: PrendsMoi
- * @GitHub: https://github.com/PrendsMoi
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/pages/store/list.js
- * @Date: 2021-05-06 17:14:15
- * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-20 14:49:49
- */
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Picker, Input, Image } from '@tarojs/components'
 import { NavBar, Loading, SpNote } from '@/components'

@@ -9,7 +9,9 @@ import {
   FloatMenus,
   FloatMenuItem,
   AccountOfficial,
-  ScreenAd
+  ScreenAd,
+  SpStorePicker,
+  SpScancode
 } from "@/components";
 import req from "@/api/req";
 import api from "@/api";
@@ -87,27 +89,28 @@ export default class Home extends Component {
     backgroundTextStyle: "dark",
     onReachBottomDistance: 50
   };
-  
+
   componentDidMount() {
+    this.getWgts()
     this.getHomeSetting();
-    this.getShareSetting();
-    this.isShowTips();
+    // this.getShareSetting();
+    // this.isShowTips();
   }
 
   // 检测收藏变化
-  componentWillReceiveProps(next) {
-    if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
-      setTimeout(() => {
-        const likeList = this.state.likeList.map(item => {
-          item.is_fav = Boolean(next.favs[item.item_id]);
-          return item;
-        });
-        this.setState({
-          likeList
-        });
-      });
-    }
-  }
+  // componentWillReceiveProps(next) {
+  //   if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
+  //     setTimeout(() => {
+  //       const likeList = this.state.likeList.map(item => {
+  //         item.is_fav = Boolean(next.favs[item.item_id]);
+  //         return item;
+  //       });
+  //       this.setState({
+  //         likeList
+  //       });
+  //     });
+  //   }
+  // }
 
   componentDidShow() {
     this.showInit();
@@ -316,38 +319,48 @@ export default class Home extends Component {
 
   // 获取首页配置
   getHomeSetting = async () => {
-    entryLaunch.getLocationInfo()
+    const { distributor_id } = await entryLaunch.getCurrentStore();
+    this.getWgts(distributor_id);
 
-    const is_open_store_status = await entry.getStoreStatus();
-    const {
-      is_open_recommend,
-      is_open_scan_qrcode,
-      is_open_wechatapp_location,
-      is_open_official_account
-    } = Taro.getStorageSync("settingInfo");
-    const isNeedLoacate = is_open_wechatapp_location == 1;
-    const options = this.$router.params;
-    options.isStore = is_open_store_status;
-    const res = await entry.entryLaunch(options, isNeedLoacate);
-    const { store } = res;
+    // const is_open_store_status = await entry.getStoreStatus();
+    // const {
+    //   is_open_recommend,
+    //   is_open_scan_qrcode,
+    //   is_open_wechatapp_location,
+    //   is_open_official_account
+    // } = Taro.getStorageSync("settingInfo");
+    // const isNeedLoacate = is_open_wechatapp_location == 1;
+    // const options = this.$router.params;
+    // options.isStore = is_open_store_status;
+    // const res = await entry.entryLaunch(options, isNeedLoacate);
+    // const { store } = res;
 
-    if (!isArray(store)) {
-      this.setState(
-        {
-          curStore: store,
-          is_open_recommend,
-          is_open_scan_qrcode,
-          is_open_store_status,
-          is_open_wechatapp_location,
-          is_open_official_account
-        },
-        () => {
-          this.getWgts();
-          this.getAutoMatic();
-        }
-      );
-    }
+    // if (!isArray(store)) {
+    //   this.setState(
+    //     {
+    //       curStore: store,
+    //       is_open_recommend,
+    //       is_open_scan_qrcode,
+    //       is_open_store_status,
+    //       is_open_wechatapp_location,
+    //       is_open_official_account
+    //     },
+    //     () => {
+    //       this.getWgts();
+    //       this.getAutoMatic();
+    //     }
+    //   );
+    // }
   };
+
+  async getWgts(id) {
+    const { config } = await api.shop.getShopTemplate({
+      distributor_id: id || 0
+    });
+    this.setState({
+      wgts: config
+    });
+  }
 
   //获取店铺id
   getDistributionId = () => {
@@ -366,60 +379,60 @@ export default class Home extends Component {
   };
 
   // 获取挂件配置
-  getWgts = async () => {
-    const { curStore, is_open_store_status, is_open_recommend } = this.state;
-    let curdis_id =
-      curStore && is_open_store_status
-        ? curStore.store_id
-        : curStore.distributor_id;
-    if (!curStore.distributor_id && curStore.distributor_id !== 0) {
-      return;
-    }
-    if (process.env.APP_PLATFORM === "platform") {
-      curdis_id = 0;
-    }
-    const url = `/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=${curdis_id}`;
-    const info = await req.get(url);
-    const wgts = isArray(info) ? [] : info.config;
-    const wgtsList = isArray(info) ? [] : info.list;
-    this.setState(
-      {
-        wgts: wgts.length > 5 ? wgts.slice(0, 5) : wgts,
-        wgtsList
-      },
-      () => {
-        // 0.5s后补足缺失挂件
-        setTimeout(() => {
-          this.setState({
-            wgts,
-            wgtsList
-          });
-        }, 500);
-        Taro.stopPullDownRefresh();
-        if (!isArray(info) && info.config) {
-          const searchWgt = info.config.find(item => item.name == "search");
-          this.setState({
-            positionStatus:
-              searchWgt && searchWgt.config && searchWgt.config.fixTop
-          });
-          if (is_open_recommend === 1) {
-            this.props.onUpdateLikeList(true);
-            this.resetPage();
-            this.setState(
-              {
-                likeList: []
-              },
-              () => {
-                this.nextPage();
-              }
-            );
-          } else {
-            this.props.onUpdateLikeList(false);
-          }
-        }
-      }
-    );
-  };
+  // getWgts = async () => {
+  //   const { curStore, is_open_store_status, is_open_recommend } = this.state;
+  //   let curdis_id =
+  //     curStore && is_open_store_status
+  //       ? curStore.store_id
+  //       : curStore.distributor_id;
+  //   if (!curStore.distributor_id && curStore.distributor_id !== 0) {
+  //     return;
+  //   }
+  //   if (process.env.APP_PLATFORM === "platform") {
+  //     curdis_id = 0;
+  //   }
+  //   const url = `/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=${curdis_id}`;
+  //   const info = await req.get(url);
+  //   const wgts = isArray(info) ? [] : info.config;
+  //   const wgtsList = isArray(info) ? [] : info.list;
+  //   this.setState(
+  //     {
+  //       wgts: wgts.length > 5 ? wgts.slice(0, 5) : wgts,
+  //       wgtsList
+  //     },
+  //     () => {
+  //       // 0.5s后补足缺失挂件
+  //       setTimeout(() => {
+  //         this.setState({
+  //           wgts,
+  //           wgtsList
+  //         });
+  //       }, 500);
+  //       Taro.stopPullDownRefresh();
+  //       if (!isArray(info) && info.config) {
+  //         const searchWgt = info.config.find(item => item.name == "search");
+  //         this.setState({
+  //           positionStatus:
+  //             searchWgt && searchWgt.config && searchWgt.config.fixTop
+  //         });
+  //         if (is_open_recommend === 1) {
+  //           this.props.onUpdateLikeList(true);
+  //           this.resetPage();
+  //           this.setState(
+  //             {
+  //               likeList: []
+  //             },
+  //             () => {
+  //               this.nextPage();
+  //             }
+  //           );
+  //         } else {
+  //           this.props.onUpdateLikeList(false);
+  //         }
+  //       }
+  //     }
+  //   );
+  // };
 
   // 获取弹窗广告配置
   getAutoMatic = async () => {
@@ -602,7 +615,6 @@ export default class Home extends Component {
       likeList,
       page,
       is_open_official_account,
-      is_open_scan_qrcode,
       is_open_store_status,
       show_official
     } = this.state;
@@ -616,6 +628,8 @@ export default class Home extends Component {
     // 否是fixed
     const isFixed = positionStatus;
 
+    const { is_open_scan_qrcode } = Taro.getStorageSync( "settingInfo" );
+    const { openStore } = Taro.getStorageSync("otherSetting");
     return (
       <View className="page-index">
         {/* 公众号关注组件 */}
@@ -627,27 +641,28 @@ export default class Home extends Component {
           ></AccountOfficial>
         )}
 
-        {isStandard && curStore && (
+        {/* {isStandard && curStore && (
           <HeaderHome
             store={curStore}
             onClickItem={this.goStore.bind(this)}
             isOpenScanQrcode={is_open_scan_qrcode}
             isOpenStoreStatus={is_open_store_status}
           />
+        )} */}
+
+        {(openStore || is_open_scan_qrcode) && (
+          <View className="header-block">
+            <View className="block-bd">{openStore && <SpStorePicker />}</View>
+            <View className="block-bd">
+              {is_open_scan_qrcode && <SpScancode />}
+            </View>
+          </View>
         )}
 
-        <View className="header-block"></View>
-
         <View
-          className={classNames(
-            "wgts-wrap",
-            !isStandard && "wgts-wrap_platform",
-            !isFixed || !isStandard
-              ? "wgts-wrap__fixed"
-              : "wgts-wrap__fixed_standard",
-            !curStore && "wgts-wrap-nolocation",
-            !isFixed && !isStandard && "platform"
-          )}
+          className={classNames("wgts-wrap", {
+            "has-header-block": openStore || is_open_scan_qrcode
+          })}
         >
           <View className="wgts-wrap__cont">
             {/* 挂件内容 */}
@@ -705,7 +720,7 @@ export default class Home extends Component {
           show={showBackToTop}
           onClick={this.scrollBackToTop.bind(this)}
         />
-        {/* addTip */}
+
         {isShowAddTip && (
           <View className="add_tip">
             <View class="tip-text">
