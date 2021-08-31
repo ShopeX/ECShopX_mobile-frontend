@@ -3,11 +3,11 @@ import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, NavBar, FloatMenuMeiQia } from '@/components'
-import { log, pickBy, formatDataTime, resolveOrderStatus, copyText, getCurrentRoute,copy } from '@/utils'
+import { log, pickBy, formatDataTime,payPlatform, resolveOrderStatus, copyText, getCurrentRoute,copy } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { Tracker } from "@/service"
 import api from '@/api'
-import { TracksPayed } from '@/utils/youshu'
+import { TracksPayed } from '@/utils/youshu' 
 import S from '@/spx'
 import { customName } from '@/utils/point'
 import DetailItem from './comps/detail-item'
@@ -289,10 +289,13 @@ export default class TradeDetail extends Component {
         ...config,
         timeStamp:config.order_info.create_time,
       }); 
-      const payRes = await Taro.requestPayment(config)
+
+      const resObj = await payPlatform(config); 
+      
+      payErr=resObj.payErr;
       // 支付上报
      
-      log.debug(`[order pay]: `, payRes)
+      log.debug(`[order pay]: `, resObj.payRes)
     } catch (e) {
       payErr = e
       if (e.errMsg.indexOf('cancel') < 0) {

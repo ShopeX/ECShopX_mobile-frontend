@@ -4,9 +4,10 @@ import { SpToast, Loading, BackToTop, NavBar } from '@/components'
 import req from '@/api/req'
 import { withBackToTop } from '@/hocs'
 import S from "@/spx";
-import { buriedPoint } from '@/utils'
+import { buriedPoint,platformTemplateName } from '@/utils'
 import { getDistributorId } from "@/utils/helper";
 import HomeWgts from '../home/comps/home-wgts'
+import qs from 'qs';
 import './custom-page.scss'
 
 @withBackToTop
@@ -25,7 +26,13 @@ export default class HomeIndex extends Component {
 
   async componentDidMount () {
     const { id } = this.$router.params
-    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${id}&name=search`
+    const pathparams=qs.stringify({
+      template_name:platformTemplateName,
+      version:'v1.0.1',
+      page_name:`custom_${id}`,
+      name:'search'
+    })
+    const url = `/alipay/pageparams/setting?${pathparams}`
     const fixSetting = await req.get(url)
 
     this.setState({
@@ -42,7 +49,7 @@ export default class HomeIndex extends Component {
   async fetchInfo () {
     const { id } = this.$router.params
     const dtid = getDistributorId();
-    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${id}&distributor_id=${dtid}`
+    const url = `/alipay/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${id}&distributor_id=${dtid}`
     const info = await req.get(url)
 
     if (!S.getAuthToken()) {

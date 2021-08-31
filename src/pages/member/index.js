@@ -17,8 +17,10 @@ import {
   navigateTo,
   getThemeStyle,
   classNames,
-  isAlipay
+  isAlipay,
+  platformTemplateName
 } from "@/utils";
+import qs from 'qs';
 import {
   customName
 } from '@/utils/point';
@@ -189,7 +191,12 @@ export default class MemberIndex extends Component {
 
   // 获取积分个人信息跳转
   async fetchRedirect() {
-    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=member_center_redirect_setting`;
+    const pathparams=qs.stringify({
+      template_name:platformTemplateName,
+      version:'v1.0.1',
+      page_name:'member_center_redirect_setting'
+    })
+    const url = `/alipay/pageparams/setting?${pathparams}`;
     const { list = [] } = await req.get(url);
     if (list[0].params) {
       this.setState({

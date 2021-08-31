@@ -76,11 +76,7 @@ export default class Detail extends Component {
   getBoostDetail = async () => {
     Taro.showLoading({mask: true})
     const { bargain_id } = this.$router.params
-    // const data = await api.boost.getDetail({
-    //   template_name: 'yykweishop',
-    //   name: 'banner',
-    //   page_name: 'pages/kanjia'
-    // })
+  
     const {
       bargain_info = {},
       user_bargain_info = {},

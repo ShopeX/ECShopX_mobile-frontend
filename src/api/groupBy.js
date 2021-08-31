@@ -21,7 +21,7 @@ export const info = (param = {}) => req.get('/member', param)
 export const identity = (param = {}) => req.get('/distributor', param)
 
 // 获取模版
-export const getTemplate = (param = {}) => req.get('/pageparams/setting', param)
+export const getTemplate = (param = {}) => req.get('/alipay/pageparams/setting', param)
 
 // promotionArticles
 export const promotionArticles = (param = {}) => req.get('/promotion/articles', param)

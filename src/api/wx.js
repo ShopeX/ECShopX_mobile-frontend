@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import req from './req'
 import { getYoushuAppid } from '@/utils/youshu'
+import { payTypeField } from '@/utils'
 
 const getAppId = () => {
   const { appid } = Taro.getExtConfigSync
@@ -120,6 +121,7 @@ export function refreshToken() {
 //加载更多商品
 export function loadMoreGoods (params) {
   return req.get(`/pagestemplate/detail`,{
-    ...params
+    ...params,
+    ...payTypeField
   })
 }

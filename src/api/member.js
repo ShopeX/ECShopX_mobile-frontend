@@ -1,4 +1,5 @@
 import req from './req'
+import { platformTemplateName } from '@/utils'
 
 export function memberInfo () {
   return req.get('/member')
@@ -350,8 +351,8 @@ export function getCrmsetting () {
 
 // 配置地址
 export function getSettingCenter () {
-  return req.get('/pageparams/setting', {
-    template_name: 'yykweishop',
+  return req.get('/alipay/pageparams/setting', {
+    template_name:platformTemplateName,
     version: 'v1.0.1',
     page_name: 'member_center_menu_setting'
   })

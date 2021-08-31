@@ -5,12 +5,13 @@ import { connect } from "@tarojs/redux";
 import req from '@/api/req'
 import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
-import { buriedPoint } from '@/utils'
+import { buriedPoint,platformTemplateName } from '@/utils'
 import { getDtidIdUrl } from '@/utils/helper'
 import {
   BaHomeWgts
 } from "../components";
 import './custom-page.scss'
+import qs from 'qs';
 
 
 @connect(
@@ -35,8 +36,14 @@ export default class HomeIndex extends Component {
 
   async componentDidMount() {
     const { id } = this.$router.params;
-    console.log('[guide/custom/custom-page-componentDidMount-params]',this.$router.params)
-    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${id}&name=search`;
+     
+    const pathparams=qs.stringify({
+      template_name:platformTemplateName,
+      version:'v1.0.1',
+      page_name:`custom_${id}`,
+      name:search
+    })
+    const url = `/alipay/pageparams/setting?${pathparams}`;
     const fixSetting = await req.get(url);
 
     this.setState(
@@ -60,7 +67,12 @@ export default class HomeIndex extends Component {
 
   async fetchInfo() {
     const { id } = this.$router.params;
-    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${id}`;
+    const pathparams=qs.stringify({
+      template_name:platformTemplateName,
+      version:'v1.0.1',
+      page_name:`custom_${id}`,
+    })
+    const url = `/alipay/pageparams/setting?${pathparams}`;
     const info = await req.get(url);
 
     if (!S.getAuthToken()) {

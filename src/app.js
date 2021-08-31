@@ -5,9 +5,10 @@ import configStore from "@/store";
 import useHooks from "@/hooks";
 import req from "@/api/req";
 import api from "@/api";
-import { normalizeQuerys, isGoodsShelves } from "@/utils";
+import { normalizeQuerys, isGoodsShelves,payTypeField } from "@/utils";
 import { FormIds, Tracker } from "@/service";
 import { youshuLogin } from '@/utils/youshu'
+import qs from 'qs';
 import Index from './pages/index'
 import LBS from './utils/lbs'
 
@@ -518,8 +519,8 @@ class App extends Component {
       ],
       name: "tabs"
     };
-
-    const setUrl = "/pagestemplate/setInfo";
+    const paramsurl=qs.stringify(payTypeField)
+    const setUrl = `/pagestemplate/setInfo?${paramsurl}`;
     req
       .get(setUrl)
       .then(
@@ -572,13 +573,7 @@ class App extends Component {
       colorAccent: themeColor.data[0].accent
     });
 
-
-    // req.get(`/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=color_style`).then(info => {
-    //   store.dispatch({
-    //     type: "colors",
-    //     payload: info.list.length ? info.list[0].params : defaultColors
-    //   });
-    // });
+ 
   }
 
   componentDidCatchError() {}

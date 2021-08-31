@@ -3,7 +3,7 @@ import { View, Image, ScrollView, Text } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
 import { Loading } from "@/components";
 import api from "@/api";
-import { pickBy, styleNames, resolveFavsList } from "@/utils";
+import { pickBy, styleNames, platformTemplateName } from "@/utils";
 import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
 import entry from "@/utils/entry";
@@ -168,9 +168,9 @@ export default class BaGuideHomeIndex extends Component {
   //初始化首页模版
   async fetchInfo(version = "v1.0.1") {
     console.log("初始化首页模版-fetchInfo-version", version);
-    // const url = `/pageparams/setting?template_name=yykweishopamore&version=${version}&page_name=dgindex`;
+     
     let params = {
-      template_name: "yykweishop",
+      template_name:platformTemplateName,
       version: version,
       page_name: "custom_salesperson",
       company_id: 1

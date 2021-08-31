@@ -1357,8 +1357,7 @@ export default class CartCheckout extends Component {
         });
       }
       
-      // 支付上报
-     
+      // 支付上报 
       log.debug(`[order pay]: `, payRes);
     } catch (e) {
       payErr = e;

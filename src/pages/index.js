@@ -1,6 +1,7 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
+import qs from 'qs';
 import {
   TabBar,
   Loading,
@@ -13,7 +14,7 @@ import {
 } from "@/components";
 import req from "@/api/req";
 import api from "@/api";
-import { pickBy, classNames, isArray,isAlipay } from "@/utils";
+import { pickBy, classNames, isArray,isAlipay,payTypeField,platformTemplateName } from "@/utils";
 import entry from "@/utils/entry";
 import { withLogin, withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
@@ -372,7 +373,14 @@ export default class Home extends Component {
     if (APP_PLATFORM === 'platform'||isAlipay) {
       curdis_id=0;
     }
-    const url = `/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=${curdis_id}`;
+
+    let pathparams=qs.stringify({
+      template_name:platformTemplateName,
+      weapp_pages:'index',
+      distributor_id:curdis_id,
+      ...payTypeField
+    }) 
+    const url = `/pagestemplate/detail?${pathparams}`;
     const info = await req.get(url);
     const wgts = isArray(info) ? [] : info.config;
     const wgtsList=isArray(info)? [] : info.list;
@@ -544,7 +552,8 @@ export default class Home extends Component {
     if(isAlipay) return ;
     const { id }=this.state.wgtsList.find((_,index)=>currentIndex===index)||{}
     this.currentLoadIndex=currentIndex;
-    let params={template_name:'yykweishop',weapp_pages:'index',page:1,page_size:currentLength+50,weapp_setting_id:id,...this.getDistributionId()};
+  
+    let params={template_name:platformTemplateName,weapp_pages:'index',page:1,page_size:currentLength+50,weapp_setting_id:id,...this.getDistributionId()};
     if(isAlipay){
       delete params.weapp_setting_id
     }
