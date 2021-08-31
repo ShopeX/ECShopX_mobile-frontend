@@ -106,13 +106,16 @@ export default class SpLogin extends Component {
             url: "/marketing/pages/member/userinfo"
           } );
         }
+        
+        Taro.eventCenter.trigger("sp-event:login");
+
         this.props.onChange && this.props.onChange();
       }
     }
   }
 
   handleOnChange() {
-    this.props.onChange();
+    this.props.onChange && this.props.onChange();
   }
 
   render() {

@@ -4,7 +4,7 @@ import { View, Text, Image, Button, ScrollView } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
 // import { AtInputNumber } from 'taro-ui'
 // import find from 'lodash/find'
-import { Price, SpLogin } from "@/components";
+import { Price } from "@/components";
 import InputNumber from "@/components/input-number";
 import { classNames, pickBy, log } from "@/utils";
 import { Tracker } from "@/service";
@@ -727,8 +727,8 @@ export default class GoodsBuyPanel extends Component {
                 hasStore &&
                 (!curSkus ||
                   (curSkus && curSkus.approve_status === "onsale")) && (
-                  <SpLogin
-                    onChange={this.handleBuyClick.bind(
+                  <View
+                    onClick={this.handleBuyClick.bind(
                       this,
                       "cart",
                       curSkus,
@@ -748,14 +748,14 @@ export default class GoodsBuyPanel extends Component {
                     >
                       {isDrug ? "加入药品清单" : "加入购物车"}
                     </Button>
-                  </SpLogin>
+                  </View>
                 )}
               {type === "fastbuy" &&
                 hasStore &&
                 (!curSkus ||
                   (curSkus && curSkus.approve_status === "onsale")) && (
-                  <SpLogin
-                    onChange={this.handleBuyClick.bind(
+                  <View
+                    onClick={this.handleBuyClick.bind(
                       this,
                       "fastbuy",
                       curSkus,
@@ -775,7 +775,7 @@ export default class GoodsBuyPanel extends Component {
                     >
                       {fastBuyText}
                     </Button>
-                  </SpLogin>
+                  </View>
                 )}
               {type === "pick" &&
                 hasStore &&

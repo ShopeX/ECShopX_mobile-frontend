@@ -156,7 +156,11 @@ export default class Detail extends Component {
     buriedPoint.call(this, {
       item_id: id,
       event_type: 'activeItemDetail'
-    })
+    } )
+    
+    Taro.eventCenter.on( "sp-event:login", () => {
+      this.fetchInfo()
+    });
   }
 
   static options = {
