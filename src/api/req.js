@@ -127,6 +127,7 @@ class API {
     } else {
       // nest data
       if(isAlipay && options.method==='DELETE'){
+        options.url = addQuery(options.url, qs.stringify(options.data));
         options.data=options.data;
         options.dataType='json';
         options.headers=options.header;
@@ -157,7 +158,8 @@ class API {
     let resData = {};
     let isRefreshing = false;
     let requests = [];
-    console.log("---options---",options)
+
+    
     return Taro.request(options)
       .then(res => {
         resData = res;
