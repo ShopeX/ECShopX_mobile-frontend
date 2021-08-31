@@ -668,7 +668,7 @@ export default class List extends Component {
             <Image
               mode='aspectFill'
               className='banner-img'
-              src={require('../../assets/imgs/black.png')}
+              src={`${APP_IMAGE_CDN}/black.png`}
             />
           </View>
           <Header useInfo={useInfo} />

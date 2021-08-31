@@ -6,14 +6,13 @@ import api from '@/api'
 import { connect } from '@tarojs/redux'
 import { withPager } from '@/hocs'
 import { pickBy } from '@/utils'
-
-import './coupon.scss'
+import './coupon-nullify.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 @withPager
-export default class Coupon extends Component {
+export default class CouponNullify extends Component {
   constructor (props) {
     super(props)
 
@@ -21,60 +20,35 @@ export default class Coupon extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '全部', status: '1', type: ''},
-        {title: '满减券', status: '1', type: 'cash'},
-        {title: '折扣券', status: '1', type: 'discount'},
-        {title: '兑换券', status: '1', type: 'new_gift'}
+        {title: '已使用', status: '2', type: ''},
+        {title: '已过期', status: '3', type: ''}
+      ],
+      couponTab:[
+        {id: 1, title: '首页', val: `/pages/index`},
+        {id: 2, title: '领券中心', val: `/others/pages/home/coupon-home`}
       ],
       list: [],
       curId: null
     }
   }
 
-  // componentDidMount () {
-  //   this.setState({
-  //     list: []
-  //   })
-  //   const tabIdx = this.state.tabList.findIndex(tab => tab.status === '1')
+  componentDidMount () {
+    const tabIdx = this.state.tabList.findIndex(tab => tab.status === '2')
 
-  //   if (tabIdx >= 0) {
-  //     this.setState({
-  //       curTabIdx: tabIdx
-  //     }, () => {
-  //       this.nextPage()
-  //     })
-  //   } else {
-  //     this.nextPage()
-  //   }
-  // }
-
-  componentDidShow () {
-    this.setState({
-      list: []
-    })
-    const { curTabIdx, tabList } = this.state
-    const status = tabList[curTabIdx].status
-    const card_type = tabList[curTabIdx].type
-    const params = {
-      card_type: card_type,
-      page: 1,
-      pageSize: 10,
-      page_no: 1,
-      page_size: 10,
-      status: status
+    if (tabIdx >= 0) {
+      this.setState({
+        curTabIdx: tabIdx
+      }, () => {
+        this.nextPage()
+      })
+    } else {
+      this.nextPage()
     }
-    this.fetch(params)
   }
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const { curTabIdx, tabList } = this.state
-    // let vaildStatus
-    // if(curTabIdx === 0) {
-    //   vaildStatus = true
-    // }else {
-    //   vaildStatus = false
-    // }
     const status = tabList[curTabIdx].status
     const card_type = tabList[curTabIdx].type
     params = {
@@ -84,7 +58,6 @@ export default class Coupon extends Component {
       pageSize,
       card_type
     }
-
     const { list, total_count: total } = await api.member.getUserCardList(params)
     const nList = pickBy(list, {
       id: 'id',
@@ -128,48 +101,16 @@ export default class Coupon extends Component {
     })
   }
 
-  handleClick = (item) => {
-    let time = parseInt(new Date().getTime() / 1000)
-    let begin_date = new Date(item.begin_date) / 1000
-    const { card_id, code, card_type, status, tagClass, id } = item
-    if (status === '2' || tagClass === 'overdue' || tagClass == 'notstarted' || time < begin_date) {
-      return false
-    }
-    let url = `/pages/item/list?cardId=${card_id}`
-    if (card_type === 'new_gift') {
-      if (status == 1) {
-        url = `/pages/item/list?card_id=${card_id}&code=${code}&user_card_id=${id}&isNewGift=true`
-      } else {
-        url = `/marketing/pages/member/qrcode?card_id=${card_id}&code=${code}&user_card_id=${id}`
-      }
-    }
+  onHandleClick = (params) => {
     Taro.navigateTo({
-      url
+      url: params
     })
   }
-
-  handleCouponClick = () => {
-    Taro.navigateTo({
-      url: `/others/pages/home/coupon-home`
-    })
-  }
-
-  handleCouponClick1 = () => {
-    Taro.navigateTo({
-      url: `/others/pages/nullify/coupon-nullify`
-    })
-  }
-
-  /*handleClickChecked = (id) => {
-    this.setState({
-      curId: id
-    })
-  }*/
-
 
   render () {
-    const { curTabIdx, tabList, list, page } = this.state
+    const { curTabIdx, tabList, list, page, couponTab } = this.state
     const { colors }=this.props
+    const status = tabList[curTabIdx].status
 
     return (
       <View className='coupon-list'>
@@ -205,21 +146,17 @@ export default class Coupon extends Component {
           <View className='coupon-list-ticket'>
             {
               list.map(item => {
-                let begin_date = new Date(item.begin_date) / 1000
+                let end_date = new Date(item.end_date) / 1000
                 let time = parseInt(new Date().getTime() / 1000)
                 return (
                   <CouponItem
                     info={item}
                     key={item.id}
-                    onHandleClick={this.handleClick.bind(this, item)}
                   >
                     <View>
-                      {(item.card_type === 'cash' || item.card_type === 'discount') ? '去使用' : ''}
-                      {(item.card_type === 'new_gift' && item.status == 1 && item.tagClass == 'notstarted') ? '未开始' : ''}
-                      {(item.card_type === 'new_gift' && item.tagClass != 'notstarted') ?
-                        (item.status == 10 ? '待核销' :
-                          item.status == 1 && time > begin_date ? '待使用' :
-                          item.status == 1 && time < begin_date ? '未开始' : '') : ''}
+                      {/* {item.status == 2 ? '已使用' : item.status == 3 ? '已过期' : '' } */}
+                      {item.status == 2 ? '已使用' : '' }
+                      {time > end_date ? '已过期' : '' }
                     </View>
                   </CouponItem>
                 )
@@ -229,16 +166,27 @@ export default class Coupon extends Component {
               page.isLoading && <Loading>正在加载...</Loading>
             }
             {
-              !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>)
+              !page.isLoading && !page.hasNext && !list.length &&
+              (<SpNote img={`${APP_IMAGE_CDN}/coupon_exist.png`} isUrl>{status == 2 ? '没有已使用优惠券哦，赶紧去使用叭' : ''}</SpNote>)
             }
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <View className='coupon-tab'>
+                {couponTab.map((item, idx)=>{
+                  let {title, val} = item
+                  return (
+                    <View
+                      key={item.id}
+                      onClick={this.onHandleClick.bind(this, val)}
+                      className={`content ${idx != 0 ? 'yellow' : 'gray'}`}
+                    >
+                      {title}
+                    </View>
+                  )
+                })}
+              </View>
+            )}
           </View>
         </ScrollView>
-        <View className='coupon-bottom'>
-          <View className='left'  onClick={this.handleCouponClick1.bind(this)}>优惠券使用记录</View>
-          <View className='middle'>｜</View>
-          <View className='right' onClick={this.handleCouponClick.bind(this)}>前往领券中心<Image className='icon' src={`${APP_IMAGE_CDN}/coupon_right_icon.png`} /></View>
-        </View>
       </View>
     )
   }

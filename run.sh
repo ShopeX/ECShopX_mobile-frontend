@@ -42,6 +42,7 @@ then
     home_page=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^home_page/{print $3}')
     map_key=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^map_key/{print $3}')
     map_name=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^map_name/{print $3}')
+    image_cdn=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^image_cdn/{print $3}')
     break
   done
     else
@@ -55,6 +56,7 @@ then
       home_page=${8}
       map_key=${9}
       map_name=${10}
+      image_cdn=${11}
     fi
 
 # version=$(git describe --tags `git rev-list --tags --max-count=1`)
@@ -102,6 +104,7 @@ APP_YOUSHU_TOKEN=bi281e87ab2424481a
 APP_ID=wx912913df9fef6ddd
 APP_MAP_KEY='${map_key}'
 APP_MAP_NAME='${map_name}'
+APP_IMAGE_CDN='${image_cdn}'
 ' > ./.env
 
 echo "请选择编译方式"

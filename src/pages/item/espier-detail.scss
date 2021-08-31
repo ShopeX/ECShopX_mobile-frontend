@@ -60,7 +60,11 @@
       box-sizing: border-box;
       padding-bottom: $toolbar-height;
     }
-  
+    
+    &__bottom {
+      padding-bottom: 160px !important;
+    }
+
     &__content {
       padding: $edge-size;
       box-sizing: border-box;
@@ -761,6 +765,27 @@
     &.limit {
       background: #eaeaea;
       color: #c3c3c3;
+    }
+  }
+  .btn-new-gift {
+    width: 100vw;
+    height: 110px;
+    padding: 15px 5vw 0 5vw;
+    background: #FFFFFF;
+    position: fixed;
+    bottom: 0;
+    .btn-content {
+      width: 90vw;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      font-size: 30px;
+      font-weight: 600;
+      color: #FFFFFF;
+      text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.14);
+      background: #F4811F;
+      box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+      border-radius: 40px;
     }
   }
 }

@@ -20,7 +20,7 @@ const {
   APP_ID,
   APP_YOUSHU_TOKEN,
   APP_IMAGE_CDN
-} = process.env;
+} = process.env
 
 // 是否为web
 const isWeb = TARO_ENV === "h5";
