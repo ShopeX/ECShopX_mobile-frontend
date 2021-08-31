@@ -146,8 +146,6 @@ export default class CouponNullify extends Component {
           <View className='coupon-list-ticket'>
             {
               list.map(item => {
-                let end_date = new Date(item.end_date) / 1000
-                let time = parseInt(new Date().getTime() / 1000)
                 return (
                   <CouponItem
                     info={item}
@@ -156,7 +154,7 @@ export default class CouponNullify extends Component {
                     <View>
                       {/* {item.status == 2 ? '已使用' : item.status == 3 ? '已过期' : '' } */}
                       {item.status == 2 ? '已使用' : '' }
-                      {time > end_date ? '已过期' : '' }
+                      {item.tagClass == 'overdue' ? '已过期' : '' }
                     </View>
                   </CouponItem>
                 )
