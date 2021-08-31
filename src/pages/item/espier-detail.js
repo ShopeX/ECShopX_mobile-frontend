@@ -904,17 +904,25 @@ export default class Detail extends Component {
     })
   }
   handleClickViewAllEvaluation() {
+    let url = `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
+    if ( this.isPointitemGood() ) {
+      url += `&order_type=pointsmall`
+    }
     Taro.navigateTo({
-      url: `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
-    })
+      url: url
+    });
   }
 
   handleToRateList = () => {
     const { evaluationTotal } = this.state
-    if (evaluationTotal > 0) {
+    if ( evaluationTotal > 0 ) {
+      let url = `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`;
+      if (this.isPointitemGood()) {
+        url += `&order_type=pointsmall`;
+      }
       Taro.navigateTo({
-        url: '/marketing/pages/item/espier-evaluation?id=' + this.$router.params.id
-      })
+        url: url
+      });
     }
   }
   
