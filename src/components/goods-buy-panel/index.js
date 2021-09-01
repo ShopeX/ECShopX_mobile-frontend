@@ -464,12 +464,13 @@ export default class GoodsBuyPanel extends Component {
   getMaxNum=()=>{
     const { curSku }=this.state;
     const { info,marketing }=this.props;
-    const curSkus = this.noSpecs ? info : curSku; 
+    const curSkus = this.noSpecs ? info : curSku;  
+
     const maxStore = +( curSkus ? curSkus.store : info.store || 99999 ); 
     if(marketing==='group'){
       return 1;
     }else if(marketing==='seckill'){
-      return info.limit_num;
+      return curSkus?curSkus.limit_num:info.limit_num;
     }
     return maxStore;
   }
