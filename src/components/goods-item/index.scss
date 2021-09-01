@@ -29,6 +29,9 @@ $item-img-size: 240px !default;
   }
   &__cont {
     padding: 20px;
+    position: relative;
+    z-index: 9999;
+    background: #FFFFFF;
   }
   &__img {
     display: block;
@@ -194,5 +197,27 @@ $item-img-size: 240px !default;
   .taxText {
     color: #666;
     font-size: 20px;
+  }
+  &__over {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    z-index: 999;
+  }
+  &__label {
+    width: 140rpx;
+    height: 140rpx;
+    background: rgba(0, 0, 0, 0.5);
+    margin: 30% auto 0;
+    font-size: 30rpx;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 140rpx;
+    border-radius: 50%;
+    text-align: center;
+  }
+  &__gray {
+    color: #BBBBBB !important;
   }
 }

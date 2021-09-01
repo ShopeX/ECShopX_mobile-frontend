@@ -215,14 +215,16 @@ export default class CouponHome extends Component {
         >
           <View className="coupon-list-ticket">
             {list.map((item, idx) => {
+              let count = `剩余${parseInt(item.quantity) - item.get_num}张`
               return (
                 <CouponItem
                   info={item}
                   className="home_coupon-list_item"
                   key={item.card_id}
+                  count={count}
                 >
                   <View className="home_coupon-list_item__quantity">
-                    剩余{parseInt(item.quantity) - item.get_num}张
+                    {/* 剩余{parseInt(item.quantity) - item.get_num}张 */}
                   </View>
                   {/* <Text
                       className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}

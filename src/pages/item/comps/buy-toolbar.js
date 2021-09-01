@@ -61,7 +61,7 @@ export default class GoodsBuyToolbar extends Component {
         )}
       >
         <View className="goods-buy-toolbar__menus">
-          <SpLogin onChange={this.props.onFavItem}>
+          <SpLogin>
             <View className="goods-buy-toolbar__menu-item">
               {info.is_fav ? (
                 <View
@@ -103,7 +103,7 @@ export default class GoodsBuyToolbar extends Component {
         {this.props.customRender ? (
           this.props.children
         ) : (
-          <View>
+          <SpLogin>
             {info.approve_status === "onsale" ? (
               <View className="goods-buy-toolbar__btns">
                 {(type === "normal" || type === "limited_time_sale") &&
@@ -139,7 +139,7 @@ export default class GoodsBuyToolbar extends Component {
                 </View>
               </View>
             )}
-          </View>
+          </SpLogin>
         )}
       </View>
     );

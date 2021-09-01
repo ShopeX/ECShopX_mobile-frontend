@@ -87,3 +87,8 @@ export function selectedPlusitem (params) {
 export function getCartRemind (params) {
   return req.get('/cartremind/setting', params)
 }
+
+// 兑换商品
+export function exchangeGood (params) {
+  return req.post('user/exchangeCard', params)
+}

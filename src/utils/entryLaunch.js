@@ -65,21 +65,37 @@ class EntryLaunch {
   getLocationInfo() {
     if (process.env.TARO_ENV === "weapp") {
     } else {
-      const geolocation = new qq.maps.Geolocation();
-      return new Promise((resolve, reject) => {
-        geolocation.getLocation(
-          res => {
-            // debugger;
-            showToast(JSON.stringify(res));
-            resolve(res);
-          },
-          error => {
-            // showToast("获取定位失败");
-            reject(`qq maps geolocation fail... ,`, error);
-          },
-          { timeout: 9000 }
-        );
+      AMap.plugin("AMap.Geolocation", function() {
+        var geolocation = new AMap.Geolocation({
+          enableHighAccuracy: true, //是否使用高精度定位，默认:true
+          timeout: 10000, //超过10秒后停止定位，默认：5s
+          position: "RB", //定位按钮的停靠位置
+          buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+          zoomToAccuracy: true //定位成功后是否自动调整地图视野到定位点
+        });
+        geolocation.getCurrentPosition( function ( status, result ) {
+          debugger
+          if (status == "complete") {
+            // onComplete(result);
+          } else {
+            // onError(result);
+          }
+        });
       });
+
+      // const geolocation = new qq.maps.Geolocation();
+      // return new Promise((resolve, reject) => {
+      //   geolocation.getLocation(
+      //     res => {
+      //       showToast(JSON.stringify(res));
+      //       resolve(res);
+      //     },
+      //     error => {
+      //       reject(`qq maps geolocation fail... ,`, error);
+      //     },
+      //     { timeout: 9000 }
+      //   );
+      // });
     }
   }
 

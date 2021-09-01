@@ -28,7 +28,7 @@ export default class DistributionGoods extends Component {
       ],
       tabList: [
         { title: '推广商品', iconType: 'home', iconPrefixClass: 'icon',url: '/marketing/pages/distribution/goods',urlRedirect: true },
-        { title: '分类', iconType: 'category', iconPrefixClass: 'icon', url: '/marketing/pages/distribution/good-category?status=true', urlRedirect: true },
+        { title: '分类', iconType: 'category', iconPrefixClass: 'icon', url: '/marketing/pages/distribution/good-category', urlRedirect: true },
       ],  
       localCurrent: 0,    
       query: null,
@@ -277,6 +277,7 @@ export default class DistributionGoods extends Component {
       const { url } = curTab
 
       const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+ 
       if (url && fullPath !== url) {
         Taro.redirectTo({ url })
       }

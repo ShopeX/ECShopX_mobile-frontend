@@ -45,18 +45,24 @@ export default class StoreList extends Component {
       // 门店列表
       list: [],
       // 是否需要定位
-      is_open_wechatapp_location: 0
+      is_open_wechatapp_location: 0,
+      pageTitle: '店铺列表'
     }
   }
 
   componentDidMount() {
+    const { pageTitle } = this.state
+    Taro.setNavigationBarTitle({
+      title: pageTitle
+    });
     this.init()
     this.getHeadquarters()
+    
   }
 
-  config = {
-    navigationBarTitleText: '店铺列表'
-  }
+  // config = {
+  //   navigationBarTitleText: '店铺列表'
+  // }
 
   // 定位并初始化处理位置信息
   // isUseDeliveryInfo 是否按收货地址定位
@@ -157,6 +163,7 @@ export default class StoreList extends Component {
   }
 
   async fetch(params) {
+    const { card_id = null } = this.$router.params
     const { query: searchParam, location } = this.state
     const { latitude = '', longitude = '' } = location
     const { page_no: page, page_size: pageSize } = params
@@ -165,7 +172,8 @@ export default class StoreList extends Component {
       page,
       pageSize,
       lat: latitude,
-      lng: longitude
+      lng: longitude,
+      card_id
     }
     const { list, total_count: total, defualt_address = {}, is_recommend } = await api.shop.list(query)
     this.setState({
@@ -251,7 +259,8 @@ export default class StoreList extends Component {
       page,
       headquarters,
       baseInfo,
-      is_open_wechatapp_location
+      is_open_wechatapp_location,
+      pageTitle,
     } = this.state
     const { province, city, area } = query
 
@@ -267,64 +276,73 @@ export default class StoreList extends Component {
     const { colors } = this.props
 
     return (
-      <View className='page-store-list'>
-        <SpNavBar
-          title='选择店铺'
-          leftIconType='chevron-left'
-        />
-        <View className='search'>
-          <View className='main'>
-            <Picker mode='region' value={areaData} onChange={this.regionChange.bind(this)}>
-              <View className='filterArea'>
-                <View className='areaName'>{areaData.join('') || '筛选地区'}</View>
-                <View className='iconfont icon-arrowDown'></View>
+      <View className="page-store-list">
+        <SpNavBar title={pageTitle} leftIconType="chevron-left" />
+        <View className="search">
+          <View className="main">
+            <Picker
+              mode="region"
+              value={areaData}
+              onChange={this.regionChange.bind(this)}
+            >
+              <View className="filterArea">
+                <View className="areaName">
+                  {areaData.join("") || "筛选地区"}
+                </View>
+                <View className="iconfont icon-arrowDown"></View>
               </View>
             </Picker>
             <Input
-              className='searchInput'
-              placeholder='请输入想搜索的店铺'
-              confirmType='search'
+              className="searchInput"
+              placeholder="请输入想搜索的店铺"
+              confirmType="search"
               value={query.name}
               onInput={this.inputStoreName.bind(this)}
               onConfirm={this.confirmSearch.bind(this)}
             />
-            {(query.name && query.name.length > 0) && <View className='iconfont icon-close' onClick={this.clearName.bind(this)}></View>}
+            {query.name && query.name.length > 0 && (
+              <View
+                className="iconfont icon-close"
+                onClick={this.clearName.bind(this)}
+              ></View>
+            )}
           </View>
         </View>
-        <View className='content'>
-          <View className='location'>
-            <View className='title'>当前位置</View>
-            <View className='locationData'>
-              {
-                (query.type !== 2 && location.address) && <View className='lngName'>
-                  {location.address || '无法获取您的位置信息'}
+        <View className="content">
+          <View className="location">
+            <View className="title">当前位置</View>
+            <View className="locationData">
+              {query.type !== 2 && location.address && (
+                <View className="lngName">
+                  {location.address || "无法获取您的位置信息"}
                 </View>
-              }
-              {
-                (query.type === 2 || (!location.address && deliveryInfo.address_id)) && <View className='lngName'>
+              )}
+              {(query.type === 2 ||
+                (!location.address && deliveryInfo.address_id)) && (
+                <View className="lngName">
                   {deliveryInfo.province}
                   {deliveryInfo.city}
                   {deliveryInfo.county}
                   {deliveryInfo.adrdetail}
                 </View>
-              }
-              {
-                (is_open_wechatapp_location === 1) && <View
-                  className='resetLocal'
+              )}
+              {is_open_wechatapp_location === 1 && (
+                <View
+                  className="resetLocal"
                   style={`color: ${colors.data[0].primary}`}
                   onClick={this.getLocation.bind(this)}
                 >
-                  <View className='iconfont icon-target'></View>
+                  <View className="iconfont icon-target"></View>
                   重新定位
                 </View>
-              }
+              )}
             </View>
           </View>
-          {
-            deliveryInfo.address_id && <View className='delivery' onClick={this.getDeliver.bind(this)}>
-              <View className='title'>按收货地址定位</View>
-              <View className='locationData'>
-                <View className='lngName'>
+          {deliveryInfo.address_id && (
+            <View className="delivery" onClick={this.getDeliver.bind(this)}>
+              <View className="title">按收货地址定位</View>
+              <View className="locationData">
+                <View className="lngName">
                   {deliveryInfo.province}
                   {deliveryInfo.city}
                   {deliveryInfo.county}
@@ -332,72 +350,64 @@ export default class StoreList extends Component {
                 </View>
               </View>
             </View>
-          }
+          )}
         </View>
-        {
-          (isRecommedList && !deliveryInfo.address_id && !location.latitude) && <View className='noContent'>
-            <Image
-              className='img'
-              src={baseInfo.logo}
-              mode='aspectFill'
-            />
-            <View className='tip'>
-              您想要地区的店铺暂时未入驻网上商城
-            </View>
+        {isRecommedList && !deliveryInfo.address_id && !location.latitude && (
+          <View className="noContent">
+            <Image className="img" src={baseInfo.logo} mode="aspectFill" />
+            <View className="tip">您想要地区的店铺暂时未入驻网上商城</View>
           </View>
-        }
-        <View className={`list ${!deliveryInfo.address_id && 'noDelivery'} ${isRecommedList && 'recommedList'}`}>
-          {
-            !isRecommedList
-              ? <View className='title'>
-                {(deliveryInfo.address_id || location.latitude) ? '附近门店' : '全部门店'}
-              </View>
-              : <View className='recommed'>
-                <View className='title'>推荐门店</View>
-              </View>
-          }
+        )}
+        <View
+          className={`list ${!deliveryInfo.address_id &&
+            "noDelivery"} ${isRecommedList && "recommedList"}`}
+        >
+          {!isRecommedList ? (
+            <View className="title">
+              {deliveryInfo.address_id || location.latitude
+                ? "附近门店"
+                : "全部门店"}
+            </View>
+          ) : (
+            <View className="recommed">
+              <View className="title">推荐门店</View>
+            </View>
+          )}
           <ScrollView
-            className={classNames(
-              'scroll',
-              {
-                ['notHaveShop']:!hasShop
-              }
-            )}
+            className={classNames("scroll", {
+              ["notHaveShop"]: !hasShop
+            })}
             scrollY
             scrollTop={scrollTop}
             scrollWithAnimation
             onScroll={this.handleScroll.bind(this)}
             onScrollToLower={this.nextPage.bind(this)}
           >
-            {
-              list.map(item => <StoreListItem
+            {list.map(item => (
+              <StoreListItem
                 info={item}
                 key={item.distributor_id}
                 onClick={this.handleClickItem.bind(this, item)}
-              />)
-            }
+              />
+            ))}
             {page.isLoading ? <Loading>正在加载...</Loading> : null}
-            {
-              !page.isLoading && !list.length
-              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-            }
+            {!page.isLoading && !list.length && (
+              <SpNote img="trades_empty.png">暂无数据~</SpNote>
+            )}
           </ScrollView>
         </View>
-        {hasShop && <View
-          className='bottom'
-          style={`color: ${colors.data[0].primary}`}
-          onClick={this.handleClickItem.bind(this, headquarters)}
-        >
-          <Image
-            className='img'
-            src={baseInfo.logo}
-            mode='aspectFill'
-          />
-          {headquarters.store_name}
-          <View className='iconfont icon-arrowRight'></View>
-        </View>}
-
+        {hasShop && (
+          <View
+            className="bottom"
+            style={`color: ${colors.data[0].primary}`}
+            onClick={this.handleClickItem.bind(this, headquarters)}
+          >
+            <Image className="img" src={baseInfo.logo} mode="aspectFill" />
+            {headquarters.store_name}
+            <View className="iconfont icon-arrowRight"></View>
+          </View>
+        )}
       </View>
-    )
+    );
   }
 }

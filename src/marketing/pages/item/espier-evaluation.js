@@ -44,11 +44,13 @@ export default class Evaluation extends Component {
 
   async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
+    const { order_type } = this.$router.params
     const query = {
       page,
       pageSize,
-      item_id: this.$router.params.id
-    }
+      item_id: this.$router.params.id,
+      order_type
+    };
     const { list, total_count } = await api.item.evaluationList(query)
     list.map(item => {
       item.picList = item.rate_pic ? item.rate_pic.split(',') : []

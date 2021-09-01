@@ -175,9 +175,11 @@ export default class MemberIndex extends Component {
       await api.pointitem.getPointitemSetting()
     ] );
 
+    console.log("--pointItemSetting--",pointItemSetting)
+
     this.setState({
-      bannerSetting: bannerSetting.list[0].params.data,
-      menuSetting: menuSetting.list[0].params.data,
+      bannerSetting: bannerSetting.list[0]?bannerSetting.list[0].params.data:{},
+      menuSetting: menuSetting.list[0]?menuSetting.list[0].params.data:{},
       score_menu_open: pointItemSetting.entrance.mobile_openstatus
     });
   }
@@ -316,6 +318,8 @@ export default class MemberIndex extends Component {
       memberInfo = memberData.memberInfo;
       vipgrade = memberData.vipgrade;
     }
+
+    console.log("--score_menu_open--",score_menu_open)
     // const is_open_official_account = Taro.getStorageSync("isOpenOfficial");
 
     return (
@@ -817,7 +821,7 @@ export default class MemberIndex extends Component {
               )
             }
           >
-            <Image src="/assets/imgs/wheel_modal_icon.png" />
+            <Image src={`${APP_IMAGE_CDN}/wheel_modal_icon.png`} />
           </View>
         ) : null}
         <TabBar />

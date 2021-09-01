@@ -14,7 +14,7 @@
     z-index: $z-index-toolbar;
   }
   .home_coupon-list__scroll {
-    height: 100vh;
+    height: 70vh;
     padding: 20px $edge-margin;
     box-sizing: border-box;
   }
@@ -39,5 +39,18 @@
     background: #c4c4c4 !important;
     color: #ffffff;
     opacity: 0.8;
+  }
+}
+
+.coupon-top {
+  width: 100%;
+  height: 30vh;
+  background: #F8DAA2;
+  position: relative;
+  .banner {
+    width: 100%;
+    height: 224px;
+    position: absolute;
+    bottom: 0;
   }
 }

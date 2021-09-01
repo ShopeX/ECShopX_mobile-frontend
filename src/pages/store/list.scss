@@ -1,5 +1,3 @@
-@import "../../style/animations";
-
 // 搜索栏高度
 $search-height: 90px;
 // 内容高度
@@ -15,10 +13,6 @@ $bottom-height: 100px;
 // 收货地址高度
 $nodelivery-height: $header-height - $store-height;
 
-page {
-  width: 100%;
-  height: 100%;
-}
 
 .page-store-list {
   height: 100%;

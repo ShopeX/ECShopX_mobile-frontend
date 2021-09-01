@@ -439,7 +439,7 @@ export default class DistributionShopHome extends Component {
             <Image
               mode='aspectFill'
               className='banner-img'
-              src={info.shop_pic || require('../../assets/black.png')}
+              src={info.shop_pic || `${APP_IMAGE_CDN}/black.png`}
             />
           </View>
           <View className='shop-info'>

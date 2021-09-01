@@ -23,7 +23,6 @@ export default class Youshu extends Base {
    
     config.token = extConfig.youshutoken;
     config.appid = extConfig.appid;
-
     console.log('extConfig',config)
 
     sr.init(config);

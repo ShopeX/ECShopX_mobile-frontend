@@ -14,7 +14,7 @@ export default class NoteIndex extends Component {
   }
 
   render () {
-    const { img, imgStyle, styles, className } = this.props
+    const { img, imgStyle, styles, className, isUrl } = this.props
 
     return (
       <View
@@ -26,7 +26,7 @@ export default class NoteIndex extends Component {
             className='note__img'
             mode='aspectFill'
             // style={styleNames(imgStyle)}
-            src={this.resolveUrl(img)}
+            src={isUrl ? img : this.resolveUrl(img)}
           />)
         }
         <Text calssName='note__text'>{this.props.children}</Text>
