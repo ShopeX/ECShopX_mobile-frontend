@@ -1,19 +1,15 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, ScrollView, Picker, Input, Image } from "@tarojs/components";
-import { SpNavBar, Loading, SpNote } from "@/components";
+import { SpNavBar, Loading, SpNote, SpPageNote } from "@/components";
 import api from "@/api";
 import { connect } from "@tarojs/redux";
 import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
-import entry from "@/utils/entry";
 import StoreListItem from "./comps/list-item";
-import { classNames, getThemeStyle } from "@/utils";
+import { classNames, getThemeStyle, entryLaunch } from "@/utils";
 
 import "./list.scss";
 
-@connect(({ colors }) => ({
-  colors: colors.current || { data: [{}] }
-}))
 @withPager
 @withBackToTop
 export default class StoreList extends Component {
@@ -33,7 +29,9 @@ export default class StoreList extends Component {
       },
       // 总店信息
       headquarters: {},
-      baseInfo: {},
+      // 默认店铺
+      defaultStore: null,
+      baseInfo: null,
       // 当前位置信息
       location: {},
       // 收货地址信息
@@ -66,9 +64,9 @@ export default class StoreList extends Component {
   init = async () => {
     const { is_open_wechatapp_location } = Taro.getStorageSync("settingInfo");
     // 获取定位
-    if (is_open_wechatapp_location === 1) {
-      await entry.getLoc();
-    }
+    // if (is_open_wechatapp_location === 1) {
+    //   await entry.getLoc();
+    // }
     const { query, deliveryInfo } = this.state;
     const lnglat = Taro.getStorageSync("lnglat") || {};
     const address = lnglat.latitude
@@ -83,6 +81,7 @@ export default class StoreList extends Component {
       query.city = city === "市辖区" || !city ? province : city;
       query.area = county;
     }
+
     this.setState(
       {
         location: {
@@ -112,7 +111,7 @@ export default class StoreList extends Component {
     const data = await api.shop.getHeadquarters();
     const baseInfo = await api.shop.getStoreBaseInfo();
     this.setState({
-      headquarters: data,
+      defaultStore: data,
       baseInfo
     });
   };
@@ -216,46 +215,52 @@ export default class StoreList extends Component {
   };
 
   // 获取定位信息
-  getLocation = async e => {
-    e.stopPropagation();
-    const { authSetting } = await Taro.getSetting();
-    if (!authSetting["scope.userLocation"]) {
-      Taro.authorize({
-        scope: "scope.userLocation",
-        success: () => {
-          this.init();
-        },
-        fail: () => {
-          Taro.showModal({
-            title: "提示",
-            content: "请打开定位权限",
-            success: async resConfirm => {
-              if (resConfirm.confirm) {
-                await Taro.openSetting();
-                const setting = await Taro.getSetting();
-                if (setting.authSetting["scope.userLocation"]) {
-                  this.init();
-                } else {
-                  Taro.showToast({ title: "获取定位权限失败", icon: "none" });
-                }
-              }
-            }
-          });
-        }
-      });
-    } else {
-      const { query } = this.state;
-      query.name = "";
-      query.type = 0;
-      this.setState(
-        {
-          query
-        },
-        () => {
-          this.init();
-        }
-      );
-    }
+  getLocationInfo = async () => {
+    const { lng, lat } = await entryLaunch.getLocationInfo();
+    const {
+      addressComponent,
+      formattedAddress
+    } = await entryLaunch.getAddressByLnglat(lng, lat);
+    debugger;
+    // e.stopPropagation();
+    // const { authSetting } = await Taro.getSetting();
+    // if (!authSetting["scope.userLocation"]) {
+    //   Taro.authorize({
+    //     scope: "scope.userLocation",
+    //     success: () => {
+    //       this.init();
+    //     },
+    //     fail: () => {
+    //       Taro.showModal({
+    //         title: "提示",
+    //         content: "请打开定位权限",
+    //         success: async resConfirm => {
+    //           if (resConfirm.confirm) {
+    //             await Taro.openSetting();
+    //             const setting = await Taro.getSetting();
+    //             if (setting.authSetting["scope.userLocation"]) {
+    //               this.init();
+    //             } else {
+    //               Taro.showToast({ title: "获取定位权限失败", icon: "none" });
+    //             }
+    //           }
+    //         }
+    //       });
+    //     }
+    //   });
+    // } else {
+    //   const { query } = this.state;
+    //   query.name = "";
+    //   query.type = 0;
+    //   this.setState(
+    //     {
+    //       query
+    //     },
+    //     () => {
+    //       this.init();
+    //     }
+    //   );
+    // }
   };
 
   // 根据收货地址搜索
@@ -282,7 +287,7 @@ export default class StoreList extends Component {
       isRecommedList,
       deliveryInfo,
       page,
-      headquarters,
+      defaultStore,
       baseInfo,
       is_open_wechatapp_location,
       pageTitle
@@ -296,9 +301,7 @@ export default class StoreList extends Component {
       areaData = [p, c === "市辖区" || !c ? province : city, ct];
     }
 
-    const hasShop = headquarters.is_valid === "true";
-
-    const { colors } = this.props;
+    // const  = defaultStore.is_valid === "true";
 
     return (
       <View className="page-store-list" style={getThemeStyle()}>
@@ -351,13 +354,12 @@ export default class StoreList extends Component {
                   {deliveryInfo.county}
                   {deliveryInfo.adrdetail}
                 </View>
-                )}
-              
+              )}
+
               {is_open_wechatapp_location === 1 && (
                 <View
                   className="resetLocal"
-                  style={`color: ${colors.data[0].primary}`}
-                  onClick={this.getLocation.bind(this)}
+                  onClick={this.getLocationInfo.bind(this)}
                 >
                   <View className="iconfont icon-target"></View>
                   重新定位
@@ -406,7 +408,7 @@ export default class StoreList extends Component {
 
           <ScrollView
             className={classNames("scroll", {
-              ["notHaveShop"]: !hasShop
+              "has-default-shop": defaultStore
             })}
             scrollY
             scrollTop={scrollTop}
@@ -421,21 +423,18 @@ export default class StoreList extends Component {
                 onClick={this.handleClickItem.bind(this, item)}
               />
             ))}
-            {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            {/* {page.isLoading ? <Loading>正在加载...</Loading> : null}
             {!page.isLoading && !list.length && (
               <SpNote img="trades_empty.png">暂无数据~</SpNote>
-            )}
+            )} */}
+            <SpPageNote info={page}></SpPageNote>
           </ScrollView>
         </View>
 
-        {hasShop && (
-          <View
-            className="bottom"
-            style={`color: ${colors.data[0].primary}`}
-            onClick={this.handleClickItem.bind(this, headquarters)}
-          >
+        {defaultStore && (
+          <View className="bottom" onClick={this.handleClickItem.bind(this)}>
             <Image className="img" src={baseInfo.logo} mode="aspectFill" />
-            {headquarters.store_name}
+            {defaultStore.store_name}
             <View className="iconfont icon-arrowRight"></View>
           </View>
         )}

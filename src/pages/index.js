@@ -623,8 +623,7 @@ export default class Home extends Component {
     // 广告屏
     const { showAdv } = this.props;
     // 是否是标准版
-    const isStandard =
-      process.env.APP_PLATFORM === "standard" && !is_open_store_status;
+    const isStandard = process.env.APP_PLATFORM === "standard" && !is_open_store_status;
     // 否是fixed
     const isFixed = positionStatus;
 
@@ -633,7 +632,7 @@ export default class Home extends Component {
     return (
       <View className="page-index">
         {/* 公众号关注组件 */}
-        {is_open_official_account === 1 && show_official && (
+        {process.env.TARO_ENV == "weapp" && is_open_official_account === 1 && show_official && (
           <AccountOfficial
             isClose
             onHandleError={this.handleOfficialError.bind(this)}

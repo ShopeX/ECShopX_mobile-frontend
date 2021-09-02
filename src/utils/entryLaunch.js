@@ -67,22 +67,22 @@ class EntryLaunch {
     } else {
       // 开启定位
       if (is_open_wechatapp_location == 1) {
-        const { position } = await this.getLocationInfo();
+        const { lng, lat } = await this.getLocationInfo();
         storeQuery = {
           ...storeQuery,
-          lat: position.lat,
-          lng: position.lng
+          lng,
+          lat
         };
         const {
           addressComponent,
           formattedAddress
-        } = await this.getAddressByLnglat([position.lng, position.lat]);
+        } = await this.getAddressByLnglat(lng, lat);
         Taro.setStorageSync("locationAddress", {
           ...addressComponent,
           formattedAddress,
-          lat: position.lat,
-          lng: position.lng
-        } );
+          lng,
+          lat
+        });
         showToast(formattedAddress);
       }
     }
@@ -100,11 +100,28 @@ class EntryLaunch {
    */
   getLocationInfo() {
     if (process.env.TARO_ENV === "weapp") {
+      return new Promise((resolve, reject) => {
+        Taro.getLocation({
+          type: "gcj02",
+          success: res => {
+            resolve({
+              lng: res.longitude,
+              lat: res.latitude
+            });
+          },
+          fail: error => {
+            reject(error);
+          }
+        });
+      });
     } else {
       return new Promise((reslove, reject) => {
         this.geolocation.getCurrentPosition(function(status, result) {
           if (status == "complete") {
-            reslove(result);
+            reslove({
+              lng: result.position.lng,
+              lat: result.position.lat
+            });
           } else {
             reject(result.message);
           }
@@ -129,10 +146,11 @@ class EntryLaunch {
 
   /**
    * @function 根据经纬度解析地址
+   * @params lnglat Array
    */
-  getAddressByLnglat(lnglat) {
+  getAddressByLnglat(lng, lat) {
     return new Promise((reslove, reject) => {
-      this.geocoder.getAddress(lnglat, function(status, result) {
+      this.geocoder.getAddress([lng, lat], function(status, result) {
         if (status === "complete" && result.regeocode) {
           reslove(result.regeocode);
         } else {

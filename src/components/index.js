@@ -16,8 +16,7 @@ export { default as FloatMenus } from './float-menus'
 export { default as FloatMenuItem } from './float-menus/item'
 export { default as FormIdCollector } from './form-id-collector'
 
-export { default as SearchBar } from './search-bar'
-export { default as SpNavBar } from './sp-nav-bar'
+
 export { default as Timer } from './timer'
 
 export { default as SpCheckbox } from './checkbox'
@@ -42,12 +41,14 @@ export { default as ScreenAd } from './screen-ad'
 export { default as HomeCapsule } from './home-capsule'
 export { default as PointLine } from './point-line'
 export { default as PointTag } from './point-tag'
+
 export { default as SpMoreImg } from './more-img'
 export { default as SpLogin } from "./sp-login";
-
 export { default as SpScancode } from "./sp-scancode";
 export { default as SpStorePicker } from "./sp-store-picker";
 export { default as SpFloatPrivacy } from "./sp-float-privacy";
-
+export { default as SearchBar } from "./search-bar";
+export { default as SpNavBar } from "./sp-nav-bar";
+export { default as SpPageNote } from "./sp-pagenote";
 
 export default {}
