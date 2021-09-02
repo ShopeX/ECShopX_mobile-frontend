@@ -18,7 +18,8 @@ const {
   APP_MAP_NAME,
   APP_TRACK,
   APP_ID,
-  APP_YOUSHU_TOKEN
+  APP_YOUSHU_TOKEN,
+  APP_IMAGE_CDN
 } = process.env
 
 // 是否为web
@@ -85,7 +86,8 @@ const config = {
     APP_ID: `${APP_ID}`,
     APP_YOUSHU_TOKEN: `${APP_YOUSHU_TOKEN}`,
     APP_MAP_KEY: isWeb ? `'${APP_MAP_KEY}'` : APP_MAP_KEY,
-    APP_MAP_NAME: `'${APP_MAP_NAME}'`
+    APP_MAP_NAME: `'${APP_MAP_NAME}'`,
+    APP_IMAGE_CDN: APP_IMAGE_CDN
   },
   alias: {
     "@": join(__dirname, "../src")

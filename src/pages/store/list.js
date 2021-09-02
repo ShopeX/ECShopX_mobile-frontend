@@ -167,6 +167,7 @@ export default class StoreList extends Component {
   }
 
   async fetch(params) {
+    const { card_id = null } = this.$router.params
     const { query: searchParam, location } = this.state
     const { latitude = '', longitude = '' } = location
     const { page_no: page, page_size: pageSize } = params
@@ -175,7 +176,8 @@ export default class StoreList extends Component {
       page,
       pageSize,
       lat: latitude,
-      lng: longitude
+      lng: longitude,
+      card_id
     }
     const { list, total_count: total, defualt_address = {}, is_recommend } = await api.shop.list(query)
     this.setState({

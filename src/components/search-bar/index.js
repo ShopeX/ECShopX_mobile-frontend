@@ -116,7 +116,7 @@ export default class SearchBar extends Component {
   }
 
   render () {
-    const { isFixed, keyword, showDailog } = this.props
+    const { isFixed, keyword, showDailog, _placeholder } = this.props
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
       <View
@@ -162,7 +162,7 @@ export default class SearchBar extends Component {
           <AtSearchBar
             className='search-input__bar'
             value={keyword}
-            placeholder='请输入关键词'
+            placeholder={!_placeholder ? '请输入关键词' : ''}
             actionName='取消'
             showActionButton={isShowAction}
             onFocus={this.handleFocusSearchHistory.bind(this, true)}

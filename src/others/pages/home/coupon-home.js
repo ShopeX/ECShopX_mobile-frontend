@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView, Image } from '@tarojs/components'
 import { Loading, SpNote, NavBar, SpToast, CouponItem } from '@/components'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
@@ -26,6 +26,10 @@ export default class CouponHome extends Component {
     }
     this.routerParams = {}
   }
+
+  // config = {
+  //   navigationBarBackgroundColor: "#F8DAA2"
+  // };
 
   async componentDidMount() {
     api.wx.shareSetting({ shareindex: 'coupon' }).then(res => {
@@ -91,7 +95,9 @@ export default class CouponHome extends Component {
       get_num: 'get_num',
       card_id: 'card_id',
       description:'description',
-      use_bound:'use_bound'
+      use_bound:'use_bound',
+      send_begin_time: 'send_begin_time',
+      send_end_time: 'send_end_time'
     })
     nList.map(item => {
       if (item.get_limit - item.user_get_num <= 0) {
@@ -113,6 +119,8 @@ export default class CouponHome extends Component {
   }
 
   handleClickNews = (card_item, idx) => {
+    let time = parseInt(new Date().getTime() / 1000)
+    if (time < card_item.send_begin_time) return
     let templeparams = {
       'temp_name': 'yykweishop',
       'source_type': 'coupon',
@@ -183,7 +191,9 @@ export default class CouponHome extends Component {
           leftIconType='chevron-left'
           fixed='true'
         />
-
+        {/* <View className='coupon-top'>
+          <Image className='banner' src={`${APP_IMAGE_CDN}/banner_coupon.png`} />
+        </View> */}
         <ScrollView
           scrollY
           className='home_coupon-list__scroll'
@@ -192,6 +202,7 @@ export default class CouponHome extends Component {
           <View className='coupon-list-ticket'>
             {
               list.map((item, idx) => {
+                let time = parseInt(new Date().getTime() / 1000)
                 return (
                   <CouponItem
                     info={item}
@@ -206,13 +217,15 @@ export default class CouponHome extends Component {
                       {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
                     </Text> */}
                     <View
-                      className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
-                      style={`background: ${colors.data[0].primary}`}
+                      style={{fontSize: '22rpx'}}
+                      // className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
+                      // style={`background: ${colors.data[0].primary}`}
                       onClick={this.handleClickNews.bind(this, item, idx)}
                     >
                       {item.getted === 1 ? '已领取' : ''}
                       {item.getted === 2 ? '已领完' : ''}
-                      {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
+                      {(time > item.send_begin_time && item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
+                      {(item.card_type === 'new_gift' && time < item.send_begin_time) ? '未开始' : ''}
                     </View>
                   </CouponItem>
                 )

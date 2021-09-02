@@ -43,7 +43,11 @@ export default class List extends Component {
       selectParams: [],
       info: {},
       shareInfo: {},
-      isOpenStore:null
+      isOpenStore:null,
+      couponTab:[
+        {id: 1, title: '首页', val: `/pages/index`},
+        {id: 2, title: '我的优惠券', val: `/marketing/pages/member/coupon`}
+      ],
     }
   }
 
@@ -91,6 +95,62 @@ export default class List extends Component {
     }
   }
 
+  async componentDidShow() {
+    const { isNewGift = null } = this.$router.params
+    if (!isNewGift) return
+    this.setStore();
+    const { cat_id = null, main_cat_id = null } = this.$router.params
+    this.firstStatus = true
+    const isOpenStore = await entry.getStoreStatus()
+    const { store_id } = Taro.getStorageSync('curStore')
+    this.setState({
+      isOpenStore
+    })
+
+    this.setState({
+      query: {
+        keywords: this.$router.params.keywords,
+        item_type: 'normal',
+        is_point: 'false',
+        distributor_id:isOpenStore ? store_id : this.$router.params.dis_id,
+        approve_status: 'onsale,only_show',
+        category: cat_id ? cat_id : '',
+        main_category: main_cat_id ? main_cat_id : ''
+      },
+      curTagId: this.$router.params.tag_id
+    }, () => {
+      this.nextPage()
+      api.wx.shareSetting({ shareindex: 'itemlist' }).then(res => {
+        this.setState({
+          shareInfo: res
+        })
+      })
+    })
+  }
+
+  // 设置门店
+  setStore = (isChange = false) => {
+    const { card_id } = this.$router.params
+    const store = Taro.getStorageSync("curStore");
+    if (store && !isChange) {
+      this.resetPage()
+      this.setState({
+        currentShop: {
+          name: store.name || store.store_name,
+          shop_id: store.shop_id,
+          store_name: store.store_name,
+          poiid: store.poiid
+        },
+        list: [],
+        oddList: [],
+        evenList: [],
+        showDrawer: false,
+      })
+    } else {
+      Taro.navigateTo({ url: `/pages/store/list?card_id=${card_id}` });
+    }
+  };
+
   onShareAppMessage() {
     const res = this.state.shareInfo
     const { cat_id = '', main_cat_id = '' } = this.$router.params
@@ -117,6 +177,7 @@ export default class List extends Component {
 
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
+    const { card_id, isNewGift = null } = this.$router.params
     const { selectParams, tagsList, curTagId,isOpenStore } = this.state
     const { distributor_id,store_id } = Taro.getStorageSync('curStore')
     const { cardId } = this.$router.params
@@ -125,11 +186,16 @@ export default class List extends Component {
       item_params: selectParams,
       tag_id: curTagId,
       page,
-      pageSize
+      pageSize,
+      card_id
     }
 
     if (APP_PLATFORM === 'standard') {
-      query.distributor_id = isOpenStore ? store_id : distributor_id
+      if (isNewGift) {
+        query.distributor_id = distributor_id
+      } else {
+        query.distributor_id = isOpenStore ? store_id : distributor_id
+      }
     }
 
     if (cardId) {
@@ -163,7 +229,8 @@ export default class List extends Component {
       price: ({ price }) => (price/100).toFixed(2),
       member_price: ({ member_price }) => (member_price/100).toFixed(2),
       market_price: ({ market_price }) => (market_price/100).toFixed(2),
-      is_fav: ({ item_id }) => Boolean(favs[item_id])
+      is_fav: ({ item_id }) => Boolean(favs[item_id]),
+      store: 'store'
     })
 
     let odd = [], even = []
@@ -301,6 +368,8 @@ export default class List extends Component {
   }
 
   handleClickItem = ( item ) => {
+    const {user_card_id, isNewGift = null, card_id , code} = this.$router.params
+    if (isNewGift && item.store == 0 ) return
     const { item_id, title, market_price, price, img } = item;
     Tracker.dispatch("TRIGGER_SKU_COMPONENT", {
       goodsId: item_id,
@@ -309,7 +378,10 @@ export default class List extends Component {
       price: price * 100,
       imgUrl: img
     });
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    let url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    if (isNewGift) {
+      url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&isNewGift=true&user_card_id=${user_card_id}&card_id=${card_id}&code${code}`
+    }
     Taro.navigateTo({
       url
     })
@@ -463,6 +535,12 @@ export default class List extends Component {
     })
   }
 
+  onHandleClick = (params) => {
+    Taro.navigateTo({
+      url: params
+    })
+  }
+
   render() {
     const {
       list,
@@ -481,9 +559,11 @@ export default class List extends Component {
       curTagId,
       info,
       isShowSearch,
-      query
+      query,
+      currentShop,
+      couponTab
     } = this.state
-    const { isTabBar = '' } = this.$router.params
+    const { isTabBar = '', isNewGift } = this.$router.params
 		return (
 			<View className='page-goods-list'>
         {
@@ -493,48 +573,76 @@ export default class List extends Component {
             fixed='true'
           />
         }
-        <View className='goods-list__toolbar'>
-          <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
-            <SearchBar
-              keyword={query ? query.keywords : ''}
-              onFocus={this.handleSearchOn}
-              onChange={this.handleSearchChange}
-              onClear={this.handleSearchClear}
-              onCancel={this.handleSearchOff}
-              onConfirm={this.handleConfirm.bind(this)}
-            />
-            {
-              !isShowSearch &&
-              <View
-                className={classNames('goods-list__type', listType === 'grid' ? 'icon-list' : 'icon-grid')}
-                onClick={this.handleViewChange}
-              >
-              </View>
-            }
+        {isNewGift ? 
+        (<View className='goods-list__toolbar1'>
+          <View className='store' onClick={this.setStore.bind(this, true)}>
+            <View className='title'>当前门店: </View>
+            <View className='name'>{currentShop.name}</View>
+            <View style={{lineHeight: '88rpx'}} className="icon-arrowRight item-icon-go"></View>
           </View>
-          {
-            tagsList.length &&
-            <TagsBar
-              current={curTagId}
-              list={tagsList}
-              onChange={this.handleTagChange.bind(this)}
-            />
-          }
-          <FilterBar
-            className='goods-list__tabs'
-            custom
-            current={curFilterIdx}
-            list={filterList}
-            onChange={this.handleFilterChange}
-          >
-            {/*
-              <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
-                <View className='icon-filter'></View>
-                <Text>筛选</Text>
+            <View style={{display: `${!page.isLoading && !page.hasNext && !list.length ? 'none' : 'flex'}`, position: 'relative'}}>
+              <FilterBar
+                className='goods-list__tabs1'
+                custom
+                current={curFilterIdx}
+                list={filterList}
+                onChange={this.handleFilterChange}
+              />
+              <View className='goods-list__search1'>
+                <SearchBar
+                  _placeholder
+                  keyword={query ? query.keywords : ''}
+                  onFocus={this.handleSearchOn}
+                  onChange={this.handleSearchChange}
+                  onClear={this.handleSearchClear}
+                  onCancel={this.handleSearchOff}
+                  onConfirm={this.handleConfirm.bind(this)}
+                />
               </View>
-            */}
-          </FilterBar>
+            </View>
+        </View>) :
+        (<View className='goods-list__toolbar'>
+        <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
+          <SearchBar
+            keyword={query ? query.keywords : ''}
+            onFocus={this.handleSearchOn}
+            onChange={this.handleSearchChange}
+            onClear={this.handleSearchClear}
+            onCancel={this.handleSearchOff}
+            onConfirm={this.handleConfirm.bind(this)}
+          />
+          {
+            !isShowSearch &&
+            <View
+              className={classNames('goods-list__type', listType === 'grid' ? 'icon-list' : 'icon-grid')}
+              onClick={this.handleViewChange}
+            >
+            </View>
+          }
         </View>
+        {
+          tagsList.length &&
+          <TagsBar
+            current={curTagId}
+            list={tagsList}
+            onChange={this.handleTagChange.bind(this)}
+          />
+        }
+        <FilterBar
+          className='goods-list__tabs'
+          custom
+          current={curFilterIdx}
+          list={filterList}
+          onChange={this.handleFilterChange}
+        >
+          {/*
+            <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
+              <View className='icon-filter'></View>
+              <Text>筛选</Text>
+            </View>
+          */}
+        </FilterBar>
+      </View>)}
 
         <AtDrawer
           show={showDrawer}
@@ -580,7 +688,7 @@ export default class List extends Component {
         </AtDrawer>
 
         <ScrollView
-          className={classNames(isTabBar ? 'goods-list__scroll_isTabBar' : 'goods-list__scroll', tagsList.length > 0 && 'with-tag-bar', isTabBar && 'isTabBar')}
+          className={classNames(isTabBar ? 'goods-list__scroll_isTabBar' : 'goods-list__scroll', tagsList.length > 0 && 'with-tag-bar', isTabBar && 'isTabBar', isNewGift && 'new-gift')}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
@@ -600,6 +708,7 @@ export default class List extends Component {
                         data-id={item.item_id}
                       >
                         <GoodsItem
+                          showFav={!isNewGift}
                           key={item.item_id}
                           info={item}
                           onClick={() => this.handleClickItem(item)}
@@ -621,6 +730,7 @@ export default class List extends Component {
                       >
                         <GoodsItem
                           key={item.item_id}
+                          showFav={!isNewGift}
                           info={item}
                           onClick={() => this.handleClickItem(item)}
                           onStoreClick={() => this.handleClickStore(item)}
@@ -640,6 +750,7 @@ export default class List extends Component {
                   return (
                     <View className='goods-list__item' key={item.item_id}>
                       <GoodsItem
+                        showFav={!isNewGift}
                         info={item}
                         onClick={() => this.handleClickItem(item)}
                         onStoreClick={() => this.handleClickStore(item)}
@@ -657,8 +768,24 @@ export default class List extends Component {
           }
           {
             !page.isLoading && !page.hasNext && !list.length
-            && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
+            && (<SpNote img={`${APP_IMAGE_CDN}/no_exist_product.png`} isUrl>此店铺不参加此次活动，看看别的吧</SpNote>)
           }
+          {!page.isLoading && !page.hasNext && !list.length && (
+              <View className='coupon-tab'>
+                {couponTab.map((item, idx)=>{
+                  let {title, val} = item
+                  return (
+                    <View
+                      key={item.id}
+                      onClick={this.onHandleClick.bind(this, val)}
+                      className={`content ${idx != 0 ? 'yellow' : 'gray'}`}
+                    >
+                      {title}
+                    </View>
+                  )
+                })}
+              </View>
+            )}
         </ScrollView>
 
         <BackToTop

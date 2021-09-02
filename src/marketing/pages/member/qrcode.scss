@@ -1,0 +1,72 @@
+@import "@/style/imports";
+
+.qrcode-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #FFFFFF;
+  &_content {
+    width: 94vw;
+    height: 86vh;
+    background: #EDEDED;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -43vh;
+    margin-left: -47vw;
+    padding: 0 2vw;
+    .top {
+      height: 10vh;
+      display: flex;
+      line-height: 10vh;
+      align-items: center;
+      justify-content: center;
+      .logo {
+        width: 80px;
+        height: 80px;
+        border-radius: 8rpx;
+      }
+      .title {
+        max-width: 78vw;
+        padding-left: 2vw;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    .middle {
+      background: #FFFFFF;
+      width: 90vw;
+      height: 66vh;
+      padding: 3vh 2vw 5vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      .barcode {
+        width: 100%;
+        height: 170px;
+      }
+      .code {
+        font-size: 24rpx;
+        font-weight: 400;
+        color: #777777;
+      }
+      .qrcode {
+        width: 350px;
+        height: 350px;
+      }
+    }
+    .bottom {
+      height: 10vh;
+      text-align: center;
+      line-height: 10vh;
+      font-size: 28rpx;
+      font-weight: 400;
+      color: #F4811F;
+      text-decoration: underline;
+    }
+  }
+}

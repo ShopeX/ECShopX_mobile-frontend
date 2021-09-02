@@ -135,6 +135,7 @@ export default class CouponPicker extends Component {
                   info={coupon}
                   isDisabled={!coupon.valid}
                   onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
+                  isExist
                 >
                   <SpCheckbox
                     checked={curCoupon && curCoupon.value && curCoupon.value.code === coupon.code}

@@ -356,3 +356,8 @@ export function getSettingCenter () {
     page_name: 'member_center_menu_setting'
   })
 }
+
+// 获取核销码
+export function getQRcode (params) {
+  return req.get('/user/exchangeCardInfo', params)
+}

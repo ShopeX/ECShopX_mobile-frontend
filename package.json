@@ -1,7 +1,7 @@
 {
-	"name": "espier-taro-fenxiao",
+	"name": "espier-vshop",
 	"app_name": "ecshopx",
-	"version": "4.0.5",
+	"version": "4.0.1",
 	"private": true,
 	"description": "taro app for bbc",
 	"scripts": {

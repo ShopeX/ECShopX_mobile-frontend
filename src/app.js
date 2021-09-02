@@ -238,7 +238,8 @@ class App extends Component {
           "pages/item/group-list",
 
           "pages/plusprice/detail-plusprice-list",
-          "pages/plusprice/cart-plusprice-list"
+          "pages/plusprice/cart-plusprice-list",
+          "pages/member/qrcode",
         ],
         plugins: {
           "live-player-plugin": {
@@ -353,7 +354,9 @@ class App extends Component {
           "pages/cart/coupon-picker",
           "pages/cart/drug-info",
           // 绑定订单
-          "pages/bindOrder/index"
+          "pages/bindOrder/index",
+          // 过期优惠券
+          "pages/nullify/coupon-nullify",
         ]
       },
       {

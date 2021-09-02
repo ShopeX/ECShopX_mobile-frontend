@@ -156,7 +156,11 @@ export default class Detail extends Component {
     buriedPoint.call(this, {
       item_id: id,
       event_type: 'activeItemDetail'
-    })
+    } )
+    
+    Taro.eventCenter.on( "sp-event:login", () => {
+      this.fetchInfo()
+    });
   }
 
   static options = {
@@ -181,12 +185,19 @@ export default class Detail extends Component {
     this.fetchCartCount()
   }
 
-  async getEvaluationList(id) {
-    const { list, total_count } = await api.item.evaluationList({
+  async getEvaluationList( id ) {
+    let params = {
       page: 1,
       pageSize: 2,
       item_id: id || this.$router.params.id
-    })
+    };
+    if ( this.isPointitemGood() ) {
+      params = {
+        ...params,
+        order_type: 'pointsmall'
+      }
+    }
+    const { list, total_count } = await api.item.evaluationList(params);
     list.map(item => {
       item.picList = item.rate_pic ? item.rate_pic.split(',') : []
     })
@@ -897,17 +908,25 @@ export default class Detail extends Component {
     })
   }
   handleClickViewAllEvaluation() {
+    let url = `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
+    if ( this.isPointitemGood() ) {
+      url += `&order_type=pointsmall`
+    }
     Taro.navigateTo({
-      url: `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
-    })
+      url: url
+    });
   }
 
   handleToRateList = () => {
     const { evaluationTotal } = this.state
-    if (evaluationTotal > 0) {
+    if ( evaluationTotal > 0 ) {
+      let url = `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`;
+      if (this.isPointitemGood()) {
+        url += `&order_type=pointsmall`;
+      }
       Taro.navigateTo({
-        url: '/marketing/pages/item/espier-evaluation?id=' + this.$router.params.id
-      })
+        url: url
+      });
     }
   }
   
@@ -980,6 +999,20 @@ export default class Detail extends Component {
       url: `/subpage/pages/editShare/index?id=${item_id}&dtid=${dtid}&company_id=${company_id}`
     })
   }
+  // 兑换商品
+  handleBuyExchange = async () => {
+    const { info } = this.state
+    const { distributor_id } = Taro.getStorageSync('curStore')
+    const { itemId: item_id } = info
+    const { user_card_id, card_id, code } = this.$router.params
+    const params = {distributor_id, item_id, user_card_id }
+    const res = await api.cart.exchangeGood(params)
+    if (res.status == true) {
+      Taro.navigateTo({
+        url: `/marketing/pages/member/qrcode?user_card_id=${user_card_id}&card_id=${card_id}&code${code}`
+      })
+    }
+  }
 
   render() {
     const {
@@ -1039,13 +1072,14 @@ export default class Detail extends Component {
     if (coupon_list && coupon_list.list.length >= 1) {
       new_coupon_list = coupon_list.list.slice(0, 3)
     }
+    let {isNewGift} = this.$router.params
 
     return (
       <View className="page-goods-detail">
         <NavBar title={info.item_name} leftIconType="chevron-left" fixed />
 
         <ScrollView
-          className="goods-detail__wrap"
+          className={`goods-detail__wrap ${isNewGift ? 'goods-detail__bottom' : null}`}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
@@ -1169,7 +1203,7 @@ export default class Detail extends Component {
                 <Text className="goods-title">{info.item_name}</Text>
                 <Text className="goods-title__desc">{info.brief}</Text>
               </View>
-              {Taro.getEnv() !== "WEB" && !this.isPointitem() && (
+              {!isNewGift && Taro.getEnv() !== "WEB" && !this.isPointitem() && (
                 <View
                   className="goods-share__wrap"
                   onClick={this.handleShare.bind(this)}
@@ -1479,7 +1513,8 @@ export default class Detail extends Component {
           />
         </FloatMenus>
 
-        {info.distributor_sale_status &&
+        {!isNewGift ?
+        (info.distributor_sale_status &&
         hasStock &&
         startActivity &&
         !info.is_gift &&
@@ -1536,6 +1571,12 @@ export default class Detail extends Component {
               )}
             </View>
           </GoodsBuyToolbar>
+        )) : (
+          <View className='btn-new-gift'>
+            <View className='btn-content' onClick={this.handleBuyExchange.bind(this)}>
+              立即兑换
+            </View>
+          </View>
         )}
 
         {info && (

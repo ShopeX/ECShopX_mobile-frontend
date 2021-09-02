@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [4.0.5](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v3.6.1...v4.0.5) (2021-08-26)
+### [4.0.1](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.1.0...v4.0.1) (2021-09-02)
+
+## [4.1.0](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v3.6.1...v4.1.0) (2021-09-02)
+
+
+### Features
+
+* 🎸 新增兑换券功能 ([73b0437](https://git.ishopex.cn/onex/ecshopx-vshop/commit/73b0437805690de71d8370caafb19a52ac3eb5d7))
 
 
 ### Bug Fixes
@@ -11,6 +18,8 @@ All notable changes to this project will be documented in this file. See [standa
 * 个人信息头像更新 ([2aeca0d](https://git.ishopex.cn/onex/ecshopx-vshop/commit/2aeca0d18586120ec0029cc79d305d62e0e7c52b))
 * 修复从导购助手跳转过来，导购店铺信息不对，修复商品详情页购买组件逻辑判断 ([6eed805](https://git.ishopex.cn/onex/ecshopx-vshop/commit/6eed8056cff52722e7bee0d455d24092a73a99f2))
 * 修改授权 ([bf6a80d](https://git.ishopex.cn/onex/ecshopx-vshop/commit/bf6a80d4bfd0f2cb44f19549bbbc92d2e5859a8b))
+* 匿名头像 ([8cbbeb9](https://git.ishopex.cn/onex/ecshopx-vshop/commit/8cbbeb9a4310c2bee6fb900d77e23cdbfc0e8c04))
+* 商品详情sp-login ([5c57df2](https://git.ishopex.cn/onex/ecshopx-vshop/commit/5c57df2426f59c30d7312e1f1ace0bac0c9698d9))
 * 授权优化 ([42e1901](https://git.ishopex.cn/onex/ecshopx-vshop/commit/42e190125c6838666944d10bf63ce0b66a582217))
 * 授权信息 ([5bb77ec](https://git.ishopex.cn/onex/ecshopx-vshop/commit/5bb77ec3a14d716e41543182f5b5b088134588a8))
 * 授权微信用户信息 ([7b036d9](https://git.ishopex.cn/onex/ecshopx-vshop/commit/7b036d9b75443c509d11ffaee4cae7b8958f447e))

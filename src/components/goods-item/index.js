@@ -87,7 +87,8 @@ export default class GoodsItem extends Component {
     }
 
     // console.log("price",price)
-  
+    
+    const isShow = info.store && info.store == 0
 
     return (
       <View className={classNames('goods-item', 'classes')}>
@@ -95,6 +96,10 @@ export default class GoodsItem extends Component {
           {this.props.renderCheckbox}
         </View>
         <View className='goods-item__bd'>
+          {/* 库存判断 */}
+          {isShow && <View className='goods-item__over'>
+            <View className='goods-item__label'>已结束</View>
+          </View>}
           <View
             className='goods-item__img-wrap'
             onClick={onClick}
@@ -140,8 +145,8 @@ export default class GoodsItem extends Component {
                 </View>
               }
               <View onClick={onClick}>
-                <Text className='goods-item__title'>{info.title}</Text>
-                <Text className='goods-item__desc'>{info.desc || ''}</Text>
+                <Text className={`goods-item__title ${isShow && 'goods-item__gray'}`}>{info.title}</Text>
+                <Text className={`goods-item__desc ${isShow && 'goods-item__gray'}`}>{info.desc || ''}</Text>
                 {this.props.renderSpec}
               </View>
             </View>
@@ -152,8 +157,8 @@ export default class GoodsItem extends Component {
               />
             }
             { !isPointitem && <View className='goods-item__price'>
-                <View className='package-price'>
-                  <Text className='goods-item__cur'>¥</Text>
+                <View className={`package-price ${isShow && 'goods-item__gray'}`}>
+                  <Text className={`goods-item__cur ${isShow && 'goods-item__gray'}`}>¥</Text>
                   <Text>
                     {price}
                     {
@@ -163,7 +168,7 @@ export default class GoodsItem extends Component {
                 </View>
                 {
                   Boolean(+marketPrice) &&
-                    <Text className='goods-item__price-market'>¥{marketPrice}</Text>
+                    <Text className={`goods-item__price-market ${isShow && 'goods-item__gray'}`}>¥{marketPrice}</Text>
                 }
 							</View>}
 							{this.props.children}

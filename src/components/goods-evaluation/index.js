@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtRate } from 'taro-ui'
-
+import userIcon from "@/assets/imgs/user-icon.png";
 import './index.scss'
 
 export default class GoodsEvaluation extends Component {
@@ -71,11 +71,11 @@ export default class GoodsEvaluation extends Component {
     return (
       <View className='evaluation-item' onClick={this.handleSelectEvaluation.bind(this)}>
         <View className='evaluation-item__avator'>
-          <Image src={info.avatar} mode='aspectFill' className='avatar' />
+          <Image src={info.anonymous ? userIcon : info.avatar} mode='aspectFill' className='avatar' />
         </View>
         <View className='evaluation-item__main'>
           <View className='name-wrap'>
-            <Text className='name'>{info.username}</Text>
+            <Text className='name'>{info.anonymous ? '匿名用户' : info.username}</Text>
             <AtRate size='12' value={info.star} />
           </View>
           <View className='desc'>{info.content}</View>

@@ -63,7 +63,7 @@ export default class FilterBar extends Component {
             return (
               <View
                 className={classNames('filter-bar__item', isCurrent && 'filter-bar__item-active', item.key && `filter-bar__item-${item.key}`, item.sort ? `filter-bar__item-sort filter-bar__item-sort-${sortOrder > 0 ? 'asc' : 'desc'}` : null)}
-                style={isCurrent ? 'color: ' + colors.data[0].primary : 'color: #666'}
+                style={isCurrent ? 'color: ' + colors.data[0].primary : 'color: #999999'}
                 onClick={this.handleClickItem.bind(this, idx)}
                 key={item.title}
               >

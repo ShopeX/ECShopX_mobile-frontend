@@ -22,6 +22,7 @@
     "APP_MAP_KEY": "readonly",
     "APP_MAP_NAME": "readonly",
     "_MEIQIA": "readonly",
-    "APP_TRACK": "readonly"
+    "APP_TRACK": "readonly",
+    "APP_IMAGE_CDN": "readonly"
   }
 }
