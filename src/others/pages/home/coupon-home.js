@@ -27,6 +27,10 @@ export default class CouponHome extends Component {
     this.routerParams = {}
   }
 
+  // config = {
+  //   navigationBarBackgroundColor: "#F8DAA2"
+  // };
+
   async componentDidMount() {
     api.wx.shareSetting({ shareindex: 'coupon' }).then(res => {
       this.setState({
@@ -187,9 +191,9 @@ export default class CouponHome extends Component {
           leftIconType='chevron-left'
           fixed='true'
         />
-        <View className='coupon-top'>
+        {/* <View className='coupon-top'>
           <Image className='banner' src={`${APP_IMAGE_CDN}/banner_coupon.png`} />
-        </View>
+        </View> */}
         <ScrollView
           scrollY
           className='home_coupon-list__scroll'
@@ -213,6 +217,7 @@ export default class CouponHome extends Component {
                       {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
                     </Text> */}
                     <View
+                      style={{fontSize: '22rpx'}}
                       // className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
                       // style={`background: ${colors.data[0].primary}`}
                       onClick={this.handleClickNews.bind(this, item, idx)}

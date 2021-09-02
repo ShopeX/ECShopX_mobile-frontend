@@ -576,10 +576,11 @@ export default class List extends Component {
         {isNewGift ? 
         (<View className='goods-list__toolbar1'>
           <View className='store' onClick={this.setStore.bind(this, true)}>
-            当前门店: <View className='name'>{currentShop.name}</View>
+            <View className='title'>当前门店: </View>
+            <View className='name'>{currentShop.name}</View>
+            <View style={{lineHeight: '88rpx'}} className="icon-arrowRight item-icon-go"></View>
           </View>
-          {list.length && 
-            <View style={{display: 'flex', position: 'relative'}}>
+            <View style={{display: `${!page.isLoading && !page.hasNext && !list.length ? 'none' : 'flex'}`, position: 'relative'}}>
               <FilterBar
                 className='goods-list__tabs1'
                 custom
@@ -598,7 +599,7 @@ export default class List extends Component {
                   onConfirm={this.handleConfirm.bind(this)}
                 />
               </View>
-          </View>}
+            </View>
         </View>) :
         (<View className='goods-list__toolbar'>
         <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>

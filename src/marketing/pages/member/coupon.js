@@ -213,7 +213,7 @@ export default class Coupon extends Component {
                     key={item.id}
                     onHandleClick={this.handleClick.bind(this, item)}
                   >
-                    <View>
+                    <View style={{fontSize: '22rpx'}}>
                       {(item.card_type === 'cash' || item.card_type === 'discount') ? '去使用' : ''}
                       {(item.card_type === 'new_gift' && item.status == 1 && item.tagClass == 'notstarted') ? '未开始' : ''}
                       {(item.card_type === 'new_gift' && item.tagClass != 'notstarted') ?
