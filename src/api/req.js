@@ -16,7 +16,7 @@ class API {
     }
 
     options.company_id = APP_COMPANY_ID;
-    if (process.env.TARO_ENV === "weapp") {
+    if (process.env.TARO_ENV === "weapp"||isAlipay) {
       const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
       options.appid = extConfig.appid;
       if (extConfig.company_id) {
@@ -88,7 +88,7 @@ class API {
     }
 
     const { company_id, appid } = this.options;
-    if (process.env.TARO_ENV === "weapp") {
+    if (process.env.TARO_ENV === "weapp"||isAlipay) {
       if (appid) {
         header["authorizer-appid"] = appid;
       }
