@@ -156,6 +156,7 @@ export default class CouponItem extends Component {
                     <View className='coupon-item___time'><Text>有效期{begin_date} - {end_date}</Text></View>
                   )}
                 <View className='radius-view radius-right-top'> </View>
+                <View className='radius-view radius-right-bottom'> </View>
                 <View className='coupon-item__content__bf'>
                   <View className='coupon-item__content__bottom' onClick={this.changeExpand}>
                       <View className='text'>详细信息</View>

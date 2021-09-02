@@ -194,7 +194,7 @@
       width: 100%;
       z-index: $z-index-toolbar;
       background: #fff;
-      box-shadow: $box-shadow;
+      // box-shadow: $box-shadow;
       .store {
         width: 100%;
         height: 92px;
@@ -202,15 +202,18 @@
         line-height: 92px;
         background: #FFFFFF;
         padding: 0 24px;
-        overflow: hidden;
-        -o-text-overflow: ellipsis;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        display: flex;
+        .title {
+          width: 160px;
+        }
         .name {
           font-size: 30px;
-          display: inline;
           font-weight: 600;
           margin-left: 10px;
+          overflow: hidden;
+          -o-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
       .at-search-bar {
@@ -270,6 +273,7 @@
       .at-search-bar__input-cnt {
         border-radius: $searchbar-height;
         border: 2px solid #BBBBBB;
+        background-color: #F5F5F5;
       }
       .at-search-bar__clear {
         height: $searchbar-height;
@@ -407,5 +411,8 @@
       left: 150px;
       color: #FFF;
     }
+  }
+  .note__has-img {
+    color: #999999;
   }
 }

@@ -927,7 +927,7 @@ export default class TradeDetail extends Component {
               (((info.status === 'WAIT_SELLER_SEND_GOODS')||
               (info.status === "TRADE_SUCCESS" && (info.receipt_type !== 'dada' || info.dada.dada_status === 4 || info.dada.dada_status === 10)) ||
               (info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE')) && info.receipt_type !== 'dada')) &&
-              info.can_apply_aftersales === 1) && <Button
+              info.can_apply_aftersales === 1 && info.order_class !== 'excard') && <Button
                 className={`trade-detail__footer__btn left ${info.is_logistics && 'trade-detail__footer_active trade-detail__footer_allWidthBtn'}`}
                 onClick={this.handleClickBtn.bind(this, "aftersales")}
               >
@@ -939,7 +939,7 @@ export default class TradeDetail extends Component {
               (info.status === "WAIT_SELLER_SEND_GOODS" || 
               (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada') &&
               info.receipt_type !== 'dada' || info.dada.dada_status !== 9) && <View
-                className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales !== 1 || (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')) ? 'trade-detail__footer_allWidthBtn' : ''
+                className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.order_class === 'excard' || info.can_apply_aftersales !== 1 || (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')) ? 'trade-detail__footer_allWidthBtn' : ''
                   }`}
                 style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
                 onClick={this.handleClickBtn.bind(this, "home")}
@@ -949,7 +949,7 @@ export default class TradeDetail extends Component {
             }
             {
               // 确认收货
-              (info.receipt_type !== 'dada' && !info.is_logistics && info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE'))) && <View
+              (info.order_class !== 'excard' && info.receipt_type !== 'dada' && !info.is_logistics && info.status === "WAIT_BUYER_CONFIRM_GOODS" && (info.is_all_delivery || (!info.is_all_delivery && info.delivery_status === 'DONE'))) && <View
                 className={`trade-detail__footer__btn trade-detail__footer_active right ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'}`}
                 style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                 onClick={this.handleClickBtn.bind(this, "confirm")}
@@ -960,7 +960,7 @@ export default class TradeDetail extends Component {
             {
               // 联系客服
               (info.status === "TRADE_SUCCESS" ||
-              (info.receipt_type === 'dada' && info.dada.dada_status === 9)) && <View 
+              (info.receipt_type === 'dada' && info.dada.dada_status === 9)) && info.order_class !== 'excard' && <View 
                 className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales === 0 || (info.receipt_type === 'dada' && info.dada.dada_status === 9)) && 'trade-detail__footer_allWidthBtn'}`}
                 style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
               >

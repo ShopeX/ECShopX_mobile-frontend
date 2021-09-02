@@ -7,6 +7,15 @@
     box-sizing: border-box;
     bottom: 160px !important;
   }
+  &__tabs {
+    .at-tabs__item--active {
+      font-size: 34px !important;
+    }
+    .at-tabs__item {
+      font-size: 28px;
+      color: #999999;
+    }
+  }
 }
 
 .coupon-list-ticket {
@@ -31,7 +40,7 @@
     font-weight: 400;
     color: #222222;
     line-height: 40px;
-    text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.14);
+    // text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.14);
   }
   .middle {
     color: #BBBBBB;
@@ -42,7 +51,7 @@
     font-weight: 400;
     color: #F4811F;
     line-height: 40px;
-    text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.14);
+    // text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.14);
     .icon {
       width: 24.55px;
       height: 18px;
