@@ -87,6 +87,10 @@ class API {
       header["Authorization"] = `Bearer ${token}`;
     }
 
+    if(process.env.TARO_ENV){
+      header["source"] =process.env.TARO_ENV;
+    }
+
     const { company_id, appid } = this.options;
     if (process.env.TARO_ENV === "weapp"||isAlipay) {
       if (appid) {
