@@ -5,8 +5,8 @@ import {
   AtTag,
   AtTextarea,
   AtTabsPane, AtTabs
-} from 'taro-ui'
-import { SpCell, SpToast, SpHtmlContent } from '@/components'
+} from 'taro-ui' 
+import { SpCell, SpToast, SpHtmlContent,SpImgPicker } from '@/components'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 // import req from '@/api/req'
@@ -147,8 +147,10 @@ export default class TradeRefund extends Component {
       S.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 3)
+  
     imgUploader.uploadImageFn(imgFiles)
-      .then(res => {
+      .then(res => { 
+        console.log("---res---",res)
         this.setState({
           imgs: res
         })
@@ -238,23 +240,24 @@ export default class TradeRefund extends Component {
       'temp_name': 'yykweishop',
       'source_type': 'after_refund',
     }
-    api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
-      if (tmlres.template_id && tmlres.template_id.length > 0) {
-        wx.requestSubscribeMessage({
-          tmplIds: tmlres.template_id,
-          success () {
-            _this.aftersalesAxios()
-          },
-          fail () {
-            _this.aftersalesAxios()
-          }
-        })
-      } else {
-        _this.aftersalesAxios()
-      }
-    }, () => {
-      _this.aftersalesAxios()
-    })
+    this.aftersalesAxios()
+    // api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
+    //   if (tmlres.template_id && tmlres.template_id.length > 0) {
+    //     wx.requestSubscribeMessage({
+    //       tmplIds: tmlres.template_id,
+    //       success () {
+    //         _this.aftersalesAxios()
+    //       },
+    //       fail () {
+    //         _this.aftersalesAxios()
+    //       }
+    //     })
+    //   } else {
+    //     _this.aftersalesAxios()
+    //   }
+    // }, () => {
+    //   _this.aftersalesAxios()
+    // })
   }
 
 
@@ -337,14 +340,16 @@ export default class TradeRefund extends Component {
                 <Text className='refund-describe__text'>上传凭证</Text>
                 <View className='refund-describe__imgupload'>
                   <Text className='refund-describe__imgupload_text'>您可以上传最多3张图片</Text>
+                  <View className='refund-describe__imgupload_picker'>
                   <AtImagePicker
                     multiple
                     mode='aspectFill'
-                    length={5}
+                    length={3}
                     files={imgs}
                     onChange={this.handleImageChange}
                     onImageClick={this.handleImageClick}
                   > </AtImagePicker>
+                  </View>
                 </View>
               </View>
               : null

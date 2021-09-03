@@ -174,10 +174,8 @@ export default class TradeList extends Component {
   }
 
   handleClickItem = (trade) => {
-    const { tid } = trade;
-
-    console.log("----handleClickItem----", trade)
-
+    const { tid } = trade; 
+    
     let url = `/subpage/pages/trade/detail?id=${tid}`;
 
     if (trade.order_class === "pointsmall") {

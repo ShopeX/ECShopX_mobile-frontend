@@ -542,9 +542,7 @@ export default class TradeDetail extends Component {
   render () {
     const { colors } = this.props
     const { info, ziti, qrcode, timer, payLoading, scrollIntoView, cancelData, tradeInfo } = this.state
-
-    console.log("----Tradedetail---",info);
-    console.log("----isPointitemGood---",this.isPointitemGood());
+ 
 
     if (!info) {
       return <Loading></Loading>

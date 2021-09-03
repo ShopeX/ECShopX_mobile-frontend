@@ -323,10 +323,7 @@ export default class MemberIndex extends Component {
     if (memberData) {
       memberInfo = memberData.memberInfo;
       vipgrade = memberData.vipgrade;
-    }
-
-    console.log("memberData",memberData)
-    // const is_open_official_account = Taro.getStorageSync("isOpenOfficial");
+    }  
 
     return (
       <View className="page-member-index" style={getThemeStyle()}>
