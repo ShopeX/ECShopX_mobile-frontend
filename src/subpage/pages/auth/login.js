@@ -5,7 +5,13 @@ import { AtForm, AtInput, AtButton } from "taro-ui";
 import { SpNavBar, SpTimer } from "@/components";
 import S from "@/spx";
 import api from "@/api";
-import { getThemeStyle, styleNames, tokenParse, navigateTo } from "@/utils";
+import {
+  getThemeStyle,
+  styleNames,
+  tokenParse,
+  navigateTo,
+  validate
+} from "@/utils";
 import { Tracker } from "@/service";
 
 import "./login.scss";
@@ -120,6 +126,23 @@ export default class Login extends Component {
                 />
               </View>
             </View>
+            <View className="form-field">
+              <View className="input-field">
+                <AtInput
+                  clear
+                  name="vcode"
+                  value={info.vcode}
+                  placeholder="请输入验证码"
+                  onChange={this.handleInputChange.bind(this, "vcode")}
+                />
+              </View>
+              <View className="btn-field">
+                <SpTimer
+                  onStart={this.handleTimerStart.bind(this)}
+                  onStop={this.handleTimerStop}
+                />
+              </View>
+            </View>
             <View className="btn-text-group">
               <Text
                 className="btn-text"
@@ -127,7 +150,13 @@ export default class Login extends Component {
               >
                 密码登录
               </Text>
-              <Text className="btn-text" onClick={this.navigateTo.bind(this, '`/subpage/pages/auth/reg`')}>
+              <Text
+                className="btn-text"
+                onClick={this.navigateTo.bind(
+                  this,
+                  "`/subpage/pages/auth/reg`"
+                )}
+              >
                 注册
               </Text>
             </View>

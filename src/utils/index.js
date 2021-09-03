@@ -17,6 +17,7 @@ import log from './log'
 import canvasExp from './canvasExp'
 import calCommonExp from './calCommonExp'
 import entryLaunch from './entryLaunch'
+import validate from "./validate";
 
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
 
@@ -453,5 +454,6 @@ export {
   canvasExp,
   getQueryVariable,
   validColor,
-  entryLaunch
+  entryLaunch,
+  validate
 };
