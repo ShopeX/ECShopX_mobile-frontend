@@ -179,8 +179,8 @@ export default class MemberIndex extends Component {
     ] );
 
     this.setState({
-      bannerSetting: bannerSetting.list[0].params.data,
-      menuSetting: menuSetting.list[0].params.data,
+      bannerSetting: bannerSetting.list[0] ? bannerSetting.list[0].params.data :{},
+      menuSetting: menuSetting.list[0] ? menuSetting.list[0].params.data : {},
       score_menu_open: pointItemSetting.entrance.mobile_openstatus
     });
   }
@@ -318,6 +318,7 @@ export default class MemberIndex extends Component {
       showPrivacy,
       showTimes
     } = this.state;
+    console.log("---score_menu_open---",score_menu_open)
     let memberInfo = null,
       vipgrade = null;
     if (memberData) {
@@ -573,7 +574,7 @@ export default class MemberIndex extends Component {
           </View>
         )} */}
 
-        {!isAlipay && <View className="page-member-section">
+        {<View className="page-member-section">
           {memberData.is_open_popularize && (
             <SpCell
               title={!memberData.is_promoter ? "我要推广" : "推广管理"}
