@@ -36,7 +36,7 @@
   .home_coupon-list__scroll {
     // height: 100vh;
     @include page-scroll($tabs-height + $searchbar-height + $navigate-height, $tabbar-height);
-    padding: 0 $edge-margin;
+    // padding: 0 $edge-margin;
     box-sizing: border-box;
   }
   .home_coupon-list_item{
