@@ -28,25 +28,35 @@ export default class Login extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.getImageVcode();
+  }
 
   navigateTo = navigateTo;
 
   handleTimerStart = async resolve => {
-    const { mobile } = this.state.info;
+    const { imgInfo } = this.state;
+    const { mobile, vcode } = this.state.info;
     if (!validate.isMobileNum(mobile)) {
       showToast("请输入正确的手机号");
       return;
     }
-
-    await api.user.regSmsCode({
-      type: "login",
-      mobile: mobile,
-      yzm: yzm,
-      token: imgInfo.imageToken
-    });
-    showToast("验证码已发送");
-    resolve();
+    if (!validate.isRequired(vcode)) {
+      showToast("请输入图形验证码");
+      return;
+    }
+    try {
+      await api.user.regSmsCode({
+        type: "login",
+        mobile: mobile,
+        yzm: vcode,
+        token: imgInfo.imageToken
+      });
+      showToast("验证码已发送");
+      resolve();
+    } catch ( e ) {
+      this.getImageVcode()
+    }
   };
 
   handleTimerStop() {}
@@ -116,7 +126,7 @@ export default class Login extends Component {
   }
 
   render() {
-    const { info, isVisible, loginType } = this.state;
+    const { info, isVisible, loginType, imgInfo } = this.state;
     return (
       <View className="page-auth-login" style={styleNames(getThemeStyle())}>
         <SpNavBar onClickLeftIcon={this.handleNavLeftItemClick} title="登录" />
@@ -165,7 +175,13 @@ export default class Login extends Component {
                   />
                 </View>
                 <View className="btn-field">
-                  <Image src={} />
+                  {imgInfo && (
+                    <Image
+                      className="image-vcode"
+                      src={imgInfo.imageData}
+                      onClick={this.getImageVcode.bind(this)}
+                    />
+                  )}
                 </View>
               </View>
             )}

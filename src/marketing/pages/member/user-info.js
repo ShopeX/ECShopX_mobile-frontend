@@ -4,7 +4,7 @@ import { connect } from "@tarojs/redux";
 import { AtForm, AtInput, AtButton } from "taro-ui";
 import {
   SpToast,
-  Timer,
+  SpTimer,
   SpNavBar,
   FormIdCollector,
   SpCheckbox
@@ -431,7 +431,7 @@ export default class Reg extends Component {
                   onFocus={this.handleErrorToastClose}
                   onChange={this.handleChange.bind(this, "vcode")}
                 >
-                  <Timer
+                  <SpTimer
                     onStart={this.handleTimerStart}
                     onStop={this.handleTimerStop}
                   />

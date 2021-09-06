@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Input, Button } from '@tarojs/components'
 import { connect } from "@tarojs/redux"
 import api from '@/api'
-import { Timer } from '@/components'
+import { SpTimer } from '@/components'
 import S from "@/spx";
 
 import './bindPhone.scss'
@@ -170,12 +170,12 @@ export default class BindPhone extends Component {
         </View>
         <View className='item'>
           <Input placeholder='请输入验证码' value={smsCode} onInput={this.onInput.bind(this, 'sms')} />
-          <Timer
+          <SpTimer
             style={`color: ${colors.data[0].primary} !important`}
             className='time'
             onStart={this.getSmsCode.bind(this)}
           >
-          </Timer>
+          </SpTimer>
         </View>
         <View className='tip'>
           <View className='line'>* 手机号每30天可修改一次；</View>

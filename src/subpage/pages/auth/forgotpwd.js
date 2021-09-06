@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import {View, Image} from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { SpToast, Timer, SpNavBar } from '@/components'
+import { SpToast, SpTimer, SpNavBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 
@@ -181,7 +181,7 @@ export default class Forgotpwd extends Component {
               onFocus={this.handleErrorToastClose}
               onChange={this.handleChange.bind(this, 'vcode')}
             >
-              <Timer
+              <SpTimer
                 onStart={this.handleTimerStart}
                 onUpdateTimer={this.handleUpdateTimer}
                 onStop={this.handleTimerStop}

@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Picker, Image } from '@tarojs/components'
 import { connect } from "@tarojs/redux";
 import { AtForm, AtInput, AtButton,AtIcon } from 'taro-ui'
-import { SpToast, Timer, SpNavBar } from '@/components'
+import { SpToast, SpTimer, SpNavBar } from '@/components'
 import {RGCheckbox } from './comps'
 import { classNames, styleNames,isString,tokenParse,getQueryVariable } from '@/utils'
 import S from '@/spx'
@@ -409,7 +409,7 @@ export default class Reg extends Component {
                   onFocus={this.handleErrorToastClose}
                   onChange={this.handleChange.bind(this, 'vcode')}
                 >
-                  <Timer
+                  <SpTimer
                     onStart={this.handleTimerStart}
                     onStop={this.handleTimerStop}
                   />
