@@ -767,7 +767,7 @@ export default class List extends Component {
           }
           {
             !page.isLoading && !page.hasNext && !list.length
-            && (<SpNote img={`${APP_IMAGE_CDN}/no_exist_product.png`} isUrl>此店铺不参加此次活动，看看别的吧</SpNote>)
+            && (<SpNote img={`${process.env.APP_IMAGE_CDN}/no_exist_product.png`} isUrl>此店铺不参加此次活动，看看别的吧</SpNote>)
           }
           {!page.isLoading && !page.hasNext && !list.length && (
               <View className='coupon-tab'>

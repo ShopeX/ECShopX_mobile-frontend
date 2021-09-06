@@ -234,7 +234,7 @@ export default class Coupon extends Component {
         <View className='coupon-bottom'>
           <View className='left'  onClick={this.handleCouponClick1.bind(this)}>优惠券使用记录</View>
           <View className='middle'>｜</View>
-          <View className='right' onClick={this.handleCouponClick.bind(this)}>前往领券中心<Image className='icon' src={`${APP_IMAGE_CDN}/coupon_right_icon.png`} /></View>
+          <View className='right' onClick={this.handleCouponClick.bind(this)}>前往领券中心<Image className='icon' src={`${process.env.APP_IMAGE_CDN}/coupon_right_icon.png`} /></View>
         </View>
       </View>
     );

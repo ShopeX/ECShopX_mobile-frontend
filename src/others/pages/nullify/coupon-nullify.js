@@ -167,7 +167,7 @@ export default class CouponNullify extends Component {
             }
             {
               !page.isLoading && !page.hasNext && !list.length &&
-              (<SpNote img={`${APP_IMAGE_CDN}/coupon_exist.png`} isUrl>{status == 2 ? '没有已使用优惠券哦，赶紧去使用叭' : ''}</SpNote>)
+              (<SpNote img={`${process.env.APP_IMAGE_CDN}/coupon_exist.png`} isUrl>{status == 2 ? '没有已使用优惠券哦，赶紧去使用叭' : ''}</SpNote>)
             }
             {!page.isLoading && !page.hasNext && !list.length && (
               <View className='coupon-tab'>

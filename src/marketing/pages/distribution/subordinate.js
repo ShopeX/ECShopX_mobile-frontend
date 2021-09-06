@@ -120,7 +120,7 @@ export default class DistributionSubordinate extends Component {
                       key={item.user_id} className={classNames('list-item', item.relationship_depth == 1 && 'child', item.relationship_depth == 2 && 'Gchild', item.relationship_depth == 3 && 'GGchild')}
                     >
                       <Image className="avatar"
-                        src={item.headimgurl ? item.headimgurl : `${APP_IMAGE_CDN}/logo.png`}
+                        src={item.headimgurl ? item.headimgurl : `${process.env.APP_IMAGE_CDN}/logo.png`}
                       />
                       <View className="list-item-txt">
                         <View className="name">

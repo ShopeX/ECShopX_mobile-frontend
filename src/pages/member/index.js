@@ -821,7 +821,7 @@ export default class MemberIndex extends Component {
               )
             }
           >
-            <Image src={`${APP_IMAGE_CDN}/wheel_modal_icon.png`} />
+            <Image src={`${process.env.APP_IMAGE_CDN}/wheel_modal_icon.png`} />
           </View>
         ) : null}
         <TabBar />

@@ -159,7 +159,7 @@ export default class CouponItem extends Component {
                 <View className='coupon-item__content__bf'>
                   <View className='coupon-item__content__bottom' onClick={this.changeExpand}>
                       <View className='text'>详细信息</View>
-                      <Image className='arrow' src={`${APP_IMAGE_CDN}${isExpanded ? '/coupon_arrow_up.png' : '/coupon_arrow_down.png'}`} />
+                      <Image className='arrow' src={`${process.env.APP_IMAGE_CDN}${isExpanded ? '/coupon_arrow_up.png' : '/coupon_arrow_down.png'}`} />
                   </View>
                   <View className='coupon-item__content__count'>{count}</View>
                 </View>

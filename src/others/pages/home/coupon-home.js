@@ -188,7 +188,7 @@ export default class CouponHome extends Component {
           fixed='true'
         />
         <View className='coupon-top'>
-          <Image className='banner' src={`${APP_IMAGE_CDN}/banner_coupon.png`} />
+          <Image className='banner' src={`${process.env.APP_IMAGE_CDN}/banner_coupon.png`} />
         </View>
         <ScrollView
           scrollY

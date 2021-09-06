@@ -1,16 +1,16 @@
 import Taro, { Component } from "@tarojs/taro";
-import { View, Text } from "@tarojs/components";
+import { View, Text, Image } from "@tarojs/components";
 import { AtForm, AtInput, AtButton } from "taro-ui";
 
 import { SpNavBar, SpTimer } from "@/components";
-import S from "@/spx";
 import api from "@/api";
 import {
   getThemeStyle,
   styleNames,
   tokenParse,
   navigateTo,
-  validate
+  validate,
+  showToast
 } from "@/utils";
 import { Tracker } from "@/service";
 
@@ -22,13 +22,15 @@ export default class Login extends Component {
 
     this.state = {
       info: {},
-      isVisible: false
+      isVisible: false,
+      imgInfo: null,
+      loginType: 1 // 1=密码; 2=验证码
     };
   }
 
-  componentDidMount() { }
-  
-  navigateTo = navigateTo
+  componentDidMount() {}
+
+  navigateTo = navigateTo;
 
   handleTimerStart = async resolve => {
     const { mobile } = this.state.info;
@@ -36,8 +38,12 @@ export default class Login extends Component {
       showToast("请输入正确的手机号");
       return;
     }
-    await api.operator.sendCode({
-      mobile
+
+    await api.user.regSmsCode({
+      type: "login",
+      mobile: mobile,
+      yzm: yzm,
+      token: imgInfo.imageToken
     });
     showToast("验证码已发送");
     resolve();
@@ -67,27 +73,50 @@ export default class Login extends Component {
     });
   };
 
-  handleToggleLogin = () => {}
+  handleToggleLogin = () => {
+    const { loginType } = this.state;
+    this.setState({
+      loginType: loginType == 1 ? 2 : 1
+    });
+  };
+
+  getImageVcode = async () => {
+    const img_res = await api.user.regImg({ type: "login" });
+    this.setState({
+      imgInfo: img_res
+    });
+  };
 
   async handleSubmit() {
-    const { mobile, code } = this.state.info;
+    const { loginType } = this.state;
+    const { mobile, password, vcode } = this.state.info;
+    let params = {
+      username: mobile
+    };
     if (!validate.isMobileNum(mobile)) {
       showToast("请输入正确的手机号");
       return;
     }
-    if (!validate.isRequired(mobile)) {
-      showToast("请输入验证码");
-      return;
+    if (loginType == 1) {
+      if (!validate.isRequired(password)) {
+        showToast("请输入密码");
+        return;
+      }
+      params["password"] = password;
+    } else {
+      if (!validate.isRequired(vcode)) {
+        showToast("请输入验证码");
+        return;
+      }
+      params["vcode"] = vcode;
+      params["check_type"] = "mobile";
     }
-    await api.operator.smsLogin({
-      mobile,
-      code,
-      logintype: "smsstaff"
-    });
+
+    const { token } = await api.user.login(params);
   }
 
   render() {
-    const { info, isVisible } = this.state;
+    const { info, isVisible, loginType } = this.state;
     return (
       <View className="page-auth-login" style={styleNames(getThemeStyle())}>
         <SpNavBar onClickLeftIcon={this.handleNavLeftItemClick} title="登录" />
@@ -109,46 +138,62 @@ export default class Login extends Component {
                 onChange={this.handleInputChange.bind(this, "mobile")}
               />
             </View>
-            <View className="form-field">
-              <View className="input-field">
-                <AtInput
-                  clear
-                  name="vcode"
-                  value={info.vcode}
-                  placeholder="请输入验证码"
-                  onChange={this.handleInputChange.bind(this, "vcode")}
-                />
+            {/* 密码登录 */}
+            {loginType == 1 && (
+              <View className="form-field">
+                <View className="input-field">
+                  <AtInput
+                    clear
+                    name="password"
+                    value={info.password}
+                    placeholder="请输入密码"
+                    onChange={this.handleInputChange.bind(this, "password")}
+                  />
+                </View>
               </View>
-              <View className="btn-field">
-                <SpTimer
-                  onStart={this.handleTimerStart.bind(this)}
-                  onStop={this.handleTimerStop}
-                />
+            )}
+            {/* 验证码登录，验证码超过1次，显示图形验证码 */}
+            {loginType == 2 && (
+              <View className="form-field">
+                <View className="input-field">
+                  <AtInput
+                    clear
+                    name="vcode"
+                    value={info.vcode}
+                    placeholder="请输入图形验证码"
+                    onChange={this.handleInputChange.bind(this, "vcode")}
+                  />
+                </View>
+                <View className="btn-field">
+                  <Image src={} />
+                </View>
               </View>
-            </View>
-            <View className="form-field">
-              <View className="input-field">
-                <AtInput
-                  clear
-                  name="vcode"
-                  value={info.vcode}
-                  placeholder="请输入验证码"
-                  onChange={this.handleInputChange.bind(this, "vcode")}
-                />
+            )}
+            {loginType == 2 && (
+              <View className="form-field">
+                <View className="input-field">
+                  <AtInput
+                    clear
+                    name="vcode"
+                    value={info.vcode}
+                    placeholder="请输入验证码"
+                    onChange={this.handleInputChange.bind(this, "vcode")}
+                  />
+                </View>
+                <View className="btn-field">
+                  <SpTimer
+                    onStart={this.handleTimerStart.bind(this)}
+                    onStop={this.handleTimerStop}
+                  />
+                </View>
               </View>
-              <View className="btn-field">
-                <SpTimer
-                  onStart={this.handleTimerStart.bind(this)}
-                  onStop={this.handleTimerStop}
-                />
-              </View>
-            </View>
+            )}
             <View className="btn-text-group">
               <Text
                 className="btn-text"
                 onClick={this.handleToggleLogin.bind(this)}
               >
-                密码登录
+                {loginType == 1 ? "验证码登录" : "密码登录"}
               </Text>
               <Text
                 className="btn-text"

@@ -311,7 +311,7 @@ export default class GroupDetail extends Component {
         >
           <Image
             mode="widthFix"
-            src={`${APP_IMAGE_CDN}/pintuan_fail.png`}
+            src={`${process.env.APP_IMAGE_CDN}/pintuan_fail.png`}
             onClick={this.handleCloseCurtain.bind(this)}
           />
         </AtCurtain>
