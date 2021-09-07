@@ -344,7 +344,9 @@ export default class TradeRefund extends Component {
                   <AtImagePicker
                     multiple
                     mode='aspectFill'
+                    showAddBtn={imgs.length<3}
                     length={3}
+                    count={3}
                     files={imgs}
                     onChange={this.handleImageChange}
                     onImageClick={this.handleImageClick}
