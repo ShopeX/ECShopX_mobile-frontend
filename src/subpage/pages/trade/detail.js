@@ -3,7 +3,7 @@ import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, NavBar, FloatMenuMeiQia } from '@/components'
-import { log, pickBy, formatDataTime,payPlatform, resolveOrderStatus, copyText, getCurrentRoute,copy } from '@/utils'
+import { log, pickBy, formatDataTime,payPlatform, resolveOrderStatus, copyText, getCurrentRoute,copy,isAlipay } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { Tracker } from "@/service"
 import api from '@/api'
@@ -883,7 +883,7 @@ export default class TradeDetail extends Component {
               !isDhPoint && !isDeposit && <View className='line'>
                 <View className='left'>支付</View>
                 <View className='right'>
-                  ¥{info.payment} {'微信支付'}
+                  ¥{info.payment} {(isAlipay?'支付宝':'微信')+'支付'}
                 </View>
               </View>
             }
