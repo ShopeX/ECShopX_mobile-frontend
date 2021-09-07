@@ -290,11 +290,19 @@ export default class List extends Component {
           const { id } = res.dataset;
           const { list } = this.state
           const curGoods = list.find( item => item.item_id == id );
-          const { item_id, title, market_price, price, img } = curGoods;
+          const {
+            item_id,
+            title,
+            market_price,
+            price,
+            img,
+            member_price
+          } = curGoods;
           Tracker.dispatch("EXPOSE_SKU_COMPONENT", {
             goodsId: item_id,
             title: title,
             market_price: market_price * 100,
+            member_price: member_price * 100,
             price: price * 100,
             imgUrl: img
           });
@@ -370,11 +378,12 @@ export default class List extends Component {
   handleClickItem = ( item ) => {
     const {user_card_id, isNewGift = null, card_id , code} = this.$router.params
     if (isNewGift && item.store == 0 ) return
-    const { item_id, title, market_price, price, img } = item;
+    const { item_id, title, market_price, price, img, member_price } = item;
     Tracker.dispatch("TRIGGER_SKU_COMPONENT", {
       goodsId: item_id,
       title: title,
       market_price: market_price * 100,
+      member_price: member_price * 100,
       price: price * 100,
       imgUrl: img
     });
