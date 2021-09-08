@@ -256,7 +256,7 @@ export default class TradeRate extends Component {
           <View
             className='btn name'
             style={`background: ${colors.data[0].primary}`}
-            onClick={this.handleClickSubmit.bind(this)}
+            onClick={this.handleClickSubmit.bind(this, false)}
           >
             立即评价
           </View>

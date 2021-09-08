@@ -156,7 +156,11 @@ export default class Detail extends Component {
     buriedPoint.call(this, {
       item_id: id,
       event_type: 'activeItemDetail'
-    })
+    } )
+    
+    Taro.eventCenter.on( "sp-event:login", () => {
+      this.fetchInfo()
+    });
   }
 
   static options = {
@@ -181,12 +185,19 @@ export default class Detail extends Component {
     this.fetchCartCount()
   }
 
-  async getEvaluationList(id) {
-    const { list, total_count } = await api.item.evaluationList({
+  async getEvaluationList( id ) {
+    let params = {
       page: 1,
       pageSize: 2,
       item_id: id || this.$router.params.id
-    })
+    };
+    if ( this.isPointitemGood() ) {
+      params = {
+        ...params,
+        order_type: 'pointsmall'
+      }
+    }
+    const { list, total_count } = await api.item.evaluationList(params);
     list.map(item => {
       item.picList = item.rate_pic ? item.rate_pic.split(',') : []
     })
@@ -897,17 +908,25 @@ export default class Detail extends Component {
     })
   }
   handleClickViewAllEvaluation() {
+    let url = `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
+    if ( this.isPointitemGood() ) {
+      url += `&order_type=pointsmall`
+    }
     Taro.navigateTo({
-      url: `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
-    })
+      url: url
+    });
   }
 
   handleToRateList = () => {
     const { evaluationTotal } = this.state
-    if (evaluationTotal > 0) {
+    if ( evaluationTotal > 0 ) {
+      let url = `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`;
+      if (this.isPointitemGood()) {
+        url += `&order_type=pointsmall`;
+      }
       Taro.navigateTo({
-        url: '/marketing/pages/item/espier-evaluation?id=' + this.$router.params.id
-      })
+        url: url
+      });
     }
   }
   

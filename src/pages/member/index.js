@@ -326,9 +326,7 @@ export default class MemberIndex extends Component {
       <View className="page-member-index" style={getThemeStyle()}>
         {S.getAuthToken() ? (
           <View
-            className={classNames("page-member-header", {
-              "no-card": !memberDiscount
-            })}
+            className={classNames("page-member-header")}
           >
             <View className="user-info">
               <View

@@ -24,7 +24,6 @@ export default class Youshu extends Base {
     // const { youshu = {} } =  Taro.getStorageSync('otherSetting') || {}
     config.token = extConfig.youshutoken;
     config.appid = extConfig.appid;
-
     console.log('extConfig',config)
 
     sr.init(config);

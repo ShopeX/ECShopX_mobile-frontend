@@ -399,7 +399,7 @@ export default class CartIndex extends Component {
     this.updateCart();
 
     // 购物车追加
-    if (item.num < parseInt(num)) {
+    if ( item.num < parseInt( num ) ) {
       Tracker.dispatch("APPEND_TO_CART_IN_CART", {
         ...item,
         goods_id: item.goods_id || item.item_id,
