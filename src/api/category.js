@@ -5,5 +5,5 @@ export function get (params) {
 }
 
 export function getCategory (params = {}) {
-  return req.get('/pageparams/setting', params)
+  return req.get('/alipay/pageparams/setting', params)
 }

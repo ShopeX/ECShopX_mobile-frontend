@@ -14,7 +14,7 @@ import req from './req'
 export const getList = (param = {}) => req.get('/promotion/bargains', param)
 
 // 获取助力配置
-export const getDetail = (param = {}) => req.get('/pageparams/setting', param)
+export const getDetail = (param = {}) => req.get('/alipay/pageparams/setting', param)
 
 // 获取助力详情
 export const getUserBargain = (param = {}) => req.get('/promotion/userbargain', param)

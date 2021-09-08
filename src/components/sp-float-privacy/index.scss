@@ -71,6 +71,15 @@
       &:last-child {
         padding-left: 20px;
       }
+      .ali-button{
+        background: var(--color-primary);
+        color:white;
+        height: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center ;
+        font-size: 0.28rem;
+      }
     }
   }
 }

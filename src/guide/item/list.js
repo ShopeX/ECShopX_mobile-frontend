@@ -545,7 +545,7 @@ export default class List extends Component {
       isShowSearch,
       query
     } = this.state;
-    const { isTabBar = "" } = this.$router.params;
+    const { isTabBar = "guide" } = this.$router.params;
     const navbar_height = S.get("navbar_height", true);
     return (
       <View className="page-goods-list">

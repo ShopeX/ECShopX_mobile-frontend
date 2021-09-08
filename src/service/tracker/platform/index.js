@@ -1,6 +1,6 @@
 const providers = {};
 
-if (process.env.TARO_ENV == "weapp") {
+if (process.env.TARO_ENV == "weapp"||process.env.TARO_ENV==='alipay') {
   Object.assign(providers, {
     [APP_TRACK]: require(`./` + APP_TRACK).default
   });

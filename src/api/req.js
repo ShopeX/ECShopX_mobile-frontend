@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro";
 import S from "@/spx";
 import qs from "qs";
-import { isGoodsShelves } from "@/utils";
+import { isGoodsShelves,isAlipay } from "@/utils";
 import api from '@/api'
 
 function addQuery(url, query) {
@@ -16,8 +16,8 @@ class API {
     }
 
     options.company_id = APP_COMPANY_ID;
-    if (process.env.TARO_ENV === "weapp") {
-      const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+    if (process.env.TARO_ENV === "weapp"||isAlipay) {
+      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
       options.appid = extConfig.appid;
       if (extConfig.company_id) {
         options.company_id = extConfig.company_id;
@@ -87,8 +87,12 @@ class API {
       header["Authorization"] = `Bearer ${token}`;
     }
 
+    if(process.env.TARO_ENV){
+      header["source"] =process.env.TARO_ENV;
+    }
+
     const { company_id, appid } = this.options;
-    if (process.env.TARO_ENV === "weapp") {
+    if (process.env.TARO_ENV === "weapp"||isAlipay) {
       if (appid) {
         header["authorizer-appid"] = appid;
       }
@@ -126,7 +130,17 @@ class API {
       delete options.data;
     } else {
       // nest data
-      options.data = qs.stringify(options.data);
+      if(isAlipay && options.method==='DELETE'){
+        options.url = addQuery(options.url, qs.stringify(options.data));
+        options.data=options.data;
+        options.dataType='json';
+        options.headers=options.header;
+        options.responseType='text';
+        options.responseCharset='utf-8';
+      }else{
+        options.data = qs.stringify(options.data);
+      }
+      
     }
     const workEnv = S.get("workEnv", true);
     let ba_params = S.get("ba_params", true);
@@ -148,6 +162,8 @@ class API {
     let resData = {};
     let isRefreshing = false;
     let requests = [];
+
+    
     return Taro.request(options)
       .then(res => {
         resData = res;
@@ -264,7 +280,8 @@ class API {
           if (
             showError &&
             data.error.message !== "当前余额不足以支付本次订单费用，请充值！" &&
-            data.error.code !== 201
+            data.error.code !== 201 &&
+            data.error.code !== 450
           ) {
             this.errorToast(data);
           }

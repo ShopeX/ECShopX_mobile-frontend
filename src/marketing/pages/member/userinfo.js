@@ -7,8 +7,7 @@ import S from "@/spx";
 import { withLogin } from "@/hocs";
 import { showToast, getThemeStyle } from "@/utils";
 import userIcon from "@/assets/imgs/user-icon.png";
-import imgUploader from "@/utils/upload";
-import GetUserInfoBtn from "./comps/getUserInfo";
+import imgUploader from "@/utils/upload"; 
 
 import "./userinfo.scss";
 @connect(

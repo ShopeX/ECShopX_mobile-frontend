@@ -5,9 +5,10 @@ import configStore from "@/store";
 import useHooks from "@/hooks";
 import req from "@/api/req";
 import api from "@/api";
-import { normalizeQuerys, isGoodsShelves } from "@/utils";
+import { normalizeQuerys, isGoodsShelves,payTypeField } from "@/utils";
 import { FormIds, Tracker } from "@/service";
 import { youshuLogin } from '@/utils/youshu'
+import qs from 'qs';
 import Index from './pages/index'
 import LBS from './utils/lbs'
 
@@ -36,6 +37,9 @@ const getHomeSetting = async () => {
     nostores_status = false,
     distributor_param_status=false
   } = await api.shop.homeSetting();
+
+  console.log("getHomeSetting1",echat);
+ 
   // 美洽客服配置
   Taro.setStorageSync("meiqia", meiqia);
   // 一洽客服配置
@@ -72,9 +76,11 @@ class App extends Component {
 
   // eslint-disable-next-line react/sort-comp
   componentWillMount() {
+    console.log("componentWillMount",APP_TRACK)
     if (APP_TRACK) {
       const system = Taro.getSystemInfoSync();   
       if (!(system && system.environment && system.environment === "wxwork")) { 
+        console.log("Tracker",Tracker.use)
         Tracker.use(APP_TRACK);
         youshuLogin();
       }
@@ -176,7 +182,7 @@ class App extends Component {
 
       "pages/custom/custom-page"
     ],
-    subpackages: [
+    subPackages: [
       {
         root: "marketing",
         pages: [
@@ -255,6 +261,7 @@ class App extends Component {
       {
         root: "subpage",
         pages: [
+          "pages/recommend/detail",
           "pages/trade/list",
           "pages/trade/customer-pickup-list",
           "pages/trade/drug-list",
@@ -270,8 +277,7 @@ class App extends Component {
           "pages/trade/refund-sendback",
           "pages/trade/invoice-list",
           "pages/cashier/index",
-          "pages/cashier/cashier-result",
-          "pages/recommend/detail",
+          "pages/cashier/cashier-result", 
           "pages/qrcode-buy",
           "pages/vip/vipgrades",
           "pages/auth/reg",
@@ -417,11 +423,14 @@ class App extends Component {
       Taro.setStorageSync("work_userid", '');
     }
     // 根据路由参数
-    const { query } = this.$router.params;
+    const { query={} } = this.$router.params;
     // 初始化清楚s_smid
     Taro.setStorageSync( "s_smid", '' );
     Taro.setStorageSync("s_dtid", '');
     Taro.setStorageSync("gu_user_id", "");
+
+    console.log('query',query);
+
     if ((query && query.scene) || query.gu_user_id || query.smid) {
       const { smid, dtid, id, aid, cid, gu, chatId, gu_user_id = ''} = await normalizeQuerys(
         query
@@ -513,8 +522,8 @@ class App extends Component {
       ],
       name: "tabs"
     };
-
-    const setUrl = "/pagestemplate/setInfo";
+    const paramsurl=qs.stringify(payTypeField)
+    const setUrl = `/pagestemplate/setInfo?${paramsurl}`;
     req
       .get(setUrl)
       .then(
@@ -567,13 +576,7 @@ class App extends Component {
       colorAccent: themeColor.data[0].accent
     });
 
-
-    // req.get(`/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=color_style`).then(info => {
-    //   store.dispatch({
-    //     type: "colors",
-    //     payload: info.list.length ? info.list[0].params : defaultColors
-    //   });
-    // });
+ 
   }
 
   componentDidCatchError() {}

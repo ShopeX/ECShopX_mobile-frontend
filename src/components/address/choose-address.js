@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
+import { rightClassName } from '@/utils'
 
 
 import './address.scss'
@@ -61,7 +62,7 @@ export default class AddressChoose extends Component {
                     </View>
                   </View>
                 </View>
-                <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
+                <View className={`sp-cell__ft-icon ${rightClassName}`}></View>
               </View>
             : <View className='address-info__bd'>+请选择收货地址</View>
           }

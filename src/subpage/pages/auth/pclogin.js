@@ -33,7 +33,7 @@ export default class PcAuth extends Component {
     }
     setTimeout(async ()=> {
       if(this.query) {
-        const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+        const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
         const { code } = await Taro.login()
         let check_params = {
             code: code,
@@ -50,7 +50,7 @@ export default class PcAuth extends Component {
   }
 
   handleLogin = async (val) => {
-    const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
     
     try {
         if(this.state.checkStatus == true) {
@@ -85,7 +85,7 @@ export default class PcAuth extends Component {
   }
 
   render () {
-    const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
 
     return (
       <View className='page-wxauth'>

@@ -572,7 +572,8 @@ export default class List extends Component {
       currentShop,
       couponTab
     } = this.state
-    const { isTabBar = '', isNewGift } = this.$router.params
+    const { isTabBar = 'guide', isNewGift } = this.$router.params
+ 
 		return (
 			<View className='page-goods-list'>
         {

@@ -171,9 +171,9 @@ export default class CartIndex extends Component {
   resolveActivityGroup(cartList = []) {
     console.log(cartList);
     const groups = cartList.map(shopCart => {
-      console.log("shopCart0---->", shopCart);
+  
       const { list, used_activity = [], plus_buy_activity = [] } = shopCart;
-      console.log("plus_buy_activity---->", plus_buy_activity);
+      
       const tDict = list.reduce((acc, val) => {
         acc[val.cart_id] = val;
         return acc;
@@ -577,7 +577,7 @@ export default class CartIndex extends Component {
         entrySource:entry_form.entry,
         ...params
       })
-      const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
       const userinfo = Taro.getStorageSync('userinfo')
       const url = `https://${API_HOST}/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout`
       const { path: qrcode } = await Taro.getImageInfo({ src: url })

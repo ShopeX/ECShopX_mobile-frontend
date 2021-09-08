@@ -49,12 +49,12 @@ export default class WxAuth extends Component {
   //处理code定时器
   handleCodeTime=()=>{
    
-    this.timer = setInterval(
-      () => {
-        this.setCode()
-      },
-      codeSetTime
-    );
+    // this.timer = setInterval(
+    //   () => {
+    //     this.setCode()
+    //   },
+    //   codeSetTime
+    // );
   }
 
   componentWillUnmount(){
@@ -281,6 +281,18 @@ export default class WxAuth extends Component {
     })
   }
 
+  getAuthCode=()=>{
+    console.log("getAuthCode")
+    my.getAuthCode({
+      scopes: ['auth_user'],
+      success: (res) => {
+        my.alert({
+          content: res.authCode,
+        });
+      },
+    });
+  }
+
   render () {
     const { colors } = this.props
     const { isAgree, baseInfo } = this.state
@@ -298,8 +310,9 @@ export default class WxAuth extends Component {
           {
             isAgree ? <Button
               className='btn'
-              openType='getPhoneNumber'
-              onGetPhoneNumber={this.getPhoneNumber.bind(this)}
+              onClick={this.getAuthCode}
+              // openType='getPhoneNumber'
+              // onGetPhoneNumber={this.getPhoneNumber.bind(this)}
             >
               微信授权手机号一键登录
             </Button> : <Button

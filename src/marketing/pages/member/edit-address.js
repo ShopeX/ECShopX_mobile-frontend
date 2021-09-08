@@ -5,15 +5,28 @@ import { AtForm, AtInput } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { SpCell, SpToast, NavBar } from '@/components'
 import api from '@/api'
-import { pickBy } from '@/utils'
+import { pickBy,isAlipay,showLoading,hideLoading } from '@/utils'
 import S from '@/spx'
 
 import './edit-address.scss'
 
+//转换属性
+const traverseData=(data)=>{
+  let item=[];
+  data.forEach(d=>{
+    let newData={};
+    newData.name=d.label;
+    if(d.children){
+      newData.subList=traverseData(d.children);
+    }
+    item.push(newData)
+  })
+  return item;
+}
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 export default class AddressIndex extends Component {
   constructor (props) {
     super(props)
@@ -23,6 +36,8 @@ export default class AddressIndex extends Component {
       areaList: [],
       multiIndex: [],
       listLength: 0,
+      areaListAli:[],
+      selectedListAli:[]
       // ubmitLoading: false,
     }
   }
@@ -32,7 +47,7 @@ export default class AddressIndex extends Component {
   }
 
   async fetch () {
-    Taro.showLoading()
+    showLoading()
     const { list } = await api.member.addressList()
     this.setState({
       listLength: list.length
@@ -46,50 +61,56 @@ export default class AddressIndex extends Component {
       }
     })
 
-    let res = await api.member.areaList()
-    const nList = pickBy(res, {
-      label: 'label',
-      children: 'children',
-    })
-    this.nList = nList
-    let arrProvice = []
-    let arrCity = []
-    let arrCounty = []
-    nList.map((item, index) => {
-      arrProvice.push(item.label)
-      if(index === 0) {
-        item.children.map((c_item, c_index) => {
-          arrCity.push(c_item.label)
-          if(c_index === 0) {
-            c_item.children.map(cny_item => {
-              arrCounty.push(cny_item.label)
-            })
-          }
-        })
-      }
-    })
-    this.setState({
-      areaList: [arrProvice, arrCity, arrCounty],
-      // areaList: [['北京'], ['北京'], ['东城']],
-    })
+    let res = await api.member.areaList();  
 
-    if (this.$router.params.isWechatAddress){
-      const resAddress = await Taro.chooseAddress()
-      const query = {
-        province: resAddress.provinceName,
-        city: resAddress.cityName,
-        county: resAddress.countyName,
-        adrdetail: resAddress.detailInfo,
-        is_def: 0,
-        postalCode: resAddress.postalCode,
-        telephone: resAddress.telNumber,
-        username: resAddress.userName,
-      }
-      this.setState({
-        info: query
-      })
-    }
-    Taro.hideLoading()
+    this.setState({
+      areaListAli:traverseData(res)
+    }) 
+
+    // const nList = pickBy(res, {
+    //   name: 'label',
+    //   subList: 'children',
+    // })
+    // console.log("---api.member.areaList2---",nList);
+    // this.nList = nList
+    // let arrProvice = []
+    // let arrCity = []
+    // let arrCounty = []
+    // nList.map((item, index) => {
+    //   arrProvice.push(item.label)
+    //   if(index === 0) {
+    //     item.children.map((c_item, c_index) => {
+    //       arrCity.push(c_item.label)
+    //       if(c_index === 0) {
+    //         c_item.children.map(cny_item => {
+    //           arrCounty.push(cny_item.label)
+    //         })
+    //       }
+    //     })
+    //   }
+    // })
+    // this.setState({
+    //   areaList: [arrProvice, arrCity, arrCounty],
+    //   // areaList: [['北京'], ['北京'], ['东城']],
+    // })
+
+    // if (this.$router.params.isWechatAddress){
+    //   const resAddress = await Taro.chooseAddress()
+    //   const query = {
+    //     province: resAddress.provinceName,
+    //     city: resAddress.cityName,
+    //     county: resAddress.countyName,
+    //     adrdetail: resAddress.detailInfo,
+    //     is_def: 0,
+    //     postalCode: resAddress.postalCode,
+    //     telephone: resAddress.telNumber,
+    //     username: resAddress.userName,
+    //   }
+    //   this.setState({
+    //     info: query
+    //   })
+    // }
+    hideLoading()
   }
 
   // 选定开户地区
@@ -206,8 +227,8 @@ export default class AddressIndex extends Component {
   }
 
   handleSubmit = async (e) => {
-    const { value } = e.detail
-    const { areaList, multiIndex } = this.state
+    const { value } = e.detail||{}
+    const { selectedListAli } = this.state
     const data = {
       ...this.state.info,
       ...value
@@ -231,23 +252,27 @@ export default class AddressIndex extends Component {
     }
 
     if (!data.province) {
-      data.province = areaList[0][multiIndex[0]]
-      data.city = areaList[1][multiIndex[1]]
-      data.county = areaList[2][multiIndex[2]]
+      data.province = selectedListAli[0]
+      data.city =  selectedListAli[1]
+      data.county =  selectedListAli[2]
     }
 
     if (!data.adrdetail) {
       return S.toast('请输入详细地址')
     }
+
+      // if(isAlipay){ 
+      //   data.city='上海市';
+      //   data.province='上海市';
+      //   data.postalCode=100010;
+      //   data.county='徐汇';
+      // }
     console.log(data)
-    Taro.showLoading({
+    showLoading({
       title: '正在提交',
       mask: true
     })
-
-    this.setState({
-      submitLoading: true
-    })
+ 
     try {
       await api.member.addressCreateOrUpdate(data)
       if(data.address_id) {
@@ -258,17 +283,31 @@ export default class AddressIndex extends Component {
       setTimeout(()=>{
         Taro.navigateBack()
       }, 700)
-    } catch (error) {
+    } catch (error) { 
+      hideLoading()
       return false
-    }
-    this.setState({
-      submitLoading: false
+    } 
+    hideLoading()
+  }
+
+  handleSelectArea=()=>{
+    const { areaListAli } =this.state;
+    console.log("--areaList--",areaListAli)
+    my.multiLevelSelect({
+      title:'请选择省市县区域',
+      list:areaListAli,
+      success:(res)=>{
+        console.log("----handleSelectArea---",res.result)
+        this.setState({
+          selectedListAli:[res.result[0].name,res.result[1].name,res.result[2].name]
+        }) 
+      }
     })
   }
 
   render () {
     const { colors } = this.props
-    const { info, multiIndex, areaList } = this.state
+    const { info, multiIndex, selectedListAli } = this.state
 
     return (
       <View className='page-address-edit'>
@@ -298,17 +337,20 @@ export default class AddressIndex extends Component {
               value={info.telephone}
               onChange={this.handleChange.bind(this, 'telephone')}
             />
-            <Picker
+            {/* <Picker
               mode='multiSelector'
               onClick={this.handleClickPicker}
               onChange={this.bindMultiPickerChange}
               onColumnChange={this.bindMultiPickerColumnChange}
               value={multiIndex}
               range={areaList}
-            >
-              <View className='picker'>
-                <View className='picker__title'>所在区域</View>
+            > */}
+              <View className='picker' onClick={this.handleSelectArea}>
+                <View className='picker__title' >所在区域</View>
                 {
+                  selectedListAli.length && <Text>{`${selectedListAli[0]}${selectedListAli[1]}${selectedListAli[2]}`}</Text>
+                }
+                {/* {
                   info.address_id || (this.$router.params.isWechatAddress && info.province)
                     ? `${info.province}${info.city}${info.county}`
                     : <View>
@@ -318,9 +360,9 @@ export default class AddressIndex extends Component {
                           : null
                       }
                     </View>
-                }
+                } */}
               </View>
-            </Picker>
+            {/* </Picker> */}
 
             <AtInput
               title='详细地址'
@@ -360,7 +402,7 @@ export default class AddressIndex extends Component {
                 </Button>
                 : <Button
                   type='primary'
-                  onClick={this.handleSubmit}
+                  // onClick={this.handleSubmit}
                   formType='submit'
                   style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                 >提交</Button>

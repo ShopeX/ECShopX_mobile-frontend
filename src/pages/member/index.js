@@ -16,8 +16,11 @@ import { withLogin } from "@/hocs";
 import {
   navigateTo,
   getThemeStyle,
-  classNames
+  classNames,
+  isAlipay,
+  platformTemplateName
 } from "@/utils";
+import qs from 'qs';
 import {
   customName
 } from '@/utils/point';
@@ -178,8 +181,8 @@ export default class MemberIndex extends Component {
     console.log("--pointItemSetting--",pointItemSetting)
 
     this.setState({
-      bannerSetting: bannerSetting.list[0]?bannerSetting.list[0].params.data:{},
-      menuSetting: menuSetting.list[0]?menuSetting.list[0].params.data:{},
+      bannerSetting: bannerSetting.list[0] ? bannerSetting.list[0].params.data :{},
+      menuSetting: menuSetting.list[0] ? menuSetting.list[0].params.data : {},
       score_menu_open: pointItemSetting.entrance.mobile_openstatus
     });
   }
@@ -190,7 +193,12 @@ export default class MemberIndex extends Component {
 
   // 获取积分个人信息跳转
   async fetchRedirect() {
-    const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=member_center_redirect_setting`;
+    const pathparams=qs.stringify({
+      template_name:platformTemplateName,
+      version:'v1.0.1',
+      page_name:'member_center_redirect_setting'
+    })
+    const url = `/alipay/pageparams/setting?${pathparams}`;
     const { list = [] } = await req.get(url);
     if (list[0].params) {
       this.setState({
@@ -283,7 +291,7 @@ export default class MemberIndex extends Component {
   handleClickWxOAuth( fn ) {
     if ( this.state.showTimes >= 1 ) {
       fn && fn();
-    } else {
+    } else { 
       const { avatar, username } = this.props.memberData.memberInfo;
       if (avatar && username) {
         fn && fn();
@@ -312,16 +320,14 @@ export default class MemberIndex extends Component {
       showPrivacy,
       showTimes
     } = this.state;
+    console.log("---score_menu_open---",score_menu_open)
     let memberInfo = null,
       vipgrade = null;
     if (memberData) {
       memberInfo = memberData.memberInfo;
       vipgrade = memberData.vipgrade;
     }
-
-    console.log("--score_menu_open--",score_menu_open)
-    // const is_open_official_account = Taro.getStorageSync("isOpenOfficial");
-
+ 
     return (
       <View className="page-member-index" style={getThemeStyle()}>
         {S.getAuthToken() ? (
@@ -437,65 +443,7 @@ export default class MemberIndex extends Component {
           </View>
         )}
 
-        {(vipgrade.is_open || (!vipgrade.is_open && vipgrade.is_vip)) &&
-          memberDiscount !== "" && (
-            <View
-              className="member-card"
-              onClick={() => {
-                this.handleClickWxOAuth(
-                  this.navigateTo.bind(this, "/subpage/pages/vip/vipgrades")
-                );
-              }}
-            >
-              {vipgrade.is_open && !vipgrade.is_vip && (
-                <View className="vip-btn">
-                  <View className="vip-btn__title">
-                    开通VIP会员 <Text className="icon-arrowRight"></Text>
-                  </View>
-                  {memberDiscount && (
-                    <View className="vip-btn__desc">
-                      即可享受最高{memberDiscount}折会员优惠
-                    </View>
-                  )}
-                </View>
-              )}
-              {vipgrade.is_vip && (
-                <View className="grade-info">
-                  <View className="member-card-title">
-                    <Text className="vip-sign">
-                      {vipgrade.vip_type === "svip" ? (
-                        <Text>SVIP</Text>
-                      ) : (
-                        <Text>VIP</Text>
-                      )}
-                    </Text>
-                    会员卡
-                  </View>
-                  <View className="member-card-no">
-                    NO. {memberInfo.user_card_code}
-                  </View>
-                  <View className="member-card-period">
-                    {vipgrade.end_time} 到期
-                  </View>
-                </View>
-              )}
-              {vipgrade.is_vip && (
-                <Image
-                  className="member-info-bg"
-                  src={vipgrade.background_pic_url}
-                  mode="widthFix"
-                />
-              )}
-              {vipgrade.is_open && !vipgrade.is_vip && (
-                <Image
-                  className="member-info-bg"
-                  src={memberInfo.gradeInfo.background_pic_url}
-                  mode="widthFix"
-                />
-              )}
-            </View>
-          )}
-
+    
         {/* {is_open_official_account === 1 && (
           <View className="page-member-section">
             <AccountOfficial
@@ -620,13 +568,13 @@ export default class MemberIndex extends Component {
           </View>
         </View>
 
-        {bannerSetting && bannerSetting.is_show && (
+        {/* {bannerSetting && bannerSetting.is_show && (
           <View className="page-member-section">
             <MemberBanner info={bannerSetting} />
           </View>
-        )}
+        )} */}
 
-        <View className="page-member-section">
+        {<View className="page-member-section">
           {memberData.is_open_popularize && (
             <SpCell
               title={!memberData.is_promoter ? "我要推广" : "推广管理"}
@@ -773,7 +721,7 @@ export default class MemberIndex extends Component {
               onClick={this.handleClick.bind(this, '/subpage/pages/auth/store-reg')}
             >
             </SpCell>*/}
-        </View>
+        </View>}
 
         <View className="page-member-section">
           {Taro.getEnv() !== "WEB" && (

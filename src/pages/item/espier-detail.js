@@ -7,7 +7,7 @@ import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavB
 import api from '@/api'
 import req from '@/api/req'
 import { withPager, withBackToTop,withPointitem } from '@/hocs'
-import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys, buriedPoint } from '@/utils'
+import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys, buriedPoint,isAlipay,isWeixin } from '@/utils'
 import entry from '@/utils/entry'
 import S from '@/spx'
 import { Tracker } from "@/service"
@@ -614,6 +614,7 @@ export default class Detail extends Component {
   }
 
   handleBuyAction = async (type) => {
+    console.log("handleBuyAction")
     if (type === 'cart') {
       this.fetchCartCount()
     }
@@ -642,7 +643,7 @@ export default class Detail extends Component {
     const { info,is_open_store_status } = this.state
     const { pics, company_id, item_id } = info
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
-    const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
+    const extConfig = (Taro.getEnv() === 'WEAPP' && Taro.getExtConfigSync) ? Taro.getExtConfigSync() : {}
     const { distributor_id,store_id } = Taro.getStorageSync('curStore')
     
     const pic = pics[0].replace('http:', 'https:')
@@ -933,8 +934,7 @@ export default class Detail extends Component {
   //订阅通知
   handleSubscription = async () => {
 
-    if(this.isPointitemGood()){
-      console.log("this.isPointitemGood()")
+    if(this.isPointitemGood()||isAlipay){ 
       return ;
     }
 
@@ -1202,8 +1202,8 @@ export default class Detail extends Component {
               <View className="goods-title__wrap">
                 <Text className="goods-title">{info.item_name}</Text>
                 <Text className="goods-title__desc">{info.brief}</Text>
-              </View>
-              {!isNewGift && Taro.getEnv() !== "WEB" && !this.isPointitem() && (
+              </View> 
+              {!isNewGift && !isWeixin && !this.isPointitem() && !isAlipay && (
                 <View
                   className="goods-share__wrap"
                   onClick={this.handleShare.bind(this)}
@@ -1214,7 +1214,7 @@ export default class Detail extends Component {
               )}
             </View>
 
-            {!info.is_gift && info.vipgrade_guide_title ? (
+            {!info.is_gift && info.vipgrade_guide_title && !isAlipay ? (
               <VipGuide
                 info={{
                   ...info.vipgrade_guide_title,
@@ -1336,7 +1336,7 @@ export default class Detail extends Component {
               </View>
             )}
 
-          {!info.is_gift && !this.isPointitemGood() && (
+          {!info.is_gift && !this.isPointitemGood() && !isAlipay && (
             <SpCell
               className="goods-sec-specs"
               title="领券"
@@ -1490,9 +1490,9 @@ export default class Detail extends Component {
             icon="home1"
             onClick={this.handleBackHome.bind(this)}
           />
-          {meiqia.is_open === "true" ||
+          {isAlipay ? null :(meiqia.is_open === "true" ||
           echat.is_open === "true" ||
-          Taro.getEnv() === "WEB" ? (
+          Taro.getEnv() === "WEB") ? (
             <FloatMenuMeiQia
               storeId={info.distributor_id}
               info={{ goodId: info.item_id, goodName: info.itemName }}
@@ -1552,7 +1552,7 @@ export default class Detail extends Component {
               ) : (
                 <View
                   style={`background: ${
-                    this.isPointitemGood()
+                    (this.isPointitemGood()||isAlipay)
                       ? "grey"
                       : !isSubscribeGoods
                       ? colors.data[0].primary
@@ -1566,7 +1566,9 @@ export default class Detail extends Component {
                     ? "已兑完"
                     : isSubscribeGoods
                     ? "已订阅到货通知"
-                    : "到货通知"}
+                    : isAlipay
+                    ? "暂无可售"
+                    :"到货通知"}
                 </View>
               )}
             </View>

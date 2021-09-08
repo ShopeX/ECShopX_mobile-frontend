@@ -1,8 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { classNames } from '@/utils'
-
+import { classNames,checkClassName } from '@/utils' 
 import './index.scss'
 
 @connect(({ colors }) => ({
@@ -63,7 +62,7 @@ export default class SpCheckbox extends Component {
           className='sp-checkbox'
           style={isChecked ? 'background: ' + colors.data[0].primary : null}
         >
-          <View className='at-icon at-icon-check'></View>
+          <View className={checkClassName}></View>
         </View>
         <View className='sp-checkbox__label'>{this.props.children}</View>
       </View>

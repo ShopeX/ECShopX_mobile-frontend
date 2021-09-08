@@ -3,6 +3,8 @@ import api from "@/api";
 import req from "@/api/req";
 import S from "@/spx";
 import { getOpenId } from '@/utils/youshu'
+import { payTypeField } from '@/utils';
+import qs from 'qs';
 
 // 请在onload 中调用此函数，保证千人千码跟踪记录正常
 // 用户分享和接受参数处理
@@ -168,27 +170,10 @@ async function logScene(data){
       await api.promotion.logQrcode(logParams)
     }
 }
-
-//获取定位配置
-// async function getLocalSetting() {
-//   const filter = {template_name: 'yykweishop', version: 'v1.0.1', name: 'setting'}
-//   const res = await api.category.getCategory(filter)
-//   const data = res.length ? res[0].params : null
-//   if (res.length > 0) {
-//     if (!data || !data.config) {
-//       return true
-//     } else if(data.config.location){
-//       return true
-//     } else {
-//       return false
-//     }
-//   } else {
-//     return true
-//   }
-//   return positionStatus
-// }
+ 
 async function getLocalSetting() {
-  const url = "/pagestemplate/setInfo";
+  const paramsurl=qs.stringify(payTypeField)
+  const url = `/pagestemplate/setInfo?${paramsurl}`;
   const { is_open_wechatapp_location } = await req.get(url);
   if (is_open_wechatapp_location == 1) {
     return true;
@@ -241,7 +226,7 @@ async function getLocal(isNeedLocate) {
 }
 
 async function getLoc() {
-  if (process.env.TARO_ENV === "weapp") {
+  if (process.env.TARO_ENV === "weapp"||process.env.TARO_ENV === "alipay") {
     return await Taro.getLocation({ type: "gcj02" }).then(
       async locationData => {
         await InverseAnalysis(locationData);

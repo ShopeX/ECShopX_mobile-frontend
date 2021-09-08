@@ -1,6 +1,7 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
+import qs from 'qs';
 import {
   TabBar,
   Loading,
@@ -13,7 +14,7 @@ import {
 } from "@/components";
 import req from "@/api/req";
 import api from "@/api";
-import { pickBy, classNames, isArray } from "@/utils";
+import { pickBy, classNames, isArray,isAlipay,payTypeField,platformTemplateName } from "@/utils";
 import entry from "@/utils/entry";
 import { withLogin, withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
@@ -369,10 +370,17 @@ export default class Home extends Component {
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return;
     }
-    if (APP_PLATFORM === 'platform') {
+    if (APP_PLATFORM === 'platform'||isAlipay) {
       curdis_id=0;
     }
-    const url = `/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=${curdis_id}`;
+
+    let pathparams=qs.stringify({
+      template_name:platformTemplateName,
+      weapp_pages:'index',
+      distributor_id:curdis_id,
+      ...payTypeField
+    }) 
+    const url = `/pagestemplate/detail?${pathparams}`;
     const info = await req.get(url);
     const wgts = isArray(info) ? [] : info.config;
     const wgtsList=isArray(info)? [] : info.list;
@@ -541,9 +549,14 @@ export default class Home extends Component {
   };
 
   handleLoadMore=async (currentIndex,compType,currentTabIndex,currentLength)=>{
+    if(isAlipay) return ;
     const { id }=this.state.wgtsList.find((_,index)=>currentIndex===index)||{}
     this.currentLoadIndex=currentIndex;
-    let params={template_name:'yykweishop',weapp_pages:'index',page:1,page_size:currentLength+50,weapp_setting_id:id,...this.getDistributionId()};
+  
+    let params={template_name:platformTemplateName,weapp_pages:'index',page:1,page_size:currentLength+50,weapp_setting_id:id,...this.getDistributionId()};
+    if(isAlipay){
+      delete params.weapp_setting_id
+    }
     let loadData;
     if(compType==='good-grid'||compType==='good-scroll'){ 
       loadData=await api.wx.loadMoreGoods(params);
@@ -626,7 +639,7 @@ export default class Home extends Component {
           {/* 挂件内容和猜你喜欢 */}
           <View className="wgts-wrap__cont">
             <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} />
-            {likeList.length > 0 && is_open_recommend == 1 && (
+            {/* {likeList.length > 0 && is_open_recommend == 1 && (
               <View className="faverite-list">
                 <WgtGoodsFaverite info={likeList} />
                 {page.isLoading ? <Loading>正在加载...</Loading> : null}
@@ -634,7 +647,7 @@ export default class Home extends Component {
                   <SpNote img="trades_empty.png">暂无数据~</SpNote>
                 )}
               </View>
-            )}
+            )} */}
           </View>
         </View>
         {/* 浮动按钮 */}
@@ -671,7 +684,7 @@ export default class Home extends Component {
           onClick={this.scrollBackToTop.bind(this)}
         />
         {/* addTip */}
-        {isShowAddTip && (
+        {/* {isShowAddTip && (
           <View className="add_tip">
             <View class="tip-text">
               点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺
@@ -683,7 +696,7 @@ export default class Home extends Component {
               {" "}
             </View>
           </View>
-        )}
+        )} */}
         {/* tabBar */}
         <TabBar showbar={show_tabBar} />
         {/* 开屏广告 */}

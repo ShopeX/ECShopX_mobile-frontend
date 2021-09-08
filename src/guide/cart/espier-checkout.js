@@ -9,7 +9,7 @@ import api from "@/api";
 import S from "@/spx";
 import req from "@/api/req";
 import { withLogin } from "@/hocs";
-import { pickBy, log, classNames, styleNames, returnFloat } from "@/utils";
+import { pickBy, isWeixin, classNames, styleNames, returnFloat } from "@/utils";
 import guideCanvasExp from "./guideCanvasExp.js";
 import _cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
@@ -263,12 +263,9 @@ export default class EspireCheckout extends Component {
       if (guideInfo && guideInfo.store_name) {
         wxshop_name = guideInfo.store_name;
       }
-      const extConfig =
-        Taro.getEnv() === "WEAPP" && wx.getExtConfigSync
-          ? wx.getExtConfigSync()
-          : {};
-      const gu_user_id = Taro.getStorageSync("work_userid");
-      const gu = `${guideInfo.work_userid}_${guideInfo.shop_code}`;
+      const extConfig = ( isWeixin && Taro.getExtConfigSync ) ? Taro.getExtConfigSync() : {}
+      const gu_user_id = Taro.getStorageSync( "work_userid" );
+      const gu = `${guideInfo.work_userid}_${guideInfo.shop_code}`; 
       const qrcode_params = `appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout&cxdid=${cxdid}&company_id=${guideInfo.company_id}&smid=${guideInfo.salesperson_id}&distributor_id=${guideInfo.distributor_id}&gu=${gu}`;
       const host = req.baseURL.replace("/api/h5app/wxapp/", "");
       // https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?temp_name=yykweishop&page=pages/cart/espier-checkout&company_id=1&cxdid=159&smid=78&distributor_id=103

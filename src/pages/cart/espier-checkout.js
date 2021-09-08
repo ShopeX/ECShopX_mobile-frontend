@@ -4,7 +4,7 @@ import { connect } from "@tarojs/redux";
 import { AtButton, AtInput } from "taro-ui";
 import {
   customName
-} from '@/utils/point';
+} from '@/utils/point'; 
 import {
   Loading,
   Price,
@@ -22,7 +22,9 @@ import {
   authSetting,
   normalizeQuerys,
   redirectUrl,
-  buriedPoint
+  buriedPoint,
+  isAlipay,
+  isWexin
 } from "@/utils";
 import { lockScreen } from "@/utils/dom";
 import { Tracker } from "@/service";
@@ -963,6 +965,7 @@ export default class CartCheckout extends Component {
   }
 
   handlePaymentShow = () => {
+    if(isAlipay) return ;
     this.setState({
       isPaymentOpend: true,
       isDrugInfoOpend: false,
@@ -1089,6 +1092,15 @@ export default class CartCheckout extends Component {
   };
 
   async createByType(params){  
+    console.log("--createByType--",params)
+    const {payType}=this.state;
+    if(isAlipay){
+      params.pay_type='alipaymini';
+    }
+    if(payType==='point'){
+      params.pay_type='point';
+    }
+
     let info;
     if(this.isPointitemGood()){
       info = await api.trade.create({
@@ -1122,6 +1134,7 @@ export default class CartCheckout extends Component {
     // const { payType, total,point_use } = this.state
     // const { type } = this.$router.params
     const isDrug = type === "drug";
+
     if (payType === "point" || payType === "deposit") {
       try {
         const content =
@@ -1215,8 +1228,7 @@ export default class CartCheckout extends Component {
         //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
         // });
         return;
-      } else {
-        console.log("----this.state.total---",this.state.total)
+      } else { 
         config = await this.createByType({
           ...params,
           pay_type:this.state.total.freight_type==="point"?'point':payType
@@ -1265,20 +1277,19 @@ export default class CartCheckout extends Component {
       });
       return;
     }
-    // 支付流程
-    const paymentParams = {
-      order_id,
-      pay_type: this.state.payType,
-      order_type: config.order_type
-    };
-
     this.setState({
       submitLoading: false
     }); 
 
     const isExtraPoint=this.isPointitemGood() && this.state.total.freight_type==="point"; 
+
+    let tradeDetailUrl=`/subpage/pages/trade/detail?id=${order_id}`;
+
+    // 支付宝小程序积分商城支付
+    const pointPay= this.isPointitemGood() && isAlipay;
     // 积分流程
-    if (payType === "point" || payType === "deposit" || isExtraPoint ) { 
+    if (payType === "point" || payType === "deposit" || isExtraPoint || pointPay) { 
+      console.log("你猜我猜不猜",payType)
       if (!payErr) {
         Taro.showToast({
           title: "支付成功",
@@ -1310,28 +1321,49 @@ export default class CartCheckout extends Component {
     }
 
     payErr = null;
-    console.log("-----configCheckout-----",config) 
+    console.log("-----configCheckout-----",config,total,config) 
     try {  
       const { total } = this.state; 
-      const notNeedPay=total.freight_type==='cash' && !config.package;
+      const notNeedPay=total.freight_type==='cash' && !config.package; 
+      //需要使用支付宝支付
+      const isAlipayRequirePay=isAlipay && this.state.payType==='wxpay';
       
       let payRes; 
-      if(!notNeedPay){
+      if(!notNeedPay || isAlipayRequirePay){
+
         Tracker.dispatch("ORDER_PAY", {
           ...total,
           ...config,
           timeStamp:config.order_created,
         });
-  
-        payRes = await Taro.requestPayment(config); 
+
+        console.log("我需要支付")
+
+        if(isAlipay){
+          payRes = await my.tradePay({tradeNO:config.trade_no}); 
+        }else{
+          payRes = await Taro.requestPayment(config); 
+        }  
+      }
+
+      if(!payRes.result){
+        Taro.showToast({  
+          title:"用户取消支付",
+          icon: "none"
+        });
+
+        payErr='用户取消支付'
+
+        Taro.redirectTo({
+          url:tradeDetailUrl
+        });
       }
       
-      // 支付上报
-     
+      // 支付上报 
       log.debug(`[order pay]: `, payRes);
     } catch (e) {
       payErr = e;
-      console.log(e)
+      console.log("我发生错误",e)
       // Taro.showToast({
       //   //title: e.err_desc || e.errMsg || "支付失败",
       //   title:"支付失败",
@@ -1596,7 +1628,7 @@ export default class CartCheckout extends Component {
     // 支付方式文字
     const payTypeText = {
       point: customName('积分支付'),
-      wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
+      wxpay: isWexin ? '微信支付' : isAlipay ? '支付宝支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款',
       hfpay: '微信支付'
@@ -1652,6 +1684,7 @@ export default class CartCheckout extends Component {
     //const isBtnDisabled = !address
     const isBtnDisabled = express ? !address : false;
 
+    console.log("--payType--",payType)
 
     return (
       <View className="page-checkout">
@@ -1706,7 +1739,7 @@ export default class CartCheckout extends Component {
             </SpCell>
           )}
           {/* type !== 'limited_time_sale' */}
-          {type !== "group" && type !== "seckill" && !bargain_id && !this.isPointitemGood() && (
+          {type !== "group" && type !== "seckill" && !bargain_id && !this.isPointitemGood() && !isAlipay && (
             <SpCell
               isLink
               className="coupons-list"
@@ -1811,7 +1844,7 @@ export default class CartCheckout extends Component {
             })}
           </View>
  
-          {process.env.TARO_ENV === "weapp" && !this.isPointitemGood() && !bargain_id &&  total.invoice_status && (
+          {isWexin && !this.isPointitemGood() && !bargain_id &&  total.invoice_status && (
             <SpCell
               isLink
               className="trade-invoice"
@@ -1857,7 +1890,7 @@ export default class CartCheckout extends Component {
           {!bargain_id && !this.isPointitemGood() && (
             <View className="trade-payment">
               <SpCell
-                isLink
+                isLink={!isAlipay}
                 border={false}
                 title="支付方式"
                 onClick={this.handlePaymentShow}

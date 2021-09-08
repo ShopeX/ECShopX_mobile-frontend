@@ -5,8 +5,9 @@ import { SpToast, Loading, BackToTop } from '@/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, normalizeQuerys, getCurrentRoute } from '@/utils'
+import { pickBy, normalizeQuerys, getCurrentRoute,platformTemplateName } from '@/utils'
 import { withBackToTop } from '@/hocs'
+import qs from 'qs';
 import S from "@/spx";
 import { WgtSlider, WgtImgHotZone, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtSearchHome, WgtFilm } from '../home/wgts'
 
@@ -77,13 +78,13 @@ export default class StoreIndex extends Component {
           name,
           brand: logo
         }
-
-    // const options = this.$router.params
-    // const res = await entry.entryLaunch(options, true)
-
-    //const { distributor_id } = await Taro.getStorageSync('curStore')
-
-    const url = `pagestemplate/shopDetail?template_name=yykweishop&weapp_pages=index&distributor_id=${id}`
+    const pathparams=qs.stringify({
+      template_name:platformTemplateName,
+      weapp_pages:'index',
+      distributor_id:id
+    })
+        
+    const url = `pagestemplate/shopDetail?${pathparams}`
     try {
       const info = await req.get(url)
       if (!S.getAuthToken()) {

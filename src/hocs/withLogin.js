@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+
 import S from '@/spx'
 
 const LIFE_CYCLE_TYPES = {
@@ -21,6 +22,7 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
 
       async componentWillMount () {
         if (lifeCycle === LIFE_CYCLE_TYPES.WILL_MOUNT) {
+          console.log("WILL_MOUNT")
           const res = await this.$__autoLogin()
           if (!res) return
           if (super.componentWillMount) {
@@ -36,8 +38,13 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
 
       async componentDidMount () {
         if (lifeCycle === LIFE_CYCLE_TYPES.DID_MOUNT) {
+          console.log("DID_MOUNT")
           const res = await this.$__autoLogin()
-          if (!res) return
+
+          if (!res) { 
+            this.autoLoginFail();
+            return
+          } 
 
           if (super.componentDidMount) {
             super.componentDidMount()
@@ -52,6 +59,7 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
 
       async componentDidShow () {
         if (lifeCycle === LIFE_CYCLE_TYPES.DID_SHOW) {
+          console.log("DID_SHOW")
           const res = await this.$__autoLogin()
           if (!res) return
 

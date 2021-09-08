@@ -4,7 +4,7 @@ import { connect } from "@tarojs/redux";
 import { AtButton } from 'taro-ui'
 import S from "@/spx";
 import api from "@/api";
-import { showToast, classNames, tokenParse } from "@/utils";
+import { isWeixin, isAlipay, classNames, tokenParse } from "@/utils";
 import { Tracker } from "@/service";
 import "./index.scss";
 
@@ -27,16 +27,70 @@ export default class SpLogin extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  async handleBindPhone(e) {
+  /** 设置导购id */
+  setSalespersonId = (params) => {
+    // 导购id
+    const salesperson_id = Taro.getStorageSync("s_smid");
+    if (salesperson_id) {
+      params.distributor_id = Taro.getStorageSync("s_dtid");
+      params.salesperson_id = salesperson_id;
+    }
+  }
+
+  afterNewLogin = async ({ token, work_userid }) => {
+    if (token) {
+      S.setAuthToken(token);
+      if (work_userid) {
+        api.user.uniquevisito({
+          work_userid: work_userid
+        });
+        const gu_user_id = Taro.getStorageSync("gu_user_id");
+        if (gu_user_id) {
+          api.user.bindSaleperson({
+            work_userid: work_userid
+          });
+        }
+      }
+
+      // 通过token解析openid
+      if(isWeixin){
+        const { user_id, openid, unionid } = tokenParse(token);
+        Tracker.setVar({
+          user_id: user_id,
+          open_id: openid,
+          union_id: unionid
+        });
+      }
+     
+
+      await S.getMemberInfo();
+      // const memberInfo = await api.member.memberInfo();
+      // this.props.setMemberInfo( memberInfo )
+
+      this.setState({
+        token
+      });
+
+      const { switch_first_auth_force_validation } = await api.user.getIsMustOauth({ module_type: 1 });
+      if (switch_first_auth_force_validation == 1) {
+        Taro.navigateTo({
+          url: "/marketing/pages/member/userinfo"
+        });
+      }
+      this.props.onChange && this.props.onChange();
+    }
+  }
+
+  wexinBindPhone = async (e) => {
     const { encryptedData, iv, cloudID } = e.detail;
+
     if (encryptedData && iv) {
       // 推广用户uid
       const uid = Taro.getStorageSync("distribution_shop_id");
       const trackParams = Taro.getStorageSync("trackParams");
-      // 导购id
-      const salesperson_id = Taro.getStorageSync("s_smid");
+
       // 新导购信息处理
       const work_userid = Taro.getStorageSync("work_userid");
       const { code } = await Taro.login();
@@ -49,10 +103,7 @@ export default class SpLogin extends Component {
         auth_type: "wxapp"
       };
 
-      if (salesperson_id) {
-        params.distributor_id = Taro.getStorageSync("s_dtid");
-        params.salesperson_id = salesperson_id;
-      }
+      this.setSalespersonId(params);
 
       if (work_userid) {
         params.channel = 1;
@@ -70,53 +121,55 @@ export default class SpLogin extends Component {
       }
 
       const { token, is_new } = await api.wx.newlogin(params);
-      if (token) {
-        S.setAuthToken(token);
-        if (work_userid) {
-          api.user.uniquevisito({
-            work_userid: work_userid
-          });
-          const gu_user_id = Taro.getStorageSync("gu_user_id");
-          if (gu_user_id) {
-            api.user.bindSaleperson({
-              work_userid: work_userid
-            });
-          }
-        }
+      this.afterNewLogin({ token, work_userid })
+    }
+  }
 
-        // 通过token解析openid
-        const { user_id, openid, unionid } = tokenParse(token);
-        Tracker.setVar({
-          user_id: user_id,
-          open_id: openid,
-          union_id: unionid
-        });
+  alipayBindPhone = async (e) => { 
 
-        await S.getMemberInfo();
-        // const memberInfo = await api.member.memberInfo();
-        // this.props.setMemberInfo( memberInfo )
+    my.getPhoneNumber({
+      protocols: {
+        // 小程序模板所属的三方应用appId        
+        isvAppId: '2021002170619146'  
+      },
+      success:async  (res) => {
+        const encryptedData = res.response;
 
-        this.setState({
-          token
-        });
+        const { authCode } = await my.getAuthCode({ scopes: ['auth_base'] }); 
 
-        const { switch_first_auth_force_validation } = await api.user.getIsMustOauth( { module_type: 1 } );
-        if ( switch_first_auth_force_validation == 1 ) {
-          Taro.navigateTo( {
-            url: "/marketing/pages/member/userinfo"
-          } );
+        const params = {
+          encryptedData,
+          code: authCode
         }
         
-        Taro.eventCenter.trigger("sp-event:login");
+        this.setSalespersonId(params);
 
-        this.props.onChange && this.props.onChange();
+        const { token } = await api.alipay.newlogin(params);
+
+        this.afterNewLogin({ token, work_userid: '' });
+      },
+      fail: (res) => {
+        console.log(res);
+        console.log('getPhoneNumber_fail');
       }
+    });
+
+
+  }
+
+
+  async handleBindPhone(e) {
+    if (isWeixin) {
+      this.wexinBindPhone(e);
+    } else if (isAlipay) {
+      this.alipayBindPhone(e);
     }
   }
 
   handleOnChange() {
     this.props.onChange && this.props.onChange();
   }
+
 
   render() {
     const { token } = this.state;
@@ -128,25 +181,24 @@ export default class SpLogin extends Component {
           </View>
         )}
 
-        {!token && (
-          <AtButton
-            className="login-btn"
-            openType="getPhoneNumber"
-            onGetPhoneNumber={this.handleBindPhone.bind(this)}
-          >
-            {this.props.children}
-          </AtButton>
-        )}
+        {!token && isWeixin && <AtButton
+          className="login-btn"
+          openType="getPhoneNumber"
+          onGetPhoneNumber={this.handleBindPhone.bind(this)}
+        >
+          {this.props.children}
+        </AtButton>}
 
-        {/* {!token && (
-          <AtButton
-            lang="zh_CN"
-            className="userinfo-btn"
-            onClick={this.handleGetUserProfile.bind(this)}
-          >
-            {this.props.children}
-          </AtButton>
-        )} */}
+        {!token && isAlipay && <Button
+          className="login-btn ali-button"
+          onGetAuthorize={this.handleBindPhone}
+          openType="getAuthorize"
+          scope='phoneNumber'
+        >
+          {this.props.children}
+        </Button>
+        }
+
       </View>
     );
   }

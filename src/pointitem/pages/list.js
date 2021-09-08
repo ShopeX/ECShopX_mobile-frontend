@@ -650,8 +650,7 @@ export default class List extends Component {
 
     const {
       colors
-    } = this.props;
-    const { isTabBar = '' } = this.$router.params
+    } = this.props; 
     const noData = !page.isLoading && !page.hasNext && !list.length;
     const searchTop = paddindTop != 0 ? `${paddindTop + 20}px` : '50%';
 

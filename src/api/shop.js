@@ -1,4 +1,5 @@
 import req from "./req";
+import { platformTemplateName } from '@/utils'
 
 export function getShop(params = {}) {
   return req.get("/distributor/is_valid", params);
@@ -39,10 +40,10 @@ export function getHeadquarters(params = {}) {
 //
 export function getPageParamsConfig({
   page_name,
-  template_name = "yykweishop",
+  template_name = platformTemplateName,
   version = "v1.0.1"
 }) {
-  return req.get("pageparams/setting", {
+  return req.get("alipay/pageparams/setting", {
     page_name,
     template_name,
     version
