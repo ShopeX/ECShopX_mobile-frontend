@@ -18,7 +18,8 @@ import {
   getThemeStyle,
   classNames,
   isAlipay,
-  platformTemplateName
+  platformTemplateName,
+  transformPlatformUrl
 } from "@/utils";
 import qs from 'qs';
 import {
@@ -198,7 +199,7 @@ export default class MemberIndex extends Component {
       version:'v1.0.1',
       page_name:'member_center_redirect_setting'
     })
-    const url = `/alipay/pageparams/setting?${pathparams}`;
+    const url = transformPlatformUrl(`/alipay/pageparams/setting?${pathparams}`);
     const { list = [] } = await req.get(url);
     if (list[0].params) {
       this.setState({

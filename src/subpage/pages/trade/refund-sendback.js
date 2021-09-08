@@ -4,8 +4,7 @@ import { AtInput, AtButton } from 'taro-ui'
 import { NavBar, SpToast } from '@/components'
 import { getThemeStyle } from "@/utils";
 import api from '@/api'
-import S from '@/spx'
-import { getThemeStyle } from "@/utils";
+import S from '@/spx' 
 
 import './refund-sendback.scss'
 

@@ -1,5 +1,6 @@
 import req from "./req";
 import S from "@/spx";
+import { transformPlatformUrl } from '@/utils'
 
 function createHead() {
   return {
@@ -11,7 +12,7 @@ function createHead() {
 }
 //获取首页导购模版
 export function getHomeTmps(params = {}, config = createHead()) {
-  return req.get("/alipay/pageparams/setting", params,config);
+  return req.get(transformPlatformUrl("/alipay/pageparams/setting"), params,config);
 }
 
 //获取导购店铺列表

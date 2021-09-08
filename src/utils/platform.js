@@ -53,3 +53,8 @@ export async function payPlatform(order = {}) {
 export const platformTemplateName=isAlipay?'onexshop':'yykweishop';
 //平台添加字段
 export const payTypeField=isAlipay?{page_type:'alipay'}:{}
+
+export const transformPlatformUrl=(url)=>{
+    console.log("---transformPlatformUrl---",url,isWeixin)
+    return isWeixin?url.replace('/alipay',''):url;
+}
