@@ -3,9 +3,7 @@ import { View, Image } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
 import qs from 'qs';
 import {
-  TabBar,
-  Loading,
-  SpNote,
+  TabBar, 
   BackToTop,
   FloatMenus,
   FloatMenuItem,
@@ -14,7 +12,7 @@ import {
 } from "@/components";
 import req from "@/api/req";
 import api from "@/api";
-import { pickBy, classNames, isArray,isAlipay,payTypeField,platformTemplateName } from "@/utils";
+import { pickBy, classNames, isWeixin,isArray,isAlipay,payTypeField,platformTemplateName } from "@/utils";
 import entry from "@/utils/entry";
 import { withLogin, withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
@@ -639,7 +637,7 @@ export default class Home extends Component {
           {/* 挂件内容和猜你喜欢 */}
           <View className="wgts-wrap__cont">
             <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} />
-            {/* {likeList.length > 0 && is_open_recommend == 1 && (
+            {!isAlipay && likeList.length > 0 && is_open_recommend == 1 && (
               <View className="faverite-list">
                 <WgtGoodsFaverite info={likeList} />
                 {page.isLoading ? <Loading>正在加载...</Loading> : null}
@@ -647,7 +645,7 @@ export default class Home extends Component {
                   <SpNote img="trades_empty.png">暂无数据~</SpNote>
                 )}
               </View>
-            )} */}
+            )}
           </View>
         </View>
         {/* 浮动按钮 */}
@@ -684,7 +682,7 @@ export default class Home extends Component {
           onClick={this.scrollBackToTop.bind(this)}
         />
         {/* addTip */}
-        {/* {isShowAddTip && (
+        {isShowAddTip && !isAlipay && (
           <View className="add_tip">
             <View class="tip-text">
               点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺
@@ -696,7 +694,7 @@ export default class Home extends Component {
               {" "}
             </View>
           </View>
-        )} */}
+        )}
         {/* tabBar */}
         <TabBar showbar={show_tabBar} />
         {/* 开屏广告 */}

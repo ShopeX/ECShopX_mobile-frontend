@@ -85,6 +85,8 @@ export default class TabBar extends Component {
       ]
     }
 
+    console.log("---tabList---",list)
+
     this.setState({
       tabList: list,
     }, () => {

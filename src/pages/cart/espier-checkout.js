@@ -973,12 +973,7 @@ export default class CartCheckout extends Component {
     });
   };
 
-  handleDrugInfoShow = () => {
-    // this.setState({
-    //   isPaymentOpend: false,
-    //   isDrugInfoOpend: true
-    // })
-    const { drug } = this.state;
+  handleDrugInfoShow = () => {  
     Taro.navigateTo({
       url: `/others/pages/cart/drug-info`
     });
@@ -1092,13 +1087,18 @@ export default class CartCheckout extends Component {
   };
 
   async createByType(params){  
-    console.log("--createByType--",params)
-    const {payType}=this.state;
+    const { freight_type,freight_fee }=this.state.total; 
+
+    const { payType }=this.state; 
+
+    const isPointPay=payType==='point' || (this.isPointitemGood() && (freight_type==='point' || (freight_type==='cash' && freight_fee==0 )))
+
+    if(isPointPay){
+      params.pay_type='point';
+    } 
+
     if(isAlipay){
       params.pay_type='alipaymini';
-    }
-    if(payType==='point'){
-      params.pay_type='point';
     }
 
     let info;
@@ -1285,10 +1285,13 @@ export default class CartCheckout extends Component {
 
     let tradeDetailUrl=`/subpage/pages/trade/detail?id=${order_id}`;
 
-    // 支付宝小程序积分商城支付
-    const pointPay= this.isPointitemGood() && isAlipay;
+    // 支付宝小程序积分商城支付 
+    const { total:{freight_type,freight_fee},payType:statePayType }=this.state;  
+
+    const isPointPay=statePayType==='point' || (this.isPointitemGood() && (freight_type==='point' || (freight_type==='cash' && freight_fee==0 )))
+
     // 积分流程
-    if (payType === "point" || payType === "deposit" || isExtraPoint || pointPay) { 
+    if (payType === "point" || payType === "deposit" || isExtraPoint || isPointPay) { 
       console.log("你猜我猜不猜",payType)
       if (!payErr) {
         Taro.showToast({
@@ -1485,11 +1488,7 @@ export default class CartCheckout extends Component {
     // })
   };
 
-  handlePaymentChange = async payType => {
-    // if (payType === 'point') {
-    //   this.props.onClearCoupon()
-    // }
-
+  handlePaymentChange = async payType => { 
     this.setState({
       point_use: 0,
       payType,
@@ -1633,6 +1632,7 @@ export default class CartCheckout extends Component {
       delivery: '货到付款',
       hfpay: '微信支付'
     }
+
     const { coupon, colors } = this.props
     const {
       info,
@@ -1648,8 +1648,7 @@ export default class CartCheckout extends Component {
       disabledPayment,
       isPaymentOpend,
       receiptType,
-      drug,
-      third_params,
+      drug, 
       shoppingGuideData,
       curStore,
       pointInfo,
@@ -1661,15 +1660,7 @@ export default class CartCheckout extends Component {
       pack,
       isOpenStore,
       defalutPaytype
-    } = this.state; 
-    // let curStore = {}
-    // if (shopData) {
-    //   curStore = shopData
-    // } else {
-    //   curStore = this.state.curStore
-    // }
-    //const curStore = Taro.getStorageSync('curStore')
-    // const { curStore } = this.state
+    } = this.state;  
     const { type, goodType, bargain_id } = this.$router.params;
     const isDrug = type === "drug";
     if (!info) {
@@ -1682,9 +1673,7 @@ export default class CartCheckout extends Component {
         ? "会员折扣"
         : (coupon.value && coupon.value.title) || "";
     //const isBtnDisabled = !address
-    const isBtnDisabled = express ? !address : false;
-
-    console.log("--payType--",payType)
+    const isBtnDisabled = express ? !address : false; 
 
     return (
       <View className="page-checkout">
