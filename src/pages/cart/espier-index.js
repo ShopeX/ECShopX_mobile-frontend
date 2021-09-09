@@ -403,7 +403,7 @@ export default class CartIndex extends Component {
       Tracker.dispatch("APPEND_TO_CART_IN_CART", {
         ...item,
         goods_id: item.goods_id || item.item_id,
-        num: parseInt(num) - item.num,
+        num: parseInt( num ) - item.num,
         goods_num: num
       });
     } else {
