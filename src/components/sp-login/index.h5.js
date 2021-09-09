@@ -29,10 +29,15 @@ export default class SpLogin extends Component {
 
   componentDidMount() {}
 
-  navigateTo = navigateTo;
-
   handleOnChange() {
     this.props.onChange && this.props.onChange();
+  }
+
+  handleOAuthLogin() {
+    const { path } = this.$router
+    Taro.navigateTo({
+      url: `/subpage/pages/auth/login?redirect=${encodeURIComponent(path)}`
+    });
   }
 
   render() {
@@ -46,11 +51,15 @@ export default class SpLogin extends Component {
         )}
 
         {!token && (
-          <AtButton className="login-btn" onClick={this.navigateTo.bind(this, '/subpage/pages/auth/login')}>
+          <AtButton
+            className="login-btn"
+            onClick={this.handleOAuthLogin.bind(
+              this
+            )}
+          >
             {this.props.children}
           </AtButton>
         )}
-
       </View>
     );
   }

@@ -50,6 +50,8 @@ import SearchBar from "./search-bar";
 import SpNavBar from "./sp-nav-bar";
 import SpPageNote from "./sp-pagenote";
 import SpTimer from "./sp-timer";
+import SpRecommend from "./sp-recommend";
+import SpGoodsItem from "./sp-goods-item";
 
 export default {};
 
@@ -63,5 +65,7 @@ export {
   SearchBar,
   SpNavBar,
   SpPageNote,
-  SpTimer
+  SpTimer,
+  SpRecommend,
+  SpGoodsItem
 };

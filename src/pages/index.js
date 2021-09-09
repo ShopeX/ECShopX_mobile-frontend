@@ -11,15 +11,24 @@ import {
   AccountOfficial,
   ScreenAd,
   SpStorePicker,
-  SpScancode
+  SpScancode,
+  SpRecommend
 } from "@/components";
 import req from "@/api/req";
 import api from "@/api";
-import { pickBy, classNames, isArray, entryLaunch } from "@/utils";
+import {
+  pickBy,
+  classNames,
+  styleNames,
+  isArray,
+  getThemeStyle,
+  entryLaunch
+} from "@/utils";
 import entry from "@/utils/entry";
 import { withPager, withBackToTop } from "@/hocs";
 import S from "@/spx";
 import { Tracker } from "@/service";
+import { setPageTitle } from "@/utils/platform";
 import { WgtGoodsFaverite, HeaderHome } from "./home/wgts";
 import HomeWgts from "./home/comps/home-wgts";
 import Automatic from "./home/comps/automatic";
@@ -79,7 +88,8 @@ export default class Home extends Component {
       isGoStore: false,
       show_tabBar: true,
       advertList: [],
-      currentShowAdvert: 0
+      currentShowAdvert: 0,
+      recommendList: null
     };
   }
 
@@ -92,7 +102,10 @@ export default class Home extends Component {
 
   componentDidMount() {
     // this.getWgts()
+    const { is_open_recommend } = Taro.getStorageSync("settingInfo");
     this.getHomeSetting();
+    // 开启猜你喜欢
+    is_open_recommend == 1 && this.getLikeList();
     // this.getShareSetting();
     // this.isShowTips();
   }
@@ -113,14 +126,14 @@ export default class Home extends Component {
   // }
 
   componentDidShow() {
-    this.showInit();
-    this.isShoppingGuide();
-    this.getDistributionInfo();
+    // this.showInit();
+    // this.isShoppingGuide();
+    // this.getDistributionInfo();
     // 检测白名单
-    this.checkWhite();
+    // this.checkWhite();
     // 购物车数量
-    this.fetchCartCount();
-    this.getPointSetting();
+    // this.fetchCartCount();
+    // this.getPointSetting();
   }
 
   // 下拉刷新
@@ -351,6 +364,14 @@ export default class Home extends Component {
     //     }
     //   );
     // }
+  };
+
+  getLikeList = async () => {
+    const { list } = await api.cart.likeList({
+      page: 1,
+      pageSize: 6
+    });
+    this.setState({ recommendList: list });
   };
 
   async getWgts(id) {
@@ -616,38 +637,33 @@ export default class Home extends Component {
       page,
       is_open_official_account,
       is_open_store_status,
-      show_official
+      show_official,
+      recommendList
     } = this.state;
 
     const pages = Taro.getCurrentPages();
     // 广告屏
     const { showAdv } = this.props;
     // 是否是标准版
-    const isStandard = process.env.APP_PLATFORM === "standard" && !is_open_store_status;
+    const isStandard =
+      process.env.APP_PLATFORM === "standard" && !is_open_store_status;
     // 否是fixed
     const isFixed = positionStatus;
 
-    const { is_open_scan_qrcode } = Taro.getStorageSync( "settingInfo" );
+    const { is_open_scan_qrcode } = Taro.getStorageSync("settingInfo");
     const { openStore } = Taro.getStorageSync("otherSetting");
     return (
-      <View className="page-index">
+      <View className="page-index" style={styleNames(getThemeStyle())}>
         {/* 公众号关注组件 */}
-        {process.env.TARO_ENV == "weapp" && is_open_official_account === 1 && show_official && (
-          <AccountOfficial
-            isClose
-            onHandleError={this.handleOfficialError.bind(this)}
-            onClick={this.handleOfficialClose.bind(this)}
-          ></AccountOfficial>
-        )}
-
-        {/* {isStandard && curStore && (
-          <HeaderHome
-            store={curStore}
-            onClickItem={this.goStore.bind(this)}
-            isOpenScanQrcode={is_open_scan_qrcode}
-            isOpenStoreStatus={is_open_store_status}
-          />
-        )} */}
+        {process.env.TARO_ENV == "weapp" &&
+          is_open_official_account === 1 &&
+          show_official && (
+            <AccountOfficial
+              isClose
+              onHandleError={this.handleOfficialError.bind(this)}
+              onClick={this.handleOfficialClose.bind(this)}
+            ></AccountOfficial>
+          )}
 
         {(openStore || is_open_scan_qrcode) && (
           <View className="header-block">
@@ -668,7 +684,11 @@ export default class Home extends Component {
             <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} />
 
             {/* 猜你喜欢 */}
-            {likeList.length > 0 && is_open_recommend == 1 && (
+            {
+              recommendList && <SpRecommend info={recommendList} />
+            }
+
+            {/* {likeList.length > 0 && is_open_recommend == 1 && (
               <View className="faverite-list">
                 <WgtGoodsFaverite info={likeList} />
                 {page.isLoading ? <Loading>正在加载...</Loading> : null}
@@ -676,7 +696,7 @@ export default class Home extends Component {
                   <SpNote img="trades_empty.png">暂无数据~</SpNote>
                 )}
               </View>
-            )}
+            )} */}
           </View>
         </View>
 

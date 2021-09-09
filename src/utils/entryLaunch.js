@@ -29,7 +29,7 @@ class EntryLaunch {
 
     Taro.setStorageSync("launch_params", options);
     this.sence_params = options;
-    this.initAMap();
+    process.env.TARO_ENV == "h5" && this.initAMap();
     return options;
   }
 
@@ -58,7 +58,7 @@ class EntryLaunch {
     const { is_open_wechatapp_location } = Taro.getStorageSync("settingInfo");
     const pages = Taro.getCurrentPages();
     const currentPage = pages[pages.length - 1];
-    const { dtid } = currentPage.$router.params;
+    const { dtid } = process.env.TARO_ENV == 'weapp' ? currentPage.options : currentPage.$router.params;
     let storeQuery = {}; // 店铺查询参数
     if (dtid) {
       storeQuery = {
@@ -67,23 +67,27 @@ class EntryLaunch {
     } else {
       // 开启定位
       if (is_open_wechatapp_location == 1) {
-        const { lng, lat } = await this.getLocationInfo();
-        storeQuery = {
-          ...storeQuery,
-          lng,
-          lat
-        };
-        const {
-          addressComponent,
-          formattedAddress
-        } = await this.getAddressByLnglat(lng, lat);
-        Taro.setStorageSync("locationAddress", {
-          ...addressComponent,
-          formattedAddress,
-          lng,
-          lat
-        });
-        showToast(formattedAddress);
+        try {
+          const { lng, lat } = await this.getLocationInfo();
+          storeQuery = {
+            ...storeQuery,
+            lng,
+            lat
+          };
+          const {
+            addressComponent,
+            formattedAddress
+          } = await this.getAddressByLnglat(lng, lat);
+          Taro.setStorageSync("locationAddress", {
+            ...addressComponent,
+            formattedAddress,
+            lng,
+            lat
+          });
+          showToast(formattedAddress);
+        } catch(e) {
+          console.warn('location failed: ' + e.message);
+        }
       }
     }
     const storeInfo = await api.shop.getShop(storeQuery);
@@ -123,7 +127,7 @@ class EntryLaunch {
               lat: result.position.lat
             });
           } else {
-            reject(result.message);
+            reject({ message: result.message });
           }
         });
       });

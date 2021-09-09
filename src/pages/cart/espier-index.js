@@ -19,6 +19,7 @@ import S from '@/spx'
 import { Tracker } from "@/service";
 import { withPager, withLogin } from '@/hocs'
 import entry from '@/utils/entry'
+import { setPageTitle } from '@/utils/platform'
 import CartItem from './comps/cart-item'
 import { getDistributorId } from "@/utils/helper";
 
@@ -68,7 +69,8 @@ export default class CartIndex extends Component {
   }
 
   componentDidMount() {
-    console.log(this.$router.params, 48);
+    setPageTitle( '购物车' )
+    
     if (this.$router.params && this.$router.params.path === "qrcode") {
       this.setState({
         isPathQrcode: true
@@ -595,9 +597,9 @@ export default class CartIndex extends Component {
     const isEmpty = !list.length;
     return (
       <View className={classNames("page-cart-index", isDrug && "is-drug")}>
-        {isDrug && (
+        {/* {isDrug && (
           <SpNavBar title="购物车" leftIconType="chevron-left" fixed="true" />
-        )}
+        )} */}
 
         {!S.getAuthToken() && (
           <View className="login-header">

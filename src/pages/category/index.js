@@ -4,6 +4,7 @@ import { connect } from "@tarojs/redux";
 import {AtTabs, AtTabsPane} from "taro-ui"
 import api from '@/api'
 import { pickBy } from '@/utils'
+import { setPageTitle } from '@/utils/platform'
 import { TabBar } from '@/components'
 import Series from './comps/series'
 
@@ -25,7 +26,8 @@ export default class Category extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
+    setPageTitle('商品分类')
     this.fetch()
   }
 

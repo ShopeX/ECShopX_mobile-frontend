@@ -4,6 +4,7 @@ import { AtForm, AtInput, AtButton } from "taro-ui";
 
 import { SpNavBar, SpTimer } from "@/components";
 import api from "@/api";
+import S from '@/spx'
 import {
   getThemeStyle,
   styleNames,
@@ -36,12 +37,12 @@ export default class Login extends Component {
 
   handleTimerStart = async resolve => {
     const { imgInfo } = this.state;
-    const { mobile, vcode } = this.state.info;
+    const { mobile, yzm } = this.state.info;
     if (!validate.isMobileNum(mobile)) {
       showToast("请输入正确的手机号");
       return;
     }
-    if (!validate.isRequired(vcode)) {
+    if (!validate.isRequired(yzm)) {
       showToast("请输入图形验证码");
       return;
     }
@@ -49,7 +50,7 @@ export default class Login extends Component {
       await api.user.regSmsCode({
         type: "login",
         mobile: mobile,
-        yzm: vcode,
+        yzm: yzm,
         token: imgInfo.imageToken
       });
       showToast("验证码已发送");
@@ -122,7 +123,16 @@ export default class Login extends Component {
       params["check_type"] = "mobile";
     }
 
-    const { token } = await api.user.login(params);
+    const { token } = await api.user.login( params );
+    S.setAuthToken( token );
+    const { redirect } = this.$router.params
+    const url = redirect
+      ? decodeURIComponent(redirect)
+      : process.env.APP_HOME_PAGE;
+
+    Taro.redirectTo({
+      url
+    });
   }
 
   render() {
@@ -168,10 +178,10 @@ export default class Login extends Component {
                 <View className="input-field">
                   <AtInput
                     clear
-                    name="vcode"
-                    value={info.vcode}
+                    name="yzm"
+                    value={info.yzm}
                     placeholder="请输入图形验证码"
-                    onChange={this.handleInputChange.bind(this, "vcode")}
+                    onChange={this.handleInputChange.bind(this, "yzm")}
                   />
                 </View>
                 <View className="btn-field">
