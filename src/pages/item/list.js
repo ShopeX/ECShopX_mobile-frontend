@@ -717,7 +717,7 @@ export default class List extends Component {
                         data-id={item.item_id}
                       >
                         <GoodsItem
-                          showFav={!isNewGift}
+                          showNewGift={isNewGift}
                           key={item.item_id}
                           info={item}
                           onClick={() => this.handleClickItem(item)}
@@ -739,7 +739,7 @@ export default class List extends Component {
                       >
                         <GoodsItem
                           key={item.item_id}
-                          showFav={!isNewGift}
+                          showNewGift={isNewGift}
                           info={item}
                           onClick={() => this.handleClickItem(item)}
                           onStoreClick={() => this.handleClickStore(item)}
@@ -759,7 +759,7 @@ export default class List extends Component {
                   return (
                     <View className='goods-list__item' key={item.item_id}>
                       <GoodsItem
-                        showFav={!isNewGift}
+                        showNewGift={isNewGift}
                         info={item}
                         onClick={() => this.handleClickItem(item)}
                         onStoreClick={() => this.handleClickStore(item)}
