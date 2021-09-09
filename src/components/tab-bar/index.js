@@ -83,12 +83,10 @@ export default class TabBar extends Component {
         { title: '购物车', iconType: 'cart', iconPrefixClass: 'icon', url: '/pages/cart/espier-index', text: this.cartCount || '', max: '99',urlRedirect: true },
         { title: '我的', iconType: 'member', iconPrefixClass: 'icon', url: '/pages/member/index', urlRedirect: true },
       ]
-    }
-
-    console.log("---tabList---",list)
+    } 
 
     this.setState({
-      tabList: list,
+      tabList: [...list],
     }, () => {
       this.updateCurTab()
     })
