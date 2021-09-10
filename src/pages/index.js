@@ -427,7 +427,7 @@ export default class Home extends Component {
       register_type: "all"
     });
 
-    let openAdvertList = [general, membercard].filter(item => item.is_open === 'true').map(item=>({adPic:item.ad_pic,title:item.ad_title})); 
+    let openAdvertList = [general||{}, membercard||{}].filter(item => item.is_open === 'true').map(item=>({adPic:item.ad_pic,title:item.ad_title})); 
 
     this.setState({
       advertList: openAdvertList

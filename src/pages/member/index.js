@@ -18,6 +18,7 @@ import {
   getThemeStyle,
   classNames,
   isAlipay,
+  isWeixin,
   platformTemplateName,
   transformPlatformUrl
 } from "@/utils";
@@ -289,13 +290,17 @@ export default class MemberIndex extends Component {
     }
   };
 
-  handleClickWxOAuth( fn ) {
+  handleClickWxOAuth( fn,need=true ) {
     if ( this.state.showTimes >= 1 ) {
-      fn && fn();
+      if(need){
+        fn && fn();
+      } 
     } else { 
       const { avatar, username } = this.props.memberData.memberInfo;
       if (avatar && username) {
-        fn && fn();
+        if(need){
+          fn && fn();
+        }
       } else {
         this.setState({
           showPrivacy: true
@@ -409,7 +414,7 @@ export default class MemberIndex extends Component {
                   className="view-flex-item"
                   onClick={() => {
                     this.handleClickWxOAuth(
-                      this.navigateTo.bind(this, "/others/pages/recharge/index")
+                      this.navigateTo.bind(this, "/others/pages/recharge/index"),isWeixin
                     );
                   }}
                 >
