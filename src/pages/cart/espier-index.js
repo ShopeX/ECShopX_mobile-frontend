@@ -140,7 +140,6 @@ export default class CartIndex extends Component {
       pageSize
     };
     const { list, total_count: total } = await api.cart.likeList(query);
-
     const nList = pickBy(list, {
       img: "pics[0]",
       item_id: "item_id",
@@ -517,6 +516,7 @@ export default class CartIndex extends Component {
       img: ({ pics }) => pics,
       price: ({ price }) => (+price / 100).toFixed(2),
       market_price: ({ market_price }) => (+market_price / 100).toFixed(2),
+      member_price: "member_price",
       num: "num",
       packages: item =>
         item.packages &&
@@ -586,7 +586,6 @@ export default class CartIndex extends Component {
     } = this.state;
     const { list, showLikeList, colors } = this.props;
     console.log("groups", groups);
-
     // if (loading) {
     //   return <Loading />;
     // }
