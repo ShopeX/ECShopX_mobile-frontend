@@ -61,7 +61,7 @@ export default class SpGoodsItem extends Component {
       return null;
     }
       
-    const img = info.img || info.image_default_id;
+    const img = info.pics.length > 0 ? info.pics[0] : '';
 
     let promotion_activity = null,
       act_price = null;
@@ -118,7 +118,9 @@ export default class SpGoodsItem extends Component {
             lazyLoad
           />
         </View>
-        <View className="goods-item__bd"></View>
+        <View className="goods-item__bd">
+          
+        </View>
         <View className="goods-item__ft">{this.props.renderFooter}</View>
       </View>
     );

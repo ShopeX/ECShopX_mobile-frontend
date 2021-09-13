@@ -190,7 +190,7 @@ export default class List extends Component {
       card_id
     }
 
-    if (APP_PLATFORM === 'standard') {
+    if (process.env.APP_PLATFORM === 'standard') {
       if (isNewGift) {
         query.distributor_id = distributor_id
       } else {
