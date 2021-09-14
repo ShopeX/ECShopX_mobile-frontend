@@ -50,6 +50,7 @@ export default class TradeRefundDetail extends Component {
       aftersalesAddress: info.aftersales_address
     })
   }
+  
 
   handleBtnClick = async (type) => {
     const { aftersales_bn, order_id, item_id } = this.state.info
@@ -86,6 +87,12 @@ export default class TradeRefundDetail extends Component {
       })
     }
   }
+  onCopy = () => {
+    const { aftersales_address, aftersales_contact, aftersales_mobile } =  this.state.info.aftersales_address
+    Taro.setClipboardData({
+      data: aftersales_address + aftersales_contact + aftersales_mobile,
+    })
+  }
 
   render () {
     const { info, remind, progress, aftersalesAddress } = this.state
@@ -119,9 +126,17 @@ export default class TradeRefundDetail extends Component {
           <Text className='refund-status__text text-status'>{ status }</Text>
           {
             (progress == 1 || progress == 2) && info.aftersales_address && <View className='aftersalesAddress'>
-              <View className='address'>
-                寄回地址: { info.aftersales_address.aftersales_address || '请联系客服' }
+              {
+                info.aftersales_address.aftersales_address ?  <View className='contact'>
+                  <View className='site'>
+                    寄回地址: { info.aftersales_address.aftersales_address} 
+                  </View>
+                  <View className='copy' onClick={this.onCopy}> 复制</View>
+              </View>: <View className='address'>
+                寄回地址: 请联系客服
               </View>
+              }
+             
               {
                 info.aftersales_address.aftersales_address && <View className='contact'>
                   <View>收件人: { info.aftersales_address.aftersales_contact }</View>

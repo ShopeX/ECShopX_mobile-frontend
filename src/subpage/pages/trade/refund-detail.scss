@@ -25,6 +25,13 @@
     .contact {
       display: flex;
       justify-content: space-between;
+      .site{
+        width: 80%;
+      }
+      .copy{
+        flex: 1;
+        text-align: right
+      }
     }
   }
   .refund-detail {
