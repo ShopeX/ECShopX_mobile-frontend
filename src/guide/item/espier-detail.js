@@ -571,8 +571,8 @@ export default class Detail extends Component {
     const { pics, item_id } = this.state.info;
     const pic = pics[0].replace("http:", "https:");
     const extConfig =
-      Taro.getEnv() === "WEAPP" && wx.getExtConfigSync
-        ? wx.getExtConfigSync()
+      Taro.getEnv() === "WEAPP" && Taro.getExtConfigSync
+        ? Taro.getExtConfigSync()
         : {};
     //const infoId = info.distributor_id
     const gu_user_id = Taro.getStorageSync("work_userid");

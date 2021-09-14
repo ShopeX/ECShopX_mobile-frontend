@@ -37,7 +37,7 @@ export default class WgtGoodsGrid extends Component {
 
   startTrack() {
     this.endTrack();
-    const observer = Taro.createIntersectionObserver(this.$scope, {
+    const observer = Taro.createIntersectionObserver({
       observeAll: true
     });
     observer.relativeToViewport({ bottom: 0 }).observe(".grid-item", res => { 

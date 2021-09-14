@@ -6,9 +6,8 @@ import { AtDrawer, AtInput } from 'taro-ui'
 import { BackToTop, Loading, SpNote, TabBar, HomeCapsule } from '@/components'
 import api from '@/api'
 import { Tracker } from "@/service";
-import { classNames } from '@/utils'
-import Header from './comps/header'
-import Tabs from './comps/tabs'
+import { classNames,isWeixin } from '@/utils'
+import Header from './comps/header' 
 import GoodsItem from './comps/goods_item'
 import FilterBlock from './comps/filter-block'
 import throttle from 'lodash/throttle'
@@ -650,8 +649,7 @@ export default class List extends Component {
 
     const {
       colors
-    } = this.props;
-    const { isTabBar = '' } = this.$router.params
+    } = this.props; 
     const noData = !page.isLoading && !page.hasNext && !list.length;
     const searchTop = paddindTop != 0 ? `${paddindTop + 20}px` : '50%';
 
@@ -659,12 +657,9 @@ export default class List extends Component {
     // console.log('-----useInfo----', useInfo)
     // console.log('-----filterConfig----', this.state.filterConfig)
     return (
-      <View className="page-pointitem-home">
-        <CustomHeader
-          isWhite={paddindTop > 0}
-          isHome={true}
-          statusBarHeight={statusBarHeight}
-        />
+      <View className='page-pointitem-home'>
+
+        {isWeixin && <CustomHeader isWhite={paddindTop > 0} isHome={true} statusBarHeight={statusBarHeight} />}
 
         <View className="pointitem-banner">
           <View className="pointitem-def">

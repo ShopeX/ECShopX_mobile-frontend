@@ -1,4 +1,4 @@
-const log = wx.getRealtimeLogManager ? wx.getRealtimeLogManager() : null;
+const log = Taro.getRealtimeLogManager ? Taro.getRealtimeLogManager() : null;
 class Logs {
   constructor() {}
 

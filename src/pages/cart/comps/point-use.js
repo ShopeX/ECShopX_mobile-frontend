@@ -3,6 +3,7 @@ import { View, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtFloatLayout,AtInput,AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import { SpCheckbox } from '@/components'
+import { closeClassName } from '@/utils';
 import './point-use.scss'
 import {
   customName
@@ -113,7 +114,7 @@ export default class PointUse extends Component {
             <Text>{customName("积分")}</Text>
             <Text className='rule-title' onClick={this.handleRuleOpen}>使用规则</Text>
             <View
-              className='at-icon at-icon-close'
+              className={closeClassName}
               onClick={this.handleCancel}
             ></View>
           </View>

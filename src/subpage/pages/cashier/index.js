@@ -23,8 +23,7 @@ export default class Cashier extends Component {
 
   }
 
-  isPointitemGood() {
-    console.log('----------isPointitemGood-------', this.$router)
+  isPointitemGood() { 
     const options = this.$router.params;
     return options.type === 'pointitem';
   }

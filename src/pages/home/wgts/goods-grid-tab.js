@@ -44,7 +44,7 @@ export default class WgtGoodsGridTab extends Component {
 
   startWrapperTrack() {
     this.endWrapperTrack();
-    const observer = Taro.createIntersectionObserver(this.$scope, {
+    const observer = Taro.createIntersectionObserver({
       observeAll: true
     });
     

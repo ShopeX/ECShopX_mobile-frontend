@@ -190,7 +190,7 @@ export default class Reg extends Component {
   parseJwt (token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url&&base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var arr_base64 = wx.base64ToArrayBuffer(base64)
+    var arr_base64 = Taro.base64ToArrayBuffer(base64)
     arr_base64 = String.fromCharCode.apply(null, new Uint8Array(arr_base64))
     var jsonPayload = decodeURIComponent(arr_base64.split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);

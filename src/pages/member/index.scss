@@ -3,6 +3,9 @@
   .icon-daipingjia:before {
     content: "\e607";
   }  
+  .img-class{
+    width:100%;
+  }
   .page-member-header {
     padding: 160px 0 80px;
     margin-bottom: 20px;
@@ -406,7 +409,7 @@
     right: 5px;
     bottom: 180px;
     z-index: $z-index-toast;
-    .taro-img, img, Image{
+    .taro-img, img, Image,image{
       height: 100px;
       width: 100px;
     }

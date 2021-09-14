@@ -58,6 +58,8 @@ export default class RegRule extends Component {
   render () {
     const { info, title } = this.state
 
+    console.log("---info--",info)
+
     return (
       <View className='page-member-integral'>
         <SpNavBar

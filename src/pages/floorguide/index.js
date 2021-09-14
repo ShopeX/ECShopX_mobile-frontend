@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from "@tarojs/redux"
-import { pickBy } from '@/utils'
+import { pickBy,platformTemplateName } from '@/utils'
 import api from '@/api'
 import {AtTabs, AtTabsPane} from "taro-ui"
 import Series from './comps/series'
@@ -35,7 +35,7 @@ export default class Category extends Component {
       children: 'children'
     })*/
 
-    const query = {template_name: 'yykweishop', version: 'v1.0.1', page_name: 'floor_guide'}
+    const query = {template_name:platformTemplateName, version: 'v1.0.1', page_name: 'floor_guide'}
     const { list } = await api.category.getCategory(query)
     let seriesList = list[0] ? list[0].params.data : []
     if (seriesList.length) {

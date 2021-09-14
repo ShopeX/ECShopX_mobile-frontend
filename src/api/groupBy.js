@@ -9,6 +9,7 @@
  * @LastEditTime: 2020-06-16 14:09:13
  */ 
 import req from './req'
+import { transformPlatformUrl } from '@/utils'
 
 // 登录
 export const login = (param = {}) => req.post('/wxa/promotion/articles', param)
@@ -21,7 +22,7 @@ export const info = (param = {}) => req.get('/member', param)
 export const identity = (param = {}) => req.get('/distributor', param)
 
 // 获取模版
-export const getTemplate = (param = {}) => req.get('/pageparams/setting', param)
+export const getTemplate = (param = {}) => req.get(transformPlatformUrl('/alipay/pageparams/setting'), param)
 
 // promotionArticles
 export const promotionArticles = (param = {}) => req.get('/promotion/articles', param)

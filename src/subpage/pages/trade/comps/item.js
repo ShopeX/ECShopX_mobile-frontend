@@ -39,13 +39,7 @@ export default class TradeItem extends Component {
   computeTotalPrice(){
     let total;
     const {info:{point,order_class,freight_fee,freight_type,total_fee,payment, receipt_type},payType}=this.props;
-    console.log("---point---",point)
-    console.log("---order_class---",order_class)
-    console.log("---freight_fee---",freight_fee)
-    console.log("---freight_type---",freight_type)
-    console.log("---total_fee---",total_fee)
-    console.log("---payment---",payment)
-    console.log("---payType---",payType)
+   
     if(order_class==="pointsmall"){
       if(freight_type==="point" ||  (freight_type==="cash" && freight_fee==0)){
         total= `合计：${point} ${customName("积分")}`

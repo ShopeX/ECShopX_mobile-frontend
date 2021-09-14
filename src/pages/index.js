@@ -1,10 +1,9 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
+import qs from "qs";
 import {
   TabBar,
-  Loading,
-  SpNote,
   BackToTop,
   FloatMenus,
   FloatMenuItem,
@@ -19,8 +18,12 @@ import api from "@/api";
 import {
   pickBy,
   classNames,
-  styleNames,
+  isWeixin,
   isArray,
+  isAlipay,
+  payTypeField,
+  platformTemplateName,
+  styleNames,
   getThemeStyle,
   entryLaunch
 } from "@/utils";
@@ -384,7 +387,7 @@ export default class Home extends Component {
   }
 
   //获取店铺id
-  getDistributionId = () => {
+  getDistributionId = async () => {
     const { curStore, is_open_store_status, is_open_recommend } = this.state;
     let curdis_id =
       curStore && is_open_store_status
@@ -393,10 +396,57 @@ export default class Home extends Component {
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return;
     }
-    if (process.env.APP_PLATFORM === "platform") {
+    if (process.env.APP_PLATFORM === "platform" || isAlipay) {
       curdis_id = 0;
     }
-    return { distributor_id: curdis_id };
+
+    let pathparams = qs.stringify({
+      template_name: platformTemplateName,
+      weapp_pages: "index",
+      distributor_id: curdis_id,
+      ...payTypeField
+    });
+    const url = `/pagestemplate/detail?${pathparams}`;
+    const info = await req.get(url);
+    const wgts = isArray(info) ? [] : info.config;
+    const wgtsList = isArray(info) ? [] : info.list;
+    this.setState(
+      {
+        wgts: wgts.length > 5 ? wgts.slice(0, 5) : wgts,
+        wgtsList
+      },
+      () => {
+        // 0.5s后补足缺失挂件
+        setTimeout(() => {
+          this.setState({
+            wgts,
+            wgtsList
+          });
+        }, 500);
+        Taro.stopPullDownRefresh();
+        if (!isArray(info) && info.config) {
+          const searchWgt = info.config.find(item => item.name == "search");
+          this.setState({
+            positionStatus:
+              searchWgt && searchWgt.config && searchWgt.config.fixTop
+          });
+          if (is_open_recommend === 1) {
+            this.props.onUpdateLikeList(true);
+            this.resetPage();
+            this.setState(
+              {
+                likeList: []
+              },
+              () => {
+                this.nextPage();
+              }
+            );
+          } else {
+            this.props.onUpdateLikeList(false);
+          }
+        }
+      }
+    );
   };
 
   // 获取挂件配置
@@ -461,7 +511,7 @@ export default class Home extends Component {
       register_type: "all"
     });
 
-    let openAdvertList = [general, membercard]
+    let openAdvertList = [general || {}, membercard || {}]
       .filter(item => item.is_open === "true")
       .map(item => ({ adPic: item.ad_pic, title: item.ad_title }));
 
@@ -587,17 +637,22 @@ export default class Home extends Component {
     currentTabIndex,
     currentLength
   ) => {
+    if (isAlipay) return;
     const { id } =
       this.state.wgtsList.find((_, index) => currentIndex === index) || {};
     this.currentLoadIndex = currentIndex;
+
     let params = {
-      template_name: "yykweishop",
+      template_name: platformTemplateName,
       weapp_pages: "index",
       page: 1,
       page_size: currentLength + 50,
       weapp_setting_id: id,
       ...this.getDistributionId()
     };
+    if (isAlipay) {
+      delete params.weapp_setting_id;
+    }
     let loadData;
     if (compType === "good-grid" || compType === "good-scroll") {
       loadData = await api.wx.loadMoreGoods(params);
@@ -682,13 +737,7 @@ export default class Home extends Component {
           <View className="wgts-wrap__cont">
             {/* 挂件内容 */}
             <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} />
-
-            {/* 猜你喜欢 */}
-            {
-              recommendList && <SpRecommend info={recommendList} />
-            }
-
-            {/* {likeList.length > 0 && is_open_recommend == 1 && (
+            {!isAlipay && likeList.length > 0 && is_open_recommend == 1 && (
               <View className="faverite-list">
                 <WgtGoodsFaverite info={likeList} />
                 {page.isLoading ? <Loading>正在加载...</Loading> : null}
@@ -696,7 +745,8 @@ export default class Home extends Component {
                   <SpNote img="trades_empty.png">暂无数据~</SpNote>
                 )}
               </View>
-            )} */}
+            )}{" "}
+            */}
           </View>
         </View>
 
@@ -739,8 +789,8 @@ export default class Home extends Component {
           show={showBackToTop}
           onClick={this.scrollBackToTop.bind(this)}
         />
-
-        {isShowAddTip && (
+        {/* addTip */}
+        {isShowAddTip && !isAlipay && (
           <View className="add_tip">
             <View class="tip-text">
               点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺

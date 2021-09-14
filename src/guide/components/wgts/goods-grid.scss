@@ -30,6 +30,7 @@
       border: 1px solid #f5f5f5;
       .thumbnail {
         position: relative;
+        overflow: hidden;
         &::after {
           display: flex;
           padding-top: 100%;

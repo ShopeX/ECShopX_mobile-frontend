@@ -92,7 +92,18 @@
       &_text {
         display: block;
         padding: 30px;
-        color: #b3b3b3;
+        color: #b3b3b3; 
+      }
+      &_picker{
+        height:100px;
+
+         /*  #ifdef  alipay  */
+         .at-image-picker__item{
+            top: 35%;
+            width: 75%;
+            height: 75%;
+         }
+         /*  #endif  */
       }
     }
   }

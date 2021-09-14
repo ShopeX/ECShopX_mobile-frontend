@@ -1,88 +1,35 @@
 /* eslint-disable react/jsx-key */
-import Taro, { Component } from "@tarojs/taro";
-import {
-  View,
-  Text,
-  ScrollView,
-  Swiper,
-  SwiperItem,
-  Image,
-  Video,
-  Canvas
-} from "@tarojs/components";
-import { connect } from "@tarojs/redux";
-import { AtCountdown } from "taro-ui";
-import {
-  Loading,
-  Price,
-  FloatMenus,
-  FloatMenuItem,
-  SpHtmlContent,
-  SpToast,
-  SpNavBar,
-  GoodsBuyPanel,
-  SpCell,
-  GoodsEvaluation,
-  FloatMenuMeiQia,
-  GoodsItem,
-  PointLine
-} from "@/components";
-import api from "@/api";
-import req from "@/api/req";
-import { withPager, withBackToTop, withPointitem } from "@/hocs";
-import {
-  log,
-  calcTimer,
-  isArray,
-  pickBy,
-  canvasExp,
-  normalizeQuerys,
-  buriedPoint
-} from "@/utils";
-import entry from "@/utils/entry";
-import S from "@/spx";
-import { Tracker } from "@/service";
-import {
-  GoodsBuyToolbar,
-  ItemImg,
-  ImgSpec,
-  StoreInfo,
-  ActivityPanel,
-  SharePanel,
-  VipGuide,
-  ParamsItem,
-  GroupingItem
-} from "./comps";
-import { linkPage } from "../home/wgts/helper";
-import {
-  WgtFilm,
-  WgtSlider,
-  WgtWriting,
-  WgtGoods,
-  WgtHeading
-} from "../home/wgts";
-import { getDtidIdUrl } from "@/utils/helper";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text, ScrollView, Swiper, SwiperItem, Image, Video, Canvas } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
+import { AtCountdown } from 'taro-ui'
+import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell, GoodsEvaluation, FloatMenuMeiQia, GoodsItem ,PointLine} from '@/components'
+import api from '@/api'
+import req from '@/api/req'
+import { withPager, withBackToTop,withPointitem } from '@/hocs'
+import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys, buriedPoint,isAlipay,isWeixin } from '@/utils'
+import entry from '@/utils/entry'
+import S from '@/spx'
+import { Tracker } from "@/service"
+import { GoodsBuyToolbar, ItemImg, ImgSpec, StoreInfo, ActivityPanel, SharePanel, VipGuide, ParamsItem, GroupingItem } from './comps'
+import { linkPage } from '../home/wgts/helper'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
+import { getDtidIdUrl } from '@/utils/helper'
 
-import "./espier-detail.scss";
+import './espier-detail.scss'
 
-@connect(
-  ({ cart, member, colors }) => ({
-    cart,
-    colors: colors.current,
-    favs: member.favs,
-    showLikeList: cart.showLikeList
-  }),
-  dispatch => ({
-    onFastbuy: item => dispatch({ type: "cart/fastbuy", payload: { item } }),
-    onAddCart: item => dispatch({ type: "cart/add", payload: { item } }),
-    onUpdateCount: count =>
-      dispatch({ type: "cart/updateCount", payload: count }),
-    onAddFav: ({ item_id, fav_id }) =>
-      dispatch({ type: "member/addFav", payload: { item_id, fav_id } }),
-    onDelFav: ({ item_id }) =>
-      dispatch({ type: "member/delFav", payload: { item_id } })
-  })
-)
+@connect(({ cart, member, colors }) => ({
+  cart,
+  colors: colors.current,
+  favs: member.favs,
+  showLikeList: cart.showLikeList
+}), (dispatch) => ({
+  onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
+  onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
+  onUpdateCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),
+  onAddFav: ({ item_id, fav_id }) => dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
+  onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
+}))
 @withPager
 @withBackToTop
 @withPointitem
@@ -710,9 +657,10 @@ export default class Detail extends Component {
     });
   };
 
-  handleBuyAction = async type => {
-    if (type === "cart") {
-      this.fetchCartCount();
+  handleBuyAction = async (type) => {
+    console.log("handleBuyAction")
+    if (type === 'cart') {
+      this.fetchCartCount()
     }
     this.setState({
       showBuyPanel: false
@@ -738,31 +686,16 @@ export default class Detail extends Component {
       Taro.setStorageSync("userinfo", userObj);
       userinfo = userObj;
     }
-    const { avatar, userId } = userinfo;
-    const { info, is_open_store_status } = this.state;
-    const { pics, company_id, item_id } = info;
-    const host = req.baseURL.replace("/api/h5app/wxapp/", "");
-    const extConfig =
-      Taro.getEnv() === "WEAPP" && wx.getExtConfigSync
-        ? wx.getExtConfigSync()
-        : {};
-    const { distributor_id, store_id } = Taro.getStorageSync("curStore");
-
-    const pic = pics[0].replace("http:", "https:");
-    const infoId = info.distributor_id;
-    const id =
-      process.env.APP_PLATFORM === "standard"
-        ? is_open_store_status
-          ? store_id
-          : distributor_id
-        : infoId;
-
-    const wxappCode = getDtidIdUrl(
-      `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${
-        extConfig.appid
-      }&company_id=${company_id}&id=${item_id}&uid=${userId}`,
-      id
-    );
+    const { avatar, userId } = userinfo
+    const { info,is_open_store_status } = this.state
+    const { pics, company_id, item_id } = info
+    const host = req.baseURL.replace('/api/h5app/wxapp/', '')
+    const extConfig = (Taro.getEnv() === 'WEAPP' && Taro.getExtConfigSync) ? Taro.getExtConfigSync() : {}
+    const { distributor_id,store_id } = Taro.getStorageSync('curStore')
+    
+    const pic = pics[0].replace('http:', 'https:')
+    const infoId = info.distributor_id
+    const id = APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : infoId;
 
     console.log("wxappCode", wxappCode);
 
@@ -1079,9 +1012,9 @@ export default class Detail extends Component {
 
   //订阅通知
   handleSubscription = async () => {
-    if (this.isPointitemGood()) {
-      console.log("this.isPointitemGood()");
-      return;
+
+    if(this.isPointitemGood()||isAlipay){ 
+      return ;
     }
 
     const { isSubscribeGoods, info } = this.state;
@@ -1369,8 +1302,8 @@ export default class Detail extends Component {
               <View className="goods-title__wrap">
                 <Text className="goods-title">{info.item_name}</Text>
                 <Text className="goods-title__desc">{info.brief}</Text>
-              </View>
-              {!isNewGift && Taro.getEnv() !== "WEB" && !this.isPointitem() && (
+              </View> 
+              {!isNewGift && !isWeixin && !this.isPointitem() && !isAlipay && (
                 <View
                   className="goods-share__wrap"
                   onClick={this.handleShare.bind(this)}
@@ -1381,7 +1314,7 @@ export default class Detail extends Component {
               )}
             </View>
 
-            {!info.is_gift && info.vipgrade_guide_title ? (
+            {!info.is_gift && info.vipgrade_guide_title && !isAlipay ? (
               <VipGuide
                 info={{
                   ...info.vipgrade_guide_title,
@@ -1503,7 +1436,7 @@ export default class Detail extends Component {
               </View>
             )}
 
-          {!info.is_gift && !this.isPointitemGood() && (
+          {!info.is_gift && !this.isPointitemGood() && !isAlipay && (
             <SpCell
               className="goods-sec-specs"
               title="领券"
@@ -1658,9 +1591,9 @@ export default class Detail extends Component {
             icon="home1"
             onClick={this.handleBackHome.bind(this)}
           />
-          {meiqia.is_open === "true" ||
+          {isAlipay ? null :(meiqia.is_open === "true" ||
           echat.is_open === "true" ||
-          Taro.getEnv() === "WEB" ? (
+          Taro.getEnv() === "WEB") ? (
             <FloatMenuMeiQia
               storeId={info.distributor_id}
               info={{ goodId: info.item_id, goodName: info.itemName }}
@@ -1720,7 +1653,7 @@ export default class Detail extends Component {
               ) : (
                 <View
                   style={`background: ${
-                    this.isPointitemGood()
+                    (this.isPointitemGood()||isAlipay)
                       ? "grey"
                       : !isSubscribeGoods
                       ? colors.data[0].primary
@@ -1734,7 +1667,9 @@ export default class Detail extends Component {
                     ? "已兑完"
                     : isSubscribeGoods
                     ? "已订阅到货通知"
-                    : "到货通知"}
+                    : isAlipay
+                    ? "暂无可售"
+                    :"到货通知"}
                 </View>
               )}
             </View>

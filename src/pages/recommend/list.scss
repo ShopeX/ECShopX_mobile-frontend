@@ -11,6 +11,10 @@
       background: #fff;
       box-shadow: $box-shadow;
       padding-top: 10px;
+      .icon-periscope{
+        color: #ccc;
+        display: inline-block;
+      }
       .at-search-bar {
         padding-right: 30px !important;
       }

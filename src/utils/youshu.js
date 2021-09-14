@@ -54,7 +54,7 @@ function TracksPayed(info, config, moduleName) {
 }
 
 function getYoushuAppid() {
-  const { appid } = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+  const { appid } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
   const {
     youshu: { weapp_app_id }
   } = Taro.getStorageSync("otherSetting");

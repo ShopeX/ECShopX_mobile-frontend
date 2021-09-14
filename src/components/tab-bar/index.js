@@ -83,10 +83,10 @@ export default class TabBar extends Component {
         { title: '购物车', iconType: 'cart', iconPrefixClass: 'icon', url: '/pages/cart/espier-index', text: this.cartCount || '', max: '99',urlRedirect: true },
         { title: '我的', iconType: 'member', iconPrefixClass: 'icon', url: '/pages/member/index', urlRedirect: true },
       ]
-    }
+    } 
 
     this.setState({
-      tabList: list,
+      tabList: [...list],
     }, () => {
       this.updateCurTab()
     })
@@ -141,22 +141,23 @@ export default class TabBar extends Component {
   }
 
   handleClick = (current) => {
+    
     const cur = this.state.localCurrent
     const {showbar = true} = this.props
     if(!showbar){
       return false
     }
-
+    
     if (cur !== current) {
       const curTab = this.state.tabList[current]
       const { url, withLogin } = curTab
       const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+    
       if (withLogin && !S.getAuthToken()) {
         return Taro.navigateTo({
           url: APP_AUTH_PAGE
         })
-      }
-
+      } 
       if (url && fullPath !== url) {
         // if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
         //   Taro.navigateTo({ url })
@@ -176,6 +177,8 @@ export default class TabBar extends Component {
     if (process.env.APP_INTEGRATION) {
       return <View></View>
     }
+
+    console.log("-----tabList----",tabList)
 
     return (
       <AtTabBar

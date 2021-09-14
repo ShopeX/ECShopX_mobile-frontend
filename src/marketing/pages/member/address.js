@@ -5,6 +5,7 @@ import { connect } from "@tarojs/redux";
 import { SpToast, SpCell, SpNavBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
+import { pickBy,isAlipay,showLoading,hideLoading } from '@/utils'
 
 import './address.scss'
 
@@ -52,11 +53,11 @@ export default class AddressIndex extends Component {
         isPicker: true
       })
     }
-    Taro.showLoading({
+    showLoading({
       mask: true
     })
     const { list } = await api.member.addressList()
-    Taro.hideLoading()
+    hideLoading()
     let newList = [...list]
     if (receipt_type === 'dada' && city) {
       newList = list.map(item => {

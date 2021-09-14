@@ -4,7 +4,7 @@ import { AtInput, AtButton } from 'taro-ui'
 import { SpNavBar, SpToast } from '@/components'
 import { getThemeStyle } from "@/utils";
 import api from '@/api'
-import S from '@/spx'
+import S from '@/spx' 
 
 import './refund-sendback.scss'
 
@@ -97,24 +97,24 @@ export default class TradeRefundSendback extends Component {
   render () {
     const { express, logi_no, curExpressIdx } = this.state
     return (
-      <View className='page-refund-sendback'  style={getThemeStyle()}>
+      <View className="page-refund-sendback" style={getThemeStyle()}>
         <SpNavBar
-          title='售后填写物流公司'
-          leftIconType='chevron-left'
-          fixed='true'
+          title="售后填写物流公司"
+          leftIconType="chevron-left"
+          fixed="true"
         />
 
-        <View className='sec'>
-          <View className='at-input'>
-            <View className='at-input__container'>
-              <View className='at-input__title'>物流公司：</View>
+        <View className="sec">
+          <View className="at-input">
+            <View className="at-input__container">
+              <View className="at-input__title">物流公司：</View>
               <Picker
-                mode='selector'
+                mode="selector"
                 range={express}
-                rangeKey='corp_name'
+                rangeKey="corp_name"
                 onChange={this.handleExpressChange}
               >
-                <View className='picker'>
+                <View className="picker">
                   {express[curExpressIdx].corp_name}
                 </View>
               </Picker>
@@ -122,24 +122,23 @@ export default class TradeRefundSendback extends Component {
           </View>
 
           <AtInput
-            title='物流单号：'
-            name='logi_no'
-            type='text'
-            placeholder='请填写物流单号'
+            title="物流单号："
+            name="logi_no"
+            type="text"
+            placeholder="请填写物流单号"
             value={logi_no}
-            onChange={this.handleChange.bind(this, 'logi_no')}
+            onChange={this.handleChange.bind(this, "logi_no")}
           />
         </View>
 
-        <View className='btns'>
-          <AtButton
-            type='primary'
-            onClick={this.handleSubmit}
-          >保存</AtButton>
+        <View className="btns">
+          <AtButton type="primary" onClick={this.handleSubmit}>
+            保存
+          </AtButton>
         </View>
 
         <SpToast />
       </View>
-    )
+    );
   }
 }

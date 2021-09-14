@@ -252,7 +252,7 @@ export default class EspireCheckout extends Component {
         item_total = "2",
         gift_total = "3";
 
-      const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
       const userinfo = Taro.getStorageSync("userinfo");
       // https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?temp_name=yykweishop&page=pages/cart/espier-checkout&company_id=1&cxdid=159&smid=78&distributor_id=103
       const url = `https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout`;
@@ -538,7 +538,7 @@ export default class EspireCheckout extends Component {
         item_total = "2",
         gift_total = "3";
 
-      const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
       const userinfo = Taro.getStorageSync("userinfo");
       // https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?temp_name=yykweishop&page=pages/cart/espier-checkout&company_id=1&cxdid=159&smid=78&distributor_id=103
       const url = `https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout`;

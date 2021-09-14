@@ -3,7 +3,7 @@ import { View } from '@tarojs/components'
 import { connect } from "@tarojs/redux";
 import { AtTabs, AtTabsPane, AtTabBar } from "taro-ui"
 import api from '@/api'
-import { pickBy, getCurrentRoute } from '@/utils'
+import { pickBy, getCurrentRoute ,platformTemplateName} from '@/utils'
 import Series from './comps/series'
 
 import './category.scss'
@@ -44,7 +44,7 @@ export default class Category extends Component {
     const options = this.$router.params
     const id = options.id
     const query = {
-      template_name: 'yykweishop',
+      template_name:platformTemplateName,
       version: 'v1.0.1',
       page_name: 'category',
       distributor_id: id

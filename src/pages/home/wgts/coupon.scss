@@ -11,6 +11,14 @@
     &.coupon-body::after {
       content: none;
     }
+    /*  #ifdef  alipay  */
+    .img-class{
+      width: 120px;
+      height: 120px;
+      margin-right: 35px;
+      border-radius: 6px;
+    }
+    /*  #endif  */
   }
   .coupon_img {
     width: 100%;

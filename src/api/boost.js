@@ -9,12 +9,13 @@
  * @LastEditTime: 2020-09-27 18:18:22
  */
 import req from './req'
+import { transformPlatformUrl } from '@/utils'
 
 // 获取助力列表
 export const getList = (param = {}) => req.get('/promotion/bargains', param)
 
 // 获取助力配置
-export const getDetail = (param = {}) => req.get('/pageparams/setting', param)
+export const getDetail = (param = {}) => req.get(transformPlatformUrl('/alipay/pageparams/setting'), param)
 
 // 获取助力详情
 export const getUserBargain = (param = {}) => req.get('/promotion/userbargain', param)

@@ -5,11 +5,12 @@ import configStore from "@/store";
 import useHooks from "@/hooks";
 import req from "@/api/req";
 import api from "@/api";
-import { normalizeQuerys, isGoodsShelves } from "@/utils";
+import { normalizeQuerys, isGoodsShelves,payTypeField } from "@/utils";
 import { FormIds, Tracker } from "@/service";
 import entryLaunch from "@/utils/entryLaunch";
 import { youshuLogin } from '@/utils/youshu'
 import { DEFAULT_TABS } from '@/consts'
+import qs from 'qs';
 import Index from './pages/index'
 import LBS from './utils/lbs'
 
@@ -38,6 +39,9 @@ const getHomeSetting = async () => {
     nostores_status = false,
     distributor_param_status=false
   } = await api.shop.homeSetting();
+
+  console.log("getHomeSetting1",echat);
+ 
   // 美洽客服配置
   Taro.setStorageSync("meiqia", meiqia);
   // 一洽客服配置
@@ -62,13 +66,15 @@ getHomeSetting();
 class App extends Component {
   // eslint-disable-next-line react/sort-comp
   componentWillMount() {
+    console.log("componentWillMount", process.env.APP_TRACK);
     if (process.env.APP_TRACK) {
-      const system = Taro.getSystemInfoSync();   
-      if (!(system && system.environment && system.environment === "wxwork")) { 
+      const system = Taro.getSystemInfoSync();
+      if (!(system && system.environment && system.environment === "wxwork")) {
+        console.log("Tracker", Tracker.use);
         Tracker.use(process.env.APP_TRACK);
         youshuLogin();
       }
-    } 
+    }
     // 获取收藏列表
     if (process.env.TARO_ENV === "weapp") {
       FormIds.startCollectingFormIds();
@@ -166,7 +172,7 @@ class App extends Component {
 
       "pages/custom/custom-page"
     ],
-    subpackages: [
+    subPackages: [
       {
         root: "marketing",
         pages: [
@@ -229,13 +235,13 @@ class App extends Component {
 
           "pages/plusprice/detail-plusprice-list",
           "pages/plusprice/cart-plusprice-list",
-          "pages/member/qrcode",
+          "pages/member/qrcode"
         ],
         plugins: {
-          "live-player-plugin": {
-            "version": "1.2.10", // 填写该直播组件版本号
-            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          } 
+          // "live-player-plugin": {
+          //   "version": "1.2.10", // 填写该直播组件版本号
+          //   "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
+          // }
           // "meiqia": {
           //   "version": "1.1.0",
           //   "provider": "wx2d2cd5fd79396601"
@@ -245,6 +251,7 @@ class App extends Component {
       {
         root: "subpage",
         pages: [
+          "pages/recommend/detail",
           "pages/trade/list",
           "pages/trade/customer-pickup-list",
           "pages/trade/drug-list",
@@ -261,7 +268,6 @@ class App extends Component {
           "pages/trade/invoice-list",
           "pages/cashier/index",
           "pages/cashier/cashier-result",
-          "pages/recommend/detail",
           "pages/qrcode-buy",
           "pages/vip/vipgrades",
           "pages/auth/reg",
@@ -272,8 +278,8 @@ class App extends Component {
           "pages/auth/pclogin",
           "pages/auth/store-reg",
           // 编辑分享
-          'pages/editShare/index',
-          'pages/auth/bindPhone'
+          "pages/editShare/index",
+          "pages/auth/bindPhone"
         ]
       },
       // 团购
@@ -308,7 +314,7 @@ class App extends Component {
         root: "guide",
         pages: [
           "index",
-          "category/index",          
+          "category/index",
           "item/list",
           "item/espier-detail",
           "item/item-params",
@@ -346,7 +352,7 @@ class App extends Component {
           // 绑定订单
           "pages/bindOrder/index",
           // 过期优惠券
-          "pages/nullify/coupon-nullify",
+          "pages/nullify/coupon-nullify"
         ]
       },
       {
@@ -358,7 +364,7 @@ class App extends Component {
       "scope.userLocation": {
         desc: "您的位置信息将用于定位附近门店"
       }
-    },
+    }
     // plugins: {
     //   contactPlugin: {
     //     version: "1.3.0",
@@ -368,7 +374,7 @@ class App extends Component {
   };
 
   componentDidShow(options) {
-    this.init()
+    this.init();
     const { referrerInfo } = options || {};
     if (referrerInfo) {
       console.log(referrerInfo);
@@ -399,48 +405,54 @@ class App extends Component {
     // 欢迎语导购过期时间
     const guUserIdExp = Taro.getStorageSync("guUserIdExp");
     if (!guUserIdExp || Date.parse(new Date()) - guUserIdExp > treeDay) {
-      Taro.setStorageSync("work_userid", '');
+      Taro.setStorageSync("work_userid", "");
     }
 
     // 根据路由参数
-    const { query } = this.$router.params;
+    const { query = {} } = this.$router.params;
     // 初始化清楚s_smid
-    Taro.setStorageSync( "s_smid", '' );
-    Taro.setStorageSync("s_dtid", '');
-    Taro.setStorageSync( "gu_user_id", "" );
+    Taro.setStorageSync("s_smid", "");
+    Taro.setStorageSync("s_dtid", "");
+    Taro.setStorageSync("gu_user_id", "");
 
-    // 缓存路由参数
-    entryLaunch.init(this.$router.params);
-    
-    // if ((query && query.scene) || query.gu_user_id || query.smid) {
-    //   const { smid, dtid, id, aid, cid, gu, chatId, gu_user_id = ''} = await normalizeQuerys(
-    //     query
-    //   )
-    //   // 旧导购存放
-    //   if (smid) {
-    //     Taro.setStorageSync( "s_smid", smid );
-    //   } 
-    //   if (dtid) {
-    //     Taro.setStorageSync("s_dtid", dtid);
-    //   }
-    //   // 新导购埋点数据存储导购员工工号
-    //   if (gu) {
-    //     const [employee_number, store_bn] = gu.split("_")
-    //     Taro.setStorageSync("work_userid", employee_number)
-    //     Taro.setStorageSync("store_bn", store_bn)
-    //   }
-    //   // 欢迎语小程序卡片分享参数处理
-    //   if (gu_user_id) {
-    //     Taro.setStorageSync( "work_userid", gu_user_id )
-    //     Taro.setStorageSync("gu_user_id", gu_user_id);
-    //     // 如果是登录状态下打开分享且携带导购ID
-    //     if (S.getAuthToken()) {
-    //       api.user.bindSaleperson({
-    //         work_userid: gu_user_id
-    //       } )
-    //     }
-    //   }
-      
+    console.log("query", query);
+
+    if ((query && query.scene) || query.gu_user_id || query.smid) {
+      const {
+        smid,
+        dtid,
+        id,
+        aid,
+        cid,
+        gu,
+        chatId,
+        gu_user_id = ""
+      } = await normalizeQuerys(query);
+      // 旧导购存放
+      if (smid) {
+        Taro.setStorageSync("s_smid", smid);
+      }
+      if (dtid) {
+        Taro.setStorageSync("s_dtid", dtid);
+      }
+      // 新导购埋点数据存储导购员工工号
+      if (gu) {
+        const [employee_number, store_bn] = gu.split("_");
+        Taro.setStorageSync("work_userid", employee_number);
+        Taro.setStorageSync("store_bn", store_bn);
+      }
+      // 欢迎语小程序卡片分享参数处理
+      if (gu_user_id) {
+        Taro.setStorageSync("work_userid", gu_user_id);
+        Taro.setStorageSync("gu_user_id", gu_user_id);
+        // 如果是登录状态下打开分享且携带导购ID
+        if (S.getAuthToken()) {
+          api.user.bindSaleperson({
+            work_userid: gu_user_id
+          });
+        }
+      }
+    }
     //   if ( Taro.getStorageSync( "work_userid" ) && S.getAuthToken() ) {
     //     // uv 埋点
     //     api.user.uniquevisito({
@@ -512,13 +524,15 @@ class App extends Component {
       ],
       name: "base"
     };
-    const info = await api.shop.getPageParamsConfig( { page_name: 'color_style' } )
+    const info = await api.shop.getPageParamsConfig({
+      page_name: "color_style"
+    });
     const themeColor = info.list.length ? info.list[0].params : defaultColors;
     // 兼容老的主题
     store.dispatch({
       type: "colors",
       payload: themeColor
-    } );
+    });
     S.set("SYSTEM_THEME", {
       colorPrimary: themeColor.data[0].primary,
       colorMarketing: themeColor.data[0].marketing,

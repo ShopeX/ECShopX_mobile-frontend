@@ -131,6 +131,7 @@ class Tracker {
 
   @enable
   dispatch(type, payload) {
+    if(process.env.TARO_ENV==='alipay') return ;
     if (!this._tracker) return;
     return this._tracker.dispatch(type, payload);
   }

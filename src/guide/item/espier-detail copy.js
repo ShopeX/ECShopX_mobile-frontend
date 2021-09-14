@@ -618,8 +618,8 @@ export default class Detail extends Component {
     const { avatar } = userinfo
     const { info } = this.state
     const { pics, item_id } = info
-    const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
-    //const id = process.env.APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : infoId
+    const extConfig = (Taro.getEnv() === 'WEAPP' && Taro.getExtConfigSync) ? Taro.getExtConfigSync() : {}
+    //const id = APP_PLATFORM === 'standard' ? is_open_store_status ? store_id : distributor_id : infoId
       //新增导购信息
       const QwUserInfo = S.get('QwUserInfo',true)
       const qrcode_params =`page=pages/item/espier-detail

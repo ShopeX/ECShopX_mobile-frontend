@@ -14,12 +14,13 @@
  **/
 import showdown from './showdown.js';
 import HtmlToJson from './html2json.js';
+import Taro, { Component } from '@tarojs/taro'
 /**
  * 配置及公有属性
  **/
 var realWindowWidth = 0;
 var realWindowHeight = 0;
-wx.getSystemInfo({
+Taro.getSystemInfo({
   success: function (res) {
     realWindowWidth = res.windowWidth
     realWindowHeight = res.windowHeight

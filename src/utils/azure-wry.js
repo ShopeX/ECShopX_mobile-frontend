@@ -10,7 +10,7 @@ async function uploadImagesFn (imgFiles) {
         resolve(item)
       } else {
         const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-        const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+        const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
         Taro.uploadFile({
           url: req.baseURL + 'espier/upload',
           filePath: item.url,

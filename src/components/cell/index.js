@@ -21,6 +21,13 @@ export default class SpCell extends Component {
 
   render () {
     const { isLink, value, icon, img, iconPrefix, title, onClick, arrow, border, className } = this.props
+
+    let linkClassName=`sp-cell__ft-icon at-icon at-icon-chevron-${arrow}`;
+
+    if(Taro.getEnv() == Taro.ENV_TYPE.ALIPAY){
+      linkClassName='icon-arrowRight'
+    }
+    
     return (
       <View
         className={classNames('sp-cell', className, isLink ? 'sp-cell__is-link' : null, border ? null : 'sp-cell__no-border')}
@@ -46,7 +53,7 @@ export default class SpCell extends Component {
           )}
         </View>
         {isLink && (
-          <View className={`sp-cell__ft-icon at-icon at-icon-chevron-${arrow}`}></View>
+          <View className={linkClassName}></View>
         )}
       </View>
     )

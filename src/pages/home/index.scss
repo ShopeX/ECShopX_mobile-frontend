@@ -3,10 +3,11 @@
   background: #fff;
   box-sizing: border-box;
 
-  .header-block {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
+  .img-class{
+    width:100%;
+  }
+  
+  .home-header {
     position: fixed;
     top: 0;
     right: 0;

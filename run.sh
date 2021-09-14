@@ -109,7 +109,7 @@ APP_IMAGE_CDN='${image_cdn}'
 
 echo "请选择编译方式"
 
-buildType='weapp h5'
+buildType='weapp h5 alipay'
 
 select type in $buildType
 do
@@ -117,9 +117,13 @@ do
     then
     echo "npm run build:weapp"
     npm run build:weapp
-  else
-    echo "npm run build:h5"
+  elif [ "$type" == 'alipay' ]
+    then
+    echo "npm run build:alipay"
     npm run build:h5
+  else 
+    echo "npm run build:h5"
+    npm run build:alipay
   fi
   break
 done

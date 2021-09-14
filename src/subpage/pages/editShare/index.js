@@ -80,7 +80,7 @@ export default class EditShare extends Component {
 
     const { userId } = Taro.getStorageSync('userinfo')
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
-    const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
+    const extConfig = (Taro.getEnv() === 'WEAPP' && Taro.getExtConfigSync) ? Taro.getExtConfigSync() : {}
 
     const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
 

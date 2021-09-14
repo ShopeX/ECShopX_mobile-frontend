@@ -5,7 +5,7 @@ import { connect } from '@tarojs/redux'
 import { AtDrawer } from 'taro-ui'
 import { BackToTop, Loading, RecommendItem, SearchBar, TabBar, SpNote, FilterBar } from '@/components'
 import api from '@/api'
-import { classNames, pickBy } from '@/utils'
+import { classNames, pickBy,showLoading,hideLoading } from '@/utils'
 import S from '@/spx'
 
 import './list.scss'
@@ -57,15 +57,15 @@ export default class RecommendList extends Component {
           isChooseColumn: true
         }
       })
-    }
-    Taro.showLoading()
+    } 
+    showLoading();
     this.resetPage()
     this.setState({
       list: [],
     })
     setTimeout(()=>{
       this.nextPage()
-      Taro.hideLoading()
+      hideLoading()
     }, 200)
 
     // this.praiseNum()
@@ -484,8 +484,10 @@ export default class RecommendList extends Component {
                 value={multiIndex}
                 range={areaList}
               >
-                <View className='iconfont icon-periscope'></View>
-                <Text>{address || '地区'}</Text>
+                <View>
+                  <View className='iconfont icon-periscope'></View>
+                  <Text>{address || '地区'}</Text>
+                </View>
 							</Picker>
 							{address ? <Text className='icon-close' onClick={this.handleRegionRefresh.bind(this)}></Text> : ''}
             </View>

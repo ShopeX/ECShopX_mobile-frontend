@@ -12,7 +12,7 @@ import {
   GoodsItem,
   SpLogin
 } from "@/components";
-import { log, navigateTo, pickBy, classNames} from '@/utils'
+import { log, navigateTo, pickBy, classNames,showLoading,hideLoading } from '@/utils'
 import debounce from 'lodash/debounce'
 import api from '@/api'
 import S from '@/spx'
@@ -38,7 +38,7 @@ import './espier-index.scss'
       dispatch({ type: "cart/updateCount", payload: count })
   })
 )
-@withLogin()
+@withLogin(()=>{},1)
 @withPager
 export default class CartIndex extends Component {
   static defaultProps = {
@@ -68,6 +68,13 @@ export default class CartIndex extends Component {
     this.lastCartId = null;
   }
 
+  autoLoginFail=()=>{
+    console.log("---autoLoginFail---")
+    this.setState({ 
+      loading:false
+    })
+  }
+
   componentDidMount() {
     setPageTitle( '购物车' )
     
@@ -77,10 +84,8 @@ export default class CartIndex extends Component {
       });
     }
     this.getRemind();
-    this.nextPage();
-
-    if (!S.getAuthToken()) return;
-
+    this.nextPage(); 
+    if (!S.getAuthToken()) return; 
     this.fetchCart(list => {
       const groups = this.resolveActivityGroup(list);
       // this.props.list 此时为空数组
@@ -142,7 +147,6 @@ export default class CartIndex extends Component {
       pageSize
     };
     const { list, total_count: total } = await api.cart.likeList(query);
-
     const nList = pickBy(list, {
       img: "pics[0]",
       item_id: "item_id",
@@ -174,9 +178,9 @@ export default class CartIndex extends Component {
   resolveActivityGroup(cartList = []) {
     console.log(cartList);
     const groups = cartList.map(shopCart => {
-      console.log("shopCart0---->", shopCart);
+   
       const { list, used_activity = [], plus_buy_activity = [] } = shopCart;
-      console.log("plus_buy_activity---->", plus_buy_activity);
+ 
       const tDict = list.reduce((acc, val) => {
         acc[val.cart_id] = val;
         return acc;
@@ -309,7 +313,7 @@ export default class CartIndex extends Component {
   }
 
   updateCart = async () => {
-    Taro.showLoading({
+    showLoading({
       mask: true
     });
     this.updating = true;
@@ -319,7 +323,7 @@ export default class CartIndex extends Component {
       console.log(e);
     }
     this.updating = false;
-    Taro.hideLoading();
+    hideLoading();
   };
 
   asyncUpdateCart = debounce(async () => {
@@ -350,11 +354,13 @@ export default class CartIndex extends Component {
   }
 
   handleDelect = async cart_id => {
+    console.log("---handleDelect---",cart_id)
     const res = await Taro.showModal({
       title: "提示",
       content: "将当前商品移出购物车?",
       showCancel: true,
       cancel: "取消",
+      cancelText: "取消",
       confirmText: "确认",
       confirmColor: "#0b4137"
     });
@@ -421,7 +427,7 @@ export default class CartIndex extends Component {
   handleAllSelect = async (checked, shopIndex) => {
     const { cartIds } = this.props;
 
-    Taro.showLoading();
+    showLoading();
     try {
       await api.cart.select({
         cart_id: cartIds[shopIndex],
@@ -430,7 +436,7 @@ export default class CartIndex extends Component {
     } catch (e) {
       console.log(e);
     }
-    Taro.hideLoading();
+    hideLoading();
     this.updateCart();
   };
 
@@ -450,7 +456,7 @@ export default class CartIndex extends Component {
 
   handleSelectPromotion = async item => {
     const { marketing_id: activity_id, cart_id } = item;
-    Taro.showLoading({
+    showLoading({
       mask: true
     });
     this.setState({
@@ -461,7 +467,7 @@ export default class CartIndex extends Component {
       cart_id
     });
     await this.fetchCart();
-    Taro.hideLoading();
+    hideLoading();
   };
 
   handleClosePromotions = () => {
@@ -519,6 +525,7 @@ export default class CartIndex extends Component {
       img: ({ pics }) => pics,
       price: ({ price }) => (+price / 100).toFixed(2),
       market_price: ({ market_price }) => (+market_price / 100).toFixed(2),
+      member_price: "member_price",
       num: "num",
       packages: item =>
         item.packages &&
@@ -550,9 +557,9 @@ export default class CartIndex extends Component {
         cartType
       },
       async () => {
-        Taro.showLoading({ mask: true });
+        showLoading({ mask: true });
         await this.fetchCart();
-        Taro.hideLoading();
+        hideLoading();
         // console.log(111)
       }
     );
@@ -588,7 +595,6 @@ export default class CartIndex extends Component {
     } = this.state;
     const { list, showLikeList, colors } = this.props;
     console.log("groups", groups);
-
     // if (loading) {
     //   return <Loading />;
     // }
@@ -630,7 +636,7 @@ export default class CartIndex extends Component {
             //   </View>
             // )
           }
-          {remindInfo.is_open && (
+          {/* {remindInfo.is_open && (
             <View
               className={`${!S.getAuthToken() && "paddingTop"}`}
               style={`background: ${colors.data[0].primary}`}
@@ -639,7 +645,7 @@ export default class CartIndex extends Component {
                 {remindInfo.remind_content}
               </AtNoticebar>
             </View>
-          )}
+          )} */}
 
           {crossborder_show && (
             <View className="changeCross">

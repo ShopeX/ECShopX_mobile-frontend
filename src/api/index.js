@@ -18,6 +18,7 @@ import * as group from './group'
 import * as groupBy from './groupBy'
 import * as boost from './boost'
 import * as wx from './wx'
+import * as alipay from './alipay'
 import * as wheel from './wheel'
 import * as pointitem from './pointitem'
 
@@ -46,5 +47,6 @@ export default {
   wheel,
   boost,
   pointitem,
-  guide
+  guide,
+  alipay
 }

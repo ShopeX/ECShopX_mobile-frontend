@@ -1,8 +1,8 @@
 import Taro from "@tarojs/taro";
 import S from "@/spx";
 import qs from "qs";
-import { isGoodsShelves } from "@/utils";
-import api from '@/api'
+import { isGoodsShelves, isAlipay } from "@/utils";
+import api from "@/api";
 
 function addQuery(url, query) {
   return url + (url.indexOf("?") >= 0 ? "&" : "?") + query;
@@ -16,8 +16,8 @@ class API {
     }
 
     options.company_id = process.env.APP_COMPANY_ID;
-    if (process.env.TARO_ENV === "weapp") {
-      const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+    if (process.env.TARO_ENV === "weapp" || isAlipay) {
+      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
       options.appid = extConfig.appid;
       if (extConfig.company_id) {
         options.company_id = extConfig.company_id;
@@ -81,14 +81,18 @@ class API {
       header["content-type"] =
         header["content-type"] || "application/x-www-form-urlencoded";
     }
-   
+
     const token = S.getAuthToken();
     if (token) {
       header["Authorization"] = `Bearer ${token}`;
     }
 
+    if (process.env.TARO_ENV) {
+      header["source"] = process.env.TARO_ENV;
+    }
+
     const { company_id, appid } = this.options;
-    if (process.env.TARO_ENV === "weapp") {
+    if (process.env.TARO_ENV === "weapp" || isAlipay) {
       if (appid) {
         header["authorizer-appid"] = appid;
       }
@@ -126,7 +130,16 @@ class API {
       delete options.data;
     } else {
       // nest data
-      options.data = qs.stringify(options.data);
+      if (isAlipay && options.method === "DELETE") {
+        options.url = addQuery(options.url, qs.stringify(options.data));
+        options.data = options.data;
+        options.dataType = "json";
+        options.headers = options.header;
+        options.responseType = "text";
+        options.responseCharset = "utf-8";
+      } else {
+        options.data = qs.stringify(options.data);
+      }
     }
     const workEnv = S.get("workEnv", true);
     let ba_params = S.get("ba_params", true);
@@ -148,6 +161,7 @@ class API {
     let resData = {};
     let isRefreshing = false;
     let requests = [];
+
     return Taro.request(options)
       .then(res => {
         resData = res;
@@ -213,8 +227,8 @@ class API {
             });
             return Promise.reject(this.reqError(resData, "帐号已被禁用"));
           }
-          if ( data.error && data.error.code === 401001 ) {
-            if ( isGoodsShelves() ) {
+          if (data.error && data.error.code === 401001) {
+            if (isGoodsShelves()) {
               S.logout();
               S.loginQW(this, true);
             } else {
@@ -236,24 +250,23 @@ class API {
                   method: "get",
                   url: process.env.APP_BASE_URL + "/token/refresh"
                 })
-                .then( data => {
-                  console.log( "/token/refresh", data );
-                  if ( data.statusCode == 401 ) {
-                    S.logout()
-                    S.login(this, true)
-                  }
-                  S.setAuthToken(data.header.Authorization.split(" ")[1]);
-                  requests.forEach(cb => cb());
-                  requests = [];
-                  return API.makeReq(config);
-                })
-                .catch(e => {
-                  console.log( e );
-                  
-                })
-                .finally(() => {
-                  isRefreshing = false;
-                });
+                  .then(data => {
+                    console.log("/token/refresh", data);
+                    if (data.statusCode == 401) {
+                      S.logout();
+                      S.login(this, true);
+                    }
+                    S.setAuthToken(data.header.Authorization.split(" ")[1]);
+                    requests.forEach(cb => cb());
+                    requests = [];
+                    return API.makeReq(config);
+                  })
+                  .catch(e => {
+                    console.log(e);
+                  })
+                  .finally(() => {
+                    isRefreshing = false;
+                  });
               }
             }
           }
@@ -264,7 +277,8 @@ class API {
           if (
             showError &&
             data.error.message !== "当前余额不足以支付本次订单费用，请充值！" &&
-            data.error.code !== 201
+            data.error.code !== 201 &&
+            data.error.code !== 450
           ) {
             this.errorToast(data);
           }
@@ -282,7 +296,7 @@ class API {
     const errMsg = data.message || data.err_msg || msg;
     const err = new Error(errMsg);
     err.res = res;
-    err.code = res.data.error.code
+    err.code = res.data.error.code;
     return err;
   }
 }

@@ -19,7 +19,7 @@ export default class Youshu extends Base {
 
   constructor(options = {}) {
     super(options);
-    const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
    
     config.token = extConfig.youshutoken;
     config.appid = extConfig.appid;

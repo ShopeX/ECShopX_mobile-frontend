@@ -7,6 +7,7 @@ import api from "@/api";
 import {
   customName
 } from '@/utils/point';
+import { closeClassName } from '@/utils';
 import "./payment-picker.scss";
 
 @connect(({ colors }) => ({
@@ -92,7 +93,7 @@ export default class PaymentPicker extends Component {
           <View className="payment-picker__hd">
             <Text>支付方式</Text>
             <View
-              className="at-icon at-icon-close"
+              className={closeClassName}
               onClick={this.handleCancel}
             ></View>
           </View>

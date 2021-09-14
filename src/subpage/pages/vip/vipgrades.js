@@ -5,7 +5,7 @@ import { connect } from "@tarojs/redux";
 import { AtTabs, AtTabsPane } from "taro-ui";
 import api from "@/api";
 import S from "@/spx";
-import { pickBy } from "@/utils";
+import { pickBy,showLoading,hideLoading,isAlipay } from "@/utils";
 import PaymentPicker from "@/pages/cart/comps/payment-picker";
 import { customName } from "@/utils/point";
 import userIcon from "@/assets/imgs/user-icon.png";
@@ -108,11 +108,11 @@ export default class VipIndex extends Component {
       pay_type: payType
     };
 
-    Taro.showLoading({ mask: true });
+    showLoading({ mask: true });
 
     const data = await api.vip.charge(params);
 
-    Taro.hideLoading();
+    hideLoading();
 
     var config = data;
     var that = this;
@@ -265,14 +265,14 @@ export default class VipIndex extends Component {
               onClose={this.handleLayoutClose}
               onChange={this.handlePaymentChange}
             ></PaymentPicker>
-            <SpCell
+            {!isAlipay && <SpCell
               isLink
               border={false}
               title="支付方式"
               onClick={this.handlePaymentShow}
             >
               <Text>{payTypeText[payType]}</Text>
-            </SpCell>
+            </SpCell>}
             <Button className="pay-btn" onClick={this.handleCharge}>
               立即支付
             </Button>

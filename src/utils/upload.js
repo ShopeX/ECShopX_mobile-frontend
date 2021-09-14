@@ -11,6 +11,7 @@
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
 import S from '@/spx'
+import { isAlipay } from '@/utils'
 // import * as qiniu from 'qiniu-js'
 
 const getToken = (params) => {
@@ -30,14 +31,14 @@ const getToken = (params) => {
 
 const upload = {
   aliUpload: async (item, tokenRes) => {
-    const {accessid, dir, host, policy, signature} = tokenRes
+    const { accessid, dir, host, policy, signature } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
     try {
       const res = await Taro.uploadFile({
         url: host,
         filePath: item.url,
         name: 'file',
-        formData:{
+        formData: {
           name: filename,
           key: `${dir}`,
           policy: policy,
@@ -56,21 +57,25 @@ const upload = {
         url: `${host}${dir}`
       }
     } catch (e) {
-      throw new Error (e)
+      throw new Error(e)
     }
   },
   qiNiuUpload: async (item, tokenRes) => {
-    const { token, key, domain, host } = tokenRes
-    // const url = uploadURLFromRegionCode(region)
+    const { token, key, domain, host } = tokenRes 
+    
+    const uploadFile = isAlipay ? my.uploadFile : Taro.uploadFile;
+  
     try {
-      const { data } = await Taro.uploadFile({
+      const { data } = await uploadFile({
         url: host,
         filePath: item.url,
-        name: 'file',
+        fileType:'image',
+        [isAlipay?'fileName':'name']: 'file',
         formData:{
           'token': token,
           'key': key
-      }})
+        }
+      })
       const imgData = JSON.parse(data)
       if (!imgData.key) {
         return false
@@ -80,24 +85,24 @@ const upload = {
       }
     } catch (e) {
       throw new Error (e)
-    }
+    } 
   },
   localUpload: async (item, tokenRes) => {
-    const { filetype="image", domain } = tokenRes
+    const { filetype = "image", domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-    const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
     try {
       const res = await Taro.uploadFile({
         url: `${req.baseURL}espier/uploadlocal`,
         filePath: item.url,
-        header:{
+        header: {
           'Authorization': `Bearer ${S.getAuthToken()}`,
-          'authorizer-appid': extConfig.appid 
+          'authorizer-appid': extConfig.appid
         },
         name: 'images',
-        formData:{
+        formData: {
           name: filename,
-          filetype,  
+          filetype,
         }
       })
       const data = JSON.parse(res.data)
@@ -109,11 +114,11 @@ const upload = {
         url: `${domain}/${image_url}`
       }
     } catch (e) {
-      throw new Error (e)
+      throw new Error(e)
     }
   },
   awsUpload: async (item, tokenRes) => {
-    const { 
+    const {
       formInputs = {
         XAmzCredential: '',
         XAmzAlgorithm: '',
@@ -131,7 +136,7 @@ const upload = {
         url: formAttributes.action,
         filePath: item.url,
         name: 'file',
-        formData:{
+        formData: {
           key: formInputs.key,
           'X-Amz-Credential': formInputs.XAmzCredential,
           'X-Amz-Algorithm': `AES256`,
@@ -150,7 +155,7 @@ const upload = {
         url: Location
       }
     } catch (e) {
-      throw new Error (e)
+      throw new Error(e)
     }
   }
 }
@@ -170,6 +175,7 @@ const getUploadFun = (dirver) => {
 
 // 返回对应上传方式
 const uploadImageFn = async (imgFiles, filetype = 'image') => {
+  console.log("---imgFiles---", imgFiles)
   const imgs = []
   for (const item of imgFiles) {
     if (!item.file) {
@@ -182,7 +188,8 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
       const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
       const { driver, token } = await getToken({ filetype, filename })
       const uploadType = getUploadFun(driver)
-      const img = await upload[uploadType](item, { ...token, filetype})
+      console.log("----uploadType----", uploadType)
+      const img = await upload[uploadType](item, { ...token, filetype })
       if (!img || !img.url) {
         continue
       }
@@ -190,7 +197,8 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
     } catch (e) {
       console.log(e)
     }
-  } 
+  }
+  console.log("---uploadImageFn---", imgs)
   return imgs
 }
 
