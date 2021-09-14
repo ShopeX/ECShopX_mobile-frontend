@@ -46,7 +46,8 @@ export default class TradeRefund extends Component {
       isShowSegTypeSheet: false,
       isSameCurSegType: false,
       curSegTypeValue: null,
-      remind: {}
+      remind: {},
+      isInvalid: true
     }
   }
 
@@ -201,37 +202,44 @@ export default class TradeRefund extends Component {
   }
 
   aftersalesAxios = async () => {
-    const { segTypes, curSegIdx, curReasonIdx, description } = this.state
-    const reason = this.state.reason[curReasonIdx]
-    const aftersales_type = segTypes[curSegIdx].status
-    const evidence_pic = this.state.imgs.map(({ url }) => url)
-    const { order_id, aftersales_bn,deliverData } = this.$router.params
-    let detail = deliverData
-    const data = {
-      detail,
-      order_id,
-      aftersales_bn,
-      aftersales_type,
-      reason,
-      description,
-      evidence_pic
+    this.setState({isInvalid: false})
+    try {
+      const { segTypes, curSegIdx, curReasonIdx, description } = this.state
+      const reason = this.state.reason[curReasonIdx]
+      const aftersales_type = segTypes[curSegIdx].status
+      const evidence_pic = this.state.imgs.map(({ url }) => url)
+      const { order_id, aftersales_bn,deliverData } = this.$router.params
+      let detail = deliverData
+      const data = {
+        detail,
+        order_id,
+        aftersales_bn,
+        aftersales_type,
+        reason,
+        description,
+        evidence_pic
+      }
+
+      // console.log(data, 244)
+      const method = aftersales_bn ? 'modify' : 'apply'
+      await api.aftersales[method](data)
+
+      // 退款退货
+      const { orderInfo } = await api.trade.detail(order_id);
+      Tracker.dispatch("ORDER_REFUND", orderInfo);
+
+
+      S.toast('操作成功')
+      setTimeout(() => {
+        this.setState({isInvalid: true})
+        Taro.redirectTo({
+          url: `/subpage/pages/trade/detail?id=${order_id}`
+        })
+      }, 700)
+    } catch (e) {
+      this.setState({isInvalid: true})
     }
-
-    // console.log(data, 244)
-    const method = aftersales_bn ? 'modify' : 'apply'
-    await api.aftersales[method](data)
-
-    // 退款退货
-    const { orderInfo } = await api.trade.detail(order_id);
-    Tracker.dispatch("ORDER_REFUND", orderInfo);
-
-
-    S.toast('操作成功')
-    setTimeout(() => {
-      Taro.redirectTo({
-        url: `/subpage/pages/trade/detail?id=${order_id}`
-      })
-    }, 700)
+    
   }
 
   handleSubmit = () => {
@@ -240,7 +248,7 @@ export default class TradeRefund extends Component {
       'temp_name': 'yykweishop',
       'source_type': 'after_refund',
     }
-    this.aftersalesAxios()
+    if (this.state.isInvalid) this.aftersalesAxios()
     // api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
     //   if (tmlres.template_id && tmlres.template_id.length > 0) {
     //     wx.requestSubscribeMessage({
