@@ -43,6 +43,7 @@ then
     map_key=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^map_key/{print $3}')
     map_name=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^map_name/{print $3}')
     image_cdn=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^image_cdn/{print $3}')
+    ali_isvid=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^ali_isvid/{print $3}')
     break
   done
     else
@@ -57,6 +58,7 @@ then
       map_key=${9}
       map_name=${10}
       image_cdn=${11}
+      ali_isvid=${12}
     fi
 
 # version=$(git describe --tags `git rev-list --tags --max-count=1`)
@@ -83,7 +85,8 @@ echo '{
   "ext": {
     "company_id": "'${company_id}'",
     "appid": "'${appid}'",
-    "wxa_name": "'${appName}'"
+    "wxa_name": "'${appName}'",
+    "ali_isvid":"'${ali_isvid}'"
   },
   "window": {
       "backgroundTextStyle": "light",

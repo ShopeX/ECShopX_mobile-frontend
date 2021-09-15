@@ -1,8 +1,7 @@
 import Taro from "@tarojs/taro";
 import S from "@/spx";
 import qs from "qs";
-import { isGoodsShelves,isAlipay } from "@/utils";
-import api from '@/api'
+import { isGoodsShelves,isAlipay } from "@/utils"; 
 
 function addQuery(url, query) {
   return url + (url.indexOf("?") >= 0 ? "&" : "?") + query;
