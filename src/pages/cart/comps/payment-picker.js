@@ -42,8 +42,15 @@ export default class PaymentPicker extends Component {
   static options = {
     addGlobalClass: true
   }
-  async fatch () {
-    let res = await api.member.getTradePaymentList()
+  async fatch() {
+    let params = {}
+    const distributor_id = Taro.getStorageSync("payment_list_dtid");
+    if (distributor_id) {
+      params = {
+        distributor_id
+      };
+    }
+    let res = await api.member.getTradePaymentList(params);
     this.setState({
       typeList: res
     }, () => {

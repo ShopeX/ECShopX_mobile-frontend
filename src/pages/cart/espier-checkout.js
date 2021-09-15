@@ -644,6 +644,7 @@ export default class CartCheckout extends Component {
       params.bargain_id = bargain_id;
     }
     this.params = params;
+    Taro.setStorageSync("payment_list_dtid", params.distributor_id);
     return _cloneDeep({
       ...params,
       items: []
@@ -1676,7 +1677,6 @@ export default class CartCheckout extends Component {
         : (coupon.value && coupon.value.title) || "";
     //const isBtnDisabled = !address
     const isBtnDisabled = express ? !address : false; 
-
     return (
       <View className="page-checkout">
         {showAddressPicker === false ? (
