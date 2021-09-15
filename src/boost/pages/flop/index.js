@@ -195,20 +195,21 @@ export default class Flop extends Component {
             <View>帮助好友领取随机折扣优惠</View>
           </View>
           {
-            (info.help_pics && info.help_pics.length > 0 ) && 
-            (S.getAuthToken() ?
+            S.getAuthToken() ?
+              (info.help_pics && info.help_pics.length > 0 ) &&
               <View className='discountImg'>
                 {
                   info.help_pics.map((item, index) => <Image key={`${item}${index}`}  src={item} mode='aspectFill' className='img' onClick={this.handleDiscount.bind(this)} />)
                 }
               </View> :
+              (info.help_pics && info.help_pics.length > 0 ) &&
               <SpLogin onChange={this.onChangeLoginSuccess.bind(this)}>
                 <View className='discountImg'>
                   {
                     info.help_pics.map((item, index) => <Image key={`${item}${index}`}  src={item} mode='aspectFill' className='img' onClick={this.handleDiscount.bind(this)} />)
                   }
                 </View>
-              </SpLogin>)
+              </SpLogin>
           }
         </View>
         <View className='boostMain'>
