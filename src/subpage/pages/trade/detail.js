@@ -185,7 +185,8 @@ export default class TradeDetail extends Component {
       can_apply_aftersales:'can_apply_aftersales',
       status: ({ order_status }) => resolveOrderStatus(order_status),
       orders: ({ items = [], logistics_items = [], is_split  }) => pickBy((is_split ? logistics_items : items), pickItem),
-      log_orders: ({ items = [] }) => pickBy(items, pickItem)
+      log_orders: ({ items = [] }) => pickBy(items, pickItem),
+      can_apply_cancel: 'can_apply_cancel'
     })
 
     const ziti = pickBy(data.distributor, {
@@ -762,6 +763,7 @@ export default class TradeDetail extends Component {
             </View>
             {
               !info.is_logistics &&
+              info.can_apply_cancel != 0 && 
               (info.status === "WAIT_BUYER_PAY" ||
               (info.status === "WAIT_SELLER_SEND_GOODS" && 
               info.order_status_des !== "PAYED_WAIT_PROCESS" && info.order_status_des !== "PAYED_PARTAIL")) &&
