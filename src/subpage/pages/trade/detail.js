@@ -60,7 +60,8 @@ export default class TradeDetail extends Component {
       // selections:[],
       scrollIntoView: 'order-0',
       cancelData: {},
-      tradeInfo: {}
+      tradeInfo: {},
+      showQRcode: false
     }
   }
 
@@ -201,14 +202,16 @@ export default class TradeDetail extends Component {
     const tradeInfo = data.tradeInfo
 
     if (info.receipt_type == 'ziti' && info.ziti_status === 'PENDING') {
-      const { qrcode_url } = await api.trade.zitiCode({ order_id: id })
+      const { qrcode_url, pickup_code  } = await api.trade.zitiCode({ order_id: id })
       this.setState({
-        qrcode: qrcode_url
+        qrcode: qrcode_url,
+        pickup_code: pickup_code
       }, () => {
         const interval = setInterval(async () => {
-          const { qrcode_url } = await api.trade.zitiCode({ order_id: id })
+          const { qrcode_url, pickup_code } = await api.trade.zitiCode({ order_id: id })
           this.setState({
-            qrcode: qrcode_url
+            qrcode: qrcode_url,
+            pickup_code: pickup_code
           })
         }, 10000)
 
@@ -539,9 +542,15 @@ export default class TradeDetail extends Component {
     copy(orderid);
   }
 
+  handleImgClick = (val) => {
+    this.setState({
+      showQRcode: val
+    })
+  }
+
   render () {
     const { colors } = this.props
-    const { info, ziti, qrcode, timer, payLoading, scrollIntoView, cancelData, tradeInfo } = this.state
+    const { info, ziti, qrcode, timer, payLoading, scrollIntoView, cancelData, tradeInfo, showQRcode, pickup_code } = this.state
  
 
     if (!info) {
@@ -561,6 +570,11 @@ export default class TradeDetail extends Component {
 
     return (
       <View className={`trade-detail ${info.is_logistics && 'islog'} ${info.status !== 'TRADE_CLOSED' && 'paddingBottom'}`}>
+        {showQRcode && <View className='qrcode-page' onClick={() => {this.handleImgClick(false)}}>
+          <View className='qrcode-bgc'>
+            <Image className='qrcode' src={qrcode} />
+          </View>
+        </View>}
         <NavBar title='订单详情' leftIconType='chevron-left' fixed='true' />
         {
           info.is_logistics && <View className='custabs'>
@@ -644,16 +658,17 @@ export default class TradeDetail extends Component {
             <View className='ziti-content'>
               {info.status === "WAIT_SELLER_SEND_GOODS" &&
                 info.ziti_status === "PENDING" && (
-                  <View>
+                  <View onClick={() => {this.handleImgClick(true)}}>
                     <Image className='ziti-qrcode' src={qrcode} />
                     {info.pickupcode_status && (
                       <View>
-                        <View
+                        <View className='num-code'>{pickup_code}</View>
+                        {/* <View
                           className='sendCode'
                           onClick={this.sendCode.bind(this)}
                         >
                           发送提货码
-                        </View>
+                        </View> */}
                         <View className='sendCodeTips'>
                           提货时请出告知店员提货验证码
                         </View>
