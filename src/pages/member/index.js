@@ -71,7 +71,9 @@ export default class MemberIndex extends Component {
         recharge: false,
         ziti_order: false,
         //是否开启积分链接
-        score_menu: false
+        score_menu: false,
+        share_enable: false,
+        memberinfo_enable: false
       },
       imgUrl: "",
       // 积分商城菜单
@@ -337,9 +339,7 @@ export default class MemberIndex extends Component {
     return (
       <View className="page-member-index" style={getThemeStyle()}>
         {S.getAuthToken() ? (
-          <View
-            className={classNames("page-member-header")}
-          >
+          <View className={classNames("page-member-header")}>
             <View className="user-info">
               <View
                 className="view-flex view-flex-middle"
@@ -361,7 +361,7 @@ export default class MemberIndex extends Component {
                   <View className="gradename">{`${
                     !vipgrade.is_vip
                       ? memberInfo.gradeInfo.grade_name
-                      : vipgrade.grade_name || '会员'
+                      : vipgrade.grade_name || "会员"
                   }`}</View>
                 </View>
               </View>
@@ -414,7 +414,11 @@ export default class MemberIndex extends Component {
                   className="view-flex-item"
                   onClick={() => {
                     this.handleClickWxOAuth(
-                      this.navigateTo.bind(this, "/others/pages/recharge/index"),isWeixin
+                      this.navigateTo.bind(
+                        this,
+                        "/others/pages/recharge/index"
+                      ),
+                      isWeixin
                     );
                   }}
                 >
@@ -449,7 +453,6 @@ export default class MemberIndex extends Component {
           </View>
         )}
 
-    
         {/* {is_open_official_account === 1 && (
           <View className="page-member-section">
             <AccountOfficial
@@ -580,138 +583,139 @@ export default class MemberIndex extends Component {
           </View>
         )} */}
 
-        {<View className="page-member-section">
-          {memberData.is_open_popularize && (
-            <SpCell
-              title={!memberData.is_promoter ? "我要推广" : "推广管理"}
-              isLink
-              img={require("../../assets/imgs/store.png")}
-              onClick={() =>
-                this.handleClickWxOAuth(this.beDistributor.bind(this))
-              }
-            ></SpCell>
-          )}
-
-          {Taro.getEnv() !== "WEB" && (
-            <View>
-              {menuSetting.group && (
-                <SpCell
-                  title="我的拼团"
-                  isLink
-                  img={require("../../assets/imgs/group.png")}
-                  onClick={() =>
-                    this.handleClickWxOAuth(
-                      this.navigateTo.bind(
-                        this,
-                        "/marketing/pages/member/group-list"
-                      )
-                    )
-                  }
-                ></SpCell>
-              )}
-              {menuSetting.community_order && (
-                <SpCell
-                  title="我的社区团购"
-                  isLink
-                  img={require("../../assets/imgs/group.png")}
-                  onClick={() =>
-                    this.handleClickWxOAuth(
-                      this.navigateTo.bind(
-                        this,
-                        "/groupBy/pages/orderList/index"
-                      )
-                    )
-                  }
-                ></SpCell>
-              )}
-            </View>
-          )}
-
-          {Taro.getEnv() !== "WEB" && (
-            <View>
-              {menuSetting.boost_activity && (
-                <SpCell
-                  title="助力活动"
-                  isLink
-                  img={require("../../assets/imgs/group.png")}
-                  onClick={() =>
-                    this.handleClickWxOAuth(
-                      this.navigateTo.bind(this, "/boost/pages/home/index")
-                    )
-                  }
-                ></SpCell>
-              )}
-              {menuSetting.boost_order && (
-                <SpCell
-                  title="助力订单"
-                  isLink
-                  img={require("../../assets/imgs/group.png")}
-                  onClick={() =>
-                    this.handleClickWxOAuth(
-                      this.navigateTo.bind(this, "/boost/pages/order/index")
-                    )
-                  }
-                ></SpCell>
-              )}
-            </View>
-          )}
-          {menuSetting.offline_order && (
-            <SpCell
-              title="线下订单关联"
-              isLink
-              img={require("../../assets/imgs/group.png")}
-              onClick={() =>
-                this.handleClickWxOAuth(
-                  this.navigateTo.bind(this, "/others/pages/bindOrder/index")
-                )
-              }
-            ></SpCell>
-          )}
-          {menuSetting.complaint &&
-            salespersonData &&
-            salespersonData.distributor && (
+        {
+          <View className="page-member-section">
+            {memberData.is_open_popularize && (
               <SpCell
-                title="投诉记录"
+                title={!memberData.is_promoter ? "我要推广" : "推广管理"}
+                isLink
+                img={require("../../assets/imgs/store.png")}
+                onClick={() =>
+                  this.handleClickWxOAuth(this.beDistributor.bind(this))
+                }
+              ></SpCell>
+            )}
+
+            {Taro.getEnv() !== "WEB" && (
+              <View>
+                {menuSetting.group && (
+                  <SpCell
+                    title="我的拼团"
+                    isLink
+                    img={require("../../assets/imgs/group.png")}
+                    onClick={() =>
+                      this.handleClickWxOAuth(
+                        this.navigateTo.bind(
+                          this,
+                          "/marketing/pages/member/group-list"
+                        )
+                      )
+                    }
+                  ></SpCell>
+                )}
+                {menuSetting.community_order && (
+                  <SpCell
+                    title="我的社区团购"
+                    isLink
+                    img={require("../../assets/imgs/group.png")}
+                    onClick={() =>
+                      this.handleClickWxOAuth(
+                        this.navigateTo.bind(
+                          this,
+                          "/groupBy/pages/orderList/index"
+                        )
+                      )
+                    }
+                  ></SpCell>
+                )}
+              </View>
+            )}
+
+            {Taro.getEnv() !== "WEB" && (
+              <View>
+                {menuSetting.boost_activity && (
+                  <SpCell
+                    title="助力活动"
+                    isLink
+                    img={require("../../assets/imgs/group.png")}
+                    onClick={() =>
+                      this.handleClickWxOAuth(
+                        this.navigateTo.bind(this, "/boost/pages/home/index")
+                      )
+                    }
+                  ></SpCell>
+                )}
+                {menuSetting.boost_order && (
+                  <SpCell
+                    title="助力订单"
+                    isLink
+                    img={require("../../assets/imgs/group.png")}
+                    onClick={() =>
+                      this.handleClickWxOAuth(
+                        this.navigateTo.bind(this, "/boost/pages/order/index")
+                      )
+                    }
+                  ></SpCell>
+                )}
+              </View>
+            )}
+            {menuSetting.offline_order && (
+              <SpCell
+                title="线下订单关联"
                 isLink
                 img={require("../../assets/imgs/group.png")}
                 onClick={() =>
                   this.handleClickWxOAuth(
+                    this.navigateTo.bind(this, "/others/pages/bindOrder/index")
+                  )
+                }
+              ></SpCell>
+            )}
+            {menuSetting.complaint &&
+              salespersonData &&
+              salespersonData.distributor && (
+                <SpCell
+                  title="投诉记录"
+                  isLink
+                  img={require("../../assets/imgs/group.png")}
+                  onClick={() =>
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(
+                        this,
+                        "/marketing/pages/member/complaint-record"
+                      )
+                    )
+                  }
+                ></SpCell>
+              )}
+            {menuSetting.activity && (
+              <SpCell
+                title="活动预约"
+                isLink
+                img={require("../../assets/imgs/buy.png")}
+                onClick={() =>
+                  this.handleClickWxOAuth(
                     this.navigateTo.bind(
                       this,
-                      "/marketing/pages/member/complaint-record"
+                      "/marketing/pages/member/item-activity"
                     )
                   )
                 }
               ></SpCell>
             )}
-          {menuSetting.activity && (
-            <SpCell
-              title="活动预约"
-              isLink
-              img={require("../../assets/imgs/buy.png")}
-              onClick={() =>
-                this.handleClickWxOAuth(
-                  this.navigateTo.bind(
-                    this,
-                    "/marketing/pages/member/item-activity"
+            {score_menu_open && (
+              <SpCell
+                title={customName("积分商城")}
+                isLink
+                img={require("../../assets/imgs/score.png")}
+                onClick={() =>
+                  this.handleClickWxOAuth(
+                    this.navigateTo.bind(this, "/pointitem/pages/list")
                   )
-                )
-              }
-            ></SpCell>
-          )}
-          {score_menu_open && (
-            <SpCell
-              title={customName("积分商城")}
-              isLink
-              img={require("../../assets/imgs/score.png")}
-              onClick={() =>
-                this.handleClickWxOAuth(
-                  this.navigateTo.bind(this, "/pointitem/pages/list")
-                )
-              }
-            ></SpCell>
-          )}
-          {/* {
+                }
+              ></SpCell>
+            )}
+            {/* {
               menuSetting.activity && <SpCell
                 title='活动预约'
                 isLink
@@ -720,17 +724,18 @@ export default class MemberIndex extends Component {
               >
               </SpCell>
             }  */}
-          {/* <SpCell
+            {/* <SpCell
               title='入驻申请'
               isLink
               img='/assets/imgs/buy.png'
               onClick={this.handleClick.bind(this, '/subpage/pages/auth/store-reg')}
             >
             </SpCell>*/}
-        </View>}
+          </View>
+        }
 
         <View className="page-member-section">
-          {Taro.getEnv() !== "WEB" && (
+          {Taro.getEnv() !== "WEB" && menuSetting.share_enable && (
             <SpCell title="我要分享" isLink>
               <Button className="btn-share" open-type="share"></Button>
             </SpCell>
@@ -744,13 +749,15 @@ export default class MemberIndex extends Component {
               )
             }
           ></SpCell>
-          <SpCell
-            title="个人信息"
-            isLink
-            onClick={() =>
-              this.handleClickWxOAuth(this.handleClickInfo.bind(this))
-            }
-          ></SpCell>
+          {menuSetting.memberinfo_enable && (
+            <SpCell
+              title="个人信息"
+              isLink
+              onClick={() =>
+                this.handleClickWxOAuth(this.handleClickInfo.bind(this))
+              }
+            ></SpCell>
+          )}
           {process.env.TARO_ENV === "h5" && (
             <SpCell
               title="设置"
