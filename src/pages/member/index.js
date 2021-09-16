@@ -391,7 +391,7 @@ export default class MemberIndex extends Component {
               >
                 <View className="member-assets__label">优惠券</View>
                 <View className="member-assets__value">
-                  {memberAssets.discount_total_count}
+                  {memberAssets.discount_total_count || 0}
                 </View>
               </View>
 
@@ -405,7 +405,7 @@ export default class MemberIndex extends Component {
                   {customName("积分")}
                 </View>
                 <View className="member-assets__value">
-                  {memberAssets.point_total_count}
+                  {memberAssets.point_total_count || 0}
                 </View>
               </View>
 
@@ -435,7 +435,7 @@ export default class MemberIndex extends Component {
               >
                 <View className="member-assets__label">收藏</View>
                 <View className="member-assets__value">
-                  {memberAssets.fav_total_count}
+                  {memberAssets.fav_total_count || 0}
                 </View>
               </View>
             </View>
