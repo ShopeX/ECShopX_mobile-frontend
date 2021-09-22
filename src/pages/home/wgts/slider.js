@@ -76,7 +76,7 @@ export default class WgtSlider extends Component {
               autoplay
               current={curIdx}
               interval={config.interval}
-              duration={300000}
+              duration={300}
               onChange={this.handleSwiperChange}
             >
               {data.map((item, idx) => {
