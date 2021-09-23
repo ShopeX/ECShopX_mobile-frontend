@@ -1336,7 +1336,7 @@ export default class Detail extends Component {
               </View>
             )}
 
-          {!info.is_gift && !this.isPointitemGood() && !isAlipay && (
+          {!info.is_gift && !this.isPointitemGood() && !isAlipay && new_coupon_list.length > 0 && (
             <SpCell
               className="goods-sec-specs"
               title="领券"
