@@ -67,7 +67,7 @@ class App extends Component {
   // eslint-disable-next-line react/sort-comp
   componentWillMount() {
     console.log("componentWillMount", process.env.APP_TRACK);
-    if (process.env.APP_TRACK) {
+    if (process.env.APP_TRACK && process.env.TARO_ENV == 'weapp') {
       const system = Taro.getSystemInfoSync();
       if (!(system && system.environment && system.environment === "wxwork")) {
         console.log("Tracker", Tracker.use);
