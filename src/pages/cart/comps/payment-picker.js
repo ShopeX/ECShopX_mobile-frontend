@@ -42,22 +42,27 @@ export default class PaymentPicker extends Component {
 
   static options = {
     addGlobalClass: true
-  };
+  }
   async fatch() {
-    let res = await api.member.getTradePaymentList();
-    this.setState(
-      {
-        typeList: res
-      },
-      () => {
-        if (res[0]) {
-          console.log(111);
-          this.handlePaymentChange(res[0].pay_type_code);
-          this.handleChange(res[0].pay_type_code);
-          this.props.onInitDefaultPayType(res[0].pay_type_code);
-        }
+    let params = {};
+    const distributor_id = Taro.getStorageSync("payment_list_dtid");
+    if (distributor_id) {
+      params = {
+        distributor_id
+      };
+    }
+    let res = await api.member.getTradePaymentList(params);
+    this.setState({
+      typeList: res
+    }, () => {
+      if ( res[0] ) {
+        console.log( 111 );
+        const channel = res[0].pay_channel || "";
+        this.handlePaymentChange( res[0].pay_type_code, channel );
+        this.handleChange( res[0].pay_type_code )
+        this.props.onInitDefaultPayType( res[0].pay_type_code, channel );
       }
-    );
+    });
   }
   handleCancel = () => {
     this.setState({
@@ -76,7 +81,10 @@ export default class PaymentPicker extends Component {
   };
 
   handleChange = type => {
-    this.props.onChange(type);
+    const { typeList } = this.state
+    const payItem = typeList.find( item => item.pay_type_code == type );
+    const channel = payItem.pay_channel || "";
+    this.props.onChange(type, channel);
   };
 
   render() {
