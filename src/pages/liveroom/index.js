@@ -1,11 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from "taro-ui"
-import { debounce } from '@/utils'
+import { debounce, calcTimer } from '@/utils'
 import api from '@/api'
 import LoadingMore from '@/boost/component/loadingMore'
-// src/boost/pages/order/index.js
-// src/pages/liveroom/index.js
+
 import './index.scss'
 
 export default class LiveRoomList extends Component {
@@ -29,22 +28,11 @@ export default class LiveRoomList extends Component {
     this.getList()
   }
 
-  calcTimer (totalSec) {
-    let remainingSec = totalSec
-    const dd = Math.floor(totalSec / 24 / 3600)
-    remainingSec -= dd * 3600 * 24
-    const hh = Math.floor(remainingSec / 3600)
-    remainingSec -= hh * 3600
-    const mm = Math.floor(remainingSec / 60)
-    remainingSec -= mm * 60
-    const ss = Math.floor(remainingSec)
-
-    return {
-			dd,
-			hh,
-      mm,
-      ss
-    }
+  timeStamp = (time) => {
+    // time = 1632640084
+    let currentTimp = new Date().getTime() / 1000
+    let second = calcTimer((time - currentTimp))
+    return second
   }
 
   getList = async (isRefrsh = false) => {
@@ -53,7 +41,6 @@ export default class LiveRoomList extends Component {
     await api.liveroom.getLiveRoomList({ page: param.page, page_size: param.pageSize }).then(res => {
       const { list, total_count } = res
       const isEnd = param.page >= (total_count / param.pageSize)
-      console.log(list, isRefrsh)
       this.setState({
         liveRoomList: isRefrsh ? list : [...liveRoomList, ...list],
         isRefresh: false,
@@ -98,50 +85,14 @@ export default class LiveRoomList extends Component {
     this.getList()
   }
 
-  getTime = (second, getDateType) => {
-    var date = new Date(second)
-    if (getDateType == 0) {
-      return date.getFullYear()
-    } else if (getDateType == 1) {
-      if ((date.getMonth() + 1) <= 9) {
-        return '0' + (date.getMonth() + 1)
-      } else {
-        return date.getMonth()+1
-      }
-    } else if (getDateType == 2) {
-      if (date.getDate() <= 9) {
-        return '0' + date.getDate()
-      } else {
-        return date.getDate()
-      }
-    } else if (getDateType == 3) {
-      if (date.getHours() <= 9) {
-        return '0' + date.getHours()
-      } else {
-        return date.getHours()
-      }
-    } else if (getDateType==4) {
-      if (date.getMinutes() <= 9) {
-        return '0' + date.getMinutes()
-      } else {
-        return date.getMinutes()
-      }
-    } else if (getDateType==5) {
-      return date.getSeconds()
-    } else {
-      alert('输入时间格式有误!')
-      return
-    }
-  }
-
   onLocation = (item) => {
-    if ((item.live_status === 103 && item.close_replay === 0) || item.live_status === 101) {
-      Taro.navigateTo({
-        url: `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${item.roomid}`
-      })
-    } else {
-      return
-    }
+    // if ((item.live_status === 103 && item.close_replay === 0) || item.live_status === 101) {
+    Taro.navigateTo({
+      url: `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${item.roomid}`
+    })
+    // } else {
+    //   return
+    // }
   }
 
   render () {
@@ -159,15 +110,8 @@ export default class LiveRoomList extends Component {
         onRefresherRefresh={this.handleRefresh}
         onScrollToLower={this.handleLoadMore}
       >
-        {
-          liveRoomList.map(item => (
-            <View style={{ position: 'relative' }} onClick={this.onLocation.bind(this, item)} key={item.roomid}>
-            {/* <Navigator
-              hover-class='none'
-              style={{ position: 'relative' }}
-              key={item.roomid}
-              url={`plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${item.roomid}`}
-            > */}
+        {liveRoomList.map(item => (
+          <View style={{ position: 'relative' }} onClick={this.onLocation.bind(this, item)} key={item.roomid}>
             <Image className='liveroom-page-bck' mode='aspectFit' src={item.cover_img}></Image>
             <View className='liveroom-page-title'>{item.name}</View>
             {
@@ -183,21 +127,29 @@ export default class LiveRoomList extends Component {
                 <View className='live notice'>预告</View>
                 <View className='content'>
                   <AtCountdown
-                    isShowDay
+                    isShowDay={this.timeStamp(item.start_time).dd != 0}
+                    isShowHour={this.timeStamp(item.start_time).hh != 0}
                     format={{ day: '天', hours: '时', minutes: '分', seconds: '' }}
-                    day={this.calcTimer(1632476044).dd}
-                    hours={this.calcTimer(1632476044).hh}
-                    minutes={this.calcTimer(1632476044).mm}
-                    seconds={this.calcTimer(1632476044).ss}
+                    day={this.timeStamp(item.start_time).dd}
+                    hours={this.timeStamp(item.start_time).hh}
+                    minutes={this.timeStamp(item.start_time).mm}
+                    seconds={this.timeStamp(item.start_time).ss}
                   />
                 </View>
               </View>
             }
             {
-              (item.live_status == 103) &&
+              item.live_status == 103 && item.close_replay == 0 &&
               <View className='liveroom-page-state'>
                 <View className='live return'>回放</View>
                 <View className='content'>{item.live_time_text}</View>
+              </View>
+            }
+            {
+              ((item.live_status == 103 && item.close_replay == 1) || item.live_status == 104 || item.live_status == 105 || item.live_status == 106 || item.live_status == 107) &&
+              <View className='liveroom-page-state'>
+                <View className='live return'>已结束</View>
+                <View className='content'>直播已结束</View>
               </View>
             }
           </View>
