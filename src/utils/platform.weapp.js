@@ -7,3 +7,7 @@ export function setPageTitle(title) {
 }
 
 export const platformTemplateName = "onexshop";
+
+export const transformPlatformUrl = url => {
+  return url
+};

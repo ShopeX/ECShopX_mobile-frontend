@@ -5,7 +5,7 @@ import { DEFAULT_POINT_NAME } from '@/consts'
 
 import "./index.scss";
 
-export default class HomeCapsule extends Component {
+export default class SpPoint extends Component {
   static defaultProps = {
     value: 0
   };

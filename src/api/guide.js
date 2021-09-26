@@ -1,6 +1,6 @@
 import req from "./req";
 import S from "@/spx";
-import { transformPlatformUrl } from '@/utils'
+import { transformPlatformUrl } from "@/utils/platform";
 
 function createHead() {
   return {

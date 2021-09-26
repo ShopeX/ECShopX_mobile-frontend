@@ -1,15 +1,5 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 社区团购api
- * @FilePath: /unite-vshop/src/api/groupBy.js
- * @Date: 2020-05-26 10:23:49
- * @LastEditors: Arvin
- * @LastEditTime: 2020-06-16 14:09:13
- */ 
 import req from './req'
-import { transformPlatformUrl } from '@/utils'
+import { transformPlatformUrl } from "@/utils/platform";
 
 // 登录
 export const login = (param = {}) => req.post('/wxa/promotion/articles', param)

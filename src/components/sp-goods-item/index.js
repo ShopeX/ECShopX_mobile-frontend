@@ -114,7 +114,7 @@ export default class SpGoodsItem extends Component {
           <SpImg
             img-class="order-item__img"
             src={img}
-            mode="aspectFill"
+            mode="widthFix"
             width="300"
             lazyLoad
           />
@@ -134,17 +134,19 @@ export default class SpGoodsItem extends Component {
           )}
 
           {/* 促销活动标签 */}
-          <View className="promotions">
-            {/* {info.promotions.map((item, index) => (
-              <Text className="promotion-tag" key={`promotion-tag__${index}`}>
-                {PROMOTION_TAG[item.tag_type]}
-              </Text>
-            ))} */}
-          </View>
+          {info.promotion_activity && (
+            <View className="promotions">
+              {info.promotion_activity.map((item, index) => (
+                <Text className="promotion-tag" key={`promotion-tag__${index}`}>
+                  {PROMOTION_TAG[item.tag_type]}
+                </Text>
+              ))}
+            </View>
+          )}
 
           <View className="goods-info">
-            <View className="goods-title"></View>
-            <View className="goods-desc"></View>
+            <View className="goods-title">{info.itemName}</View>
+            <View className="goods-desc">{info.brief}</View>
           </View>
 
           {/* 商品价格、积分 */}

@@ -2,8 +2,21 @@
   &-hd {
     font-size: 36px;
     text-align: center;
+    margin-bottom: 20px;
   }
   &-bd {
-    
+    display: flex;
+    flex-wrap: wrap;
+    .goods-item-wrap {
+      width: 50%;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      &:nth-child(2n + 1) {
+        padding: 0 10px 0 20px;
+      }
+      &:nth-child(2n + 2) {
+        padding: 0 20px 0 10px;
+      }
+    }
   }
 }

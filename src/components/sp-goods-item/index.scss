@@ -1,223 +1,31 @@
-@import '../../style/imports';
+.sp-goods-item {
+  .goods-item {
+    &__hd {
 
-$item-img-size: 240px !default;
+    }
+    &__bd {
+      .goods-title {
+        font-size: 28px;
+        color: #666;
+      }
+      .goods-desc {
+        font-size: 24px;
+        color: #999;
+        @include multi-ellipsis(2);
+      }
 
-.draw-item__ft-inner {
-  display: flex;
-  justify-content: space-between;
-  font-size: $font-size-small;
-  color: $color-gray;
-  .weui-progress {
-    flex: 1;
-    margin-left: 10px;
-  }
-}
-
-.goods-item {
-  $self: &;
-	position: relative;
-  border-radius: $item-border-radius;
-  overflow: hidden;
-	box-shadow: 0 5px 5px rgba(0,0,0,0.1);
-
-  &__hd {
-  }
-  &__bd {
-    border-radius: $item-border-radius;
-    background: #fff;
-    overflow: hidden;
-  }
-  &__cont {
-    padding: 20px;
-    position: relative;
-    z-index: 9999;
-    background: #FFFFFF;
-  }
-  &__img {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    &-wrap {
-      display: flex;
-      position: relative;
-      &::after {
-        padding-top: 100%;
-        content: ""
+      .promotions {
+        display: flex;
+        .promotion-tag {
+          flex-wrap: wrap;
+          background-color: var(--color-primary);
+          color: #fff;
+          font-size: 24px;
+        }
       }
     }
-  }
-  &__caption {
-    padding-bottom: 20px;
-  }
-  &__tag-list {
-    padding-bottom: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    .tagitem {
-      margin-top: 10px;
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-    .member_preference {
-      background: rgb(247, 106, 13);
-      color: #fff;
-    }
-  }
-  &__tag {
-    padding: 4px 4px 3px 4px;
-    line-height: 1;
-    font-size: 20px;
-    border-radius: 4px;
-    box-shadow: 0 0 0 1PX #FF5000;
-    color: #FF5000;
-  }
-  &__group {
-    border-radius: 4px;
-    background: #FF5000;
-    color: #fff;
-  }
-  &__title {
-    margin: 0 0 5px;
-    max-height: 80px;
-    @include multi-ellipsis(2);
-    line-height: 1.3;
-    font-size: 26px;
-    color: #333;
-    font-family: Arial;
-  }
-  &__desc {
-    margin: 0 0 15px;
-    line-height: 1.3;
-    @include multi-ellipsis(2);
-    color: $color-gray;
-    font-size: $font-size-small;
-  }
-  &__cur {
-    padding-right: 5px;
-    font-size: 20px;
-  }
-  &__price {
-    flex: 1;
-    padding-right: 24px;
-    line-height: 1;
-    font-size: floor(1.1 * $font-size);
-    color: $color-price;
-    font-family: Arial;
-  }
-  &__point {
-    display: flex;
-    &-number{
-      font-weight: 500;
-      font-size: 30rpx;
-    }
-    &-text{
-      font-size: 22rpx;
-      margin-left: 5rpx;
-      margin-top: 6rpx;
-      color: #333;
-    }
-  }
-  &__point {
-    color: $color-brand-primary;
-  }
-  &__price-market {
-    padding-left: 5px;
-    font-size: $font-size-small;
-    color: $color-gray-light;
-    text-decoration: line-through;
-  }
+    &__ft {
 
-  &__extra {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  &__author {
-    font-size: $font-size-small;
-    color: #000;
-    &-avatar {
-      background: $color-bg-gray;
-      width: 50px;
-      height: 50px;
-      border-radius: 50px;
-      margin-right: 12px;
-      display: inline-block;
-      vertical-align: middle;
-      overflow: hidden;
     }
-    &-name {
-      width: 140px;
-      display: inline-block;
-      vertical-align: middle;
-      @include text-overflow();
-    }
-  }
-  &__actions {
-    color: #d0d0d0;
-    font-size: $font-size-small;
-    text-align: right;
-    [class^="icon-"] {
-      color: #d0d0d0;
-      font-size: 36px;
-      &:before {
-        margin-left: 8px;
-      }
-    }
-    .icon-star-on, .icon-like-on {
-      color: $color-brand-primary;
-    }
-  }
-  &__store {
-    padding-top: 10px;
-    color: $color-gray;
-    font-size: 20px;
-    letter-spacing: 0;
-    &-entry {
-      color: #333;
-    }
-  }
-
-  // 跨境
-  .nationalInfo {
-    display: flex;
-    align-items: center;
-    font-size: 24px;
-    padding-bottom: 10px;
-    .nationalFlag {
-      width: 45px;
-      height: 45px;
-      border-radius: 100%;
-      margin-right: 15px;
-    }
-  }
-  //含税价
-  .taxText {
-    color: #666;
-    font-size: 20px;
-  }
-  &__over {
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    position: absolute;
-    z-index: 999;
-  }
-  &__label {
-    width: 140rpx;
-    height: 140rpx;
-    background: rgba(0, 0, 0, 0.5);
-    margin: 30% auto 0;
-    font-size: 30rpx;
-    font-weight: 400;
-    color: #FFFFFF;
-    line-height: 140rpx;
-    border-radius: 50%;
-    text-align: center;
-  }
-  &__gray {
-    color: #BBBBBB !important;
   }
 }
