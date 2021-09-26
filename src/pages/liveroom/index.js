@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView } from '@tarojs/components'
+import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { AtCountdown } from "taro-ui"
 import { debounce, calcTimer } from '@/utils'
 import api from '@/api'
@@ -110,7 +110,82 @@ export default class LiveRoomList extends Component {
         onRefresherRefresh={this.handleRefresh}
         onScrollToLower={this.handleLoadMore}
       >
-        {liveRoomList.map(item => (
+        <View className='liveroom-page-box'>
+          <View className='liveroom-page-left'>
+            <Image className='left-img' mode='widthFix' src={liveRoomList[0].cover_img}></Image>
+            <View className='left-state'>
+              <View className='lives'><Image className='icons' mode='aspectFit' src={`${APP_IMAGE_CDN}/live_w.png`} /></View>
+              <View className='content'>
+                正在直播中
+              </View>
+            </View>
+          </View>
+          <View className='liveroom-page-right'>
+            <View className='right-title'>科技布沙发现代轻奢直播名称最多显示两行…</View>
+            <View className='right-btn lives'><Image className='icons' mode='aspectFit' src={`${APP_IMAGE_CDN}/live_w.png`} />进入直播</View>
+          </View>
+        </View>
+        <View className='liveroom-page-box'>
+          <View className='liveroom-page-left'>
+            <Image className='left-img' mode='widthFix' src={liveRoomList[0].cover_img}></Image>
+            <View className='left-state'>
+              <View className='lives notice'><Image className='icons' mode='aspectFit' src={`${APP_IMAGE_CDN}/notice_w.png`} /></View>
+              <View className='content'>
+                预告
+              </View>
+            </View>
+          </View>
+          <View className='liveroom-page-right'>
+            <View className='right-title'>科技布沙发现代轻奢直播名称最多显示两行…</View>
+            <View className='right-count'>
+              <Text>直播时间：</Text>
+              <AtCountdown
+                isShowDay={this.timeStamp(1632991411).dd != 0}
+                isShowHour={this.timeStamp(1632991411).hh != 0}
+                format={{ day: '天', hours: '时', minutes: '分', seconds: '' }}
+                day={this.timeStamp(1632991411).dd}
+                hours={this.timeStamp(1632991411).hh}
+                minutes={this.timeStamp(1632991411).mm}
+                seconds={this.timeStamp(1632991411).ss}
+              />
+            </View>
+            <View className='right-btn return notice-border'><Image className='icons' mode='aspectFit' src={`${APP_IMAGE_CDN}/notice_b.png`} />查看预告</View>
+          </View>
+        </View>
+        <View className='liveroom-page-box'>
+          <View className='liveroom-page-left'>
+            <Image className='left-img' mode='widthFix' src={liveRoomList[0].cover_img}></Image>
+            <View className='left-state'>
+              <View className='lives return'><Image className='icons' mode='aspectFit' src={`${APP_IMAGE_CDN}/return_b.png`} /></View>
+              <View className='content'>
+                回放
+              </View>
+            </View>
+          </View>
+          <View className='liveroom-page-right'>
+            <View className='right-title'>科技布沙发现代轻奢直播名称最多显示两行…</View>
+            <View className='right-count'>
+              <View className='fs'>直播时长：</View>
+              <View className='fs'>4小时16分05秒</View>
+              </View>
+            <View className='right-btn return return-border'><Image className='icons' mode='aspectFit' src={`${APP_IMAGE_CDN}/return_b.png`} />查看回放</View>
+          </View>
+        </View>
+        <View className='liveroom-page-box'>
+          <View className='liveroom-page-left'>
+            <Image className='left-img' mode='widthFix' src={liveRoomList[0].cover_img}></Image>
+            <View className='left-state'>
+              <View className='lives return'><Image className='icons' mode='aspectFit' src={`${APP_IMAGE_CDN}/over_b.png`} /></View>
+              <View className='content'>
+                已结束
+              </View>
+            </View>
+          </View>
+          <View className='liveroom-page-right'>
+            <View className='right-title'>科技布沙发现代轻奢直播名称最多显示两行…</View>
+          </View>
+        </View>
+        {/* {liveRoomList.map(item => (
           <View style={{ position: 'relative' }} onClick={this.onLocation.bind(this, item)} key={item.roomid}>
             <Image className='liveroom-page-bck' mode='aspectFit' src={item.cover_img}></Image>
             <View className='liveroom-page-title'>{item.name}</View>
@@ -153,8 +228,8 @@ export default class LiveRoomList extends Component {
               </View>
             }
           </View>
-        ))
-      }
+        )) */}
+      {/* } */}
       {/* 加载更多 */}
       <LoadingMore isLoading={isLoading} isEnd={isEnd} isEmpty={isEmpty} />
       {/* 防止子内容无法支撑scroll-view下拉刷新 */}
