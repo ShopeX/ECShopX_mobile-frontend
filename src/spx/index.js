@@ -257,7 +257,7 @@ class Spx {
       const userInfo = await this.getMemberInfo();
       return userInfo;
     } else {
-      showToast("登录失败");
+      // showToast("登录失败");
     }
     // const { path, fullPath } = getCurrentRoute(ctx.$router);
     // const encodedRedirect = encodeURIComponent(fullPath);

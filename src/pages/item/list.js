@@ -586,6 +586,7 @@ export default class List extends Component {
             fixed='true'
           />
         }
+        
         {isNewGift ?
           (<View className='goods-list__toolbar1'>
             <View className='store' onClick={this.setStore.bind(this, true)}>

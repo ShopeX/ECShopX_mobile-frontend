@@ -118,13 +118,15 @@ export function pickBy (arr, keyMaps = {}) {
   const picker = (item) => {
     const ret = {}
 
-    Object.keys(keyMaps).forEach(key => {
+    Object.keys( keyMaps ).forEach( key => {
       const val = keyMaps[key]
 
-      if (isString(val)) {
-        ret[key] = _get(item, val)
-      } else if (isFunction(val)) {
-        ret[key] = val(item)
+      if ( isString( val ) ) {
+        ret[key] = _get( item, val )
+      } else if ( isFunction( val ) ) {
+        ret[key] = val( item )
+      } else if ( isObject( val ) ) {
+        ret[key] = _get(item, val.key) || val.default;
       } else {
         ret[key] = val
       }
@@ -269,7 +271,28 @@ export const browser = (() => {
       isAlipay: ua.match(/AlipayClient/i)
     }
   }
-})()
+} )()
+
+
+export const getBrowserEnv = () => {
+  const ua = navigator.userAgent;
+  console.log( `user-agent:`, ua );
+  return {
+    trident: ua.indexOf("Trident") > -1, //IE内核
+    presto: ua.indexOf("Presto") > -1, //opera内核
+    webKit: ua.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
+    gecko: ua.indexOf("Gecko") > -1 && ua.indexOf("KHTML") == -1, //火狐内核
+    mobile: !!ua.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+    ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+    android: ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1, //android终端
+    weixin: ua.match(/MicroMessenger/i),
+    qq: ua.match(/\sQQ/i) == " qq", //是否QQ
+    isWeapp:
+      (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) ||
+      global.__wxjs_environment === "miniprogram",
+    isAlipay: ua.match(/AlipayClient/i)
+  };
+}
 
 // 注入美洽客服插件
 export const meiqiaInit = () => {

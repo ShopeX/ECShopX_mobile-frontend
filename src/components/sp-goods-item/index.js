@@ -40,6 +40,14 @@ export default class SpGoodsItem extends Component {
     });
   };
 
+  handleClick = () => {
+    const { item_id, distributor_id } = this.props.info;
+    const url = `/pages/item/espier-detail?id=${item_id}&dtid=${distributor_id}`;
+    Taro.navigateTo({
+      url
+    });
+  }
+
   render() {
     const {
       info,
@@ -58,65 +66,64 @@ export default class SpGoodsItem extends Component {
     } = this.props;
     // console.log('this.props',this.props)
 
-    if (!info) {
+    if ( !info ) {
       return null;
     }
       
     const img = info.pics.length > 0 ? info.pics[0] : '';
 
-    let promotion_activity = null,
-      act_price = null;
-    // console.log("act_price",act_price)
-    // console.log("info.promotion_activity_tag",info.promotion_activity_tag)
-    if (info.promotion_activity_tag && info.promotion_activity_tag.length > 1) {
-      info.promotion_activity_tag.map(tag_item => {
-        if (
-          tag_item.tag_type === "single_group" ||
-          tag_item.tag_type === "normal" ||
-          tag_item.tag_type === "limited_time_sale"
-        ) {
-          promotion_activity = tag_item.tag_type;
-          act_price = tag_item.activity_price;
-          return;
-        }
-      });
-    } else if (
-      info.promotion_activity_tag &&
-      info.promotion_activity_tag.length === 1
-    ) {
-      promotion_activity = info.promotion_activity_tag[0].tag_type;
-      act_price = info.promotion_activity_tag[0].activity_price;
-    } else {
-      promotion_activity = null;
-      act_price = null;
-    }
+    // let promotion_activity = null,
+    //   act_price = null;
+    // if (info.promotion_activity_tag && info.promotion_activity_tag.length > 1) {
+    //   info.promotion_activity_tag.map(tag_item => {
+    //     if (
+    //       tag_item.tag_type === "single_group" ||
+    //       tag_item.tag_type === "normal" ||
+    //       tag_item.tag_type === "limited_time_sale"
+    //     ) {
+    //       promotion_activity = tag_item.tag_type;
+    //       act_price = tag_item.activity_price;
+    //       return;
+    //     }
+    //   });
+    // } else if (
+    //   info.promotion_activity_tag &&
+    //   info.promotion_activity_tag.length === 1
+    // ) {
+    //   promotion_activity = info.promotion_activity_tag[0].tag_type;
+    //   act_price = info.promotion_activity_tag[0].activity_price;
+    // } else {
+    //   promotion_activity = null;
+    //   act_price = null;
+    // }
 
-    act_price = (act_price / 100).toFixed(2);
-    let price = "",
-      marketPrice = "";
-    if (isObject(info.price)) {
-      price = info.price.total_price;
-    } else {
-      price = Boolean(+act_price)
-        ? act_price
-        : Boolean(+info.member_price)
-        ? info.member_price
-        : info.price;
-      //marketPrice = Boolean(+act_price) || Boolean(+info.member_price) ? info.price : info.market_price
-      marketPrice = info.market_price;
-    }
+    // act_price = (act_price / 100).toFixed(2);
+    // let price = "",
+    //   marketPrice = "";
+    // if (isObject(info.price)) {
+    //   price = info.price.total_price;
+    // } else {
+    //   price = Boolean(+act_price)
+    //     ? act_price
+    //     : Boolean(+info.member_price)
+    //     ? info.member_price
+    //     : info.price;
+    //   marketPrice = info.market_price;
+    // }
 
-    const isShow = info.store && info.store == 0;
+    // const isShow = info.store && info.store == 0;
 
     return (
-      <View className={classNames("sp-goods-item")}>
+      <View
+        className={classNames("sp-goods-item")}
+        onClick={this.handleClick.bind(this)}
+      >
         <View className="goods-item__hd">
           <SpImg
             img-class="order-item__img"
             src={img}
             mode="widthFix"
             width="300"
-            lazyLoad
           />
         </View>
         <View className="goods-item__bd">
@@ -134,7 +141,7 @@ export default class SpGoodsItem extends Component {
           )}
 
           {/* 促销活动标签 */}
-          {info.promotion_activity && (
+          {info.promotion_activity && info.promotion_activity.length > 0 && (
             <View className="promotions">
               {info.promotion_activity.map((item, index) => (
                 <Text className="promotion-tag" key={`promotion-tag__${index}`}>
@@ -158,8 +165,8 @@ export default class SpGoodsItem extends Component {
 
           {!info.is_point && (
             <View className="goods-price">
-              <SpPrice value={100}></SpPrice>
-              <SpPrice lineThrough value={200}></SpPrice>
+              <SpPrice value={info.price / 1000}></SpPrice>
+              <SpPrice lineThrough value={info.market_price / 1000}></SpPrice>
             </View>
           )}
         </View>

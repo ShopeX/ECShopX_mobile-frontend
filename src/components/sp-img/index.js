@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { Image } from '@tarojs/components'
-
+import { classNames } from '@/utils'
+import "./index.scss";
 export default class SpImg extends Component {
 
   static defaultProps = {
@@ -19,7 +20,7 @@ export default class SpImg extends Component {
     const {
       src,
       mode,
-      lazyLoad = true,
+      lazyLoad,
       onLoad,
       onError,
       width,
@@ -62,14 +63,14 @@ export default class SpImg extends Component {
     const imgClass = Taro.getEnv() !== 'WEB' ? 'img-class' : this.props['img-class']
 
     return (
-      <Image 
-        className={imgClass}
+      <Image
+        className={classNames(`sp-img`, imgClass)}
         src={url}
         mode={mode}
         onError={onError}
         onLoad={onLoad}
         lazyLoad={lazyLoad}
       />
-    )
+    );
   }
 }

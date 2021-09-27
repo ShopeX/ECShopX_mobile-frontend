@@ -3,7 +3,22 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, ScrollView, Swiper, SwiperItem, Image, Video, Canvas } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
-import { Loading, Price, FloatMenus, FloatMenuItem, SpHtmlContent, SpToast, NavBar, GoodsBuyPanel, SpCell, GoodsEvaluation, FloatMenuMeiQia, GoodsItem ,PointLine} from '@/components'
+import {
+  Loading,
+  Price,
+  FloatMenus,
+  FloatMenuItem,
+  SpHtmlContent,
+  SpToast,
+  SpNavBar,
+  GoodsBuyPanel,
+  SpCell,
+  GoodsEvaluation,
+  FloatMenuMeiQia,
+  GoodsItem,
+  PointLine,
+  SpRecommend
+} from "@/components";
 import api from '@/api'
 import req from '@/api/req'
 import { withPager, withBackToTop,withPointitem } from '@/hocs'
@@ -33,7 +48,7 @@ import './espier-detail.scss'
 @withPager
 @withBackToTop
 @withPointitem
-export default class Detail extends Component {
+export default class EspierDetail extends Component {
   constructor(props) {
     super(props);
 
@@ -502,23 +517,23 @@ export default class Detail extends Component {
 
     const { list, total_count: total } = await this.goodLikeList(query);
 
-    const nList = pickBy(list, {
-      img: "pics[0]",
-      item_id: "item_id",
-      title: "itemName",
-      point: "point",
-      distributor_id: "distributor_id",
-      promotion_activity_tag: "promotion_activity",
-      price: ({ price }) => {
-        return (price / 100).toFixed(2);
-      },
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-      desc: "brief"
-    });
+    // const nList = pickBy(list, {
+    //   img: "pics[0]",
+    //   item_id: "item_id",
+    //   title: "itemName",
+    //   point: "point",
+    //   distributor_id: "distributor_id",
+    //   promotion_activity_tag: "promotion_activity",
+    //   price: ({ price }) => {
+    //     return (price / 100).toFixed(2);
+    //   },
+    //   member_price: ({ member_price }) => (member_price / 100).toFixed(2),
+    //   market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+    //   desc: "brief"
+    // });
 
     this.setState({
-      likeList: [...this.state.likeList, ...nList]
+      likeList: [...this.state.likeList, ...list]
     });
 
     return {
@@ -1179,7 +1194,9 @@ export default class Detail extends Component {
         <SpNavBar title={info.item_name} leftIconType="chevron-left" fixed />
 
         <ScrollView
-          className={`goods-detail__wrap ${isNewGift ? 'goods-detail__bottom' : null}`}
+          className={`goods-detail__wrap ${
+            isNewGift ? "goods-detail__bottom" : null
+          }`}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
@@ -1302,7 +1319,7 @@ export default class Detail extends Component {
               <View className="goods-title__wrap">
                 <Text className="goods-title">{info.item_name}</Text>
                 <Text className="goods-title__desc">{info.brief}</Text>
-              </View> 
+              </View>
               {!isNewGift && !isWeixin && !this.isPointitem() && !isAlipay && (
                 <View
                   className="goods-share__wrap"
@@ -1562,7 +1579,10 @@ export default class Detail extends Component {
             </View>
           )}
 
-          {likeList.length > 0 && showLikeList ? (
+          {/* 猜你喜欢 */}
+          {likeList.length && showLikeList && <SpRecommend info={likeList} />}
+
+          {/* {likeList.length > 0 && showLikeList ? (
             <View className="cart-list cart-list__disabled">
               <View className="cart-list__hd like__hd">
                 <Text className="cart-list__title">猜你喜欢</Text>
@@ -1582,7 +1602,7 @@ export default class Detail extends Component {
                 })}
               </View>
             </View>
-          ) : null}
+          ) : null} */}
         </ScrollView>
 
         <FloatMenus>
@@ -1591,9 +1611,9 @@ export default class Detail extends Component {
             icon="home1"
             onClick={this.handleBackHome.bind(this)}
           />
-          {isAlipay ? null :(meiqia.is_open === "true" ||
-          echat.is_open === "true" ||
-          Taro.getEnv() === "WEB") ? (
+          {isAlipay ? null : meiqia.is_open === "true" ||
+            echat.is_open === "true" ||
+            Taro.getEnv() === "WEB" ? (
             <FloatMenuMeiQia
               storeId={info.distributor_id}
               info={{ goodId: info.item_id, goodName: info.itemName }}
@@ -1614,69 +1634,73 @@ export default class Detail extends Component {
           />
         </FloatMenus>
 
-        {!isNewGift ?
-        (info.distributor_sale_status &&
-        hasStock &&
-        startActivity &&
-        !info.is_gift &&
-        !vipLimit ? (
-          <GoodsBuyToolbar
-            info={info}
-            type={marketing}
-            cartCount={cartCount}
-            onFavItem={this.handleMenuClick.bind(this, "fav")}
-            onClickAddCart={this.handleBuyBarClick.bind(this, "cart")}
-            onClickFastBuy={this.handleBuyBarClick.bind(this, "fastbuy")}
-            isPointitem={this.isPointitemGood()}
-          >
-            <View>{marketing}</View>
-          </GoodsBuyToolbar>
-        ) : (
-          <GoodsBuyToolbar
-            info={info}
-            customRender
-            cartCount={cartCount}
-            type={marketing}
-            onFavItem={this.handleMenuClick.bind(this, "fav")}
-            isPointitem={this.isPointitemGood()}
-          >
-            <View
-              className="goods-buy-toolbar__btns"
-              style="width: 60%; text-align: center"
+        {!isNewGift ? (
+          info.distributor_sale_status &&
+          hasStock &&
+          startActivity &&
+          !info.is_gift &&
+          !vipLimit ? (
+            <GoodsBuyToolbar
+              info={info}
+              type={marketing}
+              cartCount={cartCount}
+              onFavItem={this.handleMenuClick.bind(this, "fav")}
+              onClickAddCart={this.handleBuyBarClick.bind(this, "cart")}
+              onClickFastBuy={this.handleBuyBarClick.bind(this, "fastbuy")}
+              isPointitem={this.isPointitemGood()}
             >
-              {!startActivity || info.is_gift || vipLimit ? (
-                <View className="arrivalNotice noNotice limit">
-                  {info.is_gift ? "赠品不可购买" : ""}
-                  {!startActivity ? "活动即将开始" : ""}
-                  {vipLimit ? "仅限特定会员购买" : ""}
-                </View>
-              ) : (
-                <View
-                  style={`background: ${
-                    (this.isPointitemGood()||isAlipay)
-                      ? "grey"
-                      : !isSubscribeGoods
-                      ? colors.data[0].primary
-                      : "inherit"
-                  }`}
-                  className={`arrivalNotice ${isSubscribeGoods &&
-                    "noNotice"} ${this.isPointitemGood() && "good_disabled"}`}
-                  onClick={this.handleSubscription.bind(this)}
-                >
-                  {this.isPointitemGood()
-                    ? "已兑完"
-                    : isSubscribeGoods
-                    ? "已订阅到货通知"
-                    : isAlipay
-                    ? "暂无可售"
-                    :"到货通知"}
-                </View>
-              )}
-            </View>
-          </GoodsBuyToolbar>
-        )) : (
-          <View className='btn-new-gift'>
-            <View className='btn-content' onClick={this.handleBuyExchange.bind(this)}>
+              <View>{marketing}</View>
+            </GoodsBuyToolbar>
+          ) : (
+            <GoodsBuyToolbar
+              info={info}
+              customRender
+              cartCount={cartCount}
+              type={marketing}
+              onFavItem={this.handleMenuClick.bind(this, "fav")}
+              isPointitem={this.isPointitemGood()}
+            >
+              <View
+                className="goods-buy-toolbar__btns"
+                style="width: 60%; text-align: center"
+              >
+                {!startActivity || info.is_gift || vipLimit ? (
+                  <View className="arrivalNotice noNotice limit">
+                    {info.is_gift ? "赠品不可购买" : ""}
+                    {!startActivity ? "活动即将开始" : ""}
+                    {vipLimit ? "仅限特定会员购买" : ""}
+                  </View>
+                ) : (
+                  <View
+                    style={`background: ${
+                      this.isPointitemGood() || isAlipay
+                        ? "grey"
+                        : !isSubscribeGoods
+                        ? colors.data[0].primary
+                        : "inherit"
+                    }`}
+                    className={`arrivalNotice ${isSubscribeGoods &&
+                      "noNotice"} ${this.isPointitemGood() && "good_disabled"}`}
+                    onClick={this.handleSubscription.bind(this)}
+                  >
+                    {this.isPointitemGood()
+                      ? "已兑完"
+                      : isSubscribeGoods
+                      ? "已订阅到货通知"
+                      : isAlipay
+                      ? "暂无可售"
+                      : "到货通知"}
+                  </View>
+                )}
+              </View>
+            </GoodsBuyToolbar>
+          )
+        ) : (
+          <View className="btn-new-gift">
+            <View
+              className="btn-content"
+              onClick={this.handleBuyExchange.bind(this)}
+            >
               立即兑换
             </View>
           </View>

@@ -4,6 +4,7 @@
 
     }
     &__bd {
+      border-radius: 0;
       .goods-title {
         font-size: 28px;
         color: #666;
@@ -18,9 +19,12 @@
         display: flex;
         .promotion-tag {
           flex-wrap: wrap;
-          background-color: var(--color-primary);
-          color: #fff;
-          font-size: 24px;
+          border: 1PX solid var(--color-primary);
+          color: var(--color-primary);
+          font-size: 22px;
+          border-radius: 4px;
+          padding: 0 2px;
+          line-height: 26px;
         }
       }
     }

@@ -1,12 +1,4 @@
-@import '../../style/imports';
-
 .page-goods-detail {
-  /*  #ifdef  h5  */  
-  padding-top: $navigate-height-h5;
-  .swiper-container {
-    height: 100%;
-  }
-  /*  #endif  */
   .wgts-wrap__cont {
     padding: $edge-size;
     box-sizing: border-box;

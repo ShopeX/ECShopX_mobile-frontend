@@ -1,21 +1,21 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Text, Image } from "@tarojs/components";
-import { SpImg } from "@/components";
-import { classNames } from "@/utils";
+import { SpGoodsItem } from "@/components";
+import { pickBy, classNames } from "@/utils";
 import { linkPage } from "./helper";
 import { Tracker } from "@/service";
 import { getDistributorId } from "@/utils/helper";
-import { withLoadMore } from '@/hocs';
+import { withLoadMore } from "@/hocs";
 import "./goods-grid.scss";
 
-@withLoadMore
+// @withLoadMore
 export default class WgtGoodsGrid extends Component {
   static options = {
     addGlobalClass: true
   };
 
   componentDidMount() {
-    this.startTrack(); 
+    this.startTrack();
   }
 
   navigateTo(url, item) {
@@ -28,7 +28,7 @@ export default class WgtGoodsGrid extends Component {
 
   handleClickMore = () => {
     const { moreLink } = this.props.info.config;
-    if (moreLink) {
+    if (moreLink.linkPage) {
       linkPage(moreLink.linkPage, moreLink);
     } else {
       this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id || ""}`);
@@ -40,7 +40,7 @@ export default class WgtGoodsGrid extends Component {
     const observer = Taro.createIntersectionObserver({
       observeAll: true
     });
-    observer.relativeToViewport({ bottom: 0 }).observe(".grid-item", res => { 
+    observer.relativeToViewport({ bottom: 0 }).observe(".grid-item", res => {
       if (res.intersectionRatio > 0) {
         const { id } = res.dataset;
         const { data } = this.state.info;
@@ -50,7 +50,7 @@ export default class WgtGoodsGrid extends Component {
     });
 
     this.observe = observer;
-  }  
+  }
 
   endTrack() {
     if (this.observer) {
@@ -63,7 +63,7 @@ export default class WgtGoodsGrid extends Component {
     const { distributor_id } = item;
     const dtid = distributor_id ? distributor_id : getDistributorId();
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`,
+      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`
     });
     if (item) {
       // 商品卡触发
@@ -72,22 +72,36 @@ export default class WgtGoodsGrid extends Component {
   }
 
   render() {
-    const { info, dis_id = '' } = this.props    
+    const { info, dis_id = "" } = this.props;
     if (!info) {
       return null;
     }
 
     const { base, data, config } = info;
-    /*let listData = []
-    data.map(item => {
-      listData.push({
-        title: item.title,
-        desc: item.desc,
-        img: item.imgUrl,
-        is_fav: item.is_fav,
-        item_id: item.goodsId,
-      })
-    })*/
+    const goods = pickBy(data, {
+      origincountry_img_url: {
+        key: "origincountry_img_url",
+        default: []
+      },
+      pics: ({ imgUrl }) => {
+        return [imgUrl];
+      },
+      itemName: "title",
+      brief: "brief",
+      promotion_activity: "promotion_activity",
+      is_point: "is_point",
+      price: ({ act_price, member_price, price }) => {
+        if (act_price > 0) {
+          return act_price;
+        } else if (member_price > 0) {
+          return member_price;
+        } else {
+          return price;
+        }
+      },
+      market_price: "market_price"
+    });
+    console.log("goods-grid:", goods);
 
     return (
       <View className={`wgt wgt-grid ${base.padded ? "wgt__padded" : null}`}>
@@ -100,110 +114,24 @@ export default class WgtGoodsGrid extends Component {
             <View className="wgt__more" onClick={this.handleClickMore}>
               <View className="three-dot"></View>
             </View>
-            {/* <View
-              className='wgt__goods__more'
-              onClick={this.navigateTo.bind(this, `/pages/item/list?dis_id=${dis_id}`)}
-            >
-              <View className='all-goods'>全部商品{dis_id}</View>
-            </View> */}
           </View>
         )}
         <View className="wgt__body with-padding">
           <View className="grid-goods out-padding grid-goods__type-grid">
-            {data.map((item, idx) => {
-              const price = (
-                (item.act_price
-                  ? item.act_price
-                  : item.member_price
-                  ? item.member_price
-                  : item.price) / 100
-              ).toFixed(2);
-              //const marketPrice = ((item.act_price ? item.price : item.member_price ? item.price : item.market_price)/100).toFixed(2)
-              const marketPrice = (item.market_price / 100).toFixed(2);
-              return (
-                <View
-                  key={`${idx}1`}
-                  className={classNames("grid-item", {
-                    "grid-item-three": config.style == "grids",
-                    "lastItem":idx===data.length-1
-                  })}
-                  onClick={() => this.handleClickItem(item)}
-                  data-id={item.goodsId}
-                >
-                  <View className="goods-wrap">
-                    <View className="thumbnail">
-                      <SpImg
-                        img-class="goods-img"
-                        src={item.imgUrl}
-                        mode="aspectFill"
-                        width="400"
-                        lazyLoad
-                      />
-                    </View>
-                    <View className="caption">
-                      {config.brand && item.brand && (
-                        <SpImg
-                          img-class="goods-brand"
-                          src={item.brand}
-                          mode="aspectFill"
-                          width="300"
-                        />
-                      )}
-                      {item.type === "1" && (
-                        <View className="nationalInfo">
-                          <Image
-                            className="nationalFlag"
-                            src={item.origincountry_img_url}
-                            mode="aspectFill"
-                            lazyLoad
-                          />
-                          <Text className="nationalTitle">
-                            {item.origincountry_name}
-                          </Text>
-                        </View>
-                      )}
-                      {item.promotionActivity && item.promotionActivity.length > 0 && <View className="activity-label">
-                          {item.promotionActivity.map((s, index) => (
-                            <Text key={index} className="text">
-                              {s.tag_type == 'single_group' ? '团购' : ''}
-                              {s.tag_type == 'full_minus' ? '满减' : ''}
-                              {s.tag_type == 'full_discount' ? '满折' : ''}
-                              {s.tag_type == 'full_gift' ? '满赠' : ''}
-                              {s.tag_type == 'normal' ? '秒杀' : ''}
-                              {s.tag_type == 'limited_time_sale' ? '限时特惠' : ''}
-                              {s.tag_type == 'plus_price_buy' ? '换购' : ''}
-                            </Text>
-                          ))}</View>}
-                      <View
-                        className={`goods-title ${
-                          !config.brand || !item.brand ? "no-brand" : ""
-                        }`}
-                      >
-                        {item.title}
-                      </View>
-                      {item.brief && (
-                        <View
-                          className={`goods-brief ${
-                            !config.brand || !item.brand ? "no-brand" : ""
-                          }`}
-                        >
-                          {item.brief}
-                        </View>
-                      )}
-                      {config.showPrice && (
-                        <View className="goods-price">
-                          <Text className="cur">¥</Text>
-                          {price}
-                          {marketPrice && marketPrice != 0 && (
-                            <Text className="market-price">{marketPrice}</Text>
-                          )}
-                        </View>
-                      )}
-                    </View>
-                  </View>
-                </View>
-              );
-            })}
+            {goods.map((item, idx) => (
+              <View className="goods-item-wrap" key={`goods-item-wrap__${idx}`}>
+                <SpGoodsItem info={item} />
+              </View>
+              // const price = (
+              //   (item.act_price
+              //     ? item.act_price
+              //     : item.member_price
+              //     ? item.member_price
+              //     : item.price) / 100
+              // ).toFixed(2);
+              // const marketPrice = (item.market_price / 100).toFixed(2);
+              // return
+            ))}
           </View>
         </View>
       </View>

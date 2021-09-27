@@ -54,6 +54,7 @@ import SpRecommend from "./sp-recommend";
 import SpGoodsItem from "./sp-goods-item";
 import SpPoint from "./sp-point";
 import SpPrice from "./sp-price";
+export SpDefault from "./sp-default";
 
 import SpImgPicker from "./img-picker";
 
@@ -74,5 +75,6 @@ export {
   SpGoodsItem,
   SpPoint,
   SpPrice,
+  SpDefault,
   SpImgPicker
 };

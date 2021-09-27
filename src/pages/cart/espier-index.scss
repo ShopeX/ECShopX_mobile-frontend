@@ -1,5 +1,4 @@
 .page-cart-index {
-
   .custom_botton_wrapper{
     display: inline-block;
     .btn-rand{
@@ -12,8 +11,8 @@
     align-items: center;
     justify-content: center;
     position: fixed;
-    left: 0;
     top: 0;
+    left: 0;
     right: 0;
     height: 70px;
     line-height: 70px;
@@ -33,6 +32,35 @@
       font-size: 24px;
     }
   }
+  
+  .scroll-view {
+    @include page-scroll(0, $tabbar-height);
+  }
+
+  &.has-navbar {
+    .scroll-view {
+      @include page-scroll($navigate-height-h5, $tabbar-height);
+    }
+    .login-header { 
+      top: $navigate-height-h5
+    }
+  }
+
+  &.has-loginbar {
+    .scroll-view {
+      @include page-scroll(70px, $tabbar-height);
+    }
+  }
+
+
+  &.has-navbar.has-loginbar {
+    .scroll-view {
+      @include page-scroll($navigate-height-h5 + 70px, $tabbar-height);
+    }
+  }
+
+
+  
   .goods-list {
     margin: 0 -10px;
     &__type-grid {
@@ -256,20 +284,7 @@
   .at-action-sheet__container {
     z-index: $z-index-modal;
   }
-  &.is-drug {
-    /*  #ifdef  h5  */    
-    padding-top: $navigate-height-h5;
-    /*  #endif  */    
-    .cart-list__scroll {
-      @include page-scroll($navigate-height, $toolbar-height);
-      /*  #ifdef  h5  */  
-      @include page-scroll($navigate-height-h5, $toolbar-height);      
-      /*  #endif  */
-    }
-    .cart-toolbar {
-      bottom: 0;
-    }
-  }
+
   .cart-toolbar {
     // bottom: $tabbar-height;
     position: initial;

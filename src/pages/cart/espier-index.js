@@ -10,9 +10,21 @@ import {
   Price,
   SpNavBar,
   GoodsItem,
-  SpLogin
+  SpRecommend,
+  SpLogin,
+  SpDefault
 } from "@/components";
-import { log, navigateTo, pickBy, classNames,showLoading,hideLoading } from '@/utils'
+import {
+  log,
+  navigateTo,
+  pickBy,
+  classNames,
+  showLoading,
+  hideLoading,
+  getThemeStyle,
+  styleNames,
+  getBrowserEnv
+} from "@/utils";
 import debounce from 'lodash/debounce'
 import api from '@/api'
 import S from '@/spx'
@@ -147,20 +159,8 @@ export default class CartIndex extends Component {
       pageSize
     };
     const { list, total_count: total } = await api.cart.likeList(query);
-    const nList = pickBy(list, {
-      img: "pics[0]",
-      item_id: "item_id",
-      promotion_activity_tag: "promotion_activity",
-      distributor_id: "distributor_id",
-      price: ({ price }) => (price / 100).toFixed(2),
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-      title: "itemName",
-      desc: "brief"
-    });
-
     this.setState({
-      likeList: [...this.state.likeList, ...nList]
+      likeList: [...this.state.likeList, ...list]
     });
 
     if (!S.getAuthToken()) {
@@ -602,10 +602,14 @@ export default class CartIndex extends Component {
     const isDrug = type === "drug";
     const isEmpty = !list.length;
     return (
-      <View className={classNames("page-cart-index", isDrug && "is-drug")}>
-        {/* {isDrug && (
-          <SpNavBar title="购物车" leftIconType="chevron-left" fixed="true" />
-        )} */}
+      <View
+        className={classNames("page-cart-index", {
+          "has-navbar": process.env.TARO_ENV == "h5" && !getBrowserEnv().weixin,
+          "has-loginbar": !S.getAuthToken()
+        })}
+        style={styleNames(getThemeStyle())}
+      >
+        <SpNavBar title="购物车" leftIconType="chevron-left" fixed />
 
         {!S.getAuthToken() && (
           <View className="login-header">
@@ -622,31 +626,10 @@ export default class CartIndex extends Component {
         )}
 
         <ScrollView
-          className={`${isEmpty ? "hidden-scroll" : "cart-list__scroll"}`}
+          className={classNames(`scroll-view`)}
           onScrollToLower={this.nextPage}
           scrollY
         >
-          {
-            // !isEmpty && (
-            //   <View className='cart-list__actions'>
-            //     <Text
-            //       clasName='btn-cart-mode'
-            //       onClick={this.toggleCartMode}
-            //     >{cartMode === 'edit' ? '完成' : '编辑'}</Text>
-            //   </View>
-            // )
-          }
-          {/* {remindInfo.is_open && (
-            <View
-              className={`${!S.getAuthToken() && "paddingTop"}`}
-              style={`background: ${colors.data[0].primary}`}
-            >
-              <AtNoticebar marquee icon="volume-plus" className="notice" single>
-                {remindInfo.remind_content}
-              </AtNoticebar>
-            </View>
-          )} */}
-
           {crossborder_show && (
             <View className="changeCross">
               <View className="content">
@@ -838,7 +821,6 @@ export default class CartIndex extends Component {
                         );
                       })}
 
-                    <View></View>
                     <View
                       className={`toolbar cart-toolbar ${isEmpty && "hidden"}`}
                     >
@@ -906,24 +888,38 @@ export default class CartIndex extends Component {
               );
             })}
 
-            {(!groups.length || this.state.error) && (
+            <SpDefault icon message="快去给我挑点宝贝吧">
+              <AtButton
+                type="primary"
+                onClick={this.navigateTo.bind(
+                  this,
+                  process.env.APP_HOME_PAGE,
+                  true
+                )}
+              >
+                随便逛逛
+              </AtButton>
+            </SpDefault>
+
+            {/* {(!groups.length || this.state.error) && (
               <View style={{ textAlign: "center" }}>
                 <View style="margin-bottom: 20px">
                   <SpNote img="cart_empty.png">快去给我挑点宝贝吧~</SpNote>
                 </View>
-                <View
-                  className="custom_botton_wrapper"
-                  style={`background: ${colors.data[0].primary};border-color:${colors.data[0].primary}`}
-                >
+                <View className="btn-go">
                   <AtButton
-                    className="btn-rand inherit"
-                    onClick={this.navigateTo.bind(this, process.env.APP_HOME_PAGE, true)}
+                    type="primary"
+                    onClick={this.navigateTo.bind(
+                      this,
+                      process.env.APP_HOME_PAGE,
+                      true
+                    )}
                   >
                     随便逛逛
                   </AtButton>
                 </View>
               </View>
-            )}
+            )} */}
           </View>
 
           {invalidList.length > 0 && (
@@ -949,34 +945,9 @@ export default class CartIndex extends Component {
             </View>
           )}
 
-          {!isDrug && likeList.length && showLikeList ? (
-            <View className="cart-list cart-list__disabled">
-              <View className="cart-list__hd like__hd">
-                <Text
-                  className="cart-list__title"
-                  style={{
-                    color: colors.data[0].primary,
-                    borderColor: colors.data[0].primary
-                  }}
-                >
-                  猜你喜欢
-                </Text>
-              </View>
-              <View className="goods-list goods-list__type-grid">
-                {likeList.map(item => {
-                  return (
-                    <View className="goods-list__item" key={item.item_id}>
-                      <GoodsItem
-                        key={item.item_id}
-                        info={item}
-                        onClick={this.handleClickItem.bind(this, item)}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-            </View>
-          ) : null}
+          {/* 猜你喜欢 */}
+          {likeList.length && showLikeList && <SpRecommend info={likeList} />}
+
           {page.isLoading ? <Loading>正在加载...</Loading> : null}
         </ScrollView>
         {isPathQrcode && (

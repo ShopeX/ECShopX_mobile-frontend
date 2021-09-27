@@ -1,13 +1,3 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/pages/home/wgts/helper.js
- * @Date: 2020-04-30 17:12:45
- * @LastEditors: Arvin
- * @LastEditTime: 2021-02-01 14:00:21
- */
 import Taro from '@tarojs/taro'
 // import { WGTS_NAV_MAP } from '@/consts'
 
