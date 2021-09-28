@@ -1680,7 +1680,6 @@ export default class CartCheckout extends Component {
         : (coupon.value && coupon.value.title) || "";
     //const isBtnDisabled = !address
     const isBtnDisabled = express ? !address : false; 
-
     return (
       <View className="page-checkout">
         {showAddressPicker === false ? (

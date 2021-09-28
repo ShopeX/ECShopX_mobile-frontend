@@ -49,8 +49,9 @@ export default class TabBar extends Component {
     addGlobalClass: true
   }
 
-  initTabbarData () {
+  initTabbarData () { 
     const { tabBar } = this.props
+    console.log("--initTabbarData---",tabBar)
     let list = []
 
     if (tabBar) {
@@ -106,9 +107,13 @@ export default class TabBar extends Component {
   }
 
   updateCurTab () {
+   
     this.fetchCart()
     const { tabList, localCurrent } = this.state
     const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+
+    console.log("--updateCurTab--",localCurrent,fullPath,tabList)
+    
     if (tabList.length == 0) {
       return
     }
@@ -178,7 +183,7 @@ export default class TabBar extends Component {
       return <View></View>
     }
 
-    console.log("-----tabList----",tabList)
+    console.log("-----tabList----",tabList,localCurrent)
 
     return (
       <AtTabBar

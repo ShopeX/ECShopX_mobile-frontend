@@ -44,7 +44,7 @@ export default class PaymentPicker extends Component {
     addGlobalClass: true
   }
   async fatch() {
-    let params = {};
+    let params = {}
     const distributor_id = Taro.getStorageSync("payment_list_dtid");
     if (distributor_id) {
       params = {
@@ -57,7 +57,10 @@ export default class PaymentPicker extends Component {
     }, () => {
       if ( res[0] ) {
         console.log( 111 );
-        const channel = res[0].pay_channel || "";
+        let channel = "";
+        if ( typeof res[0].pay_channel != "undefined") {
+          channel = res[0].pay_channel;
+        }
         this.handlePaymentChange( res[0].pay_type_code, channel );
         this.handleChange( res[0].pay_type_code )
         this.props.onInitDefaultPayType( res[0].pay_type_code, channel );
@@ -83,8 +86,11 @@ export default class PaymentPicker extends Component {
   handleChange = type => {
     const { typeList } = this.state
     const payItem = typeList.find( item => item.pay_type_code == type );
-    const channel = payItem.pay_channel || "";
-    this.props.onChange(type, channel);
+    let channel = ''
+    if ( payItem && typeof payItem.pay_channel != 'undefined' ) {
+      channel = payItem.pay_channel;
+    }
+    this.props.onChange( type, channel );
   };
 
   render() {

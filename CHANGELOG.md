@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.13](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.0.10...v4.0.13) (2021-09-28)
+
+
+### Bug Fixes
+
+* 会员储值 ([2af100e](https://git.ishopex.cn/onex/ecshopx-vshop/commit/2af100ec1b9505154fcef4c2b912e470a37849b3))
+* 分享配置 ([8130ad3](https://git.ishopex.cn/onex/ecshopx-vshop/commit/8130ad373e31e53fcdb7b0b31900a45d3ec51997))
+
 ### [4.0.12](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.0.10...v4.0.12) (2021-09-22)
 
 

@@ -17,7 +17,7 @@ import {
   navigateTo,
   getThemeStyle,
   classNames,
-  isAlipay,
+  showModal,
   isWeixin,
   platformTemplateName,
   transformPlatformUrl
@@ -238,11 +238,11 @@ export default class MemberIndex extends Component {
       });
       return;
     }
-    const { confirm } = await Taro.showModal({
+    const { confirm } = await showModal({
       title: "邀请推广",
       content: "确定申请成为推广员？",
       showCancel: true,
-      cancel: "取消",
+      cancel: "取消", 
       confirmText: "确认",
       confirmColor: "#0b4137"
     });
@@ -585,7 +585,7 @@ export default class MemberIndex extends Component {
 
         {
           <View className="page-member-section">
-            {memberData.is_open_popularize && (
+            {memberData.is_open_popularize && isWeixin && (
               <SpCell
                 title={!memberData.is_promoter ? "我要推广" : "推广管理"}
                 isLink
