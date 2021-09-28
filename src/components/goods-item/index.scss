@@ -47,6 +47,12 @@ $item-img-size: 240px !default;
         padding-top: 100%;
         content: ""
       }
+      /*  #ifdef  alipay  */
+      .img-class{
+        width: 100%;
+        height: 100%;
+      }
+      /*  #endif  */
     }
   }
   &__caption {

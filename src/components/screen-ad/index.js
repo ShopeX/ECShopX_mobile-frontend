@@ -132,7 +132,7 @@ export default class ScreenAd extends Component {
           {isJump ? `跳过${downTime}s` : `${downTime}s`}
         </View>
         {
-          !isVideo ? <Image className='adImg' src={url} />
+          !isVideo ? <Image className='adImg' mode='widthFix' src={url} />
           : <Video
             autoplay
             loop
