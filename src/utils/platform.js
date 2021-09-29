@@ -27,6 +27,11 @@ export const showLoading = isWeixin ? Taro.showLoading : my.showLoading;
 
 export const hideLoading = isWeixin ? Taro.hideLoading : my.hideLoading;
 
+export const showModal=(params)=>Taro.showModal({
+    ...params,
+    cancelText:params.cancel||params.cancelText
+})
+
 //平台支付
 export async function payPlatform(order = {}) {
     let payRes;

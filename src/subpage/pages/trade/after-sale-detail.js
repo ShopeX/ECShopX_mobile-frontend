@@ -3,7 +3,7 @@ import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpToast, NavBar } from '@/components'
-import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute } from '@/utils'
+import { log, pickBy, formatTime, resolveOrderStatus, copyText, getCurrentRoute,showLoading,hideLoading } from '@/utils'
 import { Tracker } from "@/service";
 import api from '@/api'
 import S from '@/spx'
@@ -509,7 +509,7 @@ export default class TradeDetail extends Component {
 
   // 发送验证码
   sendCode = async () => {
-    Taro.showLoading({
+    showLoading({
       title: '发送中',
       mask: true
     })

@@ -126,26 +126,22 @@ export default class SpLogin extends Component {
   }
 
   alipayBindPhone = async (e) => { 
-
+    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
+    console.log("--alipayBindPhone--",extConfig)
     my.getPhoneNumber({
       protocols: {
         // 小程序模板所属的三方应用appId        
-        isvAppId: '2021002170619146'  
+        isvAppId:extConfig.ali_isvid
       },
       success:async  (res) => {
         const encryptedData = res.response;
-
         const { authCode } = await my.getAuthCode({ scopes: ['auth_base'] }); 
-
         const params = {
           encryptedData,
           code: authCode
         }
-        
         this.setSalespersonId(params);
-
         const { token } = await api.alipay.newlogin(params);
-
         this.afterNewLogin({ token, work_userid: '' });
       },
       fail: (res) => {

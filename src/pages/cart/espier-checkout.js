@@ -116,11 +116,11 @@ export default class CartCheckout extends Component {
         coupon_discount: "",
         point: "",
         point_fee: "",
-        freight_type:""
+        freight_type: ""
       },
       // 默认支付方式
-      defalutPaytype: 'wxpay',
-      payType: '',
+      defalutPaytype: "wxpay",
+      payType: "",
       disabledPayment: null,
       isPaymentOpend: false,
       isDrugInfoOpend: false,
@@ -144,8 +144,9 @@ export default class CartCheckout extends Component {
       isPackageOpen: false,
       isNeedPackage: false,
       pick: {},
-      isOpenStore: null
-    }
+      isOpenStore: null,
+      channel: ''
+    };
 
     // 路由参数缓存
     this.routerParams = {}
@@ -644,6 +645,7 @@ export default class CartCheckout extends Component {
       params.bargain_id = bargain_id;
     }
     this.params = params;
+    Taro.setStorageSync("payment_list_dtid", params.distributor_id);
     return _cloneDeep({
       ...params,
       items: []
@@ -1101,8 +1103,6 @@ export default class CartCheckout extends Component {
     if(isPointPay){
       params.pay_type='point';
     } 
-
-
     let info;
     if(this.isPointitemGood()){
       info = await api.trade.create({
@@ -1130,7 +1130,7 @@ export default class CartCheckout extends Component {
     // if (!this.state.address) {
     //   return S.toast('请选择地址')
     // }
-    const { payType, total, identity, isOpenStore, curStore, receiptType } = this.state;
+    const { payType, total, identity, isOpenStore, curStore, receiptType, channel } = this.state;
     const { type, goodType, cart_type } = this.$router.params;
 
     // const { payType, total,point_use } = this.state
@@ -1230,10 +1230,12 @@ export default class CartCheckout extends Component {
         //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
         // });
         return;
-      } else { 
+      } else {
         config = await this.createByType({
           ...params,
-          pay_type:this.state.total.freight_type==="point"?'point':payType
+          pay_type:
+            this.state.total.freight_type === "point" ? "point" : payType,
+          pay_channel: channel
         });
         order_id = isDrug ? config.order_id : config.trade_info.order_id;
       }   
@@ -1351,7 +1353,7 @@ export default class CartCheckout extends Component {
         }  
       }
 
-      if(!payRes.result){
+      if(!payRes.result && isAlipay){
         Taro.showToast({  
           title:"用户取消支付",
           icon: "none"
@@ -1490,10 +1492,11 @@ export default class CartCheckout extends Component {
     // })
   };
 
-  handlePaymentChange = async payType => { 
+  handlePaymentChange = async (payType, channel) => {
     this.setState({
       point_use: 0,
       payType,
+      channel,
       isPaymentOpend: false
     }, () => {
       this.calcOrder()
@@ -1501,10 +1504,11 @@ export default class CartCheckout extends Component {
   }
 
   // 设置初次paytype
-  initDefaultPaytype = (payType) => {
+  initDefaultPaytype = ( payType, channel ) => {
     this.setState({
-      defalutPaytype: payType
-    })
+      defalutPaytype: payType,
+      channel
+    });
   }
 
   handleLayoutClose = () => {
@@ -1676,7 +1680,6 @@ export default class CartCheckout extends Component {
         : (coupon.value && coupon.value.title) || "";
     //const isBtnDisabled = !address
     const isBtnDisabled = express ? !address : false; 
-
     return (
       <View className="page-checkout">
         {showAddressPicker === false ? (

@@ -33,7 +33,12 @@ export function linkPage (type, data) {
       url = '/pages/custom/custom-page?id=' + id
       break;
     case 'marketing':
-      url = '/marketing/pages/item/group-list'
+      if (id == "coupon_list") {
+        // url = "/marketing/pages/member/coupon";
+        url = "/others/pages/home/coupon-home";
+      } else if (id == "groups_list") {
+        url = "/marketing/pages/item/group-list";
+      }
       break;
     case 'seckill':
       url = '/marketing/pages/item/seckill-goods-list?seckill_id=' + id

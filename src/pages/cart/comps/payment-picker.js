@@ -17,7 +17,8 @@ export default class PaymentPicker extends Component {
   static defaultProps = {
     isOpened: false,
     type: "",
-    disabledPayment: null
+    disabledPayment: null,
+    onInitDefaultPayType: () => {}
   };
 
   constructor(props) {
@@ -42,18 +43,29 @@ export default class PaymentPicker extends Component {
   static options = {
     addGlobalClass: true
   }
-  async fatch () {
-    let res = await api.member.getTradePaymentList()
+  async fatch() {
+    let params = {}
+    const distributor_id = Taro.getStorageSync("payment_list_dtid");
+    if (distributor_id) {
+      params = {
+        distributor_id
+      };
+    }
+    let res = await api.member.getTradePaymentList(params);
     this.setState({
       typeList: res
     }, () => {
-      if (res[0]) {
-        console.log(111);
-        this.handlePaymentChange(res[0].pay_type_code)
-        this.handleChange(res[0].pay_type_code)
-        this.props.onInitDefaultPayType(res[0].pay_type_code)
+      if ( res[0] ) {
+        console.log( 111 );
+        let channel = "";
+        if ( typeof res[0].pay_channel != "undefined") {
+          channel = res[0].pay_channel;
+        }
+        this.handlePaymentChange( res[0].pay_type_code, channel );
+        this.handleChange( res[0].pay_type_code )
+        this.props.onInitDefaultPayType( res[0].pay_type_code, channel );
       }
-    })
+    });
   }
   handleCancel = () => {
     this.setState({
@@ -72,7 +84,13 @@ export default class PaymentPicker extends Component {
   };
 
   handleChange = type => {
-    this.props.onChange(type);
+    const { typeList } = this.state
+    const payItem = typeList.find( item => item.pay_type_code == type );
+    let channel = ''
+    if ( payItem && typeof payItem.pay_channel != 'undefined' ) {
+      channel = payItem.pay_channel;
+    }
+    this.props.onChange( type, channel );
   };
 
   render() {
@@ -92,10 +110,7 @@ export default class PaymentPicker extends Component {
         <View className="payment-picker">
           <View className="payment-picker__hd">
             <Text>支付方式</Text>
-            <View
-              className={closeClassName}
-              onClick={this.handleCancel}
-            ></View>
+            <View className={closeClassName} onClick={this.handleCancel}></View>
           </View>
           <View className="payment-picker__bd">
             {isShowPoint && (
@@ -108,7 +123,9 @@ export default class PaymentPicker extends Component {
                 onClick={this.handlePaymentChange.bind(this, "point")}
               >
                 <View className="payment-item__bd">
-                  <Text className="payment-item__title">{customName("积分支付")}</Text>
+                  <Text className="payment-item__title">
+                    {customName("积分支付")}
+                  </Text>
                   <Text className="payment-item__desc">
                     {disabledPayment && disabledPayment["point"]
                       ? disabledPayment["point"]

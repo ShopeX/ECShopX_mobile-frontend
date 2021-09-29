@@ -16,6 +16,7 @@ import throttle from 'lodash/throttle'
 import log from './log'
 import canvasExp from './canvasExp'
 import calCommonExp from './calCommonExp'
+import { isWeixin,isAlipay } from './platform';
 
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
 
@@ -61,7 +62,7 @@ export function normalizeArray (...args) {
 }
 
 export function getCurrentRoute (router) {
-  if (process.env.TARO_ENV === 'weapp') {
+  if (isWeixin || isAlipay) {
     // eslint-disable-next-line
     const page = getCurrentPages().pop()
     router = page.$component.$router

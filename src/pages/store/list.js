@@ -1,13 +1,3 @@
-/*
- * @Author: PrendsMoi
- * @GitHub: https://github.com/PrendsMoi
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/pages/store/list.js
- * @Date: 2021-05-06 17:14:15
- * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-05-20 14:49:49
- */
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Picker, Input, Image } from '@tarojs/components'
 import { NavBar, Loading, SpNote } from '@/components'
@@ -55,7 +45,8 @@ export default class StoreList extends Component {
       // 门店列表
       list: [],
       // 是否需要定位
-      is_open_wechatapp_location: 0
+      is_open_wechatapp_location: 0,
+      loading: false
     }
   }
 
@@ -97,11 +88,15 @@ export default class StoreList extends Component {
       query
     }, () => {
       this.resetPage(() => {
-        this.setState({
-          list: []
-        }, () => {
-          this.nextPage()
-        })
+        this.setState(
+          {
+            list: [],
+            loading: true
+          },
+          () => {
+            this.nextPage();
+          }
+        );
       })
     })
   }
@@ -184,8 +179,9 @@ export default class StoreList extends Component {
       query,
       list: [...this.state.list, ...list],
       deliveryInfo: defualt_address,
-      isRecommedList: is_recommend === 1
-    })
+      isRecommedList: is_recommend === 1,
+      loading: false
+    });
     return {
       total
     }
@@ -201,8 +197,11 @@ export default class StoreList extends Component {
   }
 
   // 获取定位信息
-  getLocation = async (e) => {
-    e.stopPropagation()
+  getLocation = async ( e ) => {
+    if ( this.state.loading ) {
+      return false  
+    }
+    e.stopPropagation();
     const { authSetting } = await Taro.getSetting()
     if (!authSetting['scope.userLocation']) {
       Taro.authorize({

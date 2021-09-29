@@ -77,7 +77,7 @@ export default class Deliver extends Component {
 
     return <View className='deliver'>
       {
-        (showSwitchDeliver && showSwitchDeliver.length > 0) && <View className='switch-tab'>
+        (showSwitchDeliver && showSwitchDeliver.length > 1) && <View className='switch-tab'>
         {
           showSwitchDeliver.map(item => <View
             key={item.type}
