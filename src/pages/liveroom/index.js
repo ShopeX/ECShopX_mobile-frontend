@@ -3,7 +3,6 @@ import { View, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from "taro-ui"
 import { debounce, calcTimer, classNames } from '@/utils'
 import api from '@/api'
-import LoadingMore from '@/boost/component/loadingMore'
 import { TabBar } from '@/components'
 
 import './index.scss'
@@ -14,13 +13,12 @@ export default class LiveRoomList extends Component {
     this.state = {
       scrollTop: 0,
       isRefresh: false,
-      liveRoomList: [],
-      isEnd: false,
+      liveList: [],
       isLoading: false,
-      isEmpty: false,
+      isEnding: false,
       param: {
         page: 1,
-        pageSize: 5
+        pageSize: 10
       }
     }
   }
@@ -37,19 +35,16 @@ export default class LiveRoomList extends Component {
   }
 
   getList = async (isRefrsh = false) => {
-    const { param, liveRoomList } = this.state
-    isRefrsh && Taro.showLoading({title: '正在加载...', mask: true})
+    const { param, liveList } = this.state
     await api.liveroom.getLiveRoomList({ page: param.page, page_size: param.pageSize }).then(res => {
       const { list, total_count } = res
-      const isEnd = param.page >= (total_count / param.pageSize)
+      let listlength = liveList.concat(list).length || list.length
       this.setState({
-        liveRoomList: isRefrsh ? list : [...liveRoomList, ...list],
+        liveList: isRefrsh ? liveList.concat(list) : list,
         isRefresh: false,
         isLoading: false,
-        isEnd,
-        isEmpty: list.length <= 0
+        isEnding: listlength == total_count
       })
-      isRefrsh && Taro.hideLoading()
     })
   }
 
@@ -69,16 +64,30 @@ export default class LiveRoomList extends Component {
       isRefresh: true,
       param
     })
+    this.getList()
+  }
+
+  // 滚动到底部
+  onScrollToLower = () => {
+    const { isLoading, param, isEnding } = this.state
+    if (isLoading || isEnding) return
+    this.setState({
+      param: {
+        page: ++param.page,
+        pageSize: param.pageSize
+      },
+      isLoading: true
+    })
     this.getList(true)
   }
 
   // 上拉加载
-  handleLoadMore = () => {
-    const { isLoading, isEnd, param, isEmpty } = this.state
-    if (isEnd || isLoading || isEmpty) return
+  onScrollToUpper = () => {
+    const { isLoading, param, isEnding } = this.state
+    if (isLoading || isEnding) return
     this.setState({
       param: {
-        page: ++param.page,
+        page: 1,
         pageSize: param.pageSize
       },
       isLoading: true
@@ -97,22 +106,26 @@ export default class LiveRoomList extends Component {
   }
 
   render () {
-    const { liveRoomList, scrollTop, isRefresh, isEnd, isLoading, isEmpty } = this.state
+    const { liveList, scrollTop, isRefresh, isLoading, isEnding } = this.state
     return (
       <View>
         <ScrollView
           className='liveroom-page'
           scrollY
-          scroll-anchoring
+          scrollAnchoring
           refresherEnabled
           scrollWithAnimation
+          lowerThreshold='100px'
+          upperThreshold='100px'
           scrollTop={scrollTop}
           onScroll={this.onScroll}
           refresherTriggered={isRefresh}
           onRefresherRefresh={this.handleRefresh}
-          onScrollToLower={this.handleLoadMore}
+          onScrollToUpper={this.onScrollToUpper}
+          onScrollToLower={this.onScrollToLower}
+          style={{ height: '100vh' }}
         >
-          {liveRoomList.map(item => {
+          {liveList.map(item => {
             let liveing = item.live_status == 101 // 直播中
             let notStarted = item.live_status == 102 // 未开始（预告）
             let playback = item.live_status == 103 && item.close_replay == 0 // 回放
@@ -203,10 +216,10 @@ export default class LiveRoomList extends Component {
             )
           })
         }
-        {/* 加载更多 */}
-        <LoadingMore isLoading={isLoading} isEnd={isEnd} isEmpty={isEmpty} />
-        {/* 防止子内容无法支撑scroll-view下拉刷新 */}
-        <View style='width:50rpx;height:50rpx;bottom:-50rpx;position:absolute;' />
+        <View style='text-align: center;margin: 10px;'>
+          { isLoading && <View>加载中...</View> }
+          { isEnding && <View>-- 我也是有底线的 --</View> }
+        </View>
       </ScrollView>
       <TabBar />
     </View>
