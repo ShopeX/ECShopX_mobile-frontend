@@ -762,6 +762,7 @@ export default class Home extends Component {
               onClick={this.handleClickShop.bind(this)}
             />
           )}
+          
           {advertList && advertList.length && !S.getAuthToken() && (
             <FloatMenuItem
               iconPrefixClass="icon"

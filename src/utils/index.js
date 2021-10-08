@@ -276,7 +276,7 @@ export const browser = (() => {
 
 export const getBrowserEnv = () => {
   const ua = navigator.userAgent;
-  console.log( `user-agent:`, ua );
+  // console.log( `user-agent:`, ua );
   return {
     trident: ua.indexOf("Trident") > -1, //IE内核
     presto: ua.indexOf("Presto") > -1, //opera内核

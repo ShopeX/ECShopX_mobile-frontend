@@ -185,30 +185,22 @@ export default class CouponHome extends Component {
     const { list, page } = this.state
 
     return (
-      <View className='coupon-list'>
-        <SpNavBar
-          title='优惠券列表'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+      <View className="coupon-list">
+        <SpNavBar title="优惠券列表" leftIconType="chevron-left" fixed="true" />
         {/* <View className='coupon-top'>
-          <Image className='banner' src={`${APP_IMAGE_CDN}/banner_coupon.png`} />
+          <Image className='banner' src={`${process.env.APP_IMAGE_CDN}/banner_coupon.png`} />
         </View> */}
         <ScrollView
           scrollY
-          className='home_coupon-list__scroll'
+          className="home_coupon-list__scroll"
           onScrollToLower={this.nextPage}
         >
-          <View className='coupon-list-ticket'>
-            {
-              list.map((item, idx) => {
-                let time = parseInt(new Date().getTime() / 1000)
-                return (
-                  <CouponItem
-                    info={item}
-                    key={item.card_id}
-                  >
-                    {/* <Text
+          <View className="coupon-list-ticket">
+            {list.map((item, idx) => {
+              let time = parseInt(new Date().getTime() / 1000);
+              return (
+                <CouponItem info={item} key={item.card_id}>
+                  {/* <Text
                       className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
                       onClick={this.handleGetCard.bind(this, item, idx)}
                     >
@@ -216,32 +208,35 @@ export default class CouponHome extends Component {
                       {item.getted === 2 ? '已领完' : ''}
                       {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
                     </Text> */}
-                    <View
-                      style={{fontSize: '22rpx'}}
-                      // className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
-                      // style={`background: ${colors.data[0].primary}`}
-                      onClick={this.handleClickNews.bind(this, item, idx)}
-                    >
-                      {item.getted === 1 ? '已领取' : ''}
-                      {item.getted === 2 ? '已领完' : ''}
-                      {(time > item.send_begin_time && item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
-                      {(item.card_type === 'new_gift' && time < item.send_begin_time) ? '未开始' : ''}
-                    </View>
-                  </CouponItem>
-                )
-              })
-            }
-            {
-              page.isLoading && <Loading>正在加载...</Loading>
-            }
-            {
-              !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>)
-            }
+                  <View
+                    style={{ fontSize: "22rpx" }}
+                    // className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
+                    // style={`background: ${colors.data[0].primary}`}
+                    onClick={this.handleClickNews.bind(this, item, idx)}
+                  >
+                    {item.getted === 1 ? "已领取" : ""}
+                    {item.getted === 2 ? "已领完" : ""}
+                    {time > item.send_begin_time &&
+                    item.getted !== 2 &&
+                    item.getted !== 1
+                      ? "立即领取"
+                      : ""}
+                    {item.card_type === "new_gift" &&
+                    time < item.send_begin_time
+                      ? "未开始"
+                      : ""}
+                  </View>
+                </CouponItem>
+              );
+            })}
+            {page.isLoading && <Loading>正在加载...</Loading>}
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img="trades_empty.png">赶快去添加吧~</SpNote>
+            )}
           </View>
         </ScrollView>
         <SpToast />
       </View>
-    )
+    );
   }
 }
