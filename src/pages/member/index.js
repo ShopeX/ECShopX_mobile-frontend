@@ -182,11 +182,9 @@ export default class MemberIndex extends Component {
       await api.pointitem.getPointitemSetting()
     ] );
 
-    console.log("--pointItemSetting--",pointItemSetting)
-
     this.setState({
-      bannerSetting: bannerSetting.list[0] ? bannerSetting.list[0].params.data :{},
-      menuSetting: menuSetting.list[0] ? menuSetting.list[0].params.data : {},
+      bannerSetting: bannerSetting.list[0].params.data,
+      menuSetting: menuSetting.list[0].params.data,
       score_menu_open: pointItemSetting.entrance.mobile_openstatus
     });
   }
@@ -238,11 +236,11 @@ export default class MemberIndex extends Component {
       });
       return;
     }
-    const { confirm } = await showModal({
+    const { confirm } = await Taro.showModal({
       title: "邀请推广",
       content: "确定申请成为推广员？",
       showCancel: true,
-      cancel: "取消", 
+      cancel: "取消",
       confirmText: "确认",
       confirmColor: "#0b4137"
     });
@@ -328,18 +326,21 @@ export default class MemberIndex extends Component {
       showPrivacy,
       showTimes
     } = this.state;
-    console.log("---score_menu_open---",score_menu_open)
     let memberInfo = null,
       vipgrade = null;
     if (memberData) {
       memberInfo = memberData.memberInfo;
       vipgrade = memberData.vipgrade;
     }
- 
+
     return (
       <View className="page-member-index" style={getThemeStyle()}>
         {S.getAuthToken() ? (
-          <View className={classNames("page-member-header")}>
+          <View
+            className={classNames("page-member-header", {
+              "no-card": !memberDiscount
+            })}
+          >
             <View className="user-info">
               <View
                 className="view-flex view-flex-middle"
@@ -452,6 +453,65 @@ export default class MemberIndex extends Component {
             </SpLogin>
           </View>
         )}
+
+        {(vipgrade.is_open || (!vipgrade.is_open && vipgrade.is_vip)) &&
+          memberDiscount !== "" && (
+            <View
+              className="member-card"
+              onClick={() => {
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, "/subpage/pages/vip/vipgrades")
+                );
+              }}
+            >
+              {vipgrade.is_open && !vipgrade.is_vip && (
+                <View className="vip-btn">
+                  <View className="vip-btn__title">
+                    开通VIP会员 <Text className="icon-arrowRight"></Text>
+                  </View>
+                  {memberDiscount && (
+                    <View className="vip-btn__desc">
+                      即可享受最高{memberDiscount}折会员优惠
+                    </View>
+                  )}
+                </View>
+              )}
+              {vipgrade.is_vip && (
+                <View className="grade-info">
+                  <View className="member-card-title">
+                    <Text className="vip-sign">
+                      {vipgrade.vip_type === "svip" ? (
+                        <Text>SVIP</Text>
+                      ) : (
+                        <Text>VIP</Text>
+                      )}
+                    </Text>
+                    会员卡
+                  </View>
+                  <View className="member-card-no">
+                    NO. {memberInfo.user_card_code}
+                  </View>
+                  <View className="member-card-period">
+                    {vipgrade.end_time} 到期
+                  </View>
+                </View>
+              )}
+              {vipgrade.is_vip && (
+                <Image
+                  className="member-info-bg"
+                  src={vipgrade.background_pic_url}
+                  mode="widthFix"
+                />
+              )}
+              {vipgrade.is_open && !vipgrade.is_vip && (
+                <Image
+                  className="member-info-bg"
+                  src={memberInfo.gradeInfo.background_pic_url}
+                  mode="widthFix"
+                />
+              )}
+            </View>
+          )}
 
         {/* {is_open_official_account === 1 && (
           <View className="page-member-section">
