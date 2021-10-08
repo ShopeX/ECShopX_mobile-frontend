@@ -241,15 +241,19 @@ export default class GoodsBuyPanel extends Component {
 
   handleImgClick = () => {
     const { curSku, info } = this.state;
-    if (!curSku) return;
-
-    const { item_spec } = curSku;
-    const { item_image_url, spec_image_url } = item_spec[0];
     const { pics } = info;
-
+    // if (!curSku) return;
     let imgs = [];
-    if (item_image_url.length || spec_image_url) {
-      imgs = item_image_url.length > 0 ? item_image_url : [spec_image_url];
+
+    if (curSku) {
+      const { item_spec } = curSku;
+      const { item_image_url, spec_image_url } = item_spec[0];
+  
+      if (item_image_url.length || spec_image_url) {
+        imgs = item_image_url.length > 0 ? item_image_url : [spec_image_url];
+      } else {
+        imgs = pics;
+      }
     } else {
       imgs = pics;
     }
