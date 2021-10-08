@@ -62,15 +62,17 @@ $tabBarHeight: 110px;
   }
   &-right {
     width: 50%;
-    padding: 25px;
-    position: relative;
+    padding: 20px 30px;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     .right-title {
       @include multi-ellipsis(2);
     }
     .right-count {
       color: #999;
       font-size: 24px;
-      margin-top: 20%;
       .fs {
         font-size: 24px;
       }
@@ -87,9 +89,6 @@ $tabBarHeight: 110px;
       }
     }
     .right-btn {
-      position: absolute;
-      right: 7%;
-      bottom: 7%;
       padding: 10px 30px;
       border-radius: 80px;
       display: flex;

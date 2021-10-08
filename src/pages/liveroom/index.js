@@ -217,8 +217,8 @@ export default class LiveRoomList extends Component {
           })
         }
         <View style='text-align: center;margin: 10px;'>
-          { isLoading && <View>加载中...</View> }
-          { isEnding && <View>-- 我也是有底线的 --</View> }
+          { isLoading && <View style={{ color: '#ccc', fontSize: '12px' }}>加载中...</View> }
+          { isEnding && <View style={{ color: '#ccc', fontSize: '12px' }}>-- 我也是有底线的 --</View> }
         </View>
       </ScrollView>
       <TabBar />
