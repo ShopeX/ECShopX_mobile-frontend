@@ -182,11 +182,9 @@ export default class MemberIndex extends Component {
       await api.pointitem.getPointitemSetting()
     ] );
 
-    console.log("--pointItemSetting--",pointItemSetting)
-
     this.setState({
-      bannerSetting: bannerSetting.list[0] ? bannerSetting.list[0].params.data :{},
-      menuSetting: menuSetting.list[0] ? menuSetting.list[0].params.data : {},
+      bannerSetting: bannerSetting.list[0].params.data,
+      menuSetting: menuSetting.list[0].params.data,
       score_menu_open: pointItemSetting.entrance.mobile_openstatus
     });
   }
@@ -238,11 +236,11 @@ export default class MemberIndex extends Component {
       });
       return;
     }
-    const { confirm } = await showModal({
+    const { confirm } = await Taro.showModal({
       title: "邀请推广",
       content: "确定申请成为推广员？",
       showCancel: true,
-      cancel: "取消", 
+      cancel: "取消",
       confirmText: "确认",
       confirmColor: "#0b4137"
     });
@@ -328,18 +326,21 @@ export default class MemberIndex extends Component {
       showPrivacy,
       showTimes
     } = this.state;
-    console.log("---score_menu_open---",score_menu_open)
     let memberInfo = null,
       vipgrade = null;
     if (memberData) {
       memberInfo = memberData.memberInfo;
       vipgrade = memberData.vipgrade;
     }
- 
+
     return (
       <View className="page-member-index" style={getThemeStyle()}>
         {S.getAuthToken() ? (
-          <View className={classNames("page-member-header")}>
+          <View
+            className={classNames("page-member-header", {
+              "no-card": !memberDiscount
+            })}
+          >
             <View className="user-info">
               <View
                 className="view-flex view-flex-middle"
@@ -452,6 +453,65 @@ export default class MemberIndex extends Component {
             </SpLogin>
           </View>
         )}
+
+        {(vipgrade.is_open || (!vipgrade.is_open && vipgrade.is_vip)) &&
+          memberDiscount !== "" && (
+            <View
+              className="member-card"
+              onClick={() => {
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, "/subpage/pages/vip/vipgrades")
+                );
+              }}
+            >
+              {vipgrade.is_open && !vipgrade.is_vip && (
+                <View className="vip-btn">
+                  <View className="vip-btn__title">
+                    开通VIP会员 <Text className="icon-arrowRight"></Text>
+                  </View>
+                  {memberDiscount && (
+                    <View className="vip-btn__desc">
+                      即可享受最高{memberDiscount}折会员优惠
+                    </View>
+                  )}
+                </View>
+              )}
+              {vipgrade.is_vip && (
+                <View className="grade-info">
+                  <View className="member-card-title">
+                    <Text className="vip-sign">
+                      {vipgrade.vip_type === "svip" ? (
+                        <Text>SVIP</Text>
+                      ) : (
+                        <Text>VIP</Text>
+                      )}
+                    </Text>
+                    会员卡
+                  </View>
+                  <View className="member-card-no">
+                    NO. {memberInfo.user_card_code}
+                  </View>
+                  <View className="member-card-period">
+                    {vipgrade.end_time} 到期
+                  </View>
+                </View>
+              )}
+              {vipgrade.is_vip && (
+                <Image
+                  className="member-info-bg"
+                  src={vipgrade.background_pic_url}
+                  mode="widthFix"
+                />
+              )}
+              {vipgrade.is_open && !vipgrade.is_vip && (
+                <Image
+                  className="member-info-bg"
+                  src={memberInfo.gradeInfo.background_pic_url}
+                  mode="widthFix"
+                />
+              )}
+            </View>
+          )}
 
         {/* {is_open_official_account === 1 && (
           <View className="page-member-section">
@@ -583,156 +643,154 @@ export default class MemberIndex extends Component {
           </View>
         )} */}
 
-        {
-          <View className="page-member-section">
-            {memberData.is_open_popularize && isWeixin && (
-              <SpCell
-                title={!memberData.is_promoter ? "我要推广" : "推广管理"}
-                isLink
-                img={require("../../assets/imgs/store.png")}
-                onClick={() =>
-                  this.handleClickWxOAuth(this.beDistributor.bind(this))
-                }
-              ></SpCell>
-            )}
+        <View className="page-member-section">
+          {memberData.is_open_popularize && isWeixin && (
+            <SpCell
+              title={!memberData.is_promoter ? "我要推广" : "推广管理"}
+              isLink
+              img={require("../../assets/imgs/store.png")}
+              onClick={() =>
+                this.handleClickWxOAuth(this.beDistributor.bind(this))
+              }
+            ></SpCell>
+          )}
 
-            {Taro.getEnv() !== "WEB" && (
-              <View>
-                {menuSetting.group && (
-                  <SpCell
-                    title="我的拼团"
-                    isLink
-                    img={require("../../assets/imgs/group.png")}
-                    onClick={() =>
-                      this.handleClickWxOAuth(
-                        this.navigateTo.bind(
-                          this,
-                          "/marketing/pages/member/group-list"
-                        )
-                      )
-                    }
-                  ></SpCell>
-                )}
-                {menuSetting.community_order && (
-                  <SpCell
-                    title="我的社区团购"
-                    isLink
-                    img={require("../../assets/imgs/group.png")}
-                    onClick={() =>
-                      this.handleClickWxOAuth(
-                        this.navigateTo.bind(
-                          this,
-                          "/groupBy/pages/orderList/index"
-                        )
-                      )
-                    }
-                  ></SpCell>
-                )}
-              </View>
-            )}
-
-            {Taro.getEnv() !== "WEB" && (
-              <View>
-                {menuSetting.boost_activity && (
-                  <SpCell
-                    title="助力活动"
-                    isLink
-                    img={require("../../assets/imgs/group.png")}
-                    onClick={() =>
-                      this.handleClickWxOAuth(
-                        this.navigateTo.bind(this, "/boost/pages/home/index")
-                      )
-                    }
-                  ></SpCell>
-                )}
-                {menuSetting.boost_order && (
-                  <SpCell
-                    title="助力订单"
-                    isLink
-                    img={require("../../assets/imgs/group.png")}
-                    onClick={() =>
-                      this.handleClickWxOAuth(
-                        this.navigateTo.bind(this, "/boost/pages/order/index")
-                      )
-                    }
-                  ></SpCell>
-                )}
-              </View>
-            )}
-            {menuSetting.offline_order && (
-              <SpCell
-                title="线下订单关联"
-                isLink
-                img={require("../../assets/imgs/group.png")}
-                onClick={() =>
-                  this.handleClickWxOAuth(
-                    this.navigateTo.bind(this, "/others/pages/bindOrder/index")
-                  )
-                }
-              ></SpCell>
-            )}
-            {menuSetting.complaint &&
-              salespersonData &&
-              salespersonData.distributor && (
+          {Taro.getEnv() !== "WEB" && (
+            <View>
+              {menuSetting.group && (
                 <SpCell
-                  title="投诉记录"
+                  title="我的拼团"
                   isLink
                   img={require("../../assets/imgs/group.png")}
                   onClick={() =>
                     this.handleClickWxOAuth(
                       this.navigateTo.bind(
                         this,
-                        "/marketing/pages/member/complaint-record"
+                        "/marketing/pages/member/group-list"
                       )
                     )
                   }
                 ></SpCell>
               )}
-            {menuSetting.activity && (
+              {menuSetting.community_order && (
+                <SpCell
+                  title="我的社区团购"
+                  isLink
+                  img={require("../../assets/imgs/group.png")}
+                  onClick={() =>
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(
+                        this,
+                        "/groupBy/pages/orderList/index"
+                      )
+                    )
+                  }
+                ></SpCell>
+              )}
+            </View>
+          )}
+
+          {Taro.getEnv() !== "WEB" && (
+            <View>
+              {menuSetting.boost_activity && (
+                <SpCell
+                  title="助力活动"
+                  isLink
+                  img={require("../../assets/imgs/group.png")}
+                  onClick={() =>
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(this, "/boost/pages/home/index")
+                    )
+                  }
+                ></SpCell>
+              )}
+              {menuSetting.boost_order && (
+                <SpCell
+                  title="助力订单"
+                  isLink
+                  img={require("../../assets/imgs/group.png")}
+                  onClick={() =>
+                    this.handleClickWxOAuth(
+                      this.navigateTo.bind(this, "/boost/pages/order/index")
+                    )
+                  }
+                ></SpCell>
+              )}
+            </View>
+          )}
+          {menuSetting.offline_order && (
+            <SpCell
+              title="线下订单关联"
+              isLink
+              img={require("../../assets/imgs/group.png")}
+              onClick={() =>
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, "/others/pages/bindOrder/index")
+                )
+              }
+            ></SpCell>
+          )}
+          {menuSetting.complaint &&
+            salespersonData &&
+            salespersonData.distributor && (
               <SpCell
-                title="活动预约"
+                title="投诉记录"
                 isLink
-                img={require("../../assets/imgs/buy.png")}
+                img={require("../../assets/imgs/group.png")}
                 onClick={() =>
                   this.handleClickWxOAuth(
                     this.navigateTo.bind(
                       this,
-                      "/marketing/pages/member/item-activity"
+                      "/marketing/pages/member/complaint-record"
                     )
                   )
                 }
               ></SpCell>
             )}
-            {score_menu_open && (
-              <SpCell
-                title={customName("积分商城")}
-                isLink
-                img={require("../../assets/imgs/score.png")}
-                onClick={() =>
-                  this.handleClickWxOAuth(
-                    this.navigateTo.bind(this, "/pointitem/pages/list")
-                  )
-                }
-              ></SpCell>
-            )}
-            {/* {
-              menuSetting.activity && <SpCell
-                title='活动预约'
-                isLink
-                img={require('../../assets/imgs/buy.png')}
-                onClick={this.handleClick.bind(this, '/marketing/pages/member/coupon')}
-              >
-              </SpCell>
-            }  */}
-            {/* <SpCell
-              title='入驻申请'
+          {menuSetting.activity && (
+            <SpCell
+              title="活动预约"
               isLink
-              img='/assets/imgs/buy.png'
-              onClick={this.handleClick.bind(this, '/subpage/pages/auth/store-reg')}
+              img={require("../../assets/imgs/buy.png")}
+              onClick={() =>
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(
+                    this,
+                    "/marketing/pages/member/item-activity"
+                  )
+                )
+              }
+            ></SpCell>
+          )}
+          {score_menu_open && (
+            <SpCell
+              title={customName("积分商城")}
+              isLink
+              img={require("../../assets/imgs/score.png")}
+              onClick={() =>
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, "/pointitem/pages/list")
+                )
+              }
+            ></SpCell>
+          )}
+          {/* {
+            menuSetting.activity && <SpCell
+              title='活动预约'
+              isLink
+              img={require('../../assets/imgs/buy.png')}
+              onClick={this.handleClick.bind(this, '/marketing/pages/member/coupon')}
             >
-            </SpCell>*/}
-          </View>
-        }
+            </SpCell>
+          }  */}
+          {/* <SpCell
+            title='入驻申请'
+            isLink
+            img='/assets/imgs/buy.png'
+            onClick={this.handleClick.bind(this, '/subpage/pages/auth/store-reg')}
+          >
+          </SpCell>*/}
+        </View>
 
         <View className="page-member-section">
           {Taro.getEnv() !== "WEB" && menuSetting.share_enable && (
