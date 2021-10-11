@@ -154,8 +154,9 @@
       }
       &.active {
         .item-content {
-          border-color: #e4dad2;
-          background: #fffff2;
+          background: #FFF2DF;
+          border: 1px solid #F5A623;
+          box-shadow: 0px 4px 16px 0px #EAD6B6;
         }
       }
     }
