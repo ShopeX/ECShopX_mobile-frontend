@@ -51,6 +51,7 @@ export default class VipIndex extends Component {
       () => {
         this.fetchInfo();
         this.fetchUserVipInfo();
+        this.fetchCouponList()
       }
     );
   }
@@ -71,6 +72,13 @@ export default class VipIndex extends Component {
       list,
       curTabIdx: curTabIdx === -1 ? 0 : curTabIdx
     });
+  }
+
+  async fetchCouponList () {
+    const [one, two] = await Promise.all([api.member.memberInfo(), api.vip.getCouponList({ type: 'vip_grade', grade_id: 12 })])
+    console.log(one, two, '----')
+    // const list = await api.vip.getCouponList({ type: , grade_id:  })
+    // console.log(list)
   }
 
   handleClickTab = idx => {

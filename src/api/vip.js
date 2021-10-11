@@ -11,3 +11,7 @@ export function charge (params) {
 export function getUserVipInfo (params) {
 	return req.get('/vipgrades/uservip',params)
 }
+
+export function getCouponList (params) {
+	return req.get('/user/getBindCardList',params)
+}
