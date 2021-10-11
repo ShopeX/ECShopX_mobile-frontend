@@ -5,9 +5,9 @@ import req from "@/api/req";
 import { withBackToTop } from "@/hocs";
 import S from "@/spx";
 import { buriedPoint  } from "@/utils";
-import { platformTemplateName, transformPlatformUrl } from "@/utils/platform";
-import { getDistributorId } from "@/utils/helper";
-import HomeWgts from "../home/comps/home-wgts";
+// import { platformTemplateName, transformPlatformUrl } from "@/utils/platform";
+// import { getDistributorId } from "@/utils/helper";
+// import HomeWgts from "../home/comps/home-wgts";
 import qs from "qs";
 import "./custom-page.scss";
 
@@ -27,15 +27,15 @@ export default class HomeIndex extends Component {
 
   async componentDidMount() {
     const { id } = this.$router.params;
-    const pathparams = qs.stringify({
-      template_name: platformTemplateName,
-      version: "v1.0.1",
-      page_name: `custom_${id}`,
-      name: "search"
-    });
-    const url = transformPlatformUrl(
-      `/alipay/pageparams/setting?${pathparams}`
-    );
+    // const pathparams = qs.stringify({
+    //   template_name: platformTemplateName,
+    //   version: "v1.0.1",
+    //   page_name: `custom_${id}`,
+    //   name: "search"
+    // });
+    // const url = transformPlatformUrl(
+    //   `/alipay/pageparams/setting?${pathparams}`
+    // );
     const fixSetting = await req.get(url);
 
     this.setState(
@@ -119,7 +119,7 @@ export default class HomeIndex extends Component {
           scrollY
         >
           <View className="wgts-wrap__cont">
-            <HomeWgts wgts={wgts} />
+            {/* <HomeWgts wgts={wgts} /> */}
           </View>
         </ScrollView>
 

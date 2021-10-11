@@ -72,11 +72,11 @@ export default class DistributionWithdraw extends Component {
         alipay_account,
       })
     }
-    if (config.limit_rebate) {
-      this.setState({
-        limit_rebate: config.limit_rebate,
-      })
-    }
+    // if (config.limit_rebate) {
+    //   this.setState({
+    //     limit_rebate: config.limit_rebate,
+    //   })
+    // }
     // this.setState({
     //   accountInfo:dataInfo
     // })
