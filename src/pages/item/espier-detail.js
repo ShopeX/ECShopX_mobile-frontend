@@ -1203,7 +1203,7 @@ export default class Detail extends Component {
                 <Text className="goods-title">{info.item_name}</Text>
                 <Text className="goods-title__desc">{info.brief}</Text>
               </View> 
-              {!isNewGift && !isWeixin && !this.isPointitem() && !isAlipay && (
+              {!isNewGift && !this.isPointitem() && !isAlipay && (
                 <View
                   className="goods-share__wrap"
                   onClick={this.handleShare.bind(this)}
