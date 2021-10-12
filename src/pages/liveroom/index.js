@@ -24,11 +24,15 @@ export default class LiveRoomList extends Component {
   }
 
   componentDidMount () {
+    this.setState({ scrollTop: 0 })
+  }
+
+  componentDidShow () {
     this.getList()
+    // this.setState({ scrollTop: 0 })
   }
 
   timeStamp = (time) => {
-    // time = 1632640084
     let currentTimp = new Date().getTime() / 1000
     let second = calcTimer((time - currentTimp))
     return second
@@ -166,15 +170,15 @@ export default class LiveRoomList extends Component {
                 </View>
                 <View className='liveroom-page-right'>
                   <View className='right-title'>{item.name}</View>
-                  {/* 直播时间 */}
+                  {/* 直播倒计时 */}
                   {
                     notStarted &&
                     <View className='right-count'>
-                      <View className='fs'>直播时间：</View>
+                      <View className='fs'>直播倒计时：</View>
                       <AtCountdown
                         isShowDay={this.timeStamp(item.start_time).dd != 0}
                         isShowHour={this.timeStamp(item.start_time).hh != 0}
-                        format={{ day: '天', hours: '时', minutes: '分', seconds: '' }}
+                        format={{ day: '天', hours: '时', minutes: '分', seconds: '秒' }}
                         day={this.timeStamp(item.start_time).dd}
                         hours={this.timeStamp(item.start_time).hh}
                         minutes={this.timeStamp(item.start_time).mm}

@@ -67,6 +67,8 @@ $tabBarHeight: 110px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    padding-bottom: 150px;
+    position: relative;
     .right-title {
       @include multi-ellipsis(2);
     }
@@ -95,6 +97,9 @@ $tabBarHeight: 110px;
       justify-content: center;
       align-items: center;
       color: #fff;
+      position: absolute;
+      bottom: 7%;
+      right: 5%;
       .icons {
         width: 30px;
         height: 30px;
