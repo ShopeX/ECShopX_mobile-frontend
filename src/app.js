@@ -180,7 +180,8 @@ class App extends Component {
       "pages/store/list",
       "pages/store/ziti-list",
 
-      "pages/custom/custom-page"
+      "pages/custom/custom-page",
+      "pages/liveroom/index"
     ],
     subPackages: [
       {

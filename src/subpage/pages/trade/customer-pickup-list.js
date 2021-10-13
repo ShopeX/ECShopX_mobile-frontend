@@ -4,8 +4,8 @@ import { Loading, SpNote, NavBar } from '@/components'
 import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
+import { Tracker } from "@/service"
 import TradeItem from './comps/item'
-import { Tracker } from "@/service";
 
 import './list.scss'
 
