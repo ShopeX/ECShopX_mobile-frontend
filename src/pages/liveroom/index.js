@@ -3,14 +3,12 @@ import { View, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from "taro-ui"
 import { calcTimer, classNames } from '@/utils'
 import api from '@/api'
-import { withPager, withBackToTop } from "@/hocs"
-import { Tracker } from "@/service"
+import { withPager } from "@/hocs"
 import { TabBar, Loading, SpNote } from '@/components'
 
 import './index.scss'
 
 @withPager
-@withBackToTop
 export default class LiveRoomList extends Component {
   constructor (props) {
     super(props)
@@ -34,9 +32,6 @@ export default class LiveRoomList extends Component {
     this.setState({
       liveList: [...this.state.liveList, ...list]
     })
-    // await api.liveroom.getLiveRoomList(query).then(res => {
-    //   const { list, total_count: total } = res
-    // })
     return {
       total
     }
@@ -48,79 +43,22 @@ export default class LiveRoomList extends Component {
     return second
   }
 
-  // 滚动事件
-  // onScroll = debounce((e) => {
-  //   const { scrollTop } = e.detail
-  //   this.setState({
-  //     scrollTop
-  //   })
-  // }, 1000)
-
-  // 下拉更新数据
-  // handleRefresh = () => {
-  //   const { param } = this.state
-  //   param.page = 1
-  //   this.setState({
-  //     isRefresh: true,
-  //     param
-  //   })
-  //   this.getList(1)
-  // }
-
-  // // 滚动到底部
-  // onScrollToLower = () => {
-  //   let that = this
-  //   const { isLoading, param, isLastPage, isLoadInterface } = that.state
-  //   let isLastVal = isLastPage
-  //   if (!isLoadInterface) {
-  //     if (!isLastVal) {
-  //       this.setState({ isLoadInterface: true })
-  //       let page = param.page * 1 + 1
-  //       param.page = page
-  //       this.setState({ param })
-  //       this.getList(page)
-  //     }
-  //   }
-  // }
-
-  // // 上拉加载
-  // onScrollToUpper = () => {
-  //   let that = this
-  //   const { isLoading, param, isLastPage, isLoadInterface } = that.state
-  //   let isLastVal = isLastPage
-  //   if (!isLoadInterface) {
-  //     if (!isLastVal) {
-  //       this.setState({ isLoadInterface: true })
-  //       let page = 1
-  //       param.page = page
-  //       this.setState({ param })
-  //       this.getList(page)
-  //     }
-  //   }
-  // }
-
   onPullDownRefresh = () => {
-    Tracker.dispatch("PAGE_PULL_DOWN_REFRESH")
-    
     // Taro.showLoading({
     //   title: '加载中',
     //   icon: 'none',
     // })
     this.resetPage(() => {
-      this.nextPage()
       this.setState({ liveList: [] })
+      this.nextPage()
       // Taro.hideLoading()
     })
   }
 
   onLocation = (item) => {
-    // if ((item.live_status === 103 && item.close_replay === 0) || item.live_status === 101) {
     Taro.navigateTo({
       url: `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${item.roomid}`
     })
-    // } else {
-    //   return
-    // }
   }
 
   render () {
@@ -232,10 +170,6 @@ export default class LiveRoomList extends Component {
           {!page.isLoading && !page.hasNext && !liveList.length && (
             <SpNote>暂无数据~</SpNote>
           )}
-        {/* <View style='text-align: center;margin: 10px;'>
-          { isLoading && <View style={{ color: '#ccc', fontSize: '12px' }}>加载中...</View> }
-          { isLastPage && <View style={{ color: '#ccc', fontSize: '12px' }}>-- 我也是有底线的 --</View> }
-        </View> */}
       </ScrollView>
       <TabBar />
     </View>
