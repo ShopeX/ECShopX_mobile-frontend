@@ -1,12 +1,8 @@
-export { default as FloatMenuMeiQia } from "./float-menus/meiqia";
-
-
 export { default as Loading } from "./loading";
 export { default as Price } from "./price";
 export { default as BackToTop } from "./back-to-top";
 export { default as GoodsBuyPanel } from "./goods-buy-panel";
 export { default as GoodsItem } from "./goods-item";
-// export { default as AddressPicker } from './address/picker'
 export { default as TabBar } from "./tab-bar";
 export { default as TagsBar } from "./tags-bar";
 export { default as FilterBar } from "./filter-bar";
@@ -54,6 +50,7 @@ import SpDefault from "./sp-default";
 
 import SpImgPicker from "./img-picker";
 import SpCell from "./sp-cell";
+import FloatMenuMeiQia from "./float-menus/meiqia";
 
 export default {};
 
@@ -74,5 +71,6 @@ export {
   SpPrice,
   SpDefault,
   SpImgPicker,
-  SpCell
+  SpCell,
+  FloatMenuMeiQia
 };

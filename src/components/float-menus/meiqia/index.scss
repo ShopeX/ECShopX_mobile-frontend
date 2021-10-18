@@ -1,0 +1,29 @@
+.float-menu {
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(#fff, 1);
+    margin: 0 0 $edge-margin;
+    color: $color-brand-primary;
+    width: 64px;
+    height: 64px;
+    border-radius: 100%;
+    font-size: $font-size;
+    opacity: 1;
+    border: 1px solid rgba($color-brand-primary, 0.1);
+    transition: all .2s;
+    &:before, &:after {
+      border: none;
+    }
+    .icon {
+      color: $color-brand-accent-light;
+      font-size: 42px;
+      font-weight: light;
+      line-height: 1;
+    }
+    &.hidden {
+      opacity: 0;
+    }
+  }
+}

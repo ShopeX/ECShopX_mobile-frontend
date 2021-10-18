@@ -1,19 +1,9 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/components/float-menus/meiqia.h5.js
- * @Date: 2020-04-20 16:57:55
- * @LastEditors: Arvin
- * @LastEditTime: 2020-11-17 16:18:22
- */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { Tracker } from "@/service";
-import './item.scss'
+import './index.scss'
 
-export default class Index extends Component {
+export default class Meiqia extends Component {
 
   static defaultProps = {
     storeId: '',

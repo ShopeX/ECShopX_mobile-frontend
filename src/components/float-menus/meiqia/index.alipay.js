@@ -1,20 +1,10 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/components/float-menus/meiqia.weapp.js
- * @Date: 2020-04-20 16:57:55
- * @LastEditors: Arvin
- * @LastEditTime: 2020-12-09 14:38:53
- */
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { Tracker } from "@/service";
 import api from '@/api'
-import './item.scss'
+import './index.scss'
 
-export default class Index extends Component {
+export default class Meiqia extends Component {
 
   static defaultProps = {
     storeId: '',
@@ -52,7 +42,7 @@ export default class Index extends Component {
     let id = info.distributor_id
     const { storeId } = this.props
     // 如果不是标准版
-    if (process.env.APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
+    if (APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
       id = storeId
     }
 
