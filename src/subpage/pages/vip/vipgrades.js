@@ -5,10 +5,12 @@ import { connect } from "@tarojs/redux";
 import { AtTabs, AtTabsPane } from "taro-ui";
 import api from "@/api";
 import S from "@/spx";
-import { pickBy,showLoading,hideLoading,isAlipay } from "@/utils";
+import { pickBy, showLoading, hideLoading, isAlipay, formatTime } from "@/utils";
 import PaymentPicker from "@/pages/cart/comps/payment-picker";
 import { customName } from "@/utils/point";
-import userIcon from "@/assets/imgs/user-icon.png";
+import userIcon from "@/assets/imgs/user-icon.png"
+
+import FloatModal from './com'
 
 import "./vipgrades.scss";
 
@@ -20,7 +22,7 @@ export default class VipIndex extends Component {
     navigationBarTitleText: "会员购买",
     backgroundColor: "#2f3030",
     backgroundTextStyle: "light"
-  };
+  }
   constructor(props) {
     super(props);
 
@@ -33,8 +35,10 @@ export default class VipIndex extends Component {
       list: [],
       cur: null,
       payType: "",
-      isPaymentOpend: false
-    };
+      isPaymentOpend: false,
+      visible: true,
+      couponList: []
+    }
   }
 
   componentDidMount() {
@@ -75,9 +79,159 @@ export default class VipIndex extends Component {
   }
 
   async fetchCouponList () {
-    const [one, two] = await Promise.all([api.member.memberInfo(), api.vip.getCouponList({ type: 'vip_grade', grade_id: 12 })])
-    console.log(one, two, '----')
-    // const list = await api.vip.getCouponList({ type: , grade_id:  })
+    let list = [
+      {
+        status: 'status',
+        reduce_cost: '0',
+        least_cost: '10000',
+        begin_date: formatTime(1634572800 * 1000),
+        end_date: formatTime(1638201600 * 1000),
+        fixed_term: null,
+        card_type: 'discount',
+        tagClass: 'tagClass',
+        title: '三联折扣活动',
+        discount: '10',
+        get_limit: '1',
+        user_get_num: 0,
+        quantity: '100',
+        get_num: 2,
+        card_id: '841',
+        description:'三联折扣活动description',
+        use_bound:'0',
+        send_begin_time: null,
+        send_end_time: null
+      },
+      {
+        status: 'status',
+        reduce_cost: '0',
+        least_cost: '10000',
+        begin_date: formatTime(1634572800 * 1000),
+        end_date: formatTime(1638201600 * 1000),
+        fixed_term: null,
+        card_type: 'discount',
+        tagClass: 'tagClass',
+        title: '三联折扣活动',
+        discount: '10',
+        get_limit: '1',
+        user_get_num: 0,
+        quantity: '100',
+        get_num: 2,
+        card_id: '841',
+        description:'三联折扣活动description',
+        use_bound:'0',
+        send_begin_time: null,
+        send_end_time: null
+      },
+      {
+        status: 'status',
+        reduce_cost: '0',
+        least_cost: '10000',
+        begin_date: formatTime(1634572800 * 1000),
+        end_date: formatTime(1638201600 * 1000),
+        fixed_term: null,
+        card_type: 'discount',
+        tagClass: 'tagClass',
+        title: '三联折扣活动',
+        discount: '10',
+        get_limit: '1',
+        user_get_num: 0,
+        quantity: '100',
+        get_num: 2,
+        card_id: '841',
+        description:'三联折扣活动description',
+        use_bound:'0',
+        send_begin_time: null,
+        send_end_time: null
+      },
+      {
+        status: 'status',
+        reduce_cost: '0',
+        least_cost: '10000',
+        begin_date: formatTime(1634572800 * 1000),
+        end_date: formatTime(1638201600 * 1000),
+        fixed_term: null,
+        card_type: 'discount',
+        tagClass: 'tagClass',
+        title: '三联折扣活动',
+        discount: '10',
+        get_limit: '1',
+        user_get_num: 0,
+        quantity: '100',
+        get_num: 2,
+        card_id: '841',
+        description:'三联折扣活动description',
+        use_bound:'0',
+        send_begin_time: null,
+        send_end_time: null
+      },
+      {
+        status: 'status',
+        reduce_cost: '0',
+        least_cost: '10000',
+        begin_date: formatTime(1634572800 * 1000),
+        end_date: formatTime(1638201600 * 1000),
+        fixed_term: null,
+        card_type: 'discount',
+        tagClass: 'tagClass',
+        title: '三联折扣活动',
+        discount: '10',
+        get_limit: '1',
+        user_get_num: 0,
+        quantity: '100',
+        get_num: 2,
+        card_id: '841',
+        description:'三联折扣活动description',
+        use_bound:'0',
+        send_begin_time: null,
+        send_end_time: null
+      },
+      {
+        status: 'status',
+        reduce_cost: '0',
+        least_cost: '10000',
+        begin_date: formatTime(1634572800 * 1000),
+        end_date: formatTime(1638201600 * 1000),
+        fixed_term: null,
+        card_type: 'discount',
+        tagClass: 'tagClass',
+        title: '三联折扣活动',
+        discount: '10',
+        get_limit: '1',
+        user_get_num: 0,
+        quantity: '100',
+        get_num: 2,
+        card_id: '841',
+        description:'三联折扣活动description',
+        use_bound:'0',
+        send_begin_time: null,
+        send_end_time: null
+      },
+      {
+        status: 'status',
+        reduce_cost: '0',
+        least_cost: '10000',
+        begin_date: formatTime(1634572800 * 1000),
+        end_date: formatTime(1638201600 * 1000),
+        fixed_term: null,
+        card_type: 'discount',
+        tagClass: 'tagClass',
+        title: '三联折扣活动',
+        discount: '10',
+        get_limit: '1',
+        user_get_num: 0,
+        quantity: '100',
+        get_num: 2,
+        card_id: '841',
+        description:'三联折扣活动description',
+        use_bound:'0',
+        send_begin_time: null,
+        send_end_time: null
+      }
+    ]
+    this.setState({ couponList: list })
+    // const [one, two] = await Promise.all([api.member.memberInfo(), api.vip.getBindCardList({ type: 'vip_grade', grade_id: 12 })])
+    // console.log(one, two, '----')
+    // const list = await api.vip.getBindCardList({ type: , grade_id:  })
     // console.log(list)
   }
 
@@ -172,7 +326,12 @@ export default class VipIndex extends Component {
       },
       () => {}
     );
-  };
+  }
+
+  handleChange = (visible) => {
+    this.setState({ visible })
+  }
+
   render() {
     const { colors } = this.props;
     const {
@@ -184,7 +343,9 @@ export default class VipIndex extends Component {
       tabList,
       curCellIdx,
       payType,
-      isPaymentOpend
+      isPaymentOpend,
+      visible,
+      couponList
     } = this.state;
     const payTypeText = {
       point: customName("积分支付"),
@@ -288,7 +449,7 @@ export default class VipIndex extends Component {
           立即支付
           </View>
         </View>
-        <View className='coupon-box' style={{ boxShadow: '0rpx 2rpx 16rpx 0rpx #DDDDDD' }}>
+        <View  onClick={this.handleChange.bind(this, true)} className='coupon-box' style={{ boxShadow: '0rpx 2rpx 16rpx 0rpx #DDDDDD' }}>
           <Text className='content-v-padded'>会员专享券包</Text>
           <Text className='content-v-subtitle'>优惠券共计102张</Text>
           <ScrollView scrollX className='scroll-box'>
@@ -319,7 +480,8 @@ export default class VipIndex extends Component {
             </View>
           </View>
         </View>
+        <FloatModal visible={visible} list={couponList} onChange={this.handleChange} />
       </View>
-    );
+    )
   }
 }
