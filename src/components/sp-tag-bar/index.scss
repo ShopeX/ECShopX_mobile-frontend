@@ -1,0 +1,20 @@
+@import "../../style/imports";
+
+.tags {
+  width: 100%;
+  white-space: nowrap;
+  background: #fff;
+  border-bottom: 1PX solid #efefef;
+  .tag-item {
+    display: inline-block;
+    padding: 0 20px;
+    height: $tags-height;
+    line-height: $tags-height;
+    font-size: 26px;
+    color: #666;
+    &.active {
+      color: $color-link;
+      font-weight: 600;
+    }
+  }
+}

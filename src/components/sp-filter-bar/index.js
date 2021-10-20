@@ -58,15 +58,18 @@ export default class SpFilterBar extends Component {
         {custom &&
           list.map((item, idx) => (
             <View
-              className={classNames("filter-bar__item", {
-                'active': curIdx === idx,
+              className={classNames("sp-filter-bar__item", {
+                active: curIdx === idx,
                 "sort-asc": item.sort && sortOrder > 0,
                 "sort-desc": item.sort && sortOrder < 0
               })}
               onClick={this.handleClickItem.bind(this, idx)}
-              key={`filter-bar-item__${idx}`}
+              key={`sp-filter-bar-item__${idx}`}
             >
-              <Text className="filter-bar__item-text">{item.title}</Text>
+              <Text className="sp-filter-bar__item-text">{item.title}</Text>
+              {item.icon && (
+                <Text className={classNames("iconfont", item.icon)}></Text>
+              )}
             </View>
           ))}
         {this.props.children}

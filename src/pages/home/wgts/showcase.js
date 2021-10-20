@@ -1,13 +1,3 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/pages/home/wgts/showcase.js
- * @Date: 2020-10-28 09:58:46
- * @LastEditors: Arvin
- * @LastEditTime: 2021-02-01 14:03:42
- */
 import Taro, { Component } from "@tarojs/taro";
 import { View, Text } from "@tarojs/components";
 import { SpImg } from "@/components";

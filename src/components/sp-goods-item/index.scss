@@ -1,25 +1,33 @@
 .sp-goods-item {
+  background-color: #f5f5f5;
   .goods-item {
     &__hd {
-
     }
     &__bd {
       border-radius: 0;
+      padding: 15px;
       .goods-title {
-        font-size: 28px;
-        color: #666;
+        font-size: 24px;
+        color: $color-primary-text;
+        @include multi-ellipsis(1);
+        // padding: 15px;
       }
       .goods-desc {
         font-size: 24px;
-        color: #999;
+        color: $color-hint-text;
         @include multi-ellipsis(2);
+      }
+
+      .goods-price {
+        line-height: 26px;
+        margin-top: 10px;
       }
 
       .promotions {
         display: flex;
         .promotion-tag {
           flex-wrap: wrap;
-          border: 1PX solid var(--color-primary);
+          border: 1px solid var(--color-primary);
           color: var(--color-primary);
           font-size: 22px;
           border-radius: 4px;
@@ -29,7 +37,6 @@
       }
     }
     &__ft {
-
     }
   }
 }

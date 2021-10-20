@@ -48,6 +48,7 @@ import SpPoint from "./sp-point";
 import SpPrice from "./sp-price";
 import SpDefault from "./sp-default";
 import SpSearch from "./sp-search";
+import SpSearchBar from "./sp-search-bar";
 import SpFilterBar from "./sp-filter-bar";
 
 import SpImgPicker from "./img-picker";
@@ -73,6 +74,7 @@ export {
   SpPrice,
   SpDefault,
   SpSearch,
+  SpSearchBar,
   SpFilterBar,
   SpImgPicker,
   SpCell,

@@ -153,34 +153,34 @@
   }
 }
 
-.at-tabs {
-  height: $tabs-height;
-  box-shadow: 0 10px 10px rgba(#000, 0.05);
-  box-sizing: border-box;
-  position: fixed;
-  left: 0;
-  top: $navigate-height;
-  width: 100%;
-  z-index: $z-index-toolbar;
+// .at-tabs {
+//   height: $tabs-height;
+//   box-shadow: 0 10px 10px rgba(#000, 0.05);
+//   box-sizing: border-box;
+//   position: fixed;
+//   left: 0;
+//   top: $navigate-height;
+//   width: 100%;
+//   z-index: $z-index-toolbar;
 
-  &__header {}
+//   &__header {}
 
-  .at-tabs__body {
-    height: 0;
-  }
+//   .at-tabs__body {
+//     height: 0;
+//   }
 
-  .at-tabs__item {
-    height: $tabs-height;
-    line-height: $tabs-height;
-    padding: 0;
-  }
+//   .at-tabs__item {
+//     height: $tabs-height;
+//     line-height: $tabs-height;
+//     padding: 0;
+//   }
 
-  .at-tabs__item-underline {
-    height: 2PX;
-    width: 20%;
-    left: 40%;
-  }
-}
+//   .at-tabs__item-underline {
+//     height: 2PX;
+//     width: 20%;
+//     left: 40%;
+//   }
+// }
 
 .search-input__bar.at-search-bar {
   padding: 0 35px 0 30px !important;

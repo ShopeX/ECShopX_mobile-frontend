@@ -1,29 +1,40 @@
 .sp-price {
-  .price {
-    &__primary {
-      color: $color-price;
-      font-size: 26px;
-    }
-    &__symbol {
-      margin-right: 5px;
+  &.line-through {
+    color: $color-hint-text;
+    text-decoration: line-through;
+    .price__symbol {
       font-size: 20px;
+      color: $color-hint-text;
       font-weight: normal;
     }
-    &__int {
+    .price__int {
+      font-size: 24px;
+      color: $color-hint-text;
+      font-weight: normal;
     }
-    &__decimal {
-      font-size: 1em;
+    .price__decimal {
+      font-size: 24px;
+      color: $color-hint-text;
+      font-weight: normal;
     }
   }
-  .price-market {
-    color: $color-gray;
-    margin-left: 8px;
-    text-decoration: line-through;
-    font-size: 22px;
-    .price__symbol {
+
+  .price {
+    &__symbol {
       margin-right: 5px;
-      font-size: 20px;
-      font-weight: normal;
+      color: $color-primary-text;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    &__int {
+      color: $color-primary-text;
+      font-size: 32px;
+      font-weight: bold;
+    }
+    &__decimal {
+      color: $color-primary-text;
+      font-size: 28px;
+      font-weight: bold;
     }
   }
 }

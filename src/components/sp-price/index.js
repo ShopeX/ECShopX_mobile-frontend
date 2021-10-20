@@ -46,9 +46,10 @@ export default class SpPrice extends Component {
       <Text
         className={classNames(
           "sp-price",
-          lineThrough ? "price-market" : "price",
-          "classes",
-          primary ? "price__primary" : null,
+          {
+            "line-through": lineThrough
+          },
+          // primary ? "price__primary" : null,
           className
         )}
       >

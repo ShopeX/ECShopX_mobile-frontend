@@ -2,7 +2,7 @@ import Taro, { Component } from "@tarojs/taro";
 import { View, Text, ScrollView } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
 import { withPager, withBackToTop } from "@/hocs";
-import { AtDrawer } from "taro-ui";
+import { AtDrawer, AtTabs } from "taro-ui";
 import {
   BackToTop,
   Loading,
@@ -10,6 +10,8 @@ import {
   SpFilterBar,
   SearchBar,
   GoodsItem,
+  SpGoodsItem,
+  SpSearchBar,
   SpNote,
   SpNavBar,
   TabBar
@@ -37,16 +39,20 @@ export default class List extends Component {
       filterList: [
         { title: "综合" },
         { title: "销量" },
-        { title: "价格" },
-        { title: "价格" }
+        { title: "价格", icon: "icon-shengxu-01" },
+        { title: "价格", icon: "icon-jiangxu-01" }
       ],
       query: null,
       list: [],
       oddList: [],
       evenList: [],
-      tagsList: [],
+      tagsList: [
+        {
+          id: 0,
+          title: "全部"
+        }
+      ],
       paramsList: [],
-      listType: "grid",
       isShowSearch: false,
       showDrawer: false,
       selectParams: [],
@@ -93,19 +99,19 @@ export default class List extends Component {
     );
   }
 
-  componentWillReceiveProps(next) {
-    if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
-      setTimeout(() => {
-        const list = this.state.list.map(item => {
-          item.is_fav = Boolean(next.favs[item.item_id]);
-          return item;
-        });
-        this.setState({
-          list
-        });
-      });
-    }
-  }
+  // componentWillReceiveProps(next) {
+  //   if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
+  //     setTimeout(() => {
+  //       const list = this.state.list.map(item => {
+  //         item.is_fav = Boolean(next.favs[item.item_id]);
+  //         return item;
+  //       });
+  //       this.setState({
+  //         list
+  //       });
+  //     });
+  //   }
+  // }
 
   async componentDidShow() {
     const { isNewGift = null } = this.$router.params;
@@ -229,54 +235,76 @@ export default class List extends Component {
     } = await api.item.search(query);
     const { favs } = this.props;
 
-    item_params_list.map(item => {
-      if (selectParams.length < 4) {
-        selectParams.push({
-          attribute_id: item.attribute_id,
-          attribute_value_id: "all"
-        });
-      }
-      item.attribute_values.unshift({
-        attribute_value_id: "all",
-        attribute_value_name: "全部",
-        isChooseParams: true
-      });
-    });
+    // item_params_list.map(item => {
+    //   if (selectParams.length < 4) {
+    //     selectParams.push({
+    //       attribute_id: item.attribute_id,
+    //       attribute_value_id: "all"
+    //     });
+    //   }
+    //   item.attribute_values.unshift({
+    //     attribute_value_id: "all",
+    //     attribute_value_name: "全部",
+    //     isChooseParams: true
+    //   });
+    // });
 
+    // const nList = pickBy(list, {
+    //   img: ({ pics }) =>
+    //     pics ? (typeof pics !== "string" ? pics[0] : JSON.parse(pics)[0]) : "",
+    //   item_id: "item_id",
+    //   title: ({ itemName, item_name }) => (itemName ? itemName : item_name),
+    //   desc: "brief",
+    //   distributor_id: "distributor_id",
+    //   distributor_info: "distributor_info",
+    //   promotion_activity_tag: "promotion_activity",
+    //   origincountry_name: "origincountry_name",
+    //   origincountry_img_url: "origincountry_img_url",
+    //   type: "type",
+    //   price: ({ price }) => (price / 100).toFixed(2),
+    //   member_price: ({ member_price }) => (member_price / 100).toFixed(2),
+    //   market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+    //   is_fav: ({ item_id }) => Boolean(favs[item_id]),
+    //   store: "store"
+    // } );
+    
     const nList = pickBy(list, {
-      img: ({ pics }) =>
-        pics ? (typeof pics !== "string" ? pics[0] : JSON.parse(pics)[0]) : "",
-      item_id: "item_id",
-      title: ({ itemName, item_name }) => (itemName ? itemName : item_name),
-      desc: "brief",
+      origincountry_img_url: {
+        key: "origincountry_img_url",
+        default: []
+      },
+      pics: "pics",
+      itemId: "goodsId",
+      itemName: "itemName",
+      brief: "brief",
+      promotion_activity: "promotion_activity",
       distributor_id: "distributor_id",
-      distributor_info: "distributor_info",
-      promotion_activity_tag: "promotion_activity",
-      origincountry_name: "origincountry_name",
-      origincountry_img_url: "origincountry_img_url",
-      type: "type",
-      price: ({ price }) => (price / 100).toFixed(2),
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-      is_fav: ({ item_id }) => Boolean(favs[item_id]),
-      store: "store"
+      is_point: "is_point",
+      price: ({ act_price, member_price, price }) => {
+        if (act_price > 0) {
+          return act_price;
+        } else if (member_price > 0) {
+          return member_price;
+        } else {
+          return price;
+        }
+      },
+      market_price: "market_price"
     });
 
-    let odd = [],
-      even = [];
-    nList.map((item, idx) => {
-      if (idx % 2 == 0) {
-        odd.push(item);
-      } else {
-        even.push(item);
-      }
-    });
+    // let odd = [],
+    //   even = [];
+    // nList.map((item, idx) => {
+    //   if (idx % 2 == 0) {
+    //     odd.push(item);
+    //   } else {
+    //     even.push(item);
+    //   }
+    // });
 
     this.setState(
       {
         list: [...this.state.list, ...nList],
-        oddList: [...this.state.oddList, ...odd],
-        evenList: [...this.state.evenList, ...even],
         showDrawer: false,
         query
       },
@@ -287,25 +315,25 @@ export default class List extends Component {
       }
     );
 
-    if (this.firstStatus) {
-      this.setState({
-        paramsList: item_params_list,
-        selectParams
-      });
-      this.firstStatus = false;
-    }
+    // if (this.firstStatus) {
+    //   this.setState({
+    //     paramsList: item_params_list,
+    //     selectParams
+    //   });
+    //   this.firstStatus = false;
+    // }
 
-    if (tagsList.length === 0) {
-      let tags = select_tags_list;
-      tags.unshift({
-        tag_id: 0,
-        tag_name: "全部"
-      });
-      this.setState({
-        //curTagId: 0,
-        tagsList: tags
-      });
-    }
+    // if (tagsList.length === 0) {
+    //   let tags = select_tags_list;
+    //   tags.unshift({
+    //     tag_id: 0,
+    //     tag_name: "全部"
+    //   });
+    //   this.setState({
+    //     //curTagId: 0,
+    //     tagsList: tags
+    //   });
+    // }
 
     return {
       total
@@ -408,14 +436,6 @@ export default class List extends Component {
     );
   };
 
-  handleListTypeChange = () => {
-    const listType = this.state.listType === "grid" ? "default" : "grid";
-
-    this.setState({
-      listType
-    });
-  };
-
   handleClickItem = item => {
     const {
       user_card_id,
@@ -446,36 +466,6 @@ export default class List extends Component {
     const url = `/pages/store/index?id=${item.distributor_info.distributor_id}`;
     Taro.navigateTo({
       url
-    });
-  };
-
-  handleClickFilter = () => {
-    this.setState({
-      showDrawer: true
-    });
-  };
-
-  handleClickParmas = (id, child_id) => {
-    const { paramsList, selectParams } = this.state;
-    paramsList.map(item => {
-      if (item.attribute_id === id) {
-        item.attribute_values.map(v_item => {
-          if (v_item.attribute_value_id === child_id) {
-            v_item.isChooseParams = true;
-          } else {
-            v_item.isChooseParams = false;
-          }
-        });
-      }
-    });
-    selectParams.map(item => {
-      if (item.attribute_id === id) {
-        item.attribute_value_id = child_id;
-      }
-    });
-    this.setState({
-      paramsList,
-      selectParams
     });
   };
 
@@ -514,13 +504,6 @@ export default class List extends Component {
         this.nextPage();
       }
     );
-  };
-
-  handleSearchOn = () => {
-    console.log("handleSearchOn");
-    this.setState({
-      isShowSearch: true
-    });
   };
 
   handleSearchOff = () => {
@@ -600,9 +583,6 @@ export default class List extends Component {
   render() {
     const {
       list,
-      oddList,
-      evenList,
-      listType,
       curFilterIdx,
       filterList,
       showBackToTop,
@@ -625,144 +605,44 @@ export default class List extends Component {
       <View className="page-goods-list">
         <SpNavBar title="商品列表" leftIconType="chevron-left" fixed />
 
+        <View className="search-wrap">
+          <View></View>
+          <SpSearchBar />
+        </View>
+
+        <View className="tag-block">
+          <View className="tag-container"></View>
+          <View className="filter-btn">
+            <Text className="filter-text">刷选</Text>
+            <Text className="iconfont icon-shaixuan-01"></Text>
+          </View>
+        </View>
+
         <SpFilterBar
-          className="goods-list__tabs"
+          className="goods-tabs"
           custom
           current={curFilterIdx}
           list={filterList}
           onChange={this.handleFilterChange}
         />
 
-        <AtDrawer
-          show={showDrawer}
-          right
-          mask
-          width={`${Taro.pxTransform(570)}`}
-        >
-          {paramsList.map((item, index) => {
-            return (
-              <View className="drawer-item" key={`${index}1`}>
-                <View className="drawer-item__title">
-                  <Text>{item.attribute_name}</Text>
-                  <View className="at-icon at-icon-chevron-down"> </View>
-                </View>
-                <View className="drawer-item__options">
-                  {item.attribute_values.map((v_item, v_index) => {
-                    return (
-                      <View
-                        className={classNames(
-                          "drawer-item__options__item",
-                          v_item.isChooseParams
-                            ? "drawer-item__options__checked"
-                            : ""
-                        )}
-                        // className='drawer-item__options__item'
-                        key={`${v_index}1`}
-                        onClick={this.handleClickParmas.bind(
-                          this,
-                          item.attribute_id,
-                          v_item.attribute_value_id
-                        )}
-                      >
-                        {v_item.attribute_value_name}
-                      </View>
-                    );
-                  })}
-                  <View className="drawer-item__options__none"> </View>
-                  <View className="drawer-item__options__none"> </View>
-                  <View className="drawer-item__options__none"> </View>
-                </View>
-              </View>
-            );
-          })}
-          <View className="drawer-footer">
-            <Text
-              className="drawer-footer__btn"
-              onClick={this.handleClickSearchParams.bind(this, "reset")}
-            >
-              重置
-            </Text>
-            <Text
-              className="drawer-footer__btn drawer-footer__btn_active"
-              onClick={this.handleClickSearchParams.bind(this, "submit")}
-            >
-              确定
-            </Text>
-          </View>
-        </AtDrawer>
-
         <ScrollView
-          className={classNames(
-            isTabBar ? "goods-list__scroll_isTabBar" : "goods-list__scroll",
-            tagsList.length > 0 && "with-tag-bar",
-            isTabBar && "isTabBar",
-            isNewGift && "new-gift"
-          )}
+          className={classNames("scroll-view")}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          {listType === "grid" && (
-            <View className="goods-list goods-list__type-grid">
-              <View className="goods-list__group">
-                {oddList.map(item => {
-                  return (
-                    <View
-                      className="goods-list__item"
-                      key={item.item_id}
-                      data-id={item.item_id}
-                    >
-                      <GoodsItem
-                        showNewGift={isNewGift}
-                        key={item.item_id}
-                        info={item}
-                        onClick={() => this.handleClickItem(item)}
-                        onStoreClick={() => this.handleClickStore(item)}
-                      />
-                    </View>
-                  );
-                })}
+          <View className="goods-list">
+            {list.map(item => (
+              <View className="goods-list-wrap" key={item.item_id}>
+                <SpGoodsItem info={item} />
               </View>
-              <View className="goods-list__group">
-                {evenList.map(item => {
-                  return (
-                    <View
-                      className="goods-list__item"
-                      key={item.item_id}
-                      data-id={item.item_id}
-                    >
-                      <GoodsItem
-                        key={item.item_id}
-                        showNewGift={isNewGift}
-                        info={item}
-                        onClick={() => this.handleClickItem(item)}
-                        onStoreClick={() => this.handleClickStore(item)}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-            </View>
-          )}
-          {listType === "list" && (
-            <View className="goods-list goods-list__type-list">
-              {list.map(item => {
-                return (
-                  <View className="goods-list__item" key={item.item_id}>
-                    <GoodsItem
-                      showNewGift={isNewGift}
-                      info={item}
-                      onClick={() => this.handleClickItem(item)}
-                      onStoreClick={() => this.handleClickStore(item)}
-                    />
-                  </View>
-                );
-              })}
-            </View>
-          )}
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            ))}
+          </View>
+
+          {/* {page.isLoading ? <Loading>正在加载...</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
             <SpNote
               img={
@@ -774,8 +654,9 @@ export default class List extends Component {
             >{`${
               isNewGift ? "此店铺不参加此次活动，看看别的吧" : "暂无数据～"
             }`}</SpNote>
-          )}
-          {isNewGift && !page.isLoading && !page.hasNext && !list.length && (
+          )} */}
+
+          {/* {isNewGift && !page.isLoading && !page.hasNext && !list.length && (
             <View className="coupon-tab">
               {couponTab.map((item, idx) => {
                 let { title, val } = item;
@@ -790,7 +671,7 @@ export default class List extends Component {
                 );
               })}
             </View>
-          )}
+          )} */}
         </ScrollView>
 
         <BackToTop
@@ -798,7 +679,6 @@ export default class List extends Component {
           onClick={this.scrollBackToTop}
           bottom={30}
         />
-        {isTabBar && <TabBar />}
       </View>
     );
   }
