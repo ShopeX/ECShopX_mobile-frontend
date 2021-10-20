@@ -1,11 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, Navigator, Button } from '@tarojs/components'
+import { View, Text, Image, Navigator, Button, Canvas } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { NavBar, Loading } from "@/components";
-import api from '@/api'
-import { pickBy } from '@/utils'
+import { pickBy, canvasExp } from '@/utils'
+import { getDtidIdUrl } from "@/utils/helper"
 import userIcon from "@/assets/imgs/user-icon.png";
-import { Tracker } from "@/service";
+import req from '@/api/req'
+import api from '@/api'
+import S from '@/spx'
 import './index.scss'
 
 @connect(({ colors }) => ({
@@ -17,13 +19,13 @@ export default class DistributionDashboard extends Component {
     super(props)
     this.state = {
       info: null,
-      showPoster: true,
+      showPoster: false,
       poster: null,
-      codeInfo: null
+      posterImgs: null
     }
   }
 
-  componentDidMount () {   
+  componentDidMount () {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -70,12 +72,112 @@ export default class DistributionDashboard extends Component {
   }
  
 
-  handleClick = () => {
-    let { isOpenShop, shop_status } = this.state.info
+  handleClick = async () => {
+    // let { isOpenShop, shop_status } = this.state.info
     // Taro.navigateTo({
     //   url: `/marketing/pages/distribution/qrcode?isOpenShop=${isOpenShop}&status=${shop_status === 1}`
     // })
-    this.setState({ showPoster: true })
+    // this.setState({ showPoster: true })
+    const { posterImgs } = this.state
+    if (!posterImgs || !posterImgs.avatar || !posterImgs.code || !posterImgs.username) {
+      const imgs = await this.downloadPosterImg()
+      console.log(imgs, '---')
+      if (imgs && imgs.avatar && imgs.code && imgs.username) {
+        this.setState({
+          showPoster: true
+        })
+      }
+    } else {
+      this.setState({
+        showPoster: true
+      })
+    }
+  }
+
+  downloadPosterImg = async () => { // 处理海报信息以及太阳码
+    let userinfo = Taro.getStorageSync('userinfo')
+    const GUIDE_INFO = S.get("GUIDE_INFO", true);
+    const gu = `${GUIDE_INFO.work_userid}_${GUIDE_INFO.shop_code}`;
+    if (S.getAuthToken() && (!userinfo || !userinfo.userId)) {
+      const res = await api.member.memberInfo();
+      const userObj = {
+        avatar: res.memberInfo.avatar,
+        userId: res.memberInfo.user_id
+      }
+      Taro.setStorageSync('userinfo', userObj)
+      userinfo = userObj
+    }
+    const { avatar, userId } = userinfo
+    const { info } = this.state
+    const { id } = this.$router.params
+    const { share_image_url, image_url, item_id, username } = info
+    const host = req.baseURL.replace('/api/h5app/wxapp/', '')
+    const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
+    const { distributor_id, store_id } = Taro.getStorageSync('curStore')
+
+    // const pic = (share_image_url || image_url).replace('http:', 'https:')
+    const infoId = info.distributor_id
+    const dtid = store_id || distributor_id || infoId
+    const wxappCode = getDtidIdUrl(
+      `https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=wx912913df9fef6ddd&company_id=1&id=6196&uid=20556&dtid=186`,
+      GUIDE_INFO.distributor_id
+    )
+    // const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`subpage/pages/recommend/detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
+    console.log(wxappCode)
+    let avatarImg;
+    console.log(avatar, wxappCode, '--------s---')
+    if (avatar) { // 头像
+      avatarImg = await Taro.getImageInfo({src: avatar})
+    }
+    const bck = await Taro.getImageInfo({src: `${APP_IMAGE_CDN}/distribution_bck.png`})
+    const codeImg = await Taro.getImageInfo({src: wxappCode}) // 二维码
+    console.log(bck, '----bck--')
+    if (avatarImg) {
+      const posterImgs = {
+        avatar: avatarImg ? avatarImg.path : null,
+        code: codeImg.path,
+        bck: bck.path,
+        username
+      }
+      await this.setState({
+        posterImgs
+      }, () => {
+        this.drawImage()
+      })
+      
+      return posterImgs
+    } else {
+      return null
+    }
+  }
+
+  drawImage = () => { // 分享海报
+    const { posterImgs } = this.state
+    if (!posterImgs) return
+    const { avatar, code, bck, username } = posterImgs
+    const ctx = Taro.createCanvasContext('myCanvas')
+
+    canvasExp.roundRect(ctx, "#fff", 0, 0, 375, 640, 5)
+    canvasExp.drawImageFill(ctx, bck, 0, 0, 375, 640)
+    canvasExp.textFill(ctx, username, 180, 50, 18, "#222")
+    canvasExp.drawImageFill(ctx, code, 100, 325, 180, 180)
+    canvasExp.imgCircleClip(ctx, avatar, 100, 15, 65, 65)
+    ctx.draw(true, () => {
+      Taro.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        canvasId: 'myCanvas'
+      }).then(res => {
+        const shareImg = res.tempFilePath;
+        this.setState({
+          poster: shareImg
+        },()=>{
+          this.setState({
+            showPoster:true
+          })
+        })
+      })
+    })
   }
 
   async fetch() {
@@ -111,7 +213,7 @@ export default class DistributionDashboard extends Component {
     const res3 = await api.member.getIsHf()
     let isHf=res3.hfpay_version_status
     const info = { username, avatar, ...base, ...pInfo, ...userInfo,isHf }
-   
+
     this.setState({ info }, () => {
       this.onGetPostUrl()
     })
@@ -175,6 +277,7 @@ export default class DistributionDashboard extends Component {
 
   /** 保存图片 */
   savePoster = (poster) => {
+    console.log(poster)
     Taro.saveImageToPhotosAlbum({
       filePath: poster
     }).then(() => {
@@ -186,7 +289,8 @@ export default class DistributionDashboard extends Component {
         showPoster: false
       })
     })
-    .catch(() => {
+    .catch((res) => {
+      console.log(res)
       Taro.showToast({
         icon:'none',
         title: '保存失败'
@@ -197,7 +301,7 @@ export default class DistributionDashboard extends Component {
   render() {
     const { colors } = this.props
     const { info, showPoster, poster } = this.state
-    console.log(info, '0-0')
+    console.log(info, poster, '0-0')
     if ( !info ) {
       return <Loading />
     }
@@ -373,6 +477,22 @@ export default class DistributionDashboard extends Component {
           )}
         </View>
         {showPoster && (
+          <View className='poster-modal' onClick={this.handleHidePoster.bind(this)}>
+            <Image className='poster' src={poster} mode='aspectFit' />
+            <View
+              className='icon-download poster-save-btn'
+              onClick={this.handleSavePoster.bind(this)}
+            >
+              保存图片
+            </View>
+            <View
+              className='icon-close poster-close-btn'
+              onClick={this.handleHidePoster.bind(this)}
+            ></View>
+          </View>
+        )}
+
+        {/* {showPoster && (
           <View className='poster-modal'>
             <View className='box'>
               <Image className='poster' src={`${APP_IMAGE_CDN}/distribution_bck.png`} mode='aspectFit' />
@@ -397,7 +517,8 @@ export default class DistributionDashboard extends Component {
               ></View>
             </View>
           </View>
-        )}
+        )} */}
+        <Canvas className='canvas' canvas-id='myCanvas'></Canvas>
       </View>
     );
   }
