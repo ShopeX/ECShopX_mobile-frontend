@@ -21,7 +21,8 @@ export default class DistributionDashboard extends Component {
       info: null,
       showPoster: false,
       poster: null,
-      posterImgs: null
+      posterImgs: null,
+      qrcode: null
     }
   }
 
@@ -36,6 +37,55 @@ export default class DistributionDashboard extends Component {
 
   config = {
     navigationBarTitleText: '推广管理'
+  }
+
+  async fetch() {
+    const resUser = Taro.getStorageSync('userinfo')
+    const { username, avatar } = resUser
+
+    const res = await api.distribution.dashboard()
+    const base = pickBy(res, {
+      itemTotalPrice: 'itemTotalPrice',
+      cashWithdrawalRebate: 'cashWithdrawalRebate',
+      promoter_order_count: 'promoter_order_count',
+      promoter_grade_order_count: 'promoter_grade_order_count',
+      rebateTotal: 'rebateTotal',
+      isbuy_promoter: 'isbuy_promoter',
+      notbuy_promoter: 'notbuy_promoter',
+      taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee'
+    })
+
+    const promoter = await api.distribution.info()
+    const pInfo = pickBy(promoter, {
+      shop_name: 'shop_name',
+      shop_pic: 'shop_pic',
+      is_open_promoter_grade: 'is_open_promoter_grade',
+      promoter_grade_name: 'promoter_grade_name',
+      isOpenShop: 'isOpenShop',
+      shop_status: 'shop_status',
+      reason: 'reason'
+    })
+    const res2 = await api.member.hfpayUserApply()
+        const userInfo = pickBy(res2, {
+          applyStatus: 'status',
+        })
+    const res3 = await api.member.getIsHf()
+    let isHf=res3.hfpay_version_status
+    const info = { username, avatar, ...base, ...pInfo, ...userInfo, isHf }
+    this.setState({ info }, () => {
+      this.onGetPostUrl()
+    })
+  }
+
+
+  async onGetPostUrl () {
+    let { isOpenShop, shop_status } = this.state.info
+    shop_status = JSON.parse(shop_status === 1)
+    const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
+    const res = await api.distribution.qrcode({path: url})
+    const { qrcode } = res
+    this.setState({ qrcode })
+    console.log(qrcode, 'ppppp')
   }
 
   handleOpenApply() {
@@ -53,7 +103,7 @@ export default class DistributionDashboard extends Component {
               icon: 'success',
               duration: 2000
             })
-              .then(res => this.fetch())
+            .then(res => this.fetch())
           }
         })
       }
@@ -73,15 +123,9 @@ export default class DistributionDashboard extends Component {
  
 
   handleClick = async () => {
-    // let { isOpenShop, shop_status } = this.state.info
-    // Taro.navigateTo({
-    //   url: `/marketing/pages/distribution/qrcode?isOpenShop=${isOpenShop}&status=${shop_status === 1}`
-    // })
-    // this.setState({ showPoster: true })
     const { posterImgs } = this.state
     if (!posterImgs || !posterImgs.avatar || !posterImgs.code || !posterImgs.username) {
       const imgs = await this.downloadPosterImg()
-      console.log(imgs, '---')
       if (imgs && imgs.avatar && imgs.code && imgs.username) {
         this.setState({
           showPoster: true
@@ -108,16 +152,14 @@ export default class DistributionDashboard extends Component {
       userinfo = userObj
     }
     const { avatar, userId } = userinfo
-    const { info } = this.state
+    const { info, qrcode } = this.state
     const { id } = this.$router.params
-    const { share_image_url, image_url, item_id, username } = info
+    const { username } = info
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
-    const extConfig = (Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync) ? wx.getExtConfigSync() : {}
+    const extConfig = Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync ? wx.getExtConfigSync() : {}
     const { distributor_id, store_id } = Taro.getStorageSync('curStore')
 
     // const pic = (share_image_url || image_url).replace('http:', 'https:')
-    const infoId = info.distributor_id
-    const dtid = store_id || distributor_id || infoId
     const wxappCode = getDtidIdUrl(
       `https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=wx912913df9fef6ddd&company_id=1&id=6196&uid=20556&dtid=186`,
       GUIDE_INFO.distributor_id
@@ -125,13 +167,12 @@ export default class DistributionDashboard extends Component {
     // const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`subpage/pages/recommend/detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
     console.log(wxappCode)
     let avatarImg;
-    console.log(avatar, wxappCode, '--------s---')
     if (avatar) { // 头像
       avatarImg = await Taro.getImageInfo({src: avatar})
     }
-    const bck = await Taro.getImageInfo({src: `${APP_IMAGE_CDN}/distribution_bck.png`})
+    const bck = await Taro.getImageInfo({src: `${APP_IMAGE_CDN}/distribution_bck.png`}) // 背景图片
     const codeImg = await Taro.getImageInfo({src: wxappCode}) // 二维码
-    console.log(bck, '----bck--')
+    // const codeImg = await Taro.getImageInfo({src: qrcode}) // 二维码
     if (avatarImg) {
       const posterImgs = {
         avatar: avatarImg ? avatarImg.path : null,
@@ -180,65 +221,10 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  async fetch() {
-    const resUser = Taro.getStorageSync('userinfo')
-    const { username, avatar } = resUser
-
-    const res = await api.distribution.dashboard()
-    const base = pickBy(res, {
-      itemTotalPrice: 'itemTotalPrice',
-      cashWithdrawalRebate: 'cashWithdrawalRebate',
-      promoter_order_count: 'promoter_order_count',
-      promoter_grade_order_count: 'promoter_grade_order_count',
-      rebateTotal: 'rebateTotal',
-      isbuy_promoter: 'isbuy_promoter',
-      notbuy_promoter: 'notbuy_promoter',
-      taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee'
-    })
-
-    const promoter = await api.distribution.info()
-    const pInfo = pickBy(promoter, {
-      shop_name: 'shop_name',
-      shop_pic: 'shop_pic',
-      is_open_promoter_grade: 'is_open_promoter_grade',
-      promoter_grade_name: 'promoter_grade_name',
-      isOpenShop: 'isOpenShop',
-      shop_status: 'shop_status',
-      reason: 'reason'
-    })
-    const res2 = await api.member.hfpayUserApply()
-        const userInfo = pickBy(res2, {
-          applyStatus: 'status',
-        })
-    const res3 = await api.member.getIsHf()
-    let isHf=res3.hfpay_version_status
-    const info = { username, avatar, ...base, ...pInfo, ...userInfo,isHf }
-
-    this.setState({ info }, () => {
-      this.onGetPostUrl()
-    })
-  }
-
-  async onGetPostUrl () {
-    let { isOpenShop, shop_status } = this.state.info
-    shop_status = JSON.parse(shop_status === 1)
-    const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
-    const res = await api.distribution.qrcode({path: url})
-    const { qrcode } = res
-
-    this.setState({
-      info: {
-        ...this.state.info,
-        qrcode: qrcode
-      }
-    })
-  }
-
   /** 点击保存按钮 */
   handleSavePoster = () => {
     const { poster } = this.state
     Taro.getSetting().then(res => {
-      console.log(res, '----')
       if (!res.authSetting['scope.writePhotosAlbum']) {
         Taro.authorize({
           scope: 'scope.writePhotosAlbum',
@@ -269,15 +255,8 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  handleHidePoster = () => {
-    this.setState({
-      showPoster: false
-    })
-  }
-
   /** 保存图片 */
   savePoster = (poster) => {
-    console.log(poster)
     Taro.saveImageToPhotosAlbum({
       filePath: poster
     }).then(() => {
@@ -298,10 +277,15 @@ export default class DistributionDashboard extends Component {
     })
   }
 
+  handleHidePoster = () => {
+    this.setState({
+      showPoster: false
+    })
+  }
+
   render() {
     const { colors } = this.props
     const { info, showPoster, poster } = this.state
-    console.log(info, poster, '0-0')
     if ( !info ) {
       return <Loading />
     }
@@ -477,7 +461,7 @@ export default class DistributionDashboard extends Component {
           )}
         </View>
         {showPoster && (
-          <View className='poster-modal' onClick={this.handleHidePoster.bind(this)}>
+          <View className='poster-modal'>
             <Image className='poster' src={poster} mode='aspectFit' />
             <View
               className='icon-download poster-save-btn'
@@ -491,35 +475,8 @@ export default class DistributionDashboard extends Component {
             ></View>
           </View>
         )}
-
-        {/* {showPoster && (
-          <View className='poster-modal'>
-            <View className='box'>
-              <Image className='poster' src={`${APP_IMAGE_CDN}/distribution_bck.png`} mode='aspectFit' />
-              <View className='avatar-box'>
-                <Image
-                  className='avatar'
-                  src={info.avatar || userIcon}
-                  mode='aspectFit'
-                />
-                <Text className='name'>{info.username}</Text>
-              </View>
-              <Image src={info.qrcode} className='er-code' mode='aspectFit' />
-              <View
-                className='icon-download poster-save-btn'
-                onClick={this.handleSavePoster.bind(this)}
-              >
-                保存图片
-              </View>
-              <View
-                className='icon-close poster-close-btn'
-                onClick={this.handleHidePoster.bind(this)}
-              ></View>
-            </View>
-          </View>
-        )} */}
         <Canvas className='canvas' canvas-id='myCanvas'></Canvas>
       </View>
-    );
+    )
   }
 }
