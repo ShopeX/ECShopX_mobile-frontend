@@ -21,8 +21,7 @@ export default class DistributionDashboard extends Component {
       info: null,
       showPoster: false,
       poster: null,
-      posterImgs: null,
-      qrcode: null
+      posterImgs: null
     }
   }
 
@@ -72,20 +71,8 @@ export default class DistributionDashboard extends Component {
     const res3 = await api.member.getIsHf()
     let isHf=res3.hfpay_version_status
     const info = { username, avatar, ...base, ...pInfo, ...userInfo, isHf }
-    this.setState({ info }, () => {
-      this.onGetPostUrl()
-    })
-  }
-
-
-  async onGetPostUrl () {
-    let { isOpenShop, shop_status } = this.state.info
-    shop_status = JSON.parse(shop_status === 1)
-    const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
-    const res = await api.distribution.qrcode({path: url})
-    const { qrcode } = res
-    this.setState({ qrcode })
-    console.log(qrcode, 'ppppp')
+    
+    this.setState({ info })
   }
 
   handleOpenApply() {
@@ -139,10 +126,10 @@ export default class DistributionDashboard extends Component {
   }
 
   downloadPosterImg = async () => { // 处理海报信息以及太阳码
+    let { info: { username, isOpenShop, shop_status } } = this.state
     let userinfo = Taro.getStorageSync('userinfo')
-    const GUIDE_INFO = S.get("GUIDE_INFO", true);
-    const gu = `${GUIDE_INFO.work_userid}_${GUIDE_INFO.shop_code}`;
-    if (S.getAuthToken() && (!userinfo || !userinfo.userId)) {
+    const { avatar, userId } = userinfo
+    if (S.getAuthToken() && (!userinfo || !userId)) {
       const res = await api.member.memberInfo();
       const userObj = {
         avatar: res.memberInfo.avatar,
@@ -151,28 +138,18 @@ export default class DistributionDashboard extends Component {
       Taro.setStorageSync('userinfo', userObj)
       userinfo = userObj
     }
-    const { avatar, userId } = userinfo
-    const { info, qrcode } = this.state
-    const { id } = this.$router.params
-    const { username } = info
-    const host = req.baseURL.replace('/api/h5app/wxapp/', '')
     const extConfig = Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync ? wx.getExtConfigSync() : {}
-    const { distributor_id, store_id } = Taro.getStorageSync('curStore')
 
-    // const pic = (share_image_url || image_url).replace('http:', 'https:')
-    const wxappCode = getDtidIdUrl(
-      `https://ecshopx.shopex123.com/index.php/wechatAuth/wxapp/qrcode.png?page=pages/item/espier-detail&appid=wx912913df9fef6ddd&company_id=1&id=6196&uid=20556&dtid=186`,
-      GUIDE_INFO.distributor_id
-    )
-    // const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`subpage/pages/recommend/detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
-    console.log(wxappCode)
-    let avatarImg;
+    shop_status = JSON.parse(shop_status === 1)
+    const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
+    const wxappCode = `${req.baseURL}promoter/qrcode.png?path=${url}&appid=${extConfig.appid}&company_id=${extConfig.company_id}&user_id=${userId}`
+
+    let avatarImg
     if (avatar) { // 头像
       avatarImg = await Taro.getImageInfo({src: avatar})
     }
     const bck = await Taro.getImageInfo({src: `${APP_IMAGE_CDN}/distribution_bck.png`}) // 背景图片
     const codeImg = await Taro.getImageInfo({src: wxappCode}) // 二维码
-    // const codeImg = await Taro.getImageInfo({src: qrcode}) // 二维码
     if (avatarImg) {
       const posterImgs = {
         avatar: avatarImg ? avatarImg.path : null,
