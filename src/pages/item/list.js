@@ -18,7 +18,7 @@ import {
 } from "@/components";
 import api from "@/api";
 import { Tracker } from "@/service";
-import { pickBy, classNames, isWeixin } from "@/utils";
+import { pickBy, classNames, isWeixin, isWeb, getBrowserEnv } from "@/utils";
 import entry from "../../utils/entry";
 
 import "./list.scss";
@@ -602,7 +602,11 @@ export default class List extends Component {
     const { isTabBar = "guide", isNewGift } = this.$router.params;
 
     return (
-      <View className="page-goods-list">
+      <View
+        className={classNames("page-goods-list", {
+          "has-navbar": isWeb && !getBrowserEnv().weixin
+        })}
+      >
         <SpNavBar title="商品列表" leftIconType="chevron-left" fixed />
 
         <View className="search-wrap">

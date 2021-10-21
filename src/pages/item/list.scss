@@ -20,7 +20,7 @@
   }
 
   .tag-block {
-    padding: 24px 20px;
+    padding: 16px 20px;
     display: flex;
     align-items: center;
     background: #fff;
@@ -37,28 +37,24 @@
     }
   }
 
+  &.has-navbar {
+    .scroll-view {
+      @include page-scroll($navigate-height-h5 + 260px, 0);
+    }
+  }
+
+  .scroll-view {
+    @include page-scroll(260px, 0);
+  }
+
   .goods-list {
     column-count: 2;
-    padding: 0 16px;
+    padding: 16px;
     .goods-list-wrap {
+      page-break-inside: avoid;
       width: 345px;
       margin-bottom: 28px;
       box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
     }
-    // &__scroll {
-    //   @include page-scroll(
-    //     $tabs-height + $searchbar-height + $navigate-height + 8,
-    //     0
-    //   );
-    //   &.with-tag-bar {
-    //     @include page-scroll(
-    //       $tabs-height + $searchbar-height + $tags-height + $navigate-height + 8,
-    //       0
-    //     );
-    //   }
-    //   &.new-gift {
-    //     top: 208px !important;
-    //   }
-    // }
   }
 }
