@@ -41,7 +41,6 @@ export default class SpToolbar extends PureComponent {
           <ScrollView
             scrollY
             className='coupon-scroll'
-            // onScrollToLower={this.nextPage}
           >
             <View className='coupon-list-ticket'>
               {
@@ -68,7 +67,7 @@ export default class SpToolbar extends PureComponent {
                       >
                         {item.getted === 1 ? '已领取' : ''}
                         {item.getted === 2 ? '已领完' : ''}
-                        {(time > item.send_begin_time && item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
+                        {(time > item.send_begin_time && item.getted !== 2 && item.getted !== 1) ? '待领取' : ''}
                         {(item.card_type === 'new_gift' && time < item.send_begin_time) ? '未开始' : ''}
                       </View>
                     </CouponItem>

@@ -197,13 +197,13 @@
   }
 
   .coupon-box {
-    padding: 25px;
+    padding: 25px 15px;
     margin-bottom: 25px;
     background: #fff;
     .scroll-box {
       padding-top: 30px;
       width: 100%;
-      height: 325px;
+      height: 310px;
       white-space: nowrap;
       display: flex;
       justify-content: center;
@@ -214,29 +214,12 @@
       display: inline-block;
       flex-direction: column;
       text-align: center;
-      background: #F5F0E2;
-      border-radius: 15px;
-      width: 33%;
-      white-space: normal;
-      margin-right: 30px;
-      .price__primary {
-        font-size: 50px;
-        font-weight: bold;
-        color: #724120;
-        .price__symbol {
-          font-size: 28px;
-        }
-      }
-      .top {
-        padding: 25px 25px 30px;
-      }
-      .bottom {
-        position: relative;
-      }
+      width: 31%;
+      height: 290px;
       .coupon-mark {
         position: absolute;
-        top: 0;
-        right: -15px;
+        top: 6%;
+        right: -5%;
         padding: 0px 10px;
         background: #F59F4B;
         border-radius: 12px 12px 12px 0px;
@@ -244,36 +227,54 @@
         color: #fff;
         font-size: 24px;
       }
-      .coupon-desc {
-        margin-top: 30px;
+      .img {
+        width: 100%;
+        height: 100%;
+      }
+      &-price {
+        position: absolute;
+        left: 50%;
+        top: 15%;
+        transform: translateX(-50%);
+          .price__primary {
+            font-size: 50px;
+            font-weight: bold;
+            color: #724120;
+            .price__symbol {
+              font-size: 28px;
+            }
+          }
+      }
+      &-desc {
+        width: 80%;
+        color: #fff;
+        font-size: 24px;
+        position: absolute;
+        bottom: 23%;
+        left: 50%;
+        transform: translateX(-50%);
         @include multi-ellipsis(2)
       }
-      .coupon-quan {
-        font-size: 26px;
-        color: #724120;
-        font-weight: bold;
-        padding: 20px 0px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      &-circle {
-        width: 20px;
-        height: 20px;
-        background: #fff;
+      &-quan {
+        line-height: 24px;
+        padding: 5px 20px;
+        font-size: 20px;
         position: absolute;
-        border-radius: 50%;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(180deg, #FFF7EA 0%, #E4C5A4 100%);
+        box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.21);
+        border-radius: 10px;
       }
-      .circle-left {
-        left: -10px;
-        top: -8px;
+      &-font {
+        font-size: 50px;
+        font-weight: bold;
+        color: #724120;
       }
-      .circle-right {
-        right: -10px;
-        top: -8px;
-      }
-      .coupon-line {
-        border: 1px dashed #836B4E;
+      &-size {
+        font-size: 24px;
+        color: #724120;
       }
     }
     .coupon:last-child {

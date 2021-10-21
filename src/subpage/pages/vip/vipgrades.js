@@ -36,7 +36,7 @@ export default class VipIndex extends Component {
       cur: null,
       payType: "",
       isPaymentOpend: false,
-      visible: true,
+      visible: false,
       couponList: []
     }
   }
@@ -230,9 +230,9 @@ export default class VipIndex extends Component {
     ]
     this.setState({ couponList: list })
     // const [one, two] = await Promise.all([api.member.memberInfo(), api.vip.getBindCardList({ type: 'vip_grade', grade_id: 12 })])
-    // console.log(one, two, '----')
-    // const list = await api.vip.getBindCardList({ type: , grade_id:  })
-    // console.log(list)
+    const res = await api.vip.getBindCardList({ type: 'vip_grade', grade_id: 12 })
+
+    console.log(res, list, '----')
   }
 
   handleClickTab = idx => {
@@ -454,16 +454,39 @@ export default class VipIndex extends Component {
           <Text className='content-v-subtitle'>优惠券共计102张</Text>
           <ScrollView scrollX className='scroll-box'>
             <View className='coupon'>
-              <View className='top'>
+              <Image className='img' src='/assets/imgs/coupon_bck.png' />
+              <View className='coupon-price'>
                 <Price primary value={Number(220.00)} noDecimal />
-                <View className='coupon-desc'>满99元可用</View>
               </View>
-              <View className='bottom'>
-                <View className='coupon-line'></View>
-                <View className='coupon-circle circle-left'></View>
-                <View className='coupon-quan'>满减券</View>
-                <View className='coupon-circle circle-right'></View>
+              <View className='coupon-desc'>满99元可用</View>
+              <View className='coupon-quan'>满减券</View>
+              <View className='coupon-mark'>X2</View>
+            </View>
+            <View className='coupon'>
+              <Image className='img' src='/assets/imgs/coupon_bck.png' />
+              <View className='coupon-price'>
+                <View className='coupon-font'>兑换券</View>
               </View>
+              <View className='coupon-desc'>会员使用</View>
+              <View className='coupon-quan'>兑换券</View>
+            </View>
+            <View className='coupon'>
+              <Image className='img' src='/assets/imgs/coupon_bck.png' />
+              <View className='coupon-price'>
+                <Text className='coupon-font'>8.5</Text>
+                <Text className='coupon-size'>折</Text>
+              </View>
+              <View className='coupon-desc'>满2件使用</View>
+              <View className='coupon-quan'>折扣券</View>
+              <View className='coupon-mark'>X22</View>
+            </View>
+            <View className='coupon'>
+              <Image className='img' src='/assets/imgs/coupon_bck.png' />
+              <View className='coupon-price'>
+                <Price primary value={Number(220.00)} noDecimal />
+              </View>
+              <View className='coupon-desc'>满99元可用</View>
+              <View className='coupon-quan'>满减券</View>
               <View className='coupon-mark'>X2</View>
             </View>
           </ScrollView>
