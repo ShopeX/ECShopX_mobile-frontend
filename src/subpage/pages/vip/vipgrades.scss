@@ -39,29 +39,19 @@
       }
     }
     .header-tab {
-      height: auto !important;
       &.at-tabs {
         position: relative;
-        box-shadow: none;
       }
       .at-tabs__item-underline {
-        height: 0px;
-        background: none;
+        height: 8px;
+        background: #eac18b;
       }
       .at-tabs__header {
-        // background: transparent;
-        background: #DDD;
-        border-radius: 50px 50px 0px 0px;
-        color: #666;
-        overflow: hidden;
+        background: transparent;
         .at-tabs__item {
           color: #7a7867;
-          height: 80px;
-          line-height: 80px;
           &.at-tabs__item--active {
-            color: #222;
-            font-weight: bold;
-            background: #fff;
+            color: #eac18b;
           }
         }
       }
@@ -117,7 +107,7 @@
       // padding: 0 10px;
       display: inline-block;
       text-align: center;
-      padding-right: 25px;
+      padding-right: 28px;
       padding-top: 10px;
       .item-content {
         box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.08);
@@ -129,12 +119,14 @@
         // width: 260px;
         // border: 1px solid #f8f8f8;
         border-radius: 15px;
-        padding: 55px 20px;
+        padding: 40px 50px;
         .desc {
           font-size: 30px;
           color: #555;
+          padding-bottom: 10px;
+        }
+        .weight {
           font-weight: bold;
-          padding-bottom: 30px;
         }
         .amount {
           font-family: "Helvetica Neue";
@@ -215,8 +207,8 @@
       display: inline-block;
       flex-direction: column;
       text-align: center;
-      width: 31%;
-      height: 290px;
+      width: 28%;
+      height: 260px;
       .coupon-mark {
         position: absolute;
         top: 6%;
@@ -237,14 +229,14 @@
         left: 50%;
         top: 15%;
         transform: translateX(-50%);
-          .price__primary {
-            font-size: 50px;
-            font-weight: bold;
-            color: #724120;
-            .price__symbol {
-              font-size: 28px;
-            }
+        .price__primary {
+          font-size: 50px;
+          font-weight: bold;
+          color: #724120;
+          .price__symbol {
+            font-size: 28px;
           }
+        }
       }
       &-desc {
         width: 80%;
@@ -269,7 +261,7 @@
         border-radius: 10px;
       }
       &-font {
-        font-size: 50px;
+        font-size: 38px;
         font-weight: bold;
         color: #724120;
       }

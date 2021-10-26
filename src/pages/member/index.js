@@ -319,7 +319,7 @@ export default class MemberIndex extends Component {
     }  
   }
 
-  async fetchCouponCardList () {
+  fetchCouponCardList () {
     api.vip.getShowCardPackage({ receive_type: 'grade' })
     .then(({ all_card_list, receive_record_list }) => {
       if (all_card_list && all_card_list.length > 0) {
@@ -341,7 +341,7 @@ export default class MemberIndex extends Component {
     this.setState({ visible })
   }
 
-  async fetchgetCouponList () {
+  fetchgetCouponList () {
     const { receive_record_list } = this.state
     let receive_ids = receive_record_list.map(el => el.package_id)
     api.vip.getConfirmPackageShow({ receive_ids })

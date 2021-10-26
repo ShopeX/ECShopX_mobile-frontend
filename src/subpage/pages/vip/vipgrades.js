@@ -81,17 +81,16 @@ export default class VipIndex extends Component {
     })
   }
 
-  async onGetsBindCardList (item) {
+  onGetsBindCardList (item) {
     const { curTabIdx } = this.state
-    await api.vip.getBindCardList({ type: 'vip_grade', grade_id: item[curTabIdx].vip_grade_id })
+    api.vip.getBindCardList({ type: 'vip_grade', grade_id: item[curTabIdx].vip_grade_id })
     .then((res) => {
       const { list, total_count } = res
       this.setState({ couponList: list, total_count })
     })
-
   }
 
-  async fetchCouponCardList () {
+  fetchCouponCardList () {
     api.vip.getShowCardPackage({ receive_type: 'vip_grade' })
     .then(({ all_card_list, receive_record_list }) => {
       if (all_card_list && all_card_list.length > 0) {
@@ -113,10 +112,9 @@ export default class VipIndex extends Component {
     this.setState({ visible })
   }
 
-  async fetchgetCouponList () {
+  fetchgetCouponList () {
     const { receive_record_list } = this.state
     let receive_ids = receive_record_list.map(el => el.package_id)
-
     api.vip.getConfirmPackageShow({ receive_ids })
   }
 
@@ -270,7 +268,11 @@ export default class VipIndex extends Component {
                 <Image className='icon-vip' src='/assets/imgs/svip.png' />
               </View>
               <View className='mcode'>
-                {userVipInfo.end_time} 到期，购买后有效期将延续
+                {
+                  userVipInfo.grade_name
+                  ? userVipInfo.grade_name + ' : 有效期至' + userVipInfo.end_time
+                  : '暂未开通'
+                }
               </View>
             </View>
           </View>
@@ -312,7 +314,8 @@ export default class VipIndex extends Component {
                       onClick={this.checkHandle.bind(this, index)}
                     >
                       <View className='item-content'>
-                        <View className='desc'>{item.name === 'monthly' && '连续包月' || item.name === 'quarter' && '连续包季' || item.name === 'year' && '连续包年'}（{item.desc}）</View>
+                        <View className='desc weight'>{item.name === 'monthly' && '连续包月' || item.name === 'quarter' && '连续包季' || item.name === 'year' && '连续包年'}</View>
+                        <View className='desc'>{item.desc}</View>
                         <View className='amount'>
                           <Price primary value={Number(item.price)} />
                         </View>
