@@ -178,7 +178,7 @@ export default class VipIndex extends Component {
           showCancel: false,
           success: function(res) {
             console.log("success")
-            this.fetchCouponCardList()
+            that.fetchCouponCardList()
           }
         })
       },
