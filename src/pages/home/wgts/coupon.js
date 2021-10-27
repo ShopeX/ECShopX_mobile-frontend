@@ -128,7 +128,7 @@ export default class WgtCoupon extends Component {
 
   fetchgetCouponList () {
     const { receive_record_list } = this.state
-    let receive_ids = receive_record_list.map(el => el.package_id)
+    let receive_ids = receive_record_list && receive_record_list.map(el => el.receive_id)
     api.vip.getConfirmPackageShow({ receive_ids })
   }
 
