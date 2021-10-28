@@ -209,9 +209,9 @@ export default class VipIndex extends Component {
   }
 
   handleCouponBox = () => {
-    Taro.showModal({
-      content: '开通会员，立享优惠',
-      showCancel: false
+    Taro.showToast({
+      title: "开通会员，立享优惠",
+      icon: "none"
     })
   }
 
