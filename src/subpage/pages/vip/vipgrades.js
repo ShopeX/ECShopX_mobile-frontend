@@ -94,6 +94,11 @@ export default class VipIndex extends Component {
     .then(({ all_card_list }) => {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
+      } else {
+        Taro.showToast({
+          title: "领取失败",
+          icon: "none"
+        })
       }
       this.setState({ all_card_list })
     })
