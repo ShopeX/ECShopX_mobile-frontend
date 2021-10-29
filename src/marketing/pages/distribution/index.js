@@ -398,7 +398,7 @@ export default class DistributionDashboard extends Component {
             <Navigator
               className='view-flex-item'
               hover-class='none'
-              url='/marketing/pages/distribution/point-platform/index'>
+              url='/marketing/pages/distribution/point-platform'>
               <View className='icon-jifen'></View>
               <View className='label'>推广积分</View>
               <View className='mark'>{info.pointTotal || 0}</View>

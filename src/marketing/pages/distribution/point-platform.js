@@ -3,7 +3,7 @@ import { View, Text, Navigator } from '@tarojs/components'
 import api from '@/api'
 import { NavBar } from '@/components'
 
-import './index.scss'
+import './point-platform.scss'
 
 export default class PointPlatform extends Component {
   constructor (props) {
