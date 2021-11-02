@@ -116,7 +116,7 @@ export default class DistributionShop extends Component {
             </View>
           </View>
           <Navigator className="shop-setting" url="/marketing/pages/distribution/shop-setting">
-            <Text class="icon-setting"></Text>
+            <Text class="icon-settings"></Text>
           </Navigator>
         </View>
         {
