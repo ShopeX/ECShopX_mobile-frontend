@@ -30,19 +30,19 @@ export default class CrmAddressList extends Component {
   }
 
   componentDidShow() {
-    this.fetch()
+    // this.fetch()
   }
 
-  async fetch () {
-    Taro.showLoading()
-    const data = await api.member.crmAddressList()
-    Taro.hideLoading()
-    let selectedId = data.find(addr => addr.is_def > 0) || null
-    this.setState({
-      list:data,
-      selectedId:selectedId && selectedId[ADDRESS_ID]
-    })
-  }
+  // async fetch () {
+  //   Taro.showLoading()
+  //   const data = await api.member.crmAddressList() // 此接口已删除
+  //   Taro.hideLoading()
+  //   let selectedId = data.find(addr => addr.is_def > 0) || null
+  //   this.setState({
+  //     list:data,
+  //     selectedId:selectedId && selectedId[ADDRESS_ID]
+  //   })
+  // }
 
   handleClickChecked = async(item) => {
     this.setState({

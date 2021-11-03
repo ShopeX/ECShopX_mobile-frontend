@@ -72,9 +72,6 @@ export function userUsedCard (params = {}) {
 export function addressList (params) {
   return req.get('/member/addresslist', params)
 }
-export function crmAddressList (params = {}) {//获取crm地址
-  return req.post('/member/crmaddresslist',params)
-}
 
 export function addressCreate (params = {}) {
   return req.post('/member/address', params)
@@ -341,12 +338,6 @@ export function getTradePaymentList (params = {}) {
 }
 export function getIsHf (params = {}) {
   return req.get('/trade/payment/hfpayversionstatus', params)
-}
-
-
-//获取是否开启获取crm地址
-export function getCrmsetting () {
-  return req.get('/member/crmsetting')
 }
 
 // 配置地址
