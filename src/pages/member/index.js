@@ -543,7 +543,7 @@ export default class MemberIndex extends Component {
             </View>
           )}
 
-        {/* {is_open_official_account === 1 && (
+        {is_open_official_account === 1 && (
           <View className="page-member-section">
             <AccountOfficial
               onHandleError={this.handleOfficialError.bind(this)}
@@ -551,7 +551,7 @@ export default class MemberIndex extends Component {
               isClose={false}
             />
           </View>
-        )} */}
+        )}
 
         <View className="page-member-section order-box">
           <View className="section-title view-flex view-flex-middle">
@@ -667,11 +667,11 @@ export default class MemberIndex extends Component {
           </View>
         </View>
 
-        {/* {bannerSetting && bannerSetting.is_show && (
+        {bannerSetting && bannerSetting.is_show && (
           <View className="page-member-section">
             <MemberBanner info={bannerSetting} />
           </View>
-        )} */}
+        )}
 
         <View className="page-member-section">
           {memberData.is_open_popularize && isWeixin && (
