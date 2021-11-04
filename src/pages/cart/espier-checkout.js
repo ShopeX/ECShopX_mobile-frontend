@@ -24,7 +24,7 @@ import {
   redirectUrl,
   buriedPoint,
   isAlipay,
-  isWexin
+  isWeixin
 } from "@/utils";
 import { lockScreen } from "@/utils/dom";
 import { Tracker } from "@/service";
@@ -1633,7 +1633,7 @@ export default class CartCheckout extends Component {
     // 支付方式文字
     const payTypeText = {
       point: customName('积分支付'),
-      wxpay: isWexin ? '微信支付' : isAlipay ? '支付宝支付' : '现金支付',
+      wxpay: isWeixin ? '微信支付' : isAlipay ? '支付宝支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款',
       hfpay: '微信支付'
@@ -1838,7 +1838,7 @@ export default class CartCheckout extends Component {
             })}
           </View>
  
-          {isWexin && !this.isPointitemGood() && !bargain_id &&  total.invoice_status && (
+          {isWeixin && !this.isPointitemGood() && !bargain_id &&  total.invoice_status && (
             <SpCell
               isLink
               className="trade-invoice"

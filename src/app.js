@@ -206,6 +206,9 @@ class App extends Component {
           "pages/distribution/shop-goods",
           "pages/distribution/shop-trade",
           "pages/distribution/shop-achievement",
+
+          "pages/distribution/point-platform",
+
           "pages/verified-card/index",
           "pages/verified-card/verified",
           "pages/verified-card/card",
@@ -247,6 +250,8 @@ class App extends Component {
           "pages/plusprice/detail-plusprice-list",
           "pages/plusprice/cart-plusprice-list",
           "pages/member/qrcode",
+
+        
         ],
         plugins: {
           "live-player-plugin": {

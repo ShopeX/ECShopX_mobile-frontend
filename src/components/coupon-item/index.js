@@ -88,13 +88,15 @@ export default class CouponItem extends Component {
     ]
     switch(e) {
       case 'new_gift':
-      return type[0]
+        return type[0]
+      case 'gift':
+        return type[0]
       case 'cash':
-      return type[1]
+        return type[1]
       case 'discount':
-      return type[2]
+        return type[2]
       default: 
-      return null
+        return null
     }
   }
 

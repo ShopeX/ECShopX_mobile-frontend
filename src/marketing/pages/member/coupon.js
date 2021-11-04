@@ -49,21 +49,22 @@ export default class Coupon extends Component {
   // }
 
   componentDidShow () {
-    this.setState({
-      list: []
-    })
-    const { curTabIdx, tabList } = this.state
-    const status = tabList[curTabIdx].status
-    const card_type = tabList[curTabIdx].type
-    const params = {
-      card_type: card_type,
-      page: 1,
-      pageSize: 10,
-      page_no: 1,
-      page_size: 10,
-      status: status
-    }
-    this.fetch(params)
+    // this.setState({
+    //   list: []
+    // })
+    // const { curTabIdx, tabList } = this.state
+    // const status = tabList[curTabIdx].status
+    // const card_type = tabList[curTabIdx].type
+    // const params = {
+    //   card_type: card_type,
+    //   page: 1,
+    //   pageSize: 10,
+    //   page_no: 1,
+    //   page_size: 10,
+    //   status: status
+    // }
+    // this.fetch(params)
+    this.nextPage()
   }
 
   async fetch (params) {
@@ -84,6 +85,9 @@ export default class Coupon extends Component {
       pageSize,
       card_type
     }
+
+    delete params.page_no
+    delete params.page_size
 
     const { list, total_count: total } = await api.member.getUserCardList(params)
     const nList = pickBy(list, {
@@ -168,7 +172,7 @@ export default class Coupon extends Component {
 
 
   render () {
-    const { curTabIdx, tabList, list, page } = this.state
+    const { curTabIdx, tabList, list, page, scrollTop } = this.state
     const { colors }=this.props
 
     return (
@@ -200,6 +204,9 @@ export default class Coupon extends Component {
         <ScrollView
           scrollY
           className='coupon-list__scroll'
+          scrollWithAnimation
+          scrollTop={scrollTop}
+          onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
           <View className='coupon-list-ticket'>

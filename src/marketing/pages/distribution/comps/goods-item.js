@@ -37,7 +37,14 @@ export default class DistributionGoodsItem extends Component {
             <View>
               <View className='goods-item__title'>{info.title}</View>
               <View className='goods-item__price'><Text className='cur'>¥</Text>{info.price}</View>
-              <View className='goods-item__promoter-price'>预计收益：<Text className='cur'>¥</Text>{info.promoter_price}</View>
+              <View className='goods-item__promoter-price'>预计收益：
+                {
+                  info.commission_type==='money'?
+                  <Text className='cur'>¥{info.promoter_price}</Text>:
+                  <Text className='cur'>{info.promoter_point} 积分</Text>
+                }
+                
+              </View>
             </View>
             <View className='goods-item__extra'>
               <View className='goods-item__author'>

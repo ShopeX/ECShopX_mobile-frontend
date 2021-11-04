@@ -24,26 +24,12 @@ export default class AddressIndex extends Component {
     this.state = {
       list: [],
       isPicker: false,
-      selectedId: null,
-      is_open_crmAddress:false
+      selectedId: null
     }
-  }
-
-  componentDidMount () {
-    // this.fetch()
-    this.getCrmsetting()
-
   }
 
   componentDidShow() {
     this.fetch()
-  }
-
-  async getCrmsetting () {
-    const status = await api.member.getCrmsetting()
-    this.setState({
-      is_open_crmAddress: status
-    })
   }
 
   async fetch (isDelete = false) {
@@ -153,17 +139,6 @@ export default class AddressIndex extends Component {
               onClick={this.wxAddress.bind(this)}
             />
             : null
-        }
-        {
-          is_open_crmAddress 
-          ? <SpCell
-            isLink
-            iconPrefix='sp-icon'
-            icon='weixin'
-            title='获取CRM收货地址'
-            onClick={this.crmAddress.bind(this)}
-          />
-        :null
         }
 
         <NavBar 

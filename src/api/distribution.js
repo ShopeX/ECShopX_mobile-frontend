@@ -28,6 +28,10 @@ export function statistics () {
   return req.get('/promoter/brokerage/count')
 }
 
+export function getPointInfo (){
+  return req.get(`/promoter/brokerage/point_count`)
+}
+
 export function withdrawRecord (params) {
   return req.get('/promoter/cash_withdrawal', params)
 }

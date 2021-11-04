@@ -28,7 +28,7 @@ export default class DistributionShop extends Component {
   }
 
   async fetch() {
-    const { turnover } = this.$router.params
+    const { turnover,point } = this.$router.params;
     const { userId } = Taro.getStorageSync('userinfo')
     const param = {
       user_id: userId
@@ -56,7 +56,8 @@ export default class DistributionShop extends Component {
         shop_pic,
         turnover,
         share_title,
-        applets_share_img
+        applets_share_img,
+        point
       }
     })
   }
@@ -115,7 +116,7 @@ export default class DistributionShop extends Component {
             </View>
           </View>
           <Navigator className="shop-setting" url="/marketing/pages/distribution/shop-setting">
-            <Text class="icon-setting"></Text>
+            <Text class="icon-settings"></Text>
           </Navigator>
         </View>
         {
@@ -130,9 +131,13 @@ export default class DistributionShop extends Component {
         }
         <View className='section content-center'>
           <View className='content-padded-b shop-achievement'>
-            <View className='achievement-label'>小店营业额</View>
-            <View className='achievement-amount'><Text className='amount-cur'>¥</Text> {info.turnover}</View>
+            <View className='achievement-label'>小店任务返佣额 </View>
+            <View className='achievement-amount'><Text className='amount-cur'>¥</Text> {info.turnover / 100}</View>
           </View>
+          {/* <View className='content-padded-b shop-achievement'>
+            <View className='achievement-label'>小店返佣积分</View>
+            <View className='achievement-amount'>{info.point || 0} <Text className='amount-cur'>分</Text> </View>
+          </View> */}
         </View>
         <View className='grid two-in-row'>
           <View className='grid-item shop-nav-item' onClick={this.handleClick.bind(this, 'achievement')}>

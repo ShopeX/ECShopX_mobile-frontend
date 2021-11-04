@@ -90,7 +90,9 @@ export default class DistributionGoods extends Component {
       desc: 'brief',
       price: ({ price }) => (price / 100).toFixed(2),
       promoter_price: ({ promoter_price }) => (promoter_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2)
+      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+      commission_type:"commission_type",
+      promoter_point:'promoter_point'
     })
 
     let ids = []
@@ -287,6 +289,7 @@ export default class DistributionGoods extends Component {
   render() {
     const { status } = this.$router.params
     const { list, page, scrollTop, goodsIds, curFilterIdx, filterList, query, tabList, localCurrent } = this.state
+    console.log(list);
 
     return (
       <View className='page-distribution-shop'>
