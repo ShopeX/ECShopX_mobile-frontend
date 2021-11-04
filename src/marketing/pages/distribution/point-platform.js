@@ -47,7 +47,7 @@ export default class PointPlatform extends Component {
           <View className="header-bottom view-flex">
             <View className="view-flex-item view-flex view-flex-vertical view-flex-middle view-flex-center  with-border">
               <View className="assets-label">推广积分总额</View>
-              <View>¥ {info.point_total}</View>
+              <View>{info.point_total}积分</View>
             </View>
             <View className="view-flex-item view-flex view-flex-vertical view-flex-middle view-flex-center">
               {/* <View className="assets-label">可提取现金</View>
