@@ -73,6 +73,7 @@ const config = {
     patterns: copyPatterns
   },
   plugins: [
+    "@shopex/taro-plugin-modules",
     path.join(__dirname, "./modify-taro.js"),
     "@tarojs/plugin-sass",
     "@tarojs/plugin-uglify"

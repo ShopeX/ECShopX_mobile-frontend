@@ -833,8 +833,10 @@ export default class Home extends Component {
 
         {/* 开屏广告 */}
         {showAdv && <ScreenAd />}
-<<<<<<< HEAD
+        
 
         {/* tabBar */}
+      </View>
+    )
   }
 }

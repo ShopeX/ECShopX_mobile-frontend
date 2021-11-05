@@ -13,6 +13,7 @@
 		"build:rn": "taro build --type rn",
 		"dev:weapp": "npm run build:weapp -- --watch",
 		"dev:weapp:prd": "cross-env BUILD_ENV=prd npm run build:weapp -- --watch",
+		"dev:weapp:modules": "TARO_MODULES=true npx taro build --type weapp --watch",
 		"dev:swan": "npm run build:swan -- --watch",
 		"dev:alipay": "npm run build:alipay -- --watch",
 		"dev:tt": "npm run build:tt -- --watch",
@@ -62,6 +63,7 @@
 		"taro-ui": "^2.2.1"
 	},
 	"devDependencies": {
+		"@shopex/taro-plugin-modules": "^1.0.4",
 		"@tarojs/mini-runner": "2.2.11",
 		"@tarojs/plugin-babel": "2.2.11",
 		"@tarojs/plugin-csso": "2.2.11",
