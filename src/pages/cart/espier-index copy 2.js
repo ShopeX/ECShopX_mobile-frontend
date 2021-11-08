@@ -37,7 +37,7 @@ import { Tracker } from "@/service";
 import entry from "@/utils/entry";
 import { setPageTitle } from "@/utils/platform";
 import { getDistributorId } from "@/utils/helper";
-import { usePage } from '@/hooks'
+// import { usePagination } from '@/hooks'
 import CartGoodsItem from "./comps/cart-goodsitem";
 import "./espier-index.scss";
 
@@ -47,15 +47,16 @@ const tablist = [
 ];
 
 function CartIndex(props) {
+  // const { nextPage } = usePagination()
   const [state, setState] = useState({
     current: 0,
     itemCount: 0
-  });
+  } );
   const [cartList, setCatList] = useState({
     valid_cart: [],
     invalid_cart: []
   });
-  const [likeList, setLikeList] = useState([]);
+  const [likeList, setLikeList] = useState([])
   const router = useRouter();
   const { current } = state;
   const { valid_cart, invalid_cart } = cartList;
@@ -67,11 +68,11 @@ function CartIndex(props) {
     if (isLogin) {
       getCartList();
     }
-  }, [state]);
+  }, [state] );
 
-  useEffect(async () => {
+  useEffect( async () => {
     getLikeList();
-  }, []);
+  }, [])
 
   const getCartList = async () => {
     const { type = "distributor" } = router.params;
@@ -87,10 +88,10 @@ function CartIndex(props) {
         iscrossborder: 1
       };
     }
-    Taro.showLoading();
+    Taro.showLoading()
     const { valid_cart = [], invalid_cart = [] } = await api.cart.get(params);
-    const { item_count } = await api.cart.count({ shop_type: "distributor" });
-    Taro.hideLoading();
+    const { item_count } = await api.cart.count( { shop_type: "distributor" } );
+    Taro.hideLoading()
     setCatList({
       valid_cart,
       invalid_cart
@@ -101,7 +102,7 @@ function CartIndex(props) {
     const { list, total_count: total } = await api.cart.likeList({
       page: 1,
       pageSize: 10
-    });
+    } );
     setLikeList(list);
   };
 
@@ -110,28 +111,29 @@ function CartIndex(props) {
       ...state,
       current
     });
+    
   };
 
-  const onChangeGoodsItemCheck = async (item, e) => {
+  const onChangeGoodsItemCheck = async ( item, e ) => {
     await api.cart.select({
       cart_id: item.cart_id,
       is_checked: e
-    });
-    getCartList();
-  };
+    } );
+    getCartList()
+  }
 
-  const onChangeAllCheck = async (item, e) => {
-    const cartIds = item.list.map(item => item.cart_id);
+  const onChangeAllCheck = async ( item, e ) => {
+    const cartIds = item.list.map(item => item.cart_id)
     await api.cart.select({
       cart_id: cartIds,
       is_checked: e
     });
     getCartList();
-  };
+  }
 
   /**
    * 删除购物车
-   * @param {*} item
+   * @param {*} item 
    */
   const onDeleteCartGoodsItem = async ({ cart_id }) => {
     const res = await Taro.showModal({
@@ -148,6 +150,59 @@ function CartIndex(props) {
     getCartList();
   };
 
+  const shopCartItem = item => {
+    const allChecked = !item.list.find(item => !item.is_checked);
+    return (
+      <View className="shop-cart-item">
+        <View className="shop-cart-item-hd">{item.shop_name}</View>
+        <View className="shop-cart-item-bd">
+          <View className="shop-activity"></View>
+          {item.list.map((sitem, index) => (
+            <View className="cart-item-wrap" key={`cart-item-wrap__${index}`}>
+              <SpCheckboxNew
+                isChecked={sitem.is_checked}
+                onChange={onChangeGoodsItemCheck.bind(this, sitem)}
+              />
+              <CartGoodsItem info={sitem} onDelete={onDeleteCartGoodsItem.bind(this, sitem) }/>
+            </View>
+          ))}
+        </View>
+        <View className="shop-cart-item-ft">
+          <View className="lf">
+            <SpCheckboxNew
+              isChecked={allChecked}
+              label="全选"
+              onChange={onChangeAllCheck.bind(this, item)}
+            />
+          </View>
+          <View className="rg">
+            <View className="total-price-wrap">
+              合计：
+              <SpPrice className="total-pirce" value={item.total_fee / 1000} />
+            </View>
+            <AtButton
+              className="btn-calc"
+              type="primary"
+              circle
+              disabled={item.cart_total_num == 0}
+            >
+              结算({item.cart_total_num})
+            </AtButton>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const loginComps = (
+    <View className="login-header">
+      <View className="login-txt">授权登录后同步购物车的商品</View>
+      <SpLogin size="small" circle onChange={() => {}}>
+        授权登录
+      </SpLogin>
+    </View>
+  );
+
   return (
     <View
       className={classNames({
@@ -158,73 +213,13 @@ function CartIndex(props) {
       style={styleNames(getThemeStyle())}
     >
       <SpNavBar title="购物车" leftIconType="chevron-left" fixed />
-      {!isLogin && (
-        <View className="login-header">
-          <View className="login-txt">授权登录后同步购物车的商品</View>
-          <SpLogin size="small" circle onChange={() => {}}>
-            授权登录
-          </SpLogin>
-        </View>
-      )}
+      {!isLogin && loginComps}
       {isLogin && (
         <View>
-          <SpTabs
-            current={current}
-            tablist={tablist}
-            onChange={onChangeSpTab}
-          />
+          <SpTabs current={current} tablist={tablist} onChange={onChangeSpTab} />
           <View className="valid-cart-block">
             {valid_cart.map((item, index) => {
-              const allChecked = !item.list.find(item => !item.is_checked);
-              return (
-                <View className="shop-cart-item" key={`shop-cart-item__${index}`}>
-                  <View className="shop-cart-item-hd">{item.shop_name}</View>
-                  <View className="shop-cart-item-bd">
-                    <View className="shop-activity"></View>
-                    {item.list.map((sitem, index) => (
-                      <View
-                        className="cart-item-wrap"
-                        key={`cart-item-wrap__${index}`}
-                      >
-                        <SpCheckboxNew
-                          isChecked={sitem.is_checked}
-                          onChange={onChangeGoodsItemCheck.bind(this, sitem)}
-                        />
-                        <CartGoodsItem
-                          info={sitem}
-                          onDelete={onDeleteCartGoodsItem.bind(this, sitem)}
-                        />
-                      </View>
-                    ))}
-                  </View>
-                  <View className="shop-cart-item-ft">
-                    <View className="lf">
-                      <SpCheckboxNew
-                        isChecked={allChecked}
-                        label="全选"
-                        onChange={onChangeAllCheck.bind(this, item)}
-                      />
-                    </View>
-                    <View className="rg">
-                      <View className="total-price-wrap">
-                        合计：
-                        <SpPrice
-                          className="total-pirce"
-                          value={item.total_fee / 1000}
-                        />
-                      </View>
-                      <AtButton
-                        className="btn-calc"
-                        type="primary"
-                        circle
-                        disabled={item.cart_total_num == 0}
-                      >
-                        结算({item.cart_total_num})
-                      </AtButton>
-                    </View>
-                  </View>
-                </View>
-              );
+              return shopCartItem(item);
             })}
           </View>
           <View className="invalid-cart-block"></View>
@@ -242,7 +237,7 @@ function CartIndex(props) {
           </AtButton>
         </SpDefault>
       )}
-      
+
       {/* 猜你喜欢 */}
       {<SpRecommend className="recommend-block" info={likeList} />}
       <TabBar />

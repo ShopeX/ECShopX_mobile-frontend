@@ -7,7 +7,6 @@ import { pickBy, canvasExp } from '@/utils'
 import { getDtidIdUrl } from "@/utils/helper"
 import userIcon from "@/assets/imgs/user-icon.png";
 import req from '@/api/req'
-import api from '@/api'
 import S from '@/spx'
 import './index.scss'
 

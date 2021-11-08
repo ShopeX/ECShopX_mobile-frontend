@@ -1,4 +1,4 @@
-import Taro, { Component, useState } from "@tarojs/taro";
+import Taro, { Component, useState, useEffect } from "@tarojs/taro";
 import { View, ScrollView, Text, Image, Button } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
 import {
@@ -29,7 +29,6 @@ import { transformPlatformUrl, platformTemplateName } from "@/utils/platform";
 import qs from "qs";
 import userIcon from "@/assets/imgs/user-icon.png";
 import "./index.scss";
-import { useEffect } from "react";
 
 // @connect(
 //   ({ colors, member }) => ({
@@ -81,38 +80,6 @@ function MemberIndex( props ) {
     });
   }, [])
 
-  const KtVipComps = () => {
-    return (
-      <View className="kt-vip">
-        <View className="lf-con">
-          <View className='vip-title'>
-            开通VIP会员<Text className="iconfont icon-qianwang-01"></Text>
-          </View>
-          <View className='vip-desc'>即刻享受最高1折会员优惠</View>
-        </View>
-        <View className="rg-con">
-          <View className="vip-xf">
-            续费<Text className="iconfont icon-qianwang-01"></Text>
-          </View>
-          <View className="xs-price">限时特价</View>
-        </View>
-      </View>
-    );
-  }
-
-  const ServiceComps = () => {
-    return (
-      <View className="service-block">
-        <View className="block-hd">我的服务</View>
-        <View className="block-bd">
-          {
-
-          }
-        </View>
-      </View>
-    );
-  }
-
   return (
     <View className="pages-member-index" style={styleNames(getThemeStyle())}>
       <View
@@ -156,14 +123,30 @@ function MemberIndex( props ) {
         <View className="header-ft"></View>
       </View>
 
-      <KtVipComps />
+      <View className="kt-vip">
+        <View className="lf-con">
+          <View className="vip-title">
+            开通VIP会员<Text className="iconfont icon-qianwang-01"></Text>
+          </View>
+          <View className="vip-desc">即刻享受最高1折会员优惠</View>
+        </View>
+        <View className="rg-con">
+          <View className="vip-xf">
+            续费<Text className="iconfont icon-qianwang-01"></Text>
+          </View>
+          <View className="xs-price">限时特价</View>
+        </View>
+      </View>
 
       <View className="order-block">
         <View className="block-hd"></View>
         <View className="block-bd"></View>
       </View>
 
-      <ServiceComps />
+      <View className="service-block">
+        <View className="block-hd">我的服务</View>
+        <View className="block-bd">{}</View>
+      </View>
 
       <View className="help-block">
         <View className="block-hd">帮助中心</View>

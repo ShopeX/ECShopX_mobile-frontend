@@ -280,23 +280,24 @@ export const browser = (() => {
 
 
 export const getBrowserEnv = () => {
-  const ua = navigator.userAgent;
-  // console.log( `user-agent:`, ua );
-  return {
-    trident: ua.indexOf("Trident") > -1, //IE内核
-    presto: ua.indexOf("Presto") > -1, //opera内核
-    webKit: ua.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
-    gecko: ua.indexOf("Gecko") > -1 && ua.indexOf("KHTML") == -1, //火狐内核
-    mobile: !!ua.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-    ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-    android: ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1, //android终端
-    weixin: ua.match(/MicroMessenger/i),
-    qq: ua.match(/\sQQ/i) == " qq", //是否QQ
-    isWeapp:
-      (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) ||
-      global.__wxjs_environment === "miniprogram",
-    isAlipay: ua.match(/AlipayClient/i)
-  };
+  if ( process.env.TARO_ENV === 'h5' ) {
+    const ua = navigator.userAgent;
+    return {
+      trident: ua.indexOf( "Trident" ) > -1, //IE内核
+      presto: ua.indexOf( "Presto" ) > -1, //opera内核
+      webKit: ua.indexOf( "AppleWebKit" ) > -1, //苹果、谷歌内核
+      gecko: ua.indexOf( "Gecko" ) > -1 && ua.indexOf( "KHTML" ) == -1, //火狐内核
+      mobile: !!ua.match( /AppleWebKit.*Mobile.*/ ), //是否为移动终端
+      ios: !!ua.match( /\(i[^;]+;( U;)? CPU.+Mac OS X/ ), //ios终端
+      android: ua.indexOf( "Android" ) > -1 || ua.indexOf( "Adr" ) > -1, //android终端
+      weixin: ua.match( /MicroMessenger/i ),
+      qq: ua.match( /\sQQ/i ) == " qq", //是否QQ
+      isWeapp:
+        ( ua.match( /MicroMessenger/i ) && ua.match( /miniprogram/i ) ) ||
+        global.__wxjs_environment === "miniprogram",
+      isAlipay: ua.match( /AlipayClient/i )
+    };
+  }
 }
 
 // 注入美洽客服插件

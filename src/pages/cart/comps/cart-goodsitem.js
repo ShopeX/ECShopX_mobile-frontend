@@ -12,6 +12,11 @@ function CartGoodsItem(props) {
   const onDeleteGoodsItem = () => {
     onDelete(info)
   }
+
+  if ( !info ) {
+    return null
+  }
+  
   return (
     <View className="cart-goods-item">
       <View className="goods-item-hd">
