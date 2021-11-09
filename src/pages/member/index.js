@@ -26,6 +26,7 @@ import qs from 'qs';
 import { customName } from '@/utils/point';
 import userIcon from '@/assets/imgs/user-icon.png'
 import MemberBanner from "./comps/member-banner"
+import PrivacyConfirmModal from './comps/privacy-confirm-modal'
 
 import "./index.scss";
 
@@ -81,7 +82,8 @@ export default class MemberIndex extends Component {
       // showPrivacy: false,
       // showTimes: 0,
       all_card_list: [],
-      visible: false
+      visible: false,
+      privacyVisible: false
     };
   }
 
@@ -338,6 +340,11 @@ export default class MemberIndex extends Component {
     this.setState({ visible })
   }
 
+  onPrivateChange = (type) => {
+    console.log(type, '---')
+    this.setState({ privacyVisible: false })
+  }
+
   render() {
     const { colors, memberData } = this.props;
     const {
@@ -355,7 +362,8 @@ export default class MemberIndex extends Component {
       // showPrivacy,
       // showTimes,
       visible,
-      all_card_list
+      all_card_list,
+      privacyVisible
     } = this.state;
     let memberInfo = null,
       vipgrade = null;
@@ -905,6 +913,7 @@ export default class MemberIndex extends Component {
           }
         /> */}
         <CouponModal visible={visible} list={all_card_list} onChange={this.handleCouponChange} />
+        <PrivacyConfirmModal visible={privacyVisible} onChange={this.onPrivateChange.bind(this)}  />
       </View>
     )
   }
