@@ -113,15 +113,15 @@ export default class Home extends Component {
     // this.getShareSetting();
     // this.isShowTips();
   }
-
+  // 隐私协议
   PrivacyConfirmModalonChange = async(type) => {
     if (type==='agree') {
       const result = await api.wx.getPrivacyTime();
       const { update_time } = result;
-      Taro.setStorageSync('update_time',update_time)
+      Taro.setStorageSync('PrivacyUpdate_time',update_time)
       this.getHomeSetting();
     }else{
-      Taro.removeStorageSync('update_time');
+      Taro.removeStorageSync('PrivacyUpdate_time');
       Taro.removeStorageSync('auth_token');
     }
     this.setState({
