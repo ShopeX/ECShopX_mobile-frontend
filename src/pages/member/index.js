@@ -298,8 +298,17 @@ export default class MemberIndex extends Component {
   };
 
   handleClickWxOAuth( fn,need=true ) {
-    if(need){
-      fn && fn();
+    let policy = Taro.getStorageSync("isPrivacy")
+    if (!S.getAuthToken() && !policy) {
+      // this.setState({ privacyVisible: true })
+      // // Taro.showToast({ title: '请登录', icon: 'none', mask: true })
+      S.OAuthWxUserProfile(() => {
+        this.fetch()
+      }, true)
+      return
+    }
+    if (need) {
+      fn && fn()
     }
     // if ( this.state.showTimes >= 1 ) {
     //   if(need){

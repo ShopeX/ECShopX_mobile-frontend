@@ -1,5 +1,5 @@
 import Taro, { Component } from "@tarojs/taro";
-import { View } from "@tarojs/components";
+import { View, Button } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
 import { AtButton } from 'taro-ui'
 import S from "@/spx";
@@ -167,7 +167,7 @@ export default class SpLogin extends Component {
 
   onPrivateChange = async (type, e) => {
     this.setState({ privacyVisible: false })
-    if (type == 'agree') {
+    if (type == 'agree' && e) {
       this.wexinBindPhone(e)
     }
   }
@@ -211,7 +211,7 @@ export default class SpLogin extends Component {
         </Button>
         }
 
-        <PrivacyConfirmModal visible={privacyVisible} onChange={this.onPrivateChange}  />
+        <PrivacyConfirmModal isPhone={privacyVisible} visible={privacyVisible} onChange={this.onPrivateChange}  />
       </View>
     );
   }
