@@ -1,11 +1,11 @@
-import Taro, { Component } from "@tarojs/taro"
-import { View, Image, Button, Text } from "@tarojs/components"
+import Taro, { Component } from "@tarojs/taro";
+import { View, Image, Button, Text } from "@tarojs/components";
 import api from "@/api"
 
 import "./index.scss"
 
 export default class PrivacyConfirmModal extends Component {
-  static defaultProps = {}
+  static defaultProps = {};
   constructor(props) {
     super(props)
     this.state = {
@@ -20,8 +20,8 @@ export default class PrivacyConfirmModal extends Component {
   handleClickAgreement = type => {
     Taro.navigateTo({
       url: "/subpage/pages/auth/reg-rule?type=" + type
-    })
-  }
+    });
+  };
 
   async fetch() {
     const data = await api.shop.getStoreBaseInfo()
@@ -36,12 +36,12 @@ export default class PrivacyConfirmModal extends Component {
     if (encryptedData && iv) {
       Taro.setStorageSync("PrivacyUpdate_time", true)
     }
-    onChange && onChange('agree', e)
-  }
+    onChange && onChange("agree", e);
+  };
 
   render() {
     const { info } = this.state
-    const { visible, onChange } = this.props
+    const { visible, onChange, isPhone } = this.props
 
     return (
       <View>
@@ -54,7 +54,10 @@ export default class PrivacyConfirmModal extends Component {
               />
               <View className='container'>
                 <View className='top'>
-                  <Image src={`${APP_IMAGE_CDN}/privacy_tips.png`} className='tips' />
+                  <Image
+                    src={`${APP_IMAGE_CDN}/privacy_tips.png`}
+                    className='tips'
+                  />
                   <View>个人隐私保护指引</View>
                 </View>
                 <View className='content'>
@@ -82,12 +85,20 @@ export default class PrivacyConfirmModal extends Component {
                   <Button className='cancel' onClick={() => onChange('reject')}>
                     拒绝
                   </Button>
-                  <Button className='agree' openType='getPhoneNumber' onGetPhoneNumber={this.wexinBindPhone}>
-                    同意
-                  </Button>
-                  {/* <Button onClick={() => onChange('agree')}>
-                    <View className='agree'>同意</View>
-                  </Button> */}
+                  {isPhone ? (
+                    <Button
+                      className='agree'
+                      openType='getPhoneNumber'
+                      onGetPhoneNumber={this.wexinBindPhone}
+                    >
+                      同意
+                    </Button>
+                  ) : (
+                    <Button onClick={() => onChange('agree')}  className='agree'>
+                      同意
+                    </Button>
+                  )}
+
                   {/* <Button onClick={() => onChange('agree')}>
                     <View className='agree'>同意</View>
                   </Button> */}
