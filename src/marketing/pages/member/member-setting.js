@@ -72,64 +72,25 @@ export default class SettingIndex extends Component {
   }
 
   async handleCancelMenber() {
-    this.setState({
-      visible: true,
-      title: '注销账号',
-      content: '有未完成的订单点击注销账号，弹出弹窗，弹窗内容为后台配置',
-      confirmBtnContent: '我知道了'
+    req.delete('/member', { is_delete: '0' }).then((res) => {
+      if (!res.status) {
+        this.setState({
+          visible: true,
+          title: '注销账号',
+          content: res.msg,
+          confirmBtnContent: '我知道了'
+        })
+      } else {
+        this.handleClickWxOAuth(`/marketing/pages/member/destroy-member?phone=${res.msg}`, true)
+      }
     })
-    // Taro.showLoading()
-    // const url = `/member`
-    // req.delete(url).then(res => {
-    //   if (res.status) {
-    //     Taro.hideLoading()
-    //     Taro.showModal({
-    //       title: "注销会员",
-    //       content:
-    //         "一旦注销会员，会员资产会被清零且不能对历史订单发起售后，请确认是否注销",
-    //       showCancel: true,
-    //       success: res => {
-    //         if (res.confirm) {
-    //           Taro.showLoading();
-    //           const url = `/member?is_delete=1`;
-    //           req.delete(url).then(res => {
-    //             if (res.status) {
-    //               Taro.hideLoading();
-    //               wx.clearStorage();
-    //               Taro.showToast({
-    //                 title: "注销成功",
-    //                 icon: "none",
-    //                 mask: true,
-    //                 duration: 2000
-    //               });
-    //               Taro.navigateBack();
-    //             } else {
-    //               Taro.showModal({
-    //                 title: "注销会员",
-    //                 content: res.message
-    //               });
-    //             }
-    //           });
-    //           Taro.hideLoading();
-    //         }
-    //       }
-    //     });
-    //   } else {
-    //     Taro.showModal({
-    //       title: "注销会员",
-    //       content: res.message
-    //     });
-    //   }
-    // });
-    // Taro.hideLoading();
   }
 
-  handCancel = (parmas) => {
-    console.log(parmas)
-    if (parmas === 'confirm') {
-      // 我知道了
-      this.handleClickWxOAuth("/marketing/pages/member/destroy-member", true)
-    }
+  handCancel = () => {
+    // if (parmas === 'confirm') {
+    //   // 我知道了
+    //   this.handleClickWxOAuth("/marketing/pages/member/destroy-member", true)
+    // }
     this.setState({ visible: false })
   }
 

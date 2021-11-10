@@ -33,13 +33,9 @@ export default class RegRule extends Component {
       navBarTitle = title
     } else if (type === 'privacyAndregister') { // 隐私和注册协议
       const { content: privacyContent, title: privactTitle } = await api.shop.getRuleInfo({ type: 'privacy' })
-      const { content: registerContent, title: registerTitle } = await api.user.regRule()
+      const { content: registerContent, title: registerTitle } = await api.shop.getRuleInfo({ type: 'member_register' })
       data = privacyContent + registerContent
       navBarTitle = `${privactTitle}和${registerTitle}`
-    } else if (type == 'cancelPrivate') { // 用户注销协议
-      const { content, title = '用户注销协议' } = await api.user.regRule()
-      data = content
-      navBarTitle = title
     } else if (type) {
       // 隐私政策
       const { content, title = '充值协议' } = await api.shop.getRuleInfo({
