@@ -23,12 +23,13 @@
   }
   .container {
     position: absolute;
-    top: 5%;
+    top: 0;
     padding: 40px;
     color: #222;
   }
   .top {
     display: flex;
+    align-items: center;
     margin-bottom: 40px;
     font-weight: bold;
   }
@@ -55,20 +56,20 @@
   }
   .bottom {
     display: flex;
+    justify-content: space-between;
     margin-top: 37px;
+  }
+  .agree, .cancel {
+    width: 45%;
+    margin: 0px;
+    font-size: 28px;
+    border-radius: 8px;
   }
   .cancel {
     background: #ffffff;
-    border-radius: 8px;
-    padding: 0 90px;
-    margin: 0 -25px;
-
   }
   .agree {
     color: #fff;
     background: #db692a;
-    border-radius: 8px;
-    padding: 0 90px;
-    margin: 0 -25px;
   }
 }

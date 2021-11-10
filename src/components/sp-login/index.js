@@ -6,7 +6,7 @@ import S from "@/spx";
 import api from "@/api";
 import { isWeixin, isAlipay, classNames, tokenParse } from "@/utils";
 import { Tracker } from "@/service";
-import PrivacyConfirmModal from '@/components'
+import { PrivacyConfirmModal } from '@/components'
 
 import "./index.scss";
 
@@ -165,16 +165,16 @@ export default class SpLogin extends Component {
     this.props.onChange && this.props.onChange();
   }
 
-  onPrivateChange = async (type) => {
-    console.log(type, '--')
-    if (type == 'agree')  Taro.setStorageSync("isPrivacy", true)
+  onPrivateChange = async (type, e) => {
     this.setState({ privacyVisible: false })
+    if (type == 'agree') {
+      this.wexinBindPhone(e)
+    }
   }
 
   onClickChange = () => {
     this.setState({ privacyVisible: true })
   }
-
 
   render() {
     const { token, privacyVisible } = this.state;

@@ -1,6 +1,5 @@
 import Taro, { Component } from "@tarojs/taro"
 import { View, Image, Button, Text } from "@tarojs/components"
-import { SpLogin } from '@/components'
 import "./index.scss"
 
 export default class PrivacyConfirmModal extends Component {
@@ -13,6 +12,15 @@ export default class PrivacyConfirmModal extends Component {
     Taro.navigateTo({
       url: "/subpage/pages/auth/reg-rule?type=" + type
     })
+  }
+
+  wexinBindPhone = async (e) => {
+    const { encryptedData, iv } = e.detail
+    const { onChange } = this.props
+    if (encryptedData && iv) {
+      Taro.setStorageSync("isPrivacy", true)
+    }
+    onChange && onChange('agree', e)
   }
 
   render() {
@@ -54,14 +62,15 @@ export default class PrivacyConfirmModal extends Component {
                   </Text>
                 </View>
                 <View className='bottom'>
-                  <Button onClick={() => onChange('reject')}>
-                    <View className='cancel'>拒绝</View>
+                  <Button className='cancel' onClick={() => onChange('reject')}>
+                    拒绝
                   </Button>
-                  <SpLogin>
-                    <Button onClick={() => onChange('agree')}>
-                      <View className='agree'>同意</View>
-                    </Button>
-                  </SpLogin>
+                  <Button className='agree' openType='getPhoneNumber' onGetPhoneNumber={this.wexinBindPhone}>
+                    同意
+                  </Button>
+                  {/* <Button onClick={() => onChange('agree')}>
+                    <View className='agree'>同意</View>
+                  </Button> */}
                   {/* <Button onClick={() => onChange('agree')}>
                     <View className='agree'>同意</View>
                   </Button> */}
