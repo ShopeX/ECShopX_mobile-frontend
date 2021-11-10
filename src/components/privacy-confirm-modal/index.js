@@ -52,6 +52,7 @@ export default class PrivacyConfirmModal extends Component {
               <Image
                 src={`${APP_IMAGE_CDN}/privacy_bck.png`}
                 className='background'
+                mode='widthFix'
               />
               <View className='container'>
                 <View className='top'>
@@ -59,7 +60,7 @@ export default class PrivacyConfirmModal extends Component {
                     src={`${APP_IMAGE_CDN}/privacy_tips.png`}
                     className='tips'
                   />
-                  <View>个人隐私保护指引</View>
+                  <View className='texts'>个人隐私保护指引</View>
                 </View>
                 <View className='content'>
                   <Text>
