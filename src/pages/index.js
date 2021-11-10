@@ -101,7 +101,11 @@ export default class Home extends Component {
 
   // 获取隐私政策时间
   async protocolUpdateTime() {
-    if (Taro.getStorageSync('update_time')) {
+    const time = Taro.getStorageSync('PrivacyUpdate_time');
+    const result = await api.wx.getPrivacyTime();
+    const { update_time } = result;
+
+    if (time && time >= update_time) {
       this.getHomeSetting();
       return;
     }
@@ -118,6 +122,7 @@ export default class Home extends Component {
     if (type==='agree') {
       const result = await api.wx.getPrivacyTime();
       const { update_time } = result;
+
       Taro.setStorageSync('PrivacyUpdate_time',update_time)
       this.getHomeSetting();
     }else{
