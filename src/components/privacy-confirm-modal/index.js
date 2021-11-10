@@ -34,7 +34,7 @@ export default class PrivacyConfirmModal extends Component {
     const { encryptedData, iv } = e.detail
     const { onChange } = this.props
     if (encryptedData && iv) {
-      Taro.setStorageSync("isPrivacy", true)
+      Taro.setStorageSync("PrivacyUpdate_time", true)
     }
     onChange && onChange('agree', e)
   }

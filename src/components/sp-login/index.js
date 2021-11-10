@@ -178,7 +178,7 @@ export default class SpLogin extends Component {
 
   render() {
     const { token, privacyVisible } = this.state;
-    let policy = Taro.getStorageSync("isPrivacy")
+    let policy = Taro.getStorageSync("PrivacyUpdate_time")
     console.log(policy, 'policy', privacyVisible)
     return (
       <View className={classNames("sp-login", this.props.className)}>
