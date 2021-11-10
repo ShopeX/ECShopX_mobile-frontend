@@ -5,7 +5,13 @@ import { classNames, styleNames } from "@/utils";
 import "./comp-panel.scss";
 
 function CompsPanel(props) {
-  const { title, extra, icon, children, className } = props;
+  const {
+    title,
+    extra,
+    icon = "icon-qianwang-01",
+    children,
+    className
+  } = props;
   return (
     <View
       className={classNames(
@@ -33,5 +39,9 @@ function CompsPanel(props) {
     </View>
   );
 }
+
+CompsPanel.options = {
+  addGlobalClass: true
+};
 
 export default CompsPanel;

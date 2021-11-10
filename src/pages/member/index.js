@@ -28,8 +28,9 @@ import {
 import { transformPlatformUrl, platformTemplateName } from "@/utils/platform";
 import qs from "qs";
 import userIcon from "@/assets/imgs/user-icon.png";
-import CompsVipCard from './comps/comp-vipcard'
-import CompsPanel from './comps/comp-panel'
+import { useLogin } from "@/hooks";
+import CompsVipCard from "./comps/comp-vipcard";
+import CompsPanel from "./comps/comp-panel";
 import "./index.scss";
 
 // @connect(
@@ -43,7 +44,8 @@ import "./index.scss";
 // )
 //   @withLogin()
 
-function MemberIndex( props ) {
+function MemberIndex(props) {
+  const { isLogin } = useLogin();
   const [menu, setMenu] = useState({
     activity: false,
     offline_order: false,
@@ -61,25 +63,49 @@ function MemberIndex( props ) {
     memberinfo_enable: false
   });
 
+  useEffect(async () => {
+    console.log(`isLogin:`, isLogin);
+    if (isLogin) {
+      await api.member.getSalesperson();
+      await api.trade.getCount();
+      await api.vip.getList();
+      await api.member.memberAssets();
+      // 大转盘
+      await api.wheel.getTurntableconfig();
+    }
+  }, []);
+
   useEffect( async () => {
-    await api.member.getSalesperson()
-    await api.trade.getCount()
-    await api.vip.getList()
-    await api.member.memberAssets()
-    // 大转盘
-    await api.wheel.getTurntableconfig()
-  }, [] )
+    getMemberCenterConfig()
+    // // 菜单配置
+    // const res = await api.shop.getPageParamsConfig({
+    //   page_name: "member_center_menu_setting"
+    // });
+    // setMenu({
+    //   ...menu,
+    //   ...res.list[0].params.data
+    // } );
+    
+  }, [] );
   
-  useEffect( async () => {
-    // 菜单配置
-    const res = await api.shop.getPageParamsConfig({
-      page_name: "member_center_menu_setting"
-    } )
+  const getMemberCenterConfig = async () => {
+    const [bannerRes, menuRes, pointShopRes] = await Promise.all([
+      // 会员中心banner
+      await api.shop.getPageParamsConfig({
+        page_name: "member_center_setting"
+      }),
+      // 菜单自定义
+      await api.shop.getPageParamsConfig({
+        page_name: "member_center_menu_setting"
+      }),
+      // 积分商城
+      await api.pointitem.getPointitemSetting()
+    ] );
     setMenu({
       ...menu,
-      ...res.list[0].params.data
+      ...menuRes.list[0].params.data
     });
-  }, [])
+  }
 
   return (
     <View className="pages-member-index" style={styleNames(getThemeStyle())}>
@@ -128,28 +154,34 @@ function MemberIndex( props ) {
       <View className="body-block">
         <CompsPanel title="订单" extra="查看全部订单">
           <View className="ziti-order">
-            <View>
-              <View>自提订单</View>
-              <View className="ziti-">您有0个等待自提的订单</View>
+            <View className="ziti-order-info">
+              <View className="title">自提订单</View>
+              <View className="ziti-txt">
+                您有<Text className="ziti-num">0</Text>个等待自提的订单
+              </View>
             </View>
-            <Text className='iconfont'></Text>
+            <Text className="iconfont icon-qianwang-01"></Text>
           </View>
           <View className="order-con">
             <View className="order-item">
-              <SpImage src="" />
-              <Text className=""></Text>
+              <SpImage src="daizhifu.png" width="70" />
+              <Text className="order-txt">待支付</Text>
             </View>
             <View className="order-item">
-              <SpImage src="" />
-              <Text className=""></Text>
+              <SpImage src="daifahuo.png" width="70" />
+              <Text className="order-txt">待发货</Text>
             </View>
             <View className="order-item">
-              <SpImage src="" />
-              <Text className=""></Text>
+              <SpImage src="daishouhuo.png" width="70" />
+              <Text className="order-txt">待收货</Text>
             </View>
             <View className="order-item">
-              <SpImage src="" />
-              <Text className=""></Text>
+              <SpImage src="pingjia.png" width="70" />
+              <Text className="order-txt">待评价</Text>
+            </View>
+            <View className="order-item">
+              <SpImage src="daishouhuo.png" width="70" />
+              <Text className="order-txt">售后</Text>
             </View>
           </View>
         </CompsPanel>
@@ -175,7 +207,7 @@ function MemberIndex( props ) {
   );
 }
 
-export default MemberIndex
+export default MemberIndex;
 
 // export default class MemberIndex extends Component {
 //   constructor(props) {

@@ -79,4 +79,5 @@ export const DEFAULT_TABS = {
   name: "tabs"
 };
 
+
 export default {};
