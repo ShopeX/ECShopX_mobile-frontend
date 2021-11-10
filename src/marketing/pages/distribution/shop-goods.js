@@ -276,7 +276,7 @@ export default class DistributionShopGoods extends Component {
                         onClick={this.handleViewDetail.bind(
                           this,
                           index,
-                          item.item_id
+                          item.goods_id
                         )}
                       >
                         <Text className="icon-search"></Text> 查看指标明细
