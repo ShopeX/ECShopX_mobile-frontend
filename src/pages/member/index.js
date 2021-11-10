@@ -298,15 +298,18 @@ export default class MemberIndex extends Component {
   };
 
   handleClickWxOAuth( fn,need=true ) {
-    const { avatar, username } = this.props.memberData.memberInfo;
-    if (avatar && username) {
-      if(need){
-        fn && fn()
+    const { memberData } =this.props
+    if (memberData && memberData.memberInfo) {
+      const { avatar, username } = memberData.memberInfo;
+      if (avatar && username) {
+        if(need){
+          fn && fn()
+        }
+      } else {
+        S.OAuthWxUserProfile(() => {
+          this.fetch()
+        }, true)
       }
-    } else {
-      S.OAuthWxUserProfile(() => {
-        this.fetch()
-      }, true)
     }
     // if ( this.state.showTimes >= 1 ) {
     //   if(need){
@@ -859,21 +862,13 @@ export default class MemberIndex extends Component {
             <SpCell
               title='设置'
               isLink
-              onClick={() =>
-                this.handleClickWxOAuth(
-                  this.navigateTo.bind(this, "/marketing/pages/member/member-setting")
-                )
-              }
+              onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/member-setting' })}
             ></SpCell>
           }
           <SpCell
             title='用户协议和隐私政策'
             isLink
-            onClick={() =>
-              this.handleClickWxOAuth(
-                this.navigateTo.bind(this, `/subpage/pages/auth/reg-rule?type=privacyAndregister`)
-              )
-            }
+            onClick={() => Taro.navigateTo({ url: '/subpage/pages/auth/reg-rule?type=privacyAndregister' })}
           ></SpCell>
           {process.env.TARO_ENV === "h5" && (
             <SpCell
