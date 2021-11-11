@@ -101,7 +101,7 @@ export default class Home extends Component {
 
   // 获取隐私政策时间
   async protocolUpdateTime() {
-    const time = Taro.getStorageSync('PrivacyUpdate_time');
+    const time = Taro.getStorageSync("PrivacyUpdate_time");
     const result = await api.wx.getPrivacyTime();
     const { update_time } = result;
 
@@ -118,21 +118,43 @@ export default class Home extends Component {
     // this.isShowTips();
   }
   // 隐私协议
-  PrivacyConfirmModalonChange = async(type) => {
-    if (type==='agree') {
+  PrivacyConfirmModalonChange = async type => {
+    if (type === "agree") {
       const result = await api.wx.getPrivacyTime();
       const { update_time } = result;
 
-      Taro.setStorageSync('PrivacyUpdate_time',update_time)
+      Taro.setStorageSync("PrivacyUpdate_time", update_time);
       this.getHomeSetting();
-    }else{
-      Taro.removeStorageSync('PrivacyUpdate_time');
-      Taro.removeStorageSync('auth_token');
+    } else {
+      Taro.removeStorageSync("PrivacyUpdate_time");
+      Taro.removeStorageSync("auth_token");
+      const {
+        is_open_scan_qrcode,
+        is_open_recommend,
+        is_open_wechatapp_location,
+        is_open_official_account
+      } = Taro.getStorageSync("settingInfo");
+      let { distributor_id } = Taro.getStorageSync("curStore");
+      const store = await entry.handleDistributorId(distributor_id)
+      this.setState(
+        {
+          curStore: store,
+          is_open_scan_qrcode:is_open_scan_qrcode,
+          is_open_recommend,
+          is_open_wechatapp_location,
+          is_open_official_account
+        },
+        () => {
+          this.getWgts();
+          this.getAutoMatic();
+        }
+      );
+
+
     }
     this.setState({
       PrivacyConfirmModalVisible: false
     });
-
   };
 
   // 检测收藏变化
@@ -384,7 +406,7 @@ export default class Home extends Component {
     options.isStore = is_open_store_status;
     const res = await entry.entryLaunch(options, isNeedLoacate);
     const { store } = res;
-
+    console.log('store===========',store);
     if (!isArray(store)) {
       this.setState(
         {
