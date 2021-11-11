@@ -249,8 +249,12 @@ class Spx {
 
       const resLogin = await Taro.login() || {};
       code = resLogin.code;
-      const tokenLogin = await api.wx.login({ code }) || {}
-      token = tokenLogin.token;
+      try {
+        const tokenLogin = await api.wx.login({ code }) || {}
+        token = tokenLogin.token;
+      } catch(e) {
+        return true
+      }
     } else if (isAlipay) {
       const authLogin = await my.getAuthCode({ scopes: ['auth_base'] });
       code = authLogin.authCode; 
