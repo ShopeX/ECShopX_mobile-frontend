@@ -81,7 +81,8 @@ export default class MemberIndex extends Component {
       // showPrivacy: false,
       // showTimes: 0,
       all_card_list: [],
-      visible: false
+      visible: false,
+      privacyInfo: {}
     };
   }
 
@@ -97,6 +98,7 @@ export default class MemberIndex extends Component {
   }
 
   componentDidShow () {
+    this.getPrivacyTitle()
     if (S.getAuthToken()) {
       this.fetchCouponCardList()
     }
@@ -108,6 +110,13 @@ export default class MemberIndex extends Component {
     onReachBottomDistance: 50,
     backgroundTextStyle: "dark",
     navigationStyle: "custom"
+  }
+
+  async getPrivacyTitle () {
+    const data = await api.shop.getStoreBaseInfo()
+    this.setState({
+      privacyInfo: data
+    })
   }
 
   async onShareAppMessage() {
@@ -365,7 +374,8 @@ export default class MemberIndex extends Component {
       // showPrivacy,
       // showTimes,
       visible,
-      all_card_list
+      all_card_list,
+      privacyInfo
     } = this.state;
     let memberInfo = null,
       vipgrade = null;
@@ -866,7 +876,7 @@ export default class MemberIndex extends Component {
             ></SpCell>
           }
           <SpCell
-            title='用户协议和隐私政策'
+            title={privacyInfo.protocol.member_register + '和' + privacyInfo.protocol.privacy}
             isLink
             onClick={() => Taro.navigateTo({ url: '/subpage/pages/auth/reg-rule?type=privacyAndregister' })}
           ></SpCell>
