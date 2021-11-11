@@ -55,7 +55,9 @@ export default class SettingIndex extends Component {
         if (res.status) {
           Taro.removeStorageSync('auth_token')
           Taro.removeStorageSync('PrivacyUpdate_time')
-          Taro.redirectTo({ url: 'pages/index' })
+          Taro.reLaunch({
+            url: '/pages/index'
+          })
         }
       })
     }
@@ -77,14 +79,14 @@ export default class SettingIndex extends Component {
           <View className='fonts'>· 以及《用户注销协议》中包含的所有信息。</View>
           <View className='bottom fonts'>请确保所有交易已完结且无纠纷，账号删除后的历史交易可能产生的资金退回权益等将视作自动放弃。</View>
         </View>
-        <View className='button' onClick={this.handleNextStep.bind(this, checked)}>下一步</View>
+        <View className='button' style={`background: ${colors.data[0].primary}`} onClick={this.handleNextStep.bind(this, checked)}>下一步</View>
         <View className='check-box'>
           <SpCheckbox
             checked={checked}
             colors={colors}
             onChange={this.handleSelect.bind(this)}
           />
-          <View>阅读并同意<Text onClick={() => Taro.navigateTo({ url: '/subpage/pages/auth/reg-rule?type=member_logout' })} className='color'>《用户注销协议》</Text></View>
+          <View>阅读并同意<Text onClick={() => Taro.navigateTo({ url: '/subpage/pages/auth/reg-rule?type=member_logout' })} style={`color: ${colors.data[0].primary}`}>《用户注销协议》</Text></View>
         </View>
         <DestoryConfirm visible={visible} content={content} title={title} cancelBtn={cancelBtnContent} confirmBtn={confirmBtnContent} onCancel={this.handCancel} />
       </View>

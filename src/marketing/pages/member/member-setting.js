@@ -3,10 +3,14 @@ import { View, Button } from "@tarojs/components";
 import req from "@/api/req";
 import { SpCell } from "@/components";
 import S from "@/spx";
+import { connect } from "@tarojs/redux"
 import DestoryConfirm from './comps/destory-comfirm-modal';
 
 import "./member-setting.scss";
 
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 export default class SettingIndex extends Component {
   constructor(props) {
     super(props);
@@ -96,6 +100,7 @@ export default class SettingIndex extends Component {
 
   render() {
     const { visible, content, title, confirmBtnContent } = this.state
+    const { colors } = this.props
     return (
       <View className='member-setting'>
         <View className='page-member-section'>
@@ -114,7 +119,7 @@ export default class SettingIndex extends Component {
             )}
           ></SpCell>
           {S.getAuthToken() && (
-            <Button className='button' onClick={this.handleCancelMenber.bind(this)}>
+            <Button className='button' style={`color: ${colors.data[0].primary}; border: 1px solid ${colors.data[0].primary}`} onClick={this.handleCancelMenber.bind(this)}>
               注销账号
             </Button>
           )}
