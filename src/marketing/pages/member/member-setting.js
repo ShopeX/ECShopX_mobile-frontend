@@ -44,7 +44,7 @@ export default class SettingIndex extends Component {
   handleClickWxOAuth = (url, isLogin = false) => {
     if (!S.getAuthToken() && isLogin) {
       Taro.showToast({
-        title: "请先登录",
+        title: "请登录",
         icon: "none"
       });
       return false;
@@ -56,7 +56,7 @@ export default class SettingIndex extends Component {
     const { redirectInfo } = this.state;
     if (!S.getAuthToken()) {
       Taro.showToast({
-        title: "请先登录",
+        title: "请登录",
         icon: "none"
       });
       return false;
