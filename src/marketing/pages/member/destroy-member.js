@@ -44,7 +44,7 @@ export default class SettingIndex extends Component {
         cancelBtnContent: '确认注销账号'
       })
     } else {
-      Taro.showToast({ title: '请勾选《用户注册协议》', icon: 'none' })
+      Taro.showToast({ title: '请勾选《用户注销协议》', icon: 'none' })
     }
   }
 
