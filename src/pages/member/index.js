@@ -382,8 +382,8 @@ export default class MemberIndex extends Component {
     }
     let privacyTitle = ''
     let privacy_info = Taro.getStorageSync('privacy_info')
-    if (privacy_info && privacy_info.brand_name) {
-      privacyTitle =  privacy_info.protocol.member_register + '和' + privacy_info.protocol.privacy
+    if (privacy_info) {
+      privacyTitle =  privacy_info.member_register + '和' + privacy_info.privacy
     }
 
     return (

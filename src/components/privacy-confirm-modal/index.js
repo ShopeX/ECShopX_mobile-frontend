@@ -54,7 +54,7 @@ export default class PrivacyConfirmModal extends Component {
           <View className='privacy-confirm-modal'>
             <View className='block'>
               <Image
-                src={`${APP_IMAGE_CDN}/privacy_bck.png`}
+                src='https://b-img-cdn.yuanyuanke.cn/image/21/2021/11/11/ceb224c25e89e4960dd85e30c82983f3oF9GVfNTQKu3n0hXhf2774ZxYlF1Yhgx'
                 className='background'
               />
               <View className='container'>
