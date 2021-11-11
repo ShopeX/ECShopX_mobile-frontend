@@ -1,9 +1,13 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Image, Button, Text } from "@tarojs/components";
 import api from "@/api"
+import { connect } from "@tarojs/redux"
 
 import "./index.scss"
 
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 export default class PrivacyConfirmModal extends Component {
   static defaultProps = {};
   constructor(props) {
@@ -42,7 +46,7 @@ export default class PrivacyConfirmModal extends Component {
 
   render() {
     const { info } = this.state
-    const { visible, onChange, isPhone } = this.props
+    const { visible, onChange, isPhone, colors } = this.props
 
     return (
       <View>
@@ -67,14 +71,14 @@ export default class PrivacyConfirmModal extends Component {
                     请您务必谨慎阅读，充分理解“用户协议”和“隐私政策”各条款。包括但不限于：为了向您提供更好的服务，我们须向您收集相关的个人信息。您可以在“个人信息”中查看、变更、删除、个人授权信息。您可阅读
                   </Text>
                   <Text
-                    className='link'
-                    onClick={this.handleClickAgreement.bind(this, 'privacy')}
+                    style={`color: ${colors.data[0].primary}`}
+                    onClick={this.handleClickAgreement.bind(this, 'member_register')}
                   >
                     《{info.protocol.member_register}》
                   </Text>
                   <Text>、</Text>
                   <Text
-                    className='link'
+                    style={`color: ${colors.data[0].primary}`}
                     onClick={this.handleClickAgreement.bind(this, 'privacy')}
                   >
                     《{info.protocol.privacy}》
@@ -89,6 +93,7 @@ export default class PrivacyConfirmModal extends Component {
                   </Button>
                   {isPhone ? (
                     <Button
+                      style={`background: ${colors.data[0].primary}`}
                       className='agree'
                       openType='getPhoneNumber'
                       onGetPhoneNumber={this.wexinBindPhone}
@@ -96,7 +101,7 @@ export default class PrivacyConfirmModal extends Component {
                       同意
                     </Button>
                   ) : (
-                    <Button onClick={() => onChange('agree')}  className='agree'>
+                    <Button style={`background: ${colors.data[0].primary}`} onClick={() => onChange('agree')}  className='agree'>
                       同意
                     </Button>
                   )}
