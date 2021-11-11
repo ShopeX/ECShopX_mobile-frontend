@@ -588,17 +588,17 @@ export default class Detail extends Component {
   }
 
   handleBuyBarClick = (type) => {
-    // if (!S.getAuthToken()) {
-    //   // Taro.showToast({
-    //   //   icon:'none',
-    //   //   title: '请先登录再购买'
-    //   // })
-    //   // setTimeout(() => {
-    //   //   S.login(this, true)
-    //   // }, 2000)
+    if (!S.getAuthToken()) {
+      // Taro.showToast({
+      //   icon:'none',
+      //   title: '请先登录再购买'
+      // })
+      // setTimeout(() => {
+      //   S.login(this, true)
+      // }, 2000)
 
-    //   return
-    // }
+      return
+    }
 
     this.setState({
       showBuyPanel: true,
