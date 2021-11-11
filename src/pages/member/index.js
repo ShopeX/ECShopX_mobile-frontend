@@ -89,6 +89,7 @@ export default class MemberIndex extends Component {
   componentWillMount() {
     this.fetch();
     this.getSetting();
+    this.getPrivacyTitle()
     // this.getWheel();
     // this.fetchBanner();
     // this.fetchRedirect();
@@ -98,7 +99,6 @@ export default class MemberIndex extends Component {
   }
 
   componentDidShow () {
-    this.getPrivacyTitle()
     if (S.getAuthToken()) {
       this.fetchCouponCardList()
     }
@@ -308,6 +308,13 @@ export default class MemberIndex extends Component {
 
   handleClickWxOAuth( fn,need=true ) {
     const { memberData } =this.props
+    if (!S.getAuthToken()) {
+      Taro.showToast({
+        icon: 'none',
+        title: '请登录'
+      })
+      return
+    }
     if (memberData && memberData.memberInfo) {
       const { avatar, username } = memberData.memberInfo;
       if (avatar && username) {
@@ -382,6 +389,10 @@ export default class MemberIndex extends Component {
     if (memberData) {
       memberInfo = memberData.memberInfo;
       vipgrade = memberData.vipgrade;
+    }
+    let privacyTitle = ''
+    if (privacyInfo && privacyInfo.brand_name) {
+      privacyTitle =  privacyInfo.protocol.member_register + '和' + privacyInfo.protocol.privacy
     }
 
     return (
@@ -876,7 +887,7 @@ export default class MemberIndex extends Component {
             ></SpCell>
           }
           <SpCell
-            title={privacyInfo.protocol.member_register + '和' + privacyInfo.protocol.privacy}
+            title={privacyTitle}
             isLink
             onClick={() => Taro.navigateTo({ url: '/subpage/pages/auth/reg-rule?type=privacyAndregister' })}
           ></SpCell>
