@@ -386,8 +386,6 @@ export default class MemberIndex extends Component {
       privacyTitle =  privacy_info.protocol.member_register + '和' + privacy_info.protocol.privacy
     }
 
-    let isAuToken = S.getAuthToken()
-
     return (
       <View className="page-member-index" style={getThemeStyle()}>
         {S.getAuthToken() ? (
@@ -710,7 +708,7 @@ export default class MemberIndex extends Component {
             ></SpCell>
           )}
 
-          {Taro.getEnv() !== "WEB" && isAuToken && (
+          {Taro.getEnv() !== "WEB" && (
             <View>
               {menuSetting.group && (
                 <SpCell
@@ -727,7 +725,7 @@ export default class MemberIndex extends Component {
                   }
                 ></SpCell>
               )}
-              {menuSetting.community_order && isAuToken && (
+              {menuSetting.community_order && (
                 <SpCell
                   title="我的社区团购"
                   isLink
@@ -745,7 +743,7 @@ export default class MemberIndex extends Component {
             </View>
           )}
 
-          {Taro.getEnv() !== "WEB" && isAuToken && (
+          {Taro.getEnv() !== "WEB" && (
             <View>
               {menuSetting.boost_activity && (
                 <SpCell
@@ -773,7 +771,7 @@ export default class MemberIndex extends Component {
               )}
             </View>
           )}
-          {menuSetting.offline_order && isAuToken && (
+          {menuSetting.offline_order && (
             <SpCell
               title="线下订单关联"
               isLink
@@ -785,7 +783,7 @@ export default class MemberIndex extends Component {
               }
             ></SpCell>
           )}
-          {menuSetting.complaint && isAuToken &&
+          {menuSetting.complaint &&
             salespersonData &&
             salespersonData.distributor && (
               <SpCell
@@ -802,7 +800,7 @@ export default class MemberIndex extends Component {
                 }
               ></SpCell>
             )}
-          {menuSetting.activity && isAuToken && (
+          {menuSetting.activity && (
             <SpCell
               title="活动预约"
               isLink
@@ -817,7 +815,7 @@ export default class MemberIndex extends Component {
               }
             ></SpCell>
           )}
-          {score_menu_open && isAuToken && (
+          {score_menu_open && (
             <SpCell
               title={customName("积分商城")}
               isLink
@@ -848,7 +846,7 @@ export default class MemberIndex extends Component {
         </View>
 
         <View className="page-member-section">
-          {Taro.getEnv() !== "WEB" && menuSetting.share_enable && isAuToken && (
+          {Taro.getEnv() !== "WEB" && menuSetting.share_enable && (
             <SpCell title="我要分享" isLink>
               <Button className="btn-share" open-type="share"></Button>
             </SpCell>
