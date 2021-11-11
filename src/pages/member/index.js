@@ -31,6 +31,7 @@ import userIcon from "@/assets/imgs/user-icon.png";
 import { useLogin } from "@/hooks";
 import CompsVipCard from "./comps/comp-vipcard";
 import CompsPanel from "./comps/comp-panel";
+import CompMenu from './comps/comp-menu'
 import "./index.scss";
 
 // @connect(
@@ -45,22 +46,31 @@ import "./index.scss";
 //   @withLogin()
 
 function MemberIndex(props) {
-  const { isLogin } = useLogin();
-  const [menu, setMenu] = useState({
-    activity: false,
-    offline_order: false,
-    boost_activity: false,
-    boost_order: false,
-    complaint: false,
-    community_order: false,
-    ext_info: false,
-    group: false,
-    member_code: false,
-    recharge: false,
-    ziti_order: false,
-    score_menu: false,
-    share_enable: false,
-    memberinfo_enable: false
+  const { isLogin, showPolicy } = useLogin();
+  const [config, setConfig] = useState({
+    banner: {
+      loginBanner: "",
+      noLoginBanner: "",
+      pageUrl: "",
+      urlOpen: false,
+      appId: null
+    },
+    menu: {
+      pointMenu: false, // 积分菜单
+      activity: false, // 活动预约
+      offline_order: false, // 线下订单
+      boost_activity: false, // 助力活动
+      boost_order: false, // 助力订单
+      complaint: false, // 投诉记录
+      community_order: false, // 社区团购
+      ext_info: false,
+      group: false, // 我的拼团
+      member_code: false, // 会员二维码
+      recharge: false, // 储值
+      ziti_order: false, // 自提
+      share_enable: false, // 分享
+      memberinfo_enable: false // 个人信息
+    }
   });
 
   useEffect(async () => {
@@ -75,8 +85,8 @@ function MemberIndex(props) {
     }
   }, []);
 
-  useEffect( async () => {
-    getMemberCenterConfig()
+  useEffect(async () => {
+    getMemberCenterConfig();
     // // 菜单配置
     // const res = await api.shop.getPageParamsConfig({
     //   page_name: "member_center_menu_setting"
@@ -85,9 +95,8 @@ function MemberIndex(props) {
     //   ...menu,
     //   ...res.list[0].params.data
     // } );
-    
-  }, [] );
-  
+  }, []);
+
   const getMemberCenterConfig = async () => {
     const [bannerRes, menuRes, pointShopRes] = await Promise.all([
       // 会员中心banner
@@ -100,13 +109,41 @@ function MemberIndex(props) {
       }),
       // 积分商城
       await api.pointitem.getPointitemSetting()
-    ] );
-    setMenu({
-      ...menu,
-      ...menuRes.list[0].params.data
-    });
-  }
+    ]);
+    let _config = { ...config };
+    if (bannerRes.list.length > 0) {
+      const {
+        app_id,
+        is_show,
+        login_banner,
+        no_login_banner,
+        page,
+        url_is_open
+      } = bannerRes.list[0].params.data;
+      Object.assign(_config, {
+        banner: {
+          isShow: is_show,
+          loginBanner: login_banner,
+          noLoginBanner: no_login_banner,
+          pageUrl: page,
+          urlOpen: url_is_open,
+          appId: app_id
+        }
+      });
+    }
+    if (menuRes.list.length > 0) {
+      Object.assign(_config, {
+        menu: {
+          ..._config.menu,
+          ...menuRes.list[0].params.data
+        }
+      });
+    }
+    _config.menu.pointMenu = pointShopRes.entrance.mobile_openstatus;
+    setConfig(_config);
+  };
 
+  console.log("showPolicy:", showPolicy);
   return (
     <View className="pages-member-index" style={styleNames(getThemeStyle())}>
       <View
@@ -148,6 +185,7 @@ function MemberIndex(props) {
           </View>
         </View>
         <View className="header-ft">
+          {/* 会员卡等级 */}
           <CompsVipCard />
         </View>
       </View>
@@ -185,23 +223,13 @@ function MemberIndex(props) {
             </View>
           </View>
         </CompsPanel>
-      </View>
 
-      <View className="order-block">
-        <View className="block-hd">订单</View>
-        <View className="block-bd"></View>
-      </View>
+        <CompsPanel title="我的服务">
+          <CompMenu />
+        </CompsPanel>
 
-      <View className="service-block">
-        <View className="block-hd">我的服务</View>
-        <View className="block-bd">{}</View>
+        <CompsPanel title="帮助中心"></CompsPanel>
       </View>
-
-      <View className="help-block">
-        <View className="block-hd">帮助中心</View>
-        <View className="block-bd"></View>
-      </View>
-
       <TabBar />
     </View>
   );

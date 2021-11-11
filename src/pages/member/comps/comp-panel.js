@@ -23,17 +23,19 @@ function CompsPanel(props) {
     >
       <View className="comp-panel-hd">
         <View className="panel-title">{title}</View>
-        <View className="panel-extra">
-          <Text className="extra">{extra}</Text>
-          <Text
-            className={classNames(
-              {
-                iconfont: true
-              },
-              icon
-            )}
-          ></Text>
-        </View>
+        {
+          extra && <View className="panel-extra">
+            <Text className="extra">{extra}</Text>
+            <Text
+              className={classNames(
+                {
+                  iconfont: true
+                },
+                icon
+              )}
+            ></Text>
+          </View>
+        }
       </View>
       <View className="comp-panel-bd">{children}</View>
     </View>
