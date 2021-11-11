@@ -125,3 +125,8 @@ export function loadMoreGoods (params) {
     ...payTypeField
   })
 }
+
+// 隐私协议更新时间
+export function getPrivacyTime (){
+  return req.get(`/shops/protocolUpdateTime`)
+}

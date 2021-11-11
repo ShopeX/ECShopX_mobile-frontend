@@ -225,6 +225,8 @@ class App extends Component {
           "pages/member/item-guess",
           "pages/member/member-code",
           "pages/member/group-list",
+          "pages/member/member-setting",
+          "pages/member/destroy-member",
 
           "pages/wheel/index",
           "pages/item/espier-evaluation",

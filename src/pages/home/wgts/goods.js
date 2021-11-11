@@ -3,6 +3,7 @@ import { View, Text } from "@tarojs/components";
 import { SpImg } from "@/components";
 import { connect } from "@tarojs/redux";
 import { Tracker } from "@/service";
+import S from "@/spx";
 import entry from "@/utils/entry";
 import { getDistributorId } from "@/utils/helper";
 import api from "@/api";
@@ -85,6 +86,14 @@ export default class WgtGoods extends Component {
   handleClickOperate = async (item_data, type, e) => {
     const { info } = this.props;
     e.stopPropagation();
+
+    if (!S.getAuthToken()) {
+      Taro.showToast({
+        icon: 'none',
+        title: '请登录'
+      })
+      return
+    }
 
     /*if(info.data) {
       let onsale = true

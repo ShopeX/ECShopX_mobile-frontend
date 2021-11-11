@@ -1,0 +1,34 @@
+.destory-comfirm-modal {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99;
+  width: 100%;
+  height: 100vh;
+  .content {
+    width: 80%;
+    text-align: center;
+    padding: 50px 40px 40px;
+    background: #fff;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 15px;
+  }
+  .title {
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: bold;
+  }
+  .confirm-button {
+    width: 90%;
+    background: #F4811F;
+    border-radius: 60px;
+    color: #FFFFFF;
+    text-align: center;
+    margin: 50px auto 30px auto;
+    padding: 15px 0px;
+  }
+}

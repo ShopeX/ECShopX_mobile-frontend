@@ -60,6 +60,7 @@ import SpCheckboxNew from "./sp-checkbox";
 import SpInputNumber from "./sp-input-number";
 import SpLoadMore from "./sp-load-more";
 import SpLoading from "./sp-loading";
+import SpModal from "./sp-modal";
 
 import SpImgPicker from "./img-picker";
 import SpCell from "./sp-cell";
@@ -97,5 +98,6 @@ export {
   SpCheckboxNew,
   SpInputNumber,
   SpLoadMore,
-  SpLoading
+  SpLoading,
+  SpModal
 };

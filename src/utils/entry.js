@@ -38,6 +38,7 @@ async function entryLaunch(data, isNeedLocate) {
 
   // 如果需要定位,并且店铺无效，
   if (!dtidValid) {
+    console.log('=======================');
     store = await getLocal(isNeedLocate);
   }
 
@@ -358,5 +359,6 @@ export default {
   getWebLocal,
   InverseAnalysis,
   getStoreStatus,
-  logScene
+  logScene,
+  handleDistributorId
 };

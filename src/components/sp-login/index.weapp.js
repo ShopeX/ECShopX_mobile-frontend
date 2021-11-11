@@ -1,11 +1,13 @@
 import Taro, { Component } from "@tarojs/taro";
-import { View } from "@tarojs/components";
+import { View, Button } from "@tarojs/components";
 import { connect } from "@tarojs/redux";
 import { AtButton } from 'taro-ui'
 import S from "@/spx";
 import api from "@/api";
 import { isWeixin, isAlipay, classNames, tokenParse } from "@/utils";
 import { Tracker } from "@/service";
+import { PrivacyConfirmModal } from '@/components'
+
 import "./index.scss";
 
 @connect(
@@ -23,11 +25,20 @@ export default class SpLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      token: S.getAuthToken()
+      token: S.getAuthToken(),
+      privacyVisible: false,
+      update_time: null
     };
   }
 
-  componentDidMount() { }
+  componentDidShow () {
+    this.onGetTimes()
+  }
+
+  onGetTimes = async () => {
+    const { update_time } = await api.wx.getPrivacyTime()
+    this.setState({ update_time })
+  }
 
   /** 设置导购id */
   setSalespersonId = (params) => {
@@ -149,8 +160,6 @@ export default class SpLogin extends Component {
         console.log('getPhoneNumber_fail');
       }
     });
-
-
   }
 
 
@@ -166,9 +175,27 @@ export default class SpLogin extends Component {
     this.props.onChange && this.props.onChange();
   }
 
+  onPrivateChange = async (type, e) => {
+    if (type == 'agree' && e) {
+      this.wexinBindPhone(e)
+    }
+    if (type === 'reject') {
+      Taro.removeStorageSync('PrivacyUpdate_time')
+    }
+    this.setState({ privacyVisible: false })
+  }
+
+  onClickChange = () => {
+    this.setState({ privacyVisible: true })
+  }
 
   render() {
-    const { token } = this.state;
+    const { token, privacyVisible, update_time } = this.state;
+    let pritecy_time = Taro.getStorageSync("PrivacyUpdate_time")
+    let policy = true
+    if (!pritecy_time || pritecy_time != update_time) {
+      policy = false
+    }
     return (
       <View className={classNames("sp-login", this.props.className)}>
         {token && (
@@ -177,13 +204,18 @@ export default class SpLogin extends Component {
           </View>
         )}
 
-        {!token && isWeixin && <AtButton
+        {!token && policy && isWeixin && <AtButton
           className="login-btn"
           openType="getPhoneNumber"
           onGetPhoneNumber={this.handleBindPhone.bind(this)}
         >
           {this.props.children}
         </AtButton>}
+
+        {
+          !token && !policy && isWeixin &&
+          <View onClick={this.onClickChange.bind(this)}>{this.props.children}</View>
+        }
 
         {!token && isAlipay && <Button
           className="login-btn ali-button"
@@ -195,6 +227,7 @@ export default class SpLogin extends Component {
         </Button>
         }
 
+        <PrivacyConfirmModal isPhone={privacyVisible} visible={privacyVisible} onChange={this.onPrivateChange}  />
       </View>
     );
   }

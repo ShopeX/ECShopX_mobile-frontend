@@ -1,0 +1,80 @@
+@import "@/style/imports";
+
+.privacy-confirm-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  .block {
+    // height: 68%;
+    // width: 85%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .background {
+    height: 780px;
+    width: 600px;
+    border-radius: 16px;
+  }
+  .container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 50px 40px;
+    color: #222;
+    height: 100%;
+    width: 100%;
+  }
+  .top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+    font-weight: bold;
+  }
+  .texts {
+    font-size: 30px;
+  }
+  .tips {
+    height: 40px;
+    width: 40px;
+    margin-right: 19px;
+  }
+  .content {
+    // padding: 35px 40px;
+    padding: 20px;
+    width: 516px;
+    height: 480px;
+    background-color: #fff;
+    line-height: 48px;
+  }
+  .confirm {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  .at-checkbox {
+    background: transparent !important;
+  }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+  }
+  .agree, .cancel {
+    width: 45%;
+    margin: 0px;
+    font-size: 28px;
+    border-radius: 8px;
+  }
+  .cancel {
+    background: #ffffff;
+  }
+  .agree {
+    color: #fff;
+    background: #db692a;
+  }
+}

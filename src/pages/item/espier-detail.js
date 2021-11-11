@@ -644,18 +644,18 @@ export default class EspierDetail extends Component {
     });
   };
 
-  handleBuyBarClick = type => {
-    // if (!S.getAuthToken()) {
-    //   // Taro.showToast({
-    //   //   icon:'none',
-    //   //   title: '请先登录再购买'
-    //   // })
-    //   // setTimeout(() => {
-    //   //   S.login(this, true)
-    //   // }, 2000)
+  handleBuyBarClick = (type) => {
+    if (!S.getAuthToken()) {
+      // Taro.showToast({
+      //   icon:'none',
+      //   title: '请先登录再购买'
+      // })
+      // setTimeout(() => {
+      //   S.login(this, true)
+      // }, 2000)
 
-    //   return
-    // }
+      return
+    }
 
     this.setState({
       showBuyPanel: true,
