@@ -97,6 +97,7 @@ export default class Home extends Component {
     this.protocolUpdateTime();
     this.getShareSetting();
     this.isShowTips();
+    this.getPrivacyTitle()
   }
 
   // 获取隐私政策时间
@@ -691,6 +692,11 @@ export default class Home extends Component {
     }
     this.setState({ visible });
   };
+
+  async getPrivacyTitle () {
+    const data = await api.shop.getStoreBaseInfo()
+    Taro.setStorageSync('privacy_info', data)
+  }
 
   render() {
     const {

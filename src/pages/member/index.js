@@ -81,15 +81,13 @@ export default class MemberIndex extends Component {
       // showPrivacy: false,
       // showTimes: 0,
       all_card_list: [],
-      visible: false,
-      privacyInfo: {}
+      visible: false
     };
   }
 
   componentWillMount() {
     this.fetch();
     this.getSetting();
-    this.getPrivacyTitle()
     // this.getWheel();
     // this.fetchBanner();
     // this.fetchRedirect();
@@ -110,13 +108,6 @@ export default class MemberIndex extends Component {
     onReachBottomDistance: 50,
     backgroundTextStyle: "dark",
     navigationStyle: "custom"
-  }
-
-  async getPrivacyTitle () {
-    const data = await api.shop.getStoreBaseInfo()
-    this.setState({
-      privacyInfo: data
-    })
   }
 
   async onShareAppMessage() {
@@ -381,8 +372,7 @@ export default class MemberIndex extends Component {
       // showPrivacy,
       // showTimes,
       visible,
-      all_card_list,
-      privacyInfo
+      all_card_list
     } = this.state;
     let memberInfo = null,
       vipgrade = null;
@@ -391,8 +381,9 @@ export default class MemberIndex extends Component {
       vipgrade = memberData.vipgrade;
     }
     let privacyTitle = ''
-    if (privacyInfo && privacyInfo.brand_name) {
-      privacyTitle =  privacyInfo.protocol.member_register + '和' + privacyInfo.protocol.privacy
+    let privacy_info = Taro.getStorageSync('privacy_info')
+    if (privacy_info && privacy_info.brand_name) {
+      privacyTitle =  privacy_info.protocol.member_register + '和' + privacy_info.protocol.privacy
     }
 
     let isAuToken = S.getAuthToken()
