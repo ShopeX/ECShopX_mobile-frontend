@@ -228,19 +228,17 @@ function MemberIndex(props) {
         <CompsPanel title="我的服务">
           <CompMenu />
         </CompsPanel>
-
-
         
         
         <CompsPanel title="帮助中心"></CompsPanel>
       </View>
 
-      <SpModal
-        type="policy"
-        open={ }
-        onCancel={handleCloseModal}
-        onConfirm={handleConfirmModal}
-      />
+            <SpModal
+              type="policy"
+              open={ }
+              onCancel={handleCloseModal}
+              onConfirm={handleConfirmModal}
+            />
 
       <TabBar />
     </View>
