@@ -1,9 +1,9 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
-import { AtTabBar } from "taro-ui";
-import { getCurrentRoute } from "@/utils";
-import S from "@/spx";
+import Taro, { Component } from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
+import { AtTabBar } from 'taro-ui'
+import { getCurrentRoute } from '@/utils'
+import S from '@/spx'
 // import { getTotalCount } from '@/store/cart'
 
 @connect(({ tabBar, cart }) => ({
@@ -11,158 +11,153 @@ import S from "@/spx";
   cartCount: cart.cartCount
 }))
 export default class TabBar extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
       localCurrent: 0,
-      backgroundColor: "",
-      color: "",
-      selectedColor: "#1f82e0",
+      backgroundColor: '',
+      color: '',
+      selectedColor: '#1f82e0',
       tabList: []
-    };
+    }
   }
 
-  componentDidMount() {
-    this.initTabbarData();
+  componentDidMount () {
+    this.initTabbarData()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.current !== undefined) {
-      this.setState({ localCurrent: nextProps.current });
+      this.setState({ localCurrent: nextProps.current })
     }
     if (this.props.cartCount !== nextProps.cartCount) {
       setTimeout(() => {
-        this.initTabbarData();
-      });
+        this.initTabbarData()
+      })
     }
   }
 
-  componentDidShow() {
+  componentDidShow () {
     if (this.state.tabList.length > 0) {
-      this.fetchCart();
+      this.fetchCart()
     }
   }
 
   static options = {
     addGlobalClass: true
-  };
+  }
 
-  initTabbarData() {
-    const { tabBar } = this.props;
-    let list = [];
+  initTabbarData () {
+    const { tabBar } = this.props
+    let list = []
     list = [
       {
-        title: "首页",
-        iconType: "home",
-        iconPrefixClass: "icon",
-        url: "/guide/index",
+        title: '首页',
+        iconType: 'home',
+        iconPrefixClass: 'icon',
+        url: '/guide/index',
         urlRedirect: true
       },
       {
-        title: "分类",
-        iconType: "category",
-        iconPrefixClass: "icon",
-        url: "/guide/category/index",
+        title: '分类',
+        iconType: 'category',
+        iconPrefixClass: 'icon',
+        url: '/guide/category/index',
         urlRedirect: true
       },
       {
-        title: "优惠券",
-        iconType: "member",
-        iconPrefixClass: "icon",
-        url: "/guide/coupon-home/index",
+        title: '优惠券',
+        iconType: 'member',
+        iconPrefixClass: 'icon',
+        url: '/guide/coupon-home/index',
         urlRedirect: true
       },
       {
-        title: "种草",
-        iconType: "member",
-        iconPrefixClass: "icon",
-        url: "/guide/recommend/list",
+        title: '种草',
+        iconType: 'member',
+        iconPrefixClass: 'icon',
+        url: '/guide/recommend/list',
         urlRedirect: true
       },
       {
-        title: "购物车",
-        iconType: "cart",
-        iconPrefixClass: "icon",
-        url: "/guide/cart/espier-index",
-        text: this.cartCount || "",
-        max: "99",
+        title: '购物车',
+        iconType: 'cart',
+        iconPrefixClass: 'icon',
+        url: '/guide/cart/espier-index',
+        text: this.cartCount || '',
+        max: '99',
         urlRedirect: true
       }
-    ];
+    ]
     this.setState(
       {
         tabList: list
       },
       () => {
-        this.updateCurTab();
+        this.updateCurTab()
       }
-    );
+    )
   }
 
-  get cartCount() {
-    return this.props.cartCount;
+  get cartCount () {
+    return this.props.cartCount
   }
 
-  get tabBar() {
-    let initTabBar = Taro.getStorageSync("initTabBar");
+  get tabBar () {
+    let initTabBar = Taro.getStorageSync('initTabBar')
     if (this.props.tabBar && initTabBar == true) {
-      Taro.setStorageSync("initTabBar", false);
-      this.initTabbarData();
+      Taro.setStorageSync('initTabBar', false)
+      this.initTabbarData()
     }
   }
 
-  updateCurTab() {
-    this.fetchCart();
-    const { tabList, localCurrent } = this.state;
-    const fullPath = getCurrentRoute(this.$router).fullPath.split("?")[0];
+  updateCurTab () {
+    this.fetchCart()
+    const { tabList, localCurrent } = this.state
+    const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
     if (tabList.length == 0) {
-      return;
+      return
     }
-    const { url } = tabList[localCurrent] || {};
+    const { url } = tabList[localCurrent] || {}
     if (url && url !== fullPath) {
-      const nCurrent = tabList.findIndex(t => t.url === fullPath) || 0;
+      const nCurrent = tabList.findIndex((t) => t.url === fullPath) || 0
       this.setState({
         localCurrent: nCurrent
-      });
+      })
     }
   }
 
-  async fetchCart() {
-    if (!S.getAuthToken()) return;
-    const { tabList } = this.state;
-    const cartTabIdx = tabList.findIndex(
-      item => item.url.indexOf("cart") !== -1
-    );
-    const updateCartCount = count => {
-      tabList[cartTabIdx].text = count || "";
+  async fetchCart () {
+    if (!S.getAuthToken()) return
+    const { tabList } = this.state
+    const cartTabIdx = tabList.findIndex((item) => item.url.indexOf('cart') !== -1)
+    const updateCartCount = (count) => {
+      tabList[cartTabIdx].text = count || ''
       this.setState({
         tabList
-      });
-    };
+      })
+    }
 
-    const { path } = getCurrentRoute(this.$router);
-    if (
-      this.state.tabList[cartTabIdx] &&
-      path === this.state.tabList[cartTabIdx].url
-    ) {
-      updateCartCount("");
-      return;
+    const { path } = getCurrentRoute(this.$router)
+    if (this.state.tabList[cartTabIdx] && path === this.state.tabList[cartTabIdx].url) {
+      updateCartCount('')
+      return
     }
   }
 
-  handleClick = current => {
-    const cur = this.state.localCurrent;
-    const { showbar = true } = this.props;
+  handleClick = (current) => {
+    const cur = this.state.localCurrent
+    const { showbar = true } = this.props
     if (!showbar) {
-      return false;
+      return false
     }
 
     if (cur !== current) {
-      const curTab = this.state.tabList[current];
-      const { url, withLogin } = curTab;
-      console.log('tabbar-withLogin',url,withLogin)
-      const fullPath = getCurrentRoute(this.$router).fullPath.split("?")[0];
+      const curTab = this.state.tabList[current]
+      const { url, withLogin } = curTab
+      console.log('tabbar-withLogin', url, withLogin)
+      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
       // if (withLogin && !S.getAuthToken()) {
       //   return Taro.navigateTo({
       //     url: APP_AUTH_PAGE
@@ -173,23 +168,17 @@ export default class TabBar extends Component {
         // if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
         //   Taro.navigateTo({ url })
         // } else {
-        Taro.redirectTo({ url });
+        Taro.redirectTo({ url })
         // }
       }
     }
-  };
+  }
 
-  render() {
-    const {
-      color,
-      backgroundColor,
-      selectedColor,
-      tabList,
-      localCurrent
-    } = this.state;
-    
+  render () {
+    const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
+
     if (process.env.APP_INTEGRATION) {
-      return <View></View>;
+      return <View></View>
     }
 
     return (
@@ -202,6 +191,6 @@ export default class TabBar extends Component {
         onClick={this.handleClick}
         current={localCurrent}
       />
-    );
+    )
   }
 }

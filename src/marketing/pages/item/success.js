@@ -13,7 +13,7 @@ export default class TradeRateSuccess extends Component {
     this.state = {}
   }
 
-  componentDidMount () { }
+  componentDidMount () {}
 
   handleClick = () => {
     Taro.redirectTo({
@@ -26,7 +26,9 @@ export default class TradeRateSuccess extends Component {
       <View className='trade-rate-success'>
         <View className='in-icon in-icon-icon-test'></View>
         <Text className='text'>评价成功～ </Text>
-        <View className='btn-wrap' onClick={this.handleClick}>返回首页</View>
+        <View className='btn-wrap' onClick={this.handleClick}>
+          返回首页
+        </View>
       </View>
     )
   }

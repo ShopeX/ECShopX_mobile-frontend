@@ -17,7 +17,7 @@ export default class BargainItem extends Component {
   defaultProps = {
     info: {}
   }
-  
+
   constructor (props) {
     super(props)
   }
@@ -35,10 +35,10 @@ export default class BargainItem extends Component {
       <View className='bargainItem'>
         <Image className='img' src={info.item_pics} mode='aspectFill' />
         <View className='info'>
-          <View className='title'>{ info.item_name }</View>
+          <View className='title'>{info.item_name}</View>
           <View className='price'>
-            <Text className='text'>¥{ info.mkt_price }</Text>
-            <Text className='text diff'>砍价立减：¥{ info.diff_price }</Text>
+            <Text className='text'>¥{info.mkt_price}</Text>
+            <Text className='text diff'>砍价立减：¥{info.diff_price}</Text>
           </View>
           {/* <View className='progress'>
             <Progress percent={20} activeColor='#a2564c' backgroundColor='#f0eeed' strokeWidth={6} active />
@@ -49,7 +49,9 @@ export default class BargainItem extends Component {
           </View> */}
         </View>
         <View className='act'>
-          <Button size='mini' className='btn' onClick={this.handleItem.bind(this)}>查看详情</Button>
+          <Button size='mini' className='btn' onClick={this.handleItem.bind(this)}>
+            查看详情
+          </Button>
         </View>
       </View>
     )

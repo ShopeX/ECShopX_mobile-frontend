@@ -1,17 +1,15 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
-import { SpNavBar,SpCell } from '@/components'
+import { SpNavBar, SpCell } from '@/components'
 import PaymentPicker from '@/pages/cart/comps/payment-picker'
 import './index.scss'
-import {
-  getPointName
-} from '@/utils';
-export default class PayOrder extends Component {
+import { getPointName } from '@/utils'
 
+export default class PayOrder extends Component {
   constructor (props) {
     super(props)
-    
+
     this.state = {
       list: [],
       totalItemNum: 0,
@@ -27,26 +25,28 @@ export default class PayOrder extends Component {
         community_id: '',
         community_activity_id: '',
         member_discount: false,
-        coupon_discount: '',
+        coupon_discount: ''
       },
-      payType:'',
-      isPaymentOpend:false
+      payType: '',
+      isPaymentOpend: false
     }
   }
-  
+
   componentDidMount () {
     this.getCalculateTotal()
   }
-  
+
   config = {
     navigationBarTitleText: '结算'
   }
 
   getCalculateTotal = async () => {
-    Taro.showLoading({title: '请稍等...', mask: true})
+    Taro.showLoading({ title: '请稍等...', mask: true })
     const { activityId, itemId, itemNum = 1, communityId } = this.$router.params
     //  查询地址
-    const currentCommunity = await api.groupBy.activityCommunityDetail({community_id: communityId})
+    const currentCommunity = await api.groupBy.activityCommunityDetail({
+      community_id: communityId
+    })
     const { param } = this.state
     if (itemId) {
       param.items.push({
@@ -56,7 +56,7 @@ export default class PayOrder extends Component {
     }
     param.community_id = communityId
     param.community_activity_id = activityId
-    api.groupBy.getCalculateTotal(param).then(res => {
+    api.groupBy.getCalculateTotal(param).then((res) => {
       this.setState({
         // orderId: res.order_id,
         list: res.items,
@@ -72,10 +72,10 @@ export default class PayOrder extends Component {
   }
   // 去支付
   handlePay = () => {
-    const { param ,payType} = this.state
-    param.pay_type=payType
-    Taro.showLoading({title: '拉起支付中...', mask: true})
-    api.groupBy.createOrder(param).then(res => {
+    const { param, payType } = this.state
+    param.pay_type = payType
+    Taro.showLoading({ title: '拉起支付中...', mask: true })
+    api.groupBy.createOrder(param).then((res) => {
       Taro.hideLoading()
       const { trade_info } = res
       Taro.requestPayment({
@@ -94,7 +94,7 @@ export default class PayOrder extends Component {
             }
           })
         },
-        fail: () => { 
+        fail: () => {
           Taro.showModal({
             content: '支付失败',
             showCancel: false,
@@ -110,25 +110,25 @@ export default class PayOrder extends Component {
   }
   handlePaymentShow = () => {
     this.setState({
-      isPaymentOpend: true,
+      isPaymentOpend: true
     })
   }
   handleLayoutClose = () => {
     this.setState({
-      isPaymentOpend: false,
+      isPaymentOpend: false
     })
   }
   handlePaymentChange = async (payType) => {
-
-    this.setState({
-      payType,
-      isPaymentOpend: false
-    }, () => {
-
-    })
+    this.setState(
+      {
+        payType,
+        isPaymentOpend: false
+      },
+      () => {}
+    )
   }
   render () {
-    const { 
+    const {
       currtent,
       list,
       totalFee,
@@ -143,8 +143,8 @@ export default class PayOrder extends Component {
       wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款',
-      hfpay:'微信支付'
-    } 
+      hfpay: '微信支付'
+    }
     return (
       <View className='payOrder'>
         <SpNavBar
@@ -156,47 +156,56 @@ export default class PayOrder extends Component {
           {/* 配送地址 */}
           <View className='address'>
             {/* <View className='time'>预计送达: 2020/05/09 18:00</View> */}
-            <View className='community'>{ currtent.community_name }</View>
-            <View className='unit'>提货：{ currtent.address }</View>
+            <View className='community'>{currtent.community_name}</View>
+            <View className='unit'>提货：{currtent.address}</View>
           </View>
           {/* 商品详情 */}
           <View className='infoLine'>
             <View className='goodImg'>
-              {
-                list.map(item => (
-                  <Image key={item.item_id} src={item.pic} className='img' />
-                ))
-              }
+              {list.map((item) => (
+                <Image key={item.item_id} src={item.pic} className='img' />
+              ))}
             </View>
             <View className='sum'>
-              共{ totalItemNum }件
-              <View className='iconfont icon-arrowRight'></View>
+              共{totalItemNum}件<View className='iconfont icon-arrowRight'></View>
             </View>
           </View>
           <View className='infoLine'>
             <Text>商品总价</Text>
-            <Text>{ symbol }{ itemFee }</Text>
+            <Text>
+              {symbol}
+              {itemFee}
+            </Text>
           </View>
-          <SpCell
-              isLink
-              border={false}
-              title='支付方式'
-              onClick={this.handlePaymentShow}
-            >
-              <Text>{payTypeText[payType]}</Text>
-            </SpCell>
+          <SpCell isLink border={false} title='支付方式' onClick={this.handlePaymentShow}>
+            <Text>{payTypeText[payType]}</Text>
+          </SpCell>
           {/* <View className='infoLine'>
             <View>会员优惠</View>
             <View>-¥7.50</View>
           </View> */}
           <View className='infoLine flexEnd'>
-          <Text>需支付： <Text className='price'>{ symbol }{ totalFee }</Text></Text>
+            <Text>
+              需支付：{' '}
+              <Text className='price'>
+                {symbol}
+                {totalFee}
+              </Text>
+            </Text>
           </View>
         </View>
         {/* 支付 */}
         <View className='payBar'>
-          <View className='sum'>合计: <Text className='price'>{ symbol }{ totalFee }</Text></View>
-          <View className='goPay' onClick={this.handlePay.bind(this)}>去支付</View>
+          <View className='sum'>
+            合计:{' '}
+            <Text className='price'>
+              {symbol}
+              {totalFee}
+            </Text>
+          </View>
+          <View className='goPay' onClick={this.handlePay.bind(this)}>
+            去支付
+          </View>
         </View>
         <PaymentPicker
           isOpened={isPaymentOpend}

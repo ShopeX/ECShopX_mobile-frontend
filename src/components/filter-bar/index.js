@@ -8,7 +8,6 @@ import './index.scss'
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 export default class FilterBar extends Component {
   static options = {
     addGlobalClass: true
@@ -51,18 +50,26 @@ export default class FilterBar extends Component {
 
   render () {
     const { list, className, custom, colors } = this.props
-		const { sortOrder, curIdx } = this.state
+    const { sortOrder, curIdx } = this.state
 
     return (
       <View className={classNames('filter-bar', className)}>
-        {
-          custom &&
+        {custom &&
           list.map((item, idx) => {
             const isCurrent = curIdx === idx
 
             return (
               <View
-                className={classNames('filter-bar__item', isCurrent && 'filter-bar__item-active', item.key && `filter-bar__item-${item.key}`, item.sort ? `filter-bar__item-sort filter-bar__item-sort-${sortOrder > 0 ? 'asc' : 'desc'}` : null)}
+                className={classNames(
+                  'filter-bar__item',
+                  isCurrent && 'filter-bar__item-active',
+                  item.key && `filter-bar__item-${item.key}`,
+                  item.sort
+                    ? `filter-bar__item-sort filter-bar__item-sort-${
+                        sortOrder > 0 ? 'asc' : 'desc'
+                      }`
+                    : null
+                )}
                 style={isCurrent ? 'color: ' + colors.data[0].primary : 'color: #999999'}
                 onClick={this.handleClickItem.bind(this, idx)}
                 key={item.title}
@@ -71,8 +78,7 @@ export default class FilterBar extends Component {
                 <View className='active-bar' style={'background: ' + colors.data[0].primary}></View>
               </View>
             )
-          })
-        }
+          })}
         {this.props.children}
       </View>
     )

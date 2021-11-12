@@ -5,20 +5,19 @@ import { connect } from '@tarojs/redux'
 import S from '@/spx'
 import api from '@/api'
 import { AtTag, AtTextarea } from 'taro-ui'
-import { Tracker } from "@/service";
+import { Tracker } from '@/service'
 
-import './cancel.scss';
+import './cancel.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 export default class TradeCancel extends Component {
   static config = {
     navigationBarTitleText: '取消订单'
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       reason: ['多买/错买', '不想要了', '买多了', '其他'],
@@ -59,30 +58,26 @@ export default class TradeCancel extends Component {
 
     const res = await api.trade.cancel(data)
 
-    const { orderInfo } = await api.trade.detail(order_id);
-    // 取消订单埋点   
-    Tracker.dispatch("CANCEL_ORDER", {
+    const { orderInfo } = await api.trade.detail(order_id)
+    // 取消订单埋点
+    Tracker.dispatch('CANCEL_ORDER', {
       orderInfo,
       orderCancel: res,
-      orderTime:orderInfo.create_time
-    });
+      orderTime: orderInfo.create_time
+    })
     if (res) {
       S.toast('操作成功')
       Taro.navigateBack()
     }
   }
 
-  render() {
+  render () {
     const { reason, curReasonIdx, otherReason, textCount } = this.state
     const { colors } = this.props
 
     return (
       <View className='page-trade-cancel'>
-        <SpNavBar
-          title='取消订单'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title='取消订单' leftIconType='chevron-left' fixed='true' />
 
         <View className='sec'>
           <SpCell title='请选择取消理由'>
@@ -94,7 +89,9 @@ export default class TradeCancel extends Component {
                   active={idx === curReasonIdx}
                   name={item}
                   onClick={this.handleClickTag}
-                >{item}</AtTag>
+                >
+                  {item}
+                </AtTag>
               )
             })}
           </SpCell>
@@ -115,7 +112,9 @@ export default class TradeCancel extends Component {
             onClick={this.handleSubmit}
             className='toolbar_btn'
             style={`background: ${colors.data[0].primary}`}
-          >确定取消</View>
+          >
+            确定取消
+          </View>
         </View>
 
         <SpToast />

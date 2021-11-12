@@ -45,11 +45,15 @@ export default class MeiQia extends Component {
   handleClose = () => {
     Taro.navigateBack()
   }
-  
+
   render () {
-    const {metadata, clientid, agentid, id, groupid} = this.state
+    const { metadata, clientid, agentid, id, groupid } = this.state
     return (
-      id && <WebView src={`${APP_CUSTOM_SERVER}/others/pages/meiqia/index?metadata=${metadata}&clientid=${clientid}&agentid=${agentid}&id=${id}&groupid=${groupid}`}></WebView>
+      id && (
+        <WebView
+          src={`${APP_CUSTOM_SERVER}/others/pages/meiqia/index?metadata=${metadata}&clientid=${clientid}&agentid=${agentid}&id=${id}&groupid=${groupid}`}
+        ></WebView>
+      )
     )
   }
 }

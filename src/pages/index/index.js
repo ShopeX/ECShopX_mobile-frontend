@@ -7,17 +7,15 @@ export default class Index extends Component {
     navigationBarTitleText: '首页'
   }
 
-  componentWillMount () {
-  }
+  componentWillMount () {}
 
-  componentDidMount () {
-  }
+  componentDidMount () {}
 
-  componentWillUnmount () { }
+  componentWillUnmount () {}
 
-  componentDidShow () { }
+  componentDidShow () {}
 
-  componentDidHide () { }
+  componentDidHide () {}
 
   render () {
     return (

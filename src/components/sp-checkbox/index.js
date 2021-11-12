@@ -1,21 +1,21 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View, Text } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
-import { classNames, checkClassName } from "@/utils";
-import "./index.scss";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
+import { classNames, checkClassName } from '@/utils'
+import './index.scss'
 
-function SpCheckboxNew(props) {
-  const { className, children, isChecked = false, label, onChange = () => {} } = this.props;
+function SpCheckboxNew (props) {
+  const { className, children, isChecked = false, label, onChange = () => {} } = this.props
 
   const onChangeCheckbox = () => {
-    onChange(!isChecked);
-  };
+    onChange(!isChecked)
+  }
 
   return (
     <View
       className={classNames(
         {
-          "sp-checkbox-new": true
+          'sp-checkbox-new': true
         },
         className
       )}
@@ -26,12 +26,12 @@ function SpCheckboxNew(props) {
           {
             iconfont: true
           },
-          isChecked ? "icon-roundcheckfill" : "icon-round"
+          isChecked ? 'icon-roundcheckfill' : 'icon-round'
         )}
       ></Text>
-      <View className="sp-checkbox-new__label">{label || children}</View>
+      <View className='sp-checkbox-new__label'>{label || children}</View>
     </View>
-  );
+  )
 }
 
-export default SpCheckboxNew;
+export default SpCheckboxNew

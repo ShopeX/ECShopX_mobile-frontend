@@ -1,14 +1,12 @@
-
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtTabslist, SpImg } from '@/components'
 import { connect } from '@tarojs/redux'
-import { getDistributorId } from "@/utils/helper";
+import { getDistributorId } from '@/utils/helper'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
-import { withLoadMore } from '@/hocs';
+import { withLoadMore } from '@/hocs'
 import './goods-grid-tab.scss'
-
 
 @connect(({ colors }) => ({
   colors: colors.current
@@ -16,114 +14,127 @@ import './goods-grid-tab.scss'
 export default class WgtGoodsGridTab extends Component {
   static options = {
     addGlobalClass: true
-  };
+  }
 
   static defaultProps = {
     info: {}
-  };
+  }
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       current: 0,
       goodsList: [],
       moreLink: {}
-    };
-  }
-
-  componentDidMount() {
-    const { info = {} } = this.props; 
-    let { current } = this.state; 
-    this.setState({
-      goodsList: info.list[current] ? info.list[current].goodsList : [],
-      moreLink: info.config.moreLink
-    },()=>{
-      this.startWrapperTrack();
-    });
-  }
-
-  startWrapperTrack() {
-    this.endWrapperTrack();
-    const observer = Taro.createIntersectionObserver({
-      observeAll: true
-    });
-    
-    const { type,info: { list,data,more }, onLoadMore = () => { }, index } = this.props;
-    const { goodsList,current}=this.state;
-    let direction = type === 'good-scroll' ? 'right' : 'bottom'; 
-    observer.relativeToViewport({ [direction]: 0 }).observe(".lastItem", res => { 
-      if (res.intersectionRatio > 0) {  
-        if (list[current].more) { 
-          onLoadMore(index, type,current,goodsList.length);
-        }
-      }
-    });
-    this.wrapperobserver = observer;
-  }
-
-  endWrapperTrack() {
-    if (this.wrapperobserver) {
-      this.wrapperobserver.disconnect();
-      this.wrapperobserver = null;
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { info = {} } = nextProps;
-    let { current } = this.state;
-    this.setState({
-      goodsList: info.list[current] ? info.list[current].goodsList : [],
-      moreLink: info.config.moreLink
-    },()=>{
-      this.startWrapperTrack();
-    });
+  componentDidMount () {
+    const { info = {} } = this.props
+    let { current } = this.state
+    this.setState(
+      {
+        goodsList: info.list[current] ? info.list[current].goodsList : [],
+        moreLink: info.config.moreLink
+      },
+      () => {
+        this.startWrapperTrack()
+      }
+    )
   }
 
-  handleClick(value) {
-    const { info } = this.props;
-    this.setState({
-      goodsList: info.list[value].goodsList
-    },()=>{
-      this.startWrapperTrack();
-    });
+  startWrapperTrack () {
+    this.endWrapperTrack()
+    const observer = Taro.createIntersectionObserver({
+      observeAll: true
+    })
+
+    const {
+      type,
+      info: { list, data, more },
+      onLoadMore = () => {},
+      index
+    } = this.props
+    const { goodsList, current } = this.state
+    let direction = type === 'good-scroll' ? 'right' : 'bottom'
+    observer.relativeToViewport({ [direction]: 0 }).observe('.lastItem', (res) => {
+      if (res.intersectionRatio > 0) {
+        if (list[current].more) {
+          onLoadMore(index, type, current, goodsList.length)
+        }
+      }
+    })
+    this.wrapperobserver = observer
+  }
+
+  endWrapperTrack () {
+    if (this.wrapperobserver) {
+      this.wrapperobserver.disconnect()
+      this.wrapperobserver = null
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const { info = {} } = nextProps
+    let { current } = this.state
+    this.setState(
+      {
+        goodsList: info.list[current] ? info.list[current].goodsList : [],
+        moreLink: info.config.moreLink
+      },
+      () => {
+        this.startWrapperTrack()
+      }
+    )
+  }
+
+  handleClick (value) {
+    const { info } = this.props
+    this.setState(
+      {
+        goodsList: info.list[value].goodsList
+      },
+      () => {
+        this.startWrapperTrack()
+      }
+    )
   }
 
   handleClickMore = () => {
-    const { moreLink } = this.props.info.config;
+    const { moreLink } = this.props.info.config
     if (moreLink) {
-      linkPage(moreLink.linkPage, moreLink);
+      linkPage(moreLink.linkPage, moreLink)
     } else {
-      this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id || ""}`);
+      this.navigateTo(`/pages/item/list?dis_id=${this.props.dis_id || ''}`)
     }
-  };
+  }
   // navigateTo(url) {
   //   Taro.navigateTo({ url });
   // }
 
-  handleClickItem(item) {
-    const { distributor_id } = item;
-    const dtid = distributor_id ? distributor_id : getDistributorId();
+  handleClickItem (item) {
+    const { distributor_id } = item
+    const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`,
-    });
+      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`
+    })
   }
-  
-  render() {
-    const { info, colors } = this.props;
+
+  render () {
+    const { info, colors } = this.props
     if (!info) {
-      return null;
+      return null
     }
-    const { config, base } = info;
-    const { goodsList, moreLink } = this.state;  
- 
+    const { config, base } = info
+    const { goodsList, moreLink } = this.state
 
     return (
-      <View className={`wgt wgt-grid ${base.padded ? "wgt__padded" : null}`}>
+      <View className={`wgt wgt-grid ${base.padded ? 'wgt__padded' : null}`}>
         {base.title && (
-          <View className="wgt__header">
-            <View className="wgt__title">
+          <View className='wgt__header'>
+            <View className='wgt__title'>
               <Text>{base.title}</Text>
-              <View className="wgt__subtitle">{base.subtitle}</View>
+              <View className='wgt__subtitle'>{base.subtitle}</View>
             </View>
             {/* <View
                       className='wgt__more'
@@ -139,119 +150,111 @@ export default class WgtGoodsGridTab extends Component {
                     </View> */}
           </View>
         )}
-        <AtTabslist
-          tabList={info.list}
-          onClick={this.handleClick.bind(this)}
-        ></AtTabslist>
+        <AtTabslist tabList={info.list} onClick={this.handleClick.bind(this)}></AtTabslist>
 
-        <View className="wgt__body with-padding">
-          <View className="grid-goods out-padding grid-goods__type-grid">
+        <View className='wgt__body with-padding'>
+          <View className='grid-goods out-padding grid-goods__type-grid'>
             {goodsList.map((item, idx) => {
               const price = (
                 (item.act_price
                   ? item.act_price
                   : item.member_price
-                    ? item.member_price
-                    : item.price) / 100
-              ).toFixed(2);
+                  ? item.member_price
+                  : item.price) / 100
+              ).toFixed(2)
               //const marketPrice = ((item.act_price ? item.price : item.member_price ? item.price : item.market_price)/100).toFixed(2)
-              const marketPrice = ((item.market_price || 0) / 100).toFixed(2);
+              const marketPrice = ((item.market_price || 0) / 100).toFixed(2)
               return (
                 <View
                   key={`${idx}1`}
-                  className={classNames("grid-item", {
-                    "grid-item-three": config && config.style == "grids",
-                    "lastItem": idx === goodsList.length - 1
+                  className={classNames('grid-item', {
+                    'grid-item-three': config && config.style == 'grids',
+                    'lastItem': idx === goodsList.length - 1
                   })}
                   onClick={() => this.handleClickItem(item)}
                   data-id={item.goodsId}
                 >
                   {/* {item.distributor_id} */}
-                  <View className="goods-wrap">
-                    <View className="thumbnail">
+                  <View className='goods-wrap'>
+                    <View className='thumbnail'>
                       <SpImg
-                        img-class="goods-img"
+                        img-class='goods-img'
                         src={item.imgUrl}
-                        mode="aspectFill"
-                        width="400"
+                        mode='aspectFill'
+                        width='400'
                         lazyLoad
                       />
                     </View>
-                    <View className="caption">
+                    <View className='caption'>
                       {config && config.brand && item.brand && (
                         <SpImg
-                          img-class="goods-brand"
+                          img-class='goods-brand'
                           src={item.brand}
-                          mode="aspectFill"
-                          width="300"
+                          mode='aspectFill'
+                          width='300'
                         />
                       )}
-                      {item.type === "1" && (
-                        <View className="nationalInfo">
+                      {item.type === '1' && (
+                        <View className='nationalInfo'>
                           <Image
-                            className="nationalFlag"
+                            className='nationalFlag'
                             src={item.origincountry_img_url}
-                            mode="aspectFill"
+                            mode='aspectFill'
                             lazyLoad
                           />
-                          <Text className="nationalTitle">
-                            {item.origincountry_name}
-                          </Text>
+                          <Text className='nationalTitle'>{item.origincountry_name}</Text>
                         </View>
                       )}
-                      {item.promotionActivity &&
-                        item.promotionActivity.length > 0 && (
-                          <View className="activity-label">
-                            {item.promotionActivity.map((s, index) => (
-                              <Text key={index} className="text">
-                                {s.tag_type == "single_group" ? "团购" : ""}
-                                {s.tag_type == "full_minus" ? "满减" : ""}
-                                {s.tag_type == "full_discount" ? "满折" : ""}
-                                {s.tag_type == "full_gift" ? "满赠" : ""}
-                                {s.tag_type == "normal" ? "秒杀" : ""}
-                                {s.tag_type == "limited_time_sale"
-                                  ? "限时特惠"
-                                  : ""}
-                                {s.tag_type == "plus_price_buy" ? "换购" : ""}
-                              </Text>
-                            ))}
-                          </View>
-                        )}
+                      {item.promotionActivity && item.promotionActivity.length > 0 && (
+                        <View className='activity-label'>
+                          {item.promotionActivity.map((s, index) => (
+                            <Text key={index} className='text'>
+                              {s.tag_type == 'single_group' ? '团购' : ''}
+                              {s.tag_type == 'full_minus' ? '满减' : ''}
+                              {s.tag_type == 'full_discount' ? '满折' : ''}
+                              {s.tag_type == 'full_gift' ? '满赠' : ''}
+                              {s.tag_type == 'normal' ? '秒杀' : ''}
+                              {s.tag_type == 'limited_time_sale' ? '限时特惠' : ''}
+                              {s.tag_type == 'plus_price_buy' ? '换购' : ''}
+                            </Text>
+                          ))}
+                        </View>
+                      )}
                       <View
-                        className={`goods-title ${!config.brand || !item.brand ? "no-brand" : ""
-                          }`}
+                        className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}
                       >
                         {item.title}
                       </View>
                       {item.brief && (
                         <View
-                          className={`goods-brief ${!config.brand || !item.brand ? "no-brand" : ""
-                            }`}
+                          className={`goods-brief ${
+                            !config.brand || !item.brand ? 'no-brand' : ''
+                          }`}
                         >
                           {item.brief}
                         </View>
                       )}
 
                       {config.showPrice && (
-                        <View className="goods-price">
-                          <Text className="cur">¥</Text>
+                        <View className='goods-price'>
+                          <Text className='cur'>¥</Text>
                           {price}
                           {marketPrice && marketPrice != 0 && (
-                            <Text className="market-price">{marketPrice}</Text>
+                            <Text className='market-price'>{marketPrice}</Text>
                           )}
                         </View>
                       )}
                     </View>
                   </View>
                 </View>
-              );
+              )
             })}
           </View>
         </View>
         {moreLink.id && (
-          <View className="btn" onClick={this.handleClickMore}>
+          <View className='btn' onClick={this.handleClickMore}>
             <Text
-              className="more"
+              className='more'
               style={`border-color:${colors.data[0].primary};color:${colors.data[0].primary}`}
             >
               查看更多
@@ -259,6 +262,6 @@ export default class WgtGoodsGridTab extends Component {
           </View>
         )}
       </View>
-    );
+    )
   }
 }

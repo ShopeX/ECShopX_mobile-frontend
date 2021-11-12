@@ -14,7 +14,7 @@ export default class ItemActivity extends Component {
 
     this.state = {
       ...this.state,
-      list: [],
+      list: []
     }
   }
 
@@ -41,7 +41,7 @@ export default class ItemActivity extends Component {
     })
 
     this.setState({
-      list: [...this.state.list, ...nList],
+      list: [...this.state.list, ...nList]
     })
 
     return { total }
@@ -53,54 +53,53 @@ export default class ItemActivity extends Component {
     })
   }
 
-
   render () {
     const { list, page } = this.state
 
     return (
       <View className='reservation-list'>
-        <SpNavBar
-          title='活动预约'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
-        <ScrollView
-          scrollY
-          className='reservation-list__scroll'
-          onScrollToLower={this.nextPage}
-        >
+        <SpNavBar title='活动预约' leftIconType='chevron-left' fixed='true' />
+        <ScrollView scrollY className='reservation-list__scroll' onScrollToLower={this.nextPage}>
           <View className='reservation-list__list'>
-            {
-              list.map(item => {
-                return (
-                  // eslint-disable-next-line react/jsx-key
-                  <View className='reservation-list__item'>
-                    <View className='reservation-list__item_title'>
-                      <Text></Text>
-                      <Text>{item.status === 'rejected' ? '本次活动太火爆了，很遗憾名额已满，请您持续关注！' : ''}{item.status === 'pending' ? '待审核' : ''}{item.status === 'passed' ? '通过' : ''}</Text>
-                    </View>
-                    <View className='reservation-list__item_content'>
-                      <View className='content_data'>
-                        <Text>活动名称</Text>
-                        <Text>{item.activity_name}</Text>
-                      </View>
-                      <View className='content_data'>
-                        <Text>活动时间</Text>
-                        <Text>{item.start_date} ~ {item.end_date}</Text>
-                      </View>
-                    </View>
-                    <Text className='reservation-list__item_btn' onClick={this.handleClickDetail.bind(this, item.record_id)}>查看详情</Text>
+            {list.map((item) => {
+              return (
+                // eslint-disable-next-line react/jsx-key
+                <View className='reservation-list__item'>
+                  <View className='reservation-list__item_title'>
+                    <Text></Text>
+                    <Text>
+                      {item.status === 'rejected'
+                        ? '本次活动太火爆了，很遗憾名额已满，请您持续关注！'
+                        : ''}
+                      {item.status === 'pending' ? '待审核' : ''}
+                      {item.status === 'passed' ? '通过' : ''}
+                    </Text>
                   </View>
-                )
-              })
-            }
-            {
-              page.isLoading && <Loading>正在加载...</Loading>
-            }
-            {
-              !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>您还未报名任何活动哦，快去报名吧!</SpNote>)
-            }
+                  <View className='reservation-list__item_content'>
+                    <View className='content_data'>
+                      <Text>活动名称</Text>
+                      <Text>{item.activity_name}</Text>
+                    </View>
+                    <View className='content_data'>
+                      <Text>活动时间</Text>
+                      <Text>
+                        {item.start_date} ~ {item.end_date}
+                      </Text>
+                    </View>
+                  </View>
+                  <Text
+                    className='reservation-list__item_btn'
+                    onClick={this.handleClickDetail.bind(this, item.record_id)}
+                  >
+                    查看详情
+                  </Text>
+                </View>
+              )
+            })}
+            {page.isLoading && <Loading>正在加载...</Loading>}
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img='trades_empty.png'>您还未报名任何活动哦，快去报名吧!</SpNote>
+            )}
           </View>
         </ScrollView>
       </View>

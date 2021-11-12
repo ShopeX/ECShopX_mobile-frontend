@@ -3,7 +3,7 @@ import { View, Image } from '@tarojs/components'
 import S from '@/spx'
 import api from '@/api'
 
-import './store-info.scss';
+import './store-info.scss'
 
 export default class StoreInfo extends Component {
   static options = {
@@ -14,7 +14,7 @@ export default class StoreInfo extends Component {
     info: null
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -22,13 +22,13 @@ export default class StoreInfo extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (!S.getAuthToken()) {
       return
     }
 
     const { info } = this.props
-    api.member.storeIsFav(info.distributor_id).then(res => {
+    api.member.storeIsFav(info.distributor_id).then((res) => {
       if (res.is_fav) {
         this.setState({
           isFav: true
@@ -77,26 +77,29 @@ export default class StoreInfo extends Component {
 
     return (
       <View className='store-info'>
-        <View className="view-flex view-flex-middle">
-          <Image className="store-brand" src={info.logo || 'https://fakeimg.pl/120x120/EFEFEF/CCC/?text=brand&font=lobster'} mode="aspectFit" />
+        <View className='view-flex view-flex-middle'>
+          <Image
+            className='store-brand'
+            src={info.logo || 'https://fakeimg.pl/120x120/EFEFEF/CCC/?text=brand&font=lobster'}
+            mode='aspectFit'
+          />
           <View>
-            <View className="store-name">{info.name}</View>
+            <View className='store-name'>{info.name}</View>
           </View>
         </View>
         <View className='view-flex'>
           <View className='view-flex-item'>
             <View
-              className="store-attention-btn"
+              className='store-attention-btn'
               onClick={this.handleStoreFav.bind(this, info.distributor_id)}
             >
               {isFav ? '已关注' : '关注店铺'}
             </View>
           </View>
           <View className='view-flex-item'>
-            <View
-              className="store-enter-btn"
-              onClick={this.handleClickLink}
-            >进入店铺</View>
+            <View className='store-enter-btn' onClick={this.handleClickLink}>
+              进入店铺
+            </View>
           </View>
         </View>
       </View>

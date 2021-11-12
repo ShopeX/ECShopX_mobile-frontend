@@ -1,15 +1,15 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { connect } from "@tarojs/redux";
-import { AtTabs, AtTabsPane, AtTabBar } from "taro-ui"
+import { connect } from '@tarojs/redux'
+import { AtTabs, AtTabsPane, AtTabBar } from 'taro-ui'
 import api from '@/api'
-import { pickBy, getCurrentRoute} from '@/utils'
-import { platformTemplateName } from "@/utils/platform";
+import { pickBy, getCurrentRoute } from '@/utils'
+import { platformTemplateName } from '@/utils/platform'
 import Series from './comps/series'
 
 import './category.scss'
 
-@connect(store => ({
+@connect((store) => ({
   store
 }))
 export default class Category extends Component {
@@ -26,9 +26,19 @@ export default class Category extends Component {
       localCurrent: 2,
       tabBarList: [
         { title: '店铺首页', iconType: 'home', iconPrefixClass: 'icon', url: '/pages/store/index' },
-        { title: '商品列表', iconType: 'list', iconPrefixClass: 'icon', url: '/others/pages/store/list' },
-        { title: '商品分类', iconType: 'category', iconPrefixClass: 'icon', url: '/others/pages/store/category' }
-      ]      
+        {
+          title: '商品列表',
+          iconType: 'list',
+          iconPrefixClass: 'icon',
+          url: '/others/pages/store/list'
+        },
+        {
+          title: '商品分类',
+          iconType: 'category',
+          iconPrefixClass: 'icon',
+          url: '/others/pages/store/category'
+        }
+      ]
     }
   }
 
@@ -45,7 +55,7 @@ export default class Category extends Component {
     const options = this.$router.params
     const id = options.id
     const query = {
-      template_name:platformTemplateName,
+      template_name: platformTemplateName,
       version: 'v1.0.1',
       page_name: 'category',
       distributor_id: id
@@ -61,19 +71,21 @@ export default class Category extends Component {
         id: 'id',
         category_id: 'category_id',
         is_main_category: 'is_main_category',
-        children: ({ children }) => pickBy(children, {
-          name: 'category_name',
-          img: 'image_url',
-          id: 'id',
-          is_main_category: 'is_main_category',
-          category_id: 'category_id',
-          children: ({ children }) => pickBy(children, {
+        children: ({ children }) =>
+          pickBy(children, {
             name: 'category_name',
             img: 'image_url',
+            id: 'id',
+            is_main_category: 'is_main_category',
             category_id: 'category_id',
-            is_main_category: 'is_main_category'
+            children: ({ children }) =>
+              pickBy(children, {
+                name: 'category_name',
+                img: 'image_url',
+                category_id: 'category_id',
+                is_main_category: 'is_main_category'
+              })
           })
-        })
       })
       this.setState({
         list: nList,
@@ -83,7 +95,7 @@ export default class Category extends Component {
       let tabList = []
       let contentList = []
       if (list[0].params.hasSeries) {
-        seriesList.map(item => {
+        seriesList.map((item) => {
           tabList.push({ title: item.title, status: item.name })
           contentList.push(item.content)
         })
@@ -103,7 +115,7 @@ export default class Category extends Component {
         tabList,
         contentList,
         hasSeries: true,
-        list: nList,
+        list: nList
       })
     }
   }
@@ -120,9 +132,9 @@ export default class Category extends Component {
     })
     this.setState({
       curTabIdx: idx,
-      list: nList,
+      list: nList
     })
-    if(idx === this.state.curTabIdx){
+    if (idx === this.state.curTabIdx) {
       this.setState({
         isChanged: false
       })
@@ -140,7 +152,7 @@ export default class Category extends Component {
       const { url } = curTab
       const options = this.$router.params
       const id = options.id
-      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
       const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
       if (url && fullPath !== url) {
         Taro.redirectTo({ url: `${url}${param}` })
@@ -153,40 +165,26 @@ export default class Category extends Component {
     const options = this.$router.params
     return (
       <View className='page-category-index'>
-        {
-          tabList.length !== 0
-            ? <AtTabs
-              className='category__tabs'
-              current={curTabIdx}
-              tabList={tabList}
-              onClick={this.handleClickTab}
-            >
-              {
-                tabList.map((panes, pIdx) =>
-                  (<AtTabsPane
-                    current={curTabIdx}
-                    key={panes.status}
-                    index={pIdx}
-                  >
-                  </AtTabsPane>)
-                )
-              }
-            </AtTabs>
-            : null
-				}
-        <View className={`${hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'}`}>
-          <Series
-            isChanged={isChanged}
-            info={list}
-            storeId={options.id}
-          />
+        {tabList.length !== 0 ? (
+          <AtTabs
+            className='category__tabs'
+            current={curTabIdx}
+            tabList={tabList}
+            onClick={this.handleClickTab}
+          >
+            {tabList.map((panes, pIdx) => (
+              <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+            ))}
+          </AtTabs>
+        ) : null}
+        <View
+          className={`${
+            hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
+          }`}
+        >
+          <Series isChanged={isChanged} info={list} storeId={options.id} />
         </View>
-        <AtTabBar
-          fixed
-          tabList={tabBarList}
-          onClick={this.handleClick}
-          current={localCurrent}
-        />     
+        <AtTabBar fixed tabList={tabBarList} onClick={this.handleClick} current={localCurrent} />
       </View>
     )
   }

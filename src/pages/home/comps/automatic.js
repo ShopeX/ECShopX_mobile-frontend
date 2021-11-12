@@ -23,20 +23,17 @@ export default class Automatic extends Component {
 
     return (
       <View>
-        {
-          isShow &&
-            <View className='gift-wrap'>
-              <View className='gift'>
-                <Image
-                  className='gift-bg'
-                  src={info.adPic}
-                  mode='widthFix'
-                />
-                <Button className={`btn-primary ${info.title ? null : 'gift-btn'}`} onClick={onClick}>{info.title}</Button>
-                <View className='zoom-btn icon-close' onClick={onClose}></View>
-              </View>
+        {isShow && (
+          <View className='gift-wrap'>
+            <View className='gift'>
+              <Image className='gift-bg' src={info.adPic} mode='widthFix' />
+              <Button className={`btn-primary ${info.title ? null : 'gift-btn'}`} onClick={onClick}>
+                {info.title}
+              </Button>
+              <View className='zoom-btn icon-close' onClick={onClose}></View>
             </View>
-        }
+          </View>
+        )}
       </View>
     )
   }

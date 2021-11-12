@@ -42,8 +42,8 @@ export default class ItemHistory extends Component {
       title: 'itemData.itemName',
       desc: 'itemData.brief',
       distributor_id: 'distributor_id',
-      price: ({ itemData }) => (itemData.price/100).toFixed(2),
-      market_price: ({ itemData }) => (itemData.market_price/100).toFixed(2)
+      price: ({ itemData }) => (itemData.price / 100).toFixed(2),
+      market_price: ({ itemData }) => (itemData.market_price / 100).toFixed(2)
     })
 
     this.setState({
@@ -69,10 +69,7 @@ export default class ItemHistory extends Component {
     return (
       <View className='page-goods-list page-goods-history'>
         <View className='goods-list__toolbar'>
-          <SpNavBar
-            leftIconType='chevron-left'
-            fixed='true'
-          />
+          <SpNavBar leftIconType='chevron-left' fixed='true' />
         </View>
 
         <ScrollView
@@ -84,33 +81,23 @@ export default class ItemHistory extends Component {
           onScrollToLower={this.nextPage}
         >
           <View className='goods-list goods-list__type-grid'>
-            {
-              list.map(item => {
-                return (
-                  <GoodsItem
-                    key={item.item_id}
-                    info={item}
-                    onClick={() => this.handleClickItem(item)}
-                  />
-                )
-              })
-            }
+            {list.map((item) => {
+              return (
+                <GoodsItem
+                  key={item.item_id}
+                  info={item}
+                  onClick={() => this.handleClickItem(item)}
+                />
+              )
+            })}
           </View>
-          {
-            page.isLoading
-              ? <Loading>正在加载...</Loading>
-              : null
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-          }
+          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+          )}
         </ScrollView>
 
-        <BackToTop
-          show={showBackToTop}
-          onClick={this.scrollBackToTop}
-        />
+        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
       </View>
     )
   }

@@ -1,20 +1,11 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View, Text, ScrollView } from "@tarojs/components";
-import { entryLaunch } from "@/utils";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text, ScrollView } from '@tarojs/components'
+import { entryLaunch } from '@/utils'
 
 export default class ShareLand extends Component {
+  componentDidMount () {}
 
-  componentDidMount() {
-    
-  }
-
-
-
-  render() {
-    return (
-      <View className="page-share-land">
-      
-      </View>
-    );
+  render () {
+    return <View className='page-share-land'></View>
   }
 }

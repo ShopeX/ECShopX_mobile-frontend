@@ -1,7 +1,7 @@
-import Taro from "@tarojs/taro";
-import configStore from "@/store";
+import Taro from '@tarojs/taro'
+import configStore from '@/store'
 
-const { store } = configStore();
+const { store } = configStore()
 // const DEFAULT_NAME = "积分";
 // const CUSTOM_NAME = Taro.getStorageSync("custom_point_name") || DEFAULT_NAME;
 
@@ -14,7 +14,7 @@ const { store } = configStore();
 //   }
 // };
 
-export const getPointName = function() {
-  const { system } = store.getState();
-  return system.pointName;
-};
+export const getPointName = function () {
+  const { system } = store.getState()
+  return system.pointName
+}

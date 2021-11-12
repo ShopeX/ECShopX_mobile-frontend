@@ -1,27 +1,21 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { AtAvatar } from "taro-ui";
+import { AtAvatar } from 'taro-ui'
 
-import './exclusive-customer-service.scss';
+import './exclusive-customer-service.scss'
 
 export default class ExclusiveCustomerService extends Component {
-
-
   static defaultProps = {
     isOpened: false
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
-    this.state = {
-
-    }
+    this.state = {}
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount () {}
 
   static options = {
     addGlobalClass: true
@@ -37,34 +31,29 @@ export default class ExclusiveCustomerService extends Component {
   /**
    * 监听按钮点击事件执行开始时的回调
    * */
-  startmessage() {
+  startmessage () {
     console.log('监听按钮点击事件执行开始时的回调')
   }
 
   /**
    * 监听按钮点击事件执行完毕后的回调
    * */
-  completemessage() {
+  completemessage () {
     console.log('监听按钮点击事件执行完毕后的回调')
   }
 
-  render() {
-    let { info } = this.props;
+  render () {
+    let { info } = this.props
 
-    if (!info) return null;
+    if (!info) return null
 
     return (
       <View className='exclusive-customer-service exclusive'>
-        <View className='exclusive-title'>
-          我的导购/专属客服
-        </View>
+        <View className='exclusive-title'>我的导购/专属客服</View>
 
         <View className='exclusive-con'>
           <View className='exclusive-con__avatar'>
-            <AtAvatar image={info.avatar}
-              size='small'
-              circle
-            />
+            <AtAvatar image={info.avatar} size='small' circle />
           </View>
           <View className='exclusive-con__info'>
             <View>
@@ -77,7 +66,6 @@ export default class ExclusiveCustomerService extends Component {
           </View>
         </View>
 
-
         <View className='exclusive-button flex'>
           <View className='d-button border-r contact-ta'>
             <View className='contact-ta__text'>联系TA</View>
@@ -88,7 +76,14 @@ export default class ExclusiveCustomerService extends Component {
             />
           </View>
           {/* <Button className='d-button border-r'>联系TA</Button> */}
-          <Button className='d-button' onClick={() => { Taro.navigateTo({ url: '/pages/member/complaint' }) }}>投诉TA</Button>
+          <Button
+            className='d-button'
+            onClick={() => {
+              Taro.navigateTo({ url: '/pages/member/complaint' })
+            }}
+          >
+            投诉TA
+          </Button>
         </View>
       </View>
     )

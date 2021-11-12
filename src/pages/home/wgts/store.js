@@ -55,35 +55,30 @@ export default class WgtStore extends Component {
             <View className='wgt__subtitle'>{base.subtitle}</View>
           </View>
         )}
-        {
-          data.map(item =>
-            <View className='store-wrap'>
-              <View
-                className='store-info'
-                onClick={this.handleStoreClick.bind(this, item.id)}
-                >
-                <Image className='store-logo' src={item.logo} lazyLoad mode='scaleToFill' />
-                <View className='store-name'>{item.name}</View>
-              </View>
-              <ScrollView
-                scrollX
-                className='store-goods'
-                >
-                {
-                  item.items.map(goods =>
-                    <View
-                      className='store-goods__item'
-                      onClick={this.handleGoodsClick.bind(this, goods)}
-                      >
-                      <Image className='store-goods__item-thumbnail' src={goods.imgUrl} mode='scaleToFill' lazyLoad />
-                      <View className='store-goods__item-price'>¥{(goods.price/100).toFixed(2)}</View>
-                    </View>
-                  )
-                }
-              </ScrollView>
+        {data.map((item) => (
+          <View className='store-wrap'>
+            <View className='store-info' onClick={this.handleStoreClick.bind(this, item.id)}>
+              <Image className='store-logo' src={item.logo} lazyLoad mode='scaleToFill' />
+              <View className='store-name'>{item.name}</View>
             </View>
-          )
-        }
+            <ScrollView scrollX className='store-goods'>
+              {item.items.map((goods) => (
+                <View
+                  className='store-goods__item'
+                  onClick={this.handleGoodsClick.bind(this, goods)}
+                >
+                  <Image
+                    className='store-goods__item-thumbnail'
+                    src={goods.imgUrl}
+                    mode='scaleToFill'
+                    lazyLoad
+                  />
+                  <View className='store-goods__item-price'>¥{(goods.price / 100).toFixed(2)}</View>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        ))}
       </View>
     )
   }

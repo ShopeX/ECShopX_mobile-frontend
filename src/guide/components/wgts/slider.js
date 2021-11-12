@@ -1,31 +1,31 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View, Image, Swiper, SwiperItem } from "@tarojs/components";
-import { SpImg } from "@/components";
-import { classNames } from "@/utils";
-import { linkPage } from "./helper";
-import { WgtPlateType } from "./index";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Image, Swiper, SwiperItem } from '@tarojs/components'
+import { SpImg } from '@/components'
+import { classNames } from '@/utils'
+import { linkPage } from './helper'
+import { WgtPlateType } from './index'
 
-import "./slider.scss";
+import './slider.scss'
 
 export default class WgtSlider extends Component {
   static defaultProps = {
     info: null
-  };
+  }
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
       curIdx: 0,
       index: 0
-    };
+    }
   }
 
   static options = {
     addGlobalClass: true
-  };
+  }
 
-  handleClickItem = linkPage;
+  handleClickItem = linkPage
 
   // handleSwiperChange = (e) => {
   //   const { current  } = e.detail
@@ -34,26 +34,26 @@ export default class WgtSlider extends Component {
   //     curIdx: current
   //   })
   // }
-  handleSwiperChange = e => {
-    const { current } = e.detail;
+  handleSwiperChange = (e) => {
+    const { current } = e.detail
     this.setState({
       curIdx: current,
       index: e.target.current
-    });
-  };
+    })
+  }
 
-  render() {
-    const { info } = this.props;
-    const { curIdx, index } = this.state;
+  render () {
+    const { info } = this.props
+    const { curIdx, index } = this.state
 
     if (!info) {
-      return null;
+      return null
     }
-    const { config, base, data } = info;
-    const curContent = (data[curIdx] || {}).content;
+    const { config, base, data } = info
+    const curContent = (data[curIdx] || {}).content
 
     return (
-      <View className={`wgt ${base.padded ? "wgt__padded" : null}`}>
+      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
         {base.title && (
           <View className='wgt__header'>
             <View className='wgt__title'>{base.title}</View>
@@ -61,14 +61,9 @@ export default class WgtSlider extends Component {
           </View>
         )}
         {config ? (
-          <View className={`slider-wrap ${config.padded ? "padded" : ""}`}>
+          <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
             {data[0] && (
-              <Image
-                mode='widthFix'
-                className='scale-placeholder'
-                lazyLoad
-                src={data[0].imgUrl}
-              />
+              <Image mode='widthFix' className='scale-placeholder' lazyLoad src={data[0].imgUrl} />
             )}
             <Swiper
               className='slider-img'
@@ -84,27 +79,13 @@ export default class WgtSlider extends Component {
                 return (
                   <SwiperItem
                     key={`${idx}1`}
-                    className={`slider-item ${
-                      config.rounded ? "rounded" : null
-                    }`}
+                    className={`slider-item ${config.rounded ? 'rounded' : null}`}
                   >
                     <View
-                      style={`padding: 0 ${
-                        config.padded ? Taro.pxTransform(20) : 0
-                      }`}
-                      onClick={this.handleClickItem.bind(
-                        this,
-                        item.linkPage,
-                        item.id,
-                        item
-                      )}
+                      style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
+                      onClick={this.handleClickItem.bind(this, item.linkPage, item.id, item)}
                     >
-                      <WgtPlateType
-                        info={item}
-                        index={index}
-                        num={idx}
-                        base={base}
-                      />
+                      <WgtPlateType info={item} index={index} num={idx} base={base} />
                       <SpImg
                         img-class='slider-item__img'
                         src={item.imgUrl}
@@ -114,24 +95,24 @@ export default class WgtSlider extends Component {
                       />
                     </View>
                   </SwiperItem>
-                );
+                )
               })}
             </Swiper>
 
             {data.length > 1 && config.dot && (
               <View
                 className={classNames(
-                  "slider-dot",
-                  { "dot-size-switch": config.animation },
+                  'slider-dot',
+                  { 'dot-size-switch': config.animation },
                   config.dotLocation,
-                  config.dotCover ? "cover" : "no-cover",
+                  config.dotCover ? 'cover' : 'no-cover',
                   config.dotColor,
                   config.shape
                 )}
               >
                 {data.map((dot, dotIdx) => (
                   <View
-                    className={classNames("dot", { active: curIdx === dotIdx })}
+                    className={classNames('dot', { active: curIdx === dotIdx })}
                     key={`${dotIdx}1`}
                   ></View>
                 ))}
@@ -141,7 +122,7 @@ export default class WgtSlider extends Component {
             {data.length > 1 && !config.dot && (
               <View
                 className={classNames(
-                  "slider-count",
+                  'slider-count',
                   config.dotLocation,
                   config.shape,
                   config.dotColor
@@ -152,10 +133,8 @@ export default class WgtSlider extends Component {
             )}
           </View>
         ) : null}
-        {config.content && curContent && (
-          <View className='slider-caption'>{curContent}</View>
-        )}
+        {config.content && curContent && <View className='slider-caption'>{curContent}</View>}
       </View>
-    );
+    )
   }
 }

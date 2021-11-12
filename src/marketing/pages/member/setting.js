@@ -7,14 +7,16 @@ import { connect } from '@tarojs/redux'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
 
-@connect(() => ({}), (dispatch) => ({
-  onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
-  onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),
-  onFetchFavs: (favs) => dispatch({ type: 'member/favs', payload: favs })
-}))
+@connect(
+  () => ({}),
+  (dispatch) => ({
+    onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
+    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),
+    onFetchFavs: (favs) => dispatch({ type: 'member/favs', payload: favs })
+  })
+)
 @withLogin()
 export default class MemberSetting extends Component {
-
   handleClickSetting = () => {
     Taro.navigateTo({
       url: '/marketing/pages/member/userinfo'
@@ -39,21 +41,19 @@ export default class MemberSetting extends Component {
   render () {
     return (
       <View className='page-member-setting'>
-        <SpNavBar
-          title='设置'
-          fixed={false}
-        />
+        <SpNavBar title='设置' fixed={false} />
 
         <View className='sec'>
           {/* <SpCell title='用户设置' isLink onClick={this.handleClickSetting}> </SpCell> */}
-          <SpCell title='版本' value={process.env.APP_VERSION}> </SpCell>
+          <SpCell title='版本' value={process.env.APP_VERSION}>
+            {' '}
+          </SpCell>
         </View>
 
         <View className='btns'>
-          <AtButton
-            type='primary'
-            onClick={this.handleClickLogout}
-          >退出登录</AtButton>
+          <AtButton type='primary' onClick={this.handleClickLogout}>
+            退出登录
+          </AtButton>
         </View>
       </View>
     )

@@ -7,16 +7,18 @@ import { SpNavBar, AddressChoose } from '@/components'
 
 import './index.scss'
 
-
-@connect(({ address }) => ({
-  address: address.current
-}), (dispatch) => ({
-  onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address })
-}))
+@connect(
+  ({ address }) => ({
+    address: address.current
+  }),
+  (dispatch) => ({
+    onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address })
+  })
+)
 export default class Pay extends Component {
   constructor (props) {
     super(props)
-    this. state = {
+    this.state = {
       cur_address: null,
       remark: '',
       goodInfo: {},
@@ -71,10 +73,7 @@ export default class Pay extends Component {
   // 获取数据
   getOrderInfo = async () => {
     const { bargain_id } = this.$router.params
-    const {
-      bargain_info = {},
-      user_bargain_info = {}
-    } = await api.boost.getUserBargain({
+    const { bargain_info = {}, user_bargain_info = {} } = await api.boost.getUserBargain({
       bargain_id,
       has_order: true
     })
@@ -82,30 +81,33 @@ export default class Pay extends Component {
     const { user_id, cutdown_amount } = user_bargain_info
     let purchasePrice = mPrice
     const discount = mPrice - price
-    if (user_id && (discount > cutdown_amount)) {
+    if (user_id && discount > cutdown_amount) {
       purchasePrice = mPrice - cutdown_amount
     }
     const { list = [] } = await api.member.addressList()
-    this.setState({
-      goodInfo: pickBy(bargain_info, {
-        bargain_id: 'bargain_id',
-        item_name: 'item_name',
-        item_pics: 'item_pics',
-        item_intro: 'item_intro',
-        bargain_rules: 'bargain_rules',
-        share_msg: 'share_msg',
-        mkt_price: ({ mkt_price }) => (mkt_price / 100).toFixed(2),
-      }),
-      purchasePrice: (purchasePrice / 100).toFixed(2)
-    }, () => {
-      // 设置默认地址
-      let defaultAddress = null
-      if (list && list.length > 0) {
-        const isDef = list.find(item => item.is_def)
-        defaultAddress = isDef
+    this.setState(
+      {
+        goodInfo: pickBy(bargain_info, {
+          bargain_id: 'bargain_id',
+          item_name: 'item_name',
+          item_pics: 'item_pics',
+          item_intro: 'item_intro',
+          bargain_rules: 'bargain_rules',
+          share_msg: 'share_msg',
+          mkt_price: ({ mkt_price }) => (mkt_price / 100).toFixed(2)
+        }),
+        purchasePrice: (purchasePrice / 100).toFixed(2)
+      },
+      () => {
+        // 设置默认地址
+        let defaultAddress = null
+        if (list && list.length > 0) {
+          const isDef = list.find((item) => item.is_def)
+          defaultAddress = isDef
+        }
+        this.props.onAddressChoose(defaultAddress)
       }
-      this.props.onAddressChoose(defaultAddress)
-    })
+    )
   }
 
   // 支付
@@ -162,7 +164,7 @@ export default class Pay extends Component {
           duration: 1500,
           mask: true
         })
-      }    
+      }
     }
     this.setState({
       isLoading: false
@@ -184,7 +186,7 @@ export default class Pay extends Component {
         <AddressChoose isAddress={cur_address} />
         <View className='remark'>
           <View className='title'>备注</View>
-          <Textarea 
+          <Textarea
             style='width:100%;min-height: 50px'
             placeholder='例如颜色尺寸等'
             value={remark}
@@ -195,23 +197,30 @@ export default class Pay extends Component {
         <View className='goods'>
           <Image src={goodInfo.item_pics} mode='aspectFill' className='img' />
           <View className='info'>
-            <View className='name'>{ goodInfo.item_name }</View>
+            <View className='name'>{goodInfo.item_name}</View>
             <View className='price'>
-              <Text>¥{ goodInfo.mkt_price }/件</Text>
+              <Text>¥{goodInfo.mkt_price}/件</Text>
               <Text>x1</Text>
             </View>
           </View>
         </View>
         <View className='sum'>
-          商品总价<Text>¥{ purchasePrice }</Text>
+          商品总价<Text>¥{purchasePrice}</Text>
         </View>
         <View className='actBtn'>
           <View className='price'>
-            实付款: <Text>¥{ purchasePrice }</Text>
+            实付款: <Text>¥{purchasePrice}</Text>
           </View>
-          <Button className='btn' disabled={isLoading} loading={isLoading} onClick={this.handlePay.bind(this)}>立即付款</Button>
+          <Button
+            className='btn'
+            disabled={isLoading}
+            loading={isLoading}
+            onClick={this.handlePay.bind(this)}
+          >
+            立即付款
+          </Button>
         </View>
       </View>
     )
-  }  
+  }
 }

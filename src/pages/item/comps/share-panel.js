@@ -12,7 +12,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Button, Image } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
 
-import './share-panel.scss';
+import './share-panel.scss'
 
 export default class SharePanel extends Component {
   static defaultProps = {
@@ -52,24 +52,38 @@ export default class SharePanel extends Component {
           </View> */}
           <Button className='share-panel__item' openType='share'>
             <View className='imgBtn'>
-              <Image className='img' mode='aspectFit' src={require('../../../assets/imgs/weixin.png')} />
+              <Image
+                className='img'
+                mode='aspectFit'
+                src={require('../../../assets/imgs/weixin.png')}
+              />
             </View>
             <View className='title'>分享给好友</View>
           </Button>
           <View className='share-panel__item' onClick={onClick}>
             <View className='imgBtn'>
-              <Image className='img' mode='aspectFit' src={require('../../../assets/imgs/poster.png')} />
+              <Image
+                className='img'
+                mode='aspectFit'
+                src={require('../../../assets/imgs/poster.png')}
+              />
             </View>
-            <View className='title'>海报分享</View>            
+            <View className='title'>海报分享</View>
           </View>
-          <View className='share-panel__item' onClick={onEditShare}>  
+          <View className='share-panel__item' onClick={onEditShare}>
             <View className='imgBtn'>
-              <Image className='img' mode='aspectFit' src={require('../../../assets/imgs/editshare.png')} />
+              <Image
+                className='img'
+                mode='aspectFit'
+                src={require('../../../assets/imgs/editshare.png')}
+              />
             </View>
-            <View className='title'>分享编辑</View>            
+            <View className='title'>分享编辑</View>
           </View>
         </View>
-        <View className='cancel' onClick={onClose}>取消</View>
+        <View className='cancel' onClick={onClose}>
+          取消
+        </View>
       </AtFloatLayout>
     )
   }

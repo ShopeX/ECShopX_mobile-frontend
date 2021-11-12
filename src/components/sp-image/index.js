@@ -1,11 +1,11 @@
-import Taro, { Component } from "@tarojs/taro";
-import { Image } from "@tarojs/components";
-import { classNames, styleNames } from "@/utils";
-import "./index.scss";
+import Taro, { Component } from '@tarojs/taro'
+import { Image } from '@tarojs/components'
+import { classNames, styleNames } from '@/utils'
+import './index.scss'
 
-const Fn = () => { }
+const Fn = () => {}
 
-function SpImage( props ) {
+function SpImage (props) {
   const {
     src,
     className,
@@ -14,22 +14,22 @@ function SpImage( props ) {
     onError = Fn,
     onLoad = Fn,
     lazyLoad = Fn
-  } = this.props;
-  const imgUrl = `${process.env.APP_IMAGE_CDN}/${src}`;
+  } = this.props
+  const imgUrl = `${process.env.APP_IMAGE_CDN}/${src}`
   return (
     <View
       className={classNames(
         {
-          "sp-image": true
+          'sp-image': true
         },
         className
       )}
-      style={styleNames( {
+      style={styleNames({
         width: `${width}rpx`
       })}
     >
       <Image
-        className="sp-image-img"
+        className='sp-image-img'
         src={imgUrl}
         mode={mode}
         onError={onError}
@@ -37,11 +37,11 @@ function SpImage( props ) {
         lazyLoad={lazyLoad}
       />
     </View>
-  );
+  )
 }
 
 SpImage.options = {
   addGlobalClass: true
-};
+}
 
-export default SpImage;
+export default SpImage

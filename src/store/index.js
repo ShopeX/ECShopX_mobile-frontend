@@ -15,16 +15,16 @@ if (process.env.TARO_ENV === 'weapp') {
 
 const isProd = process.env.NODE_ENV === 'production'
 
-const middlewares = [
-  thunkMiddleware,
-  !isProd && createLogger()
-].filter(Boolean)
+const middlewares = [thunkMiddleware, !isProd && createLogger()].filter(Boolean)
 
-const reducer = persistReducer({
-  key: 'root',
-  storage,
-  blacklist: ['cart', 'address','home','guide']
-}, reducers)
+const reducer = persistReducer(
+  {
+    key: 'root',
+    storage,
+    blacklist: ['cart', 'address', 'home', 'guide']
+  },
+  reducers
+)
 
 let store, persistor
 
@@ -39,5 +39,3 @@ export default function configStore () {
     persistor
   }
 }
-
-

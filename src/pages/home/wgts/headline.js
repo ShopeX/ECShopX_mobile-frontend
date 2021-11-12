@@ -1,4 +1,3 @@
-
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import './headline.scss'
@@ -8,26 +7,25 @@ export default class WgtHeadline extends Component {
     addGlobalClass: true
   }
 
-    static defaultProps = {
-        info: null
-    }
+  static defaultProps = {
+    info: null
+  }
 
-    constructor(props) {
-        super(props)
-        this.state = {
-        }
+  constructor (props) {
+    super(props)
+    this.state = {}
+  }
+  render () {
+    const { info } = this.props
+    if (!info) {
+      return null
     }
-    render() {
-        const { info } = this.props
-        if (!info) {
-          return null
-        }
-        return (
-            <View className='index'>
-                <View className='title' style={'text-align:' + info.base.float}>
-                    {info.base.title}
-                </View>
-            </View>
-        )
-    }
+    return (
+      <View className='index'>
+        <View className='title' style={'text-align:' + info.base.float}>
+          {info.base.title}
+        </View>
+      </View>
+    )
+  }
 }

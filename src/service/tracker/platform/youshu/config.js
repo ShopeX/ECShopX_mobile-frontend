@@ -2,12 +2,12 @@ export default {
   /**
    * 有数 - ka‘接入测试用’ 分配的 app_id，对应的业务接口人负责
    */
-  token: "",
+  token: '',
 
   /**
    * 微信小程序appID，以wx开头
    */
-  appid: "",
+  appid: '',
 
   /**
    * 如果使用了小程序插件，需要设置为 true
@@ -37,4 +37,4 @@ export default {
   autoTrack: false,
   // 建议开启-自动化获取openId，授权过的小程序可自动化获取openId
   openAutoTrackOpenId: true
-};
+}

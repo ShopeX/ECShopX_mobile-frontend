@@ -27,17 +27,12 @@ export default class WgtFilm extends Component {
   handleClickItem = linkPage
 
   resolveSize ({ width, height, ratio: tRatio } = {}, screenWidth, base = {}) {
-    const aspectRatios = [
-      16 / 9,
-      9 / 16,
-      4 / 3,
-      3 / 4,
-      1 / 1
-    ]
+    const aspectRatios = [16 / 9, 9 / 16, 4 / 3, 3 / 4, 1 / 1]
     const { proportion = 0 } = base
     let ratio = aspectRatios[proportion]
-    
-    let w = '100%', h
+
+    let w = '100%',
+      h
     let objectFit = 'contain'
     const defaultHeight = Math.round(screenWidth / ratio)
 
@@ -88,15 +83,11 @@ export default class WgtFilm extends Component {
             <View className='wgt__subtitle'>{base.subtitle}</View>
           </View>
         )}
-        <View 
+        <View
           className={`slider-wrap ${config.padded ? 'padded' : ''}`}
           style={`width: ${width}; height: ${height}`}
         >
-          <Video
-            className='flim-video'
-            src={data[0].url}
-            controls
-          />
+          <Video className='flim-video' src={data[0].url} controls />
         </View>
       </View>
     )

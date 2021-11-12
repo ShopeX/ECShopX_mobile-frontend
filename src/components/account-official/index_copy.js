@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, OfficialAccount, Image } from '@tarojs/components'
-import {connect} from "@tarojs/redux";
+import { connect } from '@tarojs/redux'
 import { classNames } from '@/utils'
 
 import './index.scss'
@@ -26,26 +26,25 @@ export default class AccountOfficial extends Component {
     super(props)
 
     this.state = {
-      isShowAccount:false
+      isShowAccount: false
     }
   }
-  componentDidMount(){
-  }
+  componentDidMount () {}
 
-  componentDidShow() {
+  componentDidShow () {
     this.handleClickError()
     this.handleClickLoad()
   }
 
-  handleClickClose =() => {
+  handleClickClose = () => {
     this.props.onClick()
   }
 
   handleClickLoad = (res) => {
-    console.log('res',res)
-    if(res && res.detail) {
+    console.log('res', res)
+    if (res && res.detail) {
       this.setState({
-        isShowAccount:true
+        isShowAccount: true
       })
       let status_cur = res.detail.status
       this.props.onHandleError(status_cur)
@@ -53,8 +52,8 @@ export default class AccountOfficial extends Component {
   }
 
   handleClickError = (error) => {
-    console.log('error',error)
-    if(error && error.detail) {
+    console.log('error', error)
+    if (error && error.detail) {
       let status_cur = error.detail.status
       this.props.onHandleError(status_cur)
     }
@@ -62,23 +61,19 @@ export default class AccountOfficial extends Component {
 
   render () {
     const { isShowAccount } = this.state
-    const { colors,isClose } = this.props
+    const { colors, isClose } = this.props
     return (
       <View className='account-view'>
-      <OfficialAccount
-        className='account-view__official'
-        onLoad={(res) => this.handleClickLoad(res)}
-        onError={(error) => this.handleClickError(error)}
-      />
-      
-      {
-        isShowAccount && isClose && (
+        <OfficialAccount
+          className='account-view__official'
+          onLoad={(res) => this.handleClickLoad(res)}
+          onError={(error) => this.handleClickError(error)}
+        />
+
+        {isShowAccount && isClose && (
           <View className='zoom-btn icon-close' onClick={this.handleClickClose.bind(this)}></View>
-
-        )
-      }
-    </View>
-
+        )}
+      </View>
     )
   }
 }

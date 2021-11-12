@@ -41,19 +41,11 @@ export default class ArticleIndex extends Component {
 
     return (
       <View className='article-index'>
-        {info.image_url && (
-          <Image
-            className='article-brand'
-            src={info.image_url}
-            mode='widthFix'
-          />
-        )}
+        {info.image_url && <Image className='article-brand' src={info.image_url} mode='widthFix' />}
         <View className='article-info'>
           <Text className='article-title'>{info.title}</Text>
           <Text className='article-time'>{info.updated_str}</Text>
-          <SpHtmlContent
-            content={info.content}
-          ></SpHtmlContent>
+          <SpHtmlContent content={info.content}></SpHtmlContent>
         </View>
       </View>
     )

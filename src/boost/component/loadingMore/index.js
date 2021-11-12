@@ -14,7 +14,6 @@ import { View } from '@tarojs/components'
 import './index.scss'
 
 export default class LoadingMore extends Component {
-
   static defaultProps = {
     // 加载中
     isLoading: false,
@@ -32,24 +31,16 @@ export default class LoadingMore extends Component {
     const { isLoading, isEnd, isEmpty } = this.props
     return (
       <View className={`loadingMore ${isEmpty && 'empty'}`}>
-        {
-          isLoading && <View className='lds-ellipsis'>
+        {isLoading && (
+          <View className='lds-ellipsis'>
             <View className='div'></View>
             <View className='div'></View>
             <View className='div'></View>
             <View className='div'></View>
           </View>
-        }
-        {
-          isEmpty && !isLoading && <View className='empty'>
-            暂无数据
-          </View>
-        }
-        {
-          isEnd && !isEmpty && !isLoading && <View className='isEnd'>
-            -- 我也是有底线的 --
-          </View>
-        }
+        )}
+        {isEmpty && !isLoading && <View className='empty'>暂无数据</View>}
+        {isEnd && !isEmpty && !isLoading && <View className='isEnd'>-- 我也是有底线的 --</View>}
       </View>
     )
   }

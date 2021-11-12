@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text, Image } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote } from '@/components'
-import {AtCountdown, AtTabs, AtTabsPane} from 'taro-ui'
+import { AtCountdown, AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 
 import './seckill-list.scss'
@@ -17,8 +17,8 @@ export default class SeckillList extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '进行中', status: 'valid'},
-        {title: '未开始', status: 'notice'}
+        { title: '进行中', status: 'valid' },
+        { title: '未开始', status: 'notice' }
       ],
       query: null,
       list: [],
@@ -31,14 +31,17 @@ export default class SeckillList extends Component {
   }
 
   componentDidMount () {
-    this.setState({
-      query: {
-        status: this.state.curTabIdx === 0 ? 'valid' : 'notice',
-        item_type: 'normal'
+    this.setState(
+      {
+        query: {
+          status: this.state.curTabIdx === 0 ? 'valid' : 'notice',
+          item_type: 'normal'
+        }
+      },
+      () => {
+        this.nextPage()
       }
-    }, () => {
-      this.nextPage()
-		})
+    )
   }
 
   calcTimer (t_index, totalSec) {
@@ -52,11 +55,8 @@ export default class SeckillList extends Component {
     remainingSec -= mm * 60
     const ss = Math.floor(remainingSec)
     timeCountDown.map((item, index) => {
-      if(index === t_index){
-        item.dd = dd,
-        item.hh = hh,
-        item.mm = mm,
-        item.ss = ss
+      if (index === t_index) {
+        ;(item.dd = dd), (item.hh = hh), (item.mm = mm), (item.ss = ss)
       }
     })
     this.setState({
@@ -74,8 +74,8 @@ export default class SeckillList extends Component {
 
     const { list, total_count: total } = await api.seckill.seckillList(query)
 
-		let timeCountDown = []
-    list.map(item => {
+    let timeCountDown = []
+    list.map((item) => {
       timeCountDown.push({
         timer: null,
         micro_second: item.last_seconds,
@@ -83,17 +83,20 @@ export default class SeckillList extends Component {
       })
     })
 
-    this.setState({
-      timeCountDown,
-    },()=>{
-      timeCountDown.map((t_item,t_index) => {
-        if (t_item.micro_second === 0) {
-          t_item.time = 0
-          return
-        }
-        this.calcTimer(t_index, t_item.micro_second)
-      })
-    })
+    this.setState(
+      {
+        timeCountDown
+      },
+      () => {
+        timeCountDown.map((t_item, t_index) => {
+          if (t_item.micro_second === 0) {
+            t_item.time = 0
+            return
+          }
+          this.calcTimer(t_index, t_item.micro_second)
+        })
+      }
+    )
 
     this.setState({
       list: [...this.state.list, ...list],
@@ -115,11 +118,14 @@ export default class SeckillList extends Component {
       })
     }
 
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curTabIdx: idx
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   handleClickItem = (seckill_id) => {
@@ -138,16 +144,9 @@ export default class SeckillList extends Component {
           tabList={tabList}
           onClick={this.handleClickTab}
         >
-           {
-             tabList.map((panes, pIdx) =>
-               (<AtTabsPane
-                 current={curTabIdx}
-                 key={panes.status}
-                 index={pIdx}
-               >
-               </AtTabsPane>)
-             )
-           }
+          {tabList.map((panes, pIdx) => (
+            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+          ))}
         </AtTabs>
         <ScrollView
           className='seckill__scroll'
@@ -158,53 +157,49 @@ export default class SeckillList extends Component {
           onScrollToLower={this.nextPage}
         >
           <View>
-            {
-              list.map((item, index) => {
-                return (
-                  <View className='seckill-list' key={`${index}1`} onClick={this.handleClickItem.bind(this, item.seckill_id)}>
-                    <View className='seckill-list__title'>离结束还有：
-                      <AtCountdown
-                        isShowDay
-                        day={timeCountDown[index].dd}
-                        hours={timeCountDown[index].hh}
-                        minutes={timeCountDown[index].mm}
-                        seconds={timeCountDown[index].ss}
-                      />
-										</View>
-                    <Image className='seckill-list__banner' mode='widthFix' src={item.ad_pic} />
-										<View className='seckill-goods'>
-										{
-											item.items.map(seckill=>{
-												return (
-													<View className='seckill-goods__item'>
-														<Image className='seckill-goods__img' mode='aspectFill' src={seckill.pics[0]} />
-														<Text className='seckill-goods__title'>{seckill.item_title}</Text>
-													</View>
-												)
-											})
-
-										}
-                    </View>
+            {list.map((item, index) => {
+              return (
+                <View
+                  className='seckill-list'
+                  key={`${index}1`}
+                  onClick={this.handleClickItem.bind(this, item.seckill_id)}
+                >
+                  <View className='seckill-list__title'>
+                    离结束还有：
+                    <AtCountdown
+                      isShowDay
+                      day={timeCountDown[index].dd}
+                      hours={timeCountDown[index].hh}
+                      minutes={timeCountDown[index].mm}
+                      seconds={timeCountDown[index].ss}
+                    />
                   </View>
-                )
-              })
-            }
+                  <Image className='seckill-list__banner' mode='widthFix' src={item.ad_pic} />
+                  <View className='seckill-goods'>
+                    {item.items.map((seckill) => {
+                      return (
+                        <View className='seckill-goods__item'>
+                          <Image
+                            className='seckill-goods__img'
+                            mode='aspectFill'
+                            src={seckill.pics[0]}
+                          />
+                          <Text className='seckill-goods__title'>{seckill.item_title}</Text>
+                        </View>
+                      )
+                    })}
+                  </View>
+                </View>
+              )
+            })}
           </View>
-          {
-            page.isLoading
-              ? <Loading>正在加载...</Loading>
-              : null
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-            && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-          }
+          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+          )}
         </ScrollView>
 
-        <BackToTop
-          show={showBackToTop}
-          onClick={this.scrollBackToTop}
-        />
+        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
       </View>
     )
   }

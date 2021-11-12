@@ -6,21 +6,19 @@ import api from '@/api'
 import { Loading } from '@/components'
 import { normalizeQuerys } from '@/utils'
 
-
 import './shopping-guide-card.scss'
 
-
 export default class ShoppingGuideCard extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
       info: null,
-      token:''
+      token: ''
     }
   }
 
-  async componentWillMount() {
+  async componentWillMount () {
     Taro.setNavigationBarTitle({
       title: '导购名片'
     })
@@ -41,25 +39,25 @@ export default class ShoppingGuideCard extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     let token = S.getAuthToken()
 
     this.fetch(token)
-    if (!token) return;
+    if (!token) return
 
     this.getShop()
   }
 
-  async fetch(token) {
+  async fetch (token) {
     let salesperson_id = Taro.getStorageSync('s_smid')
 
     let info = null
 
-    if(token){
+    if (token) {
       info = await api.member.getUsersalespersonrel({
         salesperson_id
       })
-    }else{
+    } else {
       info = await api.member.getSalespersonNologin({
         salesperson_id
       })
@@ -76,7 +74,7 @@ export default class ShoppingGuideCard extends Component {
   /**
    * 获取店铺
    * */
-  async getShop() {
+  async getShop () {
     let distributor_id = Taro.getStorageSync('s_dtid')
 
     let store = await api.shop.getShop({ distributor_id })
@@ -84,18 +82,15 @@ export default class ShoppingGuideCard extends Component {
     Taro.setStorageSync('curStore', store)
   }
 
-
   /**
    * 绑定好友
    * */
-  handleClickBindFriend() {
-
-  }
+  handleClickBindFriend () {}
 
   /**
- * 绑定导购
- * */
-  async handleClickBindShoppingGuide() {
+   * 绑定导购
+   * */
+  async handleClickBindShoppingGuide () {
     Taro.showLoading({
       title: '绑定中',
       mask: true
@@ -108,7 +103,6 @@ export default class ShoppingGuideCard extends Component {
       data = await api.member.setUsersalespersonrel({
         salesperson_id
       })
-
     } catch (err) {
       Taro.hideLoading()
 
@@ -123,28 +117,31 @@ export default class ShoppingGuideCard extends Component {
 
     if (!data) return
 
-    let { info } = this.state;
+    let { info } = this.state
 
-    this.setState({
-      info: Object.assign({}, info, { is_bind: data.success })
-    }, () => {
-      if (data.success) {
-        Taro.showToast({
-          title: '绑定成功',
-          icon: 'success',
-          duration: 2000
-        })
-      } else {
-        Taro.showToast({
-          title: '绑定失败',
-          icon: 'none',
-          duration: 2000
-        })
+    this.setState(
+      {
+        info: Object.assign({}, info, { is_bind: data.success })
+      },
+      () => {
+        if (data.success) {
+          Taro.showToast({
+            title: '绑定成功',
+            icon: 'success',
+            duration: 2000
+          })
+        } else {
+          Taro.showToast({
+            title: '绑定失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
       }
-    })
+    )
   }
 
-  handleClickIndex() {
+  handleClickIndex () {
     Taro.redirectTo({
       url: '/pages/index'
     })
@@ -153,14 +150,14 @@ export default class ShoppingGuideCard extends Component {
   /**
    * 监听按钮点击事件执行开始时的回调
    * */
-  handleClickStartmessage(e) {
+  handleClickStartmessage (e) {
     console.log('监听按钮点击事件执行开始时的回调', e)
   }
 
   /**
    * 监听按钮点击事件执行完毕后的回调
    * */
-  handleClickCompletemessage(e) {
+  handleClickCompletemessage (e) {
     console.log('监听按钮点击事件执行完毕后的回调', e)
     // Taro.showToast({
     //   title: '以通过微信服务通知',
@@ -169,7 +166,7 @@ export default class ShoppingGuideCard extends Component {
     // })
   }
 
-  handleClickTo(){
+  handleClickTo () {
     Taro.setStorageSync('isShoppingGuideCard', 'true')
 
     Taro.redirectTo({
@@ -184,7 +181,7 @@ export default class ShoppingGuideCard extends Component {
     }
   }
 
-  render() {
+  render () {
     const { info, token } = this.state
 
     if (!info) {
@@ -198,21 +195,21 @@ export default class ShoppingGuideCard extends Component {
             <View className='page-header__info-name'>
               {info.name} <Text>导购</Text>
             </View>
-            <View className='page-header__info-shop'>
-              {info.store_name}
-            </View>
+            <View className='page-header__info-shop'>{info.store_name}</View>
             {/* <View className='page-header__info-address'>
               地址
             </View> */}
           </View>
           <View>
-            <AtAvatar circle size='large' image={info.avatar} ></AtAvatar>
+            <AtAvatar circle size='large' image={info.avatar}></AtAvatar>
           </View>
         </View>
 
         <View className='page-button'>
-          { !token ? <AtButton onClick={this.handleClickTo.bind(this)}>去授权</AtButton> :
-            info.is_friend == 0 ? <AtButton className='page-button__button' >
+          {!token ? (
+            <AtButton onClick={this.handleClickTo.bind(this)}>去授权</AtButton>
+          ) : info.is_friend == 0 ? (
+            <AtButton className='page-button__button'>
               <View className='page-cell'>
                 <Text className='button-text'>加好友</Text>
                 <cell
@@ -221,11 +218,11 @@ export default class ShoppingGuideCard extends Component {
                   plugid={info.work_configid}
                 />
               </View>
-            </AtButton> : null
-          }
-          {
-            info.is_bind == 0 ? <AtButton onClick={this.handleClickBindShoppingGuide.bind(this)}>绑定导购</AtButton> : null
-          }
+            </AtButton>
+          ) : null}
+          {info.is_bind == 0 ? (
+            <AtButton onClick={this.handleClickBindShoppingGuide.bind(this)}>绑定导购</AtButton>
+          ) : null}
           <AtButton onClick={this.handleClickIndex.bind(this)}>去购物</AtButton>
         </View>
       </View>

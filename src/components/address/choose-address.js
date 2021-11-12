@@ -3,14 +3,16 @@ import { View, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { rightClassName } from '@/utils'
 
-
 import './address.scss'
 
-@connect(( { address } ) => ({
-  address: address.current,
-}), (dispatch) => ({
-  onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address }),
-}))
+@connect(
+  ({ address }) => ({
+    address: address.current
+  }),
+  (dispatch) => ({
+    onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address })
+  })
+)
 export default class AddressChoose extends Component {
   static defaultProps = {
     onClickBack: () => {}
@@ -19,8 +21,7 @@ export default class AddressChoose extends Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-    }
+    this.state = {}
   }
 
   static options = {
@@ -42,30 +43,29 @@ export default class AddressChoose extends Component {
 
     return (
       <View className='address-picker'>
-        <View
-          className='address'
-          onClick={this.clickTo.bind(this, 'choose')}
-        >
-          {
-            isAddress
-            ? <View className='address-picker__bd'>
-                <View className='address-receive'>
-                  <View className='info-trade'>
-                    <View className='address-area'>
-                      { isAddress.is_def && <View className='def'>默认</View> }
-                      {isAddress.province}{isAddress.state}{isAddress.district}
-                    </View>
-                    <View className='address-detail'>{isAddress.address}</View>
-                    <View className='user-info-trade'>
-                      <Text className='name'>{isAddress.name}</Text>
-                      <Text>{isAddress.mobile}</Text>
-                    </View>
+        <View className='address' onClick={this.clickTo.bind(this, 'choose')}>
+          {isAddress ? (
+            <View className='address-picker__bd'>
+              <View className='address-receive'>
+                <View className='info-trade'>
+                  <View className='address-area'>
+                    {isAddress.is_def && <View className='def'>默认</View>}
+                    {isAddress.province}
+                    {isAddress.state}
+                    {isAddress.district}
+                  </View>
+                  <View className='address-detail'>{isAddress.address}</View>
+                  <View className='user-info-trade'>
+                    <Text className='name'>{isAddress.name}</Text>
+                    <Text>{isAddress.mobile}</Text>
                   </View>
                 </View>
-                <View className={`sp-cell__ft-icon ${rightClassName}`}></View>
               </View>
-            : <View className='address-info__bd'>+请选择收货地址</View>
-          }
+              <View className={`sp-cell__ft-icon ${rightClassName}`}></View>
+            </View>
+          ) : (
+            <View className='address-info__bd'>+请选择收货地址</View>
+          )}
         </View>
       </View>
     )

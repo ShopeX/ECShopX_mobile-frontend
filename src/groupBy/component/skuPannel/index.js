@@ -15,8 +15,6 @@ import './index.scss'
 
 export default class SkuPannel extends Component {
   render () {
-    return (
-      <View>sku选择</View>
-    )
+    return <View>sku选择</View>
   }
 }

@@ -8,7 +8,7 @@ import ComplaintRecordItem from './comps/complaint-record-item'
 import './complaint-record.scss'
 
 export default class ComplaintRecord extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -19,7 +19,7 @@ export default class ComplaintRecord extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getSalesperson()
     this.getComplaintsList()
   }
@@ -27,23 +27,22 @@ export default class ComplaintRecord extends Component {
   /**
    * 获取个人信息
    * */
-  async getSalesperson() {
-    let info = await api.member.getSalesperson();
+  async getSalesperson () {
+    let info = await api.member.getSalesperson()
 
     console.log('res', info)
 
     this.setState({ info })
   }
 
-
-  handleClickDisplayMap(item) {
+  handleClickDisplayMap (item) {
     this.setState({
       showMap: true,
       showImage: item
     })
   }
 
-  handleClickHideMap(e) {
+  handleClickHideMap (e) {
     e.stopPropagation()
     this.setState({
       showMap: false
@@ -53,35 +52,30 @@ export default class ComplaintRecord extends Component {
   /**
    * 获取个人信息
    * */
-  async getComplaintsList() {
-    let { list } = await api.member.getComplaintsList({ page: 1, pageSize: 100 });
+  async getComplaintsList () {
+    let { list } = await api.member.getComplaintsList({ page: 1, pageSize: 100 })
 
-    let nList = list.map(item => {
-      item.complaints_images !== '' ? item.imgList = item.complaints_images.split(',') : item.imgList = []
+    let nList = list.map((item) => {
+      item.complaints_images !== ''
+        ? (item.imgList = item.complaints_images.split(','))
+        : (item.imgList = [])
       return item
     })
 
     this.setState({ list: nList })
   }
 
-  render() {
+  render () {
     const { info, list, showMap, showImage } = this.state
 
     if (!info) return <Loading />
 
     return (
       <View className='page-complaint-record'>
-        <SpNavBar
-          title='投诉记录'
-          leftIconType='chevron-left'
-          fixed='true'
-        />	        
+        <SpNavBar title='投诉记录' leftIconType='chevron-left' fixed='true' />
         <View className='pege-header'>
           <View className='pege-header__avatar'>
-            <AtAvatar image={info.avatar}
-              size='normal'
-              circle
-            />
+            <AtAvatar image={info.avatar} size='normal' circle />
           </View>
           <View className='pege-header__info'>
             <View>
@@ -91,33 +85,45 @@ export default class ComplaintRecord extends Component {
             <View className='pege-header__info-store_address'>
               <Text>{info.distributor.store_address}</Text>
 
-              <AtButton onClick={() => { Taro.navigateTo({ url: '/marketing/pages/member/complaint' }) }} className='complaint-button' type='primary' size='small'>投诉</AtButton>
+              <AtButton
+                onClick={() => {
+                  Taro.navigateTo({ url: '/marketing/pages/member/complaint' })
+                }}
+                className='complaint-button'
+                type='primary'
+                size='small'
+              >
+                投诉
+              </AtButton>
             </View>
           </View>
-
         </View>
 
         <View className='page-main'>
-          {
-            list.map(item => {
-              return (<ComplaintRecordItem onClick={this.handleClickDisplayMap.bind(this)} key={item.id} info={item} />)
-            })
-          }
+          {list.map((item) => {
+            return (
+              <ComplaintRecordItem
+                onClick={this.handleClickDisplayMap.bind(this)}
+                key={item.id}
+                info={item}
+              />
+            )
+          })}
         </View>
 
-        {
-          showMap ?
-            <View className='page-display'>
-              <View onClick={this.handleClickHideMap.bind(this)} className='page-display__con'>
-                <Image
-                  onClick={(e) => { e.stopPropagation() }}
-                  mode='widthFix'
-                  src={showImage}
-                />
-              </View>
-            </View> : null
-        }
-
+        {showMap ? (
+          <View className='page-display'>
+            <View onClick={this.handleClickHideMap.bind(this)} className='page-display__con'>
+              <Image
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+                mode='widthFix'
+                src={showImage}
+              />
+            </View>
+          </View>
+        ) : null}
       </View>
     )
   }

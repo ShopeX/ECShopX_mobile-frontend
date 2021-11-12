@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { classNames, formatTime } from '@/utils'
 
-import './rate-item.scss';
+import './rate-item.scss'
 
 export default class RateItem extends Component {
   static defaultProps = {
@@ -28,17 +28,13 @@ export default class RateItem extends Component {
           <View className='rate-item__content'>
             {info.reply_content ? info.reply_content : '无评价'}
           </View>
-          {
-            info.rate_pic && info.rate_pic.length > 0
-              ? <View className='rate-item__imgs'>
-                  {
-                    info.rate_pic.map((img, idx) =>
-                      <Image key={`${idx}1`} mode='aspectFill' className='rate-item__img' src={img} />
-                    )
-                  }
-                </View>
-              : null
-          }
+          {info.rate_pic && info.rate_pic.length > 0 ? (
+            <View className='rate-item__imgs'>
+              {info.rate_pic.map((img, idx) => (
+                <Image key={`${idx}1`} mode='aspectFill' className='rate-item__img' src={img} />
+              ))}
+            </View>
+          ) : null}
         </View>
       </View>
     )

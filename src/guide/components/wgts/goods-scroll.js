@@ -13,8 +13,7 @@ export default class WgtGoodsScroll extends Component {
     Taro.navigateTo({ url })
   }
 
-  handleClickItem = (item,index) => {
-   
+  handleClickItem = (item, index) => {
     const url = `/guide/item/espier-detail?id=${item.goodsId}`
     Taro.navigateTo({
       url
@@ -37,24 +36,18 @@ export default class WgtGoodsScroll extends Component {
               <Text>{base.title}</Text>
               <View className='wgt__subtitle'>{base.subtitle}</View>
             </View>
-            <View
-              className='wgt__more'
-              onClick={this.navigateTo.bind(this, '/guide/item/list')}
-            >
+            <View className='wgt__more' onClick={this.navigateTo.bind(this, '/guide/item/list')}>
               <View className='three-dot'></View>
             </View>
           </View>
         )}
         <View className='wgt-body'>
-          <ScrollView
-            className='scroll-goods'
-            scrollX
-          >
+          <ScrollView className='scroll-goods' scrollX>
             {data.map((item, idx) => (
               <View
                 key={idx}
                 className='scroll-item'
-                onClick={this.handleClickItem.bind(this,item,idx)}
+                onClick={this.handleClickItem.bind(this, item, idx)}
               >
                 {config.leaderboard && (
                   <View className='subscript'>
@@ -63,17 +56,13 @@ export default class WgtGoodsScroll extends Component {
                   </View>
                 )}
                 <View className='thumbnail'>
-                  <Image
-                    className='goods-img'
-                    src={item.imgUrl}
-                    mode='aspectFill'
-                  />
+                  <Image className='goods-img' src={item.imgUrl} mode='aspectFill' />
                 </View>
               </View>
             ))}
           </ScrollView>
         </View>
-    </View>
+      </View>
     )
   }
 }

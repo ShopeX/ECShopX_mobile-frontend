@@ -20,12 +20,12 @@ export default class CouponNullify extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '已使用', status: '2', type: ''},
-        {title: '已过期', status: '3', type: ''}
+        { title: '已使用', status: '2', type: '' },
+        { title: '已过期', status: '3', type: '' }
       ],
-      couponTab:[
-        {id: 1, title: '首页', val: `/pages/index`},
-        {id: 2, title: '领券中心', val: `/others/pages/home/coupon-home`}
+      couponTab: [
+        { id: 1, title: '首页', val: `/pages/index` },
+        { id: 2, title: '领券中心', val: `/others/pages/home/coupon-home` }
       ],
       list: [],
       curId: null
@@ -33,14 +33,17 @@ export default class CouponNullify extends Component {
   }
 
   componentDidMount () {
-    const tabIdx = this.state.tabList.findIndex(tab => tab.status === '2')
+    const tabIdx = this.state.tabList.findIndex((tab) => tab.status === '2')
 
     if (tabIdx >= 0) {
-      this.setState({
-        curTabIdx: tabIdx
-      }, () => {
-        this.nextPage()
-      })
+      this.setState(
+        {
+          curTabIdx: tabIdx
+        },
+        () => {
+          this.nextPage()
+        }
+      )
     } else {
       this.nextPage()
     }
@@ -72,13 +75,13 @@ export default class CouponNullify extends Component {
       tagClass: 'tagClass',
       title: 'title',
       discount: 'discount',
-      use_condition:'use_condition',
-      description:'description',
-      use_bound:'use_bound'
+      use_condition: 'use_condition',
+      description: 'description',
+      use_bound: 'use_bound'
     })
 
     this.setState({
-      list: [...this.state.list, ...nList],
+      list: [...this.state.list, ...nList]
     })
 
     return { total }
@@ -94,11 +97,14 @@ export default class CouponNullify extends Component {
       })
     }
 
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curTabIdx: idx
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   onHandleClick = (params) => {
@@ -109,68 +115,47 @@ export default class CouponNullify extends Component {
 
   render () {
     const { curTabIdx, tabList, list, page, couponTab } = this.state
-    const { colors }=this.props
+    const { colors } = this.props
     const status = tabList[curTabIdx].status
 
     return (
       <View className='coupon-list'>
-        <SpNavBar
-          title='优惠券列表'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
-          className={`coupon-list__tabs ${colors.data[0].primary?'customTabsStyle':''}`}
+          className={`coupon-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
-          customStyle={{color:colors.data[0].primary,backgroundColor:colors.data[0].primary}}
+          customStyle={{ color: colors.data[0].primary, backgroundColor: colors.data[0].primary }}
         >
-          {
-            tabList.map((panes, pIdx) =>
-              (<AtTabsPane
-                current={curTabIdx}
-                key={panes.status}
-                index={pIdx}
-              >
-              </AtTabsPane>)
-            )
-          }
+          {tabList.map((panes, pIdx) => (
+            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+          ))}
         </AtTabs>
 
-        <ScrollView
-          scrollY
-          className='coupon-list__scroll'
-          onScrollToLower={this.nextPage}
-        >
+        <ScrollView scrollY className='coupon-list__scroll' onScrollToLower={this.nextPage}>
           <View className='coupon-list-ticket'>
-            {
-              list.map(item => {
-                return (
-                  <CouponItem
-                    info={item}
-                    key={item.id}
-                  >
-                    <View  style={{fontSize: '22rpx'}}>
-                      {/* {item.status == 2 ? '已使用' : item.status == 3 ? '已过期' : '' } */}
-                      {item.status == 2 ? '已使用' : '' }
-                      {item.tagClass == 'overdue' ? '已过期' : '' }
-                    </View>
-                  </CouponItem>
-                )
-              })
-            }
-            {
-              page.isLoading && <Loading>正在加载...</Loading>
-            }
-            {
-              !page.isLoading && !page.hasNext && !list.length &&
-              (<SpNote img={`${process.env.APP_IMAGE_CDN}/coupon_exist.png`} isUrl>{status == 2 ? '没有已使用优惠券哦，赶紧去使用叭' : ''}</SpNote>)
-            }
+            {list.map((item) => {
+              return (
+                <CouponItem info={item} key={item.id}>
+                  <View style={{ fontSize: '22rpx' }}>
+                    {/* {item.status == 2 ? '已使用' : item.status == 3 ? '已过期' : '' } */}
+                    {item.status == 2 ? '已使用' : ''}
+                    {item.tagClass == 'overdue' ? '已过期' : ''}
+                  </View>
+                </CouponItem>
+              )
+            })}
+            {page.isLoading && <Loading>正在加载...</Loading>}
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img={`${process.env.APP_IMAGE_CDN}/coupon_exist.png`} isUrl>
+                {status == 2 ? '没有已使用优惠券哦，赶紧去使用叭' : ''}
+              </SpNote>
+            )}
             {!page.isLoading && !page.hasNext && !list.length && (
               <View className='coupon-tab'>
-                {couponTab.map((item, idx)=>{
-                  let {title, val} = item
+                {couponTab.map((item, idx) => {
+                  let { title, val } = item
                   return (
                     <View
                       key={item.id}

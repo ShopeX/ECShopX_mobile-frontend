@@ -24,7 +24,7 @@ export default class WgtWriting extends Component {
   handleClickItem = linkPage
 
   handleSwiperChange = (e) => {
-    const { current  } = e.detail
+    const { current } = e.detail
 
     this.setState({
       curIdx: current
@@ -42,7 +42,7 @@ export default class WgtWriting extends Component {
     const { config, base, data } = info
     const curContent = (data[curIdx] || {}).content
     let contentArr = []
-    if(curContent) {
+    if (curContent) {
       contentArr = curContent.split('\n')
     }
 
@@ -58,13 +58,13 @@ export default class WgtWriting extends Component {
           className={`slider-wra wgt-writing ${config.padded ? 'padded' : ''}`}
           style={`${config.align ? `text-align:${config.align}` : ''}`}
         >
-          {
-            contentArr.map((item, index) => {
-              return (
-                <View className='writing-view' key={`${index}1`}>{item}</View>
-              )
-            })
-          }
+          {contentArr.map((item, index) => {
+            return (
+              <View className='writing-view' key={`${index}1`}>
+                {item}
+              </View>
+            )
+          })}
         </View>
       </View>
     )

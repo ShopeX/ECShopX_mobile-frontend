@@ -12,7 +12,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import S from '@/spx'
 
-import './vip-guide.scss';
+import './vip-guide.scss'
 
 export default class VipGuide extends Component {
   static options = {
@@ -49,32 +49,27 @@ export default class VipGuide extends Component {
     }
 
     return (
-      <View className="vip-guide">
-        <View className="vip-guide-content">
-          <View className="vip-price">
-            {
-              info.gradeDiscount &&
-                <View className="vip-tag">
-                  {info.vipgrade_desc}
-                </View>
-            }
-            {
-              (info.memberPrice || info.gradeDiscount) &&
-                <View className="vip-price-amount">
-                  {
-                    info.memberPrice &&
-                      <View className="vip-price-amount"><Text className="cur">¥ </Text>{info.memberPrice}</View>
-                  }
-                  {
-                    info.gradeDiscount &&
-                      <View>{info.gradeDiscount}折</View>
-                  }
-                </View>
-            }
+      <View className='vip-guide'>
+        <View className='vip-guide-content'>
+          <View className='vip-price'>
+            {info.gradeDiscount && <View className='vip-tag'>{info.vipgrade_desc}</View>}
+            {(info.memberPrice || info.gradeDiscount) && (
+              <View className='vip-price-amount'>
+                {info.memberPrice && (
+                  <View className='vip-price-amount'>
+                    <Text className='cur'>¥ </Text>
+                    {info.memberPrice}
+                  </View>
+                )}
+                {info.gradeDiscount && <View>{info.gradeDiscount}折</View>}
+              </View>
+            )}
           </View>
-          <View className="vip-guide-text">{info.guide_title_desc}</View>
+          <View className='vip-guide-text'>{info.guide_title_desc}</View>
         </View>
-        <View className="vip-apply" onClick={this.handleClick.bind(this)}>立即加入</View>
+        <View className='vip-apply' onClick={this.handleClick.bind(this)}>
+          立即加入
+        </View>
       </View>
     )
   }

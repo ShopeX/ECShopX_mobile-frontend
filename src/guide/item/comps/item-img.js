@@ -17,11 +17,7 @@ export default class ItemImg extends Component {
 
     return (
       <View className='item-img'>
-        <Image
-          className='item-img__img'
-          mode='aspectFill'
-          src={src}
-        />
+        <Image className='item-img__img' mode='aspectFill' src={src} />
       </View>
     )
   }

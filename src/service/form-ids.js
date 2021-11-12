@@ -2,7 +2,7 @@ import api from '@/api'
 import { log } from '@/utils'
 
 class FormIds {
-  constructor(options = {}) {
+  constructor (options = {}) {
     this._collectingFormIdsTimer = null
     this._formIds = []
     this.options = {
@@ -11,7 +11,7 @@ class FormIds {
     }
   }
 
-  startCollectingFormIds() {
+  startCollectingFormIds () {
     if (this._collectingFormIdsTimer) {
       clearInterval(this._collectingFormIdsTimer)
     }
@@ -24,7 +24,7 @@ class FormIds {
     log.debug(`[form-ids] start collecting`)
   }
 
-  collectFormIds(ids, sync) {
+  collectFormIds (ids, sync) {
     if (!ids) return
     if (!Array.isArray(ids)) {
       ids = [ids]
@@ -37,11 +37,11 @@ class FormIds {
     }
   }
 
-  async flush(ids = [], needsMerge = true, needsClean = true) {
+  async flush (ids = [], needsMerge = true, needsClean = true) {
     if (needsMerge) {
       ids = [...this._formIds, ...ids]
     }
-    ids = ids.filter(id => id !== 'the formId is a mock one')
+    ids = ids.filter((id) => id !== 'the formId is a mock one')
 
     if (!ids.length) return
     ids = ids.join(',')
@@ -59,7 +59,7 @@ class FormIds {
     }
   }
 
-  stop() {
+  stop () {
     if (this._collectingFormIdsTimer) {
       clearInterval(this._collectingFormIdsTimer)
       log.debug(`[form-ids] stop collecting`)

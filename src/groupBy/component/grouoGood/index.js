@@ -19,7 +19,6 @@ import BuyerItem from '../buyerItem'
 import './index.scss'
 
 export default class GroupGood extends Component {
-
   static defaultProps = {
     info: {
       good: [],
@@ -28,9 +27,9 @@ export default class GroupGood extends Component {
       deliveryDate: ''
     }
   }
-  
+
   constructor (props) {
-    super (props)
+    super(props)
 
     this.state = {
       timeId: '',
@@ -51,14 +50,17 @@ export default class GroupGood extends Component {
       if (timeId) {
         clearTimeout(timeId)
       }
-      this.setState({
-        countTime: nextProps.info.time,
-        timeId: '',
-        list: nextProps.info.good || [],
-        isEnd: false
-      }, () => {
-        this.countdown()
-      })
+      this.setState(
+        {
+          countTime: nextProps.info.time,
+          timeId: '',
+          list: nextProps.info.good || [],
+          isEnd: false
+        },
+        () => {
+          this.countdown()
+        }
+      )
     }
   }
 
@@ -74,11 +76,14 @@ export default class GroupGood extends Component {
     let { countTime, timeId } = this.state
     if (countTime > 0) {
       timeId = setTimeout(() => {
-        this.setState({
-          countTime: countTime - 1
-        }, () => {
-          this.countdown()
-        })
+        this.setState(
+          {
+            countTime: countTime - 1
+          },
+          () => {
+            this.countdown()
+          }
+        )
       }, 1000)
     } else {
       // 清除倒计时
@@ -94,32 +99,34 @@ export default class GroupGood extends Component {
       isEnd: timeId === ''
     })
   }
-  
+
   // 修改商品数量
   setGoodNum = (itemId, type) => {
     const currentCommunity = Taro.getStorageSync('community')
     const { list } = this.state
-    const index = list.findIndex(item => item.itemId === itemId)
+    const index = list.findIndex((item) => item.itemId === itemId)
     const num = list[index].num
     if (type === 'add') {
-      list[index].num = num ? (num + 1) : 1
+      list[index].num = num ? num + 1 : 1
     } else {
-      list[index].num = (num && num > 1) ? (num - 1) : 0
+      list[index].num = num && num > 1 ? num - 1 : 0
     }
-    api.groupBy.updateCart({
-      item_id: list[index].itemId,
-      num: list[index].num,
-      shop_id: currentCommunity.community_id,
-      activity_id: list[index].activity_id,
-      shop_type: 'community',
-      activity_type: 'community',
-      order_class: 'community',
-      isAccumulate: false,
-    }).then(() => {  
-      this.setState({
-        list: list
+    api.groupBy
+      .updateCart({
+        item_id: list[index].itemId,
+        num: list[index].num,
+        shop_id: currentCommunity.community_id,
+        activity_id: list[index].activity_id,
+        shop_type: 'community',
+        activity_type: 'community',
+        order_class: 'community',
+        isAccumulate: false
       })
-    })
+      .then(() => {
+        this.setState({
+          list: list
+        })
+      })
   }
 
   goNextNotice = () => {
@@ -136,24 +143,28 @@ export default class GroupGood extends Component {
       <View className='groupGood'>
         <View className='info'>
           <View className='time'>
-            <View className='left'>
-              本期剩余时间{ formatCountTime(countTime) }
-            </View>
+            <View className='left'>本期剩余时间{formatCountTime(countTime)}</View>
             <View className='right' onClick={this.goNextNotice.bind(this)}>
               下期预告
               <AtIcon value='chevron-right' size='16'></AtIcon>
             </View>
           </View>
-          <View>
-            预计送达：{ info.deliveryDate }
-          </View>
+          <View>预计送达：{info.deliveryDate}</View>
         </View>
-        {
-          list && list.map(item => <GoodItem key={item.itemId} ShowBuyer isEnd={isEnd} goodInfo={item} onSetGoodNum={this.setGoodNum.bind(this)} />)
-        }
-        {
-          info.buyer && info.buyer.map((item, index) => <BuyerItem key={item} last={index === (info.buyer.length - 1)} />)
-        }
+        {list &&
+          list.map((item) => (
+            <GoodItem
+              key={item.itemId}
+              ShowBuyer
+              isEnd={isEnd}
+              goodInfo={item}
+              onSetGoodNum={this.setGoodNum.bind(this)}
+            />
+          ))}
+        {info.buyer &&
+          info.buyer.map((item, index) => (
+            <BuyerItem key={item} last={index === info.buyer.length - 1} />
+          ))}
       </View>
     )
   }

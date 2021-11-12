@@ -7,7 +7,8 @@
  * @Date: 2020-06-09 16:05:37
  * @LastEditors: Arvin
  * @LastEditTime: 2020-07-07 10:18:03
- */ 
+ */
+
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
@@ -35,25 +36,23 @@ export default class ImgSpec extends Component {
 
     return (
       <View className='goods-sec-specs'>
-        <ScrollView
-          className='specs-scroller'
-          scrollX
-        >
+        <ScrollView className='specs-scroller' scrollX>
           <View className='specs-imgs'>
             <Text>{info.length}色可选</Text>
-            {
-              info.map((item, index) => {
-                return (
-                  <Image
-                    className={classNames('specs-imgs__item', current === index && 'specs-imgs__item-active')}
-                    src={item.url}
-                    key={item.specValueId}
-                    mode='aspectFill'
-                    onClick={this.handleSepcClick.bind(this, index)}
-                  />
-                )
-              })
-            }
+            {info.map((item, index) => {
+              return (
+                <Image
+                  className={classNames(
+                    'specs-imgs__item',
+                    current === index && 'specs-imgs__item-active'
+                  )}
+                  src={item.url}
+                  key={item.specValueId}
+                  mode='aspectFill'
+                  onClick={this.handleSepcClick.bind(this, index)}
+                />
+              )
+            })}
           </View>
         </ScrollView>
       </View>

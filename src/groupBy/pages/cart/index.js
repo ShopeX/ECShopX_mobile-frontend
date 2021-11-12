@@ -22,10 +22,7 @@ export default class GroupByIndex extends Component {
     }
   }
 
-
-  componentDidMount () {
-
-  }
+  componentDidMount () {}
 
   componentDidShow () {
     if (S.getAuthToken()) {
@@ -49,33 +46,40 @@ export default class GroupByIndex extends Component {
   // 获取购物车数据
   getCartData = (callback = null) => {
     const currentCommunity = Taro.getStorageSync('community')
-    Taro.showLoading({title: '请稍等...', mask: true})
-    api.groupBy.getCart({
-      shop_id: currentCommunity.community_id,
-      shop_type: 'community',
-      order_type: 'community_normal',
-      activity_type: 'community'
-    }).then(res => {
-      Taro.hideLoading()
-      const valid_cart = res.valid_cart[0] || {}
-      const invalid_cart = res.invalid_cart[0] || {}
-      const isCheckAll = valid_cart && valid_cart.list && valid_cart.list.some(item => item.is_checked)
-      this.setState({
-        isCheckAll: isCheckAll,
-        list: formatGood(valid_cart.list),
-        failureList: formatGood(invalid_cart.list)
-      }, () => {
-        this.calcSum()
+    Taro.showLoading({ title: '请稍等...', mask: true })
+    api.groupBy
+      .getCart({
+        shop_id: currentCommunity.community_id,
+        shop_type: 'community',
+        order_type: 'community_normal',
+        activity_type: 'community'
       })
-      if (callback) callback()
-    })
+      .then((res) => {
+        Taro.hideLoading()
+        const valid_cart = res.valid_cart[0] || {}
+        const invalid_cart = res.invalid_cart[0] || {}
+        const isCheckAll =
+          valid_cart && valid_cart.list && valid_cart.list.some((item) => item.is_checked)
+        this.setState(
+          {
+            isCheckAll: isCheckAll,
+            list: formatGood(valid_cart.list),
+            failureList: formatGood(invalid_cart.list)
+          },
+          () => {
+            this.calcSum()
+          }
+        )
+        if (callback) callback()
+      })
   }
 
   /**
-   * @description: 
-   * @param {isCheckAll： 选择状态， isAllBtn： 是否是点击全选按钮触发} 
-   * @return: 
-   */  
+   * @description:
+   * @param {isCheckAll： 选择状态， isAllBtn： 是否是点击全选按钮触发}
+   * @return:
+   */
+
   // 全选
   setCheckAll = (isCheckAll, isAllBtn = true) => {
     if (isAllBtn) {
@@ -87,11 +91,14 @@ export default class GroupByIndex extends Component {
 
   // 全选回调
   setCheckAllBack = (isCheckAll) => {
-    this.setState({
-      isCheckAll: isCheckAll
-    }, () => { 
-      this.calcSum()
-    })
+    this.setState(
+      {
+        isCheckAll: isCheckAll
+      },
+      () => {
+        this.calcSum()
+      }
+    )
   }
 
   // 计算价格
@@ -100,7 +107,7 @@ export default class GroupByIndex extends Component {
     const sum = list.reduce((total, val) => {
       const price = Number(val.price) * 10 * 10 * val.num
       const add = val.isChecked ? price : 0
-      return total += add
+      return (total += add)
     }, 0)
     this.setState({
       total: (sum / 100).toFixed(2)
@@ -110,13 +117,13 @@ export default class GroupByIndex extends Component {
   // 结算
   handleSettlement = () => {
     const { list } = this.state
-    const isChecked = list.some(item => item.isChecked)
-    const activityId =  list[0] && list[0].activity_id
+    const isChecked = list.some((item) => item.isChecked)
+    const activityId = list[0] && list[0].activity_id
     const currentCommunity = Taro.getStorageSync('community')
     if (!isChecked) {
       Taro.showToast({
         title: '请选择要购买的商品',
-        icon: "none"
+        icon: 'none'
       })
     } else {
       Taro.navigateTo({
@@ -125,7 +132,7 @@ export default class GroupByIndex extends Component {
     }
   }
 
-  cartNode = node => this.cartRef = node
+  cartNode = (node) => (this.cartRef = node)
 
   render () {
     const { list, failureList, isCheckAll, total } = this.state
@@ -149,8 +156,8 @@ export default class GroupByIndex extends Component {
             onSetChekckAll={this.setCheckAllBack.bind(this)}
           />
         </View>
-        {
-          list.length > 0 && <View className='toolBar'>
+        {list.length > 0 && (
+          <View className='toolBar'>
             <View className='left' onClick={this.setCheckAll.bind(this, isCheckAll)}>
               <View className={`checkBox ${isCheckAll && 'isChecked'}`}>
                 {isCheckAll && <AtIcon value='check' size='12' color='#fff'></AtIcon>}
@@ -158,11 +165,15 @@ export default class GroupByIndex extends Component {
               全选
             </View>
             <View className='right'>
-              <View className='sum'>合计: <Text className='price'>¥{ total }</Text></View>
-              <View className='settlement' onClick={this.handleSettlement.bind(this)}>结算</View>
+              <View className='sum'>
+                合计: <Text className='price'>¥{total}</Text>
+              </View>
+              <View className='settlement' onClick={this.handleSettlement.bind(this)}>
+                结算
+              </View>
             </View>
-          </View>          
-        }
+          </View>
+        )}
         <TabBar current={1} />
       </View>
     )

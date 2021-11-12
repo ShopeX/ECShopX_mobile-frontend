@@ -21,23 +21,23 @@ export default class Home extends Component {
       isRefresh: false,
       isLoading: false,
       isEnd: false,
-      isEmpty: false,    
+      isEmpty: false
     }
   }
   componentDidMount () {
     this.getList()
   }
-  
+
   config = {
     navigationBarTitleText: '助力首页'
   }
 
   getList = async (isRefrsh = false) => {
-    Taro.showLoading({title: '正在加载中', mask: true})
+    Taro.showLoading({ title: '正在加载中', mask: true })
     const { param, list } = this.state
     const data = await api.boost.getList(param)
     const total_count = data.total_count
-    const isEnd = param.page >= (total_count / param.pageSize)
+    const isEnd = param.page >= total_count / param.pageSize
     const newList = pickBy(data.list || [], {
       item_pics: 'item_pics',
       item_name: 'item_name',
@@ -51,7 +51,7 @@ export default class Home extends Component {
       isRefresh: false,
       isLoading: false,
       isEnd,
-      isEmpty: !data.list || data.list.length <= 0  
+      isEmpty: !data.list || data.list.length <= 0
     })
     Taro.hideLoading()
   }
@@ -73,7 +73,7 @@ export default class Home extends Component {
       param
     })
     this.getList(true)
-  }  
+  }
 
   // 上拉加载
   handleLoadMore = () => {
@@ -87,17 +87,10 @@ export default class Home extends Component {
       isLoading: true
     })
     this.getList()
-  }  
-  
+  }
+
   render () {
-    const {
-      list,
-      scrollTop,
-      isRefresh, 
-      isLoading,
-      isEnd,
-      isEmpty
-    } = this.state
+    const { list, scrollTop, isRefresh, isLoading, isEnd, isEmpty } = this.state
     return (
       <View className='home'>
         <SpNavBar
@@ -118,11 +111,11 @@ export default class Home extends Component {
           onScrollToLower={this.handleLoadMore}
         >
           {/* 列表图 */}
-          {
-            list.map(item => <View className='item' key={item.bargain_id}>
+          {list.map((item) => (
+            <View className='item' key={item.bargain_id}>
               <BargainItem info={item} />
-            </View>)
-          }
+            </View>
+          ))}
           {/* 加载更多 */}
           <LoadingMore isLoading={isLoading} isEnd={isEnd} isEmpty={isEmpty} />
           {/* 防止子内容无法支撑scroll-view下拉刷新 */}

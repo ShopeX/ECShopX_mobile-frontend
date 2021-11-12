@@ -1,22 +1,16 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View, Text, Picker, Image } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
-import { AtForm, AtInput, AtButton } from "taro-ui";
-import {
-  SpToast,
-  SpTimer,
-  SpNavBar,
-  FormIdCollector,
-  SpCheckbox
-} from "@/components";
-import { classNames, isString, isArray } from "@/utils";
-import { Tracker } from "@/service";
-import S from "@/spx";
-import api from "@/api";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text, Picker, Image } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
+import { AtForm, AtInput, AtButton } from 'taro-ui'
+import { SpToast, SpTimer, SpNavBar, FormIdCollector, SpCheckbox } from '@/components'
+import { classNames, isString, isArray } from '@/utils'
+import { Tracker } from '@/service'
+import S from '@/spx'
+import api from '@/api'
 
-import "./user-info.scss";
+import './user-info.scss'
 
-const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP;
+const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
 
 @connect(
   ({ user }) => ({
@@ -25,8 +19,8 @@ const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP;
   () => ({})
 )
 export default class Reg extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
       info: {},
@@ -38,59 +32,59 @@ export default class Reg extends Component {
       option_list: [],
       showCheckboxPanel: false,
       isHasData: true
-    };
-    this.handleChange = this.handleChange.bind(this);
+    }
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // console.log(Taro.getEnv(),this.props.land_params)
-    if (process.env.TARO_ENV === "weapp") {
+    if (process.env.TARO_ENV === 'weapp') {
       this.setState({
         info: {
-          user_type: "wechat"
+          user_type: 'wechat'
         }
-      });
+      })
     } else {
       this.setState({
         info: {
-          user_type: "local",
-          uid: this.props.land_params ? this.props.land_params.user_id : ""
+          user_type: 'local',
+          uid: this.props.land_params ? this.props.land_params.user_id : ''
         }
-      });
+      })
     }
-    this.fetch();
+    this.fetch()
   }
 
   handleClickImgcode = async () => {
     const query = {
-      type: "sign"
-    };
+      type: 'sign'
+    }
     try {
-      const img_res = await api.user.regImg(query);
+      const img_res = await api.user.regImg(query)
       this.setState({
         imgInfo: img_res
-      });
+      })
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
-  async fetch() {
-    let arr = [];
-    let res = await api.user.regParam();
-    console.log(res);
+  async fetch () {
+    let arr = []
+    let res = await api.user.regParam()
+    console.log(res)
     if (!res) {
       this.setState({
         isHasData: false
-      });
+      })
     } else {
-      Object.keys(res).forEach(key => {
+      Object.keys(res).forEach((key) => {
         if (res[key].is_open) {
-          if (key === "sex") {
-            res[key].items = ["未知", "男", "女"];
+          if (key === 'sex') {
+            res[key].items = ['未知', '男', '女']
           }
-          if (key === "birthday") {
-            res[key].items = [];
+          if (key === 'birthday') {
+            res[key].items = []
           }
           arr.push({
             key: key,
@@ -98,187 +92,187 @@ export default class Reg extends Component {
             name: res[key].name,
             is_required: res[key].is_required,
             items: res[key].items ? res[key].items : null
-          });
+          })
         }
-      });
+      })
       this.setState({
         list: arr,
         isHasData: true
-      });
+      })
     }
 
     if (!isWeapp) {
-      this.handleClickImgcode();
+      this.handleClickImgcode()
     }
-    this.count = 0;
+    this.count = 0
   }
 
-  handleSubmit = async e => {
-    const { value } = e.detail;
+  handleSubmit = async (e) => {
+    const { value } = e.detail
     const data = {
       ...this.state.info,
       ...value
-    };
+    }
 
     if (!data.mobile || !/1\d{10}/.test(data.mobile)) {
-      return S.toast("请输入正确的手机号");
+      return S.toast('请输入正确的手机号')
     }
 
     if (!isWeapp && !data.vcode) {
-      return S.toast("请输入验证码");
+      return S.toast('请输入验证码')
     }
 
     /*if (!data.password) {
       return S.toast('请输入密码')
     }*/
-    this.state.list.map(item => {
+    this.state.list.map((item) => {
       return item.is_required
         ? item.is_required && data[item.key]
           ? true
           : S.toast(`请输入${item.name}`)
-        : null;
-    });
+        : null
+    })
 
     try {
       if (isWeapp) {
-        const uid = Taro.getStorageSync("distribution_shop_id");
-        const { union_id, open_id } = this.$router.params;
-        const trackParams = Taro.getStorageSync("trackParams");
+        const uid = Taro.getStorageSync('distribution_shop_id')
+        const { union_id, open_id } = this.$router.params
+        const trackParams = Taro.getStorageSync('trackParams')
         let params = {
           ...data,
-          user_type: "wechat",
-          auth_type: "wxapp",
+          user_type: 'wechat',
+          auth_type: 'wxapp',
           union_id,
           open_id
-        };
+        }
         if (uid) {
-          Object.assign(params, { uid });
+          Object.assign(params, { uid })
         }
         if (trackParams) {
           Object.assign(params, {
             source_id: trackParams.source_id,
             monitor_id: trackParams.monitor_id
-          });
+          })
         }
-        const res = await api.user.reg(params);
+        const res = await api.user.reg(params)
 
-        Tracker.dispatch("MEMBER_REG", params);
+        Tracker.dispatch('MEMBER_REG', params)
 
-        const { code } = await Taro.login();
-        const { token } = await api.wx.login({ code });
-        S.setAuthToken(token);
+        const { code } = await Taro.login()
+        const { token } = await api.wx.login({ code })
+        S.setAuthToken(token)
       } else {
-        const res = await api.user.reg(data);
-        S.setAuthToken(res.token);
+        const res = await api.user.reg(data)
+        S.setAuthToken(res.token)
       }
 
-      S.toast("注册成功");
+      S.toast('注册成功')
       setTimeout(() => {
         Taro.redirectTo({
-          url: "/pages/member/index"
-        });
-      }, 700);
+          url: '/pages/member/index'
+        })
+      }, 700)
     } catch (error) {
-      return false;
+      return false
     }
-  };
+  }
 
   handleChange = (name, val) => {
-    const { info, list } = this.state;
-    info[name] = val;
-    if (name === "mobile") {
+    const { info, list } = this.state
+    info[name] = val
+    if (name === 'mobile') {
       if (val.length === 11 && this.count === 0) {
-        this.count = 1;
+        this.count = 1
         this.setState({
           imgVisible: true
-        });
+        })
       }
     }
 
     if (!isString(val) && !isArray(val)) {
-      list.map(item => {
-        item.key === name ? (info[name] = val.detail.value) : null;
-        if (name === "birthday") {
-          item.key === name ? (item.value = val.detail.value) : null;
+      list.map((item) => {
+        item.key === name ? (info[name] = val.detail.value) : null
+        if (name === 'birthday') {
+          item.key === name ? (item.value = val.detail.value) : null
         } else {
           item.key === name
             ? item.items
               ? (item.value = item.items[val.detail.value])
               : (item.value = val.detail.value)
-            : null;
+            : null
         }
-      });
+      })
     } else if (isArray(val)) {
-      list.map(item => {
-        let new_option_list = [];
-        val.map(option_item => {
+      list.map((item) => {
+        let new_option_list = []
+        val.map((option_item) => {
           if (option_item.ischecked === true) {
-            new_option_list.push(option_item.name);
+            new_option_list.push(option_item.name)
           }
-        });
-        item.key === name ? (item.value = new_option_list.join("，")) : null;
-      });
+        })
+        item.key === name ? (item.value = new_option_list.join('，')) : null
+      })
     } else {
-      list.map(item => {
-        item.key === name ? (item.value = val) : null;
-      });
+      list.map((item) => {
+        item.key === name ? (item.value = val) : null
+      })
     }
-    this.setState({ list });
-  };
+    this.setState({ list })
+  }
 
   handleClickIconpwd = () => {
-    const { isVisible } = this.state;
+    const { isVisible } = this.state
     this.setState({
       isVisible: !isVisible
-    });
-  };
+    })
+  }
 
   handleErrorToastClose = () => {
-    S.closeToast();
-  };
+    S.closeToast()
+  }
 
-  handleTimerStart = async resolve => {
-    if (this.state.isTimerStart) return;
-    const { mobile, yzm } = this.state.info;
-    const { imgInfo } = this.state;
+  handleTimerStart = async (resolve) => {
+    if (this.state.isTimerStart) return
+    const { mobile, yzm } = this.state.info
+    const { imgInfo } = this.state
     if (!/1\d{10}/.test(mobile)) {
-      return S.toast("请输入正确的手机号");
+      return S.toast('请输入正确的手机号')
     }
     if (!(mobile.length === 11 && yzm)) {
-      return S.toast("请输入手机号和图形验证码");
+      return S.toast('请输入手机号和图形验证码')
     }
 
     const query = {
-      type: "sign",
+      type: 'sign',
       mobile: mobile,
       yzm: yzm,
       token: imgInfo.imageToken
-    };
+    }
     try {
-      await api.user.regSmsCode(query);
-      S.toast("发送成功");
+      await api.user.regSmsCode(query)
+      S.toast('发送成功')
     } catch (error) {
-      return false;
+      return false
     }
 
-    resolve();
-  };
+    resolve()
+  }
 
-  handleTimerStop = () => {};
+  handleTimerStop = () => {}
 
   handleClickAgreement = () => {
     Taro.navigateTo({
-      url: "/subpage/pages/auth/reg-rule"
-    });
-  };
+      url: '/subpage/pages/auth/reg-rule'
+    })
+  }
 
   handleBackHome = () => {
     Taro.redirectTo({
-      url: "/pages/index"
-    });
-  };
+      url: '/pages/index'
+    })
+  }
 
-  handleGetPhoneNumber = async e => {
+  handleGetPhoneNumber = async (e) => {
     // let { code } = this.$router.params
     // try {
     //   await Taro.checkSession()
@@ -290,61 +284,61 @@ export default class Reg extends Component {
     //   const codeRes = await Taro.login()
     //   code = codeRes.code
     // }
-    const { code } = await Taro.login();
-    const { errMsg, ...params } = e.detail;
-    if (errMsg.indexOf("fail") >= 0) {
-      return;
+    const { code } = await Taro.login()
+    const { errMsg, ...params } = e.detail
+    if (errMsg.indexOf('fail') >= 0) {
+      return
     }
-    params.code = code;
-    const { phoneNumber } = await api.wx.decryptPhone(params);
-    this.handleChange("mobile", phoneNumber);
+    params.code = code
+    const { phoneNumber } = await api.wx.decryptPhone(params)
+    this.handleChange('mobile', phoneNumber)
     this.setState({
       isHasValue: true
-    });
-  };
+    })
+  }
 
   handleBackHome = () => {
     Taro.redirectTo({
-      url: "/pages/index"
-    });
-  };
+      url: '/pages/index'
+    })
+  }
 
   showCheckboxPanel = (options, type) => {
     this.setState({
       option_list: options,
       showCheckboxPanel: true
-    });
-    this.type = type;
-  };
+    })
+    this.type = type
+  }
 
   // 多选结果确认
-  btnClick = btn_type => {
+  btnClick = (btn_type) => {
     this.setState({
       showCheckboxPanel: false
-    });
-    const { option_list } = this.state;
-    if (btn_type === "cancel") {
+    })
+    const { option_list } = this.state
+    if (btn_type === 'cancel') {
       // let new_type = this.type
-      option_list.map(item => {
-        item.ischecked = false;
-      });
+      option_list.map((item) => {
+        item.ischecked = false
+      })
     }
-    this.handleChange(this.type, option_list);
-  };
+    this.handleChange(this.type, option_list)
+  }
 
-  handleSelectionChange = name => {
-    const { option_list } = this.state;
-    option_list.map(item => {
+  handleSelectionChange = (name) => {
+    const { option_list } = this.state
+    option_list.map((item) => {
       if (item.name === name) {
-        item.ischecked = !item.ischecked;
+        item.ischecked = !item.ischecked
       }
-    });
+    })
     this.setState({
       option_list
-    });
-  };
+    })
+  }
 
-  render() {
+  render () {
     const {
       info,
       isHasValue,
@@ -355,21 +349,21 @@ export default class Reg extends Component {
       imgInfo,
       option_list,
       showCheckboxPanel
-    } = this.state;
+    } = this.state
 
     return (
-      <View className="auth-reg">
-        <SpNavBar title="注册" leftIconType="chevron-left" />
+      <View className='auth-reg'>
+        <SpNavBar title='注册' leftIconType='chevron-left' />
         <AtForm onSubmit={this.handleSubmit}>
-          <View className="sec auth-reg__form">
-            {process.env.TARO_ENV === "weapp" && (
-              <View className="at-input">
-                <View className="at-input__container">
-                  <View className="at-input__title">手机号码</View>
-                  <View className="at-input__input">{info.mobile}</View>
-                  <View className="at-input__children">
+          <View className='sec auth-reg__form'>
+            {process.env.TARO_ENV === 'weapp' && (
+              <View className='at-input'>
+                <View className='at-input__container'>
+                  <View className='at-input__title'>手机号码</View>
+                  <View className='at-input__input'>{info.mobile}</View>
+                  <View className='at-input__children'>
                     <AtButton
-                      openType="getPhoneNumber"
+                      openType='getPhoneNumber'
                       onGetPhoneNumber={this.handleGetPhoneNumber}
                     >
                       获取手机号码
@@ -399,42 +393,36 @@ export default class Reg extends Component {
             {Taro.getEnv() !== Taro.ENV_TYPE.WEAPP && (
               <View>
                 <AtInput
-                  title="手机号码"
-                  name="mobile"
-                  type="number"
+                  title='手机号码'
+                  name='mobile'
+                  type='number'
                   maxLength={11}
                   value={info.mobile}
-                  placeholder="请输入手机号码"
+                  placeholder='请输入手机号码'
                   onFocus={this.handleErrorToastClose}
-                  onChange={this.handleChange.bind(this, "mobile")}
+                  onChange={this.handleChange.bind(this, 'mobile')}
                 />
                 {imgVisible ? (
                   <AtInput
-                    title="图片验证码"
-                    name="yzm"
+                    title='图片验证码'
+                    name='yzm'
                     value={info.yzm}
-                    placeholder="请输入图片验证码"
+                    placeholder='请输入图片验证码'
                     onFocus={this.handleErrorToastClose}
-                    onChange={this.handleChange.bind(this, "yzm")}
+                    onChange={this.handleChange.bind(this, 'yzm')}
                   >
-                    <Image
-                      src={`${imgInfo.imageData}`}
-                      onClick={this.handleClickImgcode}
-                    />
+                    <Image src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
                   </AtInput>
                 ) : null}
                 <AtInput
-                  title="验证码"
-                  name="vcode"
+                  title='验证码'
+                  name='vcode'
                   value={info.vcode}
-                  placeholder="请输入验证码"
+                  placeholder='请输入验证码'
                   onFocus={this.handleErrorToastClose}
-                  onChange={this.handleChange.bind(this, "vcode")}
+                  onChange={this.handleChange.bind(this, 'vcode')}
                 >
-                  <SpTimer
-                    onStart={this.handleTimerStart}
-                    onStop={this.handleTimerStop}
-                  />
+                  <SpTimer onStart={this.handleTimerStart} onStop={this.handleTimerStop} />
                 </AtInput>
               </View>
             )}
@@ -458,7 +446,7 @@ export default class Reg extends Component {
               list.map((item, index) => {
                 return (
                   <View key={`${index}1`}>
-                    {item.element_type === "input" ? (
+                    {item.element_type === 'input' ? (
                       <View key={`${index}1`}>
                         <AtInput
                           key={`${index}1`}
@@ -468,65 +456,47 @@ export default class Reg extends Component {
                           value={item.value}
                           onFocus={this.handleErrorToastClose}
                           onChange={this.handleChange.bind(this, `${item.key}`)}
-                          ref={input => {
-                            this.textInput = input;
+                          ref={(input) => {
+                            this.textInput = input
                           }}
                         />
                       </View>
                     ) : null}
-                    {item.element_type === "select" ? (
-                      <View className="page-section">
+                    {item.element_type === 'select' ? (
+                      <View className='page-section'>
                         <View key={`${index}1`}>
-                          {item.key === "birthday" ? (
+                          {item.key === 'birthday' ? (
                             <Picker
-                              mode="date"
-                              onChange={this.handleChange.bind(
-                                this,
-                                `${item.key}`
-                              )}
+                              mode='date'
+                              onChange={this.handleChange.bind(this, `${item.key}`)}
                             >
-                              <View className="picker">
-                                <View className="picker__title">
-                                  {item.name}
-                                </View>
+                              <View className='picker'>
+                                <View className='picker__title'>{item.name}</View>
                                 <Text
                                   className={classNames(
-                                    item.value
-                                      ? "pick-value"
-                                      : "pick-value-null"
+                                    item.value ? 'pick-value' : 'pick-value-null'
                                   )}
                                 >
-                                  {item.value
-                                    ? item.value
-                                    : `请选择${item.name}`}
+                                  {item.value ? item.value : `请选择${item.name}`}
                                 </Text>
                               </View>
                             </Picker>
                           ) : (
                             <Picker
-                              mode="selector"
+                              mode='selector'
                               range={item.items}
                               key={`${index}1`}
                               data-item={item}
-                              onChange={this.handleChange.bind(
-                                this,
-                                `${item.key}`
-                              )}
+                              onChange={this.handleChange.bind(this, `${item.key}`)}
                             >
-                              <View className="picker">
-                                <View className="picker__title">
-                                  {item.name}
-                                </View>
+                              <View className='picker'>
+                                <View className='picker__title'>{item.name}</View>
                                 <Text
                                   className={classNames(
-                                    item.value
-                                      ? "pick-value"
-                                      : "pick-value-null"
+                                    item.value ? 'pick-value' : 'pick-value-null'
                                   )}
                                 >
-                                  {item.value
-                                    ? item.value
-                                    : `请选择${item.name}`}
+                                  {item.value ? item.value : `请选择${item.name}`}
                                 </Text>
                               </View>
                             </Picker>
@@ -534,56 +504,41 @@ export default class Reg extends Component {
                         </View>
                       </View>
                     ) : null}
-                    {item.element_type === "checkbox" ? (
-                      <View className="page-section">
+                    {item.element_type === 'checkbox' ? (
+                      <View className='page-section'>
                         <AtInput
                           key={`${index}1`}
                           title={item.name}
                           name={`${item.key}`}
                           placeholder={`请选择${item.name}`}
                           value={item.value}
-                          onFocus={this.showCheckboxPanel.bind(
-                            this,
-                            item.items,
-                            item.key
-                          )}
+                          onFocus={this.showCheckboxPanel.bind(this, item.items, item.key)}
                         />
                       </View>
                     ) : null}
                   </View>
-                );
+                )
               })}
           </View>
-          <View className="btns">
-            {process.env.TARO_ENV === "weapp" ? (
+          <View className='btns'>
+            {process.env.TARO_ENV === 'weapp' ? (
               <FormIdCollector sync>
-                <AtButton
-                  className="submit-btn"
-                  type="primary"
-                  formType="submit"
-                >
+                <AtButton className='submit-btn' type='primary' formType='submit'>
                   同意协议并注册
                 </AtButton>
-                <AtButton
-                  type="default"
-                  onClick={this.handleBackHome.bind(this)}
-                >
+                <AtButton type='default' onClick={this.handleBackHome.bind(this)}>
                   暂不注册，随便逛逛
                 </AtButton>
               </FormIdCollector>
             ) : (
-              <AtButton
-                type="primary"
-                onClick={this.handleSubmit}
-                formType="submit"
-              >
+              <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>
                 同意协议并注册
               </AtButton>
             )}
-            <View className="accountAgreement">
+            <View className='accountAgreement'>
               已阅读并同意
               <Text
-                className="accountAgreement__text"
+                className='accountAgreement__text'
                 onClick={this.handleClickAgreement.bind(this)}
               >
                 《用户协议》
@@ -592,35 +547,26 @@ export default class Reg extends Component {
           </View>
         </AtForm>
         {showCheckboxPanel ? (
-          <View className="checkBoxPanel">
-            <View className="checkBoxPanel-content">
+          <View className='checkBoxPanel'>
+            <View className='checkBoxPanel-content'>
               {option_list.map((item, index) => {
                 return (
-                  <View className="checkBoxPanel-item" key={`${index}1`}>
+                  <View className='checkBoxPanel-item' key={`${index}1`}>
                     <SpCheckbox
                       checked={item.ischecked}
-                      onChange={this.handleSelectionChange.bind(
-                        this,
-                        item.name
-                      )}
+                      onChange={this.handleSelectionChange.bind(this, item.name)}
                     >
                       {item.name}
                     </SpCheckbox>
                   </View>
-                );
+                )
               })}
             </View>
-            <View className="panel-btns">
-              <View
-                className="panel-btn cancel-btn"
-                onClick={this.btnClick.bind(this, "cancel")}
-              >
+            <View className='panel-btns'>
+              <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>
                 取消
               </View>
-              <View
-                className="panel-btn require-btn"
-                onClick={this.btnClick.bind(this, "require")}
-              >
+              <View className='panel-btn require-btn' onClick={this.btnClick.bind(this, 'require')}>
                 确定
               </View>
             </View>
@@ -628,6 +574,6 @@ export default class Reg extends Component {
         ) : null}
         <SpToast />
       </View>
-    );
+    )
   }
 }

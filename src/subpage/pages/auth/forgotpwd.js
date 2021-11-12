@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Image} from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpToast, SpTimer, SpNavBar } from '@/components'
 import S from '@/spx'
@@ -66,7 +66,7 @@ export default class Forgotpwd extends Component {
         title: '修改成功',
         icon: 'none'
       })
-      setTimeout(()=>{
+      setTimeout(() => {
         Taro.redirectTo({
           url: APP_AUTH_PAGE
         })
@@ -79,8 +79,8 @@ export default class Forgotpwd extends Component {
   handleChange = (name, val) => {
     const { info } = this.state
     info[name] = val
-    if(name === 'mobile') {
-      if(val.length === 11 && this.count === 0) {
+    if (name === 'mobile') {
+      if (val.length === 11 && this.count === 0) {
         this.count = 1
         this.setState({
           imgVisible: true
@@ -92,8 +92,8 @@ export default class Forgotpwd extends Component {
   handleClickIconpwd = () => {
     const { isVisible } = this.state
     this.setState({
-      isVisible: !isVisible,
-    });
+      isVisible: !isVisible
+    })
   }
 
   handleErrorToastClose = () => {
@@ -109,7 +109,7 @@ export default class Forgotpwd extends Component {
       return S.toast('请输入正确的手机号')
     }
 
-    if(!(mobile.length === 11 && yzm)) {
+    if (!(mobile.length === 11 && yzm)) {
       return S.toast('请输入手机号和图形验证码')
     }
 
@@ -148,13 +148,8 @@ export default class Forgotpwd extends Component {
 
     return (
       <View className='auth-forgotpwd'>
-        <SpNavBar
-          title='忘记密码'
-          leftIconType='chevron-left'
-        />
-        <AtForm
-          onSubmit={this.handleSubmit}
-        >
+        <SpNavBar title='忘记密码' leftIconType='chevron-left' />
+        <AtForm onSubmit={this.handleSubmit}>
           <View className='sec auth-forgotpwd__form'>
             <AtInput
               title='手机号码'
@@ -166,13 +161,18 @@ export default class Forgotpwd extends Component {
               onFocus={this.handleErrorToastClose}
               onChange={this.handleChange.bind(this, 'mobile')}
             />
-            {
-              imgVisible
-                ? <AtInput title='图片验证码' name='yzm' value={info.yzm} placeholder='请输入图片验证码' onFocus={this.handleErrorToastClose} onChange={this.handleChange.bind(this, 'yzm')}>
-                  <Image src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
-                </AtInput>
-                : null
-            }
+            {imgVisible ? (
+              <AtInput
+                title='图片验证码'
+                name='yzm'
+                value={info.yzm}
+                placeholder='请输入图片验证码'
+                onFocus={this.handleErrorToastClose}
+                onChange={this.handleChange.bind(this, 'yzm')}
+              >
+                <Image src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
+              </AtInput>
+            ) : null}
             <AtInput
               title='验证码'
               name='vcode'
@@ -197,19 +197,30 @@ export default class Forgotpwd extends Component {
               onFocus={this.handleErrorToastClose}
               onChange={this.handleChange.bind(this, 'password')}
             >
-              {
-                isVisible
-                  ? <View className='sp-icon sp-icon-yanjing icon-pwd' onClick={this.handleClickIconpwd}> </View>
-                  : <View className='sp-icon sp-icon-icon6 icon-pwd' onClick={this.handleClickIconpwd}> </View>
-              }
+              {isVisible ? (
+                <View
+                  className='sp-icon sp-icon-yanjing icon-pwd'
+                  onClick={this.handleClickIconpwd}
+                >
+                  {' '}
+                </View>
+              ) : (
+                <View className='sp-icon sp-icon-icon6 icon-pwd' onClick={this.handleClickIconpwd}>
+                  {' '}
+                </View>
+              )}
             </AtInput>
           </View>
           <View className='btns'>
-            {
-              process.env.TARO_ENV === 'weapp'
-                ? <AtButton type='primary' formType='submit'>确认</AtButton>
-                : <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>确认</AtButton>
-            }
+            {process.env.TARO_ENV === 'weapp' ? (
+              <AtButton type='primary' formType='submit'>
+                确认
+              </AtButton>
+            ) : (
+              <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>
+                确认
+              </AtButton>
+            )}
           </View>
         </AtForm>
 

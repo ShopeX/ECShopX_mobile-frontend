@@ -1,3 +1,1 @@
-export default ( props ) => {
-  
-}
+export default (props) => {}

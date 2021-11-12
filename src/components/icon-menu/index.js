@@ -33,7 +33,17 @@ export default class IconMenu extends Component {
   }
 
   render () {
-    const { img, icon, iconStyle, iconPrefixClass, title, size, className, hoverClass, openType } = this.props
+    const {
+      img,
+      icon,
+      iconStyle,
+      iconPrefixClass,
+      title,
+      size,
+      className,
+      hoverClass,
+      openType
+    } = this.props
 
     return (
       <Button
@@ -43,8 +53,10 @@ export default class IconMenu extends Component {
         openType={openType}
       >
         <View className='sp-iconmenu__icon'>
-          {img && (<Image mode='aspectFill' className='sp-iconmenu__img' src={img} />)}
-          {icon && (<AtIcon value={icon} prefixClass={iconPrefixClass} style={iconStyle} size={size} />)}
+          {img && <Image mode='aspectFill' className='sp-iconmenu__img' src={img} />}
+          {icon && (
+            <AtIcon value={icon} prefixClass={iconPrefixClass} style={iconStyle} size={size} />
+          )}
         </View>
         <Text className='sp-iconmenu__title'>{title}</Text>
       </Button>

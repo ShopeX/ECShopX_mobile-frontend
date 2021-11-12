@@ -17,8 +17,8 @@ export default class ReservationList extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '未过期', status: '1'},
-        {title: '已过期', status: '2'}
+        { title: '未过期', status: '1' },
+        { title: '已过期', status: '2' }
       ],
       list: [],
       curId: null
@@ -26,14 +26,17 @@ export default class ReservationList extends Component {
   }
 
   componentDidMount () {
-    const tabIdx = this.state.tabList.findIndex(tab => tab.status === '1')
+    const tabIdx = this.state.tabList.findIndex((tab) => tab.status === '1')
 
     if (tabIdx >= 0) {
-      this.setState({
-        curTabIdx: tabIdx
-      }, () => {
-        this.nextPage()
-      })
+      this.setState(
+        {
+          curTabIdx: tabIdx
+        },
+        () => {
+          this.nextPage()
+        }
+      )
     } else {
       this.nextPage()
     }
@@ -43,9 +46,9 @@ export default class ReservationList extends Component {
     const { page_no: page, page_size: pageSize } = params
     const { curTabIdx } = this.state
     let vaildStatus
-    if(curTabIdx === 0) {
+    if (curTabIdx === 0) {
       vaildStatus = true
-    }else {
+    } else {
       vaildStatus = false
     }
     params = {
@@ -69,7 +72,7 @@ export default class ReservationList extends Component {
     })
 
     this.setState({
-      list: [...this.state.list, ...nList],
+      list: [...this.state.list, ...nList]
     })
 
     return { total }
@@ -85,11 +88,14 @@ export default class ReservationList extends Component {
       })
     }
 
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curTabIdx: idx
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   /*handleClickChecked = (id) => {
@@ -103,7 +109,6 @@ export default class ReservationList extends Component {
     })
   }
 
-
   render () {
     const { curTabIdx, tabList, list, page } = this.state
 
@@ -115,23 +120,12 @@ export default class ReservationList extends Component {
           tabList={tabList}
           onClick={this.handleClickTab}
         >
-          {
-            tabList.map((panes, pIdx) =>
-              (<AtTabsPane
-                current={curTabIdx}
-                key={panes.status}
-                index={pIdx}
-              >
-              </AtTabsPane>)
-            )
-          }
+          {tabList.map((panes, pIdx) => (
+            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+          ))}
         </AtTabs>
 
-        <ScrollView
-          scrollY
-          className='reservation-list__scroll'
-          onScrollToLower={this.nextPage}
-        >
+        <ScrollView scrollY className='reservation-list__scroll' onScrollToLower={this.nextPage}>
           <View className='reservation-list__list'>
             <View className='reservation-list__item'>
               <View className='reservation-list__item_title'>
@@ -165,7 +159,12 @@ export default class ReservationList extends Component {
                   <Text>美妆</Text>
                 </View>
               </View>
-              <Text className='reservation-list__item_btn' onClick={this.handleClickDetail.bind(this)}>查看详情</Text>
+              <Text
+                className='reservation-list__item_btn'
+                onClick={this.handleClickDetail.bind(this)}
+              >
+                查看详情
+              </Text>
             </View>
             {/* {
               list.map(item => {

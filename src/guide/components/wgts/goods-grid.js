@@ -11,8 +11,7 @@ export default class WgtGoodsGrid extends Component {
     Taro.navigateTo({ url })
   }
 
-  handleClickItem = (item,index) => {
-   
+  handleClickItem = (item, index) => {
     const url = `/guide/item/espier-detail?id=${item.goodsId}`
     Taro.navigateTo({
       url
@@ -45,7 +44,7 @@ export default class WgtGoodsGrid extends Component {
               <Text>{base.title}</Text>
               <View className='wgt__subtitle'>{base.subtitle}</View>
             </View>
-       
+
             <View
               className='wgt__goods__more'
               onClick={this.navigateTo.bind(this, '/guide/item/list')}
@@ -60,26 +59,26 @@ export default class WgtGoodsGrid extends Component {
               <View
                 key={idx}
                 className='grid-item'
-                onClick={this.handleClickItem.bind(this,item,idx)}
+                onClick={this.handleClickItem.bind(this, item, idx)}
               >
                 <View className='goods-wrap'>
                   <View className='thumbnail'>
-                    <Image
-                      className='goods-img'
-                      src={item.imgUrl}
-                      mode='aspectFill'
-                    />
+                    <Image className='goods-img' src={item.imgUrl} mode='aspectFill' />
                   </View>
                   <View className='caption'>
                     {config.brand && item.brand && (
-                      <Image
-                        className='goods-brand'
-                        src={item.brand}
-                        mode='aspectFill'
-                      />
+                      <Image className='goods-brand' src={item.brand} mode='aspectFill' />
                     )}
-                    <View className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.title}</View>
-                    <View className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}>{item.brief}</View>
+                    <View
+                      className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}
+                    >
+                      {item.title}
+                    </View>
+                    <View
+                      className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}
+                    >
+                      {item.brief}
+                    </View>
                   </View>
                 </View>
               </View>

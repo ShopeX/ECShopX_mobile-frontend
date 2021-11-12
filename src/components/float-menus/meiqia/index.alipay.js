@@ -1,11 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
-import { Tracker } from "@/service";
+import { Tracker } from '@/service'
 import api from '@/api'
 import './index.scss'
 
 export default class Meiqia extends Component {
-
   static defaultProps = {
     storeId: '',
     info: {},
@@ -16,7 +15,7 @@ export default class Meiqia extends Component {
     addGlobalClass: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -27,7 +26,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     const meiqia = Taro.getStorageSync('meiqia') || {}
     if (meiqia.is_open === 'true') {
       this.meiQiaInt()
@@ -77,42 +76,47 @@ export default class Meiqia extends Component {
         mobile: userInfo.mobile || ''
       }
       const { meiqia_id, meiqia_token, clientid, groupid } = this.state
-      Tracker.dispatch("START_CONSULT", { type: 'meiqia' });
+      Tracker.dispatch('START_CONSULT', { type: 'meiqia' })
       Taro.navigateTo({
         url: '/others/pages/meiqia/index',
         success: function (res) {
           // 通过eventChannel向被打开页面传送数据
-          res.eventChannel.emit('acceptDataFromOpenerPage', { id: meiqia_id, agentid: meiqia_token, metadata: metadata, clientid, groupid })
+          res.eventChannel.emit('acceptDataFromOpenerPage', {
+            id: meiqia_id,
+            agentid: meiqia_token,
+            metadata: metadata,
+            clientid,
+            groupid
+          })
         }
       })
     } else {
-      Tracker.dispatch("START_CONSULT", { type: 'echat' });
+      Tracker.dispatch('START_CONSULT', { type: 'echat' })
       Taro.navigateTo({
         url: '/others/pages/echat/index'
       })
     }
   }
 
-
-  render() {
+  render () {
     const { isFloat } = this.props
     const { meiqia_id } = this.state
     const echat = Taro.getStorageSync('echat')
 
-    return (
-      (meiqia_id || echat.is_open === 'true') ? <View>
-        {
-          isFloat ? <Button
-            className='float-menu__item'
-            onClick={this.contactMeiQia.bind(this)}
-          >
+    return meiqia_id || echat.is_open === 'true' ? (
+      <View>
+        {isFloat ? (
+          <Button className='float-menu__item' onClick={this.contactMeiQia.bind(this)}>
             <View className='icon icon-headphones'></View>
           </Button>
-          : <View onClick={this.contactMeiQia.bind(this)} className='refund-detail-btn'>
-            { this.props.children }
+        ) : (
+          <View onClick={this.contactMeiQia.bind(this)} className='refund-detail-btn'>
+            {this.props.children}
           </View>
-        }
-      </View> : ''
+        )}
+      </View>
+    ) : (
+      ''
     )
   }
 }

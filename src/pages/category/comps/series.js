@@ -1,11 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text, ScrollView, Image} from '@tarojs/components'
-import { connect } from "@tarojs/redux";
+import { View, Text, ScrollView, Image } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import { Loading } from '@/components'
 import { classNames } from '@/utils'
 
 import './series.scss'
-@connect(({store, colors}) => ({
+
+@connect(({ store, colors }) => ({
   store,
   colors: colors.current
 }))
@@ -27,10 +28,10 @@ export default class Series extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps){
-    if(nextProps.isChanged === true) {
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.isChanged === true) {
       this.setState({
-        currentIndex: 0,
+        currentIndex: 0
       })
     }
   }
@@ -75,82 +76,81 @@ export default class Series extends Component {
     const id = info[currentIndex].id || ''
     const itemsImg = info[currentIndex].img
 
-
     return (
       <View className='category-list'>
-        <ScrollView
-          className='category-list__nav'
-          scrollY
-        >
+        <ScrollView className='category-list__nav' scrollY>
           <View className='category-nav'>
-            {
-              info.map((item, index) =>
-                <View
-                  className={classNames('category-nav__content', currentIndex == index ? 'category-nav__content-checked' : null)}
-                  style={currentIndex == index ? `border-left: 7rpx solid ${colors.data[0].primary};` : null}
-                  key={`${item.name}${index}`}
-                  onClick={this.handleClickCategoryNav.bind(this, index)}
-                >
-                  { item.hot && <Text className='hot-tag'></Text> }{item.name}
-                </View>
-              )
-            }
+            {info.map((item, index) => (
+              <View
+                className={classNames(
+                  'category-nav__content',
+                  currentIndex == index ? 'category-nav__content-checked' : null
+                )}
+                style={
+                  currentIndex == index
+                    ? `border-left: 7rpx solid ${colors.data[0].primary};`
+                    : null
+                }
+                key={`${item.name}${index}`}
+                onClick={this.handleClickCategoryNav.bind(this, index)}
+              >
+                {item.hot && <Text className='hot-tag'></Text>}
+                {item.name}
+              </View>
+            ))}
           </View>
         </ScrollView>
         {/*右*/}
-        <ScrollView
-          className='category-list__content'
-          scrollY
-        >
+        <ScrollView className='category-list__content' scrollY>
           <View className={classNames(pluralType ? 'category-content' : 'category-content-no')}>
-            {
-              itemsImg
-              && <Image src={itemsImg} mode='aspectFill' onClick={this.handleCustomClick.bind(this, id)} className='category__banner' />
-            }
-            {
-              items.map(item =>
-                item.children
-                  ? <View className='new'>
-                      <View className='group-title'>{item.name}</View>
-                      <View className='content-group'>
-                      {
-                        item.children.map(child =>
-                          <View
-                            className='category-content__img'
-                            key={child.category_id}
-                            onClick={this.handleClickItem.bind(this, child)}
-                          >
-                            {
-                              child.img
-                              && <Image
-                                className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
-                                mode='aspectFit'
-                                src={child.img}
-                              />
-                            }
-                            <View className='img-cat-name'>{child.name}</View>
-                          </View>
-                        )
-                      }
+            {itemsImg && (
+              <Image
+                src={itemsImg}
+                mode='aspectFill'
+                onClick={this.handleCustomClick.bind(this, id)}
+                className='category__banner'
+              />
+            )}
+            {items.map((item) =>
+              item.children ? (
+                <View className='new'>
+                  <View className='group-title'>{item.name}</View>
+                  <View className='content-group'>
+                    {item.children.map((child) => (
+                      <View
+                        className='category-content__img'
+                        key={child.category_id}
+                        onClick={this.handleClickItem.bind(this, child)}
+                      >
+                        {child.img && (
+                          <Image
+                            className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
+                            mode='aspectFit'
+                            src={child.img}
+                          />
+                        )}
+                        <View className='img-cat-name'>{child.name}</View>
                       </View>
-                    </View>
-                  : <View
-                    className='category-content__img'
-                    key={item.category_id}
-                    onClick={this.handleClickItem.bind(this, item)}
-                  >
-                      {
-                        item.img
-                        && <Image
-                          className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
-                          mode='aspectFit'
-                          src={item.img}
-                        />
-                      }
-                      <View className='img-cat-name'>{item.name}</View>
-                    </View>
+                    ))}
+                  </View>
+                </View>
+              ) : (
+                <View
+                  className='category-content__img'
+                  key={item.category_id}
+                  onClick={this.handleClickItem.bind(this, item)}
+                >
+                  {item.img && (
+                    <Image
+                      className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
+                      mode='aspectFit'
+                      src={item.img}
+                    />
+                  )}
+                  <View className='img-cat-name'>{item.name}</View>
+                </View>
               )
-            }
+            )}
 
             <View className='category-content__img-empty'> </View>
             <View className='category-content__img-empty'> </View>

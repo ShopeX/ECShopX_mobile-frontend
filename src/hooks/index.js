@@ -1,2 +1,2 @@
-export useLogin from "./useLogin";
-export usePage from "./usePage";
+export useLogin from './useLogin'
+export usePage from './usePage'

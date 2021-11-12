@@ -1,19 +1,22 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View } from '@tarojs/components'
-import { connect } from "@tarojs/redux";
+import { View } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import { normalizeQuerys } from '@/utils'
 
 import './landing.scss'
 
-@connect(() => ({}), (dispatch) => ({
-  onUserLanding: (land_params) => dispatch({ type: 'user/landing', payload: land_params })
-}))
+@connect(
+  () => ({}),
+  (dispatch) => ({
+    onUserLanding: (land_params) => dispatch({ type: 'user/landing', payload: land_params })
+  })
+)
 export default class Landing extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      ...this.state,
+      ...this.state
     }
   }
   async componentDidMount () {

@@ -1,13 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { connect } from "@tarojs/redux";
+import { connect } from '@tarojs/redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
-import { Tracker } from "@/service"
+import { Tracker } from '@/service'
 import TradeItem from './comps/item'
 
 import './list.scss'
@@ -17,7 +17,7 @@ import './list.scss'
 }))
 @withPager
 export default class TradeList extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -35,20 +35,23 @@ export default class TradeList extends Component {
     }
   }
 
-  componentDidShow() {
+  componentDidShow () {
     const { status } = this.$router.params
-    const tabIdx = this.state.tabList.findIndex(tab => tab.status === status)
+    const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
 
     if (tabIdx >= 0) {
-      this.setState({
-        curTabIdx: tabIdx,
-        list: []
-      }, () => {
-        this.resetPage()
-        setTimeout(() => {
-          this.nextPage()
-        }, 500)
-      })
+      this.setState(
+        {
+          curTabIdx: tabIdx,
+          list: []
+        },
+        () => {
+          this.resetPage()
+          setTimeout(() => {
+            this.nextPage()
+          }, 500)
+        }
+      )
     } else {
       this.resetPage()
       this.setState({
@@ -58,15 +61,14 @@ export default class TradeList extends Component {
         this.nextPage()
       }, 500)
     }
-
   }
 
   onPullDownRefresh = () => {
-    Tracker.dispatch("PAGE_PULL_DOWN_REFRESH");
+    Tracker.dispatch('PAGE_PULL_DOWN_REFRESH')
 
     Taro.showLoading({
       title: '加载中',
-      icon: 'none',
+      icon: 'none'
     })
     this.resetPage(() => {
       this.nextPage()
@@ -77,32 +79,38 @@ export default class TradeList extends Component {
     })
   }
 
-
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.hideLayer()
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { tabList, curTabIdx } = this.state
 
-    params = _mapKeys({
-      ...params,
-      order_type: 'normal',
-      status: tabList[curTabIdx].status
-    }, function (val, key) {
-      if (key === 'page_no') return 'page'
-      if (key === 'page_size') return 'pageSize'
+    params = _mapKeys(
+      {
+        ...params,
+        order_type: 'normal',
+        status: tabList[curTabIdx].status
+      },
+      function (val, key) {
+        if (key === 'page_no') return 'page'
+        if (key === 'page_size') return 'pageSize'
 
-      return key
-    })
+        return key
+      }
+    )
 
-    const { list, pager: { count: total }, rate_status } = await api.trade.list(params)
+    const {
+      list,
+      pager: { count: total },
+      rate_status
+    } = await api.trade.list(params)
     let nList = pickBy(list, {
       tid: 'order_id',
       status_desc: 'order_status_msg',
       order_status_des: 'order_status_des',
       status: ({ order_status }) => resolveOrderStatus(order_status),
-      totalItems: ({ items }) => items.reduce((acc, item) => (+item.num) + acc, 0),
+      totalItems: ({ items }) => items.reduce((acc, item) => +item.num + acc, 0),
       payment: ({ total_fee }) => (total_fee / 100).toFixed(2),
       total_fee: 'total_fee',
       pay_type: 'pay_type',
@@ -114,12 +122,12 @@ export default class TradeList extends Component {
       is_rate: 'is_rate',
       dada: 'dada',
       create_date: 'create_date',
-      is_all_delivery: "is_all_delivery",
+      is_all_delivery: 'is_all_delivery',
       is_logistics: 'is_split',
       receipt_type: 'receipt_type',
       delivery_type: 'delivery_type',
       pay_status: 'pay_status',
-      delivery_status: "delivery_status",
+      delivery_status: 'delivery_status',
       delivery_code: 'delivery_code',
       delivery_corp: 'delivery_corp',
       delivery_corp_name: 'delivery_corp_name',
@@ -127,21 +135,22 @@ export default class TradeList extends Component {
       orders_delivery_id: 'orders_delivery_id',
       order_type: 'order_type',
       can_apply_cancel: 'can_apply_cancel',
-      order: ({ items }) => pickBy(items, {
-        order_id: 'order_id',
-        item_id: 'item_id',
-        pic_path: 'pic',
-        title: 'item_name',
-        origincountry_name: 'origincountry_name',
-        origincountry_img_url: 'origincountry_img_url',
-        type: 'type',
-        item_spec_desc: 'item_spec_desc',
-        price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
-        item_fee: 'item_fee',
-        point: 'item_point',
-        num: 'num',
-        order_item_type: 'order_item_type'
-      })
+      order: ({ items }) =>
+        pickBy(items, {
+          order_id: 'order_id',
+          item_id: 'item_id',
+          pic_path: 'pic',
+          title: 'item_name',
+          origincountry_name: 'origincountry_name',
+          origincountry_img_url: 'origincountry_img_url',
+          type: 'type',
+          item_spec_desc: 'item_spec_desc',
+          price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+          item_fee: 'item_fee',
+          point: 'item_point',
+          num: 'num',
+          order_item_type: 'order_item_type'
+        })
     })
 
     log.debug('[trade list] list fetched and processed: ', nList)
@@ -167,19 +176,22 @@ export default class TradeList extends Component {
       })
     }
 
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curTabIdx: idx
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   handleClickItem = (trade) => {
-    const { tid } = trade; 
-    
-    let url = `/subpage/pages/trade/detail?id=${tid}`;
+    const { tid } = trade
 
-    if (trade.order_class === "pointsmall") {
+    let url = `/subpage/pages/trade/detail?id=${tid}`
+
+    if (trade.order_class === 'pointsmall') {
       url += `&type=pointitem`
     }
 
@@ -192,9 +204,9 @@ export default class TradeList extends Component {
     console.log(trade)
     const { tid } = trade
 
-    let detailUrl = `/subpage/pages/trade/detail?id=${tid}`;
+    let detailUrl = `/subpage/pages/trade/detail?id=${tid}`
 
-    if (trade.order_class === "pointsmall") {
+    if (trade.order_class === 'pointsmall') {
       detailUrl += `&type=pointitem`
     }
 
@@ -220,10 +232,20 @@ export default class TradeList extends Component {
         break
       case 'delivery':
         {
-          let { delivery_code, delivery_corp, delivery_corp_name, orders_delivery_id, delivery_type, is_all_delivery, tid, order_type } = trade
+          let {
+            delivery_code,
+            delivery_corp,
+            delivery_corp_name,
+            orders_delivery_id,
+            delivery_type,
+            is_all_delivery,
+            tid,
+            order_type
+          } = trade
           if (is_all_delivery || delivery_type === 'old') {
             Taro.navigateTo({
-              url: `/subpage/pages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name || delivery_corp}&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
+              url: `/subpage/pages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name ||
+                delivery_corp}&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
             })
           } else {
             Taro.navigateTo({
@@ -257,34 +279,23 @@ export default class TradeList extends Component {
     })
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { curTabIdx, curItemActionsId, tabList, list = [], page, rateStatus } = this.state
 
     return (
       <View className='page-trade-list'>
-        <SpNavBar
-          title='订单列表'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title='订单列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className={`trade-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
-          customStyle={{color:colors.data[0].primary,backgroundColor:colors.data[0].primary}}
+          customStyle={{ color: colors.data[0].primary, backgroundColor: colors.data[0].primary }}
         >
-          {
-            tabList.map((panes, pIdx) =>
-            (<AtTabsPane
-              current={curTabIdx}
-              key={panes.status}
-              index={pIdx}
-            >
-            </AtTabsPane>)
-            )
-          }
+          {tabList.map((panes, pIdx) => (
+            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+          ))}
         </AtTabs>
 
         <ScrollView
@@ -293,34 +304,26 @@ export default class TradeList extends Component {
           // onScrollToUpper={this.onPullDownRefresh.bind(this)}
           onScrollToLower={this.nextPage}
         >
-          {
-            list.map((item) => {
-              return (
-                <TradeItem
-                  payType={item.pay_type}
-                  key={item.tid}
-                  rateStatus={rateStatus}
-                  info={item}
-                  showActions={curItemActionsId === item.tid}
-                  onClick={this.handleClickItem.bind(this, item)}
-                  onClickBtn={this.handleClickItemBtn.bind(this, item)}
-                  onActionBtnClick={this.handleActionBtnClick.bind(this, item)}
-                  onActionClick={this.handleActionClick.bind(this, item)}
-                />
-              )
-            })
-          }
-          {
-            page.isLoading && <Loading>正在加载...</Loading>
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-            && (<SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>)
-          }
-          {!!curItemActionsId && <View
-            className='layer'
-            onClick={this.hideLayer}
-          />}
+          {list.map((item) => {
+            return (
+              <TradeItem
+                payType={item.pay_type}
+                key={item.tid}
+                rateStatus={rateStatus}
+                info={item}
+                showActions={curItemActionsId === item.tid}
+                onClick={this.handleClickItem.bind(this, item)}
+                onClickBtn={this.handleClickItemBtn.bind(this, item)}
+                onActionBtnClick={this.handleActionBtnClick.bind(this, item)}
+                onActionClick={this.handleActionClick.bind(this, item)}
+              />
+            )
+          })}
+          {page.isLoading && <Loading>正在加载...</Loading>}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>
+          )}
+          {!!curItemActionsId && <View className='layer' onClick={this.hideLayer} />}
         </ScrollView>
       </View>
     )

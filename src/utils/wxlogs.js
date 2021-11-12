@@ -1,46 +1,46 @@
-const log = Taro.getRealtimeLogManager ? Taro.getRealtimeLogManager() : null;
+const log = Taro.getRealtimeLogManager ? Taro.getRealtimeLogManager() : null
 class Logs {
-  constructor() {}
+  constructor () {}
 
-  info() {
+  info () {
     if (!log) {
-      return;
+      return
     }
-    log.info.apply(log, arguments);
+    log.info.apply(log, arguments)
   }
 
-  warn() {
+  warn () {
     if (!log) {
-      return;
+      return
     }
-    log.warn.apply(log, arguments);
+    log.warn.apply(log, arguments)
   }
 
-  error() {
+  error () {
     if (!log) {
-      return;
+      return
     }
-    log.error.apply(log, arguments);
+    log.error.apply(log, arguments)
   }
 
-  setFilterMsg(msg) {
+  setFilterMsg (msg) {
     if (!log || !log.setFilterMsg) {
-      return;
+      return
     }
-    if (typeof msg !== "string") {
-      return;
+    if (typeof msg !== 'string') {
+      return
     }
-    log.setFilterMsg(msg);
+    log.setFilterMsg(msg)
   }
 
-  addFilterMsg(msg) {
+  addFilterMsg (msg) {
     if (!log || !log.addFilterMsg) {
-      return;
+      return
     }
-    if (typeof msg !== "string") {
-      return;
+    if (typeof msg !== 'string') {
+      return
     }
-    log.addFilterMsg(msg);
+    log.addFilterMsg(msg)
   }
 }
 

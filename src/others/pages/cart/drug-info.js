@@ -6,16 +6,17 @@ import S from '@/spx'
 import req from '@/api/req'
 
 import './drug-info.scss'
-@connect(({ cart }) => ({
-  curDrugInfo: cart.drugInfo
-}), (dispatch) => ({
-  onChangeDrugInfo: (drugInfo) => dispatch({ type: 'cart/changeDrugInfo', payload: drugInfo })
-}))
 
+@connect(
+  ({ cart }) => ({
+    curDrugInfo: cart.drugInfo
+  }),
+  (dispatch) => ({
+    onChangeDrugInfo: (drugInfo) => dispatch({ type: 'cart/changeDrugInfo', payload: drugInfo })
+  })
+)
 export default class DrugInfo extends Component {
-  static defaultProps = {
-
-  }
+  static defaultProps = {}
 
   static options = {
     addGlobalClass: true
@@ -26,13 +27,13 @@ export default class DrugInfo extends Component {
 
     this.state = {
       info: {},
-      imgInfo:{}
+      imgInfo: {}
     }
   }
   componentDidMount () {
     const { curDrugInfo } = this.props
-    const { info, imgInfo} = this.state
-    if(info && imgInfo){
+    const { info, imgInfo } = this.state
+    if (info && imgInfo) {
       info.drug_buyer_name = curDrugInfo.drug_buyer_name
       info.drug_buyer_id_card = curDrugInfo.drug_buyer_id_card
       imgInfo.drug_list_image = curDrugInfo.drug_list_image
@@ -44,16 +45,27 @@ export default class DrugInfo extends Component {
   }
 
   uploadURLFromRegionCode = (code) => {
-    let uploadURL = null;
-    switch(code) {
-        case 'z0': uploadURL = 'https://up.qiniup.com'; break;
-        case 'z1': uploadURL = 'https://up-z1.qiniup.com'; break;
-        case 'z2': uploadURL = 'https://up-z2.qiniup.com'; break;
-        case 'na0': uploadURL = 'https://up-na0.qiniup.com'; break;
-        case 'as0': uploadURL = 'https://up-as0.qiniup.com'; break;
-        default: console.error('please make the region is with one of [z0, z1, z2, na0, as0]');
+    let uploadURL = null
+    switch (code) {
+      case 'z0':
+        uploadURL = 'https://up.qiniup.com'
+        break
+      case 'z1':
+        uploadURL = 'https://up-z1.qiniup.com'
+        break
+      case 'z2':
+        uploadURL = 'https://up-z2.qiniup.com'
+        break
+      case 'na0':
+        uploadURL = 'https://up-na0.qiniup.com'
+        break
+      case 'as0':
+        uploadURL = 'https://up-as0.qiniup.com'
+        break
+      default:
+        console.error('please make the region is with one of [z0, z1, z2, na0, as0]')
     }
-    return uploadURL;
+    return uploadURL
   }
 
   handleInfoChange = (name, val) => {
@@ -65,16 +77,15 @@ export default class DrugInfo extends Component {
   }
 
   handleSubmitClick = () => {
-    const { info,imgInfo } = this.state
-    if(!info || !imgInfo){
+    const { info, imgInfo } = this.state
+    if (!info || !imgInfo) {
       return
     }
-    const drugInfo = Object.assign(info,imgInfo);
+    const drugInfo = Object.assign(info, imgInfo)
     this.props.onChangeDrugInfo(drugInfo)
-    setTimeout(()=>{
+    setTimeout(() => {
       Taro.navigateBack()
     }, 700)
-    
   }
 
   handleImageChange = async (data, type) => {
@@ -110,17 +121,17 @@ export default class DrugInfo extends Component {
             url: uploadUrl,
             filePath: item.url,
             name: 'file',
-            formData:{
+            formData: {
               'token': token,
               'key': key
             },
-            success: res => {             
+            success: (res) => {
               let imgData = JSON.parse(res.data)
               resolve({
                 url: `${domain}/${imgData.key}`
               })
             },
-            fail: error => reject(error)
+            fail: (error) => reject(error)
           })
         }
       })
@@ -134,48 +145,47 @@ export default class DrugInfo extends Component {
       }
     })
   }
-  handleImageClick = () => {
-  }
-  
+  handleImageClick = () => {}
 
   render () {
-    const { info,imgInfo } = this.state
+    const { info, imgInfo } = this.state
     return (
-      <View class="drug-info">
-      <AtInput
-        title='用药人姓名'
-        className='trade-remark__input'
-        value={info.drug_buyer_name}
-        onChange={this.handleInfoChange.bind(this, 'drug_buyer_name')}
-      />
-      <AtInput
-        title='用药人身份证'
-        className='trade-remark__input'
-        placeholder='请输入有效的身份证号'
-        value={info.drug_buyer_id_card}
-        onChange={this.handleInfoChange.bind(this, 'drug_buyer_id_card')}
-      />
-      <View className='drug-describe'>
-        <View className='drug-describe__img'>
-          <Text className='drug-describe__text'>上传处方单</Text>
-          <View className='drug-describe__imgupload'>
-            <AtImagePicker
-              mode='aspectFill'
-              multiple
-              count={3}
-              length={3}
-              files={imgInfo.drug_list_image}
-              onChange={this.handleImageChange.bind(this)}
-              onImageClick={this.handleImageClick}
-            > </AtImagePicker>
+      <View class='drug-info'>
+        <AtInput
+          title='用药人姓名'
+          className='trade-remark__input'
+          value={info.drug_buyer_name}
+          onChange={this.handleInfoChange.bind(this, 'drug_buyer_name')}
+        />
+        <AtInput
+          title='用药人身份证'
+          className='trade-remark__input'
+          placeholder='请输入有效的身份证号'
+          value={info.drug_buyer_id_card}
+          onChange={this.handleInfoChange.bind(this, 'drug_buyer_id_card')}
+        />
+        <View className='drug-describe'>
+          <View className='drug-describe__img'>
+            <Text className='drug-describe__text'>上传处方单</Text>
+            <View className='drug-describe__imgupload'>
+              <AtImagePicker
+                mode='aspectFill'
+                multiple
+                count={3}
+                length={3}
+                files={imgInfo.drug_list_image}
+                onChange={this.handleImageChange.bind(this)}
+                onImageClick={this.handleImageClick}
+              >
+                {' '}
+              </AtImagePicker>
+            </View>
           </View>
         </View>
+        <AtButton type='primary' onClick={this.handleSubmitClick.bind(this)}>
+          确定
+        </AtButton>
       </View>
-      <AtButton
-        type='primary'
-        onClick={this.handleSubmitClick.bind(this)}
-      >确定</AtButton>
-    </View>
     )
   }
 }

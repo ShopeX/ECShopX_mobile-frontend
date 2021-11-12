@@ -1,131 +1,118 @@
-import Taro from "@tarojs/taro";
-import S from "@/spx";
-import qs from "qs";
-import { isGoodsShelves, isAlipay, log, } from "@/utils";
-import { goToAuthPage } from '@/utils/platform';
-import api from "@/api";
-import { isWeb } from '@/utils/platforms';
+import Taro from '@tarojs/taro'
+import S from '@/spx'
+import qs from 'qs'
+import { isGoodsShelves, isAlipay, log } from '@/utils'
+import { goToAuthPage } from '@/utils/platform'
+import api from '@/api'
+import { isWeb } from '@/utils/platforms'
 
-function addQuery(url, query) {
-  return url + (url.indexOf("?") >= 0 ? "&" : "?") + query;
+function addQuery (url, query) {
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
 }
 
 class RequestQueue {
-  constructor() {
-    this.requestList = [];
+  constructor () {
+    this.requestList = []
   }
 
-  push(req) {
-    this.requestList.push(req);
+  push (req) {
+    this.requestList.push(req)
   }
 
-  async run() {
-    const request = this.requestList.shift();
+  async run () {
+    const request = this.requestList.shift()
     if (request) {
-      await request();
+      await request()
       if (this.requestList.length > 0 && !API.isRefreshing) {
-        this.run();
+        this.run()
       }
     }
   }
 }
 
-const requestQueue = new RequestQueue();
+const requestQueue = new RequestQueue()
 
 class API {
-  constructor(options = {}) {
-    let { baseURL = "/" } = options;
+  constructor (options = {}) {
+    let { baseURL = '/' } = options
     if (!/\/$/.test(baseURL)) {
-      baseURL = baseURL + "/";
+      baseURL = baseURL + '/'
     }
 
-    options.company_id = process.env.APP_COMPANY_ID;
-    if (process.env.TARO_ENV === "weapp" || isAlipay) {
-      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
-      options.appid = extConfig.appid;
+    options.company_id = process.env.APP_COMPANY_ID
+    if (process.env.TARO_ENV === 'weapp' || isAlipay) {
+      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+      options.appid = extConfig.appid
       if (extConfig.company_id) {
-        options.company_id = extConfig.company_id;
+        options.company_id = extConfig.company_id
       }
     }
 
-    this.options = options;
-    this.baseURL = baseURL;
-    this.genMethods(["get", "post", "delete", "put"]);
+    this.options = options
+    this.baseURL = baseURL
+    this.genMethods(['get', 'post', 'delete', 'put'])
   }
 
-  static isRefreshing = false;
+  static isRefreshing = false
 
-  genMethods(methods) {
-    methods.forEach(method => {
+  genMethods (methods) {
+    methods.forEach((method) => {
       this[method] = (url, data, config = {}) =>
         this.makeReq({
           ...config,
           method,
           url,
           data
-        });
-    });
+        })
+    })
   }
 
-  errorToast(data) {
+  errorToast (data) {
     const errMsg =
-      data.msg ||
-      data.err_msg ||
-      (data.error && data.error.message) ||
-      "操作失败，请稍后重试";
-    let newText = "";
+      data.msg || data.err_msg || (data.error && data.error.message) || '操作失败，请稍后重试'
+    let newText = ''
     if (errMsg.length > 11) {
-      newText = errMsg.substring(0, 11) + "\n" + errMsg.substring(11);
+      newText = errMsg.substring(0, 11) + '\n' + errMsg.substring(11)
     } else {
-      newText = errMsg;
+      newText = errMsg
     }
     setTimeout(() => {
       Taro.showToast({
-        icon: "none",
+        icon: 'none',
         title: newText
-      });
-    }, 200);
+      })
+    }, 200)
   }
 
-  makeReq(config) {
-    const {
-      url,
-      data,
-      header = {},
-      method = "GET",
-      showLoading,
-      showError = true
-    } = config;
-    const methodIsGet = method.toLowerCase() === "get";
+  makeReq (config) {
+    const { url, data, header = {}, method = 'GET', showLoading, showError = true } = config
+    const methodIsGet = method.toLowerCase() === 'get'
 
-    let reqUrl = /^http/.test(url)
-      ? url
-      : `${this.baseURL}${url.replace(/^\//, "")}`;
-    const query = !data || typeof data === "string" ? qs.parse(data) : data;
+    let reqUrl = /^http/.test(url) ? url : `${this.baseURL}${url.replace(/^\//, '')}`
+    const query = !data || typeof data === 'string' ? qs.parse(data) : data
 
     if (!methodIsGet) {
-      header["content-type"] =
-        header["content-type"] || "application/x-www-form-urlencoded";
+      header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
     }
 
-    const token = S.getAuthToken();
+    const token = S.getAuthToken()
     if (token) {
-      header["Authorization"] = `Bearer ${token}`;
+      header['Authorization'] = `Bearer ${token}`
     }
 
     if (!isWeb) {
-      header["source"] = process.env.TARO_ENV;
+      header['source'] = process.env.TARO_ENV
     }
 
-    const { company_id, appid } = this.options;
-    if (process.env.TARO_ENV === "weapp" || isAlipay) {
+    const { company_id, appid } = this.options
+    if (process.env.TARO_ENV === 'weapp' || isAlipay) {
       if (appid) {
-        header["authorizer-appid"] = appid;
+        header['authorizer-appid'] = appid
       }
       // 企微货架
       if (isGoodsShelves()) {
-        header["salesperson-type"] = "shopping_guide";
-        header["x-wxapp-session"] = token;
+        header['salesperson-type'] = 'shopping_guide'
+        header['x-wxapp-session'] = token
       }
     }
 
@@ -135,12 +122,12 @@ class API {
       data: query,
       method: method.toUpperCase(),
       header: header
-    };
+    }
 
     if (showLoading) {
       Taro.showLoading({
         mask: true
-      });
+      })
     }
 
     // TODO: update taro version
@@ -150,124 +137,121 @@ class API {
     options.data = {
       ...(options.data || {}),
       company_id
-    };
-    if (options.method === "GET") {
-      options.url = addQuery(options.url, qs.stringify(options.data));
-      delete options.data;
+    }
+    if (options.method === 'GET') {
+      options.url = addQuery(options.url, qs.stringify(options.data))
+      delete options.data
     } else {
       // nest data
-      if (isAlipay && options.method === "DELETE") {
-        options.url = addQuery(options.url, qs.stringify(options.data));
-        options.data = options.data;
-        options.dataType = "json";
-        options.headers = options.header;
-        options.responseType = "text";
-        options.responseCharset = "utf-8";
+      if (isAlipay && options.method === 'DELETE') {
+        options.url = addQuery(options.url, qs.stringify(options.data))
+        options.data = options.data
+        options.dataType = 'json'
+        options.headers = options.header
+        options.responseType = 'text'
+        options.responseCharset = 'utf-8'
       } else {
-        options.data = qs.stringify(options.data);
+        options.data = qs.stringify(options.data)
       }
     }
-    const workEnv = S.get("workEnv", true);
-    let ba_params = S.get("ba_params", true);
+    const workEnv = S.get('workEnv', true)
+    let ba_params = S.get('ba_params', true)
 
-    if (workEnv && workEnv.environment === "wxwork") {
+    if (workEnv && workEnv.environment === 'wxwork') {
       //企业微信
 
       let guide_code = options.data.guide_code
         ? options.data.guide_code
         : ba_params
         ? ba_params.guide_code
-        : null;
-      options.data.guide = true;
-      options.data.guide_code = guide_code;
-      console.log("======导购端请求参数====");
+        : null
+      options.data.guide = true
+      options.data.guide_code = guide_code
+      console.log('======导购端请求参数====')
 
-      console.log(ba_params);
+      console.log(ba_params)
     }
-    let resData = {};
-    
+    let resData = {}
+
     return Taro.request(options)
-      .then(res => {
-        resData = res;
+      .then((res) => {
+        resData = res
       })
-      .catch(err => {
-        resData.statusCode = err.status;
-        resData.header = {};
+      .catch((err) => {
+        resData.statusCode = err.status
+        resData.header = {}
         err.headers.forEach((val, key) => {
-          resData.header[key] = val;
-        });
-        if (config.responseType === "arraybuffer") {
-          return err.arrayBuffer();
+          resData.header[key] = val
+        })
+        if (config.responseType === 'arraybuffer') {
+          return err.arrayBuffer()
         }
-        if (
-          config.dataType === "json" ||
-          typeof config.dataType === "undefined"
-        ) {
-          return err.json();
+        if (config.dataType === 'json' || typeof config.dataType === 'undefined') {
+          return err.json()
         }
 
-        if (config.responseType === "text") {
-          return err.text();
+        if (config.responseType === 'text') {
+          return err.text()
         }
-        return Promise.resolve(null);
+        return Promise.resolve(null)
       })
-      .then(res => {
+      .then((res) => {
         // 如果有错误则为错误信息
         if (res) {
-          resData.data = res;
+          resData.data = res
         }
         // eslint-disable-next-line
-        const { data, statusCode, header } = resData;
+        const { data, statusCode, header } = resData
         if (showLoading) {
-          Taro.hideLoading();
+          Taro.hideLoading()
         }
 
         if (statusCode >= 200 && statusCode < 300) {
           if (data.data !== undefined) {
-            if (options.url.indexOf("token/refresh") >= 0) {
-              data.data.token = resData.header.Authorization.replace(
-                "Bearer ",
-                ""
-              );
+            if (options.url.indexOf('token/refresh') >= 0) {
+              data.data.token = resData.header.Authorization.replace('Bearer ', '')
             }
-            return data.data;
+            return data.data
           } else {
             if (showError) {
-              this.errorToast(data);
+              this.errorToast(data)
             }
-            return Promise.reject(this.reqError(resData));
+            return Promise.reject(this.reqError(resData))
           }
         }
-        if ( statusCode === 401 ) {
+        if (statusCode === 401) {
           if (data.error && data.error.code === 401002) {
             this.errorToast({
-              msg: "帐号已被禁用"
-            });
-            return Promise.reject(this.reqError(resData, "帐号已被禁用"));
+              msg: '帐号已被禁用'
+            })
+            return Promise.reject(this.reqError(resData, '帐号已被禁用'))
           }
           if (data.error && data.error.code === 401001) {
             if (isGoodsShelves()) {
-              S.logout();
-              S.loginQW(this, true);
+              S.logout()
+              S.loginQW(this, true)
             } else {
               // 刷新token
-              log.debug("refreshing token...");
+              log.debug('refreshing token...')
               requestQueue.push(() => {
                 return new Promise((resolve, reject) => {
-                  resolve(_this.makeReq(config));
-                });
-              });
-              if ( !API.isRefreshing ) {
+                  resolve(_this.makeReq(config))
+                })
+              })
+              if (!API.isRefreshing) {
                 API.isRefreshing = true
                 // debugger
-                api.wx.refreshToken().then(res => {
-                  // debugger;
-                  S.setAuthToken();
-                } ).finally( () => {
-                  API.isRefreshing = false
-                });
+                api.wx
+                  .refreshToken()
+                  .then((res) => {
+                    // debugger;
+                    S.setAuthToken()
+                  })
+                  .finally(() => {
+                    API.isRefreshing = false
+                  })
               }
-              
+
               // const config = options;
               // if (isRefreshing) {
               //   return new Promise(resolve => {
@@ -306,37 +290,35 @@ class API {
             }
           }
           // token刷新失败, 重新登录
-          if ( data.status_code == 401 ) {
+          if (data.status_code == 401) {
             // goToAuthPage()
           }
-          return Promise.reject( this.reqError( resData ) );
+          return Promise.reject(this.reqError(resData))
         }
 
         if (statusCode >= 400) {
           if (
             showError &&
-            data.error.message !== "当前余额不足以支付本次订单费用，请充值！" &&
+            data.error.message !== '当前余额不足以支付本次订单费用，请充值！' &&
             data.error.code !== 201 &&
             data.error.code !== 450
           ) {
-            this.errorToast(data);
+            this.errorToast(data)
           }
-          return Promise.reject(this.reqError(resData));
+          return Promise.reject(this.reqError(resData))
         }
 
-        return Promise.reject(
-          this.reqError(resData, `API error: ${statusCode}`)
-        );
-      });
+        return Promise.reject(this.reqError(resData, `API error: ${statusCode}`))
+      })
   }
 
-  reqError(res, msg = "") {
-    const data = res.data.error || res.data;
-    const errMsg = data.message || data.err_msg || msg;
-    const err = new Error(errMsg);
-    err.res = res;
-    err.code = res.data.error.code;
-    return err;
+  reqError (res, msg = '') {
+    const data = res.data.error || res.data
+    const errMsg = data.message || data.err_msg || msg
+    const err = new Error(errMsg)
+    err.res = res
+    err.code = res.data.error.code
+    return err
   }
 }
 
@@ -349,6 +331,6 @@ export default new API({
 
   //   return chain.proceed(requestParams)
   // }
-});
+})
 
-export { API };
+export { API }

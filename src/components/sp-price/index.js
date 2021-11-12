@@ -1,13 +1,13 @@
-import Taro, { Component } from "@tarojs/taro";
-import { Text } from "@tarojs/components";
-import { classNames, isNumber } from "@/utils";
+import Taro, { Component } from '@tarojs/taro'
+import { Text } from '@tarojs/components'
+import { classNames, isNumber } from '@/utils'
 
-import "./index.scss";
+import './index.scss'
 
 export default class SpPrice extends Component {
   static options = {
     addGlobalClass: true
-  };
+  }
 
   static defaultProps = {
     className: null,
@@ -15,16 +15,16 @@ export default class SpPrice extends Component {
     primary: false,
     noSymbol: false,
     noDecimal: false,
-    unit: "default",
-    appendText: "",
+    unit: 'default',
+    appendText: '',
     plus: false
-  };
+  }
 
-  static externalClasses = ["classes"];
+  static externalClasses = ['classes']
 
-  render() {
+  render () {
     const {
-      value = "",
+      value = '',
       noSymbol,
       primary,
       noDecimal,
@@ -33,21 +33,21 @@ export default class SpPrice extends Component {
       appendText,
       lineThrough,
       plus
-    } = this.props;
-    let priceVal = unit === "cent" ? +value / 100 : value;
+    } = this.props
+    let priceVal = unit === 'cent' ? +value / 100 : value
     if (isNumber(priceVal)) {
-      priceVal = priceVal.toFixed(2);
+      priceVal = priceVal.toFixed(2)
     }
-    const [int, decimal] = (priceVal || "").split(".");
-    const minus = value < 0;
-    const symbol = this.props.symbol || "¥";
+    const [int, decimal] = (priceVal || '').split('.')
+    const minus = value < 0
+    const symbol = this.props.symbol || '¥'
 
     return (
       <Text
         className={classNames(
-          "sp-price",
+          'sp-price',
           {
-            "line-through": lineThrough
+            'line-through': lineThrough
           },
           // primary ? "price__primary" : null,
           className
@@ -55,15 +55,11 @@ export default class SpPrice extends Component {
       >
         {minus && <Text>-</Text>}
         {plus && <Text>+</Text>}
-        {noSymbol ? null : <Text className="price__symbol">{symbol}</Text>}
-        <Text className="price__int">
-          {int.indexOf("-") === 0 ? int.slice(1) : int}
-        </Text>
-        {decimal !== undefined && !noDecimal && (
-          <Text className="price__decimal">.{decimal}</Text>
-        )}
-        {appendText && <Text className="price__append">{appendText}</Text>}
+        {noSymbol ? null : <Text className='price__symbol'>{symbol}</Text>}
+        <Text className='price__int'>{int.indexOf('-') === 0 ? int.slice(1) : int}</Text>
+        {decimal !== undefined && !noDecimal && <Text className='price__decimal'>.{decimal}</Text>}
+        {appendText && <Text className='price__append'>{appendText}</Text>}
       </Text>
-    );
+    )
   }
 }

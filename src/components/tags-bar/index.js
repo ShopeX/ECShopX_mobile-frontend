@@ -8,7 +8,6 @@ import './index.scss'
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 export default class TagsBar extends Component {
   static options = {
     addGlobalClass: true
@@ -41,18 +40,14 @@ export default class TagsBar extends Component {
     const { list, colors } = this.props
 
     return (
-      <ScrollView
-        className='tags'
-        scrollX
-      >
-        {
-          list.length > 0 &&
+      <ScrollView className='tags' scrollX>
+        {list.length > 0 &&
           list.map((item, idx) => {
             const isCurrent = this.state.curId === item.tag_id
 
             return (
               <View
-                className="tag-item"
+                className='tag-item'
                 style={isCurrent ? `color: ${colors.data[0].primary}` : `color: inherit;`}
                 onClick={this.handleClickItem.bind(this, item.tag_id)}
                 key={item.tag_id}
@@ -60,8 +55,7 @@ export default class TagsBar extends Component {
                 {item.tag_name}
               </View>
             )
-          })
-        }
+          })}
       </ScrollView>
     )
   }

@@ -17,15 +17,15 @@ export function add (params) {
   return req.post(`/cart`, params)
 }
 
-export function fastBuy (params,isPointitem) {
-  const { item_id, num = 1, bargain_id,distributor_id } = params
+export function fastBuy (params, isPointitem) {
+  const { item_id, num = 1, bargain_id, distributor_id } = params
   const query = {
     cart_type: 'fastbuy',
     item_id,
     num,
     distributor_id,
     isAccumulate: false,
-    shop_type: isPointitem?'pointsmall':'distributor'
+    shop_type: isPointitem ? 'pointsmall' : 'distributor'
   }
   if (bargain_id) {
     query.bargain_id = bargain_id
@@ -33,7 +33,7 @@ export function fastBuy (params,isPointitem) {
   return req.post('/cart', query)
 }
 
-export function del ({ cart_id }) { 
+export function del ({ cart_id }) {
   return req.delete('/cartdel', { cart_id })
 }
 
@@ -41,9 +41,9 @@ export function select ({ cart_id, is_checked }) {
   return req.put('/cartupdate/checkstatus', { cart_id, is_checked })
 }
 
-export function updateNum (shop_id,cart_id, num, shop_type) {
+export function updateNum (shop_id, cart_id, num, shop_type) {
   return req.put(`/cartupdate/num`, {
-		shop_id,
+    shop_id,
     cart_id,
     num,
     isAccumulate: false,
@@ -70,12 +70,11 @@ export function coupons (params) {
 }
 
 export function likeList (params) {
-   
-  const distributor_id=getDistributorId();
+  const distributor_id = getDistributorId()
 
   return req.get('/promotions/recommendlike', {
     distributor_id,
-    ...params,
+    ...params
   })
 }
 

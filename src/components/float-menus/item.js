@@ -17,7 +17,7 @@ export default class Index extends Component {
   }
 
   render () {
-    const{ onClick, openType, iconPrefixClass, hide, icon, sessionFrom } = this.props
+    const { onClick, openType, iconPrefixClass, hide, icon, sessionFrom } = this.props
 
     return (
       <Button

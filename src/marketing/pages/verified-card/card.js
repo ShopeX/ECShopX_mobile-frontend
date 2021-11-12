@@ -1,28 +1,21 @@
-import Taro, { Component } from "@tarojs/taro";
-import {
-  View,
-  Text,
-  Image,
-  Navigator,
-  Form,
-  Button,
-  Picker
-} from "@tarojs/components";
-import { AtInput, AtButton, AtList, AtListItem } from "taro-ui";
-import S from "@/spx";
-import { connect } from "@tarojs/redux";
-import { SpNavBar, SpToast } from "@/components";
-import api from "@/api";
-import { pickBy, classNames } from "@/utils";
-import bankData from "./hfpayBankData.json";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text, Image, Navigator, Form, Button, Picker } from '@tarojs/components'
+import { AtInput, AtButton, AtList, AtListItem } from 'taro-ui'
+import S from '@/spx'
+import { connect } from '@tarojs/redux'
+import { SpNavBar, SpToast } from '@/components'
+import api from '@/api'
+import { pickBy, classNames } from '@/utils'
+import bankData from './hfpayBankData.json'
 
-import "./verified.scss";
+import './verified.scss'
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 export default class DistributionDashboard extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       info: {},
       multiIndex: [],
@@ -30,100 +23,100 @@ export default class DistributionDashboard extends Component {
       areaList: [],
       selectorChecked: [],
       bankData
-    };
+    }
   }
   config = {
-    navigationBarTitleText: "绑定银行卡"
-  };
-  componentDidMount() {
-    const { colors } = this.props;
+    navigationBarTitleText: '绑定银行卡'
+  }
+  componentDidMount () {
+    const { colors } = this.props
     Taro.setNavigationBarColor({
-      frontColor: "#ffffff",
+      frontColor: '#ffffff',
       backgroundColor: colors.data[0].marketing
-    });
-    this.fetch();
+    })
+    this.fetch()
   }
 
-  handleInput(type, val) {
-    let info = this.state.info;
-    info[type] = val;
+  handleInput (type, val) {
+    let info = this.state.info
+    info[type] = val
     this.setState({
       info
-    });
+    })
   }
 
-  handleSubmit(e) {
-    let { info } = this.state;
+  handleSubmit (e) {
+    let { info } = this.state
     if (!info.bank_id) {
-      return S.toast("请选择银行");
+      return S.toast('请选择银行')
     }
 
     if (!info.card_num || !/^[1-9]\d{9,29}$/.test(info.card_num)) {
-      return S.toast("请输入正确的银行卡号");
+      return S.toast('请输入正确的银行卡号')
     }
 
     let obj = {
       bank_name: info.bank_name,
       card_num: info.card_num,
       bank_id: info.bank_id
-    };
-    api.member.hfpayBankSave(obj).then(res => {
+    }
+    api.member.hfpayBankSave(obj).then((res) => {
       Taro.showToast({
-        title: "提交成功等待审核",
-        icon: "success",
+        title: '提交成功等待审核',
+        icon: 'success',
         duration: 2000
-      });
+      })
       this.setState({
         isTrue: true
-      });
-    });
+      })
+    })
   }
 
-  async fetch() {
-    const res = await api.member.hfpayBankInfo();
+  async fetch () {
+    const res = await api.member.hfpayBankInfo()
     const info = pickBy(res, {
-      card_num: "card_num",
-      bank_id: "bank_id",
-      bank_name: "bank_name"
-    });
+      card_num: 'card_num',
+      bank_id: 'bank_id',
+      bank_name: 'bank_name'
+    })
     if (info.card_num) {
       this.setState({
         info,
         isTrue: true
-      });
+      })
     }
   }
 
-  handleChange(e) {
-    let bank_name = bankData[e.detail.value].bank_name;
-    let bank_id = bankData[e.detail.value].bank_code;
-    let { info } = this.state;
-    info = { ...info, bank_name, bank_id };
+  handleChange (e) {
+    let bank_name = bankData[e.detail.value].bank_name
+    let bank_id = bankData[e.detail.value].bank_code
+    let { info } = this.state
+    info = { ...info, bank_name, bank_id }
     this.setState({
       info
-    });
+    })
   }
 
-  render() {
-    const { colors } = this.props;
-    const { info, isTrue, bankData } = this.state;
+  render () {
+    const { colors } = this.props
+    const { info, isTrue, bankData } = this.state
     return (
-      <View className="page-distribution-index">
-        <SpNavBar title="绑定银行卡" leftIconType="chevron-left" />
+      <View className='page-distribution-index'>
+        <SpNavBar title='绑定银行卡' leftIconType='chevron-left' />
 
-        <View className="page-bd">
+        <View className='page-bd'>
           <Form onSubmit={this.handleSubmit}>
-            <View className="">
+            <View className=''>
               <AtInput
                 disabled={isTrue}
-                title="银行卡号"
-                type="number"
-                placeholder="银行卡号"
+                title='银行卡号'
+                type='number'
+                placeholder='银行卡号'
                 value={info.card_num}
-                onChange={this.handleInput.bind(this, "card_num")}
+                onChange={this.handleInput.bind(this, 'card_num')}
               />
             </View>
-            <View className="bt">
+            <View className='bt'>
               {/* <AtInput
                                     
                                     title='银行'
@@ -134,18 +127,14 @@ export default class DistributionDashboard extends Component {
                                     onChange={this.handleInput.bind(this, 'bankName')}
                                 /> */}
               <Picker
-                mode="selector"
+                mode='selector'
                 range={bankData}
-                rangeKey="bank_name"
+                rangeKey='bank_name'
                 onChange={this.handleChange.bind(this)}
               >
-                <View className="picker">
-                  <View className="picker__title">银行</View>
-                  <Text
-                    className={classNames(
-                      info.bank_id ? "pick-value" : "pick-value-null"
-                    )}
-                  >
+                <View className='picker'>
+                  <View className='picker__title'>银行</View>
+                  <Text className={classNames(info.bank_id ? 'pick-value' : 'pick-value-null')}>
                     {info.bank_name ? info.bank_name : `请选择`}
                   </Text>
                 </View>
@@ -187,13 +176,13 @@ export default class DistributionDashboard extends Component {
                                 </Picker>
                             </View> */}
 
-            <View className="btn">
-              {process.env.TARO_ENV === "weapp" ? (
+            <View className='btn'>
+              {process.env.TARO_ENV === 'weapp' ? (
                 <View>
                   <Button
-                    className="submit-btn"
-                    type="primary"
-                    formType="submit"
+                    className='submit-btn'
+                    type='primary'
+                    formType='submit'
                     disabled={isTrue}
                     style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                   >
@@ -202,10 +191,10 @@ export default class DistributionDashboard extends Component {
                 </View>
               ) : (
                 <Button
-                  type="primary"
+                  type='primary'
                   disabled={isTrue}
                   onClick={this.handleSubmit}
-                  formType="submit"
+                  formType='submit'
                   style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                 >
                   提交
@@ -216,6 +205,6 @@ export default class DistributionDashboard extends Component {
           </Form>
         </View>
       </View>
-    );
+    )
   }
 }

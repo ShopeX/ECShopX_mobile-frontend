@@ -25,25 +25,21 @@ export default class PayDetail extends Component {
     }
   }
 
-
   config = {
     navigationBarTitleText: '订单详情'
   }
-  
+
   // 获取支付订单信息
   getOrderInfo = async () => {
     const { bargain_id } = this.$router.params
-    const {
-      bargain_order = {}
-    } = await api.boost.getUserBargain({
+    const { bargain_order = {} } = await api.boost.getUserBargain({
       bargain_id,
       has_order: true
     })
-    
+
     this.setOrderInfo(bargain_order)
   }
-  
-  
+
   setOrderInfo = (info) => {
     this.setState({
       info: pickBy(info, {
@@ -97,7 +93,7 @@ export default class PayDetail extends Component {
         Taro.showToast({
           title: '支付成功',
           mask: true
-        })        
+        })
       }
     } catch (e) {
       if (!e.res) {
@@ -115,9 +111,9 @@ export default class PayDetail extends Component {
     }
     this.setState({
       isLoading: false
-    }) 
+    })
   }
-  
+
   render () {
     const { info, isLoading } = this.state
     const { order_id } = this.$router.params
@@ -131,48 +127,52 @@ export default class PayDetail extends Component {
         <View className='address'>
           <View className='title'>收货信息</View>
           <View className='info'>
-            <Text>
-              { info.receiver_name }
-            </Text>
-            <Text>
-              { info.receiver_mobile }
-            </Text>
+            <Text>{info.receiver_name}</Text>
+            <Text>{info.receiver_mobile}</Text>
           </View>
           <View className='add'>
-            { info.receiver_state}{ info.receiver_city }{ info.receiver_district }
-            { info.receiver_address }
+            {info.receiver_state}
+            {info.receiver_city}
+            {info.receiver_district}
+            {info.receiver_address}
           </View>
         </View>
         <View className='goods'>
           <Image src={info.item_pics} mode='aspectFill' className='img' />
-          <View>{ info.item_name }</View>
+          <View>{info.item_name}</View>
         </View>
         <View className='other'>
           <View className='line'>
             <View className='title'>支付金额:</View>
             <View className='content'>
-              <Text className='text'>¥{ info.total_fee }</Text>
-              <Text className='through'>原价 ¥{ info.item_fee }</Text>
+              <Text className='text'>¥{info.total_fee}</Text>
+              <Text className='through'>原价 ¥{info.item_fee}</Text>
             </View>
           </View>
           <View className='line'>
             <View className='title'>下单时间:</View>
-            <View className='content'>{ info.create_time }</View>
+            <View className='content'>{info.create_time}</View>
           </View>
           <View className='line'>
             <View className='title'>订单编号:</View>
-            <View className='content'>{ info.order_id }</View>
+            <View className='content'>{info.order_id}</View>
           </View>
           <View className='line'>
             <View className='title'>备注:</View>
-            <View className='content'>{ info.remark || '暂无备注'}</View>
+            <View className='content'>{info.remark || '暂无备注'}</View>
           </View>
         </View>
-        {
-          !order_id &&
-            <Button className='btn' disabled={isLoading} loading={isLoading} onClick={this.handlePay.bind(this)}>立即支付</Button>
-        }
+        {!order_id && (
+          <Button
+            className='btn'
+            disabled={isLoading}
+            loading={isLoading}
+            onClick={this.handlePay.bind(this)}
+          >
+            立即支付
+          </Button>
+        )}
       </View>
     )
-  }  
+  }
 }

@@ -16,8 +16,8 @@ export default class WgtShowCase extends Component {
 
   navigateTo = navigateTo
 
-  handleClickItem (item,index){
-    linkPage(item.linkPage, item.id,item)
+  handleClickItem (item, index) {
+    linkPage(item.linkPage, item.id, item)
   }
 
   render () {
@@ -36,47 +36,23 @@ export default class WgtShowCase extends Component {
               <Text>{base.title}</Text>
               <View className='wgt__subtitle'>{base.subtitle}</View>
             </View>
-            <View
-              className='wgt__more'
-              onClick={this.navigateTo.bind(this, '/guide/item/list')}
-            >
+            <View className='wgt__more' onClick={this.navigateTo.bind(this, '/guide/item/list')}>
               <View className='three-dot'></View>
             </View>
           </View>
         )}
         <View className={`showcase-scheme-${config.style}`}>
           <View className='scheme-item'>
-            <View
-              className='layout layout-1'
-              onClick={this.handleClickItem.bind(this, data[0],0)}
-            >
-              <Image
-                className='show-img'
-                src={data[0].imgUrl}
-                mode='scaleToFill'
-              />
+            <View className='layout layout-1' onClick={this.handleClickItem.bind(this, data[0], 0)}>
+              <Image className='show-img' src={data[0].imgUrl} mode='scaleToFill' />
             </View>
           </View>
           <View className='scheme-item'>
-            <View
-              className='layout layout-2'
-              onClick={this.handleClickItem.bind(this, data[1],1)}
-            >
-              <Image
-                className='show-img'
-                src={data[1].imgUrl}
-                mode='scaleToFill'
-              />
+            <View className='layout layout-2' onClick={this.handleClickItem.bind(this, data[1], 1)}>
+              <Image className='show-img' src={data[1].imgUrl} mode='scaleToFill' />
             </View>
-            <View
-              className='layout layout-3'
-              onClick={this.handleClickItem.bind(this, data[2],2)}
-            >
-              <Image
-                className='show-img'
-                src={data[2].imgUrl}
-                mode='scaleToFill'
-              />
+            <View className='layout layout-3' onClick={this.handleClickItem.bind(this, data[2], 2)}>
+              <Image className='show-img' src={data[2].imgUrl} mode='scaleToFill' />
             </View>
           </View>
         </View>

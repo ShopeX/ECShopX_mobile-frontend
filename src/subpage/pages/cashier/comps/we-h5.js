@@ -12,8 +12,7 @@ export default class WeappBtn extends Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-    }
+    this.state = {}
   }
 
   componentDidMount () {
@@ -27,18 +26,17 @@ export default class WeappBtn extends Component {
   }
 
   handleClickPay = async () => {
-    const { order_id } = this.$router.params;
-    const { orderType = 'normal' } = this.props;
-
+    const { order_id } = this.$router.params
+    const { orderType = 'normal' } = this.props
 
     const params = {
       pay_type: 'wxpayh5',
       order_id,
-      order_type:orderType
+      order_type: orderType
     }
 
     const res = await api.cashier.getPayment(params)
-    console.log("res-------------")
+    console.log('res-------------')
     console.log(res)
     // eslint-disable-next-line
     const loc = location
@@ -49,11 +47,13 @@ export default class WeappBtn extends Component {
 
     form.setAttribute('method', 'get')
     form.setAttribute('action', action)
-    form.innerHTML = queryPair.map(p => {
-      const idx = p.indexOf('=')
-      const [name, value] = [p.slice(0, idx), p.slice(idx+1)]
-      return `<input type="hidden" name="${name}" value="${value}" />`
-    }).join('')
+    form.innerHTML = queryPair
+      .map((p) => {
+        const idx = p.indexOf('=')
+        const [name, value] = [p.slice(0, idx), p.slice(idx + 1)]
+        return `<input type="hidden" name="${name}" value="${value}" />`
+      })
+      .join('')
     document.body.appendChild(form)
 
     form.submit()
@@ -61,10 +61,7 @@ export default class WeappBtn extends Component {
 
   render () {
     return (
-      <View
-        className='weapp-btn'
-        onClick={this.handleClickPay.bind(this)}
-      >
+      <View className='weapp-btn' onClick={this.handleClickPay.bind(this)}>
         微信支付
       </View>
     )

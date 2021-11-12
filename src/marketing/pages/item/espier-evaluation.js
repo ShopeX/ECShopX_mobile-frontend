@@ -1,6 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { Loading, FloatMenus, FloatMenuItem, GoodsEvaluation, GoodsComment, SpNavBar } from '@/components'
+import {
+  Loading,
+  FloatMenus,
+  FloatMenuItem,
+  GoodsEvaluation,
+  GoodsComment,
+  SpNavBar
+} from '@/components'
 import api from '@/api'
 import { withBackToTop, withPager } from '@/hocs'
 import { normalizeQuerys } from '@/utils'
@@ -28,7 +35,7 @@ export default class Evaluation extends Component {
     }
   }
 
-  async componentWillMount() {
+  async componentWillMount () {
     const query = await normalizeQuerys(this.$router.params)
     this.$router.params.id = query.id
     await entry.entryLaunch(this.$router.params, false)
@@ -50,9 +57,9 @@ export default class Evaluation extends Component {
       pageSize,
       item_id: this.$router.params.id,
       order_type
-    };
+    }
     const { list, total_count } = await api.item.evaluationList(query)
-    list.map(item => {
+    list.map((item) => {
       item.picList = item.rate_pic ? item.rate_pic.split(',') : []
     })
 
@@ -104,7 +111,7 @@ export default class Evaluation extends Component {
     })
 
     Taro.hideLoading()
-   /* const { userInfo, info } = this.state
+    /* const { userInfo, info } = this.state
 
     if (!e) {
       return
@@ -144,38 +151,26 @@ export default class Evaluation extends Component {
     })
   }
 
-
-
-
   render () {
     const { showBackToTop, evaluationList, showCommentPanel } = this.state
 
     if (!evaluationList.length) {
-      return (
-        <Loading />
-      )
+      return <Loading />
     }
 
     return (
       <View className='page-goods-evaluation'>
-        <SpNavBar
-          title='评论列表'
-          leftIconType='chevron-left'
-        />              
-        <ScrollView
-          className='goods-detail__scroll'
-          onScrollToLower={this.nextPage}
-          scrollY
-        >
+        <SpNavBar title='评论列表' leftIconType='chevron-left' />
+        <ScrollView className='goods-detail__scroll' onScrollToLower={this.nextPage} scrollY>
           <View className='goods-evaluation-wrap'>
             <View className='evaluation-list'>
-              {evaluationList.map(item => {
+              {evaluationList.map((item) => {
                 return (
                   <GoodsEvaluation
                     info={item}
                     key={item.rate_id}
                     pathRoute='espier-evaluation'
-                    showComment={true}
+                    showComment
                     onReplyRate={this.handleClickViewEvaluation.bind(this, item)}
                   />
                 )
@@ -193,13 +188,13 @@ export default class Evaluation extends Component {
           />
         </FloatMenus>
 
-        {
-          showCommentPanel && <GoodsComment
+        {showCommentPanel && (
+          <GoodsComment
             isOpened={showCommentPanel}
             onClose={() => this.setState({ showCommentPanel: false, curRate: {} })}
             onReplyRate={this.handleReplyRate.bind(this)}
           />
-        }
+        )}
       </View>
     )
   }

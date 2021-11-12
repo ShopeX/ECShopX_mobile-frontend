@@ -11,7 +11,7 @@ const LIFE_CYCLE_TYPES = {
 export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT) {
   if (LIFE_CYCLE_TYPES[lifeCycle] !== undefined) {
     console.warn(`lifeCycle is not in defined types: ${lifeCycle}`)
-    return Component => Component
+    return (Component) => Component
   }
 
   return function withLoginComponent (Component) {
@@ -22,7 +22,7 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
 
       async componentWillMount () {
         if (lifeCycle === LIFE_CYCLE_TYPES.WILL_MOUNT) {
-          console.log("WILL_MOUNT")
+          console.log('WILL_MOUNT')
           const res = await this.$__autoLogin()
           if (!res) return
           if (super.componentWillMount) {
@@ -38,13 +38,13 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
 
       async componentDidMount () {
         if (lifeCycle === LIFE_CYCLE_TYPES.DID_MOUNT) {
-          console.log("DID_MOUNT")
+          console.log('DID_MOUNT')
           const res = await this.$__autoLogin()
 
-          if (!res) { 
-            this.autoLoginFail();
+          if (!res) {
+            this.autoLoginFail()
             return
-          } 
+          }
 
           if (super.componentDidMount) {
             super.componentDidMount()
@@ -59,7 +59,7 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
 
       async componentDidShow () {
         if (lifeCycle === LIFE_CYCLE_TYPES.DID_SHOW) {
-          console.log("DID_SHOW")
+          console.log('DID_SHOW')
           const res = await this.$__autoLogin()
           if (!res) return
 
@@ -79,12 +79,12 @@ export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOU
         let res
         console.log('[$__autoLogin] --- run')
         try {
-          res = await S.autoLogin( this )
+          res = await S.autoLogin(this)
           this.$__autoLogin_state = !res ? 'fail' : 'success'
         } catch (e) {
           this.$__autoLogin_state = 'fail'
         }
-        console.log('[$__autoLogin] --- res',res)
+        console.log('[$__autoLogin] --- res', res)
         return res
       }
 

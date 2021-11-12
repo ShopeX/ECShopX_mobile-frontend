@@ -15,16 +15,19 @@ export default function withBackToTop (Component) {
 
     scrollBackToTop = () => {
       // workaround
-      this.setState({
-        scrollTop: 1
-      }, () => {
-        if (process.env.TARO_ENV === 'weapp') {
-          // workaround for weapp
-          this.setState({
-            scrollTop: null
-          })
+      this.setState(
+        {
+          scrollTop: 1
+        },
+        () => {
+          if (process.env.TARO_ENV === 'weapp') {
+            // workaround for weapp
+            this.setState({
+              scrollTop: null
+            })
+          }
         }
-      })
+      )
     }
 
     handleScroll = throttle((e) => {

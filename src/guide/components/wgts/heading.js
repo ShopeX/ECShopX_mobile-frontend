@@ -24,7 +24,7 @@ export default class WgtHeading extends Component {
   handleClickItem = linkPage
 
   handleSwiperChange = (e) => {
-    const { current  } = e.detail
+    const { current } = e.detail
 
     this.setState({
       curIdx: current
@@ -42,17 +42,17 @@ export default class WgtHeading extends Component {
     const { config, base, data } = info
     const curContent = (data[curIdx] || {}).content
     let stringStyle = ''
-    if(config) {
-      if(config.align) {
+    if (config) {
+      if (config.align) {
         stringStyle = `text-align: ${config.align};`
       }
-      if(config.italic === true) {
+      if (config.italic === true) {
         stringStyle = stringStyle.concat('font-style: italic;')
       }
-      if(config.bold === true) {
+      if (config.bold === true) {
         stringStyle = stringStyle.concat('font-weight: 700;')
       }
-      if(config.size) {
+      if (config.size) {
         stringStyle = stringStyle.concat(`font-size: ${Taro.pxTransform(config.size * 2)};`)
       }
     }
@@ -65,10 +65,7 @@ export default class WgtHeading extends Component {
             <View className='wgt__subtitle'>{base.subtitle}</View>
           </View>
         )}
-        <View
-          className={`slider-wra ${config.padded ? 'padded' : ''}`}
-          style={stringStyle}
-        >
+        <View className={`slider-wra ${config.padded ? 'padded' : ''}`} style={stringStyle}>
           <View className='heading-view'>{curContent}</View>
         </View>
       </View>

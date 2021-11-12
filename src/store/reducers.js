@@ -5,10 +5,10 @@ import address from './address'
 import member from './member'
 import tabBar from './tab-bar'
 import colors from './colors'
-import system from "./system";
+import system from './system'
 import home from './home'
 import guide from './guide'
-import shop from "./shop";
+import shop from './shop'
 
 export default combineReducers({
   cart,
@@ -21,4 +21,4 @@ export default combineReducers({
   home,
   shop,
   system
-});
+})

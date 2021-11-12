@@ -2,12 +2,11 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import api from '@/api'
-import { connect } from "@tarojs/redux"
+import { connect } from '@tarojs/redux'
 import { debounce, pickBy, formatDataTime } from '@/utils'
 import LoadingMore from '../../component/loadingMore'
 
 import './index.scss'
-
 
 @connect(({ colors }) => ({
   colors: colors.current
@@ -27,7 +26,7 @@ export default class Order extends Component {
       isRefresh: false,
       isLoading: false,
       isEnd: false,
-      isEmpty: false,
+      isEmpty: false
     }
   }
   componentDidMount () {
@@ -39,16 +38,16 @@ export default class Order extends Component {
   }
 
   getList = async (isRefrsh = false) => {
-    Taro.showLoading({title: '正在加载中', mask: true})
+    Taro.showLoading({ title: '正在加载中', mask: true })
     const { param, list } = this.state
     const data = await api.boost.getOrderList(param)
     const total_count = data.total_count
-    const isEnd = param.page >= (total_count / param.pageSize)
+    const isEnd = param.page >= total_count / param.pageSize
     const newList = pickBy(data.list, {
       order_id: 'order_id',
       items: 'items',
       order_status: 'order_status',
-      create_time: ({create_time}) => formatDataTime(create_time),
+      create_time: ({ create_time }) => formatDataTime(create_time),
       bargain_id: 'bargain_id',
       total_fee: ({ total_fee }) => (total_fee / 100).toFixed(2),
       item_price: ({ item_price }) => (item_price / 100).toFixed(2)
@@ -104,14 +103,7 @@ export default class Order extends Component {
   }
 
   render () {
-    const {
-      list,
-      scrollTop,
-      isRefresh,
-      isLoading,
-      isEnd,
-      isEmpty
-    } = this.state
+    const { list, scrollTop, isRefresh, isLoading, isEnd, isEmpty } = this.state
     const { colors } = this.props
     return (
       <View className='order'>
@@ -133,26 +125,30 @@ export default class Order extends Component {
           onScrollToLower={this.handleLoadMore}
         >
           {/* 列表图 */}
-          {
-            list.map(item => <View className='item' key={item.bargain_id}>
+          {list.map((item) => (
+            <View className='item' key={item.bargain_id}>
               <View className='head'>
-                <View className='text'>{ item.create_time }</View>
-                <View className='text'>订单号：{ item.order_id }</View>
+                <View className='text'>{item.create_time}</View>
+                <View className='text'>订单号：{item.order_id}</View>
               </View>
               <View className='info'>
                 <Image src={item.items[0].pic} mode='aspectFill' className='img' />
                 <View className='detail'>
-                  <View className='title'>{ item.items[0].item_name }</View>
-                  <View className='price'>
-                    支付金额: ¥{ item.total_fee }
-                  </View>
+                  <View className='title'>{item.items[0].item_name}</View>
+                  <View className='price'>支付金额: ¥{item.total_fee}</View>
                 </View>
               </View>
               <View className='foot'>
-                <View className='check' style={`background: ${colors.data[0].primary}`} onClick={this.handleItem.bind(this, item)}>订单详情</View>
+                <View
+                  className='check'
+                  style={`background: ${colors.data[0].primary}`}
+                  onClick={this.handleItem.bind(this, item)}
+                >
+                  订单详情
+                </View>
               </View>
-            </View>)
-          }
+            </View>
+          ))}
           {/* 加载更多 */}
           <LoadingMore isLoading={isLoading} isEnd={isEnd} isEmpty={isEmpty} />
           {/* 防止子内容无法支撑scroll-view下拉刷新 */}

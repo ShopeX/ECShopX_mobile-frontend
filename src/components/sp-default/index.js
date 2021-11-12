@@ -1,33 +1,35 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View, Text, Image } from "@tarojs/components";
-import { classNames } from "@/utils";
-import SpImage from "./../sp-image";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text, Image } from '@tarojs/components'
+import { classNames } from '@/utils'
+import SpImage from './../sp-image'
 
-import "./index.scss";
+import './index.scss'
 
 const TYPES = {
-  cart: "empty_cart.png"
-};
+  cart: 'empty_cart.png'
+}
 
-function SpDefault() {
-  const { className, message, children, type } = this.props;
+function SpDefault () {
+  const { className, message, children, type } = this.props
   return (
     <View
       className={classNames(
         {
-          "sp-default": true
+          'sp-default': true
         },
         className
       )}
     >
-      <View className="sp-default-hd">{type && <SpImage className='default-img' src={TYPES[type]} />}</View>
-      <View className="sp-default-bd">{message}</View>
-      <View className="sp-default-ft">{children}</View>
+      <View className='sp-default-hd'>
+        {type && <SpImage className='default-img' src={TYPES[type]} />}
+      </View>
+      <View className='sp-default-bd'>{message}</View>
+      <View className='sp-default-ft'>{children}</View>
     </View>
-  );
+  )
 }
 
-export default SpDefault;
+export default SpDefault
 
 // export default class SpDefault extends Component {
 //   static options = {

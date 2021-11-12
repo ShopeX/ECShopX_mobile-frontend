@@ -2,8 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { Button, View } from '@tarojs/components'
 
 export default class GetUserInfoBtn extends Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.setState({
       canIUseGetUserProfile: false
@@ -26,7 +25,7 @@ export default class GetUserInfoBtn extends Component {
   handleGetUserProfile = () => {
     wx.getUserProfile({
       desc: '用于完善会员资料',
-      success: data => {
+      success: (data) => {
         const res = {
           detail: data
         }
@@ -38,7 +37,6 @@ export default class GetUserInfoBtn extends Component {
     })
   }
 
-
   handleGetUserInfo = async (res) => {
     const { onGetUserInfo } = this.props
     onGetUserInfo && onGetUserInfo(res)
@@ -48,29 +46,33 @@ export default class GetUserInfoBtn extends Component {
     const { isGetUserInfo = false } = this.props
     const { canIUseGetUserProfile } = this.state
 
-    return <View className='btnContent'>
-      {
-        isGetUserInfo ? this.props.children 
-        : <View className='content'>
-          {
-            canIUseGetUserProfile ? <Button
-              className='getInfoBtn'
-              hoverClass='none'
-              onClick={this.handleGetUserProfile.bind(this)}
-            >
-              { this.props.children }
-            </Button>
-            : <Button
-              className='getInfoBtn'
-              openType='getUserInfo'
-              hoverClass='none'
-              onGetUserInfo={this.handleGetUserInfo.bind(this)}
-            >
-              { this.props.children }
-            </Button>
-          }
-        </View>
-      }
-    </View>
+    return (
+      <View className='btnContent'>
+        {isGetUserInfo ? (
+          this.props.children
+        ) : (
+          <View className='content'>
+            {canIUseGetUserProfile ? (
+              <Button
+                className='getInfoBtn'
+                hoverClass='none'
+                onClick={this.handleGetUserProfile.bind(this)}
+              >
+                {this.props.children}
+              </Button>
+            ) : (
+              <Button
+                className='getInfoBtn'
+                openType='getUserInfo'
+                hoverClass='none'
+                onGetUserInfo={this.handleGetUserInfo.bind(this)}
+              >
+                {this.props.children}
+              </Button>
+            )}
+          </View>
+        )}
+      </View>
+    )
   }
 }

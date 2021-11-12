@@ -7,28 +7,28 @@ import { connect } from '@tarojs/redux'
 import { withPager } from '@/hocs'
 import { pickBy } from '@/utils'
 
-import "./coupon.scss";
+import './coupon.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 @withPager
 export default class Coupon extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '全部', status: '1', type: ''},
-        {title: '满减券', status: '1', type: 'cash'},
-        {title: '折扣券', status: '1', type: 'discount'},
-        {title: '兑换券', status: '1', type: 'new_gift'}
+        { title: '全部', status: '1', type: '' },
+        { title: '满减券', status: '1', type: 'cash' },
+        { title: '折扣券', status: '1', type: 'discount' },
+        { title: '兑换券', status: '1', type: 'new_gift' }
       ],
       list: [],
       curId: null
-    };
+    }
   }
 
   // componentDidMount () {
@@ -67,9 +67,9 @@ export default class Coupon extends Component {
     this.nextPage()
   }
 
-  async fetch(params) {
-    const { page_no: page, page_size: pageSize } = params;
-    const { curTabIdx, tabList } = this.state;
+  async fetch (params) {
+    const { page_no: page, page_size: pageSize } = params
+    const { curTabIdx, tabList } = this.state
     // let vaildStatus
     // if(curTabIdx === 0) {
     //   vaildStatus = true
@@ -91,45 +91,48 @@ export default class Coupon extends Component {
 
     const { list, total_count: total } = await api.member.getUserCardList(params)
     const nList = pickBy(list, {
-      id: "id",
-      status: "status",
-      reduce_cost: "reduce_cost",
-      least_cost: "least_cost",
-      begin_date: "begin_date",
-      end_date: "end_date",
-      card_type: "card_type",
-      card_id: "card_id",
-      code: "code",
-      tagClass: "tagClass",
-      title: "title",
-      discount: "discount",
-      use_condition: "use_condition",
-      description: "description",
-      use_bound: "use_bound"
-    });
+      id: 'id',
+      status: 'status',
+      reduce_cost: 'reduce_cost',
+      least_cost: 'least_cost',
+      begin_date: 'begin_date',
+      end_date: 'end_date',
+      card_type: 'card_type',
+      card_id: 'card_id',
+      code: 'code',
+      tagClass: 'tagClass',
+      title: 'title',
+      discount: 'discount',
+      use_condition: 'use_condition',
+      description: 'description',
+      use_bound: 'use_bound'
+    })
 
     this.setState({
       list: [...this.state.list, ...nList]
-    });
+    })
 
-    return { total };
+    return { total }
   }
 
-  handleClickTab = idx => {
-    if (this.state.page.isLoading) return;
+  handleClickTab = (idx) => {
+    if (this.state.page.isLoading) return
 
     if (idx !== this.state.curTabIdx) {
-      this.resetPage();
+      this.resetPage()
       this.setState({
         list: []
-      });
+      })
     }
 
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curTabIdx: idx
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   handleClick = (item) => {
@@ -149,8 +152,8 @@ export default class Coupon extends Component {
     }
     Taro.navigateTo({
       url
-    });
-  };
+    })
+  }
 
   handleCouponClick = () => {
     Taro.navigateTo({
@@ -170,18 +173,15 @@ export default class Coupon extends Component {
     })
   }*/
 
-
   render () {
     const { curTabIdx, tabList, list, page, scrollTop } = this.state
-    const { colors }=this.props
+    const { colors } = this.props
 
     return (
-      <View className="coupon-list">
-        <SpNavBar title="优惠券列表" leftIconType="chevron-left" fixed="true" />
+      <View className='coupon-list'>
+        <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
-          className={`coupon-list__tabs ${
-            colors.data[0].primary ? "customTabsStyle" : ""
-          }`}
+          className={`coupon-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
@@ -191,11 +191,7 @@ export default class Coupon extends Component {
           }}
         >
           {tabList.map((panes, pIdx) => (
-            <AtTabsPane
-              current={curTabIdx}
-              key={panes.status}
-              index={pIdx}
-            ></AtTabsPane>
+            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
           ))}
         </AtTabs>
 
@@ -208,43 +204,52 @@ export default class Coupon extends Component {
           onScrollToLower={this.nextPage}
         >
           <View className='coupon-list-ticket'>
-            {
-              list.map(item => {
-                let begin_date = new Date(item.begin_date) / 1000
-                let time = parseInt(new Date().getTime() / 1000)
-                return (
-                  <CouponItem
-                    info={item}
-                    key={item.id}
-                    onHandleClick={this.handleClick.bind(this, item)}
-                  >
-                    <View style={{fontSize: '22rpx'}}>
-                      {(item.card_type === 'cash' || item.card_type === 'discount') ? '去使用' : ''}
-                      {(item.card_type === 'new_gift' && item.status == 1 && item.tagClass == 'notstarted') ? '未开始' : ''}
-                      {(item.card_type === 'new_gift' && item.tagClass != 'notstarted') ?
-                        (item.status == 10 ? '待核销' :
-                          item.status == 1 && time > begin_date ? '待使用' :
-                          item.status == 1 && time < begin_date ? '未开始' : '') : ''}
-                    </View>
-                  </CouponItem>
-                )
-              })
-            }
-            {
-              page.isLoading && <Loading>正在加载...</Loading>
-            }
-            {
-              !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>)
-            }
+            {list.map((item) => {
+              let begin_date = new Date(item.begin_date) / 1000
+              let time = parseInt(new Date().getTime() / 1000)
+              return (
+                <CouponItem
+                  info={item}
+                  key={item.id}
+                  onHandleClick={this.handleClick.bind(this, item)}
+                >
+                  <View style={{ fontSize: '22rpx' }}>
+                    {item.card_type === 'cash' || item.card_type === 'discount' ? '去使用' : ''}
+                    {item.card_type === 'new_gift' &&
+                    item.status == 1 &&
+                    item.tagClass == 'notstarted'
+                      ? '未开始'
+                      : ''}
+                    {item.card_type === 'new_gift' && item.tagClass != 'notstarted'
+                      ? item.status == 10
+                        ? '待核销'
+                        : item.status == 1 && time > begin_date
+                        ? '待使用'
+                        : item.status == 1 && time < begin_date
+                        ? '未开始'
+                        : ''
+                      : ''}
+                  </View>
+                </CouponItem>
+              )
+            })}
+            {page.isLoading && <Loading>正在加载...</Loading>}
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>
+            )}
           </View>
         </ScrollView>
         <View className='coupon-bottom'>
-          <View className='left'  onClick={this.handleCouponClick1.bind(this)}>优惠券使用记录</View>
+          <View className='left' onClick={this.handleCouponClick1.bind(this)}>
+            优惠券使用记录
+          </View>
           <View className='middle'>｜</View>
-          <View className='right' onClick={this.handleCouponClick.bind(this)}>前往领券中心<Image className='icon' src={`${process.env.APP_IMAGE_CDN}/coupon_right_icon.png`} /></View>
+          <View className='right' onClick={this.handleCouponClick.bind(this)}>
+            前往领券中心
+            <Image className='icon' src={`${process.env.APP_IMAGE_CDN}/coupon_right_icon.png`} />
+          </View>
         </View>
       </View>
-    );
+    )
   }
 }

@@ -51,7 +51,6 @@ export default class PackageList extends Component {
         list: [...this.state.list, ...nList]
       })
 
-
       if (!currentPackage) {
         this.setState({
           currentPackage: nList[0].package_id
@@ -83,40 +82,27 @@ export default class PackageList extends Component {
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-            <View className='package-goods__list'>
-              {
-                list.map(item => {
-                  return (
-                    <View
-                      className='package-goods__item'
-                      key={item.package_id}
-                    >
-                      <PackageItem
-                        info={item}
-                        distributorId={distributor_id}
-                        current={currentPackage}
-                        onClick={this.handleItemClick.bind(this, item.package_id)}
-                      />
-                    </View>
-                  )
-                })
-              }
-              {
-                page.isLoading
-                  ? <Loading>正在加载...</Loading>
-                  : null
-              }
-              {
-                !page.isLoading && !page.hasNext && !list.length
-                  && (<SpNote img='trades_empty.png'>活动已结束~</SpNote>)
-              }
-            </View>
+          <View className='package-goods__list'>
+            {list.map((item) => {
+              return (
+                <View className='package-goods__item' key={item.package_id}>
+                  <PackageItem
+                    info={item}
+                    distributorId={distributor_id}
+                    current={currentPackage}
+                    onClick={this.handleItemClick.bind(this, item.package_id)}
+                  />
+                </View>
+              )
+            })}
+            {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img='trades_empty.png'>活动已结束~</SpNote>
+            )}
+          </View>
         </ScrollView>
 
-        <BackToTop
-          show={showBackToTop}
-          onClick={this.scrollBackToTop}
-        />
+        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
       </View>
     )
   }

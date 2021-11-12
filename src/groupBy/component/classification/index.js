@@ -7,7 +7,8 @@
  * @Date: 2020-06-12 13:27:40
  * @LastEditors: Arvin
  * @LastEditTime: 2020-06-22 17:14:11
- */ 
+ */
+
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 
@@ -18,7 +19,7 @@ export default class Classification extends Component {
     list: []
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
   }
 
@@ -26,16 +27,12 @@ export default class Classification extends Component {
     const { list } = this.props
     return (
       <View className='classification'>
-        {
-          list.map(item => (
-            <View className='menuItem' key={item}>
-              <Image className='img' src='https://picsum.photos/id/1036/200/200' />
-              <View className='name'>
-                菜单{ item }
-              </View>
-            </View>
-          ))
-        }
+        {list.map((item) => (
+          <View className='menuItem' key={item}>
+            <Image className='img' src='https://picsum.photos/id/1036/200/200' />
+            <View className='name'>菜单{item}</View>
+          </View>
+        ))}
       </View>
     )
   }

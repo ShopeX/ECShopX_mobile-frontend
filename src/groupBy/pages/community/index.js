@@ -9,7 +9,6 @@ import LoadingMore from '../../component/loadingMore'
 import './index.scss'
 
 export default class Community extends Component {
-
   constructor (props) {
     super(props)
     this.state = {
@@ -20,7 +19,7 @@ export default class Community extends Component {
       current: {},
       param: {
         page: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       lbs: {
         lat: '',
@@ -52,26 +51,29 @@ export default class Community extends Component {
     const lbs = this.getLoacl()
     if (!lbs) return false
     const { latitude, longitude } = lbs
-    this.setState({
-      lbs: {
-        lat: latitude,
-        lng: longitude
+    this.setState(
+      {
+        lbs: {
+          lat: latitude,
+          lng: longitude
+        }
+      },
+      () => {
+        this.getCommunity(true)
+        this.getNearBuyCommunity()
       }
-    }, () => {
-      this.getCommunity(true)
-      this.getNearBuyCommunity()
-    })
+    )
   }
 
   // 定位
   getLoacl = async () => {
     let lbs = ''
     if (Taro.getEnv() === 'WEAPP') {
-      lbs = await Taro.getLocation({type: 'gcj02'}).catch(() => {
+      lbs = await Taro.getLocation({ type: 'gcj02' }).catch(() => {
         Taro.showModal({
           content: '您未授权访问您的定位信息，请先更改您的授权设置',
           showCancel: false,
-          success: res => {
+          success: (res) => {
             if (res.confirm) {
               Taro.openSetting({
                 success: () => {
@@ -92,14 +94,14 @@ export default class Community extends Component {
   // 获取社区列表
   getCommunity = async (isRefresh = false) => {
     const { param, list: oldList, lbs } = this.state
-    isRefresh && Taro.showLoading({title: '正在加载...', mask: true})
-    api.groupBy.activityCommunityList({...param, ...lbs}).then(res => {
+    isRefresh && Taro.showLoading({ title: '正在加载...', mask: true })
+    api.groupBy.activityCommunityList({ ...param, ...lbs }).then((res) => {
       const { total_count, list } = res
       this.setState({
         list: isRefresh ? list : [...oldList, ...list],
         isRefresh: false,
         isLoading: false,
-        isEnd: param.page >= (total_count / param.pageSize)
+        isEnd: param.page >= total_count / param.pageSize
       })
       isRefresh && Taro.hideLoading()
     })
@@ -115,7 +117,7 @@ export default class Community extends Component {
     } else {
       const { lbs } = this.state
       console.log(lbs)
-      api.groupBy.activityCommunity(lbs).then(res => {
+      api.groupBy.activityCommunity(lbs).then((res) => {
         Taro.setStorageSync('community', res)
         this.setState({
           current: res
@@ -165,14 +167,7 @@ export default class Community extends Component {
   }
 
   render () {
-    const { 
-      list, 
-      isLoading, 
-      isEnd, 
-      isRefresh, 
-      scrollTop, 
-      current
-    } = this.state
+    const { list, isLoading, isEnd, isRefresh, scrollTop, current } = this.state
     return (
       <View className='community'>
         <SpNavBar
@@ -185,10 +180,10 @@ export default class Community extends Component {
           <View className='search'>
             <View className='content'>
               <View className='iconfont icon-search'></View>
-              <Input 
-                type='text' 
-                placeholder='请输入社区名称' 
-                confirmType='search' 
+              <Input
+                type='text'
+                placeholder='请输入社区名称'
+                confirmType='search'
                 onInput={this.searchInput}
                 onConfirm={this.handleRefresh}
               />
@@ -197,8 +192,11 @@ export default class Community extends Component {
           <View className='myZiti'>
             <View className='title'>我的当前自提点</View>
             <View className='myCommunity' onClick={() => Taro.navigateBack()}>
-              <View className='location'>{ current.community_name }</View>
-              <View className='distance'>{ current.distance_show }{ current.distance_unit }</View>
+              <View className='location'>{current.community_name}</View>
+              <View className='distance'>
+                {current.distance_show}
+                {current.distance_unit}
+              </View>
             </View>
           </View>
           <View className='nearBy'>
@@ -218,18 +216,21 @@ export default class Community extends Component {
           onRefresherRefresh={this.handleRefresh}
           onScrollToLower={this.handleLoadMore}
         >
-          {
-            list.map(item => (
-              <View className='item' key={item.community_id} onClick={this.setCommunity.bind(this, item)}>
-                <View className='name'>
-                  { item.city + item.area }({ item.community_name })
-                </View>
-                <View className='distance'>
-                  { item.distance_show }{ item.distance_unit }
-                </View>
+          {list.map((item) => (
+            <View
+              className='item'
+              key={item.community_id}
+              onClick={this.setCommunity.bind(this, item)}
+            >
+              <View className='name'>
+                {item.city + item.area}({item.community_name})
               </View>
-            ))
-          }
+              <View className='distance'>
+                {item.distance_show}
+                {item.distance_unit}
+              </View>
+            </View>
+          ))}
           {/* 加载更多 */}
           <LoadingMore isLoading={isLoading} isEnd={isEnd} />
           {/* 防止子内容无法支撑scroll-view下拉刷新 */}

@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Form, Button, Text, Picker, Image } from '@tarojs/components'
-import { connect } from "@tarojs/redux";
+import { connect } from '@tarojs/redux'
 import { AtInput, AtButton } from 'taro-ui'
-import { SpToast, SpTimer, SpNavBar, SpCheckbox,AccountOfficial } from '@/components'
-import { classNames, isString, isArray, tokenParse } from "@/utils";
-import { Tracker } from "@/service";
+import { SpToast, SpTimer, SpNavBar, SpCheckbox, AccountOfficial } from '@/components'
+import { classNames, isString, isArray, tokenParse } from '@/utils'
+import { Tracker } from '@/service'
 import S from '@/spx'
 import api from '@/api'
 
@@ -12,12 +12,15 @@ import './reg.scss'
 
 const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
 
-@connect(({ user, colors }) => ({
-  land_params: user.land_params,
-  colors: colors.current
-}), () => ({}))
+@connect(
+  ({ user, colors }) => ({
+    land_params: user.land_params,
+    colors: colors.current
+  }),
+  () => ({})
+)
 export default class Reg extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -30,13 +33,13 @@ export default class Reg extends Component {
       option_list: [],
       showCheckboxPanel: false,
       isHasData: true,
-      show_official:false,
-      show_kuangkuang:true
+      show_official: false,
+      show_kuangkuang: true
     }
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // console.log(Taro.getEnv(),this.props.land_params)
     if (process.env.TARO_ENV === 'weapp') {
       this.setState({
@@ -52,10 +55,10 @@ export default class Reg extends Component {
         }
       })
     }
-    
+
     this.fetch()
   }
-  componentDidShow(){
+  componentDidShow () {
     this.checkWhite()
   }
   handleClickImgcode = async () => {
@@ -72,7 +75,7 @@ export default class Reg extends Component {
     }
   }
 
-  async fetch() {
+  async fetch () {
     let arr = []
     let res = await api.user.regParam()
     console.log(res)
@@ -81,7 +84,7 @@ export default class Reg extends Component {
         isHasData: false
       })
     } else {
-      Object.keys(res).forEach(key => {
+      Object.keys(res).forEach((key) => {
         if (res[key].is_open) {
           if (key === 'sex') {
             res[key].items = ['未知', '男', '女']
@@ -108,16 +111,15 @@ export default class Reg extends Component {
       this.handleClickImgcode()
     }
     this.count = 0
-
   }
   async checkWhite () {
     const { status } = await api.wx.getWhiteList()
-    if(status == true){
+    if (status == true) {
       setTimeout(() => {
-       this.setState({
-         show_kuangkuang:false
-       })
-       //Taro.hideHomeButton()
+        this.setState({
+          show_kuangkuang: false
+        })
+        //Taro.hideHomeButton()
       }, 1000)
     }
   }
@@ -141,15 +143,14 @@ export default class Reg extends Component {
     /*if (!data.password) {
       return S.toast('请输入密码')
     }*/
-    this.state.list.map(item => {
-      if(item.is_required && !data[item.key]){
+    this.state.list.map((item) => {
+      if (item.is_required && !data[item.key]) {
         contine = true
         return S.toast(`请输入${item.name}`)
-
       }
       //return item.is_required ? (item.is_required && data[item.key] ? true : S.toast(`请输入${item.name}`)) : null
     })
-    if(contine){
+    if (contine) {
       return false
     }
 
@@ -169,7 +170,10 @@ export default class Reg extends Component {
           Object.assign(params, { uid })
         }
         if (trackParams) {
-          Object.assign(params, { source_id: trackParams.source_id, monitor_id: trackParams.monitor_id })
+          Object.assign(params, {
+            source_id: trackParams.source_id,
+            monitor_id: trackParams.monitor_id
+          })
         }
 
         // 导购id
@@ -184,31 +188,29 @@ export default class Reg extends Component {
 
         if (work_userid) {
           params.channel = 1
-          params.work_userid = work_userid 
+          params.work_userid = work_userid
         }
 
         const res = await api.user.reg(params)
-        Tracker.dispatch("MEMBER_REG", params);
+        Tracker.dispatch('MEMBER_REG', params)
 
         const { code } = await Taro.login()
         const { token } = await api.wx.login({ code })
 
-       
-        
-        S.setAuthToken( token )
-        try{
+        S.setAuthToken(token)
+        try {
           await api.wx.newMarketing()
-        }catch(e){
+        } catch (e) {
           console.error(e)
         }
         // 通过token解析openid
-        if ( token ) {
-          const userInfo = tokenParse(token);
+        if (token) {
+          const userInfo = tokenParse(token)
           Tracker.setVar({
             user_id: userInfo.user_id,
             open_id: userInfo.openid,
             union_id: userInfo.unionid
-          });
+          })
         }
       } else {
         const res = await api.user.reg(data)
@@ -223,9 +225,7 @@ export default class Reg extends Component {
             salesperson_id
           })
         }
-
       } catch (err) {
-
         Taro.showToast({
           title: '导购员绑定失败',
           icon: 'none',
@@ -235,8 +235,8 @@ export default class Reg extends Component {
 
       S.toast('注册成功')
       const { redirect, source } = this.$router.params
-      setTimeout(()=>{
-        if(Taro.getStorageSync('isqrcode') === 'true') {
+      setTimeout(() => {
+        if (Taro.getStorageSync('isqrcode') === 'true') {
           Taro.redirectTo({
             url: '/subpage/pages/qrcode-buy'
           })
@@ -275,27 +275,31 @@ export default class Reg extends Component {
     }
 
     if (!isString(val) && !isArray(val)) {
-      list.map(item => {
-        item.key === name ? info[name] = val.detail.value : null
+      list.map((item) => {
+        item.key === name ? (info[name] = val.detail.value) : null
         if (name === 'birthday') {
-          item.key === name ? item.value = val.detail.value : null
+          item.key === name ? (item.value = val.detail.value) : null
         } else {
-          item.key === name ? (item.items ? item.value = item.items[val.detail.value] : item.value = val.detail.value) : null
+          item.key === name
+            ? item.items
+              ? (item.value = item.items[val.detail.value])
+              : (item.value = val.detail.value)
+            : null
         }
       })
     } else if (isArray(val)) {
-      list.map(item => {
+      list.map((item) => {
         let new_option_list = []
-        val.map(option_item => {
+        val.map((option_item) => {
           if (option_item.ischecked === true) {
             new_option_list.push(option_item.name)
           }
         })
-        item.key === name ? item.value = new_option_list.join("，") : null
+        item.key === name ? (item.value = new_option_list.join('，')) : null
       })
     } else {
-      list.map(item => {
-        item.key === name ? item.value = val : null
+      list.map((item) => {
+        item.key === name ? (item.value = val) : null
       })
     }
     this.setState({ list })
@@ -304,8 +308,8 @@ export default class Reg extends Component {
   handleClickIconpwd = () => {
     const { isVisible } = this.state
     this.setState({
-      isVisible: !isVisible,
-    });
+      isVisible: !isVisible
+    })
   }
 
   handleErrorToastClose = () => {
@@ -339,9 +343,7 @@ export default class Reg extends Component {
     resolve()
   }
 
-  handleTimerStop = () => {
-
-  }
+  handleTimerStop = () => {}
 
   handleClickAgreement = () => {
     Taro.navigateTo({
@@ -402,7 +404,7 @@ export default class Reg extends Component {
     const { option_list } = this.state
     if (btn_type === 'cancel') {
       // let new_type = this.type
-      option_list.map(item => {
+      option_list.map((item) => {
         item.ischecked = false
       })
     }
@@ -411,7 +413,7 @@ export default class Reg extends Component {
 
   handleSelectionChange = (name) => {
     const { option_list } = this.state
-    option_list.map(item => {
+    option_list.map((item) => {
       if (item.name === name) {
         item.ischecked = !item.ischecked
       }
@@ -420,38 +422,50 @@ export default class Reg extends Component {
       option_list
     })
   }
-  handleOfficialError=()=>{
-    
-  }
-  handleOfficialClose =()=>{
+  handleOfficialError = () => {}
+  handleOfficialClose = () => {
     this.setState({
-      show_official:false
+      show_official: false
     })
   }
 
-  render() {
+  render () {
     const { colors } = this.props
-    const { info, isHasValue, isVisible, isHasData, list, imgVisible, imgInfo, option_list, showCheckboxPanel,show_official,show_kuangkuang } = this.state
+    const {
+      info,
+      isHasValue,
+      isVisible,
+      isHasData,
+      list,
+      imgVisible,
+      imgInfo,
+      option_list,
+      showCheckboxPanel,
+      show_official,
+      show_kuangkuang
+    } = this.state
 
     return (
-      <View className="auth-reg">
+      <View className='auth-reg'>
         {show_official && (
           <AccountOfficial
             onHandleError={this.handleOfficialError.bind(this)}
             onClick={this.handleOfficialClose.bind(this)}
           />
         )}
-        <SpNavBar title="注册" leftIconType="chevron-left" />
+        <SpNavBar title='注册' leftIconType='chevron-left' />
         <Form onSubmit={this.handleSubmit}>
-          <View className="sec auth-reg__form">
-            {process.env.TARO_ENV === "weapp" && (
-              <View className="at-input">
-                <View className="at-input__container">
-                  <View className="at-input__title"><Text className="require-text">*</Text>手机号码</View>
-                  <View className="at-input__input">{info.mobile}</View>
-                  <View className="at-input__children">
+          <View className='sec auth-reg__form'>
+            {process.env.TARO_ENV === 'weapp' && (
+              <View className='at-input'>
+                <View className='at-input__container'>
+                  <View className='at-input__title'>
+                    <Text className='require-text'>*</Text>手机号码
+                  </View>
+                  <View className='at-input__input'>{info.mobile}</View>
+                  <View className='at-input__children'>
                     <AtButton
-                      openType="getPhoneNumber"
+                      openType='getPhoneNumber'
                       onGetPhoneNumber={this.handleGetPhoneNumber}
                     >
                       获取手机号码
@@ -482,49 +496,42 @@ export default class Reg extends Component {
               <View>
                 <AtInput
                   required
-                  title="手机号码"
-                  name="mobile"
-                  type="number"
+                  title='手机号码'
+                  name='mobile'
+                  type='number'
                   maxLength={11}
                   value={info.mobile}
-                  placeholder="请输入手机号码"
+                  placeholder='请输入手机号码'
                   onFocus={this.handleErrorToastClose}
-                  onChange={this.handleChange.bind(this, "mobile")}
+                  onChange={this.handleChange.bind(this, 'mobile')}
                 />
                 {imgVisible ? (
                   <AtInput
-                    title="图片验证码"
+                    title='图片验证码'
                     required
-                    name="yzm"
+                    name='yzm'
                     value={info.yzm}
-                    placeholder="请输入图片验证码"
+                    placeholder='请输入图片验证码'
                     onFocus={this.handleErrorToastClose}
-                    onChange={this.handleChange.bind(this, "yzm")}
+                    onChange={this.handleChange.bind(this, 'yzm')}
                   >
-                    <Image
-                      src={`${imgInfo.imageData}`}
-                      onClick={this.handleClickImgcode}
-                    />
+                    <Image src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
                   </AtInput>
                 ) : null}
                 <AtInput
-                  title="验证码"
+                  title='验证码'
                   required
-                  name="vcode"
+                  name='vcode'
                   value={info.vcode}
-                  placeholder="请输入验证码"
+                  placeholder='请输入验证码'
                   onFocus={this.handleErrorToastClose}
-                  onChange={this.handleChange.bind(this, "vcode")}
+                  onChange={this.handleChange.bind(this, 'vcode')}
                 >
-                  <SpTimer
-                    onStart={this.handleTimerStart}
-                    onStop={this.handleTimerStop}
-                  />
+                  <SpTimer onStart={this.handleTimerStart} onStop={this.handleTimerStop} />
                 </AtInput>
               </View>
             )}
 
-            
             {/*<AtInput
               title='密码'
               name='password'
@@ -545,7 +552,7 @@ export default class Reg extends Component {
               list.map((item, index) => {
                 return (
                   <View key={`${index}1`}>
-                    {item.element_type === "input" ? (
+                    {item.element_type === 'input' ? (
                       <View key={`${index}1`}>
                         <AtInput
                           required={item.is_required}
@@ -556,71 +563,53 @@ export default class Reg extends Component {
                           value={item.value}
                           onFocus={this.handleErrorToastClose}
                           onChange={this.handleChange.bind(this, `${item.key}`)}
-                          ref={input => {
-                            this.textInput = input;
+                          ref={(input) => {
+                            this.textInput = input
                           }}
                         />
                       </View>
                     ) : null}
-                    {item.element_type === "select" ? (
-                      <View className="page-section">
+                    {item.element_type === 'select' ? (
+                      <View className='page-section'>
                         <View key={`${index}1`}>
-                          {item.key === "birthday" ? (
+                          {item.key === 'birthday' ? (
                             <Picker
-                              mode="date"
-                              onChange={this.handleChange.bind(
-                                this,
-                                `${item.key}`
-                              )}
+                              mode='date'
+                              onChange={this.handleChange.bind(this, `${item.key}`)}
                             >
-                              <View className="picker">
-                                <View className="picker__title">
-                                  {
-                                    item.is_required && (<Text className="require-text">*</Text>)
-                                  }
+                              <View className='picker'>
+                                <View className='picker__title'>
+                                  {item.is_required && <Text className='require-text'>*</Text>}
                                   {item.name}
                                 </View>
                                 <Text
                                   className={classNames(
-                                    item.value
-                                      ? "pick-value"
-                                      : "pick-value-null"
+                                    item.value ? 'pick-value' : 'pick-value-null'
                                   )}
                                 >
-                                  {item.value
-                                    ? item.value
-                                    : `请选择${item.name}`}
+                                  {item.value ? item.value : `请选择${item.name}`}
                                 </Text>
                               </View>
                             </Picker>
                           ) : (
                             <Picker
-                              mode="selector"
+                              mode='selector'
                               range={item.items}
                               key={`${index}1`}
                               data-item={item}
-                              onChange={this.handleChange.bind(
-                                this,
-                                `${item.key}`
-                              )}
+                              onChange={this.handleChange.bind(this, `${item.key}`)}
                             >
-                              <View className="picker">
-                                <View className="picker__title">
-                                {
-                                    item.is_required && (<Text className="require-text">*</Text>)
-                                }
-                                {item.name}
+                              <View className='picker'>
+                                <View className='picker__title'>
+                                  {item.is_required && <Text className='require-text'>*</Text>}
+                                  {item.name}
                                 </View>
                                 <Text
                                   className={classNames(
-                                    item.value
-                                      ? "pick-value"
-                                      : "pick-value-null"
+                                    item.value ? 'pick-value' : 'pick-value-null'
                                   )}
                                 >
-                                  {item.value
-                                    ? item.value
-                                    : `请选择${item.name}`}
+                                  {item.value ? item.value : `请选择${item.name}`}
                                 </Text>
                               </View>
                             </Picker>
@@ -628,8 +617,8 @@ export default class Reg extends Component {
                         </View>
                       </View>
                     ) : null}
-                    {item.element_type === "checkbox" ? (
-                      <View className="page-section">
+                    {item.element_type === 'checkbox' ? (
+                      <View className='page-section'>
                         <AtInput
                           required={item.is_required}
                           key={`${index}1`}
@@ -637,54 +626,47 @@ export default class Reg extends Component {
                           name={`${item.key}`}
                           placeholder={`请选择${item.name}`}
                           value={item.value}
-                          onFocus={this.showCheckboxPanel.bind(
-                            this,
-                            item.items,
-                            item.key
-                          )}
+                          onFocus={this.showCheckboxPanel.bind(this, item.items, item.key)}
                         />
                       </View>
                     ) : null}
                   </View>
-                );
+                )
               })}
           </View>
-          <View className="btns">
-            {process.env.TARO_ENV === "weapp" ? (
+          <View className='btns'>
+            {process.env.TARO_ENV === 'weapp' ? (
               <View>
                 <Button
-                  className="submit-btn"
-                  type="primary"
-                  formType="submit"
+                  className='submit-btn'
+                  type='primary'
+                  formType='submit'
                   style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                 >
                   同意协议并注册
                 </Button>
                 {show_kuangkuang ? (
-                  <AtButton
-                    type="default"
-                    onClick={this.handleBackHome.bind(this)}
-                  >
+                  <AtButton type='default' onClick={this.handleBackHome.bind(this)}>
                     暂不注册，随便逛逛
                   </AtButton>
                 ) : (
-                  ""
+                  ''
                 )}
               </View>
             ) : (
               <Button
-                type="primary"
+                type='primary'
                 onClick={this.handleSubmit}
-                formType="submit"
+                formType='submit'
                 style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
               >
                 同意协议并注册
               </Button>
             )}
-            <View className="accountAgreement">
+            <View className='accountAgreement'>
               已阅读并同意
               <Text
-                className="accountAgreement__text"
+                className='accountAgreement__text'
                 onClick={this.handleClickAgreement.bind(this)}
               >
                 《用户协议》
@@ -693,35 +675,29 @@ export default class Reg extends Component {
           </View>
         </Form>
         {showCheckboxPanel ? (
-          <View className="checkBoxPanel">
-            <View className="checkBoxPanel-content">
+          <View className='checkBoxPanel'>
+            <View className='checkBoxPanel-content'>
               {option_list.map((item, index) => {
                 return (
-                  <View className="checkBoxPanel-item" key={`${index}1`}>
+                  <View className='checkBoxPanel-item' key={`${index}1`}>
                     <SpCheckbox
                       checked={item.ischecked}
-                      onChange={this.handleSelectionChange.bind(
-                        this,
-                        item.name
-                      )}
+                      onChange={this.handleSelectionChange.bind(this, item.name)}
                     >
                       {item.name}
                     </SpCheckbox>
                   </View>
-                );
+                )
               })}
             </View>
-            <View className="panel-btns">
-              <View
-                className="panel-btn cancel-btn"
-                onClick={this.btnClick.bind(this, "cancel")}
-              >
+            <View className='panel-btns'>
+              <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>
                 取消
               </View>
               <View
-                className="panel-btn require-btn"
+                className='panel-btn require-btn'
                 style={`background: ${colors.data[0].primary}`}
-                onClick={this.btnClick.bind(this, "require")}
+                onClick={this.btnClick.bind(this, 'require')}
               >
                 确定
               </View>
@@ -730,6 +706,6 @@ export default class Reg extends Component {
         ) : null}
         <SpToast />
       </View>
-    );
+    )
   }
 }

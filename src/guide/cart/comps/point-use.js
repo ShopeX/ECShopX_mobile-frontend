@@ -1,6 +1,6 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View, Text, Button } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text, Button } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 import {
   AtFloatLayout,
   AtInput,
@@ -8,10 +8,11 @@ import {
   AtModalHeader,
   AtModalContent,
   AtModalAction
-} from "taro-ui";
-import { SpCheckbox } from "@/components";
-import "./point-use.scss";
-import { getPointName } from "@/utils";
+} from 'taro-ui'
+import { SpCheckbox } from '@/components'
+import './point-use.scss'
+import { getPointName } from '@/utils'
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
@@ -19,128 +20,119 @@ export default class PointUse extends Component {
   static defaultProps = {
     isOpened: false,
     disabledPoint: false
-  };
+  }
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
       isOpenRule: false,
       point: null,
       localType: props.type
-    };
+    }
   }
-  componentWillReceiveProps = nextProps => {
+  componentWillReceiveProps = (nextProps) => {
     if (nextProps.type !== this.props.type) {
       this.setState({
         localType: nextProps.type
-      });
+      })
     }
-  };
+  }
 
   static options = {
     addGlobalClass: true
-  };
+  }
 
   handleCancel = () => {
     this.setState({
       localType: this.props.type
       //point:null
-    });
-    this.props.onClose();
-  };
+    })
+    this.props.onClose()
+  }
 
   handleRuleOpen = () => {
     this.setState({
       isOpenRule: true
-    });
-  };
+    })
+  }
 
   handleRuleClose = () => {
     this.setState({
       isOpenRule: false
-    });
-  };
-  handlePointChange = value => {
-    const { info } = this.props;
-    const max_point = Number(info.max_point);
+    })
+  }
+  handlePointChange = (value) => {
+    const { info } = this.props
+    const max_point = Number(info.max_point)
     if (value >= max_point) {
       this.setState({
-        localType: info.deduct_point_rule.full_amount ? "point" : "wxpay",
+        localType: info.deduct_point_rule.full_amount ? 'point' : 'wxpay',
         point: max_point
-      });
-      return max_point;
+      })
+      return max_point
     }
     this.setState(
       {
         point: Number(value) > max_point ? max_point : value,
         localType: info.deduct_point_rule.full_amount
           ? Number(value) === max_point
-            ? "point"
-            : "wxpay"
-          : "wxpay"
+            ? 'point'
+            : 'wxpay'
+          : 'wxpay'
       },
       () => {
-        console.log(this.state.localType);
+        console.log(this.state.localType)
       }
-    );
-  };
+    )
+  }
 
-  handleUseFullAmount = checked => {
-    const { info } = this.props;
+  handleUseFullAmount = (checked) => {
+    const { info } = this.props
     this.setState({
-      point: checked ? info.max_point : "",
+      point: checked ? info.max_point : '',
       disabledPoint: checked ? true : false,
-      localType: checked ? "point" : "wxpay"
-    });
-  };
+      localType: checked ? 'point' : 'wxpay'
+    })
+  }
 
   handleChange = (point, pay_type) => {
-    this.props.onChange(point, pay_type);
-  };
+    this.props.onChange(point, pay_type)
+  }
 
-  render() {
-    const { info, isOpened, loading, colors } = this.props;
-    const { point, isOpenRule, disabledPoint, localType } = this.state;
+  render () {
+    const { info, isOpened, loading, colors } = this.props
+    const { point, isOpenRule, disabledPoint, localType } = this.state
     if (!info) {
-      return null;
+      return null
     }
-    const { deduct_point_rule = {} } = info;
+    const { deduct_point_rule = {} } = info
     return (
       <View>
         <AtFloatLayout isOpened={isOpened}>
-          <View className="point-use">
-            <View className="point-use__hd">
+          <View className='point-use'>
+            <View className='point-use__hd'>
               <Text>{getPointName()}</Text>
-              <Text className="rule-title" onClick={this.handleRuleOpen}>
+              <Text className='rule-title' onClick={this.handleRuleOpen}>
                 使用规则
               </Text>
-              <View
-                className="at-icon at-icon-close"
-                onClick={this.handleCancel}
-              ></View>
+              <View className='at-icon at-icon-close' onClick={this.handleCancel}></View>
             </View>
-            <View className="point-use__bd">
-              <View className="point-item">
-                <View className="point-item__title">
-                  {`用户可用${getPointName()}：`}
-                </View>
-                <View className="point-item__desc">{info.user_point}</View>
+            <View className='point-use__bd'>
+              <View className='point-item'>
+                <View className='point-item__title'>{`用户可用${getPointName()}：`}</View>
+                <View className='point-item__desc'>{info.user_point}</View>
               </View>
-              <View className="point-item border">
-                <View className="point-item__title">
-                  {`本单最大可用${getPointName()}：`}
-                </View>
-                <View className="point-item__desc">{info.max_point}</View>
+              <View className='point-item border'>
+                <View className='point-item__title'>{`本单最大可用${getPointName()}：`}</View>
+                <View className='point-item__desc'>{info.max_point}</View>
               </View>
-              <View className="point-item">
-                <View className="point-item__title">
-                  {`请输入抵扣${getPointName()}`}
-                </View>
-                <View className="point-item__desc">
+              <View className='point-item'>
+                <View className='point-item__title'>{`请输入抵扣${getPointName()}`}</View>
+                <View className='point-item__desc'>
                   <AtInput
-                    type="number"
-                    title=""
+                    type='number'
+                    title=''
                     value={
                       info.real_use_point
                         ? info.real_use_point < info.point_use
@@ -154,25 +146,23 @@ export default class PointUse extends Component {
                 </View>
               </View>
 
-              {deduct_point_rule &&
-                deduct_point_rule.full_amount &&
-                info.max_point > 0 && (
-                  <View className="point-item">
-                    <View className="point-item__title">
-                      <SpCheckbox
-                        colors={colors}
-                        checked={localType === "point"}
-                        onChange={this.handleUseFullAmount}
-                      >
-                        全额抵扣
-                      </SpCheckbox>
-                    </View>
+              {deduct_point_rule && deduct_point_rule.full_amount && info.max_point > 0 && (
+                <View className='point-item'>
+                  <View className='point-item__title'>
+                    <SpCheckbox
+                      colors={colors}
+                      checked={localType === 'point'}
+                      onChange={this.handleUseFullAmount}
+                    >
+                      全额抵扣
+                    </SpCheckbox>
                   </View>
-                )}
+                </View>
+              )}
             </View>
             <Button
-              type="primary"
-              className="btn-submit"
+              type='primary'
+              className='btn-submit'
               style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
               loading={loading}
               onClick={this.handleChange.bind(this, point, localType)}
@@ -191,15 +181,13 @@ export default class PointUse extends Component {
               }%；`}
             </View>
             <View>使用数量</View>
-            <View>
-              {`2.${deduct_point_rule.deduct_point} ${getPointName()}抵 1 元；`}
-            </View>
+            <View>{`2.${deduct_point_rule.deduct_point} ${getPointName()}抵 1 元；`}</View>
           </AtModalContent>
           <AtModalAction>
             <Button onClick={this.handleRuleClose}>我知道了</Button>
           </AtModalAction>
         </AtModal>
       </View>
-    );
+    )
   }
 }

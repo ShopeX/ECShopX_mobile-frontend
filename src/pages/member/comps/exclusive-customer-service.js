@@ -1,28 +1,21 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { AtAvatar } from "taro-ui";
+import { AtAvatar } from 'taro-ui'
 
-import './exclusive-customer-service.scss';
-
+import './exclusive-customer-service.scss'
 
 export default class ExclusiveCustomerService extends Component {
-
-
   static defaultProps = {
     isOpened: false
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
-    this.state = {
-
-    }
+    this.state = {}
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount () {}
 
   static options = {
     addGlobalClass: true
@@ -38,34 +31,29 @@ export default class ExclusiveCustomerService extends Component {
   /**
    * 监听按钮点击事件执行开始时的回调
    * */
-  startmessage() {
+  startmessage () {
     console.log('监听按钮点击事件执行开始时的回调')
   }
 
   /**
    * 监听按钮点击事件执行完毕后的回调
    * */
-  completemessage() {
+  completemessage () {
     console.log('监听按钮点击事件执行完毕后的回调')
   }
 
-  render() {
-    let { info } = this.props;
+  render () {
+    let { info } = this.props
 
-    if (!info) return null;
+    if (!info) return null
 
     return (
       <View className='exclusive-customer-service exclusive'>
-        <View className='exclusive-title'>
-          我的导购/专属客服
-        </View>
+        <View className='exclusive-title'>我的导购/专属客服</View>
 
         <View className='exclusive-con'>
           <View className='exclusive-con__avatar'>
-            <AtAvatar image={info.avatar}
-              size='small'
-              circle
-            />
+            <AtAvatar image={info.avatar} size='small' circle />
           </View>
           <View className='exclusive-con__info'>
             <View>
@@ -80,10 +68,12 @@ export default class ExclusiveCustomerService extends Component {
           </View>
         </View>
 
-
         <View className='exclusive-button flex'>
-          <View className='border-r contact-ta' onClick={() => Taro.showToast({title:'请查看服务通知',icon:'none'})}>
-            <View className='cell'> 
+          <View
+            className='border-r contact-ta'
+            onClick={() => Taro.showToast({ title: '请查看服务通知', icon: 'none' })}
+          >
+            <View className='cell'>
               <cell
                 styleType='2'
                 startmessage={this.startmessage.bind(this)}
@@ -96,11 +86,15 @@ export default class ExclusiveCustomerService extends Component {
               </View>
             </View>
           </View>
-          <View className='d-button' onClick={() => { Taro.navigateTo({ url: '/marketing/pages/member/complaint' }) }}>
+          <View
+            className='d-button'
+            onClick={() => {
+              Taro.navigateTo({ url: '/marketing/pages/member/complaint' })
+            }}
+          >
             <Image className='img' src='/assets/imgs/complaint_icon.png' />
             <View className='text'>投诉</View>
           </View>
-
         </View>
       </View>
     )

@@ -13,8 +13,7 @@ export default class WgtNavigation extends Component {
     info: null
   }
 
-  handleClickItem (item,index) {
-  
+  handleClickItem (item, index) {
     linkPage(item.linkPage, item.id)
   }
 
@@ -36,14 +35,9 @@ export default class WgtNavigation extends Component {
                 <View
                   className='nav-item'
                   key={item.id}
-                  onClick={this.handleClickItem.bind(this, item,idx)}
+                  onClick={this.handleClickItem.bind(this, item, idx)}
                 >
-                  <Image
-                    className='nav-img'
-                    mode='widthFix'
-                    lazyLoad
-                    src={item.imgUrl}
-                  />
+                  <Image className='nav-img' mode='widthFix' lazyLoad src={item.imgUrl} />
                   <Text className='nav-name'>{item.content}</Text>
                 </View>
               )

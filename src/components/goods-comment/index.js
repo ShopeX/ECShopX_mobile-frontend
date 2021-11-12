@@ -18,14 +18,12 @@ export default class GoodsComment extends Component {
     super(props)
 
     this.state = {
-        isActive: props.isOpened,
-        comment: '',
-        count: 0
+      isActive: props.isOpened,
+      comment: '',
+      count: 0
     }
   }
-  componentDidMount () {
-
-  }
+  componentDidMount () {}
 
   componentWillReceiveProps (nextProps) {
     const { isOpened } = nextProps
@@ -48,7 +46,7 @@ export default class GoodsComment extends Component {
   async handleClickReply () {
     const { comment } = this.state
     if (!comment || !comment.length) {
-        return
+      return
     }
     this.props.onReplyRate && this.props.onReplyRate(comment)
     this.setState({
@@ -60,8 +58,8 @@ export default class GoodsComment extends Component {
   handleChange (e) {
     let comment = e
     this.setState({
-        comment,
-        count: comment ? comment.length : 0
+      comment,
+      count: comment ? comment.length : 0
     })
   }
 
@@ -69,29 +67,42 @@ export default class GoodsComment extends Component {
     const { isActive, comment, count } = this.state
 
     return (
-        <View className={classNames('goods-comment-panel', isActive ? 'goods-comment-panel__active' : null)}>
-            <View className='goods-comment-panel__overlay' onClick={() => this.toggleShow(false)}></View>
+      <View
+        className={classNames(
+          'goods-comment-panel',
+          isActive ? 'goods-comment-panel__active' : null
+        )}
+      >
+        <View
+          className='goods-comment-panel__overlay'
+          onClick={() => this.toggleShow(false)}
+        ></View>
 
-            <View className='goods-comment-panel__wrap'>
-                <View className='goods-comment-panel__bd'>
-                    <AtTextarea
-                        className='comment'
-                        count={false}
-                        value={comment}
-                        onChange={this.handleChange.bind(this)}
-                        maxLength={500}
-                        height={60}
-                        autoFocus={true}
-                        fixed={true}
-                        placeholder='请输入您的评论'
-                    />
-                    <View className='reply-btns'>
-                        <Text className='count'>{count}/500</Text>
-                        <View className={classNames('btn', {'btn-disabled': count==0})} onClick={this.handleClickReply}>发表</View>
-                    </View>
-                </View>
+        <View className='goods-comment-panel__wrap'>
+          <View className='goods-comment-panel__bd'>
+            <AtTextarea
+              className='comment'
+              count={false}
+              value={comment}
+              onChange={this.handleChange.bind(this)}
+              maxLength={500}
+              height={60}
+              autoFocus
+              fixed
+              placeholder='请输入您的评论'
+            />
+            <View className='reply-btns'>
+              <Text className='count'>{count}/500</Text>
+              <View
+                className={classNames('btn', { 'btn-disabled': count == 0 })}
+                onClick={this.handleClickReply}
+              >
+                发表
+              </View>
             </View>
+          </View>
         </View>
+      </View>
     )
   }
 }

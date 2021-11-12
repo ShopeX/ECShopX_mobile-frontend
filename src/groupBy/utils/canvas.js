@@ -13,8 +13,7 @@
 export default class Canvas {
   constructor (ctx = null, taro) {
     if (ctx) {
-      this.ctx = ctx,
-      this.taro = taro
+      ;(this.ctx = ctx), (this.taro = taro)
     } else {
       throw new Error('请传入canvas对象')
     }
@@ -22,7 +21,7 @@ export default class Canvas {
 
   /**
    * @description: 创建背板
-   * @param 
+   * @param
    * {
    *  w: 宽，
    *  h: 高，
@@ -30,9 +29,10 @@ export default class Canvas {
    *  y: y轴位置
    *  bgColor: 背景颜色值
    *  bgImg: 背景图,
-   * } 
-   */  
-  async createBackground (w, h, x, y, r, bgColor = '#fff',  bgImg) {
+   * }
+   */
+
+  async createBackground (w, h, x, y, r, bgColor = '#fff', bgImg) {
     this.ctx.beginPath()
     this.ctx.setFillStyle(bgColor)
     // 左上角
@@ -56,7 +56,7 @@ export default class Canvas {
     // border-left
     this.ctx.lineTo(x, y + r)
     this.ctx.lineTo(x + r, y)
-    
+
     this.ctx.fill()
     this.ctx.closePath()
     this.ctx.clip()
@@ -69,7 +69,7 @@ export default class Canvas {
 
   // 创建圆图
   async createRoundImg (x, y, r, img, bgColor) {
-    if (!img) return 
+    if (!img) return
     this.ctx.beginPath()
     this.ctx.arc(x - r, y + r, r, 0, 2 * Math.PI)
     if (bgColor) {
@@ -100,7 +100,7 @@ export default class Canvas {
     const single = width / str.length
     // 可显示文字个数
     const num = limitWidth / single
-    if (num >= (strLength + 4)) {
+    if (num >= strLength + 4) {
       return str
     } else {
       // 截取位置
@@ -123,7 +123,7 @@ export default class Canvas {
   }
 
   /**
-   * @description: 
+   * @description:
    * @param {
    *  img: 图片路径
    *  x: 图片起始x位置
@@ -131,9 +131,10 @@ export default class Canvas {
    *  w: 宽
    *  h: 高
    *  isClip: 是否裁剪
-   * } 
-   * @return: 
-   */  
+   * }
+   * @return:
+   */
+
   // 绘制图片
   async drawImage (img, x, y, w, h, isClip = false) {
     if (!img) return null
@@ -146,14 +147,14 @@ export default class Canvas {
     }
     // 环境判断
     if (process.env.TARO_ENV === 'h5') {
-      const imgInfo = await this.insertImg(img) 
+      const imgInfo = await this.insertImg(img)
       useImg = {
         img: imgInfo,
         w: imgInfo.width,
         h: imgInfo.height
       }
     } else {
-      const imgInfo = await this.taro.getImageInfo({src: img})
+      const imgInfo = await this.taro.getImageInfo({ src: img })
       useImg = {
         img: `${isHttps ? '' : '/'}${imgInfo.path}`,
         w: imgInfo.width,
@@ -168,7 +169,7 @@ export default class Canvas {
     this.ctx.restore()
     this.ctx.save()
   }
-  
+
   // 插入H5图片
   insertImg (imgUrl) {
     const isHttps = imgUrl.indexOf('https://') !== -1 || imgUrl.indexOf('http://') !== -1
@@ -176,7 +177,7 @@ export default class Canvas {
     if (isHttps) {
       img.setAttribute('crossOrigin', 'Anonymous')
     }
-    return new Promise (resolve => {
+    return new Promise((resolve) => {
       img.onload = () => {
         resolve(img)
       }
@@ -185,26 +186,32 @@ export default class Canvas {
   }
 
   // 创建多个商品
-async createGoodList (data, x, y, w) {
-  const marginTop = 20
-  const marginLeft = x + 50
-  const top = y + 10
-  const imgWidth = 60
-  // 限制宽度
-  const limtWidth = (w + x * 2) - (marginLeft * 2 + imgWidth + 10)
-  // 字体大小
-  const fontSize = 16
-  // 创建标题
-  this.drawText((w + x * 2)/ 2, top, '1月1日推荐', '#333', 23, 'center')
-  for (let i = 0; i < 5; i++) {
-    const toTop = top + marginTop * 2 + (marginTop + imgWidth) * i
-    this.ctx.setFontSize(fontSize)
-    const name = this.splitString('澳大利亚澳大利亚澳大利亚澳大利亚澳大利亚', limtWidth)
-    await this.drawImage('https://img12.360buyimg.com/n7/jfs/t25312/134/1983666171/147642/a17b1b62/5bc19e2eNf9565de8.jpg', marginLeft, toTop, imgWidth, imgWidth)
-    this.drawText(marginLeft + imgWidth + 10, toTop + 5, name, '#333', fontSize)
-    this.createShowPrice('10.00', '14.00', marginLeft + imgWidth + 10, toTop + 40, fontSize)
+  async createGoodList (data, x, y, w) {
+    const marginTop = 20
+    const marginLeft = x + 50
+    const top = y + 10
+    const imgWidth = 60
+    // 限制宽度
+    const limtWidth = w + x * 2 - (marginLeft * 2 + imgWidth + 10)
+    // 字体大小
+    const fontSize = 16
+    // 创建标题
+    this.drawText((w + x * 2) / 2, top, '1月1日推荐', '#333', 23, 'center')
+    for (let i = 0; i < 5; i++) {
+      const toTop = top + marginTop * 2 + (marginTop + imgWidth) * i
+      this.ctx.setFontSize(fontSize)
+      const name = this.splitString('澳大利亚澳大利亚澳大利亚澳大利亚澳大利亚', limtWidth)
+      await this.drawImage(
+        'https://img12.360buyimg.com/n7/jfs/t25312/134/1983666171/147642/a17b1b62/5bc19e2eNf9565de8.jpg',
+        marginLeft,
+        toTop,
+        imgWidth,
+        imgWidth
+      )
+      this.drawText(marginLeft + imgWidth + 10, toTop + 5, name, '#333', fontSize)
+      this.createShowPrice('10.00', '14.00', marginLeft + imgWidth + 10, toTop + 40, fontSize)
+    }
   }
-}
 
   // 创建单个商品
   async creatSingleGood (data, x, y, sw, sh, sr) {
@@ -237,13 +244,21 @@ async createGoodList (data, x, y, w) {
     this.ctx.setFontSize(23)
     const splitName = this.splitString(data.name, w)
     this.drawText((w + imgX * 2) / 2, imgY + h + 15, splitName, '#333', 23, 'center')
-    this.createShowPrice(data.symbol, data.nPrice, data.oPrice, (w + imgX * 2) / 2, imgY + h + 80, 22, true)
+    this.createShowPrice(
+      data.symbol,
+      data.nPrice,
+      data.oPrice,
+      (w + imgX * 2) / 2,
+      imgY + h + 80,
+      22,
+      true
+    )
     this.ctx.restore()
     this.ctx.save()
   }
 
   // 创建价格展示
-  createShowPrice(symbol = '¥', nPrice, oPrice, x, y, fontSize, isCenter = false, align = 'left') {
+  createShowPrice (symbol = '¥', nPrice, oPrice, x, y, fontSize, isCenter = false, align = 'left') {
     const diff = 4
     const otherFontSize = fontSize - (diff + 1)
     const marignLeft = 2
@@ -255,10 +270,23 @@ async createGoodList (data, x, y, w) {
     const sumWidth = isCenter ? (symbolWidth + oPriceWidth + nPriceWidth + marignLeft * 4) / 2 : 0
     this.drawText(x - sumWidth, y + diff, symbol, '#928869', otherFontSize, align)
     this.drawText(x - sumWidth + symbolWidth + marignLeft, y, nPrice, '#928869', fontSize, align)
-    this.drawText(x - sumWidth + symbolWidth + nPriceWidth + marignLeft * 3, y + diff, oPrice, '#666', otherFontSize, align)
+    this.drawText(
+      x - sumWidth + symbolWidth + nPriceWidth + marignLeft * 3,
+      y + diff,
+      oPrice,
+      '#666',
+      otherFontSize,
+      align
+    )
     this.ctx.beginPath()
-    this.ctx.moveTo(x - sumWidth + symbolWidth + nPriceWidth + marignLeft * 3, y + diff + otherFontSize / 1.8)
-    this.ctx.lineTo(x - sumWidth + symbolWidth + nPriceWidth + marignLeft * 3 + oPriceWidth, y + diff + otherFontSize / 1.8)
+    this.ctx.moveTo(
+      x - sumWidth + symbolWidth + nPriceWidth + marignLeft * 3,
+      y + diff + otherFontSize / 1.8
+    )
+    this.ctx.lineTo(
+      x - sumWidth + symbolWidth + nPriceWidth + marignLeft * 3 + oPriceWidth,
+      y + diff + otherFontSize / 1.8
+    )
     this.ctx.setLineWidth(1)
     this.ctx.setStrokeStyle('#666')
     this.ctx.stroke()
@@ -267,7 +295,7 @@ async createGoodList (data, x, y, w) {
     this.ctx.restore()
     this.ctx.save()
   }
-  
+
   // 创建底部内容
   async createBottom (width, x, y, data) {
     const sx = x
@@ -276,27 +304,35 @@ async createGoodList (data, x, y, w) {
     const marginTop = 24
     const list = [
       {
-        name: '小区团长:', 
+        name: '小区团长:',
         content: data.leaderName
-      }, {
-        name: '预计送达:', 
+      },
+      {
+        name: '预计送达:',
         content: data.deliveryDate
-      }, {
-        name: '提货地址:',   
+      },
+      {
+        name: '提货地址:',
         content: data.address
       }
     ]
     // 重置文字大小
     this.ctx.setFontSize(11)
-    for (let i =0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
       const top = sy + marginTop * i
       const nameWidth = this.measureText(list[i].name)
-      const limtWidth = (width - 2 * sx - 100 - nameWidth - marginLeft )
+      const limtWidth = width - 2 * sx - 100 - nameWidth - marginLeft
       const text = this.splitString(list[i].content, limtWidth)
       this.drawText(sx, top, list[i].name)
       this.drawText(sx + nameWidth + marginLeft, top, text, '#000', 11, 'left')
     }
-    this.drawText(sx, sy + marginTop * list.length + 8, '点击放大，长按转发，优惠拼团扫一扫', '#000', 13)
+    this.drawText(
+      sx,
+      sy + marginTop * list.length + 8,
+      '点击放大，长按转发，优惠拼团扫一扫',
+      '#000',
+      13
+    )
     await this.createRoundImg(width - sx, sy, 50, data.img, '#fff')
   }
 
@@ -304,20 +340,27 @@ async createGoodList (data, x, y, w) {
   async drawCanvas (width, height, goodInfo, cb = null) {
     const goodTop = 60
     const goodLeft = 15
-    const goodWidth = width - (goodLeft * 2)
+    const goodWidth = width - goodLeft * 2
     const goodheight = 450
     const pic = goodInfo.pics[0].replace('http://', 'https://')
     // 绘制背景
     await this.createBackground(width, height, 0, 0, 10, '#fff')
     // 绘制商品内容框
     await this.createBackground(goodWidth, goodheight, goodLeft, goodTop, 10)
-    await this.creatSingleGood({
-      img: pic,
-      name: goodInfo.goodName,
-      nPrice: goodInfo.activityPrice,
-      oPrice: goodInfo.price,
-      symbol: goodInfo.symbol
-    }, goodLeft, goodTop, goodWidth, 340, 10)
+    await this.creatSingleGood(
+      {
+        img: pic,
+        name: goodInfo.goodName,
+        nPrice: goodInfo.activityPrice,
+        oPrice: goodInfo.price,
+        symbol: goodInfo.symbol
+      },
+      goodLeft,
+      goodTop,
+      goodWidth,
+      340,
+      10
+    )
     // await this.createGoodList({
     // }, goodLeft, goodTop, goodWidth)
     await this.createBottom(width, goodLeft, goodTop + goodheight, {

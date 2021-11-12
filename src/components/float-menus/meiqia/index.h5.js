@@ -1,17 +1,16 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
-import { Tracker } from "@/service";
+import { Tracker } from '@/service'
 import './index.scss'
 
 export default class Meiqia extends Component {
-
   static defaultProps = {
     storeId: '',
     info: {},
     isFloat: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -22,7 +21,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     const meiqia = Taro.getStorageSync('meiqia') || {}
     if (meiqia.is_open === 'true') {
       const { enterprise_id, group_id, persion_ids } = meiqia
@@ -40,7 +39,7 @@ export default class Meiqia extends Component {
           meiqia_token: persion_ids,
           groupid: group_id
         })
-        // if (type) {        
+        // if (type) {
         //   const { meiqia_id, meiqia_token, clientid = '', groupid = '' } = await api.user.im(id)
         //   this.setState({
         //     meiqia_id,
@@ -55,7 +54,7 @@ export default class Meiqia extends Component {
         //     groupid: group_id
         //   })
         // }
-      }      
+      }
     }
   }
 
@@ -67,24 +66,24 @@ export default class Meiqia extends Component {
     const meiqiajs = document.getElementById('meiqiajs')
     if (!meiqiajs) {
       try {
-        (function (m, ei, q, i, a, j, s) {
-          m[i] = m[i] || function () {
-            (m[i].a = m[i].a || []).push(arguments)
-          };
-          j = ei.createElement(q),
-            s = ei.getElementsByTagName(q)[0];
-          j.async = true;
-          j.charset = 'UTF-8';
-          j.id = 'meiqiajs';
-          j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
-          s.parentNode.insertBefore(j, s);
-        })(window, document, 'script', '_MEIQIA');
+        ;(function (m, ei, q, i, a, j, s) {
+          m[i] =
+            m[i] ||
+            function () {
+              ;(m[i].a = m[i].a || []).push(arguments)
+            }
+          ;(j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
+          j.async = true
+          j.charset = 'UTF-8'
+          j.id = 'meiqiajs'
+          j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t'
+          s.parentNode.insertBefore(j, s)
+        })(window, document, 'script', '_MEIQIA')
       } catch (err) {
         console.log(err)
       }
     }
   }
-
 
   // 美恰客服
   contactMeiQia = async () => {
@@ -96,7 +95,7 @@ export default class Meiqia extends Component {
       userName: userInfo.username || '',
       mobile: userInfo.mobile || ''
     }
-    Tracker.dispatch("START_CONSULT", { type: 'meiqia' });
+    Tracker.dispatch('START_CONSULT', { type: 'meiqia' })
     this.meiqiaInit()
     if (_MEIQIA) {
       // 设置企业id
@@ -125,24 +124,23 @@ export default class Meiqia extends Component {
     }
   }
 
-
-  render() {
+  render () {
     const { isFloat } = this.props
     const { meiqia_id } = this.state
-    return (
-      meiqia_id ? <View>
-        {
-          isFloat ? <Button
-            className='float-menu__item'
-            onClick={this.contactMeiQia.bind(this)}
-          >
+    return meiqia_id ? (
+      <View>
+        {isFloat ? (
+          <Button className='float-menu__item' onClick={this.contactMeiQia.bind(this)}>
             <View className='icon icon-headphones'></View>
           </Button>
-          : <View onClick={this.contactMeiQia.bind(this)} className='refund-detail-btn'>
-            { this.props.children }
+        ) : (
+          <View onClick={this.contactMeiQia.bind(this)} className='refund-detail-btn'>
+            {this.props.children}
           </View>
-        }
-      </View> : ''
+        )}
+      </View>
+    ) : (
+      ''
     )
   }
 }

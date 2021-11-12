@@ -10,8 +10,7 @@ import LoadingMore from '../../component/loadingMore'
 import './index.scss'
 
 export default class nextNotice extends Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       // 活动列表
@@ -47,7 +46,7 @@ export default class nextNotice extends Component {
 
   // 获取活动数据
   getActiveData = async (isRefrsh = false) => {
-    Taro.showLoading({title: '正在加载中', mask: true})
+    Taro.showLoading({ title: '正在加载中', mask: true })
     const currentCommunity = Taro.getStorageSync('community')
     const { param, list, timeId } = this.state
     // 刷新清除原倒计时
@@ -55,44 +54,52 @@ export default class nextNotice extends Component {
     // 原列表数据
     const oldList = isRefrsh ? [] : list
 
-    api.groupBy.activityDetail({
-      ...param,
-      community_id: currentCommunity.community_id
-    }).then(res => {
-      Taro.hideLoading()
-      if (!res.status) {
-        this.setState({
-          isNotData: false
-        })
-        return
-      }
-      const total_count = res.items.total_count
-      const isEnd = param.page >= (total_count / param.pageSize)
-      const newlist =  [...oldList, ...formatGood(res.items.list)]
-      this.setState({
-        list: newlist,
-        deliveryDate: res.delivery_date,
-        countTime: res.last_second,
-        isRefresh: false,
-        isLoading: false,
-        isEnd,
-        isEmpty: newlist.length <= 0,
-      }, () => {
-        this.countdown()
+    api.groupBy
+      .activityDetail({
+        ...param,
+        community_id: currentCommunity.community_id
       })
-    })
+      .then((res) => {
+        Taro.hideLoading()
+        if (!res.status) {
+          this.setState({
+            isNotData: false
+          })
+          return
+        }
+        const total_count = res.items.total_count
+        const isEnd = param.page >= total_count / param.pageSize
+        const newlist = [...oldList, ...formatGood(res.items.list)]
+        this.setState(
+          {
+            list: newlist,
+            deliveryDate: res.delivery_date,
+            countTime: res.last_second,
+            isRefresh: false,
+            isLoading: false,
+            isEnd,
+            isEmpty: newlist.length <= 0
+          },
+          () => {
+            this.countdown()
+          }
+        )
+      })
   }
-  
+
   // 倒计时
   countdown = () => {
     let { countTime, timeId } = this.state
     if (countTime > 0) {
       timeId = setTimeout(() => {
-        this.setState({
-          countTime: countTime - 1
-        }, () => {
-          this.countdown()
-        })
+        this.setState(
+          {
+            countTime: countTime - 1
+          },
+          () => {
+            this.countdown()
+          }
+        )
       }, 1000)
     } else {
       // 清除倒计时
@@ -145,7 +152,7 @@ export default class nextNotice extends Component {
       list,
       countTime,
       scrollTop,
-      isRefresh, 
+      isRefresh,
       isLoading,
       isEnd,
       isEmpty,
@@ -159,17 +166,13 @@ export default class nextNotice extends Component {
           leftIconType='chevron-left'
           fixed='true'
         />
-        {
-          isNotData ? <View className='haveData'>
+        {isNotData ? (
+          <View className='haveData'>
             <View className='info'>
               <View className='time'>
-                <View className='left'>
-                  距离开始时间{ formatCountTime(countTime) }
-                </View>
+                <View className='left'>距离开始时间{formatCountTime(countTime)}</View>
               </View>
-              <View>
-                预计送达：{ deliveryDate }
-              </View>
+              <View>预计送达：{deliveryDate}</View>
             </View>
             <ScrollView
               className='list'
@@ -183,17 +186,19 @@ export default class nextNotice extends Component {
               onRefresherRefresh={this.handleRefresh}
               onScrollToLower={this.handleLoadMore}
             >
-              {
-                list && list.map(item => <GoodItem key={item.itemId} isNext isEnd={isEnd} goodInfo={item} />)
-              }
+              {list &&
+                list.map((item) => (
+                  <GoodItem key={item.itemId} isNext isEnd={isEnd} goodInfo={item} />
+                ))}
               {/* 加载更多 */}
               <LoadingMore isLoading={isLoading} isEnd={isEnd} isEmpty={isEmpty} />
               {/* 防止子内容无法支撑scroll-view下拉刷新 */}
               <View style='width:2rpx;height:2rpx;bottom:-2rpx;position:absolute;' />
-            </ScrollView>          
+            </ScrollView>
           </View>
-          : <View className='noData'>暂无下期活动</View>          
-        }
+        ) : (
+          <View className='noData'>暂无下期活动</View>
+        )}
       </View>
     )
   }

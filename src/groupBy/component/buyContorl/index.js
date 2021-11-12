@@ -16,7 +16,6 @@ import S from '@/spx'
 import './index.scss'
 
 export default class buyContorl extends Component {
-
   static defaultProps = {
     // 是否结束
     isEnd: false,
@@ -70,19 +69,24 @@ export default class buyContorl extends Component {
     const { isEnd, quantity, isCanReduce } = this.props
     return (
       <View className='buyContorl'>
-        {
-          !isEnd && quantity > 0 
-            ? <View className='content'>
-              <Button className={`reduceBtn ${isCanReduce && quantity <= 1 && 'disable'}`} onClick={this.handleClick.bind(this, 'reduce')}>
-                <AtIcon value='subtract' size='12'></AtIcon>
-              </Button>
-              <View className='num'>{ quantity }</View>
-              <Button className='addBtn'onClick={this.handleClick.bind(this, 'add')}>
-                <AtIcon value='add' size='12'></AtIcon>
-              </Button>
-            </View>
-            : <Button className='buyButton' onClick={this.handleClick.bind(this, 'add')}>{isEnd ? '活动结束' : '立即抢购'}</Button>
-        }
+        {!isEnd && quantity > 0 ? (
+          <View className='content'>
+            <Button
+              className={`reduceBtn ${isCanReduce && quantity <= 1 && 'disable'}`}
+              onClick={this.handleClick.bind(this, 'reduce')}
+            >
+              <AtIcon value='subtract' size='12'></AtIcon>
+            </Button>
+            <View className='num'>{quantity}</View>
+            <Button className='addBtn' onClick={this.handleClick.bind(this, 'add')}>
+              <AtIcon value='add' size='12'></AtIcon>
+            </Button>
+          </View>
+        ) : (
+          <Button className='buyButton' onClick={this.handleClick.bind(this, 'add')}>
+            {isEnd ? '活动结束' : '立即抢购'}
+          </Button>
+        )}
       </View>
     )
   }

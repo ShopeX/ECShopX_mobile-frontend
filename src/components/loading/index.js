@@ -18,14 +18,12 @@ export default class Loading extends Component {
     const { className, type, img, size } = this.props
 
     return (
-      <View className={classNames('loading', type && `loading__${type}` , className)}>
-        {img
-          ? <Image src={img} className='loading-img' />
-          : <View
-            className='spiner'
-            style={`${size ? `width: ${size}, height: ${size}` : ''}`}
-          />
-        }
+      <View className={classNames('loading', type && `loading__${type}`, className)}>
+        {img ? (
+          <Image src={img} className='loading-img' />
+        ) : (
+          <View className='spiner' style={`${size ? `width: ${size}, height: ${size}` : ''}`} />
+        )}
         <Text className='loading-text'>{this.props.children}</Text>
       </View>
     )

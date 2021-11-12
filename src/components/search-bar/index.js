@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Form, Text, Image} from '@tarojs/components'
+import { View, Form, Text, Image } from '@tarojs/components'
 import { AtSearchBar } from 'taro-ui'
 import { classNames } from '@/utils'
 import { toggleTouchMove } from '@/utils/dom'
@@ -41,8 +41,8 @@ export default class SearchBar extends Component {
       isShowAction: true
     })
     Taro.getStorage({ key: 'searchHistory' })
-      .then(res => {
-        let stringArr = res.data.split(',').filter(item => {
+      .then((res) => {
+        let stringArr = res.data.split(',').filter((item) => {
           const isHave = item.trim()
           return isHave
         })
@@ -63,9 +63,9 @@ export default class SearchBar extends Component {
   handleConfirm = (e) => {
     if (e.detail.value && e.detail.value.trim()) {
       Taro.getStorage({ key: 'searchHistory' })
-        .then(res => {
+        .then((res) => {
           let stringArr = res.data.split(',')
-          let arr = [].concat(stringArr);
+          let arr = [].concat(stringArr)
           arr.unshift(e.detail.value)
           arr = Array.from(new Set(arr))
           let arrString = arr.join(',')
@@ -97,10 +97,9 @@ export default class SearchBar extends Component {
   }
 
   handleClickDelete = () => {
-    Taro.removeStorage({ key: 'searchHistory' })
-      .then(() => {
-        this.setState({ historyList: [] })
-      })
+    Taro.removeStorage({ key: 'searchHistory' }).then(() => {
+      this.setState({ historyList: [] })
+    })
   }
 
   handleClickTag = (item) => {
@@ -120,9 +119,13 @@ export default class SearchBar extends Component {
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
       <View
-        className={classNames('search-input', isFixed ? 'search-input-fixed' : null, showSearchDailog ? 'search-input__focus' : null, !showDailog && 'without-dialog')}
+        className={classNames(
+          'search-input',
+          isFixed ? 'search-input-fixed' : null,
+          showSearchDailog ? 'search-input__focus' : null,
+          !showDailog && 'without-dialog'
+        )}
       >
-
         {/*<View*/}
         {/*className={classNames('search-input', className === 'category-top' ? className : '', showSearchDailog ? 'search-input__focus' : null, isFixed ? 'search-input-fixed' : null)}*/}
         {/*ref='container'*/}
@@ -172,17 +175,29 @@ export default class SearchBar extends Component {
             onActionClick={this.handleClickCancel.bind(this, false)}
           />
         </Form>
-        {
-          showDailog &&
-          <View className={classNames(showSearchDailog ? 'search-input__history' : 'search-input__history-none')}>
+        {showDailog && (
+          <View
+            className={classNames(
+              showSearchDailog ? 'search-input__history' : 'search-input__history-none'
+            )}
+          >
             <View className='search-input__history-title'>
               <Text>最近搜索</Text>
-              <Text className='icon-trash icon-del' onClick={this.handleClickDelete.bind(this)}></Text>
+              <Text
+                className='icon-trash icon-del'
+                onClick={this.handleClickDelete.bind(this)}
+              ></Text>
             </View>
             <View className='search-input__history-list'>
-             {
-                historyList.map((item, index) => <View className='search-input__history-list__btn' key={`${index}1`} onClick={this.handleClickTag.bind(this, item)}>{item}</View> )
-             }
+              {historyList.map((item, index) => (
+                <View
+                  className='search-input__history-list__btn'
+                  key={`${index}1`}
+                  onClick={this.handleClickTag.bind(this, item)}
+                >
+                  {item}
+                </View>
+              ))}
             </View>
             {/*<View className='search-input__history-title hot-title'>
               <Text>热门搜索</Text>
@@ -194,7 +209,7 @@ export default class SearchBar extends Component {
               </View>
             </View>*/}
           </View>
-        }
+        )}
       </View>
     )
   }

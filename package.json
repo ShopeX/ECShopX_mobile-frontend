@@ -106,13 +106,5 @@
 		"publicPath": "//b-cdn.yuanyuanke.cn/",
 		"bucket": "espier-shop-vue",
 		"path": "h5/"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"lint-staged": {
-		"**/*.{js,jsx}": "prettier-eslint --write"
 	}
 }

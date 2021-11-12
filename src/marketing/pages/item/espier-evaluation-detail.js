@@ -8,11 +8,14 @@ import S from '@/spx'
 
 import './espier-evaluation.scss'
 
-@connect(({ evaluation }) => ({
-  evaluation
-}), (dispatch) => ({
-  onAddEvaluation: ({ info }) => dispatch({ type: 'evaluation/add', payload: { info } })
-}))
+@connect(
+  ({ evaluation }) => ({
+    evaluation
+  }),
+  (dispatch) => ({
+    onAddEvaluation: ({ info }) => dispatch({ type: 'evaluation/add', payload: { info } })
+  })
+)
 @withPager
 export default class EvaluationDetail extends Component {
   static options = {
@@ -27,7 +30,7 @@ export default class EvaluationDetail extends Component {
       showCommentPanel: false,
       userInfo: {},
       info: null,
-      replyRateList:null
+      replyRateList: null
     }
   }
 
@@ -37,22 +40,21 @@ export default class EvaluationDetail extends Component {
 
     this.setState({
       userInfo
-
     })
   }
 
-  getEvaluationDetail=async ()=>{
-    let company_id=this.$router.params.company_id
-    let rate_id=this.$router.params.rate_id
-    let params={
+  getEvaluationDetail = async () => {
+    let company_id = this.$router.params.company_id
+    let rate_id = this.$router.params.rate_id
+    let params = {
       company_id
     }
-    let rate_ids=[]
-    let info=await api.item.getEvaluationDetail(rate_id,params)
+    let rate_ids = []
+    let info = await api.item.getEvaluationDetail(rate_id, params)
 
     info.picList = info.rate_pic ? info.rate_pic.split(',') : []
-    info.reply={}
-    info.reply.total_count=info.reply_count
+    info.reply = {}
+    info.reply.total_count = info.reply_count
     this.getreplyRateList(info)
     rate_ids.push(rate_id)
     this.setState({
@@ -66,10 +68,9 @@ export default class EvaluationDetail extends Component {
         info
       })
     })*/
-
   }
   //获取评论点赞状态
- /* async getRatePraiseStatus(rateids){
+  /* async getRatePraiseStatus(rateids){
     let params={
       rate_ids:JSON.stringify(rateids)
     }
@@ -78,21 +79,21 @@ export default class EvaluationDetail extends Component {
     return res.list
   }*/
   // 获取评论列表
-  getreplyRateList=async (info)=>{
-    let company_id=this.$router.params.company_id
-    let rate_id=this.$router.params.rate_id
-    let item_id=this.$router.params.item_id
-    let params={
+  getreplyRateList = async (info) => {
+    let company_id = this.$router.params.company_id
+    let rate_id = this.$router.params.rate_id
+    let item_id = this.$router.params.item_id
+    let params = {
       item_id,
       company_id,
       rate_id,
-      page:1,
-      pageSize:100
+      page: 1,
+      pageSize: 100
     }
-    let reply= await api.item.getreplyRateList(params)
+    let reply = await api.item.getreplyRateList(params)
 
     //  const {info}=this.state
-    info.reply.list=reply.list
+    info.reply.list = reply.list
     this.setState({
       info
     })
@@ -105,8 +106,7 @@ export default class EvaluationDetail extends Component {
     Taro.hideLoading()
     const { info } = this.state
     if (info.praise_status) {
-
-      if(info.praise_num){
+      if (info.praise_num) {
         info.praise_num--
       }
       info.praise_status = false
@@ -148,7 +148,7 @@ export default class EvaluationDetail extends Component {
   // 点击评论
   handleShowPanel = () => {
     if (S.getAuthToken()) {
-      this.setState({showCommentPanel: true})
+      this.setState({ showCommentPanel: true })
     } else {
       S.toast('请登录后再评论')
       setTimeout(() => {
@@ -157,27 +157,21 @@ export default class EvaluationDetail extends Component {
     }
   }
 
-
   render () {
     const { info, showCommentPanel } = this.state
 
     if (!info) {
-      return (
-        <Loading />
-      )
+      return <Loading />
     }
 
     return (
       <View className='page-goods-evaluation'>
-        <SpNavBar
-          title='评论'
-          leftIconType='chevron-left'
-        />        
+        <SpNavBar title='评论' leftIconType='chevron-left' />
         <View className='goods-evaluation-wrap'>
           <View className='evaluation-list'>
             <GoodsEvaluation
               info={info}
-              showComment={true}
+              showComment
               onReplyRate={this.handleShowPanel.bind(this)}
             />
           </View>

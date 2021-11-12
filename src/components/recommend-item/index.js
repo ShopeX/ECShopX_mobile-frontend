@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text, Image, Progress} from '@tarojs/components'
+import { View, Text, Image, Progress } from '@tarojs/components'
 import { Price, SpImg } from '@/components'
 import { isObject, classNames } from '@/utils'
 import api from '@/api'
@@ -11,13 +11,12 @@ export default class RecommendItem extends Component {
     onClick: () => {},
     showMarketPrice: true,
     noCurSymbol: false,
-    type: 'item',
+    type: 'item'
   }
 
   static options = {
     addGlobalClass: true
   }
-
 
   handleLikeClick = async (e) => {
     e.stopPropagation()
@@ -27,7 +26,17 @@ export default class RecommendItem extends Component {
   }
 
   render () {
-    const { info, noCurSymbol, noCurDecimal, onClick, appendText, className, isPointDraw, type, noShowZan } = this.props
+    const {
+      info,
+      noCurSymbol,
+      noCurDecimal,
+      onClick,
+      appendText,
+      className,
+      isPointDraw,
+      type,
+      noShowZan
+    } = this.props
     if (!info) {
       return null
     }
@@ -37,13 +46,8 @@ export default class RecommendItem extends Component {
 
     return (
       <View className={classNames('recommend-item', className)}>
-        <View className='recommend-item__hd'>
-          {this.props.children}
-        </View>
-        <View
-          className='recommend-item__bd'
-          onClick={onClick}
-        >
+        <View className='recommend-item__hd'>{this.props.children}</View>
+        <View className='recommend-item__bd' onClick={onClick}>
           <View className='recommend-item__img-wrap'>
             <SpImg
               img-class='recommend-item__img'
@@ -60,25 +64,38 @@ export default class RecommendItem extends Component {
             </View>
             <View className='recommend-item__extra'>
               <View className='recommend-item__author'>
-                {img_head && <Image
-                  className='recommend-item__author-avatar'
-                  src={img_head}
-                  mode='aspectFill'
-                />}
-                {info.author && <Text className={!noShowZan ?'recommend-item__author-name':'recommend-item__author-name recommend-item__author-long'}>{info.author}</Text>}
+                {img_head && (
+                  <Image
+                    className='recommend-item__author-avatar'
+                    src={img_head}
+                    mode='aspectFill'
+                  />
+                )}
+                {info.author && (
+                  <Text
+                    className={
+                      !noShowZan
+                        ? 'recommend-item__author-name'
+                        : 'recommend-item__author-name recommend-item__author-long'
+                    }
+                  >
+                    {info.author}
+                  </Text>
+                )}
               </View>
-              {!noShowZan && <View className={`recommend-item__actions ${info.isPraise ? 'is_like__active' : ''}`}>
+              {!noShowZan && (
                 <View
-                  className='icon-like'
-                ><Text>{info.articlePraiseNum}</Text></View>
-              </View>}
-              
+                  className={`recommend-item__actions ${info.isPraise ? 'is_like__active' : ''}`}
+                >
+                  <View className='icon-like'>
+                    <Text>{info.articlePraiseNum}</Text>
+                  </View>
+                </View>
+              )}
             </View>
           </View>
         </View>
-        <View className='recommend-item__ft'>
-          {this.props.renderFooter}
-        </View>
+        <View className='recommend-item__ft'>{this.props.renderFooter}</View>
       </View>
     )
   }

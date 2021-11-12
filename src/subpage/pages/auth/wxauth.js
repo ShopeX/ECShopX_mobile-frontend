@@ -3,21 +3,20 @@ import { View, Image, Button, Radio, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import S from '@/spx'
-import { tokenParse } from "@/utils"
-import entry from "@/utils/entry";
-import { Tracker } from "@/service"
+import { tokenParse } from '@/utils'
+import entry from '@/utils/entry'
+import { Tracker } from '@/service'
 
 import './wxauth.scss'
 
-let codeSetTime=1000 * 10;
+let codeSetTime = 1000 * 10
 
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 export default class WxAuth extends Component {
   constructor (props) {
-    super(props) 
+    super(props)
 
     this.state = {
       isAgree: true,
@@ -26,29 +25,28 @@ export default class WxAuth extends Component {
       baseInfo: {
         protocol: {}
       },
-      code:''
+      code: ''
     }
   }
 
   componentDidMount () {
     this.getStoreSettingInfo()
-    this.getIsMustOauth();
-    this.setCode(true);
-    this.handleCodeTime();
+    this.getIsMustOauth()
+    this.setCode(true)
+    this.handleCodeTime()
   }
 
-  setCode=async (init)=>{
-    let code  
-    let res = await Taro.login();
-    code=res.code; 
+  setCode = async (init) => {
+    let code
+    let res = await Taro.login()
+    code = res.code
     this.setState({
       code
     })
   }
 
   //处理code定时器
-  handleCodeTime=()=>{
-   
+  handleCodeTime = () => {
     // this.timer = setInterval(
     //   () => {
     //     this.setCode()
@@ -57,14 +55,14 @@ export default class WxAuth extends Component {
     // );
   }
 
-  componentWillUnmount(){
-    this.timer && clearInterval(this.timer);
+  componentWillUnmount () {
+    this.timer && clearInterval(this.timer)
   }
 
-  componentDidShow(option) {
+  componentDidShow (option) {
     this.checkWhite()
     if (!this.state.isNewOpen) {
-      this.redirect();
+      this.redirect()
     }
   }
 
@@ -78,17 +76,17 @@ export default class WxAuth extends Component {
 
   async checkWhite () {
     const { status } = await api.wx.getWhiteList()
-    if(status == true){
+    if (status == true) {
       setTimeout(() => {
         Taro.hideHomeButton()
       }, 1000)
     }
   }
 
-  async getIsMustOauth() {
-    const { switch_first_auth_force_validation } = await api.user.getIsMustOauth( { module_type: 1 } );
+  async getIsMustOauth () {
+    const { switch_first_auth_force_validation } = await api.user.getIsMustOauth({ module_type: 1 })
     if (switch_first_auth_force_validation == 1) {
-      this.setState({ isMustOauth: true });
+      this.setState({ isMustOauth: true })
     }
   }
 
@@ -98,15 +96,13 @@ export default class WxAuth extends Component {
     Taro.hideLoading()
     let redirect_url = ''
     if (Taro.getStorageSync('isqrcode') === 'true') {
-      redirect_url = redirect
-        ? decodeURIComponent(redirect)
-        : '/subpage/pages/qrcode-buy'
+      redirect_url = redirect ? decodeURIComponent(redirect) : '/subpage/pages/qrcode-buy'
     } else if (Taro.getStorageSync('isShoppingGuideCard') === 'true') {
       redirect_url = redirect
         ? decodeURIComponent(redirect)
         : '/marketing/pages/member/shopping-guide-card'
     } else if (source === 'other_pay') {
-        redirect_url = redirect
+      redirect_url = redirect
         ? decodeURIComponent(redirect)
         : `/pages/cart/espier-checkout?source=${source}`
     } else if (source === 'loginout') {
@@ -123,10 +119,10 @@ export default class WxAuth extends Component {
     }
   }
 
-  handleNews = async () =>{
+  handleNews = async () => {
     let templeparams = {
       'temp_name': 'yykweishop',
-      'source_type': 'member',
+      'source_type': 'member'
     }
     const tmlres = await api.user.newWxaMsgTmpl(templeparams)
     if (tmlres.template_id && tmlres.template_id.length > 0) {
@@ -137,8 +133,8 @@ export default class WxAuth extends Component {
   }
 
   // 登录注册事件
-  login_reg = async (getParams) => { 
-    const { code }=this.state;
+  login_reg = async (getParams) => {
+    const { code } = this.state
     Taro.showLoading({
       mask: true,
       title: '正在登录...'
@@ -175,15 +171,14 @@ export default class WxAuth extends Component {
         params.inviter_id = uid
         params.uid = uid
       }
-      
-      const { token, is_new } = await api.wx.newlogin(params);
-      
-      if(is_new){
-        await entry.logScene({register:true})
+
+      const { token, is_new } = await api.wx.newlogin(params)
+
+      if (is_new) {
+        await entry.logScene({ register: true })
       }
-  
-      if ( token ) {
-        
+
+      if (token) {
         S.setAuthToken(token)
         Taro.hideLoading()
         Taro.showToast({
@@ -191,31 +186,34 @@ export default class WxAuth extends Component {
           icon: 'none',
           mask: true,
           duration: 2000
-        } )
-        
+        })
+
         if (work_userid) {
           api.user.uniquevisito({
             work_userid: work_userid
-          } );
-          const gu_user_id = Taro.getStorageSync("gu_user_id");
-          if ( gu_user_id ) {
-            api.user.bindSaleperson( {
+          })
+          const gu_user_id = Taro.getStorageSync('gu_user_id')
+          if (gu_user_id) {
+            api.user.bindSaleperson({
               work_userid: work_userid
-            } );
+            })
           }
         }
 
-        setTimeout( () => {
-          if ( this.state.isMustOauth && is_new ) {
-            this.setState({
-              isNewOpen: false
-            }, () => {
-              Taro.navigateTo({
-                url: "/marketing/pages/member/userinfo"
-              });
-            });
+        setTimeout(() => {
+          if (this.state.isMustOauth && is_new) {
+            this.setState(
+              {
+                isNewOpen: false
+              },
+              () => {
+                Taro.navigateTo({
+                  url: '/marketing/pages/member/userinfo'
+                })
+              }
+            )
           } else {
-            this.redirect();
+            this.redirect()
           }
         }, 800)
         // 通过token解析openid
@@ -227,7 +225,7 @@ export default class WxAuth extends Component {
         })
       }
     } catch (e) {
-      console.log(e,'e')
+      console.log(e, 'e')
       Taro.showToast({
         title: '授权失败，请稍后再试',
         icon: 'none'
@@ -258,7 +256,7 @@ export default class WxAuth extends Component {
       })
       return false
     }
-    this.login_reg({encryptedData, iv, cloudID})
+    this.login_reg({ encryptedData, iv, cloudID })
   }
 
   // 点击回到首页
@@ -281,16 +279,16 @@ export default class WxAuth extends Component {
     })
   }
 
-  getAuthCode=()=>{
-    console.log("getAuthCode")
+  getAuthCode = () => {
+    console.log('getAuthCode')
     my.getAuthCode({
       scopes: ['auth_user'],
       success: (res) => {
         my.alert({
-          content: res.authCode,
-        });
-      },
-    });
+          content: res.authCode
+        })
+      }
+    })
   }
 
   render () {
@@ -300,38 +298,42 @@ export default class WxAuth extends Component {
     return (
       <View className='page-wxauth'>
         <View className='logo'>
-          <Image
-            className='img'
-            src={baseInfo.logo}
-            mode='aspectFill'
-          />
+          <Image className='img' src={baseInfo.logo} mode='aspectFill' />
         </View>
         <View className='bottom'>
-          {
-            isAgree ? <Button
+          {isAgree ? (
+            <Button
               className='btn'
               onClick={this.getAuthCode}
               // openType='getPhoneNumber'
               // onGetPhoneNumber={this.getPhoneNumber.bind(this)}
             >
               微信授权手机号一键登录
-            </Button> : <Button
-              className='btn disabled'
-              onClick={this.getPhoneNumber.bind(this)}
-            >
+            </Button>
+          ) : (
+            <Button className='btn disabled' onClick={this.getPhoneNumber.bind(this)}>
               微信授权手机号一键登录
             </Button>
-          }
-          <View 
-            className='rule'
-            onClick={this.changeAgreeRule.bind(this)}
-          >
-            <Radio
-              checked={isAgree}
-            >
-            </Radio>
-            <View className='content' >
-              若微信号未注册则将进入注册流程，注册即为同意<Text onClick={this.jumpRule.bind(this, 'member_register')} style={`color: ${colors.data[0].primary}`} className='ruleName' >《{baseInfo.protocol.member_register}》</Text>、<Text onClick={this.jumpRule.bind(this, 'privacy')} style={`color: ${colors.data[0].primary}`} className='ruleName'>《{baseInfo.protocol.privacy}》</Text>
+          )}
+          <View className='rule' onClick={this.changeAgreeRule.bind(this)}>
+            <Radio checked={isAgree}></Radio>
+            <View className='content'>
+              若微信号未注册则将进入注册流程，注册即为同意
+              <Text
+                onClick={this.jumpRule.bind(this, 'member_register')}
+                style={`color: ${colors.data[0].primary}`}
+                className='ruleName'
+              >
+                《{baseInfo.protocol.member_register}》
+              </Text>
+              、
+              <Text
+                onClick={this.jumpRule.bind(this, 'privacy')}
+                style={`color: ${colors.data[0].primary}`}
+                className='ruleName'
+              >
+                《{baseInfo.protocol.privacy}》
+              </Text>
             </View>
           </View>
         </View>

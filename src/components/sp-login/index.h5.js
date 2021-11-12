@@ -1,12 +1,12 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
-import { AtButton } from "taro-ui";
-import S from "@/spx";
-import api from "@/api";
-import { showToast, classNames, navigateTo } from "@/utils";
-import { Tracker } from "@/service";
-import "./index.scss";
+import Taro, { Component } from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
+import { AtButton } from 'taro-ui'
+import S from '@/spx'
+import api from '@/api'
+import { showToast, classNames, navigateTo } from '@/utils'
+import { Tracker } from '@/service'
+import './index.scss'
 
 // @connect(
 //   () => ( {} ),
@@ -16,33 +16,33 @@ import "./index.scss";
 //   } )
 // )
 
-function SpLogin(props) {
-  const { className, children, size = "normal", circle = false, onChange } = this.props;
-  const isLogin = S.getAuthToken();
+function SpLogin (props) {
+  const { className, children, size = 'normal', circle = false, onChange } = this.props
+  const isLogin = S.getAuthToken()
 
   /**
    *
    */
 
   const handleOnChange = () => {
-    onChange && onChange();
-  };
+    onChange && onChange()
+  }
 
   /**
    *
    */
   const handleOAuthLogin = () => {
-    const { path } = this.$router;
+    const { path } = this.$router
     Taro.navigateTo({
       url: `/subpage/pages/auth/login?redirect=${encodeURIComponent(path)}`
-    });
-  };
+    })
+  }
 
   return (
     <View
       className={classNames(
         {
-          "sp-login": true
+          'sp-login': true
         },
         className
       )}
@@ -50,8 +50,8 @@ function SpLogin(props) {
       {isLogin && children}
       {!isLogin && (
         <AtButton
-          className="login-btn"
-          type="primary"
+          className='login-btn'
+          type='primary'
           size={size}
           circle={circle}
           onClick={handleOAuthLogin}
@@ -60,7 +60,7 @@ function SpLogin(props) {
         </AtButton>
       )}
     </View>
-  );
+  )
 }
 
-export default SpLogin;
+export default SpLogin

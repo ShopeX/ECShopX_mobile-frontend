@@ -60,9 +60,12 @@ export default class SpTimer extends Component {
 
     this.props.onStart((start) => {
       if (start !== false) {
-        this.setState({
-          sent: true
-        }, () => next())
+        this.setState(
+          {
+            sent: true
+          },
+          () => next()
+        )
       }
     }, this.state.countDur)
   }
@@ -79,11 +82,7 @@ export default class SpTimer extends Component {
     const { countDur, sent } = this.state
     const { timerMsg, className, style = '' } = this.props
 
-    const msg = timerMsg || (timer
-      ? `${countDur}s`
-      : sent
-        ? this.props.msg
-        : this.props.defaultMsg)
+    const msg = timerMsg || (timer ? `${countDur}s` : sent ? this.props.msg : this.props.defaultMsg)
 
     return (
       <Text

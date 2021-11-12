@@ -46,15 +46,9 @@ export default class RGCheckbox extends Component {
     const { isChecked } = this.state
 
     return (
-      <View
-        className={classNames('reg-checkbox__wrap')}
-        onClick={this.handleClick}
-      >
-        <View
-          className='reg-checkbox'
-        >
-            
-          <View className={isChecked?'at-icon at-icon-check':''}></View>
+      <View className={classNames('reg-checkbox__wrap')} onClick={this.handleClick}>
+        <View className='reg-checkbox'>
+          <View className={isChecked ? 'at-icon at-icon-check' : ''}></View>
         </View>
         <Text className='reg-checkbox__label'>{this.props.children}</Text>
       </View>

@@ -17,9 +17,9 @@ export default class BrandDetail extends Component {
 
     this.state = {
       brand_name_list: [1, 2, 3, 4],
-      brand_time_list: [1,23,4],
+      brand_time_list: [1, 23, 4],
       brand_service_list: [1, 2, 3, 4],
-      brand_store_list: [1,23,4],
+      brand_store_list: [1, 23, 4],
       brand_name: '',
       brand_time: '',
       brand_service: '',
@@ -27,32 +27,28 @@ export default class BrandDetail extends Component {
     }
   }
 
-  componentDidMount () {
-    
-  }
+  componentDidMount () {}
 
-  async fetch () {
-    
-  }
- 
+  async fetch () {}
+
   handleCell = (type, e) => {
     const checked_index = e.detail.value
-    if( type === 'brand') {
+    if (type === 'brand') {
       this.setState({
         brand_name: this.state.brand_name_list[checked_index]
       })
     }
-    if( type === 'time') {
+    if (type === 'time') {
       this.setState({
         brand_time: this.state.brand_time_list[checked_index]
       })
     }
-    if( type === 'service') {
+    if (type === 'service') {
       this.setState({
         brand_service: this.state.brand_service_list[checked_index]
       })
     }
-    if( type === 'store') {
+    if (type === 'store') {
       this.setState({
         brand_store: this.state.brand_store_list[checked_index]
       })
@@ -71,15 +67,27 @@ export default class BrandDetail extends Component {
     })
     console.log(query, 53)
   }
-  
-  render () {
 
-    const { brand_name_list, brand_time_list, brand_service_list, brand_store_list, brand_name, brand_time, brand_service, brand_store } = this.state
+  render () {
+    const {
+      brand_name_list,
+      brand_time_list,
+      brand_service_list,
+      brand_store_list,
+      brand_name,
+      brand_time,
+      brand_service,
+      brand_store
+    } = this.state
 
     return (
       <View className='brand-detail'>
         <View className='brand-detail__normal brand-detail__brand'>
-          <Picker mode='selector' range={brand_store_list} onChange={this.handleCell.bind(this, 'store')}>
+          <Picker
+            mode='selector'
+            range={brand_store_list}
+            onChange={this.handleCell.bind(this, 'store')}
+          >
             <View className='picker'>
               <View className='picker__title'>当前门店</View>
               <View className='pick-value'>
@@ -88,7 +96,11 @@ export default class BrandDetail extends Component {
               </View>
             </View>
           </Picker>
-          <Picker mode='selector' range={brand_name_list} onChange={this.handleCell.bind(this, 'brand')}>
+          <Picker
+            mode='selector'
+            range={brand_name_list}
+            onChange={this.handleCell.bind(this, 'brand')}
+          >
             <View className='picker'>
               <View className='picker__title'>预约品牌</View>
               <View className='pick-value'>
@@ -97,7 +109,11 @@ export default class BrandDetail extends Component {
               </View>
             </View>
           </Picker>
-          <Picker mode='selector' range={brand_service_list} onChange={this.handleCell.bind(this, 'service')}>
+          <Picker
+            mode='selector'
+            range={brand_service_list}
+            onChange={this.handleCell.bind(this, 'service')}
+          >
             <View className='picker'>
               <View className='picker__title'>预约服务</View>
               <View className='pick-value'>
@@ -106,9 +122,13 @@ export default class BrandDetail extends Component {
               </View>
             </View>
           </Picker>
-        </View>  
+        </View>
         <View className='brand-detail__normal brand-detail__time'>
-          <Picker mode='selector' range={brand_time_list} onChange={this.handleCell.bind(this, 'time')}>
+          <Picker
+            mode='selector'
+            range={brand_time_list}
+            onChange={this.handleCell.bind(this, 'time')}
+          >
             <View className='picker'>
               <View className='picker__title'>预约时间</View>
               <View className='pick-value'>
@@ -117,9 +137,11 @@ export default class BrandDetail extends Component {
               </View>
             </View>
           </Picker>
-        </View>  
-        <View className='brand-detail__btn' onClick={this.handleReservate.bind(this)}>确定预约</View>
-      </View>   
+        </View>
+        <View className='brand-detail__btn' onClick={this.handleReservate.bind(this)}>
+          确定预约
+        </View>
+      </View>
     )
   }
 }

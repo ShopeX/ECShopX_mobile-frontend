@@ -1,5 +1,5 @@
 export function resolveFavsList (list, favs) {
-  return list.map(t => {
+  return list.map((t) => {
     const { item_id } = t
     return {
       ...t,

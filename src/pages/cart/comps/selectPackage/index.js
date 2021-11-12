@@ -15,8 +15,8 @@ import { connect } from '@tarojs/redux'
 import { SpCheckbox, SpCell } from '@/components'
 import { AtActionSheet } from 'taro-ui'
 
-
 import './index.scss'
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
@@ -27,7 +27,7 @@ export default class SelectPackage extends Component {
     packInfo: {}
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       isOpend: false,
@@ -35,14 +35,14 @@ export default class SelectPackage extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { isChecked } = this.props
     this.setState({
       checked: isChecked
     })
   }
 
-  componentWillReceiveProps(next) {
+  componentWillReceiveProps (next) {
     const { checked } = this.state
     if (next.isChecked !== checked) {
       setTimeout(() => {
@@ -73,11 +73,14 @@ export default class SelectPackage extends Component {
   // 触发props
   handleConfrim = () => {
     const { checked } = this.state
-    this.setState({
-      isOpend: false
-    }, () => {
-      this.props.onHanleChange && this.props.onHanleChange(checked)
-    })
+    this.setState(
+      {
+        isOpend: false
+      },
+      () => {
+        this.props.onHanleChange && this.props.onHanleChange(checked)
+      }
+    )
   }
 
   handleClose = () => {
@@ -85,43 +88,38 @@ export default class SelectPackage extends Component {
       isOpend: false
     })
   }
-  render() {
+  render () {
     const { isOpend, checked } = this.state
     const { isChecked, packInfo = {}, colors, isPointitem = false } = this.props
     return (
-
       <View className=''>
-        {!isPointitem && <SpCell
-          isLink
-          className="trade-invoice"
-          title={packInfo.packName}
-          onClick={this.showSheet.bind(this)}
-        >
-          <View className="invoice-title">
-            {isChecked ? '需要' : '不需要'}
-          </View>
-        </SpCell>}
+        {!isPointitem && (
+          <SpCell
+            isLink
+            className='trade-invoice'
+            title={packInfo.packName}
+            onClick={this.showSheet.bind(this)}
+          >
+            <View className='invoice-title'>{isChecked ? '需要' : '不需要'}</View>
+          </SpCell>
+        )}
 
-        <AtActionSheet
-          isOpened={isOpend}
-          onClose={this.handleClose}
-        >
+        <AtActionSheet isOpened={isOpend} onClose={this.handleClose}>
           <View className='payment-picker'>
             <View className='payment-picker__hd'>
               <Text>{packInfo.packName}</Text>
             </View>
             <View className='payment-picker__bd'>
-              <View className='payment-item no-border' onClick={this.handleChange.bind(this, false)}>
+              <View
+                className='payment-item no-border'
+                onClick={this.handleChange.bind(this, false)}
+              >
                 <View className='payment-item__bd'>
                   <Text className='payment-item__title'>不需要</Text>
                 </View>
                 <View className='payment-item__ft'>
-                  <SpCheckbox
-                    colors={colors}
-                    checked={!checked}
-                  />
+                  <SpCheckbox colors={colors} checked={!checked} />
                 </View>
-
               </View>
 
               <View className='payment-item no-border' onClick={this.handleChange.bind(this, true)}>
@@ -129,10 +127,7 @@ export default class SelectPackage extends Component {
                   <Text className='payment-item__title'>需要</Text>
                 </View>
                 <View className='payment-item__ft'>
-                  <SpCheckbox
-                    colors={colors}
-                    checked={checked}
-                  />
+                  <SpCheckbox colors={colors} checked={checked} />
                 </View>
               </View>
               <View className='payment-item__desc'>{packInfo.packDes}</View>
@@ -142,12 +137,12 @@ export default class SelectPackage extends Component {
               className='btn-submit'
               style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
               onClick={this.handleConfrim.bind(this)}
-            >确定</Button>
-
+            >
+              确定
+            </Button>
           </View>
         </AtActionSheet>
       </View>
-
     )
   }
 }

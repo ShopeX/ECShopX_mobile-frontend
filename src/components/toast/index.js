@@ -57,8 +57,8 @@ export default class SpToast extends Component {
   render () {
     const { showToast, text } = this.state
     let newText = ''
-    if(text.length > 11) {
-      newText = text.substring(0, 11)+ '\n' + text.substring(11)
+    if (text.length > 11) {
+      newText = text.substring(0, 11) + '\n' + text.substring(11)
     } else {
       newText = text
     }

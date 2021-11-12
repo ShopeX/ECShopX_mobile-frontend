@@ -7,7 +7,8 @@
  * @Date: 2020-05-06 16:01:41
  * @LastEditors: Arvin
  * @LastEditTime: 2020-11-19 15:00:36
- */ 
+ */
+
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import api from '@/api'
@@ -22,8 +23,7 @@ export default class AlipayBtn extends Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-    }
+    this.state = {}
   }
 
   componentDidMount () {
@@ -42,7 +42,7 @@ export default class AlipayBtn extends Component {
       order_id: this.props.orderID,
       pay_type: this.props.payType,
       order_type: this.props.orderType,
-      return_url:`${protocol}//${host}/subpage/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
+      return_url: `${protocol}//${host}/subpage/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
     }
     try {
       const { payment } = await api.cashier.getPayment(query)
@@ -63,9 +63,10 @@ export default class AlipayBtn extends Component {
   render () {
     return (
       <View>
-        <View className='alipay-btn' onClick={this.handleClickPayment.bind(this)}>支付宝支付</View>
+        <View className='alipay-btn' onClick={this.handleClickPayment.bind(this)}>
+          支付宝支付
+        </View>
       </View>
-
     )
   }
 }

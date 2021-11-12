@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtRate } from 'taro-ui'
-import userIcon from "@/assets/imgs/user-icon.png";
+import userIcon from '@/assets/imgs/user-icon.png'
 import './index.scss'
 
 export default class GoodsEvaluation extends Component {
@@ -18,18 +18,18 @@ export default class GoodsEvaluation extends Component {
     super(props)
 
     this.state = {
-      styles: {height: '220rpx'}
+      styles: { height: '220rpx' }
     }
   }
 
   componentDidMount () {
     const { windowWidth } = Taro.getSystemInfoSync()
 
-    let height = ((windowWidth*2) - 169) / 3 + 'rpx'
+    let height = (windowWidth * 2 - 169) / 3 + 'rpx'
     this.setState({
-        styles: {
-            height
-        }
+      styles: {
+        height
+      }
     })
   }
 
@@ -52,7 +52,6 @@ export default class GoodsEvaluation extends Component {
     this.props.onPreviewImg() && this.props.onPreviewImg(url)
   }*/
 
-
   render () {
     const { info, showComment, pathRoute } = this.props
     const { styles } = this.state
@@ -60,9 +59,9 @@ export default class GoodsEvaluation extends Component {
       return null
     }
 
-    if(pathRoute === 'detail'){
-      if(info && info.picList) {
-        if(info.picList.length > 3) {
+    if (pathRoute === 'detail') {
+      if (info && info.picList) {
+        if (info.picList.length > 3) {
           info.picList = info.picList.slice(0, 3)
         }
       }
@@ -71,7 +70,11 @@ export default class GoodsEvaluation extends Component {
     return (
       <View className='evaluation-item' onClick={this.handleSelectEvaluation.bind(this)}>
         <View className='evaluation-item__avator'>
-          <Image src={info.anonymous ? userIcon : info.avatar} mode='aspectFill' className='avatar' />
+          <Image
+            src={info.anonymous ? userIcon : info.avatar}
+            mode='aspectFill'
+            className='avatar'
+          />
         </View>
         <View className='evaluation-item__main'>
           <View className='name-wrap'>
@@ -79,43 +82,49 @@ export default class GoodsEvaluation extends Component {
             <AtRate size='12' value={info.star} />
           </View>
           <View className='desc'>{info.content}</View>
-          {info.rate_pic_num>0 && <View className='evaluation_imgs'>
-            {info.picList.map((imgUrl, index) => {
-              return (
-                <View
-                  key={index}
-                  style={`height: ${styles.height}`}
-                  className={`img-box ${pathRoute === 'detail' ? '' : 'marginBottom10'}`}
-                >
-                  <Image className='img-rate' style={`height: ${styles.height}`} src={imgUrl} mode='aspectFill' />
-                </View>
-              )
-            })}
-          </View>}
+          {info.rate_pic_num > 0 && (
+            <View className='evaluation_imgs'>
+              {info.picList.map((imgUrl, index) => {
+                return (
+                  <View
+                    key={index}
+                    style={`height: ${styles.height}`}
+                    className={`img-box ${pathRoute === 'detail' ? '' : 'marginBottom10'}`}
+                  >
+                    <Image
+                      className='img-rate'
+                      style={`height: ${styles.height}`}
+                      src={imgUrl}
+                      mode='aspectFill'
+                    />
+                  </View>
+                )
+              })}
+            </View>
+          )}
 
-          {
-            showComment && ( <View className='reply-comment' onClick={this.handleClickEvaluate.bind(this, info)}>
+          {showComment && (
+            <View className='reply-comment' onClick={this.handleClickEvaluate.bind(this, info)}>
               <Text className='text'>评论</Text>
               <Text className='text'>{info.reply.total_count}</Text>
-            </View>)
-          }
+            </View>
+          )}
 
-          {showComment && info.reply && info.reply.list && info.reply.list.length > 0 && <View className='reply-wrap'>
-            {
-              info.reply.list.map(reply => {
+          {showComment && info.reply && info.reply.list && info.reply.list.length > 0 && (
+            <View className='reply-wrap'>
+              {info.reply.list.map((reply) => {
                 return (
                   <View className='reply-item' key={reply.reply_id}>
                     <Text className='reply-name'>{reply.username}：</Text>
                     <Text className='reply-content'>{reply.content}</Text>
                   </View>
                 )
-              })
-            }
-          </View>}
-
+              })}
+            </View>
+          )}
         </View>
 
-       {/* <View className={classNames('option-wrap', {'no-pic': !info.rate_pic_num})}>
+        {/* <View className={classNames('option-wrap', {'no-pic': !info.rate_pic_num})}>
           <Text className='pro-spec'>{info.item_spec_desc}</Text>
           <View className='btns-wrap'>
             <View className='btn-common' onClick={this.handleClickLike.bind(this)}>
@@ -129,7 +138,7 @@ export default class GoodsEvaluation extends Component {
           </View>
         </View> */}
 
-            {/* {showComment && info.reply && info.reply.total_count > 0 && <View className='reply-wrap'>
+        {/* {showComment && info.reply && info.reply.total_count > 0 && <View className='reply-wrap'>
                 {
                     info.reply.list.map(reply => {
                         return (
@@ -141,7 +150,7 @@ export default class GoodsEvaluation extends Component {
                     })
                 }
             </View>} */}
-        </View>
+      </View>
     )
   }
 }

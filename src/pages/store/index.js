@@ -6,15 +6,26 @@ import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
 import { pickBy, normalizeQuerys, getCurrentRoute } from '@/utils'
-import { setPageTitle, platformTemplateName } from "@/utils/platform";
+import { setPageTitle, platformTemplateName } from '@/utils/platform'
 import { withBackToTop } from '@/hocs'
-import qs from 'qs';
-import S from "@/spx";
-import { WgtSlider, WgtImgHotZone, WgtMarquees, WgtNavigation, WgtCoupon, WgtGoodsScroll, WgtGoodsGrid, WgtShowcase, WgtSearchHome, WgtFilm } from '../home/wgts'
+import qs from 'qs'
+import S from '@/spx'
+import {
+  WgtSlider,
+  WgtImgHotZone,
+  WgtMarquees,
+  WgtNavigation,
+  WgtCoupon,
+  WgtGoodsScroll,
+  WgtGoodsGrid,
+  WgtShowcase,
+  WgtSearchHome,
+  WgtFilm
+} from '../home/wgts'
 
 import './index.scss'
 
-@connect(store => ({
+@connect((store) => ({
   store
 }))
 @withBackToTop
@@ -30,19 +41,28 @@ export default class StoreIndex extends Component {
       storeInfo: null,
       tabList: [
         { title: '店铺首页', iconType: 'home', iconPrefixClass: 'icon', url: '/pages/store/index' },
-        { title: '商品列表', iconType: 'list', iconPrefixClass: 'icon', url: '/others/pages/store/list' },
-        { title: '商品分类', iconType: 'category', iconPrefixClass: 'icon', url: '/others/pages/store/category' }
+        {
+          title: '商品列表',
+          iconType: 'list',
+          iconPrefixClass: 'icon',
+          url: '/others/pages/store/list'
+        },
+        {
+          title: '商品分类',
+          iconType: 'category',
+          iconPrefixClass: 'icon',
+          url: '/others/pages/store/category'
+        }
       ]
     }
   }
 
-
-  async componentDidMount () { 
+  async componentDidMount () {
     const options = await normalizeQuerys(this.$router.params)
     const id = options.id || options.dtid
-      if(id){
+    if (id) {
       this.fetchInfo(id)
-      }
+    }
   }
 
   componentDidShow = () => {
@@ -64,7 +84,7 @@ export default class StoreIndex extends Component {
       title: this.state.storeInfo ? this.state.storeInfo.name : '店铺商品',
       path: `/pages/store/index?id=${this.$router.params.id}`
     }
-  }  
+  }
 
   async fetchInfo (distributorId) {
     let id = ''
@@ -74,17 +94,17 @@ export default class StoreIndex extends Component {
     } else {
       id = await Taro.getStorageSync('curStore').distributor_id
     }
-    const { name, logo } = await api.shop.getShop({distributor_id: id})
-        storeInfo = {
-          name,
-          brand: logo
-        }
-    const pathparams=qs.stringify({
-      template_name:platformTemplateName,
-      weapp_pages:'index',
-      distributor_id:id
+    const { name, logo } = await api.shop.getShop({ distributor_id: id })
+    storeInfo = {
+      name,
+      brand: logo
+    }
+    const pathparams = qs.stringify({
+      template_name: platformTemplateName,
+      weapp_pages: 'index',
+      distributor_id: id
     })
-        
+
     const url = `pagestemplate/shopDetail?${pathparams}`
     try {
       const info = await req.get(url)
@@ -93,18 +113,21 @@ export default class StoreIndex extends Component {
           authStatus: true
         })
       }
-      this.setState({
-        wgts: info.config,
-        storeInfo: storeInfo
-      },()=>{
-        if(info.config) {
-          info.config.map(item => {
-            if(item.name === 'setting' && item.config.faverite) {
-              this.nextPage()
-            }
-          })
+      this.setState(
+        {
+          wgts: info.config,
+          storeInfo: storeInfo
+        },
+        () => {
+          if (info.config) {
+            info.config.map((item) => {
+              if (item.name === 'setting' && item.config.faverite) {
+                this.nextPage()
+              }
+            })
+          }
         }
-      })
+      )
     } catch (e) {
       setTimeout(() => {
         Taro.navigateBack()
@@ -124,11 +147,11 @@ export default class StoreIndex extends Component {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
-      desc: 'brief',
+      desc: 'brief'
     })
 
     this.setState({
-      likeList: [...this.state.likeList, ...nList],
+      likeList: [...this.state.likeList, ...nList]
     })
 
     return {
@@ -143,7 +166,7 @@ export default class StoreIndex extends Component {
   }
 
   handleClickCloseAddTip = () => {
-    Taro.setStorage({ key: 'addTipIsShow', data: {isShowAddTip: false} })
+    Taro.setStorage({ key: 'addTipIsShow', data: { isShowAddTip: false } })
     this.setState({
       isShowAddTip: false
     })
@@ -157,7 +180,7 @@ export default class StoreIndex extends Component {
       const options = await normalizeQuerys(this.$router.params)
       const id = options.id || options.dtid
       const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
-      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
         Taro.redirectTo({ url: `${url}${param}` })
       }
@@ -165,11 +188,18 @@ export default class StoreIndex extends Component {
   }
 
   render () {
-    const { wgts, storeInfo, showBackToTop, scrollTop, tabList, localCurrent, isShowAddTip, authStatus } = this.state
+    const {
+      wgts,
+      storeInfo,
+      showBackToTop,
+      scrollTop,
+      tabList,
+      localCurrent,
+      isShowAddTip,
+      authStatus
+    } = this.state
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
-
-    
 
     if (!wgts || !this.props.store) {
       return <Loading />
@@ -186,43 +216,46 @@ export default class StoreIndex extends Component {
           <View className='wgts-wrap__cont'>
             <View className='store-header'>
               <View>
-                <Image className='store-brand' src={storeInfo.brand || 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'} />
+                <Image
+                  className='store-brand'
+                  src={
+                    storeInfo.brand || 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'
+                  }
+                />
               </View>
               <View className='store-name'>{storeInfo.name}</View>
             </View>
-            {
-              wgts.map((item, idx) => {
-                return (
-                  <View className='wgt-wrap' key={`${item.name}${idx}`}>
-                    {item.name === 'search' && <WgtSearchHome info={item} dis_id={this.$router.params.id} />}
-                    {item.name === 'slider' && <WgtSlider info={item} />}
-                    {item.name === 'film' && <WgtFilm info={item} />}
-                    {item.name === 'marquees' && <WgtMarquees info={item} />}
-                    {item.name === 'navigation' && <WgtNavigation info={item} />}
-                    {item.name === 'coupon' && <WgtCoupon info={item} dis_id={this.$router.params.id} />}
-                    {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
-                    {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} dis_id={this.$router.params.id} />}
-                    {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} dis_id={this.$router.params.id} />}
-                    {item.name === 'showcase' && <WgtShowcase info={item} />}
-                  </View>
-                )
-              })
-            }
+            {wgts.map((item, idx) => {
+              return (
+                <View className='wgt-wrap' key={`${item.name}${idx}`}>
+                  {item.name === 'search' && (
+                    <WgtSearchHome info={item} dis_id={this.$router.params.id} />
+                  )}
+                  {item.name === 'slider' && <WgtSlider info={item} />}
+                  {item.name === 'film' && <WgtFilm info={item} />}
+                  {item.name === 'marquees' && <WgtMarquees info={item} />}
+                  {item.name === 'navigation' && <WgtNavigation info={item} />}
+                  {item.name === 'coupon' && (
+                    <WgtCoupon info={item} dis_id={this.$router.params.id} />
+                  )}
+                  {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
+                  {item.name === 'goodsScroll' && (
+                    <WgtGoodsScroll info={item} dis_id={this.$router.params.id} />
+                  )}
+                  {item.name === 'goodsGrid' && (
+                    <WgtGoodsGrid info={item} dis_id={this.$router.params.id} />
+                  )}
+                  {item.name === 'showcase' && <WgtShowcase info={item} />}
+                </View>
+              )
+            })}
           </View>
         </ScrollView>
 
-        <BackToTop
-          show={showBackToTop}
-          onClick={this.scrollBackToTop}
-        />
+        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
 
         <SpToast />
-        <AtTabBar
-          fixed
-          tabList={tabList}
-          onClick={this.handleClick}
-          current={localCurrent}
-        />        
+        <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
       </View>
     )
   }

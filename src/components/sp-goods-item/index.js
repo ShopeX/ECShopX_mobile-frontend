@@ -1,13 +1,13 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View, Text, Image } from "@tarojs/components";
-import { SpImg, SpPoint, SpPrice } from "@/components";
-import api from "@/api";
-import { connect } from "@tarojs/redux";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text, Image } from '@tarojs/components'
+import { SpImg, SpPoint, SpPrice } from '@/components'
+import api from '@/api'
+import { connect } from '@tarojs/redux'
 
-import { isObject, classNames } from "@/utils";
+import { isObject, classNames } from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
 
-import "./index.scss";
+import './index.scss'
 
 export default class SpGoodsItem extends Component {
   static defaultProps = {
@@ -17,39 +17,39 @@ export default class SpGoodsItem extends Component {
     showFav: true,
     showSku: false,
     noCurSymbol: false,
-    type: "item",
+    type: 'item',
     isPointitem: false
-  };
+  }
 
   static options = {
     addGlobalClass: true
-  };
+  }
 
   handleFavClick = async () => {
-    const { item_id, is_fav } = this.props.info;
+    const { item_id, is_fav } = this.props.info
     if (!is_fav) {
-      const favRes = await api.member.addFav(item_id);
-      this.props.onAddFav(favRes);
+      const favRes = await api.member.addFav(item_id)
+      this.props.onAddFav(favRes)
     } else {
-      await api.member.delFav(item_id);
-      this.props.onDelFav(this.props.info);
+      await api.member.delFav(item_id)
+      this.props.onDelFav(this.props.info)
     }
     Taro.showToast({
-      title: is_fav ? "已移出收藏" : "已加入收藏",
+      title: is_fav ? '已移出收藏' : '已加入收藏',
       mask: true
-    });
-  };
+    })
+  }
 
   handleClick = () => {
     // const { item_id, distributor_id } = this.props.info;
-    const { itemId, distributor_id } = this.props.info;
-    const url = `/pages/item/espier-detail?id=${itemId}&dtid=${distributor_id}`;
+    const { itemId, distributor_id } = this.props.info
+    const url = `/pages/item/espier-detail?id=${itemId}&dtid=${distributor_id}`
     Taro.navigateTo({
       url
-    });
+    })
   }
 
-  render() {
+  render () {
     const {
       info,
       showMarketPrice,
@@ -64,14 +64,14 @@ export default class SpGoodsItem extends Component {
       colors,
       type,
       isPointitem
-    } = this.props;
+    } = this.props
     // console.log('this.props',this.props)
 
-    if ( !info ) {
-      return null;
+    if (!info) {
+      return null
     }
-      
-    const img = info.pics.length > 0 ? info.pics[0] : '';
+
+    const img = info.pics.length > 0 ? info.pics[0] : ''
 
     // let promotion_activity = null,
     //   act_price = null;
@@ -115,78 +115,67 @@ export default class SpGoodsItem extends Component {
     // const isShow = info.store && info.store == 0;
 
     return (
-      <View
-        className={classNames("sp-goods-item")}
-        onClick={this.handleClick.bind(this)}
-      >
-        <View className="goods-item__hd">
-          <SpImg
-            img-class="order-item__img"
-            src={img}
-            mode="widthFix"
-            width="300"
-          />
+      <View className={classNames('sp-goods-item')} onClick={this.handleClick.bind(this)}>
+        <View className='goods-item__hd'>
+          <SpImg img-class='order-item__img' src={img} mode='widthFix' width='300' />
         </View>
-        <View className="goods-item__bd">
+        <View className='goods-item__bd'>
           {/* 跨境商品 */}
-          {info.type === "1" && (
-            <View className="national-info">
+          {info.type === '1' && (
+            <View className='national-info'>
               <Image
-                className="nationalFlag"
+                className='nationalFlag'
                 src={info.origincountry_img_url}
-                mode="aspectFill"
+                mode='aspectFill'
                 lazyLoad
               />
-              <Text className="nationalTitle">{info.origincountry_name}</Text>
+              <Text className='nationalTitle'>{info.origincountry_name}</Text>
             </View>
           )}
 
-          <View className="goods-info">
-            <View className="goods-title">{info.itemName}</View>
-            <View className="goods-desc">{info.brief}</View>
+          <View className='goods-info'>
+            <View className='goods-title'>{info.itemName}</View>
+            <View className='goods-desc'>{info.brief}</View>
           </View>
 
-          <View className="bd-block">
-            <View className="bd-block-lf">
+          <View className='bd-block'>
+            <View className='bd-block-lf'>
               {/* 商品价格、积分 */}
               {info.is_point && (
-                <View className="goods-price">
+                <View className='goods-price'>
                   <SpPoint value={info.point} />
                 </View>
               )}
 
               {!info.is_point && (
-                <View className="goods-price">
-                  <View className="gd-price">
+                <View className='goods-price'>
+                  <View className='gd-price'>
                     <SpPrice value={info.price / 1000}></SpPrice>
                   </View>
-                  <View className="mk-price">
-                    <SpPrice
-                      lineThrough
-                      value={info.market_price / 1000}
-                    ></SpPrice>
+                  <View className='mk-price'>
+                    <SpPrice lineThrough value={info.market_price / 1000}></SpPrice>
                   </View>
                 </View>
               )}
             </View>
-            <View className="bd-block-rg">
-              <Text className="iconfont icon-shoucang-01"></Text>
+            <View className='bd-block-rg'>
+              <Text className='iconfont icon-shoucang-01'></Text>
             </View>
           </View>
 
           {/* 促销活动标签 */}
           {info.promotion_activity && info.promotion_activity.length > 0 && (
-            <View className="promotions">
+            <View className='promotions'>
               {info.promotion_activity.map((item, index) => (
-                <Text className="promotion-tag" key={`promotion-tag__${index}`}>
+                <Text className='promotion-tag' key={`promotion-tag__${index}`}>
                   {PROMOTION_TAG[item.tag_type]}
                 </Text>
               ))}
             </View>
           )}
         </View>
-        <View className="goods-item__ft">{this.props.renderFooter}</View>
+        <View className='goods-item__ft'>{this.props.renderFooter}</View>
       </View>
-    );
+    )
   }
 }

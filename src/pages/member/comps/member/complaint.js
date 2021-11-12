@@ -7,7 +7,7 @@ import api from '@/api'
 import './complaint.scss'
 
 export default class Complaint extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -17,12 +17,12 @@ export default class Complaint extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
-    let info = await api.member.getSalesperson();
+  async fetch () {
+    let info = await api.member.getSalesperson()
 
     console.log('res', info)
 
@@ -32,7 +32,7 @@ export default class Complaint extends Component {
   /**
    * 起诉理由输入
    * */
-  handleChangeReason(e) {
+  handleChangeReason (e) {
     this.setState({
       complaintReason: e
     })
@@ -41,7 +41,7 @@ export default class Complaint extends Component {
   /**
    * 图片上传
    * */
-  handleChangeUploadImg(files) {
+  handleChangeUploadImg (files) {
     this.setState({
       files
     })
@@ -50,15 +50,15 @@ export default class Complaint extends Component {
   /**
    * 图片上传失败
    * */
-  handleChangeUploadError(mes) {
+  handleChangeUploadError (mes) {
     console.log('图片上传失败', mes)
   }
 
   /**
    * 投诉
    *  */
-  async handleClickButton() {
-    let { complaintReason: complaints_content, files } = this.state;
+  async handleClickButton () {
+    let { complaintReason: complaints_content, files } = this.state
 
     if (!complaints_content) {
       Taro.showToast({
@@ -68,7 +68,7 @@ export default class Complaint extends Component {
       return
     }
 
-    let nFiles = files.map(item => {
+    let nFiles = files.map((item) => {
       return item.url
     })
 
@@ -77,7 +77,7 @@ export default class Complaint extends Component {
       complaints_images: nFiles.join()
     }
 
-    await api.member.setComplaints(params);
+    await api.member.setComplaints(params)
 
     await Taro.showToast({
       title: '投诉成功',
@@ -89,7 +89,7 @@ export default class Complaint extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info, complaintReason, files } = this.state
 
     if (!info) {
@@ -102,15 +102,10 @@ export default class Complaint extends Component {
           <View>投书对象：</View>
           <View className='flex exclusive-header'>
             <View className='exclusive-header__avatar'>
-              <AtAvatar image={info.avatar}
-                size='normal'
-                circle
-              />
+              <AtAvatar image={info.avatar} size='normal' circle />
             </View>
             <View className='exclusive-header__info'>
-              <View className='exclusive-header__info-name'>
-                {info.name}
-              </View>
+              <View className='exclusive-header__info-name'>{info.name}</View>
               <View className='exclusive-header__info-store_name'>
                 {info.distributor.store_name}
               </View>
@@ -142,14 +137,9 @@ export default class Complaint extends Component {
         </View>
 
         <View className='complaint-button'>
-          <AtButton
-            type='primary'
-            circle
-            size='normal'
-            onClick={this.handleClickButton.bind(this)}
-          >
+          <AtButton type='primary' circle size='normal' onClick={this.handleClickButton.bind(this)}>
             按钮文案
-            </AtButton>
+          </AtButton>
         </View>
       </View>
     )

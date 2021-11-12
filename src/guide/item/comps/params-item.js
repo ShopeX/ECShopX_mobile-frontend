@@ -18,9 +18,9 @@ export default class ParamsItem extends Component {
     }
 
     return (
-      <View className="goods-params__item">
-        <View className="goods-params__item-label">{info.label}</View>
-        <View className="goods-params__item-value">{info.value}</View>
+      <View className='goods-params__item'>
+        <View className='goods-params__item-label'>{info.label}</View>
+        <View className='goods-params__item-value'>{info.value}</View>
       </View>
     )
   }

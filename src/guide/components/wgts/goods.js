@@ -1,22 +1,25 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image} from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 
 import S from '@/spx'
 
-
 import './goods.scss'
-@connect(({ cart, member }) => ({
-  cart,
-  favs: member.favs
-}), (dispatch) => ({
-  onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
-  onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
-  onAddFav: ({ item_id }) => dispatch({ type: 'member/addFav', payload: { item_id } }),
-  onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
-}))
+
+@connect(
+  ({ cart, member }) => ({
+    cart,
+    favs: member.favs
+  }),
+  (dispatch) => ({
+    onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
+    onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
+    onAddFav: ({ item_id }) => dispatch({ type: 'member/addFav', payload: { item_id } }),
+    onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
+  })
+)
 export default class WgtGoods extends Component {
   static options = {
     addGlobalClass: true
@@ -26,7 +29,7 @@ export default class WgtGoods extends Component {
     info: null
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -37,15 +40,11 @@ export default class WgtGoods extends Component {
   }
 
   handleClickItem = async (id) => {
-  
     try {
       Taro.navigateTo({
         url: `/guide/item/espier-detail?id=${id}`
       })
-    } catch (error) {
-   
-    }
-
+    } catch (error) {}
   }
 
   handleSwiperChange = (e) => {
@@ -57,9 +56,9 @@ export default class WgtGoods extends Component {
   }
 
   handleClickOperate = async (item_data, type, e) => {
-    const {info, sourcetype, title, author,source,componentIndex } = this.props
+    const { info, sourcetype, title, author, source, componentIndex } = this.props
     e.stopPropagation()
-    if(!S.getAuthToken()){
+    if (!S.getAuthToken()) {
       S.login(this)
       return false
     }
@@ -121,7 +120,6 @@ export default class WgtGoods extends Component {
     }
 
     if (type === 'buy') {
-  
       try {
         await api.cart.add({
           item_id: item_data.item_id,
@@ -135,10 +133,9 @@ export default class WgtGoods extends Component {
         console.log(error)
       }
     }
-
   }
 
-  render() {
+  render () {
     const { info } = this.props
     const { curIdx, is_fav } = this.state
     if (!info) {
@@ -157,24 +154,27 @@ export default class WgtGoods extends Component {
           </View>
         )}
         <View className='slider-wrap'>
-          {
-            data.map(item => {
-              return (
-                <View className='goods-content' key={item.item_id} onClick={this.handleClickItem.bind(this, item.item_id)}>
-                  <View className='goods-content__info'>
-                    <View className='goods-content__info_img'>
-                      <Image className='img-style' mode='widthFix' src={item.img_url} />
-                    </View>
-                    <View className='goods-content__info_text'>
-                      <Text>{item.item_name}</Text>
-                      <Text className='goods-content__info_status'>{item.itemStatus ? '点击查看产品详情' : '该商品已下架'}</Text>
-                    </View>
+          {data.map((item) => {
+            return (
+              <View
+                className='goods-content'
+                key={item.item_id}
+                onClick={this.handleClickItem.bind(this, item.item_id)}
+              >
+                <View className='goods-content__info'>
+                  <View className='goods-content__info_img'>
+                    <Image className='img-style' mode='widthFix' src={item.img_url} />
                   </View>
-               
+                  <View className='goods-content__info_text'>
+                    <Text>{item.item_name}</Text>
+                    <Text className='goods-content__info_status'>
+                      {item.itemStatus ? '点击查看产品详情' : '该商品已下架'}
+                    </Text>
+                  </View>
                 </View>
-              )
-            })
-          }
+              </View>
+            )
+          })}
         </View>
       </View>
     )

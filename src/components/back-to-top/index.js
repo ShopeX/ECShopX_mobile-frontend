@@ -5,7 +5,6 @@ import { classNames } from '@/utils'
 import './index.scss'
 
 export default class BackToTop extends Component {
-
   static defaultProps = {
     onClick: () => {}
   }

@@ -1,7 +1,7 @@
 import Taro, { PureComponent } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { CouponItem } from '@/components'
-import { AtModal } from "taro-ui"
+import { AtModal } from 'taro-ui'
 import { withPager } from '@/hocs'
 
 import './index.scss'
@@ -20,10 +20,7 @@ export default class CouponModal extends PureComponent {
 
     return (
       <View className='coupon-modal'>
-        <AtModal
-          isOpened={visible}
-          closeOnClickOverlay={false}
-        >
+        <AtModal isOpened={visible} closeOnClickOverlay={false}>
           <View className='title'>
             福利专享券
             <View
@@ -31,20 +28,17 @@ export default class CouponModal extends PureComponent {
               onClick={() => onChange(false, 'close')}
             ></View>
           </View>
-          <ScrollView
-            scrollY
-            className='coupon-scroll'
-          >
+          <ScrollView scrollY className='coupon-scroll'>
             <View className='coupon-list-ticket'>
-              {
-                list && list.map((item, idx) => {
+              {list &&
+                list.map((item, idx) => {
                   let time = parseInt(new Date().getTime() / 1000)
                   return (
-                    <CouponItem
-                      info={item}
-                      key={item.card_id}
-                    >
-                      <View style={{fontSize: '22rpx'}} onClick={this.handleClickNews.bind(this, item, idx)}>
+                    <CouponItem info={item} key={item.card_id}>
+                      <View
+                        style={{ fontSize: '22rpx' }}
+                        onClick={this.handleClickNews.bind(this, item, idx)}
+                      >
                         待领取
                         {/* {item.getted === 1 ? '已领取' : ''}
                         {item.getted === 2 ? '已领完' : ''}
@@ -53,11 +47,12 @@ export default class CouponModal extends PureComponent {
                       </View>
                     </CouponItem>
                   )
-                })
-              }
+                })}
             </View>
           </ScrollView>
-          <View onClick={() => onChange(false, 'jump')} className='button'>放入券包</View>
+          <View onClick={() => onChange(false, 'jump')} className='button'>
+            放入券包
+          </View>
         </AtModal>
       </View>
     )

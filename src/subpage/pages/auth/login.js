@@ -1,73 +1,66 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View, Text, Image } from "@tarojs/components";
-import { AtForm, AtInput, AtButton } from "taro-ui";
+import Taro, { Component } from '@tarojs/taro'
+import { View, Text, Image } from '@tarojs/components'
+import { AtForm, AtInput, AtButton } from 'taro-ui'
 
-import { SpNavBar, SpTimer } from "@/components";
-import api from "@/api";
+import { SpNavBar, SpTimer } from '@/components'
+import api from '@/api'
 import S from '@/spx'
-import {
-  getThemeStyle,
-  styleNames,
-  tokenParse,
-  navigateTo,
-  validate,
-  showToast
-} from "@/utils";
-import { Tracker } from "@/service";
+import { getThemeStyle, styleNames, tokenParse, navigateTo, validate, showToast } from '@/utils'
+import { Tracker } from '@/service'
 
-import "./login.scss";
+import './login.scss'
 
 export default class Login extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
       info: {},
       isVisible: false,
       imgInfo: null,
       loginType: 1 // 1=密码; 2=验证码
-    };
+    }
   }
 
-  componentDidMount() {
-    this.getImageVcode();
+  componentDidMount () {
+    this.getImageVcode()
   }
 
-  navigateTo = navigateTo;
+  navigateTo = navigateTo
 
-  handleTimerStart = async resolve => {
-    const { imgInfo } = this.state;
-    const { mobile, yzm } = this.state.info;
+  handleTimerStart = async (resolve) => {
+    const { imgInfo } = this.state
+    const { mobile, yzm } = this.state.info
     if (!validate.isMobileNum(mobile)) {
-      showToast("请输入正确的手机号");
-      return;
+      showToast('请输入正确的手机号')
+      return
     }
     if (!validate.isRequired(yzm)) {
-      showToast("请输入图形验证码");
-      return;
+      showToast('请输入图形验证码')
+      return
     }
     try {
       await api.user.regSmsCode({
-        type: "login",
+        type: 'login',
         mobile: mobile,
         yzm: yzm,
         token: imgInfo.imageToken
-      });
-      showToast("验证码已发送");
-      resolve();
-    } catch ( e ) {
+      })
+      showToast('验证码已发送')
+      resolve()
+    } catch (e) {
       this.getImageVcode()
     }
-  };
+  }
 
-  handleTimerStop() {}
+  handleTimerStop () {}
 
-  handleInputChange(name, val) {
-    const { info } = this.state;
-    info[name] = val;
+  handleInputChange (name, val) {
+    const { info } = this.state
+    info[name] = val
     this.setState({
       info
-    });
+    })
   }
 
   handleNavLeftItemClick = () => {
@@ -81,113 +74,111 @@ export default class Login extends Component {
     // Taro.navigateBack()、
     Taro.redirectTo({
       url: process.env.APP_HOME_PAGE
-    });
-  };
+    })
+  }
 
   handleToggleLogin = () => {
-    const { loginType } = this.state;
+    const { loginType } = this.state
     this.setState({
       loginType: loginType == 1 ? 2 : 1
-    });
-  };
+    })
+  }
 
   getImageVcode = async () => {
-    const img_res = await api.user.regImg({ type: "login" });
+    const img_res = await api.user.regImg({ type: 'login' })
     this.setState({
       imgInfo: img_res
-    });
-  };
+    })
+  }
 
-  async handleSubmit() {
-    const { loginType } = this.state;
-    const { mobile, password, vcode } = this.state.info;
+  async handleSubmit () {
+    const { loginType } = this.state
+    const { mobile, password, vcode } = this.state.info
     let params = {
       username: mobile
-    };
+    }
     if (!validate.isMobileNum(mobile)) {
-      showToast("请输入正确的手机号");
-      return;
+      showToast('请输入正确的手机号')
+      return
     }
     if (loginType == 1) {
       if (!validate.isRequired(password)) {
-        showToast("请输入密码");
-        return;
+        showToast('请输入密码')
+        return
       }
-      params["password"] = password;
+      params['password'] = password
     } else {
       if (!validate.isRequired(vcode)) {
-        showToast("请输入验证码");
-        return;
+        showToast('请输入验证码')
+        return
       }
-      params["vcode"] = vcode;
-      params["check_type"] = "mobile";
+      params['vcode'] = vcode
+      params['check_type'] = 'mobile'
     }
 
-    const { token } = await api.user.login( params );
-    S.setAuthToken( token );
+    const { token } = await api.user.login(params)
+    S.setAuthToken(token)
     const { redirect } = this.$router.params
-    const url = redirect
-      ? decodeURIComponent(redirect)
-      : process.env.APP_HOME_PAGE;
+    const url = redirect ? decodeURIComponent(redirect) : process.env.APP_HOME_PAGE
 
     Taro.redirectTo({
       url
-    });
+    })
   }
 
-  render() {
-    const { info, isVisible, loginType, imgInfo } = this.state;
+  render () {
+    const { info, isVisible, loginType, imgInfo } = this.state
     return (
-      <View className="page-auth-login" style={styleNames(getThemeStyle())}>
-        <SpNavBar onClickLeftIcon={this.handleNavLeftItemClick} title="登录" />
-        <View className="auth-hd">
-          <View className="title">欢迎登录</View>
+      <View className='page-auth-login' style={styleNames(getThemeStyle())}>
+        <SpNavBar onClickLeftIcon={this.handleNavLeftItemClick} title='登录' />
+        <View className='auth-hd'>
+          <View className='title'>欢迎登录</View>
           {/* <View className="desc">未注册的手机号验证后自动创建账号</View> */}
         </View>
-        <View className="auth-bd">
-          <View className="form-title">中国大陆 +86</View>
-          <AtForm className="form">
-            <View className="form-field">
+        <View className='auth-bd'>
+          <View className='form-title'>中国大陆 +86</View>
+          <AtForm className='form'>
+            <View className='form-field'>
               <AtInput
                 clear
-                name="mobile"
+                name='mobile'
                 maxLength={11}
-                type="tel"
+                type='tel'
                 value={info.mobile}
-                placeholder="请输入您的手机号码"
-                onChange={this.handleInputChange.bind(this, "mobile")}
+                placeholder='请输入您的手机号码'
+                onChange={this.handleInputChange.bind(this, 'mobile')}
               />
             </View>
             {/* 密码登录 */}
             {loginType == 1 && (
-              <View className="form-field">
-                <View className="input-field">
+              <View className='form-field'>
+                <View className='input-field'>
                   <AtInput
                     clear
-                    name="password"
+                    name='password'
                     value={info.password}
-                    placeholder="请输入密码"
-                    onChange={this.handleInputChange.bind(this, "password")}
+                    placeholder='请输入密码'
+                    onChange={this.handleInputChange.bind(this, 'password')}
                   />
                 </View>
               </View>
             )}
             {/* 验证码登录，验证码超过1次，显示图形验证码 */}
             {loginType == 2 && (
-              <View className="form-field">
-                <View className="input-field">
+              <View className='form-field'>
+                <View className='input-field'>
                   <AtInput
                     clear
-                    name="yzm"
+                    name='yzm'
                     value={info.yzm}
-                    placeholder="请输入图形验证码"
-                    onChange={this.handleInputChange.bind(this, "yzm")}
+                    placeholder='请输入图形验证码'
+                    onChange={this.handleInputChange.bind(this, 'yzm')}
                   />
                 </View>
-                <View className="btn-field">
+                <View className='btn-field'>
                   {imgInfo && (
                     <Image
-                      className="image-vcode"
+                      className='image-vcode'
                       src={imgInfo.imageData}
                       onClick={this.getImageVcode.bind(this)}
                     />
@@ -196,17 +187,17 @@ export default class Login extends Component {
               </View>
             )}
             {loginType == 2 && (
-              <View className="form-field">
-                <View className="input-field">
+              <View className='form-field'>
+                <View className='input-field'>
                   <AtInput
                     clear
-                    name="vcode"
+                    name='vcode'
                     value={info.vcode}
-                    placeholder="请输入验证码"
-                    onChange={this.handleInputChange.bind(this, "vcode")}
+                    placeholder='请输入验证码'
+                    onChange={this.handleInputChange.bind(this, 'vcode')}
                   />
                 </View>
-                <View className="btn-field">
+                <View className='btn-field'>
                   <SpTimer
                     onStart={this.handleTimerStart.bind(this)}
                     onStop={this.handleTimerStop}
@@ -214,29 +205,19 @@ export default class Login extends Component {
                 </View>
               </View>
             )}
-            <View className="btn-text-group">
-              <Text
-                className="btn-text"
-                onClick={this.handleToggleLogin.bind(this)}
-              >
-                {loginType == 1 ? "验证码登录" : "密码登录"}
+            <View className='btn-text-group'>
+              <Text className='btn-text' onClick={this.handleToggleLogin.bind(this)}>
+                {loginType == 1 ? '验证码登录' : '密码登录'}
               </Text>
               <Text
-                className="btn-text"
-                onClick={this.navigateTo.bind(
-                  this,
-                  "`/subpage/pages/auth/reg`"
-                )}
+                className='btn-text'
+                onClick={this.navigateTo.bind(this, '`/subpage/pages/auth/reg`')}
               >
                 注册
               </Text>
             </View>
-            <View className="form-submit">
-              <AtButton
-                circle
-                type="primary"
-                onClick={this.handleSubmit.bind(this)}
-              >
+            <View className='form-submit'>
+              <AtButton circle type='primary' onClick={this.handleSubmit.bind(this)}>
                 登录
               </AtButton>
             </View>
@@ -246,6 +227,6 @@ export default class Login extends Component {
           <Image className="logo" mode="widthFix" src={LOGO} />
         </View> */}
       </View>
-    );
+    )
   }
 }

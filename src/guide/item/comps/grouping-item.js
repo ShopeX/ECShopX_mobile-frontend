@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Image, Text} from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
 import { calcTimer } from '@/utils'
 
-import './grouping-item.scss';
+import './grouping-item.scss'
 
 export default class GroupingItem extends Component {
   static options = {
@@ -23,7 +23,7 @@ export default class GroupingItem extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { info } = this.props
     const remaining_time = calcTimer(info.over_time)
     console.log(remaining_time)
@@ -39,11 +39,8 @@ export default class GroupingItem extends Component {
     if (!remaining_time) return null
 
     return (
-      <View
-        className='grouping-item view-flex view-flex-middle'
-        onClick={onClick}
-        >
-        <Image className='group-sponsor-avatar' src={info.member_info.headimgurl}/>
+      <View className='grouping-item view-flex view-flex-middle' onClick={onClick}>
+        <Image className='group-sponsor-avatar' src={info.member_info.headimgurl} />
         <View className='view-flex-item'>
           <View className='name'>{info.member_info.nickname}的团</View>
           <View>

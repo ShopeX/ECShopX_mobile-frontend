@@ -1,15 +1,16 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { connect } from "@tarojs/redux";
-import {AtTabs, AtTabsPane} from "taro-ui"
+import { connect } from '@tarojs/redux'
+import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
-import { setPageTitle, platformTemplateName } from "@/utils/platform";
+import { setPageTitle, platformTemplateName } from '@/utils/platform'
 import { TabBar } from '@/components'
 import Series from './comps/series'
 
 import './index.scss'
-@connect(store => ({
+
+@connect((store) => ({
   store
 }))
 export default class Category extends Component {
@@ -26,7 +27,7 @@ export default class Category extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     setPageTitle('商品分类')
     this.fetch()
   }
@@ -38,7 +39,7 @@ export default class Category extends Component {
       children: 'children'
     })*/
 
-    const query = {template_name:platformTemplateName, version: 'v1.0.1', page_name: 'category'}
+    const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
     const { list } = await api.category.getCategory(query)
     let seriesList = list[0] ? list[0].params.data : []
     if (!seriesList.length) {
@@ -48,17 +49,19 @@ export default class Category extends Component {
         img: 'image_url',
         id: 'id',
         category_id: 'category_id',
-        children: ({ children }) => pickBy(children, {
-          name: 'category_name',
-          img: 'image_url',
-          id: 'id',
-          category_id: 'category_id',
-          children: ({ children }) => pickBy(children, {
+        children: ({ children }) =>
+          pickBy(children, {
             name: 'category_name',
             img: 'image_url',
-            category_id: 'category_id'
+            id: 'id',
+            category_id: 'category_id',
+            children: ({ children }) =>
+              pickBy(children, {
+                name: 'category_name',
+                img: 'image_url',
+                category_id: 'category_id'
+              })
           })
-        })
       })
       this.setState({
         list: nList,
@@ -68,7 +71,7 @@ export default class Category extends Component {
       let tabList = []
       let contentList = []
       if (list[0].params.hasSeries) {
-        seriesList.map(item => {
+        seriesList.map((item) => {
           tabList.push({ title: item.title, status: item.name })
           contentList.push(item.content)
         })
@@ -87,7 +90,7 @@ export default class Category extends Component {
         tabList,
         contentList,
         hasSeries: true,
-        list: nList,
+        list: nList
       })
     }
   }
@@ -104,9 +107,9 @@ export default class Category extends Component {
     })
     this.setState({
       curTabIdx: idx,
-      list: nList,
+      list: nList
     })
-    if(idx === this.state.curTabIdx){
+    if (idx === this.state.curTabIdx) {
       this.setState({
         isChanged: false
       })
@@ -122,32 +125,24 @@ export default class Category extends Component {
 
     return (
       <View className='page-category-index'>
-        {
-          tabList.length !== 0
-            ? <AtTabs
-              className='category__tabs'
-              current={curTabIdx}
-              tabList={tabList}
-              onClick={this.handleClickTab}
-            >
-              {
-                tabList.map((panes, pIdx) =>
-                  (<AtTabsPane
-                    current={curTabIdx}
-                    key={panes.status}
-                    index={pIdx}
-                  >
-                  </AtTabsPane>)
-                )
-              }
-            </AtTabs>
-            : null
-				}
-        <View className={`${hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'}`}>
-          <Series
-            isChanged={isChanged}
-            info={list}
-          />
+        {tabList.length !== 0 ? (
+          <AtTabs
+            className='category__tabs'
+            current={curTabIdx}
+            tabList={tabList}
+            onClick={this.handleClickTab}
+          >
+            {tabList.map((panes, pIdx) => (
+              <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+            ))}
+          </AtTabs>
+        ) : null}
+        <View
+          className={`${
+            hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
+          }`}
+        >
+          <Series isChanged={isChanged} info={list} />
         </View>
         <TabBar />
       </View>

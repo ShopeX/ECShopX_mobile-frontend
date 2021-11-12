@@ -29,9 +29,11 @@ export default class DistributionShopForm extends Component {
     })
     if (key === 'shop_pic' && val) {
       this.setState({
-        imgs: [{
-          url: val
-        }]
+        imgs: [
+          {
+            url: val
+          }
+        ]
       })
     }
   }
@@ -47,13 +49,13 @@ export default class DistributionShopForm extends Component {
     })
   }
 
-  handleSubmit = async() => {
+  handleSubmit = async () => {
     const { key, val } = this.state.info
     const params = {
       [key]: val
     }
     const { list = [] } = await api.distribution.update(params)
-    if ( list[0] ) Taro.navigateBack()
+    if (list[0]) Taro.navigateBack()
   }
 
   handleImageChange = async (data, type) => {
@@ -91,42 +93,43 @@ export default class DistributionShopForm extends Component {
     return (
       <View className='page-distribution-shop-form'>
         <View className='shop-form'>
-          {
-            info.key == 'shop_name'
-            && <AtInput
+          {info.key == 'shop_name' && (
+            <AtInput
               type='text'
               title='小店名称'
               value={info.val}
               onChange={this.handleChange.bind(this)}
             />
-          }
-          {
-            info.key == 'brief'
-            && <AtTextarea
+          )}
+          {info.key == 'brief' && (
+            <AtTextarea
               type='textarea'
               title='小店描述'
               value={info.val}
               onChange={this.handleChange.bind(this)}
             />
-          }
-          {
-            info.key == 'shop_pic'
-              && <View className='pic-upload__img'>
-                  <Text className='pic-upload__text'>上传店招</Text>
-                  <View className='pic-upload__imgupload'>
-                    <Text className='pic-upload__imgupload_text'>图片建议尺寸：320*100</Text>
-                    <AtImagePicker
-                      mode='aspectFill'
-                      count={1}
-                      length={3}
-                      files={imgs}
-                      onChange={this.handleImageChange.bind(this)}
-                    > </AtImagePicker>
-                  </View>
-                </View>
-          }
+          )}
+          {info.key == 'shop_pic' && (
+            <View className='pic-upload__img'>
+              <Text className='pic-upload__text'>上传店招</Text>
+              <View className='pic-upload__imgupload'>
+                <Text className='pic-upload__imgupload_text'>图片建议尺寸：320*100</Text>
+                <AtImagePicker
+                  mode='aspectFill'
+                  count={1}
+                  length={3}
+                  files={imgs}
+                  onChange={this.handleImageChange.bind(this)}
+                >
+                  {' '}
+                </AtImagePicker>
+              </View>
+            </View>
+          )}
           <View className='shop_pic-btn'>
-            <AtButton type='primary' onClick={this.handleSubmit.bind(this)}>提交</AtButton>
+            <AtButton type='primary' onClick={this.handleSubmit.bind(this)}>
+              提交
+            </AtButton>
           </View>
         </View>
       </View>

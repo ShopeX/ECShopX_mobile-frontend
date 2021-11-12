@@ -9,12 +9,11 @@
  * @LastEditTime: 2020-07-08 18:28:53
  */
 
-
 const formatGood = (data, symbol = '¥') => {
   if (!data || !data.length) {
     return []
   }
-  const list = data.map(item => {
+  const list = data.map((item) => {
     return {
       symbol,
       itemId: item.item_id,
@@ -45,7 +44,7 @@ const formatOrder = (data) => {
   if (!data || !data.length) {
     return []
   }
-  const list = data.map(item => {
+  const list = data.map((item) => {
     return {
       orderId: item.order_id,
       items: formatGood(item.items, item.fee_symbol),
@@ -60,16 +59,12 @@ const formatOrder = (data) => {
 
 // 格式化时间
 const formatCountTime = (time) => {
-  const format = (val) => (val > 9) ? val : `0${val}`
-  const d = Math.floor(time / (24*3600))
-  const h = Math.floor(time % (24*3600) / 3600)
-  const m = Math.floor(time % 3600 / 60)
+  const format = (val) => (val > 9 ? val : `0${val}`)
+  const d = Math.floor(time / (24 * 3600))
+  const h = Math.floor((time % (24 * 3600)) / 3600)
+  const m = Math.floor((time % 3600) / 60)
   const s = Math.floor(time % 60)
   return `${d}天${format(h)}:${format(m)}:${format(s)}`
 }
 
-export {
-  formatGood,
-  formatOrder,
-  formatCountTime
-}
+export { formatGood, formatOrder, formatCountTime }

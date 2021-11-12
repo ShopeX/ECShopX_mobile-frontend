@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {Button, Image, View} from '@tarojs/components'
+import { Button, Image, View } from '@tarojs/components'
 import api from '@/api'
 import { formatDataTime } from '@/utils'
 import paySuccessPng from '../../../assets/imgs/pay_success.png'
@@ -13,25 +13,25 @@ export default class CashierResult extends Component {
 
     this.state = {
       orderInfo: null,
-      tradeInfo:{
+      tradeInfo: {
         tradeState: ''
       },
-      showTabBar: '',
+      showTabBar: ''
     }
   }
   componentDidMount () {
     Taro.showLoading()
-    setTimeout(()=>{
+    setTimeout(() => {
       Taro.hideLoading()
       this.fetch()
-    },2000)
+    }, 2000)
   }
 
   async fetch () {
     const { order_id } = this.$router.params
     const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
 
-    if(tradeInfo.orderId.indexOf('CZ') !== -1) {
+    if (tradeInfo.orderId.indexOf('CZ') !== -1) {
       this.setState({
         showTabBar: 'CZ'
       })
@@ -44,11 +44,11 @@ export default class CashierResult extends Component {
   }
 
   handleClickBack = (orderId) => {
-    if(orderId.indexOf('CJ') === -1){
+    if (orderId.indexOf('CJ') === -1) {
       Taro.navigateTo({
         url: `/pages/trade/detail?id=${orderId}`
       })
-    }else {
+    } else {
       Taro.navigateTo({
         url: `/pages/member/point-draw-order`
       })
@@ -64,10 +64,10 @@ export default class CashierResult extends Component {
   render () {
     const { orderInfo, tradeInfo, showTabBar } = this.state
 
-    if(!orderInfo)return null;
+    if (!orderInfo) return null
     let create_time = formatDataTime(orderInfo.create_time * 1000)
     let ingUrl = payFailPng
-    if(tradeInfo.tradeState === 'SUCCESS'){
+    if (tradeInfo.tradeState === 'SUCCESS') {
       ingUrl = paySuccessPng
     }
 
@@ -76,60 +76,64 @@ export default class CashierResult extends Component {
         <View className='cashier-content'>
           <View className='cashier-result'>
             <View className='cashier-result__img'>
-              <Image
-                className='note__img'
-                mode='aspectFill'
-                src={ingUrl}
-              />
+              <Image className='note__img' mode='aspectFill' src={ingUrl} />
             </View>
             <View className='cashier-result__info'>
-              <View className='cashier-result__info-title'>订单支付{tradeInfo.tradeState === 'SUCCESS' ? '成功' : '失败'}</View>
+              <View className='cashier-result__info-title'>
+                订单支付{tradeInfo.tradeState === 'SUCCESS' ? '成功' : '失败'}
+              </View>
               <View className='cashier-result__info-news'>订单编号：{tradeInfo.orderId}</View>
-              {
-                tradeInfo.tradeState === 'SUCCESS' ? <View className='cashier-result__info-news'>支付单号：{tradeInfo.tradeId}</View> : null
-              }
+              {tradeInfo.tradeState === 'SUCCESS' ? (
+                <View className='cashier-result__info-news'>支付单号：{tradeInfo.tradeId}</View>
+              ) : null}
               <View className='cashier-result__info-news'>创建时间：{create_time}</View>
-              {
-                tradeInfo.tradeState === 'SUCCESS' ? <View className='cashier-result__info-news'>支付时间：{tradeInfo.payDate}</View> : null
-              }
+              {tradeInfo.tradeState === 'SUCCESS' ? (
+                <View className='cashier-result__info-news'>支付时间：{tradeInfo.payDate}</View>
+              ) : null}
             </View>
           </View>
         </View>
 
-        {
-          showTabBar === 'CZ'
-            ? <View className='goods-buy-toolbar'>
-                <View className='goods-buy-toolbar__btns'>
-                  <Button
-                    className='goods-buy-toolbar__btn btn-add-cart'
-                    onClick={this.handleClickRoam}
-                  >返回首页</Button>
-                </View>
+        {showTabBar === 'CZ' ? (
+          <View className='goods-buy-toolbar'>
+            <View className='goods-buy-toolbar__btns'>
+              <Button
+                className='goods-buy-toolbar__btn btn-add-cart'
+                onClick={this.handleClickRoam}
+              >
+                返回首页
+              </Button>
+            </View>
+          </View>
+        ) : (
+          <View className='goods-buy-toolbar'>
+            {tradeInfo.tradeState === 'fail' ? (
+              <View className='goods-buy-toolbar__btns'>
+                <Button
+                  className='goods-buy-toolbar__btn btn-fast-buy'
+                  onClick={this.handleClickBack.bind(this, tradeInfo.orderId)}
+                >
+                  订单详情
+                </Button>
               </View>
-            : <View className='goods-buy-toolbar'>
-                {
-                  tradeInfo.tradeState === 'fail'
-                    ? <View className='goods-buy-toolbar__btns'>
-                      <Button
-                        className='goods-buy-toolbar__btn btn-fast-buy'
-                        onClick={this.handleClickBack.bind(this, tradeInfo.orderId)}
-                      >订单详情</Button>
-                    </View>
-                    : <View className='goods-buy-toolbar__btns'>
-                      <Button
-                        className='goods-buy-toolbar__btn btn-add-cart'
-                        onClick={this.handleClickRoam}
-                      >返回首页</Button>
-                      <Button
-                        className='goods-buy-toolbar__btn btn-fast-buy'
-                        onClick={this.handleClickBack.bind(this, tradeInfo.orderId)}
-                      >订单详情</Button>
-                    </View>
-                }
+            ) : (
+              <View className='goods-buy-toolbar__btns'>
+                <Button
+                  className='goods-buy-toolbar__btn btn-add-cart'
+                  onClick={this.handleClickRoam}
+                >
+                  返回首页
+                </Button>
+                <Button
+                  className='goods-buy-toolbar__btn btn-fast-buy'
+                  onClick={this.handleClickBack.bind(this, tradeInfo.orderId)}
+                >
+                  订单详情
+                </Button>
               </View>
-        }
-
-
+            )}
+          </View>
+        )}
       </View>
     )
   }

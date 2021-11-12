@@ -21,14 +21,14 @@ export default class NoteIndex extends Component {
         className={classNames('note', img ? 'note__has-img' : null, className)}
         // style={styleNames(styles)}
       >
-        {
-          img && (<Image
+        {img && (
+          <Image
             className='note__img'
             mode='aspectFill'
             // style={styleNames(imgStyle)}
             src={isUrl ? img : this.resolveUrl(img)}
-          />)
-        }
+          />
+        )}
         <Text calssName='note__text'>{this.props.children}</Text>
       </View>
     )

@@ -1,30 +1,22 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import {
-  AtImagePicker,
-  AtTag,
-  AtTextarea,
-  AtTabsPane, AtTabs
-} from 'taro-ui' 
-import { SpCell, SpToast, SpHtmlContent,SpImgPicker } from '@/components'
+import { AtImagePicker, AtTag, AtTextarea, AtTabsPane, AtTabs } from 'taro-ui'
+import { SpCell, SpToast, SpHtmlContent, SpImgPicker } from '@/components'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 // import req from '@/api/req'
-import { Tracker } from "@/service";
+import { Tracker } from '@/service'
 import { pickBy, classNames } from '@/utils'
 import S from '@/spx'
 import imgUploader from '@/utils/upload'
 
 import './refund.scss'
 
-
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
-
 export default class TradeRefund extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -54,13 +46,13 @@ export default class TradeRefund extends Component {
   componentDidMount () {
     this.fetch()
     const { status } = this.$router.params
-    const { segTypes,curSegIdx } = this.state
+    const { segTypes, curSegIdx } = this.state
     let curIndex = 0
-    segTypes.map((item,index)=>{
+    segTypes.map((item, index) => {
       item.status == status && (curIndex = index)
     })
     this.setState({
-      curSegIdx:curIndex
+      curSegIdx: curIndex
     })
   }
 
@@ -69,35 +61,42 @@ export default class TradeRefund extends Component {
       mask: true
     })
 
-    const { aftersales_bn, order_id, isDelivery, delivery_status,deliverData } = this.$router.params
-    let detail = deliverData ? JSON.parse(deliverData) :null
+    const {
+      aftersales_bn,
+      order_id,
+      isDelivery,
+      delivery_status,
+      deliverData
+    } = this.$router.params
+    let detail = deliverData ? JSON.parse(deliverData) : null
     // 获取售后原因
     const reasonList = await api.aftersales.reasonList()
     let params = null
-    if(aftersales_bn){
+    if (aftersales_bn) {
       const res = await api.aftersales.info({
         aftersales_bn,
         detail,
         order_id
       })
       if (!res) {
-      this.setState({
-        reason: newReason,
-        remind,
-      })
+        this.setState({
+          reason: newReason,
+          remind
+        })
         return
       }
-        params = pickBy(res, {
-        curSegIdx: ({ aftersales_type }) => this.state.segTypes.findIndex(t => t.status === aftersales_type) || 0,
-        curSegTypeValue: ({ aftersales_type }) => this.state.segTypes[this.state.segTypes.findIndex(t => t.status === aftersales_type)].title,
+      params = pickBy(res, {
+        curSegIdx: ({ aftersales_type }) =>
+          this.state.segTypes.findIndex((t) => t.status === aftersales_type) || 0,
+        curSegTypeValue: ({ aftersales_type }) =>
+          this.state.segTypes[this.state.segTypes.findIndex((t) => t.status === aftersales_type)]
+            .title,
         curReasonIdx: ({ reason }) => reasonList.indexOf(reason) || 0,
         curSegReasonValue: 'reason',
         description: 'description',
-        imgs: ({ evidence_pic }) => evidence_pic.map(url => ({ url }))
+        imgs: ({ evidence_pic }) => evidence_pic.map((url) => ({ url }))
       })
     }
- 
-
 
     Taro.hideLoading()
 
@@ -117,7 +116,6 @@ export default class TradeRefund extends Component {
       reason: newReason
     })
   }
-
 
   handleClickTag = (data) => {
     const idx = this.state.reason.indexOf(data.name)
@@ -148,18 +146,16 @@ export default class TradeRefund extends Component {
       S.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 3)
-  
-    imgUploader.uploadImageFn(imgFiles)
-      .then(res => { 
-        console.log("---res---",res)
-        this.setState({
-          imgs: res
-        })
+
+    imgUploader.uploadImageFn(imgFiles).then((res) => {
+      console.log('---res---', res)
+      this.setState({
+        imgs: res
       })
+    })
   }
 
-  handleImageClick = () => {
-  }
+  handleImageClick = () => {}
 
   handleClickTab = (idx) => {
     this.setState({
@@ -170,13 +166,13 @@ export default class TradeRefund extends Component {
   handleChangeRefundOptions = (type) => {
     if (type === 'type') {
       this.setState({
-        isShowSegTypeSheet: true,
+        isShowSegTypeSheet: true
       })
     }
 
     if (type === 'goods') {
       this.setState({
-        isShowSegGoodSheet: true,
+        isShowSegGoodSheet: true
       })
     }
   }
@@ -202,13 +198,13 @@ export default class TradeRefund extends Component {
   }
 
   aftersalesAxios = async () => {
-    this.setState({isInvalid: false})
+    this.setState({ isInvalid: false })
     try {
       const { segTypes, curSegIdx, curReasonIdx, description } = this.state
       const reason = this.state.reason[curReasonIdx]
       const aftersales_type = segTypes[curSegIdx].status
       const evidence_pic = this.state.imgs.map(({ url }) => url)
-      const { order_id, aftersales_bn,deliverData } = this.$router.params
+      const { order_id, aftersales_bn, deliverData } = this.$router.params
       let detail = deliverData
       const data = {
         detail,
@@ -225,28 +221,26 @@ export default class TradeRefund extends Component {
       await api.aftersales[method](data)
 
       // 退款退货
-      const { orderInfo } = await api.trade.detail(order_id);
-      Tracker.dispatch("ORDER_REFUND", orderInfo);
-
+      const { orderInfo } = await api.trade.detail(order_id)
+      Tracker.dispatch('ORDER_REFUND', orderInfo)
 
       S.toast('操作成功')
       setTimeout(() => {
-        this.setState({isInvalid: true})
+        this.setState({ isInvalid: true })
         Taro.redirectTo({
           url: `/subpage/pages/trade/detail?id=${order_id}`
         })
       }, 700)
     } catch (e) {
-      this.setState({isInvalid: true})
+      this.setState({ isInvalid: true })
     }
-    
   }
 
   handleSubmit = () => {
     let _this = this
     let templeparams = {
       'temp_name': 'yykweishop',
-      'source_type': 'after_refund',
+      'source_type': 'after_refund'
     }
     if (this.state.isInvalid) this.aftersalesAxios()
     // api.user.newWxaMsgTmpl(templeparams).then(tmlres => {
@@ -268,11 +262,22 @@ export default class TradeRefund extends Component {
     // })
   }
 
-
   render () {
     const { colors } = this.props
-    const { segTypes, curSegIdx, reason, curReasonIdx,
-      goodStatus, curGoodIdx, isShowSegGoodSheet, isSameCurSegGood, curSegGoodValue, description, imgs, remind } = this.state
+    const {
+      segTypes,
+      curSegIdx,
+      reason,
+      curReasonIdx,
+      goodStatus,
+      curGoodIdx,
+      isShowSegGoodSheet,
+      isSameCurSegGood,
+      curSegGoodValue,
+      description,
+      imgs,
+      remind
+    } = this.state
     return (
       <View className='page-trade-refund'>
         <AtTabs
@@ -280,30 +285,29 @@ export default class TradeRefund extends Component {
           current={curSegIdx}
           tabList={segTypes}
           onClick={this.handleClickTab}
-          customStyle={{color:colors.data[0].primary,backgroundColor:colors.data[0].primary}}
+          customStyle={{ color: colors.data[0].primary, backgroundColor: colors.data[0].primary }}
         >
-          {
-            segTypes.map((panes, pIdx) =>
-              (<AtTabsPane
-                current={curSegIdx}
-                key={panes.status}
-                index={pIdx}
-              >
-              </AtTabsPane>)
-            )
-          }
+          {segTypes.map((panes, pIdx) => (
+            <AtTabsPane current={curSegIdx} key={panes.status} index={pIdx}></AtTabsPane>
+          ))}
         </AtTabs>
         <SpCell className='trade-refund__reason' title='请选择退款理由'>
-          {reason && reason.map((item, idx) => {
-            return (
-              <AtTag
-                key={item}
-                className={classNames('refund-reason', idx === curReasonIdx ? 'refund-reason__checked' : '')}
-                name={item}
-                onClick={this.handleClickTag}
-              >{item}</AtTag>
-            )
-          })}
+          {reason &&
+            reason.map((item, idx) => {
+              return (
+                <AtTag
+                  key={item}
+                  className={classNames(
+                    'refund-reason',
+                    idx === curReasonIdx ? 'refund-reason__checked' : ''
+                  )}
+                  name={item}
+                  onClick={this.handleClickTag}
+                >
+                  {item}
+                </AtTag>
+              )
+            })}
         </SpCell>
         {/*<SpCell
           className='trade-refund__goods'
@@ -341,45 +345,49 @@ export default class TradeRefund extends Component {
             value={description}
             onChange={this.handleTextChange}
             placeholder='退款说明（选填）'
-          > </AtTextarea>
-          {
-            curSegIdx === 1
-              ? <View className='refund-describe__img'>
-                <Text className='refund-describe__text'>上传凭证</Text>
-                <View className='refund-describe__imgupload'>
-                  <Text className='refund-describe__imgupload_text'>您可以上传最多3张图片</Text>
-                  <View className='refund-describe__imgupload_picker'>
+          >
+            {' '}
+          </AtTextarea>
+          {curSegIdx === 1 ? (
+            <View className='refund-describe__img'>
+              <Text className='refund-describe__text'>上传凭证</Text>
+              <View className='refund-describe__imgupload'>
+                <Text className='refund-describe__imgupload_text'>您可以上传最多3张图片</Text>
+                <View className='refund-describe__imgupload_picker'>
                   <AtImagePicker
                     multiple
                     mode='aspectFill'
-                    showAddBtn={imgs.length<3}
+                    showAddBtn={imgs.length < 3}
                     length={3}
                     count={3}
                     files={imgs}
                     onChange={this.handleImageChange}
                     onImageClick={this.handleImageClick}
-                  > </AtImagePicker>
-                  </View>
+                  >
+                    {' '}
+                  </AtImagePicker>
                 </View>
               </View>
-              : null
-          }
+            </View>
+          ) : null}
         </View>
 
-        {remind && remind.is_open && <View className='remind-wrap'>
-          <Text className='biao-icon biao-icon-tishi'>  售后提醒</Text>
+        {remind && remind.is_open && (
+          <View className='remind-wrap'>
+            <Text className='biao-icon biao-icon-tishi'> 售后提醒</Text>
 
-          <View className='remind-text'>
-            <SpHtmlContent
-              className="goods-detail__content"
-              content={remind.intro}
-            />
+            <View className='remind-text'>
+              <SpHtmlContent className='goods-detail__content' content={remind.intro} />
+            </View>
           </View>
-        </View>}
+        )}
         <View
           className='refund-btn'
           style={`background: ${colors.data[0].primary}`}
-          onClick={this.handleSubmit}>提交</View>
+          onClick={this.handleSubmit}
+        >
+          提交
+        </View>
         {/*<SpCell border={false}>
           <AtSegmentedControl
             onClick={this.handleChangeType}

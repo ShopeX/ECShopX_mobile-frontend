@@ -5,7 +5,7 @@ import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
 import TradeItem from './comps/item'
-import { Tracker } from "@/service";
+import { Tracker } from '@/service'
 
 import './list.scss'
 
@@ -16,7 +16,7 @@ export default class TradePickList extends Component {
     navigationBarTitleText: '处方药订单'
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -27,23 +27,26 @@ export default class TradePickList extends Component {
     }
   }
 
-  componentDidMount() {
-    this.setState({
-      query: {
-        order_type: 'normal',
-        order_class: 'drug'
+  componentDidMount () {
+    this.setState(
+      {
+        query: {
+          order_type: 'normal',
+          order_class: 'drug'
+        }
+      },
+      () => {
+        this.nextPage()
       }
-    }, () => {
-      this.nextPage()
-    })
+    )
   }
 
   onPullDownRefresh = () => {
-    Tracker.dispatch("PAGE_PULL_DOWN_REFRESH");
-    
+    Tracker.dispatch('PAGE_PULL_DOWN_REFRESH')
+
     Taro.showLoading({
       title: '加载中',
-      icon: 'none',
+      icon: 'none'
     })
     this.resetPage(() => {
       this.nextPage()
@@ -54,41 +57,44 @@ export default class TradePickList extends Component {
     })
   }
 
-
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.hideLayer()
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       ...this.state.query,
       page,
       pageSize
     }
-    const { list, pager: { count: total } } = await api.trade.list(query)
+    const {
+      list,
+      pager: { count: total }
+    } = await api.trade.list(query)
     let nList = pickBy(list, {
       tid: 'order_id',
       status_desc: 'order_status_msg',
       order_status_des: 'order_status_des',
       status: ({ order_status }) => resolveOrderStatus(order_status),
-      totalItems: ({ items }) => items.reduce((acc, item) => (+item.num) + acc, 0),
+      totalItems: ({ items }) => items.reduce((acc, item) => +item.num + acc, 0),
       payment: ({ total_fee }) => (total_fee / 100).toFixed(2),
       total_fee: 'total_fee',
       pay_type: 'pay_type',
       point: 'point',
       create_date: 'create_date',
       ziti_status: 'ziti_status',
-      order: ({ items }) => pickBy(items, {
-        order_id: 'order_id',
-        item_id: 'item_id',
-        pic_path: 'pic',
-        title: 'item_name',
-        price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
-        item_fee: 'item_fee',
-        point: 'item_point',
-        num: 'num'
-      })
+      order: ({ items }) =>
+        pickBy(items, {
+          order_id: 'order_id',
+          item_id: 'item_id',
+          pic_path: 'pic',
+          title: 'item_name',
+          price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+          item_fee: 'item_fee',
+          point: 'item_point',
+          num: 'num'
+        })
     })
 
     log.debug('[trade list] list fetched and processed: ', nList)
@@ -150,16 +156,12 @@ export default class TradePickList extends Component {
     })
   }
 
-  render() {
+  render () {
     const { curItemActionsId, tabList, list, page } = this.state
 
     return (
       <View className='page-trade-list'>
-        <SpNavBar
-          title='自提订单'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title='自提订单' leftIconType='chevron-left' fixed='true' />
 
         <ScrollView
           scrollY
@@ -167,45 +169,37 @@ export default class TradePickList extends Component {
           onScrollToUpper={this.onPullDownRefresh.bind(this)}
           onScrollToLower={this.nextPage}
         >
-          {
-            list.map((item) => {
-              return (
-                <TradeItem
-                  payType={item.pay_type}
-                  key={item.tid}
-                  info={item}
-                  showActions={curItemActionsId === item.tid}
-                  onClick={this.handleClickItem.bind(this, item)}
-                  onClickBtn={this.handleClickItemBtn.bind(this, item)}
-                  onActionBtnClick={this.handleActionBtnClick.bind(this, item)}
-                  onActionClick={this.handleActionClick.bind(this, item)}
-                  customFooter
-                  renderFooter={
-                    <View className='trade-item__ft-drug'>
-                      {
-                        item.order_status_des === 'CANCEL'
-                          ? <Text className='trade-item__status'>已拒绝</Text>
-                          : <Text className='trade-item__status'>
-                            {item.ziti_status == 'APPROVE' ? '审核通过' : '待审核'}
-                          </Text>
-                      }
-                    </View>
-                  }
-                />
-              )
-            })
-          }
-          {
-            page.isLoading && <Loading>正在加载...</Loading>
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-            && (<SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>)
-          }
-          {!!curItemActionsId && <View
-            className='layer'
-            onClick={this.hideLayer}
-          />}
+          {list.map((item) => {
+            return (
+              <TradeItem
+                payType={item.pay_type}
+                key={item.tid}
+                info={item}
+                showActions={curItemActionsId === item.tid}
+                onClick={this.handleClickItem.bind(this, item)}
+                onClickBtn={this.handleClickItemBtn.bind(this, item)}
+                onActionBtnClick={this.handleActionBtnClick.bind(this, item)}
+                onActionClick={this.handleActionClick.bind(this, item)}
+                customFooter
+                renderFooter={
+                  <View className='trade-item__ft-drug'>
+                    {item.order_status_des === 'CANCEL' ? (
+                      <Text className='trade-item__status'>已拒绝</Text>
+                    ) : (
+                      <Text className='trade-item__status'>
+                        {item.ziti_status == 'APPROVE' ? '审核通过' : '待审核'}
+                      </Text>
+                    )}
+                  </View>
+                }
+              />
+            )
+          })}
+          {page.isLoading && <Loading>正在加载...</Loading>}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>
+          )}
+          {!!curItemActionsId && <View className='layer' onClick={this.hideLayer} />}
         </ScrollView>
       </View>
     )

@@ -16,7 +16,6 @@ import BuyContorl from '../buyContorl'
 import './index.scss'
 
 export default class GoodItem extends Component {
-
   static defaultProps = {
     goodInfo: {},
     // 是否结束
@@ -32,8 +31,8 @@ export default class GoodItem extends Component {
     // 数量为1时是否可以继续减少
     isCanReduce: false
   }
-  
-  constructor(props) {
+
+  constructor (props) {
     super(props)
   }
 
@@ -79,64 +78,81 @@ export default class GoodItem extends Component {
     const { goodInfo, isEnd, ShowBuyer, ShowCheckBox, isExpired, isCanReduce, isNext } = this.props
 
     return (
-      <View className='goodItem' onClick={this.handleItem.bind(this, goodInfo.itemId, goodInfo.activity_id)}>
-        {
-          ShowCheckBox &&
+      <View
+        className='goodItem'
+        onClick={this.handleItem.bind(this, goodInfo.itemId, goodInfo.activity_id)}
+      >
+        {ShowCheckBox && (
           <View
             className={`checkBox ${goodInfo.isChecked && 'isChecked'}`}
             onClick={this.handleCheck.bind(this, goodInfo.cartId)}
           >
             {goodInfo.isChecked && <AtIcon value='check' size='12' color='#fff'></AtIcon>}
           </View>
-        }
+        )}
         <View className='left'>
           <Image src={goodInfo.pics} className='goodImg' />
         </View>
         <View className='right'>
           <View className='goodItem-info'>
-            <View className='name'>{ goodInfo.itemName }</View>
-            <View className='desc'>{ goodInfo.brief }</View>
+            <View className='name'>{goodInfo.itemName}</View>
+            <View className='desc'>{goodInfo.brief}</View>
           </View>
           <View className='otherInfo'>
             <View className='otherInfoLeft'>
               <View className='vipTag'>会员专享</View>
               <View className='price'>
-                <Text className='symbol'>{ goodInfo.symbol }</Text>
-                { this.showPrice(goodInfo) }
-                <View className='oldPrice'>{ goodInfo.price }</View>
+                <Text className='symbol'>{goodInfo.symbol}</Text>
+                {this.showPrice(goodInfo)}
+                <View className='oldPrice'>{goodInfo.price}</View>
               </View>
             </View>
-            {
-              (!isExpired && !isNext) ? <View className='otherInfoRight'>
-                { goodInfo.limit_num > 0 && <View className='limit'>限购{ goodInfo.limit_num }件</View>}
+            {!isExpired && !isNext ? (
+              <View className='otherInfoRight'>
+                {goodInfo.limit_num > 0 && (
+                  <View className='limit'>限购{goodInfo.limit_num}件</View>
+                )}
                 <BuyContorl
                   isEnd={isEnd}
                   store={goodInfo.store}
                   limit={goodInfo.limit_num}
                   quantity={goodInfo.num}
                   isCanReduce={isCanReduce}
-                  addQuantity={this.setGoodNum.bind(this, ShowCheckBox ? goodInfo.cartId : goodInfo.itemId, 'add')}
-                  reduceQuantity={this.setGoodNum.bind(this, ShowCheckBox ? goodInfo.cartId : goodInfo.itemId, 'reduce')}
+                  addQuantity={this.setGoodNum.bind(
+                    this,
+                    ShowCheckBox ? goodInfo.cartId : goodInfo.itemId,
+                    'add'
+                  )}
+                  reduceQuantity={this.setGoodNum.bind(
+                    this,
+                    ShowCheckBox ? goodInfo.cartId : goodInfo.itemId,
+                    'reduce'
+                  )}
                 />
               </View>
-              : <View className='otherInfoExpired'>{ isNext ? '尚未开始' : '已经过期' }</View>
-            }
+            ) : (
+              <View className='otherInfoExpired'>{isNext ? '尚未开始' : '已经过期'}</View>
+            )}
           </View>
-          {
-            ShowBuyer && goodInfo.history_data.length > 0 && <View className='buyer'>
+          {ShowBuyer && goodInfo.history_data.length > 0 && (
+            <View className='buyer'>
               最近购买
               <View className='recent'>
-                {
-                  goodInfo.history_data.map((item, index) => (
-                    item.headimgurl && <Image style={`left: -${Taro.pxTransform(index * 20)}`} key={item.headimgurl} className='buyAvatar' src={item.headimgurl} />
-                  ))
-                }
+                {goodInfo.history_data.map(
+                  (item, index) =>
+                    item.headimgurl && (
+                      <Image
+                        style={`left: -${Taro.pxTransform(index * 20)}`}
+                        key={item.headimgurl}
+                        className='buyAvatar'
+                        src={item.headimgurl}
+                      />
+                    )
+                )}
               </View>
-              <View className='num'>
-                { goodInfo.initial_sales }人...
-              </View>
+              <View className='num'>{goodInfo.initial_sales}人...</View>
             </View>
-          }
+          )}
         </View>
       </View>
     )

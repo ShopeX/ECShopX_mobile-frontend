@@ -1,109 +1,96 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View } from "@tarojs/components";
-import api from "@/api";
-import { Loading, SpNavBar, SpToast } from "@/components";
-import { pickBy, browser, getPointName } from "@/utils";
-import { withLogin } from "@/hocs";
-import { AlipayPay, WeH5Pay, WePay } from "./comps";
+import Taro, { Component } from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import api from '@/api'
+import { Loading, SpNavBar, SpToast } from '@/components'
+import { pickBy, browser, getPointName } from '@/utils'
+import { withLogin } from '@/hocs'
+import { AlipayPay, WeH5Pay, WePay } from './comps'
 
-import "./index.scss";
+import './index.scss'
 
 @withLogin()
 export default class Cashier extends Component {
   state = {
     info: null,
-    env: ""
-  };
-
-  componentDidShow() {
-    this.fetch();
+    env: ''
   }
 
-  isPointitemGood() {
-    const options = this.$router.params;
-    return options.type === "pointitem";
+  componentDidShow () {
+    this.fetch()
   }
 
-  async fetch() {
-    const { order_id } = this.$router.params;
+  isPointitemGood () {
+    const options = this.$router.params
+    return options.type === 'pointitem'
+  }
 
-    let env = "";
+  async fetch () {
+    const { order_id } = this.$router.params
+
+    let env = ''
     if (browser.weixin) {
-      env = "WX";
+      env = 'WX'
     }
 
-    Taro.showLoading();
-    const orderInfo = await api.cashier.getOrderDetail(order_id);
+    Taro.showLoading()
+    const orderInfo = await api.cashier.getOrderDetail(order_id)
 
     const info = pickBy(orderInfo.orderInfo, {
-      order_id: "order_id",
-      order_type: "order_type",
-      pay_type: "pay_type",
-      point: "point",
-      title: "title",
+      order_id: 'order_id',
+      order_type: 'order_type',
+      pay_type: 'pay_type',
+      point: 'point',
+      title: 'title',
       total_fee: ({ total_fee }) => (total_fee / 100).toFixed(2)
-    });
+    })
 
     this.setState({
       info,
       env
-    });
-    Taro.hideLoading();
+    })
+    Taro.hideLoading()
   }
 
   handleClickBack = () => {
-    const { order_type } = this.state.info;
-    const url =
-      order_type === "recharge"
-        ? "/pages/member/pay"
-        : "/pages/trade/list?redrict=home";
+    const { order_type } = this.state.info
+    const url = order_type === 'recharge' ? '/pages/member/pay' : '/pages/trade/list?redrict=home'
 
     Taro.redirectTo({
       url
-    });
-  };
+    })
+  }
 
-  render() {
-    const { info, env, appPay } = this.state;
+  render () {
+    const { info, env, appPay } = this.state
 
-    console.log("---cashierInfo---", info);
+    console.log('---cashierInfo---', info)
 
     if (!info) {
-      return <Loading />;
+      return <Loading />
     }
 
     return (
-      <View className="page-cashier-index">
-        <SpNavBar title="收银台" onClickLeftIcon={this.handleClickBack} />
-        <View className="cashier-money">
-          {info.order_type !== "recharge" ? (
-            <View className="cashier-money__tip">
-              订单提交成功，请选择支付方式
-            </View>
+      <View className='page-cashier-index'>
+        <SpNavBar title='收银台' onClickLeftIcon={this.handleClickBack} />
+        <View className='cashier-money'>
+          {info.order_type !== 'recharge' ? (
+            <View className='cashier-money__tip'>订单提交成功，请选择支付方式</View>
           ) : null}
-          <View className="cashier-money__content">
-            <View className="cashier-money__content-title">
-              订单编号： {info.order_id}
-            </View>
-            <View className="cashier-money__content-title">
-              订单名称：{info.title}
-            </View>
-            <View className="cashier-money__content-title">
+          <View className='cashier-money__content'>
+            <View className='cashier-money__content-title'>订单编号： {info.order_id}</View>
+            <View className='cashier-money__content-title'>订单名称：{info.title}</View>
+            <View className='cashier-money__content-title'>
               应付总额
-              {info.pay_type === "point" ? `（${getPointName()}）` : "（元）"}
+              {info.pay_type === 'point' ? `（${getPointName()}）` : '（元）'}
             </View>
-            <View className="cashier-money__content-number">
-              {info.pay_type === "point" ? info.point : info.total_fee}
+            <View className='cashier-money__content-number'>
+              {info.pay_type === 'point' ? info.point : info.total_fee}
             </View>
           </View>
         </View>
         {!env ? (
           <View>
-            <AlipayPay
-              orderID={info.order_id}
-              payType="alipayh5"
-              orderType={info.order_type}
-            />
+            <AlipayPay orderID={info.order_id} payType='alipayh5' orderType={info.order_type} />
             <WeH5Pay orderID={info.order_id} />
           </View>
         ) : (
@@ -113,6 +100,6 @@ export default class Cashier extends Component {
         )}
         <SpToast />
       </View>
-    );
+    )
   }
 }

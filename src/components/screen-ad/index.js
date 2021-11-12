@@ -16,11 +16,13 @@ import { linkPage } from '@/pages/home/wgts/helper'
 
 import './index.scss'
 
-@connect(() => ({}), (dispatch) => ({
-  onUpdateShowAdv: () => dispatch({ type: 'member/closeAdv'})
-}))
+@connect(
+  () => ({}),
+  (dispatch) => ({
+    onUpdateShowAdv: () => dispatch({ type: 'member/closeAdv' })
+  })
+)
 export default class ScreenAd extends Component {
-
   constructor (props) {
     super(props)
     this.timeId = null
@@ -54,28 +56,31 @@ export default class ScreenAd extends Component {
       weapp: 'wapp',
       h5: 'h5'
     }
-    const isHave = (res.is_enable === 1) && ((res.app === 'all') || (res.app.indexOf(client[env]) !== -1))
-    this.setState({
-      isShow: isHave,
-      position: res.position,
-      isVideo: res.material_type === 2,
-      isJump: res.is_jump === 1,
-      downTime: res.waiting_time,
-      jumpUrl: res.ad_url,
-      url: res.ad_material
-    }, () => {
-      setTimeout(() => {
-        this.countDown() 
-      }, 1000)
-    })
+    const isHave = res.is_enable === 1 && (res.app === 'all' || res.app.indexOf(client[env]) !== -1)
+    this.setState(
+      {
+        isShow: isHave,
+        position: res.position,
+        isVideo: res.material_type === 2,
+        isJump: res.is_jump === 1,
+        downTime: res.waiting_time,
+        jumpUrl: res.ad_url,
+        url: res.ad_material
+      },
+      () => {
+        setTimeout(() => {
+          this.countDown()
+        }, 1000)
+      }
+    )
   }
-  
+
   // 禁止触摸穿透
   disableTouch = (e) => {
     e.stopPropagation()
     return false
   }
-  
+
   // 点击广告
   clickAd = (e) => {
     e && e.stopPropagation()
@@ -83,7 +88,7 @@ export default class ScreenAd extends Component {
     if (jumpUrl && jumpUrl.linkPage) {
       linkPage(jumpUrl.linkPage, jumpUrl)
       setTimeout(() => {
-        this.jumpAd() 
+        this.jumpAd()
       })
     }
   }
@@ -94,11 +99,14 @@ export default class ScreenAd extends Component {
     const { isJump } = this.state
     if (e && !isJump) return false
     this.timeId && clearTimeout(this.timeId)
-    this.setState({
-      isShow: false
-    }, () => {
-      this.props.onUpdateShowAdv()
-    })
+    this.setState(
+      {
+        isShow: false
+      },
+      () => {
+        this.props.onUpdateShowAdv()
+      }
+    )
   }
 
   // 倒计时
@@ -106,13 +114,16 @@ export default class ScreenAd extends Component {
     const { downTime } = this.state
     const newTime = downTime - 1
     if (newTime > 0) {
-      this.setState({
-        downTime: newTime
-      }, () => {
-        this.timeId = setTimeout(() => {
-          this.countDown()
-        }, 1000)
-      })
+      this.setState(
+        {
+          downTime: newTime
+        },
+        () => {
+          this.timeId = setTimeout(() => {
+            this.countDown()
+          }, 1000)
+        }
+      )
     } else {
       this.jumpAd()
     }
@@ -131,9 +142,10 @@ export default class ScreenAd extends Component {
         <View className={`countDown ${position}`} onClick={this.jumpAd.bind(this)}>
           {isJump ? `跳过${downTime}s` : `${downTime}s`}
         </View>
-        {
-          !isVideo ? <Image className='adImg' mode='widthFix' src={url} />
-          : <Video
+        {!isVideo ? (
+          <Image className='adImg' mode='widthFix' src={url} />
+        ) : (
+          <Video
             autoplay
             loop
             onTouchMove={this.disableTouch.bind(this)}
@@ -144,8 +156,8 @@ export default class ScreenAd extends Component {
             showPlayBtn={false}
             showCenterPlayBtn={false}
             src={url}
-          /> 
-        }
+          />
+        )}
       </View>
     )
   }

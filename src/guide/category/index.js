@@ -1,21 +1,20 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { connect } from "@tarojs/redux";
-import {AtTabs, AtTabsPane} from "taro-ui"
+import { connect } from '@tarojs/redux'
+import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import S from '@/spx'
 import { pickBy, styleNames } from '@/utils'
-import { platformTemplateName } from "@/utils/platform";
-import { BaTabBar,BaNavBar } from '../components'
+import { platformTemplateName } from '@/utils/platform'
+import { BaTabBar, BaNavBar } from '../components'
 import Series from './comps/series'
 
 import './index.scss'
 
-@connect(store => ({
+@connect((store) => ({
   store
 }))
 export default class BaCategory extends Component {
-  
   constructor (props) {
     super(props)
 
@@ -33,8 +32,8 @@ export default class BaCategory extends Component {
     await S.autoLogin(this)
     this.fetch()
   }
-  config ={
-    navigationStyle:'custom'
+  config = {
+    navigationStyle: 'custom'
   }
 
   async fetch () {
@@ -44,9 +43,9 @@ export default class BaCategory extends Component {
       children: 'children'
     })*/
 
-    const query = {template_name:platformTemplateName, version: 'v1.0.1', page_name: 'category'}
+    const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
     const { list } = await api.category.getCategory(query)
-    console.log('list----->',list)
+    console.log('list----->', list)
     let seriesList = list[0] ? list[0].params.data : []
     if (!seriesList.length) {
       const res = await api.category.get()
@@ -55,17 +54,19 @@ export default class BaCategory extends Component {
         img: 'image_url',
         id: 'id',
         category_id: 'category_id',
-        children: ({ children }) => pickBy(children, {
-          name: 'category_name',
-          img: 'image_url',
-          id: 'id',
-          category_id: 'category_id',
-          children: ({ children }) => pickBy(children, {
+        children: ({ children }) =>
+          pickBy(children, {
             name: 'category_name',
             img: 'image_url',
-            category_id: 'category_id'
+            id: 'id',
+            category_id: 'category_id',
+            children: ({ children }) =>
+              pickBy(children, {
+                name: 'category_name',
+                img: 'image_url',
+                category_id: 'category_id'
+              })
           })
-        })
       })
       this.setState({
         list: nList,
@@ -75,7 +76,7 @@ export default class BaCategory extends Component {
       let tabList = []
       let contentList = []
       if (list[0].params.hasSeries) {
-        seriesList.map(item => {
+        seriesList.map((item) => {
           tabList.push({ title: item.title, status: item.name })
           contentList.push(item.content)
         })
@@ -94,7 +95,7 @@ export default class BaCategory extends Component {
         tabList,
         contentList,
         hasSeries: true,
-        list: nList,
+        list: nList
       })
     }
   }
@@ -111,9 +112,9 @@ export default class BaCategory extends Component {
     })
     this.setState({
       curTabIdx: idx,
-      list: nList,
+      list: nList
     })
-    if(idx === this.state.curTabIdx){
+    if (idx === this.state.curTabIdx) {
       this.setState({
         isChanged: false
       })
@@ -127,41 +128,33 @@ export default class BaCategory extends Component {
   render () {
     const { curTabIdx, tabList, list, hasSeries, isChanged } = this.state
     const n_ht = S.get('navbar_height', true)
-    const c_ht = tabList.length > 0 ?  n_ht * 2 - 10 : n_ht
+    const c_ht = tabList.length > 0 ? n_ht * 2 - 10 : n_ht
     return (
       <View className='page-category-index'>
         <BaNavBar title='导购商城' fixed jumpType='home' />
-        
-        {
-        
-          tabList.length !== 0
-            ?<View className='category__wrap' style={styleNames({'top': `${n_ht}px`})}>
-              <AtTabs
-                className='category__tabs'
-                current={curTabIdx}
-                tabList={tabList}
-                onClick={this.handleClickTab}
-              >
-              {
-                tabList.map((panes, pIdx) =>
-                  (<AtTabsPane
-                    current={curTabIdx}
-                    key={panes.status}
-                    index={pIdx}
-                  >
-                  </AtTabsPane>)
-                )
-              }
-            </AtTabs>
-            </View>
-            : null
-				}
 
-        <View className={`${hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'}`} style={styleNames({'top': `${c_ht}px`})}>
-          <Series
-            isChanged={isChanged}
-            info={list}
-          />
+        {tabList.length !== 0 ? (
+          <View className='category__wrap' style={styleNames({ 'top': `${n_ht}px` })}>
+            <AtTabs
+              className='category__tabs'
+              current={curTabIdx}
+              tabList={tabList}
+              onClick={this.handleClickTab}
+            >
+              {tabList.map((panes, pIdx) => (
+                <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+              ))}
+            </AtTabs>
+          </View>
+        ) : null}
+
+        <View
+          className={`${
+            hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
+          }`}
+          style={styleNames({ 'top': `${c_ht}px` })}
+        >
+          <Series isChanged={isChanged} info={list} />
         </View>
         <BaTabBar />
       </View>

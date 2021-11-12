@@ -7,12 +7,16 @@ import S from '@/spx'
 import api from '@/api'
 import { connect } from '@tarojs/redux'
 
-import './package-item.scss';
-@connect(({ cart }) => ({
-  cart,
-}), (dispatch) => ({
-	onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
-}))
+import './package-item.scss'
+
+@connect(
+  ({ cart }) => ({
+    cart
+  }),
+  (dispatch) => ({
+    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
+  })
+)
 export default class PackageItem extends Component {
   static options = {
     addGlobalClass: true
@@ -22,7 +26,7 @@ export default class PackageItem extends Component {
     distributorId: 0
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -32,7 +36,7 @@ export default class PackageItem extends Component {
       showBuyPanel: false,
       packageTotalPrice: 0,
       curSku: null,
-      skuInfo:null,
+      skuInfo: null,
       curId: null,
       fromCheck: false,
       packagePrices: null,
@@ -61,25 +65,25 @@ export default class PackageItem extends Component {
       spec_items: 'spec_items',
       item_spec_desc: 'item_spec_desc',
       checked_spec: null,
-      price: ({ package_price }) => (package_price/100).toFixed(2),
-      market_price: ({ price }) => (price/100).toFixed(2)
+      price: ({ package_price }) => (package_price / 100).toFixed(2),
+      market_price: ({ price }) => (price / 100).toFixed(2)
     })
 
     console.log(packagePrice, main_package_price, 66)
 
     const main_item = pickBy(mainItem, {
       img: 'pics[0]',
-        item_id: 'item_id',
-        title: 'itemName',
-        desc: 'brief',
-        pics: 'pics',
-        store: 'store',
-        spec_items: 'spec_items',
-        item_spec_desc: 'item_spec_desc',
-        distributor_id: 'distributor_id',
-        checked_spec: null,
-        price: ({ package_price }) => (package_price/100).toFixed(2),
-        market_price: ({ price }) => (price/100).toFixed(2)
+      item_id: 'item_id',
+      title: 'itemName',
+      desc: 'brief',
+      pics: 'pics',
+      store: 'store',
+      spec_items: 'spec_items',
+      item_spec_desc: 'item_spec_desc',
+      distributor_id: 'distributor_id',
+      checked_spec: null,
+      price: ({ package_price }) => (package_price / 100).toFixed(2),
+      market_price: ({ price }) => (price / 100).toFixed(2)
     })
 
     this.setState({
@@ -89,15 +93,18 @@ export default class PackageItem extends Component {
       mainItem: main_item
     })
 
-    console.log(main_item,89)
-    if(main_item.spec_items && main_item.spec_items.length <= 1) {
+    console.log(main_item, 89)
+    if (main_item.spec_items && main_item.spec_items.length <= 1) {
       const selection = this.state.selection
       selection['add'](main_item.item_id)
-      this.setState({
-        selection: new Set(selection)
-      }, () => {
-        this.countPackageTotal()
-      })
+      this.setState(
+        {
+          selection: new Set(selection)
+        },
+        () => {
+          this.countPackageTotal()
+        }
+      )
     }
   }
 
@@ -105,31 +112,37 @@ export default class PackageItem extends Component {
     const cur = this.props.current
     if (cur !== pid) {
       const { list, mainItem } = this.state
-      Object.assign(mainItem, {checked_spec: null})
-      list.map(item => {
-        Object.assign(item, {checked_spec: null})
+      Object.assign(mainItem, { checked_spec: null })
+      list.map((item) => {
+        Object.assign(item, { checked_spec: null })
       })
-      this.setState({
-        selection: new Set(),
-        mainItem,
-        list
-      },() => {
-        this.initMainPackage()
-      })
+      this.setState(
+        {
+          selection: new Set(),
+          mainItem,
+          list
+        },
+        () => {
+          this.initMainPackage()
+        }
+      )
     }
     this.props.onClick()
   }
 
   initMainPackage = () => {
     const { mainItem } = this.state
-    if(mainItem.spec_items && mainItem.spec_items.length <= 1) {
+    if (mainItem.spec_items && mainItem.spec_items.length <= 1) {
       const selection = this.state.selection
       selection['add'](mainItem.item_id)
-      this.setState({
-        selection: new Set(selection)
-      }, () => {
-        this.countPackageTotal()
-      })
+      this.setState(
+        {
+          selection: new Set(selection)
+        },
+        () => {
+          this.countPackageTotal()
+        }
+      )
     }
   }
 
@@ -141,17 +154,21 @@ export default class PackageItem extends Component {
       return
     }
     console.log(item, checked, 108)
-    selection[checked ? 'add' : 'delete']((item.checked_spec && item.checked_spec.item_id) || item.item_id)
-    this.setState({
-      selection: new Set(selection)
-    }, () => {
-      this.countPackageTotal()
-    })
+    selection[checked ? 'add' : 'delete'](
+      (item.checked_spec && item.checked_spec.item_id) || item.item_id
+    )
+    this.setState(
+      {
+        selection: new Set(selection)
+      },
+      () => {
+        this.countPackageTotal()
+      }
+    )
   }
 
   handleMainSkuSelection = () => {
     this.showBuyPanel(this.state.mainItem, 'main')
-
   }
 
   handleSkuSelection = (data) => {
@@ -178,61 +195,67 @@ export default class PackageItem extends Component {
     let checked = null
     const selection = this.state.selection
 
-    if(fromCheck === 'main') {
-      if(mainItem.spec_items && mainItem.spec_items.length > 0) {
-        mainItem.spec_items.map(spec_item => {
-          if(curId === spec_item.item_id) {
-            Object.assign(mainItem, {checked_spec: res})
+    if (fromCheck === 'main') {
+      if (mainItem.spec_items && mainItem.spec_items.length > 0) {
+        mainItem.spec_items.map((spec_item) => {
+          if (curId === spec_item.item_id) {
+            Object.assign(mainItem, { checked_spec: res })
           }
         })
-        if( mainItem.checked_spec && (res.item_id === mainItem.checked_spec.item_id)) {
+        if (mainItem.checked_spec && res.item_id === mainItem.checked_spec.item_id) {
           mainItem.price = this.state.mainPackagePrice[res.item_id].price / 100
           mainItem.market_price = this.state.mainPackagePrice[res.item_id].market_price / 100
         }
       }
-      if(mainItem.spec_items && mainItem.spec_items.length > 1) {
-        mainItem.spec_items.map(spec_item => {
+      if (mainItem.spec_items && mainItem.spec_items.length > 1) {
+        mainItem.spec_items.map((spec_item) => {
           selection['delete'](spec_item.item_id)
         })
       }
       selection['add'](res.item_id)
-      this.setState({
-        selection: new Set(selection)
-      }, () => {
-        this.countPackageTotal()
-      })
+      this.setState(
+        {
+          selection: new Set(selection)
+        },
+        () => {
+          this.countPackageTotal()
+        }
+      )
     } else {
-      if(list.length > 0) {
-        list.map(item => {
-          if(item.spec_items && item.spec_items.length > 0) {
-            item.spec_items.map(spec_item => {
-              if(curId === spec_item.item_id) {
-                Object.assign(item, {checked_spec: res})
+      if (list.length > 0) {
+        list.map((item) => {
+          if (item.spec_items && item.spec_items.length > 0) {
+            item.spec_items.map((spec_item) => {
+              if (curId === spec_item.item_id) {
+                Object.assign(item, { checked_spec: res })
               }
-              if(spec_item.item_id === res.item_id) {
+              if (spec_item.item_id === res.item_id) {
                 item.price = this.state.packagePrices[res.item_id].price / 100
                 item.market_price = this.state.packagePrices[res.item_id].market_price / 100
               }
             })
           }
-          if(item.checked_spec) {
+          if (item.checked_spec) {
             checked = item.checked_spec.item_id
           }
-          if(item.spec_items && item.spec_items.length > 1) {
-            item.spec_items.map(spec_item => {
-              if(res.item_id === spec_item.item_id) {
-                item.spec_items.map(del_item => {
+          if (item.spec_items && item.spec_items.length > 1) {
+            item.spec_items.map((spec_item) => {
+              if (res.item_id === spec_item.item_id) {
+                item.spec_items.map((del_item) => {
                   selection['delete'](del_item.item_id)
                 })
               }
             })
           }
           selection['add'](res.item_id)
-          this.setState({
-            selection: new Set(selection)
-          }, () => {
-            this.countPackageTotal()
-          })
+          this.setState(
+            {
+              selection: new Set(selection)
+            },
+            () => {
+              this.countPackageTotal()
+            }
+          )
         })
       }
     }
@@ -242,7 +265,6 @@ export default class PackageItem extends Component {
       mainItem,
       showBuyPanel: false
     })
-
   }
 
   handleAddCart = async () => {
@@ -262,20 +284,20 @@ export default class PackageItem extends Component {
     const { selection, mainItem } = this.state
     console.log(selection, 198)
     const packageId = this.props.current
-    if(!mainItem.checked_spec && mainItem.spec_items.length > 1) {
+    if (!mainItem.checked_spec && mainItem.spec_items.length > 1) {
       Taro.showToast({
         title: '请选择主商品规格',
         icon: 'none'
       })
       return
     }
-    const id =  (mainItem.checked_spec && mainItem.checked_spec.item_id) || mainItem.item_id
+    const id = (mainItem.checked_spec && mainItem.checked_spec.item_id) || mainItem.item_id
 
     let item_selected = []
     const selected = [...selection]
-    if(selected) {
-      selected.map(item => {
-        if(item !== id){
+    if (selected) {
+      selected.map((item) => {
+        if (item !== id) {
           item_selected.push(item)
         }
       })
@@ -291,41 +313,42 @@ export default class PackageItem extends Component {
       activity_id: packageId,
       activity_type: 'package',
       distributor_id: distributorId
-		}
-		const res = await api.cart.add(query)
+    }
+    const res = await api.cart.add(query)
 
     if (res) {
       Taro.showToast({
         title: '成功加入购物车',
         icon: 'success'
-			})
-			this.fetchCartcount()
+      })
+      this.fetchCartcount()
     }
   }
 
-	async fetchCartcount() {
+  async fetchCartcount () {
     try {
-      const { item_count } = await api.cart.count({shop_type: 'distributor'})
+      const { item_count } = await api.cart.count({ shop_type: 'distributor' })
       this.props.onUpdateCartCount(item_count)
     } catch (e) {
       console.error(e)
     }
-	}
+  }
 
   countPackageTotal () {
     const { selection, packagePrices, mainPackagePrice } = this.state
     let packageTotalPrice = 0
     const selected = [...selection]
-    console.log(selected,packagePrices, mainPackagePrice,361)
+    console.log(selected, packagePrices, mainPackagePrice, 361)
     if (selected.length) {
       // packageTotalPrice += Number(mainItem.price * 100)
-      selected.map(id => {
-
-        packageTotalPrice += Number(packagePrices[id] && packagePrices[id].price) || Number( mainPackagePrice[id] && mainPackagePrice[id].price)
+      selected.map((id) => {
+        packageTotalPrice +=
+          Number(packagePrices[id] && packagePrices[id].price) ||
+          Number(mainPackagePrice[id] && mainPackagePrice[id].price)
       })
     }
     this.setState({
-      packageTotalPrice: (packageTotalPrice/100).toFixed(2)
+      packageTotalPrice: (packageTotalPrice / 100).toFixed(2)
     })
   }
 
@@ -334,7 +357,19 @@ export default class PackageItem extends Component {
     if (!info) {
       return null
     }
-    const { list, selection, packagePrice,skuInfo ,curSku,showBuyPanel,buyPanelType,packageTotalPrice, packagePrices, mainPackagePrice, mainItem  } = this.state
+    const {
+      list,
+      selection,
+      packagePrice,
+      skuInfo,
+      curSku,
+      showBuyPanel,
+      buyPanelType,
+      packageTotalPrice,
+      packagePrices,
+      mainPackagePrice,
+      mainItem
+    } = this.state
 
     const { package_id, package_name } = info
     return (
@@ -355,11 +390,7 @@ export default class PackageItem extends Component {
               info={mainItem}
               renderCheckbox={
                 <View className='cart-item__act'>
-                  <SpCheckbox
-                    key={mainItem.item_id}
-                    checked='true'
-                    disabled
-                  />
+                  <SpCheckbox key={mainItem.item_id} checked='true' disabled />
                 </View>
               }
               renderSpec={
@@ -368,7 +399,9 @@ export default class PackageItem extends Component {
                   style={mainItem.spec_items && mainItem.spec_items.length ? '' : 'display: none;'}
                   onClick={this.handleMainSkuSelection.bind(this, mainItem)}
                 >
-                  <Text className='goods-item__sku-text'>{mainItem.checked_spec ? mainItem.checked_spec.propsText : '请选择规格'}</Text>
+                  <Text className='goods-item__sku-text'>
+                    {mainItem.checked_spec ? mainItem.checked_spec.propsText : '请选择规格'}
+                  </Text>
                   <Text className='icon-arrowDown'></Text>
                 </View>
               }
@@ -376,85 +409,83 @@ export default class PackageItem extends Component {
           </View>
           <View className='package-goods__list'>
             <View>组合商品</View>
-            {
-              list.map(item => {
-                return (
-                  <GoodsItem
-                    img-class='package-goods__item'
-                    showFav={false}
-                    showSku
-                    key={item.item_id}
-                    info={item}
-                    renderCheckbox={
-                      <View className='cart-item__act'>
-                        <SpCheckbox
-                          key={item.item_id}
-                          checked={selection.has((item.checked_spec && item.checked_spec.item_id) || item.item_id)}
-                          onChange={this.handleSelectionChange.bind(this, item)}
-                        />
-                      </View>
-                    }
-                    renderSpec={
-                      <View
-                        className='goods-item__sku'
-                        style={item.spec_items.length ? '' : 'display: none;'}
-                        onClick={this.handleSkuSelection.bind(this, item)}
-                      >
-                        <Text className='goods-item__sku-text'>{item.checked_spec ? item.checked_spec.propsText : '请选择规格'}</Text>
-                        <Text className='icon-arrowDown'></Text>
-                      </View>
-                    }
-                  />
-                )
-              })
-            }
+            {list.map((item) => {
+              return (
+                <GoodsItem
+                  img-class='package-goods__item'
+                  showFav={false}
+                  showSku
+                  key={item.item_id}
+                  info={item}
+                  renderCheckbox={
+                    <View className='cart-item__act'>
+                      <SpCheckbox
+                        key={item.item_id}
+                        checked={selection.has(
+                          (item.checked_spec && item.checked_spec.item_id) || item.item_id
+                        )}
+                        onChange={this.handleSelectionChange.bind(this, item)}
+                      />
+                    </View>
+                  }
+                  renderSpec={
+                    <View
+                      className='goods-item__sku'
+                      style={item.spec_items.length ? '' : 'display: none;'}
+                      onClick={this.handleSkuSelection.bind(this, item)}
+                    >
+                      <Text className='goods-item__sku-text'>
+                        {item.checked_spec ? item.checked_spec.propsText : '请选择规格'}
+                      </Text>
+                      <Text className='icon-arrowDown'></Text>
+                    </View>
+                  }
+                />
+              )
+            })}
           </View>
 
           <View class='package-goods__item-footer'>
-            <View className='package-amount'>组合价：<Text className='amount-number'>¥{packageTotalPrice}</Text></View>
+            <View className='package-amount'>
+              组合价：<Text className='amount-number'>¥{packageTotalPrice}</Text>
+            </View>
             <AtButton
               type='primary'
               className='package-add-cart'
               size='small'
               onClick={this.handleAddCart.bind(this)}
-            >加入购物车</AtButton>
+            >
+              加入购物车
+            </AtButton>
           </View>
 
-          {
-            (curSku && showBuyPanel) &&
-              <GoodsBuyPanel
-                info={curSku}
-                isPackage='package'
-                packItem={packagePrices}
-                mainpackItem={mainPackagePrice}
-                type={buyPanelType}
-                isOpened={showBuyPanel}
-                onClose={this.handleSpecClose.bind(this)}
-                onSubmit={this.handleSpecSubmit.bind(this)}
-              />
-          }
+          {curSku && showBuyPanel && (
+            <GoodsBuyPanel
+              info={curSku}
+              isPackage='package'
+              packItem={packagePrices}
+              mainpackItem={mainPackagePrice}
+              type={buyPanelType}
+              isOpened={showBuyPanel}
+              onClose={this.handleSpecClose.bind(this)}
+              onSubmit={this.handleSpecSubmit.bind(this)}
+            />
+          )}
         </AtAccordion>
-        {
-          current !== package_id &&
-            <ScrollView
-              className='package-goods__thumbnails'
-              scrollX
-              scrollWithAnimation
-            >
-              {
-                list.map(item => {
-                  return (
-                    <Image
-                      key={item.index}
-                      className='package-goods__thumbnails-img'
-                      mode='aspectFix'
-                      src={item.pics[0]}
-                    />
-                  )
-                })
-              }
-            </ScrollView>
-        }
+        {current !== package_id && (
+          <ScrollView className='package-goods__thumbnails' scrollX scrollWithAnimation>
+            {list.map((item) => {
+              return (
+                <Image
+                  key={item.index}
+                  className='package-goods__thumbnails-img'
+                  mode='aspectFix'
+                  src={item.pics[0]}
+                />
+              )
+            })}
+          </ScrollView>
+        )}
       </View>
     )
   }

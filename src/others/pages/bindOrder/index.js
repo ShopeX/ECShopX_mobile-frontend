@@ -5,7 +5,6 @@ import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { SpNavBar } from '@/components'
 
-
 import './index.scss'
 
 @connect(({ colors }) => ({
@@ -24,7 +23,9 @@ export default class BindOrder extends Component {
   }
 
   showTips = (tipType) => {
-    const tips = tipType ? '找到门店购物小票如下图红框位置，可手动输入或者扫码输入订单号' : '找到门店购物小票如下图红框位置内容输入'
+    const tips = tipType
+      ? '找到门店购物小票如下图红框位置，可手动输入或者扫码输入订单号'
+      : '找到门店购物小票如下图红框位置内容输入'
     const img = tipType ? require('./img/barCode.png') : require('./img/randomCode.png')
     this.setState({
       tips,
@@ -41,7 +42,7 @@ export default class BindOrder extends Component {
 
   scanCode = async (e) => {
     e.stopPropagation()
-    const { result = ''} = await Taro.scanCode()
+    const { result = '' } = await Taro.scanCode()
     this.setState({
       barCode: result
     })
@@ -75,29 +76,31 @@ export default class BindOrder extends Component {
       })
       Taro.showToast({
         title: '关联成功，请至订单列表查看',
-        icon:'none'
+        icon: 'none'
       })
     } catch (e) {}
   }
-  
+
   render () {
     const { barCode, randomCode, showModal, tips, tipImg } = this.state
     const { colors } = this.props
-    
+
     return (
       <View className='bindOrder'>
-        <SpNavBar
-          title='线下订单关联'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title='线下订单关联' leftIconType='chevron-left' fixed='true' />
         <View className='barCode'>
           <View className='line'>
             请输入或者扫码录入订单号
             <View className='iconfont icon-info' onClick={this.showTips.bind(this, 1)}></View>
           </View>
           <View className='input'>
-            <Input className='text' value={barCode} type='text' placeholder='订单号' onInput={this.inputChange.bind(this, 'barCode')} />
+            <Input
+              className='text'
+              value={barCode}
+              type='text'
+              placeholder='订单号'
+              onInput={this.inputChange.bind(this, 'barCode')}
+            />
             <View className='iconfont icon-scan' onClick={this.scanCode.bind(this)}></View>
           </View>
         </View>
@@ -107,7 +110,13 @@ export default class BindOrder extends Component {
             <View className='iconfont icon-info' onClick={this.showTips.bind(this, 0)}></View>
           </View>
           <View className='input'>
-            <Input className='text' value={randomCode}type='text' placeholder='随机码' onInput={this.inputChange.bind(this, 'randomCode')} />
+            <Input
+              className='text'
+              value={randomCode}
+              type='text'
+              placeholder='随机码'
+              onInput={this.inputChange.bind(this, 'randomCode')}
+            />
           </View>
         </View>
         <View
@@ -117,20 +126,22 @@ export default class BindOrder extends Component {
         >
           关联
         </View>
-        <AtModal
-          isOpened={showModal}
-          className='tipsModal'
-          onClose={this.hideModal.bind(this)}
-        >
+        <AtModal isOpened={showModal} className='tipsModal' onClose={this.hideModal.bind(this)}>
           <AtModalContent>
-            { tips }
+            {tips}
             <Image src={tipImg} className='img' mode='aspectFit' />
           </AtModalContent>
           <AtModalAction>
-            <View className='confirm' onClick={this.hideModal.bind(this)} style={`background: ${colors.data[0].primary}`}>确认</View>
+            <View
+              className='confirm'
+              onClick={this.hideModal.bind(this)}
+              style={`background: ${colors.data[0].primary}`}
+            >
+              确认
+            </View>
           </AtModalAction>
         </AtModal>
       </View>
-    ) 
+    )
   }
 }

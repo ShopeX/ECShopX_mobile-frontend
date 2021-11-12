@@ -1,6 +1,6 @@
-import { Tracker } from "@/service";
+import { Tracker } from '@/service'
 
-function resolveOrderInfo(params) {
+function resolveOrderInfo (params) {
   const {
     order_id,
     order_time,
@@ -10,7 +10,7 @@ function resolveOrderInfo(params) {
     refund_time,
     order_status,
     sub_orders
-  } = params;
+  } = params
   const baseData = {
     order: {
       order_id,
@@ -26,11 +26,11 @@ function resolveOrderInfo(params) {
       order_status
     },
     sub_orders
-  };
-  return baseData;
+  }
+  return baseData
 }
 
-function resolveCartInfo(params, action_type) {
+function resolveCartInfo (params, action_type) {
   const baseData = {
     sku: {
       sku_id: params.sku_id,
@@ -42,41 +42,37 @@ function resolveCartInfo(params, action_type) {
     },
     sale: {
       // 原价
-      original_price: Number(params.market_price)
-        ? params.market_price / 100
-        : params.price / 100,
+      original_price: Number(params.market_price) ? params.market_price / 100 : params.price / 100,
       // 销售价(是否会员价)
-      current_price: params.member_price
-        ? params.member_price / 100
-        : params.price / 100
+      current_price: params.member_price ? params.member_price / 100 : params.price / 100
     }
     // goods_title: params.goods_title||params.item_name
-  };
+  }
   if (action_type) {
-    Object.assign(baseData, { action_type });
+    Object.assign(baseData, { action_type })
   }
   if (params.num) {
-    Object.assign(baseData, { sku_num: params.num });
+    Object.assign(baseData, { sku_num: params.num })
   }
   if (params.primary_image_url) {
-    Object.assign(baseData, { primary_image_url: params.primary_image_url });
+    Object.assign(baseData, { primary_image_url: params.primary_image_url })
   }
-  return baseData;
+  return baseData
 }
 
 const actions = {
   // 发起咨询
-  ["START_CONSULT"](params) {
-    Tracker.trackEvents("start_consult", "发起咨询", {
-      action_type: "consult_online",
+  ['START_CONSULT'] (params) {
+    Tracker.trackEvents('start_consult', '发起咨询', {
+      action_type: 'consult_online',
       ...params
-    });
+    })
   },
   // 注册
-  ["MEMBER_REG"](params) {
-    Tracker.trackEvents("register_wxapp", "用户注册", {
+  ['MEMBER_REG'] (params) {
+    Tracker.trackEvents('register_wxapp', '用户注册', {
       ...params
-    });
+    })
   },
   /**
    * give_order：用户提交订单；
@@ -86,11 +82,11 @@ const actions = {
    * refund：用户发起退货退款
    */
   // 用户提交订单
-  ["CREATE_ORDER"](params) {
+  ['CREATE_ORDER'] (params) {
     const data = resolveOrderInfo({
       order_id: params.trade_info.order_id,
       order_time: params.timeStamp,
-      order_status: "give_order",
+      order_status: 'give_order',
       sub_orders: [
         {
           sub_order_id: params.trade_info.order_id,
@@ -98,16 +94,16 @@ const actions = {
           pay_amt: parseInt(params.total_fee) / 100
         }
       ]
-    });
-    Tracker.trackEvents("custom_order", "用户提交订单", data);
+    })
+    Tracker.trackEvents('custom_order', '用户提交订单', data)
   },
   // 用户关闭支付密码浮层
-  ["CANCEL_PAY"](params) {
+  ['CANCEL_PAY'] (params) {
     const data = resolveOrderInfo({
       order_id: params.trade_info.order_id,
       order_time: params.timeStamp,
       cancel_pay_time: new Date().getTime(),
-      order_status: "cancel_pay",
+      order_status: 'cancel_pay',
       sub_orders: [
         {
           sub_order_id: params.trade_info.order_id,
@@ -115,16 +111,16 @@ const actions = {
           pay_amt: parseInt(params.total_fee) / 100
         }
       ]
-    });
-    Tracker.trackEvents("custom_order", "用户关闭支付密码浮层", data);
+    })
+    Tracker.trackEvents('custom_order', '用户关闭支付密码浮层', data)
   },
   // 用户取消订单
-  ["CANCEL_ORDER"](params) {
-    const { orderInfo } = params;
+  ['CANCEL_ORDER'] (params) {
+    const { orderInfo } = params
     const data = resolveOrderInfo({
       order_id: orderInfo.order_id,
       order_time: orderInfo.create_time,
-      order_status: "cancel_give_order",
+      order_status: 'cancel_give_order',
       cancel_time: new Date().getTime(),
       sub_orders: [
         {
@@ -133,15 +129,15 @@ const actions = {
           pay_amt: parseInt(orderInfo.total_fee) / 100
         }
       ]
-    });
-    Tracker.trackEvents("custom_order", "用户取消订单", data);
+    })
+    Tracker.trackEvents('custom_order', '用户取消订单', data)
   },
   // 用户发起支付
-  ["ORDER_PAY"](params) {
+  ['ORDER_PAY'] (params) {
     const data = resolveOrderInfo({
       order_id: params.trade_info.order_id,
       order_time: params.timeStamp,
-      order_status: "pay",
+      order_status: 'pay',
       //pay_time: new Date().getTime(),
       sub_orders: [
         {
@@ -150,14 +146,14 @@ const actions = {
           pay_amt: parseInt(params.total_fee) / 100
         }
       ]
-    });
-    Tracker.trackEvents("custom_order", "用户发起支付", data);
+    })
+    Tracker.trackEvents('custom_order', '用户发起支付', data)
   },
-  ["ORDER_PAYED"](params) {
+  ['ORDER_PAYED'] (params) {
     const data = resolveOrderInfo({
       order_id: params.trade_info.order_id,
       order_time: params.timeStamp,
-      order_status: "payed",
+      order_status: 'payed',
       //pay_time: new Date().getTime(),
       sub_orders: [
         {
@@ -166,15 +162,15 @@ const actions = {
           pay_amt: parseInt(params.total_fee) / 100
         }
       ]
-    });
-    Tracker.trackEvents("custom_order", "用户完成支付", data);
+    })
+    Tracker.trackEvents('custom_order', '用户完成支付', data)
   },
   // 用户发起退货退款
-  ["ORDER_REFUND"](params) {
+  ['ORDER_REFUND'] (params) {
     const data = resolveOrderInfo({
       order_id: params.order_id,
       order_time: params.create_time,
-      order_status: "refund",
+      order_status: 'refund',
       refund_time: new Date().getTime(),
       sub_orders: [
         {
@@ -183,55 +179,48 @@ const actions = {
           pay_amt: parseInt(params.total_fee) / 100
         }
       ]
-    });
-    Tracker.trackEvents("custom_order", "用户发起退货退款", data);
+    })
+    Tracker.trackEvents('custom_order', '用户发起退货退款', data)
   },
   // 页面上拉触底
-  ["PAGE_REACH_BOTTOM"]() {
-    Tracker.trackEvents("page_reach_bottom", "页面上拉触底");
+  ['PAGE_REACH_BOTTOM'] () {
+    Tracker.trackEvents('page_reach_bottom', '页面上拉触底')
   },
   // 页面下拉刷新
-  ["PAGE_PULL_DOWN_REFRESH"]() {
-    Tracker.trackEvents("page_pull_down_refresh", "页面下拉刷新");
+  ['PAGE_PULL_DOWN_REFRESH'] () {
+    Tracker.trackEvents('page_pull_down_refresh', '页面下拉刷新')
   },
   // 领取优惠券
-  ["GET_COUPON"](params) {
-    Tracker.trackEvents("get_coupon", "领取优惠券", {
+  ['GET_COUPON'] (params) {
+    Tracker.trackEvents('get_coupon', '领取优惠券', {
       coupon: {
         coupon_id: params.card_id,
         coupon_name: params.title
       }
-    });
+    })
   },
   // 分享
-  ["GOODS_SHARE_TO_CHANNEL_CLICK"](params) {
+  ['GOODS_SHARE_TO_CHANNEL_CLICK'] (params) {
     const data = {
-      from_type: params.from_type || "button",
+      from_type: params.from_type || 'button',
       share_title: params.item_name || params.share_title,
-      share_image_url: params.pics ? params.pics[0] : "",
+      share_image_url: params.pics ? params.pics[0] : '',
       shareType: params.shareType
-    };
+    }
 
-    Tracker.trackEvents("page_share_app_message", "分享", data);
+    Tracker.trackEvents('page_share_app_message', '分享', data)
   },
   // 搜索
-  ["SEARCH_RESULT"](params) {
-    const { keywords: keyword } = params;
+  ['SEARCH_RESULT'] (params) {
+    const { keywords: keyword } = params
 
-    Tracker.trackEvents("search", "搜索返回结果", {
+    Tracker.trackEvents('search', '搜索返回结果', {
       keyword
-    });
+    })
   },
   // 商品收藏
-  ["GOODS_COLLECT"](params) {
-    const {
-      itemId,
-      itemName,
-      market_price,
-      price,
-      member_price,
-      pics
-    } = params;
+  ['GOODS_COLLECT'] (params) {
+    const { itemId, itemName, market_price, price, member_price, pics } = params
     const data = resolveCartInfo({
       sku_id: itemId,
       sku_name: itemName,
@@ -241,20 +230,12 @@ const actions = {
       goods_id: itemId,
       goods_title: itemName,
       primary_image_url: pics[0]
-    });
-    Tracker.trackEvents("sku_collect", "商品收藏", data);
+    })
+    Tracker.trackEvents('sku_collect', '商品收藏', data)
   },
   // 商品页浏览
-  ["GOODS_DETAIL_VIEW"](params) {
-    const {
-      itemId,
-      goods_id,
-      itemName,
-      market_price,
-      price,
-      member_price,
-      pics
-    } = params;
+  ['GOODS_DETAIL_VIEW'] (params) {
+    const { itemId, goods_id, itemName, market_price, price, member_price, pics } = params
     const data = resolveCartInfo({
       sku_id: itemId,
       sku_name: itemName,
@@ -264,19 +245,12 @@ const actions = {
       goods_id: goods_id,
       goods_title: itemName,
       primary_image_url: pics[0]
-    });
-    Tracker.trackEvents("browse_sku_page", "浏览商品详情页", data);
+    })
+    Tracker.trackEvents('browse_sku_page', '浏览商品详情页', data)
   },
   // 商品卡曝光
-  ["EXPOSE_SKU_COMPONENT"](params) {
-    const {
-      goodsId,
-      title,
-      market_price,
-      price,
-      member_price,
-      imgUrl
-    } = params;
+  ['EXPOSE_SKU_COMPONENT'] (params) {
+    const { goodsId, title, market_price, price, member_price, imgUrl } = params
     const data = resolveCartInfo({
       sku_id: goodsId,
       sku_name: title,
@@ -286,19 +260,12 @@ const actions = {
       goods_id: goodsId,
       goods_title: title,
       primary_image_url: imgUrl
-    });
-    Tracker.trackEvents("expose_sku_component", "商品卡曝光", data);
+    })
+    Tracker.trackEvents('expose_sku_component', '商品卡曝光', data)
   },
   // 商品卡触发
-  ["TRIGGER_SKU_COMPONENT"](params) {
-    const {
-      goodsId,
-      title,
-      market_price,
-      price,
-      member_price,
-      imgUrl
-    } = params;
+  ['TRIGGER_SKU_COMPONENT'] (params) {
+    const { goodsId, title, market_price, price, member_price, imgUrl } = params
     const data = resolveCartInfo({
       sku_id: goodsId,
       sku_name: title,
@@ -308,8 +275,8 @@ const actions = {
       goods_id: goodsId,
       goods_title: title,
       primary_image_url: imgUrl
-    });
-    Tracker.trackEvents("trigger_sku_component", "商品卡触发", data);
+    })
+    Tracker.trackEvents('trigger_sku_component', '商品卡触发', data)
   },
   /**
    * first_add_to_cart：首次加车；
@@ -318,7 +285,7 @@ const actions = {
    * remove_from_cart：从购物车彻底移除
    */
   // 从购物车彻底移除
-  ["REMOVE_FROM_CART"](params) {
+  ['REMOVE_FROM_CART'] (params) {
     const {
       item_id: sku_id,
       item_spec_desc: sku_name,
@@ -328,27 +295,27 @@ const actions = {
       member_price,
       title,
       goods_id
-    } = params;
+    } = params
     const data = resolveCartInfo(
       {
         sku_id,
         sku_name,
         num,
         market_price: parseInt(market_price * 100),
-        price: parseInt( price * 100 ),
+        price: parseInt(price * 100),
         member_price,
         goods_id: goods_id,
         goods_title: title
       },
-      "remove_from_cart"
-    );
+      'remove_from_cart'
+    )
 
-    Tracker.trackEvents("add_to_cart", "从购物车彻底移除", data);
+    Tracker.trackEvents('add_to_cart', '从购物车彻底移除', data)
   },
   // 再次加车
-  ["append_to_cart"](params) {},
+  ['append_to_cart'] (params) {},
   // 购物车追加
-  ["APPEND_TO_CART_IN_CART"](params) {
+  ['APPEND_TO_CART_IN_CART'] (params) {
     const {
       item_id: sku_id,
       item_spec_desc: sku_name,
@@ -358,7 +325,7 @@ const actions = {
       member_price,
       title,
       goods_id
-    } = params;
+    } = params
     const data = resolveCartInfo(
       {
         sku_id,
@@ -370,12 +337,12 @@ const actions = {
         goods_id,
         goods_title: title
       },
-      "append_to_cart"
-    );
-    Tracker.trackEvents("add_to_cart", "购物车追加", data);
+      'append_to_cart'
+    )
+    Tracker.trackEvents('add_to_cart', '购物车追加', data)
   },
   // 购物车移除
-  ["REMOVE_FROM_CART_NUM"](params) {
+  ['REMOVE_FROM_CART_NUM'] (params) {
     const {
       item_id: sku_id,
       item_spec_desc: sku_name,
@@ -385,7 +352,7 @@ const actions = {
       member_price,
       title,
       goods_id
-    } = params;
+    } = params
     const data = resolveCartInfo(
       {
         sku_id,
@@ -397,13 +364,13 @@ const actions = {
         goods_id: goods_id,
         goods_title: title
       },
-      "remove_from_cart"
-    );
+      'remove_from_cart'
+    )
 
-    Tracker.trackEvents("add_to_cart", "购物车移除", data);
+    Tracker.trackEvents('add_to_cart', '购物车移除', data)
   },
   // 首次加车
-  ["GOODS_ADD_TO_CART"](params) {
+  ['GOODS_ADD_TO_CART'] (params) {
     const {
       item_id: sku_id,
       propsText: sku_name,
@@ -414,7 +381,7 @@ const actions = {
       goods_id,
       itemName: goods_title,
       item_name
-    } = params;
+    } = params
 
     const data = resolveCartInfo(
       {
@@ -428,10 +395,10 @@ const actions = {
         goods_title,
         item_name
       },
-      "append_to_cart"
-    );
-    Tracker.trackEvents("add_to_cart", "首次加车", data);
+      'append_to_cart'
+    )
+    Tracker.trackEvents('add_to_cart', '首次加车', data)
   }
-};
+}
 
-export default actions;
+export default actions

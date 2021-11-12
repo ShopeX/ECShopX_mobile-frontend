@@ -2,7 +2,6 @@ import Taro, { Component } from '@tarojs/taro'
 import { AtTabBar } from 'taro-ui'
 
 export default class NavBar extends Component {
-
   static defaultProps = {
     current: 0
   }
@@ -22,11 +21,11 @@ export default class NavBar extends Component {
       url: tabList[current]
     })
   }
-  
+
   render () {
     const { current } = this.props
     return (
-      <AtTabBar 
+      <AtTabBar
         fixed
         current={current}
         selectedColor='#ffd000'
@@ -35,7 +34,7 @@ export default class NavBar extends Component {
         tabList={[
           { title: '首页', iconType: 'home', iconPrefixClass: 'icon' },
           { title: '购物车', iconType: 'cart', iconPrefixClass: 'icon', text: '' },
-          { title: '会员中心', iconType: 'member', iconPrefixClass: 'icon'},
+          { title: '会员中心', iconType: 'member', iconPrefixClass: 'icon' }
         ]}
       />
     )

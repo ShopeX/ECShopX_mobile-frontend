@@ -1,40 +1,34 @@
 export default class Base {
-  constructor(options = {}) {
-    this.options = options;
+  constructor (options = {}) {
+    this.options = options
   }
 
-  setVar() {}
-  trackEvent() {}
+  setVar () {}
+  trackEvent () {}
 
-  componentDidMount() {}
-  componentDidHide() {}
+  componentDidMount () {}
+  componentDidHide () {}
 
-  dispatch(type, payload) {
+  dispatch (type, payload) {
     try {
-      const actions = this.actions;
+      const actions = this.actions
       if (!actions) {
-        console.error("tracker actions not found:");
-        return;
+        console.error('tracker actions not found:')
+        return
       }
       if (actions) {
-        const fn = actions[type];
+        const fn = actions[type]
         if (fn) {
-          if (typeof payload === "function") {
-            payload = payload(this);
+          if (typeof payload === 'function') {
+            payload = payload(this)
           }
-          return fn(payload);
+          return fn(payload)
         }
 
-        console.error(
-          "tracker action not defined: ",
-          type,
-          " payload: ",
-          payload
-        );
+        console.error('tracker action not defined: ', type, ' payload: ', payload)
       }
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
   }
-
 }

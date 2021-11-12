@@ -1,4 +1,3 @@
-
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { SpNavBar, SpHtmlContent } from '@/components'
@@ -31,9 +30,14 @@ export default class RegRule extends Component {
       const { content, title = '充值协议' } = await api.member.depositPayRule()
       data = content
       navBarTitle = title
-    } else if (type === 'privacyAndregister') { // 隐私和注册协议
-      const { content: registerContent, title: registerTitle } = await api.shop.getRuleInfo({ type: 'member_register' })
-      const { content: privacyContent, title: privactTitle } = await api.shop.getRuleInfo({ type: 'privacy' })
+    } else if (type === 'privacyAndregister') {
+      // 隐私和注册协议
+      const { content: registerContent, title: registerTitle } = await api.shop.getRuleInfo({
+        type: 'member_register'
+      })
+      const { content: privacyContent, title: privactTitle } = await api.shop.getRuleInfo({
+        type: 'privacy'
+      })
       data = registerContent + privacyContent
       navBarTitle = `${registerTitle}和${privactTitle}`
     } else if (type) {
@@ -59,23 +63,13 @@ export default class RegRule extends Component {
     })
   }
 
-
   render () {
     const { info, title } = this.state
 
     return (
       <View className='page-member-integral'>
-        <SpNavBar
-          title={title}
-          leftIconType='chevron-left'
-        />
-        {
-          info &&
-            <SpHtmlContent
-              className='pay-rule-style'
-              content={info}
-            />
-        }
+        <SpNavBar title={title} leftIconType='chevron-left' />
+        {info && <SpHtmlContent className='pay-rule-style' content={info} />}
       </View>
     )
   }

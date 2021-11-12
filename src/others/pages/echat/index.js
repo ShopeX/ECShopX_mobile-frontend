@@ -16,18 +16,15 @@ export default class MeiQia extends Component {
     super(props)
   }
 
-  componentDidMount () {
-  }
+  componentDidMount () {}
 
   handleClose = () => {
     Taro.navigateBack()
   }
-  
+
   render () {
     const echat = Taro.getStorageSync('echat')
 
-    return (
-      echat && echat.echat_url &&<WebView src={echat.echat_url}></WebView>
-    )
+    return echat && echat.echat_url && <WebView src={echat.echat_url}></WebView>
   }
 }

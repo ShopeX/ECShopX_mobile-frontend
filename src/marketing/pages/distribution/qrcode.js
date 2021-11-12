@@ -3,14 +3,13 @@ import { View, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { SpNavBar } from '@/components'
 import api from '@/api'
-import userIcon from "@/assets/imgs/user-icon.png";
+import userIcon from '@/assets/imgs/user-icon.png'
 
 import './qrcode.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 export default class DistributionQrcode extends Component {
   constructor (props) {
     super(props)
@@ -35,7 +34,7 @@ export default class DistributionQrcode extends Component {
     isOpenShop = JSON.parse(isOpenShop)
     status = JSON.parse(status)
     const url = isOpenShop && status ? `marketing/pages/distribution/shop-home` : `pages/index`
-    const res = await api.distribution.qrcode({path: url})
+    const res = await api.distribution.qrcode({ path: url })
     const { qrcode } = res
 
     this.setState({
@@ -52,26 +51,19 @@ export default class DistributionQrcode extends Component {
     const { info } = this.state
 
     return (
-      <View
-        className="page-distribution-qrcode"
-        style={"background: " + colors.data[0].marketing}
-      >
-        <SpNavBar title="二维码" leftIconType="chevron-left" />
-        <View className="qrcode-bg">
-          <View className="title">邀请卡</View>
-          <Image
-            className="avatar"
-            src={info.avatar || userIcon}
-            mode="aspectFit"
-          />
-          <View className="name">{info.username}</View>
-          <View className="welcome-words">邀你一起加入，推广赢奖励</View>
-          <View className="qrcode">
-            <Image src={info.qrcode} mode="aspectFit" />
+      <View className='page-distribution-qrcode' style={'background: ' + colors.data[0].marketing}>
+        <SpNavBar title='二维码' leftIconType='chevron-left' />
+        <View className='qrcode-bg'>
+          <View className='title'>邀请卡</View>
+          <Image className='avatar' src={info.avatar || userIcon} mode='aspectFit' />
+          <View className='name'>{info.username}</View>
+          <View className='welcome-words'>邀你一起加入，推广赢奖励</View>
+          <View className='qrcode'>
+            <Image src={info.qrcode} mode='aspectFit' />
           </View>
-          <View className="tips">微信扫一扫或长按识别</View>
+          <View className='tips'>微信扫一扫或长按识别</View>
         </View>
       </View>
-    );
+    )
   }
 }

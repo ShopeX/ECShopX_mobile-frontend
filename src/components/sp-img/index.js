@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { Image } from '@tarojs/components'
 import { classNames } from '@/utils'
-import "./index.scss";
-export default class SpImg extends Component {
+import './index.scss'
 
+export default class SpImg extends Component {
   static defaultProps = {
     onLoad: () => {},
     onError: () => {}
@@ -16,7 +16,7 @@ export default class SpImg extends Component {
   static externalClasses = ['img-class']
 
   render () {
-    const { disk_driver = 'qiniu'} = Taro.getStorageSync('otherSetting') || {}
+    const { disk_driver = 'qiniu' } = Taro.getStorageSync('otherSetting') || {}
     const {
       src,
       mode,
@@ -56,8 +56,11 @@ export default class SpImg extends Component {
       // 是否需要处理
       const isMode = mod || width || height || ll || ss || lim || col || per
       url += isMode ? `?x-oss-process=image/resize,${mod}${w}${h}${ll}${ss}${lim}${col}${per}` : ''
-    } else if (disk_driver === 'qiniu'){
-      url += (width || height) ? `?imageView2/2${width ? '/w/' + width : ''}${height ? '/h/' + height : ''}` : ''
+    } else if (disk_driver === 'qiniu') {
+      url +=
+        width || height
+          ? `?imageView2/2${width ? '/w/' + width : ''}${height ? '/h/' + height : ''}`
+          : ''
     }
 
     const imgClass = Taro.getEnv() !== 'WEB' ? 'img-class' : this.props['img-class']
@@ -71,6 +74,6 @@ export default class SpImg extends Component {
         onLoad={onLoad}
         lazyLoad={lazyLoad}
       />
-    );
+    )
   }
 }

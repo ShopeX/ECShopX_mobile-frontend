@@ -38,7 +38,7 @@ export default class DistributionShopAchievement extends Component {
       pageSize
     }
 
-    const { list, total_count: total} = await api.distribution.shopAchievement(query)
+    const { list, total_count: total } = await api.distribution.shopAchievement(query)
     const nList = pickBy(list, {
       title: 'item_name',
       limit_desc: 'limit_desc',
@@ -63,38 +63,40 @@ export default class DistributionShopAchievement extends Component {
 
   handleDateChange = (val) => {
     console.log(11111111)
-    this.setState({
-      date: val.detail.value
-    }, () => {
-      Taro.showLoading({
-        title: '加载中',
-        icon: 'none',
-      })
-      this.resetPage(() => {
-        this.nextPage()
-        this.setState({
-          list: []
+    this.setState(
+      {
+        date: val.detail.value
+      },
+      () => {
+        Taro.showLoading({
+          title: '加载中',
+          icon: 'none'
         })
-        Taro.hideLoading()
-      })
-    })
+        this.resetPage(() => {
+          this.nextPage()
+          this.setState({
+            list: []
+          })
+          Taro.hideLoading()
+        })
+      }
+    )
   }
 
   render () {
     const { list, page, date, scrollTop } = this.state
 
     return (
-      <View className="page-distribution-shop">
-        <View class="page-header">
+      <View className='page-distribution-shop'>
+        <View class='page-header'>
           <Picker mode='date' fields='month' onChange={this.handleDateChange}>
-            {
-              date
-              ? <View className='picker'>
-                  业绩周期：{this.state.date}
-                </View>
-              : <View>查看历史业绩请选择日期 <Text className='icon-arrowDown' /></View>
-            }
-
+            {date ? (
+              <View className='picker'>业绩周期：{this.state.date}</View>
+            ) : (
+              <View>
+                查看历史业绩请选择日期 <Text className='icon-arrowDown' />
+              </View>
+            )}
           </Picker>
         </View>
         <ScrollView
@@ -106,36 +108,34 @@ export default class DistributionShopAchievement extends Component {
           onScrollToLower={this.nextPage}
         >
           <View className='achievement-list'>
-            {
-              list.map((item, index) =>
+            {list.map((item, index) => (
               <View className='section achievement-list__item'>
                 <View className='section-title'>
                   <View className='achievement-list__item-label'>任务商品：</View>
                   <View className='achievement-list__item-title'>{item.title}</View>
                 </View>
-                {
-                  item.limit_desc &&
-                    <View className='achievement-list__item-target'>{item.limit_desc}</View>
-                }
-                {
-                  !item.limit_desc && item.status === 1 &&
-                    <View className='achievement-list__item-target'>已达标</View>
-                }
+                {item.limit_desc && (
+                  <View className='achievement-list__item-target'>{item.limit_desc}</View>
+                )}
+                {!item.limit_desc && item.status === 1 && (
+                  <View className='achievement-list__item-target'>已达标</View>
+                )}
                 <View className='section-body view-flex content-center achievement-list__item-status'>
-                  {
-                    item.rebate_type == 'total_num' &&
-                      <View className='view-flex-item'>
-                        <View className='status-label'>已完成订单</View>
-                        <View className='status-value'>{item.finish_num}</View>
+                  {item.rebate_type == 'total_num' && (
+                    <View className='view-flex-item'>
+                      <View className='status-label'>已完成订单</View>
+                      <View className='status-value'>{item.finish_num}</View>
+                    </View>
+                  )}
+                  {item.rebate_type == 'total_money' && (
+                    <View className='view-flex-item'>
+                      <View className='status-label'>已完成金额</View>
+                      <View className='status-value price'>
+                        <Text className='cur'>¥</Text>
+                        {item.total_fee}
                       </View>
-                  }
-                  {
-                    item.rebate_type == 'total_money' &&
-                      <View className='view-flex-item'>
-                        <View className='status-label'>已完成金额</View>
-                        <View className='status-value price'><Text className='cur'>¥</Text>{item.total_fee}</View>
-                      </View>
-                  }
+                    </View>
+                  )}
                   <View className='view-flex-item'>
                     <View className='status-label'>已关闭订单</View>
                     <View className='status-value'>{item.close_num}</View>
@@ -146,18 +146,12 @@ export default class DistributionShopAchievement extends Component {
                   </View>
                 </View>
               </View>
-              )
-            }
+            ))}
           </View>
-          {
-            page.isLoading
-              ? <Loading>正在加载...</Loading>
-              : null
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-          }
+          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+          )}
         </ScrollView>
         <SpToast />
       </View>

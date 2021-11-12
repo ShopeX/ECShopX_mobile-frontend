@@ -20,7 +20,7 @@ export default class ItemParams extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
@@ -41,22 +41,12 @@ export default class ItemParams extends Component {
     const { list } = this.state
 
     return (
-      <View className="goods-params-wrap">
-        <SpNavBar
-          title='商品参数'
-          leftIconType='chevron-left'
-        />	          
-        <View className="goods-params">
-          {
-            list.map((item) => {
-              return (
-                <ParamsItem
-                  key={item.attribute_id}
-                  info={item}
-                />
-              )
-            })
-          }
+      <View className='goods-params-wrap'>
+        <SpNavBar title='商品参数' leftIconType='chevron-left' />
+        <View className='goods-params'>
+          {list.map((item) => {
+            return <ParamsItem key={item.attribute_id} info={item} />
+          })}
         </View>
       </View>
     )

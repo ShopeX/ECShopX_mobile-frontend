@@ -3,16 +3,19 @@ import { View, Text, Image } from '@tarojs/components'
 import { Loading } from '@/components'
 import api from '@/api'
 import { withLogin } from '@/hocs'
-import { connect } from "@tarojs/redux"
+import { connect } from '@tarojs/redux'
 import { pickBy } from '@/utils'
 import { AtRate, AtTextarea, AtImagePicker } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 
 import './rate.scss'
 
-@connect(( { colors } ) => ({
-  colors: colors.current
-}), () => ({}))
+@connect(
+  ({ colors }) => ({
+    colors: colors.current
+  }),
+  () => ({})
+)
 @withLogin()
 export default class TradeRate extends Component {
   constructor (props) {
@@ -41,36 +44,38 @@ export default class TradeRate extends Component {
       mask: true
     })
     const info = pickBy(data.orderInfo, {
-      orders: ({ items }) => pickBy(items, {
-        item_id: 'item_id',
-        item_spec_desc: 'item_spec_desc',
-        pic_path: 'pic',
-        title: 'item_name',
-        price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
-        num: 'num',
-        star: 0,
-        content: '',
-        pics: []
-      }),
-      logistics_items: ({ logistics_items = [] }) => pickBy(logistics_items, {
-        item_id: 'item_id',
-        item_spec_desc: 'item_spec_desc',
-        pic_path: 'pic',
-        title: 'item_name',
-        price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
-        num: 'num',
-        star: 0,
-        content: '',
-        pics: []
-      }), 
+      orders: ({ items }) =>
+        pickBy(items, {
+          item_id: 'item_id',
+          item_spec_desc: 'item_spec_desc',
+          pic_path: 'pic',
+          title: 'item_name',
+          price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+          num: 'num',
+          star: 0,
+          content: '',
+          pics: []
+        }),
+      logistics_items: ({ logistics_items = [] }) =>
+        pickBy(logistics_items, {
+          item_id: 'item_id',
+          item_spec_desc: 'item_spec_desc',
+          pic_path: 'pic',
+          title: 'item_name',
+          price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+          num: 'num',
+          star: 0,
+          content: '',
+          pics: []
+        })
     })
     Taro.hideLoading()
     const orders = [...info.orders, ...info.logistics_items]
     let goodsList = []
     let giftList = []
-    if(orders && orders.length > 0){
-      orders.map(item => {
-        if(item.order_item_type !== 'gift') {
+    if (orders && orders.length > 0) {
+      orders.map((item) => {
+        if (item.order_item_type !== 'gift') {
           goodsList.push(item)
         } else {
           giftList.push(item)
@@ -150,7 +155,7 @@ export default class TradeRate extends Component {
       }
 
       let pics = []
-      item.pics.map(pic => {
+      item.pics.map((pic) => {
         pics.push(pic.url)
       })
       rates.push({
@@ -190,11 +195,9 @@ export default class TradeRate extends Component {
     const { goodsList } = this.state
 
     const { colors } = this.props
- 
+
     if (!goodsList.length) {
-      return (
-        <Loading />
-      )
+      return <Loading />
     }
 
     return (
@@ -211,18 +214,16 @@ export default class TradeRate extends Component {
                       src={Array.isArray(item.pic_path) ? item.pic_path[0] : item.pic_path}
                     />
                   </View>
-                  <View className='goods-item__bd'>
-                    { item.title }
-                  </View>
+                  <View className='goods-item__bd'>{item.title}</View>
                 </View>
                 <View className='rate-wrap'>
                   <Text className='title'>商品评价</Text>
                   <AtRate
-                    size='21' 
-                    value={item.star} 
+                    size='21'
+                    value={item.star}
                     onChange={this.handleChange.bind(this, idx)}
                   />
-                  <Text className='rate-num'>{item.star ? (item.star + '.0') : 0}分</Text>
+                  <Text className='rate-num'>{item.star ? item.star + '.0' : 0}分</Text>
                 </View>
 
                 <View className='comment-wrap'>
@@ -252,7 +253,9 @@ export default class TradeRate extends Component {
         </View>
 
         <View className='submit-btn'>
-          <View className='btn noname' onClick={this.handleClickSubmit.bind(this, true)}>匿名评价</View>
+          <View className='btn noname' onClick={this.handleClickSubmit.bind(this, true)}>
+            匿名评价
+          </View>
           <View
             className='btn name'
             style={`background: ${colors.data[0].primary}`}

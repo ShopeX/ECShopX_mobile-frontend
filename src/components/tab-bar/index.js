@@ -6,12 +6,11 @@ import { getCurrentRoute } from '@/utils'
 import S from '@/spx'
 // import { getTotalCount } from '@/store/cart'
 
-@connect(({ tabBar,cart }) => ({
+@connect(({ tabBar, cart }) => ({
   tabBar: tabBar.current,
   cartCount: cart.cartCount
 }))
 export default class TabBar extends Component {
-
   constructor (props) {
     super(props)
 
@@ -23,7 +22,7 @@ export default class TabBar extends Component {
       tabList: []
     }
   }
-  
+
   componentDidMount () {
     this.initTabbarData()
   }
@@ -49,9 +48,9 @@ export default class TabBar extends Component {
     addGlobalClass: true
   }
 
-  initTabbarData () { 
+  initTabbarData () {
     const { tabBar } = this.props
-    console.log("--initTabbarData---",tabBar)
+    console.log('--initTabbarData---', tabBar)
     let list = []
 
     if (tabBar) {
@@ -62,7 +61,7 @@ export default class TabBar extends Component {
         color,
         selectedColor
       })
-      data.map(item => {
+      data.map((item) => {
         let obj = {
           title: item.text,
           iconType: item.iconPath && item.selectedIconPath ? '' : item.name,
@@ -73,24 +72,53 @@ export default class TabBar extends Component {
           urlRedirect: true
         }
         if (item.name === 'cart') {
-          Object.assign(obj, {text: this.cartCount || '', max: '99'})
+          Object.assign(obj, { text: this.cartCount || '', max: '99' })
         }
         list.push(obj)
       })
     } else {
       list = [
-        { title: '首页', iconType: 'home', iconPrefixClass: 'icon', url: '/pages/index', urlRedirect: true },
-        { title: '分类', iconType: 'category', iconPrefixClass: 'icon', url: '/pages/category/index', urlRedirect: true },
-        { title: '购物车', iconType: 'cart', iconPrefixClass: 'icon', url: '/pages/cart/espier-index', text: this.cartCount || '', max: '99',urlRedirect: true },
-        { title: '我的', iconType: 'member', iconPrefixClass: 'icon', url: '/pages/member/index', urlRedirect: true },
+        {
+          title: '首页',
+          iconType: 'home',
+          iconPrefixClass: 'icon',
+          url: '/pages/index',
+          urlRedirect: true
+        },
+        {
+          title: '分类',
+          iconType: 'category',
+          iconPrefixClass: 'icon',
+          url: '/pages/category/index',
+          urlRedirect: true
+        },
+        {
+          title: '购物车',
+          iconType: 'cart',
+          iconPrefixClass: 'icon',
+          url: '/pages/cart/espier-index',
+          text: this.cartCount || '',
+          max: '99',
+          urlRedirect: true
+        },
+        {
+          title: '我的',
+          iconType: 'member',
+          iconPrefixClass: 'icon',
+          url: '/pages/member/index',
+          urlRedirect: true
+        }
       ]
-    } 
+    }
 
-    this.setState({
-      tabList: [...list],
-    }, () => {
-      this.updateCurTab()
-    })
+    this.setState(
+      {
+        tabList: [...list]
+      },
+      () => {
+        this.updateCurTab()
+      }
+    )
   }
 
   get cartCount () {
@@ -107,13 +135,12 @@ export default class TabBar extends Component {
   }
 
   updateCurTab () {
-   
     this.fetchCart()
     const { tabList, localCurrent } = this.state
-    const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
+    const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
 
-    console.log("--updateCurTab--",localCurrent,fullPath,tabList)
-    
+    console.log('--updateCurTab--', localCurrent, fullPath, tabList)
+
     if (tabList.length == 0) {
       return
     }
@@ -129,7 +156,7 @@ export default class TabBar extends Component {
   async fetchCart () {
     if (!S.getAuthToken()) return
     const { tabList } = this.state
-    const cartTabIdx = tabList.findIndex(item => item.url.indexOf('cart') !== -1)
+    const cartTabIdx = tabList.findIndex((item) => item.url.indexOf('cart') !== -1)
     const updateCartCount = (count) => {
       tabList[cartTabIdx].text = count || ''
       this.setState({
@@ -138,31 +165,29 @@ export default class TabBar extends Component {
     }
 
     const { path } = getCurrentRoute(this.$router)
-    if (this.state.tabList[cartTabIdx] && (path === this.state.tabList[cartTabIdx].url)) {
+    if (this.state.tabList[cartTabIdx] && path === this.state.tabList[cartTabIdx].url) {
       updateCartCount('')
       return
     }
-
   }
 
   handleClick = (current) => {
-    
     const cur = this.state.localCurrent
-    const {showbar = true} = this.props
-    if(!showbar){
+    const { showbar = true } = this.props
+    if (!showbar) {
       return false
     }
-    
+
     if (cur !== current) {
       const curTab = this.state.tabList[current]
       const { url, withLogin } = curTab
-      const fullPath = ((getCurrentRoute(this.$router).fullPath).split('?'))[0]
-    
+      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+
       if (withLogin && !S.getAuthToken()) {
         return Taro.navigateTo({
           url: APP_AUTH_PAGE
         })
-      } 
+      }
       if (url && fullPath !== url) {
         // if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
         //   Taro.navigateTo({ url })
@@ -173,17 +198,14 @@ export default class TabBar extends Component {
     }
   }
 
- 
-
   render () {
     const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
- 
 
     if (process.env.APP_INTEGRATION) {
       return <View></View>
     }
 
-    console.log("-----tabList----",tabList,localCurrent)
+    console.log('-----tabList----', tabList, localCurrent)
 
     return (
       <AtTabBar

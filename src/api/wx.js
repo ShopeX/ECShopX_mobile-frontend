@@ -4,13 +4,11 @@ import { getYoushuAppid } from '@/utils/youshu'
 import { payTypeField } from '@/utils'
 
 const getAppId = () => {
-  const { appid } = Taro.getExtConfigSync
-    ? Taro.getExtConfigSync()
-    : {};
+  const { appid } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
 
   return appid
 }
-  
+
 export function info (data) {
   return req.post('/wx.info', data)
 }
@@ -19,27 +17,33 @@ export function code (code) {
   return req.get('/wx.code', { code })
 }
 
-export function getYoushuOpenid( params ) {
-  const appid = getAppId();
-  return req.post('/getopenid', {
-    ...params, 
-    appid
-  }, { showError: false })
+export function getYoushuOpenid (params) {
+  const appid = getAppId()
+  return req.post(
+    '/getopenid',
+    {
+      ...params,
+      appid
+    },
+    { showError: false }
+  )
 }
 
 export function userInfo () {
   return req.get('/wx.user.info')
 }
 
-
-
 export function login (params) {
   const appid = getAppId()
-  return req.post('/login', {
-    ...params,
-    appid,
-    auth_type: 'wxapp'
-  }, { showError: false })
+  return req.post(
+    '/login',
+    {
+      ...params,
+      appid,
+      auth_type: 'wxapp'
+    },
+    { showError: false }
+  )
 }
 
 export function newMarketing () {
@@ -48,20 +52,24 @@ export function newMarketing () {
 
 export function newlogin (params) {
   const appid = getAppId()
-  return req.post('/new_login', {
+  return req.post(
+    '/new_login',
+    {
+      ...params,
+      appid,
+      auth_type: 'wxapp'
+    },
+    { showError: false }
+  )
+}
+
+export function prelogin (params) {
+  const appid = getAppId()
+  return req.post('/prelogin', {
     ...params,
     appid,
     auth_type: 'wxapp'
-  }, { showError: false })
-}
-
-export function prelogin(params) {
-  const appid = getAppId();
-  return req.post("/prelogin", {
-    ...params,
-    appid,
-    auth_type: "wxapp"
-  });
+  })
 }
 
 // export function prelogin (params) {
@@ -106,27 +114,26 @@ export function taskReportData (params) {
 
 // 互动埋点上报
 export function interactiveReportData (params) {
-  console.log('[触发互动埋点上报]',params)
+  console.log('[触发互动埋点上报]', params)
   return req.post('/salesperson/relationshipcontinuity', {
     ...params
   })
 }
 
 // 刷新token
-export function refreshToken() {
-  return req.get("/token/refresh");
+export function refreshToken () {
+  return req.get('/token/refresh')
 }
-
 
 //加载更多商品
 export function loadMoreGoods (params) {
-  return req.get(`/pagestemplate/detail`,{
+  return req.get(`/pagestemplate/detail`, {
     ...params,
     ...payTypeField
   })
 }
 
 // 隐私协议更新时间
-export function getPrivacyTime (){
+export function getPrivacyTime () {
   return req.get(`/shops/protocolUpdateTime`)
 }

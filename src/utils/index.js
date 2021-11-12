@@ -8,7 +8,7 @@ import copy from 'copy-to-clipboard'
 import S from '@/spx'
 import { STATUS_TYPES_MAP } from '@/consts'
 import api from '@/api'
-import configStore from "@/store";
+import configStore from '@/store'
 import _get from 'lodash/get'
 import _findKey from 'lodash/findKey'
 import _pickBy from 'lodash/pickBy'
@@ -18,13 +18,12 @@ import log from './log'
 import canvasExp from './canvasExp'
 import calCommonExp from './calCommonExp'
 import entryLaunch from './entryLaunch'
-import validate from "./validate";
-import { isWeb } from "./platforms";
+import validate from './validate'
+import { isWeb } from './platforms'
 import { getPointName } from './point'
 
-
-const isPrimitiveType = ( val, type ) => Object.prototype.toString.call( val ) === type
-const { store } = configStore();
+const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
+const { store } = configStore()
 
 export function isFunction (val) {
   return isPrimitiveType(val, '[object Function]')
@@ -34,26 +33,26 @@ export function isNumber (val) {
   return isPrimitiveType(val, '[object Number]')
 }
 
-export function isPointerEvent(val) {
-  return isPrimitiveType(val, "[object PointerEvent]");
+export function isPointerEvent (val) {
+  return isPrimitiveType(val, '[object PointerEvent]')
 }
 /**
- * 保留两个位小数，不足补0 
- * @param { Number } value 
+ * 保留两个位小数，不足补0
+ * @param { Number } value
  */
-export const returnFloat = value => {
-	var value = Math.round(parseFloat(value)*100)/100;
-	var s = value.toString().split(".");
-	if(s.length == 1){
-		value=value.toString()+".00";
-		return value;
-	}
-	if(s.length > 1){
-		if(s[1].length < 2){
-			value=value.toString()+"0";
-		}
-		return value;
-	}
+export const returnFloat = (value) => {
+  var value = Math.round(parseFloat(value) * 100) / 100
+  var s = value.toString().split('.')
+  if (s.length == 1) {
+    value = value.toString() + '.00'
+    return value
+  }
+  if (s.length > 1) {
+    if (s[1].length < 2) {
+      value = value.toString() + '0'
+    }
+    return value
+  }
 }
 export function isObject (val) {
   return isPrimitiveType(val, '[object Object]')
@@ -72,13 +71,13 @@ export function normalizeArray (...args) {
 }
 
 export function getCurrentRoute (router) {
-  if (Taro.getEnv() == "WEAPP" || Taro.getEnv() == "ALIPAY") {
+  if (Taro.getEnv() == 'WEAPP' || Taro.getEnv() == 'ALIPAY') {
     // eslint-disable-next-line
-    const page = getCurrentPages().pop();
-    router = page.$component.$router;
+    const page = getCurrentPages().pop()
+    router = page.$component.$router
   }
   const { path, params: origParams } = router
-  const params = _pickBy(origParams, val => val !== '')
+  const params = _pickBy(origParams, (val) => val !== '')
 
   const fullPath = `${path}${Object.keys(params).length > 0 ? '?' + qs.stringify(params) : ''}`
 
@@ -92,10 +91,13 @@ export function getCurrentRoute (router) {
 // 除以100以后的千分符
 export function formatPriceToHundred (price) {
   if (price) {
-    return (Number(price)/100).toFixed(2).toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
+    return (Number(price) / 100)
+      .toFixed(2)
+      .toString()
+      .replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
   } else {
     return 0
-  } 
+  }
 }
 
 export async function normalizeQuerys (params = {}) {
@@ -123,15 +125,15 @@ export function pickBy (arr, keyMaps = {}) {
   const picker = (item) => {
     const ret = {}
 
-    Object.keys( keyMaps ).forEach( key => {
+    Object.keys(keyMaps).forEach((key) => {
       const val = keyMaps[key]
 
-      if ( isString( val ) ) {
-        ret[key] = _get( item, val )
-      } else if ( isFunction( val ) ) {
-        ret[key] = val( item )
-      } else if ( isObject( val ) ) {
-        ret[key] = _get(item, val.key) || val.default;
+      if (isString(val)) {
+        ret[key] = _get(item, val)
+      } else if (isFunction(val)) {
+        ret[key] = val(item)
+      } else if (isObject(val)) {
+        ret[key] = _get(item, val.key) || val.default
       } else {
         ret[key] = val
       }
@@ -147,9 +149,9 @@ export function pickBy (arr, keyMaps = {}) {
   }
 }
 
-export function navigateTo( url, isRedirect ) {
+export function navigateTo (url, isRedirect) {
   if (isObject(isRedirect) || isPointerEvent(isRedirect)) {
-    isRedirect = false;
+    isRedirect = false
   }
 
   if (isRedirect) {
@@ -160,9 +162,7 @@ export function navigateTo( url, isRedirect ) {
 }
 
 export function resolvePath (baseUrl, params = {}) {
-  const queryStr = typeof params === 'string'
-    ? params
-    : qs.stringify(params)
+  const queryStr = typeof params === 'string' ? params : qs.stringify(params)
 
   return `${baseUrl}${baseUrl.indexOf('?') >= 0 ? '&' : '?'}${queryStr}`
 }
@@ -216,7 +216,7 @@ export function calcTimer (totalSec) {
 
 export function resolveOrderStatus (status, isBackwards) {
   if (isBackwards) {
-    return _findKey(STATUS_TYPES_MAP, o => o === status)
+    return _findKey(STATUS_TYPES_MAP, (o) => o === status)
   }
 
   return STATUS_TYPES_MAP[status]
@@ -255,9 +255,8 @@ export function authSetting (scope, succFn, errFn) {
 
 export function imgCompression (url) {
   const rule = '?imageView2/1/w/80'
-  return url +  rule
+  return url + rule
 }
-
 
 export const browser = (() => {
   if (process.env.TARO_ENV === 'h5') {
@@ -266,95 +265,96 @@ export const browser = (() => {
       trident: ua.indexOf('Trident') > -1, //IE内核
       presto: ua.indexOf('Presto') > -1, //opera内核
       webKit: ua.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-      gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') == -1,//火狐内核
+      gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') == -1, //火狐内核
       mobile: !!ua.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
       ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
       android: ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1, //android终端
       weixin: ua.match(/MicroMessenger/i),
-      qq: ua.match(/\sQQ/i) == " qq", //是否QQ
-      isWeapp: (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) || global.__wxjs_environment === 'miniprogram',
+      qq: ua.match(/\sQQ/i) == ' qq', //是否QQ
+      isWeapp:
+        (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) ||
+        global.__wxjs_environment === 'miniprogram',
       isAlipay: ua.match(/AlipayClient/i)
     }
   }
-} )()
-
+})()
 
 export const getBrowserEnv = () => {
-  if ( process.env.TARO_ENV === 'h5' ) {
-    const ua = navigator.userAgent;
+  if (process.env.TARO_ENV === 'h5') {
+    const ua = navigator.userAgent
     return {
-      trident: ua.indexOf( "Trident" ) > -1, //IE内核
-      presto: ua.indexOf( "Presto" ) > -1, //opera内核
-      webKit: ua.indexOf( "AppleWebKit" ) > -1, //苹果、谷歌内核
-      gecko: ua.indexOf( "Gecko" ) > -1 && ua.indexOf( "KHTML" ) == -1, //火狐内核
-      mobile: !!ua.match( /AppleWebKit.*Mobile.*/ ), //是否为移动终端
-      ios: !!ua.match( /\(i[^;]+;( U;)? CPU.+Mac OS X/ ), //ios终端
-      android: ua.indexOf( "Android" ) > -1 || ua.indexOf( "Adr" ) > -1, //android终端
-      weixin: ua.match( /MicroMessenger/i ),
-      qq: ua.match( /\sQQ/i ) == " qq", //是否QQ
+      trident: ua.indexOf('Trident') > -1, //IE内核
+      presto: ua.indexOf('Presto') > -1, //opera内核
+      webKit: ua.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!ua.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1, //android终端
+      weixin: ua.match(/MicroMessenger/i),
+      qq: ua.match(/\sQQ/i) == ' qq', //是否QQ
       isWeapp:
-        ( ua.match( /MicroMessenger/i ) && ua.match( /miniprogram/i ) ) ||
-        global.__wxjs_environment === "miniprogram",
-      isAlipay: ua.match( /AlipayClient/i )
-    };
+        (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) ||
+        global.__wxjs_environment === 'miniprogram',
+      isAlipay: ua.match(/AlipayClient/i)
+    }
   }
 }
 
 // 注入美洽客服插件
 export const meiqiaInit = () => {
-  (function(m, ei, q, i, a, j, s) {
-    m[i] = m[i] || function() {
-        (m[i].a = m[i].a || []).push(arguments)
-    };
-    j = ei.createElement(q),
-        s = ei.getElementsByTagName(q)[0];
-    j.async = true;
-    j.charset = 'UTF-8';
-    j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
-    s.parentNode.insertBefore(j, s);
-  })(window, document, 'script', '_MEIQIA');
+  ;(function (m, ei, q, i, a, j, s) {
+    m[i] =
+      m[i] ||
+      function () {
+        ;(m[i].a = m[i].a || []).push(arguments)
+      }
+    ;(j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
+    j.async = true
+    j.charset = 'UTF-8'
+    j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t'
+    s.parentNode.insertBefore(j, s)
+  })(window, document, 'script', '_MEIQIA')
 }
 
-export function tokenParse(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  console.log("Taro.base64ToArrayBuffer",Taro)
-  var arr_base64 = Taro.base64ToArrayBuffer(base64);
-  arr_base64 = String.fromCharCode.apply(null, new Uint8Array(arr_base64));
+export function tokenParse (token) {
+  var base64Url = token.split('.')[1]
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  console.log('Taro.base64ToArrayBuffer', Taro)
+  var arr_base64 = Taro.base64ToArrayBuffer(base64)
+  arr_base64 = String.fromCharCode.apply(null, new Uint8Array(arr_base64))
   var jsonPayload = decodeURIComponent(
     arr_base64
-      .split("")
-      .map(function(c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      .split('')
+      .map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
       })
-      .join("")
-  );
+      .join('')
+  )
 
-  return JSON.parse(jsonPayload);
+  return JSON.parse(jsonPayload)
 }
 
-
 // 解析字符串
-function  getQueryVariable(herf) {
+function getQueryVariable (herf) {
   const url = herf.split('?')
   let query = {}
   if (url[1]) {
-      const str = url[1]
-      // const str = url.substr(1)
-      const pairs = str.split("&")
-      for(let i = 0; i < pairs.length; i ++) {
-          const pair = pairs[i].split("=")
-          query[pair[0]] = pair[1]
-      }
+    const str = url[1]
+    // const str = url.substr(1)
+    const pairs = str.split('&')
+    for (let i = 0; i < pairs.length; i++) {
+      const pair = pairs[i].split('=')
+      query[pair[0]] = pair[1]
+    }
   }
   return query
 }
 /** 是否是合法的color */
-function validColor(color) {
+function validColor (color) {
   var re1 = /^#([0-9a-f]{6}|[0-9a-f]{3})$/i
   var re2 = /^rgb\(([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\)$/i
   var re3 = /^rgba\(([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,(1|1.0|0.[0-9])\)$/i
-  return re2.test(color) || re1.test(color) || re3.test(color);
+  return re2.test(color) || re1.test(color) || re3.test(color)
 }
 
 /**
@@ -379,19 +379,20 @@ export async function buriedPoint (data) {
     item_id = '',
     smid = '',
     gu_user_id = ''
-  } =  await normalizeQuerys(params)
-  let employee_number = smid, store_bn = ''
+  } = await normalizeQuerys(params)
+  let employee_number = smid,
+    store_bn = ''
   if (gu) {
-    [employee_number, store_bn] = gu.split('_')
+    ;[employee_number, store_bn] = gu.split('_')
   }
   if (gu_user_id) {
     employee_number = gu_user_id
   }
   // 任务埋点
   if (subtask_id) {
-    const { distributor_id: shopId } = Taro.getStorageSync('curStore') 
+    const { distributor_id: shopId } = Taro.getStorageSync('curStore')
     if (process.env.APP_PLATFORM === 'standard') {
-      dtid= shopId
+      dtid = shopId
     }
     const newData = {
       employee_number,
@@ -418,24 +419,22 @@ export async function buriedPoint (data) {
 
 /**
  * 参数拼接
- * 
+ *
  */
 
-export function paramsSplice(params){
-  let str=''
-  let arr=[]
-  for(var key in params){
-    let p=`${key}=${params[key]}`
+export function paramsSplice (params) {
+  let str = ''
+  let arr = []
+  for (var key in params) {
+    let p = `${key}=${params[key]}`
     arr.push(p)
-    
   }
-  str=arr.join('&')
+  str = arr.join('&')
   return str
-
 }
 
 export function resolveFavsList (list, favs) {
-  return list.map(t => {
+  return list.map((t) => {
     const { item_id } = t
     return {
       ...t,
@@ -445,37 +444,37 @@ export function resolveFavsList (list, favs) {
 }
 
 // 判断是否在导购货架
-export function isGoodsShelves() {
-  const system = Taro.getSystemInfoSync();
-  log.debug(`this system is: ${system.environment}`);
-  if ( system && system.environment && system.environment === "wxwork" ) {
+export function isGoodsShelves () {
+  const system = Taro.getSystemInfoSync()
+  log.debug(`this system is: ${system.environment}`)
+  if (system && system.environment && system.environment === 'wxwork') {
     return true
   } else {
-    return false;
+    return false
   }
 }
 
-export function getThemeStyle() {
-  const result = store.getState();
+export function getThemeStyle () {
+  const result = store.getState()
   if (typeof result.system != 'undefined') {
-    const { colorPrimary, colorMarketing, colorAccent } = result.system;
+    const { colorPrimary, colorMarketing, colorAccent } = result.system
     return {
-      "--color-primary": colorPrimary,
-      "--color-marketing": colorMarketing,
-      "--color-accent": colorAccent
-    };
+      '--color-primary': colorPrimary,
+      '--color-marketing': colorMarketing,
+      '--color-accent': colorAccent
+    }
   }
 }
 
-export function showToast(title) {
+export function showToast (title) {
   Taro.showToast({
     title,
-    icon: "none"
-  });
+    icon: 'none'
+  })
 }
 
-export function isNavbar() {
-  return isWeb && !getBrowserEnv().weixin;
+export function isNavbar () {
+  return isWeb && !getBrowserEnv().weixin
 }
 
 export {
@@ -491,6 +490,6 @@ export {
   entryLaunch,
   validate,
   getPointName
-};
+}
 
-export * from "./platforms";
+export * from './platforms'

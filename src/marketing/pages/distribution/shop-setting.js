@@ -58,11 +58,7 @@ export default class DistributionShopSetting extends Component {
           border
           isLink
         />
-        <SpCell
-          title='小店店招'
-          onClick={this.handleClick.bind(this, 'shop_pic')}
-          isLink
-        >
+        <SpCell title='小店店招' onClick={this.handleClick.bind(this, 'shop_pic')} isLink>
           <Image
             className='shop-sign'
             src={info.shop_pic || 'https://fakeimg.pl/320x100/EFEFEF/CCC/?font=lobster'}

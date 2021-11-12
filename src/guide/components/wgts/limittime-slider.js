@@ -25,7 +25,7 @@ export default class WgtLimittimeSlider extends Component {
   handleClickItem = linkPage
 
   handleSwiperChange = (e) => {
-    const { current  } = e.detail
+    const { current } = e.detail
 
     this.setState({
       curIdx: current
@@ -76,11 +76,7 @@ export default class WgtLimittimeSlider extends Component {
                     style={`padding: 0 ${Taro.pxTransform(config.sliderSpace || 0)}`}
                     onClick={this.handleClickItem.bind(this, item.linkPage, item.id)}
                   >
-                    <Image
-                      mode='widthFix'
-                      className='slider-item__img'
-                      src={item.imgUrl}
-                    />
+                    <Image mode='widthFix' className='slider-item__img' src={item.imgUrl} />
                   </View>
                 </SwiperItem>
               )
@@ -88,25 +84,39 @@ export default class WgtLimittimeSlider extends Component {
           </Swiper>
 
           {data.length > 1 && config.dot && (
-            <View className={classNames('slider-dot', { 'dot-size-switch': config.animation}, config.dotLocation, config.dotCover ? 'cover' : 'no-cover', config.dotColor, config.shape)}>
-              {data.map((dot, dotIdx) =>
+            <View
+              className={classNames(
+                'slider-dot',
+                { 'dot-size-switch': config.animation },
+                config.dotLocation,
+                config.dotCover ? 'cover' : 'no-cover',
+                config.dotColor,
+                config.shape
+              )}
+            >
+              {data.map((dot, dotIdx) => (
                 <View
                   className={classNames('dot', { active: curIdx === dotIdx })}
                   key={dotIdx}
                 ></View>
-              )}
+              ))}
             </View>
           )}
 
           {data.length > 1 && !config.dot && (
-            <View className={classNames('slider-count', config.dotLocation, config.shape, config.dotColor)}>
+            <View
+              className={classNames(
+                'slider-count',
+                config.dotLocation,
+                config.shape,
+                config.dotColor
+              )}
+            >
               {curIdx + 1}/{data.length}
             </View>
           )}
         </View>
-        {config.content && data.length > 0 && (
-          <Text className='slider-caption'>{curContent}</Text>
-        )}
+        {config.content && data.length > 0 && <Text className='slider-caption'>{curContent}</Text>}
       </View>
     )
   }

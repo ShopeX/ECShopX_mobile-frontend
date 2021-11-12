@@ -33,7 +33,7 @@ export default class AuthLogin extends Component {
       }, 2000)
       return
     }
-    this.scanCode()    
+    this.scanCode()
   }
 
   // 扫码
@@ -71,7 +71,7 @@ export default class AuthLogin extends Component {
       token = t
     }
     const { code } = await Taro.login()
-    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}    
+    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
     try {
       Taro.showLoading({
         title: '授权中'
@@ -89,12 +89,11 @@ export default class AuthLogin extends Component {
           mask: true
         })
       }
-    } catch (e) {
-    }
+    } catch (e) {}
     Taro.hideLoading()
     setTimeout(() => {
       this.cancel()
-    }, 1500)    
+    }, 1500)
   }
 
   cancel = () => {
@@ -107,7 +106,7 @@ export default class AuthLogin extends Component {
       })
     }
   }
-  
+
   render () {
     const { showAuth } = this.state
     const user = Taro.getStorageSync('userinfo')
@@ -118,13 +117,15 @@ export default class AuthLogin extends Component {
 
     return (
       <View className='authLogin'>
-        <View className='welcome'>尊敬的{ user.username }</View>
-        <View className='content'>
-          您即将在门店大屏登录并在门店进行购物，请您确认是否登录
-        </View>
+        <View className='welcome'>尊敬的{user.username}</View>
+        <View className='content'>您即将在门店大屏登录并在门店进行购物，请您确认是否登录</View>
         <View className='btnGroup'>
-          <View className='comfirm' onClick={this.comfimLogin.bind(this)}>确认</View>
-          <View className='cancel' onClick={this.cancel.bind(this)}>取消</View>
+          <View className='comfirm' onClick={this.comfimLogin.bind(this)}>
+            确认
+          </View>
+          <View className='cancel' onClick={this.cancel.bind(this)}>
+            取消
+          </View>
         </View>
       </View>
     )

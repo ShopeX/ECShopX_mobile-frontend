@@ -1,18 +1,20 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Input, Button } from '@tarojs/components'
-import { connect } from "@tarojs/redux"
+import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { SpTimer } from '@/components'
-import S from "@/spx";
+import S from '@/spx'
 
 import './bindPhone.scss'
 
-@connect(( { colors } ) => ({
-  colors: colors.current || { data: [{}] } 
-}), () => ({}))
+@connect(
+  ({ colors }) => ({
+    colors: colors.current || { data: [{}] }
+  }),
+  () => ({})
+)
 export default class BindPhone extends Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -72,7 +74,7 @@ export default class BindPhone extends Component {
     }
     const query = {
       type: 'update',
-      mobile: mobile,
+      mobile: mobile
     }
     try {
       await api.user.regSmsCode(query)
@@ -119,7 +121,7 @@ export default class BindPhone extends Component {
         icon: 'none'
       })
       return false
-    } 
+    }
     await api.member.setMemberMobile({
       old_mobile: currentMobile,
       old_region_mobile: oldCountryCode + currentMobile,
@@ -133,62 +135,68 @@ export default class BindPhone extends Component {
       title: '修改成功',
       mask: true,
       duration: 2000
-    } )
-    await S.getMemberInfo();
+    })
+    await S.getMemberInfo()
     setTimeout(() => {
       Taro.navigateBack()
     }, 2000)
   }
-  
+
   render () {
     const { currentMobile, mobile, smsCode, countryCode, baseInfo } = this.state
     const { colors } = this.props
 
-    return <View className='bindPhone'>
-      <View className='logo'>
-        <Image
-          className='img'
-          src={baseInfo.logo}
-          mode='aspectFill'
-        />
-        <View className='currentPhone'>
-          当前手机号：{countryCode} { currentMobile }
+    return (
+      <View className='bindPhone'>
+        <View className='logo'>
+          <Image className='img' src={baseInfo.logo} mode='aspectFill' />
+          <View className='currentPhone'>
+            当前手机号：{countryCode} {currentMobile}
+          </View>
+        </View>
+        <View className='form'>
+          <View className='item'>中国大陆 +86</View>
+          <View className='item'>
+            <Input
+              type='number'
+              value={mobile}
+              placeholder='请输入您的手机号'
+              onInput={this.onInput.bind(this, 'phone')}
+            />
+            <Button
+              className='btn'
+              openType='getPhoneNumber'
+              onGetPhoneNumber={this.getPhoneNumber.bind(this)}
+              style={`color: ${colors.data[0].primary}`}
+            >
+              授权号码
+            </Button>
+          </View>
+          <View className='item'>
+            <Input
+              placeholder='请输入验证码'
+              value={smsCode}
+              onInput={this.onInput.bind(this, 'sms')}
+            />
+            <SpTimer
+              style={`color: ${colors.data[0].primary} !important`}
+              className='time'
+              onStart={this.getSmsCode.bind(this)}
+            ></SpTimer>
+          </View>
+          <View className='tip'>
+            <View className='line'>* 手机号每30天可修改一次；</View>
+            <View className='line'>* 目前仅支持中国大陆手机号；</View>
+          </View>
+          <View
+            className='submit'
+            style={`background: ${colors.data[0].primary}`}
+            onClick={this.handleEdit.bind(this)}
+          >
+            修改手机号
+          </View>
         </View>
       </View>
-      <View className='form'>
-        <View className='item'>中国大陆 +86</View>
-        <View className='item'>
-          <Input type='number' value={mobile} placeholder='请输入您的手机号' onInput={this.onInput.bind(this, 'phone')} />
-          <Button
-            className='btn'
-            openType='getPhoneNumber'
-            onGetPhoneNumber={this.getPhoneNumber.bind(this)}
-            style={`color: ${colors.data[0].primary}`}
-          >
-            授权号码
-          </Button>
-        </View>
-        <View className='item'>
-          <Input placeholder='请输入验证码' value={smsCode} onInput={this.onInput.bind(this, 'sms')} />
-          <SpTimer
-            style={`color: ${colors.data[0].primary} !important`}
-            className='time'
-            onStart={this.getSmsCode.bind(this)}
-          >
-          </SpTimer>
-        </View>
-        <View className='tip'>
-          <View className='line'>* 手机号每30天可修改一次；</View>
-          <View className='line'>* 目前仅支持中国大陆手机号；</View>
-        </View>
-        <View
-          className='submit'
-          style={`background: ${colors.data[0].primary}`}
-          onClick={this.handleEdit.bind(this)}
-        >
-          修改手机号
-        </View>
-      </View>
-    </View>
+    )
   }
 }

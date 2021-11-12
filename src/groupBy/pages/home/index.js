@@ -47,8 +47,7 @@ export default class GroupByIndex extends Component {
     }
   }
 
-  componentDidMount () {
-  }
+  componentDidMount () {}
 
   componentDidShow () {
     this.init()
@@ -57,7 +56,7 @@ export default class GroupByIndex extends Component {
   config = {
     navigationBarTitleText: '团购'
   }
-  
+
   // 获取定位
   init = async () => {
     // if (!S.getAuthToken()) {
@@ -86,25 +85,28 @@ export default class GroupByIndex extends Component {
     if (!lbs) return
     const { latitude, longitude } = lbs
     this.getSetting()
-    this.setState({
-      lbs: {
-        lat: latitude,
-        lng: longitude
+    this.setState(
+      {
+        lbs: {
+          lat: latitude,
+          lng: longitude
+        },
+        userInfo
       },
-      userInfo
-    }, () => {
-      this.getNearBuyCommunity()
-    })
+      () => {
+        this.getNearBuyCommunity()
+      }
+    )
   }
   // 定位
   getLoacl = async () => {
     let lbs = ''
     if (Taro.getEnv() === 'WEAPP') {
-      lbs = await Taro.getLocation({type: 'gcj02'}).catch(() => {
+      lbs = await Taro.getLocation({ type: 'gcj02' }).catch(() => {
         Taro.showModal({
           content: '您未授权访问您的定位信息，请先更改您的授权设置',
           showCancel: false,
-          success: res => {
+          success: (res) => {
             if (res.confirm) {
               Taro.openSetting({
                 success: () => {
@@ -127,77 +129,92 @@ export default class GroupByIndex extends Component {
     const { current } = this.state
     if (currentCommunity) {
       if (currentCommunity.community_id !== current.community_id) {
-        this.setState({
-          current: currentCommunity
-        }, () => {
-          this.handleRefresh(true)
-        })
+        this.setState(
+          {
+            current: currentCommunity
+          },
+          () => {
+            this.handleRefresh(true)
+          }
+        )
       }
     } else {
       const { lbs } = this.state
-      api.groupBy.activityCommunity(lbs).then(res => {
+      api.groupBy.activityCommunity(lbs).then((res) => {
         Taro.setStorageSync('community', res)
-        this.setState({
-          current: res
-        }, () => {
-          this.handleRefresh(true)
-        })
+        this.setState(
+          {
+            current: res
+          },
+          () => {
+            this.handleRefresh(true)
+          }
+        )
       })
     }
   }
   // 获取活动数据
   getActiveData = async (isRefrsh = false) => {
-    Taro.showLoading({title: '正在加载中', mask: true})
+    Taro.showLoading({ title: '正在加载中', mask: true })
     const { current, category, param, list } = this.state
     // 原列表数据
     const oldList = isRefrsh ? [] : list[0].good
 
-    api.groupBy.activityDetail({
-      ...param,
-      community_id: current.community_id,
-      activity_goods_category_key: category
-    }).then(res => {
-      if (!res.status) {
+    api.groupBy
+      .activityDetail({
+        ...param,
+        community_id: current.community_id,
+        activity_goods_category_key: category
+      })
+      .then((res) => {
+        if (!res.status) {
+          this.setState({
+            list: [],
+            banner: [],
+            isRefresh: false,
+            isLoading: false,
+            isEnd: false,
+            isEmpty: true
+          })
+          Taro.hideLoading()
+          return
+        }
+        const total_count = res.items.total_count
+        const isEnd = param.page >= total_count / param.pageSize
+        const data =
+          res.last_second && res.items
+            ? [
+                {
+                  time: res.last_second,
+                  good: [...oldList, ...formatGood(res.items.list, res.cur.symbol)],
+                  deliveryDate: res.delivery_date
+                }
+              ]
+            : []
         this.setState({
-          list: [],
-          banner: [],
+          list: data,
           isRefresh: false,
           isLoading: false,
-          isEnd: false,
-          isEmpty: true
+          isEnd,
+          isEmpty: data.length <= 0,
+          banner: res.banner_img ? [res.banner_img] : ''
         })
         Taro.hideLoading()
-        return
-      }
-      const total_count = res.items.total_count
-      const isEnd = param.page >= (total_count / param.pageSize)
-      const data = res.last_second && res.items ? [{
-        time: res.last_second,
-        good: [...oldList, ...formatGood(res.items.list, res.cur.symbol)],
-        deliveryDate: res.delivery_date
-      }] : []
-      this.setState({
-        list: data,
-        isRefresh: false,
-        isLoading: false,
-        isEnd,
-        isEmpty: data.length <= 0,
-        banner: res.banner_img ? [res.banner_img] : ''
       })
-      Taro.hideLoading()
-    })
   }
   // 获取设置
   getSetting = () => {
-    api.groupBy.getTemplate({
-      template_name: 'yykcommunity',
-      version: 'v1.0.1',
-      page_name: 'index'
-    }).then(res => {
-      this.setState({
-        menuList: res.list || []
+    api.groupBy
+      .getTemplate({
+        template_name: 'yykcommunity',
+        version: 'v1.0.1',
+        page_name: 'index'
       })
-    })
+      .then((res) => {
+        this.setState({
+          menuList: res.list || []
+        })
+      })
   }
   // 滚动事件
   onScroll = debounce((e) => {
@@ -238,14 +255,14 @@ export default class GroupByIndex extends Component {
       url: '/groupBy/pages/community/index'
     })
   }
-  
+
   render () {
     const {
       userInfo,
       banner,
       list,
       scrollTop,
-      isRefresh, 
+      isRefresh,
       isLoading,
       isEnd,
       isEmpty,
@@ -254,19 +271,19 @@ export default class GroupByIndex extends Component {
     } = this.state
 
     return (
-      <View className='groupByHome' >
+      <View className='groupByHome'>
         <SpNavBar
           title={this.config.navigationBarTitleText}
           leftIconType='chevron-left'
           fixed='true'
         />
         <View className='header' onClick={this.goCommunity}>
-          { userInfo.avatar && <Image className='avatar' src={userInfo.avatar}></Image> }
+          {userInfo.avatar && <Image className='avatar' src={userInfo.avatar}></Image>}
           <View className='info'>
             <View className='name'>{userInfo.username || '当前社区：'}</View>
-            <View className={`address ${ !userInfo.username && 'noLogin'}`}>
-              { !userInfo.username ? <View className='icon icon-periscope'></View> : '提货:'}
-              { current.city + current.area }({current.community_name})
+            <View className={`address ${!userInfo.username && 'noLogin'}`}>
+              {!userInfo.username ? <View className='icon icon-periscope'></View> : '提货:'}
+              {current.city + current.area}({current.community_name})
             </View>
           </View>
         </View>
@@ -283,25 +300,21 @@ export default class GroupByIndex extends Component {
           onScrollToLower={this.handleLoadMore}
         >
           {/* banner */}
-          {
-            banner.length >0 && <Swiper
-              className='banner'
-            >
-              {
-                banner.map(item => (
-                  <SwiperItem key={item} className='bannerItem'>
-                    <Image className='bannerImg' src={item}></Image>
-                  </SwiperItem>
-                ))
-              }
+          {banner.length > 0 && (
+            <Swiper className='banner'>
+              {banner.map((item) => (
+                <SwiperItem key={item} className='bannerItem'>
+                  <Image className='bannerImg' src={item}></Image>
+                </SwiperItem>
+              ))}
             </Swiper>
-          }
+          )}
           {/* 菜单 */}
-          {  menuList.length > 0 && <Classification list={menuList} /> }
+          {menuList.length > 0 && <Classification list={menuList} />}
           {/* 列表图 */}
-          {
-            list.map(item => <GroupGood key={item.time} info={item} onRefesh={this.handleRefresh.bind(this)} />)
-          }
+          {list.map((item) => (
+            <GroupGood key={item.time} info={item} onRefesh={this.handleRefresh.bind(this)} />
+          ))}
           {/* 加载更多 */}
           <LoadingMore isLoading={isLoading} isEnd={isEnd} isEmpty={isEmpty} />
           {/* 防止子内容无法支撑scroll-view下拉刷新 */}

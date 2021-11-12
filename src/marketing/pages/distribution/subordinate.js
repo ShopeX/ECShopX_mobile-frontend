@@ -18,8 +18,8 @@ export default class DistributionSubordinate extends Component {
       list: [],
       curTabIdx: 0,
       tabList: [
-        { title: '已购买', num: 0, type:'buy' },
-        { title: '未购买', num: 0, type:'not_buy' }
+        { title: '已购买', num: 0, type: 'buy' },
+        { title: '未购买', num: 0, type: 'not_buy' }
       ]
     }
   }
@@ -29,16 +29,16 @@ export default class DistributionSubordinate extends Component {
   }
 
   async fetch (params) {
-    const { curTabIdx,tabList } = this.state
+    const { curTabIdx, tabList } = this.state
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
       pageSize: 15,
-      buy_type:tabList[curTabIdx].type
+      buy_type: tabList[curTabIdx].type
     }
 
     const { list, total_count } = await api.distribution.subordinate(query)
-    const total  = total_count
+    const total = total_count
 
     const nList = pickBy(list, {
       relationship_depth: 'relationship_depth',
@@ -70,39 +70,31 @@ export default class DistributionSubordinate extends Component {
       })
     }
 
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curTabIdx: idx
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   render () {
     const { list, page, curTabIdx, tabList, scrollTop } = this.state
 
     return (
-      <View className="page-distribution-subordinate">
-        <SpNavBar
-          title='我的会员'
-          leftIconType='chevron-left'
-          fixed='true'
-        />	          
+      <View className='page-distribution-subordinate'>
+        <SpNavBar title='我的会员' leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className='client-list__tabs'
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
         >
-          {
-            tabList.map((panes, pIdx) =>
-              (<AtTabsPane
-                current={curTabIdx}
-                key={panes.type}
-                index={pIdx}
-              >
-              </AtTabsPane>)
-            )
-          }
+          {tabList.map((panes, pIdx) => (
+            <AtTabsPane current={curTabIdx} key={panes.type} index={pIdx}></AtTabsPane>
+          ))}
         </AtTabs>
         <ScrollView
           className='subordinate-list__scroll'
@@ -111,51 +103,47 @@ export default class DistributionSubordinate extends Component {
           scrollTop={scrollTop}
           onScrollToLower={this.nextPage}
         >
-          { list.length > 0 &&
-            <View className="section list">
-              {
-                list.map(item => {
-                  return (
-                    <View
-                      key={item.user_id} className={classNames('list-item', item.relationship_depth == 1 && 'child', item.relationship_depth == 2 && 'Gchild', item.relationship_depth == 3 && 'GGchild')}
-                    >
-                      <Image className="avatar"
-                        src={item.headimgurl ? item.headimgurl : `${process.env.APP_IMAGE_CDN}/logo.png`}
-                      />
-                      <View className="list-item-txt">
-                        <View className="name">
-                          {item.username || '匿名用户'}
-                          {
-                            item.is_open_promoter_grade
-                            && <Text className="level-name">({item.promoter_grade_name})</Text>
-                          }
-                        </View>
-                        <View className="mobile">
-                          {
-                            item.mobile
-                            && <Text>{item.mobile}</Text>
-                          }
-                        </View>
+          {list.length > 0 && (
+            <View className='section list'>
+              {list.map((item) => {
+                return (
+                  <View
+                    key={item.user_id}
+                    className={classNames(
+                      'list-item',
+                      item.relationship_depth == 1 && 'child',
+                      item.relationship_depth == 2 && 'Gchild',
+                      item.relationship_depth == 3 && 'GGchild'
+                    )}
+                  >
+                    <Image
+                      className='avatar'
+                      src={
+                        item.headimgurl ? item.headimgurl : `${process.env.APP_IMAGE_CDN}/logo.png`
+                      }
+                    />
+                    <View className='list-item-txt'>
+                      <View className='name'>
+                        {item.username || '匿名用户'}
+                        {item.is_open_promoter_grade && (
+                          <Text className='level-name'>({item.promoter_grade_name})</Text>
+                        )}
                       </View>
-                      <View className="bind-date">
-                        <View>绑定时间</View>
-                        <View>{item.bind_date}</View>
-                      </View>
+                      <View className='mobile'>{item.mobile && <Text>{item.mobile}</Text>}</View>
                     </View>
-                  )
-                })
-              }
+                    <View className='bind-date'>
+                      <View>绑定时间</View>
+                      <View>{item.bind_date}</View>
+                    </View>
+                  </View>
+                )
+              })}
             </View>
-          }
-          {
-            page.isLoading
-              ? <Loading>正在加载...</Loading>
-              : null
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-          }
+          )}
+          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+          )}
         </ScrollView>
       </View>
     )

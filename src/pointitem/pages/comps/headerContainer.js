@@ -14,7 +14,7 @@ import { View } from '@tarojs/components'
 import './headContainer.scss'
 
 export default class HeaderCustom extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
   }
 
@@ -23,9 +23,8 @@ export default class HeaderCustom extends Component {
   }
 
   handleBack = (type = '') => {
-    console.log("--handleBack--",type)
+    console.log('--handleBack--', type)
     if (type) {
-   
       Taro.reLaunch({
         url: '/pages/index?isPoint=true'
       })
@@ -36,17 +35,19 @@ export default class HeaderCustom extends Component {
 
   render () {
     const { isWhite = false, statusBarHeight = 44, isHome } = this.props
-    return <View
-      className='customHeader'
-      style={`padding-top: ${statusBarHeight}px; background: ${isWhite ? '#fff' : 'transparent'}`}
-    >
-      <View className={`menu ${!isHome && 'roate'}`}>
-        {
-          isHome
-            ? <View className='icon icon-home1' onClick={this.handleBack.bind(this, 'home')}></View>
-            : <View className='icon icon-arrowUp' onClick={this.handleBack.bind(this, '')}></View>
-        }
+    return (
+      <View
+        className='customHeader'
+        style={`padding-top: ${statusBarHeight}px; background: ${isWhite ? '#fff' : 'transparent'}`}
+      >
+        <View className={`menu ${!isHome && 'roate'}`}>
+          {isHome ? (
+            <View className='icon icon-home1' onClick={this.handleBack.bind(this, 'home')}></View>
+          ) : (
+            <View className='icon icon-arrowUp' onClick={this.handleBack.bind(this, '')}></View>
+          )}
+        </View>
       </View>
-    </View>
+    )
   }
 }

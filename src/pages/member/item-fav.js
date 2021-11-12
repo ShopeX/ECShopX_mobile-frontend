@@ -10,9 +10,7 @@ import StoreFavItem from './comps/store-fav-item'
 
 import './item-fav.scss'
 
-@connect(({
-  member
-}) => ({
+@connect(({ member }) => ({
   favs: member.favs
 }))
 @withPager
@@ -25,9 +23,9 @@ export default class ItemFav extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        {title: '商品', status: '0'},
-        {title: '软文', status: '1'},
-        {title: '店铺', status: '2'},
+        { title: '商品', status: '0' },
+        { title: '软文', status: '1' },
+        { title: '店铺', status: '2' }
       ],
       list: []
     }
@@ -59,15 +57,15 @@ export default class ItemFav extends Component {
             item_id: 'item_id',
             title: 'item_name',
             desc: 'brief',
-            item_type:'item_type',
+            item_type: 'item_type',
             distributor_id: 'distributor_id',
-            point:'point',
+            point: 'point',
             // price: ({ price }) => (price/100).toFixed(2),
-            price: ({ price, item_price }) => ((price || item_price)/100).toFixed(2),
+            price: ({ price, item_price }) => ((price || item_price) / 100).toFixed(2),
             is_fav: ({ item_id }) => Boolean(favs[item_id])
           })
           total = res.total_count
-          break;
+          break
         case 1:
           res = await api.article.totalCollectArticle(query)
           list = pickBy(res.list, {
@@ -78,10 +76,10 @@ export default class ItemFav extends Component {
             summary: 'summary',
             head_portrait: 'head_portrait',
             author: 'author',
-            item_type:'item_type'
+            item_type: 'item_type'
           })
           total = res.total_count
-          break;
+          break
         case 2:
           res = await api.member.storeFavList(query)
           list = pickBy(res.list, {
@@ -89,10 +87,10 @@ export default class ItemFav extends Component {
             fav_num: 'fav_num',
             name: 'name',
             logo: 'logo',
-            item_type:'item_type'
+            item_type: 'item_type'
           })
           total = res.total_count
-          break;
+          break
         default:
       }
       return { list, total }
@@ -109,27 +107,28 @@ export default class ItemFav extends Component {
   }
 
   handleClickItem = (item) => {
-    let detailUrl;
-    if(item.item_type==="pointsmall"){//积分商城
-      detailUrl=`/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&type=pointitem`
-    }else{
-      detailUrl=`/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    let detailUrl
+    if (item.item_type === 'pointsmall') {
+      //积分商城
+      detailUrl = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&type=pointitem`
+    } else {
+      detailUrl = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     }
     const url = (() => {
       let link = null
       switch (this.state.curTabIdx) {
         case 0:
-					link = detailUrl
-          break;
+          link = detailUrl
+          break
         case 1:
           link = `/subpage/pages/recommend/detail?id=${item.item_id}`
-          break;
+          break
         case 2:
           link = `/pages/store/index?id=${item.distributor_id}`
-          break;
+          break
         default:
           link = ''
-			}
+      }
       return link
     })()
     Taro.navigateTo({
@@ -139,11 +138,14 @@ export default class ItemFav extends Component {
 
   handleFavRemoved = () => {
     this.resetPage()
-    this.setState({
-      list: []
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        list: []
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   handleClickTab = (idx) => {
@@ -156,11 +158,14 @@ export default class ItemFav extends Component {
       })
     }
 
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curTabIdx: idx
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   render () {
@@ -169,11 +174,7 @@ export default class ItemFav extends Component {
     return (
       <View className='page-goods-list page-goods-fav'>
         <View className='goods-list__toolbar'>
-          <SpNavBar
-            title='收藏'
-            leftIconType='chevron-left'
-            fixed='true'
-          />
+          <SpNavBar title='收藏' leftIconType='chevron-left' fixed='true' />
         </View>
         <AtTabs
           className='trade-list__tabs'
@@ -181,16 +182,9 @@ export default class ItemFav extends Component {
           tabList={tabList}
           onClick={this.handleClickTab}
         >
-          {
-            tabList.map((panes, pIdx) =>
-              (<AtTabsPane
-                current={curTabIdx}
-                key={panes.status}
-                index={pIdx}
-              >
-              </AtTabsPane>)
-            )
-          }
+          {tabList.map((panes, pIdx) => (
+            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+          ))}
         </AtTabs>
         <ScrollView
           className='goods-list__scroll'
@@ -200,77 +194,60 @@ export default class ItemFav extends Component {
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          {
-            curTabIdx === 0
-              && <View className='goods-list goods-list__type-grid'>
-                  {
-                    list.map(item => {
-                      return (
-                        <View className='goods-list__item' key={item.item_id}>
-                          <GoodsItem
-                            key={item.item_id}
-                            info={item}
-                            onClick={() => this.handleClickItem(item)}
-                            isPointitem={item.item_type==="pointsmall"}
-                          />
-                        </View>
-                      )
-                    })
-                  }
-                </View>
-          }
-          {
-            curTabIdx === 1
-              && <View className='goods-list goods-list__type-grid'>
-                  {
-                    list.map(item => {
-                      return (
-                        <View className='goods-list__item' key={item.item_id}>
-                          <RecommendItem
-                            key={item.item_id}
-                            info={item}
-                            onClick={() => this.handleClickItem(item)}
-                          />
-                        </View>
-                      )
-                    })
-                  }
-                </View>
-          }
-          {
-            curTabIdx === 2
-              && <View className='goods-list'>
-                  {
-                    list.map(item => {
-                      return (
-                        <View className='goods-list__item' key={item.distributor_id}>
-                          <StoreFavItem
-                            key={item.distributor_id}
-                            info={item}
-                            onClick={() => this.handleClickItem(item)}
-                            onCancel={this.handleFavRemoved}
-                          />
-                        </View>
-                      )
-                    })
-                  }
-                </View>
-          }
-          {
-            page.isLoading
-              ? <Loading>正在加载...</Loading>
-              : null
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-              && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-          }
+          {curTabIdx === 0 && (
+            <View className='goods-list goods-list__type-grid'>
+              {list.map((item) => {
+                return (
+                  <View className='goods-list__item' key={item.item_id}>
+                    <GoodsItem
+                      key={item.item_id}
+                      info={item}
+                      onClick={() => this.handleClickItem(item)}
+                      isPointitem={item.item_type === 'pointsmall'}
+                    />
+                  </View>
+                )
+              })}
+            </View>
+          )}
+          {curTabIdx === 1 && (
+            <View className='goods-list goods-list__type-grid'>
+              {list.map((item) => {
+                return (
+                  <View className='goods-list__item' key={item.item_id}>
+                    <RecommendItem
+                      key={item.item_id}
+                      info={item}
+                      onClick={() => this.handleClickItem(item)}
+                    />
+                  </View>
+                )
+              })}
+            </View>
+          )}
+          {curTabIdx === 2 && (
+            <View className='goods-list'>
+              {list.map((item) => {
+                return (
+                  <View className='goods-list__item' key={item.distributor_id}>
+                    <StoreFavItem
+                      key={item.distributor_id}
+                      info={item}
+                      onClick={() => this.handleClickItem(item)}
+                      onCancel={this.handleFavRemoved}
+                    />
+                  </View>
+                )
+              })}
+            </View>
+          )}
+          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+          )}
         </ScrollView>
 
-        <BackToTop
-          show={showBackToTop}
-          onClick={this.scrollBackToTop}
-        />
+        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
       </View>
     )
   }

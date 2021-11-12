@@ -33,14 +33,17 @@ export default class AfterSale extends Component {
 
   componentDidMount () {
     const { status } = this.$router.params
-    const tabIdx = this.state.tabList.findIndex(tab => tab.status === status)
+    const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
 
     if (tabIdx >= 0) {
-      this.setState({
-        curTabIdx: tabIdx
-      }, () => {
-        this.nextPage()
-      })
+      this.setState(
+        {
+          curTabIdx: tabIdx
+        },
+        () => {
+          this.nextPage()
+        }
+      )
     } else {
       this.nextPage()
     }
@@ -49,15 +52,18 @@ export default class AfterSale extends Component {
   async fetch (params) {
     const { tabList, curTabIdx } = this.state
 
-    params = _mapKeys({
-      ...params,
-      aftersales_status: tabList[curTabIdx].status
-    }, function (val, key) {
-      if (key === 'page_no') return 'page'
-      if (key === 'page_size') return 'pageSize'
+    params = _mapKeys(
+      {
+        ...params,
+        aftersales_status: tabList[curTabIdx].status
+      },
+      function (val, key) {
+        if (key === 'page_no') return 'page'
+        if (key === 'page_size') return 'pageSize'
 
-      return key
-    })
+        return key
+      }
+    )
 
     const { list, total_count: total } = await api.aftersales.list(params)
 
@@ -68,15 +74,16 @@ export default class AfterSale extends Component {
       payment: ({ refund_fee }) => (refund_fee / 100).toFixed(2),
       pay_type: 'pay_type',
       point: 'point',
-      order: ({ detail }) => pickBy(detail, {
-        order_id: 'order_id',
-        item_id: 'item_id',
-        pic_path: 'item_pic',
-        title: 'item_name',
-        price: ({ refund_fee }) => (+refund_fee / 100).toFixed(2),
-        point: 'item_point',
-        num: 'num'
-      })
+      order: ({ detail }) =>
+        pickBy(detail, {
+          order_id: 'order_id',
+          item_id: 'item_id',
+          pic_path: 'item_pic',
+          title: 'item_name',
+          price: ({ refund_fee }) => (+refund_fee / 100).toFixed(2),
+          point: 'item_point',
+          num: 'num'
+        })
     })
 
     log.debug('[trade list] list fetched and processed: ', nList)
@@ -98,11 +105,14 @@ export default class AfterSale extends Component {
       })
     }
 
-    this.setState({
-      curTabIdx: idx
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curTabIdx: idx
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   handleClickItem = (trade) => {
@@ -118,36 +128,21 @@ export default class AfterSale extends Component {
 
     return (
       <View className='page-after-sale trade-list'>
-        <SpNavBar
-          title='售后订单列表'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title='售后订单列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className='trade-list__tabs'
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
         >
-          {
-            tabList.map((panes, pIdx) =>
-              (<AtTabsPane
-                current={curTabIdx}
-                key={panes.status}
-                index={pIdx}
-              >
-              </AtTabsPane>)
-            )
-          }
+          {tabList.map((panes, pIdx) => (
+            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+          ))}
         </AtTabs>
 
-        <ScrollView
-          scrollY
-          className='trade-list__scroll'
-          onScrollToLower={this.nextPage}
-        >
-          {
-            list && list.map((item, idx) => {
+        <ScrollView scrollY className='trade-list__scroll' onScrollToLower={this.nextPage}>
+          {list &&
+            list.map((item, idx) => {
               return (
                 <TradeItem
                   key={`${idx}1`}
@@ -160,17 +155,16 @@ export default class AfterSale extends Component {
                     </View>
                   }
                   customFooter
-                  renderFooter={
-                    <View></View>
-                  }
+                  renderFooter={<View></View>}
                   info={item}
                   onClick={this.handleClickItem.bind(this, item)}
                 />
               )
-            })
-          }
-          {page.isLoading && (<Loading>正在加载...</Loading>)}
-          {!page.isLoading && !page.hasNext && !list.length && (<SpNote img='trades_empty.png'>暂无数据</SpNote>)}
+            })}
+          {page.isLoading && <Loading>正在加载...</Loading>}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>暂无数据</SpNote>
+          )}
         </ScrollView>
       </View>
     )

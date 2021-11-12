@@ -22,7 +22,7 @@ export default class DistributionWithdrawalsAcount extends Component {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { alipay_name, alipay_account } = await api.distribution.info()
     this.setState({
       name: alipay_name,
@@ -48,7 +48,7 @@ export default class DistributionWithdrawalsAcount extends Component {
     const params = {
       alipay_name: name,
       //alipay_account: !hasBind ? acount : new_acount
-      alipay_account:acount
+      alipay_account: acount
     }
     const { list } = await api.distribution.update(params)
     const { alipay_name, alipay_account } = list[0]
@@ -63,30 +63,29 @@ export default class DistributionWithdrawalsAcount extends Component {
 
   render () {
     const { name, acount, isEdit, hasBind } = this.state
-    console.log('00',hasBind)
+    console.log('00', hasBind)
 
     return (
-      <View className="page-distribution-acount">
-        <View className="section list message">
-
-        <AtInput
-                className='message-input'
-                title='开户人姓名：'
-                type='text'
-                maxLength='30'
-                onChange={this.handleChange.bind(this, 'name')}
-                value={name}
-                placeholder='请输入开户人姓名'
-              />
-              <AtInput
-                className='message-input'
-                title='支付宝账号'
-                type='text'
-                maxLength='30'
-                onChange={this.handleChange.bind(this, 'acount')}
-                value={acount}
-                placeholder='请输入账号'
-              />
+      <View className='page-distribution-acount'>
+        <View className='section list message'>
+          <AtInput
+            className='message-input'
+            title='开户人姓名：'
+            type='text'
+            maxLength='30'
+            onChange={this.handleChange.bind(this, 'name')}
+            value={name}
+            placeholder='请输入开户人姓名'
+          />
+          <AtInput
+            className='message-input'
+            title='支付宝账号'
+            type='text'
+            maxLength='30'
+            onChange={this.handleChange.bind(this, 'acount')}
+            value={acount}
+            placeholder='请输入账号'
+          />
 
           {/* {
             !hasBind
@@ -135,14 +134,16 @@ export default class DistributionWithdrawalsAcount extends Component {
               />
           } */}
         </View>
-        <View className="content-padded">
-        <Button type="primary" onClick={this.handleSubmit}>确认绑定</Button>
+        <View className='content-padded'>
+          <Button type='primary' onClick={this.handleSubmit}>
+            确认绑定
+          </Button>
           {/* { !hasBind && <Button type="primary" onClick={this.handleSubmit}>确认绑定</Button> }
           { hasBind && !isEdit && <Button type="primary" onClick={this.handleClick}>修改支付宝账号</Button> }
           { hasBind && isEdit && <Button type="primary" onClick={this.handleSubmit}>确认修改并保存</Button> } */}
         </View>
-        <View className="g-ul">
-          <View className="g-ul-li">请务必准确填写开户人姓名和支付宝账号</View>
+        <View className='g-ul'>
+          <View className='g-ul-li'>请务必准确填写开户人姓名和支付宝账号</View>
           {/* <View className="g-ul-li">支持支付宝账户的修改，但每天仅限1次</View> */}
         </View>
       </View>

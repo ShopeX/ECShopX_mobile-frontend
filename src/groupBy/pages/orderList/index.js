@@ -19,7 +19,6 @@ import LoadingMore from '../../component/loadingMore'
 import './index.scss'
 
 export default class OrderList extends Component {
-
   constructor (props) {
     super(props)
     this.state = {
@@ -38,7 +37,7 @@ export default class OrderList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getOrderList(true)
   }
 
@@ -52,10 +51,10 @@ export default class OrderList extends Component {
     if (isRefresh) {
       oldList = []
     }
-    api.groupBy.getOrderList(param).then(res => {
+    api.groupBy.getOrderList(param).then((res) => {
       const { list, pager } = res
       const count = pager.count
-      const isEnd = param.page >= (count / param.pageSize)
+      const isEnd = param.page >= count / param.pageSize
       this.setState({
         list: [...oldList, ...formatOrder(list)],
         isEnd,
@@ -71,23 +70,29 @@ export default class OrderList extends Component {
 
     if (param.status === status) return
     param.status = status
-    this.setState({
-      param
-    }, () => {
-      this.handleRefresh()
-    })
+    this.setState(
+      {
+        param
+      },
+      () => {
+        this.handleRefresh()
+      }
+    )
   }
 
   // 下拉刷新
   handleRefresh = () => {
     const { param } = this.state
     param.page = 1
-    this.setState({
-      isRefresh: true,
-      param
-    }, () => {
-      this.getOrderList(true)
-    })
+    this.setState(
+      {
+        isRefresh: true,
+        param
+      },
+      () => {
+        this.getOrderList(true)
+      }
+    )
   }
 
   // 上拉加载
@@ -95,28 +100,36 @@ export default class OrderList extends Component {
     const { isLoading, isEnd, isEmpty, param } = this.state
     if (isEnd || isLoading || isEmpty) return
     param.page += 1
-    this.setState({
-      isLoading: true,
-      param
-    }, () => {
-      this.getOrderList()
-    })
+    this.setState(
+      {
+        isLoading: true,
+        param
+      },
+      () => {
+        this.getOrderList()
+      }
+    )
   }
 
   render () {
-    const tabs = [{
-      title: '全部',
-      status: 0
-    }, {
-      title: '待支付',
-      status: 5
-    }, {
-      title: '待取货',
-      status: 4
-    }, {
-      title: '已完成',
-      status: 3
-    }]
+    const tabs = [
+      {
+        title: '全部',
+        status: 0
+      },
+      {
+        title: '待支付',
+        status: 5
+      },
+      {
+        title: '待取货',
+        status: 4
+      },
+      {
+        title: '已完成',
+        status: 3
+      }
+    ]
     const { list, param, isRefresh, isLoading, isEnd, isEmpty } = this.state
     return (
       <View className='orderList'>
@@ -126,17 +139,15 @@ export default class OrderList extends Component {
           fixed='true'
         />
         <View className='orderListTabs'>
-          {
-            tabs.map(item => (
-              <View 
-                className={`tabsItem ${item.status === param.status && 'active'}`}
-                key={item.status}
-                onClick={this.handleTabs.bind(this, item.status)}
-              >
-                { item.title }
-              </View>
-            ))
-          }
+          {tabs.map((item) => (
+            <View
+              className={`tabsItem ${item.status === param.status && 'active'}`}
+              key={item.status}
+              onClick={this.handleTabs.bind(this, item.status)}
+            >
+              {item.title}
+            </View>
+          ))}
         </View>
         <ScrollView
           className='order-list'
@@ -148,7 +159,9 @@ export default class OrderList extends Component {
           onRefresherRefresh={this.handleRefresh}
           onScrollToLower={this.handleLoadMore}
         >
-          { list.map(item => <OrderItem key={item} info={item} onRefresh={this.handleRefresh} />) }
+          {list.map((item) => (
+            <OrderItem key={item} info={item} onRefresh={this.handleRefresh} />
+          ))}
           {/* 加载更多 */}
           <LoadingMore isLoading={isLoading} isEnd={isEnd} isEmpty={isEmpty} />
           {/* 防止子内容无法支撑scroll-view下拉刷新 */}

@@ -1,30 +1,26 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
+import Taro, { Component } from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import { connect } from '@tarojs/redux'
 
-import "./index.scss";
+import './index.scss'
+
 export default class AccountOfficial extends Component {
   static options = {
     addGlobalClass: true
-  };
-
-  static defaultProps = {
-
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-    };
   }
-  componentDidMount() {}
 
-  componentDidShow() {}
+  static defaultProps = {}
 
-  render() {
-    return (
-      <View className="account-view"></View>
-    );
+  constructor (props) {
+    super(props)
+
+    this.state = {}
+  }
+  componentDidMount () {}
+
+  componentDidShow () {}
+
+  render () {
+    return <View className='account-view'></View>
   }
 }

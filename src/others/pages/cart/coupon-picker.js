@@ -8,11 +8,14 @@ import api from '@/api'
 
 import './coupon-picker.scss'
 
-@connect(({ cart }) => ({
-  curCoupon: cart.coupon
-}), (dispatch) => ({
-  onChangeCoupon: (coupon) => dispatch({ type: 'cart/changeCoupon', payload: coupon })
-}))
+@connect(
+  ({ cart }) => ({
+    curCoupon: cart.coupon
+  }),
+  (dispatch) => ({
+    onChangeCoupon: (coupon) => dispatch({ type: 'cart/changeCoupon', payload: coupon })
+  })
+)
 @withPager
 export default class CouponPicker extends Component {
   constructor (props) {
@@ -29,7 +32,15 @@ export default class CouponPicker extends Component {
 
   async fetch (query = {}) {
     //const { distributor_id } = Taro.getStorageSync('curStore')
-    const { items, is_checkout, cart_type, use_platform = 'mall',distributor_id, source, goodType } = this.$router.params
+    const {
+      items,
+      is_checkout,
+      cart_type,
+      use_platform = 'mall',
+      distributor_id,
+      source,
+      goodType
+    } = this.$router.params
     // const { curCoupon } = this.props
     const { page_no: page, page_size: pageSize } = query
 
@@ -49,9 +60,9 @@ export default class CouponPicker extends Component {
 
     if (goodType === 'cross') {
       params.iscrossborder = 1
-    } 
-    
-    if(source === 'other_pay'){
+    }
+
+    if (source === 'other_pay') {
       let { cxdid, dtid, smid } = Taro.getStorageSync('espierCheckoutData')
       params.cxdid = cxdid
       params.distributor_id = dtid
@@ -64,7 +75,7 @@ export default class CouponPicker extends Component {
     const smid = Taro.getStorageSync('s_smid')
     const chatId = Taro.getStorageSync('chatId')
     if (smid) {
-      params.salesman_id = smid 
+      params.salesman_id = smid
     }
     if (chatId) {
       params.chat_id = chatId
@@ -82,12 +93,12 @@ export default class CouponPicker extends Component {
       discount: 'discount',
       begin_date: 'begin_date',
       end_date: 'end_date',
-      description:'description',
-      use_bound:'use_bound'
+      description: 'description',
+      use_bound: 'use_bound'
     })
     const list = [...this.state.coupons, ...coupons]
     this.setState({
-      coupons: list.sort(a => a.valid ? -1 : 1)
+      coupons: list.sort((a) => (a.valid ? -1 : 1))
       // coupons: list
     })
     return { total: couponsData.total_count }
@@ -99,8 +110,8 @@ export default class CouponPicker extends Component {
     const payload = value
       ? { type, value }
       : {
-        not_use_coupon: 1
-      }
+          not_use_coupon: 1
+        }
     this.props.onChangeCoupon(payload)
     setTimeout(() => {
       Taro.navigateBack()
@@ -122,36 +133,27 @@ export default class CouponPicker extends Component {
 
     return (
       <View className='coupon-picker'>
-        <ScrollView
-          scrollY
-          className='coupon-list__scroll'
-          onScrollToLower={this.nextPage}
-        >
-          {
-            coupons.map((coupon, idx) => {
-              return (
-                <CouponItem
-                  key={`${idx}1`}
-                  info={coupon}
-                  isDisabled={!coupon.valid}
-                  onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
-                  isExist
-                >
-                  <SpCheckbox
-                    checked={curCoupon && curCoupon.value && curCoupon.value.code === coupon.code}
-                    disabled={!coupon.valid}
-                  />
-                </CouponItem>
-              )
-            })
-          }
-          {
-            page.isLoading && <Loading>正在加载...</Loading>
-          }
-          {
-            !page.isLoading && !page.hasNext && !coupons.length
-            && (<SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>)
-          }
+        <ScrollView scrollY className='coupon-list__scroll' onScrollToLower={this.nextPage}>
+          {coupons.map((coupon, idx) => {
+            return (
+              <CouponItem
+                key={`${idx}1`}
+                info={coupon}
+                isDisabled={!coupon.valid}
+                onClick={this.handleCouponSelect.bind(this, 'coupon', coupon)}
+                isExist
+              >
+                <SpCheckbox
+                  checked={curCoupon && curCoupon.value && curCoupon.value.code === coupon.code}
+                  disabled={!coupon.valid}
+                />
+              </CouponItem>
+            )
+          })}
+          {page.isLoading && <Loading>正在加载...</Loading>}
+          {!page.isLoading && !page.hasNext && !coupons.length && (
+            <SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>
+          )}
         </ScrollView>
         <View
           className='coupon-item coupon-item__nil'
@@ -161,9 +163,7 @@ export default class CouponPicker extends Component {
             <Text className='coupon-item__title'>不使用优惠券</Text>
           </View>
           <View className='coupon-item__ft'>
-            <SpCheckbox
-              checked={!curCoupon || !curCoupon.value}
-            />
+            <SpCheckbox checked={!curCoupon || !curCoupon.value} />
           </View>
         </View>
       </View>

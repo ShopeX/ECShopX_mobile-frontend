@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Icon} from '@tarojs/components'
+import { View, Icon } from '@tarojs/components'
 import { toggleTouchMove } from '@/utils/dom'
 import { getQueryVariable } from '@/utils'
 import './search-home.scss'
@@ -35,7 +35,7 @@ export default class WgtSearchHome extends Component {
   }
 
   handleScanCode = () => {
-    Taro.scanCode().then(res => {
+    Taro.scanCode().then((res) => {
       var scene = decodeURIComponent(res.path)
       var path = scene.replace('pages/', '')
       path = path.replace('scene=', '')
@@ -51,7 +51,7 @@ export default class WgtSearchHome extends Component {
         })
       }
     })
-  }  
+  }
 
   render () {
     const { info } = this.props
@@ -65,7 +65,10 @@ export default class WgtSearchHome extends Component {
       <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
         <View className={`search ${config.fixTop ? 'fixed' : null}`}>
           <View className={`content-padded ${base.padded ? 'wgt__padded' : null}`}>
-            <View className='search-box view-flex view-flex-middle view-flex-center' onClick={this.searchTap.bind(this)}>
+            <View
+              className='search-box view-flex view-flex-middle view-flex-center'
+              onClick={this.searchTap.bind(this)}
+            >
               <Icon className='iconfont search-icon' type='search' size='14' color='#999999'></Icon>
               <View>输入商品名称</View>
             </View>

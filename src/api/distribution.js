@@ -28,7 +28,7 @@ export function statistics () {
   return req.get('/promoter/brokerage/count')
 }
 
-export function getPointInfo (){
+export function getPointInfo () {
   return req.get(`/promoter/brokerage/point_count`)
 }
 
@@ -68,7 +68,7 @@ export function shopBanner (params) {
 }
 
 export function getCategorylevel (params) {
-  return req.get('/goods/categorylevel',params)
+  return req.get('/goods/categorylevel', params)
 }
 
 // 小店上架分类
@@ -80,11 +80,11 @@ export function getCustompage () {
   return req.get('/promoter/custompage')
 }
 
-export function getCash(params) {
-  return req.post('/promoter/cash_withdrawal',params)
+export function getCash (params) {
+  return req.post('/promoter/cash_withdrawal', params)
 }
 
-// 获取小店上架商品 
+// 获取小店上架商品
 export function getShopGoods (params) {
   return req.get('/goods/shopitems', params)
 }

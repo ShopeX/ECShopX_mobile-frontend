@@ -1,33 +1,33 @@
-import Taro, { Component } from "@tarojs/taro";
-import { View, Image, Button, Text } from "@tarojs/components";
-import api from "@/api"
-import { connect } from "@tarojs/redux"
+import Taro, { Component } from '@tarojs/taro'
+import { View, Image, Button, Text } from '@tarojs/components'
+import api from '@/api'
+import { connect } from '@tarojs/redux'
 
-import "./index.scss"
+import './index.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 export default class PrivacyConfirmModal extends Component {
-  static defaultProps = {};
-  constructor(props) {
+  static defaultProps = {}
+  constructor (props) {
     super(props)
     this.state = {
       info: null
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  handleClickAgreement = type => {
+  handleClickAgreement = (type) => {
     Taro.navigateTo({
-      url: "/subpage/pages/auth/reg-rule?type=" + type
-    });
-  };
+      url: '/subpage/pages/auth/reg-rule?type=' + type
+    })
+  }
 
-  async fetch() {
+  async fetch () {
     const data = await api.shop.getStoreBaseInfo()
     this.setState({
       info: data
@@ -39,12 +39,12 @@ export default class PrivacyConfirmModal extends Component {
     const { onChange } = this.props
     if (encryptedData && iv) {
       const { update_time } = await api.wx.getPrivacyTime()
-      Taro.setStorageSync('PrivacyUpdate_time',update_time)
+      Taro.setStorageSync('PrivacyUpdate_time', update_time)
     }
-    onChange && onChange("agree", e);
-  };
+    onChange && onChange('agree', e)
+  }
 
-  render() {
+  render () {
     const { info } = this.state
     const { visible, onChange, isPhone, colors } = this.props
 
@@ -59,10 +59,7 @@ export default class PrivacyConfirmModal extends Component {
               />
               <View className='container'>
                 <View className='top'>
-                  <Image
-                    src={`${APP_IMAGE_CDN}/privacy_tips.png`}
-                    className='tips'
-                  />
+                  <Image src={`${APP_IMAGE_CDN}/privacy_tips.png`} className='tips' />
                   <View className='texts'>个人隐私保护指引</View>
                 </View>
                 <View className='content'>
@@ -82,9 +79,7 @@ export default class PrivacyConfirmModal extends Component {
                   >
                     《{info.protocol.privacy}》
                   </Text>
-                  <Text>
-                    了解详细信息。如您同意，请点击”同意“开始接受我们的服务。
-                  </Text>
+                  <Text>了解详细信息。如您同意，请点击”同意“开始接受我们的服务。</Text>
                 </View>
                 <View className='bottom'>
                   <Button className='cancel' onClick={() => onChange('reject')}>
@@ -100,7 +95,11 @@ export default class PrivacyConfirmModal extends Component {
                       同意
                     </Button>
                   ) : (
-                    <Button style={`background: ${colors.data[0].primary}`} onClick={() => onChange('agree')}  className='agree'>
+                    <Button
+                      style={`background: ${colors.data[0].primary}`}
+                      onClick={() => onChange('agree')}
+                      className='agree'
+                    >
                       同意
                     </Button>
                   )}
@@ -114,6 +113,6 @@ export default class PrivacyConfirmModal extends Component {
           </View>
         )}
       </View>
-    );
+    )
   }
 }

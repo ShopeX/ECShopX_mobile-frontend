@@ -27,20 +27,11 @@ export default class CheckoutItems extends Component {
           title={`商品清单(${list.length})件`}
           onClickLeftIcon={onClickBack}
         />
-        <ScrollView
-          class='checkout-items__scroll'
-        >
+        <ScrollView class='checkout-items__scroll'>
           <View className='checkout-items__list'>
-            {
-              list.map(item => {
-                return (
-                  <GoodsItem
-                    key={item.item_id}
-                    info={item}
-                  />
-                )
-              })
-            }
+            {list.map((item) => {
+              return <GoodsItem key={item.item_id} info={item} />
+            })}
           </View>
         </ScrollView>
       </View>

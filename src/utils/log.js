@@ -2,8 +2,9 @@ const noop = () => {}
 
 const debug = (...args) => {
   let cArgs = []
-  args.forEach(item => {
-    const cItem = typeof item !== 'object' ? ['%c' + item, 'color: #3e76f6; font-weight: normal;'] : item
+  args.forEach((item) => {
+    const cItem =
+      typeof item !== 'object' ? ['%c' + item, 'color: #3e76f6; font-weight: normal;'] : item
     cArgs = cArgs.concat(cItem)
   })
 

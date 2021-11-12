@@ -13,7 +13,6 @@ import { View, Image } from '@tarojs/components'
 import './index.scss'
 
 export default class BuyerItem extends Component {
-  
   static defaultProps = {
     // 是否是最后一个
     last: false,
@@ -31,14 +30,15 @@ export default class BuyerItem extends Component {
 
     return (
       <View className={`buyerItem ${last ? 'last' : ''}`}>
-        <Image className='avatar' src='https://pic1.zhimg.com/v2-d8bbab30a2a4db2fe03213ef3f9b50e8_r.jpg' />
+        <Image
+          className='avatar'
+          src='https://pic1.zhimg.com/v2-d8bbab30a2a4db2fe03213ef3f9b50e8_r.jpg'
+        />
         <View className='info'>
           <View className='desc'>某某某刚刚购买了</View>
           <View className='goodName'>购买了啥啥哈哈</View>
         </View>
-        <View>
-          X{info.num}
-        </View>
+        <View>X{info.num}</View>
       </View>
     )
   }

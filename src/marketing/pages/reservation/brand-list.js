@@ -16,16 +16,20 @@ export default class BrandList extends Component {
     super(props)
 
     this.state = {
-      list: [{
-        id: 1,
-        name: '讽德诵功的国际化刚刚好复健科低功耗的看过的看过后的看法更好地将更好地积分开个会12',
-      },{
-        id: 2,
-        name: '讽德诵功的国际化刚刚好复健科低功耗的看过的看过后的看法更好地将更好地积分开个会123',
-      },{
-        id: 3,
-        name: '讽德诵功的国际化刚刚好复健科低功耗的看过的看过后的看法更好地将更好地积分开个会213',
-      }]
+      list: [
+        {
+          id: 1,
+          name: '讽德诵功的国际化刚刚好复健科低功耗的看过的看过后的看法更好地将更好地积分开个会12'
+        },
+        {
+          id: 2,
+          name: '讽德诵功的国际化刚刚好复健科低功耗的看过的看过后的看法更好地将更好地积分开个会123'
+        },
+        {
+          id: 3,
+          name: '讽德诵功的国际化刚刚好复健科低功耗的看过的看过后的看法更好地将更好地积分开个会213'
+        }
+      ]
     }
   }
 
@@ -35,18 +39,18 @@ export default class BrandList extends Component {
 
   async fetch () {
     const { list } = this.state
-    list.map(item => {
+    list.map((item) => {
       item.max_height = 0
     })
     this.setState({
       list: list
     })
   }
- 
+
   changeIntroductionView = (id) => {
     const { list } = this.state
-    list.map(item => {
-      if(item.id === id) {
+    list.map((item) => {
+      if (item.id === id) {
         item.max_height = item.max_height === 120 ? 0 : 120
       }
     })
@@ -61,31 +65,41 @@ export default class BrandList extends Component {
       url: '/marketing/pages/reservation/brand-detail?id=1'
     })
   }
-  
+
   render () {
     const { list } = this.state
     console.log(list, 64)
 
     return (
       <View className='brand-list'>
-        {
-          list.map((item, index) => {
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <View className='brand-item'>
-                <View className='brand-item__title' key={`${index}1`} onClick={this.changeIntroductionView.bind(this, item.id)}>
-                  <Image mode='widthFix' src='/assets/imgs/pay_fail.png' className='brand-item__title_img' />
-                </View>
-                <Text className='brand-item__btn' onClick={this.reservate.bind(this, 1)}>立即预约</Text>
-                <View 
-                  className='brand-item__introduction'
-                  style={`max-height: ${item.max_height}px;`} 
-                  onClick={this.showIntroduction.bind(this, index)}
-                >{item.name}</View>
+        {list.map((item, index) => {
+          return (
+            // eslint-disable-next-line react/jsx-key
+            <View className='brand-item'>
+              <View
+                className='brand-item__title'
+                key={`${index}1`}
+                onClick={this.changeIntroductionView.bind(this, item.id)}
+              >
+                <Image
+                  mode='widthFix'
+                  src='/assets/imgs/pay_fail.png'
+                  className='brand-item__title_img'
+                />
               </View>
-            )
-          })
-        }
+              <Text className='brand-item__btn' onClick={this.reservate.bind(this, 1)}>
+                立即预约
+              </Text>
+              <View
+                className='brand-item__introduction'
+                style={`max-height: ${item.max_height}px;`}
+                onClick={this.showIntroduction.bind(this, index)}
+              >
+                {item.name}
+              </View>
+            </View>
+          )
+        })}
       </View>
     )
   }
