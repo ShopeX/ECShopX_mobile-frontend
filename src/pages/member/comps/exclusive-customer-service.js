@@ -9,13 +9,13 @@ export default class ExclusiveCustomerService extends Component {
     isOpened: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
   static options = {
     addGlobalClass: true
@@ -31,18 +31,18 @@ export default class ExclusiveCustomerService extends Component {
   /**
    * 监听按钮点击事件执行开始时的回调
    * */
-  startmessage () {
+  startmessage() {
     console.log('监听按钮点击事件执行开始时的回调')
   }
 
   /**
    * 监听按钮点击事件执行完毕后的回调
    * */
-  completemessage () {
+  completemessage() {
     console.log('监听按钮点击事件执行完毕后的回调')
   }
 
-  render () {
+  render() {
     let { info } = this.props
 
     if (!info) return null

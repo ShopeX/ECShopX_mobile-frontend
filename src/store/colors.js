@@ -5,7 +5,7 @@ const initState = {
 }
 
 const colors = createReducer(initState, {
-  ['colors'] (state, action) {
+  ['colors'](state, action) {
     const current = action.payload
     return {
       ...state,

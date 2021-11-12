@@ -16,7 +16,7 @@ import '../../pages/member/qrcode-buy.scss'
 @withPager
 @withBackToTop
 export default class QrcodeBuy extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -30,7 +30,7 @@ export default class QrcodeBuy extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const options = this.$router.params
     const query = await normalizeQuerys(this.$router.params)
     console.log(query, 38)
@@ -44,11 +44,11 @@ export default class QrcodeBuy extends Component {
     this.fetchTips()
   }
 
-  async componentDidShow () {
+  async componentDidShow() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     if (!S.getAuthToken()) {
       this.setState({
         isLogin: false
@@ -67,7 +67,7 @@ export default class QrcodeBuy extends Component {
       )
     }
   }
-  async fetchTips () {
+  async fetchTips() {
     const { content } = await api.user.regRule()
     this.setState({
       tipsInfo: content
@@ -118,7 +118,7 @@ export default class QrcodeBuy extends Component {
     // console.log(116,Taro.getStorageSync('odtid'))
     console.log(116, odtid)
     Taro.scanCode({
-      async success (res) {
+      async success(res) {
         let query = {
           barcode: res.result,
           distributor_id: odtid ? odtid : 0
@@ -162,7 +162,7 @@ export default class QrcodeBuy extends Component {
 
   handleClose = () => {}
 
-  render () {
+  render() {
     const { colors } = this.props
     const {
       isLogin,

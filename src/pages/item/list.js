@@ -39,7 +39,7 @@ const filterList = [
   { title: '价格', icon: 'icon-jiangxu-01' }
 ]
 
-function ItemList () {
+function ItemList() {
   const [list, setList] = useState({
     leftList: [],
     rightList: []

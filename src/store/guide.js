@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-create-reducer'
 // import dotProp from 'dot-prop-immutable'
 
-function walkCart (state, fn) {
+function walkCart(state, fn) {
   state.list.forEach((shopCart) => {
     shopCart.list.forEach(fn)
   })
@@ -26,14 +26,14 @@ const initState = {
 }
 
 const guideCart = createReducer(initState, {
-  ['guide/updateStoreInfo'] (state, action) {
+  ['guide/updateStoreInfo'](state, action) {
     const { info: storeInfo } = action.payload
     return {
       ...state,
       storeInfo
     }
   },
-  ['guideCart/checkout'] (state, action) {
+  ['guideCart/checkout'](state, action) {
     const checkoutItem = action.payload
 
     return {
@@ -41,7 +41,7 @@ const guideCart = createReducer(initState, {
       checkoutItem
     }
   },
-  ['guideCart/fastbuy'] (state, action) {
+  ['guideCart/fastbuy'](state, action) {
     const { item, num = 1 } = action.payload
 
     return {
@@ -52,7 +52,7 @@ const guideCart = createReducer(initState, {
       }
     }
   },
-  ['guideCart/updateNum'] (state, action) {
+  ['guideCart/updateNum'](state, action) {
     const { cart_id, num } = action.payload
 
     walkCart(state, (t) => {
@@ -67,7 +67,7 @@ const guideCart = createReducer(initState, {
       list
     }
   },
-  ['guideCart/update'] (state, action) {
+  ['guideCart/update'](state, action) {
     const list = action.payload
 
     let cartIds = []
@@ -81,25 +81,25 @@ const guideCart = createReducer(initState, {
       cartIds
     }
   },
-  ['guideCart/clearFastbuy'] (state) {
+  ['guideCart/clearFastbuy'](state) {
     return {
       ...state,
       fastbuy: null
     }
   },
-  ['guideCart/clear'] (state) {
+  ['guideCart/clear'](state) {
     return {
       ...state,
       ...initState
     }
   },
-  ['guideCart/clearCoupon'] (state) {
+  ['guideCart/clearCoupon'](state) {
     return {
       ...state,
       coupon: null
     }
   },
-  ['guideCart/selection'] (state, action) {
+  ['guideCart/selection'](state, action) {
     const selection = action.payload
 
     return {
@@ -107,7 +107,7 @@ const guideCart = createReducer(initState, {
       selection
     }
   },
-  ['guideCart/changeCoupon'] (state, action) {
+  ['guideCart/changeCoupon'](state, action) {
     const coupon = action.payload
 
     return {
@@ -115,7 +115,7 @@ const guideCart = createReducer(initState, {
       coupon
     }
   },
-  ['guideCart/freightCoupon'] (state, action) {
+  ['guideCart/freightCoupon'](state, action) {
     const freightCoupon = action.payload
 
     return {
@@ -123,13 +123,13 @@ const guideCart = createReducer(initState, {
       freightCoupon
     }
   },
-  ['guideCart/clearFreightCoupon'] (state) {
+  ['guideCart/clearFreightCoupon'](state) {
     return {
       ...state,
       freightCoupon: null
     }
   },
-  ['guideCart/count'] (state, action) {
+  ['guideCart/count'](state, action) {
     const count = action.payload > 0 ? action.payload : ''
 
     return {
@@ -137,7 +137,7 @@ const guideCart = createReducer(initState, {
       count
     }
   },
-  ['guideCart/updateAds'] (state, action) {
+  ['guideCart/updateAds'](state, action) {
     const ads = action.payload ? action.payload : null
 
     return {
@@ -145,7 +145,7 @@ const guideCart = createReducer(initState, {
       ads
     }
   },
-  ['guideCart/receiptType'] (state, action) {
+  ['guideCart/receiptType'](state, action) {
     const receiptType = action.payload
 
     return {
@@ -153,7 +153,7 @@ const guideCart = createReducer(initState, {
       receiptType
     }
   },
-  ['guideCart/storeinfo'] (state, action) {
+  ['guideCart/storeinfo'](state, action) {
     const storeinfo = action.payload
 
     return {
@@ -161,35 +161,35 @@ const guideCart = createReducer(initState, {
       storeinfo
     }
   },
-  ['guideCart/clearReceipt'] (state) {
+  ['guideCart/clearReceipt'](state) {
     return {
       ...state,
       receiptType: '',
       storeinfo: null
     }
   },
-  ['guideCart/closeCart'] (state, action) {
+  ['guideCart/closeCart'](state, action) {
     const showBuyPanel = action.payload
     return {
       ...state,
       showBuyPanel
     }
   },
-  ['guideCart/setGoodsSkuInfo'] (state, action) {
+  ['guideCart/setGoodsSkuInfo'](state, action) {
     const goodsSkuInfo = action.payload
     return {
       ...state,
       goodsSkuInfo
     }
   },
-  ['guideCart/giftCoupon'] (state, action) {
+  ['guideCart/giftCoupon'](state, action) {
     const giftCoupon = action.payload
     return {
       ...state,
       giftCoupon
     }
   },
-  ['guideCart/clearGiftCoupon'] (state) {
+  ['guideCart/clearGiftCoupon'](state) {
     return {
       ...state,
       giftCoupon: null
@@ -199,7 +199,7 @@ const guideCart = createReducer(initState, {
 
 export default guideCart
 
-export function getTotalCount (state, isAll) {
+export function getTotalCount(state, isAll) {
   let total = 0
 
   walkCart(state, (item) => {
@@ -210,7 +210,7 @@ export function getTotalCount (state, isAll) {
   return total
 }
 
-export function getTotalPrice (state) {
+export function getTotalPrice(state) {
   let total = 0
 
   walkCart(state, (item) => {
@@ -222,6 +222,6 @@ export function getTotalPrice (state) {
   return total.toFixed(2)
 }
 
-export function getSelectedCart (state) {
+export function getSelectedCart(state) {
   return state.list.filter((item) => state.selection.includes(item.item_id))
 }

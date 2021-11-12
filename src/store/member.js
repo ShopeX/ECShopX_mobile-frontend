@@ -12,7 +12,7 @@ const initState = {
 }
 
 const member = createReducer(initState, {
-  ['member/favs'] (state, action) {
+  ['member/favs'](state, action) {
     const favsList = action.payload
     const favs = {}
     favsList.forEach(({ item_id, fav_id }) => {
@@ -27,7 +27,7 @@ const member = createReducer(initState, {
       favs
     }
   },
-  ['member/addFav'] (state, action) {
+  ['member/addFav'](state, action) {
     const { item_id } = action.payload
     const favs = {
       ...state.favs,
@@ -39,7 +39,7 @@ const member = createReducer(initState, {
       favs
     }
   },
-  ['member/delFav'] (state, action) {
+  ['member/delFav'](state, action) {
     const { item_id } = action.payload
     const favs = {
       ...state.favs
@@ -51,13 +51,13 @@ const member = createReducer(initState, {
       favs
     }
   },
-  ['member/closeAdv'] (state) {
+  ['member/closeAdv'](state) {
     return {
       ...state,
       showAdv: false
     }
   },
-  ['member/init'] (state, { payload }) {
+  ['member/init'](state, { payload }) {
     return {
       ...state,
       member: payload

@@ -7,7 +7,7 @@ import { formatTime } from '@/utils'
 import './index.scss'
 
 export default class ArticleIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -15,11 +15,11 @@ export default class ArticleIndex extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { id } = this.$router.params
     const info = await api.article.detail(id)
 
@@ -32,7 +32,7 @@ export default class ArticleIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.state
 
     if (!info) {

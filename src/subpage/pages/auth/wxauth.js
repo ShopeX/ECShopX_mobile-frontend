@@ -15,7 +15,7 @@ let codeSetTime = 1000 * 10
   colors: colors.current
 }))
 export default class WxAuth extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -29,7 +29,7 @@ export default class WxAuth extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getStoreSettingInfo()
     this.getIsMustOauth()
     this.setCode(true)
@@ -55,11 +55,11 @@ export default class WxAuth extends Component {
     // );
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.timer && clearInterval(this.timer)
   }
 
-  componentDidShow (option) {
+  componentDidShow(option) {
     this.checkWhite()
     if (!this.state.isNewOpen) {
       this.redirect()
@@ -67,14 +67,14 @@ export default class WxAuth extends Component {
   }
 
   // 获取总店配置信息
-  async getStoreSettingInfo () {
+  async getStoreSettingInfo() {
     const data = await api.shop.getStoreBaseInfo()
     this.setState({
       baseInfo: data
     })
   }
 
-  async checkWhite () {
+  async checkWhite() {
     const { status } = await api.wx.getWhiteList()
     if (status == true) {
       setTimeout(() => {
@@ -83,14 +83,14 @@ export default class WxAuth extends Component {
     }
   }
 
-  async getIsMustOauth () {
+  async getIsMustOauth() {
     const { switch_first_auth_force_validation } = await api.user.getIsMustOauth({ module_type: 1 })
     if (switch_first_auth_force_validation == 1) {
       this.setState({ isMustOauth: true })
     }
   }
 
-  redirect () {
+  redirect() {
     const redirect = this.$router.params.redirect
     const { source } = this.$router.params
     Taro.hideLoading()
@@ -291,7 +291,7 @@ export default class WxAuth extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { isAgree, baseInfo } = this.state
     // const setCheckColor = isAgree ? colors.data[0].primary : '#fff'

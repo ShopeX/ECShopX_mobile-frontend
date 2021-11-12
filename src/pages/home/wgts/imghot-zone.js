@@ -14,7 +14,7 @@ export default class WgtImgHotZone extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,7 +24,7 @@ export default class WgtImgHotZone extends Component {
 
   handleClickItem = linkPage
 
-  render () {
+  render() {
     const { info } = this.props
     const { curIdx } = this.state
 

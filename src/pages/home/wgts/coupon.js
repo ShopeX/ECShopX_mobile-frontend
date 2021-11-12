@@ -23,7 +23,7 @@ export default class WgtCoupon extends Component {
     visible: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -50,10 +50,10 @@ export default class WgtCoupon extends Component {
         if (tmlres.template_id && tmlres.template_id.length > 0) {
           wx.requestSubscribeMessage({
             tmplIds: tmlres.template_id,
-            success () {
+            success() {
               _this.handleGetCard(card_item)
             },
-            fail () {
+            fail() {
               _this.handleGetCard(card_item)
             }
           })
@@ -81,7 +81,7 @@ export default class WgtCoupon extends Component {
     } catch (e) {}
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
@@ -101,7 +101,7 @@ export default class WgtCoupon extends Component {
     })
   }
 
-  fetchCouponCardList () {
+  fetchCouponCardList() {
     api.vip.getShowCardPackage({ receive_type: 'template' }).then(({ all_card_list }) => {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
@@ -124,7 +124,7 @@ export default class WgtCoupon extends Component {
     this.setState({ visible })
   }
 
-  render () {
+  render() {
     const { info, dis_id = '' } = this.props
     const { visible, all_card_list } = this.state
     if (!info) {

@@ -16,7 +16,7 @@ export default class WgtGoodsScroll extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,7 +24,7 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  setTimer () {
+  setTimer() {
     console.log('---setTimer---')
     const { info } = this.props
     const { config } = info
@@ -36,15 +36,15 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setTimer()
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
-  handleClickItem (item) {
+  handleClickItem(item) {
     const { distributor_id } = item
     const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
@@ -78,7 +78,7 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

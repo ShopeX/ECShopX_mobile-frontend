@@ -24,7 +24,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class List extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -63,7 +63,7 @@ export default class List extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { cat_id = null, main_cat_id = null } = this.$router.params
     this.firstStatus = true
 
@@ -91,7 +91,7 @@ export default class List extends Component {
     )
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}` : ''
@@ -102,7 +102,7 @@ export default class List extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -113,7 +113,7 @@ export default class List extends Component {
     }
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, tagsList, curTagId } = this.state
     const { distributor_id } = Taro.getStorageSync('curStore')
@@ -450,7 +450,7 @@ export default class List extends Component {
     }
   }
 
-  render () {
+  render() {
     const {
       localCurrent,
       tabList,

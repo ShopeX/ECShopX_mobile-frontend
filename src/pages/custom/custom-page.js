@@ -13,7 +13,7 @@ import './custom-page.scss'
 
 @withBackToTop
 export default class HomeIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -25,7 +25,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const { id } = this.$router.params
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
@@ -50,7 +50,7 @@ export default class HomeIndex extends Component {
     })
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const { id } = this.$router.params
     const dtid = getDistributorId()
     const url = transformPlatformUrl(
@@ -69,7 +69,7 @@ export default class HomeIndex extends Component {
     })
   }
 
-  async onShareAppMessage () {
+  async onShareAppMessage() {
     const { shareInfo } = this.state
     const { id } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -82,7 +82,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const { shareInfo } = this.state
     const { id } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -94,7 +94,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  render () {
+  render() {
     const { wgts, authStatus, scrollTop, showBackToTop, positionStatus } = this.state
 
     if (!wgts) {

@@ -13,7 +13,7 @@ import './category.scss'
   store
 }))
 export default class Category extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -42,11 +42,11 @@ export default class Category extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     /*const nList = pickBy(res, {
       category_name: 'category_name',
       image_url: 'image_url',
@@ -160,7 +160,7 @@ export default class Category extends Component {
     }
   }
 
-  render () {
+  render() {
     const { curTabIdx, tabList, list, hasSeries, isChanged, localCurrent, tabBarList } = this.state
     const options = this.$router.params
     return (

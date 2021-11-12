@@ -29,7 +29,7 @@ export default class SharePanel extends Component {
     console.log('onClickShareTimeline')
   }
 
-  render () {
+  render() {
     const { isOpen, onClose, onClick, onEditShare } = this.props
 
     return (

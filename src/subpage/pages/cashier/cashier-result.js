@@ -8,7 +8,7 @@ import payFailPng from '../../../assets/imgs/pay_fail.png'
 import './cashier-result.scss'
 
 export default class CashierResult extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -19,7 +19,7 @@ export default class CashierResult extends Component {
       showTabBar: ''
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     Taro.showLoading()
     setTimeout(() => {
       Taro.hideLoading()
@@ -27,7 +27,7 @@ export default class CashierResult extends Component {
     }, 2000)
   }
 
-  async fetch () {
+  async fetch() {
     const { order_id } = this.$router.params
     const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
 
@@ -61,7 +61,7 @@ export default class CashierResult extends Component {
     })
   }
 
-  render () {
+  render() {
     const { orderInfo, tradeInfo, showTabBar } = this.state
 
     if (!orderInfo) return null

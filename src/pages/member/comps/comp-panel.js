@@ -4,7 +4,7 @@ import { classNames, styleNames } from '@/utils'
 
 import './comp-panel.scss'
 
-function CompsPanel (props) {
+function CompsPanel(props) {
   const { title, extra, icon = 'icon-qianwang-01', children, className } = props
   return (
     <View

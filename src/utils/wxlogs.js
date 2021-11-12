@@ -1,29 +1,29 @@
 const log = Taro.getRealtimeLogManager ? Taro.getRealtimeLogManager() : null
 class Logs {
-  constructor () {}
+  constructor() {}
 
-  info () {
+  info() {
     if (!log) {
       return
     }
     log.info.apply(log, arguments)
   }
 
-  warn () {
+  warn() {
     if (!log) {
       return
     }
     log.warn.apply(log, arguments)
   }
 
-  error () {
+  error() {
     if (!log) {
       return
     }
     log.error.apply(log, arguments)
   }
 
-  setFilterMsg (msg) {
+  setFilterMsg(msg) {
     if (!log || !log.setFilterMsg) {
       return
     }
@@ -33,7 +33,7 @@ class Logs {
     log.setFilterMsg(msg)
   }
 
-  addFilterMsg (msg) {
+  addFilterMsg(msg) {
     if (!log || !log.addFilterMsg) {
       return
     }

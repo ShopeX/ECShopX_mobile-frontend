@@ -7,7 +7,7 @@ import api from '@/api'
 import './refund-detail.scss'
 
 export default class TradeRefundDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -18,11 +18,11 @@ export default class TradeRefundDetail extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { aftersales_bn, item_id, order_id } = this.$router.params
     // const { detail: info, order_info:orderInfo,progress,reason} = await api.aftersales.info({
     //   aftersales_bn,
@@ -94,7 +94,7 @@ export default class TradeRefundDetail extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, remind, progress, aftersalesAddress } = this.state
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')

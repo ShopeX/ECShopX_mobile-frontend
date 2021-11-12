@@ -6,7 +6,7 @@ const initState = {
 }
 
 const qywx = createReducer(initState, {
-  ['qywx/getSysType'] (state, action) {
+  ['qywx/getSysType'](state, action) {
     const favsList = action.payload
     const isqy = false
 
@@ -16,7 +16,7 @@ const qywx = createReducer(initState, {
     }
   },
 
-  ['qywx/delFav'] (state, action) {
+  ['qywx/delFav'](state, action) {
     const { item_id } = action.payload
     const favs = {
       ...state.favs
@@ -28,7 +28,7 @@ const qywx = createReducer(initState, {
       favs
     }
   },
-  ['qywx/closeAdv'] (state) {
+  ['qywx/closeAdv'](state) {
     return {
       ...state,
       showAdv: false

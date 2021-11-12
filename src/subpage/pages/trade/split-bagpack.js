@@ -25,7 +25,7 @@ import './split-bagpack.scss'
 //   })
 // }
 export default class TradeDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -34,11 +34,11 @@ export default class TradeDetail extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { order_id, order_type } = this.$router.params
     const data = await api.trade.deliveryLists({ order_id })
 
@@ -58,7 +58,7 @@ export default class TradeDetail extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { list, delivery_num } = this.state
     if (list.length == 0) {

@@ -22,7 +22,7 @@ export default class PointUse extends Component {
     disabledPoint: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -101,7 +101,7 @@ export default class PointUse extends Component {
     this.props.onChange(point, pay_type)
   }
 
-  render () {
+  render() {
     const { info, isOpened, loading, colors } = this.props
     const { point, isOpenRule, disabledPoint, localType } = this.state
     if (!info) {

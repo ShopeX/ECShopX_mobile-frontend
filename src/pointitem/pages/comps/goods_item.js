@@ -14,13 +14,13 @@ import { SpImg, PointLine } from '@/components'
 import './goods_item.scss'
 
 export default class GoodsItem extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  render () {
+  render() {
     const { info = {}, onClick, isStoreOut } = this.props
 
     return (

@@ -38,7 +38,7 @@ export const showLoading = isAlipay ? my.showLoading : Taro.showLoading
 export const hideLoading = isAlipay ? my.hideLoading : Taro.hideLoading
 
 //平台支付
-export async function payPlatform (order = {}) {
+export async function payPlatform(order = {}) {
   let payRes
   let payErr = null
   if (isAlipay) {

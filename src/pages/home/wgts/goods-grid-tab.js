@@ -20,7 +20,7 @@ export default class WgtGoodsGridTab extends Component {
     info: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       current: 0,
@@ -29,7 +29,7 @@ export default class WgtGoodsGridTab extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { info = {} } = this.props
     let { current } = this.state
     this.setState(
@@ -43,7 +43,7 @@ export default class WgtGoodsGridTab extends Component {
     )
   }
 
-  startWrapperTrack () {
+  startWrapperTrack() {
     this.endWrapperTrack()
     const observer = Taro.createIntersectionObserver({
       observeAll: true
@@ -67,14 +67,14 @@ export default class WgtGoodsGridTab extends Component {
     this.wrapperobserver = observer
   }
 
-  endWrapperTrack () {
+  endWrapperTrack() {
     if (this.wrapperobserver) {
       this.wrapperobserver.disconnect()
       this.wrapperobserver = null
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { info = {} } = nextProps
     let { current } = this.state
     this.setState(
@@ -88,7 +88,7 @@ export default class WgtGoodsGridTab extends Component {
     )
   }
 
-  handleClick (value) {
+  handleClick(value) {
     const { info } = this.props
     this.setState(
       {
@@ -112,7 +112,7 @@ export default class WgtGoodsGridTab extends Component {
   //   Taro.navigateTo({ url });
   // }
 
-  handleClickItem (item) {
+  handleClickItem(item) {
     const { distributor_id } = item
     const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
@@ -120,7 +120,7 @@ export default class WgtGoodsGridTab extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, colors } = this.props
     if (!info) {
       return null

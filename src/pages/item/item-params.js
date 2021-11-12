@@ -12,7 +12,7 @@ export default class ItemParams extends Component {
     navigationBarTitleText: '商品参数'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -20,11 +20,11 @@ export default class ItemParams extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { id } = this.$router.params
     const info = await api.item.detail(id)
     const { item_params } = info
@@ -37,7 +37,7 @@ export default class ItemParams extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list } = this.state
 
     return (

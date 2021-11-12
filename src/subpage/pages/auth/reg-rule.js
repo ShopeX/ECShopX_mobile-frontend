@@ -8,7 +8,7 @@ import './reg.scss'
 
 @withPager
 export default class RegRule extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -16,11 +16,11 @@ export default class RegRule extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     let data = ''
     let navBarTitle = '协议'
     const { type } = this.$router.params
@@ -63,7 +63,7 @@ export default class RegRule extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, title } = this.state
 
     return (

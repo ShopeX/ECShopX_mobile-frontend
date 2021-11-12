@@ -7,7 +7,7 @@ import { isObject, classNames } from '@/utils'
 
 import './cart-goodsitem.scss'
 
-function CartGoodsItem (props) {
+function CartGoodsItem(props) {
   const { info, onDelete = () => {} } = this.props
   const onDeleteGoodsItem = () => {
     onDelete(info)

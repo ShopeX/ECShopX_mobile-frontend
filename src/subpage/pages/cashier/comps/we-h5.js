@@ -9,18 +9,18 @@ export default class WeappBtn extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const refMeta = document.querySelector('meta[name="referrer"]')
     refMeta.setAttribute('content', 'always')
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const refMeta = document.querySelector('meta[name="referrer"]')
     refMeta.setAttribute('content', 'never')
   }
@@ -59,7 +59,7 @@ export default class WeappBtn extends Component {
     form.submit()
   }
 
-  render () {
+  render() {
     return (
       <View className='weapp-btn' onClick={this.handleClickPay.bind(this)}>
         微信支付

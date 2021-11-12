@@ -14,7 +14,7 @@ import './bindPhone.scss'
   () => ({})
 )
 export default class BindPhone extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -27,7 +27,7 @@ export default class BindPhone extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getStoreSettingInfo()
     this.getUserInfo()
   }
@@ -37,7 +37,7 @@ export default class BindPhone extends Component {
   }
 
   // 获取总店配置信息
-  async getStoreSettingInfo () {
+  async getStoreSettingInfo() {
     const data = await api.shop.getStoreBaseInfo()
     this.setState({
       baseInfo: data
@@ -142,7 +142,7 @@ export default class BindPhone extends Component {
     }, 2000)
   }
 
-  render () {
+  render() {
     const { currentMobile, mobile, smsCode, countryCode, baseInfo } = this.state
     const { colors } = this.props
 

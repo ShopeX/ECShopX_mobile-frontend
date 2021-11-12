@@ -8,7 +8,7 @@ import api from '@/api'
 import './forgotpwd.scss'
 
 export default class Forgotpwd extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -19,7 +19,7 @@ export default class Forgotpwd extends Component {
       imgInfo: {}
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
@@ -37,7 +37,7 @@ export default class Forgotpwd extends Component {
     }
   }
 
-  async fetch () {
+  async fetch() {
     this.handleClickImgcode()
     this.count = 0
   }
@@ -143,7 +143,7 @@ export default class Forgotpwd extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, timerMsg, isVisible, imgVisible, imgInfo } = this.state
 
     return (

@@ -16,7 +16,7 @@ import './refund.scss'
   colors: colors.current
 }))
 export default class TradeRefund extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -43,7 +43,7 @@ export default class TradeRefund extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
     const { status } = this.$router.params
     const { segTypes, curSegIdx } = this.state
@@ -56,7 +56,7 @@ export default class TradeRefund extends Component {
     })
   }
 
-  async fetch () {
+  async fetch() {
     Taro.showLoading({
       mask: true
     })
@@ -262,7 +262,7 @@ export default class TradeRefund extends Component {
     // })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const {
       segTypes,

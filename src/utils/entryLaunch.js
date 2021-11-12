@@ -5,12 +5,12 @@ import configStore from '@/store'
 import { showToast, log } from '@/utils'
 
 class EntryLaunch {
-  constructor () {
+  constructor() {
     const { store } = configStore()
     this.store = store
   }
 
-  init (params) {
+  init(params) {
     const { query, scene } =
       process.env.TARO_ENV == 'h5' ? { query: params } : Taro.getLaunchOptionsSync()
 
@@ -34,7 +34,7 @@ class EntryLaunch {
   /**
    * @function 初始化高德地图配置
    */
-  initAMap () {
+  initAMap() {
     AMap.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
       this.geolocation = new AMap.Geolocation({
         enableHighAccuracy: true, //是否使用高精度定位，默认:true
@@ -52,7 +52,7 @@ class EntryLaunch {
   /**
    * @function 获取当前店铺
    */
-  async getCurrentStore () {
+  async getCurrentStore() {
     const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo')
     const pages = Taro.getCurrentPages()
     const currentPage = pages[pages.length - 1]
@@ -98,7 +98,7 @@ class EntryLaunch {
   /**
    * @function 根据经纬度获取定位信息
    */
-  getLocationInfo () {
+  getLocationInfo() {
     if (process.env.TARO_ENV === 'weapp') {
       return new Promise((resolve, reject) => {
         Taro.getLocation({
@@ -116,7 +116,7 @@ class EntryLaunch {
       })
     } else {
       return new Promise((reslove, reject) => {
-        this.geolocation.getCurrentPosition(function (status, result) {
+        this.geolocation.getCurrentPosition(function(status, result) {
           if (status == 'complete') {
             reslove({
               lng: result.position.lng,
@@ -148,9 +148,9 @@ class EntryLaunch {
    * @function 根据经纬度解析地址
    * @params lnglat Array
    */
-  getAddressByLnglat (lng, lat) {
+  getAddressByLnglat(lng, lat) {
     return new Promise((reslove, reject) => {
-      this.geocoder.getAddress([lng, lat], function (status, result) {
+      this.geocoder.getAddress([lng, lat], function(status, result) {
         if (status === 'complete' && result.regeocode) {
           reslove(result.regeocode)
         } else {
@@ -165,7 +165,7 @@ class EntryLaunch {
    * @returns Boolean
    * @description 标准版有门店，并且根据后台设置是否展示门店；平台版不显示门店
    */
-  isOpenStore () {
+  isOpenStore() {
     const { nostores_status } = Taro.getStorageSync('otherSetting')
     if (process.env.APP_PLATFORM === 'standard') {
       return !nostores_status

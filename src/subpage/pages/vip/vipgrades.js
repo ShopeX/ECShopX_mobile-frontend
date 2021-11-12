@@ -21,7 +21,7 @@ export default class VipIndex extends Component {
     backgroundColor: '#2f3030',
     backgroundTextStyle: 'light'
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -41,7 +41,7 @@ export default class VipIndex extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -59,7 +59,7 @@ export default class VipIndex extends Component {
     )
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const { cur, list } = await api.vip.getList()
     const { grade_name: name } = this.$router.params
 
@@ -83,7 +83,7 @@ export default class VipIndex extends Component {
     )
   }
 
-  onGetsBindCardList (item) {
+  onGetsBindCardList(item) {
     const { curTabIdx } = this.state
     api.vip
       .getBindCardList({ type: 'vip_grade', grade_id: item[curTabIdx].vip_grade_id })
@@ -93,7 +93,7 @@ export default class VipIndex extends Component {
       })
   }
 
-  fetchCouponCardList () {
+  fetchCouponCardList() {
     api.vip.getShowCardPackage({ receive_type: 'vip_grade' }).then(({ all_card_list }) => {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
@@ -129,7 +129,7 @@ export default class VipIndex extends Component {
     })
   }
 
-  async handleCharge () {
+  async handleCharge() {
     if (!S.getAuthToken()) {
       Taro.showToast({
         title: '请先登录再购买',
@@ -166,17 +166,17 @@ export default class VipIndex extends Component {
       package: config.package,
       signType: config.signType,
       paySign: config.paySign,
-      success: function (res) {
+      success: function(res) {
         wx.showModal({
           content: '支付成功',
           showCancel: false,
-          success: function (res) {
+          success: function(res) {
             console.log('success')
             that.fetchCouponCardList()
           }
         })
       },
-      fail: function (res) {
+      fail: function(res) {
         wx.showModal({
           content: '支付失败',
           showCancel: false
@@ -185,7 +185,7 @@ export default class VipIndex extends Component {
     })
   }
 
-  async fetchUserVipInfo () {
+  async fetchUserVipInfo() {
     const userVipInfo = await api.vip.getUserVipInfo()
     this.setState({
       userVipInfo
@@ -221,7 +221,7 @@ export default class VipIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     let {
       userInfo,

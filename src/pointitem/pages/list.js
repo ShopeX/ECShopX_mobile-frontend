@@ -21,7 +21,7 @@ import './list.scss'
 }))
 @withPager
 export default class List extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -79,7 +79,7 @@ export default class List extends Component {
     navigationStyle: 'custom'
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const { keywords, dis_id, cat_id, main_cat_id } = this.$router.params
 
     this.init()
@@ -104,7 +104,7 @@ export default class List extends Component {
     )
   }
 
-  componentWillReceiveProps (next) {
+  componentWillReceiveProps(next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       setTimeout(() => {
         const list = this.state.list.map((item) => {
@@ -131,14 +131,14 @@ export default class List extends Component {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.getWechatNavBarHeight()
     this.fetchUserInfo()
 
     const options = this.$router.params
   }
 
-  async fetchUserInfo () {
+  async fetchUserInfo() {
     const [res, { point }] = await Promise.all([
       api.member.memberInfo(),
       api.pointitem.getMypoint()
@@ -160,7 +160,7 @@ export default class List extends Component {
 
   getLeafChild = (list) => {
     //获取分类的叶子节点
-    function queryList (json, arr) {
+    function queryList(json, arr) {
       for (var i = 0; i < json.length; i++) {
         var sonList = json[i].children || []
         if (sonList.length == 0) {
@@ -174,7 +174,7 @@ export default class List extends Component {
     return queryList(list, [])
   }
 
-  async fetchConfig (params) {
+  async fetchConfig(params) {
     const query = {
       page: 1,
       item_type: 'normal',
@@ -216,7 +216,7 @@ export default class List extends Component {
     })
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
 
     const {
@@ -260,7 +260,7 @@ export default class List extends Component {
     }
   }
 
-  startTrack () {
+  startTrack() {
     this.endTrack()
     const observer = Taro.createIntersectionObserver(this.$scope, {
       observeAll: true
@@ -285,7 +285,7 @@ export default class List extends Component {
     this.observe = observer
   }
 
-  endTrack () {
+  endTrack() {
     if (this.observer) {
       this.observer.disconnect()
       this.observe = null
@@ -351,7 +351,7 @@ export default class List extends Component {
     )
   }
 
-  handleClickItemF (idx) {
+  handleClickItemF(idx) {
     const item = this.state.filterList[idx] || {}
 
     let sortOrder = null
@@ -592,7 +592,7 @@ export default class List extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       list,
       curFilterIdx,

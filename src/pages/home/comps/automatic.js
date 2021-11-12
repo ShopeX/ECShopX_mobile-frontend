@@ -14,7 +14,7 @@ export default class Automatic extends Component {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const { info, onClick, onClose, isShow } = this.props
 
     if (!info) {

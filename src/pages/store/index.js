@@ -30,7 +30,7 @@ import './index.scss'
 }))
 @withBackToTop
 export default class StoreIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -57,7 +57,7 @@ export default class StoreIndex extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const options = await normalizeQuerys(this.$router.params)
     const id = options.id || options.dtid
     if (id) {
@@ -76,7 +76,7 @@ export default class StoreIndex extends Component {
       })
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     if (res.from === 'button') {
       console.log(res.target)
     }
@@ -86,7 +86,7 @@ export default class StoreIndex extends Component {
     }
   }
 
-  async fetchInfo (distributorId) {
+  async fetchInfo(distributorId) {
     let id = ''
     let storeInfo = null
     if (distributorId) {
@@ -135,7 +135,7 @@ export default class StoreIndex extends Component {
     }
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -187,7 +187,7 @@ export default class StoreIndex extends Component {
     }
   }
 
-  render () {
+  render() {
     const {
       wgts,
       storeInfo,

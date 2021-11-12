@@ -11,14 +11,14 @@ const QW_SESSION_KEY_TIMESTAMP = 'refresh_session_key_time' //企业微信sessio
 const QW_SESSION = 'qw_session' //企微用户信息
 const { store } = configStore()
 
-function remove (arr, item) {
+function remove(arr, item) {
   const idx = arr.indexOf(item)
   if (idx >= 0) {
     arr.splice(idx, 1)
   }
 }
 
-function isAsync (func) {
+function isAsync(func) {
   const string = func.toString().trim()
 
   return !!(
@@ -29,7 +29,7 @@ function isAsync (func) {
 }
 
 class Spx {
-  constructor (options = {}) {
+  constructor(options = {}) {
     this.hooks = []
     this.options = {
       autoRefreshToken: true,
@@ -42,7 +42,7 @@ class Spx {
     }
   }
 
-  refreshQwUserinfo () {
+  refreshQwUserinfo() {
     if (this._refreshSessionKeyTimer) {
       clearTimeout(this._refreshSessionKeyTimer)
     }
@@ -61,7 +61,7 @@ class Spx {
     this._refreshSessionKeyTimer = time
   }
 
-  getAuthToken () {
+  getAuthToken() {
     const authToken = Taro.getStorageSync(TOKEN_IDENTIFIER)
     if (authToken && !this.get(TOKEN_IDENTIFIER)) {
       this.set(TOKEN_IDENTIFIER, authToken)
@@ -69,13 +69,13 @@ class Spx {
     return authToken
   }
 
-  setAuthToken (token) {
+  setAuthToken(token) {
     this.set(TOKEN_IDENTIFIER, token)
     Taro.setStorageSync(TOKEN_IDENTIFIER, token)
     Taro.setStorageSync(TOKEN_TIMESTAMP, Date.now() + 55 * 60 * 1000)
   }
 
-  startRefreshToken () {
+  startRefreshToken() {
     if (this._refreshTokenTimer) {
       clearTimeout(this._refreshTokenTimer)
     }
@@ -93,7 +93,7 @@ class Spx {
     setInterval(checkAndRefresh, 5 * 60 * 1000)
   }
 
-  async getUserInfo () {
+  async getUserInfo() {
     let userInfo = this.get('userInfo')
     const token = this.getAuthToken()
     if (!userInfo && token) {
@@ -104,7 +104,7 @@ class Spx {
     return userInfo
   }
 
-  get (key, forceLocal) {
+  get(key, forceLocal) {
     let val = globalData[key]
     if (forceLocal) {
       val = Taro.getStorageSync(key)
@@ -113,23 +113,23 @@ class Spx {
     return val
   }
 
-  set (key, val, forceLocal) {
+  set(key, val, forceLocal) {
     globalData[key] = val
     if (forceLocal) {
       Taro.setStorageSync(key, val)
     }
   }
-  delete (key, forceLocal) {
+  delete(key, forceLocal) {
     delete globalData[key]
     if (forceLocal) {
       Taro.removeStorageSync(key)
     }
   }
-  hasHook (name) {
+  hasHook(name) {
     return this.hooks[name] !== undefined
   }
 
-  async trigger (name, ...args) {
+  async trigger(name, ...args) {
     const cbs = this.hooks[name]
     if (!cbs) return
 
@@ -144,20 +144,20 @@ class Spx {
     return ret
   }
 
-  bind (name, fn) {
+  bind(name, fn) {
     const fns = this.hooks[name] || []
     fns.push(fn)
     this.hooks[name] = fns
   }
 
-  unbind (name, fn) {
+  unbind(name, fn) {
     const fns = this.hooks[name]
     if (!fns) return
 
     remove(fns, fn)
   }
 
-  async OAuthWxUserProfile (fn, require) {
+  async OAuthWxUserProfile(fn, require) {
     if (!this.getAuthToken()) {
       showToast('请先登录')
       return
@@ -191,7 +191,7 @@ class Spx {
   }
 
   // 获取会员信息
-  async getMemberInfo () {
+  async getMemberInfo() {
     const userInfo = await api.member.memberInfo()
     store.dispatch({
       type: 'member/init',
@@ -210,7 +210,7 @@ class Spx {
     return userInfo
   }
 
-  async autoLogin (ctx, next) {
+  async autoLogin(ctx, next) {
     const IS_QW_GOODS_SHELVES = isGoodsShelves()
     try {
       await this.trigger('autoLogin', ctx)
@@ -239,7 +239,7 @@ class Spx {
     }
   }
 
-  async login (ctx, isRedirect = false) {
+  async login(ctx, isRedirect = false) {
     let code, token
     if (isWeixin) {
       let { update_time } = await api.wx.getPrivacyTime()
@@ -280,7 +280,7 @@ class Spx {
     // });
   }
 
-  async loginQW (ctx) {
+  async loginQW(ctx) {
     console.log('[loginQW] 企微登录 执行')
     let { code } = await this.getQyLoginCode()
     const QwUserInfo = await api.user.getQwUserInfo({
@@ -301,14 +301,14 @@ class Spx {
     this.set('GUIDE_INFO', _QwUserInfo, true)
   }
 
-  logout () {
+  logout() {
     Taro.removeStorageSync(TOKEN_TIMESTAMP)
     this.delete(TOKEN_IDENTIFIER, true)
     Taro.removeStorageSync('userinfo')
     this.trigger('logout')
   }
 
-  globalData () {
+  globalData() {
     if (process.env.NODE_ENV === 'production') {
       return null
     } else {
@@ -316,7 +316,7 @@ class Spx {
     }
   }
   //获取企业微信code
-  getQyLoginCode () {
+  getQyLoginCode() {
     return new Promise((reslove, reject) => {
       wx.qy.login({
         success: (res) => {
@@ -329,7 +329,7 @@ class Spx {
     })
   }
 
-  setUvTimeStamp () {
+  setUvTimeStamp() {
     let uvstamp = Taro.getStorageSync('userVisitTime')
     let today = formatDataTime(new Date())
     if (!uvstamp || (uvstamp && new Date(today).getTime() > uvstamp)) {
@@ -339,11 +339,11 @@ class Spx {
     }
   }
 
-  toast (...args) {
+  toast(...args) {
     Taro.eventCenter.trigger.apply(Taro.eventCenter, ['sp-toast:show', ...args])
   }
 
-  closeToast () {
+  closeToast() {
     Taro.eventCenter.trigger('sp-toast:close')
   }
 }

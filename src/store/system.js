@@ -11,7 +11,7 @@ const initState = {
 }
 
 const system = createReducer(initState, {
-  ['system/config'] (state, action) {
+  ['system/config'](state, action) {
     const payload = action.payload
     return {
       ...state,

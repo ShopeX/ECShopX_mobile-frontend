@@ -1,6 +1,6 @@
 import Taro, { useRouter } from '@tarojs/taro'
 
-export function setPageTitle (title) {
+export function setPageTitle(title) {
   document.title = title
   var mobile = navigator.userAgent.toLowerCase()
   if (/iphone|ipad|ipod/.test(mobile)) {
@@ -9,8 +9,8 @@ export function setPageTitle (title) {
     // 替换成站标favicon路径或者任意存在的较小的图片即可
     // iframe.setAttribute('src', '/favicon.ico')
     // iframe.setAttribute('src','/wt_logo.png')
-    var iframeCallback = function () {
-      setTimeout(function () {
+    var iframeCallback = function() {
+      setTimeout(function() {
         iframe.removeEventListener('load', iframeCallback)
         document.body.removeChild(iframe)
       }, 0)
@@ -37,13 +37,13 @@ export const goToAuthPage = () => {
 }
 
 class CreateIntersectionObserver {
-  constructor (options) {
+  constructor(options) {
     this.options = options
     this['on-observer'] = () => {}
     this.init()
   }
 
-  init () {
+  init() {
     const { el } = this.options
     if (!el) {
       throw new Error('createIntersectionObserver options el is null')
@@ -64,7 +64,7 @@ class CreateIntersectionObserver {
     return this
   }
 
-  on (event, fn) {
+  on(event, fn) {
     this[event] = fn
   }
 }

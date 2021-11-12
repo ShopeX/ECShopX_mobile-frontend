@@ -13,12 +13,12 @@ export default class WgtFloorImg extends Component {
     info: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
   onRoute = linkPage
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

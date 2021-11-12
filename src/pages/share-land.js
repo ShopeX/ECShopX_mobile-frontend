@@ -3,9 +3,9 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { entryLaunch } from '@/utils'
 
 export default class ShareLand extends Component {
-  componentDidMount () {}
+  componentDidMount() {}
 
-  render () {
+  render() {
     return <View className='page-share-land'></View>
   }
 }

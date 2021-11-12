@@ -15,16 +15,16 @@ export default class Cashier extends Component {
     env: ''
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetch()
   }
 
-  isPointitemGood () {
+  isPointitemGood() {
     const options = this.$router.params
     return options.type === 'pointitem'
   }
 
-  async fetch () {
+  async fetch() {
     const { order_id } = this.$router.params
 
     let env = ''
@@ -60,7 +60,7 @@ export default class Cashier extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, env, appPay } = this.state
 
     console.log('---cashierInfo---', info)

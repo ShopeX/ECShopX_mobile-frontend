@@ -13,7 +13,7 @@ import { classNames } from '@/utils'
 import './filter-block.scss'
 
 export default class FilterBlock extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
@@ -50,7 +50,7 @@ export default class FilterBlock extends Component {
     }
   }
 
-  render () {
+  render() {
     const name = this.getName()
 
     const { type } = this.props

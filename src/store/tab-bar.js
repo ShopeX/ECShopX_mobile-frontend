@@ -5,7 +5,7 @@ const initState = {
 }
 
 const tabBar = createReducer(initState, {
-  ['tabBar'] (state, action) {
+  ['tabBar'](state, action) {
     const current = action.payload
     return {
       ...state,

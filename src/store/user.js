@@ -5,7 +5,7 @@ const initState = {
 }
 
 const user = createReducer(initState, {
-  ['user/landing'] (state, action) {
+  ['user/landing'](state, action) {
     const land_params = action.payload
 
     return {

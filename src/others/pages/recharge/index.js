@@ -16,7 +16,7 @@ import './index.scss'
 }))
 @withLogin()
 export default class Recharge extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     /**
      * @description: state字段说明
@@ -43,7 +43,7 @@ export default class Recharge extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getMemberInfo()
     // 获取充值金额列表
     api.member.getRechargeNumber().then((res) => {
@@ -57,7 +57,7 @@ export default class Recharge extends Component {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.setStore()
   }
 
@@ -66,7 +66,7 @@ export default class Recharge extends Component {
   }
 
   // 获取会员详情
-  getMemberInfo () {
+  getMemberInfo() {
     api.member.memberInfo().then((res) => {
       this.setState({
         deposit: res.deposit
@@ -245,7 +245,7 @@ export default class Recharge extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       currentShop,
       deposit,

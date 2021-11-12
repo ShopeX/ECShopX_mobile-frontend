@@ -10,7 +10,7 @@ export default class ParamsItem extends Component {
     info: {}
   }
 
-  render () {
+  render() {
     const { info } = this.props
 
     if (!info) {

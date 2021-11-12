@@ -22,7 +22,7 @@ import { de } from 'date-fns/locale'
 @withPager
 @withBackToTop
 export default class StoreZitiList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -41,7 +41,7 @@ export default class StoreZitiList extends Component {
     navigationBarTitleText: '选择自提门店'
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const lnglat = Taro.getStorageSync('lnglat')
     const cityInfo = Taro.getStorageSync('selectShop')
     let query = {}
@@ -75,7 +75,7 @@ export default class StoreZitiList extends Component {
       this.handleGetLocation()
     }
   }
-  async fetch (params) {
+  async fetch(params) {
     const isOpenStore = await entry.getStoreStatus()
     const { page_no: page, page_size: pageSize } = params
     const { shop_id, order_type, cart_type, seckill_id, ticket, bargain_id } = this.$router.params
@@ -393,7 +393,7 @@ export default class StoreZitiList extends Component {
     }, 300)
   }
 
-  render () {
+  render() {
     const {
       list,
       scrollTop,

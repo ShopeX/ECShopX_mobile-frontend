@@ -18,7 +18,7 @@ export default class WgtShowCase extends Component {
 
   handleClickItem = linkPage
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

@@ -37,7 +37,7 @@ export default class GoodsBuyToolbar extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       onClickAddCart,
       onClickFastBuy,

@@ -14,7 +14,7 @@ import { View } from '@tarojs/components'
 import './headContainer.scss'
 
 export default class HeaderCustom extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -33,7 +33,7 @@ export default class HeaderCustom extends Component {
     }
   }
 
-  render () {
+  render() {
     const { isWhite = false, statusBarHeight = 44, isHome } = this.props
     return (
       <View

@@ -7,11 +7,11 @@ if (process.env.TARO_ENV == 'weapp' || process.env.TARO_ENV === 'alipay') {
 }
 
 class Trackers {
-  constructor () {
+  constructor() {
     this.providers = providers
   }
 
-  get (name, options) {
+  get(name, options) {
     const Tracker = this.providers[name]
     return new Tracker(options)
   }

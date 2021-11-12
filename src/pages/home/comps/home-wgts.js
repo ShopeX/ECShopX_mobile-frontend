@@ -29,7 +29,7 @@ export default class HomeWgts extends Component {
     screenWidth: 375
   }
 
-  componentDidMount () {
+  componentDidMount() {
     Taro.getSystemInfo().then((res) => {
       this.setState({
         screenWidth: res.screenWidth
@@ -44,7 +44,7 @@ export default class HomeWgts extends Component {
     addGlobalClass: true
   }
 
-  startTrack () {
+  startTrack() {
     this.endTrack()
 
     const { wgts } = this.props
@@ -72,7 +72,7 @@ export default class HomeWgts extends Component {
     this.observe = observer
   }
 
-  endTrack () {
+  endTrack() {
     if (this.observer) {
       this.observer.disconnect()
       this.observe = null
@@ -84,7 +84,7 @@ export default class HomeWgts extends Component {
     loadMore(idx, goodType, currentTabIndex, currentLength)
   }
 
-  render () {
+  render() {
     const { wgts } = this.props
     const { screenWidth } = this.state
 

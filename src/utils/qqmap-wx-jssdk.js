@@ -33,33 +33,33 @@ var Utils = {
    * md5加密方法
    * 版权所有©2011 Sebastian Tschan，https：//blueimp.net
    */
-  safeAdd (x, y) {
+  safeAdd(x, y) {
     var lsw = (x & 0xffff) + (y & 0xffff)
     var msw = (x >> 16) + (y >> 16) + (lsw >> 16)
     return (msw << 16) | (lsw & 0xffff)
   },
-  bitRotateLeft (num, cnt) {
+  bitRotateLeft(num, cnt) {
     return (num << cnt) | (num >>> (32 - cnt))
   },
-  md5cmn (q, a, b, x, s, t) {
+  md5cmn(q, a, b, x, s, t) {
     return this.safeAdd(
       this.bitRotateLeft(this.safeAdd(this.safeAdd(a, q), this.safeAdd(x, t)), s),
       b
     )
   },
-  md5ff (a, b, c, d, x, s, t) {
+  md5ff(a, b, c, d, x, s, t) {
     return this.md5cmn((b & c) | (~b & d), a, b, x, s, t)
   },
-  md5gg (a, b, c, d, x, s, t) {
+  md5gg(a, b, c, d, x, s, t) {
     return this.md5cmn((b & d) | (c & ~d), a, b, x, s, t)
   },
-  md5hh (a, b, c, d, x, s, t) {
+  md5hh(a, b, c, d, x, s, t) {
     return this.md5cmn(b ^ c ^ d, a, b, x, s, t)
   },
-  md5ii (a, b, c, d, x, s, t) {
+  md5ii(a, b, c, d, x, s, t) {
     return this.md5cmn(c ^ (b | ~d), a, b, x, s, t)
   },
-  binlMD5 (x, len) {
+  binlMD5(x, len) {
     /* append padding */
     x[len >> 5] |= 0x80 << len % 32
     x[(((len + 64) >>> 9) << 4) + 14] = len
@@ -155,7 +155,7 @@ var Utils = {
     }
     return [a, b, c, d]
   },
-  binl2rstr (input) {
+  binl2rstr(input) {
     var i
     var output = ''
     var length32 = input.length * 32
@@ -164,7 +164,7 @@ var Utils = {
     }
     return output
   },
-  rstr2binl (input) {
+  rstr2binl(input) {
     var i
     var output = []
     output[(input.length >> 2) - 1] = undefined
@@ -177,10 +177,10 @@ var Utils = {
     }
     return output
   },
-  rstrMD5 (s) {
+  rstrMD5(s) {
     return this.binl2rstr(this.binlMD5(this.rstr2binl(s), s.length * 8))
   },
-  rstrHMACMD5 (key, data) {
+  rstrHMACMD5(key, data) {
     var i
     var bkey = this.rstr2binl(key)
     var ipad = []
@@ -197,7 +197,7 @@ var Utils = {
     hash = this.binlMD5(ipad.concat(this.rstr2binl(data)), 512 + data.length * 8)
     return this.binl2rstr(this.binlMD5(opad.concat(hash), 512 + 128))
   },
-  rstr2hex (input) {
+  rstr2hex(input) {
     var hexTab = '0123456789abcdef'
     var output = ''
     var x
@@ -208,23 +208,23 @@ var Utils = {
     }
     return output
   },
-  str2rstrUTF8 (input) {
+  str2rstrUTF8(input) {
     return unescape(encodeURIComponent(input))
   },
-  rawMD5 (s) {
+  rawMD5(s) {
     return this.rstrMD5(this.str2rstrUTF8(s))
   },
-  hexMD5 (s) {
+  hexMD5(s) {
     return this.rstr2hex(this.rawMD5(s))
   },
-  rawHMACMD5 (k, d) {
+  rawHMACMD5(k, d) {
     return this.rstrHMACMD5(this.str2rstrUTF8(k), str2rstrUTF8(d))
   },
-  hexHMACMD5 (k, d) {
+  hexHMACMD5(k, d) {
     return this.rstr2hex(this.rawHMACMD5(k, d))
   },
 
-  md5 (string, key, raw) {
+  md5(string, key, raw) {
     if (!key) {
       if (!raw) {
         return this.hexMD5(string)
@@ -243,12 +243,12 @@ var Utils = {
    * @param {String} featrue 方法名
    * @return 返回加密后的sig参数
    */
-  getSig (requestParam, sk, feature, mode) {
+  getSig(requestParam, sk, feature, mode) {
     var sig = null
     var requestArr = []
     Object.keys(requestParam)
       .sort()
-      .forEach(function (key) {
+      .forEach(function(key) {
         requestArr.push(key + '=' + requestParam[key])
       })
     if (feature == 'search') {
@@ -282,7 +282,7 @@ var Utils = {
    * 得到终点query字符串
    * @param {Array|String} 检索数据
    */
-  location2query (data) {
+  location2query(data) {
     if (typeof data == 'string') {
       return data
     }
@@ -305,14 +305,14 @@ var Utils = {
   /**
    * 计算角度
    */
-  rad (d) {
+  rad(d) {
     return (d * Math.PI) / 180.0
   },
   /**
    * 处理终点location数组
    * @return 返回终点数组
    */
-  getEndLocation (location) {
+  getEndLocation(location) {
     var to = location.split(';')
     var endLocation = []
     for (var i = 0; i < to.length; i++) {
@@ -330,7 +330,7 @@ var Utils = {
    * @param b 表示经度差
    * @return 返回的是距离，单位m
    */
-  getDistance (latFrom, lngFrom, latTo, lngTo) {
+  getDistance(latFrom, lngFrom, latTo, lngTo) {
     var radLatFrom = this.rad(latFrom)
     var radLatTo = this.rad(latTo)
     var a = radLatFrom - radLatTo
@@ -350,7 +350,7 @@ var Utils = {
   /**
    * 使用微信接口进行定位
    */
-  getWXLocation (success, fail, complete) {
+  getWXLocation(success, fail, complete) {
     wx.getLocation({
       type: 'gcj02',
       success: success,
@@ -362,7 +362,7 @@ var Utils = {
   /**
    * 获取location参数
    */
-  getLocationParam (location) {
+  getLocationParam(location) {
     if (typeof location == 'string') {
       var locationArr = location.split(',')
       if (locationArr.length === 2) {
@@ -380,10 +380,10 @@ var Utils = {
   /**
    * 回调函数默认处理
    */
-  polyfillParam (param) {
-    param.success = param.success || function () {}
-    param.fail = param.fail || function () {}
-    param.complete = param.complete || function () {}
+  polyfillParam(param) {
+    param.success = param.success || function() {}
+    param.fail = param.fail || function() {}
+    param.complete = param.complete || function() {}
   },
 
   /**
@@ -392,7 +392,7 @@ var Utils = {
    * @param {Object} param 接口参数
    * @param {String} key 对应参数的key
    */
-  checkParamKeyEmpty (param, key) {
+  checkParamKeyEmpty(param, key) {
     if (!param[key]) {
       var errconf = this.buildErrorConfig(
         ERROR_CONF.PARAM_ERR,
@@ -410,7 +410,7 @@ var Utils = {
    *
    * @param {Object} param 接口参数
    */
-  checkKeyword (param) {
+  checkKeyword(param) {
     return !this.checkParamKeyEmpty(param, 'keyword')
   },
 
@@ -419,7 +419,7 @@ var Utils = {
    *
    * @param {Object} param 接口参数
    */
-  checkLocation (param) {
+  checkLocation(param) {
     var location = this.getLocationParam(param.location)
     if (!location || !location.latitude || !location.longitude) {
       var errconf = this.buildErrorConfig(
@@ -438,7 +438,7 @@ var Utils = {
    * @param {Number} errCode 错误码
    * @param {Number} errMsg 错误描述
    */
-  buildErrorConfig (errCode, errMsg) {
+  buildErrorConfig(errCode, errMsg) {
     return {
       status: errCode,
       message: errMsg
@@ -460,7 +460,7 @@ var Utils = {
    * @param {Object} param 接口参数
    * @param {Object} data 数据
    */
-  handleData (param, data, feature) {
+  handleData(param, data, feature) {
     if (feature == 'search') {
       var searchResult = data.data
       var searchSimplify = []
@@ -635,11 +635,11 @@ var Utils = {
    * @param {Object} param 配置项
    * @param {String} feature 方法名
    */
-  buildWxRequestConfig (param, options, feature) {
+  buildWxRequestConfig(param, options, feature) {
     var that = this
     options.header = { 'content-type': 'application/json' }
     options.method = 'GET'
-    options.success = function (res) {
+    options.success = function(res) {
       var data = res.data
       if (data.status === 0) {
         that.handleData(param, data, feature)
@@ -647,11 +647,11 @@ var Utils = {
         param.fail(data)
       }
     }
-    options.fail = function (res) {
+    options.fail = function(res) {
       res.statusCode = ERROR_CONF.WX_ERR_CODE
       param.fail(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg))
     }
-    options.complete = function (res) {
+    options.complete = function(res) {
       var statusCode = +res.statusCode
       switch (statusCode) {
         case ERROR_CONF.WX_ERR_CODE: {
@@ -678,17 +678,17 @@ var Utils = {
   /**
    * 处理用户参数是否传入坐标进行不同的处理
    */
-  locationProcess (param, locationsuccess, locationfail, locationcomplete) {
+  locationProcess(param, locationsuccess, locationfail, locationcomplete) {
     var that = this
     locationfail =
       locationfail ||
-      function (res) {
+      function(res) {
         res.statusCode = ERROR_CONF.WX_ERR_CODE
         param.fail(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg))
       }
     locationcomplete =
       locationcomplete ||
-      function (res) {
+      function(res) {
         if (res.statusCode == ERROR_CONF.WX_ERR_CODE) {
           param.complete(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg))
         }
@@ -708,7 +708,7 @@ class QQMapWX {
    *
    * @param {Object} options 接口参数,key 为必选参数
    */
-  constructor (options) {
+  constructor(options) {
     if (!options.key) {
       throw Error('key值不能为空')
     }
@@ -723,7 +723,7 @@ class QQMapWX {
    * 参数对象结构可以参考
    * @see http://lbs.qq.com/webservice_v1/guide-search.html
    */
-  search (options) {
+  search(options) {
     var that = this
     options = options || {}
 
@@ -765,7 +765,7 @@ class QQMapWX {
       rectangle = options.rectangle
     }
 
-    var locationsuccess = function (result) {
+    var locationsuccess = function(result) {
       if (region && !rectangle) {
         //城市限定参数拼接
         requestParam.boundary =
@@ -824,7 +824,7 @@ class QQMapWX {
    * 参数对象结构可以参考
    * http://lbs.qq.com/webservice_v1/guide-suggestion.html
    */
-  getSuggestion (options) {
+  getSuggestion(options) {
     var that = this
     options = options || {}
     Utils.polyfillParam(options)
@@ -854,7 +854,7 @@ class QQMapWX {
     }
     //排序
     if (options.location) {
-      var locationsuccess = function (result) {
+      var locationsuccess = function(result) {
         requestParam.location = result.latitude + ',' + result.longitude
         if (options.sig) {
           requestParam.sig = Utils.getSig(requestParam, options.sig, 'suggest')
@@ -896,7 +896,7 @@ class QQMapWX {
    * 请求参数结构可以参考
    * http://lbs.qq.com/webservice_v1/guide-gcoder.html
    */
-  reverseGeocoder (options) {
+  reverseGeocoder(options) {
     var that = this
     options = options || {}
     Utils.polyfillParam(options)
@@ -910,7 +910,7 @@ class QQMapWX {
       requestParam.poi_options = options.poi_options
     }
 
-    var locationsuccess = function (result) {
+    var locationsuccess = function(result) {
       requestParam.location = result.latitude + ',' + result.longitude
       if (options.sig) {
         requestParam.sig = Utils.getSig(requestParam, options.sig, 'reverseGeocoder')
@@ -937,7 +937,7 @@ class QQMapWX {
    * 请求参数结构可以参考
    * http://lbs.qq.com/webservice_v1/guide-geocoder.html
    */
-  geocoder (options) {
+  geocoder(options) {
     var that = this
     options = options || {}
     Utils.polyfillParam(options)
@@ -981,7 +981,7 @@ class QQMapWX {
    * 请求参数结构可以参考
    * http://lbs.qq.com/webservice_v1/guide-region.html
    */
-  getCityList (options) {
+  getCityList(options) {
     var that = this
     options = options || {}
     Utils.polyfillParam(options)
@@ -1014,7 +1014,7 @@ class QQMapWX {
    * 请求参数结构可以参考
    * http://lbs.qq.com/webservice_v1/guide-region.html
    */
-  getDistrictByCityId (options) {
+  getDistrictByCityId(options) {
     var that = this
     options = options || {}
     Utils.polyfillParam(options)
@@ -1057,7 +1057,7 @@ class QQMapWX {
    * 请求参数结构可以参考
    * http://lbs.qq.com/webservice_v1/guide-distance.html
    */
-  calculateDistance (options) {
+  calculateDistance(options) {
     var that = this
     options = options || {}
     Utils.polyfillParam(options)
@@ -1079,7 +1079,7 @@ class QQMapWX {
 
     //计算直线距离
     if (requestParam.mode == 'straight') {
-      var locationsuccess = function (result) {
+      var locationsuccess = function(result) {
         var locationTo = Utils.getEndLocation(requestParam.to) //处理终点坐标
         var data = {
           message: 'query ok',
@@ -1121,7 +1121,7 @@ class QQMapWX {
 
       Utils.locationProcess(options, locationsuccess)
     } else {
-      var locationsuccess = function (result) {
+      var locationsuccess = function(result) {
         requestParam.from = result.latitude + ',' + result.longitude
         if (options.sig) {
           requestParam.sig = Utils.getSig(requestParam, options.sig, 'calculateDistance')
@@ -1150,7 +1150,7 @@ class QQMapWX {
    * 请求参数结构可以参考
    * https://lbs.qq.com/webservice_v1/guide-road.html
    */
-  direction (options) {
+  direction(options) {
     var that = this
     options = options || {}
     Utils.polyfillParam(options)
@@ -1224,7 +1224,7 @@ class QQMapWX {
       }
     }
 
-    var locationsuccess = function (result) {
+    var locationsuccess = function(result) {
       requestParam.from = result.latitude + ',' + result.longitude
       if (options.sig) {
         requestParam.sig = Utils.getSig(requestParam, options.sig, 'direction', options.mode)

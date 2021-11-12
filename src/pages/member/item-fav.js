@@ -16,7 +16,7 @@ import './item-fav.scss'
 @withPager
 @withBackToTop
 export default class ItemFav extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -31,11 +31,11 @@ export default class ItemFav extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -168,7 +168,7 @@ export default class ItemFav extends Component {
     )
   }
 
-  render () {
+  render() {
     const { list, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
 
     return (

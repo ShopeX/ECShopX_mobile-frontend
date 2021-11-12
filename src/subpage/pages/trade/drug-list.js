@@ -16,7 +16,7 @@ export default class TradePickList extends Component {
     navigationBarTitleText: '处方药订单'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -27,7 +27,7 @@ export default class TradePickList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setState(
       {
         query: {
@@ -57,11 +57,11 @@ export default class TradePickList extends Component {
     })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.hideLayer()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       ...this.state.query,
@@ -156,7 +156,7 @@ export default class TradePickList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { curItemActionsId, tabList, list, page } = this.state
 
     return (

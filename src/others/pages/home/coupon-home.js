@@ -15,7 +15,7 @@ import '../home/coupon-home.scss'
 }))
 @withPager
 export default class CouponHome extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -30,7 +30,7 @@ export default class CouponHome extends Component {
   //   navigationBarBackgroundColor: "#F8DAA2"
   // };
 
-  async componentDidMount () {
+  async componentDidMount() {
     api.wx.shareSetting({ shareindex: 'coupon' }).then((res) => {
       this.setState({
         shareInfo: res
@@ -45,7 +45,7 @@ export default class CouponHome extends Component {
     })
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}` : ''
@@ -56,7 +56,7 @@ export default class CouponHome extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -67,7 +67,7 @@ export default class CouponHome extends Component {
     }
   }
 
-  async fetch (params) {
+  async fetch(params) {
     let { distributor_id, dtid, item_id = '', itemid = '', card_id } = this.routerParams
     params = {
       ...params,
@@ -132,10 +132,10 @@ export default class CouponHome extends Component {
         if (tmlres.template_id && tmlres.template_id.length > 0) {
           wx.requestSubscribeMessage({
             tmplIds: tmlres.template_id,
-            success () {
+            success() {
               _this.handleGetCard(card_item, idx)
             },
-            fail () {
+            fail() {
               _this.handleGetCard(card_item, idx)
             }
           })
@@ -178,7 +178,7 @@ export default class CouponHome extends Component {
     } catch (e) {}
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { list, page } = this.state
 

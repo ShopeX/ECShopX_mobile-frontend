@@ -10,11 +10,11 @@ export default class WgtImgGif extends Component {
     info: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {}
   }
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

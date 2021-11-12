@@ -33,7 +33,7 @@ import './index.scss'
 )
 @withLogin()
 export default class MemberIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       turntable_open: 0,
@@ -83,7 +83,7 @@ export default class MemberIndex extends Component {
     navigationStyle: 'custom'
   }
 
-  componentWillMount () {
+  componentWillMount() {
     this.fetch()
     this.getSetting()
     // this.getWheel();
@@ -94,7 +94,7 @@ export default class MemberIndex extends Component {
     // this.getConfigPointitem();
   }
 
-  async onShareAppMessage () {
+  async onShareAppMessage() {
     const { share_title = '震惊！这店绝了！', share_pic_wechatapp } = await req.get(
       `/memberCenterShare/getInfo`
     )
@@ -106,11 +106,11 @@ export default class MemberIndex extends Component {
     }
   }
 
-  onPullDownRefresh () {
+  onPullDownRefresh() {
     this.fetch()
   }
 
-  onRefresh () {
+  onRefresh() {
     Taro.showNavigationBarLoading()
     //显示 loading 提示框。需主动调用 wx.hideLoading 才能关闭提示框
     Taro.showLoading({
@@ -120,7 +120,7 @@ export default class MemberIndex extends Component {
 
   navigateTo = navigateTo
 
-  async fetch () {
+  async fetch() {
     if (S.getAuthToken()) {
       const [
         salesPerson,
@@ -156,7 +156,7 @@ export default class MemberIndex extends Component {
     Taro.stopPullDownRefresh()
   }
 
-  async getSetting () {
+  async getSetting() {
     const [bannerSetting, menuSetting, pointItemSetting] = await Promise.all([
       // 会员中心banner
       await api.shop.getPageParamsConfig({
@@ -182,7 +182,7 @@ export default class MemberIndex extends Component {
   }
 
   // 获取积分个人信息跳转
-  async fetchRedirect () {
+  async fetchRedirect() {
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
       version: 'v1.0.1',
@@ -247,7 +247,7 @@ export default class MemberIndex extends Component {
   }
 
   // 订单查看
-  async handleTradeClick (type) {
+  async handleTradeClick(type) {
     Taro.navigateTo({
       url: `/subpage/pages/trade/list?status=${type}`
     })
@@ -278,7 +278,7 @@ export default class MemberIndex extends Component {
     }
   }
 
-  handleClickWxOAuth (fn, need = true) {
+  handleClickWxOAuth(fn, need = true) {
     if (!S.getAuthToken()) {
       showToast('请登录后再操作')
       return
@@ -301,7 +301,7 @@ export default class MemberIndex extends Component {
     }
   }
 
-  renderMarketingNavs () {
+  renderMarketingNavs() {
     const { memberData } = this.props
     const { score_menu_open, salespersonData, menuSetting } = this.state
     const { is_open_popularize, is_promoter } = memberData
@@ -422,7 +422,7 @@ export default class MemberIndex extends Component {
     )
   }
 
-  renderNormalNavs () {
+  renderNormalNavs() {
     const { menuSetting } = this.state
     const { memberinfo_enable } = menuSetting
     let navs = []
@@ -461,7 +461,7 @@ export default class MemberIndex extends Component {
     )
   }
 
-  render () {
+  render() {
     const { colors, memberData } = this.props
     const {
       score_menu_open,

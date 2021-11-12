@@ -27,7 +27,7 @@ export default class ActivityPanel extends Component {
   // 	})
   // }
 
-  render () {
+  render() {
     const { info, isOpen, onClick, onClose } = this.props
     if (!info) {
       return <Loading></Loading>

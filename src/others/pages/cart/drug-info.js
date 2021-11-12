@@ -22,7 +22,7 @@ export default class DrugInfo extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -30,7 +30,7 @@ export default class DrugInfo extends Component {
       imgInfo: {}
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     const { curDrugInfo } = this.props
     const { info, imgInfo } = this.state
     if (info && imgInfo) {
@@ -147,7 +147,7 @@ export default class DrugInfo extends Component {
   }
   handleImageClick = () => {}
 
-  render () {
+  render() {
     const { info, imgInfo } = this.state
     return (
       <View class='drug-info'>

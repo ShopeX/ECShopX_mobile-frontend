@@ -14,11 +14,11 @@ export default class WgtGoodsGrid extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.startTrack()
   }
 
-  navigateTo (url, item) {
+  navigateTo(url, item) {
     Taro.navigateTo({ url })
     if (item) {
       // 商品卡触发
@@ -35,7 +35,7 @@ export default class WgtGoodsGrid extends Component {
     }
   }
 
-  startTrack () {
+  startTrack() {
     this.endTrack()
     const observer = Taro.createIntersectionObserver({
       observeAll: true
@@ -52,14 +52,14 @@ export default class WgtGoodsGrid extends Component {
     this.observe = observer
   }
 
-  endTrack () {
+  endTrack() {
     if (this.observer) {
       this.observer.disconnect()
       this.observe = null
     }
   }
 
-  handleClickItem (item) {
+  handleClickItem(item) {
     const { distributor_id } = item
     const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
@@ -71,7 +71,7 @@ export default class WgtGoodsGrid extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info, dis_id = '' } = this.props
     if (!info) {
       return null

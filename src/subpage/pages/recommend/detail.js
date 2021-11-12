@@ -15,7 +15,7 @@ import './detail.scss'
 }))
 @withPager
 export default class recommendDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     props = props || {}
     props.pageSize = 50
     super(props)
@@ -30,12 +30,12 @@ export default class recommendDetail extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetchContent()
     // this.praiseCheck()
   }
 
-  componentDidMount () {
+  componentDidMount() {
     Taro.getSystemInfo().then((res) => {
       this.setState({
         screenWidth: res.screenWidth
@@ -47,7 +47,7 @@ export default class recommendDetail extends Component {
     })
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { info } = this.state
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `&uid=${userId}` : ''
@@ -59,7 +59,7 @@ export default class recommendDetail extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const { info } = this.state
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `&uid=${userId}` : ''
@@ -98,7 +98,7 @@ export default class recommendDetail extends Component {
     })
   }
 
-  async fetchContent () {
+  async fetchContent() {
     const { id } = this.$router.params
 
     // 关注数加1
@@ -183,7 +183,7 @@ export default class recommendDetail extends Component {
     }
   }
 
-  handleShare () {}
+  handleShare() {}
 
   handleClickGoods = () => {
     const { id } = this.$router.params
@@ -194,14 +194,14 @@ export default class recommendDetail extends Component {
     Taro.navigateToMiniProgram({
       appId: APP_GIFT_APPID, // 要跳转的小程序的appid
       path: '/pages/index/index', // 跳转的目标页面
-      success (res) {
+      success(res) {
         // 打开成功
         console.log(res)
       }
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info, praiseCheckStatus, screenWidth, collectArticleStatus, showBackToTop } = this.state
 

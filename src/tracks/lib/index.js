@@ -3,14 +3,14 @@ import { getBoundingClientRect, isClickTrackArea, getActivePage } from './helper
 
 const LIFE_TIME = ['componentDidMount', 'componentDidShow', 'componentDidHide']
 
-export default function withTracker (Component) {
+export default function withTracker(Component) {
   return class WithTrackerComponent extends Component {
-    constructor (props) {
+    constructor(props) {
       super(props)
       this.page = this
     }
 
-    async componentDidMount () {
+    async componentDidMount() {
       this.methodTracker()
       if (super.componentDidMount) {
         super.componentDidMount()
@@ -18,14 +18,14 @@ export default function withTracker (Component) {
       }
     }
 
-    async componentDidShow () {
+    async componentDidShow() {
       if (super.componentDidShow) {
         super.componentDidShow()
         this._componentDidShow && this._componentDidShow()
       }
     }
 
-    async componentDidHide () {
+    async componentDidHide() {
       if (super.componentDidHide) {
         super.componentDidHide()
         this._componentDidHide && this._componentDidHide()
@@ -63,10 +63,10 @@ export default function withTracker (Component) {
       })
     }
 
-    _wrapTargetMethod (target, methodName, path, item) {
+    _wrapTargetMethod(target, methodName, path, item) {
       const methodFunction = target[methodName]
 
-      target[methodName] = function _aa (...args) {
+      target[methodName] = function _aa(...args) {
         const result = methodFunction && methodFunction.apply(this, args)
         const methodExcuter = () => {
           // methods.forEach(fn => {
@@ -93,7 +93,7 @@ export default function withTracker (Component) {
       }
     }
 
-    report (path, track, args) {
+    report(path, track, args) {
       console.log('-------report ---------')
       const { element, method, dataKeys } = track
       const logger = []

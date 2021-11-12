@@ -18,7 +18,7 @@ export default class PaymentPicker extends Component {
     onInitDefaultPayType: () => {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -26,7 +26,7 @@ export default class PaymentPicker extends Component {
       typeList: []
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.fatch()
   }
   componentWillReceiveProps = (nextProps) => {
@@ -40,7 +40,7 @@ export default class PaymentPicker extends Component {
   static options = {
     addGlobalClass: true
   }
-  async fatch () {
+  async fatch() {
     let params = {}
     const distributor_id = Taro.getStorageSync('payment_list_dtid')
     if (distributor_id) {
@@ -93,7 +93,7 @@ export default class PaymentPicker extends Component {
     this.props.onChange(type, channel)
   }
 
-  render () {
+  render() {
     const {
       isOpened,
       loading,

@@ -17,7 +17,7 @@ export default class TradeCancel extends Component {
     navigationBarTitleText: '取消订单'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       reason: ['多买/错买', '不想要了', '买多了', '其他'],
@@ -71,7 +71,7 @@ export default class TradeCancel extends Component {
     }
   }
 
-  render () {
+  render() {
     const { reason, curReasonIdx, otherReason, textCount } = this.state
     const { colors } = this.props
 

@@ -20,18 +20,18 @@ export default class AlipayBtn extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const refMeta = document.querySelector('meta[name="referrer"]')
     refMeta.setAttribute('content', 'always')
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const refMeta = document.querySelector('meta[name="referrer"]')
     refMeta.setAttribute('content', 'never')
   }
@@ -60,7 +60,7 @@ export default class AlipayBtn extends Component {
     }
   }
 
-  render () {
+  render() {
     return (
       <View>
         <View className='alipay-btn' onClick={this.handleClickPayment.bind(this)}>

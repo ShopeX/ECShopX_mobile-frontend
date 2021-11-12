@@ -38,7 +38,7 @@ export const getDtidIdUrl = (url, distributor_id) => {
 
 // import { WGTS_NAV_MAP } from '@/consts'
 
-export function linkPage (type, data) {
+export function linkPage(type, data) {
   const { id, title } = data
   console.log(type, data)
   let url = ''

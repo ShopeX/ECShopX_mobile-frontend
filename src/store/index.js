@@ -28,7 +28,7 @@ const reducer = persistReducer(
 
 let store, persistor
 
-export default function configStore () {
+export default function configStore() {
   if (!store) {
     store = createStore(reducer, applyMiddleware(...middlewares))
     persistor = persistStore(store)

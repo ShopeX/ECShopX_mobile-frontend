@@ -11,7 +11,7 @@ import { Tracker } from '@/service'
 import './login.scss'
 
 export default class Login extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -22,7 +22,7 @@ export default class Login extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getImageVcode()
   }
 
@@ -53,9 +53,9 @@ export default class Login extends Component {
     }
   }
 
-  handleTimerStop () {}
+  handleTimerStop() {}
 
-  handleInputChange (name, val) {
+  handleInputChange(name, val) {
     const { info } = this.state
     info[name] = val
     this.setState({
@@ -91,7 +91,7 @@ export default class Login extends Component {
     })
   }
 
-  async handleSubmit () {
+  async handleSubmit() {
     const { loginType } = this.state
     const { mobile, password, vcode } = this.state.info
     let params = {
@@ -126,7 +126,7 @@ export default class Login extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, isVisible, loginType, imgInfo } = this.state
     return (
       <View className='page-auth-login' style={styleNames(getThemeStyle())}>

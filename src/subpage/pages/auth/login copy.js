@@ -12,7 +12,7 @@ import { Tracker } from '@/service'
 import './login.scss'
 
 export default class Login extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -26,7 +26,7 @@ export default class Login extends Component {
       url: `/subpage/pages/auth/reg`
     })
   }
-  componentDidMount () {}
+  componentDidMount() {}
 
   handleSubmit = async (e) => {
     const { value } = e.detail || e[0].detail
@@ -65,7 +65,7 @@ export default class Login extends Component {
     }
   }
 
-  handleChange (name, val) {
+  handleChange(name, val) {
     const { info } = this.state
     info[name] = val
   }
@@ -109,7 +109,7 @@ export default class Login extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, isVisible } = this.state
 
     return (

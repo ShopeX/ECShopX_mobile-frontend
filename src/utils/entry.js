@@ -8,7 +8,7 @@ import qs from 'qs'
 
 // 请在onload 中调用此函数，保证千人千码跟踪记录正常
 // 用户分享和接受参数处理
-async function entryLaunch (data, isNeedLocate) {
+async function entryLaunch(data, isNeedLocate) {
   let options = null
   if (data.scene) {
     const scene = decodeURIComponent(data.scene)
@@ -141,7 +141,7 @@ async function entryLaunch (data, isNeedLocate) {
   return options
 }
 
-async function logScene (data) {
+async function logScene(data) {
   if (data.scene) {
     //扫码进来时
     let logParams = {}
@@ -172,7 +172,7 @@ async function logScene (data) {
   }
 }
 
-async function getLocalSetting () {
+async function getLocalSetting() {
   const paramsurl = qs.stringify(payTypeField)
   const url = `/pagestemplate/setInfo?${paramsurl}`
   const { is_open_wechatapp_location } = await req.get(url)
@@ -187,7 +187,7 @@ async function getLocalSetting () {
 //     distributor_id:0
 //   }
 //   Taro.setStorageSync('curStore', store)
-async function getLocal (isNeedLocate) {
+async function getLocal(isNeedLocate) {
   let store = null
   const positionStatus = await getLocalSetting()
   if (!positionStatus) {
@@ -227,7 +227,7 @@ async function getLocal (isNeedLocate) {
   return store
 }
 
-async function getLoc () {
+async function getLoc() {
   if (process.env.TARO_ENV === 'weapp' || process.env.TARO_ENV === 'alipay') {
     return await Taro.getLocation({ type: 'gcj02' }).then(
       async (locationData) => {
@@ -247,7 +247,7 @@ async function getLoc () {
   }
 }
 
-async function getStoreStatus () {
+async function getStoreStatus() {
   const { nostores_status } = Taro.getStorageSync('otherSetting')
   if (process.env.APP_PLATFORM === 'standard') {
     if (nostores_status === true) {
@@ -261,7 +261,7 @@ async function getStoreStatus () {
 }
 
 // web定位获取
-function getWebLocal (isSetStorage = true) {
+function getWebLocal(isSetStorage = true) {
   const { qq } = window
   // let geolocation = new qq.maps.Geolocation('PVUBZ-E24HK-7SXJY-AGQZC-DN3IT-6EB6V', 'oneX新零售门店定位')
   let geolocation = new qq.maps.Geolocation(process.env.APP_MAP_KEY, process.env.APP_MAP_NAME)
@@ -293,7 +293,7 @@ function getWebLocal (isSetStorage = true) {
   })
 }
 // 新增千人千码跟踪记录
-function trackViewNum (monitor_id, source_id) {
+function trackViewNum(monitor_id, source_id) {
   let _session = Taro.getStorageSync('_session')
   if (!_session) {
     return true
@@ -307,7 +307,7 @@ function trackViewNum (monitor_id, source_id) {
 }
 
 // distributorId 店铺ID
-async function handleDistributorId (distributorId) {
+async function handleDistributorId(distributorId) {
   const res = await api.shop.getShop({ distributor_id: distributorId })
   //const isOpenStore = await getStoreStatus()
   if (res.status === false) {
@@ -321,7 +321,7 @@ async function handleDistributorId (distributorId) {
 }
 
 // 格式化URL字符串
-function parseUrlStr (urlStr) {
+function parseUrlStr(urlStr) {
   var keyValuePairs = []
   if (urlStr) {
     for (var i = 0; i < urlStr.split('&').length; i++) {
@@ -337,7 +337,7 @@ function parseUrlStr (urlStr) {
 }
 
 // 逆解析地址
-async function InverseAnalysis (locationData) {
+async function InverseAnalysis(locationData) {
   const { latitude, longitude } = locationData
   let cityInfo = await Taro.request({
     url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${process.env.APP_MAP_KEY}`

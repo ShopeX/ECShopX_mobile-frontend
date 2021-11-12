@@ -5,7 +5,7 @@ const initState = {
 }
 
 const shop = createReducer(initState, {
-  ['shop/setShop'] (state, action) {
+  ['shop/setShop'](state, action) {
     const curStore = action.payload
     return {
       ...state,

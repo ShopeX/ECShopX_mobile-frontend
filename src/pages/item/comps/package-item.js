@@ -26,7 +26,7 @@ export default class PackageItem extends Component {
     distributorId: 0
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -45,11 +45,11 @@ export default class PackageItem extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { package_id } = this.props.info
     // const { itemLists, main_item_id, main_item_price, package_price } = await api.item.packageDetail(package_id)
     const res = await api.item.packageDetail(package_id)
@@ -325,7 +325,7 @@ export default class PackageItem extends Component {
     }
   }
 
-  async fetchCartcount () {
+  async fetchCartcount() {
     try {
       const { item_count } = await api.cart.count({ shop_type: 'distributor' })
       this.props.onUpdateCartCount(item_count)
@@ -334,7 +334,7 @@ export default class PackageItem extends Component {
     }
   }
 
-  countPackageTotal () {
+  countPackageTotal() {
     const { selection, packagePrices, mainPackagePrice } = this.state
     let packageTotalPrice = 0
     const selected = [...selection]
@@ -352,7 +352,7 @@ export default class PackageItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, onClick, current } = this.props
     if (!info) {
       return null

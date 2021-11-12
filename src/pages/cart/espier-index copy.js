@@ -59,7 +59,7 @@ export default class CartIndex extends Component {
     list: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -89,7 +89,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  componentDidMount () {
+  componentDidMount() {
     setPageTitle('购物车')
 
     if (this.$router.params && this.$router.params.path === 'qrcode') {
@@ -112,7 +112,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     console.log(
       'componentWillReceiveProps',
       nextProps.list,
@@ -154,7 +154,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -177,7 +177,7 @@ export default class CartIndex extends Component {
   }
 
   // 活动分组
-  resolveActivityGroup (cartList = []) {
+  resolveActivityGroup(cartList = []) {
     console.log(cartList)
     const groups = cartList.map((shopCart) => {
       const { list, used_activity = [], plus_buy_activity = [] } = shopCart
@@ -226,7 +226,7 @@ export default class CartIndex extends Component {
     return groups
   }
 
-  processCart ({ valid_cart = [], invalid_cart = [], cartType, crossborder_show, item_count = 0 }) {
+  processCart({ valid_cart = [], invalid_cart = [], cartType, crossborder_show, item_count = 0 }) {
     // const res = await api.cart.count({ shop_type: 'distributor' })
     let cartCount = 0
     const list = valid_cart.map((shopCart) => {
@@ -252,7 +252,7 @@ export default class CartIndex extends Component {
     return list
   }
 
-  async fetchCart (cb) {
+  async fetchCart(cb) {
     let valid_cart = [],
       invalid_cart = [],
       crossborder_show = false
@@ -332,14 +332,14 @@ export default class CartIndex extends Component {
   }
 
   // 获取购物车消息通知
-  async getRemind () {
+  async getRemind() {
     const res = await api.cart.getCartRemind()
     this.setState({
       remindInfo: res
     })
   }
 
-  async handleSelectionChange (shopIndex, cart_id, checked) {
+  async handleSelectionChange(shopIndex, cart_id, checked) {
     await api.cart.select({
       cart_id,
       is_checked: checked
@@ -380,7 +380,7 @@ export default class CartIndex extends Component {
     this.updateCart()
   }
 
-  async changeCartNum (shop_id, cart_id, num) {
+  async changeCartNum(shop_id, cart_id, num) {
     const { type = 'distributor' } = this.$router.params
     try {
       const res = await api.cart.updateNum(shop_id, cart_id, num, type)
@@ -496,7 +496,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  transformCartList (list) {
+  transformCartList(list) {
     return pickBy(list, {
       item_id: 'item_id',
       cart_id: 'cart_id',
@@ -571,7 +571,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       groups,
       invalidList,

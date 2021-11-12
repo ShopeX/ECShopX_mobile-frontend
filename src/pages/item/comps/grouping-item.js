@@ -15,7 +15,7 @@ export default class GroupingItem extends Component {
     onClick: () => {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -23,7 +23,7 @@ export default class GroupingItem extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { info } = this.props
     const remaining_time = calcTimer(info.over_time)
     console.log(remaining_time)
@@ -32,7 +32,7 @@ export default class GroupingItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, total, onClick } = this.props
     const { remaining_time } = this.state
 

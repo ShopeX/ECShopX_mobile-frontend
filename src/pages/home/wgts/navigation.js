@@ -16,7 +16,7 @@ export default class WgtNavigation extends Component {
 
   handleClickItem = linkPage
 
-  render () {
+  render() {
     const { info } = this.props
 
     if (!info) {

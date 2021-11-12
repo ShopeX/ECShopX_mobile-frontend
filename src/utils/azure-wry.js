@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import req from '@/api/req'
 import S from '@/spx'
 
-async function uploadImagesFn (imgFiles) {
+async function uploadImagesFn(imgFiles) {
   let promises = []
   imgFiles.forEach((item) => {
     const promise = new Promise((resolve, reject) => {

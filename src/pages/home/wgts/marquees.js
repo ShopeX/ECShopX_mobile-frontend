@@ -13,7 +13,7 @@ export default class WgtMarquees extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -21,7 +21,7 @@ export default class WgtMarquees extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { info } = this.props
     const { config, data } = info
 
@@ -43,7 +43,7 @@ export default class WgtMarquees extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info } = this.props
 
     if (!info) {

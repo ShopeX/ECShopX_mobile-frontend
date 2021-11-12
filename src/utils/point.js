@@ -14,7 +14,7 @@ const { store } = configStore()
 //   }
 // };
 
-export const getPointName = function () {
+export const getPointName = function() {
   const { system } = store.getState()
   return system.pointName
 }

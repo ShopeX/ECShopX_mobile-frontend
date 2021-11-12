@@ -14,7 +14,7 @@ import './list.scss'
 @withPager
 @withLogin()
 export default class AfterSale extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -31,7 +31,7 @@ export default class AfterSale extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { status } = this.$router.params
     const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
 
@@ -49,7 +49,7 @@ export default class AfterSale extends Component {
     }
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { tabList, curTabIdx } = this.state
 
     params = _mapKeys(
@@ -57,7 +57,7 @@ export default class AfterSale extends Component {
         ...params,
         aftersales_status: tabList[curTabIdx].status
       },
-      function (val, key) {
+      function(val, key) {
         if (key === 'page_no') return 'page'
         if (key === 'page_size') return 'pageSize'
 
@@ -123,7 +123,7 @@ export default class AfterSale extends Component {
     })
   }
 
-  render () {
+  render() {
     const { curTabIdx, tabList, list, page } = this.state
 
     return (

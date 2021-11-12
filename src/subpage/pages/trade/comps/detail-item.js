@@ -61,7 +61,7 @@ export default class DetailItem extends Component {
     copyText(val)
     S.toast('复制成功')
   }
-  handleSelectionChange (item_id, checked) {
+  handleSelectionChange(item_id, checked) {
     //选择要申请售后的商品
     const { info } = this.props
     info.orders.map((item) => {
@@ -71,7 +71,7 @@ export default class DetailItem extends Component {
       info
     })
   }
-  handleQuantityChange (item, val) {
+  handleQuantityChange(item, val) {
     //改变售后商品的数量
     const { info } = this.props
     info.orders.map((v) => {
@@ -82,7 +82,7 @@ export default class DetailItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       customHeader,
       customFooter,

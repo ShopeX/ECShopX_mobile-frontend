@@ -17,7 +17,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class StoreList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -51,7 +51,7 @@ export default class StoreList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { pageTitle } = this.state
     Taro.setNavigationBarTitle({
       title: pageTitle
@@ -166,7 +166,7 @@ export default class StoreList extends Component {
     })
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { card_id = null } = this.$router.params
     const { query: searchParam, location } = this.state
     const { latitude = '', longitude = '' } = location
@@ -264,7 +264,7 @@ export default class StoreList extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       scrollTop,
       query,

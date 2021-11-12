@@ -4,13 +4,13 @@ import { getPointName } from '@/utils'
 import './header.scss'
 
 export default class Header extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  render () {
+  render() {
     const { useInfo: { username, avatar, point } = {} } = this.props
 
     return (

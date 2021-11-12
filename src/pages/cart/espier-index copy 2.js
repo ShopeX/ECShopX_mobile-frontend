@@ -41,7 +41,7 @@ const tablist = [
   { title: '跨境商品', icon: 'icon-kuajingshangpin-01', type: 'cross' }
 ]
 
-function CartIndex (props) {
+function CartIndex(props) {
   // const { nextPage } = usePagination()
   const [state, setState] = useState({
     current: 0,

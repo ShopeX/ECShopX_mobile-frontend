@@ -25,7 +25,7 @@ const LOGISTICS_CODE = {
   'ZJS': '宅急送'
 }
 export default class TradeRefundSendback extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     const express = []
     for (let key in LOGISTICS_CODE) {
@@ -92,7 +92,7 @@ export default class TradeRefundSendback extends Component {
     }, 1000)
   }
 
-  render () {
+  render() {
     const { express, logi_no, curExpressIdx } = this.state
     return (
       <View className='page-refund-sendback' style={getThemeStyle()}>

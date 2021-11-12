@@ -25,7 +25,7 @@ export default class StoreFavItem extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info, onClick } = this.props
 
     return (

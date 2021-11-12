@@ -20,7 +20,7 @@ const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
   () => ({})
 )
 export default class Reg extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -39,7 +39,7 @@ export default class Reg extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // console.log(Taro.getEnv(),this.props.land_params)
     if (process.env.TARO_ENV === 'weapp') {
       this.setState({
@@ -58,7 +58,7 @@ export default class Reg extends Component {
 
     this.fetch()
   }
-  componentDidShow () {
+  componentDidShow() {
     this.checkWhite()
   }
   handleClickImgcode = async () => {
@@ -75,7 +75,7 @@ export default class Reg extends Component {
     }
   }
 
-  async fetch () {
+  async fetch() {
     let arr = []
     let res = await api.user.regParam()
     console.log(res)
@@ -112,7 +112,7 @@ export default class Reg extends Component {
     }
     this.count = 0
   }
-  async checkWhite () {
+  async checkWhite() {
     const { status } = await api.wx.getWhiteList()
     if (status == true) {
       setTimeout(() => {
@@ -429,7 +429,7 @@ export default class Reg extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const {
       info,

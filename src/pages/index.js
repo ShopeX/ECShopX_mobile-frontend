@@ -45,7 +45,7 @@ import './home/index.scss'
 @withPager
 @withBackToTop
 export default class Home extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.autoCloseTipId = null
     this.currentLoadIndex = -1
@@ -86,7 +86,7 @@ export default class Home extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.protocolUpdateTime()
     this.getShareSetting()
     this.isShowTips()
@@ -94,7 +94,7 @@ export default class Home extends Component {
   }
 
   // 获取隐私政策时间
-  async protocolUpdateTime () {
+  async protocolUpdateTime() {
     const isLocal = await entry.getLocalSetting()
     console.log('=============isLocal', isLocal)
 
@@ -167,7 +167,7 @@ export default class Home extends Component {
   //   }
   // }
 
-  componentDidShow () {
+  componentDidShow() {
     // this.showInit();
     // this.isShoppingGuide();
     // this.getDistributionInfo();
@@ -231,7 +231,7 @@ export default class Home extends Component {
   }
 
   // 分享
-  onShareAppMessage (params) {
+  onShareAppMessage(params) {
     const shareInfo = this.shareInfo()
 
     console.log('--onShareAppMessage--', shareInfo)
@@ -242,7 +242,7 @@ export default class Home extends Component {
   }
 
   // 分享朋友圈
-  onShareTimeline (params) {
+  onShareTimeline(params) {
     const shareInfo = this.shareInfo('time')
 
     return {
@@ -599,7 +599,7 @@ export default class Home extends Component {
   }
 
   // 获取购物车数量
-  async fetchCartCount () {
+  async fetchCartCount() {
     if (!S.getAuthToken()) return
     try {
       const res = await api.cart.count({ shop_type: 'distributor' })
@@ -711,7 +711,7 @@ export default class Home extends Component {
     })
   }
 
-  fetchCouponCardList (receive_type) {
+  fetchCouponCardList(receive_type) {
     api.vip.getShowCardPackage({ receive_type }).then(({ all_card_list }) => {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
@@ -729,7 +729,7 @@ export default class Home extends Component {
     this.setState({ visible })
   }
 
-  async getPrivacyTitle () {
+  async getPrivacyTitle() {
     const data = await api.shop.getStoreBaseInfo()
     Taro.setStorageSync(
       'privacy_info',
@@ -737,7 +737,7 @@ export default class Home extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       show_tabBar,
       isShowAddTip,

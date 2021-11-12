@@ -28,7 +28,7 @@ export default class RecommendList extends Component {
     navigationBarTitleText: '文章'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -46,7 +46,7 @@ export default class RecommendList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     api.wx.shareSetting({ shareindex: 'planting' }).then((res) => {
       this.setState({
         shareInfo: res
@@ -54,7 +54,7 @@ export default class RecommendList extends Component {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     const params = this.$router.params
     if (params) {
       const { id, name } = params
@@ -79,7 +79,7 @@ export default class RecommendList extends Component {
     // this.praiseNum()
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `/pages/recommend/list?uid=${userId}` : '/pages/recommend/list'
@@ -90,7 +90,7 @@ export default class RecommendList extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -101,7 +101,7 @@ export default class RecommendList extends Component {
     }
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { columnList, areaList } = this.state
     let { selectColumn } = this.state
@@ -483,7 +483,7 @@ export default class RecommendList extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       list,
       showBackToTop,

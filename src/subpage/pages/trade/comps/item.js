@@ -28,12 +28,12 @@ export default class TradeItem extends Component {
     addGlobalClass: true
   }
 
-  handleClickBtn (type) {
+  handleClickBtn(type) {
     const { info } = this.props
     this.props.onClickBtn && this.props.onClickBtn(type, info)
   }
 
-  computeTotalPrice () {
+  computeTotalPrice() {
     let total
     const {
       info: { point, order_class, freight_fee, freight_type, total_fee, payment, receipt_type },
@@ -66,7 +66,7 @@ export default class TradeItem extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       customHeader,
       customFooter,

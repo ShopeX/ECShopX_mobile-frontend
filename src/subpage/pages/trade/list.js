@@ -17,7 +17,7 @@ import './list.scss'
 }))
 @withPager
 export default class TradeList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -35,7 +35,7 @@ export default class TradeList extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     const { status } = this.$router.params
     const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
 
@@ -79,11 +79,11 @@ export default class TradeList extends Component {
     })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.hideLayer()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { tabList, curTabIdx } = this.state
 
     params = _mapKeys(
@@ -92,7 +92,7 @@ export default class TradeList extends Component {
         order_type: 'normal',
         status: tabList[curTabIdx].status
       },
-      function (val, key) {
+      function(val, key) {
         if (key === 'page_no') return 'page'
         if (key === 'page_size') return 'pageSize'
 
@@ -279,7 +279,7 @@ export default class TradeList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { curTabIdx, curItemActionsId, tabList, list = [], page, rateStatus } = this.state
 

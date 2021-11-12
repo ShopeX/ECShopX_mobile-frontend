@@ -21,7 +21,7 @@ export default class WgtStore extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -39,7 +39,7 @@ export default class WgtStore extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

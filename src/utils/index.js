@@ -25,15 +25,15 @@ import { getPointName } from './point'
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
 const { store } = configStore()
 
-export function isFunction (val) {
+export function isFunction(val) {
   return isPrimitiveType(val, '[object Function]')
 }
 
-export function isNumber (val) {
+export function isNumber(val) {
   return isPrimitiveType(val, '[object Number]')
 }
 
-export function isPointerEvent (val) {
+export function isPointerEvent(val) {
   return isPrimitiveType(val, '[object PointerEvent]')
 }
 /**
@@ -54,23 +54,23 @@ export const returnFloat = (value) => {
     return value
   }
 }
-export function isObject (val) {
+export function isObject(val) {
   return isPrimitiveType(val, '[object Object]')
 }
 
-export function isArray (arr) {
+export function isArray(arr) {
   return Array.isArray(arr)
 }
 
-export function isString (val) {
+export function isString(val) {
   return typeof val === 'string'
 }
 
-export function normalizeArray (...args) {
+export function normalizeArray(...args) {
   return args.reduce((ret, item) => ret.concat(item), [])
 }
 
-export function getCurrentRoute (router) {
+export function getCurrentRoute(router) {
   if (Taro.getEnv() == 'WEAPP' || Taro.getEnv() == 'ALIPAY') {
     // eslint-disable-next-line
     const page = getCurrentPages().pop()
@@ -89,7 +89,7 @@ export function getCurrentRoute (router) {
 }
 
 // 除以100以后的千分符
-export function formatPriceToHundred (price) {
+export function formatPriceToHundred(price) {
   if (price) {
     return (Number(price) / 100)
       .toFixed(2)
@@ -100,7 +100,7 @@ export function formatPriceToHundred (price) {
   }
 }
 
-export async function normalizeQuerys (params = {}) {
+export async function normalizeQuerys(params = {}) {
   const { scene, ...rest } = params
   const queryStr = decodeURIComponent(scene)
   const obj = qs.parse(queryStr)
@@ -121,7 +121,7 @@ export async function normalizeQuerys (params = {}) {
   return ret
 }
 
-export function pickBy (arr, keyMaps = {}) {
+export function pickBy(arr, keyMaps = {}) {
   const picker = (item) => {
     const ret = {}
 
@@ -149,7 +149,7 @@ export function pickBy (arr, keyMaps = {}) {
   }
 }
 
-export function navigateTo (url, isRedirect) {
+export function navigateTo(url, isRedirect) {
   if (isObject(isRedirect) || isPointerEvent(isRedirect)) {
     isRedirect = false
   }
@@ -161,23 +161,23 @@ export function navigateTo (url, isRedirect) {
   return Taro.navigateTo({ url })
 }
 
-export function resolvePath (baseUrl, params = {}) {
+export function resolvePath(baseUrl, params = {}) {
   const queryStr = typeof params === 'string' ? params : qs.stringify(params)
 
   return `${baseUrl}${baseUrl.indexOf('?') >= 0 ? '&' : '?'}${queryStr}`
 }
 
-export function formatTime (time, formatter = 'yyyy-MM-dd') {
+export function formatTime(time, formatter = 'yyyy-MM-dd') {
   const newTime = time.toString().length < 13 ? time * 1000 : time
   return format(newTime, formatter)
 }
 
-export function formatDataTime (time, formatter = 'yyyy-MM-dd HH:mm:ss') {
+export function formatDataTime(time, formatter = 'yyyy-MM-dd HH:mm:ss') {
   const newTime = time.toString().length < 13 ? time * 1000 : time
   return format(newTime, formatter)
 }
 
-export function copyText (text, msg = '内容已复制') {
+export function copyText(text, msg = '内容已复制') {
   return new Promise((resolve, reject) => {
     if (process.env.TARO_ENV === 'weapp') {
       Taro.setClipboardData({
@@ -196,7 +196,7 @@ export function copyText (text, msg = '内容已复制') {
   })
 }
 
-export function calcTimer (totalSec) {
+export function calcTimer(totalSec) {
   let remainingSec = totalSec
   const dd = Math.floor(totalSec / 24 / 3600)
   remainingSec -= dd * 3600 * 24
@@ -214,7 +214,7 @@ export function calcTimer (totalSec) {
   }
 }
 
-export function resolveOrderStatus (status, isBackwards) {
+export function resolveOrderStatus(status, isBackwards) {
   if (isBackwards) {
     return _findKey(STATUS_TYPES_MAP, (o) => o === status)
   }
@@ -222,7 +222,7 @@ export function resolveOrderStatus (status, isBackwards) {
   return STATUS_TYPES_MAP[status]
 }
 
-export function goToPage (page) {
+export function goToPage(page) {
   // eslint-disable-next-line
   const loc = location
   page = page.replace(/^\//, '')
@@ -231,14 +231,14 @@ export function goToPage (page) {
   loc.href = url
 }
 
-export function maskMobile (mobile) {
+export function maskMobile(mobile) {
   return mobile.replace(/^(\d{2})(\d+)(\d{2}$)/, '$1******$3')
 }
 
 // 不可使用promise/async异步写法
-export function authSetting (scope, succFn, errFn) {
+export function authSetting(scope, succFn, errFn) {
   Taro.getSetting({
-    success (res) {
+    success(res) {
       const result = res.authSetting[`scope.${scope}`]
       if (result === undefined) {
         Taro.authorize({
@@ -253,7 +253,7 @@ export function authSetting (scope, succFn, errFn) {
   })
 }
 
-export function imgCompression (url) {
+export function imgCompression(url) {
   const rule = '?imageView2/1/w/80'
   return url + rule
 }
@@ -302,10 +302,10 @@ export const getBrowserEnv = () => {
 
 // 注入美洽客服插件
 export const meiqiaInit = () => {
-  ;(function (m, ei, q, i, a, j, s) {
+  ;(function(m, ei, q, i, a, j, s) {
     m[i] =
       m[i] ||
-      function () {
+      function() {
         ;(m[i].a = m[i].a || []).push(arguments)
       }
     ;(j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
@@ -316,7 +316,7 @@ export const meiqiaInit = () => {
   })(window, document, 'script', '_MEIQIA')
 }
 
-export function tokenParse (token) {
+export function tokenParse(token) {
   var base64Url = token.split('.')[1]
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
   console.log('Taro.base64ToArrayBuffer', Taro)
@@ -325,7 +325,7 @@ export function tokenParse (token) {
   var jsonPayload = decodeURIComponent(
     arr_base64
       .split('')
-      .map(function (c) {
+      .map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
       })
       .join('')
@@ -335,7 +335,7 @@ export function tokenParse (token) {
 }
 
 // 解析字符串
-function getQueryVariable (herf) {
+function getQueryVariable(herf) {
   const url = herf.split('?')
   let query = {}
   if (url[1]) {
@@ -350,7 +350,7 @@ function getQueryVariable (herf) {
   return query
 }
 /** 是否是合法的color */
-function validColor (color) {
+function validColor(color) {
   var re1 = /^#([0-9a-f]{6}|[0-9a-f]{3})$/i
   var re2 = /^rgb\(([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\)$/i
   var re3 = /^rgba\(([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,(1|1.0|0.[0-9])\)$/i
@@ -369,7 +369,7 @@ function validColor (color) {
  * }
  * } data 新增上报数据
  */
-export async function buriedPoint (data) {
+export async function buriedPoint(data) {
   const params = this.$router.params
   let {
     gu,
@@ -422,7 +422,7 @@ export async function buriedPoint (data) {
  *
  */
 
-export function paramsSplice (params) {
+export function paramsSplice(params) {
   let str = ''
   let arr = []
   for (var key in params) {
@@ -433,7 +433,7 @@ export function paramsSplice (params) {
   return str
 }
 
-export function resolveFavsList (list, favs) {
+export function resolveFavsList(list, favs) {
   return list.map((t) => {
     const { item_id } = t
     return {
@@ -444,7 +444,7 @@ export function resolveFavsList (list, favs) {
 }
 
 // 判断是否在导购货架
-export function isGoodsShelves () {
+export function isGoodsShelves() {
   const system = Taro.getSystemInfoSync()
   log.debug(`this system is: ${system.environment}`)
   if (system && system.environment && system.environment === 'wxwork') {
@@ -454,7 +454,7 @@ export function isGoodsShelves () {
   }
 }
 
-export function getThemeStyle () {
+export function getThemeStyle() {
   const result = store.getState()
   if (typeof result.system != 'undefined') {
     const { colorPrimary, colorMarketing, colorAccent } = result.system
@@ -466,14 +466,14 @@ export function getThemeStyle () {
   }
 }
 
-export function showToast (title) {
+export function showToast(title) {
   Taro.showToast({
     title,
     icon: 'none'
   })
 }
 
-export function isNavbar () {
+export function isNavbar() {
   return isWeb && !getBrowserEnv().weixin
 }
 

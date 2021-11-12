@@ -12,17 +12,17 @@ import Taro, { Component } from '@tarojs/taro'
 import { WebView } from '@tarojs/components'
 
 export default class MeiQia extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
   handleClose = () => {
     Taro.navigateBack()
   }
 
-  render () {
+  render() {
     const echat = Taro.getStorageSync('echat')
 
     return echat && echat.echat_url && <WebView src={echat.echat_url}></WebView>

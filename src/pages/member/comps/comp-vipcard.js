@@ -4,7 +4,7 @@ import { styleNames } from '@/utils'
 
 import './comp-vipcard.scss'
 
-function CompsVipCard (props) {
+function CompsVipCard(props) {
   return (
     <View
       className='comp-vipcard'

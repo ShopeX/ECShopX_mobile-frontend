@@ -5,7 +5,7 @@ const initState = {
 }
 
 const address = createReducer(initState, {
-  ['address/choose'] (state, action) {
+  ['address/choose'](state, action) {
     const current = action.payload
 
     return {

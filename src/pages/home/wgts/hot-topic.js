@@ -11,7 +11,7 @@ export default class WgtHotTopic extends Component {
     info: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       current: '',
@@ -19,21 +19,21 @@ export default class WgtHotTopic extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { info } = this.props
     this.setState({
       list: info.data
     })
   }
 
-  handleClick (value, Page, id) {
+  handleClick(value, Page, id) {
     this.setState({
       current: value
     })
     linkPage(Page, id)
   }
 
-  render () {
+  render() {
     const { current, list } = this.state
     const { info } = this.props
 

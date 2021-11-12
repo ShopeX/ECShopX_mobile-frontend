@@ -38,7 +38,7 @@ const steps = [
   colors: colors.current
 }))
 export default class EditShare extends Component {
-  constructor (...props) {
+  constructor(...props) {
     super(...props)
 
     this.state = {
@@ -54,7 +54,7 @@ export default class EditShare extends Component {
     this.goodInfo = {}
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getShareSettingInfo()
   }
 
@@ -63,7 +63,7 @@ export default class EditShare extends Component {
   }
 
   // 获取分享信息
-  async getShareSettingInfo () {
+  async getShareSettingInfo() {
     Taro.showLoading()
     const { id, dtid, company_id } = this.$router.params
     const data = await api.item.getShareSetting(id)
@@ -247,7 +247,7 @@ export default class EditShare extends Component {
     Taro.navigateBack()
   }
 
-  render () {
+  render() {
     const { insertData, info, selectPics, showPoster, showSuccess } = this.state
     const { colors } = this.props
 

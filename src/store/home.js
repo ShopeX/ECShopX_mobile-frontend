@@ -16,7 +16,7 @@ const initState = {
 }
 
 const home = createReducer(initState, {
-  ['home/homesearchfocus'] (state, action) {
+  ['home/homesearchfocus'](state, action) {
     const homesearchfocus = action.payload
 
     return {
@@ -24,28 +24,28 @@ const home = createReducer(initState, {
       homesearchfocus
     }
   },
-  ['home/showhometabbar'] (state, action) {
+  ['home/showhometabbar'](state, action) {
     const showhometabbar = action.payload
     return {
       ...state,
       showhometabbar
     }
   },
-  ['home/tabSet'] (state, action) {
+  ['home/tabSet'](state, action) {
     const tabSet = action.payload.item
     return {
       ...state,
       tabSet
     }
   },
-  ['home/nearshopinfo'] (state, action) {
+  ['home/nearshopinfo'](state, action) {
     const nearshopinfo = action.payload
     return {
       ...state,
       nearshopinfo
     }
   },
-  ['home/homepopup'] (state, action) {
+  ['home/homepopup'](state, action) {
     return {
       ...state,
       isShowPopupTempalte: action.payload.isShowPopupTempalte,
@@ -53,19 +53,19 @@ const home = createReducer(initState, {
     }
   },
 
-  ['home/activityMenu'] (state, action) {
+  ['home/activityMenu'](state, action) {
     return {
       ...state,
       activityMenu: action.payload
     }
   },
-  ['home/userinfo'] (state, action) {
+  ['home/userinfo'](state, action) {
     return {
       ...state,
       userinfo: action.payload
     }
   },
-  ['custompage/activityMenu'] (state, action) {
+  ['custompage/activityMenu'](state, action) {
     return {
       ...state,
       custompageActivityMenu: action.payload

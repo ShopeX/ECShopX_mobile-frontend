@@ -9,7 +9,7 @@ export default class RateItem extends Component {
     info: null
   }
 
-  render () {
+  render() {
     const { info, type } = this.props
 
     if (!info) {

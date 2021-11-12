@@ -12,7 +12,7 @@ import './history.scss'
   colors: colors.current
 }))
 export default class History extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       list: [],
@@ -27,7 +27,7 @@ export default class History extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { type = 0 } = this.$router.params
     const title = type === '1' ? '消费记录' : '充值记录'
     Taro.setNavigationBarTitle({
@@ -96,7 +96,7 @@ export default class History extends Component {
     console.log(111)
   }
 
-  render () {
+  render() {
     const { list, isLoading, isEmpty } = this.state
     const { colors } = this.props
     return (

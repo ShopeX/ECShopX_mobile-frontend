@@ -27,7 +27,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class List extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -55,7 +55,7 @@ export default class List extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const { cat_id = null, main_cat_id = null } = this.$router.params
     this.firstStatus = true
     const isOpenStore = await entry.getStoreStatus()
@@ -88,7 +88,7 @@ export default class List extends Component {
     )
   }
 
-  componentWillReceiveProps (next) {
+  componentWillReceiveProps(next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       setTimeout(() => {
         const list = this.state.list.map((item) => {
@@ -102,7 +102,7 @@ export default class List extends Component {
     }
   }
 
-  async componentDidShow () {
+  async componentDidShow() {
     const { isNewGift = null } = this.$router.params
     if (!isNewGift) return
     this.setStore()
@@ -161,7 +161,7 @@ export default class List extends Component {
     }
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const res = this.state.shareInfo
     const { cat_id = '', main_cat_id = '' } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -175,7 +175,7 @@ export default class List extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { cat_id = null, main_cat_id = null } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -189,7 +189,7 @@ export default class List extends Component {
     }
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { card_id, isNewGift = null } = this.$router.params
     const { selectParams, tagsList, curTagId, isOpenStore } = this.state
@@ -306,7 +306,7 @@ export default class List extends Component {
     }
   }
 
-  startTrack () {
+  startTrack() {
     this.endTrack()
     const observer = Taro.createIntersectionObserver(this.$scope, {
       observeAll: true
@@ -332,7 +332,7 @@ export default class List extends Component {
     this.observe = observer
   }
 
-  endTrack () {
+  endTrack() {
     if (this.observer) {
       this.observer.disconnect()
       this.observe = null
@@ -576,7 +576,7 @@ export default class List extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       list,
       oddList,

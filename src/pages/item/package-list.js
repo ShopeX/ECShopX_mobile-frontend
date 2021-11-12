@@ -11,7 +11,7 @@ import './package-list.scss'
 @withPager
 @withBackToTop
 export default class PackageList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -25,11 +25,11 @@ export default class PackageList extends Component {
     navigationBarTitleText: '优惠组合'
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { id } = this.$router.params
     const { currentPackage } = this.state
@@ -69,7 +69,7 @@ export default class PackageList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType } = this.state
     const { distributor_id } = this.$router.params
     return (

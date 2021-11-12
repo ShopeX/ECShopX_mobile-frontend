@@ -19,7 +19,7 @@ const MENUS = [
   { key: 'complaint', name: '投诉记录', icon: 'm_menu_toushu.png' }
 ]
 
-function CompMenu (props) {
+function CompMenu(props) {
   return (
     <View className='comp-menu'>
       {MENUS.map((item, index) => (

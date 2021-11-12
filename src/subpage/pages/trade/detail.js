@@ -55,7 +55,7 @@ const statusImg = {
   colors: colors.current
 }))
 export default class TradeDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -74,21 +74,21 @@ export default class TradeDetail extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearInterval(this.state.interval)
   }
 
-  componentDidShow () {
+  componentDidShow() {
     console.log(APP_BASE_URL)
     this.fetch()
   }
 
-  isPointitemGood () {
+  isPointitemGood() {
     const options = this.$router.params
     return options.type === 'pointitem'
   }
 
-  calcTimer (totalSec) {
+  calcTimer(totalSec) {
     let remainingSec = totalSec
     const dd = Math.floor(totalSec / 24 / 3600)
     remainingSec -= dd * 3600 * 24
@@ -106,7 +106,7 @@ export default class TradeDetail extends Component {
     }
   }
 
-  async fetch () {
+  async fetch() {
     const { id } = this.$router.params
     const data = await api.trade.detail(id)
     let sessionFrom = ''
@@ -282,7 +282,7 @@ export default class TradeDetail extends Component {
     await copyText(msg)
   }
 
-  async handlePay () {
+  async handlePay() {
     const { info } = this.state
 
     this.setState({
@@ -350,7 +350,7 @@ export default class TradeDetail extends Component {
     }
   }
 
-  async handleClickBtn (type, e) {
+  async handleClickBtn(type, e) {
     e.stopPropagation()
     const { info } = this.state
     if (type === 'home') {
@@ -400,7 +400,7 @@ export default class TradeDetail extends Component {
     }
   }
 
-  async handleClickRefund (type, item_id) {
+  async handleClickRefund(type, item_id) {
     const {
       info: { tid: order_id }
     } = this.state
@@ -573,7 +573,7 @@ export default class TradeDetail extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const {
       info,
