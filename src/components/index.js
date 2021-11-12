@@ -63,6 +63,7 @@ export { default as ScreenAd } from './screen-ad'
 export { default as HomeCapsule } from './home-capsule'
 export { default as PointLine } from './point-line'
 export { default as PointTag } from './point-tag'
+export { default as CouponModal } from './coupon-modal'
 
 export default {}
 
