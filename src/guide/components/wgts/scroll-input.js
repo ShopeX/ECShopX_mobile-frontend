@@ -19,7 +19,7 @@ export default class WgtScrollInput extends Component {
     info: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -32,8 +32,8 @@ export default class WgtScrollInput extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {}
-  componentWillReceiveProps (nextProps) {
+  componentDidMount() {}
+  componentWillReceiveProps(nextProps) {
     const { info } = this.props
     //console.log('info.config.isScroll-----1',info.config.isScroll,nextProps.scrollflag!==this.props.scrollflag)
     if (nextProps.scrollflag !== this.props.scrollflag) {
@@ -44,18 +44,18 @@ export default class WgtScrollInput extends Component {
       }
     }
   }
-  shouldComponentUpdate (nextProps) {
+  shouldComponentUpdate(nextProps) {
     if (nextProps.scrollflag === this.props.scrollflag) return false
   }
 
-  componentDidHide () {}
+  componentDidHide() {}
 
   handleConfirm = (e) => {
     const { onHomesearchfocus, dispatch } = this.props
     onHomesearchfocus(true)
   }
 
-  render () {
+  render() {
     const { info, scrollflag, isOpenStore } = this.props
     let { isfix } = this.state
     if (!info.config) return

@@ -36,7 +36,7 @@ export default class GoodsBuyPanel extends Component {
     isPointitem: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -57,7 +57,7 @@ export default class GoodsBuyPanel extends Component {
     this.disabledSet = new Set()
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { info } = this.props
     const { spec_items, promotion_activity, activity_info = null, activity_type } = info
 
@@ -117,7 +117,7 @@ export default class GoodsBuyPanel extends Component {
     this.initSelect()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { isOpened } = nextProps
     if (isOpened !== this.state.isActive) {
       this.setState({
@@ -145,7 +145,7 @@ export default class GoodsBuyPanel extends Component {
     return `已选 “${propsText}”`
   }
 
-  calcDisabled (selection) {
+  calcDisabled(selection) {
     const skuDict = this.skuDict
     const disabledSet = new Set()
     const makeReg = (sel, row, val) => {
@@ -176,7 +176,7 @@ export default class GoodsBuyPanel extends Component {
     this.disabledSet = disabledSet
   }
 
-  getCurSkuImg (sku) {
+  getCurSkuImg(sku) {
     let img = this.props.info.pics[0]
     if (!sku) {
       return img
@@ -191,7 +191,7 @@ export default class GoodsBuyPanel extends Component {
     return img
   }
 
-  updateCurSku (selection) {
+  updateCurSku(selection) {
     console.log('----updateCurSku---', selection)
     const { info } = this.props
     const { activity } = this.state
@@ -474,7 +474,7 @@ export default class GoodsBuyPanel extends Component {
     return maxStore
   }
 
-  render () {
+  render() {
     // packItem={packagePrices}
     //                 mainItem={mainPackagePrice}
     const {

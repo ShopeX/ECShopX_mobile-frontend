@@ -15,13 +15,13 @@ export default class SliderTypeOne extends PureComponent {
     curIdx: 0
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       imgHeight: null
     }
   }
-  componentWillMount () {
+  componentWillMount() {
     const {
       info: { data }
     } = this.props
@@ -55,7 +55,7 @@ export default class SliderTypeOne extends PureComponent {
     // })
   }
 
-  render () {
+  render() {
     const { info, autoPlay, curIdx } = this.props
     const { imgHeight } = this.state
 

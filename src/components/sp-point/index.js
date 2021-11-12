@@ -10,7 +10,7 @@ export default class SpPoint extends Component {
     value: 0
   }
 
-  render () {
+  render() {
     const { className, value } = this.props
     const unit = Taro.getStorageInfoSync('custom_point_name') || DEFAULT_POINT_NAME
 

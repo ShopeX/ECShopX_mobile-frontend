@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { classNames, checkClassName } from '@/utils'
 import './index.scss'
 
-function SpCheckboxNew (props) {
+function SpCheckboxNew(props) {
   const { className, children, isChecked = false, label, onChange = () => {} } = this.props
 
   const onChangeCheckbox = () => {

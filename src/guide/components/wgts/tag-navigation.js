@@ -11,20 +11,20 @@ export default class WgtTagNavigation extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
-  handleClickItem (item, index) {
+  handleClickItem(item, index) {
     const { onClick } = this.props
     onClick(index)
   }
 
-  render () {
+  render() {
     const { info } = this.props
 
     if (!info) {

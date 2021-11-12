@@ -12,7 +12,7 @@ import './brand-list.scss'
 @withPager
 @withBackToTop
 export default class BrandList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -33,11 +33,11 @@ export default class BrandList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { list } = this.state
     list.map((item) => {
       item.max_height = 0
@@ -66,7 +66,7 @@ export default class BrandList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list } = this.state
     console.log(list, 64)
 

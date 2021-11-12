@@ -15,7 +15,7 @@ import api from '@/api'
 import './index.scss'
 
 export default class OrderItem extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -110,7 +110,7 @@ export default class OrderItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     return (
       <View className='orderItem' onClick={this.handleItem.bind(this)}>

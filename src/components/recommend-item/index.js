@@ -25,7 +25,7 @@ export default class RecommendItem extends Component {
     // await api.item.collect(item_id)
   }
 
-  render () {
+  render() {
     const {
       info,
       noCurSymbol,

@@ -19,7 +19,7 @@ export default class WgtFixedInput extends Component {
     info: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
@@ -30,7 +30,7 @@ export default class WgtFixedInput extends Component {
     isfix: false
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { info } = this.props
     if (nextProps.scrollflag !== this.props.scrollflag) {
       if (info.config && info.config.isScroll) {
@@ -40,7 +40,7 @@ export default class WgtFixedInput extends Component {
       }
     }
   }
-  shouldComponentUpdate (nextProps) {
+  shouldComponentUpdate(nextProps) {
     if (nextProps.scrollflag === this.props.scrollflag) return false
   }
 
@@ -49,7 +49,7 @@ export default class WgtFixedInput extends Component {
     onHomesearchfocus(true)
   }
 
-  render () {
+  render() {
     const { info } = this.props
     let { isfix } = this.state
     if (!info.config) return

@@ -16,7 +16,7 @@ export default class GroupList extends Component {
     navigationBarTitleText: '限时团购'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -31,7 +31,7 @@ export default class GroupList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
     api.wx.shareSetting({ shareindex: 'group' }).then((res) => {
       this.setState({
@@ -40,7 +40,7 @@ export default class GroupList extends Component {
     })
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { curTabIdx } = this.state
     const dtid = getDistributorId()
     params = _mapKeys(
@@ -51,7 +51,7 @@ export default class GroupList extends Component {
         team_status: '0',
         distributor_id: dtid
       },
-      function (val, key) {
+      function(val, key) {
         if (key === 'page_no') return 'page'
         if (key === 'page_size') return 'pageSize'
 
@@ -101,7 +101,7 @@ export default class GroupList extends Component {
     })
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}` : ''
@@ -112,7 +112,7 @@ export default class GroupList extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -123,7 +123,7 @@ export default class GroupList extends Component {
     }
   }
 
-  render () {
+  render() {
     const { tabList, curTabIdx, list, page } = this.state
 
     return (

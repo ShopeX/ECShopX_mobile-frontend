@@ -9,7 +9,7 @@ export default class WgtGoodsScroll extends Component {
     info: null
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
@@ -20,7 +20,7 @@ export default class WgtGoodsScroll extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

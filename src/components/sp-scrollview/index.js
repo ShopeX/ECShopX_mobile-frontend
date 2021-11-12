@@ -7,7 +7,7 @@ import { isObject, classNames } from '@/utils'
 
 // import "./index.scss";
 
-function SpScrollView (props) {
+function SpScrollView(props) {
   const { children } = props
   return (
     <ScrollView className={classNames('sp-scrollview')}>

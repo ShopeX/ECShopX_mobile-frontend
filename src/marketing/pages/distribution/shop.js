@@ -10,7 +10,7 @@ import './shop.scss'
   colors: colors.current
 }))
 export default class DistributionShop extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -18,7 +18,7 @@ export default class DistributionShop extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
@@ -26,7 +26,7 @@ export default class DistributionShop extends Component {
     navigationBarTitleText: '我的小店'
   }
 
-  async fetch () {
+  async fetch() {
     const { turnover, point } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const param = {
@@ -61,7 +61,7 @@ export default class DistributionShop extends Component {
     })
   }
 
-  handleClick (key) {
+  handleClick(key) {
     const { userId } = Taro.getStorageSync('userinfo')
     let url = ''
     switch (key) {
@@ -85,7 +85,7 @@ export default class DistributionShop extends Component {
     })
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { username, userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
     return {
@@ -95,7 +95,7 @@ export default class DistributionShop extends Component {
     }
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info } = this.state
 

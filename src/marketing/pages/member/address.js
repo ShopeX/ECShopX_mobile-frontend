@@ -21,7 +21,7 @@ const ADDRESS_ID = 'address_id'
   })
 )
 export default class AddressIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -31,11 +31,11 @@ export default class AddressIndex extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetch()
   }
 
-  async fetch (isDelete = false) {
+  async fetch(isDelete = false) {
     const { isPicker, receipt_type = '', city = '' } = this.$router.params
     if (isPicker) {
       this.setState({
@@ -129,7 +129,7 @@ export default class AddressIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { selectedId, isPicker, list, is_open_crmAddress } = this.state
     return (

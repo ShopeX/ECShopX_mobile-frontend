@@ -11,7 +11,7 @@ import './index.scss'
   memberData: member.member
 }))
 export default class Flop extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -26,7 +26,7 @@ export default class Flop extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getBoostDetail()
     S.getAuthToken() && this.handleClickWxOAuth()
   }
@@ -144,7 +144,7 @@ export default class Flop extends Component {
     this.handleClickWxOAuth()
   }
 
-  handleClickWxOAuth () {
+  handleClickWxOAuth() {
     const { avatar, username } = this.props.memberData.memberInfo
     if (!avatar && !username) {
       this.setState({
@@ -153,7 +153,7 @@ export default class Flop extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info, boostList, isDisabled, cutPercent, showPrivacy } = this.state
     return (
       <View className='flop'>

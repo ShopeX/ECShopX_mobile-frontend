@@ -28,7 +28,7 @@ export default class BaGuideHomeIndex extends Component {
     navigationStyle: 'custom',
     onReachBottomDistance: 50
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -53,13 +53,13 @@ export default class BaGuideHomeIndex extends Component {
       guideInfo: null
     }
   }
-  componentDidShow () {}
-  async componentWillMount () {
+  componentDidShow() {}
+  async componentWillMount() {
     const options = this.$router.params
     const res = await entry.entryLaunch(options, false) // 不能开启定位，直接读取导购带过来的店铺信息
     console.log('[entry.entryLaunch]', res)
   }
-  async componentDidMount () {
+  async componentDidMount() {
     await S.autoLogin(this)
     const { version } = this.$router.params
     console.log('[挂件包] this.state.wgts', this.state.wgts)
@@ -67,7 +67,7 @@ export default class BaGuideHomeIndex extends Component {
     this.guideInit(version)
   }
 
-  guideInit (version) {
+  guideInit(version) {
     const guideInfo = S.get('GUIDE_INFO', true)
     console.log('导购 - guideInit - guideInfo ', guideInfo)
     this.setState({ guideInfo }, () => {
@@ -159,7 +159,7 @@ export default class BaGuideHomeIndex extends Component {
   // }
 
   //初始化首页模版
-  async fetchInfo (version = 'v1.0.1') {
+  async fetchInfo(version = 'v1.0.1') {
     console.log('初始化首页模版-fetchInfo-version', version)
 
     let params = {
@@ -194,7 +194,7 @@ export default class BaGuideHomeIndex extends Component {
   }
 
   //获取门店列表
-  async getStoreList (params = {}) {
+  async getStoreList(params = {}) {
     const { list } = await api.guide.distributorlist({
       page: 1,
       pageSize: 10000,
@@ -248,7 +248,7 @@ export default class BaGuideHomeIndex extends Component {
     )
   }
 
-  render () {
+  render() {
     const { wgts, scrollTop, showStore, shopList, currentIndex, guideInfo } = this.state
     const isLoading = !wgts
     const { homesearchfocus, showBuyPanel, goodsSkuInfo, storeInfo } = this.props

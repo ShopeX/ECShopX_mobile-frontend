@@ -10,7 +10,7 @@ import './destroy-member.scss'
   colors: colors.current
 }))
 export default class SettingIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       checked: false,
@@ -64,7 +64,7 @@ export default class SettingIndex extends Component {
     this.setState({ visible: false })
   }
 
-  render () {
+  render() {
     const { checked, visible, content, title, cancelBtnContent, confirmBtnContent } = this.state
     const { colors } = this.props
     return (

@@ -14,7 +14,7 @@ import './coupon.scss'
 }))
 @withPager
 export default class Coupon extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -48,7 +48,7 @@ export default class Coupon extends Component {
   //   }
   // }
 
-  componentDidShow () {
+  componentDidShow() {
     // this.setState({
     //   list: []
     // })
@@ -67,7 +67,7 @@ export default class Coupon extends Component {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { curTabIdx, tabList } = this.state
     // let vaildStatus
@@ -173,7 +173,7 @@ export default class Coupon extends Component {
     })
   }*/
 
-  render () {
+  render() {
     const { curTabIdx, tabList, list, page, scrollTop } = this.state
     const { colors } = this.props
 

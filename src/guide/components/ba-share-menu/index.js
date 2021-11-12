@@ -10,18 +10,18 @@ export default class BaShareMenu extends Component {
     showPosterBtn: true,
     onClick: () => {}
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       ...this.state
     }
   }
-  handlePoster (e) {
+  handlePoster(e) {
     const { onCreatePoster } = this.props
     onCreatePoster()
   }
 
-  render () {
+  render() {
     const { showPosterBtn, entry_form } = this.props
     return (
       <View className='share-menu__mask'>

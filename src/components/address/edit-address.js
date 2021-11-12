@@ -13,7 +13,7 @@ export default class EditAddress extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,11 +24,11 @@ export default class EditAddress extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { list } = await api.member.addressList()
     this.setState({
       listLength: list.length
@@ -240,7 +240,7 @@ export default class EditAddress extends Component {
     }, 700)
   }
 
-  render () {
+  render() {
     const { info, areaList, multiIndex } = this.state
 
     if (!info) {

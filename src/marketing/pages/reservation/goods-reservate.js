@@ -16,7 +16,7 @@ import './goods-reservate.scss'
 @withPager
 @withBackToTop
 export default class GoodsReservate extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -32,12 +32,12 @@ export default class GoodsReservate extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.count = 0
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { activity_info } = await api.user.registrationActivity({
       activity_id: this.$router.params.activity_id
     })
@@ -218,10 +218,10 @@ export default class GoodsReservate extends Component {
         if (tmlres.template_id && tmlres.template_id.length > 0) {
           wx.requestSubscribeMessage({
             tmplIds: tmlres.template_id,
-            success () {
+            success() {
               _this.handleSubmit()
             },
-            fail () {
+            fail() {
               _this.handleSubmit()
             }
           })
@@ -298,7 +298,7 @@ export default class GoodsReservate extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const {
       cur_activity_info,

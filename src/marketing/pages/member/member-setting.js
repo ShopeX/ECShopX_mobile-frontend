@@ -12,7 +12,7 @@ import './member-setting.scss'
   colors: colors.current
 }))
 export default class SettingIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       redirectInfo: {},
@@ -23,7 +23,7 @@ export default class SettingIndex extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetchRedirect()
   }
 
@@ -32,7 +32,7 @@ export default class SettingIndex extends Component {
   }
 
   // 获取积分个人信息跳转
-  async fetchRedirect () {
+  async fetchRedirect() {
     const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=member_center_redirect_setting`
     const { list = [] } = await req.get(url)
     if (list[0] && list[0].params) {
@@ -75,7 +75,7 @@ export default class SettingIndex extends Component {
     }
   }
 
-  async handleCancelMenber () {
+  async handleCancelMenber() {
     req.delete('/member', { is_delete: '0' }).then((res) => {
       if (!res.status) {
         this.setState({
@@ -98,7 +98,7 @@ export default class SettingIndex extends Component {
     this.setState({ visible: false })
   }
 
-  render () {
+  render() {
     const { visible, content, title, confirmBtnContent } = this.state
     const { colors } = this.props
     return (

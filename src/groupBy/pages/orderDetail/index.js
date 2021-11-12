@@ -17,7 +17,7 @@ import { SpNavBar } from '@/components'
 import './index.scss'
 
 export default class OrderDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -40,14 +40,14 @@ export default class OrderDetail extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     let { timeId } = this.state
     if (timeId) {
       clearTimeout(timeId)
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.getOrderDetail()
   }
 
@@ -250,7 +250,7 @@ export default class OrderDetail extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       orderId,
       currtent,

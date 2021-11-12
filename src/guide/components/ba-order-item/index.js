@@ -16,7 +16,7 @@ export default class BaOrderItem extends Component {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const {
       info,
       onClick,

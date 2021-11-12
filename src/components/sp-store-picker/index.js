@@ -14,7 +14,7 @@ export default class SpStorePicker extends Component {
 
   navigateTo = navigateTo
 
-  render () {
+  render() {
     const { store } = this.props
     return (
       <View className='sp-store-picker' onClick={this.navigateTo.bind(this, '/pages/store/list')}>

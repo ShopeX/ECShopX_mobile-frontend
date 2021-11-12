@@ -7,7 +7,7 @@ import { SpNavBar } from '@/components'
 import './index.scss'
 
 export default class PayDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -16,7 +16,7 @@ export default class PayDetail extends Component {
     }
   }
 
-  componentWillMount () {
+  componentWillMount() {
     const { order_id } = this.$router.params
     if (order_id) {
       this.getOrderDetail()
@@ -114,7 +114,7 @@ export default class PayDetail extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, isLoading } = this.state
     const { order_id } = this.$router.params
     return (

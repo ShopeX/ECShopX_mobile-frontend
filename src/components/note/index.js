@@ -9,11 +9,11 @@ export default class NoteIndex extends Component {
     addGlobalClass: true
   }
 
-  resolveUrl (img) {
+  resolveUrl(img) {
     return `/assets/imgs/${img}`
   }
 
-  render () {
+  render() {
     const { img, imgStyle, styles, className, isUrl } = this.props
 
     return (

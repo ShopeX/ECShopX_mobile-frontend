@@ -28,7 +28,7 @@ const traverseData = (data) => {
   colors: colors.current
 }))
 export default class AddressIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -42,11 +42,11 @@ export default class AddressIndex extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     showLoading()
     const { list } = await api.member.addressList()
     this.setState({
@@ -304,7 +304,7 @@ export default class AddressIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info, multiIndex, selectedListAli } = this.state
 

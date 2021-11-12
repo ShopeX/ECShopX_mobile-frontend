@@ -12,7 +12,7 @@ import './shop-achievement.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopAchievement extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,11 +24,11 @@ export default class DistributionShopAchievement extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { date } = this.state
     const { page_no: page, page_size: pageSize } = params
     const query = {
@@ -83,7 +83,7 @@ export default class DistributionShopAchievement extends Component {
     )
   }
 
-  render () {
+  render() {
     const { list, page, date, scrollTop } = this.state
 
     return (

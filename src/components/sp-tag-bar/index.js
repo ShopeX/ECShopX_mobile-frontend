@@ -14,7 +14,7 @@ export default class SpTagBar extends Component {
     list: []
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     const { current } = props
@@ -23,7 +23,7 @@ export default class SpTagBar extends Component {
     }
   }
 
-  handleClickItem (id) {
+  handleClickItem(id) {
     this.setState({
       curId: id
     })
@@ -32,7 +32,7 @@ export default class SpTagBar extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list } = this.props
     const { curId } = this.state
 

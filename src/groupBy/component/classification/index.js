@@ -19,11 +19,11 @@ export default class Classification extends Component {
     list: []
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  render () {
+  render() {
     const { list } = this.props
     return (
       <View className='classification'>

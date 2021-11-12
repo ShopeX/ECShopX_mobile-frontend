@@ -15,7 +15,7 @@ export default class GroupDetail extends Component {
     navigationBarTitleText: '拼团详情'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isSelf: false,
@@ -26,14 +26,14 @@ export default class GroupDetail extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const options = await normalizeQuerys(this.$router.params)
     const curStore = Taro.getStorageSync('curStore')
     if (!curStore) await entry.entryLaunch({ ...options }, true)
     this.fetchDetail()
   }
 
-  async fetchDetail () {
+  async fetchDetail() {
     const { team_id } = this.$router.params
     const { distributor_id } = Taro.getStorageSync('curStore')
     const params = { distributor_id }
@@ -61,7 +61,7 @@ export default class GroupDetail extends Component {
     })
   }
 
-  calcTimer (totalSec) {
+  calcTimer(totalSec) {
     let remainingSec = totalSec
     const dd = Math.floor(totalSec / 24 / 3600)
     remainingSec -= dd * 3600 * 24
@@ -123,7 +123,7 @@ export default class GroupDetail extends Component {
     })
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { distributor_id } = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const { detail } = this.state
@@ -144,7 +144,7 @@ export default class GroupDetail extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const { distributor_id } = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const { detail } = this.state
@@ -156,13 +156,13 @@ export default class GroupDetail extends Component {
     }
   }
 
-  handleCloseCurtain () {
+  handleCloseCurtain() {
     this.setState({
       curtainStatus: false
     })
   }
 
-  render () {
+  render() {
     const { detail, timer, isLeader, isSelf, curtainStatus } = this.state
     if (!detail) return null
     const { team_info, activity_info, member_list } = detail

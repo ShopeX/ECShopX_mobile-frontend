@@ -13,7 +13,7 @@ export default class BackToTop extends Component {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const { show, onClick, bottom } = this.props
 
     return (

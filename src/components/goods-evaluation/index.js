@@ -14,7 +14,7 @@ export default class GoodsEvaluation extends Component {
     showComment: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -22,7 +22,7 @@ export default class GoodsEvaluation extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { windowWidth } = Taro.getSystemInfoSync()
 
     let height = (windowWidth * 2 - 169) / 3 + 'rpx'
@@ -33,7 +33,7 @@ export default class GoodsEvaluation extends Component {
     })
   }
 
-  handleSelectEvaluation () {
+  handleSelectEvaluation() {
     const { info } = this.props
     this.props.onChange && this.props.onChange(info)
   }
@@ -42,7 +42,7 @@ export default class GoodsEvaluation extends Component {
     this.props.onPraiseRate && this.props.onPraiseRate(this.props.info)
   }*/
 
-  handleClickEvaluate () {
+  handleClickEvaluate() {
     const { info } = this.props
     this.props.onReplyRate() && this.props.onReplyRate(info)
   }
@@ -52,7 +52,7 @@ export default class GoodsEvaluation extends Component {
     this.props.onPreviewImg() && this.props.onPreviewImg(url)
   }*/
 
-  render () {
+  render() {
     const { info, showComment, pathRoute } = this.props
     const { styles } = this.state
     if (!info) {

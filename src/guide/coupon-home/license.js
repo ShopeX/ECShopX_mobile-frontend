@@ -8,9 +8,9 @@ export default class HomeLicense extends Component {
     navigationBarTitleText: '电子营业执照'
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
-  render () {
+  render() {
     return (
       <View className='page-home-license'>
         <View className='dl'>

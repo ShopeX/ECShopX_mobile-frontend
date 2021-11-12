@@ -15,7 +15,7 @@ import './index.scss'
   store
 }))
 export default class BaCategory extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class BaCategory extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     await S.autoLogin(this)
     this.fetch()
   }
@@ -36,7 +36,7 @@ export default class BaCategory extends Component {
     navigationStyle: 'custom'
   }
 
-  async fetch () {
+  async fetch() {
     /*const nList = pickBy(res, {
       category_name: 'category_name',
       image_url: 'image_url',
@@ -125,7 +125,7 @@ export default class BaCategory extends Component {
     }
   }
 
-  render () {
+  render() {
     const { curTabIdx, tabList, list, hasSeries, isChanged } = this.state
     const n_ht = S.get('navbar_height', true)
     const c_ht = tabList.length > 0 ? n_ht * 2 - 10 : n_ht

@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { WGTS_NAV_MAP } from '@/consts'
 
-export function linkPage (type, id, item) {
+export function linkPage(type, id, item) {
   // console.log('[首页模版点击：linkPage]-type',type)
   // console.log('[首页模版点击：linkPage]-id', id)
   // console.log('[首页模版点击：linkPage]-item',item)

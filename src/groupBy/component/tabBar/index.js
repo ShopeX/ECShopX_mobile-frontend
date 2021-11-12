@@ -6,7 +6,7 @@ export default class NavBar extends Component {
     current: 0
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -22,7 +22,7 @@ export default class NavBar extends Component {
     })
   }
 
-  render () {
+  render() {
     const { current } = this.props
     return (
       <AtTabBar

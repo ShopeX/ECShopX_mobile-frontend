@@ -14,7 +14,7 @@ export default class SliderTypeTwo extends PureComponent {
     curIdx: 0
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -27,7 +27,7 @@ export default class SliderTypeTwo extends PureComponent {
     this.props.onChangeSwiper(current)
   }
 
-  render () {
+  render() {
     const { info, curIdx } = this.props
     if (!info) {
       return null

@@ -11,7 +11,7 @@ import './index.scss'
   colors: colors.current
 }))
 export default class BindOrder extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       barCode: '',
@@ -81,7 +81,7 @@ export default class BindOrder extends Component {
     } catch (e) {}
   }
 
-  render () {
+  render() {
     const { barCode, randomCode, showModal, tips, tipImg } = this.state
     const { colors } = this.props
 

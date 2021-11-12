@@ -15,7 +15,7 @@ export default class SliderTypeThree extends PureComponent {
     curIdx: 0
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -32,7 +32,7 @@ export default class SliderTypeThree extends PureComponent {
     // })
   }
 
-  render () {
+  render() {
     const { info, curIdx } = this.props
 
     if (!info) {

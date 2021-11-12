@@ -37,7 +37,7 @@ export default class FormIdCollector extends Component {
     FormIds.collectFormIds(formId, sync)
   }
 
-  render () {
+  render() {
     if (Taro.getEnv() === Taro.ENV_TYPE.WEAPP) {
       const { children } = this.props
       return { children }

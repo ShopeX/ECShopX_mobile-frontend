@@ -11,7 +11,7 @@ import S from '@/spx'
   cartCount: cart.cartCount
 }))
 export default class TabBar extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -23,11 +23,11 @@ export default class TabBar extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.initTabbarData()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.current !== undefined) {
       this.setState({ localCurrent: nextProps.current })
     }
@@ -38,7 +38,7 @@ export default class TabBar extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     if (this.state.tabList.length > 0) {
       this.fetchCart()
     }
@@ -48,7 +48,7 @@ export default class TabBar extends Component {
     addGlobalClass: true
   }
 
-  initTabbarData () {
+  initTabbarData() {
     const { tabBar } = this.props
     let list = []
     list = [
@@ -100,11 +100,11 @@ export default class TabBar extends Component {
     )
   }
 
-  get cartCount () {
+  get cartCount() {
     return this.props.cartCount
   }
 
-  get tabBar () {
+  get tabBar() {
     let initTabBar = Taro.getStorageSync('initTabBar')
     if (this.props.tabBar && initTabBar == true) {
       Taro.setStorageSync('initTabBar', false)
@@ -112,7 +112,7 @@ export default class TabBar extends Component {
     }
   }
 
-  updateCurTab () {
+  updateCurTab() {
     this.fetchCart()
     const { tabList, localCurrent } = this.state
     const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
@@ -128,7 +128,7 @@ export default class TabBar extends Component {
     }
   }
 
-  async fetchCart () {
+  async fetchCart() {
     if (!S.getAuthToken()) return
     const { tabList } = this.state
     const cartTabIdx = tabList.findIndex((item) => item.url.indexOf('cart') !== -1)
@@ -174,7 +174,7 @@ export default class TabBar extends Component {
     }
   }
 
-  render () {
+  render() {
     const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
 
     if (process.env.APP_INTEGRATION) {

@@ -9,7 +9,7 @@ export default class WgtSearchHome extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -18,7 +18,7 @@ export default class WgtSearchHome extends Component {
       isShowAction: false
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     if (process.env.TARO_ENV === 'h5') {
       toggleTouchMove(this.refs.container)
     }
@@ -53,7 +53,7 @@ export default class WgtSearchHome extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

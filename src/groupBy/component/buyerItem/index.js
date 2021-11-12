@@ -21,11 +21,11 @@ export default class BuyerItem extends Component {
     }
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  render () {
+  render() {
     const { info, last } = this.props
 
     return (

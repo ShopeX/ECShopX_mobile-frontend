@@ -18,7 +18,7 @@ export default class HtmlContent extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (isWeixin || isAlipay) {
       const { content } = this.props
       console.log('--this.$scope--', this.$scope)
@@ -27,7 +27,7 @@ export default class HtmlContent extends Component {
     }
   }
 
-  render () {
+  render() {
     const { className } = this.props
     const classes = classNames('html-content', className)
 

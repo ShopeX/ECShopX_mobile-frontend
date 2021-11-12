@@ -13,7 +13,7 @@ export default class SpRecommend extends Component {
     info: null
   }
 
-  render () {
+  render() {
     const { info, className } = this.props
     const leftList = info.filter((item, index) => {
       if (index % 2 == 0) {

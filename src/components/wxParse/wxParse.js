@@ -21,7 +21,7 @@ import Taro, { Component } from '@tarojs/taro'
 var realWindowWidth = 0
 var realWindowHeight = 0
 Taro.getSystemInfo({
-  success: function (res) {
+  success: function(res) {
     realWindowWidth = res.windowWidth
     realWindowHeight = res.windowHeight
   }
@@ -29,7 +29,7 @@ Taro.getSystemInfo({
 /**
  * 主函数入口区
  **/
-function wxParse (
+function wxParse(
   bindName = 'wxParseData',
   type = 'html',
   data = '<div class="color:red;">数据不能为空</div>',
@@ -58,7 +58,7 @@ function wxParse (
   that.wxParseImgTap = wxParseImgTap
 }
 // 图片点击事件
-function wxParseImgTap (e) {
+function wxParseImgTap(e) {
   var that = this
   var nowImgUrl = e.target.dataset.src
   var tagFrom = e.target.dataset.from
@@ -73,7 +73,7 @@ function wxParseImgTap (e) {
 /**
  * 图片视觉宽高计算函数区
  **/
-function wxParseImgLoad (e) {
+function wxParseImgLoad(e) {
   var that = this
   var tagFrom = e.target.dataset.from
   var idx = e.target.dataset.idx
@@ -82,7 +82,7 @@ function wxParseImgLoad (e) {
   }
 }
 // 假循环获取计算图片视觉最佳宽高
-function calMoreImageInfo (e, idx, that, bindName) {
+function calMoreImageInfo(e, idx, that, bindName) {
   var temData = that.data[bindName]
   if (!temData || temData.images.length == 0) {
     return
@@ -108,7 +108,7 @@ function calMoreImageInfo (e, idx, that, bindName) {
 }
 
 // 计算视觉优先的图片宽高
-function wxAutoImageCal (originalWidth, originalHeight, that, bindName) {
+function wxAutoImageCal(originalWidth, originalHeight, that, bindName) {
   //获取图片的原始长宽
   var windowWidth = 0,
     windowHeight = 0
@@ -136,7 +136,7 @@ function wxAutoImageCal (originalWidth, originalHeight, that, bindName) {
   return results
 }
 
-function wxParseTemArray (temArrayName, bindNameReg, total, that) {
+function wxParseTemArray(temArrayName, bindNameReg, total, that) {
   var array = []
   var temData = that.data
   var obj = null
@@ -156,7 +156,7 @@ function wxParseTemArray (temArrayName, bindNameReg, total, that) {
  *
  */
 
-function emojisInit (reg = '', baseSrc = '/wxParse/emojis/', emojis) {
+function emojisInit(reg = '', baseSrc = '/wxParse/emojis/', emojis) {
   HtmlToJson.emojisInit(reg, baseSrc, emojis)
 }
 

@@ -2,9 +2,9 @@
 // this.state.page 存放page相关的状态
 import { Tracker } from '@/service'
 
-export default function withPager (Component) {
+export default function withPager(Component) {
   return class WithPagerComponent extends Component {
-    constructor (props) {
+    constructor(props) {
       super(props)
       const { pageSize = 10, pageNo = 0, pageTotal = 0 } = props || {}
 
@@ -52,7 +52,7 @@ export default function withPager (Component) {
       })
     }
 
-    resetPage (cb = () => {}) {
+    resetPage(cb = () => {}) {
       const page = {
         ...(this.state.page || {}),
         page_no: 0,

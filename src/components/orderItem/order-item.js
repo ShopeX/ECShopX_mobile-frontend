@@ -19,7 +19,7 @@ export default class OrderItem extends Component {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const {
       info,
       onClick,

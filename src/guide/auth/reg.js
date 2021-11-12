@@ -21,7 +21,7 @@ export default class Reg extends Component {
   config = {
     navigationBarTitleText: '导购商城'
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -37,7 +37,7 @@ export default class Reg extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // console.log(Taro.getEnv(),this.props.land_params)
     if (process.env.TARO_ENV === 'weapp') {
       this.setState({
@@ -70,7 +70,7 @@ export default class Reg extends Component {
     }
   }
 
-  async fetch () {
+  async fetch() {
     let arr = []
     let res = await api.user.regParam()
     Object.keys(res).forEach((key) => {
@@ -182,7 +182,7 @@ export default class Reg extends Component {
     }
   }
 
-  parseJwt (token) {
+  parseJwt(token) {
     var base64Url = token.split('.')[1]
     var base64 = base64Url && base64Url.replace(/-/g, '+').replace(/_/g, '/')
     var arr_base64 = Taro.base64ToArrayBuffer(base64)
@@ -190,7 +190,7 @@ export default class Reg extends Component {
     var jsonPayload = decodeURIComponent(
       arr_base64
         .split('')
-        .map(function (c) {
+        .map(function(c) {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
         })
         .join('')
@@ -331,7 +331,7 @@ export default class Reg extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       info,
       isVisible,

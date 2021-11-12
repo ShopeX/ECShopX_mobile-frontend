@@ -14,7 +14,7 @@ export default class SharePanel extends Component {
     onClose: () => {},
     onClick: () => {}
   }
-  render () {
+  render() {
     const { info, isOpen, onClose, onClick } = this.props
 
     return (

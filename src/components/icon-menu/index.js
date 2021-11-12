@@ -32,7 +32,7 @@ export default class IconMenu extends Component {
     onClick()
   }
 
-  render () {
+  render() {
     const {
       img,
       icon,

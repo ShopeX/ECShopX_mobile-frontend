@@ -14,7 +14,7 @@ export default class ItemHistory extends Component {
     navigationBarTitleText: '浏览记录'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -23,11 +23,11 @@ export default class ItemHistory extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -63,7 +63,7 @@ export default class ItemHistory extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list, showBackToTop, scrollTop, page } = this.state
 
     return (

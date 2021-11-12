@@ -29,7 +29,7 @@ export default class HomeWgts extends PureComponent {
     wgts: []
   }
 
-  componentDidMount () {
+  componentDidMount() {
     Taro.getSystemInfo().then((res) => {
       this.setState({
         screenWidth: res.screenWidth
@@ -43,13 +43,13 @@ export default class HomeWgts extends PureComponent {
     let eleName = `#tag-hotzone_img${index}`
     console.log('eleName----999', eleName)
     query.select(eleName).boundingClientRect()
-    query.exec(function (res) {
+    query.exec(function(res) {
       const { onChangPageScroll } = _this.props
       onChangPageScroll(res[0].top)
     })
   }
 
-  render () {
+  render() {
     const { wgts, scrollTop, source, zz } = this.props
     const { screenWidth } = this.state
     return (

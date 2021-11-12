@@ -14,7 +14,7 @@ export default class SpToolbar extends PureComponent {
     inline: false
   }
 
-  render () {
+  render() {
     const { inline } = this.props
     const ipxClass = S.get('ipxClass') || ''
 

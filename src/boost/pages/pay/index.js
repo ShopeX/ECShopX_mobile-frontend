@@ -16,7 +16,7 @@ import './index.scss'
   })
 )
 export default class Pay extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       cur_address: null,
@@ -27,11 +27,11 @@ export default class Pay extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getOrderInfo()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.address !== this.props.address) {
       console.log(nextProps.address)
       this.handleChangeAddress(nextProps.address)
@@ -174,7 +174,7 @@ export default class Pay extends Component {
     })
   }
 
-  render () {
+  render() {
     const { cur_address, remark, goodInfo, purchasePrice, isLoading } = this.state
     return (
       <View className='pay'>

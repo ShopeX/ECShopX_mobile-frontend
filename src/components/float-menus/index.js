@@ -12,7 +12,7 @@ export default class BackToTop extends Component {
     bottom: null
   }
 
-  render () {
+  render() {
     const { bottom } = this.props
 
     return (

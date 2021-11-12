@@ -65,7 +65,7 @@ export default class buyContorl extends Component {
     }
   }
 
-  render () {
+  render() {
     const { isEnd, quantity, isCanReduce } = this.props
     return (
       <View className='buyContorl'>

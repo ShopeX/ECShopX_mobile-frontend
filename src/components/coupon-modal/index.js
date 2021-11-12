@@ -15,7 +15,7 @@ export default class CouponModal extends PureComponent {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const { list, visible, onChange } = this.props
 
     return (

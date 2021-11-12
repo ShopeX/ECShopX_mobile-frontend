@@ -18,7 +18,7 @@ import './rate.scss'
 )
 @withLogin()
 export default class TradeRate extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class TradeRate extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
@@ -36,7 +36,7 @@ export default class TradeRate extends Component {
     navigationBarTitleText: '发表评价'
   }
 
-  async fetch () {
+  async fetch() {
     const { id } = this.$router.params
     const data = await api.trade.detail(id)
 
@@ -89,7 +89,7 @@ export default class TradeRate extends Component {
     })
   }
 
-  handleChange (index, value) {
+  handleChange(index, value) {
     const { goodsList } = this.state
     goodsList[index].star = value
     this.setState({
@@ -104,7 +104,7 @@ export default class TradeRate extends Component {
     })
   }
 
-  handleChangeComment (index, e) {
+  handleChangeComment(index, e) {
     const { goodsList } = this.state
     goodsList[index].content = e
     this.setState({
@@ -191,7 +191,7 @@ export default class TradeRate extends Component {
   }
 
   // TODO: 确认原有功能
-  render () {
+  render() {
     const { goodsList } = this.state
 
     const { colors } = this.props

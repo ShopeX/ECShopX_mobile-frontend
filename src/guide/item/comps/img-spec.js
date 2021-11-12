@@ -28,7 +28,7 @@ export default class ImgSpec extends Component {
     this.props.onClick(index)
   }
 
-  render () {
+  render() {
     const { info, current, onClick } = this.props
     if (!info) {
       return null

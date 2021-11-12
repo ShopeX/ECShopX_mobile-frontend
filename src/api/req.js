@@ -6,20 +6,20 @@ import { goToAuthPage } from '@/utils/platform'
 import api from '@/api'
 import { isWeb } from '@/utils/platforms'
 
-function addQuery (url, query) {
+function addQuery(url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
 }
 
 class RequestQueue {
-  constructor () {
+  constructor() {
     this.requestList = []
   }
 
-  push (req) {
+  push(req) {
     this.requestList.push(req)
   }
 
-  async run () {
+  async run() {
     const request = this.requestList.shift()
     if (request) {
       await request()
@@ -33,7 +33,7 @@ class RequestQueue {
 const requestQueue = new RequestQueue()
 
 class API {
-  constructor (options = {}) {
+  constructor(options = {}) {
     let { baseURL = '/' } = options
     if (!/\/$/.test(baseURL)) {
       baseURL = baseURL + '/'
@@ -55,7 +55,7 @@ class API {
 
   static isRefreshing = false
 
-  genMethods (methods) {
+  genMethods(methods) {
     methods.forEach((method) => {
       this[method] = (url, data, config = {}) =>
         this.makeReq({
@@ -67,7 +67,7 @@ class API {
     })
   }
 
-  errorToast (data) {
+  errorToast(data) {
     const errMsg =
       data.msg || data.err_msg || (data.error && data.error.message) || '操作失败，请稍后重试'
     let newText = ''
@@ -84,7 +84,7 @@ class API {
     }, 200)
   }
 
-  makeReq (config) {
+  makeReq(config) {
     const { url, data, header = {}, method = 'GET', showLoading, showError = true } = config
     const methodIsGet = method.toLowerCase() === 'get'
 
@@ -312,7 +312,7 @@ class API {
       })
   }
 
-  reqError (res, msg = '') {
+  reqError(res, msg = '') {
     const data = res.data.error || res.data
     const errMsg = data.message || data.err_msg || msg
     const err = new Error(errMsg)

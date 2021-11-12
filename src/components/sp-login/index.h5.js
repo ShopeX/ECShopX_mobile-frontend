@@ -16,7 +16,7 @@ import './index.scss'
 //   } )
 // )
 
-function SpLogin (props) {
+function SpLogin(props) {
   const { className, children, size = 'normal', circle = false, onChange } = this.props
   const isLogin = S.getAuthToken()
 

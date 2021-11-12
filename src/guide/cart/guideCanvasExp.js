@@ -133,7 +133,7 @@ const guideCanvasExp = {
       _y = _y + 22
     })
   },
-  textNameFlow (ctx, text, rows, x, y, w) {
+  textNameFlow(ctx, text, rows, x, y, w) {
     let chr = text.split('')
     let temp = ''
     let row = []
@@ -174,7 +174,7 @@ const guideCanvasExp = {
     ctx.drawImage(img, x, y, w, h)
     // ctx.restore()
   },
-  roundRect (ctx, x, y, w, h, r, color) {
+  roundRect(ctx, x, y, w, h, r, color) {
     // 开始绘制
     ctx.beginPath()
     // 因为边缘描边存在锯齿，最好指定使用 transparent 填充

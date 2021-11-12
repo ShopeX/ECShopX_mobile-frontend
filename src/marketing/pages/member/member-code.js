@@ -8,7 +8,7 @@ import api from '@/api'
 import './member-code.scss'
 
 export default class MemberCode extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -16,11 +16,11 @@ export default class MemberCode extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { memberInfo, vipgrade, cardInfo } = await api.member.memberInfo()
     const params = {
       code_type: (cardInfo && cardInfo.code_type) || {},
@@ -38,7 +38,7 @@ export default class MemberCode extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.state
     if (!info) {
       return null

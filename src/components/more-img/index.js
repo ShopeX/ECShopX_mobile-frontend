@@ -6,7 +6,7 @@ import { linkPage } from '@/utils/helper'
 import './index.scss'
 
 export default class MoreImg extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -20,7 +20,7 @@ export default class MoreImg extends Component {
     }
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
@@ -41,7 +41,7 @@ export default class MoreImg extends Component {
     }
   }
 
-  render () {
+  render() {
     const { dataLength = 0, config: { moreLink = {} } = {}, base = {}, more } = this.props
 
     return (

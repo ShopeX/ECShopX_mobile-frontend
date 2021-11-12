@@ -75,7 +75,7 @@ export default class Detail extends Component {
     navigationBarTitleText: '导购商城'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -117,14 +117,14 @@ export default class Detail extends Component {
     }
   }
 
-  async componentWillMount () {
+  async componentWillMount() {
     const options = this.$router.params
     const res = await entry.entryLaunch(options, false) //false 不可开启定位，直接读取导购带过来的店铺
     this.setState({ subtask_id: res.subtask_id })
     console.log('[商详截取：entry.entryLaunch-guide/item/espier-detail]', res)
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     await S.autoLogin(this)
     const { id, subtask_id } = this.$router.params
     this.fetchInfo(id)
@@ -136,13 +136,13 @@ export default class Detail extends Component {
     }
   }
 
-  async componentDidShow () {
+  async componentDidShow() {
     Taro.hideShareMenu({
       menus: ['shareAppMessage', 'shareTimeline']
     })
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const { info } = this.state
     const { salesperson_id, distributor_id, work_userid, shop_code } = S.get('GUIDE_INFO', true)
     const query = this.$router.params
@@ -162,7 +162,7 @@ export default class Detail extends Component {
     }
   }
 
-  async innitPageShareUrl () {
+  async innitPageShareUrl() {
     const query = await normalizeQuerys(this.$router.params)
     const { entry_form, subtask_id } = this.state
     let gu = null
@@ -203,7 +203,7 @@ export default class Detail extends Component {
     })
   }
 
-  async getEvaluationList (id) {
+  async getEvaluationList(id) {
     const { list, total_count } = await api.item.evaluationList({
       page: 1,
       pageSize: 2,
@@ -219,7 +219,7 @@ export default class Detail extends Component {
     })
   }
 
-  async fetchInfo (itemId, goodsId) {
+  async fetchInfo(itemId, goodsId) {
     const { distributor_id, store_id } = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
     //const isOpenStore = await entry.getStoreStatus()
@@ -368,7 +368,7 @@ export default class Detail extends Component {
     log.debug('fetch: done', info)
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -399,7 +399,7 @@ export default class Detail extends Component {
     }
   }
 
-  resolveSpecImgs (specs) {
+  resolveSpecImgs(specs) {
     const ret = {}
 
     //只有一个图片类型规格
@@ -664,7 +664,7 @@ export default class Detail extends Component {
     })
   }
 
-  handleSavePoster () {
+  handleSavePoster() {
     const { poster } = this.state
     Taro.getSetting().then((res) => {
       if (!res.authSetting['scope.writePhotosAlbum']) {
@@ -769,7 +769,7 @@ export default class Detail extends Component {
       url: `/others/pages/home/coupon-home?item_id=${this.state.info.item_id}&distributor_id=${id}`
     })
   }
-  handleClickViewAllEvaluation () {
+  handleClickViewAllEvaluation() {
     Taro.navigateTo({
       url: `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
     })
@@ -803,10 +803,10 @@ export default class Detail extends Component {
       }
     })
   }
-  toCart () {
+  toCart() {
     Taro.navigateTo({ url: '/guide/cart/espier-index' })
   }
-  render () {
+  render() {
     const {
       info,
       isGreaterSix,

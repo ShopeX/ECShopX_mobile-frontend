@@ -24,7 +24,7 @@ export default class cartList extends Component {
     isCanReduce: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     const list = props.list.map((item) => {
       item.isOpened = false
@@ -36,7 +36,7 @@ export default class cartList extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const list = nextProps.list.map((item) => {
       item.isOpened = false
       return item
@@ -202,7 +202,7 @@ export default class cartList extends Component {
       })
   }
 
-  render () {
+  render() {
     const options = [
       {
         text: '删除',

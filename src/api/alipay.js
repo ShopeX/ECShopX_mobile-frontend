@@ -8,7 +8,7 @@ const useauth = {
 }
 
 /**支付宝自动登录 */
-export function login (params) {
+export function login(params) {
   return req.post('/alipay/login', {
     ...params,
     ...useauth,
@@ -16,7 +16,7 @@ export function login (params) {
   })
 }
 /**支付宝手动登录（注册） */
-export function newlogin (params) {
+export function newlogin(params) {
   return req.post('/alipay/new_login', {
     ...params,
     ...useauth,

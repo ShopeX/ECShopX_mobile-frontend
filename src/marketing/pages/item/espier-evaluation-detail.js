@@ -22,7 +22,7 @@ export default class EvaluationDetail extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -34,7 +34,7 @@ export default class EvaluationDetail extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const userInfo = Taro.getStorageSync('userinfo')
     this.getEvaluationDetail()
 
@@ -157,7 +157,7 @@ export default class EvaluationDetail extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info, showCommentPanel } = this.state
 
     if (!info) {

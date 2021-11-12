@@ -35,7 +35,7 @@ export default class CartIndex extends Component {
     list: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -58,7 +58,7 @@ export default class CartIndex extends Component {
     this.lastCartId = null
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     await S.autoLogin(this)
     if (this.$router.params && this.$router.params.path === 'qrcode') {
       this.setState({
@@ -80,7 +80,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     console.log(
       'componentWillReceiveProps',
       nextProps.list,
@@ -94,7 +94,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     if (!S.getAuthToken() || this.state.loading) return
     this.updateCart()
   }
@@ -106,7 +106,7 @@ export default class CartIndex extends Component {
     })
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -142,7 +142,7 @@ export default class CartIndex extends Component {
   }
 
   // 活动分组
-  resolveActivityGroup (cartList = []) {
+  resolveActivityGroup(cartList = []) {
     const groups = cartList.map((shopCart) => {
       const { list, used_activity = [], plus_buy_activity = [] } = shopCart
       const tDict = list.reduce((acc, val) => {
@@ -189,7 +189,7 @@ export default class CartIndex extends Component {
     return groups
   }
 
-  processCart ({ valid_cart = [], invalid_cart = [], cartType, crossborder_show, item_count = 0 }) {
+  processCart({ valid_cart = [], invalid_cart = [], cartType, crossborder_show, item_count = 0 }) {
     // const res = await api.cart.count({ shop_type: 'distributor' })
     let cartCount = 0
     const list = valid_cart.map((shopCart) => {
@@ -215,7 +215,7 @@ export default class CartIndex extends Component {
     return list
   }
 
-  async fetchCart (cb) {
+  async fetchCart(cb) {
     let valid_cart = [],
       invalid_cart = [],
       crossborder_show = false
@@ -300,14 +300,14 @@ export default class CartIndex extends Component {
   }
 
   // 获取购物车消息通知
-  async getRemind () {
+  async getRemind() {
     const res = await api.cart.getCartRemind()
     this.setState({
       remindInfo: res
     })
   }
   //购物车商品选中变更
-  async handleSelectionChange (type = 'item', item) {
+  async handleSelectionChange(type = 'item', item) {
     let params = {
       cart_id: (item && item.cart_id) || '',
       is_checked: item && item.is_checked == '1' ? 'false' : 'true'
@@ -487,7 +487,7 @@ export default class CartIndex extends Component {
       url: '/guide/cart/espier-checkout?cart_type=cart'
     })
   }
-  transformCartList (list) {
+  transformCartList(list) {
     return pickBy(list, {
       item_id: 'item_id',
       cart_id: 'cart_id',
@@ -559,7 +559,7 @@ export default class CartIndex extends Component {
       url: url
     })
   }
-  render () {
+  render() {
     const {
       groups,
       invalidList,

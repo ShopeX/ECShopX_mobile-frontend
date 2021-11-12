@@ -10,7 +10,7 @@ import './coupon-detail.scss'
   colors: colors.current
 }))
 export default class CouponDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -40,11 +40,11 @@ export default class CouponDetail extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { card_id, code } = this.$router.params
     console.log(this.$router.params)
     const params = {
@@ -173,7 +173,7 @@ export default class CouponDetail extends Component {
     )
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { cardInfo, curStore, curBranchStore, showCodeInput, curindex, show } = this.state
 

@@ -17,7 +17,7 @@ export default class PaymentPicker extends Component {
     disabledPayment: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -25,7 +25,7 @@ export default class PaymentPicker extends Component {
       typeList: []
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.fatch()
   }
   componentWillReceiveProps = (nextProps) => {
@@ -39,7 +39,7 @@ export default class PaymentPicker extends Component {
   static options = {
     addGlobalClass: true
   }
-  async fatch () {
+  async fatch() {
     let res = await api.member.getTradePaymentList()
     this.setState(
       {
@@ -74,7 +74,7 @@ export default class PaymentPicker extends Component {
     this.props.onChange(type)
   }
 
-  render () {
+  render() {
     const {
       isOpened,
       loading,

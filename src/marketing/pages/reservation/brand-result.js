@@ -12,7 +12,7 @@ import './brand-result.scss'
 @withPager
 @withBackToTop
 export default class BrandResult extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -21,9 +21,9 @@ export default class BrandResult extends Component {
     }
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
-  async fetch () {}
+  async fetch() {}
 
   handleClickRecord = () => {
     Taro.navigateTo({
@@ -31,7 +31,7 @@ export default class BrandResult extends Component {
     })
   }
 
-  render () {
+  render() {
     const { brand_store, brand_time } = this.state
 
     return (

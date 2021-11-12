@@ -22,7 +22,7 @@ export default class SeriesItem extends Component {
     onClick: () => {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -31,7 +31,7 @@ export default class SeriesItem extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -87,7 +87,7 @@ export default class SeriesItem extends Component {
   //   }
   // }
 
-  render () {
+  render() {
     const { info, content, scrollTop, isChanged, pluralType, imgType } = this.props
     const { currentIndex, page } = this.state
     if (!info) {

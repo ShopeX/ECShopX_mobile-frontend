@@ -21,7 +21,7 @@ import './userinfo.scss'
   })
 )
 export default class UserInfo extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -46,7 +46,7 @@ export default class UserInfo extends Component {
     this.optionsType = ''
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getFormItem()
   }
 
@@ -263,7 +263,7 @@ export default class UserInfo extends Component {
     }
   }
 
-  privacyOnChange () {
+  privacyOnChange() {
     this.setState(
       {
         isAgree: true
@@ -278,7 +278,7 @@ export default class UserInfo extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       formItems,
       userInfo,

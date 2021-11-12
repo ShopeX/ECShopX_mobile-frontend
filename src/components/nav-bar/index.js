@@ -20,7 +20,7 @@ export default class NavBar extends Component {
     return Taro.navigateBack()
   }
 
-  render () {
+  render() {
     const { title, leftIconType, fixed } = this.props
 
     return Taro.getEnv() !== Taro.ENV_TYPE.WEAPP && Taro.getEnv() !== Taro.ENV_TYPE.ALIPAY ? (

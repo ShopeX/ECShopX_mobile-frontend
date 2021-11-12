@@ -7,7 +7,7 @@ export default class WgtGoodsGrid extends Component {
     addGlobalClass: true
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
@@ -18,7 +18,7 @@ export default class WgtGoodsGrid extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

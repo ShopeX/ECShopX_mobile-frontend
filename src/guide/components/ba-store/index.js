@@ -23,13 +23,13 @@ export default class BaStore extends Component {
     defaultStore: null,
     guideInfo: null
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       baInfo: {}
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     // let QwUserInfo = S.get("GUIDE_INFO", true);
     // this.setState({
     //   baInfo: QwUserInfo
@@ -45,7 +45,7 @@ export default class BaStore extends Component {
   //   navigateTo('/guide/auth/wxauth',true)
   // }
 
-  render () {
+  render() {
     const { defaultStore } = this.props
     // const token = S.getAuthToken();
     // const n_ht = S.get( "navbar_height", true );

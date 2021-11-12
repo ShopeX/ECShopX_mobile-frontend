@@ -6,7 +6,7 @@ import ModalPolicy from './modal-policy'
 
 import './index.scss'
 
-function SpModal (props) {
+function SpModal(props) {
   const {
     children,
     type,

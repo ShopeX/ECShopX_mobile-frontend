@@ -11,7 +11,7 @@ import './shop-category.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -46,7 +46,7 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     Taro.hideShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
@@ -60,7 +60,7 @@ export default class DistributionShopCategory extends Component {
     this.fetchInfo()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -68,7 +68,7 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const query = {
       category_level: 2
     }
@@ -103,7 +103,7 @@ export default class DistributionShopCategory extends Component {
     )
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { defaultId } = this.state
     // let distribution_shop_id = Taro.getStorageSync('distribution_shop_id')
@@ -158,7 +158,7 @@ export default class DistributionShopCategory extends Component {
   //   })
   //  // console.warn(categoryId)
   // }
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
     console.log(info)
@@ -245,7 +245,7 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  render () {
+  render() {
     const { status } = this.$router.params
     const {
       list,

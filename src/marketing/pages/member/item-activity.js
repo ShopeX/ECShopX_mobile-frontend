@@ -9,7 +9,7 @@ import './item-activity.scss'
 
 @withPager
 export default class ItemActivity extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -18,11 +18,11 @@ export default class ItemActivity extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     params = {
       page,
@@ -53,7 +53,7 @@ export default class ItemActivity extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list, page } = this.state
 
     return (

@@ -27,7 +27,7 @@ export default class WgtSliderHotzone extends PureComponent {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -98,7 +98,7 @@ export default class WgtSliderHotzone extends PureComponent {
   //     })
   // }
 
-  render () {
+  render() {
     const { info, autoPlay } = this.props
     const { curIdx, percentage, progesswidth } = this.state
 

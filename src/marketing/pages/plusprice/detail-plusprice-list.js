@@ -17,7 +17,7 @@ import './plusprice.scss'
 @withPager
 @withBackToTop
 export default class DetailPluspriceList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -36,7 +36,7 @@ export default class DetailPluspriceList extends Component {
     navigationBarTitleText: ''
   }
 
-  componentDidMount () {
+  componentDidMount() {
     console.log('---componentDidMount---')
     // const { marketing_id } = this.$router.params
     // this.setState({
@@ -73,7 +73,7 @@ export default class DetailPluspriceList extends Component {
   //   }
   // }
 
-  calcTimer (totalSec) {
+  calcTimer(totalSec) {
     let remainingSec = totalSec
     const dd = Math.floor(totalSec / 24 / 3600)
     remainingSec -= dd * 3600 * 24
@@ -90,7 +90,7 @@ export default class DetailPluspriceList extends Component {
       ss
     }
   }
-  handleClickItem (item) {
+  handleClickItem(item) {
     const { distributor_id } = item
     const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
@@ -98,7 +98,7 @@ export default class DetailPluspriceList extends Component {
     })
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       marketing_id: this.$router.params.marketing_id,
@@ -140,7 +140,7 @@ export default class DetailPluspriceList extends Component {
     }
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const {
       list,

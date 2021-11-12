@@ -28,7 +28,7 @@ export default class GroupGood extends Component {
     }
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -39,12 +39,12 @@ export default class GroupGood extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // 执行倒计时
     this.countdown()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.info.time !== this.props.info.time) {
       const { timeId } = this.state
       if (timeId) {
@@ -64,7 +64,7 @@ export default class GroupGood extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     let { timeId } = this.state
     if (timeId) {
       clearTimeout(timeId)
@@ -135,7 +135,7 @@ export default class GroupGood extends Component {
     })
   }
 
-  render () {
+  render() {
     const { countTime, isEnd, list } = this.state
     const { info } = this.props
 

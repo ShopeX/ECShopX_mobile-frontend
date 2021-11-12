@@ -13,7 +13,7 @@ export default class WgtCoupon extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       scrollLeft: 0,
@@ -22,7 +22,7 @@ export default class WgtCoupon extends Component {
       imgwidth: 0
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     let query = Taro.createSelectorQuery().in(this.$scope)
     let _this = this
     query
@@ -35,7 +35,7 @@ export default class WgtCoupon extends Component {
       .exec()
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
   handleScroll = (e) => {
@@ -80,7 +80,7 @@ export default class WgtCoupon extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

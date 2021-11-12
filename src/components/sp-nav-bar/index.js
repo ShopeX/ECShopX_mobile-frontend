@@ -21,7 +21,7 @@ export default class SpNavBar extends Component {
     return Taro.navigateBack()
   }
 
-  render () {
+  render() {
     const { title, leftIconType, fixed } = this.props
     if (isNavbar) {
       return (

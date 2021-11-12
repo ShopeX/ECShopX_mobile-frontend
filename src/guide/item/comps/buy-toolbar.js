@@ -29,7 +29,7 @@ export default class GoodsBuyToolbar extends Component {
     })
   }
 
-  render () {
+  render() {
     const { onClickAddCart, onClickFastBuy, cartCount, type, info, colors } = this.props
 
     if (!info) {

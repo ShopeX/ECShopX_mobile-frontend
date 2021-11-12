@@ -17,7 +17,7 @@ import { formatCountTime } from '../../utils/index'
 import './index.scss'
 
 export default class ShareDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       // 当前社区
@@ -42,11 +42,11 @@ export default class ShareDetail extends Component {
       }
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.getGoodInfo()
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     let { timeId } = this.state
     if (timeId) {
       clearTimeout(timeId)
@@ -141,7 +141,7 @@ export default class ShareDetail extends Component {
     })
   }
 
-  render () {
+  render() {
     const { goodInfo, countTime, current } = this.state
 
     return (

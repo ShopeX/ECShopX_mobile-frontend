@@ -1,17 +1,17 @@
 import Taro, { Component } from '@tarojs/taro'
 
-export default function withLoadMore (Component) {
+export default function withLoadMore(Component) {
   return class WithLoadMoreComponent extends Component {
-    constructor (props) {
+    constructor(props) {
       super(props)
     }
 
-    componentDidMount () {
+    componentDidMount() {
       this.startWrapperTrack()
       this.setTimer && this.setTimer()
     }
 
-    startWrapperTrack () {
+    startWrapperTrack() {
       this.endWrapperTrack()
       const observer = Taro.createIntersectionObserver({
         selectAll: true
@@ -34,7 +34,7 @@ export default function withLoadMore (Component) {
       this.wrapperobserver = observer
     }
 
-    startWrapperTrack () {
+    startWrapperTrack() {
       this.endWrapperTrack()
       const observer = Taro.createIntersectionObserver(this.$scope, {
         observeAll: true
@@ -56,7 +56,7 @@ export default function withLoadMore (Component) {
       this.wrapperobserver = observer
     }
 
-    endWrapperTrack () {
+    endWrapperTrack() {
       if (this.wrapperobserver) {
         this.wrapperobserver.disconnect()
         this.wrapperobserver = null

@@ -15,7 +15,7 @@ export default class SpImg extends Component {
 
   static externalClasses = ['img-class']
 
-  render () {
+  render() {
     const { disk_driver = 'qiniu' } = Taro.getStorageSync('otherSetting') || {}
     const {
       src,

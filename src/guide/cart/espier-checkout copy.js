@@ -47,7 +47,7 @@ export default class EspireCheckout extends Component {
   // config = {
   //   navigationBarTitleText: "innisfree 导购商城"
   // };
-  constructor (props) {
+  constructor(props) {
     super(props)
     const { windowWidth } = Taro.$systemSize
     const ratio = windowWidth / 375
@@ -76,11 +76,11 @@ export default class EspireCheckout extends Component {
       isShowQrcode: false // 分享订单图片显示状态
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.calcOrder()
   }
   // 计算接口
-  async calcOrder () {
+  async calcOrder() {
     Taro.showLoading({
       title: '加载中',
       mask: true
@@ -188,7 +188,7 @@ export default class EspireCheckout extends Component {
     })
     Taro.hideLoading()
   }
-  getParams () {
+  getParams() {
     const { order_id } = this.$router.params
     const { payType: pay_type } = this.state
     const { freightCoupon } = this.props
@@ -629,7 +629,7 @@ export default class EspireCheckout extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       goodsllist,
       notgoodslist,

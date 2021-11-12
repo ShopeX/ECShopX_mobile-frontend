@@ -12,7 +12,7 @@ import './index.scss'
   colors: colors.current
 }))
 export default class Order extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       param: {
@@ -29,7 +29,7 @@ export default class Order extends Component {
       isEmpty: false
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.getList()
   }
 
@@ -102,7 +102,7 @@ export default class Order extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list, scrollTop, isRefresh, isLoading, isEnd, isEmpty } = this.state
     const { colors } = this.props
     return (

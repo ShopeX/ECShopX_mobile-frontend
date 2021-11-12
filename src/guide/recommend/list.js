@@ -11,7 +11,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class RecommendList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       ...this.state,
@@ -21,7 +21,7 @@ export default class RecommendList extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     await S.autoLogin(this)
     this.nextPage()
   }
@@ -31,7 +31,7 @@ export default class RecommendList extends Component {
     navigationStyle: 'custom'
   }
 
-  componentDidShow () {}
+  componentDidShow() {}
 
   // 搜索查询
   handleSearchOn = () => {
@@ -97,7 +97,7 @@ export default class RecommendList extends Component {
     )
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const article_query = {
       article_type: 'bring',
@@ -135,7 +135,7 @@ export default class RecommendList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { query, isShowSearch, scrollTop, list, page } = this.state
     const n_ht = S.get('navbar_height', true)
     const c_ht = n_ht + 42

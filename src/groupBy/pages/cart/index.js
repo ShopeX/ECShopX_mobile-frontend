@@ -11,7 +11,7 @@ import CartList from '../../component/cartList'
 import './index.scss'
 
 export default class GroupByIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       total: 0,
@@ -22,9 +22,9 @@ export default class GroupByIndex extends Component {
     }
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
-  componentDidShow () {
+  componentDidShow() {
     if (S.getAuthToken()) {
       this.getCartData()
     } else {
@@ -134,7 +134,7 @@ export default class GroupByIndex extends Component {
 
   cartNode = (node) => (this.cartRef = node)
 
-  render () {
+  render() {
     const { list, failureList, isCheckAll, total } = this.state
     const isEmpty = list.length <= 0 && failureList.length <= 0
     return (

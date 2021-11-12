@@ -7,7 +7,7 @@ import './index.scss'
 import { getPointName } from '@/utils'
 
 export default class PayOrder extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -32,7 +32,7 @@ export default class PayOrder extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getCalculateTotal()
   }
 
@@ -127,7 +127,7 @@ export default class PayOrder extends Component {
       () => {}
     )
   }
-  render () {
+  render() {
     const {
       currtent,
       list,

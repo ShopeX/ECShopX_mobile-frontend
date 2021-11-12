@@ -11,7 +11,7 @@ export default class BaNavBar extends Component {
   static defaultProps = {
     onClick: () => {}
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       navbarHeight: 0,
@@ -23,7 +23,7 @@ export default class BaNavBar extends Component {
       jumpType: 'home'
     }
   }
-  async componentDidMount () {
+  async componentDidMount() {
     let MenuButton = await Taro.getMenuButtonBoundingClientRect()
     let systemInfo = await Taro.getSystemInfoSync()
     let currentPage = await Taro.getCurrentPages().length
@@ -47,19 +47,19 @@ export default class BaNavBar extends Component {
     S.set('navbar_height', navbarHeight, true)
   }
   //回退
-  navBack () {
+  navBack() {
     Taro.navigateBack({
       delta: 1
     })
   }
   //回首页
-  navHome () {
+  navHome() {
     Taro.redirectTo({
       url: '/guide/index'
     })
   }
 
-  render () {
+  render() {
     const {
       navbarHeight,
       right,

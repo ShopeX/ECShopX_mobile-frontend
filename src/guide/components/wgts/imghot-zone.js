@@ -23,12 +23,12 @@ export default class WgtImgHotZone extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {}
   }
 
-  async handleClickItem (item, index) {
+  async handleClickItem(item, index) {
     if (item.linkPage === 'cashcoupon') {
       const toke = S.getAuthToken()
       if (!toke) {
@@ -73,7 +73,7 @@ export default class WgtImgHotZone extends Component {
   //   e.stopPropagation()
   // }
 
-  render () {
+  render() {
     const { info } = this.props
 
     if (!info) {

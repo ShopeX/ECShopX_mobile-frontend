@@ -77,7 +77,7 @@ export default class Detail extends Component {
     navigationBarTitleText: '导购商城'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -120,13 +120,13 @@ export default class Detail extends Component {
     }
   }
 
-  async componentWillMount () {
+  async componentWillMount() {
     const query = await normalizeQuerys(this.$router.params)
     this.$router.params.id = query.id
     await entry.entryLaunch(this.$router.params, false)
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const options = this.$router.params
     //判断是否是从b端小程序跳转
     let jumpType = 'home'
@@ -188,7 +188,7 @@ export default class Detail extends Component {
     this.getDetailShare()
   }
 
-  async getDetailShare () {
+  async getDetailShare() {
     const options = this.$router.params
     let id = options.dtid
     let salesperson_id = Taro.getStorageSync('s_smid')
@@ -202,7 +202,7 @@ export default class Detail extends Component {
     }
   }
 
-  async componentDidShow () {
+  async componentDidShow() {
     const userInfo = Taro.getStorageSync('userinfo')
     if (S.getAuthToken() && (!userInfo || !userInfo.userId)) {
       const res = await api.member.memberInfo()
@@ -235,7 +235,7 @@ export default class Detail extends Component {
 
     // this.fetchCartCount()
   }
-  onShareAppMessage () {
+  onShareAppMessage() {
     const { info, pageShareUrl } = this.state
     //console.log('pageShareUrl----->',pageShareUrl)
     return {
@@ -244,7 +244,7 @@ export default class Detail extends Component {
       imageUrl: info.pics[0]
     }
   }
-  async innitPageShareUrl () {
+  async innitPageShareUrl() {
     const query = await normalizeQuerys(this.$router.params)
     const { entry_form, subtask_id } = this.state
     let gu = null
@@ -285,7 +285,7 @@ export default class Detail extends Component {
     })
   }
 
-  async getEvaluationList (id) {
+  async getEvaluationList(id) {
     const { list, total_count } = await api.item.evaluationList({
       page: 1,
       pageSize: 2,
@@ -301,7 +301,7 @@ export default class Detail extends Component {
     })
   }
 
-  async fetchCartCount () {
+  async fetchCartCount() {
     const { info } = this.state
     if (!S.getAuthToken() || !info) return
     const { special_type } = info
@@ -321,7 +321,7 @@ export default class Detail extends Component {
       console.log(e)
     }
   }
-  async checkWhite () {
+  async checkWhite() {
     const { status } = await api.wx.getWhiteList()
     if (status == true) {
       setTimeout(() => {
@@ -330,7 +330,7 @@ export default class Detail extends Component {
     }
   }
 
-  async fetchInfo (itemId, goodsId) {
+  async fetchInfo(itemId, goodsId) {
     const { distributor_id, store_id } = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
     //const isOpenStore = await entry.getStoreStatus()
@@ -494,7 +494,7 @@ export default class Detail extends Component {
     log.debug('fetch: done', info)
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -525,7 +525,7 @@ export default class Detail extends Component {
     }
   }
 
-  resolveSpecImgs (specs) {
+  resolveSpecImgs(specs) {
     const ret = {}
 
     //只有一个图片类型规格
@@ -820,7 +820,7 @@ export default class Detail extends Component {
     })
   }
 
-  handleSavePoster () {
+  handleSavePoster() {
     const { poster } = this.state
     Taro.getSetting().then((res) => {
       if (!res.authSetting['scope.writePhotosAlbum']) {
@@ -924,7 +924,7 @@ export default class Detail extends Component {
       url: `/others/pages/home/coupon-home?item_id=${this.state.info.item_id}&distributor_id=${id}`
     })
   }
-  handleClickViewAllEvaluation () {
+  handleClickViewAllEvaluation() {
     Taro.navigateTo({
       url: `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
     })
@@ -959,7 +959,7 @@ export default class Detail extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       info,
       isGreaterSix,

@@ -11,7 +11,7 @@ export default class SpSearch extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       searchValue: '',
@@ -20,7 +20,7 @@ export default class SpSearch extends Component {
     }
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
   handleClick = () => {
     Taro.navigateTo({
@@ -28,7 +28,7 @@ export default class SpSearch extends Component {
     })
   }
 
-  render () {
+  render() {
     return (
       <View className='sp-search' onClick={this.handleClick.bind(this)}>
         <View className='iconfont icon-sousuo-01'></View>

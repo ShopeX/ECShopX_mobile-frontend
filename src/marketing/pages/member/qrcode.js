@@ -5,7 +5,7 @@ import api from '@/api'
 import './qrcode.scss'
 
 export default class QRcode extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -13,7 +13,7 @@ export default class QRcode extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const { user_card_id } = this.$router.params
     let result = await api.member.getQRcode({ user_card_id })
     this.setState({
@@ -29,7 +29,7 @@ export default class QRcode extends Component {
     })
   }
 
-  render () {
+  render() {
     const { result } = this.state
 
     return (

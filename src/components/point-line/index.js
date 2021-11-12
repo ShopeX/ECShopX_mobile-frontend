@@ -8,7 +8,7 @@ export default class HomeCapsule extends Component {
     url: ''
   }
 
-  render () {
+  render() {
     const { className, point, plus, isGoodCard, isStoreOut } = this.props
     const classes = classNames('point-line', className, { plus: plus })
 

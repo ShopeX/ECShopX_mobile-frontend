@@ -23,7 +23,7 @@ export default class SpNote extends Component {
 
   handleClick = () => {}
 
-  render () {
+  render() {
     const { icon, className, title, button, value, btnText, to } = this.props
 
     return (

@@ -21,7 +21,7 @@ export default class SpLogin extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       token: S.getAuthToken(),
@@ -30,7 +30,7 @@ export default class SpLogin extends Component {
     }
   }
 
-  componentWillMount () {
+  componentWillMount() {
     this.onGetTimes()
   }
 
@@ -162,7 +162,7 @@ export default class SpLogin extends Component {
     })
   }
 
-  async handleBindPhone (e) {
+  async handleBindPhone(e) {
     if (isWeixin) {
       this.wexinBindPhone(e)
     } else if (isAlipay) {
@@ -170,7 +170,7 @@ export default class SpLogin extends Component {
     }
   }
 
-  handleOnChange () {
+  handleOnChange() {
     this.props.onChange && this.props.onChange()
   }
 
@@ -188,7 +188,7 @@ export default class SpLogin extends Component {
     this.setState({ privacyVisible: true })
   }
 
-  render () {
+  render() {
     const { token, privacyVisible, update_time } = this.state
     let pritecy_time = Taro.getStorageSync('PrivacyUpdate_time')
     let policy = true

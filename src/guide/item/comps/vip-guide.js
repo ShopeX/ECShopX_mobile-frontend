@@ -41,7 +41,7 @@ export default class VipGuide extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
 
     if (!info) {

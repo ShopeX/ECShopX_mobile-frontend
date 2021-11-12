@@ -12,7 +12,7 @@ import './shop-category.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -44,11 +44,11 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetchInfo()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -61,7 +61,7 @@ export default class DistributionShopCategory extends Component {
     navigationBarTitleText: ''
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const options = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
@@ -108,7 +108,7 @@ export default class DistributionShopCategory extends Component {
     )
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { defaultId } = this.state
     const options = this.$router.params
@@ -215,7 +215,7 @@ export default class DistributionShopCategory extends Component {
       })
     }
   }
-  render () {
+  render() {
     const {
       list,
       hasSeries,

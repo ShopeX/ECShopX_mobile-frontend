@@ -14,7 +14,7 @@ import './index.scss'
   colors: colors.current
 }))
 export default class DistributionDashboard extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       info: null,
@@ -24,7 +24,7 @@ export default class DistributionDashboard extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -37,7 +37,7 @@ export default class DistributionDashboard extends Component {
     navigationBarTitleText: '推广管理'
   }
 
-  async fetch () {
+  async fetch() {
     const resUser = Taro.getStorageSync('userinfo')
     const { username, avatar } = resUser
 
@@ -76,7 +76,7 @@ export default class DistributionDashboard extends Component {
     this.setState({ info })
   }
 
-  handleOpenApply () {
+  handleOpenApply() {
     Taro.showModal({
       title: '申请开店',
       content: '是否申请开启小店推广',
@@ -97,7 +97,7 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
@@ -274,7 +274,7 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info, showPoster, poster } = this.state
     console.log(info)

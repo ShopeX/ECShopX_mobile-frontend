@@ -32,7 +32,7 @@ export default class GoodItem extends Component {
     isCanReduce: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -74,7 +74,7 @@ export default class GoodItem extends Component {
     return price
   }
 
-  render () {
+  render() {
     const { goodInfo, isEnd, ShowBuyer, ShowCheckBox, isExpired, isCanReduce, isNext } = this.props
 
     return (

@@ -19,7 +19,7 @@ import LoadingMore from '../../component/loadingMore'
 import './index.scss'
 
 export default class OrderList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       list: [],
@@ -37,7 +37,7 @@ export default class OrderList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getOrderList(true)
   }
 
@@ -111,7 +111,7 @@ export default class OrderList extends Component {
     )
   }
 
-  render () {
+  render() {
     const tabs = [
       {
         title: '全部',

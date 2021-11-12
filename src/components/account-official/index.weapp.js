@@ -21,16 +21,16 @@ export default class AccountOfficial extends Component {
     onClick: () => {},
     onHandleError: () => {}
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
       isShowAccount: false
     }
   }
-  componentDidMount () {}
+  componentDidMount() {}
 
-  componentDidShow () {
+  componentDidShow() {
     this.handleClickError()
     this.handleClickLoad()
   }
@@ -58,7 +58,7 @@ export default class AccountOfficial extends Component {
     }
   }
 
-  render () {
+  render() {
     const { isShowAccount } = this.state
     const { colors, isClose } = this.props
     return (

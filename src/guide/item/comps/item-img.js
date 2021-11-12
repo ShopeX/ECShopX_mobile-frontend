@@ -12,7 +12,7 @@ export default class ItemImg extends Component {
     src: null
   }
 
-  render () {
+  render() {
     const { src } = this.props
 
     return (

@@ -49,7 +49,7 @@ export default class SpGoodsItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       info,
       showMarketPrice,

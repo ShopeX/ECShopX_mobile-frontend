@@ -18,14 +18,14 @@ import { normalizeQuerys } from '@/utils'
 import './index.scss'
 
 export default class AuthLogin extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       showAuth: false
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (!S.getAuthToken()) {
       S.toast('请先登录')
       setTimeout(() => {
@@ -107,7 +107,7 @@ export default class AuthLogin extends Component {
     }
   }
 
-  render () {
+  render() {
     const { showAuth } = this.state
     const user = Taro.getStorageSync('userinfo')
 

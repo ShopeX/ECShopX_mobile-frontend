@@ -62,7 +62,7 @@ getHomeSetting()
 
 class App extends Component {
   // eslint-disable-next-line react/sort-comp
-  componentWillMount () {
+  componentWillMount() {
     console.log('componentWillMount', process.env.APP_TRACK)
     if (process.env.APP_TRACK && process.env.TARO_ENV == 'weapp') {
       const system = Taro.getSystemInfoSync()
@@ -135,7 +135,7 @@ class App extends Component {
       Taro.setStorageSync('cartType', 'normal')
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.init()
   }
 
@@ -375,19 +375,19 @@ class App extends Component {
     // }
   }
 
-  componentDidShow (options) {
+  componentDidShow(options) {
     const { referrerInfo } = options || {}
     if (referrerInfo) {
       console.log(referrerInfo)
     }
   }
 
-  componentDidHide () {
+  componentDidHide() {
     FormIds.stop()
   }
 
   // 初始化
-  async init () {
+  async init() {
     // 过期时间
     const promoterExp = Taro.getStorageSync('distribution_shop_exp')
     if (Date.parse(new Date()) - promoterExp > treeDay) {
@@ -477,7 +477,7 @@ class App extends Component {
     // this.fetchColors();
   }
 
-  async getSystemConfig () {
+  async getSystemConfig() {
     const appConfig = await api.shop.getAppConfig()
     const {
       tab_bar,
@@ -603,11 +603,11 @@ class App extends Component {
   //   });
   // }
 
-  componentDidCatchError () {}
+  componentDidCatchError() {}
 
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
-  render () {
+  render() {
     return (
       <Provider store={store}>
         <Index />

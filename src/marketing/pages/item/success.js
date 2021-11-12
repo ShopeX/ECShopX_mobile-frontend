@@ -7,13 +7,13 @@ export default class TradeRateSuccess extends Component {
   config = {
     navigationBarTitleText: '评价成功'
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
   handleClick = () => {
     Taro.redirectTo({
@@ -21,7 +21,7 @@ export default class TradeRateSuccess extends Component {
     })
   }
 
-  render () {
+  render() {
     return (
       <View className='trade-rate-success'>
         <View className='in-icon in-icon-icon-test'></View>

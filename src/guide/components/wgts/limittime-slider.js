@@ -14,7 +14,7 @@ export default class WgtLimittimeSlider extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -32,7 +32,7 @@ export default class WgtLimittimeSlider extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     const { curIdx } = this.state
 

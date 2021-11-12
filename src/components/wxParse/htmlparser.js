@@ -43,13 +43,13 @@ var fillAttrs = makeMap(
 // Special Elements (can contain anything)
 var special = makeMap('wxxxcode-style,script,style,view,scroll-view,block')
 
-function HTMLParser (html, handler) {
+function HTMLParser(html, handler) {
   var index,
     chars,
     match,
     stack = [],
     last = html
-  stack.last = function () {
+  stack.last = function() {
     return this[this.length - 1]
   }
 
@@ -103,7 +103,7 @@ function HTMLParser (html, handler) {
         if (handler.chars) handler.chars(text)
       }
     } else {
-      html = html.replace(new RegExp('([\\s\\S]*?)</' + stack.last() + '[^>]*>'), function (
+      html = html.replace(new RegExp('([\\s\\S]*?)</' + stack.last() + '[^>]*>'), function(
         all,
         text
       ) {
@@ -123,7 +123,7 @@ function HTMLParser (html, handler) {
   // Clean up any remaining tags
   parseEndTag()
 
-  function parseStartTag (tag, tagName, rest, unary) {
+  function parseStartTag(tag, tagName, rest, unary) {
     tagName = tagName.toLowerCase()
 
     if (block[tagName]) {
@@ -143,7 +143,7 @@ function HTMLParser (html, handler) {
     if (handler.start) {
       var attrs = []
 
-      rest.replace(attr, function (match, name) {
+      rest.replace(attr, function(match, name) {
         var value = arguments[2]
           ? arguments[2]
           : arguments[3]
@@ -167,7 +167,7 @@ function HTMLParser (html, handler) {
     }
   }
 
-  function parseEndTag (tag, tagName) {
+  function parseEndTag(tag, tagName) {
     // If no tag name is provided, clean shop
     if (!tagName) var pos = 0
     // Find the closest opened tag of the same type
@@ -185,7 +185,7 @@ function HTMLParser (html, handler) {
   }
 }
 
-function makeMap (str) {
+function makeMap(str) {
   var obj = {},
     items = str.split(',')
   for (var i = 0; i < items.length; i++) obj[items[i]] = true

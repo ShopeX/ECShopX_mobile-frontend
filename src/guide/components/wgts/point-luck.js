@@ -5,18 +5,18 @@ import api from '@/api'
 import { maskMobile, formatTime } from '@/utils'
 
 export default class PointLuck extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       announce: null
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { list } = await api.member.pointDrawLuckAll()
     const announce = list
       .map(
@@ -31,7 +31,7 @@ export default class PointLuck extends Component {
     })
   }
 
-  render () {
+  render() {
     const { announce } = this.state
     if (!announce) {
       return null

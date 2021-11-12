@@ -13,7 +13,7 @@ export default class myGroupList extends Component {
     navigationBarTitleText: '我的拼团'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -22,18 +22,18 @@ export default class myGroupList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     params = _mapKeys(
       {
         ...params,
         group_goods_type: 'normal',
         team_status: '0'
       },
-      function (val, key) {
+      function(val, key) {
         if (key === 'page_no') return 'page'
         if (key === 'page_size') return 'pageSize'
 
@@ -63,7 +63,7 @@ export default class myGroupList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { tabList, curTabIdx, list, page } = this.state
 
     return (

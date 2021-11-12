@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { AtToast } from 'taro-ui'
 import { isObject } from '@/utils'
 
-function resolveState (props = {}, state = {}) {
+function resolveState(props = {}, state = {}) {
   const ret = {
     ...props,
     ...state
@@ -12,7 +12,7 @@ function resolveState (props = {}, state = {}) {
 }
 
 export default class SpToast extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,7 +24,7 @@ export default class SpToast extends Component {
     Taro.eventCenter.on('sp-toast:close', this.handleClose)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     Taro.eventCenter.off('sp-toast:show', this.handleShow)
     Taro.eventCenter.off('sp-toast:close', this.handleClose)
   }
@@ -54,7 +54,7 @@ export default class SpToast extends Component {
     })
   }
 
-  render () {
+  render() {
     const { showToast, text } = this.state
     let newText = ''
     if (text.length > 11) {

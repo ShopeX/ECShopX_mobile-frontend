@@ -20,7 +20,7 @@ export default class Series extends Component {
     imgType: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class Series extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -66,7 +66,7 @@ export default class Series extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info, isChanged, pluralType, imgType, colors } = this.props
     const { currentIndex } = this.state
     if (!info) {

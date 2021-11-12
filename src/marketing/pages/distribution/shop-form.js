@@ -9,7 +9,7 @@ import api from '@/api'
 import './shop-form.scss'
 
 export default class DistributionShopForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -18,7 +18,7 @@ export default class DistributionShopForm extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // const { imgs } = this.state
     const { key, val } = this.$router.params
     this.setState({
@@ -87,7 +87,7 @@ export default class DistributionShopForm extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, imgs } = this.state
 
     return (

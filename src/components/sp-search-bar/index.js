@@ -13,7 +13,7 @@ export default class SpSearchBar extends Component {
     showDailog: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class SpSearchBar extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (process.env.TARO_ENV === 'h5') {
       toggleTouchMove(this.refs.container)
     }
@@ -114,7 +114,7 @@ export default class SpSearchBar extends Component {
     console.log('热门搜索', 100)
   }
 
-  render () {
+  render() {
     const { isFixed, keyword, showDailog, _placeholder } = this.props
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (

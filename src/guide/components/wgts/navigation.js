@@ -13,11 +13,11 @@ export default class WgtNavigation extends Component {
     info: null
   }
 
-  handleClickItem (item, index) {
+  handleClickItem(item, index) {
     linkPage(item.linkPage, item.id)
   }
 
-  render () {
+  render() {
     const { info } = this.props
 
     if (!info) {

@@ -14,7 +14,7 @@ import './goods.scss'
 @withPager
 @withBackToTop
 export default class DistributionGoods extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -47,7 +47,7 @@ export default class DistributionGoods extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     Taro.hideShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
@@ -71,7 +71,7 @@ export default class DistributionGoods extends Component {
     )
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { page_no: page, page_size: pageSize } = params
     const { selectParams } = this.state
@@ -259,7 +259,7 @@ export default class DistributionGoods extends Component {
     }
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
 
@@ -319,7 +319,7 @@ export default class DistributionGoods extends Component {
     }
   }
 
-  render () {
+  render() {
     const { status } = this.$router.params
     const {
       list,

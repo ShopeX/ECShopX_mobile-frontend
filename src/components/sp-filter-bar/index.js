@@ -19,7 +19,7 @@ export default class SpFilterBar extends Component {
     list: []
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     const { current } = props
@@ -29,7 +29,7 @@ export default class SpFilterBar extends Component {
     }
   }
 
-  handleClickItem (idx) {
+  handleClickItem(idx) {
     const item = this.props.list[idx]
     let sortOrder = null
 
@@ -48,7 +48,7 @@ export default class SpFilterBar extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list, className, custom, colors } = this.props
     const { sortOrder, curIdx } = this.state
 

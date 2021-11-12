@@ -16,7 +16,7 @@ import './detail.scss'
 }))
 @withPager
 export default class recommendDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     props = props || {}
     props.pageSize = 50
     super(props)
@@ -29,7 +29,7 @@ export default class recommendDetail extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     await S.autoLogin(this)
     Taro.getSystemInfo().then((res) => {
       this.setState({
@@ -42,7 +42,7 @@ export default class recommendDetail extends Component {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     Taro.hideShareMenu({
       //禁用胶囊分享
       menus: ['shareAppMessage', 'shareTimeline']
@@ -55,7 +55,7 @@ export default class recommendDetail extends Component {
     navigationBarTitleText: '种草详情'
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const { info } = this.state
     const { salesperson_id, work_userid, distributor_id, shop_code } = S.get('GUIDE_INFO', true)
     const gu = `${work_userid}_${shop_code}`
@@ -85,7 +85,7 @@ export default class recommendDetail extends Component {
     })
   }
 
-  async fetchContent () {
+  async fetchContent() {
     const { id } = this.$router.params
 
     // 关注数加1
@@ -101,7 +101,7 @@ export default class recommendDetail extends Component {
     this.detailInfo(id)
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info, screenWidth } = this.state
     const navbar_height = S.get('navbar_height', true)

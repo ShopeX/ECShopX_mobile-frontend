@@ -16,7 +16,7 @@ export default class Index extends Component {
     hide: false
   }
 
-  render () {
+  render() {
     const { onClick, openType, iconPrefixClass, hide, icon, sessionFrom } = this.props
 
     return (

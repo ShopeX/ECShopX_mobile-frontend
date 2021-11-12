@@ -43,25 +43,25 @@ var fillAttrs = makeMap(
 
 // Special Elements (can contain anything)
 var special = makeMap('wxxxcode-style,script,style,view,scroll-view,block')
-function makeMap (str) {
+function makeMap(str) {
   var obj = {},
     items = str.split(',')
   for (var i = 0; i < items.length; i++) obj[items[i]] = true
   return obj
 }
 
-function q (v) {
+function q(v) {
   return '"' + v + '"'
 }
 
-function removeDOCTYPE (html) {
+function removeDOCTYPE(html) {
   return html
     .replace(/<\?xml.*\?>\n/, '')
     .replace(/<.*!doctype.*\>\n/, '')
     .replace(/<.*!DOCTYPE.*\>\n/, '')
 }
 
-function trimHtml (html) {
+function trimHtml(html) {
   return html
     .replace(/\r?\n+/g, '')
     .replace(/<!--.*?-->/gi, '')
@@ -69,7 +69,7 @@ function trimHtml (html) {
     .replace(/[ ]+</gi, '<')
 }
 
-function html2json (html, bindName) {
+function html2json(html, bindName) {
   //处理字符串
   html = removeDOCTYPE(html)
   html = trimHtml(html)
@@ -84,7 +84,7 @@ function html2json (html, bindName) {
   }
   var index = 0
   HTMLParser(html, {
-    start: function (tag, attrs, unary) {
+    start: function(tag, attrs, unary) {
       //debug(tag, attrs, unary);
       // node for this element
       var node = {
@@ -112,7 +112,7 @@ function html2json (html, bindName) {
       }
 
       if (attrs.length !== 0) {
-        node.attr = attrs.reduce(function (pre, attr) {
+        node.attr = attrs.reduce(function(pre, attr) {
           var name = attr.name
           var value = attr.value
           if (name == 'class') {
@@ -207,7 +207,7 @@ function html2json (html, bindName) {
         bufArray.unshift(node)
       }
     },
-    end: function (tag) {
+    end: function(tag) {
       //debug(tag);
       // merge into parent tag
       var node = bufArray.shift()
@@ -229,7 +229,7 @@ function html2json (html, bindName) {
         parent.nodes.push(node)
       }
     },
-    chars: function (text) {
+    chars: function(text) {
       //debug(text);
       var node = {
         node: 'text',
@@ -250,7 +250,7 @@ function html2json (html, bindName) {
         parent.nodes.push(node)
       }
     },
-    comment: function (text) {
+    comment: function(text) {
       //debug(text);
       // var node = {
       //     node: 'comment',
@@ -266,7 +266,7 @@ function html2json (html, bindName) {
   return results
 }
 
-function transEmojiStr (str) {
+function transEmojiStr(str) {
   // var eReg = new RegExp("["+__reg+' '+"]");
   //   str = str.replace(/\[([^\[\]]+)\]/g,':$1:')
 
@@ -301,7 +301,7 @@ function transEmojiStr (str) {
   return emojiObjs
 }
 
-function emojisInit (reg = '', baseSrc = '/wxParse/emojis/', emojis) {
+function emojisInit(reg = '', baseSrc = '/wxParse/emojis/', emojis) {
   __emojisReg = reg
   __emojisBaseSrc = baseSrc
   __emojis = emojis

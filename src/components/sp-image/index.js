@@ -5,7 +5,7 @@ import './index.scss'
 
 const Fn = () => {}
 
-function SpImage (props) {
+function SpImage(props) {
   const {
     src,
     className,

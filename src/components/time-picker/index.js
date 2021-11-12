@@ -3,7 +3,7 @@ import { View, Picker, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
 
 export default class TimePicker extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
@@ -16,7 +16,7 @@ export default class TimePicker extends Component {
     onselctedTime(e.detail.value)
   }
 
-  render () {
+  render() {
     return (
       <View className='time-picker'>
         <View>

@@ -14,7 +14,7 @@ import './shop-home.scss'
 
 @withPager
 export default class DistributionShopHome extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -66,12 +66,12 @@ export default class DistributionShopHome extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getShopInfo()
     this.init()
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.handleCloseSearch()
   }
 
@@ -86,7 +86,7 @@ export default class DistributionShopHome extends Component {
   }
 
   // 分享
-  onShareAppMessage () {
+  onShareAppMessage() {
     const { info: shopInfo, userId } = this.state
     const title = shopInfo.shop_name || `${shopInfo.username}的小店`
     return {
@@ -419,7 +419,7 @@ export default class DistributionShopHome extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       showBackToTop,
       tabList,

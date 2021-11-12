@@ -18,7 +18,7 @@ export default class SpCell extends Component {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const {
       isLink,
       value,

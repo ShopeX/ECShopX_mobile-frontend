@@ -22,7 +22,7 @@ export default class SpPrice extends Component {
 
   static externalClasses = ['classes']
 
-  render () {
+  render() {
     const {
       value = '',
       noSymbol,

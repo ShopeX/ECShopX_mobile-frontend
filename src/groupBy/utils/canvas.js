@@ -11,7 +11,7 @@
  */
 
 export default class Canvas {
-  constructor (ctx = null, taro) {
+  constructor(ctx = null, taro) {
     if (ctx) {
       ;(this.ctx = ctx), (this.taro = taro)
     } else {
@@ -32,7 +32,7 @@ export default class Canvas {
    * }
    */
 
-  async createBackground (w, h, x, y, r, bgColor = '#fff', bgImg) {
+  async createBackground(w, h, x, y, r, bgColor = '#fff', bgImg) {
     this.ctx.beginPath()
     this.ctx.setFillStyle(bgColor)
     // 左上角
@@ -68,7 +68,7 @@ export default class Canvas {
   }
 
   // 创建圆图
-  async createRoundImg (x, y, r, img, bgColor) {
+  async createRoundImg(x, y, r, img, bgColor) {
     if (!img) return
     this.ctx.beginPath()
     this.ctx.arc(x - r, y + r, r, 0, 2 * Math.PI)
@@ -84,13 +84,13 @@ export default class Canvas {
   }
 
   // 计算文字长度
-  measureText (text) {
+  measureText(text) {
     const width = this.ctx.measureText(text).width
     return width
   }
 
   // 文字超长截取
-  splitString (str, limitWidth) {
+  splitString(str, limitWidth) {
     if (!str) return null
     // 文字长度
     const width = this.measureText(str)
@@ -111,7 +111,7 @@ export default class Canvas {
   }
 
   // 绘制文字
-  drawText (x, y, text, color = '#333', fontSize = 11, textAlign = 'left', baseline = 'top') {
+  drawText(x, y, text, color = '#333', fontSize = 11, textAlign = 'left', baseline = 'top') {
     if (!text) return
     this.ctx.setFontSize(fontSize)
     this.ctx.setFillStyle(color)
@@ -136,7 +136,7 @@ export default class Canvas {
    */
 
   // 绘制图片
-  async drawImage (img, x, y, w, h, isClip = false) {
+  async drawImage(img, x, y, w, h, isClip = false) {
     if (!img) return null
     // 判断是否是网络图片
     const isHttps = img.indexOf('https://') !== -1 || img.indexOf('http://') !== -1
@@ -171,7 +171,7 @@ export default class Canvas {
   }
 
   // 插入H5图片
-  insertImg (imgUrl) {
+  insertImg(imgUrl) {
     const isHttps = imgUrl.indexOf('https://') !== -1 || imgUrl.indexOf('http://') !== -1
     const img = new Image()
     if (isHttps) {
@@ -186,7 +186,7 @@ export default class Canvas {
   }
 
   // 创建多个商品
-  async createGoodList (data, x, y, w) {
+  async createGoodList(data, x, y, w) {
     const marginTop = 20
     const marginLeft = x + 50
     const top = y + 10
@@ -214,7 +214,7 @@ export default class Canvas {
   }
 
   // 创建单个商品
-  async creatSingleGood (data, x, y, sw, sh, sr) {
+  async creatSingleGood(data, x, y, sw, sh, sr) {
     const imgX = x
     const imgY = y
     const r = sr
@@ -258,7 +258,7 @@ export default class Canvas {
   }
 
   // 创建价格展示
-  createShowPrice (symbol = '¥', nPrice, oPrice, x, y, fontSize, isCenter = false, align = 'left') {
+  createShowPrice(symbol = '¥', nPrice, oPrice, x, y, fontSize, isCenter = false, align = 'left') {
     const diff = 4
     const otherFontSize = fontSize - (diff + 1)
     const marignLeft = 2
@@ -297,7 +297,7 @@ export default class Canvas {
   }
 
   // 创建底部内容
-  async createBottom (width, x, y, data) {
+  async createBottom(width, x, y, data) {
     const sx = x
     const sy = y + 18
     const marginLeft = 10
@@ -337,7 +337,7 @@ export default class Canvas {
   }
 
   // 绘制
-  async drawCanvas (width, height, goodInfo, cb = null) {
+  async drawCanvas(width, height, goodInfo, cb = null) {
     const goodTop = 60
     const goodLeft = 15
     const goodWidth = width - goodLeft * 2

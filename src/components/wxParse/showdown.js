@@ -12,7 +12,7 @@
  * detail : http://weappdev.com/t/wxparse-alpha0-1-html-markdown/184
  */
 
-function getDefaultOpts (simple) {
+function getDefaultOpts(simple) {
   'use strict'
 
   var defaultOptions = {
@@ -142,7 +142,7 @@ showdown.extensions = {}
  * @param {*} value
  * @returns {showdown}
  */
-showdown.setOption = function (key, value) {
+showdown.setOption = function(key, value) {
   'use strict'
   globalOptions[key] = value
   return this
@@ -154,7 +154,7 @@ showdown.setOption = function (key, value) {
  * @param {string} key
  * @returns {*}
  */
-showdown.getOption = function (key) {
+showdown.getOption = function(key) {
   'use strict'
   return globalOptions[key]
 }
@@ -164,7 +164,7 @@ showdown.getOption = function (key) {
  * @static
  * @returns {{}}
  */
-showdown.getOptions = function () {
+showdown.getOptions = function() {
   'use strict'
   return globalOptions
 }
@@ -173,7 +173,7 @@ showdown.getOptions = function () {
  * Reset global options to the default values
  * @static
  */
-showdown.resetOptions = function () {
+showdown.resetOptions = function() {
   'use strict'
   globalOptions = getDefaultOpts(true)
 }
@@ -182,7 +182,7 @@ showdown.resetOptions = function () {
  * Set the flavor showdown should use as default
  * @param {string} name
  */
-showdown.setFlavor = function (name) {
+showdown.setFlavor = function(name) {
   'use strict'
   if (flavor.hasOwnProperty(name)) {
     var preset = flavor[name]
@@ -200,7 +200,7 @@ showdown.setFlavor = function (name) {
  * @param {boolean} [simple=true]
  * @returns {{}}
  */
-showdown.getDefaultOptions = function (simple) {
+showdown.getDefaultOptions = function(simple) {
   'use strict'
   return getDefaultOpts(simple)
 }
@@ -215,7 +215,7 @@ showdown.getDefaultOptions = function (simple) {
  * @param {function} [func]
  * @returns {*}
  */
-showdown.subParser = function (name, func) {
+showdown.subParser = function(name, func) {
   'use strict'
   if (showdown.helper.isString(name)) {
     if (typeof func !== 'undefined') {
@@ -237,7 +237,7 @@ showdown.subParser = function (name, func) {
  * @param {object|function=} ext
  * @returns {*}
  */
-showdown.extension = function (name, ext) {
+showdown.extension = function(name, ext) {
   'use strict'
 
   if (!showdown.helper.isString(name)) {
@@ -279,7 +279,7 @@ showdown.extension = function (name, ext) {
  * Gets all extensions registered
  * @returns {{}}
  */
-showdown.getAllExtensions = function () {
+showdown.getAllExtensions = function() {
   'use strict'
   return extensions
 }
@@ -288,7 +288,7 @@ showdown.getAllExtensions = function () {
  * Remove an extension
  * @param {string} name
  */
-showdown.removeExtension = function (name) {
+showdown.removeExtension = function(name) {
   'use strict'
   delete extensions[name]
 }
@@ -296,7 +296,7 @@ showdown.removeExtension = function (name) {
 /**
  * Removes all extensions
  */
-showdown.resetExtensions = function () {
+showdown.resetExtensions = function() {
   'use strict'
   extensions = {}
 }
@@ -307,7 +307,7 @@ showdown.resetExtensions = function () {
  * @param {string} name
  * @returns {{valid: boolean, error: string}}
  */
-function validate (extension, name) {
+function validate(extension, name) {
   'use strict'
 
   var errMsg = name ? 'Error in ' + name + ' extension->' : 'Error in unnamed extension',
@@ -430,7 +430,7 @@ function validate (extension, name) {
  * @param {object} ext
  * @returns {boolean}
  */
-showdown.validateExtension = function (ext) {
+showdown.validateExtension = function(ext) {
   'use strict'
 
   var validateExtension = validate(ext, null)
@@ -455,7 +455,7 @@ if (!showdown.hasOwnProperty('helper')) {
  * @param {string} a
  * @returns {boolean}
  */
-showdown.helper.isString = function isString (a) {
+showdown.helper.isString = function isString(a) {
   'use strict'
   return typeof a === 'string' || a instanceof String
 }
@@ -466,7 +466,7 @@ showdown.helper.isString = function isString (a) {
  * @param {string} a
  * @returns {boolean}
  */
-showdown.helper.isFunction = function isFunction (a) {
+showdown.helper.isFunction = function isFunction(a) {
   'use strict'
   var getType = {}
   return a && getType.toString.call(a) === '[object Function]'
@@ -478,7 +478,7 @@ showdown.helper.isFunction = function isFunction (a) {
  * @param {*} obj
  * @param {function} callback
  */
-showdown.helper.forEach = function forEach (obj, callback) {
+showdown.helper.forEach = function forEach(obj, callback) {
   'use strict'
   if (typeof obj.forEach === 'function') {
     obj.forEach(callback)
@@ -495,7 +495,7 @@ showdown.helper.forEach = function forEach (obj, callback) {
  * @param {*} a
  * @returns {boolean}
  */
-showdown.helper.isArray = function isArray (a) {
+showdown.helper.isArray = function isArray(a) {
   'use strict'
   return a.constructor === Array
 }
@@ -506,7 +506,7 @@ showdown.helper.isArray = function isArray (a) {
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is `undefined`, else `false`.
  */
-showdown.helper.isUndefined = function isUndefined (value) {
+showdown.helper.isUndefined = function isUndefined(value) {
   'use strict'
   return typeof value === 'undefined'
 }
@@ -517,12 +517,12 @@ showdown.helper.isUndefined = function isUndefined (value) {
  * @param {string} s extension name
  * @returns {string}
  */
-showdown.helper.stdExtName = function (s) {
+showdown.helper.stdExtName = function(s) {
   'use strict'
   return s.replace(/[_-]||\s/g, '').toLowerCase()
 }
 
-function escapeCharactersCallback (wholeMatch, m1) {
+function escapeCharactersCallback(wholeMatch, m1) {
   'use strict'
   var charCodeToEscape = m1.charCodeAt(0)
   return '~E' + charCodeToEscape + 'E'
@@ -545,7 +545,7 @@ showdown.helper.escapeCharactersCallback = escapeCharactersCallback
  * @param {boolean} afterBackslash
  * @returns {XML|string|void|*}
  */
-showdown.helper.escapeCharacters = function escapeCharacters (text, charsToEscape, afterBackslash) {
+showdown.helper.escapeCharacters = function escapeCharacters(text, charsToEscape, afterBackslash) {
   'use strict'
   // First we have to escape the escape characters so that
   // we can build a character class out of them
@@ -561,7 +561,7 @@ showdown.helper.escapeCharacters = function escapeCharacters (text, charsToEscap
   return text
 }
 
-var rgxFindMatchPos = function (str, left, right, flags) {
+var rgxFindMatchPos = function(str, left, right, flags) {
   'use strict'
   var f = flags || '',
     g = f.indexOf('g') > -1,
@@ -632,7 +632,7 @@ var rgxFindMatchPos = function (str, left, right, flags) {
  * matchRecursiveRegExp("<div id=\"x\">test</div>", "<div\\b[^>]*>", "</div>", "gi")
  * returns: ["test"]
  */
-showdown.helper.matchRecursiveRegExp = function (str, left, right, flags) {
+showdown.helper.matchRecursiveRegExp = function(str, left, right, flags) {
   'use strict'
 
   var matchPos = rgxFindMatchPos(str, left, right, flags),
@@ -658,12 +658,12 @@ showdown.helper.matchRecursiveRegExp = function (str, left, right, flags) {
  * @param {string} flags
  * @returns {string}
  */
-showdown.helper.replaceRecursiveRegExp = function (str, replacement, left, right, flags) {
+showdown.helper.replaceRecursiveRegExp = function(str, replacement, left, right, flags) {
   'use strict'
 
   if (!showdown.helper.isFunction(replacement)) {
     var repStr = replacement
-    replacement = function () {
+    replacement = function() {
       return repStr
     }
   }
@@ -703,15 +703,15 @@ showdown.helper.replaceRecursiveRegExp = function (str, replacement, left, right
  */
 if (showdown.helper.isUndefined(console)) {
   console = {
-    warn: function (msg) {
+    warn: function(msg) {
       'use strict'
       alert(msg)
     },
-    log: function (msg) {
+    log: function(msg) {
       'use strict'
       alert(msg)
     },
-    error: function (msg) {
+    error: function(msg) {
       'use strict'
       throw msg
     }
@@ -728,7 +728,7 @@ if (showdown.helper.isUndefined(console)) {
  * @param {object} [converterOptions]
  * @returns {Converter}
  */
-showdown.Converter = function (converterOptions) {
+showdown.Converter = function(converterOptions) {
   'use strict'
 
   var /**
@@ -762,7 +762,7 @@ showdown.Converter = function (converterOptions) {
    * Converter constructor
    * @private
    */
-  function _constructor () {
+  function _constructor() {
     converterOptions = converterOptions || {}
 
     for (var gOpt in globalOptions) {
@@ -797,7 +797,7 @@ showdown.Converter = function (converterOptions) {
    * @param {string} [name='']
    * @private
    */
-  function _parseExtension (ext, name) {
+  function _parseExtension(ext, name) {
     name = name || null
     // If it's a string, the extension was previously loaded
     if (showdown.helper.isString(ext)) {
@@ -864,7 +864,7 @@ showdown.Converter = function (converterOptions) {
    * @param {*} ext
    * @param {string} name
    */
-  function legacyExtensionLoading (ext, name) {
+  function legacyExtensionLoading(ext, name) {
     if (typeof ext === 'function') {
       ext = ext(new showdown.Converter())
     }
@@ -897,7 +897,7 @@ showdown.Converter = function (converterOptions) {
    * @param {string} name
    * @param {function} callback
    */
-  function listen (name, callback) {
+  function listen(name, callback) {
     if (!showdown.helper.isString(name)) {
       throw Error(
         'Invalid argument in converter.listen() method: name must be a string, but ' +
@@ -920,7 +920,7 @@ showdown.Converter = function (converterOptions) {
     listeners[name].push(callback)
   }
 
-  function rTrimInputText (text) {
+  function rTrimInputText(text) {
     var rsp = text.match(/^\s*/)[0].length,
       rgx = new RegExp('^\\s{0,' + rsp + '}', 'gm')
     return text.replace(rgx, '')
@@ -935,7 +935,7 @@ showdown.Converter = function (converterOptions) {
    * @param {{}} globals
    * @returns {string}
    */
-  this._dispatch = function dispatch (evtName, text, options, globals) {
+  this._dispatch = function dispatch(evtName, text, options, globals) {
     if (listeners.hasOwnProperty(evtName)) {
       for (var ei = 0; ei < listeners[evtName].length; ++ei) {
         var nText = listeners[evtName][ei](evtName, text, this, options, globals)
@@ -953,7 +953,7 @@ showdown.Converter = function (converterOptions) {
    * @param {function} callback
    * @returns {showdown.Converter}
    */
-  this.listen = function (name, callback) {
+  this.listen = function(name, callback) {
     listen(name, callback)
     return this
   }
@@ -963,7 +963,7 @@ showdown.Converter = function (converterOptions) {
    * @param {string} text
    * @returns {*}
    */
-  this.makeHtml = function (text) {
+  this.makeHtml = function(text) {
     //check if text is not falsy
     if (!text) {
       return text
@@ -1013,7 +1013,7 @@ showdown.Converter = function (converterOptions) {
     text = showdown.subParser('stripBlankLines')(text, options, globals)
 
     //run languageExtensions
-    showdown.helper.forEach(langExtensions, function (ext) {
+    showdown.helper.forEach(langExtensions, function(ext) {
       text = showdown.subParser('runExtension')(ext, text, options, globals)
     })
 
@@ -1034,7 +1034,7 @@ showdown.Converter = function (converterOptions) {
     text = text.replace(/~T/g, '~')
 
     // Run output modifiers
-    showdown.helper.forEach(outputModifiers, function (ext) {
+    showdown.helper.forEach(outputModifiers, function(ext) {
       text = showdown.subParser('runExtension')(ext, text, options, globals)
     })
     return text
@@ -1045,7 +1045,7 @@ showdown.Converter = function (converterOptions) {
    * @param {string} key
    * @param {*} value
    */
-  this.setOption = function (key, value) {
+  this.setOption = function(key, value) {
     options[key] = value
   }
 
@@ -1054,7 +1054,7 @@ showdown.Converter = function (converterOptions) {
    * @param {string} key
    * @returns {*}
    */
-  this.getOption = function (key) {
+  this.getOption = function(key) {
     return options[key]
   }
 
@@ -1062,7 +1062,7 @@ showdown.Converter = function (converterOptions) {
    * Get the options of this Converter instance
    * @returns {{}}
    */
-  this.getOptions = function () {
+  this.getOptions = function() {
     return options
   }
 
@@ -1071,7 +1071,7 @@ showdown.Converter = function (converterOptions) {
    * @param {{}} extension
    * @param {string} [name=null]
    */
-  this.addExtension = function (extension, name) {
+  this.addExtension = function(extension, name) {
     name = name || null
     _parseExtension(extension, name)
   }
@@ -1080,7 +1080,7 @@ showdown.Converter = function (converterOptions) {
    * Use a global registered extension with THIS converter
    * @param {string} extensionName Name of the previously registered extension
    */
-  this.useExtension = function (extensionName) {
+  this.useExtension = function(extensionName) {
     _parseExtension(extensionName)
   }
 
@@ -1088,7 +1088,7 @@ showdown.Converter = function (converterOptions) {
    * Set the flavor THIS converter should use
    * @param {string} name
    */
-  this.setFlavor = function (name) {
+  this.setFlavor = function(name) {
     if (flavor.hasOwnProperty(name)) {
       var preset = flavor[name]
       for (var option in preset) {
@@ -1105,7 +1105,7 @@ showdown.Converter = function (converterOptions) {
    * and specify the extensions you wish to use
    * @param {Array} extension
    */
-  this.removeExtension = function (extension) {
+  this.removeExtension = function(extension) {
     if (!showdown.helper.isArray(extension)) {
       extension = [extension]
     }
@@ -1128,7 +1128,7 @@ showdown.Converter = function (converterOptions) {
    * Get all extension of THIS converter
    * @returns {{language: Array, output: Array}}
    */
-  this.getAllExtensions = function () {
+  this.getAllExtensions = function() {
     return {
       language: langExtensions,
       output: outputModifiers
@@ -1139,12 +1139,12 @@ showdown.Converter = function (converterOptions) {
 /**
  * Turn Markdown link shortcuts into XHTML <a> tags.
  */
-showdown.subParser('anchors', function (text, options, globals) {
+showdown.subParser('anchors', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('anchors.before', text, options, globals)
 
-  var writeAnchorTag = function (wholeMatch, m1, m2, m3, m4, m5, m6, m7) {
+  var writeAnchorTag = function(wholeMatch, m1, m2, m3, m4, m5, m6, m7) {
     if (showdown.helper.isUndefined(m7)) {
       m7 = ''
     }
@@ -1275,7 +1275,7 @@ showdown.subParser('anchors', function (text, options, globals) {
   return text
 })
 
-showdown.subParser('autoLinks', function (text, options, globals) {
+showdown.subParser('autoLinks', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('autoLinks.before', text, options, globals)
@@ -1295,7 +1295,7 @@ showdown.subParser('autoLinks', function (text, options, globals) {
     text = text.replace(simpleMailRegex, replaceMail)
   }
 
-  function replaceLink (wm, link) {
+  function replaceLink(wm, link) {
     var lnkTxt = link
     if (/^www\./i.test(link)) {
       link = link.replace(/^www\./i, 'http://www.')
@@ -1303,7 +1303,7 @@ showdown.subParser('autoLinks', function (text, options, globals) {
     return '<a href="' + link + '">' + lnkTxt + '</a>'
   }
 
-  function replaceMail (wholeMatch, m1) {
+  function replaceMail(wholeMatch, m1) {
     var unescapedStr = showdown.subParser('unescapeSpecialChars')(m1)
     return showdown.subParser('encodeEmailAddress')(unescapedStr)
   }
@@ -1317,7 +1317,7 @@ showdown.subParser('autoLinks', function (text, options, globals) {
  * These are all the transformations that form block-level
  * tags like paragraphs, headers, and list items.
  */
-showdown.subParser('blockGamut', function (text, options, globals) {
+showdown.subParser('blockGamut', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('blockGamut.before', text, options, globals)
@@ -1349,7 +1349,7 @@ showdown.subParser('blockGamut', function (text, options, globals) {
   return text
 })
 
-showdown.subParser('blockQuotes', function (text, options, globals) {
+showdown.subParser('blockQuotes', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('blockQuotes.before', text, options, globals)
@@ -1366,7 +1366,7 @@ showdown.subParser('blockQuotes', function (text, options, globals) {
    /gm, function(){...});
    */
 
-  text = text.replace(/((^[ \t]{0,3}>[ \t]?.+\n(.+\n)*\n*)+)/gm, function (wholeMatch, m1) {
+  text = text.replace(/((^[ \t]{0,3}>[ \t]?.+\n(.+\n)*\n*)+)/gm, function(wholeMatch, m1) {
     var bq = m1
 
     // attacklab: hack around Konqueror 3.5.4 bug:
@@ -1382,7 +1382,7 @@ showdown.subParser('blockQuotes', function (text, options, globals) {
 
     bq = bq.replace(/(^|\n)/g, '$1  ')
     // These leading spaces screw with <pre> content, so we need to fix that:
-    bq = bq.replace(/(\s*<pre>[^\r]+?<\/pre>)/gm, function (wholeMatch, m1) {
+    bq = bq.replace(/(\s*<pre>[^\r]+?<\/pre>)/gm, function(wholeMatch, m1) {
       var pre = m1
       // attacklab: hack around Konqueror 3.5.4 bug:
       pre = pre.replace(/^  /gm, '~0')
@@ -1404,7 +1404,7 @@ showdown.subParser('blockQuotes', function (text, options, globals) {
 /**
  * Process Markdown `<pre><code>` blocks.
  */
-showdown.subParser('codeBlocks', function (text, options, globals) {
+showdown.subParser('codeBlocks', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('codeBlocks.before', text, options, globals)
@@ -1425,7 +1425,7 @@ showdown.subParser('codeBlocks', function (text, options, globals) {
   text += '~0'
 
   var pattern = /(?:\n\n|^)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g
-  text = text.replace(pattern, function (wholeMatch, m1, m2) {
+  text = text.replace(pattern, function(wholeMatch, m1, m2) {
     var codeblock = m1,
       nextChar = m2,
       end = '\n'
@@ -1477,7 +1477,7 @@ showdown.subParser('codeBlocks', function (text, options, globals) {
  *
  *         ... type <code>`bar`</code> ...
  */
-showdown.subParser('codeSpans', function (text, options, globals) {
+showdown.subParser('codeSpans', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('codeSpans.before', text, options, globals)
@@ -1498,7 +1498,7 @@ showdown.subParser('codeSpans', function (text, options, globals) {
   if (typeof text === 'undefined') {
     text = ''
   }
-  text = text.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm, function (wholeMatch, m1, m2, m3) {
+  text = text.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm, function(wholeMatch, m1, m2, m3) {
     var c = m3
     c = c.replace(/^([ \t]*)/g, '') // leading whitespace
     c = c.replace(/[ \t]*$/g, '') // trailing whitespace
@@ -1513,7 +1513,7 @@ showdown.subParser('codeSpans', function (text, options, globals) {
 /**
  * Convert all tabs to spaces
  */
-showdown.subParser('detab', function (text) {
+showdown.subParser('detab', function(text) {
   'use strict'
 
   // expand first n-1 tabs
@@ -1523,7 +1523,7 @@ showdown.subParser('detab', function (text) {
   text = text.replace(/\t/g, '~A~B')
 
   // use the sentinel to anchor our regex so it doesn't explode
-  text = text.replace(/~B(.+?)~A/g, function (wholeMatch, m1) {
+  text = text.replace(/~B(.+?)~A/g, function(wholeMatch, m1) {
     var leadingText = m1,
       numSpaces = 4 - (leadingText.length % 4) // g_tab_width
 
@@ -1545,7 +1545,7 @@ showdown.subParser('detab', function (text) {
 /**
  * Smart processing for ampersands and angle brackets that need to be encoded.
  */
-showdown.subParser('encodeAmpsAndAngles', function (text) {
+showdown.subParser('encodeAmpsAndAngles', function(text) {
   'use strict'
   // Ampersand-encoding based entirely on Nat Irons's Amputator MT plugin:
   // http://bumppo.net/projects/amputator/
@@ -1568,7 +1568,7 @@ showdown.subParser('encodeAmpsAndAngles', function (text) {
  * ...but we're sidestepping its use of the (slow) RegExp constructor
  * as an optimization for Firefox.  This function gets called a LOT.
  */
-showdown.subParser('encodeBackslashEscapes', function (text) {
+showdown.subParser('encodeBackslashEscapes', function(text) {
   'use strict'
   text = text.replace(/\\(\\)/g, showdown.helper.escapeCharactersCallback)
   text = text.replace(/\\([`*_{}\[\]()>#+-.!])/g, showdown.helper.escapeCharactersCallback)
@@ -1580,7 +1580,7 @@ showdown.subParser('encodeBackslashEscapes', function (text) {
  * The point is that in code, these characters are literals,
  * and lose their special Markdown meanings.
  */
-showdown.subParser('encodeCode', function (text) {
+showdown.subParser('encodeCode', function(text) {
   'use strict'
 
   // Encode all ampersands; HTML entities are not
@@ -1619,24 +1619,24 @@ showdown.subParser('encodeCode', function (text) {
  *  mailing list: <http://tinyurl.com/yu7ue>
  *
  */
-showdown.subParser('encodeEmailAddress', function (addr) {
+showdown.subParser('encodeEmailAddress', function(addr) {
   'use strict'
 
   var encode = [
-    function (ch) {
+    function(ch) {
       return '&#' + ch.charCodeAt(0) + ';'
     },
-    function (ch) {
+    function(ch) {
       return '&#x' + ch.charCodeAt(0).toString(16) + ';'
     },
-    function (ch) {
+    function(ch) {
       return ch
     }
   ]
 
   addr = 'mailto:' + addr
 
-  addr = addr.replace(/./g, function (ch) {
+  addr = addr.replace(/./g, function(ch) {
     if (ch === '@') {
       // this *must* be encoded. I insist.
       ch = encode[Math.floor(Math.random() * 2)](ch)
@@ -1659,14 +1659,14 @@ showdown.subParser('encodeEmailAddress', function (addr) {
  * Within tags -- meaning between < and > -- encode [\ ` * _] so they
  * don't conflict with their use in Markdown for code, italics and strong.
  */
-showdown.subParser('escapeSpecialCharsWithinTagAttributes', function (text) {
+showdown.subParser('escapeSpecialCharsWithinTagAttributes', function(text) {
   'use strict'
 
   // Build a regex to find HTML tags and comments.  See Friedl's
   // "Mastering Regular Expressions", 2nd Ed., pp. 200-201.
   var regex = /(<[a-z\/!$]("[^"]*"|'[^']*'|[^'">])*>|<!(--.*?--\s*)+>)/gi
 
-  text = text.replace(regex, function (wholeMatch) {
+  text = text.replace(regex, function(wholeMatch) {
     var tag = wholeMatch.replace(/(.)<\/?code>(?=.)/g, '$1`')
     tag = showdown.helper.escapeCharacters(tag, '\\`*_', false)
     return tag
@@ -1685,7 +1685,7 @@ showdown.subParser('escapeSpecialCharsWithinTagAttributes', function (text) {
  *     end
  * ```
  */
-showdown.subParser('githubCodeBlocks', function (text, options, globals) {
+showdown.subParser('githubCodeBlocks', function(text, options, globals) {
   'use strict'
 
   // early exit if option is not enabled
@@ -1697,7 +1697,7 @@ showdown.subParser('githubCodeBlocks', function (text, options, globals) {
 
   text += '~0'
 
-  text = text.replace(/(?:^|\n)```(.*)\n([\s\S]*?)\n```/g, function (
+  text = text.replace(/(?:^|\n)```(.*)\n([\s\S]*?)\n```/g, function(
     wholeMatch,
     language,
     codeblock
@@ -1736,16 +1736,16 @@ showdown.subParser('githubCodeBlocks', function (text, options, globals) {
   return globals.converter._dispatch('githubCodeBlocks.after', text, options, globals)
 })
 
-showdown.subParser('hashBlock', function (text, options, globals) {
+showdown.subParser('hashBlock', function(text, options, globals) {
   'use strict'
   text = text.replace(/(^\n+|\n+$)/g, '')
   return '\n\n~K' + (globals.gHtmlBlocks.push(text) - 1) + 'K\n\n'
 })
 
-showdown.subParser('hashElement', function (text, options, globals) {
+showdown.subParser('hashElement', function(text, options, globals) {
   'use strict'
 
-  return function (wholeMatch, m1) {
+  return function(wholeMatch, m1) {
     var blockText = m1
 
     // Undo double lines
@@ -1762,7 +1762,7 @@ showdown.subParser('hashElement', function (text, options, globals) {
   }
 })
 
-showdown.subParser('hashHTMLBlocks', function (text, options, globals) {
+showdown.subParser('hashHTMLBlocks', function(text, options, globals) {
   'use strict'
 
   var blockTags = [
@@ -1801,7 +1801,7 @@ showdown.subParser('hashHTMLBlocks', function (text, options, globals) {
       'video',
       'p'
     ],
-    repFunc = function (wholeMatch, match, left, right) {
+    repFunc = function(wholeMatch, match, left, right) {
       var txt = wholeMatch
       // check if this html element is marked as markdown
       // if so, it's contents should be parsed as markdown
@@ -1844,7 +1844,7 @@ showdown.subParser('hashHTMLBlocks', function (text, options, globals) {
 /**
  * Hash span elements that should not be parsed as markdown
  */
-showdown.subParser('hashHTMLSpans', function (text, config, globals) {
+showdown.subParser('hashHTMLSpans', function(text, config, globals) {
   'use strict'
 
   var matches = showdown.helper.matchRecursiveRegExp(text, '<code\\b[^>]*>', '</code>', 'gi')
@@ -1858,7 +1858,7 @@ showdown.subParser('hashHTMLSpans', function (text, config, globals) {
 /**
  * Unhash HTML spans
  */
-showdown.subParser('unhashHTMLSpans', function (text, config, globals) {
+showdown.subParser('unhashHTMLSpans', function(text, config, globals) {
   'use strict'
 
   for (var i = 0; i < globals.gHtmlSpans.length; ++i) {
@@ -1871,10 +1871,10 @@ showdown.subParser('unhashHTMLSpans', function (text, config, globals) {
 /**
  * Hash span elements that should not be parsed as markdown
  */
-showdown.subParser('hashPreCodeTags', function (text, config, globals) {
+showdown.subParser('hashPreCodeTags', function(text, config, globals) {
   'use strict'
 
-  var repFunc = function (wholeMatch, match, left, right) {
+  var repFunc = function(wholeMatch, match, left, right) {
     // encode html entities
     var codeblock = left + showdown.subParser('encodeCode')(match) + right
     return (
@@ -1894,7 +1894,7 @@ showdown.subParser('hashPreCodeTags', function (text, config, globals) {
   return text
 })
 
-showdown.subParser('headers', function (text, options, globals) {
+showdown.subParser('headers', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('headers.before', text, options, globals)
@@ -1917,7 +1917,7 @@ showdown.subParser('headers', function (text, options, globals) {
       ? /^(.+)[ \t]*\n-{2,}[ \t]*\n+/gm
       : /^(.+)[ \t]*\n-+[ \t]*\n+/gm
 
-  text = text.replace(setextRegexH1, function (wholeMatch, m1) {
+  text = text.replace(setextRegexH1, function(wholeMatch, m1) {
     var spanGamut = showdown.subParser('spanGamut')(m1, options, globals),
       hID = options.noHeaderId ? '' : ' id="' + headerId(m1) + '"',
       hLevel = headerLevelStart,
@@ -1925,7 +1925,7 @@ showdown.subParser('headers', function (text, options, globals) {
     return showdown.subParser('hashBlock')(hashBlock, options, globals)
   })
 
-  text = text.replace(setextRegexH2, function (matchFound, m1) {
+  text = text.replace(setextRegexH2, function(matchFound, m1) {
     var spanGamut = showdown.subParser('spanGamut')(m1, options, globals),
       hID = options.noHeaderId ? '' : ' id="' + headerId(m1) + '"',
       hLevel = headerLevelStart + 1,
@@ -1940,7 +1940,7 @@ showdown.subParser('headers', function (text, options, globals) {
   //  ...
   //  ###### Header 6
   //
-  text = text.replace(/^(#{1,6})[ \t]*(.+?)[ \t]*#*\n+/gm, function (wholeMatch, m1, m2) {
+  text = text.replace(/^(#{1,6})[ \t]*(.+?)[ \t]*#*\n+/gm, function(wholeMatch, m1, m2) {
     var span = showdown.subParser('spanGamut')(m2, options, globals),
       hID = options.noHeaderId ? '' : ' id="' + headerId(m2) + '"',
       hLevel = headerLevelStart - 1 + m1.length,
@@ -1949,7 +1949,7 @@ showdown.subParser('headers', function (text, options, globals) {
     return showdown.subParser('hashBlock')(header, options, globals)
   })
 
-  function headerId (m) {
+  function headerId(m) {
     var title,
       escapedId = m.replace(/[^\w]/g, '').toLowerCase()
 
@@ -1978,7 +1978,7 @@ showdown.subParser('headers', function (text, options, globals) {
 /**
  * Turn Markdown image shortcuts into <img> tags.
  */
-showdown.subParser('images', function (text, options, globals) {
+showdown.subParser('images', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('images.before', text, options, globals)
@@ -1986,7 +1986,7 @@ showdown.subParser('images', function (text, options, globals) {
   var inlineRegExp = /!\[(.*?)]\s?\([ \t]*()<?(\S+?)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*(?:(['"])(.*?)\6[ \t]*)?\)/g,
     referenceRegExp = /!\[([^\]]*?)] ?(?:\n *)?\[(.*?)]()()()()()/g
 
-  function writeImageTag (wholeMatch, altText, linkId, url, width, height, m5, title) {
+  function writeImageTag(wholeMatch, altText, linkId, url, width, height, m5, title) {
     var gUrls = globals.gUrls,
       gTitles = globals.gTitles,
       gDims = globals.gDimensions
@@ -2051,7 +2051,7 @@ showdown.subParser('images', function (text, options, globals) {
   return text
 })
 
-showdown.subParser('italicsAndBold', function (text, options, globals) {
+showdown.subParser('italicsAndBold', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('italicsAndBold.before', text, options, globals)
@@ -2077,7 +2077,7 @@ showdown.subParser('italicsAndBold', function (text, options, globals) {
 /**
  * Form HTML ordered (numbered) and unordered (bulleted) lists.
  */
-showdown.subParser('lists', function (text, options, globals) {
+showdown.subParser('lists', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('lists.before', text, options, globals)
@@ -2088,7 +2088,7 @@ showdown.subParser('lists', function (text, options, globals) {
    * @param {boolean} trimTrailing
    * @returns {string}
    */
-  function processListItems (listStr, trimTrailing) {
+  function processListItems(listStr, trimTrailing) {
     // The $g_list_level global keeps track of when we're inside a list.
     // Each time we enter a list, we increment it; when we leave a list,
     // we decrement. If it's zero, we're not in a list anymore.
@@ -2120,7 +2120,7 @@ showdown.subParser('lists', function (text, options, globals) {
     var rgx = /(\n)?(^[ \t]*)([*+-]|\d+[.])[ \t]+((\[(x|X| )?])?[ \t]*[^\r]+?(\n{1,2}))(?=\n*(~0|\2([*+-]|\d+[.])[ \t]+))/gm,
       isParagraphed = /\n[ \t]*\n(?!~0)/.test(listStr)
 
-    listStr = listStr.replace(rgx, function (wholeMatch, m1, m2, m3, m4, taskbtn, checked) {
+    listStr = listStr.replace(rgx, function(wholeMatch, m1, m2, m3, m4, taskbtn, checked) {
       checked = checked && checked.trim() !== ''
       var item = showdown.subParser('outdent')(m4, options, globals),
         bulletStyle = ''
@@ -2128,7 +2128,7 @@ showdown.subParser('lists', function (text, options, globals) {
       // Support for github tasklists
       if (taskbtn && options.tasklists) {
         bulletStyle = ' class="task-list-item" style="list-style-type: none;"'
-        item = item.replace(/^[ \t]*\[(x|X| )?]/m, function () {
+        item = item.replace(/^[ \t]*\[(x|X| )?]/m, function() {
           var otp =
             '<input type="checkbox" disabled style="margin: 0px 0.35em 0.25em -1.6em; vertical-align: middle;"'
           if (checked) {
@@ -2177,7 +2177,7 @@ showdown.subParser('lists', function (text, options, globals) {
    * @param {boolean} trimTrailing
    * @returns {string}
    */
-  function parseConsecutiveLists (list, listType, trimTrailing) {
+  function parseConsecutiveLists(list, listType, trimTrailing) {
     // check if we caught 2 or more consecutive lists by mistake
     // we use the counterRgx, meaning if listType is UL we look for UL and vice versa
     var counterRxg = listType === 'ul' ? /^ {0,2}\d+\.[ \t]/gm : /^ {0,2}[*+-][ \t]/gm,
@@ -2185,7 +2185,7 @@ showdown.subParser('lists', function (text, options, globals) {
       result = ''
 
     if (list.search(counterRxg) !== -1) {
-      ;(function parseCL (txt) {
+      ;(function parseCL(txt) {
         var pos = txt.search(counterRxg)
         if (pos !== -1) {
           // slice
@@ -2238,14 +2238,14 @@ showdown.subParser('lists', function (text, options, globals) {
   var wholeList = /^(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm
 
   if (globals.gListLevel) {
-    text = text.replace(wholeList, function (wholeMatch, list, m2) {
+    text = text.replace(wholeList, function(wholeMatch, list, m2) {
       var listType = m2.search(/[*+-]/g) > -1 ? 'ul' : 'ol'
       return parseConsecutiveLists(list, listType, true)
     })
   } else {
     wholeList = /(\n\n|^\n?)(([ ]{0,3}([*+-]|\d+[.])[ \t]+)[^\r]+?(~0|\n{2,}(?=\S)(?![ \t]*(?:[*+-]|\d+[.])[ \t]+)))/gm
     //wholeList = /(\n\n|^\n?)( {0,3}([*+-]|\d+\.)[ \t]+[\s\S]+?)(?=(~0)|(\n\n(?!\t| {2,}| {0,3}([*+-]|\d+\.)[ \t])))/g;
-    text = text.replace(wholeList, function (wholeMatch, m1, list, m3) {
+    text = text.replace(wholeList, function(wholeMatch, m1, list, m3) {
       var listType = m3.search(/[*+-]/g) > -1 ? 'ul' : 'ol'
       return parseConsecutiveLists(list, listType)
     })
@@ -2261,7 +2261,7 @@ showdown.subParser('lists', function (text, options, globals) {
 /**
  * Remove one level of line-leading tabs or spaces
  */
-showdown.subParser('outdent', function (text) {
+showdown.subParser('outdent', function(text) {
   'use strict'
 
   // attacklab: hack around Konqueror 3.5.4 bug:
@@ -2277,7 +2277,7 @@ showdown.subParser('outdent', function (text) {
 /**
  *
  */
-showdown.subParser('paragraphs', function (text, options, globals) {
+showdown.subParser('paragraphs', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('paragraphs.before', text, options, globals)
@@ -2344,7 +2344,7 @@ showdown.subParser('paragraphs', function (text, options, globals) {
 /**
  * Run extension
  */
-showdown.subParser('runExtension', function (ext, text, options, globals) {
+showdown.subParser('runExtension', function(ext, text, options, globals) {
   'use strict'
 
   if (ext.filter) {
@@ -2365,7 +2365,7 @@ showdown.subParser('runExtension', function (ext, text, options, globals) {
  * These are all the transformations that occur *within* block-level
  * tags like paragraphs, headers, and list items.
  */
-showdown.subParser('spanGamut', function (text, options, globals) {
+showdown.subParser('spanGamut', function(text, options, globals) {
   'use strict'
 
   text = globals.converter._dispatch('spanGamut.before', text, options, globals)
@@ -2393,7 +2393,7 @@ showdown.subParser('spanGamut', function (text, options, globals) {
   return text
 })
 
-showdown.subParser('strikethrough', function (text, options, globals) {
+showdown.subParser('strikethrough', function(text, options, globals) {
   'use strict'
 
   if (options.strikethrough) {
@@ -2411,7 +2411,7 @@ showdown.subParser('strikethrough', function (text, options, globals) {
  * match consecutive blank lines with /\n+/ instead of something
  * contorted like /[ \t]*\n+/
  */
-showdown.subParser('stripBlankLines', function (text) {
+showdown.subParser('stripBlankLines', function(text) {
   'use strict'
   return text.replace(/^[ \t]+$/gm, '')
 })
@@ -2441,7 +2441,7 @@ showdown.subParser('stripBlankLines', function (text) {
  * function(){...});
  *
  */
-showdown.subParser('stripLinkDefinitions', function (text, options, globals) {
+showdown.subParser('stripLinkDefinitions', function(text, options, globals) {
   'use strict'
 
   var regex = /^ {0,3}\[(.+)]:[ \t]*\n?[ \t]*<?(\S+?)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*\n?[ \t]*(?:(\n*)["|'(](.+?)["|')][ \t]*)?(?:\n+|(?=~0))/gm
@@ -2449,7 +2449,7 @@ showdown.subParser('stripLinkDefinitions', function (text, options, globals) {
   // attacklab: sentinel workarounds for lack of \A and \Z, safari\khtml bug
   text += '~0'
 
-  text = text.replace(regex, function (wholeMatch, linkId, url, width, height, blankLines, title) {
+  text = text.replace(regex, function(wholeMatch, linkId, url, width, height, blankLines, title) {
     linkId = linkId.toLowerCase()
     globals.gUrls[linkId] = showdown.subParser('encodeAmpsAndAngles')(url) // Link IDs are case-insensitive
 
@@ -2478,7 +2478,7 @@ showdown.subParser('stripLinkDefinitions', function (text, options, globals) {
   return text
 })
 
-showdown.subParser('tables', function (text, options, globals) {
+showdown.subParser('tables', function(text, options, globals) {
   'use strict'
 
   if (!options.tables) {
@@ -2487,7 +2487,7 @@ showdown.subParser('tables', function (text, options, globals) {
 
   var tableRgx = /^[ \t]{0,3}\|?.+\|.+\n[ \t]{0,3}\|?[ \t]*:?[ \t]*(?:-|=){2,}[ \t]*:?[ \t]*\|[ \t]*:?[ \t]*(?:-|=){2,}[\s\S]+?(?:\n\n|~0)/gm
 
-  function parseStyles (sLine) {
+  function parseStyles(sLine) {
     if (/^:[ \t]*--*$/.test(sLine)) {
       return ' style="text-align:left;"'
     } else if (/^--*[ \t]*:[ \t]*$/.test(sLine)) {
@@ -2499,7 +2499,7 @@ showdown.subParser('tables', function (text, options, globals) {
     }
   }
 
-  function parseHeaders (header, style) {
+  function parseHeaders(header, style) {
     var id = ''
     header = header.trim()
     if (options.tableHeaderId) {
@@ -2510,12 +2510,12 @@ showdown.subParser('tables', function (text, options, globals) {
     return '<th' + id + style + '>' + header + '</th>\n'
   }
 
-  function parseCells (cell, style) {
+  function parseCells(cell, style) {
     var subText = showdown.subParser('spanGamut')(cell, options, globals)
     return '<td' + style + '>' + subText + '</td>\n'
   }
 
-  function buildTable (headers, cells) {
+  function buildTable(headers, cells) {
     var tb = '<table>\n<thead>\n<tr>\n',
       tblLgn = headers.length
 
@@ -2537,7 +2537,7 @@ showdown.subParser('tables', function (text, options, globals) {
 
   text = globals.converter._dispatch('tables.before', text, options, globals)
 
-  text = text.replace(tableRgx, function (rawTable) {
+  text = text.replace(tableRgx, function(rawTable) {
     var i,
       tableLines = rawTable.split('\n')
 
@@ -2551,10 +2551,10 @@ showdown.subParser('tables', function (text, options, globals) {
       }
     }
 
-    var rawHeaders = tableLines[0].split('|').map(function (s) {
+    var rawHeaders = tableLines[0].split('|').map(function(s) {
         return s.trim()
       }),
-      rawStyles = tableLines[1].split('|').map(function (s) {
+      rawStyles = tableLines[1].split('|').map(function(s) {
         return s.trim()
       }),
       rawCells = [],
@@ -2570,7 +2570,7 @@ showdown.subParser('tables', function (text, options, globals) {
         continue
       }
       rawCells.push(
-        tableLines[i].split('|').map(function (s) {
+        tableLines[i].split('|').map(function(s) {
           return s.trim()
         })
       )
@@ -2612,10 +2612,10 @@ showdown.subParser('tables', function (text, options, globals) {
 /**
  * Swap back in all the special characters we've hidden.
  */
-showdown.subParser('unescapeSpecialChars', function (text) {
+showdown.subParser('unescapeSpecialChars', function(text) {
   'use strict'
 
-  text = text.replace(/~E(\d+)E/g, function (wholeMatch, m1) {
+  text = text.replace(/~E(\d+)E/g, function(wholeMatch, m1) {
     var charCodeToReplace = parseInt(m1)
     return String.fromCharCode(charCodeToReplace)
   })

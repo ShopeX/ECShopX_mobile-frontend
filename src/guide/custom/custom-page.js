@@ -18,7 +18,7 @@ import qs from 'qs'
 @withPager
 @withBackToTop
 export default class HomeIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -30,7 +30,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const { id } = this.$router.params
 
     const pathparams = qs.stringify({
@@ -60,7 +60,7 @@ export default class HomeIndex extends Component {
     })
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const { id } = this.$router.params
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
@@ -81,7 +81,7 @@ export default class HomeIndex extends Component {
     })
   }
 
-  async onShareAppMessage () {
+  async onShareAppMessage() {
     const { shareInfo } = this.state
     const { id } = this.$router.params
     const { salesperson_id, distributor_id, work_userid, shop_code } = S.get('GUIDE_INFO', true)
@@ -99,7 +99,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const { shareInfo } = this.state
     const { id } = this.$router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -111,7 +111,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  render () {
+  render() {
     const { wgts, authStatus, scrollTop, showBackToTop, positionStatus } = this.state
     const { colors } = this.props
     if (!wgts) {

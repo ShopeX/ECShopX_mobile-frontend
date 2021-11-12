@@ -10,7 +10,7 @@ import './seckill-list.scss'
 @withPager
 @withBackToTop
 export default class SeckillList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -30,7 +30,7 @@ export default class SeckillList extends Component {
     navigationBarTitleText: ''
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setState(
       {
         query: {
@@ -44,7 +44,7 @@ export default class SeckillList extends Component {
     )
   }
 
-  calcTimer (t_index, totalSec) {
+  calcTimer(t_index, totalSec) {
     let remainingSec = totalSec
     const { timeCountDown } = this.state
     const dd = Math.floor(totalSec / 24 / 3600)
@@ -64,7 +64,7 @@ export default class SeckillList extends Component {
     })
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       status: this.state.curTabIdx === 0 ? 'valid' : 'notice',
@@ -134,7 +134,7 @@ export default class SeckillList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list, curTabIdx, tabList, showBackToTop, scrollTop, page, timeCountDown } = this.state
     return (
       <View className='page-seckill-list'>

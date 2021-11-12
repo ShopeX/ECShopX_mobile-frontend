@@ -8,7 +8,7 @@ export default class PointTag extends Component {
     url: ''
   }
 
-  render () {
+  render() {
     const { className } = this.props
     const classes = classNames('point-tag', className)
 

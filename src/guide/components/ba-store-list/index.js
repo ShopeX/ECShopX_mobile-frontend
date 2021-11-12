@@ -12,7 +12,7 @@ export default class BaStoreList extends Component {
   static defaultProps = {
     currentIndex: 0
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       keyWord: '',
@@ -47,7 +47,7 @@ export default class BaStoreList extends Component {
     this.props.onStoreConfirm(setIdx)
   }
 
-  render () {
+  render() {
     const { shopList } = this.props
     const { keyWord, setIdx } = this.state
     if (!shopList) return

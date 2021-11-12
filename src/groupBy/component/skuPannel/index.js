@@ -14,7 +14,7 @@ import { View } from '@tarojs/components'
 import './index.scss'
 
 export default class SkuPannel extends Component {
-  render () {
+  render() {
     return <View>sku选择</View>
   }
 }

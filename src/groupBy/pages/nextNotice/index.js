@@ -10,7 +10,7 @@ import LoadingMore from '../../component/loadingMore'
 import './index.scss'
 
 export default class nextNotice extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       // 活动列表
@@ -29,11 +29,11 @@ export default class nextNotice extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getActiveData(true)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     let { timeId } = this.state
     if (timeId) {
       clearTimeout(timeId)
@@ -147,7 +147,7 @@ export default class nextNotice extends Component {
     this.getActiveData()
   }
 
-  render () {
+  render() {
     const {
       list,
       countTime,

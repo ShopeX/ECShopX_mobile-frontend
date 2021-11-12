@@ -27,7 +27,7 @@ export default class SelectPackage extends Component {
     packInfo: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isOpend: false,
@@ -35,14 +35,14 @@ export default class SelectPackage extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { isChecked } = this.props
     this.setState({
       checked: isChecked
     })
   }
 
-  componentWillReceiveProps (next) {
+  componentWillReceiveProps(next) {
     const { checked } = this.state
     if (next.isChecked !== checked) {
       setTimeout(() => {
@@ -88,7 +88,7 @@ export default class SelectPackage extends Component {
       isOpend: false
     })
   }
-  render () {
+  render() {
     const { isOpend, checked } = this.state
     const { isChecked, packInfo = {}, colors } = this.props
     return (

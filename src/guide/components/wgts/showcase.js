@@ -16,11 +16,11 @@ export default class WgtShowCase extends Component {
 
   navigateTo = navigateTo
 
-  handleClickItem (item, index) {
+  handleClickItem(item, index) {
     linkPage(item.linkPage, item.id, item)
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

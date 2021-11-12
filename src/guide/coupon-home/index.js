@@ -18,7 +18,7 @@ export default class CouponHome extends Component {
   config = {
     navigationStyle: 'custom'
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class CouponHome extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     await S.autoLogin(this)
     this.nextPage()
     api.wx.shareSetting({ shareindex: 'coupon' }).then((res) => {
@@ -38,14 +38,14 @@ export default class CouponHome extends Component {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     Taro.hideShareMenu({
       //禁用胶囊分享
       menus: ['shareAppMessage', 'shareTimeline']
     })
   }
 
-  onShareAppMessage (item) {
+  onShareAppMessage(item) {
     const { info = {} } = item.target.dataset
     const res = this.state.shareInfo
     // console.log('item.target.dataset',item)
@@ -68,7 +68,7 @@ export default class CouponHome extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -79,7 +79,7 @@ export default class CouponHome extends Component {
     }
   }
 
-  async fetch (params) {
+  async fetch(params) {
     let { distributor_id } = S.get('GUIDE_INFO', true)
     let { card_id = '' } = await normalizeQuerys(this.$router.params)
     params = {
@@ -188,7 +188,7 @@ export default class CouponHome extends Component {
     } catch (e) {}
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { list, page } = this.state
     const n_ht = S.get('navbar_height', true)

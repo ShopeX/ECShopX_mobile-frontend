@@ -51,7 +51,7 @@ export default class GoodsItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       info,
       showMarketPrice,

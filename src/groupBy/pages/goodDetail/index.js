@@ -9,7 +9,7 @@ import CanvasUtil from '../../utils/canvas'
 import './index.scss'
 
 export default class GoodDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       goodInfo: {
@@ -36,11 +36,11 @@ export default class GoodDetail extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getGoodInfo()
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     let { timeId } = this.state
     if (timeId) {
       clearTimeout(timeId)
@@ -210,7 +210,7 @@ export default class GoodDetail extends Component {
     })
   }
 
-  render () {
+  render() {
     const { goodInfo, imgCurrent, posterImg, showPoster, countTime } = this.state
     const { isNext = false } = this.$router.params
 

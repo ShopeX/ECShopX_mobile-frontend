@@ -18,7 +18,7 @@ export default class AddressChoose extends Component {
     onClickBack: () => {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
@@ -38,7 +38,7 @@ export default class AddressChoose extends Component {
     }
   }
 
-  render () {
+  render() {
     const { isAddress } = this.props
 
     return (

@@ -6,7 +6,7 @@ import api from '@/api'
 import './withdraw.scss'
 
 export default class DistributionWithdraw extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -21,7 +21,7 @@ export default class DistributionWithdraw extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetch()
   }
 
@@ -36,7 +36,7 @@ export default class DistributionWithdraw extends Component {
   //   return userInfo
   // }
 
-  async fetch () {
+  async fetch() {
     const { cashWithdrawalRebate } = await api.distribution.statistics()
     let res = await api.member.getTradePaymentList()
     let { payList } = this.state
@@ -120,7 +120,7 @@ export default class DistributionWithdraw extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       cashWithdrawalRebate,
       limit_rebate,

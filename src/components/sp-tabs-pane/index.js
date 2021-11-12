@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { classNames, navigateTo } from '@/utils'
 import './index.scss'
 
-function SpTabsPane (props) {
+function SpTabsPane(props) {
   let { className, children, index, current } = this.props
 
   return (

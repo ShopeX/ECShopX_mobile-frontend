@@ -16,7 +16,7 @@ import './seckill-goods-list.scss'
 @withPager
 @withBackToTop
 export default class SeckillGoodsList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -35,7 +35,7 @@ export default class SeckillGoodsList extends Component {
     navigationBarTitleText: ''
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // this.setState({
     //   query: {
     //     status: this.state.curTabIdx === 0 ? 'valid' : 'notice',
@@ -53,7 +53,7 @@ export default class SeckillGoodsList extends Component {
     })
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const seckill_id = this.$router.params.seckill_id
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
@@ -71,7 +71,7 @@ export default class SeckillGoodsList extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -82,7 +82,7 @@ export default class SeckillGoodsList extends Component {
     }
   }
 
-  calcTimer (totalSec) {
+  calcTimer(totalSec) {
     let remainingSec = totalSec
     const dd = Math.floor(totalSec / 24 / 3600)
     remainingSec -= dd * 3600 * 24
@@ -99,14 +99,14 @@ export default class SeckillGoodsList extends Component {
       ss
     }
   }
-  handleClickItem (item) {
+  handleClickItem(item) {
     const { distributor_id } = item
     const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
       url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
     })
   }
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const dtid = getDistributorId()
     const query = {
@@ -150,7 +150,7 @@ export default class SeckillGoodsList extends Component {
     }
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { list, imgurl, showBackToTop, scrollTop, page, timer, status } = this.state
     return (

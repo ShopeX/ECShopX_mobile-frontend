@@ -14,7 +14,7 @@ import Classification from '../../component/classification'
 import './index.scss'
 
 export default class GroupByIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       userInfo: {},
@@ -47,9 +47,9 @@ export default class GroupByIndex extends Component {
     }
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
-  componentDidShow () {
+  componentDidShow() {
     this.init()
   }
 
@@ -256,7 +256,7 @@ export default class GroupByIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       userInfo,
       banner,
