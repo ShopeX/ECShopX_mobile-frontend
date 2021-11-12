@@ -757,7 +757,7 @@ export default class Home extends Component {
 
   async getPrivacyTitle () {
     const data = await api.shop.getStoreBaseInfo()
-    Taro.setStorageSync('privacy_info', data)
+    Taro.setStorageSync('privacy_info', data.protocol || { member_register: '注册协议', privacy: '隐私政策' })
   }
 
   render() {

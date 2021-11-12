@@ -51,7 +51,8 @@ const initConfig = {
     ziti_order: false, // 自提
     share_enable: false, // 分享
     memberinfo_enable: false // 个人信息
-  }
+  },
+  openPolicyModal: false
 };
 
 function MemberIndex(props) {

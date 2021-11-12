@@ -1,7 +1,7 @@
 {
 	"name": "ecshopx-vshop",
 	"app_name": "ecshopx",
-	"version": "4.4.0",
+	"version": "4.5.0",
 	"private": true,
 	"description": "taro app for bbc",
 	"scripts": {
@@ -19,7 +19,9 @@
 		"dev:tt": "npm run build:tt -- --watch",
 		"dev:h5": "npm run build:h5 -- --watch",
 		"dev:rn": "npm run build:rn -- --watch",
-		"release:h5": "RELEASE=h5 npm run build:h5"
+		"release:h5": "RELEASE=h5 npm run build:h5",
+		"prepare": "husky install",
+		"lint": "prettier-eslint 'src/**/*.{js,jsx}' --write"
 	},
 	"author": "",
 	"license": "MIT",
@@ -64,7 +66,7 @@
 		"use-immer": "^0.6.0"
 	},
 	"devDependencies": {
-		"@shopex/taro-plugin-modules": "^1.0.5",
+		"@shopex/taro-plugin-modules": "^1.0.8",
 		"@tarojs/mini-runner": "2.2.11",
 		"@tarojs/plugin-babel": "2.2.11",
 		"@tarojs/plugin-csso": "2.2.11",
@@ -84,13 +86,20 @@
 		"chalk": "^4.1.2",
 		"cross-env": "^5.2.0",
 		"eslint": "^4.19.1",
+		"eslint-config-prettier": "^8.3.0",
 		"eslint-config-taro": "2.2.11",
 		"eslint-plugin-import": "^2.12.0",
+		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-react": "^7.8.2",
+		"eslint-plugin-react-hooks": "^4.3.0",
 		"eslint-plugin-taro": "2.2.11",
 		"fs-extra": "^8.0.1",
 		"glob": "^7.1.4",
+		"husky": "^7.0.4",
 		"lodash-webpack-plugin": "^0.11.5",
+		"prettier-eslint": "^13.0.0",
+		"prettier-eslint-cli": "^5.0.1",
+		"stylelint": "^14.0.1",
 		"webpack-bundle-analyzer": "^3.8.0",
 		"webpack-dev-server": "^2.9.7"
 	},
@@ -98,5 +107,13 @@
 		"publicPath": "//b-cdn.yuanyuanke.cn/",
 		"bucket": "espier-shop-vue",
 		"path": "h5/"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"**/*.{js,jsx}": "prettier-eslint --write"
 	}
 }

@@ -31,7 +31,7 @@ export default class SpLogin extends Component {
     };
   }
 
-  componentDidShow () {
+  componentWillMount () {
     this.onGetTimes()
   }
 
@@ -193,6 +193,7 @@ export default class SpLogin extends Component {
     const { token, privacyVisible, update_time } = this.state;
     let pritecy_time = Taro.getStorageSync("PrivacyUpdate_time")
     let policy = true
+    console.log(pritecy_time, update_time, '-----')
     if (!pritecy_time || pritecy_time != update_time) {
       policy = false
     }

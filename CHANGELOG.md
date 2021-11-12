@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.5.0](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.4.3...v4.5.0) (2021-11-11)
+
+
+### Features
+
+* fe ([909b767](https://git.ishopex.cn/onex/ecshopx-vshop/commit/909b7675312d8f7105167413158143f40b2165a4))
+
+### [4.4.3](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.4.2...v4.4.3) (2021-11-11)
+
+### [4.4.2](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.4.1...v4.4.2) (2021-11-11)
+
+### [4.4.1](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.3.2...v4.4.1) (2021-11-11)
+
+
+### Bug Fixes
+
+* 修复会员中心不开启banner，积分商城无法显示问题 ([f18043e](https://git.ishopex.cn/onex/ecshopx-vshop/commit/f18043e7163708d44f77116b0a6961c2e0ff70b1))
+
+### [4.3.1](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.2.1...v4.3.1) (2021-10-28)
+
 ### [4.3.2](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.2.1...v4.3.2) (2021-11-04)
 
 ### [4.3.1](https://git.ishopex.cn/onex/ecshopx-vshop/compare/v4.2.1...v4.3.1) (2021-10-28)

@@ -11,29 +11,32 @@
   .block {
     // height: 68%;
     // width: 85%;
-    position: absolute;
+    position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
   }
   .background {
-    height: 780px;
+    height: 750px;
     width: 600px;
     border-radius: 16px;
   }
   .container {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     padding: 50px 40px;
     color: #222;
     height: 100%;
-    width: 100%;
+    width: 80%;
   }
   .top {
     display: flex;
     align-items: center;
-    margin-bottom: 50px;
+    // margin-bottom: 50px;
     font-weight: bold;
   }
   .texts {
@@ -51,6 +54,8 @@
     height: 480px;
     background-color: #fff;
     line-height: 48px;
+    position: absolute;
+    top: 135px;
   }
   .confirm {
     display: flex;
@@ -62,7 +67,10 @@
   .bottom {
     display: flex;
     justify-content: space-between;
-    margin-top: 50px;
+    // margin-top: 50px;
+    position: absolute;
+    width: 86%;
+    bottom: 31px;
   }
   .agree, .cancel {
     width: 45%;
