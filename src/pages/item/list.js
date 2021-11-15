@@ -45,7 +45,7 @@ function ItemList() {
     rightList: []
   })
   const [listType, setListType] = useState('grid')
-  // const [isShowSearch, setIsShowSearch] = useState(false)
+  const [isShowSearch, setIsShowSearch] = useState(false)
   const [query, setQuery] = useState(null)
 
   const { leftList, rightList } = list
