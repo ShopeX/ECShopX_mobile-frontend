@@ -10,7 +10,7 @@ export default class SpRecommend extends Component {
   }
 
   static defaultProps = {
-    info: null
+    info: []
   }
 
   render() {

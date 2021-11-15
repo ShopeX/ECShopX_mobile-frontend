@@ -1,19 +1,8 @@
-// @font-face {
-//   font-family: 'iconfont';  /* Project id 869421 */
-//   src: url('//at.alicdn.com/t/font_869421_95cns5q57wm.woff2?t=1621497872705') format('woff2'),
-//     url('//at.alicdn.com/t/font_869421_95cns5q57wm.woff?t=1621497872705') format('woff'),
-//     url('//at.alicdn.com/t/font_869421_95cns5q57wm.ttf?t=1621497872705') format('truetype');
-// }
-
-
-
-
-
 @font-face {
   font-family: "iconfont"; /* Project id 869421 */
-  src: url('//at.alicdn.com/t/font_869421_dbig0l9mxsn.woff2?t=1635407779981') format('woff2'),
-       url('//at.alicdn.com/t/font_869421_dbig0l9mxsn.woff?t=1635407779981') format('woff'),
-       url('//at.alicdn.com/t/font_869421_dbig0l9mxsn.ttf?t=1635407779981') format('truetype');
+  src: url('//at.alicdn.com/t/font_869421_s00bff0yfrb.woff2?t=1636959681153') format('woff2'),
+       url('//at.alicdn.com/t/font_869421_s00bff0yfrb.woff?t=1636959681153') format('woff'),
+       url('//at.alicdn.com/t/font_869421_s00bff0yfrb.ttf?t=1636959681153') format('truetype');
 }
 
 .iconfont {
@@ -24,7 +13,73 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-gou:before {
+  content: "\e714";
+}
 
+.icon-lianxi:before {
+  content: "\e66f";
+}
+
+.icon-shimingrenzheng:before {
+  content: "\e784";
+}
+
+.icon-erweima-01:before {
+  content: "\e879";
+}
+
+.icon-gerenxinxi-01:before {
+  content: "\e876";
+}
+
+.icon-qiehuanmendian-01:before {
+  content: "\e877";
+}
+
+.icon-dizhiguanli-01:before {
+  content: "\e878";
+}
+
+.icon-daifahuo-01:before {
+  content: "\e871";
+}
+
+.icon-daifukuan-01:before {
+  content: "\e872";
+}
+
+.icon-daipingjia-01:before {
+  content: "\e873";
+}
+
+.icon-daishouhuo-01:before {
+  content: "\e874";
+}
+
+.icon-shouhou-01:before {
+  content: "\e875";
+}
+
+.icon-fuzhi1:before {
+  content: "\e638";
+}
+
+.icon-roundcheckfill:before {
+  content: "\e656";
+}
+
+.icon-round:before {
+  content: "\e6d7";
+}
+
+.icon-kuajingshangpin-01:before {
+  content: "\e86f";
+}
+
+.icon-putongshangpin-01:before {
+  content: "\e870";
+}
 
 .icon-shanchu-01:before {
   content: "\e86e";
