@@ -10,7 +10,11 @@
   }
 }
 .search {
+  padding-bottom: 15px;
+  display: flex;
+  justify-content: space-around;
   &-box {
+    width: 80%;
     padding: 15px 0;
     border-radius: 80px;
     background-color: #efefef;
@@ -29,7 +33,7 @@
   .scancode {
     display: flex;
     align-items: center;
-    padding-right: 20px;
+    padding-left: 15px;
     font-size: 20px;
     color: #666;
     line-height: 1;
