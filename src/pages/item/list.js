@@ -44,6 +44,10 @@ function ItemList() {
     leftList: [],
     rightList: []
   })
+  const [listType, setListType] = useState('grid')
+  const [isShowSearch, setIsShowSearch] = useState(false)
+  const [query, setQuery] = useState(null)
+
   const { leftList, rightList } = list
 
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -81,6 +85,45 @@ function ItemList() {
 
   // resetPage()
 
+  const handleOnFocus = () => {
+    setIsShowSearch(true)
+  }
+
+  const handleOnChange = (val) => {
+    setQuery({ ...query, keywords: val })
+  }
+
+  const handleOnClear = () => {
+    setQuery({ ...query, keywords: '' })
+    setIsShowSearch(false)
+    resetPage()
+    setList({ leftList: [], rightList: [] })
+    nextPage()
+  }
+
+  const handleSearchOff = () => {
+    setIsShowSearch(false)
+  }
+
+  const handleConfirm = (val) => {
+    Tracker.dispatch("SEARCH_RESULT", {
+      keywords: val
+    })
+    setIsShowSearch(false)
+    setQuery({ ...query, keywords: val })
+    resetPage()
+    setList({ leftList: [], rightList: [] })
+    nextPage()
+  }
+
+  const handleViewChange = () => {
+    if (listType === 'grid') {
+      setListType('list')
+    } else {
+      setListType('grid')
+    }
+  }
+
   console.log('usePage loading:', loading, hasNext, total)
   return (
     <View
@@ -91,25 +134,41 @@ function ItemList() {
     >
       <SpNavBar title='商品列表' leftIconType='chevron-left' fixed />
 
+
+      <View className='page-goods-list__toolbar'>
+        <View className='search-wrap'>
+          <SpSearchBar
+            keyword={query ? query.keywords : ''}
+            onFocus={handleOnFocus}
+            onChange={handleOnChange}
+            onClear={handleOnClear}
+            onCancel={handleSearchOff}
+            onConfirm={handleConfirm}
+          />
+          {/* {
+            !isShowSearch &&
+              <View
+                className={classNames('page-goods-list__type', listType === 'grid' ? 'icon-list' : 'icon-grid')}
+                onClick={handleViewChange}
+              />
+          } */}
+        </View>
+
+        {/* <View className='tag-block'>
+          <View className='tag-container'><SpTagBar list={tagsList} /></View>
+          <View className='filter-btn'>
+            <Text className='filter-text'>筛选</Text>
+            <Text className='iconfont icon-shaixuan-01'></Text>
+          </View>
+        </View> */}
+      </View>
+
       <ScrollView
         className={classNames('scroll-view')}
         scrollY
         scrollWithAnimation
         onScrollToLower={nextPage}
       >
-        <View className='search-wrap'>
-          <View></View>
-          <SpSearchBar />
-        </View>
-
-        <View className='tag-block'>
-          <View className='tag-container'>{/* <SpTagBar list={tagsList} /> */}</View>
-          <View className='filter-btn'>
-            <Text className='filter-text'>刷选</Text>
-            <Text className='iconfont icon-shaixuan-01'></Text>
-          </View>
-        </View>
-
         {/* <SpFilterBar
           className="goods-tabs"
           custom
