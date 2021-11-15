@@ -73,7 +73,7 @@ class API {
       header['Authorization'] = `Bearer ${token}`
     }
 
-    if (process.env.TARO_ENV) {
+    if (process.env.TARO_ENV == 'weapp') {
       header['source'] = process.env.TARO_ENV
     }
 
