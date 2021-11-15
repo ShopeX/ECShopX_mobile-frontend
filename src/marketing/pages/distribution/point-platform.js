@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Navigator } from '@tarojs/components'
 import api from '@/api'
-import { NavBar } from '@/components'
+import { SpNavBar } from '@/components'
 
 import './point-platform.scss'
 
@@ -29,7 +29,7 @@ export default class PointPlatform extends Component {
     console.log(info)
     return (
       <View className='page-distribution-statistics'>
-        <NavBar title='推广费' leftIconType='chevron-left' />
+        <SpNavBar title='推广费' leftIconType='chevron-left' />
         <View className='header content-padded-b'>
           <View className='header-top'>
             <View className='view-flex view-flex-justify'>

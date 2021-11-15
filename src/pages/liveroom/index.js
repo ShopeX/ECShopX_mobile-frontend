@@ -101,28 +101,28 @@ export default class LiveRoomList extends Component {
                         <Image
                           className='icons'
                           mode='aspectFit'
-                          src={`${APP_IMAGE_CDN}/live_w.png`}
+                          src={`${process.env.APP_IMAGE_CDN}/live_w.png`}
                         />
                       )}
                       {notStarted && (
                         <Image
                           className='icons'
                           mode='aspectFit'
-                          src={`${APP_IMAGE_CDN}/notice_w.png`}
+                          src={`${process.env.APP_IMAGE_CDN}/notice_w.png`}
                         />
                       )}
                       {playback && (
                         <Image
                           className='icons'
                           mode='aspectFit'
-                          src={`${APP_IMAGE_CDN}/return_b.png`}
+                          src={`${process.env.APP_IMAGE_CDN}/return_b.png`}
                         />
                       )}
                       {other && (
                         <Image
                           className='icons'
                           mode='aspectFit'
-                          src={`${APP_IMAGE_CDN}/over_b.png`}
+                          src={`${process.env.APP_IMAGE_CDN}/over_b.png`}
                         />
                       )}
                     </View>
@@ -163,7 +163,7 @@ export default class LiveRoomList extends Component {
                       <Image
                         className='icons'
                         mode='aspectFit'
-                        src={`${APP_IMAGE_CDN}/live_w.png`}
+                        src={`${process.env.APP_IMAGE_CDN}/live_w.png`}
                       />
                       进入直播
                     </View>
@@ -176,7 +176,7 @@ export default class LiveRoomList extends Component {
                       <Image
                         className='icons'
                         mode='aspectFit'
-                        src={`${APP_IMAGE_CDN}/notice_b.png`}
+                        src={`${process.env.APP_IMAGE_CDN}/notice_b.png`}
                       />
                       查看预告
                     </View>
@@ -189,7 +189,7 @@ export default class LiveRoomList extends Component {
                       <Image
                         className='icons'
                         mode='aspectFit'
-                        src={`${APP_IMAGE_CDN}/return_b.png`}
+                        src={`${process.env.APP_IMAGE_CDN}/return_b.png`}
                       />
                       查看回放
                     </View>

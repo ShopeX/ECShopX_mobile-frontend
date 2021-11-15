@@ -64,6 +64,7 @@ export { default as HomeCapsule } from './home-capsule'
 export { default as PointLine } from './point-line'
 export { default as PointTag } from './point-tag'
 export { default as CouponModal } from './coupon-modal'
+export { default as PrivacyConfirmModal } from './privacy-confirm-modal'
 
 export default {}
 

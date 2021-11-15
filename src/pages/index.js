@@ -10,11 +10,22 @@ import {
   AccountOfficial,
   ScreenAd,
   CouponModal,
-  PrivacyConfirmModal
+  PrivacyConfirmModal,
+  SpStorePicker,
+  SpSearch
 } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, classNames, isArray, isAlipay, payTypeField, platformTemplateName } from '@/utils'
+import {
+  pickBy,
+  classNames,
+  styleNames,
+  getThemeStyle,
+  isArray,
+  isAlipay,
+  payTypeField
+} from '@/utils'
+import { platformTemplateName } from '@/utils/platform'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
@@ -41,7 +52,7 @@ import './home/index.scss'
     onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
   })
 )
-// @withLogin()
+
 @withPager
 @withBackToTop
 export default class Home extends Component {

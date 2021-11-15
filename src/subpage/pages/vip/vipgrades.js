@@ -348,7 +348,7 @@ export default class VipIndex extends Component {
                   key={items.card_id}
                   onClick={this.handleCouponBox.bind(this)}
                 >
-                  <Image className='img' src={`${APP_IMAGE_CDN}/coupon_bck.png`} />
+                  <Image className='img' src={`${process.env.APP_IMAGE_CDN}/coupon_bck.png`} />
                   {items.card_type === 'cash' && (
                     <View>
                       <View className='coupon-price'>

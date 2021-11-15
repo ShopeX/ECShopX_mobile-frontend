@@ -146,7 +146,7 @@ export default class CouponItem extends Component {
           <View className='coupon-item'>
             <View
               className='coupon-item__content'
-              style={`background-image: url(${APP_IMAGE_CDN}${'/coupon_FFF.png'})`}
+              style={`background-image: url(${process.env.APP_IMAGE_CDN}${'/coupon_FFF.png'})`}
             >
               <View className='coupon-item___description'>
                 <View>
@@ -184,7 +184,7 @@ export default class CouponItem extends Component {
                   <View className='text'>详细信息</View>
                   <Image
                     className='arrow'
-                    src={`${APP_IMAGE_CDN}${
+                    src={`${process.env.APP_IMAGE_CDN}${
                       isExpanded ? '/coupon_arrow_up.png' : '/coupon_arrow_down.png'
                     }`}
                   />
@@ -198,7 +198,7 @@ export default class CouponItem extends Component {
                   'coupon-item__name',
                   isDisabled ? 'coupon-item__name-not' : null
                 )}
-                style={`background-image: url(${APP_IMAGE_CDN}${
+                style={`background-image: url(${process.env.APP_IMAGE_CDN}${
                   info.tagClass === 'used' || info.tagClass === 'overdue'
                     ? '/coupon_inval.png'
                     : '/coupon_mj.png'
@@ -231,7 +231,7 @@ export default class CouponItem extends Component {
                   'coupon-item__name',
                   isDisabled ? 'coupon-item__name-not' : null
                 )}
-                style={`background-image: url(${APP_IMAGE_CDN}${
+                style={`background-image: url(${process.env.APP_IMAGE_CDN}${
                   info.tagClass === 'used' || info.tagClass === 'overdue'
                     ? '/coupon_inval.png'
                     : '/coupon_dh.png'
@@ -248,7 +248,7 @@ export default class CouponItem extends Component {
                   'coupon-item__name',
                   isDisabled ? 'coupon-item__name-not' : null
                 )}
-                style={`background-image: url(${APP_IMAGE_CDN}${
+                style={`background-image: url(${process.env.APP_IMAGE_CDN}${
                   info.tagClass === 'used' || info.tagClass === 'overdue'
                     ? '/coupon_inval.png'
                     : '/coupon_dh.png'
@@ -281,7 +281,7 @@ export default class CouponItem extends Component {
                   'coupon-item__name',
                   isDisabled ? 'coupon-item__name-not' : null
                 )}
-                style={`background-image: url(${APP_IMAGE_CDN}${
+                style={`background-image: url(${process.env.APP_IMAGE_CDN}${
                   info.tagClass === 'used' || info.tagClass === 'overdue'
                     ? '/coupon_inval.png'
                     : '/coupon_zk.png'

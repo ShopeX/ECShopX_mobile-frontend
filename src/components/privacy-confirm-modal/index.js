@@ -59,7 +59,7 @@ export default class PrivacyConfirmModal extends Component {
               />
               <View className='container'>
                 <View className='top'>
-                  <Image src={`${APP_IMAGE_CDN}/privacy_tips.png`} className='tips' />
+                  <Image src={`${process.env.APP_IMAGE_CDN}/privacy_tips.png`} className='tips' />
                   <View className='texts'>个人隐私保护指引</View>
                 </View>
                 <View className='content'>

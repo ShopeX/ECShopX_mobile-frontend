@@ -491,5 +491,4 @@ export {
   validate,
   getPointName
 }
-
 export * from './platforms'
