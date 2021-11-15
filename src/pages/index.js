@@ -503,60 +503,60 @@ export default class Home extends Component {
   }
 
   // 获取挂件配置
-  // getWgts = async () => {
-  //   const { curStore, is_open_store_status, is_open_recommend } = this.state;
-  //   let curdis_id =
-  //     curStore && is_open_store_status
-  //       ? curStore.store_id
-  //       : curStore.distributor_id;
-  //   if (!curStore.distributor_id && curStore.distributor_id !== 0) {
-  //     return;
-  //   }
-  //   if (process.env.APP_PLATFORM === "platform") {
-  //     curdis_id = 0;
-  //   }
-  //   const url = `/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=${curdis_id}`;
-  //   const info = await req.get(url);
-  //   const wgts = isArray(info) ? [] : info.config;
-  //   const wgtsList = isArray(info) ? [] : info.list;
-  //   this.setState(
-  //     {
-  //       wgts: wgts.length > 5 ? wgts.slice(0, 5) : wgts,
-  //       wgtsList
-  //     },
-  //     () => {
-  //       // 0.5s后补足缺失挂件
-  //       setTimeout(() => {
-  //         this.setState({
-  //           wgts,
-  //           wgtsList
-  //         });
-  //       }, 500);
-  //       Taro.stopPullDownRefresh();
-  //       if (!isArray(info) && info.config) {
-  //         const searchWgt = info.config.find(item => item.name == "search");
-  //         this.setState({
-  //           positionStatus:
-  //             searchWgt && searchWgt.config && searchWgt.config.fixTop
-  //         });
-  //         if (is_open_recommend === 1) {
-  //           this.props.onUpdateLikeList(true);
-  //           this.resetPage();
-  //           this.setState(
-  //             {
-  //               likeList: []
-  //             },
-  //             () => {
-  //               this.nextPage();
-  //             }
-  //           );
-  //         } else {
-  //           this.props.onUpdateLikeList(false);
-  //         }
-  //       }
-  //     }
-  //   );
-  // };
+  getWgts = async () => {
+    const { curStore, is_open_store_status, is_open_recommend } = this.state;
+    let curdis_id =
+      curStore && is_open_store_status
+        ? curStore.store_id
+        : curStore.distributor_id;
+    if (!curStore.distributor_id && curStore.distributor_id !== 0) {
+      return;
+    }
+    if (process.env.APP_PLATFORM === "platform") {
+      curdis_id = 0;
+    }
+    const url = `/pagestemplate/detail?template_name=yykweishop&weapp_pages=index&distributor_id=${curdis_id}`;
+    const info = await req.get(url);
+    const wgts = isArray(info) ? [] : info.config;
+    const wgtsList = isArray(info) ? [] : info.list;
+    this.setState(
+      {
+        wgts: wgts.length > 5 ? wgts.slice(0, 5) : wgts,
+        wgtsList
+      },
+      () => {
+        // 0.5s后补足缺失挂件
+        setTimeout(() => {
+          this.setState({
+            wgts,
+            wgtsList
+          });
+        }, 500);
+        Taro.stopPullDownRefresh();
+        if (!isArray(info) && info.config) {
+          const searchWgt = info.config.find(item => item.name == "search");
+          this.setState({
+            positionStatus:
+              searchWgt && searchWgt.config && searchWgt.config.fixTop
+          });
+          if (is_open_recommend === 1) {
+            this.props.onUpdateLikeList(true);
+            this.resetPage();
+            this.setState(
+              {
+                likeList: []
+              },
+              () => {
+                this.nextPage();
+              }
+            );
+          } else {
+            this.props.onUpdateLikeList(false);
+          }
+        }
+      }
+    );
+  };
 
   // 获取弹窗广告配置
   getAutoMatic = async () => {
