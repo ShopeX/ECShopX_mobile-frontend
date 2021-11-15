@@ -21,7 +21,7 @@ async function uploadImagesFn(imgFiles) {
           },
           formData: {
             'file': item.url,
-            'company_id': extConfig.company_id || APP_COMPANY_ID
+            'company_id': extConfig.company_id || process.env.APP_COMPANY_ID
           },
           success: (res) => {
             let imgData = JSON.parse(res.data)

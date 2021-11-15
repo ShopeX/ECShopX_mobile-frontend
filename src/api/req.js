@@ -14,7 +14,7 @@ class API {
       baseURL = baseURL + '/'
     }
 
-    options.company_id = APP_COMPANY_ID
+    options.company_id = process.env.APP_COMPANY_ID
     if (process.env.TARO_ENV === 'weapp' || isAlipay) {
       const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
       options.appid = extConfig.appid
@@ -228,7 +228,7 @@ class API {
                     Authorization: `Bearer ${token}`
                   },
                   method: 'get',
-                  url: APP_BASE_URL + '/token/refresh'
+                  url: process.env.APP_BASE_URL + '/token/refresh'
                 })
                   .then((data) => {
                     console.log('/token/refresh', data)
@@ -280,7 +280,7 @@ class API {
 }
 
 export default new API({
-  baseURL: APP_BASE_URL
+  baseURL: process.env.APP_BASE_URL
 
   // interceptor (chain) {
   //   const { requestParams } = chain

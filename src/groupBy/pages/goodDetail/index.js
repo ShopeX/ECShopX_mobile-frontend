@@ -165,7 +165,7 @@ export default class GoodDetail extends Component {
     //   mask: true,
     //   title: '请稍等'
     // })
-    const host = APP_BASE_URL.replace('api/h5app/wxapp', '')
+    const host = process.env.APP_BASE_URL.replace('api/h5app/wxapp', '')
 
     const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
 

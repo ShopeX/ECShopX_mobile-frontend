@@ -41,7 +41,7 @@ export default class Meiqia extends Component {
     let id = info.distributor_id
     const { storeId } = this.props
     // 如果不是标准版
-    if (APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
+    if (process.env.APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
       id = storeId
     }
 

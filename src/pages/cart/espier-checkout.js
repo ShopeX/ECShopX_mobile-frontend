@@ -19,6 +19,7 @@ import {
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
 import { TracksPayed } from '@/utils/youshu'
+import { customName } from '@/utils/point'
 import find from 'lodash/find'
 import _cloneDeep from 'lodash/cloneDeep'
 import CheckoutItems from './checkout-items'

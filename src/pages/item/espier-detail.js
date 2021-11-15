@@ -724,7 +724,11 @@ export default class EspierDetail extends Component {
     const pic = pics[0].replace('http:', 'https:')
     const infoId = info.distributor_id
     const id =
-      APP_PLATFORM === 'standard' ? (is_open_store_status ? store_id : distributor_id) : infoId
+      process.env.APP_PLATFORM === 'standard'
+        ? is_open_store_status
+          ? store_id
+          : distributor_id
+        : infoId
 
     console.log('wxappCode', wxappCode)
 
