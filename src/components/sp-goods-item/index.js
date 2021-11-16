@@ -150,10 +150,10 @@ export default class SpGoodsItem extends Component {
               {!info.is_point && (
                 <View className='goods-price'>
                   <View className='gd-price'>
-                    <SpPrice value={info.price / 1000}></SpPrice>
+                    <SpPrice value={info.price / 100}></SpPrice>
                   </View>
                   <View className='mk-price'>
-                    <SpPrice lineThrough value={info.market_price / 1000}></SpPrice>
+                    <SpPrice lineThrough value={info.market_price / 100}></SpPrice>
                   </View>
                 </View>
               )}

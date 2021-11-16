@@ -51,7 +51,7 @@ export default class MeiQia extends Component {
     return (
       id && (
         <WebView
-          src={`${APP_CUSTOM_SERVER}/others/pages/meiqia/index?metadata=${metadata}&clientid=${clientid}&agentid=${agentid}&id=${id}&groupid=${groupid}`}
+          src={`${process.env.APP_CUSTOM_SERVER}/others/pages/meiqia/index?metadata=${metadata}&clientid=${clientid}&agentid=${agentid}&id=${id}&groupid=${groupid}`}
         ></WebView>
       )
     )
