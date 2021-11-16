@@ -64,19 +64,19 @@ export default class WgtSearchHome extends Component {
 
     const { base, config } = info
 
+    let isShowScan = Taro.getEnv() !== 'WEB' && config.scanCode == 1 && process.env.APP_PLATFORM !== 'standard'
     return (
       <View className='wgt-search'>
         <View className={`search ${config.fixTop ? 'fixed' : null}`}>
           <View
             className='search-box view-flex view-flex-middle view-flex-center'
             onClick={this.searchTap.bind(this)}
+            style={!isShowScan ? { width:'95%' } : {} }
           >
             <View className='iconfont icon-search1'></View>
             <View>搜索</View>
           </View>
-          {Taro.getEnv() !== 'WEB' &&
-            config.scanCode == 1 &&
-            process.env.APP_PLATFORM !== 'standard' && (
+          { isShowScan && (
               <View className='scancode' onClick={this.handleScanCode.bind(this)}>
                 <View className='iconfont icon-scan'></View>
                 <View>扫码</View>

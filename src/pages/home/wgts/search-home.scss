@@ -10,7 +10,7 @@
   }
 }
 .search {
-  padding-bottom: 15px;
+  padding: 15px 0px;
   display: flex;
   justify-content: space-around;
   &-box {
@@ -33,7 +33,6 @@
   .scancode {
     display: flex;
     align-items: center;
-    padding-left: 15px;
     font-size: 20px;
     color: #666;
     line-height: 1;

@@ -14,12 +14,16 @@
     width: 70%;
     .zoom-btn {
       position: absolute;
-      padding: 5px;
+      width: 45px;
+      height: 45px;
       right: 20px;
       top: -70px;
       font-size: 32px;
       color: #fff;
       border: 1PX solid #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border-radius: 100%;
       &::after {
         position: absolute;
@@ -29,6 +33,7 @@
         top: 100%;
         background: #fff;
         content: "";
+        z-index: -1;
       }
     }
     .gift-bg {
