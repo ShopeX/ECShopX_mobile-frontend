@@ -730,6 +730,8 @@ export default class EspierDetail extends Component {
           : distributor_id
         : infoId
 
+    const wxappCode = getDtidIdUrl(`${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&uid=${userId}`,id)
+
     console.log('wxappCode', wxappCode)
 
     let avatarImg
