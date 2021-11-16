@@ -1,0 +1,96 @@
+.page-cart-index {
+  .login-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    .login-txt {
+      color: $color-brand-accent;
+      margin-right: 10px;
+    }
+    .btn-login {
+      background: var(--color-primary);
+      font-size: 26px;
+      color: #fff;
+    }
+  } 
+  .recommend-icon {
+    width: 100px;
+  }
+  .shop-cart-item {
+    padding: 0 16px;
+    margin-top: 40px;
+    &-hd {
+      font-size: 30px;
+      color: #333;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    &-bd {
+      background: #fff;
+    }
+    &-ft {
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      .rg {
+        display:flex;
+        align-items: center;
+        .total-pirce {
+          font-size: 40px;
+        }
+        .btn-calc {
+          margin-left: 16px;
+        }
+      }
+    }
+  }
+  .cart-item-wrap {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+  }
+  .cart-goods-item {
+    flex: 1;
+  }
+  .at-input-number {
+    border: 1PX solid #999;
+    border-radius: 0;
+    height: 40px;
+    &__input {
+      border-left: 1PX solid #999;
+      border-right: 1PX solid #999;
+      width: 60px;
+      height: 40px;
+      line-height:40px;
+    }
+    &__btn {
+      color: #222;
+      padding: 0;
+      width: 40px;
+      
+    }
+    &__btn-subtract{
+      font-size: 26px;
+    }
+  }
+  .total-pirce {
+    .price__symbol {
+      font-size: 26px;
+      color: var(--color-primary);
+    }
+    .price__int {
+      font-size: 34px;
+      color: var(--color-primary);
+    }
+    .price__decimal {
+      font-size: 30px;
+      color: var(--color-primary);
+    }
+  }
+  .recommend-block {
+    margin-top: 96px;
+  }
+}
