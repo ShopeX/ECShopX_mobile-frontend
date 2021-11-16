@@ -64,7 +64,7 @@ export default class WgtSearchHome extends Component {
 
     const { base, config } = info
 
-    let isShowScan = Taro.getEnv() !== 'WEB' && config.scanCode == 1 && process.env.APP_PLATFORM !== 'standard'
+    let isShowScan = Taro.getEnv() !== 'WEB' && config.scanCode && process.env.APP_PLATFORM !== 'standard'
     return (
       <View className='wgt-search'>
         <View className={`search ${config.fixTop ? 'fixed' : null}`}>

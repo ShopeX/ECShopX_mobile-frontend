@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
-import { BackToTop, Loading, TagsBar, FilterBar, SearchBar, GoodsItem, SpNote, NavBar, TabBar } from '@/components'
+import { BackToTop, Loading, TagsBar, FilterBar, SpSearchBar, GoodsItem, SpNote, SpNavBar, TabBar } from '@/components'
 import api from '@/api'
 import { Tracker } from "@/service";
 import { pickBy, classNames, isWeixin } from '@/utils'
@@ -151,29 +151,29 @@ export default class List extends Component {
     }
   };
 
-  // onShareAppMessage() {
-  //   const res = this.state.shareInfo
-  //   const { cat_id = '', main_cat_id = '' } = this.$router.params
-  //   const { userId } = Taro.getStorageSync('userinfo')
-  //   const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
-  //   return {
-  //     title: res.title,
-  //     imageUrl: res.imageUrl,
-  //     path: `/pages/item/list${query}`
-  //   }
-  // }
+  onShareAppMessage() {
+    const res = this.state.shareInfo
+    const { cat_id = '', main_cat_id = '' } = this.$router.params
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      path: `/pages/item/list${query}`
+    }
+  }
 
-  // onShareTimeline() {
-  //   const res = this.state.shareInfo
-  //   const { cat_id = null, main_cat_id = null } = this.$router.params
-  //   const { userId } = Taro.getStorageSync('userinfo')
-  //   const query = userId ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `cat_id=${cat_id}&main_cat_id=${main_cat_id}`
-  //   return {
-  //     title: res.title,
-  //     imageUrl: res.imageUrl,
-  //     query: query
-  //   }
-  // }
+  onShareTimeline() {
+    const res = this.state.shareInfo
+    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `cat_id=${cat_id}&main_cat_id=${main_cat_id}`
+    return {
+      title: res.title,
+      imageUrl: res.imageUrl,
+      query: query
+    }
+  }
 
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
@@ -580,7 +580,7 @@ export default class List extends Component {
     return (
       <View className='page-goods-list'>
         {
-          !isTabBar && <NavBar
+          !isTabBar && <SpNavBar
             title='商品列表'
             leftIconType='chevron-left'
             fixed='true'
@@ -602,7 +602,7 @@ export default class List extends Component {
                 onChange={this.handleFilterChange}
               />
               <View className='goods-list__search1'>
-                <SearchBar
+                <SpSearchBar
                   _placeholder
                   keyword={query ? query.keywords : ''}
                   onFocus={this.handleSearchOn}
@@ -616,7 +616,7 @@ export default class List extends Component {
           </View>) :
           (<View className='goods-list__toolbar'>
             <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
-              <SearchBar
+              <SpSearchBar
                 keyword={query ? query.keywords : ''}
                 onFocus={this.handleSearchOn}
                 onChange={this.handleSearchChange}

@@ -6,6 +6,7 @@
     @include page-scroll($navigate-height + $tabs-height, $edge-margin);
     box-sizing: border-box;
     bottom: 160px !important;
+    top: 90px;
   }
   &__tabs {
     .at-tabs__item--active {
@@ -24,7 +25,7 @@
 
 .coupon-bottom {
   width: 100%;
-  height: 160px;
+  height: 125px;
   background: #FFFFFF;
   position: fixed;
   z-index: 999;

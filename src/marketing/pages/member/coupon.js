@@ -24,7 +24,7 @@ export default class Coupon extends Component {
         { title: '全部', status: '1', type: '' },
         { title: '满减券', status: '1', type: 'cash' },
         { title: '折扣券', status: '1', type: 'discount' },
-        { title: '兑换券', status: '1', type: 'new_gift' }
+        // { title: '兑换券', status: '1', type: 'new_gift' }
       ],
       list: [],
       curId: null
@@ -186,8 +186,8 @@ export default class Coupon extends Component {
           tabList={tabList}
           onClick={this.handleClickTab}
           customStyle={{
-            color: colors.data[0].primary,
-            backgroundColor: colors.data[0].primary
+            color: colors.data[0].primary
+            // backgroundColor: colors.data[0].primary
           }}
         >
           {tabList.map((panes, pIdx) => (
