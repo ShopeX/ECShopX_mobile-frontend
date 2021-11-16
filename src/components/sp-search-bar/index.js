@@ -157,9 +157,8 @@ export default class SpSearchBar extends Component {
             <View className='sp-search-bar__history-list'>
               {historyList.map((item, index) => (
                 <View
-                  className='sp-search-bar__history-list__btn'
+                  className='sp-search-bar__history-list__btn sp-search-bar-border'
                   key={`${index}1`}
-                  style={{ border: `1px solid var(--color-primary)`, color: 'var(--color-primary)' }}
                   onClick={this.handleClickTag.bind(this, item)}
                 >
                   {item}
