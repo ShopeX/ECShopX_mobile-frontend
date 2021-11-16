@@ -11,11 +11,8 @@ import {
   navigateTo,
   getThemeStyle,
   classNames,
-  isWeixin,
-  platformTemplateName,
-  transformPlatformUrl
-} from '@/utils'
-import qs from 'qs'
+  isWeixin
+} from '@/utils' 
 import { customName } from '@/utils/point'
 import userIcon from '@/assets/imgs/user-icon.png'
 import MemberBanner from './comps/member-banner'
@@ -39,11 +36,11 @@ export default class MemberIndex extends Component {
     this.state = {
       turntable_open: 0,
       redirectInfo: {},
-      orderCount: null,
+      orderCount: {},
       memberDiscount: null,
       isOpenPopularize: false,
       salespersonData: null,
-      memberAssets: null,
+      memberAssets: {},
       // 是否开启储值
       rechargeStatus: true,
       // banner配置
@@ -372,10 +369,10 @@ export default class MemberIndex extends Component {
       protocol
     } = this.state;
     let memberInfo = null,
-      vipgrade = null
+      vipgrade = {}
     if (memberData) {
       memberInfo = memberData.memberInfo
-      vipgrade = memberData.vipgrade
+      vipgrade = memberData.vipgrade||{}
     }
     let privacyTitle = ''
     if (protocol) {

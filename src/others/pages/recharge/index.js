@@ -159,7 +159,7 @@ export default class Recharge extends Component {
     api.member
       .rehcargePay(param)
       .then((res) => {
-        debugger
+       
         Taro.hideLoading()
         if (Taro.getEnv() === 'WEAPP') {
           this.weappPay(res)

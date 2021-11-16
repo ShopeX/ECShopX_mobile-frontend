@@ -1,5 +1,4 @@
-import Taro from '@tarojs/taro'
-import { maxBy } from 'lodash'
+import Taro from '@tarojs/taro' 
 
 /** 在支付宝平台 */
 export const isAlipay = Taro.getEnv() == Taro.ENV_TYPE.ALIPAY

@@ -41,7 +41,7 @@ export default class WgtGoodsGrid extends Component {
       el: '.wgt-grid__loader-more'
     })
     observer.on('on-observer', () => {
-      debugger
+      
     })
 
     this.endTrack()

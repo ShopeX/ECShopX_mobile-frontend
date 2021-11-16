@@ -202,7 +202,6 @@ async function getLocal(isNeedLocate) {
       }
       store = await api.shop.getShop(param)
     } else {
-      debugger
       const locationData = await getLoc()
       if (locationData !== null && locationData !== '') {
         let param = {}

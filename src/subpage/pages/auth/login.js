@@ -5,8 +5,7 @@ import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpNavBar, SpTimer } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-import { getThemeStyle, styleNames, tokenParse, navigateTo, validate, showToast } from '@/utils'
-import { Tracker } from '@/service'
+import { getThemeStyle, styleNames, tokenParse, navigateTo, validate, showToast } from '@/utils' 
 
 import './login.scss'
 
@@ -211,7 +210,7 @@ export default class Login extends Component {
               </Text>
               <Text
                 className='btn-text'
-                onClick={this.navigateTo.bind(this, '`/subpage/pages/auth/reg`')}
+                onClick={()=>Taro.navigateTo({url:'/subpage/pages/auth/reg'})}
               >
                 注册
               </Text>

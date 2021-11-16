@@ -14,7 +14,8 @@ import {
   redirectUrl,
   buriedPoint,
   isAlipay,
-  isWeixin
+  isWeixin,
+  isWeb
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -1235,7 +1236,7 @@ export default class CartCheckout extends Component {
       }
 
       if (
-        process.env.TARO_ENV === 'h5' &&
+        isWeb &&
         payType !== 'point' &&
         payType !== 'deposit' &&
         !isDrug
@@ -1244,10 +1245,10 @@ export default class CartCheckout extends Component {
           ...params,
           pay_type: this.state.total.freight_type === 'point' ? 'point' : 'wxpay'
         })
-        // redirectUrl(api, `/subpage/pages/cashier/index?order_id=${config.order_id}&type=pointitem`)
-        // Taro.redirectTo({
-        //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
-        // });
+        //redirectUrl(api, `/subpage/pages/cashier/index?order_id=${config.order_id}&type=pointitem`)
+        Taro.redirectTo({
+          url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
+        });
         return
       } else {
         config = await this.createByType({

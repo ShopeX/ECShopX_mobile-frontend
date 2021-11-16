@@ -30,7 +30,6 @@ export const transformPlatformUrl = (url) => {
 export const goToAuthPage = () => {
   const router = useRouter()
   const { path } = router
-  debugger
   Taro.navigateTo({
     url: `/pages/auth/login?redirect=`
   })
