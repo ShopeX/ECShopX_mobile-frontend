@@ -196,7 +196,7 @@ function CartIndex(props) {
                     <View className='rg'>
                       <View className='total-price-wrap'>
                         合计：
-                        <SpPrice className='total-pirce' value={item.total_fee / 1000} />
+                        <SpPrice className='total-pirce' value={item.total_fee / 100} />
                       </View>
                       <AtButton
                         className='btn-calc'

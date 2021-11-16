@@ -31,7 +31,7 @@ function CartGoodsItem(props) {
           <Text className='spec-desc'>{info.item_spec_desc}</Text>
         </View>
         <View className='item-ft'>
-          <SpPrice value={info.price / 1000} />
+          <SpPrice value={info.price / 100} />
           <SpInputNumber value={info.num} />
         </View>
       </View>
