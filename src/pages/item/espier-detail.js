@@ -446,11 +446,11 @@ export default class EspierDetail extends Component {
     }
 
     const { item_params } = info
-    let itemParams = pickBy(item_params, {
+    let itemParams = item_params ? pickBy(item_params, {
       label: 'attribute_name',
       value: 'attribute_value_name'
-    })
-    itemParams = itemParams.slice(0, 5)
+    }) : []
+    itemParams = itemParams && itemParams.slice(0, 5)
 
     info.is_fav = Boolean(this.props.favs[info.item_id])
     const specImgsDict = this.resolveSpecImgs(info.item_spec_desc)
@@ -562,7 +562,7 @@ export default class EspierDetail extends Component {
     const ret = {}
 
     //只有一个图片类型规格
-    specs.some((item) => {
+    specs && specs.some((item) => {
       if (item.is_image) {
         item.spec_values.forEach((v) => {
           ret[v.spec_value_id] = v.spec_image_url

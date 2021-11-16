@@ -85,8 +85,8 @@ export default class GoodsBuyPanel extends Component {
     const marketing = info.activity_type ? info.activity_type : 'normal'
 
     const skuDict = {}
-    const originSpecIds = info.item_spec_desc.map((item) => item.spec_id)
-    const newSpceItems = spec_items.sort((a, b) => {
+    const originSpecIds = info.item_spec_desc && info.item_spec_desc.map((item) => item.spec_id)
+    const newSpceItems = spec_items && spec_items.sort((a, b) => {
       const first = a.item_spec[0].spec_value_id
       const second = b.item_spec[0].spec_value_id
       return first - second
@@ -634,7 +634,7 @@ export default class GoodsBuyPanel extends Component {
           )}
           <View className='goods-buy-panel__bd'>
             <ScrollView className='goods-skus__wrap'>
-              {info.item_spec_desc.map((spec, idx) => {
+              {info.item_spec_desc && info.item_spec_desc.map((spec, idx) => {
                 return (
                   <View className='sku-item__group' key={spec.spec_id}>
                     {info.item_spec_desc.length > 1 && (

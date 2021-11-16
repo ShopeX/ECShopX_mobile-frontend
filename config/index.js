@@ -23,6 +23,9 @@ const copyPatterns = [{ from: "src/assets", to: `${DIST_PATH}/assets` }];
 if (process.env.TARO_ENV != "h5") {
   copyPatterns.push({ from: "src/ext.json", to: `${DIST_PATH}/ext.json` });
 }
+if ( process.env.TARO_ENV != "h5" ) {
+  copyPatterns.push({ from: 'src/files/', to: `dist/${process.env.TARO_ENV}` })
+}
 
 const plugins = []
 if ( process.env.TARO_ENV == "weapp" ) {
