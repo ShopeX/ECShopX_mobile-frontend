@@ -19,6 +19,11 @@ export default class Cashier extends Component {
     this.fetch()
   }
 
+  async componentDidMount(){
+    // let res = await api.member.getTradePaymentList({platform:'h5'});
+    // console.log("===res==",res)
+  }
+
   isPointitemGood() {
     const options = this.$router.params
     return options.type === 'pointitem'
