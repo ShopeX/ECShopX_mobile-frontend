@@ -87,10 +87,9 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    this.protocolUpdateTime()
-    this.getShareSetting()
-    this.isShowTips()
-    this.getPrivacyTitle()
+    this.protocolUpdateTime();
+    this.getShareSetting();
+    this.isShowTips();
   }
 
   // 获取隐私政策时间
@@ -670,14 +669,6 @@ export default class Home extends Component {
       })
     }
     this.setState({ visible })
-  }
-
-  async getPrivacyTitle() {
-    const data = await api.shop.getStoreBaseInfo()
-    Taro.setStorageSync(
-      'privacy_info',
-      data.protocol || { member_register: '注册协议', privacy: '隐私政策' }
-    )
   }
 
   render() {

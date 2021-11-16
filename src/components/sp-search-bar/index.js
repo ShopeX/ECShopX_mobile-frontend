@@ -10,7 +10,12 @@ export default class SpSearchBar extends Component {
   static defaultProps = {
     isOpened: false,
     keyword: '',
-    showDailog: true
+    showDailog: true,
+    onCancel: () =>  {},
+    onChange: () => {},
+    onClear: () => {},
+    onFocus: () => {},
+    onConfirm: () => {}
   }
 
   constructor(props) {
@@ -119,15 +124,11 @@ export default class SpSearchBar extends Component {
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
       <View
-        className={classNames('sp-search-bar', {
-          fixed: isFixed
-        })}
-
-        // isFixed ? 'search-input-fixed' : null, showSearchDailog ? 'search-input__focus' : null, !showDailog && 'without-dialog' )}
+        className={classNames('sp-search-bar', isFixed ? 'sp-search-bar-fixed' : null, showSearchDailog ? 'sp-search-bar__focus' : null, !showDailog && 'without-dialog')}
       >
-        <Form className='search-input__form'>
+        <Form className='sp-search-bar__form'>
           <AtSearchBar
-            className='search-input__bar'
+            className='sp-search-bar__bar'
             value={keyword}
             placeholder='搜索'
             actionName='取消'
@@ -143,28 +144,29 @@ export default class SpSearchBar extends Component {
         {showDailog && (
           <View
             className={classNames(
-              showSearchDailog ? 'search-input__history' : 'search-input__history-none'
+              showSearchDailog ? 'sp-search-bar__history' : 'sp-search-bar__history-none'
             )}
           >
-            <View className='search-input__history-title'>
-              <Text>最近搜索</Text>
+            <View className='sp-search-bar__history-title'>
+              <Text className='title'>最近搜索</Text>
               <Text
                 className='icon-trash icon-del'
                 onClick={this.handleClickDelete.bind(this)}
               ></Text>
             </View>
-            <View className='search-input__history-list'>
+            <View className='sp-search-bar__history-list'>
               {historyList.map((item, index) => (
                 <View
-                  className='search-input__history-list__btn'
+                  className='sp-search-bar__history-list__btn'
                   key={`${index}1`}
+                  style={{ border: `1px solid var(--color-primary)`, color: 'var(--color-primary)' }}
                   onClick={this.handleClickTag.bind(this, item)}
                 >
                   {item}
                 </View>
               ))}
             </View>
-            {/*<View className='search-input__history-title hot-title'>
+            {/*<View className='sp-search-bar__history-title hot-title'>
               <Text>热门搜索</Text>
             </View>
             <View className='hot-list'>
