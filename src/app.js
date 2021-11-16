@@ -150,7 +150,7 @@ class App extends Component {
       'pages/category/index',
       'pages/floorguide/index',
 
-      // 'pages/item/list',
+      'pages/item/list',
       'pages/item/espier-detail',
       'pages/item/item-params',
       'pages/item/package-list',
