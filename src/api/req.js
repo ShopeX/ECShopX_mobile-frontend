@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import S from '@/spx'
 import qs from 'qs'
-import { isGoodsShelves, isAlipay } from '@/utils'
+import { isGoodsShelves, isAlipay,isWeb } from '@/utils'
 
 function addQuery(url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
@@ -40,16 +40,19 @@ class API {
     })
   }
 
-  errorToast(data) {
-    const errMsg =
+  errorToast(data) { 
+    let errMsg =
       data.msg || data.err_msg || (data.error && data.error.message) || '操作失败，请稍后重试'
+    if(isWeb){
+      errMsg=data.data.message; 
+    }
     let newText = ''
     if (errMsg.length > 11) {
       newText = errMsg.substring(0, 11) + '\n' + errMsg.substring(11)
     } else {
       newText = errMsg
     }
-    setTimeout(() => {
+    setTimeout(() => { 
       Taro.showToast({
         icon: 'none',
         title: newText
@@ -171,11 +174,12 @@ class API {
 
         return Promise.resolve(null)
       })
-      .then((res) => {
+      .then((res) => { 
         // 如果有错误则为错误信息
         if (res) {
           resData.data = res
         }
+
         // eslint-disable-next-line
         const { data, statusCode, header } = resData
         if (showLoading) {
@@ -250,17 +254,20 @@ class API {
         }
 
         if (statusCode >= 400) {
+ 
           if (
-            showError &&
+            !isWeb && showError &&
             data.error.message !== '当前余额不足以支付本次订单费用，请充值！' &&
             data.error.code !== 201 &&
             data.error.code !== 450
           ) {
             this.errorToast(data)
+          }else if(isWeb && showError && data.message !== '当前余额不足以支付本次订单费用，请充值！' ){
+            this.errorToast(data)
           }
-          return Promise.reject(this.reqError(resData))
-        }
 
+          return Promise.reject(this.reqError(resData))
+        } 
         return Promise.reject(this.reqError(resData, `API error: ${statusCode}`))
       })
   }

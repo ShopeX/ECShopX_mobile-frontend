@@ -10,10 +10,7 @@ import entryLaunch from '@/utils/entryLaunch'
 import { youshuLogin } from '@/utils/youshu'
 import { DEFAULT_TABS, DEFAULT_THEME } from '@/consts'
 import qs from 'qs'
-import Index from './pages/index'
-import LBS from './utils/lbs'
-
-// import entry from '@/utils/entry'
+import Index from './pages/index' 
 
 import './app.scss'
 

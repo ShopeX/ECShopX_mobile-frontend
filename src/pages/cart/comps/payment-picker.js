@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { AtFloatLayout } from 'taro-ui'
 import { SpCheckbox } from '@/components'
 import api from '@/api'
-import { closeClassName, getPointName } from '@/utils'
+import { closeClassName, getPointName,payment_platform } from '@/utils'
 import './payment-picker.scss'
 
 @connect(({ colors }) => ({
@@ -42,10 +42,12 @@ export default class PaymentPicker extends Component {
   }
   async fatch() {
     let params = {}
+    console.log("==fetch=====>",payment_platform)
     const distributor_id = Taro.getStorageSync('payment_list_dtid')
     if (distributor_id) {
       params = {
-        distributor_id
+        distributor_id,
+        platform:payment_platform
       }
     }
     let res = await api.member.getTradePaymentList(params)
