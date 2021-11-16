@@ -49,7 +49,6 @@ const config = {
       ]
     ],
     plugins: [
-      'lodash',
       'transform-decorators-legacy',
       'transform-class-properties',
       'transform-object-rest-spread',
@@ -81,75 +80,21 @@ const config = {
     "@tarojs/plugin-sass",
     "@tarojs/plugin-terser"
   ],
-  // 开启压缩
-  // uglify: {
-  //   enable: IS_PROD,
-  //   config: {
-  //     // 配置项同 https://github.com/mishoo/UglifyJS2#minify-options
-  //     compress: {
-  //       drop_console: IS_PROD,
-  //       drop_debugger: IS_PROD
-  //     }
-  //   }
-  // },
   mini: {
     webpackChain(chain, webpack) {
-      // chain.merge({
-      //   optimization: {
-      //     splitChunks: {
-      //       cacheGroups: {
-      //         lodash: {
-      //           name: 'lodash',
-      //           priority: 1000,
-      //           test(module) {
-      //             return /node_modules[\\/]lodash/.test(module.context)
-      //           }
-      //         },
-      //         // moment: {
-      //         //   name: 'date-fns',
-      //         //   priority: 1000,
-      //         //   test(module) {
-      //         //     return /node_modules[\\/]date-fns/.test(module.context)
-      //         //   }
-      //         // }
-      //       }
-      //     }
-      //   }
-      // })
-      debugger
-
-      // use cache-loader
+      // use cache-loader both in dev & prod
       chain.module
-          .rule('script')
-            .use('cacheLoader')
-              .loader('cache-loader')
-            .before('0')
+        .rule('script')
+          .use('cacheLoader')
+            .loader('cache-loader')
+          .before('0')
 
       chain.module
         .rule('template')
           .use('cacheLoader')
             .loader('cache-loader')
           .before('0')
-
-      chain.plugin('analyzer')
-        .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
-      // if (isPro) {
-      //   chain.plugin('analyzer')
-      //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
-      // }
-      // chain.plugin('IgnorePlugin').use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/])
-      // chain.plugin('LodashModuleReplacementPlugin').use(require('lodash-webpack-plugin'), [
-      //   {
-      //     coercions: true,
-      //     paths: true
-      //   }
-      // ])
     },
-    // commonChunks(commonChunks) {
-    //   commonChunks.push('lodash')
-    //   commonChunks.push('date-fns')
-    //   return commonChunks
-    // },
     // 图片转换base64
     imageUrlLoaderOption: {
       limit: 0
@@ -168,7 +113,7 @@ const config = {
       url: {
         enable: true,
         config: {
-          limit: 10240 // 设定转换尺寸上限
+          limit: 1024 // 设定转换尺寸上限
         }
       },
       cssModules: {
@@ -186,14 +131,6 @@ const config = {
     router: {
       mode: 'browser'
     },
-    // devServer: {
-    //   https: {
-    //     key: "../cert/ecshopx-server.key",
-    //     cert: "../cert/ecshopx-server.crt",
-    //     // passphrase: "webpack-dev-server",
-    //     requestCert: true
-    //   }
-    // },
     postcss: {
       autoprefixer: {
         enable: true,
@@ -204,48 +141,9 @@ const config = {
     },
     esnextModules: ['taro-ui'],
     webpackChain(chain, webpack) {
-      chain.merge({
-        resolve: {
-          alias: {
-            react$: 'nervjs',
-            'react-dom$': 'nervjs',
-            'lodash': 'lodash-es'
-          }
-        }
-      })
-      // chain.merge({
-      //   optimization: {
-      //     splitChunks: {
-      //       cacheGroups: {
-      //         lodash: {
-      //           name: 'lodash',
-      //           priority: 1000,
-      //           test(module) {
-      //             return /node_modules[\\/]lodash/.test(module.context)
-      //           }
-      //         },
-      //         // moment: {
-      //         //   name: 'date-fns',
-      //         //   priority: 1000,
-      //         //   test(module) {
-      //         //     return /node_modules[\\/]date-fns/.test(module.context)
-      //         //   }
-      //         // }
-      //       }
-      //     }
-      //   }
-      // })
-      // if (!isPro) {
-      //   chain.plugin('analyzer')
-      //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
-      // }
-      // chain.plugin('IgnorePlugin').use(webpack.IgnorePlugin, [/^\.\/locale$/, /date-fns$/])
-      // chain.plugin('LodashModuleReplacementPlugin').use(require('lodash-webpack-plugin'), [
-      //   {
-      //     coercions: true,
-      //     paths: true
-      //   }
-      // ])
+      chain.resolve.alias
+        .set('react$', 'nervjs')
+        .set('react-dom$', 'nervjs')
     }
   }
 }
