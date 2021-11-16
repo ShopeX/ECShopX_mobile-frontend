@@ -87,3 +87,6 @@ export const createIntersectionObserver = (el) => {
     this.observe = observer
   })
 }
+
+
+export const payment_platform='h5';
