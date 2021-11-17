@@ -1,6 +1,10 @@
 import req from './req'
+import { isWeb } from '@/utils'
 
 const getAppId = () => {
+  if(isWeb){
+    return undefined;
+  }
   const { appid } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
   return appid
 }
@@ -23,6 +27,7 @@ export function refreshToken() {
 }
 
 export function reg(params) {
+  console.log("===params===req===",params)
   const appid = getAppId()
   return req.post('/member', {
     ...params,

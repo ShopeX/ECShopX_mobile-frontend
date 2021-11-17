@@ -67,12 +67,9 @@ class API {
     })
   }
 
-  errorToast(data) {
-    let errMsg =
-      data.msg || data.err_msg || (data.error && data.error.message) || '操作失败，请稍后重试'
-    if (isWeb) {
-      errMsg = data.data.message
-    }
+  errorToast(data) { 
+    let errMsg = data.message || '操作失败，请稍后重试'
+   
     let newText = ''
     if (errMsg.length > 11) {
       newText = errMsg.substring(0, 11) + '\n' + errMsg.substring(11)
@@ -145,11 +142,8 @@ class API {
       }
     }
 
-
-
     const _this = this
     return Taro.request( options ).then( ( res ) => {
-      debugger
       if (showLoading) {
         Taro.hideLoading()
       }
@@ -201,31 +195,19 @@ class API {
         }
         return Promise.reject(this.reqError(data))
       }
-
-      if (statusCode >= 400) {
+      if (statusCode >= 400) { 
         if (
-          !isWeb &&
           showError &&
-          data.error.message !== '当前余额不足以支付本次订单费用，请充值！' &&
-          data.error.code !== 201 &&
-          data.error.code !== 450
-        ) {
-          this.errorToast(data)
-        } else if (
-          isWeb &&
-          showError &&
-          data.message !== '当前余额不足以支付本次订单费用，请充值！'
+          data.message !== '当前余额不足以支付本次订单费用，请充值！' &&
+          data.code !== 201 &&
+          data.code !== 450
         ) {
           this.errorToast(data)
         }
-
         return Promise.reject(this.reqError(data))
       }
       return Promise.reject(this.reqError(data, `API error: ${statusCode}`))
     } ).catch( e => {
-      // if()
-
-
       return Promise.reject( this.reqError( {
         message: e.statusText,
         statusCode: e.status

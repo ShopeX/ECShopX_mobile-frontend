@@ -124,7 +124,7 @@ export default class Reg extends Component {
     }
   }
 
-  handleSubmit = async (e) => {
+  handleSubmit = async (e) => { 
     const { value } = e.detail
     let contine = false
     const data = {
@@ -140,9 +140,9 @@ export default class Reg extends Component {
       return S.toast('请输入验证码')
     }
 
-    /*if (!data.password) {
+    if (!data.password) {
       return S.toast('请输入密码')
-    }*/
+    }
     this.state.list.map((item) => {
       if (item.is_required && !data[item.key]) {
         contine = true
@@ -212,8 +212,8 @@ export default class Reg extends Component {
             union_id: userInfo.unionid
           })
         }
-      } else {
-        const res = await api.user.reg(data)
+      } else { 
+        const res = await api.user.reg(data) 
         S.setAuthToken(res.token)
       }
 
@@ -532,7 +532,7 @@ export default class Reg extends Component {
               </View>
             )}
 
-            {/*<AtInput
+            <AtInput
               title='密码'
               name='password'
               type={isVisible ? 'text' : 'password'}
@@ -547,7 +547,7 @@ export default class Reg extends Component {
                   ? <View className='sp-icon sp-icon-yanjing icon-pwd' onClick={this.handleClickIconpwd}> </View>
                   : <View className='sp-icon sp-icon-icon6 icon-pwd' onClick={this.handleClickIconpwd}> </View>
               }
-            </AtInput>*/}
+            </AtInput>
             {isHasData &&
               list.map((item, index) => {
                 return (

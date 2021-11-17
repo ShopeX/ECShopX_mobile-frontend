@@ -1662,7 +1662,9 @@ export default class CartCheckout extends Component {
       wxpay: isWeixin ? '微信支付' : isAlipay ? '支付宝支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款',
-      hfpay: '微信支付'
+      hfpay: '微信支付',
+      alipayh5:'支付宝支付',
+      wxpayh5:'微信支付'
     }
 
     const { coupon, colors } = this.props
@@ -1698,6 +1700,8 @@ export default class CartCheckout extends Component {
     if (!info) {
       return <Loading />
     }
+
+    console.log("===payType==",payType)
 
     const couponText = !coupon
       ? ''

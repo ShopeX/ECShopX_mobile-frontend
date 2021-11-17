@@ -11,7 +11,10 @@ page {
   height: 100%;
   padding: $edge-size $edge-margin $toolbar-height $edge-margin;
   /*  #ifdef  h5  */
-  padding-top: $navigate-height-h5 + $edge-size;
+  //padding-top: $navigate-height-h5 + $edge-size;
+  // padding-left:0;
+  // padding-right:0;
+  box-sizing: border-box;
   /*  #endif  */
   overflow-y: auto;
   .shopping-guide-header{
