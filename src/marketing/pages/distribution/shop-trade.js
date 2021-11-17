@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { SpToast, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { pickBy, formatDataTime } from '@/utils'
+import { pickBy, formatDateTime } from '@/utils'
 
 import './shop-trade.scss'
 
@@ -85,7 +85,7 @@ export default class DistributionShopTrade extends Component {
                 <View className='section-title view-flex view-flex-middle with-border'>
                   <View className='view-flex-item trade-list__item-code'>{item.order_id}</View>
                   <View className='trade-list__item-date'>
-                    <Text className='icon-clock muted'></Text> {formatDataTime(item.created * 1000)}
+                    <Text className='icon-clock muted'></Text> {formatDateTime(item.created * 1000)}
                   </View>
                 </View>
                 <View className='section-body'>

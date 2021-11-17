@@ -23,7 +23,7 @@ export default class ArticleIndex extends Component {
     const { id } = this.$router.params
     const info = await api.article.detail(id)
 
-    info.updated_str = formatTime(info.updated * 1000, 'yyyy-MM-dd HH:mm')
+    info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD HH:mm')
     Taro.setNavigationBarTitle({
       title: info.title
     })

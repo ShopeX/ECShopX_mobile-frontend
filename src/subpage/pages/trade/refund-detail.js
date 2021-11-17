@@ -36,7 +36,7 @@ export default class TradeRefundDetail extends Component {
     })
     let prog = +info.progress
     info.status_str = REFUND_STATUS[String(prog)]
-    info.creat_time_str = formatTime(info.create_time * 1000, 'yyyy-MM-dd HH:mm')
+    info.creat_time_str = formatTime(info.create_time * 1000, 'YYYY-MM-DD HH:mm')
     let remind = await api.aftersales.remindDetail()
 
     this.setState({
@@ -172,7 +172,7 @@ export default class TradeRefundDetail extends Component {
             (progress == 3 || progress == 5)
               ? <View>
                   <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'refund')}>再次申请</Text>
-                 
+
                 </View>
               : null
           } */}
@@ -323,7 +323,7 @@ export default class TradeRefundDetail extends Component {
         {/* <FloatMenus>
         {
           meiqia.is_open === 'meiqia'
-            ? <FloatMenuMeiQia storeId={orderInfo.distributor_id} info={{orderId: orderInfo.order_id}} /> 
+            ? <FloatMenuMeiQia storeId={orderInfo.distributor_id} info={{orderId: orderInfo.order_id}} />
             : <FloatMenuItem
               iconPrefixClass='icon'
               icon='headphones'

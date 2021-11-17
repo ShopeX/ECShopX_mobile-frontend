@@ -73,7 +73,7 @@ export default class WgtSearchHome extends Component {
             onClick={this.searchTap.bind(this)}
             style={!isShowScan ? { width:'95%' } : {} }
           >
-            <View className='iconfont icon-search1'></View>
+            <View className='iconfont searchicon icon-search1'></View>
             <View>搜索</View>
           </View>
           { isShowScan && (

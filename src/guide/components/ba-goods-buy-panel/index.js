@@ -10,9 +10,8 @@ import { classNames, pickBy, log } from '@/utils'
 import { Tracker } from '@/service'
 import api from '@/api'
 import entry from '@/utils/entry'
-import S from '@/spx'
 import './index.scss'
-import { floor } from 'lodash'
+import floor from 'lodash/floor'
 
 @connect(({ colors, guide }) => ({
   colors: colors.current,

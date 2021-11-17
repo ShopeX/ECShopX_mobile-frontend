@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
-import { pickBy, formatDataTime } from '@/utils'
+import { pickBy, formatDateTime } from '@/utils'
 import api from '@/api'
 import { SpNavBar } from '@/components'
 
@@ -58,7 +58,7 @@ export default class PayDetail extends Component {
         receiver_address: 'receiver_address',
         remark: 'remark',
         num_total: 'total_fee',
-        create_time: ({ create_time }) => formatDataTime(create_time),
+        create_time: ({ create_time }) => formatDateTime(create_time),
         total_fee: ({ total_fee }) => (total_fee / 100).toFixed(2),
         item_fee: ({ item_fee }) => (item_fee / 100).toFixed(2)
       })

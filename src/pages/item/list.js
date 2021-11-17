@@ -43,11 +43,7 @@ export default class List extends Component {
       selectParams: [],
       info: {},
       shareInfo: {},
-      isOpenStore: null,
-      couponTab: [
-        { id: 1, title: '首页', val: `/pages/index` },
-        { id: 2, title: '我的优惠券', val: `/marketing/pages/member/coupon` }
-      ],
+      isOpenStore:null
     }
   }
 
@@ -81,7 +77,7 @@ export default class List extends Component {
     })
   }
 
-  componentWillReceiveProps(next) {
+  componentWillReceiveProps (next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       setTimeout(() => {
         const list = this.state.list.map(item => {
@@ -94,62 +90,6 @@ export default class List extends Component {
       })
     }
   }
-
-  async componentDidShow() {
-    const { isNewGift = null } = this.$router.params
-    if (!isNewGift) return
-    this.setStore();
-    const { cat_id = null, main_cat_id = null } = this.$router.params
-    this.firstStatus = true
-    const isOpenStore = await entry.getStoreStatus()
-    const { store_id } = Taro.getStorageSync('curStore')
-    this.setState({
-      isOpenStore
-    })
-
-    this.setState({
-      query: {
-        keywords: this.$router.params.keywords,
-        item_type: 'normal',
-        is_point: 'false',
-        distributor_id: isOpenStore ? store_id : this.$router.params.dis_id,
-        approve_status: 'onsale,only_show',
-        category: cat_id ? cat_id : '',
-        main_category: main_cat_id ? main_cat_id : ''
-      },
-      curTagId: this.$router.params.tag_id
-    }, () => {
-      this.nextPage()
-      api.wx.shareSetting({ shareindex: 'itemlist' }).then(res => {
-        this.setState({
-          shareInfo: res
-        })
-      })
-    })
-  }
-
-  // 设置门店
-  setStore = (isChange = false) => {
-    const { card_id } = this.$router.params
-    const store = Taro.getStorageSync("curStore");
-    if (store && !isChange) {
-      this.resetPage()
-      this.setState({
-        currentShop: {
-          name: store.name || store.store_name,
-          shop_id: store.shop_id,
-          store_name: store.store_name,
-          poiid: store.poiid
-        },
-        list: [],
-        oddList: [],
-        evenList: [],
-        showDrawer: false,
-      })
-    } else {
-      Taro.navigateTo({ url: `/pages/store/list?card_id=${card_id}` });
-    }
-  };
 
   onShareAppMessage() {
     const res = this.state.shareInfo
@@ -177,25 +117,19 @@ export default class List extends Component {
 
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
-    const { card_id, isNewGift = null } = this.$router.params
-    const { selectParams, tagsList, curTagId, isOpenStore } = this.state
-    const { distributor_id, store_id } = Taro.getStorageSync('curStore')
+    const { selectParams, tagsList, curTagId,isOpenStore } = this.state
+    const { distributor_id,store_id } = Taro.getStorageSync('curStore')
     const { cardId } = this.$router.params
     const query = {
       ...this.state.query,
       item_params: selectParams,
       tag_id: curTagId,
       page,
-      pageSize,
-      card_id
+      pageSize
     }
 
     if (process.env.APP_PLATFORM === 'standard') {
-      if (isNewGift) {
-        query.distributor_id = distributor_id
-      } else {
-        query.distributor_id = isOpenStore ? store_id : distributor_id
-      }
+      query.distributor_id = isOpenStore ? store_id : distributor_id
     }
 
     if (cardId) {
@@ -227,7 +161,7 @@ export default class List extends Component {
       origincountry_img_url: 'origincountry_img_url',
       type: 'type',
       price: ({ price }) => (price / 100).toFixed(2),
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
+      // member_price: ({ member_price }) => (member_price / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
       is_fav: ({ item_id }) => Boolean(favs[item_id]),
       store: 'store'
@@ -252,7 +186,6 @@ export default class List extends Component {
       if (isWeixin) {
         this.startTrack();
       }
-
     })
 
     if (this.firstStatus) {
@@ -292,20 +225,13 @@ export default class List extends Component {
         if (res.intersectionRatio > 0) {
           const { id } = res.dataset;
           const { list } = this.state
-          const curGoods = list.find(item => item.item_id == id);
-          const {
-            item_id,
-            title,
-            market_price,
-            price,
-            img,
-            member_price
-          } = curGoods;
+          const curGoods = list.find( item => item.item_id == id );
+          const { item_id, title, market_price, price, img, member_price } = curGoods;
           Tracker.dispatch("EXPOSE_SKU_COMPONENT", {
             goodsId: item_id,
             title: title,
             market_price: market_price * 100,
-            member_price: member_price * 100,
+            // member_price: member_price * 100,
             price: price * 100,
             imgUrl: img
           });
@@ -379,21 +305,16 @@ export default class List extends Component {
   }
 
   handleClickItem = (item) => {
-    const { user_card_id, isNewGift = null, card_id, code } = this.$router.params
-    if (isNewGift && item.store == 0) return
-    const { item_id, title, market_price, price, img, member_price } = item;
+    const { item_id, title, market_price, price, img } = item;
     Tracker.dispatch("TRIGGER_SKU_COMPONENT", {
       goodsId: item_id,
       title: title,
       market_price: market_price * 100,
-      member_price: member_price * 100,
+      // member_price: member_price * 100,
       price: price * 100,
       imgUrl: img
     });
-    let url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
-    if (isNewGift) {
-      url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&isNewGift=true&user_card_id=${user_card_id}&card_id=${card_id}&code${code}`
-    }
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -547,12 +468,6 @@ export default class List extends Component {
     })
   }
 
-  onHandleClick = (params) => {
-    Taro.navigateTo({
-      url: params
-    })
-  }
-
   render() {
     const {
       list,
@@ -571,92 +486,60 @@ export default class List extends Component {
       curTagId,
       info,
       isShowSearch,
-      query,
-      currentShop,
-      couponTab
+      query
     } = this.state
-    const { isTabBar = 'guide', isNewGift } = this.$router.params
-
-    return (
-      <View className='page-goods-list'>
-        {
-          !isTabBar && <SpNavBar
+    const { isTabBar = '' } = this.$router.params
+		return (
+			<View className='page-goods-list'>
+        {/* { !isTabBar && } */}
+          <SpNavBar
             title='商品列表'
-            leftIconType='chevron-left'
+            leftIconType={!isTabBar ? 'chevron-left' : ''}
             fixed='true'
           />
-        }
-        {isNewGift ?
-          (<View className='goods-list__toolbar1'>
-            <View className='store' onClick={this.setStore.bind(this, true)}>
-              <View className='title'>当前门店: </View>
-              <View className='name'>{currentShop.name}</View>
-              <View style={{ lineHeight: '88rpx' }} className="iconfont icon-arrowRight item-icon-go"></View>
-            </View>
-            <View style={{ display: `${!page.isLoading && !page.hasNext && !list.length ? 'none' : 'flex'}`, position: 'relative' }}>
-              <FilterBar
-                className='goods-list__tabs1'
-                custom
-                current={curFilterIdx}
-                list={filterList}
-                onChange={this.handleFilterChange}
-              />
-              <View className='goods-list__search1'>
-                <SpSearchBar
-                  _placeholder
-                  keyword={query ? query.keywords : ''}
-                  onFocus={this.handleSearchOn}
-                  onChange={this.handleSearchChange}
-                  onClear={this.handleSearchClear}
-                  onCancel={this.handleSearchOff}
-                  onConfirm={this.handleConfirm.bind(this)}
-                />
-              </View>
-            </View>
-          </View>) :
-          (<View className='goods-list__toolbar'>
-            <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
-              <SpSearchBar
-                keyword={query ? query.keywords : ''}
-                onFocus={this.handleSearchOn}
-                onChange={this.handleSearchChange}
-                onClear={this.handleSearchClear}
-                onCancel={this.handleSearchOff}
-                onConfirm={this.handleConfirm.bind(this)}
-              />
-              {
-                !isShowSearch &&
-                <View
-                  className={classNames('goods-list__type iconfont', listType === 'grid' ? 'icon-list' : 'icon-grid')}
-                  style={ listType === 'grid' ? { fontSize: '30px' } : { fontSize: '20px' } }
-                  onClick={this.handleViewChange}
-                >
-                </View>
-              }
-            </View>
+        <View className='goods-list__toolbar'>
+          <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
+            <SpSearchBar
+              keyword={query ? query.keywords : ''}
+              onFocus={this.handleSearchOn}
+              onChange={this.handleSearchChange}
+              onClear={this.handleSearchClear}
+              onCancel={this.handleSearchOff}
+              onConfirm={this.handleConfirm.bind(this)}
+            />
             {
-              tagsList.length &&
-              <TagsBar
-                current={curTagId}
-                list={tagsList}
-                onChange={this.handleTagChange.bind(this)}
-              />
+              !isShowSearch &&
+              <View
+                className={classNames('goods-list__type', listType === 'grid' ? 'icon-list' : 'icon-grid')}
+                style={ listType === 'grid' ? { fontSize: '26px' } : { fontSize: '18px' } }
+                onClick={this.handleViewChange}
+              >
+              </View>
             }
-            <FilterBar
-              className='goods-list__tabs'
-              custom
-              current={curFilterIdx}
-              list={filterList}
-              onChange={this.handleFilterChange}
-            >
-              {/*
-            <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
-              <View className='icon-filter'></View>
-              <Text>筛选</Text>
-            </View>
-          */}
-            </FilterBar>
-          </View>)}
+          </View>
+          {
+            tagsList.length &&
+            <TagsBar
+              current={curTagId}
+              list={tagsList}
+              onChange={this.handleTagChange.bind(this)}
+            />
+          }
+          <FilterBar
+            className='goods-list__tabs'
+            custom
+            current={curFilterIdx}
+            list={filterList}
+            onChange={this.handleFilterChange}
+          >
+            {/*
+              <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
+                <View className='icon-filter'></View>
+                <Text>筛选</Text>
+              </View>
+            */}
+          </FilterBar>
+        </View>
 
         <AtDrawer
           show={showDrawer}
@@ -702,7 +585,7 @@ export default class List extends Component {
         </AtDrawer>
 
         <ScrollView
-          className={classNames(isTabBar ? 'goods-list__scroll_isTabBar' : 'goods-list__scroll', tagsList.length > 0 && 'with-tag-bar', isTabBar && 'isTabBar', isNewGift && 'new-gift')}
+          className={classNames(isTabBar ? 'goods-list__scroll_isTabBar' : 'goods-list__scroll', tagsList.length > 0 && 'with-tag-bar', isTabBar && 'isTabBar')}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
@@ -722,7 +605,6 @@ export default class List extends Component {
                         data-id={item.item_id}
                       >
                         <GoodsItem
-                          showNewGift={isNewGift}
                           key={item.item_id}
                           info={item}
                           onClick={() => this.handleClickItem(item)}
@@ -744,7 +626,6 @@ export default class List extends Component {
                       >
                         <GoodsItem
                           key={item.item_id}
-                          showNewGift={isNewGift}
                           info={item}
                           onClick={() => this.handleClickItem(item)}
                           onStoreClick={() => this.handleClickStore(item)}
@@ -764,7 +645,6 @@ export default class List extends Component {
                   return (
                     <View className='goods-list__item' key={item.item_id}>
                       <GoodsItem
-                        showNewGift={isNewGift}
                         info={item}
                         onClick={() => this.handleClickItem(item)}
                         onStoreClick={() => this.handleClickStore(item)}
@@ -782,24 +662,8 @@ export default class List extends Component {
           }
           {
             !page.isLoading && !page.hasNext && !list.length
-            && (<SpNote img={isNewGift ? `${APP_IMAGE_CDN}/no_exist_product.png` : `trades_empty.png`} isUrl={isNewGift}>{`${isNewGift ? '此店铺不参加此次活动，看看别的吧' : '暂无数据～'}`}</SpNote>)
+            && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
           }
-          {isNewGift && !page.isLoading && !page.hasNext && !list.length && (
-            <View className='coupon-tab'>
-              {couponTab.map((item, idx) => {
-                let { title, val } = item
-                return (
-                  <View
-                    key={item.id}
-                    onClick={this.onHandleClick.bind(this, val)}
-                    className={`content ${idx != 0 ? 'yellow' : 'gray'}`}
-                  >
-                    {title}
-                  </View>
-                )
-              })}
-            </View>
-          )}
         </ScrollView>
 
         <BackToTop

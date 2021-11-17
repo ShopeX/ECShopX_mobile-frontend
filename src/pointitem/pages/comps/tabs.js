@@ -13,7 +13,6 @@ import { classNames } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 
 import './tabs.scss'
-import { isThisSecond } from 'date-fns'
 
 @connect(({ colors }) => ({
   colors: colors.current

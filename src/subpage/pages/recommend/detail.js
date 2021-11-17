@@ -91,7 +91,7 @@ export default class recommendDetail extends Component {
   detailInfo = async (id) => {
     const info = S.getAuthToken() ? await api.article.detailAuth(id) : await api.article.detail(id)
 
-    info.updated_str = formatTime(info.updated * 1000, 'yyyy-MM-dd')
+    info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD')
 
     this.setState({
       info

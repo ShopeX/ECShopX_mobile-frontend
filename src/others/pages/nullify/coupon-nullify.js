@@ -126,7 +126,7 @@ export default class CouponNullify extends Component {
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
-          customStyle={{ color: colors.data[0].primary, backgroundColor: colors.data[0].primary }}
+          customStyle={{ color: colors.data[0].primary }}
         >
           {tabList.map((panes, pIdx) => (
             <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>

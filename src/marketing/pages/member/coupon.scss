@@ -8,6 +8,18 @@
     bottom: 160px !important;
     top: 90px;
   }
+  .at-tabs__header {
+    .at-tabs__item {
+      flex: 0 0 180px;
+      // font-size: 32px;
+      font-weight: 400;
+    }
+    .at-tabs__item-underline {
+      height: 6px;
+      width: 30%;
+      left: 35%;
+    }
+  }
   &__tabs {
     .at-tabs__item--active {
       font-size: 34px !important;

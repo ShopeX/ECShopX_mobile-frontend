@@ -79,7 +79,7 @@ export default class recommendDetail extends Component {
   // 拉取详情
   detailInfo = async (id) => {
     const info = await api.article.detail(id)
-    info.updated_str = formatTime(info.updated * 1000, 'yyyy-MM-dd')
+    info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD')
     this.setState({
       info
     })

@@ -9,7 +9,6 @@ import { pickBy } from '@/utils'
 import { connect } from '@tarojs/redux'
 
 import './ziti-list.scss'
-import { de } from 'date-fns/locale'
 
 @connect(
   ({ cart }) => ({

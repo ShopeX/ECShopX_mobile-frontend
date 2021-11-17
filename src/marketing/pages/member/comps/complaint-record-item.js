@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtAvatar, AtTextarea } from 'taro-ui'
-import { formatDataTime } from '@/utils'
+import { formatDateTime } from '@/utils'
 
 import './complaint-record-item.scss'
 
@@ -67,7 +67,7 @@ export default class ComplaintRecordItem extends Component {
               )
             })}
           </View>
-          <View className='item-info__date'>{formatDataTime(info.created * 1000)}</View>
+          <View className='item-info__date'>{formatDateTime(info.created * 1000)}</View>
         </View>
 
         {replyList.map((item, idx) => {
@@ -93,7 +93,7 @@ export default class ComplaintRecordItem extends Component {
                 </View>
               </View>
 
-              <View className='item-reply__date'>{formatDataTime(item.reply_time * 1000)}</View>
+              <View className='item-reply__date'>{formatDateTime(item.reply_time * 1000)}</View>
             </View>
           )
         })}

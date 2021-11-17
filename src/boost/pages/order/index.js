@@ -3,7 +3,7 @@ import { View, ScrollView, Image } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import api from '@/api'
 import { connect } from '@tarojs/redux'
-import { debounce, pickBy, formatDataTime } from '@/utils'
+import { debounce, pickBy, formatDateTime } from '@/utils'
 import LoadingMore from '../../component/loadingMore'
 
 import './index.scss'
@@ -47,7 +47,7 @@ export default class Order extends Component {
       order_id: 'order_id',
       items: 'items',
       order_status: 'order_status',
-      create_time: ({ create_time }) => formatDataTime(create_time),
+      create_time: ({ create_time }) => formatDateTime(create_time),
       bargain_id: 'bargain_id',
       total_fee: ({ total_fee }) => (total_fee / 100).toFixed(2),
       item_price: ({ item_price }) => (item_price / 100).toFixed(2)

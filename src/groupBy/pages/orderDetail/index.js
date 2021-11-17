@@ -11,7 +11,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
-import { formatDataTime } from '@/utils'
+import { formatDateTime } from '@/utils'
 import { SpNavBar } from '@/components'
 
 import './index.scss'
@@ -133,7 +133,7 @@ export default class OrderDetail extends Component {
             endDate: orderInfo.end_date,
             payDate: tradeInfo.payDate,
             pay_type: orderInfo.pay_type,
-            createTime: formatDataTime(orderInfo.create_time),
+            createTime: formatDateTime(orderInfo.create_time),
             qrcodeUrl
           },
           () => {

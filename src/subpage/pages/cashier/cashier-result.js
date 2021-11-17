@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { Button, Image, View } from '@tarojs/components'
 import api from '@/api'
-import { formatDataTime } from '@/utils'
+import { formatDateTime } from '@/utils'
 import paySuccessPng from '../../../assets/imgs/pay_success.png'
 import payFailPng from '../../../assets/imgs/pay_fail.png'
 
@@ -65,7 +65,7 @@ export default class CashierResult extends Component {
     const { orderInfo, tradeInfo, showTabBar } = this.state
 
     if (!orderInfo) return null
-    let create_time = formatDataTime(orderInfo.create_time * 1000)
+    let create_time = formatDateTime(orderInfo.create_time * 1000)
     let ingUrl = payFailPng
     if (tradeInfo.tradeState === 'SUCCESS') {
       ingUrl = paySuccessPng

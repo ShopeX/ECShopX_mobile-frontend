@@ -6,7 +6,7 @@ import { Loading, SpNavBar, FloatMenuMeiQia } from '@/components'
 import {
   log,
   pickBy,
-  formatDataTime,
+  formatDateTime,
   payPlatform,
   resolveOrderStatus,
   copyText,
@@ -137,8 +137,8 @@ export default class TradeDetail extends Component {
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
-      created_time_str: ({ create_time }) => formatDataTime(create_time * 1000),
-      update_time_str: ({ update_time }) => formatDataTime(update_time * 1000),
+      created_time_str: ({ create_time }) => formatDateTime(create_time * 1000),
+      update_time_str: ({ update_time }) => formatDateTime(update_time * 1000),
       auto_cancel_seconds: 'auto_cancel_seconds',
       receiver_name: 'receiver_name',
       receiver_mobile: 'receiver_mobile',
@@ -873,13 +873,13 @@ export default class TradeDetail extends Component {
             {info.dada && info.dada.pickup_time && (
               <View className='line'>
                 <View className='left'>取货时间</View>
-                <View className='right'>{formatDataTime(Number(info.dada.pickup_time))}</View>
+                <View className='right'>{formatDateTime(Number(info.dada.pickup_time))}</View>
               </View>
             )}
             {info.dada && info.dada.delivered_time && (
               <View className='line'>
                 <View className='left'>送达时间</View>
-                <View className='right'>{formatDataTime(Number(info.dada.delivered_time))}</View>
+                <View className='right'>{formatDateTime(Number(info.dada.delivered_time))}</View>
               </View>
             )}
             {info.dada && (info.dada.dada_status === 10 || info.dada.dada_status === 4) && (

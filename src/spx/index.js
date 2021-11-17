@@ -331,7 +331,7 @@ class Spx {
 
   setUvTimeStamp() {
     let uvstamp = Taro.getStorageSync('userVisitTime')
-    let today = formatDataTime(new Date())
+    let today = formatDateTime(new Date())
     if (!uvstamp || (uvstamp && new Date(today).getTime() > uvstamp)) {
       api.user.getuservisit()
       uvstamp = new Date(today).getTime() + 5 * 60 * 1000
