@@ -4,7 +4,7 @@ import { connect } from '@tarojs/redux'
 import { AtFloatLayout } from 'taro-ui'
 import { SpCheckbox } from '@/components'
 import api from '@/api'
-import { closeClassName, getPointName } from '@/utils'
+import { closeClassName, getPointName,isWeixin } from '@/utils'
 import { payment_platform } from '@/utils/platform'
 import './payment-picker.scss'
 
@@ -108,6 +108,8 @@ export default class PaymentPicker extends Component {
     } = this.props
     const { localType, typeList } = this.state
 
+    console.log("===localType==",localType,typeList)
+
     return (
       <AtFloatLayout isOpened={isOpened}>
         <View className='payment-picker'>
@@ -140,7 +142,7 @@ export default class PaymentPicker extends Component {
                 </View>
               </View>
             )}
-            {isShowBalance && (
+            {isShowBalance && isWeixin && (
               <View
                 className={`payment-item ${
                   disabledPayment && disabledPayment['deposit'] ? 'is-disabled' : ''

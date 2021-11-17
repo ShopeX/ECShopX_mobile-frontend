@@ -1,11 +1,36 @@
 import Taro from '@tarojs/taro'
 import S from '@/spx'
+import api from '@/api'
 import qs from 'qs'
-import { isGoodsShelves, isAlipay,isWeb } from '@/utils'
+
+import { isAlipay, isWeb } from '@/utils'
 
 function addQuery(url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
 }
+
+class RequestQueue {
+  constructor() {
+    this.requestList = []
+  }
+
+  push(req) {
+    this.requestList.push(req)
+  }
+
+  async run() {
+    const request = this.requestList.shift()
+    log.debug(`requestQueue length is ${this.requestList.length}`)
+    if (request) {
+      await request()
+      if (this.requestList.length > 0 && !API.isRefreshing) {
+        this.run()
+      }
+    }
+  }
+}
+
+const requestQueue = new RequestQueue()
 
 class API {
   constructor(options = {}) {
@@ -28,6 +53,8 @@ class API {
     this.genMethods(['get', 'post', 'delete', 'put'])
   }
 
+  static isRefreshing = false
+
   genMethods(methods) {
     methods.forEach((method) => {
       this[method] = (url, data, config = {}) =>
@@ -41,18 +68,15 @@ class API {
   }
 
   errorToast(data) { 
-    let errMsg =
-      data.msg || data.err_msg || (data.error && data.error.message) || '操作失败，请稍后重试'
-    if(isWeb){
-      errMsg=data.data.message; 
-    }
+    let errMsg = data.message || '操作失败，请稍后重试'
+   
     let newText = ''
     if (errMsg.length > 11) {
       newText = errMsg.substring(0, 11) + '\n' + errMsg.substring(11)
     } else {
       newText = errMsg
     }
-    setTimeout(() => { 
+    setTimeout(() => {
       Taro.showToast({
         icon: 'none',
         title: newText
@@ -76,15 +100,10 @@ class API {
       header['Authorization'] = `Bearer ${token}`
     }
 
-    const { company_id, appid } = this.options;
-    if (process.env.TARO_ENV === "weapp"||isAlipay) {
+    const { company_id, appid } = this.options
+    if (process.env.TARO_ENV === 'weapp' || isAlipay) {
       if (appid) {
         header['authorizer-appid'] = appid
-      }
-      // 企微货架
-      if (isGoodsShelves()) {
-        header['salesperson-type'] = 'shopping_guide'
-        header['x-wxapp-session'] = token
       }
     }
 
@@ -102,10 +121,6 @@ class API {
       })
     }
 
-    // TODO: update taro version
-    // if (this.options.interceptor && Taro.addInterceptor) {
-    //   Taro.addInterceptor(this.options.interceptor)
-    // }
     options.data = {
       ...(options.data || {}),
       company_id
@@ -126,171 +141,92 @@ class API {
         options.data = qs.stringify(options.data)
       }
     }
-    const workEnv = S.get('workEnv', true)
-    let ba_params = S.get('ba_params', true)
-
-    if (workEnv && workEnv.environment === 'wxwork') {
-      //企业微信
-
-      let guide_code = options.data.guide_code
-        ? options.data.guide_code
-        : ba_params
-        ? ba_params.guide_code
-        : null
-      options.data.guide = true
-      options.data.guide_code = guide_code
-      console.log('======导购端请求参数====')
-
-      console.log(ba_params)
-    }
-    let resData = {}
-    let isRefreshing = false
-    let requests = []
-
-    return Taro.request(options)
-      .then((res) => {
-        resData = res
-      })
-      .catch((err) => {
-        resData.statusCode = err.status
-
-        resData.header = {}
-
-        err.headers.forEach((val, key) => {
-          resData.header[key] = val
-        })
-
-        if (config.responseType === 'arraybuffer') {
-          return err.arrayBuffer()
+    const _this = this
+    return Taro.request(options).then((res) => {
+      if (showLoading) {
+        Taro.hideLoading()
+      }
+      const { statusCode } = res
+      const { data } = res.data
+      if (statusCode >= 200 && statusCode < 300) {
+        if (options.url.indexOf('token/refresh') >= 0) {
+          data['token'] = res.header.Authorization.replace('Bearer ', '')
         }
-
-        if (config.dataType === 'json' || typeof config.dataType === 'undefined') {
-          return err.json()
+        return data
+      }
+      console.log('options:', options)
+      if (statusCode === 401) {
+        // 刷新token失败
+        if ( !data.code && API.isRefreshing ) {
+          S.setAuthToken('')
+          Taro.redirectTo({ url: '/pages/member/index' })
         }
-
-        if (config.responseType === 'text') {
-          return err.text()
+        if (data.code === 401002) {
+          this.errorToast({
+            msg: '帐号已被禁用'
+          })
+          return Promise.reject(this.reqError(data, '帐号已被禁用'))
         }
-
-        return Promise.resolve(null)
-      })
-      .then((res) => { 
-        // 如果有错误则为错误信息
-        if (res) {
-          resData.data = res
-        }
-
-        // eslint-disable-next-line
-        const { data, statusCode, header } = resData
-        if (showLoading) {
-          Taro.hideLoading()
-        }
-
-        if (statusCode >= 200 && statusCode < 300) {
-          if (data.data !== undefined) {
-            if (options.url.indexOf('token/refresh') >= 0) {
-              data.data.token = resData.header.Authorization.replace('Bearer ', '')
-            }
-            return data.data
-          } else {
-            if (showError) {
-              this.errorToast(data)
-            }
-            return Promise.reject(this.reqError(resData))
-          }
-        }
-
-        if (statusCode === 401) {
-          if (data.error && data.error.code === 401002) {
-            this.errorToast({
-              msg: '帐号已被禁用'
+        if (data.code === 401001) {
+          requestQueue.push(() => {
+            return new Promise((resolve, reject) => {
+              resolve(_this.makeReq(config))
             })
-            return Promise.reject(this.reqError(resData, '帐号已被禁用'))
+          })
+          if (!API.isRefreshing) {
+            API.isRefreshing = true
+            api.wx
+              .refreshToken()
+              .then( ( res ) => {
+                log.debug(`token refresh success: ${res.token}`)
+                API.isRefreshing = false
+                S.setAuthToken(res.token)
+                requestQueue.run()
+              })
+              .catch((e) => {
+                API.isRefreshing = false
+                Taro.redirectTo({ url: '/pages/member/index' })
+              })
+              .finally(() => {
+                API.isRefreshing = false
+              })
           }
-          if (data.error && data.error.code === 401001) {
-            if (isGoodsShelves()) {
-              S.logout()
-              S.loginQW(this, true)
-            } else {
-              // 刷新token
-              const config = options
-              if (isRefreshing) {
-                return new Promise((resolve) => {
-                  requests.push((token) => {
-                    resolve(API.makeReq(config))
-                  })
-                })
-              } else {
-                isRefreshing = true
-                const token = S.getAuthToken()
-                return Taro.request({
-                  header: {
-                    Authorization: `Bearer ${token}`
-                  },
-                  method: 'get',
-                  url: process.env.APP_BASE_URL + '/token/refresh'
-                })
-                  .then((data) => {
-                    console.log('/token/refresh', data)
-                    if (data.statusCode == 401) {
-                      S.logout()
-                      S.login(this, true)
-                    }
-                    S.setAuthToken(data.header.Authorization.split(' ')[1])
-                    requests.forEach((cb) => cb())
-                    requests = []
-                    return API.makeReq(config)
-                  })
-                  .catch((e) => {
-                    console.log(e)
-                  })
-                  .finally(() => {
-                    isRefreshing = false
-                  })
-              }
-            }
-          }
-          return Promise.reject(this.reqError(resData))
+        }
+        return Promise.reject(this.reqError(data))
+      }
+
+      if (statusCode >= 400) { 
+        if (
+          showError &&
+          data.message !== '当前余额不足以支付本次订单费用，请充值！' &&
+          data.code !== 201 &&
+          data.code !== 450
+        ) {
+          this.errorToast(data)
         }
 
-        if (statusCode >= 400) {
- 
-          if (
-            !isWeb && showError &&
-            data.error.message !== '当前余额不足以支付本次订单费用，请充值！' &&
-            data.error.code !== 201 &&
-            data.error.code !== 450
-          ) {
-            this.errorToast(data)
-          }else if(isWeb && showError && data.message !== '当前余额不足以支付本次订单费用，请充值！' ){
-            this.errorToast(data)
-          }
-
-          return Promise.reject(this.reqError(resData))
-        } 
-        return Promise.reject(this.reqError(resData, `API error: ${statusCode}`))
-      })
+        return Promise.reject(this.reqError(data))
+      }
+      return Promise.reject(this.reqError(data, `API error: ${statusCode}`))
+    }).catch( e => { 
+      return Promise.reject(this.reqError( {
+        message: e.statusText,
+        statusCode: e.status
+      }))
+    })
   }
 
   reqError(res, msg = '') {
-    const data = res.data.error || res.data
-    const errMsg = data.message || data.err_msg || msg
+    const errMsg = res.message || msg
     const err = new Error(errMsg)
     err.res = res
-    err.code = res.data.error.code
+    err.code = res.statusCode
     return err
   }
 }
 
 export default new API({
   baseURL: process.env.APP_BASE_URL
-
-  // interceptor (chain) {
-  //   const { requestParams } = chain
-  //   requestParams.company_id = '1'
-
-  //   return chain.proceed(requestParams)
-  // }
 })
 
 export { API }
