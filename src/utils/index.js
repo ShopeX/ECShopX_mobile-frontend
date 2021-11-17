@@ -173,7 +173,7 @@ export function formatTime(time, formatter = 'YYYY-MM-DD') {
 
 export function formatDateTime(time, formatter = 'YYYY-MM-DD HH:mm:ss') {
   const newTime = time.toString().length < 13 ? time * 1000 : time
-  return format(newTime, formatter)
+  return dayjs(newTime, formatter)
 }
 
 export function copyText(text, msg = '内容已复制') {
