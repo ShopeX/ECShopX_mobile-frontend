@@ -119,8 +119,8 @@
     line-height: 1;
   }
   .at-tab-bar__icon {
-    .iconfont {
-      font-size: 38px !important;
+    .iconfont, .icon {
+      font-size: $at-tab-bar-icon-font-size;
     }
   }
 }
