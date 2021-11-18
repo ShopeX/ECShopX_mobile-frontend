@@ -141,7 +141,7 @@ export default class PaymentPicker extends Component {
                 </View>
               </View>
             )}
-            {isShowBalance && isWeixin && (
+            {/* {isShowBalance && isWeixin && (
               <View
                 className={`payment-item ${
                   disabledPayment && disabledPayment['deposit'] ? 'is-disabled' : ''
@@ -164,7 +164,7 @@ export default class PaymentPicker extends Component {
                   ></SpCheckbox>
                 </View>
               </View>
-            )}
+            )} */}
             {isShowDelivery && (
               <View
                 className={`payment-item ${

@@ -144,6 +144,7 @@ class API {
 
     const _this = this
     return Taro.request( options ).then( ( res ) => {
+      // debugger;
       if (showLoading) {
         Taro.hideLoading()
       }
@@ -200,7 +201,7 @@ class API {
       } else {
         return Promise.reject( this.reqError( data, `API error: ${statusCode}` ) )
       }
-    } ).catch( e => {
+    } ).catch( e => { 
       return Promise.reject( this.reqError( {
         message: e.statusText,
         statusCode: e.status
