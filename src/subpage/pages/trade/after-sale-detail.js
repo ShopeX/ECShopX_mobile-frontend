@@ -122,7 +122,7 @@ export default class TradeDetail extends Component {
     }
   }
 
-  getParamsAboutItem = (oldInfo, isInit = false) => {
+  getParamsAboutItem = (oldInfo, isInit = false) => { 
     const newInfo = JSON.parse(JSON.stringify(oldInfo))
     /** 是否有积分商品 */
     let is_has_point
@@ -705,7 +705,7 @@ export default class TradeDetail extends Component {
               </View>
             </View>
           )}
-          <View className='trade-money'>
+          {/* <View className='trade-money'>
             {info.is_has_normal && (
               <View>
                 总计金额：
@@ -720,7 +720,7 @@ export default class TradeDetail extends Component {
                 <Text className='trade-money__num'>￥{info.total_point_money}</Text>
               </View>
             )}
-          </View>
+          </View> */}
         </ScrollView>
 
         {info.can_apply_aftersales === 1 && (
