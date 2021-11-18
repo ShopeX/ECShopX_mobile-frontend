@@ -474,7 +474,7 @@ export function showToast(title) {
 
 export function isNavbar() {
   return isWeb && !getBrowserEnv().weixin
-}
+} 
 
 export {
   classNames,

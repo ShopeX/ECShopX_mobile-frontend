@@ -13,6 +13,7 @@ const CONST_ENVS = {
     process.env.TARO_ENV == "h5"
       ? "/subpage/pages/auth/login"
       : "/subpage/pages/auth/wxauth",
+  APP_HOME_PAGE:'/pages/index',
   ...APP_ENVS
 };
 

@@ -5,6 +5,7 @@ import { Loading, SpNavBar, SpToast } from '@/components'
 import { pickBy, browser, getPointName } from '@/utils'
 import { withLogin } from '@/hocs'
 import { AlipayPay, WeH5Pay, WePay } from './comps'
+import { getPaymentList } from '@/utils/payment'
 
 import './index.scss'
 
@@ -12,7 +13,8 @@ import './index.scss'
 export default class Cashier extends Component {
   state = {
     info: null,
-    env: ''
+    env: '',
+    isHasAlipay:true
   }
 
   componentDidShow() {
@@ -20,8 +22,13 @@ export default class Cashier extends Component {
   }
 
   async componentDidMount(){
+    console.log("aaa")
     // let res = await api.member.getTradePaymentList({platform:'h5'});
     // console.log("===res==",res)
+    const { isHasAlipay } = await getPaymentList();
+    this.setState({
+      isHasAlipay
+    })
   }
 
   isPointitemGood() {
@@ -66,10 +73,10 @@ export default class Cashier extends Component {
   }
 
   render() {
-    const { info, env, appPay } = this.state
+    const { info, env, isHasAlipay } = this.state;
 
-    console.log('---cashierInfo---', info)
-
+    const { payType }=this.$router.params;
+  
     if (!info) {
       return <Loading />
     }
@@ -95,7 +102,7 @@ export default class Cashier extends Component {
         </View>
         {!env ? (
           <View>
-            <AlipayPay orderID={info.order_id} payType='alipayh5' orderType={info.order_type} />
+            {isHasAlipay && <AlipayPay orderID={info.order_id} payType='alipayh5' orderType={info.order_type} />}
             <WeH5Pay orderID={info.order_id} />
           </View>
         ) : (
