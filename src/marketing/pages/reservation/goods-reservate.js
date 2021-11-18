@@ -316,7 +316,7 @@ export default class GoodsReservate extends Component {
     return (
       <View className='goods-reservate'>
         <View className='goods-reservate__storeinfo'>
-          {isHasActivityInfo ? (
+          {(isHasActivityInfo && formdata.header_title)? (
             <Text className='goods-reservate__tip'>{formdata.header_title}</Text>
           ) : null}
           {formdata &&

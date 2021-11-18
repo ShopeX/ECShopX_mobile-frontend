@@ -839,26 +839,7 @@ export default class CartIndex extends Component {
                 随便逛逛
               </AtButton>
             </SpDefault>
-
-            {/* {(!groups.length || this.state.error) && (
-              <View style={{ textAlign: "center" }}>
-                <View style="margin-bottom: 20px">
-                  <SpNote img="cart_empty.png">快去给我挑点宝贝吧~</SpNote>
-                </View>
-                <View className="btn-go">
-                  <AtButton
-                    type="primary"
-                    onClick={this.navigateTo.bind(
-                      this,
-                      process.env.APP_HOME_PAGE,
-                      true
-                    )}
-                  >
-                    随便逛逛
-                  </AtButton>
-                </View>
-              </View>
-            )} */}
+ 
           </View>
 
           {invalidList.length > 0 && (

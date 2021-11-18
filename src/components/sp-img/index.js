@@ -37,8 +37,8 @@ export default class SpImg extends Component {
       color,
       // 按比例
       p
-    } = this.props
-
+    } = this.props 
+    
     if (!src) return null
 
     let url = src

@@ -4,7 +4,7 @@ import { classNames, styleNames } from '@/utils'
 import './index.scss'
 
 const Fn = () => {}
-
+  
 function SpImage(props) {
   const {
     src,
@@ -14,8 +14,9 @@ function SpImage(props) {
     onError = Fn,
     onLoad = Fn,
     lazyLoad = Fn
-  } = this.props
+  } = props
   const imgUrl = `${process.env.APP_IMAGE_CDN}/${src}`
+ 
   return (
     <View
       className={classNames(
