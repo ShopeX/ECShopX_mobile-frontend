@@ -33,7 +33,7 @@ export default class HomeIndex extends Component {
       page_name: `custom_${id}`,
       name: 'search'
     })
-    const url = transformPlatformUrl(`/alipay/pageparams/setting?${pathparams}`)
+    const url = transformPlatformUrl(`/pageparams/setting?${pathparams}`)
     const fixSetting = await req.get(url)
 
     this.setState(
@@ -53,9 +53,13 @@ export default class HomeIndex extends Component {
   async fetchInfo() {
     const { id } = this.$router.params
     const dtid = getDistributorId()
-    const url = transformPlatformUrl(
-      `/alipay/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=custom_${id}&distributor_id=${dtid}`
-    )
+    const pathparams = qs.stringify({
+      template_name: platformTemplateName,
+      version: 'v1.0.1',
+      page_name: `custom_${id}`,
+      distributor_id: dtid
+    })
+    const url = transformPlatformUrl(`/pageparams/setting?${pathparams}`)
     const info = await req.get(url)
 
     if (!S.getAuthToken()) {

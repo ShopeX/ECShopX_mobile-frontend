@@ -64,9 +64,10 @@
       padding-top: 0;
     }
     &__fixed {
-      #{$self}__cont {
-        padding-top: $home-search-height;
-      }
+      padding-top: $home-search-height;
+      // #{$self}__cont {
+      //   padding-top: $home-search-height;
+      // }
     }
     &__is-distributor {
     }
