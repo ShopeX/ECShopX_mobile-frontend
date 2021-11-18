@@ -287,9 +287,9 @@ export default class TradeRefund extends Component {
           onClick={this.handleClickTab}
           customStyle={{ color: colors.data[0].primary, backgroundColor: colors.data[0].primary }}
         >
-          {segTypes.map((panes, pIdx) => (
+          {/* {segTypes.map((panes, pIdx) => (
             <AtTabsPane current={curSegIdx} key={panes.status} index={pIdx}></AtTabsPane>
-          ))}
+          ))} */}
         </AtTabs>
         <SpCell className='trade-refund__reason' title='请选择退款理由'>
           {reason &&

@@ -78,6 +78,13 @@ page, body {
   padding: $edge-margin $edge-size;
 }
 
+.page-trade-refund { 
+
+  .at-tabs__page{
+    display: none;
+  }
+}
+
 .toolbar {
   &.toolbar-inline {
     .at-button, at-button {

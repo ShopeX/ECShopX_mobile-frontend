@@ -2,8 +2,13 @@
 
 .page-trade-refund {
   overflow: auto;
+
+  .at-tabs__page{
+    display: none;
+  }
   .trade-refund__reason {
-    margin-top: $tabs-height;
+    // margin-top: $tabs-height;
+    margin-top: 10px;
     padding-top: 30px;
   }
   .trade-refund__reason.sp-cell {
