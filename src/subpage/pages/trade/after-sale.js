@@ -127,7 +127,7 @@ export default class AfterSale extends Component {
     const { curTabIdx, tabList, list, page } = this.state
 
     return (
-      <View className='page-after-sale trade-list'>
+      <View className='trade-list'>
         <SpNavBar title='售后订单列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className='trade-list__tabs'
