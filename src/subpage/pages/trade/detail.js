@@ -619,7 +619,7 @@ export default class TradeDetail extends Component {
             </View>
           </View>
         )}
-        <NavBar title='订单详情' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title='订单详情' leftIconType='chevron-left' fixed='true' />
         {info.is_logistics && (
           <View className='custabs'>
             <View

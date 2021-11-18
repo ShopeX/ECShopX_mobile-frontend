@@ -11,7 +11,7 @@ import {
   log,
   authSetting,
   normalizeQuerys,
-  redirectUrl,
+  getPointName,
   buriedPoint,
   isAlipay,
   isWeixin,
@@ -1072,7 +1072,7 @@ export default class CartCheckout extends Component {
     })
     let _this = this
 
-    if (Taro.getEnv() === 'WEAPP') {
+    if (isWeixin) {
       let templeparams = {
         temp_name: 'yykweishop',
         source_type: receiptType === 'logistics' ? 'logistics_order' : 'ziti_order'
@@ -1247,7 +1247,7 @@ export default class CartCheckout extends Component {
         })
         //redirectUrl(api, `/subpage/pages/cashier/index?order_id=${config.order_id}&type=pointitem`)
         Taro.redirectTo({
-          url: `/subpage/pages/cashier/index?order_id=${config.order_id}`
+          url: `/subpage/pages/cashier/index?order_id=${config.order_id}&payType=${payType}`
         });
         return
       } else {

@@ -42,8 +42,7 @@ export default class PaymentPicker extends Component {
     addGlobalClass: true
   }
   async fatch() {
-    let params = {}
-    console.log("==fetch=====>",payment_platform)
+    let params = {} 
     const distributor_id = Taro.getStorageSync('payment_list_dtid')
     if (distributor_id) {
       params = {
