@@ -1894,7 +1894,7 @@ export default class CartCheckout extends Component {
             />
           )}
 
-          {goodType !== 'cross' && !this.isPointitemGood() && pointInfo.is_open_deduct_point && (
+          {goodType !== 'cross' && !this.isPointitemGood() && pointInfo.is_open_deduct_point && process.env.APP_PLATFORM !== 'platform' && (
             <SpCell
               isLink
               className='trade-invoice'
@@ -1917,7 +1917,7 @@ export default class CartCheckout extends Component {
             </SpCell>
           )}
 
-          {goodType !== 'cross' && !this.isPointitemGood() && pointInfo.is_open_deduct_point && (
+          {goodType !== 'cross' && !this.isPointitemGood() && pointInfo.is_open_deduct_point && process.env.APP_PLATFORM !== 'platform' && (
             <SpCell
               isLink
               className='trade-invoice'
@@ -1979,7 +1979,7 @@ export default class CartCheckout extends Component {
               <SpCell className='trade-sub-total__item' title='优惠金额：'>
                 <Price unit='cent' value={total.discount_fee} />
               </SpCell>
-              {goodType !== 'cross' && pointInfo.is_open_deduct_point && (
+              {goodType !== 'cross' && pointInfo.is_open_deduct_point && process.env.APP_PLATFORM !== 'platform' && (
                 <SpCell className='trade-sub-total__item' title={`${getPointName()}抵扣：`}>
                   <Price unit='cent' value={total.point_fee} />
                 </SpCell>
