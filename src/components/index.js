@@ -7,6 +7,7 @@ import SpFloatPrivacy from './sp-float-privacy'
 import SearchBar from './search-bar'
 import SpNavBar from './sp-nav-bar'
 import SpNote from './sp-note'
+import SpNote2 from './sp-note/index2'
 import SpPageNote from './sp-pagenote'
 import SpTimer from './sp-timer'
 import SpRecommend from './sp-recommend'
@@ -31,11 +32,13 @@ import SpImgPicker from './img-picker'
 import SpCell from './sp-cell'
 import FloatMenuMeiQia from './float-menus/meiqia'
 
+import GoodsItem from './goods-item'
+
 export { default as Loading } from './loading'
 export { default as Price } from './price'
 export { default as BackToTop } from './back-to-top'
 export { default as GoodsBuyPanel } from './goods-buy-panel'
-export { default as GoodsItem } from './goods-item'
+ 
 export { default as TabBar } from './tab-bar'
 export { default as TagsBar } from './tags-bar'
 export { default as FilterBar } from './filter-bar'
@@ -66,9 +69,11 @@ export { default as PointTag } from './point-tag'
 export { default as CouponModal } from './coupon-modal'
 export { default as PrivacyConfirmModal } from './privacy-confirm-modal'
 
+
 export default {}
 
 export {
+  GoodsItem,
   SpImg,
   SpMoreImg,
   SpLogin,
@@ -78,6 +83,7 @@ export {
   SearchBar,
   SpNavBar,
   SpNote,
+  SpNote2,
   SpPageNote,
   SpTimer,
   SpRecommend,

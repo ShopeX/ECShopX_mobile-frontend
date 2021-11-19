@@ -1,0 +1,17 @@
+@import '../../style/imports';
+
+.note {
+  text-align: center;
+  &__has-img {
+    padding: 120px 0 0;
+  }
+  &__img {
+    width: 76px * 4;
+    height: 85px * 4;
+    margin: 0 auto 48px;
+    display: block;
+  }
+  &__text {
+    color: $color-gray;
+  }
+}

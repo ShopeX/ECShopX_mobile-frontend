@@ -6,14 +6,15 @@ require("dotenv-flow").config();
 
 const DIST_PATH = `dist/${process.env.TARO_ENV}`;
 const APP_ENVS = getEnvs();
+ 
+
 
 const CONST_ENVS = {
   APP_NAME: pkg.app_name,
   APP_AUTH_PAGE:
     process.env.TARO_ENV == "h5"
       ? "/subpage/pages/auth/login"
-      : "/subpage/pages/auth/wxauth",
-  APP_HOME_PAGE:'/pages/index',
+      : "/subpage/pages/auth/wxauth",  
   ...APP_ENVS
 };
 
