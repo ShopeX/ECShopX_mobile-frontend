@@ -132,10 +132,10 @@ export default class CartIndex extends Component {
     })
   }
 
-  // componentDidShow() {
-  //   if (!S.getAuthToken() || this.state.loading) return;
-  //   this.updateCart();
-  // }
+  componentDidShow() {
+    if (!S.getAuthToken() || this.state.loading) return;
+    this.updateCart()
+  }
 
   onChangeLoginSuccess = async () => {
     this.updateCart()

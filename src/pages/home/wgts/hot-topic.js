@@ -38,7 +38,7 @@ export default class WgtHotTopic extends Component {
     const { info } = this.props
 
     return (
-      <View className={`index ${info.base.padded ? 'wgt__padded' : null}`}>
+      <View className={`hot-topic ${info.base.padded ? 'wgt__padded' : null}`}>
         <View className='title'> {info.base.title}</View>
         <View className='list'>
           {list.map((item, idx) => {

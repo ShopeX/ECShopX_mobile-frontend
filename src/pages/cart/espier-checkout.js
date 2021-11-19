@@ -682,6 +682,7 @@ export default class CartCheckout extends Component {
       data = await api.cart.total(params)
     } catch (e) {
       this.resolvePayError(e)
+      Taro.navigateBack()
     }
 
     if (!data) return

@@ -101,14 +101,20 @@ export default class Home extends Component {
     const result = await api.wx.getPrivacyTime()
     const { update_time } = result
 
-    if ((time && time >= update_time) || !isLocal) {
+    console.log(update_time, time, isLocal, '-----')
+
+    if (!time || time != update_time || isLocal) {
+      this.setState({
+        PrivacyConfirmModalVisible: true
+      })
+    } else {
       this.getHomeSetting()
-      return
     }
 
-    this.setState({
-      PrivacyConfirmModalVisible: true
-    })
+    // if ((time && time >= update_time) || !isLocal) {
+    //   return
+    // }
+
     // this.getHomeSetting();
     // this.getShareSetting();
     // this.isShowTips();
