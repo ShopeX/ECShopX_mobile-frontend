@@ -279,6 +279,12 @@ export default class List extends Component {
           : (sort > 0 ? 3 : 2)
     }
 
+    /** 当不需要排序且点击一致时 */
+    if(current===this.state.curFilterIdx&&!sort){
+      return ;
+    }
+ 
+
     if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
       this.resetPage()
       this.setState({
@@ -480,11 +486,9 @@ export default class List extends Component {
       scrollTop,
       page,
       showDrawer,
-      paramsList,
-      selectParams,
+      paramsList, 
       tagsList,
-      curTagId,
-      info,
+      curTagId, 
       isShowSearch,
       query
     } = this.state
