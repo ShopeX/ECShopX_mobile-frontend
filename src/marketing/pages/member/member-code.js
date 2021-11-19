@@ -52,10 +52,7 @@ export default class MemberCode extends Component {
         <View className='member-code'>
           <View className='avatar'>
             <Image className='avatar-img' src={avatar || userIcon} mode='aspectFill' />
-            {/* {
-              info.vipType && (info.vipType === 'vip' || info.vipType === 'svip')
-                && <Image className="icon-vip" src="../images/svip.png" />
-            } */}
+         
           </View>
           <View className='nickname'>{username}</View>
           <Image className='member-code-bar' mode='aspectFill' src={info.barcode_url} />

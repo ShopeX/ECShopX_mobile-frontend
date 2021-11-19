@@ -168,6 +168,8 @@ export default class UserInfo extends Component {
   }
 
   handleShowCheckboxPanel = (checkItem) => {
+    console.log("===handleShowCheckboxPanel",checkItem)
+    if(!checkItem.is_edit) return;
     const { userInfo } = this.state
     const { key, checkbox } = checkItem
     this.optionsType = key
@@ -291,6 +293,7 @@ export default class UserInfo extends Component {
     const { colors, memberData } = this.props
 
     console.log('--userInfo--', userInfo)
+    console.log('--formItems--', formItems)
     if (!userInfo) {
       return null
     }
@@ -361,7 +364,7 @@ export default class UserInfo extends Component {
                     value={userInfo[item.key]}
                     placeholder={item.required_message}
                     onInput={this.handleInput.bind(this, item.key)}
-                    disabled={!item.is_edit && item.isInitValue}
+                    disabled={!item.is_edit}
                   />
                 )}
                 {/* 数字 */}
@@ -374,14 +377,14 @@ export default class UserInfo extends Component {
                     min={item.range.start}
                     placeholder={item.required_message}
                     onInput={this.handleInput.bind(this, item.key)}
-                    disabled={!item.is_edit && item.isInitValue}
+                    disabled={!item.is_edit}
                   />
                 )}
                 {/* 日期 */}
                 {item.field_type === 3 && (
                   <Picker
                     mode='date'
-                    disabled={!item.is_edit && item.isInitValue}
+                    disabled={!item.is_edit}
                     value={userInfo[item.key]}
                     onChange={this.pickerChange.bind(this, item)}
                   >
@@ -392,7 +395,7 @@ export default class UserInfo extends Component {
                 {item.field_type === 4 && (
                   <Picker
                     mode='selector'
-                    disabled={!item.is_edit && item.isInitValue}
+                    disabled={!item.is_edit}
                     value={this.textToIndex(userInfo[item.key], item.select)}
                     range={item.select}
                     onChange={this.pickerChange.bind(this, item)}
