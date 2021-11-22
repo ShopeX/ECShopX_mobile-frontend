@@ -11,7 +11,8 @@ import {
   copyText,
   getCurrentRoute,
   showLoading,
-  getPointName
+  classNames,
+  isWebWechat
 } from '@/utils'
 import { Tracker } from '@/service'
 import api from '@/api'
@@ -560,8 +561,10 @@ export default class TradeDetail extends Component {
       return <Loading></Loading>
     }
 
+    console.log("===isWebWechat==",isWebWechat)
+
     return (
-      <View className={`trade-detail ${info.is_logistics && 'islog'}`}>
+      <View className={classNames(`trade-detail ${info.is_logistics && 'islog'}`,{isWebWechat})}>
         <SpNavBar title='售后详情' leftIconType='chevron-left' fixed='true' />
         {info.is_logistics && (
           <View className='custabs'>

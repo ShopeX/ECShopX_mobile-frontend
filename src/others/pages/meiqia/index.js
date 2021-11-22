@@ -47,6 +47,7 @@ export default class MeiQia extends Component {
   }
 
   render() {
+    console.log("===process.env.APP_CUSTOM_SERVER===>",process.env.APP_CUSTOM_SERVER)
     const { metadata, clientid, agentid, id, groupid } = this.state
     return (
       id && (

@@ -477,6 +477,13 @@ export function isNavbar() {
   return isWeb && !getBrowserEnv().weixin
 } 
 
+export function isWebWechat() {
+  return !!getBrowserEnv().weixin
+} 
+  
+/** 在微信h5中 */
+export const isWbWechat=isWebWechat();
+
 export {
   classNames,
   styleNames,

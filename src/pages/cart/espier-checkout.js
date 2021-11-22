@@ -1145,10 +1145,10 @@ export default class CartCheckout extends Component {
   }
 
   handlePay = async () => {
-    /*  */
-    // if (!this.state.address) {
-    //   return S.toast('请选择地址')
-    // }
+    /* 大于50字提示  */
+    if (this.params.remark && this.params.remark.length>50) {
+      return S.toast('请选择地址')
+    }
     const { payType, total, identity, isOpenStore, curStore, receiptType, channel } = this.state
     const { type, goodType, cart_type } = this.$router.params
 

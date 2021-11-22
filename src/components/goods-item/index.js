@@ -54,7 +54,7 @@ export default class GoodsItem extends Component {
   render() {
     const {
       info,
-      showMarketPrice,
+      cart,
       showFav,
       noCurSymbol,
       noCurDecimal,
@@ -120,7 +120,7 @@ export default class GoodsItem extends Component {
     const isShow = info.store && info.store == 0
 
     return (
-      <View className={classNames('goods-item', 'classes')}>
+      <View className={classNames('goods-item', 'classes',{'cart':cart})}>
         <View className='goods-item__hd'>{this.props.renderCheckbox}</View>
         <View className='goods-item__bd'>
           {/* 库存判断 */}

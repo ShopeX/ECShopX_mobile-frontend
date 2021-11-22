@@ -38,6 +38,16 @@ page {
         /* autoprefixer: ignore next */
         -webkit-box-orient: vertical;
       }
+
+      /*  #ifdef  h5  */
+      &__hd{
+        display: block;
+
+        .goods-item__img{
+          position: relative;
+        }
+      } 
+      /*  #endif  */
     }  
     .rate-wrap {
       display: flex;
@@ -100,7 +110,7 @@ page {
     background: #fff;
     padding: 0 50px;
     overflow: hidden;
-    height: 120px;
+    height: 120px; 
     .btn {
       width: 338px;
       height: 80px;
@@ -124,7 +134,33 @@ page {
         z-index: 99;
         transform: translateX(-84px);
       }
-    }
+    } 
   }
+ 
 }
 
+  /*  #ifdef  h5  */
+  *{
+    box-sizing: border-box;
+  }
+  .trade-rate{
+   
+    .submit-btn{
+      box-sizing: border-box;
+      .btn {
+        width:50%;
+
+        &.name{
+          transform:translateX(-30%);
+        }
+    
+        &.noname{
+          width:65%;
+          padding-right: 0;
+        }
+      }
+    }
+  }
+  
+   
+  /*  #endif  */

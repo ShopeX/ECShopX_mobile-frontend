@@ -312,9 +312,9 @@ export default class CartIndex extends Component {
   }
 
   updateCart = async () => {
-    showLoading({
-      mask: true
-    });
+    // showLoading({
+    //   mask: true
+    // });
     this.updating = true;
     try {
       await this.fetchCart();
@@ -322,7 +322,7 @@ export default class CartIndex extends Component {
       console.log(e);
     }
     this.updating = false;
-    hideLoading();
+    // hideLoading();
   };
 
   asyncUpdateCart = debounce(async () => {
@@ -969,6 +969,7 @@ export default class CartIndex extends Component {
                         key={item.item_id}
                         info={item}
                         onClick={this.handleClickItem.bind(this, item)}
+                        cart
                       />
                     </View>
                   );

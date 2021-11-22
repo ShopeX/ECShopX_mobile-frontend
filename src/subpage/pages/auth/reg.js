@@ -537,6 +537,7 @@ export default class Reg extends Component {
               type={isVisible ? 'text' : 'password'}
               value={info.password}
               placeholder='请输入密码'
+              required
               autocomplete='new-password'
               onFocus={this.handleErrorToastClose}
               onChange={this.handleChange.bind(this, 'password')}

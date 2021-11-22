@@ -13,7 +13,9 @@ import {
   getCurrentRoute,
   copy,
   isAlipay,
-  getPointName
+  getPointName,
+  isWbWechat,
+  classNames
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { Tracker } from '@/service'
@@ -602,10 +604,12 @@ export default class TradeDetail extends Component {
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
 
+    console.log("===isWebWechat==",isWbWechat);
+
     return (
       <View
-        className={`trade-detail ${info.is_logistics && 'islog'} ${info.status !== 'TRADE_CLOSED' &&
-          'paddingBottom'}`}
+        className={classNames(`trade-detail ${info.is_logistics && 'islog'} ${info.status !== 'TRADE_CLOSED' &&
+        'paddingBottom'}`,{isWbWechat})}
       >
         {showQRcode && (
           <View
