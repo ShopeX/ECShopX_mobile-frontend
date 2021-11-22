@@ -65,14 +65,14 @@ export default class SettingIndex extends Component {
       })
       return false
     }
-    if (redirectInfo.data && redirectInfo.data.info_url_is_open) {
-      Taro.navigateToMiniProgram({
-        appId: redirectInfo.data.info_app_id,
-        path: redirectInfo.data.info_page
-      })
-    } else {
-      this.handleClickWxOAuth('/marketing/pages/member/userinfo', true)
-    }
+    // if (redirectInfo.data && redirectInfo.data.info_url_is_open) {
+    //   Taro.navigateToMiniProgram({
+    //     appId: redirectInfo.data.info_app_id,
+    //     path: redirectInfo.data.info_page
+    //   })
+    // } else {
+    this.handleClickWxOAuth('/marketing/pages/member/userinfo', true)
+    // }
   }
 
   async handleCancelMenber() {
