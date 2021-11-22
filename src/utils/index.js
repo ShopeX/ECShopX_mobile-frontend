@@ -316,6 +316,26 @@ export const meiqiaInit = () => {
   })(window, document, 'script', '_MEIQIA')
 }
 
+const redirectUrl = async (api, url, type = 'redirectTo') => {
+  if (!browser.weixin) {
+    Taro[type]({url})
+    return
+  }
+  let newUrl = getUrl(url)
+  let { redirect_url } = await api.wx.getredirecturl({url:newUrl})
+  Taro[type]({
+    url: redirect_url
+  })
+}
+
+const getUrl = (url) => {
+  let href = global.location.href;
+  let hrefList = href.split('/')
+
+  return `${hrefList[0]}//${hrefList[2]}${url}`
+} 
+
+
 export function tokenParse(token) {
   var base64Url = token.split('.')[1]
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
@@ -477,6 +497,13 @@ export function isNavbar() {
   return isWeb && !getBrowserEnv().weixin
 } 
 
+export function isWebWechat() {
+  return !!getBrowserEnv().weixin
+} 
+  
+/** 在微信h5中 */
+export const isWbWechat=isWebWechat();
+
 export {
   classNames,
   styleNames,
@@ -489,6 +516,7 @@ export {
   validColor,
   entryLaunch,
   validate,
-  getPointName
+  getPointName,
+  redirectUrl
 }
 export * from './platforms'

@@ -2,6 +2,17 @@
 
 $custabs: 80px;
 
+/*  #ifdef h5  */
+*{
+  box-sizing: border-box;
+}
+.trade-detail {
+ &.isWebWechat{
+   
+ }
+}
+/*  endif */
+
 .trade-detail {
   box-sizing: border-box;
   height: 100vh;

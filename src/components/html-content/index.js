@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View,RichText } from '@tarojs/components'
 import { classNames,isWeixin,isAlipay } from '@/utils'
+let src = './../components/wxParse/wxParse.wxml';
 
 import './index.scss';
 
@@ -35,7 +36,7 @@ export default class HtmlContent extends Component {
 
     return process.env.TARO_ENV === 'weapp'
       ? (<View className={classes}>
-          <import src='../../components/wxParse/wxParse.wxml' />
+          <import src={'../../components/wxParse/wxParse.wxml'} />
           <template is='wxParse' data='{{wxParseData:article.nodes}}' />
         </View>) 
       : process.env.TARO_ENV === 'alipay'

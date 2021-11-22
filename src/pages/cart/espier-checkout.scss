@@ -139,6 +139,11 @@ page {
       align-items: center;
       justify-content: space-between;
     }
+     /* #ifdef h5 */
+     &__ft {
+      left:290px;
+    }
+    /*  #endif  */
     &__num {
       font-size: $font-size-small;
       color: #333333;

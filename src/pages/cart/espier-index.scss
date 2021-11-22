@@ -190,6 +190,7 @@
         }
       }
     }
+
 	}
   .cart-item {
     &__act {
@@ -255,6 +256,10 @@
     display: block;
     background: $color-brand-primary;
     border-color: $color-brand-primary;
+
+    /* #ifdef h5 */
+    width: 250px;
+    /* #endif */
   }
   .at-action-sheet__container {
     z-index: $z-index-modal;

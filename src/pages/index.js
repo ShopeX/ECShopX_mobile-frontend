@@ -167,9 +167,9 @@ export default class Home extends Component {
   }
 
   componentDidShow() {
-    this.showInit()
-    this.isShoppingGuide()
-    this.getDistributionInfo()
+    //this.showInit()
+    //this.isShoppingGuide()
+    //this.getDistributionInfo()
     // 检测白名单
     this.checkWhite()
     // 购物车数量
