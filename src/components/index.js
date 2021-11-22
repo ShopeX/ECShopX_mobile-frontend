@@ -27,6 +27,7 @@ import SpInputNumber from './sp-input-number'
 import SpLoadMore from './sp-load-more'
 import SpLoading from './sp-loading'
 import SpModal from './sp-modal'
+import SpHtmlContent from './html-content'
 
 import SpImgPicker from './img-picker'
 import SpCell from './sp-cell'
@@ -48,8 +49,7 @@ export { default as FormIdCollector } from './form-id-collector'
 
 export { default as SpToast } from './toast'
 export { default as SpIconMenu } from './icon-menu'
-
-export { default as SpHtmlContent } from './html-content'
+ 
 export { default as RecommendItem } from './recommend-item'
 export { default as SpCheckbox } from './checkbox'
 
@@ -105,5 +105,6 @@ export {
   SpInputNumber,
   SpLoadMore,
   SpLoading,
-  SpModal
+  SpModal,
+  SpHtmlContent
 }
