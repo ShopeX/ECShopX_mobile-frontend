@@ -2,13 +2,20 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtBadge } from 'taro-ui'
+import api from '@/api'
 import { FormIdCollector, SpLogin } from '@/components'
 import { classNames,isWeb,isWeixin } from '@/utils'
 import './buy-toolbar.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current
-}))
+  }),
+  (dispatch) => ({
+    onAddFav: ({ item_id, fav_id }) =>
+      dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
+    onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
+  })
+)
 export default class GoodsBuyToolbar extends Component {
   static options = {
     addGlobalClass: true
@@ -43,6 +50,21 @@ export default class GoodsBuyToolbar extends Component {
     })
   }
 
+  handleFavClick = async () => {
+    const { item_id, is_fav } = this.props.info
+    if (!is_fav) {
+      const favRes = await api.member.addFav(item_id)
+      this.props.onAddFav(favRes)
+    } else {
+      await api.member.delFav(item_id)
+      this.props.onDelFav(this.props.info)
+    }
+    Taro.showToast({
+      title: is_fav ? '已移出收藏' : '已加入收藏',
+      mask: true
+    })
+  }
+
   render() {
     const {
       onClickAddCart,
@@ -73,12 +95,11 @@ export default class GoodsBuyToolbar extends Component {
       <View className={classNames(isPointitem ? 'goods-isPointitem' : null, 'goods-buy-toolbar')}>
         <View className='goods-buy-toolbar__menus'>
           <SpLogin>
-            <View className='goods-buy-toolbar__menu-item'>
-              {info.is_fav ? (
-                <View className='icon-star-on' style={`color: ${colors.data[0].primary}`} />
-              ) : (
-                <View className='icon-star' />
-              )}
+            <View className='goods-buy-toolbar__menu-item' onClick={this.handleFavClick}>
+              <View
+                className={classNames('iconfont', info.is_fav ? 'icon-star_on' : 'icon-star')}
+                style={info.is_fav ? { color: colors.data[0].primary } : {}}
+              />
             </View>
           </SpLogin> 
           {!isPointitem ? (

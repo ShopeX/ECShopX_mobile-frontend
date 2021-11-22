@@ -346,6 +346,18 @@ export default class EspierDetail extends Component {
     return info
   }
 
+  componentWillReceiveProps (next) {
+    if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
+      let is_fav = null
+      setTimeout(() => {
+        is_fav = Boolean(next.favs[this.state.info.item_id])
+        this.setState({
+          info: {...this.state.info, is_fav}
+        })
+      }, 100)
+    }
+  }
+
   async goodPackageList(id) {
     let info
     if (this.isPointitemGood()) {
