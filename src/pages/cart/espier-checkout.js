@@ -665,7 +665,7 @@ export default class CartCheckout extends Component {
     console.log(res, 'res')
   }
 
-  async calcOrder() {
+  async calcOrder(init) {
     Taro.showLoading({
       title: '加载中',
       mask: true
@@ -682,7 +682,19 @@ export default class CartCheckout extends Component {
       data = await api.cart.total(params)
     } catch (e) {
       this.resolvePayError(e)
-      Taro.navigateBack()
+      // let pages = pages = Taro.getCurrentPages()
+      // let currentPage = pages[pages.length - 2]
+      // let option = currentPage.options
+      // console.log(pages, 'page', currentPage.route, currentPage.options)
+      // let arr = []
+      // Object.keys(option).forEach((key) => {
+      //   arr.push(key+ '=' + option[key])
+      // })
+      // console.log(arr, 'att', currentPage.route + '?' + arr.join('&'))
+      // Taro.redirectTo({
+      //   url: currentPage.route + '?' + arr.join('&')
+      // })
+      if (init) Taro.navigateBack()
     }
 
     if (!data) return
@@ -872,7 +884,7 @@ export default class CartCheckout extends Component {
         address
       },
       () => {
-        this.calcOrder()
+        this.calcOrder(true)
       }
     )
     if (!address) {

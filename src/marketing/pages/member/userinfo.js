@@ -265,18 +265,15 @@ export default class UserInfo extends Component {
   }
 
   privacyOnChange() {
-    this.setState(
-      {
-        isAgree: true
-      },
-      () => {
-        if (this.state.wxUserInfo) {
-          this.getFormItem()
-        } else {
-          this.saveInfo()
-        }
+    this.setState({
+      isAgree: true
+    }, () => {
+      if (this.state.wxUserInfo) {
+        this.getFormItem()
+      } else {
+        this.saveInfo()
       }
-    )
+    })
   }
 
   render() {
@@ -363,6 +360,7 @@ export default class UserInfo extends Component {
                     value={userInfo[item.key]}
                     placeholder={item.required_message}
                     onInput={this.handleInput.bind(this, item.key)}
+                    // disabled={!item.is_edit && item.isInitValue}
                     disabled={!item.is_edit}
                   />
                 )}
