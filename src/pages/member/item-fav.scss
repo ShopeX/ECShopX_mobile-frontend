@@ -1,20 +1,24 @@
 @import "../../style/imports";
 @import "../item/list";
 
-.page-goods-fav { 
+.page-goods-fav {
+  padding-top: 10px;
   /*  #ifdef  h5  */  
-  padding-top: $navigate-height-h5;
+  // padding-top: $navigate-height-h5;
   /*  #endif  */
   .trade-list__tabs {
     /*  #ifdef  h5  */  
-    padding-top: $navigate-height-h5;
+    // padding-top: $navigate-height-h5;
     /*  #endif  */
+    .at-tabs__body {
+      height: 0px;
+    }
   }
   .goods-list {
     &__scroll {
-      @include page-scroll($navigate-height + $tabs-height + 10px, 0);
+      @include page-scroll($navigate-height + $tabs-height + 30px, 0);
       /*  #ifdef  h5  */  
-      @include page-scroll($navigate-height-h5 + $tabs-height + 10px, 0);
+      @include page-scroll($navigate-height-h5 + $tabs-height + 30px, 0);
       /*  #endif  */      
     }
     &__type-grid {
@@ -22,6 +26,9 @@
       flex-wrap: wrap;
       .goods-list__item {
         width: 50%;
+        /*  #ifdef  h5  */
+        width: 47.3%;
+        /*  #endif  */
         padding: 10px;
       }
     }

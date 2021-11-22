@@ -21,7 +21,7 @@ export default class WgtImgGif extends Component {
     }
 
     return (
-      <View className={`index ${info.base.padded ? 'wgt__padded' : null}`}>
+      <View className={`img-gif-index ${info.base.padded ? 'wgt__padded' : null}`}>
         <View className='imglist' style={`background:url(${info.data && info.data[0].imgUrl})`}>
           <SpImg
             img-class='scale-placeholder gif'

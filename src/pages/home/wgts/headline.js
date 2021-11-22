@@ -21,7 +21,7 @@ export default class WgtHeadline extends Component {
       return null
     }
     return (
-      <View className='index'>
+      <View className='head-line-index'>
         <View className='title' style={'text-align:' + info.base.float}>
           {info.base.title}
         </View>

@@ -1,32 +1,30 @@
 @import "../../style/imports";
 
 .goods-params-wrap {
-  padding: 20px;
-}
-
-.goods-params {
-  background: $color-bg-gray;
-  padding: 1px;
-  /*  #ifdef  h5  */  
-  padding-top: $navigate-height-h5;
-  /*  #endif  */        
-  &__item {
-    padding: 1px;
-    display: flex;
-    &-label {
-      flex: 2;
-      padding: 20px;
-      margin-right: 1px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      color: $color-gray;
-      background: #fff;
-    }
-    &-value {
-      flex: 3;
-      padding: 20px;
-      background: #fff;
+  .goods-params {
+    background: $color-bg-gray;
+    padding: 20px;
+    /*  #ifdef  h5  */  
+    // padding-top: $navigate-height-h5;
+    /*  #endif  */        
+    &__item {
+      padding: 1px;
+      display: flex;
+      &-label {
+        flex: 2;
+        padding: 20px;
+        margin-right: 1px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: $color-gray;
+        background: #fff;
+      }
+      &-value {
+        flex: 3;
+        padding: 20px;
+        background: #fff;
+      }
     }
   }
 }

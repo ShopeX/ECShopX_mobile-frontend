@@ -172,10 +172,8 @@ export default class ItemFav extends Component {
     const { list, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
 
     return (
-      <View className='page-goods-list page-goods-fav'>
-        <View className='goods-list__toolbar'>
-          <SpNavBar title='收藏' leftIconType='chevron-left' fixed='true' />
-        </View>
+      <View className='page-goods-fav'>
+        <SpNavBar title='收藏' leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className='trade-list__tabs'
           current={curTabIdx}
