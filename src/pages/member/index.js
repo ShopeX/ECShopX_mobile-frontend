@@ -651,20 +651,21 @@ export default class MemberIndex extends Component {
             ></SpCell>
           )}
 
+          {menuSetting.group && (
+            <SpCell
+              title='我的拼团'
+              isLink
+              img={require('../../assets/imgs/group.png')}
+              onClick={() =>
+                this.handleClickWxOAuth(
+                  this.navigateTo.bind(this, '/marketing/pages/member/group-list')
+                )
+              }
+            ></SpCell>
+          )}
+
           {Taro.getEnv() !== 'WEB' && (
             <View>
-              {menuSetting.group && (
-                <SpCell
-                  title='我的拼团'
-                  isLink
-                  img={require('../../assets/imgs/group.png')}
-                  onClick={() =>
-                    this.handleClickWxOAuth(
-                      this.navigateTo.bind(this, '/marketing/pages/member/group-list')
-                    )
-                  }
-                ></SpCell>
-              )}
               {menuSetting.community_order && (
                 <SpCell
                   title='我的社区团购'
@@ -714,7 +715,7 @@ export default class MemberIndex extends Component {
               }
             ></SpCell>
           )}
-          {menuSetting.complaint && salespersonData && salespersonData.distributor && (
+          {/* {menuSetting.complaint && (
             <SpCell
               title='投诉记录'
               isLink
@@ -725,7 +726,7 @@ export default class MemberIndex extends Component {
                 )
               }
             ></SpCell>
-          )}
+          )} */}
           {menuSetting.activity && (
             <SpCell
               title='活动预约'
@@ -790,13 +791,11 @@ export default class MemberIndex extends Component {
               }
             ></SpCell>
           )} */}
-          {process.env.TARO_ENV === 'weapp' && (
             <SpCell
               title='设置'
               isLink
               onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/member-setting' })}
             ></SpCell>
-          )}
           <SpCell
             title={privacyTitle}
             isLink
@@ -804,7 +803,7 @@ export default class MemberIndex extends Component {
               Taro.navigateTo({ url: '/subpage/pages/auth/reg-rule?type=privacyAndregister' })
             }
           ></SpCell>
-          {process.env.TARO_ENV === 'h5' && (
+          {/* {process.env.TARO_ENV === 'h5' && (
             <SpCell
               title='设置'
               isLink
@@ -814,7 +813,7 @@ export default class MemberIndex extends Component {
                 )
               }
             ></SpCell>
-          )}
+          )} */}
         </View>
 
         {turntable_open === '1' ? (
