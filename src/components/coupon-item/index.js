@@ -149,7 +149,7 @@ export default class CouponItem extends Component {
               style={`background-image: url(${process.env.APP_IMAGE_CDN}${'/coupon_FFF.png'})`}
             >
               <View className='coupon-item___description'>
-                <View>
+                <View className='coupon-item__flex'>
                   <View
                     className='tag'
                     style={`background: ${
