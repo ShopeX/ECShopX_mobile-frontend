@@ -3,6 +3,9 @@
 .member-code-wrap {
   display: flex;
   align-items: center;
+  /*  #ifdef  h5  */
+  display: block;
+  /*  #endif  */
   width: 100vw;
   height: 100vh;
   .member-code {
@@ -14,6 +17,10 @@
     border-radius: 10px;
     text-align: center;
     color: #666;
+    /*  #ifdef  h5  */
+    width: auto;
+    margin-top: 20%;
+    /*  #endif  */
     .avatar {
       position: absolute;
       left: 50%;
