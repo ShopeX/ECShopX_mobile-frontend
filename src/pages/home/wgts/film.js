@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Video } from '@tarojs/components'
+import { View, Video,Text } from '@tarojs/components'
 import { linkPage } from './helper'
 
 import './film.scss'
@@ -78,8 +78,9 @@ export default class WgtFilm extends Component {
     return (
       <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
         {base.title && (
+          // <View className='wgt__header' style={{justifyContent: 'flex-start'}}>
           <View className='wgt__header'>
-            <View className='wgt__title'>{base.title}</View>
+            <Text>{base.title}</Text>
             <View className='wgt__subtitle'>{base.subtitle}</View>
           </View>
         )}
