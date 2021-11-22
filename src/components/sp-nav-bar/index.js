@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtNavBar } from 'taro-ui'
-import { classNames, isNavbar, isWeb } from '@/utils'
+import { classNames, getBrowserEnv, isWeb } from '@/utils'
 
 import './index.scss'
 
@@ -23,7 +23,7 @@ export default class SpNavBar extends Component {
 
   render() {
     const { title, leftIconType, fixed } = this.props
-    if (isNavbar) {
+    if (isWeb && !getBrowserEnv().weixin) {
       return (
         <View
           className={classNames(`sp-nav-bar nav-bar-height`, {

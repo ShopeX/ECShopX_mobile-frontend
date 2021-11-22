@@ -3,7 +3,7 @@ import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtBadge } from 'taro-ui'
 import { FormIdCollector, SpLogin } from '@/components'
-import { classNames } from '@/utils'
+import { classNames,isWeb,isWeixin } from '@/utils'
 import './buy-toolbar.scss'
 
 @connect(({ colors }) => ({
@@ -25,9 +25,15 @@ export default class GoodsBuyToolbar extends Component {
   }
 
   handleClickCart = (id, type) => {
-    Taro.reLaunch({
-      url: `/pages/cart/espier-index?type=${type}`
-    })
+    if(isWeb){
+      Taro.redirectTo({
+        url: `/pages/cart/espier-index?type=${type}`
+      })
+    }else{
+      Taro.reLaunch({
+        url: `/pages/cart/espier-index?type=${type}`
+      })
+    }
   }
 
   handleNaviationToHome = () => {
@@ -74,12 +80,7 @@ export default class GoodsBuyToolbar extends Component {
                 <View className='icon-star' />
               )}
             </View>
-          </SpLogin>
-          {/*{process.env.TARO_ENV === 'weapp' && (
-            <Button className='goods-buy-toolbar__menu-item' openType='contact'>
-              <View className='in-icon in-icon-kefu'></View>
-            </Button>
-          )}*/}
+          </SpLogin> 
           {!isPointitem ? (
             <View
               className='goods-buy-toolbar__menu-item'

@@ -9,6 +9,11 @@ const getAppId = () => {
   return appid
 }
 
+export function getOpenid ({ code }) {
+  return req.get('/oauth/getopenid', {code})
+}
+
+
 export function info(data) {
   return req.post('/wx.info', data)
 }
