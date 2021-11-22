@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { copyText, getThemeStyle } from '@/utils'
+import { copyText, getThemeStyle, styleNames } from '@/utils'
 import OrderItem from '../../../../components/orderItem/order-item'
 
 import './detail-item.scss'
@@ -93,7 +93,7 @@ export default class DetailItem extends Component {
       showType
     } = this.props
     return (
-      <View className='detail-item' style={getThemeStyle()}>
+      <View className='detail-item' style={styleNames(getThemeStyle())}>
         {info &&
           info[showType] &&
           info[showType].map((item, idx) => (

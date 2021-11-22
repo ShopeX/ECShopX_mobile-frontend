@@ -4,7 +4,7 @@ import { SpNavBar, SpCheckbox, SpFloatPrivacy } from '@/components'
 import api from '@/api'
 import { connect } from '@tarojs/redux'
 import S from '@/spx' 
-import { showToast, getThemeStyle } from '@/utils'
+import { showToast, getThemeStyle, styleNames } from '@/utils'
 import userIcon from '@/assets/imgs/user-icon.png'
 import imgUploader from '@/utils/upload'
 
@@ -295,7 +295,7 @@ export default class UserInfo extends Component {
     }
 
     return (
-      <View className='page-member-setting' style={getThemeStyle()}>
+      <View className='page-member-setting' style={styleNames(getThemeStyle())}>
         <SpNavBar title='用户信息' />
         <View className='baseInfo'>
           <View className='item'>

@@ -7,7 +7,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
 import entry from '@/utils/entry'
 import StoreListItem from './comps/list-item'
-import { classNames, getThemeStyle } from '@/utils'
+import { classNames, getThemeStyle, styleNames } from '@/utils'
 
 import './list.scss'
 
@@ -291,7 +291,7 @@ export default class StoreList extends Component {
     // const  = defaultStore.is_valid === "true";
 
     return (
-      <View className='page-store-list' style={getThemeStyle()}>
+      <View className='page-store-list' style={styleNames(getThemeStyle())}>
         <SpNavBar title={pageTitle} leftIconType='chevron-left' />
         <View className='search-block'>
           <View className='main'>

@@ -10,6 +10,7 @@ import { withLogin } from '@/hocs'
 import {
   navigateTo,
   getThemeStyle,
+  styleNames,
   classNames,
   isWeixin
 } from '@/utils' 
@@ -380,7 +381,7 @@ export default class MemberIndex extends Component {
     }
 
     return (
-      <View className='page-member-index' style={getThemeStyle()}>
+      <View className='page-member-index' style={styleNames(getThemeStyle())}>
         {S.getAuthToken() ? (
           <View
             className={classNames('page-member-header', {
@@ -482,7 +483,7 @@ export default class MemberIndex extends Component {
           </View>
         )}
 
-        {(vipgrade.is_open || (!vipgrade.is_open && vipgrade.is_vip)) && memberDiscount !== '' && (
+        {(vipgrade.is_open || (!vipgrade.is_open && vipgrade.is_vip)) && memberDiscount !== '' && S.getAuthToken() && (
           <View
             className='member-card'
             onClick={() => {

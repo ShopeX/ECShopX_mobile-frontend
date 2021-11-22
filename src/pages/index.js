@@ -754,7 +754,7 @@ export default class Home extends Component {
               onClick={this.handleClickShop.bind(this)}
             />
           )}
-          {advertList && advertList.length && !S.getAuthToken() && (
+          {advertList && advertList.length > 0 && !S.getAuthToken() && (
             <FloatMenuItem
               iconPrefixClass='iconfont icon'
               icon='present'
@@ -764,7 +764,7 @@ export default class Home extends Component {
         </FloatMenus>
         {/* 浮窗广告 */}
         {advertList &&
-          advertList.length &&
+          advertList.length > 0 &&
           !S.getAuthToken() &&
           advertList.map((item, index) => {
             return (
