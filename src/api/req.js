@@ -1,14 +1,9 @@
 import Taro from '@tarojs/taro'
 import qs from 'qs'
 import S from '@/spx'
-import { isAlipay, isWeixin } from '@/utils'
+import { isAlipay, isWeixin, isWeb } from '@/utils'
 import log from '@/utils/log'
 import { HTTP_STATUS } from './consts'
-
-let demoIsTokenRefreshed = true
-setTimeout(() => {
-  demoIsTokenRefreshed = false
-}, 0);
 
 class RequestQueue {
   constructor() {
@@ -315,7 +310,7 @@ class API {
   }
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && !isWeb) {
   Taro.addInterceptor(Taro.interceptors.logInterceptor)
 }
 

@@ -46,7 +46,7 @@ export default class AlipayBtn extends Component {
     }
     try {
       const { payment } = await api.cashier.getPayment(query)
-      const el = document.createElement('div')
+      const el = document.createElement('div') 
       el.innerHTML = payment.replace(/<script>(.*)?<\/script>/, '')
 
       document.body.appendChild(el)

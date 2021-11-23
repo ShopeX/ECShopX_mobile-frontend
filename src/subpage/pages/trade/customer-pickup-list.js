@@ -2,13 +2,16 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
+import { connect } from '@tarojs/redux'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
 import { Tracker } from '@/service'
 import TradeItem from './comps/item'
 
 import './list.scss'
-
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 @withPager
 @withLogin()
 export default class TradePickList extends Component {

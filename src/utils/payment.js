@@ -14,7 +14,8 @@ export async function getPaymentList() {
         }
     }
     let list = await api.member.getTradePaymentList(params);
-    const isHasAlipay=list.some(item=>item==='alipayh5');
+    console.log("===list===",list)
+    const isHasAlipay=list.some(item=>item.pay_type_code==='alipayh5');
     return {
         list,
         isHasAlipay

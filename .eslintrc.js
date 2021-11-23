@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["taro", "react"],
+  extends: ["taro"],
   rules: {
     "no-unused-vars": ["error", { varsIgnorePattern: "Taro" }],
     "space-before-function-paren": [1, "always"],

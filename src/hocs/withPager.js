@@ -2,6 +2,7 @@
 // this.state.page 存放page相关的状态
 import { Tracker } from '@/service'
 
+
 export default function withPager(Component) {
   return class WithPagerComponent extends Component {
     constructor(props) {
@@ -19,7 +20,9 @@ export default function withPager(Component) {
       this.state.page = page
     }
 
-    nextPage = async () => {
+    nextPage = async () => { 
+ 
+
       const { page } = this.state
       if (!page.hasNext || page.isLoading) return
 
@@ -41,7 +44,7 @@ export default function withPager(Component) {
       if (!total || curPage >= Math.ceil(+total / page_size)) {
         page.hasNext = false
       }
-
+ 
       this.setState({
         page: {
           ...page,
@@ -49,10 +52,10 @@ export default function withPager(Component) {
           page_no: curPage,
           isLoading: false
         }
-      })
+      }) 
     }
 
-    resetPage(cb = () => {}) {
+    resetPage(cb = () => {}) { 
       const page = {
         ...(this.state.page || {}),
         page_no: 0,
