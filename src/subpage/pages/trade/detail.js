@@ -443,7 +443,7 @@ export default class TradeDetail extends Component {
     if (!webSocketIsOpen) {
       const token = S.getAuthToken()
       Taro.connectSocket({
-        url: APP_WEBSOCKET_URL,
+        url: process.env.APP_WEBSOCKET,
         header: {
           'content-type': 'application/json',
           'authorization': `Bearer ${token}`,
@@ -519,7 +519,7 @@ export default class TradeDetail extends Component {
       () => {
         const token = S.getAuthToken()
         Taro.connectSocket({
-          url: APP_WEBSOCKET_URL,
+          url: process.env.APP_WEBSOCKET,
           header: {
             'content-type': 'application/json',
             'x-wxapp-session': token,

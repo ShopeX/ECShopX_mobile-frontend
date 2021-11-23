@@ -91,7 +91,6 @@ export default class HomeWgts extends Component {
     console.log('home-wgts', wgts)
 
     if (!wgts || wgts.length <= 0) return null
-    console.log(WgtCoupon)
     return (
       <View className='home-wgts'>
         {wgts.map((item, idx) => (
