@@ -5,7 +5,7 @@ import { AtForm, AtInput } from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { SpCell, SpToast, SpNavBar } from '@/components'
 import api from '@/api'
-import { pickBy, isWeixin, isAlipay, showLoading, hideLoading } from '@/utils'
+import { pickBy, isWeixin, isAlipay, showLoading, hideLoading, isWeb } from '@/utils'
 import S from '@/spx'
 
 import './edit-address.scss'
@@ -284,7 +284,6 @@ export default class AddressIndex extends Component {
   render() {
     const { colors } = this.props
     const { info, multiIndex, areaList } = this.state
-
     return (
       <View className='page-address-edit'>
         {/*<EditAddress*/}
@@ -315,22 +314,41 @@ export default class AddressIndex extends Component {
               value={multiIndex}
               range={areaList}
             >
-              <View className='picker'>
-                <View className='picker__title'>所在区域</View>
-                {info.address_id || (this.$router.params.isWechatAddress && info.province) ? (
-                  `${info.province}${info.city}${info.county}`
-                ) : (
-                  <View>
-                    {multiIndex.length > 0 ? (
-                      <Text>
-                        {areaList[0][multiIndex[0]]}
-                        {areaList[1][multiIndex[1]]}
-                        {areaList[2][multiIndex[2]]}
-                      </Text>
-                    ) : null}
-                  </View>
-                )}
-              </View>
+              {isWeb ? (
+                <View className='picker' onClick={this.handleClickPicker}>
+                  <View className='picker__title'>所在区域</View>
+                  {info.address_id || (this.$router.params.isWechatAddress && info.province) ? (
+                    `${info.province}${info.city}${info.county}`
+                  ) : (
+                    <View>
+                      {multiIndex.length > 0 ? (
+                        <Text>
+                          {areaList[0][multiIndex[0]]}
+                          {areaList[1][multiIndex[1]]}
+                          {areaList[2][multiIndex[2]]}
+                        </Text>
+                      ) : null}
+                    </View>
+                  )}
+                </View>
+              ) : (
+                <View className='picker'>
+                  <View className='picker__title'>所在区域</View>
+                  {info.address_id || (this.$router.params.isWechatAddress && info.province) ? (
+                    `${info.province}${info.city}${info.county}`
+                  ) : (
+                    <View>
+                      {multiIndex.length > 0 ? (
+                        <Text>
+                          {areaList[0][multiIndex[0]]}
+                          {areaList[1][multiIndex[1]]}
+                          {areaList[2][multiIndex[2]]}
+                        </Text>
+                      ) : null}
+                    </View>
+                  )}
+                </View>
+              )}
             </Picker>
             <AtInput
               title='详细地址'

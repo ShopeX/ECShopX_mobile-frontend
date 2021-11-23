@@ -32,7 +32,7 @@ class Spx {
   constructor(options = {}) {
     this.hooks = []
     this.options = {
-      autoRefreshToken: true,
+      autoRefreshToken: false, // 关闭主动刷新token
       ...options
     }
 
@@ -82,7 +82,7 @@ class Spx {
     const checkAndRefresh = async () => {
       const expired = Taro.getStorageSync(TOKEN_TIMESTAMP)
       if (!expired) return
-      const delta = expired - Date. now()
+      const delta = expired - Date.now()
       if (delta > 0 && delta <= 5 * 60 * 1000) {
         const { token } = await api.user.refreshToken()
         clearTimeout(this._refreshTokenTimer)

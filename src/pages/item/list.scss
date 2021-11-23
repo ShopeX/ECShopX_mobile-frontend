@@ -4,20 +4,20 @@
   background: $color-bg-gray;
   /*  #ifdef  h5  */  
   padding-top: $navigate-height-h5;
-  &.inWeixin{
-    padding-top:0;
+  // &.inWeixin{
+  //   padding-top:0;
 
-    .goods-list{
-      &__toolbar{
-        top: 0;
-      }
-      &__scroll{
-        &.with-tag-bar{
-          @include page-scroll($tabs-height + $searchbar-height + $tags-height + 8, 0);
-        }
-      }
-    }
-  }
+  //   .goods-list{
+  //     &__toolbar{
+  //       top: 0;
+  //     }
+  //     &__scroll{
+  //       &.with-tag-bar{
+  //         @include page-scroll($tabs-height + $searchbar-height + $tags-height + 8, 0);
+  //       }
+  //     }
+  //   }
+  // }
   /*  #endif  */
   .goods-list {
     margin: 0 -10px;
@@ -92,9 +92,9 @@
       @include page-scroll($tabs-height + $searchbar-height + $navigate-height-h5 + 8, 0);
       /*  #endif  */      
       &.with-tag-bar {
-        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height + 8, 0);
+        @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 20, 0);
         /*  #ifdef  h5  */  
-        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height-h5 + 8, 0);
+        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height-h5 + 15, 0);
         /*  #endif  */        
       }
     }
