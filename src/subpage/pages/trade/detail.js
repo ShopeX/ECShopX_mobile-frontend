@@ -16,7 +16,9 @@ import {
   getPointName,
   classNames,
   isNavbar,
-  isWbWechat
+  isWbWechat,
+  isWeb,
+  redirectUrl
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { Tracker } from '@/service'
@@ -297,6 +299,12 @@ export default class TradeDetail extends Component {
       order_id,
       order_type
     }
+
+    if(isWeb){
+      redirectUrl(api, `/subpage/pages/cashier/index?order_id=${order_id}`) 
+      return ;
+    }
+    
     const config = await api.cashier.getPayment(paymentParams)
 
     this.setState({

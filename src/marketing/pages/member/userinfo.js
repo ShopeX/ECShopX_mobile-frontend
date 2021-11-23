@@ -33,12 +33,12 @@ export default class UserInfo extends Component {
       avatarClickNum: 0,
       showCheckboxPanel: false,
       // 是否显示隐私协议
-      showPrivacy: false,
-      showTimes: 0,
+      // showPrivacy: false,
+      // showTimes: 0,
       // 是否获取微信用户信息授权
-      wxUserInfo: true,
+      // wxUserInfo: true,
       // 是否同意隐私协议
-      isAgree: Taro.getStorageSync('Privacy_agress')
+      // isAgree: Taro.getStorageSync('Privacy_agress')
     }
 
     // option的type
@@ -55,8 +55,8 @@ export default class UserInfo extends Component {
 
   // 上传头像
   handleAvatar = async () => {
-    const { showTimes, userInfo, isAgree } = this.state
-    if (showTimes >= 1) {
+    const { userInfo } = this.state
+    if (userInfo.avatar) {
       try {
         const { tempFiles = [] } = await Taro.chooseImage({
           count: 1
@@ -78,19 +78,19 @@ export default class UserInfo extends Component {
         console.log(err)
       }
     } else {
-      if (isAgree == 1) {
+      // if (isAgree == 1) {
         S.OAuthWxUserProfile(() => {
-          this.setState({
-            showTimes: this.state.showTimes + 1
-          })
+          // this.setState({
+          //   showTimes: this.state.showTimes + 1
+          // })
           this.getFormItem()
         }, true)
-      } else {
-        this.setState({
-          showPrivacy: true,
-          wxUserInfo: true
-        })
-      }
+      // } else {
+      //   this.setState({
+      //     showPrivacy: true,
+      //     wxUserInfo: true
+      //   })
+      // }
     }
   }
 
@@ -234,7 +234,7 @@ export default class UserInfo extends Component {
   saveInfo = async (e) => {
     // e && e.stopPropagation();
     const { userInfo, regParams, isAgree } = this.state
-    if (isAgree == 1) {
+    // if (isAgree == 1) {
       try {
         Object.keys(regParams).forEach((key) => {
           if (regParams[key].is_required) {
@@ -256,25 +256,25 @@ export default class UserInfo extends Component {
       } catch (e) {
         showToast(`请完善${e}`)
       }
-    } else {
-      this.setState({
-        showPrivacy: true,
-        wxUserInfo: false
-      })
-    }
+    // } else {
+    //   this.setState({
+    //     showPrivacy: true,
+    //     wxUserInfo: false
+    //   })
+    // }
   }
 
-  privacyOnChange() {
-    this.setState({
-      isAgree: true
-    }, () => {
-      if (this.state.wxUserInfo) {
-        this.getFormItem()
-      } else {
-        this.saveInfo()
-      }
-    })
-  }
+  // privacyOnChange() {
+  // this.setState({
+  //   isAgree: true
+  // }, () => {
+  // if (this.state.wxUserInfo) {
+  //   this.getFormItem()
+  // } else {
+  //   this.saveInfo()
+  // }
+  // })
+  // }
 
   render() {
     const {
@@ -283,8 +283,8 @@ export default class UserInfo extends Component {
       regParams,
       showCheckboxPanel,
       option_list,
-      showPrivacy,
-      wxUserInfo
+      // showPrivacy,
+      // wxUserInfo
     } = this.state
     const { colors, memberData } = this.props
 
@@ -460,7 +460,7 @@ export default class UserInfo extends Component {
           </View>
         ) : null}
 
-        <SpFloatPrivacy
+        {/* <SpFloatPrivacy
           isOpened={showPrivacy}
           wxUserInfo={wxUserInfo}
           onClose={() =>
@@ -470,7 +470,7 @@ export default class UserInfo extends Component {
             })
           }
           onChange={this.privacyOnChange.bind(this)}
-        />
+        /> */}
       </View>
     )
   }

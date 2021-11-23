@@ -14,6 +14,7 @@ import {
   classNames,
   isWeixin
 } from '@/utils'
+import { setPageTitle } from '@/utils/platform'
 import { customName } from '@/utils/point'
 import userIcon from '@/assets/imgs/user-icon.png'
 import MemberBanner from './comps/member-banner'
@@ -77,6 +78,7 @@ export default class MemberIndex extends Component {
   }
 
   componentWillMount() {
+    setPageTitle('会员中心')
     this.fetch();
     this.getSetting();
     this.getPrivacyTitle();

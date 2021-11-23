@@ -14,8 +14,8 @@ import {
 } from '@/components'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, classNames, isArray, isAlipay, payTypeField } from '@/utils'
-import { platformTemplateName } from '@/utils/platform'
+import { pickBy, classNames, isArray, isAlipay, isWeixin, payTypeField } from '@/utils'
+import { platformTemplateName, setPageTitle } from '@/utils/platform'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
@@ -86,8 +86,9 @@ export default class Home extends Component {
     }
   }
 
-  componentDidMount() { 
-    
+  componentDidMount() {
+    setPageTitle('微商城')
+    this.protocolUpdateTime();
     this.getShareSetting();
     this.isShowTips(); 
   
@@ -777,7 +778,7 @@ export default class Home extends Component {
         {/* 返回顶部 */}
         <BackToTop show={showBackToTop} onClick={this.scrollBackToTop.bind(this)} />
         {/* addTip */}
-        {isShowAddTip && !isAlipay && (
+        {isShowAddTip && isWeixin && (
           <View className='add_tip'>
             <View class='tip-text'>点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺</View>
             <View className='icon-close icon-view' onClick={this.handleClickCloseAddTip.bind(this)}>

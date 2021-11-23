@@ -12,7 +12,8 @@ import {
   GoodsItem,
   SpLogin
 } from "@/components";
-import { log, navigateTo, pickBy, classNames,showLoading,hideLoading } from '@/utils'
+import { log, navigateTo, pickBy, classNames, showLoading, hideLoading } from '@/utils'
+import { setPageTitle } from '@/utils/platform'
 import debounce from 'lodash/debounce'
 import api from '@/api'
 import S from '@/spx'
@@ -75,7 +76,7 @@ export default class CartIndex extends Component {
   }
 
   componentDidMount() {
-    console.log(this.$router.params, 48);
+    setPageTitle('购物车')
     if (this.$router.params && this.$router.params.path === "qrcode") {
       this.setState({
         isPathQrcode: true

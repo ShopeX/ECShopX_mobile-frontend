@@ -104,7 +104,7 @@ export default class SettingIndex extends Component {
     return (
       <View className='member-setting'>
         <SpNavBar title='设置' />
-        <View className='page-member-section'>
+        <View className='member-setting-section'>
           <SpCell title='个人信息' isLink onClick={this.handleClickInfo.bind(this)}></SpCell>
           <SpCell
             title='地址管理'

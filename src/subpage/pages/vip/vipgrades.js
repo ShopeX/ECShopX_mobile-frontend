@@ -14,8 +14,7 @@ import {
   isNavbar,
   formatTime
 } from '@/utils'
-import PaymentPicker from '@/pages/cart/comps/payment-picker'
-import { customName } from '@/utils/point'
+import PaymentPicker from '@/pages/cart/comps/payment-picker'  
 import userIcon from '@/assets/imgs/user-icon.png'
 
 import './vipgrades.scss'
@@ -137,7 +136,8 @@ export default class VipIndex extends Component {
     })
   }
 
-  async handleCharge() {
+  handleCharge=async ()=>{
+  
     if (!S.getAuthToken()) {
       Taro.showToast({
         title: '请先登录再购买',
@@ -150,8 +150,9 @@ export default class VipIndex extends Component {
 
       return
     }
-
+    
     const { list, curTabIdx, curCellIdx, payType } = this.state
+    
     const vip_grade = list[curTabIdx]
     const params = {
       vip_grade_id: vip_grade.vip_grade_id,
@@ -159,12 +160,14 @@ export default class VipIndex extends Component {
       distributor_id: Taro.getStorageSync('trackIdentity').distributor_id || '',
       pay_type: payType
     }
-
+  
     showLoading({ mask: true })
 
     const data = await api.vip.charge(params)
 
     hideLoading()
+
+ 
 
     var config = data
     var that = this
@@ -286,9 +289,9 @@ export default class VipIndex extends Component {
             tabList={tabList}
             onClick={this.handleClickTab}
           >
-            {tabList.map((panes, pIdx) => (
+            {/* {tabList.map((panes, pIdx) => (
               <AtTabsPane current={curTabIdx} key={panes.title} index={pIdx}></AtTabsPane>
-            ))}
+            ))} */}
           </AtTabs>
         </View>
         <View className='pay-box'>

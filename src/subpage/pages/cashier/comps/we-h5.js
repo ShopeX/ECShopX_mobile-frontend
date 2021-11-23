@@ -35,9 +35,7 @@ export default class WeappBtn extends Component {
       order_type: orderType
     }
 
-    const res = await api.cashier.getPayment(params)
-    console.log('res-------------')
-    console.log(res)
+    const res = await api.cashier.getPayment(params) 
     // eslint-disable-next-line
     const loc = location
     const redirect_url = `${loc.protocol}//${loc.host}/subpage/pages/cashier/cashier-result?order_id=${order_id}`

@@ -32,7 +32,7 @@ class Spx {
   constructor(options = {}) {
     this.hooks = []
     this.options = {
-      autoRefreshToken: true,
+      autoRefreshToken: false, // 关闭主动刷新token
       ...options
     }
 

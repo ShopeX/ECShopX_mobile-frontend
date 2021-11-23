@@ -74,6 +74,7 @@
   }
 }
 .pay-rule-style {
+  word-break: break-word;
   padding: 30px;
 }
 
@@ -115,8 +116,8 @@
   margin-right: 8px;
   font-family: SimSun, sans-serif;
 }
-.page-member-integral {
-  /*  #ifdef  h5  */
-  padding-top: $navigate-height-h5;
-  /*  #endif  */
-}
+// .page-member-integral {
+//   /*  #ifdef  h5  */
+//   padding-top: $navigate-height-h5;
+//   /*  #endif  */
+// }

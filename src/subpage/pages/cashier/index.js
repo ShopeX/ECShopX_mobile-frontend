@@ -21,10 +21,7 @@ export default class Cashier extends Component {
     this.fetch()
   }
 
-  async componentDidMount(){
-    console.log("aaa")
-    // let res = await api.member.getTradePaymentList({platform:'h5'});
-    // console.log("===res==",res)
+  async componentDidMount(){ 
     const { isHasAlipay } = await getPaymentList();
     this.setState({
       isHasAlipay
