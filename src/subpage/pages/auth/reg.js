@@ -155,6 +155,7 @@ export default class Reg extends Component {
     }
 
     try {
+      let res = null
       if (isWeapp) {
         const uid = Taro.getStorageSync('distribution_shop_id')
         const { union_id, open_id } = this.$router.params
@@ -191,7 +192,7 @@ export default class Reg extends Component {
           params.work_userid = work_userid
         }
 
-        const res = await api.user.reg(params)
+        res = await api.user.reg(params)
         Tracker.dispatch('MEMBER_REG', params)
 
         const { code } = await Taro.login()
@@ -213,7 +214,7 @@ export default class Reg extends Component {
           })
         }
       } else { 
-        const res = await api.user.reg(data) 
+        res = await api.user.reg(data) 
         S.setAuthToken(res.token)
       }
 
@@ -233,30 +234,35 @@ export default class Reg extends Component {
         })
       }
 
-      S.toast('注册成功')
-      const { redirect, source } = this.$router.params
-      setTimeout(() => {
-        if (Taro.getStorageSync('isqrcode') === 'true') {
-          Taro.redirectTo({
-            url: '/subpage/pages/qrcode-buy'
-          })
-        } else if (source === 'other_pay') {
-          Taro.redirectTo({
-            url: `/pages/cart/espier-checkout?source=${source}`
-          })
-        } else {
-          // 如果返回
-          if (redirect) {
+      console.log(res,'注册返回');
+      if (res && res.status_code === 200) {
+        S.toast('注册成功')
+        const { redirect, source } = this.$router.params
+        setTimeout(() => {
+          if (Taro.getStorageSync('isqrcode') === 'true') {
             Taro.redirectTo({
-              url: decodeURIComponent(redirect)
+              url: '/subpage/pages/qrcode-buy'
+            })
+          } else if (source === 'other_pay') {
+            Taro.redirectTo({
+              url: `/pages/cart/espier-checkout?source=${source}`
             })
           } else {
-            Taro.redirectTo({
-              url: '/pages/member/index'
-            })
+            // 如果返回
+            if (redirect) {
+              Taro.redirectTo({
+                url: decodeURIComponent(redirect)
+              })
+            } else {
+              Taro.redirectTo({
+                url: '/pages/member/index'
+              })
+            }
           }
-        }
-      }, 700)
+        }, 700)
+      } else {
+        S.toast(res.message)
+      }
     } catch (error) {
       return false
     }

@@ -575,6 +575,10 @@ export default class TradeDetail extends Component {
   // 复制orderid
   copyOrderId = (orderid) => {
     copy(orderid)
+    Taro.showToast({
+      title: '复制成功',
+      icon: 'none'
+    })
   }
 
   handleImgClick = (val) => {

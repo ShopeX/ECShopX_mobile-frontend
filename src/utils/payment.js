@@ -1,6 +1,7 @@
 
 import Taro from '@tarojs/taro';
 import { payment_platform } from '@/utils/platform';
+import { isWbWechat } from '@/utils';
 import api from '@/api'
 
 export async function getPaymentList() {
@@ -9,7 +10,7 @@ export async function getPaymentList() {
     if (distributor_id) {
         params = {
             distributor_id,
-            platform: payment_platform
+            platform: isWbWechat?'wxPlatform':payment_platform
         }
     }
     let list = await api.member.getTradePaymentList(params);

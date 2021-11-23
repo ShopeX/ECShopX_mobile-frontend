@@ -79,7 +79,7 @@ export default class ActivityPanel extends Component {
                               <View className='item' key={`promotion${index}`}>
                                 <View className='item-img'>
                                   <SpImg
-                                    img-class='goods-item__img'
+                                    img-class='promotion-rule-goods__img'
                                     src={plus.pics[0]}
                                     mode='aspectFill'
                                     width='400'

@@ -24,7 +24,7 @@ export default class CashierResult extends Component {
     setTimeout(() => {
       Taro.hideLoading()
       this.fetch()
-    }, 2000)
+    }, 3000)
   }
 
   async fetch() {
@@ -70,6 +70,8 @@ export default class CashierResult extends Component {
     if (tradeInfo.tradeState === 'SUCCESS') {
       ingUrl = paySuccessPng
     }
+
+    console.log("===tradeInfo===",tradeInfo)
 
     return (
       <View className='page-cashier-index'>

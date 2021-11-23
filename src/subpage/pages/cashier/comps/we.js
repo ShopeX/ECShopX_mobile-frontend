@@ -41,6 +41,12 @@ export default class WeappBtn extends Component {
 
     let { appId, timeStamp, nonceStr, signType, paySign } = config
 
+    const loc = location
+
+    const redirect_url = `${loc.protocol}//${loc.host}/subpage/pages/cashier/cashier-result?order_id=${order_id}`
+
+    const redirect_url2=`/subpage/pages/cashier/cashier-result?order_id=${order_id}`
+
     WeixinJSBridge.invoke(
       'getBrandWCPayRequest',
       {
@@ -53,10 +59,13 @@ export default class WeappBtn extends Component {
       },
       function(res) {
         console.error(res)
-        if (res.err_msg == 'get_brand_wcpay_request:ok') {
-          // 使用以上方式判断前端返回,微信团队郑重提示：
-          //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-        }
+        Taro.navigateTo({
+          url:redirect_url2
+        })
+        // if (res.err_msg == 'get_brand_wcpay_request:ok') {
+        //   // 使用以上方式判断前端返回,微信团队郑重提示：
+        //   //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+        // }
       }
     )
   }
