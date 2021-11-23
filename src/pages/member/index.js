@@ -299,14 +299,16 @@ export default class MemberIndex extends Component {
     }
     if (memberData && memberData.memberInfo) {
       const { avatar, username } = memberData.memberInfo
-      if (avatar && username) {
-        if (need) {
+      if (isWeixin) {
+        if (avatar && username && need) {
           fn && fn()
+        } else {
+          S.OAuthWxUserProfile(() => {
+            this.fetch()
+          }, true)
         }
       } else {
-        S.OAuthWxUserProfile(() => {
-          this.fetch()
-        }, true)
+        fn && fn()
       }
     }
     // if ( this.state.showTimes >= 1 ) {
@@ -450,13 +452,12 @@ export default class MemberIndex extends Component {
                 <View className='member-assets__value'>{memberAssets.point_total_count || 0}</View>
               </View>
 
-              {rechargeStatus && (
+              {rechargeStatus && isWeixin && (
                 <View
                   className='view-flex-item'
                   onClick={() => {
                     this.handleClickWxOAuth(
-                      this.navigateTo.bind(this, '/others/pages/recharge/index'),
-                      isWeixin
+                      this.navigateTo.bind(this, '/others/pages/recharge/index')
                     )
                   }}
                 >
@@ -844,4 +845,5 @@ export default class MemberIndex extends Component {
       </View>
     )
   }
+
 }
