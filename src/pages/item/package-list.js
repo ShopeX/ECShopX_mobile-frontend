@@ -2,12 +2,29 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote } from '@/components'
+import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import PackageItem from './comps/package-item'
 
 import './package-list.scss'
 
+@connect(
+  ({ cart, member, colors }) => ({
+    cart,
+    colors: colors.current,
+    favs: member.favs,
+    showLikeList: cart.showLikeList
+  }),
+  (dispatch) => ({
+    onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
+    onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
+    onUpdateCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),
+    onAddFav: ({ item_id, fav_id }) =>
+      dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
+    onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
+  })
+)
 @withPager
 @withBackToTop
 export default class PackageList extends Component {
@@ -80,7 +97,7 @@ export default class PackageList extends Component {
           scrollTop={scrollTop}
           scrollWithAnimation
           onScroll={this.handleScroll}
-          onScrollToLower={this.nextPage}
+          // onScrollToLower={this.nextPage}
         >
           <View className='package-goods__list'>
             {list.map((item) => {
@@ -106,4 +123,4 @@ export default class PackageList extends Component {
       </View>
     )
   }
-}
+} 

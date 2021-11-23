@@ -71,9 +71,7 @@ export default class Cashier extends Component {
 
   render() {
     const { info, env, isHasAlipay } = this.state;
-
-    const { payType }=this.$router.params;
-  
+ 
     if (!info) {
       return <Loading />
     }
