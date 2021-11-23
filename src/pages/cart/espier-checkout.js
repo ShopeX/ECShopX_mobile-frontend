@@ -16,7 +16,8 @@ import {
   isAlipay,
   isWeixin,
   isWeb,
-  redirectUrl
+  redirectUrl,
+  isObjectValueEqual
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -248,13 +249,24 @@ export default class CartCheckout extends Component {
   componentWillReceiveProps(nextProps) {
     const nextAddress = nextProps.address || {}
     const selfAddress = this.props.address || {}
-    if (nextAddress.address_id !== selfAddress.address_id) {
+    if (!isObjectValueEqual(nextAddress, selfAddress)
+      // nextAddress.address_id !== selfAddress.address_id
+      // || nextAddress.username !== selfAddress.username
+      // || nextAddress.province !== selfAddress.province
+      // || nextAddress.city !== selfAddress.city
+      // || nextAddress.county !== selfAddress.county
+      // || nextAddress.telephone !== selfAddress.telephone
+      // || nextAddress.adrdetail !== selfAddress.adrdetail
+      // || nextAddress.postalCode !== selfAddress.postalCode
+      // || nextAddress.is_def !== selfAddress.is_def
+    ) {
       this.fetchAddress()
     }
     if (nextProps.zitiShop !== this.props.zitiShop) {
       this.fetchZiTiShop()
     }
   }
+
   componentWillUnmount() {
     // teardown clean
     this.props.onClearCoupon()
