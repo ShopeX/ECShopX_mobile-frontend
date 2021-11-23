@@ -48,7 +48,7 @@
 		"nerv-devtools": "^1.5.7",
 		"nervjs": "^1.5.7",
 		"qiniu-js": "^2.5.4",
-		"qs": "^6.6.0",
+		"qs": "6.6.0",
 		"redux": "^4.0.1",
 		"redux-create-reducer": "^1.2.0",
 		"redux-logger": "^3.0.6",
