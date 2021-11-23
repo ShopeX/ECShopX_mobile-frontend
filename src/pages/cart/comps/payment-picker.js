@@ -6,6 +6,7 @@ import { SpCheckbox } from '@/components'
 import api from '@/api'
 import { closeClassName, getPointName,isWeixin } from '@/utils'
 import { payment_platform } from '@/utils/platform'
+import { getPaymentList } from '@/utils/payment'
 import './payment-picker.scss'
 
 @connect(({ colors }) => ({
@@ -42,15 +43,11 @@ export default class PaymentPicker extends Component {
     addGlobalClass: true
   }
   async fatch() {
-    let params = {} 
-    const distributor_id = Taro.getStorageSync('payment_list_dtid')
-    if (distributor_id) {
-      params = {
-        distributor_id,
-        platform:payment_platform
-      }
-    }
-    let res = await api.member.getTradePaymentList(params)
+
+    const { list }=await getPaymentList(); 
+
+    const res = list;
+    
     this.setState(
       {
         typeList: res

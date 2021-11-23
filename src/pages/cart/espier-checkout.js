@@ -16,7 +16,8 @@ import {
   isAlipay,
   isWeixin,
   isWeb,
-  redirectUrl
+  redirectUrl,
+  isWbWechat
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -1666,7 +1667,8 @@ export default class CartCheckout extends Component {
       delivery: '货到付款',
       hfpay: '微信支付',
       alipayh5:'支付宝支付',
-      wxpayh5:'微信支付'
+      wxpayh5:'微信支付',
+      wxpayjs:'微信支付'
     }
 
     const { coupon, colors } = this.props
