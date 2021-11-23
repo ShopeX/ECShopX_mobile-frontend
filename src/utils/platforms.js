@@ -21,9 +21,10 @@ export const rightClassName = isWeixin
   ? 'at-icon at-icon-chevron-right'
   : 'iconfont icon-arrowRight'
 
-export const copy = isWeixin
+export const copy = isWeixin || isWeb
   ? (text) => Taro.setClipboardData({ data: text })
   : (text) => {
+    console.log(isWeixin);
       console.log('alipay支付成功')
       my.setClipboard({
         text,
