@@ -13,7 +13,7 @@ import {
   styleNames,
   classNames,
   isWeixin
-} from '@/utils' 
+} from '@/utils'
 import { customName } from '@/utils/point'
 import userIcon from '@/assets/imgs/user-icon.png'
 import MemberBanner from './comps/member-banner'

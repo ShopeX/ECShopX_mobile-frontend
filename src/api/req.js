@@ -1,95 +1,111 @@
 import Taro from '@tarojs/taro'
-import S from '@/spx'
-import api from '@/api'
 import qs from 'qs'
+import S from '@/spx'
+import { isAlipay, isWeixin } from '@/utils'
+import log from '@/utils/log'
+import { HTTP_STATUS } from './consts'
 
-import { isAlipay, isWeb } from '@/utils'
-
-function addQuery(url, query) {
-  return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
-}
+let demoIsTokenRefreshed = true
+setTimeout(() => {
+  demoIsTokenRefreshed = false
+}, 0);
 
 class RequestQueue {
   constructor() {
     this.requestList = []
+    this.isRunning = false
   }
 
-  push(req) {
+  push (req) {
     this.requestList.push(req)
   }
 
-  async run() {
-    const request = this.requestList.shift()
-    log.debug(`requestQueue length is ${this.requestList.length}`)
-    if (request) {
-      await request()
-      if (this.requestList.length > 0 && !API.isRefreshing) {
-        this.run()
+  destroy () {
+    this.isRunning = false
+    this.requestList = []
+  }
+
+  run () {
+    this.isRunning = true
+    const next = async () => {
+      const req = this.requestList.shift()
+      log.debug(`requestQueue length is ${this.requestList.length}`)
+      if (!req) return
+
+      await req()
+      if (this.requestList.length > 0 && this.isRunning) {
+        await next()
       }
     }
+
+    next()
   }
 }
 
-const requestQueue = new RequestQueue()
-
 class API {
   constructor(options = {}) {
-    let { baseURL = '/' } = options
+    this.setOptions(options)
+    this.isRefreshingToken = false
+    this.requestQueue = new RequestQueue()
+  }
+
+  setOptions (opts) {
+    let { baseURL = '/' } = opts
     if (!/\/$/.test(baseURL)) {
       baseURL = baseURL + '/'
     }
+    this.baseURL = baseURL
 
-    options.company_id = process.env.APP_COMPANY_ID
-    if (process.env.TARO_ENV === 'weapp' || isAlipay) {
+    const options = {
+      company_id: process.env.APP_COMPANY_ID
+    }
+    if (isWeixin || isAlipay) {
       const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
       options.appid = extConfig.appid
       if (extConfig.company_id) {
         options.company_id = extConfig.company_id
       }
     }
-
     this.options = options
-    this.baseURL = baseURL
-    this.genMethods(['get', 'post', 'delete', 'put'])
   }
 
-  static isRefreshing = false
+  errorToast (data) {
+    let errMsg =
+      data.message || (data.data && data.data.message) || '操作失败，请稍后重试'
 
-  genMethods(methods) {
-    methods.forEach((method) => {
-      this[method] = (url, data, config = {}) =>
-        this.makeReq({
-          ...config,
-          method,
-          url,
-          data
-        })
-    })
-  }
-
-  errorToast(data) { 
-    let errMsg = data.message || '操作失败，请稍后重试'
-   
-    let newText = ''
     if (errMsg.length > 11) {
-      newText = errMsg.substring(0, 11) + '\n' + errMsg.substring(11)
-    } else {
-      newText = errMsg
+      errMsg = errMsg.substring(0, 11) + '\n' + errMsg.substring(11)
     }
+
     setTimeout(() => {
       Taro.showToast({
         icon: 'none',
-        title: newText
+        title: errMsg
       })
     }, 200)
   }
 
-  makeReq(config) {
-    const { url, data, header = {}, method = 'GET', showLoading, showError = true } = config
+  getReqUrl (url) {
+    return /^http/.test(url) ? url : `${this.baseURL}${url.replace(/^\//, '')}`
+  }
+
+  handleLogout () {
+    this.requestQueue.destroy()
+    this.isRefreshingToken = false
+    S.logout()
+    setTimeout(() => {
+      Taro.redirectTo({ url: '/pages/member/index' })
+    }, 300)
+  }
+
+  intereptorReq (params) {
+    const { url, data, header = {}, method = 'GET' } = params
+    const { company_id, appid } = this.options
     const methodIsGet = method.toLowerCase() === 'get'
 
-    let reqUrl = /^http/.test(url) ? url : `${this.baseURL}${url.replace(/^\//, '')}`
+    const reqUrl = this.getReqUrl(url)
     const query = !data || typeof data === 'string' ? qs.parse(data) : data
+    query.company_id = company_id
 
     if (!methodIsGet) {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
@@ -100,20 +116,105 @@ class API {
       header['Authorization'] = `Bearer ${token}`
     }
 
-    const { company_id, appid } = this.options
-    if (process.env.TARO_ENV === 'weapp' || isAlipay) {
-      if (appid) {
-        header['authorizer-appid'] = appid
-      }
+
+    if ((isWeixin || isAlipay) && appid) {
+      header['authorizer-appid'] = appid
     }
 
-    const options = {
-      ...config,
+    const config = {
+      ...params,
       url: reqUrl,
       data: query,
       method: method.toUpperCase(),
       header: header
     }
+
+    return config
+  }
+
+  intereptorRes (res) {
+    const { data, statusCode, config } = res
+    const { showError = true } = config
+
+    if (statusCode == HTTP_STATUS.SUCCESS) {
+      const { status_code } = data
+      if (!status_code) {
+        return data.data
+      } else {
+        // status_code 不为0，表示有错误
+        if (showError) {
+          this.errorToast(data)
+        }
+        return Promise.reject(this.reqError(res))
+      }
+    }
+
+    if (statusCode === HTTP_STATUS.UNAUTHORIZED) {
+      if ((data.data && data.data.code) === HTTP_STATUS.USER_FORBIDDEN) {
+        if (showError) {
+          this.errorToast(data)
+        }
+        return Promise.reject(this.reqError(res, '帐号已被禁用'))
+      }
+
+      this.handleLogout()
+      return Promise.reject(this.reqError(res))
+    }
+
+    if (statusCode === HTTP_STATUS.NOT_FOUND) {
+      return Promise.reject(this.reqError(res, '请求资源不存在'))
+    }
+
+    if (statusCode === HTTP_STATUS.BAD_GATEWAY) {
+      return Promise.reject(this.reqError(res, '服务端出现了问题'))
+    }
+
+    return Promise.reject(this.reqError(res, `API error: ${statusCode}`))
+  }
+
+  async refreshToken () {
+    this.isRefreshingToken = true
+    const token = S.getAuthToken()
+    try {
+      await this.makeReq(
+        {
+          header: {
+            Authorization: `Bearer ${token}`
+          },
+          method: 'get',
+          url: this.getReqUrl('/token/refresh'),
+          noPending: true
+        },
+        (res) => {
+          console.log('refreshing token: ', res)
+          const { statusCode } = res
+          if (statusCode === HTTP_STATUS.UNAUTHORIZED) {
+            return this.handleLogout()
+          }
+
+          const newToken = res.header.Authorization.split(' ')[1]
+          S.setAuthToken(newToken)
+        }
+      )
+    } catch (e) {
+      console.log(e)
+    }
+
+    this.isRefreshingToken = false
+  }
+
+  /**
+   *
+   *
+   * @param {Object} config 请求参数
+   * @param {function(Object)} [intereptorRes] 处理请求回调数据的方法
+   * @param {function(Object)} [intereptorReq] 处理请求参数的方法
+   * @return {Object} 请求返回的数据
+   * @memberof API
+   */
+  async makeReq (config = {}, intereptorRes, intereptorReq) {
+    const { showLoading } = config
+    const options = intereptorReq ? intereptorReq(config) : this.intereptorReq(config)
 
     if (showLoading) {
       Taro.showLoading({
@@ -121,102 +222,103 @@ class API {
       })
     }
 
-    options.data = {
-      ...(options.data || {}),
-      company_id
-    }
-    if (options.method === 'GET') {
-      options.url = addQuery(options.url, qs.stringify(options.data))
-      delete options.data
-    } else {
-      // nest data
-      if (isAlipay && options.method === 'DELETE') {
-        options.url = addQuery(options.url, qs.stringify(options.data))
-        options.data = options.data
-        options.dataType = 'json'
-        options.headers = options.header
-        options.responseType = 'text'
-        options.responseCharset = 'utf-8'
+    let ret
+    try {
+      const res = await Taro.request(options)
+      res.config = options
+      if (
+        res.statusCode === HTTP_STATUS.UNAUTHORIZED &&
+        (res.data.data && res.data.data.code) === HTTP_STATUS.TOKEN_NEEDS_REFRESH &&
+        S.getAuthToken()
+      ) {
+        // token失效时重造请求，并刷新token
+        if (!this.isRefreshingToken) {
+          await this.refreshToken()
+        }
+        ret = await this.pendingReq(config, intereptorRes, intereptorReq, true)
       } else {
-        options.data = qs.stringify(options.data)
+        if (!this.isRefreshingToken || config.noPending) {
+          ret = intereptorRes ? intereptorRes(res) : this.intereptorRes(res)
+        } else {
+          // 正在刷新token，将请求放入队列
+          ret = await this.pendingReq(config, intereptorRes, intereptorReq)
+        }
       }
+    } catch (e) {
+      console.log(e)
     }
 
-    const _this = this
-    return Taro.request( options ).then( ( res ) => {
-      // debugger;
-      if (showLoading) {
-        Taro.hideLoading()
-      }
-      const { statusCode } = res
-      const { data } = res.data
-      if ( statusCode >= 200 && statusCode < 300 ) {
-        const { status_code, message, code } = data
-        if ( status_code ) {
-          if ( status_code == 401 ) {
-            if ( code == 401001 ) {
-              requestQueue.push( () => {
-                return new Promise( ( resolve, reject ) => {
-                  resolve( _this.makeReq( config ) )
-                } )
-              } )
-              if ( !API.isRefreshing ) {
-                API.isRefreshing = true
-                api.wx
-                  .refreshToken()
-                  .then( ( res ) => {
-                    // log.debug( `token refresh success: ${res.token}` )
-                    API.isRefreshing = false
-                    S.setAuthToken( res.token )
-                    requestQueue.run()
-                  } )
-                  .catch( ( e ) => {
-                    API.isRefreshing = false
-                    Taro.redirectTo( { url: '/pages/member/index' } )
-                  } )
-                  .finally( () => {
-                    API.isRefreshing = false
-                  } )
-              }
-            } else if ( code == 401002 ) {
-              this.errorToast( {
-                msg: '帐号已被禁用'
-              } )
-              return Promise.reject( this.reqError( data, '帐号已被禁用' ) )
-            } else {
-              S.setAuthToken( '' )
-              Taro.redirectTo( { url: '/pages/member/index' } )
-            }
-            
-          } else {
-            this.errorToast( data )
-            return Promise.reject( this.reqError( data ) )
-          }
-        } else {
-          if ( options.url.indexOf( 'token/refresh' ) >= 0 ) {
-            data['token'] = res.header.Authorization.replace( 'Bearer ', '' )
-          }
-          return data
+    if (showLoading) {
+      Taro.hideLoading()
+    }
+
+    return ret
+  }
+
+  pendingReq (config, intereptorRes, intereptorReq, isSend) {
+    return new Promise((resolve) => {
+      const pendingReq = async () => {
+        // 仅加入队列一次
+        const reqConfig = {
+          ...config,
+          noPending: true
         }
-      } else {
-        return Promise.reject( this.reqError( data, `API error: ${statusCode}` ) )
+        const data = await this.makeReq(reqConfig, intereptorRes, intereptorReq)
+        resolve(data)
       }
-    } ).catch( e => { 
-      return Promise.reject( this.reqError( {
-        message: e.statusText,
-        statusCode: e.status
-      }))
+      this.requestQueue.push(pendingReq)
+      if (isSend) this.requestQueue.run()
     })
   }
 
-  reqError(res, msg = '') {
-    const errMsg = res.message || msg
+  get (url, data, config) {
+    return this.makeReq({
+      ...config,
+      url,
+      data,
+      method: 'GET'
+    })
+  }
+
+  reqError (res, msg = '') {
+    const errMsg = (res.data && res.data.message) || msg
     const err = new Error(errMsg)
     err.res = res
-    err.code = res.statusCode
     return err
   }
+
+  post (url, data, config) {
+    return this.makeReq({
+      ...config,
+      url,
+      data,
+      method: 'POST'
+    })
+  }
+
+  put (url, data, config) {
+    return this.makeReq({
+      ...config,
+      url,
+      data,
+      method: 'PUT'
+    })
+  }
+
+  delete (url, data, config) {
+    return this.makeReq({
+      ...config,
+      url,
+      data,
+      method: 'DELETE'
+    })
+  }
 }
+
+if (process.env.NODE_ENV === 'production') {
+  Taro.addInterceptor(Taro.interceptors.logInterceptor)
+}
+
 
 export default new API({
   baseURL: process.env.APP_BASE_URL
