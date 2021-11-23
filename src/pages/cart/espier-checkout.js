@@ -1871,6 +1871,7 @@ export default class CartCheckout extends Component {
                         className='trade-remark__input'
                         placeholder='给商家留言：选填（50字以内）'
                         onChange={this.handleRemarkChange.bind(this)}
+                        maxLength={50}
                       />
                     </SpCell>
                   </View>

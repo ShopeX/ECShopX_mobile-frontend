@@ -1,10 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image, ScrollView, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtButton, AtActionSheet, AtActionSheetItem, AtNoticebar } from 'taro-ui'
+import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import {
-  SpCheckbox,
-  SpNote,
+  SpCheckbox, 
   SpNote2,
   TabBar,
   Loading,

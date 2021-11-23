@@ -46,7 +46,7 @@ export default class CashierResult extends Component {
   handleClickBack = (orderId) => {
     if (orderId.indexOf('CJ') === -1) {
       Taro.navigateTo({
-        url: `/pages/trade/detail?id=${orderId}`
+        url: `/subpage/pages/trade/detail?id=${orderId}`
       })
     } else {
       Taro.navigateTo({

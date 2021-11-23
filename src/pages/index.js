@@ -86,16 +86,16 @@ export default class Home extends Component {
     }
   }
 
-  componentDidMount() {
-    this.protocolUpdateTime();
+  componentDidMount() { 
+    
     this.getShareSetting();
-    this.isShowTips();
+    this.isShowTips(); 
+  
   }
 
   // 获取隐私政策时间
   async protocolUpdateTime() {
-    const isLocal = await entry.getLocalSetting()
-    console.log('=============isLocal', isLocal)
+    const isLocal = await entry.getLocalSetting() 
 
     const time = Taro.getStorageSync('PrivacyUpdate_time')
     const result = await api.wx.getPrivacyTime()
@@ -108,10 +108,7 @@ export default class Home extends Component {
     } else {
       this.getHomeSetting()
     }
-
-    // this.getHomeSetting();
-    // this.getShareSetting();
-    // this.isShowTips();
+ 
   }
   // 隐私协议
   PrivacyConfirmModalonChange = async (type) => {
@@ -166,10 +163,11 @@ export default class Home extends Component {
     }
   }
 
-  componentDidShow() {
-    //this.showInit()
-    //this.isShoppingGuide()
-    //this.getDistributionInfo()
+  componentDidShow() { 
+    this.protocolUpdateTime();
+    this.showInit()
+    this.isShoppingGuide()
+    this.getDistributionInfo()
     // 检测白名单
     this.checkWhite()
     // 购物车数量
@@ -177,7 +175,7 @@ export default class Home extends Component {
     this.getPointSetting()
     if (S.getAuthToken()) {
       this.getCurrentGrad()
-    }
+    } 
   }
 
   // 配置信息

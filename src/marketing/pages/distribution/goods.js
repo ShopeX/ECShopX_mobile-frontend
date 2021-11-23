@@ -142,11 +142,17 @@ export default class DistributionGoods extends Component {
   }
 
   handleFilterChange = (data) => {
-    const { current, sort } = data
+
+    console.log("===handleFilterChange====",data)
+    const { current, sort } = data;
 
     const query = {
       ...this.state.query,
       goodsSort: current === 0 ? null : current === 1 ? 1 : sort > 0 ? 3 : 2
+    }
+
+    if((current == this.state.curFilterIdx) && sort!==null ){
+      return ;
     }
 
     if (
