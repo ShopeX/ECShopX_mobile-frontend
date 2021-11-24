@@ -5,7 +5,7 @@ import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpNavBar, SpTimer } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-import { getThemeStyle, styleNames, classNames,getBrowserEnv, navigateTo, validate, showToast } from '@/utils' 
+import { getThemeStyle, styleNames, classNames,getBrowserEnv, navigateTo, validate, showToast } from '@/utils'
 
 import './login.scss'
 
@@ -115,14 +115,20 @@ export default class Login extends Component {
       params['check_type'] = 'mobile'
     }
 
-    const { token } = await api.user.login(params)
-    S.setAuthToken(token)
-    const { redirect } = this.$router.params
-    const url = redirect ? decodeURIComponent(redirect) : process.env.APP_HOME_PAGE
+    try {
+      const { token } = await api.user.login(params)
+      if (token) {
+        S.setAuthToken(token)
+        const { redirect } = this.$router.params
+        const url = redirect ? decodeURIComponent(redirect) : process.env.APP_HOME_PAGE
 
-    Taro.redirectTo({
-      url
-    })
+        Taro.redirectTo({
+          url
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   render() {
