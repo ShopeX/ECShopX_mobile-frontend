@@ -36,7 +36,7 @@ $checkbox-size: 32px;
 
 .sp-checkbox__checked {
   .sp-checkbox {
-    // border-color: $color-brand-primary;
+    background-color: var(--color-primary);
   }
   .at-icon {
     // opacity: 1;

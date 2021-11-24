@@ -18,7 +18,9 @@ import {
   isWeb,
   isWbWechat,
   redirectUrl,
-  isObjectValueEqual
+  isObjectValueEqual,
+  getThemeStyle,
+  styleNames
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -1546,6 +1548,7 @@ export default class CartCheckout extends Component {
 
   // 设置初次paytype
   initDefaultPaytype = (payType, channel) => {
+    console.log("==initDefaultPaytype==",payType,channel)
     this.setState({
       defalutPaytype: payType,
       channel
@@ -1727,7 +1730,7 @@ export default class CartCheckout extends Component {
     //const isBtnDisabled = !address
     const isBtnDisabled = express ? !address : false
     return (
-      <View className='page-checkout'>
+      <View className='page-checkout' style={styleNames(getThemeStyle())}>
         {showAddressPicker === false ? (
           <SpNavBar title='填写订单信息' leftIconType='chevron-left' fixed='true' />
         ) : null}
@@ -2106,7 +2109,7 @@ export default class CartCheckout extends Component {
           disabledPayment={disabledPayment}
           onClose={this.handleLayoutClose}
           onChange={this.handlePaymentChange}
-          onInitDefaultPayType={this.initDefaultPaytype.bind(this)}
+          onInitDefaultPayType={this.initDefaultPaytype}
         ></PaymentPicker>
         {/* 积分使用 */}
         <PointUse

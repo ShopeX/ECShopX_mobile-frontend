@@ -2,10 +2,8 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtFloatLayout } from 'taro-ui'
-import { SpCheckbox } from '@/components'
-import api from '@/api'
-import { closeClassName, getPointName,isWeixin } from '@/utils'
-import { payment_platform } from '@/utils/platform'
+import { SpCheckbox } from '@/components' 
+import { closeClassName, getPointName,isWeixin } from '@/utils' 
 import { getPaymentList } from '@/utils/payment'
 import './payment-picker.scss'
 
@@ -29,7 +27,7 @@ export default class PaymentPicker extends Component {
     }
   }
   componentDidMount() {
-    this.fatch()
+    this.fetch()
   }
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.type !== this.props.type) {
@@ -42,25 +40,24 @@ export default class PaymentPicker extends Component {
   static options = {
     addGlobalClass: true
   }
-  async fatch() {
+  async fetch() {
 
-    const { list }=await getPaymentList(); 
-
-    const res = list;
-    
+    const { list }=await getPaymentList();  
+    const res = list; 
+ 
     this.setState(
       {
         typeList: res
       },
       () => {
         if (res[0]) {
-          console.log(111)
+          console.log(111) 
+          this.handlePaymentChange(res[0].pay_type_code, channel)
+          this.handleChange(res[0].pay_type_code) 
           let channel = ''
           if (typeof res[0].pay_channel != 'undefined') {
             channel = res[0].pay_channel
-          }
-          this.handlePaymentChange(res[0].pay_type_code, channel)
-          this.handleChange(res[0].pay_type_code)
+          } 
           this.props.onInitDefaultPayType(res[0].pay_type_code, channel)
         }
       }
@@ -198,7 +195,8 @@ export default class PaymentPicker extends Component {
                     <Text className='payment-item__desc'>使用{item.pay_type_name}</Text>
                   </View>
                   <View className='payment-item__ft'>
-                    <SpCheckbox checked={localType === item.pay_type_code}></SpCheckbox>
+                   {/* <View>{localType === item.pay_type_code?'test':'test2'}</View>  */}
+                    <SpCheckbox checked={localType === item.pay_type_code}></SpCheckbox> 
                   </View>
                 </View>
               )

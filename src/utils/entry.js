@@ -19,6 +19,7 @@ async function entryLaunch(data, isNeedLocate) {
   }
   console.log('[entry-options]', options)
 
+  
   // 如果没有带店铺id
   if (!options.dtid) {
     let { distributor_id, store_id } = Taro.getStorageSync('curStore')
@@ -26,6 +27,20 @@ async function entryLaunch(data, isNeedLocate) {
       options.dtid = options.isStore ? store_id : distributor_id
     }
   }
+
+  if (options.uid) {
+    // 如果分享带了会员ID 那么
+    Taro.setStorageSync('distribution_shop_id', options.uid)
+    Taro.setStorageSync('trackParams', {})
+  } else if (options.s && options.m) {
+    Taro.setStorageSync('distribution_shop_id', '')
+    Taro.setStorageSync('trackParams', {
+      source_id: options.s,
+      monitor_id: options.m
+    })
+    trackViewNum(options.m, options.s)
+  }
+  
   let dtidValid = false
   let store = {}
 
@@ -46,18 +61,7 @@ async function entryLaunch(data, isNeedLocate) {
     options.dtid = store.distributor_id
   }
 
-  if (options.uid) {
-    // 如果分享带了会员ID 那么
-    Taro.setStorageSync('distribution_shop_id', options.uid)
-    Taro.setStorageSync('trackParams', {})
-  } else if (options.s && options.m) {
-    Taro.setStorageSync('distribution_shop_id', '')
-    Taro.setStorageSync('trackParams', {
-      source_id: options.s,
-      monitor_id: options.m
-    })
-    trackViewNum(options.m, options.s)
-  }
+  
 
   let emp_id = options.emp_id || data.emp_id || options.emp || data.emp //导购ID
   let gu = options.gu
