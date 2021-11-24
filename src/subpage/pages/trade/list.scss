@@ -63,6 +63,14 @@
         /*  #endif  */
       }
     }
+    .trade-cont {
+      .more {
+        color: #d42f29;
+        /*  #ifdef  h5  */
+        border: none;
+        /*  #endif  */
+      }
+    }
   }
 
   .trade-item {
