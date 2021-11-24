@@ -283,8 +283,10 @@ export default class PackageItem extends Component {
 
     const { selection, mainItem } = this.state
     console.log(selection, 198)
+    console.log(mainItem,'mainItemmainItemmainItem');
+    // return
     const packageId = this.props.current
-    if (!mainItem.checked_spec && mainItem.spec_items.length > 1) {
+    if (!mainItem.checked_spec || mainItem.spec_items.length > 1) {
       Taro.showToast({
         title: '请选择主商品规格',
         icon: 'none'
@@ -448,7 +450,7 @@ export default class PackageItem extends Component {
             })}
           </View>
 
-          <View class='package-goods__item-footer'>
+          <View className='package-goods__item-footer'>
             <View className='package-amount'>
               组合价：<Text className='amount-number'>¥{packageTotalPrice}</Text>
             </View>

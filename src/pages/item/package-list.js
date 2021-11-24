@@ -89,6 +89,7 @@ export default class PackageList extends Component {
   render() {
     const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType } = this.state
     const { distributor_id } = this.$router.params
+    console.log('===================');
     return (
       <View className='page-package-goods'>
         <ScrollView
