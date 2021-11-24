@@ -24,16 +24,16 @@ export default class GoodsItem extends Component {
     const { info = {}, onClick, isStoreOut } = this.props
 
     return (
-      <View class={classNames('goods_item', { 'isStoreOut': isStoreOut })} onClick={onClick}>
-        <View class='goods_item_image'>
+      <View className={classNames('goods_item', { 'isStoreOut': isStoreOut })} onClick={onClick}>
+        <View className='goods_item_image'>
           <Image src={info.imgUrl} />
         </View>
-        <View class='goods_item_name'>{info.item_name}</View>
-        <View class='goods_item_score'>
+        <View className='goods_item_name'>{info.item_name}</View>
+        <View className='goods_item_score'>
           <PointLine point={info.point} isGoodCard isStoreOut={isStoreOut} />
         </View>
 
-        {isStoreOut && <View class='block'>已兑完</View>}
+        {isStoreOut && <View className='block'>已兑完</View>}
       </View>
     )
   }

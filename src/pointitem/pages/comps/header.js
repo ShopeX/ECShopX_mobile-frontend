@@ -14,14 +14,14 @@ export default class Header extends Component {
     const { useInfo: { username, avatar, point } = {} } = this.props
 
     return (
-      <View class='header'>
-        <View class='avatar'>
+      <View className='header'>
+        <View className='avatar'>
           <Image src={avatar} />
         </View>
-        <View class='name'>{username}</View>
-        <View class='score'>
-          <View class='score_num'>{point}</View>
-          <View class='score_description'>{getPointName()}</View>
+        <View className='name'>{username}</View>
+        <View className='score'>
+          <View className='score_num'>{point}</View>
+          <View className='score_description'>{getPointName()}</View>
         </View>
       </View>
     )

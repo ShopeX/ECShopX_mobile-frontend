@@ -677,11 +677,12 @@ export default class CartIndex extends Component {
                   ) : null}
                   {shopCart.shopInfo.plus_buy_activity &&
                     shopCart.shopInfo.plus_buy_activity.map(plus_item => {
-                      const { discount_desc } = plus_item;
+                      const { discount_desc, activity_id } = plus_item;
                       return (
                         <View
                           className="cart-group__activity"
                           style="background:#ffffff;"
+                          key={activity_id}
                         >
                           <View className="cart-group__activity-item">
                             <View
