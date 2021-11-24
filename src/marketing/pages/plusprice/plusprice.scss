@@ -18,6 +18,8 @@
       width: 96%;
       /*  #ifdef  h5  */
       @include page-scroll($navigate-height-h5, 0);
+      top: 50%;
+      transform: translateY(-30%);
       /*  #endif  */
     }
     &__info {
