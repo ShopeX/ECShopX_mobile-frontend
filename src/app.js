@@ -506,7 +506,7 @@ class App extends Component {
     }
     store.dispatch({
       type: 'tabBar',
-      payload: tabbar || DEFAULT_TABS
+      payload: tabbar
     })
 
     const { colorPrimary, colorMarketing, colorAccent } = DEFAULT_THEME

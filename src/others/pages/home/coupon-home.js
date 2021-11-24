@@ -121,32 +121,38 @@ export default class CouponHome extends Component {
   handleClickNews = (card_item, idx) => {
     let time = parseInt(new Date().getTime() / 1000)
     if (time < card_item.send_begin_time) return
-    let templeparams = {
-      'temp_name': 'yykweishop',
-      'source_type': 'coupon'
+
+    if ( process.env.TARO_ENV == 'h5' ) {
+      this.handleGetCard(card_item, idx)
     }
-    let _this = this
-    api.user.newWxaMsgTmpl(templeparams).then(
-      (tmlres) => {
-        console.log('templeparams---1', tmlres)
-        if (tmlres.template_id && tmlres.template_id.length > 0) {
-          wx.requestSubscribeMessage({
-            tmplIds: tmlres.template_id,
-            success() {
-              _this.handleGetCard(card_item, idx)
-            },
-            fail() {
-              _this.handleGetCard(card_item, idx)
-            }
-          })
-        } else {
-          _this.handleGetCard(card_item, idx)
-        }
-      },
-      () => {
-        _this.handleGetCard(card_item, idx)
+    if ( process.env.TARO_ENV == 'weapp' ) {
+      let templeparams = {
+        'temp_name': 'yykweishop',
+        'source_type': 'coupon'
       }
-    )
+      let _this = this
+      api.user.newWxaMsgTmpl( templeparams ).then(
+        ( tmlres ) => {
+          console.log( 'templeparams---1', tmlres )
+          if ( tmlres.template_id && tmlres.template_id.length > 0 ) {
+            wx.requestSubscribeMessage( {
+              tmplIds: tmlres.template_id,
+              success() {
+                _this.handleGetCard( card_item, idx )
+              },
+              fail() {
+                _this.handleGetCard( card_item, idx )
+              }
+            } )
+          } else {
+            _this.handleGetCard( card_item, idx )
+          }
+        },
+        () => {
+          _this.handleGetCard( card_item, idx )
+        }
+      )
+    }
   }
 
   handleGetCard = async (card_item, idx) => {

@@ -38,39 +38,12 @@ export default class WgtGoodsGrid extends Component {
 
   startTrack() {
     const observer = new CreateIntersectionObserver({
-      el: '.wgt-grid__loader-more'
+      el: '.wgt-grid__loader-more',
+      scope: this.$scope
     })
-    observer.on('on-observer', () => {
-      
-    })
-
-    this.endTrack()
-    // const observer = Taro.createIntersectionObserver({
-    //   observeAll: true
-    // });
-    // observer.relativeToViewport({ bottom: 0 }).observe(".grid-item", res => {
-    //   if (res.intersectionRatio > 0) {
-    //     const { id } = res.dataset;
-    //     const { data } = this.state.info;
-    //     const curGoods = data.find(item => item.goodsId == id);
-    //     Tracker.dispatch("EXPOSE_SKU_COMPONENT", curGoods);
-    //   }
-    // });
-    // const observer = new IntersectionObserver(
-    //   res => {
-    //     const { isIntersecting } = res[0]
-    //     if ( isIntersecting ) {
-
-    //     }
-    //   },
-    //   {
-    //     // root: document.querySelector(".home-wgts"),
-    //     // threshold: [0, 0.8]
-    //   }
-    // );
-
-    // observer.observe(document.querySelector(".wgt-grid__loader-more"));
-    // this.observe = observer;
+    observer.on('on-observer', (res) => {
+      console.log('on-observer', res)
+    } )
   }
 
   endTrack() {
@@ -124,7 +97,6 @@ export default class WgtGoodsGrid extends Component {
       },
       market_price: 'market_price'
     })
-    log.debug('goods-grid:', goods)
 
     return (
       <View className={`wgt wgt-grid ${base.padded ? 'wgt__padded' : null}`}>

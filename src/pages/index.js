@@ -165,7 +165,6 @@ export default class Home extends Component {
   }
 
   componentDidShow() { 
-    this.protocolUpdateTime();
     this.showInit()
     this.isShoppingGuide()
     this.getDistributionInfo()
