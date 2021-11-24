@@ -168,7 +168,11 @@ export default class VipIndex extends Component {
 
     const data = await api.vip.charge(params)
 
+    console.log("===data",data)
+
     hideLoading()  
+
+    const order_id=data.trade_info.order_id;
  
     if (env === "h5") { 
       redirectUrl(api,`/subpage/pages/cashier/index?order_id=${order_id}&isMember=true`, 'navigateTo')

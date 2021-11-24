@@ -153,7 +153,9 @@ export default class SpGoodsItem extends Component {
                     <SpPrice value={info.price / 100}></SpPrice>
                   </View>
                   <View className='mk-price'>
-                    <SpPrice lineThrough value={info.market_price / 100}></SpPrice>
+                    {
+                      info.market_price / 100 > 0 &&  <SpPrice lineThrough value={info.market_price / 100}></SpPrice>
+                    }
                   </View>
                 </View>
               )}

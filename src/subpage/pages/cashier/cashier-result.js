@@ -20,9 +20,15 @@ export default class CashierResult extends Component {
     }
   }
   componentDidMount() {
-    Taro.showLoading()
+    console.log("===componentDidMount")
+    Taro.showToast({
+      icon: 'none',
+      title: '我是大魔王',
+      duration: 5000
+    })
+    // Taro.showLoading()
     setTimeout(() => {
-      Taro.hideLoading()
+      // Taro.hideLoading()
       this.fetch()
     }, 3000)
   }

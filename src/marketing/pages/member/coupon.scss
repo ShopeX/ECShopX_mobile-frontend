@@ -1,17 +1,21 @@
-@import "@/style/imports";
 
 .coupon-list {
   background: #f6f6f6;
   &__scroll {
-    @include page-scroll($navigate-height + $tabs-height, $edge-margin);
+    @include page-scroll(100px, $edge-margin);
     box-sizing: border-box;
-    bottom: 160px !important;
-    top: 90px;
+    padding-top: 20px;
+    bottom: 105px;
   }
+  &.has-navbar {
+    .coupon-list__scroll {
+      top: $navigate-height + 100px;
+    }
+  }
+
   .at-tabs__header {
     .at-tabs__item {
       flex: 0 0 180px;
-      // font-size: 32px;
       font-weight: 400;
     }
     .at-tabs__item-underline {
@@ -29,13 +33,6 @@
       color: #999999;
     }
   }
-}
-
-.coupon-list-ticket {
-  padding-top: 24px;
-  /*  #ifdef  h5  */
-  padding-top: $navigate-height-h5 + 30px;
-  /*  #endif  */
 }
 
 .coupon-bottom {

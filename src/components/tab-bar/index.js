@@ -4,7 +4,8 @@ import { connect } from '@tarojs/redux'
 import { AtTabBar } from 'taro-ui'
 import { getCurrentRoute } from '@/utils'
 import S from '@/spx'
-// import { getTotalCount } from '@/store/cart'
+
+const defaultTabList = []
 
 @connect(({ tabBar, cart }) => ({
   tabBar: tabBar.current,
@@ -23,29 +24,25 @@ export default class TabBar extends Component {
     }
   }
 
+  static options = {
+    addGlobalClass: true
+  }
+
   componentDidMount() {
     this.initTabbarData()
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.current !== undefined) {
+    if (nextProps.current) {
       this.setState({ localCurrent: nextProps.current })
     }
-    if (this.props.cartCount !== nextProps.cartCount) {
-      setTimeout(() => {
-        this.initTabbarData()
-      })
-    }
+    this.initTabbarData()
   }
 
   componentDidShow() {
     if (this.state.tabList.length > 0) {
       this.fetchCart()
     }
-  }
-
-  static options = {
-    addGlobalClass: true
   }
 
   initTabbarData() {
@@ -126,13 +123,13 @@ export default class TabBar extends Component {
     return this.props.cartCount
   }
 
-  get tabBar() {
-    let initTabBar = Taro.getStorageSync('initTabBar')
-    if (this.props.tabBar && initTabBar == true) {
-      Taro.setStorageSync('initTabBar', false)
-      this.initTabbarData()
-    }
-  }
+  // get tabBar() {
+  //   let initTabBar = Taro.getStorageSync('initTabBar')
+  //   if (this.props.tabBar && initTabBar == true) {
+  //     Taro.setStorageSync('initTabBar', false)
+  //     this.initTabbarData()
+  //   }
+  // }
 
   updateCurTab() {
     this.fetchCart()
@@ -200,12 +197,9 @@ export default class TabBar extends Component {
 
   render() {
     const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
+    const { tabBar } = this.props
 
-    if (process.env.APP_INTEGRATION) {
-      return <View></View>
-    }
-
-    console.log('-----tabList----', tabList, localCurrent)
+    console.log('-----tabList----', tabBar, localCurrent)
 
     return (
       <AtTabBar

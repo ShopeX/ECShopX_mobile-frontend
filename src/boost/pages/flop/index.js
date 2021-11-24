@@ -109,7 +109,7 @@ export default class Flop extends Component {
       const price = Math.abs(res.cutdown_num / 100).toFixed(2)
       const msg = res.cutdown_num > 0 ? `太棒了！成功助力好友` : `对不起，助力失败！增加${price}`
       Taro.hideLoading()
-      Taro.showToast({
+      Taro.({
         title: msg,
         icon: 'none',
         mask: true
