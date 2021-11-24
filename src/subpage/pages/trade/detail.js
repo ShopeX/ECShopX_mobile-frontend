@@ -587,6 +587,18 @@ export default class TradeDetail extends Component {
     })
   }
 
+  computedPayType=()=>{
+    const { info:{pay_type} } =this.state;
+    console.log("==computedPayType==",this.state.info);
+    if(isAlipay){
+      return '支付宝'
+    }else if(pay_type==='alipayh5'){
+      return '支付宝'
+    }else{
+      return '微信'
+    }
+  }
+
   render() {
     const { colors } = this.props
     const {
@@ -952,7 +964,7 @@ export default class TradeDetail extends Component {
                 <View className='left'>支付</View>
                 <View className='right'>
                   ¥{info.payment}{' '}
-                  {info.order_class !== 'excard' ? (isAlipay ? '支付宝' : '微信') + '支付' : ''}
+                  {info.order_class !== 'excard' ? this.computedPayType()  + '支付' : ''}
                 </View>
               </View>
             )}

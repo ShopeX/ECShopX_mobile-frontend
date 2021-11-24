@@ -8,6 +8,32 @@ import { HTTP_STATUS } from './consts'
 function addQuery (url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
 }
+
+const request = (() => {
+  if (isWeb) {
+    // h5环境，请求失败时，需要额外处理
+    return async (...args) => {
+      let res
+      try {
+        res = await Taro.request(...args)
+      } catch (e) {
+        res = e
+        if (e instanceof global.Response) {
+          const data = await e.json()
+          res = {
+            data,
+            statusCode: e.status,
+            header: e.headers
+          }
+        }
+      }
+
+      return res
+    }
+  }
+
+  return Taro.request
+})()
 class RequestQueue {
   constructor() {
     this.requestList = []
@@ -217,6 +243,8 @@ class API {
     this.isRefreshingToken = false
   }
 
+  request = request
+
   /**
    *
    *
@@ -238,7 +266,7 @@ class API {
 
     let ret
     try {
-      const res = await Taro.request(options)
+      const res = await this.request(options)
       res.config = options
       if (
         res.statusCode === HTTP_STATUS.UNAUTHORIZED &&
