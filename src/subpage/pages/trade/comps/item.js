@@ -175,7 +175,7 @@ export default class TradeItem extends Component {
                 )}
               <Button
                 className='btn-action'
-                style={`background: ${colors.data[0].primary}`,{width:'auto'}}
+                style={`background: ${colors.data[0].primary}`}
                 onClick={this.handleClickBtn.bind(this, 'detail')}
               >
                 订单详情
