@@ -294,6 +294,7 @@ export default class GoodsBuyPanel extends Component {
   }
 
   handleBuyClick = async (type, skuInfo, num) => {
+    debugger;
     console.warn(this.props)
     if (this.state.busy) return
     const isOpenStore = await entry.getStoreStatus()
@@ -305,7 +306,7 @@ export default class GoodsBuyPanel extends Component {
     const curStore = Taro.getStorageSync('curStore')
     let id = isOpenStore ? curStore.store_id : distributor_id
     let url = `/pages/cart/espier-checkout`
-
+    
     this.setState({
       busy: true
     })

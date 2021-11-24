@@ -12,7 +12,8 @@ import {
   getThemeStyle,
   styleNames,
   classNames,
-  isWeixin
+  isWeixin,
+  isWeb
 } from '@/utils'
 import { setPageTitle } from '@/utils/platform'
 import { customName } from '@/utils/point'
@@ -743,7 +744,7 @@ export default class MemberIndex extends Component {
               }
             ></SpCell>
           )}
-          {score_menu_open && (
+          {score_menu_open && !isWeb &&(
             <SpCell
               title={customName('积分商城')}
               isLink

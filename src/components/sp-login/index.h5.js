@@ -5,7 +5,7 @@ import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
 import { showToast, classNames, navigateTo } from '@/utils'
-import { Tracker } from '@/service'
+import qs from 'qs';
 import './index.scss'
 
 // @connect(
@@ -31,10 +31,13 @@ function SpLogin(props) {
   /**
    *
    */
-  const handleOAuthLogin = () => {
-    const { path } = this.$router
+  const handleOAuthLogin = () => { 
+    const { path,params} = this.$router 
+    let pathC=`${path}?${qs.stringify(params)}`
+    let url=`/subpage/pages/auth/login?redirect=${encodeURIComponent(pathC)}`
+  
     Taro.navigateTo({
-      url: `/subpage/pages/auth/login?redirect=${encodeURIComponent(path)}`
+      url
     })
   }
 
