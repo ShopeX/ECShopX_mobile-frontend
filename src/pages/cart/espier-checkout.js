@@ -249,7 +249,7 @@ export default class CartCheckout extends Component {
   componentWillReceiveProps(nextProps) {
     const nextAddress = nextProps.address || {}
     const selfAddress = this.props.address || {}
-    if (!isObjectValueEqual(nextAddress, selfAddress)
+    if (JSON.stringify(nextAddress) != "{}" && JSON.stringify(selfAddress) != "{}" && !isObjectValueEqual(nextAddress, selfAddress)
       // nextAddress.address_id !== selfAddress.address_id
       // || nextAddress.username !== selfAddress.username
       // || nextAddress.province !== selfAddress.province
@@ -678,7 +678,7 @@ export default class CartCheckout extends Component {
     console.log(res, 'res')
   }
 
-  async calcOrder(init) {
+  async calcOrder() {
     Taro.showLoading({
       title: '加载中',
       mask: true
@@ -884,7 +884,7 @@ export default class CartCheckout extends Component {
         address
       },
       () => {
-        this.calcOrder(true)
+        this.calcOrder()
       }
     )
     if (!address) {
@@ -1067,7 +1067,7 @@ export default class CartCheckout extends Component {
           }
         }
       })
-    } else if (e.res.status_code === 422) {
+    } else if (e.res.data.data.status_code === 422) {
       Taro.navigateBack()
     }
   }
