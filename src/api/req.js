@@ -221,6 +221,7 @@ class API {
     try {
       const res = await Taro.request(options)
       res.config = options
+      debugger;
       if (
         res.statusCode === HTTP_STATUS.UNAUTHORIZED &&
         (res.data.data && res.data.data.code) === HTTP_STATUS.TOKEN_NEEDS_REFRESH &&
