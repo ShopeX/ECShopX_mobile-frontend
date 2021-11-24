@@ -12,7 +12,7 @@ import {
   isAlipay,
   getPointName,
   isNavbar,
-  formatTime
+  redirectUrl
 } from '@/utils'
 import PaymentPicker from '@/pages/cart/comps/payment-picker'  
 import userIcon from '@/assets/imgs/user-icon.png'
@@ -153,22 +153,28 @@ export default class VipIndex extends Component {
     
     const { list, curTabIdx, curCellIdx, payType } = this.state
     
-    const vip_grade = list[curTabIdx]
+    const vip_grade = list[curTabIdx];
+
+    const env = process.env.TARO_ENV;
+
     const params = {
       vip_grade_id: vip_grade.vip_grade_id,
       card_type: vip_grade.price_list[curCellIdx].name,
       distributor_id: Taro.getStorageSync('trackIdentity').distributor_id || '',
-      pay_type: payType
-    }
+      pay_type: env==='h5'?'wxpayh5':payType
+    } 
   
     showLoading({ mask: true })
 
     const data = await api.vip.charge(params)
 
-    hideLoading()
-
+    hideLoading()  
  
-
+    if (env === "h5") { 
+      redirectUrl(api,`/subpage/pages/cashier/index?order_id=${order_id}&isMember=true`, 'navigateTo')
+      return
+		} 
+ 
     var config = data
     var that = this
     wx.requestPayment({

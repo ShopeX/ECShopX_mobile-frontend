@@ -5,6 +5,9 @@ import { isAlipay, isWeixin, isWeb } from '@/utils'
 import log from '@/utils/log'
 import { HTTP_STATUS } from './consts'
 
+function addQuery (url, query) {
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
+}
 class RequestQueue {
   constructor() {
     this.requestList = []
@@ -100,7 +103,9 @@ class API {
 
     const reqUrl = this.getReqUrl(url)
     const query = !data || typeof data === 'string' ? qs.parse(data) : data
-    query.company_id = company_id
+    if (company_id) {
+      query.company_id = company_id
+    }
 
     if (!methodIsGet) {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
@@ -111,6 +116,12 @@ class API {
       header['Authorization'] = `Bearer ${token}`
     }
 
+    // 处理版本区分
+    if (isWeb) {
+      if (process.env.APP_VUE_SAAS) {
+        header['origin'] = global.location.host
+      }
+    }
 
     if ((isWeixin || isAlipay) && appid) {
       header['authorizer-appid'] = appid
@@ -124,6 +135,14 @@ class API {
       header: header
     }
 
+    // 清理请求参数
+    if (methodIsGet) {
+      config.url = addQuery(config.url, qs.stringify(config.data))
+      delete config.data
+    } else {
+      config.data = qs.stringify(config.data)
+    }
+
     return config
   }
 
@@ -132,7 +151,7 @@ class API {
     const { showError = true } = config
 
     if (statusCode == HTTP_STATUS.SUCCESS) {
-      const { status_code } = data
+      const { status_code } = data.data
       if (!status_code) {
         return data.data
       } else {
@@ -220,7 +239,7 @@ class API {
     let ret
     try {
       const res = await Taro.request(options)
-      res.config = options
+      res.config = options 
       if (
         res.statusCode === HTTP_STATUS.UNAUTHORIZED &&
         (res.data.data && res.data.data.code) === HTTP_STATUS.TOKEN_NEEDS_REFRESH &&

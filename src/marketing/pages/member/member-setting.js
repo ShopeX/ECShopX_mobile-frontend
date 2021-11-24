@@ -3,10 +3,19 @@ import { View, Button } from '@tarojs/components'
 import req from '@/api/req'
 import { SpCell, SpNavBar } from '@/components'
 import S from '@/spx'
+import { goToPage } from '@/utils'
 import { connect } from '@tarojs/redux'
 import DestoryConfirm from './comps/destory-comfirm-modal'
 
 import './member-setting.scss'
+@connect(
+  () => ({}),
+  (dispatch) => ({
+    onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
+    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),
+    onFetchFavs: (favs) => dispatch({ type: 'member/favs', payload: favs })
+  })
+)
 
 @connect(({ colors }) => ({
   colors: colors.current
@@ -43,6 +52,23 @@ export default class SettingIndex extends Component {
     // this.setState({
     //   memberBanner:list
     // })
+  }
+  handleClickLogout = async () => {
+    S.logout()
+    this.props.onFetchFavs([])
+    this.props.onUpdateCart([])
+    this.props.onUpdateCartCount(0)
+    console.log(process.env.TARO_ENV ,'=======process.env.TARO_ENV ' );
+    console.log(Taro.getEnv() ,'======= Taro.getEnv() ' );
+    console.log(process.env.APP_HOME_PAGE);
+    if (process.env.TARO_ENV === 'h5' && Taro.getEnv() !== 'SAPP') {
+      // eslint-disable-next-line
+      goToPage(process.env.APP_HOME_PAGE)
+    } else {
+      Taro.redirectTo({
+        url: process.env.APP_HOME_PAGE
+      })
+    }
   }
 
   handleClickWxOAuth = (url, isLogin = false) => {
@@ -112,13 +138,22 @@ export default class SettingIndex extends Component {
             onClick={this.handleClickWxOAuth.bind(this, '/marketing/pages/member/address', true)}
           ></SpCell>
           {S.getAuthToken() && (
-            <Button
-              className='button'
-              style={`color: ${colors.data[0].primary}; border: 1px solid ${colors.data[0].primary}`}
-              onClick={this.handleCancelMenber.bind(this)}
-            >
-              注销账号
-            </Button>
+            <View className='btn'>
+              <Button
+                className='button'
+                style={`color: ${colors.data[0].primary}; border: 1px solid ${colors.data[0].primary}`}
+                onClick={this.handleClickLogout}
+              >
+                退出登录
+              </Button>
+              <Button
+                className='button'
+                style={`color: ${colors.data[0].primary}; border: 1px solid ${colors.data[0].primary}`}
+                onClick={this.handleCancelMenber.bind(this)}
+              >
+                注销账号
+              </Button>
+            </View>
           )}
         </View>
         <DestoryConfirm

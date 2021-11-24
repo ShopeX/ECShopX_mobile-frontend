@@ -13,12 +13,17 @@
     overflow: hidden;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   }
-  .button {
-    width: 93%;
-    background: #ffffff;
-    font-size: 28px;
-    border-radius: 60px;
+  .btn{
     position: fixed;
-    bottom: 2%;
+    bottom: 3%;
+    width: 92vw;
+    .button {
+      width: 93%;
+      background: #ffffff;
+      font-size: 28px;
+      border-radius: 60px;
+      margin-top: 30px;
+    }
   }
+
 }

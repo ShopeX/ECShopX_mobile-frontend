@@ -4,12 +4,16 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import { pickBy, log } from '@/utils'
 import api from '@/api'
+import { connect } from '@tarojs/redux'
 import { withLogin, withPager } from '@/hocs'
 import { AFTER_SALE_STATUS } from '@/consts'
 import _mapKeys from 'lodash/mapKeys'
 import TradeItem from './comps/item'
 
 import './list.scss'
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 
 @withPager
 @withLogin()
