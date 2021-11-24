@@ -153,7 +153,7 @@ export default class AfterSale extends Component {
                   payType={item.pay_type}
                   customHeader
                   renderHeader={
-                    <View className='trade-item__hd-cont'>
+                    <View className='trade-item__hd-cont trade-cont'>
                       <Text className='trade-item__shop'>退款单号：{item.id}&#12288;</Text>
                       <Text className='more'>{item.status_desc}</Text>
                     </View>
