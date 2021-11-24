@@ -5,7 +5,7 @@ import { Loading, SpNote, SpNavBar, CouponItem } from '@/components'
 import api from '@/api'
 import { connect } from '@tarojs/redux'
 import { withPager } from '@/hocs'
-import { pickBy } from '@/utils'
+import { pickBy, classNames, isNavbar } from '@/utils'
 
 import './coupon.scss'
 
@@ -178,7 +178,11 @@ export default class Coupon extends Component {
     const { colors } = this.props
 
     return (
-      <View className='coupon-list'>
+      <View
+        className={classNames('coupon-list', {
+          'has-navbar': isNavbar()
+        })}
+      >
         <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className={`coupon-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
@@ -190,9 +194,6 @@ export default class Coupon extends Component {
             // backgroundColor: colors.data[0].primary
           }}
         >
-          {tabList.map((panes, pIdx) => (
-            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
-          ))}
         </AtTabs>
 
         <ScrollView
