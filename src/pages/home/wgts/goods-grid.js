@@ -115,7 +115,7 @@ export default class WgtGoodsGrid extends Component {
           <View className='grid-goods out-padding grid-goods__type-grid wgt-grid__goods-wrap'>
             {goods.map((item, idx) => (
               <View className='goods-item-wrap' key={`goods-item-wrap__${idx}`}>
-                <SpGoodsItem info={item} />
+                <SpGoodsItem info={item} isOpenCollection={false}/>
               </View>
             ))}
           </View>
