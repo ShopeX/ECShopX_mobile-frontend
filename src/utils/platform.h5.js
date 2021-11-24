@@ -51,7 +51,7 @@ class CreateIntersectionObserver {
       (res) => {
         const { isIntersecting } = res[0]
         if (isIntersecting) {
-          this['on-observer']()
+          this['on-observer'](isIntersecting)
         }
       },
       {

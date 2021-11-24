@@ -7,7 +7,7 @@ const initState = {
   // 是否显示广告
   showAdv: true,
   member: {
-    memberInfo: null
+    memberInfo: {}
   }
 }
 
