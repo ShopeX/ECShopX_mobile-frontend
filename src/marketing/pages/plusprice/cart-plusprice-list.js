@@ -125,7 +125,7 @@ export default class DetailPluspriceList extends Component {
       >
         <SpNavBar title='微商城' />
         <ScrollView
-          className={classNames(`plusprice-goods__scroll ${!isWebWechat() && 'cus-padding' : ''}`)}
+          className={classNames('plusprice-goods__scroll', !isWebWechat() ? 'cus-padding' : '')}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
