@@ -6,7 +6,8 @@ import { AtDrawer } from 'taro-ui'
 import { BackToTop, Loading, TagsBar, FilterBar, SpSearchBar, GoodsItem, SpNote, SpNavBar, TabBar } from '@/components'
 import api from '@/api'
 import { Tracker } from "@/service";
-import { pickBy, classNames, isWeixin,getBrowserEnv } from '@/utils'
+import { pickBy, classNames, isWeixin, isNavbar } from '@/utils'
+import { setPageTitle } from '@/utils/platform'
 import entry from "../../utils/entry";
 
 import './list.scss'
@@ -75,6 +76,10 @@ export default class List extends Component {
         })
       })
     })
+  }
+
+  componentDidShow() {
+    setPageTitle('商品列表')
   }
 
   componentWillReceiveProps (next) {
@@ -493,15 +498,18 @@ export default class List extends Component {
     } = this.state
     const { isTabBar = '' } = this.$router.params
 		return (
-			<View className={classNames('page-goods-list',{'inWeixin':getBrowserEnv().weixin})}>
-        {/* { !isTabBar && } */}
-          <SpNavBar
-            title='商品列表'
-            leftIconType={!isTabBar ? 'chevron-left' : ''}
-            fixed='true'
-          />
+      <View
+        className={classNames('page-goods-list', {
+          'has-navbar': isNavbar()
+        })}
+      >
+        <SpNavBar title='商品列表' leftIconType={!isTabBar ? 'chevron-left' : ''} fixed='true' />
         <View className='goods-list__toolbar'>
-          <View className={`goods-list__search ${(query && query.keywords && !isShowSearch) ? 'on-search' : null}`}>
+          <View
+            className={`goods-list__search ${
+              query && query.keywords && !isShowSearch ? 'on-search' : null
+            }`}
+          >
             <SpSearchBar
               keyword={query ? query.keywords : ''}
               onFocus={this.handleSearchOn}
@@ -510,24 +518,24 @@ export default class List extends Component {
               onCancel={this.handleSearchOff}
               onConfirm={this.handleConfirm.bind(this)}
             />
-            {
-              !isShowSearch &&
+            {!isShowSearch && (
               <View
-                className={classNames('goods-list__type', listType === 'grid' ? 'icon-list' : 'icon-grid')}
-                style={ listType === 'grid' ? { fontSize: '26px' } : { fontSize: '18px' } }
+                className={classNames(
+                  'goods-list__type',
+                  listType === 'grid' ? 'icon-list' : 'icon-grid'
+                )}
+                style={listType === 'grid' ? { fontSize: '26px' } : { fontSize: '18px' }}
                 onClick={this.handleViewChange}
-              >
-              </View>
-            }
+              ></View>
+            )}
           </View>
-          {
-            tagsList.length > 0 &&
+          {tagsList.length > 0 && (
             <TagsBar
               current={curTagId}
               list={tagsList}
               onChange={this.handleTagChange.bind(this)}
             />
-          }
+          )}
           <FilterBar
             className='goods-list__tabs'
             custom
@@ -544,136 +552,123 @@ export default class List extends Component {
           </FilterBar>
         </View>
 
-        <AtDrawer
-          show={showDrawer}
-          right
-          mask
-          width={`${Taro.pxTransform(570)}`}
-        >
-          {
-            paramsList.map((item, index) => {
-              return (
-                <View className='drawer-item' key={`${index}1`}>
-                  <View className='drawer-item__title'>
-                    <Text>{item.attribute_name}</Text>
-                    <View className='at-icon at-icon-chevron-down'> </View>
-                  </View>
-                  <View className='drawer-item__options'>
-                    {
-                      item.attribute_values.map((v_item, v_index) => {
-                        return (
-                          <View
-                            className={classNames('drawer-item__options__item', v_item.isChooseParams ? 'drawer-item__options__checked' : '')}
-                            // className='drawer-item__options__item'
-                            key={`${v_index}1`}
-                            onClick={this.handleClickParmas.bind(this, item.attribute_id, v_item.attribute_value_id)}
-                          >
-                            {v_item.attribute_value_name}
-                          </View>
-                        )
-                      })
-                    }
-                    <View className='drawer-item__options__none'> </View>
-                    <View className='drawer-item__options__none'> </View>
-                    <View className='drawer-item__options__none'> </View>
-                  </View>
+        <AtDrawer show={showDrawer} right mask width={`${Taro.pxTransform(570)}`}>
+          {paramsList.map((item, index) => {
+            return (
+              <View className='drawer-item' key={`${index}1`}>
+                <View className='drawer-item__title'>
+                  <Text>{item.attribute_name}</Text>
+                  <View className='at-icon at-icon-chevron-down'> </View>
                 </View>
-              )
-            })
-          }
+                <View className='drawer-item__options'>
+                  {item.attribute_values.map((v_item, v_index) => {
+                    return (
+                      <View
+                        className={classNames(
+                          'drawer-item__options__item',
+                          v_item.isChooseParams ? 'drawer-item__options__checked' : ''
+                        )}
+                        // className='drawer-item__options__item'
+                        key={`${v_index}1`}
+                        onClick={this.handleClickParmas.bind(
+                          this,
+                          item.attribute_id,
+                          v_item.attribute_value_id
+                        )}
+                      >
+                        {v_item.attribute_value_name}
+                      </View>
+                    )
+                  })}
+                  <View className='drawer-item__options__none'> </View>
+                  <View className='drawer-item__options__none'> </View>
+                  <View className='drawer-item__options__none'> </View>
+                </View>
+              </View>
+            )
+          })}
           <View className='drawer-footer'>
-            <Text className='drawer-footer__btn' onClick={this.handleClickSearchParams.bind(this, 'reset')}>重置</Text>
-            <Text className='drawer-footer__btn drawer-footer__btn_active' onClick={this.handleClickSearchParams.bind(this, 'submit')}>确定</Text>
+            <Text
+              className='drawer-footer__btn'
+              onClick={this.handleClickSearchParams.bind(this, 'reset')}
+            >
+              重置
+            </Text>
+            <Text
+              className='drawer-footer__btn drawer-footer__btn_active'
+              onClick={this.handleClickSearchParams.bind(this, 'submit')}
+            >
+              确定
+            </Text>
           </View>
         </AtDrawer>
 
         <ScrollView
-          className={classNames(isTabBar ? 'goods-list__scroll_isTabBar' : 'goods-list__scroll', tagsList.length > 0 && 'with-tag-bar', isTabBar && 'isTabBar')}
+          className={classNames(
+            isTabBar ? 'goods-list__scroll_isTabBar' : 'goods-list__scroll',
+            tagsList.length > 0 && 'with-tag-bar',
+            isTabBar && 'isTabBar'
+          )}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          {
-            listType === 'grid' &&
+          {listType === 'grid' && (
             <View className='goods-list goods-list__type-grid'>
               <View className='goods-list__group'>
-                {
-                  oddList.map(item => {
-                    return (
-                      <View
-                        className='goods-list__item'
-                        key={item.item_id}
-                        data-id={item.item_id}
-                      >
-                        <GoodsItem
-                          key={item.item_id}
-                          info={item}
-                          onClick={() => this.handleClickItem(item)}
-                          onStoreClick={() => this.handleClickStore(item)}
-                        />
-                      </View>
-                    );
-                  })
-                }
-              </View>
-              <View className='goods-list__group'>
-                {
-                  evenList.map(item => {
-                    return (
-                      <View
-                        className='goods-list__item'
-                        key={item.item_id}
-                        data-id={item.item_id}
-                      >
-                        <GoodsItem
-                          key={item.item_id}
-                          info={item}
-                          onClick={() => this.handleClickItem(item)}
-                          onStoreClick={() => this.handleClickStore(item)}
-                        />
-                      </View>
-                    );
-                  })
-                }
-              </View>
-            </View>
-          }
-          {
-            listType === 'list' &&
-            <View className='goods-list goods-list__type-list'>
-              {
-                list.map(item => {
+                {oddList.map((item) => {
                   return (
-                    <View className='goods-list__item' key={item.item_id}>
+                    <View className='goods-list__item' key={item.item_id} data-id={item.item_id}>
                       <GoodsItem
+                        key={item.item_id}
                         info={item}
                         onClick={() => this.handleClickItem(item)}
                         onStoreClick={() => this.handleClickStore(item)}
                       />
                     </View>
                   )
-                })
-              }
+                })}
+              </View>
+              <View className='goods-list__group'>
+                {evenList.map((item) => {
+                  return (
+                    <View className='goods-list__item' key={item.item_id} data-id={item.item_id}>
+                      <GoodsItem
+                        key={item.item_id}
+                        info={item}
+                        onClick={() => this.handleClickItem(item)}
+                        onStoreClick={() => this.handleClickStore(item)}
+                      />
+                    </View>
+                  )
+                })}
+              </View>
             </View>
-          }
-          {
-            page.isLoading
-              ? <Loading>正在加载...</Loading>
-              : null
-          }
-          {
-            !page.isLoading && !page.hasNext && !list.length
-            && (<SpNote img='trades_empty.png'>暂无数据~</SpNote>)
-          }
+          )}
+          {listType === 'list' && (
+            <View className='goods-list goods-list__type-list'>
+              {list.map((item) => {
+                return (
+                  <View className='goods-list__item' key={item.item_id}>
+                    <GoodsItem
+                      info={item}
+                      onClick={() => this.handleClickItem(item)}
+                      onStoreClick={() => this.handleClickStore(item)}
+                    />
+                  </View>
+                )
+              })}
+            </View>
+          )}
+          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+          )}
         </ScrollView>
 
-        <BackToTop
-          show={showBackToTop}
-          onClick={this.scrollBackToTop}
-          bottom={30}
-        />
+        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} bottom={30} />
         {isTabBar && <TabBar />}
       </View>
     )

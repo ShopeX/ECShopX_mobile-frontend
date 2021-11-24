@@ -87,7 +87,6 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    setPageTitle('微商城')
     this.protocolUpdateTime();
     this.getShareSetting();
     this.isShowTips(); 
@@ -164,7 +163,8 @@ export default class Home extends Component {
     }
   }
 
-  componentDidShow() { 
+  componentDidShow() {
+    setPageTitle('微商城')
     this.showInit()
     this.isShoppingGuide()
     this.getDistributionInfo()

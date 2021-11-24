@@ -1,33 +1,16 @@
-@import "../../style/imports";
 
 .page-goods-list {
   background: $color-bg-gray;
   /*  #ifdef  h5  */  
-  padding-top: $navigate-height-h5;
-  // &.inWeixin{
-  //   padding-top:0;
-
-  //   .goods-list{
-  //     &__toolbar{
-  //       top: 0;
-  //     }
-  //     &__scroll{
-  //       &.with-tag-bar{
-  //         @include page-scroll($tabs-height + $searchbar-height + $tags-height + 8, 0);
-  //       }
-  //     }
-  //   }
+  // &.has-navbar{
+  //   padding-top: $navigate-height-h5;
   // }
-  /*  #endif  */
   .goods-list {
     margin: 0 -10px;
     &__toolbar {
       position: fixed;
       padding-top: 10px;
-      top: 0; 
-      /*  #ifdef  h5  */  
-      top: $navigate-height-h5;
-      /*  #endif  */      
+      top: 0;   
       left: 0;
       width: 100%;
       z-index: $z-index-toolbar;
@@ -88,28 +71,10 @@
     }
     &__scroll {
       @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 8, 0);
-      /*  #ifdef  h5  */  
-      @include page-scroll($tabs-height + $searchbar-height + $navigate-height-h5 + 8, 0);
-      /*  #endif  */      
-      &.with-tag-bar {
-        @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 20, 0);
-        /*  #ifdef  h5  */  
-        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height-h5 + 15, 0);
-        /*  #endif  */        
-      }
     }
 
     &__scroll_isTabBar {
       @include page-scroll($tabs-height + $searchbar-height + $navigate-height + $tabbar-height + 8, $tabbar-height);
-      /*  #ifdef  h5  */  
-      @include page-scroll($tabs-height + $searchbar-height + $navigate-height-h5 + $tabbar-height + 8, $tabbar-height);
-      /*  #endif  */      
-      &.with-tag-bar {
-        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height + 8, $tabbar-height);
-        /*  #ifdef  h5  */  
-        @include page-scroll($tabs-height + $searchbar-height + $tags-height + $navigate-height-h5 + 8, $tabbar-height);
-        /*  #endif  */        
-      }
     }
 
     /*  #ifdef  h5  */  
