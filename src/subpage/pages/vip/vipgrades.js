@@ -3,6 +3,7 @@ import { View, Image, Text, ScrollView } from '@tarojs/components'
 import { Price, SpNavBar, SpCell, CouponModal } from '@/components'
 import { connect } from '@tarojs/redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
+import { getPaymentList } from '@/utils/payment'
 import api from '@/api'
 import S from '@/spx'
 import {
@@ -32,6 +33,7 @@ export default class VipIndex extends Component {
     super(props)
 
     this.state = {
+      typeList:[],
       userInfo: {},
       userVipInfo: {},
       curTabIdx: 0,
@@ -65,8 +67,16 @@ export default class VipIndex extends Component {
       }
     )
   }
-
+  // 获取支付方式
+  async getPayList(){
+    const { list }= await getPaymentList();  
+    const res = list; 
+    this.setState({
+      typeList: res,
+    })
+  }
   async fetchInfo() {
+    this.getPayList();
     const { cur, list } = await api.vip.getList()
     const { grade_name: name } = this.$router.params
 
@@ -258,15 +268,17 @@ export default class VipIndex extends Component {
       visible,
       couponList,
       all_card_list,
-      total_count
+      total_count,
+      typeList
     } = this.state
-    const payTypeText = {
-      point: `${getPointName()}支付`,
-      wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
-      deposit: '余额支付',
-      delivery: '货到付款',
-      hfpay: '微信支付'
-    }
+    console.log('typeList',typeList);
+    // const payTypeText = {
+    //   point: `${getPointName()}支付`,
+    //   wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
+    //   deposit: '余额支付',
+    //   delivery: '货到付款',
+    //   hfpay: '微信支付'
+    // }
     return (
       <View
         className={classNames('page-vip-vipgrades', 'vipgrades', {
@@ -356,7 +368,9 @@ export default class VipIndex extends Component {
               onClick={this.handlePaymentShow}
               className='cus-sp-cell'
             >
-              <Text>{payTypeText[payType]}</Text>
+              {
+                typeList.length>0 && <Text>{typeList[1].pay_type_name}</Text>
+              }
             </SpCell>
           )}
           <View className='pay-btn' onClick={this.handleCharge}>

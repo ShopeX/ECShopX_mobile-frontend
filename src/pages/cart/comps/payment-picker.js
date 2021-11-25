@@ -44,6 +44,7 @@ export default class PaymentPicker extends Component {
 
     const { list }=await getPaymentList();  
     const res = list; 
+    console.log('res==============',res);
  
     this.setState(
       {
@@ -107,7 +108,7 @@ export default class PaymentPicker extends Component {
       <AtFloatLayout isOpened={isOpened}>
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
-            <Text>支付方式</Text>
+            <View>支付方式</View>
             <View className={closeClassName} onClick={this.handleCancel}></View>
           </View>
           <View className='payment-picker__bd'>
