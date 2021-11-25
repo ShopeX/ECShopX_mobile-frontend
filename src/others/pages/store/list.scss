@@ -1,9 +1,14 @@
 @import "@/style/imports";
 
-.page-goods-list-padding {
-  padding-top: $navigate-height-h5;
+.store-goods-list-padding {
+  .goods-list__toolbar {
+    top: $navigate-height-h5 !important;
+  }
+  .with-tag-bar {
+    top: 340px !important;
+  }
 }
-.page-goods-list {
+.store-goods-list {
   background: $color-bg-gray;
   .goods-list {
     margin: 0 -10px;
@@ -218,4 +223,22 @@
       }
     }
   }
+  .tags {
+    width: 100%;
+    white-space: nowrap;
+    background: #fff;
+    border-bottom: 1PX solid #efefef;
+    .tag-item {
+      display: inline-block;
+      padding: 0 20px;
+      height: $tags-height;
+      line-height: $tags-height;
+      font-size: 26px;
+      color: #666;
+      &.active {
+        color: $color-link;
+        font-weight: 600;
+      }
+    }
+  }  
 }

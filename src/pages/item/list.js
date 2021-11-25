@@ -6,9 +6,9 @@ import { AtDrawer } from 'taro-ui'
 import { BackToTop, Loading, TagsBar, FilterBar, SpSearchBar, GoodsItem, SpNote, SpNavBar, TabBar } from '@/components'
 import api from '@/api'
 import { Tracker } from "@/service";
-import { pickBy, classNames, isWeixin, isNavbar } from '@/utils'
+import { pickBy, classNames, isWeixin, isNavbar, isWebWechat } from '@/utils'
 import { setPageTitle } from '@/utils/platform'
-import entry from "../../utils/entry";
+import entry from "@/utils/entry";
 
 import './list.scss'
 
@@ -607,7 +607,8 @@ export default class List extends Component {
           className={classNames(
             isTabBar ? 'goods-list__scroll_isTabBar' : 'goods-list__scroll',
             tagsList.length > 0 && 'with-tag-bar',
-            isTabBar && 'isTabBar'
+            isTabBar && 'isTabBar',
+            isWebWechat() && 'isWeiBrowse'
           )}
           scrollY
           scrollTop={scrollTop}

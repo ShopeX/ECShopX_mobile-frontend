@@ -493,7 +493,7 @@ export default class List extends Component {
     } = this.state
 
     return (
-      <View className={classNames('page-goods-list', isNavbar() ? 'page-goods-list-padding' : null)} >
+      <View className={classNames('store-goods-list', isNavbar() ? 'store-goods-list-padding' : null)} >
         <SpNavBar title='商品列表' leftIconType='chevron-left' fixed='true' />
         <View className='goods-list__toolbar'>
           <View
