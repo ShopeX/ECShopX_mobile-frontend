@@ -1347,6 +1347,15 @@ export default class CartCheckout extends Component {
 
         this.props.onClearCart()
 
+        if (type === 'group') {
+          const groupUrl = `/marketing/pages/item/group-detail?team_id=${config.team_id}`
+          Taro.redirectTo({
+            url: groupUrl
+          })
+          return
+        }
+
+
         let url = `/subpage/pages/trade/detail?id=${order_id}`
 
         if (isExtraPoint) {

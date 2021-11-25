@@ -1,8 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtButton, AtCountdown, AtCurtain } from 'taro-ui'
-import { FormIdCollector } from '@/components'
-import { classNames, normalizeQuerys, log } from '@/utils'
+import { FormIdCollector, SpNavBar } from '@/components'
+import { classNames, normalizeQuerys, log, isWeixin, isWeb } from '@/utils'
 import entry from '@/utils/entry'
 import api from '@/api'
 import S from '@/spx'
@@ -162,13 +162,21 @@ export default class GroupDetail extends Component {
     })
   }
 
+  handleInvitaionFriend() {
+    Taro.showToast({
+      title: '请至微信小程序分享给好友',
+      icon: 'none'
+    })
+  }
+
   render() {
     const { detail, timer, isLeader, isSelf, curtainStatus } = this.state
     if (!detail) return null
     const { team_info, activity_info, member_list } = detail
 
     return (
-      <View className='page-group-detail'>
+      <View className={classNames('page-group-detail')}>
+        <SpNavBar title='拼团详情' leftIconType='chevron-left' fixed='true' />
         <View
           className={classNames('status-icon', {
             'success icon-over-group': detail && team_info.team_status == 2,
@@ -245,9 +253,10 @@ export default class GroupDetail extends Component {
                         mode='aspectFill'
                       />
                     )}
-                    {team_info.head_mid === member_list.list[index].member_id && (
-                      <View className='leader-icon'>团长</View>
-                    )}
+                    {member_list.list[index] &&
+                      team_info.head_mid === member_list.list[index].member_id && (
+                        <View className='leader-icon'>团长</View>
+                      )}
                   </View>
                 )
               })}
@@ -261,8 +270,17 @@ export default class GroupDetail extends Component {
                   <View className='btn-submit'>我要参团</View>
                 </FormIdCollector>
               )}
-              {isLeader && (
+              {isLeader && isWeixin && (
                 <AtButton type='primary' className='btn-submit' openType='share'>
+                  邀请好友参团
+                </AtButton>
+              )}
+              {isLeader && isWeb && (
+                <AtButton
+                  type='primary'
+                  className='btn-submit'
+                  onClick={this.handleInvitaionFriend.bind(this)}
+                >
                   邀请好友参团
                 </AtButton>
               )}

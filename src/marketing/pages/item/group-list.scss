@@ -1,43 +1,43 @@
-@import "@/style/imports";
-
 $item-img-size: 240px !default;
 
 .page-group-list {
-  .at-tabs {
-    height: $tabs-height;
-    box-shadow: 0 10px 10px rgba(#000, 0.05);
-    &__header {
-      position: fixed;
-      left: 0;
-      top: $navigate-height;
-      /*  #ifdef  h5  */
-      top: $navigate-height-h5;
-      /*  #endif  */
-      width: 100%;
-      z-index: $z-index-toolbar;
-    }
-    &__item {
-      height: $tabs-height;
-      color: $color-brand-accent-light;
-    }
-    &__item-underline {
-      width: 40%;
-      left: 30%;
-      background: $color-brand-primary;
-    }
-    &__item--active {
-      color: $color-brand-primary;
-    }
-  }
+  // .at-tabs {
+  //   height: $tabs-height;
+  //   box-shadow: 0 10px 10px rgba(#000, 0.05);
+  //   &__header {
+  //     position: fixed;
+  //     left: 0;
+  //     top: $navigate-height;
+  //     /*  #ifdef  h5  */
+  //     top: $navigate-height-h5;
+  //     /*  #endif  */
+  //     width: 100%;
+  //     z-index: $z-index-toolbar;
+  //   }
+  //   &__item {
+  //     height: $tabs-height;
+  //     color: $color-brand-accent-light;
+  //   }
+  //   &__item-underline {
+  //     width: 40%;
+  //     left: 30%;
+  //     background: $color-brand-primary;
+  //   }
+  //   &__item--active {
+  //     color: $color-brand-primary;
+  //   }
+  // }
   .groups-list__scroll {
     box-sizing: border-box;
     @include page-scroll($tabbar-height + $edge-size/2, 0);
-    /*  #ifdef  h5  */
-    @include page-scroll(
-      $tabbar-height + $edge-size/2 + $navigate-height-h5,
-      0
-    );
-    /*  #endif  */
+  }
+  &.has-navbar {
+    .groups-list__scroll {
+      @include page-scroll(
+        $tabbar-height + $edge-size/2 + $navigate-height-h5,
+        0
+      );
+    }
   }
   .group-item {
     $self: &;
