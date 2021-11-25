@@ -12,7 +12,7 @@ import {
   GoodsItem,
   SpLogin
 } from "@/components";
-import { log, navigateTo, pickBy, classNames, showLoading, hideLoading } from '@/utils'
+import { log, navigateTo, pickBy, classNames, showLoading, hideLoading,styleNames,getThemeStyle } from '@/utils'
 import { setPageTitle } from '@/utils/platform'
 import debounce from 'lodash/debounce'
 import api from '@/api'
@@ -26,11 +26,12 @@ import { getDistributorId } from "@/utils/helper";
 import './espier-index.scss'
 
 @connect(
-  ({ cart, colors }) => ({
+  ({ cart, colors, member }) => ({
     list: cart.list,
     cartIds: cart.cartIds,
     showLikeList: cart.showLikeList,
-    colors: colors.current
+    colors: colors.current,
+    favs: member.favs
   }),
   dispatch => ({
     onUpdateCart: list => dispatch({ type: "cart/update", payload: list }),
@@ -115,6 +116,17 @@ export default class CartIndex extends Component {
     this.setState({
       groups
     });
+    if (Object.keys(this.props.favs).length !== Object.keys(nextProps.favs).length) {
+      setTimeout(() => {
+        const likeList = this.state.likeList.map(item => {
+          item.is_fav = Boolean(nextProps.favs[item.item_id])
+          return item
+        })
+        this.setState({
+          likeList
+        })
+      })
+    }
   }
 
   componentDidShow() {
@@ -140,7 +152,8 @@ export default class CartIndex extends Component {
   };
 
   async fetch(params) {
-    const { page_no: page, page_size: pageSize } = params;
+    const { page_no: page, page_size: pageSize } = params
+    const { favs } = this.props;
     const query = {
       page,
       pageSize
@@ -155,7 +168,8 @@ export default class CartIndex extends Component {
       member_price: ({ member_price }) => (member_price / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
       title: "itemName",
-      desc: "brief"
+      desc: "brief",
+      is_fav: ({ item_id }) => Boolean(favs[item_id])
     });
 
     this.setState({
@@ -593,15 +607,12 @@ export default class CartIndex extends Component {
       remindInfo
     } = this.state;
     const { list, showLikeList, colors } = this.props;
-    console.log("groups", groups);
-    // if (loading) {
-    //   return <Loading />;
-    // }
+    
     const { type = "distributor" } = this.$router.params;
     const isDrug = type === "drug";
     const isEmpty = !list.length;
     return (
-      <View className={classNames("page-cart-index", isDrug && "is-drug")}>
+      <View className={classNames("page-cart-index", isDrug && "is-drug")}    style={styleNames(getThemeStyle())}>
         {isDrug && (
           <SpNavBar title="购物车" leftIconType="chevron-left" fixed="true" />
         )}
@@ -622,6 +633,7 @@ export default class CartIndex extends Component {
 
         <ScrollView
           className={`${isEmpty ? "hidden-scroll" : "cart-list__scroll"}`}
+          style={isDrug && isNavbar() ? { top: '2rem' } : { top: 0 }}
           onScrollToLower={this.nextPage}
           scrollY
         >
@@ -674,14 +686,18 @@ export default class CartIndex extends Component {
                       <Text className="icon-shop"></Text>
                       {shopCart.shopInfo.shop_name}
                     </View>
-                  ) : null}
+                  ) : <View className="shop__name">
+                  <Text className="icon-shop"></Text>
+                  {'自营'}
+                </View>}
                   {shopCart.shopInfo.plus_buy_activity &&
                     shopCart.shopInfo.plus_buy_activity.map(plus_item => {
-                      const { discount_desc } = plus_item;
+                      const { discount_desc, activity_id } = plus_item;
                       return (
                         <View
                           className="cart-group__activity"
                           style="background:#ffffff;"
+                          key={activity_id}
                         >
                           <View className="cart-group__activity-item">
                             <View
@@ -831,7 +847,7 @@ export default class CartIndex extends Component {
                           <CartItem
                             isDisabled
                             num
-                            key={item.item.item_id}
+                            key={item.item_id}
                             info={item}
                           ></CartItem>
                         );

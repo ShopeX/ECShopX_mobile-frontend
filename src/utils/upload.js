@@ -71,6 +71,7 @@ const upload = {
         filePath: item.url,
         fileType: 'image',
         [isAlipay ? 'fileName' : 'name']: 'file',
+        withCredentials: false,
         formData: {
           'token': token,
           'key': key

@@ -1,9 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { Price, SpImg, PointTag } from '@/components'
-import { getPointName } from '@/utils'
+import { getPointName } from '@/utils';
+import { connect } from '@tarojs/redux'
 import './order-item.scss'
 
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 export default class OrderItem extends Component {
   static defaultProps = {
     onClick: () => {},

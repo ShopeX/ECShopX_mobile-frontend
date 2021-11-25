@@ -124,7 +124,7 @@ export default class FilterBar extends Component {
     return (
       <View className={classNames('filter-bar', { 'active': active }, className)} id='filter'>
         {/* <Icon className='iconfont search-icon' type='search' size='14' color='#999999'></Icon> */}
-        <View class='text'>
+        <View className='text'>
           {custom &&
             list.map((item, idx) => {
               const isCurrent = curIdx === idx
@@ -151,14 +151,14 @@ export default class FilterBar extends Component {
               )
             })}
         </View>
-        <View class='action'>
-          <View class='filter' onClick={this.handleOpenFilter}>
-            <View class='textFilter'>筛选</View>
+        <View className='action'>
+          <View className='filter' onClick={this.handleOpenFilter}>
+            <View className='textFilter'>筛选</View>
             <View className='iconfont icon-filter'></View>
           </View>
-          <View class='searchInput'></View>
+          <View className='searchInput'></View>
         </View>
-        <View class='searchInput searchInput-P'>
+        <View className='searchInput searchInput-P'>
           <AtInput
             value={inputValue}
             onFocus={this.handleFocus}

@@ -5,7 +5,7 @@ import { Loading, SpNote, Price, SpNavBar } from '@/components'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
 import { withPager } from '@/hocs'
-import { calcTimer } from '@/utils'
+import { calcTimer, isNavbar, classNames } from '@/utils'
 import { getDistributorId } from '@/utils/helper'
 
 import './group-list.scss'
@@ -127,17 +127,21 @@ export default class GroupList extends Component {
     const { tabList, curTabIdx, list, page } = this.state
 
     return (
-      <View className='page-group-list'>
+      <View
+        className={classNames('page-group-list', {
+          'has-navbar': isNavbar()
+        })}
+      >
         <SpNavBar title='团购' leftIconType='chevron-left' fixed='true' />
         <AtTabs
-          className='group-list__tabs'
+          className={classNames('group-list__tabs', isNavbar() ? 'group-padding' : null)}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
         >
-          {tabList.map((panes, pIdx) => (
+          {/* {tabList.map((panes, pIdx) => (
             <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
-          ))}
+          ))} */}
         </AtTabs>
 
         <ScrollView scrollY className='groups-list__scroll' onScrollToLower={this.nextPage}>

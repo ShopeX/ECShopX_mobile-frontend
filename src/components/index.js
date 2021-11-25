@@ -28,6 +28,7 @@ import SpLoadMore from './sp-load-more'
 import SpLoading from './sp-loading'
 import SpModal from './sp-modal'
 import SpHtmlContent from './html-content'
+import SpCheckbox from './checkbox';
 
 import SpImgPicker from './img-picker'
 import SpCell from './sp-cell'
@@ -50,9 +51,7 @@ export { default as FormIdCollector } from './form-id-collector'
 export { default as SpToast } from './toast'
 export { default as SpIconMenu } from './icon-menu'
  
-export { default as RecommendItem } from './recommend-item'
-export { default as SpCheckbox } from './checkbox'
-
+export { default as RecommendItem } from './recommend-item' 
 export { default as AddressChoose } from './address/choose-address'
 export { default as CouponItem } from './coupon-item'
 export { default as TimePicker } from './time-picker/index.js'
@@ -106,5 +105,6 @@ export {
   SpLoadMore,
   SpLoading,
   SpModal,
-  SpHtmlContent
+  SpHtmlContent,
+  SpCheckbox
 }

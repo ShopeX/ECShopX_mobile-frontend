@@ -16,8 +16,8 @@ export default class HomeCapsule extends Component {
       <View
         className={classNames(classes, [{ isGoodCard: isGoodCard }, { isStoreOut: isStoreOut }])}
       >
-        <View class='number'>{point}</View>
-        <View class='text'>{getPointName()}</View>
+        <View className='number'>{point}</View>
+        <View className='text'>{getPointName()}</View>
       </View>
     )
   }

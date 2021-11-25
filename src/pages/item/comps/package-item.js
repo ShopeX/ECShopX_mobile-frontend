@@ -291,6 +291,7 @@ export default class PackageItem extends Component {
         title: '请选择主商品规格',
         icon: 'none'
       })
+
       return
     }
     const id = (mainItem.checked_spec && mainItem.checked_spec.item_id) || mainItem.item_id

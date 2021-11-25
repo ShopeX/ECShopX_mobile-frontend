@@ -79,6 +79,7 @@ export default class MemberIndex extends Component {
   }
 
   componentWillMount() {
+    console.log('================WillMount===============');
     setPageTitle('会员中心')
     this.fetch();
     this.getSetting();
@@ -92,8 +93,10 @@ export default class MemberIndex extends Component {
   }
 
   componentDidShow() {
+    console.log('================Show===============');
     if (S.getAuthToken()) {
       this.fetchCouponCardList()
+      this.fetch();
     }
   }
 

@@ -26,6 +26,12 @@ page, body {
   background: $color-bg-gray;
   color: $color-primary-text;
 }
+body{
+  position: inherit !important;
+}
+.taro__modal {
+  transition: opacity 0s linear 0s !important;
+}
 
 .lnk {
   color: $color-link;

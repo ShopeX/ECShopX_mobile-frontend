@@ -53,6 +53,7 @@
         $tabs-height + $navigate-height + $searchbar-height,
         $tabbar-height
       );
+      top: 130px;
       /*  #ifdef  h5  */
       @include page-scroll(
         $tabs-height + $navigate-height-h5 + $searchbar-height,

@@ -3,9 +3,13 @@ import { View, ScrollView } from '@tarojs/components'
 import { AtNavBar } from 'taro-ui'
 import { GoodsItem } from '@/components'
 import { classNames } from '@/utils'
+import { connect } from '@tarojs/redux'
 
 import './checkout-items.scss'
 
+@connect(({ colors }) => ({
+  colors: colors.current
+}))
 export default class CheckoutItems extends Component {
   static defaultProps = {
     isOpened: false,

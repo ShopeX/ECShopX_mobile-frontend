@@ -6,6 +6,7 @@ import { pickBy, browser, getPointName } from '@/utils'
 import { withLogin } from '@/hocs'
 import { AlipayPay, WeH5Pay, WePay } from './comps'
 import { getPaymentList } from '@/utils/payment'
+import { PAYTYPE } from '@/consts'
 
 import './index.scss'
 
@@ -14,7 +15,8 @@ export default class Cashier extends Component {
   state = {
     info: null,
     env: '',
-    isHasAlipay:true
+    isHasAlipay:true,
+    payType:PAYTYPE.WXH5
   }
 
   componentDidShow() {
@@ -34,7 +36,7 @@ export default class Cashier extends Component {
   }
 
   async fetch() {
-    const { order_id } = this.$router.params
+    const { order_id,pay_type } = this.$router.params
 
     let env = ''
     if (browser.weixin) {
@@ -55,7 +57,8 @@ export default class Cashier extends Component {
 
     this.setState({
       info,
-      env
+      env,
+      payType:pay_type
     })
     Taro.hideLoading()
   }
@@ -70,7 +73,7 @@ export default class Cashier extends Component {
   }
 
   render() {
-    const { info, env, isHasAlipay } = this.state;
+    const { info, env, isHasAlipay,payType } = this.state;
  
     if (!info) {
       return <Loading />
@@ -97,8 +100,8 @@ export default class Cashier extends Component {
         </View>
         {!env ? (
           <View>
-            {isHasAlipay && <AlipayPay orderID={info.order_id} payType='alipayh5' orderType={info.order_type} />}
-            <WeH5Pay orderID={info.order_id} />
+            {isHasAlipay && payType===PAYTYPE.ALIH5 &&<AlipayPay orderID={info.order_id} payType='alipayh5' orderType={info.order_type} />}
+            {payType===PAYTYPE.WXH5 && <WeH5Pay orderID={info.order_id} />}
           </View>
         ) : (
           <View>

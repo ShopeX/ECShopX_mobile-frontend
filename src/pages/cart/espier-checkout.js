@@ -16,8 +16,11 @@ import {
   isAlipay,
   isWeixin,
   isWeb,
+  isWbWechat,
   redirectUrl,
-  isObjectValueEqual
+  isObjectValueEqual,
+  getThemeStyle,
+  styleNames
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -32,6 +35,7 @@ import PointUse from './comps/point-use'
 import Deliver from './comps/deliver'
 // import DrugInfo from './drug-info'
 import OrderItem from '../../components/orderItem/order-item'
+import { PAYTYPE } from '@/consts'
 
 import './espier-checkout.scss'
 import entry from '../../utils/entry'
@@ -111,7 +115,7 @@ export default class CartCheckout extends Component {
         freight_type: ''
       },
       // 默认支付方式
-      defalutPaytype: 'wxpay',
+      defalutPaytype:isWbWechat? 'wxpayjs':isWeb?'wxpayh5':'wxpay',
       payType: '',
       disabledPayment: null,
       isPaymentOpend: false,
@@ -1259,7 +1263,13 @@ export default class CartCheckout extends Component {
           ...params,
           pay_type: this.state.total.freight_type === 'point' ? 'point' : 'wxpay'
         })
-        redirectUrl(api, `/subpage/pages/cashier/index?order_id=${config.order_id}`)
+        let redirectPath=`/subpage/pages/cashier/index?order_id=${config.order_id}`;
+
+        if(payType===PAYTYPE.WXH5||payType===PAYTYPE.ALIH5){
+          redirectPath+=`&pay_type=${payType}`;
+        }
+
+        redirectUrl(api, redirectPath)
 
         // Taro.redirectTo({
         //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}&payType=${payType}&type=pointitem`
@@ -1344,6 +1354,15 @@ export default class CartCheckout extends Component {
         })
 
         this.props.onClearCart()
+
+        if (type === 'group') {
+          const groupUrl = `/marketing/pages/item/group-detail?team_id=${config.team_id}`
+          Taro.redirectTo({
+            url: groupUrl
+          })
+          return
+        }
+
 
         let url = `/subpage/pages/trade/detail?id=${order_id}`
 
@@ -1594,6 +1613,7 @@ export default class CartCheckout extends Component {
 
   // 设置初次paytype
   initDefaultPaytype = (payType, channel) => {
+    console.log("==initDefaultPaytype==",payType,channel)
     this.setState({
       defalutPaytype: payType,
       channel
@@ -1776,7 +1796,7 @@ export default class CartCheckout extends Component {
     //const isBtnDisabled = !address
     const isBtnDisabled = express ? !address : false
     return (
-      <View className='page-checkout'>
+      <View className='page-checkout' style={styleNames(getThemeStyle())}>
         {showAddressPicker === false ? (
           <SpNavBar title='填写订单信息' leftIconType='chevron-left' fixed='true' />
         ) : null}
@@ -2157,7 +2177,7 @@ export default class CartCheckout extends Component {
           disabledPayment={disabledPayment}
           onClose={this.handleLayoutClose}
           onChange={this.handlePaymentChange}
-          onInitDefaultPayType={this.initDefaultPaytype.bind(this)}
+          onInitDefaultPayType={this.initDefaultPaytype}
         ></PaymentPicker>
         {/* 积分使用 */}
         <PointUse

@@ -1,12 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-import { classNames, checkClassName } from '@/utils'
+import { View } from '@tarojs/components' 
+import { classNames, checkClassName,styleNames,getThemeStyle } from '@/utils'
 import './index.scss'
-
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
+ 
 export default class SpCheckbox extends Component {
   static defaultProps = {
     checked: false,
@@ -44,18 +40,17 @@ export default class SpCheckbox extends Component {
     this.props.onChange && this.props.onChange(isChecked)
   }
 
-  render() {
-    const { colors } = this.props
+  render() { 
     const { isChecked } = this.state
 
     return (
       <View
         className={classNames('sp-checkbox__wrap', isChecked ? 'sp-checkbox__checked' : null)}
         onClick={this.handleClick.bind(this)}
+        style={styleNames(getThemeStyle())}
       >
         <View
-          className='sp-checkbox'
-          style={isChecked ? 'background: ' + colors.data[0].primary : null}
+          className='sp-checkbox' 
         >
           <View className={checkClassName}></View>
         </View>

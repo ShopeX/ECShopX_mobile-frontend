@@ -14,7 +14,7 @@ export default class DistributionStatistics extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidShow () {
     this.fetch()
   }
 

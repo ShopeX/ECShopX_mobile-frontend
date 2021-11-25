@@ -7,12 +7,11 @@ import { BackToTop, Loading, SpNote, TabBar, HomeCapsule } from '@/components'
 import api from '@/api'
 import { Tracker } from '@/service'
 import { classNames, isWeixin, getPointName } from '@/utils'
+import throttle from 'lodash/throttle'
 import Header from './comps/header'
 import GoodsItem from './comps/goods_item'
 import FilterBlock from './comps/filter-block'
-import throttle from 'lodash/throttle'
 import CustomHeader from './comps/headerContainer'
-import S from '@/spx'
 import './list.scss'
 
 @connect(({ member, colors }) => ({
@@ -680,14 +679,14 @@ export default class List extends Component {
               )
             })}
           </View>
-          <View class='action'>
+          <View className='action'>
             {!isHidden && (
-              <View class='filter' onClick={this.handleOpenFilter}>
-                <View class='textFilter'>筛选</View>
+              <View className='filter' onClick={this.handleOpenFilter}>
+                <View className='textFilter'>筛选</View>
                 <View className='iconfont icon-filter'></View>
               </View>
             )}
-            <View class='searchInput'></View>
+            <View className='searchInput'></View>
           </View>
           <View
             className={classNames('searchInput', 'searchInput-P', [
@@ -758,13 +757,13 @@ export default class List extends Component {
           mask
           width={`${Taro.pxTransform(630)}`}
           onClose={this.filterOpen.bind(false)}
-          class='custom_drawer'
+          className='custom_drawer'
         >
-          <View class='wrapper-filter'>
+          <View className='wrapper-filter'>
             {brandVisible && (
-              <View class='brand'>
-                <View class='title'>品牌</View>
-                <View class='content-filter'>
+              <View className='brand'>
+                <View className='title'>品牌</View>
+                <View className='content-filter'>
                   {brandList.map((item, index) => {
                     return (
                       <FilterBlock
@@ -779,9 +778,9 @@ export default class List extends Component {
               </View>
             )}
             {categoryVisible && (
-              <View class='category'>
-                <View class='title'>分类</View>
-                <View class='content-filter'>
+              <View className='category'>
+                <View className='title'>分类</View>
+                <View className='content-filter'>
                   {categoryList.map((item, index) => {
                     return (
                       <FilterBlock
@@ -796,15 +795,15 @@ export default class List extends Component {
               </View>
             )}
             {pointVisible && (
-              <View class='score'>
-                <View class='title'>{`${getPointName()}区间`}</View>
-                <View class='input-wrap'>
+              <View className='score'>
+                <View className='title'>{`${getPointName()}区间`}</View>
+                <View className='input-wrap'>
                   <AtInput
                     placeholder={`最低${getPointName()}值`}
                     value={start_price}
                     onChange={this.handleChangeStartprice}
                   />
-                  <View class='text'>~</View>
+                  <View className='text'>~</View>
                   <AtInput
                     placeholder={`最高${getPointName()}值`}
                     value={end_price}

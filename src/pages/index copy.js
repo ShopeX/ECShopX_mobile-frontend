@@ -108,18 +108,18 @@ export default class Home extends Component {
     const isLocal = await entry.getLocalSetting()
     console.log('=============isLocal', isLocal)
 
-    const time = Taro.getStorageSync('PrivacyUpdate_time')
+    const privacy_time = Taro.getStorageSync('PrivacyUpdate_time')
     const result = await api.wx.getPrivacyTime()
     const { update_time } = result
 
-    if ((time && time >= update_time) || !isLocal) {
+    if ((!String(privacy_time) || privacy_time != update_time) && isLocal) {
+      this.setState({
+        PrivacyConfirmModalVisible: true
+      })
+    } else {
       this.getHomeSetting()
-      return
     }
 
-    this.setState({
-      PrivacyConfirmModalVisible: true
-    })
     // this.getHomeSetting();
     // this.getShareSetting();
     // this.isShowTips();

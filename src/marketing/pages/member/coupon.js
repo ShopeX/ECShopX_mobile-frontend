@@ -49,22 +49,22 @@ export default class Coupon extends Component {
   // }
 
   componentDidShow() {
-    // this.setState({
-    //   list: []
-    // })
-    // const { curTabIdx, tabList } = this.state
-    // const status = tabList[curTabIdx].status
-    // const card_type = tabList[curTabIdx].type
-    // const params = {
-    //   card_type: card_type,
-    //   page: 1,
-    //   pageSize: 10,
-    //   page_no: 1,
-    //   page_size: 10,
-    //   status: status
-    // }
-    // this.fetch(params)
-    this.nextPage()
+    this.setState({
+      list: []
+    })
+    const { curTabIdx, tabList } = this.state
+    const status = tabList[curTabIdx].status
+    const card_type = tabList[curTabIdx].type
+    const params = {
+      card_type: card_type,
+      page: 1,
+      pageSize: 10,
+      page_no: 1,
+      page_size: 10,
+      status: status
+    }
+    this.fetch(params)
+    // this.nextPage()
   }
 
   async fetch(params) {

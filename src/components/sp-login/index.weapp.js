@@ -74,7 +74,7 @@ export default class SpLogin extends Component {
         })
       }
       
-      // await api.wx.newMarketing()
+      await api.wx.newMarketing()
       await S.getMemberInfo()
       // const memberInfo = await api.member.memberInfo();
       // this.props.setMemberInfo( memberInfo )
@@ -191,17 +191,17 @@ export default class SpLogin extends Component {
 
   render() {
     const { token, privacyVisible, update_time } = this.state
-    let pritecy_time = Taro.getStorageSync('PrivacyUpdate_time')
-    let policy = true
-    console.log(pritecy_time, update_time, '-----')
-    if (!pritecy_time || pritecy_time != update_time) {
-      policy = false
+    let privacy_time = Taro.getStorageSync('PrivacyUpdate_time')
+    let isPolicyShow = false
+    // console.log(!privacy_time, privacy_time != update_time, update_time, '-----')
+    if (!String(privacy_time) || privacy_time != update_time) {
+      isPolicyShow = true
     }
     return (
       <View className={classNames('sp-login', this.props.className)}>
         {token && <View onClick={this.handleOnChange.bind(this)}>{this.props.children}</View>}
 
-        {!token && policy && isWeixin && (
+        {!token && !isPolicyShow && isWeixin && (
           <AtButton
             className='login-btn'
             openType='getPhoneNumber'
@@ -211,7 +211,7 @@ export default class SpLogin extends Component {
           </AtButton>
         )}
 
-        {!token && !policy && isWeixin && (
+        {!token && isPolicyShow && isWeixin && (
           <View onClick={this.onClickChange.bind(this)}>{this.props.children}</View>
         )}
 

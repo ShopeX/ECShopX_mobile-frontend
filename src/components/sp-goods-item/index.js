@@ -63,7 +63,8 @@ export default class SpGoodsItem extends Component {
       isPointDraw,
       colors,
       type,
-      isPointitem
+      isPointitem,
+      isOpenCollection
     } = this.props
     // console.log('this.props',this.props)
 
@@ -160,9 +161,12 @@ export default class SpGoodsItem extends Component {
                 </View>
               )}
             </View>
-            <View className='bd-block-rg'>
-              <Text className='iconfont icon-shoucang-01'></Text>
-            </View>
+            {
+              isOpenCollection && <View className='bd-block-rg'>
+                <Text className='iconfont icon-shoucang-01'></Text>
+              </View>
+            }
+
           </View>
 
           {/* 促销活动标签 */}

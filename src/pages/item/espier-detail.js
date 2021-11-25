@@ -548,23 +548,23 @@ export default class EspierDetail extends Component {
 
     const { list, total_count: total } = await this.goodLikeList(query)
 
-    // const nList = pickBy(list, {
-    //   img: "pics[0]",
-    //   item_id: "item_id",
-    //   title: "itemName",
-    //   point: "point",
-    //   distributor_id: "distributor_id",
-    //   promotion_activity_tag: "promotion_activity",
-    //   price: ({ price }) => {
-    //     return (price / 100).toFixed(2);
-    //   },
-    //   member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-    //   market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-    //   desc: "brief"
-    // });
+    const nList = pickBy(list, {
+      img: "pics[0]",
+      item_id: "item_id",
+      title: "itemName",
+      point: "point",
+      distributor_id: "distributor_id",
+      promotion_activity_tag: "promotion_activity",
+      price: ({ price }) => {
+        return (price / 100).toFixed(2);
+      },
+      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
+      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+      desc: "brief"
+    });
 
     this.setState({
-      likeList: [...this.state.likeList, ...list]
+      likeList: [...this.state.likeList, ...nList]
     })
 
     return {
@@ -1193,6 +1193,8 @@ export default class EspierDetail extends Component {
     }
     let { isNewGift } = this.$router.params
 
+    console.log("==likeList==",likeList)
+
     return (
       <View className='page-goods-detail'>
         <SpNavBar title={info.item_name} leftIconType='chevron-left' fixed />
@@ -1549,29 +1551,37 @@ export default class EspierDetail extends Component {
           )}
 
           {/* 猜你喜欢 */}
-          {likeList.length && showLikeList && <SpRecommend info={likeList} />}
-
-          {/* {likeList.length > 0 && showLikeList ? (
+          {likeList.length && showLikeList ? (
             <View className="cart-list cart-list__disabled">
               <View className="cart-list__hd like__hd">
-                <Text className="cart-list__title">猜你喜欢</Text>
+                <Text
+                  className="cart-list__title"
+                  style={{
+                    color: colors.data[0].primary,
+                    borderColor: colors.data[0].primary
+                  }}
+                >
+                  猜你喜欢
+                </Text>
               </View>
               <View className="goods-list goods-list__type-grid">
                 {likeList.map(item => {
                   return (
-                    <View className="goods-list__item">
+                    <View className="goods-list__item" key={item.item_id}>
                       <GoodsItem
                         key={item.item_id}
                         info={item}
                         onClick={this.handleClickItem.bind(this, item)}
-                        isPointitem={this.isPointitemGood()}
+                  
                       />
                     </View>
                   );
                 })}
               </View>
             </View>
-          ) : null} */}
+          ):null}
+
+        
         </ScrollView>
 
         <FloatMenus>
