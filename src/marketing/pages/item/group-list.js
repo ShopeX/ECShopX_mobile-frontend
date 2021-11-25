@@ -134,7 +134,7 @@ export default class GroupList extends Component {
       >
         <SpNavBar title='团购' leftIconType='chevron-left' fixed='true' />
         <AtTabs
-          className='group-list__tabs'
+          className={classNames('group-list__tabs', isNavbar() ? 'group-padding' : null)}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}

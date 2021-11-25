@@ -1,6 +1,18 @@
 $item-img-size: 240px !default;
 
 .page-group-list {
+  .group-list__tabs {
+    height: auto;
+    .at-tabs__header {
+      position: fixed;
+      top: 0;
+    }
+  }
+  .group-padding {
+    .at-tabs__header {
+      top: $navigate-height-h5 !important;
+    }
+  }
   // .at-tabs {
   //   height: $tabs-height;
   //   box-shadow: 0 10px 10px rgba(#000, 0.05);
