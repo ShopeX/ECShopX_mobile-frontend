@@ -39,6 +39,7 @@ import { PAYTYPE } from '@/consts'
 
 import './espier-checkout.scss'
 import entry from '../../utils/entry'
+import { copySync } from 'fs-extra'
 
 const transformCartList = (list) => {
   return pickBy(list, {
@@ -1169,7 +1170,7 @@ export default class CartCheckout extends Component {
     // }
     const { payType, total, identity, isOpenStore, curStore, receiptType, channel } = this.state
     const { type, goodType, cart_type } = this.$router.params
- 
+
     const isDrug = type === 'drug'
 
     if (payType === 'point' || payType === 'deposit') {
@@ -1261,14 +1262,14 @@ export default class CartCheckout extends Component {
         config = await this.h5CreateByType({
           ...params,
           pay_type: this.state.total.freight_type === 'point' ? 'point' : 'wxpay'
-        })   
+        })
         let redirectPath=`/subpage/pages/cashier/index?order_id=${config.order_id}`;
 
         if(payType===PAYTYPE.WXH5||payType===PAYTYPE.ALIH5){
           redirectPath+=`&pay_type=${payType}`;
         }
-        
-        redirectUrl(api, redirectPath) 
+
+        redirectUrl(api, redirectPath)
 
         // Taro.redirectTo({
         //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}&payType=${payType}&type=pointitem`
@@ -1485,6 +1486,54 @@ export default class CartCheckout extends Component {
     this.params = {
       ...this.params,
       remark: val
+    }
+  }
+
+  // 键盘挡输入框
+  getElementOffsetTop (el) {
+    let top = el.offsetTop
+    let cur = el.offsetParent
+    while(cur != null){
+      top += cur.offsetTop
+      cur = cur.offsetParent
+   }
+   return top
+  }
+
+  getDevice () {
+    const ua = navigator.userAgent
+    const ios = /iPad|iPhone|iPod/.test(ua)
+    return ios
+  }
+
+  handleRemarkFocus = (value, event) => {
+    if (!isWeb) {
+      return
+    }
+    const ios = this.getDevice()
+    const dom = event.target
+    setTimeout(() => {
+      if (ios) {
+        document.body.scrollTop = document.body.scrollHeight
+      } else {
+        // dom.scrollIntoView(false) 微信x5内核不支持
+        const body = document.getElementsByTagName('body')[0]
+        const clientHeight = body.clientHeight // 可见高
+        const fixHeight = clientHeight / 3 // 自定义位置
+        const offsetTop = this.getElementOffsetTop(dom)
+        body.scrollTop = offsetTop - fixHeight
+      }
+    }, 300);
+  }
+
+  handleRemarkBlur = () => {
+    if (!isWeb) {
+      return
+    }
+    const ios = this.getDevice()
+    if (!ios) {
+      const body = document.getElementsByTagName('body')[0]
+      body.scrollTop = 0
     }
   }
 
@@ -1728,7 +1777,8 @@ export default class CartCheckout extends Component {
       isPackage,
       pack,
       isOpenStore,
-      defalutPaytype
+      defalutPaytype,
+      fixInput
     } = this.state
     const { type, goodType, bargain_id } = this.$router.params
     const isDrug = type === 'drug'
@@ -1890,9 +1940,11 @@ export default class CartCheckout extends Component {
                   <View className='sec cart-group__cont'>
                     <SpCell className='sec trade-remark' border={false}>
                       <AtInput
-                        className='trade-remark__input'
+                        className={`trade-remark__input` }
                         placeholder='给商家留言：选填（50字以内）'
                         onChange={this.handleRemarkChange.bind(this)}
+                        onFocus={this.handleRemarkFocus.bind(this)}
+                        onBlur={this.handleRemarkBlur.bind(this)}
                         maxLength={50}
                       />
                     </SpCell>

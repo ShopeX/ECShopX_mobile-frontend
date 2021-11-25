@@ -607,10 +607,7 @@ export default class CartIndex extends Component {
       remindInfo
     } = this.state;
     const { list, showLikeList, colors } = this.props;
-     
-    // if (loading) {
-    //   return <Loading />;
-    // }
+    
     const { type = "distributor" } = this.$router.params;
     const isDrug = type === "drug";
     const isEmpty = !list.length;
@@ -689,7 +686,10 @@ export default class CartIndex extends Component {
                       <Text className="icon-shop"></Text>
                       {shopCart.shopInfo.shop_name}
                     </View>
-                  ) : null}
+                  ) : <View className="shop__name">
+                  <Text className="icon-shop"></Text>
+                  {'自营'}
+                </View>}
                   {shopCart.shopInfo.plus_buy_activity &&
                     shopCart.shopInfo.plus_buy_activity.map(plus_item => {
                       const { discount_desc, activity_id } = plus_item;
