@@ -686,7 +686,10 @@ export default class CartIndex extends Component {
                       <Text className="icon-shop"></Text>
                       {shopCart.shopInfo.shop_name}
                     </View>
-                  ) : null}
+                  ) : <View className="shop__name">
+                  <Text className="icon-shop"></Text>
+                  {'自营'}
+                </View>}
                   {shopCart.shopInfo.plus_buy_activity &&
                     shopCart.shopInfo.plus_buy_activity.map(plus_item => {
                       const { discount_desc, activity_id } = plus_item;
