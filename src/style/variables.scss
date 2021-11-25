@@ -1,78 +1,87 @@
-@import "md-colors";
+@import 'md-colors';
 
-$font-family        : "Hiragino Sans GB", "微软雅黑", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-$font-size          : 14px * 2 !default;
+$font-family: 'Hiragino Sans GB', '微软雅黑', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont,
+  'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', Helvetica, Arial, sans-serif,
+  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+$font-size: 14px * 2 !default;
 
-$font-size-small    : floor($font-size * 0.9) !default;
-$font-size-large    : floor($font-size * 1.2) !default;
-$edge-size          : 15px * 2 !default;
-$edge-margin        : 10px * 2 !default;
+$font-size-small: floor($font-size * 0.9) !default;
+$font-size-large: floor($font-size * 1.2) !default;
+$edge-size: 15px * 2 !default;
+$edge-margin: 10px * 2 !default;
 
-$navigation-height  : 80px !default;
-$toolbar-height     : 120px !default;
-$navigate-height    : 80px !default;
-$navigate-height-h5 : 92px !default;
-$tags-height        : 90px !default;
-$tabs-height        : 72px !default;
-$toolbar-shadow     : 0 -2px 3px rgba(#000, 0.05);
-$tabbar-height      : 90px !default;
-$searchbar-height   : 84px !default;
+$navigation-height: 80px !default;
+$toolbar-height: 120px !default;
+$navigate-height: 80px !default;
+$navigate-height-h5: 92px !default;
+$tags-height: 90px !default;
+$tabs-height: 72px !default;
+$toolbar-shadow: 0 -2px 3px rgba(#000, 0.05);
+$tabbar-height: 90px !default;
+$searchbar-height: 84px !default;
 
-$color-weixin       : #07C15F !default;
-$item-border-radius : 20px !default;
-$box-shadow         : 0 4px 6px rgba(#000, 0.05);
+$color-weixin: #07c15f !default;
+$item-border-radius: 20px !default;
+$box-shadow: 0 4px 6px rgba(#000, 0.05);
 
 /*==============================
 =            colors            =
 ==============================*/
-$color-red                : $md-red !default;
-$color-blue               : $md-blue !default;
-$color-green              : $md-green !default;
-$color-yellow             : $md-yellow !default;
-$color-orange             : $md-orange-400 !default;
-$color-gray               : #999 !default;
-$color-gray-light         : #aaa !default;
+$color-red: $md-red !default;
+$color-blue: $md-blue !default;
+$color-green: $md-green !default;
+$color-yellow: $md-yellow !default;
+$color-orange: $md-orange-400 !default;
+$color-gray: #999 !default;
+$color-gray-light: #aaa !default;
 
-$color-brand-primary      : #C40000 !default;
-$color-brand-accent       : #FA7815 !default;
-$color-brand-accent-light : #31373f !default;
-$color-brand-primary-text : #ffffff !default;
-$color-brand-accent-text  : #ffffff !default;
+$color-brand-primary: #c40000 !default;
+$color-brand-accent: #fa7815 !default;
+$color-brand-accent-light: #31373f !default;
+$color-brand-primary-text: #ffffff !default;
+$color-brand-accent-text: #ffffff !default;
 
-$color-alert-warning      : #ff9b36 !default;
-$color-alert-success      : #28bd55 !default;
-$color-alert-info         : #02C1FE !default;
-$color-alert-error        : $color-red !default;
+$color-alert-warning: #ff9b36 !default;
+$color-alert-success: #28bd55 !default;
+$color-alert-info: #02c1fe !default;
+$color-alert-error: $color-red !default;
 
-$color-primary-text       : #222 !default;
-$color-secondary-text     : #777 !default;
-$color-hint-text          : #999 !default;
-$color-disabled-text      : #ccc !default;
-$color-border-gray        : #d9d9d9 !default;
-$color-border-gray-light  : #e8e8e8 !default;
-$color-border-gray-dark   : #b9b9b9 !default;
-$color-bg-gray            : #f4f4f4 !default;
-$color-divider            : $color-border-gray-light !default;
-$color-link               : $color-brand-primary !default;
-$color-link-dark          : $md-grey-900 !default;
-$color-invalid            : #ff2400 !default;
+$color-primary-text: #222 !default;
+$color-secondary-text: #777 !default;
+$color-hint-text: #999 !default;
+$color-disabled-text: #ccc !default;
+$color-border-gray: #d9d9d9 !default;
+$color-border-gray-light: #e8e8e8 !default;
+$color-border-gray-dark: #b9b9b9 !default;
+$color-bg-gray: #f4f4f4 !default;
+$color-divider: $color-border-gray-light !default;
+$color-link: $color-brand-primary !default;
+$color-link-dark: $md-grey-900 !default;
+$color-invalid: #ff2400 !default;
 
-$color-point-color:#d42f29;
+$color-point-color: #d42f29;
 
-$color-search-cancel-bg            : transparent !default;
+$color-search-cancel-bg: transparent !default;
 
 /*===============================
 =            z-index            =
 ===============================*/
-$z-index-level-1  : 100 !default;
-$z-index-level-2  : 200 !default;
-$z-index-level-3  : 300 !default;
-$z-index-level-4  : 400 !default;
-$z-index-level-5  : 500 !default;
-$z-index-level-6  : 600 !default;
+$z-index-level-1: 100 !default;
+$z-index-level-2: 200 !default;
+$z-index-level-3: 300 !default;
+$z-index-level-4: 400 !default;
+$z-index-level-5: 500 !default;
+$z-index-level-6: 600 !default;
 
-$z-index-toolbar  : $z-index-level-1 !default;
-$z-index-tooltip  : $z-index-level-3 !default;
-$z-index-dropdown : $z-index-level-3 !default;
-$z-index-modal    : $z-index-level-5 !default;
-$z-index-toast    : $z-index-level-6 !default;
+$z-index-toolbar: $z-index-level-1 !default;
+$z-index-tooltip: $z-index-level-3 !default;
+$z-index-dropdown: $z-index-level-3 !default;
+$z-index-modal: $z-index-level-5 !default;
+$z-index-toast: $z-index-level-6 !default;
+
+body {
+  position: inherit !important;
+}
+.taro__modal {
+  transition: opacity 0s linear 0s !important;
+}
