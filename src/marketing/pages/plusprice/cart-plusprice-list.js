@@ -6,7 +6,7 @@ import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar, SpCheckbox } from '@/c
 import { connect } from '@tarojs/redux'
 import api from '@/api'
 import { getDistributorId } from '@/utils/helper'
-import { pickBy, isWebWechat, classNames } from '@/utils'
+import { pickBy, classNames, isNavbar } from '@/utils'
 
 import './plusprice.scss'
 
@@ -120,12 +120,12 @@ export default class DetailPluspriceList extends Component {
     const { list, showBackToTop, scrollTop, page } = this.state
     return (
       <View
-        className='page-plusprice cart-page-plusprice'
+        className='cart-page-plusprice'
         style={`background: ${colors.data[0].primary}`}
       >
         <SpNavBar title='微商城' />
         <ScrollView
-          className={classNames('plusprice-goods__scroll', !isWebWechat() ? 'cus-padding' : '')}
+          className='cart-page-plusprice-goods__scroll'
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
@@ -133,7 +133,7 @@ export default class DetailPluspriceList extends Component {
           onScrollToLower={this.nextPage}
         >
           {list && list.length > 0 && (
-            <View className='plusprice-goods__list plusprice-goods__type-list'>
+            <View className='cart-page-plusprice-goods__list cart-page-plusprice-goods__type-list'>
               {list.map((item) => {
                 return (
                   <View key={item.item_id} className='goods-list__item'>
@@ -162,7 +162,7 @@ export default class DetailPluspriceList extends Component {
             <SpNote img='trades_empty.png'>暂无数据~</SpNote>
           )}
         </ScrollView>
-        <View className='plusprice-footer'>
+        <View className='cart-page-plusprice-goods__footer'>
           <View className='footer-list'>
             <View
               className='footer-item no-use'
