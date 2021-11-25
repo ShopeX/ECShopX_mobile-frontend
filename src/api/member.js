@@ -332,6 +332,7 @@ export function hfpayBankInfo(params = {}) {
 }
 // 获取获取支付方式
 export function getTradePaymentList(params = {}) {
+  params.only = 'wx';
   return req.get('/trade/payment/list', params)
 }
 export function getIsHf(params = {}) {

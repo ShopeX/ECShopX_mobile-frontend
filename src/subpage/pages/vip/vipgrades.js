@@ -369,7 +369,7 @@ export default class VipIndex extends Component {
               className='cus-sp-cell'
             >
               {
-                typeList.length>0 && <Text>{typeList[1].pay_type_name}</Text>
+                typeList.length > 0 && <Text>{typeList[0].pay_type_name}</Text>
               }
             </SpCell>
           )}
