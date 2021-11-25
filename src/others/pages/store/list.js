@@ -14,7 +14,7 @@ import {
   SpNavBar
 } from '@/components'
 import api from '@/api'
-import { pickBy, classNames, getCurrentRoute } from '@/utils'
+import { pickBy, classNames, getCurrentRoute, isNavbar } from '@/utils'
 
 import './list.scss'
 
@@ -493,7 +493,7 @@ export default class List extends Component {
     } = this.state
 
     return (
-      <View className='page-goods-list'>
+      <View className={classNames('page-goods-list', isNavbar() ? 'page-goods-list-padding' : null)} >
         <SpNavBar title='商品列表' leftIconType='chevron-left' fixed='true' />
         <View className='goods-list__toolbar'>
           <View

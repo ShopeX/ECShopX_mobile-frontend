@@ -1,19 +1,16 @@
 @import "@/style/imports";
 
+.page-goods-list-padding {
+  padding-top: $navigate-height-h5;
+}
 .page-goods-list {
   background: $color-bg-gray;
-  /*  #ifdef  h5  */
-  padding-top: $navigate-height-h5;
-  /*  #endif  */
   .goods-list {
     margin: 0 -10px;
     &__toolbar {
       position: fixed;
       padding-top: 10px;
       top: 0;
-      /*  #ifdef  h5  */
-      top: $navigate-height-h5;
-      /*  #endif  */
       left: 0;
       width: 100%;
       z-index: $z-index-toolbar;
@@ -81,25 +78,12 @@
         $tabs-height + $searchbar-height + $navigate-height + 8,
         $tabbar-height
       );
-      /*  #ifdef  h5  */
-      @include page-scroll(
-        $tabs-height + $searchbar-height + $navigate-height-h5 + 8,
-        $tabbar-height
-      );
-      /*  #endif  */
       &.with-tag-bar {
         @include page-scroll(
           $tabs-height + $searchbar-height + $tags-height + $navigate-height + 8,
           $tabbar-height
         );
-        /*  #ifdef  h5  */
-        @include page-scroll(
-          $tabs-height + $searchbar-height + $tags-height + $navigate-height-h5 +
-            8,
-          $tabbar-height
-        );
-        bottom: 0;
-        /*  #endif  */
+        top: 250px;
       }
     }
 
@@ -163,6 +147,7 @@
     }
     &__search {
       position: relative;
+      padding-left: 20px;
       &.on-search {
         .at-search-bar {
           padding-right: 0 !important;
