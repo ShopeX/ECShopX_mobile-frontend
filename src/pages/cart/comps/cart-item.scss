@@ -91,13 +91,14 @@ $item-img-height: 200px !default;
     margin: 0 0 16px;
   }
   &__promotion {
-    background: #f8f8f8;
     @include text-overflow();
     font-size: $font-size-small;
-    color: #333;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
     display: inline-block;
     padding: 3px 10px;
-    @include hairline(#333, 0, top, right, bottom, left);
+    border-radius: 6px;
+    // @include hairline(#333, 0, top, right, bottom, left);
   }
   &__price {
     font-size: 28px;
