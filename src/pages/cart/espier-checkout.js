@@ -254,17 +254,9 @@ export default class CartCheckout extends Component {
   componentWillReceiveProps(nextProps) {
     const nextAddress = nextProps.address || {}
     const selfAddress = this.props.address || {}
-    if (JSON.stringify(nextAddress) != "{}" && JSON.stringify(selfAddress) != "{}" && !isObjectValueEqual(nextAddress, selfAddress)
-      // nextAddress.address_id !== selfAddress.address_id
-      // || nextAddress.username !== selfAddress.username
-      // || nextAddress.province !== selfAddress.province
-      // || nextAddress.city !== selfAddress.city
-      // || nextAddress.county !== selfAddress.county
-      // || nextAddress.telephone !== selfAddress.telephone
-      // || nextAddress.adrdetail !== selfAddress.adrdetail
-      // || nextAddress.postalCode !== selfAddress.postalCode
-      // || nextAddress.is_def !== selfAddress.is_def
-    ) {
+    console.log(nextAddress, selfAddress)
+    // if (JSON.stringify(nextAddress) != "{}" && JSON.stringify(selfAddress) != "{}" && !isObjectValueEqual(nextAddress, selfAddress)
+    if (!isObjectValueEqual(nextAddress, selfAddress)) {
       this.fetchAddress()
     }
     if (nextProps.zitiShop !== this.props.zitiShop) {
