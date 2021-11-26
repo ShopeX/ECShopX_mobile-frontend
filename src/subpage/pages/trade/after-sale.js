@@ -11,6 +11,7 @@ import _mapKeys from 'lodash/mapKeys'
 import TradeItem from './comps/item'
 
 import './list.scss'
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
@@ -131,7 +132,7 @@ export default class AfterSale extends Component {
     const { curTabIdx, tabList, list, page } = this.state
 
     return (
-      <View className='trade-list'>
+      <View className='trade-list after-saler-page'>
         <SpNavBar title='售后订单列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className='trade-list__tabs'
@@ -144,7 +145,7 @@ export default class AfterSale extends Component {
           ))}
         </AtTabs>
 
-        <ScrollView scrollY className='trade-list__scroll' onScrollToLower={this.nextPage}>
+        <ScrollView scrollY className='trade-list__scroll after-saler__scroll' onScrollToLower={this.nextPage}>
           {list &&
             list.map((item, idx) => {
               return (
