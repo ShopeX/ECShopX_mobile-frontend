@@ -27,6 +27,7 @@ export default class SpRecommend extends Component {
     })
     return (
       <View className={classNames('sp-recommend', className)}>
+        <View>===================</View>
         <View className='sp-recommend-hd'>
           <SpImage className='recommend-icon' src='like_list.png' width='200' />
         </View>
