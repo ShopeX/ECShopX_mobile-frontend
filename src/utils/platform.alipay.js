@@ -1,15 +1,13 @@
-import Taro from '@tarojs/taro'
+import Taro,{getCurrentInstance} from "@tarojs/taro";
 
 export function setPageTitle(title) {
   Taro.setNavigationBarTitle({
     title
-  })
+  });
 }
 
-export const platformTemplateName = 'yykweishop'
+export const platformTemplateName = "yykweishop";
 
-export const transformPlatformUrl = (url) => {
-  return `/alipay${url}`
-}
-
-export const payment_platform='wxMiniProgram';
+export const transformPlatformUrl = url => {
+  return `/alipay${url}`;
+};

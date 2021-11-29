@@ -129,9 +129,9 @@
     //   width: 100%;
     // }
     /*  #endif  */
-    // &_platform {
-    //   padding-top: 0;
-    // }
+    &_platform {
+      padding-top: 0;
+    }
     #{$self}__cont {
       padding-top: 0;
     }
@@ -143,9 +143,9 @@
         }
       }
     }
-    // &.platform {
-    //   padding-top: 0;
-    // }
+    &.platform {
+      padding-top: 0;
+    }
     &__fixed_standard {
         padding-top: calc(#{$home-header-height} + #{$home-search-height});
       .search {

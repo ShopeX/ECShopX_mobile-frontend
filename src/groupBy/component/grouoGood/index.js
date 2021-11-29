@@ -8,7 +8,8 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-06-23 14:43:51
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import api from '@/api'

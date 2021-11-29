@@ -1,7 +1,7 @@
 import { AtImagePicker } from 'taro-ui'
 import { isAlipay } from '@/utils'
 import { View } from '@tarojs/components'
-import { useCallback } from '@tarojs/taro'
+import React, { useCallback } from 'react';
 import imgUploader from '@/utils/upload'
 import './index.scss'
 

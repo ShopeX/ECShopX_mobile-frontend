@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
 import { SpNavBar, SpCell } from '@/components'
@@ -7,6 +8,7 @@ import './index.scss'
 import { getPointName } from '@/utils'
 
 export default class PayOrder extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -36,13 +38,9 @@ export default class PayOrder extends Component {
     this.getCalculateTotal()
   }
 
-  config = {
-    navigationBarTitleText: '结算'
-  }
-
   getCalculateTotal = async () => {
     Taro.showLoading({ title: '请稍等...', mask: true })
-    const { activityId, itemId, itemNum = 1, communityId } = this.$router.params
+    const { activityId, itemId, itemNum = 1, communityId } = this.$instance.router.params
     //  查询地址
     const currentCommunity = await api.groupBy.activityCommunityDetail({
       community_id: communityId

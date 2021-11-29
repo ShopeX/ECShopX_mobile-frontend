@@ -8,7 +8,8 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-07-20 11:17:34
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import BuyContorl from '../buyContorl'

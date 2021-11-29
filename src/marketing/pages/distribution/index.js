@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Navigator, Button, Canvas } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpNavBar, Loading } from '@/components'
 import api from '@/api'
 import { pickBy, canvasExp } from '@/utils'
@@ -31,10 +32,6 @@ export default class DistributionDashboard extends Component {
       backgroundColor: colors.data[0].marketing
     })
     this.fetch()
-  }
-
-  config = {
-    navigationBarTitleText: '推广管理'
   }
 
   async fetch() {

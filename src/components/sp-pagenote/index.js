@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Text } from '@tarojs/components'
 import { classNames, navigateTo } from '@/utils'
 import SpLoading from '../sp-loading'

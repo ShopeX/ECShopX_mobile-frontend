@@ -1,11 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton, AtFloatLayout } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
 import { isWeixin, isWeb, isAlipay, classNames, showToast, navigateTo } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import './index.scss'
 
 @connect(

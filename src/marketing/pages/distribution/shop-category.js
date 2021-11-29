@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Text } from '@tarojs/components'
 import { Loading, SpImg, SpNote, SpNavBar } from '@/components'
 import { classNames, pickBy, getCurrentRoute } from '@/utils'
@@ -12,6 +13,7 @@ import './shop-category.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -56,13 +58,8 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  // 配置信息
-  config = {
-    navigationBarTitleText: ''
-  }
-
   async fetchInfo() {
-    const options = this.$router.params
+    const options = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
     const query = {
@@ -111,7 +108,7 @@ export default class DistributionShopCategory extends Component {
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { defaultId } = this.state
-    const options = this.$router.params
+    const options = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
 
@@ -182,7 +179,7 @@ export default class DistributionShopCategory extends Component {
       const curTab = this.state.tabList[current]
       const { url, urlRedirect } = curTab
 
-      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
         if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
           Taro.navigateTo({ url })
@@ -194,7 +191,7 @@ export default class DistributionShopCategory extends Component {
   }
 
   handleClickItem = (item) => {
-    const options = this.$router.params
+    const options = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
     let id = distributionShopId || userId

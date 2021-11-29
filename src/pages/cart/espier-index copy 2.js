@@ -1,6 +1,8 @@
-import Taro, { useState, useEffect, useRouter } from '@tarojs/taro'
+import { useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, ScrollView, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton, AtActionSheet, AtActionSheetItem, AtNoticebar } from 'taro-ui'
 import {
   SpNote,
@@ -28,7 +30,7 @@ import {
 } from '@/utils'
 import api from '@/api'
 import S from '@/spx'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import entry from '@/utils/entry'
 import { setPageTitle } from '@/utils/platform'
 import { getDistributorId } from '@/utils/helper'
@@ -42,6 +44,7 @@ const tablist = [
 ]
 
 function CartIndex(props) {
+  const $instance = useMemo(getCurrentInstance, []);
   // const { nextPage } = usePagination()
   const [state, setState] = useState({
     current: 0,
@@ -52,7 +55,7 @@ function CartIndex(props) {
     invalid_cart: []
   })
   const [likeList, setLikeList] = useState([])
-  const router = useRouter()
+  const router = $instance.router
   const { current } = state
   const { valid_cart, invalid_cart } = cartList
 

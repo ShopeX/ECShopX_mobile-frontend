@@ -8,7 +8,7 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-06-15 10:50:05
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View } from '@tarojs/components'
 
 import './index.scss'

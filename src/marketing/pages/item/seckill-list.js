@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Text, Image } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote } from '@/components'
@@ -24,10 +25,6 @@ export default class SeckillList extends Component {
       list: [],
       timeCountDown: []
     }
-  }
-
-  config = {
-    navigationBarTitleText: ''
   }
 
   componentDidMount() {

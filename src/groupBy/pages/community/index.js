@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Input } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import { debounce } from '@/utils'
@@ -30,10 +31,6 @@ export default class Community extends Component {
 
   async componentDidMount() {
     this.init()
-  }
-
-  config = {
-    navigationBarTitleText: '社区列表'
   }
 
   // 搜索框输入

@@ -1,6 +1,6 @@
-import Taro, { Component, useState, useEffect } from '@tarojs/taro'
+import React, { Component, useState, useEffect } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer, AtTabs } from 'taro-ui'
 import {
@@ -19,7 +19,7 @@ import {
   TabBar
 } from '@/components'
 import api from '@/api'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import { pickBy, classNames, isWeixin, isWeb, isNavbar, styleNames, getThemeStyle } from '@/utils'
 import { usePage } from '@/hooks'
 import entry from '../../utils/entry'

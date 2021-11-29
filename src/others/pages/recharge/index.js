@@ -1,7 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text, Input } from '@tarojs/components'
 import { SpNavBar, SpCell } from '@/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
 import { classNames, getPointName } from '@/utils'
@@ -59,10 +60,6 @@ export default class Recharge extends Component {
 
   componentDidShow() {
     this.setStore()
-  }
-
-  config = {
-    navigationBarTitleText: '储值'
   }
 
   // 获取会员详情

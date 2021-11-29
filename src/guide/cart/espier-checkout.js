@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Button, Image, Canvas } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton } from 'taro-ui'
 import { Price, SpCell, SpToast } from '@/components'
 import { Batoolbar, BaOrderItem } from '../components'
@@ -50,6 +51,7 @@ const transformCartList = (list, params = {}) => {
   //dispatch => ({})
 )
 export default class EspireCheckout extends Component {
+  $instance = getCurrentInstance();
   // config = {
   //   navigationBarTitleText: "innisfree 导购商城"
   // };
@@ -185,7 +187,7 @@ export default class EspireCheckout extends Component {
     Taro.hideLoading()
   }
   getParams() {
-    const { order_id } = this.$router.params
+    const { order_id } = this.$instance.router.params
     const { payType: pay_type } = this.state
     const { freightCoupon } = this.props
 

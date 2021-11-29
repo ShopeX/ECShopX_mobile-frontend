@@ -8,12 +8,13 @@
  * @LastEditors: PrendsMoi
  * @LastEditTime: 2021-04-23 13:55:44
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { Textarea, View, Image, Canvas, Button } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
 import api from '@/api'
 import req from '@/api/req'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import './index.scss'
 
@@ -38,6 +39,7 @@ const steps = [
   colors: colors.current
 }))
 export default class EditShare extends Component {
+  $instance = getCurrentInstance();
   constructor(...props) {
     super(...props)
 
@@ -58,14 +60,10 @@ export default class EditShare extends Component {
     this.getShareSettingInfo()
   }
 
-  config = {
-    navigationBarTitleText: '编辑分享'
-  }
-
   // 获取分享信息
   async getShareSettingInfo() {
     Taro.showLoading()
-    const { id, dtid, company_id } = this.$router.params
+    const { id, dtid, company_id } = this.$instance.router.params
     const data = await api.item.getShareSetting(id)
     const insertData = [
       {

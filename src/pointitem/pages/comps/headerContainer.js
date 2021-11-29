@@ -8,7 +8,8 @@
  * @LastEditors: PrendsMoi
  * @LastEditTime: 2021-03-08 18:34:22
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 
 import './headContainer.scss'

@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
 import { SpToast, Loading, SpNote } from '@/components'
 // import S from '@/spx'

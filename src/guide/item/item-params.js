@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -8,9 +9,7 @@ import { ParamsItem } from './comps'
 import './item-params.scss'
 
 export default class ItemParams extends Component {
-  static config = {
-    navigationBarTitleText: '商品参数'
-  }
+  $instance = getCurrentInstance();
 
   constructor(props) {
     super(props)
@@ -25,7 +24,7 @@ export default class ItemParams extends Component {
   }
 
   async fetch() {
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     const info = await api.item.detail(id)
     const { item_params } = info
     const itemParams = pickBy(item_params, {

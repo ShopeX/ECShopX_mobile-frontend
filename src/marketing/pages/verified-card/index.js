@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Navigator, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpNavBar } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -17,9 +18,6 @@ export default class Index extends Component {
     this.state = {
       info: {}
     }
-  }
-  config = {
-    navigationBarTitleText: '实名认证以及绑定银行卡'
   }
   componentDidMount() {
     const { colors } = this.props

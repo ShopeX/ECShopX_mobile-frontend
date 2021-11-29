@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer, AtTabBar } from 'taro-ui'
 import {
@@ -14,7 +15,7 @@ import {
   SpNavBar
 } from '@/components'
 import api from '@/api'
-import { pickBy, classNames, getCurrentRoute, isNavbar } from '@/utils'
+import { pickBy, classNames, getCurrentRoute } from '@/utils'
 
 import './list.scss'
 
@@ -24,6 +25,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class List extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -64,21 +66,21 @@ export default class List extends Component {
   }
 
   componentDidMount() {
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     this.firstStatus = true
 
     this.setState(
       {
         query: {
-          keywords: this.$router.params.keywords,
+          keywords: this.$instance.router.params.keywords,
           item_type: 'normal',
           is_point: 'false',
-          distributor_id: this.$router.params.dis_id,
+          distributor_id: this.$instance.router.params.dis_id,
           approve_status: 'onsale,only_show',
           category: cat_id ? cat_id : '',
           main_category: main_cat_id ? main_cat_id : ''
         },
-        curTagId: this.$router.params.tag_id
+        curTagId: this.$instance.router.params.tag_id
       },
       () => {
         this.nextPage()
@@ -459,10 +461,10 @@ export default class List extends Component {
     if (cur !== current) {
       const curTab = this.state.tabList[current]
       const { url } = curTab
-      const options = this.$router.params
+      const options = this.$instance.router.params
       const id = options.dis_id
       const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
-      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
         Taro.redirectTo({ url: `${url}${param}` })
       }
@@ -493,7 +495,7 @@ export default class List extends Component {
     } = this.state
 
     return (
-      <View className={classNames('store-goods-list', isNavbar() ? 'store-goods-list-padding' : null)} >
+      <View className='page-goods-list'>
         <SpNavBar title='商品列表' leftIconType='chevron-left' fixed='true' />
         <View className='goods-list__toolbar'>
           <View

@@ -5,9 +5,9 @@ import Trackers from './platform'
 // import { SOURCE_TYPE } from "./trackers/sensors/consts";
 
 function enable(target, name, descriptor) {
-  if (process.env.APP_TRACK) {
-    return descriptor
-  }
+  // if (process.env.APP_TRACK) {
+  //   return descriptor
+  // }
 
   descriptor.value = function(params) {
     console.info(`[tracker ${name}]: `, params)

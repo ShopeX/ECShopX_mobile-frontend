@@ -1,4 +1,5 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { PureComponent } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
 

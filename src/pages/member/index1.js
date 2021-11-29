@@ -1,6 +1,6 @@
-import Taro, { Component, useState, useEffect } from '@tarojs/taro'
+import React, { Component, useState, useEffect } from 'react';
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import {
   TabBar,
   SpLogin,

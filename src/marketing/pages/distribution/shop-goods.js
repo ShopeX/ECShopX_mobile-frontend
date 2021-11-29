@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
 import { SpToast, Loading, SpNote, SearchBar } from '@/components'
 import S from '@/spx'
@@ -11,6 +12,7 @@ import './shop-goods.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopGoods extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -130,7 +132,7 @@ export default class DistributionShopGoods extends Component {
       const curTab = this.state.tabList[current]
       const { url } = curTab
 
-      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
         Taro.redirectTo({ url })
       }

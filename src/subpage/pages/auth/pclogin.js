@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
@@ -20,13 +21,14 @@ function parseUrlStr(urlStr) {
 }
 
 export default class PcAuth extends Component {
+  $instance = getCurrentInstance();
   state = {
     checkStatus: false
   }
 
   async componentDidMount() {
-    if (this.$router.params.scene) {
-      const query = decodeURIComponent(this.$router.params.scene)
+    if (this.$instance.router.params.scene) {
+      const query = decodeURIComponent(this.$instance.router.params.scene)
       const queryStr = decodeURIComponent(query)
       const res = parseUrlStr(queryStr)
       this.query = res

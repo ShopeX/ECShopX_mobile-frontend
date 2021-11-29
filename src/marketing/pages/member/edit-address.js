@@ -1,8 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 // import EditAddress from '@/components/new-address/edit-address'
 import { View, Switch, Text, Picker, Button } from '@tarojs/components'
 import { AtForm, AtInput } from 'taro-ui'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpCell, SpToast, SpNavBar } from '@/components'
 import api from '@/api'
 import { pickBy, isWeixin, isAlipay, showLoading, hideLoading, isWeb } from '@/utils'
@@ -28,6 +29,7 @@ const traverseData = (data) => {
   colors: colors.current
 }))
 export default class AddressIndex extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -54,7 +56,7 @@ export default class AddressIndex extends Component {
     })
 
     list.map((a_item) => {
-      if (a_item.address_id === this.$router.params.address_id) {
+      if (a_item.address_id === this.$instance.router.params.address_id) {
         this.setState({
           info: a_item
         })
@@ -90,7 +92,7 @@ export default class AddressIndex extends Component {
       // areaList: [['北京'], ['北京'], ['东城']],
     })
 
-    if (this.$router.params.isWechatAddress) {
+    if (this.$instance.router.params.isWechatAddress) {
       const resAddress = await Taro.chooseAddress()
       const query = {
         province: resAddress.provinceName,
@@ -287,8 +289,8 @@ export default class AddressIndex extends Component {
     return (
       <View className='page-address-edit'>
         {/*<EditAddress*/}
-        {/*address={this.$router.params.address}*/}
-        {/*addressID={this.$router.params.address_id}*/}
+        {/*address={getCurrentInstance().params.address}*/}
+        {/*addressID={getCurrentInstance().params.address_id}*/}
         {/*/>*/}
         <SpNavBar title='编辑地址' leftIconType='chevron-left' fixed='true' />
         <AtForm onSubmit={this.handleSubmit}>
@@ -317,7 +319,7 @@ export default class AddressIndex extends Component {
               {isWeb ? (
                 <View className='picker' onClick={this.handleClickPicker}>
                   <View className='picker__title'>所在区域</View>
-                  {info.address_id || (this.$router.params.isWechatAddress && info.province) ? (
+                  {info.address_id || (this.$instance.router.params.isWechatAddress && info.province) ? (
                     `${info.province}${info.city}${info.county}`
                   ) : (
                     <View>
@@ -334,7 +336,7 @@ export default class AddressIndex extends Component {
               ) : (
                 <View className='picker'>
                   <View className='picker__title'>所在区域</View>
-                  {info.address_id || (this.$router.params.isWechatAddress && info.province) ? (
+                  {info.address_id || (this.$instance.router.params.isWechatAddress && info.province) ? (
                     `${info.province}${info.city}${info.county}`
                   ) : (
                     <View>
@@ -395,6 +397,6 @@ export default class AddressIndex extends Component {
 
         <SpToast />
       </View>
-    )
+    );
   }
 }

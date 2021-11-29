@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
@@ -32,7 +33,7 @@ function SpLogin(props) {
    *
    */
   const handleOAuthLogin = () => { 
-    const { path,params} = this.$router 
+    const { path,params} = getCurrentInstance() 
     let pathC=`${path}?${qs.stringify(params)}`
     let url=`/subpage/pages/auth/login?redirect=${encodeURIComponent(pathC)}`
   

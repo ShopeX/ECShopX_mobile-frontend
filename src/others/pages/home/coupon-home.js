@@ -1,12 +1,13 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Image } from '@tarojs/components'
 import { Loading, SpNote, SpNavBar, SpToast, CouponItem } from '@/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
 import S from '@/spx'
 import { withPager } from '@/hocs'
 import { pickBy, formatTime, buriedPoint, normalizeQuerys } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 
 import '../home/coupon-home.scss'
 
@@ -15,6 +16,7 @@ import '../home/coupon-home.scss'
 }))
 @withPager
 export default class CouponHome extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -36,7 +38,7 @@ export default class CouponHome extends Component {
         shareInfo: res
       })
     })
-    this.routerParams = await normalizeQuerys(this.$router.params)
+    this.routerParams = await normalizeQuerys(this.$instance.router.params)
     this.nextPage()
     const { distributor_id = '', dtid = '' } = this.routerParams
     buriedPoint.call(this, {

@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpNavBar, FloatMenuMeiQia } from '@/components'
 import {
@@ -21,7 +22,7 @@ import {
   redirectUrl
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import api from '@/api'
 import { TracksPayed } from '@/utils/youshu'
 import S from '@/spx'
@@ -60,6 +61,7 @@ const statusImg = {
   colors: colors.current
 }))
 export default class TradeDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -88,7 +90,7 @@ export default class TradeDetail extends Component {
   }
 
   isPointitemGood() {
-    const options = this.$router.params
+    const options = this.$instance.router.params
     return options.type === 'pointitem'
   }
 
@@ -111,7 +113,7 @@ export default class TradeDetail extends Component {
   }
 
   async fetch() {
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     const data = await api.trade.detail(id)
     let sessionFrom = ''
     const pickItem = {
@@ -353,7 +355,7 @@ export default class TradeDetail extends Component {
         icon: 'success'
       })
 
-      const { fullPath } = getCurrentRoute(this.$router)
+      const { fullPath } = getCurrentRoute(this.$instance.router)
       Taro.redirectTo({
         url: fullPath
       })
@@ -395,7 +397,7 @@ export default class TradeDetail extends Component {
       })
       if (confirm) {
         await api.trade.confirm(info.tid)
-        const { fullPath } = getCurrentRoute(this.$router)
+        const { fullPath } = getCurrentRoute(this.$instance.router)
         Taro.redirectTo({
           url: fullPath
         })
@@ -445,7 +447,7 @@ export default class TradeDetail extends Component {
   }
 
   zitiWebsocket = () => {
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     const { webSocketIsOpen, restartOpenWebsoect } = this.state
     // websocket 开始
     if (!webSocketIsOpen) {

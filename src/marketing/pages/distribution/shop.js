@@ -1,8 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Navigator, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 
 import './shop.scss'
 
@@ -10,6 +11,7 @@ import './shop.scss'
   colors: colors.current
 }))
 export default class DistributionShop extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -22,12 +24,8 @@ export default class DistributionShop extends Component {
     this.fetch()
   }
 
-  config = {
-    navigationBarTitleText: '我的小店'
-  }
-
   async fetch() {
-    const { turnover, point } = this.$router.params
+    const { turnover, point } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const param = {
       user_id: userId

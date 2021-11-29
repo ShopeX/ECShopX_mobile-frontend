@@ -1,13 +1,14 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
 // import { AtButton } from 'taro-ui'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 // import { AtInputNumber } from 'taro-ui'
 // import find from 'lodash/find'
 import { Price } from '@/components'
 import InputNumber from '@/components/input-number'
 import { classNames, pickBy, log } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import api from '@/api'
 import entry from '@/utils/entry'
 import './index.scss'

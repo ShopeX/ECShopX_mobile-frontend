@@ -1,13 +1,14 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
 // import { AtButton } from 'taro-ui'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 // import { AtInputNumber } from 'taro-ui'
 // import find from 'lodash/find'
 import { Price } from '@/components'
 import InputNumber from '@/components/input-number'
 import { classNames, pickBy, log, closeClassName, getPointName } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import api from '@/api'
 import floor from 'lodash/floor'
 import entry from '@/utils/entry'
@@ -294,6 +295,7 @@ export default class GoodsBuyPanel extends Component {
   }
 
   handleBuyClick = async (type, skuInfo, num) => {
+ 
     console.warn(this.props)
     if (this.state.busy) return
     const isOpenStore = await entry.getStoreStatus()
@@ -305,7 +307,7 @@ export default class GoodsBuyPanel extends Component {
     const curStore = Taro.getStorageSync('curStore')
     let id = isOpenStore ? curStore.store_id : distributor_id
     let url = `/pages/cart/espier-checkout`
-
+    
     this.setState({
       busy: true
     })

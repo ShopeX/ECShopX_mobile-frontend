@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { AtTabs, AtTabsPane, AtCountdown } from 'taro-ui'
 import { Loading, SpNote, Price, SpNavBar } from '@/components'
@@ -12,10 +13,6 @@ import './group-list.scss'
 
 @withPager
 export default class GroupList extends Component {
-  static config = {
-    navigationBarTitleText: '限时团购'
-  }
-
   constructor(props) {
     super(props)
 
@@ -134,7 +131,7 @@ export default class GroupList extends Component {
       >
         <SpNavBar title='团购' leftIconType='chevron-left' fixed='true' />
         <AtTabs
-          className={classNames('group-list__tabs', isNavbar() ? 'group-padding' : null)}
+          className='group-list__tabs'
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}

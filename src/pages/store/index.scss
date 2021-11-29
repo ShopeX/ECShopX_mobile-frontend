@@ -72,7 +72,7 @@
 }
 
 .wgts-wrap {
-  &__fixed__page {
+  &__fixed {
     background: #fff;
     @include page-scroll(0, $tabbar-height);
   }

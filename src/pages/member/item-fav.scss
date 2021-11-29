@@ -15,14 +15,11 @@
     }
   }
   .goods-list {
-    .goods-list__scroll, .goods-list__navbar {
+    &__scroll {
       @include page-scroll($navigate-height + $tabs-height + 30px, 0);
       /*  #ifdef  h5  */  
       @include page-scroll($navigate-height-h5 + $tabs-height + 30px, 0);
-      /*  #endif  */
-    }
-    .goods-list__navbar {
-      top: 100px !important;
+      /*  #endif  */      
     }
     &__type-grid {
       display: flex;

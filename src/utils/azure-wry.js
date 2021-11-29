@@ -1,10 +1,10 @@
-import Taro from '@tarojs/taro'
+import Taro,{getCurrentInstance} from "@tarojs/taro";
 import req from '@/api/req'
 import S from '@/spx'
 
-async function uploadImagesFn(imgFiles) {
+async function uploadImagesFn (imgFiles) {
   let promises = []
-  imgFiles.forEach((item) => {
+  imgFiles.forEach(item => {
     const promise = new Promise((resolve, reject) => {
       if (!item.file) {
         resolve(item)
@@ -19,15 +19,15 @@ async function uploadImagesFn(imgFiles) {
             'Authorization': S.getAuthToken(),
             'authorizer-appid': extConfig.appid
           },
-          formData: {
+          formData:{
             'file': item.url,
-            'company_id': extConfig.company_id || process.env.APP_COMPANY_ID
+            'company_id': extConfig.company_id || APP_COMPANY_ID
           },
-          success: (res) => {
+          success: res => {
             let imgData = JSON.parse(res.data)
             resolve(imgData.data)
           },
-          fail: (error) => reject(error)
+          fail: error => reject(error)
         })
       }
     })

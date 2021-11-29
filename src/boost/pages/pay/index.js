@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { Textarea, View, Image, Text, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
 import api from '@/api'
 import { SpNavBar, AddressChoose } from '@/components'
@@ -16,6 +17,7 @@ import './index.scss'
   })
 )
 export default class Pay extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
     this.state = {
@@ -36,10 +38,6 @@ export default class Pay extends Component {
       console.log(nextProps.address)
       this.handleChangeAddress(nextProps.address)
     }
-  }
-
-  config = {
-    navigationBarTitleText: '结算页面'
   }
 
   // 处理地址
@@ -72,7 +70,7 @@ export default class Pay extends Component {
 
   // 获取数据
   getOrderInfo = async () => {
-    const { bargain_id } = this.$router.params
+    const { bargain_id } = this.$instance.router.params
     const { bargain_info = {}, user_bargain_info = {} } = await api.boost.getUserBargain({
       bargain_id,
       has_order: true

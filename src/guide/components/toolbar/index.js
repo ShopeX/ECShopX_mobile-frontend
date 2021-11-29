@@ -1,4 +1,4 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { PureComponent } from 'react';
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 import S from '@/spx'

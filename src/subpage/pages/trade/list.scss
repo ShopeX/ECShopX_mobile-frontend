@@ -63,6 +63,14 @@
         /*  #endif  */
       }
     }
+    .trade-cont {
+      .more {
+        color: #d42f29;
+        /*  #ifdef  h5  */
+        border: none;
+        /*  #endif  */
+      }
+    }
   }
 
   .trade-item {
@@ -115,19 +123,6 @@
       font-size: 24px;
       color: #000;
     }
-  }
-}
-
-.after-saler-page {
-  .after-saler__scroll {
-    .more {
-      color: #d42f29;
-      border: none;
-      font-size: 24px;
-    }
-  }
-  .at-tabs__body {
-    height: 15px;
   }
 }
 

@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, ScrollView, Swiper, SwiperItem } from '@tarojs/components'
 import { debounce } from '@/utils'
 import api from '@/api'
@@ -51,10 +52,6 @@ export default class GroupByIndex extends Component {
 
   componentDidShow() {
     this.init()
-  }
-
-  config = {
-    navigationBarTitleText: '团购'
   }
 
   // 获取定位

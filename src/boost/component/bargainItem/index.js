@@ -8,7 +8,8 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-09-29 10:02:39
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text, Button, Progress } from '@tarojs/components'
 
 import './index.scss'

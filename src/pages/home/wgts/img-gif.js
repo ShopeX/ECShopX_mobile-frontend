@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Image } from '@tarojs/components'
 import { SpImg } from '@/components'
 import './img-gif.scss'
@@ -22,15 +22,15 @@ export default class WgtImgGif extends Component {
 
     return (
       <View className={`img-gif-index ${info.base.padded ? 'wgt__padded' : null}`}>
-        {/* <View className='imglist' style={`background:url(${info.data && info.data[0].imgUrl})`}> */}
+        <View className='imglist' style={`background:url(${info.data && info.data[0].imgUrl})`}>
           <SpImg
             img-class='scale-placeholder gif'
-            src={info.data && (info.data[0].imgUrl || info.data[1].imgUrl)}
+            src={info.data && info.data[1].imgUrl}
             mode='widthFix'
             width='750'
             lazyLoad
           />
-        {/* </View> */}
+        </View>
       </View>
     )
   }

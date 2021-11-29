@@ -6,7 +6,12 @@ $custabs: 80px;
 *{
   box-sizing: border-box;
 }
-/*  #endif */
+.trade-detail {
+ &.isWebWechat{
+   
+ }
+}
+/*  endif */
 
 .trade-detail {
   box-sizing: border-box;
@@ -15,6 +20,9 @@ $custabs: 80px;
   &.paddingBottom {
     padding-bottom: 84px;
   }
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   &.islog {
     padding-top: $custabs;
     /*  #ifdef  h5  */

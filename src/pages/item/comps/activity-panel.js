@@ -1,7 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
-import { SpImg } from '@/components'
+// import { SpImg } from '@/components'
 
 import './activity-panel.scss'
 

@@ -6,9 +6,10 @@
  * @Description: In User Settings Edit
  * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/pages/pointitem/comps/tabs.js
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Icon } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { classNames } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 

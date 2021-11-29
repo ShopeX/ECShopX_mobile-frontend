@@ -1,8 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import { SpImg, PointLine } from '@/components'
 import api from '@/api'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import { isObject, classNames,isWeb } from '@/utils'
 
@@ -196,7 +197,7 @@ export default class GoodsItem extends Component {
               </View>
             </View>
             <View className='goods-item__extra'>
-              {isPointitem && <PointLine point={info.point} />}
+              {/* {isPointitem && <PointLine point={info.point} />} */}
               {!isPointitem && (
                 <View className='goods-item__price'>
                   <View className={`package-price ${isShow && showNewGift && 'goods-item__gray'}`}>

@@ -1,9 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { Input, View, Picker, Image } from '@tarojs/components'
 import { SpNavBar, SpCheckbox, SpFloatPrivacy } from '@/components'
 import api from '@/api'
-import { connect } from '@tarojs/redux'
-import S from '@/spx' 
+import { connect } from 'react-redux'
+import S from '@/spx'
 import { showToast, getThemeStyle, styleNames } from '@/utils'
 import userIcon from '@/assets/imgs/user-icon.png'
 import imgUploader from '@/utils/upload'
@@ -47,10 +48,6 @@ export default class UserInfo extends Component {
 
   componentDidMount() {
     this.getFormItem()
-  }
-
-  config = {
-    navigationBarTitleText: '个人信息'
   }
 
   // 上传头像

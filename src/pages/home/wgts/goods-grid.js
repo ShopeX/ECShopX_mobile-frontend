@@ -1,9 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import { SpGoodsItem } from '@/components'
 import { pickBy, classNames, log } from '@/utils'
 import { linkPage } from './helper'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import { getDistributorId } from '@/utils/helper'
 import { CreateIntersectionObserver } from '@/utils/platform'
 import { withLoadMore } from '@/hocs'
@@ -37,13 +38,13 @@ export default class WgtGoodsGrid extends Component {
   }
 
   startTrack() {
-    const observer = new CreateIntersectionObserver({
-      el: '.wgt-grid__loader-more',
-      scope: this.$scope
-    })
-    observer.on('on-observer', (res) => {
-      console.log('on-observer', res)
-    } )
+    // const observer = new CreateIntersectionObserver({
+    //   el: '.wgt-grid__loader-more',
+    //   scope: this.$scope
+    // })
+    // observer.on('on-observer', (res) => {
+    //   console.log('on-observer', res)
+    // } )
   }
 
   endTrack() {

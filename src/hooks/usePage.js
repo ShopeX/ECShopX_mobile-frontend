@@ -1,4 +1,4 @@
-import { useState, useEffect } from '@tarojs/taro'
+import { useState, useEffect } from 'react';
 
 export default (props) => {
   const { fetch } = props

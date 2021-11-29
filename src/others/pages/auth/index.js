@@ -8,7 +8,8 @@
  * @LastEditors: PrendsMoi
  * @LastEditTime: 2021-03-26 14:00:21
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import { Loading } from '@/components'
 import api from '@/api'
@@ -18,6 +19,7 @@ import { normalizeQuerys } from '@/utils'
 import './index.scss'
 
 export default class AuthLogin extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
     this.state = {
@@ -38,9 +40,9 @@ export default class AuthLogin extends Component {
 
   // 扫码
   scanCode = async () => {
-    let { token, scene } = this.$router.params
+    let { token, scene } = this.$instance.router.params
     if (!token && scene) {
-      const { t } = await normalizeQuerys(this.$router.params)
+      const { t } = await normalizeQuerys(this.$instance.router.params)
       token = t
     }
     const { code } = await Taro.login()
@@ -65,9 +67,9 @@ export default class AuthLogin extends Component {
 
   // 确认登录
   comfimLogin = async () => {
-    let { token, scene } = this.$router.params
+    let { token, scene } = this.$instance.router.params
     if (!token && scene) {
-      const { t } = await normalizeQuerys(this.$router.params)
+      const { t } = await normalizeQuerys(this.$instance.router.params)
       token = t
     }
     const { code } = await Taro.login()

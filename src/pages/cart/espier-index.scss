@@ -68,11 +68,9 @@
 			padding: 0 0 4px;
 			.shop__name{
         padding: $edge-margin;
-        font-weight: bold;
         .icon-shop {
           margin-right: 10px;
           color: $color-gray;
-          font-size: inherit;
         }
 			}
       .shop__wrap {
@@ -150,11 +148,8 @@
         }
       }
       &-label {
-        // background: $color-brand-primary;
-        // color: #fff;
-        border: 1PX solid var(--color-primary);
-        color: var(--color-primary);
-        border-radius: 6px;
+        background: $color-brand-primary;
+        color: #fff;
         font-size: 20px;
         display: inline-block;
         vertical-align: middle;
@@ -227,7 +222,6 @@
         text-align: center;
         overflow: hidden;
         &-subtract, &-add {
-          // color: var(--color-primary);
           font-size: 20px;
         }
       }

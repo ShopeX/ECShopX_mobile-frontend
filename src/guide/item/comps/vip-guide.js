@@ -8,7 +8,8 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-11-19 15:28:11
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import S from '@/spx'
 

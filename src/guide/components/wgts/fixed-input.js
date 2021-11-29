@@ -1,8 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Text } from '@tarojs/components'
 
 import { classNames, styleNames } from '@/utils'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import './search-home.scss'
 
 @connect(

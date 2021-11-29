@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
 import { formatTime } from '@/utils'
@@ -7,6 +8,7 @@ import api from '@/api'
 import './refund-detail.scss'
 
 export default class TradeRefundDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -23,7 +25,7 @@ export default class TradeRefundDetail extends Component {
   }
 
   async fetch() {
-    const { aftersales_bn, item_id, order_id } = this.$router.params
+    const { aftersales_bn, item_id, order_id } = this.$instance.router.params
     // const { detail: info, order_info:orderInfo,progress,reason} = await api.aftersales.info({
     //   aftersales_bn,
     //   item_id,

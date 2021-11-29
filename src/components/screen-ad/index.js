@@ -8,10 +8,10 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2021-02-01 14:00:53
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Image, Video } from '@tarojs/components'
 import api from '@/api'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { linkPage } from '@/pages/home/wgts/helper'
 
 import './index.scss'

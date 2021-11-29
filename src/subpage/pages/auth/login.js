@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 
@@ -10,6 +11,7 @@ import { getThemeStyle, styleNames, classNames,getBrowserEnv, navigateTo, valida
 import './login.scss'
 
 export default class Login extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -63,7 +65,7 @@ export default class Login extends Component {
   }
 
   handleNavLeftItemClick = () => {
-    // const { redirect } = this.$router.params
+    // const { redirect } = getCurrentInstance().params
     // if (redirect) {
     //   Taro.redirectTo({
     //     url: decodeURIComponent(redirect)
@@ -119,7 +121,7 @@ export default class Login extends Component {
       const { token } = await api.user.login(params)
       if (token) {
         S.setAuthToken(token)
-        const { redirect } = this.$router.params
+        const { redirect } = this.$instance.router.params
         const url = redirect ? decodeURIComponent(redirect) : process.env.APP_HOME_PAGE
 
         Taro.redirectTo({

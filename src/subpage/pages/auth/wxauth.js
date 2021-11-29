@@ -1,11 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Button, Radio, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
 import S from '@/spx'
 import { tokenParse } from '@/utils'
 import entry from '@/utils/entry'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 
 import './wxauth.scss'
 
@@ -15,6 +16,7 @@ let codeSetTime = 1000 * 10
   colors: colors.current
 }))
 export default class WxAuth extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -91,8 +93,8 @@ export default class WxAuth extends Component {
   }
 
   redirect() {
-    const redirect = this.$router.params.redirect
-    const { source } = this.$router.params
+    const redirect = this.$instance.router.params.redirect
+    const { source } = this.$instance.router.params
     Taro.hideLoading()
     let redirect_url = ''
     if (Taro.getStorageSync('isqrcode') === 'true') {

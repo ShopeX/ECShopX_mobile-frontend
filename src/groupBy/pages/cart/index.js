@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import { SpNavBar } from '@/components'
@@ -37,10 +38,6 @@ export default class GroupByIndex extends Component {
       }, 1000)
       return
     }
-  }
-
-  config = {
-    navigationBarTitleText: '团购-购物车'
   }
 
   // 获取购物车数据

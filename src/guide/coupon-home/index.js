@@ -1,12 +1,13 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { Loading, SpNote, SpToast, CouponItem } from '@/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
 import S from '@/spx'
 import { withPager } from '@/hocs'
 import { pickBy, formatTime, styleNames, classNames, normalizeQuerys } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import { BaTabBar, BaNavBar } from '@/guide/components'
 import './coupon.scss'
 
@@ -15,9 +16,7 @@ import './coupon.scss'
 }))
 @withPager
 export default class CouponHome extends Component {
-  config = {
-    navigationStyle: 'custom'
-  }
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -52,7 +51,7 @@ export default class CouponHome extends Component {
     // console.log('info',info)
     // console.log('onShareAppMessage-item',res,info)
     // const { userId } = Taro.getStorageSync("userinfo");
-    const params = this.$router.params
+    const params = this.$instance.router.params
 
     const { salesperson_id, distributor_id, work_userid, shop_code } = S.get('GUIDE_INFO', true)
     const gu = `${work_userid}_${shop_code}`
@@ -81,15 +80,15 @@ export default class CouponHome extends Component {
 
   async fetch(params) {
     let { distributor_id } = S.get('GUIDE_INFO', true)
-    let { card_id = '' } = await normalizeQuerys(this.$router.params)
+    let { card_id = '' } = await normalizeQuerys(this.$instance.router.params)
     params = {
       ...params,
       end_date: 1,
       distributor_id,
       card_id,
-      item_id: this.$router.params
-        ? this.$router.params.item_id
-          ? this.$router.params.item_id
+      item_id: this.$instance.router.params
+        ? this.$instance.router.params.item_id
+          ? this.$instance.router.params.item_id
           : ''
         : ''
     }

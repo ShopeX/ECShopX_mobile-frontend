@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { TabBar, SpCell, AccountOfficial, SpLogin, SpFloatPrivacy, CouponModal } from '@/components'
 // import ExclusiveCustomerService from './comps/exclusive-customer-service'
 import api from '@/api'
@@ -71,7 +72,7 @@ export default class MemberIndex extends Component {
       score_menu_open: false,
       // 是否显示隐私协议
       // showPrivacy: false,
-      showTimes: 0,
+      // showTimes: 0,
       all_card_list: [],
       visible: false,
       protocol: { member_register: '注册协议', privacy: '隐私政策' }
@@ -79,7 +80,6 @@ export default class MemberIndex extends Component {
   }
 
   componentWillMount() {
-    console.log('================WillMount===============');
     setPageTitle('会员中心')
     this.fetch();
     this.getSetting();
@@ -93,19 +93,9 @@ export default class MemberIndex extends Component {
   }
 
   componentDidShow() {
-    console.log('================Show===============');
     if (S.getAuthToken()) {
       this.fetchCouponCardList()
-      this.fetch();
     }
-  }
-
-  config = {
-    navigationBarTitleText: '',
-    enablePullDownRefresh: true,
-    onReachBottomDistance: 50,
-    backgroundTextStyle: 'dark',
-    navigationStyle: 'custom'
   }
 
   async onShareAppMessage() {
@@ -293,6 +283,7 @@ export default class MemberIndex extends Component {
   }
 
   handleClickWxOAuth(fn, need = true) {
+    const { memberData } = this.props
     if (!S.getAuthToken()) {
       Taro.showToast({
         icon: 'none',
@@ -300,36 +291,12 @@ export default class MemberIndex extends Component {
       })
       return
     }
-    // const { memberData } = this.props
-    // if (memberData && memberData.memberInfo) {
-    //   const { avatar, username } = memberData.memberInfo
-    //   if (isWeixin) {
-    //     if (avatar && username && need) {
-    //       fn && fn()
-    //     } else {
-    //       S.OAuthWxUserProfile(() => {
-    //         this.fetch()
-    //       }, true)
-    //     }
-    //   } else {
-    //     fn && fn()
-    //   }
-    // }
-    if ( this.state.showTimes >= 1 ) {
-      if (need) {
-        fn && fn()
-      }
-    } else {
-      const { avatar, username } = this.props.memberData.memberInfo;
+    if (memberData && memberData.memberInfo) {
+      const { avatar, username } = memberData.memberInfo
       if (isWeixin) {
-        if (avatar && username) {
-          if(need){
-            fn && fn()
-          }
+        if (avatar && username && need) {
+          fn && fn()
         } else {
-          this.setState({
-            showTimes: this.state.showTimes + 1
-          })
           S.OAuthWxUserProfile(() => {
             this.fetch()
           }, true)
@@ -338,6 +305,22 @@ export default class MemberIndex extends Component {
         fn && fn()
       }
     }
+    // if ( this.state.showTimes >= 1 ) {
+    //   if(need){
+    //     fn && fn();
+    //   }
+    // } else {
+    //   const { avatar, username } = this.props.memberData.memberInfo;
+    //   if (avatar && username) {
+    //     if(need){
+    //       fn && fn();
+    //     }
+    //   } else {
+    //     this.setState({
+    //       showPrivacy: true
+    //     });
+    //   }
+    // }
   }
 
   fetchCouponCardList() {
@@ -856,5 +839,4 @@ export default class MemberIndex extends Component {
       </View>
     )
   }
-
 }

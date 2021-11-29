@@ -1,83 +1,106 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import classNames from 'classnames'
-import styleNames from 'stylenames'
 import qs from 'qs'
-import dayjs from 'dayjs'
 import copy from 'copy-to-clipboard'
 import S from '@/spx'
 import { STATUS_TYPES_MAP } from '@/consts'
 import api from '@/api'
-import configStore from '@/store'
+import configStore from "@/store";
 import _get from 'lodash/get'
 import _findKey from 'lodash/findKey'
 import _pickBy from 'lodash/pickBy'
+import _keys from 'lodash/keys'
 import debounce from 'lodash/debounce'
 import throttle from 'lodash/throttle'
 import log from './log'
 import canvasExp from './canvasExp'
 import calCommonExp from './calCommonExp'
 import entryLaunch from './entryLaunch'
-import validate from './validate'
-import { isWeb } from './platforms'
+import validate from "./validate";
+import { isWeb } from "./platforms";
 import { getPointName } from './point'
 
-const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
-const { store } = configStore()
 
-export function isFunction(val) {
+const isPrimitiveType = ( val, type ) => Object.prototype.toString.call( val ) === type
+const store = configStore()
+
+export function isFunction (val) {
   return isPrimitiveType(val, '[object Function]')
 }
 
-export function isNumber(val) {
+export function isNumber (val) {
   return isPrimitiveType(val, '[object Number]')
 }
 
 export function isPointerEvent(val) {
-  return isPrimitiveType(val, '[object PointerEvent]')
+  return isPrimitiveType(val, "[object PointerEvent]");
 }
 /**
  * 保留两个位小数，不足补0
  * @param { Number } value
  */
-export const returnFloat = (value) => {
-  var value = Math.round(parseFloat(value) * 100) / 100
-  var s = value.toString().split('.')
-  if (s.length == 1) {
-    value = value.toString() + '.00'
-    return value
-  }
-  if (s.length > 1) {
-    if (s[1].length < 2) {
-      value = value.toString() + '0'
-    }
-    return value
-  }
+export const returnFloat = value => {
+	var value = Math.round(parseFloat(value)*100)/100;
+	var s = value.toString().split(".");
+	if(s.length == 1){
+		value=value.toString()+".00";
+		return value;
+	}
+	if(s.length > 1){
+		if(s[1].length < 2){
+			value=value.toString()+"0";
+		}
+		return value;
+	}
 }
-export function isObject(val) {
+export function isObject (val) {
   return isPrimitiveType(val, '[object Object]')
 }
 
-export function isArray(arr) {
+export function isArray (arr) {
   return Array.isArray(arr)
 }
 
-export function isString(val) {
+export function isString (val) {
   return typeof val === 'string'
 }
 
-export function normalizeArray(...args) {
+export function normalizeArray (...args) {
   return args.reduce((ret, item) => ret.concat(item), [])
 }
 
-export function getCurrentRoute(router) {
-  if (Taro.getEnv() == 'WEAPP' || Taro.getEnv() == 'ALIPAY') {
-    // eslint-disable-next-line
-    const page = getCurrentPages().pop()
-    router = page.$component.$router
-  }
-  const { path, params: origParams } = router
-  const params = _pickBy(origParams, (val) => val !== '')
+// export function getCurrentRoute (router) {
+//   if (Taro.getEnv() == "WEAPP" || Taro.getEnv() == "ALIPAY") {
+//     // eslint-disable-next-line
+//     const page = getCurrentPages().pop();
+//     console.info()
+//     debugger
+//     router = page.$component?.$router;
+//     if (!router) {
+//       const { ...routerParams, $taroTimestamp } = page.$taroParams
+//       router = {
+//         path: page.path, item
+//       }
+//     }
+//   }
+//   const { path, params: origParams } = router
+//   const params = _pickBy(origParams, val => val !== '')
 
+//   const fullPath = `${path}${Object.keys(params).length > 0 ? '?' + qs.stringify(params) : ''}`
+
+//   return {
+//     path,
+//     fullPath,
+//     params
+//   }
+// }
+
+// TODO: 验证方法在h5及边界情况稳定性
+export function getCurrentRoute () {
+  const router = getCurrentInstance().router
+  // eslint-disable-next-line
+  const { $taroTimestamp, ...params } = router.params || {}
+  const path = router.path
   const fullPath = `${path}${Object.keys(params).length > 0 ? '?' + qs.stringify(params) : ''}`
 
   return {
@@ -88,18 +111,15 @@ export function getCurrentRoute(router) {
 }
 
 // 除以100以后的千分符
-export function formatPriceToHundred(price) {
+export function formatPriceToHundred (price) {
   if (price) {
-    return (Number(price) / 100)
-      .toFixed(2)
-      .toString()
-      .replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
+    return (Number(price)/100).toFixed(2).toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,')
   } else {
     return 0
   }
 }
 
-export async function normalizeQuerys(params = {}) {
+export async function normalizeQuerys (params = {}) {
   const { scene, ...rest } = params
   const queryStr = decodeURIComponent(scene)
   const obj = qs.parse(queryStr)
@@ -120,19 +140,19 @@ export async function normalizeQuerys(params = {}) {
   return ret
 }
 
-export function pickBy(arr, keyMaps = {}) {
+export function pickBy (arr, keyMaps = {}) {
   const picker = (item) => {
     const ret = {}
 
-    Object.keys(keyMaps).forEach((key) => {
+    Object.keys( keyMaps ).forEach( key => {
       const val = keyMaps[key]
 
-      if (isString(val)) {
-        ret[key] = _get(item, val)
-      } else if (isFunction(val)) {
-        ret[key] = val(item)
-      } else if (isObject(val)) {
-        ret[key] = _get(item, val.key) || val.default
+      if ( isString( val ) ) {
+        ret[key] = _get( item, val )
+      } else if ( isFunction( val ) ) {
+        ret[key] = val( item )
+      } else if ( isObject( val ) ) {
+        ret[key] = _get(item, val.key) || val.default;
       } else {
         ret[key] = val
       }
@@ -148,9 +168,9 @@ export function pickBy(arr, keyMaps = {}) {
   }
 }
 
-export function navigateTo(url, isRedirect) {
+export function navigateTo( url, isRedirect ) {
   if (isObject(isRedirect) || isPointerEvent(isRedirect)) {
-    isRedirect = false
+    isRedirect = false;
   }
 
   if (isRedirect) {
@@ -160,23 +180,25 @@ export function navigateTo(url, isRedirect) {
   return Taro.navigateTo({ url })
 }
 
-export function resolvePath(baseUrl, params = {}) {
-  const queryStr = typeof params === 'string' ? params : qs.stringify(params)
+export function resolvePath (baseUrl, params = {}) {
+  const queryStr = typeof params === 'string'
+    ? params
+    : qs.stringify(params)
 
   return `${baseUrl}${baseUrl.indexOf('?') >= 0 ? '&' : '?'}${queryStr}`
 }
 
-export function formatTime(time, formatter = 'YYYY-MM-DD') {
+export function formatTime (time, formatter = 'yyyy-MM-dd') {
   const newTime = time.toString().length < 13 ? time * 1000 : time
-  return dayjs(newTime).format(formatter)
+  return format(newTime, formatter)
 }
 
-export function formatDateTime(time, formatter = 'YYYY-MM-DD HH:mm:ss') {
+export function formatDataTime (time, formatter = 'yyyy-MM-dd HH:mm:ss') {
   const newTime = time.toString().length < 13 ? time * 1000 : time
-  return dayjs(newTime).format(formatter)
+  return format(newTime, formatter)
 }
 
-export function copyText(text, msg = '内容已复制') {
+export function copyText (text, msg = '内容已复制') {
   return new Promise((resolve, reject) => {
     if (process.env.TARO_ENV === 'weapp') {
       Taro.setClipboardData({
@@ -195,7 +217,7 @@ export function copyText(text, msg = '内容已复制') {
   })
 }
 
-export function calcTimer(totalSec) {
+export function calcTimer (totalSec) {
   let remainingSec = totalSec
   const dd = Math.floor(totalSec / 24 / 3600)
   remainingSec -= dd * 3600 * 24
@@ -213,15 +235,15 @@ export function calcTimer(totalSec) {
   }
 }
 
-export function resolveOrderStatus(status, isBackwards) {
+export function resolveOrderStatus (status, isBackwards) {
   if (isBackwards) {
-    return _findKey(STATUS_TYPES_MAP, (o) => o === status)
+    return _findKey(STATUS_TYPES_MAP, o => o === status)
   }
 
   return STATUS_TYPES_MAP[status]
 }
 
-export function goToPage(page) {
+export function goToPage (page) {
   // eslint-disable-next-line
   const loc = location
   page = page.replace(/^\//, '')
@@ -230,14 +252,14 @@ export function goToPage(page) {
   loc.href = url
 }
 
-export function maskMobile(mobile) {
+export function maskMobile (mobile) {
   return mobile.replace(/^(\d{2})(\d+)(\d{2}$)/, '$1******$3')
 }
 
 // 不可使用promise/async异步写法
-export function authSetting(scope, succFn, errFn) {
+export function authSetting (scope, succFn, errFn) {
   Taro.getSetting({
-    success(res) {
+    success (res) {
       const result = res.authSetting[`scope.${scope}`]
       if (result === undefined) {
         Taro.authorize({
@@ -252,10 +274,11 @@ export function authSetting(scope, succFn, errFn) {
   })
 }
 
-export function imgCompression(url) {
+export function imgCompression (url) {
   const rule = '?imageView2/1/w/80'
-  return url + rule
+  return url +  rule
 }
+
 
 export const browser = (() => {
   if (process.env.TARO_ENV === 'h5') {
@@ -264,105 +287,85 @@ export const browser = (() => {
       trident: ua.indexOf('Trident') > -1, //IE内核
       presto: ua.indexOf('Presto') > -1, //opera内核
       webKit: ua.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-      gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') == -1, //火狐内核
+      gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') == -1,//火狐内核
       mobile: !!ua.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
       ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
       android: ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1, //android终端
       weixin: ua.match(/MicroMessenger/i),
-      qq: ua.match(/\sQQ/i) == ' qq', //是否QQ
-      isWeapp:
-        (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) ||
-        global.__wxjs_environment === 'miniprogram',
+      qq: ua.match(/\sQQ/i) == " qq", //是否QQ
+      isWeapp: (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) || global.__wxjs_environment === 'miniprogram',
       isAlipay: ua.match(/AlipayClient/i)
     }
   }
-})()
+} )()
+
 
 export const getBrowserEnv = () => {
-  if (process.env.TARO_ENV === 'h5') {
-    const ua = navigator.userAgent
-    return {
-      trident: ua.indexOf('Trident') > -1, //IE内核
-      presto: ua.indexOf('Presto') > -1, //opera内核
-      webKit: ua.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-      gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') == -1, //火狐内核
-      mobile: !!ua.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-      ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-      android: ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1, //android终端
-      weixin: ua.match(/MicroMessenger/i),
-      qq: ua.match(/\sQQ/i) == ' qq', //是否QQ
-      isWeapp:
-        (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) ||
-        global.__wxjs_environment === 'miniprogram',
-      isAlipay: ua.match(/AlipayClient/i)
-    }
-  }
-  return {}
+  const ua = navigator.userAgent;
+  // console.log( `user-agent:`, ua );
+  return {
+    trident: ua.indexOf("Trident") > -1, //IE内核
+    presto: ua.indexOf("Presto") > -1, //opera内核
+    webKit: ua.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
+    gecko: ua.indexOf("Gecko") > -1 && ua.indexOf("KHTML") == -1, //火狐内核
+    mobile: !!ua.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+    ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+    android: ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1, //android终端
+    weixin: ua.match(/MicroMessenger/i),
+    qq: ua.match(/\sQQ/i) == " qq", //是否QQ
+    isWeapp:
+      (ua.match(/MicroMessenger/i) && ua.match(/miniprogram/i)) ||
+      global.__wxjs_environment === "miniprogram",
+    isAlipay: ua.match(/AlipayClient/i)
+  };
 }
 
 // 注入美洽客服插件
 export const meiqiaInit = () => {
-  ;(function(m, ei, q, i, a, j, s) {
-    m[i] =
-      m[i] ||
-      function() {
-        ;(m[i].a = m[i].a || []).push(arguments)
-      }
-    ;(j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
-    j.async = true
-    j.charset = 'UTF-8'
-    j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t'
-    s.parentNode.insertBefore(j, s)
-  })(window, document, 'script', '_MEIQIA')
-}
-
-const redirectUrl = async (api, url, type = 'redirectTo') => {
-  if (!browser.weixin) {
-    Taro[type]({ url })
-    return
-  }
-  let newUrl = getUrl(url)
-  let { redirect_url } = await api.wx.getredirecturl({url:newUrl}) 
-  global.location.href = redirect_url
-}
-
-const getUrl = (url) => {
-  let href = global.location.href
-  let hrefList = href.split('/')
-
-  return `${hrefList[0]}//${hrefList[2]}${url}`
+  (function(m, ei, q, i, a, j, s) {
+    m[i] = m[i] || function() {
+        (m[i].a = m[i].a || []).push(arguments)
+    };
+    j = ei.createElement(q),
+        s = ei.getElementsByTagName(q)[0];
+    j.async = true;
+    j.charset = 'UTF-8';
+    j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
+    s.parentNode.insertBefore(j, s);
+  })(window, document, 'script', '_MEIQIA');
 }
 
 export function tokenParse(token) {
-  var base64Url = token.split('.')[1]
-  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-  console.log('Taro.base64ToArrayBuffer', Taro)
-  var arr_base64 = Taro.base64ToArrayBuffer(base64)
-  arr_base64 = String.fromCharCode.apply(null, new Uint8Array(arr_base64))
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  console.log("Taro.base64ToArrayBuffer",Taro)
+  var arr_base64 = Taro.base64ToArrayBuffer(base64);
+  arr_base64 = String.fromCharCode.apply(null, new Uint8Array(arr_base64));
   var jsonPayload = decodeURIComponent(
     arr_base64
-      .split('')
+      .split("")
       .map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
       })
-      .join('')
-  )
+      .join("")
+  );
 
-  return JSON.parse(jsonPayload)
+  return JSON.parse(jsonPayload);
 }
 
+
 // 解析字符串
-function getQueryVariable(herf) {
+function  getQueryVariable(herf) {
   const url = herf.split('?')
   let query = {}
   if (url[1]) {
-    const str = url[1]
-    // const str = url.substr(1)
-    const pairs = str.split('&')
-    for (let i = 0; i < pairs.length; i++) {
-      const pair = pairs[i].split('=')
-      query[pair[0]] = pair[1]
-    }
+      const str = url[1]
+      // const str = url.substr(1)
+      const pairs = str.split("&")
+      for(let i = 0; i < pairs.length; i ++) {
+          const pair = pairs[i].split("=")
+          query[pair[0]] = pair[1]
+      }
   }
   return query
 }
@@ -371,7 +374,7 @@ function validColor(color) {
   var re1 = /^#([0-9a-f]{6}|[0-9a-f]{3})$/i
   var re2 = /^rgb\(([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\)$/i
   var re3 = /^rgba\(([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,([0-9]|[0-9][0-9]|25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9])\,(1|1.0|0.[0-9])\)$/i
-  return re2.test(color) || re1.test(color) || re3.test(color)
+  return re2.test(color) || re1.test(color) || re3.test(color);
 }
 
 /**
@@ -386,8 +389,8 @@ function validColor(color) {
  * }
  * } data 新增上报数据
  */
-export async function buriedPoint(data) {
-  const params = this.$router.params
+export async function buriedPoint (data) {
+  const params = getCurrentInstance().router.params
   let {
     gu,
     subtask_id = '',
@@ -396,11 +399,10 @@ export async function buriedPoint(data) {
     item_id = '',
     smid = '',
     gu_user_id = ''
-  } = await normalizeQuerys(params)
-  let employee_number = smid,
-    store_bn = ''
+  } =  await normalizeQuerys(params)
+  let employee_number = smid, store_bn = ''
   if (gu) {
-    ;[employee_number, store_bn] = gu.split('_')
+    [employee_number, store_bn] = gu.split('_')
   }
   if (gu_user_id) {
     employee_number = gu_user_id
@@ -409,7 +411,7 @@ export async function buriedPoint(data) {
   if (subtask_id) {
     const { distributor_id: shopId } = Taro.getStorageSync('curStore')
     if (process.env.APP_PLATFORM === 'standard') {
-      dtid = shopId
+      dtid= shopId
     }
     const newData = {
       employee_number,
@@ -439,19 +441,21 @@ export async function buriedPoint(data) {
  *
  */
 
-export function paramsSplice(params) {
-  let str = ''
-  let arr = []
-  for (var key in params) {
-    let p = `${key}=${params[key]}`
+export function paramsSplice(params){
+  let str=''
+  let arr=[]
+  for(var key in params){
+    let p=`${key}=${params[key]}`
     arr.push(p)
+
   }
-  str = arr.join('&')
+  str=arr.join('&')
   return str
+
 }
 
-export function resolveFavsList(list, favs) {
-  return list.map((t) => {
+export function resolveFavsList (list, favs) {
+  return list.map(t => {
     const { item_id } = t
     return {
       ...t,
@@ -462,105 +466,71 @@ export function resolveFavsList(list, favs) {
 
 // 判断是否在导购货架
 export function isGoodsShelves() {
-  const system = Taro.getSystemInfoSync()
-  log.debug(`this system is: ${system.environment}`)
-  if (system && system.environment && system.environment === 'wxwork') {
+  const system = Taro.getSystemInfoSync();
+  log.debug(`this system is: ${system.environment}`);
+  if ( system && system.environment && system.environment === "wxwork" ) {
     return true
   } else {
-    return false
+    return false;
   }
 }
 
-export function getThemeStyle() {
-  const result = store.getState()
-  if (typeof result.system != 'undefined') {
-    const { colorPrimary, colorMarketing, colorAccent } = result.system
-    return {
-      '--color-primary': colorPrimary,
-      '--color-marketing': colorMarketing,
-      '--color-accent': colorAccent
-    }
+export function styleNames (styles) {
+  if (!styles || typeof styles !== 'object') {
+    return '""'
   }
+  let styleNames = ''
+  _keys(styles).forEach((key) => {
+    if (typeof styles[key] === 'string') {
+      styleNames += `${key}:${styles[key]};`
+      return
+    }
+    if (typeof styles[key] !== 'object' || styles[key].length === 0) {
+      return
+    }
+    let conditions = styles[key]
+
+    _keys(conditions).forEach((value) => {
+      if (
+        (typeof conditions[value] !== 'function' && conditions[value]) ||
+        (typeof conditions[value] === 'function' && conditions[value]())
+      ) {
+        styleNames += `${key}:${value};`
+        return
+      }
+    })
+  })
+  return `${styleNames}`
+}
+
+
+
+export function getThemeStyle() {
+  // const systemTheme = S.get( "SYSTEM_THEME" );
+  // const result = store.getState();
+  // if (typeof result.system != 'undefined') {
+  //   const { colorPrimary, colorMarketing, colorAccent } = result.system;
+  //   return {
+  //     "--color-primary": colorPrimary,
+  //     "--color-marketing": colorMarketing,
+  //     "--color-accent": colorAccent
+  //   };
+  // }
 }
 
 export function showToast(title) {
   Taro.showToast({
     title,
-    icon: 'none'
-  })
+    icon: "none"
+  });
 }
 
 export function isNavbar() {
-  return isWeb && !getBrowserEnv().weixin
-}
-
-export function isWebWechat() {
-  return !!getBrowserEnv().weixin
-}
-
-/** 在微信h5中 */
-export const isWbWechat = isWebWechat()
-
-export function isObjectValueEqual(a, b) {
-  var aProps = Object.getOwnPropertyNames(a)
-  var bProps = Object.getOwnPropertyNames(b)
-  if (aProps.length != bProps.length) {
-    return false
-  }
-  for (var i = 0; i < aProps.length; i++) {
-    var propName = aProps[i]
-    if (a[propName] !== b[propName]) {
-      return false
-    }
-  }
-  return true
-}
-
-// 表情字符串
-export function isEmojiCharacter(substring) {
-  for (var i = 0; i < substring.length; i++) {
-    var hs = substring.charCodeAt(i)
-    if (0xd800 <= hs && hs <= 0xdbff) {
-      if (substring.length > 1) {
-        var ls = substring.charCodeAt(i + 1)
-        var uc = (hs - 0xd800) * 0x400 + (ls - 0xdc00) + 0x10000
-        if (0x1d000 <= uc && uc <= 0x1f77f) {
-          return true
-        }
-      }
-    } else if (substring.length > 1) {
-      var ls = substring.charCodeAt(i + 1)
-      if (ls == 0x20e3) {
-        return true
-      }
-    } else {
-      if (0x2100 <= hs && hs <= 0x27ff) {
-        return true
-      } else if (0x2b05 <= hs && hs <= 0x2b07) {
-        return true
-      } else if (0x2934 <= hs && hs <= 0x2935) {
-        return true
-      } else if (0x3297 <= hs && hs <= 0x3299) {
-        return true
-      } else if (
-        hs == 0xa9 ||
-        hs == 0xae ||
-        hs == 0x303d ||
-        hs == 0x3030 ||
-        hs == 0x2b55 ||
-        hs == 0x2b1c ||
-        hs == 0x2b1b ||
-        hs == 0x2b50
-      ) {
-        return true
-      }
-    }
-  }
+  return isWeb && !getBrowserEnv().weixin;
 }
 
 export {
   classNames,
-  styleNames,
   log,
   debounce,
   throttle,
@@ -570,7 +540,7 @@ export {
   validColor,
   entryLaunch,
   validate,
-  getPointName,
-  redirectUrl
-}
-export * from './platforms'
+  getPointName
+};
+
+export * from "./platforms";

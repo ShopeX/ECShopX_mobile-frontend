@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 
 export default function withLoadMore(Component) {
   return class WithLoadMoreComponent extends Component {

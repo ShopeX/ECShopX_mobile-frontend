@@ -8,7 +8,8 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-06-22 14:31:25
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { AtSwipeAction } from 'taro-ui'
 import api from '@/api'

@@ -9,7 +9,7 @@
  * @LastEditTime: 2020-06-22 17:14:11
  */
 
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Image } from '@tarojs/components'
 
 import './index.scss'

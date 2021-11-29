@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, ScrollView, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import {
   SpCheckbox, 
@@ -12,7 +13,7 @@ import {
   GoodsItem,
   SpLogin
 } from "@/components";
-import { log, navigateTo, pickBy, classNames, showLoading, hideLoading,styleNames,getThemeStyle } from '@/utils'
+import { log, navigateTo, pickBy, classNames, showLoading, hideLoading } from '@/utils'
 import { setPageTitle } from '@/utils/platform'
 import debounce from 'lodash/debounce'
 import api from '@/api'
@@ -26,12 +27,11 @@ import { getDistributorId } from "@/utils/helper";
 import './espier-index.scss'
 
 @connect(
-  ({ cart, colors, member }) => ({
+  ({ cart, colors }) => ({
     list: cart.list,
     cartIds: cart.cartIds,
     showLikeList: cart.showLikeList,
-    colors: colors.current,
-    favs: member.favs
+    colors: colors.current
   }),
   dispatch => ({
     onUpdateCart: list => dispatch({ type: "cart/update", payload: list }),
@@ -42,6 +42,7 @@ import './espier-index.scss'
 @withLogin(()=>{},1)
 @withPager
 export default class CartIndex extends Component {
+  $instance = getCurrentInstance();
   static defaultProps = {
     list: null
   };
@@ -78,7 +79,7 @@ export default class CartIndex extends Component {
 
   componentDidMount() {
     setPageTitle('购物车')
-    if (this.$router.params && this.$router.params.path === "qrcode") {
+    if (this.$instance.router.params && this.$instance.router.params.path === "qrcode") {
       this.setState({
         isPathQrcode: true
       });
@@ -116,17 +117,6 @@ export default class CartIndex extends Component {
     this.setState({
       groups
     });
-    if (Object.keys(this.props.favs).length !== Object.keys(nextProps.favs).length) {
-      setTimeout(() => {
-        const likeList = this.state.likeList.map(item => {
-          item.is_fav = Boolean(nextProps.favs[item.item_id])
-          return item
-        })
-        this.setState({
-          likeList
-        })
-      })
-    }
   }
 
   componentDidShow() {
@@ -152,8 +142,7 @@ export default class CartIndex extends Component {
   };
 
   async fetch(params) {
-    const { page_no: page, page_size: pageSize } = params
-    const { favs } = this.props;
+    const { page_no: page, page_size: pageSize } = params;
     const query = {
       page,
       pageSize
@@ -168,8 +157,7 @@ export default class CartIndex extends Component {
       member_price: ({ member_price }) => (member_price / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
       title: "itemName",
-      desc: "brief",
-      is_fav: ({ item_id }) => Boolean(favs[item_id])
+      desc: "brief"
     });
 
     this.setState({
@@ -276,7 +264,7 @@ export default class CartIndex extends Component {
       invalid_cart = [],
       crossborder_show = false;
     const cartTypeLocal = Taro.getStorageSync("cartType");
-    const { type = "distributor" } = this.$router.params;
+    const { type = "distributor" } = this.$instance.router.params;
     const isOpenStore = await entry.getStoreStatus(); //非门店自提
     const params = {
       shop_type: type,
@@ -400,7 +388,7 @@ export default class CartIndex extends Component {
   };
 
   async changeCartNum(shop_id, cart_id, num) {
-    const { type = "distributor" } = this.$router.params;
+    const { type = "distributor" } = this.$instance.router.params;
     try {
       const res = await api.cart.updateNum(shop_id, cart_id, num, type);
       this.processCart(res);
@@ -415,7 +403,7 @@ export default class CartIndex extends Component {
   }
 
   handleQuantityChange = async (shop_id, item, num, e) => {
-    const { type = "distributor" } = this.$router.params;
+    const { type = "distributor" } = this.$instance.router.params;
     await api.cart.updateNum(shop_id, item.cart_id, num, type);
     this.updateCart();
 
@@ -502,7 +490,7 @@ export default class CartIndex extends Component {
       mobile
     } = shopCart.shopInfo;
     const { cartType } = this.state;
-    const { type } = this.$router.params;
+    const { type } = this.$instance.router.params;
     if (this.updating) {
       Taro.showToast({
         title: "正在计算价格，请稍后",
@@ -607,12 +595,15 @@ export default class CartIndex extends Component {
       remindInfo
     } = this.state;
     const { list, showLikeList, colors } = this.props;
-    
-    const { type = "distributor" } = this.$router.params;
+    console.log("==likeList==",likeList)
+    // if (loading) {
+    //   return <Loading />;
+    // }
+    const { type = "distributor" } = this.$instance.router.params;
     const isDrug = type === "drug";
     const isEmpty = !list.length;
     return (
-      <View className={classNames("page-cart-index", isDrug && "is-drug")}    style={styleNames(getThemeStyle())}>
+      <View className={classNames("page-cart-index", isDrug && "is-drug")}>
         {isDrug && (
           <SpNavBar title="购物车" leftIconType="chevron-left" fixed="true" />
         )}
@@ -633,8 +624,7 @@ export default class CartIndex extends Component {
 
         <ScrollView
           className={`${isEmpty ? "hidden-scroll" : "cart-list__scroll"}`}
-          style={isDrug && isNavbar() ? { top: '2rem' } : { top: 0 }}
-          // onScrollToLower={this.nextPage}
+          onScrollToLower={this.nextPage}
           scrollY
         >
           {
@@ -686,10 +676,7 @@ export default class CartIndex extends Component {
                       <Text className="icon-shop"></Text>
                       {shopCart.shopInfo.shop_name}
                     </View>
-                  ) : <View className="shop__name">
-                  <Text className="icon-shop"></Text>
-                  {'自营'}
-                </View>}
+                  ) : null}
                   {shopCart.shopInfo.plus_buy_activity &&
                     shopCart.shopInfo.plus_buy_activity.map(plus_item => {
                       const { discount_desc, activity_id } = plus_item;

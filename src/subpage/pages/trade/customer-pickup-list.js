@@ -1,11 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import TradeItem from './comps/item'
 
 import './list.scss'
@@ -15,9 +16,7 @@ import './list.scss'
 @withPager
 @withLogin()
 export default class TradePickList extends Component {
-  static config = {
-    navigationBarTitleText: '自提订单'
-  }
+  $instance = getCurrentInstance();
 
   constructor(props) {
     super(props)
@@ -120,7 +119,7 @@ export default class TradePickList extends Component {
     const { tid } = trade
     if (type === 'confirm') {
       await api.trade.confirm(tid)
-      const { fullPath } = getCurrentRoute(this.$router)
+      const { fullPath } = getCurrentRoute(this.$instance.router)
       Taro.redirectTo({
         url: fullPath
       })

@@ -1,10 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
 import { SpNavBar, SpHtmlContent } from '@/components'
 import { pickBy, calcTimer } from '@/utils'
 import { AtCountdown, AtIcon } from 'taro-ui'
 import api from '@/api'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
 
 import './index.scss'
@@ -16,6 +17,7 @@ import './index.scss'
   })
 )
 export default class Detail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
     this.state = {
@@ -61,14 +63,10 @@ export default class Detail extends Component {
     }
   }
 
-  config = {
-    navigationBarTitleText: '助力详情'
-  }
-
   // 获取助力详情wechat-taroturntable
   getBoostDetail = async () => {
     Taro.showLoading({ mask: true })
-    const { bargain_id } = this.$router.params
+    const { bargain_id } = this.$instance.router.params
 
     const {
       bargain_info = {},
@@ -159,7 +157,7 @@ export default class Detail extends Component {
           reject(new Error('ERROR_BASE64SRC_WRITE'))
         }
       })
-    })
+    });
   }
 
   // 绘制海报

@@ -1,10 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
 
 import './qrcode.scss'
 
 export default class QRcode extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -14,7 +16,7 @@ export default class QRcode extends Component {
   }
 
   async componentDidMount() {
-    const { user_card_id } = this.$router.params
+    const { user_card_id } = this.$instance.router.params
     let result = await api.member.getQRcode({ user_card_id })
     this.setState({
       result
@@ -22,8 +24,8 @@ export default class QRcode extends Component {
   }
 
   handleClick = () => {
-    const { card_id, user_card_id, code } = this.$router.params
-    console.log('🚀', this.$router.params)
+    const { card_id, user_card_id, code } = this.$instance.router.params
+    console.log('🚀', this.$instance.router.params)
     Taro.redirectTo({
       url: `/pages/item/list?card_id=${card_id}&code=${code}&user_card_id=${user_card_id}&isNewGift=true`
     })

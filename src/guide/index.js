@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, ScrollView, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { Loading } from '@/components'
 import api from '@/api'
 import { pickBy, styleNames } from '@/utils'
@@ -24,10 +25,7 @@ import '../pages/home/index.scss'
 @withPager
 @withBackToTop
 export default class BaGuideHomeIndex extends Component {
-  config = {
-    navigationStyle: 'custom',
-    onReachBottomDistance: 50
-  }
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -55,13 +53,13 @@ export default class BaGuideHomeIndex extends Component {
   }
   componentDidShow() {}
   async componentWillMount() {
-    const options = this.$router.params
+    const options = this.$instance.router.params
     const res = await entry.entryLaunch(options, false) // 不能开启定位，直接读取导购带过来的店铺信息
     console.log('[entry.entryLaunch]', res)
   }
   async componentDidMount() {
     await S.autoLogin(this)
-    const { version } = this.$router.params
+    const { version } = this.$instance.router.params
     console.log('[挂件包] this.state.wgts', this.state.wgts)
     //设置导购信息
     this.guideInit(version)

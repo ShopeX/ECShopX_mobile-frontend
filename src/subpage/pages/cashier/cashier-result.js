@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { Button, Image, View } from '@tarojs/components'
 import api from '@/api'
 import { formatDateTime } from '@/utils'
@@ -8,6 +9,7 @@ import payFailPng from '../../../assets/imgs/pay_fail.png'
 import './cashier-result.scss'
 
 export default class CashierResult extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -28,7 +30,7 @@ export default class CashierResult extends Component {
   }
 
   async fetch() {
-    const { order_id } = this.$router.params
+    const { order_id } = this.$instance.router.params
     const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
 
     if (tradeInfo.orderId.indexOf('CZ') !== -1) {

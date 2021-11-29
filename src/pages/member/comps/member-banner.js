@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components'
-import { SpImg } from '@/components'
+// import { SpImg } from '@/components'
 import S from '@/spx'
 
 import './member-banner.scss'

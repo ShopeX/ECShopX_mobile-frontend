@@ -1,6 +1,7 @@
-import Taro, { PureComponent, Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
-import { Tracker } from '@/service'
+// // import { Tracker } from '@/service'
 import {
   WgtSearchHome,
   WgtFilm,
@@ -21,22 +22,28 @@ import {
 } from '../wgts'
 
 export default class HomeWgts extends Component {
-  static defaultProps = {
-    wgts: []
+  constructor(props) {
+    console.log('HomeWgts-constructor-this.props1',props)
+    super(props)
+    console.log('HomeWgts-constructor-props2',props)
   }
+  // static defaultProps = {
+  //   wgts: []
+  // }
 
   state = {
     screenWidth: 375
   }
 
   componentDidMount() {
+    console.log('HomeWgts-constructor-this.props3',this.props)
     Taro.getSystemInfo().then((res) => {
       this.setState({
         screenWidth: res.screenWidth
       })
-      if (process.env.TARO_ENV == 'weapp') {
-        this.startTrack()
-      }
+      // if (process.env.TARO_ENV == 'weapp') {
+      //   this.startTrack()
+      // }
     })
   }
 
@@ -53,21 +60,6 @@ export default class HomeWgts extends Component {
     // const toExpose = wgts.map((t, idx) => String(idx))
 
     const observer = Taro.createIntersectionObserver({ observeAll: true })
-
-    // observer.relativeToViewport({ bottom: 0 }).observe(".wgt-wrap", res => {
-
-    //   if (res.intersectionRatio > 0) {
-    //     const { name, idx } = res.dataset
-    //     if (name === "goodsGrid") {
-    //       const result = wgts.find((t, index) => index == idx);
-    //       if (result) {
-    //         result.data.forEach(goods => {
-    //           Tracker.dispatch("EXPOSE_SKU_COMPONENT", goods);
-    //         })
-    //       }
-    //     }
-    //   }
-    // });
 
     this.observe = observer
   }
@@ -88,18 +80,20 @@ export default class HomeWgts extends Component {
     const { wgts } = this.props
     const { screenWidth } = this.state
 
-    console.log('home-wgts', wgts)
+    console.log('home-wgts23', wgts)
 
-    if (!wgts || wgts.length <= 0) return null
+    if (!wgts || wgts.length <= 0) return (<View>就很</View>)
     return (
       <View className='home-wgts'>
-        {wgts.map((item, idx) => (
+        {
+         wgts.map((item, idx) => (          
           <View
             className='wgt-wrap'
             key={`${item.name}${idx}`}
             data-idx={idx}
             data-name={item.name}
           >
+            {idx} {item.name}
             {item.name === "search" && <WgtSearchHome info={item} />}
             {item.name === 'film' && <WgtFilm info={item} />}
             {item.name === 'marquees' && <WgtMarquees info={item} />}
@@ -136,11 +130,12 @@ export default class HomeWgts extends Component {
             {item.name === 'img-gif' && <WgtImgGif info={item} />}
             {item.name === 'hotTopic' && <WgtHotTopic info={item} />}
             {item.name === 'floorImg' && <WgtFloorImg info={item} />}
-            {process.env.APP_PLATFORM !== 'standard' && item.name === 'store' && (
+            {/* {process.env.APP_PLATFORM !== 'standard' && item.name === 'store' && (
               <WgtStore info={item} />
-            )}
+            )} */}
           </View>
-        ))}
+          ))
+        }
       </View>
     )
   }

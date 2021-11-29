@@ -1,7 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import './index.scss'
 
 @connect(({ colors }) => ({

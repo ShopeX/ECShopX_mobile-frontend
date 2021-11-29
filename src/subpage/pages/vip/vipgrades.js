@@ -1,9 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text, ScrollView } from '@tarojs/components'
 import { Price, SpNavBar, SpCell, CouponModal } from '@/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { getPaymentList } from '@/utils/payment'
 import api from '@/api'
 import S from '@/spx'
 import {
@@ -15,7 +15,7 @@ import {
   isNavbar,
   redirectUrl
 } from '@/utils'
-import PaymentPicker from '@/pages/cart/comps/payment-picker'  
+import PaymentPicker from '@/pages/cart/comps/payment-picker'
 import userIcon from '@/assets/imgs/user-icon.png'
 
 import './vipgrades.scss'
@@ -24,16 +24,11 @@ import './vipgrades.scss'
   colors: colors.current
 }))
 export default class VipIndex extends Component {
-  static config = {
-    navigationBarTitleText: '会员购买',
-    backgroundColor: '#2f3030',
-    backgroundTextStyle: 'light'
-  }
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
     this.state = {
-      typeList:[],
       userInfo: {},
       userVipInfo: {},
       curTabIdx: 0,
@@ -67,18 +62,10 @@ export default class VipIndex extends Component {
       }
     )
   }
-  // 获取支付方式
-  async getPayList(){
-    const { list }= await getPaymentList();  
-    const res = list; 
-    this.setState({
-      typeList: res,
-    })
-  }
+
   async fetchInfo() {
-    this.getPayList();
     const { cur, list } = await api.vip.getList()
-    const { grade_name: name } = this.$router.params
+    const { grade_name: name } = this.$instance.router.params
 
     const tabList = pickBy(list, {
       title: ({ grade_name }) => grade_name,
@@ -268,17 +255,15 @@ export default class VipIndex extends Component {
       visible,
       couponList,
       all_card_list,
-      total_count,
-      typeList
+      total_count
     } = this.state
-    console.log('typeList',typeList);
-    // const payTypeText = {
-    //   point: `${getPointName()}支付`,
-    //   wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
-    //   deposit: '余额支付',
-    //   delivery: '货到付款',
-    //   hfpay: '微信支付'
-    // }
+    const payTypeText = {
+      point: `${getPointName()}支付`,
+      wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
+      deposit: '余额支付',
+      delivery: '货到付款',
+      hfpay: '微信支付'
+    }
     return (
       <View
         className={classNames('page-vip-vipgrades', 'vipgrades', {
@@ -368,9 +353,7 @@ export default class VipIndex extends Component {
               onClick={this.handlePaymentShow}
               className='cus-sp-cell'
             >
-              {
-                typeList.length > 0 && <Text>{typeList[0].pay_type_name}</Text>
-              }
+              <Text>{payTypeText[payType]}</Text>
             </SpCell>
           )}
           <View className='pay-btn' onClick={this.handleCharge}>

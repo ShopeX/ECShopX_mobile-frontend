@@ -1,11 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import { SpCell, SpToast, SpNavBar } from '@/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import S from '@/spx'
 import api from '@/api'
 import { AtTag, AtTextarea } from 'taro-ui'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 
 import './cancel.scss'
 
@@ -13,9 +14,7 @@ import './cancel.scss'
   colors: colors.current
 }))
 export default class TradeCancel extends Component {
-  static config = {
-    navigationBarTitleText: '取消订单'
-  }
+  $instance = getCurrentInstance();
 
   constructor(props) {
     super(props)
@@ -49,7 +48,7 @@ export default class TradeCancel extends Component {
       return S.toast('请输入其他理由')
     }
 
-    const { order_id } = this.$router.params
+    const { order_id } = this.$instance.router.params
     const data = {
       order_id,
       cancel_reason: reason[curReasonIdx],

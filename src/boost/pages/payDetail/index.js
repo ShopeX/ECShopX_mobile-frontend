@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Button } from '@tarojs/components'
 import { pickBy, formatDateTime } from '@/utils'
 import api from '@/api'
@@ -7,6 +8,7 @@ import { SpNavBar } from '@/components'
 import './index.scss'
 
 export default class PayDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -17,7 +19,7 @@ export default class PayDetail extends Component {
   }
 
   componentWillMount() {
-    const { order_id } = this.$router.params
+    const { order_id } = this.$instance.router.params
     if (order_id) {
       this.getOrderDetail()
     } else {
@@ -25,13 +27,9 @@ export default class PayDetail extends Component {
     }
   }
 
-  config = {
-    navigationBarTitleText: '订单详情'
-  }
-
   // 获取支付订单信息
   getOrderInfo = async () => {
-    const { bargain_id } = this.$router.params
+    const { bargain_id } = this.$instance.router.params
     const { bargain_order = {} } = await api.boost.getUserBargain({
       bargain_id,
       has_order: true
@@ -67,7 +65,7 @@ export default class PayDetail extends Component {
 
   // 获取订单详情
   getOrderDetail = async () => {
-    const { order_id, bargain_id } = this.$router.params
+    const { order_id, bargain_id } = this.$instance.router.params
     const { orderInfo } = await api.boost.getOrderDetail({
       order_id,
       bargain_id
@@ -116,7 +114,7 @@ export default class PayDetail extends Component {
 
   render() {
     const { info, isLoading } = this.state
-    const { order_id } = this.$router.params
+    const { order_id } = this.$instance.router.params
     return (
       <View className='payDetail'>
         <SpNavBar

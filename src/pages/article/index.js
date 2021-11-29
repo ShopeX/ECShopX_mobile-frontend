@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
 import { SpHtmlContent } from '@/components'
@@ -7,6 +8,7 @@ import { formatTime } from '@/utils'
 import './index.scss'
 
 export default class ArticleIndex extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -20,7 +22,7 @@ export default class ArticleIndex extends Component {
   }
 
   async fetch() {
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     const info = await api.article.detail(id)
 
     info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD HH:mm')

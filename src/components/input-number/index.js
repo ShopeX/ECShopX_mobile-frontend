@@ -1,4 +1,5 @@
-import Taro from '@tarojs/taro'
+import React from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Input, Text } from '@tarojs/components'
 import classNames from 'classnames'
 import _toString from 'lodash/toString'

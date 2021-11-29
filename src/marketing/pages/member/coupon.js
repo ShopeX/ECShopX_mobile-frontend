@@ -1,9 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Text, Image } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar, CouponItem } from '@/components'
 import api from '@/api'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager } from '@/hocs'
 import { pickBy, classNames, isNavbar } from '@/utils'
 
@@ -49,22 +50,22 @@ export default class Coupon extends Component {
   // }
 
   componentDidShow() {
-    this.setState({
-      list: []
-    })
-    const { curTabIdx, tabList } = this.state
-    const status = tabList[curTabIdx].status
-    const card_type = tabList[curTabIdx].type
-    const params = {
-      card_type: card_type,
-      page: 1,
-      pageSize: 10,
-      page_no: 1,
-      page_size: 10,
-      status: status
-    }
-    this.fetch(params)
-    // this.nextPage()
+    // this.setState({
+    //   list: []
+    // })
+    // const { curTabIdx, tabList } = this.state
+    // const status = tabList[curTabIdx].status
+    // const card_type = tabList[curTabIdx].type
+    // const params = {
+    //   card_type: card_type,
+    //   page: 1,
+    //   pageSize: 10,
+    //   page_no: 1,
+    //   page_size: 10,
+    //   status: status
+    // }
+    // this.fetch(params)
+    this.nextPage()
   }
 
   async fetch(params) {

@@ -1,8 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Image } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import api from '@/api'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { debounce, pickBy, formatDateTime } from '@/utils'
 import LoadingMore from '../../component/loadingMore'
 
@@ -31,10 +32,6 @@ export default class Order extends Component {
   }
   componentDidMount() {
     this.getList()
-  }
-
-  config = {
-    navigationBarTitleText: '我的助力订单'
   }
 
   getList = async (isRefrsh = false) => {

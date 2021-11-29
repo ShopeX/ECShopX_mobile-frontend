@@ -1,6 +1,6 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Text, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { classNames, formatPriceToHundred, getPointName } from '@/utils'
 import OrderItem from '../../../../components/orderItem/order-item'
 

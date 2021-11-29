@@ -1,17 +1,17 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import { pickBy, log } from '@/utils'
 import api from '@/api'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withLogin, withPager } from '@/hocs'
 import { AFTER_SALE_STATUS } from '@/consts'
 import _mapKeys from 'lodash/mapKeys'
 import TradeItem from './comps/item'
 
 import './list.scss'
-
 @connect(({ colors }) => ({
   colors: colors.current
 }))
@@ -19,6 +19,7 @@ import './list.scss'
 @withPager
 @withLogin()
 export default class AfterSale extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -37,7 +38,7 @@ export default class AfterSale extends Component {
   }
 
   componentDidMount() {
-    const { status } = this.$router.params
+    const { status } = this.$instance.router.params
     const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
 
     if (tabIdx >= 0) {
@@ -132,7 +133,7 @@ export default class AfterSale extends Component {
     const { curTabIdx, tabList, list, page } = this.state
 
     return (
-      <View className='trade-list after-saler-page'>
+      <View className='trade-list'>
         <SpNavBar title='售后订单列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className='trade-list__tabs'
@@ -145,7 +146,7 @@ export default class AfterSale extends Component {
           ))}
         </AtTabs>
 
-        <ScrollView scrollY className='trade-list__scroll after-saler__scroll' onScrollToLower={this.nextPage}>
+        <ScrollView scrollY className='trade-list__scroll' onScrollToLower={this.nextPage}>
           {list &&
             list.map((item, idx) => {
               return (

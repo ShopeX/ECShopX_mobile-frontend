@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import qs from 'qs'
 import {
   TabBar,
@@ -29,7 +30,7 @@ import { platformTemplateName } from '@/utils/platform'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
 import HomeWgts from './home/comps/home-wgts'
 import Automatic from './home/comps/automatic'
@@ -55,6 +56,7 @@ import './home/index.scss'
 @withPager
 @withBackToTop
 export default class Home extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
     this.autoCloseTipId = null
@@ -406,7 +408,7 @@ export default class Home extends Component {
       is_open_official_account
     } = Taro.getStorageSync('settingInfo')
     const isNeedLoacate = is_open_wechatapp_location == 1
-    const options = this.$router.params
+    const options = this.$instance.router.params
     options.isStore = is_open_store_status
     const res = await entry.entryLaunch(options, isNeedLoacate)
     const { store } = res

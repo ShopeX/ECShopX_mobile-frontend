@@ -1,4 +1,4 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { PureComponent } from 'react';
 import { View, ScrollView } from '@tarojs/components'
 import { CouponItem } from '@/components'
 import { AtModal } from 'taro-ui'

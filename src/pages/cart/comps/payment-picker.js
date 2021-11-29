@@ -1,10 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Text, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtFloatLayout } from 'taro-ui'
 import { SpCheckbox } from '@/components' 
 import { closeClassName, getPointName,isWeixin } from '@/utils' 
-import { getPaymentList } from '@/utils/payment'
+// import { getPaymentList } from '@/utils/payment'
 import './payment-picker.scss'
 
 @connect(({ colors }) => ({
@@ -42,9 +42,8 @@ export default class PaymentPicker extends Component {
   }
   async fetch() {
 
-    const { list }=await getPaymentList();  
-    const res = list; 
-    console.log('res==============',res);
+    // const { list }=await getPaymentList();  
+    const res = []; 
  
     this.setState(
       {
@@ -108,7 +107,7 @@ export default class PaymentPicker extends Component {
       <AtFloatLayout isOpened={isOpened}>
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
-            <View>支付方式</View>
+            <Text>支付方式</Text>
             <View className={closeClassName} onClick={this.handleCancel}></View>
           </View>
           <View className='payment-picker__bd'>

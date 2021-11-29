@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { AtButton, AtAvatar } from 'taro-ui'
 import S from '@/spx'
@@ -9,6 +10,7 @@ import { normalizeQuerys } from '@/utils'
 import './shopping-guide-card.scss'
 
 export default class ShoppingGuideCard extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -29,7 +31,7 @@ export default class ShoppingGuideCard extends Component {
       token
     })
 
-    let { smid, dtid } = await normalizeQuerys(this.$router.params)
+    let { smid, dtid } = await normalizeQuerys(this.$instance.router.params)
 
     if (smid) {
       Taro.setStorageSync('s_smid', smid)

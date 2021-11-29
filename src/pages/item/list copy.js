@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
 import {
@@ -15,7 +16,7 @@ import {
   TabBar
 } from '@/components'
 import api from '@/api'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import { pickBy, classNames, isWeixin } from '@/utils'
 import entry from '../../utils/entry'
 
@@ -27,6 +28,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class List extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -56,7 +58,7 @@ export default class List extends Component {
   }
 
   async componentDidMount() {
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     this.firstStatus = true
     const isOpenStore = await entry.getStoreStatus()
     const { store_id } = Taro.getStorageSync('curStore')
@@ -67,15 +69,15 @@ export default class List extends Component {
     this.setState(
       {
         query: {
-          keywords: this.$router.params.keywords,
+          keywords: this.$instance.router.params.keywords,
           item_type: 'normal',
           is_point: 'false',
-          distributor_id: isOpenStore ? store_id : this.$router.params.dis_id,
+          distributor_id: isOpenStore ? store_id : this.$instance.router.params.dis_id,
           approve_status: 'onsale,only_show',
           category: cat_id ? cat_id : '',
           main_category: main_cat_id ? main_cat_id : ''
         },
-        curTagId: this.$router.params.tag_id
+        curTagId: this.$instance.router.params.tag_id
       },
       () => {
         this.nextPage()
@@ -103,10 +105,10 @@ export default class List extends Component {
   }
 
   async componentDidShow() {
-    const { isNewGift = null } = this.$router.params
+    const { isNewGift = null } = this.$instance.router.params
     if (!isNewGift) return
     this.setStore()
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     this.firstStatus = true
     const isOpenStore = await entry.getStoreStatus()
     const { store_id } = Taro.getStorageSync('curStore')
@@ -117,15 +119,15 @@ export default class List extends Component {
     this.setState(
       {
         query: {
-          keywords: this.$router.params.keywords,
+          keywords: this.$instance.router.params.keywords,
           item_type: 'normal',
           is_point: 'false',
-          distributor_id: isOpenStore ? store_id : this.$router.params.dis_id,
+          distributor_id: isOpenStore ? store_id : this.$instance.router.params.dis_id,
           approve_status: 'onsale,only_show',
           category: cat_id ? cat_id : '',
           main_category: main_cat_id ? main_cat_id : ''
         },
-        curTagId: this.$router.params.tag_id
+        curTagId: this.$instance.router.params.tag_id
       },
       () => {
         this.nextPage()
@@ -140,7 +142,7 @@ export default class List extends Component {
 
   // 设置门店
   setStore = (isChange = false) => {
-    const { card_id } = this.$router.params
+    const { card_id } = this.$instance.router.params
     const store = Taro.getStorageSync('curStore')
     if (store && !isChange) {
       this.resetPage()
@@ -163,7 +165,7 @@ export default class List extends Component {
 
   onShareAppMessage() {
     const res = this.state.shareInfo
-    const { cat_id = '', main_cat_id = '' } = this.$router.params
+    const { cat_id = '', main_cat_id = '' } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId
       ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}`
@@ -177,7 +179,7 @@ export default class List extends Component {
 
   onShareTimeline() {
     const res = this.state.shareInfo
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId
       ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}`
@@ -191,10 +193,10 @@ export default class List extends Component {
 
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
-    const { card_id, isNewGift = null } = this.$router.params
+    const { card_id, isNewGift = null } = this.$instance.router.params
     const { selectParams, tagsList, curTagId, isOpenStore } = this.state
     const { distributor_id, store_id } = Taro.getStorageSync('curStore')
-    const { cardId } = this.$router.params
+    const { cardId } = this.$instance.router.params
     const query = {
       ...this.state.query,
       item_params: selectParams,
@@ -401,7 +403,7 @@ export default class List extends Component {
   }
 
   handleClickItem = (item) => {
-    const { user_card_id, isNewGift = null, card_id, code } = this.$router.params
+    const { user_card_id, isNewGift = null, card_id, code } = this.$instance.router.params
     if (isNewGift && item.store == 0) return
     const { item_id, title, market_price, price, img, member_price } = item
     Tracker.dispatch('TRIGGER_SKU_COMPONENT', {
@@ -598,7 +600,7 @@ export default class List extends Component {
       currentShop,
       couponTab
     } = this.state
-    const { isTabBar = 'guide', isNewGift } = this.$router.params
+    const { isTabBar = 'guide', isNewGift } = this.$instance.router.params
 
     return (
       <View className='page-goods-list'>

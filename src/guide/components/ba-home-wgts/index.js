@@ -1,4 +1,5 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { PureComponent } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import {
   WgtFilm,
@@ -18,6 +19,7 @@ import {
 // import {  WgtSearchHome } from '@/pages/home/wgts'
 
 export default class HomeWgts extends PureComponent {
+  $instance = getCurrentInstance();
   state = {
     screenWidth: 375
   }
@@ -68,7 +70,7 @@ export default class HomeWgts extends PureComponent {
                 />
               )}
               {item.name === 'search' && (
-                <WgtSearchHome info={item} dis_id={this.$router.params.id} />
+                <WgtSearchHome info={item} dis_id={this.$instance.router.params.id} />
               )}
               {item.name === 'slider-hotzone' && (
                 <WgtSliderHotzone source={source} componentIndex={idx} info={item} />
@@ -104,9 +106,9 @@ export default class HomeWgts extends PureComponent {
 
               {idx === 1 && <WgtPointLuck />}
             </View>
-          )
+          );
         })}
       </View>
-    )
+    );
   }
 }

@@ -8,7 +8,7 @@
  * @LastEditors: PrendsMoi
  * @LastEditTime: 2021-04-09 15:37:59
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Image, Text } from '@tarojs/components'
 import { navigateTo, classNames } from '@/utils'
 import S from '@/spx'

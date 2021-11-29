@@ -8,7 +8,7 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-06-24 15:50:29
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, ScrollView } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import api from '@/api'
@@ -39,10 +39,6 @@ export default class OrderList extends Component {
 
   componentDidMount() {
     this.getOrderList(true)
-  }
-
-  config = {
-    navigationBarTitleText: '我的订单'
   }
 
   // 获取订单列表

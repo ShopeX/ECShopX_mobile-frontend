@@ -8,7 +8,8 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-06-23 14:08:25
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
 import { formatDateTime } from '@/utils'
@@ -17,6 +18,7 @@ import { SpNavBar } from '@/components'
 import './index.scss'
 
 export default class OrderDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -49,10 +51,6 @@ export default class OrderDetail extends Component {
 
   componentDidShow() {
     this.getOrderDetail()
-  }
-
-  config = {
-    navigationBarTitleText: '订单详情'
   }
 
   // 倒计时
@@ -95,7 +93,7 @@ export default class OrderDetail extends Component {
   }
 
   getOrderDetail = () => {
-    const { orderId } = this.$router.params
+    const { orderId } = this.$instance.router.params
     if (!orderId) {
       return
     }

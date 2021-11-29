@@ -1,10 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Form, Button, Text, Picker, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtInput, AtButton } from 'taro-ui'
 import { SpToast, SpTimer, SpNavBar, SpCheckbox, AccountOfficial } from '@/components'
 import { classNames, isString, isArray, tokenParse,getBrowserEnv } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import S from '@/spx'
 import api from '@/api'
 
@@ -20,6 +21,7 @@ const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
   () => ({})
 )
 export default class Reg extends Component {
+  $instance = getCurrentInstance();
   constructor (props) {
     super(props)
 
@@ -158,7 +160,7 @@ export default class Reg extends Component {
       let res = null
       if (isWeapp) {
         const uid = Taro.getStorageSync('distribution_shop_id')
-        const { union_id, open_id } = this.$router.params
+        const { union_id, open_id } = this.$instance.router.params
         const trackParams = Taro.getStorageSync('trackParams')
         let params = {
           ...data,
@@ -237,7 +239,7 @@ export default class Reg extends Component {
       console.log(res,'注册返回');
       if (res && res.token) {
         S.toast('注册成功')
-        const { redirect, source } = this.$router.params
+        const { redirect, source } = this.$instance.router.params
         setTimeout(() => {
           if (Taro.getStorageSync('isqrcode') === 'true') {
             Taro.redirectTo({
@@ -364,7 +366,7 @@ export default class Reg extends Component {
   }
 
   handleGetPhoneNumber = async (e) => {
-    // let { code } = this.$router.params
+    // let { code } = getCurrentInstance().params
     // try {
     //   await Taro.checkSession()
     // } catch (e) {

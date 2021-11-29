@@ -1,7 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 // import AddressList from '@/components/new-address/address'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpToast, SpCell, SpNavBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
@@ -21,6 +22,7 @@ const ADDRESS_ID = 'address_id'
   })
 )
 export default class AddressIndex extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -36,7 +38,7 @@ export default class AddressIndex extends Component {
   }
 
   async fetch(isDelete = false) {
-    const { isPicker, receipt_type = '', city = '' } = this.$router.params
+    const { isPicker, receipt_type = '', city = '' } = this.$instance.router.params
     if (isPicker) {
       this.setState({
         isPicker: true

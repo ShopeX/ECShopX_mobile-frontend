@@ -1,7 +1,8 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { PureComponent } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
 import S from '@/spx'
 import { linkPage } from '../helper'

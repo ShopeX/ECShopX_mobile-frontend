@@ -8,7 +8,8 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-04-27 10:58:12
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { Form, Button } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { FormIds } from '@/service'

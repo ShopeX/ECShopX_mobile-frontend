@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Swiper, SwiperItem, Image, Text, Canvas } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 import { SpNavBar, SpHtmlContent } from '@/components'
@@ -9,6 +10,7 @@ import CanvasUtil from '../../utils/canvas'
 import './index.scss'
 
 export default class GoodDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
     this.state = {
@@ -47,10 +49,6 @@ export default class GoodDetail extends Component {
     }
   }
 
-  config = {
-    navigationBarTitleText: '商品详情'
-  }
-
   // 倒计时
   countdown = () => {
     let { countTime, timeId } = this.state
@@ -77,7 +75,7 @@ export default class GoodDetail extends Component {
 
   // 获取商品详情
   getGoodInfo = () => {
-    const { itemId, activeId, cid } = this.$router.params
+    const { itemId, activeId, cid } = this.$instance.router.params
 
     api.groupBy
       .activityGoodDetail({
@@ -212,7 +210,7 @@ export default class GoodDetail extends Component {
 
   render() {
     const { goodInfo, imgCurrent, posterImg, showPoster, countTime } = this.state
-    const { isNext = false } = this.$router.params
+    const { isNext = false } = this.$instance.router.params
 
     return (
       <View className='goodDetail'>

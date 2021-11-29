@@ -1,12 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View,RichText } from '@tarojs/components'
 import { classNames,isWeixin,isAlipay } from '@/utils'
-let src = './../components/wxParse/wxParse.wxml';
 
 import './index.scss';
 
 let wxParse
-if (isWeixin||isAlipay) {
+if (isAlipay) {
   wxParse = require('@/components/wxParse/wxParse')
 }
 
@@ -20,7 +19,7 @@ export default class HtmlContent extends Component {
   }
 
   componentDidMount () {
-    if (isWeixin||isAlipay) {
+    if (isAlipay) {
       const { content } = this.props
       console.log('--this.$scope--',this.$scope)
       // console.log(content, 24)
@@ -34,12 +33,7 @@ export default class HtmlContent extends Component {
 
     console.log("--process.env.TARO_ENV === 'weapp'--",process.env.TARO_ENV)
 
-    return process.env.TARO_ENV === 'weapp'
-      ? (<View className={classes}>
-          <import src={'../../components/wxParse/wxParse.wxml'} />
-          <template is='wxParse' data='{{wxParseData:article.nodes}}' />
-        </View>) 
-      : process.env.TARO_ENV === 'alipay'
+    return process.env.TARO_ENV === 'alipay'
       ? (
         <View className={classes}>
           <RichText nodes={article.nodes}></RichText>

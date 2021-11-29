@@ -1,8 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Text, Image } from '@tarojs/components'
 import { Price, SpImg, PointTag } from '@/components'
 import { getPointName } from '@/utils';
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import './order-item.scss'
 
 @connect(({ colors }) => ({

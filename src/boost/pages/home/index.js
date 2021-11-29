@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import api from '@/api'
@@ -26,10 +27,6 @@ export default class Home extends Component {
   }
   componentDidMount() {
     this.getList()
-  }
-
-  config = {
-    navigationBarTitleText: '助力首页'
   }
 
   getList = async (isRefrsh = false) => {

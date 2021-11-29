@@ -1,5 +1,5 @@
 import req from './req'
-import { transformPlatformUrl } from '@/utils/platform'
+import { transformPlatformUrl } from "@/utils/platform";
 
 // 登录
 export const login = (param = {}) => req.post('/wxa/promotion/articles', param)
@@ -12,8 +12,7 @@ export const info = (param = {}) => req.get('/member', param)
 export const identity = (param = {}) => req.get('/distributor', param)
 
 // 获取模版
-export const getTemplate = (param = {}) =>
-  req.get(transformPlatformUrl('/alipay/pageparams/setting'), param)
+export const getTemplate = (param = {}) => req.get(transformPlatformUrl('/alipay/pageparams/setting'), param)
 
 // promotionArticles
 export const promotionArticles = (param = {}) => req.get('/promotion/articles', param)
@@ -40,7 +39,7 @@ export const updateCart = (param = {}) => req.post('/cart', param)
 export const updateGoodNum = (param = {}) => req.put('/cartupdate/num', param)
 
 // 更新商品选中状态
-export const updateCheckGood = (param = {}) => req.put('/cartupdate/checkstatus', param)
+export const updateCheckGood = (param = {}) =>  req.put('/cartupdate/checkstatus', param)
 
 // 删除商品
 export const deleteGood = (param = {}) => req.delete('/cartdel', param)
@@ -94,8 +93,7 @@ export const getShopDetail = (param = {}) => req.get('/shops/wxshops', param)
 export const getRechargeRules = (param = {}) => req.get('/weapp/deposit/rechargerules', param)
 
 // getRechargeAgreement
-export const getRechargeAgreement = (param = {}) =>
-  req.get('/weapp/deposit/recharge/agreement', param)
+export const getRechargeAgreement = (param = {}) => req.get('/weapp/deposit/recharge/agreement', param)
 
 // deposit recharge
 export const depositRecharge = (param = {}) => req.post('/weapp/deposit/recharge', param)
@@ -113,7 +111,7 @@ export const addReservation = (param = {}) => req.post('/reservation', param)
 export const getDateList = (param = {}) => req.get('/reservation/dateDay', param)
 
 // reservation getTimeList
-export const getTimeList = (param = {}) => req.get('/reservation/timelist', param)
+export const getTimeList = (param ={}) => req.get('/reservation/timelist', param)
 
 // getRecordList
 export const getRecordList = (param = {}) => req.get('/reservation/recordlist', param)
@@ -250,12 +248,10 @@ export const promoterQrcode = (param = {}) => req.get('/promoter/qrcode', param)
 export const uploadImage = (param = {}) => req.get('/espier/image_upload_token', param)
 
 // 活动详情
-export const activityDetail = (param = {}) =>
-  req.get('/promotion/community/activityitemslist', param)
+export const activityDetail = (param = {}) => req.get('/promotion/community/activityitemslist', param)
 
 // 活动商品详情
-export const activityGoodDetail = (param = {}) =>
-  req.get('/promotion/community/activityitemsinfo', param)
+export const activityGoodDetail = (param = {}) => req.get('/promotion/community/activityitemsinfo', param)
 
 // 附近活动社区
 export const activityCommunity = (param = {}) => req.get('/promotion/community/nearInfo', param)
@@ -267,13 +263,10 @@ export const activityCommunityList = (param = {}) => req.get('/promotion/communi
 export const activityCommunityDetail = (param = {}) => req.get('/promotion/community/info', param)
 
 // updateSalesCount
-export const updateSalesCount = (param = {}) =>
-  req.get('/promotion/community/activityitemsales', param)
+export const updateSalesCount = (param = {}) => req.get('/promotion/community/activityitemsales', param)
 
 // getActivitySaleHistory
-export const getActivitySaleHistory = (param = {}) =>
-  req.get('/promotion/community/activitySaleHistory', param)
+export const getActivitySaleHistory = (param = {}) => req.get('/promotion/community/activitySaleHistory', param)
 
 // getActivityItemSaleHistory
-export const getActivityItemSaleHistory = (param = {}) =>
-  req.get('/promotion/community/activityItemSaleHistory', param)
+export const getActivityItemSaleHistory = (param = {}) => req.get('/promotion/community/activityItemSaleHistory', param)

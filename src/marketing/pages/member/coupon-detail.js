@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Input } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
 // import { classNames, pickBy } from '@/utils'
 
@@ -10,6 +11,7 @@ import './coupon-detail.scss'
   colors: colors.current
 }))
 export default class CouponDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -45,8 +47,8 @@ export default class CouponDetail extends Component {
   }
 
   async fetch() {
-    const { card_id, code } = this.$router.params
-    console.log(this.$router.params)
+    const { card_id, code } = this.$instance.router.params
+    console.log(this.$instance.router.params)
     const params = {
       card_id,
       code

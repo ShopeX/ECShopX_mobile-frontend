@@ -1,13 +1,14 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, ScrollView, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton, AtActionSheet, AtActionSheetItem, AtNoticebar } from 'taro-ui'
 import { SpCheckbox, SpNote, Loading, Price } from '@/components'
 import { log, navigateTo, pickBy, classNames, styleNames } from '@/utils'
 import debounce from 'lodash/debounce'
 import api from '@/api'
 import S from '@/spx'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import { withPager } from '@/hocs'
 import entry from '@/utils/entry'
 import CartItem from './comps/cart-item'
@@ -28,9 +29,7 @@ import './espier-index.scss'
 )
 @withPager
 export default class CartIndex extends Component {
-  config = {
-    navigationStyle: 'custom'
-  }
+  $instance = getCurrentInstance();
   static defaultProps = {
     list: null
   }
@@ -60,7 +59,7 @@ export default class CartIndex extends Component {
 
   async componentDidMount() {
     await S.autoLogin(this)
-    if (this.$router.params && this.$router.params.path === 'qrcode') {
+    if (this.$instance.router.params && this.$instance.router.params.path === 'qrcode') {
       this.setState({
         isPathQrcode: true
       })
@@ -220,7 +219,7 @@ export default class CartIndex extends Component {
       invalid_cart = [],
       crossborder_show = false
     const cartTypeLocal = Taro.getStorageSync('cartType')
-    const { type = 'distributor' } = this.$router.params
+    const { type = 'distributor' } = this.$instance.router.params
     const isOpenStore = await entry.getStoreStatus() //非门店自提
     const params = {
       shop_type: type,
@@ -365,7 +364,7 @@ export default class CartIndex extends Component {
 
   //购物车商品详情变更:数量、选中状态
   handleQuantityChange = async (shop_id, item, num, e) => {
-    const { type = 'distributor' } = this.$router.params
+    const { type = 'distributor' } = this.$instance.router.params
     await api.guide.cartdataadd({
       shop_id,
       item_id: item.item_id,
@@ -450,7 +449,7 @@ export default class CartIndex extends Component {
       mobile
     } = shopCart.shopInfo
     const { cartType } = this.state
-    const { type } = this.$router.params
+    const { type } = this.$instance.router.params
     if (this.updating) {
       Taro.showToast({
         title: '正在计算价格，请稍后',
@@ -579,7 +578,7 @@ export default class CartIndex extends Component {
     if (loading) {
       return <Loading />
     }
-    const { type = 'distributor' } = this.$router.params
+    const { type = 'distributor' } = this.$instance.router.params
     const isDrug = type === 'drug'
     const isEmpty = !list.length
     return (

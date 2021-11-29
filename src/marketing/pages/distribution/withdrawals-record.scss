@@ -3,7 +3,6 @@
 .page-distribution-record {
   .record-list__scroll {
     @include page-scroll($tabs-height + $navigate-height, 0);
-    top: 20px;
   }
   .status-icon {
     display: block;

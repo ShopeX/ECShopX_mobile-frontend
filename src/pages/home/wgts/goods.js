@@ -1,8 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { SpImg } from '@/components'
-import { connect } from '@tarojs/redux'
-import { Tracker } from '@/service'
+import { connect } from 'react-redux'
+// import { Tracker } from '@/service'
 import S from '@/spx'
 import entry from '@/utils/entry'
 import { getDistributorId } from '@/utils/helper'
@@ -157,9 +158,9 @@ export default class WgtGoods extends Component {
         const isOpenStore = await entry.getStoreStatus()
         const { distributor_id, store_id } = Taro.getStorageSync('curStore')
         let id = Number(item_data.distributor_id) || 0
-        if (process.env.APP_PLATFORM === 'standard' && !id) {
-          id = isOpenStore ? store_id : distributor_id
-        }
+        // if (process.env.APP_PLATFORM === 'standard' && !id) {
+        //   id = isOpenStore ? store_id : distributor_id
+        // }
 
         await api.cart.add({
           item_id: item_data.item_id,

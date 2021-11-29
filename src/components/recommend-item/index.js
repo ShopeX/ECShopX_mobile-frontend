@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Text, Image, Progress } from '@tarojs/components'
 import { Price, SpImg } from '@/components'
 import { isObject, classNames } from '@/utils'

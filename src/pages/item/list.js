@@ -1,14 +1,15 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
 import { BackToTop, Loading, TagsBar, FilterBar, SpSearchBar, GoodsItem, SpNote, SpNavBar, TabBar } from '@/components'
 import api from '@/api'
 import { Tracker } from "@/service";
-import { pickBy, classNames, isWeixin, isNavbar, isWebWechat, isEmojiCharacter, showToast } from '@/utils'
+import { pickBy, classNames, isWeixin, isNavbar } from '@/utils'
 import { setPageTitle } from '@/utils/platform'
-import entry from "@/utils/entry";
+import entry from "../../utils/entry";
 
 import './list.scss'
 
@@ -20,6 +21,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class List extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -49,7 +51,7 @@ export default class List extends Component {
   }
 
   async componentDidMount() {
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     this.firstStatus = true
     const isOpenStore = await entry.getStoreStatus()
     const { store_id } = Taro.getStorageSync('curStore')
@@ -59,15 +61,15 @@ export default class List extends Component {
 
     this.setState({
       query: {
-        keywords: this.$router.params.keywords,
+        keywords: this.$instance.router.params.keywords,
         item_type: 'normal',
         is_point: 'false',
-        distributor_id: isOpenStore ? store_id : this.$router.params.dis_id,
+        distributor_id: isOpenStore ? store_id : this.$instance.router.params.dis_id,
         approve_status: 'onsale,only_show',
         category: cat_id ? cat_id : '',
         main_category: main_cat_id ? main_cat_id : ''
       },
-      curTagId: this.$router.params.tag_id
+      curTagId: this.$instance.router.params.tag_id
     }, () => {
       this.nextPage()
       api.wx.shareSetting({ shareindex: 'itemlist' }).then(res => {
@@ -98,7 +100,7 @@ export default class List extends Component {
 
   onShareAppMessage() {
     const res = this.state.shareInfo
-    const { cat_id = '', main_cat_id = '' } = this.$router.params
+    const { cat_id = '', main_cat_id = '' } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
     return {
@@ -110,7 +112,7 @@ export default class List extends Component {
 
   onShareTimeline() {
     const res = this.state.shareInfo
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `cat_id=${cat_id}&main_cat_id=${main_cat_id}`
     return {
@@ -124,7 +126,7 @@ export default class List extends Component {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, tagsList, curTagId,isOpenStore } = this.state
     const { distributor_id,store_id } = Taro.getStorageSync('curStore')
-    const { cardId } = this.$router.params
+    const { cardId } = this.$instance.router.params
     const query = {
       ...this.state.query,
       item_params: selectParams,
@@ -147,7 +149,7 @@ export default class List extends Component {
     item_params_list.map(item => {
       if (selectParams.length < 4) {
         selectParams.push({
-          attribute_id: item.attribute_id,  
+          attribute_id: item.attribute_id,
           attribute_value_id: 'all'
         })
       }
@@ -457,11 +459,6 @@ export default class List extends Component {
   }
 
   handleConfirm = ( val ) => {
-    if ( isEmojiCharacter( val ) ) {
-      showToast('请输入正确的关键字查询')
-      return
-    }
-
     Tracker.dispatch("SEARCH_RESULT", {
       keywords: val
     } );
@@ -501,7 +498,7 @@ export default class List extends Component {
       isShowSearch,
       query
     } = this.state
-    const { isTabBar = '' } = this.$router.params
+    const { isTabBar = '' } = this.$instance.router.params
 		return (
       <View
         className={classNames('page-goods-list', {
@@ -612,8 +609,7 @@ export default class List extends Component {
           className={classNames(
             isTabBar ? 'goods-list__scroll_isTabBar' : 'goods-list__scroll',
             tagsList.length > 0 && 'with-tag-bar',
-            isTabBar && 'isTabBar',
-            isWebWechat() && 'isWeiBrowse'
+            isTabBar && 'isTabBar'
           )}
           scrollY
           scrollTop={scrollTop}

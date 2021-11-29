@@ -1,7 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 // import AddressList from '@/components/new-address/address'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpToast, SpCell, SpNavBar, SpCheckbox } from '@/components'
 import S from '@/spx'
 import api from '@/api'

@@ -1,11 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
 import { isWeixin, isAlipay, classNames, tokenParse } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import { PrivacyConfirmModal } from '@/components'
 
 import './index.scss'
@@ -74,7 +75,7 @@ export default class SpLogin extends Component {
         })
       }
       
-      await api.wx.newMarketing()
+      // await api.wx.newMarketing()
       await S.getMemberInfo()
       // const memberInfo = await api.member.memberInfo();
       // this.props.setMemberInfo( memberInfo )
@@ -226,11 +227,11 @@ export default class SpLogin extends Component {
           </Button>
         )}
 
-        <PrivacyConfirmModal
+        {/* <PrivacyConfirmModal
           isPhone={privacyVisible}
           visible={privacyVisible}
           onChange={this.onPrivateChange}
-        />
+        /> */}
       </View>
     )
   }

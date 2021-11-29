@@ -8,7 +8,7 @@
  * @LastEditors: PrendsMoi
  * @LastEditTime: 2021-04-22 13:56:53
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Button, Image } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
 

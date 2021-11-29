@@ -1,7 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-import qs from 'qs'
+import React, { Component } from 'react';
+import Taro,{getCurrentInstance} from "@tarojs/taro";
+import { View, Image } from "@tarojs/components";
+import { connect } from "react-redux";
+import qs from "qs";
 import {
   TabBar,
   BackToTop,
@@ -11,20 +12,27 @@ import {
   ScreenAd,
   CouponModal,
   PrivacyConfirmModal
-} from '@/components'
-import req from '@/api/req'
-import api from '@/api'
-import { pickBy, classNames, isArray, isAlipay, isWeixin, payTypeField } from '@/utils'
-import { platformTemplateName, setPageTitle } from '@/utils/platform'
-import entry from '@/utils/entry'
-import { withPager, withBackToTop } from '@/hocs'
-import S from '@/spx'
-import { Tracker } from '@/service'
-import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
-import HomeWgts from './home/comps/home-wgts'
-import Automatic from './home/comps/automatic'
+} from "@/components";
 
-import './home/index.scss'
+import req from "@/api/req";
+import api from "@/api";
+import {
+  pickBy,
+  classNames,
+  isArray,
+  isAlipay,
+  payTypeField,
+} from "@/utils";
+import entry from "@/utils/entry";
+import { withPager, withBackToTop } from "@/hocs";
+import S from "@/spx";
+// import { Tracker } from "@/service";
+import { setPageTitle, platformTemplateName } from "@/utils/platform";
+import { WgtGoodsFaverite, HeaderHome } from "./home/wgts";
+import HomeWgts from "./home/comps/home-wgts";
+import Automatic from "./home/comps/automatic";
+
+import "./home/index.scss";
 
 @connect(
   ({ cart, member, store }) => ({
@@ -33,18 +41,18 @@ import './home/index.scss'
     cartIds: cart.cartIds,
     cartCount: cart.cartCount,
     showLikeList: cart.showLikeList,
-    showAdv: member.showAdv,
-    favs: member.favs
+    // showAdv: member.showAdv,
+    // favs: member.favs
   }),
-  (dispatch) => ({
-    onUpdateLikeList: (show_likelist) =>
-      dispatch({ type: 'cart/updateLikeList', payload: show_likelist }),
-    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
+  dispatch => ({
+    onUpdateLikeList: show_likelist =>
+      dispatch({ type: "cart/updateLikeList", payload: show_likelist }),
+    onUpdateCartCount: count =>
+      dispatch({ type: "cart/updateCount", payload: count })
   })
 )
-// @withLogin()
 @withPager
-@withBackToTop
+// @withBackToTop
 export default class Home extends Component {
   constructor(props) {
     super(props)
@@ -87,27 +95,34 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    this.protocolUpdateTime();
+    // // console.log('APP_NAME',APP_NAME)
+    // console.log('process.env.APP_IMAGE_CDN',process.env.APP_IMAGE_CDN)
+    // this.protocolUpdateTime();
     this.getShareSetting();
     this.isShowTips();
+    this.getHomeSetting()
   }
 
   // 获取隐私政策时间
   async protocolUpdateTime() {
     const isLocal = await entry.getLocalSetting()
+    console.log('=============isLocal', isLocal)
 
-    const privacy_time = Taro.getStorageSync('PrivacyUpdate_time')
+    const time = Taro.getStorageSync('PrivacyUpdate_time')
     const result = await api.wx.getPrivacyTime()
     const { update_time } = result
 
-    if ((!String(privacy_time) || privacy_time != update_time) && isLocal) {
+    if ((!time || time != update_time) && isLocal) {
       this.setState({
         PrivacyConfirmModalVisible: true
       })
     } else {
       this.getHomeSetting()
     }
- 
+
+    // this.getHomeSetting();
+    // this.getShareSetting();
+    // this.isShowTips();
   }
   // 隐私协议
   PrivacyConfirmModalonChange = async (type) => {
@@ -163,7 +178,6 @@ export default class Home extends Component {
   }
 
   componentDidShow() {
-    setPageTitle('微商城')
     this.showInit()
     this.isShoppingGuide()
     this.getDistributionInfo()
@@ -192,7 +206,7 @@ export default class Home extends Component {
 
   // 下拉刷新
   onPullDownRefresh = () => {
-    Tracker.dispatch('PAGE_PULL_DOWN_REFRESH')
+    // Tracker.dispatch('PAGE_PULL_DOWN_REFRESH')
     this.resetPage()
     this.setState(
       {
@@ -222,9 +236,9 @@ export default class Home extends Component {
   }
 
   // 触底事件
-  // onReachBottom = () => {
-  //   this.nextPage()
-  // }
+  onReachBottom = () => {
+    this.nextPage()
+  }
 
   // 分享
   onShareAppMessage(params) {
@@ -383,6 +397,7 @@ export default class Home extends Component {
 
   // 获取首页配置
   getHomeSetting = async () => {
+    console.log('获取挂件配置getWgts')
     const is_open_store_status = await entry.getStoreStatus()
     const {
       is_open_recommend,
@@ -391,7 +406,7 @@ export default class Home extends Component {
       is_open_official_account
     } = Taro.getStorageSync('settingInfo')
     const isNeedLoacate = is_open_wechatapp_location == 1
-    const options = this.$router.params
+    const options = getCurrentInstance().router.params
     options.isStore = is_open_store_status
     const res = await entry.entryLaunch(options, isNeedLoacate)
     const { store } = res
@@ -421,22 +436,23 @@ export default class Home extends Component {
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
-    if (process.env.APP_PLATFORM === 'platform') {
-      curdis_id = 0
-    }
+    // if (process.env.APP_PLATFORM === 'platform') {
+    //   curdis_id = 0
+    // }
     return { distributor_id: curdis_id }
   }
 
   // 获取挂件配置
   getWgts = async () => {
+    console.log('获取挂件配置getWgts')
     const { curStore, is_open_store_status, is_open_recommend } = this.state
     let curdis_id = curStore && is_open_store_status ? curStore.store_id : curStore.distributor_id
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
-    if (process.env.APP_PLATFORM === 'platform' || isAlipay) {
-      curdis_id = 0
-    }
+    // if (process.env.APP_PLATFORM === 'platform' || isAlipay) {
+    //   curdis_id = 0
+    // }
 
     let pathparams = qs.stringify({
       template_name: platformTemplateName,
@@ -503,7 +519,7 @@ export default class Home extends Component {
   }
 
   // 获取猜你喜欢
-  fetch = async (params) => { 
+  fetch = async (params) => {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -614,12 +630,13 @@ export default class Home extends Component {
   }
 
   handleLoadMore = async (currentIndex, compType, currentTabIndex, currentLength) => {
+    console.log('handleLoadMore',currentIndex, compType, currentTabIndex, currentLength)
     if (isAlipay) return
     const { id } = this.state.wgtsList.find((_, index) => currentIndex === index) || {}
     this.currentLoadIndex = currentIndex
 
     let params = {
-      template_name: platformTemplateName,
+      template_name: "yykweishop",
       weapp_pages: 'index',
       page: 1,
       page_size: currentLength + 50,
@@ -697,7 +714,7 @@ export default class Home extends Component {
     // 广告屏
     const { showAdv } = this.props
     // 是否是标准版
-    const isStandard = process.env.APP_PLATFORM === 'standard' && !is_open_store_status
+    const isStandard = true // process.env.APP_PLATFORM === 'standard' && !is_open_store_status
     // 否是fixed
     const isFixed = positionStatus
 
@@ -727,9 +744,10 @@ export default class Home extends Component {
             !isFixed && !isStandard && 'platform'
           )}
         >
+
           {/* 挂件内容和猜你喜欢 */}
           <View className='wgts-wrap__cont'>
-            <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} />
+           {wgts && wgts.length && <HomeWgts wgts={wgts} loadMore={this.handleLoadMore}  />} 
             {!isAlipay && likeList.length > 0 && is_open_recommend == 1 && (
               <View className='faverite-list'>
                 <WgtGoodsFaverite info={likeList} />
@@ -741,8 +759,9 @@ export default class Home extends Component {
             )}
           </View>
         </View>
+
         {/* 浮动按钮 */}
-        <FloatMenus>
+        {/* <FloatMenus>
           {show_tabBar && featuredshop && (
             <Image
               className='distribution-shop'
@@ -751,17 +770,18 @@ export default class Home extends Component {
               onClick={this.handleClickShop.bind(this)}
             />
           )}
-          {advertList && advertList.length > 0 && !S.getAuthToken() && (
+          {advertList && advertList.length && !S.getAuthToken() && (
             <FloatMenuItem
               iconPrefixClass='iconfont icon'
               icon='present'
               onClick={this.handleSwitchAdvert.bind(this, -1)}
             />
           )}
-        </FloatMenus>
+        </FloatMenus> */}
+
         {/* 浮窗广告 */}
         {advertList &&
-          advertList.length > 0 &&
+          advertList.length &&
           !S.getAuthToken() &&
           advertList.map((item, index) => {
             return (
@@ -773,10 +793,12 @@ export default class Home extends Component {
               />
             )
           })}
+
         {/* 返回顶部 */}
-        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop.bind(this)} />
+        {/* <BackToTop show={showBackToTop} onClick={this.scrollBackToTop.bind(this)} /> */}
+        
         {/* addTip */}
-        {isShowAddTip && isWeixin && (
+        {isShowAddTip && !isAlipay && (
           <View className='add_tip'>
             <View class='tip-text'>点击“•●•”添加到我的小程序，微信首页下拉即可快速访问店铺</View>
             <View className='icon-close icon-view' onClick={this.handleClickCloseAddTip.bind(this)}>
@@ -784,17 +806,20 @@ export default class Home extends Component {
             </View>
           </View>
         )}
+
         {/* tabBar */}
-        <TabBar showbar={show_tabBar} />
+        {/* <TabBar showbar={show_tabBar} /> */}
+
         {/* 开屏广告 */}
-        {showAdv && <ScreenAd />}
-        <CouponModal visible={visible} list={all_card_list} onChange={this.handleCouponChange} />
+        {/* {showAdv && <ScreenAd />}
+        <CouponModal visible={visible} list={all_card_list} onChange={this.handleCouponChange} /> */}
+
         {/* 隐私弹窗 */}
-        <PrivacyConfirmModal
+        {/* <PrivacyConfirmModal
           visible={PrivacyConfirmModalVisible}
           onChange={this.PrivacyConfirmModalonChange}
           isPhone={false}
-        ></PrivacyConfirmModal>
+        ></PrivacyConfirmModal> */}
       </View>
     )
   }

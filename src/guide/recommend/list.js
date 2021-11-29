@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { SearchBar, RecommendItem, SpNote } from '@/components'
@@ -24,11 +25,6 @@ export default class RecommendList extends Component {
   async componentDidMount() {
     await S.autoLogin(this)
     this.nextPage()
-  }
-
-  config = {
-    navigationBarTitleText: '种草',
-    navigationStyle: 'custom'
   }
 
   componentDidShow() {}

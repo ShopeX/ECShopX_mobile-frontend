@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AddressChoose } from '@/components'
 
 import './deliver.scss'
@@ -9,6 +10,7 @@ import './deliver.scss'
   colors: colors.current
 }))
 export default class Deliver extends Component {
+  $instance = getCurrentInstance();
   static defaultProps = {
     list: [],
     curStore: {},
@@ -57,7 +59,7 @@ export default class Deliver extends Component {
 
   render() {
     const { curStore, receiptType, address, isOpenStore, colors } = this.props
-    const { goodType, type } = this.$router.params
+    const { goodType, type } = this.$instance.router.params
     // 收货方式[快递，同城，自提]
     const deliveryList = [
       {

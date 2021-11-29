@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import api from '@/api'
@@ -38,10 +39,6 @@ export default class nextNotice extends Component {
     if (timeId) {
       clearTimeout(timeId)
     }
-  }
-
-  config = {
-    navigationBarTitleText: '下期预告'
   }
 
   // 获取活动数据

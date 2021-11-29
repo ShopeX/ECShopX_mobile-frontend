@@ -1,13 +1,14 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import TradeItem from './comps/item'
 
 import './list.scss'
@@ -17,6 +18,7 @@ import './list.scss'
 }))
 @withPager
 export default class TradeList extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -36,7 +38,7 @@ export default class TradeList extends Component {
   }
 
   componentDidShow() {
-    const { status } = this.$router.params
+    const { status } = this.$instance.router.params
     const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
 
     if (tabIdx >= 0) {
@@ -212,7 +214,7 @@ export default class TradeList extends Component {
 
     if (type === 'confirm') {
       await api.trade.confirm(tid)
-      const { fullPath } = getCurrentRoute(this.$router)
+      const { fullPath } = getCurrentRoute(this.$instance.router)
       Taro.redirectTo({
         url: fullPath
       })

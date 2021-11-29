@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
-import { SpImg } from '@/components'
+// import { SpImg } from '@/components'
 import { classNames } from '@/utils'
 import { linkPage } from '@/utils/helper'
 import './index.scss'

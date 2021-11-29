@@ -1,9 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpCell, SpNavBar } from '@/components'
 import { goToPage } from '@/utils'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
 

@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpCheckbox, CouponItem, Loading, SpNote } from '@/components'
 import { pickBy } from '@/utils'
 import { withPager } from '@/hocs'
@@ -18,6 +19,7 @@ import './coupon-picker.scss'
 )
 @withPager
 export default class CouponPicker extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
     this.state = {
@@ -40,7 +42,7 @@ export default class CouponPicker extends Component {
       distributor_id,
       source,
       goodType
-    } = this.$router.params
+    } = this.$instance.router.params
     // const { curCoupon } = this.props
     const { page_no: page, page_size: pageSize } = query
 

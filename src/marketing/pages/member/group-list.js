@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import { Loading, SpNote, Price, SpNavBar } from '@/components'
 import _mapKeys from 'lodash/mapKeys'
@@ -9,10 +10,6 @@ import './group-list.scss'
 
 @withPager
 export default class myGroupList extends Component {
-  static config = {
-    navigationBarTitleText: '我的拼团'
-  }
-
   constructor(props) {
     super(props)
 

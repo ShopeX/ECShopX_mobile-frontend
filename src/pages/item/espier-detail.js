@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import {
   View,
   Text,
@@ -10,7 +11,7 @@ import {
   Video,
   Canvas
 } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
 import {
   Loading,
@@ -45,7 +46,7 @@ import {
 import { setPageTitle } from '@/utils/platform'
 import entry from '@/utils/entry'
 import S from '@/spx'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import {
   GoodsBuyToolbar,
   ItemImg,
@@ -59,7 +60,7 @@ import {
 } from './comps'
 import { linkPage } from '../home/wgts/helper'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
-import { getDtidIdUrl } from '@/utils/helper' 
+import { getDtidIdUrl } from '@/utils/helper'
 
 import './espier-detail.scss'
 
@@ -83,6 +84,7 @@ import './espier-detail.scss'
 @withBackToTop
 @withPointitem
 export default class EspierDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -127,7 +129,7 @@ export default class EspierDetail extends Component {
   }
 
   async componentDidMount() {
-    const options = await normalizeQuerys(this.$router.params)
+    const options = await normalizeQuerys(this.$instance.router.params)
     // Taro.showLoading({
     //   mask: true
     // });
@@ -186,7 +188,7 @@ export default class EspierDetail extends Component {
             if (id) {
               itemId = id
             } else {
-              itemId = this.$router.params.id
+              itemId = this.$instance.router.params.id
             }
             api.member.itemHistorySave(itemId)
           } catch (e) {
@@ -239,7 +241,7 @@ export default class EspierDetail extends Component {
     let params = {
       page: 1,
       pageSize: 2,
-      item_id: id || this.$router.params.id
+      item_id: id || this.$instance.router.params.id
     }
     if (this.isPointitemGood()) {
       params = {
@@ -333,7 +335,7 @@ export default class EspierDetail extends Component {
   }
 
   isPointitemGood() {
-    const options = this.$router.params
+    const options = this.$instance.router.params
     return options.type === 'pointitem'
   }
 
@@ -347,22 +349,13 @@ export default class EspierDetail extends Component {
     return info
   }
 
-  componentWillReceiveProps (next) { 
+  componentWillReceiveProps (next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       let is_fav = null
       setTimeout(() => {
         is_fav = Boolean(next.favs[this.state.info.item_id])
         this.setState({
           info: {...this.state.info, is_fav}
-        })
-        setTimeout(() => {
-          const likeList = this.state.likeList.map((item) => {
-            item.is_fav = Boolean(next.favs[item.item_id])
-            return item
-          })
-          this.setState({
-            likeList
-          })
         })
       }, 100)
     }
@@ -387,7 +380,7 @@ export default class EspierDetail extends Component {
     if (itemId) {
       id = itemId
     } else {
-      id = this.$router.params.id
+      id = this.$instance.router.params.id
     }
 
     const param = { goods_id: goodsId }
@@ -399,10 +392,10 @@ export default class EspierDetail extends Component {
     if (process.env.APP_PLATFORM === 'standard') {
       param.distributor_id = distributor_id
     } else {
-      if (this.$router.params.dtid) {
-        param.distributor_id = this.$router.params.dtid
+      if (this.$instance.router.params.dtid) {
+        param.distributor_id = this.$instance.router.params.dtid
       } else {
-        const options = this.$router.params
+        const options = this.$instance.router.params
         if (options.scene) {
           const query = await normalizeQuerys(options)
           if (query.dtid) {
@@ -449,7 +442,7 @@ export default class EspierDetail extends Component {
       }
     }
 
-    if ( this.$router.path === '/pages/item/espier-detail' ) {
+    if ( this.$instance.router.path === '/pages/item/espier-detail' ) {
       setPageTitle(info.item_name)
       // Taro.setNavigationBarTitle({
       //   title: info.item_name
@@ -536,7 +529,7 @@ export default class EspierDetail extends Component {
   }
 
   async goodLikeList(query) {
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     let info
     if (this.isPointitemGood()) {
       info = await api.pointitem.likeList({
@@ -549,7 +542,6 @@ export default class EspierDetail extends Component {
   }
 
   async fetch(params) {
-    console.log("====favs",this.props.favs)
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -570,8 +562,7 @@ export default class EspierDetail extends Component {
       },
       member_price: ({ member_price }) => (member_price / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-      desc: "brief",
-      is_fav: ({ item_id }) => Boolean(this.props.favs[item_id])
+      desc: "brief"
     });
 
     this.setState({
@@ -677,7 +668,7 @@ export default class EspierDetail extends Component {
   }
 
   handleParamsClick = () => {
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
 
     Taro.navigateTo({
       url: `/pages/item/item-params?id=${id}`
@@ -1026,7 +1017,7 @@ export default class EspierDetail extends Component {
     })
   }
   handleClickViewAllEvaluation() {
-    let url = `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
+    let url = `/marketing/pages/item/espier-evaluation?id=${this.$instance.router.params.id}`
     if (this.isPointitemGood()) {
       url += `&order_type=pointsmall`
     }
@@ -1038,7 +1029,7 @@ export default class EspierDetail extends Component {
   handleToRateList = () => {
     const { evaluationTotal } = this.state
     if (evaluationTotal > 0) {
-      let url = `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
+      let url = `/marketing/pages/item/espier-evaluation?id=${this.$instance.router.params.id}`
       if (this.isPointitemGood()) {
         url += `&order_type=pointsmall`
       }
@@ -1135,7 +1126,7 @@ export default class EspierDetail extends Component {
     const { info } = this.state
     const { distributor_id } = Taro.getStorageSync('curStore')
     const { itemId: item_id } = info
-    const { user_card_id, card_id, code } = this.$router.params
+    const { user_card_id, card_id, code } = this.$instance.router.params
     const params = { distributor_id, item_id, user_card_id }
     const res = await api.cart.exchangeGood(params)
     if (res.status == true) {
@@ -1202,7 +1193,7 @@ export default class EspierDetail extends Component {
     if (coupon_list && coupon_list.list.length >= 1) {
       new_coupon_list = coupon_list.list.slice(0, 3)
     }
-    let { isNewGift } = this.$router.params
+    let { isNewGift } = this.$instance.router.params
 
     console.log("==likeList==",likeList)
 
@@ -1559,7 +1550,8 @@ export default class EspierDetail extends Component {
             <View>
               {desc && <SpHtmlContent className='goods-detail__content' content={desc} />}
             </View>
-          )} 
+          )}
+
           {/* 猜你喜欢 */}
           {likeList.length && showLikeList ? (
             <View className="cart-list cart-list__disabled">
@@ -1582,6 +1574,7 @@ export default class EspierDetail extends Component {
                         key={item.item_id}
                         info={item}
                         onClick={this.handleClickItem.bind(this, item)}
+                  
                       />
                     </View>
                   );

@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { SpToast, Loading, BackToTop, SpNavBar } from '@/components'
 import req from '@/api/req'
@@ -13,6 +14,7 @@ import './custom-page.scss'
 
 @withBackToTop
 export default class HomeIndex extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -26,7 +28,7 @@ export default class HomeIndex extends Component {
   }
 
   async componentDidMount() {
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
       version: 'v1.0.1',
@@ -51,7 +53,7 @@ export default class HomeIndex extends Component {
   }
 
   async fetchInfo() {
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     const dtid = getDistributorId()
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
@@ -75,7 +77,7 @@ export default class HomeIndex extends Component {
 
   async onShareAppMessage() {
     const { shareInfo } = this.state
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}&id=${id}` : `?id=${id}`
     console.log(query)
@@ -88,7 +90,7 @@ export default class HomeIndex extends Component {
 
   onShareTimeline() {
     const { shareInfo } = this.state
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}&id=${id}` : `id=${id}`
     return {

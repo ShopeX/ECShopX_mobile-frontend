@@ -6,7 +6,7 @@ const canvasExp = {
     if (valign) ctx.setTextBaseline(valign)
     if (bold) {
       ctx.fillText(text, x, y)
-      ctx.fillText(text, x + 0.5, y + 0.5)
+      ctx.fillText(text, x+0.5, y+0.5)
     } else {
       ctx.fillText(text, x, y)
     }
@@ -15,14 +15,14 @@ const canvasExp = {
     let _x = x
     let _w = 0
     if (align === 'center') {
-      arr.map((item) => {
+      arr.map(item => {
         const width = ctx.measureText(item.text).width
         _w += width
       })
-      _x = x - _w / 2
+      _x = x - _w/2
     }
 
-    arr.map((item) => {
+    arr.map(item => {
       const { text, size, color, bold, lineThrough, valign } = item
       ctx.setFontSize(size)
       ctx.setFillStyle(color)
@@ -33,36 +33,24 @@ const canvasExp = {
       if (align === 'center') {
         ctx.fillText(text, _x, y)
         if (bold) {
-          ctx.fillText(text, _x + 0.5, y + 0.5)
+          ctx.fillText(text, _x+0.5, y+0.5)
         }
         if (lineThrough) {
-          ctx.moveTo(
-            _x,
-            valign === 'center' ? y : valign === 'bottom' ? y - size / 2 : y + size / 2
-          )
-          ctx.lineTo(
-            _x + w,
-            valign === 'center' ? y : valign === 'bottom' ? y - size / 2 : y + size / 2
-          )
+          ctx.moveTo (_x, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
+          ctx.lineTo (_x + w, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
           ctx.setLineWidth(1)
           ctx.setStrokeStyle(color)
           ctx.stroke()
         }
-        _x += w / 2 - 3
+        _x += w/2 - 3
       } else if (align === 'right') {
         ctx.fillText(text, _x, y)
         if (bold) {
-          ctx.fillText(text, _x + 0.5, y + 0.5)
+          ctx.fillText(text, _x+0.5, y+0.5)
         }
         if (lineThrough) {
-          ctx.moveTo(
-            _x,
-            valign === 'center' ? y : valign === 'bottom' ? y - size / 2 : y + size / 2
-          )
-          ctx.lineTo(
-            _x + w,
-            valign === 'center' ? y : valign === 'bottom' ? y - size / 2 : y + size / 2
-          )
+          ctx.moveTo (_x, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
+          ctx.lineTo (_x + w, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
           ctx.setLineWidth(1)
           ctx.setStrokeStyle(color)
           ctx.stroke()
@@ -71,17 +59,11 @@ const canvasExp = {
       } else {
         ctx.fillText(text, _x, y)
         if (bold) {
-          ctx.fillText(text, _x + 0.5, y + 0.5)
+          ctx.fillText(text, _x+0.5, y+0.5)
         }
         if (lineThrough) {
-          ctx.moveTo(
-            _x,
-            valign === 'center' ? y : valign === 'bottom' ? y - size / 2 : y + size / 2
-          )
-          ctx.lineTo(
-            _x + w,
-            valign === 'center' ? y : valign === 'bottom' ? y - size / 2 : y + size / 2
-          )
+          ctx.moveTo (_x, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
+          ctx.lineTo (_x + w, valign === 'center' ? y : valign === 'bottom' ? y - size/2 : y + size/2)
           ctx.setLineWidth(1)
           ctx.setStrokeStyle(color)
           ctx.stroke()
@@ -96,7 +78,7 @@ const canvasExp = {
     let chr = text.split('')
     let temp = ''
     for (let a = 0; a < chr.length; a++) {
-      if (ctx.measureText(temp).width < w - 50) {
+      if (ctx.measureText(temp).width < w-50) {
         temp += chr[a]
       } else {
         temp += '...'
@@ -121,8 +103,8 @@ const canvasExp = {
     //   }
     // })
 
-    chr.map((item, index) => {
-      if (ctx.measureText(temp).width < w) {
+    chr.map((item,index) =>{
+      if(ctx.measureText(temp).width < w) {
         temp += item
       } else {
         row.push(temp)
@@ -141,18 +123,18 @@ const canvasExp = {
     //   }
     // }
 
-    row.push(temp)
+   row.push(temp)
     let _y = y
     row.forEach((item, index) => {
-      console.log('index', index, rows)
-      if (index + 1 < rows) {
+      console.log('index',index,rows)
+      if (index+1 < rows) {
         ctx.fillText(item, x, _y)
       }
-      if (index + 1 === rows) {
+      if (index+1 === rows) {
         canvasExp.textOverflowFill(ctx, item, x, _y, w, size, color)
         //this.textOverflowFill(ctx, item, x, _y, w, size, color)
       }
-      _y = _y + 24
+      _y = _y+24
     })
   },
   drawImageFill: (ctx, img, x, y, w, h) => {

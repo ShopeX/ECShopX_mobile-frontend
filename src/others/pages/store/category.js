@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane, AtTabBar } from 'taro-ui'
 import api from '@/api'
 import { pickBy, getCurrentRoute } from '@/utils'
@@ -13,6 +14,7 @@ import './category.scss'
   store
 }))
 export default class Category extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -52,7 +54,7 @@ export default class Category extends Component {
       image_url: 'image_url',
       children: 'children'
     })*/
-    const options = this.$router.params
+    const options = this.$instance.router.params
     const id = options.id
     const query = {
       template_name: platformTemplateName,
@@ -150,9 +152,9 @@ export default class Category extends Component {
     if (cur !== current) {
       const curTab = this.state.tabBarList[current]
       const { url } = curTab
-      const options = this.$router.params
+      const options = this.$instance.router.params
       const id = options.id
-      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
       if (url && fullPath !== url) {
         Taro.redirectTo({ url: `${url}${param}` })
@@ -162,7 +164,7 @@ export default class Category extends Component {
 
   render() {
     const { curTabIdx, tabList, list, hasSeries, isChanged, localCurrent, tabBarList } = this.state
-    const options = this.$router.params
+    const options = this.$instance.router.params
     return (
       <View className='page-category-index'>
         {tabList.length !== 0 ? (

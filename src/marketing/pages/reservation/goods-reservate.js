@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtInput, AtCheckbox, AtFloatLayout, AtTextarea } from 'taro-ui'
 import { SpToast, SpCheckbox } from '@/components'
@@ -16,6 +17,7 @@ import './goods-reservate.scss'
 @withPager
 @withBackToTop
 export default class GoodsReservate extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -39,7 +41,7 @@ export default class GoodsReservate extends Component {
 
   async fetch() {
     const { activity_info } = await api.user.registrationActivity({
-      activity_id: this.$router.params.activity_id
+      activity_id: this.$instance.router.params.activity_id
     })
     if (!activity_info) {
       this.setState({

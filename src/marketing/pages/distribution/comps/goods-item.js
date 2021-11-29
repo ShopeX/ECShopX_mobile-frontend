@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Text, Image, Button } from '@tarojs/components'
 // import { AtButton } from 'taro-ui'
 import { classNames } from '@/utils'

@@ -1,16 +1,18 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Progress, Text, Button } from '@tarojs/components'
 import { pickBy, normalizeQuerys } from '@/utils'
 import { SpNavBar, SpLogin, SpFloatPrivacy } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import './index.scss'
 
 @connect(({ member }) => ({
   memberData: member.member
 }))
 export default class Flop extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -31,16 +33,12 @@ export default class Flop extends Component {
     S.getAuthToken() && this.handleClickWxOAuth()
   }
 
-  config = {
-    navigationBarTitleText: '帮砍'
-  }
-
   // 获取助力详情wechat-taroturntable
   getBoostDetail = async () => {
     Taro.showLoading({ mask: true })
-    let { bargain_id, user_id } = this.$router.params
-    if (this.$router.params.scene) {
-      const query = await normalizeQuerys(this.$router.params)
+    let { bargain_id, user_id } = this.$instance.router.params
+    if (this.$instance.router.params.scene) {
+      const query = await normalizeQuerys(this.$instance.router.params)
       if (query.bid) {
         bargain_id = query.bid
       }

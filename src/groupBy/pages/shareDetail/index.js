@@ -8,7 +8,8 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-07-08 18:39:56
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text, ScrollView } from '@tarojs/components'
 import api from '@/api'
 import BuyerItem from '../../component/buyerItem'
@@ -17,6 +18,7 @@ import { formatCountTime } from '../../utils/index'
 import './index.scss'
 
 export default class ShareDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
     this.state = {
@@ -53,10 +55,6 @@ export default class ShareDetail extends Component {
     }
   }
 
-  config = {
-    navigationBarTitleText: '分享详情'
-  }
-
   // 倒计时
   countdown = () => {
     let { countTime, timeId } = this.state
@@ -83,7 +81,7 @@ export default class ShareDetail extends Component {
 
   // 获取商品详情
   getGoodInfo = () => {
-    const { itemId, aid, cid } = this.$router.params
+    const { itemId, aid, cid } = this.$instance.router.params
     api.groupBy
       .activityGoodDetail({
         item_id: itemId,
@@ -135,7 +133,7 @@ export default class ShareDetail extends Component {
 
   // 立即抢购
   buy = () => {
-    const { itemId, aid, cid } = this.$router.params
+    const { itemId, aid, cid } = this.$instance.router.params
     Taro.redirectTo({
       url: `/groupBy/pages/goodDetail/index?itemId=${itemId}&activeId=${aid}&cid=${cid}`
     })

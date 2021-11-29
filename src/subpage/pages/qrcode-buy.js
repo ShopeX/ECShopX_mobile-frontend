@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtFloatLayout } from 'taro-ui'
 import { SpToast, CouponItem, SpCheckbox, SpHtmlContent } from '@/components'
@@ -16,6 +17,7 @@ import '../../pages/member/qrcode-buy.scss'
 @withPager
 @withBackToTop
 export default class QrcodeBuy extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -31,8 +33,8 @@ export default class QrcodeBuy extends Component {
   }
 
   async componentDidMount() {
-    const options = this.$router.params
-    const query = await normalizeQuerys(this.$router.params)
+    const options = this.$instance.router.params
+    const query = await normalizeQuerys(this.$instance.router.params)
     console.log(query, 38)
     Taro.setStorageSync('isqrcode', query.qrcode)
     Taro.setStorageSync('odtid', query.odtid)

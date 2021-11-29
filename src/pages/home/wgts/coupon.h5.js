@@ -1,10 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Button } from '@tarojs/components'
 import { SpImg, SpToast, CouponModal } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { classNames } from '@/utils'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 
 import './coupon.scss'
 

@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Image, Text, Button } from '@tarojs/components'
 import { Loading, SpNote } from '@/components'
 import { classNames, pickBy, getCurrentRoute } from '@/utils'
@@ -11,6 +12,7 @@ import './shop-category.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -51,7 +53,7 @@ export default class DistributionShopCategory extends Component {
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     })
-    const { status } = this.$router.params
+    const { status } = this.$instance.router.params
     const { tabList } = this.state
     tabList[0].url += `?status=${status}`
     this.setState({
@@ -198,7 +200,7 @@ export default class DistributionShopCategory extends Component {
       const curTab = this.state.tabList[current]
       const { url } = curTab
 
-      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
         Taro.redirectTo({ url })
       }
@@ -246,7 +248,7 @@ export default class DistributionShopCategory extends Component {
   }
 
   render() {
-    const { status } = this.$router.params
+    const { status } = this.$instance.router.params
     const {
       list,
       hasSeries,

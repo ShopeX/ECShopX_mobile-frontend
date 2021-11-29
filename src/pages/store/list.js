@@ -1,8 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView, Picker, Input, Image } from '@tarojs/components'
 import { SpNavBar, Loading, SpPageNote } from '@/components'
 import api from '@/api'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
 import entry from '@/utils/entry'
@@ -17,6 +18,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class StoreList extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -167,7 +169,7 @@ export default class StoreList extends Component {
   }
 
   async fetch(params) {
-    const { card_id = null } = this.$router.params
+    const { card_id = null } = this.$instance.router.params
     const { query: searchParam, location } = this.state
     const { latitude = '', longitude = '' } = location
     const { page_no: page, page_size: pageSize } = params

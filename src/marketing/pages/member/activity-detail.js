@@ -8,9 +8,10 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-08-17 15:34:00
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 // import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 import { isArray } from '@/utils'
@@ -21,6 +22,7 @@ import './activity-detail.scss'
   colors: colors.current
 }))
 export default class ActivityDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -35,7 +37,7 @@ export default class ActivityDetail extends Component {
 
   async fetch() {
     const { content } = await api.user.registrationRecordInfo({
-      record_id: this.$router.params.record_id
+      record_id: this.$instance.router.params.record_id
     })
 
     let answer_data = []

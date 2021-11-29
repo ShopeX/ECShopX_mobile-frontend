@@ -1,11 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer, AtInput } from 'taro-ui'
 import { BackToTop, Loading, SpNote, TabBar, HomeCapsule } from '@/components'
 import api from '@/api'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import { classNames, isWeixin, getPointName } from '@/utils'
 import throttle from 'lodash/throttle'
 import Header from './comps/header'
@@ -20,6 +21,7 @@ import './list.scss'
 }))
 @withPager
 export default class List extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -69,17 +71,8 @@ export default class List extends Component {
     }
   }
 
-  config = {
-    enablePullDownRefresh: true,
-    onReachBottomDistance: 80,
-    backgroundTextStyle: 'dark',
-    navigationBarTitleText: '',
-    navigationBarTextStyle: 'white',
-    navigationStyle: 'custom'
-  }
-
   async componentDidMount() {
-    const { keywords, dis_id, cat_id, main_cat_id } = this.$router.params
+    const { keywords, dis_id, cat_id, main_cat_id } = this.$instance.router.params
 
     this.init()
 
@@ -134,7 +127,7 @@ export default class List extends Component {
     this.getWechatNavBarHeight()
     this.fetchUserInfo()
 
-    const options = this.$router.params
+    const options = this.$instance.router.params
   }
 
   async fetchUserInfo() {

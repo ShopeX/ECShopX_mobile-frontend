@@ -1,19 +1,22 @@
-.has-navbar {
-  .goods-list__toolbar {
-    top: $navigate-height-h5 !important;
-  }
-}
+
 .page-goods-list {
   background: $color-bg-gray;
-  .isWeiBrowse {
-    top: 5.2rem !important;
-  }
+  /*  #ifdef  h5  */  
+  // &.has-navbar{
+  //   padding-top: $navigate-height-h5;
+  // }
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   .goods-list {
     margin: 0 -10px;
     &__toolbar {
       position: fixed;
       padding-top: 10px;
       top: 0;   
+      /*  #ifdef  h5  */
+      top: $navigate-height-h5;
+      /*  #endif  */
       left: 0;
       width: 100%;
       z-index: $z-index-toolbar;

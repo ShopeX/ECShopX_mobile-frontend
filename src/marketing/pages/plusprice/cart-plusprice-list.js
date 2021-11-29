@@ -1,9 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar, SpCheckbox } from '@/components'
 // import { AtCountdown } from 'taro-ui'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
 import { getDistributorId } from '@/utils/helper'
 import { pickBy, classNames, isNavbar } from '@/utils'
@@ -16,6 +17,7 @@ import './plusprice.scss'
 @withPager
 @withBackToTop
 export default class DetailPluspriceList extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -26,10 +28,6 @@ export default class DetailPluspriceList extends Component {
       timer: null,
       list: []
     }
-  }
-
-  config = {
-    navigationBarTitleText: '优惠换购'
   }
 
   componentDidMount() {
@@ -89,7 +87,7 @@ export default class DetailPluspriceList extends Component {
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
-      marketing_id: this.$router.params.marketing_id,
+      marketing_id: this.$instance.router.params.marketing_id,
       page,
       pageSize
     }

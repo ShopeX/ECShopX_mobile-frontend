@@ -1,7 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components'
 import { AtTabslist, SpImg } from '@/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { getDistributorId } from '@/utils/helper'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
@@ -45,26 +46,26 @@ export default class WgtGoodsGridTab extends Component {
 
   startWrapperTrack() {
     this.endWrapperTrack()
-    const observer = Taro.createIntersectionObserver({
-      observeAll: true
-    })
+    // const observer = Taro.createIntersectionObserver({
+    //   observeAll: true
+    // })
 
-    const {
-      type,
-      info: { list, data, more },
-      onLoadMore = () => {},
-      index
-    } = this.props
-    const { goodsList, current } = this.state
-    let direction = type === 'good-scroll' ? 'right' : 'bottom'
-    observer.relativeToViewport({ [direction]: 0 }).observe('.lastItem', (res) => {
-      if (res.intersectionRatio > 0) {
-        if (list[current].more) {
-          onLoadMore(index, type, current, goodsList.length)
-        }
-      }
-    })
-    this.wrapperobserver = observer
+    // const {
+    //   type,
+    //   info: { list, data, more },
+    //   onLoadMore = () => {},
+    //   index
+    // } = this.props
+    // const { goodsList, current } = this.state
+    // let direction = type === 'good-scroll' ? 'right' : 'bottom'
+    // observer.relativeToViewport({ [direction]: 0 }).observe('.lastItem', (res) => {
+    //   if (res.intersectionRatio > 0) {
+    //     if (list[current].more) {
+    //       onLoadMore(index, type, current, goodsList.length)
+    //     }
+    //   }
+    // })
+    // this.wrapperobserver = observer
   }
 
   endWrapperTrack() {
@@ -150,7 +151,7 @@ export default class WgtGoodsGridTab extends Component {
                     </View> */}
           </View>
         )}
-        <AtTabslist tabList={info.list} onClick={this.handleClick.bind(this)}></AtTabslist>
+        {/* <AtTabslist tabList={info.list} onClick={this.handleClick.bind(this)}></AtTabslist> */}
 
         <View className='wgt__body with-padding'>
           <View className='grid-goods out-padding grid-goods__type-grid'>

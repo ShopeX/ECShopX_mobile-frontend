@@ -5,7 +5,7 @@ export default function withPointitem(Component) {
     }
 
     isPointitem() {
-      const options = this.$router.params
+      const options = getCurrentInstance().params
       return options.type === 'pointitem'
     }
 

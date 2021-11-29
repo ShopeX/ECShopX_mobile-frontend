@@ -1,8 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Navigator, Form, Button, Picker } from '@tarojs/components'
 import { AtInput, AtButton, AtList, AtListItem } from 'taro-ui'
 import S from '@/spx'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpNavBar, SpToast } from '@/components'
 import api from '@/api'
 import { pickBy, classNames } from '@/utils'
@@ -24,9 +25,6 @@ export default class DistributionDashboard extends Component {
       selectorChecked: [],
       bankData
     }
-  }
-  config = {
-    navigationBarTitleText: '绑定银行卡'
   }
   componentDidMount() {
     const { colors } = this.props

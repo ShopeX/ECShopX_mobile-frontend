@@ -1,17 +1,19 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import api from '@/api'
 import { Loading, SpNavBar, SpToast } from '@/components'
 import { pickBy, browser, getPointName } from '@/utils'
 import { withLogin } from '@/hocs'
 import { AlipayPay, WeH5Pay, WePay } from './comps'
-import { getPaymentList } from '@/utils/payment'
+// import { getPaymentList } from '@/utils/payment'
 import { PAYTYPE } from '@/consts'
 
 import './index.scss'
 
 @withLogin()
 export default class Cashier extends Component {
+  $instance = getCurrentInstance();
   state = {
     info: null,
     env: '',
@@ -24,19 +26,20 @@ export default class Cashier extends Component {
   }
 
   async componentDidMount(){ 
-    const { isHasAlipay } = await getPaymentList();
+    // const { isHasAlipay } = await getPaymentList();
+    const isHasAlipay = []
     this.setState({
       isHasAlipay
     })
   }
 
   isPointitemGood() {
-    const options = this.$router.params
+    const options = this.$instance.router.params
     return options.type === 'pointitem'
   }
 
   async fetch() {
-    const { order_id,pay_type } = this.$router.params
+    const { order_id,pay_type } = this.$instance.router.params
 
     let env = ''
     if (browser.weixin) {

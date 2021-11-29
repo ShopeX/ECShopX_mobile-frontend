@@ -1,17 +1,14 @@
 @import "@/style/imports";
-$padding-top:10px;
 
-.page-goods-evaluation { 
-
-  @include page-scroll($padding-top);
-
-  &.has-navbar{
-    @include page-scroll(0);
-  } 
-
+.page-goods-evaluation {
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
   .goods-detail__scroll {
-   
-    
+    @include page-scroll($navigate-height);
+    /*  #ifdef  h5  */
+    @include page-scroll($navigate-height-h5);
+    /*  #endif  */
   }
   .goods-evaluation-wrap {
     background: #fff;

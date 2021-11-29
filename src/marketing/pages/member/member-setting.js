@@ -1,10 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Button } from '@tarojs/components'
 import req from '@/api/req'
 import { SpCell, SpNavBar } from '@/components'
 import S from '@/spx'
 import { goToPage, isWeb } from '@/utils'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import DestoryConfirm from './comps/destory-comfirm-modal'
 
 import './member-setting.scss'
@@ -34,10 +35,6 @@ export default class SettingIndex extends Component {
 
   componentDidShow() {
     this.fetchRedirect()
-  }
-
-  config = {
-    navigationBarTitleText: '设置'
   }
 
   // 获取积分个人信息跳转

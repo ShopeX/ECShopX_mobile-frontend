@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Form, Text, Image } from '@tarojs/components'
 import { AtSearchBar } from 'taro-ui'
 import { classNames } from '@/utils'

@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpToast, Loading, BackToTop } from '@/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
@@ -30,6 +31,7 @@ import './index.scss'
 }))
 @withBackToTop
 export default class StoreIndex extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -58,7 +60,7 @@ export default class StoreIndex extends Component {
   }
 
   async componentDidMount() {
-    const options = await normalizeQuerys(this.$router.params)
+    const options = await normalizeQuerys(this.$instance.router.params)
     const id = options.id || options.dtid
     if (id) {
       this.fetchInfo(id)
@@ -82,8 +84,8 @@ export default class StoreIndex extends Component {
     }
     return {
       title: this.state.storeInfo ? this.state.storeInfo.name : '店铺商品',
-      path: `/pages/store/index?id=${this.$router.params.id}`
-    }
+      path: `/pages/store/index?id=${this.$instance.router.params.id}`
+    };
   }
 
   async fetchInfo(distributorId) {
@@ -177,10 +179,10 @@ export default class StoreIndex extends Component {
     if (cur !== current) {
       const curTab = this.state.tabList[current]
       const { url } = curTab
-      const options = await normalizeQuerys(this.$router.params)
+      const options = await normalizeQuerys(this.$instance.router.params)
       const id = options.id || options.dtid
       const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
-      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
         Taro.redirectTo({ url: `${url}${param}` })
       }
@@ -194,7 +196,9 @@ export default class StoreIndex extends Component {
       showBackToTop,
       scrollTop,
       tabList,
-      localCurrent, 
+      localCurrent,
+      isShowAddTip,
+      authStatus
     } = this.state
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
@@ -205,7 +209,7 @@ export default class StoreIndex extends Component {
     return (
       <View className='page-store-index'>
         <ScrollView
-          className='wgts-wrap wgts-wrap__fixed__page'
+          className='wgts-wrap wgts-wrap__fixed'
           scrollTop={scrollTop}
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
@@ -227,25 +231,25 @@ export default class StoreIndex extends Component {
               return (
                 <View className='wgt-wrap' key={`${item.name}${idx}`}>
                   {item.name === 'search' && (
-                    <WgtSearchHome info={item} dis_id={this.$router.params.id} />
+                    <WgtSearchHome info={item} dis_id={this.$instance.router.params.id} />
                   )}
                   {item.name === 'slider' && <WgtSlider info={item} />}
                   {item.name === 'film' && <WgtFilm info={item} />}
                   {item.name === 'marquees' && <WgtMarquees info={item} />}
                   {item.name === 'navigation' && <WgtNavigation info={item} />}
                   {item.name === 'coupon' && (
-                    <WgtCoupon info={item} dis_id={this.$router.params.id} />
+                    <WgtCoupon info={item} dis_id={this.$instance.router.params.id} />
                   )}
                   {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
                   {item.name === 'goodsScroll' && (
-                    <WgtGoodsScroll info={item} dis_id={this.$router.params.id} />
+                    <WgtGoodsScroll info={item} dis_id={this.$instance.router.params.id} />
                   )}
                   {item.name === 'goodsGrid' && (
-                    <WgtGoodsGrid info={item} dis_id={this.$router.params.id} />
+                    <WgtGoodsGrid info={item} dis_id={this.$instance.router.params.id} />
                   )}
                   {item.name === 'showcase' && <WgtShowcase info={item} />}
                 </View>
-              )
+              );
             })}
           </View>
         </ScrollView>
@@ -255,6 +259,6 @@ export default class StoreIndex extends Component {
         <SpToast />
         <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
       </View>
-    )
+    );
   }
 }

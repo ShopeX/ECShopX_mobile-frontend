@@ -1,10 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import api from '@/api'
 
 import './we.scss'
 
 export default class WeappBtn extends Component {
+  $instance = getCurrentInstance();
   static options = {
     addGlobalClass: true
   }
@@ -26,7 +28,7 @@ export default class WeappBtn extends Component {
   }
 
   handleClickPay = async () => {
-    const { order_id } = this.$router.params
+    const { order_id } = this.$instance.router.params
     const { orderType = 'normal' } = this.props
 
     const params = {

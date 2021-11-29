@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, Text, Navigator } from '@tarojs/components'
 import api from '@/api'
 import { SpNavBar } from '@/components'
@@ -14,7 +14,7 @@ export default class DistributionStatistics extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidMount() {
     this.fetch()
   }
 

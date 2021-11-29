@@ -1,4 +1,4 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { PureComponent } from 'react';
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { styleNames } from '@/utils'
 import '../slider.scss'

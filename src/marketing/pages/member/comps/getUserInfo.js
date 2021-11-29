@@ -1,4 +1,4 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { Button, View } from '@tarojs/components'
 
 export default class GetUserInfoBtn extends Component {

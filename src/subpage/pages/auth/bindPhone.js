@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Input, Button } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
 import { SpTimer } from '@/components'
 import S from '@/spx'
@@ -30,10 +31,6 @@ export default class BindPhone extends Component {
   componentDidMount() {
     this.getStoreSettingInfo()
     this.getUserInfo()
-  }
-
-  config = {
-    navigationBarTitleText: '修改手机号'
   }
 
   // 获取总店配置信息

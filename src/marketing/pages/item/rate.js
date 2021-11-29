@@ -1,9 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import { Loading } from '@/components'
 import api from '@/api'
 import { withLogin } from '@/hocs'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
 import { AtRate, AtTextarea, AtImagePicker } from 'taro-ui'
 import imgUploader from '@/utils/upload'
@@ -18,6 +19,7 @@ import './rate.scss'
 )
 @withLogin()
 export default class TradeRate extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -32,12 +34,8 @@ export default class TradeRate extends Component {
     this.fetch()
   }
 
-  config = {
-    navigationBarTitleText: '发表评价'
-  }
-
   async fetch() {
-    const { id } = this.$router.params
+    const { id } = this.$instance.router.params
     const data = await api.trade.detail(id)
 
     Taro.showLoading({

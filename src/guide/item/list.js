@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
 import {
@@ -16,7 +17,7 @@ import {
 } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-import { Tracker } from '@/service'
+// import { Tracker } from '@/service'
 import { pickBy, classNames } from '@/utils'
 import entry from '../../utils/entry'
 import { BaNavBar } from '../components'
@@ -30,6 +31,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class List extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -55,7 +57,7 @@ export default class List extends Component {
   }
 
   async componentDidMount() {
-    const { cat_id = null, main_cat_id = null, gu, sence } = this.$router.params
+    const { cat_id = null, main_cat_id = null, gu, sence } = this.$instance.router.params
 
     this.firstStatus = true
     const isOpenStore = await entry.getStoreStatus()
@@ -68,7 +70,7 @@ export default class List extends Component {
     this.setState(
       {
         query: {
-          keywords: this.$router.params.keywords,
+          keywords: this.$instance.router.params.keywords,
           item_type: 'normal',
           is_point: 'false',
           distributor_id: storeInfo.distributor_id,
@@ -77,7 +79,7 @@ export default class List extends Component {
           category: cat_id ? cat_id : '',
           main_category: main_cat_id ? main_cat_id : ''
         },
-        curTagId: this.$router.params.tag_id
+        curTagId: this.$instance.router.params.tag_id
       },
       () => {
         this.nextPage()
@@ -104,14 +106,9 @@ export default class List extends Component {
     }
   }
 
-  config = {
-    navigationStyle: 'custom',
-    navigationBarTitleText: '导购商城'
-  }
-
   // onShareAppMessage() {
   //   const res = this.state.shareInfo
-  //   const { cat_id = '', main_cat_id = '' } = this.$router.params
+  //   const { cat_id = '', main_cat_id = '' } = getCurrentInstance().params
   //   const { userId } = Taro.getStorageSync('userinfo')
   //   const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
   //   return {
@@ -123,7 +120,7 @@ export default class List extends Component {
 
   onShareTimeline() {
     const res = this.state.shareInfo
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId
       ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}`
@@ -139,7 +136,7 @@ export default class List extends Component {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, tagsList, curTagId, isOpenStore } = this.state
     //const { distributor_id,store_id } = Taro.getStorageSync('curStore')
-    const { cardId } = this.$router.params
+    const { cardId } = this.$instance.router.params
     const query = {
       ...this.state.query,
       item_params: selectParams,
@@ -532,7 +529,7 @@ export default class List extends Component {
       isShowSearch,
       query
     } = this.state
-    const { isTabBar = '' } = this.$router.params
+    const { isTabBar = '' } = this.$instance.router.params
     const navbar_height = S.get('navbar_height', true)
     return (
       <View className='page-goods-list'>

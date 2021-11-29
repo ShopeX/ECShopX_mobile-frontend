@@ -1,10 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
-import { pickBy, isNavbar, classNames } from '@/utils'
+import { pickBy } from '@/utils'
 import { BackToTop, Loading, GoodsItem, SpNavBar, SpNote, RecommendItem } from '@/components'
 import StoreFavItem from './comps/store-fav-item'
 
@@ -33,20 +34,6 @@ export default class ItemFav extends Component {
 
   componentDidMount() {
     this.nextPage()
-  }
-
-  componentWillReceiveProps (next) {
-    if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
-      setTimeout(() => {
-        const list = this.state.list.map(item => {
-          item.is_fav = Boolean(next.favs[item.item_id])
-          return item
-        })
-        this.setState({
-          list
-        })
-      })
-    }
   }
 
   async fetch(params) {
@@ -184,6 +171,7 @@ export default class ItemFav extends Component {
 
   render() {
     const { list, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
+
     return (
       <View className='page-goods-fav'>
         <SpNavBar title='收藏' leftIconType='chevron-left' fixed='true' />
@@ -198,7 +186,7 @@ export default class ItemFav extends Component {
           ))}
         </AtTabs>
         <ScrollView
-          className={classNames(isNavbar ? 'goods-list__navbar' : 'goods-list__scroll')}
+          className='goods-list__scroll'
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation

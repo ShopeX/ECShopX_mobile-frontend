@@ -1,0 +1,150 @@
+.pages-member-index {
+  padding-bottom: $tabbar-height;
+  .header-block {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+  .usericon {
+    border: 4px solid #fff;
+    width: 110px;
+    height: 110px;
+    border-radius: 50px;
+    margin-right: 20px;
+    overflow: hidden;
+  }
+  .header-hd {
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    .username {
+      font-size: 32px;
+      color: #222;
+      margin-right: 24px;
+    }
+    .icon-erweima-01 {
+      color: var(--color-primary);
+      font-size: 38px;
+    }
+    .join-us-txt {
+      color: var(--color-primary);
+      // text-decoration: underline;
+      // text-underline-offset: 2px;
+    }
+  }
+  .header-bd {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .bd-item {
+      flex: 1;
+      text-align: center;
+    }
+    .bd-item-label {
+      color: #666;
+      font-size: 24px;
+    }
+    .bd-item-value {
+      color: #333;
+      font-size: 36px;
+    }
+  }
+  .header-ft {
+
+  }
+
+  .body-block {
+    padding: 24px 16px;
+    .comp-panel {
+      margin-bottom: 24px;
+    }
+  }
+  .ziti-order {
+    background: #F5F5F5;
+    display: flex;
+    align-items: center;
+    padding: 20px 16px;
+    margin-bottom: 24px;
+    &-info {
+      flex: 1;
+    }
+    .icon-qianwang-01 {
+      font-size: 24px;
+      color: #aaa;
+    }
+    .title {
+      font-size: 30px;
+      color: #444;
+      font-weight: bold;
+    }
+    .ziti-txt {
+      font-size: 24px;
+      color: #444;
+    }
+    .ziti-num {
+      color: #da760c;
+    }
+  }
+  .order-con {
+    display: flex;
+    .order-item {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .order-bradge {
+      font-size: 22px;
+      background-color: var(--color-primary);
+      display: block;
+      border-radius: 12px 12px 12px 0;
+      color: #fff;
+      position: absolute;
+      right: 20px;
+      top: 0;
+      width: 34px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+    }
+    .order-txt {
+      font-size: 24px;
+      color: #222;
+    }
+  }
+
+  .service-block {
+    background: #fff;
+    box-shadow: 0px 2px 10px 0px rgba(234, 231, 224, 1);
+    margin: 0 16px 24px;
+    .block-hd {
+      color: #333;
+      font-size: 36px;
+      font-weight: bold;
+      padding: 36px 25px;
+    }
+  }
+
+  .btn-share {
+    border-width: 0;
+    height: inherit;
+    line-height: inherit;
+    padding: 0;
+    width: fit-content;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &:after {
+      border-width: 0;
+    }
+
+  }
+
+  .dibiao-block {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+}

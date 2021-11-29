@@ -8,13 +8,15 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-11-19 15:20:48
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import api from '@/api'
 
 import './we.scss'
 
 export default class WeappBtn extends Component {
+  $instance = getCurrentInstance();
   static options = {
     addGlobalClass: true
   }
@@ -24,7 +26,7 @@ export default class WeappBtn extends Component {
   }
 
   handleClickPay = async () => {
-    let { code } = this.$router.params
+    let { code } = this.$instance.router.params
 
     let { open_id } = await api.wx.getOpenid({ code })
 

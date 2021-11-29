@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpNavBar } from '@/components'
 import api from '@/api'
 import userIcon from '@/assets/imgs/user-icon.png'
@@ -11,6 +12,7 @@ import './qrcode.scss'
   colors: colors.current
 }))
 export default class DistributionQrcode extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -30,7 +32,7 @@ export default class DistributionQrcode extends Component {
 
   async fetch() {
     const { username, avatar, userId } = Taro.getStorageSync('userinfo')
-    let { isOpenShop, status } = this.$router.params
+    let { isOpenShop, status } = this.$instance.router.params
     isOpenShop = JSON.parse(isOpenShop)
     status = JSON.parse(status)
     const url = isOpenShop && status ? `marketing/pages/distribution/shop-home` : `pages/index`

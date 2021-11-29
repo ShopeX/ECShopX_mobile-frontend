@@ -1,8 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Navigator, Form, Button } from '@tarojs/components'
 import { AtInput, AtButton } from 'taro-ui'
 import S from '@/spx'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { SpNavBar, SpToast } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -20,9 +21,6 @@ export default class DistributionDashboard extends Component {
       info: {},
       isTrue: false
     }
-  }
-  config = {
-    navigationBarTitleText: '实名认证'
   }
   componentDidMount() {
     const { colors } = this.props

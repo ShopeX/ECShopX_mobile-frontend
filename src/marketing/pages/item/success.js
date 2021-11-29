@@ -1,12 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 
 import './success.scss'
 
 export default class TradeRateSuccess extends Component {
-  config = {
-    navigationBarTitleText: '评价成功'
-  }
   constructor(props) {
     super(props)
 

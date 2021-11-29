@@ -1,7 +1,8 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtDrawer } from 'taro-ui'
 import {
   BackToTop,
@@ -24,9 +25,7 @@ import './list.scss'
 @withPager
 @withBackToTop
 export default class RecommendList extends Component {
-  static config = {
-    navigationBarTitleText: '文章'
-  }
+  $instance = getCurrentInstance();
 
   constructor(props) {
     super(props)
@@ -55,7 +54,7 @@ export default class RecommendList extends Component {
   }
 
   componentDidShow() {
-    const params = this.$router.params
+    const params = this.$instance.router.params
     if (params) {
       const { id, name } = params
       this.setState({

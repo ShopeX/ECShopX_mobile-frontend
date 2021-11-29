@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Text, ScrollView, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
+import { View, Text, Button, Image } from '@tarojs/components'
+import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpToast, SpNavBar, FloatMenuMeiQia, SpImg } from '@/components'
 import { pickBy, formatTime, resolveOrderStatus } from '@/utils'
@@ -25,6 +26,7 @@ import './split-bagpack.scss'
 //   })
 // }
 export default class TradeDetail extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -39,7 +41,7 @@ export default class TradeDetail extends Component {
   }
 
   async fetch() {
-    const { order_id, order_type } = this.$router.params
+    const { order_id, order_type } = this.$instance.router.params
     const data = await api.trade.deliveryLists({ order_id })
 
     let { delivery_num, list } = data

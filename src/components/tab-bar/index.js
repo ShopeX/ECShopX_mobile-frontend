@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { getCurrentRoute } from '@/utils'
 import S from '@/spx'
@@ -12,6 +13,7 @@ const defaultTabList = []
   cartCount: cart.cartCount
 }))
 export default class TabBar extends Component {
+  $instance = getCurrentInstance();
   constructor(props) {
     super(props)
 
@@ -134,7 +136,7 @@ export default class TabBar extends Component {
   updateCurTab() {
     this.fetchCart()
     const { tabList, localCurrent } = this.state
-    const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+    const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
 
     console.log('--updateCurTab--', localCurrent, fullPath, tabList)
 
@@ -161,7 +163,7 @@ export default class TabBar extends Component {
       })
     }
 
-    const { path } = getCurrentRoute(this.$router)
+    const { path } = getCurrentRoute(this.$instance.router)
     if (this.state.tabList[cartTabIdx] && path === this.state.tabList[cartTabIdx].url) {
       updateCartCount('')
       return
@@ -178,7 +180,7 @@ export default class TabBar extends Component {
     if (cur !== current) {
       const curTab = this.state.tabList[current]
       const { url, withLogin } = curTab
-      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
 
       if (withLogin && !S.getAuthToken()) {
         return Taro.navigateTo({

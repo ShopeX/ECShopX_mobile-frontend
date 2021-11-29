@@ -1,9 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react';
 import { View, ScrollView } from '@tarojs/components'
 import { AtNavBar } from 'taro-ui'
 import { GoodsItem } from '@/components'
 import { classNames } from '@/utils'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import './checkout-items.scss'
 
