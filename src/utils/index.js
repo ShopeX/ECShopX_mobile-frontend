@@ -323,10 +323,6 @@ const redirectUrl = async (api, url, type = 'redirectTo') => {
   }
   let newUrl = getUrl(url)
   let { redirect_url } = await api.wx.getredirecturl({url:newUrl}) 
-  // debugger;
-  // Taro[type]({
-  //   url: redirect_url
-  // })
   global.location.href = redirect_url
 }
 
