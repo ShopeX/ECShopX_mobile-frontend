@@ -29,6 +29,10 @@ import SpLoading from './sp-loading'
 import SpModal from './sp-modal'
 import SpHtmlContent from './html-content'
 import SpCheckbox from './checkbox';
+import SpNewNavbar from './sp-new-navbar';
+import SpNewInput from './sp-new-input';
+import SpNewFilterbar from './sp-new-filterbar';
+import SpNewShopItem from './sp-new-shop-item';
 
 import SpImgPicker from './img-picker'
 import SpCell from './sp-cell'
@@ -106,5 +110,9 @@ export {
   SpLoading,
   SpModal,
   SpHtmlContent,
-  SpCheckbox
+  SpCheckbox,
+  SpNewNavbar,
+  SpNewInput,
+  SpNewFilterbar,
+  SpNewShopItem
 }

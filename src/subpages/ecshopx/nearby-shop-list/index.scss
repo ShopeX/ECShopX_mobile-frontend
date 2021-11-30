@@ -1,0 +1,20 @@
+$input-vertical-padding:16px;
+$input-horizontal-padding:24px; 
+
+ 
+.sp-page-nearbyshoplist{ 
+
+    view,text,div,span{
+        box-sizing: border-box
+    };
+    
+    &-input{
+        background-color: white;
+        padding:$input-vertical-padding $input-horizontal-padding;
+    }
+
+    &-scrollview{
+        @include page-scroll(0, 0);
+    }
+    
+}

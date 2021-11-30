@@ -607,7 +607,7 @@ export default class Home extends Component {
     })
   }
 
-  handleSwitchAdvert = (showIdx) => {
+  handleSwitchAdvert = (showIdx) => { 
     this.setState({
       currentShowAdvert: ++showIdx
     })

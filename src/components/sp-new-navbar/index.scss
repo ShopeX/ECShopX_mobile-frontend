@@ -1,0 +1,31 @@
+ 
+@import "../../style/iconfont.scss";
+
+.sp-component-newnavbar{
+
+    background-color: white;
+    padding:0 16px;
+    display: flex;
+    align-items: center;
+
+    &-back{
+        width: 58px;
+        height: 58px;
+        border: 1px solid rgba(88, 88, 88,0.4);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .iconfont{
+            font-size: 32px;
+        }
+    }
+
+    &-title{
+        font-size: 40px;
+        font-weight: 400;
+        color: #000000;
+        margin-left:16px;
+    }
+}

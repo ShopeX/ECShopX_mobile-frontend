@@ -3,7 +3,7 @@ import S from '@/spx'
 import { Provider } from '@tarojs/redux'
 import configStore from '@/store' 
 import api from '@/api'
-import { normalizeQuerys, isGoodsShelves } from '@/utils'
+import { normalizeQuerys, isGoodsShelves,setSystemInfo } from '@/utils'
 import { FormIds, Tracker } from '@/service' 
 import { youshuLogin } from '@/utils/youshu'
 import { DEFAULT_TABS, DEFAULT_THEME } from '@/consts' 
@@ -60,6 +60,7 @@ class App extends Component {
     console.log('componentWillMount', process.env.APP_TRACK)
     if (process.env.APP_TRACK && process.env.TARO_ENV == 'weapp') {
       const system = Taro.getSystemInfoSync()
+      setSystemInfo();
       if (!(system && system.environment && system.environment === 'wxwork')) {
         console.log('Tracker', Tracker.use)
         Tracker.use(process.env.APP_TRACK)
@@ -358,6 +359,12 @@ class App extends Component {
       {
         root: 'pointitem',
         pages: ['pages/list']
+      },
+      {
+        root: 'subpages/ecshopx',
+        pages: [
+          'nearby-shop-list/index'
+        ]
       }
     ],
     permission: {
