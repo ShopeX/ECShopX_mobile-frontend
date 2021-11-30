@@ -226,11 +226,11 @@ export default {
   //     pages: ['pages/list']
   //   }
   ],
-  // permission: {
-  //   'scope.userLocation': {
-  //     desc: '您的位置信息将用于定位附近门店'
-  //   }
-  // }
+  permission: {
+    'scope.userLocation': {
+      "desc": '您的位置信息将用于定位附近门店'
+    }
+  }
   // plugins: {
   //   contactPlugin: {
   //     version: "1.3.0",

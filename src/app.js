@@ -21,18 +21,8 @@ const store = configStore();
 const treeDay = 86400000 * 3
 
 class App extends Component {
-  // eslint-disable-next-line react/sort-comp
   componentWillMount() {
     this.getHomeSetting()
-    // console.log("componentWillMount", process.env.APP_TRACK);
-    // if (process.env.APP_TRACK && process.env.TARO_ENV == 'weapp') {
-    //   const system = Taro.getSystemInfoSync();
-    //   if (!(system && system.environment && system.environment === "wxwork")) {
-    //     // console.log("Tracker", Tracker.use);
-    //     // Tracker.use(process.env.APP_TRACK);
-    //     // youshuLogin();
-    //   }
-    // }
     // 获取收藏列表
     if (process.env.TARO_ENV === "weapp") {
       try {
@@ -213,7 +203,7 @@ class App extends Component {
       console.log(error);
     }
     store.dispatch({
-      type: "tabBar",
+      type: "sys/setSysConfig",
       payload: tabbar || DEFAULT_TABS
     });
 

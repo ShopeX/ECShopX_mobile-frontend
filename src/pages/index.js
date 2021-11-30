@@ -11,7 +11,8 @@ import {
   AccountOfficial,
   ScreenAd,
   CouponModal,
-  PrivacyConfirmModal
+  PrivacyConfirmModal,
+  SpTabbar
 } from "@/components";
 
 import req from "@/api/req";
@@ -820,6 +821,7 @@ export default class Home extends Component {
           onChange={this.PrivacyConfirmModalonChange}
           isPhone={false}
         ></PrivacyConfirmModal> */}
+        <SpTabbar />
       </View>
     )
   }

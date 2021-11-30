@@ -79,6 +79,16 @@ export const DEFAULT_TABS = {
   name: 'tabs'
 }
 
+export const TABBAR_PATH = {
+  home: '/pages/index',
+  category: '/pages/category/index',
+  cart: '/pages/cart/espier-index',
+  member: '/subpages/member/index',
+  article: '/pages/recommend/list',
+  liveroom: '/pages/liveroom/index',
+  allGoods: '/pages/item/list?isTabBar=true'
+}
+
 export const PAYTYPE={
   /** h5环境下 */
   WXH5:'wxpayh5',

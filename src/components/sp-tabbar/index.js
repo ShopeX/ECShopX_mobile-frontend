@@ -1,7 +1,9 @@
-import Taro, { useState } from 'react'
+import Taro from '@tarojs/taro'
+import { useState } from 'react'
 import { View, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
+import { TABBAR_PATH } from '@/consts'
 import { classNames, styleNames, getCurrentRoute } from '@/utils'
 import './index.scss'
 
@@ -14,6 +16,7 @@ function SpTabbar( props ) {
   const tabList = tabbar.data.map( item => {
     return {
       title: item.text,
+      name: item.name,
       iconType: item.iconPath && item.selectedIconPath ? '' : item.name,
       iconPrefixClass: 'iconfont icon',
       image: item.iconPath,
@@ -27,14 +30,16 @@ function SpTabbar( props ) {
   const pages = Taro.getCurrentPages()
   if ( pages.length > 0 ) {
     const currentPage = pages[pages.length - 1].route
-    currentIndex = tabList.findIndex((tab) => tab.url == `/${currentPage}`)
+    currentIndex = tabList.findIndex((tab) => TABBAR_PATH[tab.name] == `/${currentPage}`)
   }
+
+  console.log('currentIndex:', currentIndex)
 
   const handleTabbarClick = ( index ) => {
     const tabItem = tabList[index]
     const { path } = getCurrentRoute()
-    if ( path != tabItem.url ) {
-      Taro.redirectTo( { url: tabItem.url } )
+    if ( path != TABBAR_PATH[tabItem.name] ) {
+      Taro.redirectTo( { url: TABBAR_PATH[tabItem.name] } )
     }
   }
   

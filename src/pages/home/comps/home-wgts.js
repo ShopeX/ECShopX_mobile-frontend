@@ -93,7 +93,6 @@ export default class HomeWgts extends Component {
             data-idx={idx}
             data-name={item.name}
           >
-            {idx} {item.name}
             {item.name === "search" && <WgtSearchHome info={item} />}
             {item.name === 'film' && <WgtFilm info={item} />}
             {item.name === 'marquees' && <WgtMarquees info={item} />}
