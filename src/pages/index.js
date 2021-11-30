@@ -722,9 +722,10 @@ export default class Home extends Component {
           className={classNames(
             'wgts-wrap',
             !isStandard && 'wgts-wrap_platform',
-            !isFixed || !isStandard ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard',
-            !curStore && 'wgts-wrap-nolocation',
-            !isFixed && !isStandard && 'platform'
+            isFixed && 'wgts-wrap__fixed'
+            // !isFixed || !isStandard ? 'wgts-wrap__fixed' : 'wgts-wrap__fixed_standard',
+            // curStore && 'wgts-wrap-nolocation',
+            // !isFixed && !isStandard && 'platform'
           )}
         >
           {/* 挂件内容和猜你喜欢 */}

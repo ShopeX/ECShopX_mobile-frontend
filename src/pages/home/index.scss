@@ -118,16 +118,16 @@
 
   .wgts-wrap {
     $self: &;
-    padding-top: $home-header-height;
+    // padding-top: $home-header-height;
     padding-bottom: $tabbar-height;
     background: #fff;
     &.has-header-block {
       padding-top: 80px;
     }
     /*  #ifdef  h5  */
-    // .taro-img {
-    //   width: 100%;
-    // }
+    .taro-img {
+      width: 100%;
+    }
     /*  #endif  */
     // &_platform {
     //   padding-top: 0;
@@ -154,11 +154,11 @@
         }
       }
     }
-    &__is-distributor {
-    }
-    &.wgts-wrap-nolocation {
-      padding-top: 0;
-    }
+    // &__is-distributor {
+    // }
+    // &.wgts-wrap-nolocation {
+    //   padding-top: 0;
+    // }
   }
   
   
