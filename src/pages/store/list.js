@@ -6,8 +6,8 @@ import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
 import entry from '@/utils/entry'
-import StoreListItem from './comps/list-item'
 import { classNames, getThemeStyle, styleNames } from '@/utils'
+import CusStoreListItem from './comps/cus-list-item'
 
 import './list.scss'
 
@@ -442,7 +442,7 @@ export default class StoreList extends Component {
             onScrollToLower={this.nextPage.bind(this)}
           >
             {list.map((item) => (
-              <StoreListItem
+              <CusStoreListItem
                 info={item}
                 key={item.distributor_id}
                 onClick={this.handleClickItem.bind(this, item)}
@@ -456,13 +456,13 @@ export default class StoreList extends Component {
           </ScrollView>
         </View>
 
-        {defaultStore && (
+        {/* {defaultStore && (
           <View className='bottom' onClick={this.handleClickItem.bind(this)}>
             <Image className='img' src={baseInfo.logo} mode='aspectFill' />
             {defaultStore.store_name}
             <View className='iconfont icon-arrowRight'></View>
           </View>
-        )}
+        )} */}
       </View>
     )
   }
