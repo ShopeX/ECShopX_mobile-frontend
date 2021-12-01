@@ -198,7 +198,7 @@ export default class EspierDetail extends Component {
     // 处理定位
     const lnglat = Taro.getStorageSync('lnglat')
     if (lnglat && !lnglat.city) {
-      entry.InverseAnalysis(lnglat)
+      entry.InverseAnalysisGaode(lnglat)
     }
 
     this.isCanShare()

@@ -67,34 +67,43 @@ export default class StoreList extends Component {
   init = async () => {
     const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo')
 
-    const { formattedAddress } = Taro.getStorageSync('locationAddress')
-    let addressList
-    if (S.getAuthToken()) {
-      addressList = await api.member.addressList()
+    await entry.getLoc()
+
+    const { query, deliveryInfo } = this.state
+    const lnglat = Taro.getStorageSync('lnglat') || {}
+
+    console.log(lnglat, deliveryInfo, 'lnglatlnglatlnglatlnglatlnglat')
+    // const address = `${lnglat.province}${(Array.isArray(lnglat.city) ? lnglat.city.length : lnglat.city) ? `${lnglat.city}` : ''}${lnglat.district}${lnglat.township}`
+    // const address = lnglat.latitude ? `${lnglat.city}${lnglat.district}${lnglat.street}${lnglat.street_number}` : ''
+    const address = lnglat.latitude ? lnglat.formatted_address : null
+    query.province = lnglat.province || ''
+    query.city = lnglat.city || ''
+    query.area = lnglat.district || ''
+    if (query.type === 2) {
+      const { province = '', city = '', county = '' } = deliveryInfo
+      query.province = province
+      query.city = (city === '市辖区' || !city) ? province : city
+      query.area = county
     }
-    this.setState(
-      {
-        location: {
-          ...lnglat,
-          address
-        },
-        is_open_wechatapp_location,
-        query
+
+    this.setState({
+      location: {
+        ...lnglat,
+        address
       },
-      () => {
-        this.resetPage(() => {
-          this.setState(
-            {
-              list: [],
-              loading: true
-            },
-            () => {
-              this.nextPage()
-            }
-          )
+      is_open_wechatapp_location,
+      query
+    },() => {
+      this.resetPage(() => {
+        this.setState({
+          list: [],
+          loading: true
+        },
+        () => {
+          this.nextPage()
         })
-      }
-    )
+      })
+    })
   }
 
   // 获取总店信息
@@ -115,14 +124,12 @@ export default class StoreList extends Component {
     query.city = value[1]
     query.area = value[2]
     query.type = 1
-    this.setState(
-      {
-        query
-      },
-      () => {
-        this.confirmSearch()
-      }
-    )
+    this.setState({
+      query
+    },
+    () => {
+      this.confirmSearch()
+    })
   }
 
   // 搜索店铺名称
@@ -283,10 +290,10 @@ export default class StoreList extends Component {
 
     let areaData = [province, city, area]
 
-    // if (query.type === 0 && !location.address && deliveryInfo.address_id) {
-    //   const { province: p = "", city: c = "", county: ct = "" } = deliveryInfo;
-    //   areaData = [p, c === "市辖区" || !c ? province : city, ct];
-    // }
+    if (query.type === 0 && location && !location.address && deliveryInfo && deliveryInfo.address_id) {
+      const { province: p = "", city: c = "", county: ct = "" } = deliveryInfo;
+      areaData = [p, c === "市辖区" || !c ? province : city, ct];
+    }
 
     // const  = defaultStore.is_valid === "true";
 
@@ -304,7 +311,7 @@ export default class StoreList extends Component {
 
             <Input
               className='searchInput'
-              placeholder='请输入想搜索的店铺'
+              placeholder='输入收货地址寻找周边门店'
               confirmType='search'
               value={query.name}
               onInput={this.inputStoreName.bind(this)}
@@ -316,10 +323,24 @@ export default class StoreList extends Component {
           </View>
         </View>
 
-        <View className='block-content'>
+        {/* <View className='block-content'>
           <View className='block-hd'>当前位置</View>
           <View className='block-bd location-wrap'>
-            <View className='location-address'>{formattedAddress}</View>
+            <View className='location-address'>
+              {
+                (query.type !== 2 && location.address) && <View className='lngName'>
+                  {location.address || '无法获取您的位置信息'}
+                </View>
+              }
+              {
+                (query.type === 2 || (!location.address && deliveryInfo.address_id)) && <View className='lngName'>
+                  {deliveryInfo.province}
+                  {deliveryInfo.city}
+                  {deliveryInfo.county}
+                  {deliveryInfo.adrdetail}
+                </View>
+              }
+            </View>
             <View className='btn-location'>
               <Text className='iconfont icon-target'></Text>
               重新定位
@@ -337,19 +358,19 @@ export default class StoreList extends Component {
         <View className='block-content'>
           <View className='block-hd'>附近门店</View>
           <View className='block-bd'></View>
-        </View>
+        </View> */}
 
-        {/* <View className="content">
+        <View className="block-content">
           <View className="location">
-            <View className="title">当前位置</View>
-            <View className="locationData">
-              {query.type !== 2 && location.address && (
-                <View className="lngName">
+            <View className="block-hd">当前定位地址</View>
+            <View className='block-bd location-wrap'>
+              {query.type !== 2 && location && location.address && (
+                <View className="lngName" style={{ width: '77%', fontWeight: 'bold' }}>
                   {location.address || "无法获取您的位置信息"}
                 </View>
               )}
               {(query.type === 2 ||
-                (!location.address && deliveryInfo.address_id)) && (
+                (location && !location.address && deliveryInfo && deliveryInfo.address_id)) && (
                 <View className="lngName">
                   {deliveryInfo.province}
                   {deliveryInfo.city}
@@ -358,55 +379,57 @@ export default class StoreList extends Component {
                 </View>
               )}
 
-              {is_open_wechatapp_location === 1 && (
-                <View
-                  className="resetLocal"
-                  onClick={this.getLocationInfo.bind(this)}
-                >
-                  <View className="iconfont icon-target"></View>
-                  重新定位
-                </View>
-              )}
+              {/* {is_open_wechatapp_location === 1 && ( */}
+              <View
+                className="btn-location'"
+                onClick={this.getLocation.bind(this)}
+              >
+                <View className="iconfont icon-zhongxindingwei iconcss"></View>
+                重新定位
+              </View>
+              {/* )} */}
             </View>
           </View>
+        </View>
 
-          {deliveryInfo.address_id && (
-            <View className="delivery" onClick={this.getDeliver.bind(this)}>
-              <View className="title">按收货地址定位</View>
-              <View className="locationData">
-                <View className="lngName">
-                  {deliveryInfo.province}
-                  {deliveryInfo.city}
-                  {deliveryInfo.county}
-                  {deliveryInfo.adrdetail}
+          {deliveryInfo.address_id &&
+            <View className="block-content">
+              <View className="location" onClick={this.getDeliver.bind(this)}>
+                <View className="block-hd">我的收货地址</View>
+                <View className="block-bd">
+                  <View className="lngName">
+                    {deliveryInfo.province}
+                    {deliveryInfo.city}
+                    {deliveryInfo.county}
+                    {deliveryInfo.adrdetail}
+                  </View>
                 </View>
               </View>
             </View>
-          )}
-        </View>
+          }
 
         {isRecommedList && !deliveryInfo.address_id && !location.latitude && (
-          <View className="noContent">
+          <View className="block-content">
             <Image className="img" src={baseInfo.logo} mode="aspectFill" />
             <View className="tip">您想要地区的店铺暂时未入驻网上商城</View>
           </View>
-        )} */}
+        )}
 
         <View
           className={`list ${!deliveryInfo.address_id && 'noDelivery'} ${isRecommedList &&
             'recommedList'}`}
         >
-          {/* {!isRecommedList ? (
+          {!isRecommedList ? (
             <View className="title">
               {deliveryInfo.address_id || location.latitude
-                ? "附近门店"
-                : "全部门店"}
+                ? "附近商家"
+                : "全部商家"}
             </View>
           ) : (
             <View className="recommed">
-              <View className="title">推荐门店</View>
+              <View className="title">推荐商家</View>
             </View>
-          )} */}
+          )}
 
           <ScrollView
             className={classNames('scroll', {

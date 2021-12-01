@@ -66,12 +66,12 @@ $nodelivery-height: $header-height - $store-height;
   }
 
   .block-content {
-    padding: 20px 40px;
+    padding: 20px 30px;
     background-color: #fff;
     margin-bottom: 30px;
     .block-hd {
       color: #666;
-      font-size: 30px;
+      font-size: 28px;
       margin-bottom: 10px;
     }
     .location-wrap {
@@ -85,7 +85,7 @@ $nodelivery-height: $header-height - $store-height;
       padding-right: 40px;
     }
     .btn-location {
-      width: 260px;
+      // width: 260px;
       color: var(--color-primary);
       display: flex;
       align-items: center;
@@ -112,5 +112,21 @@ $nodelivery-height: $header-height - $store-height;
     .iconfont {
       margin-left: 32px;
     }
+  }
+  .tip {
+    text-align: center;
+  }
+  .iconcss {
+    font-size: 30px;
+    color: var(--color-primary);
+    margin-right: 5px;
+  }
+  .title {
+    color: #111;
+    font-weight: bold;
+    font-size: 32px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    margin-top: 40px;
   }
 }
