@@ -697,7 +697,7 @@ export default class Home extends Component {
     // 广告屏
     const { showAdv } = this.props
     // 是否是标准版
-    const isStandard = !is_open_store_status
+    const isStandard = process.env.APP_PLATFORM === 'standard' && !is_open_store_status
     // 否是fixed
     const isFixed = positionStatus
 
