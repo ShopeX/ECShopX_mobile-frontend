@@ -17,6 +17,7 @@ $nodelivery-height: $header-height - $store-height;
 .page-store-list {
   height: 100%;
   box-sizing: border-box;
+  padding: 0px 20px;
   // /*  #ifdef  h5  */  
   // padding-top: $navigate-height-h5;
   // /*  #endif  */   

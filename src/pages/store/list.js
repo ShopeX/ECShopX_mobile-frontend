@@ -47,7 +47,7 @@ export default class StoreList extends Component {
       // 是否需要定位
       is_open_wechatapp_location: 0,
       loading: false,
-      pageTitle: '店铺列表'
+      pageTitle: '选择门店'
     }
   }
 
@@ -56,13 +56,16 @@ export default class StoreList extends Component {
     Taro.setNavigationBarTitle({
       title: pageTitle
     })
+    Taro.setNavigationBarColor({
+      backgroundColor: '#F5F5F5'
+    })
     this.init()
     this.getHeadquarters()
   }
 
-  // config = {
-  //   navigationBarTitleText: '店铺列表'
-  // }
+  config = {
+    navigationBarBackgroundColor: '#F5F5F5'
+  }
 
   init = async () => {
     const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo')

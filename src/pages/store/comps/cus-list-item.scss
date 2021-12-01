@@ -1,64 +1,63 @@
 @import "@/style/imports";
 
-.store-item {
-  // display: flex;
-  // align-items: center;
-  padding: 24px 30px;
+.cus-list-item {
+  padding: 25px 15px;
   background: #fff;
-  position: relative;
-  overflow: hidden;
-  z-index: 999;
-  &::after {
-    content: '';
-    position: absolute;
-    width: calc(100% - 60px);
-    height: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    top: 0;
-    margin: 0 auto;
-    border-bottom: 2px solid #efefef;
-  }
-  .store-content {
-    flex: 1;
-    display: flex;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  .list-left {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #DDDDDD;
+    border-radius: 20px;
     overflow: hidden;
-    &_left {
-      flex: 1;
-      overflow: hidden;
+    .list-imgs {
+      width: 100%;
+      height: 100%;
     }
-    .store-name {
-      font-size: 32px;
+  }
+  .list-center {
+    width: 66%;
+    .list-title {
+      white-space: nowrap;
+      text-overflow:ellipsis;
+      overflow: hidden;
+      font-size: 30px;
+      font-weight: bold;
+      color: #222;
+    }
+    .list-time, .list-adress {
+      color: #999999;
+      font-size: 22px;
+    }
+    .adressicons, .clockicons  {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+    .adressicons {
+      font-size: 26px;
+    }
+    .list-tag {
       display: flex;
       align-items: center;
-      overflow: hidden;
-      .store-content_distance {
-        font-size: 24px;
-        height: 33px;
-        line-height: 33px;
-        color: #f4811f;
-        padding: 0 5px;
-        border-radius: 6px;
+      margin-top: 8px;
+      .tags {
+        padding: 2px 6px;
+        border: 1px solid var(--color-primary);
+        color: var(--color-primary);
+        font-size: 22px;
+        border-radius: 10px;
         margin-right: 10px;
-        border: 2px solid #f4811f;
       }
-      .name {
-        flex: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-    }
-    .store-address {
-      font-size: $font-size-small;
-      color: $color-gray;
     }
   }
-  .store-location {
-    font-size: 46px;
-    color: $color-gray;
-    flex-shrink: 0;
-    height: auto;
+  .list-right {
+    width: 14%;
+    font-size: 26px;
+    color: #666666;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow: hidden;
   }
 }

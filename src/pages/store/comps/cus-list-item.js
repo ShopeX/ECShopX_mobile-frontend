@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
-import './list-item.scss'
+import './cus-list-item.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current || { data: [{}] }
@@ -16,17 +16,9 @@ export default class StoreListItem extends Component {
     addGlobalClass: true
   }
 
-  handleClick = () => {
-    this.props.onClick && this.props.onClick()
-  }
-
-  handleMap = (lat, lng, e) => {
-    e.stopPropagation()
-    Taro.openLocation({
-      latitude: Number(lat),
-      longitude: Number(lng),
-      scale: 18
-    })
+  handleClick = (info) => {
+    console.log(info, '----info---')
+    // this.props.onClick && this.props.onClick()
   }
 
   render() {
@@ -35,33 +27,29 @@ export default class StoreListItem extends Component {
     const distance = info.distance ? (info.distance * 1).toFixed(2) : false
 
     return (
-      <View className='store-item' onClick={this.handleClick.bind(this)}>
-        <View className='store-content'>
-          <View className='store-content_left'>
-            <View className='store-name'>
-              {distance && (
-                <View
-                  className='store-content_distance'
-                  style={`color: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
-                >
-                  {distance}
-                  {info.distance_unit}
-                </View>
-              )}
-              <View className='name'>{info.name}</View>
-            </View>
-            <View className='store-address'>店铺地址：{info.store_address}</View>
-            <View className='store-address'>营业时间：{info.hour}</View>
-            <View className='store-address'>联系电话：{info.mobile}</View>
-          </View>
-          {!isStore && info.lat && (
-            <View
-              className='store-location icon-periscope'
-              style={`color: ${colors.data[0].primary}`}
-              onClick={this.handleMap.bind(this, info.lat, info.lng)}
-            ></View>
-          )}
+      <View className='cus-list-item' onClick={this.handleClick.bind(this, info)}>
+        <View className='list-left'>
+          <Image className='list-imgs' src='https://b-img-cdn.yuanyuanke.cn/image/21/2021/09/09/e256a607a5914062d406916bc22b1465BRHbeKZOlgTyIDnPmitVXJESiSXLCaDk?imageView2/2/w/400'></Image>
         </View>
+        <View className='list-center'>
+          <View className='list-title'>{info.name}</View>
+          <View className='list-time'>
+            <Text className='iconfont icon-clock1 clockicons'/>
+            <Text>{info.hour}</Text>
+          </View>
+          <View className='list-adress'>
+            <Text className='iconfont icon-dizhiguanli-01 adressicons'/>
+            <Text>{info.store_address}</Text>
+          </View>
+
+          <View className='list-tag'>
+            {info.tagList.map(item => <View className='tags' key={item.tag_id}>{item.tag_name}</View>)}
+          </View>
+        </View>
+        {
+          distance &&
+          <View className='list-right'>{distance}{info.distance_unit}</View>
+        }
       </View>
     )
   }
