@@ -1,5 +1,5 @@
 import Taro, { useState, memo } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View,Text } from '@tarojs/components';
 import { classNames } from '@/utils';
 import './index.scss';
 
@@ -10,12 +10,17 @@ const SpNewFilterbar = (props) => {
         filterData,
         value,
         onClickLabel=()=>{},
-        onClickFilter=()=>{}
+        onClickFilter=()=>{},
+        bgWhite=true,
+        borderRadius=false
     } = props;
 
     return (
         <View
-            className={classNames('sp-component-newfilterbar')}
+            className={classNames('sp-component-newfilterbar',{
+                ['bg-white']:bgWhite,
+                ['border-radius']:borderRadius,
+            })}
         >
             <View className={'sp-component-newfilterbar-check'}>
                 {

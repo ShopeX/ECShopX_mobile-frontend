@@ -1,5 +1,5 @@
 import Taro, { useState, memo } from '@tarojs/taro';
-import { View, Image } from '@tarojs/components';
+import { View, Image,Text } from '@tarojs/components';
 import { classNames } from '@/utils';
 import { DistributionLabel } from './comps';
 import { SpNewCoupon } from '@/components';
@@ -20,10 +20,33 @@ const SpNewShopItem = (props) => {
             { value: '60', label: '60元', isReceive: true },
         ],
         discountName='满减',
-        discountMsg='好物狂欢节享满199减30，领10元叠好物狂欢节享满199减30，领10元叠…'
+        discountMsg='好物狂欢节享满199减30，领10元叠好物狂欢节享满199减30，领10元叠…',
+        inSearch=false
     } = props;
 
-    return (
+    return inSearch ? (
+        <View
+            className={classNames('sp-component-newshopitem', className)}
+        >
+            <View className={'sp-component-newshopitem-header'}>
+                <View className={'left'}>
+                    <Image src={ImageSRC} className={'img'} ></Image>
+                </View>
+                <View className={'center'}>
+                    <View className={'name'}>{title}</View>
+                    <View className={'rate'}>
+                        <Text>评分：{rate}</Text>    
+                        <Text className={'sale'}>月销：{sale}</Text>    
+                    </View>
+                </View>
+                <View className={'right'}>1000m</View>
+            </View>
+            <View className={'sp-component-newshopitem-logo'}>
+                <Image src={ImageSRC} className={'img'} />
+            </View>
+            <View className={'sp-component-newshopitem-good-list'}></View>
+        </View>
+    ) : (
         <View
             className={classNames('sp-component-newshopitem', className)}
         >

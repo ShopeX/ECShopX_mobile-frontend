@@ -1,4 +1,4 @@
-import Taro, { useState, memo } from '@tarojs/taro';
+import Taro, { useState, memo,useEffect } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { classNames } from '@/utils';
 import { SpPopup } from '@/components';
@@ -13,7 +13,13 @@ const SpNewDrawer = (props) => {
         children
     } = props;
 
-    return (
+    const [loaded,setLoaded]=useState(false); 
+    
+    useEffect(() => {
+        setLoaded(true);
+    }, [])
+
+    return loaded ? (
         <SpPopup
             visible={visible}
             right
@@ -31,7 +37,7 @@ const SpNewDrawer = (props) => {
                 {children}
             </View>
         </SpPopup>
-    )
+    ) : null;
 }
 
 export default memo(SpNewDrawer);

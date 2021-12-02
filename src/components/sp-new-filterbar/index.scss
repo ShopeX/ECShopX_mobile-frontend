@@ -5,9 +5,18 @@ $border-color:#CCCCCC;
 
 .sp-component-newfilterbar{ 
 
-    height:92px;
-    background-color: white;
-    display: flex;
+    height:92px; 
+    display: flex; 
+    background-color: #f5f5f5;
+
+    &.bg-white{
+        background-color: white;
+    }
+
+    &.border-radius{ 
+        border-radius: 40px 40px 0px 0px;
+        overflow: hidden;
+    }
     
     &-check{
         flex:1;

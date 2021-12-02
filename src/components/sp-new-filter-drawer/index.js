@@ -1,5 +1,5 @@
 import Taro, { useState, memo } from '@tarojs/taro';
-import { View } from '@tarojs/components';
+import { View,ScrollView } from '@tarojs/components';
 import { classNames } from '@/utils';
 import { SpNewDrawer } from '@/components';
 import CustomButton from './comps/button';
@@ -31,7 +31,7 @@ const SpNewFilterDrawer = (props) => {
                                     </View>
                                     {
                                       item.children.map((citem,index)=>(
-                                          <View className={classNames('label',{'checked':index===1})}>
+                                          <View className={classNames('sp-filter-block',{'checked':index===1})}>
                                               {citem.label}
                                           </View>
                                       ))  

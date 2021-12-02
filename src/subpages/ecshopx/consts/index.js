@@ -81,4 +81,13 @@ export const FILTER_DRAWER_DATA=[
             }
         ]
     }, 
+];
+
+export const SEARCH_DATA=[
+    '可乐',
+    '香氛蜡烛',
+    '收纳',
+    '坚果零食', 
+    '酸奶', 
+    '外框左右空24px', 
 ]

@@ -363,7 +363,8 @@ class App extends Component {
       {
         root: 'subpages/ecshopx',
         pages: [
-          'nearby-shop-list/index'
+          'nearby-shop-list/index',
+          'nearby-shop-search/index',
         ]
       }
     ],

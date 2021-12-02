@@ -37,6 +37,7 @@ import SpNewCoupon from './sp-new-coupon';
 import SpNewDrawer from './sp-new-drawer';
 import SpPopup from './sp-popup';
 import SpNewFilterDrawer from './sp-new-filter-drawer';
+import SpNewPrice from './sp-new-price';
 
 import SpImgPicker from './img-picker'
 import SpCell from './sp-cell'
@@ -122,5 +123,6 @@ export {
   SpNewCoupon,
   SpNewDrawer,
   SpPopup,
-  SpNewFilterDrawer
+  SpNewFilterDrawer,
+  SpNewPrice
 }

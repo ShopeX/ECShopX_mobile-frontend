@@ -26,24 +26,9 @@ $padding-bottom:60px;
                 margin-bottom:24px;
             }
 
-            .label{
-                height: 60px;
-                background: #F5F5F5;
-                border-radius: 16px;
-                padding:0 24px;
-                display: inline-flex;
-                align-items: center;
-                color: #222222;
-                font-size: 24px;
-                font-weight: 400;
-                margin-right:24px;
+            .sp-filter-block{
                 margin-bottom: 24px;
-
-                &.checked{
-                    color:$primary-color;
-                    background-color: $primary-color-bg;
-                    font-weight: 600;
-                }
+                margin-right:24px;
             }
         }
     }

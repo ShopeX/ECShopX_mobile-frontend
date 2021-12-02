@@ -17,7 +17,7 @@ export function getSystemInfo(){
     if(isWeixin){ 
         res=Taro.getStorageSync('systemInfo')
     }
-    return res;
+    return res={};
 }
 
 //获取导航栏高度
@@ -25,7 +25,7 @@ export const getNavbarHeight = () => {
     //statusBarHeight是状态栏高度
     const { statusBarHeight,menuButton } = getSystemInfo();
     //获取菜单按钮（右上角胶囊按钮）的布局位置信息 
-    const { top, height } = menuButton; 
+    const { top, height } = menuButton||{}; 
     //导航栏的高度
     const navbarHeight = height + (top - statusBarHeight) * 2;
 

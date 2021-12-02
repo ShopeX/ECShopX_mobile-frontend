@@ -1,21 +1,33 @@
 $input-vertical-padding:16px;
 $input-horizontal-padding:24px; 
 
+$input-height:92px;
+$filter-bar-height:92px;
  
-.sp-page-nearbyshoplist{ 
 
-    view,text,div,span{
+$prefixCls:'sp-page-nearbyshoplist';
+ 
+.#{$prefixCls}{ 
+
+    view,text,div,span,.img,image{
         box-sizing: border-box
     };
     
     &-input{
         background-color: white;
         padding:$input-vertical-padding $input-horizontal-padding;
+        height: $input-height; 
     }
 
     &-scrollview{
-        @include page-scroll(0, 0); 
+        @include page-scroll($input-height+$filter-bar-height, 0); 
         background: white; 
+    }
+
+    &.has-navbar{
+        .#{$prefixCls}-scrollview{
+            @include page-scroll($input-height+$filter-bar-height+$navigate-height-h5, 0); 
+        }
     }
     
 }
