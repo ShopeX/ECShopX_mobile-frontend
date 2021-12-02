@@ -90,6 +90,10 @@ export default class Home extends Component {
     this.protocolUpdateTime();
     this.getShareSetting();
     this.isShowTips();
+    Taro.eventCenter.on('lnglat-success', () => {
+      // console.log(Taro.getStorageSync('lnglat'))
+    })
+
   }
 
   // 获取隐私政策时间
@@ -701,8 +705,11 @@ export default class Home extends Component {
     // 否是fixed
     const isFixed = positionStatus
 
+    // 是否同意获取位置信息
+    const { latitude } = Taro.getStorageSync('lnglat') || {}
+
     return (
-      <View className='page-index'>
+      <View className={classNames('page-index', latitude && 'padtop')}>
         {is_open_official_account === 1 && show_official && (
           <AccountOfficial
             isClose
@@ -710,7 +717,7 @@ export default class Home extends Component {
             onClick={this.handleOfficialClose.bind(this)}
           ></AccountOfficial>
         )}
-        {isStandard && curStore && (
+        {isStandard && curStore && latitude && (
           <HeaderHome
             store={curStore}
             onClickItem={this.goStore.bind(this)}

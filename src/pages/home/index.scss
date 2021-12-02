@@ -1,8 +1,10 @@
+.padtop {
+  padding-top: $home-header-height;
+}
 .page-index {
   position: relative;
   background: #fff;
   box-sizing: border-box;
-  padding-top: $home-header-height;
 
   .header-block {
     display: flex;
