@@ -177,14 +177,15 @@ async function logScene(data) {
 }
 
 async function getLocalSetting() {
-  const paramsurl = qs.stringify(payTypeField)
-  const url = `/pagestemplate/setInfo?${paramsurl}`
-  const { is_open_wechatapp_location } = await req.get(url)
-  if (is_open_wechatapp_location == 1) {
-    return true
-  } else {
-    return false
-  }
+  // const paramsurl = qs.stringify(payTypeField)
+  // const url = `/pagestemplate/setInfo?${paramsurl}`
+  // const { is_open_wechatapp_location } = await req.get(url)
+  // if (is_open_wechatapp_location == 1) {
+  //   return true
+  // } else {
+  //   return false
+  // }
+  return true
 }
 
 //   store = {
@@ -234,7 +235,8 @@ async function getLoc() {
   if (process.env.TARO_ENV === 'weapp' || process.env.TARO_ENV === 'alipay') {
     return await Taro.getLocation({ type: 'gcj02' }).then(
       async (locationData) => {
-        await InverseAnalysis(locationData)
+        await InverseAnalysisGaode(locationData)
+        // await InverseAnalysis(locationData)
         return locationData
       },
       () => {
@@ -242,11 +244,11 @@ async function getLoc() {
       }
     )
   } else {
-    if (process.env.APP_PLATFORM === 'standard') {
-      return getWebLocal().catch(() => '定位错误')
-    } else {
-      return null
-    }
+    // if (process.env.APP_PLATFORM === 'standard') {
+    return getWebLocal().catch(() => '定位错误')
+    // } else {
+    //   return null
+    // }
   }
 }
 
@@ -340,16 +342,35 @@ function parseUrlStr(urlStr) {
 }
 
 // 逆解析地址
-async function InverseAnalysis(locationData) {
-  const { latitude, longitude } = locationData
+// async function InverseAnalysis(locationData) {
+//   const { latitude, longitude } = locationData
+//   let cityInfo = await Taro.request({
+//     url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${process.env.APP_MAP_KEY}`
+//   })
+//   if (cityInfo.data.result) {
+//     Taro.setStorageSync('lnglat', {
+//       ...locationData,
+//       ...cityInfo.data.result.address_component
+//     })
+//   }
+// }
+
+async function InverseAnalysisGaode(locationData){
+  const { latitude, longitude } = locationData;
   let cityInfo = await Taro.request({
-    url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${process.env.APP_MAP_KEY}`
-  })
-  if (cityInfo.data.result) {
+    url: `https://restapi.amap.com/v3/geocode/regeo`,
+    data:{
+      key:'1ccc1ebc947719886f0cd766d70241fe',
+      location:`${longitude},${latitude}`, 
+    }
+  }); 
+  if (cityInfo.data.status == 1) {
     Taro.setStorageSync('lnglat', {
       ...locationData,
-      ...cityInfo.data.result.address_component
-    })
+      ...cityInfo.data.regeocode.addressComponent,
+      formatted_address: cityInfo.data.regeocode.formatted_address
+    } );
+    Taro.eventCenter.trigger('lnglat-success')
   }
 }
 
@@ -359,7 +380,8 @@ export default {
   getLoc,
   getLocalSetting,
   getWebLocal,
-  InverseAnalysis,
+  // InverseAnalysis,
+  InverseAnalysisGaode,
   getStoreStatus,
   logScene,
   handleDistributorId

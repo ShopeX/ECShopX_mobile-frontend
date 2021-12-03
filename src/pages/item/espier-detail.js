@@ -1413,7 +1413,7 @@ export default class EspierDetail extends Component {
                   <View className='line'></View>
                   <View className='item'>
                     <View className='iconfont icon-periscope'></View>
-                    <Text>{lnglat.city}</Text>
+                    <Text>{isArray(lnglat.city) ? lnglat.city[0] : lnglat.city}</Text>
                   </View>
                 </View>
               </View>
