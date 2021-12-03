@@ -1,7 +1,13 @@
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import Taro, { memo, useState, useEffect } from '@tarojs/taro'
-
+import api from '@/api'
 import './nearby-shop.scss'
+
+const noShop = require('@/assets/imgs/noShop.png');
+const shop_default_bg = require('@/assets/imgs/shop_default_bg.png');
+const shop_default_logo = require('@/assets/imgs/shop_default_logo.png');
+
+
 
 const WgtNearbyShop = (props) => {
 
@@ -10,14 +16,22 @@ const WgtNearbyShop = (props) => {
     const { base, seletedTags } = info
 
     const [activeIndex, setActiveIndex] = useState(0);
+    const [nearbyShop, setNearbyShop] = useState([])
 
-    // useEffect(async () => {
-    //     const obj = {
-    //         distributor_tag_id: seletedTags[activeIndex]
-    //     }
-    //     const result = await api.wgts.getNearbyShop(obj);
-    //     console.log(result);
-    // }, [])
+    useEffect(async () => {
+        const { latitude, longitude } = Taro.getStorageSync('lnglat')
+        const obj = {
+            lat: latitude,
+            lng: longitude,
+            distributor_tag_id: seletedTags[activeIndex].tag_id,
+            show_discount: 1
+        }
+        const result = await api.wgts.getNearbyShop(obj);
+        setNearbyShop(result.list)
+    }, [activeIndex])
+
+
+
 
 
     return (
@@ -38,6 +52,34 @@ const WgtNearbyShop = (props) => {
                             <Text className={`tag ${activeIndex == index ? 'active' : null}`}
                                 key={item.tag_id} onClick={e => setActiveIndex(index)}>{item.tag_name}</Text>
                         ))
+                    }
+                </View>
+                <View className='shopList'>
+                    {
+                        nearbyShop.length > 0 ? nearbyShop.map((item) => (
+                            (
+                                <View className='shop' key={item.distributor_id}>
+                                    <View className='shopbg'>
+                                        <Image mode='widthFix' className='shop_img'
+                                            src={item.banner || shop_default_bg} width={200}></Image>
+
+                                        <Image mode='widthFix' className='shop_logo'
+                                            src={item.logo || shop_default_logo} width={70}></Image>
+                                    </View>
+
+                                    <View className='shop_name'>{item.name}</View>
+                                    {
+                                        item.discountCardList[0] && <View className='shop_coupon' >{item.discountCardList[0].title}</View>
+                                    }
+
+
+
+                                </View>
+                            )
+                        )) : <View className='noShopContent'>
+                            <Image mode='widthFix' className='noShop' src={noShop}></Image>
+                            <View className='tips'>更多商家接入中，敬请期待</View>
+                        </View>
                     }
                 </View>
 

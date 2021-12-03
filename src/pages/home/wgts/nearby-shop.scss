@@ -3,21 +3,23 @@
 .see_more {
   padding: 0px 10px;
   height: 36px;
-  border-radius: 18px;
-  border: 1px solid #f4811f;
-  color: #f4811f;
-  font-size: 20px;
+  //   border-radius: 18px;
+  //   border: 1px solid #f4811f;
+  //   color: #f4811f;
+  font-size: 25px;
 }
 .nearby_shop_wrap {
   padding: 20px;
   overflow: hidden;
   .tagList {
+    width: 100%;
     overflow-x: auto;
     white-space: nowrap;
   }
 
   .tag {
     display: inline-block;
+    cursor: pointer;
     margin-right: 20px;
     padding: 4px 12px;
     background-color: #eee;
@@ -28,7 +30,72 @@
     text-align: center;
     &.active {
       color: #f4811f;
-      background: #FEF0E4;
+      background: #fef0e4;
+    }
+  }
+  .shopList {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-top: 30px;
+    .shop {
+      width: 200px;
+      height: 290px;
+      border: 1px solid #ccc;
+      background: linear-gradient(360deg, #ffffff 0%, #f5f5f5 100%);
+      border-radius: 8px;
+      margin-right: 16px;
+      .shopbg {
+        width: 200px;
+        position: relative;
+      }
+      .shop_img {
+        width: 100%;
+      }
+      .shop_logo {
+        width: 70px;
+        height: 70px;
+        border-radius: 70px;
+        position: absolute;
+        top: 90%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .shop_name {
+        margin-top: 30px;
+        font-size: 28px;
+        text-align: center;
+        line-height: 40px;
+        color: #000;
+      }
+      .shop_coupon {
+        max-width: 80%;
+        margin: 10px auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 4px 6px;
+        text-align: center;
+        color: #f4811f;
+        border-radius: 4px;
+        line-height: 30px;
+        border: 1px solid #f4811f;
+        font-size: 22px;
+      }
+    }
+  }
+  .noShopContent {
+    margin: 10px auto 0;
+
+    .noShop {
+      width: 400px !important;
+      overflow: hidden;
+      max-height: 300px;
+    }
+    .tips {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 30px;
     }
   }
 }
