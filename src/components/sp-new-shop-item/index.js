@@ -2,7 +2,7 @@ import Taro, { useState, memo } from '@tarojs/taro';
 import { View, Image,Text } from '@tarojs/components';
 import { classNames } from '@/utils';
 import { DistributionLabel } from './comps';
-import { SpNewCoupon } from '@/components';
+import { SpNewCoupon,SpNewPrice } from '@/components';
 import './index.scss';
 const ImageSRC = 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
 
@@ -21,7 +21,15 @@ const SpNewShopItem = (props) => {
         ],
         discountName='满减',
         discountMsg='好物狂欢节享满199减30，领10元叠好物狂欢节享满199减30，领10元叠…',
-        inSearch=false
+        inSearch=false,
+        goodList=[
+            {img:ImageSRC,originPrice:4,price:3},
+            {img:ImageSRC,price:12},
+            {img:ImageSRC,originPrice:9.8,price:10},
+            {img:ImageSRC,originPrice:4,price:3},
+            {img:ImageSRC,price:12},
+            {img:ImageSRC,originPrice:9.8,price:10},
+        ]
     } = props;
 
     return inSearch ? (
@@ -44,7 +52,22 @@ const SpNewShopItem = (props) => {
             <View className={'sp-component-newshopitem-logo'}>
                 <Image src={ImageSRC} className={'img'} />
             </View>
-            <View className={'sp-component-newshopitem-good-list'}></View>
+            <View className={'sp-component-newshopitem-good-list'}>
+                {
+                    goodList.map(item=>{
+                        return (
+                            <View className={'good-item'}>
+                                <Image className='img' src={item.img}></Image>
+                                <View className='price'>
+                                    <SpNewPrice price={item.price} />
+                                    <View className={'margin'}></View>
+                                    <SpNewPrice price={item.originPrice} discount equal size={'small'} />
+                                </View>
+                            </View>
+                        )
+                    })
+                }
+            </View>
         </View>
     ) : (
         <View

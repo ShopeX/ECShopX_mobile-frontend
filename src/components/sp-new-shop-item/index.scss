@@ -9,7 +9,6 @@ $img-width:120px;
     background-color: white;
     display: flex;
 
-
     &.in-shoplist{
         margin-top:24px;
     }
@@ -205,7 +204,7 @@ $img-width:120px;
     }
 
     &-logo{
-        margin-top: 4px;
+        margin-top: 16px;
         border-radius: 16px;
         overflow: hidden;
 
@@ -214,4 +213,33 @@ $img-width:120px;
             display: block;
         }
     }
+
+    &-good-list{
+        margin-top:18px; 
+        white-space: nowrap; 
+        overflow-y: auto;
+        font-size:0;//解决inline-block空白间隙问题
+
+        .good-item{
+            display: inline-block;
+            margin-right: 16px;
+            .img{
+                width: 218px;
+                height: 218px;
+                border-radius: 16px;
+                border: 1px solid #DDDDDD;
+                display: block;
+            }
+            .price{
+                margin-top:12px;
+                display: flex;  
+                align-items: flex-start;
+
+                .margin{
+                    width:8px;
+                }
+            }
+        }
+    }
+
 }
