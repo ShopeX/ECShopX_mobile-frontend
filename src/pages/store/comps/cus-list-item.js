@@ -16,9 +16,8 @@ export default class StoreListItem extends Component {
     addGlobalClass: true
   }
 
-  handleClick = (info) => {
-    console.log(info, '----info---')
-    // this.props.onClick && this.props.onClick()
+  handleClick = () => {
+    this.props.onClick && this.props.onClick()
   }
 
   render() {

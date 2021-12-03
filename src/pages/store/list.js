@@ -71,9 +71,9 @@ export default class StoreList extends Component {
 
   componentDidShow () {
     this.init()
-    if (this.props.address) {
-      this.setState({ deliveryInfo: this.props.address })
-    }
+    // if (!!this.props.address) {
+    //   this.setState({ deliveryInfo: this.props.address })
+    // }
   }
 
   config = {
@@ -82,21 +82,18 @@ export default class StoreList extends Component {
 
   init = async () => {
     const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo')
-
-    await entry.getLoc()
-
     const { query, deliveryInfo } = this.state
     const lnglat = Taro.getStorageSync('lnglat') || {}
 
-    console.log(lnglat, deliveryInfo, 'lnglatlnglatlnglatlnglatlnglat')
     // const address = `${lnglat.province}${(Array.isArray(lnglat.city) ? lnglat.city.length : lnglat.city) ? `${lnglat.city}` : ''}${lnglat.district}${lnglat.township}`
     // const address = lnglat.latitude ? `${lnglat.city}${lnglat.district}${lnglat.street}${lnglat.street_number}` : ''
-    const address = lnglat.latitude ? lnglat.formatted_address : null
+    const addressdetail = lnglat.latitude ? lnglat.addressdetail : null
     query.province = lnglat.province || ''
     query.city = lnglat.city || ''
     query.area = lnglat.district || ''
     if (query.type === 2) {
-      const { province = '', city = '', county = '' } = deliveryInfo
+      let adress_detail = !!this.props.address ? this.props.address : deliveryInfo
+      const { province = '', city = '', county = '' } = adress_detail
       query.province = province
       query.city = (city === '市辖区' || !city) ? province : city
       query.area = county
@@ -105,7 +102,7 @@ export default class StoreList extends Component {
     this.setState({
       location: {
         ...lnglat,
-        address
+        addressdetail
       },
       is_open_wechatapp_location,
       query
@@ -204,11 +201,13 @@ export default class StoreList extends Component {
     }
     const { list, total_count: total, defualt_address = {}, is_recommend } = await api.shop.list(
       query
-    )
+      )
+    const { province, city, county, adrdetail } = this.props.address || defualt_address
+    let addressdetail = province + city + county + adrdetail
     this.setState({
       query,
       list: [...this.state.list, ...list],
-      deliveryInfo: defualt_address,
+      deliveryInfo: !!this.props.address ? {...this.props.address, addressdetail} : {...defualt_address, addressdetail},
       isRecommedList: is_recommend === 1,
       loading: false
     })
@@ -219,11 +218,12 @@ export default class StoreList extends Component {
 
   // 选择门店
   handleClickItem = (info) => {
-    if (info) {
-      info.store_id = 0 //新增非门店自提，开启distributor_id 取值为store_id
-    }
-    Taro.setStorageSync('curStore', info)
-    Taro.navigateBack()
+    Taro.navigateTo({ url: `/pages/store/index?id=${info.distributor_id}` })
+    // if (info) {
+    //   info.store_id = 0 //新增非门店自提，开启distributor_id 取值为store_id
+    // }
+    // Taro.setStorageSync('curStore', info)
+    // Taro.navigateBack()
   }
 
   // 获取定位信息
@@ -258,6 +258,10 @@ export default class StoreList extends Component {
         }
       })
     } else {
+      await entry.getLoc()
+      // Taro.eventCenter.on('lnglat-success', () => {
+      //   console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
+      // })
       const { query } = this.state
       query.name = ''
       query.type = 0
@@ -273,18 +277,24 @@ export default class StoreList extends Component {
   }
 
   // 根据收货地址搜索
-  getDeliver = () => {
-    const { query } = this.state
-    query.name = ''
-    query.type = 2
-    this.setState(
-      {
-        query
-      },
-      () => {
-        this.init()
-      }
-    )
+  onLocationChange = (info) => {
+    entry.positiveAnalysisGaode(info)
+    if (info) {
+      info.store_id = 0 //新增非门店自提，开启distributor_id 取值为store_id
+    }
+    Taro.navigateBack()
+    // Taro.setStorageSync('curStore', info)
+    // const { query } = this.state
+    // query.name = ''
+    // query.type = 2
+    // this.setState(
+    //   {
+    //     query
+    //   },
+    //   () => {
+    //     this.init()
+    //   }
+    // )
   }
 
   render() {
@@ -306,11 +316,11 @@ export default class StoreList extends Component {
 
     let areaData = [province, city, area]
 
-    if (query.type === 0 && location && !location.address && deliveryInfo && deliveryInfo.address_id) {
+    if (query.type === 0 && location && !location.addressdetail && deliveryInfo && deliveryInfo.address_id) {
       const { province: p = "", city: c = "", county: ct = "" } = deliveryInfo;
       areaData = [p, c === "市辖区" || !c ? province : city, ct];
     }
-
+    console.log(location, 'locationlocationlocation')
     // const  = defaultStore.is_valid === "true";
 
     return (
@@ -344,12 +354,12 @@ export default class StoreList extends Component {
           <View className='block-bd location-wrap'>
             <View className='location-address'>
               {
-                (query.type !== 2 && location.address) && <View className='lngName'>
-                  {location.address || '无法获取您的位置信息'}
+                (query.type !== 2 && location.addressdetail) && <View className='lngName'>
+                  {location.addressdetail || '无法获取您的位置信息'}
                 </View>
               }
               {
-                (query.type === 2 || (!location.address && deliveryInfo.address_id)) && <View className='lngName'>
+                (query.type === 2 || (!location.addressdetail && deliveryInfo.address_id)) && <View className='lngName'>
                   {deliveryInfo.province}
                   {deliveryInfo.city}
                   {deliveryInfo.county}
@@ -379,12 +389,12 @@ export default class StoreList extends Component {
           <View className="location">
             <View className="block-hd">当前定位地址</View>
             <View className='block-bd location-wrap'>
-              {query.type !== 2 && location && location.address && (
-                <View className="lngName" style={{ width: '77%', fontWeight: 'bold' }}>
-                  {location.address || "无法获取您的位置信息"}
+              {query.type !== 2 && location && location.addressdetail && (
+                <View className="lngName" onClick={this.onLocationChange.bind(this, location)} style={{ width: '77%', fontWeight: 'bold' }}>
+                  {location.addressdetail || "无法获取您的位置信息"}
                 </View>
               )}
-              {(query.type === 2 ||
+              {/* {(query.type === 2 ||
                 (location && !location.address && deliveryInfo && deliveryInfo.address_id)) && (
                 <View className="lngName">
                   {deliveryInfo.province}
@@ -392,7 +402,7 @@ export default class StoreList extends Component {
                   {deliveryInfo.county}
                   {deliveryInfo.adrdetail}
                 </View>
-              )}
+              )} */}
 
               {/* {is_open_wechatapp_location === 1 && ( */}
               <View
@@ -412,7 +422,7 @@ export default class StoreList extends Component {
               </View>
               {
                 deliveryInfo.address_id &&
-                <View className="block-bd" onClick={this.getDeliver.bind(this)}>
+                <View className="block-bd" onClick={this.onLocationChange.bind(this, deliveryInfo)}>
                   <View className="lngName">
                     {deliveryInfo.province}
                     {deliveryInfo.city}
