@@ -1,15 +1,15 @@
 @import '@/style/imports';
 
 .see_more {
-  padding: 0px 10px;
   height: 36px;
+  font-size: 24rpx;
+  color: #999;
   //   border-radius: 18px;
   //   border: 1px solid #f4811f;
   //   color: #f4811f;
-  font-size: 25px;
 }
 .nearby_shop_wrap {
-  padding: 20px;
+  padding: 20px 24px 0;
   overflow: hidden;
   .tagList {
     width: 100%;
@@ -77,7 +77,7 @@
         padding: 4px 6px;
         text-align: center;
         color: #f4811f;
-        border-radius: 4px;
+        border-radius: 8px;
         line-height: 30px;
         border: 1px solid #f4811f;
         font-size: 22px;
