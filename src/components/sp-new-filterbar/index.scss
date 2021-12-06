@@ -29,7 +29,7 @@ $border-color:#CCCCCC;
             font-size: 28px;
             font-weight: 400;
             color: #999999;
-            transition: all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+            transition: all 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
 
             &:not(:first-child){
                 margin-left: 60px;

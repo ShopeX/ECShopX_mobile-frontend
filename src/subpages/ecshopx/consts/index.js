@@ -15,82 +15,35 @@ export const DEFAULT_SORT_VALUE=DISTANCE_PLUS_SORT;
 
 export const FILTER_DRAWER_DATA=[
     {
-        value:'type',
-        label:'商家类型',
-        children:[
-            {
-                value:'1',
-                label:'商家类型',
-            },
-            {
-                value:'2',
-                label:'超市',
-            },
-            {
-                value:'3',
-                label:'商家类型',
-            },
-            {
-                value:'4',
-                label:'美妆',
-            },
-            {
-                value:'5',
-                label:'外框左右空24px',
-            },
-            {
-                value:'6',
-                label:'商家类型商家类型商家类',
-            },
-            {
-                value:'7',
-                label:'商家类型',
-            },
-            {
-                value:'8',
-                label:'母婴',
-            },
-            {
-                value:'9',
-                label:'商家类型商家类型商家',
-            },
-            {
-                value:'10',
-                label:'商家类型',
-            },
-            {
-                value:'11',
-                label:'商家类型',
-            },
-            {
-                value:'12',
-                label:'商家类型',
-            },
-            {
-                value:'13',
-                label:'商家类型',
-            },
+        value:'tag',
+        label:'商家标签',
+        children:[ 
         ]
     },
     {
-        value:'service',
+        value:'logistics',
         label:'商家服务',
         children:[
             {
-                value:'1',
+                value:'ziti',
                 label:'自提',
             },
             {
-                value:'2',
+                value:'delivery',
                 label:'快递',
             },
             {
-                value:'3',
+                value:'dada',
                 label:'同城配',
             }
         ]
     }, 
 ];
+
+//填充标签
+export function fillFilterTag(tagList){
+    FILTER_DRAWER_DATA[0].children=tagList.map(item=>({value:item.tag_id,label:item.tag_name}));
+}
 
 export const SEARCH_DATA=[
     '可乐',

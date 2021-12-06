@@ -1,10 +1,10 @@
 import Taro, { useState, useEffect, useCallback } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components';
-import { SpNavBar, SpNewInput, SpNewFilterbar, SpNewShopItem, SpNewFilterDrawer } from '@/components'
+import { SpNavBar, SpNewInput, SpNewFilterbar, SpNewShopItem, SpNewFilterDrawer, SpLoadMore } from '@/components'
 import { classNames, isNavbar } from '@/utils';
-import { FILTER_DATA, FILTER_DRAWER_DATA,DEFAULT_SORT_VALUE } from '../consts/index';
+import { FILTER_DATA, FILTER_DRAWER_DATA, DEFAULT_SORT_VALUE,fillFilterTag } from '../consts/index';
 import api from '@/api'
-import { usePage,useFirstMount } from '@/hooks';
+import { usePage, useFirstMount } from '@/hooks';
 import './index.scss';
 
 const NavbarTitle = '附近商家';
@@ -15,25 +15,31 @@ const NavbarTitle = '附近商家';
 // const top=`${pxTransform(navbarHeight)+ 92 + 92}rpx`;
 
 const NearbyShopList = (props) => {
- 
+
     const [filterValue, setFilterValue] = useState(DEFAULT_SORT_VALUE);
 
     const [filterVisible, setFilterVisible] = useState(false);
 
-    const [list,setList]=useState([]); 
+    const [dataList, setDataList] = useState([]); 
+
+    //物流
+    const [logistics,setLogistics]=useState({
+        //自提
+        is_ziti:undefined,
+        //快递
+        is_delivery:undefined,
+        //达达
+        is_dada:undefined
+    }); 
+
+    //标签id
+    const [tag,setTag]=useState('');
 
     const handleClickFilterLabel = useCallback(
-        (item) => { 
+        (item) => {
             setFilterValue(item);
         },
         [],
-    );
-
-    const handleClickFilter = useCallback(
-        () => {
-            setFilterVisible(true)
-        },
-        []
     );
 
     const handleClickInput = useCallback(
@@ -45,7 +51,24 @@ const NearbyShopList = (props) => {
         []
     );
 
-    const firstMount=useFirstMount();
+    const handleDrawer=useCallback(
+        (flag) => (selectedValue) => {
+            setFilterVisible(flag); 
+            if(!selectedValue.tag && !Array.isArray(selectedValue.tag)) return ;   
+            setTag(selectedValue.tag.length?selectedValue.tag.join(','):''); 
+            const is_ziti=selectedValue.logistics.includes('ziti')?1:undefined;
+            const is_delivery=selectedValue.logistics.includes('delivery')?1:undefined;
+            const is_dada=selectedValue.logistics.includes('dada')?1:undefined;
+            setLogistics({
+                is_ziti,
+                is_delivery,
+                is_dada
+            });
+        },
+        [],
+    ); 
+
+    const mounted = useFirstMount();
 
     const fetch = async ({ pageIndex, pageSize }) => {
         const params = {
@@ -54,23 +77,32 @@ const NearbyShopList = (props) => {
             // province:'上海市',
             // city:'上海市', 
             // area:'徐汇区',
-            type:0,
+            type: 0,
             // name:'',
             // card_id:'',
             // isToken:false,
-            show_discount:1,
-            show_marketing_activity:1,
+            show_discount: 1,
+            show_marketing_activity: 1,
+            is_ziti:logistics.is_ziti,
+            is_delivery:logistics.is_delivery,
+            is_dada:logistics.is_dada,
+            distributor_tag_id:tag
             // lng:121.4177321,
             // lat:31.175441,
             // sort_type:filterValue
         }
         const {
             list,
-            total_count
+            total_count,
+            tagList
         } = await api.shop.list(params);
 
-        setList(list);
+        setDataList([
+            ...dataList,
+            ...list
+        ]);
         setTotal(total_count);
+        fillFilterTag(tagList);
     };
 
     const { loading, hasNext, total, setTotal, nextPage, resetPage } = usePage({
@@ -78,11 +110,18 @@ const NearbyShopList = (props) => {
     });
 
     useEffect(() => {
-        if(firstMount){
-            resetPage()
+        if (mounted) {
+            resetPage();
+            setDataList([]);
         }
     }, [filterValue]);
- 
+
+    useEffect(() => {
+        if (mounted) {
+            resetPage();
+            setDataList([]);
+        }
+    }, [tag,logistics]);  
 
     return (
         <View className={classNames(
@@ -109,31 +148,35 @@ const NearbyShopList = (props) => {
                 filterData={FILTER_DATA}
                 value={filterValue}
                 onClickLabel={handleClickFilterLabel}
-                onClickFilter={handleClickFilter}
+                onClickFilter={handleDrawer(true)}
             />
 
             <ScrollView
                 className={classNames('sp-page-nearbyshoplist-scrollview')}
                 scrollY
                 scrollWithAnimation
-                
+                onScrollToLower={nextPage}
             >
                 {
-                    list.map((item, index) => (
+                    dataList.map((item, index) => (
                         <SpNewShopItem
                             className={classNames(
                                 'in-shoplist',
                                 { 'in-shoplist-last': index === 99 }
-                            )} 
+                            )}
                             info={item}
                         />
                     ))
                 }
+                {/* 分页loading */}
+                <SpLoadMore loading={loading} hasNext={hasNext} total={total} />
+
             </ScrollView>
 
             <SpNewFilterDrawer
                 visible={filterVisible}
                 filterData={FILTER_DRAWER_DATA}
+                onCloseDrawer={handleDrawer(false)}
             />
 
             {/* 分页loading */}

@@ -6,7 +6,8 @@ import './button.scss';
 const Button = (props) => {
 
     const {
-        
+        onConfirm=()=>{},
+        onReset=()=>{}
     } = props;
 
     return (
@@ -15,8 +16,8 @@ const Button = (props) => {
                 'filter-button'
             )
         }>
-            <View className={'reset'}>重置</View>
-            <View className={'confirm'}>确定并筛选</View>
+            <View className={'reset'} onClick={onReset}>重置</View>
+            <View className={'confirm'} onClick={onConfirm}>确定并筛选</View>
         </View>
     )
 }
