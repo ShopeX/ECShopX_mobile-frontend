@@ -24,7 +24,6 @@ export default class StoreListItem extends Component {
     const { info, isStore, colors } = this.props
     if (!info) return null
     const distance = info.distance ? (info.distance * 1).toFixed(2) : false
-    console.log(info, '---------in-----')
 
     return (
       <View className='cus-list-item' onClick={this.handleClick.bind(this, info)}>

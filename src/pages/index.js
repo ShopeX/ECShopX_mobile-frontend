@@ -96,9 +96,6 @@ export default class Home extends Component {
       let location = await entryLaunch.getLocationInfo()
       // 处理定位
       await entry.InverseAnalysisGaode(location)
-      console.log(location, '===============location=============')
-      // const data = await entryLaunch.getAddressByLnglat(location.longitude, location.latitude)
-      // console.log(data, '======data======')
     }
     Taro.eventCenter.on('lnglat-success', () => {
       // console.log(Taro.getStorageSync('lnglat'))
