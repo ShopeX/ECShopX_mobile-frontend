@@ -177,15 +177,15 @@ async function logScene(data) {
 }
 
 async function getLocalSetting() {
-  // const paramsurl = qs.stringify(payTypeField)
-  // const url = `/pagestemplate/setInfo?${paramsurl}`
-  // const { is_open_wechatapp_location } = await req.get(url)
-  // if (is_open_wechatapp_location == 1) {
-  //   return true
-  // } else {
-  //   return false
-  // }
-  return true
+  const paramsurl = qs.stringify(payTypeField)
+  const url = `/pagestemplate/setInfo?${paramsurl}`
+  const { is_open_wechatapp_location } = await req.get(url)
+  if (is_open_wechatapp_location == 1) {
+    return true
+  } else {
+    return false
+  }
+  // return true
 }
 
 //   store = {
@@ -362,7 +362,7 @@ async function positiveAnalysisGaode (locationData) {
   let cityInfo = await Taro.request({
     url: `https://restapi.amap.com/v3/geocode/geo`,
     data:{
-      key:'1ccc1ebc947719886f0cd766d70241fe',
+      key: process.env.APP_MAP_KEY,
       address,
     }
   })
@@ -385,7 +385,7 @@ async function InverseAnalysisGaode(locationData){
   let cityInfo = await Taro.request({
     url: `https://restapi.amap.com/v3/geocode/regeo`,
     data:{
-      key:'1ccc1ebc947719886f0cd766d70241fe',
+      key: process.env.APP_MAP_KEY,
       location:`${longitude},${latitude}`, 
     }
   }); 
