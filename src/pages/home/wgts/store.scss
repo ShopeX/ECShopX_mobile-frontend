@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .store-wrap {
   margin: 20px 20px 0;
@@ -12,20 +12,39 @@
     .store-logo {
       width: 80px;
       height: 80px;
-      border-radius: 100%;
+      border-radius: 15px;
       box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
     }
-    .store-name {
+    .store-title {
       padding-left: 20px;
+      .store-name {
+        font-size: 30px;
+        font-weight: 600;
+        color: #333;
+      }
+      .store-tags {
+        &-item {
+          margin-right: 20px;
+          color: #c3c3c3;
+          border: 1px solid #c3c3c3;
+          padding: 2px 6px;
+          border-radius: 5px;
+        }
+      }
     }
   }
+  .store-banner {
+    width: 100%;
+    padding: 15px 0;
+  }
   .store-goods {
-    padding-top: 20px;
     white-space: nowrap;
     &__item {
       display: inline-block;
-      margin-right: 20px;
+      margin-right: 19px;
       &-thumbnail {
+        border-width: 1px;
+        border-style: solid;
         width: 150px;
         height: 150px;
       }
