@@ -138,7 +138,7 @@ class API {
     }
 
     const token = S.getAuthToken()
-    if (token && (params||{data:{}}).data.isToken!==false) {
+    if (token) {
       header['Authorization'] = `Bearer ${token}`
     }
 

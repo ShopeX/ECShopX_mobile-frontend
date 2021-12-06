@@ -22,7 +22,8 @@ const SpNewShopItem = (props) => {
         ],
         info = {
             discountCardList: [],
-            marketingActivityList: []
+            marketingActivityList: [],
+            scoreList:{}
         },
         //默认优惠券展示3条
         discountCount = 3,
@@ -83,7 +84,7 @@ const SpNewShopItem = (props) => {
                 <View className={'center'}>
                     <View className={'name'}>{title}</View>
                     <View className={'rate'}>
-                        {!!info.rate && <Text>评分：{info.rate}</Text>}
+                        {!!(info.scoreList||{}).avg_star && <Text>评分：{(info.scoreList||{}).avg_star}</Text>}
                         <Text className={'sale'}>月销：{info.sales_count}</Text>
                     </View>
                 </View>

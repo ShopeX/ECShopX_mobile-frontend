@@ -14,7 +14,9 @@ const NavbarTitle = '附近商家';
 //微信小程序顶部距离=导航栏距离+输入框距离+筛选tab距离
 // const top=`${pxTransform(navbarHeight)+ 92 + 92}rpx`;
 
-const lnglat=Taro.getStorageInfoSync('lnglat')||{};
+const lnglat=Taro.getStorageSync('lnglat')||{};
+
+console.log("===lnglat===",lnglat)
 
 const NearbyShopList = (props) => {
 
@@ -77,21 +79,20 @@ const NearbyShopList = (props) => {
             page: pageIndex,
             pageSize,
             province:lnglat.province,
-            // city:'上海市', 
+            city:lnglat.city?lnglat.city:lnglat.province, 
             area:lnglat.district,
-            type: 0,
-            // name:'',
-            // card_id:'',
-            // isToken:false,
+            type: 0, 
             show_discount: 1,
             show_marketing_activity: 1,
             is_ziti:logistics.is_ziti,
             is_delivery:logistics.is_delivery,
             is_dada:logistics.is_dada,
-            distributor_tag_id:tag
-            // lng:121.4177321,
-            // lat:31.175441,
-            // sort_type:filterValue
+            distributor_tag_id:tag,
+            lng:lnglat.longitude,
+            lat:lnglat.latitude,
+            //是否展示积分
+            show_score:1,
+            sort_type:filterValue
         }
         const {
             list,
