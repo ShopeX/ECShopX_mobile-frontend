@@ -6,6 +6,7 @@ import { connect } from '@tarojs/redux'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
 import entry from '@/utils/entry'
+import entryLaunch from '@/utils/entryLaunch'
 import { classNames, getThemeStyle, styleNames } from '@/utils'
 import CusStoreListItem from './comps/cus-list-item'
 
@@ -69,11 +70,14 @@ export default class StoreList extends Component {
     this.getHeadquarters()
   }
 
-  componentDidShow () {
-    this.init()
-    // if (!!this.props.address) {
-    //   this.setState({ deliveryInfo: this.props.address })
-    // }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.address !== this.props.address) {
+      const { province, city, county, adrdetail } = nextProps.address
+      let addressdetail = province + city + county + adrdetail
+      this.setState({ deliveryInfo: {...nextProps.address, addressdetail} }, () => {
+        this.init()
+      })
+    }
   }
 
   config = {
@@ -232,69 +236,73 @@ export default class StoreList extends Component {
       return false
     }
     e.stopPropagation()
-    const { authSetting } = await Taro.getSetting()
-    if (!authSetting['scope.userLocation']) {
-      Taro.authorize({
-        scope: 'scope.userLocation',
-        success: () => {
-          this.init()
-        },
-        fail: () => {
-          Taro.showModal({
-            title: '提示',
-            content: '请打开定位权限',
-            success: async (resConfirm) => {
-              if (resConfirm.confirm) {
-                await Taro.openSetting()
-                const setting = await Taro.getSetting()
-                if (setting.authSetting['scope.userLocation']) {
-                  this.init()
-                } else {
-                  Taro.showToast({ title: '获取定位权限失败', icon: 'none' })
+    if (process.env.TARO_ENV === 'weapp') {
+      const { authSetting } = await Taro.getSetting()
+      if (!authSetting['scope.userLocation']) {
+        Taro.authorize({
+          scope: 'scope.userLocation',
+          success: () => {
+            this.init()
+          },
+          fail: () => {
+            Taro.showModal({
+              title: '提示',
+              content: '请打开定位权限',
+              success: async (resConfirm) => {
+                if (resConfirm.confirm) {
+                  await Taro.openSetting()
+                  const setting = await Taro.getSetting()
+                  if (setting.authSetting['scope.userLocation']) {
+                    this.init()
+                  } else {
+                    Taro.showToast({ title: '获取定位权限失败', icon: 'none' })
+                  }
                 }
               }
-            }
-          })
-        }
-      })
-    } else {
+            })
+          }
+        })
+      }
       await entry.getLoc()
-      // Taro.eventCenter.on('lnglat-success', () => {
-      //   console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
-      // })
-      const { query } = this.state
-      query.name = ''
-      query.type = 0
-      this.setState(
-        {
-          query
-        },
-        () => {
-          this.init()
-        }
-      )
     }
+    if (process.env.TARO_ENV == 'h5') { // h5获取经纬度
+      await entryLaunch.initAMap()
+      let location = await entryLaunch.getLocationInfo()
+      await entry.InverseAnalysisGaode(location) // 根据经纬度去解析出地址
+      console.log(location, '===============location=============')
+      // const data = await entryLaunch.getAddressByLnglat(location.longitude, location.latitude)
+      // console.log(data, '======data======')
+    }
+    // Taro.eventCenter.on('lnglat-success', () => {
+    //   console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
+    // })
+    const { query } = this.state
+    query.name = ''
+    query.type = 0
+    this.setState(
+      {
+        query
+      },
+      () => {
+        this.init()
+      }
+    )
   }
 
   // 根据收货地址搜索
-  onLocationChange = (info) => {
-    entry.positiveAnalysisGaode(info)
+  onLocationChange = async (info) => {
+    await entry.positiveAnalysisGaode(info)
     if (info) {
       info.store_id = 0 //新增非门店自提，开启distributor_id 取值为store_id
     }
     Taro.navigateBack()
     // Taro.setStorageSync('curStore', info)
-    // const { query } = this.state
-    // query.name = ''
-    // query.type = 2
-    // this.setState(
-    //   {
-    //     query
-    //   },
-    //   () => {
-    //     this.init()
-    //   }
-    // )
+    const { query } = this.state
+    query.name = ''
+    query.type = 2
+    this.setState({ query }, () => {
+      this.init()
+    })
   }
 
   render() {
@@ -320,7 +328,7 @@ export default class StoreList extends Component {
       const { province: p = "", city: c = "", county: ct = "" } = deliveryInfo;
       areaData = [p, c === "市辖区" || !c ? province : city, ct];
     }
-    console.log(location, 'locationlocationlocation')
+    console.log(location, deliveryInfo, 'location--deliveryInfo')
     // const  = defaultStore.is_valid === "true";
 
     return (
@@ -418,10 +426,10 @@ export default class StoreList extends Component {
             <View className="currentadress">
               <View className="block-hd flex-header">
                 <View>我的收货地址</View>
-                {deliveryInfo.address_id && <View className='arrow' onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose'})}>选择其他地址<View className='iconfont icon-qianwang-01'></View></View>}
+                {deliveryInfo && deliveryInfo.address_id && <View className='arrow' onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose'})}>选择其他地址<View className='iconfont icon-qianwang-01'></View></View>}
               </View>
               {
-                deliveryInfo.address_id &&
+                deliveryInfo && deliveryInfo.address_id &&
                 <View className="block-bd" onClick={this.onLocationChange.bind(this, deliveryInfo)}>
                   <View className="lngName">
                     {deliveryInfo.province}
@@ -432,7 +440,7 @@ export default class StoreList extends Component {
                 </View>
               }
               {
-                !deliveryInfo.address_id &&
+                deliveryInfo && !deliveryInfo.address_id &&
                 <View className='address-btn' onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })}>添加新地址</View>
               }
             </View>
@@ -453,7 +461,7 @@ export default class StoreList extends Component {
         >
           {!isRecommedList ? (
             <View className="title">
-              {deliveryInfo.address_id || location.latitude
+              {(deliveryInfo && deliveryInfo.address_id) || (location && location.latitude)
                 ? "附近商家"
                 : "全部商家"}
             </View>

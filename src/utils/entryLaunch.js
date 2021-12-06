@@ -105,8 +105,8 @@ class EntryLaunch {
           type: 'gcj02',
           success: (res) => {
             resolve({
-              lng: res.longitude,
-              lat: res.latitude
+              longitude: res.longitude,
+              latitude: res.latitude
             })
           },
           fail: (error) => {
@@ -119,8 +119,8 @@ class EntryLaunch {
         this.geolocation.getCurrentPosition(function(status, result) {
           if (status == 'complete') {
             reslove({
-              lng: result.position.lng,
-              lat: result.position.lat
+              longitude: result.position.lng,
+              latitude: result.position.lat
             })
           } else {
             reject({ message: result.message })

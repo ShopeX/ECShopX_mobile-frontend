@@ -20,6 +20,7 @@ import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
 import { Tracker } from '@/service'
+import entryLaunch from '@/utils/entryLaunch'
 import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
 import HomeWgts from './home/comps/home-wgts'
 import Automatic from './home/comps/automatic'
@@ -86,10 +87,19 @@ export default class Home extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.protocolUpdateTime();
     this.getShareSetting();
     this.isShowTips();
+    if (process.env.TARO_ENV == 'h5') { // h5获取经纬度
+      await entryLaunch.initAMap()
+      let location = await entryLaunch.getLocationInfo()
+      // 处理定位
+      await entry.InverseAnalysisGaode(location)
+      console.log(location, '===============location=============')
+      // const data = await entryLaunch.getAddressByLnglat(location.longitude, location.latitude)
+      // console.log(data, '======data======')
+    }
     Taro.eventCenter.on('lnglat-success', () => {
       // console.log(Taro.getStorageSync('lnglat'))
     })
@@ -802,7 +812,7 @@ export default class Home extends Component {
           visible={PrivacyConfirmModalVisible}
           onChange={this.PrivacyConfirmModalonChange}
           isPhone={false}
-        ></PrivacyConfirmModal>
+        />
       </View>
     )
   }

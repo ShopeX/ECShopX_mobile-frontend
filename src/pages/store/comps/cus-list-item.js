@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Image, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import './cus-list-item.scss'
@@ -24,11 +24,12 @@ export default class StoreListItem extends Component {
     const { info, isStore, colors } = this.props
     if (!info) return null
     const distance = info.distance ? (info.distance * 1).toFixed(2) : false
+    console.log(info, '---------in-----')
 
     return (
       <View className='cus-list-item' onClick={this.handleClick.bind(this, info)}>
         <View className='list-left'>
-          <Image className='list-imgs' src='https://b-img-cdn.yuanyuanke.cn/image/21/2021/09/09/e256a607a5914062d406916bc22b1465BRHbeKZOlgTyIDnPmitVXJESiSXLCaDk?imageView2/2/w/400'></Image>
+          <Image className='list-imgs' src={info.logo}></Image>
         </View>
         <View className='list-center'>
           <View className='list-title'>{info.name}</View>
@@ -42,7 +43,7 @@ export default class StoreListItem extends Component {
           </View>
 
           <View className='list-tag'>
-            {info.tagList.map(item => <View className='tags' key={item.tag_id}>{item.tag_name}</View>)}
+            {info.tagList.map(item => <View className='cus-tag' key={item.tag_id}>{item.tag_name}</View>)}
           </View>
         </View>
         {
