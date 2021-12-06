@@ -357,42 +357,6 @@ export default class StoreList extends Component {
           </View>
         </View>
 
-        {/* <View className='block-content'>
-          <View className='block-hd'>当前位置</View>
-          <View className='block-bd location-wrap'>
-            <View className='location-address'>
-              {
-                (query.type !== 2 && location.addressdetail) && <View className='lngName'>
-                  {location.addressdetail || '无法获取您的位置信息'}
-                </View>
-              }
-              {
-                (query.type === 2 || (!location.addressdetail && deliveryInfo.address_id)) && <View className='lngName'>
-                  {deliveryInfo.province}
-                  {deliveryInfo.city}
-                  {deliveryInfo.county}
-                  {deliveryInfo.adrdetail}
-                </View>
-              }
-            </View>
-            <View className='btn-location'>
-              <Text className='iconfont icon-target'></Text>
-              重新定位
-            </View>
-          </View>
-        </View>
-
-        <View className='block-content'>
-          <View className='block-hd'>按收货地址定位</View>
-          <View className='block-bd'>
-            <View className='receive-address'></View>
-          </View>
-        </View>
-
-        <View className='block-content'>
-          <View className='block-hd'>附近门店</View>
-          <View className='block-bd'></View>
-        </View> */}
         <View className="block-content">
           <View className="location">
             <View className="block-hd">当前定位地址</View>
@@ -402,17 +366,6 @@ export default class StoreList extends Component {
                   {location.addressdetail || "无法获取您的位置信息"}
                 </View>
               )}
-              {/* {(query.type === 2 ||
-                (location && !location.address && deliveryInfo && deliveryInfo.address_id)) && (
-                <View className="lngName">
-                  {deliveryInfo.province}
-                  {deliveryInfo.city}
-                  {deliveryInfo.county}
-                  {deliveryInfo.adrdetail}
-                </View>
-              )} */}
-
-              {/* {is_open_wechatapp_location === 1 && ( */}
               <View
                 className="btn-location'"
                 onClick={this.getLocation.bind(this)}
@@ -423,27 +376,27 @@ export default class StoreList extends Component {
               {/* )} */}
             </View>
           </View>
-            <View className="currentadress">
-              <View className="block-hd flex-header">
-                <View>我的收货地址</View>
-                {deliveryInfo && deliveryInfo.address_id && <View className='arrow' onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose'})}>选择其他地址<View className='iconfont icon-qianwang-01'></View></View>}
-              </View>
-              {
-                deliveryInfo && deliveryInfo.address_id &&
-                <View className="block-bd" onClick={this.onLocationChange.bind(this, deliveryInfo)}>
-                  <View className="lngName">
-                    {deliveryInfo.province}
-                    {deliveryInfo.city}
-                    {deliveryInfo.county}
-                    {deliveryInfo.adrdetail}
-                  </View>
-                </View>
-              }
-              {
-                deliveryInfo && !deliveryInfo.address_id &&
-                <View className='address-btn' onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })}>添加新地址</View>
-              }
+          <View className="currentadress">
+            <View className="block-hd flex-header">
+              <View>我的收货地址</View>
+              {deliveryInfo && deliveryInfo.address_id && <View className='arrow' onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose'})}>选择其他地址<View className='iconfont icon-qianwang-01'></View></View>}
             </View>
+            {
+              deliveryInfo && deliveryInfo.address_id &&
+              <View className="block-bd" onClick={this.onLocationChange.bind(this, deliveryInfo)}>
+                <View className="lngName">
+                  {deliveryInfo.province}
+                  {deliveryInfo.city}
+                  {deliveryInfo.county}
+                  {deliveryInfo.adrdetail}
+                </View>
+              </View>
+            }
+            {
+              deliveryInfo && !deliveryInfo.address_id &&
+              <View className='address-btn' onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })}>添加新地址</View>
+            }
+          </View>
         </View>
 
           
