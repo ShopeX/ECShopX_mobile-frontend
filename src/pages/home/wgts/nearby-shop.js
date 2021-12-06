@@ -17,8 +17,14 @@ const WgtNearbyShop = (props) => {
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [nearbyShop, setNearbyShop] = useState([])
+    const [isLocal,   setIsLocal] = useState(false);
 
     useEffect(async () => {
+
+        if (!isLocal) {
+            return;
+        }
+
         const { latitude, longitude } = Taro.getStorageSync('lnglat')
         const obj = {
             lat: latitude,
@@ -30,13 +36,18 @@ const WgtNearbyShop = (props) => {
         setNearbyShop(result.list)
     }, [activeIndex])
 
-    const showMore=()=>{
+    const showMore = () => {
         Taro.navigateTo({
-            url:'/subpages/ecshopx/nearby-shop-list/index'
+            url: '/subpages/ecshopx/nearby-shop-list/index'
         })
     }
 
-
+    const handleStoreClick = (id) => {
+        const url = `/pages/store/index?id=${id}`
+        Taro.navigateTo({
+            url
+        })
+    }
 
     return (
         <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
@@ -58,34 +69,40 @@ const WgtNearbyShop = (props) => {
                         ))
                     }
                 </View>
-                <View className='shopList'>
-                    {
-                        nearbyShop.length > 0 ? nearbyShop.map((item) => (
-                            (
-                                <View className='shop' key={item.distributor_id}>
-                                    <View className='shopbg'>
-                                        <Image mode='widthFix' className='shop_img'
-                                            src={item.banner || shop_default_bg} width={200}></Image>
+                {
+                    isLocal ? <View className='shopList'>
+                        {
+                            nearbyShop.length > 0 ? nearbyShop.map((item) => (
+                                (
+                                    <View className='shop' key={item.distributor_id} onClick={e => handleStoreClick(item.distributor_id)}>
+                                        <View className='shopbg'>
+                                            <Image mode='widthFix' className='shop_img'
+                                                src={item.banner || shop_default_bg} width={200}></Image>
 
-                                        <Image mode='widthFix' className='shop_logo'
-                                            src={item.logo || shop_default_logo} width={70}></Image>
+                                            <Image mode='widthFix' className='shop_logo'
+                                                src={item.logo || shop_default_logo} width={70}></Image>
+                                        </View>
+
+                                        <View className='shop_name'>{item.name}</View>
+                                        {
+                                            item.discountCardList[0] && <View className='shop_coupon' >{item.discountCardList[0].title}</View>
+                                        }
+
+
+
                                     </View>
+                                )
+                            )) : <View className='noShopContent'>
+                                <Image mode='widthFix' className='noShop' src={noShop}></Image>
+                                <View className='tips'>更多商家接入中，敬请期待</View>
+                            </View>
+                        }
+                    </View>:<View className='noLocalContent'>
+                        <View className='noLocalContent-tips'>未授权位置信息，请授权定位</View>
+                        <Button className='noLocalContent-btn' type='primary'>直接授权定位</Button>
+                    </View>
+                }
 
-                                    <View className='shop_name'>{item.name}</View>
-                                    {
-                                        item.discountCardList[0] && <View className='shop_coupon' >{item.discountCardList[0].title}</View>
-                                    }
-
-
-
-                                </View>
-                            )
-                        )) : <View className='noShopContent'>
-                            <Image mode='widthFix' className='noShop' src={noShop}></Image>
-                            <View className='tips'>更多商家接入中，敬请期待</View>
-                        </View>
-                    }
-                </View>
 
             </View>
         </View>
