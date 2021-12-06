@@ -1,6 +1,7 @@
 import { View, Text, Image } from '@tarojs/components'
 import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import api from '@/api'
+import entryLaunchFun from '@/utils/entryLaunch'
 import './nearby-shop.scss'
 
 const noShop = require('@/assets/imgs/noShop.png');
@@ -17,15 +18,16 @@ const WgtNearbyShop = (props) => {
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [nearbyShop, setNearbyShop] = useState([])
-    const [isLocal,   setIsLocal] = useState(false);
+    const [isLocal, setIsLocal] = useState(false);
 
     useEffect(async () => {
-
-        if (!isLocal) {
-            return;
+        const { latitude, longitude } = Taro.getStorageSync('lnglat')
+        if (!latitude && !longitude) {
+            return
+        } else {
+            setIsLocal(true)
         }
 
-        const { latitude, longitude } = Taro.getStorageSync('lnglat')
         const obj = {
             lat: latitude,
             lng: longitude,
@@ -49,6 +51,13 @@ const WgtNearbyShop = (props) => {
         })
     }
 
+    const getLocation = async () => {
+        await entryLaunchFun.isOpenPosition()
+    }
+
+    Taro.eventCenter.on('lnglat-success', () => {
+      console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
+    })
     return (
         <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
             {base.title && (
@@ -97,9 +106,9 @@ const WgtNearbyShop = (props) => {
                                 <View className='tips'>更多商家接入中，敬请期待</View>
                             </View>
                         }
-                    </View>:<View className='noLocalContent'>
+                    </View> : <View className='noLocalContent'>
                         <View className='noLocalContent-tips'>未授权位置信息，请授权定位</View>
-                        <Button className='noLocalContent-btn' type='primary'>直接授权定位</Button>
+                        <Button className='noLocalContent-btn' onClick={e => getLocation()} type='primary'>直接授权定位</Button>
                     </View>
                 }
 
