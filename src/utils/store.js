@@ -9,3 +9,8 @@ export function JumpStoreIndex(info){
 export function JumpPageIndex(){ 
     Taro.navigateTo({ url: `/pages/index` })
 }
+
+//跳转到商品详情页
+export function JumpGoodDetail(itemId,distributor_id){ 
+    Taro.navigateTo({ url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributor_id}` })
+}

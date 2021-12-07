@@ -142,7 +142,7 @@ const NearbyShopList = (props) => {
     const noData = dataList.length === 0;
 
     //表示没有筛选也没有数据
-    const noCompleteData = noData && !name && noLogistics && !tag;  
+    const noCompleteData = noData && !name && noLogistics && !tag && !loading;  
 
     return (
         <View className={classNames(

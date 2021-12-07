@@ -1,6 +1,6 @@
 import Taro, { useMemo, memo, useState, useCallback,useEffect } from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components';
-import { classNames, JumpStoreIndex } from '@/utils';
+import { classNames, JumpStoreIndex,JumpGoodDetail } from '@/utils';
 import { DistributionLabel } from './comps';
 import { SpNewCoupon, SpNewPrice } from '@/components';
 import api from '@/api'
@@ -10,15 +10,7 @@ const NoImageSRC = 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'
 const SpNewShopItem = (props) => {
 
     const {
-        className = '',
-        goodList = [
-            { img: NoImageSRC, originPrice: 4, price: 3 },
-            { img: NoImageSRC, price: 12 },
-            { img: NoImageSRC, originPrice: 9.8, price: 10 },
-            { img: NoImageSRC, originPrice: 4, price: 3 },
-            { img: NoImageSRC, price: 12 },
-            { img: NoImageSRC, originPrice: 9.8, price: 10 },
-        ],
+        className = '', 
         info = {
             discountCardList: [],
             marketingActivityList: [],
@@ -217,7 +209,7 @@ const SpNewShopItem = (props) => {
                 {
                     info.itemList.map(item => {
                         return (
-                            <View className={'good-item'}>
+                            <View className={'good-item'} onClick={()=>JumpGoodDetail(item.item_id,info.distributor_id)}>
                                 <Image className='img' src={item.pics}></Image>
                                 <View className='price'>
                                     <SpNewPrice price={item.price} />
