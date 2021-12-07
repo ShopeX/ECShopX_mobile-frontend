@@ -91,7 +91,7 @@ export default class WgtStore extends Component {
                     className='store-goods__item-thumbnail'
                     src={goods.imgUrl}
                     style={{ borderColor: base.borderColor || 'none' }}
-                    mode='widthFix'
+                    mode='scaleToFill'
                     
                   />
                   <View className='store-goods__item-price'>¥{(goods.price / 100).toFixed(2)}</View>

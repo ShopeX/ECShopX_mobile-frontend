@@ -1,13 +1,9 @@
-import { View, Text, Image,Button } from '@tarojs/components'
+import { View, Text, Image, Button } from '@tarojs/components'
 import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import api from '@/api'
 import entryLaunchFun from '@/utils/entryLaunch'
+import { SpNoShop } from '@/components'
 import './nearby-shop.scss'
-
-const noShop = require('@/assets/imgs/noShop.png');
-const shop_default_bg = require('@/assets/imgs/shop_default_bg.png');
-const shop_default_logo = require('@/assets/imgs/shop_default_logo.png');
-
 
 
 const WgtNearbyShop = (props) => {
@@ -21,6 +17,10 @@ const WgtNearbyShop = (props) => {
     const [isLocal, setIsLocal] = useState(false);
 
     useEffect(async () => {
+        init();
+    }, [activeIndex])
+
+    const init = async () => {
         const { latitude, longitude } = Taro.getStorageSync('lnglat')
         if (!latitude && !longitude) {
             return
@@ -36,7 +36,7 @@ const WgtNearbyShop = (props) => {
         }
         const result = await api.wgts.getNearbyShop(obj);
         setNearbyShop(result.list)
-    }, [activeIndex])
+    }
 
     const showMore = () => {
         Taro.navigateTo({
@@ -53,19 +53,23 @@ const WgtNearbyShop = (props) => {
 
     const getLocation = async () => {
         await entryLaunchFun.isOpenPosition()
+        init();
     }
 
     Taro.eventCenter.on('lnglat-success', () => {
-      console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
+        console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
     })
     return (
         <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
             {base.title && (
                 <View className='wgt__header' style={{ justifyContent: 'space-between' }}>
                     <View className='wgt__title'>{base.title}</View>
-                    <View className='wgt__more' style={{ width: 'auto' }}>
-                        <View className='see_more' onClick={showMore}>查看更多</View>
-                    </View>
+                    {
+                        isLocal && <View className='wgt__more' style={{ width: 'auto' }}>
+                            <View className='see_more' onClick={showMore}>查看更多</View>
+                        </View>
+                    }
+
                 </View>
             )}
 
@@ -86,10 +90,11 @@ const WgtNearbyShop = (props) => {
                                     <View className='shop' key={item.distributor_id} onClick={e => handleStoreClick(item.distributor_id)}>
                                         <View className='shopbg'>
                                             <Image mode='widthFix' className='shop_img'
-                                                src={item.banner || shop_default_bg} width={200}></Image>
+                                                src={item.banner || `${process.env.APP_IMAGE_CDN}/shop_default_bg.png`} width={200}></Image>
 
                                             <Image mode='widthFix' className='shop_logo'
-                                                src={item.logo || shop_default_logo} width={70}></Image>
+                                                src={item.logo || `${process.env.APP_IMAGE_CDN}/shop_default_logo.png`} width={70}></Image>
+
                                         </View>
 
                                         <View className='shop_name'>{item.name}</View>
@@ -101,10 +106,7 @@ const WgtNearbyShop = (props) => {
 
                                     </View>
                                 )
-                            )) : <View className='noShopContent'>
-                                <Image mode='widthFix' className='noShop' src={noShop}></Image>
-                                <View className='tips'>更多商家接入中，敬请期待</View>
-                            </View>
+                            )) : <SpNoShop />
                         }
                     </View> : <View className='noLocalContent'>
                         <View className='noLocalContent-tips'>未授权位置信息，请授权定位</View>

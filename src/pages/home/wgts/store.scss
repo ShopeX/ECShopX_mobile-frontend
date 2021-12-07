@@ -35,10 +35,11 @@
   }
   .store-banner {
     width: 100%;
-    padding: 15px 0;
+    padding-top: 15px;
   }
   .store-goods {
     white-space: nowrap;
+    margin-top: 20px;
     &__item {
       display: inline-block;
       margin-right: 19px;

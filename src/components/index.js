@@ -44,6 +44,8 @@ import SpCell from './sp-cell'
 import FloatMenuMeiQia from './float-menus/meiqia'
 
 import GoodsItem from './goods-item'
+import SpNoShop from './sp-noshop'
+
 
 export { default as Loading } from './loading'
 export { default as Price } from './price'
@@ -125,4 +127,5 @@ export {
   SpPopup,
   SpNewFilterDrawer,
   SpNewPrice,
+  SpNoShop
 }
