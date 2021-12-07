@@ -32,6 +32,9 @@ $input-color:#BF9775;
             @include hairline($input-color,0,left);
         }
       
+        .placeholderClass{
+            color:$input-color;
+        }
     }
     
 }

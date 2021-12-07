@@ -141,9 +141,8 @@ const NearbyShopList = (props) => {
             />
 
             <View className={'sp-page-nearbyshoplist-input'}>
-                <SpNewInput
-                    isStatic
-                    onClick={handleClickInput}
+                <SpNewInput  
+                    placeholder={'输入商家、商品'}
                 />
             </View>
 
@@ -180,10 +179,7 @@ const NearbyShopList = (props) => {
                 visible={filterVisible}
                 filterData={FILTER_DRAWER_DATA}
                 onCloseDrawer={handleDrawer(false)}
-            />
-
-            {/* 分页loading */}
-            {/* <SpLoadMore loading={loading} hasNext={hasNext} total={total} /> */}
+            /> 
 
         </View>
     )

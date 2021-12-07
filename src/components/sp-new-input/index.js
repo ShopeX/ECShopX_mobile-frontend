@@ -6,7 +6,7 @@ import './index.scss';
 const SpNewInput=(props)=>{
 
     const {
-        placeholder='输入商家、商品',
+        placeholder='',
         isStatic=false,
         onClick=()=>{},
         onConfirm=()=>{}
@@ -36,6 +36,8 @@ const SpNewInput=(props)=>{
                         value={value}
                         onInput={handleInput}    
                         onConfirm={handleConfirm}
+                        placeholder={placeholder}
+                        placeholderClass={'placeholderClass'}
                     />}
                 </View>
             </View>

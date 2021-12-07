@@ -2,6 +2,7 @@
 @import "../../style/iconfont.scss";
 
 $img-width:120px;
+$primary-color:rgba(244, 129, 31, 1);
 
 .sp-component-newshopitem{
     
@@ -15,9 +16,9 @@ $img-width:120px;
 
     &.in-shoplist-last{
         margin-bottom: 48px;
-    }
-
-    &.in-shop-search{
+    } 
+    
+    &.in-store-index{
         border-radius: 16px;
         padding:24px 16px;
         margin-bottom: 24px;
@@ -165,6 +166,7 @@ $img-width:120px;
             flex-grow: 0;
             flex-shrink: 0;
             height: 100px;
+            margin-right:24px;
            
             .img{
                 width:100px;
@@ -178,11 +180,23 @@ $img-width:120px;
         .center{
             flex:1;
             padding:4px 24px;
+            padding-left:0;
             .name{
                 font-weight: 600;
                 color: #111111;
                 font-size: 30px;
-                @include multi-ellipsis(1);
+                display:flex;
+                align-items: center;
+                .text{
+                    @include multi-ellipsis(1);
+                    flex:1;
+                }
+                .iconfont{
+                    width:16px;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                }
+                
             }
             .rate{
                 margin-top:8px;
@@ -197,14 +211,29 @@ $img-width:120px;
         }
 
         .right{
-            width:100px;
+            width:180px;
             flex-grow: 0;
             flex-shrink: 0;
-            text-align: right;
-            font-size: 28px;
-            font-weight: 400;
-            color: #666666;
-            padding-top: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            .button{
+                height: 44px;
+                display: flex;
+                align-items: center;
+                padding:0 16px;
+                color:$primary-color;
+                font-size: 24px;
+                font-weight: 600;
+                border-radius: 22px;
+                border: 1px solid #F4811F;
+
+                .text{
+                    display: flex;
+                    align-items: center;
+                }
+            }
         }
     }
 
