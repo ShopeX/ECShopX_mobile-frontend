@@ -1,4 +1,5 @@
-import Taro from '@tarojs/taro'
+import Taro from '@tarojs/taro';
+import api from '@/api';
 
 //跳转到店铺首页
 export function JumpStoreIndex(info){ 
@@ -13,4 +14,10 @@ export function JumpPageIndex(){
 //跳转到商品详情页
 export function JumpGoodDetail(itemId,distributor_id){ 
     Taro.navigateTo({ url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributor_id}` })
+}
+
+//获取总店
+export async function getHeadShop(){
+    const res = await api.shop.getShop({ distributor_id: 0 });
+    return res;
 }

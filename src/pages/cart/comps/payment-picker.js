@@ -43,8 +43,7 @@ export default class PaymentPicker extends Component {
   async fetch() {
 
     const { list }=await getPaymentList();  
-    const res = list; 
-    console.log('res==============',res);
+    const res = list;  
  
     this.setState(
       {
@@ -100,9 +99,7 @@ export default class PaymentPicker extends Component {
       isShowBalance = true,
       isShowDelivery = true
     } = this.props
-    const { localType, typeList } = this.state
-
-    console.log("===localType==",localType,typeList)
+    const { localType, typeList } = this.state 
 
     return (
       <AtFloatLayout isOpened={isOpened}>

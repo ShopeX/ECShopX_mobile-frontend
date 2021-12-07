@@ -7,7 +7,7 @@ const SpNewFilterbar = (props) => {
 
     const {
         filterText = '筛选',
-        filterData,
+        filterData=[],
         value,
         onClickLabel=()=>{},
         onClickFilter=()=>{},

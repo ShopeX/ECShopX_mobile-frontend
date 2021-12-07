@@ -57,6 +57,7 @@ export default class Deliver extends Component {
 
   render() {
     const { curStore, receiptType, address, isOpenStore, colors } = this.props
+   
     const { goodType, type } = this.$router.params
     // 收货方式[快递，同城，自提]
     const deliveryList = [
