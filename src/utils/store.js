@@ -4,3 +4,8 @@ import Taro from '@tarojs/taro'
 export function JumpStoreIndex(info){ 
     Taro.navigateTo({ url: `/pages/store/index?id=${info.distributor_id}` })
 }
+
+//跳转到首页
+export function JumpPageIndex(){ 
+    Taro.navigateTo({ url: `/pages/index` })
+}

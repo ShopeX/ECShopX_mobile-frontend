@@ -19,15 +19,61 @@ $prefixCls:'sp-page-nearbyshoplist';
         height: $input-height; 
     }
 
-    &-scrollview{
-        @include page-scroll($input-height+$filter-bar-height, 0); 
+    &.has-filterbar{
+        .#{$prefixCls}-scrollview{
+            @include page-scroll($input-height+$filter-bar-height, 0); 
+            background: white; 
+        }
+        &.has-navbar{
+            .#{$prefixCls}-scrollview{
+                @include page-scroll($input-height+$filter-bar-height+$navigate-height-h5, 0); 
+            }
+        }
+    }
+
+    .#{$prefixCls}-scrollview{ 
+        @include page-scroll($input-height, 0); 
         background: white; 
     }
 
     &.has-navbar{
         .#{$prefixCls}-scrollview{
-            @include page-scroll($input-height+$filter-bar-height+$navigate-height-h5, 0); 
+            @include page-scroll($input-height+$navigate-height-h5, 0); 
         }
+    }
+
+    &-nodata{
+
+        padding-top:287px;
+
+        .img{ 
+            margin:0 auto;
+            display: block;
+            width: 372px;
+            height: 286px;
+        }
+        .tips{ 
+            font-weight: 400;
+            color: #666666; 
+            font-size: 24px;
+            margin:0 auto;
+            text-align: center;
+            margin-top: 66px;
+        }
+        .button{
+            width: 340px;
+            height: 80px;
+            background: #F4811F;
+            border-radius: 40px;
+            color: white;
+            margin:0 auto;
+            margin-top:40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
     }
     
 }

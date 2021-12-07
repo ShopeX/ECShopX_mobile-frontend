@@ -1,8 +1,8 @@
 import Taro, { useState, useEffect, useCallback } from '@tarojs/taro';
-import { View, ScrollView } from '@tarojs/components';
+import { View, ScrollView,Image } from '@tarojs/components';
 import { SpNavBar, SpNewInput, SpNewFilterbar, SpNewShopItem, SpNewFilterDrawer, SpLoadMore } from '@/components'
-import { classNames, isNavbar } from '@/utils';
-import { FILTER_DATA, FILTER_DRAWER_DATA, DEFAULT_SORT_VALUE,fillFilterTag } from '../consts/index';
+import { classNames, isNavbar,JumpPageIndex } from '@/utils';
+import { FILTER_DATA, FILTER_DRAWER_DATA, DEFAULT_SORT_VALUE, fillFilterTag } from '../consts/index';
 import api from '@/api'
 import { usePage, useFirstMount } from '@/hooks';
 import './index.scss';
@@ -14,9 +14,7 @@ const NavbarTitle = '附近商家';
 //微信小程序顶部距离=导航栏距离+输入框距离+筛选tab距离
 // const top=`${pxTransform(navbarHeight)+ 92 + 92}rpx`;
 
-const lnglat=Taro.getStorageSync('lnglat')||{};
-
-console.log("===lnglat===",lnglat)
+const lnglat = ()=>Taro.getStorageSync('lnglat') || {}; 
 
 const NearbyShopList = (props) => {
 
@@ -25,38 +23,38 @@ const NearbyShopList = (props) => {
     const [filterVisible, setFilterVisible] = useState(false);
 
     //筛选名称
-    const [name,setName]=useState('');
+    const [name, setName] = useState('');
 
-    const [dataList, setDataList] = useState([]); 
+    const [dataList, setDataList] = useState([]);
 
     //物流
-    const [logistics,setLogistics]=useState({
+    const [logistics, setLogistics] = useState({
         //自提
-        is_ziti:undefined,
+        is_ziti: undefined,
         //快递
-        is_delivery:undefined,
+        is_delivery: undefined,
         //达达
-        is_dada:undefined
-    }); 
+        is_dada: undefined
+    });
 
     //标签id
-    const [tag,setTag]=useState('');
+    const [tag, setTag] = useState('');
 
     const handleClickFilterLabel = useCallback(
         (item) => {
             setFilterValue(item);
         },
         [],
-    ); 
+    );
 
-    const handleDrawer=useCallback(
+    const handleDrawer = useCallback(
         (flag) => (selectedValue) => {
-            setFilterVisible(flag); 
-            if(!selectedValue.tag && !Array.isArray(selectedValue.tag)) return ;   
-            setTag(selectedValue.tag.length?selectedValue.tag.join(','):''); 
-            const is_ziti=selectedValue.logistics.includes('ziti')?1:undefined;
-            const is_delivery=selectedValue.logistics.includes('delivery')?1:undefined;
-            const is_dada=selectedValue.logistics.includes('dada')?1:undefined;
+            setFilterVisible(flag);
+            if (!selectedValue.tag && !Array.isArray(selectedValue.tag)) return;
+            setTag(selectedValue.tag.length ? selectedValue.tag.join(',') : '');
+            const is_ziti = selectedValue.logistics.includes('ziti') ? 1 : undefined;
+            const is_delivery = selectedValue.logistics.includes('delivery') ? 1 : undefined;
+            const is_dada = selectedValue.logistics.includes('dada') ? 1 : undefined;
             setLogistics({
                 is_ziti,
                 is_delivery,
@@ -64,7 +62,7 @@ const NearbyShopList = (props) => {
             });
         },
         [],
-    ); 
+    );
 
     const mounted = useFirstMount();
 
@@ -72,22 +70,22 @@ const NearbyShopList = (props) => {
         const params = {
             page: pageIndex,
             pageSize,
-            province:lnglat.province,
-            city:lnglat.city?lnglat.city:lnglat.province, 
-            area:lnglat.district,
-            type: 0, 
+            province: lnglat().province,
+            city: lnglat().city ? lnglat().city : lnglat().province,
+            area: lnglat().district,
+            type: 0,
             show_discount: 1,
             show_marketing_activity: 1,
-            is_ziti:logistics.is_ziti,
-            is_delivery:logistics.is_delivery,
-            is_dada:logistics.is_dada,
-            distributor_tag_id:tag,
-            lng:lnglat.longitude,
-            lat:lnglat.latitude,
+            is_ziti: logistics.is_ziti,
+            is_delivery: logistics.is_delivery,
+            is_dada: logistics.is_dada,
+            distributor_tag_id: tag,
+            lng: lnglat().longitude,
+            lat: lnglat().latitude,
             //是否展示积分
-            show_score:1,
-            sort_type:filterValue,
-            show_items:1,
+            show_score: 1,
+            sort_type: filterValue,
+            show_items: 1,
             name
         }
         const {
@@ -108,8 +106,8 @@ const NearbyShopList = (props) => {
         fetch
     });
 
-     //点击搜索框搜索
-     const handleConfirm = useCallback(
+    //点击搜索框搜索
+    const handleConfirm = useCallback(
         (item) => {
             setName(item);
         },
@@ -128,20 +126,30 @@ const NearbyShopList = (props) => {
             resetPage();
             setDataList([]);
         }
-    }, [tag,logistics]);  
+    }, [tag, logistics]);
 
     useEffect(() => {
         if (mounted) {
             resetPage();
             setDataList([]);
         }
-    }, [name]);  
+    }, [name]);
+
+    //没有物流
+    const noLogistics = Object.values(logistics).every(item => !item);
+
+    //表示没有数据
+    const noData = dataList.length === 0;
+
+    //表示没有筛选也没有数据
+    const noCompleteData = noData && !name && noLogistics && !tag;  
 
     return (
         <View className={classNames(
             'sp-page-nearbyshoplist',
             {
-                'has-navbar': isNavbar()
+                'has-navbar': isNavbar(),
+                'has-filterbar':!noCompleteData
             }
         )}>
 
@@ -152,18 +160,19 @@ const NearbyShopList = (props) => {
             />
 
             <View className={'sp-page-nearbyshoplist-input'}>
-                <SpNewInput  
+                <SpNewInput
                     placeholder={'输入商家、商品'}
                     onConfirm={handleConfirm}
                 />
             </View>
 
-            <SpNewFilterbar
+            {!noCompleteData && <SpNewFilterbar
                 filterData={FILTER_DATA}
                 value={filterValue}
                 onClickLabel={handleClickFilterLabel}
                 onClickFilter={handleDrawer(true)}
-            />
+            />}
+
 
             <ScrollView
                 className={classNames('sp-page-nearbyshoplist-scrollview')}
@@ -186,14 +195,18 @@ const NearbyShopList = (props) => {
                 }
                 {/* 分页loading */}
                 <SpLoadMore loading={loading} hasNext={hasNext} total={total} />
-
+                {!loading && noData && <View className={'sp-page-nearbyshoplist-nodata'}>
+                    <Image className="img"  src={`${process.env.APP_IMAGE_CDN}/empty_data.png`}></Image>
+                    <View className="tips">更多商家接入中，尽情期待</View>
+                    <View className="button" onClick={()=>JumpPageIndex()}>去首页逛逛</View>
+                </View>}
             </ScrollView>
 
             <SpNewFilterDrawer
                 visible={filterVisible}
                 filterData={FILTER_DRAWER_DATA}
                 onCloseDrawer={handleDrawer(false)}
-            /> 
+            />
 
         </View>
     )
@@ -201,7 +214,6 @@ const NearbyShopList = (props) => {
 
 export default NearbyShopList;
 
-NearbyShopList.config = {
-    // navigationStyle: 'custom'
+NearbyShopList.config = { 
     navigationBarTitleText: NavbarTitle
 }
