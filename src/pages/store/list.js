@@ -7,7 +7,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
 import entry from '@/utils/entry'
 import entryLaunchFun from '@/utils/entryLaunch'
-import { classNames, getThemeStyle, styleNames, isOpenPosition } from '@/utils'
+import { classNames, getThemeStyle, styleNames } from '@/utils'
 import CusStoreListItem from './comps/cus-list-item'
 import CusNoPosition from './comps/cus-no-position'
 
@@ -236,10 +236,13 @@ export default class StoreList extends Component {
     if (this.state.loading) {
       return false
     }
+    // const location = await Taro.getStorageSync('lnglat')
     // Taro.eventCenter.on('lnglat-success', () => {
-    //   console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
-    // })
+      // })
+    // console.log(location, '----', !!location)
     await entryLaunchFun.isOpenPosition()
+    // const locationData = await entryLaunchFun.getLocationInfo()
+    // await entry.InverseAnalysisGaode(locationData)
     const { query } = this.state
     query.name = ''
     query.type = 0
