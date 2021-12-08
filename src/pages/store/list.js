@@ -228,8 +228,8 @@ export default class StoreList extends Component {
   }
 
   clearName = () => {
-    console.log('clear')
     const { query } = this.state
+    query.type = 0
     this.setState(
       {
         query: {
@@ -244,7 +244,16 @@ export default class StoreList extends Component {
   }
 
   // 确认搜索
-  confirmSearch = () => {
+  confirmSearch = (e) => {
+    const { query } = this.state
+    if (e && e.detail.value) {
+      query.type = 2
+      query.name = e.detail.value
+      this.setState({
+        ...this.state.query,
+        query
+      })
+    }
     this.resetPage(() => {
       this.setState(
         {
