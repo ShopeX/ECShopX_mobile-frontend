@@ -40,15 +40,12 @@ export default class WgtStore extends Component {
   }
 
   render() {
-    const { info } = this.props
-    console.log('===================', info);
+    const { info } = this.props 
     if (!info) {
       return null
     }
 
-    const { config, base, data, seletedTags } = info
-
-    console.log('seletedTags==============', seletedTags);
+    const { config, base, data, seletedTags } = info 
 
     return (
       <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>

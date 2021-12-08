@@ -46,8 +46,7 @@ export default class TabBar extends Component {
   }
 
   initTabbarData() {
-    const { tabBar } = this.props
-    console.log('--initTabbarData---', tabBar)
+    const { tabBar } = this.props 
     let list = []
 
     if (tabBar) {
@@ -135,8 +134,7 @@ export default class TabBar extends Component {
     this.fetchCart()
     const { tabList, localCurrent } = this.state
     const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
-
-    console.log('--updateCurTab--', localCurrent, fullPath, tabList)
+ 
 
     if (tabList.length == 0) {
       return
@@ -198,8 +196,7 @@ export default class TabBar extends Component {
   render() {
     const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
     const { tabBar } = this.props
-
-    console.log('-----tabList----', tabBar, localCurrent)
+ 
 
     return (
       <AtTabBar

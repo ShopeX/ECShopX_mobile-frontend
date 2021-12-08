@@ -402,8 +402,7 @@ export default class Home extends Component {
     const options = this.$router.params
     options.isStore = is_open_store_status
     const res = await entry.entryLaunch(options, isNeedLoacate)
-    const { store } = res
-    console.log('store===========', store)
+    const { store } = res 
     if (!isArray(store)) {
       this.setState(
         {

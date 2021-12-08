@@ -139,7 +139,7 @@ export default class SpLogin extends Component {
 
   alipayBindPhone = async (e) => {
     const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
-    console.log('--alipayBindPhone--', extConfig)
+ 
     my.getPhoneNumber({
       protocols: {
         // 小程序模板所属的三方应用appId

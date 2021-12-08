@@ -22,8 +22,7 @@ const SpNewFilterbar = (props) => {
         return item.value===value || item.plusValue===value || item.minusValue===value;
     }
 
-    const handleClickLabel=(item)=>{
-        console.log("item===>",item)
+    const handleClickLabel=(item)=>{ 
         const sortFunc=(item)=>{
             if(item.value||item.value==0){
                 res=item.value

@@ -492,7 +492,7 @@ export default class CartCheckout extends Component {
   }
 
   async getParams() {
-    // console.log('/////////////////')
+ 
     let { isNeedPackage, pack } = this.state
 
     const {
@@ -682,9 +682,7 @@ export default class CartCheckout extends Component {
         packName,
         packDes
       }
-    })
-
-    console.log(res, 'res')
+    }) 
   }
 
   async calcOrder() {
@@ -779,7 +777,7 @@ export default class CartCheckout extends Component {
     let info = this.state.info
     let pointInfo = this.state.pointInfo
     if (items) {
-      console.log('', items)
+     
       // 从后端获取订单item
       info = {
         cart: [

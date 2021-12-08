@@ -33,9 +33,7 @@ const getHomeSetting = async () => {
     whitelist_status = false,
     nostores_status = false,
     distributor_param_status = false
-  } = await api.shop.homeSetting()
-
-  console.log('getHomeSetting1', echat)
+  } = await api.shop.homeSetting() 
 
   // 美洽客服配置
   Taro.setStorageSync('meiqia', meiqia)
@@ -58,13 +56,12 @@ getHomeSetting()
 
 class App extends Component {
   // eslint-disable-next-line react/sort-comp
-  componentWillMount() {
-    console.log('componentWillMount', process.env.APP_TRACK)
+  componentWillMount() { 
     if (process.env.APP_TRACK && process.env.TARO_ENV == 'weapp') {
       const system = Taro.getSystemInfoSync()
       setSystemInfo();
       if (!(system && system.environment && system.environment === 'wxwork')) {
-        console.log('Tracker', Tracker.use)
+  
         Tracker.use(process.env.APP_TRACK)
         youshuLogin()
       }
@@ -571,7 +568,7 @@ class App extends Component {
   //   try {
   //     tabbar = JSON.parse(tab_bar)
   //   } catch (error) {
-  //     console.log(error)
+ 
   //   }
   //   store.dispatch({
   //     type: "tabBar",

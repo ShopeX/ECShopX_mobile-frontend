@@ -50,8 +50,7 @@ export default class PaymentPicker extends Component {
         typeList: res
       },
       () => {
-        if (res[0]) {
-          console.log(111) 
+        if (res[0]) { 
           this.handlePaymentChange(res[0].pay_type_code, channel)
           this.handleChange(res[0].pay_type_code) 
           let channel = ''

@@ -42,7 +42,7 @@ export default class WgtGoodsGrid extends Component {
       scope: this.$scope
     })
     observer.on('on-observer', (res) => {
-      console.log('on-observer', res)
+     
     } )
   }
 
