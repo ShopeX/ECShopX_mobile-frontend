@@ -7,7 +7,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
 import entry from '@/utils/entry'
 import entryLaunchFun from '@/utils/entryLaunch'
-import { classNames, getThemeStyle, styleNames, isOpenPosition } from '@/utils'
+import { classNames, getThemeStyle, styleNames } from '@/utils'
 import CusStoreListItem from './comps/cus-list-item'
 import CusNoPosition from './comps/cus-no-position'
 
@@ -237,20 +237,20 @@ export default class StoreList extends Component {
       return false
     }
     // Taro.eventCenter.on('lnglat-success', () => {
-    //   console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
-    // })
-    await entryLaunchFun.isOpenPosition()
-    const { query } = this.state
-    query.name = ''
-    query.type = 0
-    this.setState(
-      {
-        query
-      },
-      () => {
-        this.init()
-      }
-    )
+      // })
+    await entryLaunchFun.isOpenPosition(() => {
+      const { query } = this.state
+      query.name = ''
+      query.type = 0
+      this.setState(
+        {
+          query
+        },
+        () => {
+          this.init()
+        }
+      )
+    })
   }
 
   // 根据收货地址搜索

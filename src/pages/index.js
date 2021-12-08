@@ -83,7 +83,7 @@ export default class Home extends Component {
       currentShowAdvert: 0,
       all_card_list: [],
       visible: false,
-      PrivacyConfirmModalVisible: false
+      PrivacyVisible: false
     }
   }
 
@@ -106,7 +106,7 @@ export default class Home extends Component {
 
     if ((!String(privacy_time) || privacy_time != update_time) && isLocal) {
       this.setState({
-        PrivacyConfirmModalVisible: true
+        PrivacyVisible: true
       })
     } else {
       this.getHomeSetting()
@@ -114,7 +114,7 @@ export default class Home extends Component {
  
   }
   // 隐私协议
-  PrivacyConfirmModalonChange = async (type) => {
+  onPrivacyChange = async (type) => {
     if (type === 'agree') {
       const result = await api.wx.getPrivacyTime()
       const { update_time } = result
@@ -147,7 +147,7 @@ export default class Home extends Component {
       )
     }
     this.setState({
-      PrivacyConfirmModalVisible: false
+      PrivacyVisible: false
     })
   }
 
@@ -694,7 +694,7 @@ export default class Home extends Component {
       show_official,
       visible,
       all_card_list,
-      PrivacyConfirmModalVisible
+      PrivacyVisible
     } = this.state
 
     const pages = Taro.getCurrentPages()
@@ -799,8 +799,8 @@ export default class Home extends Component {
         <CouponModal visible={visible} list={all_card_list} onChange={this.handleCouponChange} />
         {/* 隐私弹窗 */}
         <PrivacyConfirmModal
-          visible={PrivacyConfirmModalVisible}
-          onChange={this.PrivacyConfirmModalonChange}
+          visible={PrivacyVisible}
+          onChange={this.onPrivacyChange}
           isPhone={false}
         />
       </View>

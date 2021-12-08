@@ -74,7 +74,7 @@
   .at-checkbox {
     background: transparent !important;
   }
-  .bottom {
+  .bottom-box {
     display: flex;
     justify-content: space-between;
     // margin-top: 50px;
@@ -98,6 +98,6 @@
   }
   .agree {
     color: #fff;
-    background: #db692a;
+    background: var(--color-primary)
   }
 }
