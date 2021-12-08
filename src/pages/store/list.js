@@ -233,23 +233,18 @@ export default class StoreList extends Component {
 
   // 获取定位信息
   getLocation = async (e) => {
-    if (this.state.loading) {
-      return false
-    }
+    // if (this.state.loading) {
+    //   return false
+    // }
     // Taro.eventCenter.on('lnglat-success', () => {
       // })
     await entryLaunchFun.isOpenPosition(() => {
       const { query } = this.state
       query.name = ''
       query.type = 0
-      this.setState(
-        {
-          query
-        },
-        () => {
-          this.init()
-        }
-      )
+      this.setState({ query }, () => {
+        this.init()
+      })
     })
   }
 
@@ -390,7 +385,7 @@ export default class StoreList extends Component {
             )}
 
             <ScrollView
-              className={classNames('scroll', {
+              className={classNames('scroll store-scroll', {
                 'has-default-shop': defaultStore
               })}
               scrollY

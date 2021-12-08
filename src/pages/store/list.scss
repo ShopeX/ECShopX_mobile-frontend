@@ -18,12 +18,14 @@ $nodelivery-height: $header-height - $store-height;
   height: 100%;
   box-sizing: border-box;
   padding: 0px 20px;
-  // /*  #ifdef  h5  */  
-  // padding-top: $navigate-height-h5;
-  // /*  #endif  */   
+  /*  #ifdef  h5  */  
+  padding: 0px;
+  /*  #endif  */   
   .search-block {
     padding: 25px 0px;
-    margin-bottom: 5px;
+    /*  #ifdef  h5  */  
+    padding: 25px 20px;
+    /*  #endif  */   
     .main {
       background: #fff;
       display: flex;
@@ -73,6 +75,9 @@ $nodelivery-height: $header-height - $store-height;
     background-color: #fff;
     margin-bottom: 30px;
     border-radius: 16px;
+    /*  #ifdef  h5  */
+    margin: 10px 20px 30px;
+    /*  #endif  */
     .block-hd {
       color: #999999;
       font-size: 28px;
@@ -158,10 +163,20 @@ $nodelivery-height: $header-height - $store-height;
     margin-bottom: 10px;
     padding-left: 20px;
     margin-top: 40px;
+    /*  #ifdef  h5  */
+    padding-left: 35px;
+    /*  #endif  */
   }
   .no-more {
     text-align: center;
   }
+  .store-scroll {
+    /*  #ifdef  h5  */
+    margin: 10px 20px;
+    /*  #endif  */
+  }
+}
+.page-store-lists {
   .position-imgs {
     width: 370px;
     height: 286px;
