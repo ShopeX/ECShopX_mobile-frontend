@@ -236,24 +236,21 @@ export default class StoreList extends Component {
     if (this.state.loading) {
       return false
     }
-    // const location = await Taro.getStorageSync('lnglat')
     // Taro.eventCenter.on('lnglat-success', () => {
       // })
-    // console.log(location, '----', !!location)
-    await entryLaunchFun.isOpenPosition()
-    // const locationData = await entryLaunchFun.getLocationInfo()
-    // await entry.InverseAnalysisGaode(locationData)
-    const { query } = this.state
-    query.name = ''
-    query.type = 0
-    this.setState(
-      {
-        query
-      },
-      () => {
-        this.init()
-      }
-    )
+    await entryLaunchFun.isOpenPosition(() => {
+      const { query } = this.state
+      query.name = ''
+      query.type = 0
+      this.setState(
+        {
+          query
+        },
+        () => {
+          this.init()
+        }
+      )
+    })
   }
 
   // 根据收货地址搜索
