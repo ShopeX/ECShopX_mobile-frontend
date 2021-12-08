@@ -45,6 +45,7 @@ import FloatMenuMeiQia from './float-menus/meiqia'
 
 import GoodsItem from './goods-item'
 import SpNoShop from './sp-noshop'
+import CusNoPosition from './cus-no-position'
 
 
 export { default as Loading } from './loading'
@@ -127,5 +128,6 @@ export {
   SpPopup,
   SpNewFilterDrawer,
   SpNewPrice,
-  SpNoShop
+  SpNoShop,
+  CusNoPosition
 }

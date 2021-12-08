@@ -83,7 +83,9 @@ export default class Home extends Component {
       currentShowAdvert: 0,
       all_card_list: [],
       visible: false,
-      PrivacyVisible: false
+      PrivacyVisible: false,
+
+      location_detail:null
     }
   }
 
@@ -94,6 +96,7 @@ export default class Home extends Component {
     Taro.eventCenter.on('lnglat-success', () => {
       // console.log(Taro.getStorageSync('lnglat'))
     })
+    // this.refreshHeaderHome();
   }
 
   // 获取隐私政策时间
@@ -176,6 +179,7 @@ export default class Home extends Component {
     // 购物车数量
     this.fetchCartCount()
     this.getPointSetting()
+    this.refreshHeaderHome();
     if (S.getAuthToken()) {
       this.getCurrentGrad()
     }
@@ -671,6 +675,13 @@ export default class Home extends Component {
     this.setState({ visible })
   }
 
+  refreshHeaderHome = () => {
+    this.setState({
+      location_detail: Taro.getStorageSync('lnglat') || {}
+    })
+    // const location_detail = Taro.getStorageSync('lnglat') || {}
+  }
+
   render() {
     const {
       show_tabBar,
@@ -693,7 +704,8 @@ export default class Home extends Component {
       show_official,
       visible,
       all_card_list,
-      PrivacyVisible
+      PrivacyVisible,
+      location_detail
     } = this.state
 
     const pages = Taro.getCurrentPages()
@@ -705,10 +717,12 @@ export default class Home extends Component {
     const isFixed = positionStatus
 
     // 是否同意获取位置信息
-    const location_detail = Taro.getStorageSync('lnglat') || {}
+    // const location_detail = Taro.getStorageSync('lnglat') || {}
+
+
 
     return (
-      <View className={classNames('page-index', location_detail.latitude && 'padtop')}>
+      <View className={classNames('page-index', location_detail && location_detail.latitude && 'padtop')}>
         {is_open_official_account === 1 && show_official && (
           <AccountOfficial
             isClose
@@ -736,7 +750,7 @@ export default class Home extends Component {
         >
           {/* 挂件内容和猜你喜欢 */}
           <View className='wgts-wrap__cont'>
-            <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} />
+            <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} refreshHeaderHome={this.refreshHeaderHome} />
             {!isAlipay && likeList.length > 0 && is_open_recommend == 1 && (
               <View className='faverite-list'>
                 <WgtGoodsFaverite info={likeList} />

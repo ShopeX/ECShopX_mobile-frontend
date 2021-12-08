@@ -4,18 +4,20 @@ import { connect } from '@tarojs/redux'
 import { PrivacyConfirmModal } from '@/components'
 import api from '@/api'
 
-import './cus-no-position.scss'
+import './index.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current || { data: [{}] }
 }))
 export default class StoreListItem extends Component {
+  
   constructor (props) {
     super(props)
     this.state = {
       PrivacyVisible: false,
       update_time: null
     }
+
   }
   static defaultProps = {
     onClick: () => {}

@@ -71,7 +71,7 @@ export default class HeaderHome extends Component {
             onClick={this.handlePickStore.bind(this)}
           >
             <View className='iconfont icon-periscope'></View>
-            <View className='shop-name'>{store.addressdetail || '选择地址'}</View>
+            <View className='shop-name'>{(store && store.addressdetail) || '选择地址'}</View>
             <View className='icon-arrowDown'></View>
           </View>
           {/* ) : (

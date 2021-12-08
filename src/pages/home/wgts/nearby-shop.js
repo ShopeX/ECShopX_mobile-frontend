@@ -2,13 +2,13 @@ import { View, Text, Image, Button } from '@tarojs/components'
 import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import api from '@/api'
 import entryLaunchFun from '@/utils/entryLaunch'
-import { SpNoShop } from '@/components'
+import { SpNoShop, CusNoPosition } from '@/components'
+import { getThemeStyle, styleNames } from '@/utils'
 import './nearby-shop.scss'
-
 
 const WgtNearbyShop = (props) => {
 
-    const { info = null } = props
+    const { info = null, refreshHeaderHome } = props
     if (!info) return
     const { base, seletedTags } = info
 
@@ -52,8 +52,12 @@ const WgtNearbyShop = (props) => {
     }
 
     const getLocation = async () => {
-        await entryLaunchFun.isOpenPosition()
-        init();
+        await entryLaunchFun.isOpenPosition(() => {
+            console.log('=======dasla=-========');
+            init();
+            refreshHeaderHome();
+
+        })
     }
 
     Taro.eventCenter.on('lnglat-success', () => {
@@ -108,10 +112,12 @@ const WgtNearbyShop = (props) => {
                                 )
                             )) : <SpNoShop />
                         }
-                    </View> : <View className='noLocalContent'>
-                        <View className='noLocalContent-tips'>未授权位置信息，请授权定位</View>
-                        <Button className='noLocalContent-btn' onClick={e => getLocation()} type='primary'>直接授权定位</Button>
-                    </View>
+                    </View> :
+                        <View className='noLocalContent' style={styleNames(getThemeStyle())}>
+                            <CusNoPosition onClick={getLocation}>
+                            </CusNoPosition>
+                        </View>
+
                 }
 
 
@@ -123,4 +129,7 @@ const WgtNearbyShop = (props) => {
 WgtNearbyShop.options = {
     addGlobalClass: true
 }
+
+
+
 export default memo(WgtNearbyShop)
