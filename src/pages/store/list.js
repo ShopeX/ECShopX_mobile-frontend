@@ -7,7 +7,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
 import entry from '@/utils/entry'
 import entryLaunchFun from '@/utils/entryLaunch'
-import { classNames, getThemeStyle, styleNames } from '@/utils'
+import { classNames, getThemeStyle, styleNames, pickBy } from '@/utils'
 import CusStoreListItem from './comps/cus-list-item'
 import CusNoPosition from './comps/cus-no-position'
 
@@ -55,7 +55,9 @@ export default class StoreList extends Component {
       // 是否需要定位
       is_open_wechatapp_location: 0,
       loading: false,
-      pageTitle: '选择门店'
+      pageTitle: '选择门店',
+      areaList: [],
+      multiIndex: [],
     }
   }
 
@@ -118,7 +120,9 @@ export default class StoreList extends Component {
           loading: true
         },
         () => {
-          this.nextPage()
+          setTimeout(() => {
+            this.nextPage()
+          }, 0)
         })
       })
     })
@@ -135,12 +139,23 @@ export default class StoreList extends Component {
   }
 
   // 省市区选择器
-  regionChange = (region) => {
-    const { value } = region.detail
+  regionChange = async (e) => {
     const { query } = this.state
-    query.province = value[0]
-    query.city = value[1]
-    query.area = value[2]
+    this.addList.map((item, index) => {
+      if (index === e.detail.value[0]) {
+        query.province = item.label
+        item.children.map((s_item, sIndex) => {
+          if (sIndex === e.detail.value[1]) {
+            query.city = s_item.label
+            s_item.children.map((th_item, thIndex) => {
+              if (thIndex === e.detail.value[2]) {
+                query.area = th_item.label
+              }
+            })
+          }
+        })
+      }
+    })
     query.type = 1
     this.setState({
       query
@@ -148,6 +163,57 @@ export default class StoreList extends Component {
     () => {
       this.confirmSearch()
     })
+  }
+
+  bindMultiPickerColumnChange = (e) => {
+    const { areaList, multiIndex } = this.state
+    if (e.detail.column === 0) {
+      this.setState({
+        multiIndex: [e.detail.value, 0, 0]
+      })
+      this.addList.map((item, index) => {
+        if (index === e.detail.value) {
+          let arrCity = []
+          let arrCounty = []
+          item.children.map((c_item, c_index) => {
+            arrCity.push(c_item.label)
+            if (c_index === 0) {
+              c_item.children.map((cny_item) => {
+                arrCounty.push(cny_item.label)
+              })
+            }
+          })
+          areaList[1] = arrCity
+          areaList[2] = arrCounty
+          this.setState({ areaList })
+        }
+      })
+    } else if (e.detail.column === 1) {
+      multiIndex[1] = e.detail.value
+      multiIndex[2] = 0
+      this.setState(
+        {
+          multiIndex
+        },
+        () => {
+          this.addList[multiIndex[0]].children.map((c_item, c_index) => {
+            if (c_index === e.detail.value) {
+              let arrCounty = []
+              c_item.children.map((cny_item) => {
+                arrCounty.push(cny_item.label)
+              })
+              areaList[2] = arrCounty
+              this.setState({ areaList })
+            }
+          })
+        }
+      )
+    } else {
+      multiIndex[2] = e.detail.value
+      this.setState({
+        multiIndex
+      })
+    }
   }
 
   // 搜索店铺名称
@@ -163,6 +229,7 @@ export default class StoreList extends Component {
   }
 
   clearName = () => {
+    console.log('clear')
     const { query } = this.state
     this.setState(
       {
@@ -185,7 +252,9 @@ export default class StoreList extends Component {
           list: []
         },
         () => {
-          this.nextPage()
+          setTimeout(() => {
+            this.nextPage()
+          }, 0)
         }
       )
     })
@@ -193,9 +262,32 @@ export default class StoreList extends Component {
 
   async fetch(params) {
     const { card_id = null } = this.$router.params
-    const { query: searchParam, location } = this.state
+    const { query: searchParam, location, areaList } = this.state
     const { latitude = '', longitude = '' } = location
     const { page_no: page, page_size: pageSize } = params
+    let res = await api.member.areaList()
+    const addList = pickBy(res, {
+      label: 'label',
+      children: 'children'
+    })
+    this.addList = addList
+    let arrProvice = []
+    let arrCity = []
+    let arrCounty = []
+
+    addList.map((item, index) => {
+      arrProvice.push(item.label)
+      if (index === 0) {
+        item.children.map((c_item, c_index) => {
+          arrCity.push(c_item.label)
+          if (c_index === 0) {
+            c_item.children.map((cny_item) => {
+              arrCounty.push(cny_item.label)
+            })
+          }
+        })
+      }
+    })
     const query = {
       ...searchParam,
       page,
@@ -211,6 +303,7 @@ export default class StoreList extends Component {
     let addressdetail = province + city + county + adrdetail
     this.setState({
       query,
+      areaList: [arrProvice, arrCity, arrCounty],
       list: [...this.state.list, ...list],
       deliveryInfo: !!this.props.address ? {...this.props.address, addressdetail} : {...defualt_address, addressdetail},
       isRecommedList: is_recommend === 1,
@@ -264,6 +357,32 @@ export default class StoreList extends Component {
     })
   }
 
+  // 选定开户地区
+  handleClickPicker = () => {
+    let arrProvice = []
+    let arrCity = []
+    let arrCounty = []
+    if (this.addList) {
+      this.addList.map((item, index) => {
+        arrProvice.push(item.label)
+        if (index === 0) {
+          item.children.map((c_item, c_index) => {
+            arrCity.push(c_item.label)
+            if (c_index === 0) {
+              c_item.children.map((cny_item) => {
+                arrCounty.push(cny_item.label)
+              })
+            }
+          })
+        }
+      })
+      this.setState({
+        areaList: [arrProvice, arrCity, arrCounty],
+        multiIndex: [0, 0, 0]
+      })
+    }
+  }
+
   render() {
     const {
       scrollTop,
@@ -277,16 +396,18 @@ export default class StoreList extends Component {
       baseInfo,
       is_open_wechatapp_location,
       pageTitle,
-      formattedAddress
+      formattedAddress,
+      areaList,
+      multiIndex
     } = this.state
     const { province, city, area } = query
 
-    let areaData = [province, city, area]
+    let areaData = province + city + area
 
-    if (query.type === 0 && location && !location.addressdetail && deliveryInfo && deliveryInfo.address_id) {
-      const { province: p = "", city: c = "", county: ct = "" } = deliveryInfo;
-      areaData = [p, c === "市辖区" || !c ? province : city, ct];
-    }
+    // if (query.type === 0 && location && !location.addressdetail && deliveryInfo && deliveryInfo.address_id) {
+    //   const { province: p = "", city: c = "", county: ct = "" } = deliveryInfo;
+    //   areaData = [p, c === "市辖区" || !c ? province : city, ct];
+    // }
     console.log(location, deliveryInfo, 'location--deliveryInfo')
     // const  = defaultStore.is_valid === "true";
 
@@ -296,12 +417,28 @@ export default class StoreList extends Component {
           <SpNavBar title={pageTitle} leftIconType='chevron-left' />
           <View className='search-block'>
             <View className='main'>
-              <Picker mode='region' value={areaData} onChange={this.regionChange.bind(this)}>
+              {/* <Picker mode='region' value={areaData} onChange={this.regionChange.bind(this)}>
                 <View className='filterArea'>
                   <View className='areaName'>{areaData.join('') || '筛选地区'}</View>
                   <View className='iconfont icon-arrowDown'></View>
                 </View>
-              </Picker>
+              </Picker> */}
+              <View className='filter-bar__item region-picker'>
+                <Picker
+                  mode='multiSelector'
+                  onClick={this.handleClickPicker}
+                  onChange={this.regionChange}
+                  onColumnChange={this.bindMultiPickerColumnChange}
+                  value={multiIndex}
+                  range={areaList}
+                >
+                  <View className='pick-title'>
+                    <View className='iconfont icon-periscope'></View>
+                    <Text>{areaData || '地区'}</Text>
+                    <View className='iconfont icon-arrowDown'></View>
+                  </View>
+                </Picker>
+              </View>
 
               <Input
                 className='searchInput'
@@ -312,7 +449,7 @@ export default class StoreList extends Component {
                 onConfirm={this.confirmSearch.bind(this)}
               />
               {query.name && query.name.length > 0 && (
-                <View className='iconfont icon-close' onClick={this.clearName.bind(this)}></View>
+                <View className='iconfont icon-close close-css' onClick={this.clearName.bind(this)}></View>
               )}
             </View>
           </View>

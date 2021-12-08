@@ -33,6 +33,8 @@ $nodelivery-height: $header-height - $store-height;
       height: 60px;
       padding: 0 38px;
       border-radius: 30px;
+      position: relative;
+      padding-right: 55px;
       .filterArea {
         width: 230px;
         flex-shrink: 0;
@@ -65,7 +67,7 @@ $nodelivery-height: $header-height - $store-height;
       .searchInput {
         flex: 1;
         font-size: 24px;
-        color: #AAAAAA;
+        color: #222;
       }
     }
   }
@@ -174,6 +176,29 @@ $nodelivery-height: $header-height - $store-height;
     /*  #ifdef  h5  */
     margin: 10px 20px;
     /*  #endif  */
+  }
+  .region-picker{
+		display: flex;
+    align-items: center;
+    margin-right: 20px;
+		.icon-close{
+      margin-left: 10px;
+		}
+	}
+  .pick-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    .iconfont {
+      font-size: 28px;
+    }
+  }
+  .close-css {
+    font-size: 30px;
+    position: absolute;
+    right: 15px;
+    z-index: 99;
   }
 }
 .page-store-lists {
