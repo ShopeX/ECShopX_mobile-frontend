@@ -67,21 +67,17 @@ $prefixCls:'sp-component-newshopitem';
         height: $img-width;
         flex-grow: 0;
         flex-shrink: 0;
-        margin-right:24px; 
-   
-        
+        margin-right:24px;  
+        border-radius: 16px;
+        border: 1px solid #DDDDDD;
+        overflow: hidden; 
+ 
 
         .img{
             width:$img-width;
             height: $img-width;
-            display: block;
-            border-radius: 16px;
-            overflow: hidden;
-            @include hairline(#DDDDDD,0,left,right,top,bottom);
+            display: block;  
 
-            &:before{
-                border-radius: 16rpx;
-            }
         }
     }
 
