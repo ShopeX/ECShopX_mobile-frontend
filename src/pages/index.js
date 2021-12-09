@@ -84,8 +84,7 @@ export default class Home extends Component {
       all_card_list: [],
       visible: false,
       PrivacyVisible: false,
-
-      location_detail:null
+      location_detail: {}
     }
   }
 
@@ -93,9 +92,6 @@ export default class Home extends Component {
     this.protocolUpdateTime();
     this.getShareSetting();
     this.isShowTips();
-    Taro.eventCenter.on('lnglat-success', () => {
-      // console.log(Taro.getStorageSync('lnglat'))
-    })
     // this.refreshHeaderHome();
   }
 
@@ -676,8 +672,10 @@ export default class Home extends Component {
   }
 
   refreshHeaderHome = () => {
-    this.setState({
-      location_detail: Taro.getStorageSync('lnglat') || {}
+    Taro.eventCenter.on('lnglat-success', () => {
+      this.setState({
+        location_detail: Taro.getStorageSync('lnglat') || {}
+      })
     })
     // const location_detail = Taro.getStorageSync('lnglat') || {}
   }
@@ -719,10 +717,8 @@ export default class Home extends Component {
     // 是否同意获取位置信息
     // const location_detail = Taro.getStorageSync('lnglat') || {}
 
-
-
     return (
-      <View className={classNames('page-index', location_detail && location_detail.latitude && 'padtop')}>
+      <View className='page-index padtop'>
         {is_open_official_account === 1 && show_official && (
           <AccountOfficial
             isClose
