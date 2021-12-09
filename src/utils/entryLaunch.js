@@ -216,6 +216,8 @@ class EntryLaunch {
           }
         })
       } else {
+        let locationData = await this.getLocationInfo()
+        if (locationData.latitude) await entry.InverseAnalysisGaode(locationData)
         if (callback) callback()
       }
     } else {

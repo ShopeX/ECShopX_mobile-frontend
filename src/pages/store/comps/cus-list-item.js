@@ -31,7 +31,13 @@ export default class StoreListItem extends Component {
           <Image className='list-imgs' src={info.logo}></Image>
         </View>
         <View className='list-center'>
-          <View className='list-title'>{info.name}</View>
+          <View className='list-title'>
+            <View className='list-title-left'>{info.name}</View>
+            {
+              distance &&
+              <View className='list-title-right'>{distance}{info.distance_unit}</View>
+            }
+          </View>
           <View className='list-time'>
             <Text className='iconfont icon-clock1 clockicons'/>
             <Text>{info.hour}</Text>
@@ -45,10 +51,6 @@ export default class StoreListItem extends Component {
             {info.tagList.map(item => <View className='cus-tag' key={item.tag_id}>{item.tag_name}</View>)}
           </View>
         </View>
-        {
-          distance &&
-          <View className='list-right'>{distance}{info.distance_unit}</View>
-        }
       </View>
     )
   }

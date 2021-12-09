@@ -18,15 +18,26 @@
     }
   }
   .list-center {
-    width: 65%;
+    width: 81%;
     margin-left: 25px;
     .list-title {
-      white-space: nowrap;
-      text-overflow:ellipsis;
-      overflow: hidden;
-      font-size: 30px;
-      font-weight: bold;
-      color: #222;
+      display: flex;
+      .list-title-left {
+        width: 80%;
+        white-space: nowrap;
+        text-overflow:ellipsis;
+        overflow: hidden;
+        font-size: 30px;
+        font-weight: bold;
+        color: #222;
+      }
+      .list-title-right {
+        font-size: 26px;
+        color: #666666;
+        white-space: nowrap;
+        text-overflow:ellipsis;
+        overflow: hidden;
+      }
     }
     .list-time, .list-adress {
       color: #999999;
@@ -43,6 +54,8 @@
       display: flex;
       align-items: center;
       margin-top: 8px;
+      overflow: auto;
+      white-space: nowrap;
       .cus-tag {
         padding: 2px 6px;
         border: 1px solid var(--color-primary);
@@ -52,13 +65,8 @@
         margin-right: 10px;
       }
     }
-  }
-  .list-right {
-    width: 15%;
-    font-size: 26px;
-    color: #666666;
-    white-space: nowrap;
-    text-overflow:ellipsis;
-    overflow: hidden;
+    .list-tag::-webkit-scrollbar {
+      display: none;
+    }
   }
 }

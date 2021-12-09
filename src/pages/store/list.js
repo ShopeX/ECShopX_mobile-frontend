@@ -16,11 +16,7 @@ import './list.scss'
   ({ colors, address }) => ({
     colors: colors.current || { data: [{}] },
     address: address.current
-  }),
-  (dispatch) => ({
-    onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address })
-  })
-)
+  }))
 @withPager
 @withBackToTop
 export default class StoreList extends Component {
@@ -72,6 +68,10 @@ export default class StoreList extends Component {
     this.getHeadquarters()
   }
 
+  componentDidShow () {
+    this.init()
+  }
+
   componentWillReceiveProps (nextProps) {
     if (nextProps.address !== this.props.address) {
       const { province, city, county, adrdetail } = nextProps.address
@@ -91,17 +91,15 @@ export default class StoreList extends Component {
     const { query, deliveryInfo } = this.state
     const lnglat = Taro.getStorageSync('lnglat') || {}
 
-    // const address = `${lnglat.province}${(Array.isArray(lnglat.city) ? lnglat.city.length : lnglat.city) ? `${lnglat.city}` : ''}${lnglat.district}${lnglat.township}`
-    // const address = lnglat.latitude ? `${lnglat.city}${lnglat.district}${lnglat.street}${lnglat.street_number}` : ''
     const addressdetail = lnglat.latitude ? lnglat.addressdetail : null
     query.province = lnglat.province || ''
-    query.city = lnglat.city || ''
+    query.city = Array.isArray(lnglat.city) ? lnglat.province: lnglat.city,
     query.area = lnglat.district || ''
     if (query.type === 2) {
       let adress_detail = !!this.props.address ? this.props.address : deliveryInfo
       const { province = '', city = '', county = '' } = adress_detail
       query.province = province
-      query.city = (city === '市辖区' || !city) ? province : city
+      query.city = city
       query.area = county
     }
 
@@ -219,6 +217,7 @@ export default class StoreList extends Component {
   inputStoreName = (e) => {
     const { detail } = e
     const { query } = this.state
+    query.search_type = 2
     this.setState({
       query: {
         ...query,
@@ -338,7 +337,8 @@ export default class StoreList extends Component {
     //   return false
     // }
     // Taro.eventCenter.on('lnglat-success', () => {
-      // })
+    //   console.log(Taro.getStorageSync('lnglat'))
+    //   })
     await entryLaunchFun.isOpenPosition(() => {
       const { query } = this.state
       query.name = ''
