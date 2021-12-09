@@ -398,6 +398,7 @@ export default class Home extends Component {
     const options = this.$router.params
     options.isStore = is_open_store_status
     const res = await entry.entryLaunch(options, isNeedLoacate)
+    Taro.eventCenter.trigger('lnglat-success')
     const { store } = res 
     if (!isArray(store)) {
       this.setState(
