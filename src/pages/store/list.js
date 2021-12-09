@@ -183,12 +183,9 @@ export default class StoreList extends Component {
         })
       }
     })
-    query.type = 1
+    // query.type = 1
     this.setState({
       query
-    },
-    () => {
-      this.confirmSearch()
     })
   }
 
@@ -251,7 +248,7 @@ export default class StoreList extends Component {
       query: {
         ...query,
         name: detail.value,
-        type: 0,
+        type: 1,
         search_type: 2
       }
     })
