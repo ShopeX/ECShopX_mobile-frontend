@@ -15,7 +15,7 @@ $prefixCls:'sp-component-newshopitem';
     &.in-shoplist{
 
         flex-direction: column;
-        padding:16px;
+        padding:32px 16px;
 
         .#{$prefixCls}-top{
             display: flex;
@@ -64,17 +64,24 @@ $prefixCls:'sp-component-newshopitem';
 
     &-left{
         width:$img-width;
+        height: $img-width;
         flex-grow: 0;
         flex-shrink: 0;
-        margin-right:24px;
+        margin-right:24px; 
+   
+        
 
         .img{
             width:$img-width;
             height: $img-width;
             display: block;
             border-radius: 16px;
-            @include hairline(#DDDDDD,0,left,right,top,bottom);
             overflow: hidden;
+            @include hairline(#DDDDDD,0,left,right,top,bottom);
+
+            &:before{
+                border-radius: 16rpx;
+            }
         }
     }
 
@@ -154,7 +161,7 @@ $prefixCls:'sp-component-newshopitem';
                 display: flex;
                 
                 .left{
-                    width: 480px;
+                    width: 550px;
                     flex-shrink: 0;
                     flex-grow: 0;
                 }

@@ -5,7 +5,7 @@ import { DistributionLabel } from './comps';
 import { SpNewCoupon, SpNewPrice } from '@/components';
 import api from '@/api'
 import './index.scss';
-const NoImageSRC = 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'
+const NoImageSRC = 'https://shopex-ecshopx.oss-cn-beijing.aliyuncs.com/ecshopx-vshop/shop_default_logo.png'
 
 const SpNewShopItem = (props) => {
 

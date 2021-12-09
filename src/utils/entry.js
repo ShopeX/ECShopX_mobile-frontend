@@ -391,7 +391,7 @@ async function InverseAnalysisGaode(locationData){
       location:`${longitude},${latitude}`, 
     }
   }); 
-  console.log("===cityInfowjb===>",cityInfo,process.env.APP_MAP_KEY,locationData)
+  console.log("===cityInfowjb===>",cityInfo,process.env.APP_MAP_KEY,locationData,process.env)
   if (cityInfo.data.status == 1) {
     Taro.setStorageSync('lnglat', {
       ...locationData,

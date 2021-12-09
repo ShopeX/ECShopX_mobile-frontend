@@ -31,8 +31,8 @@ const SpNewCoupon=(props)=>{
         >
             <View className={'border'}></View>
             <View className={'radius'}></View>
-            <Text className={'text'}>{text}</Text>
-            <Text className={'status-text'}>{statusText}</Text>
+            <View className={'text'}>{text}</View>
+            <View className={'status-text'}>{statusText}</View>
         </View>
     )
 }

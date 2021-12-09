@@ -30,6 +30,12 @@ $primary-color-bg:rgba(244, 129, 31, 0.1);
         margin-right: 8px;
     }
 
+    .text,.status-text{
+        display: inline-flex;
+        align-items: center;
+        font-size: 22px;
+    }
+
     .radius{
         &::before,&::after{
             box-sizing: border-box;
@@ -78,7 +84,7 @@ $primary-color-bg:rgba(244, 129, 31, 0.1);
             left:0;
         }
         &::after{
-            right:1px;
+            right:0;
         }
     }
 

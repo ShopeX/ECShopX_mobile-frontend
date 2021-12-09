@@ -22,9 +22,10 @@ $input-color:#BF9775;
     }
 
     &-placeholder{  
-        color:$input-color;
-        padding:15px 0;
+        color:$input-color; 
         width:100%;
+        display: flex;
+        align-items: center;
 
         .text{
             font-size:24px;
