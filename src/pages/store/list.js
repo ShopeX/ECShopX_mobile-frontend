@@ -65,6 +65,7 @@ export default class StoreList extends Component {
       backgroundColor: '#F5F5F5'
     })
     this.init()
+    this.initAdress()
     this.getHeadquarters()
   }
 
@@ -84,6 +85,35 @@ export default class StoreList extends Component {
 
   config = {
     navigationBarBackgroundColor: '#F5F5F5'
+  }
+  
+  initAdress = async () => {
+    let res = await api.member.areaList()
+    const addList = pickBy(res, {
+      label: 'label',
+      children: 'children'
+    })
+    this.addList = addList
+    let arrProvice = []
+    let arrCity = []
+    let arrCounty = []
+
+    addList.map((item, index) => {
+      arrProvice.push(item.label)
+      if (index === 0) {
+        item.children.map((c_item, c_index) => {
+          arrCity.push(c_item.label)
+          if (c_index === 0) {
+            c_item.children.map((cny_item) => {
+              arrCounty.push(cny_item.label)
+            })
+          }
+        })
+      }
+    })
+    this.setState({
+      areaList: [arrProvice, arrCity, arrCounty],
+    })
   }
 
   init = async () => {
@@ -269,32 +299,9 @@ export default class StoreList extends Component {
 
   async fetch(params) {
     const { card_id = null } = this.$router.params
-    const { query: searchParam, location, areaList } = this.state
+    const { query: searchParam, location } = this.state
     const { latitude = '', longitude = '' } = location
     const { page_no: page, page_size: pageSize } = params
-    let res = await api.member.areaList()
-    const addList = pickBy(res, {
-      label: 'label',
-      children: 'children'
-    })
-    this.addList = addList
-    let arrProvice = []
-    let arrCity = []
-    let arrCounty = []
-
-    addList.map((item, index) => {
-      arrProvice.push(item.label)
-      if (index === 0) {
-        item.children.map((c_item, c_index) => {
-          arrCity.push(c_item.label)
-          if (c_index === 0) {
-            c_item.children.map((cny_item) => {
-              arrCounty.push(cny_item.label)
-            })
-          }
-        })
-      }
-    })
     const query = {
       ...searchParam,
       page,
@@ -310,7 +317,6 @@ export default class StoreList extends Component {
     let addressdetail = province + city + county + adrdetail
     this.setState({
       query,
-      areaList: [arrProvice, arrCity, arrCounty],
       list: [...this.state.list, ...list],
       deliveryInfo: !!this.props.address ? {...this.props.address, addressdetail} : {...defualt_address, addressdetail},
       isRecommedList: is_recommend === 1,
