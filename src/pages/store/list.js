@@ -217,11 +217,12 @@ export default class StoreList extends Component {
   inputStoreName = (e) => {
     const { detail } = e
     const { query } = this.state
-    query.search_type = 2
     this.setState({
       query: {
         ...query,
-        name: detail.value
+        name: detail.value,
+        type: 0,
+        search_type: 2
       }
     })
   }
@@ -246,7 +247,6 @@ export default class StoreList extends Component {
   confirmSearch = (e) => {
     const { query } = this.state
     if (e && e.detail.value) {
-      query.type = 2
       query.name = e.detail.value
       this.setState({
         ...this.state.query,
