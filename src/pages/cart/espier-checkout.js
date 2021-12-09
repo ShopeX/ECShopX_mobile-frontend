@@ -1781,6 +1781,7 @@ export default class CartCheckout extends Component {
       defalutPaytype, 
       headShop
     } = this.state
+  
     const { type, goodType, bargain_id } = this.$router.params
     const isDrug = type === 'drug'
     if (!info) {
@@ -1792,7 +1793,7 @@ export default class CartCheckout extends Component {
       ? '会员折扣'
       : (coupon.value && coupon.value.title) || ''
     //const isBtnDisabled = !address
-    const isBtnDisabled = express ? !address : false
+    const isBtnDisabled = express ? !address : false 
     return (
       <View className='page-checkout' style={styleNames(getThemeStyle())}>
         {showAddressPicker === false ? (
