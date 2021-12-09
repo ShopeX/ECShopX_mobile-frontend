@@ -26,17 +26,25 @@ export default class SpLogin extends Component {
     this.state = {
       token: S.getAuthToken(),
       privacyVisible: false,
-      update_time: null
+      update_time: null,
+      code: null
     }
   }
 
-  componentWillMount() {
+  componentWillMount () {
+    Taro.eventCenter.on('login-success', () => {
+      this.setState({
+        token: S.getAuthToken()
+      })
+    })
     this.onGetTimes()
   }
 
   onGetTimes = async () => {
     const { update_time } = await api.wx.getPrivacyTime()
-    this.setState({ update_time })
+    const resLogin = await Taro.login() || {}
+    let code = resLogin.code
+    this.setState({ update_time, code })
   }
 
   /** 设置导购id */
@@ -72,9 +80,8 @@ export default class SpLogin extends Component {
           open_id: openid,
           union_id: unionid
         })
+        await api.wx.newMarketing()
       }
-      
-      await api.wx.newMarketing()
       await S.getMemberInfo()
       // const memberInfo = await api.member.memberInfo();
       // this.props.setMemberInfo( memberInfo )
@@ -83,9 +90,7 @@ export default class SpLogin extends Component {
         token
       })
 
-      const { switch_first_auth_force_validation } = await api.user.getIsMustOauth({
-        module_type: 1
-      })
+      const { switch_first_auth_force_validation } = await api.user.getIsMustOauth({ module_type: 1 })
       if (switch_first_auth_force_validation == 1) {
         Taro.navigateTo({
           url: '/marketing/pages/member/userinfo'
@@ -139,7 +144,7 @@ export default class SpLogin extends Component {
 
   alipayBindPhone = async (e) => {
     const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
- 
+    console.log('--alipayBindPhone--', extConfig)
     my.getPhoneNumber({
       protocols: {
         // 小程序模板所属的三方应用appId
@@ -176,11 +181,23 @@ export default class SpLogin extends Component {
   }
 
   onPrivateChange = async (type, e) => {
-    if (type == 'agree' && e) {
-      this.wexinBindPhone(e)
+    if (type == 'agree') {
+      if (e) {
+        this.wexinBindPhone(e)
+      } else {
+        const result = await api.wx.getPrivacyTime()
+        const { update_time } = result
+  
+        Taro.setStorageSync('PrivacyUpdate_time', update_time)
+        // setTimeout(() => {
+        // }, 1000)
+        S.login(this)
+        this.props.onChange && this.props.onChange()
+      }
     }
     if (type === 'reject') {
       Taro.removeStorageSync('PrivacyUpdate_time')
+      Taro.removeStorageSync("auth_token")
     }
     this.setState({ privacyVisible: false })
   }
@@ -190,10 +207,9 @@ export default class SpLogin extends Component {
   }
 
   render() {
-    const { token, privacyVisible, update_time } = this.state
+    const { token, privacyVisible, update_time, code } = this.state
     let privacy_time = Taro.getStorageSync('PrivacyUpdate_time')
     let isPolicyShow = false
-    // console.log(!privacy_time, privacy_time != update_time, update_time, '-----')
     if (!String(privacy_time) || privacy_time != update_time) {
       isPolicyShow = true
     }
@@ -201,7 +217,7 @@ export default class SpLogin extends Component {
       <View className={classNames('sp-login', this.props.className)}>
         {token && <View onClick={this.handleOnChange.bind(this)}>{this.props.children}</View>}
 
-        {!token && !isPolicyShow && isWeixin && (
+        {!token && !isPolicyShow && isWeixin &&
           <AtButton
             className='login-btn'
             openType='getPhoneNumber'
@@ -209,28 +225,23 @@ export default class SpLogin extends Component {
           >
             {this.props.children}
           </AtButton>
-        )}
+        }
 
-        {!token && isPolicyShow && isWeixin && (
+        {!token && isPolicyShow && isWeixin &&
           <View onClick={this.onClickChange.bind(this)}>{this.props.children}</View>
-        )}
+        }
 
-        {!token && isAlipay && (
-          <Button
-            className='login-btn ali-button'
-            onGetAuthorize={this.handleBindPhone}
-            openType='getAuthorize'
-            scope='phoneNumber'
-          >
-            {this.props.children}
-          </Button>
-        )}
+        {!token && isAlipay && <Button
+          className='login-btn ali-button'
+          onGetAuthorize={this.handleBindPhone}
+          openType='getAuthorize'
+          scope='phoneNumber'
+        >
+          {this.props.children}
+        </Button>
+        }
 
-        <PrivacyConfirmModal
-          isPhone={privacyVisible}
-          visible={privacyVisible}
-          onChange={this.onPrivateChange}
-        />
+        <PrivacyConfirmModal isPhone={!Boolean(code)} visible={privacyVisible} onChange={this.onPrivateChange}  />
       </View>
     )
   }
