@@ -33,7 +33,11 @@ const getHomeSetting = async () => {
     whitelist_status = false,
     nostores_status = false,
     distributor_param_status = false
-  } = await api.shop.homeSetting() 
+  } = await api.shop.homeSetting()
+
+  // 获取地图的key 
+  // const { key } = await api.shop.getMapKeyDetail({type: 'amap'})
+  // Taro.setStorageSync('gaode_map_key', key)
 
   // 美洽客服配置
   Taro.setStorageSync('meiqia', meiqia)
