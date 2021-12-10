@@ -42,7 +42,7 @@ const NearbyShopList = (props) => {
 
     const handleClickFilterLabel = useCallback(
         (item) => {
-            setFilterValue(item);
+            setFilterValue(item);  
         },
         [],
     );
@@ -66,7 +66,7 @@ const NearbyShopList = (props) => {
 
     const mounted = useFirstMount();
 
-    const fetch = async ({ pageIndex, pageSize }) => {
+    const fetch = async ({ pageIndex, pageSize }) => { 
         const params = {
             page: pageIndex,
             pageSize,
@@ -111,7 +111,7 @@ const NearbyShopList = (props) => {
         (item) => {
             setName(item);
         },
-        [],
+        []
     ); 
 
     useEffect(() => {
@@ -128,7 +128,7 @@ const NearbyShopList = (props) => {
     const noData = dataList.length === 0;
 
     //表示没有筛选也没有数据
-    const noCompleteData = noData && !name && noLogistics && !tag && !loading;  
+    const noCompleteData = noData && !name && noLogistics && !tag && !loading;   
 
     return (
         <View className={classNames(
