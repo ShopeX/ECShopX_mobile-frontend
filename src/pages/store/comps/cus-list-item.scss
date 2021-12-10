@@ -22,11 +22,11 @@
     margin-left: 25px;
     .list-title {
       display: flex;
+      .list-title-left, .list-title-right {
+        @include text-overflow()
+      }
       .list-title-left {
         width: 80%;
-        white-space: nowrap;
-        text-overflow:ellipsis;
-        overflow: hidden;
         font-size: 30px;
         font-weight: bold;
         color: #222;
@@ -34,9 +34,6 @@
       .list-title-right {
         font-size: 26px;
         color: #666666;
-        white-space: nowrap;
-        text-overflow:ellipsis;
-        overflow: hidden;
       }
     }
     .list-time, .list-adress {
