@@ -230,12 +230,13 @@ $prefixCls:'sp-component-newshopitem';
                 align-items: center;
                 .text{
                     @include multi-ellipsis(1);
-                    flex:1;
+                    // flex:1;
                 }
                 .iconfont{
                     width:16px;
                     flex-grow: 0;
                     flex-shrink: 0;
+                    margin-left: 16px;
                 }
                 
             }

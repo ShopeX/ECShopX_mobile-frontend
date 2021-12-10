@@ -89,10 +89,21 @@ const SpNewShopItem = (props) => {
 
     const handleClickLogo=useCallback(
         () => {
-            JumpStoreIndex(info)
+            if(logoCanJump){
+                JumpStoreIndex(info)
+            } 
         },  
         [logoCanJump,info]
     );
+
+    const handleClickName=useCallback(
+        () => {
+            if(canJump){
+                JumpStoreIndex(info)
+            } 
+        },
+        [canJump],
+    )
     
     useEffect(() => {
         if(inStore){
@@ -127,9 +138,9 @@ const SpNewShopItem = (props) => {
                     <Image src={logo} className={'img'} ></Image>
                 </View>}
                 <View className={'center'}>
-                    <View className={'name'}>
+                    <View className={'name'} onClick={handleClickName}>
                         <View className={'text'}>{title}</View>
-                        {canJump && <Text className={'iconfont icon-qianwang-01'} onClick={() => JumpStoreIndex(info)}></Text>}
+                        {canJump && <Text className={'iconfont icon-qianwang-01'} ></Text>}
                     </View>
                     <View className={'rate'}>
                         {rate}
