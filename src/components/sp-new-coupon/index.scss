@@ -1,0 +1,92 @@
+ 
+@import "../../style/iconfont.scss";
+
+$primary-color:rgba(244, 129, 31, 1);
+$primary-color-bg:rgba(244, 129, 31, 0.1);
+
+.sp-component-newcoupon{
+    
+    height: 40px;
+    border-top:1px solid $primary-color;
+    border-bottom:1px solid $primary-color;
+    padding:0 18px;
+    font-size: 22px;
+    color:$primary-color;
+    display: inline-flex; 
+    position: relative;
+    overflow: hidden;
+
+    &.receiveed{
+        background-color:$primary-color-bg ;
+    }
+
+    &.in-new-shop-item{
+        margin-right: 8px;
+        margin-bottom: 16px;
+    }
+
+    .text{
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    .text,.status-text{
+        display: inline-flex;
+        align-items: center;
+        font-size: 22px;
+    }
+
+    .radius{
+        &::before,&::after{
+            box-sizing: border-box;
+            position: absolute;
+            content:'';
+            display: block;
+            top:50%;
+            transform: translateY(-50%); 
+            border:1px solid $primary-color;
+            width: 16px;
+            height:16px;
+            border-radius: 50%;
+            background-color: white;
+        }
+    
+        &::before{  
+            left:-9px;
+            z-index: 1; 
+        }
+        &::after{  
+            right:-9px;
+            z-index: 1; 
+        }
+    
+    }
+
+    .border{
+        position: absolute;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0; 
+
+        &::before,&::after{ 
+            box-sizing: border-box; 
+            position: absolute;
+            content:'';
+            display: block;
+            top:0;
+            bottom:0;
+            width:1px;
+            background-color: $primary-color;
+        }
+
+        &::before{
+            left:0;
+        }
+        &::after{
+            right:0;
+        }
+    }
+
+  
+}

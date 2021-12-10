@@ -1,12 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, Loading, BackToTop } from '@/components'
+import { SpToast, Loading, BackToTop,SpNewShopItem } from '@/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, normalizeQuerys, getCurrentRoute } from '@/utils'
-import { setPageTitle, platformTemplateName } from '@/utils/platform'
+import { pickBy, normalizeQuerys, getCurrentRoute,classNames } from '@/utils'
+import { platformTemplateName } from '@/utils/platform'
 import { withBackToTop } from '@/hocs'
 import qs from 'qs'
 import S from '@/spx'
@@ -94,10 +94,12 @@ export default class StoreIndex extends Component {
     } else {
       id = await Taro.getStorageSync('curStore').distributor_id
     }
-    const { name, logo } = await api.shop.getShop({ distributor_id: id })
+    const { name, logo,scoreList,distributor_id } = await api.shop.getShop({ distributor_id: id,show_score:1 })
     storeInfo = {
       name,
-      brand: logo
+      brand: logo,
+      scoreList,
+      distributor_id
     }
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
@@ -213,15 +215,13 @@ export default class StoreIndex extends Component {
         >
           <View className='wgts-wrap__cont'>
             <View className='store-header'>
-              <View>
-                <Image
-                  className='store-brand'
-                  src={
-                    storeInfo.brand || 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'
-                  }
-                />
-              </View>
-              <View className='store-name'>{storeInfo.name}</View>
+              <SpNewShopItem 
+                inStore
+                info={storeInfo}
+                className={classNames(
+                  'in-shop-search'
+                )}
+              />
             </View>
             {wgts.map((item, idx) => {
               return (

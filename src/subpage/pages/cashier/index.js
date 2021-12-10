@@ -66,8 +66,8 @@ export default class Cashier extends Component {
   }
 
   handleClickBack = () => {
-    const { order_type } = this.state.info
-    const url = order_type === 'recharge' ? '/pages/member/pay' : '/pages/trade/list?redrict=home'
+    const { order_type,order_id } = this.state.info
+    const url = order_type === 'recharge' ? '/pages/member/pay' : `/subpage/pages/trade/detail?id=${order_id}`
 
     Taro.redirectTo({
       url

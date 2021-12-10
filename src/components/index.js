@@ -29,12 +29,24 @@ import SpLoading from './sp-loading'
 import SpModal from './sp-modal'
 import SpHtmlContent from './html-content'
 import SpCheckbox from './checkbox';
+import SpNewNavbar from './sp-new-navbar';
+import SpNewInput from './sp-new-input';
+import SpNewFilterbar from './sp-new-filterbar';
+import SpNewShopItem from './sp-new-shop-item';
+import SpNewCoupon from './sp-new-coupon';
+import SpNewDrawer from './sp-new-drawer';
+import SpPopup from './sp-popup';
+import SpNewFilterDrawer from './sp-new-filter-drawer';
+import SpNewPrice from './sp-new-price';
 
 import SpImgPicker from './img-picker'
 import SpCell from './sp-cell'
 import FloatMenuMeiQia from './float-menus/meiqia'
 
 import GoodsItem from './goods-item'
+import SpNoShop from './sp-noshop'
+import CusNoPosition from './cus-no-position'
+
 
 export { default as Loading } from './loading'
 export { default as Price } from './price'
@@ -106,5 +118,16 @@ export {
   SpLoading,
   SpModal,
   SpHtmlContent,
-  SpCheckbox
+  SpCheckbox,
+  SpNewNavbar,
+  SpNewInput,
+  SpNewFilterbar,
+  SpNewShopItem,
+  SpNewCoupon,
+  SpNewDrawer,
+  SpPopup,
+  SpNewFilterDrawer,
+  SpNewPrice,
+  SpNoShop,
+  CusNoPosition
 }

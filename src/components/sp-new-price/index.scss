@@ -1,0 +1,49 @@
+ 
+@import "../../style/iconfont.scss";
+
+$primary-color:#F4811F;
+$discount-color:rgba(187, 187, 187, 1);
+
+$normal-size:24px;
+$small-size:20px;
+
+.sp-component-newprice{
+    font-size: $normal-size;
+    display: inline-block;
+    color:$primary-color;
+    position: relative;
+    line-height: 1;
+
+    &.discount{
+
+        color:$discount-color;
+
+        &:after{
+            display: block;
+            content:'';
+            position: absolute;
+            width: 100%;
+            top:50%;
+            transform: translateY(-50%);
+            height:1px;
+            background-color:$discount-color ;
+        }
+    }
+
+    .int{
+        font-size:32px;
+        font-weight: 500;
+    }
+
+    &.equal{
+        .int{
+            font-size:inherit;
+            font-weight: inherit;
+        }
+    }
+
+    &.small{
+        font-size: $small-size;
+    }
+   
+}

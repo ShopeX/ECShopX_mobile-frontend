@@ -170,8 +170,7 @@ export default class EditAddress extends Component {
     info[name] = val
   }
 
-  handleDefChange = (e) => {
-    console.log(e.detail.value)
+  handleDefChange = (e) => { 
     const info = {
       ...this.state.info,
       is_def: e.detail.value ? 1 : 0
@@ -215,8 +214,7 @@ export default class EditAddress extends Component {
 
     if (!data.adrdetail) {
       return S.toast('请输入详细地址')
-    }
-    console.log(data)
+    } 
     try {
       await api.member.addressCreateOrUpdate(data)
       if (data.address_id) {

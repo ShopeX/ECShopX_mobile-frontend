@@ -17,7 +17,8 @@ import {
   WgtHeadline,
   WgtImgGif,
   WgtHotTopic,
-  WgtFloorImg
+  WgtFloorImg,
+  WgtNearbyShop,
 } from '../wgts'
 
 export default class HomeWgts extends Component {
@@ -85,7 +86,7 @@ export default class HomeWgts extends Component {
   }
 
   render() {
-    const { wgts } = this.props
+    const { wgts,refreshHeaderHome } = this.props
     const { screenWidth } = this.state
 
     console.log('home-wgts', wgts)
@@ -139,6 +140,7 @@ export default class HomeWgts extends Component {
             {process.env.APP_PLATFORM !== 'standard' && item.name === 'store' && (
               <WgtStore info={item} />
             )}
+            {item.name === "nearbyShop" && <WgtNearbyShop info={item} refreshHeaderHome={refreshHeaderHome}/>}
           </View>
         ))}
       </View>

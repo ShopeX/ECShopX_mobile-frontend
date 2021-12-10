@@ -1,0 +1,18 @@
+@import "@/style/imports";
+
+.cus-no-position {
+  .position-title {
+    color: #666666;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .position-btn {
+    color: #fff;
+    background: var(--color-primary);
+    padding: 20px 0px;
+    width: 40%;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 50px;
+  }
+}

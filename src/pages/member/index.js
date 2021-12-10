@@ -78,8 +78,7 @@ export default class MemberIndex extends Component {
     };
   }
 
-  componentWillMount() {
-    console.log('================WillMount===============');
+  componentWillMount() { 
     setPageTitle('会员中心')
     this.fetch();
     this.getSetting();

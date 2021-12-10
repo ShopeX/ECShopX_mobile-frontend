@@ -1,0 +1,12 @@
+$blue-color:#4980FF;
+
+.distribution-label{ 
+    @include hairline($blue-color,0,left,right,top,bottom);
+    height: 30px;
+    padding:1px 4px;
+    font-size: 20px;
+    font-weight: 400;
+    color: $blue-color;
+    display: inline-flex;
+    align-items: center;
+}

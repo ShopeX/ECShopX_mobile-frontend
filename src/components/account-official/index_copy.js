@@ -40,8 +40,7 @@ export default class AccountOfficial extends Component {
     this.props.onClick()
   }
 
-  handleClickLoad = (res) => {
-    console.log('res', res)
+  handleClickLoad = (res) => { 
     if (res && res.detail) {
       this.setState({
         isShowAccount: true

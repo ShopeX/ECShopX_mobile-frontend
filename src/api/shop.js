@@ -33,6 +33,11 @@ export function getRuleInfo(params = {}) {
 }
 
 // 获取总店信息
+export function getDefaultShop(params = {}) {
+  return req.get('/distributor/default', params)
+}
+
+// 获取总店信息
 export function getHeadquarters(params = {}) {
   return req.get('/distributor/self', params)
 }

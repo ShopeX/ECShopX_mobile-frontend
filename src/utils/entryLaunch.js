@@ -3,6 +3,7 @@ import api from '@/api'
 import qs from 'qs'
 import configStore from '@/store'
 import { showToast, log } from '@/utils'
+import entry from '@/utils/entry'
 
 class EntryLaunch {
   constructor() {
@@ -67,7 +68,7 @@ class EntryLaunch {
       // 开启定位
       if (is_open_wechatapp_location == 1) {
         try {
-          const { lng, lat } = await this.getLocationInfo()
+          const { longitude: lng, latitude: lat } = await this.getLocationInfo()
           storeQuery = {
             ...storeQuery,
             lng,
@@ -98,29 +99,35 @@ class EntryLaunch {
   /**
    * @function 根据经纬度获取定位信息
    */
-  getLocationInfo() {
+  async getLocationInfo() {
     if (process.env.TARO_ENV === 'weapp') {
       return new Promise((resolve, reject) => {
         Taro.getLocation({
           type: 'gcj02',
           success: (res) => {
-            resolve({
-              lng: res.longitude,
-              lat: res.latitude
-            })
+            resolve(res)
           },
           fail: (error) => {
+            resolve({})
             reject(error)
           }
         })
       })
+      // return await Taro.getLocation({ type: 'gcj02' }).then(
+      //   async (locationData) => {
+      //     await entry.InverseAnalysisGaode(locationData)
+      //     return locationData
+      //   }
+      // ).catch(() => {
+      //   return {}
+      // })
     } else {
       return new Promise((reslove, reject) => {
         this.geolocation.getCurrentPosition(function(status, result) {
           if (status == 'complete') {
             reslove({
-              lng: result.position.lng,
-              lat: result.position.lat
+              longitude: result.position.lng,
+              latitude: result.position.lat
             })
           } else {
             reject({ message: result.message })
@@ -173,6 +180,53 @@ class EntryLaunch {
       return false
     }
   }
+
+  /**
+   * 判断是否开启定位，去获取经纬度，根据经纬度去获取地址
+   */
+  async isOpenPosition (callback) {
+    if (process.env.TARO_ENV === 'weapp') {
+      const { authSetting } = await Taro.getSetting()
+      if (!authSetting['scope.userLocation']) {
+        Taro.authorize({
+          scope: 'scope.userLocation',
+          success: async () => {
+            let locationData = await this.getLocationInfo()
+            if (locationData.latitude) await entry.InverseAnalysisGaode(locationData)
+            if (callback) callback()
+          },
+          fail: () => {
+            Taro.showModal({
+              title: '提示',
+              content: '请打开定位权限',
+              success: async (resConfirm) => {
+                if (resConfirm.confirm) {
+                  await Taro.openSetting()
+                  const setting = await Taro.getSetting()
+                  if (setting.authSetting['scope.userLocation']) {
+                    let locationData = await this.getLocationInfo()
+                    if (locationData.latitude) await entry.InverseAnalysisGaode(locationData)
+                    if (callback) callback()
+                  } else {
+                    Taro.showToast({ title: '获取定位权限失败', icon: 'none' })
+                  }
+                }
+              }
+            })
+          }
+        })
+      } else {
+        let locationData = await this.getLocationInfo()
+        if (locationData.latitude) await entry.InverseAnalysisGaode(locationData)
+        if (callback) callback()
+      }
+    } else {
+      let locationData = await this.getLocationInfo()
+      if (locationData.latitude) await entry.InverseAnalysisGaode(locationData)
+      if (callback) callback()
+    }
+  }
 }
+
 
 export default new EntryLaunch()

@@ -31,8 +31,7 @@ export default class Meiqia extends Component {
       // 如果不是标准版
       if (process.env.APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
         id = storeId
-      }
-      console.log(id)
+      } 
       if (enterprise_id) {
         this.setState({
           meiqia_id: enterprise_id,

@@ -5,7 +5,7 @@ import { AtButton, AtInput } from 'taro-ui'
 import { Loading, Price, SpCell, SpToast, SpNavBar, SpHtmlContent } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-// import { withLogin } from '@/hocs'
+ 
 import {
   pickBy,
   log,
@@ -20,7 +20,8 @@ import {
   redirectUrl,
   isObjectValueEqual,
   getThemeStyle,
-  styleNames
+  styleNames,
+  getHeadShop
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -141,14 +142,15 @@ export default class CartCheckout extends Component {
       isNeedPackage: false,
       pick: {},
       isOpenStore: null,
-      channel: ''
+      channel: '',
+      headShop:{}
     }
 
     // 路由参数缓存
     this.routerParams = {}
   }
 
-  async componentDidMount() {
+  async componentDidMount() { 
     if (this.$router.params.scene) {
       const data = await normalizeQuerys(this.$router.params)
       this.routerParams = data
@@ -168,6 +170,9 @@ export default class CartCheckout extends Component {
       return
     }
     const { cart_type, pay_type: payType } = this.$router.params
+    const {
+      shop_id:router_shop_id
+    } = this.$router.params
     let curStore = null,
       info = null
 
@@ -187,6 +192,7 @@ export default class CartCheckout extends Component {
         hour,
         phone
       } = this.$router.params
+ 
       // 积分购买不在此种情况
       curStore = {
         shop_id,
@@ -203,10 +209,16 @@ export default class CartCheckout extends Component {
       info = null
     }
 
+    const res=await getHeadShop(); 
+
     this.setState({
       curStore,
       info,
-      payType: payType || this.state.payType
+      payType: payType || this.state.payType,
+      headShop:{
+        ...res,
+        is_current:router_shop_id==0
+      }
     })
 
     let total_fee = 0
@@ -480,7 +492,7 @@ export default class CartCheckout extends Component {
   }
 
   async getParams() {
-    // console.log('/////////////////')
+ 
     let { isNeedPackage, pack } = this.state
 
     const {
@@ -670,9 +682,7 @@ export default class CartCheckout extends Component {
         packName,
         packDes
       }
-    })
-
-    console.log(res, 'res')
+    }) 
   }
 
   async calcOrder() {
@@ -767,7 +777,7 @@ export default class CartCheckout extends Component {
     let info = this.state.info
     let pointInfo = this.state.pointInfo
     if (items) {
-      console.log('', items)
+     
       // 从后端获取订单item
       info = {
         cart: [
@@ -1604,8 +1614,7 @@ export default class CartCheckout extends Component {
   }
 
   // 设置初次paytype
-  initDefaultPaytype = (payType, channel) => {
-    console.log("==initDefaultPaytype==",payType,channel)
+  initDefaultPaytype = (payType, channel) => { 
     this.setState({
       defalutPaytype: payType,
       channel
@@ -1769,24 +1778,22 @@ export default class CartCheckout extends Component {
       isPackage,
       pack,
       isOpenStore,
-      defalutPaytype,
-      fixInput
+      defalutPaytype, 
+      headShop
     } = this.state
+  
     const { type, goodType, bargain_id } = this.$router.params
     const isDrug = type === 'drug'
     if (!info) {
       return <Loading />
-    }
-
-    console.log("===payType==",payType)
-
+    } 
     const couponText = !coupon
       ? ''
       : coupon.type === 'member'
       ? '会员折扣'
       : (coupon.value && coupon.value.title) || ''
     //const isBtnDisabled = !address
-    const isBtnDisabled = express ? !address : false
+    const isBtnDisabled = express ? !address : false 
     return (
       <View className='page-checkout' style={styleNames(getThemeStyle())}>
         {showAddressPicker === false ? (
@@ -1803,6 +1810,7 @@ export default class CartCheckout extends Component {
             receiptType={receiptType}
             curStore={curStore}
             isOpenStore={isOpenStore}
+            headShop={headShop}
             address={address}
             onChangReceiptType={this.handleSwitchExpress.bind(this)}
             onEidtZiti={this.handleEditZitiClick.bind(this)}

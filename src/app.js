@@ -3,7 +3,9 @@ import S from '@/spx'
 import { Provider } from '@tarojs/redux'
 import configStore from '@/store' 
 import api from '@/api'
-import { normalizeQuerys, isGoodsShelves } from '@/utils'
+import { normalizeQuerys, isGoodsShelves,setSystemInfo } from '@/utils'
+import entryLaunch from '@/utils/entryLaunch'
+import LBS from '@/utils/lbs'
 import { FormIds, Tracker } from '@/service' 
 import { youshuLogin } from '@/utils/youshu'
 import { DEFAULT_TABS, DEFAULT_THEME } from '@/consts' 
@@ -31,9 +33,7 @@ const getHomeSetting = async () => {
     whitelist_status = false,
     nostores_status = false,
     distributor_param_status = false
-  } = await api.shop.homeSetting()
-
-  console.log('getHomeSetting1', echat)
+  } = await api.shop.homeSetting() 
 
   // 美洽客服配置
   Taro.setStorageSync('meiqia', meiqia)
@@ -56,12 +56,12 @@ getHomeSetting()
 
 class App extends Component {
   // eslint-disable-next-line react/sort-comp
-  componentWillMount() {
-    console.log('componentWillMount', process.env.APP_TRACK)
+  componentWillMount() { 
     if (process.env.APP_TRACK && process.env.TARO_ENV == 'weapp') {
       const system = Taro.getSystemInfoSync()
+      setSystemInfo();
       if (!(system && system.environment && system.environment === 'wxwork')) {
-        console.log('Tracker', Tracker.use)
+  
         Tracker.use(process.env.APP_TRACK)
         youshuLogin()
       }
@@ -121,8 +121,9 @@ class App extends Component {
         })
     }
     // H5定位
-    if (process.env.APP_PLATFORM === 'standard' && Taro.getEnv() === 'WEB') {
-      // new LBS();
+    if (Taro.getEnv() === 'WEB') {
+      new LBS();
+      entryLaunch.initAMap()
     }
     // 设置购物车默认类型
     if (Taro.getStorageSync('cartType')) {
@@ -144,10 +145,10 @@ class App extends Component {
       'pages/category/index',
       'pages/floorguide/index',
 
-      'pages/item/list',
-      'pages/item/espier-detail',
-      'pages/item/item-params',
-      'pages/item/package-list',
+      // 'pages/item/list',
+      // 'pages/item/espier-detail',
+      // 'pages/item/item-params',
+      // 'pages/item/package-list',
 
       'pages/cart/espier-index',
       'pages/cart/espier-checkout',
@@ -158,12 +159,15 @@ class App extends Component {
       'pages/member/item-fav',
       // 'pages/store/index',
       // 'pages/store/list',
-      // 'pages/store/ziti-list',
-
+      // 'pages/store/ziti-list', 
       'pages/custom/custom-page',
       'pages/liveroom/index'
     ],
     subPackages: [
+      {
+        root: 'pages/item/',
+        pages: ['list', 'espier-detail', 'item-params','package-list']
+      },
       {
         root: 'pages/store/',
         pages: ['index', 'list', 'ziti-list']
@@ -238,10 +242,10 @@ class App extends Component {
           'pages/member/qrcode'
         ],
         plugins: {
-          "live-player-plugin": {
-            "version": "1.3.0", // 填写该直播组件版本号
-            "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
-          }
+          // "live-player-plugin": {
+          //   "version": "1.3.0", // 填写该直播组件版本号
+          //   "provider": "wx2b03c6e691cd7370" // 必须填该直播组件appid
+          // }
           // "meiqia": {
           //   "version": "1.1.0",
           //   "provider": "wx2d2cd5fd79396601"
@@ -358,6 +362,12 @@ class App extends Component {
       {
         root: 'pointitem',
         pages: ['pages/list']
+      },
+      {
+        root: 'subpages/ecshopx',
+        pages: [
+          'nearby-shop-list/index'
+        ]
       }
     ],
     permission: {
@@ -558,7 +568,7 @@ class App extends Component {
   //   try {
   //     tabbar = JSON.parse(tab_bar)
   //   } catch (error) {
-  //     console.log(error)
+ 
   //   }
   //   store.dispatch({
   //     type: "tabBar",

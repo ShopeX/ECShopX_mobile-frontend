@@ -45,8 +45,7 @@ export default class WgtCoupon extends Component {
 
     let _this = this
     api.user.newWxaMsgTmpl(templeparams).then(
-      (tmlres) => {
-        console.log('templeparams---1', tmlres)
+      (tmlres) => { 
         if (tmlres.template_id && tmlres.template_id.length > 0) {
           wx.requestSubscribeMessage({
             tmplIds: tmlres.template_id,
@@ -67,8 +66,7 @@ export default class WgtCoupon extends Component {
     )
   }
 
-  handleGetCard = async (card_item) => {
-    console.log('card_item', card_item)
+  handleGetCard = async (card_item) => { 
     const query = {
       card_id: card_item.id
     }

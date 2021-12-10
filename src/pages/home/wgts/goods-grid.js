@@ -42,7 +42,7 @@ export default class WgtGoodsGrid extends Component {
       scope: this.$scope
     })
     observer.on('on-observer', (res) => {
-      console.log('on-observer', res)
+     
     } )
   }
 
@@ -71,8 +71,7 @@ export default class WgtGoodsGrid extends Component {
       return null
     }
 
-    const { base, data, config } = info
-    console.log(data,'===================');
+    const { base, data, config } = info 
     // const goods = pickBy(data, {
     //   origincountry_img_url: {
     //     key: 'origincountry_img_url',

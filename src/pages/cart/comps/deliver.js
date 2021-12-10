@@ -56,7 +56,8 @@ export default class Deliver extends Component {
   }
 
   render() {
-    const { curStore, receiptType, address, isOpenStore, colors } = this.props
+    const { curStore, receiptType, address, isOpenStore, colors,headShop={} } = this.props 
+   
     const { goodType, type } = this.$router.params
     // 收货方式[快递，同城，自提]
     const deliveryList = [
@@ -71,7 +72,7 @@ export default class Deliver extends Component {
       {
         type: 'dada',
         name: '同城配送',
-        isopen: curStore.is_dada && goodType !== 'cross'
+        isopen: headShop.is_current ? headShop.is_dada : curStore.is_dada && goodType !== 'cross'
       },
       {
         type: 'ziti',

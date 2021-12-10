@@ -20,8 +20,7 @@ export default class RecommendItem extends Component {
 
   handleLikeClick = async (e) => {
     e.stopPropagation()
-    const { item_id, is_like } = this.props.info
-    console.log(is_like, item_id)
+    const { item_id, is_like } = this.props.info 
     // await api.item.collect(item_id)
   }
 

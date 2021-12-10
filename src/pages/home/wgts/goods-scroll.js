@@ -24,8 +24,7 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  setTimer() {
-    console.log('---setTimer---')
+  setTimer() { 
     const { info } = this.props
     const { config } = info
     if (config.lastSeconds) {
