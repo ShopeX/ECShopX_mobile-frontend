@@ -124,11 +124,12 @@
             align-self: flex-start;
 
             .text {
-              background: #00081c;
+              border: 1PX solid $color-brand-primary;
+              color: $color-brand-primary;
+              background: #fff;
               border-radius: 2px;
               -ms-flex-negative: 0;
               flex-shrink: 0; 
-              color: #fff;
               margin: 0 4px 5px 0;
               padding: 2px 5px;
             }
