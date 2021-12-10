@@ -2,7 +2,7 @@ import Taro, { useState, useEffect, useCallback } from '@tarojs/taro';
 import { View, ScrollView,Image } from '@tarojs/components';
 import { SpNavBar, SpNewInput, SpNewFilterbar, SpNewShopItem, SpNewFilterDrawer, SpLoadMore } from '@/components'
 import { classNames, isNavbar,JumpPageIndex } from '@/utils';
-import { FILTER_DATA, FILTER_DRAWER_DATA, DEFAULT_SORT_VALUE, fillFilterTag } from '../consts/index';
+import { FILTER_DATA, FILTER_DRAWER_DATA, DEFAULT_SORT_VALUE, fillFilterTag,DISTANCE_PLUS_SORT,DISTANCE_MINUS_SORT } from '../consts/index';
 import api from '@/api'
 import { usePage, useFirstMount } from '@/hooks';
 import './index.scss';
@@ -42,9 +42,18 @@ const NearbyShopList = (props) => {
 
     const handleClickFilterLabel = useCallback(
         (item) => {
+            const lastDistanceFilter=filterValue==DISTANCE_PLUS_SORT || filterValue==DISTANCE_MINUS_SORT
+            const distanceFilter=item==DISTANCE_PLUS_SORT || item==DISTANCE_MINUS_SORT
+            console.log("===filterValue",filterValue,item,lastDistanceFilter,distanceFilter)
+         
+            //如果从非距离tab切换回来距离tab  应该是由近到远
+            if(!lastDistanceFilter && distanceFilter){
+                setFilterValue(DEFAULT_SORT_VALUE); 
+                return ;
+            } 
             setFilterValue(item);  
         },
-        [],
+        [filterValue],
     );
 
     const handleDrawer = useCallback(

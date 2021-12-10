@@ -1,9 +1,9 @@
 //plusValue 代表正序 minusValue代表倒序
-const TIME_SORT=0;
-const SALE_PLUS_SORT=4;
-const SALE_MINUS_SORT=3;
-const DISTANCE_PLUS_SORT=1;
-const DISTANCE_MINUS_SORT=2;
+export const TIME_SORT=0;
+export const SALE_PLUS_SORT=4;
+export const SALE_MINUS_SORT=3;
+export const DISTANCE_PLUS_SORT=1;
+export const DISTANCE_MINUS_SORT=2;
 
 export const FILTER_DATA=[
     {value:TIME_SORT,label:'综合排序'},
