@@ -67,3 +67,8 @@ export function getShopTemplate(params) {
     ...params
   })
 }
+
+// 获取高德地图key
+export function getMapKeyDetail(params) {
+  return req.get('/third_party/map/key', params)
+}

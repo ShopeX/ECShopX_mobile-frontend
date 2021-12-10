@@ -305,11 +305,10 @@ export default class StoreList extends Component {
       pageSize,
       lat: latitude,
       lng: longitude,
-      card_id
+      card_id,
+      sort_type: 1
     }
-    const { list, total_count: total, defualt_address = {}, is_recommend } = await api.shop.list(
-      query
-      )
+    const { list, total_count: total, defualt_address = {}, is_recommend } = await api.shop.list(query)
     const { province, city, county, adrdetail } = this.props.address || defualt_address
     let addressdetail = province + city + county + adrdetail
     this.setState({
@@ -419,8 +418,8 @@ export default class StoreList extends Component {
     //   const { province: p = "", city: c = "", county: ct = "" } = deliveryInfo;
     //   areaData = [p, c === "市辖区" || !c ? province : city, ct];
     // }
-    console.log(location, deliveryInfo, 'location--deliveryInfo')
     // const  = defaultStore.is_valid === "true";
+    // console.log(location, deliveryInfo, 'location--deliveryInfo')
 
     return (
       ((location && location.addressdetail) || (deliveryInfo && deliveryInfo.addressdetail))
