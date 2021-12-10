@@ -60,7 +60,7 @@ export default class Home extends Component {
       curStore: {
         distributor_id: 0
       },
-      positionStatus: false,
+      isFixed: false,
       automatic: null,
       showAuto: true,
       // top: 0,
@@ -452,6 +452,12 @@ export default class Home extends Component {
     const info = await req.get(url)
     const wgts = isArray(info) ? [] : info.config
     const wgtsList = isArray(info) ? [] : info.list
+    if (wgts.length > 0) {
+      const searchWgt = wgts.find((item) => item.name == 'search')
+      this.setState({
+        isFixed: searchWgt && searchWgt.config && searchWgt.config.fixTop
+      })
+    }
     this.setState(
       {
         wgts: wgts.length > 5 ? wgts.slice(0, 5) : wgts,
@@ -467,10 +473,6 @@ export default class Home extends Component {
         }, 500)
         Taro.stopPullDownRefresh()
         if (!isArray(info) && info.config) {
-          const searchWgt = info.config.find((item) => item.name == 'search')
-          this.setState({
-            positionStatus: searchWgt && searchWgt.config && searchWgt.config.fixTop
-          })
           if (is_open_recommend === 1) {
             this.props.onUpdateLikeList(true)
             this.resetPage()
@@ -692,7 +694,7 @@ export default class Home extends Component {
       showAuto,
       featuredshop,
       wgts,
-      positionStatus,
+      isFixed,
       curStore,
       is_open_recommend,
       likeList,
@@ -712,8 +714,6 @@ export default class Home extends Component {
     const { showAdv } = this.props
     // 是否是标准版
     const isStandard = !is_open_store_status
-    // 否是fixed
-    const isFixed = positionStatus
 
     // 是否同意获取位置信息
     // const location_detail = Taro.getStorageSync('lnglat') || {}
