@@ -1,4 +1,4 @@
-import Taro,{ useState,memo } from '@tarojs/taro';
+import Taro,{ useMemo,memo } from '@tarojs/taro';
 import { View ,Text} from '@tarojs/components';
 import { classNames,getNavbarHeight } from '@/utils';
 import './index.scss'; 
@@ -11,14 +11,19 @@ const SpNewPrice=(props)=>{
      */
 
     const { 
-        price=0,
+        price:priceProp=0,
         prefix='¥',
         digits=2,
         equal=false,
         discount=false,
         size='normal',
-        className=''
+        className='',
+        isPoints=true
     }=props; 
+
+    const price=useMemo(() => {
+        return isPoints?priceProp/100:priceProp;
+    }, [isPoints,priceProp])
 
     //过滤后的字符串
     const changePrice=Number(price).toFixed(digits);
