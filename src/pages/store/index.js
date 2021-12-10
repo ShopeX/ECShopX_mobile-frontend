@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, Loading, BackToTop,SpNewShopItem } from '@/components'
+import { SpToast, Loading, BackToTop,SpNewShopItem,SpCellCoupon } from '@/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
@@ -53,7 +53,8 @@ export default class StoreIndex extends Component {
           iconPrefixClass: 'icon',
           url: '/others/pages/store/category'
         }
-      ]
+      ],
+      couponList:[]
     }
   }
 
@@ -62,6 +63,7 @@ export default class StoreIndex extends Component {
     const id = options.id || options.dtid
     if (id) {
       this.fetchInfo(id)
+      this.fetchCouponList(id)
     }
   }
 
@@ -84,6 +86,21 @@ export default class StoreIndex extends Component {
       title: this.state.storeInfo ? this.state.storeInfo.name : '店铺商品',
       path: `/pages/store/index?id=${this.$router.params.id}`
     }
+  }
+
+  async fetchCouponList(id){
+    const params={
+      page_no:1,
+      page_size:5,
+      end_date:1,
+      distributor_id:id
+    }
+    const {
+      list
+    } = await api.member.homeCouponList(params)
+    this.setState({
+      couponList:list
+    })
   }
 
   async fetchInfo(distributorId) {
@@ -197,6 +214,7 @@ export default class StoreIndex extends Component {
       scrollTop,
       tabList,
       localCurrent, 
+      couponList
     } = this.state
     const user = Taro.getStorageSync('userinfo')
     const isPromoter = user && user.isPromoter
@@ -223,6 +241,11 @@ export default class StoreIndex extends Component {
                 )}
               />
             </View>
+
+            <SpCellCoupon 
+              couponList={couponList}
+            />
+
             {wgts.map((item, idx) => {
               return (
                 <View className='wgt-wrap' key={`${item.name}${idx}`}>

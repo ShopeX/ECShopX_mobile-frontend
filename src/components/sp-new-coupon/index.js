@@ -12,7 +12,8 @@ const SpNewCoupon=(props)=>{
         },
         isReceive=false,
         text='',
-        className
+        className,
+        hasStatus=true
     }=props;
 
     //设置领取和未领取的文字
@@ -32,7 +33,7 @@ const SpNewCoupon=(props)=>{
             <View className={'border'}></View>
             <View className={'radius'}></View>
             <View className={'text'}>{text}</View>
-            <View className={'status-text'}>{statusText}</View>
+            {hasStatus && <View className={'status-text'}>{statusText}</View>}
         </View>
     )
 }
