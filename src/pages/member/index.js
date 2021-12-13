@@ -95,10 +95,11 @@ export default class MemberIndex extends Component {
   }
 
   componentDidShow() {
-    console.log('================Show===============');
+    Taro.eventCenter.on('login-success', () => {
+      this.fetch()
+    })
     if (S.getAuthToken()) {
       this.fetchCouponCardList()
-      this.fetch();
     }
   }
 
