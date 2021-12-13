@@ -419,10 +419,10 @@ export default class StoreList extends Component {
     //   areaData = [p, c === "市辖区" || !c ? province : city, ct];
     // }
     // const  = defaultStore.is_valid === "true";
-    // console.log(location, deliveryInfo, 'location--deliveryInfo')
+    const lnglat = Taro.getStorageSync('lnglat') || {}
 
     return (
-      ((location && location.addressdetail) || (deliveryInfo && deliveryInfo.addressdetail))
+      lnglat.latitude
       ? <View className='page-store-list' style={styleNames(getThemeStyle())}>
           <SpNavBar title={pageTitle} leftIconType='chevron-left' />
           <View className='search-block'>
@@ -441,10 +441,11 @@ export default class StoreList extends Component {
                   onColumnChange={this.bindMultiPickerColumnChange}
                   value={multiIndex}
                   range={areaList}
+                  style={{ width: '100%' }}
                 >
                   <View className='pick-title'>
                     <View className='iconfont icon-periscope'></View>
-                    <Text>{areaData || '地区'}</Text>
+                    <Text className='texts'>{areaData || '地区'}</Text>
                     <View className='iconfont icon-arrowDown'></View>
                   </View>
                 </Picker>
