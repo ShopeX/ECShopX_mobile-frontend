@@ -5,6 +5,7 @@ import { debounce } from '@/utils'
 import api from '@/api'
 import entry from '../../../utils/entry'
 import LoadingMore from '../../component/loadingMore'
+import entryLaunchFun from '@/utils/entryLaunch'
 
 import './index.scss'
 
@@ -48,7 +49,9 @@ export default class Community extends Component {
 
   // 获取定位
   init = async () => {
-    const lbs = this.getLoacl()
+    const lbs = await entryLaunchFun.getLocationInfo()
+    // if (lbs.latitude) await InverseAnalysisGaode(lbs)
+    // const lbs = this.getLoacl()
     if (!lbs) return false
     const { latitude, longitude } = lbs
     this.setState(
@@ -66,30 +69,30 @@ export default class Community extends Component {
   }
 
   // 定位
-  getLoacl = async () => {
-    let lbs = ''
-    if (Taro.getEnv() === 'WEAPP') {
-      lbs = await Taro.getLocation({ type: 'gcj02' }).catch(() => {
-        Taro.showModal({
-          content: '您未授权访问您的定位信息，请先更改您的授权设置',
-          showCancel: false,
-          success: (res) => {
-            if (res.confirm) {
-              Taro.openSetting({
-                success: () => {
-                  this.init()
-                }
-              })
-            }
-          }
-        })
-        return false
-      })
-    } else {
-      lbs = await entry.getWebLocal(false).catch(() => false)
-    }
-    return lbs
-  }
+  // getLoacl = async () => {
+  //   let lbs = ''
+  //   if (Taro.getEnv() === 'WEAPP') {
+  //     lbs = await Taro.getLocation({ type: 'gcj02' }).catch(() => {
+  //       Taro.showModal({
+  //         content: '您未授权访问您的定位信息，请先更改您的授权设置',
+  //         showCancel: false,
+  //         success: (res) => {
+  //           if (res.confirm) {
+  //             Taro.openSetting({
+  //               success: () => {
+  //                 this.init()
+  //               }
+  //             })
+  //           }
+  //         }
+  //       })
+  //       return false
+  //     })
+  //   } else {
+  //     lbs = await entry.getWebLocal(false).catch(() => false)
+  //   }
+  //   return lbs
+  // }
 
   // 获取社区列表
   getCommunity = async (isRefresh = false) => {

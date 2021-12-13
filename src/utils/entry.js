@@ -268,37 +268,37 @@ async function getStoreStatus() {
 }
 
 // web定位获取
-function getWebLocal(isSetStorage = true) {
-  const { qq } = window
-  // let geolocation = new qq.maps.Geolocation('PVUBZ-E24HK-7SXJY-AGQZC-DN3IT-6EB6V', 'oneX新零售门店定位')
-  let geolocation = new qq.maps.Geolocation(process.env.APP_MAP_KEY, process.env.APP_MAP_NAME)
-  return new Promise((resolve, reject) => {
-    geolocation.getLocation(
-      (r) => {
-        console.log('您的位置：' + r.lng + ',' + r.lat)
-        const param = {
-          latitude: r.lat,
-          longitude: r.lng
-        }
-        if (isSetStorage) {
-          Taro.setStorage({ key: 'lnglat', data: param })
-        }
-        resolve(param)
-      },
-      () => {
-        console.log('定位失败')
-        Taro.showToast({
-          icon: 'none',
-          title: '定位失败'
-        })
-        reject('')
-      },
-      {
-        timeout: 3000
-      }
-    )
-  })
-}
+// function getWebLocal(isSetStorage = true) {
+//   const { qq } = window
+//   // let geolocation = new qq.maps.Geolocation('PVUBZ-E24HK-7SXJY-AGQZC-DN3IT-6EB6V', 'oneX新零售门店定位')
+//   let geolocation = new qq.maps.Geolocation(process.env.APP_MAP_KEY, process.env.APP_MAP_NAME)
+//   return new Promise((resolve, reject) => {
+//     geolocation.getLocation(
+//       (r) => {
+//         console.log('您的位置：' + r.lng + ',' + r.lat)
+//         const param = {
+//           latitude: r.lat,
+//           longitude: r.lng
+//         }
+//         if (isSetStorage) {
+//           Taro.setStorage({ key: 'lnglat', data: param })
+//         }
+//         resolve(param)
+//       },
+//       () => {
+//         console.log('定位失败')
+//         Taro.showToast({
+//           icon: 'none',
+//           title: '定位失败'
+//         })
+//         reject('')
+//       },
+//       {
+//         timeout: 3000
+//       }
+//     )
+//   })
+// }
 // 新增千人千码跟踪记录
 function trackViewNum(monitor_id, source_id) {
   let _session = Taro.getStorageSync('_session')
@@ -419,7 +419,7 @@ export default {
   getLocal,
   getLoc,
   getLocalSetting,
-  getWebLocal,
+  // getWebLocal,
   // InverseAnalysis,
   InverseAnalysisGaode,
   positiveAnalysisGaode,

@@ -166,7 +166,7 @@ export default class Home extends Component {
   }
 
   componentDidShow() {
-    setPageTitle('微商城')
+    // setPageTitle('微商城')
     this.showInit()
     this.isShoppingGuide()
     this.getDistributionInfo()
