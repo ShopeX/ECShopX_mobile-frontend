@@ -4,11 +4,12 @@ import { debounce } from '@/utils'
 import api from '@/api'
 import { SpNavBar } from '@/components'
 import S from '@/spx'
+import entry from '@/utils/entry'
+import entryLaunchFun from '@/utils/entryLaunch'
 import { formatGood } from '../../utils'
 import GroupGood from '../../component/grouoGood'
 import LoadingMore from '../../component/loadingMore'
 import TabBar from '../../component/tabBar'
-import entry from '../../../utils/entry'
 import Classification from '../../component/classification'
 
 import './index.scss'
@@ -81,7 +82,8 @@ export default class GroupByIndex extends Component {
       }
       Taro.setStorageSync('userinfo', userInfo)
     }
-    const lbs = await this.getLoacl()
+    // const lbs = await this.getLoacl()
+    const lbs = await entryLaunchFun.getLocationInfo()
     if (!lbs) return
     const { latitude, longitude } = lbs
     this.getSetting()
@@ -99,30 +101,30 @@ export default class GroupByIndex extends Component {
     )
   }
   // 定位
-  getLoacl = async () => {
-    let lbs = ''
-    if (Taro.getEnv() === 'WEAPP') {
-      lbs = await Taro.getLocation({ type: 'gcj02' }).catch(() => {
-        Taro.showModal({
-          content: '您未授权访问您的定位信息，请先更改您的授权设置',
-          showCancel: false,
-          success: (res) => {
-            if (res.confirm) {
-              Taro.openSetting({
-                success: () => {
-                  this.init()
-                }
-              })
-            }
-          }
-        })
-        return false
-      })
-    } else {
-      lbs = await entry.getWebLocal(false).catch(() => false)
-    }
-    return lbs
-  }
+  // getLoacl = async () => {
+  //   let lbs = ''
+  //   if (Taro.getEnv() === 'WEAPP') {
+  //     lbs = await Taro.getLocation({ type: 'gcj02' }).catch(() => {
+  //       Taro.showModal({
+  //         content: '您未授权访问您的定位信息，请先更改您的授权设置',
+  //         showCancel: false,
+  //         success: (res) => {
+  //           if (res.confirm) {
+  //             Taro.openSetting({
+  //               success: () => {
+  //                 this.init()
+  //               }
+  //             })
+  //           }
+  //         }
+  //       })
+  //       return false
+  //     })
+  //   } else {
+  //     lbs = await entry.getWebLocal(false).catch(() => false)
+  //   }
+  //   return lbs
+  // }
   // 获取附近活动社区
   getNearBuyCommunity = () => {
     const currentCommunity = Taro.getStorageSync('community')
