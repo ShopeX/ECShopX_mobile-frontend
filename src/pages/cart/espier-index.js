@@ -143,9 +143,9 @@ export default class CartIndex extends Component {
   // }
 
   handleClickItem = (item) => {
-    const { distributor_id } = item;
-    const dtid = distributor_id ? distributor_id : getDistributorId();
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
+    const { distributor_id, item_id } = item;
+    // const dtid = distributor_id ? distributor_id : getDistributorId();
+    const url = `/pages/item/espier-detail?id=${item_id}&dtid=${distributor_id || 0}`
     Taro.navigateTo({
       url
     });
