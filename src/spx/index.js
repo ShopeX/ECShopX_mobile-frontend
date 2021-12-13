@@ -264,6 +264,7 @@ class Spx {
     }
     if (token) {
       this.setAuthToken(token, true)
+      Taro.eventCenter.trigger('login-success')
       const userInfo = await this.getMemberInfo()
       return userInfo
     } else {
