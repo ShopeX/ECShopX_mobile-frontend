@@ -83,7 +83,8 @@ export default class Coupon extends Component {
       status,
       page,
       pageSize,
-      card_type
+      card_type,
+      // source_type:'distributor'
     }
 
     delete params.page_no

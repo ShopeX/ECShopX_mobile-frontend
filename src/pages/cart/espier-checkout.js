@@ -1264,7 +1264,7 @@ export default class CartCheckout extends Component {
       ) {
         config = await this.h5CreateByType({
           ...params,
-          pay_type: this.state.total.freight_type === 'point' ? 'point' : 'wxpay'
+          pay_type: this.state.total.freight_type === 'point' ? 'point' : payType===PAYTYPE.ALIH5?PAYTYPE.ALIH5:'wxpay'
         })
         let redirectPath=`/subpage/pages/cashier/index?order_id=${config.order_id}`;
 

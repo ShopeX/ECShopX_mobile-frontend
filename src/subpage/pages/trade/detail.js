@@ -21,6 +21,7 @@ import {
   redirectUrl
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
+import { PAYTYPE } from '@/consts'
 import { Tracker } from '@/service'
 import api from '@/api'
 import { TracksPayed } from '@/utils/youshu'
@@ -303,7 +304,7 @@ export default class TradeDetail extends Component {
     }
 
     if(isWeb){
-      redirectUrl(api, `/subpage/pages/cashier/index?order_id=${order_id}`)
+      redirectUrl(api, `/subpage/pages/cashier/index?order_id=${order_id}&pay_type=${pay_type}`)
       return ;
     }
 
@@ -590,11 +591,10 @@ export default class TradeDetail extends Component {
   }
 
   computedPayType=()=>{
-    const { info:{pay_type} } =this.state;
-    console.log("==computedPayType==",this.state.info);
+    const { info:{pay_type} } =this.state; 
     if(isAlipay){
       return '支付宝'
-    }else if(pay_type==='alipayh5'){
+    }else if(pay_type===PAYTYPE.ALIH5){
       return '支付宝'
     }else{
       return '微信'
