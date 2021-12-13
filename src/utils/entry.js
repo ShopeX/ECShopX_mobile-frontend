@@ -52,9 +52,9 @@ async function entryLaunch(data, isNeedLocate) {
   }
 
   // 如果需要定位,并且店铺无效，
-  if (!dtidValid) { 
-    store = await getLocal(isNeedLocate)
-  }
+  // if (!dtidValid) { 
+  store = await getLocal(isNeedLocate)
+  // }
 
   if (!store.status) {
     options.store = store
