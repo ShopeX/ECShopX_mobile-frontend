@@ -13,7 +13,6 @@
   overflow: hidden;
   .tagList {
     width: 100%;
-    overflow-x: auto;
     white-space: nowrap;
     &::-webkit-scrollbar {
       display: none;
@@ -37,26 +36,26 @@
     }
   }
   .shopList {
-    display: flex;
-    overflow-x: auto;
     white-space: nowrap;
     margin-top: 30px;
     &::-webkit-scrollbar {
       display: none;
     }
     .shop {
+      display: inline-block;
       width: 200px;
-      height: 290px;
-      border: 1px solid #ccc;
+      padding-bottom: 10px;
+      // height: 290px;
+      border: 1PX solid #ccc;
       background: linear-gradient(360deg, #ffffff 0%, #f5f5f5 100%);
       border-radius: 8px;
       margin-right: 16px;
       .shopbg {
-        width: 200px;
+        width: 197px;
         position: relative;
       }
       .shop_img {
-        width: 100%;
+        width: 99%;
         height: 140px;
       }
       .shop_logo {
@@ -80,6 +79,7 @@
       }
       .shop_coupon {
         max-width: 80%;
+        height: 40px;
         margin: 10px auto;
         @include text-overflow();
         padding: 4px 6px;
@@ -87,7 +87,7 @@
         color: #f4811f;
         border-radius: 8px;
         line-height: 30px;
-        border: 1px solid #f4811f;
+     
         font-size: 22px;
       }
     }
