@@ -44,10 +44,10 @@ export default class WgtGoodsScroll extends Component {
   }
 
   handleClickItem(item) {
-    const { distributor_id } = item
-    const dtid = distributor_id ? distributor_id : getDistributorId()
+    const { distributor_id, goodsId } = item
+    // const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`
+      url: `/pages/item/espier-detail?id=${goodsId}&dtid=${distributor_id || 0}`
     })
   }
 
