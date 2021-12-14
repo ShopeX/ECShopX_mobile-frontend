@@ -4,6 +4,7 @@
   background: #fff;
   height: 100%;
   box-sizing: border-box;
+
   .store-header { 
     text-align: center;
     padding:30px 0;
@@ -16,10 +17,7 @@
     .store-name {
       font-size: 32px;
     }
-  }
-  .at-toast {
-
-  }
+  } 
   .add_tip {
     display: flex;
     position: fixed;
@@ -67,6 +65,11 @@
       width: 100%;
       border-radius: 60px;
       box-shadow: 0 0 20px rgba(0,0,0,.2);
+    }
+  }
+  &.fixedSearch{
+    .wgts-wrap {
+      padding-top: 80px; 
     }
   }
 }

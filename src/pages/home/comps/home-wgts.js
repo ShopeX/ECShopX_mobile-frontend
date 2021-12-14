@@ -137,7 +137,7 @@ export default class HomeWgts extends Component {
             {item.name === 'img-gif' && <WgtImgGif info={item} />}
             {item.name === 'hotTopic' && <WgtHotTopic info={item} />}
             {item.name === 'floorImg' && <WgtFloorImg info={item} />}
-            {process.env.APP_PLATFORM !== 'standard' && item.name === 'store' && (
+            {item.name === 'store' && (
               <WgtStore info={item} />
             )}
             {item.name === "nearbyShop" && <WgtNearbyShop info={item} refreshHeaderHome={refreshHeaderHome}/>}
