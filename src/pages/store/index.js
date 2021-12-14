@@ -1,11 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, Loading, BackToTop,SpNewShopItem,SpCellCoupon } from '@/components'
+import { SpToast, Loading, BackToTop, SpNewShopItem, SpCellCoupon } from '@/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, normalizeQuerys, getCurrentRoute,classNames } from '@/utils'
+import { pickBy, normalizeQuerys, getCurrentRoute, classNames } from '@/utils'
 import { platformTemplateName } from '@/utils/platform'
 import { withBackToTop } from '@/hocs'
 import qs from 'qs'
@@ -20,7 +20,10 @@ import {
   WgtGoodsGrid,
   WgtShowcase,
   WgtSearchHome,
-  WgtFilm
+  WgtFilm,
+  WgtNearbyShop,
+  WgtStore,
+  WgtGoodsGridTab
 } from '../home/wgts'
 
 import './index.scss'
@@ -54,7 +57,8 @@ export default class StoreIndex extends Component {
           url: '/others/pages/store/category'
         }
       ],
-      couponList:[]
+      couponList: [],
+      fixedSearch:false
     }
   }
 
@@ -69,7 +73,7 @@ export default class StoreIndex extends Component {
 
   componentDidShow = () => {
     Taro.getStorage({ key: 'addTipIsShow' })
-      .then(() => {})
+      .then(() => { })
       .catch((error) => {
         console.log(error)
         this.setState({
@@ -88,18 +92,18 @@ export default class StoreIndex extends Component {
     }
   }
 
-  async fetchCouponList(id){
-    const params={
-      page_no:1,
-      page_size:5,
-      end_date:1,
-      distributor_id:id
+  async fetchCouponList(id) {
+    const params = {
+      page_no: 1,
+      page_size: 5,
+      end_date: 1,
+      distributor_id: id
     }
     const {
       list
     } = await api.member.homeCouponList(params)
     this.setState({
-      couponList:list
+      couponList: list
     })
   }
 
@@ -111,7 +115,7 @@ export default class StoreIndex extends Component {
     } else {
       id = await Taro.getStorageSync('curStore').distributor_id
     }
-    const { name, logo,scoreList,distributor_id } = await api.shop.getShop({ distributor_id: id,show_score:1 })
+    const { name, logo, scoreList, distributor_id } = await api.shop.getShop({ distributor_id: id, show_score: 1 })
     storeInfo = {
       name,
       brand: logo,
@@ -132,10 +136,15 @@ export default class StoreIndex extends Component {
           authStatus: true
         })
       }
+      //是否有search
+      let search=info.config.find(item=>item.name==='search')||{config:{}};
+      let fixedSearch=!!search.config.fixTop;
+
       this.setState(
         {
           wgts: info.config,
-          storeInfo: storeInfo
+          storeInfo: storeInfo,
+          fixedSearch
         },
         () => {
           if (info.config) {
@@ -213,16 +222,23 @@ export default class StoreIndex extends Component {
       showBackToTop,
       scrollTop,
       tabList,
-      localCurrent, 
-      couponList
+      localCurrent,
+      couponList,
+      fixedSearch
     } = this.state
-    const user = Taro.getStorageSync('userinfo') 
+    const user = Taro.getStorageSync('userinfo')
 
     if (!wgts || !this.props.store) {
       return <Loading />
     }
+
+
+
+     
     return (
-      <View className='page-store-index'>
+      <View className={classNames('page-store-index',{
+        fixedSearch
+      })}>
         <ScrollView
           className='wgts-wrap wgts-wrap__fixed__page'
           scrollTop={scrollTop}
@@ -232,7 +248,7 @@ export default class StoreIndex extends Component {
         >
           <View className='wgts-wrap__cont'>
             <View className='store-header'>
-              <SpNewShopItem 
+              <SpNewShopItem
                 inStore
                 info={storeInfo}
                 className={classNames(
@@ -241,7 +257,7 @@ export default class StoreIndex extends Component {
               />
             </View>
 
-            <SpCellCoupon 
+            <SpCellCoupon
               couponList={couponList}
               info={storeInfo}
             />
@@ -252,6 +268,7 @@ export default class StoreIndex extends Component {
                   {item.name === 'search' && (
                     <WgtSearchHome info={item} dis_id={this.$router.params.id} />
                   )}
+                  {item.name === "nearbyShop" && <WgtNearbyShop info={item} />}
                   {item.name === 'slider' && <WgtSlider info={item} />}
                   {item.name === 'film' && <WgtFilm info={item} />}
                   {item.name === 'marquees' && <WgtMarquees info={item} />}
@@ -264,9 +281,24 @@ export default class StoreIndex extends Component {
                     <WgtGoodsScroll info={item} dis_id={this.$router.params.id} />
                   )}
                   {item.name === 'goodsGrid' && (
-                    <WgtGoodsGrid info={item} dis_id={this.$router.params.id} />
+                    <WgtGoodsGrid
+                      info={item}
+                      dis_id={this.$router.params.id}
+                      index={idx}
+                      type='good-grid'
+                    />
+                  )}
+                  {item.name === 'goodsGridTab' && (
+                    <WgtGoodsGridTab
+                      info={item}
+                      index={idx}
+                      type='good-grid-tab' 
+                    />
                   )}
                   {item.name === 'showcase' && <WgtShowcase info={item} />}
+                  {item.name === 'store' && (
+                    <WgtStore info={item} />
+                  )}
                 </View>
               )
             })}
