@@ -66,7 +66,7 @@ export default class AlipayBtn extends Component {
     return (
       <View>
         <View className='alipay-btn' onClick={this.handleClickPayment.bind(this)}>
-          支付宝测试支付
+          支付宝支付
         </View>
       </View>
     )

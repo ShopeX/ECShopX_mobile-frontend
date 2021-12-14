@@ -4,25 +4,10 @@ export const SYMBOL = 'alipay_submit_div';
 
 //删除支付宝之前的form表单
 export function deleteForm() {
+    //针对华为无法删除根节点的支付宝form表单
+    let forms = document.getElementsByClassName(SYMBOL); 
 
-    let forms = document.getElementsByClassName(SYMBOL);
-
-    Taro.showToast({
-        icon: 'none',
-        title: '我执行了deleteForm操作',
-        duration: 15000
-    })
-
-    while (forms.length) {
-
-        console.log("===deleteForm===>");
-
-        Taro.showToast({
-            icon: 'none',
-            title: '我执行了删除表单操作',
-            duration: 15000
-        })
-
+    while (forms.length) {  
         document.body.removeChild(forms[0]);
     }
 }
