@@ -37,13 +37,13 @@ export default class WgtGoodsGrid extends Component {
   }
 
   startTrack() {
-    const observer = new CreateIntersectionObserver({
-      el: '.wgt-grid__loader-more',
-      scope: this.$scope
-    })
-    observer.on('on-observer', (res) => {
+    // const observer = new CreateIntersectionObserver({
+    //   el: '.wgt-grid__loader-more',
+    //   scope: this.$scope
+    // })
+    // observer.on('on-observer', (res) => {
      
-    } )
+    // } )
   }
 
   endTrack() {

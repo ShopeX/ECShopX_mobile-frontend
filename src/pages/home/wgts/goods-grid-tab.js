@@ -3,7 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import { AtTabslist, SpImg } from '@/components'
 import { connect } from '@tarojs/redux'
 import { getDistributorId } from '@/utils/helper'
-import { classNames } from '@/utils'
+import { classNames, isWeixin } from '@/utils'
 import { linkPage } from './helper'
 import { withLoadMore } from '@/hocs'
 import './goods-grid-tab.scss'
@@ -38,7 +38,7 @@ export default class WgtGoodsGridTab extends Component {
         moreLink: info.config.moreLink
       },
       () => {
-        this.startWrapperTrack()
+      if (isWeixin) this.startWrapperTrack()
       }
     )
   }
@@ -83,7 +83,7 @@ export default class WgtGoodsGridTab extends Component {
         moreLink: info.config.moreLink
       },
       () => {
-        this.startWrapperTrack()
+        if (isWeixin) this.startWrapperTrack()
       }
     )
   }
@@ -95,7 +95,7 @@ export default class WgtGoodsGridTab extends Component {
         goodsList: info.list[value].goodsList
       },
       () => {
-        this.startWrapperTrack()
+        if (isWeixin) this.startWrapperTrack()
       }
     )
   }
