@@ -11,7 +11,7 @@ const StoreListItem = (props) => {
   }
 
   if (!info) return null
-  const distance = info.distance ? (info.distance * 1).toFixed(2) : false
+  const distance = info.distance < 1 ? Math.round(info.distance * Math.pow(10, 3)) : Number(info.distance).toFixed(2)
 
   return (
     <View className='cus-list-item' onClick={handleClick}>
