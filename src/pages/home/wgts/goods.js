@@ -58,18 +58,19 @@ export default class WgtGoods extends Component {
         return false
       }
     }*/
-    try {
-      const { distributor_id } = item
-      const dtid = distributor_id ? distributor_id : getDistributorId()
-      Taro.navigateTo({
-        url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
-      })
-    } catch (error) {
-      console.log(error)
-      /*Taro.navigateTo({
-        url: `/pages/iwp/item-detail?id=${id}`
-      })*/
-    }
+    // try {
+    const { distributor_id, item_id } = item
+    // const dtid = distributor_id ? distributor_id : getDistributorId()
+    Taro.navigateTo({
+      url: `/pages/item/espier-detail?id=${item_id}&dtid=${distributor_id || 0}`
+    })
+    // }
+    // catch (error) {
+    //   console.log(error)
+    //   Taro.navigateTo({
+    //     url: `/pages/iwp/item-detail?id=${id}`
+    //   })
+    // }
   }
 
   handleSwiperChange = (e) => {

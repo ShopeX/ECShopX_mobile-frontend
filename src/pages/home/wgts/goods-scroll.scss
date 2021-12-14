@@ -1,6 +1,8 @@
 .scroll-goods {
   width: 100%;
   white-space: nowrap;
+  display: flex;
+  align-items: baseline;
   .scroll-item {
     display: inline-block;
     position: relative;
