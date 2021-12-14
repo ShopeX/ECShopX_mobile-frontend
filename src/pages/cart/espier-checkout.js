@@ -266,7 +266,7 @@ export default class CartCheckout extends Component {
   componentWillReceiveProps(nextProps) {
     const nextAddress = nextProps.address || {}
     const selfAddress = this.props.address || {}
-    console.log(nextAddress, selfAddress)
+    console.log("componentWillReceiveProps==>",nextAddress, selfAddress)
     // if (JSON.stringify(nextAddress) != "{}" && JSON.stringify(selfAddress) != "{}" && !isObjectValueEqual(nextAddress, selfAddress)
     if (!isObjectValueEqual(nextAddress, selfAddress)) {
       this.fetchAddress()
@@ -376,11 +376,12 @@ export default class CartCheckout extends Component {
   }
 
   async fetchAddress(cb) {
-    const { receiptType, curStore } = this.state
+    const { receiptType, curStore,headShop } = this.state
+    console.log("===fetchAddress===>",headShop)
     const query = {}
     if (receiptType === 'dada') {
       query.receipt_type = receiptType
-      query.city = curStore.city
+      query.city = headShop.is_current ? headShop.city : curStore.city
     }
     const { list } = await api.member.addressList(query)
     this.setState(
@@ -855,7 +856,7 @@ export default class CartCheckout extends Component {
         express: receiptType !== 'ziti'
       },
       () => {
-        if (receiptType !== 'ziti') {
+        if (receiptType !== 'ziti') { 
           if (this.props.address) {
             this.props.onAddressChoose(null)
           } else {
@@ -1263,7 +1264,7 @@ export default class CartCheckout extends Component {
       ) {
         config = await this.h5CreateByType({
           ...params,
-          pay_type: this.state.total.freight_type === 'point' ? 'point' : 'wxpay'
+          pay_type: this.state.total.freight_type === 'point' ? 'point' : payType===PAYTYPE.ALIH5?PAYTYPE.ALIH5:'wxpay'
         })
         let redirectPath=`/subpage/pages/cashier/index?order_id=${config.order_id}`;
 

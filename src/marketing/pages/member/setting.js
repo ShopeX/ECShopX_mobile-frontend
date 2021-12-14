@@ -30,10 +30,10 @@ export default class MemberSetting extends Component {
     this.props.onUpdateCartCount(0)
     if (process.env.TARO_ENV === 'h5' && Taro.getEnv() !== 'SAPP') {
       // eslint-disable-next-line
-      goToPage(APP_HOME_PAGE)
+      goToPage(process.env.APP_HOME_PAGE)
     } else {
       Taro.redirectTo({
-        url: APP_HOME_PAGE
+        url: process.env.APP_HOME_PAGE
       })
     }
   }

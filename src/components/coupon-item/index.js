@@ -17,7 +17,8 @@ export default class CouponItem extends Component {
     info: null,
     isShowCheckout: false,
     isDisabled: false,
-    showDetail: false
+    showDetail: false,
+    distributor_info:{}
   }
 
   constructor(props) {
@@ -113,7 +114,8 @@ export default class CouponItem extends Component {
       colors,
       isExist,
       invalidCouponColor,
-      count
+      count,
+      distributor_info
     } = this.props
     const { isItemChecked, showDetail, isExpanded } = this.state
 
@@ -160,7 +162,9 @@ export default class CouponItem extends Component {
                   >
                     {obj.tag}
                   </View>
-                  {info.title}
+                  <View  className='name'>
+                    {distributor_info.name||'平台自营'}{"："}{info.title}
+                  </View>
                 </View>
                 {/* {
                     (info.tagClass === 'used' || info.tagClass === 'overdue')

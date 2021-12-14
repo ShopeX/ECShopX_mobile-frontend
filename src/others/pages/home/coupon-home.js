@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, ScrollView, Image } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { Loading, SpNote, SpNavBar, SpToast, CouponItem } from '@/components'
 import { connect } from '@tarojs/redux'
 import api from '@/api'
@@ -156,6 +156,8 @@ export default class CouponHome extends Component {
   }
 
   handleGetCard = async (card_item, idx) => {
+    console.log("===handleGetCard===>",card_item,idx)
+    // return ;
     const { list } = this.state
 
     if (list[idx].getted === 2 || list[idx].getted === 1) {
