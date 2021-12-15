@@ -96,16 +96,23 @@ export default class TradeItem extends Component {
               <View className='trade-item__hd'>{this.props.renderHeader}</View>
             </View>
           ) : (
-            <View className='trade-item__hd'>
-              <Text className='time'>{info.create_date}</Text>
-              <View className='right'>
-                {info.type == '1' && (
-                  <View>
-                    <Text className='iconfont icon-globe'></Text>
-                    <Text>跨境</Text>
-                  </View>
-                )}
-                <Text className='trade-item__shop'>订单号：{info.tid}</Text>
+            <View>
+               <SpNewShopItem
+                inOrderList
+                info={info.distributor_info}
+                canJump={true}
+              />
+              <View className='trade-item__hd'>
+                <View className='time lineone'>创建时间：{info.create_date}</View>
+                <View className='time linetwo'>
+                  {info.type == '1' && (
+                    <View>
+                      <Text className='iconfont icon-globe'></Text>
+                      <Text>跨境</Text>
+                    </View>
+                  )}
+                  <Text className='trade-item__shop'>订单号：{info.tid}</Text>
+                </View>
               </View>
             </View>
           ))}

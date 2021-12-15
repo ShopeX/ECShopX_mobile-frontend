@@ -34,7 +34,8 @@ $prefixCls:'sp-component-newshopitem';
     
             .good-item{
                
-                display: inline-block; 
+                display: inline-block;
+                width: 218px; 
                 
                 &:not(:first-child){
                     margin-left:16px;
@@ -45,8 +46,7 @@ $prefixCls:'sp-component-newshopitem';
                     height: 218px;
                     border-radius: 16px;
                     border: 1px solid #DDDDDD;
-                    display: block;
-                    min-width: 100%;
+                    display: block; 
                 }
                 .name{
                     @include multi-ellipsis(2);

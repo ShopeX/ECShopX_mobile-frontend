@@ -192,11 +192,7 @@ export default class TradeItem extends Component {
                 )}
                 {!customFooter && info.status === 'WAIT_BUYER_CONFIRM_GOODS' && (
                     <View className='trade-item__ft'>
-                        <View className='trade-item__ft-actions'>
-                            {/* <Text
-              className='trade-item__acts'
-              onClick={this.props.onActionBtnClick.bind(this)}
-            >更多</Text> */}
+                        <View className='trade-item__ft-actions'> 
                             {info.receipt_type !== 'dada' && (
                                 <View className={classNames('trade-item__dropdown', { 'is-active': showActions })}>
                                     <Text
@@ -246,13 +242,8 @@ export default class TradeItem extends Component {
                 )}
                 {!customFooter && info.status === 'TRADE_SUCCESS' && (
                     <View className='trade-item__ft'>
-                        <View className='trade-item__ft-actions'>
-                            {/*<Text
-              className='trade-item__acts'
-              onClick={this.props.onActionBtnClick.bind(this)}
-            >更多</Text>*/}
+                        <View className='trade-item__ft-actions'> 
                             <View className={classNames('trade-item__dropdown', { 'is-active': showActions })}>
-                                {/*<Text className='trade-item__dropdown-item' onClick={this.props.onActionClick.bind(this, 'rate')}>评价|晒单</Text>*/}
                                 <Text
                                     className='trade-item__dropdown-item'
                                     onClick={this.props.onActionClick.bind(this, 'rebuy')}
@@ -290,31 +281,7 @@ export default class TradeItem extends Component {
                             </Button>
                         </View>
                     </View>
-                )}
-                {/* {!customFooter && info.status === 'WAIT_RATE' && <View className='trade-item__ft'>
-          <View className='trade-item__ft-actions'>
-            <Text className='trade-item__acts'>更多</Text>
-            <View className={classNames('trade-item__dropdown', { 'is-active': showActions })}>
-              <Text className='trade-item__dropdown-item' onClick={this.props.onActionClick.bind(this, 'rate')}>评价|晒单</Text>
-              <Text className='trade-item__dropdown-item' onClick={this.props.onActionClick.bind(this, 'rebuy')}>再次购买</Text>
-            </View>
-          </View>
-          <View className='trade-item__ft-bd'>
-            <Text className='trade-item__status'>{info.status_desc}</Text>
-            <AtButton
-              circle
-              type='secondary'
-              size='small'
-              onClick={this.handleClickBtn.bind(this, 'rate')}
-            >评价</AtButton>
-            <AtButton
-              circle
-              type='primary'
-              size='small'
-              onClick={this.handleClickBtn.bind(this, 'detail')}
-            >订单详情</AtButton>
-          </View>
-        </View>} */}
+                )} 
             </View>
         )
     }

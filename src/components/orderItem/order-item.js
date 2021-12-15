@@ -94,10 +94,8 @@ export default class OrderItem extends Component {
               ></Price>
             ) : (
               <Price className='order-item__price' value={info.price}></Price>
-            )}
-
-            {/* {payType=='hfpay'&&<Text className='order-item__pay-type'>微信支付</Text>}
-              {payType!='hfpay'&&<Text className='order-item__pay-type'>{payType === 'dhpoint' ? '积分支付' : '微信支付'}</Text>} */}
+            )} 
+           
           </View>
         )}
       </View>

@@ -226,7 +226,9 @@ const SpNewShopItem = (props) => {
                         return (
                             <View className={classNames('good-item')} onClick={()=>JumpGoodDetail(item.item_id,info.distributor_id)}>
                                 <Image className='img' src={item.pics}></Image>
-                                <View className='name'>{item.item_name}</View>
+                                <View className='name' >
+                                    {item.item_name}
+                                </View>
                                 <View className='price'>
                                     <SpNewPrice price={item.price} />
                                     <View className={'margin'}></View>

@@ -10,47 +10,35 @@
   .icon-globe {
     font-size: 32px;
     margin-right: 10px;
-  }
-  &__hd {
-    padding: 28px $edge-size 0;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .more {
-      color: $color-link;
-      font-size: small;
-      text-align: right;
-    }
-    .right {
-      display: flex;
-      align-items: center;
-    }
-  }
+  } 
 
   &__total {
     padding: 0 $edge-size floor($edge-size/2);
     text-align: right;
   }
 
-  &__hd {
-    padding: 0 0 10px;
-    //height: 44px;
+  &__bd {
+    padding:0 16px;
+  }
+
+  &__hd { 
+    padding:24px 16px; 
     line-height: 1.4;
-    border-bottom: 1px solid #e4e4e4;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 22px;
+    border-bottom: 1px solid #e4e4e4;  
     color: #a6a6a6;
-    .right {
-      font-size: 22px;
-      color: #a6a6a6;
-      .trade-item__shop {
-        margin-left: 20px;
-      }
+
+    .item{
+      font-weight: 400; 
+      font-size: 24px;
     }
+    .lineone{
+        color: #333333;
+    }
+    .linetwo{
+        color: #999999;
+    }
+
+    
   }
   &__total {
     padding: 20px 24px;
@@ -67,7 +55,7 @@
     }
   }
   &__ft {
-    padding: 0;
+    padding: 0 16px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
