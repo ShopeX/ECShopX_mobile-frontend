@@ -7,8 +7,7 @@ import { connect } from '@tarojs/redux'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
 
-@connect(
-  () => ({}),
+@connect(() => ({}),
   (dispatch) => ({
     onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
     onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),

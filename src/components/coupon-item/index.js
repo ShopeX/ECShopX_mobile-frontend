@@ -18,7 +18,9 @@ export default class CouponItem extends Component {
     isShowCheckout: false,
     isDisabled: false,
     showDetail: false,
-    distributor_info:{}
+    distributor_info:{},
+    //是否展示店铺名称
+    showDtName:true
   }
 
   constructor(props) {
@@ -105,19 +107,25 @@ export default class CouponItem extends Component {
     this.props.onHandleClick && this.props.onHandleClick()
   }
 
+  getDistributorName= () =>{
+    const { info,distributor_info }=this.props;
+    console.log("getDistributorName==>",distributor_info,info);
+    if(distributor_info.name) return distributor_info.name;
+    return (info.distributor_list||[]).reduce((total,current,index)=>total+current.name+(info.distributor_list.length-1===index?'':','),'')||''
+  }
+
   render() {
     const {
       info,
       isShowCheckout,
-      isChoosed,
-      onClick,
+      isChoosed, 
       colors,
-      isExist,
-      invalidCouponColor,
+      isExist, 
       count,
-      distributor_info
+      distributor_info,
+      showDtName
     } = this.props
-    const { isItemChecked, showDetail, isExpanded } = this.state
+    const { isItemChecked, isExpanded } = this.state
 
     if (!info) {
       return null
@@ -162,8 +170,9 @@ export default class CouponItem extends Component {
                   >
                     {obj.tag}
                   </View>
-                  <View  className='name'>
-                    {distributor_info.name||'平台自营'}{"："}{info.title}
+                  <View  className='name' >
+                    {showDtName && <Text>{this.getDistributorName()||'平台自营'}{"："}</Text>}
+                    <Text>{info.title}</Text>
                   </View>
                 </View>
                 {/* {

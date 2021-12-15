@@ -26,18 +26,34 @@ $prefixCls:'sp-component-newshopitem';
             white-space: nowrap; 
             overflow-y: auto;
             font-size:0;//解决inline-block空白间隙问题
-            display: flex;
-            justify-content: space-between;
+            display: flex; 
+            
+            &.fill{
+                justify-content: space-between;
+            }
     
             .good-item{
-                display: inline-block; 
+               
+                display: inline-block;
+                width: 218px; 
+                
+                &:not(:first-child){
+                    margin-left:16px;
+                }
+
                 .img{
                     width: 218px;
                     height: 218px;
                     border-radius: 16px;
                     border: 1px solid #DDDDDD;
-                    display: block;
-                    min-width: 100%;
+                    display: block; 
+                }
+                .name{
+                    @include multi-ellipsis(2);
+                    font-size: 24px;
+                    font-weight: 400;
+                    color:rgba(34, 34, 34, 1);
+                    margin-top:4px;
                 }
                 .price{
                     margin-top:12px;

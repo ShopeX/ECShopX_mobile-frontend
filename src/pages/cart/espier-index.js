@@ -20,8 +20,7 @@ import S from '@/spx'
 import { Tracker } from "@/service";
 import { withPager, withLogin } from '@/hocs'
 import entry from '@/utils/entry'
-import CartItem from './comps/cart-item'
-import { getDistributorId } from "@/utils/helper";
+import CartItem from './comps/cart-item' 
 
 import './espier-index.scss'
 

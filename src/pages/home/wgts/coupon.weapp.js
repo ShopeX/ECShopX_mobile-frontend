@@ -205,7 +205,7 @@ export default class WgtCoupon extends Component {
               </View>
             )
           })}
-          {voucher_package.map((item, idx) => {
+          {voucher_package && voucher_package.map((item, idx) => {
             return (
               <View className={classNames('coupon-wgt', item.imgUrl && 'with-img')} key={`${idx}1`}>
                 {' '}

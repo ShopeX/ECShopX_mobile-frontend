@@ -1,4 +1,4 @@
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Image, ScrollView } from '@tarojs/components'
 import Taro, { memo, useState, useEffect } from '@tarojs/taro'
 import api from '@/api'
 import entryLaunchFun from '@/utils/entryLaunch'
@@ -32,7 +32,8 @@ const WgtNearbyShop = (props) => {
             lat: latitude,
             lng: longitude,
             distributor_tag_id: seletedTags[activeIndex].tag_id,
-            show_discount: 1
+            show_discount: 1,
+            sort_type:1
         }
         const result = await api.wgts.getNearbyShop(obj);
         setNearbyShop(result.list)
@@ -76,18 +77,18 @@ const WgtNearbyShop = (props) => {
             )}
 
             <View className='nearby_shop_wrap'>
-                <View className='tagList'>
+                <ScrollView scrollX className='tagList'>
                     {
                         seletedTags.map((item, index) => (
                             <Text className={`tag ${activeIndex == index ? 'active' : null}`}
                                 key={item.tag_id} onClick={e => setActiveIndex(index)}>{item.tag_name}</Text>
                         ))
                     }
-                </View>
+                </ScrollView>
                 {
-                    isLocal ? <View className='shopList'>
+                    isLocal ? <ScrollView scrollX className='shopList'>
                         {
-                            nearbyShop.length > 0 ? nearbyShop.map((item) => (
+                            nearbyShop.length > 0 ? nearbyShop.slice(0,10).map((item) => (
                                 (
                                     <View className='shop' key={item.distributor_id} onClick={e => handleStoreClick(item.distributor_id)}>
                                         <View className='shopbg'>
@@ -101,16 +102,15 @@ const WgtNearbyShop = (props) => {
 
                                         <View className='shop_name'>{item.name}</View>
                                         {
-                                            item.discountCardList[0] && <View className='shop_coupon' >{item.discountCardList[0].title}</View>
+                                            base.show_coupon ?
+                                                item.discountCardList[0] ? <View className='shop_coupon' style={{ border: '1PX solid #f4811f' }} >{item.discountCardList[0].title}</View>
+                                                    : <View className='shop_coupon' ></View> : ''
                                         }
-
-
-
                                     </View>
                                 )
                             )) : <SpNoShop />
                         }
-                    </View> :
+                    </ScrollView> :
                         <View className='noLocalContent' style={styleNames(getThemeStyle())}>
                             <CusNoPosition onClick={getLocation}>
                             </CusNoPosition>

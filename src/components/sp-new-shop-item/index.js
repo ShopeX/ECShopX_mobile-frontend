@@ -220,12 +220,15 @@ const SpNewShopItem = (props) => {
                     </View>
                 </View>
             </View> 
-            {isShowGoods && <View className={'sp-component-newshopitem-good-list'}>
+            {isShowGoods && <View className={classNames('sp-component-newshopitem-good-list',{'fill':info.itemList.length===goodCount})}>
                 {
                     info.itemList.slice(0,goodCount).map(item => {
                         return (
-                            <View className={'good-item'} onClick={()=>JumpGoodDetail(item.item_id,info.distributor_id)}>
+                            <View className={classNames('good-item')} onClick={()=>JumpGoodDetail(item.item_id,info.distributor_id)}>
                                 <Image className='img' src={item.pics}></Image>
+                                <View className='name' >
+                                    {item.item_name}
+                                </View>
                                 <View className='price'>
                                     <SpNewPrice price={item.price} />
                                     <View className={'margin'}></View>

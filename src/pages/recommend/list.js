@@ -420,7 +420,7 @@ export default class RecommendList extends Component {
           () => {
             setTimeout(() => {
               this.nextPage()
-            }, 0);
+            }, 0)
           }
         )
       }

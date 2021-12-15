@@ -15,8 +15,7 @@ import {
   isAlipay,
   getPointName,
   classNames,
-  isNavbar,
-  isWbWechat,
+  isNavbar, 
   isWeb,
   redirectUrl
 } from '@/utils'
@@ -119,6 +118,7 @@ export default class TradeDetail extends Component {
     const pickItem = {
       order_id: 'order_id',
       item_id: 'id',
+      good_id:'item_id',
       // aftersales_status: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
       delivery_code: 'delivery_code',
       delivery_corp: 'delivery_corp',
@@ -140,7 +140,8 @@ export default class TradeDetail extends Component {
       left_aftersales_num: 'left_aftersales_num',
       item_spec_desc: 'item_spec_desc',
       order_item_type: 'order_item_type',
-      show_aftersales: 'show_aftersales'
+      show_aftersales: 'show_aftersales',
+      distributor_id:'distributor_id'
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',

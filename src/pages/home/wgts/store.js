@@ -45,7 +45,7 @@ export default class WgtStore extends Component {
       return null
     }
 
-    const { config, base, data, seletedTags } = info 
+    const { config, base, data, seletedTags=[] } = info 
 
     return (
       <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
