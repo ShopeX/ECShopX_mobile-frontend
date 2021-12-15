@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Text, Picker, Input } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -22,13 +22,14 @@ const initialState = {
   shopList: [],
   keyword: '',
   locationIng: false,
-  receiveAddress: null 
+  receiveAddress: {}
 }
 
 function NearlyShop( props ) {
   const { children } = props
   const [ state, setState ] = useImmer(initialState)
   const { location } = useSelector( state => state.user )
+  const shopRef = useRef()
   
   const dispatch = useDispatch();
   // log.debug(`location: ${JSON.stringify(location)}`);
@@ -60,13 +61,14 @@ function NearlyShop( props ) {
       v.areaData = areaList
     })
   }
-  const fetchShop = useCallback( async ( params ) => {
+  const fetchShop = async ( params ) => {
     const { pageIndex: page, pageSize } = params;
     const query = {
       page,
       pageSize,
       lat: location.lat,
       lng: location.lng,
+      name: state.keyword
     };
     const {
       list,
@@ -82,7 +84,7 @@ function NearlyShop( props ) {
     return {
       total,
     };
-  }, []);
+  }
 
 
   const handleClickPicker = () => {
@@ -92,18 +94,17 @@ function NearlyShop( props ) {
 
   }
 
-  const onChageInput = ({ detail }) => {
-    setState( v => {
-      v.keyword = detail
-    })
-  }
 
-  const confirmSearch = async () => {
+  const confirmSearch = async ({ detail }) => {
     const { lng, lat, error } = await entryLaunch.getLnglatByAddress( '上海市徐汇区宜山路' )
     if ( error ) {
       showToast(error)
     } else {
-      this.fetchShop()
+      setState((v) => {
+        v.keyword = detail.value
+        v.shopList = []
+      })
+      shopRef.current.reset()
     }
   }
 
@@ -171,10 +172,9 @@ function NearlyShop( props ) {
             <Text className="iconfont icon-sousuo-01"></Text>
             <Input
               className="search-comp"
-              placeholder="输入地址寻找周边门店"
+              placeholder="输入收货地址寻找周边门店"
               confirmType="search"
               value={state.keyword}
-              onInput={onChageInput}
               onConfirm={confirmSearch}
             />
           </View>
@@ -222,7 +222,7 @@ function NearlyShop( props ) {
 
       <View className="nearlyshop-list">
         <View className="list-title">附近商家</View>
-        <SpScrollView className="shoplist-block" fetch={fetchShop}>
+        <SpScrollView ref={shopRef} className="shoplist-block" fetch={fetchShop}>
           {state.shopList.map((item, index) => (
             <View className="shop-item-wrapper" key={`shopitem-wrap__${index}`}>
               <CompShopItem info={item} />

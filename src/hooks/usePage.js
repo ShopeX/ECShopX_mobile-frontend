@@ -62,10 +62,11 @@ export default (props) => {
    */
   const resetPage = () => {
     totalRef.current = 0
-    setPage({
-      ...page,
-      pageIndex: 1
-    })
+    setPage( v => {
+      v.pageIndex = 1
+      v.hasMore = true
+    });
+    excluteFetch()
   }
 
   return {
