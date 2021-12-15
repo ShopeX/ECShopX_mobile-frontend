@@ -15,7 +15,7 @@ function SpPage( props ) {
     '--color-marketing': colorMarketing,
     '--color-accent': colorAccent
   }
-  console.log('hasNavbar:', hasNavbar, pageTheme)
+  // console.log('hasNavbar:', hasNavbar, pageTheme)
   return (
     <View className={classNames( "sp-page", className, {
       "has-navbar": hasNavbar

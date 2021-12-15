@@ -1,5 +1,5 @@
 import Taro, { useDidShow } from "@tarojs/taro";
-import React, { useEffect } from 'react';
+import React, { useEffect, useImperativeHandle} from 'react';
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { SpImg, SpNote, SpLoading } from "@/components";
 import api from '@/api'
@@ -9,7 +9,7 @@ import { isObject, classNames, isWeixin, isWeb } from '@/utils'
 
 import "./index.scss";
 
-function SpScrollView(props) {
+function SpScrollView(props, ref) {
   const { className, children, fetch, auto = true } = props
   // const scope = useScope();
   const { page, getTotal, nextPage, resetPage } = usePage({
@@ -60,8 +60,14 @@ function SpScrollView(props) {
   const observerFn = () => {
 
   }
-  
 
+  useImperativeHandle(ref, () => ({
+    // reset 就是暴露给父组件的方法
+    reset: () => {
+      resetPage()
+    }
+  }))
+  
 
   return (
     <View className={classNames("sp-scrollview", className)}>
@@ -82,4 +88,4 @@ SpScrollView.options = {
   addGlobalClass: true
 }
 
-export default React.memo(SpScrollView);
+export default React.memo(React.forwardRef(SpScrollView));

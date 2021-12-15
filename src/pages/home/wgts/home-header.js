@@ -15,7 +15,7 @@ function WgtHomeHeader( props ) {
 
   const handlePickStore = () => {
     Taro.navigateTo( {
-      url: '/subpages/ecshopx/nearlyShop'
+      url: '/subpages/ecshopx/nearly-shop'
     })
   }
 
