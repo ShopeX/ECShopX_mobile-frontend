@@ -79,6 +79,7 @@ export default class AfterSale extends Component {
       payment: ({ refund_fee }) => (refund_fee / 100).toFixed(2),
       pay_type: 'pay_type',
       point: 'point',
+      distributor_info:'distributor_info',
       order: ({ detail }) =>
         pickBy(detail, {
           order_id: 'order_id',
