@@ -7,7 +7,7 @@ import req from '@/api/req'
 import api from '@/api'
 import { pickBy, normalizeQuerys, getCurrentRoute, classNames } from '@/utils'
 import { platformTemplateName } from '@/utils/platform'
-import { withBackToTop } from '@/hocs'
+import { withBackToTop,withPager } from '@/hocs'
 import qs from 'qs'
 import S from '@/spx'
 import {
@@ -23,7 +23,8 @@ import {
   WgtFilm,
   WgtNearbyShop,
   WgtStore,
-  WgtGoodsGridTab
+  WgtGoodsGridTab,
+  WgtGoodsFaverite
 } from '../home/wgts'
 
 import './index.scss'
@@ -31,6 +32,7 @@ import './index.scss'
 @connect((store) => ({
   store
 }))
+@withPager
 @withBackToTop
 export default class StoreIndex extends Component {
   constructor(props) {
@@ -58,16 +60,17 @@ export default class StoreIndex extends Component {
         }
       ],
       couponList: [],
-      fixedSearch:false
+      fixedSearch:false,
+      likeList: []
     }
   }
 
   async componentDidMount() {
     const options = await normalizeQuerys(this.$router.params)
-    const id = options.id || options.dtid
+    const id = options.id || options.dtid; 
     if (id) {
       this.fetchInfo(id)
-      this.fetchCouponList(id)
+      this.fetchCouponList(id) 
     }
   }
 
@@ -147,13 +150,25 @@ export default class StoreIndex extends Component {
           fixedSearch
         },
         () => {
-          if (info.config) {
-            info.config.map((item) => {
-              if (item.name === 'setting' && item.config.faverite) {
+          this.resetPage(()=>{
+            this.setState(
+              {
+                likeList: []
+              },
+              () => {
                 this.nextPage()
               }
-            })
-          }
+            )
+          })
+        
+          // this.nextPage()
+          // if (info.config) {
+          //   info.config.map((item) => {
+          //     if (item.name === 'setting' && item.config.faverite) {
+             
+          //     }
+          //   })
+          // }
         }
       )
     } catch (e) {
@@ -163,24 +178,32 @@ export default class StoreIndex extends Component {
     }
   }
 
-  async fetch(params) {
+  // 获取猜你喜欢
+  fetch = async (params) => {  
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
       pageSize
     }
-    const { list, total_count: total } = await api.cart.likeList(query)
+    const { list, total_count: total } = await api.cart.likeList(query) 
 
     const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
-      desc: 'brief'
-    })
-
+      distributor_id: 'distributor_id',
+      origincountry_name: 'origincountry_name',
+      origincountry_img_url: 'origincountry_img_url',
+      promotion_activity_tag: 'promotion_activity',
+      type: 'type',
+      price: ({ price }) => (price / 100).toFixed(2),
+      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
+      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+      desc: 'brief', 
+    }) 
     this.setState({
       likeList: [...this.state.likeList, ...nList]
-    })
+    }) 
 
     return {
       total
@@ -224,7 +247,8 @@ export default class StoreIndex extends Component {
       tabList,
       localCurrent,
       couponList,
-      fixedSearch
+      fixedSearch,
+      likeList
     } = this.state
     const user = Taro.getStorageSync('userinfo')
 
@@ -232,8 +256,8 @@ export default class StoreIndex extends Component {
       return <Loading />
     }
 
-
-
+    console.log("===likeList==>",likeList)
+ 
      
     return (
       <View className={classNames('page-store-index',{
@@ -302,6 +326,9 @@ export default class StoreIndex extends Component {
                 </View>
               )
             })}
+
+            <WgtGoodsFaverite info={likeList} />
+
           </View>
         </ScrollView>
 
