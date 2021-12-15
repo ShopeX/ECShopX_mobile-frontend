@@ -37,7 +37,8 @@ const upload = {
       const res = await Taro.uploadFile({
         url: host,
         filePath: item.url,
-        name: 'file',
+        name: "file",
+        withCredentials: false,
         formData: {
           name: filename,
           key: `${dir}`,
@@ -45,11 +46,11 @@ const upload = {
           OSSAccessKeyId: accessid,
           // 让服务端返回200
           signature: signature,
-          success_action_status: '200',
+          success_action_status: "200",
           // 服务端回调
           // callback: callback
-        }
-      })
+        },
+      });
       if (!res) {
         return false
       }
@@ -69,7 +70,8 @@ const upload = {
       const { data } = await uploadFile({
         url: host,
         filePath: item.url,
-        fileType:'image',
+        fileType: 'image',
+        withCredentials: false,
         [isAlipay?'fileName':'name']: 'file',
         formData:{
           'token': token,

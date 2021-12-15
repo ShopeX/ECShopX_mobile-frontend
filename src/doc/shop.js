@@ -5,6 +5,10 @@ export const SHOP_ITEM = {
   address: "address",
   tagList: "tagList",
   distance: ({ distance, distance_unit }) => {
-    return distance ? `${parseFloat(distance).toFixed(1)}${distance_unit}` : ''
+    return distance ? `${parseFloat(distance).toFixed(1)}${distance_unit}` : "";
   },
+  cardList: "discountCardList",
+  
 };
+
+

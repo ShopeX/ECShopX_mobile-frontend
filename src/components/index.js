@@ -44,6 +44,9 @@ import SpSearchBar from './search-bar'
 import SpToast from './toast'
 import SpScrollView from './sp-scrollview'
 import SpLoading from './sp-loading'
+import SpFilterBar from './sp-filter-bar'
+import SpShopItem from "./sp-shop-item"
+import SpShopCoupon from './sp-shop-coupon'
 
 export default {}
 
@@ -94,4 +97,7 @@ export {
   SpToast,
   SpScrollView,
   SpLoading,
+  SpFilterBar,
+  SpShopItem,
+  SpShopCoupon,
 };
