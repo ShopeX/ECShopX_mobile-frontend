@@ -141,9 +141,10 @@ export default class AddressIndex extends Component {
             title='获取微信收货地址'
             onClick={this.wxAddress.bind(this)}
           />
-        ) : null}
+        ) : (
+          <SpNavBar title='收货地址' leftIconType='chevron-left' fixed='true' />
+        )}
 
-        <SpNavBar title='收货地址' leftIconType='chevron-left' fixed='true' />
         <View className='member-address-list'>
           {list.map((item) => {
             return (

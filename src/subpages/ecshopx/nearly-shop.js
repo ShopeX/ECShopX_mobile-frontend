@@ -34,7 +34,8 @@ function NearlyShop( props ) {
     autoLogin: false
   })
   const [ state, setState ] = useImmer(initialState)
-  const { location, address } = useSelector( state => state.user )
+  const { location } = useSelector( state => state.user )
+  const { address } = useSelector( state => state.address )
   const shopRef = useRef()
   
   const dispatch = useDispatch();
@@ -109,11 +110,13 @@ function NearlyShop( props ) {
   }
 
   const onConfirmSearch = async ({ detail }) => {
-    const { lng, lat, error } = await entryLaunch.getLnglatByAddress('上海市徐汇区宜山路')
+    const res = await entryLaunch.getLnglatByAddress(location.address)
+    const { lng, lat, error } = res
+    dispatch(updateLocation(res))
     if ( error ) {
       showToast(error)
     } else {
-      setState((v) => {
+      await setState((v) => {
         v.keyword = detail.value
         v.shopList = []
         v.type = 1
@@ -200,11 +203,39 @@ function NearlyShop( props ) {
     setState( v => {
       v.locationIng = true
     })
-    const res = await entryLaunch.getCurrentAddressInfo()
-    dispatch( updateLocation( res ) );
+    // const res = await entryLaunch.getCurrentAddressInfo()
+    // dispatch( updateLocation( res ) );
+    // console.log(res, 'res')
+    // await entryLaunch.isOpenPosition(() => {
+    //   setState(v => {
+    //     v.shopList = []
+    //     v.keyword = ''
+    //     v.type = 0
+    //     v.search_type = undefined
+    //   })
+    //   shopRef.current.reset()
+    // })
+    // setState((v) => {
+    //   v.locationIng = false;
+    // })
+
+    await entryLaunch.isOpenPosition(async (res) => {
+      if (res.lat) {
+        dispatch(updateLocation(res))
+        await setState(v => {
+          v.shopList = []
+          v.keyword = ''
+          v.name = ''
+          v.type = 0
+          v.search_type = undefined
+        })
+        shopRef.current.reset()
+      }
+    })
+
     setState((v) => {
-      v.locationIng = false;
-    });
+      v.locationIng = false
+    })
   }
 
   const onClearValueChange = async () => {
