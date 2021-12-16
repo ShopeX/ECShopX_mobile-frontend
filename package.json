@@ -1,7 +1,7 @@
 {
 	"name": "ecshopx-vshop",
 	"app_name": "ecshopx",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"private": true,
 	"description": "taro app for bbc",
 	"scripts": {
