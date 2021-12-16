@@ -116,8 +116,9 @@ class EntryLaunch {
               lat: res.latitude
             });
           },
-          fail: error => {
-            reject(error);
+          fail: async error => {
+            resolve({})
+            reject(error)
           }
         });
       });
@@ -138,8 +139,12 @@ class EntryLaunch {
   }
 
   async getCurrentAddressInfo() {
+    debugger
     const { lng, lat } = await this.getLocationInfo()
-    const res = await this.getAddressByLnglatWebAPI( lng, lat )
+    let res = {}
+    if (lat) {
+      res = await this.getAddressByLnglatWebAPI( lng, lat )
+    }
     return res
   }
 
@@ -153,15 +158,15 @@ class EntryLaunch {
         key: process.env.APP_MAP_KEY,
         address
       }
-    } );
+    })
     if ( res.data.status == 1 ) {
       const { geocodes } = res.data
       if ( geocodes.length > 0 ) {
         return {
-          // address: geocodes[0].formatted_address,
-          // province: geocodes[0].province,
-          // city: geocodes[0].city,
-          // district: geocodes[0].district,
+          address: geocodes[0].formatted_address,
+          province: geocodes[0].province,
+          city: geocodes[0].city,
+          district: geocodes[0].district,
           lng: geocodes[0].location.split( ',' )[0],
           lat: geocodes[0].location.split( ',' )[1]
         }
@@ -193,7 +198,8 @@ class EntryLaunch {
     });
   }
 
-  async getAddressByLnglatWebAPI( lng, lat ) {
+  async getAddressByLnglatWebAPI(lng, lat) {
+    console.log(lng, lat, '=======')
     const res = await Taro.request({
       url: `${geocodeUrl}/regeo`,
       data:{
@@ -201,7 +207,7 @@ class EntryLaunch {
         location:`${lng},${lat}`, 
       }
     }); 
-    if ( res.data.status == 1 ) {
+    if (res.data.status == 1) {
       const { formatted_address, addressComponent: { province, city, district } } = res.data.regeocode
       return {
         lng,
@@ -231,6 +237,64 @@ class EntryLaunch {
       return !nostores_status;
     } else {
       return false;
+    }
+  }
+
+  /**
+   * 判断是否开启定位，去获取经纬度，根据经纬度去获取地址
+   */
+   async isOpenPosition (callback) {
+    if (process.env.TARO_ENV === 'weapp') {
+      const { authSetting } = await Taro.getSetting()
+      if (!authSetting['scope.userLocation']) {
+        Taro.authorize({
+          scope: 'scope.userLocation',
+          success: async () => {
+            let { lng, lat } = await this.getLocationInfo()
+            let res = {}
+            if (lat) {
+              res = await this.getAddressByLnglatWebAPI(lng, lat)
+            }
+            if (callback) callback(res)
+          },
+          fail: () => {
+            Taro.showModal({
+              title: '提示',
+              content: '请打开定位权限',
+              success: async (resConfirm) => {
+                if (resConfirm.confirm) {
+                  await Taro.openSetting()
+                  const setting = await Taro.getSetting()
+                  if (setting.authSetting['scope.userLocation']) {
+                    let { lng, lat } = await this.getLocationInfo()
+                    let res = {}
+                    if (lat) {
+                      res = await this.getAddressByLnglatWebAPI(lng, lat)
+                    }
+                    if (callback) callback(res)
+                  } else {
+                    Taro.showToast({ title: '获取定位权限失败', icon: 'none' })
+                  }
+                }
+              }
+            })
+          }
+        })
+      } else {
+        let { lng, lat } = await this.getLocationInfo()
+        let res = {}
+        if (lat) {
+          res = await this.getAddressByLnglatWebAPI(lng, lat)
+        }
+        if (callback) callback(res)
+      }
+    } else {
+      let { lng, lat } = await this.getLocationInfo()
+      let res = {}
+      if (lat) {
+        res = await this.getAddressByLnglatWebAPI(lng, lat)
+      }
+      if (callback) callback(res)
     }
   }
 }
