@@ -2,7 +2,8 @@
   padding-top: $home-header-height;
 }
 .page-index {
-  position: relative; 
+  position: relative;
+  background: #fff;
   box-sizing: border-box;
 
   .header-block {
@@ -122,7 +123,7 @@
     $self: &;
     // padding-top: $home-header-height;
     padding-bottom: $tabbar-height;
-   
+    background: #fff;
     &.has-header-block {
       padding-top: 80px;
     }
