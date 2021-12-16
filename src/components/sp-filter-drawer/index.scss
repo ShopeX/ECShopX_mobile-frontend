@@ -1,0 +1,39 @@
+$primary-color: rgb(244, 129, 31);
+$primary-color-bg: rgba(244, 129, 31, 0.1);
+
+$padding-top: 120px;
+$padding-bottom: 60px;
+
+.sp-new-filter-drawer {
+  padding-top: $padding-top;
+  padding-bottom: $padding-bottom;
+  position: relative;
+  height: 100%;
+
+  &-container {
+    padding: 0 24px;
+    @include page-scroll($padding-top, 80 + $padding-bottom);
+
+    &-block {
+      .title {
+        font-size: 32px;
+        font-weight: 600;
+        color: #111111;
+        margin-bottom: 24px;
+      }
+
+      .sp-filter-block {
+        margin-bottom: 24px;
+        margin-right: 24px;
+      }
+    }
+  }
+
+  &-action {
+    position: absolute;
+    bottom: $padding-bottom;
+    left: 0;
+    right: 0;
+    padding: 0 58px;
+  }
+}

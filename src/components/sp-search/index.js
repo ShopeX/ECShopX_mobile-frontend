@@ -1,40 +1,27 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { View, Text, Icon } from '@tarojs/components'
-import './index.scss'
+import React, { useState } from "react";
+import Taro, { getCurrentInstance } from "@tarojs/taro";
+import { View, Text, Icon } from "@tarojs/components";
+import "./index.scss";
 
-export default class SpSearch extends Component {
-  static options = {
-    addGlobalClass: true
-  }
+function SpSearch(props) {
+  const { placeholder = "" } = props;
 
-  static defaultProps = {
-    info: null
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      searchValue: '',
-      historyList: [],
-      isShowAction: false
-    }
-  }
-
-  componentDidMount() {}
-
-  handleClick = () => {
+  const handleClick = () => {
     Taro.navigateTo({
-      url: `/pages/item/list`
-    })
-  }
+      url: `/pages/item/list`,
+    });
+  };
 
-  render() {
-    return (
-      <View className='sp-search' onClick={this.handleClick.bind(this)}>
-        <View className='iconfont icon-sousuo-01'></View>
-        <Text className='place-holder'>搜索</Text>
-      </View>
-    )
-  }
+  return (
+    <View className="sp-search" onClick={handleClick}>
+      <View className="iconfont icon-sousuo-01"></View>
+      <Text className="place-holder">{placeholder}</Text>
+    </View>
+  );
 }
+
+SpSearch.options = {
+  addGlobalClass: true,
+};
+
+export default React.memo(SpSearch);

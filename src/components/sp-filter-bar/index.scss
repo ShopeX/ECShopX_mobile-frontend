@@ -18,7 +18,10 @@
     &.active {
       .sp-filter-bar__item-text {
         font-weight: bold;
+        font-size: 30px;
         color: $color-primary-text;
+        position: relative;
+        top: -2px;
       }
       .iconfont {
         font-weight: bold;

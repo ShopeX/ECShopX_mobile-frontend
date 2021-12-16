@@ -1,0 +1,33 @@
+.sp-button {
+  .filter-button {
+    position: relative;
+    height: 80px;
+    border-radius: 40px;
+    /* prettier-ignore */
+    border: 1PX solid var(--color-primary);
+    overflow: hidden;
+    font-size: 28px;
+
+    .reset {
+      width: 176px;
+      color: var(--color-primary);
+      height: 100%;
+      padding-left: 60px;
+      line-height: 80px;
+    }
+
+    .confirm {
+      width: 340px;
+      background: var(--color-primary);
+      border-radius: 40px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

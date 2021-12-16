@@ -1,82 +1,53 @@
-$input-vertical-padding: 16px;
-$input-horizontal-padding: 24px;
-
-$input-height: 92px;
-$filter-bar-height: 92px;
-
-$prefixCls: "sp-page-nearbyshoplist";
-
-.#{$prefixCls} {
-  view,
-  text,
-  div,
-  span,
-  .img,
-  image {
-    box-sizing: border-box;
+.page-shop-list {
+  .search-block {
+    padding: 16px 24px;
+    background: #fff;
   }
-
-  &-input {
-    background-color: white;
-    padding: $input-vertical-padding $input-horizontal-padding;
-    height: $input-height;
+  .filter-block {
+    padding: 0 28px;
+    background: #fff;
   }
-
-  &.has-filterbar {
-    .#{$prefixCls}-scrollview {
-      @include page-scroll($input-height + $filter-bar-height, 0);
-      background: white;
-    }
-    &.has-navbar {
-      .#{$prefixCls}-scrollview {
-        @include page-scroll(
-          $input-height + $filter-bar-height + $navigate-height-h5,
-          0
-        );
-      }
-    }
+  .sp-filter-bar {
+    justify-content: flex-start;
   }
-
-  .#{$prefixCls}-scrollview {
-    @include page-scroll($input-height, 0);
-    background: white;
+  .sp-filter-bar__item {
+    flex: initial;
+    padding: 0 20px;
   }
-
-  &.has-navbar {
-    .#{$prefixCls}-scrollview {
-      @include page-scroll($input-height + $navigate-height-h5, 0);
-    }
+  .sp-filter-bar__extra {
+    flex: 1;
+    text-align: right;
   }
-
-  &-nodata {
-    padding-top: 287px;
-
-    .img {
-      margin: 0 auto;
+  .filter-btn {
+    font-size: 28px;
+    color: var(--color-primary);
+    position: relative;
+    text-align: text;
+    float: right;
+    &:before {
+      content: "";
       display: block;
-      width: 372px;
-      height: 286px;
+      height: 40px;
+      /* prettier-ignore */
+      width: 1PX;
+      background: #f5f5f5;
+      position: absolute;
+      left: -30px;
     }
-    .tips {
-      font-weight: 400;
-      color: #666666;
-      font-size: 24px;
-      margin: 0 auto;
-      text-align: center;
-      margin-top: 66px;
+    .icon-filter {
+      font-size: 30px;
     }
-    .button {
-      width: 340px;
-      height: 80px;
-      background: #f4811f;
-      border-radius: 40px;
-      color: white;
-      margin: 0 auto;
-      margin-top: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
+  }
+  .shoplist-block {
+    /* prettier-ignore */
+    margin-top: 1PX;
+    padding: 20px 16px;
+    background: #fff;
+  }
+
+  .shop-item-wrapper {
+    &:not(:last-child) {
+      margin-bottom: 30px;
     }
   }
 }

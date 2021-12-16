@@ -8,4 +8,8 @@ export const SHOP_ITEM = {
   distance: ({ distance, distance_unit }) => {
     return distance ? (distance < 1 ? Math.round(distance * Math.pow(10, 3)) : Number(distance).toFixed(2)) + distance_unit : ''
   },
+  cardList: "discountCardList",
+  salesCount: "sales_count",
 };
+
+

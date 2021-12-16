@@ -1,10 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { classNames, styleNames } from '@/utils'
+import { classNames, styleNames, isNumber } from "@/utils";
 import './index.scss'
 
 function SpImage(props) {
-  const {
+  let {
     src,
     className,
     mode = 'widthFix',
@@ -13,21 +13,25 @@ function SpImage(props) {
     onLoad = () => {},
     lazyLoad = () => {}
   } = props
+  if ( !src ) {
+    src = "default_img.png";
+  }
+
   const imgUrl = /^http/.test(src) ? src : `${process.env.APP_IMAGE_CDN}/${src}`
   return (
     <View
       className={classNames(
         {
-          'sp-image': true
+          "sp-image": true,
         },
         className
       )}
       style={styleNames({
-        width: width == 'auto' ? 'auto' : `${width / 2}px`
+        width: isNumber(width) ? `${width / 2}px` : '',
       })}
     >
       <Image
-        className='sp-image-img'
+        className="sp-image-img"
         src={imgUrl}
         mode={mode}
         // onError={onError}
@@ -35,7 +39,7 @@ function SpImage(props) {
         // lazyLoad={lazyLoad}
       />
     </View>
-  )
+  );
 }
 
 SpImage.options = {

@@ -8,7 +8,7 @@ import api from "@/api";
 // import { youshuLogin } from '@/utils/youshu'
 import { DEFAULT_TABS, DEFAULT_THEME } from "@/consts";
 import { SG_APP_CONFIG, SG_MEIQIA, SG_YIQIA } from '@/consts'
-import { checkAppVersion } from '@/utils'
+import { checkAppVersion, isWeixin } from '@/utils'
 
 import "./app.scss";
 
@@ -40,7 +40,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    checkAppVersion()
+    if ( isWeixin ) {
+      checkAppVersion()
+    }
   }
 
   componentDidShow(options) {
