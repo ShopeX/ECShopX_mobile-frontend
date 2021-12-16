@@ -221,7 +221,7 @@ const SpNewShopItem = (props) => {
                                         </View>
                                     </View>
                                     <View className={'right'}>
-                                        {hasMore && index===0 && <View className={'right-arrow'} onClick={handleExpand}>
+                                        {hasMore && index===0 && discountCardList.length===0 && <View className={'right-arrow'} onClick={handleExpand}>
                                             <Text className={classNames('iconfont icon-arrowDown', {
                                                 ['expand']: expand
                                             })}></Text>
