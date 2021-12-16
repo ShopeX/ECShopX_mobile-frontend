@@ -7,11 +7,15 @@
     height: 60px;
     border-radius: 30px;
     display: flex;
-    align-items: center
+    align-items: center;
+    padding: 0px 20px;
   }
   .region-picker {
-    width: 260px;
-    padding: 0 20px;
+		display: flex;
+    align-items: center;
+    margin-right: 20px;
+    width: 45%;
+    justify-content: flex-start;
   }
   .pick-title {
     display: flex;
@@ -28,7 +32,10 @@
   .search-comp-wrap {
     flex: 1;
     display: flex;
-    align-items: center
+    align-items: center;
+    .icon-close {
+      font-size: 28px;
+		}
   }
   .icon-sousuo-01 {
     font-size: 32px;

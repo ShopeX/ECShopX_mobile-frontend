@@ -11,12 +11,12 @@ import CompShopItem from './comps/comp-shopitem'
 import { SG_APP_CONFIG } from '@/consts'
 import { usePage } from '@/hooks'
 import doc from '@/doc'
-import { entryLaunch, pickBy, classNames, showToast, log } from "@/utils";
+import { entryLaunch, pickBy, classNames, showToast, log, isArray } from "@/utils";
 
 import './nearly-shop.scss'
 
 const initialState = {
-  areaArray: [],
+  areaArray: [[], [], []],
   areaIndexArray: [0, 0, 0],
   areaData: [],
   shopList: [],
@@ -28,39 +28,40 @@ const initialState = {
 function NearlyShop( props ) {
   const { children } = props
   const [ state, setState ] = useImmer(initialState)
-  const { location } = useSelector( state => state.user )
+  const { location, address } = useSelector( state => state.user )
   const shopRef = useRef()
   
   const dispatch = useDispatch();
   // log.debug(`location: ${JSON.stringify(location)}`);
   useEffect( () => {
-    fetchAddressList()  
+    fetchAddressList()
   }, [])
 
   const fetchAddressList = async () => {
     const areaList = await api.member.areaList()
-    const arrProvice = []
-    const arrCity = []
-    const arrCounty = []
+    // let proviceArr = []
+    // let cityArr = []
+    // let countyArr = []
 
-    areaList.map((item, index) => {
-      arrProvice.push(item.label)
-      if (index === 0) {
-        item.children.map((c_item, c_index) => {
-          arrCity.push(c_item.label)
-          if (c_index === 0) {
-            c_item.children.map((cny_item) => {
-              arrCounty.push(cny_item.label)
-            })
-          }
-        })
-      }
-    })
+    // areaList.map((item, index) => {
+    //   proviceArr.push(item.label)
+    //   if (index === 0) {
+    //     item.children.map((c_item, c_index) => {
+    //       cityArr.push(c_item.label)
+    //       if (c_index === 0) {
+    //         c_item.children.map((cny_item) => {
+    //           countyArr.push(cny_item.label)
+    //         })
+    //       }
+    //     })
+    //   }
+    // })
     setState( v => {
-      v.areaArray = [arrProvice, arrCity, arrCounty]
+      // v.areaArray = [proviceArr, cityArr, countyArr]
       v.areaData = areaList
     })
   }
+
   const fetchShop = async ( params ) => {
     const { pageIndex: page, pageSize } = params;
     const query = {
@@ -73,12 +74,12 @@ function NearlyShop( props ) {
     const {
       list,
       total_count: total,
-      defualt_address = null,
+      defualt_address,
       is_recommend,
     } = await api.shop.list(query);
     setState((v) => {
       v.shopList = v.shopList.concat( pickBy( list, doc.shop.SHOP_ITEM ) );
-      v.receiveAddress = defualt_address;
+      v.receiveAddress = !isArray(defualt_address) ? defualt_address : {}
     });
 
     return {
@@ -86,17 +87,14 @@ function NearlyShop( props ) {
     };
   }
 
-
-  const handleClickPicker = () => {
+  const onInputChange = ({ detail }) => {
+    setState( v => {
+      v.keyword = detail.value
+    })
   }
 
-  const regionChange = async ( e ) => {
-
-  }
-
-
-  const confirmSearch = async ({ detail }) => {
-    const { lng, lat, error } = await entryLaunch.getLnglatByAddress( '上海市徐汇区宜山路' )
+  const onConfirmSearch = async ({ detail }) => {
+    const { lng, lat, error } = await entryLaunch.getLnglatByAddress('上海市徐汇区宜山路')
     if ( error ) {
       showToast(error)
     } else {
@@ -108,23 +106,63 @@ function NearlyShop( props ) {
     }
   }
 
-  const bindMultiPickerColumnChange = ( e ) => {
-    const { column, value } = e.detail
-    let arrCity = []
-    let arrCounty = []
-    if ( column == 0 ) {
-      arrCity = state.areaData[value].children.map(item => item.label)
-      arrCounty = state.areaData[value].children[0].children.map( item => item.label )
+  const onPickerClick = () => {
+    const { areaData } = state
+    const { province, city, district } = location
+    let chooseIndex = []
+    let proviceArr = []
+    let cityArr = []
+    let countyArr = []
+    areaData.map((item, index) => {
+      proviceArr.push(item.label)
+      if (item.label == province) {
+        chooseIndex.push(index)
+        item.children.map((c_item, c_index) => {
+          cityArr.push(c_item.label)
+          if (c_item.label == city) {
+            chooseIndex.push(c_index)
+            c_item.children.map((cny_item, cny_index) => {
+              countyArr.push(cny_item.label)
+              if (cny_item.label == district) {
+                chooseIndex.push(cny_index)
+              }
+            })
+          }
+        })
+      }
+    })
+    setState(v => {
+      v.areaIndexArray = chooseIndex
+      v.areaArray = [proviceArr, cityArr, countyArr]
+    })
+  }
+
+  const onPickerChange = async ({ detail }) => {
+    setState(v => {
+      v.areaIndexArray = detail.value
+    })
+  }
+
+  const onColumnChange = ({ detail }) => {
+    const { column, value } = detail
+    let cityArr = []
+    let countyArr = []
+    if (column == 0) {
+      cityArr = state.areaData[value].children.map(item => item.label)
+      countyArr = state.areaData[value].children[0].children.map( item => item.label )
       setState( v => {
         v.areaIndexArray[0] = value
-        v.areaArray[1] = arrCity
-        v.areaArray[2] = arrCounty
+        v.areaIndexArray[1] = 0
+        v.areaIndexArray[2] = 0
+        v.areaArray[1] = cityArr
+        v.areaArray[2] = countyArr
       })
-    } else if ( column == 1 ) {
-      arrCounty = state.areaData[state.areaIndexArray[0]].children[value].children.map( item => item.label )
+    } else if (column == 1) {
+      countyArr = state.areaData[state.areaIndexArray[0]].children[value].children.map( item => item.label )
       setState( v => {
         v.areaIndexArray[1] = value
-        v.areaArray[2] = arrCounty
+        v.areaIndexArray[2] = 0
+        v.areaArray[2] = countyArr
       })
     } else {
       setState( v => {
@@ -145,10 +183,17 @@ function NearlyShop( props ) {
     });
   }
 
-  const { receiveAddress } = state
-  const {province, city, area} = location
-  const locationValue = province + city + area
-  console.log(receiveAddress, props, '--------------')
+  const onClearValueChange = async () => {
+    await setState(v => {
+      v.keyword = ''
+      v.shopList = []
+    })
+    shopRef.current.reset()
+  }
+
+  const { receiveAddress, areaIndexArray, areaArray } = state
+  const {province, city, district} = location
+  const locationValue = province + city + district
   return (
     <SpPage className="page-ecshopx-nearlyshop">
       <View className="search-block">
@@ -156,11 +201,11 @@ function NearlyShop( props ) {
           <View className="region-picker">
             <Picker
               mode="multiSelector"
-              onClick={handleClickPicker}
-              onChange={regionChange}
-              onColumnChange={bindMultiPickerColumnChange}
-              value={state.multiIndex}
-              range={state.areaArray}
+              onClick={onPickerClick}
+              onChange={onPickerChange}
+              onColumnChange={onColumnChange}
+              value={areaIndexArray}
+              range={areaArray}
               style={{ width: '100%' }}
             >
               <View className="pick-title">
@@ -178,8 +223,12 @@ function NearlyShop( props ) {
               placeholder="输入收货地址寻找周边门店"
               confirmType="search"
               value={state.keyword}
-              onConfirm={confirmSearch}
+              onInput={onInputChange}
+              onConfirm={onConfirmSearch}
             />
+            {state.keyword && state.keyword.length > 0 && (
+              <View className='iconfont icon-close' onClick={onClearValueChange}></View>
+            )}
           </View>
         </View>
       </View>
@@ -199,7 +248,7 @@ function NearlyShop( props ) {
         </View>
         <View className="block-title">我的收货地址</View>
         <View className="receive-address">
-          {!receiveAddress && (
+          {JSON.stringify(receiveAddress) == "{}" && (
             <View
               className="btn-add-address"
               onClick={() =>
@@ -209,7 +258,7 @@ function NearlyShop( props ) {
               添加新地址
             </View>
           )}
-          {receiveAddress && (
+          {JSON.stringify(receiveAddress) != "{}" && (
             <View className="address-info-block">
               <View className="name-mobile">
                 <Text className="receive-name">{receiveAddress.username}</Text>

@@ -1,7 +1,7 @@
 import Taro,{getCurrentInstance} from "@tarojs/taro";
 import api from "@/api";
 import qs from "qs";
-import { showToast, log } from "@/utils";
+import { showToast, log, isArray } from "@/utils";
 
 const geocodeUrl = 'https://restapi.amap.com/v3/geocode'
 class EntryLaunch {
@@ -202,14 +202,14 @@ class EntryLaunch {
       }
     }); 
     if ( res.data.status == 1 ) {
-      const { formatted_address, addressComponent } = res.data.regeocode
+      const { formatted_address, addressComponent: { province, city, district } } = res.data.regeocode
       return {
         lng,
         lat,
         address: formatted_address,
-        province: addressComponent.province,
-        city: addressComponent.township,
-        district: addressComponent.district
+        province: province,
+        city: isArray(city) ? province : city,
+        district: district
       }
     } else {
       return {
