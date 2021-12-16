@@ -12,7 +12,7 @@ import { useLogin } from '@/hooks'
 import './index.scss'
 
 function SpLogin( props ) {
-  const { children, className } = props
+  const { children, className, onChange } = props
   const { isLogin, login, updatePolicyTime, setToken } = useLogin({
     policyUpdateHook: () => {
       setPolicyModal(true)
@@ -49,18 +49,25 @@ function SpLogin( props ) {
     }
   }
 
-  const handleOnChange = () => { }
+  const handleOnChange = () => {
+    onChange && onChange()
+  }
 
-   const handleCloseModal = useCallback(() => {
-     setPolicyModal(false)
-   }, [])
+  const handleCloseModal = useCallback(() => {
+    setPolicyModal(false)
+  }, [])
 
-   const handleConfirmModal = useCallback(() => {
-     setPolicyModal(false)
-     updatePolicyTime()
+  const handleConfirmModal = useCallback( async () => {
      // 自动登录
-     login()
-   }, [])
+    try {
+      await login()
+      updatePolicyTime()
+      onChange && onChange()
+    } catch (e) {
+      console.log(e)
+    }
+    setPolicyModal(false)
+  }, [])
   
   return (
     <View className={classNames('sp-login', className)}>

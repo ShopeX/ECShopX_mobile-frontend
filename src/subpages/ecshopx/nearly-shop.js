@@ -1,15 +1,15 @@
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Text, Picker, Input } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpPage, SpScrollView } from "@/components";
+import { SpPage, SpScrollView, SpLogin } from "@/components";
 import { updateLocation } from "@/store/slices/user";
 import api from '@/api'
 import CompShopItem from './comps/comp-shopitem'
 import { SG_APP_CONFIG } from '@/consts'
-import { usePage } from '@/hooks'
+import { usePage, useLogin } from '@/hooks'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray } from "@/utils";
 
@@ -30,6 +30,9 @@ const initialState = {
 
 function NearlyShop( props ) {
   const { children } = props
+  const { isLogin } = useLogin({
+    autoLogin: false
+  })
   const [ state, setState ] = useImmer(initialState)
   const { location, address } = useSelector( state => state.user )
   const shopRef = useRef()
@@ -218,6 +221,21 @@ function NearlyShop( props ) {
     Taro.navigateTo({ url: `/pages/store/index?id=${item.distributor_id}` })
   }
 
+  const onAddChange = () => {
+    if (!isLogin) return
+    Taro.navigateTo({ url: "/marketing/pages/member/edit-address" })
+  }
+
+  const onChangeLoginSuccess = async () => {
+    await setState(v => {
+      v.shopList = []
+      v.keyword = ''
+      v.type = 0
+      v.search_type = undefined
+    })
+    shopRef.current.reset()
+  }
+
   const { receiveAddress, areaIndexArray, areaArray, chooseValue } = state
   const {province, city, district} = location
   const locationValue = province + city + district
@@ -276,14 +294,14 @@ function NearlyShop( props ) {
         <View className="block-title">我的收货地址</View>
         <View className="receive-address">
           {JSON.stringify(receiveAddress) == "{}" && (
-            <View
-              className="btn-add-address"
-              onClick={() =>
-                Taro.navigateTo({ url: "/marketing/pages/member/edit-address" })
-              }
-            >
-              添加新地址
-            </View>
+            <SpLogin onChange={onChangeLoginSuccess}>
+              <View
+                className="btn-add-address"
+                onClick={onAddChange}
+              >
+                添加新地址
+              </View>
+            </SpLogin>
           )}
           {JSON.stringify(receiveAddress) != "{}" && (
             <View className="address-info-block">
