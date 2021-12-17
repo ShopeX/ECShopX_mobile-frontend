@@ -15,8 +15,7 @@ import {
   SpGoodsItem,
   SpSearchBar,
   SpNote,
-  SpNavBar,
-  SpTagBar,
+  SpNavBar, 
   SpLoadMore,
   TabBar,
   SpPage,
@@ -30,7 +29,7 @@ import './list.scss'
 const initialState = {
   leftList: [],
   rightList: [],
-  filterList = [
+  filterList: [
     { title: '综合' },
     { title: '销量' },
     { title: '价格', icon: 'icon-shengxu-01' },
