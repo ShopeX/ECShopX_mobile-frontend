@@ -5,6 +5,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  .filter-bar-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
   &__ft {
     &:empty {
       padding: 0;

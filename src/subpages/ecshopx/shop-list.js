@@ -129,7 +129,6 @@ function shopList(props) {
         </SpFilterBar>
       </View>
       <SpScrollView className="shoplist-block" fetch={fetch}>
-        drawer: {drawer}
         {list.map((item, index) => (
           <View className="shop-item-wrapper" key={`shopitem-wrap__${index}`}>
             <SpShopItem info={item} />

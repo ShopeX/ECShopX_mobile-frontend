@@ -1,126 +1,86 @@
-.page-goods-list {
+.page-item-list {
   // background: $color-bg-gray;
-  .search-wrap {
-    padding: 16px 24px;
+  .item-list-head {
     background: #fff;
-
   }
-
-  .goods-tabs {
-    background: #fff;
-    .sp-filter-bar__item {
-      border-radius: 0;
+  .search-wrap {
+    padding: 16px 28px;
+  }
+  .sp-filter-bar {
+    &__item {
       background: #f5f5f5;
       &:first-child {
-        border-radius: 50px 0 0 0;
+        border-top-left-radius: 40px;
       }
       &:last-child {
-        border-radius: 0 50px 0 0;
+        border-top-right-radius: 40px;
       }
     }
   }
 
-  .tag-block {
-    padding: 0 20px 16px;
-    display: flex;
-    align-items: center;
-    background: #fff;
-    .tag-container {
-      flex: 1;
+  .filter-btn {
+    font-size: 28px;
+    color: var(--color-primary);
+    position: relative;
+    text-align: text;
+    float: right;
+    &:before {
+      content: "";
+      display: block;
+      height: 40px;
+      /* prettier-ignore */
+      width: 1PX;
+      background: #f5f5f5;
+      position: absolute;
+      left: -30px;
     }
-    .filter-btn {
-      width: 100px;
-      display: flex;
-      align-items: center;
-      .filter-text {
-        color: var(--color-primary);
-      }
-      .icon-shaixuan-01 {
-        color: var(--color-primary);
-        font-size: 32px;
-        position: relative;
-        top: 2px;
-      }
+    .icon-filter {
+      font-size: 30px;
     }
   }
 
-  &.has-navbar {
-    .scroll-view {
-      @include page-scroll($navigate-height-h5, 0);
-    }
-  }
+  // .goods-tabs {
+  //   background: #fff;
+  //   .sp-filter-bar__item {
+  //     border-radius: 0;
+  //     background: #f5f5f5;
+  //     &:first-child {
+  //       border-radius: 50px 0 0 0;
+  //     }
+  //     &:last-child {
+  //       border-radius: 0 50px 0 0;
+  //     }
+  //   }
+  // }
 
-  .scroll-view {
-    @include page-scroll(0, 0);
-  }
+  // .tag-block {
+  //   padding: 0 20px 16px;
+  //   display: flex;
+  //   align-items: center;
+  //   background: #fff;
+  //   .tag-container {
+  //     flex: 1;
+  //   }
+  //   .filter-btn {
+  //     width: 100px;
+  //     display: flex;
+  //     align-items: center;
+  //     .filter-text {
+  //       color: var(--color-primary);
+  //     }
+  //     .icon-shaixuan-01 {
+  //       color: var(--color-primary);
+  //       font-size: 32px;
+  //       position: relative;
+  //       top: 2px;
+  //     }
+  //   }
+  // }
 
-  .goods-list {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 16px;
-    padding-top: 125px;
-    .goods-list-wrap {
-      // page-break-inside: avoid;
-      width: 345px;
-      margin-bottom: 28px;
-      box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
-    }
-  }
-  &__toolbar {
-    position: fixed;
-    padding-top: 10px;
-    top: 0; 
-    /*  #ifdef  h5  */  
-    top: $navigate-height-h5;
-    /*  #endif  */      
-    left: 0;
-    width: 100%;
-    z-index: $z-index-toolbar;
-    background: #fff;
-    box-shadow: $box-shadow;
-    .sp-search-bar {
-      box-shadow: none;
-      &__focus{
-        .at-search-bar {
-          padding-right: 0 !important;
-        }
-      }
-    }
-    .at-search-bar {
-      padding-right: 50px !important;
-      &__input {
-        height: $searchbar-height !important;
-      }
-      &__input-cnt {
-        border-radius: $searchbar-height;
-      }
-      &__clear {
-        height: $searchbar-height;
-      }
-      &__action {
-        padding: 0px;
-      }
-    }
-    &-title {
-      width: 60%;
-      margin:0 auto;
-      height: 84px;
-      line-height: 84px;
-      text-align: center;
-      .at-divider {
-        height: 84px;
-      }
-    }
-  }
-  &__type {
-    position: absolute;
-    width: 55px;
-    right: 20px;
-    top: 35%;
-    transform: translateY(-50%);
-    font-size: 50px;
-    color: $color-gray;
-    background: #fff;
-    text-align: right;
+  .brand-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 20px;
   }
 }

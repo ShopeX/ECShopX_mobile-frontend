@@ -1,10 +1,17 @@
-import React from 'react';
+import React from "react";
+import { View } from "@tarojs/components";
+import './index.scss'
 
-function SpSelect() {
+function SpSelect(props) {
+  const { info = [] } = props;
   return (
-    <div>
-      SpSelect
-    </div>
+    <View className="sp-select">
+      {info.map((item) => (
+        <View className="select-item" key={`select-item__${item.id}`}>
+          {item.name}
+        </View>
+      ))}
+    </View>
   );
 }
 

@@ -46,3 +46,8 @@ export const WGT_GOODS_GRID_TAB = {
   marketPrice: "market_price",
   brand: "brand",
 };
+
+export const WGT_GOODS_BRAND = {
+  id: "attribute_id",
+  name: "attribute_name",
+};
