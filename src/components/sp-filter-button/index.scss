@@ -1,19 +1,18 @@
-$button-height:80px;
-$primary-color:#f4811f;
+$button-height:80px; 
  
 
 .sp-filter-button{
     position: relative;
     height: 80px;
     border-radius: 40px;
-    border: 1PX solid $primary-color;
+    border: 1PX solid var(--color-primary);
     overflow: hidden;
     font-size: 28px;
     position: relative;  
 
     &_reset{
         width:34%;
-        color:$primary-color;
+        color:var(--color-primary);
         height: 100%;   
         line-height: $button-height;
         @include flex-center();
@@ -21,7 +20,7 @@ $primary-color:#f4811f;
 
     &_confirm{
         width: 66%; 
-        background: $primary-color;
+        background: var(--color-primary);
         border-radius: 40px;
         position: absolute;
         right:0;
