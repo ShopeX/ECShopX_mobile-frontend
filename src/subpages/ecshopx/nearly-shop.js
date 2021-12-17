@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useRef, useDidShow } from "react";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Text, Picker, Input } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { SpPage, SpScrollView, SpLogin } from "@/components";
@@ -21,48 +20,29 @@ const initialState = {
   areaData: [],
   shopList: [],
   locationIng: false,
-  chooseValue: [],
+  chooseValue: ['北京市', '北京市', '昌平区'],
   keyword: '', // 参数
   type: 0, // 参数
   search_type: undefined // 参数
 }
 
 function NearlyShop( props ) {
-  const { children } = props
   const { isLogin } = useLogin({
     autoLogin: false
   })
   const [ state, setState ] = useImmer(initialState)
   const { location, address } = useSelector( state => state.user )
   const shopRef = useRef()
-  
-  const dispatch = useDispatch();
-  // log.debug(`location: ${JSON.stringify(location)}`);
+  const dispatch = useDispatch()
+
   useEffect( () => {
     fetchAddressList()
+    onPickerClick()
   }, [])
 
   const fetchAddressList = async () => {
     const areaList = await api.member.areaList()
-    // let proviceArr = []
-    // let cityArr = []
-    // let countyArr = []
-
-    // areaList.map((item, index) => {
-    //   proviceArr.push(item.label)
-    //   if (index === 0) {
-    //     item.children.map((c_item, c_index) => {
-    //       cityArr.push(c_item.label)
-    //       if (c_index === 0) {
-    //         c_item.children.map((cny_item) => {
-    //           countyArr.push(cny_item.label)
-    //         })
-    //       }
-    //     })
-    //   }
-    // })
     setState( v => {
-      // v.areaArray = [proviceArr, cityArr, countyArr]
       v.areaData = areaList
     })
   }
@@ -89,13 +69,13 @@ function NearlyShop( props ) {
       list,
       total_count: total,
       defualt_address,
-    } = await api.shop.list(query);
+    } = await api.shop.list(query)
+
     setState((v) => {
       v.shopList = v.shopList.concat( pickBy( list, doc.shop.SHOP_ITEM ) );
     })
 
     let format_address = !isArray(defualt_address) ? defualt_address : null
-
     dispatch(updateChooseAddress(address || format_address))
 
     return {
@@ -112,11 +92,10 @@ function NearlyShop( props ) {
   const onConfirmSearch = async ({ detail }) => {
     const res = await entryLaunch.getLnglatByAddress(location.address)
     const { lng, lat, error } = res
-    dispatch(updateLocation(res))
-
     if ( error ) {
       showToast(error)
     } else {
+      dispatch(updateLocation(local))
       await setState((v) => {
         v.keyword = detail.value
         v.shopList = []
@@ -204,22 +183,6 @@ function NearlyShop( props ) {
     setState( v => {
       v.locationIng = true
     })
-    // const res = await entryLaunch.getCurrentAddressInfo()
-    // dispatch( updateLocation( res ) );
-    // console.log(res, 'res')
-    // await entryLaunch.isOpenPosition(() => {
-    //   setState(v => {
-    //     v.shopList = []
-    //     v.keyword = ''
-    //     v.type = 0
-    //     v.search_type = undefined
-    //   })
-    //   shopRef.current.reset()
-    // })
-    // setState((v) => {
-    //   v.locationIng = false;
-    // })
-
     await entryLaunch.isOpenPosition(async (res) => {
       if (res.lat) {
         dispatch(updateLocation(res))
@@ -233,7 +196,6 @@ function NearlyShop( props ) {
         shopRef.current.reset()
       }
     })
-
     setState((v) => {
       v.locationIng = false
     })
@@ -270,7 +232,6 @@ function NearlyShop( props ) {
 
   // 根据收货地址搜索
   const onLocationChange = async (info) => {
-    console.log(info)
     let local = info.address || info.province + info.city + info.county + info.adrdetail
     const res = await entryLaunch.getLnglatByAddress(local)
     await dispatch(updateLocation(res))
@@ -311,6 +272,7 @@ function NearlyShop( props ) {
               placeholder="输入收货地址寻找周边门店"
               confirmType="search"
               value={state.keyword}
+              disabled={!location.address}
               onInput={onInputChange}
               onConfirm={onConfirmSearch}
             />
@@ -333,7 +295,7 @@ function NearlyShop( props ) {
                 active: state.locationIng,
               })}
             ></Text>
-            {state.locationIng ? "定位中..." : "重新定位"}
+            { location.address ? (state.locationIng ? "定位中..." : "重新定位") : '开启定位' }
           </View>
         </View>
         <View className="block-title block-flex">
