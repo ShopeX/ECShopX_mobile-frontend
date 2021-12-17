@@ -5,7 +5,7 @@ import { AtButton } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { SpPage, SpScrollView, SpLogin } from "@/components";
-import { updateLocation, updateAddress } from "@/store/slices/user";
+import { updateLocation, updateChooseAddress } from "@/store/slices/user";
 import api from '@/api'
 import CompShopItem from './comps/comp-shopitem'
 import { SG_APP_CONFIG } from '@/consts'
@@ -88,12 +88,15 @@ function NearlyShop( props ) {
     const {
       list,
       total_count: total,
-      defualt_address = {},
+      defualt_address,
     } = await api.shop.list(query);
-    dispatch(updateAddress(address || defualt_address))
     setState((v) => {
       v.shopList = v.shopList.concat( pickBy( list, doc.shop.SHOP_ITEM ) );
     })
+
+    let format_address = !isArray(defualt_address) ? defualt_address : null
+
+    dispatch(updateChooseAddress(address || format_address))
 
     return {
       total

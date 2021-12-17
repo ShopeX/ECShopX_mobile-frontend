@@ -11,8 +11,8 @@ import PaymentPicker from '../../../pages/cart/comps/payment-picker'
 // /Users/zhangqing/projectTwo/ecshopx-vshop/src/pages/cart/comps/payment-picker.js
 import './index.scss'
 
-@connect(({ address, colors, sys }) => ({
-  address: address.current,
+@connect(({ user, colors, sys }) => ({
+  address: user.address,
   colors: colors.current,
   pointName: sys.pointName
 }))

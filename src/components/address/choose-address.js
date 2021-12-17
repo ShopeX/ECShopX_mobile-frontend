@@ -10,7 +10,7 @@ import './address.scss'
     address: user.address,
   }),
   (dispatch) => ({
-    onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address })
+    updateChooseAddress: (address) => dispatch({ type: 'user/updateChooseAddress', payload: address })
   })
 )
 export default class AddressChoose extends Component {

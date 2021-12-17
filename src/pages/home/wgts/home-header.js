@@ -11,7 +11,7 @@ import './home-header.scss'
 function WgtHomeHeader( props ) {
   const { children } = props
   const { openScanQrcode } = Taro.getStorageSync( SG_APP_CONFIG );
-  const { location } = useSelector(state => state.user)
+  const { location = {} } = useSelector(state => state.user)
 
   const handlePickStore = () => {
     Taro.navigateTo( {
@@ -26,7 +26,7 @@ function WgtHomeHeader( props ) {
   return (
     <View className='home-header'>
       <View className='nearly-shop' onClick={handlePickStore}>
-        <View className='address'>{location ? location.address : '获取定位地址'}</View>
+        <View className='address'>{location.address || '获取定位地址'}</View>
         <Text className='iconfont icon-qianwang-01'></Text>
       </View>
 

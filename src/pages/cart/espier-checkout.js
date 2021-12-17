@@ -73,7 +73,7 @@ const transformCartList = (list) => {
     onClearCart: () => dispatch({ type: 'cart/clear' }),
     onClearCoupon: () => dispatch({ type: 'cart/clearCoupon' }),
     onClearDrugInfo: () => dispatch({ type: 'cart/clearDrugInfo' }),
-    onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address }),
+    updateChooseAddress: (address) => dispatch({ type: 'user/updateChooseAddress', payload: address }),
     onChangeCoupon: (coupon) => dispatch({ type: 'cart/changeCoupon', payload: coupon }),
     onChangeZitiStore: (zitiShop) => dispatch({ type: 'cart/changeZitiStore', payload: zitiShop })
     //onChangeDrugInfo: (drugInfo) => dispatch({ type: 'cart/changeDrugInfo', payload: drugInfo })
@@ -237,7 +237,7 @@ export default class CartCheckout extends Component {
       }
     })
 
-    this.props.onAddressChoose(null)
+    this.props.updateChooseAddress(null)
     this.props.onChangeZitiStore(null)
     Taro.removeStorageSync('selectShop')
     this.getSalespersonNologin()
@@ -460,7 +460,7 @@ export default class CartCheckout extends Component {
   changeSelection(params = {}) {
     const { address_list } = this.state
     if (address_list.length === 0) {
-      this.props.onAddressChoose(null)
+      this.props.updateChooseAddress(null)
       this.setState(
         {
           address: null
@@ -483,7 +483,7 @@ export default class CartCheckout extends Component {
         null
     }
 
-    this.props.onAddressChoose(address)
+    this.props.updateChooseAddress(address)
     this.handleAddressChange(address)
   }
 
@@ -855,7 +855,7 @@ export default class CartCheckout extends Component {
       () => {
         if (receiptType !== 'ziti') {
           if (this.props.address) {
-            this.props.onAddressChoose(null)
+            this.props.updateChooseAddress(null)
           } else {
             this.fetchAddress()
           }

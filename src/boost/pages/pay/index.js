@@ -9,11 +9,11 @@ import { SpNavBar, AddressChoose } from '@/components'
 import './index.scss'
 
 @connect(
-  ({ address }) => ({
-    address: address.current
+  ({ user }) => ({
+    address: user.address
   }),
   (dispatch) => ({
-    onAddressChoose: (address) => dispatch({ type: 'address/choose', payload: address })
+    updateChooseAddress: (address) => dispatch({ type: 'user/updateChooseAddress', payload: address })
   })
 )
 export default class Pay extends Component {
@@ -103,7 +103,7 @@ export default class Pay extends Component {
           const isDef = list.find((item) => item.is_def)
           defaultAddress = isDef
         }
-        this.props.onAddressChoose(defaultAddress)
+        this.props.updateChooseAddress(defaultAddress)
       }
     )
   }

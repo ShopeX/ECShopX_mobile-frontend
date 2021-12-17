@@ -12,12 +12,12 @@ import './address.scss'
 const ADDRESS_ID = 'address_id'
 
 @connect(
-  ({ address, colors }) => ({
-    address: address.current,
+  ({ user, colors }) => ({
+    address: user.address,
     colors: colors.current
   }),
   (dispatch) => ({
-    updateAddress: (address) => dispatch({ type: 'user/updateAddress', payload: address })
+    updateChooseAddress: (address) => dispatch({ type: 'user/updateChooseAddress', payload: address })
   })
 )
 export default class AddressIndex extends Component {
@@ -72,7 +72,7 @@ export default class AddressIndex extends Component {
       selectedId: item[ADDRESS_ID]
     })
 
-    this.props.updateAddress(item)
+    this.props.updateChooseAddress(item)
     setTimeout(() => {
       Taro.navigateBack()
     }, 700)
@@ -110,7 +110,7 @@ export default class AddressIndex extends Component {
     await api.member.addressDelete(item.address_id)
     S.toast('删除成功')
     if (selectedId === item.address_id) {
-      this.props.updateAddress(null)
+      this.props.updateChooseAddress(null)
     }
     setTimeout(() => {
       this.fetch(true)

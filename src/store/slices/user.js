@@ -37,7 +37,7 @@ const userSlice = createSlice({
       }
     },
 
-    updateAddress: (state, { payload }) => {
+    updateChooseAddress: (state, { payload }) => {
       state.address = payload
     },
 
@@ -47,6 +47,6 @@ const userSlice = createSlice({
   }
 })
 
-export const { updateUserInfo, updateAddress, updateLocation } = userSlice.actions
+export const { updateUserInfo, updateChooseAddress, updateLocation } = userSlice.actions
 
 export default userSlice.reducer
