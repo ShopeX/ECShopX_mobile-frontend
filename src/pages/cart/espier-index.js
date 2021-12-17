@@ -665,7 +665,7 @@ export default class CartIndex extends Component {
             </View>
           )} */}
 
-          {crossborder_show && (
+          {/* {crossborder_show && (
             <View className="changeCross">
               <View className="content">
                 <View
@@ -679,7 +679,8 @@ export default class CartIndex extends Component {
                 ></View>
               </View>
             </View>
-          )}
+          )} */}
+          
           <View className="cart-list">
             {groups.map((shopCart, shopIndex) => {
               // console.log('shopCart---->',shopCart)
