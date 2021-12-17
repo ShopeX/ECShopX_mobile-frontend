@@ -8,7 +8,7 @@ import { isObject, classNames } from '@/utils'
 import './comp-goodsitem.scss'
 
 function CompGoodsItem(props) {
-  const { info, onDelete = () => {}, onChange = () => {}} = props
+  const { info, onDelete = () => {}, onChange = () => {}, isShowAddInput = true} = props
   const onDeleteGoodsItem = () => {
     onDelete(info)
   }
@@ -36,7 +36,7 @@ function CompGoodsItem(props) {
         </View>
         <View className='item-ft'>
           <SpPrice value={info.price / 100} />
-          <SpInputNumber value={info.num} onChange={ onChangeGoodsItem}/>
+          {isShowAddInput && <SpInputNumber value={info.num} onChange={ onChangeGoodsItem}/>}
         </View>
       </View>
     </View>

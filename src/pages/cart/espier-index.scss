@@ -21,6 +21,7 @@
   .recommend-icon {
     width: auto;
     height: 50px;
+    margin-bottom: 24px;
   }
   .shop-cart-item {
     padding: 0 16px;
@@ -51,11 +52,26 @@
         }
       }
     }
+    &-hd-disabeld {
+      font-size: 36px;
+      color: #999;
+      font-weight: bold;
+      margin: 65px 0px 25px;
+    }
   }
   .cart-item-wrap {
     padding: 16px;
     display: flex;
     align-items: center;
+  }
+  .cart-item-warp-disabled {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    color: #999;
+    .price__symbol, .price__int, .price__decimal {
+      color: #999;
+    }
   }
   .cart-goods-item {
     flex: 1;
@@ -102,6 +118,6 @@
     }
   }
   .recommend-block {
-    margin-top: 96px;
+    margin-top: 65px;
   }
 }

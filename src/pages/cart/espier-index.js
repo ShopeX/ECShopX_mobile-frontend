@@ -166,7 +166,7 @@ function CartIndex( props ) {
       )}
       {isLogin && (
         <View>
-          <SpTabs current={current} tablist={tablist} onChange={onChangeSpTab} />
+          {/* <SpTabs current={current} tablist={tablist} onChange={onChangeSpTab} /> */}
           <View className='valid-cart-block'>
             {validCart.map((item, index) => {
               const allChecked = !item.list.find((item) => !item.is_checked)
@@ -216,7 +216,24 @@ function CartIndex( props ) {
               )
             })}
           </View>
-          <View className='invalid-cart-block'></View>
+          <View className='invalid-cart-block'>
+            <View className='shop-cart-item'>
+              <View className='shop-cart-item-hd-disabeld'>已失效商品</View>
+              <View className='shop-cart-item-bd'>
+                <View className='shop-activity'></View>
+                {invalidCart.map((sitem, index) => (
+                  <View className='cart-item-warp-disabled' key={`cart-item-warp-disabled__${index}`}>
+                    <SpCheckboxNew disabled />
+                    <CompGoodsItem
+                      info={sitem}
+                      isShowAddInput={false}
+                      onDelete={onDeleteCartGoodsItem.bind( this, sitem )}
+                    />
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
         </View>
       )}
 
