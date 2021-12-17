@@ -56,6 +56,7 @@ import SpShopCoupon from './sp-shop-coupon'
 import SpFilterDrawer from "./sp-filter-drawer";
 import SpButton from "./sp-button";
 import SpFloatPrivacy from './sp-float-privacy'
+import SpFilterButton from './sp-filter-button'
 
 export default {}
 
@@ -118,4 +119,5 @@ export {
   SpFilterDrawer,
   SpButton,
   SpFloatPrivacy,
+  SpFilterButton
 };

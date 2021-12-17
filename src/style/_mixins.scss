@@ -139,3 +139,9 @@
     -webkit-text-fill-color: transparent;
   }
 }
+
+@mixin flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
