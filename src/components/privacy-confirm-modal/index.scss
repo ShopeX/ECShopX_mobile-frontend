@@ -32,6 +32,11 @@
     color: #222;
     height: 100%;
     width: 80%;
+    /*  #ifdef  h5  */
+    width: 73%;
+    height: 92%;
+    padding: 30px 20px;
+    /*  #endif  */
   }
   .top {
     display: flex;
@@ -56,6 +61,11 @@
     line-height: 48px;
     position: absolute;
     top: 135px;
+    /*  #ifdef  h5  */
+    top: 115px;
+    height: 450px;
+    width: 510px;
+    /*  #endif  */
   }
   .confirm {
     display: flex;
@@ -64,25 +74,30 @@
   .at-checkbox {
     background: transparent !important;
   }
-  .bottom {
+  .bottom-box {
     display: flex;
     justify-content: space-between;
     // margin-top: 50px;
     position: absolute;
     width: 86%;
     bottom: 31px;
+    /*  #ifdef  h5  */
+    bottom: 40px;
+    width: 92%;
+    /*  #endif  */
   }
   .agree, .cancel {
     width: 45%;
     margin: 0px;
     font-size: 28px;
     border-radius: 8px;
+    border: none;
   }
   .cancel {
     background: #ffffff;
   }
   .agree {
     color: #fff;
-    background: #db692a;
+    background: var(--color-primary)
   }
 }

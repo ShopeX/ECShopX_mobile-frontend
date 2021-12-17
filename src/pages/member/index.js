@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { TabBar, SpCell, AccountOfficial, SpLogin, SpFloatPrivacy, CouponModal } from '@/components'
+import { TabBar, SpCell, AccountOfficial, SpLogin, SpFloatPrivacy, CouponModal, PrivacyConfirmModal } from '@/components'
 // import ExclusiveCustomerService from './comps/exclusive-customer-service'
 import api from '@/api'
 import S from '@/spx'
@@ -74,16 +74,18 @@ export default class MemberIndex extends Component {
       showTimes: 0,
       all_card_list: [],
       visible: false,
-      protocol: { member_register: '注册协议', privacy: '隐私政策' }
+      protocol: { member_register: '注册协议', privacy: '隐私政策' },
+      privacyVisible: false,
+      update_time: null
     };
   }
 
-  componentWillMount() {
-    console.log('================WillMount===============');
+  componentWillMount() { 
     setPageTitle('会员中心')
     this.fetch();
     this.getSetting();
     this.getPrivacyTitle();
+    this.protocolUpdateTime();
     // this.getWheel();
     // this.fetchBanner();
     // this.fetchRedirect();
@@ -93,10 +95,11 @@ export default class MemberIndex extends Component {
   }
 
   componentDidShow() {
-    console.log('================Show===============');
+    Taro.eventCenter.on('login-success', () => {
+      this.fetch()
+    })
     if (S.getAuthToken()) {
       this.fetchCouponCardList()
-      this.fetch();
     }
   }
 
@@ -106,6 +109,37 @@ export default class MemberIndex extends Component {
     onReachBottomDistance: 50,
     backgroundTextStyle: 'dark',
     navigationStyle: 'custom'
+  }
+
+  // 获取隐私政策时间
+  async protocolUpdateTime() {
+    const privacy_time = Taro.getStorageSync("PrivacyUpdate_time");
+    const result = await api.wx.getPrivacyTime();
+    const { update_time } = result;
+
+    if ((!String(privacy_time) || privacy_time != update_time)) {
+      this.setState({
+        privacyVisible: true
+      })
+    }
+  }
+
+  onPrivateChange = async (type) => {
+    if (type === "agree") {
+      const result = await api.wx.getPrivacyTime()
+      const { update_time } = result
+
+      Taro.setStorageSync("PrivacyUpdate_time", update_time)
+      setTimeout(() => {
+        S.login(this)
+      }, 1000)
+    } else {
+      Taro.removeStorageSync("PrivacyUpdate_time")
+      Taro.removeStorageSync("auth_token")
+    }
+    this.setState({
+      privacyVisible : false
+    })
   }
 
   async onShareAppMessage() {
@@ -382,7 +416,8 @@ export default class MemberIndex extends Component {
       // showTimes,
       visible,
       all_card_list,
-      protocol
+      protocol,
+      privacyVisible
     } = this.state;
     let memberInfo = null,
       vipgrade = {}
@@ -853,6 +888,12 @@ export default class MemberIndex extends Component {
           }
         /> */}
         <CouponModal visible={visible} list={all_card_list} onChange={this.handleCouponChange} />
+        {/* 隐私弹窗 */}
+        <PrivacyConfirmModal
+          visible={privacyVisible}
+          onChange={this.onPrivateChange}
+          isPhone={false}
+        />
       </View>
     )
   }

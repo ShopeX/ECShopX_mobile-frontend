@@ -20,8 +20,7 @@ import S from '@/spx'
 import { Tracker } from "@/service";
 import { withPager, withLogin } from '@/hocs'
 import entry from '@/utils/entry'
-import CartItem from './comps/cart-item'
-import { getDistributorId } from "@/utils/helper";
+import CartItem from './comps/cart-item' 
 
 import './espier-index.scss'
 
@@ -62,7 +61,8 @@ export default class CartIndex extends Component {
       cartType: "normal",
       crossborder_show: false,
       // 消息通知
-      remindInfo: {}
+      remindInfo: {},
+      token: S.getAuthToken()
     };
 
     this.updating = false;
@@ -84,8 +84,8 @@ export default class CartIndex extends Component {
       });
     }
     this.getRemind();
-    this.nextPage(); 
-    if (!S.getAuthToken()) return; 
+    this.nextPage();
+    if (!this.state.token) return
     this.fetchCart(list => {
       const groups = this.resolveActivityGroup(list);
       // this.props.list 此时为空数组
@@ -136,6 +136,11 @@ export default class CartIndex extends Component {
 
   onChangeLoginSuccess = async () => {
     this.updateCart();
+    Taro.eventCenter.on('login-success', () => {
+      this.setState({
+        token: S.getAuthToken()
+      })
+    })
   };
 
   // handleLoginClick = () => {
@@ -143,9 +148,9 @@ export default class CartIndex extends Component {
   // }
 
   handleClickItem = (item) => {
-    const { distributor_id } = item;
-    const dtid = distributor_id ? distributor_id : getDistributorId();
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
+    const { distributor_id, item_id } = item;
+    // const dtid = distributor_id ? distributor_id : getDistributorId();
+    const url = `/pages/item/espier-detail?id=${item_id}&dtid=${distributor_id || 0}`
     Taro.navigateTo({
       url
     });
@@ -153,6 +158,7 @@ export default class CartIndex extends Component {
 
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
+    const { token } = this.state
     const { favs } = this.props;
     const query = {
       page,
@@ -176,7 +182,7 @@ export default class CartIndex extends Component {
       likeList: [...this.state.likeList, ...nList]
     });
 
-    if (!S.getAuthToken()) {
+    if (!token) {
       this.setState({
         loading: false
       });
@@ -604,7 +610,8 @@ export default class CartIndex extends Component {
       isPathQrcode,
       cartType,
       crossborder_show,
-      remindInfo
+      remindInfo,
+      token
     } = this.state;
     const { list, showLikeList, colors } = this.props;
     
@@ -617,7 +624,7 @@ export default class CartIndex extends Component {
           <SpNavBar title="购物车" leftIconType="chevron-left" fixed="true" />
         )}
 
-        {!S.getAuthToken() && (
+        {!token && (
           <View className="login-header">
             <View>授权登录后同步购物车的商品</View>
             <SpLogin onChange={this.onChangeLoginSuccess.bind(this)}>
@@ -649,7 +656,7 @@ export default class CartIndex extends Component {
           }
           {/* {remindInfo.is_open && (
             <View
-              className={`${!S.getAuthToken() && "paddingTop"}`}
+              className={`${!token && "paddingTop"}`}
               style={`background: ${colors.data[0].primary}`}
             >
               <AtNoticebar marquee icon="volume-plus" className="notice" single>

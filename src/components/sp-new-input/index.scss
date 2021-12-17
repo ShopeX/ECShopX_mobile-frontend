@@ -1,0 +1,41 @@
+@import "../../style/iconfont.scss";
+
+$input-height:60px;
+$input-color:#BF9775;
+
+.sp-component-newinput{ 
+
+    height: $input-height;
+    background: #F5F5F5;
+    border-radius: 30px;
+    display: flex;
+
+    &-icon{
+        width: 70px;
+        padding-left:25px;
+        line-height: $input-height;
+
+        .iconfont{
+            font-size:32px;
+            color:$input-color;
+        }
+    }
+
+    &-placeholder{  
+        color:$input-color; 
+        width:100%;
+        display: flex;
+        align-items: center;
+
+        .text{
+            font-size:24px;
+            padding-left:15px;
+            @include hairline($input-color,0,left);
+        }
+      
+        .placeholderClass{
+            color:$input-color;
+        }
+    }
+    
+}

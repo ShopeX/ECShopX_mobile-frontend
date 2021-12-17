@@ -3,7 +3,7 @@ import { View, Text, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { classNames, formatPriceToHundred, getPointName } from '@/utils'
 import OrderItem from '../../../../components/orderItem/order-item'
-
+import { SpNewShopItem } from '@/components'
 import './item.scss'
 
 @connect(({ colors }) => ({
@@ -20,8 +20,8 @@ export default class TradeItem extends Component {
     payType: '',
     info: {},
     rateStatus: false,
-    onClickBtn: () => {},
-    onClick: () => {}
+    onClickBtn: () => { },
+    onClick: () => { }
   }
 
   static options = {
@@ -87,18 +87,32 @@ export default class TradeItem extends Component {
       <View className='trade-item'>
         {!noHeader &&
           (customHeader ? (
-            <View className='trade-item__hd'>{this.props.renderHeader}</View>
+            <View>
+              <SpNewShopItem
+                inOrderList
+                info={info.distributor_info}
+                canJump={true}
+              />
+              <View className='trade-item__hd'>{this.props.renderHeader}</View>
+            </View>
           ) : (
-            <View className='trade-item__hd'>
-              <Text className='time'>{info.create_date}</Text>
-              <View className='right'>
-                {info.type == '1' && (
-                  <View>
-                    <Text className='iconfont icon-globe'></Text>
-                    <Text>跨境</Text>
-                  </View>
-                )}
-                <Text className='trade-item__shop'>订单号：{info.tid}</Text>
+            <View>
+               <SpNewShopItem
+                inOrderList
+                info={info.distributor_info}
+                canJump={true}
+              />
+              <View className='trade-item__hd'>
+                <View className='time lineone'>创建时间：{info.create_date}</View>
+                <View className='time linetwo'>
+                  {info.type == '1' && (
+                    <View>
+                      <Text className='iconfont icon-globe'></Text>
+                      <Text>跨境</Text>
+                    </View>
+                  )}
+                  <Text className='trade-item__shop'>订单号：{info.tid}</Text>
+                </View>
               </View>
             </View>
           ))}
@@ -124,9 +138,9 @@ export default class TradeItem extends Component {
             <View className='trade-item__ft-bd'>
               <Text className='trade-item__status'>{info.status_desc}</Text>
               {(info.order_status_des === 'PAYED' || info.order_status_des === 'NOTPAY') &&
-              !info.is_logistics &&
-              info.can_apply_cancel != 0 &&
-              (info.receipt_type !== 'dada' || (info.dada && info.dada.dada_status === 0)) ? (
+                !info.is_logistics &&
+                info.can_apply_cancel != 0 &&
+                (info.receipt_type !== 'dada' || (info.dada && info.dada.dada_status === 0)) ? (
                 <Button
                   className='btn-action'
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}
@@ -151,9 +165,9 @@ export default class TradeItem extends Component {
             <View className='trade-item__ft-bd'>
               <Text className='trade-item__status'>{info.status_desc}</Text>
               {(info.order_status_des === 'PAYED' || info.order_status_des === 'NOTPAY') &&
-              info.can_apply_cancel != 0 &&
-              !info.is_logistics &&
-              (info.receipt_type !== 'dada' || (info.dada && info.dada.dada_status === 0)) ? (
+                info.can_apply_cancel != 0 &&
+                !info.is_logistics &&
+                (info.receipt_type !== 'dada' || (info.dada && info.dada.dada_status === 0)) ? (
                 <Button
                   className='btn-action'
                   style={`box-shadow: 0 0 0 1PX ${colors.data[0].primary}; color: ${colors.data[0].primary}`}

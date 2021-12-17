@@ -33,6 +33,11 @@ export function getRuleInfo(params = {}) {
 }
 
 // 获取总店信息
+export function getDefaultShop(params = {}) {
+  return req.get('/distributor/default', params)
+}
+
+// 获取总店信息
 export function getHeadquarters(params = {}) {
   return req.get('/distributor/self', params)
 }
@@ -61,4 +66,9 @@ export function getShopTemplate(params) {
     weapp_pages: 'index',
     ...params
   })
+}
+
+// 获取高德地图key
+export function getMapKeyDetail(params) {
+  return req.get('/third_party/map/key', params)
 }

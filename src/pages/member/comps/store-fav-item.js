@@ -29,11 +29,13 @@ export default class StoreFavItem extends Component {
     const { info, onClick } = this.props
 
     return (
-      <View className='fav-store__item' onClick={onClick}>
-        <Image className='fav-store__item-brand' src={info.logo} mode='aspectFill' />
-        <View className='fav-store__item-info'>
-          <View>{info.name}</View>
-          <View className='store-fav-count'>{info.fav_num}人关注</View>
+      <View className='fav-store__item'>
+        <View className='fav-store__item-flex' onClick={onClick}>
+          <Image className='fav-store__item-brand' src={info.logo} mode='aspectFill' />
+          <View className='fav-store__item-info'>
+            <View className='store-name'>{info.name}</View>
+            <View className='store-fav-count'>{info.fav_num}人关注</View>
+          </View>
         </View>
         <View
           className='fav-store__item-cancel'

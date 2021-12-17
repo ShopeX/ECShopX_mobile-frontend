@@ -37,13 +37,13 @@ export default class WgtGoodsGrid extends Component {
   }
 
   startTrack() {
-    const observer = new CreateIntersectionObserver({
-      el: '.wgt-grid__loader-more',
-      scope: this.$scope
-    })
-    observer.on('on-observer', (res) => {
-      console.log('on-observer', res)
-    } )
+    // const observer = new CreateIntersectionObserver({
+    //   el: '.wgt-grid__loader-more',
+    //   scope: this.$scope
+    // })
+    // observer.on('on-observer', (res) => {
+     
+    // } )
   }
 
   endTrack() {
@@ -54,10 +54,10 @@ export default class WgtGoodsGrid extends Component {
   }
 
   handleClickItem(item) {
-    const { distributor_id } = item
-    const dtid = distributor_id ? distributor_id : getDistributorId()
+    const { distributor_id, goodsId } = item
+    // const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.goodsId}&dtid=${dtid}`
+      url: `/pages/item/espier-detail?id=${goodsId}&dtid=${distributor_id || 0}`
     })
     if (item) {
       // 商品卡触发
@@ -71,8 +71,7 @@ export default class WgtGoodsGrid extends Component {
       return null
     }
 
-    const { base, data, config } = info
-    console.log(data,'===================');
+    const { base, data, config } = info 
     // const goods = pickBy(data, {
     //   origincountry_img_url: {
     //     key: 'origincountry_img_url',

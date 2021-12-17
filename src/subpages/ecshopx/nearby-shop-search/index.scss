@@ -1,0 +1,75 @@
+$input-vertical-padding:16px;
+$input-horizontal-padding:24px; 
+
+$input-height:92px;
+$filter-bar-height:92px;
+ 
+
+$prefixCls:'sp-page-nearbyshopsearch';
+ 
+.#{$prefixCls}{ 
+
+    view,text,div,span,.img,image{
+        box-sizing: border-box
+    };
+ 
+    
+    &-input{
+        background-color: white;
+        padding:$input-vertical-padding $input-horizontal-padding;
+        height: $input-height; 
+    } 
+
+    &-search{
+        @include page-scroll($input-height, 0);
+    } 
+
+    &-search{
+
+        padding:32px 24px;
+        @include page-scroll($input-height, 0); 
+        background-color: white;
+
+        &-title{
+            height:45px;
+            margin-bottom:6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .left{
+                font-size: 32px;
+                font-weight: 500;
+                color: #222222;
+            }
+            .right{
+                font-size: 24px;
+                font-weight: 400;
+                color: #999999;
+            }
+        }
+
+        &-content{
+            .sp-filter-block{
+                margin-top: 24px;
+                margin-right:24px;
+            }
+        }
+    }
+
+    &-list{
+        background: white;  
+    } 
+
+    &-scrollview{
+        @include page-scroll($input-height+$filter-bar-height, 0); 
+        padding:0 16px;
+    }
+
+    &.has-navbar{ 
+        .#{$prefixCls}-search{
+            @include page-scroll($input-height+$filter-bar-height+$navigate-height-h5, 0); 
+        }
+    }
+    
+}

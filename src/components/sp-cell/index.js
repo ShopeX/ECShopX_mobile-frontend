@@ -11,7 +11,8 @@ export default class SpCell extends Component {
     border: false,
     title: '',
     arrow: 'right',
-    onClick: () => {}
+    onClick: () => {},
+    commonStyle:''
   }
 
   static options = {
@@ -29,7 +30,8 @@ export default class SpCell extends Component {
       onClick,
       arrow,
       border,
-      className
+      className,
+      commonStyle
     } = this.props
 
     let linkClassName = `sp-cell__ft-icon at-icon at-icon-chevron-${arrow}`
@@ -42,7 +44,8 @@ export default class SpCell extends Component {
       <View
         className={classNames('sp-cell', className, {
           'sp-cell__is-link': isLink,
-          'sp-cell__no-border': !border
+          'sp-cell__no-border': !border,
+          'commonStyle':commonStyle
         })}
         onClick={onClick}
       >

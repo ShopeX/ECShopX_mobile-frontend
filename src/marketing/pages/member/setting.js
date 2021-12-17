@@ -7,8 +7,7 @@ import { connect } from '@tarojs/redux'
 import { withLogin } from '@/hocs'
 import S from '@/spx'
 
-@connect(
-  () => ({}),
+@connect(() => ({}),
   (dispatch) => ({
     onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
     onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),
@@ -30,10 +29,10 @@ export default class MemberSetting extends Component {
     this.props.onUpdateCartCount(0)
     if (process.env.TARO_ENV === 'h5' && Taro.getEnv() !== 'SAPP') {
       // eslint-disable-next-line
-      goToPage(APP_HOME_PAGE)
+      goToPage(process.env.APP_HOME_PAGE)
     } else {
       Taro.redirectTo({
-        url: APP_HOME_PAGE
+        url: process.env.APP_HOME_PAGE
       })
     }
   }

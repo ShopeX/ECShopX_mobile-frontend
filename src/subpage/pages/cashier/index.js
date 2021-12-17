@@ -7,6 +7,7 @@ import { withLogin } from '@/hocs'
 import { AlipayPay, WeH5Pay, WePay } from './comps'
 import { getPaymentList } from '@/utils/payment'
 import { PAYTYPE } from '@/consts'
+import { deleteForm } from './util';
 
 import './index.scss'
 
@@ -20,7 +21,8 @@ export default class Cashier extends Component {
   }
 
   componentDidShow() {
-    this.fetch()
+    this.fetch();
+    deleteForm();
   }
 
   async componentDidMount(){ 
@@ -36,7 +38,7 @@ export default class Cashier extends Component {
   }
 
   async fetch() {
-    const { order_id,pay_type } = this.$router.params
+    const { order_id,pay_type,id } = this.$router.params
 
     let env = ''
     if (browser.weixin) {
@@ -44,7 +46,7 @@ export default class Cashier extends Component {
     }
 
     Taro.showLoading()
-    const orderInfo = await api.cashier.getOrderDetail(order_id)
+    const orderInfo = await api.cashier.getOrderDetail(order_id||id)
 
     const info = pickBy(orderInfo.orderInfo, {
       order_id: 'order_id',
@@ -64,8 +66,8 @@ export default class Cashier extends Component {
   }
 
   handleClickBack = () => {
-    const { order_type } = this.state.info
-    const url = order_type === 'recharge' ? '/pages/member/pay' : '/pages/trade/list?redrict=home'
+    const { order_type,order_id } = this.state.info
+    const url = order_type === 'recharge' ? '/pages/member/pay' : `/subpage/pages/trade/detail?id=${order_id}`
 
     Taro.redirectTo({
       url

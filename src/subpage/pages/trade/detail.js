@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtCountdown } from 'taro-ui'
-import { Loading, SpNavBar, FloatMenuMeiQia } from '@/components'
+import { Loading, SpNavBar, FloatMenuMeiQia, SpNewShopItem } from '@/components'
 import {
   log,
   pickBy,
@@ -15,12 +15,12 @@ import {
   isAlipay,
   getPointName,
   classNames,
-  isNavbar,
-  isWbWechat,
+  isNavbar, 
   isWeb,
   redirectUrl
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
+import { PAYTYPE } from '@/consts'
 import { Tracker } from '@/service'
 import api from '@/api'
 import { TracksPayed } from '@/utils/youshu'
@@ -75,7 +75,8 @@ export default class TradeDetail extends Component {
       scrollIntoView: 'order-0',
       cancelData: {},
       tradeInfo: {},
-      showQRcode: false
+      showQRcode: false,
+      distributor:{}
     }
   }
 
@@ -111,12 +112,13 @@ export default class TradeDetail extends Component {
   }
 
   async fetch() {
-    const { id } = this.$router.params
+    const { id } = this.$router.params 
     const data = await api.trade.detail(id)
     let sessionFrom = ''
     const pickItem = {
       order_id: 'order_id',
       item_id: 'id',
+      good_id:'item_id',
       // aftersales_status: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
       delivery_code: 'delivery_code',
       delivery_corp: 'delivery_corp',
@@ -138,7 +140,8 @@ export default class TradeDetail extends Component {
       left_aftersales_num: 'left_aftersales_num',
       item_spec_desc: 'item_spec_desc',
       order_item_type: 'order_item_type',
-      show_aftersales: 'show_aftersales'
+      show_aftersales: 'show_aftersales',
+      distributor_id:'distributor_id'
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
@@ -272,7 +275,8 @@ export default class TradeDetail extends Component {
       sessionFrom,
       ziti,
       cancelData,
-      tradeInfo
+      tradeInfo,
+      distributor:data.distributor
     })
   }
 
@@ -301,7 +305,7 @@ export default class TradeDetail extends Component {
     }
 
     if(isWeb){
-      redirectUrl(api, `/subpage/pages/cashier/index?order_id=${order_id}`)
+      redirectUrl(api, `/subpage/pages/cashier/index?order_id=${order_id}&pay_type=${pay_type}`)
       return ;
     }
 
@@ -371,7 +375,7 @@ export default class TradeDetail extends Component {
         return
       }
       Taro.redirectTo({
-        url: APP_HOME_PAGE
+        url: process.env.APP_HOME_PAGE
       })
       return
     }
@@ -588,11 +592,10 @@ export default class TradeDetail extends Component {
   }
 
   computedPayType=()=>{
-    const { info:{pay_type} } =this.state;
-    console.log("==computedPayType==",this.state.info);
+    const { info:{pay_type} } =this.state; 
     if(isAlipay){
       return '支付宝'
-    }else if(pay_type==='alipayh5'){
+    }else if(pay_type===PAYTYPE.ALIH5){
       return '支付宝'
     }else{
       return '微信'
@@ -611,7 +614,8 @@ export default class TradeDetail extends Component {
       cancelData,
       tradeInfo,
       showQRcode,
-      pickup_code
+      pickup_code,
+      distributor
     } = this.state
 
     if (!info) {
@@ -627,9 +631,7 @@ export default class TradeDetail extends Component {
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')
     // TODO: orders 多商铺
-    // const tradeOrders = resolveTradeOrders(info)
-
-    console.log("===isWebWechat==",isWbWechat);
+    // const tradeOrders = resolveTradeOrders(info) 
 
     return (
       <View
@@ -799,6 +801,12 @@ export default class TradeDetail extends Component {
           </View>
 
           <View className='trade-detail-goods'>
+            <SpNewShopItem 
+              info={distributor}
+              canJump
+              inOrderDetail
+              hasLogo={false}
+            />
             <View className='line'>
               <View className='left'>订单号：</View>
               <View className='right'>

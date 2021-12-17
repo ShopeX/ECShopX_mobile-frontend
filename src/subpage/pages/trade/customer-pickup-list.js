@@ -86,6 +86,7 @@ export default class TradePickList extends Component {
       pay_type: 'pay_type',
       point: 'point',
       create_date: 'create_date',
+      distributor_info:'distributor_info',
       order: ({ items }) =>
         pickBy(items, {
           order_id: 'order_id',

@@ -1,3 +1,5 @@
+$cell-prefix:'sp-cell';
+
 .sp-cell {
   background: #fff;
   padding: 24px $edge-size;
@@ -41,5 +43,23 @@
     font-size: 40px;
     margin-right: 8px;
     margin-left: -8px;
+  }
+
+  &.commonStyle{
+
+    @include hairline(#DDDDDD,0,top,bottom);
+
+    .#{$cell-prefix}__hd{
+      width: 120px;
+    }
+    .#{$cell-prefix}__bd{
+        overflow: hidden;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+    }
+    .#{$cell-prefix}__ft{
+        padding: 0 15rpx;
+    }
   }
 }

@@ -5,10 +5,7 @@ import { classNames, navigateTo } from '@/utils'
 import './index.scss'
 
 function SpTabs(props) {
-  let { tablist = [], current, onChange } = this.props
-
-  console.log('current', current)
-
+  let { tablist = [], current, onChange } = this.props 
   return (
     <View className='sp-tabs'>
       <View className='sp-tabs-hd'>

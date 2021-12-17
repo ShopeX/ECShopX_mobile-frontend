@@ -1,0 +1,36 @@
+$primary-color:#F4811F;
+$button-height:80px;
+
+.filter-button{
+ 
+    position: relative;
+    height: $button-height;
+    border-radius: 40px;
+    border:1px solid $primary-color;
+    overflow: hidden;
+    font-size: 28px;
+
+    .reset{
+        width:176px;
+        color:$primary-color;
+        height: 100%;
+        padding-left:60px;
+        line-height: $button-height;
+    }
+
+    .confirm{
+        width: 340px; 
+        background: $primary-color;
+        border-radius: 40px;
+        position: absolute;
+        right:0;
+        top:0;
+        bottom:0;
+        color:white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+    }
+
+}

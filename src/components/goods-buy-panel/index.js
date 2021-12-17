@@ -191,8 +191,7 @@ export default class GoodsBuyPanel extends Component {
     return img
   }
 
-  updateCurSku(selection) {
-    console.log('----updateCurSku---', selection)
+  updateCurSku(selection) { 
     const { info } = this.props
     const { activity } = this.state
     const { activity_type } = info
@@ -214,9 +213,7 @@ export default class GoodsBuyPanel extends Component {
     this.setState({
       curSku,
       curImg
-    })
-
-    console.log('----curSku---', curSku)
+    }) 
 
     if (activity && info.activity_type === 'limited_buy') {
       const validItem = activity.items.find((n) => n.item_id === curSku.item_id)
@@ -272,10 +269,7 @@ export default class GoodsBuyPanel extends Component {
     } else {
       selection[idx] = item.spec_value_id
       selectionText[idx] = spec_full_text
-    }
-
-    console.log(selection, 254)
-    console.log('---selectionText---', selectionText)
+    } 
 
     this.updateCurSku(selection)
     this.setState({
@@ -293,8 +287,7 @@ export default class GoodsBuyPanel extends Component {
     this.props.onClose && this.props.onClose()
   }
 
-  handleBuyClick = async (type, skuInfo, num) => {
-    console.warn(this.props)
+  handleBuyClick = async (type, skuInfo, num) => { 
     if (this.state.busy) return
     const isOpenStore = await entry.getStoreStatus()
     const { marketing, info, isPointitem } = this.props
@@ -409,9 +402,7 @@ export default class GoodsBuyPanel extends Component {
     }
 
     if (type === 'pick') {
-      const { info } = this.props
-      // console.log(skuInfo, info, 346)
-      //info.checked_spec = skuInfo
+      const { info } = this.props 
       this.setState(
         {
           busy: false
@@ -501,9 +492,7 @@ export default class GoodsBuyPanel extends Component {
     if (!info) {
       return null
     }
-
-    console.log('--info--', info)
-
+ 
     const { special_type } = info
     const isDrug = special_type === 'drug'
     const curSkus = this.noSpecs ? info : curSku
@@ -532,8 +521,7 @@ export default class GoodsBuyPanel extends Component {
     if (isPackage === 'package') {
       price = info.price * 100
       marketPrice = info.market_price * 100
-      if (curSkus) {
-        console.log(curSkus.item_id, packItem[curSkus.item_id], mainpackItem[curSkus.item_id], 394)
+      if (curSkus) { 
         price =
           (packItem[curSkus.item_id] && packItem[curSkus.item_id].price) ||
           (mainpackItem[curSkus.item_id] && mainpackItem[curSkus.item_id].price)

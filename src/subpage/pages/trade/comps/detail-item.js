@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { copyText, getThemeStyle, styleNames } from '@/utils'
+import { copyText, getThemeStyle, styleNames,JumpGoodDetail } from '@/utils'
 import OrderItem from '../../../../components/orderItem/order-item'
 
 import './detail-item.scss'
@@ -83,11 +83,8 @@ export default class DetailItem extends Component {
   }
 
   render() {
-    const {
-      customHeader,
-      customFooter,
-      noHeader,
-      onClick,
+    const { 
+      customFooter, 
       info,
       isPointitem,
       showType
@@ -112,7 +109,10 @@ export default class DetailItem extends Component {
                   </View>
                 ) : null}
               </View>
-              <OrderItem key={`${idx}1`} info={item} isShowNational isPointitemGood={isPointitem} />
+              <OrderItem key={`${idx}1`} info={item} isShowNational isPointitemGood={isPointitem} onClick={()=>{ 
+                JumpGoodDetail(item.good_id,item.distributor_id)}
+              } 
+              />
               {!customFooter &&
                 info.pay_type !== 'dhpoint' &&
                 (info.status === 'TRADE_SUCCESS' ||

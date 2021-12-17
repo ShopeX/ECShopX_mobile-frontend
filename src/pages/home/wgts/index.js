@@ -1,4 +1,6 @@
 import WgtCoupon from './coupon'
+import WgtNearbyShop from './nearby-shop'
+
 
 export { default as HeaderHome } from './header-home'
 export { default as WgtSlider } from './slider'
@@ -22,9 +24,12 @@ export { default as WgtHeadline } from './headline'
 export { default as WgtImgGif } from './img-gif'
 export { default as WgtHotTopic } from './hot-topic'
 export { default as WgtFloorImg } from './floor-img'
+// export { default as WgtNearbyShop } from './nearby-shop'
+
+
 
 
 
 export {
-  WgtCoupon
+  WgtCoupon,WgtNearbyShop
 }

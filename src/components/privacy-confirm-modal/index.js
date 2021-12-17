@@ -81,7 +81,7 @@ export default class PrivacyConfirmModal extends Component {
                   </Text>
                   <Text>了解详细信息。如您同意，请点击”同意“开始接受我们的服务。</Text>
                 </View>
-                <View className='bottom'>
+                <View className='bottom-box'>
                   <Button className='cancel' onClick={() => onChange('reject')}>
                     拒绝
                   </Button>

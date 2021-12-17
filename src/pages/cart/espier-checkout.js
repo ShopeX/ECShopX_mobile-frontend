@@ -5,7 +5,7 @@ import { AtButton, AtInput } from 'taro-ui'
 import { Loading, Price, SpCell, SpToast, SpNavBar, SpHtmlContent } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-// import { withLogin } from '@/hocs'
+ 
 import {
   pickBy,
   log,
@@ -20,7 +20,8 @@ import {
   redirectUrl,
   isObjectValueEqual,
   getThemeStyle,
-  styleNames
+  styleNames,
+  getHeadShop
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -141,33 +142,37 @@ export default class CartCheckout extends Component {
       isNeedPackage: false,
       pick: {},
       isOpenStore: null,
-      channel: ''
+      channel: '',
+      headShop:{}
     }
 
     // 路由参数缓存
     this.routerParams = {}
   }
 
-  async componentDidMount() {
-    if (this.$router.params.scene) {
-      const data = await normalizeQuerys(this.$router.params)
+  async componentDidMount() { 
+    const { params } = this.$router || {}
+    if (params.scene) {
+      const data = await normalizeQuerys(params)
       this.routerParams = data
       Taro.setStorageSync('espierCheckoutData', data)
     }
 
-    let token = S.getAuthToken()
-    if (!token) {
+    if (!S.getAuthToken()) {
       let source = ''
-      if (this.$router.params.scene) {
+      if (params.scene) {
         source = 'other_pay'
       }
       Taro.redirectTo({
-        url: `/subpage/pages/auth/wxauth?source=${source}`
+        url: `/subpage/pages/auth/wxauth?source=${source}&scene=${params.scene}`
       })
 
       return
     }
-    const { cart_type, pay_type: payType } = this.$router.params
+    const { cart_type, pay_type: payType } = params
+    const {
+      shop_id:router_shop_id
+    } = params
     let curStore = null,
       info = null
 
@@ -187,6 +192,7 @@ export default class CartCheckout extends Component {
         hour,
         phone
       } = this.$router.params
+ 
       // 积分购买不在此种情况
       curStore = {
         shop_id,
@@ -203,10 +209,16 @@ export default class CartCheckout extends Component {
       info = null
     }
 
+    const res=await getHeadShop(); 
+
     this.setState({
       curStore,
       info,
-      payType: payType || this.state.payType
+      payType: payType || this.state.payType,
+      headShop:{
+        ...res,
+        is_current:router_shop_id==0
+      }
     })
 
     let total_fee = 0
@@ -254,7 +266,7 @@ export default class CartCheckout extends Component {
   componentWillReceiveProps(nextProps) {
     const nextAddress = nextProps.address || {}
     const selfAddress = this.props.address || {}
-    console.log(nextAddress, selfAddress)
+    console.log("componentWillReceiveProps==>",nextAddress, selfAddress)
     // if (JSON.stringify(nextAddress) != "{}" && JSON.stringify(selfAddress) != "{}" && !isObjectValueEqual(nextAddress, selfAddress)
     if (!isObjectValueEqual(nextAddress, selfAddress)) {
       this.fetchAddress()
@@ -364,11 +376,12 @@ export default class CartCheckout extends Component {
   }
 
   async fetchAddress(cb) {
-    const { receiptType, curStore } = this.state
+    const { receiptType, curStore,headShop } = this.state
+    console.log("===fetchAddress===>",headShop)
     const query = {}
     if (receiptType === 'dada') {
       query.receipt_type = receiptType
-      query.city = curStore.city
+      query.city = headShop.is_current ? headShop.city : curStore.city
     }
     const { list } = await api.member.addressList(query)
     this.setState(
@@ -480,7 +493,7 @@ export default class CartCheckout extends Component {
   }
 
   async getParams() {
-    // console.log('/////////////////')
+ 
     let { isNeedPackage, pack } = this.state
 
     const {
@@ -670,9 +683,7 @@ export default class CartCheckout extends Component {
         packName,
         packDes
       }
-    })
-
-    console.log(res, 'res')
+    }) 
   }
 
   async calcOrder() {
@@ -767,7 +778,7 @@ export default class CartCheckout extends Component {
     let info = this.state.info
     let pointInfo = this.state.pointInfo
     if (items) {
-      console.log('', items)
+     
       // 从后端获取订单item
       info = {
         cart: [
@@ -845,7 +856,7 @@ export default class CartCheckout extends Component {
         express: receiptType !== 'ziti'
       },
       () => {
-        if (receiptType !== 'ziti') {
+        if (receiptType !== 'ziti') { 
           if (this.props.address) {
             this.props.onAddressChoose(null)
           } else {
@@ -1253,7 +1264,7 @@ export default class CartCheckout extends Component {
       ) {
         config = await this.h5CreateByType({
           ...params,
-          pay_type: this.state.total.freight_type === 'point' ? 'point' : 'wxpay'
+          pay_type: this.state.total.freight_type === 'point' ? 'point' : payType===PAYTYPE.ALIH5?PAYTYPE.ALIH5:'wxpay'
         })
         let redirectPath=`/subpage/pages/cashier/index?order_id=${config.order_id}`;
 
@@ -1604,8 +1615,7 @@ export default class CartCheckout extends Component {
   }
 
   // 设置初次paytype
-  initDefaultPaytype = (payType, channel) => {
-    console.log("==initDefaultPaytype==",payType,channel)
+  initDefaultPaytype = (payType, channel) => { 
     this.setState({
       defalutPaytype: payType,
       channel
@@ -1769,24 +1779,22 @@ export default class CartCheckout extends Component {
       isPackage,
       pack,
       isOpenStore,
-      defalutPaytype,
-      fixInput
+      defalutPaytype, 
+      headShop
     } = this.state
+  
     const { type, goodType, bargain_id } = this.$router.params
     const isDrug = type === 'drug'
     if (!info) {
       return <Loading />
-    }
-
-    console.log("===payType==",payType)
-
+    } 
     const couponText = !coupon
       ? ''
       : coupon.type === 'member'
       ? '会员折扣'
       : (coupon.value && coupon.value.title) || ''
     //const isBtnDisabled = !address
-    const isBtnDisabled = express ? !address : false
+    const isBtnDisabled = express ? !address : false 
     return (
       <View className='page-checkout' style={styleNames(getThemeStyle())}>
         {showAddressPicker === false ? (
@@ -1803,6 +1811,7 @@ export default class CartCheckout extends Component {
             receiptType={receiptType}
             curStore={curStore}
             isOpenStore={isOpenStore}
+            headShop={headShop}
             address={address}
             onChangReceiptType={this.handleSwitchExpress.bind(this)}
             onEidtZiti={this.handleEditZitiClick.bind(this)}

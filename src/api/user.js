@@ -26,8 +26,7 @@ export function refreshToken() {
   return req.get('/token/refresh')
 }
 
-export function reg(params) {
-  console.log("===params===req===",params)
+export function reg(params) { 
   const appid = getAppId() || ''
   return req.post('/member', {
     ...params,

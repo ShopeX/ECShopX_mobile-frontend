@@ -183,7 +183,7 @@ export default class Detail extends Component {
     // 处理定位
     const lnglat = Taro.getStorageSync('lnglat')
     if (lnglat && !lnglat.city) {
-      entry.InverseAnalysis(lnglat)
+      entry.InverseAnalysisGaode(lnglat)
     }
     this.getDetailShare()
   }
@@ -1229,7 +1229,7 @@ export default class Detail extends Component {
                   <View className='line'></View>
                   <View className='item'>
                     <View className='iconfont icon-periscope'></View>
-                    <Text>{lnglat.city}</Text>
+                    <Text>{isArray(lnglat.city) ? lnglat.city[0] : lnglat.city}</Text>
                   </View>
                 </View>
               </View>

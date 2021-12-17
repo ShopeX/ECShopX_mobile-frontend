@@ -1,13 +1,13 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { SpToast, Loading, BackToTop } from '@/components'
+import { SpToast, Loading, BackToTop, SpNewShopItem, SpCellCoupon } from '@/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, normalizeQuerys, getCurrentRoute } from '@/utils'
-import { setPageTitle, platformTemplateName } from '@/utils/platform'
-import { withBackToTop } from '@/hocs'
+import { pickBy, normalizeQuerys, getCurrentRoute, classNames,isNavbar } from '@/utils'
+import { platformTemplateName } from '@/utils/platform'
+import { withBackToTop,withPager } from '@/hocs'
 import qs from 'qs'
 import S from '@/spx'
 import {
@@ -20,7 +20,11 @@ import {
   WgtGoodsGrid,
   WgtShowcase,
   WgtSearchHome,
-  WgtFilm
+  WgtFilm,
+  WgtNearbyShop,
+  WgtStore,
+  WgtGoodsGridTab,
+  WgtGoodsFaverite
 } from '../home/wgts'
 
 import './index.scss'
@@ -28,6 +32,7 @@ import './index.scss'
 @connect((store) => ({
   store
 }))
+@withPager
 @withBackToTop
 export default class StoreIndex extends Component {
   constructor(props) {
@@ -53,21 +58,25 @@ export default class StoreIndex extends Component {
           iconPrefixClass: 'icon',
           url: '/others/pages/store/category'
         }
-      ]
+      ],
+      couponList: [],
+      fixedSearch:false,
+      likeList: []
     }
   }
 
   async componentDidMount() {
     const options = await normalizeQuerys(this.$router.params)
-    const id = options.id || options.dtid
+    const id = options.id || options.dtid; 
     if (id) {
       this.fetchInfo(id)
+      this.fetchCouponList(id) 
     }
   }
 
   componentDidShow = () => {
     Taro.getStorage({ key: 'addTipIsShow' })
-      .then(() => {})
+      .then(() => { })
       .catch((error) => {
         console.log(error)
         this.setState({
@@ -86,6 +95,21 @@ export default class StoreIndex extends Component {
     }
   }
 
+  async fetchCouponList(id) {
+    const params = {
+      page_no: 1,
+      page_size: 5,
+      end_date: 1,
+      distributor_id: id
+    }
+    const {
+      list
+    } = await api.member.homeCouponList(params)
+    this.setState({
+      couponList: list
+    })
+  }
+
   async fetchInfo(distributorId) {
     let id = ''
     let storeInfo = null
@@ -94,10 +118,12 @@ export default class StoreIndex extends Component {
     } else {
       id = await Taro.getStorageSync('curStore').distributor_id
     }
-    const { name, logo } = await api.shop.getShop({ distributor_id: id })
+    const { name, logo, scoreList, distributor_id } = await api.shop.getShop({ distributor_id: id, show_score: 1 })
     storeInfo = {
       name,
-      brand: logo
+      brand: logo,
+      scoreList,
+      distributor_id
     }
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
@@ -113,19 +139,36 @@ export default class StoreIndex extends Component {
           authStatus: true
         })
       }
+      //是否有search
+      let search=info.config.find(item=>item.name==='search')||{config:{}};
+      let fixedSearch=!!search.config.fixTop;
+
       this.setState(
         {
           wgts: info.config,
-          storeInfo: storeInfo
+          storeInfo: storeInfo,
+          fixedSearch
         },
         () => {
-          if (info.config) {
-            info.config.map((item) => {
-              if (item.name === 'setting' && item.config.faverite) {
+          this.resetPage(()=>{
+            this.setState(
+              {
+                likeList: []
+              },
+              () => {
                 this.nextPage()
               }
-            })
-          }
+            )
+          })
+        
+          // this.nextPage()
+          // if (info.config) {
+          //   info.config.map((item) => {
+          //     if (item.name === 'setting' && item.config.faverite) {
+             
+          //     }
+          //   })
+          // }
         }
       )
     } catch (e) {
@@ -135,24 +178,32 @@ export default class StoreIndex extends Component {
     }
   }
 
-  async fetch(params) {
+  // 获取猜你喜欢
+  fetch = async (params) => {  
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
       pageSize
     }
-    const { list, total_count: total } = await api.cart.likeList(query)
+    const { list, total_count: total } = await api.cart.likeList(query) 
 
     const nList = pickBy(list, {
       img: 'pics[0]',
       item_id: 'item_id',
       title: 'itemName',
-      desc: 'brief'
-    })
-
+      distributor_id: 'distributor_id',
+      origincountry_name: 'origincountry_name',
+      origincountry_img_url: 'origincountry_img_url',
+      promotion_activity_tag: 'promotion_activity',
+      type: 'type',
+      price: ({ price }) => (price / 100).toFixed(2),
+      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
+      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+      desc: 'brief', 
+    }) 
     this.setState({
       likeList: [...this.state.likeList, ...nList]
-    })
+    }) 
 
     return {
       total
@@ -194,16 +245,25 @@ export default class StoreIndex extends Component {
       showBackToTop,
       scrollTop,
       tabList,
-      localCurrent, 
+      localCurrent,
+      couponList,
+      fixedSearch,
+      likeList
     } = this.state
     const user = Taro.getStorageSync('userinfo')
-    const isPromoter = user && user.isPromoter
 
     if (!wgts || !this.props.store) {
       return <Loading />
     }
+
+    console.log("===likeList==>",likeList)
+ 
+     
     return (
-      <View className='page-store-index'>
+      <View className={classNames('page-store-index',{
+        fixedSearch,
+        'has-navbar':isNavbar()
+      })}>
         <ScrollView
           className='wgts-wrap wgts-wrap__fixed__page'
           scrollTop={scrollTop}
@@ -213,22 +273,27 @@ export default class StoreIndex extends Component {
         >
           <View className='wgts-wrap__cont'>
             <View className='store-header'>
-              <View>
-                <Image
-                  className='store-brand'
-                  src={
-                    storeInfo.brand || 'https://fakeimg.pl/120x120/FFF/CCC/?text=brand&font=lobster'
-                  }
-                />
-              </View>
-              <View className='store-name'>{storeInfo.name}</View>
+              <SpNewShopItem
+                inStore
+                info={storeInfo}
+                className={classNames(
+                  'in-shop-search'
+                )}
+              />
             </View>
+
+            <SpCellCoupon
+              couponList={couponList}
+              info={storeInfo}
+            />
+
             {wgts.map((item, idx) => {
               return (
                 <View className='wgt-wrap' key={`${item.name}${idx}`}>
                   {item.name === 'search' && (
                     <WgtSearchHome info={item} dis_id={this.$router.params.id} />
                   )}
+                  {item.name === "nearbyShop" && <WgtNearbyShop info={item} />}
                   {item.name === 'slider' && <WgtSlider info={item} />}
                   {item.name === 'film' && <WgtFilm info={item} />}
                   {item.name === 'marquees' && <WgtMarquees info={item} />}
@@ -241,12 +306,30 @@ export default class StoreIndex extends Component {
                     <WgtGoodsScroll info={item} dis_id={this.$router.params.id} />
                   )}
                   {item.name === 'goodsGrid' && (
-                    <WgtGoodsGrid info={item} dis_id={this.$router.params.id} />
+                    <WgtGoodsGrid
+                      info={item}
+                      dis_id={this.$router.params.id}
+                      index={idx}
+                      type='good-grid'
+                    />
+                  )}
+                  {item.name === 'goodsGridTab' && (
+                    <WgtGoodsGridTab
+                      info={item}
+                      index={idx}
+                      type='good-grid-tab' 
+                    />
                   )}
                   {item.name === 'showcase' && <WgtShowcase info={item} />}
+                  {item.name === 'store' && (
+                    <WgtStore info={item} />
+                  )}
                 </View>
               )
             })}
+
+            <WgtGoodsFaverite info={likeList} />
+
           </View>
         </ScrollView>
 

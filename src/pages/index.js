@@ -19,7 +19,7 @@ import { platformTemplateName, setPageTitle } from '@/utils/platform'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
-import { Tracker } from '@/service'
+import { Tracker } from '@/service' 
 import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
 import HomeWgts from './home/comps/home-wgts'
 import Automatic from './home/comps/automatic'
@@ -59,7 +59,7 @@ export default class Home extends Component {
       curStore: {
         distributor_id: 0
       },
-      positionStatus: false,
+      isFixed: false,
       automatic: null,
       showAuto: true,
       // top: 0,
@@ -82,14 +82,16 @@ export default class Home extends Component {
       currentShowAdvert: 0,
       all_card_list: [],
       visible: false,
-      PrivacyConfirmModalVisible: false
+      PrivacyVisible: false,
+      location_detail: {}
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.protocolUpdateTime();
     this.getShareSetting();
     this.isShowTips();
+    // this.refreshHeaderHome();
   }
 
   // 获取隐私政策时间
@@ -102,7 +104,7 @@ export default class Home extends Component {
 
     if ((!String(privacy_time) || privacy_time != update_time) && isLocal) {
       this.setState({
-        PrivacyConfirmModalVisible: true
+        PrivacyVisible: true
       })
     } else {
       this.getHomeSetting()
@@ -110,7 +112,7 @@ export default class Home extends Component {
  
   }
   // 隐私协议
-  PrivacyConfirmModalonChange = async (type) => {
+  onPrivacyChange = async (type) => {
     if (type === 'agree') {
       const result = await api.wx.getPrivacyTime()
       const { update_time } = result
@@ -143,7 +145,7 @@ export default class Home extends Component {
       )
     }
     this.setState({
-      PrivacyConfirmModalVisible: false
+      PrivacyVisible: false
     })
   }
 
@@ -163,7 +165,7 @@ export default class Home extends Component {
   }
 
   componentDidShow() {
-    setPageTitle('微商城')
+    // setPageTitle('微商城')
     this.showInit()
     this.isShoppingGuide()
     this.getDistributionInfo()
@@ -172,6 +174,7 @@ export default class Home extends Component {
     // 购物车数量
     this.fetchCartCount()
     this.getPointSetting()
+    this.refreshHeaderHome();
     if (S.getAuthToken()) {
       this.getCurrentGrad()
     }
@@ -394,8 +397,8 @@ export default class Home extends Component {
     const options = this.$router.params
     options.isStore = is_open_store_status
     const res = await entry.entryLaunch(options, isNeedLoacate)
-    const { store } = res
-    console.log('store===========', store)
+    Taro.eventCenter.trigger('lnglat-success')
+    const { store } = res  
     if (!isArray(store)) {
       this.setState(
         {
@@ -448,6 +451,12 @@ export default class Home extends Component {
     const info = await req.get(url)
     const wgts = isArray(info) ? [] : info.config
     const wgtsList = isArray(info) ? [] : info.list
+    if (wgts.length > 0) {
+      const searchWgt = wgts.find((item) => item.name == 'search')
+      this.setState({
+        isFixed: searchWgt && searchWgt.config && searchWgt.config.fixTop
+      })
+    }
     this.setState(
       {
         wgts: wgts.length > 5 ? wgts.slice(0, 5) : wgts,
@@ -463,10 +472,6 @@ export default class Home extends Component {
         }, 500)
         Taro.stopPullDownRefresh()
         if (!isArray(info) && info.config) {
-          const searchWgt = info.config.find((item) => item.name == 'search')
-          this.setState({
-            positionStatus: searchWgt && searchWgt.config && searchWgt.config.fixTop
-          })
           if (is_open_recommend === 1) {
             this.props.onUpdateLikeList(true)
             this.resetPage()
@@ -607,7 +612,7 @@ export default class Home extends Component {
     })
   }
 
-  handleSwitchAdvert = (showIdx) => {
+  handleSwitchAdvert = (showIdx) => { 
     this.setState({
       currentShowAdvert: ++showIdx
     })
@@ -668,6 +673,15 @@ export default class Home extends Component {
     this.setState({ visible })
   }
 
+  refreshHeaderHome = () => {
+    Taro.eventCenter.on('lnglat-success', () => {
+      this.setState({
+        location_detail: Taro.getStorageSync('lnglat') || {}
+      })
+    })
+    // const location_detail = Taro.getStorageSync('lnglat') || {}
+  }
+
   render() {
     const {
       show_tabBar,
@@ -679,7 +693,7 @@ export default class Home extends Component {
       showAuto,
       featuredshop,
       wgts,
-      positionStatus,
+      isFixed,
       curStore,
       is_open_recommend,
       likeList,
@@ -690,19 +704,21 @@ export default class Home extends Component {
       show_official,
       visible,
       all_card_list,
-      PrivacyConfirmModalVisible
+      PrivacyVisible,
+      location_detail
     } = this.state
 
     const pages = Taro.getCurrentPages()
     // 广告屏
     const { showAdv } = this.props
     // 是否是标准版
-    const isStandard = process.env.APP_PLATFORM === 'standard' && !is_open_store_status
-    // 否是fixed
-    const isFixed = positionStatus
+    const isStandard = !is_open_store_status
+
+    // 是否同意获取位置信息
+    // const location_detail = Taro.getStorageSync('lnglat') || {}
 
     return (
-      <View className='page-index'>
+      <View className='page-index padtop'>
         {is_open_official_account === 1 && show_official && (
           <AccountOfficial
             isClose
@@ -710,14 +726,14 @@ export default class Home extends Component {
             onClick={this.handleOfficialClose.bind(this)}
           ></AccountOfficial>
         )}
-        {isStandard && curStore && (
+        {/* {isStandard && location_detail && location_detail.latitude && ( */}
           <HeaderHome
-            store={curStore}
+            store={location_detail}
             onClickItem={this.goStore.bind(this)}
             isOpenScanQrcode={is_open_scan_qrcode}
             isOpenStoreStatus={is_open_store_status}
           />
-        )}
+        {/* )} */}
         <View
           className={classNames(
             'wgts-wrap',
@@ -730,7 +746,7 @@ export default class Home extends Component {
         >
           {/* 挂件内容和猜你喜欢 */}
           <View className='wgts-wrap__cont'>
-            <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} />
+            <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} refreshHeaderHome={this.refreshHeaderHome} />
             {!isAlipay && likeList.length > 0 && is_open_recommend == 1 && (
               <View className='faverite-list'>
                 <WgtGoodsFaverite info={likeList} />
@@ -792,10 +808,10 @@ export default class Home extends Component {
         <CouponModal visible={visible} list={all_card_list} onChange={this.handleCouponChange} />
         {/* 隐私弹窗 */}
         <PrivacyConfirmModal
-          visible={PrivacyConfirmModalVisible}
-          onChange={this.PrivacyConfirmModalonChange}
+          visible={PrivacyVisible}
+          onChange={this.onPrivacyChange}
           isPhone={false}
-        ></PrivacyConfirmModal>
+        />
       </View>
     )
   }

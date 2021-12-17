@@ -418,7 +418,9 @@ export default class RecommendList extends Component {
             list: []
           },
           () => {
-            this.nextPage()
+            setTimeout(() => {
+              this.nextPage()
+            }, 0)
           }
         )
       }
