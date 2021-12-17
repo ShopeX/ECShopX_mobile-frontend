@@ -1,5 +1,5 @@
 import { View, Text, Image, ScrollView } from '@tarojs/components'
-import Taro, { memo, useState, useEffect } from '@tarojs/taro'
+import Taro, { memo, useState, useEffect,useDidShow,useRef } from '@tarojs/taro'
 import api from '@/api'
 import entryLaunchFun from '@/utils/entryLaunch'
 import { SpNoShop, CusNoPosition } from '@/components'
@@ -7,6 +7,10 @@ import { getThemeStyle, styleNames } from '@/utils'
 import './nearby-shop.scss'
 
 const WgtNearbyShop = (props) => {
+    // 只会返回时执行一次 
+    useDidShow(()=>{
+        init();
+    },[])
 
     const { info = null, refreshHeaderHome } = props
     if (!info) return
@@ -15,10 +19,12 @@ const WgtNearbyShop = (props) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [nearbyShop, setNearbyShop] = useState([])
     const [isLocal, setIsLocal] = useState(false);
+    const [scrollLeft, setScrollLeft] = useState(0);
 
     useEffect(() => {
         init();
     }, [activeIndex])
+
 
     const init = async () => {
         const { latitude, longitude } = Taro.getStorageSync('lnglat')
@@ -37,6 +43,7 @@ const WgtNearbyShop = (props) => {
         }
         const result = await api.wgts.getNearbyShop(obj);
         setNearbyShop(result.list)
+        setScrollLeft(0+Math.random()) //在小程序端必须这么写才能回到初始值
     }
 
     const showMore = () => {
@@ -62,6 +69,7 @@ const WgtNearbyShop = (props) => {
     Taro.eventCenter.on('lnglat-success', () => {
         console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
     })
+
     return (
         <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
             {base.title && (
@@ -86,25 +94,29 @@ const WgtNearbyShop = (props) => {
                     }
                 </ScrollView>
                 {
-                    isLocal ? <ScrollView scrollX className='shopList'>
+                    isLocal ? <ScrollView scrollX className='shopList' scrollLeft={scrollLeft}>
                         {
                             nearbyShop.length > 0 ? nearbyShop.slice(0,10).map((item) => (
                                 (
                                     <View className='shop' key={item.distributor_id} onClick={e => handleStoreClick(item.distributor_id)}>
                                         <View className='shopbg'>
                                             <Image mode='scaleToFill' className='shop_img'
-                                                src={item.banner || `${process.env.APP_IMAGE_CDN}/shop_default_bg.png`} width={200}></Image>
-
-                                            <Image mode='scaleToFill' className='shop_logo'
-                                                src={item.logo || `${process.env.APP_IMAGE_CDN}/shop_default_logo.png`} width={70}></Image>
-
+                                                src={item.banner || `${process.env.APP_IMAGE_CDN}/shop_default_bg.png`}></Image>
+                                            <View className='logo'>
+                                                <Image mode='scaleToFill' className='shop_logo'
+                                                    src={item.logo || `${process.env.APP_IMAGE_CDN}/shop_default_logo.png`}></Image>
+                                            </View>
+                                            
                                         </View>
 
                                         <View className='shop_name'>{item.name}</View>
                                         {
                                             base.show_coupon ?
-                                                item.discountCardList[0] ? <View className='shop_coupon' style={{ border: '1PX solid #f4811f' }} >{item.discountCardList[0].title}</View>
-                                                    : <View className='shop_coupon' ></View> : ''
+                                                (item.discountCardList[0] ? 
+                                                    <View className='shop_coupon border'>{item.discountCardList[0].title}</View>
+                                                    : 
+                                                    <View className='shop_coupon'></View>)
+                                                : ''
                                         }
                                     </View>
                                 )

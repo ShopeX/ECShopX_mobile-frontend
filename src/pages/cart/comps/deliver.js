@@ -124,7 +124,7 @@ export default class Deliver extends Component {
             <View className='otherInfo'>
               <View className='text-muted light'>门店营业时间：{curStore.hour}</View>
               <View className='text-muted'>
-                联系电话：<Text className='phone'>{curStore.phone}</Text>
+                联系电话：<Text className='phone'>{headShop.is_current?headShop.phone:curStore.phone}</Text>
               </View>
             </View>
           </View>

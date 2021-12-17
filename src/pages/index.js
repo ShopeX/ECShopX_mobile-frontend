@@ -398,7 +398,7 @@ export default class Home extends Component {
     options.isStore = is_open_store_status
     const res = await entry.entryLaunch(options, isNeedLoacate)
     Taro.eventCenter.trigger('lnglat-success')
-    const { store } = res 
+    const { store } = res  
     if (!isArray(store)) {
       this.setState(
         {

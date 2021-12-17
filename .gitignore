@@ -10,3 +10,4 @@ sitemap.json
 dist/
 .app_modules.*
 .npmrc
+.husky

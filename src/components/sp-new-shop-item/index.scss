@@ -16,6 +16,7 @@ $prefixCls:'sp-component-newshopitem';
 
         flex-direction: column;
         padding:32px 16px;
+        @include hairline(#DDDDDD,0,bottom);
 
         .#{$prefixCls}-top{
             display: flex;
@@ -152,7 +153,16 @@ $prefixCls:'sp-component-newshopitem';
 
         &-bottom{
             .activity-line-one{
-                margin-top:14px;
+                margin-top:14px; 
+            }
+            .activity-line-one, .activity-line-two{
+                display: flex;
+                
+                .left{
+                    width: 550px;
+                    flex-shrink: 0;
+                    flex-grow: 0;
+                }
                 .right{
                     flex:1;
                     .right-arrow{
@@ -169,15 +179,6 @@ $prefixCls:'sp-component-newshopitem';
                             }
                         } 
                     }
-                }
-            }
-            .activity-line-one, .activity-line-two{
-                display: flex;
-                
-                .left{
-                    width: 550px;
-                    flex-shrink: 0;
-                    flex-grow: 0;
                 }
                 
             } 
@@ -210,7 +211,11 @@ $prefixCls:'sp-component-newshopitem';
                     }
 
                 } 
+                &.noDiscount{
+                    margin-top:14px;
+                }
             }
+            
         }
         
     }

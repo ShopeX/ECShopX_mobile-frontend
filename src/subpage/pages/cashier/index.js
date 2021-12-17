@@ -38,7 +38,7 @@ export default class Cashier extends Component {
   }
 
   async fetch() {
-    const { order_id,pay_type } = this.$router.params
+    const { order_id,pay_type,id } = this.$router.params
 
     let env = ''
     if (browser.weixin) {
@@ -46,7 +46,7 @@ export default class Cashier extends Component {
     }
 
     Taro.showLoading()
-    const orderInfo = await api.cashier.getOrderDetail(order_id)
+    const orderInfo = await api.cashier.getOrderDetail(order_id||id)
 
     const info = pickBy(orderInfo.orderInfo, {
       order_id: 'order_id',
