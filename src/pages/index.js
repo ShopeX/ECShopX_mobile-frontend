@@ -106,10 +106,8 @@ export default class Home extends Component {
       this.setState({
         PrivacyVisible: true
       })
-    } else {
-      this.getHomeSetting()
     }
- 
+    this.getHomeSetting()
   }
   // 隐私协议
   onPrivacyChange = async (type) => {
@@ -117,7 +115,7 @@ export default class Home extends Component {
       const result = await api.wx.getPrivacyTime()
       const { update_time } = result
 
-      Taro.setStorageSync('PrivacyUpdate_time', update_time)
+      await Taro.setStorageSync('PrivacyUpdate_time', update_time)
       this.getHomeSetting()
     } else {
       Taro.removeStorageSync('PrivacyUpdate_time')
@@ -396,7 +394,8 @@ export default class Home extends Component {
     const isNeedLoacate = is_open_wechatapp_location == 1
     const options = this.$router.params
     options.isStore = is_open_store_status
-    const res = await entry.entryLaunch(options, isNeedLoacate)
+    const privacy_time = Taro.getStorageSync('PrivacyUpdate_time')
+    const res = await entry.entryLaunch(options, isNeedLoacate, privacy_time)
     Taro.eventCenter.trigger('lnglat-success')
     const { store } = res  
     if (!isArray(store)) {

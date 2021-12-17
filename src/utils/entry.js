@@ -9,7 +9,7 @@ import qs from 'qs'
 
 // 请在onload 中调用此函数，保证千人千码跟踪记录正常
 // 用户分享和接受参数处理
-async function entryLaunch(data, isNeedLocate) {
+async function entryLaunch(data, isNeedLocate, privacy_time) {
   let options = null
   if (data.scene) {
     const scene = decodeURIComponent(data.scene)
@@ -53,7 +53,7 @@ async function entryLaunch(data, isNeedLocate) {
 
   // 如果需要定位,并且店铺无效，
   // if (!dtidValid) { 
-  store = await getLocal(isNeedLocate)
+  store = await getLocal(isNeedLocate, privacy_time)
   // }
 
   if (!store.status) {
@@ -192,7 +192,7 @@ async function getLocalSetting() {
 //     distributor_id:0
 //   }
 //   Taro.setStorageSync('curStore', store)
-async function getLocal(isNeedLocate) {
+async function getLocal(isNeedLocate, privacy_time) {
   let store = null
   const positionStatus = await getLocalSetting()
   if (!positionStatus) {
@@ -207,9 +207,12 @@ async function getLocal(isNeedLocate) {
       }
       store = await api.shop.getShop(param)
     } else {
+      let locationData = null
+      if (String(privacy_time)) {
+        locationData = await entryLaunchFun.getLocationInfo()
+        if (locationData.latitude) await InverseAnalysisGaode(locationData)
+      }
       // const locationData = await getLoc()
-      const locationData = await entryLaunchFun.getLocationInfo()
-      if (locationData.latitude) await InverseAnalysisGaode(locationData)
       if (locationData !== null && locationData !== '') {
         let param = {}
         if (isNeedLocate && positionStatus) {
