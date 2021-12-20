@@ -168,7 +168,7 @@ export default class CartCheckout extends Component {
 
       return
     }
-    const { cart_type, pay_type: payType } = this.$instance.router.params
+    const { cart_type, pay_type: payType, shop_id: router_shop_id } = this.$instance.router.params
     let curStore = null,
       info = null
 
@@ -204,7 +204,7 @@ export default class CartCheckout extends Component {
       info = null
     }
 
-    const res=await getHeadShop(); 
+    const res= await getHeadShop(); 
 
     this.setState({
       curStore,
@@ -1726,8 +1726,9 @@ export default class CartCheckout extends Component {
       isPackage,
       pack,
       isOpenStore,
-      defalutPaytype
-    } = this.state
+      defalutPaytype,
+      headShop,
+    } = this.state;
     const { type, goodType, bargain_id } = this.$instance.router.params
     const isDrug = type === 'drug'
     if (!info) {

@@ -24,6 +24,8 @@ export function setPageTitle(title) {
 
 export const platformTemplateName = "yykweishop";
 
+export const payment_platform = "h5";
+
 export const transformPlatformUrl = url => {
   return url;
 };
