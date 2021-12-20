@@ -6,7 +6,7 @@
 export default function withPager(Component) {
   return class WithPagerComponent extends Component {
     constructor(props) {
-      super(props)
+      super(props) 
       const { pageSize = 10, pageNo = 0, pageTotal = 0 } = props || {}
 
       const page = {
@@ -17,15 +17,13 @@ export default function withPager(Component) {
         page_size: pageSize
       }
 
-      this.state.page = page
+      this.state.page = page 
     }
 
-    nextPage = async () => { 
- 
-
-      const { page } = this.state
+    nextPage = async () => {  
+      const { page } = this.state  
       if (!page.hasNext || page.isLoading) return
-
+  
       // 上拉触底
       if (page.page_no > 0) {
         Tracker.dispatch('PAGE_REACH_BOTTOM')
@@ -43,8 +41,7 @@ export default function withPager(Component) {
       })
       if (!total || curPage >= Math.ceil(+total / page_size)) {
         page.hasNext = false
-      }
- 
+      } 
       this.setState({
         page: {
           ...page,
@@ -58,11 +55,12 @@ export default function withPager(Component) {
     resetPage(cb = () => {}) { 
       const page = {
         ...(this.state.page || {}),
+        page_size:10,
         page_no: 0,
         total: 0,
         isLoading: false,
         hasNext: true
-      }
+      } 
       this.setState({ page }, cb)
     }
   }

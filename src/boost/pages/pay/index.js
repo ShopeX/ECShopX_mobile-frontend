@@ -34,8 +34,7 @@ export default class Pay extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.address !== this.props.address) {
-      console.log(nextProps.address)
+    if (nextProps.address !== this.props.address) { 
       this.handleChangeAddress(nextProps.address)
     }
   }

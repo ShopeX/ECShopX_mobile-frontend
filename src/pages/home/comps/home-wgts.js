@@ -79,7 +79,7 @@ export default class HomeWgts extends Component {
   }
 
   render() {
-    const { wgts } = this.props
+    const { wgts,refreshHeaderHome } = this.props
     const { screenWidth } = this.state
 
     console.log('home-wgts23', wgts)
@@ -129,15 +129,15 @@ export default class HomeWgts extends Component {
                 onLoadMore={this.handleLoadMore}
               />
             )}
-            {item.name === "showcase" && <WgtShowcase info={item} />}
-            {item.name === "headline" && <WgtHeadline info={item} />}
-            {item.name === "img-gif" && <WgtImgGif info={item} />}
-            {item.name === "hotTopic" && <WgtHotTopic info={item} />}
-            {item.name === "floorImg" && <WgtFloorImg info={item} />}
-            {item.name === "nearbyShop" && <WgtNearbyShop info={item} />}
-            {/* {process.env.APP_PLATFORM !== 'standard' && item.name === 'store' && (
+            {item.name === 'showcase' && <WgtShowcase info={item} />}
+            {item.name === 'headline' && <WgtHeadline info={item} />}
+            {item.name === 'img-gif' && <WgtImgGif info={item} />}
+            {item.name === 'hotTopic' && <WgtHotTopic info={item} />}
+            {item.name === 'floorImg' && <WgtFloorImg info={item} />}
+            {item.name === 'store' && (
               <WgtStore info={item} />
-            )} */}
+            )}
+            {item.name === "nearbyShop" && <WgtNearbyShop info={item} refreshHeaderHome={refreshHeaderHome}/>}
           </View>
         ))}
       </View>

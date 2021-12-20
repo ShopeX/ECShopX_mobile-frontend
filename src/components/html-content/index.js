@@ -19,9 +19,8 @@ export default class HtmlContent extends Component {
   }
 
   componentDidMount () {
-    if (isAlipay) {
-      const { content } = this.props
-      console.log('--this.$scope--',this.$scope)
+    if (isWeixin||isAlipay) {
+      const { content } = this.props 
       // console.log(content, 24)
       wxParse.wxParse('article', 'html', content, this.$scope, 5)
     }
@@ -29,9 +28,7 @@ export default class HtmlContent extends Component {
 
   render () {
     const { className } = this.props
-    const classes = classNames('html-content', className)
-
-    console.log("--process.env.TARO_ENV === 'weapp'--",process.env.TARO_ENV)
+    const classes = classNames('html-content', className) 
 
     return process.env.TARO_ENV === 'alipay'
       ? (

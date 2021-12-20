@@ -70,6 +70,9 @@ page {
     background: #fff;
     padding: 0 50px;
     overflow: hidden;
+    /*  #ifdef  h5  */
+    width: 87%;
+    /*  #endif  */
     .btn {
       width: 100%;
       height: 80px;
@@ -79,6 +82,9 @@ page {
       border-radius: 40px;
       color: #333;
       border: 2px solid #bbb;
+      /*  #ifdef  h5  */
+      width: 87%;
+      /*  #endif  */
       // &.loginOut {
       //   width: 396px;
       //   padding-right: 176px;

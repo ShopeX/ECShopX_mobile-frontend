@@ -6,7 +6,7 @@ import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar } from '@/components'
 import { AtCountdown } from 'taro-ui'
 import { connect } from 'react-redux'
 import api from '@/api'
-import { pickBy } from '@/utils'
+import { classNames, pickBy,isNavbar } from '@/utils'
 import { getDistributorId } from '@/utils/helper'
 
 import './seckill-goods-list.scss'
@@ -152,7 +152,9 @@ export default class SeckillGoodsList extends Component {
     const { colors } = this.props
     const { list, imgurl, showBackToTop, scrollTop, page, timer, status } = this.state
     return (
-      <View className='page-seckill-goods'>
+      <View className={classNames('page-seckill-goods',{
+        'has-navbar':isNavbar()
+      })}>
         <SpNavBar title='微商城' />
         <ScrollView
           className='seckill-goods__scroll'

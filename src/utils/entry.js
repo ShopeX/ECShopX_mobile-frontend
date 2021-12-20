@@ -3,13 +3,14 @@ import api from "@/api";
 import req from "@/api/req";
 import S from "@/spx";
 import { getOpenId } from '@/utils/youshu'
-import { payTypeField } from '@/utils';
-import qs from 'qs';
+import { payTypeField } from '@/utils'
+import entryLaunchFun from '@/utils/entryLaunch'
+import qs from 'qs'
 
 // 请在onload 中调用此函数，保证千人千码跟踪记录正常
 // 用户分享和接受参数处理
-async function entryLaunch(data, isNeedLocate) {
-  let options = null;
+async function entryLaunch(data, isNeedLocate, privacy_time) {
+  let options = null
   if (data.scene) {
     const scene = decodeURIComponent(data.scene);
     //格式化二维码参数
@@ -37,9 +38,9 @@ async function entryLaunch(data, isNeedLocate) {
 
 
   // 如果需要定位,并且店铺无效，
-  if (!dtidValid) {
-    store = await getLocal(isNeedLocate);
-  }
+  // if (!dtidValid) { 
+  store = await getLocal(isNeedLocate, privacy_time)
+  // }
 
   if (!store.status) {
     options.store = store;
@@ -181,15 +182,16 @@ async function getLocalSetting() {
   } else {
     return false;
   }
+  // return true
 }
 
 //   store = {
 //     distributor_id:0
 //   }
 //   Taro.setStorageSync('curStore', store)
-async function getLocal(isNeedLocate) {
-  let store = null;
-  const positionStatus = await getLocalSetting();
+async function getLocal(isNeedLocate, privacy_time) {
+  let store = null
+  const positionStatus = await getLocalSetting()
   if (!positionStatus) {
     store = await api.shop.getShop();
   } else {
@@ -202,10 +204,14 @@ async function getLocal(isNeedLocate) {
       }
       store = await api.shop.getShop(param);
     } else {
-      // debugger
-      const locationData = await getLoc();
-      if (locationData !== null && locationData !== "") {
-        let param = {};
+      let locationData = null
+      if (String(privacy_time)) {
+        locationData = await entryLaunchFun.getLocationInfo()
+        if (locationData.latitude) await InverseAnalysisGaode(locationData)
+      }
+      // const locationData = await getLoc()
+      if (locationData !== null && locationData !== '') {
+        let param = {}
         if (isNeedLocate && positionStatus) {
           param.lat = locationData.latitude;
           param.lng = locationData.longitude;
@@ -228,22 +234,22 @@ async function getLocal(isNeedLocate) {
 }
 
 async function getLoc() {
-  if (1) {
-  // if (process.env.TARO_ENV === "weapp"||process.env.TARO_ENV === "alipay") {
-    return await Taro.getLocation({ type: "gcj02" }).then(
-      async locationData => {
-        await InverseAnalysis(locationData);
-        return locationData;
+  if (process.env.TARO_ENV === 'weapp' || process.env.TARO_ENV === 'alipay') {
+    return await Taro.getLocation({ type: 'gcj02' }).then(
+      async (locationData) => {
+        await InverseAnalysisGaode(locationData)
+        // await InverseAnalysis(locationData)
+        return locationData
       },
       () => {
         return null;
       }
     );
   } else {
-    // if (process.env.APP_PLATFORM === "standard") {
-    //   return getWebLocal().catch(() => "定位错误");
+    // if (process.env.APP_PLATFORM === 'standard') {
+    // return getWebLocal().catch(() => '定位错误')
     // } else {
-    //   return null;
+    //   return null
     // }
   }
 }
@@ -263,37 +269,37 @@ async function getStoreStatus() {
 }
 
 // web定位获取
-function getWebLocal(isSetStorage = true) {
-  const { qq } = window;
-  // let geolocation = new qq.maps.Geolocation('PVUBZ-E24HK-7SXJY-AGQZC-DN3IT-6EB6V', 'oneX新零售门店定位')
-  let geolocation = new qq.maps.Geolocation('PVUBZ-E24HK-7SXJY-AGQZC-DN3IT-6EB6V', 'oneX新零售门店定位');
-  return new Promise((resolve, reject) => {
-    geolocation.getLocation(
-      r => {
-        console.log("您的位置：" + r.lng + "," + r.lat);
-        const param = {
-          latitude: r.lat,
-          longitude: r.lng
-        };
-        if (isSetStorage) {
-          Taro.setStorage({ key: "lnglat", data: param });
-        }
-        resolve(param);
-      },
-      () => {
-        console.log("定位失败");
-        Taro.showToast({
-          icon: "none",
-          title: "定位失败"
-        });
-        reject("");
-      },
-      {
-        timeout: 3000
-      }
-    );
-  });
-}
+// function getWebLocal(isSetStorage = true) {
+//   const { qq } = window
+//   // let geolocation = new qq.maps.Geolocation('PVUBZ-E24HK-7SXJY-AGQZC-DN3IT-6EB6V', 'oneX新零售门店定位')
+//   let geolocation = new qq.maps.Geolocation(process.env.APP_MAP_KEY, process.env.APP_MAP_NAME)
+//   return new Promise((resolve, reject) => {
+//     geolocation.getLocation(
+//       (r) => {
+//         console.log('您的位置：' + r.lng + ',' + r.lat)
+//         const param = {
+//           latitude: r.lat,
+//           longitude: r.lng
+//         }
+//         if (isSetStorage) {
+//           Taro.setStorage({ key: 'lnglat', data: param })
+//         }
+//         resolve(param)
+//       },
+//       () => {
+//         console.log('定位失败')
+//         Taro.showToast({
+//           icon: 'none',
+//           title: '定位失败'
+//         })
+//         reject('')
+//       },
+//       {
+//         timeout: 3000
+//       }
+//     )
+//   })
+// }
 // 新增千人千码跟踪记录
 function trackViewNum(monitor_id, source_id) {
   let _session = Taro.getStorageSync("_session");
@@ -339,16 +345,73 @@ function parseUrlStr(urlStr) {
 }
 
 // 逆解析地址
-async function InverseAnalysis(locationData) {
-  const { latitude, longitude } = locationData;
+// async function InverseAnalysis(locationData) {
+//   const { latitude, longitude } = locationData
+//   let cityInfo = await Taro.request({
+//     url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${process.env.APP_MAP_KEY}`
+//   })
+//   if (cityInfo.data.result) {
+//     Taro.setStorageSync('lnglat', {
+//       ...locationData,
+//       ...cityInfo.data.result.address_component
+//     })
+//   }
+// }
+
+// 高德地图根据地址解析经纬度
+async function positiveAnalysisGaode (locationData) {
+  // let MAP_KEY = null
+  // if (process.env.TARO_ENV === 'weapp') {
+  //   const { map_key } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+  //   MAP_KEY = map_key
+  // } else {
+  //   MAP_KEY = Taro.getStorageSync('gaode_map_key') || {}
+  // }
+  const { addressdetail: address } = locationData
   let cityInfo = await Taro.request({
-    url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${'PVUBZ-E24HK-7SXJY-AGQZC-DN3IT-6EB6V'}`
-  } );
-  if ( cityInfo.data.result ) {
-    Taro.setStorageSync( "lnglat", {
+    url: `https://restapi.amap.com/v3/geocode/geo`,
+    data:{
+      key: process.env.APP_MAP_KEY,
+      address,
+    }
+  })
+  if (cityInfo.data.status == 1) {
+    const { geocodes } = cityInfo.data
+    Taro.setStorageSync('lnglat', {
+      ...geocodes[0],
+      longitude: +geocodes[0].location.split(',')[0],
+      latitude: +geocodes[0].location.split(',')[1],
+      addressdetail: geocodes[0].formatted_address
+    })
+    Taro.eventCenter.trigger('lnglat-success')
+  }
+}
+
+// 高德地图根据经纬度解析地址
+async function InverseAnalysisGaode(locationData){
+  // let MAP_KEY = null
+  // if (process.env.TARO_ENV === 'weapp') {
+  //   const { map_key } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+  //   MAP_KEY = map_key
+  // } else {
+  //   MAP_KEY = Taro.getStorageSync('gaode_map_key') || {}
+  // }
+  const { latitude, longitude } = locationData
+  let cityInfo = await Taro.request({
+    url: `https://restapi.amap.com/v3/geocode/regeo`,
+    data:{
+      key: process.env.APP_MAP_KEY,
+      location:`${longitude},${latitude}`, 
+    }
+  }); 
+  console.log("===cityInfowjb2===>",cityInfo,process.env.APP_MAP_KEY,locationData,process.env)
+  if (cityInfo.data.status == 1) {
+    Taro.setStorageSync('lnglat', {
       ...locationData,
-      ...cityInfo.data.result.address_component
+      ...cityInfo.data.regeocode.addressComponent,
+      addressdetail: cityInfo.data.regeocode.formatted_address
     } );
+    Taro.eventCenter.trigger('lnglat-success')
   }
 }
 
@@ -357,8 +420,10 @@ export default {
   getLocal,
   getLoc,
   getLocalSetting,
-  getWebLocal,
-  InverseAnalysis,
+  // getWebLocal,
+  // InverseAnalysis,
+  InverseAnalysisGaode,
+  positiveAnalysisGaode,
   getStoreStatus,
   logScene
 };

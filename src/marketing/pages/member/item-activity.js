@@ -99,7 +99,7 @@ export default class ItemActivity extends Component {
             })}
             {page.isLoading && <Loading>正在加载...</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>您还未报名任何活动哦，快去报名吧!</SpNote>
+              <SpNote isUrl img={`${process.env.APP_IMAGE_CDN}/empty_activity.png`}>您还未报名任何活动哦，快去报名吧!</SpNote>
             )}
           </View>
         </ScrollView>

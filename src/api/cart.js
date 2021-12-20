@@ -69,9 +69,8 @@ export function coupons (params) {
   return req.get('/user/newGetCardList', params)
 }
 
-export function likeList (params) {
-   
-  // const distributor_id=getDistributorId();
+export function likeList(params) {
+  const distributor_id = process.env.APP_PLATFORM === 'standard' ? getDistributorId() :  '';
 
   return req.get('/promotions/recommendlike', {
     // distributor_id,

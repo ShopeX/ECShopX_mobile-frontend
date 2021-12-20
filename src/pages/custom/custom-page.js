@@ -80,7 +80,7 @@ export default class HomeIndex extends Component {
     const { id } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}&id=${id}` : `?id=${id}`
-    console.log(query)
+ 
     return {
       title: shareInfo.page_share_title,
       imageUrl: shareInfo.page_share_imageUrl,

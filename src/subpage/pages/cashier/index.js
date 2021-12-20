@@ -45,15 +45,15 @@ export default class Cashier extends Component {
   }
 
   async fetch() {
-    const { order_id, pay_type } = this.$instance.router.params;
+    const { order_id,pay_type,id } = this.$router.params
 
     let env = "";
     if (browser.weixin) {
       env = "WX";
     }
 
-    Taro.showLoading();
-    const orderInfo = await api.cashier.getOrderDetail(order_id);
+    Taro.showLoading()
+    const orderInfo = await api.cashier.getOrderDetail(order_id||id)
 
     const info = pickBy(orderInfo.orderInfo, {
       order_id: "order_id",
@@ -73,11 +73,8 @@ export default class Cashier extends Component {
   }
 
   handleClickBack = () => {
-    const { order_type } = this.state.info;
-    const url =
-      order_type === "recharge"
-        ? "/pages/member/pay"
-        : "/pages/trade/list?redrict=home";
+    const { order_type,order_id } = this.state.info
+    const url = order_type === 'recharge' ? '/pages/member/pay' : `/subpage/pages/trade/detail?id=${order_id}`
 
     Taro.redirectTo({
       url,

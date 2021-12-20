@@ -1,7 +1,7 @@
 {
 	"name": "ecshopx-vshop",
 	"app_name": "ecshopx",
-	"version": "2.0.2",
+	"version": "2.1.1",
 	"private": true,
 	"description": "taro app for bbc",
 	"scripts": {
@@ -20,7 +20,8 @@
 		"dev:tt": "npm run build:tt -- --watch",
 		"dev:h5": "npm run build:h5 -- --watch",
 		"dev:rn": "npm run build:rn -- --watch",
-		"release:h5": "RELEASE=h5 npm run build:h5"
+		"release:h5": "RELEASE=h5 npm run build:h5",
+		"lint": "prettier-eslint 'src/**/*.{js,jsx}' --write"
 	},
 	"author": "",
 	"license": "MIT",

@@ -111,8 +111,7 @@ export default class SearchBar extends Component {
     })
   }
 
-  handleClickHotItem = () => {
-    console.log('热门搜索', 100)
+  handleClickHotItem = () => { 
   }
 
   render() {

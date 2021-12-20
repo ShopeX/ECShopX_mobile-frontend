@@ -16,7 +16,7 @@
         display: inline-block;
       }
       .at-search-bar {
-        padding-right: 30px !important;
+        padding: 0px 30px !important;
       }
       .search-input {
         box-shadow: none;
@@ -78,6 +78,7 @@
     }
     &__scroll {
       @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 10, $tabbar-height + floor($edge-margin / 2));
+      top: 155px;
     }
     &__type-grid {
       display: flex;

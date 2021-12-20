@@ -69,7 +69,7 @@ export default class GoodsItem extends Component {
       isPointitem,
       showNewGift
     } = this.props
-    // console.log('this.props',this.props)
+ 
 
     if (!info) {
       return null

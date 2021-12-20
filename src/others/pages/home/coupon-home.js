@@ -101,7 +101,8 @@ export default class CouponHome extends Component {
       description: 'description',
       use_bound: 'use_bound',
       send_begin_time: 'send_begin_time',
-      send_end_time: 'send_end_time'
+      send_end_time: 'send_end_time',
+      distributor_list:'distributor_list'
     })
     nList.map((item) => {
       if (item.get_limit - item.user_get_num <= 0) {
@@ -120,7 +121,25 @@ export default class CouponHome extends Component {
     return { total }
   }
 
-  handleClickNews = (card_item, idx) => {
+  handleClickNews = (card_item, idx) => { 
+    console.log("===handleClickNews===>",card_item)
+    if(card_item.getted===1){
+      //已领取
+      Taro.showToast({
+        title:'优惠券领取机会已用完',
+        icon:'none'
+      })
+      return ;
+    }
+    if(card_item.getted===2){
+      //已领完
+      Taro.showToast({
+        title:'领取失败，优惠券已领完',
+        icon:'none'
+      })
+      return ;
+    }
+ 
     let time = parseInt(new Date().getTime() / 1000)
     if (time < card_item.send_begin_time) return
 
@@ -157,7 +176,7 @@ export default class CouponHome extends Component {
     }
   }
 
-  handleGetCard = async (card_item, idx) => {
+  handleGetCard = async (card_item, idx) => {  
     const { list } = this.state
 
     if (list[idx].getted === 2 || list[idx].getted === 1) {
@@ -192,28 +211,15 @@ export default class CouponHome extends Component {
 
     return (
       <View className='coupon-home'>
-        <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' />
-        {/* <View className='coupon-top'>
-          <Image className='banner' src={`${process.env.APP_IMAGE_CDN}/banner_coupon.png`} />
-        </View> */}
+        <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' /> 
         <ScrollView scrollY className='home_coupon-home__scroll' onScrollToLower={this.nextPage}>
           <View className='coupon-home-ticket'>
             {list.map((item, idx) => {
               let time = parseInt(new Date().getTime() / 1000)
               return (
                 <CouponItem info={item} key={item.card_id}>
-                  {/* <Text
-                      className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
-                      onClick={this.handleGetCard.bind(this, item, idx)}
-                    >
-                      {item.getted === 1 ? '已领取' : ''}
-                      {item.getted === 2 ? '已领完' : ''}
-                      {(item.getted !== 2 && item.getted !== 1) ? '立即领取' : ''}
-                    </Text> */}
                   <View
-                    style={{ fontSize: '22rpx' }}
-                    // className={`coupon-btn ${(item.getted === 2 || item.getted === 1) ? 'coupon-btn__done' : ''}`}
-                    // style={`background: ${colors.data[0].primary}`}
+                    style={{ fontSize: '22rpx' }} 
                     onClick={this.handleClickNews.bind(this, item, idx)}
                   >
                     {item.getted === 1 ? '已领取' : ''}

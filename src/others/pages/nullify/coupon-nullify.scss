@@ -7,6 +7,9 @@
   }
   &.has-navbar {
     top: $navigate-height + 100px;
+    .coupon-list__scroll {
+      @include page-scroll($navigate-height+100px, $edge-margin);
+    }
   }
   .customTabsStyle {
     color: #000000;

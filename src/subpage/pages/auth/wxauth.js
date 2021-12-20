@@ -4,7 +4,8 @@ import { View, Image, Button, Radio, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import api from '@/api'
 import S from '@/spx'
-import { tokenParse } from '@/utils'
+import { tokenParse, isAlipay } from '@/utils'
+import { SpLogin } from '@/components'
 import entry from '@/utils/entry'
 // import { Tracker } from '@/service'
 
@@ -31,7 +32,7 @@ export default class WxAuth extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getStoreSettingInfo()
     this.getIsMustOauth()
     this.setCode(true)
@@ -204,16 +205,13 @@ export default class WxAuth extends Component {
 
         setTimeout(() => {
           if (this.state.isMustOauth && is_new) {
-            this.setState(
-              {
-                isNewOpen: false
-              },
-              () => {
-                Taro.navigateTo({
-                  url: '/marketing/pages/member/userinfo'
-                })
-              }
-            )
+            this.setState({
+              isNewOpen: false
+            }, () => {
+              Taro.navigateTo({
+                url: '/marketing/pages/member/userinfo'
+              })
+            })
           } else {
             this.redirect()
           }
@@ -293,6 +291,11 @@ export default class WxAuth extends Component {
     })
   }
 
+  onChangeLoginSuccess = () => {
+    const { source, scene } = this.$router.params
+    Taro.redirectTo({ url: `/pages/cart/espier-checkout?source=${source}&scene=${scene}` })
+  }
+
   render() {
     const { colors } = this.props
     const { isAgree, baseInfo } = this.state
@@ -304,19 +307,25 @@ export default class WxAuth extends Component {
         </View>
         <View className='bottom'>
           {isAgree ? (
-            <Button
-              className='btn'
-              onClick={this.getAuthCode}
-              // openType='getPhoneNumber'
-              // onGetPhoneNumber={this.getPhoneNumber.bind(this)}
+            isAlipay ? <Button
+                className='btn'
+                onClick={this.getAuthCode}
+                // openType='getPhoneNumber'
+                // onGetPhoneNumber={this.getPhoneNumber.bind(this)}
+              >
+                微信授权手机号一键登录
+              </Button>
+             : <SpLogin onChange={this.onChangeLoginSuccess.bind(this)}>
+                <Button className='btn' >微信授权手机号一键登录</Button>
+              </SpLogin>
+            )
+            : <Button
+              className='btn disabled'
+              // onClick={this.getPhoneNumber.bind(this)}
             >
               微信授权手机号一键登录
             </Button>
-          ) : (
-            <Button className='btn disabled' onClick={this.getPhoneNumber.bind(this)}>
-              微信授权手机号一键登录
-            </Button>
-          )}
+          }
           <View className='rule' onClick={this.changeAgreeRule.bind(this)}>
             <Radio checked={isAgree}></Radio>
             <View className='content'>

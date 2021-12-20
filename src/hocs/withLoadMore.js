@@ -1,5 +1,5 @@
-import { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import Taro, { Component } from '@tarojs/taro'
+import { isWeixin } from '@/utils'
 
 export default function withLoadMore(Component) {
   return class WithLoadMoreComponent extends Component {
@@ -8,7 +8,7 @@ export default function withLoadMore(Component) {
     }
 
     componentDidMount() {
-      this.startWrapperTrack()
+      if (isWeixin) this.startWrapperTrack()
       this.setTimer && this.setTimer()
     }
 
@@ -35,27 +35,27 @@ export default function withLoadMore(Component) {
       this.wrapperobserver = observer
     }
 
-    startWrapperTrack() {
-      this.endWrapperTrack()
-      const observer = Taro.createIntersectionObserver(this.$scope, {
-        observeAll: true
-      })
-      const { type } = this.props
-      let direction = type === 'good-scroll' ? 'right' : 'bottom'
-      observer.relativeToViewport({ [direction]: 0 }).observe('.lastItem', (res) => {
-        if (res.intersectionRatio > 0) {
-          const {
-            info: { data, more },
-            onLoadMore = () => {},
-            index
-          } = this.props
-          if (more) {
-            onLoadMore(index, type, '_', data.length)
-          }
-        }
-      })
-      this.wrapperobserver = observer
-    }
+    // startWrapperTrack() {
+    //   this.endWrapperTrack()
+    //   const observer = Taro.createIntersectionObserver(this.$scope, {
+    //     observeAll: true
+    //   })
+    //   const { type } = this.props
+    //   let direction = type === 'good-scroll' ? 'right' : 'bottom'
+    //   observer.relativeToViewport({ [direction]: 0 }).observe('.lastItem', (res) => {
+    //     if (res.intersectionRatio > 0) {
+    //       const {
+    //         info: { data, more },
+    //         onLoadMore = () => {},
+    //         index
+    //       } = this.props
+    //       if (more) {
+    //         onLoadMore(index, type, '_', data.length)
+    //       }
+    //     }
+    //   })
+    //   this.wrapperobserver = observer
+    // }
 
     endWrapperTrack() {
       if (this.wrapperobserver) {

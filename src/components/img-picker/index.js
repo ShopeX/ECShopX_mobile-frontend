@@ -16,8 +16,7 @@ const ImgPicker = (props) => {
         const resultFiles = res.apFilePaths.map((item) => ({
           url: item,
           file: item
-        }))
-        console.log('---Res--', res)
+        })) 
         imgUploader.uploadImageFn(resultFiles).then((res) => {
           console.log('---uploadImageFn res---', res)
         })

@@ -81,9 +81,6 @@ export default class PointUse extends Component {
             ? 'point'
             : defalutPaytype
           : defalutPaytype
-      },
-      () => {
-        console.log(this.state.localType)
       }
     )
   }

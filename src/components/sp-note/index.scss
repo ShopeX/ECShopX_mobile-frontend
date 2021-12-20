@@ -4,6 +4,12 @@
   flex-direction: column;
   align-items: center;
   padding: 20px 0;
+  &__img {
+    width: 76px * 4;
+    height: 85px * 4;
+    margin: 0 auto 48px;
+    display: block;
+  }
   &__text {
     color: $color-hint-text;
   }

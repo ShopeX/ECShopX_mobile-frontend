@@ -332,19 +332,19 @@
       }
     }
   }
-  
+
   .goods-sec-specs {
     display: flex;
     background: #fff;
     padding: 30px;
     margin: 0 0 $edge-margin;
     .goods-sec-label {
-      width: 120px;
+      width: 15%;
       color: $color-gray;
       font-size: 24px;
     }
     .goods-sec-value{
-      flex: 1;
+      width: 80%;
     }
     .goods-sec-icon {
       display: block;

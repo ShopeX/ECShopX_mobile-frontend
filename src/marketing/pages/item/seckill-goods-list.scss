@@ -1,15 +1,22 @@
 @import "@/style/imports";
 
 .page-seckill-goods {
-  /*  #ifdef  h5  */
-  padding-top: $navigate-height-h5;
-  /*  #endif  */
+ 
+  &.has-navbar{
+    .seckill-goods{
+      &__scroll {
+        @include page-scroll($navigate-height, 0);
+      }
+    }
+
+    .taro-img{
+      height: auto;
+    }
+  }
+
   .seckill-goods {
     &__scroll {
-      @include page-scroll(0, 0);
-      /*  #ifdef  h5  */
-      @include page-scroll($navigate-height-h5, 0);
-      /*  #endif  */
+      @include page-scroll(0, 0); 
     }
     &__swiper {
       box-sizing: border-box;

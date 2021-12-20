@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { Price } from '@/components'
 import InputNumber from '@/components/input-number'
 import { classNames, pickBy, log } from '@/utils'
-// import { Tracker } from '@/service'
+import { Tracker } from '@/service'
 import api from '@/api'
 import floor from 'lodash/floor'
 import entry from '@/utils/entry'
@@ -203,11 +203,10 @@ export default class GoodsBuyPanel extends Component {
     return img;
   }
 
-  updateCurSku(selection) {
-    console.log("----updateCurSku---", selection);
-    const { info } = this.props;
-    const { activity } = this.state;
-    const { activity_type } = info;
+  updateCurSku(selection) { 
+    const { info } = this.props
+    const { activity } = this.state
+    const { activity_type } = info
 
     selection = selection || this.state.selection;
     this.calcDisabled(selection);
@@ -225,10 +224,8 @@ export default class GoodsBuyPanel extends Component {
 
     this.setState({
       curSku,
-      curImg,
-    });
-
-    console.log("----curSku---", curSku);
+      curImg
+    }) 
 
     if (activity && info.activity_type === "limited_buy") {
       const validItem = activity.items.find(
@@ -286,12 +283,9 @@ export default class GoodsBuyPanel extends Component {
       selection[idx] = null;
       selectionText[idx] = null;
     } else {
-      selection[idx] = item.spec_value_id;
-      selectionText[idx] = spec_full_text;
-    }
-
-    console.log(selection, 254);
-    console.log("---selectionText---", selectionText);
+      selection[idx] = item.spec_value_id
+      selectionText[idx] = spec_full_text
+    } 
 
     this.updateCurSku(selection);
     this.setState({
@@ -309,18 +303,17 @@ export default class GoodsBuyPanel extends Component {
     this.props.onClose && this.props.onClose();
   };
 
-  handleBuyClick = async (type, skuInfo, num) => {
-    console.warn(this.props);
-    if (this.state.busy) return;
-    const isOpenStore = await entry.getStoreStatus();
-    const { marketing, info, isPointitem } = this.props;
-    const { special_type } = info;
-    const isDrug = special_type === "drug";
-    const { item_id } = this.noSpecs ? info : skuInfo;
-    const { distributor_id } = info;
-    const curStore = Taro.getStorageSync("curStore");
-    let id = isOpenStore ? curStore.store_id : distributor_id;
-    let url = `/pages/cart/espier-checkout`;
+  handleBuyClick = async (type, skuInfo, num) => { 
+    if (this.state.busy) return
+    const isOpenStore = await entry.getStoreStatus()
+    const { marketing, info, isPointitem } = this.props
+    const { special_type } = info
+    const isDrug = special_type === 'drug'
+    const { item_id } = this.noSpecs ? info : skuInfo
+    const { distributor_id } = info
+    const curStore = Taro.getStorageSync('curStore')
+    let id = isOpenStore ? curStore.store_id : distributor_id
+    let url = `/pages/cart/espier-checkout`
 
     this.setState({
       busy: true,
@@ -426,10 +419,8 @@ export default class GoodsBuyPanel extends Component {
       });
     }
 
-    if (type === "pick") {
-      const { info } = this.props;
-      // console.log(skuInfo, info, 346)
-      //info.checked_spec = skuInfo
+    if (type === 'pick') {
+      const { info } = this.props 
       this.setState(
         {
           busy: false,
@@ -525,13 +516,11 @@ export default class GoodsBuyPanel extends Component {
     if (!info) {
       return null;
     }
-
-    console.log("--info--", info);
-
-    const { special_type } = info;
-    const isDrug = special_type === "drug";
-    const curSkus = this.noSpecs ? info : curSku;
-    const hasStore = curSkus ? curSkus.store > 0 : info.store > 0;
+ 
+    const { special_type } = info
+    const isDrug = special_type === 'drug'
+    const curSkus = this.noSpecs ? info : curSku
+    const hasStore = curSkus ? curSkus.store > 0 : info.store > 0
 
     let price = "",
       marketPrice = "",
@@ -557,16 +546,10 @@ export default class GoodsBuyPanel extends Component {
       marketPrice = info.market_price;
     }
 
-    if (isPackage === "package") {
-      price = info.price * 100;
-      marketPrice = info.market_price * 100;
-      if (curSkus) {
-        console.log(
-          curSkus.item_id,
-          packItem[curSkus.item_id],
-          mainpackItem[curSkus.item_id],
-          394
-        );
+    if (isPackage === 'package') {
+      price = info.price * 100
+      marketPrice = info.market_price * 100
+      if (curSkus) { 
         price =
           (packItem[curSkus.item_id] && packItem[curSkus.item_id].price) ||
           (mainpackItem[curSkus.item_id] &&

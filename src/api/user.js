@@ -22,9 +22,9 @@ export function refreshToken() {
   return req.get("/token/refresh");
 }
 
-export function reg(params) {
-  const appid = getAppId();
-  return req.post("/member", {
+export function reg(params) { 
+  const appid = getAppId() || ''
+  return req.post('/member', {
     ...params,
     appid
   });

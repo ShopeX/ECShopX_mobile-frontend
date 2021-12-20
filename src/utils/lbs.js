@@ -11,7 +11,7 @@ class LBS {
     script.type = "text/javascript";
     // script.src = `https://apis.map.qq.com/tools/geolocation/min?key=${process.env.APP_MAP_KEY}&referer=${process.env.APP_MAP_NAME}`
 
-    script.src = `https://webapi.amap.com/maps?v=2.0&key=1ccc1ebc947719886f0cd766d70241fe`;
+    script.src = `https://webapi.amap.com/maps?v=2.0&key=${process.env.APP_MAP_KEY}`
     // script.src = `https://apis.map.qq.com/tools/geolocation/min?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp&effect=zoom`;
     // script.src = `https://map.qq.com/api/js?v=2.exp&key=${process.env.APP_MAP_KEY}`;
     // script.src = `https://mapapi.qq.com/web/mapComponents/geoLocation/v/geolocation.min.js

@@ -9,10 +9,8 @@ export default class TimePicker extends Component {
     this.state = {}
   }
 
-  onChange = (e) => {
-    console.log(e)
-    const { onselctedTime } = this.props
-    console.log(onselctedTime)
+  onChange = (e) => { 
+    const { onselctedTime } = this.props 
     onselctedTime(e.detail.value)
   }
 

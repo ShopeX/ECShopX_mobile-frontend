@@ -3,4 +3,25 @@
 //     width: 200px;
 //   } 
 // }
+$primary-color:rgb(244, 129, 31);
+$primary-color-bg:rgba(244, 129, 31, 0.1);
 
+.sp-filter-block{
+     
+        height: 60px;
+        background: #F5F5F5;
+        border-radius: 16px;
+        padding:0 24px;
+        display: inline-flex;
+        align-items: center;
+        color: #222222;
+        font-size: 24px;
+        font-weight: 400;
+
+        &.checked{
+            color:$primary-color;
+            background-color: $primary-color-bg;
+            font-weight: 600;
+        }
+  
+}

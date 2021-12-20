@@ -1,0 +1,73 @@
+$prefixCls:'sp-popup';
+
+.#{$prefixCls}{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 810;
+    transition: visibility 300ms cubic-bezier(0.36, 0.66, 0.04, 1);
+    visibility: hidden;
+ 
+
+    &-overlay{
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.3);
+        opacity: 0; 
+        transition: opacity 150ms ease-in;
+    }
+
+
+    &-container{
+        transform: translate3d(0, 100%, 0);
+        transition: transform 300ms cubic-bezier(0.36, 0.66, 0.04, 1), -webkit-transform 300ms cubic-bezier(0.36, 0.66, 0.04, 1); 
+        min-height:200px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+
+        &.borderradius{ 
+            border-top-left-radius: 12rpx;
+            border-top-right-radius: 12rpx; 
+            overflow: hidden;
+        } 
+    } 
+
+    &.visible{
+        visibility: visible;
+
+        .#{$prefixCls}-overlay{
+            opacity: 1;
+        }
+        .#{$prefixCls}-container{
+            transform: translate3d(0, 0, 0); 
+        }
+    }
+
+
+    &.right{
+        .#{$prefixCls}-container{
+            transform: translate3d(100%, 0, 0);
+            transition: transform 300ms cubic-bezier(0.36, 0.66, 0.04, 1), -webkit-transform 300ms cubic-bezier(0.36, 0.66, 0.04, 1);
+            position: absolute;
+            right: 0; 
+            height: 100%;
+            &.borderradius{ 
+                border-top-left-radius: 40px;
+                border-bottom-left-radius: 40px; 
+                overflow: hidden;
+            } 
+        }
+        &.visible{
+            .#{$prefixCls}-container{
+                transform: translate3d(0, 0, 0); 
+            }
+        }
+        
+    }
+}

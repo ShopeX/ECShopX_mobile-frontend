@@ -91,11 +91,7 @@ export default class OrderItem extends Component {
         {customFooter ? (
           this.props.renderFooter
         ) : (
-          <View className="order-item__ft">
-            {/* {payType === 'point'
-                ? <Price className='order-item__price' appendText='积分' noSymbol noDecimal value={info.point}></Price>
-                : <Price className='order-item__price' value={info.price}></Price>
-              } */}
+          <View className='order-item__ft'> 
             {isPointitemGood ? (
               <Price
                 className="order-item__price"
@@ -105,11 +101,9 @@ export default class OrderItem extends Component {
                 value={info.item_point || info.point}
               ></Price>
             ) : (
-              <Price className="order-item__price" value={info.price}></Price>
-            )}
-
-            {/* {payType=='hfpay'&&<Text className='order-item__pay-type'>微信支付</Text>}
-              {payType!='hfpay'&&<Text className='order-item__pay-type'>{payType === 'dhpoint' ? '积分支付' : '微信支付'}</Text>} */}
+              <Price className='order-item__price' value={info.price}></Price>
+            )} 
+           
           </View>
         )}
       </View>

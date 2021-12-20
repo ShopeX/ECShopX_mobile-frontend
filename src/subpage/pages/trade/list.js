@@ -6,10 +6,10 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
-import { withPager, withLogin } from '@/hocs'
-import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
-// import { Tracker } from '@/service'
-import TradeItem from './comps/item'
+import { withPager } from '@/hocs'
+import { log, pickBy, resolveOrderStatus, getCurrentRoute, classNames,isNavbar } from '@/utils'
+import { Tracker } from '@/service'
+import TradeItem from './comps/new-item'
 
 import './list.scss'
 
@@ -134,6 +134,7 @@ export default class TradeList extends Component {
       delivery_corp: 'delivery_corp',
       delivery_corp_name: 'delivery_corp_name',
       delivery_id: 'delivery_id',
+      distributor_info:'distributor_info',
       orders_delivery_id: 'orders_delivery_id',
       order_type: 'order_type',
       can_apply_cancel: 'can_apply_cancel',
@@ -286,14 +287,19 @@ export default class TradeList extends Component {
     const { curTabIdx, curItemActionsId, tabList, list = [], page, rateStatus } = this.state
 
     return (
-      <View className='page-trade-list'>
+      <View className={classNames(
+        'page-trade-list',
+        {
+          'has-navbar':isNavbar()
+        }
+      )}>
         <SpNavBar title='订单列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className={`trade-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
-          customStyle={{ color: colors.data[0].primary, backgroundColor: colors.data[0].primary }}
+          customStyle={{ color: colors.data[0].primary}}
         >
           {tabList.map((panes, pIdx) => (
             <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
@@ -323,7 +329,7 @@ export default class TradeList extends Component {
           })}
           {page.isLoading && <Loading>正在加载...</Loading>}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>
+            <SpNote isUrl img={`${process.env.APP_IMAGE_CDN}/empty_order.png`}>您还没有商城订单呦~</SpNote>
           )}
           {!!curItemActionsId && <View className='layer' onClick={this.hideLayer} />}
         </ScrollView>

@@ -15,7 +15,7 @@ $md-grey-800            : #424242;
 $md-grey-900            : #212121;
 $content-edge:15px;
 
-scroll-view, view, text {
+scroll-view, view, text,div,span {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   overflow: normal;
