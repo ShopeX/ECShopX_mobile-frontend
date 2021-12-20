@@ -12,4 +12,9 @@ export const SHOP_ITEM = {
   salesCount: "sales_count",
 };
 
+export const BUSINESS_SORT = {
+  label: 'title',
+  sort: 'sort'
+}
+
 

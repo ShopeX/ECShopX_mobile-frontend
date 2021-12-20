@@ -12,7 +12,6 @@ function SpShopItem(props) {
     return null;
   }
   const { logo, name, distance, cardList, salesCount,fullReduction = [{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"}]  } = info;
-  console.log('info',info)
   return (
     <View className={classNames("sp-shop-item", className)}>
       <View className="shop-item-hd">

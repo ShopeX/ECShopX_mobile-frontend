@@ -68,11 +68,3 @@ export const BUSINESS_LIST_SERVICES = [
     name: "同城配",
   },
 ];
-export const SEARCH_DATA=[
-    '可乐',
-    '香氛蜡烛',
-    '收纳',
-    '坚果零食', 
-    '酸奶', 
-    '外框左右空24px', 
-]

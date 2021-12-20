@@ -111,9 +111,15 @@ function shopList(props) {
     // fillFilterTag(tagList);
   }, []);
 
-  const handleFilterChange = () => {
 
-  }
+  const handleFilterChange = async (e) => {
+    await setState((draft) => {
+      draft.leftList = [];
+      draft.rightList = [];
+      draft.curFilterIdx = e;
+    });
+    goodsRef.current.reset();
+  };
 
   const handleOnFocus = () => {
     setIsShowSearch(true);
@@ -146,13 +152,14 @@ function shopList(props) {
     nextPage();
   };
 
-  const { filterList, curFilterIdx, list,tagList } = state;
+  const { filterList, curFilterIdx, list,tagList,  } = state;
   const onConfirmBrand = async () => {
     await setState((draft) => {
       draft.leftList = [];
       draft.rightList = [];
-      draft.show = false;
+      draft.drawer = false;
     });
+    setDrawer(false);
     goodsRef.current.reset();
   };
 
@@ -161,7 +168,7 @@ function shopList(props) {
       draft.brandSelect = [];
       draft.leftList = [];
       draft.rightList = [];
-      draft.show = false;
+      draft.drawer = false;
     });
     goodsRef.current.reset();
   };
@@ -171,6 +178,7 @@ function shopList(props) {
       draft.brandSelect = val;
     });
   };
+
 
   return (
     <SpPage className="page-shop-list">
@@ -200,7 +208,7 @@ function shopList(props) {
             筛选<Text className="iconfont icon-filter"></Text>
           </View>
         </SpFilterBar> */}
-        <SpTagBar className="tag-list" list={filterList} value={curFilterIdx} onChange = {handleFilterChange}>
+        <SpTagBar className="tag-list" list={pickBy(filterList, doc.shop.BUSINESS_SORT)} value={curFilterIdx} onChange = {handleFilterChange}>
           <View
             className="filter-btn"
             onClick={() => {
@@ -210,12 +218,12 @@ function shopList(props) {
             筛选<Text className="iconfont icon-filter"></Text>
           </View>
         </SpTagBar>
-        <SpFilterBar
+        {/* <SpFilterBar
           custom
           current={curFilterIdx}
           list={filterList}
           onChange={handleFilterChange}
-        />
+        /> */}
       </View>
       <SpScrollView className="shoplist-block" fetch={fetch} ref={goodsRef}>
         {list.map((item, index) => (
