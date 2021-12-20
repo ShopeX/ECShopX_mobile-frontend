@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro";
 import { View, ScrollView, Text } from "@tarojs/components";
 import { AtDrawer } from 'taro-ui'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import {
@@ -13,12 +13,16 @@ import {
   SpSearchBar,
   SpPage,
   SpScrollView,
-  SpButton
+  SpButton,
+  SpTagBar,
+  SpDrawer,
+  SpSelect
 } from "@/components";
 import doc from '@/doc'
 import { classNames, pickBy } from "@/utils";
 import api from "@/api";
 import "./shop-list.scss";
+import {BUSINESS_LIST_SERVICES} from './consts/index'
 
 const initialState = {
   filterList: [
@@ -28,14 +32,19 @@ const initialState = {
   ],
   curFilterIdx: 0,
   keywords: '',
-  list: []
+  list: [],
+  tagList: [],
+  brandSelect: [],
 }
 
 
 function shopList(props) {
   const [state, setState] = useImmer( initialState )
+  const {
+    brandSelect,
+  } = state;
   const [drawer, setDrawer] = useState(false)
-
+  const goodsRef = useRef();
   const { location } = useSelector( state => state.user )
 
   // const handleClickFilterLabel = useCallback((item) => {
@@ -82,14 +91,16 @@ function shopList(props) {
       show_score: 1,
       // sort_type: filterValue,
       show_items: 1,
+      brand_id: brandSelect.map( ( item ) => item.id ).toString(),
       // name
     };
     const { list, total_count, tagList } = await api.shop.list( query );
-    
     const _list = pickBy(list, doc.shop.SHOP_ITEM);
+    const _tagList = pickBy(tagList, doc.goods.BUSINESS_LIST_TAG)
 
     setState( ( v ) => {
       v.list = v.list.concat(_list);
+      v.tagList = _tagList
     })
 
     return {
@@ -104,15 +115,77 @@ function shopList(props) {
 
   }
 
-  const { filterList, curFilterIdx, list } = state;
+  const handleOnFocus = () => {
+    setIsShowSearch(true);
+  };
+
+  const handleOnChange = (val) => {
+    setQuery({ ...query, keywords: val });
+  };
+
+  const handleOnClear = () => {
+    setQuery({ ...query, keywords: "" });
+    setIsShowSearch(false);
+    resetPage();
+    setList({ leftList: [], rightList: [] });
+    nextPage();
+  };
+
+  const handleSearchOff = () => {
+    setIsShowSearch(false);
+  };
+
+  const handleConfirm = (val) => {
+    Tracker.dispatch("SEARCH_RESULT", {
+      keywords: val,
+    });
+    setIsShowSearch(false);
+    setQuery({ ...query, keywords: val });
+    resetPage();
+    setList({ leftList: [], rightList: [] });
+    nextPage();
+  };
+
+  const { filterList, curFilterIdx, list,tagList } = state;
+  const onConfirmBrand = async () => {
+    await setState((draft) => {
+      draft.leftList = [];
+      draft.rightList = [];
+      draft.show = false;
+    });
+    goodsRef.current.reset();
+  };
+
+  const onResetBrand = async () => {
+    await setState((draft) => {
+      draft.brandSelect = [];
+      draft.leftList = [];
+      draft.rightList = [];
+      draft.show = false;
+    });
+    goodsRef.current.reset();
+  };
+
+  const onChangeBrand = (val) => {
+    setState((draft) => {
+      draft.brandSelect = val;
+    });
+  };
 
   return (
     <SpPage className="page-shop-list">
       <View className="search-block">
-        <SpSearchBar placeholder="请输入商家、商品" />
+        <SpSearchBar 
+          _placeholder="请输入商家、商品"
+          onFocus={handleOnFocus}
+          onChange={handleOnChange}
+          onClear={handleOnClear}
+          onCancel={handleSearchOff}
+          onConfirm={handleConfirm}
+        />
       </View>
       <View className="filter-block">
-        <SpFilterBar
+        {/* <SpFilterBar
           custom
           current={curFilterIdx}
           list={filterList}
@@ -126,9 +199,25 @@ function shopList(props) {
           >
             筛选<Text className="iconfont icon-filter"></Text>
           </View>
-        </SpFilterBar>
+        </SpFilterBar> */}
+        <SpTagBar className="tag-list" list={filterList} value={curFilterIdx} onChange = {handleFilterChange}>
+          <View
+            className="filter-btn"
+            onClick={() => {
+              setDrawer(true);
+            }}
+          >
+            筛选<Text className="iconfont icon-filter"></Text>
+          </View>
+        </SpTagBar>
+        <SpFilterBar
+          custom
+          current={curFilterIdx}
+          list={filterList}
+          onChange={handleFilterChange}
+        />
       </View>
-      <SpScrollView className="shoplist-block" fetch={fetch}>
+      <SpScrollView className="shoplist-block" fetch={fetch} ref={goodsRef}>
         {list.map((item, index) => (
           <View className="shop-item-wrapper" key={`shopitem-wrap__${index}`}>
             <SpShopItem info={item} />
@@ -136,7 +225,7 @@ function shopList(props) {
         ))}
       </SpScrollView>
 
-      <AtDrawer
+      {/* <AtDrawer
         show={drawer}
         right
         mask
@@ -150,7 +239,30 @@ function shopList(props) {
             <SpButton />
           </View>
         </View>
-      </AtDrawer>
+      </AtDrawer> */}
+      <SpDrawer
+        show={drawer}
+        onClose={() => {
+          setDrawer(false);
+        }}
+        onConfirm={onConfirmBrand}
+        onReset={onResetBrand}
+      >
+        <View className="brand-title">商家类型</View>
+        <SpSelect
+          multiple
+          info={tagList}
+          value={brandSelect}
+          onChange={onChangeBrand}
+        />
+        <View className="brand-title">商家服务</View>
+        <SpSelect
+          multiple
+          info={BUSINESS_LIST_SERVICES}
+          value={brandSelect}
+          onChange={onChangeBrand}
+        />
+      </SpDrawer>
     </SpPage>
   );
 };

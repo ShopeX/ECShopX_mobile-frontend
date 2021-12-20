@@ -196,7 +196,6 @@ function ItemList() {
     });
     goodsRef.current.reset();
   };
-
   return (
     <SpPage className={classNames("page-item-list")}>
       <View className="item-list-head">

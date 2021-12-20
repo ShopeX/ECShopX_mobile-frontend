@@ -59,3 +59,18 @@ export const SEARCH_DATA = [
   "酸奶",
   "外框左右空24px",
 ];
+
+export const BUSINESS_LIST_SERVICES = [
+  {
+    id: "ziti",
+    name: "自提",
+  },
+  {
+    id: "delivery",
+    name: "快递",
+  },
+  {
+    id: "dada",
+    name: "同城配",
+  },
+]

@@ -103,7 +103,7 @@ export default class HomeWgts extends Component {
               <WgtSlider isHomeSearch info={item} width={screenWidth} />
             )}
             {item.name === "navigation" && <WgtNavigation info={item} />}
-            {item.name === "coupon" && <WgtCoupon info={item} />}
+            {/* {item.name === "coupon" && <WgtCoupon info={item} />} */}
             {item.name === "imgHotzone" && <WgtImgHotZone info={item} />}
             {item.name === "goodsScroll" && (
               <WgtGoodsScroll

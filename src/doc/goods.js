@@ -51,3 +51,8 @@ export const WGT_GOODS_BRAND = {
   id: "attribute_id",
   name: "attribute_name",
 };
+
+export const BUSINESS_LIST_TAG = {
+  id: "tag_id",
+  name: 'tag_name'
+}

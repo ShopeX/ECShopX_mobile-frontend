@@ -54,6 +54,14 @@ $prefixCls: "sp-shop-item";
       margin: 0 10px 10px 0;
     }
   }
+  .item-bd-fr {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    .sp-shop-fullReduction {
+      margin: 0 10px 10px 0;
+    }
+  }
 
   &-left {
     width: $img-width;

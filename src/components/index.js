@@ -59,6 +59,7 @@ import SpFloatPrivacy from './sp-float-privacy'
 import SpTagBar from './sp-tag-bar'
 import SpDrawer from './sp-drawer'
 import SpSelect from './sp-select'
+import SpShopFullReduction from './sp-shop-fullReduction'
 
 export default {}
 
@@ -124,4 +125,5 @@ export {
   SpTagBar,
   SpDrawer,
   SpSelect,
+  SpShopFullReduction,
 };

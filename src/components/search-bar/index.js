@@ -166,7 +166,7 @@ export default class SearchBar extends Component {
           <AtSearchBar
             className='search-input__bar'
             value={keyword}
-            placeholder={!_placeholder ? '请输入关键词' : ''}
+            placeholder={!_placeholder ? '请输入关键词' : _placeholder}
             actionName='取消'
             showActionButton={isShowAction}
             onFocus={this.handleFocusSearchHistory.bind(this, true)}

@@ -1,0 +1,24 @@
+.sp-shop-fullReduction {
+    color: black;
+    display: flex;
+    flex-direction: row;
+    .label-style{
+        width: 66px;
+        height: 34px;
+        background: linear-gradient(174deg, #F31346 0%, #FF4A4A 100%);
+        border-radius: 5px;
+        margin-right: 8px;
+        font-size: 22px;
+        font-family: PingFangSC-Semibold, PingFang SC;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 34px;
+        text-align: center;
+    }
+    .text-style {
+        font-size: 24px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #999999;
+    }
+}
