@@ -7,13 +7,13 @@ import api from "@/api";
 import "./index.scss";
 
 function SpShopItem(props) {
-  const { className, info } = props;
+  const { className, info, jumpToBusiness } = props;
   if (!info) {
     return null;
   }
-  const { logo, name, distance, cardList, salesCount,fullReduction = [{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"}]  } = info;
+  const { logo, name, distance, cardList, salesCount,fullReduction = [{label:"满减",text:"好物狂欢节享满199减30"}]  } = info;
   return (
-    <View className={classNames("sp-shop-item", className)}>
+    <View className={classNames("sp-shop-item", className)} onClick={jumpToBusiness}>
       <View className="shop-item-hd">
         <SpImage className="shop-logo" src={logo} />
       </View>

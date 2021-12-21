@@ -65,8 +65,9 @@ function ItemList() {
   const goodsRef = useRef();
 
   useEffect(() => {}, []);
-
+  
   const fetch = async ( { pageIndex, pageSize } ) => {
+  
     let params = {
       page: pageIndex,
       pageSize,
