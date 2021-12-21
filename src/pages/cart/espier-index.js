@@ -157,7 +157,7 @@ function CartIndex( props ) {
   const onClickImgAndTitle = async (item) => {
     Taro.navigateTo({
       url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.shop_id}`
-    });
+    })
   }
 
   const handleCheckout = (item) => {
@@ -191,6 +191,36 @@ function CartIndex( props ) {
                     <Text className="iconfont icon-shop"/>
                     {item.shop_name || '自营'}
                   </View>
+                  {/** 换购开始 */}
+                  {item.plus_buy_activity.length > 0 && item.plus_buy_activity.map((plus_item) => {
+                    const { discount_desc, activity_id } = plus_item;
+                    return (
+                      <View
+                        className="shop-cart-activity"
+                        key={activity_id}
+                      >
+                        <View className="shop-cart-activity-item">
+                          <View
+                            className="shop-cart-activity-item-left"
+                            onClick={() => Taro.navigateTo({ url: `/marketing/pages/plusprice/detail-plusprice-list?marketing_id=${activity_id}` })}
+                          >
+                            <Text className="shop-cart-activity-label">
+                              换购
+                            </Text>
+                            <Text>{discount_desc.info}</Text>
+                          </View>
+                          <View
+                            className="shop-cart-activity-item-right"
+                            onClick={() => Taro.navigateTo({ url: `/marketing/pages/plusprice/cart-plusprice-list?marketing_id=${activity_id}` })}
+                          >
+                            去选择
+                            <Text className="at-icon at-icon-chevron-right"></Text>
+                          </View>
+                        </View>
+                      </View>
+                    )})
+                  }
+                  {/** 换购结束 */}
                   <View className='shop-cart-item-bd'>
                     <View className='shop-activity'></View>
                     {item.list.map((sitem, index) => (
