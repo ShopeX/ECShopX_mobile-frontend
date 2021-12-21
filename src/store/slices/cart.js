@@ -13,11 +13,14 @@ export const fetchCartList = createAsyncThunk( 'cart/fetchCartList', async ( par
     valid_cart,
     invalid_cart
   }
-} )
+})
 
 export const deleteCartItem = createAsyncThunk( 'cart/deleteCartItem', async ( params ) => {
   await api.cart.del( params )
-  debugger
+})
+
+export const updateCartItemNum = createAsyncThunk( 'cart/updateCartItemNum', async ( { shop_id, cart_id, num, shop_type } ) => {
+  await api.cart.updateNum(shop_id, cart_id, num, shop_type)
 })
 
 const cartSlice = createSlice({

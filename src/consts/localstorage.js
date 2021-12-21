@@ -7,3 +7,4 @@ export const SG_USER_INFO = 'userinfo' // 用户信息
 export const SG_MEIQIA = 'meiqia' // 客户美洽配置
 export const SG_YIQIA = 'echat' // 客户一洽配置
 export const SG_APP_CONFIG = 'settingInfo' // APP基础信息配置
+export const SG_SHOW_ADD_TIP = "addTipIsShow"; // 小程序添加指引

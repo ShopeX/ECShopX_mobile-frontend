@@ -19,7 +19,9 @@
     }
   } 
   .recommend-icon {
-    width: 100px;
+    width: auto;
+    height: 50px;
+    margin-bottom: 24px;
   }
   .shop-cart-item {
     padding: 0 16px;
@@ -50,11 +52,65 @@
         }
       }
     }
+    &-hd-disabeld {
+      font-size: 34px;
+      color: #999;
+      font-weight: bold;
+      margin: 65px 0px 25px;
+    }
   }
+
+  .shop-cart-activity {
+    background: #fff;
+    position: relative;
+    padding: 15px 30px;
+    padding-right: 20px;
+    &::after {
+      position: absolute;
+      left: $edge-size;
+      right: $edge-size;
+      height: 1PX;
+      bottom: 0;
+      background: #f5f5f5;
+      content: "";
+    }
+    &-item{
+      display: flex;
+      justify-content: space-between;
+      &-left{
+        display: flex;
+        align-items: center;
+      }
+      &-right{
+        flex-basis: 150px;
+        text-align: right;
+      }
+    }
+    &-label {
+      border: 1PX solid var(--color-primary);
+      color: var(--color-primary);
+      border-radius: 6px;
+      font-size: 20px;
+      display: inline-block;
+      vertical-align: middle;
+      padding: 2px 8px;
+      margin-right: 8px;
+    }
+  }
+
   .cart-item-wrap {
     padding: 16px;
     display: flex;
     align-items: center;
+  }
+  .cart-item-warp-disabled {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    color: #999;
+    .price__symbol, .price__int, .price__decimal {
+      color: #999;
+    }
   }
   .cart-goods-item {
     flex: 1;
@@ -77,16 +133,42 @@
       top: -2px;
     }
     &__btn {
-      color: #222;
+      color: var(--color-primary);
       padding: 0;
       width: 40px;
-      
     }
     &__btn-subtract{
       font-size: 26px;
     }
+    .at-input-number--disabled {
+      color: #ccc;
+    }
+  }
+  .discount-price-wrap {
+    color: var(--color-primary);
+    line-height: 24px;
+    .total-pirce {
+      color: var(--color-primary);
+      font-weight: normal;
+      .price__symbol {
+        font-size: 28px;
+        font-weight: normal;
+        color: var(--color-primary);
+      }
+      .price__int {
+        font-size: 28px;
+        font-weight: normal;
+        color: var(--color-primary);
+      }
+      .price__decimal {
+        font-size: 28px;
+        font-weight: normal;
+        color: var(--color-primary);
+      }
+    }
   }
   .total-pirce {
+    color: var(--color-primary);
     .price__symbol {
       font-size: 26px;
       color: var(--color-primary);
@@ -101,6 +183,10 @@
     }
   }
   .recommend-block {
-    margin-top: 96px;
+    margin-top: 65px;
+  }
+  .icon-shop {
+    font-size: 28px;
+    margin-right: 10px;
   }
 }

@@ -10,6 +10,10 @@
   display: flex;
   align-items: center;
 
+  .nearly-shop {
+    display: flex;
+    align-items: center;
+  }
   .address {
     font-size: 28px;
     max-width: 160px;
@@ -17,6 +21,7 @@
   }
   .children-block {
     flex: 1;
+    padding: 0 10px;
   }
   .icon-qianwang-01 {
     font-size: 24px;
@@ -25,6 +30,10 @@
   .scancode {
     .icon-scan {
       color: var(--color-primary);
+      font-size: 42px;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
     }
   }
 }

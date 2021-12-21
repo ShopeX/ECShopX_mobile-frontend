@@ -112,7 +112,7 @@ export default class GoodsBuyToolbar extends Component {
               )}
             >
               <AtBadge value={cartCount || null}>
-                <View className='icon-cart'></View>
+                <View className='iconfont icon-cart'></View>
               </AtBadge>
             </View>
           ) : (

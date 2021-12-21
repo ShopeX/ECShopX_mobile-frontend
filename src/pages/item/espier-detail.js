@@ -1320,7 +1320,7 @@ export default class EspierDetail extends Component {
               </View>
               {!isNewGift && !this.isPointitem() && isWeixin && (
                 <View className='goods-share__wrap' onClick={this.handleShare.bind(this)}>
-                  <View className='icon-share'></View>
+                  <View className='iconfont icon-share'></View>
                   <View className='share-label'>分享</View>
                 </View>
               )}
@@ -1713,11 +1713,11 @@ export default class EspierDetail extends Component {
             <Image className='poster' src={poster} mode='widthFix' />
             <View className='view-flex view-flex-middle'>
               <View
-                className='icon-close poster-close-btn'
+                className='iconfont icon-close poster-close-btn'
                 onClick={this.handleHidePoster.bind(this)}
               ></View>
               <View
-                className='icon-download poster-save-btn'
+                className='iconfont icon-download poster-save-btn'
                 style={`background: ${colors.data[0].primary}`}
                 onClick={this.handleSavePoster.bind(this)}
               >
