@@ -68,6 +68,7 @@ const WgtNearbyShop = (props) => {
 
     Taro.eventCenter.on('lnglat-success', () => {
         console.log(Taro.getStorageSync('lnglat'), 'getStorageSyncgetStorageSync')
+        init();
     })
 
     return (
@@ -88,7 +89,7 @@ const WgtNearbyShop = (props) => {
                 <ScrollView scrollX className='tagList'>
                     {
                         seletedTags.map((item, index) => (
-                            <Text className={`tag ${activeIndex == index ? 'active' : null}`}
+                            <Text className={`tag ${activeIndex == index ? 'active' : ''}`}
                                 key={item.tag_id} onClick={e => setActiveIndex(index)}>{item.tag_name}</Text>
                         ))
                     }
