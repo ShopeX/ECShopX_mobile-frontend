@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { View, Text, Image, ScrollView, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { useImmer } from 'use-immer'
+import doc from '@/doc'
 import { AtButton, AtActionSheet, AtActionSheetItem, AtNoticebar } from 'taro-ui'
 import {
   SpNote,
@@ -29,7 +30,8 @@ import {
   getThemeStyle,
   styleNames,
   isNavbar,
-  entryLaunch
+  entryLaunch,
+  pickBy
 } from '@/utils'
 import api from '@/api'
 import S from '@/spx'
@@ -45,6 +47,16 @@ const tablist = [
   { title: '跨境商品', icon: 'icon-kuajingshangpin-01', type: 'cross' }
 ]
 
+const initialState = {
+  // goodsItemList: [],
+  // activityList: [],
+  // plusBuyActivityList: [],
+  likeList: [],
+  current: 0, // 0:普通商品  1:跨境商品
+  itemCount: 0,
+  groupsList: []
+}
+
 function CartIndex( props ) {
   const dispatch = useDispatch()
   const { isLogin, updatePolicyTime, getUserInfoAuth } = useLogin({
@@ -53,19 +65,24 @@ function CartIndex( props ) {
       setPolicyModal(true)
     }
   })
+
   const $instance = useMemo( getCurrentInstance, [] );
-  const { validCart, invalidCart } = useSelector( ( state ) => state.cart )
+  const { validCart = [], invalidCart = [] } = useSelector( ( state ) => state.cart )
   const { colorPrimary } = useSelector( ( state ) => state.sys )
   const { userInfo, vipInfo } = useSelector((state) => state.user)
-  
-  const [policyModal, setPolicyModal] = useState( false )
-  const [state, setState] = useState({
-    current: 0, // 0:普通商品  1:跨境商品
-    itemCount: 0
-  })
 
-  const [likeList, setLikeList] = useImmer([])
-  const [] = useImmer()
+  const [ state, setState ] = useImmer(initialState)
+  
+  const [policyModal, setPolicyModal] = useState(false)
+
+  // const [state, setState] = useState({
+  //   current: 0, // 0:普通商品  1:跨境商品
+  //   itemCount: 0
+  // })
+
+  // const [likeList, setLikeList] = useImmer([])
+  // const [ activityList, setActivityList ] = useImmer([])
+  // const [ plusBuyList, setPlusBuyList ] = useImmer([])
   
   const router = $instance.router
   const { current } = state
@@ -79,6 +96,7 @@ function CartIndex( props ) {
 
   useEffect(() => {
     getLikeList()
+    // resolveActivityGroup(validCart)
   }, [])
 
   const getCartList = async () => {
@@ -96,8 +114,48 @@ function CartIndex( props ) {
       }
     }
     Taro.showLoading()
-    dispatch(fetchCartList(params))
+    await dispatch(fetchCartList(params))
+    resolveActiveGroup()
     Taro.hideLoading()
+  }
+
+  const resolveActiveGroup = () => {
+    console.log(validCart, '=========')
+    const groupsList = validCart.map(shopCart => {
+      const { list, used_activity = [], plus_buy_activity = [], activity_grouping = [] } = shopCart
+      const tDict = list.reduce((acc, val) => {
+        acc[val.cart_id] = val
+        return acc
+      }, {})
+      console.log(tDict, 'tDict')
+      // 使用活动商品
+      const activityGrouping = activity_grouping;
+      const activityList = used_activity.map(act => {
+        const active = activityGrouping.find(a_item => String(a_item.activity_id) === String(act.activity_id))
+        const itemList = active.cart_ids.map(id => {
+          const cartItem = tDict[id]
+          delete tDict[id]
+          return cartItem
+        })
+        return { list: itemList, active }
+      })
+      // 加购价
+      const plusBuyActivityList = []
+      plus_buy_activity.map(pitem => {
+        const { plus_item } = pitem;
+        if (plus_item) {
+          const items = pickBy(plus_item, {...doc.cart.CART_GOODS_ITEM, activity_id: pitem.activity_id, })
+          plusBuyActivityList.push(items)
+        }
+      })
+      activityList.push({ list: Object.values(tDict), active: null })
+
+      return { goodsItemList: shopCart, plusBuyActivityList: [...plusBuyActivityList], activityList: activityList }
+    })
+    // console.log(activityList, 'activityList')
+    setState(v => {
+      v.groupsList = groupsList
+    })
   }
 
   const getLikeList = async () => {
@@ -105,14 +163,20 @@ function CartIndex( props ) {
       page: 1,
       pageSize: 10
     })
-    setLikeList(list)
+    // setLikeList(list)
+    setState(v => {
+      v.likeList = list
+    })
   }
 
   // const onChangeSpTab = (current) => {
-  //   setState({
-  //     ...state,
-  //     current
+  //   setState(v => {
+  //     v.current = current
   //   })
+  //   // setState({
+  //   //   ...state,
+  //   //   current
+  //   // })
   // }
 
   const onChangeGoodsItemCheck = async (item, e) => {
@@ -169,6 +233,8 @@ function CartIndex( props ) {
     })
   }
 
+  console.log(state.groupsList, 'groupsListrender')
+
   return (
     <SpPage className='page-cart-index'>
       {!isLogin && (
@@ -183,16 +249,17 @@ function CartIndex( props ) {
         <View>
           {/* <SpTabs current={current} tablist={tablist} onChange={onChangeSpTab} /> */}
           <View className='valid-cart-block'>
-            {validCart.map((item, index) => {
-              const allChecked = !item.list.find((item) => !item.is_checked)
+            {state.groupsList.map((all_item, index) => {
+              const { goodsItemList = {}, activityList = [], plusBuyActivityList = [] } = all_item || {}
+              const allChecked = !goodsItemList.list.find((item) => !item.is_checked)
               return (
                 <View className='shop-cart-item' key={`shop-cart-item__${index}`}>
                   <View className='shop-cart-item-hd'>
                     <Text className="iconfont icon-shop"/>
-                    {item.shop_name || '自营'}
+                    {goodsItemList.shop_name || '自营'}
                   </View>
                   {/** 换购开始 */}
-                  {item.plus_buy_activity.length > 0 && item.plus_buy_activity.map((plus_item) => {
+                  {goodsItemList.plus_buy_activity.map((plus_item) => {
                     const { discount_desc, activity_id } = plus_item;
                     return (
                       <View
@@ -221,9 +288,24 @@ function CartIndex( props ) {
                     )})
                   }
                   {/** 换购结束 */}
+                  {
+                    plusBuyActivityList.map((plus_item, plus_index) => (
+                      <View className='cart-item-wrap' key={`cart-item-wrap__${plus_index}`}>
+                        <CompGoodsItem
+                          disabled
+                          info={plus_item}
+                          isShowAddInput={false}
+                          isShowDeleteIcon={false}
+                          // onDelete={onDeleteCartGoodsItem.bind(this, plus_item)}
+                          // onChange={onChangeCartGoodsItem.bind(this, plus_item)}
+                          // onClickImgAndTitle={onClickImgAndTitle.bind(this, plus_item)}
+                        />
+                      </View>
+                    ))
+                  }
                   <View className='shop-cart-item-bd'>
                     <View className='shop-activity'></View>
-                    {item.list.map((sitem, index) => (
+                    {goodsItemList.list.map((sitem, index) => (
                       <View className='cart-item-wrap' key={`cart-item-wrap__${index}`}>
                         <SpCheckboxNew
                           isChecked={sitem.is_checked}
@@ -243,20 +325,20 @@ function CartIndex( props ) {
                       <SpCheckboxNew
                         isChecked={allChecked}
                         label='全选'
-                        onChange={onChangeAllCheck.bind(this, item)}
+                        onChange={onChangeAllCheck.bind(this, goodsItemList)}
                       />
                     </View>
                     <View className='rg'>
                       <View>
                         <View className='total-price-wrap'>
                           合计：
-                          <SpPrice className='total-pirce' value={item.total_fee / 100} />
+                          <SpPrice className='total-pirce' value={goodsItemList.total_fee / 100} />
                         </View>
                         {
-                          item.discount_fee > 0 &&
+                          goodsItemList.discount_fee > 0 &&
                           <View className='discount-price-wrap'>
                             共优惠：
-                            <SpPrice className='total-pirce' value={item.discount_fee / 100} />
+                            <SpPrice className='total-pirce' value={goodsItemList.discount_fee / 100} />
                           </View>
                         }
                       </View>
@@ -264,10 +346,10 @@ function CartIndex( props ) {
                         className='btn-calc'
                         type='primary'
                         circle
-                        disabled={item.cart_total_num <= 0}
-                        onClick={() => handleCheckout(item)}
+                        disabled={goodsItemList.cart_total_num <= 0}
+                        onClick={() => handleCheckout(goodsItemList)}
                       >
-                        结算({item.cart_total_num})
+                        结算({goodsItemList.cart_total_num})
                       </AtButton>
                     </View>
                   </View>
@@ -305,7 +387,7 @@ function CartIndex( props ) {
       )}
 
       {/* 猜你喜欢 */}
-      {<SpRecommend className='recommend-block' info={likeList} />}
+      {<SpRecommend className='recommend-block' info={state.likeList} />}
 
       <SpPrivacyModal
         open={policyModal}

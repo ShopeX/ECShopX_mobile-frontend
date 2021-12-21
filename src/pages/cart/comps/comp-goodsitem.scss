@@ -28,12 +28,41 @@
   .goods-title {
     @include multi-ellipsis(1);
     width: 300px;
+    &__tag {
+      display: inline-block;
+      border: 1PX solid var(--color-primary);
+      color: var(--color-primary);
+      padding: 1px 10px;
+      font-size: 20px;
+      margin-right: 10px;
+      border-radius: 10px;
+    }
+    &__promotion {
+      display: flex;
+      align-items: flex-start;
+      margin-top: 20px;
+      .titles {
+        display: inline-block;
+        width: 300px;
+        font-size: 26px;
+        color: #999;
+        @include multi-ellipsis(2)
+        // @include text-overflow();
+      }
+    }
   }
   .spec-desc {
     background-color: #F5F5F5;
-    font-size: 26px;
+    font-size: 24px;
     color: #999;
     padding: 5px 13px;
+  }
+  .spec-brief {
+    color: #999;
+    font-size: 24px;
+    width: 350px;
+    display: block;
+    @include text-overflow();
   }
   .icon-shanchu-01 {
     font-size: 40px;
