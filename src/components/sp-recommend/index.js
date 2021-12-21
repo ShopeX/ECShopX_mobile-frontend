@@ -51,7 +51,7 @@ export default class SpRecommend extends Component {
     return (
       <View className={classNames('sp-recommend', className)}>
         <View className='sp-recommend-hd'>
-          <SpImage className='recommend-icon' src='like_list.png' width='200' />
+          <SpImage className='recommend-icon' mode="heightFix" src='like_list.png' />
         </View>
         <View className='sp-recommend-bd'>
           <View className='left-container'>

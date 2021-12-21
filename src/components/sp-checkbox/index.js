@@ -5,7 +5,7 @@ import { classNames } from '@/utils'
 import './index.scss'
 
 function SpCheckboxNew(props) {
-  const { className, children, isChecked = false, label, onChange = () => {} } = props
+  const { className, children, isChecked = false, label, onChange = () => {}, disabled = false } = props
 
   const onChangeCheckbox = () => {
     onChange(!isChecked)
@@ -26,7 +26,7 @@ function SpCheckboxNew(props) {
           {
             iconfont: true
           },
-          isChecked ? 'icon-roundcheckfill' : 'icon-round'
+          disabled ? 'icon-circle1' : isChecked ? 'icon-roundcheckfill' : 'icon-round'
         )}
       ></Text>
       <View className='sp-checkbox-new__label'>{label || children}</View>

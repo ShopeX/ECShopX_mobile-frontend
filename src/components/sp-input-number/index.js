@@ -153,7 +153,7 @@ AtInputNumber.defaultProps = {
   value: 1,
   type: 'number',
   width: 0,
-  min: 0,
+  min: 1,
   max: 100,
   step: 1,
   size: '',
