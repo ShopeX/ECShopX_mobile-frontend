@@ -178,7 +178,7 @@ function CartIndex(props) {
                     {item.list.map((sitem, index) => (
                       <View className='cart-item-wrap' key={`cart-item-wrap__${index}`}>
                         <SpCheckboxNew
-                          isChecked={sitem.is_checked}
+                          checked={sitem.is_checked}
                           onChange={onChangeGoodsItemCheck.bind(this, sitem)}
                         />
                         <CartGoodsItem
@@ -191,7 +191,7 @@ function CartIndex(props) {
                   <View className='shop-cart-item-ft'>
                     <View className='lf'>
                       <SpCheckboxNew
-                        isChecked={allChecked}
+                        checked={allChecked}
                         label='全选'
                         onChange={onChangeAllCheck.bind(this, item)}
                       />
