@@ -36,7 +36,6 @@ function SpPrivacyModal( props ) {
 
   const handleConfirm = () => {
     updatePolicyTime()
-    login()
     onConfirm()
   }
 

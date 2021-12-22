@@ -61,10 +61,10 @@ function SpLogin( props ) {
     // 自动登录
     try {
       await login()
-      updatePolicyTime()
       onChange && onChange()
     } catch (e) {
-      console.log(e)
+      console.log( e )
+      setIsNewUser(true);
     }
     setPolicyModal(false)
   }, [])
