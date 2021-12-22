@@ -111,25 +111,33 @@ function CartIndex( props ) {
       cus_activity_list.push({ list: Object.values(tDict), active: null })
 
       // 加购价选中的商品
-      const cus_plus_buy_goods_list = []
-      plus_buy_activity.map(pitem => {
-        const { plus_item } = pitem;
-        if (plus_item) {
-          const items = pickBy(plus_item, {...doc.cart.CART_GOODS_ITEM, activity_id: pitem.activity_id, })
-          cus_plus_buy_goods_list.push(items)
-        }
-      })
+      // const cus_plus_buy_goods_list = []
+      // plus_buy_activity.map(pitem => {
+      //   const { plus_item } = pitem;
+      //   if (plus_item) {
+      //     const items = pickBy(plus_item, {...doc.cart.CART_GOODS_ITEM, activity_id: pitem.activity_id, })
+      //     cus_plus_buy_goods_list.push(items)
+      //   }
+      // })
 
       // 加购价
       let all_plus_active_items = []
       let no_active_item = []
+      // let cus_plus_buy_goods_list = []
       let cus_plus_item_list = plus_buy_activity.map((plusitem, index) => {
-        all_plus_active_items.push(plusitem.activity_item_ids)
-        const result = list.filter(k => plusitem.activity_item_ids.indexOf(k.item_id) > -1)
+        const { plus_item, activity_item_ids, activity_id } = plusitem;
+        // 加购价选中的商品
+        let plus_goods = null
+        if (plus_item) {
+          plus_goods = pickBy(plus_item, {...doc.cart.CART_GOODS_ITEM, activity_id, })
+          // cus_plus_buy_goods_list.push(items)
+        }
+        all_plus_active_items.push(activity_item_ids)
+        const result = list.filter(k => activity_item_ids.indexOf(k.item_id) > -1)
         return {
           ...plusitem,
-          // discount_desc: plusitem.discount_desc,
-          itemList: result
+          itemList: result,
+          cus_plus_buy_goods_list: plus_goods
         }
       })
       all_plus_active_items = all_plus_active_items.toString().split(',')
@@ -141,12 +149,13 @@ function CartIndex( props ) {
       }
       cus_plus_item_list.push({
         discount_desc: null,
-        itemList: no_active_item
+        itemList: no_active_item,
+        cus_plus_buy_goods_list: null
       })
       return {
         ...item,
         cus_plus_item_list,
-        cus_plus_buy_goods_list,
+        // cus_plus_buy_goods_list,
         cus_activity_list
       }
       // return { goodsItemList: shopCart, plusBuyActivityList: [...plusBuyActivityList], activityList: activityList }
@@ -255,7 +264,7 @@ function CartIndex( props ) {
           {/* <SpTabs current={current} tablist={tablist} onChange={onChangeSpTab} /> */}
           <View className='valid-cart-block'>
             {groupsList.map((all_item, all_index) => {
-              const { cus_plus_item_list = [], activityList = [], cus_plus_buy_goods_list = [] } = all_item || {}
+              const { cus_plus_item_list = [], activityList = [] } = all_item || {}
               const allChecked = all_item.cart_total_count == all_item.list.length
               {/* const allChecked = cus_plus_item_list.map(el.itemList.find((item) => !item.is_checked)) */}
               return (
@@ -266,7 +275,7 @@ function CartIndex( props ) {
                   </View>
                   {
                     cus_plus_item_list.map((cus_item, cus_index) => {
-                      const { discount_desc, activity_id, itemList } = cus_item
+                      const { discount_desc, activity_id, itemList, cus_plus_buy_goods_list } = cus_item
                       {/* allChecked = itemList.find((item) => !item.is_checked) */}
                       {/** 换购开始 */}
                       return (
@@ -298,7 +307,7 @@ function CartIndex( props ) {
                             </View>
                           }
                           {/** 换购结束 */}
-                          <View className='shop-cart-item-bd' style={{ borderBottom: '1px solid #ddd' }}>
+                          <View className='shop-cart-item-bd'>
                             <View className='shop-activity'></View>
                             {itemList.map((c_sitem, c_index) => (
                               <View className='cart-item-wrap' key={`cart-item-wrap__${c_index}`}>
@@ -315,11 +324,20 @@ function CartIndex( props ) {
                               </View>
                             ))}
                           </View>
+                          {cus_plus_buy_goods_list && <View className='cart-item-wrap plus_items_bck'>
+                            <SpCheckboxNew disabled />
+                            <CompGoodsItem
+                              disabled
+                              info={cus_plus_buy_goods_list}
+                              isShowAddInput={false}
+                              isShowDeleteIcon={false}
+                            />
+                          </View>}
                         </View>
                       )
                     })
                   }
-                  {
+                  {/* {
                     cus_plus_buy_goods_list.map((plus_item, plus_index) => (
                       <View className='cart-item-wrap plus_items_bck' key={`cart-item-wrap__${plus_index}`}>
                         <CompGoodsItem
@@ -333,7 +351,7 @@ function CartIndex( props ) {
                         />
                       </View>
                     ))
-                  }
+                  } */}
                   <View className='shop-cart-item-ft'>
                     <View className='lf'>
                       <SpCheckboxNew
