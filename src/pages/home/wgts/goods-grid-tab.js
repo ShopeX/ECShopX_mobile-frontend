@@ -129,7 +129,7 @@ export default class WgtGoodsGridTab extends Component {
     const { goodsList, moreLink } = this.state
 
     return (
-      <View className={`wgt wgt-grid ${base.padded ? 'wgt__padded' : null}`}>
+      <View className={`wgt wgt-grid ${base.padded ? 'wgt__padded' : null}`} style={styleNames(getThemeStyle())}>
         {base.title && (
           <View className='wgt__header'>
             <View className='wgt__title'>

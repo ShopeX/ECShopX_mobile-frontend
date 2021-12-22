@@ -57,6 +57,7 @@ export default class GoodsItem extends Component {
         className={classNames('cart-item', className, {
           'is-disabled': isDisabled
         })}
+        style={styleNames(getThemeStyle())}
       >
         <View className='cart-item__hd'>{this.props.children}</View>
         <View className='cart-item__bd' onClick={onClick}>

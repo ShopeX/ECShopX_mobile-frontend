@@ -8,8 +8,8 @@
 //     font-size: 32px;
 //     line-height: 40px;
 //     padding-bottom: 5px;
-//     border-bottom: 1PX solid $color-brand-primary;
-//     color: $color-brand-primary;
+//     border-bottom: 1PX solid var(--color-primary);
+//     color: var(--color-primary);
 //   }
   
 //   .grid-goods {
@@ -61,8 +61,8 @@
     font-size: 32px;
     line-height: 40px;
     padding-bottom: 5px;
-    border-bottom: 1PX solid $color-brand-primary;
-    color: $color-brand-primary;
+    border-bottom: 1PX solid var(--color-primary);
+    color: var(--color-primary);
   }
   
   .grid-goods {
@@ -122,8 +122,8 @@
             align-self: flex-start;
 
             .text {
-              border: 1PX solid $color-brand-primary;
-              color: $color-brand-primary;
+              border: 1PX solid var(--color-primary);
+              color: var(--color-primary);
               background: #fff;
               border-radius: 2px;
               -ms-flex-negative: 0;
