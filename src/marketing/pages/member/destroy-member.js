@@ -50,8 +50,8 @@ export default class SettingIndex extends Component {
       // 确认注销账号
       req.delete('/member', { is_delete: '1' }).then((res) => {
         if (res.status) {
-          Taro.removeStorageSync('auth_token')
-          Taro.removeStorageSync('PrivacyUpdate_time')
+          Taro.removeStorageSync("token");
+          Taro.removeStorageSync("policy_updatetime");
           Taro.reLaunch({
             url: '/pages/index'
           })

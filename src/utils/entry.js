@@ -75,7 +75,7 @@ async function entryLaunch(data, isNeedLocate, privacy_time) {
         entrytime: entrytime
       });
 
-      if (Taro.getStorageSync("auth_token")) {
+      if (Taro.getStorageSync("token")) {
         api.track.salesmenlog({ omc_id: emp_id });
       }
     }

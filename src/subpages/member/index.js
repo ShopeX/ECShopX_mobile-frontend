@@ -7,7 +7,7 @@ import {
 } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { useSelector } from 'react-redux'
-
+import { useImmer } from 'use-immer'
 import {
   TabBar,
   SpLogin,
@@ -27,72 +27,75 @@ import {
   classNames,
   showToast,
   showModal,
-  isWeixin
+  isWeixin,
+  log
 } from '@/utils'
 import { useLogin } from '@/hooks'
 import CompVipCard from './comps/comp-vipcard'
 import CompBanner from './comps/comp-banner'
-import CompsPanel from './comps/comp-panel'
+import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompHelpCenter from './comps/comp-helpcenter'
 import './index.scss'
 
+const initialConfigState = {
+  banner: {
+    isShow: false,
+    loginBanner: "",
+    noLoginBanner: "",
+    pageUrl: "",
+    urlOpen: false,
+    appId: null,
+  },
+  menu: {
+    pointMenu: false, // 积分菜单
+    activity: false, // 活动预约
+    offline_order: false, // 线下订单
+    boost_activity: false, // 助力活动
+    boost_order: false, // 助力订单
+    complaint: false, // 投诉记录
+    community_order: false, // 社区团购
+    ext_info: false,
+    group: false, // 我的拼团
+    member_code: false, // 会员二维码
+    recharge: false, // 储值
+    ziti_order: false, // 自提
+    share_enable: false, // 分享
+    memberinfo_enable: false, // 个人信息
+  },
+  infoAppId: "",
+  infoPage: "",
+  infoUrlIsOpen: true,
+  pointAppId: "",
+  pointPage: "",
+  pointUrlIsOpen: true,
+};
+
+const initialState = {
+  favCount: 0,
+  point: 0,
+  couponCount: 0,
+  username: "",
+  avatar: "",
+  mobile: "",
+  waitPayNum: 0,
+  waitSendNum: 0,
+  waitRecevieNum: 0,
+  waitEvaluateNum: 0,
+  afterSalesNum: 0,
+  zitiNum: 0,
+};
+
 function MemberIndex(props) {
   const { isLogin, updatePolicyTime, getUserInfoAuth } = useLogin({
-    autoLogin: true,
-    policyUpdateHook: () => {
-      setPolicyModal(true)
-    }
+    autoLogin: true
   })
-  const [config, setConfig] = useState({
-    banner: {
-      isShow: false,
-      loginBanner: '',
-      noLoginBanner: '',
-      pageUrl: '',
-      urlOpen: false,
-      appId: null
-    },
-    menu: {
-      pointMenu: false, // 积分菜单
-      activity: false, // 活动预约
-      offline_order: false, // 线下订单
-      boost_activity: false, // 助力活动
-      boost_order: false, // 助力订单
-      complaint: false, // 投诉记录
-      community_order: false, // 社区团购
-      ext_info: false,
-      group: false, // 我的拼团
-      member_code: false, // 会员二维码
-      recharge: false, // 储值
-      ziti_order: false, // 自提
-      share_enable: false, // 分享
-      memberinfo_enable: false // 个人信息
-    },
-    infoAppId: '',
-    infoPage: '',
-    infoUrlIsOpen: true,
-    pointAppId: '',
-    pointPage: '',
-    pointUrlIsOpen: true
-  })
-  const [data, setData] = useState({
-    favCount: 0,
-    point: 0,
-    couponCount: 0,
-    username: '',
-    avatar: '',
-    mobile: '',
-    waitPayNum: 0,
-    waitSendNum: 0,
-    waitRecevieNum: 0,
-    waitEvaluateNum: 0,
-    afterSalesNum: 0,
-    zitiNum: 0
-  })
-  const [policyModal, setPolicyModal] = useState(false)
+  const [config, setConfig] = useImmer(initialConfigState);
+  const [state, setState] = useImmer(initialState);
+  
   const { userInfo, vipInfo } = useSelector((state) => state.user)
-  console.log('store userInfo', userInfo)
+  log.debug(`store userInfo: ${JSON.stringify(userInfo)}`);
+  
   useEffect(() => {
     if (isLogin) {
       getMemberCenterData()
@@ -176,21 +179,18 @@ function MemberIndex(props) {
         pointUrlIsOpen: point_url_is_open
       }
     }
-    // setConfig((state) => {
-    //   state.banner = banner
-    //   state.menu = {
-    //     ...menu,
-    //     pointMenu: pointShopRes.entrance.mobile_openstatus
-    //   }
-    // })
-    setConfig({
-      ...config,
-      banner,
-      menu: {
+    setConfig( draft => {
+      draft.banner = banner;
+      draft.menu = {
         ...menu,
-        pointMenu: pointShopRes.entrance.mobile_openstatus
-      },
-      ...redirectInfo
+        pointMenu: pointShopRes.entrance.mobile_openstatus,
+      };
+      draft.infoAppId = redirectInfo.info_app_id;
+      draft.infoPage = redirectInfo.info_page;
+      draft.infoUrlIsOpen = redirectInfo.info_url_is_open;
+      draft.pointAppId = redirectInfo.point_app_id;
+      draft.pointPage = redirectInfo.point_page;
+      draft.pointUrlIsOpen = redirectInfo.point_url_is_open;
     })
   }
 
@@ -210,18 +210,17 @@ function MemberIndex(props) {
       normal_payed_daishouhuo,
       normal_payed_daiziti
     } = resTrade
-    setData({
-      ...data,
-      favCount: fav_total_count,
-      point: point_total_count,
-      couponCount: discount_total_count,
-      waitPayNum: normal_notpay_notdelivery,
-      waitSendNum: normal_payed_daifahuo,
-      waitRecevieNum: normal_payed_daishouhuo,
-      // waitEvaluateNum: 0,
-      afterSalesNum: aftersales,
-      zitiNum: normal_payed_daiziti
-    })
+
+    setState(draft => {
+      draft.favCount = fav_total_count;
+      draft.point = point_total_count;
+      draft.couponCount = discount_total_count;
+      draft.waitPayNum = normal_notpay_notdelivery;
+      draft.waitSendNum = normal_payed_daifahuo;
+      draft.waitRecevieNum = normal_payed_daishouhuo;
+      draft.afterSalesNum = aftersales;
+      draft.zitiNum = normal_payed_daiziti;
+    });
   }
 
   const handleClickLink = async (link) => {
@@ -239,41 +238,32 @@ function MemberIndex(props) {
     }
   }
 
-  const handleCloseModal = useCallback(() => {
-    setPolicyModal(false)
-  }, [])
-
-  const handleConfirmModal = useCallback(() => {
-    setPolicyModal(false)
-    updatePolicyTime()
-  }, [])
-
   const handleClickService = async (item) => {
     const { link, key } = item
     await getUserInfoAuth()
     // 分销推广
     if (key == 'popularize') {
       // 已经是分销员
-      if (data.isPromoter) {
-        Taro.navigateTo({ url: link })
+      if (userInfo.isPromoter) {
+        Taro.navigateTo({ url: link });
       } else {
         const { confirm } = await Taro.showModal({
-          title: '邀请推广',
-          content: '确定申请成为推广员？',
+          title: "邀请推广",
+          content: "确定申请成为推广员？",
           showCancel: true,
-          cancel: '取消',
-          confirmText: '确认',
-          confirmColor: '#0b4137'
-        })
-        if (!confirm) return
-        const { status } = await api.distribution.become()
+          cancel: "取消",
+          confirmText: "确认",
+          confirmColor: "#0b4137",
+        });
+        if (!confirm) return;
+        const { status } = await api.distribution.become();
         if (status) {
           Taro.showModal({
-            title: '恭喜',
-            content: '已成为推广员',
+            title: "恭喜",
+            content: "已成为推广员",
             showCancel: false,
-            confirmText: '好'
-          })
+            confirmText: "好",
+          });
         }
       }
       return
@@ -296,7 +286,7 @@ function MemberIndex(props) {
     return null
   }
 
-  console.log(`member page:`, userInfo)
+  // console.log(`member page:`, state, config);
 
   return (
     <SpPage className='pages-member-index'>
@@ -337,21 +327,21 @@ function MemberIndex(props) {
             onClick={handleClickLink.bind(this, '/marketing/pages/member/coupon')}
           >
             <View className='bd-item-label'>优惠券(张)</View>
-            <View className='bd-item-value'>{data.couponCount}</View>
+            <View className='bd-item-value'>{state.couponCount}</View>
           </View>
           <View className='bd-item' onClick={handleClickPoint}>
             <View className='bd-item-label'>积分(分)</View>
-            <View className='bd-item-value'>{data.point}</View>
+            <View className='bd-item-value'>{state.point}</View>
           </View>
           {/* <View className='bd-item'>
             <View className='bd-item-label'>储值(¥)</View>
             <View className='bd-item-value'>
-              <SpPrice value={data.deposit} />
+              <SpPrice value={state.deposit} />
             </View>
           </View> */}
           <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
             <View className='bd-item-label'>收藏(个)</View>
-            <View className='bd-item-value'>{data.favCount}</View>
+            <View className='bd-item-value'>{state.favCount}</View>
           </View>
         </View>
         <View className='header-ft'>
@@ -374,7 +364,7 @@ function MemberIndex(props) {
           />
         )}
 
-        <CompsPanel
+        <CompPanel
           title='订单'
           extra='查看全部订单'
           onLink={handleClickLink.bind(this, '/subpage/pages/trade/list')}
@@ -387,7 +377,7 @@ function MemberIndex(props) {
               <View className='ziti-order-info'>
                 <View className='title'>自提订单</View>
                 <View className='ziti-txt'>
-                  您有<Text className='ziti-num'>{data.zitiNum}</Text>个等待自提的订单
+                  您有<Text className='ziti-num'>{state.zitiNum}</Text>个等待自提的订单
                 </View>
               </View>
               <Text className='iconfont icon-qianwang-01'></Text>
@@ -399,24 +389,39 @@ function MemberIndex(props) {
               className='order-item'
               onClick={handleClickLink.bind(this, '/subpage/pages/trade/list?status=5')}
             >
+<<<<<<< HEAD
               <SpImage src='daizhifu.png' className="icon-style"/>
               { data.waitPayNum > 0 && <View className='order-bradge'><Text>{ data.waitPayNum}</Text></View>}
+=======
+              <SpImage src='daizhifu.png' width='70' />
+              { state.waitPayNum > 0 && <View className='order-bradge'><Text>{ state.waitPayNum}</Text></View>}
+>>>>>>> 928eb70ba554c22dd0ba2b47b6d723e7d05bd764
               <Text className='order-txt'>待支付</Text>
             </View>
             <View
               className='order-item'
               onClick={handleClickLink.bind(this, '/subpage/pages/trade/list?status=3')}
             >
+<<<<<<< HEAD
               <SpImage src='daifahuo.png' className="icon-style" />
               {data.waitSendNum > 0 && <View className='order-bradge'><Text>{ data.waitSendNum}</Text></View>}
+=======
+              <SpImage src='daifahuo.png' width='70' />
+              {state.waitSendNum > 0 && <View className='order-bradge'><Text>{ state.waitSendNum}</Text></View>}
+>>>>>>> 928eb70ba554c22dd0ba2b47b6d723e7d05bd764
               <Text className='order-txt'>待发货</Text>
             </View>
             <View
               className='order-item'
               onClick={handleClickLink.bind(this, '/subpage/pages/trade/list?status=1')}
             >
+<<<<<<< HEAD
               <SpImage src='daishouhuo.png' className="icon-style" />
               {data.waitRecevieNum > 0 && <View className='order-bradge'><Text>{ data.waitRecevieNum}</Text></View>}
+=======
+              <SpImage src='daishouhuo.png' width='70' />
+              {state.waitRecevieNum > 0 && <View className='order-bradge'><Text>{ state.waitRecevieNum}</Text></View>}
+>>>>>>> 928eb70ba554c22dd0ba2b47b6d723e7d05bd764
               <Text className='order-txt'>待收货</Text>
             </View>
             <View
@@ -430,14 +435,19 @@ function MemberIndex(props) {
               className='order-item'
               onClick={handleClickLink.bind(this, '/subpage/pages/trade/after-sale')}
             >
+<<<<<<< HEAD
               <SpImage src='daishouhuo.png' className="icon-style" />
               {data.afterSalesNum > 0 && <View className='order-bradge'><Text>{ data.afterSalesNum}</Text></View>}
+=======
+              <SpImage src='daishouhuo.png' width='70' />
+              {state.afterSalesNum > 0 && <View className='order-bradge'><Text>{ state.afterSalesNum}</Text></View>}
+>>>>>>> 928eb70ba554c22dd0ba2b47b6d723e7d05bd764
               <Text className='order-txt'>售后</Text>
             </View>
           </View>
-        </CompsPanel>
+        </CompPanel>
 
-        <CompsPanel title='我的服务'>
+        <CompPanel title='我的服务'>
           <CompMenu
             accessMenu={{
               ...config.menu,
@@ -446,21 +456,16 @@ function MemberIndex(props) {
             isPromoter={userInfo ? userInfo.isPromoter : false}
             onLink={handleClickService}
           />
-        </CompsPanel>
+        </CompPanel>
 
-        <CompsPanel title='帮助中心'>
+        <CompPanel title='帮助中心'>
           <CompHelpCenter onLink={handleClickService} />
-        </CompsPanel>
+        </CompPanel>
       </View>
       <View className='dibiao-block'>
         <SpImage src='dibiao.png' width='320' />
       </View>
 
-      {/* <SpPrivacyModal
-        open={policyModal}
-        onCancel={handleCloseModal}
-        onConfirm={handleConfirmModal}
-      /> */}
       <SpTabbar />
     </SpPage>
   )

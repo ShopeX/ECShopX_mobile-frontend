@@ -37,7 +37,7 @@ export default class StoreListItem extends Component {
 
   handleClick = () => {
     const { update_time } = this.state
-    const privacy_time = Taro.getStorageSync('PrivacyUpdate_time')
+    const privacy_time = Taro.getStorageSync("policy_updatetime");
     if ((!String(privacy_time) || privacy_time != update_time)) {
       this.setState({
         PrivacyVisible: true
@@ -53,11 +53,11 @@ export default class StoreListItem extends Component {
       const result = await api.wx.getPrivacyTime()
       const { update_time } = result
 
-      Taro.setStorageSync('PrivacyUpdate_time', update_time)
+      Taro.setStorageSync("policy_updatetime", update_time);
       this.props.onClick && this.props.onClick()
     } else {
-      Taro.removeStorageSync('PrivacyUpdate_time')
-      Taro.removeStorageSync('auth_token')
+      Taro.removeStorageSync("policy_updatetime");
+      Taro.removeStorageSync('token')
     }
     this.setState({
       PrivacyVisible: false

@@ -9,10 +9,7 @@ function CompFloatMenu(props) {
   return (
     <SpFloatMenus className="comp-floatmenu">
       <SpFloatMenuItem>
-        1
-      </SpFloatMenuItem>
-      <SpFloatMenuItem>
-        {/* <SpFloatAd /> */}
+        <SpFloatAd />
       </SpFloatMenuItem>
       <SpFloatMenuItem>
         

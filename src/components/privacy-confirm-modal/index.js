@@ -40,7 +40,7 @@ export default class PrivacyConfirmModal extends Component {
     const { onChange } = this.props
     if (encryptedData && iv) {
       const { update_time } = await api.wx.getPrivacyTime()
-      Taro.setStorageSync('PrivacyUpdate_time', update_time)
+      Taro.setStorageSync("policy_updatetime", update_time);
     }
     onChange && onChange('agree', e)
   }

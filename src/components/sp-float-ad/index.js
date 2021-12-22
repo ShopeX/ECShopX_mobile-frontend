@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Taro from "@tarojs/taro";
-import { View } from "@tarojs/components";
+import { View, Text } from "@tarojs/components";
 import { useImmer } from "use-immer";
 import { AtCurtain } from "taro-ui";
 import { SpImage } from "@/components"
@@ -11,10 +11,12 @@ import "./index.scss";
 
 const initialState = {
   list: [],
+  adIndex: 0
 };
 
 function SpFloatAd(props) {
-  const [state, setState] = useImmer(initialState);
+  const [state, setState] = useImmer( initialState );
+  const { list, adIndex } = state
 
   useEffect(() => {
     fetchAdList();
@@ -31,15 +33,30 @@ function SpFloatAd(props) {
   };
 
   const onCloseAd = () => {
-
+    let curIndex = adIndex + 1
+    setState((draft) => {
+      draft.adIndex = curIndex;
+    });
   }
 
   return (
-    <View>
-      {state.list.map((item, index) => (
-        <AtCurtain isOpened={true} onClose={onCloseAd}>
-          <SpImage src={item.ad_pic} mode="heightFix" />
-          <View className="ad-title">{item.ad_title}</View>
+    <View className="sp-float-ad">
+      <Text className="iconfont icon-present" onClick={() => {
+        setState((draft) => {
+          draft.adIndex = 0;
+        });
+      }}></Text>
+      {list.map((item, index) => (
+        <AtCurtain
+          className={`ad-curtain__${index}`}
+          isOpened={index == adIndex}
+          onClose={onCloseAd}
+          closeBtnPosition="top"
+        >
+          <SpImage src={item.ad_pic} mode="widthFix" />
+          <View className="ad-ft">
+            <Text className="ad-title">{item.ad_title}</Text>
+          </View>
         </AtCurtain>
       ))}
     </View>

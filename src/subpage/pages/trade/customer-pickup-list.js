@@ -14,7 +14,6 @@ import './list.scss'
   colors: colors.current
 }))
 @withPager
-@withLogin()
 export default class TradePickList extends Component {
   $instance = getCurrentInstance();
 

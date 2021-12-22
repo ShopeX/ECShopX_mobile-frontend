@@ -108,7 +108,7 @@ export default class Home extends Component {
   async protocolUpdateTime() {
     const isLocal = await entry.getLocalSetting() 
 
-    const time = Taro.getStorageSync('PrivacyUpdate_time')
+    const time = Taro.getStorageSync("policy_updatetime");
     const result = await api.wx.getPrivacyTime()
     const { update_time } = result
 
@@ -130,11 +130,11 @@ export default class Home extends Component {
       const result = await api.wx.getPrivacyTime()
       const { update_time } = result
 
-      Taro.setStorageSync('PrivacyUpdate_time', update_time)
+      Taro.setStorageSync('policy_updatetime', update_time)
       this.getHomeSetting()
     } else {
-      Taro.removeStorageSync('PrivacyUpdate_time')
-      Taro.removeStorageSync('auth_token')
+      Taro.removeStorageSync("policy_updatetime");
+      Taro.removeStorageSync("token");
       const {
         is_open_scan_qrcode,
         is_open_recommend,
