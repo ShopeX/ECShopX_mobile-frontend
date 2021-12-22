@@ -1,6 +1,7 @@
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import classNames from "classnames";
 import qs from "qs";
+import dayjs from "dayjs";
 import copy from "copy-to-clipboard";
 import S from "@/spx";
 import { STATUS_TYPES_MAP } from "@/consts";
@@ -237,12 +238,14 @@ export function resolvePath(baseUrl, params = {}) {
 
 export function formatTime(time, formatter = "yyyy-MM-dd") {
   const newTime = time.toString().length < 13 ? time * 1000 : time;
-  return format(newTime, formatter);
+  return dayjs(newTime).format(formatter);
+
 }
 
 export function formatDateTime(time, formatter = "yyyy-MM-dd HH:mm:ss") {
   const newTime = time.toString().length < 13 ? time * 1000 : time;
-  return format(newTime, formatter);
+  return dayjs(newTime).format(formatter);
+
 }
 
 export function copyText(text, msg = "内容已复制") {

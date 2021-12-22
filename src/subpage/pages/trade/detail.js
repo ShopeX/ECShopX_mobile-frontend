@@ -113,7 +113,7 @@ export default class TradeDetail extends Component {
   }
 
   async fetch() {
-    const { id } = this.$router.params 
+    const { id } = this.$instance.router.params; 
     const data = await api.trade.detail(id)
     let sessionFrom = ''
     const pickItem = {

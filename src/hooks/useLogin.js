@@ -43,7 +43,8 @@ export default (props = {}) => {
           const { token } = await api.wx.login({ code })
           setToken( token )
         } catch (e) {
-          console.error('[hooks useLogin] auto login is failed: ', e)
+          console.error( '[hooks useLogin] auto login is failed: ', e )
+          throw new Error(e)
         }
       }
     }
