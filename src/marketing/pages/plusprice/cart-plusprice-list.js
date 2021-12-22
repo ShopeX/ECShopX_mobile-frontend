@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
-import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar, SpCheckbox } from '@/components'
+import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar, SpCheckboxNew } from '@/components'
 // import { AtCountdown } from 'taro-ui'
 import { connect } from 'react-redux'
 import api from '@/api'
 import { getDistributorId } from '@/utils/helper'
-import { pickBy, classNames, isNavbar } from '@/utils'
+import { pickBy, hasNavbar } from '@/utils'
 
 import './plusprice.scss'
 
@@ -42,8 +42,7 @@ export default class DetailPluspriceList extends Component {
     })
   }
   handleSelectGoods = (item, checked) => {
-    const { list } = this.state
-    list.map((v) => {
+    const new_list = this.state.list.map((v) => {
       v.is_checked = false
       v.item_id == item.item_id && (v.is_checked = true)
       return {
@@ -52,7 +51,7 @@ export default class DetailPluspriceList extends Component {
       }
     })
     this.setState({
-      list
+      list: new_list
     })
   }
 
@@ -121,7 +120,7 @@ export default class DetailPluspriceList extends Component {
         className='cart-page-plusprice'
         style={`background: ${colors.data[0].primary}`}
       >
-        <SpNavBar title='微商城' />
+        {hasNavbar && <SpNavBar title='微商城' />}
         <ScrollView
           className='cart-page-plusprice-goods__scroll'
           scrollY
@@ -136,10 +135,10 @@ export default class DetailPluspriceList extends Component {
                 return (
                   <View key={item.item_id} className='goods-list__item'>
                     <View className='item-check'>
-                      <SpCheckbox
+                      <SpCheckboxNew
                         checked={item.is_checked}
                         onChange={this.handleSelectGoods.bind(this, item)}
-                      ></SpCheckbox>
+                      ></SpCheckboxNew>
                     </View>
                     <View className='item-goodsItem'>
                       <GoodsItem
