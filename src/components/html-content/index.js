@@ -22,7 +22,7 @@ export default class HtmlContent extends Component {
   componentDidMount () {
     if (isWeixin||isAlipay) {
       const { content } = this.props 
-      // console.log(content, 24)
+      console.log(content, 24)
       wxParse.wxParse('article', 'html', content, this.$scope, 5)
     }
   }
