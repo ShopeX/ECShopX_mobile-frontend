@@ -57,7 +57,7 @@ export default class SpLogin extends Component {
     }
   }
 
-  afterNewLogin = async ({ token, work_userid }) => {
+  afterNewLogin = async ({ token, work_userid,is_new }) => {
     if (token) {
       S.setAuthToken(token)
       if (work_userid) {
@@ -80,7 +80,11 @@ export default class SpLogin extends Component {
           open_id: openid,
           union_id: unionid
         })
-        await api.wx.newMarketing()
+        //如果是新用户才领取会员卡
+        if(is_new){
+          await api.wx.newMarketing()
+        }
+      
       }
       await S.getMemberInfo()
       // const memberInfo = await api.member.memberInfo();
@@ -139,7 +143,7 @@ export default class SpLogin extends Component {
       }
 
       const { token, is_new } = await api.wx.newlogin(params)
-      this.afterNewLogin({ token, work_userid })
+      this.afterNewLogin({ token, work_userid,is_new })
     }
   }
 
