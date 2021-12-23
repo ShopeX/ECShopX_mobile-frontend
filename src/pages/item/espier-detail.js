@@ -126,6 +126,24 @@ export default class EspierDetail extends Component {
     }
   }
 
+  getGoodId = async () => {
+    const options = await normalizeQuerys(this.$router.params)
+    if (options.itemid && !options.id) {
+      options.id = options.itemid
+    }
+    let id = options.id
+    const entryData = await entry.entryLaunch({ ...options }, true)
+    console.log('entryData---->', entryData)
+    id = entryData.id  
+    if (options.scene) {
+      const query = await normalizeQuerys(options)
+      if (query.id) {
+        id = query.id 
+      }
+    }
+    return id;
+  }
+
   async componentDidMount() {
     const options = await normalizeQuerys(this.$router.params)
     // Taro.showLoading({
@@ -177,7 +195,7 @@ export default class EspierDetail extends Component {
             uid = query.uid
           }
         }
-        this.fetchInfo(id)
+       
         this.getEvaluationList(id)
         // 浏览记录
         if (S.getAuthToken()) {
@@ -233,6 +251,8 @@ export default class EspierDetail extends Component {
       Taro.setStorageSync('userinfo', userObj)
     }
     this.fetchCartCount()
+    const goodId=await this.getGoodId();
+    this.fetchInfo(goodId);
   }
 
   async getEvaluationList(id) {
@@ -507,7 +527,7 @@ export default class EspierDetail extends Component {
         isSubscribeGoods: !!subscribe
       },
       async () => {
-        const vedioUrl=this.getVedioUrl();
+        const vedioUrl = this.getVedioUrl();
         let contentDesc = ''
         //说明没有值
         if (!isArray(desc)) {
@@ -1149,7 +1169,7 @@ export default class EspierDetail extends Component {
 
   getVedioUrl = () => {
 
-    const { info }=this.state;
+    const { info } = this.state;
     //有本地视频
     const localVedio = (info.video_type === 'local' && info.videos) ? info.videos : false;
     //有微信视频
@@ -1220,9 +1240,9 @@ export default class EspierDetail extends Component {
     let { isNewGift } = this.$router.params
 
 
-    const vedioUrl=this.getVedioUrl(); 
+    const vedioUrl = this.getVedioUrl();
 
-    console.log('==vedioUrl==',vedioUrl,desc);
+    console.log('==vedioUrl==', vedioUrl, desc);
 
     return (
       <View className='page-goods-detail'>
@@ -1677,10 +1697,10 @@ export default class EspierDetail extends Component {
                 ) : (
                   <View
                     style={`background: ${this.isPointitemGood() || isAlipay
-                        ? 'grey'
-                        : !isSubscribeGoods
-                          ? colors.data[0].primary
-                          : 'inherit'
+                      ? 'grey'
+                      : !isSubscribeGoods
+                        ? colors.data[0].primary
+                        : 'inherit'
                       }`}
                     className={`arrivalNotice ${isSubscribeGoods &&
                       'noNotice'} ${this.isPointitemGood() && 'good_disabled'}`}
