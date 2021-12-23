@@ -290,6 +290,7 @@ export default class UserInfo extends Component {
 
     console.log('--userInfo--', userInfo)
     console.log('--formItems--', formItems)
+    console.log('--regParams--', regParams)
     if (!userInfo) {
       return null
     }

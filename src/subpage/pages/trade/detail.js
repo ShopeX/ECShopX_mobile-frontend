@@ -622,6 +622,11 @@ export default class TradeDetail extends Component {
       return <Loading></Loading>
     }
 
+    console.log("==tradeInfo==>",tradeInfo)
+
+    //订单未支付
+    const NOT_PAY=tradeInfo && tradeInfo.tradeState==="NOTPAY";
+
     //const isDhPoint = info.point_fee!=0?'point':''
     const isDhPoint = info.pay_type === 'point'
     // 是否为余额支付
@@ -975,7 +980,7 @@ export default class TradeDetail extends Component {
                   {info.order_class !== 'excard' ? this.computedPayType()  + '支付' : ''}
                 </View>
               </View>
-            )}
+            )} 
             {info.delivery_code && (
               <View className='line'>
                 <View className='left'>物流单号</View>
