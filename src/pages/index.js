@@ -1,5 +1,9 @@
 import React, { useEffect, memo } from "react";
-import Taro, { useShareAppMessage, useShareTimeline } from "@tarojs/taro";
+import Taro, {
+  useShareAppMessage,
+  useShareTimeline,
+  usePageScroll,
+} from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -13,7 +17,6 @@ import {
   SpPage,
   SpSearch,
   SpRecommend,
-  SpFloatMenus,
   SpFloatMenuItem,
   SpTabbar,
 } from "@/components";
@@ -39,6 +42,7 @@ const MCompAddTip = memo(CompAddTip);
 const initState = {
   wgts: [],
   shareInfo: {},
+  showBackToTop: false
 };
 
 function Home() {
@@ -52,7 +56,6 @@ function Home() {
   useEffect(() => {
     fetchInit();
     fetchWgts();
-    fetchAdConfig();
     fetchShareInfo()
   }, []);
 
@@ -79,21 +82,6 @@ function Home() {
     });
   };
 
-  // 获取弹窗广告配置
-  const fetchAdConfig = async () => {
-    const { general, membercard } = await api.promotion.automatic({
-      register_type: "all",
-    });
-
-    // let openAdvertList = [general || {}, membercard || {}]
-    //   .filter((item) => item.is_open === "true")
-    //   .map((item) => ({ adPic: item.ad_pic, title: item.ad_title }));
-
-    // this.setState({
-    //   advertList: openAdvertList,
-    // });
-  };
-
   const fetchShareInfo = async () => {
     const res = await api.wx.shareSetting({ shareindex: "index" });
     setState( ( draft ) => {
@@ -115,16 +103,19 @@ function Home() {
       imageUrl: shareInfo.imageUrl,
       query: "/pages/index",
     };
-  })
+  } )
+  
+
 
   const searchComp = wgts.find( ( wgt ) => wgt.name == "search" );
   let filterWgts = []
   if (searchComp && searchComp.config.fixTop) {
     filterWgts = wgts.filter((wgt) => wgt.name !== "search");
+  } else {
+    filterWgts = wgts;
   }
-
   return (
-    <SpPage className="page-index">
+    <SpPage className="page-index" renderFloat={ <CompFloatMenu /> }>
       {/* header-block */}
       <WgtHomeHeader>
         {searchComp && searchComp.config.fixTop && <SpSearch />}
@@ -144,7 +135,7 @@ function Home() {
       {isWeixin && <SpScreenAd />}
 
       {/* 浮动菜单 */}
-      <CompFloatMenu />
+      {/* <CompFloatMenu /> */}
 
       <SpTabbar />
     </SpPage>

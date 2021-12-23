@@ -39,6 +39,10 @@ function SpFloatAd(props) {
     });
   }
 
+  if ( S.getAuthToken() ) {
+    return null
+  }
+
   return (
     <View className="sp-float-ad">
       <Text className="iconfont icon-present" onClick={() => {
