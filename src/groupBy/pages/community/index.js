@@ -50,15 +50,15 @@ export default class Community extends Component {
   // 获取定位
   init = async () => {
     const lbs = await entryLaunchFun.getLocationInfo()
-    // if (lbs.latitude) await InverseAnalysisGaode(lbs)
+    // if (lbs.lat) await InverseAnalysisGaode(lbs)
     // const lbs = this.getLoacl()
     if (!lbs) return false
-    const { latitude, longitude } = lbs
+    const { lat, lng } = lbs
     this.setState(
       {
         lbs: {
-          lat: latitude,
-          lng: longitude
+          lat,
+          lng
         }
       },
       () => {

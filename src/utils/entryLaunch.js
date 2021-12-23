@@ -311,7 +311,7 @@ class EntryLaunch {
           scope: 'scope.userLocation',
           success: async () => {
             let locationData = await this.getLocationInfo()
-            if (locationData.latitude) await entry.InverseAnalysisGaode(locationData)
+            if (locationData.lat) await entry.InverseAnalysisGaode(locationData)
             if (callback) callback()
           },
           fail: () => {
@@ -324,7 +324,7 @@ class EntryLaunch {
                   const setting = await Taro.getSetting()
                   if (setting.authSetting['scope.userLocation']) {
                     let locationData = await this.getLocationInfo()
-                    if (locationData.latitude) await entry.InverseAnalysisGaode(locationData)
+                    if (locationData.lat) await entry.InverseAnalysisGaode(locationData)
                     if (callback) callback()
                   } else {
                     Taro.showToast({ title: '获取定位权限失败', icon: 'none' })
@@ -336,12 +336,12 @@ class EntryLaunch {
         })
       } else {
         let locationData = await this.getLocationInfo()
-        if (locationData.latitude) await entry.InverseAnalysisGaode(locationData)
+        if (locationData.lat) await entry.InverseAnalysisGaode(locationData)
         if (callback) callback()
       }
     } else {
       let locationData = await this.getLocationInfo()
-      if (locationData.latitude) await entry.InverseAnalysisGaode(locationData)
+      if (locationData.lat) await entry.InverseAnalysisGaode(locationData)
       if (callback) callback()
     }
   }

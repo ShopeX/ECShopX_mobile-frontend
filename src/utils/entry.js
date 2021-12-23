@@ -199,22 +199,22 @@ async function getLocal(isNeedLocate, privacy_time) {
     if (lnglat) {
       let param = {};
       if (isNeedLocate && positionStatus) {
-        param.lat = lnglat.latitude;
-        param.lng = lnglat.longitude;
+        param.lat = lnglat.lat;
+        param.lng = lnglat.lng;
       }
       store = await api.shop.getShop(param);
     } else {
       let locationData = null
       if (String(privacy_time)) {
         locationData = await entryLaunchFun.getLocationInfo()
-        if (locationData.latitude) await InverseAnalysisGaode(locationData)
+        if (locationData.lat) await InverseAnalysisGaode(locationData)
       }
       // const locationData = await getLoc()
       if (locationData !== null && locationData !== '') {
         let param = {}
         if (isNeedLocate && positionStatus) {
-          param.lat = locationData.latitude;
-          param.lng = locationData.longitude;
+          param.lat = locationData.lat;
+          param.lng = locationData.lng;
         }
         store = await api.shop.getShop(param);
       } else {
@@ -379,8 +379,8 @@ async function positiveAnalysisGaode (locationData) {
     const { geocodes } = cityInfo.data
     Taro.setStorageSync('lnglat', {
       ...geocodes[0],
-      longitude: +geocodes[0].location.split(',')[0],
-      latitude: +geocodes[0].location.split(',')[1],
+      lng: +geocodes[0].location.split(',')[0],
+      lat: +geocodes[0].location.split(',')[1],
       addressdetail: geocodes[0].formatted_address
     })
     Taro.eventCenter.trigger('lnglat-success')
@@ -396,12 +396,12 @@ async function InverseAnalysisGaode(locationData){
   // } else {
   //   MAP_KEY = Taro.getStorageSync('gaode_map_key') || {}
   // }
-  const { latitude, longitude } = locationData
+  const { lat, lng } = locationData
   let cityInfo = await Taro.request({
     url: `https://restapi.amap.com/v3/geocode/regeo`,
     data:{
       key: process.env.APP_MAP_KEY,
-      location:`${longitude},${latitude}`, 
+      location:`${lng},${lat}`, 
     }
   }); 
   console.log("===cityInfowjb2===>",cityInfo,process.env.APP_MAP_KEY,locationData,process.env)

@@ -85,13 +85,13 @@ export default class GroupByIndex extends Component {
     // const lbs = await this.getLoacl()
     const lbs = await entryLaunchFun.getLocationInfo()
     if (!lbs) return
-    const { latitude, longitude } = lbs
+    const { lat, lng } = lbs
     this.getSetting()
     this.setState(
       {
         lbs: {
-          lat: latitude,
-          lng: longitude
+          lat,
+          lng
         },
         userInfo
       },
