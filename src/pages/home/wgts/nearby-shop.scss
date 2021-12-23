@@ -20,22 +20,21 @@
     white-space: nowrap;
     display: flex;
     align-items: baseline;
-    &::-webkit-scrollbar {
-      display: none;
-      width: 0;
-      height: 0;
-      color: transparent;
-    }
+    // &::-webkit-scrollbar {
+    //   display: none;
+    //   width: 0;
+    //   height: 0;
+    //   color: transparent;
+    // }
   }
 
   .tag {
     display: inline-block;
     margin-right: 20px;
-    padding: 4px 12px;
+    padding: 4px 20px;
     background-color: #eee;
     border-radius: 23px;
     height: 46px;
-    min-width: 80px;
     color: #444444;
     text-align: center;
     &.active {
@@ -46,13 +45,13 @@
   .shopList {
     white-space: nowrap;
     margin-top: 30px;
-    &::-webkit-scrollbar {
-      display: none;
-      width: 0;
-      height: 0;
-      color: transparent;
-      background: transparent;
-    }
+    // &::-webkit-scrollbar {
+    //   display: none;
+    //   width: 0;
+    //   height: 0;
+    //   color: transparent;
+    //   background: transparent;
+    // }
     .shop {
       display: inline-block;
       vertical-align: top;
