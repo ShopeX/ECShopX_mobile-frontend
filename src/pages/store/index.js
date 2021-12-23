@@ -328,8 +328,8 @@ export default class StoreIndex extends Component {
                     <WgtStore info={item} />
                   )}
                    {item.name === 'headline' && <WgtHeadline info={item} />}
-                   {item.name === 'floorImg' && <WgtHotTopic info={item} />}
-                   {item.name === 'hotTopic' && <WgtFloorImg info={item} />}
+                   {item.name === 'hotTopic' && <WgtHotTopic info={item} />}
+                   {item.name === 'floorImg' && <WgtFloorImg info={item} />}
 
 
                 </View>
