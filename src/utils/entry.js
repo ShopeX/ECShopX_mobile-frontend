@@ -177,9 +177,11 @@ async function logScene(data) {
 }
 
 async function getLocalSetting() {
-  const paramsurl = qs.stringify(payTypeField)
-  const url = `/pagestemplate/setInfo?${paramsurl}`
-  const { is_open_wechatapp_location } = await req.get(url)
+  // const paramsurl = qs.stringify(payTypeField)
+  // const url = `/pagestemplate/setInfo?${paramsurl}`
+  // const { is_open_wechatapp_location } = await req.get(url)
+  const { is_open_wechatapp_location }=Taro.getStorageSync('settingInfo')
+  console.log("==getLocalSetting==",is_open_wechatapp_location)
   if (is_open_wechatapp_location == 1) {
     return true
   } else {

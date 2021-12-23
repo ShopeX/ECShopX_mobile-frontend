@@ -15,7 +15,7 @@ import {
   isAlipay,
   getPointName,
   classNames,
-  isNavbar, 
+  isNavbar,
   isWeb,
   redirectUrl
 } from '@/utils'
@@ -76,7 +76,7 @@ export default class TradeDetail extends Component {
       cancelData: {},
       tradeInfo: {},
       showQRcode: false,
-      distributor:{}
+      distributor: {}
     }
   }
 
@@ -112,13 +112,13 @@ export default class TradeDetail extends Component {
   }
 
   async fetch() {
-    const { id } = this.$router.params 
+    const { id } = this.$router.params
     const data = await api.trade.detail(id)
     let sessionFrom = ''
     const pickItem = {
       order_id: 'order_id',
       item_id: 'id',
-      good_id:'item_id',
+      good_id: 'item_id',
       // aftersales_status: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
       delivery_code: 'delivery_code',
       delivery_corp: 'delivery_corp',
@@ -141,7 +141,7 @@ export default class TradeDetail extends Component {
       item_spec_desc: 'item_spec_desc',
       order_item_type: 'order_item_type',
       show_aftersales: 'show_aftersales',
-      distributor_id:'distributor_id'
+      distributor_id: 'distributor_id'
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
@@ -276,7 +276,7 @@ export default class TradeDetail extends Component {
       ziti,
       cancelData,
       tradeInfo,
-      distributor:data.distributor
+      distributor: data.distributor
     })
   }
 
@@ -304,9 +304,9 @@ export default class TradeDetail extends Component {
       order_type
     }
 
-    if(isWeb){
+    if (isWeb) {
       redirectUrl(api, `/subpage/pages/cashier/index?order_id=${order_id}&pay_type=${pay_type}`)
-      return ;
+      return;
     }
 
     const config = await api.cashier.getPayment(paymentParams)
@@ -591,13 +591,13 @@ export default class TradeDetail extends Component {
     })
   }
 
-  computedPayType=()=>{
-    const { info:{pay_type} } =this.state; 
-    if(isAlipay){
+  computedPayType = () => {
+    const { info: { pay_type } } = this.state;
+    if (isAlipay) {
       return '支付宝'
-    }else if(pay_type===PAYTYPE.ALIH5){
+    } else if (pay_type === PAYTYPE.ALIH5) {
       return '支付宝'
-    }else{
+    } else {
       return '微信'
     }
   }
@@ -621,6 +621,11 @@ export default class TradeDetail extends Component {
     if (!info) {
       return <Loading></Loading>
     }
+
+    console.log("==tradeInfo==>", tradeInfo)
+
+    //订单未支付
+    const NOT_PAY = tradeInfo && tradeInfo.tradeState === "NOTPAY";
 
     //const isDhPoint = info.point_fee!=0?'point':''
     const isDhPoint = info.pay_type === 'point'
@@ -753,36 +758,34 @@ export default class TradeDetail extends Component {
           <View className='trade-detail-address'>
             {((info.dada && info.dada.id) ||
               (info.receipt_type === 'ziti' && !info.is_logistics)) && (
-              <View className={`store ${info.dada && info.dada.id ? 'border' : ''}`}>
-                <Text
-                  className={`iconfont ${
-                    info.receipt_type === 'dada' ? 'icon-shangjiadizhi-01' : 'icon-dizhi-01'
-                  }`}
-                ></Text>
-                <View>
-                  <View className='storeName'>{ziti.store_name}</View>
-                  <View className='storeAddress'>{ziti.store_address}</View>
-                  <View className='storeHour'>
-                    <Text className='title'>营业时间：</Text>
-                    {ziti.hour}
-                  </View>
-                  <View className='storeMobile'>
-                    <Text className='title'>门店电话：</Text>
-                    {ziti.phone}
-                    <View
-                      className='iconfont icon-dianhua'
-                      onClick={this.callDada.bind(this, ziti.phone)}
-                    ></View>
+                <View className={`store ${info.dada && info.dada.id ? 'border' : ''}`}>
+                  <Text
+                    className={`iconfont ${info.receipt_type === 'dada' ? 'icon-shangjiadizhi-01' : 'icon-dizhi-01'
+                      }`}
+                  ></Text>
+                  <View>
+                    <View className='storeName'>{ziti.store_name}</View>
+                    <View className='storeAddress'>{ziti.store_address}</View>
+                    <View className='storeHour'>
+                      <Text className='title'>营业时间：</Text>
+                      {ziti.hour}
+                    </View>
+                    <View className='storeMobile'>
+                      <Text className='title'>门店电话：</Text>
+                      {ziti.phone}
+                      <View
+                        className='iconfont icon-dianhua'
+                        onClick={this.callDada.bind(this, ziti.phone)}
+                      ></View>
+                    </View>
                   </View>
                 </View>
-              </View>
-            )}
+              )}
             {((info.dada && info.dada.id) || info.receipt_type === 'logistics') && (
               <View className='address-receive'>
                 <Text
-                  className={`iconfont ${
-                    info.receipt_type === 'dada' ? 'icon-shouhuodizhi-01' : 'icon-dizhi-01'
-                  }`}
+                  className={`iconfont ${info.receipt_type === 'dada' ? 'icon-shouhuodizhi-01' : 'icon-dizhi-01'
+                    }`}
                 ></Text>
                 <View className='info-trade'>
                   <Text className='address-detail'>
@@ -801,7 +804,7 @@ export default class TradeDetail extends Component {
           </View>
 
           <View className='trade-detail-goods'>
-            <SpNewShopItem 
+            <SpNewShopItem
               info={distributor}
               canJump
               inOrderDetail
@@ -967,12 +970,28 @@ export default class TradeDetail extends Component {
                 </View>
               </View>
             )}
-            {!isDhPoint && !isDeposit && (
+            {!isDhPoint && !isDeposit && !NOT_PAY && (
               <View className='line'>
                 <View className='left'>支付</View>
                 <View className='right'>
                   ¥{info.payment}{' '}
-                  {info.order_class !== 'excard' ? this.computedPayType()  + '支付' : ''}
+                  {info.order_class !== 'excard' ? this.computedPayType() + '支付' : ''}
+                </View>
+              </View>
+            )}
+            {!isDhPoint && !isDeposit && NOT_PAY && (
+              <View className='line'>
+                <View className='left'>应付金额</View>
+                <View className='right'>
+                  ¥{info.payment}{' '} 
+                </View>
+              </View>
+            )}
+             {!isDhPoint && !isDeposit && NOT_PAY && (
+              <View className='line'>
+                <View className='left'>支付类型</View>
+                <View className='right'> 
+                  {info.order_class !== 'excard' ? this.computedPayType() + '支付' : ''}
                 </View>
               </View>
             )}
@@ -1003,27 +1022,27 @@ export default class TradeDetail extends Component {
         {info.status !== 'TRADE_CLOSED' && (
           <View className='trade-detail__footer'>
             {// 立即支付
-            info.status === 'WAIT_BUYER_PAY' && (
-              <Button
-                className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'
-                type='primary'
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                loading={payLoading}
-                onClick={this.handleClickBtn.bind(this, 'pay')}
-              >
-                立即支付
-              </Button>
-            )}
+              info.status === 'WAIT_BUYER_PAY' && (
+                <Button
+                  className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'
+                  type='primary'
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  loading={payLoading}
+                  onClick={this.handleClickBtn.bind(this, 'pay')}
+                >
+                  立即支付
+                </Button>
+              )}
             {// 申请售后
-            (info.status === 'WAIT_SELLER_SEND_GOODS' ||
-              (info.status === 'TRADE_SUCCESS' &&
-                (info.receipt_type !== 'dada' ||
-                  info.dada.dada_status === 4 ||
-                  info.dada.dada_status === 10)) ||
-              (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
-                (info.is_all_delivery ||
-                  (!info.is_all_delivery && info.delivery_status === 'DONE')) &&
-                info.receipt_type !== 'dada')) &&
+              (info.status === 'WAIT_SELLER_SEND_GOODS' ||
+                (info.status === 'TRADE_SUCCESS' &&
+                  (info.receipt_type !== 'dada' ||
+                    info.dada.dada_status === 4 ||
+                    info.dada.dada_status === 10)) ||
+                (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
+                  (info.is_all_delivery ||
+                    (!info.is_all_delivery && info.delivery_status === 'DONE')) &&
+                  info.receipt_type !== 'dada')) &&
               info.can_apply_aftersales === 1 &&
               info.order_class !== 'excard' && (
                 <Button
@@ -1035,27 +1054,26 @@ export default class TradeDetail extends Component {
                 </Button>
               )}
             {// 继续购物
-            (info.status === 'WAIT_SELLER_SEND_GOODS' ||
-              (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
-                info.receipt_type === 'dada' &&
-                info.receipt_type !== 'dada') ||
-              info.dada.dada_status !== 9) && (
-              <View
-                className={`trade-detail__footer__btn trade-detail__footer_active right ${
-                  info.order_class === 'excard' ||
-                  info.can_apply_aftersales !== 1 ||
-                  (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')
-                    ? 'trade-detail__footer_allWidthBtn'
-                    : ''
-                }`}
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
-                onClick={this.handleClickBtn.bind(this, 'home')}
-              >
-                继续购物
-              </View>
-            )}
+              (info.status === 'WAIT_SELLER_SEND_GOODS' ||
+                (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
+                  info.receipt_type === 'dada' &&
+                  info.receipt_type !== 'dada') ||
+                info.dada.dada_status !== 9) && (
+                <View
+                  className={`trade-detail__footer__btn trade-detail__footer_active right ${info.order_class === 'excard' ||
+                      info.can_apply_aftersales !== 1 ||
+                      (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')
+                      ? 'trade-detail__footer_allWidthBtn'
+                      : ''
+                    }`}
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
+                  onClick={this.handleClickBtn.bind(this, 'home')}
+                >
+                  继续购物
+                </View>
+              )}
             {// 确认收货
-            info.order_class !== 'excard' &&
+              info.order_class !== 'excard' &&
               info.receipt_type !== 'dada' &&
               !info.is_logistics &&
               info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
@@ -1071,8 +1089,8 @@ export default class TradeDetail extends Component {
                 </View>
               )}
             {// 联系客服
-            (info.status === 'TRADE_SUCCESS' ||
-              (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
+              (info.status === 'TRADE_SUCCESS' ||
+                (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
               info.order_class !== 'excard' && (
                 <View
                   className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales ===

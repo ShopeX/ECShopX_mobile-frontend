@@ -76,8 +76,8 @@ $item-img-height: 200px !default;
   }
   &__tag {
     display: inline-block;
-    border: 1px solid $color-brand-primary;
-    color: $color-brand-primary;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
     padding: 3px 4px;
     font-size: $font-size-small;
     margin-right: 10px;
@@ -107,7 +107,7 @@ $item-img-height: 200px !default;
     }
   }
   &__point {
-    color: $color-brand-primary;
+    color: var(--color-primary);
   }
   &__price-market {
     font-size: $font-size-small;

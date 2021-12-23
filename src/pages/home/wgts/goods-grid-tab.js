@@ -3,7 +3,7 @@ import { View, Image, Text } from '@tarojs/components'
 import { AtTabslist, SpImg } from '@/components'
 import { connect } from '@tarojs/redux'
 import { getDistributorId } from '@/utils/helper'
-import { classNames, isWeixin } from '@/utils'
+import { classNames, isWeixin, styleNames, getThemeStyle } from '@/utils'
 import { linkPage } from './helper'
 import { withLoadMore } from '@/hocs'
 import './goods-grid-tab.scss'
@@ -129,7 +129,7 @@ export default class WgtGoodsGridTab extends Component {
     const { goodsList, moreLink } = this.state
 
     return (
-      <View className={`wgt wgt-grid ${base.padded ? 'wgt__padded' : null}`}>
+      <View className={`wgt wgt-grid ${base.padded ? 'wgt__padded' : null}`} style={styleNames(getThemeStyle())}>
         {base.title && (
           <View className='wgt__header'>
             <View className='wgt__title'>

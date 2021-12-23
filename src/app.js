@@ -135,7 +135,7 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    this.init()
+    this.init() 
   }
 
   system = Taro.getSystemInfoSync()
@@ -391,8 +391,8 @@ class App extends Component {
     const { referrerInfo } = options || {}
     if (referrerInfo) {
       console.log(referrerInfo)
-    }
-  }
+    } 
+  } 
 
   componentDidHide() {
     FormIds.stop()
@@ -489,7 +489,7 @@ class App extends Component {
     // this.fetchColors();
   }
 
-  async getSystemConfig() {
+  async getSystemConfig() { 
     const appConfig = await api.shop.getAppConfig()
     const {
       tab_bar,

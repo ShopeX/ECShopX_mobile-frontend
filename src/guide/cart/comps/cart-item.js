@@ -3,7 +3,7 @@ import { View, Text, Image } from '@tarojs/components'
 // import { AtInputNumber } from 'taro-ui'
 import { Price } from '@/components'
 import InputNumber from '@/components/input-number'
-import { isObject, classNames } from '@/utils'
+import { isObject, classNames, styleNames, getThemeStyle } from '@/utils'
 
 import './cart-item.scss'
 
@@ -57,6 +57,7 @@ export default class GoodsItem extends Component {
         className={classNames('cart-item', className, {
           'is-disabled': isDisabled
         })}
+        style={styleNames(getThemeStyle())}
       >
         <View className='cart-item__hd'>{this.props.children}</View>
         <View className='cart-item__bd' onClick={onClick}>

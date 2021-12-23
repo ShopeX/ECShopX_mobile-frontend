@@ -195,7 +195,7 @@ export default class CartIndex extends Component {
 
   // 活动分组
   resolveActivityGroup(cartList = []) {
-    console.log(cartList);
+    console.log(cartList, 'cartList');
     const groups = cartList.map(shopCart => {
    
       const { list, used_activity = [], plus_buy_activity = [] } = shopCart;
@@ -204,6 +204,7 @@ export default class CartIndex extends Component {
         acc[val.cart_id] = val;
         return acc;
       }, {});
+      console.log(tDict, 'tDict')
       const activityGrouping = shopCart.activity_grouping;
       // 活动列表
       const group = used_activity.map(act => {
@@ -614,6 +615,8 @@ export default class CartIndex extends Component {
       token
     } = this.state;
     const { list, showLikeList, colors } = this.props;
+
+    console.log(groups, 'groups------')
     
     const { type = "distributor" } = this.$router.params;
     const isDrug = type === "drug";
