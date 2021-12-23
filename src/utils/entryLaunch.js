@@ -71,7 +71,7 @@ class EntryLaunch {
       // 开启定位
       if (is_open_wechatapp_location == 1) {
         try {
-          const { longitude: lng, latitude: lat } = await this.getLocationInfo()
+          const { lng, lat } = await this.getLocationInfo()
           storeQuery = {
             ...storeQuery,
             lng,
