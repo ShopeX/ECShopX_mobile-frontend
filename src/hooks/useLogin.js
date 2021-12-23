@@ -56,12 +56,12 @@ export default (props = {}) => {
     getUserInfo()
   }
 
-  const getUserInfo = async () => {
-    if ( !userInfo ) {
-      const _userInfo = await api.member.memberInfo()
-      dispatch(updateUserInfo(_userInfo))
+  const getUserInfo = async (refresh) => {
+    if (!userInfo || refresh) {
+      const _userInfo = await api.member.memberInfo();
+      dispatch(updateUserInfo(_userInfo));
     }
-  }
+  };
 
   /**
    * @function 检查隐私协议是否变更
@@ -107,7 +107,7 @@ export default (props = {}) => {
                 username: userInfo.nickName,
                 avatar: userInfo.avatarUrl
               })
-              await getUserInfo()
+              await getUserInfo(true)
               resolve()
             },
             fail: (e) => {

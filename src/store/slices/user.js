@@ -43,6 +43,21 @@ const userSlice = createSlice({
 
     updateLocation: ( state, { payload } ) => {
       state.location = payload
+    },
+
+    clearUserInfo: ( state, { payload } ) => {
+      state.userInfo = null
+      state.cardInfo = {}
+      state.vipInfo = {
+        isOpen: false,
+        isVip: false,
+        vipType: '',
+        endTime: ''
+      }
+      state.showAdv = false
+      state.fav = {}
+      state.address = null
+      state.location = {}
     }
   }
 })

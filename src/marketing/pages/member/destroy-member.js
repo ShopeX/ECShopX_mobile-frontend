@@ -4,9 +4,11 @@ import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { SpCheckbox } from '@/components'
 import req from '@/api/req'
+import configStore from "@/store";
 import DestoryConfirm from './comps/destory-comfirm-modal'
 import './destroy-member.scss'
 
+const store = configStore();
 @connect(({ colors }) => ({
   colors: colors.current
 }))
@@ -51,7 +53,10 @@ export default class SettingIndex extends Component {
       req.delete('/member', { is_delete: '1' }).then((res) => {
         if (res.status) {
           Taro.removeStorageSync("token");
-          Taro.removeStorageSync("policy_updatetime");
+          Taro.removeStorageSync( "policy_updatetime" );
+          store.dispatch({
+            type: "user/clearUserInfo",
+          });
           Taro.reLaunch({
             url: '/pages/index'
           })

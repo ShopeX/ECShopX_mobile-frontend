@@ -237,8 +237,6 @@ class Spx {
   }
 
   logout() {
-    Taro.removeStorageSync(TOKEN_TIMESTAMP)
-    this.delete(TOKEN_IDENTIFIER, true)
     Taro.removeStorageSync('userinfo')
     this.trigger('logout')
   }
