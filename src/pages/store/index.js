@@ -24,7 +24,10 @@ import {
   WgtNearbyShop,
   WgtStore,
   WgtGoodsGridTab,
-  WgtGoodsFaverite
+  WgtGoodsFaverite,
+  WgtHeadline,
+  WgtFloorImg,
+  WgtHotTopic
 } from '../home/wgts'
 
 import './index.scss'
@@ -324,6 +327,11 @@ export default class StoreIndex extends Component {
                   {item.name === 'store' && (
                     <WgtStore info={item} />
                   )}
+                   {item.name === 'headline' && <WgtHeadline info={item} />}
+                   {item.name === 'floorImg' && <WgtHotTopic info={item} />}
+                   {item.name === 'hotTopic' && <WgtFloorImg info={item} />}
+
+
                 </View>
               )
             })}
