@@ -389,39 +389,24 @@ function MemberIndex(props) {
               className='order-item'
               onClick={handleClickLink.bind(this, '/subpage/pages/trade/list?status=5')}
             >
-<<<<<<< HEAD
-              <SpImage src='daizhifu.png' className="icon-style"/>
-              { data.waitPayNum > 0 && <View className='order-bradge'><Text>{ data.waitPayNum}</Text></View>}
-=======
-              <SpImage src='daizhifu.png' width='70' />
+              <SpImage src='daizhifu.png' className="icon-style" />
               { state.waitPayNum > 0 && <View className='order-bradge'><Text>{ state.waitPayNum}</Text></View>}
->>>>>>> 928eb70ba554c22dd0ba2b47b6d723e7d05bd764
               <Text className='order-txt'>待支付</Text>
             </View>
             <View
               className='order-item'
               onClick={handleClickLink.bind(this, '/subpage/pages/trade/list?status=3')}
             >
-<<<<<<< HEAD
               <SpImage src='daifahuo.png' className="icon-style" />
-              {data.waitSendNum > 0 && <View className='order-bradge'><Text>{ data.waitSendNum}</Text></View>}
-=======
-              <SpImage src='daifahuo.png' width='70' />
               {state.waitSendNum > 0 && <View className='order-bradge'><Text>{ state.waitSendNum}</Text></View>}
->>>>>>> 928eb70ba554c22dd0ba2b47b6d723e7d05bd764
               <Text className='order-txt'>待发货</Text>
             </View>
             <View
               className='order-item'
               onClick={handleClickLink.bind(this, '/subpage/pages/trade/list?status=1')}
             >
-<<<<<<< HEAD
               <SpImage src='daishouhuo.png' className="icon-style" />
-              {data.waitRecevieNum > 0 && <View className='order-bradge'><Text>{ data.waitRecevieNum}</Text></View>}
-=======
-              <SpImage src='daishouhuo.png' width='70' />
               {state.waitRecevieNum > 0 && <View className='order-bradge'><Text>{ state.waitRecevieNum}</Text></View>}
->>>>>>> 928eb70ba554c22dd0ba2b47b6d723e7d05bd764
               <Text className='order-txt'>待收货</Text>
             </View>
             <View
@@ -435,13 +420,8 @@ function MemberIndex(props) {
               className='order-item'
               onClick={handleClickLink.bind(this, '/subpage/pages/trade/after-sale')}
             >
-<<<<<<< HEAD
               <SpImage src='daishouhuo.png' className="icon-style" />
-              {data.afterSalesNum > 0 && <View className='order-bradge'><Text>{ data.afterSalesNum}</Text></View>}
-=======
-              <SpImage src='daishouhuo.png' width='70' />
               {state.afterSalesNum > 0 && <View className='order-bradge'><Text>{ state.afterSalesNum}</Text></View>}
->>>>>>> 928eb70ba554c22dd0ba2b47b6d723e7d05bd764
               <Text className='order-txt'>售后</Text>
             </View>
           </View>

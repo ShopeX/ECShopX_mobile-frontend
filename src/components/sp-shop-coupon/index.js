@@ -8,7 +8,6 @@ import "./index.scss";
 
 function SpShopCoupon( props ) {
   const { className, info } = props
-  console.log('info==',info)
   const { card_type, discount, least_cost } = info;
   let couponText = ''
   // 折扣券

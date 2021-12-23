@@ -7,19 +7,15 @@ import api from "@/api";
 import { SpShopCoupon,SpShopFullReduction } from '@/components'
 
 function CompHeader(props){
-    const { info, couponList = [], fullReduction = [{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"}] } = props
+    const { info, couponList = [], fullReduction = [{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"}] } = props
     const { brand = '', name = '', scoreList = {}} = info
     const [showMore, setShowMore] = useState(false)
     const [fav, setFav] = useState(false)
-    const handeChange = () => {
-        setShowMore(!showMore)
-    }
     const handleCouponClick = useCallback(() => {
         Taro.navigateTo({
           url: `/others/pages/home/coupon-home?distributor_id=${info.distributor_id}`,
         });
     }, [info]);
-
     const handleFocus = (flag) => async () => {
         let data = {};
         if (flag) {
@@ -37,10 +33,8 @@ function CompHeader(props){
         }
         setFav(flag);
       };
-    const backfun = (e) => {
-        console.log('e==',e)
-        setShowMore(e)
-    }
+    //品牌介绍
+    const brandInfo = () => {}
     return (
         <View className="comp-header">
             {/* {店铺信息} */}
@@ -50,7 +44,7 @@ function CompHeader(props){
                     <View className='store-name'>{name}</View>
                     <View className='store-avgSstar-block'>
                         <Text className='store-avgSstar'>评分:{scoreList.avg_star}</Text>
-                        <View className='brand-produce'>品牌介绍 ></View>
+                        <View className='brand-produce' onClick={brandInfo}>品牌介绍 ></View>
                     </View>
                 </View>
                 <View className='attention' onClick={handleFocus(!fav)}>
@@ -59,7 +53,7 @@ function CompHeader(props){
             </View>
             {/* {优惠券} */}
             {
-             couponList && <View className='coupon-block' onClick={handleCouponClick}>
+                couponList.length>0 && <View className='coupon-block' onClick={handleCouponClick}>
                 {
                     couponList.map((item,index) => (
                         <SpShopCoupon info={item} key={`shop-coupon__${index}`} />
@@ -69,21 +63,19 @@ function CompHeader(props){
             }
             {/* {满减} */}
             {
-                fullReduction && <View className={!showMore ? 'full-block' : 'full-block pick'} >
-                    {
-                        fullReduction.map((item,index) => {
-                            return (
-                                <SpShopFullReduction 
-                                  info={item} 
-                                  key={`shop-full-reduction__${index}`} 
-                                  showMoreIcon={fullReduction.length > 1 && index == 0 }
-                                  status={showMore}
-                                  count={fullReduction.length}
-                                  handeChange={(e) => backfun(e)}
-                                />
-                            )
-                        })
-                    }
+                fullReduction.length>0 && <View className={!showMore ? 'full-block' : 'full-block pick'} >
+                {
+                    fullReduction.map((item,index) => (
+                        <SpShopFullReduction 
+                          info={item} 
+                          key={`shop-full-reduction__${index}`} 
+                          showMoreIcon={fullReduction.length > 1 && index == 0 }
+                          status={showMore}
+                          count={fullReduction.length}
+                          handeChange={(e) => setShowMore(e)}
+                        />
+                    ))
+                }
                 </View>
             }
         </View>

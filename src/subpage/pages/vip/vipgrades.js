@@ -206,9 +206,9 @@ export default class VipIndex extends Component {
           showCancel: false,
           success: function (res) {
             console.log("success");
-            // S.getMemberInfo();
+            S.getMemberInfo();
             that.fetchCouponCardList();
-            that.fetchMemberInfo();
+            Taro.navigateBack()
           },
         });
       },
@@ -220,16 +220,6 @@ export default class VipIndex extends Component {
       },
     });
   };
-
-  async fetchMemberInfo() {
-    const _userInfo = await api.member.memberInfo()
-    console.log('_userInfo==',_userInfo)
-    // dispatch(updateUserInfo(_userInfo))
-    this.props.onFetchUser(_userInfo)
-    Taro.navigateTo({
-      url: `/subpages/member/index`,
-    });
-  }
 
   async fetchUserVipInfo() {
     const userVipInfo = await api.vip.getUserVipInfo();

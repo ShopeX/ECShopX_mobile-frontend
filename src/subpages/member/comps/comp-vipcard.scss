@@ -1,6 +1,6 @@
 .comp-vipcard {
   // width: 750px;
-  height: 80px;
+  height: 85px;
   background-size: 100% 100%;
   margin-top: 28px;
   display: flex;
@@ -17,6 +17,43 @@
       background: #d5d5d5;
       top: 16px;
       right: 30px;
+    }
+  }
+  .block {
+    width: 100%;
+    display: flex;
+  }
+  .block-vip {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    .top-block {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      .vip-card {
+        font-size: 35px;
+        color: #000000;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        .icon {
+          color: #000000;
+          font-size: 20px;
+          padding-left: 15px;
+        }
+      }
+      .card-no {
+        font-size: 30px;
+        color: #000000;
+        font-weight: 400;
+      }
+    }
+    .expire-time {
+      color: gray;
+      font-size: 25px;
     }
   }
   .rg-con {

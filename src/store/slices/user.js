@@ -33,7 +33,7 @@ const userSlice = createSlice({
         isOpen: vipgrade.is_open,
         isVip: vipgrade.is_vip,
         vipType: vipgrade.lv_type,
-        endTime: vipgrade.created
+        endTime: vipgrade.end_time
       }
     },
 

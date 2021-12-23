@@ -311,16 +311,6 @@ export default class StoreIndex extends Component {
               info={storeInfo}
               couponList={couponList}
             />
-            {/* <View className="store-header">
-              <SpNewShopItem
-                inStore
-                info={storeInfo}
-                className={classNames("in-shop-search")}
-              />
-            </View>
-
-            <SpCellCoupon couponList={couponList} info={storeInfo} /> */}
-
             {wgts.map((item, idx) => {
               return (
                 <View className="wgt-wrap" key={`${item.name}${idx}`}>

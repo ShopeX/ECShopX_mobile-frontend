@@ -20,8 +20,7 @@ $primary-color: rgba(244, 129, 31, 1);
             // top: 0;
         }
         .attention {
-            width: 95px;
-            height: 44px;
+            padding: 4px 16px;
             background: #FFFFFF;
             border-radius: 22px;
             border: 1px solid #F4811F;
@@ -30,7 +29,7 @@ $primary-color: rgba(244, 129, 31, 1);
             font-weight: 600;
             color: #F4811F;
             text-align: center;
-            line-height: 44px;
+            // line-height: 44px;
             position: absolute;
             right: 16px;
         }

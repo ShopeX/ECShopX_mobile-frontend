@@ -4,7 +4,7 @@ import { isWeixin, isAlipay, log, isGoodsShelves, showToast } from "@/utils";
 import { SG_TOKEN, SG_USER_INFO } from '@/consts/localstorage'
 import qs from 'qs'
 import configStore from '@/store'
-const { store } = configStore()
+const  store  = configStore()
 
 
 const globalData = {}
@@ -127,9 +127,8 @@ class Spx {
   // 获取会员信息
   async getMemberInfo() {
     const userInfo = await api.member.memberInfo()
-    console.log('store==',store)
     store.dispatch({
-      type: 'member/init',
+      type: 'user/updateUserInfo',
       payload: userInfo
     })
     const { username, avatar, user_id, mobile, open_id } = userInfo.memberInfo
