@@ -93,55 +93,57 @@ function CartIndex( props ) {
 
   const resolveActiveGroup =  () => {
     const groupsList = validCart.map(item => {
-      const { list, used_activity = [], plus_buy_activity = [], activity_grouping = [] } = item
+      // used_activity：满减  activity_grouping：满减&满折 gift_activity：满赠  plus_buy_activity:加价购
+      const { list, used_activity = [], plus_buy_activity = [], activity_grouping = [], gift_activity = [] } = item
       // 使用活动商品
       const tDict = reduceTransform(list, 'cart_id')
       const activityGrouping = activity_grouping;
-      const cus_activity_list = used_activity.map(act => {
-        const active = activityGrouping.find(a_item => String(a_item.activity_id) === String(act.activity_id))
-        const itemList = active.cart_ids.map(id => {
-          const cartItem = tDict[id]
-          delete tDict[id]
-          return cartItem
-        })
-        return { list: itemList, active }
-      })
-      cus_activity_list.push({ list: Object.values(tDict), active: null })
+      // const cus_activity_list = used_activity.map(act => {
+      //   const active = activityGrouping.find(a_item => String(a_item.activity_id) === String(act.activity_id))
+      //   const cus_general_goods_list = active.cart_ids.map(id => {
+      //     const cartItem = tDict[id]
+      //     delete tDict[id]
+      //     return cartItem
+      //   })
+      //   return { list: cus_general_goods_list, active }
+      // })
+      // console.log(cus_activity_list, 'cus_activity_list')
+      // cus_activity_list.push({ list: Object.values(tDict), active: null })
       // 加购价
-      let all_plus_active_items = []
-      let no_active_item = []
+      let all_plus_itemid_list = [] // 加价购商品id
+      let no_active_item = [] // 没有活动的商品
       let cus_plus_item_list = plus_buy_activity.map((plusitem, index) => {
         const { plus_item, activity_item_ids, activity_id } = plusitem;
-        // 加购价选中的商品
-        let plus_goods = null
+        // 加购价换购的商品
+        let exchange_item = null
         if (plus_item) {
-          plus_goods = pickBy(plus_item, {...doc.cart.CART_GOODS_ITEM, activity_id, })
+          exchange_item = pickBy(plus_item, {...doc.cart.CART_GOODS_ITEM, activity_id, })
         }
-        all_plus_active_items.push(activity_item_ids)
-        const result = list.filter(k => activity_item_ids.indexOf(k.item_id) > -1)
+        all_plus_itemid_list.push(activity_item_ids)
+        const general_goods = list.filter(k => activity_item_ids.indexOf(k.item_id) > -1)
         return {
           ...plusitem,
-          itemList: result,
-          cus_plus_buy_goods_list: plus_goods
+          cus_general_goods_list: general_goods,
+          cus_plus_exchange_item_list: exchange_item
         }
       })
-      all_plus_active_items = all_plus_active_items.toString().split(',')
-      const goodsMap = reduceTransform(list, 'item_id')
-      console.log(goodsMap, 'goodsMapgoodsMap')
+      console.log(all_plus_itemid_list, 'all_plus_itemid_list')
+      // all_plus_itemid_list = all_plus_itemid_list.toString().split(',')
+      const goodsMap = reduceTransform(list, 'cart_id')
       for (const key in goodsMap) {
-        if (all_plus_active_items.indexOf(key) < 0) {
+        if (all_plus_itemid_list.indexOf(goodsMap[key].item_id) < 0) {
           no_active_item.push(goodsMap[key])
         }
       }
       cus_plus_item_list.push({
         discount_desc: null,
-        itemList: no_active_item,
-        cus_plus_buy_goods_list: null
+        cus_general_goods_list: no_active_item,
+        cus_plus_exchange_item_list: null
       })
       return {
         ...item,
         cus_plus_item_list,
-        cus_activity_list
+        // cus_activity_list
       }
     })
     return groupsList || []
@@ -261,7 +263,7 @@ function CartIndex( props ) {
                     {all_item.shop_name || '自营'}
                   </View>
                   {cus_plus_item_list.map((cus_item, cus_index) => {
-                    const { discount_desc, activity_id, itemList, cus_plus_buy_goods_list } = cus_item
+                    const { discount_desc, activity_id, cus_general_goods_list, cus_plus_exchange_item_list } = cus_item
                     return (
                       <View key={cus_index}>
                         {/** 换购开始 */}
@@ -292,7 +294,7 @@ function CartIndex( props ) {
                         }
                         {/** 换购结束 */}
                         {/**普通商品开始 */}
-                        {itemList.map((c_sitem, c_index) => (
+                        {cus_general_goods_list.map((c_sitem, c_index) => (
                           <View className='shop-cart-item-bd'>
                             <View className='shop-activity'></View>
                             <View className='cart-item-wrap' key={c_index}>
@@ -323,11 +325,11 @@ function CartIndex( props ) {
                         ))}
                         {/**普通商品开始 */}
                         {/**换购商品开始 */}
-                        {cus_plus_buy_goods_list &&
+                        {cus_plus_exchange_item_list &&
                           <View className='cart-item-wrap plus_items_bck'>
                             <CompGoodsItem
                               disabled
-                              info={cus_plus_buy_goods_list}
+                              info={cus_plus_exchange_item_list}
                               isShowAddInput={false}
                               isShowDeleteIcon={false}
                             />
