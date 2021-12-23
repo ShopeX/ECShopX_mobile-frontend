@@ -190,7 +190,12 @@
     margin-right: 10px;
   }
   .plus_items_bck {
-    background: #fafafa;
+    background: #fff;
     opacity: 0.8;
+    justify-content: center;
+    .goods-image {
+      width: 180px;
+      height: 180px;
+    }
   }
 }

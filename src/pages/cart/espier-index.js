@@ -66,9 +66,8 @@ function CartIndex( props ) {
   const { userInfo, vipInfo } = useSelector((state) => state.user)
 
   const [ state, setState ] = useImmer(initialState)
-  
   const [policyModal, setPolicyModal] = useState(false)
-  
+
   const router = $instance.router
   const { current } = state
 
@@ -128,6 +127,7 @@ function CartIndex( props ) {
       })
       all_plus_active_items = all_plus_active_items.toString().split(',')
       const goodsMap = reduceTransform(list, 'item_id')
+      console.log(goodsMap, 'goodsMapgoodsMap')
       for (const key in goodsMap) {
         if (all_plus_active_items.indexOf(key) < 0) {
           no_active_item.push(goodsMap[key])
@@ -175,12 +175,16 @@ function CartIndex( props ) {
   //   // })
   // }
 
-  const onChangeGoodsItemCheck = async (item, e) => {
-    console.log(item, e)
-    await api.cart.select({
-      cart_id: item.cart_id,
-      is_checked: e
-    })
+  const onChangeGoodsItemCheck = async (item, checked) => {
+    Taro.showLoading()
+    try {
+      await api.cart.select({
+        cart_id: item.cart_id,
+        is_checked: checked
+      })
+    } catch (e) {
+      console.log(e)
+    }
     getCartList()
   }
 
@@ -288,10 +292,10 @@ function CartIndex( props ) {
                         }
                         {/** 换购结束 */}
                         {/**普通商品开始 */}
-                        <View className='shop-cart-item-bd'>
-                          <View className='shop-activity'></View>
-                          {itemList.map((c_sitem, c_index) => (
-                            <View className='cart-item-wrap' key={`cart-item-wrap__${c_index}`}>
+                        {itemList.map((c_sitem, c_index) => (
+                          <View className='shop-cart-item-bd'>
+                            <View className='shop-activity'></View>
+                            <View className='cart-item-wrap' key={c_index}>
                               <SpCheckboxNew
                                 checked={c_sitem.is_checked}
                                 onChange={onChangeGoodsItemCheck.bind(this, c_sitem)}
@@ -303,13 +307,24 @@ function CartIndex( props ) {
                                 onClickImgAndTitle={onClickImgAndTitle.bind(this, c_sitem)}
                               />
                             </View>
-                          ))}
-                        </View>
+                            {/**组合商品开始 */}
+                            {c_sitem.packages && c_sitem.packages.map((pack_sitem, pack_index) => (
+                              <View className='cart-item-wrap plus_items_bck' key={pack_index}>
+                                <CompGoodsItem
+                                  disabled
+                                  info={pack_sitem}
+                                  isShowAddInput={false}
+                                  isShowDeleteIcon={false}
+                                />
+                              </View>
+                            ))}
+                            {/**组合商品开始 */}
+                          </View>
+                        ))}
                         {/**普通商品开始 */}
                         {/**换购商品开始 */}
                         {cus_plus_buy_goods_list &&
                           <View className='cart-item-wrap plus_items_bck'>
-                            <SpCheckboxNew disabled />
                             <CompGoodsItem
                               disabled
                               info={cus_plus_buy_goods_list}
@@ -361,24 +376,27 @@ function CartIndex( props ) {
               )
             })}
           </View>
-          <View className='invalid-cart-block'>
-            <View className='shop-cart-item'>
-              <View className='shop-cart-item-hd-disabeld'>已失效商品</View>
-              <View className='shop-cart-item-bd'>
-                <View className='shop-activity'></View>
-                {invalidCart.map((sitem, sindex) => (
-                  <View className='cart-item-warp-disabled' key={`cart-item-warp-disabled__${sindex}`}>
-                    <SpCheckboxNew disabled />
-                    <CompGoodsItem
-                      info={sitem}
-                      isShowAddInput={false}
-                      onDelete={onDeleteCartGoodsItem.bind( this, sitem )}
-                    />
-                  </View>
-                ))}
+          {
+            invalidCart.length > 0 &&
+            <View className='invalid-cart-block'>
+              <View className='shop-cart-item'>
+                <View className='shop-cart-item-hd-disabeld'>已失效商品</View>
+                <View className='shop-cart-item-bd'>
+                  <View className='shop-activity'></View>
+                  {invalidCart.map((sitem, sindex) => (
+                    <View className='cart-item-warp-disabled' key={`cart-item-warp-disabled__${sindex}`}>
+                      <SpCheckboxNew disabled />
+                      <CompGoodsItem
+                        info={sitem}
+                        isShowAddInput={false}
+                        onDelete={onDeleteCartGoodsItem.bind( this, sitem )}
+                      />
+                    </View>
+                  ))}
+                </View>
               </View>
             </View>
-          </View>
+          }
         </View>
       )}
 

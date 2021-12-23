@@ -34,7 +34,8 @@ function SpCheckboxNew(props) {
           {
             iconfont: true
           },
-          disabled ? 'icon-circle1' : (isChecked ? 'icon-roundcheckfill' : 'icon-round')
+          disabled ? 'icon-circle1' : (isChecked ? 'icon-roundcheckfill' : 'icon-round'),
+          disabled && isChecked && 'icon-roundcheckfill'
         )}
       ></Text>
       <View className='sp-checkbox-new__label'>{label || children}</View>
