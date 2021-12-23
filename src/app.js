@@ -21,7 +21,6 @@ import "./app.scss";
 const store = configStore();
 class App extends Component {
   componentWillMount() {
-    // this.getHomeSetting()
     this.getSystemConfig()
     // if (S.getAuthToken() ) {
     //   api.member

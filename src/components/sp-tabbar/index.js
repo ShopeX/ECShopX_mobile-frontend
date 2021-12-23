@@ -43,7 +43,6 @@ function SpTabbar( props ) {
     }
   }
   
-  // debugger
   return (
     <AtTabBar
       fixed

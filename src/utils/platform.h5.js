@@ -35,7 +35,6 @@ export const goToAuthPage = () => {
   const $instance = useMemo(getCurrentInstance, []);
   const router = $instance.router;
   const { path } = router;
-  debugger;
   Taro.navigateTo({
     url: `/pages/auth/login?redirect=`
   });

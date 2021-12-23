@@ -4,7 +4,7 @@ import { View, Button } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
-import { isWeixin, isAlipay, classNames, tokenParse } from '@/utils'
+import { isWeixin, isAlipay, classNames, showToast } from "@/utils";
 import { SG_SHARER_UID, SG_TRACK_PARAMS } from '@/consts'
 import { Tracker } from '@/service'
 import { SpPrivacyModal } from '@/components'
@@ -41,11 +41,14 @@ function SpLogin( props ) {
         user_type: 'wechat',
         auth_type: 'wxapp'
       }
-
+      Taro.showLoading()
       const { token, is_new } = await api.wx.newlogin(params)
       if (token) {
         setToken(token)
       }
+      showToast('恭喜您，注册成功')
+
+      // Taro.hideLoading();
     }
   }
 
@@ -58,7 +61,6 @@ function SpLogin( props ) {
   }, [])
 
   const handleConfirmModal = useCallback( async () => {
-    // debugger
     // 自动登录
     try {
       await login()

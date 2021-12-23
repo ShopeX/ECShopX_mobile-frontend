@@ -9,6 +9,7 @@ function SpImage(props) {
     className,
     mode = 'widthFix',
     width = 'auto',
+    onClick = () => {},
     onError = () => {},
     onLoad = () => {},
     lazyLoad = () => {}
@@ -28,7 +29,8 @@ function SpImage(props) {
       )}
       style={styleNames({
         width: isNumber(width) ? `${width / 2}px` : '',
-      })}
+      } )}
+      onClick = { onClick }
     >
       <Image
         className="sp-image-img"

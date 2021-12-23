@@ -110,31 +110,29 @@ class EntryLaunch {
       return new Promise((resolve, reject) => {
         Taro.getLocation({
           type: 'gcj02',
-          success: (res) => {
-            resolve(res)
+          success: ( res ) => {
+            if ( res.errMsg == "getLocation:ok" ) {
+              resolve({
+                lng: res.longitude,
+                lat: res.latitude
+              });
+            } else {
+              reject({ message: res.errMsg });
+            }  
           },
           fail: (error) => {
-            resolve({})
-            reject(error)
+            reject( { message: error })
           }
         })
       })
-      // return await Taro.getLocation({ type: 'gcj02' }).then(
-      //   async (locationData) => {
-      //     await entry.InverseAnalysisGaode(locationData)
-      //     return locationData
-      //   }
-      // ).catch(() => {
-      //   return {}
-      // })
     } else {
       return new Promise((reslove, reject) => {
         this.geolocation.getCurrentPosition(function(status, result) {
           if (status == "complete") {
             reslove({
-              longitude: result.position.lng,
-              latitude: result.position.lat
-            })
+              lng: result.position.lng,
+              lat: result.position.lat,
+            });
           } else {
             reject({ message: result.message });
           }

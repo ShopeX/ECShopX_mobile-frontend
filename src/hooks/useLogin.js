@@ -34,10 +34,7 @@ export default (props = {}) => {
     if (isWeixin) {
       // 隐私协议
       const checkResult = await checkPolicyChange()
-      if (!checkResult ) {
-        policyUpdateHook()
-        return
-      } else {
+      if (checkResult ) {
         const { code } = await Taro.login()
         try {
           const { token } = await api.wx.login({ code })
@@ -70,10 +67,14 @@ export default (props = {}) => {
   const checkPolicyChange = async () => {
     const { update_time } = await api.wx.getPrivacyTime()
     policyTime.current = update_time
-    console.log( Taro.getStorageSync( SG_POLICY_UPDATETIME ) )
-    console.log( update_time )
-    console.log(Taro.getStorageSync(SG_POLICY_UPDATETIME) === update_time)
-    return Taro.getStorageSync( SG_POLICY_UPDATETIME ) === update_time
+    // console.log( Taro.getStorageSync( SG_POLICY_UPDATETIME ) )
+    // console.log( update_time )
+    // console.log(Taro.getStorageSync(SG_POLICY_UPDATETIME) === update_time)
+    const res = Taro.getStorageSync( SG_POLICY_UPDATETIME ) === update_time;
+    if ( !res ) {
+      policyUpdateHook();
+    }
+    return res;
   }
 
   /**

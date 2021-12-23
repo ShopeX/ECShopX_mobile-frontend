@@ -48,7 +48,6 @@ export default class TabBar extends Component {
   }
 
   initTabbarData(props) {
-    // debugger
     const { tabBar } = Object.assign(this.props , props)
     let list = []
 

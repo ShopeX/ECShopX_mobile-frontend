@@ -4,7 +4,7 @@ import Taro from "@tarojs/taro";
 import { View, Text } from "@tarojs/components";
 import { useImmer } from "use-immer";
 import { AtCurtain } from "taro-ui";
-import { SpImage } from "@/components"
+import { SpImage, SpLogin, SpFloatMenuItem } from "@/components";
 import api from "@/api";
 import S from "@/spx";
 import "./index.scss";
@@ -44,12 +44,15 @@ function SpFloatAd(props) {
   }
 
   return (
-    <View className="sp-float-ad">
-      <Text className="iconfont icon-present" onClick={() => {
-        setState((draft) => {
-          draft.adIndex = 0;
-        });
-      }}></Text>
+    <SpFloatMenuItem className="sp-float-ad">
+      <Text
+        className="iconfont icon-present"
+        onClick={() => {
+          setState((draft) => {
+            draft.adIndex = 0;
+          });
+        }}
+      ></Text>
       {list.map((item, index) => (
         <AtCurtain
           className={`ad-curtain__${index}`}
@@ -57,33 +60,15 @@ function SpFloatAd(props) {
           onClose={onCloseAd}
           closeBtnPosition="top"
         >
-          <SpImage src={item.ad_pic} mode="widthFix" />
-          <View className="ad-ft">
-            <Text className="ad-title">{item.ad_title}</Text>
-          </View>
+          <SpLogin>
+            <SpImage src={item.ad_pic} mode="widthFix" />
+            <View className="ad-ft">
+              <Text className="ad-title">{item.ad_title}</Text>
+            </View>
+          </SpLogin>
         </AtCurtain>
       ))}
-    </View>
-
-    // <View className="sp-float-ad">
-    //   {isShow && (
-    //     <View className="gift-wrap">
-    //       <View className="gift">
-    //         <Image className="gift-bg" src={info.adPic} mode="widthFix" />
-    //         <Button
-    //           className={`btn-primary ${info.title ? null : "gift-btn"}`}
-    //           onClick={onClick}
-    //         >
-    //           {info.title}
-    //         </Button>
-    //         <View
-    //           className="zoom-btn iconfont icon-close"
-    //           onClick={onClose}
-    //         ></View>
-    //       </View>
-    //     </View>
-    //   )}
-    // </View>
+    </SpFloatMenuItem>
   );
 }
 

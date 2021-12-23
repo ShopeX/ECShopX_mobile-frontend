@@ -1,43 +1,34 @@
-import React, { useEffect, memo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Taro, {
   useShareAppMessage,
   useShareTimeline,
-  usePageScroll,
 } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  TabBar,
-  BackToTop,
-  FloatMenus,
-  FloatMenuItem,
-  AccountOfficial,
   SpScreenAd,
-  CouponModal,
+  SpCouponPackage,
   SpPage,
   SpSearch,
   SpRecommend,
-  SpFloatMenuItem,
+  SpPrivacyModal,
   SpTabbar,
 } from "@/components";
-
 import api from "@/api";
-import { pickBy, classNames, isArray, isWeixin, payTypeField } from "@/utils";
-
+import { isWeixin } from "@/utils";
 import entryLaunch from "@/utils/entryLaunch";
 import { SG_APP_CONFIG } from "@/consts";
 import { updateLocation } from "@/store/slices/user";
 import { useImmer } from "use-immer";
-import S from "@/spx";
+import { useLogin } from "@/hooks";
 import HomeWgts from "./home/comps/home-wgts";
-import { WgtSearchHome, WgtHomeHeader } from "./home/wgts";
-import Automatic from "./home/comps/automatic";
+import { WgtHomeHeader } from "./home/wgts";
 import CompAddTip from "./home/comps/comp-addtip";
 import CompFloatMenu from "./home/comps/comp-floatmenu";
 
 import "./home/index.scss";
 
-const MCompAddTip = memo(CompAddTip);
+const MCompAddTip = React.memo(CompAddTip);
 
 const initState = {
   wgts: [],
@@ -47,19 +38,39 @@ const initState = {
 
 function Home() {
   const [state, setState] = useImmer(initState);
-  const [likeList, setLikeList] = useImmer([]);
+  const [likeList, setLikeList] = useImmer( [] );
+  const { isLogin, login, updatePolicyTime, checkPolicyChange } = useLogin({
+    policyUpdateHook: () => {
+      setPolicyModal(true);
+    },
+  });
+  const [policyModal, setPolicyModal] = useState(false);
   const { openRecommend } = Taro.getStorageSync( SG_APP_CONFIG );
   const { wgts, shareInfo } = state
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetchInit();
+  useEffect( () => {
     fetchWgts();
+    fetchLikeList();
     fetchShareInfo()
   }, []);
 
-  const fetchInit = async () => {
+  const fetchWgts = async () => {
+    const { config } = await api.shop.getShopTemplate({
+      distributor_id: 0, // 平台版固定值
+    });
+    setState((v) => {
+      v.wgts = config;
+    } );
+    // 检查隐私协议是否变更或同意
+    const checkRes = await checkPolicyChange();
+    if ( checkRes ) {
+      fetchLocation()
+    }
+  };
+
+  const fetchLikeList = async () => {
     if (openRecommend == 1) {
       const query = {
         page: 1,
@@ -68,18 +79,6 @@ function Home() {
       const { list } = await api.cart.likeList(query);
       setLikeList(list);
     }
-
-    const res = await entryLaunch.getCurrentAddressInfo();
-    dispatch(updateLocation(res));
-  };
-
-  const fetchWgts = async () => {
-    const { config } = await api.shop.getShopTemplate({
-      distributor_id: 0, // 平台版固定值
-    });
-    setState((v) => {
-      v.wgts = config;
-    });
   };
 
   const fetchShareInfo = async () => {
@@ -88,6 +87,17 @@ function Home() {
       draft.shareInfo = res
     })
   }
+
+  // 定位
+  const fetchLocation = async () => {
+    const res = await entryLaunch.getCurrentAddressInfo();
+    dispatch(updateLocation(res));
+  }
+
+  const handleConfirmModal = useCallback(async () => {
+    fetchLocation()
+    setPolicyModal(false);
+  }, []);
 
   useShareAppMessage(async (res) =>  {
     return {
@@ -105,8 +115,6 @@ function Home() {
     };
   } )
   
-
-
   const searchComp = wgts.find( ( wgt ) => wgt.name == "search" );
   let filterWgts = []
   if (searchComp && searchComp.config.fixTop) {
@@ -137,6 +145,18 @@ function Home() {
 
       {/* 开屏广告 */}
       {isWeixin && <SpScreenAd />}
+
+      {/* 隐私政策 */}
+      <SpPrivacyModal
+        open={policyModal}
+        onCancel={() => {
+          setPolicyModal(false);
+        }}
+        onConfirm={handleConfirmModal}
+      />
+
+      {/* 优惠券包 */}
+      {/* <SpCouponPackage /> */}
 
       <SpTabbar />
     </SpPage>
