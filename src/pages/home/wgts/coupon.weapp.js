@@ -15,7 +15,8 @@ export default class WgtCoupon extends Component {
   }
 
   static defaultProps = {
-    info: null
+    info: null,
+    hasToast:true
   }
 
   state = {
@@ -123,7 +124,7 @@ export default class WgtCoupon extends Component {
   }
 
   render() {
-    const { info, dis_id = '' } = this.props
+    const { info, dis_id = '',hasToast } = this.props
     const { visible, all_card_list } = this.state
     if (!info) {
       return null
@@ -271,7 +272,7 @@ export default class WgtCoupon extends Component {
             )
           })}
         </View>*/}
-        <SpToast />
+        {hasToast && <SpToast />}
         <CouponModal visible={visible} list={all_card_list} onChange={this.handleCouponChange} />
       </View>
     )

@@ -302,7 +302,7 @@ export default class StoreIndex extends Component {
                   {item.name === 'marquees' && <WgtMarquees info={item} />}
                   {item.name === 'navigation' && <WgtNavigation info={item} />}
                   {item.name === 'coupon' && (
-                    <WgtCoupon info={item} dis_id={this.$router.params.id} />
+                    <WgtCoupon info={item} dis_id={this.$router.params.id} hasToast={false} />
                   )}
                   {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
                   {item.name === 'goodsScroll' && (
