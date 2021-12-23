@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Text, Button } from "@tarojs/components";
-import { CouponModal } from "@/components";
+import { CouponModal,SpImg } from "@/components";
 import api from "@/api";
 import S from "@/spx";
 import { classNames, showToast } from "@/utils";

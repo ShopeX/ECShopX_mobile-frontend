@@ -1586,8 +1586,8 @@ export default class EspierDetail extends Component {
 
         <FloatMenus>
           <FloatMenuItem
-            iconPrefixClass='icon'
-            icon='home1'
+            iconPrefixClass='iconfont'
+            icon='icon-home1'
             onClick={this.handleBackHome.bind(this)}
           />
           {isAlipay ? null : meiqia.is_open === 'true' ||
@@ -1599,14 +1599,14 @@ export default class EspierDetail extends Component {
             />
           ) : (
             <FloatMenuItem
-              iconPrefixClass='icon'
-              icon='headphones'
+              iconPrefixClass='iconfont'
+              icon='icon-headphones'
               openType='contact'
               sessionFrom={sessionFrom}
             />
           )}
           <FloatMenuItem
-            iconPrefixClass='icon'
+            iconPrefixClass='iconfont'
             icon='arrow-up'
             hide={!showBackToTop}
             onClick={this.scrollBackToTop}

@@ -5,18 +5,28 @@ import { classNames } from "@/utils";
 import { useState,useCallback } from 'react'
 import api from "@/api";
 import { SpShopCoupon,SpShopFullReduction } from '@/components'
+import { useLogin } from '@/hooks'
 
 function CompHeader(props){
     const { info, couponList = [], fullReduction = [{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"}] } = props
     const { brand = '', name = '', scoreList = {}} = info
     const [showMore, setShowMore] = useState(false)
     const [fav, setFav] = useState(false)
+    const { isLogin } = useLogin({
+        autoLogin: false
+    })
     const handleCouponClick = useCallback(() => {
         Taro.navigateTo({
           url: `/others/pages/home/coupon-home?distributor_id=${info.distributor_id}`,
         });
     }, [info]);
     const handleFocus = (flag) => async () => {
+        if(!isLogin) {
+            return Taro.showToast({
+                icon: "none",
+                title: '请先授权',
+            });
+        }
         let data = {};
         if (flag) {
             //关注

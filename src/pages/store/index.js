@@ -61,14 +61,15 @@ export default class StoreIndex extends Component {
       tabList: [
         {
           title: "店铺首页",
+          iconPrefixClass: "iconfont",
           iconType: "home",
-          iconPrefixClass: "icon",
           url: "/pages/store/index",
+          //iconfont icon-home"
         },
         {
           title: "商品分类",
           iconType: "category",
-          iconPrefixClass: "icon",
+          iconPrefixClass: "iconfont",
           url: "/others/pages/store/category",
         },
       ],
@@ -76,14 +77,17 @@ export default class StoreIndex extends Component {
       fixedSearch: false,
       likeList: [],
     };
+    this.current = getCurrentInstance()
+    this.id = this.current.router.params.id
   }
 
   async componentDidMount() {
-    const current = getCurrentInstance()
-    console.log('id==',current.router.params.id)
+    // const current = getCurrentInstance()
+    // console.log('id==',current.router.params.id)
     // const options = await normalizeQuerys(this.$router.params);
     // const id = options.id || options.dtid;
-    const id = current.router.params.id
+    // const id = current.router.params.id
+    const id = this.id
     if (id) {
       this.fetchInfo(id);
       this.fetchCouponList(id);
@@ -260,8 +264,8 @@ export default class StoreIndex extends Component {
     if (cur !== current) {
       const curTab = this.state.tabList[current];
       const { url } = curTab;
-      const options = await normalizeQuerys(this.$router.params);
-      const id = options.id || options.dtid;
+      // const options = await normalizeQuerys(this.$router.params);
+      const id = this.id
       const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`;
       const fullPath = getCurrentRoute(this.$router).fullPath.split("?")[0];
       if (url && fullPath !== url) {
@@ -283,14 +287,12 @@ export default class StoreIndex extends Component {
       likeList,
     } = this.state;
     const user = Taro.getStorageSync("userinfo");
-
     if (!wgts || !this.props.store) {
       return <Loading />;
     }
 
     console.log("===likeList==>", likeList);
-    const current = getCurrentInstance()
-    const id = current.router.params.id
+    const id = this.id
     return (
       <View
         className={classNames("page-store-index", {
