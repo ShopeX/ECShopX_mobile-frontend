@@ -37,6 +37,7 @@ import S from '@/spx'
 // import { Tracker } from '@/service'
 import { useLogin } from '@/hooks'
 import { fetchCartList, deleteCartItem, updateCartItemNum } from '@/store/slices/cart'
+import qs from 'qs'
 import CompGoodsItem from './comps/comp-goodsitem'
 import './espier-index.scss'
 
@@ -229,9 +230,22 @@ function CartIndex( props ) {
   const handleCheckout = (item) => {
     const { type } = router.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = item
-    const cartType = current == 0 ? 'normal' : 'cross'
+    const query = {
+      cart_type: "cart",
+      type,
+      shop_id,
+      is_delivery,
+      is_ziti,
+      name: shop_name,
+      store_address: address,
+      lat,
+      lng,
+      hour,
+      phone: mobile,
+      goodType: current == 0 ? 'normal' : 'cross'
+    };
     Taro.navigateTo({
-      url: `/pages/cart/espier-checkout?cart_type=cart&type=${type}&shop_id=${shop_id}&is_delivery=${is_delivery}&is_ziti=${is_ziti}&name=${shop_name}&store_address=${address}&lat=${lat}&lng=${lng}&hour=${hour}&phone=${mobile}&goodType=${cartType}`
+      url: `/pages/cart/espier-checkout?${qs.stringify(query)}`
     })
   }
 
