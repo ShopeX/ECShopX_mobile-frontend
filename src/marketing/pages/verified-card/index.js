@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { SpNavBar } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
-import bankData from './hfpayBankData.json'
 
 import './index.scss'
 
