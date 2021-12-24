@@ -1,5 +1,5 @@
 export default {
-  enablePullDownRefresh: true,
-  backgroundTextStyle: 'dark',
-  onReachBottomDistance: 50
+  // enablePullDownRefresh: true,
+  // backgroundTextStyle: 'dark',
+  // onReachBottomDistance: 50
 };

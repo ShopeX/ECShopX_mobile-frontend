@@ -4,7 +4,7 @@ import { View, Form, Button, Text, Picker, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtInput, AtButton } from 'taro-ui'
 import { SpToast, SpTimer, SpNavBar, SpCheckbox, AccountOfficial } from '@/components'
-import { classNames, isString, isArray, tokenParse,getBrowserEnv } from '@/utils'
+import { classNames, isString, isArray, tokenParse,getBrowserEnv, isWeb } from '@/utils'
 // import { Tracker } from '@/service'
 import S from '@/spx'
 import api from '@/api'
@@ -215,8 +215,8 @@ export default class Reg extends Component {
             union_id: userInfo.unionid
           })
         }
-      } else { 
-        res = await api.user.reg(data) 
+      } else {
+        res = await api.user.reg(data)
         S.setAuthToken(res.token)
       }
 
@@ -235,8 +235,6 @@ export default class Reg extends Component {
           duration: 2000
         })
       }
-
-      console.log(res,'注册返回');
       if (res && res.token) {
         S.toast('注册成功')
         const { redirect, source } = this.$instance.router.params

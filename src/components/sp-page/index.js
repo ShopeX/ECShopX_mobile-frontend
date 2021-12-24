@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Taro, { usePageScroll } from "@tarojs/taro";
+import Taro, { usePageScroll, getCurrentInstance } from "@tarojs/taro";
 import { View, Text } from "@tarojs/components";
 import { SpNavBar, SpFloatMenuItem } from "@/components";
 import { classNames, styleNames, hasNavbar } from "@/utils";
 
 import "./index.scss";
 
-function SpPage(props) {
+function SpPage( props ) {
+  const $instance = getCurrentInstance();
+  debugger
   const { className, children, renderFloat, scrollToTopBtn = false } = props;
-  const sys = useSelector((state) => state.sys);
+  const sys = useSelector( ( state ) => state.sys );
   const [showToTop, setShowToTop] = useState(false);
-  const { colorPrimary, colorMarketing, colorAccent, rgb } = sys;
+  const { colorPrimary, colorMarketing, colorAccent, rgb, tabbar } = sys;
   const pageTheme = {
     "--color-primary": colorPrimary,
     "--color-marketing": colorMarketing,
@@ -32,6 +34,8 @@ function SpPage(props) {
       scrollTop: 0,
     });
   }
+
+  debugger
   // console.log('hasNavbar:', hasNavbar, pageTheme)
   return (
     <View

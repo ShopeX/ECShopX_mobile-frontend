@@ -48,6 +48,7 @@ export default class TradeItem extends Component {
         receipt_type,
       },
       payType,
+      pointName
     } = this.props;
 
     if (order_class === "pointsmall") {

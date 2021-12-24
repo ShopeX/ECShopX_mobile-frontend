@@ -93,7 +93,7 @@ function MemberIndex(props) {
   const [config, setConfig] = useImmer(initialConfigState);
   const [state, setState] = useImmer(initialState);
   
-  const { userInfo, vipInfo } = useSelector((state) => state.user)
+  const { userInfo, vipInfo = {} } = useSelector((state) => state.user)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`);
   
   useEffect(() => {
@@ -224,7 +224,7 @@ function MemberIndex(props) {
   }
 
   const handleClickLink = async (link) => {
-    await getUserInfoAuth()
+    if (isWeixin) await getUserInfoAuth()
     Taro.navigateTo({ url: link })
   }
 
@@ -240,7 +240,7 @@ function MemberIndex(props) {
 
   const handleClickService = async (item) => {
     const { link, key } = item
-    await getUserInfoAuth()
+    if (isWeixin) await getUserInfoAuth()
     // 分销推广
     if (key == 'popularize') {
       // 已经是分销员
@@ -443,7 +443,7 @@ function MemberIndex(props) {
         </CompPanel>
       </View>
       <View className='dibiao-block'>
-        <SpImage src='dibiao.png' width='320' />
+        <SpImage mode='heightFix' src='dibiao.png' width='320' />
       </View>
 
       <SpTabbar />
