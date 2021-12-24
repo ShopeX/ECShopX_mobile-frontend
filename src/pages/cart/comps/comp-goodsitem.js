@@ -43,7 +43,7 @@ function CompGoodsItem(props) {
         <View className='goods-item-bd'>
           <View className='item-hd'>
             <View className='goods-title'>
-              {info.activity_type == 'package' && <Text className='goods-title__tag'>组合商品</Text>}
+              {/* {info.activity_type == 'package' && <Text className='goods-title__tag'>组合商品</Text>} */}
               {info.is_plus_buy && <Text className='goods-title__tag'>换购</Text>}
               {info.item_name}
             </View>
@@ -73,7 +73,7 @@ function CompGoodsItem(props) {
             {
               isShowAddInput ?
               <SpInputNumber value={info.num} onChange={onChangeGoodsItem}/>
-              : <Text>x {info.num}</Text>
+              : <Text className='item-num'>x {info.num}</Text>
             }
           </View>
         </View>
