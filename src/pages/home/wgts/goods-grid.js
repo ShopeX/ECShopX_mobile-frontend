@@ -24,10 +24,8 @@ function WgtGoodsGrid(props) {
     >
       {base.title && (
         <View className="wgt-head">
-          <View className="wgt-hd">
-            <Text className="wgt-title">{base.title}</Text>
-            <Text className="wgt-subtitle">{base.subtitle}</Text>
-          </View>
+          <Text className="wgt-title">{base.title}</Text>
+          <Text className="wgt-subtitle">{base.subtitle}</Text>
         </View>
       )}
       <View className="wgt-body">

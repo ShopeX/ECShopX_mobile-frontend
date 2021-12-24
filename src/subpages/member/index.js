@@ -224,7 +224,7 @@ function MemberIndex(props) {
   }
 
   const handleClickLink = async (link) => {
-    await getUserInfoAuth()
+    if (isWeixin) await getUserInfoAuth()
     Taro.navigateTo({ url: link })
   }
 
@@ -240,7 +240,7 @@ function MemberIndex(props) {
 
   const handleClickService = async (item) => {
     const { link, key } = item
-    await getUserInfoAuth()
+    if (isWeixin) await getUserInfoAuth()
     // 分销推广
     if (key == 'popularize') {
       // 已经是分销员
