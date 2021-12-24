@@ -350,7 +350,7 @@ export default class EspierDetail extends Component {
   }
 
   componentWillReceiveProps (next) {
-    if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
+    if (next.favs && (Object.keys(this.props.favs).length !== Object.keys(next.favs).length)) {
       let is_fav = null
       setTimeout(() => {
         is_fav = Boolean(next.favs[this.state.info.item_id])
