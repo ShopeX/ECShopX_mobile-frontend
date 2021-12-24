@@ -93,7 +93,7 @@ function MemberIndex(props) {
   const [config, setConfig] = useImmer(initialConfigState);
   const [state, setState] = useImmer(initialState);
   
-  const { userInfo, vipInfo } = useSelector((state) => state.user)
+  const { userInfo, vipInfo = {} } = useSelector((state) => state.user)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`);
   
   useEffect(() => {
@@ -443,7 +443,7 @@ function MemberIndex(props) {
         </CompPanel>
       </View>
       <View className='dibiao-block'>
-        <SpImage src='dibiao.png' width='320' />
+        <SpImage mode='heightFix' src='dibiao.png' width='320' />
       </View>
 
       <SpTabbar />

@@ -40,6 +40,10 @@
   input {
     font-size: $font-size;
   }
+
+  &__children::after {
+    border: none;
+  }
 }
 
 .isHidden{

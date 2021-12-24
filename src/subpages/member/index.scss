@@ -156,5 +156,13 @@
     display: flex;
     justify-content: center;
     margin-bottom: 40px;
+    .sp-image-img {
+      height: 40px;
+    }
+    /*  #ifdef  h5  */
+    img {
+      height: 40px;
+    }
+    /*  #endif  */
   }
 }
