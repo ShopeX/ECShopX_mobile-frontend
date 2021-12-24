@@ -11,6 +11,7 @@ import StoreFavItem from './comps/store-fav-item'
 
 import './item-fav.scss'
 
+
 @connect(({ user }) => ({
   favs: user.favs
 }))
@@ -52,7 +53,7 @@ export default class ItemFav extends Component {
       switch (this.state.curTabIdx) {
         case 0:
           res = await api.member.favsList(query)
-          list = pickBy(res.list, {
+          list = res.list ? res.list && pickBy(res.list, {
             img: 'item_image',
             fav_id: 'fav_id',
             item_id: 'item_id',
@@ -63,13 +64,17 @@ export default class ItemFav extends Component {
             point: 'point',
             // price: ({ price }) => (price/100).toFixed(2),
             price: ({ price, item_price }) => ((price || item_price) / 100).toFixed(2),
-            is_fav: ({ item_id }) => Boolean(favs[item_id])
-          })
+            is_fav: ({ item_id }) => {
+              return (
+                favs && Boolean(favs[item_id])
+              )
+            }
+          }) : []
           total = res.total_count
           break
         case 1:
           res = await api.article.totalCollectArticle(query)
-          list = pickBy(res.list, {
+          list = res.list ? pickBy(res.list, {
             img: 'image_url',
             fav_id: 'fav_id',
             item_id: 'article_id',
@@ -78,18 +83,18 @@ export default class ItemFav extends Component {
             head_portrait: 'head_portrait',
             author: 'author',
             item_type: 'item_type'
-          })
+          }) : []
           total = res.total_count
           break
         case 2:
           res = await api.member.storeFavList(query)
-          list = pickBy(res.list, {
+          list = res.list ? res.list && pickBy(res.list, {
             distributor_id: 'distributor_id',
             fav_num: 'fav_num',
             name: 'name',
             logo: 'logo',
             item_type: 'item_type'
-          })
+          }) : []
           total = res.total_count
           break
         default:

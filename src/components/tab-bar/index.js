@@ -8,10 +8,10 @@ import S from '@/spx'
 
 const defaultTabList = []
 
-@connect(({ tabBar, cart }) => ({
-  tabBar: tabBar.current,
-  cartCount: cart.cartCount
-}))
+// @connect(({ tabBar, cart }) => ({
+//   tabBar: tabBar.current,
+//   cartCount: cart.cartCount
+// }))
 export default class TabBar extends Component {
   $instance = getCurrentInstance();
   constructor(props) {

@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
 import { AtRate, AtTextarea, AtImagePicker } from 'taro-ui'
 import imgUploader from '@/utils/upload'
+import { SpButton } from '@/components'
 
 import './rate.scss'
 
@@ -251,17 +252,14 @@ export default class TradeRate extends Component {
         </View>
 
         <View className='submit-btn'>
-          <View className='btn noname' onClick={this.handleClickSubmit.bind(this, true)}>
-            匿名评价
-          </View>
-          <View
-            className='btn name'
-            style={`background: ${colors.data[0].primary}`}
-            onClick={this.handleClickSubmit.bind(this, false)}
-          >
-            立即评价
-          </View>
+        <SpButton
+            resetText="匿名评价"
+            confirmText="立即评价"
+            onConfirm={this.handleClickSubmit.bind(this, true)}
+            onReset={this.handleClickSubmit.bind(this, false)}
+          ></SpButton>
         </View>
+        
       </View>
     )
   }
