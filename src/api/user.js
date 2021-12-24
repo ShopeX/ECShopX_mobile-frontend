@@ -1,3 +1,4 @@
+import { isWeixin } from "@/utils";
 import req from "./req";
 
 const getAppId = () => {
@@ -22,12 +23,11 @@ export function refreshToken() {
   return req.get("/token/refresh");
 }
 
-export function reg(params) { 
-  const appid = getAppId() || ''
-  return req.post('/member', {
-    ...params,
-    appid
-  });
+export function reg(params) {
+  if (isWeixin) {
+    params.appid = getAppId() || ''
+  }
+  return req.post('/member', params);
 }
 
 export function regRule() {

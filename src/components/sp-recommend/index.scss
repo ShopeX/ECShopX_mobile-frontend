@@ -1,9 +1,16 @@
 .sp-recommend {
+  margin-top: 30px;
   &-hd {
     padding: 0 24px;
     margin-bottom: 10px;
     .recommend-icon {
-      width: 200px;
+      width: auto;
+      height: 50px;
+      /*  #ifdef  h5  */
+      img {
+        height: 50px;
+      }
+      /*  #endif  */
     }
   }
   &-bd {
