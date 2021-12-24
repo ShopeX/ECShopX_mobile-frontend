@@ -21,7 +21,7 @@ function WgtNearbyShop( props ) {
   }
 
   const [state, setState] = useImmer(initialState)
-  const { location } = useSelector( state => state.user )
+  const { location = {} } = useSelector( state => state.user )
 
   const { base, seletedTags } = info;
 

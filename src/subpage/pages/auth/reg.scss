@@ -14,6 +14,10 @@
   &__form {
     padding: $edge-size;
     margin: 0 0 $edge-margin;
+    .code-imgs {
+      width: 150px;
+      height: auto;
+    }
   }
   .store-reg__input {
     .at-input:after,

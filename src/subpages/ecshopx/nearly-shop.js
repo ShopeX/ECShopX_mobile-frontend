@@ -31,7 +31,7 @@ function NearlyShop( props ) {
     autoLogin: false
   })
   const [ state, setState ] = useImmer(initialState)
-  const { location, address } = useSelector( state => state.user )
+  const { location = {}, address } = useSelector( state => state.user )
   const shopRef = useRef()
   const dispatch = useDispatch()
 

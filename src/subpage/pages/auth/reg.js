@@ -522,7 +522,7 @@ export default class Reg extends Component {
                     onFocus={this.handleErrorToastClose}
                     onChange={this.handleChange.bind(this, 'yzm')}
                   >
-                    <Image src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
+                    <Image className='code-imgs' src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
                   </AtInput>
                 ) : null}
                 <AtInput
