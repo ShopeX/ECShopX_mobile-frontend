@@ -61,15 +61,21 @@ export default class StoreIndex extends Component {
       tabList: [
         {
           title: "店铺首页",
-          iconPrefixClass: "iconfont",
+          iconPrefixClass: "iconfont icon",
           iconType: "home",
           url: "/pages/store/index",
           //iconfont icon-home"
         },
         {
+          title: "商品列表",
+          iconType: "list",
+          iconPrefixClass: "iconfont icon",
+          url: "/others/pages/store/list",
+        },
+        {
           title: "商品分类",
           iconType: "category",
-          iconPrefixClass: "iconfont",
+          iconPrefixClass: "iconfont icon",
           url: "/others/pages/store/category",
         },
       ],

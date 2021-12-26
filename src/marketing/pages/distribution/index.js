@@ -344,7 +344,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/trade?type=order'
             >
-              <View className='icon-list3'></View>
+              <View className='iconfont icon-list3'></View>
               <View className='label'>提成订单</View>
               <View>{info.promoter_order_count}</View>
             </Navigator>
@@ -353,7 +353,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/trade?type=order_team'
             >
-              <View className='icon-list2'></View>
+              <View className='iconfont icon-list2'></View>
               <View className='label'>津贴订单</View>
               <View>{info.promoter_grade_order_count}</View>
             </Navigator>

@@ -201,7 +201,6 @@ class EntryLaunch {
   }
 
   async getAddressByLnglatWebAPI(lng, lat) {
-    console.log(lng, lat, '=======')
     const res = await Taro.request({
       url: `${geocodeUrl}/regeo`,
       data:{
@@ -245,7 +244,7 @@ class EntryLaunch {
   /**
    * 判断是否开启定位，去获取经纬度，根据经纬度去获取地址
    */
-   async isOpenPosition (callback) {
+  async isOpenPosition (callback) {
     if (process.env.TARO_ENV === 'weapp') {
       const { authSetting } = await Taro.getSetting()
       if (!authSetting['scope.userLocation']) {
@@ -297,52 +296,6 @@ class EntryLaunch {
         res = await this.getAddressByLnglatWebAPI(lng, lat)
       }
       if (callback) callback(res)
-    }
-  }
-
-  /**
-   * 判断是否开启定位，去获取经纬度，根据经纬度去获取地址
-   */
-  async isOpenPosition (callback) {
-    if (process.env.TARO_ENV === 'weapp') {
-      const { authSetting } = await Taro.getSetting()
-      if (!authSetting['scope.userLocation']) {
-        Taro.authorize({
-          scope: 'scope.userLocation',
-          success: async () => {
-            let locationData = await this.getLocationInfo()
-            if (locationData.lat) await entry.InverseAnalysisGaode(locationData)
-            if (callback) callback()
-          },
-          fail: () => {
-            Taro.showModal({
-              title: '提示',
-              content: '请打开定位权限',
-              success: async (resConfirm) => {
-                if (resConfirm.confirm) {
-                  await Taro.openSetting()
-                  const setting = await Taro.getSetting()
-                  if (setting.authSetting['scope.userLocation']) {
-                    let locationData = await this.getLocationInfo()
-                    if (locationData.lat) await entry.InverseAnalysisGaode(locationData)
-                    if (callback) callback()
-                  } else {
-                    Taro.showToast({ title: '获取定位权限失败', icon: 'none' })
-                  }
-                }
-              }
-            })
-          }
-        })
-      } else {
-        let locationData = await this.getLocationInfo()
-        if (locationData.lat) await entry.InverseAnalysisGaode(locationData)
-        if (callback) callback()
-      }
-    } else {
-      let locationData = await this.getLocationInfo()
-      if (locationData.lat) await entry.InverseAnalysisGaode(locationData)
-      if (callback) callback()
     }
   }
 }

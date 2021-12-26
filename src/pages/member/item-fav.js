@@ -53,7 +53,7 @@ export default class ItemFav extends Component {
       switch (this.state.curTabIdx) {
         case 0:
           res = await api.member.favsList(query)
-          list = pickBy(res.list || res, {
+          list = pickBy(res.list, {
             img: 'item_image',
             fav_id: 'fav_id',
             item_id: 'item_id',
@@ -74,7 +74,7 @@ export default class ItemFav extends Component {
           break
         case 1:
           res = await api.article.totalCollectArticle(query)
-          list = pickBy(res.lsit || res, {
+          list = pickBy(res.lsit, {
             img: 'image_url',
             fav_id: 'fav_id',
             item_id: 'article_id',
@@ -88,7 +88,7 @@ export default class ItemFav extends Component {
           break
         case 2:
           res = await api.member.storeFavList(query)
-          list = pickBy(res.list || res, {
+          list = pickBy(res.list, {
             distributor_id: 'distributor_id',
             fav_num: 'fav_num',
             name: 'name',
@@ -176,7 +176,6 @@ export default class ItemFav extends Component {
 
   render() {
     const { list, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
-    console.log(isWxWeb, 'isWxWeb')
     return (
       <View className='page-goods-fav'>
         <SpNavBar title='收藏' leftIconType='chevron-left' fixed='true' />
@@ -191,7 +190,7 @@ export default class ItemFav extends Component {
           ))}
         </AtTabs>
         <ScrollView
-          className={`goods-list__scroll ${isWxWeb && 'scroll_top'}`}
+          className={`goods-list__scroll ${isWxWeb && 'goods_scroll_top'} `}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation

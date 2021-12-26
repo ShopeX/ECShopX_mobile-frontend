@@ -26,7 +26,7 @@ function WgtHomeHeader( props ) {
   return (
     <View className='home-header'>
       <View className='nearly-shop' onClick={handlePickStore}>
-        <View className='address'>{location.address || '获取定位地址'}</View>
+        <View className='address'>{location.address || '北京市北京市昌平区'}</View>
         <Text className='iconfont icon-qianwang-01'></Text>
       </View>
 

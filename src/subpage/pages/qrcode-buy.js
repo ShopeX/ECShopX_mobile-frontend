@@ -251,21 +251,21 @@ export default class QrcodeBuy extends Component {
               className="auth-btns__item"
               onClick={this.handleHome.bind(this)}
             >
-              <View className="icon icon-home"></View>
+              <View className="iconfont iconfont-home"></View>
               <View>商城首页</View>
             </View>
             <View
               className="auth-btns__item"
               onClick={this.handleCart.bind(this)}
             >
-              <View className="icon icon-cart"></View>
+              <View className="iconfont icon-cart"></View>
               <View>购物车</View>
             </View>
             <View
               className="auth-btns__item"
               onClick={this.handleTrade.bind(this)}
             >
-              <View className="icon icon-home"></View>
+              <View className="iconfont-home"></View>
               <View>我的订单</View>
             </View>
           </View>

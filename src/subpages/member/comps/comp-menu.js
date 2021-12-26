@@ -51,13 +51,12 @@ const MENUS = [
     link: "/marketing/pages/member/item-activity",
   },
   { key: "prorate", name: "推广管理", icon: "m_menu_tuiguang.png" },
-
-  {
-    key: "complaint",
-    name: "投诉记录",
-    icon: "m_menu_toushu.png",
-    link: "/marketing/pages/member/complaint-record",
-  },
+  // {
+  //   key: "complaint",
+  //   name: "投诉记录",
+  //   icon: "m_menu_toushu.png",
+  //   link: "/marketing/pages/member/complaint-record",
+  // },
 ];
 
 function CompMenu( props ) {

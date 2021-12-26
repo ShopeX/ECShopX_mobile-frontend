@@ -8,15 +8,15 @@ import './comp-helpcenter.scss'
 
 const MENUS = [
   { key: 'share', name: '我要分享', icon: 'icon-fenxiang-01' },
-  {
-    key: 'address',
-    name: '地址管理',
-    icon: 'icon-dizhiguanli-01',
-    link: '/marketing/pages/member/address'
-  },
+  // {
+  //   key: 'address',
+  //   name: '地址管理',
+  //   icon: 'icon-dizhiguanli-01',
+  //   link: '/marketing/pages/member/address'
+  // },
   {
     key: 'useinfo',
-    name: '个人信息',
+    name: '设置',
     icon: 'icon-gerenxinxi-01',
     link: '/marketing/pages/member/member-setting'
   },

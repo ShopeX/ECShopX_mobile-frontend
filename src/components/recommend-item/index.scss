@@ -122,7 +122,7 @@ $item-img-size: 240px !default;
   &__actions {
     color: #d0d0d0;
     font-size: $font-size-small;
-    [class^="icon-"] {
+    .iconfont {
       color: #d0d0d0;
       font-size: 32px;
       &:before {
@@ -134,7 +134,7 @@ $item-img-size: 240px !default;
     }
   }
   .is_like__active{
-    [class^="icon-"] {
+    .iconfont {
       color: $color-brand-primary;
     }
   }

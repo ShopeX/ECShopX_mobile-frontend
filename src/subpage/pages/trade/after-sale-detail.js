@@ -12,7 +12,6 @@ import {
   copyText,
   getCurrentRoute,
   classNames,
-  isWxWeb,
 } from "@/utils";
 // import { Tracker } from '@/service'
 import api from '@/api'

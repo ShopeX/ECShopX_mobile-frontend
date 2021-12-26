@@ -27,17 +27,17 @@ export default class Category extends Component {
       isChanged: false,
       localCurrent: 2,
       tabBarList: [
-        { title: '店铺首页', iconType: 'home', iconPrefixClass: 'iconfont', url: '/pages/store/index' },
+        { title: '店铺首页', iconType: 'home', iconPrefixClass: 'iconfont icon', url: '/pages/store/index' },
         {
           title: '商品列表',
           iconType: 'list',
-          iconPrefixClass: 'iconfont',
+          iconPrefixClass: 'iconfont icon',
           url: '/others/pages/store/list'
         },
         {
           title: '商品分类',
           iconType: 'category',
-          iconPrefixClass: 'iconfont',
+          iconPrefixClass: 'iconfont icon',
           url: '/others/pages/store/category'
         }
       ]

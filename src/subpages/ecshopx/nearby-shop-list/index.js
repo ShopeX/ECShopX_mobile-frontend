@@ -79,9 +79,9 @@ const NearbyShopList = (props) => {
         const params = {
             page: pageIndex,
             pageSize,
-            province: lnglat().province,
-            city: lnglat().city ? lnglat().city : lnglat().province,
-            area: lnglat().district,
+            province: lnglat().province || '北京市',
+            city: lnglat().city || '北京市',
+            area: lnglat().district || '昌平区',
             type: 0,
             show_discount: 1,
             show_marketing_activity: 1,

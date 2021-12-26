@@ -20,24 +20,20 @@
   .goods-list {
     &__scroll {
       @include page-scroll($tabs-height + 30px, 0);
-      /*  #ifdef  h5  */  
-      @include page-scroll($navigate-height-h5 + $tabs-height + 29px, 0);
+      /*  #ifdef  h5  */
+      top: $navigate-height-h5 + $tabs-height + 29px;
       /*  #endif  */      
-    }
-    .scroll_top {
-      top: 0;
     }
     &__type-grid {
       display: flex;
       flex-wrap: wrap;
       .goods-list__item {
-        // width: 50%;
-        width: 47.5%;
-        /*  #ifdef  h5  */
         width: 47.3%;
-        /*  #endif  */
         padding: 10px;
       }
     }
+  }
+  .goods_scroll_top {
+    top: $tabs-height + 29px;
   }
 }

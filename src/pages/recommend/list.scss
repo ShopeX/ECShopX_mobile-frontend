@@ -60,9 +60,10 @@
         text-align: center;
         color: #666666;
         font-size: 26px;
-        [class^=icon] {
+        .iconfont {
           color: #ccc;
           display: inline-block;
+          font-size: 28px;
 				}
 				&.region-picker{
 					display: flex;

@@ -58,9 +58,9 @@ function NearlyShop( props ) {
       lat: location.lat,
       lng: location.lng,
       name: keyword,
-      province: chooseProvice || province,
-      city: chooseCity || city,
-      area: chooseDistrict || district,
+      province: province || chooseProvice,
+      city: city || chooseCity,
+      area: district || chooseDistrict,
       type: state.type,
       search_type: state.search_type,
       sort_type: 1
@@ -109,9 +109,9 @@ function NearlyShop( props ) {
   const onPickerClick = () => {
     const [ chooseProvice, chooseCity, chooseDistrict ] = state.chooseValue
     const { province, city, district } = location
-    const p_label = chooseProvice || province
-    const c_label = chooseCity || city
-    const d_label = chooseDistrict || district
+    const p_label = province || chooseProvice
+    const c_label = city || chooseCity
+    const d_label = district || chooseDistrict
     let chooseIndex = []
     let proviceArr = []
     let cityArr = []
@@ -259,7 +259,7 @@ function NearlyShop( props ) {
             >
               <View className="pick-title">
                 <View className='iconfont icon-periscope'></View>
-                <Text className="pick-address">{chooseValue.join('') || locationValue || '选择地区'}</Text>
+                <Text className="pick-address">{locationValue || chooseValue.join('') || '选择地区'}</Text>
                 <Text className="iconfont icon-arrowDown"></Text>
               </View>
             </Picker>

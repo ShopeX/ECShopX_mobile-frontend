@@ -523,7 +523,7 @@ export default class List extends Component {
             {!isShowSearch && (
               <View
                 className={classNames(
-                  'goods-list__type',
+                  'goods-list__type iconfont',
                   listType === 'grid' ? 'icon-list' : 'icon-grid'
                 )}
                 style={listType === 'grid' ? { fontSize: '26px' } : { fontSize: '18px' }}

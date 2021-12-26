@@ -131,7 +131,7 @@ export default class GoodsItem extends Component {
             </View>
           )}
           <View className='goods-item__img-wrap' onClick={onClick}>
-            <SpImg img-class='goods-item__img' src={img} mode='aspectFill' width='400' lazyLoad />
+            <SpImg img-class='goods-item__img' src={img} mode='widthFix' width='400' lazyLoad />
           </View>
           <View className='goods-item__cont'>
             {info.type === '1' && (

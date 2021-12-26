@@ -55,19 +55,19 @@ export default class List extends Component {
         {
           title: "店铺首页",
           iconType: "home",
-          iconPrefixClass: "icon",
+          iconPrefixClass: "iconfont icon",
           url: "/pages/store/index",
         },
         {
           title: "商品列表",
           iconType: "list",
-          iconPrefixClass: "icon",
+          iconPrefixClass: "iconfont icon",
           url: "/others/pages/store/list",
         },
         {
           title: "商品分类",
           iconType: "category",
-          iconPrefixClass: "icon",
+          iconPrefixClass: "iconfont icon",
           url: "/others/pages/store/category",
         },
       ],
@@ -527,7 +527,7 @@ export default class List extends Component {
             {!isShowSearch && (
               <View
                 className={classNames(
-                  "goods-list__type",
+                  "goods-list__type iconfont",
                   listType === "grid" ? "icon-list" : "icon-grid"
                 )}
                 onClick={this.handleViewChange}
@@ -683,7 +683,7 @@ export default class List extends Component {
         <BackToTop
           show={showBackToTop}
           onClick={this.scrollBackToTop}
-          bottom={30}
+          bottom={130}
         />
         <AtTabBar
           fixed

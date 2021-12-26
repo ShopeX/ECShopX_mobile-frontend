@@ -51,7 +51,7 @@ export default class RecommendItem extends Component {
             <SpImg
               img-class='recommend-item__img'
               src={img}
-              mode='aspectFill'
+              mode='widthFix'
               width='400'
               lazyLoad
             />
@@ -86,7 +86,7 @@ export default class RecommendItem extends Component {
                 <View
                   className={`recommend-item__actions ${info.isPraise ? 'is_like__active' : ''}`}
                 >
-                  <View className='icon-like'>
+                  <View className='iconfont icon-like'>
                     <Text>{info.articlePraiseNum}</Text>
                   </View>
                 </View>

@@ -143,7 +143,7 @@ export default class DistributionShop extends Component {
             <View>任务商品</View>
           </View>
           <View className='grid-item shop-nav-item' onClick={this.handleClick.bind(this, 'trade')}>
-            <View className='icon-list1'></View>
+            <View className='iconfont icon-list1'></View>
             <View>小店订单</View>
           </View>
           <Button openType='share' className='grid-item shop-nav-item'>

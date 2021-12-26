@@ -43,9 +43,9 @@ export default class HeaderCustom extends Component {
       >
         <View className={`menu ${!isHome && 'roate'}`}>
           {isHome ? (
-            <View className='icon icon-home1' onClick={this.handleBack.bind(this, 'home')}></View>
+            <View className='iconfont icon-home1' onClick={this.handleBack.bind(this, 'home')}></View>
           ) : (
-            <View className='icon icon-arrowUp' onClick={this.handleBack.bind(this, '')}></View>
+            <View className='iconfont icon-arrowUp' onClick={this.handleBack.bind(this, '')}></View>
           )}
         </View>
       </View>
