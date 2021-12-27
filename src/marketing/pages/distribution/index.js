@@ -292,7 +292,7 @@ export default class DistributionDashboard extends Component {
               className='view-flex view-flex-middle'
               url='/marketing/pages/distribution/setting'
             >
-              <Text className='icon-info'></Text>
+              <Text className='iconfont icon-info'></Text>
             </Navigator>
           </View>
           {info.isOpenShop && info.shop_status === 0 ? (
@@ -362,7 +362,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/statistics'
             >
-              <View className='icon-money'></View>
+              <View className='iconfont icon-money'></View>
               <View className='label'>推广费</View>
               <View className='mark'>{info.rebateTotal / 100}</View>
             </Navigator>
@@ -371,7 +371,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/point-platform'
             >
-              <View className='icon-jifen'></View>
+              <View className='iconfont icon-jifen'></View>
               <View className='label'>推广积分</View>
               <View className='mark'>{info.pointTotal || 0}</View>
             </Navigator>
@@ -383,7 +383,7 @@ export default class DistributionDashboard extends Component {
             url={`/marketing/pages/distribution/subordinate?hasBuy=${info.isbuy_promoter}&noBuy=${info.notbuy_promoter}`}
           >
             <View className='view-flex-item'>我的会员</View>
-            <View className='section-more icon-arrowRight'></View>
+            <View className='iconfont icon-arrowRight'></View>
           </Navigator>
           <View className='content-padded-b view-flex content-center member'>
             <View className='view-flex-item'>
@@ -396,9 +396,9 @@ export default class DistributionDashboard extends Component {
         </View>
         <View className='section list share'>
           <View className='list-item' onClick={this.handleClick}>
-            <View className='item-icon icon-qrcode1'></View>
+            <View className='iconfont icon-qrcode1'></View>
             <View className='list-item-txt'>我的二维码</View>
-            <View className='icon-arrowRight item-icon-go'></View>
+            <View className='iconfont icon-arrowRight'></View>
           </View>
           <Navigator
             className='list-item'
@@ -406,9 +406,9 @@ export default class DistributionDashboard extends Component {
             url={`/marketing/pages/distribution/goods?status=${info.isOpenShop &&
               info.shop_status === 1}`}
           >
-            <View className='item-icon icon-weChat'></View>
+            <View className='iconfont icon-weChat'></View>
             <View className='list-item-txt'>推广商品</View>
-            <View className='icon-arrowRight item-icon-go'></View>
+            <View className='iconfont icon-arrowRight'></View>
           </Navigator>
           {info.isOpenShop && info.shop_status === 1 && (
             <Navigator
@@ -418,14 +418,14 @@ export default class DistributionDashboard extends Component {
             >
               <View className='item-icon icon-shop'></View>
               <View className='list-item-txt'>我的小店</View>
-              <View className='icon-arrowRight item-icon-go'></View>
+              <View className='iconfont icon-arrowRight'></View>
             </Navigator>
           )}
           {Taro.getEnv() !== 'WEB' && info.shop_status !== 1 && (
             <Button className='share-btn list-item' open-type='share'>
-              <View className='item-icon icon-share1'></View>
+              <View className='iconfont icon-share1'></View>
               <View className='list-item-txt'>分享给好友</View>
-              <View className='icon-arrowRight item-icon-go'></View>
+              <View className='iconfont icon-arrowRight'></View>
             </Button>
           )}
           {info.isHf && (
@@ -436,7 +436,7 @@ export default class DistributionDashboard extends Component {
             >
               <View className='item-icon icon-weChart'></View>
               <View className='list-item-txt'>实名认证以及绑卡</View>
-              <View className='icon-arrowRight item-icon-go'></View>
+              <View className='iconfont icon-arrowRight'></View>
             </Navigator>
           )}
         </View>
