@@ -88,12 +88,14 @@ $height-percent: 82%;
     background: #fff; 
     $self: &;
   
-    .icon-search {
+    .icon-search1 {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-
+      position: absolute;
+      left: 35px;
+      // margin-right: 10px;
       &.show{
         justify-content: flex-start;
       }

@@ -8,6 +8,7 @@
     @include page-scroll($navigate-height);
     /*  #ifdef  h5  */
     @include page-scroll($navigate-height-h5);
+    top:47px;
     /*  #endif  */
   }
   .goods-evaluation-wrap {
