@@ -159,7 +159,7 @@ export default class AddressIndex extends Component {
                   >
                     {item[ADDRESS_ID] === selectedId ? (
                       <Text
-                        className='icon-check address-item__checked'
+                        className='iconfont icon-check address-item__checked'
                         style={{ color: colors.data[0].primary }}
                       ></Text>
                     ) : (
@@ -191,13 +191,13 @@ export default class AddressIndex extends Component {
                     >
                       {item.is_def ? (
                         <Text
-                          className='icon-check default__icon default__checked'
+                          className='iconfont icon-check default__icon default__checked'
                           style={{ color: colors.data[0].primary }}
                         >
                           {' '}
                         </Text>
                       ) : (
-                        <Text className='icon-check default__icon'> </Text>
+                        <Text className='iconfont icon-check default__icon'> </Text>
                       )}
                       <Text className='default-text'>设为默认</Text>
                     </View>
@@ -206,11 +206,11 @@ export default class AddressIndex extends Component {
                         className='footer-text'
                         onClick={this.handleClickToEdit.bind(this, item)}
                       >
-                        <Text className='icon-edit footer-icon'> </Text>
+                        <Text className='iconfont icon-edit footer-icon'> </Text>
                         <Text>编辑</Text>
                       </View>
                       <View className='footer-text' onClick={this.handleDelete.bind(this, item)}>
-                        <Text className='icon-trash footer-icon'> </Text>
+                        <Text className='iconfont icon-trashCan footer-icon'> </Text>
                         <Text>删除</Text>
                       </View>
                     </View>

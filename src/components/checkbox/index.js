@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View } from '@tarojs/components' 
-import { classNames } from '@/utils'
+import { classNames, styleNames, getThemeStyle } from '@/utils'
 import './index.scss'
  
 export default class SpCheckbox extends Component {
@@ -50,6 +50,7 @@ export default class SpCheckbox extends Component {
           isChecked ? "sp-checkbox__checked" : null
         )}
         onClick={this.handleClick.bind(this)}
+        style={styleNames(getThemeStyle())}
       >
         <View className="sp-checkbox">
           <View className="iconfont icon-check"></View>

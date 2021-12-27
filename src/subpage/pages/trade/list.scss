@@ -81,7 +81,7 @@
     position: relative;
     .btn-action {
       width: auto;
-      margin-left: 20rpx;
+      margin-left: 20px;
       padding: 0 22px;
       height: 42px;
       line-height: 42px;
@@ -89,6 +89,7 @@
       font-size: $font-size-small;
       color: #fff;
       background: #fff;
+      margin-top: 0px;
       &::after {
         background: none;
         border: none;

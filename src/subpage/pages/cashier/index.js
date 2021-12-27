@@ -45,7 +45,7 @@ export default class Cashier extends Component {
   }
 
   async fetch() {
-    const { order_id,pay_type,id } = this.$router.params
+    const { order_id,pay_type,id } = this.$instance.router.params;
 
     let env = "";
     if (browser.weixin) {

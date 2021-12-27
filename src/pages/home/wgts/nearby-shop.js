@@ -34,7 +34,11 @@ function WgtNearbyShop( props ) {
       lat: location.lat,
       lng: location.lng,
       distributor_tag_id: seletedTags[state.activeIndex].tag_id,
-      show_discount: 1
+      show_discount: 1,
+      province: location.lat ? location.province : '北京市',
+      city: location.lat ? location.city : '北京市',
+      area: location.lat ? location.district : '昌平区',
+      type: location.lat ? 0 : 1
     };
     const { list, tagList } = await api.shop.getNearbyShop( params );
     

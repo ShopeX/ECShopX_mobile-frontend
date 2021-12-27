@@ -160,7 +160,7 @@ export default class SpSearchBar extends Component {
             <View className="sp-search-bar__history-title">
               <Text className="title">最近搜索</Text>
               <Text
-                className="icon-trash icon-del"
+                className="icon-trashCan icon-del"
                 onClick={this.handleClickDelete.bind(this)}
               ></Text>
             </View>

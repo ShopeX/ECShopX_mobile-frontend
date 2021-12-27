@@ -91,7 +91,7 @@
     }
     &__imgupload {
       border: 1px solid #e6e6e6;
-      height: 270px;
+      height: 290px;
       width: 100%;
       background: #f6f5f5;
       &_text {
@@ -100,15 +100,13 @@
         color: #b3b3b3; 
       }
       &_picker{
-        height:100px;
-
-         /*  #ifdef  alipay  */
-         .at-image-picker__item{
-            top: 35%;
-            width: 75%;
-            height: 75%;
-         }
-         /*  #endif  */
+        .at-image-picker__item{
+          top: 35%;
+          width: 75%;
+          height: 75%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
       }
     }
   }

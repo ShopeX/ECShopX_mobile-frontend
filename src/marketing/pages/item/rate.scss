@@ -101,40 +101,11 @@ page {
     }
   }
   .submit-btn {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    background: #fff;
-    padding: 0 50px;
-    overflow: hidden;
-    height: 120px; 
-    .btn {
-      width: 338px;
-      height: 80px;
-      flex-shrink: 0;
-      line-height: 80px;
-      text-align: center;
-      border-radius: 40px;
-      color: #333;
-      border: 2px solid #bbb;
-      &.noname {
-        width: 396px;
-        padding-right: 84px;
-        position: relative;
-        z-index: 9;
-        background: #fff;
-      }
-      &.name {
-        color: #fff;
-        border: none;
-        position: relative;
-        z-index: 99;
-        transform: translateX(-84px);
-      }
-    } 
+      padding: 20px 24px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
   }
  
 }

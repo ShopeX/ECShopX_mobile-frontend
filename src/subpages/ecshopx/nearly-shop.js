@@ -73,6 +73,7 @@ function NearlyShop( props ) {
 
     setState((v) => {
       v.shopList = v.shopList.concat( pickBy( list, doc.shop.SHOP_ITEM ) );
+      v.chooseValue = [query.province, query.city, query.area]
     })
 
     let format_address = !isArray(defualt_address) ? defualt_address : null
@@ -95,7 +96,7 @@ function NearlyShop( props ) {
     if ( error ) {
       showToast(error)
     } else {
-      dispatch(updateLocation(local))
+      dispatch(updateLocation(res))
       await setState((v) => {
         v.keyword = detail.value
         v.shopList = []
@@ -109,9 +110,9 @@ function NearlyShop( props ) {
   const onPickerClick = () => {
     const [ chooseProvice, chooseCity, chooseDistrict ] = state.chooseValue
     const { province, city, district } = location
-    const p_label = province || chooseProvice
-    const c_label = city || chooseCity
-    const d_label = district || chooseDistrict
+    const p_label = chooseProvice
+    const c_label = chooseCity
+    const d_label = chooseDistrict
     let chooseIndex = []
     let proviceArr = []
     let cityArr = []
@@ -238,9 +239,7 @@ function NearlyShop( props ) {
     Taro.navigateBack()
   }
 
-  console.log(address, '---address--')
-
-  const { areaIndexArray, areaArray, chooseValue } = state
+  const { areaIndexArray, areaArray, chooseValue, showType } = state
   const {province, city, district} = location
   const locationValue = province + city + district
   return (
@@ -259,7 +258,7 @@ function NearlyShop( props ) {
             >
               <View className="pick-title">
                 <View className='iconfont icon-periscope'></View>
-                <Text className="pick-address">{locationValue || chooseValue.join('') || '选择地区'}</Text>
+                <Text className="pick-address">{chooseValue.join('') || '选择地区'}</Text>
                 <Text className="iconfont icon-arrowDown"></Text>
               </View>
             </Picker>
