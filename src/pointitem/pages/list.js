@@ -98,7 +98,7 @@ export default class List extends Component {
   }
 
   componentWillReceiveProps(next) {
-    if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
+    if (next.favs && (Object.keys(this.props.favs).length !== Object.keys(next.favs).length)) {
       setTimeout(() => {
         const list = this.state.list.map((item) => {
           item.is_fav = Boolean(next.favs[item.item_id])
@@ -708,7 +708,7 @@ export default class List extends Component {
 
             {
               <Text
-                className={classNames('iconfont', 'icon-search', {
+                className={classNames('iconfont', 'icon-search1', {
                   [`show`]: filterActive
                 })}
                 type='search'

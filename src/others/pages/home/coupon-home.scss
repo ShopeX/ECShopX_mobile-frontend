@@ -16,6 +16,9 @@
   .home_coupon-home__scroll {
     height: 100vh;
     padding: 15px 0;
+    /*  #ifdef  h5  */
+    padding-top: $navigate-height-h5;
+    /*  #endif  */
     box-sizing: border-box;
   }
   &__tabs {

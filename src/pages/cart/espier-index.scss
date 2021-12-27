@@ -132,6 +132,17 @@
       font-size: 24px;
       position: relative;
       top: -2px;
+      /*  #ifdef  h5  */
+      border-left: 1PX solid #999;
+      border-right: 1PX solid #999;
+      height: auto;
+      top:0;
+      /*  #endif  */
+    }
+    input {
+      /*  #ifdef  h5  */
+      border: 0;
+      /*  #endif  */
     }
     &__btn {
       color: #222;
