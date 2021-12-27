@@ -25,10 +25,18 @@ function WgtGoodsGridTab(props) {
         wgt__padded: base.padded,
       })}
     >
-      {base.title && (
+      {/* {base.title && (
         <View className="wgt-head">
           <Text className="wgt-title">{base.title}</Text>
           <Text className="wgt-subtitle">{base.subtitle}</Text>
+        </View>
+      )} */}
+      {base.title && (
+        <View className="wgt-head">
+          <View className="wgt-hd">
+            <Text className="wgt-title">{base.title}</Text>
+            <Text className="wgt-subtitle">{base.subtitle}</Text>
+          </View>
         </View>
       )}
       <View className="wgt-body">

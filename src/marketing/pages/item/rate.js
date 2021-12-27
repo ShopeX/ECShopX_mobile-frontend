@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
 import { AtRate, AtTextarea, AtImagePicker } from 'taro-ui'
 import imgUploader from '@/utils/upload'
-import { SpButton } from '@/components'
+import { SpButton,SpPage } from '@/components'
 
 import './rate.scss'
 
@@ -200,7 +200,8 @@ export default class TradeRate extends Component {
     }
 
     return (
-      <View className='trade-rate'>
+      <SpPage>
+              <View className='trade-rate'>
         <View className='rate-list'>
           {goodsList.map((item, idx) => {
             return (
@@ -261,6 +262,7 @@ export default class TradeRate extends Component {
         </View>
         
       </View>
+      </SpPage>
     )
   }
 }
