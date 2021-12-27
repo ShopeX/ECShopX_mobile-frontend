@@ -13,8 +13,8 @@ export const SHOP_ITEM = {
 };
 
 export const BUSINESS_SORT = {
-  label: 'title',
-  sort: 'sort'
+  tag_name: 'title',
+  tag_id: 'sort'
 }
 
 

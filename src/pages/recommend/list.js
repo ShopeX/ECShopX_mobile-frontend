@@ -11,7 +11,8 @@ import {
   SearchBar,
   TabBar,
   SpNote,
-  FilterBar
+  FilterBar,
+  SpTabbar
 } from '@/components'
 import api from '@/api'
 import { classNames, pickBy } from '@/utils'
@@ -627,7 +628,7 @@ export default class RecommendList extends Component {
 
         <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
 
-        <TabBar />
+        <SpTabbar />
       </View>
     )
   }
