@@ -64,7 +64,7 @@ function SpGoodsItem( props ) {
       onClick={handleClick.bind(this)}
     >
       <View className="goods-item__hd">
-        <SpImage src={info.pic} mode="aspectFill" />
+        <SpImage src={info.pic || info.pics[0]} mode="aspectFill" />
       </View>
       <View className="goods-item__bd">
         {/* 跨境商品 */}

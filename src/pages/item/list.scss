@@ -2,6 +2,11 @@
   // background: $color-bg-gray;
   .item-list-head {
     background: #fff;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    width: 100%;
   }
   .search-wrap {
     padding: 16px 28px;
@@ -16,6 +21,9 @@
         border-top-right-radius: 40px;
       }
     }
+  }
+  .item-list-scroll {
+    @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 10, 0);
   }
 
   .filter-btn {
@@ -46,15 +54,18 @@
     .goods-list-wrap {
       width: 345px;
       margin-bottom: 28px;
-      box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
     }
     .left-container {
       width: 50%;
-      padding-right: 14px;
     }
     .right-container {
       width: 50%;
-      padding-left: 14px;
+      padding-left: 20px;
+    }
+    .goods-item-wrap {
+      margin-bottom: 20px;
+      box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
     }
   }
 

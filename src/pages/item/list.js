@@ -73,7 +73,10 @@ function ItemList() {
       page: pageIndex,
       pageSize,
       brand_id: brandSelect.map( ( item ) => item.id ).toString(),
-      keyword: keyword
+      keyword: keyword,
+      approve_status: 'onsale,only_show',
+      item_type: 'normal',
+      is_point: 'false',
     };
 
     if ( curFilterIdx == 1 ) {
@@ -88,7 +91,7 @@ function ItemList() {
     }
 
     if (curTagIdx) {
-      params["tag_id"] = tagList[curTagIdx].id;
+      params["tag_id"] = tagList[curTagIdx].tag_id;
     }
 
     const {
@@ -116,8 +119,8 @@ function ItemList() {
       if ( select_tags_list.length > 0 ) {
         v.tagList = [
           {
-            label: "全部",
-            id: 0,
+            tag_name: "全部",
+            tag_id: 0,
           }
         ].concat( select_tags_list );
       }
@@ -172,7 +175,7 @@ function ItemList() {
     await setState((draft) => {
       draft.leftList = [];
       draft.rightList = [];
-      draft.curFilterIdx = e;
+      draft.curFilterIdx = e.current || 0;
     });
     goodsRef.current.reset();
   };
@@ -201,14 +204,13 @@ function ItemList() {
     });
     goodsRef.current.reset();
   };
-  
   return (
     <SpPage className={classNames("page-item-list")}>
       <View className="item-list-head">
         <View className="search-wrap">
           <SpSearchBar
             keyword={keyword}
-            placeholder="搜索商品"
+            placeholder="搜索"
             onFocus={handleOnFocus}
             onChange={handleOnChange}
             onClear={handleOnClear}
@@ -235,7 +237,7 @@ function ItemList() {
           onChange={handleFilterChange}
         />
       </View>
-      <SpScrollView ref={goodsRef} fetch={fetch}>
+      <SpScrollView className='item-list-scroll' ref={goodsRef} fetch={fetch}>
         <View className="goods-list">
           <View className="left-container">
             {leftList.map((item, index) => (

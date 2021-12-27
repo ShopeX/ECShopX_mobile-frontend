@@ -19,9 +19,9 @@ function SpTagBar(props) {
               onClick={() => {
                 onChange(index);
               }}
-              key={`tag-item__${item.id}`}
+              key={`tag-item__${item.tag_id}`}
             >
-              {item.label}
+              {item.tag_name}
             </View>
           ))}
         </ScrollView>

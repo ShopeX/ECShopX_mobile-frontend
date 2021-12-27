@@ -3,13 +3,14 @@
   background: #fff;
   padding: 10px 30px;
   .tag-bar-hd {
-    flex: 1;
+    width: 87%;
   }
   .tag-bar-ft {
 
   }
   .tag-container {
     white-space: nowrap;
+    width: 95%;
   }
   .tag-item {
     display: inline-block;
