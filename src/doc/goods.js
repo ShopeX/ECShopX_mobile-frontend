@@ -59,17 +59,17 @@ export const BUSINESS_LIST_TAG = {
 
 export const ITEM_LIST_GOODS = {
   pic: ({ pics }) => pics ? typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0] : '',
-  item_id: 'item_id',
-  item_name: "item_name",
+  itemId: 'item_id',
+  itemName: "item_name",
   brief: 'brief',
-  distributor_id: 'distributor_id',
+  distributorId: 'distributor_id',
   distributor_info: 'distributor_info',
   promotion: 'promotion_activity',
   origincountry_name: 'origincountry_name',
   origincountry_img_url: 'origincountry_img_url',
   type: 'type',
   price: "price",
-  market_price: "market_price",
+  marketPrice: "market_price",
   // is_fav: ({ item_id }) => Boolean(favs[item_id]),
   store: 'store'
 }

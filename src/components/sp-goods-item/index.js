@@ -25,12 +25,12 @@ function SpGoodsItem( props ) {
   } = props
 
   const handleFavClick = async () => {
-    const { item_id, is_fav } = this.props.info
+    const { itemId, is_fav } = this.props.info
     if (!is_fav) {
-      const favRes = await api.member.addFav(item_id)
+      const favRes = await api.member.addFav(itemId)
       this.props.onAddFav(favRes)
     } else {
-      await api.member.delFav(item_id)
+      await api.member.delFav(itemId)
       this.props.onDelFav(this.props.info)
     }
     Taro.showToast({
