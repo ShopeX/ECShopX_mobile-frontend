@@ -12,9 +12,9 @@ import imgUploader from '@/utils/upload'
 import './userinfo.scss'
 
 @connect(
-  ({ colors, member }) => ({
+  ({ colors, user }) => ({
     colors: colors.current,
-    memberData: member.member
+    memberData: user.userInfo
   }),
   (dispatch) => ({
     setMemberInfo: (memberInfo) => dispatch({ type: 'member/init', payload: memberInfo })
@@ -93,10 +93,10 @@ export default class UserInfo extends Component {
 
   // 获取表单字段
   getFormItem = async () => {
-    const { memberInfo } = this.props.memberData
-    const { requestFields } = memberInfo
+    const { avatar, requestFields} = this.props.memberData
+    // const { requestFields } = this.props.memberData
     const userInfo = {
-      avatar: memberInfo.avatar,
+      avatar,
       ...requestFields
     }
 
@@ -410,7 +410,7 @@ export default class UserInfo extends Component {
           ))}
         </View>
 
-        <View className='btns'>
+        <View className='btns-user'>
           <View
             className='btn save'
             style={`background: ${colors.data[0].primary}`}

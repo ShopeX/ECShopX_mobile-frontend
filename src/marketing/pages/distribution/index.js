@@ -344,7 +344,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/trade?type=order'
             >
-              <View className='iconfont icon-list3'></View>
+              <View className='iconfont icon-list3 icon-fontsize'></View>
               <View className='label'>提成订单</View>
               <View>{info.promoter_order_count}</View>
             </Navigator>
@@ -353,7 +353,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/trade?type=order_team'
             >
-              <View className='iconfont icon-list2'></View>
+              <View className='iconfont icon-list2 icon-fontsize'></View>
               <View className='label'>津贴订单</View>
               <View>{info.promoter_grade_order_count}</View>
             </Navigator>
@@ -362,7 +362,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/statistics'
             >
-              <View className='iconfont icon-money'></View>
+              <View className='iconfont icon-money icon-fontsize'></View>
               <View className='label'>推广费</View>
               <View className='mark'>{info.rebateTotal / 100}</View>
             </Navigator>
@@ -371,7 +371,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/point-platform'
             >
-              <View className='iconfont icon-jifen'></View>
+              <View className='iconfont icon-jifen icon-fontsize'></View>
               <View className='label'>推广积分</View>
               <View className='mark'>{info.pointTotal || 0}</View>
             </Navigator>
@@ -396,9 +396,9 @@ export default class DistributionDashboard extends Component {
         </View>
         <View className='section list share'>
           <View className='list-item' onClick={this.handleClick}>
-            <View className='iconfont icon-qrcode1'></View>
+            <View className='iconfont icon-qrcode1 icon-fontsize'></View>
             <View className='list-item-txt'>我的二维码</View>
-            <View className='iconfont icon-arrowRight'></View>
+            <View className='iconfont icon-arrowRight icon-right'></View>
           </View>
           <Navigator
             className='list-item'
@@ -406,9 +406,9 @@ export default class DistributionDashboard extends Component {
             url={`/marketing/pages/distribution/goods?status=${info.isOpenShop &&
               info.shop_status === 1}`}
           >
-            <View className='iconfont icon-weChat'></View>
+            <View className='iconfont icon-weChat icon-fontsize'></View>
             <View className='list-item-txt'>推广商品</View>
-            <View className='iconfont icon-arrowRight'></View>
+            <View className='iconfont icon-arrowRight icon-right'></View>
           </Navigator>
           {info.isOpenShop && info.shop_status === 1 && (
             <Navigator
@@ -416,16 +416,16 @@ export default class DistributionDashboard extends Component {
               open-type='navigateTo'
               url={`/marketing/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}&point=${info.taskBrokerageItemTotalPoint}`}
             >
-              <View className='item-icon icon-shop'></View>
+              <View className='item-icon icon-shop icon-fontsize'></View>
               <View className='list-item-txt'>我的小店</View>
-              <View className='iconfont icon-arrowRight'></View>
+              <View className='iconfont icon-arrowRight icon-right'></View>
             </Navigator>
           )}
           {Taro.getEnv() !== 'WEB' && info.shop_status !== 1 && (
             <Button className='share-btn list-item' open-type='share'>
-              <View className='iconfont icon-share1'></View>
+              <View className='iconfont icon-share1 icon-fontsize'></View>
               <View className='list-item-txt'>分享给好友</View>
-              <View className='iconfont icon-arrowRight'></View>
+              <View className='iconfont icon-arrowRight icon-right'></View>
             </Button>
           )}
           {info.isHf && (

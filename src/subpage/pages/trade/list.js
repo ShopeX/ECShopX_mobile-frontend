@@ -7,7 +7,7 @@ import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
-import { log, pickBy, resolveOrderStatus, getCurrentRoute, classNames,isNavbar } from '@/utils'
+import { log, pickBy, resolveOrderStatus, getCurrentRoute, classNames,isNavbar,getBrowserEnv } from '@/utils'
 import { Tracker } from '@/service'
 import TradeItem from './comps/new-item'
 
@@ -305,10 +305,9 @@ export default class TradeList extends Component {
             <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
           ))}
         </AtTabs>
-
         <ScrollView
           scrollY
-          className='trade-list__scroll with-tabs'
+          className={`trade-list__scroll ${getBrowserEnv().weixin ? 'with-tabs-wx' : 'with-tabs'}`}
           // onScrollToUpper={this.onPullDownRefresh.bind(this)}
           onScrollToLower={this.nextPage}
         >

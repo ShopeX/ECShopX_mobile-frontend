@@ -60,7 +60,7 @@ page {
   .basicInfo {
     margin-top: 30px;
   }
-  .btns {
+  .btns-user {
     width: 100%;
     height: $btnsHeight;
     position: fixed;
@@ -68,7 +68,7 @@ page {
     display: flex;
     align-items: center;
     background: #fff;
-    padding: 0 50px;
+    // padding: 0 50px;
     overflow: hidden;
     /*  #ifdef  h5  */
     width: 87%;

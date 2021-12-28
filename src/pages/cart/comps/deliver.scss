@@ -30,7 +30,7 @@
   }
   .address-module {
     background: #fff;
-    padding: 12px 0;
+    padding: 12px 30px;
     .addr-title {
       font-size: 32px;
       font-weight: 500;
@@ -74,6 +74,11 @@
       padding-bottom: 20px;
       color: #333;
       font-size: 28px;
+    }
+  }
+  .cityDeliver{
+    .store {
+      padding-left: 30px;
     }
   }
 }

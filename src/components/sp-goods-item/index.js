@@ -58,7 +58,6 @@ function SpGoodsItem( props ) {
     return null
   }
 
-
   return (
     <View
       className={classNames("sp-goods-item")}

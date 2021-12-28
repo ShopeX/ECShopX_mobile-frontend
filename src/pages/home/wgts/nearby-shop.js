@@ -49,9 +49,11 @@ function WgtNearbyShop( props ) {
   };
 
   const showMore = () => {
-    Taro.navigateTo({
-      url: "/subpages/ecshopx/shop-list",
-    });
+    if(state.shopList.length != 0) {
+      Taro.navigateTo({
+        url: "/subpages/ecshopx/shop-list",
+      });
+    }
   };
 
   const handleStoreClick = (id) => {
