@@ -43,7 +43,8 @@ function SpImage(props) {
         className
       )}
       style={styleNames({
-        width: isNumber(width) ? `${width / 2}px` : ""
+        width: isNumber(width) ? `${width / 2}px` : "",
+        height: isNumber(height) ? `${height / 2}px` : ""
       })}
       onClick={onClick}
     >

@@ -65,12 +65,12 @@ function CompHeader(props){
             {/* {优惠券} */}
             {
                 couponList.length>0 && <View className='coupon-block' onClick={handleCouponClick}>
-                {/* <Text>领券</Text> */}
+                <Text className="get-coupon">领券</Text>
                 {
-                    couponList.map((item,index) => (
-                        <SpShopCoupon info={item} key={`shop-coupon__${index}`} />
+                    couponList.slice(0,3).map((item,index) => (
+                        <SpShopCoupon info={item} key={`shop-coupon__${index}`} fromStoreIndex className='coupon-index'/>
                     ))
-                }    
+                }
                 </View>
             }
             {/* {满减} */}

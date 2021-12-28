@@ -52,6 +52,7 @@ $primary-color: rgba(244, 129, 31, 1);
         .store-avgSstar-block {
             display: flex;
             flex-direction: row;
+            align-items: center;
             .store-avgSstar {
                 font-size: 22px;
                 font-family: PingFangSC-Regular, PingFang SC;
@@ -178,8 +179,22 @@ $primary-color: rgba(244, 129, 31, 1);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;
     .sp-shop-coupon {
         margin: 0 10px 10px 0;
+    }
+    .get-coupon {
+        font-size: 25px;
+        line-height: 42px;
+        padding-right: 20px;
+    }
+    .icon-right {
+        font-size: 30px;
+        position: absolute;
+        right: 20px;
+    }
+    .coupon-index {
+        margin:0 10px 0 0;
     }
 }
 .sp-shop-fullReduction {

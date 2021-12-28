@@ -15,10 +15,9 @@ import {
   SpNavBar
 } from '@/components'
 import api from '@/api'
-import { pickBy, classNames, getCurrentRoute } from '@/utils'
+import { pickBy, classNames, getCurrentRoute,getBrowserEnv } from '@/utils'
 
 import './list.scss'
-
 @connect(({ user }) => ({
   favs: user.favs,
 }))
@@ -506,11 +505,16 @@ export default class List extends Component {
       isShowSearch,
       query,
     } = this.state;
-
+    console.log('getBrowserEnv().weixin==',getBrowserEnv().weixin)
     return (
       <View className="page-goods-list">
         <SpNavBar title="商品列表" leftIconType="chevron-left" fixed="true" />
-        <View className="goods-list__toolbar">
+        <View
+          className={classNames(
+            'goods-list__toolbar',
+            getBrowserEnv().weixin ? 'goods-list__toolbar__wx' : null
+          )}
+        >
           <View
             className={`goods-list__search ${
               query && query.keywords && !isShowSearch ? "on-search" : null
@@ -618,7 +622,8 @@ export default class List extends Component {
         <ScrollView
           className={classNames(
             "goods-list__scroll",
-            tagsList.length > 0 && "with-tag-bar"
+            (tagsList.length > 0 && !getBrowserEnv().weixin) && "with-tag-bar",
+            (tagsList.length > 0 && getBrowserEnv().weixin) && "with-tag-bar-wx"
           )}
           scrollY
           scrollTop={scrollTop}

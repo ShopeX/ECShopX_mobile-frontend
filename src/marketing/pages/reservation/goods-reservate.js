@@ -314,6 +314,10 @@ export default class GoodsReservate extends Component {
     } = this.state
     // let new_activity_info = JSON.parse(cur_activity_info)
     const { formdata } = cur_activity_info || {}
+
+    if ( !formdata ) {
+      return null
+    }
     console.log(formdata, 255)
     return (
       <View className='goods-reservate'>

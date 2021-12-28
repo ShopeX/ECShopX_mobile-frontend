@@ -68,11 +68,11 @@ function WgtGoodsGridTab(props) {
                         key={`goods-item__${index}`}
                       >
                         <SpGoodsItem info={data} />
-                        {config.brand && (
+                        {/* {config.brand && (
                           <View className="brand-info">
                             <SpImage src={data.brand} />
                           </View>
-                        )}
+                        )} */}
                       </View>
                     );
                   })}

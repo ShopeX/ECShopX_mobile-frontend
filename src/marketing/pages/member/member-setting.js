@@ -2,7 +2,7 @@ import React, { Component } from 'react';
  import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Button } from '@tarojs/components'
 import req from '@/api/req'
-import { SpCell, SpNavBar } from '@/components'
+import { SpPage, SpCell, SpNavBar } from '@/components'
 import S from '@/spx'
 import { goToPage, isWeb } from '@/utils'
 import { connect } from 'react-redux'
@@ -133,7 +133,7 @@ export default class SettingIndex extends Component {
     const { visible, content, title, confirmBtnContent } = this.state
     const { colors } = this.props
     return (
-      <View className='member-setting'>
+      <SpPage className='member-setting'>
         <SpNavBar title='设置' />
         <View className='member-setting-section'>
           <SpCell title='个人信息' isLink onClick={this.handleClickInfo.bind(this)}></SpCell>
@@ -171,7 +171,7 @@ export default class SettingIndex extends Component {
           confirmBtn={confirmBtnContent}
           onCancel={this.handCancel}
         />
-      </View>
+      </SpPage>
     )
   }
 }

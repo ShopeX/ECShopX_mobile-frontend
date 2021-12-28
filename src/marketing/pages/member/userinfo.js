@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
  import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { Input, View, Picker, Image } from '@tarojs/components'
-import { SpNavBar, SpCheckbox, SpFloatPrivacy } from '@/components'
+import { SpPage, SpNavBar, SpCheckbox, SpFloatPrivacy } from "@/components";
 import api from '@/api'
 import { connect } from 'react-redux'
 import S from '@/spx'
@@ -292,7 +292,7 @@ export default class UserInfo extends Component {
     }
 
     return (
-      <View className='page-member-setting' style={styleNames(getThemeStyle())}>
+      <SpPage className='page-member-setting'>
         <SpNavBar title='用户信息' />
         <View className='baseInfo'>
           <View className='item'>
@@ -468,7 +468,7 @@ export default class UserInfo extends Component {
           }
           onChange={this.privacyOnChange.bind(this)}
         /> */}
-      </View>
+      </SpPage>
     )
   }
 }

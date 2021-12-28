@@ -50,6 +50,9 @@
           height: 84px;
         }
       }
+      &__wx{
+        top:0;
+      }
     }
     &__tabs {
       display: flex;
@@ -87,6 +90,12 @@
         $tabs-height + $searchbar-height + $navigate-height-h5 + 8,
         $tabbar-height
       );
+      &.with-tag-bar-wx {
+        @include page-scroll(
+        $tabs-height + $searchbar-height + $navigate-height-h5,
+        $tabbar-height
+      );
+      }
       /*  #endif  */
       &.with-tag-bar {
         @include page-scroll(

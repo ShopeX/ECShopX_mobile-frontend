@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { View, Text, ScrollView } from "@tarojs/components";
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { connect } from "react-redux";
 import { useImmer } from "use-immer";
 import { withPager, withBackToTop } from "@/hocs";
@@ -22,12 +22,12 @@ import {
   SpPage,
   SpScrollView,
   SpDrawer,
-  SpSelect,
+  SpSelect
 } from "@/components";
 import doc from "@/doc";
 import api from "@/api";
 import { pickBy, classNames, isWeixin, isWeb } from "@/utils";
-import { Tracker } from '@/service'
+import { Tracker } from "@/service";
 
 import "./list.scss";
 
@@ -40,16 +40,17 @@ const initialState = {
     { title: "综合" },
     { title: "销量" },
     { title: "价格", icon: "icon-shengxu-01" },
-    { title: "价格", icon: "icon-jiangxu-01" },
+    { title: "价格", icon: "icon-jiangxu-01" }
   ],
   curFilterIdx: 0,
   tagList: [],
   curTagIdx: 0,
   keywords: "",
-  show: false,
+  show: false
 };
 
 function ItemList(props) {
+  const $instance = getCurrentInstance();
   const [state, setState] = useImmer(initialState);
   const {
     keywords,
@@ -61,32 +62,32 @@ function ItemList(props) {
     filterList,
     tagList,
     curTagIdx,
-    show,
+    show
   } = state;
-  const [isShowSearch, setIsShowSearch] = useState(false)
+  const [isShowSearch, setIsShowSearch] = useState(false);
   const goodsRef = useRef();
 
   useEffect(() => {}, []);
 
-  const fetch = async ( { pageIndex, pageSize } ) => {
-  
+  const fetch = async ({ pageIndex, pageSize }) => {
+    const { cat_id } = $instance.router.params;
     let params = {
       page: pageIndex,
       pageSize,
-      brand_id: brandSelect.map( ( item ) => item.id ).toString(),
+      brand_id: brandSelect.toString(),
       keywords: keywords,
-      approve_status: 'onsale,only_show',
-      item_type: 'normal',
-      is_point: 'false',
+      approve_status: "onsale,only_show",
+      item_type: "normal",
+      is_point: "false"
     };
 
-    if ( curFilterIdx == 1 ) {
+    if (curFilterIdx == 1) {
       // 销量
       params["goodsSort"] = 1;
-    } else if ( curFilterIdx == 2 ) {
+    } else if (curFilterIdx == 2) {
       // 价格升序
       params["goodsSort"] = 3;
-    } else if ( curFilterIdx == 3 ) {
+    } else if (curFilterIdx == 3) {
       // 价格降序
       params["goodsSort"] = 2;
     }
@@ -95,14 +96,18 @@ function ItemList(props) {
       params["tag_id"] = tagList[curTagIdx].tag_id;
     }
 
+    if (cat_id) {
+      params["category"] = cat_id;
+    }
+
     const {
       list,
       total_count,
       item_params_list = [],
       select_tags_list = [],
-      brand_list,
+      brand_list
     } = await api.item.search(params);
-    const n_list = pickBy( list, doc.goods.ITEM_LIST_GOODS );
+    const n_list = pickBy(list, doc.goods.ITEM_LIST_GOODS);
     const resLeftList = n_list.filter((item, index) => {
       if (index % 2 == 0) {
         return item;
@@ -114,17 +119,17 @@ function ItemList(props) {
       }
     });
 
-    setState((v) => {
+    setState(v => {
       v.leftList = [...v.leftList, ...resLeftList];
       v.rightList = [...v.rightList, ...resRightList];
-      v.brandList = pickBy( brand_list?.list, doc.goods.WGT_GOODS_BRAND );
-      if ( select_tags_list.length > 0 ) {
+      v.brandList = pickBy(brand_list?.list, doc.goods.WGT_GOODS_BRAND);
+      if (select_tags_list.length > 0) {
         v.tagList = [
           {
             tag_name: "全部",
-            tag_id: 0,
+            tag_id: 0
           }
-        ].concat( select_tags_list );
+        ].concat(select_tags_list);
       }
     });
 
@@ -135,15 +140,15 @@ function ItemList(props) {
     setIsShowSearch(true);
   };
 
-  const handleOnChange = (val) => {
+  const handleOnChange = val => {
     setState(v => {
-      v.keywords = val
-    })
+      v.keywords = val;
+    });
   };
 
-  const handleOnClear = async() => {
+  const handleOnClear = async () => {
     await setState(v => {
-      v.keywords = ''
+      v.keywords = "";
     });
     setIsShowSearch(false);
     goodsRef.current.reset();
@@ -153,28 +158,28 @@ function ItemList(props) {
     setIsShowSearch(false);
   };
 
-  const handleConfirm = async(val) => {
+  const handleConfirm = async val => {
     Tracker.dispatch("SEARCH_RESULT", {
-      keywords: val,
+      keywords: val
     });
     setIsShowSearch(false);
     await setState(v => {
-      v.keywords = val
+      v.keywords = val;
     });
     goodsRef.current.reset();
   };
 
-  const onChangeTag = async (e) => {
-    await setState((draft) => {
+  const onChangeTag = async e => {
+    await setState(draft => {
       draft.leftList = [];
       draft.rightList = [];
       draft.curTagIdx = e;
     });
     goodsRef.current.reset();
-  }
+  };
 
-  const handleFilterChange = async (e) => {
-    await setState((draft) => {
+  const handleFilterChange = async e => {
+    await setState(draft => {
       draft.leftList = [];
       draft.rightList = [];
       draft.curFilterIdx = e.current || 0;
@@ -182,14 +187,14 @@ function ItemList(props) {
     goodsRef.current.reset();
   };
 
-  const onChangeBrand = (val) => {
-    setState((draft) => {
+  const onChangeBrand = val => {
+    setState(draft => {
       draft.brandSelect = val;
     });
   };
 
   const onConfirmBrand = async () => {
-    await setState((draft) => {
+    await setState(draft => {
       draft.leftList = [];
       draft.rightList = [];
       draft.show = false;
@@ -198,7 +203,7 @@ function ItemList(props) {
   };
 
   const onResetBrand = async () => {
-    await setState((draft) => {
+    await setState(draft => {
       draft.brandSelect = [];
       draft.leftList = [];
       draft.rightList = [];
@@ -207,12 +212,12 @@ function ItemList(props) {
     goodsRef.current.reset();
   };
 
-  const handleClickStore = (item) => {
-    const url = `/pages/store/index?id=${item.distributor_info.distributor_id}`
+  const handleClickStore = item => {
+    const url = `/pages/store/index?id=${item.distributor_info.distributor_id}`;
     Taro.navigateTo({
       url
-    })
-  }
+    });
+  };
 
   return (
     <SpPage scrollToTopBtn className={classNames("page-item-list")}>

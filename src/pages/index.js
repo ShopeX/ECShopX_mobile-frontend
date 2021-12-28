@@ -27,7 +27,8 @@ import CompFloatMenu from "./home/comps/comp-floatmenu";
 
 import "./home/index.scss";
 
-const MCompAddTip = React.memo(CompAddTip);
+const MCompAddTip = React.memo( CompAddTip );
+const MSpPrivacyModal = React.memo(SpPrivacyModal);
 
 const initState = {
   wgts: [],
@@ -124,10 +125,7 @@ function Home() {
     filterWgts = wgts;
   }
   return (
-    <SpPage
-      className="page-index"
-      renderFloat={<CompFloatMenu />}
-    >
+    <SpPage className="page-index" renderFloat={<CompFloatMenu />}>
       {/* header-block */}
       <WgtHomeHeader>
         {searchComp && searchComp.config.fixTop && <SpSearch />}
@@ -147,7 +145,7 @@ function Home() {
       {isWeixin && <SpScreenAd />}
 
       {/* 隐私政策 */}
-      <SpPrivacyModal
+      <MSpPrivacyModal
         open={policyModal}
         onCancel={() => {
           setPolicyModal(false);
