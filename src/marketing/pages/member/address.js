@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 // import AddressList from '@/components/new-address/address'
 import { connect } from 'react-redux'
-import { SpToast, SpCell, SpNavBar } from '@/components'
+import { SpToast, SpCell, SpNavBar,SpPage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 
@@ -132,7 +132,8 @@ export default class AddressIndex extends Component {
     const { colors } = this.props
     const { selectedId, isPicker, list, is_open_crmAddress } = this.state
     return (
-      <View className='page-address-index'>
+      <SpPage className='page-address-index'>
+        <View>
         {process.env.TARO_ENV === 'weapp' ? (
           <SpCell
             isLink
@@ -229,6 +230,7 @@ export default class AddressIndex extends Component {
         </View>
         <SpToast />
       </View>
+      </SpPage>
     )
   }
 }

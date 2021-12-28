@@ -45,6 +45,7 @@ function CompHeader(props){
       };
     //品牌介绍
     const brandInfo = () => {}
+    console.log('couponList==',couponList)
     return (
         <View className="comp-header">
             {/* {店铺信息} */}
@@ -64,6 +65,7 @@ function CompHeader(props){
             {/* {优惠券} */}
             {
                 couponList.length>0 && <View className='coupon-block' onClick={handleCouponClick}>
+                {/* <Text>领券</Text> */}
                 {
                     couponList.map((item,index) => (
                         <SpShopCoupon info={item} key={`shop-coupon__${index}`} />
