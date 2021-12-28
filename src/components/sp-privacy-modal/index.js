@@ -50,6 +50,12 @@ function SpPrivacyModal( props ) {
     onCancel()
   }
 
+  const handleClickAgreement = (type) => {
+    Taro.navigateTo({
+      url: '/subpage/pages/auth/reg-rule?type=' + type
+    })
+  }
+
   return (
     <View
       className={classNames("sp-privacy-modal", {

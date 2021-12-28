@@ -313,7 +313,7 @@ export default class GoodsReservate extends Component {
       isShowSubTips
     } = this.state
     // let new_activity_info = JSON.parse(cur_activity_info)
-    const { formdata } = cur_activity_info
+    const { formdata } = cur_activity_info || {}
     console.log(formdata, 255)
     return (
       <View className='goods-reservate'>

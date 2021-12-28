@@ -12,7 +12,7 @@ export default (props = {}) => {
   const [isLogin, setIsLogin] = useState(false)
   const dispatch = useDispatch()
   const { userInfo } = useSelector((state) => state.user)
-  const policyTime = useRef(0)
+  // const policyTime = useRef(0)
 
   useEffect(() => {
     const token = S.getAuthToken()
@@ -66,7 +66,7 @@ export default (props = {}) => {
    */
   const checkPolicyChange = async () => {
     const { update_time } = await api.wx.getPrivacyTime()
-    policyTime.current = update_time
+    // policyTime.current = update_time
     // console.log( Taro.getStorageSync( SG_POLICY_UPDATETIME ) )
     // console.log( update_time )
     // console.log(Taro.getStorageSync(SG_POLICY_UPDATETIME) === update_time)
@@ -80,8 +80,9 @@ export default (props = {}) => {
   /**
    * @function 更新隐私协议同意时间
    */
-  const updatePolicyTime = () => {
-    Taro.setStorageSync(SG_POLICY_UPDATETIME, policyTime.current)
+  const updatePolicyTime = async () => {
+    const { update_time } = await api.wx.getPrivacyTime()
+    Taro.setStorageSync(SG_POLICY_UPDATETIME, update_time)
   }
 
   /**

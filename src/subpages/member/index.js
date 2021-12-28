@@ -305,6 +305,10 @@ function MemberIndex(props) {
             className="usericon"
             src={(userInfo && userInfo.avatar) || "default_user.png"}
             width="110"
+            onClick={handleClickLink.bind(
+              this,
+              "/marketing/pages/member/userinfo"
+              )}
           />
           <View className="header-hd__body">
             <View className="username-wrap">

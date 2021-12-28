@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image } from '@tarojs/components'
-import { SpNavBar } from '@/components'
+import { SpNavBar,SpPage } from '@/components'
 import { withLogin } from '@/hocs'
 import userIcon from '@/assets/imgs/user-icon.png'
 import api from '@/api'
@@ -47,7 +47,8 @@ export default class MemberCode extends Component {
     const { username, avatar } = info.memberInfo
 
     return (
-      <View className='member-code-wrap'>
+      <SpPage>
+        <View className='member-code-wrap'>
         <SpNavBar title='我的二维码' leftIconType='chevron-left' />
         <View className='member-code'>
           <View className='avatar'>
@@ -61,6 +62,7 @@ export default class MemberCode extends Component {
           <View className='muted'>使用时，出示此码</View>
         </View>
       </View>
+      </SpPage>
     )
   }
 }

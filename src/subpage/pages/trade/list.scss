@@ -66,6 +66,12 @@
         );
         /*  #endif  */
       }
+      &.with-tabs-wx {
+        @include page-scroll(
+          $navigate-height-h5,
+          $edge-margin
+        );
+      }
     }
     .trade-cont {
       .more {

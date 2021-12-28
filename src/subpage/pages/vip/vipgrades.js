@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text, ScrollView } from '@tarojs/components'
-import { Price, SpNavBar, SpCell, CouponModal } from '@/components'
+import { Price, SpNavBar, SpCell, CouponModal,SpPage } from '@/components'
 import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
@@ -282,7 +282,8 @@ export default class VipIndex extends Component {
       hfpay: "微信支付",
     };
     return (
-      <View
+      <SpPage>
+        <View
         className={classNames("page-vip-vipgrades", "vipgrades", {
           "has-navbar": isNavbar(),
         })}
@@ -481,6 +482,7 @@ export default class VipIndex extends Component {
           onChange={this.handleCouponChange}
         />
       </View>
+      </SpPage>  
     );
   }
 }
