@@ -61,7 +61,7 @@ function NearlyShop( props ) {
       province: province || chooseProvice,
       city: city || chooseCity,
       area: district || chooseDistrict,
-      type: state.type,
+      type: location.lat ? state.type : 1,
       search_type: state.search_type,
       sort_type: 1
     };
