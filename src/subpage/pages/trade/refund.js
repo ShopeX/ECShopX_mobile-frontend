@@ -6,7 +6,7 @@ import { SpCell, SpToast, SpHtmlContent, SpImgPicker } from '@/components'
 import { connect } from 'react-redux'
 import api from '@/api'
 // import req from '@/api/req'
-// import { Tracker } from '@/service'
+import { Tracker } from '@/service'
 import { pickBy, classNames } from '@/utils'
 import S from '@/spx'
 import imgUploader from '@/utils/upload'
@@ -200,39 +200,40 @@ export default class TradeRefund extends Component {
   }
 
   aftersalesAxios = async () => {
-    this.setState({ isInvalid: false })
+    await this.setState({ isInvalid: false })
+    const { segTypes, curSegIdx, curReasonIdx, description } = this.state
+    const reason = this.state.reason[curReasonIdx]
+    const aftersales_type = segTypes[curSegIdx].status
+    const evidence_pic = this.state.imgs.map(({ url }) => url)
+    const { order_id, aftersales_bn, deliverData } = this.$instance.router.params
+    let detail = deliverData
+    const data = {
+      detail,
+      order_id,
+      aftersales_bn,
+      aftersales_type,
+      reason,
+      description,
+      evidence_pic
+    }
+
+    // console.log(data, 244)
+    const method = aftersales_bn ? 'modify' : 'apply'
+    await api.aftersales[method](data)
+
+    // 退款退货
+    const { orderInfo } = await api.trade.detail(order_id)
+    Tracker.dispatch('ORDER_REFUND', orderInfo)
+
     try {
-      const { segTypes, curSegIdx, curReasonIdx, description } = this.state
-      const reason = this.state.reason[curReasonIdx]
-      const aftersales_type = segTypes[curSegIdx].status
-      const evidence_pic = this.state.imgs.map(({ url }) => url)
-      const { order_id, aftersales_bn, deliverData } = this.$instance.router.params
-      let detail = deliverData
-      const data = {
-        detail,
-        order_id,
-        aftersales_bn,
-        aftersales_type,
-        reason,
-        description,
-        evidence_pic
-      }
-
-      // console.log(data, 244)
-      const method = aftersales_bn ? 'modify' : 'apply'
-      await api.aftersales[method](data)
-
-      // 退款退货
-      const { orderInfo } = await api.trade.detail(order_id)
-      Tracker.dispatch('ORDER_REFUND', orderInfo)
-
       S.toast('操作成功')
       setTimeout(() => {
-        this.setState({ isInvalid: true })
         Taro.redirectTo({
           url: `/subpage/pages/trade/detail?id=${order_id}`
         })
-      }, 700)
+
+        this.setState({ isInvalid: true })
+      }, 100)
     } catch (e) {
       this.setState({ isInvalid: true })
     }
