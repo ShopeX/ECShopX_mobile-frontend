@@ -7,33 +7,8 @@ import "./index.scss";
 function SpTagBar(props) {
   const { list, value, children, onChange = () => {} } = props;
 
-  const [ plus, setPlus ] = useState(true)
-
   const isChecked = (item)=>{
-    return item.value === value || item.plusValue === value || item.minusValue === value;
-  }
-
-  const handleClickLabel = (item) => {
-    const sortFunc = (item) => {
-      if(item.value || item.value == 0 ){
-        res = item.value
-      } else {
-        if (plus) {
-          res = item.minusValue
-        } else {
-          res = item.plusValue
-        }
-      } 
-    }
-    let res = 0
-    //如果是选中的
-    if (isChecked(item)) {
-      sortFunc(item)
-    } else {
-      sortFunc(item)
-    }
-    setPlus(!plus)
-    onChange(res)
+    return value == item.tag_id || value == item.value ||  value == item.plusValue || value == item.minusValue
   }
 
   return (
@@ -46,7 +21,7 @@ function SpTagBar(props) {
                 active: isChecked(item)
               })}
               onClick={() => {
-                handleClickLabel(item)
+                onChange(index, item);
               }}
               key={`tag-item__${item.tag_id}`}
             >
