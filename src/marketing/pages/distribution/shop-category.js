@@ -181,10 +181,13 @@ export default class DistributionShopCategory extends Component {
 
       const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
-        if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
-          Taro.navigateTo({ url })
+        if (
+          !urlRedirect ||
+          (url === "/subpages/member/index" && !S.getAuthToken())
+        ) {
+          Taro.navigateTo({ url });
         } else {
-          Taro.redirectTo({ url })
+          Taro.redirectTo({ url });
         }
       }
     }

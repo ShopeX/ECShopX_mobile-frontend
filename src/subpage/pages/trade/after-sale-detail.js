@@ -475,7 +475,7 @@ export default class TradeDetail extends Component {
               () => {
                 setTimeout(() => {
                   Taro.redirectTo({
-                    url: '/pages/member/index'
+                    url: '/subpages/member/index'
                   })
                 }, 700)
               }

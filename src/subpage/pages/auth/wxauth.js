@@ -111,9 +111,9 @@ export default class WxAuth extends Component {
     } else if (source === 'loginout') {
       redirect_url = '/marketing/pages/member/userinfo'
     } else {
-      redirect_url = redirect ? decodeURIComponent(redirect) : '/pages/member/index'
+      redirect_url = redirect ? decodeURIComponent(redirect) : '/subpages/member/index'
     }
-    if (redirect_url === '/pages/member/index') {
+    if (redirect_url === '/subpages/member/index') {
       Taro.navigateBack()
     } else {
       Taro.redirectTo({

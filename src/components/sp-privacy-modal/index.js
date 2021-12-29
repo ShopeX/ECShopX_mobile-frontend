@@ -20,9 +20,11 @@ function SpPrivacyModal( props ) {
   const { login, updatePolicyTime, getUserInfoAuth } = useLogin()
   const { open = false, onCancel = () => {}, onConfirm = () => {} } = props
   const [info, setInfo] = useImmer(initState)
-  useEffect(() => {
-    fetchPrivacyData()
-  }, [] )
+  useEffect( () => {
+    if ( open ) {
+      fetchPrivacyData();
+    } 
+  }, [open] )
   
   const fetchPrivacyData = async () => {
     const { logo, protocol } = await api.shop.getStoreBaseInfo()

@@ -59,8 +59,11 @@
         }
         &-rg {
           .iconfont {
-            font-size: 44px;
+            font-size: 40px;
             color: #666;
+          }
+          .icon-shoucanghover-01 {
+            color: var(--color-primary);
           }
         }
       }

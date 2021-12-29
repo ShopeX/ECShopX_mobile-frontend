@@ -1,17 +1,21 @@
 import React, { Component } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Text, Image } from "@tarojs/components";
 import { SpImage, SpPoint, SpPrice } from "@/components";
+import { fetchUserFavs, addUserFav, deleteUserFav } from "@/store/slices/user";
 import qs from "qs";
 import api from "@/api";
-import { connect } from "react-redux";
+import S from "@/spx";
 
-import { isObject, classNames } from "@/utils";
+import { isObject, classNames, showToast } from "@/utils";
 import { PROMOTION_TAG } from "@/consts";
 
 import "./index.scss";
 
-function SpGoodsItem(props) {
+function SpGoodsItem( props ) {
+  const dispatch = useDispatch();
+  const { favs } = useSelector(state => state.user);
   const {
     onClick = () => {},
     onStoreClick = () => {},
@@ -23,20 +27,24 @@ function SpGoodsItem(props) {
     isPointitem = false,
     renderFooter = null
   } = props;
+  
+
 
   const handleFavClick = async () => {
-    const { itemId, is_fav } = this.props.info;
-    if (!is_fav) {
-      const favRes = await api.member.addFav(itemId);
-      this.props.onAddFav(favRes);
-    } else {
-      await api.member.delFav(itemId);
-      this.props.onDelFav(this.props.info);
+    if ( !S.getAuthToken() ) {
+      showToast( "请先登录" );
+      return
     }
-    Taro.showToast({
-      title: is_fav ? "已移出收藏" : "已加入收藏",
-      mask: true
-    });
+
+    const { itemId, is_fav } = info;
+    const fav = favs.findIndex(item => item.item_id == itemId) > -1;
+    if (!fav) {
+      await dispatch(addUserFav(itemId));
+    } else {
+      await dispatch(deleteUserFav(itemId));
+    }
+    await dispatch(fetchUserFavs())
+    showToast(fav ? "已移出收藏" : "已加入收藏");
   };
 
   const handleClick = () => {
@@ -58,6 +66,8 @@ function SpGoodsItem(props) {
     return null;
   }
 
+  // console.log( "favs:", favs );
+  const isFaved = favs.findIndex(item => item.item_id == info.itemId) > -1;
   return (
     <View className={classNames("sp-goods-item")}>
       <View className="goods-item__hd" onClick={handleClick.bind(this)}>
@@ -114,13 +124,12 @@ function SpGoodsItem(props) {
           } */}
           {showFav && (
             <View className="bd-block-rg">
-              <View
+              <Text
                 className={classNames(
                   "iconfont",
-                  info.is_fav ? "icon-star_on" : "icon-star"
+                  isFaved ? "icon-shoucanghover-01" : "icon-shoucang-01"
                 )}
                 onClick={handleFavClick}
-                style={info.is_fav ? { color: colors.data[0].primary } : {}}
               />
             </View>
           )}

@@ -1,5 +1,3 @@
-@import "@/style/imports";
-
 .goods-buy-toolbar {
   background: #fff;
   height: $toolbar-height;
@@ -105,5 +103,8 @@
   .form-id-collector {
     flex: 1;
     overflow: hidden;
+  }
+  .icon-shoucanghover-01 {
+    color: var(--color-primary);
   }
 }

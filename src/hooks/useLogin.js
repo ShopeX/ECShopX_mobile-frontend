@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateUserInfo } from '@/store/slices/user'
+import { updateUserInfo, fetchUserFavs } from "@/store/slices/user";
 import api from '@/api'
 import { isWeixin, showToast } from '@/utils'
 import S from '@/spx'
@@ -16,7 +16,7 @@ export default (props = {}) => {
 
   useEffect(() => {
     const token = S.getAuthToken()
-    if (!token) {
+    if ( !token ) {
       autoLogin && login()
     } else {
       setIsLogin( true )
@@ -51,6 +51,7 @@ export default (props = {}) => {
     S.setAuthToken(token)
     setIsLogin(true)
     getUserInfo()
+    dispatch(fetchUserFavs());
   }
 
   const getUserInfo = async (refresh) => {

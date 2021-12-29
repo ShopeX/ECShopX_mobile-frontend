@@ -171,7 +171,7 @@ export default class Reg extends Component {
       S.toast('注册成功')
       setTimeout(() => {
         Taro.redirectTo({
-          url: '/pages/member/index'
+          url: '/subpages/member/index'
         })
       }, 700)
     } catch (error) {

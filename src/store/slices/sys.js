@@ -40,7 +40,7 @@ const initialState = {
       {
         iconPath: '',
         name: 'home',
-        pagePath: '/pages/member/index',
+        pagePath: '/subpages/member/index',
         selectedIconPath: '',
         text: '我的'
       }

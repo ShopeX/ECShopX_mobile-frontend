@@ -77,36 +77,36 @@ export default class TabBar extends Component {
     } else {
       list = [
         {
-          title: '首页',
-          iconType: 'home',
-          iconPrefixClass: 'iconfont icon',
-          url: '/pages/index',
+          title: "首页",
+          iconType: "home",
+          iconPrefixClass: "iconfont icon",
+          url: "/pages/index",
           urlRedirect: true
         },
         {
-          title: '分类',
-          iconType: 'category',
-          iconPrefixClass: 'iconfont icon',
-          url: '/pages/category/index',
+          title: "分类",
+          iconType: "category",
+          iconPrefixClass: "iconfont icon",
+          url: "/pages/category/index",
           urlRedirect: true
         },
         {
-          title: '购物车',
-          iconType: 'cart',
-          iconPrefixClass: 'iconfont icon',
-          url: '/pages/cart/espier-index',
-          text: this.cartCount || '',
-          max: '99',
+          title: "购物车",
+          iconType: "cart",
+          iconPrefixClass: "iconfont icon",
+          url: "/pages/cart/espier-index",
+          text: this.cartCount || "",
+          max: "99",
           urlRedirect: true
         },
         {
-          title: '我的',
-          iconType: 'member',
-          iconPrefixClass: 'iconfont icon',
-          url: '/pages/member/index',
+          title: "我的",
+          iconType: "member",
+          iconPrefixClass: "iconfont icon",
+          url: "/subpages/member/index",
           urlRedirect: true
         }
-      ]
+      ];
     }
 
     this.setState(
@@ -187,12 +187,12 @@ export default class TabBar extends Component {
         })
       }
       if (url && fullPath !== url) {
-        // if (!urlRedirect || (url === '/pages/member/index' && !S.getAuthToken())) {
-        //   Taro.navigateTo({ url })
-        // } else {
-        Taro.redirectTo({ url })
-        // }
-      }
+                                     // if (!urlRedirect || (url === '/subpages/member/index' && !S.getAuthToken())) {
+                                     //   Taro.navigateTo({ url })
+                                     // } else {
+                                     Taro.redirectTo({ url });
+                                     // }
+                                   }
     }
   }
 

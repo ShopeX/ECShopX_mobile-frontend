@@ -6,6 +6,7 @@ import configStore from "@/store";
 import api from "@/api";
 // import { Tracker } from "@/service";
 // import { youshuLogin } from '@/utils/youshu'
+import { fetchUserFavs } from "@/store/slices/user";
 import { DEFAULT_TABS, DEFAULT_THEME } from "@/consts";
 import { SG_APP_CONFIG, SG_MEIQIA, SG_YIQIA } from '@/consts'
 import { checkAppVersion, isWeixin } from '@/utils'
@@ -22,19 +23,8 @@ const store = configStore();
 class App extends Component {
   componentWillMount() {
     this.getSystemConfig()
-    // if (S.getAuthToken() ) {
-    //   api.member
-    //     .favsList()
-    //     .then(({ list }) => {
-    //       if (!list) return;
-    //       store.dispatch({
-    //         type: "member/favs",
-    //         payload: list
-    //       });
-    //     })
-    //     .catch(e => {
-    //       console.info(e);
-    //     });
+    // if ( S.getAuthToken() ) {
+    //   store.dispatch(fetchUserFavs());
     // }
   }
 

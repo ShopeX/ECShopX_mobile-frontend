@@ -118,7 +118,7 @@ class API {
     this.isRefreshingToken = false
     S.logout()
     setTimeout(() => {
-      Taro.redirectTo({ url: '/pages/member/index' })
+      Taro.redirectTo({ url: "/subpages/member/index" });
     }, 300)
   }
 

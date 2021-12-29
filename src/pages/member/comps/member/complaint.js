@@ -86,7 +86,7 @@ export default class Complaint extends Component {
     })
 
     Taro.redirectTo({
-      url: '/pages/member/index'
+      url: '/subpages/member/index'
     })
   }
 

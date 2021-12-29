@@ -297,7 +297,7 @@ function MemberIndex(props) {
       <View
         className="header-block"
         style={styleNames({
-          "background-image": `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`,
+          "background-image": `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`
         })}
       >
         <View className="header-hd">
@@ -308,7 +308,7 @@ function MemberIndex(props) {
             onClick={handleClickLink.bind(
               this,
               "/marketing/pages/member/userinfo"
-              )}
+            )}
           />
           <View className="header-hd__body">
             <View className="username-wrap">
@@ -433,21 +433,6 @@ function MemberIndex(props) {
               className="order-item"
               onClick={handleClickLink.bind(
                 this,
-                "/subpage/pages/trade/list?status=3"
-              )}
-            >
-              <SpImage src="daifahuo.png" className="icon-style" />
-              {state.waitSendNum > 0 && (
-                <View className="order-bradge">
-                  <Text>{state.waitSendNum}</Text>
-                </View>
-              )}
-              <Text className="order-txt">待发货</Text>
-            </View>
-            <View
-              className="order-item"
-              onClick={handleClickLink.bind(
-                this,
                 "/subpage/pages/trade/list?status=1"
               )}
             >
@@ -458,6 +443,21 @@ function MemberIndex(props) {
                 </View>
               )}
               <Text className="order-txt">待收货</Text>
+            </View>
+            <View
+              className="order-item"
+              onClick={handleClickLink.bind(
+                this,
+                "/subpage/pages/trade/list?status=3"
+              )}
+            >
+              <SpImage src="daifahuo.png" className="icon-style" />
+              {state.waitSendNum > 0 && (
+                <View className="order-bradge">
+                  <Text>{state.waitSendNum}</Text>
+                </View>
+              )}
+              <Text className="order-txt">已完成</Text>
             </View>
             <View
               className="order-item"
@@ -491,7 +491,7 @@ function MemberIndex(props) {
           <CompMenu
             accessMenu={{
               ...config.menu,
-              popularize: userInfo ? userInfo.popularize : false,
+              popularize: userInfo ? userInfo.popularize : false
             }}
             isPromoter={userInfo ? userInfo.isPromoter : false}
             onLink={handleClickService}

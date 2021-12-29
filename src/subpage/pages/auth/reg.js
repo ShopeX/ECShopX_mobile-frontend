@@ -255,8 +255,8 @@ export default class Reg extends Component {
               })
             } else {
               Taro.redirectTo({
-                url: '/pages/member/index'
-              })
+                url: "/subpages/member/index"
+              });
             }
           }
         }, 700)
