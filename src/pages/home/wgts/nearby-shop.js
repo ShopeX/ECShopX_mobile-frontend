@@ -10,8 +10,7 @@ import "./nearby-shop.scss";
 
 const initialState = {
   activeIndex: 0,
-  shopList: [],
-  tags: []
+  shopList: []
 }
 
 function WgtNearbyShop( props ) {
@@ -44,7 +43,6 @@ function WgtNearbyShop( props ) {
     
     setState( v => {
       v.shopList = list;
-      v.tags = tagList;
     })
   };
 
@@ -81,7 +79,7 @@ function WgtNearbyShop( props ) {
 
       <View className="nearby_shop_wrap">
         <ScrollView className="scroll-tab" scrollX>
-          {state.tags.map((item, index) => (
+          {seletedTags.map((item, index) => (
             <View
               className={classNames(`tag`, {
                 active: state.activeIndex == index,
@@ -128,7 +126,7 @@ function WgtNearbyShop( props ) {
                       className={classNames(
                         "sp-shop-coupon",
                       )}
-                     >
+                    >
                       <View className='coupon-wrap'>
                         <Text className="coupon-text">{item.discountCardList[0].title}</Text>
                       </View>
@@ -139,6 +137,11 @@ function WgtNearbyShop( props ) {
             </View>
           ))}
         </ScrollView>
+        {/* <View className='no_shop_content'>
+          <Image mode='widthFix' className='no_shop_img' src={`${process.env.APP_IMAGE_CDN}/empty_data.png`}></Image>
+          <View className='tips'>更多商家接入中，敬请期待</View>
+        </View> */}
+        
       </View>
     </View>
   );

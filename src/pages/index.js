@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import Taro, {
   useShareAppMessage,
   useShareTimeline,
+  useDidShow,
 } from "@tarojs/taro";
 import { View, Image } from "@tarojs/components";
 import { useSelector, useDispatch } from "react-redux";
@@ -52,11 +53,17 @@ function Home() {
 
   const dispatch = useDispatch();
 
-  useEffect( () => {
+  // useEffect( () => {
+  //   fetchWgts();
+  //   fetchLikeList();
+  //   fetchShareInfo()
+  // }, []);
+
+  useDidShow(() => {
     fetchWgts();
     fetchLikeList();
     fetchShareInfo()
-  }, []);
+  })
 
   const fetchWgts = async () => {
     const { config } = await api.shop.getShopTemplate({

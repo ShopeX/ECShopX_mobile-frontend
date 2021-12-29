@@ -166,4 +166,19 @@
       }
     }
   }
+  .no_shop_content {
+    width: 90vw;
+    display: flex;
+    margin: 10px auto 0;
+    .no_shop_img {
+      width: 400px !important;
+      overflow: hidden;
+      max-height: 300px;
+    }
+    .tips {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 30px;
+    }
+  }
 }
