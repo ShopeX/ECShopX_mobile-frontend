@@ -40,21 +40,37 @@ function SpScrollView(props, ref) {
       }, 0);
     }
 
-    if (isWeb) {
-      observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            setLoading(false);
-            observer.unobserve(entry.target);
+    if ( isWeb ) {
+      observer = new IntersectionObserver(
+        res => {
+          const { isIntersecting } = res[0];
+          if ( isIntersecting ) {
+            if (page.hasMore && !page.loading) {
+              nextPage();
+            }
           }
-          if (page.hasMore && !page.loading) {
-            nextPage();
-          }
-        });
-      });
-      console.log('wrapRef',wrapRef)
-      // observer.observe(ref.current);
-      observer.observe(wrapRef.current);
+        },
+        {
+          // root: document.querySelector(".home-wgts"),
+          // threshold: [0, 0.8]
+        }
+      );
+      observer.observe(document.querySelector(".scrollview-bottom"));
+      // this.observe = observer;
+      // observer = new IntersectionObserver((entries, observer) => {
+      //   entries.forEach((entry) => {
+      //     if (!entry.isIntersecting) {
+      //       setLoading(false);
+      //       observer.unobserve(entry.target);
+      //     }
+      //     if (page.hasMore && !page.loading) {
+      //       nextPage();
+      //     }
+      //   });
+      // });
+      // console.log('wrapRef',wrapRef)
+      // // observer.observe(ref.current);
+      // observer.observe(wrapRef.current);
     }
 
     return () => {

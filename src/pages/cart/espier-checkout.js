@@ -164,8 +164,8 @@ export default class CartCheckout extends Component {
         source = 'other_pay'
       }
       Taro.redirectTo({
-        url: `/subpage/pages/auth/wxauth?source=${source}&scene=${params.scene}`
-      })
+        url: `/subpage/pages/auth/wxauth?source=${source}&scene=${this.$instance.router.params.scene}`
+      });
 
       return
     }

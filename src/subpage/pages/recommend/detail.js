@@ -268,7 +268,7 @@ export default class recommendDetail extends Component {
             style={info.isPraise ? `color: ${colors.data[0].primary}` : 'color: inherit'}
             onClick={this.handleClickBar.bind(this, 'like')}
           >
-            <Text className='icon-like'> </Text>
+            <Text className='iconfont icon-like'> </Text>
             <Text>
               {info.isPraise ? '已赞' : '点赞'} ·{' '}
               {info.articlePraiseNum.count ? info.articlePraiseNum.count : 0}

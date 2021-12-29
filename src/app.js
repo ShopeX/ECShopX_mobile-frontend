@@ -9,7 +9,7 @@ import api from "@/api";
 import { fetchUserFavs } from "@/store/slices/user";
 import { DEFAULT_TABS, DEFAULT_THEME } from "@/consts";
 import { SG_APP_CONFIG, SG_MEIQIA, SG_YIQIA } from '@/consts'
-import { checkAppVersion, isWeixin } from '@/utils'
+import { checkAppVersion, isWeixin, isNavbar } from '@/utils'
 
 import "./app.scss";
 
@@ -35,7 +35,22 @@ class App extends Component {
   }
 
   componentDidShow(options) {
-
+    if (isNavbar()) {
+      document.querySelector("title").addEventListener(
+        "DOMSubtreeModified",
+        () => {
+          const pageTitle = document.querySelector("title").innerHTML;
+          console.log("document title:", pageTitle);
+          store.dispatch({
+            type: "sys/updatePageTitle",
+            payload: {
+              pageTitle
+            }
+          });
+        },
+        false
+      );
+    }
   }
 
   async getSystemConfig() {

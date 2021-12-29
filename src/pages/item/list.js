@@ -74,7 +74,7 @@ function ItemList(props) {
     let params = {
       page: pageIndex,
       pageSize,
-      brand_id: brandSelect.toString(),
+      brand_id: brandSelect,
       keywords: keywords,
       approve_status: "onsale,only_show",
       item_type: "normal",
@@ -163,8 +163,10 @@ function ItemList(props) {
       keywords: val
     });
     setIsShowSearch(false);
-    await setState(v => {
-      v.keywords = val;
+    await setState( draft => {
+      draft.leftList = [];
+      draft.rightList = [];
+      draft.keywords = val;
     });
     goodsRef.current.reset();
   };
@@ -239,7 +241,7 @@ function ItemList(props) {
           value={curTagIdx}
           onChange={onChangeTag}
         >
-          <View
+          {/* <View
             className="filter-btn"
             onClick={() => {
               setState(v => {
@@ -248,7 +250,7 @@ function ItemList(props) {
             }}
           >
             筛选<Text className="iconfont icon-filter"></Text>
-          </View>
+          </View> */}
         </SpTagBar>
         <SpFilterBar
           custom
@@ -284,7 +286,7 @@ function ItemList(props) {
         </View>
       </SpScrollView>
 
-      <SpDrawer
+      {/* <SpDrawer
         show={show}
         onClose={() => {
           setState(v => {
@@ -301,7 +303,7 @@ function ItemList(props) {
           value={brandSelect}
           onChange={onChangeBrand}
         />
-      </SpDrawer>
+      </SpDrawer> */}
     </SpPage>
   );
 }

@@ -1,5 +1,6 @@
 import Taro, { useMemo, memo } from "@tarojs/taro";
 import { View, Text } from "@tarojs/components";
+import mpHtml from './mp-weixin'
 
 
 function SpHtml(props) {
@@ -7,7 +8,7 @@ function SpHtml(props) {
   console.log("content:", content);
   return (
     <View className="sp-html">
-      <mp-html content={content} />
+      <mpHtml content={content} />
     </View>
   );
 }

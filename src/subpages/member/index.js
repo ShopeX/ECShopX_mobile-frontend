@@ -502,9 +502,9 @@ function MemberIndex(props) {
           <CompHelpCenter onLink={handleClickService} />
         </CompPanel>
       </View>
-      <View className="dibiao-block">
+      {/* <View className="dibiao-block">
         <SpImage className="dibiao-image" src="dibiao.png" />
-      </View>
+      </View> */}
 
       {/* 隐私政策 */}
       <SpPrivacyModal

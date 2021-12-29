@@ -74,7 +74,7 @@ export default class ItemFav extends Component {
           break
         case 1:
           res = await api.article.totalCollectArticle(query)
-          list = pickBy(res.lsit, {
+          list = pickBy(res.list, {
             img: 'image_url',
             fav_id: 'fav_id',
             item_id: 'article_id',
@@ -83,7 +83,7 @@ export default class ItemFav extends Component {
             head_portrait: 'head_portrait',
             author: 'author',
             item_type: 'item_type'
-          })
+          } )
           total = res.total_count
           break
         case 2:
@@ -177,20 +177,24 @@ export default class ItemFav extends Component {
   render() {
     const { list, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
     return (
-      <View className='page-goods-fav'>
-        <SpNavBar title='收藏' leftIconType='chevron-left' fixed='true' />
+      <View className="page-goods-fav">
+        <SpNavBar title="收藏" leftIconType="chevron-left" fixed="true" />
         <AtTabs
-          className={`trade-list__tabs ${hasNavbar && 'navbar_padtop'}`}
+          className={`trade-list__tabs ${hasNavbar && "navbar_padtop"}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
         >
           {tabList.map((panes, pIdx) => (
-            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+            <AtTabsPane
+              current={curTabIdx}
+              key={panes.status}
+              index={pIdx}
+            ></AtTabsPane>
           ))}
         </AtTabs>
         <ScrollView
-          className={`goods-list__scroll ${isWxWeb && 'goods_scroll_top'} `}
+          className={`goods-list__scroll ${isWxWeb && "goods_scroll_top"} `}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
@@ -198,41 +202,41 @@ export default class ItemFav extends Component {
           onScrollToLower={this.nextPage}
         >
           {curTabIdx === 0 && (
-            <View className='goods-list goods-list__type-grid'>
-              {list.map((item) => {
+            <View className="goods-list goods-list__type-grid">
+              {list.map(item => {
                 return (
-                  <View className='goods-list__item' key={item.item_id}>
+                  <View className="goods-list__item" key={item.item_id}>
                     <GoodsItem
                       key={item.item_id}
                       info={item}
                       onClick={() => this.handleClickItem(item)}
-                      isPointitem={item.item_type === 'pointsmall'}
+                      isPointitem={item.item_type === "pointsmall"}
                     />
                   </View>
-                )
+                );
               })}
             </View>
           )}
           {curTabIdx === 1 && (
-            <View className='goods-list goods-list__type-grid'>
-              {list.map((item) => {
+            <View className="goods-list goods-list__type-grid">
+              {list.map(item => {
                 return (
-                  <View className='goods-list__item' key={item.item_id}>
+                  <View className="goods-list__item" key={item.item_id}>
                     <RecommendItem
                       key={item.item_id}
                       info={item}
                       onClick={() => this.handleClickItem(item)}
                     />
                   </View>
-                )
+                );
               })}
             </View>
           )}
           {curTabIdx === 2 && (
-            <View className='goods-list'>
-              {list.map((item) => {
+            <View className="goods-list">
+              {list.map(item => {
                 return (
-                  <View className='goods-list__item' key={item.distributor_id}>
+                  <View className="goods-list__item" key={item.distributor_id}>
                     <StoreFavItem
                       key={item.distributor_id}
                       info={item}
@@ -240,18 +244,18 @@ export default class ItemFav extends Component {
                       onCancel={this.handleFavRemoved}
                     />
                   </View>
-                )
+                );
               })}
             </View>
           )}
           {page.isLoading ? <Loading>正在加载...</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img="trades_empty.png">暂无数据~</SpNote>
           )}
         </ScrollView>
 
         <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
       </View>
-    )
+    );
   }
 }

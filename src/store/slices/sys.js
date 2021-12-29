@@ -9,6 +9,7 @@ const initialState = {
   colorAccent: colorAccent,
   rgb: '',
   pointName: DEFAULT_POINT_NAME,
+  pageTitle: '',
   tabbar: {
     config: {
       backgroundColor: '#fff',
@@ -59,6 +60,13 @@ const sysSlice = createSlice({
         ...state,
         ...payload,
         rgb
+      };
+    },
+    updatePageTitle: ( state, { payload } ) => {
+      const { pageTitle } = payload;
+      return {
+        ...state,
+        pageTitle
       };
     }
   }

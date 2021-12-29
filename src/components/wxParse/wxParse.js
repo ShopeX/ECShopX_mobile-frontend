@@ -151,10 +151,12 @@ function emojisInit(reg='',baseSrc="/wxParse/emojis/",emojis){
    HtmlToJson.emojisInit(reg,baseSrc,emojis);
 }
 
-module.exports = {
-  wxParse: wxParse,
-  wxParseTemArray: wxParseTemArray,
-  emojisInit: emojisInit,
-  wxParseImgTap: wxParseImgTap,
-  wxParseImgLoad: wxParseImgLoad
+export default {}
+
+export {
+  wxParse,
+  wxParseTemArray,
+  emojisInit,
+  wxParseImgTap,
+  wxParseImgLoad
 }

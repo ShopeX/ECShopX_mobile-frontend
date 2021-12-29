@@ -233,7 +233,7 @@ export default class GoodsItem extends Component {
                     />
                   )}
                   {type === 'recommend' && (
-                    <View className='icon-like' onClick={this.handleLikeClick}>
+                    <View className='iconfont icon-like' onClick={this.handleLikeClick}>
                       <Text>666</Text>
                     </View>
                   )}
