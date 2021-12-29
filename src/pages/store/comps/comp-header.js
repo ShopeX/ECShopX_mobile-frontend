@@ -8,7 +8,7 @@ import { SpShopCoupon,SpShopFullReduction } from '@/components'
 import { useLogin } from '@/hooks'
 
 function CompHeader(props){
-    const { info, couponList = [], fullReduction = [{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"}] } = props
+    const { info, couponList = [], fullReduction = [{promotion_tag:"满减",marketing_name:"好物狂欢节享满199减30"},{promotion_tag:"满减",marketing_name:"好物狂欢节享满199减30"}] } = props
     const { brand = '', name = '', scoreList = {}} = info
     const [showMore, setShowMore] = useState(false)
     const [fav, setFav] = useState(false)

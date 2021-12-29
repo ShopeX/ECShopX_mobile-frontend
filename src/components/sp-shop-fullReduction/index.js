@@ -6,13 +6,13 @@ import { classNames, JumpStoreIndex, JumpGoodDetail } from "@/utils";
 
 function SpShopFullReduction(props){
     const { info,status,count = 0, handeChange,showMoreIcon } = props
-    const {label, text} = info
+    const {promotion_tag, marketing_name} = info
     return (
         <View className={classNames(
             "sp-shop-fullReduction",
           )}>
-            <View className='label-style'>{label}</View>
-            <Text className='text-style'>{text}</Text>
+            <View className='label-style'>{promotion_tag}</View>
+            <Text className='text-style'>{marketing_name}</Text>
             {
                 showMoreIcon && <View className='pick-down' onClick={() => handeChange(!status)}>{count}种优惠
                     <Image

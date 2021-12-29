@@ -20,5 +20,9 @@
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: #999999;
+        width: 300px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 }

@@ -416,7 +416,7 @@ export default class DistributionDashboard extends Component {
               open-type='navigateTo'
               url={`/marketing/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}&point=${info.taskBrokerageItemTotalPoint}`}
             >
-              <View className='item-icon icon-shop icon-fontsize'></View>
+              <View className='iconfont item-icon icon-shop icon-fontsize'></View>
               <View className='list-item-txt'>我的小店</View>
               <View className='iconfont icon-arrowRight icon-right'></View>
             </Navigator>
