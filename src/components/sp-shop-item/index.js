@@ -11,9 +11,14 @@ function SpShopItem(props) {
   if (!info) {
     return null;
   }
-  const { logo, name, cardList, salesCount, fullReduction, distance, is_dada, scoreList, marketingActivityList  } = info;
+  const { logo, name, cardList, salesCount, distance, is_dada, scoreList, marketingActivityList  } = info;
   const rate = !!(scoreList || {}).avg_star ? <Text>评分：{(scoreList || {}).avg_star}</Text> : '';
-
+  const [unfold, setUnfold] = useState(false)
+  const [showActivity, setShowActivity] = useState(false)
+  const showMore = (e) => {
+    e.stopPropagation()
+    setUnfold(!unfold)
+  }
   return (
     <View className={classNames("sp-shop-item", className)} onClick={jumpToBusiness}>
       <View className="shop-item-hd">
@@ -31,8 +36,27 @@ function SpShopItem(props) {
           {is_dada && <View className="express">达达配送</View>}
         </View>
         <View className="item-bd-bd">
-          {cardList.map((item, index) => (
+          {(unfold ? cardList : cardList.slice(0,3)).map((item, index) => (
             <SpShopCoupon info={item} key={`shop-coupon__${index}`} />
+          ))}
+          {
+            cardList.length > 3 && <Image
+                  src="/assets/imgs/down_icon.png"
+                  className={unfold ? 'down_icon translate' : 'down_icon'}
+                  onClick={showMore}
+              ></Image>
+          }
+        </View>
+        <View className={!showActivity ? 'item-bd-fr' : 'item-bd-fr pick'} onClick={(e) => {e.stopPropagation()}}>
+          {marketingActivityList.map((item, index) => (
+            <SpShopFullReduction 
+              info={item} 
+              key={`shop-full-reduction__${index}`} 
+              showMoreIcon={marketingActivityList.length > 1 && index == 0 }
+              status={showActivity}
+              count={marketingActivityList.length}
+              handeChange={(e) => setShowActivity(e)}
+            />
           ))}
         </View>
         {/* {
@@ -54,12 +78,6 @@ function SpShopItem(props) {
             </View>
           ))
         } */}
-
-        {/* <View className='item-bd-fr'>
-          {fullReduction.map((item, index) => (
-            <SpShopFullReduction info={item} key={`shop-full-reduction__${index}`} />
-          ))}
-        </View> */}
       </View>
     </View>
   );

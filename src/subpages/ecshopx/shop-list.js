@@ -66,30 +66,6 @@ function shopList(props) {
   const [drawer, setDrawer] = useState(false)
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { location } = useSelector( state => state.user )
-
-  // const handleClickFilterLabel = useCallback((item) => {
-  //   setFilterValue(item);
-  // }, []);
-
-  // const handleDrawer = useCallback(
-  //   (flag) => (selectedValue) => {
-  //     setFilterVisible(flag);
-  //     if (!selectedValue.tag && !Array.isArray(selectedValue.tag)) return;
-  //     setTag(selectedValue.tag.length ? selectedValue.tag.join(",") : "");
-  //     const is_ziti = selectedValue.logistics.includes("ziti") ? 1 : undefined;
-  //     const is_delivery = selectedValue.logistics.includes("delivery")
-  //       ? 1
-  //       : undefined;
-  //     const is_dada = selectedValue.logistics.includes("dada") ? 1 : undefined;
-  //     setLogistics({
-  //       is_ziti,
-  //       is_delivery,
-  //       is_dada,
-  //     });
-  //   },
-  //   []
-  // );
-
   const fetch = async ( params ) => {
     const { pageIndex: page, pageSize } = params;
     const query = {

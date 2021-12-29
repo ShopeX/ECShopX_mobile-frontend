@@ -147,8 +147,10 @@ function ItemList(props) {
   };
 
   const handleOnClear = async () => {
-    await setState(v => {
-      v.keywords = "";
+    await setState(draft => {
+      draft.leftList = [];
+      draft.rightList = [];
+      draft.keywords = "";
     });
     setIsShowSearch(false);
     goodsRef.current.reset();

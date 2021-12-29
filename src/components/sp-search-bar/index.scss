@@ -7,7 +7,7 @@
   .at-search-bar {
     padding-left: 20px;
   }
-  &__focus{
+  &__focus {
     height: 100vh;
     z-index: $z-index-dropdown;
     &.without-dialog {
@@ -28,7 +28,7 @@
       font-size: 24px;
       color: #000000;
       display: flex;
-      justify-content:space-between;
+      justify-content: space-between;
       align-items: center;
       padding: 30px 30px 6px 20px;
       .icon-del {
@@ -39,7 +39,7 @@
       font-size: 26px;
       color: #666666;
       display: flex;
-      justify-content:flex-start;
+      justify-content: flex-start;
       flex-wrap: wrap;
       padding-left: 10px;
       &__btn {
@@ -70,6 +70,10 @@
   .sp-search-bar-border {
     border: 1px solid var(--color-primary);
     color: var(--color-primary);
+  }
+
+  .weui-input {
+    height: 100%;
   }
 
   // .hot-title {

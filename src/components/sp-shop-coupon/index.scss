@@ -14,7 +14,7 @@
     left: -18px;
     transform: translateY(-50%);
     /* prettier-ignore */
-    border: 1PX solid rgba(244, 129, 31, 1);
+    border: 1PX solid var(--color-primary);
   }
   &::after {
     content: "";
@@ -28,23 +28,23 @@
     right: -18px;
     transform: translateY(-50%);
     /* prettier-ignore */
-    border: 1PX solid rgba(244, 129, 31, 1);
+    border: 1PX solid var(--color-primary);
   }
   .coupon-wrap {
     /* prettier-ignore */
-    border: 1PX solid rgba(244, 129, 31, 1);
+    border: 1PX solid var(--color-primary);
     border-radius: 4px;
     height: 40px;
     line-height: 38px;
     padding: 0 10px;
   }
   .coupon-text {
-    color: rgba(244, 129, 31, 1);
+    color: var(--color-primary);
     font-size: 22px;
   }
   .coupon-status {
     font-size: 22px;
     margin-left: 4px;
-    color: rgba(244, 129, 31, 1);
+    color: var(--color-primary);
   }
 }

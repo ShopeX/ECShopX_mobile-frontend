@@ -110,7 +110,7 @@ export default class DistributionShop extends Component {
             </View>
           </View>
           <Navigator className='shop-setting' url='/marketing/pages/distribution/shop-setting'>
-            <Text class='icon-settings'></Text>
+            <Text class='iconfont icon-settings'></Text>
           </Navigator>
         </View>
         {info.shop_pic && (
@@ -130,26 +130,28 @@ export default class DistributionShop extends Component {
             <View className='achievement-amount'>{info.point || 0} <Text className='amount-cur'>分</Text> </View>
           </View> */}
         </View>
-        <View className='grid two-in-row'>
+        <View className='shop-block'>
           <View
-            className='grid-item shop-nav-item'
+            className=' shop-nav-item width'
             onClick={this.handleClick.bind(this, 'achievement')}
           >
-            <View className='icon-chart'></View>
+            <View className='iconfont icon-chart iconsize'></View>
             <View>我的业绩</View>
           </View>
-          <View className='grid-item shop-nav-item' onClick={this.handleClick.bind(this, 'goods')}>
-            <View className='icon-errorList'></View>
+          <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'goods')}>
+            <View className='iconfont icon-errorList iconsize'></View>
             <View>任务商品</View>
           </View>
-          <View className='grid-item shop-nav-item' onClick={this.handleClick.bind(this, 'trade')}>
-            <View className='iconfont icon-list1'></View>
+          <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'trade')}>
+            <View className='iconfont icon-list1 iconsize'></View>
             <View>小店订单</View>
           </View>
-          <Button openType='share' className='grid-item shop-nav-item'>
-            <View className='icon-share2'></View>
-            <View>分享小店</View>
-          </Button>
+          <View className=' shop-nav-item width'>
+            <Button openType='share' className='share-btn'>
+              <View className='iconfont icon-share2 iconsize'></View>
+              <View>分享小店</View>
+            </Button>
+          </View>
         </View>
         <View className='preview' onClick={this.handleClick.bind(this, 'miniShop')}>
           <View className='main'>

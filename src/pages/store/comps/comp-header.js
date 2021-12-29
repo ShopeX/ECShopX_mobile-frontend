@@ -8,8 +8,8 @@ import { SpShopCoupon,SpShopFullReduction } from '@/components'
 import { useLogin } from '@/hooks'
 
 function CompHeader(props){
-    const { info, couponList = [], fullReduction = [{label:"满减",text:"好物狂欢节享满199减30"},{label:"满减",text:"好物狂欢节享满199减30"}] } = props
-    const { brand = '', name = '', scoreList = {}} = info
+    const { info, couponList = [] } = props
+    const { brand = '', name = '', scoreList = {}, marketingActivityList=[]} = info
     const [showMore, setShowMore] = useState(false)
     const [fav, setFav] = useState(false)
     const { isLogin } = useLogin({
@@ -45,7 +45,6 @@ function CompHeader(props){
       };
     //品牌介绍
     const brandInfo = () => {}
-    console.log('couponList==',couponList)
     return (
         <View className="comp-header">
             {/* {店铺信息} */}
@@ -75,15 +74,15 @@ function CompHeader(props){
             }
             {/* {满减} */}
             {
-                fullReduction.length>0 && <View className={!showMore ? 'full-block' : 'full-block pick'} >
+                marketingActivityList.length>0 && <View className={!showMore ? 'full-block' : 'full-block pick'} >
                 {
-                    fullReduction.map((item,index) => (
+                    marketingActivityList.map((item,index) => (
                         <SpShopFullReduction 
                           info={item} 
                           key={`shop-full-reduction__${index}`} 
-                          showMoreIcon={fullReduction.length > 1 && index == 0 }
+                          showMoreIcon={marketingActivityList.length > 1 && index == 0 }
                           status={showMore}
-                          count={fullReduction.length}
+                          count={marketingActivityList.length}
                           handeChange={(e) => setShowMore(e)}
                         />
                     ))

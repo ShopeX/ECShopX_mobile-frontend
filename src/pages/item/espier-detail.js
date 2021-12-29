@@ -515,13 +515,16 @@ export default class EspierDetail extends Component {
         if (list.length) {
           promotion_package = list.length
         }
-        this.setState({
-          desc: !contentDesc ? contentDesc
+        if ( contentDesc ) {
+          contentDesc = contentDesc
             .replace(/\s+style="[^"]*"/g, "")
             .replace(
               /<img/g,
               '<img style="max-width:100%;height:auto;display: block;"'
-            ) : '',
+            );
+        }
+        this.setState({
+          desc: contentDesc,
           promotion_package
         });
         this.fetchCartCount()

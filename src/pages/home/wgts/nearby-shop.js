@@ -37,9 +37,11 @@ function WgtNearbyShop( props ) {
       province: location.lat ? location.province : '北京市',
       city: location.lat ? location.city : '北京市',
       area: location.lat ? location.district : '昌平区',
-      type: location.lat ? 0 : 1
+      // 根据经纬度或地区查询
+      type: location.lat ? 0 : 1,
+      sort_type: 1
     };
-    const { list, tagList } = await api.shop.getNearbyShop( params );
+    const { list } = await api.shop.getNearbyShop( params );
     
     setState( v => {
       v.shopList = list;
@@ -64,7 +66,7 @@ function WgtNearbyShop( props ) {
   return (
     <View
       className={classNames("wgt", "wgt-nearbyshop", {
-        wgt__padded: base.padded,
+        wgt__padded: base.padded
       })}
     >
       {base.title && (
@@ -73,7 +75,9 @@ function WgtNearbyShop( props ) {
             <Text className="wgt-title">{base.title}</Text>
             <Text className="wgt-subtitle">{base.subtitle}</Text>
           </View>
-          <Text className="wgt-more" onClick={showMore}>查看更多</Text>
+          <Text className="wgt-more" onClick={showMore}>
+            查看更多
+          </Text>
         </View>
       )}
 
@@ -82,11 +86,11 @@ function WgtNearbyShop( props ) {
           {seletedTags.map((item, index) => (
             <View
               className={classNames(`tag`, {
-                active: state.activeIndex == index,
+                active: state.activeIndex == index
               })}
               key={item.tag_id}
               onClick={() =>
-                setState((v) => {
+                setState(v => {
                   v.activeIndex = index;
                 })
               }
@@ -97,7 +101,7 @@ function WgtNearbyShop( props ) {
         </ScrollView>
 
         <ScrollView className="scroll-list" scrollX>
-          {state.shopList.map((item) => (
+          {state.shopList.map(item => (
             <View
               className="shop"
               key={item.distributor_id}
@@ -122,13 +126,11 @@ function WgtNearbyShop( props ) {
 
                 <View className="shop-ft">
                   {item.discountCardList.length > 0 && (
-                    <View
-                      className={classNames(
-                        "sp-shop-coupon",
-                      )}
-                    >
-                      <View className='coupon-wrap'>
-                        <Text className="coupon-text">{item.discountCardList[0].title}</Text>
+                    <View className={classNames("sp-shop-coupon")}>
+                      <View className="coupon-wrap">
+                        <Text className="coupon-text">
+                          {item.discountCardList[0].title}
+                        </Text>
                       </View>
                     </View>
                   )}
@@ -136,6 +138,13 @@ function WgtNearbyShop( props ) {
               </View>
             </View>
           ))}
+
+          {state.shopList.length == 0 && (
+            <View className="empty-con">
+              <SpImage className="empty-img" src="empty_data.png" />
+              <View className="empty-tip">更多商家接入中，敬请期待</View>
+            </View>
+          )}
         </ScrollView>
         {/* <View className='no_shop_content'>
           <Image mode='widthFix' className='no_shop_img' src={`${process.env.APP_IMAGE_CDN}/empty_data.png`}></Image>

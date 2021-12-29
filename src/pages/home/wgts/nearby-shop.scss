@@ -49,8 +49,8 @@
     color: #444;
     text-align: center;
     &.active {
-      color: #f4811f;
-      background: #fef0e4;
+      color: var(--color-primary);
+      background: rgba(var(--color-rgb), 0.2);
     }
   }
 
@@ -103,68 +103,30 @@
       font-size: 28px;
       text-align: center;
       color: #000;
+      @include text-overflow();
+      padding: 0 10px;
     }
     .shop-ft {
       height:40px;
       margin-top: 10px 0 20px;
       text-align: center;
-    }
-    // .shop-coupon {
-    //   @include text-overflow();
-    //   padding: 0px 4px;
-    //   margin: 0 auto;
-    //   max-width: 140px;
-    //   color: var(--color-primary);
-    //   border-radius: 8px;
-    //   /* prettier-ignore */
-    //   border: 1PX solid var(--color-primary);
-    //   font-size: 22px;
-    // }
-    .sp-shop-coupon {
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-      &::before {
-        content: "";
-        display: block;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background-color: #fff;
-        position: absolute;
-        top: 50%;
-        left: -18px;
-        transform: translateY(-50%);
-        /* prettier-ignore */
-        border: 1PX solid rgba(244, 129, 31, 1);
-      }
-      &::after {
-        content: "";
-        display: block;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background-color: #fff;
-        position: absolute;
-        top: 50%;
-        right: -18px;
-        transform: translateY(-50%);
-        /* prettier-ignore */
-        border: 1PX solid rgba(244, 129, 31, 1);
-      }
-      .coupon-wrap {
-        /* prettier-ignore */
-        border: 1PX solid rgba(244, 129, 31, 1);
-        border-radius: 4px;
-        height: 40px;
-        line-height: 38px;
-        padding: 0 10px;
-      }
-      .coupon-text {
-        color: rgba(244, 129, 31, 1);
-        font-size: 22px;
-      }
-    }
+    }    
+  }
+  .coupon-text {
+    @include text-overflow();
+    max-width: 120px;
+    display: inline-block;
+  }
+  .empty-con {
+    text-align: center;
+  }
+  .empty-img {
+    width: 290px;
+    margin: 0 auto;
+  }
+  .empty-tip {
+    margin: 10px 0 20px;
+    color: #666;
   }
   .no_shop_content {
     width: 90vw;

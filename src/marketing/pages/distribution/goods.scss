@@ -9,7 +9,7 @@
     display: none;
   }
   .goods-list {
-    padding: 24px $edge-margin;
+    padding: 0px $edge-margin;
     &__toolbar {
       position: fixed;
       top: 0;
@@ -50,7 +50,7 @@
     }
     &__scroll {
       @include page-scroll(
-        $tabs-height + $navigate-height + $searchbar-height,
+        $tabs-height + $navigate-height,
         $tabbar-height
       );
       /*  #ifdef  h5  */
