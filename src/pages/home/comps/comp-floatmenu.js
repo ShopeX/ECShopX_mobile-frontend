@@ -57,7 +57,7 @@ function CompFloatMenu( props ) {
       <SpFloatAd />
 
       {/* 店铺精选 */}
-      { state.showStore && <SpImage src="gift_mini.png" width={145} onClick={() => {
+      { state.showStore && <SpImage className="my-store" src="gift_mini.png" onClick={() => {
         Taro.navigateTo({
           url: `/marketing/pages/distribution/shop-home?featuredshop=${state.featuredShopId}`,
         });

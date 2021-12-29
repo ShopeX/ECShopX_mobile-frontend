@@ -66,7 +66,7 @@ export default (props) => {
       v.pageIndex = 1
       v.hasMore = true
     });
-    if(page.pageIndex == 1) {
+    if(!auto || page.pageIndex == 1) {
       excluteFetch()
     }
   }

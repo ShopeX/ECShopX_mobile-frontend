@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
  import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Form, Text, Image } from '@tarojs/components'
-import { AtSearchBar } from 'taro-ui'
+import { AtSearchBar, AtForm } from "taro-ui";
 import { classNames } from '@/utils'
 import { toggleTouchMove } from '@/utils/dom'
 
@@ -67,7 +67,11 @@ export default class SpSearchBar extends Component {
     this.props.onClear();
   };
 
-  handleConfirm = (e) => {
+  handleConfirm = ( e ) => {
+    debugger
+    e.preventDefault && e.preventDefault();
+    e.stopPropagation && e.stopPropagation();
+
     if (e.detail.value && e.detail.value.trim()) {
       Taro.getStorage({ key: "searchHistory" })
         .then((res) => {
@@ -135,6 +139,7 @@ export default class SpSearchBar extends Component {
         )}
       >
         <Form className="sp-search-bar__form">
+        {/* <AtForm onSubmit={this.handleConfirm.bind(this)}> */}
           <AtSearchBar
             className="sp-search-bar__bar"
             value={keyword}
@@ -147,6 +152,7 @@ export default class SpSearchBar extends Component {
             onConfirm={this.handleConfirm.bind(this)}
             onActionClick={this.handleClickCancel.bind(this, false)}
           />
+        {/* </AtForm> */}
         </Form>
 
         {showDailog && (
