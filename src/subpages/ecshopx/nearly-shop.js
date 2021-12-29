@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback, useRef, useDidShow } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import { View, Text, Picker, Input } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpPage, SpScrollView, SpLogin } from "@/components";
+import { SpPage, SpScrollView, SpLogin, SpPrivacyModal } from "@/components";
 import { updateLocation, updateChooseAddress } from "@/store/slices/user";
 import api from '@/api'
 import CompShopItem from './comps/comp-shopitem'
@@ -26,10 +26,14 @@ const initialState = {
 }
 
 function NearlyShop( props ) {
-  const { isLogin } = useLogin({
-    autoLogin: false
+  const { isLogin, checkPolicyChange } = useLogin({
+    autoLogin: false,
+    policyUpdateHook: () => {
+      setPolicyModal(true)
+    }
   })
   const [ state, setState ] = useImmer(initialState)
+  const [policyModal, setPolicyModal] = useState(false);
   const { location = {}, address } = useSelector( state => state.user )
   const shopRef = useRef()
   const dispatch = useDispatch()
@@ -182,6 +186,7 @@ function NearlyShop( props ) {
     setState( v => {
       v.locationIng = true
     })
+    setPolicyModal(false)
     await entryLaunch.isOpenPosition(async (res) => {
       if (res.lat) {
         dispatch(updateLocation(res))
@@ -237,6 +242,15 @@ function NearlyShop( props ) {
     Taro.navigateBack()
   }
 
+  const isPolicyTime = async () => {
+    const checkRes = await checkPolicyChange()
+    if (checkRes) {
+      getLocationInfo()
+    } else {
+      setPolicyModal(true)
+    }
+  }
+
   const { areaIndexArray, areaArray, chooseValue, showType } = state
   const {province, city, district} = location
   const locationValue = province + city + district
@@ -286,7 +300,7 @@ function NearlyShop( props ) {
           <Text className="location-address" onClick={() => onLocationChange(location)} >
             {location.address || "无法获取您的位置信息"}
           </Text>
-          <View className="btn-location" onClick={getLocationInfo}>
+          <View className="btn-location" onClick={isPolicyTime}>
             <Text
               className={classNames("iconfont icon-zhongxindingwei", {
                 active: state.locationIng,
@@ -333,6 +347,11 @@ function NearlyShop( props ) {
           ))}
         </SpScrollView>
       </View>
+      <SpPrivacyModal
+        open={policyModal}
+        onCancel={() => setPolicyModal(false)}
+        onConfirm={getLocationInfo}
+      />
     </SpPage>
   );
 }
