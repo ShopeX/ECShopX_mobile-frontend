@@ -98,7 +98,7 @@ function shopList(props) {
     const _list = pickBy(list, doc.shop.SHOP_ITEM);
     const _tagList = pickBy(tagList, doc.goods.BUSINESS_LIST_TAG)
 
-    await setState( ( v ) => {
+    await setState(v=> {
       v.list = [...v.list, ..._list];
       v.tagList = _tagList
     })
@@ -116,7 +116,9 @@ function shopList(props) {
     const lastDistanceFilter = curFilterIdx == DISTANCE_PLUS_SORT || curFilterIdx == DISTANCE_MINUS_SORT
     const distanceFilter = item == DISTANCE_PLUS_SORT || item == DISTANCE_MINUS_SORT
     // console.log("===curFilterIdx", curFilterIdx, item, lastDistanceFilter, distanceFilter)
-  
+    await setState((draft) => {
+      draft.list = []
+    })
     //如果从非距离tab切换回来距离tab  应该是由近到远
     if (!lastDistanceFilter && distanceFilter) {
       await setState((draft) => {
@@ -144,12 +146,16 @@ function shopList(props) {
   const handleOnClear = async () => {
     await setState(v => {
       v.name = ''
+      v.list = []
     });
     setIsShowSearch(false);
     goodsRef.current.reset();
   };
 
   const handleSearchOff = () => {
+    setState(v => {
+      v.name = ''
+    })
     setIsShowSearch(false);
   };
 
@@ -159,6 +165,7 @@ function shopList(props) {
     });
     setIsShowSearch(false);
     await setState(v => {
+      v.list = []
       v.name = val
     });
     goodsRef.current.reset();
@@ -167,6 +174,9 @@ function shopList(props) {
   const { list, tagList,  } = state;
   const onConfirmBrand = async () => {
     setDrawer(false);
+    await setState(v => {
+      v.list = []
+    })
     goodsRef.current.reset();
   };
 
@@ -174,18 +184,20 @@ function shopList(props) {
     await setState((draft) => {
       draft.brandSelect = [];
       draft.businessServices = []
+      draft.list = []
     });
+    setDrawer(false);
     goodsRef.current.reset();
   };
 
-  const onChangeBrand = (val) => {
-    setState((draft) => {
+  const onChangeBrand = async (val) => {
+    await setState((draft) => {
       draft.brandSelect = val;
     });
   };
 
-  const onChangeBusinessServices = (val) => {
-    setState((draft) => {
+  const onChangeBusinessServices = async (val) => {
+    await setState((draft) => {
       draft.businessServices = val;
     });
   };
@@ -208,7 +220,7 @@ function shopList(props) {
         />
       </View>
       <View className="filter-block">
-        <SpTagBar className="tag-list" list={FILTER_DATA} value={curFilterIdx} onChange = {handleFilterChange}>
+        <SpTagBar className="tag-list" list={FILTER_DATA} value={curFilterIdx} onChange={handleFilterChange}>
           <View
             className="filter-btn"
             onClick={() => {

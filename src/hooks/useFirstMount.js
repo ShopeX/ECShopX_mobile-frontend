@@ -1,6 +1,6 @@
-import Taro, { useEffect, useRef } from '@tarojs/taro' 
+import { useState, useRef, useEffect } from "react";
 
-export default function useFirstMount(props){
+export default (props) => {
     //是否渲染完成
     const mounted=useRef(false);
 
