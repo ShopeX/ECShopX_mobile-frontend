@@ -37,7 +37,9 @@ function WgtNearbyShop( props ) {
       province: location.lat ? location.province : '北京市',
       city: location.lat ? location.city : '北京市',
       area: location.lat ? location.district : '昌平区',
-      type: location.lat ? 0 : 1
+      // 根据经纬度或地区查询
+      type: location.lat ? 0 : 1,
+      sort_type: 1
     };
     const { list } = await api.shop.getNearbyShop( params );
     
