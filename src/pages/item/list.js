@@ -93,7 +93,7 @@ function ItemList(props) {
     }
 
     if (curTagIdx) {
-      params["tag_id"] = tagList[curTagIdx].tag_id;
+      params["tag_id"] = curTagIdx;
     }
 
     if (cat_id) {
@@ -171,11 +171,11 @@ function ItemList(props) {
     goodsRef.current.reset();
   };
 
-  const onChangeTag = async e => {
+  const onChangeTag = async (index, item) => {
     await setState(draft => {
       draft.leftList = [];
       draft.rightList = [];
-      draft.curTagIdx = e;
+      draft.curTagIdx = item.tag_id;
     });
     goodsRef.current.reset();
   };

@@ -22,16 +22,34 @@ import doc from '@/doc'
 import { classNames, pickBy } from "@/utils";
 import api from "@/api";
 import "./shop-list.scss";
-import { BUSINESS_LIST_SERVICES, FILTER_DATA, DISTANCE_PLUS_SORT, DISTANCE_MINUS_SORT, DEFAULT_SORT_VALUE } from './consts/index'
-import { Tracker } from '@/service'
+import { Tracker } from '@/service';
+//plusValue 代表正序 minusValue代表倒序
+const TIME_SORT=0;
+const SALE_PLUS_SORT=4;
+const SALE_MINUS_SORT=3;
+const DISTANCE_PLUS_SORT=1;
+const DISTANCE_MINUS_SORT=2;
+const DEFAULT_SORT_VALUE=DISTANCE_PLUS_SORT;
+
+const FILTER_DATA=[
+  {value:TIME_SORT,tag_name:'综合排序'},
+  {tag_name:'销量',plusValue:SALE_PLUS_SORT,minusValue:SALE_MINUS_SORT},
+  {tag_name:'距离',plusValue:DISTANCE_PLUS_SORT,minusValue:DISTANCE_MINUS_SORT}
+];
+const BUSINESS_LIST_SERVICES = [
+  { id: "ziti", name: "自提", },
+  { id: "delivery", name: "快递", },
+  { id: "dada", name: "同城配", },
+]
 
 const initialState = {
-  curFilterIdx: 0,
+  curFilterIdx: DEFAULT_SORT_VALUE,
   name: '',
   list: [],
   tagList: [],
   brandSelect: [],
   businessServices: [],
+  plus: true
 }
 
 function shopList(props) {
@@ -40,7 +58,8 @@ function shopList(props) {
     brandSelect,
     businessServices,
     name,
-    curFilterIdx
+    curFilterIdx,
+    plus
   } = state;
   const goodsRef = useRef();
   useEffect(() => {}, []);
@@ -111,11 +130,34 @@ function shopList(props) {
     // fillFilterTag(tagList);
   };
 
+  const isChecked = (item)=>{
+    return item.value === curFilterIdx || item.plusValue === curFilterIdx || item.minusValue === curFilterIdx;
+  }
 
-  const handleFilterChange = async (item) => {
+  const handleFilterChange = useCallback(async(index, item) => {
+    const sortFunc = (s_item) => {
+      if(s_item.value || s_item.value == 0 ){
+        checked = s_item.value
+      } else {
+        if (plus) {
+          checked = s_item.minusValue
+        } else {
+          checked = s_item.plusValue
+        }
+      } 
+    }
+    let checked = 0
+    //如果是选中的
+    if (isChecked(item)) {
+      sortFunc(item)
+    } else {
+      sortFunc(item)
+    }
+    await setState(v => {
+      v.plus = !plus
+    })
     const lastDistanceFilter = curFilterIdx == DISTANCE_PLUS_SORT || curFilterIdx == DISTANCE_MINUS_SORT
-    const distanceFilter = item == DISTANCE_PLUS_SORT || item == DISTANCE_MINUS_SORT
-    // console.log("===curFilterIdx", curFilterIdx, item, lastDistanceFilter, distanceFilter)
+    const distanceFilter = checked == DISTANCE_PLUS_SORT || checked == DISTANCE_MINUS_SORT
     await setState((draft) => {
       draft.list = []
     })
@@ -128,10 +170,10 @@ function shopList(props) {
       return
     }
     await setState((draft) => {
-      draft.curFilterIdx = item;
+      draft.curFilterIdx = checked;
     })
     goodsRef.current.reset()
-  };
+  }, [curFilterIdx])
 
   const handleOnFocus = () => {
     setIsShowSearch(true);

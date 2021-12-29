@@ -151,15 +151,16 @@ export default class CartCheckout extends Component {
   }
 
   async componentDidMount() {
-    if (this.$instance.router.params.scene) {
-      const data = await normalizeQuerys(this.$instance.router.params)
+    let params = this.$instance.router.params
+    if (params) {
+      const data = await normalizeQuerys(params)
       this.routerParams = data
       Taro.setStorageSync('espierCheckoutData', data)
     }
 
     if (!S.getAuthToken()) {
       let source = ''
-      if (this.$instance.router.params.scene) {
+      if (params.scene) {
         source = 'other_pay'
       }
       Taro.redirectTo({
