@@ -4,7 +4,9 @@ import api from '@/api'
 const initialState = {
   cartCount: 0,
   validCart: [],
-  invalidCart: []
+  invalidCart: [],
+  coupon: null,
+  
 }
 
 export const fetchCartList = createAsyncThunk( 'cart/fetchCartList', async ( params ) => {
@@ -35,6 +37,16 @@ const cartSlice = createSlice({
     },
     updateCart: ( state, { payload } ) => {
       
+    },
+    changeCoupon: ( state, { payload } ) => {
+      state.coupon = payload
+    },
+    changeZitiStore: ( state, { payload } ) => {
+      const zitiShop = payload
+      return {
+        ...state,
+        zitiShop
+      }
     }
   },
   extraReducers: ( builder ) => {

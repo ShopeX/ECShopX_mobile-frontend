@@ -9,11 +9,11 @@ function SpTagBar(props) {
 
   const [ plus, setPlus ] = useState(true)
 
-  const isChecked=(item)=>{
+  const isChecked = (item)=>{
     return item.value === value || item.plusValue === value || item.minusValue === value;
   }
 
-  const handleClickLabel=(item)=>{ 
+  const handleClickLabel = (item) => {
     const sortFunc = (item) => {
       if(item.value || item.value == 0 ){
         res = item.value

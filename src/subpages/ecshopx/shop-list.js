@@ -112,7 +112,7 @@ function shopList(props) {
   };
 
 
-  const handleFilterChange = async (item) => {
+  const handleFilterChange = useCallback(async(item) => {
     const lastDistanceFilter = curFilterIdx == DISTANCE_PLUS_SORT || curFilterIdx == DISTANCE_MINUS_SORT
     const distanceFilter = item == DISTANCE_PLUS_SORT || item == DISTANCE_MINUS_SORT
     // console.log("===curFilterIdx", curFilterIdx, item, lastDistanceFilter, distanceFilter)
@@ -121,7 +121,7 @@ function shopList(props) {
     })
     //如果从非距离tab切换回来距离tab  应该是由近到远
     if (!lastDistanceFilter && distanceFilter) {
-      await setState((draft) => {
+      setState((draft) => {
         draft.curFilterIdx = DEFAULT_SORT_VALUE;
       })
       goodsRef.current.reset()
@@ -131,7 +131,7 @@ function shopList(props) {
       draft.curFilterIdx = item;
     })
     goodsRef.current.reset()
-  };
+  }, [curFilterIdx])
 
   const handleOnFocus = () => {
     setIsShowSearch(true);
