@@ -546,13 +546,15 @@ export default class DistributionShopHome extends Component {
             >
               <View className={`content ${item.isOutSale && 'disable'}`}>
                 <View className='imgContent'>
-                  <SpImg
+                  {/* <SpImg
                     lazyLoad
                     width='400'
+                    height='80'
                     mode='aspectFill'
                     img-class='goodImg'
                     src={item.img}
-                  />
+                  /> */}
+                  <Image src={item.img} className="goodImg" lazyLoad/>
                   <View className='outSale'></View>
                 </View>
                 <View className='info'>

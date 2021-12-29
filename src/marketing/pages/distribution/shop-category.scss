@@ -163,7 +163,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        // justify-content: space-between;
         overflow: hidden;
         .goodName {
           color: #000;
@@ -179,6 +179,7 @@
         .goodPrice {
           color: #d92128;
           font-weight: bold;
+          padding-top: 20px;
           .symbol {
             font-weight: normal;
           }

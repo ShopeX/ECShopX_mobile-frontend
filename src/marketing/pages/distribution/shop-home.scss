@@ -311,13 +311,13 @@ $height-percent: 82%;
           }
         }
         .info {
-          width: 100%;
+          // width: 100%;
           height: calc(100% - 340px);
-          padding: 2px 20px 20px 20px;
+          padding: 10px 20px 0px 20px;
           overflow: hidden;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+          // justify-content: space-between;
           .goodName {
             width: 100%;
             font-size: 24px;
@@ -327,6 +327,7 @@ $height-percent: 82%;
             -webkit-line-clamp: 2;
             /* autoprefixer: ignore next */
             -webkit-box-orient: vertical;
+            padding-bottom: 20px;
           }
           .price {
             font-size: 28px;

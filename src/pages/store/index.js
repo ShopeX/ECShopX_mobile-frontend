@@ -8,6 +8,7 @@ import {
   BackToTop,
   SpNewShopItem,
   SpCellCoupon,
+  SpPage
 } from "@/components";
 import { AtTabBar } from "taro-ui";
 import req from "@/api/req";
@@ -302,7 +303,7 @@ export default class StoreIndex extends Component {
     console.log("===likeList==>", likeList);
     const id = this.id
     return (
-      <View
+      <SpPage
         className={classNames("page-store-index", {
           fixedSearch,
           "has-navbar": isNavbar(),
@@ -373,7 +374,7 @@ export default class StoreIndex extends Component {
           onClick={this.handleClick}
           current={localCurrent}
         />
-      </View>
+      </SpPage>
     );
   }
 }

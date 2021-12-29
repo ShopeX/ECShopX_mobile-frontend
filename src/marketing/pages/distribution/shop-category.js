@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { View, ScrollView, Text } from '@tarojs/components'
+import { View, ScrollView, Text,Image } from '@tarojs/components'
 import { Loading, SpImg, SpNote, SpNavBar } from '@/components'
 import { classNames, pickBy, getCurrentRoute } from '@/utils'
 import { AtTabBar } from 'taro-ui'
@@ -274,13 +274,14 @@ export default class DistributionShopCategory extends Component {
                         onClick={this.handleClickItem.bind(this, item)}
                       >
                         <View className='left'>
-                          <SpImg
+                          {/* <SpImg
                             lazyLoad
                             width='400'
                             mode='aspectFill'
                             img-class='goodImg'
                             src={item.img}
-                          />
+                          /> */}
+                          <Image src={item.img} lazyLoad className="goodImg"/>
                         </View>
                         <View className='right'>
                           <View className='goodName'>{item.title}</View>
