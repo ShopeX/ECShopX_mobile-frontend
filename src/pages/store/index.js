@@ -155,15 +155,17 @@ export default class StoreIndex extends Component {
     } else {
       id = await Taro.getStorageSync("curStore").distributor_id;
     }
-    const { name, logo, scoreList, distributor_id } = await api.shop.getShop({
+    const { name, logo, scoreList, distributor_id,marketingActivityList } = await api.shop.getShop({
       distributor_id: id,
       show_score: 1,
+      show_marketing_activity: 1
     });
     storeInfo = {
       name,
       brand: logo,
       scoreList,
       distributor_id,
+      marketingActivityList
     };
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
