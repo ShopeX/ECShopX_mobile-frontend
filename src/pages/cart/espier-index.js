@@ -1,4 +1,4 @@
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { View, Text, Image, ScrollView, Button } from '@tarojs/components'
@@ -35,7 +35,7 @@ import {
 import api from '@/api'
 import S from '@/spx'
 // import { Tracker } from '@/service'
-import { useLogin } from '@/hooks'
+import { useLogin, useDepChange } from '@/hooks'
 import { fetchCartList, deleteCartItem, updateCartItemNum } from '@/store/slices/cart'
 import qs from 'qs'
 import CompGoodsItem from './comps/comp-goodsitem'
@@ -72,15 +72,20 @@ function CartIndex( props ) {
   const router = $instance.router
   const { current } = state
 
-  useEffect(() => {
+  useDepChange(()=>{
+    fetch()
+  },[isLogin])
+
+  useDidShow(() => {
+    fetch()
+  })
+
+  const fetch = () => {
+    getLikeList()
     if (isLogin) {
       getCartList()
     }
-  }, [isLogin])
-
-  useEffect(() => {
-    getLikeList()
-  }, [])
+  }
 
   const getCartList = async () => {
     Taro.showLoading()
@@ -190,11 +195,11 @@ function CartIndex( props ) {
     getCartList()
   }
 
-  const onChangeAllCheck = async (item, e) => {
+  const onChangeAllCheck = async (item, checked) => {
     const cartIds = item.list.map((item) => item.cart_id)
     await api.cart.select({
       cart_id: cartIds,
-      is_checked: e
+      is_checked: checked
     })
     getCartList()
   }
