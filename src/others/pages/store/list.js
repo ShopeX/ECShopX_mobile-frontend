@@ -505,6 +505,7 @@ export default class List extends Component {
       isShowSearch,
       query,
     } = this.state;
+    console.log('tagsList==',tagsList)
     console.log('getBrowserEnv().weixin==',getBrowserEnv().weixin)
     return (
       <View className="page-goods-list">

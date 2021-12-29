@@ -19,6 +19,22 @@ $prefixCls: "sp-shop-item";
 
   .shop-item-bd {
     flex: 1;
+    .down_icon {
+      width:15px;
+      height: 8px;
+      margin-left: 9px;
+      transition: transform 0.5s;
+    }
+    .translate {
+      transform: rotate(180deg);
+    }
+    .down_icon1 {
+      width:15px;
+      height: 8px;
+      margin-left: 9px;
+      transition: transform 0.5s;
+      display: inline-block;
+    }
   }
 
   .shop-name {
@@ -64,6 +80,7 @@ $prefixCls: "sp-shop-item";
     margin-top: 15px;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     .sp-shop-coupon {
       margin: 0 10px 10px 0;
     }
@@ -72,10 +89,29 @@ $prefixCls: "sp-shop-item";
     margin-top: 10px;
     display: flex;
     flex-direction: column;
+    max-height: 35px;
+    overflow: hidden;
+    transition: max-height 500ms;
     .sp-shop-fullReduction {
       margin: 0 10px 10px 0;
     }
   }
+  .pick {
+    max-height: 1000px;
+  }
+  .pick-down {
+    height: 33px;
+    font-size: 24px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #444444;
+    line-height: 33px;
+    position: absolute;
+    right: 23px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
   .item-bd-hd {
     display: flex;
     flex-direction: row;

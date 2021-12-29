@@ -64,7 +64,7 @@ export default class DistributionGoodsItem extends Component {
                   openType='share'
                   size='small'
                 >
-                  <Text class='icon-share2'></Text>
+                  <Text class='iconfont icon-share2'></Text>
                 </Button>
               </View>
             </View>

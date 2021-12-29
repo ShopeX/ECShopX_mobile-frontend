@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
-import { SpToast, Loading, FilterBar, SpNote, SpNavBar, SearchBar } from '@/components'
+import { SpToast, Loading, FilterBar, SpNote, SpNavBar, SearchBar,SpPage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
@@ -28,14 +28,14 @@ export default class DistributionGoods extends Component {
         {
           title: '推广商品',
           iconType: 'home',
-          iconPrefixClass: 'icon',
+          iconPrefixClass: 'iconfont icon',
           url: '/marketing/pages/distribution/goods',
           urlRedirect: true
         },
         {
           title: '分类',
           iconType: 'category',
-          iconPrefixClass: 'icon',
+          iconPrefixClass: 'iconfont icon',
           url: '/marketing/pages/distribution/good-category',
           urlRedirect: true
         }
@@ -343,7 +343,8 @@ export default class DistributionGoods extends Component {
     console.log(list)
 
     return (
-      <View className='page-distribution-shop'>
+      <SpPage className='page-distribution-shop'>
+        <View >
         <SpNavBar title='推广商品' leftIconType='chevron-left' fixed='true' />
         <SearchBar
           showDailog={false}
@@ -392,6 +393,7 @@ export default class DistributionGoods extends Component {
         <SpToast />
         <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
       </View>
+      </SpPage>
     )
   }
 }
