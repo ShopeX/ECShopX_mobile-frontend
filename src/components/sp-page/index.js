@@ -9,7 +9,8 @@ import { classNames, styleNames, hasNavbar } from "@/utils";
 import "./index.scss";
 
 function SpPage( props ) {
-  const { page } = getCurrentInstance();
+  console.log(getCurrentInstance());
+  const { page, router } = getCurrentInstance();
   // debugger
   const { className, children, renderFloat, renderFooter, scrollToTopBtn = false } = props;
   const sys = useSelector( ( state ) => state.sys );
@@ -36,9 +37,8 @@ function SpPage( props ) {
       scrollTop: 0,
     });
   }
-  const fidx = Object.values(TABBAR_PATH).findIndex((v) => v == page.path);
+  const fidx = Object.values(TABBAR_PATH).findIndex((v) => v == router.path.split('?')[0]);
   const isTabBarPage = fidx > -1;
-    
   return (
     <View
       className={classNames("sp-page", className, {

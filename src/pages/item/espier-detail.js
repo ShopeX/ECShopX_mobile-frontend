@@ -505,7 +505,12 @@ export default class EspierDetail extends Component {
           if (info.videos_url) {
             contentDesc += `<video src=${info.videos} controls style='width:100%'></video>` + desc
           } else {
-            contentDesc = desc
+            contentDesc = desc.toString()
+            .replace(/\s+style="[^"]*"/g, "")
+            .replace(
+              /<img/g,
+              '<img style="max-width:100%;height:auto;display: block;"'
+            );
           }
         } else {
           contentDesc = desc
@@ -515,14 +520,7 @@ export default class EspierDetail extends Component {
         if (list.length) {
           promotion_package = list.length
         }
-        if ( contentDesc ) {
-          contentDesc = contentDesc
-            .replace(/\s+style="[^"]*"/g, "")
-            .replace(
-              /<img/g,
-              '<img style="max-width:100%;height:auto;display: block;"'
-            );
-        }
+
         this.setState({
           desc: contentDesc,
           promotion_package

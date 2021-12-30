@@ -33,8 +33,16 @@ export default class ItemFav extends Component {
     }
   }
 
-  componentDidMount() {
-    this.nextPage()
+  componentDidShow() {
+    this.resetPage()
+    this.setState(
+      {
+        list: []
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   async fetch(params) {

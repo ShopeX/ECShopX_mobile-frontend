@@ -29,7 +29,7 @@ export default class TradeList extends Component {
         { title: '全部订单', status: '0' },
         { title: '待付款', status: '5' },
         { title: '待收货', status: '1' },
-        { title: '已完成', status: '3' }
+        { title: '待评价', status: '3' }
       ],
       list: [],
       rate_status: false,

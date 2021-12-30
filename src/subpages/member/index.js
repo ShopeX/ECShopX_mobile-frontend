@@ -208,12 +208,12 @@ function MemberIndex(props) {
 
     const { discount_total_count, fav_total_count, point_total_count } = resAssets
     const {
-      aftersales,
-      normal_notpay_notdelivery,
-      normal_payed_daifahuo,
-      normal_payed_daishouhuo,
-      normal_payed_daiziti
-    } = resTrade
+      aftersales, // 待处理售后
+      normal_notpay_notdelivery, // 未付款未发货
+      normal_payed_daifahuo, // 待发货
+      normal_payed_daishouhuo, // 待收货
+      normal_payed_daiziti, // 待自提订单
+    } = resTrade;
 
     setState(draft => {
       draft.favCount = fav_total_count;
@@ -434,7 +434,7 @@ function MemberIndex(props) {
                   <Text>{state.waitPayNum}</Text>
                 </View>
               )}
-              <Text className="order-txt">待支付</Text>
+              <Text className="order-txt">待付款</Text>
             </View>
             <View
               className="order-item"
@@ -451,7 +451,7 @@ function MemberIndex(props) {
               )}
               <Text className="order-txt">待收货</Text>
             </View>
-            <View
+            {/* <View
               className="order-item"
               onClick={handleClickLink.bind(
                 this,
@@ -465,7 +465,7 @@ function MemberIndex(props) {
                 </View>
               )}
               <Text className="order-txt">已完成</Text>
-            </View>
+            </View> */}
             <View
               className="order-item"
               onClick={handleClickLink.bind(
