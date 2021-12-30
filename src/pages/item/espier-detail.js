@@ -107,7 +107,7 @@ export default class EspierDetail extends Component {
       sixSpecImgsDict: {},
       curSku: null,
       promotion_activity: [],
-      promotion_package: [],
+      promotion_package: null,
       itemParams: [],
       sessionFrom: '',
       posterImgs: null,
@@ -1212,6 +1212,7 @@ export default class EspierDetail extends Component {
       evaluationList,
       isSubscribeGoods
     } = this.state
+ 
 
     const { showLikeList, colors } = this.props
     const meiqia = Taro.getStorageSync('meiqia')
@@ -1517,7 +1518,7 @@ export default class EspierDetail extends Component {
             />
           ) : null}
 
-          {promotion_package && promotion_package.length>0 && !this.isPointitemGood() && (
+          {promotion_package && !this.isPointitemGood() && (
             <SpCell
               className='goods-sec-specs'
               isLink
@@ -1526,6 +1527,7 @@ export default class EspierDetail extends Component {
               value={`共${promotion_package}种组合随意搭配`}
             />
           )}
+ 
 
           {itemParams.length > 0 && (
             <View className='goods-sec-specs' onClick={this.handleParamsClick.bind(this)}>
