@@ -2,7 +2,7 @@
 
 .page-distribution-index {
   /*  #ifdef  h5  */
-  padding-top: $navigate-height-h5;
+  // padding-top: $navigate-height-h5;
   /*  #endif  */
   .header {
     position: relative;
@@ -95,9 +95,6 @@
     }
   }
   .share {
-    .item-icon {
-      color: #00c3ff;
-    }
     .share-btn {
       margin: 0;
       line-height: 1;

@@ -256,8 +256,8 @@ export default class TradeRate extends Component {
         <SpButton
             resetText="匿名评价"
             confirmText="立即评价"
-            onConfirm={this.handleClickSubmit.bind(this, true)}
-            onReset={this.handleClickSubmit.bind(this, false)}
+            onConfirm={this.handleClickSubmit.bind(this, false)}
+            onReset={this.handleClickSubmit.bind(this, true)}
           ></SpButton>
         </View>
         

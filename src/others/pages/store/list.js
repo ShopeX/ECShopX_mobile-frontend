@@ -175,7 +175,7 @@ export default class List extends Component {
         isChooseParams: true,
       });
     });
-
+    
     const nList = pickBy(list, {
       img: ({ pics }) =>
         typeof pics !== "string" ? pics[0] : JSON.parse(pics)[0],
@@ -188,9 +188,8 @@ export default class List extends Component {
       price: ({ price }) => (price / 100).toFixed(2),
       member_price: ({ member_price }) => (member_price / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-      is_fav: ({ item_id }) => Boolean(favs[item_id]),
+      is_fav: ({ item_id }) => Boolean(favs.find(item => item.item_id == item_id)),
     });
-
     let odd = [],
       even = [];
     nList.map((item, idx) => {

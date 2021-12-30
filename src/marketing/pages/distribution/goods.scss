@@ -3,7 +3,7 @@
 .page-distribution-shop {
   background: $color-bg-gray;
   /*  #ifdef  h5  */
-  padding-top: $navigate-height-h5;
+  // padding-top: $navigate-height-h5;
   /*  #endif  */
   .at-search-bar__action {
     display: none;
@@ -54,10 +54,10 @@
         $tabbar-height
       );
       /*  #ifdef  h5  */
-      @include page-scroll(
-        $tabs-height + $navigate-height-h5 + $searchbar-height,
-        $tabbar-height
-      );
+      // @include page-scroll(
+      //   $tabs-height + $navigate-height-h5 + $searchbar-height,
+      //   $tabbar-height
+      // );
       /*  #endif  */
     }
     &__type-grid {

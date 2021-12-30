@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Image } from '@tarojs/components'
-import { Loading, SpNote, SpNavBar, SpToast, CouponItem } from '@/components'
+import { Loading, SpNote, SpNavBar, SpToast, CouponItem,SpPage } from '@/components'
 import { connect } from 'react-redux'
 import api from '@/api'
 import S from '@/spx'
 import { withPager } from '@/hocs'
-import { pickBy, formatTime, buriedPoint, normalizeQuerys } from '@/utils'
+import { pickBy, formatTime, buriedPoint, normalizeQuerys,getBrowserEnv } from '@/utils'
 // import { Tracker } from '@/service'
 
 import '../home/coupon-home.scss'
@@ -208,9 +208,8 @@ export default class CouponHome extends Component {
   render() {
     const { colors } = this.props
     const { list, page } = this.state
-
     return (
-      <View className='coupon-home'>
+      <SpPage className='coupon-home'>
         <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' /> 
         <ScrollView scrollY className='home_coupon-home__scroll' onScrollToLower={this.nextPage}>
           <View className='coupon-home-ticket'>
@@ -239,7 +238,7 @@ export default class CouponHome extends Component {
           </View>
         </ScrollView>
         <SpToast />
-      </View>
+      </SpPage> 
     )
   }
 }

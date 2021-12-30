@@ -2,7 +2,7 @@ import React, { Component } from 'react';
  import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Navigator, Button, Canvas } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { SpNavBar, Loading } from '@/components'
+import { SpNavBar, Loading,SpPage } from '@/components'
 import api from '@/api'
 import { pickBy, canvasExp } from '@/utils'
 import { getDtidIdUrl } from '@/utils/helper'
@@ -122,6 +122,7 @@ export default class DistributionDashboard extends Component {
   }
 
   downloadPosterImg = async () => {
+    console.log('-----down')
     // 处理海报信息以及太阳码
     let {
       info: { username, isOpenShop, shop_status }
@@ -142,17 +143,20 @@ export default class DistributionDashboard extends Component {
     shop_status = JSON.parse(shop_status === 1)
     const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
     const wxappCode = `${req.baseURL}promoter/qrcode.png?path=${url}&appid=${extConfig.appid}&company_id=${extConfig.company_id}&user_id=${userId}`
-
     let avatarImg
+    console.log('wxappCode==',wxappCode)
+    console.log('avatar==',avatar)
     if (avatar) {
       // 头像
       avatarImg = await Taro.getImageInfo({ src: avatar })
     }
+    console.log('avatarImg==',avatarImg)
     const bck = await Taro.getImageInfo({
       src:
         'https://b-img-cdn.yuanyuanke.cn/image/21/2021/10/21/9c8cbb5f6b6a346641fe151b5e1604118H6zDVOajmkASVYKgPePOYXIeFpc55Ta'
     }) // 背景图片
     const codeImg = await Taro.getImageInfo({ src: wxappCode }) // 二维码
+    console.log('codeImg==',codeImg)
     if (avatarImg) {
       const posterImgs = {
         avatar: avatarImg ? avatarImg.path : null,
@@ -279,7 +283,7 @@ export default class DistributionDashboard extends Component {
       return <Loading />
     }
     return (
-      <View className='page-distribution-index'>
+      <SpPage className='page-distribution-index'>
         <SpNavBar title='推广管理' leftIconType='chevron-left' />
         <View className='header' style={'background: ' + colors.data[0].marketing}>
           <View className='view-flex view-flex-middle'>
@@ -402,7 +406,7 @@ export default class DistributionDashboard extends Component {
           </View>
           <Navigator
             className='list-item'
-            open-type='navigateTo'
+            // open-type='navigateTo'
             url={`/marketing/pages/distribution/goods?status=${info.isOpenShop &&
               info.shop_status === 1}`}
           >
@@ -413,10 +417,10 @@ export default class DistributionDashboard extends Component {
           {info.isOpenShop && info.shop_status === 1 && (
             <Navigator
               className='list-item'
-              open-type='navigateTo'
+              // open-type='navigateTo'
               url={`/marketing/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}&point=${info.taskBrokerageItemTotalPoint}`}
             >
-              <View className='iconfont item-icon icon-shop icon-fontsize'></View>
+              <View className='iconfont icon-shop icon-fontsize'></View>
               <View className='list-item-txt'>我的小店</View>
               <View className='iconfont icon-arrowRight icon-right'></View>
             </Navigator>
@@ -456,7 +460,7 @@ export default class DistributionDashboard extends Component {
           </View>
         )}
         <Canvas className='canvas' canvas-id='myCanvas'></Canvas>
-      </View>
+      </SpPage>  
     )
   }
 }

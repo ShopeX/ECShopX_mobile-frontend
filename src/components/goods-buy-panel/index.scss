@@ -208,6 +208,9 @@
     margin: 0 15px 15px 0;
     display: inline-block;
     white-space: nowrap;
+    width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &.is-active {
       color: $color-brand-primary;
       border-color: $color-brand-primary;
