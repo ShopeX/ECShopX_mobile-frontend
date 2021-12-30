@@ -97,7 +97,7 @@ function MemberIndex(props) {
   const [state, setState] = useImmer(initialState);
   const [policyModal, setPolicyModal] = useState(false);
 
-  const { userInfo, vipInfo = {} } = useSelector((state) => state.user)
+  const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`);
   
   useEffect(() => {
@@ -286,6 +286,24 @@ function MemberIndex(props) {
     }
   }
 
+  const VipGradeDom = () => {
+    if (isLogin) {
+      return (
+        <View className='gradename'>{`${
+          !vipInfo.isVip
+            ? userInfo.gradeInfo ? userInfo.gradeInfo.grade_name : ''
+            : vipInfo.grade_name || '会员'
+        }`}</View>
+      )
+    } else {
+      return (
+        <SpLogin>
+          <Text className="join-us-txt">加入我们?</Text>
+        </SpLogin>
+      )
+    }
+  }
+
   if (!config) {
     return null
   }
@@ -327,18 +345,7 @@ function MemberIndex(props) {
               )}
             </View>
             <View className="join-us">
-            {
-              isLogin ? 
-                <View className='gradename'>{`${
-                  !vipInfo.isVip
-                    ? userInfo.gradeInfo ? userInfo.gradeInfo.grade_name : ''
-                    : vipInfo.grade_name || '会员'
-                }`}</View>
-              : <SpLogin>
-                <Text className="join-us-txt">加入我们?</Text>
-              </SpLogin>
-            }
-              
+              {VipGradeDom()}
             </View>
           </View>
         </View>

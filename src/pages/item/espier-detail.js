@@ -1453,7 +1453,7 @@ export default class EspierDetail extends Component {
           {marketing === "group" &&
             info.groups_list.length > 0 &&
             !this.isPointitemGood() && (
-              <View className="goods-sec-specs">
+              <View className="goods-sec-specs goods-gruop">
                 <View className="goods-sec-value">
                   <Text className="title-inner">正在进行中的团</Text>
                   <View className="grouping">
