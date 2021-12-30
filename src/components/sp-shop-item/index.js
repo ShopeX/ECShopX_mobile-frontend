@@ -7,7 +7,7 @@ import api from "@/api";
 import "./index.scss";
 
 function SpShopItem(props) {
-  const { className, info, jumpToBusiness,goodCount = 3 } = props;
+  const { className, info, jumpToBusiness,goodCount = 3,showGoods = false } = props;
   if (!info) {
     return null;
   }
@@ -61,7 +61,7 @@ function SpShopItem(props) {
       </View>
       </View>
       
-      {info.itemList && <View className={classNames('good-list', { 'fill': info.itemList.length === goodCount })}>
+      {(showGoods && info.itemList) && <View className={classNames('good-list', { 'fill': info.itemList.length === goodCount })}>
                 {
                     info.itemList.slice(0, goodCount).map(item => {
                         return (
