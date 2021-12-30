@@ -252,7 +252,7 @@ function shopList(props) {
       <SpScrollView className="shoplist-block" fetch={fetch} ref={goodsRef}>
         {list.map((item, index) => (
           <View className="shop-item-wrapper" key={`shopitem-wrap__${index}`}>
-            <SpShopItem info={item} jumpToBusiness={() => handleClickItem(item)}/>
+            <SpShopItem info={item} jumpToBusiness={() => handleClickItem(item)} showGoods={name}/>
           </View>
         ))}
       </SpScrollView>

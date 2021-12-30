@@ -14,7 +14,8 @@ export const SHOP_ITEM = {
   rate: "rate",
   scoreList: 'scoreList',
   is_dada: "is_dada",
-  marketingActivityList: "marketingActivityList"
+  marketingActivityList: "marketingActivityList",
+  itemList: "itemList",
 };
 
 export const BUSINESS_SORT = {

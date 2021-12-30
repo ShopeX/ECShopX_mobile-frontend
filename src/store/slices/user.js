@@ -42,7 +42,8 @@ const userSlice = createSlice({
         cardInfo,
         vipgrade,
         is_open_popularize,
-        is_promoter
+        is_promoter,
+        favs
       } = payload;
       console.log(vipgrade);
       state.userInfo = {
@@ -58,6 +59,7 @@ const userSlice = createSlice({
         endTime: vipgrade.end_time,
         grade_name: vipgrade.grade_name
       };
+      state.favs = favs
     },
 
     updateChooseAddress: (state, { payload }) => {

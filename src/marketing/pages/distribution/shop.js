@@ -3,6 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Navigator, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import api from '@/api'
+import { SpPage } from '@/components'
 // import { Tracker } from '@/service'
 
 import './shop.scss'
@@ -98,10 +99,12 @@ export default class DistributionShop extends Component {
     const { info } = this.state
 
     return (
-      <View className='page-distribution-shop'>
+      <SpPage className='page-distribution-shop'>
         <View className='shop-banner' style={'background: ' + colors.data[0].marketing}>
           <View className='shop-info'>
-            <Image className='shopkeeper-avatar' src={info.headimgurl} mode='aspectFill' />
+            <View className="img-content">
+              <Image className='shopkeeper-avatar' src={info.headimgurl} mode='aspectFill' />
+            </View>
             <View>
               <View className='shop-name'>
                 {info.shop_name || `${info.username}的小店(未设置名称)`}
@@ -159,7 +162,7 @@ export default class DistributionShop extends Component {
             <View className='title'>预览小店</View>
           </View>
         </View>
-      </View>
+      </SpPage>  
     )
   }
 }
