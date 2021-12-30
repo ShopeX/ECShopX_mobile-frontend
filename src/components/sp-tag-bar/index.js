@@ -23,7 +23,7 @@ function SpTagBar(props) {
               onClick={() => {
                 onChange(index, item);
               }}
-              key={`tag-item__${item.tag_id}`}
+              key={`tag-item__${index}`}
             >
               {item.tag_name}
             </View>

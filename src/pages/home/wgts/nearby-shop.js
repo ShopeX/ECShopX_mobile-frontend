@@ -108,14 +108,14 @@ function WgtNearbyShop( props ) {
               <View className="shop-image">
                 <SpImage
                   src={item.banner || "shop_default_bg.png"}
-                  mode="aspectFill"
-                  width={200}
+                  // mode="aspectFill"
+                  width={220}
                 />
               </View>
               <View className="shop-logo">
                 <SpImage
                   src={item.logo || "shop_default_logo.png"}
-                  mode="aspectFill"
+                  // mode="aspectFill"
                   width={74}
                 />
               </View>
