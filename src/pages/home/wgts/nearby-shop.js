@@ -10,7 +10,8 @@ import "./nearby-shop.scss";
 
 const initialState = {
   activeIndex: 0,
-  shopList: []
+  shopList: [],
+  scrollLeft: 0
 }
 
 function WgtNearbyShop( props ) {
@@ -44,6 +45,7 @@ function WgtNearbyShop( props ) {
     const { list } = await api.shop.getNearbyShop( params );
     setState( v => {
       v.shopList = list;
+      v.scrollLeft = 0+Math.random() //  //在小程序端必须这么写才能回到初始值
     })
   };
 
@@ -97,7 +99,7 @@ function WgtNearbyShop( props ) {
           ))}
         </ScrollView>
 
-        <ScrollView className="scroll-list" scrollX>
+        <ScrollView className="scroll-list" scrollX scrollLeft={state.scrollLeft}>
           {state.shopList.map(item => (
             <View
               className="shop"

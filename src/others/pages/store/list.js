@@ -19,7 +19,7 @@ import { pickBy, classNames, getCurrentRoute,getBrowserEnv } from '@/utils'
 
 import './list.scss'
 @connect(({ user }) => ({
-  favs: user.favs,
+  favs: user.favs || [],
 }))
 @withPager
 @withBackToTop
