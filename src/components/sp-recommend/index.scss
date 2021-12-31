@@ -3,6 +3,8 @@
   &-hd {
     padding: 0 24px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
     .recommend-icon {
       width: auto;
       height: 50px;
