@@ -291,7 +291,7 @@ function MemberIndex(props) {
       return (
         <View className='gradename'>{`${
           !vipInfo.isVip
-            ? userInfo.gradeInfo ? userInfo.gradeInfo.grade_name : ''
+            ? userInfo?.userInfo.gradeInfo.grade_name
             : vipInfo.grade_name || '会员'
         }`}</View>
       )

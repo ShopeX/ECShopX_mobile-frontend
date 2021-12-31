@@ -1,6 +1,6 @@
 // this.fetch 方法需要返回条数总量: { total }，用来计算页数
 // this.state.page 存放page相关的状态
-// import { Tracker } from '@/service'
+import { Tracker } from '@/service'
 
 
 export default function withPager(Component) {
