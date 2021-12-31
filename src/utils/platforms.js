@@ -1,19 +1,18 @@
-import Taro,{getCurrentInstance} from "@tarojs/taro";
-
-
+import Taro, { getCurrentInstance } from "@tarojs/taro";
 
 /* 获取小程序 */
 export const getAppId = () => {
-  const { appid } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
-
-  return appid;
+  const { appid } = Taro.getExtConfigSync
+    ? Taro.getExtConfigSync()
+    : { appid: process.env.APP_ID };
+  
+  return appid
 };
 
-export const createIntersectionObserver = Taro.createIntersectionObserver
+export const createIntersectionObserver = Taro.createIntersectionObserver;
 
 /** 在支付宝平台 */
 export const isAlipay = Taro.getEnv() == Taro.ENV_TYPE.ALIPAY;
-
 
 // export const copy = isWeixin
 //   ? text => Taro.setClipboardData({ data: text })
@@ -39,7 +38,7 @@ export async function payPlatform(order = {}) {
     if (!payRes.result) {
       Taro.showToast({
         title: "用户取消支付",
-        icon: "none"
+        icon: "none",
       });
 
       payErr = "用户取消支付";
@@ -49,15 +48,12 @@ export async function payPlatform(order = {}) {
   }
   return {
     payRes,
-    payErr
+    payErr,
   };
 }
 
-
 // //平台模版名称
 // export const platformTemplateName = isAlipay ? "onexshop" : "yykweishop";
-
-
 
 //平台添加字段
 export const payTypeField = isAlipay ? { page_type: "alipay" } : {};

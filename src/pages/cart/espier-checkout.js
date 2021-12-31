@@ -1409,14 +1409,7 @@ export default class CartCheckout extends Component {
         }
       }
 
-      if (!payRes.result && isAlipay) {
-        Taro.showToast({
-          title: '用户取消支付',
-          icon: 'none'
-        })
-
-        payErr = '用户取消支付'
-
+      if (!payRes.result) {
         Taro.redirectTo({
           url: tradeDetailUrl
         })

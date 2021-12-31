@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import qs from 'qs'
 import S from '@/spx'
-import { isAlipay, isWeixin, isWeb } from '@/utils'
+import { isAlipay, isWeixin, isWeb } from "@/utils";
 import log from '@/utils/log'
 import { HTTP_STATUS } from './consts'
 
@@ -84,7 +84,9 @@ class API {
       company_id: process.env.APP_COMPANY_ID
     }
     if (isWeixin || isAlipay) {
-      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+      const extConfig = Taro.getExtConfigSync
+        ? Taro.getExtConfigSync()
+        : { appid: process.env.APP_ID };
       options.appid = extConfig.appid
       if (extConfig.company_id) {
         options.company_id = extConfig.company_id
@@ -274,7 +276,7 @@ class API {
         S.getAuthToken()
       ) {
         // token失效时重造请求，并刷新token
-        if (!this.isRefreshingToken) {
+        if ( !this.isRefreshingToken ) {
           await this.refreshToken()
         }
         ret = await this.pendingReq(config, intereptorRes, intereptorReq, true)

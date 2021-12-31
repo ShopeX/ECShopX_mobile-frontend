@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { View, Text, Button, Image } from '@tarojs/components'
+import { View, Text, ScrollView, Image } from "@tarojs/components";
 import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpToast, SpNavBar, FloatMenuMeiQia, SpImg } from '@/components'

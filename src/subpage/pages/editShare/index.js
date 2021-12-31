@@ -1,19 +1,10 @@
-/*
- * @Author: PrendsMoi
- * @GitHub: https://github.com/PrendsMoi
- * @Blog: https://liuhgxu.com
- * @Description: 编辑分享
- * @FilePath: /unite-vshop/src/subpage/pages/editShare/index.js
- * @Date: 2021-04-14 15:06:18
- * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-04-23 13:55:44
- */
 import React, { Component } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { Textarea, View, Image, Canvas, Button } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
 import api from '@/api'
 import req from '@/api/req'
+import { getAppId } from '@/utils'
 import { connect } from 'react-redux'
 
 import './index.scss'
@@ -81,12 +72,11 @@ export default class EditShare extends Component {
     ]
 
     const { userId } = Taro.getStorageSync('userinfo')
-    const host = req.baseURL.replace('/api/h5app/wxapp/', '')
-    const extConfig =
-      Taro.getEnv() === 'WEAPP' && Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
-
+    const host = req.baseURL.replace( '/api/h5app/wxapp/', '' )
+    
+    const { appid } = getAppId()
     const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${
-      extConfig.appid
+      appid
     }&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
 
     this.goodInfo = data

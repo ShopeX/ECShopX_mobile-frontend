@@ -1,18 +1,14 @@
-import { isWeixin } from "@/utils";
+import { isWeixin, getAppId } from "@/utils";
 import req from "./req";
 
-const getAppId = () => {
-  const { appid } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
-  return appid;
-};
 
 export function login(data) {
   return req.post("/login", data);
 }
 
 // 绑定导购
-export function bindSaleperson (data) {
-  return req.post("/member/bindSalesperson", data)
+export function bindSaleperson(data) {
+  return req.post("/member/bindSalesperson", data);
 }
 
 export function logout() {
@@ -25,9 +21,9 @@ export function refreshToken() {
 
 export function reg(params) {
   if (isWeixin) {
-    params.appid = getAppId() || ''
+    params.appid = getAppId() || "";
   }
-  return req.post('/member', params);
+  return req.post("/member", params);
 }
 
 export function regRule() {
@@ -130,8 +126,8 @@ export function isSubscribeGoods(item_id) {
 }
 
 // 检测是否可以分享
-export function getIsCanShare (param = {}) {
-  return req.get('/goods/checkshare/items', param)
+export function getIsCanShare(param = {}) {
+  return req.get("/goods/checkshare/items", param);
 }
 
 //ba导购端
@@ -159,20 +155,20 @@ export function getQwUserInfo(params = {}) {
 //   return req.get("/workwechatlogin", params);
 // }
 //更新用户详情
-export function updateUserInfo (params) {
-  return req.put('/updateWechatUserInfo', {
-    ...params
-  })
+export function updateUserInfo(params) {
+  return req.put("/updateWechatUserInfo", {
+    ...params,
+  });
 }
 
 //记录导购被访问的UV
 export function uniquevisito(params) {
   return req.post("/member/salesperson/uniquevisito", {
-    ...params
+    ...params,
   });
 }
 
 // 是否需要开启初次授权填写个人信息
 export function getIsMustOauth(params) {
-  return req.get('/espier/config/request_field_setting', params)
+  return req.get("/espier/config/request_field_setting", params);
 }
