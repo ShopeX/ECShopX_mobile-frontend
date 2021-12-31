@@ -207,6 +207,7 @@ function MemberIndex(props) {
       normal_payed_daifahuo, // 待发货
       normal_payed_daishouhuo, // 待收货
       normal_payed_daiziti, // 待自提订单
+      normal_not_rate // 待评论
     } = resTrade;
 
     setState((draft) => {
@@ -218,6 +219,7 @@ function MemberIndex(props) {
       draft.waitRecevieNum = normal_payed_daishouhuo;
       draft.afterSalesNum = aftersales;
       draft.zitiNum = normal_payed_daiziti;
+      draft.waitEvaluateNum = normal_not_rate
     });
   };
 
@@ -457,10 +459,15 @@ function MemberIndex(props) {
               className="order-item"
               onClick={handleClickLink.bind(
                 this,
-                "/subpage/pages/trade/list?status=3"
+                "/subpage/pages/trade/list?status=7"
               )}
             >
               <SpImage src="pingjia.png" className="icon-style" />
+              {state.waitEvaluateNum > 0 && (
+                <View className="order-bradge">
+                  <Text>{state.waitEvaluateNum}</Text>
+                </View>
+              )}
               <Text className="order-txt">待评价</Text>
             </View>
             <View
