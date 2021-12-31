@@ -45,6 +45,7 @@ import {
   isAlipay,
   isWeixin,
   linkPage,
+  getAppId,
 } from "@/utils";
 import { setPageTitle } from '@/utils/platform'
 import entry from '@/utils/entry'
@@ -738,8 +739,7 @@ export default class EspierDetail extends Component {
     const { info, is_open_store_status } = this.state
     const { pics, company_id, item_id } = info
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
-    const extConfig =
-      Taro.getEnv() === 'WEAPP' && Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+    const { appid } = getAppId()
     const { distributor_id, store_id } = Taro.getStorageSync('curStore')
 
     const pic = pics[0].replace('http:', 'https:')
@@ -751,7 +751,7 @@ export default class EspierDetail extends Component {
           : distributor_id
         : infoId
 
-    const wxappCode = getDtidIdUrl(`${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${extConfig.appid}&company_id=${company_id}&id=${item_id}&uid=${userId}`,id)
+    const wxappCode = getDtidIdUrl(`${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${item_id}&uid=${userId}`,id)
 
     console.log('wxappCode', wxappCode)
 

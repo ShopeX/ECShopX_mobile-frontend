@@ -1,5 +1,6 @@
 import Taro,{getCurrentInstance} from "@tarojs/taro";
 import api from "@/api";
+import { getAppId } from '@/utils'
 // import { Tracker } from "@/service";
 
 async function youshuLogin() {
@@ -54,7 +55,7 @@ function TracksPayed(info, config, moduleName) {
 }
 
 function getYoushuAppid() {
-  const { appid } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {};
+  const { appid } = getAppId();
   const {
     youshu: { weapp_app_id }
   } = Taro.getStorageSync("otherSetting");

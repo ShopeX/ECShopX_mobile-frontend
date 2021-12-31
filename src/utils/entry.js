@@ -360,13 +360,6 @@ function parseUrlStr(urlStr) {
 
 // 高德地图根据地址解析经纬度
 async function positiveAnalysisGaode (locationData) {
-  // let MAP_KEY = null
-  // if (process.env.TARO_ENV === 'weapp') {
-  //   const { map_key } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
-  //   MAP_KEY = map_key
-  // } else {
-  //   MAP_KEY = Taro.getStorageSync('gaode_map_key') || {}
-  // }
   const { addressdetail: address } = locationData
   let cityInfo = await Taro.request({
     url: `https://restapi.amap.com/v3/geocode/geo`,
@@ -389,13 +382,6 @@ async function positiveAnalysisGaode (locationData) {
 
 // 高德地图根据经纬度解析地址
 async function InverseAnalysisGaode(locationData){
-  // let MAP_KEY = null
-  // if (process.env.TARO_ENV === 'weapp') {
-  //   const { map_key } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
-  //   MAP_KEY = map_key
-  // } else {
-  //   MAP_KEY = Taro.getStorageSync('gaode_map_key') || {}
-  // }
   const { lat, lng } = locationData
   let cityInfo = await Taro.request({
     url: `https://restapi.amap.com/v3/geocode/regeo`,

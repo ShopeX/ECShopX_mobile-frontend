@@ -34,6 +34,9 @@ class Spx {
   logout() {
     Taro.removeStorageSync( SG_TOKEN )
     Taro.removeStorageSync( SG_USER_INFO )
+    store.dispatch({
+      type: "user/clearUserInfo",
+    });
     this.delete(SG_TOKEN, true)
   }
 
@@ -236,10 +239,10 @@ class Spx {
     this.set('GUIDE_INFO', _QwUserInfo, true)
   }
 
-  logout() {
-    Taro.removeStorageSync('userinfo')
-    this.trigger('logout')
-  }
+  // logout() {
+  //   Taro.removeStorageSync('userinfo')
+  //   this.trigger('logout')
+  // }
 
   globalData() {
     if (process.env.NODE_ENV === 'production') {

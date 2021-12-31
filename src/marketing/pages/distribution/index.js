@@ -95,7 +95,9 @@ export default class DistributionDashboard extends Component {
   }
 
   onShareAppMessage() {
-    const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+    const extConfig = wx.getExtConfigSync
+      ? wx.getExtConfigSync()
+      : { wxa_name: process.env.APP_MAP_NAME };
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
     return {
@@ -138,7 +140,13 @@ export default class DistributionDashboard extends Component {
       Taro.setStorageSync('userinfo', userObj)
       userinfo = userObj
     }
-    const extConfig = Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+    const extConfig =
+      Taro.getEnv() === "WEAPP" && wx.getExtConfigSync
+        ? wx.getExtConfigSync()
+        : {
+            appid: process.env.APP_ID,
+            company_id: process.env.APP_COMPANY_ID,
+          };
 
     shop_status = JSON.parse(shop_status === 1)
     const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`

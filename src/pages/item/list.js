@@ -224,7 +224,12 @@ function ItemList(props) {
   };
 
   return (
-    <SpPage scrollToTopBtn className={classNames("page-item-list")}>
+    <SpPage
+      scrollToTopBtn
+      className={classNames("page-item-list", {
+        "has-tagbar": tagList.length > 0,
+      })}
+    >
       <View className="item-list-head">
         <View className="search-wrap">
           <SpSearchBar
@@ -237,13 +242,14 @@ function ItemList(props) {
             onConfirm={handleConfirm}
           />
         </View>
-        <SpTagBar
-          className="tag-list"
-          list={tagList}
-          value={curTagIdx}
-          onChange={onChangeTag}
-        >
-          {/* <View
+        {tagList.length > 0 && (
+          <SpTagBar
+            className="tag-list"
+            list={tagList}
+            value={curTagIdx}
+            onChange={onChangeTag}
+          >
+            {/* <View
             className="filter-btn"
             onClick={() => {
               setState(v => {
@@ -253,7 +259,9 @@ function ItemList(props) {
           >
             筛选<Text className="iconfont icon-filter"></Text>
           </View> */}
-        </SpTagBar>
+          </SpTagBar>
+        )}
+
         <SpFilterBar
           custom
           current={curFilterIdx}

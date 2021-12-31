@@ -305,8 +305,7 @@ export default class StoreIndex extends Component {
     return (
       <SpPage
         className={classNames("page-store-index", {
-          fixedSearch,
-          "has-navbar": isNavbar(),
+          fixedSearch
         })}
       >
         <ScrollView

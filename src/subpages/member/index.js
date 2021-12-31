@@ -315,7 +315,7 @@ function MemberIndex(props) {
       <View
         className="header-block"
         style={styleNames({
-          "background-image": `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`
+          "background-image": `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`,
         })}
       >
         <View className="header-hd">
@@ -344,9 +344,7 @@ function MemberIndex(props) {
                 ></Text>
               )}
             </View>
-            <View className="join-us">
-              {VipGradeDom()}
-            </View>
+            <View className="join-us">{VipGradeDom()}</View>
           </View>
         </View>
         <View className="header-bd">
@@ -451,28 +449,13 @@ function MemberIndex(props) {
               )}
             >
               <SpImage src="daishouhuo.png" className="icon-style" />
-              {state.waitRecevieNum > 0 && (
+              {state.waitRecevieNum + state.waitSendNum > 0 && (
                 <View className="order-bradge">
-                  <Text>{state.waitRecevieNum}</Text>
+                  <Text>{state.waitRecevieNum + state.waitSendNum}</Text>
                 </View>
               )}
               <Text className="order-txt">待收货</Text>
             </View>
-            {/* <View
-              className="order-item"
-              onClick={handleClickLink.bind(
-                this,
-                "/subpage/pages/trade/list?status=3"
-              )}
-            >
-              <SpImage src="daifahuo.png" className="icon-style" />
-              {state.waitSendNum > 0 && (
-                <View className="order-bradge">
-                  <Text>{state.waitSendNum}</Text>
-                </View>
-              )}
-              <Text className="order-txt">已完成</Text>
-            </View> */}
             <View
               className="order-item"
               onClick={handleClickLink.bind(
@@ -505,7 +488,7 @@ function MemberIndex(props) {
           <CompMenu
             accessMenu={{
               ...config.menu,
-              popularize: userInfo ? userInfo.popularize : false
+              popularize: userInfo ? userInfo.popularize : false,
             }}
             isPromoter={userInfo ? userInfo.isPromoter : false}
             onLink={handleClickService}

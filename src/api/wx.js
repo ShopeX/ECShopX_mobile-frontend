@@ -1,14 +1,7 @@
 import Taro from '@tarojs/taro'
-import { payTypeField } from '@/utils'
+import { payTypeField, getAppId } from '@/utils'
 import req from './req'
 
-const getAppId = () => {
-  const { appid } = Taro.getExtConfigSync
-    ? Taro.getExtConfigSync()
-    : {};
-
-  return appid
-}
 
 export function getOpenid ({ code }) {
   return req.get('/oauth/getopenid', {code})

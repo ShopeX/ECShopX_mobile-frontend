@@ -1,17 +1,7 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/utils/upload.js
- * @Date: 2020-03-06 16:32:07
- * @LastEditors: Arvin
- * @LastEditTime: 2020-11-16 17:42:43
- */
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
 import S from '@/spx'
-import { isAlipay } from '@/utils'
+import { isAlipay, getAppId } from '@/utils'
 // import * as qiniu from 'qiniu-js'
 
 const getToken = (params) => {
@@ -92,21 +82,21 @@ const upload = {
   localUpload: async (item, tokenRes) => {
     const { filetype = "image", domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+    const { appid } = getAppId()
     try {
       const res = await Taro.uploadFile({
         url: `${req.baseURL}espier/uploadlocal`,
         filePath: item.url,
         header: {
-          'Authorization': `Bearer ${S.getAuthToken()}`,
-          'authorizer-appid': extConfig.appid
+          Authorization: `Bearer ${S.getAuthToken()}`,
+          "authorizer-appid": appid,
         },
-        name: 'images',
+        name: "images",
         formData: {
           name: filename,
           filetype,
-        }
-      })
+        },
+      });
       const data = JSON.parse(res.data)
       const { image_url } = data.data
       if (!image_url) {
