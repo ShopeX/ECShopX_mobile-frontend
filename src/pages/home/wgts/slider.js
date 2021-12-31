@@ -42,7 +42,7 @@ export default class WgtSlider extends Component {
     }
     const { config, base, data } = info
     const curContent = (data[curIdx] || {}).content
-
+    console.log('slider xxxx')
     return (
       <View
         className={classNames("wgt wgt-slider", {
@@ -74,7 +74,7 @@ export default class WgtSlider extends Component {
               current={curIdx}
               interval={config.interval}
               duration={300}
-              onChange={this.handleSwiperChange.bind(this)}
+              // onChange={this.handleSwiperChange.bind(this)}
             >
               {data.map((item, idx) => {
                 return (
@@ -91,12 +91,6 @@ export default class WgtSlider extends Component {
                       className="wrapper-img"
                       onClick={this.handleClickItem.bind(this, item)}
                     >
-                      {/* <WgtPlateType
-                        info={item}
-                        index={index}
-                        num={idx}
-                        base={base}
-                      /> */}
                       <SpImage
                         img-class="slider-item__img"
                         src={item.imgUrl}
