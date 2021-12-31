@@ -1,13 +1,8 @@
-import Taro, { useShareAppMessage, useDidShow } from '@tarojs/taro'
-import {
-  useState,
-  useEffect,
-  useCallback,
-  useRef
-} from 'react'
-import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
-import { useSelector } from 'react-redux'
-import { useImmer } from 'use-immer'
+import Taro, { useShareAppMessage, useDidShow } from "@tarojs/taro";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { View, ScrollView, Text, Image, Button } from "@tarojs/components";
+import { useSelector } from "react-redux";
+import { useImmer } from "use-immer";
 import {
   TabBar,
   SpLogin,
@@ -17,9 +12,9 @@ import {
   SpModal,
   SpPrivacyModal,
   SpTabbar,
-  SpPage
-} from '@/components'
-import api from '@/api'
+  SpPage,
+} from "@/components";
+import api from "@/api";
 import {
   navigateTo,
   getThemeStyle,
@@ -28,15 +23,15 @@ import {
   showToast,
   showModal,
   isWeixin,
-  log
-} from '@/utils'
-import { useLogin } from '@/hooks'
-import CompVipCard from './comps/comp-vipcard'
-import CompBanner from './comps/comp-banner'
-import CompPanel from './comps/comp-panel'
-import CompMenu from './comps/comp-menu'
-import CompHelpCenter from './comps/comp-helpcenter'
-import './index.scss'
+  log,
+} from "@/utils";
+import { useLogin } from "@/hooks";
+import CompVipCard from "./comps/comp-vipcard";
+import CompBanner from "./comps/comp-banner";
+import CompPanel from "./comps/comp-panel";
+import CompMenu from "./comps/comp-menu";
+import CompHelpCenter from "./comps/comp-helpcenter";
+import "./index.scss";
 
 const initialConfigState = {
   banner: {
@@ -97,53 +92,51 @@ function MemberIndex(props) {
   const [state, setState] = useImmer(initialState);
   const [policyModal, setPolicyModal] = useState(false);
 
-  const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
+  const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user);
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`);
-  
-  useEffect(() => {
-    if (isLogin) {
-      getMemberCenterData()
-    }
-  }, [isLogin])
 
   useEffect(() => {
-    getMemberCenterConfig()
-  }, [])
+    if (isLogin) {
+      getMemberCenterData();
+    }
+  }, [isLogin]);
+
+  useEffect(() => {
+    getMemberCenterConfig();
+  }, []);
 
   // 分享
   useShareAppMessage(async (res) => {
-    const {
-      share_title = '震惊！这店绝了！',
-      share_pic_wechatapp
-    } = await api.member.getMemberShareConfig()
+    const { share_title = "震惊！这店绝了！", share_pic_wechatapp } =
+      await api.member.getMemberShareConfig();
     const { logo } = await api.distribution.getDistributorInfo({
-      distributor_id: 0
-    })
+      distributor_id: 0,
+    });
     return {
       title: share_title,
       imageUrl: share_pic_wechatapp || logo,
-      path: '/pages/index'
-    }
-  })
+      path: "/pages/index",
+    };
+  });
 
   const getMemberCenterConfig = async () => {
     const [bannerRes, menuRes, redirectRes, pointShopRes] = await Promise.all([
       // 会员中心banner
       await api.shop.getPageParamsConfig({
-        page_name: 'member_center_setting'
+        page_name: "member_center_setting",
       }),
       // 菜单自定义
       await api.shop.getPageParamsConfig({
-        page_name: 'member_center_menu_setting'
+        page_name: "member_center_menu_setting",
       }),
       // 积分跳转配置
       await api.shop.getPageParamsConfig({
-        page_name: 'member_center_redirect_setting'
+        page_name: "member_center_redirect_setting",
       }),
       // 积分商城
-      await api.pointitem.getPointitemSetting()
-    ])
-    let banner, menu, redirectInfo
+      await api.pointitem.getPointitemSetting(),
+    ]);
+    let banner, menu, redirectInfo;
     if (bannerRes.list.length > 0) {
       const {
         app_id,
@@ -151,19 +144,19 @@ function MemberIndex(props) {
         login_banner,
         no_login_banner,
         page,
-        url_is_open
-      } = bannerRes.list[0].params.data
+        url_is_open,
+      } = bannerRes.list[0].params.data;
       banner = {
         isShow: is_show,
         loginBanner: login_banner,
         noLoginBanner: no_login_banner,
         pageUrl: page,
         urlOpen: url_is_open,
-        appId: app_id
-      }
+        appId: app_id,
+      };
     }
     if (menuRes.list.length > 0) {
-      menu = menuRes.list[0].params.data
+      menu = menuRes.list[0].params.data;
     }
     if (redirectRes.list.length > 0) {
       const {
@@ -172,18 +165,18 @@ function MemberIndex(props) {
         info_url_is_open,
         point_app_id,
         point_page,
-        point_url_is_open
-      } = redirectRes.list[0].params.data
+        point_url_is_open,
+      } = redirectRes.list[0].params.data;
       redirectInfo = {
         infoAppId: info_app_id,
         infoPage: info_page,
         infoUrlIsOpen: info_url_is_open,
         pointAppId: point_app_id,
         pointPage: point_page,
-        pointUrlIsOpen: point_url_is_open
-      }
+        pointUrlIsOpen: point_url_is_open,
+      };
     }
-    setConfig( draft => {
+    setConfig((draft) => {
       draft.banner = banner;
       draft.menu = {
         ...menu,
@@ -195,18 +188,19 @@ function MemberIndex(props) {
       draft.pointAppId = redirectInfo.point_app_id;
       draft.pointPage = redirectInfo.point_page;
       draft.pointUrlIsOpen = redirectInfo.point_url_is_open;
-    })
-  }
+    });
+  };
 
   const getMemberCenterData = async () => {
-    const resSales = await api.member.getSalesperson()
-    const resTrade = await api.trade.getCount()
-    const resVip = await api.vip.getList()
-    const resAssets = await api.member.memberAssets()
+    const resSales = await api.member.getSalesperson();
+    const resTrade = await api.trade.getCount();
+    const resVip = await api.vip.getList();
+    const resAssets = await api.member.memberAssets();
     // 大转盘
-    const resTurntable = await api.wheel.getTurntableconfig()
+    const resTurntable = await api.wheel.getTurntableconfig();
 
-    const { discount_total_count, fav_total_count, point_total_count } = resAssets
+    const { discount_total_count, fav_total_count, point_total_count } =
+      resAssets;
     const {
       aftersales, // 待处理售后
       normal_notpay_notdelivery, // 未付款未发货
@@ -215,7 +209,7 @@ function MemberIndex(props) {
       normal_payed_daiziti, // 待自提订单
     } = resTrade;
 
-    setState(draft => {
+    setState((draft) => {
       draft.favCount = fav_total_count;
       draft.point = point_total_count;
       draft.couponCount = discount_total_count;
@@ -225,28 +219,28 @@ function MemberIndex(props) {
       draft.afterSalesNum = aftersales;
       draft.zitiNum = normal_payed_daiziti;
     });
-  }
+  };
 
   const handleClickLink = async (link) => {
-    await getUserInfoAuth()
-    Taro.navigateTo({ url: link })
-  }
+    await getUserInfoAuth();
+    Taro.navigateTo({ url: link });
+  };
 
   const handleClickPoint = () => {
-    const { pointAppId, pointPage, pointUrlIsOpen } = config
+    const { pointAppId, pointPage, pointUrlIsOpen } = config;
     if (pointUrlIsOpen) {
       Taro.navigateToMiniProgram({
         appId: pointAppId,
-        path: pointPage
-      })
+        path: pointPage,
+      });
     }
-  }
+  };
 
   const handleClickService = async (item) => {
-    const { link, key } = item
-    await getUserInfoAuth()
+    const { link, key } = item;
+    await getUserInfoAuth();
     // 分销推广
-    if (key == 'popularize') {
+    if (key == "popularize") {
       // 已经是分销员
       if (userInfo.isPromoter) {
         Taro.navigateTo({ url: link });
@@ -270,42 +264,45 @@ function MemberIndex(props) {
           });
         }
       }
-      return
+      return;
     }
-    if (key == 'useinfo') {
-      const { infoAppId, infoPage, infoUrlIsOpen } = config
+    if (key == "useinfo") {
+      const { infoAppId, infoPage, infoUrlIsOpen } = config;
       if (infoUrlIsOpen) {
         Taro.navigateToMiniProgram({
           appId: infoAppId,
-          path: infoPage
-        })
+          path: infoPage,
+        });
       }
     }
     if (link) {
-      Taro.navigateTo({ url: link })
+      Taro.navigateTo({ url: link });
     }
-  }
+  };
 
   const VipGradeDom = () => {
     if (isLogin) {
       return (
-        <View className='gradename'>{`${
-          !vipInfo.isVip
-            ? userInfo?.gradeInfo?.grade_name
-            : vipInfo.grade_name || '会员'
-        }`}</View>
-      )
+        <View className="gradename">
+          {
+            {
+              true: vipInfo.grade_name || "会员",
+              false: userInfo?.gradeInfo?.grade_name || "",
+            }[vipInfo.isVip]
+          }
+        </View>
+      );
     } else {
       return (
         <SpLogin>
           <Text className="join-us-txt">加入我们?</Text>
         </SpLogin>
-      )
+      );
     }
-  }
+  };
 
   if (!config) {
-    return null
+    return null;
   }
 
   // console.log(`member page:`, state, config);
@@ -519,4 +516,4 @@ function MemberIndex(props) {
   );
 }
 
-export default MemberIndex
+export default MemberIndex;
