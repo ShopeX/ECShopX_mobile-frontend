@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { View, Text, ScrollView, Image } from "@tarojs/components";
+import { View, Text, Button, Image,ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpToast, SpNavBar, FloatMenuMeiQia, SpImg } from '@/components'
@@ -77,12 +77,12 @@ export default class TradeDetail extends Component {
             <View className='wuliu-detail-item'>
               <View className='wuliu-status'>
                 {item.status_msg == '已发货' && (
-                  <Text className='biao-icon biao-icon-yifahuo'>
+                  <Text className='iconfont biao-icon biao-icon-yifahuo'>
                     <Text className='icon-text'>已发货</Text>
                   </Text>
                 )}
                 {item.status_msg == '未发货' && (
-                  <Text className='biao-icon biao-icon-daifahuo'>
+                  <Text className='iconfont biao-icon biao-icon-daifahuo'>
                     <Text className='icon-text'>待发货</Text>
                   </Text>
                 )}
@@ -102,11 +102,10 @@ export default class TradeDetail extends Component {
                             /> */}
                 <ScrollView scrollX>
                   {item.items.map((i) => (
-                    <SpImg
-                      img-class='order-item__img'
+                    <Image
+                      className='order-item__img'
                       src={i.pic}
                       mode='aspectFill'
-                      width='300'
                       lazyLoad
                     />
                   ))}

@@ -26,7 +26,7 @@ function WgtNearbyShop( props ) {
 
   useEffect(() => {
     init();
-  }, [state.activeIndex]);
+  }, [state.activeIndex,location]);
 
   const init = async () => {
     const params = {

@@ -556,23 +556,8 @@ export default class EspierDetail extends Component {
 
     const { list, total_count: total } = await this.goodLikeList(query)
 
-    const nList = pickBy(list, {
-      img: "pics[0]",
-      item_id: "item_id",
-      title: "itemName",
-      point: "point",
-      distributor_id: "distributor_id",
-      promotion_activity_tag: "promotion_activity",
-      price: ({ price }) => {
-        return (price / 100).toFixed(2);
-      },
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-      desc: "brief"
-    });
-
     this.setState({
-      likeList: [...this.state.likeList, ...nList]
+      likeList: [...this.state.likeList, ...list]
     })
 
     return {
@@ -1595,34 +1580,7 @@ export default class EspierDetail extends Component {
           )}
 
           {/* 猜你喜欢 */}
-          {likeList.length && showLikeList ? (
-            <View className="cart-list cart-list__disabled">
-              <View className="cart-list__hd like__hd">
-                <Text
-                  className="cart-list__title"
-                  style={{
-                    color: colors.data[0].primary,
-                    borderColor: colors.data[0].primary
-                  }}
-                >
-                  猜你喜欢
-                </Text>
-              </View>
-              <View className="goods-list goods-list__type-grid">
-                {likeList.map(item => {
-                  return (
-                    <View className="goods-list__item" key={item.item_id}>
-                      <GoodsItem
-                        key={item.item_id}
-                        info={item}
-                        onClick={this.handleClickItem.bind(this, item)}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-            </View>
-          ) : null}
+          <SpRecommend className="recommend-block" info={likeList} />
         </ScrollView>
 
         <FloatMenus>
