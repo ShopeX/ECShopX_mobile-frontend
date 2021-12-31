@@ -73,7 +73,7 @@ export default class GoodsBuyToolbar extends Component {
       info,
       colors,
       isPointitem,
-      favs
+      favs = []
     } = this.props;
     if (!info) {
       return null;

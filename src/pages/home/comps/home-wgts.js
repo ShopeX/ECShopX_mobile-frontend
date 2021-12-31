@@ -62,7 +62,6 @@ export default class HomeWgts extends Component {
     // const toExpose = wgts.map((t, idx) => String(idx))
 
     const observer = Taro.createIntersectionObserver({ observeAll: true })
-
     this.observe = observer
   }
 
@@ -79,7 +78,7 @@ export default class HomeWgts extends Component {
   }
 
   render() {
-    const { wgts,refreshHeaderHome } = this.props
+    const { wgts } = this.props
     const { screenWidth } = this.state
 
     console.log('home-wgts23', wgts)
@@ -137,7 +136,7 @@ export default class HomeWgts extends Component {
             {item.name === 'store' && (
               <WgtStore info={item} />
             )}
-            {item.name === "nearbyShop" && <WgtNearbyShop info={item} refreshHeaderHome={refreshHeaderHome}/>}
+            {item.name === "nearbyShop" && <WgtNearbyShop info={item}/>}
           </View>
         ))}
       </View>

@@ -104,7 +104,8 @@ function Home() {
   }
 
   const handleConfirmModal = useCallback(async () => {
-    fetchLocation()
+    // fetchLocation()
+    fetchWgts();
     setPolicyModal(false);
   }, []);
 
@@ -123,7 +124,6 @@ function Home() {
       query: "/pages/index",
     };
   } )
-  
   const searchComp = wgts.find( ( wgt ) => wgt.name == "search" );
   let filterWgts = []
   if (searchComp && searchComp.config.fixTop) {

@@ -30,8 +30,14 @@ export default class FormIdCollector extends Component {
 
   render() {
     if (Taro.getEnv() === Taro.ENV_TYPE.WEAPP) {
-      const { children } = this.props
-      return { children }
+      return <Button
+        hoverClass='none'
+        className='form-id-collector__btn'
+        formType='submit'
+        onClick={this.props.onClick}
+      >
+        {this.props.children}
+      </Button>
     }
 
     return (

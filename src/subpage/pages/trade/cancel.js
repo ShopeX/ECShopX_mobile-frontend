@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import S from '@/spx'
 import api from '@/api'
 import { AtTag, AtTextarea } from 'taro-ui'
-// import { Tracker } from '@/service'
+import { Tracker } from '@/service'
 
 import './cancel.scss'
 

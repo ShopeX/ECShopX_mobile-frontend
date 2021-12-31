@@ -42,7 +42,6 @@ function WgtNearbyShop( props ) {
       sort_type: 1
     };
     const { list } = await api.shop.getNearbyShop( params );
-    
     setState( v => {
       v.shopList = list;
     })

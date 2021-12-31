@@ -39,7 +39,7 @@ export default class GroupDetail extends Component {
     const detail = await api.group.groupDetail(team_id, params)
     const { activity_info, team_info, member_list } = detail
 
-    const { over_time: total_micro_second } = activity_info
+    const { over_time: total_micro_second, person_num } = activity_info
 
     const userInfo = Taro.getStorageSync('userinfo')
     const user_id = (userInfo && userInfo.userId) || 0
@@ -51,12 +51,17 @@ export default class GroupDetail extends Component {
     let timer = null
     timer = this.calcTimer(total_micro_second)
 
+    console.log(detail, '------')
+
+    const curtimestamp = (new Date()).valueOf()
+    console.log(curtimestamp, 'curtimestamp')
+
     this.setState({
       timer,
       detail,
       isLeader,
       isSelf,
-      curtainStatus: activity_info.status == 3 || team_info.status == 3 // 活动或团是否已经过期，
+      curtainStatus: team_info.status == 3 && person_num != team_info.join_person_num // 拼团活动结束并且没有拼团成功
     })
   }
 
@@ -90,17 +95,18 @@ export default class GroupDetail extends Component {
     }
 
     const { detail } = this.state
-    const { activity_info, team_info } = detail
-    const { distributor_id } = Taro.getStorageSync('curStore')
+    const { activity_info, team_info: { team_id } } = detail
+    const { goods_id, distributor_id = 0, groups_activity_id } = activity_info || {}
+    // const { distributor_id } = Taro.getStorageSync('curStore')
 
     try {
       await api.cart.fastBuy({
-        item_id: activity_info.goods_id,
-        distributor_id,
+        item_id: goods_id,
+        distributor_id: distributor_id, // 店铺端暂不支持拼团活动 所以distributor_id需要传0
         num: 1
       })
       Taro.navigateTo({
-        url: `/pages/cart/espier-checkout?type=group&team_id=${team_info.team_id}&group_id=${activity_info.groups_activity_id}&shop_id=${distributor_id}`
+        url: `/pages/cart/espier-checkout?type=group&team_id=${team_id}&group_id=${groups_activity_id}&shop_id=${distributor_id}`
       })
     } catch (e) {
       console.log(e)
@@ -109,10 +115,10 @@ export default class GroupDetail extends Component {
 
   handleDetailClick = () => {
     const { detail } = this.state
-    const { activity_info, team_info } = detail
+    const { activity_info: { goods_id, distributor_id = 0 } } = detail
 
     Taro.redirectTo({
-      url: `/pages/item/espier-detail?id=${activity_info.goods_id}&dtid=${activity_info.distributor_id}`
+      url: `/pages/item/espier-detail?id=${goods_id}&dtid=${distributor_id}`
     })
   }
 
