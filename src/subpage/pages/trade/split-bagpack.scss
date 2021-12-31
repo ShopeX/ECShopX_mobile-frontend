@@ -3,9 +3,10 @@
   .title-status {
     background-color: #f7e5e4;
     height: 65px;
-    padding: 10px;
+    padding-left: 10px;
     color: #82565d;
     font-weight: 500;
+    line-height: 65px;
   }
 
   .wuliu-detail {
@@ -19,7 +20,7 @@
         display: flex;
         justify-content: space-between;
         padding: 30px 10px 10px 10px;
-
+        align-items: center;
         .biao-icon {
           color: #ba0c29;
           //   padding: 10px;
