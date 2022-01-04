@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
-import Taro, { Component } from "@tarojs/taro";
-import { View, Image } from "@tarojs/components";
-import { classNames, styleNames, isNumber,isBase64 } from "@/utils";
-import "./index.scss";
+import { useSelector } from 'react-redux'
+import Taro, { Component } from '@tarojs/taro'
+import { View, Image } from '@tarojs/components'
+import { classNames, styleNames, isNumber, isBase64 } from '@/utils'
+import './index.scss'
 
 function SpImage (props) {
   let {
@@ -22,18 +22,16 @@ function SpImage (props) {
     src = 'default_img.png'
   }
 
-  let imgUrl = (/^http/.test(src)|| isBase64(src))
-    ? src
-    : `${process.env.APP_IMAGE_CDN}/${src}`;
-  
-  if ( diskDriver === "qiniu" ) {
-    if ( width != 'auto' ) {
-      imgUrl = `${imgUrl}?imageView2/1${width ? "/w/" + width : ""}${
-        height ? "/h/" + height : ""
-      }`;
+  let imgUrl = /^http/.test(src) || isBase64(src) ? src : `${process.env.APP_IMAGE_CDN}/${src}`
+
+  if (diskDriver === 'qiniu') {
+    if (width != 'auto') {
+      imgUrl = `${imgUrl}?imageView2/1${width ? '/w/' + width : ''}${height ? '/h/' + height : ''}`
     }
   }
+
   console.log('SpImage:', imgUrl)
+
   return (
     <View
       className={classNames(
