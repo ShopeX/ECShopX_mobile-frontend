@@ -14,7 +14,7 @@ function SpImage(props) {
     onClick = () => {},
     onError = () => {},
     onLoad = () => {},
-    lazyLoad = false
+    lazyLoad = true
   } = props;
   const { diskDriver } = useSelector(state => state.sys);
   
@@ -33,7 +33,7 @@ function SpImage(props) {
       }`;
     }
   }
-  
+  console.log("SpImage:", imgUrl);
   return (
     <View
       className={classNames(
