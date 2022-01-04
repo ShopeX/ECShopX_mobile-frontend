@@ -1211,7 +1211,8 @@ export default class CartCheckout extends Component {
 
     let order_id, config, payErr
     try {
-      let params = await this.getParams()
+      let params = await this.getParams() || {}
+      console.log(params, '-------------------------')
       const getShopId = await this.getShopId()
 
       if (process.env.APP_PLATFORM === 'standard' && cart_type !== 'cart') {
@@ -1318,6 +1319,7 @@ export default class CartCheckout extends Component {
     if (!order_id) return
 
     if (isDrug) {
+      console.log('跳转了啊啊啊啊a------isDrug--------')
       Taro.redirectTo({
         url: '/subpage/pages/trade/drug-list'
       })
@@ -1375,6 +1377,7 @@ export default class CartCheckout extends Component {
           })
           return
         }
+        console.log('跳转了啊啊啊啊a------url--------', url)
 
         Taro.redirectTo({
           url
@@ -1410,6 +1413,7 @@ export default class CartCheckout extends Component {
       }
 
       if (!payRes.result) {
+        console.log('跳转了啊啊啊啊a------tradeDetailUrl--------', tradeDetailUrl)
         Taro.redirectTo({
           url: tradeDetailUrl
         })
@@ -1443,8 +1447,7 @@ export default class CartCheckout extends Component {
         purl += '&type=pointitem'
       }
       Taro.redirectTo({
-        url:
-          type === 'group' ? `/marketing/pages/item/group-detail?team_id=${config.team_id}` : purl
+        url: type === 'group' ? `/marketing/pages/item/group-detail?team_id=${config.team_id}` : purl
       })
 
       /*this.props.onClearCart()
@@ -1460,7 +1463,7 @@ export default class CartCheckout extends Component {
         if (this.isPointitemGood()) {
           purl += '&type=pointitem'
         }
-
+        console.log('跳转了啊啊啊啊a------purl--------', purl)
         Taro.redirectTo({
           url: purl
         })
