@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import Taro, { getCurrentInstance } from "@tarojs/taro";
-import { View, Text, Icon } from "@tarojs/components";
-import "./index.scss";
+import React, { useState } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { View, Text, Icon } from '@tarojs/components'
+import './index.scss'
 
-function SpSearch(props) {
-  const { placeholder = "" } = props;
+function SpSearch (props) {
+  const { placeholder = '' } = props
 
   const handleClick = () => {
     Taro.navigateTo({
-      url: `/pages/item/list`,
-    });
-  };
+      url: `/pages/item/list`
+    })
+  }
 
   return (
-    <View className="sp-search" onClick={handleClick}>
-      <View className="iconfont icon-sousuo-01"></View>
-      <Text className="place-holder">{placeholder}</Text>
+    <View className='sp-search' onClick={handleClick}>
+      <View className='iconfont icon-sousuo-01'></View>
+      <Text className='place-holder'>{placeholder}</Text>
     </View>
-  );
+  )
 }
 
 SpSearch.options = {
-  addGlobalClass: true,
-};
+  addGlobalClass: true
+}
 
-export default SpSearch;
+export default SpSearch

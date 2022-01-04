@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Picker, Input, Image } from '@tarojs/components'
-import { SpNavBar, Loading, SpPageNote,CusNoPosition } from '@/components'
+import { SpNavBar, Loading, SpPageNote, CusNoPosition } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
@@ -13,16 +13,15 @@ import CusStoreListItem from './comps/cus-list-item'
 
 import './list.scss'
 
-@connect(
-  ({ colors, address }) => ({
-    colors: colors.current || { data: [{}] },
-    address: address.current
-  }))
+@connect(({ colors, address }) => ({
+  colors: colors.current || { data: [{}] },
+  address: address.current
+}))
 @withPager
 @withBackToTop
 export default class StoreList extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -54,11 +53,11 @@ export default class StoreList extends Component {
       loading: false,
       pageTitle: '选择门店',
       areaList: [],
-      multiIndex: [],
+      multiIndex: []
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { pageTitle } = this.state
     Taro.setNavigationBarTitle({
       title: pageTitle
@@ -79,7 +78,7 @@ export default class StoreList extends Component {
     if (nextProps.address !== this.props.address) {
       const { province, city, county, adrdetail } = nextProps.address
       let addressdetail = province + city + county + adrdetail
-      this.setState({ deliveryInfo: {...nextProps.address, addressdetail} }, () => {
+      this.setState({ deliveryInfo: { ...nextProps.address, addressdetail } }, () => {
         this.init()
       })
     }
@@ -88,7 +87,7 @@ export default class StoreList extends Component {
   config = {
     navigationBarBackgroundColor: '#F5F5F5'
   }
-  
+
   initAdress = async () => {
     let res = await api.member.areaList()
     const addList = pickBy(res, {
@@ -114,7 +113,7 @@ export default class StoreList extends Component {
       }
     })
     this.setState({
-      areaList: [arrProvice, arrCity, arrCounty],
+      areaList: [arrProvice, arrCity, arrCounty]
     })
   }
 
@@ -125,8 +124,8 @@ export default class StoreList extends Component {
 
     const addressdetail = lnglat.latitude ? lnglat.addressdetail : null
     query.province = lnglat.province || ''
-    query.city = Array.isArray(lnglat.city) ? lnglat.province: lnglat.city,
-    query.area = lnglat.district || ''
+    ;(query.city = Array.isArray(lnglat.city) ? lnglat.province : lnglat.city),
+      (query.area = lnglat.district || '')
     if (query.type === 2) {
       let adress_detail = !!this.props.address ? this.props.address : deliveryInfo
       const { province = '', city = '', county = '' } = adress_detail
@@ -135,26 +134,31 @@ export default class StoreList extends Component {
       query.area = county
     }
 
-    this.setState({
-      location: {
-        ...lnglat,
-        addressdetail
-      },
-      is_open_wechatapp_location,
-      query
-    },() => {
-      this.resetPage(() => {
-        this.setState({
-          list: [],
-          loading: true
+    this.setState(
+      {
+        location: {
+          ...lnglat,
+          addressdetail
         },
-        () => {
-          setTimeout(() => {
-            this.nextPage()
-          }, 0)
+        is_open_wechatapp_location,
+        query
+      },
+      () => {
+        this.resetPage(() => {
+          this.setState(
+            {
+              list: [],
+              loading: true
+            },
+            () => {
+              setTimeout(() => {
+                this.nextPage()
+              }, 0)
+            }
+          )
         })
-      })
-    })
+      }
+    )
   }
 
   // 获取总店信息
@@ -296,7 +300,7 @@ export default class StoreList extends Component {
     })
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { card_id = null } = this.$instance.router.params
     const { query: searchParam, location } = this.state
     const { latitude = '', longitude = '' } = location
@@ -310,13 +314,20 @@ export default class StoreList extends Component {
       card_id,
       sort_type: 1
     }
-    const { list, total_count: total, defualt_address = {}, is_recommend } = await api.shop.list(query)
+    const {
+      list,
+      total_count: total,
+      defualt_address = {},
+      is_recommend
+    } = await api.shop.list(query)
     const { province, city, county, adrdetail } = this.props.address || defualt_address
     let addressdetail = province + city + county + adrdetail
     this.setState({
       query,
       list: [...this.state.list, ...list],
-      deliveryInfo: !!this.props.address ? {...this.props.address, addressdetail} : {...defualt_address, addressdetail},
+      deliveryInfo: !!this.props.address
+        ? { ...this.props.address, addressdetail }
+        : { ...defualt_address, addressdetail },
       isRecommedList: is_recommend === 1,
       loading: false
     })
@@ -395,7 +406,7 @@ export default class StoreList extends Component {
     }
   }
 
-  render() {
+  render () {
     const {
       scrollTop,
       query,
@@ -423,153 +434,171 @@ export default class StoreList extends Component {
     // const  = defaultStore.is_valid === "true";
     const lnglat = Taro.getStorageSync('lnglat') || {}
 
-    return (
-      lnglat.latitude
-      ? <View className='page-store-list' style={styleNames(getThemeStyle())}>
-          <SpNavBar title={pageTitle} leftIconType='chevron-left' />
-          <View className='search-block'>
-            <View className='main'>
-              {/* <Picker mode='region' value={areaData} onChange={this.regionChange.bind(this)}>
+    return lnglat.latitude ? (
+      <View className='page-store-list' style={styleNames(getThemeStyle())}>
+        <SpNavBar title={pageTitle} leftIconType='chevron-left' />
+        <View className='search-block'>
+          <View className='main'>
+            {/* <Picker mode='region' value={areaData} onChange={this.regionChange.bind(this)}>
                 <View className='filterArea'>
                   <View className='areaName'>{areaData.join('') || '筛选地区'}</View>
                   <View className='iconfont icon-arrowDown'></View>
                 </View>
               </Picker> */}
-              <View className='filter-bar__item region-picker'>
-                <Picker
-                  mode='multiSelector'
-                  onClick={this.handleClickPicker}
-                  onChange={this.regionChange}
-                  onColumnChange={this.bindMultiPickerColumnChange}
-                  value={multiIndex}
-                  range={areaList}
-                  style={{ width: '100%' }}
-                >
-                  <View className='pick-title'>
-                    <View className='iconfont icon-periscope'></View>
-                    <Text className='texts'>{areaData || '地区'}</Text>
-                    <View className='iconfont icon-arrowDown'></View>
-                  </View>
-                </Picker>
-              </View>
+            <View className='filter-bar__item region-picker'>
+              <Picker
+                mode='multiSelector'
+                onClick={this.handleClickPicker}
+                onChange={this.regionChange}
+                onColumnChange={this.bindMultiPickerColumnChange}
+                value={multiIndex}
+                range={areaList}
+                style={{ width: '100%' }}
+              >
+                <View className='pick-title'>
+                  <View className='iconfont icon-periscope'></View>
+                  <Text className='texts'>{areaData || '地区'}</Text>
+                  <View className='iconfont icon-arrowDown'></View>
+                </View>
+              </Picker>
+            </View>
 
-              <Input
-                className='searchInput'
-                placeholder='输入收货地址寻找周边门店'
-                confirmType='search'
-                value={query.name}
-                onInput={this.inputStoreName.bind(this)}
-                onConfirm={this.confirmSearch.bind(this)}
-              />
-              {query.name && query.name.length > 0 && (
-                <View className='iconfont icon-close close-css' onClick={this.clearName.bind(this)}></View>
+            <Input
+              className='searchInput'
+              placeholder='输入收货地址寻找周边门店'
+              confirmType='search'
+              value={query.name}
+              onInput={this.inputStoreName.bind(this)}
+              onConfirm={this.confirmSearch.bind(this)}
+            />
+            {query.name && query.name.length > 0 && (
+              <View
+                className='iconfont icon-close close-css'
+                onClick={this.clearName.bind(this)}
+              ></View>
+            )}
+          </View>
+        </View>
+
+        <View className='block-content'>
+          <View className='location'>
+            <View className='block-hd'>当前定位地址</View>
+            <View className='block-bd location-wrap'>
+              {query.type !== 2 && location && location.addressdetail && (
+                <View
+                  className='lngName'
+                  onClick={this.onLocationChange.bind(this, location)}
+                  style={{ width: '77%', fontWeight: 'bold' }}
+                >
+                  {location.addressdetail || '无法获取您的位置信息'}
+                </View>
+              )}
+              <View className="btn-location'" onClick={this.getLocation.bind(this)}>
+                <View className='iconfont icon-zhongxindingwei iconcss'></View>
+                重新定位
+              </View>
+              {/* )} */}
+            </View>
+          </View>
+          <View className='currentadress'>
+            <View className='block-hd flex-header'>
+              <View>我的收货地址</View>
+              {deliveryInfo && deliveryInfo.address_id && (
+                <View
+                  className='arrow'
+                  onClick={() =>
+                    Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose' })
+                  }
+                >
+                  选择其他地址<View className='iconfont icon-qianwang-01'></View>
+                </View>
               )}
             </View>
-          </View>
-
-          <View className="block-content">
-            <View className="location">
-              <View className="block-hd">当前定位地址</View>
-              <View className='block-bd location-wrap'>
-                {query.type !== 2 && location && location.addressdetail && (
-                  <View className="lngName" onClick={this.onLocationChange.bind(this, location)} style={{ width: '77%', fontWeight: 'bold' }}>
-                    {location.addressdetail || "无法获取您的位置信息"}
-                  </View>
-                )}
-                <View
-                  className="btn-location'"
-                  onClick={this.getLocation.bind(this)}
-                >
-                  <View className="iconfont icon-zhongxindingwei iconcss"></View>
-                  重新定位
+            {deliveryInfo && deliveryInfo.address_id && (
+              <View className='block-bd' onClick={this.onLocationChange.bind(this, deliveryInfo)}>
+                <View className='lngName'>
+                  {deliveryInfo.province}
+                  {deliveryInfo.city}
+                  {deliveryInfo.county}
+                  {deliveryInfo.adrdetail}
                 </View>
-                {/* )} */}
               </View>
-            </View>
-            <View className="currentadress">
-              <View className="block-hd flex-header">
-                <View>我的收货地址</View>
-                {deliveryInfo && deliveryInfo.address_id && <View className='arrow' onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose'})}>选择其他地址<View className='iconfont icon-qianwang-01'></View></View>}
+            )}
+            {deliveryInfo && !deliveryInfo.address_id && (
+              <View
+                className='address-btn'
+                onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })}
+              >
+                添加新地址
               </View>
-              {
-                deliveryInfo && deliveryInfo.address_id &&
-                <View className="block-bd" onClick={this.onLocationChange.bind(this, deliveryInfo)}>
-                  <View className="lngName">
-                    {deliveryInfo.province}
-                    {deliveryInfo.city}
-                    {deliveryInfo.county}
-                    {deliveryInfo.adrdetail}
-                  </View>
-                </View>
-              }
-              {
-                deliveryInfo && !deliveryInfo.address_id &&
-                <View className='address-btn' onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })}>添加新地址</View>
-              }
-            </View>
+            )}
           </View>
+        </View>
 
-            
+        {isRecommedList && !deliveryInfo.address_id && !location.latitude && (
+          <View className='block-content'>
+            <Image className='img' src={baseInfo.logo} mode='aspectFill' />
+            <View className='tip'>您想要地区的店铺暂时未入驻网上商城</View>
+          </View>
+        )}
 
-          {isRecommedList && !deliveryInfo.address_id && !location.latitude && (
-            <View className="block-content">
-              <Image className="img" src={baseInfo.logo} mode="aspectFill" />
-              <View className="tip">您想要地区的店铺暂时未入驻网上商城</View>
+        <View
+          className={`list ${!deliveryInfo.address_id && 'noDelivery'} ${
+            isRecommedList && 'recommedList'
+          }`}
+        >
+          {!isRecommedList ? (
+            <View className='title'>
+              {(deliveryInfo && deliveryInfo.address_id) || (location && location.latitude)
+                ? '附近商家'
+                : '全部商家'}
+            </View>
+          ) : (
+            <View className='recommed'>
+              <View className='title'>推荐商家</View>
             </View>
           )}
 
-          <View
-            className={`list ${!deliveryInfo.address_id && 'noDelivery'} ${isRecommedList &&
-              'recommedList'}`}
+          <ScrollView
+            className={classNames('scroll store-scroll', {
+              'has-default-shop': defaultStore
+            })}
+            scrollY
+            scrollTop={scrollTop}
+            scrollWithAnimation
+            onScroll={this.handleScroll.bind(this)}
+            onScrollToLower={this.nextPage.bind(this)}
           >
-            {!isRecommedList ? (
-              <View className="title">
-                {(deliveryInfo && deliveryInfo.address_id) || (location && location.latitude)
-                  ? "附近商家"
-                  : "全部商家"}
-              </View>
-            ) : (
-              <View className="recommed">
-                <View className="title">推荐商家</View>
-              </View>
-            )}
-
-            <ScrollView
-              className={classNames('scroll store-scroll', {
-                'has-default-shop': defaultStore
-              })}
-              scrollY
-              scrollTop={scrollTop}
-              scrollWithAnimation
-              onScroll={this.handleScroll.bind(this)}
-              onScrollToLower={this.nextPage.bind(this)}
-            >
-              {list.map((item) => (
-                <CusStoreListItem
-                  info={item}
-                  key={item.distributor_id}
-                  onClick={this.handleClickItem.bind(this, item)}
-                />
-              ))}
-              {/* {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            {list.map((item) => (
+              <CusStoreListItem
+                info={item}
+                key={item.distributor_id}
+                onClick={this.handleClickItem.bind(this, item)}
+              />
+            ))}
+            {/* {page.isLoading ? <Loading>正在加载...</Loading> : null}
               {!page.isLoading && !list.length && (
                 <SpNote img="trades_empty.png">暂无数据~</SpNote>
               )} */}
-              <SpPageNote info={page}></SpPageNote>
-            </ScrollView>
-          </View>
+            <SpPageNote info={page}></SpPageNote>
+          </ScrollView>
+        </View>
 
-          {/* {defaultStore && (
+        {/* {defaultStore && (
             <View className='bottom' onClick={this.handleClickItem.bind(this)}>
               <Image className='img' src={baseInfo.logo} mode='aspectFill' />
               {defaultStore.store_name}
               <View className='iconfont icon-arrowRight'></View>
             </View>
           )} */}
-        </View>
-      : <View className='page-store-list' style={styleNames(getThemeStyle())}>
+      </View>
+    ) : (
+      <View className='page-store-list' style={styleNames(getThemeStyle())}>
         <CusNoPosition onClick={this.getLocation}>
-          <Image className='position-imgs' src={`${process.env.APP_IMAGE_CDN}/no-position-img.png`}></Image>
+          <Image
+            className='position-imgs'
+            src={`${process.env.APP_IMAGE_CDN}/no-position-img.png`}
+          ></Image>
         </CusNoPosition>
       </View>
     )

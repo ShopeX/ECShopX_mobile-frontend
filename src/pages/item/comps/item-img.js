@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image } from '@tarojs/components'
 
 import './item-img.scss'
@@ -12,7 +12,7 @@ export default class ItemImg extends Component {
     src: null
   }
 
-  render() {
+  render () {
     const { src } = this.props
 
     return (

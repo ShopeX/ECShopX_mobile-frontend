@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { AtTextarea } from 'taro-ui'
@@ -14,7 +14,7 @@ export default class GoodsComment extends Component {
     onClose: () => {}
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -23,9 +23,9 @@ export default class GoodsComment extends Component {
       count: 0
     }
   }
-  componentDidMount() {}
+  componentDidMount () {}
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     const { isOpened } = nextProps
     if (isOpened !== this.state.isActive) {
       this.setState({
@@ -43,7 +43,7 @@ export default class GoodsComment extends Component {
     this.props.onClose && this.props.onClose()
   }
 
-  async handleClickReply() {
+  async handleClickReply () {
     const { comment } = this.state
     if (!comment || !comment.length) {
       return
@@ -55,7 +55,7 @@ export default class GoodsComment extends Component {
     })
   }
 
-  handleChange(e) {
+  handleChange (e) {
     let comment = e
     this.setState({
       comment,
@@ -63,7 +63,7 @@ export default class GoodsComment extends Component {
     })
   }
 
-  render() {
+  render () {
     const { isActive, comment, count } = this.state
 
     return (

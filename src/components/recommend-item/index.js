@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image, Progress } from '@tarojs/components'
 import { Price, SpImg } from '@/components'
 import { isObject, classNames } from '@/utils'
@@ -20,11 +20,11 @@ export default class RecommendItem extends Component {
 
   handleLikeClick = async (e) => {
     e.stopPropagation()
-    const { item_id, is_like } = this.props.info 
+    const { item_id, is_like } = this.props.info
     // await api.item.collect(item_id)
   }
 
-  render() {
+  render () {
     const {
       info,
       noCurSymbol,
@@ -48,13 +48,7 @@ export default class RecommendItem extends Component {
         <View className='recommend-item__hd'>{this.props.children}</View>
         <View className='recommend-item__bd' onClick={onClick}>
           <View className='recommend-item__img-wrap'>
-            <SpImg
-              img-class='recommend-item__img'
-              src={img}
-              mode='widthFix'
-              width='400'
-              lazyLoad
-            />
+            <SpImg img-class='recommend-item__img' src={img} mode='widthFix' width='400' lazyLoad />
           </View>
           <View className='recommend-item__cont'>
             <View className='recommend-item__caption'>

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtImagePicker, AtTag, AtTextarea, AtTabsPane, AtTabs } from 'taro-ui'
 import { SpCell, SpToast, SpHtmlContent, SpImgPicker } from '@/components'
@@ -17,8 +17,8 @@ import './refund.scss'
   colors: colors.current
 }))
 export default class TradeRefund extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -45,7 +45,7 @@ export default class TradeRefund extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
     const { status } = this.$instance.router.params
     const { segTypes, curSegIdx } = this.state
@@ -58,18 +58,13 @@ export default class TradeRefund extends Component {
     })
   }
 
-  async fetch() {
+  async fetch () {
     Taro.showLoading({
       mask: true
     })
 
-    const {
-      aftersales_bn,
-      order_id,
-      isDelivery,
-      delivery_status,
-      deliverData
-    } = this.$instance.router.params
+    const { aftersales_bn, order_id, isDelivery, delivery_status, deliverData } =
+      this.$instance.router.params
     let detail = deliverData ? JSON.parse(deliverData) : null
     // 获取售后原因
     const reasonList = await api.aftersales.reasonList()
@@ -265,7 +260,7 @@ export default class TradeRefund extends Component {
     // })
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const {
       segTypes,

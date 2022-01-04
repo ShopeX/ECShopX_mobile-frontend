@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Switch, Text, Picker } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpCell, SpToast } from '@/components'
@@ -14,7 +14,7 @@ export default class EditAddress extends Component {
     addGlobalClass: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -25,11 +25,11 @@ export default class EditAddress extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { list } = await api.member.addressList()
     this.setState({
       listLength: list.length
@@ -171,7 +171,7 @@ export default class EditAddress extends Component {
     info[name] = val
   }
 
-  handleDefChange = (e) => { 
+  handleDefChange = (e) => {
     const info = {
       ...this.state.info,
       is_def: e.detail.value ? 1 : 0
@@ -215,7 +215,7 @@ export default class EditAddress extends Component {
 
     if (!data.adrdetail) {
       return S.toast('请输入详细地址')
-    } 
+    }
     try {
       await api.member.addressCreateOrUpdate(data)
       if (data.address_id) {
@@ -239,7 +239,7 @@ export default class EditAddress extends Component {
     }, 700)
   }
 
-  render() {
+  render () {
     const { info, areaList, multiIndex } = this.state
 
     if (!info) {

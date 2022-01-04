@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from 'react'
 import { View, ScrollView } from '@tarojs/components'
 import { CouponItem } from '@/components'
 import { AtModal } from 'taro-ui'
@@ -15,7 +15,7 @@ export default class CouponModal extends PureComponent {
     addGlobalClass: true
   }
 
-  render() {
+  render () {
     const { list, visible, onChange } = this.props
 
     return (

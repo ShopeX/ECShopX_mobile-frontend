@@ -4,8 +4,4 @@ import useDepChange from './useDepChange'
 
 export default {}
 
-export {
-  useLogin,
-  usePage,
-  useDepChange
-}
+export { useLogin, usePage, useDepChange }

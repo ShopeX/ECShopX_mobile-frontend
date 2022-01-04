@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
@@ -15,35 +15,32 @@ import {
   SpNavBar
 } from '@/components'
 import api from '@/api'
-import { pickBy, classNames, getCurrentRoute,getBrowserEnv } from '@/utils'
+import { pickBy, classNames, getCurrentRoute, getBrowserEnv } from '@/utils'
 
 import './list.scss'
+
 @connect(({ user }) => ({
-  favs: user.favs || [],
+  favs: user.favs || []
 }))
 @withPager
 @withBackToTop
 export default class List extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
-    super(props);
+  $instance = getCurrentInstance()
+  constructor (props) {
+    super(props)
 
     this.state = {
       ...this.state,
       curFilterIdx: 0,
-      curTagId: "",
-      filterList: [
-        { title: "综合" },
-        { title: "销量" },
-        { title: "价格", sort: -1 },
-      ],
+      curTagId: '',
+      filterList: [{ title: '综合' }, { title: '销量' }, { title: '价格', sort: -1 }],
       query: null,
       list: [],
       oddList: [],
       evenList: [],
       tagsList: [],
       paramsList: [],
-      listType: "grid",
+      listType: 'grid',
       isShowSearch: false,
       showDrawer: false,
       selectParams: [],
@@ -52,368 +49,366 @@ export default class List extends Component {
       localCurrent: 1,
       tabList: [
         {
-          title: "店铺首页",
-          iconType: "home",
-          iconPrefixClass: "iconfont icon",
-          url: "/pages/store/index",
+          title: '店铺首页',
+          iconType: 'home',
+          iconPrefixClass: 'iconfont icon',
+          url: '/pages/store/index'
         },
         {
-          title: "商品列表",
-          iconType: "list",
-          iconPrefixClass: "iconfont icon",
-          url: "/others/pages/store/list",
+          title: '商品列表',
+          iconType: 'list',
+          iconPrefixClass: 'iconfont icon',
+          url: '/others/pages/store/list'
         },
         {
-          title: "商品分类",
-          iconType: "category",
-          iconPrefixClass: "iconfont icon",
-          url: "/others/pages/store/category",
-        },
-      ],
-    };
+          title: '商品分类',
+          iconType: 'category',
+          iconPrefixClass: 'iconfont icon',
+          url: '/others/pages/store/category'
+        }
+      ]
+    }
   }
 
-  componentDidMount() {
-    const { cat_id = null, main_cat_id = null } = this.$instance.router.params;
-    this.firstStatus = true;
+  componentDidMount () {
+    const { cat_id = null, main_cat_id = null } = this.$instance.router.params
+    this.firstStatus = true
 
     this.setState(
       {
         query: {
           keywords: this.$instance.router.params.keywords,
-          item_type: "normal",
-          is_point: "false",
+          item_type: 'normal',
+          is_point: 'false',
           distributor_id: this.$instance.router.params.dis_id,
-          approve_status: "onsale,only_show",
-          category: cat_id ? cat_id : "",
-          main_category: main_cat_id ? main_cat_id : "",
+          approve_status: 'onsale,only_show',
+          category: cat_id ? cat_id : '',
+          main_category: main_cat_id ? main_cat_id : ''
         },
-        curTagId: this.$instance.router.params.tag_id,
+        curTagId: this.$instance.router.params.tag_id
       },
       () => {
-        this.nextPage();
-        api.wx.shareSetting({ shareindex: "itemlist" }).then((res) => {
+        this.nextPage()
+        api.wx.shareSetting({ shareindex: 'itemlist' }).then((res) => {
           this.setState({
-            shareInfo: res,
-          });
-        });
+            shareInfo: res
+          })
+        })
       }
-    );
+    )
   }
 
-  componentWillReceiveProps(next) {
+  componentWillReceiveProps (next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       setTimeout(() => {
         const list = this.state.list.map((item) => {
-          item.is_fav = Boolean(next.favs[item.item_id]);
-          return item;
-        });
+          item.is_fav = Boolean(next.favs[item.item_id])
+          return item
+        })
         this.setState({
-          list,
-        });
-      });
+          list
+        })
+      })
     }
   }
 
-  onShareAppMessage() {
-    const res = this.state.shareInfo;
-    const { userId } = Taro.getStorageSync("userinfo");
-    const query = userId ? `?uid=${userId}` : "";
+  onShareAppMessage () {
+    const res = this.state.shareInfo
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `?uid=${userId}` : ''
     return {
       title: res.title,
       imageUrl: res.imageUrl,
-      path: `/pages/item/list${query}`,
-    };
+      path: `/pages/item/list${query}`
+    }
   }
 
-  onShareTimeline() {
-    const res = this.state.shareInfo;
-    const { userId } = Taro.getStorageSync("userinfo");
-    const query = userId ? `uid=${userId}` : "";
+  onShareTimeline () {
+    const res = this.state.shareInfo
+    const { userId } = Taro.getStorageSync('userinfo')
+    const query = userId ? `uid=${userId}` : ''
     return {
       title: res.title,
       imageUrl: res.imageUrl,
-      query: query,
-    };
+      query: query
+    }
   }
 
-  async fetch(params) {
-    const { page_no: page, page_size: pageSize } = params;
-    const { selectParams, tagsList, curTagId } = this.state;
-    const { distributor_id } = Taro.getStorageSync("curStore");
+  async fetch (params) {
+    const { page_no: page, page_size: pageSize } = params
+    const { selectParams, tagsList, curTagId } = this.state
+    const { distributor_id } = Taro.getStorageSync('curStore')
 
     const query = {
       ...this.state.query,
       item_params: selectParams,
       tag_id: curTagId,
       page,
-      pageSize,
-    };
+      pageSize
+    }
 
-    if (process.env.APP_PLATFORM === "standard") {
-      query.distributor_id = distributor_id;
+    if (process.env.APP_PLATFORM === 'standard') {
+      query.distributor_id = distributor_id
     }
 
     const {
       list,
       total_count: total,
       item_params_list = [],
-      select_tags_list = [],
-    } = await api.item.search(query);
-    const { favs = [] } = this.props;
+      select_tags_list = []
+    } = await api.item.search(query)
+    const { favs = [] } = this.props
 
     item_params_list.map((item) => {
       if (selectParams.length < 4) {
         selectParams.push({
           attribute_id: item.attribute_id,
-          attribute_value_id: "all",
-        });
+          attribute_value_id: 'all'
+        })
       }
       item.attribute_values.unshift({
-        attribute_value_id: "all",
-        attribute_value_name: "全部",
-        isChooseParams: true,
-      });
-    });
-    
+        attribute_value_id: 'all',
+        attribute_value_name: '全部',
+        isChooseParams: true
+      })
+    })
+
     const nList = pickBy(list, {
-      img: ({ pics }) =>
-        typeof pics !== "string" ? pics[0] : JSON.parse(pics)[0],
-      item_id: "item_id",
+      img: ({ pics }) => (typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0]),
+      item_id: 'item_id',
       title: ({ itemName, item_name }) => (itemName ? itemName : item_name),
-      desc: "brief",
-      distributor_info: "distributor_info",
-      distributor_id: "distributor_id",
-      promotion_activity_tag: "promotion_activity",
+      desc: 'brief',
+      distributor_info: 'distributor_info',
+      distributor_id: 'distributor_id',
+      promotion_activity_tag: 'promotion_activity',
       price: ({ price }) => (price / 100).toFixed(2),
       member_price: ({ member_price }) => (member_price / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-      is_fav: ({ item_id }) => Boolean(favs.find(item => item.item_id == item_id)),
-    });
+      is_fav: ({ item_id }) => Boolean(favs.find((item) => item.item_id == item_id))
+    })
     let odd = [],
-      even = [];
+      even = []
     nList.map((item, idx) => {
       if (idx % 2 == 0) {
-        odd.push(item);
+        odd.push(item)
       } else {
-        even.push(item);
+        even.push(item)
       }
-    });
+    })
 
     this.setState({
       list: [...this.state.list, ...nList],
       oddList: [...this.state.oddList, ...odd],
       evenList: [...this.state.evenList, ...even],
       showDrawer: false,
-      query,
-    });
+      query
+    })
 
     if (this.firstStatus) {
       this.setState({
         paramsList: item_params_list,
-        selectParams,
-      });
-      this.firstStatus = false;
+        selectParams
+      })
+      this.firstStatus = false
     }
 
     if (tagsList.length === 0) {
-      let tags = select_tags_list;
+      let tags = select_tags_list
       tags.unshift({
         tag_id: 0,
-        tag_name: "全部",
-      });
+        tag_name: '全部'
+      })
       this.setState({
         //curTagId: 0,
-        tagsList: tags,
-      });
+        tagsList: tags
+      })
     }
 
     return {
-      total,
-    };
+      total
+    }
   }
 
   handleTagChange = (data) => {
-    const { current } = data;
-    this.resetPage();
+    const { current } = data
+    this.resetPage()
     this.setState({
       list: [],
       oddList: [],
-      evenList: [],
-    });
+      evenList: []
+    })
 
     this.setState(
       {
-        curTagId: current,
+        curTagId: current
       },
       () => {
-        this.nextPage();
+        this.nextPage()
       }
-    );
-  };
+    )
+  }
 
   handleFilterChange = (data) => {
     this.setState({
-      showDrawer: false,
-    });
-    const { current, sort } = data;
+      showDrawer: false
+    })
+    const { current, sort } = data
 
     const query = {
       ...this.state.query,
-      goodsSort: current === 0 ? null : current === 1 ? 1 : sort > 0 ? 3 : 2,
-    };
+      goodsSort: current === 0 ? null : current === 1 ? 1 : sort > 0 ? 3 : 2
+    }
 
     /** 当不需要排序且点击一致时 */
     if (current === this.state.curFilterIdx && !sort) {
-      return;
+      return
     }
 
     if (
       current !== this.state.curFilterIdx ||
-      (current === this.state.curFilterIdx &&
-        query.goodsSort !== this.state.query.goodsSort)
+      (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)
     ) {
-      this.resetPage();
+      this.resetPage()
       this.setState({
         list: [],
         oddList: [],
-        evenList: [],
-      });
+        evenList: []
+      })
     }
 
     this.setState(
       {
         curFilterIdx: current,
-        query,
+        query
       },
       () => {
-        this.nextPage();
+        this.nextPage()
       }
-    );
-  };
+    )
+  }
 
   handleListTypeChange = () => {
-    const listType = this.state.listType === "grid" ? "default" : "grid";
+    const listType = this.state.listType === 'grid' ? 'default' : 'grid'
 
     this.setState({
-      listType,
-    });
-  };
+      listType
+    })
+  }
 
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`;
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
-      url,
-    });
-  };
+      url
+    })
+  }
 
   handleClickStore = (item) => {
-    const url = `/pages/store/index?id=${item.distributor_info.distributor_id}`;
+    const url = `/pages/store/index?id=${item.distributor_info.distributor_id}`
     Taro.navigateTo({
-      url,
-    });
-  };
+      url
+    })
+  }
 
   handleClickFilter = () => {
     this.setState({
-      showDrawer: true,
-    });
-  };
+      showDrawer: true
+    })
+  }
 
   handleClickParmas = (id, child_id) => {
-    const { paramsList, selectParams } = this.state;
+    const { paramsList, selectParams } = this.state
     paramsList.map((item) => {
       if (item.attribute_id === id) {
         item.attribute_values.map((v_item) => {
           if (v_item.attribute_value_id === child_id) {
-            v_item.isChooseParams = true;
+            v_item.isChooseParams = true
           } else {
-            v_item.isChooseParams = false;
+            v_item.isChooseParams = false
           }
-        });
+        })
       }
-    });
+    })
     selectParams.map((item) => {
       if (item.attribute_id === id) {
-        item.attribute_value_id = child_id;
+        item.attribute_value_id = child_id
       }
-    });
+    })
     this.setState({
       paramsList,
-      selectParams,
-    });
-  };
+      selectParams
+    })
+  }
 
   handleClickSearchParams = (type) => {
     this.setState({
-      showDrawer: false,
-    });
-    if (type === "reset") {
-      const { paramsList, selectParams } = this.state;
+      showDrawer: false
+    })
+    if (type === 'reset') {
+      const { paramsList, selectParams } = this.state
       this.state.paramsList.map((item) => {
         item.attribute_values.map((v_item) => {
-          if (v_item.attribute_value_id === "all") {
-            v_item.isChooseParams = true;
+          if (v_item.attribute_value_id === 'all') {
+            v_item.isChooseParams = true
           } else {
-            v_item.isChooseParams = false;
+            v_item.isChooseParams = false
           }
-        });
-      });
+        })
+      })
       selectParams.map((item) => {
-        item.attribute_value_id = "all";
-      });
+        item.attribute_value_id = 'all'
+      })
       this.setState({
         paramsList,
-        selectParams,
-      });
+        selectParams
+      })
     }
 
-    this.resetPage();
+    this.resetPage()
     this.setState(
       {
         list: [],
         oddList: [],
-        evenList: [],
+        evenList: []
       },
       () => {
-        this.nextPage();
+        this.nextPage()
       }
-    );
-  };
+    )
+  }
 
   handleViewChange = () => {
-    const { listType } = this.state;
-    if (listType === "grid") {
+    const { listType } = this.state
+    if (listType === 'grid') {
       this.setState({
-        listType: "list",
-      });
+        listType: 'list'
+      })
     } else {
       this.setState({
-        listType: "grid",
-      });
+        listType: 'grid'
+      })
     }
-  };
+  }
 
   handleSearchOn = () => {
     this.setState({
-      isShowSearch: true,
-    });
-  };
+      isShowSearch: true
+    })
+  }
 
   handleSearchOff = () => {
     this.setState({
-      isShowSearch: false,
-    });
-  };
+      isShowSearch: false
+    })
+  }
 
   handleSearchChange = (val) => {
     this.setState({
       query: {
         ...this.state.query,
-        keywords: val,
-      },
-    });
-  };
+        keywords: val
+      }
+    })
+  }
 
   handleSearchClear = () => {
     this.setState(
@@ -421,24 +416,24 @@ export default class List extends Component {
         isShowSearch: false,
         query: {
           ...this.state.query,
-          keywords: "",
-        },
+          keywords: ''
+        }
       },
       () => {
-        this.resetPage();
+        this.resetPage()
         this.setState(
           {
             list: [],
             oddList: [],
-            evenList: [],
+            evenList: []
           },
           () => {
-            this.nextPage();
+            this.nextPage()
           }
-        );
+        )
       }
-    );
-  };
+    )
+  }
 
   handleConfirm = (val) => {
     this.setState(
@@ -446,43 +441,41 @@ export default class List extends Component {
         isShowSearch: false,
         query: {
           ...this.state.query,
-          keywords: val,
-        },
+          keywords: val
+        }
       },
       () => {
-        this.resetPage();
+        this.resetPage()
         this.setState(
           {
             list: [],
             oddList: [],
-            evenList: [],
+            evenList: []
           },
           () => {
-            this.nextPage();
+            this.nextPage()
           }
-        );
+        )
       }
-    );
-  };
+    )
+  }
 
   handleClick = (current) => {
-    const cur = this.state.localCurrent;
+    const cur = this.state.localCurrent
     if (cur !== current) {
-      const curTab = this.state.tabList[current];
-      const { url } = curTab;
-      const options = this.$instance.router.params;
-      const id = options.dis_id;
-      const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`;
-      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split(
-        "?"
-      )[0];
+      const curTab = this.state.tabList[current]
+      const { url } = curTab
+      const options = this.$instance.router.params
+      const id = options.dis_id
+      const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
+      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
-        Taro.redirectTo({ url: `${url}${param}` });
+        Taro.redirectTo({ url: `${url}${param}` })
       }
     }
-  };
+  }
 
-  render() {
+  render () {
     const {
       localCurrent,
       tabList,
@@ -502,11 +495,11 @@ export default class List extends Component {
       curTagId,
       info,
       isShowSearch,
-      query,
-    } = this.state;
+      query
+    } = this.state
     return (
-      <View className="page-goods-list">
-        <SpNavBar title="商品列表" leftIconType="chevron-left" fixed="true" />
+      <View className='page-goods-list'>
+        <SpNavBar title='商品列表' leftIconType='chevron-left' fixed='true' />
         <View
           className={classNames(
             'goods-list__toolbar',
@@ -515,11 +508,11 @@ export default class List extends Component {
         >
           <View
             className={`goods-list__search ${
-              query && query.keywords && !isShowSearch ? "on-search" : null
+              query && query.keywords && !isShowSearch ? 'on-search' : null
             }`}
           >
             <SearchBar
-              keyword={query ? query.keywords : ""}
+              keyword={query ? query.keywords : ''}
               onFocus={this.handleSearchOn}
               onChange={this.handleSearchChange}
               onClear={this.handleSearchClear}
@@ -529,8 +522,8 @@ export default class List extends Component {
             {!isShowSearch && (
               <View
                 className={classNames(
-                  "goods-list__type iconfont",
-                  listType === "grid" ? "icon-list" : "icon-grid"
+                  'goods-list__type iconfont',
+                  listType === 'grid' ? 'icon-list' : 'icon-grid'
                 )}
                 onClick={this.handleViewChange}
               ></View>
@@ -544,7 +537,7 @@ export default class List extends Component {
             />
           )}
           <FilterBar
-            className="goods-list__tabs"
+            className='goods-list__tabs'
             custom
             current={curFilterIdx}
             list={filterList}
@@ -559,28 +552,21 @@ export default class List extends Component {
           </FilterBar>
         </View>
 
-        <AtDrawer
-          show={showDrawer}
-          right
-          mask
-          width={`${Taro.pxTransform(570)}`}
-        >
+        <AtDrawer show={showDrawer} right mask width={`${Taro.pxTransform(570)}`}>
           {paramsList.map((item, index) => {
             return (
-              <View className="drawer-item" key={`${index}1`}>
-                <View className="drawer-item__title">
+              <View className='drawer-item' key={`${index}1`}>
+                <View className='drawer-item__title'>
                   <Text>{item.attribute_name}</Text>
-                  <View className="at-icon at-icon-chevron-down"> </View>
+                  <View className='at-icon at-icon-chevron-down'> </View>
                 </View>
-                <View className="drawer-item__options">
+                <View className='drawer-item__options'>
                   {item.attribute_values.map((v_item, v_index) => {
                     return (
                       <View
                         className={classNames(
-                          "drawer-item__options__item",
-                          v_item.isChooseParams
-                            ? "drawer-item__options__checked"
-                            : ""
+                          'drawer-item__options__item',
+                          v_item.isChooseParams ? 'drawer-item__options__checked' : ''
                         )}
                         // className='drawer-item__options__item'
                         key={`${v_index}1`}
@@ -592,25 +578,25 @@ export default class List extends Component {
                       >
                         {v_item.attribute_value_name}
                       </View>
-                    );
+                    )
                   })}
-                  <View className="drawer-item__options__none"> </View>
-                  <View className="drawer-item__options__none"> </View>
-                  <View className="drawer-item__options__none"> </View>
+                  <View className='drawer-item__options__none'> </View>
+                  <View className='drawer-item__options__none'> </View>
+                  <View className='drawer-item__options__none'> </View>
                 </View>
               </View>
-            );
+            )
           })}
-          <View className="drawer-footer">
+          <View className='drawer-footer'>
             <Text
-              className="drawer-footer__btn"
-              onClick={this.handleClickSearchParams.bind(this, "reset")}
+              className='drawer-footer__btn'
+              onClick={this.handleClickSearchParams.bind(this, 'reset')}
             >
               重置
             </Text>
             <Text
-              className="drawer-footer__btn drawer-footer__btn_active"
-              onClick={this.handleClickSearchParams.bind(this, "submit")}
+              className='drawer-footer__btn drawer-footer__btn_active'
+              onClick={this.handleClickSearchParams.bind(this, 'submit')}
             >
               确定
             </Text>
@@ -619,9 +605,9 @@ export default class List extends Component {
 
         <ScrollView
           className={classNames(
-            "goods-list__scroll",
-            (tagsList.length > 0 && !getBrowserEnv().weixin) && "with-tag-bar",
-            (tagsList.length > 0 && getBrowserEnv().weixin) && "with-tag-bar-wx"
+            'goods-list__scroll',
+            tagsList.length > 0 && !getBrowserEnv().weixin && 'with-tag-bar',
+            tagsList.length > 0 && getBrowserEnv().weixin && 'with-tag-bar-wx'
           )}
           scrollY
           scrollTop={scrollTop}
@@ -629,12 +615,12 @@ export default class List extends Component {
           onScroll={this.handleScroll}
           onScrollToLower={this.nextPage}
         >
-          {listType === "grid" && (
-            <View className="goods-list goods-list__type-grid">
-              <View className="goods-list__group">
+          {listType === 'grid' && (
+            <View className='goods-list goods-list__type-grid'>
+              <View className='goods-list__group'>
                 {oddList.map((item) => {
                   return (
-                    <View className="goods-list__item" key={item.item_id}>
+                    <View className='goods-list__item' key={item.item_id}>
                       <GoodsItem
                         key={item.item_id}
                         info={item}
@@ -642,13 +628,13 @@ export default class List extends Component {
                         onStoreClick={() => this.handleClickStore(item)}
                       />
                     </View>
-                  );
+                  )
                 })}
               </View>
-              <View className="goods-list__group">
+              <View className='goods-list__group'>
                 {evenList.map((item) => {
                   return (
-                    <View className="goods-list__item" key={item.item_id}>
+                    <View className='goods-list__item' key={item.item_id}>
                       <GoodsItem
                         key={item.item_id}
                         info={item}
@@ -656,16 +642,16 @@ export default class List extends Component {
                         onStoreClick={() => this.handleClickStore(item)}
                       />
                     </View>
-                  );
+                  )
                 })}
               </View>
             </View>
           )}
-          {listType === "list" && (
-            <View className="goods-list goods-list__type-list">
+          {listType === 'list' && (
+            <View className='goods-list goods-list__type-list'>
               {list.map((item) => {
                 return (
-                  <View className="goods-list__item">
+                  <View className='goods-list__item'>
                     <GoodsItem
                       key={item.item_id}
                       info={item}
@@ -673,28 +659,19 @@ export default class List extends Component {
                       onStoreClick={() => this.handleClickStore(item)}
                     />
                   </View>
-                );
+                )
               })}
             </View>
           )}
           {page.isLoading ? <Loading>正在加载...</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length > 0 && (
-            <SpNote img="trades_empty.png">暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
           )}
         </ScrollView>
 
-        <BackToTop
-          show={showBackToTop}
-          onClick={this.scrollBackToTop}
-          bottom={130}
-        />
-        <AtTabBar
-          fixed
-          tabList={tabList}
-          onClick={this.handleClick}
-          current={localCurrent}
-        />
+        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} bottom={130} />
+        <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
       </View>
-    );
+    )
   }
 }

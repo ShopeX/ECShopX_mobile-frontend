@@ -28,7 +28,7 @@ const MENUS = [
   }
 ]
 
-function CompHelpCenter(props) {
+function CompHelpCenter (props) {
   const { onLink = () => {} } = props
   return (
     <View className='comp-help-center'>

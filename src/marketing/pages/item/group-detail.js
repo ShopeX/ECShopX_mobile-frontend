@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtButton, AtCountdown, AtCurtain } from 'taro-ui'
 import { FormIdCollector, SpNavBar } from '@/components'
@@ -12,9 +12,9 @@ import { getDtidIdUrl } from '@/utils/helper'
 import './group-detail.scss'
 
 export default class GroupDetail extends Component {
-  $instance = getCurrentInstance();
+  $instance = getCurrentInstance()
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       isSelf: false,
@@ -25,14 +25,14 @@ export default class GroupDetail extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     const options = await normalizeQuerys(this.$instance.router.params)
     const curStore = Taro.getStorageSync('curStore')
     if (!curStore) await entry.entryLaunch({ ...options }, true)
     this.fetchDetail()
   }
 
-  async fetchDetail() {
+  async fetchDetail () {
     const { team_id } = this.$instance.router.params
     const { distributor_id } = Taro.getStorageSync('curStore')
     const params = { distributor_id }
@@ -53,7 +53,7 @@ export default class GroupDetail extends Component {
 
     console.log(detail, '------')
 
-    const curtimestamp = (new Date()).valueOf()
+    const curtimestamp = new Date().valueOf()
     console.log(curtimestamp, 'curtimestamp')
 
     this.setState({
@@ -65,7 +65,7 @@ export default class GroupDetail extends Component {
     })
   }
 
-  calcTimer(totalSec) {
+  calcTimer (totalSec) {
     let remainingSec = totalSec
     const dd = Math.floor(totalSec / 24 / 3600)
     remainingSec -= dd * 3600 * 24
@@ -95,7 +95,10 @@ export default class GroupDetail extends Component {
     }
 
     const { detail } = this.state
-    const { activity_info, team_info: { team_id } } = detail
+    const {
+      activity_info,
+      team_info: { team_id }
+    } = detail
     const { goods_id, distributor_id = 0, groups_activity_id } = activity_info || {}
     // const { distributor_id } = Taro.getStorageSync('curStore')
 
@@ -115,7 +118,9 @@ export default class GroupDetail extends Component {
 
   handleDetailClick = () => {
     const { detail } = this.state
-    const { activity_info: { goods_id, distributor_id = 0 } } = detail
+    const {
+      activity_info: { goods_id, distributor_id = 0 }
+    } = detail
 
     Taro.redirectTo({
       url: `/pages/item/espier-detail?id=${goods_id}&dtid=${distributor_id}`
@@ -128,7 +133,7 @@ export default class GroupDetail extends Component {
     })
   }
 
-  onShareAppMessage(res) {
+  onShareAppMessage (res) {
     const { distributor_id } = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const { detail } = this.state
@@ -149,7 +154,7 @@ export default class GroupDetail extends Component {
     }
   }
 
-  onShareTimeline() {
+  onShareTimeline () {
     const { distributor_id } = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const { detail } = this.state
@@ -161,20 +166,20 @@ export default class GroupDetail extends Component {
     }
   }
 
-  handleCloseCurtain() {
+  handleCloseCurtain () {
     this.setState({
       curtainStatus: false
     })
   }
 
-  handleInvitaionFriend() {
+  handleInvitaionFriend () {
     Taro.showToast({
       title: '请至微信小程序分享给好友',
       icon: 'none'
     })
   }
 
-  render() {
+  render () {
     const { detail, timer, isLeader, isSelf, curtainStatus } = this.state
     if (!detail) return null
     const { team_info, activity_info, member_list } = detail

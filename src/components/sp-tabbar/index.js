@@ -7,13 +7,13 @@ import { TABBAR_PATH } from '@/consts'
 import { classNames, styleNames, getCurrentRoute } from '@/utils'
 import './index.scss'
 
-function SpTabbar( props ) {
+function SpTabbar (props) {
   const { tabbar } = useSelector((state) => state.sys)
   const { className } = props
-  console.log( 'tabbar:', tabbar )
+  console.log('tabbar:', tabbar)
 
   const { color, backgroundColor, selectedColor } = tabbar.config
-  const tabList = tabbar.data.map( item => {
+  const tabList = tabbar.data.map((item) => {
     return {
       title: item.text,
       name: item.name,
@@ -24,25 +24,25 @@ function SpTabbar( props ) {
       url: item.pagePath,
       urlRedirect: true
     }
-  } )
+  })
 
   let currentIndex = 0
   const pages = Taro.getCurrentPages()
-  if ( pages.length > 0 ) {
+  if (pages.length > 0) {
     const currentPage = pages[pages.length - 1].route
     currentIndex = tabList.findIndex((tab) => TABBAR_PATH[tab.name] == `/${currentPage}`)
   }
 
   console.log('currentIndex:', currentIndex)
 
-  const handleTabbarClick = ( index ) => {
+  const handleTabbarClick = (index) => {
     const tabItem = tabList[index]
     const { path } = getCurrentRoute()
-    if ( path != TABBAR_PATH[tabItem.name] ) {
-      Taro.redirectTo( { url: TABBAR_PATH[tabItem.name] } )
+    if (path != TABBAR_PATH[tabItem.name]) {
+      Taro.redirectTo({ url: TABBAR_PATH[tabItem.name] })
     }
   }
-  
+
   return (
     <AtTabBar
       fixed

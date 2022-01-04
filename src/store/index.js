@@ -21,17 +21,15 @@ const reducer = persistReducer(
   rootReducer
 )
 
-
-export default function configStore(preloadedState = {}) {
+export default function configStore (preloadedState = {}) {
   if (!store) {
     store = configureStore({
       // reducer: rootReducer,
       reducer,
       middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
       preloadedState
-    } )
+    })
     persistStore(store)
   }
   return store
 }
-

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
-import { classNames, linkPage } from "@/utils";
+import { classNames, linkPage } from '@/utils'
 
 import './limittime-slider.scss'
 
@@ -14,7 +14,7 @@ export default class WgtLimittimeSlider extends Component {
     info: null
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -32,7 +32,7 @@ export default class WgtLimittimeSlider extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info } = this.props
     const { curIdx } = this.state
 

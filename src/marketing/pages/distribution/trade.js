@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar } from '@/components'
@@ -12,8 +12,8 @@ import './trade.scss'
 @withPager
 @withBackToTop
 export default class DistributionTrade extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -27,11 +27,11 @@ export default class DistributionTrade extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.nextPage()
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { curTabIdx } = this.state
     const { type } = this.$instance.router.params
     const { page_no: page, page_size: pageSize } = params
@@ -84,7 +84,7 @@ export default class DistributionTrade extends Component {
     )
   }
 
-  render() {
+  render () {
     const { list, page, tabList, curFilterIdx, scrollTop, curTabIdx } = this.state
     console.log(list)
 

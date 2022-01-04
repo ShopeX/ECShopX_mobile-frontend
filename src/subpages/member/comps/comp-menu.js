@@ -7,16 +7,16 @@ import './comp-menu.scss'
 
 const MENUS = [
   {
-    key: "popularize",
-    name: "推广管理",
-    icon: "m_menu_tuiguang.png",
-    link: "/marketing/pages/distribution/index",
+    key: 'popularize',
+    name: '推广管理',
+    icon: 'm_menu_tuiguang.png',
+    link: '/marketing/pages/distribution/index'
   },
   {
-    key: "group",
-    name: "我的拼团",
-    icon: "m_menu_pintuan.png",
-    link: "/marketing/pages/member/group-list",
+    key: 'group',
+    name: '我的拼团',
+    icon: 'm_menu_pintuan.png',
+    link: '/marketing/pages/member/group-list'
   },
   // {
   //   key: "pointMenu",
@@ -37,62 +37,49 @@ const MENUS = [
   //   link: "/boost/pages/order/index",
   // },
   {
-    key: "offline_order",
-    name: "线下订单",
-    icon: "m_menu_xianxiadingdan.png",
-    link: "/others/pages/bindOrder/index",
+    key: 'offline_order',
+    name: '线下订单',
+    icon: 'm_menu_xianxiadingdan.png',
+    link: '/others/pages/bindOrder/index'
   },
   // community_order: { name: "社区团购", icon: "m_menu_tuangou.png" },
   {
-    key: "activity",
-    name: "活动预约",
-    icon: "m_menu_baoming.png",
-    link: "/marketing/pages/member/item-activity",
+    key: 'activity',
+    name: '活动预约',
+    icon: 'm_menu_baoming.png',
+    link: '/marketing/pages/member/item-activity'
   },
-  { key: "prorate", name: "推广管理", icon: "m_menu_tuiguang.png" },
+  { key: 'prorate', name: '推广管理', icon: 'm_menu_tuiguang.png' }
   // {
   //   key: "complaint",
   //   name: "投诉记录",
   //   icon: "m_menu_toushu.png",
   //   link: "/marketing/pages/member/complaint-record",
   // },
-];
+]
 
-function CompMenu( props ) {
+function CompMenu (props) {
   const { accessMenu, onLink = () => {}, isPromoter } = props
-  if ( !accessMenu ) {
+  if (!accessMenu) {
     return null
   }
 
-  let menus = MENUS.filter( ( item ) => accessMenu[item.key] )
+  let menus = MENUS.filter((item) => accessMenu[item.key])
   if (isWeb) {
-    menus = menus.filter(m_item => m_item.key != "popularize")
+    menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
   return (
-    <View className="comp-menu">
+    <View className='comp-menu'>
       {menus.map((item, index) => (
-        <View
-          className="menu-item"
-          key={`menu-item__${index}`}
-          onClick={onLink.bind(this, item)}
-        >
-          <SpImage
-            className="menu-image"
-            src={item.icon}
-            width={100}
-            height={100}
-          />
-          <Text className="menu-name">
-            {item.key == "popularize"
-              ? isPromoter
-                ? item.name
-                : "我要推广"
-              : item.name}
+        <View className='menu-item' key={`menu-item__${index}`} onClick={onLink.bind(this, item)}>
+          <SpImage className='menu-image' src={item.icon} width={100} height={100} />
+          <Text className='menu-name'>
+            {item.key == 'popularize' ? (isPromoter ? item.name : '我要推广') : item.name}
           </Text>
         </View>
       ))}
     </View>
-  );
+  )
 }
 
 export default CompMenu

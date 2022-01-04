@@ -8,7 +8,7 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-06-15 10:50:05
  */
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View } from '@tarojs/components'
 
 import './index.scss'
@@ -23,11 +23,11 @@ export default class LoadingMore extends Component {
     isEmpty: false
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
   }
 
-  render() {
+  render () {
     const { isLoading, isEnd, isEmpty } = this.props
     return (
       <View className={`loadingMore ${isEmpty && 'empty'}`}>

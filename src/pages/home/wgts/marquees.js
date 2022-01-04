@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { AtNoticebar } from 'taro-ui'
 
@@ -14,7 +14,7 @@ export default class WgtMarquees extends Component {
     info: null
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -22,7 +22,7 @@ export default class WgtMarquees extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { info } = this.props
     const { config, data } = info
 
@@ -44,7 +44,7 @@ export default class WgtMarquees extends Component {
     }
   }
 
-  render() {
+  render () {
     const { info } = this.props
 
     if (!info) {

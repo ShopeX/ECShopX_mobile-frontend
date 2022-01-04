@@ -27,6 +27,6 @@ export function close (params) {
 export function reasonList (params = {}) {
   return req.get('/aftersales/reason/list', params)
 }
-export function remindDetail(params = {}) {
+export function remindDetail (params = {}) {
   return req.get('/aftersales/remind/detail', params)
 }

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { classNames, navigateTo } from '@/utils'
 import { SpLoading, SpDefault } from '@/components'
 
 import './index.scss'
 
-function SpLoadMore(props) {
+function SpLoadMore (props) {
   const { loading = false, hasNext, total = 0, className } = props
 
   return (

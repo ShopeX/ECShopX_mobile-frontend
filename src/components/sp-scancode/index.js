@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import './index.scss'
 
@@ -7,7 +7,7 @@ export default class SpScancode extends Component {
     addGlobalClass: true
   }
 
-  render() {
+  render () {
     return (
       <View className='sp-scan-code'>
         <Text className='iconfont icon-saoma-01'></Text>

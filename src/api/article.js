@@ -31,20 +31,20 @@ export function praiseNum (id) {
   return req.get(`/article/praise/num/${id}`)
 }
 
-export function totalCollectArticle (params={}) {
-  return req.get('/member/collect/article',params)
+export function totalCollectArticle (params = {}) {
+  return req.get('/member/collect/article', params)
 }
 
 export function collectArticle (id) {
   return req.post(`/member/collect/article/${id}`)
 }
 
-export function delCollectArticle (params={}) {
-  return req.delete('/member/collect/article',params)
+export function delCollectArticle (params = {}) {
+  return req.delete('/member/collect/article', params)
 }
 
-export function collectArticleInfo (params={}) {
-  return req.get('/member/collect/article/info',params)
+export function collectArticleInfo (params = {}) {
+  return req.get('/member/collect/article/info', params)
 }
 
 export function columnList () {

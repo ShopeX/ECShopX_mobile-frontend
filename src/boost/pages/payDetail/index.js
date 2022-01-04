@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import { pickBy, formatDateTime } from '@/utils'
 import api from '@/api'
@@ -8,8 +8,8 @@ import { SpNavBar } from '@/components'
 import './index.scss'
 
 export default class PayDetail extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -18,7 +18,7 @@ export default class PayDetail extends Component {
     }
   }
 
-  componentWillMount() {
+  componentWillMount () {
     const { order_id } = this.$instance.router.params
     if (order_id) {
       this.getOrderDetail()
@@ -112,7 +112,7 @@ export default class PayDetail extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info, isLoading } = this.state
     const { order_id } = this.$instance.router.params
     return (

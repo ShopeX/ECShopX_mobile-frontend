@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { SpToast, Loading, BackToTop, SpNavBar } from '@/components'
 import req from '@/api/req'
@@ -14,8 +14,8 @@ import './custom-page.scss'
 
 @withBackToTop
 export default class HomeIndex extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -27,7 +27,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     const { id } = this.$instance.router.params
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
@@ -52,7 +52,7 @@ export default class HomeIndex extends Component {
     })
   }
 
-  async fetchInfo() {
+  async fetchInfo () {
     const { id } = this.$instance.router.params
     const dtid = getDistributorId()
     const pathparams = qs.stringify({
@@ -75,12 +75,12 @@ export default class HomeIndex extends Component {
     })
   }
 
-  async onShareAppMessage() {
+  async onShareAppMessage () {
     const { shareInfo } = this.state
     const { id } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}&id=${id}` : `?id=${id}`
- 
+
     return {
       title: shareInfo.page_share_title,
       imageUrl: shareInfo.page_share_imageUrl,
@@ -88,7 +88,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  onShareTimeline() {
+  onShareTimeline () {
     const { shareInfo } = this.state
     const { id } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -100,7 +100,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  render() {
+  render () {
     const { wgts, authStatus, scrollTop, showBackToTop, positionStatus } = this.state
 
     if (!wgts) {

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { Loading } from '@/components'
@@ -22,7 +22,7 @@ export default class Series extends Component {
     storeId: ''
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -30,7 +30,7 @@ export default class Series extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -52,8 +52,9 @@ export default class Series extends Component {
       url = `/others/pages/store/list?cat_id=${category_id || ''}&dis_id=${storeId}`
     }
     if (main_category_id || is_main_category) {
-      url = `/others/pages/store/list?main_cat_id=${main_category_id ||
-        category_id}&dis_id=${storeId}`
+      url = `/others/pages/store/list?main_cat_id=${
+        main_category_id || category_id
+      }&dis_id=${storeId}`
     }
     if (url) {
       Taro.navigateTo({
@@ -70,7 +71,7 @@ export default class Series extends Component {
     }
   }
 
-  render() {
+  render () {
     const { info, isChanged, pluralType, imgType, colors } = this.props
     const { currentIndex } = this.state
     if (!info) {

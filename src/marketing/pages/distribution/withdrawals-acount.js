@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { AtInput } from 'taro-ui'
 import api from '@/api'
@@ -7,7 +7,7 @@ import api from '@/api'
 import './withdrawals-acount.scss'
 
 export default class DistributionWithdrawalsAcount extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -19,11 +19,11 @@ export default class DistributionWithdrawalsAcount extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { alipay_name, alipay_account } = await api.distribution.info()
     this.setState({
       name: alipay_name,
@@ -62,7 +62,7 @@ export default class DistributionWithdrawalsAcount extends Component {
     Taro.navigateBack()
   }
 
-  render() {
+  render () {
     const { name, acount, isEdit, hasBind } = this.state
     console.log('00', hasBind)
 

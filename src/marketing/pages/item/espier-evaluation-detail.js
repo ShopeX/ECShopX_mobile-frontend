@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { Loading, GoodsEvaluation, GoodsComment, SpToast, SpNavBar } from '@/components'
 import api from '@/api'
@@ -19,12 +19,12 @@ import './espier-evaluation.scss'
 )
 @withPager
 export default class EvaluationDetail extends Component {
-  $instance = getCurrentInstance();
+  $instance = getCurrentInstance()
   static options = {
     addGlobalClass: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -36,7 +36,7 @@ export default class EvaluationDetail extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const userInfo = Taro.getStorageSync('userinfo')
     this.getEvaluationDetail()
 
@@ -159,7 +159,7 @@ export default class EvaluationDetail extends Component {
     }
   }
 
-  render() {
+  render () {
     const { info, showCommentPanel } = this.state
 
     if (!info) {

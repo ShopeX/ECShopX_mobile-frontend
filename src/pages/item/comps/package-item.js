@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtAccordion, AtButton } from 'taro-ui'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { GoodsItem, SpCheckbox, GoodsBuyPanel } from '@/components'
@@ -27,7 +27,7 @@ export default class PackageItem extends Component {
     distributorId: 0
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -46,11 +46,11 @@ export default class PackageItem extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { package_id } = this.props.info
     // const { itemLists, main_item_id, main_item_price, package_price } = await api.item.packageDetail(package_id)
     const res = await api.item.packageDetail(package_id)
@@ -284,7 +284,7 @@ export default class PackageItem extends Component {
 
     const { selection, mainItem } = this.state
     console.log(selection, 198)
-    console.log(mainItem,'mainItemmainItemmainItem');
+    console.log(mainItem, 'mainItemmainItemmainItem')
     // return
     const packageId = this.props.current
     if (!mainItem.checked_spec && mainItem.spec_items.length > 0) {
@@ -328,7 +328,7 @@ export default class PackageItem extends Component {
     }
   }
 
-  async fetchCartcount() {
+  async fetchCartcount () {
     try {
       const { item_count } = await api.cart.count({ shop_type: 'distributor' })
       this.props.onUpdateCartCount(item_count)
@@ -337,7 +337,7 @@ export default class PackageItem extends Component {
     }
   }
 
-  countPackageTotal() {
+  countPackageTotal () {
     const { selection, packagePrices, mainPackagePrice } = this.state
     let packageTotalPrice = 0
     const selected = [...selection]
@@ -346,8 +346,8 @@ export default class PackageItem extends Component {
       // packageTotalPrice += Number(mainItem.price * 100)
       selected.map((id) => {
         packageTotalPrice +=
-          Number((packagePrices[id] && packagePrices[id].price)||0) ||
-          Number((mainPackagePrice[id] && mainPackagePrice[id].price)||0)
+          Number((packagePrices[id] && packagePrices[id].price) || 0) ||
+          Number((mainPackagePrice[id] && mainPackagePrice[id].price) || 0)
       })
     }
     this.setState({
@@ -355,7 +355,7 @@ export default class PackageItem extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info, onClick, current } = this.props
     if (!info) {
       return null
@@ -374,8 +374,7 @@ export default class PackageItem extends Component {
       mainItem
     } = this.state
 
-
-    console.log("===packageTotalPrice===",packageTotalPrice)
+    console.log('===packageTotalPrice===', packageTotalPrice)
 
     const { package_id, package_name } = info
     return (
@@ -402,7 +401,9 @@ export default class PackageItem extends Component {
               renderSpec={
                 <View
                   className='goods-item__sku'
-                  style={mainItem.spec_items && mainItem.spec_items.length > 0 ? '' : 'display: none;'}
+                  style={
+                    mainItem.spec_items && mainItem.spec_items.length > 0 ? '' : 'display: none;'
+                  }
                   onClick={this.handleMainSkuSelection.bind(this, mainItem)}
                 >
                   <Text className='goods-item__sku-text'>

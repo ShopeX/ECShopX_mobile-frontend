@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { classNames, navigateTo } from '@/utils'
 import SpLoading from '../sp-loading'
@@ -20,7 +20,7 @@ export default class SpPageNote extends Component {
 
   handleClick = () => {}
 
-  render() {
+  render () {
     const { info: page, className, title, button, value, btnText, to } = this.props
     if (!page) {
       return null

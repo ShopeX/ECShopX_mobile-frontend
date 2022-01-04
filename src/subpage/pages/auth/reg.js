@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Form, Button, Text, Picker, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtInput, AtButton } from 'taro-ui'
 import { SpToast, SpTimer, SpNavBar, SpCheckbox, AccountOfficial } from '@/components'
-import { classNames, isString, isArray, tokenParse,getBrowserEnv, isWeb } from '@/utils'
+import { classNames, isString, isArray, tokenParse, getBrowserEnv, isWeb } from '@/utils'
 // import { Tracker } from '@/service'
 import S from '@/spx'
 import api from '@/api'
@@ -21,7 +21,7 @@ const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
   () => ({})
 )
 export default class Reg extends Component {
-  $instance = getCurrentInstance();
+  $instance = getCurrentInstance()
   constructor (props) {
     super(props)
 
@@ -126,7 +126,7 @@ export default class Reg extends Component {
     }
   }
 
-  handleSubmit = async (e) => { 
+  handleSubmit = async (e) => {
     const { value } = e.detail
     let contine = false
     const data = {
@@ -255,8 +255,8 @@ export default class Reg extends Component {
               })
             } else {
               Taro.redirectTo({
-                url: "/subpages/member/index"
-              });
+                url: '/subpages/member/index'
+              })
             }
           }
         }, 700)
@@ -438,7 +438,7 @@ export default class Reg extends Component {
   render () {
     const { colors } = this.props
     const {
-      info, 
+      info,
       isVisible,
       isHasData,
       list,
@@ -448,10 +448,10 @@ export default class Reg extends Component {
       showCheckboxPanel,
       show_official,
       show_kuangkuang
-    } = this.state;
+    } = this.state
 
     return (
-      <View className={classNames('auth-reg',{'inWeixin':getBrowserEnv().weixin})}>
+      <View className={classNames('auth-reg', { 'inWeixin': getBrowserEnv().weixin })}>
         {show_official && (
           <AccountOfficial
             onHandleError={this.handleOfficialError.bind(this)}
@@ -520,7 +520,11 @@ export default class Reg extends Component {
                     onFocus={this.handleErrorToastClose}
                     onChange={this.handleChange.bind(this, 'yzm')}
                   >
-                    <Image className='code-imgs' src={`${imgInfo.imageData}`} onClick={this.handleClickImgcode} />
+                    <Image
+                      className='code-imgs'
+                      src={`${imgInfo.imageData}`}
+                      onClick={this.handleClickImgcode}
+                    />
                   </AtInput>
                 ) : null}
                 <AtInput
@@ -548,11 +552,18 @@ export default class Reg extends Component {
               onFocus={this.handleErrorToastClose}
               onChange={this.handleChange.bind(this, 'password')}
             >
-              {
-                isVisible
-                  ? <View className='sp-icon sp-icon-yanjing icon-pwd' onClick={this.handleClickIconpwd}> </View>
-                  : <View className='sp-icon sp-icon-icon6 icon-pwd' onClick={this.handleClickIconpwd}> </View>
-              }
+              {isVisible ? (
+                <View
+                  className='sp-icon sp-icon-yanjing icon-pwd'
+                  onClick={this.handleClickIconpwd}
+                >
+                  {' '}
+                </View>
+              ) : (
+                <View className='sp-icon sp-icon-icon6 icon-pwd' onClick={this.handleClickIconpwd}>
+                  {' '}
+                </View>
+              )}
             </AtInput>
             {isHasData &&
               list.map((item, index) => {

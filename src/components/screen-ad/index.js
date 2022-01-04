@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image, Video } from '@tarojs/components'
 import api from '@/api'
 import { connect } from 'react-redux'
@@ -13,7 +13,7 @@ import './index.scss'
   })
 )
 export default class ScreenAd extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.timeId = null
     this.state = {
@@ -32,7 +32,7 @@ export default class ScreenAd extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // 倒计时
     this.getSetting()
   }
@@ -119,7 +119,7 @@ export default class ScreenAd extends Component {
     }
   }
 
-  render() {
+  render () {
     const { downTime, isShow, position, isVideo, isJump, url } = this.state
 
     return (

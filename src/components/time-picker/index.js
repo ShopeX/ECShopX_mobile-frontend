@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Picker, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
 
 export default class TimePicker extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {}
   }
 
-  onChange = (e) => { 
-    const { onselctedTime } = this.props 
+  onChange = (e) => {
+    const { onselctedTime } = this.props
     onselctedTime(e.detail.value)
   }
 
-  render() {
+  render () {
     return (
       <View className='time-picker'>
         <View>

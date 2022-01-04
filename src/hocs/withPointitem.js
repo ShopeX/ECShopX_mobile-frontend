@@ -1,17 +1,17 @@
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 
-export default function withPointitem( Component ) {
+export default function withPointitem (Component) {
   return class WithPointitemComponent extends Component {
-    constructor(props) {
+    constructor (props) {
       super(props)
     }
 
-    isPointitem() {
+    isPointitem () {
       const options = getCurrentInstance().params
       return options && options.type === 'pointitem'
     }
 
-    transformUrl(url, isPointitem = false) {
+    transformUrl (url, isPointitem = false) {
       if (isPointitem) {
         return `${url}&type=pointitem`
       }

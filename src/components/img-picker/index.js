@@ -1,7 +1,7 @@
 import { AtImagePicker } from 'taro-ui'
 import { isAlipay } from '@/utils'
 import { View } from '@tarojs/components'
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 import imgUploader from '@/utils/upload'
 import './index.scss'
 
@@ -16,7 +16,7 @@ const ImgPicker = (props) => {
         const resultFiles = res.apFilePaths.map((item) => ({
           url: item,
           file: item
-        })) 
+        }))
         imgUploader.uploadImageFn(resultFiles).then((res) => {
           console.log('---uploadImageFn res---', res)
         })

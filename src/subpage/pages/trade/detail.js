@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
@@ -14,7 +14,7 @@ import {
   getCurrentRoute,
   isAlipay,
   classNames,
-  isNavbar, 
+  isNavbar,
   isWeb,
   redirectUrl
 } from '@/utils'
@@ -60,8 +60,8 @@ const statusImg = {
   pointName: sys.pointName
 }))
 export default class TradeDetail extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -77,24 +77,24 @@ export default class TradeDetail extends Component {
       cancelData: {},
       tradeInfo: {},
       showQRcode: false,
-      distributor:{}
+      distributor: {}
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     clearInterval(this.state.interval)
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.fetch()
   }
 
-  isPointitemGood() {
+  isPointitemGood () {
     const options = this.$instance.router.params
     return options.type === 'pointitem'
   }
 
-  calcTimer(totalSec) {
+  calcTimer (totalSec) {
     let remainingSec = totalSec
     const dd = Math.floor(totalSec / 24 / 3600)
     remainingSec -= dd * 3600 * 24
@@ -112,14 +112,14 @@ export default class TradeDetail extends Component {
     }
   }
 
-  async fetch() {
-    const { id } = this.$instance.router.params; 
+  async fetch () {
+    const { id } = this.$instance.router.params
     const data = await api.trade.detail(id)
     let sessionFrom = ''
     const pickItem = {
       order_id: 'order_id',
       item_id: 'id',
-      good_id:'item_id',
+      good_id: 'item_id',
       // aftersales_status: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
       delivery_code: 'delivery_code',
       delivery_corp: 'delivery_corp',
@@ -142,7 +142,7 @@ export default class TradeDetail extends Component {
       item_spec_desc: 'item_spec_desc',
       order_item_type: 'order_item_type',
       show_aftersales: 'show_aftersales',
-      distributor_id:'distributor_id'
+      distributor_id: 'distributor_id'
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
@@ -277,7 +277,7 @@ export default class TradeDetail extends Component {
       ziti,
       cancelData,
       tradeInfo,
-      distributor:data.distributor
+      distributor: data.distributor
     })
   }
 
@@ -291,7 +291,7 @@ export default class TradeDetail extends Component {
     await copyText(msg)
   }
 
-  async handlePay() {
+  async handlePay () {
     const { info } = this.state
 
     this.setState({
@@ -305,9 +305,9 @@ export default class TradeDetail extends Component {
       order_type
     }
 
-    if(isWeb){
+    if (isWeb) {
       redirectUrl(api, `/subpage/pages/cashier/index?order_id=${order_id}&pay_type=${pay_type}`)
-      return ;
+      return
     }
 
     const config = await api.cashier.getPayment(paymentParams)
@@ -365,7 +365,7 @@ export default class TradeDetail extends Component {
     }
   }
 
-  async handleClickBtn(type, e) {
+  async handleClickBtn (type, e) {
     e.stopPropagation()
     const { info } = this.state
     if (type === 'home') {
@@ -415,7 +415,7 @@ export default class TradeDetail extends Component {
     }
   }
 
-  async handleClickRefund(type, item_id) {
+  async handleClickRefund (type, item_id) {
     const {
       info: { tid: order_id }
     } = this.state
@@ -488,8 +488,8 @@ export default class TradeDetail extends Component {
               () => {
                 setTimeout(() => {
                   Taro.redirectTo({
-                    url: "/subpages/member/index"
-                  });
+                    url: '/subpages/member/index'
+                  })
                 }, 700)
               }
             )
@@ -579,7 +579,7 @@ export default class TradeDetail extends Component {
 
   // 复制orderid
   copyOrderId = (orderid) => {
-    copyText(orderid);
+    copyText(orderid)
     Taro.showToast({
       title: '复制成功',
       icon: 'none'
@@ -592,18 +592,20 @@ export default class TradeDetail extends Component {
     })
   }
 
-  computedPayType=()=>{
-    const { info:{pay_type} } =this.state; 
-    if(isAlipay){
+  computedPayType = () => {
+    const {
+      info: { pay_type }
+    } = this.state
+    if (isAlipay) {
       return '支付宝'
-    }else if(pay_type===PAYTYPE.ALIH5){
+    } else if (pay_type === PAYTYPE.ALIH5) {
       return '支付宝'
-    }else{
+    } else {
       return '微信'
     }
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const {
       info,
@@ -632,7 +634,7 @@ export default class TradeDetail extends Component {
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')
     // TODO: orders 多商铺
-    // const tradeOrders = resolveTradeOrders(info) 
+    // const tradeOrders = resolveTradeOrders(info)
 
     return (
       <View
@@ -684,9 +686,9 @@ export default class TradeDetail extends Component {
                 <View className='delivery-infos'>
                   <View className='delivery-infos__status'>
                     <View
-                      className={`delivery-infos__text text-status ${info.receipt_type === 'dada' &&
-                        info.dada.dada_status === 9 &&
-                        'red'}`}
+                      className={`delivery-infos__text text-status ${
+                        info.receipt_type === 'dada' && info.dada.dada_status === 9 && 'red'
+                      }`}
                     >
                       {info.order_status_msg}
                       {info.dada && info.dada.id && statusImg[info.dada.dada_status] && (
@@ -802,12 +804,7 @@ export default class TradeDetail extends Component {
           </View>
 
           <View className='trade-detail-goods'>
-            <SpNewShopItem 
-              info={distributor}
-              canJump
-              inOrderDetail
-              hasLogo={false}
-            />
+            <SpNewShopItem info={distributor} canJump inOrderDetail hasLogo={false} />
             <View className='line'>
               <View className='left'>订单号：</View>
               <View className='right'>
@@ -973,7 +970,7 @@ export default class TradeDetail extends Component {
                 <View className='left'>支付</View>
                 <View className='right'>
                   ¥{info.payment}{' '}
-                  {info.order_class !== 'excard' ? this.computedPayType()  + '支付' : ''}
+                  {info.order_class !== 'excard' ? this.computedPayType() + '支付' : ''}
                 </View>
               </View>
             )}
@@ -1003,100 +1000,114 @@ export default class TradeDetail extends Component {
 
         {info.status !== 'TRADE_CLOSED' && (
           <View className='trade-detail__footer'>
-            {// 立即支付
-            info.status === 'WAIT_BUYER_PAY' && (
-              <Button
-                className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'
-                type='primary'
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                loading={payLoading}
-                onClick={this.handleClickBtn.bind(this, 'pay')}
-              >
-                立即支付
-              </Button>
-            )}
-            {// 申请售后
-            (info.status === 'WAIT_SELLER_SEND_GOODS' ||
-              (info.status === 'TRADE_SUCCESS' &&
-                (info.receipt_type !== 'dada' ||
-                  info.dada.dada_status === 4 ||
-                  info.dada.dada_status === 10)) ||
-              (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
-                (info.is_all_delivery ||
-                  (!info.is_all_delivery && info.delivery_status === 'DONE')) &&
-                info.receipt_type !== 'dada')) &&
-              info.can_apply_aftersales === 1 &&
-              info.order_class !== 'excard' && (
+            {
+              // 立即支付
+              info.status === 'WAIT_BUYER_PAY' && (
                 <Button
-                  className={`trade-detail__footer__btn left ${info.is_logistics &&
-                    'trade-detail__footer_active trade-detail__footer_allWidthBtn'}`}
-                  onClick={this.handleClickBtn.bind(this, 'aftersales')}
+                  className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'
+                  type='primary'
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  loading={payLoading}
+                  onClick={this.handleClickBtn.bind(this, 'pay')}
                 >
-                  申请售后
+                  立即支付
                 </Button>
-              )}
-            {// 继续购物
-            (info.status === 'WAIT_SELLER_SEND_GOODS' ||
-              (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
-                info.receipt_type === 'dada' &&
-                info.receipt_type !== 'dada') ||
-              info.dada.dada_status !== 9) && (
-              <View
-                className={`trade-detail__footer__btn trade-detail__footer_active right ${
-                  info.order_class === 'excard' ||
-                  info.can_apply_aftersales !== 1 ||
-                  (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')
-                    ? 'trade-detail__footer_allWidthBtn'
-                    : ''
-                }`}
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
-                onClick={this.handleClickBtn.bind(this, 'home')}
-              >
-                继续购物
-              </View>
-            )}
-            {// 确认收货
-            info.order_class !== 'excard' &&
-              info.receipt_type !== 'dada' &&
-              !info.is_logistics &&
-              info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
-              (info.is_all_delivery ||
-                (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
+              )
+            }
+            {
+              // 申请售后
+              (info.status === 'WAIT_SELLER_SEND_GOODS' ||
+                (info.status === 'TRADE_SUCCESS' &&
+                  (info.receipt_type !== 'dada' ||
+                    info.dada.dada_status === 4 ||
+                    info.dada.dada_status === 10)) ||
+                (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
+                  (info.is_all_delivery ||
+                    (!info.is_all_delivery && info.delivery_status === 'DONE')) &&
+                  info.receipt_type !== 'dada')) &&
+                info.can_apply_aftersales === 1 &&
+                info.order_class !== 'excard' && (
+                  <Button
+                    className={`trade-detail__footer__btn left ${
+                      info.is_logistics &&
+                      'trade-detail__footer_active trade-detail__footer_allWidthBtn'
+                    }`}
+                    onClick={this.handleClickBtn.bind(this, 'aftersales')}
+                  >
+                    申请售后
+                  </Button>
+                )
+            }
+            {
+              // 继续购物
+              (info.status === 'WAIT_SELLER_SEND_GOODS' ||
+                (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
+                  info.receipt_type === 'dada' &&
+                  info.receipt_type !== 'dada') ||
+                info.dada.dada_status !== 9) && (
                 <View
-                  className={`trade-detail__footer__btn trade-detail__footer_active right ${info.can_apply_aftersales ===
-                    0 && 'trade-detail__footer_allWidthBtn'}`}
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, 'confirm')}
+                  className={`trade-detail__footer__btn trade-detail__footer_active right ${
+                    info.order_class === 'excard' ||
+                    info.can_apply_aftersales !== 1 ||
+                    (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')
+                      ? 'trade-detail__footer_allWidthBtn'
+                      : ''
+                  }`}
+                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
+                  onClick={this.handleClickBtn.bind(this, 'home')}
                 >
-                  确认收货
+                  继续购物
                 </View>
-              )}
-            {// 联系客服
-            (info.status === 'TRADE_SUCCESS' ||
-              (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
-              info.order_class !== 'excard' && (
-                <View
-                  className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales ===
-                    0 ||
-                    (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
-                    'trade-detail__footer_allWidthBtn'}`}
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                >
-                  {meiqia.is_open === 'true' || echat.is_open === 'true' ? (
-                    <FloatMenuMeiQia
-                      storeId={info.distributor_id}
-                      info={{ orderId: info.order_id }}
-                      isFloat={false}
-                    >
-                      联系客服
-                    </FloatMenuMeiQia>
-                  ) : (
-                    <Button openType='contact' className='contact'>
-                      联系客服
-                    </Button>
-                  )}
-                </View>
-              )}
+              )
+            }
+            {
+              // 确认收货
+              info.order_class !== 'excard' &&
+                info.receipt_type !== 'dada' &&
+                !info.is_logistics &&
+                info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
+                (info.is_all_delivery ||
+                  (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
+                  <View
+                    className={`trade-detail__footer__btn trade-detail__footer_active right ${
+                      info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'
+                    }`}
+                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                    onClick={this.handleClickBtn.bind(this, 'confirm')}
+                  >
+                    确认收货
+                  </View>
+                )
+            }
+            {
+              // 联系客服
+              (info.status === 'TRADE_SUCCESS' ||
+                (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
+                info.order_class !== 'excard' && (
+                  <View
+                    className={`trade-detail__footer__btn trade-detail__footer_active right ${
+                      (info.can_apply_aftersales === 0 ||
+                        (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
+                      'trade-detail__footer_allWidthBtn'
+                    }`}
+                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  >
+                    {meiqia.is_open === 'true' || echat.is_open === 'true' ? (
+                      <FloatMenuMeiQia
+                        storeId={info.distributor_id}
+                        info={{ orderId: info.order_id }}
+                        isFloat={false}
+                      >
+                        联系客服
+                      </FloatMenuMeiQia>
+                    ) : (
+                      <Button openType='contact' className='contact'>
+                        联系客服
+                      </Button>
+                    )}
+                  </View>
+                )
+            }
           </View>
         )}
 

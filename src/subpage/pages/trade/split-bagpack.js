@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { View, Text, Button, Image,ScrollView } from '@tarojs/components'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpToast, SpNavBar, FloatMenuMeiQia, SpImg } from '@/components'
@@ -26,8 +26,8 @@ import './split-bagpack.scss'
 //   })
 // }
 export default class TradeDetail extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -36,11 +36,11 @@ export default class TradeDetail extends Component {
     }
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { order_id, order_type } = this.$instance.router.params
     const data = await api.trade.deliveryLists({ order_id })
 
@@ -60,7 +60,7 @@ export default class TradeDetail extends Component {
     })
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { list, delivery_num } = this.state
     if (list.length == 0) {
@@ -102,12 +102,7 @@ export default class TradeDetail extends Component {
                             /> */}
                 <ScrollView scrollX>
                   {item.items.map((i) => (
-                    <Image
-                      className='order-item__img'
-                      src={i.pic}
-                      mode='aspectFill'
-                      lazyLoad
-                    />
+                    <Image className='order-item__img' src={i.pic} mode='aspectFill' lazyLoad />
                   ))}
                 </ScrollView>
               </View>

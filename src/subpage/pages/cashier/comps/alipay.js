@@ -9,11 +9,11 @@
  * @LastEditTime: 2020-11-19 15:00:36
  */
 
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import api from '@/api'
-import { SYMBOL } from '../util';
+import { SYMBOL } from '../util'
 
 import './alipay.scss'
 
@@ -22,23 +22,23 @@ export default class AlipayBtn extends Component {
     addGlobalClass: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {}
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const refMeta = document.querySelector('meta[name="referrer"]')
     refMeta.setAttribute('content', 'always')
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     const refMeta = document.querySelector('meta[name="referrer"]')
     refMeta.setAttribute('content', 'never')
   }
 
-  handleClickPayment = async () => { 
+  handleClickPayment = async () => {
     const { protocol, host } = window.location
     const query = {
       order_id: this.props.orderID,
@@ -47,15 +47,15 @@ export default class AlipayBtn extends Component {
       return_url: `${protocol}//${host}/subpage/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
     }
     try {
-      const { payment } = await api.cashier.getPayment(query) 
-      const el = document.createElement('div') 
-      el.setAttribute("class" , SYMBOL);
+      const { payment } = await api.cashier.getPayment(query)
+      const el = document.createElement('div')
+      el.setAttribute('class', SYMBOL)
       //el.innerHTML='<form id="a" name="test"></form>'
       el.innerHTML = payment.replace(/<script>(.*)?<\/script>/, '')
       document.body.appendChild(el)
 
       document.getElementById('alipay_submit').submit()
-    } catch (error) { 
+    } catch (error) {
       console.log(error)
       Taro.redirectTo({
         url: `/subpage/pages/cashier/cashier-result?payStatus=fail&order_id=${this.props.orderID}`
@@ -63,7 +63,7 @@ export default class AlipayBtn extends Component {
     }
   }
 
-  render() {
+  render () {
     return (
       <View>
         <View className='alipay-btn' onClick={this.handleClickPayment.bind(this)}>

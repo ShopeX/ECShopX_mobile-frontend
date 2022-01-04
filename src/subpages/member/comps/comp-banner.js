@@ -5,12 +5,12 @@ import { classNames, styleNames } from '@/utils'
 
 import './comp-banner.scss'
 
-function CompsBanner(props) {
+function CompsBanner (props) {
   const { className, src, info } = props
-  
+
   const handleClick = () => {
     const { urlOpen, pageUrl, appId } = info
-    if ( urlOpen ) {
+    if (urlOpen) {
       Taro.navigateToMiniProgram({
         appId: appId,
         path: pageUrl
@@ -27,7 +27,7 @@ function CompsBanner(props) {
       )}
       onClick={handleClick}
     >
-      <SpImage src={src} width="auto" />
+      <SpImage src={src} width='auto' />
     </View>
   )
 }

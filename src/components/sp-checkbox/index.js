@@ -1,10 +1,17 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect } from 'react'
 import { View, Text } from '@tarojs/components'
 import { classNames, getThemeStyle, styleNames } from '@/utils'
 import './index.scss'
 
-function SpCheckboxNew(props) {
-  const { className, children, checked = false, label, onChange = () => {}, disabled = false } = props
+function SpCheckboxNew (props) {
+  const {
+    className,
+    children,
+    checked = false,
+    label,
+    onChange = () => {},
+    disabled = false
+  } = props
 
   const [isChecked, setChecked] = useState(checked)
 
@@ -34,7 +41,7 @@ function SpCheckboxNew(props) {
           {
             iconfont: true
           },
-          disabled ? 'icon-circle1' : (isChecked ? 'icon-roundcheckfill' : 'icon-round'),
+          disabled ? 'icon-circle1' : isChecked ? 'icon-roundcheckfill' : 'icon-round',
           disabled && isChecked && 'icon-roundcheckfill'
         )}
       ></Text>

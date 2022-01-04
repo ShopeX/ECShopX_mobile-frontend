@@ -8,8 +8,8 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-08-17 15:34:00
  */
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 // import { withPager, withBackToTop } from '@/hocs'
@@ -22,8 +22,8 @@ import './activity-detail.scss'
   colors: colors.current
 }))
 export default class ActivityDetail extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -31,11 +31,11 @@ export default class ActivityDetail extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { content } = await api.user.registrationRecordInfo({
       record_id: this.$instance.router.params.record_id
     })
@@ -68,7 +68,7 @@ export default class ActivityDetail extends Component {
     Taro.navigateBack()
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { cur_activity_info } = this.state
 

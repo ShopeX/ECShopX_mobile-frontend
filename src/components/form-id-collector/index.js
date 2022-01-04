@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { Form, Button } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { FormIds } from '@/service'
@@ -28,16 +28,18 @@ export default class FormIdCollector extends Component {
     FormIds.collectFormIds(formId, sync)
   }
 
-  render() {
+  render () {
     if (Taro.getEnv() === Taro.ENV_TYPE.WEAPP) {
-      return <Button
-        hoverClass='none'
-        className='form-id-collector__btn'
-        formType='submit'
-        onClick={this.props.onClick}
-      >
-        {this.props.children}
-      </Button>
+      return (
+        <Button
+          hoverClass='none'
+          className='form-id-collector__btn'
+          formType='submit'
+          onClick={this.props.onClick}
+        >
+          {this.props.children}
+        </Button>
+      )
     }
 
     return (

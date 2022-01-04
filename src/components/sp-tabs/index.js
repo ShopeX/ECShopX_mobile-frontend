@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { classNames, navigateTo } from '@/utils'
 import './index.scss'
 
-function SpTabs(props) {
+function SpTabs (props) {
   let { tablist = [], current, onChange, children } = props
 
   console.log('current', current)

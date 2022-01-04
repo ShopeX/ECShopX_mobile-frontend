@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateUserInfo, fetchUserFavs } from "@/store/slices/user";
+import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
 import api from '@/api'
 import { isWeixin, showToast } from '@/utils'
 import S from '@/spx'
@@ -16,17 +16,17 @@ export default (props = {}) => {
 
   useEffect(() => {
     const token = S.getAuthToken()
-    if ( !token ) {
+    if (!token) {
       autoLogin && login()
     } else {
-      setIsLogin( true )
+      setIsLogin(true)
       getUserInfo()
     }
   }, [])
 
-  useEffect( () => {
-    if ( userInfo ) {
-      setIsLogin( true )
+  useEffect(() => {
+    if (userInfo) {
+      setIsLogin(true)
     }
   }, [userInfo])
 
@@ -34,13 +34,13 @@ export default (props = {}) => {
     if (isWeixin) {
       // 隐私协议
       const checkResult = await checkPolicyChange()
-      if (checkResult ) {
+      if (checkResult) {
         const { code } = await Taro.login()
         try {
           const { token } = await api.wx.login({ code })
-          setToken( token )
+          setToken(token)
         } catch (e) {
-          console.error( '[hooks useLogin] auto login is failed: ', e )
+          console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
       }
@@ -51,12 +51,12 @@ export default (props = {}) => {
     S.setAuthToken(token)
     setIsLogin(true)
     getUserInfo()
-    dispatch(fetchUserFavs());
+    dispatch(fetchUserFavs())
   }
 
   const getUserInfo = async (refresh) => {
     if (!userInfo || refresh) {
-      const _userInfo = await api.member.memberInfo();
+      const _userInfo = await api.member.memberInfo()
       // 兼容老版本 后续优化
       const { username, avatar, user_id, mobile, open_id } = _userInfo.memberInfo
       Taro.setStorageSync('userinfo', {
@@ -68,9 +68,9 @@ export default (props = {}) => {
         openid: open_id,
         vip: _userInfo.vipgrade ? _userInfo.vipgrade.vip_type : ''
       })
-      dispatch(updateUserInfo(_userInfo));
+      dispatch(updateUserInfo(_userInfo))
     }
-  };
+  }
 
   /**
    * @function 检查隐私协议是否变更
@@ -82,11 +82,11 @@ export default (props = {}) => {
     // console.log( Taro.getStorageSync( SG_POLICY_UPDATETIME ) )
     // console.log( update_time )
     // console.log(Taro.getStorageSync(SG_POLICY_UPDATETIME) === update_time)
-    const res = Taro.getStorageSync( SG_POLICY_UPDATETIME ) === update_time;
-    if ( !res ) {
-      policyUpdateHook();
+    const res = Taro.getStorageSync(SG_POLICY_UPDATETIME) === update_time
+    if (!res) {
+      policyUpdateHook()
     }
-    return res;
+    return res
   }
 
   /**
@@ -101,11 +101,11 @@ export default (props = {}) => {
    * @function 获取用户信息授权（小程序）
    */
   const getUserInfoAuth = () => {
-    return new Promise( ( resolve, reject ) => {
+    return new Promise((resolve, reject) => {
       console.log('getUserInfoAuth:获取用户信息授权（小程序）')
       const token = S.getAuthToken()
       if (!token) {
-        showToast( '请先登录' )
+        showToast('请先登录')
         return
         // reject()
       }

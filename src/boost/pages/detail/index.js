@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
 import { SpNavBar, SpHtmlContent } from '@/components'
 import { pickBy, calcTimer } from '@/utils'
@@ -17,8 +17,8 @@ import './index.scss'
   })
 )
 export default class Detail extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
     this.state = {
       adPic: '',
@@ -48,11 +48,11 @@ export default class Detail extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getBoostDetail()
   }
 
-  onShareAppMessage() {
+  onShareAppMessage () {
     const { userInfo, info } = this.state
     const userId = userInfo.user_id
 
@@ -142,22 +142,22 @@ export default class Detail extends Component {
         filePath,
         data: bodyData,
         encoding: 'base64',
-        success() {
+        success () {
           Taro.getImageInfo({
             src: filePath,
-            success(res) {
+            success (res) {
               resolve(res.path)
             },
-            fail(e) {
+            fail (e) {
               console.log(e)
             }
           })
         },
-        fail() {
+        fail () {
           reject(new Error('ERROR_BASE64SRC_WRITE'))
         }
       })
-    });
+    })
   }
 
   // 绘制海报
@@ -292,7 +292,7 @@ export default class Detail extends Component {
     }
   }
 
-  render() {
+  render () {
     const {
       adPic,
       info,

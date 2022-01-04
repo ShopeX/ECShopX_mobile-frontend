@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image } from '@tarojs/components'
 import { SpImg } from '@/components'
 import './img-gif.scss'
@@ -10,11 +10,11 @@ export default class WgtImgGif extends Component {
     info: {}
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {}
   }
-  render() {
+  render () {
     const { info } = this.props
     if (!info) {
       return null

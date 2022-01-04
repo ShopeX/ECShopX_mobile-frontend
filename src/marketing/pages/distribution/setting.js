@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import api from '@/api'
@@ -6,7 +6,7 @@ import api from '@/api'
 import './setting.scss'
 
 export default class DistributionSetting extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -16,11 +16,11 @@ export default class DistributionSetting extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const res = await api.distribution.info()
     const { parent_info = null, bind_date, mobile, shop_name = '' } = res
 
@@ -50,7 +50,7 @@ export default class DistributionSetting extends Component {
     }
   }
 
-  render() {
+  render () {
     const { info, shop_name, isEdit } = this.state
 
     return (

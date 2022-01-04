@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 import './plate-type.scss'
@@ -13,14 +13,14 @@ export default class WgtPlateType extends Component {
     base: {}
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       nowIndex: ''
     }
   }
 
-  render() {
+  render () {
     const { info, index, num, base } = this.props
     let style = `color:${base.WordColor};border-color:${base.WordColor}`
 

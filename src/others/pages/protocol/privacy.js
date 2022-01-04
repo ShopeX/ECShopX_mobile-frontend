@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 
 export default class ProtocolPrivacy extends Component {
-  render() {
+  render () {
     return (
       <View style='padding: 10px'>
         <Text style='text-align: center; display: block; font-size: 1.5em; font-weight: bold; margin: 0 0 10px;'>

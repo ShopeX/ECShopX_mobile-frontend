@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { Loading } from '@/components'
 import { AtAvatar, AtButton } from 'taro-ui'
@@ -9,7 +9,7 @@ import ComplaintRecordItem from './comps/complaint-record-item'
 import './complaint-record.scss'
 
 export default class ComplaintRecord extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -20,7 +20,7 @@ export default class ComplaintRecord extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getSalesperson()
     this.getComplaintsList()
   }
@@ -28,7 +28,7 @@ export default class ComplaintRecord extends Component {
   /**
    * 获取个人信息
    * */
-  async getSalesperson() {
+  async getSalesperson () {
     let info = await api.member.getSalesperson()
 
     console.log('res', info)
@@ -36,14 +36,14 @@ export default class ComplaintRecord extends Component {
     this.setState({ info })
   }
 
-  handleClickDisplayMap(item) {
+  handleClickDisplayMap (item) {
     this.setState({
       showMap: true,
       showImage: item
     })
   }
 
-  handleClickHideMap(e) {
+  handleClickHideMap (e) {
     e.stopPropagation()
     this.setState({
       showMap: false
@@ -53,7 +53,7 @@ export default class ComplaintRecord extends Component {
   /**
    * 获取个人信息
    * */
-  async getComplaintsList() {
+  async getComplaintsList () {
     let { list } = await api.member.getComplaintsList({ page: 1, pageSize: 100 })
 
     let nList = list.map((item) => {
@@ -66,7 +66,7 @@ export default class ComplaintRecord extends Component {
     this.setState({ list: nList })
   }
 
-  render() {
+  render () {
     const { info, list, showMap, showImage } = this.state
 
     if (!info) return <Loading />

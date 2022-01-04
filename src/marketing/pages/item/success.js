@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 
 import './success.scss'
 
 export default class TradeRateSuccess extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {}
   }
 
-  componentDidMount() {}
+  componentDidMount () {}
 
   handleClick = () => {
     Taro.redirectTo({
@@ -19,7 +19,7 @@ export default class TradeRateSuccess extends Component {
     })
   }
 
-  render() {
+  render () {
     return (
       <View className='trade-rate-success'>
         <View className='in-icon in-icon-icon-test'></View>

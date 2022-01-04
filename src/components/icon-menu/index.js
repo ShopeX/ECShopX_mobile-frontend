@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import { AtIcon } from 'taro-ui'
 
@@ -33,18 +33,9 @@ export default class IconMenu extends Component {
     onClick()
   }
 
-  render() {
-    const {
-      img,
-      icon,
-      iconStyle,
-      iconPrefixClass,
-      title,
-      size,
-      className,
-      hoverClass,
-      openType
-    } = this.props
+  render () {
+    const { img, icon, iconStyle, iconPrefixClass, title, size, className, hoverClass, openType } =
+      this.props
 
     return (
       <Button

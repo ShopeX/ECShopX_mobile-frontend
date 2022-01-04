@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, CouponItem } from '@/components'
@@ -11,7 +11,7 @@ import './reservation-list.scss'
 
 @withPager
 export default class ReservationList extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -26,7 +26,7 @@ export default class ReservationList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const tabIdx = this.state.tabList.findIndex((tab) => tab.status === '1')
 
     if (tabIdx >= 0) {
@@ -43,7 +43,7 @@ export default class ReservationList extends Component {
     }
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const { curTabIdx } = this.state
     let vaildStatus
@@ -110,7 +110,7 @@ export default class ReservationList extends Component {
     })
   }
 
-  render() {
+  render () {
     const { curTabIdx, tabList, list, page } = this.state
 
     return (

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Navigator, Button, Picker } from '@tarojs/components'
 import { AtInput } from 'taro-ui'
 import api from '@/api'
@@ -7,7 +7,7 @@ import api from '@/api'
 import './withdraw.scss'
 
 export default class DistributionWithdraw extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -22,7 +22,7 @@ export default class DistributionWithdraw extends Component {
     }
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.fetch()
   }
 
@@ -37,7 +37,7 @@ export default class DistributionWithdraw extends Component {
   //   return userInfo
   // }
 
-  async fetch() {
+  async fetch () {
     const { cashWithdrawalRebate } = await api.distribution.statistics()
     let res = await api.member.getTradePaymentList()
     let { payList } = this.state
@@ -121,15 +121,9 @@ export default class DistributionWithdraw extends Component {
     })
   }
 
-  render() {
-    const {
-      cashWithdrawalRebate,
-      limit_rebate,
-      amount,
-      curIdx,
-      payList,
-      alipay_account
-    } = this.state
+  render () {
+    const { cashWithdrawalRebate, limit_rebate, amount, curIdx, payList, alipay_account } =
+      this.state
     let payText = {
       'alipay': '支付宝',
       'wechat': '微信(<=800)',

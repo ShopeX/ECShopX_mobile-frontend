@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { AtIcon, AtButton } from 'taro-ui'
 import { classNames, navigateTo } from '@/utils'
@@ -6,7 +6,7 @@ import ModalPolicy from './modal-policy'
 
 import './index.scss'
 
-function SpModal(props) {
+function SpModal (props) {
   const {
     children,
     type,

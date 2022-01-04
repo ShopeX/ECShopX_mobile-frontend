@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 // import { SpImg } from '@/components'
 import S from '@/spx'
@@ -9,7 +9,7 @@ import './member-banner.scss'
 export default class MemberBanner extends Component {
   static defaultProps = {}
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {}
@@ -25,7 +25,7 @@ export default class MemberBanner extends Component {
     }
   }
 
-  render() {
+  render () {
     const { info } = this.props
     if (!info) {
       return null

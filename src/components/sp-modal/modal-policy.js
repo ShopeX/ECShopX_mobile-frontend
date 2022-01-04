@@ -1,4 +1,4 @@
-function ModalPolicy(props) {
+function ModalPolicy (props) {
   return <View></View>
 }
 

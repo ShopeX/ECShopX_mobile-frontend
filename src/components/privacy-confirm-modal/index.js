@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Button, Text } from '@tarojs/components'
 import api from '@/api'
 import { connect } from 'react-redux'
@@ -11,14 +11,14 @@ import './index.scss'
 }))
 export default class PrivacyConfirmModal extends Component {
   static defaultProps = {}
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       info: null
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
@@ -28,7 +28,7 @@ export default class PrivacyConfirmModal extends Component {
     })
   }
 
-  async fetch() {
+  async fetch () {
     const data = await api.shop.getStoreBaseInfo()
     this.setState({
       info: data
@@ -40,12 +40,12 @@ export default class PrivacyConfirmModal extends Component {
     const { onChange } = this.props
     if (encryptedData && iv) {
       const { update_time } = await api.wx.getPrivacyTime()
-      Taro.setStorageSync("policy_updatetime", update_time);
+      Taro.setStorageSync('policy_updatetime', update_time)
     }
     onChange && onChange('agree', e)
   }
 
-  render() {
+  render () {
     const { info } = this.state
     const { visible, onChange, isPhone, colors } = this.props
 

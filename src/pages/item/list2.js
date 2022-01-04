@@ -1,39 +1,43 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
-import { BackToTop, Loading, TagsBar, FilterBar, SpSearchBar, GoodsItem, SpNote, SpNavBar, TabBar } from '@/components'
+import {
+  BackToTop,
+  Loading,
+  TagsBar,
+  FilterBar,
+  SpSearchBar,
+  GoodsItem,
+  SpNote,
+  SpNavBar,
+  TabBar
+} from '@/components'
 import api from '@/api'
-import { Tracker } from "@/service";
+import { Tracker } from '@/service'
 import { pickBy, classNames, isWeixin, isNavbar } from '@/utils'
 import { setPageTitle } from '@/utils/platform'
-import entry from "../../utils/entry";
+import entry from '../../utils/entry'
 
 import './list.scss'
 
-@connect(({
-  user
-}) => ({
+@connect(({ user }) => ({
   favs: user.favs
 }))
 @withPager
 @withBackToTop
 export default class List extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
       ...this.state,
       curFilterIdx: 0,
       curTagId: '',
-      filterList: [
-        { title: '综合' },
-        { title: '销量' },
-        { title: '价格', sort: -1 }
-      ],
+      filterList: [{ title: '综合' }, { title: '销量' }, { title: '价格', sort: -1 }],
       query: null,
       list: [],
       oddList: [],
@@ -46,11 +50,11 @@ export default class List extends Component {
       selectParams: [],
       info: {},
       shareInfo: {},
-      isOpenStore:null
+      isOpenStore: null
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     this.firstStatus = true
     const isOpenStore = await entry.getStoreStatus()
@@ -59,35 +63,38 @@ export default class List extends Component {
       isOpenStore
     })
 
-    this.setState({
-      query: {
-        keywords: this.$instance.router.params.keywords,
-        item_type: 'normal',
-        is_point: 'false',
-        distributor_id: isOpenStore ? store_id : this.$instance.router.params.dis_id,
-        approve_status: 'onsale,only_show',
-        category: cat_id ? cat_id : '',
-        main_category: main_cat_id ? main_cat_id : ''
+    this.setState(
+      {
+        query: {
+          keywords: this.$instance.router.params.keywords,
+          item_type: 'normal',
+          is_point: 'false',
+          distributor_id: isOpenStore ? store_id : this.$instance.router.params.dis_id,
+          approve_status: 'onsale,only_show',
+          category: cat_id ? cat_id : '',
+          main_category: main_cat_id ? main_cat_id : ''
+        },
+        curTagId: this.$instance.router.params.tag_id
       },
-      curTagId: this.$instance.router.params.tag_id
-    }, () => {
-      this.nextPage()
-      api.wx.shareSetting({ shareindex: 'itemlist' }).then(res => {
-        this.setState({
-          shareInfo: res
+      () => {
+        this.nextPage()
+        api.wx.shareSetting({ shareindex: 'itemlist' }).then((res) => {
+          this.setState({
+            shareInfo: res
+          })
         })
-      })
-    })
+      }
+    )
   }
 
-  componentDidShow() {
+  componentDidShow () {
     setPageTitle('商品列表')
   }
 
   componentWillReceiveProps (next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       setTimeout(() => {
-        const list = this.state.list.map(item => {
+        const list = this.state.list.map((item) => {
           item.is_fav = Boolean(next.favs[item.item_id])
           return item
         })
@@ -98,11 +105,13 @@ export default class List extends Component {
     }
   }
 
-  onShareAppMessage() {
+  onShareAppMessage () {
     const res = this.state.shareInfo
     const { cat_id = '', main_cat_id = '' } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
+    const query = userId
+      ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}`
+      : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
     return {
       title: res.title,
       imageUrl: res.imageUrl,
@@ -110,11 +119,13 @@ export default class List extends Component {
     }
   }
 
-  onShareTimeline() {
+  onShareTimeline () {
     const res = this.state.shareInfo
     const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `cat_id=${cat_id}&main_cat_id=${main_cat_id}`
+    const query = userId
+      ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}`
+      : `cat_id=${cat_id}&main_cat_id=${main_cat_id}`
     return {
       title: res.title,
       imageUrl: res.imageUrl,
@@ -122,10 +133,10 @@ export default class List extends Component {
     }
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-    const { selectParams, tagsList, curTagId,isOpenStore } = this.state
-    const { distributor_id,store_id } = Taro.getStorageSync('curStore')
+    const { selectParams, tagsList, curTagId, isOpenStore } = this.state
+    const { distributor_id, store_id } = Taro.getStorageSync('curStore')
     const { cardId } = this.$instance.router.params
     const query = {
       ...this.state.query,
@@ -143,23 +154,32 @@ export default class List extends Component {
       query.card_id = cardId
     }
 
-    const { list, total_count: total, item_params_list = [], select_tags_list = [] } = await api.item.search(query)
+    const {
+      list,
+      total_count: total,
+      item_params_list = [],
+      select_tags_list = []
+    } = await api.item.search(query)
     const { favs } = this.props
 
-    item_params_list.map(item => {
+    item_params_list.map((item) => {
       if (selectParams.length < 4) {
         selectParams.push({
           attribute_id: item.attribute_id,
           attribute_value_id: 'all'
         })
       }
-      item.attribute_values.unshift({ attribute_value_id: 'all', attribute_value_name: '全部', isChooseParams: true })
+      item.attribute_values.unshift({
+        attribute_value_id: 'all',
+        attribute_value_name: '全部',
+        isChooseParams: true
+      })
     })
 
     const nList = pickBy(list, {
-      img: ({ pics }) => pics ? typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0] : '',
+      img: ({ pics }) => (pics ? (typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0]) : ''),
       item_id: 'item_id',
-      title: ({ itemName, item_name }) => itemName ? itemName : item_name,
+      title: ({ itemName, item_name }) => (itemName ? itemName : item_name),
       desc: 'brief',
       distributor_id: 'distributor_id',
       distributor_info: 'distributor_info',
@@ -174,7 +194,8 @@ export default class List extends Component {
       store: 'store'
     })
 
-    let odd = [], even = []
+    let odd = [],
+      even = []
     nList.map((item, idx) => {
       if (idx % 2 == 0) {
         odd.push(item)
@@ -183,17 +204,20 @@ export default class List extends Component {
       }
     })
 
-    this.setState({
-      list: [...this.state.list, ...nList],
-      oddList: [...this.state.oddList, ...odd],
-      evenList: [...this.state.evenList, ...even],
-      showDrawer: false,
-      query
-    }, () => {
-      if (isWeixin) {
-        this.startTrack();
+    this.setState(
+      {
+        list: [...this.state.list, ...nList],
+        oddList: [...this.state.oddList, ...odd],
+        evenList: [...this.state.evenList, ...even],
+        showDrawer: false,
+        query
+      },
+      () => {
+        if (isWeixin) {
+          this.startTrack()
+        }
       }
-    })
+    )
 
     if (this.firstStatus) {
       this.setState({
@@ -220,38 +244,36 @@ export default class List extends Component {
     }
   }
 
-  startTrack() {
-    this.endTrack();
+  startTrack () {
+    this.endTrack()
     const observer = Taro.createIntersectionObserver(this.$scope, {
       observeAll: true
-    });
-    observer
-      .relativeToViewport({ bottom: 0 })
-      .observe(".goods-list__item", res => {
-        // console.log("res.intersectionRatio:", res.intersectionRatio);
-        if (res.intersectionRatio > 0) {
-          const { id } = res.dataset;
-          const { list } = this.state
-          const curGoods = list.find( item => item.item_id == id );
-          const { item_id, title, market_price, price, img, member_price } = curGoods;
-          Tracker.dispatch("EXPOSE_SKU_COMPONENT", {
-            goodsId: item_id,
-            title: title,
-            market_price: market_price * 100,
-            // member_price: member_price * 100,
-            price: price * 100,
-            imgUrl: img
-          });
-        }
-      });
+    })
+    observer.relativeToViewport({ bottom: 0 }).observe('.goods-list__item', (res) => {
+      // console.log("res.intersectionRatio:", res.intersectionRatio);
+      if (res.intersectionRatio > 0) {
+        const { id } = res.dataset
+        const { list } = this.state
+        const curGoods = list.find((item) => item.item_id == id)
+        const { item_id, title, market_price, price, img, member_price } = curGoods
+        Tracker.dispatch('EXPOSE_SKU_COMPONENT', {
+          goodsId: item_id,
+          title: title,
+          market_price: market_price * 100,
+          // member_price: member_price * 100,
+          price: price * 100,
+          imgUrl: img
+        })
+      }
+    })
 
-    this.observe = observer;
+    this.observe = observer
   }
 
-  endTrack() {
+  endTrack () {
     if (this.observer) {
-      this.observer.disconnect();
-      this.observe = null;
+      this.observer.disconnect()
+      this.observe = null
     }
   }
 
@@ -264,11 +286,14 @@ export default class List extends Component {
       evenList: []
     })
 
-    this.setState({
-      curTagId: current
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curTagId: current
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   handleFilterChange = (data) => {
@@ -279,20 +304,18 @@ export default class List extends Component {
 
     const query = {
       ...this.state.query,
-      goodsSort: current === 0
-        ? null
-        : current === 1
-          ? 1
-          : (sort > 0 ? 3 : 2)
+      goodsSort: current === 0 ? null : current === 1 ? 1 : sort > 0 ? 3 : 2
     }
 
     /** 当不需要排序且点击一致时 */
-    if(current===this.state.curFilterIdx&&!sort){
-      return ;
+    if (current === this.state.curFilterIdx && !sort) {
+      return
     }
- 
 
-    if (current !== this.state.curFilterIdx || (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)) {
+    if (
+      current !== this.state.curFilterIdx ||
+      (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)
+    ) {
       this.resetPage()
       this.setState({
         list: [],
@@ -301,12 +324,15 @@ export default class List extends Component {
       })
     }
 
-    this.setState({
-      curFilterIdx: current,
-      query
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        curFilterIdx: current,
+        query
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   handleListTypeChange = () => {
@@ -318,15 +344,15 @@ export default class List extends Component {
   }
 
   handleClickItem = (item) => {
-    const { item_id, title, market_price, price, img } = item;
-    Tracker.dispatch("TRIGGER_SKU_COMPONENT", {
+    const { item_id, title, market_price, price, img } = item
+    Tracker.dispatch('TRIGGER_SKU_COMPONENT', {
       goodsId: item_id,
       title: title,
       market_price: market_price * 100,
       // member_price: member_price * 100,
       price: price * 100,
       imgUrl: img
-    });
+    })
     const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
@@ -348,9 +374,9 @@ export default class List extends Component {
 
   handleClickParmas = (id, child_id) => {
     const { paramsList, selectParams } = this.state
-    paramsList.map(item => {
+    paramsList.map((item) => {
       if (item.attribute_id === id) {
-        item.attribute_values.map(v_item => {
+        item.attribute_values.map((v_item) => {
           if (v_item.attribute_value_id === child_id) {
             v_item.isChooseParams = true
           } else {
@@ -359,7 +385,7 @@ export default class List extends Component {
         })
       }
     })
-    selectParams.map(item => {
+    selectParams.map((item) => {
       if (item.attribute_id === id) {
         item.attribute_value_id = child_id
       }
@@ -376,8 +402,8 @@ export default class List extends Component {
     })
     if (type === 'reset') {
       const { paramsList, selectParams } = this.state
-      this.state.paramsList.map(item => {
-        item.attribute_values.map(v_item => {
+      this.state.paramsList.map((item) => {
+        item.attribute_values.map((v_item) => {
           if (v_item.attribute_value_id === 'all') {
             v_item.isChooseParams = true
           } else {
@@ -385,7 +411,7 @@ export default class List extends Component {
           }
         })
       })
-      selectParams.map(item => {
+      selectParams.map((item) => {
         item.attribute_value_id = 'all'
       })
       this.setState({
@@ -395,13 +421,16 @@ export default class List extends Component {
     }
 
     this.resetPage()
-    this.setState({
-      list: [],
-      oddList: [],
-      evenList: []
-    }, () => {
-      this.nextPage()
-    })
+    this.setState(
+      {
+        list: [],
+        oddList: [],
+        evenList: []
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   handleViewChange = () => {
@@ -418,7 +447,7 @@ export default class List extends Component {
   }
 
   handleSearchOn = () => {
-    console.log("handleSearchOn")
+    console.log('handleSearchOn')
     this.setState({
       isShowSearch: true
     })
@@ -440,28 +469,34 @@ export default class List extends Component {
   }
 
   handleSearchClear = () => {
-    this.setState({
-      isShowSearch: false,
-      query: {
-        ...this.state.query,
-        keywords: ''
+    this.setState(
+      {
+        isShowSearch: false,
+        query: {
+          ...this.state.query,
+          keywords: ''
+        }
+      },
+      () => {
+        this.resetPage()
+        this.setState(
+          {
+            list: [],
+            oddList: [],
+            evenList: []
+          },
+          () => {
+            this.nextPage()
+          }
+        )
       }
-    }, () => {
-      this.resetPage()
-      this.setState({
-        list: [],
-        oddList: [],
-        evenList: []
-      }, () => {
-        this.nextPage()
-      })
-    })
+    )
   }
 
-  handleConfirm = ( val ) => {
-    Tracker.dispatch("SEARCH_RESULT", {
+  handleConfirm = (val) => {
+    Tracker.dispatch('SEARCH_RESULT', {
       keywords: val
-    } );
+    })
     this.resetPage()
     this.setState(
       {
@@ -480,7 +515,7 @@ export default class List extends Component {
     )
   }
 
-  render() {
+  render () {
     const {
       list,
       oddList,
@@ -492,14 +527,14 @@ export default class List extends Component {
       scrollTop,
       page,
       showDrawer,
-      paramsList, 
+      paramsList,
       tagsList,
-      curTagId, 
+      curTagId,
       isShowSearch,
       query
     } = this.state
     const { isTabBar = '' } = this.$instance.router.params
-		return (
+    return (
       <View
         className={classNames('page-goods-list', {
           'has-navbar': isNavbar()
