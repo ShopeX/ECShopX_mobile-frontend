@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
+import { getAppId } from '@/utils'
 import './pclogin.scss'
 
-function parseUrlStr(urlStr) {
+function parseUrlStr (urlStr) {
   var keyValuePairs = []
   if (urlStr) {
     for (var i = 0; i < urlStr.split('&').length; i++) {
@@ -21,12 +22,12 @@ function parseUrlStr(urlStr) {
 }
 
 export default class PcAuth extends Component {
-  $instance = getCurrentInstance();
+  $instance = getCurrentInstance()
   state = {
     checkStatus: false
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     if (this.$instance.router.params.scene) {
       const query = decodeURIComponent(this.$instance.router.params.scene)
       const queryStr = decodeURIComponent(query)
@@ -35,11 +36,11 @@ export default class PcAuth extends Component {
     }
     setTimeout(async () => {
       if (this.query) {
-        const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+        const { appid } = getAppId()
         const { code } = await Taro.login()
         let check_params = {
           code: code,
-          appid: extConfig.appid,
+          appid: appid,
           token: this.query.t
         }
         const { status } = await api.user.checkpclogin(check_params)
@@ -51,7 +52,7 @@ export default class PcAuth extends Component {
   }
 
   handleLogin = async (val) => {
-    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+    const { appid } = getAppId()
 
     try {
       if (this.state.checkStatus == true) {
@@ -60,7 +61,7 @@ export default class PcAuth extends Component {
           token: this.query.t,
           status: val,
           code: login_code.code,
-          appid: extConfig.appid,
+          appid: appid,
           company_id: this.query.cid
         }
         try {
@@ -84,8 +85,12 @@ export default class PcAuth extends Component {
     }
   }
 
-  render() {
-    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+  render () {
+    const extConfig = Taro.getExtConfigSync
+      ? Taro.getExtConfigSync()
+      : {
+          wxa_name: process.env.APP_MAP_NAME
+        }
 
     return (
       <View className='page-wxauth'>

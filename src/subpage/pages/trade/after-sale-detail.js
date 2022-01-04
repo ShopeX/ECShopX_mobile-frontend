@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
@@ -11,8 +11,8 @@ import {
   resolveOrderStatus,
   copyText,
   getCurrentRoute,
-  classNames,
-} from "@/utils";
+  classNames
+} from '@/utils'
 // import { Tracker } from '@/service'
 import api from '@/api'
 import S from '@/spx'
@@ -24,8 +24,8 @@ import './after-sale-detail.scss'
   pointName: sys.pointName
 }))
 export default class TradeDetail extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -41,15 +41,15 @@ export default class TradeDetail extends Component {
     }
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.fetch()
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     clearInterval(this.state.interval)
   }
 
-  calcTimer(totalSec) {
+  calcTimer (totalSec) {
     let remainingSec = totalSec
     const dd = Math.floor(totalSec / 24 / 3600)
     remainingSec -= dd * 3600 * 24
@@ -66,7 +66,7 @@ export default class TradeDetail extends Component {
       ss
     }
   }
-  selectionGoods(list) {
+  selectionGoods (list) {
     const selected = list.filter((v) => v.is_checked)
     let params = {}
     let refund = []
@@ -124,7 +124,7 @@ export default class TradeDetail extends Component {
     }
   }
 
-  getParamsAboutItem = (oldInfo, isInit = false) => { 
+  getParamsAboutItem = (oldInfo, isInit = false) => {
     const newInfo = JSON.parse(JSON.stringify(oldInfo))
     /** 是否有积分商品 */
     let is_has_point
@@ -181,7 +181,7 @@ export default class TradeDetail extends Component {
     })
   }
 
-  async fetch() {
+  async fetch () {
     const { id } = this.$instance.router.params
     const data = await api.trade.detail(id)
     let sessionFrom = ''
@@ -343,7 +343,7 @@ export default class TradeDetail extends Component {
     await copyText(msg)
   }
 
-  async handlePay() {
+  async handlePay () {
     const { info } = this.state
 
     this.setState({
@@ -401,7 +401,7 @@ export default class TradeDetail extends Component {
     }
   }
 
-  async handleClickBtn(type, val) {
+  async handleClickBtn (type, val) {
     const { info } = this.state
 
     if (type === 'REFUND') {
@@ -551,14 +551,13 @@ export default class TradeDetail extends Component {
     })
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { info, ziti, qrcode, timer, payLoading, scrollIntoView } = this.state
 
     if (!info) {
       return <Loading></Loading>
     }
-
 
     return (
       <View className={classNames(`trade-detail ${info.is_logistics && 'islog'}`)}>

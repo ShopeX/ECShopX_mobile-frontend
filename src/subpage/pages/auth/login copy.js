@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 
@@ -13,8 +13,8 @@ import { tokenParse } from '@/utils'
 import './login.scss'
 
 export default class Login extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class Login extends Component {
       url: `/subpage/pages/auth/reg`
     })
   }
-  componentDidMount() {}
+  componentDidMount () {}
 
   handleSubmit = async (e) => {
     const { value } = e.detail || e[0].detail
@@ -58,7 +58,9 @@ export default class Login extends Component {
         })
       }
 
-      const redirect = decodeURIComponent(this.$instance.router.params.redirect || process.env.APP_HOME_PAGE)
+      const redirect = decodeURIComponent(
+        this.$instance.router.params.redirect || process.env.APP_HOME_PAGE
+      )
       Taro.redirectTo({
         url: redirect
       })
@@ -67,7 +69,7 @@ export default class Login extends Component {
     }
   }
 
-  handleChange(name, val) {
+  handleChange (name, val) {
     const { info } = this.state
     info[name] = val
   }
@@ -111,7 +113,7 @@ export default class Login extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info, isVisible } = this.state
 
     return (

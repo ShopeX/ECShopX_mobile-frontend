@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
 import { formatTime } from '@/utils'
@@ -8,8 +8,8 @@ import api from '@/api'
 import './refund-detail.scss'
 
 export default class TradeRefundDetail extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -20,11 +20,11 @@ export default class TradeRefundDetail extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { aftersales_bn, item_id, order_id } = this.$instance.router.params
     // const { detail: info, order_info:orderInfo,progress,reason} = await api.aftersales.info({
     //   aftersales_bn,
@@ -86,17 +86,14 @@ export default class TradeRefundDetail extends Component {
     }
   }
   onCopy = () => {
-    const {
-      aftersales_address,
-      aftersales_contact,
-      aftersales_mobile
-    } = this.state.info.aftersales_address
+    const { aftersales_address, aftersales_contact, aftersales_mobile } =
+      this.state.info.aftersales_address
     Taro.setClipboardData({
       data: aftersales_address + aftersales_contact + aftersales_mobile
     })
   }
 
-  render() {
+  render () {
     const { info, remind, progress, aftersalesAddress } = this.state
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')

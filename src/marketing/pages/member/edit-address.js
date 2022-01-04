@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 // import EditAddress from '@/components/new-address/edit-address'
 import { View, Switch, Text, Picker, Button } from '@tarojs/components'
 import { AtForm, AtInput } from 'taro-ui'
@@ -29,8 +29,8 @@ const traverseData = (data) => {
   colors: colors.current
 }))
 export default class AddressIndex extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -39,12 +39,12 @@ export default class AddressIndex extends Component {
       areaArray: [[], [], []],
       areaIndexArray: [0, 0, 0],
       areaData: [],
-      chooseValue: ['北京市', '北京市', '昌平区'],
+      chooseValue: ['北京市', '北京市', '昌平区']
       // ubmitLoading: false,
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetchAddressList()
     this.fetch()
   }
@@ -56,7 +56,7 @@ export default class AddressIndex extends Component {
     })
   }
 
-  async fetch() {
+  async fetch () {
     Taro.showLoading()
     const { list } = await api.member.addressList()
     this.setState({
@@ -96,7 +96,7 @@ export default class AddressIndex extends Component {
   // 选定开户地区
   onPickerClick = () => {
     const { chooseValue, areaData } = this.state
-    const [ chooseProvice, chooseCity, chooseDistrict ] = chooseValue
+    const [chooseProvice, chooseCity, chooseDistrict] = chooseValue
     const p_label = chooseProvice
     const c_label = chooseCity
     const d_label = chooseDistrict
@@ -143,31 +143,33 @@ export default class AddressIndex extends Component {
     let { areaData, areaIndexArray, areaArray } = this.state
     if (column == 0) {
       this.setState({
-        areaIndexArray: [value, 0, 0],
+        areaIndexArray: [value, 0, 0]
       })
       let cityArr = []
       let countyArr = []
-      cityArr = areaData[value].children.map(item => item.label)
-      countyArr = areaData[value].children[0].children.map( item => item.label )
+      cityArr = areaData[value].children.map((item) => item.label)
+      countyArr = areaData[value].children[0].children.map((item) => item.label)
       areaArray[1] = cityArr
       areaArray[2] = countyArr
       this.setState({
-        areaArray:[...areaArray]
+        areaArray: [...areaArray]
       })
     } else if (column == 1) {
       areaIndexArray[1] = value
       areaIndexArray[2] = 0
-      this.setState({
-        areaIndexArray: [...areaIndexArray]
-      }, () => {
-        let countyArr = []
-        countyArr = areaData[areaIndexArray[0]].children[value].children.map( item => item.label )
-        areaArray[2] = countyArr
-        this.setState({
-          areaArray:[...areaArray]
-        })
-        
-      })
+      this.setState(
+        {
+          areaIndexArray: [...areaIndexArray]
+        },
+        () => {
+          let countyArr = []
+          countyArr = areaData[areaIndexArray[0]].children[value].children.map((item) => item.label)
+          areaArray[2] = countyArr
+          this.setState({
+            areaArray: [...areaArray]
+          })
+        }
+      )
     } else {
       areaIndexArray[2] = value
       this.setState({
@@ -249,7 +251,7 @@ export default class AddressIndex extends Component {
     Taro.hideLoading()
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { info, areaIndexArray, areaArray, chooseValue } = this.state
     return (
@@ -335,6 +337,6 @@ export default class AddressIndex extends Component {
 
         <SpToast />
       </View>
-    );
+    )
   }
 }

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { SpSearch } from '@/components'
 // // import { Tracker } from '@/service'
@@ -20,14 +20,14 @@ import {
   WgtImgGif,
   WgtHotTopic,
   WgtFloorImg,
-  WgtNearbyShop,
-} from "../wgts";
+  WgtNearbyShop
+} from '../wgts'
 
 export default class HomeWgts extends Component {
-  constructor(props) {
-    console.log('HomeWgts-constructor-this.props1',props)
+  constructor (props) {
+    console.log('HomeWgts-constructor-this.props1', props)
     super(props)
-    console.log('HomeWgts-constructor-props2',props)
+    console.log('HomeWgts-constructor-props2', props)
   }
   // static defaultProps = {
   //   wgts: []
@@ -37,8 +37,8 @@ export default class HomeWgts extends Component {
     screenWidth: 375
   }
 
-  componentDidMount() {
-    console.log('HomeWgts-constructor-this.props3',this.props)
+  componentDidMount () {
+    console.log('HomeWgts-constructor-this.props3', this.props)
     Taro.getSystemInfo().then((res) => {
       this.setState({
         screenWidth: res.screenWidth
@@ -53,7 +53,7 @@ export default class HomeWgts extends Component {
     addGlobalClass: true
   }
 
-  startTrack() {
+  startTrack () {
     this.endTrack()
 
     const { wgts } = this.props
@@ -62,11 +62,10 @@ export default class HomeWgts extends Component {
     // const toExpose = wgts.map((t, idx) => String(idx))
 
     const observer = Taro.createIntersectionObserver({ observeAll: true })
-
     this.observe = observer
   }
 
-  endTrack() {
+  endTrack () {
     if (this.observer) {
       this.observer.disconnect()
       this.observe = null
@@ -78,54 +77,52 @@ export default class HomeWgts extends Component {
     loadMore(idx, goodType, currentTabIndex, currentLength)
   }
 
-  render() {
-    const { wgts,refreshHeaderHome } = this.props
+  render () {
+    const { wgts } = this.props
     const { screenWidth } = this.state
 
     console.log('home-wgts23', wgts)
 
-    if ( !wgts || wgts.length <= 0 ) return null
-    
+    if (!wgts || wgts.length <= 0) return null
+
     return (
-      <View className="home-wgts">
+      <View className='home-wgts'>
         {wgts.map((item, idx) => (
           <View
-            className="wgt-wrap"
+            className='wgt-wrap'
             key={`${item.name}${idx}`}
             data-idx={idx}
             data-name={item.name}
           >
             {/* {item.name === "search" && <WgtSearchHome info={item} />} */}
-            {item.name === "search" && <SpSearch info={item} />}
-            {item.name === "film" && <WgtFilm info={item} />}
-            {item.name === "marquees" && <WgtMarquees info={item} />}
-            {item.name === "slider" && (
-              <WgtSlider isHomeSearch info={item} width={screenWidth} />
-            )}
-            {item.name === "navigation" && <WgtNavigation info={item} />}
-            {item.name === "coupon" && <WgtCoupon info={item} />}
-            {item.name === "imgHotzone" && <WgtImgHotZone info={item} />}
-            {item.name === "goodsScroll" && (
+            {item.name === 'search' && <SpSearch info={item} />}
+            {item.name === 'film' && <WgtFilm info={item} />}
+            {item.name === 'marquees' && <WgtMarquees info={item} />}
+            {item.name === 'slider' && <WgtSlider isHomeSearch info={item} width={screenWidth} />}
+            {item.name === 'navigation' && <WgtNavigation info={item} />}
+            {item.name === 'coupon' && <WgtCoupon info={item} />}
+            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
+            {item.name === 'goodsScroll' && (
               <WgtGoodsScroll
                 info={item}
                 index={idx}
-                type="good-scroll"
+                type='good-scroll'
                 onLoadMore={this.handleLoadMore}
               />
             )}
-            {item.name === "goodsGrid" && (
+            {item.name === 'goodsGrid' && (
               <WgtGoodsGrid
                 info={item}
                 index={idx}
-                type="good-grid"
+                type='good-grid'
                 onLoadMore={this.handleLoadMore}
               />
             )}
-            {item.name === "goodsGridTab" && (
+            {item.name === 'goodsGridTab' && (
               <WgtGoodsGridTab
                 info={item}
                 index={idx}
-                type="good-grid-tab"
+                type='good-grid-tab'
                 onLoadMore={this.handleLoadMore}
               />
             )}
@@ -134,13 +131,11 @@ export default class HomeWgts extends Component {
             {item.name === 'img-gif' && <WgtImgGif info={item} />}
             {item.name === 'hotTopic' && <WgtHotTopic info={item} />}
             {item.name === 'floorImg' && <WgtFloorImg info={item} />}
-            {item.name === 'store' && (
-              <WgtStore info={item} />
-            )}
-            {item.name === "nearbyShop" && <WgtNearbyShop info={item} refreshHeaderHome={refreshHeaderHome}/>}
+            {item.name === 'store' && <WgtStore info={item} />}
+            {item.name === 'nearbyShop' && <WgtNearbyShop info={item} />}
           </View>
         ))}
       </View>
-    );
+    )
   }
 }

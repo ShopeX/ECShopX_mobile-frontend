@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
-import { Loading, SpNote, SpNavBar, SpToast, CouponItem,SpPage } from '@/components'
+import { Loading, SpNote, SpNavBar, SpToast, CouponItem, SpPage } from '@/components'
 import { connect } from 'react-redux'
 import api from '@/api'
 import S from '@/spx'
 import { withPager } from '@/hocs'
-import { pickBy, formatTime, buriedPoint, normalizeQuerys,getBrowserEnv } from '@/utils'
+import { pickBy, formatTime, buriedPoint, normalizeQuerys, getBrowserEnv } from '@/utils'
 // import { Tracker } from '@/service'
 
 import '../home/coupon-home.scss'
@@ -16,8 +16,8 @@ import '../home/coupon-home.scss'
 }))
 @withPager
 export default class CouponHome extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -32,7 +32,7 @@ export default class CouponHome extends Component {
   //   navigationBarBackgroundColor: "#F8DAA2"
   // };
 
-  async componentDidMount() {
+  async componentDidMount () {
     api.wx.shareSetting({ shareindex: 'coupon' }).then((res) => {
       this.setState({
         shareInfo: res
@@ -47,7 +47,7 @@ export default class CouponHome extends Component {
     })
   }
 
-  onShareAppMessage() {
+  onShareAppMessage () {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}` : ''
@@ -58,7 +58,7 @@ export default class CouponHome extends Component {
     }
   }
 
-  onShareTimeline() {
+  onShareTimeline () {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -69,7 +69,7 @@ export default class CouponHome extends Component {
     }
   }
 
-  async fetch(params) {
+  async fetch (params) {
     let { distributor_id, dtid, item_id = '', itemid = '', card_id } = this.routerParams
     params = {
       ...params,
@@ -102,7 +102,7 @@ export default class CouponHome extends Component {
       use_bound: 'use_bound',
       send_begin_time: 'send_begin_time',
       send_end_time: 'send_end_time',
-      distributor_list:'distributor_list'
+      distributor_list: 'distributor_list'
     })
     nList.map((item) => {
       if (item.get_limit - item.user_get_num <= 0) {
@@ -121,62 +121,62 @@ export default class CouponHome extends Component {
     return { total }
   }
 
-  handleClickNews = (card_item, idx) => { 
-    console.log("===handleClickNews===>",card_item)
-    if(card_item.getted===1){
+  handleClickNews = (card_item, idx) => {
+    console.log('===handleClickNews===>', card_item)
+    if (card_item.getted === 1) {
       //已领取
       Taro.showToast({
-        title:'优惠券领取机会已用完',
-        icon:'none'
+        title: '优惠券领取机会已用完',
+        icon: 'none'
       })
-      return ;
+      return
     }
-    if(card_item.getted===2){
+    if (card_item.getted === 2) {
       //已领完
       Taro.showToast({
-        title:'领取失败，优惠券已领完',
-        icon:'none'
+        title: '领取失败，优惠券已领完',
+        icon: 'none'
       })
-      return ;
+      return
     }
- 
+
     let time = parseInt(new Date().getTime() / 1000)
     if (time < card_item.send_begin_time) return
 
-    if ( process.env.TARO_ENV == 'h5' ) {
+    if (process.env.TARO_ENV == 'h5') {
       this.handleGetCard(card_item, idx)
     }
-    if ( process.env.TARO_ENV == 'weapp' ) {
+    if (process.env.TARO_ENV == 'weapp') {
       let templeparams = {
         'temp_name': 'yykweishop',
         'source_type': 'coupon'
       }
       let _this = this
-      api.user.newWxaMsgTmpl( templeparams ).then(
-        ( tmlres ) => {
-          console.log( 'templeparams---1', tmlres )
-          if ( tmlres.template_id && tmlres.template_id.length > 0 ) {
-            wx.requestSubscribeMessage( {
+      api.user.newWxaMsgTmpl(templeparams).then(
+        (tmlres) => {
+          console.log('templeparams---1', tmlres)
+          if (tmlres.template_id && tmlres.template_id.length > 0) {
+            wx.requestSubscribeMessage({
               tmplIds: tmlres.template_id,
-              success() {
-                _this.handleGetCard( card_item, idx )
+              success () {
+                _this.handleGetCard(card_item, idx)
               },
-              fail() {
-                _this.handleGetCard( card_item, idx )
+              fail () {
+                _this.handleGetCard(card_item, idx)
               }
-            } )
+            })
           } else {
-            _this.handleGetCard( card_item, idx )
+            _this.handleGetCard(card_item, idx)
           }
         },
         () => {
-          _this.handleGetCard( card_item, idx )
+          _this.handleGetCard(card_item, idx)
         }
       )
     }
   }
 
-  handleGetCard = async (card_item, idx) => {  
+  handleGetCard = async (card_item, idx) => {
     const { list } = this.state
 
     if (list[idx].getted === 2 || list[idx].getted === 1) {
@@ -205,12 +205,12 @@ export default class CouponHome extends Component {
     } catch (e) {}
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { list, page } = this.state
     return (
       <SpPage className='coupon-home'>
-        <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' /> 
+        <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' />
         <ScrollView scrollY className='home_coupon-home__scroll' onScrollToLower={this.nextPage}>
           <View className='coupon-home-ticket'>
             {list.map((item, idx) => {
@@ -218,7 +218,7 @@ export default class CouponHome extends Component {
               return (
                 <CouponItem info={item} key={item.card_id}>
                   <View
-                    style={{ fontSize: '22rpx' }} 
+                    style={{ fontSize: '22rpx' }}
                     onClick={this.handleClickNews.bind(this, item, idx)}
                   >
                     {item.getted === 1 ? '已领取' : ''}
@@ -238,7 +238,7 @@ export default class CouponHome extends Component {
           </View>
         </ScrollView>
         <SpToast />
-      </SpPage> 
+      </SpPage>
     )
   }
 }

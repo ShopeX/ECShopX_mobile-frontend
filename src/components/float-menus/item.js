@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Button } from '@tarojs/components'
 
 import './item.scss'
@@ -16,7 +16,7 @@ export default class Index extends Component {
     hide: false
   }
 
-  render() {
+  render () {
     const { onClick, openType, iconPrefixClass, hide, icon, sessionFrom } = this.props
 
     return (

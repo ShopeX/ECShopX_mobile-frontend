@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { SpNavBar } from '@/components'
@@ -12,8 +12,8 @@ import './qrcode.scss'
   colors: colors.current
 }))
 export default class DistributionQrcode extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -21,7 +21,7 @@ export default class DistributionQrcode extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -30,7 +30,7 @@ export default class DistributionQrcode extends Component {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { username, avatar, userId } = Taro.getStorageSync('userinfo')
     let { isOpenShop, status } = this.$instance.router.params
     isOpenShop = JSON.parse(isOpenShop)
@@ -48,7 +48,7 @@ export default class DistributionQrcode extends Component {
     })
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { info } = this.state
 

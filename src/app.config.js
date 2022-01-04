@@ -1,21 +1,18 @@
 export default {
   pages: [
-    "pages/index", // 首页
-    "pages/category/index", // 分类
-    "pages/cart/espier-index", // 购物车页面
-    "pages/cart/espier-checkout", // 结算页面
-    "pages/store/index", // 店铺首页
+    'pages/index', // 首页
+    'pages/category/index', // 分类
+    'pages/cart/espier-index', // 购物车页面
+    'pages/cart/espier-checkout', // 结算页面
+    'pages/store/index', // 店铺首页
 
-    
     'pages/home/landing', // 跳转等待页面
     'pages/floorguide/index', // 楼层引导页面
 
-    "pages/item/list", // 商品列表页面
-    "pages/item/espier-detail", // 商品详情页面
+    'pages/item/list', // 商品列表页面
+    'pages/item/espier-detail', // 商品详情页面
     'pages/item/item-params', // 商品参数详情页面
     'pages/item/package-list', // 商品优惠组合详情页面
-
-
 
     'pages/article/index', // 文章页面
     'pages/recommend/list', // 推荐软文列表
@@ -26,14 +23,14 @@ export default {
   ],
   subPackages: [
     {
-      root: "subpages/ecshopx",
-      pages: ["nearly-shop", "shop-list"],
+      root: 'subpages/ecshopx',
+      pages: ['nearly-shop', 'shop-list']
     },
     {
-      root: "subpages/member",
+      root: 'subpages/member',
       pages: [
-        "index" // 会员中心
-      ],
+        'index' // 会员中心
+      ]
     },
     // {
     //   root: "subpages/auth",
@@ -97,53 +94,53 @@ export default {
         'pages/item/espier-evaluation', // 商品评论列表
         'pages/item/espier-evaluation-detail', // 商品评论详情
         'pages/item/rate', //订单评价
-        'pages/item/success',//评价结果
+        'pages/item/success', //评价结果
 
-        'pages/item/seckill-goods-list',//秒杀商品列表
-        'pages/item/seckill-list',//秒杀列表
-        'pages/item/group-detail',//限时团购详情
-        'pages/item/group-list',//限时团购列表
+        'pages/item/seckill-goods-list', //秒杀商品列表
+        'pages/item/seckill-list', //秒杀列表
+        'pages/item/group-detail', //限时团购详情
+        'pages/item/group-list', //限时团购列表
 
-        'pages/plusprice/detail-plusprice-list',//商品进入换购详情页面
-        'pages/plusprice/cart-plusprice-list',//购物车进入换购详情页面
+        'pages/plusprice/detail-plusprice-list', //商品进入换购详情页面
+        'pages/plusprice/cart-plusprice-list', //购物车进入换购详情页面
         'pages/member/qrcode'
-      ],
+      ]
     },
     {
       root: 'subpage',
       pages: [
-        'pages/recommend/detail',//软文详情页面
-        'pages/trade/list',//我的订单列表页面
-        'pages/trade/customer-pickup-list',//我的自提订单列表
-        'pages/trade/drug-list',//处方药订单列表
-        'pages/trade/detail',//订单详情页面
-        'pages/trade/after-sale-detail',//售后详情页面
-        'pages/trade/delivery-info',//整单物流详情页面
-        'pages/trade/split-bagpack',//分单物流详情页面Ω
-        'pages/trade/rate',//订单评价页面
-        'pages/trade/cancel',//取消订单页面
-        'pages/trade/after-sale',//售后订单列表
-        'pages/trade/refund',//售后申请提交页面
-        'pages/trade/refund-detail',//售后申请提交结果页面
-        'pages/trade/refund-sendback',//售后填写物流公司页面
-        'pages/trade/invoice-list',//发票管理
-        'pages/cashier/index',//收银台页面
-        'pages/cashier/cashier-result',//支付结果页面
-        'pages/qrcode-buy',//二维码购买页
-        'pages/vip/vipgrades',//会员购买页面
-        'pages/auth/reg',//新用户注册页面
-        'pages/auth/reg-rule',//注册协议&充值协议页面
-        'pages/auth/login',//登录页面
-        'pages/auth/forgotpwd',//找回密码页面
-        'pages/auth/wxauth',//微信授权页面
-        'pages/auth/pclogin',//pc登录页面
-        'pages/auth/store-reg',//申请店铺入驻页面
+        'pages/recommend/detail', //软文详情页面
+        'pages/trade/list', //我的订单列表页面
+        'pages/trade/customer-pickup-list', //我的自提订单列表
+        'pages/trade/drug-list', //处方药订单列表
+        'pages/trade/detail', //订单详情页面
+        'pages/trade/after-sale-detail', //售后详情页面
+        'pages/trade/delivery-info', //整单物流详情页面
+        'pages/trade/split-bagpack', //分单物流详情页面Ω
+        'pages/trade/rate', //订单评价页面
+        'pages/trade/cancel', //取消订单页面
+        'pages/trade/after-sale', //售后订单列表
+        'pages/trade/refund', //售后申请提交页面
+        'pages/trade/refund-detail', //售后申请提交结果页面
+        'pages/trade/refund-sendback', //售后填写物流公司页面
+        'pages/trade/invoice-list', //发票管理
+        'pages/cashier/index', //收银台页面
+        'pages/cashier/cashier-result', //支付结果页面
+        'pages/qrcode-buy', //二维码购买页
+        'pages/vip/vipgrades', //会员购买页面
+        'pages/auth/reg', //新用户注册页面
+        'pages/auth/reg-rule', //注册协议&充值协议页面
+        'pages/auth/login', //登录页面
+        'pages/auth/forgotpwd', //找回密码页面
+        'pages/auth/wxauth', //微信授权页面
+        'pages/auth/pclogin', //pc登录页面
+        'pages/auth/store-reg', //申请店铺入驻页面
         // 编辑分享
         'pages/editShare/index',
         'pages/auth/bindPhone'
       ]
     },
-  //   // 助力
+    //   // 助力
     {
       root: 'boost',
       pages: [
@@ -198,8 +195,8 @@ export default {
 
   ],
   permission: {
-    "scope.userLocation": {
-      desc: "您的位置信息将用于定位附近门店",
-    },
+    'scope.userLocation': {
+      desc: '您的位置信息将用于定位附近门店'
+    }
   }
-};
+}

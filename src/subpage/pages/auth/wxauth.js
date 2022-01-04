@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Button, Radio, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import api from '@/api'
@@ -17,8 +17,8 @@ let codeSetTime = 1000 * 10
   colors: colors.current
 }))
 export default class WxAuth extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -58,11 +58,11 @@ export default class WxAuth extends Component {
     // );
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.timer && clearInterval(this.timer)
   }
 
-  componentDidShow(option) {
+  componentDidShow (option) {
     this.checkWhite()
     if (!this.state.isNewOpen) {
       this.redirect()
@@ -70,14 +70,14 @@ export default class WxAuth extends Component {
   }
 
   // 获取总店配置信息
-  async getStoreSettingInfo() {
+  async getStoreSettingInfo () {
     const data = await api.shop.getStoreBaseInfo()
     this.setState({
       baseInfo: data
     })
   }
 
-  async checkWhite() {
+  async checkWhite () {
     const { status } = await api.wx.getWhiteList()
     if (status == true) {
       setTimeout(() => {
@@ -86,14 +86,14 @@ export default class WxAuth extends Component {
     }
   }
 
-  async getIsMustOauth() {
+  async getIsMustOauth () {
     const { switch_first_auth_force_validation } = await api.user.getIsMustOauth({ module_type: 1 })
     if (switch_first_auth_force_validation == 1) {
       this.setState({ isMustOauth: true })
     }
   }
 
-  redirect() {
+  redirect () {
     const redirect = this.$instance.router.params.redirect
     const { source } = this.$instance.router.params
     Taro.hideLoading()
@@ -205,13 +205,16 @@ export default class WxAuth extends Component {
 
         setTimeout(() => {
           if (this.state.isMustOauth && is_new) {
-            this.setState({
-              isNewOpen: false
-            }, () => {
-              Taro.navigateTo({
-                url: '/marketing/pages/member/userinfo'
-              })
-            })
+            this.setState(
+              {
+                isNewOpen: false
+              },
+              () => {
+                Taro.navigateTo({
+                  url: '/marketing/pages/member/userinfo'
+                })
+              }
+            )
           } else {
             this.redirect()
           }
@@ -296,7 +299,7 @@ export default class WxAuth extends Component {
     Taro.redirectTo({ url: `/pages/cart/espier-checkout?source=${source}&scene=${scene}` })
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { isAgree, baseInfo } = this.state
     // const setCheckColor = isAgree ? colors.data[0].primary : '#fff'
@@ -307,7 +310,8 @@ export default class WxAuth extends Component {
         </View>
         <View className='bottom'>
           {isAgree ? (
-            isAlipay ? <Button
+            isAlipay ? (
+              <Button
                 className='btn'
                 onClick={this.getAuthCode}
                 // openType='getPhoneNumber'
@@ -315,17 +319,19 @@ export default class WxAuth extends Component {
               >
                 微信授权手机号一键登录
               </Button>
-             : <SpLogin onChange={this.onChangeLoginSuccess.bind(this)}>
-                <Button className='btn' >微信授权手机号一键登录</Button>
+            ) : (
+              <SpLogin onChange={this.onChangeLoginSuccess.bind(this)}>
+                <Button className='btn'>微信授权手机号一键登录</Button>
               </SpLogin>
             )
-            : <Button
+          ) : (
+            <Button
               className='btn disabled'
               // onClick={this.getPhoneNumber.bind(this)}
             >
               微信授权手机号一键登录
             </Button>
-          }
+          )}
           <View className='rule' onClick={this.changeAgreeRule.bind(this)}>
             <Radio checked={isAgree}></Radio>
             <View className='content'>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
 
@@ -9,11 +9,11 @@ export default class NoteIndex extends Component {
     addGlobalClass: true
   }
 
-  resolveUrl(img) {
+  resolveUrl (img) {
     return `/assets/imgs/${img}`
   }
 
-  render() {
+  render () {
     const { img, imgStyle, styles, className, isUrl } = this.props
 
     return (

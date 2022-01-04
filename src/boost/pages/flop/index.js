@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Progress, Text, Button } from '@tarojs/components'
 import { pickBy, normalizeQuerys } from '@/utils'
 import { SpNavBar, SpLogin, SpFloatPrivacy } from '@/components'
@@ -12,8 +12,8 @@ import './index.scss'
   memberData: member.member
 }))
 export default class Flop extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class Flop extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getBoostDetail()
     S.getAuthToken() && this.handleClickWxOAuth()
   }
@@ -142,7 +142,7 @@ export default class Flop extends Component {
     this.handleClickWxOAuth()
   }
 
-  handleClickWxOAuth() {
+  handleClickWxOAuth () {
     const { avatar, username } = this.props.memberData.memberInfo
     if (!avatar && !username) {
       this.setState({
@@ -151,7 +151,7 @@ export default class Flop extends Component {
     }
   }
 
-  render() {
+  render () {
     const { info, boostList, isDisabled, cutPercent, showPrivacy } = this.state
     return (
       <View className='flop'>

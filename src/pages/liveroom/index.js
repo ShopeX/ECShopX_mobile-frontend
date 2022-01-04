@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
 import { calcTimer, classNames } from '@/utils'
@@ -11,7 +11,7 @@ import './index.scss'
 
 @withPager
 export default class LiveRoomList extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       ...this.state,
@@ -19,11 +19,11 @@ export default class LiveRoomList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.nextPage()
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size } = params
     const query = {
       page,
@@ -62,7 +62,7 @@ export default class LiveRoomList extends Component {
     })
   }
 
-  render() {
+  render () {
     const { liveList, scrollTop, page } = this.state
     return (
       <View>

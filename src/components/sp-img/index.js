@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import Taro from "@tarojs/taro";
-import { Image } from "@tarojs/components";
-import { classNames } from "@/utils";
-import "./index.scss";
+import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
+import { Image } from '@tarojs/components'
+import { classNames } from '@/utils'
+import './index.scss'
 
 export default class SpImg extends Component {
   static defaultProps = {
     onLoad: () => {},
-    onError: () => {},
-  };
+    onError: () => {}
+  }
 
   static options = {
-    addGlobalClass: true,
-  };
+    addGlobalClass: true
+  }
 
-  static externalClasses = ["img-class"];
+  static externalClasses = ['img-class']
 
-  render() {
-    const { disk_driver = "qiniu" } = Taro.getStorageSync("otherSetting") || {};
+  render () {
+    const { disk_driver = 'qiniu' } = Taro.getStorageSync('otherSetting') || {}
     const {
       src,
       mode,
@@ -37,39 +37,34 @@ export default class SpImg extends Component {
       // 填充
       color,
       // 按比例
-      p,
-    } = this.props;
+      p
+    } = this.props
 
-    if (!src) return null;
+    if (!src) return null
 
-    let url = src;
+    let url = src
 
-    if (disk_driver === "oss") {
+    if (disk_driver === 'oss') {
       // 处理阿里云的图片缩放参数
-      const mod = m ? `m_${m},` : "";
-      const w = width ? `w_${width},` : "";
-      const h = height ? `h_${height},` : "";
-      const ll = l ? `l_${l},` : "";
-      const ss = s ? `s_${s},` : "";
-      const lim = limit ? `limit_${limit},` : "";
-      const col = color ? `color_${limit},` : "";
-      const per = p ? `p_${p},` : "";
+      const mod = m ? `m_${m},` : ''
+      const w = width ? `w_${width},` : ''
+      const h = height ? `h_${height},` : ''
+      const ll = l ? `l_${l},` : ''
+      const ss = s ? `s_${s},` : ''
+      const lim = limit ? `limit_${limit},` : ''
+      const col = color ? `color_${limit},` : ''
+      const per = p ? `p_${p},` : ''
       // 是否需要处理
-      const isMode = mod || width || height || ll || ss || lim || col || per;
-      url += isMode
-        ? `?x-oss-process=image/resize,${mod}${w}${h}${ll}${ss}${lim}${col}${per}`
-        : "";
-    } else if (disk_driver === "qiniu") {
+      const isMode = mod || width || height || ll || ss || lim || col || per
+      url += isMode ? `?x-oss-process=image/resize,${mod}${w}${h}${ll}${ss}${lim}${col}${per}` : ''
+    } else if (disk_driver === 'qiniu') {
       url +=
         width || height
-          ? `?imageView2/2${width ? "/w/" + width : ""}${
-              height ? "/h/" + height : ""
-            }`
-          : "";
+          ? `?imageView2/2${width ? '/w/' + width : ''}${height ? '/h/' + height : ''}`
+          : ''
     }
 
-    const imgClass =
-      Taro.getEnv() !== "WEB" ? "img-class" : this.props["img-class"];
+    const imgClass = Taro.getEnv() !== 'WEB' ? 'img-class' : this.props['img-class']
 
     return (
       <Image
@@ -80,6 +75,6 @@ export default class SpImg extends Component {
         onLoad={onLoad}
         lazyLoad={lazyLoad}
       />
-    );
+    )
   }
 }

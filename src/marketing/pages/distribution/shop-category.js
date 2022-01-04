@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { View, ScrollView, Text,Image } from '@tarojs/components'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { View, ScrollView, Text, Image } from '@tarojs/components'
 import { Loading, SpImg, SpNote, SpNavBar } from '@/components'
 import { classNames, pickBy, getCurrentRoute } from '@/utils'
 import { AtTabBar } from 'taro-ui'
@@ -13,8 +13,8 @@ import './shop-category.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -46,11 +46,11 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetchInfo()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -58,7 +58,7 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  async fetchInfo() {
+  async fetchInfo () {
     const options = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
@@ -105,7 +105,7 @@ export default class DistributionShopCategory extends Component {
     )
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const { defaultId } = this.state
     const options = this.$instance.router.params
@@ -181,13 +181,10 @@ export default class DistributionShopCategory extends Component {
 
       const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
-        if (
-          !urlRedirect ||
-          (url === "/subpages/member/index" && !S.getAuthToken())
-        ) {
-          Taro.navigateTo({ url });
+        if (!urlRedirect || (url === '/subpages/member/index' && !S.getAuthToken())) {
+          Taro.navigateTo({ url })
         } else {
-          Taro.redirectTo({ url });
+          Taro.redirectTo({ url })
         }
       }
     }
@@ -215,17 +212,9 @@ export default class DistributionShopCategory extends Component {
       })
     }
   }
-  render() {
-    const {
-      list,
-      hasSeries,
-      tabList,
-      localCurrent,
-      contentList,
-      currentIndex,
-      page,
-      scrollTop
-    } = this.state
+  render () {
+    const { list, hasSeries, tabList, localCurrent, contentList, currentIndex, page, scrollTop } =
+      this.state
     const isHaveLeft = list.length > 0
     return (
       <View className='page-category-index'>
@@ -281,7 +270,7 @@ export default class DistributionShopCategory extends Component {
                             img-class='goodImg'
                             src={item.img}
                           /> */}
-                          <Image src={item.img} lazyLoad className="goodImg"/>
+                          <Image src={item.img} lazyLoad className='goodImg' />
                         </View>
                         <View className='right'>
                           <View className='goodName'>{item.title}</View>

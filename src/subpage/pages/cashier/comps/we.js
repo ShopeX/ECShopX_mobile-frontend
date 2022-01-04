@@ -8,15 +8,15 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-11-19 15:20:48
  */
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import api from '@/api'
 
 import './we.scss'
 
 export default class WeappBtn extends Component {
-  $instance = getCurrentInstance();
+  $instance = getCurrentInstance()
   static options = {
     addGlobalClass: true
   }
@@ -47,7 +47,7 @@ export default class WeappBtn extends Component {
 
     const redirect_url = `${loc.protocol}//${loc.host}/subpage/pages/cashier/cashier-result?order_id=${order_id}`
 
-    const redirect_url2=`/subpage/pages/cashier/cashier-result?order_id=${order_id}`
+    const redirect_url2 = `/subpage/pages/cashier/cashier-result?order_id=${order_id}`
 
     WeixinJSBridge.invoke(
       'getBrandWCPayRequest',
@@ -59,10 +59,10 @@ export default class WeappBtn extends Component {
         signType, //微信签名方式：
         paySign //微信签名
       },
-      function(res) {
+      function (res) {
         console.error(res)
         Taro.navigateTo({
-          url:redirect_url2
+          url: redirect_url2
         })
         // if (res.err_msg == 'get_brand_wcpay_request:ok') {
         //   // 使用以上方式判断前端返回,微信团队郑重提示：
@@ -72,7 +72,7 @@ export default class WeappBtn extends Component {
     )
   }
 
-  render() {
+  render () {
     return (
       <View className='weapp-btn' onClick={this.handleClickPay.bind(this)}>
         微信支付

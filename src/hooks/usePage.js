@@ -1,5 +1,5 @@
-import { total } from "@/api/cart";
-import { useState, useEffect, useRef } from "react";
+import { total } from '@/api/cart'
+import { useState, useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 
 const initialState = {
@@ -10,46 +10,43 @@ const initialState = {
 }
 
 export default (props) => {
-  const { fetch, auto = true } = props;
-  const [page, setPage] = useImmer(initialState);
-  const totalRef = useRef( 0 );
+  const { fetch, auto = true } = props
+  const [page, setPage] = useImmer(initialState)
+  const totalRef = useRef(0)
 
   const [hasNext, setHasNext] = useState(true)
 
-  useEffect( () => {
-    if ( auto ) {
+  useEffect(() => {
+    if (auto) {
       excluteFetch()
     }
-  }, [page.pageIndex] )
+  }, [page.pageIndex])
 
   const excluteFetch = async () => {
-    setPage( v => {
-      v.loading = true;
+    setPage((v) => {
+      v.loading = true
     })
-    const { total } = await fetch( page );
-    totalRef.current = total;
-    setPage( ( v ) => {
+    const { total } = await fetch(page)
+    totalRef.current = total
+    setPage((v) => {
       if (!total || total <= page.pageSize * page.pageNo) {
-        v.hasMore = false;
+        v.hasMore = false
       }
-      v.loading = false;
-    });
+      v.loading = false
+    })
   }
 
   const nextPage = () => {
     const curPage = page.pageIndex + 1
-    if (
-      !totalRef.current ||
-      curPage > Math.ceil(+totalRef.current / page.pageSize)
-    ) {
+    if (!totalRef.current || curPage > Math.ceil(+totalRef.current / page.pageSize)) {
       setPage((v) => {
-        v.hasMore = false;
-      });
-      return;
+        v.hasMore = false
+      })
+      return
     } else {
-      setPage( v => {
+      setPage((v) => {
         v.pageIndex = curPage
-      });
+      })
     }
   }
 
@@ -62,11 +59,11 @@ export default (props) => {
    */
   const resetPage = async () => {
     totalRef.current = 0
-    await setPage( v => {
+    await setPage((v) => {
       v.pageIndex = 1
       v.hasMore = true
-    });
-    if(!auto || page.pageIndex == 1) {
+    })
+    if (!auto || page.pageIndex == 1) {
       excluteFetch()
     }
   }
@@ -76,5 +73,5 @@ export default (props) => {
     getTotal,
     nextPage,
     resetPage
-  };
+  }
 }

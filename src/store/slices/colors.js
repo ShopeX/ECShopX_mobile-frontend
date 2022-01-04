@@ -8,11 +8,13 @@ const colorsSlice = createSlice({
   name: 'colors',
   initialState,
   reducers: {
-    setColor: ( state, { payload } ) => {
+    setColor: (state, { payload }) => {
       state.current = {
-        data: [{
-          ...payload
-        }]
+        data: [
+          {
+            ...payload
+          }
+        ]
       }
     }
   }
@@ -21,4 +23,3 @@ const colorsSlice = createSlice({
 export const { setColor } = colorsSlice.actions
 
 export default colorsSlice.reducer
-

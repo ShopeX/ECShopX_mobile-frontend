@@ -35,7 +35,7 @@ const request = (() => {
   return Taro.request
 })()
 class RequestQueue {
-  constructor() {
+  constructor () {
     this.requestList = []
     this.isRunning = false
   }
@@ -67,7 +67,7 @@ class RequestQueue {
 }
 
 class API {
-  constructor(options = {}) {
+  constructor (options = {}) {
     this.setOptions(options)
     this.isRefreshingToken = false
     this.requestQueue = new RequestQueue()
@@ -84,7 +84,9 @@ class API {
       company_id: process.env.APP_COMPANY_ID
     }
     if (isWeixin || isAlipay) {
-      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+      const extConfig = Taro.getExtConfigSync
+        ? Taro.getExtConfigSync()
+        : { appid: process.env.APP_ID }
       options.appid = extConfig.appid
       if (extConfig.company_id) {
         options.company_id = extConfig.company_id
@@ -94,8 +96,7 @@ class API {
   }
 
   errorToast (data) {
-    let errMsg =
-      data.message || (data.data && data.data.message) || '操作失败，请稍后重试'
+    let errMsg = data.message || (data.data && data.data.message) || '操作失败，请稍后重试'
 
     if (errMsg.length > 11) {
       errMsg = errMsg.substring(0, 11) + '\n' + errMsg.substring(11)
@@ -124,7 +125,7 @@ class API {
   }
 
   intereptorReq (params) {
-    const { url, data, header = {}, method = 'GET' } = params 
+    const { url, data, header = {}, method = 'GET' } = params
     const { company_id, appid } = this.options
     const methodIsGet = method.toLowerCase() === 'get'
 
@@ -362,9 +363,9 @@ if (process.env.NODE_ENV === 'production' && !isWeb) {
   Taro.addInterceptor(Taro.interceptors.logInterceptor)
 }
 
-console.log("===> process.env.APP_BASE_URL", process.env.APP_BASE_URL)
+console.log('===> process.env.APP_BASE_URL', process.env.APP_BASE_URL)
 
-console.log("===> process.env.APP_MAP_KEY", process.env.APP_MAP_KEY)
+console.log('===> process.env.APP_MAP_KEY', process.env.APP_MAP_KEY)
 
 export default new API({
   baseURL: process.env.APP_BASE_URL

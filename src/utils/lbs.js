@@ -1,14 +1,14 @@
 class LBS {
   constructor () {
-    if(process.env.TARO_ENV === 'h5'){
+    if (process.env.TARO_ENV === 'h5') {
       this.loadJScript()
     }
   }
 
   // 加载地图sdk
-  loadJScript() {
-    const script = document.createElement("script");
-    script.type = "text/javascript";
+  loadJScript () {
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
     // script.src = `https://apis.map.qq.com/tools/geolocation/min?key=${process.env.APP_MAP_KEY}&referer=${process.env.APP_MAP_NAME}`
 
     script.src = `https://webapi.amap.com/maps?v=2.0&key=${process.env.APP_MAP_KEY}`
@@ -18,7 +18,7 @@ class LBS {
     // const iframe = document.createElement('iframe')
     // iframe.src = `https://apis.map.qq.com/tools/geolocation?key=T3OBZ-SE6WF-UJCJY-JTL22-EDFA5-TDFIQ&referer=myapp&effect=zoom`;
 
-    document.body.appendChild(script);
+    document.body.appendChild(script)
   }
 }
 

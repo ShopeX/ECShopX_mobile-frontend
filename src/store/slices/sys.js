@@ -53,21 +53,21 @@ const sysSlice = createSlice({
   name: 'sys',
   initialState,
   reducers: {
-    setSysConfig: ( state, { payload } ) => {
-      const { colorPrimary } = payload;
-      const rgb = hex2rgb(colorPrimary).join(',');
+    setSysConfig: (state, { payload }) => {
+      const { colorPrimary } = payload
+      const rgb = hex2rgb(colorPrimary).join(',')
       return {
         ...state,
         ...payload,
         rgb
-      };
+      }
     },
-    updatePageTitle: ( state, { payload } ) => {
-      const { pageTitle } = payload;
+    updatePageTitle: (state, { payload }) => {
+      const { pageTitle } = payload
       return {
         ...state,
         pageTitle
-      };
+      }
     }
   }
 })

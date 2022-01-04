@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane, AtTabBar } from 'taro-ui'
@@ -14,8 +14,8 @@ import './category.scss'
   store
 }))
 export default class Category extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -27,7 +27,12 @@ export default class Category extends Component {
       isChanged: false,
       localCurrent: 2,
       tabBarList: [
-        { title: '店铺首页', iconType: 'home', iconPrefixClass: 'iconfont icon', url: '/pages/store/index' },
+        {
+          title: '店铺首页',
+          iconType: 'home',
+          iconPrefixClass: 'iconfont icon',
+          url: '/pages/store/index'
+        },
         {
           title: '商品列表',
           iconType: 'list',
@@ -44,11 +49,11 @@ export default class Category extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     /*const nList = pickBy(res, {
       category_name: 'category_name',
       image_url: 'image_url',
@@ -162,7 +167,7 @@ export default class Category extends Component {
     }
   }
 
-  render() {
+  render () {
     const { curTabIdx, tabList, list, hasSeries, isChanged, localCurrent, tabBarList } = this.state
     const options = this.$instance.router.params
     return (

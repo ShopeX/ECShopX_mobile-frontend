@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { Input, View, Picker, Image } from '@tarojs/components'
-import { SpPage, SpNavBar, SpCheckbox, SpFloatPrivacy } from "@/components";
+import { SpPage, SpNavBar, SpCheckbox, SpFloatPrivacy } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import S from '@/spx'
@@ -21,7 +21,7 @@ import './userinfo.scss'
   })
 )
 export default class UserInfo extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -32,7 +32,7 @@ export default class UserInfo extends Component {
       // 是否获取过微信信息
       isGetWxInfo: true,
       avatarClickNum: 0,
-      showCheckboxPanel: false,
+      showCheckboxPanel: false
       // 是否显示隐私协议
       // showPrivacy: false,
       // showTimes: 0,
@@ -46,7 +46,7 @@ export default class UserInfo extends Component {
     this.optionsType = ''
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getFormItem()
   }
 
@@ -76,12 +76,12 @@ export default class UserInfo extends Component {
       }
     } else {
       // if (isAgree == 1) {
-        S.OAuthWxUserProfile(() => {
-          // this.setState({
-          //   showTimes: this.state.showTimes + 1
-          // })
-          this.getFormItem()
-        }, true)
+      S.OAuthWxUserProfile(() => {
+        // this.setState({
+        //   showTimes: this.state.showTimes + 1
+        // })
+        this.getFormItem()
+      }, true)
       // } else {
       //   this.setState({
       //     showPrivacy: true,
@@ -93,7 +93,7 @@ export default class UserInfo extends Component {
 
   // 获取表单字段
   getFormItem = async () => {
-    const { avatar, requestFields} = this.props.memberData
+    const { avatar, requestFields } = this.props.memberData
     // const { requestFields } = this.props.memberData
     const userInfo = {
       avatar,
@@ -164,8 +164,8 @@ export default class UserInfo extends Component {
   }
 
   handleShowCheckboxPanel = (checkItem) => {
-    console.log("===handleShowCheckboxPanel",checkItem)
-    if(!checkItem.is_edit) return;
+    console.log('===handleShowCheckboxPanel', checkItem)
+    if (!checkItem.is_edit) return
     const { userInfo } = this.state
     const { key, checkbox } = checkItem
     this.optionsType = key
@@ -232,27 +232,27 @@ export default class UserInfo extends Component {
     // e && e.stopPropagation();
     const { userInfo, regParams, isAgree } = this.state
     // if (isAgree == 1) {
-      try {
-        Object.keys(regParams).forEach((key) => {
-          if (regParams[key].is_required) {
-            if (!userInfo[key]) {
-              throw regParams[key].name
-            }
+    try {
+      Object.keys(regParams).forEach((key) => {
+        if (regParams[key].is_required) {
+          if (!userInfo[key]) {
+            throw regParams[key].name
           }
-        })
+        }
+      })
 
-        await api.member.setMemberInfo({
-          ...userInfo
-        })
-        showToast('修改成功')
+      await api.member.setMemberInfo({
+        ...userInfo
+      })
+      showToast('修改成功')
 
-        await S.getMemberInfo()
-        // this.props.setMemberInfo({
-        //   ...memberInfo
-        // });
-      } catch (e) {
-        showToast(`请完善${e}`)
-      }
+      await S.getMemberInfo()
+      // this.props.setMemberInfo({
+      //   ...memberInfo
+      // });
+    } catch (e) {
+      showToast(`请完善${e}`)
+    }
     // } else {
     //   this.setState({
     //     showPrivacy: true,
@@ -273,13 +273,13 @@ export default class UserInfo extends Component {
   // })
   // }
 
-  render() {
+  render () {
     const {
       formItems,
       userInfo,
       regParams,
       showCheckboxPanel,
-      option_list,
+      option_list
       // showPrivacy,
       // wxUserInfo
     } = this.state

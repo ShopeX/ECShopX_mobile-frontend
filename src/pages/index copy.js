@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import Taro,{getCurrentInstance} from "@tarojs/taro";
-import { View, Image } from "@tarojs/components";
-import { connect } from "react-redux";
-import qs from "qs";
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { View, Image } from '@tarojs/components'
+import { connect } from 'react-redux'
+import qs from 'qs'
 import {
   TabBar,
   BackToTop,
@@ -13,27 +13,21 @@ import {
   CouponModal,
   PrivacyConfirmModal,
   SpTabbar
-} from "@/components";
+} from '@/components'
 
-import req from "@/api/req";
-import api from "@/api";
-import {
-  pickBy,
-  classNames,
-  isArray,
-  isAlipay,
-  payTypeField,
-} from "@/utils";
-import entry from "@/utils/entry";
-import { withPager, withBackToTop } from "@/hocs";
-import S from "@/spx";
+import req from '@/api/req'
+import api from '@/api'
+import { pickBy, classNames, isArray, isAlipay, payTypeField } from '@/utils'
+import entry from '@/utils/entry'
+import { withPager, withBackToTop } from '@/hocs'
+import S from '@/spx'
 // import { Tracker } from "@/service";
-import { setPageTitle, platformTemplateName } from "@/utils/platform";
-import { WgtGoodsFaverite, HeaderHome } from "./home/wgts";
-import HomeWgts from "./home/comps/home-wgts";
-import Automatic from "./home/comps/automatic";
+import { setPageTitle, platformTemplateName } from '@/utils/platform'
+import { WgtGoodsFaverite, HeaderHome } from './home/wgts'
+import HomeWgts from './home/comps/home-wgts'
+import Automatic from './home/comps/automatic'
 
-import "./home/index.scss";
+import './home/index.scss'
 
 @connect(
   ({ cart, user, store }) => ({
@@ -45,17 +39,16 @@ import "./home/index.scss";
     showAdv: user.showAdv,
     favs: user.favs
   }),
-  dispatch => ({
-    onUpdateLikeList: show_likelist =>
-      dispatch({ type: "cart/updateLikeList", payload: show_likelist }),
-    onUpdateCartCount: count =>
-      dispatch({ type: "cart/updateCount", payload: count })
+  (dispatch) => ({
+    onUpdateLikeList: (show_likelist) =>
+      dispatch({ type: 'cart/updateLikeList', payload: show_likelist }),
+    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
   })
 )
 @withPager
 // @withBackToTop
 export default class Home extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.autoCloseTipId = null
     this.currentLoadIndex = -1
@@ -95,20 +88,20 @@ export default class Home extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // // console.log('APP_NAME',APP_NAME)
     // console.log('process.env.APP_IMAGE_CDN',process.env.APP_IMAGE_CDN)
     // this.protocolUpdateTime();
-    this.getShareSetting();
-    this.isShowTips();
+    this.getShareSetting()
+    this.isShowTips()
     this.getHomeSetting()
   }
 
   // 获取隐私政策时间
-  async protocolUpdateTime() {
-    const isLocal = await entry.getLocalSetting() 
+  async protocolUpdateTime () {
+    const isLocal = await entry.getLocalSetting()
 
-    const time = Taro.getStorageSync("policy_updatetime");
+    const time = Taro.getStorageSync('policy_updatetime')
     const result = await api.wx.getPrivacyTime()
     const { update_time } = result
 
@@ -133,8 +126,8 @@ export default class Home extends Component {
       Taro.setStorageSync('policy_updatetime', update_time)
       this.getHomeSetting()
     } else {
-      Taro.removeStorageSync("policy_updatetime");
-      Taro.removeStorageSync("token");
+      Taro.removeStorageSync('policy_updatetime')
+      Taro.removeStorageSync('token')
       const {
         is_open_scan_qrcode,
         is_open_recommend,
@@ -163,7 +156,7 @@ export default class Home extends Component {
   }
 
   // 检测收藏变化
-  componentWillReceiveProps(next) {
+  componentWillReceiveProps (next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       setTimeout(() => {
         const likeList = this.state.likeList.map((item) => {
@@ -177,7 +170,7 @@ export default class Home extends Component {
     }
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.showInit()
     this.isShoppingGuide()
     this.getDistributionInfo()
@@ -241,16 +234,16 @@ export default class Home extends Component {
   }
 
   // 分享
-  onShareAppMessage(params) {
+  onShareAppMessage (params) {
     const shareInfo = this.shareInfo()
- 
+
     return {
       ...shareInfo
     }
   }
 
   // 分享朋友圈
-  onShareTimeline(params) {
+  onShareTimeline (params) {
     const shareInfo = this.shareInfo('time')
 
     return {
@@ -407,7 +400,7 @@ export default class Home extends Component {
     const options = getCurrentInstance().router.params
     options.isStore = is_open_store_status
     const res = await entry.entryLaunch(options, isNeedLoacate)
-    const { store } = res 
+    const { store } = res
     if (!isArray(store)) {
       this.setState(
         {
@@ -551,7 +544,7 @@ export default class Home extends Component {
   }
 
   // 获取购物车数量
-  async fetchCartCount() {
+  async fetchCartCount () {
     if (!S.getAuthToken()) return
     try {
       const res = await api.cart.count({ shop_type: 'distributor' })
@@ -627,13 +620,13 @@ export default class Home extends Component {
   }
 
   handleLoadMore = async (currentIndex, compType, currentTabIndex, currentLength) => {
-    console.log('handleLoadMore',currentIndex, compType, currentTabIndex, currentLength)
+    console.log('handleLoadMore', currentIndex, compType, currentTabIndex, currentLength)
     if (isAlipay) return
     const { id } = this.state.wgtsList.find((_, index) => currentIndex === index) || {}
     this.currentLoadIndex = currentIndex
 
     let params = {
-      template_name: "yykweishop",
+      template_name: 'yykweishop',
       weapp_pages: 'index',
       page: 1,
       page_size: currentLength + 50,
@@ -664,7 +657,7 @@ export default class Home extends Component {
     })
   }
 
-  fetchCouponCardList(receive_type) {
+  fetchCouponCardList (receive_type) {
     api.vip.getShowCardPackage({ receive_type }).then(({ all_card_list }) => {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
@@ -682,7 +675,7 @@ export default class Home extends Component {
     this.setState({ visible })
   }
 
-  render() {
+  render () {
     const {
       show_tabBar,
       isShowAddTip,
@@ -715,7 +708,7 @@ export default class Home extends Component {
     // 否是fixed
     const isFixed = positionStatus
 
-    const { is_open_scan_qrcode } = Taro.getStorageSync('settingInfo') 
+    const { is_open_scan_qrcode } = Taro.getStorageSync('settingInfo')
     const { openStore } = Taro.getStorageSync('otherSetting')
     return (
       <View className='page-index'>
@@ -744,10 +737,9 @@ export default class Home extends Component {
             // !isFixed && !isStandard && 'platform'
           )}
         >
-
           {/* 挂件内容和猜你喜欢 */}
           <View className='wgts-wrap__cont'>
-           {wgts && wgts.length && <HomeWgts wgts={wgts} loadMore={this.handleLoadMore}  />} 
+            {wgts && wgts.length && <HomeWgts wgts={wgts} loadMore={this.handleLoadMore} />}
             {!isAlipay && likeList.length > 0 && is_open_recommend == 1 && (
               <View className='faverite-list'>
                 <WgtGoodsFaverite info={likeList} />
@@ -796,7 +788,7 @@ export default class Home extends Component {
 
         {/* 返回顶部 */}
         {/* <BackToTop show={showBackToTop} onClick={this.scrollBackToTop.bind(this)} /> */}
-        
+
         {/* addTip */}
         {isShowAddTip && !isAlipay && (
           <View className='add_tip'>

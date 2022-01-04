@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Icon } from '@tarojs/components'
 import { toggleTouchMove } from '@/utils/dom'
 import { getQueryVariable } from '@/utils'
@@ -10,7 +10,7 @@ export default class WgtSearchHome extends Component {
     info: null
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -19,7 +19,7 @@ export default class WgtSearchHome extends Component {
       isShowAction: false
     }
   }
-  componentDidMount() {
+  componentDidMount () {
     if (process.env.TARO_ENV === 'h5') {
       toggleTouchMove(this.refs.container)
     }
@@ -57,7 +57,7 @@ export default class WgtSearchHome extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info } = this.props
     if (!info) {
       return null
@@ -67,15 +67,19 @@ export default class WgtSearchHome extends Component {
 
     let isShowScan = true // Taro.getEnv() !== 'WEB' && config.scanCode && process.env.APP_PLATFORM !== 'standard'
     return (
-      <View className={`wgt-search ${(base.padded && config.fixTop) ? 'cus_padding' : null}`}>
-        <View className={`search ${config.fixTop ? 'fixed' : null} ${base.padded ? 'wgt__padded' : null}`}>
+      <View className={`wgt-search ${base.padded && config.fixTop ? 'cus_padding' : null}`}>
+        <View
+          className={`search ${config.fixTop ? 'fixed' : null} ${
+            base.padded ? 'wgt__padded' : null
+          }`}
+        >
           <View
             className='search-box view-flex view-flex-middle view-flex-center'
             onClick={this.searchTap.bind(this)}
-            style={!isShowScan ? { width:'95%' } : {} }
+            style={!isShowScan ? { width: '95%' } : {}}
           >
-              <View className='iconfont searchicon icon-search1'></View>
-              <View>搜索</View>
+            <View className='iconfont searchicon icon-search1'></View>
+            <View>搜索</View>
           </View>
           {/* { isShowScan && (
               <View className='scancode' onClick={this.handleScanCode.bind(this)}>

@@ -1,33 +1,23 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/others/pages/auth/index.js
- * @Date: 2020-10-29 15:36:41
- * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-03-26 14:00:21
- */
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { Loading } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-import { normalizeQuerys } from '@/utils'
+import { normalizeQuerys, getAppId } from '@/utils'
 
 import './index.scss'
 
 export default class AuthLogin extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
     this.state = {
       showAuth: false
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (!S.getAuthToken()) {
       S.toast('请先登录')
       setTimeout(() => {
@@ -46,12 +36,12 @@ export default class AuthLogin extends Component {
       token = t
     }
     const { code } = await Taro.login()
-    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+    const { appid } = getAppId()
     try {
       const { status } = await api.user.codeAuth({
         code,
         token,
-        appid: extConfig.appid
+        appid
       })
       if (status) {
         this.setState({
@@ -73,7 +63,7 @@ export default class AuthLogin extends Component {
       token = t
     }
     const { code } = await Taro.login()
-    const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+    const { appid } = getAppId()
     try {
       Taro.showLoading({
         title: '授权中'
@@ -109,7 +99,7 @@ export default class AuthLogin extends Component {
     }
   }
 
-  render() {
+  render () {
     const { showAuth } = this.state
     const user = Taro.getStorageSync('userinfo')
 

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 // import { Tracker } from '@/service'
 import './index.scss'
@@ -11,7 +11,7 @@ export default class Meiqia extends Component {
     isFloat: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -22,7 +22,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     const meiqia = Taro.getStorageSync('meiqia') || {}
     if (meiqia.is_open === 'true') {
       const { enterprise_id, group_id, persion_ids } = meiqia
@@ -32,7 +32,7 @@ export default class Meiqia extends Component {
       // 如果不是标准版
       if (process.env.APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
         id = storeId
-      } 
+      }
       if (enterprise_id) {
         this.setState({
           meiqia_id: enterprise_id,
@@ -66,10 +66,10 @@ export default class Meiqia extends Component {
     const meiqiajs = document.getElementById('meiqiajs')
     if (!meiqiajs) {
       try {
-        ;(function(m, ei, q, i, a, j, s) {
+        ;(function (m, ei, q, i, a, j, s) {
           m[i] =
             m[i] ||
-            function() {
+            function () {
               ;(m[i].a = m[i].a || []).push(arguments)
             }
           ;(j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
@@ -124,7 +124,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  render() {
+  render () {
     const { isFloat } = this.props
     const { meiqia_id } = this.state
     return meiqia_id ? (

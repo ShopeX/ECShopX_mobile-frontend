@@ -1,28 +1,26 @@
-import React, { useState } from "react";
-import Taro, { getCurrentInstance } from "@tarojs/taro";
-import { View, ScrollView, Text } from "@tarojs/components";
-import { SpGoodsItem, SpImage } from "@/components";
-import { getDistributorId } from "@/utils/helper";
-import { classNames, pickBy, linkPage } from "@/utils";
+import React, { useState } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { View, ScrollView, Text } from '@tarojs/components'
+import { SpGoodsItem, SpImage } from '@/components'
+import { getDistributorId } from '@/utils/helper'
+import { classNames, pickBy, linkPage } from '@/utils'
 import doc from '@/doc'
-import "./goods-grid-tab.scss";
+import './goods-grid-tab.scss'
 
-function WgtGoodsGridTab(props) {
-  const { info } = props;
+function WgtGoodsGridTab (props) {
+  const { info } = props
   if (!info) {
-    return null;
+    return null
   }
 
   const [current, setCurrent] = useState(0)
 
-  const { base, config, list } = info;
-
-
+  const { base, config, list } = info
 
   return (
     <View
-      className={classNames("wgt", "wgt-goods-grid-tab", {
-        wgt__padded: base.padded,
+      className={classNames('wgt', 'wgt-goods-grid-tab', {
+        wgt__padded: base.padded
       })}
     >
       {/* {base.title && (
@@ -32,41 +30,38 @@ function WgtGoodsGridTab(props) {
         </View>
       )} */}
       {base.title && (
-        <View className="wgt-head">
-          <View className="wgt-hd">
-            <Text className="wgt-title">{base.title}</Text>
-            <Text className="wgt-subtitle">{base.subtitle}</Text>
+        <View className='wgt-head'>
+          <View className='wgt-hd'>
+            <Text className='wgt-title'>{base.title}</Text>
+            <Text className='wgt-subtitle'>{base.subtitle}</Text>
           </View>
         </View>
       )}
-      <View className="wgt-body">
-        <ScrollView className="scroll-tab" scrollX>
+      <View className='wgt-body'>
+        <ScrollView className='scroll-tab' scrollX>
           {list.map((item, index) => (
             <View
-              className={classNames("tab-item", {
-                active: current == index,
+              className={classNames('tab-item', {
+                active: current == index
               })}
               key={`tab-item__${index}`}
               onClick={() => {
-                setCurrent(index);
+                setCurrent(index)
               }}
             >
               {item.tabTitle}
             </View>
           ))}
         </ScrollView>
-        <View className="tabs-container">
+        <View className='tabs-container'>
           {list.map(
             (item, index) =>
               current == index && (
-                <View className="tab-body" key={`tab-body__${index}`}>
+                <View className='tab-body' key={`tab-body__${index}`}>
                   {item.goodsList.map((good, index) => {
-                    const data = pickBy(good, doc.goods.WGT_GOODS_GRID_TAB);
+                    const data = pickBy(good, doc.goods.WGT_GOODS_GRID_TAB)
                     return (
-                      <View
-                        className="goodgrid-item"
-                        key={`goods-item__${index}`}
-                      >
+                      <View className='goodgrid-item' key={`goods-item__${index}`}>
                         <SpGoodsItem info={data} />
                         {/* {config.brand && (
                           <View className="brand-info">
@@ -74,29 +69,24 @@ function WgtGoodsGridTab(props) {
                           </View>
                         )} */}
                       </View>
-                    );
+                    )
                   })}
                 </View>
               )
           )}
         </View>
         {config.moreLink.id && (
-          <View
-            className="btn-more"
-            onClick={() =>
-              linkPage(config.moreLink)
-            }
-          >
+          <View className='btn-more' onClick={() => linkPage(config.moreLink)}>
             查看更多
           </View>
         )}
       </View>
     </View>
-  );
+  )
 }
 
 WgtGoodsGridTab.options = {
-  addGlobalClass: true,
-};
+  addGlobalClass: true
+}
 
-export default WgtGoodsGridTab;
+export default WgtGoodsGridTab

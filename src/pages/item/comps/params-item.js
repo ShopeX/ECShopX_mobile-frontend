@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View } from '@tarojs/components'
 
 export default class ParamsItem extends Component {
@@ -10,7 +10,7 @@ export default class ParamsItem extends Component {
     info: {}
   }
 
-  render() {
+  render () {
     const { info } = this.props
 
     if (!info) {

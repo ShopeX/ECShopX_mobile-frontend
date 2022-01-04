@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, ScrollView } from '@tarojs/components'
 import { AtNavBar } from 'taro-ui'
 import { GoodsItem } from '@/components'
@@ -21,7 +21,7 @@ export default class CheckoutItems extends Component {
     addGlobalClass: true
   }
 
-  render() {
+  render () {
     const { isOpened, list, onClickBack } = this.props
 
     return (

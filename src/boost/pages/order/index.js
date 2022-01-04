@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import api from '@/api'
@@ -13,7 +13,7 @@ import './index.scss'
   colors: colors.current
 }))
 export default class Order extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       param: {
@@ -30,7 +30,7 @@ export default class Order extends Component {
       isEmpty: false
     }
   }
-  componentDidMount() {
+  componentDidMount () {
     this.getList()
   }
 
@@ -99,7 +99,7 @@ export default class Order extends Component {
     })
   }
 
-  render() {
+  render () {
     const { list, scrollTop, isRefresh, isLoading, isEnd, isEmpty } = this.state
     const { colors } = this.props
     return (

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 // import { AtInputNumber } from 'taro-ui'
 import { Price } from '@/components'
@@ -28,7 +28,7 @@ export default class GoodsItem extends Component {
   //     [info.num]: val
   //   })
   // }
-  render() {
+  render () {
     const {
       num,
       info,

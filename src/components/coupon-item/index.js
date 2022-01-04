@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { classNames } from '@/utils'
@@ -18,12 +18,12 @@ export default class CouponItem extends Component {
     isShowCheckout: false,
     isDisabled: false,
     showDetail: false,
-    distributor_info:{},
+    distributor_info: {},
     //是否展示店铺名称
-    showDtName:true
+    showDtName: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     //this.transitionCloseDetail=null;
     this.state = {
@@ -62,7 +62,7 @@ export default class CouponItem extends Component {
     })
   }
 
-  handleType(e) {
+  handleType (e) {
     let type = [
       {
         tag: '兑换券',
@@ -107,20 +107,26 @@ export default class CouponItem extends Component {
     this.props.onHandleClick && this.props.onHandleClick()
   }
 
-  getDistributorName= () =>{
-    const { info,distributor_info }=this.props;
-    console.log("getDistributorName==>",distributor_info,info);
-    if(distributor_info.name) return distributor_info.name;
-    return (info.distributor_list||[]).reduce((total,current,index)=>total+current.name+(info.distributor_list.length-1===index?'':','),'')||''
+  getDistributorName = () => {
+    const { info, distributor_info } = this.props
+    console.log('getDistributorName==>', distributor_info, info)
+    if (distributor_info.name) return distributor_info.name
+    return (
+      (info.distributor_list || []).reduce(
+        (total, current, index) =>
+          total + current.name + (info.distributor_list.length - 1 === index ? '' : ','),
+        ''
+      ) || ''
+    )
   }
 
-  render() {
+  render () {
     const {
       info,
       isShowCheckout,
-      isChoosed, 
+      isChoosed,
       colors,
-      isExist, 
+      isExist,
       count,
       distributor_info,
       showDtName
@@ -170,8 +176,13 @@ export default class CouponItem extends Component {
                   >
                     {obj.tag}
                   </View>
-                  <View  className='name' >
-                    {showDtName && <Text>{this.getDistributorName()||'平台自营'}{"："}</Text>}
+                  <View className='name'>
+                    {showDtName && (
+                      <Text>
+                        {this.getDistributorName() || '平台自营'}
+                        {'：'}
+                      </Text>
+                    )}
                     <Text>{info.title}</Text>
                   </View>
                 </View>

@@ -10,7 +10,7 @@ import entryLaunchFun from '@/utils/entryLaunch'
 import './index.scss'
 
 export default class Community extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       list: [],
@@ -29,7 +29,7 @@ export default class Community extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     this.init()
   }
 
@@ -169,7 +169,7 @@ export default class Community extends Component {
     this.getCommunity()
   }
 
-  render() {
+  render () {
     const { list, isLoading, isEnd, isRefresh, scrollTop, current } = this.state
     return (
       <View className='community'>

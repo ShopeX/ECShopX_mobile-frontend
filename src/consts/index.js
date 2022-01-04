@@ -58,12 +58,12 @@ export const TABBAR_PATH = {
   allGoods: '/pages/item/list?isTabBar=true'
 }
 
-export const PAYTYPE={
+export const PAYTYPE = {
   /** h5环境下 */
-  WXH5:'wxpayh5',
-  ALIH5:'alipayh5',
+  WXH5: 'wxpayh5',
+  ALIH5: 'alipayh5',
   /** 微信H5环境下 */
-  WXH5JS:'wxpayjs' 
+  WXH5JS: 'wxpayjs'
 }
 
 export * from './localstorage'

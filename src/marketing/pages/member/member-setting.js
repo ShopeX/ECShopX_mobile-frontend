@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import req from '@/api/req'
 import { SpPage, SpCell, SpNavBar } from '@/components'
@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import DestoryConfirm from './comps/destory-comfirm-modal'
 
 import './member-setting.scss'
+
 @connect(
   () => ({}),
   (dispatch) => ({
@@ -17,12 +18,11 @@ import './member-setting.scss'
     onFetchFavs: (favs) => dispatch({ type: 'member/favs', payload: favs })
   })
 )
-
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 export default class SettingIndex extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       redirectInfo: {},
@@ -33,12 +33,12 @@ export default class SettingIndex extends Component {
     }
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.fetchRedirect()
   }
 
   // 获取积分个人信息跳转
-  async fetchRedirect() {
+  async fetchRedirect () {
     const url = `/pageparams/setting?template_name=yykweishop&version=v1.0.1&page_name=member_center_redirect_setting`
     const { list = [] } = await req.get(url)
     if (list[0] && list[0].params) {
@@ -55,9 +55,9 @@ export default class SettingIndex extends Component {
     this.props.onFetchFavs([])
     this.props.onUpdateCart([])
     this.props.onUpdateCartCount(0)
-    console.log(process.env.TARO_ENV ,'=======process.env.TARO_ENV ' );
-    console.log(Taro.getEnv() ,'======= Taro.getEnv() ' );
-    console.log(process.env.APP_HOME_PAGE);
+    console.log(process.env.TARO_ENV, '=======process.env.TARO_ENV ')
+    console.log(Taro.getEnv(), '======= Taro.getEnv() ')
+    console.log(process.env.APP_HOME_PAGE)
     if (process.env.TARO_ENV === 'h5' && Taro.getEnv() !== 'SAPP') {
       // eslint-disable-next-line
       Taro.showToast({
@@ -106,7 +106,7 @@ export default class SettingIndex extends Component {
     // }
   }
 
-  async handleCancelMenber() {
+  async handleCancelMenber () {
     req.delete('/member', { is_delete: '0' }).then((res) => {
       if (!res.status) {
         this.setState({
@@ -129,7 +129,7 @@ export default class SettingIndex extends Component {
     this.setState({ visible: false })
   }
 
-  render() {
+  render () {
     const { visible, content, title, confirmBtnContent } = this.state
     const { colors } = this.props
     return (
@@ -144,15 +144,15 @@ export default class SettingIndex extends Component {
           ></SpCell>
           {S.getAuthToken() && (
             <View className='btn'>
-              {
-                isWeb &&  <Button
-                className='button'
-                style={`color: ${colors.data[0].primary}; border: 1px solid ${colors.data[0].primary}`}
-                onClick={this.handleClickLogout}
-              >
-                退出登录
-              </Button>
-              }
+              {isWeb && (
+                <Button
+                  className='button'
+                  style={`color: ${colors.data[0].primary}; border: 1px solid ${colors.data[0].primary}`}
+                  onClick={this.handleClickLogout}
+                >
+                  退出登录
+                </Button>
+              )}
 
               <Button
                 className='button'

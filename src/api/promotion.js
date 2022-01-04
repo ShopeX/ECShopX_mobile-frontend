@@ -17,4 +17,3 @@ export function getScreenAd (params = {}) {
 export function logQrcode (params) {
   return req.post('/promoter/qrcode/log', params)
 }
-

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
 
@@ -13,14 +13,14 @@ export default class SpCell extends Component {
     title: '',
     arrow: 'right',
     onClick: () => {},
-    commonStyle:''
+    commonStyle: ''
   }
 
   static options = {
     addGlobalClass: true
   }
 
-  render() {
+  render () {
     const {
       isLink,
       value,
@@ -46,7 +46,7 @@ export default class SpCell extends Component {
         className={classNames('sp-cell', className, {
           'sp-cell__is-link': isLink,
           'sp-cell__no-border': !border,
-          'commonStyle':commonStyle
+          'commonStyle': commonStyle
         })}
         onClick={onClick}
       >

@@ -1,54 +1,51 @@
-import Taro from "@tarojs/taro";
-import { View, Image, Text } from "@tarojs/components";
+import Taro from '@tarojs/taro'
+import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 
-import "./comp-shopitem.scss";
+import './comp-shopitem.scss'
 
+function CompShopItem (props) {
+  const { info } = props
 
-function CompShopItem( props ) {
-  const { info } = props;
+  const handleClick = () => {}
 
-  const handleClick = () => {
-    
-  }
-
-  if ( !info ) {
+  if (!info) {
     return null
   }
-  
+
   return (
-    <View className="comp-shopitem" onClick={handleClick}>
-      <View className="shopitem-hd">
+    <View className='comp-shopitem' onClick={handleClick}>
+      <View className='shopitem-hd'>
         <Image className='shop-image' src={info.logo}></Image>
       </View>
-      <View className="shopitem-bd">
-        <View className="shop-info">
-          <View className="name">{info.name}</View>
-          <View className="distance">{info.distance || "100km"}</View>
+      <View className='shopitem-bd'>
+        <View className='shop-info'>
+          <View className='name'>{info.name}</View>
+          <View className='distance'>{info.distance || '100km'}</View>
         </View>
-        <View className="business-hours">
-          <Text className="iconfont icon-clock1" />
+        <View className='business-hours'>
+          <Text className='iconfont icon-clock1' />
           <Text>{info.hour}</Text>
         </View>
-        <View className="shop-address">
-          <Text className="iconfont icon-dizhiguanli-01" />
+        <View className='shop-address'>
+          <Text className='iconfont icon-dizhiguanli-01' />
           <Text>{info.address}</Text>
         </View>
 
-        <View className="shop-tag">
+        <View className='shop-tag'>
           {info.tagList.map((item) => (
-            <View className="tag" key={item.tag_id}>
+            <View className='tag' key={item.tag_id}>
               {item.tag_name}
             </View>
           ))}
         </View>
       </View>
     </View>
-  );
+  )
 }
 
 CompShopItem.options = {
   addGlobalClass: true
 }
 
-export default CompShopItem;
+export default CompShopItem

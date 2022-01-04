@@ -51,23 +51,23 @@ import SpToast from './toast'
 import SpScrollView from './sp-scrollview'
 import SpLoading from './sp-loading'
 import SpFilterBar from './sp-filter-bar'
-import SpShopItem from "./sp-shop-item"
+import SpShopItem from './sp-shop-item'
 import SpShopCoupon from './sp-shop-coupon'
-import SpFilterDrawer from "./sp-filter-drawer";
-import SpButton from "./sp-button";
+import SpFilterDrawer from './sp-filter-drawer'
+import SpButton from './sp-button'
 import SpFloatPrivacy from './sp-float-privacy'
 import SpTagBar from './sp-tag-bar'
 import SpDrawer from './sp-drawer'
 import SpSelect from './sp-select'
 import SpShopFullReduction from './sp-shop-fullReduction'
-import SpCellCoupon from "./sp-cell-coupon";
+import SpCellCoupon from './sp-cell-coupon'
 import SpNewShopItem from './sp-new-shop-item'
 import SpNewPrice from './sp-new-price'
 import SpNewCoupon from './sp-new-coupon'
 import SpScreenAd from './sp-screen-ad'
-import SpFloatMenus from "./sp-float-menus";
-import SpFloatMenuItem from "./sp-float-menu-item";
-import SpFloatAd from "./sp-float-ad";
+import SpFloatMenus from './sp-float-menus'
+import SpFloatMenuItem from './sp-float-menu-item'
+import SpFloatAd from './sp-float-ad'
 import SpCouponPackage from './sp-coupon-package'
 
 export default {}
@@ -143,5 +143,5 @@ export {
   SpFloatMenus,
   SpFloatMenuItem,
   SpFloatAd,
-  SpCouponPackage,
-};
+  SpCouponPackage
+}

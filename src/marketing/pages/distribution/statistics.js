@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Navigator } from '@tarojs/components'
 import api from '@/api'
 import { SpNavBar } from '@/components'
@@ -7,18 +7,18 @@ import { pickBy } from '@/utils'
 import './statistics.scss'
 
 export default class DistributionStatistics extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       info: {}
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const res = await api.distribution.statistics()
     const info = pickBy(res, {
       payedRebate: 'payedRebate',
@@ -39,7 +39,7 @@ export default class DistributionStatistics extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info } = this.state
 
     return (

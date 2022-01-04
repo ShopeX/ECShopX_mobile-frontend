@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: "商品列表"
-};
+  navigationBarTitleText: '商品列表'
+}

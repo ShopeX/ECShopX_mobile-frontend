@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { Loading } from '@/components'
+import { Loading, SpButton, SpPage } from '@/components'
 import api from '@/api'
 import { withLogin } from '@/hocs'
 import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
 import { AtRate, AtTextarea, AtImagePicker } from 'taro-ui'
 import imgUploader from '@/utils/upload'
-import { SpButton,SpPage } from '@/components'
 
 import './rate.scss'
 
@@ -20,8 +19,8 @@ import './rate.scss'
 )
 @withLogin()
 export default class TradeRate extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -31,11 +30,11 @@ export default class TradeRate extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { id } = this.$instance.router.params
     const data = await api.trade.detail(id)
 
@@ -88,7 +87,7 @@ export default class TradeRate extends Component {
     })
   }
 
-  handleChange(index, value) {
+  handleChange (index, value) {
     const { goodsList } = this.state
     goodsList[index].star = value
     this.setState({
@@ -103,7 +102,7 @@ export default class TradeRate extends Component {
     })
   }
 
-  handleChangeComment(index, e) {
+  handleChangeComment (index, e) {
     const { goodsList } = this.state
     goodsList[index].content = e
     this.setState({
@@ -190,7 +189,7 @@ export default class TradeRate extends Component {
   }
 
   // TODO: 确认原有功能
-  render() {
+  render () {
     const { goodsList } = this.state
 
     const { colors } = this.props
@@ -201,67 +200,66 @@ export default class TradeRate extends Component {
 
     return (
       <SpPage>
-              <View className='trade-rate'>
-        <View className='rate-list'>
-          {goodsList.map((item, idx) => {
-            return (
-              <View className='rate-item' key={item.item_id}>
-                <View className='goods-item'>
-                  <View className='goods-item__hd'>
-                    <Image
-                      mode='aspectFill'
-                      className='goods-item__img'
-                      src={Array.isArray(item.pic_path) ? item.pic_path[0] : item.pic_path}
+        <View className='trade-rate'>
+          <View className='rate-list'>
+            {goodsList.map((item, idx) => {
+              return (
+                <View className='rate-item' key={item.item_id}>
+                  <View className='goods-item'>
+                    <View className='goods-item__hd'>
+                      <Image
+                        mode='aspectFill'
+                        className='goods-item__img'
+                        src={Array.isArray(item.pic_path) ? item.pic_path[0] : item.pic_path}
+                      />
+                    </View>
+                    <View className='goods-item__bd'>{item.title}</View>
+                  </View>
+                  <View className='rate-wrap'>
+                    <Text className='title'>商品评价</Text>
+                    <AtRate
+                      size='21'
+                      value={item.star}
+                      onChange={this.handleChange.bind(this, idx)}
                     />
+                    <Text className='rate-num'>{item.star ? item.star + '.0' : 0}分</Text>
                   </View>
-                  <View className='goods-item__bd'>{item.title}</View>
-                </View>
-                <View className='rate-wrap'>
-                  <Text className='title'>商品评价</Text>
-                  <AtRate
-                    size='21'
-                    value={item.star}
-                    onChange={this.handleChange.bind(this, idx)}
-                  />
-                  <Text className='rate-num'>{item.star ? item.star + '.0' : 0}分</Text>
-                </View>
 
-                <View className='comment-wrap'>
-                  <AtTextarea
-                    count={false}
-                    value={item.content}
-                    onChange={this.handleChangeComment.bind(this, idx)}
-                    maxLength={500}
-                    placeholderStyle='color: #a6a6a6;'
-                    placeholder='快分享您的使用新得吧～（请输入评价内容）'
-                  />
-                  <View className='upload-imgs'>
-                    <AtImagePicker
-                      multiple
-                      mode='aspectFill'
-                      count={6}
-                      length={4}
-                      files={item.pics}
-                      showAddBtn={item.pics.length !== 6}
-                      onChange={this.handleImageChange.bind(this, idx)}
-                    ></AtImagePicker>
+                  <View className='comment-wrap'>
+                    <AtTextarea
+                      count={false}
+                      value={item.content}
+                      onChange={this.handleChangeComment.bind(this, idx)}
+                      maxLength={500}
+                      placeholderStyle='color: #a6a6a6;'
+                      placeholder='快分享您的使用新得吧～（请输入评价内容）'
+                    />
+                    <View className='upload-imgs'>
+                      <AtImagePicker
+                        multiple
+                        mode='aspectFill'
+                        count={6}
+                        length={4}
+                        files={item.pics}
+                        showAddBtn={item.pics.length !== 6}
+                        onChange={this.handleImageChange.bind(this, idx)}
+                      ></AtImagePicker>
+                    </View>
                   </View>
                 </View>
-              </View>
-            )
-          })}
-        </View>
+              )
+            })}
+          </View>
 
-        <View className='submit-btn'>
-        <SpButton
-            resetText="匿名评价"
-            confirmText="立即评价"
-            onConfirm={this.handleClickSubmit.bind(this, false)}
-            onReset={this.handleClickSubmit.bind(this, true)}
-          ></SpButton>
+          <View className='submit-btn'>
+            <SpButton
+              resetText='匿名评价'
+              confirmText='立即评价'
+              onConfirm={this.handleClickSubmit.bind(this, false)}
+              onReset={this.handleClickSubmit.bind(this, true)}
+            ></SpButton>
+          </View>
         </View>
-        
-      </View>
       </SpPage>
     )
   }

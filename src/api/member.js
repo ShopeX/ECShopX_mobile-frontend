@@ -1,6 +1,5 @@
 import req from './req'
-import { platformTemplateName, transformPlatformUrl } from "@/utils/platform";
-
+import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
 
 export function memberInfo () {
   return req.get('/member')
@@ -11,8 +10,8 @@ export function setMemberInfo (params = {}) {
   return req.put('/member', params)
 }
 
-export function updateMemberInfo(params = {}) {
-  return req.put("/memberinfo", params);
+export function updateMemberInfo (params = {}) {
+  return req.put('/memberinfo', params)
 }
 
 // 更新会员手机号
@@ -24,12 +23,12 @@ export function pointDetail () {
   return req.get('/member.point.detail')
 }
 
-export function favsList( params = {} ) {
-  return req.get('/member/collect/item', params,null, { showError: false })
+export function favsList (params = {}) {
+  return req.get('/member/collect/item', params, null, { showError: false })
 }
 
-export function addFav( item_id, params ) {
-  return req.post(`/member/collect/item/${item_id}`,params)
+export function addFav (item_id, params) {
+  return req.post(`/member/collect/item/${item_id}`, params)
 }
 
 export function delFav (item_ids, params = {}) {
@@ -40,7 +39,6 @@ export function delFav (item_ids, params = {}) {
     is_empty
   })
 }
-
 
 export function memberAssets () {
   return req.get(`/member/statistical`)
@@ -73,8 +71,9 @@ export function userUsedCard (params = {}) {
 export function addressList (params) {
   return req.get('/member/addresslist', params)
 }
-export function crmAddressList (params = {}) {//获取crm地址
-  return req.post('/member/crmaddresslist',params)
+export function crmAddressList (params = {}) {
+  //获取crm地址
+  return req.post('/member/crmaddresslist', params)
 }
 
 export function addressCreate (params = {}) {
@@ -256,7 +255,7 @@ export function storeFav (id) {
 }
 
 export function storeFavDel (id) {
-  return req.delete('/member/collect/distribution', {distributor_id: id})
+  return req.delete('/member/collect/distribution', { distributor_id: id })
 }
 
 export function storeFavList () {
@@ -268,7 +267,7 @@ export function storeFavCount (params = {}) {
 }
 
 export function storeIsFav (id) {
-  return req.get('/member/collect/distribution/check', {distributor_id: id})
+  return req.get('/member/collect/distribution/check', { distributor_id: id })
 }
 
 export function receiveVip () {
@@ -291,7 +290,7 @@ export function setComplaints (params = {}) {
 }
 
 // 获取导购投诉详情
-export function getComplaintsDetail (id,params = {}) {
+export function getComplaintsDetail (id, params = {}) {
   return req.get(`/salesperson/complaintsDetail/${id}`, params)
 }
 
@@ -309,7 +308,6 @@ export function setUsersalespersonrel (params = {}) {
 export function getPointList (params = {}) {
   return req.get('/member/pointLogList', params)
 }
-
 
 //
 export function getSalespersonNologin (params = {}) {
@@ -337,13 +335,12 @@ export function hfpayBankInfo (params = {}) {
   return req.get('/hfpay/bankinfo', params)
 }
 // 获取获取支付方式
-export function getTradePaymentList(params = {}) {
+export function getTradePaymentList (params = {}) {
   return req.get('/trade/payment/list', params)
 }
 export function getIsHf (params = {}) {
   return req.get('/trade/payment/hfpayversionstatus', params)
 }
-
 
 //获取是否开启获取crm地址
 export function getCrmsetting () {
@@ -353,7 +350,7 @@ export function getCrmsetting () {
 // 配置地址
 export function getSettingCenter () {
   return req.get(transformPlatformUrl('/alipay/pageparams/setting'), {
-    template_name:platformTemplateName,
+    template_name: platformTemplateName,
     version: 'v1.0.1',
     page_name: 'member_center_menu_setting'
   })

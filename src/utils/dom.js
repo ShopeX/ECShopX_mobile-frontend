@@ -46,9 +46,13 @@ export function toggleTouchMove (el, state = false) {
       // el = Nerv.findDOMNode(el)
     }
     if (!state) {
-      el.addEventListener('touchmove', (e) => {
-        e.preventDefault()
-      }, { passive: false })
+      el.addEventListener(
+        'touchmove',
+        (e) => {
+          e.preventDefault()
+        },
+        { passive: false }
+      )
     } else {
       el.removeEventListener('touchmove')
     }

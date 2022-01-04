@@ -8,22 +8,22 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-11-17 16:08:22
  */
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { WebView } from '@tarojs/components'
 
 export default class MeiQia extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
   }
 
-  componentDidMount() {}
+  componentDidMount () {}
 
   handleClose = () => {
     Taro.navigateBack()
   }
 
-  render() {
+  render () {
     const echat = Taro.getStorageSync('echat')
 
     return echat && echat.echat_url && <WebView src={echat.echat_url}></WebView>

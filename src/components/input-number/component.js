@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component } from 'react'
 
 const objectToString = (style) => {
   if (style && typeof style === 'object') {
@@ -25,7 +25,7 @@ export default class AtComponent extends Component {
    * @param {Object|String} style2
    * @returns {String}
    */
-  mergeStyle(style1, style2) {
+  mergeStyle (style1, style2) {
     if (style1 && typeof style1 === 'object' && style2 && typeof style2 === 'object') {
       return Object.assign({}, style1, style2)
     }

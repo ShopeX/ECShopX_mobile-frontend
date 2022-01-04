@@ -1,8 +1,7 @@
-import { useMemo } from 'react';
-import Taro, { getCurrentInstance } from "@tarojs/taro";
+import { useMemo } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 
-
-export function setPageTitle( title ) {
+export function setPageTitle (title) {
   Taro.eventCenter.trigger('set-pagetitle', title)
   // document.title = title;
   // var mobile = navigator.userAgent.toLowerCase();
@@ -23,64 +22,64 @@ export function setPageTitle( title ) {
   // }
 }
 
-export const platformTemplateName = "yykweishop";
+export const platformTemplateName = 'yykweishop'
 
-export const payment_platform = "h5";
+export const payment_platform = 'h5'
 
-export const transformPlatformUrl = url => {
-  return url;
-};
+export const transformPlatformUrl = (url) => {
+  return url
+}
 
 // 授权页面
 export const goToAuthPage = () => {
-  const $instance = useMemo(getCurrentInstance, []);
-  const router = $instance.router;
-  const { path } = router;
+  const $instance = useMemo(getCurrentInstance, [])
+  const router = $instance.router
+  const { path } = router
   Taro.navigateTo({
     url: `/pages/auth/login?redirect=`
-  });
-};
+  })
+}
 
 class CreateIntersectionObserver {
-  constructor(options) {
-    this.options = options;
-    this["on-observer"] = () => {};
-    this.init();
+  constructor (options) {
+    this.options = options
+    this['on-observer'] = () => {}
+    this.init()
   }
 
-  init() {
-    const { el } = this.options;
+  init () {
+    const { el } = this.options
     if (!el) {
-      throw new Error("createIntersectionObserver options el is null");
+      throw new Error('createIntersectionObserver options el is null')
     }
     this.observer = new IntersectionObserver(
-      res => {
-        const { isIntersecting } = res[0];
+      (res) => {
+        const { isIntersecting } = res[0]
         if (isIntersecting) {
-          this["on-observer"]();
+          this['on-observer']()
         }
       },
       {
         // root: document.querySelector(".home-wgts"),
         // threshold: [0, 0.8]
       }
-    );
-    this.observer.observe(document.querySelector(el));
-    return this;
+    )
+    this.observer.observe(document.querySelector(el))
+    return this
   }
 
-  on(event, fn) {
-    this[event] = fn;
+  on (event, fn) {
+    this[event] = fn
   }
 }
 
-export { CreateIntersectionObserver };
+export { CreateIntersectionObserver }
 
-export const createIntersectionObserver = el => {
+export const createIntersectionObserver = (el) => {
   return new Promise((reslove, reject) => {
     const observer = new IntersectionObserver(
-      res => {
-        const { isIntersecting } = res[0];
+      (res) => {
+        const { isIntersecting } = res[0]
         if (isIntersecting) {
         }
       },
@@ -88,8 +87,8 @@ export const createIntersectionObserver = el => {
         // root: document.querySelector(".home-wgts"),
         // threshold: [0, 0.8]
       }
-    );
-    observer.observe(document.querySelector(el));
-    this.observe = observer;
-  });
-};
+    )
+    observer.observe(document.querySelector(el))
+    this.observe = observer
+  })
+}

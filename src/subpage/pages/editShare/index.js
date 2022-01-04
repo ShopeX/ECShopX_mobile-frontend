@@ -1,19 +1,10 @@
-/*
- * @Author: PrendsMoi
- * @GitHub: https://github.com/PrendsMoi
- * @Blog: https://liuhgxu.com
- * @Description: 编辑分享
- * @FilePath: /unite-vshop/src/subpage/pages/editShare/index.js
- * @Date: 2021-04-14 15:06:18
- * @LastEditors: PrendsMoi
- * @LastEditTime: 2021-04-23 13:55:44
- */
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { Textarea, View, Image, Canvas, Button } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
 import api from '@/api'
 import req from '@/api/req'
+import { getAppId } from '@/utils'
 import { connect } from 'react-redux'
 
 import './index.scss'
@@ -39,8 +30,8 @@ const steps = [
   colors: colors.current
 }))
 export default class EditShare extends Component {
-  $instance = getCurrentInstance();
-  constructor(...props) {
+  $instance = getCurrentInstance()
+  constructor (...props) {
     super(...props)
 
     this.state = {
@@ -56,12 +47,12 @@ export default class EditShare extends Component {
     this.goodInfo = {}
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getShareSettingInfo()
   }
 
   // 获取分享信息
-  async getShareSettingInfo() {
+  async getShareSettingInfo () {
     Taro.showLoading()
     const { id, dtid, company_id } = this.$instance.router.params
     const data = await api.item.getShareSetting(id)
@@ -82,12 +73,9 @@ export default class EditShare extends Component {
 
     const { userId } = Taro.getStorageSync('userinfo')
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
-    const extConfig =
-      Taro.getEnv() === 'WEAPP' && Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
 
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${
-      extConfig.appid
-    }&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
+    const { appid } = getAppId()
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
 
     this.goodInfo = data
     this.setState(
@@ -245,7 +233,7 @@ export default class EditShare extends Component {
     Taro.navigateBack()
   }
 
-  render() {
+  render () {
     const { insertData, info, selectPics, showPoster, showSuccess } = this.state
     const { colors } = this.props
 
@@ -264,8 +252,9 @@ export default class EditShare extends Component {
             <View className='insertData'>
               {insertData.map((item, index) => (
                 <View
-                  className={`item ${info.indexOf(`${item.name}: ${item.value}\n`) !== -1 &&
-                    'disabled'}`}
+                  className={`item ${
+                    info.indexOf(`${item.name}: ${item.value}\n`) !== -1 && 'disabled'
+                  }`}
                   key={`goodInfo${index}`}
                   onClick={this.insertInfo.bind(this, item)}
                 >

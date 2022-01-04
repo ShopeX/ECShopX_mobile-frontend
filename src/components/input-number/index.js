@@ -1,5 +1,5 @@
-import React from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Input, Text } from '@tarojs/components'
 import classNames from 'classnames'
 import _toString from 'lodash/toString'
@@ -7,7 +7,7 @@ import _toString from 'lodash/toString'
 import AtComponent from './component'
 
 // 实现两数相加并保留小数点后最短尾数
-function addNum(num1, num2) {
+function addNum (num1, num2) {
   let sq1, sq2
   try {
     sq1 = _toString(num1).split('.')[1].length
@@ -24,7 +24,7 @@ function addNum(num1, num2) {
 }
 
 // 格式化数字，处理01变成1,并且不处理1. 这种情况
-function parseValue(num) {
+function parseValue (num) {
   if (num === '') return '0'
 
   const numStr = _toString(num)
@@ -36,7 +36,7 @@ function parseValue(num) {
 }
 
 class AtInputNumber extends AtComponent {
-  handleClick(clickType) {
+  handleClick (clickType) {
     const { disabled, value, min, max, step } = this.props
     const lowThanMin = clickType === 'minus' && value <= min
     const overThanMax = clickType === 'plus' && value >= max
@@ -103,7 +103,7 @@ class AtInputNumber extends AtComponent {
     this.props.onErrorInput(errorValue)
   }
 
-  render() {
+  render () {
     const { customStyle, className, width, disabled, value, type, min, max, size } = this.props
 
     const inputStyle = {

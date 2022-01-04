@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View } from '@tarojs/components'
 import './headline.scss'
 
@@ -11,11 +11,11 @@ export default class WgtHeadline extends Component {
     info: null
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {}
   }
-  render() {
+  render () {
     const { info } = this.props
     if (!info) {
       return null

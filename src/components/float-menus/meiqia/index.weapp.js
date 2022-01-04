@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 // import { Tracker } from '@/service'
 import api from '@/api'
@@ -16,7 +16,7 @@ export default class Meiqia extends Component {
     addGlobalClass: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -27,7 +27,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     const meiqia = Taro.getStorageSync('meiqia') || {}
     if (meiqia.is_open === 'true') {
       this.meiQiaInt()
@@ -80,7 +80,7 @@ export default class Meiqia extends Component {
       Tracker.dispatch('START_CONSULT', { type: 'meiqia' })
       Taro.navigateTo({
         url: '/others/pages/meiqia/index',
-        success: function(res) {
+        success: function (res) {
           // 通过eventChannel向被打开页面传送数据
           res.eventChannel.emit('acceptDataFromOpenerPage', {
             id: meiqia_id,
@@ -99,7 +99,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  render() {
+  render () {
     const { isFloat } = this.props
     const { meiqia_id } = this.state
     const echat = Taro.getStorageSync('echat')

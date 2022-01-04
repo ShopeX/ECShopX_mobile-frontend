@@ -1,18 +1,18 @@
 import Taro, { Component } from '@tarojs/taro'
 import { isWeixin } from '@/utils'
 
-export default function withLoadMore(Component) {
+export default function withLoadMore (Component) {
   return class WithLoadMoreComponent extends Component {
-    constructor(props) {
+    constructor (props) {
       super(props)
     }
 
-    componentDidMount() {
+    componentDidMount () {
       if (isWeixin) this.startWrapperTrack()
       this.setTimer && this.setTimer()
     }
 
-    startWrapperTrack() {
+    startWrapperTrack () {
       this.endWrapperTrack()
       const observer = Taro.createIntersectionObserver({
         selectAll: true
@@ -57,7 +57,7 @@ export default function withLoadMore(Component) {
     //   this.wrapperobserver = observer
     // }
 
-    endWrapperTrack() {
+    endWrapperTrack () {
       if (this.wrapperobserver) {
         this.wrapperobserver.disconnect()
         this.wrapperobserver = null

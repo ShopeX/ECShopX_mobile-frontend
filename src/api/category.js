@@ -1,5 +1,5 @@
 import req from './req'
-import { transformPlatformUrl } from "@/utils/platform";
+import { transformPlatformUrl } from '@/utils/platform'
 
 export function get (params) {
   return req.get('/goods/category', params)

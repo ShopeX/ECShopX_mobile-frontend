@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtModal, AtButton } from 'taro-ui'
 import { Loading, SpHtmlContent } from '@/components'
@@ -8,7 +8,7 @@ import api from '@/api'
 import './index.scss'
 
 export default class MarketingIndex extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       info: null,
@@ -24,7 +24,7 @@ export default class MarketingIndex extends Component {
     }
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.fetch()
     this.getLoginaddtimes()
 
@@ -36,14 +36,14 @@ export default class MarketingIndex extends Component {
     this.aniData = aniData //将动画对象赋值给this的aniData属性
   }
 
-  componentDidHide() {
+  componentDidHide () {
     // clearInterval(this.timerID)
   }
 
   /**
    * 登陆赠送抽奖次数
    * */
-  async getLoginaddtimes() {
+  async getLoginaddtimes () {
     try {
       const data = await api.wheel.getLoginaddtimes()
       this.setState({
@@ -57,7 +57,7 @@ export default class MarketingIndex extends Component {
   /**
    * 获取
    * */
-  async fetch() {
+  async fetch () {
     const data = await api.wheel.getTurntableconfig()
 
     let rotateBg = 360 / data.prizes.length / 2
@@ -85,7 +85,7 @@ export default class MarketingIndex extends Component {
   /**
    * 抽奖
    * */
-  async handleClickLotteryDraw() {
+  async handleClickLotteryDraw () {
     if (this.rollState) return
     this.rollState = true
     let { info, num } = this.state
@@ -136,7 +136,7 @@ export default class MarketingIndex extends Component {
   /**
    * 领取奖品
    * */
-  handleClickGetPrize() {
+  handleClickGetPrize () {
     let { prizeData } = this.state
 
     if (prizeData.prize_type === 'coupon' && prizeData.prize_url) {
@@ -154,7 +154,7 @@ export default class MarketingIndex extends Component {
     })
   }
 
-  render() {
+  render () {
     let {
       info,
       rotateBg,

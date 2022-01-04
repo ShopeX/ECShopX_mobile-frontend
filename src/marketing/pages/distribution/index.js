@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Navigator, Button, Canvas } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { SpNavBar, Loading,SpPage } from '@/components'
+import { SpNavBar, Loading, SpPage } from '@/components'
 import api from '@/api'
 import { pickBy, canvasExp } from '@/utils'
 import { getDtidIdUrl } from '@/utils/helper'
@@ -15,7 +15,7 @@ import './index.scss'
   colors: colors.current
 }))
 export default class DistributionDashboard extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       info: null,
@@ -25,7 +25,7 @@ export default class DistributionDashboard extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -34,7 +34,7 @@ export default class DistributionDashboard extends Component {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const resUser = Taro.getStorageSync('userinfo')
     const { username, avatar } = resUser
 
@@ -73,7 +73,7 @@ export default class DistributionDashboard extends Component {
     this.setState({ info })
   }
 
-  handleOpenApply() {
+  handleOpenApply () {
     Taro.showModal({
       title: '申请开店',
       content: '是否申请开启小店推广',
@@ -94,8 +94,10 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  onShareAppMessage() {
-    const extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+  onShareAppMessage () {
+    const extConfig = wx.getExtConfigSync
+      ? wx.getExtConfigSync()
+      : { wxa_name: process.env.APP_MAP_NAME }
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
     return {
@@ -138,25 +140,30 @@ export default class DistributionDashboard extends Component {
       Taro.setStorageSync('userinfo', userObj)
       userinfo = userObj
     }
-    const extConfig = Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync ? wx.getExtConfigSync() : {}
+    const extConfig =
+      Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync
+        ? wx.getExtConfigSync()
+        : {
+            appid: process.env.APP_ID,
+            company_id: process.env.APP_COMPANY_ID
+          }
 
     shop_status = JSON.parse(shop_status === 1)
     const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
     const wxappCode = `${req.baseURL}promoter/qrcode.png?path=${url}&appid=${extConfig.appid}&company_id=${extConfig.company_id}&user_id=${userId}`
     let avatarImg
-    console.log('wxappCode==',wxappCode)
-    console.log('avatar==',avatar)
+    console.log('wxappCode==', wxappCode)
+    console.log('avatar==', avatar)
     if (avatar) {
       // 头像
       avatarImg = await Taro.getImageInfo({ src: avatar })
     }
-    console.log('avatarImg==',avatarImg)
+    console.log('avatarImg==', avatarImg)
     const bck = await Taro.getImageInfo({
-      src:
-        'https://b-img-cdn.yuanyuanke.cn/image/21/2021/10/21/9c8cbb5f6b6a346641fe151b5e1604118H6zDVOajmkASVYKgPePOYXIeFpc55Ta'
+      src: 'https://b-img-cdn.yuanyuanke.cn/image/21/2021/10/21/9c8cbb5f6b6a346641fe151b5e1604118H6zDVOajmkASVYKgPePOYXIeFpc55Ta'
     }) // 背景图片
     const codeImg = await Taro.getImageInfo({ src: wxappCode }) // 二维码
-    console.log('codeImg==',codeImg)
+    console.log('codeImg==', codeImg)
     if (avatarImg) {
       const posterImgs = {
         avatar: avatarImg ? avatarImg.path : null,
@@ -275,7 +282,7 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { info, showPoster, poster } = this.state
     console.log(info)
@@ -407,8 +414,9 @@ export default class DistributionDashboard extends Component {
           <Navigator
             className='list-item'
             // open-type='navigateTo'
-            url={`/marketing/pages/distribution/goods?status=${info.isOpenShop &&
-              info.shop_status === 1}`}
+            url={`/marketing/pages/distribution/goods?status=${
+              info.isOpenShop && info.shop_status === 1
+            }`}
           >
             <View className='iconfont icon-weChat icon-fontsize'></View>
             <View className='list-item-txt'>推广商品</View>
@@ -460,7 +468,7 @@ export default class DistributionDashboard extends Component {
           </View>
         )}
         <Canvas className='canvas' canvas-id='myCanvas'></Canvas>
-      </SpPage>  
+      </SpPage>
     )
   }
 }

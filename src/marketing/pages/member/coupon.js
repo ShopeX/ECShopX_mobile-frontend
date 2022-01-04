@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text, Image } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar, CouponItem } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import { withPager } from '@/hocs'
-import { pickBy, classNames, isNavbar,JumpStoreIndex, hasNavbar } from '@/utils'
+import { pickBy, classNames, isNavbar, JumpStoreIndex, hasNavbar } from '@/utils'
 
 import './coupon.scss'
 
@@ -15,7 +15,7 @@ import './coupon.scss'
 }))
 @withPager
 export default class Coupon extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -24,21 +24,21 @@ export default class Coupon extends Component {
       tabList: [
         { title: '全部', status: '1', type: '' },
         { title: '满减券', status: '1', type: 'cash' },
-        { title: '折扣券', status: '1', type: 'discount' },
+        { title: '折扣券', status: '1', type: 'discount' }
         // { title: '兑换券', status: '1', type: 'new_gift' }
       ],
       list: [],
       curId: null
     }
-  } 
+  }
 
-  componentDidShow() { 
+  componentDidShow () {
     this.nextPage()
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
-    const { curTabIdx, tabList } = this.state 
+    const { curTabIdx, tabList } = this.state
     const status = tabList[curTabIdx].status
     const card_type = tabList[curTabIdx].type
     params = {
@@ -47,7 +47,7 @@ export default class Coupon extends Component {
       page,
       pageSize,
       card_type,
-      scope_type:'all'
+      scope_type: 'all'
     }
 
     delete params.page_no
@@ -70,9 +70,9 @@ export default class Coupon extends Component {
       use_condition: 'use_condition',
       description: 'description',
       use_bound: 'use_bound',
-      source_type:'source_type',
-      source_id:'source_id',
-      distributor_info:"distributor_info"
+      source_type: 'source_type',
+      source_id: 'source_id',
+      distributor_info: 'distributor_info'
     })
 
     this.setState({
@@ -83,7 +83,7 @@ export default class Coupon extends Component {
   }
 
   handleClickTab = (idx) => {
-    console.log("====handleClickTab===>",idx, this.state.curTabIdx)
+    console.log('====handleClickTab===>', idx, this.state.curTabIdx)
     if (this.state.page.isLoading) return
 
     if (idx !== this.state.curTabIdx) {
@@ -97,7 +97,7 @@ export default class Coupon extends Component {
       {
         curTabIdx: idx
       },
-      () => { 
+      () => {
         this.nextPage()
       }
     )
@@ -106,23 +106,23 @@ export default class Coupon extends Component {
   handleClick = (item) => {
     let time = parseInt(new Date().getTime() / 1000)
     let begin_date = new Date(item.begin_date) / 1000
-    const { card_id, code, card_type, status, tagClass, id,source_type,source_id } = item
-    console.log("===item===",item)
-    
+    const { card_id, code, card_type, status, tagClass, id, source_type, source_id } = item
+    console.log('===item===', item)
+
     if (status === '2' || tagClass === 'overdue' || tagClass == 'notstarted' || time < begin_date) {
       return false
     }
 
-    let distributor_id=0;
+    let distributor_id = 0
 
     //如果有admin或者没有值则跳转到首页，否则跳转到对应店铺
-    if(source_type==='distributor'){
-      if(source_id>0){
-        distributor_id=source_id;
+    if (source_type === 'distributor') {
+      if (source_id > 0) {
+        distributor_id = source_id
       }
     }
 
-    return JumpStoreIndex({distributor_id}) 
+    return JumpStoreIndex({ distributor_id })
   }
 
   handleCouponClick = () => {
@@ -143,7 +143,7 @@ export default class Coupon extends Component {
     })
   }*/
 
-  render() {
+  render () {
     const { curTabIdx, tabList, list, page, scrollTop } = this.state
     const { colors } = this.props
 
@@ -155,7 +155,9 @@ export default class Coupon extends Component {
       >
         <SpNavBar title='优惠券列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
-          className={`coupon-list__tabs ${hasNavbar && 'navbar_padtop'} ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
+          className={`coupon-list__tabs ${hasNavbar && 'navbar_padtop'} ${
+            colors.data[0].primary ? 'customTabsStyle' : ''
+          }`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
@@ -163,8 +165,7 @@ export default class Coupon extends Component {
             color: colors.data[0].primary
             // backgroundColor: colors.data[0].primary
           }}
-        >
-        </AtTabs>
+        ></AtTabs>
 
         <ScrollView
           scrollY

@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { SpCheckbox } from '@/components'
 import req from '@/api/req'
-import configStore from "@/store";
+import configStore from '@/store'
 import DestoryConfirm from './comps/destory-comfirm-modal'
 import './destroy-member.scss'
 
-const store = configStore();
+const store = configStore()
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 export default class SettingIndex extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
     this.state = {
       checked: false,
@@ -52,11 +52,11 @@ export default class SettingIndex extends Component {
       // 确认注销账号
       req.delete('/member', { is_delete: '1' }).then((res) => {
         if (res.status) {
-          Taro.removeStorageSync("token");
-          Taro.removeStorageSync( "policy_updatetime" );
+          Taro.removeStorageSync('token')
+          Taro.removeStorageSync('policy_updatetime')
           store.dispatch({
-            type: "user/clearUserInfo",
-          });
+            type: 'user/clearUserInfo'
+          })
           Taro.reLaunch({
             url: '/pages/index'
           })
@@ -66,7 +66,7 @@ export default class SettingIndex extends Component {
     this.setState({ visible: false })
   }
 
-  render() {
+  render () {
     const { checked, visible, content, title, cancelBtnContent, confirmBtnContent } = this.state
     const { colors } = this.props
     return (
@@ -115,6 +115,6 @@ export default class SettingIndex extends Component {
           onCancel={this.handCancel}
         />
       </View>
-    );
+    )
   }
 }

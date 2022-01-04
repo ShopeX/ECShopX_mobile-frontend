@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import api from '@/api'
 
@@ -26,7 +26,7 @@ export default class StoreFavItem extends Component {
     }
   }
 
-  render() {
+  render () {
     const { info, onClick } = this.props
 
     return (

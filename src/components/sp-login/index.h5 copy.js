@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtButton } from 'taro-ui'
@@ -16,32 +16,32 @@ import './index.scss'
   })
 )
 export default class SpLogin extends Component {
-  $instance = getCurrentInstance();
+  $instance = getCurrentInstance()
   static options = {
     addGlobalClass: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       token: S.getAuthToken()
     }
   }
 
-  componentDidMount() {}
+  componentDidMount () {}
 
-  handleOnChange() {
+  handleOnChange () {
     this.props.onChange && this.props.onChange()
   }
 
-  handleOAuthLogin() {
+  handleOAuthLogin () {
     const { path } = this.$instance.router
     Taro.navigateTo({
       url: `/subpage/pages/auth/login?redirect=${encodeURIComponent(path)}`
     })
   }
 
-  render() {
+  render () {
     const { token } = this.state
     return (
       <View className={classNames('sp-login', this.props.className)}>

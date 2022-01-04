@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { SpCell } from '@/components'
 import api from '@/api'
@@ -7,7 +7,7 @@ import api from '@/api'
 import './shop-setting.scss'
 
 export default class DistributionShopSetting extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -15,11 +15,11 @@ export default class DistributionShopSetting extends Component {
     }
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const res = await api.distribution.info()
     const { shop_name, brief, shop_pic } = res
 
@@ -40,7 +40,7 @@ export default class DistributionShopSetting extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info } = this.state
 
     return (

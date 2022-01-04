@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
 import './index.scss'
@@ -14,7 +14,7 @@ export default class Loading extends Component {
     size: null
   }
 
-  render() {
+  render () {
     const { className, type, img, size } = this.props
 
     return (

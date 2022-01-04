@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { SpToast, SpTimer, SpNavBar } from '@/components'
@@ -9,7 +9,7 @@ import api from '@/api'
 import './forgotpwd.scss'
 
 export default class Forgotpwd extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -20,7 +20,7 @@ export default class Forgotpwd extends Component {
       imgInfo: {}
     }
   }
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
@@ -38,7 +38,7 @@ export default class Forgotpwd extends Component {
     }
   }
 
-  async fetch() {
+  async fetch () {
     this.handleClickImgcode()
     this.count = 0
   }
@@ -144,7 +144,7 @@ export default class Forgotpwd extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info, timerMsg, isVisible, imgVisible, imgInfo } = this.state
 
     return (

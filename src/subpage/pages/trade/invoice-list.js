@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import _mapKeys from 'lodash/mapKeys'
 import { Loading, SpNote, SpNavBar } from '@/components'
@@ -13,7 +13,7 @@ import './invoice-list.scss'
 @withPager
 @withLogin()
 export default class InvoiceList extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -22,18 +22,18 @@ export default class InvoiceList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.nextPage()
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount () {}
 
-  async fetch(params) {
+  async fetch (params) {
     params = _mapKeys(
       {
         ...params
       },
-      function(val, key) {
+      function (val, key) {
         if (key === 'page_no') return 'page'
         if (key === 'page_size') return 'pageSize'
         return key
@@ -104,8 +104,7 @@ export default class InvoiceList extends Component {
         'writePhotosAlbum',
         async () => {
           const { tempFilePath } = await Taro.downloadFile({
-            url:
-              'http://mmbiz.qpic.cn/mmbiz_png/1nDJByqmW2drJSibeWL0bEib2rj4OxG6ep2Y8VggMzP2pSSHVGNW3eIEy9BUiaMfxD4MrWUQ2oVaNEZs4VfQg8tSw/0?wx_fmt=png'
+            url: 'http://mmbiz.qpic.cn/mmbiz_png/1nDJByqmW2drJSibeWL0bEib2rj4OxG6ep2Y8VggMzP2pSSHVGNW3eIEy9BUiaMfxD4MrWUQ2oVaNEZs4VfQg8tSw/0?wx_fmt=png'
           })
 
           try {
@@ -129,7 +128,7 @@ export default class InvoiceList extends Component {
     }
   }
 
-  render() {
+  render () {
     const { list, page } = this.state
 
     return (

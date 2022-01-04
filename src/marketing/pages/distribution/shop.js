@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Navigator, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import api from '@/api'
@@ -12,8 +12,8 @@ import './shop.scss'
   colors: colors.current
 }))
 export default class DistributionShop extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -21,11 +21,11 @@ export default class DistributionShop extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { turnover, point } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const param = {
@@ -60,7 +60,7 @@ export default class DistributionShop extends Component {
     })
   }
 
-  handleClick(key) {
+  handleClick (key) {
     const { userId } = Taro.getStorageSync('userinfo')
     let url = ''
     switch (key) {
@@ -84,7 +84,7 @@ export default class DistributionShop extends Component {
     })
   }
 
-  onShareAppMessage(res) {
+  onShareAppMessage (res) {
     const { username, userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
     return {
@@ -94,7 +94,7 @@ export default class DistributionShop extends Component {
     }
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { info } = this.state
 
@@ -102,7 +102,7 @@ export default class DistributionShop extends Component {
       <SpPage className='page-distribution-shop'>
         <View className='shop-banner' style={'background: ' + colors.data[0].marketing}>
           <View className='shop-info'>
-            <View className="img-content">
+            <View className='img-content'>
               <Image className='shopkeeper-avatar' src={info.headimgurl} mode='aspectFill' />
             </View>
             <View>
@@ -162,7 +162,7 @@ export default class DistributionShop extends Component {
             <View className='title'>预览小店</View>
           </View>
         </View>
-      </SpPage>  
+      </SpPage>
     )
   }
 }

@@ -1,106 +1,102 @@
-import React, { Component } from "react";
-import Taro, { getCurrentInstance } from "@tarojs/taro";
-import { View, Video, Text } from "@tarojs/components";
-import { linkPage, classNames } from "@/utils";
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { View, Video, Text } from '@tarojs/components'
+import { linkPage, classNames } from '@/utils'
 
-import "./film.scss";
+import './film.scss'
 
 export default class WgtFilm extends Component {
   static options = {
-    addGlobalClass: true,
-  };
-
-  static defaultProps = {
-    info: null,
-  };
-
-  state = {
-    screenWidth: null,
-  };
-
-  componentDidMount() {
-    const res = Taro.getSystemInfoSync();
-    this.setState({
-      screenWidth: res.screenWidth,
-    });
+    addGlobalClass: true
   }
 
-  handleClickItem = linkPage;
+  static defaultProps = {
+    info: null
+  }
 
-  resolveSize({ width, height, ratio: tRatio } = {}, screenWidth, base = {}) {
-    const aspectRatios = [16 / 9, 9 / 16, 4 / 3, 3 / 4, 1 / 1];
-    const { proportion = 0 } = base;
-    let ratio = aspectRatios[proportion];
+  state = {
+    screenWidth: null
+  }
 
-    let w = "100%",
-      h;
-    let objectFit = "contain";
-    const defaultHeight = Math.round(screenWidth / ratio);
+  componentDidMount () {
+    const res = Taro.getSystemInfoSync()
+    this.setState({
+      screenWidth: res.screenWidth
+    })
+  }
+
+  handleClickItem = linkPage
+
+  resolveSize ({ width, height, ratio: tRatio } = {}, screenWidth, base = {}) {
+    const aspectRatios = [16 / 9, 9 / 16, 4 / 3, 3 / 4, 1 / 1]
+    const { proportion = 0 } = base
+    let ratio = aspectRatios[proportion]
+
+    let w = '100%',
+      h
+    let objectFit = 'contain'
+    const defaultHeight = Math.round(screenWidth / ratio)
 
     if (width && height) {
-      ratio = width / height;
+      ratio = width / height
       if (ratio <= 10 / 16) {
-        h = defaultHeight;
+        h = defaultHeight
       } else {
-        objectFit = "cover";
-        h = Math.round(screenWidth / ratio);
+        objectFit = 'cover'
+        h = Math.round(screenWidth / ratio)
       }
     } else {
-      h = defaultHeight;
+      h = defaultHeight
     }
 
-    if (tRatio === "square") {
+    if (tRatio === 'square') {
       // 1:1
-      objectFit = "cover";
-      h = screenWidth;
-    } else if (tRatio === "rectangle") {
+      objectFit = 'cover'
+      h = screenWidth
+    } else if (tRatio === 'rectangle') {
       // 16:9
-      h = defaultHeight;
+      h = defaultHeight
     }
 
     return {
       width: w,
       height: `${h}px`,
-      objectFit,
-    };
+      objectFit
+    }
   }
 
-  render() {
-    const { info } = this.props;
-    const { screenWidth } = this.state;
+  render () {
+    const { info } = this.props
+    const { screenWidth } = this.state
 
     if (!info) {
-      return null;
+      return null
     }
 
-    const { config = {}, base, data } = info;
-    const { width, height, objectFit } = this.resolveSize(
-      config,
-      screenWidth,
-      base
-    );
+    const { config = {}, base, data } = info
+    const { width, height, objectFit } = this.resolveSize(config, screenWidth, base)
 
     return (
       <View
-        className={classNames("wgt wgt-film", {
-          wgt__padded: base.padded,
+        className={classNames('wgt wgt-film', {
+          wgt__padded: base.padded
         })}
       >
         {base.title && (
-          <View className="wgt-head">
-            <View className="wgt-hd">
-              <Text className="wgt-title">{base.title}</Text>
-              <Text className="wgt-subtitle">{base.subtitle}</Text>
+          <View className='wgt-head'>
+            <View className='wgt-hd'>
+              <Text className='wgt-title'>{base.title}</Text>
+              <Text className='wgt-subtitle'>{base.subtitle}</Text>
             </View>
           </View>
         )}
         <View
-          className={`slider-wrap ${config.padded ? "padded" : ""}`}
+          className={`slider-wrap ${config.padded ? 'padded' : ''}`}
           style={`width: ${width}; height: ${height}`}
         >
-          <Video className="flim-video" src={data[0].url} controls />
+          <Video className='flim-video' src={data[0].url} controls />
         </View>
       </View>
-    );
+    )
   }
 }

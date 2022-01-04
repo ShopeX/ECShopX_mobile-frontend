@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image } from '@tarojs/components'
 import { copyText } from '@/utils'
 import { AtCurtain } from 'taro-ui'
@@ -13,7 +13,7 @@ export default class RateItem extends Component {
     isOpened: false
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -22,11 +22,11 @@ export default class RateItem extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const res = await api.member.h5_qrcodeData()
     this.imgUrl = res.share_uir
     this.setState({
@@ -34,7 +34,7 @@ export default class RateItem extends Component {
     })
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps () {
     this.setState({
       isOpened: true
     })
@@ -51,7 +51,7 @@ export default class RateItem extends Component {
     S.toast('复制成功')
   }
 
-  render() {
+  render () {
     const { isOpened, qrCode } = this.state
 
     return (

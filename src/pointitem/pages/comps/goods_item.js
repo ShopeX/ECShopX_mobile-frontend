@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/pages/pointitem/comps/header.js
  */
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { SpImg, PointLine } from '@/components'
@@ -14,13 +14,13 @@ import { SpImg, PointLine } from '@/components'
 import './goods_item.scss'
 
 export default class GoodsItem extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {}
   }
 
-  render() {
+  render () {
     const { info = {}, onClick, isStoreOut } = this.props
 
     return (

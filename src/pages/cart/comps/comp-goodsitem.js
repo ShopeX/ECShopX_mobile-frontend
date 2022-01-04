@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 // import { AtInputNumber } from 'taro-ui'
 import { SpPrice, SpInputNumber } from '@/components'
@@ -7,7 +7,7 @@ import { isObject, classNames } from '@/utils'
 
 import './comp-goodsitem.scss'
 
-function CompGoodsItem(props) {
+function CompGoodsItem (props) {
   const {
     info,
     onDelete = () => {},
@@ -16,7 +16,7 @@ function CompGoodsItem(props) {
     isShowAddInput = true,
     children,
     isShowDeleteIcon = true,
-    activity = [],
+    activity = []
   } = props
   const onDeleteGoodsItem = () => {
     onDelete(info)
@@ -47,34 +47,34 @@ function CompGoodsItem(props) {
               {info.is_plus_buy && <Text className='goods-title__tag'>换购</Text>}
               {info.item_name}
             </View>
-            { isShowDeleteIcon && <Text className='iconfont icon-shanchu-01' onClick={onDeleteGoodsItem}></Text> }
+            {isShowDeleteIcon && (
+              <Text className='iconfont icon-shanchu-01' onClick={onDeleteGoodsItem}></Text>
+            )}
           </View>
-          { info.brief && <Text className='spec-brief'>{info.brief}</Text> }
-          {
-            info.item_spec_desc &&
+          {info.brief && <Text className='spec-brief'>{info.brief}</Text>}
+          {info.item_spec_desc && (
             <View className='item-bd'>
               <Text className='spec-desc'>{info.item_spec_desc}</Text>
             </View>
-          }
+          )}
 
           {/* {curPromotion && (
           )} */}
           <View className='goods-title__promotion'>
-            {info.promotions && info.promotions.map((item) => (
-              <View className='goods-title__tag'>
-                {item.promotion_tag}
-              </View>
-            ))}
+            {info.promotions &&
+              info.promotions.map((item) => (
+                <View className='goods-title__tag'>{item.promotion_tag}</View>
+              ))}
             {/* <View className='titles'>{item.marketing_name}</View> */}
           </View>
 
           <View className='item-ft'>
             <SpPrice value={info.price / 100} />
-            {
-              isShowAddInput ?
-              <SpInputNumber value={info.num} onChange={onChangeGoodsItem}/>
-              : <Text className='item-num'>x {info.num}</Text>
-            }
+            {isShowAddInput ? (
+              <SpInputNumber value={info.num} onChange={onChangeGoodsItem} />
+            ) : (
+              <Text className='item-num'>x {info.num}</Text>
+            )}
           </View>
         </View>
       </View>

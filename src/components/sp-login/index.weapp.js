@@ -4,27 +4,27 @@ import { View, Button } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
-import { isWeixin, isAlipay, classNames, showToast } from "@/utils";
+import { isWeixin, isAlipay, classNames, showToast } from '@/utils'
 import { SG_SHARER_UID, SG_TRACK_PARAMS } from '@/consts'
 import { Tracker } from '@/service'
 import { SpPrivacyModal } from '@/components'
 import { useLogin } from '@/hooks'
 import './index.scss'
 
-function SpLogin( props ) {
+function SpLogin (props) {
   const { children, className, onChange } = props
   const { isLogin, login, updatePolicyTime, setToken } = useLogin({
     policyUpdateHook: () => {
       setPolicyModal(true)
     }
   })
-  const [isNewUser, setIsNewUser ] = useState(false)
-  const [policyModal, setPolicyModal] = useState( false )
+  const [isNewUser, setIsNewUser] = useState(false)
+  const [policyModal, setPolicyModal] = useState(false)
 
   const handleClickLogin = async () => {
     try {
       await login()
-    } catch ( e ) {
+    } catch (e) {
       setIsNewUser(true)
     }
   }
@@ -60,28 +60,24 @@ function SpLogin( props ) {
     setPolicyModal(false)
   }, [])
 
-  const handleConfirmModal = useCallback( async () => {
+  const handleConfirmModal = useCallback(async () => {
     // 自动登录
     try {
       await login()
       onChange && onChange()
     } catch (e) {
-      console.log( e )
-      setIsNewUser(true);
+      console.log(e)
+      setIsNewUser(true)
     }
     setPolicyModal(false)
   }, [])
-  
+
   return (
     <View className={classNames('sp-login', className)}>
       {isLogin && <View onClick={handleOnChange}>{children}</View>}
 
       {!isLogin && isNewUser && (
-        <Button
-          className='login-btn'
-          openType='getPhoneNumber'
-          onGetPhoneNumber={handleBindPhone}
-        >
+        <Button className='login-btn' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
           {children}
         </Button>
       )}
@@ -92,7 +88,7 @@ function SpLogin( props ) {
         open={policyModal}
         onCancel={handleCloseModal}
         onConfirm={handleConfirmModal}
-      />                                                        
+      />
     </View>
   )
 }

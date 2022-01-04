@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
@@ -10,7 +10,7 @@ import './item-activity.scss'
 
 @withPager
 export default class ItemActivity extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -19,11 +19,11 @@ export default class ItemActivity extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.nextPage()
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     params = {
       page,
@@ -54,7 +54,7 @@ export default class ItemActivity extends Component {
     })
   }
 
-  render() {
+  render () {
     const { list, page } = this.state
 
     return (
@@ -99,7 +99,9 @@ export default class ItemActivity extends Component {
             })}
             {page.isLoading && <Loading>正在加载...</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote isUrl img={`${process.env.APP_IMAGE_CDN}/empty_activity.png`}>您还未报名任何活动哦，快去报名吧!</SpNote>
+              <SpNote isUrl img={`${process.env.APP_IMAGE_CDN}/empty_activity.png`}>
+                您还未报名任何活动哦，快去报名吧!
+              </SpNote>
             )}
           </View>
         </ScrollView>

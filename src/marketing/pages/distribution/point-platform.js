@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Navigator } from '@tarojs/components'
 import api from '@/api'
 import { SpNavBar } from '@/components'
@@ -6,25 +6,25 @@ import { SpNavBar } from '@/components'
 import './point-platform.scss'
 
 export default class PointPlatform extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       info: {}
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const res = await api.distribution.getPointInfo()
     this.setState({
       info: res
     })
   }
 
-  render() {
+  render () {
     const { info } = this.state
     console.log(info)
     return (

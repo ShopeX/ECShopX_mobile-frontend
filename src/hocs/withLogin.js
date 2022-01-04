@@ -8,19 +8,19 @@ const LIFE_CYCLE_TYPES = {
   DID_SHOW: 2
 }
 
-export default function withLogin(nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT) {
+export default function withLogin (nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUNT) {
   if (LIFE_CYCLE_TYPES[lifeCycle] !== undefined) {
     console.warn(`lifeCycle is not in defined types: ${lifeCycle}`)
     return (Component) => Component
   }
 
-  return function withLoginComponent(Component) {
+  return function withLoginComponent (Component) {
     return class WithLogin extends Component {
-      constructor(props) {
+      constructor (props) {
         super(props)
       }
 
-      async componentWillMount() {
+      async componentWillMount () {
         if (lifeCycle === LIFE_CYCLE_TYPES.WILL_MOUNT) {
           console.log('WILL_MOUNT')
           const res = await this.$__autoLogin()
@@ -36,7 +36,7 @@ export default function withLogin(nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUN
         }
       }
 
-      async componentDidMount() {
+      async componentDidMount () {
         if (lifeCycle === LIFE_CYCLE_TYPES.DID_MOUNT) {
           console.log('DID_MOUNT')
           const res = await this.$__autoLogin()
@@ -57,7 +57,7 @@ export default function withLogin(nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUN
         }
       }
 
-      async componentDidShow() {
+      async componentDidShow () {
         if (lifeCycle === LIFE_CYCLE_TYPES.DID_SHOW) {
           console.log('DID_SHOW')
           const res = await this.$__autoLogin()
@@ -74,7 +74,7 @@ export default function withLogin(nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUN
         }
       }
 
-      async $__autoLogin() {
+      async $__autoLogin () {
         this.$__autoLogin_state = 'pending'
         let res
         console.log('[$__autoLogin] --- run')
@@ -88,7 +88,7 @@ export default function withLogin(nextFn, lifeCycle = LIFE_CYCLE_TYPES.WILL_MOUN
         return res
       }
 
-      $__autoLoginDone() {
+      $__autoLoginDone () {
         // if (this.$__autoLogin_state === 'success') return Promise.resolve(true)
         // if (this.$__autoLogin_state === 'fail') return Promise.resolve(false)
         let timer

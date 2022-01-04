@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from "react-redux";
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtNavBar } from 'taro-ui'
 import { classNames, isWeb, isNavbar } from '@/utils'
 
 import './index.scss'
 
-function SpNavBar(props) {
+function SpNavBar (props) {
   const { leftIconType = 'chevron-left', title: p_title } = props
   // const { page } = getCurrentInstance()
-  const { pageTitle } = useSelector(state => state.sys);
+  const { pageTitle } = useSelector((state) => state.sys)
   // const defaultTitle = page ? page.config?.navigationBarTitleText : p_title
 
   const handleClickLeftIcon = function () {
     Taro.navigateBack()
   }
 
-  if ( !isNavbar() ) {
+  if (!isNavbar()) {
     return null
   }
-  
+
   return (
     <AtNavBar
       fixed
-      color="#000"
+      color='#000'
       title={pageTitle}
       leftIconType={leftIconType}
       onClickLeftIcon={handleClickLeftIcon}
     />
-  );
+  )
 }
 
 SpNavBar.options = {
@@ -37,4 +37,3 @@ SpNavBar.options = {
 }
 
 export default SpNavBar
-

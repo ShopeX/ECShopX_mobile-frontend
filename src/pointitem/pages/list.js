@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
@@ -22,8 +22,8 @@ import './list.scss'
 }))
 @withPager
 export default class List extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -72,7 +72,7 @@ export default class List extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     const { keywords, dis_id, cat_id, main_cat_id } = this.$instance.router.params
 
     this.init()
@@ -97,8 +97,8 @@ export default class List extends Component {
     )
   }
 
-  componentWillReceiveProps(next) {
-    if (next.favs && (Object.keys(this.props.favs).length !== Object.keys(next.favs).length)) {
+  componentWillReceiveProps (next) {
+    if (next.favs && Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       setTimeout(() => {
         const list = this.state.list.map((item) => {
           item.is_fav = Boolean(next.favs[item.item_id])
@@ -124,14 +124,14 @@ export default class List extends Component {
     })
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.getWechatNavBarHeight()
     this.fetchUserInfo()
 
     const options = this.$instance.router.params
   }
 
-  async fetchUserInfo() {
+  async fetchUserInfo () {
     const [res, { point }] = await Promise.all([
       api.member.memberInfo(),
       api.pointitem.getMypoint()
@@ -153,7 +153,7 @@ export default class List extends Component {
 
   getLeafChild = (list) => {
     //获取分类的叶子节点
-    function queryList(json, arr) {
+    function queryList (json, arr) {
       for (var i = 0; i < json.length; i++) {
         var sonList = json[i].children || []
         if (sonList.length == 0) {
@@ -167,7 +167,7 @@ export default class List extends Component {
     return queryList(list, [])
   }
 
-  async fetchConfig(params) {
+  async fetchConfig (params) {
     const query = {
       page: 1,
       item_type: 'normal',
@@ -209,7 +209,7 @@ export default class List extends Component {
     })
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
 
     const {
@@ -253,7 +253,7 @@ export default class List extends Component {
     }
   }
 
-  startTrack() {
+  startTrack () {
     this.endTrack()
     const observer = Taro.createIntersectionObserver(this.$scope, {
       observeAll: true
@@ -278,7 +278,7 @@ export default class List extends Component {
     this.observe = observer
   }
 
-  endTrack() {
+  endTrack () {
     if (this.observer) {
       this.observer.disconnect()
       this.observe = null
@@ -344,7 +344,7 @@ export default class List extends Component {
     )
   }
 
-  handleClickItemF(idx) {
+  handleClickItemF (idx) {
     const item = this.state.filterList[idx] || {}
 
     let sortOrder = null
@@ -376,8 +376,9 @@ export default class List extends Component {
       price: price * 100,
       imgUrl: img
     })
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id ||
-      0}&type=pointitem`
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${
+      item.distributor_id || 0
+    }&type=pointitem`
     Taro.navigateTo({
       url
     })
@@ -585,7 +586,7 @@ export default class List extends Component {
     )
   }
 
-  render() {
+  render () {
     const {
       list,
       curFilterIdx,
