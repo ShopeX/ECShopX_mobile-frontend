@@ -183,8 +183,8 @@ export default class Evaluation extends Component {
 
         <FloatMenus>
           <FloatMenuItem
-            iconPrefixClass='apple'
-            icon='arrow-up'
+            iconPrefixClass='iconfont'
+            icon='icon-arrow-up'
             hide={!showBackToTop}
             onClick={this.scrollBackToTop}
           />

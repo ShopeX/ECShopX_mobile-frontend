@@ -1574,7 +1574,7 @@ export default class EspierDetail extends Component {
           )}
           <FloatMenuItem
             iconPrefixClass='iconfont'
-            icon='arrow-up'
+            icon='icon-arrow-up'
             hide={!showBackToTop}
             onClick={this.scrollBackToTop}
           />
