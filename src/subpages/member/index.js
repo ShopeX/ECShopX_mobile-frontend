@@ -438,7 +438,7 @@ function MemberIndex(props) {
                   <Text>{state.waitPayNum}</Text>
                 </View>
               )}
-              <Text className="order-txt">待付款</Text>
+              <Text className="order-txt">待支付</Text>
             </View>
             <View
               className="order-item"
@@ -477,7 +477,7 @@ function MemberIndex(props) {
                 "/subpage/pages/trade/after-sale"
               )}
             >
-              <SpImage src="daishouhuo.png" className="icon-style" />
+              <SpImage src="shouhou.png" className="icon-style" />
               {state.afterSalesNum > 0 && (
                 <View className="order-bradge">
                   <Text>{state.afterSalesNum}</Text>

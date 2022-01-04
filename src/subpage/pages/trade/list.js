@@ -27,7 +27,7 @@ export default class TradeList extends Component {
       curTabIdx: 0,
       tabList: [
         { title: '全部订单', status: '0' },
-        { title: '待付款', status: '5' },
+        { title: '待支付', status: '5' },
         { title: '待收货', status: '1' },
         { title: '待评价', status: '7', is_rate: 0 }
       ],
