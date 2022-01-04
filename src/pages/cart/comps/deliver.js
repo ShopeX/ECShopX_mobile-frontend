@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AddressChoose } from '@/components'
@@ -10,7 +10,7 @@ import './deliver.scss'
   colors: colors.current
 }))
 export default class Deliver extends Component {
-  $instance = getCurrentInstance();
+  $instance = getCurrentInstance()
   static defaultProps = {
     list: [],
     curStore: {},
@@ -47,8 +47,8 @@ export default class Deliver extends Component {
 
   // 自定义选择店铺跳转事件
   handleChooseAddress = (choose) => {
-    const { receiptType, curStore,headShop } = this.props
-    let city=headShop.is_current?headShop.city:curStore.city;
+    const { receiptType, curStore, headShop } = this.props
+    let city = headShop.is_current ? headShop.city : curStore.city
     let params = ''
     if (receiptType === 'dada') {
       params = `&city=${city}&receipt_type=${receiptType}`
@@ -58,9 +58,8 @@ export default class Deliver extends Component {
     })
   }
 
-  render() {
-    const { curStore, receiptType, address, isOpenStore, colors, headShop = {} } =
-      this.props;
+  render () {
+    const { curStore, receiptType, address, isOpenStore, colors, headShop = {} } = this.props
     const { goodType, type } = this.$instance.router.params
     // 收货方式[快递，同城，自提]
     const deliveryList = [
@@ -85,7 +84,7 @@ export default class Deliver extends Component {
     ]
     const showSwitchDeliver = deliveryList.filter((item) => item.isopen)
 
-    console.log("===headShop===>",headShop)
+    console.log('===headShop===>', headShop)
 
     return (
       <View className='deliver'>
@@ -126,7 +125,10 @@ export default class Deliver extends Component {
             <View className='otherInfo'>
               <View className='text-muted light'>门店营业时间：{curStore.hour}</View>
               <View className='text-muted'>
-                联系电话：<Text className='phone'>{headShop.is_current?headShop.phone:curStore.phone}</Text>
+                联系电话：
+                <Text className='phone'>
+                  {headShop.is_current ? headShop.phone : curStore.phone}
+                </Text>
               </View>
             </View>
           </View>
@@ -137,7 +139,9 @@ export default class Deliver extends Component {
               isAddress={address}
               onCustomChosse={this.handleChooseAddress.bind(this)}
             />
-            <View className='store'>配送门店: {headShop.is_current ? headShop.name : curStore.name}</View>
+            <View className='store'>
+              配送门店: {headShop.is_current ? headShop.name : curStore.name}
+            </View>
           </View>
         )}
       </View>

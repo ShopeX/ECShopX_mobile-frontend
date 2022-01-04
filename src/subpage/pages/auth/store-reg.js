@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Form, Text } from '@tarojs/components'
 import { AtInput, AtSwitch, AtButton } from 'taro-ui'
 import { SpToast, SpNavBar, TimePicker } from '@/components'
@@ -12,7 +12,7 @@ import './reg.scss'
 const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
 
 export default class StoreReg extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -24,9 +24,9 @@ export default class StoreReg extends Component {
     }
   }
 
-  componentDidMount() {}
+  componentDidMount () {}
 
-  async fetch() {
+  async fetch () {
     let arr = []
     let res = await api.user.storeReg()
     console.log(res)
@@ -77,7 +77,7 @@ export default class StoreReg extends Component {
     let res = await api.user.storeReg(data)
     S.toast('提交成功')
   }
-  render() {
+  render () {
     const { info, time } = this.state
 
     return (

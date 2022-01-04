@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
@@ -11,14 +11,13 @@ import StoreFavItem from './comps/store-fav-item'
 
 import './item-fav.scss'
 
-
 @connect(({ user }) => ({
   favs: user.favs
 }))
 @withPager
 @withBackToTop
 export default class ItemFav extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -33,7 +32,7 @@ export default class ItemFav extends Component {
     }
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.resetPage()
     this.setState(
       {
@@ -45,7 +44,7 @@ export default class ItemFav extends Component {
     )
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -73,9 +72,7 @@ export default class ItemFav extends Component {
             // price: ({ price }) => (price/100).toFixed(2),
             price: ({ price, item_price }) => ((price || item_price) / 100).toFixed(2),
             is_fav: ({ item_id }) => {
-              return (
-                favs && Boolean(favs[item_id])
-              )
+              return favs && Boolean(favs[item_id])
             }
           })
           total = res.total_count
@@ -91,7 +88,7 @@ export default class ItemFav extends Component {
             head_portrait: 'head_portrait',
             author: 'author',
             item_type: 'item_type'
-          } )
+          })
           total = res.total_count
           break
         case 2:
@@ -182,27 +179,23 @@ export default class ItemFav extends Component {
     )
   }
 
-  render() {
+  render () {
     const { list, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
     return (
-      <View className="page-goods-fav">
-        <SpNavBar title="收藏" leftIconType="chevron-left" fixed="true" />
+      <View className='page-goods-fav'>
+        <SpNavBar title='收藏' leftIconType='chevron-left' fixed='true' />
         <AtTabs
-          className={`trade-list__tabs ${hasNavbar && "navbar_padtop"}`}
+          className={`trade-list__tabs ${hasNavbar && 'navbar_padtop'}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
         >
           {tabList.map((panes, pIdx) => (
-            <AtTabsPane
-              current={curTabIdx}
-              key={panes.status}
-              index={pIdx}
-            ></AtTabsPane>
+            <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
           ))}
         </AtTabs>
         <ScrollView
-          className={`goods-list__scroll ${isWxWeb && "goods_scroll_top"} `}
+          className={`goods-list__scroll ${isWxWeb && 'goods_scroll_top'} `}
           scrollY
           scrollTop={scrollTop}
           scrollWithAnimation
@@ -210,41 +203,41 @@ export default class ItemFav extends Component {
           onScrollToLower={this.nextPage}
         >
           {curTabIdx === 0 && (
-            <View className="goods-list goods-list__type-grid">
-              {list.map(item => {
+            <View className='goods-list goods-list__type-grid'>
+              {list.map((item) => {
                 return (
-                  <View className="goods-list__item" key={item.item_id}>
+                  <View className='goods-list__item' key={item.item_id}>
                     <GoodsItem
                       key={item.item_id}
                       info={item}
                       onClick={() => this.handleClickItem(item)}
-                      isPointitem={item.item_type === "pointsmall"}
+                      isPointitem={item.item_type === 'pointsmall'}
                     />
                   </View>
-                );
+                )
               })}
             </View>
           )}
           {curTabIdx === 1 && (
-            <View className="goods-list goods-list__type-grid">
-              {list.map(item => {
+            <View className='goods-list goods-list__type-grid'>
+              {list.map((item) => {
                 return (
-                  <View className="goods-list__item" key={item.item_id}>
+                  <View className='goods-list__item' key={item.item_id}>
                     <RecommendItem
                       key={item.item_id}
                       info={item}
                       onClick={() => this.handleClickItem(item)}
                     />
                   </View>
-                );
+                )
               })}
             </View>
           )}
           {curTabIdx === 2 && (
-            <View className="goods-list">
-              {list.map(item => {
+            <View className='goods-list'>
+              {list.map((item) => {
                 return (
-                  <View className="goods-list__item" key={item.distributor_id}>
+                  <View className='goods-list__item' key={item.distributor_id}>
                     <StoreFavItem
                       key={item.distributor_id}
                       info={item}
@@ -252,18 +245,18 @@ export default class ItemFav extends Component {
                       onCancel={this.handleFavRemoved}
                     />
                   </View>
-                );
+                )
               })}
             </View>
           )}
           {page.isLoading ? <Loading>正在加载...</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img="trades_empty.png">暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
           )}
         </ScrollView>
 
         <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
       </View>
-    );
+    )
   }
 }

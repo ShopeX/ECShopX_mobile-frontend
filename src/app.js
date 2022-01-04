@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro';
-import S from "@/spx";
-import { Provider } from "react-redux";
-import configStore from "@/store";
-import api from "@/api";
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
+import S from '@/spx'
+import { Provider } from 'react-redux'
+import configStore from '@/store'
+import api from '@/api'
 // import { Tracker } from "@/service";
 // import { youshuLogin } from '@/utils/youshu'
-import { fetchUserFavs } from "@/store/slices/user";
-import { DEFAULT_TABS, DEFAULT_THEME } from "@/consts";
-import { SG_APP_CONFIG, SG_MEIQIA, SG_YIQIA } from '@/consts'
+import { fetchUserFavs } from '@/store/slices/user'
+import { DEFAULT_TABS, DEFAULT_THEME, SG_APP_CONFIG, SG_MEIQIA, SG_YIQIA } from '@/consts'
 import { checkAppVersion, isWeixin, isNavbar } from '@/utils'
 
-import "./app.scss";
+import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
@@ -19,50 +18,50 @@ import "./app.scss";
 //   require('nerv-devtools')
 // }
 
-const store = configStore();
+const store = configStore()
 class App extends Component {
-  componentWillMount() {
+  componentWillMount () {
     this.getSystemConfig()
     // if ( S.getAuthToken() ) {
     //   store.dispatch(fetchUserFavs());
     // }
   }
 
-  componentDidMount() {
-    if ( isWeixin ) {
+  componentDidMount () {
+    if (isWeixin) {
       checkAppVersion()
     }
   }
 
-  componentDidShow(options) {
+  componentDidShow (options) {
     if (isNavbar()) {
-      document.querySelector("title").addEventListener(
-        "DOMSubtreeModified",
+      document.querySelector('title').addEventListener(
+        'DOMSubtreeModified',
         () => {
-          const pageTitle = document.querySelector("title").innerHTML;
-          console.log("document title:", pageTitle);
+          const pageTitle = document.querySelector('title').innerHTML
+          console.log('document title:', pageTitle)
           store.dispatch({
-            type: "sys/updatePageTitle",
+            type: 'sys/updatePageTitle',
             payload: {
               pageTitle
             }
-          });
+          })
         },
         false
-      );
+      )
     }
   }
 
-  async getSystemConfig() {
+  async getSystemConfig () {
     const {
       echat = {},
       meiqia = {},
-      disk_driver = "qiniu",
+      disk_driver = 'qiniu',
       whitelist_status = false,
       nostores_status = false,
       distributor_param_status = false,
       point_rule_name = '积分'
-    } = await api.shop.homeSetting();
+    } = await api.shop.homeSetting()
 
     const {
       tab_bar,
@@ -85,7 +84,7 @@ class App extends Component {
     //   disk_driver
     // })
     // 分享时是否携带参数
-    Taro.setStorageSync("distributor_param_status", distributor_param_status);
+    Taro.setStorageSync('distributor_param_status', distributor_param_status)
 
     // Taro.setStorageSync(SG_APP_CONFIG, {
     //   openRecommend, // 猜你喜欢
@@ -95,9 +94,9 @@ class App extends Component {
     // } );
 
     try {
-      const tabBar = JSON.parse( tab_bar );
+      const tabBar = JSON.parse(tab_bar)
       store.dispatch({
-        type: "sys/setSysConfig",
+        type: 'sys/setSysConfig',
         payload: {
           colorPrimary: primary,
           colorMarketing: marketing,
@@ -110,9 +109,9 @@ class App extends Component {
           openOfficialAccount, // 公众号组件
           diskDriver: disk_driver
         }
-      });
+      })
       // 兼容老的主题方式
-      store.dispatch( {
+      store.dispatch({
         type: 'colors/setColor',
         payload: {
           primary,
@@ -121,20 +120,15 @@ class App extends Component {
         }
       })
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  
   }
 
-  componentDidCatchError() {}
+  componentDidCatchError () {}
 
-  render() {
-    return (
-      <Provider store={store}>
-        {this.props.children}
-      </Provider>
-    )
+  render () {
+    return <Provider store={store}>{this.props.children}</Provider>
   }
 }
 
-export default App;
+export default App

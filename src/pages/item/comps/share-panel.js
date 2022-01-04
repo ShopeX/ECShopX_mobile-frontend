@@ -8,7 +8,7 @@
  * @LastEditors: PrendsMoi
  * @LastEditTime: 2021-04-22 13:56:53
  */
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Button, Image } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
 
@@ -29,7 +29,7 @@ export default class SharePanel extends Component {
     console.log('onClickShareTimeline')
   }
 
-  render() {
+  render () {
     const { isOpen, onClose, onClick, onEditShare } = this.props
 
     return (

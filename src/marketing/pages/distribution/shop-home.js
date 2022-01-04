@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button, Image, Input } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { BackToTop, Loading, SpNavBar, SpImg, SpNote } from '@/components'
@@ -15,8 +15,8 @@ import './shop-home.scss'
 
 @withPager
 export default class DistributionShopHome extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -68,17 +68,17 @@ export default class DistributionShopHome extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getShopInfo()
     this.init()
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.handleCloseSearch()
   }
 
   // 分享
-  onShareAppMessage() {
+  onShareAppMessage () {
     const { info: shopInfo, userId } = this.state
     const title = shopInfo.shop_name || `${shopInfo.username}的小店`
     return {
@@ -282,13 +282,10 @@ export default class DistributionShopHome extends Component {
 
       const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
-        if (
-          !urlRedirect ||
-          (url === "/subpages/member/index" && !S.getAuthToken())
-        ) {
-          Taro.navigateTo({ url });
+        if (!urlRedirect || (url === '/subpages/member/index' && !S.getAuthToken())) {
+          Taro.navigateTo({ url })
         } else {
-          Taro.redirectTo({ url });
+          Taro.redirectTo({ url })
         }
       }
     }
@@ -414,7 +411,7 @@ export default class DistributionShopHome extends Component {
     )
   }
 
-  render() {
+  render () {
     const {
       showBackToTop,
       tabList,
@@ -554,7 +551,7 @@ export default class DistributionShopHome extends Component {
                     img-class='goodImg'
                     src={item.img}
                   /> */}
-                  <Image src={item.img} className="goodImg" lazyLoad/>
+                  <Image src={item.img} className='goodImg' lazyLoad />
                   <View className='outSale'></View>
                 </View>
                 <View className='info'>

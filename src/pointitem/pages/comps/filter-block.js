@@ -6,14 +6,14 @@
  * @Description: In User Settings Edit
  * @FilePath: /ecshopx-newpc/Users/wujiabao/Desktop/work/ecshopx-vshop/src/pages/pointitem/comps/header.js
  */
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
 
 import './filter-block.scss'
 
 export default class FilterBlock extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {}
@@ -50,7 +50,7 @@ export default class FilterBlock extends Component {
     }
   }
 
-  render() {
+  render () {
     const name = this.getName()
 
     const { type } = this.props

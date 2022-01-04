@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar } from '@/components'
@@ -10,7 +10,7 @@ import './subordinate.scss'
 
 @withPager
 export default class DistributionSubordinate extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -24,11 +24,11 @@ export default class DistributionSubordinate extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.nextPage()
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { curTabIdx, tabList } = this.state
     const { page_no: page, page_size: pageSize } = params
     const query = {
@@ -80,7 +80,7 @@ export default class DistributionSubordinate extends Component {
     )
   }
 
-  render() {
+  render () {
     const { list, page, curTabIdx, tabList, scrollTop } = this.state
 
     return (

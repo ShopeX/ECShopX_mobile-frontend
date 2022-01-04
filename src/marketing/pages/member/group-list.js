@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { Loading, SpNote, Price, SpNavBar } from '@/components'
 import _mapKeys from 'lodash/mapKeys'
@@ -10,7 +10,7 @@ import './group-list.scss'
 
 @withPager
 export default class myGroupList extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -19,18 +19,18 @@ export default class myGroupList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.nextPage()
   }
 
-  async fetch(params) {
+  async fetch (params) {
     params = _mapKeys(
       {
         ...params,
         group_goods_type: 'normal',
         team_status: '0'
       },
-      function(val, key) {
+      function (val, key) {
         if (key === 'page_no') return 'page'
         if (key === 'page_size') return 'pageSize'
 
@@ -60,11 +60,11 @@ export default class myGroupList extends Component {
     })
   }
 
-  render() {
+  render () {
     const { tabList, curTabIdx, list, page } = this.state
 
     return (
-      <View className={`page-my-group-list ${hasNavbar && 'group-list-top' }`}>
+      <View className={`page-my-group-list ${hasNavbar && 'group-list-top'}`}>
         <SpNavBar title='我的拼团' leftIconType='chevron-left' fixed='true' />
         {list.map((item, idx) => {
           const { remaining_time_obj } = item

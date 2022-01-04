@@ -1,72 +1,71 @@
-import Taro,{getCurrentInstance} from "@tarojs/taro";
-import api from "@/api";
-import qs from "qs";
-import { showToast, log, isArray } from "@/utils";
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import api from '@/api'
+import qs from 'qs'
+import { showToast, log, isArray } from '@/utils'
 
 const geocodeUrl = 'https://restapi.amap.com/v3/geocode'
 class EntryLaunch {
-  constructor() {
+  constructor () {
     this.init()
   }
 
-  init(params) {
+  init (params) {
     const { query, scene } =
-      process.env.TARO_ENV == "h5"
-        ? { query: params }
-        : Taro.getLaunchOptionsSync();
+      process.env.TARO_ENV == 'h5' ? { query: params } : Taro.getLaunchOptionsSync()
 
     let options = {
       ...query
-    };
+    }
 
     if (scene) {
       options = {
         ...options,
         ...qs.parse(decodeURIComponent(query.scene))
-      };
+      }
     }
 
     // Taro.setStorageSync("launch_params", options);
-    this.routeParams = options;
-    process.env.TARO_ENV == "h5" && this.initAMap();
-    return options;
+    this.routeParams = options
+    process.env.TARO_ENV == 'h5' && this.initAMap()
+    return options
   }
 
-  getRouteParams() {
-    return this.routeParams; 
+  getRouteParams () {
+    return this.routeParams
   }
 
   /**
    * @function 初始化高德地图配置
    */
-  initAMap() {
-    AMap.plugin(["AMap.Geolocation", "AMap.Geocoder"], () => {
+  initAMap () {
+    AMap.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
       this.geolocation = new AMap.Geolocation({
         enableHighAccuracy: true, //是否使用高精度定位，默认:true
         timeout: 10000, //超过10秒后停止定位，默认：5s
-        position: "RB", //定位按钮的停靠位置
+        position: 'RB', //定位按钮的停靠位置
         buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
         zoomToAccuracy: true //定位成功后是否自动调整地图视野到定位点
-      });
+      })
       this.geocoder = new AMap.Geocoder({
         radius: 1000 //范围，默认：500
-      });
-    });
+      })
+    })
   }
 
   /**
    * @function 获取当前店铺
    */
-  async getCurrentStore() {
-    const { is_open_wechatapp_location } = Taro.getStorageSync("settingInfo");
-    const pages = Taro.getCurrentPages();
-    const currentPage = pages[pages.length - 1];
-    const { dtid } = process.env.TARO_ENV == 'weapp' ? currentPage.options : currentPage.$router.params;
-    let storeQuery = {}; // 店铺查询参数
+  async getCurrentStore () {
+    const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo')
+    const pages = Taro.getCurrentPages()
+    const currentPage = pages[pages.length - 1]
+    const { dtid } =
+      process.env.TARO_ENV == 'weapp' ? currentPage.options : currentPage.$router.params
+    let storeQuery = {} // 店铺查询参数
     if (dtid) {
       storeQuery = {
         distributor_id: dtid
-      };
+      }
     } else {
       // 开启定位
       if (is_open_wechatapp_location == 1) {
@@ -76,76 +75,73 @@ class EntryLaunch {
             ...storeQuery,
             lng,
             lat
-          };
-          const {
-            addressComponent,
-            formattedAddress
-          } = await this.getAddressByLnglat(lng, lat);
-          Taro.setStorageSync("locationAddress", {
+          }
+          const { addressComponent, formattedAddress } = await this.getAddressByLnglat(lng, lat)
+          Taro.setStorageSync('locationAddress', {
             ...addressComponent,
             formattedAddress,
             lng,
             lat
-          });
-          showToast(formattedAddress);
-        } catch(e) {
-          console.warn('location failed: ' + e.message);
+          })
+          showToast(formattedAddress)
+        } catch (e) {
+          console.warn('location failed: ' + e.message)
         }
       }
     }
-    const storeInfo = await api.shop.getShop(storeQuery);
-    Taro.setStorageSync("curStore", storeInfo);
+    const storeInfo = await api.shop.getShop(storeQuery)
+    Taro.setStorageSync('curStore', storeInfo)
     this.store.dispatch({
-      type: "shop/setShop",
+      type: 'shop/setShop',
       payload: storeInfo
-    });
-    return storeInfo;
+    })
+    return storeInfo
   }
 
   /**
    * @function 根据经纬度获取定位信息
    */
-  async getLocationInfo() {
+  async getLocationInfo () {
     if (process.env.TARO_ENV === 'weapp') {
       return new Promise((resolve, reject) => {
         Taro.getLocation({
           type: 'gcj02',
-          success: ( res ) => {
-            if ( res.errMsg == "getLocation:ok" ) {
+          success: (res) => {
+            if (res.errMsg == 'getLocation:ok') {
               resolve({
                 lng: res.longitude,
                 lat: res.latitude
-              });
+              })
             } else {
-              reject({ message: res.errMsg });
-            }  
+              reject({ message: res.errMsg })
+            }
           },
           fail: (error) => {
-            reject( { message: error })
+            reject({ message: error })
           }
         })
       })
     } else {
       return new Promise((reslove, reject) => {
-        this.geolocation.getCurrentPosition(function(status, result) {
-          if (status == "complete") {
+        this.geolocation.getCurrentPosition(function (status, result) {
+          if (status == 'complete') {
             reslove({
               lng: result.position.lng,
-              lat: result.position.lat,
-            });
+              lat: result.position.lat
+            })
           } else {
-            reject({ message: result.message });
+            reject({ message: result.message })
           }
-        });
-      });
+        })
+      })
     }
   }
 
-  async getCurrentAddressInfo() {
+  async getCurrentAddressInfo () {
     const { lng, lat } = await this.getLocationInfo()
     let res = {}
     if (lat) {
-      res = await this.getAddressByLnglatWebAPI( lng, lat )
+      res = await this.getAddressByLnglatWebAPI(lng, lat)
     }
     return res
   }
@@ -153,24 +149,24 @@ class EntryLaunch {
   /**
    * @function 根据地址解析经纬度
    */
-  async getLnglatByAddress(address) {
+  async getLnglatByAddress (address) {
     const res = await Taro.request({
       url: `${geocodeUrl}/geo`,
-      data:{
+      data: {
         key: process.env.APP_MAP_KEY,
         address
       }
     })
-    if ( res.data.status == 1 ) {
+    if (res.data.status == 1) {
       const { geocodes } = res.data
-      if ( geocodes.length > 0 ) {
+      if (geocodes.length > 0) {
         return {
           address: geocodes[0].formatted_address,
           province: geocodes[0].province,
           city: geocodes[0].city,
           district: geocodes[0].district,
-          lng: geocodes[0].location.split( ',' )[0],
-          lat: geocodes[0].location.split( ',' )[1]
+          lng: geocodes[0].location.split(',')[0],
+          lat: geocodes[0].location.split(',')[1]
         }
       } else {
         return {
@@ -183,33 +179,36 @@ class EntryLaunch {
       }
     }
   }
-  
+
   /**
    * @function 根据经纬度解析地址
    * @params lnglat Array
    */
-  getAddressByLnglat(lng, lat) {
+  getAddressByLnglat (lng, lat) {
     return new Promise((reslove, reject) => {
-      this.geocoder.getAddress([lng, lat], function(status, result) {
-        if (status === "complete" && result.regeocode) {
-          reslove(result.regeocode);
+      this.geocoder.getAddress([lng, lat], function (status, result) {
+        if (status === 'complete' && result.regeocode) {
+          reslove(result.regeocode)
         } else {
-          reject(status);
+          reject(status)
         }
-      });
-    });
+      })
+    })
   }
 
-  async getAddressByLnglatWebAPI(lng, lat) {
+  async getAddressByLnglatWebAPI (lng, lat) {
     const res = await Taro.request({
       url: `${geocodeUrl}/regeo`,
-      data:{
+      data: {
         key: process.env.APP_MAP_KEY,
-        location:`${lng},${lat}`, 
+        location: `${lng},${lat}`
       }
-    }); 
+    })
     if (res.data.status == 1) {
-      const { formatted_address, addressComponent: { province, city, district } } = res.data.regeocode
+      const {
+        formatted_address,
+        addressComponent: { province, city, district }
+      } = res.data.regeocode
       return {
         lng,
         lat,
@@ -225,19 +224,17 @@ class EntryLaunch {
     }
   }
 
-
-
   /**
    * @function 是否开启店铺
    * @returns Boolean
    * @description 标准版有门店，并且根据后台设置是否展示门店；平台版不显示门店
    */
-  isOpenStore() {
-    const { nostores_status } = Taro.getStorageSync("otherSetting");
-    if (process.env.APP_PLATFORM === "standard") {
-      return !nostores_status;
+  isOpenStore () {
+    const { nostores_status } = Taro.getStorageSync('otherSetting')
+    if (process.env.APP_PLATFORM === 'standard') {
+      return !nostores_status
     } else {
-      return false;
+      return false
     }
   }
 
@@ -299,6 +296,5 @@ class EntryLaunch {
     }
   }
 }
-
 
 export default new EntryLaunch()

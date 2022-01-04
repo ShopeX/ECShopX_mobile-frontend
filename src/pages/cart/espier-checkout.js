@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtButton, AtInput } from 'taro-ui'
 import { Loading, Price, SpCell, SpToast, SpPage, SpHtmlContent } from '@/components'
 import api from '@/api'
 import S from '@/spx'
- 
+
 import {
   pickBy,
   log,
@@ -74,7 +74,8 @@ const transformCartList = (list) => {
     onClearCart: () => dispatch({ type: 'cart/clear' }),
     onClearCoupon: () => dispatch({ type: 'cart/clearCoupon' }),
     onClearDrugInfo: () => dispatch({ type: 'cart/clearDrugInfo' }),
-    updateChooseAddress: (address) => dispatch({ type: 'user/updateChooseAddress', payload: address }),
+    updateChooseAddress: (address) =>
+      dispatch({ type: 'user/updateChooseAddress', payload: address }),
     onChangeCoupon: (coupon) => dispatch({ type: 'cart/changeCoupon', payload: coupon }),
     onChangeZitiStore: (zitiShop) => dispatch({ type: 'cart/changeZitiStore', payload: zitiShop })
     //onChangeDrugInfo: (drugInfo) => dispatch({ type: 'cart/changeDrugInfo', payload: drugInfo })
@@ -82,12 +83,12 @@ const transformCartList = (list) => {
 )
 // @withLogin()
 export default class CartCheckout extends Component {
-  $instance = getCurrentInstance();
+  $instance = getCurrentInstance()
   static defaultProps = {
     list: []
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -116,7 +117,7 @@ export default class CartCheckout extends Component {
         freight_type: ''
       },
       // 默认支付方式
-      defalutPaytype:isWxWeb? 'wxpayjs':isWeb?'wxpayh5':'wxpay',
+      defalutPaytype: isWxWeb ? 'wxpayjs' : isWeb ? 'wxpayh5' : 'wxpay',
       payType: '',
       disabledPayment: null,
       isPaymentOpend: false,
@@ -143,14 +144,14 @@ export default class CartCheckout extends Component {
       pick: {},
       isOpenStore: null,
       channel: '',
-      headShop:{}
+      headShop: {}
     }
 
     // 路由参数缓存
     this.routerParams = {}
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     let params = this.$instance.router.params
     if (params) {
       const data = await normalizeQuerys(params)
@@ -165,7 +166,7 @@ export default class CartCheckout extends Component {
       }
       Taro.redirectTo({
         url: `/subpage/pages/auth/wxauth?source=${source}&scene=${this.$instance.router.params.scene}`
-      });
+      })
 
       return
     }
@@ -205,15 +206,15 @@ export default class CartCheckout extends Component {
       info = null
     }
 
-    const res= await getHeadShop(); 
+    const res = await getHeadShop()
 
     this.setState({
       curStore,
       info,
       payType: payType || this.state.payType,
-      headShop:{
+      headShop: {
         ...res,
-        is_current:router_shop_id==0
+        is_current: router_shop_id == 0
       }
     })
 
@@ -259,10 +260,10 @@ export default class CartCheckout extends Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     const nextAddress = nextProps.address || {}
     const selfAddress = this.props.address || {}
-    console.log("componentWillReceiveProps==>",nextAddress, selfAddress)
+    console.log('componentWillReceiveProps==>', nextAddress, selfAddress)
     // if (JSON.stringify(nextAddress) != "{}" && JSON.stringify(selfAddress) != "{}" && !isObjectValueEqual(nextAddress, selfAddress)
     if (!isObjectValueEqual(nextAddress, selfAddress)) {
       this.fetchAddress()
@@ -272,14 +273,14 @@ export default class CartCheckout extends Component {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     // teardown clean
     this.props.onClearCoupon()
     this.props.onClearDrugInfo()
     Taro.removeStorageSync('selectShop')
   }
 
-  componentDidShow() {
+  componentDidShow () {
     this.setState({
       isPaymentOpend: false,
       isDrugInfoOpend: false,
@@ -293,11 +294,11 @@ export default class CartCheckout extends Component {
   }
 
   isPointitemGood() {
-    const options = this.$instance.router.params
-    return options.type === 'pointitem'
+    const options = this.$instance.router?.params
+    return options?.type === 'pointitem'
   }
 
-  async fetchZiTiShop() {
+  async fetchZiTiShop () {
     const {
       shop_id,
       scene,
@@ -371,9 +372,9 @@ export default class CartCheckout extends Component {
     )
   }
 
-  async fetchAddress(cb) {
-    const { receiptType, curStore,headShop } = this.state
-    console.log("===fetchAddress===>",headShop)
+  async fetchAddress (cb) {
+    const { receiptType, curStore, headShop } = this.state
+    console.log('===fetchAddress===>', headShop)
     const query = {}
     if (receiptType === 'dada') {
       query.receipt_type = receiptType
@@ -394,7 +395,7 @@ export default class CartCheckout extends Component {
   /**
    * 获取代下单导购
    * */
-  async getSalespersonNologin() {
+  async getSalespersonNologin () {
     const { source, scene } = this.$instance.router.params
     let salesperson_id = ''
     if (source === 'other_pay' || scene) {
@@ -423,7 +424,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  async getShop() {
+  async getShop () {
     const { source, scene } = this.$instance.router.params
     let distributor_id = ''
     if (source === 'other_pay' || scene) {
@@ -445,7 +446,7 @@ export default class CartCheckout extends Component {
     this.setState({ shopData })
   }
 
-  async getShopId() {
+  async getShopId () {
     const { source, scene } = this.$instance.router.params
     if (source === 'other_pay' || scene) {
       let espierCheckoutData = {}
@@ -458,7 +459,7 @@ export default class CartCheckout extends Component {
     }
   }
 
-  changeSelection(params = {}) {
+  changeSelection (params = {}) {
     const { address_list } = this.state
     if (address_list.length === 0) {
       this.props.updateChooseAddress(null)
@@ -488,8 +489,7 @@ export default class CartCheckout extends Component {
     this.handleAddressChange(address)
   }
 
-  async getParams() {
- 
+  async getParams () {
     let { isNeedPackage, pack } = this.state
 
     const {
@@ -669,7 +669,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  async tradeSetting() {
+  async tradeSetting () {
     let res = await api.trade.tradeSetting()
     let { is_open, packName, packDes } = res
 
@@ -679,10 +679,10 @@ export default class CartCheckout extends Component {
         packName,
         packDes
       }
-    }) 
+    })
   }
 
-  async calcOrder() {
+  async calcOrder () {
     Taro.showLoading({
       title: '加载中',
       mask: true
@@ -774,7 +774,6 @@ export default class CartCheckout extends Component {
     let info = this.state.info
     let pointInfo = this.state.pointInfo
     if (items) {
-     
       // 从后端获取订单item
       info = {
         cart: [
@@ -828,7 +827,7 @@ export default class CartCheckout extends Component {
   }
 
   // 处理导购
-  dealGuidInfo(params) {
+  dealGuidInfo (params) {
     const work_userid = Taro.getStorageSync('work_userid')
     const chatId = Taro.getStorageSync('chatId')
     if (work_userid) {
@@ -852,7 +851,7 @@ export default class CartCheckout extends Component {
         express: receiptType !== 'ziti'
       },
       () => {
-        if (receiptType !== 'ziti') { 
+        if (receiptType !== 'ziti') {
           if (this.props.address) {
             this.props.updateChooseAddress(null)
           } else {
@@ -905,8 +904,9 @@ export default class CartCheckout extends Component {
     Taro.navigateTo({
       url: `/pages/store/ziti-list?shop_id=${id}&cart_type=${cart_type}&order_type=${
         params.order_type
-      }&seckill_id=${seckill_id}&ticket=${ticket}&goodType=${goodType}&bargain_id=${params.bargain_id ||
-        ''}`
+      }&seckill_id=${seckill_id}&ticket=${ticket}&goodType=${goodType}&bargain_id=${
+        params.bargain_id || ''
+      }`
     })
   }
 
@@ -914,7 +914,7 @@ export default class CartCheckout extends Component {
     console.log(type)
   }
 
-  handleClickItems(items) {
+  handleClickItems (items) {
     this.setState({
       curCheckoutItems: items
     })
@@ -970,7 +970,7 @@ export default class CartCheckout extends Component {
     )
   }
 
-  toggleCheckoutItems(isOpened) {
+  toggleCheckoutItems (isOpened) {
     if (isOpened === undefined) {
       isOpened = !this.state.showCheckoutItems
     }
@@ -979,7 +979,7 @@ export default class CartCheckout extends Component {
     this.setState({ showCheckoutItems: isOpened })
   }
 
-  toggleState(key, val) {
+  toggleState (key, val) {
     if (val === undefined) {
       val = !this.state[key]
     }
@@ -1008,7 +1008,7 @@ export default class CartCheckout extends Component {
     console.log(val)
   }
 
-  resolvePayError(e) {
+  resolvePayError (e) {
     const { payType, disabledPayment, defalutPaytype } = this.state
     if (payType === 'point' || payType === 'deposit') {
       const disabledPaymentMes = {}
@@ -1101,10 +1101,10 @@ export default class CartCheckout extends Component {
           if (tmlres.template_id && tmlres.template_id.length > 0) {
             wx.requestSubscribeMessage({
               tmplIds: tmlres.template_id,
-              success() {
+              success () {
                 _this.handlePay()
               },
-              fail() {
+              fail () {
                 _this.handlePay()
               }
             })
@@ -1121,7 +1121,7 @@ export default class CartCheckout extends Component {
     }
   }
 
-  async createByType(params) {
+  async createByType (params) {
     const { freight_type, freight_fee } = this.state.total
 
     const { payType } = this.state
@@ -1150,7 +1150,7 @@ export default class CartCheckout extends Component {
     return info
   }
 
-  async h5CreateByType(params) {
+  async h5CreateByType (params) {
     let info
     if (this.isPointitemGood()) {
       info = await api.trade.h5create({
@@ -1169,7 +1169,7 @@ export default class CartCheckout extends Component {
     // }
     const { payType, total, identity, isOpenStore, curStore, receiptType, channel } = this.state
     const { type, goodType, cart_type } = this.$instance.router.params
- 
+
     const isDrug = type === 'drug'
 
     if (payType === 'point' || payType === 'deposit') {
@@ -1211,7 +1211,7 @@ export default class CartCheckout extends Component {
 
     let order_id, config, payErr
     try {
-      let params = await this.getParams()
+      let params = await this.getParams() || {}
       const getShopId = await this.getShopId()
 
       if (process.env.APP_PLATFORM === 'standard' && cart_type !== 'cart') {
@@ -1252,22 +1252,22 @@ export default class CartCheckout extends Component {
         params = { ...params, ...identity }
       }
 
-      if (
-        isWeb &&
-        payType !== 'point' &&
-        payType !== 'deposit' &&
-        !isDrug
-      ) {
+      if (isWeb && payType !== 'point' && payType !== 'deposit' && !isDrug) {
         config = await this.h5CreateByType({
           ...params,
-          pay_type: this.state.total.freight_type === 'point' ? 'point' : payType===PAYTYPE.ALIH5?PAYTYPE.ALIH5:'wxpay'
+          pay_type:
+            this.state.total.freight_type === 'point'
+              ? 'point'
+              : payType === PAYTYPE.ALIH5
+              ? PAYTYPE.ALIH5
+              : 'wxpay'
         })
-        let redirectPath=`/subpage/pages/cashier/index?order_id=${config.order_id}`;
+        let redirectPath = `/subpage/pages/cashier/index?order_id=${config.order_id}`
 
-        if(payType===PAYTYPE.WXH5||payType===PAYTYPE.ALIH5){
-          redirectPath+=`&pay_type=${payType}`;
+        if (payType === PAYTYPE.WXH5 || payType === PAYTYPE.ALIH5) {
+          redirectPath += `&pay_type=${payType}`
         }
-        redirectUrl(api, redirectPath) 
+        redirectUrl(api, redirectPath)
 
         // Taro.redirectTo({
         //   url: `/subpage/pages/cashier/index?order_id=${config.order_id}&payType=${payType}&type=pointitem`
@@ -1361,7 +1361,6 @@ export default class CartCheckout extends Component {
           return
         }
 
-
         let url = `/subpage/pages/trade/detail?id=${order_id}`
 
         if (isExtraPoint) {
@@ -1385,7 +1384,6 @@ export default class CartCheckout extends Component {
     }
 
     payErr = null
-    console.log('-----configCheckout-----', config, total, config)
     try {
       const { total } = this.state
       const notNeedPay = total.freight_type === 'cash' && !config.package
@@ -1460,7 +1458,6 @@ export default class CartCheckout extends Component {
         if (this.isPointitemGood()) {
           purl += '&type=pointitem'
         }
-
         Taro.redirectTo({
           url: purl
         })
@@ -1555,7 +1552,7 @@ export default class CartCheckout extends Component {
   }
 
   // 设置初次paytype
-  initDefaultPaytype = (payType, channel) => { 
+  initDefaultPaytype = (payType, channel) => {
     this.setState({
       defalutPaytype: payType,
       channel
@@ -1680,7 +1677,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  render() {
+  render () {
     // 支付方式文字
     const payTypeText = {
       point: `${this.props.pointName}支付`,
@@ -1688,9 +1685,9 @@ export default class CartCheckout extends Component {
       deposit: '余额支付',
       delivery: '货到付款',
       hfpay: '微信支付',
-      alipayh5:'支付宝支付',
-      wxpayh5:'微信支付',
-      wxpayjs:'微信支付'
+      alipayh5: '支付宝支付',
+      wxpayh5: '微信支付',
+      wxpayjs: '微信支付'
     }
 
     const { coupon, colors } = this.props
@@ -1720,48 +1717,48 @@ export default class CartCheckout extends Component {
       pack,
       isOpenStore,
       defalutPaytype,
-      headShop,
-    } = this.state;
+      headShop
+    } = this.state
     const { type, goodType, bargain_id } = this.$instance.router.params
     const isDrug = type === 'drug'
     if (!info) {
       return <Loading />
-    } 
+    }
     const couponText = !coupon
       ? ''
       : coupon.type === 'member'
       ? '会员折扣'
       : (coupon.value && coupon.value.title) || ''
     //const isBtnDisabled = !address
-    const isBtnDisabled = express ? !address : false 
+    const isBtnDisabled = express ? !address : false
     return (
       <SpPage
-        className="page-cart-checkout"
+        className='page-cart-checkout'
         renderFooter={
-          <View className="checkout-toolbar">
-            <View className="checkout__total">
-              共<Text className="total-items">{total.items_count}</Text>
+          <View className='checkout-toolbar'>
+            <View className='checkout__total'>
+              共<Text className='total-items'>{total.items_count}</Text>
               件商品　总计:
-              {payType !== "point" && !this.isPointitemGood() ? (
-                <Price primary unit="cent" value={total.total_fee} />
+              {payType !== 'point' && !this.isPointitemGood() ? (
+                <Price primary unit='cent' value={total.total_fee} />
               ) : (
                 total.point && (
-                  <View class="last_price">
+                  <View class='last_price'>
                     <Price
-                      className="order-item__price"
+                      className='order-item__price'
                       appendText={this.props.pointName}
                       noSymbol
                       noDecimal
                       value={total.point}
                     />
                     {!total.freight_fee == 0 &&
-                      total.freight_type === "cash" &&
+                      total.freight_type === 'cash' &&
                       this.isPointitemGood() && (
                         <Price
-                          unit="cent"
+                          unit='cent'
                           plus
                           value={total.freight_fee}
-                          className="order-item__plus"
+                          className='order-item__plus'
                         />
                       )}
                   </View>
@@ -1769,25 +1766,25 @@ export default class CartCheckout extends Component {
               )}
             </View>
             <AtButton
-              type="primary"
-              className="btn-confirm-order"
+              type='primary'
+              className='btn-confirm-order'
               customStyle={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
               loading={submitLoading}
               disabled={isBtnDisabled}
               onClick={this.submitPay}
             >
-              {isDrug ? "提交预约" : "提交订单"}
+              {isDrug ? '提交预约' : '提交订单'}
             </AtButton>
           </View>
         }
       >
         {shoppingGuideData ? (
-          <View className="shopping-guide-header">
+          <View className='shopping-guide-header'>
             此订单商品来自“{shoppingGuideData.store_name}”导购“
             {shoppingGuideData.name}”的推荐
           </View>
         ) : null}
-        <View className="checkout__wrap">
+        <View className='checkout__wrap'>
           <Deliver
             receiptType={receiptType}
             curStore={curStore}
@@ -1797,75 +1794,73 @@ export default class CartCheckout extends Component {
             onChangReceiptType={this.handleSwitchExpress.bind(this)}
             onEidtZiti={this.handleEditZitiClick.bind(this)}
           />
-          {goodType === "cross" && (
-            <SpCell border={false} className="coupons-list">
+          {goodType === 'cross' && (
+            <SpCell border={false} className='coupons-list'>
               <AtInput
-                name="name"
-                title="订购人"
-                type="text"
-                className="identity"
+                name='name'
+                title='订购人'
+                type='text'
+                className='identity'
                 border={false}
-                placeholder="请输入身份证上的姓名"
+                placeholder='请输入身份证上的姓名'
                 value={identity.identity_name}
-                onChange={this.inputChange.bind(this, "identity_name")}
+                onChange={this.inputChange.bind(this, 'identity_name')}
               />
               <AtInput
-                name="cardId"
-                title="身份证号"
-                type="idcard"
-                className="identity"
+                name='cardId'
+                title='身份证号'
+                type='idcard'
+                className='identity'
                 border={false}
-                placeholder="请输入身份证号码"
+                placeholder='请输入身份证号码'
                 value={identity.identity_id}
                 ticket
-                onChange={this.inputChange.bind(this, "identity_id")}
+                onChange={this.inputChange.bind(this, 'identity_id')}
               />
-              <Text className="extDesc">
+              <Text className='extDesc'>
                 根据海关规定，购买人身份信息需与支付软件认证信息一致才可通关。本信息仅作通关用户，将被严格保密
               </Text>
             </SpCell>
           )}
           {/* type !== 'limited_time_sale' */}
-          {type !== "group" &&
-            type !== "seckill" &&
+          {type !== 'group' &&
+            type !== 'seckill' &&
             !bargain_id &&
             !this.isPointitemGood() &&
             !isAlipay && (
               <SpCell
                 isLink
-                className="coupons-list"
-                title="选择优惠券"
+                className='coupons-list'
+                title='选择优惠券'
                 onClick={this.handleCouponsClick}
-                value={couponText || ""}
+                value={couponText || ''}
               />
             )}
 
-          <View className="cart-list">
-            {info.cart.map(cart => {
+          <View className='cart-list'>
+            {info.cart.map((cart) => {
               return (
-                <View className="cart-group" key={cart.shop_id}>
-                  <View className="sec cart-group__cont">
+                <View className='cart-group' key={cart.shop_id}>
+                  <View className='sec cart-group__cont'>
                     {cart.list.map((item, idx) => {
                       return (
-                        <View className="order-item__wrap" key={item.item_id}>
-                          {item.order_item_type === "gift" ? (
-                            <View className="order-item__idx">
+                        <View className='order-item__wrap' key={item.item_id}>
+                          {item.order_item_type === 'gift' ? (
+                            <View className='order-item__idx'>
                               <Text>赠品</Text>
                             </View>
                           ) : (
-                            <View className="order-item__idx national">
+                            <View className='order-item__idx national'>
                               <Text>第{idx + 1}件商品</Text>
-                              {item.type == "1" && (
-                                <View className="nationalInfo">
+                              {item.type == '1' && (
+                                <View className='nationalInfo'>
                                   <Image
-                                    className="nationalFlag"
+                                    className='nationalFlag'
                                     src={item.origincountry_img_url}
-                                    mode="aspectFill"
+                                    mode='aspectFill'
                                     lazyLoad
                                   />
-                                  <Text className="nationalTitle">
-                                    {item.origincountry_name}
-                                  </Text>
+                                  <Text className='nationalTitle'>{item.origincountry_name}</Text>
                                 </View>
                               )}
                             </View>
@@ -1877,14 +1872,11 @@ export default class CartCheckout extends Component {
                             showDesc
                             isPointitemGood={this.isPointitemGood()}
                             renderDesc={
-                              <View className="order-item__desc">
+                              <View className='order-item__desc'>
                                 {item.discount_info &&
-                                  item.order_item_type !== "gift" &&
-                                  item.discount_info.map(discount => (
-                                    <Text
-                                      className="order-item__discount"
-                                      key={discount.type}
-                                    >
+                                  item.order_item_type !== 'gift' &&
+                                  item.discount_info.map((discount) => (
+                                    <Text className='order-item__discount' key={discount.type}>
                                       {discount.info}
                                     </Text>
                                   ))}
@@ -1892,79 +1884,71 @@ export default class CartCheckout extends Component {
                             }
                             customFooter
                             renderFooter={
-                              <View className="order-item__ft">
+                              <View className='order-item__ft'>
                                 {this.isPointitemGood() ? (
                                   <Price
-                                    className="order-item__price"
+                                    className='order-item__price'
                                     appendText={this.props.pointName}
                                     noSymbol
                                     noDecimal
                                     value={item.item_point}
                                   ></Price>
                                 ) : (
-                                  <Price
-                                    className="order-item__price"
-                                    value={item.price}
-                                  ></Price>
+                                  <Price className='order-item__price' value={item.price}></Price>
                                 )}
 
-                                <Text className="order-item__num">
-                                  x {item.num}
-                                </Text>
+                                <Text className='order-item__num'>x {item.num}</Text>
                               </View>
                             }
                           />
                         </View>
-                      );
+                      )
                     })}
                   </View>
                   {isDrug && (
                     <SpCell
                       isLink
-                      className="coupons-list"
-                      title="用药人信息"
+                      className='coupons-list'
+                      title='用药人信息'
                       onClick={this.handleDrugInfoShow}
                       //onChange={this.handleDrugChange}
-                      value={drug ? "已上传" : "用药人及处方上传"}
+                      value={drug ? '已上传' : '用药人及处方上传'}
                       drug={drug}
                     />
                   )}
-                  <View className="sec cart-group__cont">
-                    <SpCell className="sec trade-remark" border={false}>
+                  <View className='sec cart-group__cont'>
+                    <SpCell className='sec trade-remark' border={false}>
                       <AtInput
-                        className="trade-remark__input"
-                        placeholder="给商家留言：选填（50字以内）"
+                        className='trade-remark__input'
+                        placeholder='给商家留言：选填（50字以内）'
                         onChange={this.handleRemarkChange.bind(this)}
                         maxLength={50}
                       />
                     </SpCell>
                   </View>
                 </View>
-              );
+              )
             })}
           </View>
 
-          {isWeixin &&
-            !this.isPointitemGood() &&
-            !bargain_id &&
-            total.invoice_status && (
-              <SpCell
-                isLink
-                className="trade-invoice"
-                title="开发票"
-                onClick={this.handleInvoiceClick}
-              >
-                <View className="invoice-title">
-                  {invoiceTitle && (
-                    <View
-                      className="icon-close invoice-guanbi"
-                      onClick={this.resetInvoice.bind(this)}
-                    ></View>
-                  )}
-                  {invoiceTitle || "否"}
-                </View>
-              </SpCell>
-            )}
+          {isWeixin && !this.isPointitemGood() && !bargain_id && total.invoice_status && (
+            <SpCell
+              isLink
+              className='trade-invoice'
+              title='开发票'
+              onClick={this.handleInvoiceClick}
+            >
+              <View className='invoice-title'>
+                {invoiceTitle && (
+                  <View
+                    className='icon-close invoice-guanbi'
+                    onClick={this.resetInvoice.bind(this)}
+                  ></View>
+                )}
+                {invoiceTitle || '否'}
+              </View>
+            </SpCell>
+          )}
           {isPackage && express && (
             <SelectPackage
               isPointitem={this.isPointitemGood()}
@@ -1974,51 +1958,51 @@ export default class CartCheckout extends Component {
             />
           )}
 
-          {goodType !== "cross" &&
+          {goodType !== 'cross' &&
             !this.isPointitemGood() &&
             pointInfo.is_open_deduct_point &&
-            process.env.APP_PLATFORM !== "platform" && (
+            process.env.APP_PLATFORM !== 'platform' && (
               <SpCell
                 isLink
-                className="trade-invoice"
-                title={customName("积分抵扣")}
+                className='trade-invoice'
+                title={customName('积分抵扣')}
                 onClick={this.handlePointShow}
               >
-                <View className="invoice-title">
-                  {(pointInfo.point_use > 0 || payType === "point") && (
+                <View className='invoice-title'>
+                  {(pointInfo.point_use > 0 || payType === 'point') && (
                     <View
-                      className="icon-close invoice-guanbi"
+                      className='icon-close invoice-guanbi'
                       onClick={this.resetPoint.bind(this)}
                     ></View>
                   )}
-                  {payType === "point"
-                    ? "全额抵扣"
+                  {payType === 'point'
+                    ? '全额抵扣'
                     : pointInfo.point_use > 0
                     ? `${customName(`已使用${pointInfo.real_use_point}积分`)}`
-                    : `${customName("使用积分")}`}
+                    : `${customName('使用积分')}`}
                 </View>
               </SpCell>
             )}
 
-          {goodType !== "cross" &&
+          {goodType !== 'cross' &&
             !this.isPointitemGood() &&
             pointInfo.is_open_deduct_point &&
-            process.env.APP_PLATFORM !== "platform" && (
+            process.env.APP_PLATFORM !== 'platform' && (
               <SpCell
                 isLink
-                className="trade-invoice"
+                className='trade-invoice'
                 title={`${this.props.pointName}抵扣`}
                 onClick={this.handlePointShow}
               >
-                <View className="invoice-title">
-                  {(pointInfo.point_use > 0 || payType === "point") && (
+                <View className='invoice-title'>
+                  {(pointInfo.point_use > 0 || payType === 'point') && (
                     <View
-                      className="icon-close invoice-guanbi"
+                      className='icon-close invoice-guanbi'
                       onClick={this.resetPoint.bind(this)}
                     ></View>
                   )}
-                  {payType === "point"
-                    ? "全额抵扣"
+                  {payType === 'point'
+                    ? '全额抵扣'
                     : pointInfo.point_use > 0
                     ? `已使用${pointInfo.real_use_point}${this.props.pointName}`
                     : `使用${this.props.pointName}`}
@@ -2027,15 +2011,15 @@ export default class CartCheckout extends Component {
             )}
 
           {!bargain_id && !this.isPointitemGood() && (
-            <View className="trade-payment">
+            <View className='trade-payment'>
               <SpCell
                 isLink={!isAlipay}
                 border={false}
-                title="支付方式"
+                title='支付方式'
                 onClick={this.handlePaymentShow}
               >
                 {total.deduction && (
-                  <Text className="trade-payment__hint">
+                  <Text className='trade-payment__hint'>
                     {total.remainpt}
                     {`${this.props.pointName}可用`}
                   </Text>
@@ -2043,87 +2027,78 @@ export default class CartCheckout extends Component {
                 <Text>{payTypeText[payType]}</Text>
               </SpCell>
               {total.deduction && (
-                <View className="trade-payment__hint">
+                <View className='trade-payment__hint'>
                   可用{total.point}
-                  {this.props.pointName}，抵扣{" "}
-                  <Price unit="cent" value={total.deduction} /> (包含运费{" "}
-                  <Price unit="cent" value={total.freight_fee}></Price>)
+                  {this.props.pointName}，抵扣 <Price unit='cent' value={total.deduction} />{' '}
+                  (包含运费 <Price unit='cent' value={total.freight_fee}></Price>)
                 </View>
               )}
             </View>
           )}
 
           {!this.isPointitemGood() && (
-            <View className="sec trade-sub-total">
-              <SpCell className="trade-sub-total__item" title="商品金额：">
-                <Price unit="cent" value={total.item_fee} />
+            <View className='sec trade-sub-total'>
+              <SpCell className='trade-sub-total__item' title='商品金额：'>
+                <Price unit='cent' value={total.item_fee} />
               </SpCell>
-              {goodType === "cross" && (
-                <SpCell className="trade-sub-total__item" title="应税商品金额">
-                  <Price unit="cent" value={total.taxable_fee} />
+              {goodType === 'cross' && (
+                <SpCell className='trade-sub-total__item' title='应税商品金额'>
+                  <Price unit='cent' value={total.taxable_fee} />
                 </SpCell>
               )}
-              <SpCell className="trade-sub-total__item" title="优惠金额：">
-                <Price unit="cent" value={total.discount_fee} />
+              <SpCell className='trade-sub-total__item' title='优惠金额：'>
+                <Price unit='cent' value={total.discount_fee} />
               </SpCell>
-              {goodType !== "cross" &&
+              {goodType !== 'cross' &&
                 pointInfo.is_open_deduct_point &&
-                process.env.APP_PLATFORM !== "platform" && (
-                  <SpCell
-                    className="trade-sub-total__item"
-                    title={`${this.props.pointName}抵扣：`}
-                  >
-                    <Price unit="cent" value={total.point_fee} />
+                process.env.APP_PLATFORM !== 'platform' && (
+                  <SpCell className='trade-sub-total__item' title={`${this.props.pointName}抵扣：`}>
+                    <Price unit='cent' value={total.point_fee} />
                   </SpCell>
                 )}
-              <SpCell className="trade-sub-total__item" title="运费：">
-                <Price unit="cent" value={total.freight_fee} />
+              <SpCell className='trade-sub-total__item' title='运费：'>
+                <Price unit='cent' value={total.freight_fee} />
               </SpCell>
-              {goodType === "cross" && (
-                <SpCell className="trade-sub-total__item" title="税费：">
-                  <Price unit="cent" value={total.total_tax} />
+              {goodType === 'cross' && (
+                <SpCell className='trade-sub-total__item' title='税费：'>
+                  <Price unit='cent' value={total.total_tax} />
                 </SpCell>
               )}
             </View>
           )}
 
           {this.isPointitemGood() && (
-            <View className="sec trade-sub-total">
-              <SpCell
-                className="trade-sub-total__item"
-                title={`${this.props.pointName}消费：`}
-              >
+            <View className='sec trade-sub-total'>
+              <SpCell className='trade-sub-total__item' title={`${this.props.pointName}消费：`}>
                 <Price
-                  className="order-item__price"
+                  className='order-item__price'
                   appendText={this.props.pointName}
                   noSymbol
                   noDecimal
                   value={total.item_point}
                 ></Price>
               </SpCell>
-              <SpCell className="trade-sub-total__item" title="运费：">
-                {total.freight_type === "point" ? (
+              <SpCell className='trade-sub-total__item' title='运费：'>
+                {total.freight_type === 'point' ? (
                   <Price
-                    className="order-item__price"
+                    className='order-item__price'
                     appendText={this.props.pointName}
                     noSymbol
                     noDecimal
                     value={total.freight_fee}
                   />
                 ) : (
-                  <Price unit="cent" value={total.freight_fee} />
+                  <Price unit='cent' value={total.freight_fee} />
                 )}
               </SpCell>
             </View>
           )}
 
-          {goodType === "cross" && (
-            <View className="nationalNotice">
-              <View className="title">
-                关于跨境电子商务年度个人额度注意事项
-              </View>
-              <SpHtmlContent content={quota_tip} className="info" />
-              <View className="copyLink" onClick={this.copyLink}>
+          {goodType === 'cross' && (
+            <View className='nationalNotice'>
+              <View className='title'>关于跨境电子商务年度个人额度注意事项</View>
+              <SpHtmlContent content={quota_tip} className='info' />
+              <View className='copyLink' onClick={this.copyLink}>
                 跨境电子商务年度个人额度查询 点我复制
               </View>
             </View>
@@ -2182,7 +2157,7 @@ export default class CartCheckout extends Component {
           isOpened={isPaymentOpend}
           type={payType}
           isShowPoint={false}
-          isShowBalance={goodType !== "cross"}
+          isShowBalance={goodType !== 'cross'}
           isShowDelivery={false}
           disabledPayment={disabledPayment}
           onClose={this.handleLayoutClose}
@@ -2201,6 +2176,6 @@ export default class CartCheckout extends Component {
 
         <SpToast />
       </SpPage>
-    );
+    )
   }
 }

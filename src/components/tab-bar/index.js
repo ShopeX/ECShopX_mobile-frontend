@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
@@ -13,8 +13,8 @@ const defaultTabList = []
 //   cartCount: cart.cartCount
 // }))
 export default class TabBar extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -30,25 +30,25 @@ export default class TabBar extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.initTabbarData()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.current) {
       this.setState({ localCurrent: nextProps.current })
     }
     this.initTabbarData(nextProps)
   }
 
-  componentDidShow() {
+  componentDidShow () {
     if (this.state.tabList.length > 0) {
       this.fetchCart()
     }
   }
 
-  initTabbarData(props) {
-    const { tabBar } = Object.assign(this.props , props)
+  initTabbarData (props) {
+    const { tabBar } = Object.assign(this.props, props)
     let list = []
 
     if (tabBar) {
@@ -77,36 +77,36 @@ export default class TabBar extends Component {
     } else {
       list = [
         {
-          title: "首页",
-          iconType: "home",
-          iconPrefixClass: "iconfont icon",
-          url: "/pages/index",
+          title: '首页',
+          iconType: 'home',
+          iconPrefixClass: 'iconfont icon',
+          url: '/pages/index',
           urlRedirect: true
         },
         {
-          title: "分类",
-          iconType: "category",
-          iconPrefixClass: "iconfont icon",
-          url: "/pages/category/index",
+          title: '分类',
+          iconType: 'category',
+          iconPrefixClass: 'iconfont icon',
+          url: '/pages/category/index',
           urlRedirect: true
         },
         {
-          title: "购物车",
-          iconType: "cart",
-          iconPrefixClass: "iconfont icon",
-          url: "/pages/cart/espier-index",
-          text: this.cartCount || "",
-          max: "99",
+          title: '购物车',
+          iconType: 'cart',
+          iconPrefixClass: 'iconfont icon',
+          url: '/pages/cart/espier-index',
+          text: this.cartCount || '',
+          max: '99',
           urlRedirect: true
         },
         {
-          title: "我的",
-          iconType: "member",
-          iconPrefixClass: "iconfont icon",
-          url: "/subpages/member/index",
+          title: '我的',
+          iconType: 'member',
+          iconPrefixClass: 'iconfont icon',
+          url: '/subpages/member/index',
           urlRedirect: true
         }
-      ];
+      ]
     }
 
     this.setState(
@@ -119,7 +119,7 @@ export default class TabBar extends Component {
     )
   }
 
-  get cartCount() {
+  get cartCount () {
     // console.log('computed')
     return this.props.cartCount
   }
@@ -132,7 +132,7 @@ export default class TabBar extends Component {
   //   }
   // }
 
-  updateCurTab() {
+  updateCurTab () {
     this.fetchCart()
     const { tabList, localCurrent } = this.state
     const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
@@ -151,7 +151,7 @@ export default class TabBar extends Component {
     }
   }
 
-  async fetchCart() {
+  async fetchCart () {
     if (!S.getAuthToken()) return
     const { tabList } = this.state
     const cartTabIdx = tabList.findIndex((item) => item.url.indexOf('cart') !== -1)
@@ -187,19 +187,18 @@ export default class TabBar extends Component {
         })
       }
       if (url && fullPath !== url) {
-                                     // if (!urlRedirect || (url === '/subpages/member/index' && !S.getAuthToken())) {
-                                     //   Taro.navigateTo({ url })
-                                     // } else {
-                                     Taro.redirectTo({ url });
-                                     // }
-                                   }
+        // if (!urlRedirect || (url === '/subpages/member/index' && !S.getAuthToken())) {
+        //   Taro.navigateTo({ url })
+        // } else {
+        Taro.redirectTo({ url })
+        // }
+      }
     }
   }
 
-  render() {
+  render () {
     const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
     const { tabBar } = this.props
- 
 
     return (
       <AtTabBar

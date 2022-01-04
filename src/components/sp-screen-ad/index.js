@@ -1,54 +1,52 @@
-import React, { Component } from "react";
-import { View, Image, Video } from "@tarojs/components";
-import api from "@/api";
-import { connect } from "react-redux";
-import { linkPage } from "@/utils";
+import React, { Component } from 'react'
+import { View, Image, Video } from '@tarojs/components'
+import api from '@/api'
+import { connect } from 'react-redux'
+import { linkPage } from '@/utils'
 
-import "./index.scss";
+import './index.scss'
 
 @connect(
   () => ({}),
   (dispatch) => ({
-    onUpdateShowAdv: () => dispatch({ type: "member/closeAdv" }),
+    onUpdateShowAdv: () => dispatch({ type: 'member/closeAdv' })
   })
 )
 export default class ScreenAd extends Component {
-  constructor(props) {
-    super(props);
-    this.timeId = null;
+  constructor (props) {
+    super(props)
+    this.timeId = null
     this.state = {
       isShow: false,
       downTime: 10,
       // 是否为视频
       isVideo: true,
       // 按钮位置
-      position: "right_top",
+      position: 'right_top',
       // 是否允许跳过
       isJump: true,
       // 跳转链接
       jumpUrl: {},
       // 图片/视频链接
-      url: "",
-    };
+      url: ''
+    }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // 倒计时
-    this.getSetting();
+    this.getSetting()
   }
 
   // 获取后端配置信息
   getSetting = async () => {
     // const isInit = Taro.getStorageSync('initAdv')
-    const res = await api.promotion.getScreenAd();
-    const env = process.env.TARO_ENV;
+    const res = await api.promotion.getScreenAd()
+    const env = process.env.TARO_ENV
     const client = {
-      weapp: "wapp",
-      h5: "h5",
-    };
-    const isHave =
-      res.is_enable === 1 &&
-      (res.app === "all" || res.app.indexOf(client[env]) !== -1);
+      weapp: 'wapp',
+      h5: 'h5'
+    }
+    const isHave = res.is_enable === 1 && (res.app === 'all' || res.app.indexOf(client[env]) !== -1)
     this.setState(
       {
         isShow: isHave,
@@ -57,94 +55,91 @@ export default class ScreenAd extends Component {
         isJump: res.is_jump === 1,
         downTime: res.waiting_time,
         jumpUrl: res.ad_url,
-        url: res.ad_material,
+        url: res.ad_material
       },
       () => {
         setTimeout(() => {
-          this.countDown();
-        }, 1000);
+          this.countDown()
+        }, 1000)
       }
-    );
-  };
+    )
+  }
 
   // 禁止触摸穿透
   disableTouch = (e) => {
-    e.stopPropagation();
-    return false;
-  };
+    e.stopPropagation()
+    return false
+  }
 
   // 点击广告
   clickAd = (e) => {
-    e && e.stopPropagation();
-    const { jumpUrl } = this.state;
+    e && e.stopPropagation()
+    const { jumpUrl } = this.state
     if (jumpUrl && jumpUrl.linkPage) {
-      linkPage(jumpUrl);
+      linkPage(jumpUrl)
       setTimeout(() => {
-        this.jumpAd();
-      });
+        this.jumpAd()
+      })
     }
-  };
+  }
 
   // 跳过广告
   jumpAd = (e) => {
-    e && e.stopPropagation();
-    const { isJump } = this.state;
-    if (e && !isJump) return false;
-    this.timeId && clearTimeout(this.timeId);
+    e && e.stopPropagation()
+    const { isJump } = this.state
+    if (e && !isJump) return false
+    this.timeId && clearTimeout(this.timeId)
     this.setState(
       {
-        isShow: false,
+        isShow: false
       },
       () => {
-        this.props.onUpdateShowAdv();
+        this.props.onUpdateShowAdv()
       }
-    );
-  };
+    )
+  }
 
   // 倒计时
   countDown = () => {
-    const { downTime } = this.state;
-    const newTime = downTime - 1;
+    const { downTime } = this.state
+    const newTime = downTime - 1
     if (newTime > 0) {
       this.setState(
         {
-          downTime: newTime,
+          downTime: newTime
         },
         () => {
           this.timeId = setTimeout(() => {
-            this.countDown();
-          }, 1000);
+            this.countDown()
+          }, 1000)
         }
-      );
+      )
     } else {
-      this.jumpAd();
+      this.jumpAd()
     }
-  };
+  }
 
-  render() {
-    const { downTime, isShow, position, isVideo, isJump, url } = this.state;
+  render () {
+    const { downTime, isShow, position, isVideo, isJump, url } = this.state
 
     return (
       <View
-        className={`screenAd ${isShow && "show"}`}
+        className={`screenAd ${isShow && 'show'}`}
         onClick={this.clickAd.bind(this)}
         onTouchMove={this.disableTouch.bind(this)}
       >
         {/* 倒计时 */}
-        <View
-          className={`countDown ${position}`}
-          onClick={this.jumpAd.bind(this)}
-        >
+        <View className={`countDown ${position}`} onClick={this.jumpAd.bind(this)}>
           {isJump ? `跳过${downTime}s` : `${downTime}s`}
         </View>
         {!isVideo ? (
-          <Image className="adImg" mode="widthFix" src={url} />
+          <Image className='adImg' mode='widthFix' src={url} />
         ) : (
           <Video
             autoplay
             loop
             onTouchMove={this.disableTouch.bind(this)}
-            className="adVideo"
+            className='adVideo'
             controls={false}
             showProgress={false}
             showFullscreenBtn={false}
@@ -154,6 +149,6 @@ export default class ScreenAd extends Component {
           />
         )}
       </View>
-    );
+    )
   }
 }

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { toggleTouchMove } from '@/utils/dom'
@@ -7,21 +7,19 @@ import { getQueryVariable, isWeixin } from '@/utils'
 
 import './home-header.scss'
 
-function WgtHomeHeader( props ) {
+function WgtHomeHeader (props) {
   const { children } = props
-  const { location = {} } = useSelector(state => state.user)
-  const sys = useSelector( state => state.sys );
+  const { location = {} } = useSelector((state) => state.user)
+  const sys = useSelector((state) => state.sys)
   const { openScanQrcode } = sys
-  
+
   const handlePickStore = () => {
-    Taro.navigateTo( {
+    Taro.navigateTo({
       url: '/subpages/ecshopx/nearly-shop'
     })
   }
 
-  const handleScanCode = () => {
-
-  }
+  const handleScanCode = () => {}
 
   return (
     <View className='home-header'>
@@ -30,10 +28,8 @@ function WgtHomeHeader( props ) {
         <Text className='iconfont icon-qianwang-01'></Text>
       </View>
 
-      <View className='children-block'>
-        {children}
-      </View>
-      
+      <View className='children-block'>{children}</View>
+
       {isWeixin && openScanQrcode == 1 && (
         <View className='scancode' onClick={handleScanCode}>
           <Text className='iconfont icon-scan'></Text>

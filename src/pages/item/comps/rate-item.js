@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { classNames, formatTime } from '@/utils'
 
@@ -9,7 +9,7 @@ export default class RateItem extends Component {
     info: null
   }
 
-  render() {
+  render () {
     const { info, type } = this.props
 
     if (!info) {

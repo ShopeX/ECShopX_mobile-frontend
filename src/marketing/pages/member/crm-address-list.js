@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 // import AddressList from '@/components/new-address/address'
 import { connect } from 'react-redux'
@@ -18,7 +18,7 @@ const ADDRESS_ID = 'third_data'
   (dispatch) => ({})
 )
 export default class CrmAddressList extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -28,11 +28,11 @@ export default class CrmAddressList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // this.fetch()
   }
 
-  componentDidShow() {
+  componentDidShow () {
     // this.fetch()
   }
 
@@ -72,7 +72,7 @@ export default class CrmAddressList extends Component {
       submitLoading: false
     })
   }
-  render() {
+  render () {
     const { colors } = this.props
     const { list, selectedId } = this.state
     console.log('list', list)

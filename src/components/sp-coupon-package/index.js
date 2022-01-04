@@ -1,36 +1,36 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro from "@tarojs/taro";
-import { View } from "@tarojs/components";
+import Taro from '@tarojs/taro'
+import { View } from '@tarojs/components'
 import { AtModal } from 'taro-ui'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
 import S from '@/spx'
-import "./index.scss";
+import './index.scss'
 
 const initialState = {
-   list: []
+  list: []
 }
-function SpCouponPackage( props ) {
-   const [state, setState] = useImmer(initialState);
-   useEffect( () => {
-      if ( S.getAuthToken() ) {
-         getCouponList()
-      }
-   },[])
+function SpCouponPackage (props) {
+  const [state, setState] = useImmer(initialState)
+  useEffect(() => {
+    if (S.getAuthToken()) {
+      getCouponList()
+    }
+  }, [])
 
-   const getCouponList = async () => {
-      const { type } = await api.vip.getCurrentGradList();
-      const { all_card_list } = await api.vip.getShowCardPackage( { receive_type: type } );
-      setState( draft => {
-         draft.list = pickBy(all_card_list, doc.coupon.COUPON_LIST);
-      })
-   }
- 
+  const getCouponList = async () => {
+    const { type } = await api.vip.getCurrentGradList()
+    const { all_card_list } = await api.vip.getShowCardPackage({ receive_type: type })
+    setState((draft) => {
+      draft.list = pickBy(all_card_list, doc.coupon.COUPON_LIST)
+    })
+  }
+
   return (
-    <View className="sp-coupon-package">
+    <View className='sp-coupon-package'>
       {/* <AtModal isOpened={visible} closeOnClickOverlay={false}>
         <View className="title">
           福利专享券
@@ -62,11 +62,11 @@ function SpCouponPackage( props ) {
         </View>
       </AtModal> */}
     </View>
-  );
+  )
 }
 
 SpCouponPackage.options = {
-  addGlobalClass: true,
-};
+  addGlobalClass: true
+}
 
-export default SpCouponPackage;
+export default SpCouponPackage

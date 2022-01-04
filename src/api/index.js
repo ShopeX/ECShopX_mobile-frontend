@@ -24,7 +24,6 @@ import * as pointitem from './pointitem'
 import * as liveroom from './liveroom'
 import * as wgts from './wgts'
 
-
 import * as guide from './guide'
 
 export default {
@@ -43,8 +42,8 @@ export default {
   wx,
   shop,
   distribution,
-	track,
-	vip,
+  track,
+  vip,
   group,
   groupBy,
   wheel,

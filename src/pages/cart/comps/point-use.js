@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import {
@@ -11,7 +11,7 @@ import {
 } from 'taro-ui'
 import { SpCheckbox } from '@/components'
 import './point-use.scss'
-import { DEFAULT_POINT_NAME } from '@/consts';
+import { DEFAULT_POINT_NAME } from '@/consts'
 
 @connect(({ sys, colors }) => ({
   colors: colors.current,
@@ -23,7 +23,7 @@ export default class PointUse extends Component {
     disabledPoint: false
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -73,16 +73,14 @@ export default class PointUse extends Component {
       })
       return max_point
     }
-    this.setState(
-      {
-        point: Number(value) > max_point ? max_point : value,
-        localType: info.deduct_point_rule.full_amount
-          ? Number(value) === max_point
-            ? 'point'
-            : defalutPaytype
+    this.setState({
+      point: Number(value) > max_point ? max_point : value,
+      localType: info.deduct_point_rule.full_amount
+        ? Number(value) === max_point
+          ? 'point'
           : defalutPaytype
-      }
-    )
+        : defalutPaytype
+    })
   }
 
   handleUseFullAmount = (checked) => {
@@ -99,7 +97,7 @@ export default class PointUse extends Component {
     this.props.onChange(point, pay_type)
   }
 
-  render() {
+  render () {
     const { info, isOpened, loading, colors, pointName } = this.props
     const { point, isOpenRule, disabledPoint, localType } = this.state
     if (!info) {
@@ -115,7 +113,7 @@ export default class PointUse extends Component {
               <Text className='rule-title' onClick={this.handleRuleOpen}>
                 使用规则
               </Text>
-              <View className="iconfont icon-close" onClick={this.handleCancel}></View>
+              <View className='iconfont icon-close' onClick={this.handleCancel}></View>
             </View>
             <View className='point-use__bd'>
               <View className='point-item'>
@@ -175,9 +173,7 @@ export default class PointUse extends Component {
           <AtModalContent>
             <View>使用条件</View>
             <View>
-              {`1.${DEFAULT_POINT_NAME}支付不得超出订单应付总金额的 ${
-                deduct_point_rule.deduct_proportion_limit
-              }%；`}
+              {`1.${DEFAULT_POINT_NAME}支付不得超出订单应付总金额的 ${deduct_point_rule.deduct_proportion_limit}%；`}
             </View>
             <View>使用数量</View>
             <View>{`2.${deduct_point_rule.deduct_point} ${pointName}抵 1 元；`}</View>

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { Textarea, View, Image, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
@@ -13,12 +13,13 @@ import './index.scss'
     address: user.address
   }),
   (dispatch) => ({
-    updateChooseAddress: (address) => dispatch({ type: 'user/updateChooseAddress', payload: address })
+    updateChooseAddress: (address) =>
+      dispatch({ type: 'user/updateChooseAddress', payload: address })
   })
 )
 export default class Pay extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
     this.state = {
       cur_address: null,
@@ -29,12 +30,12 @@ export default class Pay extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getOrderInfo()
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.address !== this.props.address) { 
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.address !== this.props.address) {
       this.handleChangeAddress(nextProps.address)
     }
   }
@@ -171,7 +172,7 @@ export default class Pay extends Component {
     })
   }
 
-  render() {
+  render () {
     const { cur_address, remark, goodInfo, purchasePrice, isLoading } = this.state
     return (
       <View className='pay'>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image, Button } from '@tarojs/components'
 
 import './automatic.scss'
@@ -14,7 +14,7 @@ export default class Automatic extends Component {
     addGlobalClass: true
   }
 
-  render() {
+  render () {
     const { info, onClick, onClose, isShow } = this.props
 
     if (!info) {

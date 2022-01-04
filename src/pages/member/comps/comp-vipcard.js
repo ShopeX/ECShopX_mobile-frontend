@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { styleNames } from '@/utils'
 
 import './comp-vipcard.scss'
 
-function CompsVipCard(props) {
+function CompsVipCard (props) {
   return (
     <View
       className='comp-vipcard'

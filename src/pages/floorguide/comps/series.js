@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { Loading } from '@/components'
@@ -20,7 +20,7 @@ export default class Series extends Component {
     imgType: true
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -29,7 +29,7 @@ export default class Series extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -58,7 +58,7 @@ export default class Series extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info, isChanged, pluralType, imgType } = this.props
     const { currentIndex, curTag } = this.state
     if (!info) {

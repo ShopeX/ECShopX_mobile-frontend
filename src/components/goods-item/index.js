@@ -1,24 +1,26 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { SpImg, PointLine } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 
-import { isObject, classNames,isWeb } from '@/utils'
-import { fetchUserFavs, addUserFav, deleteUserFav } from "@/store/slices/user";
+import { isObject, classNames, isWeb } from '@/utils'
+import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 
 import './index.scss'
 import configStore from '@/store'
-const  store  = configStore()
+
+const store = configStore()
 
 @connect(
-  ({ colors,user }) => ({
+  ({ colors, user }) => ({
     colors: colors.current,
-    favs:user.favs
+    favs: user.favs
   }),
   (dispatch) => ({
-    onAddFav: ({ item_id, fav_id }) => dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
+    onAddFav: ({ item_id, fav_id }) =>
+      dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
     onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
   })
 )
@@ -43,17 +45,16 @@ export default class GoodsItem extends Component {
 
   static externalClasses = ['classes']
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     const { is_fav } = nextProps.info
     this.setState({
       is_fav
     })
   }
 
-
   handleFavClick = async () => {
     const { item_id } = this.props.info
-    const {is_fav } = this.state
+    const { is_fav } = this.state
     if (!is_fav) {
       const favRes = await api.member.addFav(item_id)
       this.props.onAddFav(favRes)
@@ -70,7 +71,7 @@ export default class GoodsItem extends Component {
     })
   }
 
-  render() {
+  render () {
     const {
       info,
       cart,
@@ -87,7 +88,6 @@ export default class GoodsItem extends Component {
       isPointitem,
       showNewGift
     } = this.props
- 
 
     if (!info) {
       return null
@@ -134,12 +134,10 @@ export default class GoodsItem extends Component {
       marketPrice = info.market_price
     }
 
-
     const isShow = info.store && info.store == 0
 
-    
     return (
-      <View className={classNames('goods-item', 'classes',{'cart':cart && isWeb})}>
+      <View className={classNames('goods-item', 'classes', { 'cart': cart && isWeb })}>
         <View className='goods-item__hd'>{this.props.renderCheckbox}</View>
         <View className='goods-item__bd'>
           {/* 库存判断 */}
@@ -231,9 +229,9 @@ export default class GoodsItem extends Component {
                   </View>
                   {Boolean(+marketPrice) && (
                     <Text
-                      className={`goods-item__price-market ${isShow &&
-                        showNewGift &&
-                        'goods-item__gray'}`}
+                      className={`goods-item__price-market ${
+                        isShow && showNewGift && 'goods-item__gray'
+                      }`}
                     >
                       ¥{marketPrice}
                     </Text>
@@ -245,7 +243,10 @@ export default class GoodsItem extends Component {
                 <View className='goods-item__actions'>
                   {type === 'item' && (
                     <View
-                      className={classNames('iconfont', this.state.is_fav ? 'icon-star_on' : 'icon-star')}
+                      className={classNames(
+                        'iconfont',
+                        this.state.is_fav ? 'icon-star_on' : 'icon-star'
+                      )}
                       onClick={this.handleFavClick}
                       style={this.state.is_fav ? { color: colors.data[0].primary } : {}}
                     />

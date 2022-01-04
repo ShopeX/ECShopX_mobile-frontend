@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Button, View } from '@tarojs/components'
 
 export default class GetUserInfoBtn extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.setState({
       canIUseGetUserProfile: false
     })
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (wx.getUserProfile) {
       this.setState({
         canIUseGetUserProfile: true
@@ -42,7 +42,7 @@ export default class GetUserInfoBtn extends Component {
     onGetUserInfo && onGetUserInfo(res)
   }
 
-  render() {
+  render () {
     const { isGetUserInfo = false } = this.props
     const { canIUseGetUserProfile } = this.state
 

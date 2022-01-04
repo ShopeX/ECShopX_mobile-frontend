@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { Button, Image, View } from '@tarojs/components'
 import api from '@/api'
 import { formatDateTime } from '@/utils'
@@ -9,8 +9,8 @@ import payFailPng from '../../../assets/imgs/pay_fail.png'
 import './cashier-result.scss'
 
 export default class CashierResult extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -21,7 +21,7 @@ export default class CashierResult extends Component {
       showTabBar: ''
     }
   }
-  componentDidMount() { 
+  componentDidMount () {
     Taro.showLoading()
     setInterval(() => {
       Taro.hideLoading()
@@ -29,7 +29,7 @@ export default class CashierResult extends Component {
     }, 1000)
   }
 
-  async fetch() {
+  async fetch () {
     const { order_id } = this.$instance.router.params
     const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
 
@@ -63,7 +63,7 @@ export default class CashierResult extends Component {
     })
   }
 
-  render() {
+  render () {
     const { orderInfo, tradeInfo, showTabBar } = this.state
 
     if (!orderInfo) return null
@@ -73,7 +73,7 @@ export default class CashierResult extends Component {
       ingUrl = paySuccessPng
     }
 
-    console.log("===tradeInfo===",tradeInfo)
+    console.log('===tradeInfo===', tradeInfo)
 
     return (
       <View className='page-cashier-index'>

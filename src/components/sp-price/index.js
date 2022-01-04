@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Text } from '@tarojs/components'
 import { classNames, isNumber } from '@/utils'
 
@@ -22,7 +22,7 @@ export default class SpPrice extends Component {
 
   static externalClasses = ['classes']
 
-  render() {
+  render () {
     const {
       value = '',
       noSymbol,

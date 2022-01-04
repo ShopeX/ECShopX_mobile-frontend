@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { Price, SpImg, PointTag } from '@/components'
 import { connect } from 'react-redux'
@@ -11,19 +11,19 @@ import './order-item.scss'
 export default class OrderItem extends Component {
   static defaultProps = {
     onClick: () => {},
-    payType: "",
+    payType: '',
     showExtra: true,
     info: null,
     isShowNational: false,
     isPointitemGood: false,
-    isShowPointTag: false,
-  };
+    isShowPointTag: false
+  }
 
   static options = {
-    addGlobalClass: true,
-  };
+    addGlobalClass: true
+  }
 
-  render() {
+  render () {
     const {
       info,
       onClick,
@@ -32,58 +32,46 @@ export default class OrderItem extends Component {
       showDesc,
       customFooter,
       isShowNational,
-      isPointitemGood,
-    } = this.props;
-    if (!info) return null;
+      isPointitemGood
+    } = this.props
+    if (!info) return null
 
-    const img = info.pic_path
-      ? info.pic_path
-      : Array.isArray(info.pics)
-      ? info.pics[0]
-      : info.pics;
+    const img = info.pic_path ? info.pic_path : Array.isArray(info.pics) ? info.pics[0] : info.pics
 
     return (
-      <View className="order-item" onClick={onClick}>
-        <View className="order-item__hd">
-          <SpImg
-            img-class="order-item__img"
-            src={img}
-            mode="aspectFill"
-            width="300"
-            lazyLoad
-          />
+      <View className='order-item' onClick={onClick}>
+        <View className='order-item__hd'>
+          <SpImg img-class='order-item__img' src={img} mode='aspectFill' width='300' lazyLoad />
         </View>
-        <View className="order-item__bd">
-          {isShowNational && info.type == "1" && info.origincountry_name && (
-            <View className="nationalInfo">
+        <View className='order-item__bd'>
+          {isShowNational && info.type == '1' && info.origincountry_name && (
+            <View className='nationalInfo'>
               <Image
-                className="nationalFlag"
+                className='nationalFlag'
                 src={info.origincountry_img_url}
-                mode="aspectFill"
+                mode='aspectFill'
                 lazyLoad
               />
-              <Text className="nationalTitle">{info.origincountry_name}</Text>
+              <Text className='nationalTitle'>{info.origincountry_name}</Text>
             </View>
           )}
           {isShowPointTag && <PointTag />}
-          <View className="order-item__title">
-            {info.order_item_type === "plus_buy" && (
-              <Text className="order-item__title-tag">换购</Text>
+          <View className='order-item__title'>
+            {info.order_item_type === 'plus_buy' && (
+              <Text className='order-item__title-tag'>换购</Text>
             )}
             {info.title}
           </View>
           {showDesc && info.item_spec_desc && (
-            <Text className="order-item__spec">{info.item_spec_desc}</Text>
+            <Text className='order-item__spec'>{info.item_spec_desc}</Text>
           )}
           {this.props.renderDesc}
           {showExtra && (
-            <View className="order-item__extra">
-              <Text className="order-item__desc">{info.goods_props}</Text>
-              {info.num && (
-                <Text className="order-item__num">数量：{info.num}</Text>
-              )}
+            <View className='order-item__extra'>
+              <Text className='order-item__desc'>{info.goods_props}</Text>
+              {info.num && <Text className='order-item__num'>数量：{info.num}</Text>}
               {info.item_spec_desc && (
-                <Text className="order-item__desc">{info.item_spec_desc}</Text>
+                <Text className='order-item__desc'>{info.item_spec_desc}</Text>
               )}
             </View>
           )}
@@ -91,10 +79,10 @@ export default class OrderItem extends Component {
         {customFooter ? (
           this.props.renderFooter
         ) : (
-          <View className='order-item__ft'> 
+          <View className='order-item__ft'>
             {isPointitemGood ? (
               <Price
-                className="order-item__price"
+                className='order-item__price'
                 appendText={this.props.pointName}
                 noSymbol
                 noDecimal
@@ -102,11 +90,10 @@ export default class OrderItem extends Component {
               ></Price>
             ) : (
               <Price className='order-item__price' value={info.price}></Price>
-            )} 
-           
+            )}
           </View>
         )}
       </View>
-    );
+    )
   }
 }

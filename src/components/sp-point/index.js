@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { DEFAULT_POINT_NAME } from '@/consts'
@@ -11,7 +11,7 @@ export default class SpPoint extends Component {
     value: 0
   }
 
-  render() {
+  render () {
     const { className, value } = this.props
     const unit = Taro.getStorageInfoSync('custom_point_name') || DEFAULT_POINT_NAME
 

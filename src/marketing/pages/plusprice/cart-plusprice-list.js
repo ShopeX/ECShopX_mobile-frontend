@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar, SpCheckboxNew } from '@/components'
@@ -17,8 +17,8 @@ import './plusprice.scss'
 @withPager
 @withBackToTop
 export default class DetailPluspriceList extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -30,11 +30,11 @@ export default class DetailPluspriceList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.nextPage()
   }
 
-  handleClickItem(item) {
+  handleClickItem (item) {
     const { distributor_id } = item
     const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
@@ -55,7 +55,7 @@ export default class DetailPluspriceList extends Component {
     })
   }
 
-  async handleClickConfirm(type) {
+  async handleClickConfirm (type) {
     let { list } = this.state
     if (!list.length) return
     const selected = list.filter((v) => v.is_checked)
@@ -83,7 +83,7 @@ export default class DetailPluspriceList extends Component {
     }, 300)
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       marketing_id: this.$instance.router.params.marketing_id,
@@ -112,14 +112,11 @@ export default class DetailPluspriceList extends Component {
     }
   }
 
-  render() {
+  render () {
     const { colors } = this.props
     const { list, showBackToTop, scrollTop, page } = this.state
     return (
-      <View
-        className='cart-page-plusprice'
-        style={`background: ${colors.data[0].primary}`}
-      >
+      <View className='cart-page-plusprice' style={`background: ${colors.data[0].primary}`}>
         {hasNavbar && <SpNavBar title='微商城' />}
         <ScrollView
           className='cart-page-plusprice-goods__scroll'
@@ -145,7 +142,7 @@ export default class DetailPluspriceList extends Component {
                         key={item.item_id}
                         info={item}
                         showFav={false}
-                        onClick={this.handleClickItem.bind(this,item)}
+                        onClick={this.handleClickItem.bind(this, item)}
                       ></GoodsItem>
                     </View>
                   </View>

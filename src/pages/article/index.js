@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
 import { SpHtmlContent } from '@/components'
@@ -8,8 +8,8 @@ import { formatTime } from '@/utils'
 import './index.scss'
 
 export default class ArticleIndex extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -17,11 +17,11 @@ export default class ArticleIndex extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     const { id } = this.$instance.router.params
     const info = await api.article.detail(id)
 
@@ -34,7 +34,7 @@ export default class ArticleIndex extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info } = this.state
 
     if (!info) {

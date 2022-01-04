@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { normalizeQuerys } from '@/utils'
@@ -13,15 +13,15 @@ import './landing.scss'
   })
 )
 export default class Landing extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
       ...this.state
     }
   }
-  async componentDidMount() {
+  async componentDidMount () {
     const query = await normalizeQuerys(this.$instance.router.params)
 
     this.props.onUserLanding(query)
@@ -29,13 +29,13 @@ export default class Landing extends Component {
     this.fetch()
   }
 
-  async fetch() {
+  async fetch () {
     Taro.redirectTo({
       url: '/subpage/pages/auth/reg'
     })
   }
 
-  render() {
+  render () {
     return (
       <View className='page-member-integral'>
         <View>跳转中...</View>

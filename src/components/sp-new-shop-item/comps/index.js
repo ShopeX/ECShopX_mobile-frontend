@@ -1,5 +1,3 @@
-import DistributionLabel from "./distribution-label";
+import DistributionLabel from './distribution-label'
 
-export {
-    DistributionLabel
-}
+export { DistributionLabel }

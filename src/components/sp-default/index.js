@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
 import SpImage from './../sp-image'
@@ -9,7 +9,7 @@ const TYPES = {
   cart: 'empty_cart.png'
 }
 
-function SpDefault(props) {
+function SpDefault (props) {
   const { className, message, children, type } = props
   return (
     <View
@@ -21,7 +21,7 @@ function SpDefault(props) {
       )}
     >
       <View className='sp-default-hd'>
-        {type && <SpImage className='default-img' src={TYPES[type]} width={ 350 } />}
+        {type && <SpImage className='default-img' src={TYPES[type]} width={350} />}
       </View>
       <View className='sp-default-bd'>{message}</View>
       <View className='sp-default-ft'>{children}</View>

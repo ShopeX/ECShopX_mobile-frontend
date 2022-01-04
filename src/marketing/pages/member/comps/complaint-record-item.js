@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image } from '@tarojs/components'
 import { AtAvatar, AtTextarea } from 'taro-ui'
 import { formatDateTime } from '@/utils'
@@ -10,15 +10,15 @@ export default class ComplaintRecordItem extends Component {
     isOpened: false
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {}
   }
 
-  componentDidMount() {}
+  componentDidMount () {}
 
-  render() {
+  render () {
     let { info, onClick } = this.props
 
     if (!info) return null

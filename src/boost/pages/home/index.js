@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { SpNavBar } from '@/components'
 import api from '@/api'
@@ -10,7 +10,7 @@ import BargainItem from '../../component/bargainItem'
 import './index.scss'
 
 export default class Home extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       param: {
@@ -25,7 +25,7 @@ export default class Home extends Component {
       isEmpty: false
     }
   }
-  componentDidMount() {
+  componentDidMount () {
     this.getList()
   }
 
@@ -86,13 +86,13 @@ export default class Home extends Component {
     this.getList()
   }
 
-  render() {
+  render () {
     const { list, scrollTop, isRefresh, isLoading, isEnd, isEmpty } = this.state
     return (
-      <View className="home">
-        <SpNavBar title={"助力首页"} leftIconType="chevron-left" fixed="true" />
+      <View className='home'>
+        <SpNavBar title='助力首页' leftIconType='chevron-left' fixed='true' />
         <ScrollView
-          className="list"
+          className='list'
           scrollY
           scroll-anchoring
           refresherEnabled
@@ -105,16 +105,16 @@ export default class Home extends Component {
         >
           {/* 列表图 */}
           {list.map((item) => (
-            <View className="item" key={item.bargain_id}>
+            <View className='item' key={item.bargain_id}>
               <BargainItem info={item} />
             </View>
           ))}
           {/* 加载更多 */}
           <LoadingMore isLoading={isLoading} isEnd={isEnd} isEmpty={isEmpty} />
           {/* 防止子内容无法支撑scroll-view下拉刷新 */}
-          <View style="width:2rpx;height:2rpx;bottom:-2rpx;position:absolute;" />
+          <View style='width:2rpx;height:2rpx;bottom:-2rpx;position:absolute;' />
         </ScrollView>
       </View>
-    );
+    )
   }
 }

@@ -21,7 +21,6 @@ export function category () {
   return req.get('/category.itemCategory')
 }
 
-
 export function seckillCheck ({ item_id, num = 1, seckill_id }) {
   return req.get('/promotion/seckillactivity/geticket', {
     item_id,
@@ -50,25 +49,24 @@ export function replyRate (params) {
   return req.post('/order/replyRate', params)
 }
 
-export function getEvaluationDetail (rate_id,params = {}){
-  return req.get(`/order/rate/detail/${rate_id}`,params)
+export function getEvaluationDetail (rate_id, params = {}) {
+  return req.get(`/order/rate/detail/${rate_id}`, params)
 }
-export function getreplyRateList (params = {}){
-  return req.get(`/order/replyRate/list`,params)
+export function getreplyRateList (params = {}) {
+  return req.get(`/order/replyRate/list`, params)
 }
-export function getRatePraiseStatus (params = {}){
-  return req.get(`/order/ratePraise/status`,params)
+export function getRatePraiseStatus (params = {}) {
+  return req.get(`/order/ratePraise/status`, params)
 }
 
 export function getDetailShare (params) {
   return req.post('/salesperson/task/share', params)
 }
 
-//  获取分享配置 
+//  获取分享配置
 export function getShareSetting (id) {
   return req.get(`/goods/share/items/${id}`)
 }
-
 
 //  获取是否分享携带店铺id配置
 export function getShareDtidSetting () {

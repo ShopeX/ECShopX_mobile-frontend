@@ -9,7 +9,7 @@
  * @LastEditTime: 2020-07-07 10:18:03
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
 
@@ -28,7 +28,7 @@ export default class ImgSpec extends Component {
     this.props.onClick(index)
   }
 
-  render() {
+  render () {
     const { info, current, onClick } = this.props
     if (!info) {
       return null

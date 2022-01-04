@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, Image, Button } from '@tarojs/components'
 // import { AtButton } from 'taro-ui'
 import { classNames } from '@/utils'
@@ -16,7 +16,7 @@ export default class DistributionGoodsItem extends Component {
     addGlobalClass: true
   }
 
-  render() {
+  render () {
     const { info, onClick, className, isRelease, status } = this.props
     if (!info) {
       return null

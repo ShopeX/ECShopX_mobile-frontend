@@ -18,7 +18,6 @@ export function getPointSetting (params = {}) {
   return req.get('/point/rule', params)
 }
 
-
 //获取商城配置
 export function getPointitemSetting (params = {}) {
   // return req.get('/item.search', params)
@@ -42,6 +41,5 @@ export function detail (item_id, params = {}) {
 }
 //猜你喜欢
 export function likeList (params) {
-  return req.get(`/pointsmall/lovely/goods/items`,params)
-  
+  return req.get(`/pointsmall/lovely/goods/items`, params)
 }

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar } from '@/components'
@@ -12,15 +12,15 @@ import _mapKeys from 'lodash/mapKeys'
 import TradeItem from './comps/item'
 
 import './list.scss'
+
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 @withPager
 @withLogin()
 export default class AfterSale extends Component {
-  $instance = getCurrentInstance();
-  constructor(props) {
+  $instance = getCurrentInstance()
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -37,7 +37,7 @@ export default class AfterSale extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { status } = this.$instance.router.params
     const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
 
@@ -55,7 +55,7 @@ export default class AfterSale extends Component {
     }
   }
 
-  async fetch(params) {
+  async fetch (params) {
     const { tabList, curTabIdx } = this.state
 
     params = _mapKeys(
@@ -80,7 +80,7 @@ export default class AfterSale extends Component {
       payment: ({ refund_fee }) => (refund_fee / 100).toFixed(2),
       pay_type: 'pay_type',
       point: 'point',
-      distributor_info:'distributor_info',
+      distributor_info: 'distributor_info',
       order: ({ detail }) =>
         pickBy(detail, {
           order_id: 'order_id',
@@ -130,7 +130,7 @@ export default class AfterSale extends Component {
     })
   }
 
-  render() {
+  render () {
     const { curTabIdx, tabList, list, page } = this.state
 
     return (
@@ -155,11 +155,11 @@ export default class AfterSale extends Component {
                   key={`${idx}1`}
                   payType={item.pay_type}
                   customHeader
-                  renderHeader={ 
-                      <View className='trade-item__hd-cont trade-cont'>
-                        <Text className='trade-item__shop'>退款单号：{item.id}&#12288;</Text>
-                        <Text className='more'>{item.status_desc}</Text>
-                      </View> 
+                  renderHeader={
+                    <View className='trade-item__hd-cont trade-cont'>
+                      <Text className='trade-item__shop'>退款单号：{item.id}&#12288;</Text>
+                      <Text className='more'>{item.status_desc}</Text>
+                    </View>
                   }
                   customFooter
                   renderFooter={<View></View>}

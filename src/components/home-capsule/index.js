@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
- import Taro, { getCurrentInstance } from '@tarojs/taro';
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 
@@ -10,19 +10,19 @@ export default class HomeCapsule extends Component {
     url: ''
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (process.env.TARO_ENV === 'weapp') {
     }
   }
 
-  handleClick() {
+  handleClick () {
     const { url } = this.props
     Taro.navigateTo({
       url: url || '/pages/index'
     })
   }
 
-  render() {
+  render () {
     const { className, style } = this.props
     const classes = classNames('home-capsule', className)
 

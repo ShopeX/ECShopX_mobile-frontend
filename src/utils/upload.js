@@ -27,7 +27,7 @@ const upload = {
       const res = await Taro.uploadFile({
         url: host,
         filePath: item.url,
-        name: "file",
+        name: 'file',
         withCredentials: false,
         formData: {
           name: filename,
@@ -36,11 +36,11 @@ const upload = {
           OSSAccessKeyId: accessid,
           // 让服务端返回200
           signature: signature,
-          success_action_status: "200",
+          success_action_status: '200'
           // 服务端回调
           // callback: callback
-        },
-      });
+        }
+      })
       if (!res) {
         return false
       }
@@ -52,18 +52,18 @@ const upload = {
     }
   },
   qiNiuUpload: async (item, tokenRes) => {
-    const { token, key, domain, host } = tokenRes 
-    
-    const uploadFile = isAlipay ? my.uploadFile : Taro.uploadFile;
-  
+    const { token, key, domain, host } = tokenRes
+
+    const uploadFile = isAlipay ? my.uploadFile : Taro.uploadFile
+
     try {
       const { data } = await uploadFile({
         url: host,
         filePath: item.url,
         fileType: 'image',
         withCredentials: false,
-        [isAlipay?'fileName':'name']: 'file',
-        formData:{
+        [isAlipay ? 'fileName' : 'name']: 'file',
+        formData: {
           'token': token,
           'key': key
         }
@@ -76,11 +76,11 @@ const upload = {
         url: `${domain}/${imgData.key}`
       }
     } catch (e) {
-      throw new Error (e)
-    } 
+      throw new Error(e)
+    }
   },
   localUpload: async (item, tokenRes) => {
-    const { filetype = "image", domain } = tokenRes
+    const { filetype = 'image', domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
     const { appid } = getAppId()
     try {
@@ -89,14 +89,14 @@ const upload = {
         filePath: item.url,
         header: {
           Authorization: `Bearer ${S.getAuthToken()}`,
-          "authorizer-appid": appid,
+          'authorizer-appid': appid
         },
-        name: "images",
+        name: 'images',
         formData: {
           name: filename,
-          filetype,
-        },
-      });
+          filetype
+        }
+      })
       const data = JSON.parse(res.data)
       const { image_url } = data.data
       if (!image_url) {
@@ -167,7 +167,7 @@ const getUploadFun = (dirver) => {
 
 // 返回对应上传方式
 const uploadImageFn = async (imgFiles, filetype = 'image') => {
-  console.log("---imgFiles---", imgFiles)
+  console.log('---imgFiles---', imgFiles)
   const imgs = []
   for (const item of imgFiles) {
     if (!item.file) {
@@ -180,7 +180,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
       const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
       const { driver, token } = await getToken({ filetype, filename })
       const uploadType = getUploadFun(driver)
-      console.log("----uploadType----", uploadType)
+      console.log('----uploadType----', uploadType)
       const img = await upload[uploadType](item, { ...token, filetype })
       if (!img || !img.url) {
         continue
@@ -190,7 +190,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
       console.log(e)
     }
   }
-  console.log("---uploadImageFn---", imgs)
+  console.log('---uploadImageFn---', imgs)
   return imgs
 }
 

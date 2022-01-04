@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View } from '@tarojs/components'
 
 import './writing.scss'
@@ -12,7 +12,7 @@ export default class WgtWriting extends Component {
     info: null
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class WgtWriting extends Component {
     })
   }
 
-  render() {
+  render () {
     const { info } = this.props
     const { curIdx } = this.state
 
