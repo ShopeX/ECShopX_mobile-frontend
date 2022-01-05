@@ -4,19 +4,18 @@ import { ScrollView, View, Text } from '@tarojs/components'
 import { isUndefined, getThemeStyle, styleNames, showToast, isArray } from '@/utils'
 import { SpPage } from '@/components'
 import { MButton, MStep, MNavBar, MCell, MImgPicker } from './comps'
-import { useArea, useUpdate } from './hook'
-import { useSelector, useDispatch } from 'react-redux'
-import { updateState } from '@/store/slices/merchant'
+import { useArea, useUpdate, usePrevious } from './hook'
+import { navigateToAgreement, getMerchant, setMerchant, clearMerchant } from './util'
 import {
   MERCHANT_TYPE,
   BUSINESS_SCOPE,
   STEPTWOTEXT,
   STEPTHREETEXT,
-  AUDIT_FAIL,
-  AUDIT_UNKNOWN
+  MerchantStepKey
 } from './consts'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import S from '@/spx'
 import './apply.scss'
 import { useDepChange } from '@/hooks'
 
@@ -69,34 +68,15 @@ const initialState = {
 }
 
 const Apply = () => {
-  const dispatch = useDispatch()
-
   const [state, setState] = useImmer(initialState)
 
-  const { merchantType, businessScope } = useSelector((state) => state.merchant)
+  const { merchantType, businessScope } = getMerchant()
 
   const [merchantOptions, setMerchantOptions] = useState([])
 
-  const {
-    params: { isEdit }
-  } = useRouter()
+  const update = useUpdate()
 
-  useEffect(() => {
-    //必有经营范围
-    if (businessScope.id) {
-      setState((state) => {
-        state.merchant_type_id = businessScope.id
-      })
-    }
-  }, [businessScope])
-
-  useDepChange(() => {
-    if (merchantType.id) {
-      //显示
-      dispatch(updateState({ key: BUSINESS_SCOPE }))
-    }
-  }, [merchantType])
-
+  const previousMerchantType = usePrevious(merchantType)
   //结算银行必填
   const banknameRequired = state.bank_acct_type == 1
 
@@ -112,6 +92,14 @@ const Apply = () => {
 
   //当前正在第几步
   const [step, setStep] = useState(1)
+
+  useEffect(() => {
+    if (!previousMerchantType) return
+    if (merchantType.id !== previousMerchantType?.id) {
+      setMerchant({ key: BUSINESS_SCOPE })
+      update()
+    }
+  }, [merchantType])
 
   const [loading, setLoading] = useState(false)
 
@@ -132,13 +120,22 @@ const Apply = () => {
   }
 
   useEffect(() => {
+    //必有经营范围
+    if (businessScope.id) {
+      setState((state) => {
+        state.merchant_type_id = businessScope.id
+      })
+    }
+  }, [businessScope])
+
+  useEffect(() => {
     if (selectArea.length) {
       setState((state) => {
         state.regions = selectArea.map((item) => item.label)
         state.regions_id = selectArea.map((item) => item.value)
       })
     }
-  }, [selectArea])
+  }, [selectArea, state])
 
   const handleSubmit = async () => {
     const {
@@ -256,7 +253,7 @@ const Apply = () => {
     try {
       await api.merchant.save(params)
       if (step === 3) {
-        updateStoreState({}, true)
+        S.delete(MerchantStepKey, true)
         Taro.redirectTo({
           url: `/subpages/merchant/audit`
         })
@@ -266,20 +263,6 @@ const Apply = () => {
       setLoading(false)
       return true
     }
-  }
-
-  const updateStoreState = ({ merchantObj, businessObj }, isReset = false) => {
-    let newMerchantObj = { key: MERCHANT_TYPE }
-    let newBusinessObj = { key: BUSINESS_SCOPE }
-    if (isReset) {
-      newMerchantObj = { ...newMerchantObj }
-      newBusinessObj = { ...newBusinessObj }
-    } else {
-      newMerchantObj = { ...newMerchantObj, ...merchantObj }
-      newBusinessObj = { ...newBusinessObj, ...businessObj }
-    }
-    dispatch(updateState(newMerchantObj))
-    dispatch(updateState(newBusinessObj))
   }
 
   const getDetail = async () => {
@@ -311,18 +294,22 @@ const Apply = () => {
 
     //有保存过才赋值
     if (merchant_type_id) {
-      updateStoreState({
-        merchantObj: {
+      //缓存已经存在数据则不从接口读取
+      if (!merchantType.id) {
+        setMerchant({
+          key: MERCHANT_TYPE,
           id: merchant_type_parent_id,
           name: merchant_type_parent_name,
           parent_id: 0
-        },
-        businessObj: {
+        })
+        setMerchant({
+          key: BUSINESS_SCOPE,
           id: merchant_type_id,
           name: merchant_type_name,
           parent_id: merchant_type_parent_id
-        }
-      })
+        })
+      }
+
       setState((state) => {
         state.settled_type = settled_type
         state.merchant_type_id = merchant_type_id
@@ -355,7 +342,7 @@ const Apply = () => {
       if (end) return
     }
     let nextStep = direction === 'next' ? Math.min(step + 1, 3) : Math.max(step - 1, 1)
-    Taro.setStorageSync('merchant-step', nextStep)
+    S.set(MerchantStepKey, nextStep, true)
     setStep(nextStep)
   }
 
@@ -365,7 +352,7 @@ const Apply = () => {
     const is_audit = step == 4
     //如果是审核失败跳回第一步
     if (is_audit) {
-      const storeStep = Taro.getStorageSync('merchant-step')
+      const storeStep = S.get(MerchantStepKey, true)
       setStep(storeStep ? storeStep : 1)
     } else {
       setStep(step)
@@ -373,6 +360,10 @@ const Apply = () => {
     //大于1才调用详情
     if (step > 1) {
       getDetail()
+    }
+    //如果是一步都没走
+    if (step === 1) {
+      S.delete(MerchantStepKey, true)
     }
   }
 
@@ -395,6 +386,10 @@ const Apply = () => {
 
   useEffect(() => {
     getStep()
+    return () => {
+      S.delete(MerchantStepKey, true)
+      clearMerchant()
+    }
   }, [])
 
   const handleSwitchSelector = (type) => () => {
@@ -407,17 +402,19 @@ const Apply = () => {
     })
   }
 
-  useDidShow(async () => {})
+  const handleLogout = () => {
+    S.delete(MerchantStepKey, true)
+  }
 
-  console.log('===>form===>', state)
+  useDidShow(() => {
+    update()
+  })
+
+  const fieldName = state.settled_type === 'soletrader' ? '负责人' : '法人'
 
   return (
     <SpPage className='page-merchant-apply' needNavbar={false}>
-      <MNavBar
-        canBack={step !== 1}
-        onBack={handleStep('back')}
-        onLogout={() => updateStoreState({}, true)}
-      />
+      <MNavBar canBack={step !== 1} onBack={handleStep('back')} onLogout={handleLogout} />
 
       <MStep options={StepOptions} className='mt-40' step={step} />
 
@@ -486,10 +483,10 @@ const Apply = () => {
                   onChange={handleChange('address')}
                 />
                 <MCell
-                  title='法人姓名'
+                  title={`${fieldName}姓名`}
                   required
                   mode='input'
-                  placeholder='请输入法人姓名'
+                  placeholder={`请输入${fieldName}姓名`}
                   value={state.legal_name}
                   onChange={handleChange('legal_name')}
                 />
@@ -594,7 +591,9 @@ const Apply = () => {
       </ScrollView>
 
       <View className='apply-bottom'>
-        <View className='apply-bottom-text'>《入驻协议》</View>
+        <View className='apply-bottom-text' onClick={navigateToAgreement}>
+          《入驻协议》
+        </View>
         <MButton className='apply-bottom-button' onClick={handleStep('next')} loading={loading}>
           {isSubmit ? '提交' : '下一步'}
         </MButton>

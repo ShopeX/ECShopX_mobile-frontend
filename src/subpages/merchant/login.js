@@ -4,6 +4,7 @@ import { Text, View } from '@tarojs/components'
 import { MButton, MInput, MRadio } from './comps'
 import { classNames, validate, showToast } from '@/utils'
 import { SpImage, SpPage } from '@/components'
+import { navigateToAgreement } from './util'
 import { useTimer } from './hook'
 import api from '@/api'
 import S from '@/spx'
@@ -165,11 +166,7 @@ const Login = () => {
     <SpPage className={classNames('page-merchant-login')} needNavbar={false}>
       <SpImage src='black.png' />
       <View className='page-merchant-login-content'>
-        <MInput
-          prefix={phonePrefix}
-          placeholder='请输入手机号'
-          onChange={handleChange('mobile')}
-        />
+        <MInput prefix={phonePrefix} placeholder='请输入手机号' onChange={handleChange('mobile')} />
         <MInput
           prefix={tcodePrefix}
           placeholder='请输入图形验证码'
@@ -190,7 +187,10 @@ const Login = () => {
         <View className='mt-32 view-flex view-flex-center view-flex-middle'>
           <MRadio checked={agree} onClick={() => setAgree(!agree)} />
           <View className='ml-16 radio-text'>
-            阅读并同意<Text className='primary-color'>《入驻协议》</Text>
+            阅读并同意
+            <Text className='primary-color' onClick={navigateToAgreement}>
+              《入驻协议》
+            </Text>
           </View>
         </View>
       </View>

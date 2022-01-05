@@ -1,21 +1,21 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"; 
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
-    //商户类型
-    merchantType:{},
-    //经营范围
-    businessScope:{}
+  //商户类型
+  merchantType: {},
+  //经营范围
+  businessScope: {}
 }
- 
+
 const merchantSlice = createSlice({
-  name: "merchant",
+  name: 'merchant',
   initialState,
   reducers: {
-      updateState:(state, { payload })=>{ 
-        state[payload.key] = {...state[payload.key],...payload}
-      }
+    updateState: (state, { payload }) => {
+      state[payload.key] = payload
+    }
   }
-});
+})
 
 export const { updateState } = merchantSlice.actions
 
