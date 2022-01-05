@@ -45,4 +45,6 @@ sh run.sh
 ```
 cicd test 3
 
-## 关于插件问题
+## 代码prettier
+npm run prepare
+npx husky add .husky/pre-commit "npx lint-staged --allow-empty"
