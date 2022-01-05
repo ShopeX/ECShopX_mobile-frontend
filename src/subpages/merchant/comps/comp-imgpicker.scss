@@ -27,8 +27,11 @@ $prefixCls:'sp-image-picker';
             top:0;
             bottom:0;
     
-            .taro-img__mode-widthfix{
-                height: 100%;
+            .taro-img__mode-aspectfit{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
             }
         }
     

@@ -89,9 +89,12 @@ $left-button-border-color:rgba(88, 88, 88, 0.4);
 
     &.noselect{
         .comps-cell_title{
-            width: 100%;
-            @include multi-ellipsis(1);
-            display: flex;
+            width: 100%;  
+
+            .title{
+                @include multi-ellipsis(1);
+            }
+          
         }
     }
 

@@ -124,7 +124,7 @@ const Cell = (props) => {
         className={classNames('comps-cell_title', { 'is-show': onlyShow })}
         onClick={noselect ? onClick : () => {}}
       >
-        {title}
+        <View className='title'>{title}</View>
       </View>
       <View className='comps-cell_flex'>
         {renderSelectorContent}

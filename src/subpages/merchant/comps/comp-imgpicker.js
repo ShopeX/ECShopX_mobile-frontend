@@ -64,6 +64,7 @@ function SpImagePicker (props) {
           src={imgUrl ? imgUrl : backgroundSrc}
           className='sp-image-picker-content-img'
           lazyLoad={false}
+          mode='aspectFit'
         />
         {!imgUrl && (
           <View className='sp-image-picker-content-icon' onClick={handlePhoto}>
