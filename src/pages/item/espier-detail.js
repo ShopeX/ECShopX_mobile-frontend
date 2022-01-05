@@ -77,7 +77,7 @@ import './espier-detail.scss'
   (dispatch) => ({
     onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
     onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
-    onUpdateCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),
+    onUpdateCount: (count) => dispatch({ type: 'cart/updateCartNum', payload: count }),
     onAddFav: ({ item_id, fav_id }) =>
       dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
     onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })

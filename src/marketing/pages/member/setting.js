@@ -12,7 +12,7 @@ import S from '@/spx'
   () => ({}),
   (dispatch) => ({
     onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
-    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count }),
+    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCartNum', payload: count }),
     onFetchFavs: (favs) => dispatch({ type: 'member/favs', payload: favs })
   })
 )

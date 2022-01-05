@@ -36,7 +36,13 @@ import api from '@/api'
 import S from '@/spx'
 // import { Tracker } from '@/service'
 import { useLogin, useDepChange } from '@/hooks'
-import { fetchCartList, deleteCartItem, updateCartItemNum } from '@/store/slices/cart'
+import {
+  fetchCartList,
+  deleteCartItem,
+  updateCartItemNum,
+  updateCartNum,
+  updateCount
+} from '@/store/slices/cart'
 import qs from 'qs'
 import CompGoodsItem from './comps/comp-goodsitem'
 import './espier-index.scss'
@@ -94,6 +100,10 @@ function CartIndex (props) {
       shop_type: type
     }
     await dispatch(fetchCartList(params))
+    const {
+      payload: { item_count }
+    } = await dispatch(updateCount(params)) // 获取购物车数量接口
+    await dispatch(updateCartNum(item_count)) // 更新购物车数量
     Taro.hideLoading()
   }
 

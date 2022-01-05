@@ -42,7 +42,7 @@ import './home/index.scss'
   (dispatch) => ({
     onUpdateLikeList: (show_likelist) =>
       dispatch({ type: 'cart/updateLikeList', payload: show_likelist }),
-    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
+    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCartNum', payload: count })
   })
 )
 @withPager

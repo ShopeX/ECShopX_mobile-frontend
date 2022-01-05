@@ -21,7 +21,7 @@ import './goods.scss'
     onAddCart: (item) => dispatch({ type: 'cart/add', payload: { item } }),
     onAddFav: ({ item_id }) => dispatch({ type: 'member/addFav', payload: { item_id } }),
     onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } }),
-    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
+    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCartNum', payload: count })
   })
 )
 export default class WgtGoods extends Component {

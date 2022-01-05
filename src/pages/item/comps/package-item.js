@@ -15,7 +15,7 @@ import './package-item.scss'
     cart
   }),
   (dispatch) => ({
-    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCount', payload: count })
+    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCartNum', payload: count })
   })
 )
 export default class PackageItem extends Component {

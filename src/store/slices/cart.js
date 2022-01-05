@@ -27,6 +27,12 @@ export const updateCartItemNum = createAsyncThunk(
   }
 )
 
+export const updateCount = createAsyncThunk('cart/updateCount', async (params) => {
+  // 获取购物车数量接口
+  const { item_count, cart_count } = await api.cart.count(params)
+  return { item_count, cart_count }
+})
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -36,6 +42,10 @@ const cartSlice = createSlice({
     updateCart: (state, { payload }) => {},
     changeCoupon: (state, { payload }) => {
       state.coupon = payload
+    },
+    updateCartNum: (state, { payload }) => {
+      // 更新购物车数量
+      state.cartCount = payload
     },
     changeZitiStore: (state, { payload }) => {
       const zitiShop = payload
@@ -54,6 +64,6 @@ const cartSlice = createSlice({
   }
 })
 
-export const { addCart, deleteCart, updateCart } = cartSlice.actions
+export const { addCart, deleteCart, updateCart, updateCartNum } = cartSlice.actions
 
 export default cartSlice.reducer
