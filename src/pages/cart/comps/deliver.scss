@@ -25,6 +25,7 @@
       &.active {
         color: #fff;
         background: #000;
+        background: var(--color-primary);
       }
     }
   }
