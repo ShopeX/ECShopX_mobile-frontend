@@ -29,7 +29,7 @@ function SpImage (props) {
       imgUrl = `${imgUrl}?imageView2/1${width ? '/w/' + width : ''}${height ? '/h/' + height : ''}`
     }
   }
-  console.log('SpImage:', imgUrl)
+  // console.log('SpImage:', imgUrl)
   return (
     <View
       className={classNames(
