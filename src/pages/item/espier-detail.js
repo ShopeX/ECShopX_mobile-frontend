@@ -16,7 +16,7 @@ import { useImmer } from 'use-immer'
 import { AtCountdown } from 'taro-ui'
 import {
   Loading,
-  Price,
+  SpPrice,
   FloatMenus,
   FloatMenuItem,
   SpHtmlContent,
@@ -99,22 +99,59 @@ function EspierDetail (props) {
   }
 
   return (
-    <SpPage className='page-goods-detail'>
+    <SpPage className='page-item-espierdetail'>
       {!info && <SpLoading />}
       {info && (
         <View>
           <Swiper
-            className='goods-imgs__swiper'
-            indicator-dots
+            className='goods-swiper'
             // current={curImgIdx}
             // onChange={this.handleSwiperChange}
           >
             {info.imgs.map((img, idx) => (
               <SwiperItem key={`swiperitem__${idx}`}>
-                <SpImage model='aspecFill' src={img} width={750} height={750}></SpImage>
+                <SpImage mode='aspecFill' src={img} width={750} height={750}></SpImage>
               </SwiperItem>
             ))}
           </Swiper>
+
+          <View className='goods-info'>
+            <View className='price-block'>
+              <SpPrice className='goods-price' value={100}></SpPrice>
+              <View className='vip-price'>
+                会员<SpPrice value={100}></SpPrice>
+              </View>
+            </View>
+            <View className='join-vip'>
+              <View className='vip-info'>
+                <View>
+                  <Text>会员专享</Text>
+                  <Text>8.5折</Text>
+                </View>
+                <View>亲爱的顾客，成为会员即刻享受此优惠</View>
+              </View>
+              <View className='btn-join'>立即加入</View>
+            </View>
+            <View>
+              <View className='coupon-list'></View>
+              <View className='coupon-get'>
+                领券<Text className='iconfont'></Text>
+              </View>
+            </View>
+            <View>
+              <View className='goods-name'></View>
+              <View className='goods-share'>
+                <Text className='iconfont'></Text>
+                <Text>分享</Text>
+              </View>
+            </View>
+          </View>
+
+          <View className='goods-sku'></View>
+
+          <View className='goods-rate'></View>
+
+          <View className='goods-desc'></View>
         </View>
       )}
       <View></View>
