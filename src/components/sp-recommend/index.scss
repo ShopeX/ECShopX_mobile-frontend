@@ -19,7 +19,10 @@
     display: flex;
     justify-content: space-between;
     padding: 0 16px;
-    
+    .sp-goods-item{
+      border-radius: 16px;
+      overflow: hidden;
+    }
     
     .goods-item-wrap {
       width: 345px;

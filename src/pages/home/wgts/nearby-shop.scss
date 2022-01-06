@@ -1,7 +1,7 @@
 .wgt-nearbyshop {
   background: #fff;
   border-radius: 16px;
-  margin: 0 16px 28px;
+  margin: 0 16px;
   .wgt-head {
     padding: 10px 16px;
     display: flex;
@@ -112,10 +112,23 @@
       text-align: center;
     }    
   }
+  .sp-nearby-shop-coupon {
+    display: inline-block;
+  }
+  .coupon-wrap {
+    /* prettier-ignore */
+    border: 1PX solid var(--color-primary);
+    border-radius: 6px;
+    height: 34px;
+    line-height: 34px;
+    padding: 0px 10px;
+  }
   .coupon-text {
     @include text-overflow();
     max-width: 120px;
     display: inline-block;
+    color: var(--color-primary);
+    font-size: 22px;
   }
   .empty-con {
     text-align: center;

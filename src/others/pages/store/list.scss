@@ -99,10 +99,9 @@
       /*  #endif  */
       &.with-tag-bar {
         @include page-scroll(
-          $tabs-height + $searchbar-height + $tags-height + $navigate-height + 8,
+          $tabs-height + $searchbar-height + $tags-height + 8,
           $tabbar-height
         );
-        top: 335px;
         /*  #ifdef  h5  */
         // @include page-scroll(
         //   $tabs-height + $searchbar-height + $tags-height + $navigate-height-h5 +

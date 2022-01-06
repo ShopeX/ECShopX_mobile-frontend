@@ -125,7 +125,7 @@ function WgtNearbyShop (props) {
 
                 <View className='shop-ft'>
                   {item.discountCardList.length > 0 && (
-                    <View className={classNames('sp-shop-coupon')}>
+                    <View className='sp-nearby-shop-coupon'>
                       <View className='coupon-wrap'>
                         <Text className='coupon-text'>{item.discountCardList[0].title}</Text>
                       </View>

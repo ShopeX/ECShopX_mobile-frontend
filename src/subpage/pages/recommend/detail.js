@@ -217,11 +217,11 @@ export default class recommendDetail extends Component {
         <View className='recommend-detail__title'>{info.title}</View>
         <View className='recommend-detail-info'>
           <View className='recommend-detail-info__time'>
-            <Text className={`icon-time ${info.is_like ? '' : ''}`}> </Text>
+            <Text className={`iconfont icon-31shijian ${info.is_like ? '' : ''}`}> </Text>
             {info.updated_str}
           </View>
           <View className='recommend-detail-info__time'>
-            <Text className={`icon-eye ${info.is_like ? '' : ''}`}> </Text>
+            <Text className={`iconfont icon-eye ${info.is_like ? '' : ''}`}> </Text>
             {info.articleFocusNum.count ? info.articleFocusNum.count : 0}关注
           </View>
         </View>
@@ -279,7 +279,7 @@ export default class recommendDetail extends Component {
             style={collectArticleStatus ? `color: ${colors.data[0].primary}` : 'color: inherit'}
             onClick={this.handleClickBar.bind(this, 'mark')}
           >
-            <Text className='icon-star-on'> </Text>
+            <Text className='iconfont icon-star_on'> </Text>
             <Text>{collectArticleStatus ? '已加入' : '加入心愿'}</Text>
           </View>
           <Button
@@ -287,7 +287,7 @@ export default class recommendDetail extends Component {
             className='recommend-detail__bar-item'
             onClick={this.handleClickBar.bind(this, 'share')}
           >
-            <Text className='icon-article-share'> </Text>
+            <Text className='iconfont icon-share1'> </Text>
             <Text>分享</Text>
           </Button>
         </View>

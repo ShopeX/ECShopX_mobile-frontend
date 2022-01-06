@@ -212,6 +212,7 @@
         flex-grow: 0;
       }
       .name{
+        width: 100%;
         @include multi-ellipsis(2)
       }
     }
