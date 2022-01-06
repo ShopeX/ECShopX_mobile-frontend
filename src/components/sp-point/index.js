@@ -17,7 +17,7 @@ export default class SpPoint extends Component {
 
     return (
       <View className={classNames('sp-point', className)}>
-        <View class='point'>{value}</View>
+        {value && <View class='point'>{value}</View>}
         <View class='unit'>{unit}</View>
       </View>
     )
