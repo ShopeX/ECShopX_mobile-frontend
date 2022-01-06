@@ -73,3 +73,7 @@ export const ITEM_LIST_GOODS = {
   // is_fav: ({ item_id }) => Boolean(favs[item_id]),
   store: 'store'
 }
+
+export const GOODS_INFO = {
+  imgs: 'pics'
+}
