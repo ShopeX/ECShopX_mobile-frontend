@@ -56,6 +56,10 @@
     font-size: 24px;
     color: #999;
     padding: 5px 13px;
+    max-width: 300px;
+    min-width: 100px;
+    display: inline-block;
+    @include text-overflow();
   }
   .spec-brief {
     color: #999;

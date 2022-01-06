@@ -327,9 +327,10 @@ $height-percent: 82%;
             -webkit-line-clamp: 2;
             /* autoprefixer: ignore next */
             -webkit-box-orient: vertical;
-            padding-bottom: 20px;
+            // padding-bottom: 20px;
           }
           .price {
+            padding-top: 20px;
             font-size: 28px;
             font-weight: bold;
             color: #d9011b;
