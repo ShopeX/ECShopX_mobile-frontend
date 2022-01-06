@@ -48,7 +48,7 @@ const cartSlice = createSlice({
       state.cartCount = payload
     },
     clear: (state, { payload }) => {
-      debugger
+      // debugger
       state.coupon = null
     },
     changeZitiStore: (state, { payload }) => {

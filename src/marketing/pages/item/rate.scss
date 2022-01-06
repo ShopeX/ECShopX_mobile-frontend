@@ -101,11 +101,13 @@ page {
     }
   }
   .submit-btn {
-      padding: 20px 24px;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
+    padding: 20px 24px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 88;
+    background: #fff;
   }
  
 }
@@ -114,15 +116,7 @@ page {
   *{
     box-sizing: border-box;
   }
-  .trade-rate{
-   
-    .submit-btn{
-      padding: 20px 24px;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    }
+  .trade-rate {
     .footer {
       padding: 20px 24px;
       position: absolute;
@@ -131,7 +125,4 @@ page {
       bottom: 0;
     }
   }
-  
-  
-   
   /*  #endif  */
