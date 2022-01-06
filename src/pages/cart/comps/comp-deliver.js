@@ -4,9 +4,9 @@ import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { AddressChoose, SpPage } from '@/components'
 
-import './deliver.scss'
+import './comp-deliver.scss'
 
-function Deliver (props) {
+function CmopDeliver (props) {
   const {
     curStore = {},
     address = {},
@@ -95,7 +95,7 @@ function Deliver (props) {
   }
 
   return (
-    <SpPage className='deliver'>
+    <SpPage className='comp-deliver'>
       {showSwitchDeliverComp()}
       {/** 普通快递 */}
       {receiptType === 'logistics' && <AddressChoose isAddress={address} />}
@@ -136,7 +136,7 @@ function Deliver (props) {
   )
 }
 
-Deliver.options = {
+CmopDeliver.options = {
   addGlobalClass: true
 }
-export default Deliver
+export default CmopDeliver
