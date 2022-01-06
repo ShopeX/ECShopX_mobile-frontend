@@ -1,31 +1,36 @@
 import Taro, { useRouter } from '@tarojs/taro'
 import { ScrollView, View, Text } from '@tarojs/components'
 import { useState, useEffect } from 'react'
-import { updateState } from '@/store/slices/merchant'
-import { SpPage , SpImage, Loading } from '@/components'
+import { SpPage, SpImage, Loading } from '@/components'
 import api from '@/api'
-import { usePage, useDepChange } from '@/hooks'
-import { useSelector, useDispatch } from 'react-redux'
 import {
   AUDITING,
   AUDIT_SUCCESS,
   AUDIT_FAIL,
   AUDIT_UNKNOWN,
   AUDIT_MAP_IMG,
-  AUDIT_MAP_TITLE,
-  AUDIT_MAP_RENDER
+  AUDIT_MAP_TITLE
 } from './consts'
-import { MButton, MStep, MNavBar, MCell, MImgPicker } from './comps'
+import { MButton, MNavBar } from './comps'
 import './audit.scss'
-import { classNames, styleNames, getThemeStyle } from '@/utils'
+import { classNames } from '@/utils'
+import { useImmer } from 'use-immer'
 
 const Audit = () => {
-  const [status, setStatus] = useState(0)
+  const [state, setState] = useImmer({
+    status: AUDIT_UNKNOWN,
+    memo: ''
+  })
 
   const getAuditStatus = async () => {
-    const { audit_status } = await api.merchant.getAuditstatus()
-    setStatus(audit_status)
+    const { audit_status, audit_memo } = await api.merchant.getAuditstatus()
+    setState((v) => {
+      v.status = audit_status
+      v.memo = audit_memo
+    })
   }
+
+  const { status, memo } = state
 
   const renderIng = <View className='text'>预计会在1～5个工作日完成审核</View>
 
@@ -36,8 +41,7 @@ const Audit = () => {
   const renderFail = (
     <View className='block'>
       <View className='text'>审批意见：</View>
-      <View className='text'>· 法人手持身份证照片有误，需重新上传；</View>
-      <View className='text'>· 审批意见审批意见审批意见，审批意见审批意见，审批意见审批意见。</View>
+      <View className='text'>{memo}</View>
     </View>
   )
 

@@ -49,8 +49,10 @@ $prefixCls:'page-merchant-audit';
             margin:0 auto;
             
             .text{
+                
                 text-align: left;
                 color:rgba(153, 153, 153, 1);
+                white-space: pre-wrap;
 
                 &:nth-child(2){
                     margin-top:20px;
