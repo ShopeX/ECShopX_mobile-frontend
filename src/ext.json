@@ -1,9 +1,9 @@
 {
   "extEnable": true,
-  "extAppid": "wx3e1c17c88abf3e45",
+  "extAppid": "wx4f25fb911393034b",
   "ext": {
-    "company_id": "1",
-    "appid": "wx3e1c17c88abf3e45",
+    "company_id": "21",
+    "appid": "wx4f25fb911393034b",
     "wxa_name": "通用小程序",
     "ali_isvid":""
   },
@@ -11,6 +11,6 @@
       "backgroundTextStyle": "light",
       "navigationBarBackgroundColor": "#fff",
       "navigationBarTitleText": "微商城",
-      "navigationBarTextStyle": "black" 
+      "navigationBarTextStyle": "black"
   }
 }
