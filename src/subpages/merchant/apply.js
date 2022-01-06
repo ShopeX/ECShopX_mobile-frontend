@@ -159,19 +159,6 @@ const Apply = () => {
       bank_card_front_url
     } = state
 
-    if (step === 3) {
-      const { confirm } = await Taro.showModal({
-        title: '提示',
-        content: '请确认是否提交审核',
-        showCancel: true,
-        cancel: '取消',
-        confirmText: '确认',
-        confirmColor: 'rgba(244, 129, 31, 1)'
-      })
-      if (!confirm) {
-        return true
-      }
-    }
     setLoading(true)
     let params = {}
     //第一步
@@ -239,6 +226,18 @@ const Apply = () => {
 
       if (!allWrite) {
         showToast('请完善信息')
+        return true
+      }
+
+      const { confirm } = await Taro.showModal({
+        title: '提示',
+        content: '请确认是否提交审核',
+        showCancel: true,
+        cancel: '取消',
+        confirmText: '确认',
+        confirmColor: 'rgba(244, 129, 31, 1)'
+      })
+      if (!confirm) {
         return true
       }
 
