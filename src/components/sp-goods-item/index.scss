@@ -1,5 +1,7 @@
 .sp-goods-item {
   background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
   .goods-item {
     &__hd {
       padding-top: 100%;
@@ -69,14 +71,14 @@
       }
     }
     &__ft {
-      margin-top: 40px;
-      padding: 0 20px 20px;
-      display: flex;
-      align-items: center;
-      .brand-logo {
-        border-radius: 30px;
-        overflow: hidden;
-      }
+      // margin-top: 40px;
+      // padding: 0 20px 20px;
+      // display: flex;
+      // align-items: center;
+      // .brand-logo {
+      //   border-radius: 50%;
+      //   overflow: hidden;
+      // }
     }
   }
   .goods__store {

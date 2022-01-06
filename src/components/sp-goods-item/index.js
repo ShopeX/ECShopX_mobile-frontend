@@ -150,7 +150,9 @@ function SpGoodsItem (props) {
         )}
       </View>
 
-      {info.brand && (
+      <View className='goods-item__ft'>{renderFooter}</View>
+
+      {/* {info.brand && (
         <View className='goods-item__ft'>
           <SpImage
             className='brand-logo'
@@ -161,7 +163,7 @@ function SpGoodsItem (props) {
           />
           <View className='brand-info'></View>
         </View>
-      )}
+      )} */}
     </View>
   )
 }
