@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtButton, AtInput } from 'taro-ui'
-import { Loading, Price, SpCell, SpToast, SpPage, SpHtmlContent } from '@/components'
+import { Loading, Price, SpCell, SpToast, SpPage, SpHtmlContent, SpOrderItem } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 
@@ -32,9 +32,9 @@ import CheckoutItems from './checkout-items'
 import PaymentPicker from './comps/payment-picker'
 import SelectPackage from './comps/selectPackage'
 import PointUse from './comps/point-use'
-import Deliver from './comps/deliver'
+import CompDeliver from './comps/comp-deliver'
 // import DrugInfo from './drug-info'
-import OrderItem from '../../components/orderItem/order-item'
+// import OrderItem from '../../components/orderItem/order-item'
 import { PAYTYPE } from '@/consts'
 
 import './espier-checkout.scss'
@@ -1785,7 +1785,7 @@ export default class CartCheckout extends Component {
           </View>
         ) : null}
         <View className='checkout__wrap'>
-          <Deliver
+          <CompDeliver
             receiptType={receiptType}
             curStore={curStore}
             isOpenStore={isOpenStore}
@@ -1865,7 +1865,7 @@ export default class CartCheckout extends Component {
                               )}
                             </View>
                           )}
-                          <OrderItem
+                          <SpOrderItem
                             // isShowNational
                             info={item}
                             showExtra={false}

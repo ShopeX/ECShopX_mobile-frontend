@@ -17,7 +17,7 @@ function Deliver (props) {
     onEidtZiti = () => {}
   } = props
 
-  const $instance = useMemo(getCurrentInstance, [])
+  const $instance = getCurrentInstance()
   const router = $instance.router
   const { goodType, type } = router.params
 
@@ -26,12 +26,12 @@ function Deliver (props) {
   const handleSwitchExpress = (type) => {
     // 切换配送方式
     if (receiptType === type) return false
-    onChangReceiptType && onChangReceiptType(type)
+    onChangReceiptType(type)
   }
 
   const handleEditZitiClick = (id) => {
     // 切换自提店铺
-    onEidtZiti && onEidtZiti(id)
+    onEidtZiti(id)
   }
 
   const handleMapClick = () => {
@@ -60,18 +60,17 @@ function Deliver (props) {
     {
       type: 'logistics',
       name: '普通快递',
-      isopen:
-        curStore.is_delivery || (!curStore.is_delivery && !curStore.is_ziti) || goodType === 'cross'
+      isopen: curStore.is_delivery || (!curStore.is_delivery && !curStore.is_ziti)
     },
     {
       type: 'dada',
       name: '同城配送',
-      isopen: headShop.is_current ? headShop.is_dada : curStore.is_dada && goodType !== 'cross'
+      isopen: headShop.is_current ? headShop.is_dada : curStore.is_dada
     },
     {
       type: 'ziti',
       name: '自提',
-      isopen: type !== 'pointitem' && goodType !== 'cross' && curStore.is_ziti
+      isopen: type !== 'pointitem' && curStore.is_ziti
     }
   ]
 
