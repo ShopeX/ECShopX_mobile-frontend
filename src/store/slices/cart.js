@@ -47,6 +47,10 @@ const cartSlice = createSlice({
       // 更新购物车数量
       state.cartCount = payload
     },
+    clear: (state, { payload }) => {
+      debugger
+      state.coupon = null
+    },
     changeZitiStore: (state, { payload }) => {
       const zitiShop = payload
       return {
