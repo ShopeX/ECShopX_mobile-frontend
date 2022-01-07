@@ -1216,6 +1216,8 @@ export default class EspierDetail extends Component {
     }
     let { isNewGift } = this.$instance.router.params
 
+    const vedioUrl = this.getVedioUrl()
+
     console.log('==likeList==', likeList)
 
     return (
