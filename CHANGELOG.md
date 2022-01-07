@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.1.4...v2.2.0) (2022-01-07)
+
+
+### Features
+
+* 框架升级 ([8317a76](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/8317a769fa21aadd7a765af5bc07901a7e57f5b4))
+* 框架升级 ([d1ba965](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d1ba965fd9521a41de289bc262ce4bb8efeb7842))
+
+
+### Bug Fixes
+
+* bug优化 ([cb06ae6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/cb06ae6e69492cc1e49ce371ea618ca3c8de58ce))
+* bug修复 ([31804b9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/31804b9444c7086b137a8f151a141987e126997a))
+* merge ([74af63f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/74af63f93a930b9a250f55d9b518f44b56da3a83))
+* sp-image lazyload ([4b1c290](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4b1c290cc842371b176bcb19b21469dd5e22a34e))
+* 优化购物车 ([17ddafe](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/17ddafe81d8110127d33600b7280cf8613572b92))
+* 样式UI修改 ([70b3e97](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/70b3e97e92b2d67110199dea2bacc4a4aed60642))
+* 首页UI优化 ([620f514](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/620f514f8846fcb94712f57d1b26cadf1458fb1c))
+* 首页滚动优化 ([27073af](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/27073af2a225370d297c510f1b896d8189960a5f))
+
 ### [2.1.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.2.0...v2.1.3) (2022-01-07)
 
 ### [2.1.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.1.3...v2.1.4) (2021-12-30)
