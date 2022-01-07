@@ -39,7 +39,7 @@ export default class WgtStore extends Component {
     const { config, base, data, seletedTags = [] } = info
 
     return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
+      <View className={`wgt wgt-store ${base.padded ? 'wgt__padded' : null}`}>
         {/* {base.title && (
           <View className="wgt-head">
             <View className="wgt-title">

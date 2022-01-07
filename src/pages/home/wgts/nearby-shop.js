@@ -64,89 +64,91 @@ function WgtNearbyShop (props) {
 
   return (
     <View
-      className={classNames('wgt', 'wgt-nearbyshop', {
+      className={classNames('wgt', {
         wgt__padded: base.padded
       })}
     >
-      {base.title && (
-        <View className='wgt-head'>
-          <View className='wgt-hd'>
-            <Text className='wgt-title'>{base.title}</Text>
-            <Text className='wgt-subtitle'>{base.subtitle}</Text>
-          </View>
-          <Text className='wgt-more' onClick={showMore}>
-            查看更多
-          </Text>
-        </View>
-      )}
-
-      <View className='nearby_shop_wrap'>
-        <ScrollView className='scroll-tab' scrollX>
-          {seletedTags.map((item, index) => (
-            <View
-              className={classNames(`tag`, {
-                active: state.activeIndex == index
-              })}
-              key={item.tag_id}
-              onClick={() =>
-                setState((v) => {
-                  v.activeIndex = index
-                })
-              }
-            >
-              {item.tag_name}
+      <View className='wgt-nearbyshop'>
+        {base.title && (
+          <View className='wgt-head'>
+            <View className='wgt-hd'>
+              <Text className='wgt-title'>{base.title}</Text>
+              <Text className='wgt-subtitle'>{base.subtitle}</Text>
             </View>
-          ))}
-        </ScrollView>
+            <Text className='wgt-more' onClick={showMore}>
+              查看更多
+            </Text>
+          </View>
+        )}
 
-        <ScrollView className='scroll-list' scrollX scrollLeft={state.scrollLeft}>
-          {state.shopList.map((item) => (
-            <View
-              className='shop'
-              key={item.distributor_id}
-              onClick={() => handleStoreClick(item.distributor_id)}
-            >
-              <View className='shop-image'>
-                <SpImage
-                  src={item.banner || 'shop_default_bg.png'}
-                  // mode="aspectFill"
-                  width={220}
-                />
+        <View className='nearby_shop_wrap'>
+          <ScrollView className='scroll-tab' scrollX>
+            {seletedTags.map((item, index) => (
+              <View
+                className={classNames(`tag`, {
+                  active: state.activeIndex == index
+                })}
+                key={item.tag_id}
+                onClick={() =>
+                  setState((v) => {
+                    v.activeIndex = index
+                  })
+                }
+              >
+                {item.tag_name}
               </View>
-              <View className='shop-logo'>
-                <SpImage
-                  src={item.logo || 'shop_default_logo.png'}
-                  // mode="aspectFill"
-                  width={74}
-                />
-              </View>
-              <View className='shop-info-block'>
-                <View className='shop-name'>{item.name}</View>
+            ))}
+          </ScrollView>
 
-                <View className='shop-ft'>
-                  {item.discountCardList.length > 0 && (
-                    <View className={classNames('sp-shop-coupon')}>
-                      <View className='coupon-wrap'>
-                        <Text className='coupon-text'>{item.discountCardList[0].title}</Text>
+          <ScrollView className='scroll-list' scrollX scrollLeft={state.scrollLeft}>
+            {state.shopList.map((item) => (
+              <View
+                className='shop'
+                key={item.distributor_id}
+                onClick={() => handleStoreClick(item.distributor_id)}
+              >
+                <View className='shop-image'>
+                  <SpImage
+                    src={item.banner || 'shop_default_bg.png'}
+                    // mode="aspectFill"
+                    width={220}
+                  />
+                </View>
+                <View className='shop-logo'>
+                  <SpImage
+                    src={item.logo || 'shop_default_logo.png'}
+                    // mode="aspectFill"
+                    width={74}
+                  />
+                </View>
+                <View className='shop-info-block'>
+                  <View className='shop-name'>{item.name}</View>
+
+                  <View className='shop-ft'>
+                    {item.discountCardList.length > 0 && (
+                      <View className='sp-nearby-shop-coupon'>
+                        <View className='coupon-wrap'>
+                          <Text className='coupon-text'>{item.discountCardList[0].title}</Text>
+                        </View>
                       </View>
-                    </View>
-                  )}
+                    )}
+                  </View>
                 </View>
               </View>
-            </View>
-          ))}
+            ))}
 
-          {state.shopList.length == 0 && (
-            <View className='empty-con'>
-              <SpImage className='empty-img' src='empty_data.png' />
-              <View className='empty-tip'>更多商家接入中，敬请期待</View>
-            </View>
-          )}
-        </ScrollView>
-        {/* <View className='no_shop_content'>
-          <Image mode='widthFix' className='no_shop_img' src={`${process.env.APP_IMAGE_CDN}/empty_data.png`}></Image>
-          <View className='tips'>更多商家接入中，敬请期待</View>
-        </View> */}
+            {state.shopList.length == 0 && (
+              <View className='empty-con'>
+                <SpImage className='empty-img' src='empty_data.png' />
+                <View className='empty-tip'>更多商家接入中，敬请期待</View>
+              </View>
+            )}
+          </ScrollView>
+          {/* <View className='no_shop_content'>
+            <Image mode='widthFix' className='no_shop_img' src={`${process.env.APP_IMAGE_CDN}/empty_data.png`}></Image>
+            <View className='tips'>更多商家接入中，敬请期待</View>
+          </View> */}
+        </View>
       </View>
     </View>
   )

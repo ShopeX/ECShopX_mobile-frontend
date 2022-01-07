@@ -266,6 +266,7 @@ function shopList (props) {
               showGoods={name}
               key={`shopitem-wrap__${index.toString()}`}
             />
+            <View className='inline-block' />
           </View>
         ))}
       </SpScrollView>

@@ -13,8 +13,9 @@
     display: none;
   }
   .modal-container {
-    width: 550px;
-    height: 690px;
+    width: 510px;
+    // height: 690px;
+    padding-bottom: 10px;
     background-size: 100% 100%;
   }
   .modal-hd {
@@ -33,8 +34,8 @@
   .modal-bd {
     background: #fff;
     padding: 20px;
-    margin: 0 40px;
-    height: 430px;
+    margin: 0px 40px;
+    // height: 430px;
     .policy-txt {
       color: var(--color-primary);
     }

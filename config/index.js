@@ -1,6 +1,6 @@
 import path from "path";
 import pkg from "../package.json";
-const { getEnvs, getDefineConstants } = require("./utils");
+const { getEnvs, getDefineConstants, getCacheIdentifier } = require("./utils");
 
 require("dotenv-flow").config();
 

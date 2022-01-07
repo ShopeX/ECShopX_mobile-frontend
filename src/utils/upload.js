@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
 import S from '@/spx'
-import { isAlipay, getAppId } from '@/utils'
+import { isAlipay, getAppId, exceedLimit } from '@/utils'
 // import * as qiniu from 'qiniu-js'
 
 const getToken = (params) => {
@@ -175,6 +175,13 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
         imgs.push(item)
       }
       continue
+    }
+    if (exceedLimit(item.file)) {
+      Taro.showToast({
+        title: '图片大小超出最大限制，请压缩后再上传',
+        icon: 'none'
+      })
+      break
     }
     try {
       const filename = item.url.slice(item.url.lastIndexOf('/') + 1)

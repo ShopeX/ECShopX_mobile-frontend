@@ -178,7 +178,7 @@ export default class Home extends Component {
     this.checkWhite()
     // 购物车数量
     this.fetchCartCount()
-    this.getPointSetting()
+
     if (S.getAuthToken()) {
       this.getCurrentGrad()
     }
@@ -274,13 +274,6 @@ export default class Home extends Component {
     const res = await api.wx.shareSetting({ shareindex: 'index' })
     this.setState({
       shareInfo: res
-    })
-  }
-
-  //获取积分配置
-  getPointSetting = () => {
-    api.pointitem.getPointSetting().then((pointRes) => {
-      Taro.setStorageSync('custom_point_name', pointRes.name)
     })
   }
 

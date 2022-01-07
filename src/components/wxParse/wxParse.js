@@ -53,7 +53,7 @@ function wxParse (
   }
   var bindData = {}
   bindData[bindName] = transData
-  that.setData(bindData)
+  // that.setData(bindData)
   that.bindData = bindData
   that.wxParseImgLoad = wxParseImgLoad
   that.wxParseImgTap = wxParseImgTap

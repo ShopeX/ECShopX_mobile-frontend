@@ -369,9 +369,9 @@ $prefixCls: "sp-shop-item";
       width: 218px; 
       float: left;
       
-      // &:not(:first-child){
-      //     margin-left:16px;
-      // }
+      &:not(:last-child){
+          margin-right:16px;
+      }
       // margin-right: 16px;
       .img{
           width: 218px;

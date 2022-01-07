@@ -19,12 +19,11 @@
     display: flex;
     justify-content: space-between;
     padding: 0 16px;
-    
-    
     .goods-item-wrap {
       width: 345px;
       margin-bottom: 28px;
       box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
     }
   }
 }

@@ -15,9 +15,11 @@
     }
     &-info {
       padding: 0 floor($edge-size);
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
       &__time {
-        display: inline-block;
-        margin-right: 20px;
+        margin-right: 30px;
         font-size: floor($font-size * 0.8);
         vertical-align: middle;
         [class^="icon-"] {
@@ -29,6 +31,9 @@
         }
         .in-icon-xingzhuang {
           font-size: 22px;
+        }
+        .icon-31shijian, .icon-eye {
+          font-size: 26px;
         }
       }
     }
@@ -85,7 +90,7 @@
       }
     }
   }
-  .icon-like {
+  .icon-like, .icon-star_on, .icon-share1 {
     font-size: 36px;
   }
 }

@@ -287,6 +287,7 @@ export default class UserInfo extends Component {
 
     console.log('--userInfo--', userInfo)
     console.log('--formItems--', formItems)
+    console.log('--regParams--', regParams)
     if (!userInfo) {
       return null
     }
@@ -400,7 +401,7 @@ export default class UserInfo extends Component {
                 {/* 多选 */}
                 {item.field_type === 5 && (
                   <View onClick={this.handleShowCheckboxPanel.bind(this, item)}>
-                    {userInfo[item.key]
+                    {userInfo[item.key].length > 0
                       ? this.showCheckBoxItem(userInfo[item.key])
                       : item.required_message}
                   </View>
@@ -429,7 +430,7 @@ export default class UserInfo extends Component {
                 </View>
                 <View
                   className='panel-btn require-btn'
-                  style={`color: ${colors.data[0].primary}`}
+                  // style={`color: ${colors.data[0].primary}`}
                   onClick={this.btnClick.bind(this, 'require')}
                 >
                   确定

@@ -96,7 +96,6 @@ export default class TradeRefund extends Component {
     }
 
     Taro.hideLoading()
-
     const { reason: oldReason } = this.state
 
     const newReason = [...oldReason, ...reasonList]
@@ -145,7 +144,6 @@ export default class TradeRefund extends Component {
     const imgFiles = data.slice(0, 3)
 
     imgUploader.uploadImageFn(imgFiles).then((res) => {
-      console.log('---res---', res)
       this.setState({
         imgs: res
       })

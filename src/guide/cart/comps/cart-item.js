@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 // import { AtInputNumber } from 'taro-ui'
 import { Price } from '@/components'
@@ -54,7 +54,9 @@ export default class GoodsItem extends Component {
 
     return (
       <View
-        className={classNames('cart-item', className, { 'is-disabled': isDisabled })}
+        className={classNames('cart-item', className, {
+          'is-disabled': isDisabled
+        })}
         style={styleNames(getThemeStyle())}
       >
         <View className='cart-item__hd'>{this.props.children}</View>

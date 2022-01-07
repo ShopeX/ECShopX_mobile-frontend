@@ -25,7 +25,10 @@ import {
   WgtNearbyShop,
   WgtStore,
   WgtGoodsGridTab,
-  WgtGoodsFaverite
+  WgtGoodsFaverite,
+  WgtHeadline,
+  WgtFloorImg,
+  WgtHotTopic
 } from '../home/wgts'
 import CompHeader from './comps/comp-header'
 

@@ -617,6 +617,11 @@ export function hex2rgb (hex) {
   return rgb
 }
 
+export function exceedLimit ({ size: fileSize }) {
+  const size = fileSize / 1024 / 1024
+  return size > 2
+}
+
 export {
   classNames,
   log,

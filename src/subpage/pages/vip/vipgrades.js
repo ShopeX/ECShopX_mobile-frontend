@@ -72,8 +72,14 @@ export default class VipIndex extends Component {
       title: ({ grade_name }) => grade_name,
       is_default: ({ is_default }) => is_default
     })
-
-    const curTabIdx = tabList.findIndex((item) => item.title === name)
+    console.log('==============', tabList)
+    let curTabIdx
+    if (name) {
+      curTabIdx = tabList.findIndex((item) => item.title === name)
+    } else {
+      curTabIdx = tabList.findIndex((item) => item.is_default)
+    }
+    //
 
     this.setState(
       {

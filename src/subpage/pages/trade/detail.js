@@ -625,6 +625,11 @@ export default class TradeDetail extends Component {
       return <Loading></Loading>
     }
 
+    console.log('==tradeInfo==>', tradeInfo)
+
+    //订单未支付
+    const NOT_PAY = tradeInfo && tradeInfo.tradeState === 'NOTPAY'
+
     //const isDhPoint = info.point_fee!=0?'point':''
     const isDhPoint = info.pay_type === 'point'
     // 是否为余额支付
@@ -965,7 +970,7 @@ export default class TradeDetail extends Component {
                 </View>
               </View>
             )}
-            {!isDhPoint && !isDeposit && (
+            {!isDhPoint && !isDeposit && !NOT_PAY && (
               <View className='line'>
                 <View className='left'>支付</View>
                 <View className='right'>

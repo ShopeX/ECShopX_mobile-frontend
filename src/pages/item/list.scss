@@ -23,7 +23,7 @@
     }
   }
   &.has-tagbar {
-    @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 10, 0);
+    // @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 10, 0);
   }
   .item-list-scroll {
     @include page-scroll($tabs-height + $navigate-height + 10, 0);
