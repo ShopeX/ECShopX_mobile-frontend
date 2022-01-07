@@ -28,7 +28,7 @@ export default class GoodsItem extends Component {
   //     [info.num]: val
   //   })
   // }
-  render() {
+  render () {
     const {
       num,
       info,

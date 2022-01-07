@@ -23,6 +23,7 @@ import * as wheel from './wheel'
 import * as pointitem from './pointitem'
 import * as liveroom from './liveroom'
 import * as wgts from './wgts'
+import * as merchant from './merchant'
 
 import * as guide from './guide'
 
@@ -52,5 +53,6 @@ export default {
   guide,
   alipay,
   liveroom,
-  wgts
+  wgts,
+  merchant
 }

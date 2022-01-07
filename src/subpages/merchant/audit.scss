@@ -1,0 +1,70 @@
+$bottom-height:120px;
+
+$prefixCls:'page-merchant-audit';
+
+.#{$prefixCls}{
+
+    box-sizing: border-box; 
+
+    &.fail{
+        .status-title{
+            color:rgba(236, 46, 61, 1);
+        } 
+    }
+
+    .status-img{
+        width:372px;
+        height:286px;
+        margin:156px auto 61px;
+    }
+
+    .status-title{
+        font-size: 28px;
+        color:rgba(102, 102, 102, 1);
+        line-height: 50px;
+        text-align: center;
+    }
+
+    .status-info{
+
+        margin-top:10px; 
+
+        .text{
+            font-size: 24px;
+            color:rgba(170, 170, 170, 1);
+            text-align: center;
+
+            &.success{
+                width: 370px;
+                margin:0 auto;
+            }
+        }
+        .block{
+            
+            background-color: #EBEBEB;
+            border-radius: 16px;
+            width: 560px;
+            padding:24px 40px 61px;
+            background-color: #EBEBEB;
+            margin:0 auto;
+            
+            .text{
+                
+                text-align: left;
+                color:rgba(153, 153, 153, 1);
+                white-space: pre-wrap;
+
+                &:nth-child(2){
+                    margin-top:20px;
+                }
+            }
+        } 
+    }
+    .status-form{
+        position: fixed;
+        left:0;
+        right:0;
+        bottom:0;
+        padding:0 50px 60px; 
+    }
+}

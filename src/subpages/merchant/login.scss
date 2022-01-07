@@ -1,0 +1,41 @@
+$prefixCls:'page-merchant-login';
+
+.#{$prefixCls}{
+    @include page-scroll(0 , 0);
+    background-color: white;
+
+    &-content{
+        padding: 52px 50px;
+
+        .code-suffix{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color:var(--color-primary);
+
+            &.timing{
+                background-color: #F5F5F5;
+                color:#3A3A5A;
+            }
+        }
+        .tcode-img{
+            height: 100%;
+            .taro-img__mode-widthfix{
+                height: 100%;
+            }
+        }
+        .login-button{
+            font-size: 32px;
+        }
+        .radio-text{
+            font-size: 24px;
+            font-weight: 400;
+            color: #666F83;
+ 
+            .primary-color{
+                color:var(--color-primary);
+            }
+        }
+    }
+}

@@ -12,7 +12,14 @@ function SpPage (props) {
   console.log(getCurrentInstance())
   const { page, router } = getCurrentInstance()
   // debugger
-  const { className, children, renderFloat, renderFooter, scrollToTopBtn = false } = props
+  const {
+    className,
+    children,
+    renderFloat,
+    renderFooter,
+    scrollToTopBtn = false,
+    needNavbar = true
+  } = props
   const sys = useSelector((state) => state.sys)
   const [showToTop, setShowToTop] = useState(false)
   const { colorPrimary, colorMarketing, colorAccent, rgb } = sys
@@ -42,12 +49,12 @@ function SpPage (props) {
   return (
     <View
       className={classNames('sp-page', className, {
-        'has-navbar': hasNavbar && !isTabBarPage,
+        'has-navbar': hasNavbar && !isTabBarPage && needNavbar,
         'has-footer': renderFooter
       })}
       style={styleNames(pageTheme)}
     >
-      {hasNavbar && !isTabBarPage && <SpNavBar />}
+      {hasNavbar && !isTabBarPage && needNavbar && <SpNavBar />}
       <View className='sp-page-body'>{children}</View>
 
       {/* 置底操作区 */}
