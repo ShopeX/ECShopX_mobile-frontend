@@ -1,0 +1,75 @@
+$navbar-height:90px;
+$input-height:92px;
+
+.page-merchant-selector{
+
+    .selector-scroll{
+        @include page-scroll($navbar-height+$input-height,0); 
+
+        .render-empty{
+            width:372px;
+            margin:155px auto 0;
+
+            .title{
+                font-size: 28px;
+                line-height: 50px;
+                color:#666666;
+                text-align: center;
+                margin-top: 65px;
+            }
+        }
+    }
+
+    &-content{  
+
+        padding:0px 16px; 
+
+        .card{
+            background: #FFFFFF;
+            border-radius: 16px;
+            overflow: hidden;
+            padding:0 16px;
+            
+            .comps-cell{ 
+                &:not(:last-child){
+                    @include hairline(#DDDDDD,0,bottom); 
+                }
+            }  
+        } 
+       
+    }
+
+    &-inputwrapper{
+        height: $input-height;
+        padding:0 24px;
+        .search-input{
+            height: 60px;
+
+            .at-search-bar{
+                background-color: transparent;
+
+                .at-search-bar__input-cnt{
+                    background-color: white;
+                } 
+               
+            }
+            .search-input__history{
+                display: none;
+            }
+        }
+    }
+    
+    &-input{
+        background-color: white;
+        .icon-sousuo-01{
+            color:rgba(102, 111, 131, 1);
+        }
+        .sp-component-newinput-placeholder{
+            .text{
+                &:before{
+                    border-color: rgba(169, 177, 194, 1);
+                }
+            }
+        }
+    } 
+}

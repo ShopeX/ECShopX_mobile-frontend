@@ -1,0 +1,55 @@
+$prefixCls:'sp-image-picker';
+
+.#{$prefixCls}{
+
+    &.small{
+        .#{$prefixCls}-content{
+            width: 290px;
+            height: 183px;
+        }
+    }
+
+    &-content{
+
+        width: 290px;
+        height: 211px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+     
+    
+        &-img{
+            position: absolute;
+            left:0;
+            right:0;
+            top:0;
+            bottom:0;
+    
+            .taro-img__mode-aspectfit{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+            }
+        }
+    
+        &-icon{
+            position: relative;
+            width: 80px;
+            height: 80px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            
+            [class^=icon-]{
+                    font-size:36px;
+                    color: white;
+            } 
+        }
+    }
+}
+

@@ -71,14 +71,14 @@ export default class PrivacyConfirmModal extends Component {
                     style={`color: ${colors.data[0].primary}`}
                     onClick={this.handleClickAgreement.bind(this, 'member_register')}
                   >
-                    《{info.protocol.member_register}》
+                    《{(info || { protocol: {} }).protocol.member_register}》
                   </Text>
                   <Text>、</Text>
                   <Text
                     style={`color: ${colors.data[0].primary}`}
                     onClick={this.handleClickAgreement.bind(this, 'privacy')}
                   >
-                    《{info.protocol.privacy}》
+                    《{(info || { protocol: {} }).protocol.privacy}》
                   </Text>
                   <Text>了解详细信息。如您同意，请点击”同意“开始接受我们的服务。</Text>
                 </View>

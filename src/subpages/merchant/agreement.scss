@@ -1,0 +1,28 @@
+$prefixCls:'page-merchant-agreement';
+
+.#{$prefixCls}{
+    background-color: white;
+
+    &-content{
+        @include page-scroll(90px,0);
+        background:white;
+
+        .title{
+            font-size: 36px;
+            font-weight: 500;
+            color: #3A3A5A;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .content{
+            color:rgba(102, 111, 131, 1);
+            font-size:24px;
+        }
+
+        .main{
+            padding:0 50px;
+            display: block;
+        }
+    }
+}

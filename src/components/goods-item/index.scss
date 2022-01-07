@@ -84,12 +84,12 @@ $item-img-size: 240px !default;
     }
   }
   &__tag {
-    padding: 4px 4px 3px 4px;
-    line-height: 1;
-    font-size: 20px;
-    border-radius: 4px;
-    box-shadow: 0 0 0 1PX #FF5000;
-    color: #FF5000;
+    margin: 0 4px 5px 0;
+    padding: 2px 5px;
+    color: $color-brand-primary;
+    background: #fff;
+    border-radius: 2px;
+    flex-shrink: 0;
   }
   &__group {
     border-radius: 4px;

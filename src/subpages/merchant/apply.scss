@@ -1,0 +1,80 @@
+$bottom-height:120px;
+
+$prefixCls:'page-merchant-apply';
+
+.#{$prefixCls}{
+
+    box-sizing: border-box;
+
+    .apply-scroll{
+        @include page-scroll(100px+40px+90px,$bottom-height); 
+    } 
+
+    &-content{
+
+        padding:40px 16px; 
+
+        .card{
+            background: #FFFFFF;
+            border-radius: 16px;
+            overflow: hidden;
+            padding:0 16px;
+            
+            .comps-cell{ 
+                &:not(:last-child){
+                    @include hairline(#DDDDDD,0,bottom); 
+                }
+            }
+
+            .certificate-information{
+                padding:29px 0 55px;
+
+                .comps-img-picker{
+                    &:not(:last-child){
+                        margin-bottom:48px;
+                    }
+                }
+            }
+
+        }
+
+        .info{
+            display: flex;
+            align-items: center;
+            color:rgba(169, 177, 194, 1);
+            line-height: 1;
+            margin-bottom:60px;
+
+            .icon-info, .text{
+                font-size: 24px;
+            } 
+            .text{
+                margin-left: 12px;
+            }
+        }
+    }
+
+    .apply-bottom{
+        position: fixed;
+        bottom:0;
+        left:0;
+        right:0;
+        height: $bottom-height;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding:0 20px;
+
+        &-text{
+            color:var(--color-primary);
+            margin-left: 44px;
+        }
+
+        &-button{
+            flex-shrink: 0;
+            width: 458px;
+        }
+
+    }
+}

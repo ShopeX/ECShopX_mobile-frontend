@@ -353,6 +353,8 @@ export default class Reg extends Component {
       showCheckboxPanel
     } = this.state
 
+    console.log('==list', list)
+
     return (
       <View className='auth-reg'>
         <SpNavBar title='注册' leftIconType='chevron-left' />

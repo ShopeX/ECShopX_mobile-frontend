@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { classNames, styleNames, isNumber } from '@/utils'
+import { classNames, styleNames, isNumber, isBase64 } from '@/utils'
 import './index.scss'
 
 function SpImage (props) {
@@ -22,7 +22,7 @@ function SpImage (props) {
     src = 'default_img.png'
   }
 
-  let imgUrl = /^http/.test(src) ? src : `${process.env.APP_IMAGE_CDN}/${src}`
+  let imgUrl = /^http/.test(src) || isBase64(src) ? src : `${process.env.APP_IMAGE_CDN}/${src}`
 
   if (diskDriver === 'qiniu') {
     if (width != 'auto') {

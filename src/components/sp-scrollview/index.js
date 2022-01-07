@@ -10,7 +10,7 @@ import { isObject, classNames, isWeixin, isWeb } from '@/utils'
 import './index.scss'
 
 function SpScrollView (props, ref) {
-  const { className, children, fetch, auto = true } = props
+  const { className, children, fetch, auto = true, renderEmpty } = props
   // const scope = useScope();
   const { page, getTotal, nextPage, resetPage } = usePage({
     fetch,
@@ -86,7 +86,9 @@ function SpScrollView (props, ref) {
     <View className={classNames('sp-scrollview', className)} ref={wrapRef}>
       <View className='sp-scrollview-body'>{children}</View>
       {page.loading && <SpLoading>正在加载...</SpLoading>}
-      {!page.hasMore && getTotal() == 0 && <SpNote icon title='没有查询到数据' />}
+      {!page.hasMore &&
+        getTotal() == 0 &&
+        (renderEmpty ? renderEmpty : <SpNote icon title='没有查询到数据' />)}
       {!page.loading && !page.hasMore && getTotal() > 0 && (
         <SpNote className='no-more' title='--没有更多数据了--'></SpNote>
       )}

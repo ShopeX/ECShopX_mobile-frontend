@@ -1433,7 +1433,7 @@ export default class CartCheckout extends Component {
         icon: 'success'
       })
 
-      this.props.onClearCart()
+      // this.props.onClearCart()
 
       let purl = `/subpage/pages/trade/detail?id=${order_id}`
 
@@ -1463,6 +1463,7 @@ export default class CartCheckout extends Component {
         })
       }
     }
+    this.props.onClearCart()
     return
 
     // const url = `/pages/cashier/index?order_id=${order_id}`

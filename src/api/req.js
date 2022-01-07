@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import qs from 'qs'
 import S from '@/spx'
-import { isAlipay, isWeixin, isWeb } from '@/utils'
+import { isAlipay, isWeixin, isWeb, isMerchantModule } from '@/utils'
 import log from '@/utils/log'
 import { HTTP_STATUS } from './consts'
 
@@ -119,7 +119,8 @@ class API {
     this.isRefreshingToken = false
     S.logout()
     setTimeout(() => {
-      Taro.redirectTo({ url: '/subpages/member/index' })
+      let url = isMerchantModule ? '/subpages/merchant/login' : '/pages/member/index'
+      Taro.redirectTo({ url })
     }, 300)
   }
 

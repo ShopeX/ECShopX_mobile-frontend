@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Form, Text, Image } from '@tarojs/components'
 import { AtSearchBar } from 'taro-ui'
-import { classNames } from '@/utils'
+import { isWeb, classNames } from '@/utils'
 import { toggleTouchMove } from '@/utils/dom'
 
 import './index.scss'
@@ -36,7 +36,7 @@ export default class SearchBar extends Component {
   }
 
   handleFocusSearchHistory = (isOpened) => {
-    this.props.onFocus()
+    this.props.onFocus?.()
     this.setState({
       showSearchDailog: isOpened,
       isShowAction: true
@@ -53,8 +53,9 @@ export default class SearchBar extends Component {
   }
 
   handleChangeSearch = (value, event) => {
+    //h5中value为空 需从event里面拿值
     // value = value.replace(/\s+/g,'')
-    this.props.onChange(value, event)
+    this.props.onChange?.(isWeb ? event?.detail?.value : value)
   }
 
   handleClear = () => {
@@ -90,7 +91,7 @@ export default class SearchBar extends Component {
   }
 
   handleClickCancel = (isOpened) => {
-    this.props.onCancel()
+    this.props.onCancel?.()
     this.setState({
       showSearchDailog: isOpened,
       isShowAction: false
@@ -113,8 +114,13 @@ export default class SearchBar extends Component {
 
   handleClickHotItem = () => {}
 
+  handleBlurSearch = () => {
+    this.props.onBlur?.()
+  }
+
   render () {
     const { isFixed, keyword, showDailog, placeholder } = this.props
+    console.log('===>keyword==>', keyword)
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
       <View
@@ -172,6 +178,7 @@ export default class SearchBar extends Component {
             actionName='取消'
             showActionButton={isShowAction}
             onFocus={this.handleFocusSearchHistory.bind(this, true)}
+            onBlur={this.handleBlurSearch.bind(this)}
             onClear={this.handleClear}
             onChange={this.handleChangeSearch.bind(this)}
             onConfirm={this.handleConfirm.bind(this)}

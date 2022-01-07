@@ -18,15 +18,11 @@ import {
   Price,
   FloatMenus,
   FloatMenuItem,
-  SpHtmlContent,
-  SpHtml,
   SpToast,
-  SpNavBar,
   GoodsBuyPanel,
   SpCell,
   GoodsEvaluation,
   FloatMenuMeiQia,
-  GoodsItem,
   PointLine,
   SpRecommend,
   SpPage
@@ -47,7 +43,6 @@ import {
   linkPage,
   getAppId
 } from '@/utils'
-import { setPageTitle } from '@/utils/platform'
 import entry from '@/utils/entry'
 import S from '@/spx'
 import { Tracker } from '@/service'
@@ -64,7 +59,6 @@ import {
 } from './comps'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 import { getDtidIdUrl } from '@/utils/helper'
-
 import './espier-detail.scss'
 
 @connect(
@@ -111,7 +105,7 @@ export default class EspierDetail extends Component {
       sixSpecImgsDict: {},
       curSku: null,
       promotion_activity: [],
-      promotion_package: [],
+      promotion_package: null,
       itemParams: [],
       sessionFrom: '',
       posterImgs: null,
@@ -129,6 +123,24 @@ export default class EspierDetail extends Component {
         status: false
       }
     }
+  }
+
+  getGoodId = async () => {
+    const options = await normalizeQuerys(this.$instance.params || {})
+    if (options.itemid && !options.id) {
+      options.id = options.itemid
+    }
+    let id = options.id
+    const entryData = await entry.entryLaunch({ ...options }, true)
+    console.log('entryData---->', entryData)
+    id = entryData.id
+    if (options.scene) {
+      const query = await normalizeQuerys(options)
+      if (query.id) {
+        id = query.id
+      }
+    }
+    return id
   }
 
   async componentDidMount () {
@@ -182,7 +194,7 @@ export default class EspierDetail extends Component {
             uid = query.uid
           }
         }
-        this.fetchInfo(id)
+
         this.getEvaluationList(id)
         // 浏览记录
         if (S.getAuthToken()) {
@@ -238,6 +250,8 @@ export default class EspierDetail extends Component {
       Taro.setStorageSync('userinfo', userObj)
     }
     this.fetchCartCount()
+    const goodId = await this.getGoodId()
+    this.fetchInfo(goodId)
   }
 
   async getEvaluationList (id) {
@@ -502,11 +516,12 @@ export default class EspierDetail extends Component {
         isSubscribeGoods: !!subscribe
       },
       async () => {
+        const vedioUrl = this.getVedioUrl()
         let contentDesc = ''
-
+        //说明没有值
         if (!isArray(desc)) {
-          if (info.videos_url) {
-            contentDesc += `<video src=${info.videos} controls style='width:100%'></video>` + desc
+          if (vedioUrl) {
+            contentDesc += `<video src=${vedioUrl} controls style='width:100%'></video>` + desc
           } else {
             contentDesc = desc
               .toString()
@@ -532,6 +547,18 @@ export default class EspierDetail extends Component {
     )
 
     log.debug('fetch: done', info)
+  }
+
+  getVedioUrl = () => {
+    const { info } = this.state
+    //有本地视频
+    const localVedio = info.video_type === 'local' && info.videos ? info.videos : false
+    //有微信视频
+    const wechatVedio = info.video_type !== 'local' && info.videos_url ? info.videos_url : false
+    //展示视频
+    const vedioUrl = localVedio || wechatVedio || false
+
+    return vedioUrl
   }
 
   async goodLikeList (query) {
@@ -1035,7 +1062,7 @@ export default class EspierDetail extends Component {
 
   //订阅通知
   handleSubscription = async () => {
-    if (this.isPointitemGood() || isAlipay) {
+    if (this.isPointitemGood() || isAlipay || isWeb) {
       return
     }
 
@@ -1130,6 +1157,18 @@ export default class EspierDetail extends Component {
     }
   }
 
+  getVedioUrl = () => {
+    const { info } = this.state
+    //有本地视频
+    const localVedio = info.video_type === 'local' && info.videos ? info.videos : false
+    //有微信视频
+    const wechatVedio = info.video_type !== 'local' && info.videos_url ? info.videos_url : false
+    //展示视频
+    const vedioUrl = localVedio || wechatVedio || false
+
+    return vedioUrl
+  }
+
   render () {
     const {
       info,
@@ -1181,7 +1220,7 @@ export default class EspierDetail extends Component {
     if (info.activity_type === 'limited_buy') {
       ruleDay = JSON.parse(info.activity_info.rule.day)
     }
-
+    const vedioUrl = this.getVedioUrl()
     const { pics: imgs, kaquan_list: coupon_list } = info
     let new_coupon_list = []
     if (coupon_list && coupon_list.list.length >= 1) {
@@ -1523,9 +1562,10 @@ export default class EspierDetail extends Component {
             </View>
           )}
 
+          {/* 为数组说明为组件式 */}
           {isArray(desc) ? (
             <View className='wgts-wrap__cont'>
-              {info.videos_url && <Video src={info.videos} controls style='width:100%'></Video>}
+              {vedioUrl && <Video src={vedioUrl} controls style='width:100%'></Video>}
               {desc.map((item, idx) => {
                 return (
                   <View className='wgt-wrap' key={`${item.name}${idx}`}>
@@ -1633,6 +1673,8 @@ export default class EspierDetail extends Component {
                       ? '已订阅到货通知'
                       : isAlipay
                       ? '暂无可售'
+                      : isWeb
+                      ? '已售罄'
                       : '到货通知'}
                   </View>
                 )}

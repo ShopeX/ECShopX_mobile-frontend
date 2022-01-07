@@ -1,4 +1,13 @@
-const chalk = require("chalk");
+const crypto = require('crypto')
+const chalk = require("chalk")
+const pkg = require('../package.json')
+
+function digest(str) {
+  return crypto
+    .createHash('md5')
+    .update(str)
+    .digest('hex')
+}
 
 module.exports = {
   getEnvs() {
@@ -12,11 +21,19 @@ module.exports = {
     }, {});
     return envs;
   },
+
   getDefineConstants(consts) {
     consts = Object.keys(consts).reduce((val, k) => {
       val[`process.env.${k}`] = `'${consts[k]}'`
       return val;
     }, {});
     return consts;
+  },
+
+  getCacheIdentifier(consts = {}) {
+    const env = process.env.NODE_ENV || 'development'
+    const envHash = digest(JSON.stringify(consts))
+
+    return `cache-loader:${pkg.version} ${env} ${envHash}`
   }
-};
+}

@@ -15,7 +15,8 @@ export default class WgtCoupon extends Component {
   }
 
   static defaultProps = {
-    info: null
+    info: null,
+    hasToast: true
   }
 
   state = {
