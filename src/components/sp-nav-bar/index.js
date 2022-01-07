@@ -8,13 +8,13 @@ import { classNames, isWeb, isNavbar } from '@/utils'
 import './index.scss'
 
 function SpNavBar (props) {
-  const { leftIconType = 'chevron-left', title: p_title } = props
+  const { leftIconType = 'chevron-left', title: p_title, onClickLeftIcon } = props
   // const { page } = getCurrentInstance()
   const { pageTitle } = useSelector((state) => state.sys)
   // const defaultTitle = page ? page.config?.navigationBarTitleText : p_title
 
   const handleClickLeftIcon = function () {
-    Taro.navigateBack()
+    onClickLeftIcon ? onClickLeftIcon() : Taro.navigateBack()
   }
 
   if (!isNavbar()) {

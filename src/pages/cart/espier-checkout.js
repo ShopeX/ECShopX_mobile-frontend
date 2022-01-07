@@ -1725,7 +1725,6 @@ export default class CartCheckout extends Component {
     if (!info) {
       return <Loading />
     }
-    console.log
     const couponText = !coupon
       ? ''
       : coupon.type === 'member'

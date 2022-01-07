@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { AtNavBar } from 'taro-ui'
 import { connect } from 'react-redux'
 import { View } from '@tarojs/components'
 import api from '@/api'
@@ -76,7 +77,6 @@ export default class Cashier extends Component {
     const { order_type, order_id } = this.state.info
     const url =
       order_type === 'recharge' ? '/pages/member/pay' : `/subpage/pages/trade/detail?id=${order_id}`
-
     Taro.redirectTo({
       url
     })
@@ -91,7 +91,13 @@ export default class Cashier extends Component {
 
     return (
       <View className='page-cashier-index'>
-        <SpNavBar title='收银台' onClickLeftIcon={this.handleClickBack} />
+        <AtNavBar
+          fixed
+          color='#000'
+          title='收银台'
+          leftIconType='chevron-left'
+          onClickLeftIcon={this.handleClickBack}
+        />
         <View className='cashier-money'>
           {info.order_type !== 'recharge' ? (
             <View className='cashier-money__tip'>订单提交成功，请选择支付方式</View>
