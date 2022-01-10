@@ -58,7 +58,7 @@ export function useUpdate () {
 
   return useCallback(() => forceUpdate({}), [])
 }
-;[[]]
+
 //获取区域等操作
 export function useArea () {
   //总区域
