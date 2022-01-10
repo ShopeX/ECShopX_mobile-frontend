@@ -1,13 +1,13 @@
 .comp-goodsitem {
   display: flex;
-  .goods-item-hd {
+  &-hd {
     margin-right: 20px;
   }
-  .goods-item-bd {
+  &-bd {
     flex: 1;
     position: relative;
   }
-  .goods-image {
+  &-image {
     width: 220px;
     height: 220px;
   }
