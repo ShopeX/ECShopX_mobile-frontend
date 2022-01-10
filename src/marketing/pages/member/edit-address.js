@@ -6,7 +6,7 @@ import { AtForm, AtInput } from 'taro-ui'
 import { connect } from 'react-redux'
 import { SpCell, SpToast, SpNavBar } from '@/components'
 import api from '@/api'
-import { pickBy, isWeixin, isAlipay, isWeb } from '@/utils'
+import { isWxWeb } from '@/utils'
 import S from '@/spx'
 
 import './edit-address.scss'
@@ -255,7 +255,7 @@ export default class AddressIndex extends Component {
     const { colors } = this.props
     const { info, areaIndexArray, areaArray, chooseValue } = this.state
     return (
-      <View className='page-address-edit'>
+      <View className='page-address-edit' style={isWxWeb && { paddingTop: 0 }}>
         {/*<EditAddress*/}
         {/*address={getCurrentInstance().params.address}*/}
         {/*addressID={getCurrentInstance().params.address_id}*/}

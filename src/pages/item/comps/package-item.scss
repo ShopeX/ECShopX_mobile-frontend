@@ -40,18 +40,15 @@
 }
 
 .goods-item__sku {
+  max-width: 275px;
+  min-width: 100px;
   display: inline-block;
-  padding: 0 10px;
+  @include text-overflow();
   color: $color-gray;
   font-size: $font-size-small;
   box-shadow: 0 0 0 1px #efefef;
-  [class^="icon-"] {
+  
+  .icon-arrowDown {
     margin-left: 10px;
-  }
-  &-text {
-    max-width: 300px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
   }
 }
