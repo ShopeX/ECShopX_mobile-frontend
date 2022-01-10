@@ -19,9 +19,14 @@ const CONST_ENVS = {
 // 是否为生产模式
 const IS_PROD = process.env.NODE_ENV === "production";
 
-const copyPatterns = [{ from: "src/assets", to: `${DIST_PATH}/assets` }];
+const copyPatterns = [
+  { from: "src/assets", to: `${DIST_PATH}/assets` }
+];
 if (process.env.TARO_ENV != "h5") {
   copyPatterns.push({ from: "src/ext.json", to: `${DIST_PATH}/ext.json` });
+}
+if ( process.env.TARO_ENV == 'h5' ) {
+  copyPatterns.push({ from: "src/files", to: `${DIST_PATH}` });
 }
 
 const config = {
