@@ -26,6 +26,9 @@
   .shop-cart-item {
     padding: 0 16px;
     margin-top: 40px;
+    &-shadow {
+      box-shadow: 0px 2px 10px 0px #EAE7E0;
+    }
     &-hd {
       font-size: 30px;
       color: #333;
@@ -113,10 +116,7 @@
       color: #999;
     }
   }
-  .cart-goods-item {
-    flex: 1;
-  }
-  .comp-goodsitem {
+  .cart-goods-item, .comp-goodsitem {
     flex: 1;
   }
   .at-input-number {
@@ -204,11 +204,7 @@
   }
   .plus_items_bck {
     background: #fff;
-    // justify-content: flex-end;
     justify-content: flex-start;
-    // .spec-brief {
-    //   width: 330px;
-    // }
     .goods-title {
       width: 340px;
     }
@@ -222,5 +218,8 @@
   }
   .at-input-number__btn-add {
     font-size: 26px;
+  }
+  .sp-goods-item {
+    border-radius: 2px;
   }
 }
