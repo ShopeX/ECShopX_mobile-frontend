@@ -37,7 +37,7 @@ const Agreement = () => {
   console.log('==isWeb==>', isWeb)
 
   return (
-    <SpPage className={classNames('page-merchant-agreement')} needNavbar={false}>
+    <SpPage className={classNames('page-merchant-agreement')} navbar={false}>
       <MNavBar canLogout={false} />
 
       <ScrollView className='page-merchant-agreement-content'>

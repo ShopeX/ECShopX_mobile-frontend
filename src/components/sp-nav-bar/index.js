@@ -28,6 +28,7 @@ function SpNavBar (props) {
       title={pageTitle}
       leftIconType={leftIconType}
       onClickLeftIcon={handleClickLeftIcon}
+      className={classNames('sp-nav-bar')}
     />
   )
 }

@@ -433,7 +433,7 @@ const Apply = () => {
   console.log('===render===>', merchantType, businessScope, bankName)
 
   return (
-    <SpPage className='page-merchant-apply' needNavbar={false}>
+    <SpPage className='page-merchant-apply' navbar={false}>
       <MNavBar canBack={step !== 1} onBack={handleStep('back')} onLogout={handleLogout} />
 
       <MStep options={StepOptions} className='mt-40' step={step} />

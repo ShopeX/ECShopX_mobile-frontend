@@ -18,7 +18,8 @@ function SpPage (props) {
     renderFloat,
     renderFooter,
     scrollToTopBtn = false,
-    needNavbar = true
+    navbar = true,
+    onClickLeftIcon = null
   } = props
   const sys = useSelector((state) => state.sys)
   const [showToTop, setShowToTop] = useState(false)
@@ -49,12 +50,12 @@ function SpPage (props) {
   return (
     <View
       className={classNames('sp-page', className, {
-        'has-navbar': hasNavbar && !isTabBarPage && needNavbar,
+        'has-navbar': hasNavbar && !isTabBarPage && navbar,
         'has-footer': renderFooter
       })}
       style={styleNames(pageTheme)}
     >
-      {hasNavbar && !isTabBarPage && needNavbar && <SpNavBar />}
+      {hasNavbar && !isTabBarPage && navbar && <SpNavBar onClickLeftIcon={onClickLeftIcon} />}
       <View className='sp-page-body'>{children}</View>
 
       {/* 置底操作区 */}
