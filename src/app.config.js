@@ -131,6 +131,7 @@ export default {
         'pages/auth/reg', //新用户注册页面
         'pages/auth/reg-rule', //注册协议&充值协议页面
         'pages/auth/login', //登录页面
+        'pages/auth/auth-loading', //登录中转页
         'pages/auth/forgotpwd', //找回密码页面
         'pages/auth/wxauth', //微信授权页面
         'pages/auth/pclogin', //pc登录页面

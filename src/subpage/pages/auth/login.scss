@@ -12,21 +12,24 @@ $border-color:#E2E4EA;
   flex-direction: column;
 
   &.is-code-login{
-    .form-submit{
-      margin-top: 50px;
-    }
+    .auth-bd{
+      .form-submit{
+        margin-top: 50px;
+      }
+    } 
   }
 
-
-  .page-auth-wrapper{
-    // position: absolute;
-    // top:0;
-    // left:32px;
-    // right:32px;
-    // bottom:90px;
-    // max-height:1000px;
-    flex:1;
+  &.is-full{
+    .auth-bd{
+      .form-submit{ 
+        .login-button{
+          background-color:var(--color-primary);
+          border-color: var(--color-primary);
+        }
+      }
+    } 
   }
+ 
 
   .auth-hd {
     
@@ -94,6 +97,13 @@ $border-color:#E2E4EA;
         @include flex-center();
         font-size: 36px;
         font-weight: 600;
+      }
+      .at-button--disabled{
+        opacity: 1;
+      }
+      .login-button{
+        background-color: rgba(197, 202, 213, 1);
+        border-color: rgba(197, 202, 213, 1);
       }
       .login-button,.reg-button{
         height: 100px;

@@ -3,10 +3,11 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { CompOtherLogin } from './comps'
-import { SpNavBar, SpTimer, SpPage } from '@/components'
+import { SpTimer, SpPage } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { classNames, navigateTo, validate, showToast } from '@/utils'
+import { navigationToReg } from './util'
 import './login.scss'
 
 export default class Login extends Component {
@@ -129,11 +130,18 @@ export default class Login extends Component {
 
     const passwordLogin = loginType == 1
 
+    const codeLogin = loginType == 2
+
+    //全填写完
+    const isFull =
+      (codeLogin && info.mobile && info.yzm && info.vcode) ||
+      (passwordLogin && info.mobile && info.password)
+
     return (
       <SpPage
         className={classNames('page-auth-login', {
-          //是验证码登陆
-          'is-code-login': passwordLogin
+          'is-code-login': codeLogin,
+          'is-full': isFull
         })}
         onClickLeftIcon={this.handleNavLeftItemClick}
       >
@@ -170,7 +178,7 @@ export default class Login extends Component {
               </View>
             )}
             {/* 验证码登录，验证码超过1次，显示图形验证码 */}
-            {loginType == 2 && (
+            {codeLogin && (
               <View className='form-field'>
                 <View className='input-field'>
                   <AtInput
@@ -192,7 +200,7 @@ export default class Login extends Component {
                 </View>
               </View>
             )}
-            {loginType == 2 && (
+            {codeLogin && (
               <View className='form-field'>
                 <View className='input-field'>
                   <AtInput
@@ -224,6 +232,7 @@ export default class Login extends Component {
             </View>
             <View className='form-submit'>
               <AtButton
+                disabled={!isFull}
                 circle
                 type='primary'
                 className='login-button'
@@ -231,12 +240,7 @@ export default class Login extends Component {
               >
                 登 录
               </AtButton>
-              <AtButton
-                circle
-                type='primary'
-                className='reg-button'
-                onClick={this.handleSubmit.bind(this)}
-              >
+              <AtButton circle type='primary' className='reg-button' onClick={navigationToReg}>
                 注 册
               </AtButton>
             </View>

@@ -1,127 +1,146 @@
 @import "@/style/imports";
+$border-color:#E2E4EA;
 
-.auth-reg {
-  height: 100vh;
-  /*  #ifdef  h5  */
-  padding-top: $navigate-height-h5;
-  &.inWeixin{
-    padding-top:0;
+.page-auth-reg { 
+
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+
+  &.is-full{
+    .auth-bd{
+      .form-submit{ 
+        .login-button{
+          background-color:var(--color-primary);
+          border-color: var(--color-primary);
+        }
+      }
+    } 
   }
-  /*  #endif  */
-  position: relative;
-  box-sizing: border-box;
-  background: $color-brand-primary-text;
-  &__form {
-    padding: $edge-size;
-    margin: 0 0 $edge-margin;
-    .code-imgs {
-      width: 150px;
-      height: auto;
+ 
+
+  .auth-hd {
+    
+    margin-top:80px;
+
+    .title {
+      color: #111A34;
+      font-size: 52px;
+      line-height: 1;
+      margin-bottom:24px;
+    }
+    .desc {
+      font-size: 28px;
+      color: #858B9C;
+      line-height: 1;
     }
   }
-  .store-reg__input {
-    .at-input:after,
-    .at-switch::after {
-      border-color: $color-border-gray-light;
+
+  .auth-bd {
+    margin-top: 100px; 
+    .form-title {
+      font-size: 32px;
+      color: #111A34;
+      padding-bottom: 20px;
+      // border-bottom: 1PX solid #E2E4EA;
+      @include hairline($border-color,0,bottom);
     }
-    .at-switch {
-      margin-left: 0;
-    }
-  }
-  .store-reg {
-    &__btn {
-      margin-top: 50px;
-    }
-    button::after {
-      color: $color-brand-primary;
-    }
-    &_time {
+    .form-field {
       display: flex;
-      &-placeholder {
-        color: $color-gray;
+      align-items: center;
+      @include hairline($border-color,0,bottom);
+      // border-bottom: 1PX solid #E2E4EA;
+      .at-input {
+        padding: 25px 0 !important;
+        margin-bottom: 0;
+        flex: 1;
+        
+        &:after {
+          border:none;
+        }
+      }
+      .input-field {
+        flex: 1;
+      }
+      .btn-field {
+        width: 180px;
+        text-align: center;
+        .image-vcode {
+          width:180px;
+          height:60px;
+        }
       }
     }
-  }
-  .accountAgreement {
-    width: 100%;
-    text-align: center;
-    &__text {
-      color: $color-brand-primary;
+    .btn-text-group {
+      display: flex;
+      justify-content:space-between;
     }
-  }
-  .picker {
-    padding: 16px 0;
-    margin: 0 0 $edge-size;
-    display: flex;
-    justify-content: flex-start;
-    border-bottom: 1px solid rgba($color-brand-primary, 0.2);
-    &__title {
-      font-size: $font-size;
-      margin-right: 16px;
-      width: 172px;
+    .btn-text {
+      margin-top: 30px;
+      font-size: 28px;
+      color: var(--color-primary);
     }
-    .pick-value {
-      color: #333;
+    .form-submit {
+      margin-top: 100px;
+      .at-button__text{
+        @include flex-center();
+        font-size: 36px;
+        font-weight: 600;
+      }
+      .at-button--disabled{
+        opacity: 1;
+      }
+      .login-button{
+        background-color: rgba(197, 202, 213, 1);
+        border-color: rgba(197, 202, 213, 1);
+      }
+      .login-button,.reg-button{
+        height: 100px;
+        border-radius: 50px;
+      }
+      .reg-button{
+        margin-top: 32px;
+        background-color: white;
+        border:1px solid var(--color-primary);
+        color:var(--color-primary);
+      }
     }
-    span.pick-value-null {
-      color: #ccc;
-    }
-    text.pick-value-null {
-      color: #808080;
-    }
-  }
 
-  .input-phone {
-    .at-input__input {
-      visibility: hidden;
-    }
-  }
-}
-.pay-rule-style {
-  word-break: break-word;
-  padding: 30px;
-}
-
-.checkBoxPanel {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  background: #ffffff;
-  height: 600px;
-  overflow: scroll;
-  z-index: $z-index-modal;
-  &-content {
-    padding: 40px;
-  }
-  &-item {
-    height: 50px;
-    line-height: 50px;
-  }
-  .panel-btns {
-    box-shadow: 0 2px 2px 2px #808080;
-    .panel-btn {
-      height: 80px;
-      line-height: 80px;
-      display: inline-block;
+    .form-text{
+      font-size: 24px;
+      color: #666F83;
+      margin-top:24px;
       text-align: center;
-      width: 50%;
+      line-height: 1;
     }
-    .require-btn {
-      background: $color-price;
-      color: #ffffff;
+    .forgot-password{
+      color:rgba(133, 139, 156, 1);
+    }
+    .btn-submit {
+      height: 100px;
+      border-radius: 50px;
+      line-height: 100px;
+      font-size: 36px; 
+    
     }
   }
+  .auth-ft {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+    // height:90px;
+    text-align: center;
+    .logo {
+      width: 240px;
+      height: 45px;
+    }
+  }
+
 }
-.require-text {
-  font-size: 28px;
-  color: #ff4949;
-  display: inline-block;
-  margin-right: 8px;
-  font-family: SimSun, sans-serif;
-}
-// .page-member-integral {
-//   /*  #ifdef  h5  */
-//   padding-top: $navigate-height-h5;
-//   /*  #endif  */
-// }
