@@ -21,7 +21,9 @@ import {
   isObjectValueEqual,
   getThemeStyle,
   styleNames,
-  getHeadShop
+  getHeadShop,
+  merchantIsvaild,
+  showToast
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -1076,7 +1078,14 @@ export default class CartCheckout extends Component {
     }
   }
 
-  submitPay = () => {
+  submitPay = async () => {
+    const { shop_id: distributor_id = 0 } = this.$instance.router.params || {}
+    let isVaild = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用
+    if (!isVaild) {
+      showToast('该商品已下架')
+      return
+    }
+
     let { receiptType, submitLoading } = this.state
     if (receiptType === 'logistics') {
       if (this.state.curStore.is_delivery && !this.state.address) {

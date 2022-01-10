@@ -7,7 +7,7 @@ import api from '@/api'
 import configStore from '@/store'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import { FormIdCollector, SpLogin } from '@/components'
-import { classNames, isWeb, showToast } from '@/utils'
+import { classNames, isWeb, showToast, merchantIsvaild } from '@/utils'
 import './buy-toolbar.scss'
 
 const store = configStore()
@@ -50,7 +50,12 @@ export default class GoodsBuyToolbar extends Component {
   }
 
   handleFavClick = async () => {
-    const { item_id } = this.props.info
+    const { item_id, distributor_id = 0 } = this.props.info
+    let isVaild = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用
+    if (!isVaild) {
+      showToast('该商品已下架')
+      return
+    }
     const isFaved = this.props.favs.findIndex((item) => item.item_id == item_id) > -1
     if (!isFaved) {
       await store.dispatch(addUserFav(item_id))
