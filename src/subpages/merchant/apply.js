@@ -52,7 +52,7 @@ const initialState = {
   //法人手机号码
   legal_mobile: undefined,
   //银行账户类型
-  bank_acct_type: 0,
+  bank_acct_type: 2,
   //结算银行卡号
   card_id_mask: undefined,
   //结算银行
