@@ -137,3 +137,7 @@ export function loadMoreGoods (params) {
 export function getPrivacyTime (params) {
   return req.get(`/shops/protocolUpdateTime`)
 }
+
+export function getWxAuth (params) {
+  return req.get(`/trustlogin/params`, params)
+}

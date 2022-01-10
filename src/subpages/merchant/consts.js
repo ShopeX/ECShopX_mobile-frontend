@@ -6,6 +6,11 @@ export const BUSINESS_SCOPE = 'businessScope'
 
 export const BANG_NAME = 'bankName'
 
+//银行账户类型 对私
+export const BANK_PRIVATE = 2
+//银行账户类型 对公
+export const BANK_PUBLIC = 1
+
 export const PLACEHOLDER_SELECTOR = {
   [MERCHANT_TYPE]: '请输入商家类型',
   [BUSINESS_SCOPE]: '请输入经营范围',

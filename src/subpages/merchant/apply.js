@@ -1,32 +1,33 @@
-import Taro, { useDidShow, useRouter } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import { ScrollView, View, Text } from '@tarojs/components'
-import { showToast, isArray } from '@/utils'
+import { showToast, isArray, isUndefined } from '@/utils'
 import { SpPage } from '@/components'
 import { MButton, MStep, MNavBar, MCell, MImgPicker } from './comps'
-import { useArea, useUpdate, usePrevious } from './hook'
-import { navigateToAgreement, getMerchant, setMerchant, clearMerchant } from './util'
+import { useArea, usePrevious } from './hook'
+import { navigateToAgreement } from './util'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   MERCHANT_TYPE,
   BUSINESS_SCOPE,
   BANG_NAME,
   STEPTWOTEXT,
   STEPTHREETEXT,
-  MerchantStepKey
+  MerchantStepKey,
+  BANK_PUBLIC,
+  BANK_PRIVATE
 } from './consts'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import S from '@/spx'
 import './apply.scss'
-import { useDepChange } from '@/hooks'
+import { updateBank, updateBusinessScope, updateMerchantType } from '@/store/slices/merchant'
 
 const StepOptions = ['入驻信息', '商户信息', '证照信息']
 
-//const merchatTypeOptions = [{ value: 'enterprise', label: '企业' }, { value: 'soho', label: '个体户' }];
-
 const bankAccType = [
-  { value: 1, label: '对公' },
-  { value: 2, label: '对私' }
+  { value: BANK_PUBLIC, label: '对公' },
+  { value: BANK_PRIVATE, label: '对私' }
 ]
 
 const initialState = {
@@ -51,7 +52,7 @@ const initialState = {
   //法人手机号码
   legal_mobile: undefined,
   //银行账户类型
-  bank_acct_type: 0,
+  bank_acct_type: BANK_PRIVATE,
   //结算银行卡号
   card_id_mask: undefined,
   //结算银行
@@ -71,18 +72,18 @@ const initialState = {
 const Apply = () => {
   const [state, setState] = useImmer(initialState)
 
-  const { merchantType, businessScope, bankName } = getMerchant()
+  const { merchantType, businessScope, bank: bankName } = useSelector((state) => state.merchant)
+
+  const dispatch = useDispatch()
 
   const [merchantOptions, setMerchantOptions] = useState([])
 
-  const update = useUpdate()
-
   const previousMerchantType = usePrevious(merchantType)
   //结算银行必填
-  const banknameRequired = state.bank_acct_type == 1
+  const banknameRequired = state.bank_acct_type == BANK_PUBLIC
 
   //银行绑定手机号必填
-  const bankmobileRequired = state.bank_acct_type == 2
+  const bankmobileRequired = state.bank_acct_type == BANK_PRIVATE
 
   const {
     areaList,
@@ -95,10 +96,9 @@ const Apply = () => {
   const [step, setStep] = useState(1)
 
   useEffect(() => {
-    if (!previousMerchantType) return
-    if (merchantType.id !== previousMerchantType?.id) {
-      setMerchant({ key: BUSINESS_SCOPE })
-      update()
+    if (isUndefined(previousMerchantType)) return
+    if (merchantType.id !== previousMerchantType?.id && previousMerchantType.id) {
+      dispatch(updateBusinessScope({}))
     }
   }, [merchantType])
 
@@ -144,7 +144,7 @@ const Apply = () => {
         state.regions_id = selectArea.map((item) => item.value)
       })
     }
-  }, [selectArea, state])
+  }, [selectArea])
 
   const handleSubmit = async () => {
     const {
@@ -303,47 +303,49 @@ const Apply = () => {
     //有保存过才赋值
     if (merchant_type_id) {
       //缓存已经存在数据则不从接口读取
-      if (!merchantType.id) {
-        setMerchant({
-          key: MERCHANT_TYPE,
+      dispatch(
+        updateMerchantType({
           id: merchant_type_parent_id,
           name: merchant_type_parent_name,
           parent_id: 0
         })
-        setMerchant({
-          key: BUSINESS_SCOPE,
+      )
+      dispatch(
+        updateBusinessScope({
           id: merchant_type_id,
           name: merchant_type_name,
           parent_id: merchant_type_parent_id
         })
-      }
-      if (bank_name) {
-        setMerchant({
-          key: BANG_NAME,
+      )
+    }
+
+    if (bank_name) {
+      dispatch(
+        updateBank({
           name: bank_name
         })
-      }
-
-      setState((state) => {
-        state.settled_type = settled_type
-        state.merchant_type_id = merchant_type_id
-        state.merchant_name = merchant_name
-        state.social_credit_code_id = social_credit_code_id
-        state.regions_id = JSON.parse(regions_id)
-        state.regions = [province, city, area]
-        state.address = address
-        state.legal_name = legal_name
-        state.legal_cert_id = legal_cert_id
-        state.bank_acct_type = bank_acct_type
-        state.card_id_mask = card_id_mask
-        state.legal_mobile = legal_mobile
-        state.bank_mobile = bank_mobile
-        state.license_url = license_url ? [license_url] : []
-        state.bank_card_front_url = bank_card_front_url ? [bank_card_front_url] : []
-        state.legal_certid_front_url = legal_certid_front_url || ''
-        state.legal_cert_id_back_url = legal_cert_id_back_url || ''
-      })
+      )
     }
+
+    setState((state) => {
+      state.settled_type = settled_type
+      state.merchant_type_id = merchant_type_id
+      state.merchant_name = merchant_name
+      state.social_credit_code_id = social_credit_code_id
+      state.regions_id = JSON.parse(regions_id)
+      state.regions = province ? [province, city, area] : []
+      state.address = address
+      state.legal_name = legal_name
+      state.legal_cert_id = legal_cert_id
+      state.bank_acct_type = bank_acct_type || BANK_PRIVATE
+      state.card_id_mask = card_id_mask
+      state.legal_mobile = legal_mobile
+      state.bank_mobile = bank_mobile
+      state.license_url = license_url ? [license_url] : []
+      state.bank_card_front_url = bank_card_front_url ? [bank_card_front_url] : []
+      state.legal_certid_front_url = legal_certid_front_url || ''
+      state.legal_cert_id_back_url = legal_cert_id_back_url || ''
+    })
   }
 
   //点击下一步/上一步
@@ -417,16 +419,21 @@ const Apply = () => {
 
   const handleLogout = () => {
     S.delete(MerchantStepKey, true)
+    clearMerchant()
   }
 
-  useDidShow(() => {
-    update()
-  })
+  const clearMerchant = () => {
+    dispatch(updateMerchantType({}))
+    dispatch(updateBusinessScope({}))
+    dispatch(updateBank({}))
+  }
 
   const fieldName = state.settled_type === 'soletrader' ? '负责人' : '法人'
 
+  console.log('===render===>', merchantType, businessScope, bankName)
+
   return (
-    <SpPage className='page-merchant-apply' needNavbar={false}>
+    <SpPage className='page-merchant-apply' navbar={false}>
       <MNavBar canBack={step !== 1} onBack={handleStep('back')} onLogout={handleLogout} />
 
       <MStep options={StepOptions} className='mt-40' step={step} />

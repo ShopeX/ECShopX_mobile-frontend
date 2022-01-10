@@ -41,7 +41,8 @@ import {
   isAlipay,
   isWeixin,
   linkPage,
-  getAppId
+  getAppId,
+  isWeb
 } from '@/utils'
 import entry from '@/utils/entry'
 import S from '@/spx'

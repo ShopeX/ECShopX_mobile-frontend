@@ -16,7 +16,8 @@ if (process.env.TARO_ENV === 'weapp') {
 const reducer = persistReducer(
   {
     key: 'root',
-    storage
+    storage,
+    blacklist: ['merchant']
   },
   rootReducer
 )

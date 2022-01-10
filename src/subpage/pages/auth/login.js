@@ -2,20 +2,11 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-
-import { SpNavBar, SpTimer } from '@/components'
+import { CompOtherLogin } from './comps'
+import { SpNavBar, SpTimer, SpPage } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-import {
-  getThemeStyle,
-  styleNames,
-  classNames,
-  getBrowserEnv,
-  navigateTo,
-  validate,
-  showToast
-} from '@/utils'
-
+import { classNames, navigateTo, validate, showToast } from '@/utils'
 import './login.scss'
 
 export default class Login extends Component {
@@ -73,14 +64,6 @@ export default class Login extends Component {
   }
 
   handleNavLeftItemClick = () => {
-    // const { redirect } = getCurrentInstance().params
-    // if (redirect) {
-    //   Taro.redirectTo({
-    //     url: decodeURIComponent(redirect)
-    //   })
-    // }
-    //
-    // Taro.navigateBack()、
     Taro.redirectTo({
       url: process.env.APP_HOME_PAGE
     })
@@ -142,16 +125,15 @@ export default class Login extends Component {
   }
 
   render () {
-    const { info, isVisible, loginType, imgInfo } = this.state
+    const { info, loginType, imgInfo } = this.state
     return (
-      <View
-        className={classNames('page-auth-login', { 'inWeixin': getBrowserEnv().weixin })}
-        style={styleNames(getThemeStyle())}
+      <SpPage
+        className={classNames('page-auth-login')}
+        onClickLeftIcon={this.handleNavLeftItemClick}
       >
-        <SpNavBar onClickLeftIcon={this.handleNavLeftItemClick} title='登录' />
         <View className='auth-hd'>
           <View className='title'>欢迎登录</View>
-          {/* <View className="desc">未注册的手机号验证后自动创建账号</View> */}
+          <View className='desc'>使用已注册的手机号登录</View>
         </View>
         <View className='auth-bd'>
           <View className='form-title'>中国大陆 +86</View>
@@ -228,23 +210,36 @@ export default class Login extends Component {
                 {loginType == 1 ? '验证码登录' : '密码登录'}
               </Text>
               <Text
-                className='btn-text'
+                className='btn-text forgot-password'
                 onClick={() => Taro.navigateTo({ url: '/subpage/pages/auth/reg' })}
               >
-                注册
+                忘记密码？
               </Text>
             </View>
             <View className='form-submit'>
-              <AtButton circle type='primary' onClick={this.handleSubmit.bind(this)}>
-                登录
+              <AtButton
+                circle
+                type='primary'
+                className='login-button'
+                onClick={this.handleSubmit.bind(this)}
+              >
+                登 录
+              </AtButton>
+              <AtButton
+                circle
+                type='primary'
+                className='reg-button'
+                onClick={this.handleSubmit.bind(this)}
+              >
+                注 册
               </AtButton>
             </View>
           </AtForm>
         </View>
-        {/* <View className="auth-ft">
-          <Image className="logo" mode="widthFix" src={LOGO} />
-        </View> */}
-      </View>
+        <View className='other-login'>
+          <CompOtherLogin />
+        </View>
+      </SpPage>
     )
   }
 }
