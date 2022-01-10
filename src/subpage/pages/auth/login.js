@@ -126,9 +126,15 @@ export default class Login extends Component {
 
   render () {
     const { info, loginType, imgInfo } = this.state
+
+    const passwordLogin = loginType == 1
+
     return (
       <SpPage
-        className={classNames('page-auth-login')}
+        className={classNames('page-auth-login', {
+          //是验证码登陆
+          'is-code-login': passwordLogin
+        })}
         onClickLeftIcon={this.handleNavLeftItemClick}
       >
         <View className='auth-hd'>
@@ -150,7 +156,7 @@ export default class Login extends Component {
               />
             </View>
             {/* 密码登录 */}
-            {loginType == 1 && (
+            {passwordLogin && (
               <View className='form-field'>
                 <View className='input-field'>
                   <AtInput
@@ -207,7 +213,7 @@ export default class Login extends Component {
             )}
             <View className='btn-text-group'>
               <Text className='btn-text' onClick={this.handleToggleLogin.bind(this)}>
-                {loginType == 1 ? '验证码登录' : '密码登录'}
+                {passwordLogin ? '验证码登录' : '密码登录'}
               </Text>
               <Text
                 className='btn-text forgot-password'

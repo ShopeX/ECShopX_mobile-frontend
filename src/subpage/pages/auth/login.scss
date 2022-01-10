@@ -11,6 +11,12 @@ $border-color:#E2E4EA;
   display: flex;
   flex-direction: column;
 
+  &.is-code-login{
+    .form-submit{
+      margin-top: 50px;
+    }
+  }
+
 
   .page-auth-wrapper{
     // position: absolute;
@@ -24,7 +30,7 @@ $border-color:#E2E4EA;
 
   .auth-hd {
     
-    margin-top:172px;
+    margin-top:80px;
 
     .title {
       color: #111A34;
@@ -50,12 +56,13 @@ $border-color:#E2E4EA;
     .form-field {
       display: flex;
       align-items: center;
+      @include hairline($border-color,0,bottom);
       // border-bottom: 1PX solid #E2E4EA;
       .at-input {
         padding: 25px 0 !important;
         margin-bottom: 0;
         flex: 1;
-        @include hairline($border-color,0,bottom);
+        
         &:after {
           border:none;
         }
