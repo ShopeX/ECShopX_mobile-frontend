@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import Taro from '@tarojs/taro'
 import { AtNavBar } from 'taro-ui'
 import { classNames, isWeb, isNavbar } from '@/utils'
 
@@ -28,6 +27,7 @@ function SpNavBar (props) {
       title={pageTitle}
       leftIconType={leftIconType}
       onClickLeftIcon={handleClickLeftIcon}
+      className={classNames('sp-nav-bar')}
     />
   )
 }

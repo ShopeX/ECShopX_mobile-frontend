@@ -17,8 +17,8 @@ const initialState = {
   location: {}
 }
 
-export const fetchUserFavs = createAsyncThunk('user/fetchUserFavs', async () => {
-  const { list } = await api.member.favsList()
+export const fetchUserFavs = createAsyncThunk('user/fetchUserFavs', async (params) => {
+  const { list } = await api.member.favsList(params)
   return {
     list
   }

@@ -13,6 +13,63 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.icon-weixin:before {
+  content: "\e649";
+}
+
+.icon-qianwang-011:before {
+  content: "\e896";
+}
+
+.icon-jifenshangcheng-01:before {
+  content: "\e88c";
+}
+
+.icon-mianfeihuodongyuyue-01:before {
+  content: "\e88d";
+}
+
+.icon-zhulidingdan-01:before {
+  content: "\e88e";
+}
+
+.icon-wodefenxiao-01:before {
+  content: "\e88f";
+}
+
+.icon-wodeshequtuangou-01:before {
+  content: "\e890";
+}
+
+.icon-wodepintuan-01:before {
+  content: "\e891";
+}
+
+.icon-xianxiadingdanguanlian-01:before {
+  content: "\e892";
+}
+
+.icon-tousujilu-01:before {
+  content: "\e893";
+}
+
+.icon-tuiguangguanli-01:before {
+  content: "\e894";
+}
+
+.icon-zhulihuodong-01:before {
+  content: "\e895";
+}
+
+.icon-eye:before {
+  content: "\e87c";
+}
+
+.icon-31shijian:before {
+  content: "\e640";
+}
+
 .icon-fenxiangdianpu-duoduan:before {
   content: "\e888";
 }
@@ -59,14 +116,6 @@
 
 .icon-tuxingyanzhengma-01-copy:before {
   content: "\f181";
-}
-
-.icon-eye:before {
-  content: "\e87c";
-}
-
-.icon-31shijian:before {
-  content: "\e640";
 }
 
 .icon-guanbi:before {
@@ -760,3 +809,4 @@
 .icon-arrowRight:before {
   content: "\e726";
 }
+

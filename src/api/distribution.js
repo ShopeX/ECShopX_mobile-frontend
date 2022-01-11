@@ -84,3 +84,8 @@ export function getCash (params) {
 export function getShopGoods (params) {
   return req.get('/goods/shopitems', params)
 }
+
+// 查询商家是否可用
+export function merchantIsvaild (params) {
+  return req.get(`/distributor/merchant/isvaild`, params)
+}
