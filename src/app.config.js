@@ -5,6 +5,7 @@ export default {
     'pages/cart/espier-index', // 购物车页面
     'pages/cart/espier-checkout', // 结算页面
     'pages/store/index', // 店铺首页
+    'pages/store/brand-info', // 店铺品牌
 
     'pages/home/landing', // 跳转等待页面
     'pages/floorguide/index', // 楼层引导页面

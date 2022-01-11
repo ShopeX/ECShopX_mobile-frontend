@@ -383,6 +383,10 @@ const Apply = () => {
     //大于1才调用详情
     if (step > 1) {
       getDetail()
+    } else {
+      setState((state) => {
+        state.formloading = false
+      })
     }
     //如果是一步都没走
     if (step === 1) {

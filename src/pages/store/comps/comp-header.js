@@ -8,7 +8,7 @@ import { SpShopCoupon, SpShopFullReduction } from '@/components'
 import { useLogin } from '@/hooks'
 
 function CompHeader (props) {
-  const { info, couponList = [] } = props
+  const { info, couponList = [], brandInfo = () => {} } = props
   const { brand = '', name = '', scoreList = {}, marketingActivityList = [] } = info
   const [showMore, setShowMore] = useState(false)
   const [fav, setFav] = useState(false)
@@ -44,7 +44,7 @@ function CompHeader (props) {
     setFav(flag)
   }
   //品牌介绍
-  const brandInfo = () => {}
+  // const brandInfo = () => {}
   return (
     <View className='comp-header'>
       {/* {店铺信息} */}

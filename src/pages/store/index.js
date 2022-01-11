@@ -284,6 +284,15 @@ export default class StoreIndex extends Component {
     }
   }
 
+  handleBrandInfo = () => {
+    const {
+      storeInfo: { distributor_id }
+    } = this.state
+    Taro.navigateTo({
+      url: `/pages/store/brand-info?distributor_id=${distributor_id}`
+    })
+  }
+
   render () {
     const {
       wgts,
@@ -321,7 +330,12 @@ export default class StoreIndex extends Component {
           scrollY
         >
           <View className='wgts-wrap__cont'>
-            <CompHeader inStore info={storeInfo} couponList={couponList} />
+            <CompHeader
+              inStore
+              info={storeInfo}
+              couponList={couponList}
+              brandInfo={this.handleBrandInfo}
+            />
             {wgts.map((item, idx) => {
               return (
                 <View className='wgt-wrap' key={`${item.name}${idx}`}>
