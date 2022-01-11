@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { usePageScroll, getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpNavBar, SpFloatMenuItem } from '@/components'
+import { SpNavBar, SpFloatMenuItem, SpNote } from '@/components'
 import { TABBAR_PATH } from '@/consts'
 import { classNames, styleNames, hasNavbar } from '@/utils'
 
@@ -18,7 +18,8 @@ function SpPage (props) {
     renderFloat,
     renderFooter,
     scrollToTopBtn = false,
-    needNavbar = true
+    isDefault = false,
+    defaultMsg = ''
   } = props
   const sys = useSelector((state) => state.sys)
   const [showToTop, setShowToTop] = useState(false)
@@ -49,13 +50,16 @@ function SpPage (props) {
   return (
     <View
       className={classNames('sp-page', className, {
-        'has-navbar': hasNavbar && !isTabBarPage && needNavbar,
+        'has-navbar': hasNavbar && !isTabBarPage,
         'has-footer': renderFooter
       })}
       style={styleNames(pageTheme)}
     >
-      {hasNavbar && !isTabBarPage && needNavbar && <SpNavBar />}
-      <View className='sp-page-body'>{children}</View>
+      {hasNavbar && !isTabBarPage && <SpNavBar />}
+
+      {isDefault && <SpNote img='empty_data.png' title={defaultMsg} />}
+
+      {!isDefault && <View className='sp-page-body'>{children}</View>}
 
       {/* 置底操作区 */}
       {renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}

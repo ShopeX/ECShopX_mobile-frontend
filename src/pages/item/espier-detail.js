@@ -269,7 +269,7 @@ export default class EspierDetail extends Component {
         order_type: 'pointsmall'
       }
     }
-    const { list, total_count } = await api.item.evaluationList(params)
+    const { list = [], total_count } = await api.item.evaluationList(params)
     list.map((item) => {
       item.picList = item.rate_pic ? item.rate_pic.split(',') : []
     })
@@ -703,7 +703,7 @@ export default class EspierDetail extends Component {
     }
 
     if (type != 'pick') {
-      let isVaild = await merchantIsvaild({ distributor_id: info.distributor_id }) // 判断当前店铺关联商户是否被禁用
+      let isVaild = await merchantIsvaild({ distributor_id: info.distributor_id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
       if (!isVaild) {
         showToast('该商品已下架')
         return
@@ -908,7 +908,7 @@ export default class EspierDetail extends Component {
       return
     }
 
-    let isVaild = await merchantIsvaild({ distributor_id: info.distributor_id }) // 判断当前店铺关联商户是否被禁用
+    let isVaild = await merchantIsvaild({ distributor_id: info.distributor_id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     if (!isVaild) {
       showToast('该商品已下架')
       return

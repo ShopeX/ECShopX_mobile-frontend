@@ -41,7 +41,7 @@ export default class StoreInfo extends Component {
 
   handleClickLink = async () => {
     const { distributor_id } = this.props.info || {}
-    let isVaild = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用
+    let isVaild = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     if (!isVaild) {
       showToast('该店铺已注销，在别的店铺看看吧')
       return
@@ -63,7 +63,7 @@ export default class StoreInfo extends Component {
       return
     }
 
-    let isVaild = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用
+    let isVaild = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     if (!isVaild) {
       showToast('该店铺已注销，在别的店铺看看吧')
       return
