@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { ScrollView, View, Text } from '@tarojs/components'
 import { SpPage, SpLoading } from '@/components'
-import { classNames , JumpPageIndex } from '@/utils'
+import { classNames, JumpPageIndex } from '@/utils'
 import CompHeader from './comps/comp-header'
 import { useImmer } from 'use-immer'
 import api from '@/api'
@@ -58,7 +58,7 @@ const PageBrandInfo = () => {
         </View>
         <View className='margin padding brand'>
           <View className='title'>品牌简介</View>
-          {/* <View className='content'>{storeInfo.introduce??'无'}</View> */}
+          <View className='content'>{storeInfo.introduce || '无'}</View>
         </View>
         <View className='margin good'>
           <View className='title' onClick={JumpPageIndex}>
