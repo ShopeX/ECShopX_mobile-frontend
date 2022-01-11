@@ -19,7 +19,9 @@ function SpPage (props) {
     renderFooter,
     scrollToTopBtn = false,
     isDefault = false,
-    defaultMsg = ''
+    defaultMsg = '',
+    navbar = true,
+    onClickLeftIcon = null
   } = props
   const sys = useSelector((state) => state.sys)
   const [showToTop, setShowToTop] = useState(false)
@@ -50,12 +52,12 @@ function SpPage (props) {
   return (
     <View
       className={classNames('sp-page', className, {
-        'has-navbar': hasNavbar && !isTabBarPage,
+        'has-navbar': hasNavbar && !isTabBarPage && navbar,
         'has-footer': renderFooter
       })}
       style={styleNames(pageTheme)}
     >
-      {hasNavbar && !isTabBarPage && <SpNavBar />}
+      {hasNavbar && !isTabBarPage && navbar && <SpNavBar onClickLeftIcon={onClickLeftIcon} />}
 
       {isDefault && <SpNote img='empty_data.png' title={defaultMsg} />}
 

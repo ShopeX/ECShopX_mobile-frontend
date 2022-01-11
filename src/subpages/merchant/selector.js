@@ -148,7 +148,7 @@ const Selector = () => {
   }
 
   return (
-    <SpPage className='page-merchant-selector' needNavbar={false}>
+    <SpPage className='page-merchant-selector' navbar={false}>
       <MNavBar canLogout={false} />
 
       <View className='page-merchant-selector-inputwrapper'>

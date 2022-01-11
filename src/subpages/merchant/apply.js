@@ -13,7 +13,9 @@ import {
   BANG_NAME,
   STEPTWOTEXT,
   STEPTHREETEXT,
-  MerchantStepKey
+  MerchantStepKey,
+  BANK_PUBLIC,
+  BANK_PRIVATE
 } from './consts'
 import { useImmer } from 'use-immer'
 import api from '@/api'
@@ -24,8 +26,8 @@ import { updateBank, updateBusinessScope, updateMerchantType } from '@/store/sli
 const StepOptions = ['入驻信息', '商户信息', '证照信息']
 
 const bankAccType = [
-  { value: 1, label: '对公' },
-  { value: 2, label: '对私' }
+  { value: BANK_PUBLIC, label: '对公' },
+  { value: BANK_PRIVATE, label: '对私' }
 ]
 
 const initialState = {
@@ -50,7 +52,7 @@ const initialState = {
   //法人手机号码
   legal_mobile: undefined,
   //银行账户类型
-  bank_acct_type: 2,
+  bank_acct_type: BANK_PRIVATE,
   //结算银行卡号
   card_id_mask: undefined,
   //结算银行
@@ -78,10 +80,10 @@ const Apply = () => {
 
   const previousMerchantType = usePrevious(merchantType)
   //结算银行必填
-  const banknameRequired = state.bank_acct_type == 1
+  const banknameRequired = state.bank_acct_type == BANK_PUBLIC
 
   //银行绑定手机号必填
-  const bankmobileRequired = state.bank_acct_type == 2
+  const bankmobileRequired = state.bank_acct_type == BANK_PRIVATE
 
   const {
     areaList,
@@ -335,7 +337,7 @@ const Apply = () => {
       state.address = address
       state.legal_name = legal_name
       state.legal_cert_id = legal_cert_id
-      state.bank_acct_type = bank_acct_type
+      state.bank_acct_type = bank_acct_type || BANK_PRIVATE
       state.card_id_mask = card_id_mask
       state.legal_mobile = legal_mobile
       state.bank_mobile = bank_mobile
@@ -431,7 +433,7 @@ const Apply = () => {
   console.log('===render===>', merchantType, businessScope, bankName)
 
   return (
-    <SpPage className='page-merchant-apply' needNavbar={false}>
+    <SpPage className='page-merchant-apply' navbar={false}>
       <MNavBar canBack={step !== 1} onBack={handleStep('back')} onLogout={handleLogout} />
 
       <MStep options={StepOptions} className='mt-40' step={step} />

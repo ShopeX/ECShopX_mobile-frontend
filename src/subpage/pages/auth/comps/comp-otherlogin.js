@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Input, Button } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import api from '@/api'
 import './comp-otherlogin.scss'
 
@@ -8,7 +8,8 @@ const CompOtherLogin = () => {
   const handleClickWexin = async () => {
     const $instance = getCurrentInstance()
     const { redirect = '' } = $instance.router.params
-    const redirectUrl = !!redirect && redirect !== 'undefined' ? redirect : APP_HOME_PAGE
+    const redirectUrl =
+      !!redirect && redirect !== 'undefined' ? redirect : process.env.APP_HOME_PAGE
     let { oauth_url = '' } = await api.wx.getWxAuth({
       redirect_url: redirectUrl,
       trustlogin_tag: 'weixin',

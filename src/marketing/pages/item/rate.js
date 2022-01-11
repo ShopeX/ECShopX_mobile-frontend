@@ -102,12 +102,15 @@ export default class TradeRate extends Component {
     })
   }
 
-  handleChangeComment (index, e) {
+  handleChangeComment (index, value, e) {
+    // value在H5端有bug 所以还是用e.detail.value 的方式！
+    console.log(e.detail.value)
     const { goodsList } = this.state
-    goodsList[index].content = e
+    goodsList[index].content = e.detail.value
     this.setState({
       goodsList
     })
+    console.log(goodsList)
   }
 
   handleImageChange = async (index, files, type) => {
@@ -197,6 +200,7 @@ export default class TradeRate extends Component {
     if (!goodsList.length) {
       return <Loading />
     }
+    console.log(goodsList)
 
     return (
       <SpPage>
