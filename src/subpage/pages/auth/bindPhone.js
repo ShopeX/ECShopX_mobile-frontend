@@ -74,12 +74,13 @@ const Reg = () => {
 
     //如果是新用户
     if (is_new === 1) {
+      url = '/subpage/pages/auth/edit-password'
     } else {
       url = process.env.APP_HOME_PAGE
-      Taro.redirectTo({
-        url
-      })
     }
+    Taro.redirectTo({
+      url
+    })
   }
 
   useEffect(() => {

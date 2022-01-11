@@ -68,7 +68,6 @@ export default class SpSearchBar extends Component {
   }
 
   handleConfirm = (e) => {
-    debugger
     e.preventDefault && e.preventDefault()
     e.stopPropagation && e.stopPropagation()
 
