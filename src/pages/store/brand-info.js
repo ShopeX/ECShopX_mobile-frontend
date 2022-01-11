@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
-import { ScrollView, View, Text } from '@tarojs/components'
+import { ScrollView, View, RichText } from '@tarojs/components'
 import { SpPage, SpLoading } from '@/components'
-import { classNames, JumpPageIndex } from '@/utils'
+import { classNames, isWeixin } from '@/utils'
 import CompHeader from './comps/comp-header'
 import { useImmer } from 'use-immer'
 import api from '@/api'
@@ -61,6 +61,24 @@ const PageBrandInfo = () => {
     storeFav(distributor_id)
   }, [])
 
+  const changeInt = storeInfo.introduce?.replaceAll('\n', '<br/>')
+
+  let nodes = [
+    {
+      name: 'div',
+      attrs: {
+        class: 'content'
+      },
+      children: [
+        {
+          type: 'text',
+          //text: storeInfo.introduce?.split('\n').reduce((total,cur)=>total+`<div>${cur}</div>`)
+          text: storeInfo.introduce
+        }
+      ]
+    }
+  ]
+
   return (
     <SpPage className={classNames('page-store-brand')}>
       <ScrollView className='page-store-brand-scrollview' scrollY>
@@ -70,9 +88,11 @@ const PageBrandInfo = () => {
         <View className='margin padding brand'>
           <View className='title'>品牌简介</View>
           <View className='content'>
-            <View
-              dangerouslySetInnerHTML={{ __html: storeInfo.introduce?.replaceAll('\n', '<br/>') }}
-            ></View>
+            {isWeixin ? (
+              <RichText nodes={changeInt} type='node' />
+            ) : (
+              <View dangerouslySetInnerHTML={{ __html: changeInt }}></View>
+            )}
           </View>
         </View>
         <View className='margin good'>
