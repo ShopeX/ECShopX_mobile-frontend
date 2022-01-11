@@ -640,6 +640,12 @@ function isUndefined (val) {
   return typeof val === 'undefined'
 }
 
+// 查询商家是否可用
+const merchantIsvaild = async (parmas) => {
+  const { status } = await api.distribution.merchantIsvaild(parmas)
+  return status
+}
+
 export {
   classNames,
   log,
@@ -656,7 +662,8 @@ export {
   redirectUrl,
   isBase64,
   isMerchantModule,
-  isUndefined
+  isUndefined,
+  merchantIsvaild
 }
 
 export * from './platforms'

@@ -3,6 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import S from '@/spx'
 import api from '@/api'
+import { merchantIsvaild, showToast } from '@/utils'
 
 import './store-info.scss'
 
@@ -38,15 +39,20 @@ export default class StoreInfo extends Component {
     })
   }
 
-  handleClickLink = () => {
-    const { distributor_id } = this.props.info
-    console.log(1111111, distributor_id)
+  handleClickLink = async () => {
+    const { distributor_id } = this.props.info || {}
+    let isVaild = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
+    if (!isVaild) {
+      showToast('该店铺已注销，在别的店铺看看吧')
+      return
+    }
     Taro.navigateTo({
       url: `/pages/store/index?id=${distributor_id}`
     })
   }
 
   handleStoreFav = async (id) => {
+    const { distributor_id } = this.props.info || {}
     if (!S.getAuthToken()) {
       S.toast('请先登录')
 
@@ -54,6 +60,12 @@ export default class StoreInfo extends Component {
         S.login(this)
       }, 2000)
 
+      return
+    }
+
+    let isVaild = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
+    if (!isVaild) {
+      showToast('该店铺已注销，在别的店铺看看吧')
       return
     }
 

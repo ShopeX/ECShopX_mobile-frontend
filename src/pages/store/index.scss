@@ -1,21 +1,20 @@
 @import "../../style/imports";
 $primary-color: rgba(244, 129, 31, 1);
+.page-store-height {
+  height: 100vh !important;
+}
 .page-store-index {
   background: #fff;
   height: 100%;
   box-sizing: border-box;
- 
- 
-    &.fixedSearch{
-      .wgts-wrap {
-        padding-top: 170px;
-        /*  #ifdef  h5  */
-        padding-top: 160px;
-        /*  #endif  */   
-      }  
-    }
-    
- 
+  &.fixedSearch{
+    .wgts-wrap {
+      padding-top: 170px;
+      /*  #ifdef  h5  */
+      padding-top: 160px;
+      /*  #endif  */   
+    }  
+  }
   .store-header { 
     text-align: center;
     padding:30px 0;
@@ -78,7 +77,6 @@ $primary-color: rgba(244, 129, 31, 1);
       box-shadow: 0 0 20px rgba(0,0,0,.2);
     }
   }
- 
 }
 
 .wgts-wrap {

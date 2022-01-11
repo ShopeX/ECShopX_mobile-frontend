@@ -95,13 +95,17 @@ export default class HomeWgts extends Component {
             data-name={item.name}
           >
             {/* {item.name === "search" && <WgtSearchHome info={item} />} */}
-            {item.name === 'search' && <SpSearch info={item} />}
-            {item.name === 'film' && <WgtFilm info={item} />}
-            {item.name === 'marquees' && <WgtMarquees info={item} />}
-            {item.name === 'slider' && <WgtSlider isHomeSearch info={item} width={screenWidth} />}
-            {item.name === 'navigation' && <WgtNavigation info={item} />}
-            {item.name === 'coupon' && <WgtCoupon info={item} />}
-            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
+            {item.name === 'search' && <SpSearch info={item} />} {/** 搜索 */}
+            {item.name === 'film' && <WgtFilm info={item} />} {/** 视频 */}
+            {item.name === 'marquees' && <WgtMarquees info={item} />} {/** 文字轮播 */}
+            {item.name === 'slider' && (
+              <WgtSlider isHomeSearch info={item} width={screenWidth} />
+            )}{' '}
+            {/** 轮播 */}
+            {item.name === 'navigation' && <WgtNavigation info={item} />} {/** 图片导航 */}
+            {item.name === 'coupon' && <WgtCoupon info={item} />} {/** 优惠券 */}
+            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />} {/** 热区图 */}
+            {/** 商品滚动 */}
             {item.name === 'goodsScroll' && (
               <WgtGoodsScroll
                 info={item}
@@ -110,6 +114,7 @@ export default class HomeWgts extends Component {
                 onLoadMore={this.handleLoadMore}
               />
             )}
+            {/** 商品栅格 */}
             {item.name === 'goodsGrid' && (
               <WgtGoodsGrid
                 info={item}
@@ -118,6 +123,7 @@ export default class HomeWgts extends Component {
                 onLoadMore={this.handleLoadMore}
               />
             )}
+            {/** 商品Tab */}
             {item.name === 'goodsGridTab' && (
               <WgtGoodsGridTab
                 info={item}
@@ -126,13 +132,13 @@ export default class HomeWgts extends Component {
                 onLoadMore={this.handleLoadMore}
               />
             )}
-            {item.name === 'showcase' && <WgtShowcase info={item} />}
-            {item.name === 'headline' && <WgtHeadline info={item} />}
-            {item.name === 'img-gif' && <WgtImgGif info={item} />}
-            {item.name === 'hotTopic' && <WgtHotTopic info={item} />}
-            {item.name === 'floorImg' && <WgtFloorImg info={item} />}
-            {item.name === 'store' && <WgtStore info={item} />}
-            {item.name === 'nearbyShop' && <WgtNearbyShop info={item} />}
+            {item.name === 'showcase' && <WgtShowcase info={item} />} {/** 橱窗 */}
+            {item.name === 'headline' && <WgtHeadline info={item} />} {/** 文字标题 */}
+            {item.name === 'img-gif' && <WgtImgGif info={item} />} {/** 视频图 */}
+            {item.name === 'hotTopic' && <WgtHotTopic info={item} />} {/** 热点话题 */}
+            {item.name === 'floorImg' && <WgtFloorImg info={item} />} {/** 楼层图片 */}
+            {item.name === 'store' && <WgtStore info={item} />} {/** 推荐商铺 */}
+            {item.name === 'nearbyShop' && <WgtNearbyShop info={item} />} {/** 附近商家 */}
           </View>
         ))}
       </View>
