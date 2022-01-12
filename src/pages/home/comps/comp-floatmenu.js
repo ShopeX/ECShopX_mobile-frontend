@@ -30,13 +30,15 @@ function CompFloatMenu (props) {
       user_id: distributionShopId || userInfo?.user_id
     }
     const res = await api.distribution.info(param)
-    const { user_id, is_valid, selfInfo = {}, parentInfo = {} } = res
+
+    // debugger;
+    const { user_id, is_valid, selfInfo = {}, parentInfo = {} } = res || {}
     let _userId
     if (is_valid) {
       _userId = user_id
-    } else if (selfInfo.is_valid) {
+    } else if (selfInfo?.is_valid) {
       _userId = selfInfo.user_id
-    } else if (parentInfo.is_valid) {
+    } else if (parentInfo?.is_valid) {
       _userId = parentInfo.user_id
     }
     if (_userId) {

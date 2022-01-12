@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { SpPage, SpTimer } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
@@ -33,14 +34,52 @@ const Reg = () => {
     })
   }
 
-  const handleTimerStart = () => {
+  const handleTimerStart = async (resolve) => {
     if (!validate.isMobileNum(mobile)) {
       showToast('请输入正确的手机号')
       return
     }
+    if (!validate.isRequired(yzm)) {
+      showToast('请输入图形验证码')
+      return
+    }
+    try {
+      await api.user.regSmsCode({
+        type: 'sign',
+        mobile: mobile,
+        yzm: yzm,
+        token: imgInfo.imageToken
+      })
+      showToast('验证码已发送')
+      resolve()
+    } catch (e) {
+      getImageVcode()
+    }
   }
 
-  const handleSubmit = () => {}
+  const handleSubmit = async () => {
+    if (!validate.isMobileNum(mobile)) {
+      showToast('请输入正确的手机号')
+      return
+    }
+    if (!validate.isRequired(vcode)) {
+      showToast('请输入验证码')
+      return
+    }
+    if (!validate.isRequired(password)) {
+      showToast('请输入密码')
+      return
+    }
+    try {
+      const { token } = await api.user.bind({
+        auth_type: 'local',
+        username: mobile
+      })
+      setTokenAndRedirect(token)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   useEffect(() => {
     getImageVcode()
@@ -56,8 +95,7 @@ const Reg = () => {
       })}
     >
       <View className='auth-hd'>
-        <View className='title'>欢迎登录</View>
-        <View className='desc'>使用未注册的手机号注册</View>
+        <View className='title'>欢迎注册</View>
       </View>
       <View className='auth-bd'>
         <View className='form-title'>中国大陆 +86</View>
@@ -86,12 +124,8 @@ const Reg = () => {
               />
             </View>
             <View className='btn-field'>
-              {state.imgInfo && (
-                <Image
-                  className='image-vcode'
-                  src={state.imgInfo.imageData}
-                  onClick={getImageVcode}
-                />
+              {imgInfo && (
+                <Image className='image-vcode' src={imgInfo.imageData} onClick={getImageVcode} />
               )}
             </View>
           </View>
@@ -136,7 +170,17 @@ const Reg = () => {
           </View>
 
           <View className='form-text'>
-            已阅读并同意<Text className='primary-color'>《注册协议》</Text>
+            已阅读并同意
+            <Text
+              className='primary-color'
+              onClick={() =>
+                Taro.navigateTo({
+                  url: '/subpage/pages/auth/reg-rule'
+                })
+              }
+            >
+              《注册协议》
+            </Text>
           </View>
         </AtForm>
       </View>

@@ -7,7 +7,7 @@ import { SpTimer, SpPage } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { classNames, navigateTo, validate, showToast } from '@/utils'
-import { navigationToReg } from './util'
+import { navigationToReg, setTokenAndRedirect } from './util'
 import './login.scss'
 
 export default class Login extends Component {
@@ -100,6 +100,7 @@ export default class Login extends Component {
         return
       }
       params['password'] = password
+      params['check_type'] = 'password'
     } else {
       if (!validate.isRequired(vcode)) {
         showToast('请输入验证码')
@@ -109,16 +110,17 @@ export default class Login extends Component {
       params['check_type'] = 'mobile'
     }
 
-    try {
-      const { token } = await api.user.login(params)
-      if (token) {
-        S.setAuthToken(token)
-        const { redirect } = this.$instance.router.params
-        const url = redirect ? decodeURIComponent(redirect) : process.env.APP_HOME_PAGE
+    params['auth_type'] = 'local'
+    params['silent'] = 1
 
-        Taro.redirectTo({
-          url
+    try {
+      const { token, is_new } = await api.wx.newloginh5(params)
+      if (is_new) {
+        Taro.navigateTo({
+          url: `/subpage/pages/auth/edit-password?phone=${mobile}`
         })
+      } else {
+        setTokenAndRedirect(token).bind(this)
       }
     } catch (e) {
       console.log(e)

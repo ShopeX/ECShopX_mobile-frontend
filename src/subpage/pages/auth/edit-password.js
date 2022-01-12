@@ -5,29 +5,27 @@ import { SpPage, SpTimer } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import api from '@/api'
+import { setTokenAndRedirect } from './util'
 import { useImmer } from 'use-immer'
 import './edit-password.scss'
 
 const SYMBOL = 'login'
 
 const initialValue = {
-  username: '',
-  check_type: SYMBOL,
-  yzm: '',
-  vcode: '',
-  imgInfo: null
+  password: '',
+  repassword: ''
 }
 
 const PageEditPassword = () => {
   const $instance = getCurrentInstance()
 
   const {
-    params: { unionid }
+    params: { phone, unionid }
   } = $instance.router
 
   const [state, setState] = useImmer(initialValue)
 
-  const { username, yzm, vcode, check_type, imgInfo } = state
+  const { password, repassword } = state
 
   const handleInputChange = (name) => (val) => {
     setState((state) => {
@@ -35,59 +33,18 @@ const PageEditPassword = () => {
     })
   }
 
-  const getImageVcode = async () => {
-    const img_res = await api.user.regImg({ type: SYMBOL })
-    setState((state) => {
-      state.imgInfo = img_res
-    })
-  }
-
-  const handleTimerStart = async (resolve) => {
-    if (!validate.isMobileNum(username)) {
-      showToast('请输入正确的手机号')
-      return
-    }
-    if (!validate.isRequired(yzm)) {
-      showToast('请输入图形验证码')
-      return
-    }
-    try {
-      await api.user.regSmsCode({
-        type: SYMBOL,
-        mobile: username,
-        yzm: yzm,
-        token: imgInfo.imageToken
-      })
-      showToast('验证码已发送')
-      resolve()
-    } catch (e) {
-      getImageVcode()
-    }
-  }
-
   const handleSubmit = async () => {
-    let url = ''
-
-    await api.user.bind({ username, check_type, vcode, union_id: unionid })
-
-    const { is_new } = await api.wx.getIsNew({ mobile: username })
-
-    //如果是新用户
-    if (is_new === 1) {
-    } else {
-      url = process.env.APP_HOME_PAGE
-      Taro.redirectTo({
-        url
-      })
+    if (password !== repassword) {
+      return showToast('2次输入密码不一致!')
     }
-  }
 
-  useEffect(() => {
-    getImageVcode()
-  }, [])
+    const { token } = await api.user.bind({ username: phone, password, union_id: unionid })
+
+    setTokenAndRedirect(token)
+  }
 
   //全填写完
-  const isFull = username && yzm && vcode
+  const isFull = phone && password && repassword
 
   return (
     <SpPage
@@ -107,9 +64,9 @@ const PageEditPassword = () => {
               name='mobile'
               maxLength={11}
               type='tel'
-              value={username}
+              value={password}
               placeholder='请输入密码'
-              onChange={handleInputChange('username')}
+              onChange={handleInputChange('password')}
             />
           </View>
           <View className='form-field'>
@@ -118,9 +75,9 @@ const PageEditPassword = () => {
               name='mobile'
               maxLength={11}
               type='tel'
-              value={username}
+              value={repassword}
               placeholder='再次输入密码'
-              onChange={handleInputChange('username')}
+              onChange={handleInputChange('repassword')}
             />
           </View>
           <View className='form-tip'>6-16位密码、数字或字母</View>

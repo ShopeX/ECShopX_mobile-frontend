@@ -30,7 +30,8 @@ const PageBrandInfo = () => {
       logo,
       scoreList,
       distributor_id: id,
-      introduce
+      introduce,
+      sales_count
     } = await api.shop.getShop({
       distributor_id,
       show_score: 1,
@@ -43,7 +44,8 @@ const PageBrandInfo = () => {
         brand: logo,
         scoreList,
         distributor_id: id,
-        introduce
+        introduce,
+        sales_count
       }
     })
   }

@@ -14,14 +14,15 @@ function CompHeader (props) {
     brandInfo = () => {},
     brand: brandShow = true,
     fav: favProp,
-    showFav = true
+    showFav = true,
+    showSale = false
   } = props
   const {
     brand = '',
     name = '',
     scoreList = {},
     marketingActivityList = [],
-    showSale = false
+    sales_count = 0
   } = info
   const [showMore, setShowMore] = useState(false)
   const [fav, setFav] = useState(false)
@@ -76,7 +77,7 @@ function CompHeader (props) {
                 {'品牌介绍 >'}
               </View>
             )}
-            {showSale && <View></View>}
+            {showSale && <View className='sale_count'>月销：{sales_count}</View>}
           </View>
         </View>
         {showFav && (

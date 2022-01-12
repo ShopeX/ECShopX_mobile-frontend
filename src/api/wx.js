@@ -67,10 +67,8 @@ export function newlogin (params) {
 export function newloginh5 (params) {
   return req.post('/new_login', {
     ...params,
-    auth_type: 'h5app',
     trustlogin_tag: 'weixin',
-    version_tag: 'touch',
-    api_from: 'h5app'
+    version_tag: 'touch'
   })
 }
 
@@ -153,5 +151,5 @@ export function getWxAuth (params) {
 }
 
 export function getIsNew (params) {
-  return req.get(`/member/is_new`, params)
+  return req.post(`/member/is_new`, params)
 }
