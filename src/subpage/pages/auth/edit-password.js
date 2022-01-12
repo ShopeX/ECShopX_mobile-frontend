@@ -45,7 +45,8 @@ const PageEditPassword = () => {
     } else {
       //从登陆页跳转过来
       await api.user.reg({
-        auth_type: 'wxapp',
+        auth_type: 'local',
+        check_type: 'login',
         mobile: phone,
         user_name: phone,
         password,
@@ -75,6 +76,7 @@ const PageEditPassword = () => {
           <View className='form-field'>
             <AtInput
               clear
+              type='password'
               name='mobile'
               maxLength={11}
               type='tel'

@@ -195,6 +195,7 @@ export default class Login extends Component {
                 <View className='input-field'>
                   <AtInput
                     clear
+                    type='password'
                     name='password'
                     value={info.password}
                     placeholder='请输入密码'
@@ -252,12 +253,12 @@ export default class Login extends Component {
               <Text className='btn-text' onClick={this.handleToggleLogin.bind(this)}>
                 {passwordLogin ? '验证码登录' : '密码登录'}
               </Text>
-              <Text
+              {/* <Text
                 className='btn-text forgot-password'
                 onClick={() => Taro.navigateTo({ url: '/subpage/pages/auth/reg' })}
               >
                 忘记密码？
-              </Text>
+              </Text> */}
             </View>
             <View className='form-submit'>
               <AtButton

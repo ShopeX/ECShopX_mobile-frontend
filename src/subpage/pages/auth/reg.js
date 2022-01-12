@@ -16,6 +16,8 @@ const initialValue = {
   imgInfo: null
 }
 
+const CODE_SYMBOL = 'sign'
+
 const Reg = () => {
   const [state, setState] = useImmer(initialValue)
 
@@ -28,7 +30,7 @@ const Reg = () => {
   }
 
   const getImageVcode = async () => {
-    const img_res = await api.user.regImg({ type: 'sign' })
+    const img_res = await api.user.regImg({ type: CODE_SYMBOL })
     setState((state) => {
       state.imgInfo = img_res
     })
@@ -45,7 +47,7 @@ const Reg = () => {
     }
     try {
       await api.user.regSmsCode({
-        type: 'sign',
+        type: CODE_SYMBOL,
         mobile: mobile,
         yzm: yzm,
         token: imgInfo.imageToken
@@ -71,11 +73,18 @@ const Reg = () => {
       return
     }
     try {
-      const { token } = await api.user.reg({
+      //从登陆页跳转过来
+      await api.user.reg({
         auth_type: 'local',
-        username: mobile
+        check_type: CODE_SYMBOL,
+        mobile,
+        user_name: mobile,
+        password,
+        vcode,
+        sex: 0,
+        user_type: 'local'
       })
-      setTokenAndRedirect(token)
+      Taro.navigateBack()
     } catch (e) {
       console.log(e)
     }
@@ -149,6 +158,7 @@ const Reg = () => {
             <View className='input-field'>
               <AtInput
                 clear
+                type='password'
                 name='password'
                 value={state.password}
                 placeholder='请输入密码'
