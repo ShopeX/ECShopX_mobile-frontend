@@ -10,7 +10,7 @@ import './index.scss'
 
 function SpPage (props) {
   console.log(getCurrentInstance())
-  const { page, router } = getCurrentInstance()
+  const { page, router = {} } = getCurrentInstance()
   // debugger
   const {
     className,
@@ -47,7 +47,7 @@ function SpPage (props) {
       scrollTop: 0
     })
   }
-  const fidx = Object.values(TABBAR_PATH).findIndex((v) => v == router.path.split('?')[0])
+  const fidx = router && Object.values(TABBAR_PATH).findIndex((v) => v == router.path.split('?')[0])
   const isTabBarPage = fidx > -1
   return (
     <View

@@ -1729,7 +1729,7 @@ export default class CartCheckout extends Component {
       defalutPaytype,
       headShop
     } = this.state
-    const { type, goodType, bargain_id } = this.$instance.router.params
+    const { type, goodType, bargain_id } = this.$instance.router?.params || {}
     const isDrug = type === 'drug'
     if (!info) {
       return <Loading />
