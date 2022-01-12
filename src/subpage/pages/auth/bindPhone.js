@@ -6,6 +6,7 @@ import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
+import { setToken, setTokenAndRedirect } from './util'
 import './bindPhone.scss'
 
 const SYMBOL = 'login'
@@ -22,7 +23,7 @@ const Reg = () => {
   const $instance = getCurrentInstance()
 
   const {
-    params: { unionid }
+    params: { unionid, redi_url }
   } = $instance.router
 
   const [state, setState] = useImmer(initialValue)
@@ -68,19 +69,20 @@ const Reg = () => {
   const handleSubmit = async () => {
     let url = ''
 
-    await api.user.bind({ username, check_type, vcode, union_id: unionid })
-
     const { is_new } = await api.wx.getIsNew({ mobile: username })
 
     //如果是新用户
     if (is_new === 1) {
-      url = '/subpage/pages/auth/edit-password'
+      url = `/subpage/pages/auth/edit-password?phone=${username}&unionid=${unionid}&redi_url=${redi_url}`
+      Taro.redirectTo({
+        url
+      })
     } else {
       url = process.env.APP_HOME_PAGE
+      const { token } = await api.user.bind({ username, check_type, vcode, union_id: unionid })
+      setTokenAndRedirect(token)
+      return
     }
-    Taro.redirectTo({
-      url
-    })
   }
 
   useEffect(() => {

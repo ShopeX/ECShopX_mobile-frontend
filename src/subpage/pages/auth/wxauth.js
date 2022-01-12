@@ -3,11 +3,10 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Button, Radio, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import api from '@/api'
-import S from '@/spx'
 import { tokenParse, isAlipay } from '@/utils'
 import { SpLogin } from '@/components'
 import entry from '@/utils/entry'
-// import { Tracker } from '@/service'
+import { setToken } from './util'
 
 import './wxauth.scss'
 
@@ -181,8 +180,9 @@ export default class WxAuth extends Component {
         await entry.logScene({ register: true })
       }
 
+      setToken(token)
+
       if (token) {
-        S.setAuthToken(token)
         Taro.hideLoading()
         Taro.showToast({
           title: '登录成功',

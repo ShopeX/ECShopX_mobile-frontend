@@ -23,8 +23,6 @@ const PageRegRule = () => {
   return (
     <SpPage className={classNames('page-auth-reg-rule')}>
       <ScrollView className='page-auth-reg-rule-content'>
-        {/* <View className='title'>注册协议</View> */}
-
         <View className='main' dangerouslySetInnerHTML={{ __html: content }} />
       </ScrollView>
     </SpPage>

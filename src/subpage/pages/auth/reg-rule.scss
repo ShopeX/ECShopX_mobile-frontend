@@ -3,8 +3,14 @@ $prefixCls:'page-auth-reg-rule';
 .#{$prefixCls}{
     background-color: white;
 
+    &.has-navbar{
+        .#{$prefixCls}-content{
+            @include page-scroll($navigate-height,0);
+        }
+    }
+
     &-content{
-        @include page-scroll(90px,0);
+        @include page-scroll(0,0);
         background:white;
 
         .title{

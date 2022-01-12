@@ -1,12 +1,14 @@
 import React from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+import { isWxWeb } from '@/utils'
 import api from '@/api'
 import './comp-otherlogin.scss'
 
 const CompOtherLogin = () => {
   const handleClickWexin = async () => {
     const $instance = getCurrentInstance()
+    //跳转
     const { redirect = '' } = $instance.router.params
     const redirectUrl =
       !!redirect && redirect !== 'undefined' ? redirect : process.env.APP_HOME_PAGE
@@ -18,6 +20,10 @@ const CompOtherLogin = () => {
     if (oauth_url) {
       window.location.replace(oauth_url)
     }
+  }
+
+  if (!isWxWeb) {
+    return null
   }
 
   return (
