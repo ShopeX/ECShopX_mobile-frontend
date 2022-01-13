@@ -6,7 +6,14 @@ import { SpToast, Loading, BackToTop, SpNewShopItem, SpCellCoupon, SpPage } from
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, normalizeQuerys, getCurrentRoute, classNames, merchantIsvaild, showToast } from '@/utils'
+import {
+  pickBy,
+  normalizeQuerys,
+  getCurrentRoute,
+  classNames,
+  merchantIsvaild,
+  showToast
+} from '@/utils'
 import { platformTemplateName } from '@/utils/platform'
 import { withPager, withBackToTop } from '@/hocs'
 import qs from 'qs'
@@ -198,12 +205,11 @@ export default class StoreIndex extends Component {
         })
       }
 
-      if (!info.length) {
-        return showToast('当前暂未配置模板')
-      }
+      // if (!info.length) {
+      //   return showToast('当前暂未配置模板')
+      // }
       //是否有search
       let search = info.config.find((item) => item.name === 'search')
-
 
       let fixedSearch = !!search.config.fixTop
 
