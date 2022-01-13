@@ -64,8 +64,8 @@ import './espier-detail.scss'
 
 const initialState = {
   info: null,
-  video: null,
   curImgIdx: 0,
+  play: false,
   isDefault: false,
   defaultMsg: '',
   evaluationList: [],
@@ -77,12 +77,24 @@ function EspierDetail (props) {
   const { type, id } = $instance.router.params
 
   const [state, setState] = useImmer(initialState)
-  const { info, video, isDefault, defaultMsg, evaluationList } = state
+  const { info, play, isDefault, defaultMsg, evaluationList } = state
 
   useEffect(() => {
     fetch()
     getEvaluationList()
   }, [])
+
+  useEffect(() => {
+    const video = Taro.createVideoContext('goods-video')
+    if (play) {
+      setTimeout(() => {
+        console.log('video:', video)
+        video.play()
+      }, 200)
+    } else {
+      video.stop()
+    }
+  }, [play])
 
   const fetch = async () => {
     let data
@@ -104,8 +116,7 @@ function EspierDetail (props) {
 
     // 是否订阅
     const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id)
-    const videoInfo = await Taro.getVideoInfo({ src: data.video })
-    console.log(videoInfo)
+
     setState((draft) => {
       draft.info = {
         ...data,
@@ -136,11 +147,6 @@ function EspierDetail (props) {
     })
   }
 
-  const handlePlayVideo = () => {
-    const video = Taro.createVideoContext('goods-video')
-    video.play()
-  }
-
   const { windowWidth } = Taro.getSystemInfoSync()
 
   return (
@@ -159,37 +165,8 @@ function EspierDetail (props) {
               // current={curImgIdx}
               onChange={onChangeSwiper}
             >
-              {info.video && (
-                <SwiperItem key='swiperitem__0'>
-                  <View className='video-container'>
-                    {/* 默认商品背景图 */}
-                    <SpImage
-                      mode='aspecFill'
-                      src={info.imgs[0]}
-                      width={windowWidth * 2}
-                      height={windowWidth * 2}
-                    ></SpImage>
-                    {/* <SpImage
-                      className='btn-play'
-                      mode='aspecFill'
-                      src='play.png'
-                      width={110}
-                      height={110}
-                      onClick={handlePlayVideo}
-                    ></SpImage> */}
-                    <Video
-                      id='goods-video'
-                      className='item-video'
-                      // controls={false}
-                      src={info.video}
-                      showCenterPlayBtn={false}
-                    />
-                  </View>
-                </SwiperItem>
-              )}
-
               {info.imgs.map((img, idx) => (
-                <SwiperItem key={`swiperitem__${idx + 1}`}>
+                <SwiperItem key={`swiperitem__${idx}`}>
                   <SpImage
                     mode='aspecFill'
                     src={img}
@@ -199,6 +176,28 @@ function EspierDetail (props) {
                 </SwiperItem>
               ))}
             </Swiper>
+
+            {info.video && play && (
+              <View className='video-container'>
+                <Video
+                  id='goods-video'
+                  className='item-video'
+                  src={info.video}
+                  showCenterPlayBtn={false}
+                />
+              </View>
+            )}
+
+            <View
+              className='btn-video'
+              onClick={() => {
+                setState((draft) => {
+                  play ? (draft.play = false) : (draft.play = true)
+                })
+              }}
+            >
+              {play ? '退出视频' : '播放视频'}
+            </View>
             <View className='swiper-pagegation'>1/9</View>
           </View>
 

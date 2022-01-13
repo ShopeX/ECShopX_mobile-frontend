@@ -7,12 +7,12 @@
     margin-bottom: 24px;
   }
   .video-container {
-    height: 100%;
-    position: relative;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
+    position: absolute;
     background: #000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     .item-video {
       width: 100%;
       position: absolute;
@@ -27,6 +27,12 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
+  }
+  .btn-video {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
   }
   .swiper-pagegation {
     position: absolute;
