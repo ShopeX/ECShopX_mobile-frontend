@@ -4,12 +4,20 @@ import { View, Text, Image } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { CompOtherLogin } from './comps'
 import { SpTimer, SpPage } from '@/components'
+import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
+import { connect } from 'react-redux'
 import api from '@/api'
 import qs from 'qs'
 import { classNames, navigateTo, validate, showToast } from '@/utils'
 import { navigationToReg, setToken, setTokenAndRedirect } from './util'
 import './login.scss'
 
+@connect(
+  ({ colors }) => ({
+    colors: colors.current
+  }),
+  (dispatch) => ({ dispatch })
+)
 export default class Login extends Component {
   $instance = getCurrentInstance()
   constructor (props) {
@@ -124,11 +132,31 @@ export default class Login extends Component {
           url: `/subpage/pages/auth/edit-password?phone=${pre_login_data.mobile}`
         })
       } else {
-        setTokenAndRedirect(token).bind(this)
+        const self = this
+        setTokenAndRedirect(token, async () => {
+          await self.handleUpdateUserInfo()
+        }).bind(self)
       }
     } catch (e) {
       console.log(e)
     }
+  }
+
+  handleUpdateUserInfo = async () => {
+    const { dispatch } = this.props
+    const _userInfo = await api.member.memberInfo()
+    // 兼容老版本 后续优化
+    const { username, avatar, user_id, mobile, open_id } = _userInfo.memberInfo
+    Taro.setStorageSync('userinfo', {
+      username: username,
+      avatar: avatar,
+      userId: user_id,
+      isPromoter: _userInfo.is_promoter,
+      mobile: mobile,
+      openid: open_id,
+      vip: _userInfo.vipgrade ? _userInfo.vipgrade.vip_type : ''
+    })
+    dispatch(updateUserInfo(_userInfo))
   }
 
   handleNavigateReg = async () => {

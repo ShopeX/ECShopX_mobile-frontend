@@ -34,7 +34,8 @@ async function setTokenAndRedirect (token = '', tokenSetSuccessCallback) {
       : redirect
       ? redirect
       : process.env.APP_HOME_PAGE
-    window.location.href = `${window.location.origin}${url}`
+    Taro.redirectTo({ url })
+    // window.location.href = `${window.location.origin}${url}`
   }
 }
 
@@ -44,7 +45,7 @@ function pushHistory (returnUrl, currentUrl, currentTitle) {
     'popstate',
     function (e) {
       console.log('====popstate===>', e)
-      window.location.href = returnUrl
+      // window.location.href = returnUrl
       //window.location.replace(returnUrl);
     },
     false

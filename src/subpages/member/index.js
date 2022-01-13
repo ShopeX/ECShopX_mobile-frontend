@@ -137,7 +137,9 @@ function MemberIndex (props) {
       // 积分商城
       await api.pointitem.getPointitemSetting()
     ])
-    let banner, menu, redirectInfo
+    let banner,
+      menu,
+      redirectInfo = {}
     if (bannerRes.list.length > 0) {
       const { app_id, is_show, login_banner, no_login_banner, page, url_is_open } =
         bannerRes.list[0].params.data
@@ -369,7 +371,7 @@ function MemberIndex (props) {
       </View>
 
       <View className='body-block'>
-        {config.banner.isShow && (
+        {config.banner?.isShow && (
           <CompBanner
             info={config.banner}
             src={isLogin ? config.banner.loginBanner : config.banner.noLoginBanner}
