@@ -141,12 +141,31 @@ export default class Login extends Component {
     }
   }
 
-  handleNavigateReg = () => {
-    const { isSetPhone } = this.state
+  handleNavigateReg = async () => {
+    const { isSetPhone, info } = this.state
     if (isSetPhone) {
-      Taro.navigateTo({
-        url: `/subpage/pages/auth/edit-password?${qs.stringify(isSetPhone)}`
+      const { status } = await api.user.checkSmsCode({
+        vcode: isSetPhone.vcode,
+        check_type: 'login',
+        mobile: isSetPhone.phone
       })
+      //验证码错误
+      if (status === 0) {
+        showToast('手机验证码输入有误')
+        this.getImageVcode()
+        this.setState({
+          info: {
+            ...info,
+            yzm: '',
+            code: ''
+          }
+        })
+        return
+      } else {
+        Taro.navigateTo({
+          url: `/subpage/pages/auth/edit-password?${qs.stringify(isSetPhone)}`
+        })
+      }
     } else {
       navigationToReg()
     }

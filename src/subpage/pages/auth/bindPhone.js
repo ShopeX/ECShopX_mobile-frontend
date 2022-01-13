@@ -75,10 +75,26 @@ const PageBindPhone = () => {
 
     //如果是新用户
     if (is_new === 1) {
-      url = `/subpage/pages/auth/edit-password?phone=${username}&unionid=${unionid}&redi_url=${redi_url}`
-      Taro.redirectTo({
-        url
+      const { status } = await api.user.checkSmsCode({
+        vcode,
+        check_type: SYMBOL,
+        mobile: username
       })
+      //验证码错误
+      if (status === 0) {
+        showToast('手机验证码输入有误')
+        getImageVcode()
+        setState((_state) => {
+          _state.yzm = ''
+          _state.vcode = ''
+        })
+        return
+      } else {
+        url = `/subpage/pages/auth/edit-password?phone=${username}&unionid=${unionid}&redi_url=${redi_url}`
+        Taro.redirectTo({
+          url
+        })
+      }
     } else {
       url = process.env.APP_HOME_PAGE
       const { token } = await api.user.bind({ username, check_type, vcode, union_id: unionid })

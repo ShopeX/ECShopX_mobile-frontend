@@ -27,6 +27,11 @@ export function reg (params) {
   return req.post('/member', params)
 }
 
+//校验验证码
+export function checkSmsCode (params) {
+  return req.post('/member/check_sms_code', params)
+}
+
 export function regRule () {
   return req.get('/member/agreement')
 }
