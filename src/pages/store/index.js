@@ -6,7 +6,7 @@ import { SpToast, Loading, BackToTop, SpNewShopItem, SpCellCoupon, SpPage } from
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, normalizeQuerys, getCurrentRoute, classNames, merchantIsvaild } from '@/utils'
+import { pickBy, normalizeQuerys, getCurrentRoute, classNames, merchantIsvaild, showToast } from '@/utils'
 import { platformTemplateName } from '@/utils/platform'
 import { withPager, withBackToTop } from '@/hocs'
 import qs from 'qs'
@@ -129,6 +129,7 @@ export default class StoreIndex extends Component {
 
   async fetchIsValid (id) {
     let isVaild = await merchantIsvaild({ distributor_id: id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
+    // console.log('isVaild=========',isVaild);
     this.setState({
       storeIsVaild: !isVaild
     })
@@ -196,10 +197,14 @@ export default class StoreIndex extends Component {
           authStatus: true
         })
       }
-      //是否有search
-      let search = info.config.find((item) => item.name === 'search') || {
-        config: {}
+
+      if (!info.length) {
+        return showToast('当前暂未配置模板')
       }
+      //是否有search
+      let search = info.config.find((item) => item.name === 'search')
+
+
       let fixedSearch = !!search.config.fixTop
 
       this.setState(
@@ -231,6 +236,7 @@ export default class StoreIndex extends Component {
         }
       )
     } catch (e) {
+      // console.error(e)
       setTimeout(() => {
         Taro.navigateBack()
       }, 1500)
