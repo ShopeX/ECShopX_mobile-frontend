@@ -111,7 +111,7 @@ export default class Login extends Component {
     }
 
     params['auth_type'] = 'local'
-    params['silent'] = 1
+    params['silent'] = 0
 
     try {
       const { token, is_new, error_message, pre_login_data } = await api.wx.newloginh5(params)
