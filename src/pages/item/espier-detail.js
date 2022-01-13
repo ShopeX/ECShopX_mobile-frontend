@@ -104,7 +104,8 @@ function EspierDetail (props) {
 
     // 是否订阅
     const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id)
-
+    const videoInfo = await Taro.getVideoInfo({ src: data.video })
+    console.log(videoInfo)
     setState((draft) => {
       draft.info = {
         ...data,
@@ -168,18 +169,18 @@ function EspierDetail (props) {
                       width={windowWidth * 2}
                       height={windowWidth * 2}
                     ></SpImage>
-                    <SpImage
+                    {/* <SpImage
                       className='btn-play'
                       mode='aspecFill'
                       src='play.png'
                       width={110}
                       height={110}
                       onClick={handlePlayVideo}
-                    ></SpImage>
+                    ></SpImage> */}
                     <Video
                       id='goods-video'
                       className='item-video'
-                      controls={false}
+                      // controls={false}
                       src={info.video}
                       showCenterPlayBtn={false}
                     />
