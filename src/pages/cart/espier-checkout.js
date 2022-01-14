@@ -10,7 +10,7 @@ import { isObjEmpty, isWeixin } from '@/utils'
 
 import CompDeliver from './comps/comp-deliver'
 import CompSelectPackage from './comps/comp-selectpackage'
-import PaymentPicker from './comps/payment-picker'
+import CompPaymentPicker from './comps/comp-paymentpicker'
 
 import './espier-checkout.scss'
 
@@ -24,7 +24,6 @@ const initialState = {
   isPointitemGood: false, // 是否为积分商城的商品
   shoppingGuideData: {}, //代客下单导购信息
   totalInfo: {
-    //
     items_count: '', // 商品总件数
     total_fee: '0.00', // 商品总计
     item_fee: '', // 商品金额
@@ -41,13 +40,11 @@ const initialState = {
   invoiceTitle: '', // 发票抬头
   isNeedPackage: false, // 是否需要打包
   packInfo: {}, // 打包信息
-  isPaymentOpend: false, // 支付弹框
   disabledPayment: {} // 是否禁用支付
 }
 
 function CartCheckout (props) {
   const { type, goodType } = getCurrentInstance().router.params
-  console.log(type, '-----')
 
   const [state, setState] = useImmer(initialState)
 
@@ -68,7 +65,6 @@ function CartCheckout (props) {
     invoiceTitle,
     packInfo,
     isNeedPackage,
-    isPaymentOpend,
     disabledPayment
   } = state
 
@@ -89,9 +85,8 @@ function CartCheckout (props) {
     })
   }
 
-  // 选择是否需要礼袋
+  // 选择是否需要包装
   const changeNeedPackage = (isChecked) => {
-    console.log(isChecked)
     setState((draft) => {
       draft.isNeedPackage = isChecked
     })
@@ -125,16 +120,9 @@ function CartCheckout (props) {
     console.log('优惠券')
   }
 
-  const handlePaymentShow = (isOpend) => {
-    setState((draft) => {
-      draft.isPaymentOpend = isOpend
-    })
-  }
-
   const handlePaymentChange = async (payType, channel) => {
     setState((draft) => {
-      // draft.point_use = 0
-      ;(draft.payType = payType), (draft.isPaymentOpend = false)
+      draft.payType = payType
     })
   }
 
@@ -190,17 +178,6 @@ function CartCheckout (props) {
     ? '会员折扣'
     : (coupon.value && coupon.value.title) || ''
 
-  const payTypeText = {
-    wxpay: isWeixin ? '微信支付' : '现金支付',
-    hfpay: '微信支付',
-    alipayh5: '支付宝支付',
-    wxpayh5: '微信支付',
-    wxpayjs: '微信支付',
-    deposit: '余额支付'
-    // point: `${pointName}支付`,
-    // delivery: '货到付款',
-  }
-
   return (
     <SpPage className='page-cart-checkout' renderFooter={renderFooter()}>
       {isObjEmpty(shoppingGuideData) && (
@@ -252,23 +229,14 @@ function CartCheckout (props) {
         </View>
       )}
 
-      {!isPointitemGood && (
-        <View className='trade-payment'>
-          <SpCell isLink title='支付方式' onClick={handlePaymentShow.bind(this, true)}>
-            <Text>{payTypeText[payType]}</Text>
-          </SpCell>
-        </View>
-      )}
-
-      <PaymentPicker
-        isOpened={isPaymentOpend}
-        type={payType}
-        isShowPoint={false}
-        isShowDelivery={false}
-        disabledPayment={disabledPayment}
-        onClose={handlePaymentShow.bind(this, false)}
-        onChange={handlePaymentChange}
-      />
+      <View className='cart-checkout__pay'>
+        <CompPaymentPicker
+          isPointitemGood={isPointitemGood}
+          type={payType}
+          disabledPayment={disabledPayment}
+          onChange={handlePaymentChange}
+        />
+      </View>
     </SpPage>
   )
 }

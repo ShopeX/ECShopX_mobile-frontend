@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { AtFloatLayout } from 'taro-ui'
+import { useSelector } from 'react-redux'
 import { SpCheckbox, SpCell } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
 
@@ -19,6 +20,7 @@ function CompSelectPackage (props) {
     onHanleChange = () => {}
   } = props
 
+  const { colorPrimary } = useSelector((state) => state.sys)
   const [state, setState] = useImmer(initialState)
 
   const { isOpendActionSheet, checkedRadio } = state
@@ -72,7 +74,7 @@ function CompSelectPackage (props) {
                 <Text className='payment-item__title'>不需要</Text>
               </View>
               <View className='payment-item__ft'>
-                <SpCheckbox colors='var(--color-primary)' checked={!checkedRadio} />
+                <SpCheckbox colors={colorPrimary} checked={!checkedRadio} />
               </View>
             </View>
 
@@ -81,17 +83,12 @@ function CompSelectPackage (props) {
                 <Text className='payment-item__title'>需要</Text>
               </View>
               <View className='payment-item__ft'>
-                <SpCheckbox colors='var(--color-primary)' checked={checkedRadio} />
+                <SpCheckbox colors={colorPrimary} checked={checkedRadio} />
               </View>
             </View>
             <View className='payment-item__desc'>包装说明：{packInfo.packDes}</View>
           </View>
-          <Button
-            type='primary'
-            className='btn-submit'
-            style='background: var(--color-primary); border-color: var(--color-primary);'
-            onClick={() => handleConfrim(true)}
-          >
+          <Button type='primary' className='btn-submit' onClick={() => handleConfrim(true)}>
             确定
           </Button>
         </View>
