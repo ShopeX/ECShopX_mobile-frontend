@@ -52,13 +52,13 @@ export default class AddressChoose extends Component {
                   <View className='address-area'>
                     {isAddress.is_def && <View className='def'>默认</View>}
                     {isAddress.province}
-                    {isAddress.state}
-                    {isAddress.district}
+                    {isAddress.city}
+                    {isAddress.county}
                   </View>
-                  <View className='address-detail'>{isAddress.address}</View>
+                  <View className='address-detail'>{isAddress.adrdetail}</View>
                   <View className='user-info-trade'>
-                    <Text className='name'>{isAddress.name}</Text>
-                    <Text>{isAddress.mobile}</Text>
+                    <Text className='name'>{isAddress.username}</Text>
+                    <Text>{isAddress.telephone}</Text>
                   </View>
                 </View>
               </View>

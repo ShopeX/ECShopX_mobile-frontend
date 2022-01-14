@@ -51,6 +51,11 @@ export function isString (val) {
   return typeof val === 'string'
 }
 
+export function isObjEmpty (val) {
+  // 判断对象是否有值
+  return val && Object.keys(val).length > 0
+}
+
 /** 在支付宝平台 */
 export const isAlipay = Taro.getEnv() == Taro.ENV_TYPE.ALIPAY
 

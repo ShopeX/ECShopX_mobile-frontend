@@ -12,7 +12,7 @@ const initialState = {
   },
   showAdv: false,
   favs: [],
-  // 不是用户结算的默认地址，附近商家的收货地址
+  // 是用户结算的默认地址，也是附近商家的收货地址
   address: null,
   location: {}
 }
