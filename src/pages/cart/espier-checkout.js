@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton, AtInput } from 'taro-ui'
-import { SpPage, SpPrice, SpCell , AddressChoose } from '@/components'
+import { SpPage, SpPrice, SpCell, AddressChoose } from '@/components'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import api from '@/api'
@@ -10,6 +10,7 @@ import { isObjEmpty, isWeixin } from '@/utils'
 
 import CompDeliver from './comps/comp-deliver'
 import CompSelectPackage from './comps/comp-selectpackage'
+import PaymentPicker from './comps/payment-picker'
 
 import './espier-checkout.scss'
 
@@ -39,11 +40,13 @@ const initialState = {
   headquartersStoreInfo: {}, // 总店自提门店信息
   invoiceTitle: '', // 发票抬头
   isNeedPackage: false, // 是否需要打包
-  packInfo: {} // 打包信息
+  packInfo: {}, // 打包信息
+  isPaymentOpend: false, // 支付弹框
+  disabledPayment: {} // 是否禁用支付
 }
 
 function CartCheckout (props) {
-  const { type } = getCurrentInstance().router.params
+  const { type, goodType } = getCurrentInstance().router.params
   console.log(type, '-----')
 
   const [state, setState] = useImmer(initialState)
@@ -64,7 +67,9 @@ function CartCheckout (props) {
     headquartersStoreInfo,
     invoiceTitle,
     packInfo,
-    isNeedPackage
+    isNeedPackage,
+    isPaymentOpend,
+    disabledPayment
   } = state
 
   useEffect(() => {
@@ -74,10 +79,10 @@ function CartCheckout (props) {
   }, [isPointitemGood])
 
   useEffect(() => {
-    tradeSetting()
+    getTradeSetting()
   }, [])
 
-  const tradeSetting = async () => {
+  const getTradeSetting = async () => {
     let data = await api.trade.tradeSetting()
     setState((draft) => {
       draft.packInfo = data
@@ -118,6 +123,19 @@ function CartCheckout (props) {
 
   const handleCouponsClick = () => {
     console.log('优惠券')
+  }
+
+  const handlePaymentShow = (isOpend) => {
+    setState((draft) => {
+      draft.isPaymentOpend = isOpend
+    })
+  }
+
+  const handlePaymentChange = async (payType, channel) => {
+    setState((draft) => {
+      // draft.point_use = 0
+      ;(draft.payType = payType), (draft.isPaymentOpend = false)
+    })
   }
 
   const renderFooter = () => {
@@ -166,12 +184,22 @@ function CartCheckout (props) {
     )
   }
 
-  console.log(packInfo, 'packInfo')
   const couponText = !coupon
     ? ''
     : coupon.type === 'member'
     ? '会员折扣'
     : (coupon.value && coupon.value.title) || ''
+
+  const payTypeText = {
+    wxpay: isWeixin ? '微信支付' : '现金支付',
+    hfpay: '微信支付',
+    alipayh5: '支付宝支付',
+    wxpayh5: '微信支付',
+    wxpayjs: '微信支付',
+    deposit: '余额支付'
+    // point: `${pointName}支付`,
+    // delivery: '货到付款',
+  }
 
   return (
     <SpPage className='page-cart-checkout' renderFooter={renderFooter()}>
@@ -214,13 +242,33 @@ function CartCheckout (props) {
         />
       )}
       {packInfo.is_open && (
-        <CompSelectPackage
-          isPointitemGood={isPointitemGood}
-          isChecked={isNeedPackage}
-          onHanleChange={changeNeedPackage}
-          packInfo={packInfo}
-        />
+        <View className='cart-checkout__pack'>
+          <CompSelectPackage
+            isPointitemGood={isPointitemGood}
+            isChecked={isNeedPackage}
+            onHanleChange={changeNeedPackage}
+            packInfo={packInfo}
+          />
+        </View>
       )}
+
+      {!isPointitemGood && (
+        <View className='trade-payment'>
+          <SpCell isLink title='支付方式' onClick={handlePaymentShow.bind(this, true)}>
+            <Text>{payTypeText[payType]}</Text>
+          </SpCell>
+        </View>
+      )}
+
+      <PaymentPicker
+        isOpened={isPaymentOpend}
+        type={payType}
+        isShowPoint={false}
+        isShowDelivery={false}
+        disabledPayment={disabledPayment}
+        onClose={handlePaymentShow.bind(this, false)}
+        onChange={handlePaymentChange}
+      />
     </SpPage>
   )
 }

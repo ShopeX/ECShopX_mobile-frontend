@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { AtActionSheet } from 'taro-ui'
+import { AtFloatLayout } from 'taro-ui'
 import { SpCheckbox, SpCell } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
 
@@ -60,10 +60,11 @@ function CompSelectPackage (props) {
         </SpCell>
       )}
 
-      <AtActionSheet isOpened={isOpendActionSheet} onClose={() => handleConfrim(false)}>
+      <AtFloatLayout isOpened={isOpendActionSheet} onClose={() => handleConfrim(false)}>
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
             <Text>{packInfo.packName}</Text>
+            <View className='iconfont icon-close' onClick={onShowSheet}></View>
           </View>
           <View className='payment-picker__bd'>
             <View className='payment-item no-border' onClick={handleChange.bind(this, false)}>
@@ -94,7 +95,7 @@ function CompSelectPackage (props) {
             确定
           </Button>
         </View>
-      </AtActionSheet>
+      </AtFloatLayout>
     </View>
   )
 }

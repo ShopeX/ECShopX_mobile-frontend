@@ -10,24 +10,14 @@
     position: relative;
     font-weight: bold;
     @include hairline();
-    .at-icon-close {
+    .iconfont {
       font-size: 30px;
       color: #555;
       position: absolute;
       right: 20px;
-      top: 50%;
+      top: 5%;
       margin-top: -15px;
     }
-     /*  #ifdef  alipay  */
-    .icon-close {
-      font-size: 30px;
-      color: #555;
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      margin-top: -15px;
-    }
-    /*  #endif  */
   }
   &__bd {
     min-height: 340px;
