@@ -2,31 +2,30 @@ import React, { memo, Component } from 'react'
 import { View } from '@tarojs/components'
 import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import { setPageTitle, platformTemplateName } from '@/utils/platform'
-import { TabBar, SpTabbar } from '@/components'
+import { SpTabbar } from '@/components'
 import Series from './comps/series'
 
 import './index.scss'
 
 const initialState = {
-  currentList:[], //当前系列
-  activeIndex: 0, 
-  tabList: [], // 横向tab //
+  currentList: [], //当前系列
+  activeIndex: 0,
+  tabList: [], // 横向tab
   contentList: [],
-  hasSeries:false,  //是否有多级
+  hasSeries: false //是否有多级
 }
 
 const Category = (props) => {
-
-  const [state, setState] = useImmer(initialState);
-  const {currentList,activeIndex, tabList,contentList,hasSeries}  = state
+  const [state, setState] = useImmer(initialState)
+  const { currentList, activeIndex, tabList, contentList, hasSeries } = state
   // 获取数据
   useEffect(() => {
     getConfig()
+    setPageTitle('商品分类')
   }, [])
 
   const getConfig = async () => {
@@ -44,11 +43,11 @@ const Category = (props) => {
     } else {
       contentList.push(seriesList)
     }
-    console.log('tabList====',tabList);
+    console.log('tabList====', tabList)
 
-    console.log('contentList====',contentList);
-    let currentList = contentList[activeIndex]  //当前系列内容
-    console.log('currentList ====', currentList);
+    console.log('contentList====', contentList)
+    let currentList = contentList[activeIndex] //当前系列内容
+    console.log('currentList ====', currentList)
     currentList = pickBy(currentList, {
       name: 'name',
       img: 'img',
@@ -57,184 +56,38 @@ const Category = (props) => {
       id: 'id'
     })
     setState((v) => {
-        v.tabList = tabList,
-        v.contentList = contentList,
-        v.hasSeries = true,
-        v.currentList = currentList
+      ;(v.tabList = tabList),
+        (v.contentList = contentList),
+        (v.hasSeries = true),
+        (v.currentList = currentList)
     })
-
   }
 
-  const fnSwitchSeries = (index)=>{
-    setState((v)=>{
-      v.activeIndex = index
+  const fnSwitchSeries = (index) => {
+    setState((v) => {
+      ;(v.activeIndex = index), (v.currentList = v.contentList[index])
     })
-    console.log(index);
   }
-
 
   return (
     <View className='page-category-index'>
-      {
-        state.tabList.length > 0 ?
-        (<AtTabs current={state.activeIndex} tabList={state.tabList} onClick={fnSwitchSeries}>
-          {
-            state.tabList.map((item,index)=>{
-              return (
-                <AtTabsPane current={state.activeIndex}  index={index} key={item.status}>
-
-                </AtTabsPane>
-              )
-            })
-          }
-
-        </AtTabs>):<View>none</View>
-      }
-      <View  className={`${
-            hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
-          }`}>
-        <Series info={state.currentList} />
+      {tabList.length > 1 ? (
+        <AtTabs current={state.activeIndex} tabList={state.tabList} onClick={fnSwitchSeries}>
+          {tabList.map((item, index) => (
+            <AtTabsPane current={state.activeIndex} index={index} key={item.status}></AtTabsPane>
+          ))}
+        </AtTabs>
+      ) : (
+        ''
+      )}
+      <View
+        className={`${hasSeries && tabList.length > 1 ? 'category-comps' : 'category-comps-not'}`}
+      >
+        <Series info={currentList} />
       </View>
+      <SpTabbar />
     </View>
   )
 }
 
 export default memo(Category)
-
-// export default class Category extends Component {
-//   constructor (props) {
-//     super(props)
-
-//     this.state = {
-//       curTabIdx: 0,
-//       tabList: [],
-//       contentList: [],
-//       list: null,
-//       hasSeries: false,
-//       isChanged: false
-//     }
-//   }
-
-//   componentDidMount () {
-//     setPageTitle('商品分类')
-//     this.fetch()
-//   }
-
-//   async fetch () {
-//     /*const nList = pickBy(res, {
-//       category_name: 'category_name',
-//       image_url: 'image_url',
-//       children: 'children'
-//     })*/
-
-//     const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
-//     const { list } = await api.category.getCategory(query)
-//     let seriesList = list[0] ? list[0].params.data : []
-//     if (!seriesList.length) {
-//       const res = await api.category.get()
-//       const nList = pickBy(res, {
-//         name: 'category_name',
-//         img: 'image_url',
-//         id: 'id',
-//         category_id: 'category_id',
-//         children: ({ children }) =>
-//           pickBy(children, {
-//             name: 'category_name',
-//             img: 'image_url',
-//             id: 'id',
-//             category_id: 'category_id',
-//             children: ({ children }) =>
-//               pickBy(children, {
-//                 name: 'category_name',
-//                 img: 'image_url',
-//                 category_id: 'category_id'
-//               })
-//           })
-//       })
-//       this.setState({
-//         list: nList,
-//         hasSeries: false
-//       })
-//     } else {
-//       let tabList = []
-//       let contentList = []
-//       if (list[0].params.hasSeries) {
-//         seriesList.map((item) => {
-//           tabList.push({ title: item.title, status: item.name })
-//           contentList.push(item.content)
-//         })
-//       } else {
-//         contentList.push(seriesList)
-//       }
-//       const curIndexList = contentList[this.state.curTabIdx]
-//       const nList = pickBy(curIndexList, {
-//         name: 'name',
-//         img: 'img',
-//         children: 'children',
-//         hot: 'hot',
-//         id: 'id'
-//       })
-//       this.setState({
-//         tabList,
-//         contentList,
-//         hasSeries: true,
-//         list: nList
-//       })
-//     }
-//   }
-
-//   handleClickTab = (idx) => {
-//     const curIndexList = this.state.contentList[idx]
-
-//     const nList = pickBy(curIndexList, {
-//       name: 'name',
-//       img: 'img',
-//       children: 'children',
-//       hot: 'hot',
-//       id: 'id'
-//     })
-//     this.setState({
-//       curTabIdx: idx,
-//       list: nList
-//     })
-//     if (idx === this.state.curTabIdx) {
-//       this.setState({
-//         isChanged: false
-//       })
-//     } else {
-//       this.setState({
-//         isChanged: true
-//       })
-//     }
-//   }
-
-//   render () {
-//     const { curTabIdx, tabList, list, hasSeries, isChanged } = this.state
-
-//     return (
-//       <View className='page-category-index'>
-//         {tabList.length !== 0 ? (
-//           <AtTabs
-//             className='category__tabs'
-//             current={curTabIdx}
-//             tabList={tabList}
-//             onClick={this.handleClickTab}
-//           >
-//             {tabList.map((panes, pIdx) => (
-//               <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
-//             ))}
-//           </AtTabs>
-//         ) : null}
-//         <View
-//           className={`${
-//             hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
-//           }`}
-//         >
-//           <Series isChanged={isChanged} info={list} />
-//         </View>
-//         <SpTabbar />
-//       </View>
-//     )
-//   }
-// }
-
