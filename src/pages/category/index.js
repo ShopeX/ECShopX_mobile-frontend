@@ -54,16 +54,17 @@ const CategoryIndex = (props) => {
       id: 'id'
     })
     setState((draft) => {
-      ;(draft.tabList = tabList),
-        (draft.contentList = contentList),
-        (draft.hasSeries = true),
-        (draft.currentList = currentList)
+      draft.tabList = tabList
+      draft.contentList = contentList
+      draft.hasSeries = true
+      draft.currentList = currentList
     })
   }
 
   const fnSwitchSeries = (index) => {
     setState((draft) => {
-      ;(draft.activeIndex = index), (draft.currentList = draft.contentList[index])
+      draft.activeIndex = index
+      draft.currentList = draft.contentList[index]
     })
   }
 
