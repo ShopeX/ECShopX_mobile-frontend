@@ -18,15 +18,31 @@
     flex-wrap: wrap;
   }
   .goods-item-wrap {
-    width: 50%;
     margin-bottom: 28px;
     box-sizing: border-box;
-    &:nth-child(2n + 1) {
-      padding-right: 14px;
+    &.two-inrow{
+      width: 50%;
+      &:nth-child(2n + 1) {
+        padding-right: 9px;
+      }
+      &:nth-child(2n) {
+        padding-left: 9px;
+      }
     }
-    &:nth-child(2n) {
-      padding-left: 14px;
+    &.three-inrow{
+      width: 33.3333%;
+      &:nth-child(2n+1) {
+        padding-right: 9px;
+      }
+      &:nth-child(2n+2) {
+        padding:0 9px;
+        
+      }
+      &:nth-child(2n+3) {
+        padding-left: 9px;
+      }
     }
+
     .sp-goods-item {
       border-radius: 16px;
       overflow: hidden;
