@@ -20,7 +20,7 @@ const initialState = {
   btnIsDisabled: false,
   addressList: [],
   receiptType: 'logistics', // 收货方式：ziti自提  logistics快递
-  payType: '', // wxpay 微信支付 point 积分支付 deposit 储值支付
+  payType: 'wxpay', // wxpay 微信支付 point 积分支付 deposit 储值支付
   isPointitemGood: false, // 是否为积分商城的商品
   shoppingGuideData: {}, //代客下单导购信息
   totalInfo: {
@@ -146,7 +146,7 @@ function CartCheckout (props) {
                   noDecimal
                   value={totalInfo.point}
                 />
-                {!totalInfo.freight_fee == 0 &&
+                {totalInfo.freight_fee != 0 &&
                   totalInfo.freight_type === 'cash' &&
                   isPointitemGood && (
                     <SpPrice
@@ -239,6 +239,20 @@ function CartCheckout (props) {
           onChange={handlePaymentChange}
         />
       </View>
+
+      {!isPointitemGood && (
+        <View className='sec cart-checkout__total'>
+          <SpCell className='trade-sub__item' title='商品金额：'>
+            <SpPrice unit='cent' value={totalInfo.item_fee} />
+          </SpCell>
+          <SpCell className='trade-sub__item' title='优惠金额：'>
+            <SpPrice unit='cent' primary value={totalInfo.discount_fee} />
+          </SpCell>
+          <SpCell className='trade-sub__item' title='运费：'>
+            <SpPrice unit='cent' value={totalInfo.freight_fee} />
+          </SpCell>
+        </View>
+      )}
     </SpPage>
   )
 }

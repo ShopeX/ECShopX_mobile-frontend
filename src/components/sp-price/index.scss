@@ -5,17 +5,14 @@
     .sp-price__symbol {
       font-size: 20px;
       color: $color-hint-text;
-      font-weight: normal;
     }
     .sp-price__int {
       font-size: 24px;
       color: $color-hint-text;
-      font-weight: normal;
     }
     .sp-price__decimal {
       font-size: 24px;
       color: $color-hint-text;
-      font-weight: normal;
     }
   }
 
@@ -23,16 +20,24 @@
     margin-right: 5px;
     color: $color-primary-text;
     font-size: 24px;
-    font-weight: bold;
   }
   &__int {
     color: $color-primary-text;
     font-size: 32px;
-    font-weight: bold;
   }
   &__decimal {
     color: $color-primary-text;
     font-size: 28px;
-    font-weight: bold;
+  }
+  &__primary {
+    .sp-price__symbol {
+      color: var(--color-primary);
+    }
+    .sp-price__int {
+      color: var(--color-primary);
+    }
+    .sp-price__decimal {
+      color: var(--color-primary);
+    }
   }
 }

@@ -18,7 +18,6 @@ function CompPaymentPicker (props) {
     loading,
     isPointitemGood,
     disabledPayment = null,
-    onClose = () => {},
     onChange = () => {}
     // onInitDefaultPayType = () => {}
   } = props
@@ -81,14 +80,14 @@ function CompPaymentPicker (props) {
   }
 
   const payTypeText = {
-    wxpay: isWeixin ? '微信支付' : '现金支付',
+    wxpay: '微信支付',
     hfpay: '微信支付',
     alipayh5: '支付宝支付',
     wxpayh5: '微信支付',
-    wxpayjs: '微信支付',
-    deposit: '余额支付',
-    delivery: '货到付款',
-    point: `${pointName}支付`
+    wxpayjs: '微信支付'
+    // deposit: '余额支付',
+    // delivery: '货到付款',
+    // point: `${pointName}支付`
   }
 
   return (

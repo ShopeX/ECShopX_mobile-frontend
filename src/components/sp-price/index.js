@@ -49,7 +49,7 @@ export default class SpPrice extends Component {
           {
             'line-through': lineThrough
           },
-          // primary ? "sp-price__primary" : null,
+          primary ? 'sp-price__primary' : null,
           className
         )}
       >

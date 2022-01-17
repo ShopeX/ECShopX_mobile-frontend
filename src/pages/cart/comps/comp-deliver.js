@@ -23,17 +23,19 @@ function CmopDeliver (props) {
     {
       type: 'logistics',
       name: '普通快递',
-      isopen: currentStore.is_delivery
+      isopen: true || currentStore.is_delivery
     },
     {
       type: 'dada',
       name: '同城配',
-      isopen: headquartersStore.is_current ? headquartersStore.is_dada : currentStore.is_dada
+      isopen:
+        true || (headquartersStore.is_current ? headquartersStore.is_dada : currentStore.is_dada)
     },
     {
       type: 'ziti',
       name: '自提',
-      isopen: headquartersStore.is_current ? headquartersStore.is_ziti : currentStore.is_ziti // type !== 'pointitem' && currentStore.is_ziti
+      isopen:
+        true || (headquartersStore.is_current ? headquartersStore.is_ziti : currentStore.is_ziti) // type !== 'pointitem' && currentStore.is_ziti
     }
   ]
 
