@@ -5,8 +5,8 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import { setPageTitle, platformTemplateName } from '@/utils/platform'
-import { SpTabbar } from '@/components'
-import Series from './comps/series'
+import { SpPage, SpTabbar } from '@/components'
+import ComSeries from './comps/comp-series'
 
 import './index.scss'
 
@@ -18,13 +18,12 @@ const initialState = {
   hasSeries: false //是否有多级
 }
 
-const Category = (props) => {
+const CategoryIndex = (props) => {
   const [state, setState] = useImmer(initialState)
   const { currentList, activeIndex, tabList, contentList, hasSeries } = state
   // 获取数据
   useEffect(() => {
     getConfig()
-    setPageTitle('商品分类')
   }, [])
 
   const getConfig = async () => {
@@ -54,39 +53,37 @@ const Category = (props) => {
       hot: 'hot',
       id: 'id'
     })
-    setState((v) => {
-      ;(v.tabList = tabList),
-        (v.contentList = contentList),
-        (v.hasSeries = true),
-        (v.currentList = currentList)
+    setState((draft) => {
+      ;(draft.tabList = tabList),
+        (draft.contentList = contentList),
+        (draft.hasSeries = true),
+        (draft.currentList = currentList)
     })
   }
 
   const fnSwitchSeries = (index) => {
-    setState((v) => {
-      ;(v.activeIndex = index), (v.currentList = v.contentList[index])
+    setState((draft) => {
+      ;(draft.activeIndex = index), (draft.currentList = draft.contentList[index])
     })
   }
 
   return (
-    <View className='page-category-index'>
-      {tabList.length > 1 ? (
-        <AtTabs current={state.activeIndex} tabList={state.tabList} onClick={fnSwitchSeries}>
+    <SpPage className='page-category-index'>
+      {tabList.length > 1 && (
+        <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
           {tabList.map((item, index) => (
-            <AtTabsPane current={state.activeIndex} index={index} key={item.status}></AtTabsPane>
+            <AtTabsPane current={activeIndex} index={index} key={item.status}></AtTabsPane>
           ))}
         </AtTabs>
-      ) : (
-        ''
       )}
       <View
         className={`${hasSeries && tabList.length > 1 ? 'category-comps' : 'category-comps-not'}`}
       >
-        <Series info={currentList} />
+        <ComSeries info={currentList} />
       </View>
       <SpTabbar />
-    </View>
+    </SpPage>
   )
 }
 
-export default memo(Category)
+export default CategoryIndex

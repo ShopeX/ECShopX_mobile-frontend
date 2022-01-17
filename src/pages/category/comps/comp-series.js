@@ -2,11 +2,11 @@ import React, { memo, useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
-import { Loading } from '@/components'
+import { SpLoading, SpImage } from '@/components'
 import { classNames } from '@/utils'
 import { useImmer } from 'use-immer'
 
-import './series.scss'
+import './comp-series.scss'
 
 const initialState = {
   currentTopImg: [], //当前分类顶部图片
@@ -14,9 +14,9 @@ const initialState = {
   currentID: []
 }
 
-const Series = (props) => {
+const CompSeries = (props) => {
   const [state, setState] = useImmer(initialState)
-  const [activeIndex, setActiveIndex] = useState('')
+  const [activeIndex, setActiveIndex] = useState(0)
 
   const { info, pluralType = true, imgType = true } = props
 
@@ -27,18 +27,19 @@ const Series = (props) => {
     setActiveIndex(0)
   }, [info])
 
-  useEffect(() => {
-    if (info.length <= 0) return
-    const currentTopImg = info[activeIndex].img
-    const currentChildren = info[activeIndex].children
-    const currentID = info[activeIndex].id || ''
+  // useEffect(() => {
+  //   if (info.length <= 0) return
 
-    setState((v) => {
-      ;(v.currentTopImg = currentTopImg),
-        (v.currentChildren = currentChildren),
-        (v.currentID = currentID)
-    })
-  }, [activeIndex])
+  //   const currentTopImg = info[activeIndex].img
+  //   const currentChildren = info[activeIndex].children
+  //   const currentID = info[activeIndex].id || ''
+
+  //   setState((v) => {
+  //     ;(v.currentTopImg = currentTopImg),
+  //       (v.currentChildren = currentChildren),
+  //       (v.currentID = currentID)
+  //   })
+  // }, [activeIndex])
 
   const handleClickItem = (item) => {
     const { category_id, main_category_id } = item
@@ -64,25 +65,27 @@ const Series = (props) => {
     }
   }
 
-  const { currentTopImg, currentChildren, currentID } = state
-  if (!info) {
-    return <Loading />
+  // const { currentTopImg, currentChildren, currentID } = state
+
+  if (!info || info.length == 0 || info.length <= activeIndex) {
+    return <SpLoading />
   }
-  console.log(info[activeIndex])
+
+  const currentTopImg = info[activeIndex].img || ''
+  const currentChildren = info[activeIndex].children || []
+  const currentID = info[activeIndex].id || ''
   return (
-    <View className='category-list'>
+    <View className='CompSeries'>
       {/* left */}
-      <ScrollView className='category-list__nav' scrollY>
-        <View className='category-nav-cpn'>
+      <ScrollView className='CompSeries__nav' scrollY>
+        <View className='CompSeries__nav_list'>
           {info.map((item, index) => (
             <View
               className={classNames(
-                'category-nav-cpn__content',
-                activeIndex === index ? 'category-nav-cpn__content-active' : null
+                'CompSeries__nav-list__content',
+                activeIndex === index && 'CompSeries__nav-list__content-active'
               )}
-              style={
-                activeIndex == index ? `border-left: 4px solid ${colors.data[0].primary};` : null
-              }
+              style={activeIndex == index && `border-left: 4px solid ${colors.data[0].primary};`}
               key={`${item.name}-${index}`}
               onClick={() => setActiveIndex(index)}
             >
@@ -94,13 +97,19 @@ const Series = (props) => {
       </ScrollView>
 
       {/* right */}
-      <ScrollView className='category-list__content' scrollY>
+      <ScrollView className='CompSeries__content' scrollY>
         <View className={classNames(pluralType ? 'category-content' : 'category-content-no')}>
           {currentTopImg && (
-            <Image
-              src={currentTopImg}
-              mode='aspectFill'
+            // <Image
+            //   src={currentTopImg}
+            //   mode='aspectFill'
+            //   className='category__banner'
+            //   onClick={() => handleCustomClick(currentID)}
+            // />
+            <SpImage
               className='category__banner'
+              mode='aspectFill'
+              src={currentTopImg}
               onClick={() => handleCustomClick(currentID)}
             />
           )}
@@ -116,7 +125,12 @@ const Series = (props) => {
                       onClick={() => handleClickItem(child)}
                     >
                       {child.img && (
-                        <Image
+                        // <Image
+                        //   className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
+                        //   mode='aspectFit'
+                        //   src={child.img}
+                        // />
+                        <SpImage
                           className={classNames(imgType ? 'cat-img' : 'cat-img-no')}
                           mode='aspectFit'
                           src={child.img}
@@ -150,4 +164,4 @@ const Series = (props) => {
   )
 }
 
-export default memo(Series)
+export default memo(CompSeries)
