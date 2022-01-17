@@ -81,12 +81,12 @@ const Series = (props) => {
                 activeIndex === index ? 'category-nav-cpn__content-active' : null
               )}
               style={
-                activeIndex == index ? `border-left: 7rpx solid ${colors.data[0].primary};` : null
+                activeIndex == index ? `border-left: 4px solid ${colors.data[0].primary};` : null
               }
               key={`${item.name}-${index}`}
               onClick={() => setActiveIndex(index)}
             >
-              {item.hot && <Text className='hot-tag'></Text>}
+              {item.hot && <Text className='hot-tag' key={`${item.name}-${index}`}></Text>}
               {item.name}
             </View>
           ))}
@@ -104,9 +104,9 @@ const Series = (props) => {
               onClick={() => handleCustomClick(currentID)}
             />
           )}
-          {currentChildren.map((item) =>
+          {currentChildren.map((item,index) =>
             item.children ? (
-              <View className='new'>
+              <View className='new' key={index}>
                 <View className='group-title'>{item.name}</View>
                 <View className='content-group'>
                   {item.children.map((child) => (
