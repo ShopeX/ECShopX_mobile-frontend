@@ -7,7 +7,7 @@ import { pickBy } from '@/utils'
 import doc from '@/doc'
 import { platformTemplateName } from '@/utils/platform'
 import { SpPage, SpTabbar } from '@/components'
-import ComSeries from './comps/comp-series'
+import CompSeries from './comps/comp-series'
 
 import './index.scss'
 
@@ -74,7 +74,7 @@ const CategoryIndex = (props) => {
       <View
         className={`${hasSeries && tabList.length > 1 ? 'category-comps' : 'category-comps-not'}`}
       >
-        <ComSeries info={currentList} />
+        <CompSeries info={currentList} />
       </View>
       <SpTabbar />
     </SpPage>

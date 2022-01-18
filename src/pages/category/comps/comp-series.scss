@@ -1,4 +1,4 @@
-.CompSeries {
+.comp-series {
   height: 100%;
   background: #ffffff;
   display: flex;
@@ -102,11 +102,9 @@
       .content-group {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content:flex-start;
       }
       .category__banner {
-        /* prettier-ignore */
-        border: 1PX dashed #999 ;
         display: block;
         width: 100%;
         height: 250px;
@@ -119,11 +117,11 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin-right: 25px;
+
         .cat-img {
           width: 150px;
           height: 150px;
-          /* prettier-ignore */
-          border: 1PX dashed #999;
         }
         .img-cat-name {
           width: 100%;
@@ -140,6 +138,9 @@
       &__img-empty {
         width: 140px;
         height: 0;
+      }
+      :nth-child(3n){
+        margin-right: 0px;
       }
     }
     .category-content-no {
