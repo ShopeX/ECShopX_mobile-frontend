@@ -71,6 +71,7 @@ import SpFloatMenus from './sp-float-menus'
 import SpFloatMenuItem from './sp-float-menu-item'
 import SpFloatAd from './sp-float-ad'
 import SpCouponPackage from './sp-coupon-package'
+import SpFloatLayout from './sp-float-layout'
 
 export default {}
 
@@ -147,5 +148,6 @@ export {
   SpFloatMenus,
   SpFloatMenuItem,
   SpFloatAd,
-  SpCouponPackage
+  SpCouponPackage,
+  SpFloatLayout
 }

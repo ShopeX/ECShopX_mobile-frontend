@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
@@ -58,6 +58,7 @@ import {
 import CompVipGuide from './comps/comp-vipguide'
 import CompCouponList from './comps/comp-couponlist'
 import CompStore from './comps/comp-store'
+import CompPackageList from './comps/comp-packagelist'
 import CompEvaluation from './comps/comp-evaluation'
 import CompBuytoolbar from './comps/comp-buytoolbar'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
@@ -71,6 +72,9 @@ const initialState = {
   isDefault: false,
   defaultMsg: '',
   promotionPackage: [], // 组合优惠
+  mainGoods: {},
+  makeUpGoods: [], // 组合商品
+  packageOpen: false,
   evaluationList: [],
   evaluationTotal: 0
 }
@@ -78,9 +82,21 @@ const initialState = {
 function EspierDetail (props) {
   const $instance = getCurrentInstance()
   const { type, id } = $instance.router.params
+  const pageRef = useRef()
 
   const [state, setState] = useImmer(initialState)
-  const { info, play, isDefault, defaultMsg, evaluationList, curImgIdx, promotionPackage } = state
+  const {
+    info,
+    play,
+    isDefault,
+    defaultMsg,
+    evaluationList,
+    curImgIdx,
+    promotionPackage,
+    packageOpen,
+    mainGoods,
+    makeUpGoods
+  } = state
 
   useEffect(() => {
     fetch()
@@ -99,6 +115,14 @@ function EspierDetail (props) {
       video.stop()
     }
   }, [play])
+
+  useEffect(() => {
+    if (packageOpen) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [packageOpen])
 
   const fetch = async () => {
     let data
@@ -134,10 +158,20 @@ function EspierDetail (props) {
 
   // 获取包裹
   const getPackageList = async () => {
-    const { list } = await api.item.packageList({ item_id: id })
-    setState((draft) => {
-      draft.promotionPackage = list
-    })
+    const { list } = await api.item.packageList({ item_id: id, showError: false })
+    if (list.length > 0) {
+      const {
+        itemLists,
+        mainItem,
+        main_package_price,
+        package_price: packagePrice
+      } = await api.item.packageDetail(list[0].package_id)
+      setState((draft) => {
+        draft.promotionPackage = list
+        draft.mainGoods = pickBy(mainItem, doc.goods.PACKGOODS_INFO)
+        draft.makeUpGoods = pickBy(itemLists, doc.goods.PACKGOODS_INFO)
+      })
+    }
   }
 
   // 获取评论
@@ -176,6 +210,7 @@ function EspierDetail (props) {
       scrollToTopBtn
       isDefault={isDefault}
       defaultMsg={defaultMsg}
+      ref={pageRef}
       renderFooter={<CompBuytoolbar info={info} />}
     >
       {!info && <SpLoading />}
@@ -267,7 +302,7 @@ function EspierDetail (props) {
           </View>
 
           <View className='sku-block'>
-            {promotionPackage.length > 0 && (
+            {/* {promotionPackage.length > 0 && (
               <SpCell
                 title='组合优惠'
                 isLink
@@ -278,8 +313,17 @@ function EspierDetail (props) {
               >
                 {`共${promotionPackage.length}种组合随意搭配`}
               </SpCell>
-            )}
-            <SpCell title='组合优惠' isLink value='共2种组合随意搭配'></SpCell>
+            )} */}
+            <SpCell
+              title='组合优惠'
+              isLink
+              value='共2种组合随意搭配'
+              onClick={() => {
+                setState((draft) => {
+                  draft.packageOpen = true
+                })
+              }}
+            ></SpCell>
             <SpCell title='组合优惠' isLink value='共2种组合随意搭配'></SpCell>
             <SpCell title='组合优惠' isLink value='共2种组合随意搭配'></SpCell>
           </View>
@@ -306,6 +350,20 @@ function EspierDetail (props) {
           </View>
         </View>
       )}
+
+      {/* 优惠组合 */}
+      <CompPackageList
+        open={packageOpen}
+        onClose={() => {
+          setState((draft) => {
+            draft.packageOpen = false
+          })
+        }}
+        info={{
+          mainGoods,
+          makeUpGoods
+        }}
+      />
       <View></View>
     </SpPage>
   )

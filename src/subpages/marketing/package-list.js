@@ -44,11 +44,9 @@ function PackageList (props) {
   return (
     <SpPage className='page-marketing-packagelist'>
       <SpScrollView fetch={fetch}>
-        {/* {
-          list.map(item => (
-            <CompPackageItem info={} />
-          ))
-        } */}
+        {list.map((item) => (
+          <CompPackageItem info={item} />
+        ))}
       </SpScrollView>
       {/* <View></View>
       <SpCheckboxNew>

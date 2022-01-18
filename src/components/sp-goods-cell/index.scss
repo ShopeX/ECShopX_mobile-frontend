@@ -1,3 +1,6 @@
 .sp-goods-cell {
-  
+  display: flex;
+  .goods-item-hd {
+    margin-right: 24px;
+  }
 }

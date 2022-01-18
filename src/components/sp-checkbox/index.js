@@ -33,7 +33,6 @@ function SpCheckboxNew (props) {
         },
         className
       )}
-      style={styleNames(getThemeStyle())}
       onClick={onChangeCheckbox}
     >
       <Text

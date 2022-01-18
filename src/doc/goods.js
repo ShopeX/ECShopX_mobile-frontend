@@ -88,3 +88,11 @@ export const GOODS_INFO = {
   distributorId: 'distributor_id',
   video: 'videos'
 }
+
+export const PACKGOODS_INFO = {
+  img: 'pics[0]',
+  itemName: 'itemName',
+  num: '',
+  price: 'price',
+  marketPrice: 'market_price'
+}
