@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import doc from '@/doc'
-import { isObjectsValue, isWeixin, pickBy } from '@/utils'
+import { isObjectsValue, isWeixin, pickBy, authSetting } from '@/utils'
 import { SpPage, SpPrice, SpCell, SpOrderItem } from '@/components'
 
 import { initialState } from './const'
@@ -28,7 +28,9 @@ function CartCheckout (props) {
     seckill_id = null,
     ticket = null,
     pay_type
-  } = getCurrentInstance().router.params
+  } = getCurrentInstance().router?.params || {}
+
+  let paramsInfo = {}
 
   const [state, setState] = useImmer(initialState)
   const dispatch = useDispatch()
@@ -109,7 +111,7 @@ function CartCheckout (props) {
   }
 
   const transformCartList = (list) => {
-    return pickBy(list, doc.checkout)
+    return pickBy(list, doc.checkout.CHECKOUT_GOODS_ITEM)
   }
 
   const getTradeSetting = async () => {
@@ -150,11 +152,46 @@ function CartCheckout (props) {
   }
 
   const handleInvoiceClick = () => {
-    console.log('开发票')
+    authSetting('invoiceTitle', async () => {
+      const res = await Taro.chooseInvoiceTitle()
+      if (res.errMsg === 'chooseInvoiceTitle:ok') {
+        const {
+          type,
+          content,
+          company_address,
+          bankname,
+          bankaccount,
+          company_phone,
+          registration_number
+        } = pickBy(res, doc.checkout.INVOICE_TITLE)
+
+        paramsInfo = {
+          ...paramsInfo,
+          invoice_type: 'normal',
+          invoice_content: {
+            title: type == 0 ? 'unit' : 'individual',
+            content,
+            company_address,
+            registration_number,
+            bankname,
+            bankaccount,
+            company_phone
+          }
+        }
+        setState((draft) => {
+          draft.invoiceTitle = content
+        })
+      }
+    })
   }
 
   const resetInvoice = (e) => {
-    console.log(e, 'e')
+    e.stopPropagation()
+    setState((draft) => {
+      draft.invoiceTitle = ''
+    })
+    delete paramsInfo.invoice_type
+    delete paramsInfo.invoice_content
   }
 
   const handleCouponsClick = () => {

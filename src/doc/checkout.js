@@ -15,3 +15,13 @@ export const CHECKOUT_GOODS_ITEM = {
   num: 'num',
   item_spec_desc: 'item_spec_desc'
 }
+
+export const INVOICE_TITLE = {
+  type: 'type',
+  content: 'title',
+  company_address: 'companyAddress',
+  registration_number: 'taxNumber',
+  bankname: 'bankName',
+  bankaccount: 'bankAccount',
+  company_phone: 'telephone'
+}
