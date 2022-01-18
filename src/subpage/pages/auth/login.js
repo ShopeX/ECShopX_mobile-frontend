@@ -123,7 +123,7 @@ export default class Login extends Component {
     params['auth_type'] = 'local'
 
     try {
-      const { token } = await api.wx.newloginh5(params)
+      const { token, error_message } = await api.wx.newloginh5(params)
 
       const { is_new } = tokenParseH5(token)
 
@@ -137,6 +137,9 @@ export default class Login extends Component {
           })
         }
       } else {
+        if (error_message) {
+          return showToast(error_message)
+        }
         const self = this
         setTokenAndRedirect(token, async () => {
           await self.handleUpdateUserInfo()
