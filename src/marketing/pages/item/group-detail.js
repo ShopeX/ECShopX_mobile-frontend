@@ -89,7 +89,7 @@ export default class GroupDetail extends Component {
       showToast('请先登录')
       const { params, path } = this.$instance.router
       setTimeout(() => {
-        let url = `/subpage/pages/auth/login?redirect=${encodeURIComponent(
+        let url = `/subpages/auth/login?redirect=${encodeURIComponent(
           `${path}?${qs.stringify(params)}`
         )}`
         Taro.redirectTo({ url })

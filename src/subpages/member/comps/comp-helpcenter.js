@@ -24,7 +24,7 @@ const MENUS = [
     key: 'poolicy',
     name: '隐私与政策',
     icon: 'icon-xieyiyuzhengce-01',
-    link: '/subpage/pages/auth/reg-rule?type=privacyAndregister'
+    link: '/subpages/auth/reg-rule?type=privacyAndregister'
   }
 ]
 

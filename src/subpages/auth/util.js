@@ -4,7 +4,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 //跳转到注册页
 function navigationToReg () {
   Taro.navigateTo({
-    url: '/subpage/pages/auth/reg'
+    url: '/subpages/auth/reg'
   })
 }
 

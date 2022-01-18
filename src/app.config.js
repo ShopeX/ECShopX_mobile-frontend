@@ -129,18 +129,9 @@ export default {
         'pages/cashier/cashier-result', //支付结果页面
         'pages/qrcode-buy', //二维码购买页
         'pages/vip/vipgrades', //会员购买页面
-        'pages/auth/reg', //新用户注册页面
-        'pages/auth/reg-rule', //注册协议&充值协议页面
-        'pages/auth/login', //登录页面
-        'pages/auth/edit-password', //修改密码页面
-        'pages/auth/auth-loading', //登录中转页
-        'pages/auth/forgotpwd', //找回密码页面
-        'pages/auth/wxauth', //微信授权页面
         'pages/auth/pclogin', //pc登录页面
-        'pages/auth/store-reg', //申请店铺入驻页面
         // 编辑分享
-        'pages/editShare/index',
-        'pages/auth/bindPhone'
+        'pages/editShare/index'
       ]
     },
     //   // 助力
@@ -185,9 +176,28 @@ export default {
       root: 'pointitem',
       pages: ['pages/list']
     },
+    //商家入驻
     {
       root: 'subpages/merchant',
-      pages: ['login', 'apply', 'selector', 'audit', 'agreement']
+      pages: [
+        'login', //登陆页面
+        'apply', //申请页面
+        'selector', //选择页面
+        'audit', //审核页面
+        'agreement' //协议页面
+      ]
+    },
+    {
+      root: 'subpages/auth',
+      pages: [
+        'reg', //注册页面
+        'reg-rule', //注册协议页面
+        'login', //登陆页
+        'edit-password', //修改密码页面
+        'bindPhone', //绑定手机页面
+        'auth-loading', //授权加载页
+        'forgotpwd' //找回密码页面
+      ]
     }
   ],
   permission: {

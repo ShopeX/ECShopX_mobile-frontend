@@ -127,7 +127,7 @@ export default class UserInfo extends Component {
     const { regParams } = this.state
     if (regParams.mobile.is_edit) {
       Taro.navigateTo({
-        url: '/subpage/pages/auth/bindPhone'
+        url: '/subpages/auth/bindPhone'
       })
     }
   }

@@ -4,34 +4,33 @@ import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
 import { SpPage, SpTimer } from '@/components'
 import { classNames, validate, showToast, tokenParseH5 } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { useDepChange, useLogin } from '@/hooks'
+import { useLogin } from '@/hooks'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { setTokenAndRedirect, setToken } from './util'
-import './forgotpwd.scss'
+import './bindPhone.scss'
 
-const SYMBOL = 'forgot_password'
+const SYMBOL = 'login'
 
 const initialValue = {
   username: '',
   check_type: SYMBOL,
   yzm: '',
   vcode: '',
-  imgInfo: null,
-  password: '',
-  //默认是老用户
-  is_new: false
+  imgInfo: null
 }
 
 const PageBindPhone = () => {
   const $instance = getCurrentInstance()
   const {
-    params: { phone }
+    params: { unionid, redi_url }
   } = $instance.router
+
+  const { getUserInfo } = useLogin()
 
   const [state, setState] = useImmer(initialValue)
 
-  const { username, yzm, vcode, imgInfo, password, is_new } = state
+  const { username, yzm, vcode, check_type, imgInfo } = state
 
   const handleInputChange = (name) => (val) => {
     setState((state) => {
@@ -40,7 +39,6 @@ const PageBindPhone = () => {
   }
 
   const getImageVcode = async () => {
-    if (is_new) return showToast('该手机号还未注册！')
     const img_res = await api.user.regImg({ type: SYMBOL })
     setState((state) => {
       state.imgInfo = img_res
@@ -48,7 +46,6 @@ const PageBindPhone = () => {
   }
 
   const handleTimerStart = async (resolve) => {
-    if (is_new) return showToast('该手机号还未注册！')
     if (!validate.isMobileNum(username)) {
       showToast('请输入正确的手机号')
       return
@@ -73,53 +70,53 @@ const PageBindPhone = () => {
 
   const handleSubmit = async () => {
     try {
-      await api.user.forgotPwd({
-        mobile: phone,
-        password,
-        vcode
+      const { token } = await api.user.bind({
+        username,
+        check_type,
+        vcode,
+        union_id: unionid
       })
-      showToast('设置密码成功', () => {
-        Taro.navigateBack()
-      })
+
+      const { is_new } = tokenParseH5(token)
+
+      if (is_new === 1) {
+        setToken(token)
+        Taro.navigateTo({
+          url: `/subpages/auth/edit-password?phone=${username}`
+        })
+      } else {
+        const self = this
+        setTokenAndRedirect(token, async () => {
+          await getUserInfo()
+        }).bind(self)
+      }
     } catch (e) {
       console.log(e)
     }
   }
 
-  const handlePhoneBlur = async (mobile) => {
-    if (mobile) {
-      const { is_new } = await api.wx.getIsNew({ mobile })
-      setState((_state) => {
-        _state.is_new = !!is_new
-      })
-    }
-  }
-
   useEffect(() => {
     getImageVcode()
-    //pushHistory('/subpage/pages/auth/login', '/subpage/pages/auth/bindPhone', '绑定手机号')
   }, [])
 
-  useEffect(() => {
-    if (phone) {
-      setState((_state) => {
-        _state.username = phone
-      })
-      handlePhoneBlur(phone)
-    }
-  }, [phone])
+  const handleClickLeft = () => {
+    Taro.redirectTo({
+      url: `/subpages/auth/login?redirect=${redi_url}`
+    })
+  }
 
   //全填写完
-  const isFull = username && yzm && vcode && password
+  const isFull = username && yzm && vcode
 
   return (
     <SpPage
-      className={classNames('page-auth-forgotpwd', {
+      className={classNames('page-auth-bindphone', {
         'is-full': isFull
       })}
+      onClickLeftIcon={handleClickLeft}
     >
       <View className='auth-hd'>
-        <View className='title'>忘记密码</View>
+        <View className='title'>手机号绑定</View>
       </View>
       <View className='auth-bd'>
         <View className='form-title'>中国大陆 +86</View>
@@ -133,7 +130,6 @@ const PageBindPhone = () => {
               value={username}
               placeholder='请输入您的手机号码'
               onChange={handleInputChange('username')}
-              onBlur={handlePhoneBlur}
             />
           </View>
 
@@ -146,7 +142,6 @@ const PageBindPhone = () => {
                 value={yzm}
                 placeholder='请输入图形验证码'
                 onChange={handleInputChange('yzm')}
-                disabled={is_new}
               />
             </View>
             <View className='btn-field'>
@@ -164,26 +159,12 @@ const PageBindPhone = () => {
                 value={vcode}
                 placeholder='请输入验证码'
                 onChange={handleInputChange('vcode')}
-                disabled={is_new}
               />
             </View>
             <View className='btn-field'>
               <SpTimer onStart={handleTimerStart} />
             </View>
           </View>
-
-          <View className='form-field'>
-            <AtInput
-              clear
-              name='mobile'
-              maxLength={11}
-              type='tel'
-              value={password}
-              placeholder='再次输入密码'
-              onChange={handleInputChange('password')}
-            />
-          </View>
-          <View className='form-tip'>6-16位密码、数字或字母</View>
 
           <View className='form-submit'>
             <AtButton
@@ -193,7 +174,7 @@ const PageBindPhone = () => {
               className='login-button'
               onClick={handleSubmit}
             >
-              完成
+              下一步
             </AtButton>
           </View>
         </AtForm>

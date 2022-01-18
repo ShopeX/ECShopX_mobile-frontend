@@ -31,7 +31,7 @@ export default class Landing extends Component {
 
   async fetch () {
     Taro.redirectTo({
-      url: '/subpage/pages/auth/reg'
+      url: '/subpages/auth/reg'
     })
   }
 

@@ -97,9 +97,7 @@ export default class SettingIndex extends Component {
           <View>
             阅读并同意
             <Text
-              onClick={() =>
-                Taro.navigateTo({ url: '/subpage/pages/auth/reg-rule?type=member_logout' })
-              }
+              onClick={() => Taro.navigateTo({ url: '/subpages/auth/reg-rule?type=member_logout' })}
               style={`color: ${colors.data[0].primary}`}
             >
               《用户注销协议》

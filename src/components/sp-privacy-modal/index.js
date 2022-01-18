@@ -39,7 +39,7 @@ function SpPrivacyModal (props) {
 
   const handleClickPrivacy = (type) => {
     Taro.navigateTo({
-      url: `/subpage/pages/auth/reg-rule?type=${type}`
+      url: `/subpages/auth/reg-rule?type=${type}`
     })
   }
 
@@ -50,12 +50,6 @@ function SpPrivacyModal (props) {
 
   const handleCancel = () => {
     onCancel()
-  }
-
-  const handleClickAgreement = (type) => {
-    Taro.navigateTo({
-      url: '/subpage/pages/auth/reg-rule?type=' + type
-    })
   }
 
   return (

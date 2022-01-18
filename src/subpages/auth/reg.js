@@ -185,7 +185,7 @@ const Reg = () => {
               className='primary-color'
               onClick={() =>
                 Taro.navigateTo({
-                  url: '/subpage/pages/auth/reg-rule'
+                  url: '/subpages/auth/reg-rule'
                 })
               }
             >
