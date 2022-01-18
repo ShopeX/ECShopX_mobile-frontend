@@ -28,6 +28,9 @@ $cell-prefix:'sp-cell';
     padding: 0 20px;
     color: #666;
   }
+  &__title {
+    color: #666;
+  }
   &__ft {
     color: $font-size-small;
     color: $color-gray-light;

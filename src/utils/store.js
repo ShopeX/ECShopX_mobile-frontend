@@ -19,9 +19,3 @@ export function JumpPageIndex () {
 export function JumpGoodDetail (itemId, distributor_id) {
   Taro.navigateTo({ url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributor_id || 0}` })
 }
-
-//获取总店
-export async function getHeadShop () {
-  const res = await api.shop.getHeadquarters()
-  return res
-}

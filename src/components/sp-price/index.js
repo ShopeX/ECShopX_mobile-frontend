@@ -49,16 +49,18 @@ export default class SpPrice extends Component {
           {
             'line-through': lineThrough
           },
-          // primary ? "price__primary" : null,
+          primary ? 'sp-price__primary' : null,
           className
         )}
       >
         {minus && <Text>-</Text>}
         {plus && <Text>+</Text>}
-        {noSymbol ? null : <Text className='price__symbol'>{symbol}</Text>}
-        <Text className='price__int'>{int.indexOf('-') === 0 ? int.slice(1) : int}</Text>
-        {decimal !== undefined && !noDecimal && <Text className='price__decimal'>.{decimal}</Text>}
-        {appendText && <Text className='price__append'>{appendText}</Text>}
+        {noSymbol ? null : <Text className='sp-price__symbol'>{symbol}</Text>}
+        <Text className='sp-price__int'>{int.indexOf('-') === 0 ? int.slice(1) : int}</Text>
+        {decimal !== undefined && !noDecimal && (
+          <Text className='sp-price__decimal'>.{decimal}</Text>
+        )}
+        {appendText && <Text className='sp-price__append'>{appendText}</Text>}
       </Text>
     )
   }

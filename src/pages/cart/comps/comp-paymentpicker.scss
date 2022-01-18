@@ -1,0 +1,14 @@
+.pages-comp-paymentpicker {
+  .sp-cell {
+    padding: 30px 16px;
+  }
+  .btn-submit {
+    width: 100%;
+    border-radius: 0;
+    background: var(--color-primary);
+    border: var(--color-primary);
+    &::after {
+      content: none;
+    }
+  }
+}

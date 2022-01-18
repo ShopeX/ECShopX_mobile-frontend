@@ -15,8 +15,8 @@ export default class PaymentPicker extends Component {
   static defaultProps = {
     isOpened: false,
     type: '',
-    disabledPayment: null,
-    onInitDefaultPayType: () => {}
+    disabledPayment: null
+    // onInitDefaultPayType: () => {}
   }
 
   constructor (props) {
@@ -57,7 +57,7 @@ export default class PaymentPicker extends Component {
           if (typeof res[0].pay_channel != 'undefined') {
             channel = res[0].pay_channel
           }
-          this.props.onInitDefaultPayType(res[0].pay_type_code, channel)
+          // this.props.onInitDefaultPayType(res[0].pay_type_code, channel)
         }
       }
     )
@@ -101,7 +101,7 @@ export default class PaymentPicker extends Component {
     const { localType, typeList } = this.state
 
     return (
-      <AtFloatLayout isOpened={isOpened}>
+      <AtFloatLayout isOpened={isOpened} onClose={this.handleCancel}>
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
             <Text>支付方式</Text>

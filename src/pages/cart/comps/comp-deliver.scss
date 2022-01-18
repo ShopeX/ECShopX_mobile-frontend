@@ -1,42 +1,44 @@
-@import '../../../style/imports';
+@import '@/style/imports';
 
-.deliver {
+.page-comp-deliver {
   width: 100%;
   background: #fff;
-  border-radius: 10px;
   padding: 10px 0px;
-  margin-bottom: 20px;
+  box-shadow: 0px 2px 10px 0px #EAE7E0;
+  .switch-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
   .switch-tab {
     display: flex;
-    background: #e4e4e4;
-    border-radius: 30px;
-    padding: 5px;
-    margin: 20px auto 10px auto;
-    width: 600px;
+    background: #f5f5f5;
+    border-radius: 50px;
+    margin: 20px 20px 10px 20px;
+    font-size: 24px;
     .switch-item {
-      flex: 1;
-      flex-shrink: 0;
+      // padding: 0px 30px;
+      width: 160px;
       text-align: center;
-      height: 60px;
-      line-height: 60px;
-      font-weight: bold;
-      color: #999;
-      border-radius: 30px;
+      height: 65px;
+      line-height: 65px;
+      color: #666;
+      border-radius: 50px;
       &.active {
-        color: #fff;
-        background: #000;
+        font-weight: bold;
+        color: #222;
       }
     }
   }
   .address-module {
     background: #fff;
     padding: 12px 30px;
-    .addr-title {
+    .address-title {
       font-size: 32px;
       font-weight: 500;
       padding: 12px 0;
     }
-    .addr-detail {
+    .address-detail {
       display: flex;
       font-size: 26px;
       color: #666;
@@ -51,7 +53,7 @@
         color: #666;
       }
     }
-    .otherInfo {
+    .other-info {
       margin-top: 10px;
       .text-muted {
         font-size: 24px;
@@ -61,7 +63,7 @@
           color: #d92128;
         }
         .phone {
-          color: #333;
+          color: #444;
         }
       }
     }
@@ -72,11 +74,11 @@
   .dada {
     .store {
       padding-bottom: 20px;
-      color: #333;
+      color: #444;
       font-size: 28px;
     }
   }
-  .cityDeliver{
+  .store-module{
     .store {
       padding-left: 30px;
     }

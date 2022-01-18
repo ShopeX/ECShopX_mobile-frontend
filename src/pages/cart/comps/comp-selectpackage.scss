@@ -1,0 +1,19 @@
+.pages-comp-selectpackage {
+  .sp-cell {
+    padding: 30px 16px;
+  }
+  .payment-item__desc {
+    margin: 25px 40px;
+    line-height: 1;
+    word-break:break-all
+  }
+  .btn-submit {
+    width: 100%;
+    border-radius: 0;
+    background: var(--color-primary);
+    border: var(--color-primary);
+    &::after {
+      content: none;
+    }
+  }
+}

@@ -1,0 +1,64 @@
+@import "../../style/imports";
+
+.order-item {
+  display: flex;
+  align-items: flex-start;
+  padding: $edge-size;
+  &__hd {
+    margin-right: 20px;
+  }
+  &__bd {
+    width: 50%;
+    margin-bottom: 40px;
+    position: relative;  
+  }
+  &__ft {
+    flex: 1;
+    text-align: right;
+    font-size: $font-size-small;
+  }
+  &__title {
+    font-size: floor(0.95 * $font-size);
+    @include multi-ellipsis(2);
+    line-height: 1.4;
+    margin: 0 0 15px;
+    &-tag{
+      display: inline-block;
+      background:$color-brand-primary;
+      color:#ffffff;
+      padding: 3px 4px;
+      font-size: $font-size-small;
+      margin-right: 10px;
+      
+    }
+  }
+  &__desc {
+    color: $color-gray;
+    font-size: $font-size-small;
+    margin-bottom: 10px;
+  }
+  &__spec {
+    color: $color-gray;
+    font-size: $font-size-small;
+    max-width: 90%;
+    min-width: 100px;
+    display: inline-block;
+    @include text-overflow();
+  }
+  &__price {
+    color: $color-primary-text;
+  }
+  &__point {
+    color: $color-primary-text;
+  }
+  &__num {
+    display: block;
+    color: $color-gray;
+  }
+  &__pay-type {
+    display: block;
+    margin-top: 42px;
+    font-size: 20px;
+    color: #c1c1c1;
+  }
+}

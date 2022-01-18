@@ -1,0 +1,197 @@
+import React, { useEffect } from 'react'
+import { useImmer } from 'use-immer'
+import { AtFloatLayout } from 'taro-ui'
+import { useSelector } from 'react-redux'
+import { isWeixin } from '@/utils'
+import getPaymentList from '@/utils/payment'
+import { SpCheckbox, SpCell } from '@/components'
+import { View, Text, Button } from '@tarojs/components'
+
+import './comp-paymentpicker.scss'
+
+function CompPaymentPicker (props) {
+  const {
+    // isOpened = false,
+    type = '',
+    isShowDelivery = false,
+    // isShowPoint = true,
+    loading,
+    isPointitemGood,
+    disabledPayment = null,
+    onChange = () => {}
+    // onInitDefaultPayType = () => {}
+  } = props
+
+  const { colorPrimary, pointName } = useSelector((state) => state.sys)
+
+  const [state, setState] = useImmer({
+    localType: type,
+    typeList: [],
+    isOpendActionSheet: false
+  })
+
+  const { localType, typeList, isOpendActionSheet } = state
+
+  useEffect(() => {
+    setState((draft) => {
+      draft.localType = type
+    })
+    getFetch()
+  }, [])
+
+  const getFetch = async () => {
+    const { list } = await getPaymentList()
+    setState((draft) => {
+      draft.typeList = list
+    })
+    if (list[0]) {
+      handlePaymentChange(list[0].pay_type_code, channel)
+      let channel = ''
+      if (typeof list[0].pay_channel != 'undefined') {
+        channel = list[0].pay_channel
+      }
+      // onInitDefaultPayType(res[0].pay_type_code, channel)
+    }
+  }
+
+  const handlePaymentChange = (type) => {
+    if (disabledPayment && disabledPayment[type]) return
+    setState((draft) => {
+      draft.localType = type
+    })
+  }
+
+  const handleChange = (type) => {
+    const payItem = typeList.find((item) => item.pay_type_code == type)
+    let channel = ''
+    if (payItem && typeof payItem.pay_channel != 'undefined') {
+      channel = payItem.pay_channel
+    }
+    onChange(type, channel)
+    setState((draft) => {
+      draft.isOpendActionSheet = false
+    })
+  }
+
+  const handlePaymentShow = (isOpend) => {
+    setState((draft) => {
+      draft.isOpendActionSheet = isOpend
+    })
+  }
+
+  const payTypeText = {
+    wxpay: '微信支付',
+    hfpay: '微信支付',
+    alipayh5: '支付宝支付',
+    wxpayh5: '微信支付',
+    wxpayjs: '微信支付'
+    // deposit: '余额支付',
+    // delivery: '货到付款',
+    // point: `${pointName}支付`
+  }
+
+  return (
+    <View className='pages-comp-paymentpicker'>
+      {!isPointitemGood && (
+        <SpCell
+          isLink
+          className='trade-invoice'
+          title='支付方式'
+          onClick={() => handlePaymentShow(true)}
+        >
+          <View className='invoice-title'>{payTypeText[type]}</View>
+        </SpCell>
+      )}
+
+      <AtFloatLayout isOpened={isOpendActionSheet} onClose={() => handlePaymentShow(false)}>
+        <View className='payment-picker'>
+          <View className='payment-picker__hd'>
+            <Text>支付方式</Text>
+            <View className='iconfont icon-close' onClose={() => handlePaymentShow(false)}></View>
+          </View>
+          <View className='payment-picker__bd'>
+            {/* {isShowPoint &&
+              <View
+                className={`payment-item ${
+                  disabledPayment && disabledPayment['point'] ? 'is-disabled' : ''
+                }`}
+                onClick={handlePaymentChange.bind(this, 'point')}
+              >
+                <View className='payment-item__bd'>
+                  <Text className='payment-item__title'>{`${pointName}支付`}</Text>
+                  <Text className='payment-item__desc'>
+                    {disabledPayment && disabledPayment['point']
+                      ? disabledPayment['point']
+                      : `使用${pointName}支付`}
+                  </Text>
+                </View>
+                <View className='payment-item__ft'>
+                  <SpCheckbox
+                    disabled={disabledPayment && !!disabledPayment['point']}
+                    colors={colorPrimary}
+                    checked={localType === 'point'}
+                  />
+                </View>
+              </View>
+            } */}
+            {isShowDelivery && (
+              <View
+                className={`payment-item ${
+                  disabledPayment && disabledPayment['delivery'] ? 'is-disabled' : ''
+                }`}
+                onClick={handlePaymentChange.bind(this, 'delivery')}
+              >
+                <View className='payment-item__bd'>
+                  <Text className='payment-item__title'>货到付款</Text>
+                  <Text className='payment-item__desc'>
+                    {disabledPayment && disabledPayment['delivery']
+                      ? disabledPayment.message
+                      : '货到付款'}
+                  </Text>
+                </View>
+                <View className='payment-item__ft'>
+                  <SpCheckbox
+                    disabled={disabledPayment && !!disabledPayment['delivery']}
+                    colors={colorPrimary}
+                    checked={localType === 'delivery'}
+                  />
+                </View>
+              </View>
+            )}
+
+            {typeList.map((item) => {
+              return (
+                <View
+                  className='payment-item no-border'
+                  onClick={handlePaymentChange.bind(this, item.pay_type_code)}
+                >
+                  <View className='payment-item__bd'>
+                    <Text className='payment-item__title'>{item.pay_type_name}</Text>
+                    <Text className='payment-item__desc'>使用{item.pay_type_name}</Text>
+                  </View>
+                  <View className='payment-item__ft'>
+                    <SpCheckbox checked={localType === item.pay_type_code}></SpCheckbox>
+                  </View>
+                </View>
+              )
+            })}
+          </View>
+          <Button
+            type='primary'
+            className='btn-submit'
+            loading={loading}
+            onClick={handleChange.bind(this, localType)}
+          >
+            确定
+          </Button>
+        </View>
+      </AtFloatLayout>
+    </View>
+  )
+}
+
+CompPaymentPicker.options = {
+  addGlobalClass: true
+}
+
+export default CompPaymentPicker

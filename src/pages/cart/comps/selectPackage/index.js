@@ -130,7 +130,7 @@ export default class SelectPackage extends Component {
                   <SpCheckbox colors={colors} checked={checked} />
                 </View>
               </View>
-              <View className='payment-item__desc'>{packInfo.packDes}</View>
+              <View className='payment-item__desc'>包装说明：{packInfo.packDes}</View>
             </View>
             <Button
               type='primary'
