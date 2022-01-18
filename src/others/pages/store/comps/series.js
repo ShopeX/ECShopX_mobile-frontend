@@ -77,9 +77,9 @@ export default class Series extends Component {
     if (!info) {
       return <Loading />
     }
-    const items = info[currentIndex].children
-    const id = info[currentIndex].id || ''
-    const itemsImg = info[currentIndex].img
+    const items = info[currentIndex]?.children || []
+    const id = info[currentIndex]?.id || ''
+    const itemsImg = info[currentIndex]?.img
 
     return (
       <View className='category-list'>

@@ -103,8 +103,8 @@ export default class Category extends Component {
       let contentList = []
       if (list[0].params.hasSeries) {
         seriesList.map((item) => {
-          tabList.push({ title: item.title, status: item.name })
-          contentList.push(item.content)
+          tabList.push({ title: item.name, status: item.name })
+          contentList.push(item.children)
         })
       } else {
         contentList.push(seriesList)
