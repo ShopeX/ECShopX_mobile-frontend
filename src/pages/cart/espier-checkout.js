@@ -7,44 +7,16 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import doc from '@/doc'
-import { isObjEmpty, isWeixin, pickBy } from '@/utils'
+import { isObjectsValue, isWeixin, pickBy } from '@/utils'
 import { SpPage, SpPrice, SpCell, SpOrderItem } from '@/components'
+
+import { initialState } from './const'
 
 import CompDeliver from './comps/comp-deliver'
 import CompSelectPackage from './comps/comp-selectpackage'
 import CompPaymentPicker from './comps/comp-paymentpicker'
 
 import './espier-checkout.scss'
-
-const initialState = {
-  detailInfo: {},
-  submitLoading: false,
-  btnIsDisabled: false,
-  addressList: [],
-  receiptType: 'logistics', // 收货方式：ziti自提  logistics快递
-  payType: 'wxpay', // wxpay 微信支付 point 积分支付 deposit 储值支付
-  isPointitemGood: false, // 是否为积分商城的商品
-  shoppingGuideData: {}, //代客下单导购信息
-  totalInfo: {
-    items_count: 0, // 商品总件数
-    total_fee: '0.00', // 商品总计
-    item_fee: '', // 商品金额
-    freight_fee: '', // 运费
-    member_discount: '', // 会员折扣
-    coupon_discount: '', // 优惠券折扣
-    point: '', // 积分
-    point_fee: '', // 积分抵扣
-    freight_type: '', // 运费
-    invoice_status: true // 是否需要开发票
-  },
-  currentStoreInfo: {}, // 当前店铺信息
-  headquartersStoreInfo: {}, // 总店自提门店信息
-  invoiceTitle: '', // 发票抬头
-  isNeedPackage: false, // 是否需要打包
-  packInfo: {}, // 打包信息
-  disabledPayment: {}, // 是否禁用支付
-  channel: ''
-}
 
 function CartCheckout (props) {
   const {
@@ -112,11 +84,11 @@ function CartCheckout (props) {
     })
   }
 
-  const fetchAddress = async () => {
+  const fetchAddress = async (type) => {
     let query = {
-      receipt_type: receiptType
+      receipt_type: type
     }
-    if (receiptType === 'dada') {
+    if (type === 'dada') {
       query.city = headquartersStoreInfo.is_current ? headquartersStoreInfo.city : currentStore.city
     }
     const { list: address_list } = await api.member.addressList(query)
@@ -126,14 +98,12 @@ function CartCheckout (props) {
       return
     }
 
-    let updateAddress = address
-    if (!isObjEmpty(updateAddress)) {
-      let addressFilterList = address_list.filter((item) => item.is_def > 0)
-      updateAddress = addressFilterList[0] || address_list[0] || {}
-      await dispatch(updateChooseAddress(updateAddress))
-    }
+    let update_address = null
+    let addressFilterList = address_list.filter((item) => item.is_def)
+    update_address = addressFilterList[0] || address_list[0] || {}
+    await dispatch(updateChooseAddress(update_address))
 
-    if (isObjEmpty(updateAddress)) {
+    if (update_address) {
       calcOrder()
     }
   }
@@ -158,7 +128,7 @@ function CartCheckout (props) {
 
   const onSubmitPayChange = () => {
     // 提交订单按钮
-    console.log('提交按钮', isObjEmpty(shoppingGuideData))
+    console.log('提交按钮', isObjectsValue(shoppingGuideData), shoppingGuideData)
   }
 
   const handleSwitchExpress = (receiptType) => {
@@ -169,13 +139,11 @@ function CartCheckout (props) {
     // })
     setState((draft) => {
       draft.receiptType = receiptType
+      // draft.express = receiptType !== 'ziti'
     })
     if (receiptType !== 'ziti') {
-      if (address) {
-        dispatch(updateChooseAddress(null))
-      } else {
-        fetchAddress()
-      }
+      dispatch(updateChooseAddress(null))
+      fetchAddress(receiptType)
     } else {
       calcOrder()
     }
@@ -322,7 +290,7 @@ function CartCheckout (props) {
           className='checkout-toolbar__btn'
           customStyle='background: var(--color-primary); border-color: var(--color-primary)'
           loading={submitLoading}
-          disabled={btnIsDisabled}
+          disabled={!isObjectsValue(address)}
           onClick={onSubmitPayChange}
         >
           提交订单
@@ -337,11 +305,11 @@ function CartCheckout (props) {
     ? '会员折扣'
     : (coupon.value && coupon.value.title) || ''
 
-  console.log(headquartersStoreInfo, currentStoreInfo)
+  // console.log(headquartersStoreInfo, currentStoreInfo)
 
   return (
     <SpPage className='page-cart-checkout' renderFooter={renderFooter()}>
-      {isObjEmpty(shoppingGuideData) && (
+      {isObjectsValue(shoppingGuideData) && (
         <View className='shopping-guide__header'>
           此订单商品来自“{shoppingGuideData.store_name}”导购“ {shoppingGuideData.name}”的推荐
         </View>

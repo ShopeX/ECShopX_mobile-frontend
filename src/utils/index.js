@@ -51,8 +51,8 @@ export function isString (val) {
   return typeof val === 'string'
 }
 
-export function isObjEmpty (val) {
-  // 判断对象是否有值
+export function isObjectsValue (val) {
+  // 判断对象是否有值 true：有  false：无
   return val && Object.keys(val).length > 0
 }
 
