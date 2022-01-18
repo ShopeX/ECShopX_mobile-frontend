@@ -275,28 +275,18 @@ function EspierDetail (props) {
           </View>
 
           <View className='sku-block'>
-            {/* {promotionPackage.length > 0 && (
+            {promotionPackage.length > 0 && (
               <SpCell
                 title='组合优惠'
                 isLink
-                onClick={navigateTo.bind(
-                  this,
-                  `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}`
-                )}
-              >
-                {`共${promotionPackage.length}种组合随意搭配`}
-              </SpCell>
-            )} */}
-            <SpCell
-              title='组合优惠'
-              isLink
-              value='共2种组合随意搭配'
-              onClick={() => {
-                setState((draft) => {
-                  draft.packageOpen = true
-                })
-              }}
-            ></SpCell>
+                value={`共${makeUpGoods.length}种组合随意搭配`}
+                onClick={() => {
+                  setState((draft) => {
+                    draft.packageOpen = true
+                  })
+                }}
+              ></SpCell>
+            )}
             <SpCell title='组合优惠' isLink value='共2种组合随意搭配'></SpCell>
             <SpCell title='组合优惠' isLink value='共2种组合随意搭配'></SpCell>
           </View>
