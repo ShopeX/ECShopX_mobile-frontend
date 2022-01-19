@@ -106,7 +106,9 @@ const Reg = () => {
         sex: 0,
         user_type: 'local'
       })
-      Taro.navigateBack()
+      showToast('注册成功', () => {
+        Taro.navigateBack()
+      })
     } catch (e) {
       console.log(e)
     }
