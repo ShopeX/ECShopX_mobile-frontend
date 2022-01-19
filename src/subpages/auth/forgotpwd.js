@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react'
 import { View, Text, Image } from '@tarojs/components'
-import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { SpPage, SpTimer } from '@/components'
-import { classNames, validate, showToast, tokenParseH5 } from '@/utils'
+import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { useDepChange, useLogin } from '@/hooks'
 import api from '@/api'
 import { useImmer } from 'use-immer'
-import { setTokenAndRedirect, setToken } from './util'
 import './forgotpwd.scss'
 
 const SYMBOL = 'forgot_password'
@@ -72,6 +70,9 @@ const PageBindPhone = () => {
   }
 
   const handleSubmit = async () => {
+    if (!validate.isPassword(password)) {
+      return showToast('密码格式不正确')
+    }
     try {
       await api.user.forgotPwd({
         mobile: phone,
