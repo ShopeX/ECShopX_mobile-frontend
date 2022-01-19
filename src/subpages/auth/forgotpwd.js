@@ -196,6 +196,8 @@ const PageBindPhone = () => {
               完成
             </AtButton>
           </View>
+
+          {is_new && <View className='error'>该手机号未注册！</View>}
         </AtForm>
       </View>
     </SpPage>

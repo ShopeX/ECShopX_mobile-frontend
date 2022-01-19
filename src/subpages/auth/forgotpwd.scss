@@ -56,6 +56,16 @@ $border-color:#E2E4EA;
       // border-bottom: 1PX solid #E2E4EA;
       @include hairline($border-color,0,bottom);
     }
+    .form{
+      position: relative;
+
+      .error{
+        position: absolute;
+        font-size: 24px;
+        top:100px;
+        color:red;
+      }
+    }
     .form-tip{
       font-size: 28px;
       color: #3A3A5A;
@@ -65,6 +75,7 @@ $border-color:#E2E4EA;
       display: flex;
       align-items: center;
       @include hairline($border-color,0,bottom);
+      position: relative; 
       // border-bottom: 1PX solid #E2E4EA;
       .at-input {
         padding: 25px 0 !important;

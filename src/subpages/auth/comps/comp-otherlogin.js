@@ -38,4 +38,8 @@ const CompOtherLogin = () => {
   )
 }
 
+CompOtherLogin.options = {
+  addGlobalClass: true
+}
+
 export default CompOtherLogin

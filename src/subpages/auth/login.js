@@ -40,12 +40,10 @@ export default class Login extends Component {
     const { imgInfo } = this.state
     const { mobile, yzm } = this.state.info
     if (!validate.isMobileNum(mobile)) {
-      showToast('请输入正确的手机号')
-      return
+      return showToast('请输入正确的手机号')
     }
     if (!validate.isRequired(yzm)) {
-      showToast('请输入图形验证码')
-      return
+      return showToast('请输入图形验证码')
     }
     try {
       await api.user.regSmsCode({
