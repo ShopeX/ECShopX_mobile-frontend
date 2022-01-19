@@ -76,7 +76,6 @@ const PageBindPhone = () => {
         vcode,
         union_id: unionid
       })
-
       const { is_new } = tokenParseH5(token)
 
       if (is_new === 1) {

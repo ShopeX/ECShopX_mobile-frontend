@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Input, Button } from '@tarojs/components'
+import { isWeb, isWeixin } from '@/utils'
 import { connect } from 'react-redux'
 import api from '@/api'
-import { SpTimer } from '@/components'
+import { SpTimer, SpPage } from '@/components'
 import S from '@/spx'
 import './edit-phone.scss'
 
@@ -70,7 +71,7 @@ export default class BindPhone extends Component {
     }
     const query = {
       type: 'update',
-      mobile: mobile
+      mobile
     }
     try {
       await api.user.regSmsCode(query)
@@ -142,8 +143,10 @@ export default class BindPhone extends Component {
     const { currentMobile, mobile, smsCode, countryCode, baseInfo } = this.state
     const { colors } = this.props
 
+    console.log('===mobile==', mobile)
+
     return (
-      <View className='page-edit-phone'>
+      <SpPage className='page-edit-phone'>
         <View className='logo'>
           <Image className='img' src={baseInfo.logo} mode='aspectFill' />
           <View className='currentPhone'>
@@ -151,7 +154,6 @@ export default class BindPhone extends Component {
           </View>
         </View>
         <View className='form'>
-          <View className='item'>中国大陆 +86</View>
           <View className='item'>
             <Input
               type='number'
@@ -159,14 +161,15 @@ export default class BindPhone extends Component {
               placeholder='请输入您的手机号'
               onInput={this.onInput.bind(this, 'phone')}
             />
-            <Button
-              className='btn'
-              openType='getPhoneNumber'
-              onGetPhoneNumber={this.getPhoneNumber.bind(this)}
-              style={`color: ${colors.data[0].primary}`}
-            >
-              授权号码
-            </Button>
+            {isWeixin && (
+              <Button
+                className='btn'
+                openType='getPhoneNumber'
+                onGetPhoneNumber={this.getPhoneNumber.bind(this)}
+              >
+                授权号码
+              </Button>
+            )}
           </View>
           <View className='item'>
             <Input
@@ -174,11 +177,7 @@ export default class BindPhone extends Component {
               value={smsCode}
               onInput={this.onInput.bind(this, 'sms')}
             />
-            <SpTimer
-              style={`color: ${colors.data[0].primary} !important`}
-              className='time'
-              onStart={this.getSmsCode.bind(this)}
-            ></SpTimer>
+            <SpTimer className='time' onStart={this.getSmsCode.bind(this)}></SpTimer>
           </View>
           <View className='tip'>
             <View className='line'>* 手机号每30天可修改一次；</View>
@@ -192,7 +191,7 @@ export default class BindPhone extends Component {
             修改手机号
           </View>
         </View>
-      </View>
+      </SpPage>
     )
   }
 }
