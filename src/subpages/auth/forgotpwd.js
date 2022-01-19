@@ -76,7 +76,7 @@ const PageBindPhone = () => {
     }
     try {
       await api.user.forgotPwd({
-        mobile: phone,
+        mobile: username,
         password,
         vcode
       })
