@@ -15,7 +15,9 @@ const initialValue = {
   vcode: '',
   password: '',
   imgInfo: null,
-  checked: false
+  checked: false,
+  member_register: '',
+  privacy: ''
 }
 
 const CODE_SYMBOL = 'sign'
@@ -23,7 +25,7 @@ const CODE_SYMBOL = 'sign'
 const Reg = () => {
   const [state, setState] = useImmer(initialValue)
 
-  const { mobile, yzm, vcode, password, imgInfo, checked } = state
+  const { mobile, yzm, vcode, password, imgInfo, checked, member_register, privacy } = state
 
   const { colorPrimary } = useSelector((state) => state.sys)
 
@@ -67,11 +69,11 @@ const Reg = () => {
     if (!checked) {
       const res = await Taro.showModal({
         title: '提示',
-        content: '是否同意注册协议?',
+        content: `请先阅读并同意${member_register}、${privacy}?`,
         showCancel: true,
         cancel: '取消',
-        cancelText: '取消',
-        confirmText: '确认',
+        cancelText: '拒绝',
+        confirmText: '同意',
         confirmColor: colorPrimary
       })
       if (!res.confirm) return
@@ -95,7 +97,6 @@ const Reg = () => {
         auth_type: 'local',
         check_type: CODE_SYMBOL,
         mobile,
-        user_name: mobile,
         password,
         vcode,
         sex: 0,
@@ -113,8 +114,20 @@ const Reg = () => {
     })
   }
 
+  const fetchPrivacyData = async () => {
+    const {
+      protocol: { member_register, privacy }
+    } = await api.shop.getStoreBaseInfo()
+
+    setState((v) => {
+      v.member_register = member_register
+      v.privacy = privacy
+    })
+  }
+
   useEffect(() => {
     getImageVcode()
+    fetchPrivacyData()
   }, [])
 
   //全填写完
@@ -209,11 +222,22 @@ const Reg = () => {
                 className='primary-color'
                 onClick={() =>
                   Taro.navigateTo({
-                    url: '/subpages/auth/reg-rule'
+                    url: '/subpages/auth/reg-rule?type=member_register'
                   })
                 }
               >
-                《注册协议》
+                《{member_register}》
+              </Text>
+              、
+              <Text
+                className='primary-color'
+                onClick={() =>
+                  Taro.navigateTo({
+                    url: '/subpages/auth/reg-rule?type=privacy'
+                  })
+                }
+              >
+                《{privacy}》
               </Text>
             </View>
           </View>

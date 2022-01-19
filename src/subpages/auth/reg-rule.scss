@@ -1,16 +1,10 @@
-$prefixCls:'page-auth-reg-rule';
+$prefixCls:'page-member-integral';
 
 .#{$prefixCls}{
     background-color: white;
 
-    &.has-navbar{
-        .#{$prefixCls}-content{
-            @include page-scroll($navigate-height,0);
-        }
-    }
-
     &-content{
-        @include page-scroll(0,0);
+        @include page-scroll(90px,0);
         background:white;
 
         .title{
@@ -19,16 +13,6 @@ $prefixCls:'page-auth-reg-rule';
             color: #3A3A5A;
             text-align: center;
             margin-bottom: 30px;
-        }
-
-        .content{
-            color:rgba(102, 111, 131, 1);
-            font-size:24px;
-        }
-
-        .main{
-            padding:0 50px;
-            display: block;
         }
     }
 }

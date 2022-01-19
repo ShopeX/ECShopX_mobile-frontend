@@ -3,7 +3,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtInput } from 'taro-ui'
 import { classNames } from '@/utils'
-import api from '@/api'
 import { useImmer } from 'use-immer'
 import './comp-password-input.scss'
 
