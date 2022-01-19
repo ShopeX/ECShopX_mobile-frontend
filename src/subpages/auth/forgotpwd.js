@@ -6,6 +6,7 @@ import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
+import { CompPasswordInput } from './comps'
 import './forgotpwd.scss'
 
 const SYMBOL = 'forgot_password'
@@ -173,15 +174,7 @@ const PageBindPhone = () => {
           </View>
 
           <View className='form-field'>
-            <AtInput
-              clear
-              name='mobile'
-              maxLength={11}
-              type='tel'
-              value={password}
-              placeholder='再次输入密码'
-              onChange={handleInputChange('password')}
-            />
+            <CompPasswordInput onChange={handleInputChange('password')} disabled={is_new} />
           </View>
           <View className='form-tip'>6-16位密码、数字或字母</View>
 

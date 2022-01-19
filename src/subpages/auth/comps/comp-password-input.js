@@ -1,12 +1,47 @@
 import React from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { isWxWeb } from '@/utils'
+import { AtInput } from 'taro-ui'
+import { classNames } from '@/utils'
 import api from '@/api'
+import { useImmer } from 'use-immer'
 import './comp-password-input.scss'
 
-const CompPasswordInput = () => {
-  return <View className='comp-password-input'></View>
+const initialValue = {
+  //一种是正常的 text 一种是 password
+  type: 'text'
+}
+
+const CompPasswordInput = (props) => {
+  const { onChange = () => {}, disabled } = props
+
+  const [state, setState] = useImmer(initialValue)
+
+  const { type } = state
+
+  const handleToggle = () => {
+    setState((_state) => {
+      _state.type = type === 'text' ? 'password' : 'text'
+    })
+  }
+
+  return (
+    <View className='comp-password-input'>
+      <AtInput
+        clear
+        type={type}
+        placeholder='请输入密码'
+        placeholderClass='input-placeholder'
+        onChange={onChange}
+        disabled={disabled}
+      />
+      <View className='input-icon' onClick={handleToggle}>
+        <Text
+          className={classNames('icon', [type === 'text' ? 'icon-xianshi' : 'icon-yincang'])}
+        ></Text>
+      </View>
+    </View>
+  )
 }
 
 CompPasswordInput.options = {
