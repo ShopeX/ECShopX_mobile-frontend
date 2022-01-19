@@ -58,7 +58,7 @@ const PageEditPassword = () => {
   }
 
   //全填写完
-  const isFull = phone && password && repassword
+  const isFull = phone && password && repassword && password.length >= 6 && repassword.length >= 6
 
   return (
     <SpPage
