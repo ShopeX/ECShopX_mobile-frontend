@@ -148,7 +148,6 @@ const PageBindPhone = () => {
                 value={yzm}
                 placeholder='请输入图形验证码'
                 onChange={handleInputChange('yzm')}
-                disabled={is_new}
               />
             </View>
             <View className='btn-field'>
@@ -166,7 +165,6 @@ const PageBindPhone = () => {
                 value={vcode}
                 placeholder='请输入验证码'
                 onChange={handleInputChange('vcode')}
-                disabled={is_new}
               />
             </View>
             <View className='btn-field'>
@@ -175,7 +173,7 @@ const PageBindPhone = () => {
           </View>
 
           <View className='form-field'>
-            <CompPasswordInput onChange={handleInputChange('password')} disabled={is_new} />
+            <CompPasswordInput onChange={handleInputChange('password')} />
           </View>
           <View className='form-tip'>6-16位密码、数字或字母</View>
 

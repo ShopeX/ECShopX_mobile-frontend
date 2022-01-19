@@ -196,7 +196,8 @@ export default {
         'edit-password', //修改密码页面
         'bindPhone', //绑定手机页面
         'auth-loading', //授权加载页
-        'forgotpwd' //找回密码页面
+        'forgotpwd', //找回密码页面
+        'edit-phone' //修改密码页面
       ]
     }
   ],

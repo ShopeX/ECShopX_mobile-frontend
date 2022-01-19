@@ -258,7 +258,11 @@ export default class Login extends Component {
             {passwordLogin && (
               <View className='form-field'>
                 <View className='input-field'>
-                  <CompPasswordInput onChange={this.handleInputChange.bind(this, 'password')} />
+                  <CompPasswordInput
+                    onChange={this.handleInputChange.bind(this, 'password')}
+                    onFocus={this.handleRemarkFocus.bind(this)}
+                    onBlur={this.handleRemarkBlur.bind(this)}
+                  />
                 </View>
               </View>
             )}

@@ -124,18 +124,7 @@ export default class UserInfo extends Component {
   // 更换手机号ß
   editPhone = (e) => {
     e && e.stopPropagation()
-    let url = '/subpages/auth/bindPhone?redi_url=/marketing/pages/member/userinfo'
-    let unionid
-    let token = S.getAuthToken()
-    if (isWeixin) {
-      unionid = tokenParse(token)?.unionid
-    } else {
-      unionid = tokenParseH5(token)?.unionid
-    }
-    console.log('===token===>', token, tokenParse(token), tokenParseH5(token))
-    if (unionid) {
-      url += `&unionid=${unionid}`
-    }
+    let url = '/subpages/auth/edit-phone'
     const { regParams } = this.state
     if (regParams.mobile.is_edit) {
       Taro.navigateTo({

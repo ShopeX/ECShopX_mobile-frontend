@@ -10,7 +10,7 @@ import './index.scss'
 
 function SpPage (props) {
   console.log(getCurrentInstance())
-  const { page, router = {} } = getCurrentInstance()
+  const { router = {} } = getCurrentInstance()
   // debugger
   const {
     className,
