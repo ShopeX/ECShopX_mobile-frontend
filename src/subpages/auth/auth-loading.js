@@ -27,7 +27,7 @@ const AuthLoading = () => {
     let url = ''
     //如果是新用户
     if (is_new === 1) {
-      url = `/subpages/auth/?unionid=${unionid}&redi_url=${redi_url}`
+      url = `/subpages/auth/bindPhone?unionid=${unionid}&redi_url=${redi_url}`
       Taro.redirectTo({
         url
       })

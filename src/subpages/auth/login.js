@@ -189,6 +189,17 @@ export default class Login extends Component {
     return ios
   }
 
+  // 键盘挡输入框
+  getElementOffsetTop (el) {
+    let top = el.offsetTop
+    let cur = el.offsetParent
+    while (cur != null) {
+      top += cur.offsetTop
+      cur = cur.offsetParent
+    }
+    return top
+  }
+
   handleRemarkFocus = (value, event) => {
     const ios = this.getDevice()
     const dom = event.target

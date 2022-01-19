@@ -42,9 +42,11 @@ const PageBindPhone = () => {
     })
   }
 
-  const getImageVcode = async () => {
-    const is_stop = await showModalReg()
-    if (is_stop) return
+  const getImageVcode = async (validate = false) => {
+    if (validate) {
+      const is_stop = await showModalReg()
+      if (is_stop) return
+    }
     const img_res = await api.user.regImg({ type: SYMBOL })
     setState((state) => {
       state.imgInfo = img_res
@@ -167,7 +169,11 @@ const PageBindPhone = () => {
             </View>
             <View className='btn-field'>
               {imgInfo && (
-                <Image className='image-vcode' src={imgInfo.imageData} onClick={getImageVcode} />
+                <Image
+                  className='image-vcode'
+                  src={imgInfo.imageData}
+                  onClick={() => getImageVcode(true)}
+                />
               )}
             </View>
           </View>
