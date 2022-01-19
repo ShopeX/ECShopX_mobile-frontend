@@ -1,7 +1,23 @@
 .comp-other-login{
+    position: relative;
+    .line{
+        border-top:1px solid red;
+        position:absolute; 
+        top:20px;
+        left:0;
+        right:0;
+    }
     .text{
         color:rgba(197, 202, 213, 1);
-        font-size: 24px;
+        font-size: 28px; 
+        position: relative;
+
+        &:after,&:before{
+            position: absolute;
+            top:0;
+            content: '';
+            display: block;
+        }
     }
     .loginway{
         padding:24px 0 10px 0;

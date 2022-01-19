@@ -34,7 +34,8 @@ async function setTokenAndRedirect (token = '', tokenSetSuccessCallback) {
       ? decodeURIComponent(redi_url)
       : redirect
       ? redirect
-      : process.env.APP_HOME_PAGE
+      : '/subpages/member/index'
+    // : process.env.APP_HOME_PAGE
     Taro.redirectTo({ url })
     // window.location.href = `${window.location.origin}${url}`
   }
