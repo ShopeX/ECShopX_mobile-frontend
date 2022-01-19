@@ -275,9 +275,11 @@ export default class Login extends Component {
               <Text className='btn-text' onClick={this.handleToggleLogin.bind(this)}>
                 {passwordLogin ? '验证码登录' : '密码登录'}
               </Text>
-              <Text className='btn-text forgot-password' onClick={this.handleForgotPsd}>
-                忘记密码？
-              </Text>
+              {passwordLogin && (
+                <Text className='btn-text forgot-password' onClick={this.handleForgotPsd}>
+                  忘记密码？
+                </Text>
+              )}
             </View>
             <View className='form-submit'>
               <AtButton
