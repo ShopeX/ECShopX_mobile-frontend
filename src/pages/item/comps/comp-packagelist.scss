@@ -10,6 +10,9 @@
     font-size: 30px;
     padding: 12px 0;
   }
+  .main-goods-list {
+    padding-left: 56px;
+  }
   .main-goods-item {
     display: flex;
     &:not(:last-child) {

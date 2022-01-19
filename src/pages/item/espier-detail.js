@@ -4,7 +4,16 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtCountdown } from 'taro-ui'
-import { SpPrice, SpCell, SpImage, SpLoading, SpRecommend, SpHtml, SpPage } from '@/components'
+import {
+  SpPrice,
+  SpCell,
+  SpImage,
+  SpLoading,
+  SpRecommend,
+  SpHtml,
+  SpPage,
+  SpSkuSelect
+} from '@/components'
 import api from '@/api'
 import req from '@/api/req'
 import {
@@ -327,6 +336,9 @@ function EspierDetail (props) {
           makeUpGoods
         }}
       />
+
+      {/* Sku选择器 */}
+      <SpSkuSelect info={info} />
       <View></View>
     </SpPage>
   )

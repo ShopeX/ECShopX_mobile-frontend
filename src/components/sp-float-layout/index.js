@@ -7,14 +7,7 @@ import { classNames } from '@/utils'
 import './index.scss'
 
 function SpFloatLayout (props) {
-  const {
-    title = '标题',
-    children,
-    className,
-    renderFooter,
-    open = false,
-    onClose = () => {}
-  } = props
+  const { title, children, className, renderFooter, open = false, onClose = () => {} } = props
 
   return (
     <View
@@ -24,10 +17,12 @@ function SpFloatLayout (props) {
     >
       <View className='sp-float-layout__overlay'></View>
       <View className='sp-float-layout__body'>
-        <View className='sp-float-layout-hd'>
-          <Text className='layout-title'>{title}</Text>
-          <Text className='iconfont icon-guanbi' onClick={onClose}></Text>
-        </View>
+        <Text className='iconfont icon-guanbi' onClick={onClose}></Text>
+        {title && (
+          <View className='sp-float-layout-hd'>
+            <Text className='layout-title'>{title}</Text>
+          </View>
+        )}
         <ScrollView className='sp-float-layout-bd' scrollY>
           {children}
         </ScrollView>

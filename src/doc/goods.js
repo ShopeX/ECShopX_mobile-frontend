@@ -83,6 +83,7 @@ export const GOODS_INFO = {
   couponList: 'kaquan_list',
   store: 'store',
   isGift: 'is_gift',
+  skuItems: 'item_spec_desc',
   intro: 'intro',
   distributorInfo: 'distributor_info',
   distributorId: 'distributor_id',

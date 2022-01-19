@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtFloatLayout, AtButton } from 'taro-ui'
-import { SpCell, SpPrice, SpFloatLayout, SpCheckboxNew, SpGoodsCell } from '@/components'
+import { SpLogin, SpPrice, SpFloatLayout, SpCheckboxNew, SpGoodsCell } from '@/components'
 import api from '@/api'
 import './comp-packagelist.scss'
 
@@ -21,6 +21,7 @@ function CompPackageList (props) {
   // const fetch = async () =>{
   //   const { itemLists, mainItem, main_package_price, package_price: packagePrice } = await api.item.packageDetail(info.package_id)
   // }
+  const handleAddCart = () => {}
 
   return (
     <SpFloatLayout
@@ -35,7 +36,7 @@ function CompPackageList (props) {
             <SpPrice value={100} />
           </View>
           <View className='btn-wrap'>
-            <AtButton type='primary' circle>
+            <AtButton type='primary' circle onClick={handleAddCart}>
               加入购物车
             </AtButton>
           </View>
@@ -45,7 +46,6 @@ function CompPackageList (props) {
       <View className='main-goods'>主商品</View>
       <View className='main-goods-list'>
         <View className='main-goods-item'>
-          <SpCheckboxNew />
           <SpGoodsCell info={mainGoods} />
         </View>
       </View>
