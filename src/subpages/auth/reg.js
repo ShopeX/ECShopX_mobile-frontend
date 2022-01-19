@@ -4,6 +4,7 @@ import { View, Text, Image } from '@tarojs/components'
 import { SpPage, SpTimer, SpCheckbox } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
 import { useSelector, useDispatch } from 'react-redux'
+import { CompOtherLogin, CompPasswordInput } from './comps'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
@@ -90,6 +91,9 @@ const Reg = () => {
     if (!validate.isRequired(password)) {
       showToast('请输入密码')
       return
+    }
+    if (!validate.isPassword(password)) {
+      return showToast('密码格式不正确')
     }
     try {
       //从登陆页跳转过来
@@ -191,16 +195,11 @@ const Reg = () => {
 
           <View className='form-field'>
             <View className='input-field'>
-              <AtInput
-                clear
-                type='password'
-                name='password'
-                value={state.password}
-                placeholder='请输入密码'
-                onChange={handleInputChange('password')}
-              />
+              <CompPasswordInput onChange={handleInputChange('password')} />
             </View>
           </View>
+
+          <View className='form-tip'>6-16位密码、数字或字母</View>
 
           <View className='form-submit'>
             <AtButton
