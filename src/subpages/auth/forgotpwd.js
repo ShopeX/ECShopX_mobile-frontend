@@ -124,7 +124,7 @@ const PageBindPhone = () => {
       </View>
       <View className='auth-bd'>
         <AtForm className='form'>
-          <View className='form-field'>
+          <View className={classNames('form-field', { 'error': is_new })}>
             <AtInput
               clear
               name='mobile'
@@ -136,6 +136,8 @@ const PageBindPhone = () => {
               onBlur={handlePhoneBlur}
             />
           </View>
+
+          {is_new && <View className='error'>该手机号未注册！</View>}
 
           {/* 验证码登录，验证码超过1次，显示图形验证码 */}
           <View className='form-field'>
@@ -188,8 +190,6 @@ const PageBindPhone = () => {
               完成
             </AtButton>
           </View>
-
-          {is_new && <View className='error'>该手机号未注册！</View>}
         </AtForm>
       </View>
     </SpPage>

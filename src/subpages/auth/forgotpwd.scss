@@ -60,10 +60,9 @@ $border-color:#E2E4EA;
       position: relative;
 
       .error{
-        position: absolute;
-        font-size: 24px;
-        top:100px;
-        color:red;
+        position: relative;
+        font-size: 28px; 
+        color:rgba(236, 46, 61, 1);
       }
     }
     .form-tip{
@@ -76,6 +75,11 @@ $border-color:#E2E4EA;
       align-items: center;
       @include hairline($border-color,0,bottom);
       position: relative; 
+
+      &.error{
+        border-bottom:4px solid rgba(236, 46, 61, 1);
+        // @include hairline($border-color,0,bottom);
+      }
       // border-bottom: 1PX solid #E2E4EA;
       .at-input {
         padding: 25px 0 !important;
