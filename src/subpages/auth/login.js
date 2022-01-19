@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { CompOtherLogin } from './comps'
+import { CompOtherLogin, CompPasswordInput } from './comps'
 import { SpTimer, SpPage } from '@/components'
-import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
+import { updateUserInfo } from '@/store/slices/user'
 import { connect } from 'react-redux'
 import api from '@/api'
 import { classNames, navigateTo, validate, showToast, tokenParseH5 } from '@/utils'
@@ -223,15 +223,7 @@ export default class Login extends Component {
             {passwordLogin && (
               <View className='form-field'>
                 <View className='input-field'>
-                  <AtInput
-                    clear
-                    type='password'
-                    name='password'
-                    value={info.password}
-                    placeholder='请输入密码'
-                    onChange={this.handleInputChange.bind(this, 'password')}
-                    placeholderClass='input-placeholder'
-                  />
+                  <CompPasswordInput onChange={this.handleInputChange.bind(this, 'password')} />
                 </View>
               </View>
             )}
