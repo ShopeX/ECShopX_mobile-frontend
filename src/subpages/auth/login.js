@@ -99,6 +99,9 @@ export default class Login extends Component {
       showToast('请输入正确的手机号')
       return
     }
+    if (!validate.isPassword(password)) {
+      return showToast('密码格式不正确')
+    }
     if (loginType == 1) {
       if (!validate.isRequired(password)) {
         showToast('请输入密码')
@@ -180,6 +183,37 @@ export default class Login extends Component {
     })
   }
 
+  getDevice () {
+    const ua = navigator.userAgent
+    const ios = /iPad|iPhone|iPod/.test(ua)
+    return ios
+  }
+
+  handleRemarkFocus = (value, event) => {
+    const ios = this.getDevice()
+    const dom = event.target
+    setTimeout(() => {
+      if (ios) {
+        document.body.scrollTop = document.body.scrollHeight
+      } else {
+        // dom.scrollIntoView(false) 微信x5内核不支持
+        const body = document.getElementsByTagName('body')[0]
+        const clientHeight = body.clientHeight // 可见高
+        const fixHeight = clientHeight / 3 // 自定义位置
+        const offsetTop = this.getElementOffsetTop(dom)
+        body.scrollTop = offsetTop - fixHeight
+      }
+    }, 300)
+  }
+
+  handleRemarkBlur = () => {
+    const ios = this.getDevice()
+    if (!ios) {
+      const body = document.getElementsByTagName('body')[0]
+      body.scrollTop = 0
+    }
+  }
+
   render () {
     const { info, loginType, imgInfo } = this.state
 
@@ -190,7 +224,7 @@ export default class Login extends Component {
     //全填写完
     const isFull =
       (codeLogin && info.mobile && info.yzm && info.vcode) ||
-      (passwordLogin && info.mobile && info.password)
+      (passwordLogin && info.mobile && info.password && info.password.length >= 6)
 
     return (
       <SpPage
@@ -216,6 +250,8 @@ export default class Login extends Component {
                 placeholder='请输入您的手机号码'
                 onChange={this.handleInputChange.bind(this, 'mobile')}
                 placeholderClass='input-placeholder'
+                onFocus={this.handleRemarkFocus.bind(this)}
+                onBlur={this.handleRemarkBlur.bind(this)}
               />
             </View>
             {/* 密码登录 */}
@@ -236,6 +272,8 @@ export default class Login extends Component {
                     value={info.yzm}
                     placeholder='请输入图形验证码'
                     onChange={this.handleInputChange.bind(this, 'yzm')}
+                    onFocus={this.handleRemarkFocus.bind(this)}
+                    onBlur={this.handleRemarkBlur.bind(this)}
                     placeholderClass='input-placeholder'
                   />
                 </View>
@@ -260,6 +298,8 @@ export default class Login extends Component {
                     placeholder='请输入验证码'
                     onChange={this.handleInputChange.bind(this, 'vcode')}
                     placeholderClass='input-placeholder'
+                    onFocus={this.handleRemarkFocus.bind(this)}
+                    onBlur={this.handleRemarkBlur.bind(this)}
                   />
                 </View>
                 <View className='btn-field'>

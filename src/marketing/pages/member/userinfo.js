@@ -132,6 +132,7 @@ export default class UserInfo extends Component {
     } else {
       unionid = tokenParseH5(token)?.unionid
     }
+    console.log('===token===>', token, tokenParse(token), tokenParseH5(token))
     if (unionid) {
       url += `&unionid=${unionid}`
     }
