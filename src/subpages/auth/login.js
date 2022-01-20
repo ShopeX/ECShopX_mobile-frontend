@@ -38,6 +38,14 @@ export default class Login extends Component {
     this.getImageVcode()
   }
 
+  componentDidShow () {
+    const { redirect } = this.$instance.router.params
+    if (S.getAuthToken()) {
+      const url = redirect ? decodeURIComponent(redirect) : '/subpages/member/index'
+      window.location.href = url
+    }
+  }
+
   navigateTo = navigateTo
 
   handleTimerStart = async (resolve) => {
