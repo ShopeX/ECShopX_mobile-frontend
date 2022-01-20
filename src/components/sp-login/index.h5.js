@@ -18,14 +18,6 @@ function SpLogin (props) {
   /**
    *
    */
-
-  const handleOnChange = () => {
-    onChange && onChange()
-  }
-
-  /**
-   *
-   */
   const handleOAuthLogin = () => {
     const $instance = getCurrentInstance()
     const { path } = $instance.router

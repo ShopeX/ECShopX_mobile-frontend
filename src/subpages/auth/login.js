@@ -7,6 +7,7 @@ import { SpTimer, SpPage } from '@/components'
 import { updateUserInfo } from '@/store/slices/user'
 import { connect } from 'react-redux'
 import api from '@/api'
+import S from '@/spx'
 import { classNames, navigateTo, validate, showToast, tokenParseH5 } from '@/utils'
 import { navigationToReg, setToken, setTokenAndRedirect, addListener } from './util'
 import './login.scss'
@@ -36,6 +37,14 @@ export default class Login extends Component {
 
   componentDidMount () {
     this.getImageVcode()
+  }
+
+  componentDidShow () {
+    const { redirect } = this.$instance.router.params
+    if (S.getAuthToken()) {
+      const url = redirect ? decodeURIComponent(redirect) : '/subpages/member/index'
+      window.location.href = url
+    }
   }
 
   navigateTo = navigateTo
