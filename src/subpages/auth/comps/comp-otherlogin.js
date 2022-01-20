@@ -28,10 +28,11 @@ const CompOtherLogin = () => {
 
   return (
     <View className='comp-other-login'>
-      <View className='text'>- 其它方式登录 -</View>
+      {/* <View className='line'></View> */}
+      <View className='text'>其它方式登录</View>
       <View className='loginway'>
         <View className='wechat' onClick={handleClickWexin}>
-          <Text className='icon-weixin'></Text>
+          <Text className='iconfont icon-weixin'></Text>
         </View>
       </View>
     </View>

@@ -65,6 +65,11 @@ $border-color:#E2E4EA;
       // border-bottom: 1PX solid #E2E4EA;
       @include hairline($border-color,0,bottom);
     }
+    .form-tip{
+      font-size: 28px;
+       color: #858b9c;
+      margin-top: 16px;
+    }
     .form-field {
       display: flex;
       align-items: center;
@@ -88,6 +93,7 @@ $border-color:#E2E4EA;
         .image-vcode {
           width:180px;
           height:60px;
+          display: block;
         }
       }
     }
@@ -111,8 +117,8 @@ $border-color:#E2E4EA;
         opacity: 1;
       }
       .login-button{
-        background-color: rgba(197, 202, 213, 1);
-        border-color: rgba(197, 202, 213, 1);
+        background: rgba(var(--color-rgb), 0.2);
+        border-color: rgba(var(--color-rgb), 0.2);
       }
       .login-button,.reg-button{
         height: 100px;
@@ -121,7 +127,8 @@ $border-color:#E2E4EA;
       .reg-button{
         margin-top: 32px;
         background-color: white;
-        border:1px solid var(--color-primary);
+        /* prettier-ignore */
+        border: 1PX solid var(--color-primary);
         color:var(--color-primary);
       }
     }
@@ -149,8 +156,8 @@ $border-color:#E2E4EA;
       height: 45px;
     }
   }
-  .other-login{
-    position: absolute;
+  .other-login{ 
+    margin-top: 60px;
     left: 0;
     right: 0;
     bottom:0;

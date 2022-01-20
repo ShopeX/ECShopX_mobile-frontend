@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
-import { CompOtherLogin, CompPasswordInput } from './comps'
+import { CompOtherLogin, CompPasswordInput, CompInput } from './comps'
 import { SpTimer, SpPage } from '@/components'
 import { updateUserInfo } from '@/store/slices/user'
 import { connect } from 'react-redux'
 import api from '@/api'
 import { classNames, navigateTo, validate, showToast, tokenParseH5 } from '@/utils'
-import { navigationToReg, setToken, setTokenAndRedirect } from './util'
+import { navigationToReg, setToken, setTokenAndRedirect, addListener } from './util'
+import { PASSWORD_TIP } from './const'
 import './login.scss'
 
 @connect(
@@ -26,8 +27,11 @@ export default class Login extends Component {
       info: {},
       isVisible: false,
       imgInfo: null,
-      loginType: 1 // 1=密码; 2=验证码
+      loginType: 1, // 1=密码; 2=验证码
+      logoShow: true
     }
+    //定时器
+    this.timer = null
   }
 
   componentDidMount () {
@@ -90,6 +94,7 @@ export default class Login extends Component {
   }
 
   async handleSubmit () {
+    const { redirect } = this.$instance.router.params
     const { loginType } = this.state
     const { mobile, password, vcode } = this.state.info
     let params = {
@@ -99,10 +104,14 @@ export default class Login extends Component {
       showToast('请输入正确的手机号')
       return
     }
+
     if (loginType == 1) {
       if (!validate.isRequired(password)) {
         showToast('请输入密码')
         return
+      }
+      if (!validate.isPassword(password)) {
+        return showToast('密码格式不正确')
       }
       params['password'] = password
       params['check_type'] = 'password'
@@ -131,7 +140,9 @@ export default class Login extends Component {
         } else {
           setToken(token)
           Taro.navigateTo({
-            url: `/subpages/auth/edit-password?phone=${mobile}`
+            url: `/subpages/auth/edit-password?phone=${mobile}&redi_url=${encodeURIComponent(
+              redirect
+            )}`
           })
         }
       } else {
@@ -166,22 +177,83 @@ export default class Login extends Component {
   }
 
   handleNavigateReg = async () => {
-    navigationToReg()
+    const { redirect } = this.$instance.router.params
+    navigationToReg(redirect)
   }
 
   handleForgotPsd = async () => {
+    const { redirect } = this.$instance.router.params
     let url = '/subpages/auth/forgotpwd'
     const { mobile } = this.state.info
+    if (redirect) {
+      url += `?redi_url=${encodeURIComponent(redirect)}`
+    }
     if (mobile) {
-      url += `?phone=${mobile}`
+      url += `&phone=${mobile}`
     }
     Taro.navigateTo({
       url
     })
   }
 
+  getDevice () {
+    const ua = navigator.userAgent
+    const ios = /iPad|iPhone|iPod/.test(ua)
+    return ios
+  }
+
+  // 键盘挡输入框
+  getElementOffsetTop (el) {
+    let top = el.offsetTop
+    let cur = el.offsetParent
+    while (cur != null) {
+      top += cur.offsetTop
+      cur = cur.offsetParent
+    }
+    return top
+  }
+
+  handleRemarkFocus = (value, event) => {
+    const ios = this.getDevice()
+    const dom = event.target
+    setTimeout(() => {
+      if (ios) {
+        document.body.scrollTop = document.body.scrollHeight
+      } else {
+        // dom.scrollIntoView(false) 微信x5内核不支持
+        const body = document.getElementsByTagName('body')[0]
+        const clientHeight = body.clientHeight // 可见高
+        const fixHeight = clientHeight / 3 // 自定义位置
+        const offsetTop = this.getElementOffsetTop(dom)
+        body.scrollTop = offsetTop - fixHeight
+      }
+    }, 300)
+  }
+
+  handleRemarkBlur = () => {
+    const ios = this.getDevice()
+    if (!ios) {
+      const body = document.getElementsByTagName('body')[0]
+      body.scrollTop = 0
+    }
+  }
+
+  logoShow = (show) => () => {
+    if (!show) {
+      this.setState({
+        logoShow: false
+      })
+    } else {
+      setTimeout(() => {
+        this.setState({
+          logoShow: true
+        })
+      }, 100)
+    }
+  }
+
   render () {
-    const { info, loginType, imgInfo } = this.state
+    const { info, loginType, imgInfo, logoShow } = this.state
 
     const passwordLogin = loginType == 1
 
@@ -190,7 +262,12 @@ export default class Login extends Component {
     //全填写完
     const isFull =
       (codeLogin && info.mobile && info.yzm && info.vcode) ||
-      (passwordLogin && info.mobile && info.password)
+      (passwordLogin && info.mobile && info.password && info.password.length >= 6)
+
+    const inputProp = {
+      onFocus: this.logoShow(false),
+      onBlur: this.logoShow(true)
+    }
 
     return (
       <SpPage
@@ -202,7 +279,7 @@ export default class Login extends Component {
       >
         <View className='auth-hd'>
           <View className='title'>欢迎登录</View>
-          <View className='desc'>使用已注册的手机号登录</View>
+          {/* <View className='desc'>使用已注册的手机号登录</View> */}
         </View>
         <View className='auth-bd'>
           <AtForm className='form'>
@@ -216,13 +293,19 @@ export default class Login extends Component {
                 placeholder='请输入您的手机号码'
                 onChange={this.handleInputChange.bind(this, 'mobile')}
                 placeholderClass='input-placeholder'
+                {...inputProp}
               />
             </View>
             {/* 密码登录 */}
             {passwordLogin && (
               <View className='form-field'>
                 <View className='input-field'>
-                  <CompPasswordInput onChange={this.handleInputChange.bind(this, 'password')} />
+                  <CompPasswordInput
+                    onChange={this.handleInputChange.bind(this, 'password')}
+                    {...inputProp}
+                    // onFocus={this.handleRemarkFocus.bind(this)}
+                    // onBlur={this.handleRemarkBlur.bind(this)}
+                  />
                 </View>
               </View>
             )}
@@ -237,6 +320,7 @@ export default class Login extends Component {
                     placeholder='请输入图形验证码'
                     onChange={this.handleInputChange.bind(this, 'yzm')}
                     placeholderClass='input-placeholder'
+                    {...inputProp}
                   />
                 </View>
                 <View className='btn-field'>
@@ -260,6 +344,7 @@ export default class Login extends Component {
                     placeholder='请输入验证码'
                     onChange={this.handleInputChange.bind(this, 'vcode')}
                     placeholderClass='input-placeholder'
+                    {...inputProp}
                   />
                 </View>
                 <View className='btn-field'>
@@ -270,6 +355,7 @@ export default class Login extends Component {
                 </View>
               </View>
             )}
+            {/* {passwordLogin && <View className='form-tip'>{PASSWORD_TIP}</View>} */}
             <View className='btn-text-group'>
               <Text className='btn-text' onClick={this.handleToggleLogin.bind(this)}>
                 {passwordLogin ? '验证码登录' : '密码登录'}

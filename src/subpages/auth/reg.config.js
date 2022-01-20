@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '注册协议'
+  navigationBarTitleText: '注册'
 }

@@ -7,6 +7,8 @@ import { AtForm, AtInput, AtButton } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { CompPasswordInput } from './comps'
+import { useSelector } from 'react-redux'
+import { PASSWORD_TIP } from './const'
 import './forgotpwd.scss'
 
 const SYMBOL = 'forgot_password'
@@ -25,12 +27,14 @@ const initialValue = {
 const PageBindPhone = () => {
   const $instance = getCurrentInstance()
   const {
-    params: { phone }
+    params: { phone, redi_url }
   } = $instance.router
 
   const [state, setState] = useImmer(initialValue)
 
   const { username, yzm, vcode, imgInfo, password, is_new } = state
+
+  const { colorPrimary } = useSelector((state) => state.sys)
 
   const handleInputChange = (name) => (val) => {
     setState((state) => {
@@ -38,16 +42,45 @@ const PageBindPhone = () => {
     })
   }
 
-  const getImageVcode = async () => {
-    if (is_new) return showToast('该手机号还未注册！')
+  const getImageVcode = async (validate = false) => {
+    // if (validate) {
+    //   const is_stop = await showModalReg()
+    //   if (is_stop) return
+    // }
     const img_res = await api.user.regImg({ type: SYMBOL })
     setState((state) => {
       state.imgInfo = img_res
     })
   }
 
+  const showModalReg = async () => {
+    let url = `/subpages/auth/reg`
+    if (redi_url) {
+      url += `?redi_url=${encodeURIComponent(redi_url)}`
+    }
+    const { is_new } = await api.wx.getIsNew({ mobile: username })
+    setState((_state) => {
+      _state.is_new = !!is_new
+    })
+    if (is_new === 1) {
+      const res = await Taro.showModal({
+        title: '提示',
+        content: `此手机号码未注册、是否同意前往注册`,
+        cancelText: '拒绝',
+        confirmText: '同意',
+        confirmColor: colorPrimary
+      })
+      if (res.confirm) {
+        Taro.navigateTo({
+          url
+        })
+      }
+      return true
+    }
+    return false
+  }
+
   const handleTimerStart = async (resolve) => {
-    if (is_new) return showToast('该手机号还未注册！')
     if (!validate.isMobileNum(username)) {
       showToast('请输入正确的手机号')
       return
@@ -56,6 +89,11 @@ const PageBindPhone = () => {
       showToast('请输入图形验证码')
       return
     }
+
+    // 验证手机号是否注册
+    const isNewUser = await showModalReg()
+    if (isNewUser) return
+
     try {
       await api.user.regSmsCode({
         type: SYMBOL,
@@ -88,15 +126,6 @@ const PageBindPhone = () => {
     }
   }
 
-  const handlePhoneBlur = async (mobile) => {
-    if (mobile) {
-      const { is_new } = await api.wx.getIsNew({ mobile })
-      setState((_state) => {
-        _state.is_new = !!is_new
-      })
-    }
-  }
-
   useEffect(() => {
     getImageVcode()
   }, [])
@@ -106,12 +135,11 @@ const PageBindPhone = () => {
       setState((_state) => {
         _state.username = phone
       })
-      handlePhoneBlur(phone)
     }
   }, [phone])
 
   //全填写完
-  const isFull = username && yzm && vcode && password
+  const isFull = username && yzm && vcode && password && password.length >= 6
 
   return (
     <SpPage
@@ -124,7 +152,7 @@ const PageBindPhone = () => {
       </View>
       <View className='auth-bd'>
         <AtForm className='form'>
-          <View className='form-field'>
+          <View className={classNames('form-field')}>
             <AtInput
               clear
               name='mobile'
@@ -133,7 +161,6 @@ const PageBindPhone = () => {
               value={username}
               placeholder='请输入您的手机号码'
               onChange={handleInputChange('username')}
-              onBlur={handlePhoneBlur}
             />
           </View>
 
@@ -146,12 +173,15 @@ const PageBindPhone = () => {
                 value={yzm}
                 placeholder='请输入图形验证码'
                 onChange={handleInputChange('yzm')}
-                disabled={is_new}
               />
             </View>
             <View className='btn-field'>
               {imgInfo && (
-                <Image className='image-vcode' src={imgInfo.imageData} onClick={getImageVcode} />
+                <Image
+                  className='image-vcode'
+                  src={imgInfo.imageData}
+                  onClick={() => getImageVcode(true)}
+                />
               )}
             </View>
           </View>
@@ -164,7 +194,6 @@ const PageBindPhone = () => {
                 value={vcode}
                 placeholder='请输入验证码'
                 onChange={handleInputChange('vcode')}
-                disabled={is_new}
               />
             </View>
             <View className='btn-field'>
@@ -173,9 +202,9 @@ const PageBindPhone = () => {
           </View>
 
           <View className='form-field'>
-            <CompPasswordInput onChange={handleInputChange('password')} disabled={is_new} />
+            <CompPasswordInput onChange={handleInputChange('password')} />
           </View>
-          <View className='form-tip'>6-16位密码、数字或字母</View>
+          {/* <View className='form-tip'>{PASSWORD_TIP}</View> */}
 
           <View className='form-submit'>
             <AtButton
@@ -188,8 +217,6 @@ const PageBindPhone = () => {
               完成
             </AtButton>
           </View>
-
-          {is_new && <View className='error'>该手机号未注册！</View>}
         </AtForm>
       </View>
     </SpPage>

@@ -1,10 +1,11 @@
 import S from '@/spx'
+import { showToast } from '@/utils'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 
 //跳转到注册页
-function navigationToReg () {
+function navigationToReg (redirect) {
   Taro.navigateTo({
-    url: '/subpages/auth/reg'
+    url: `/subpages/auth/reg?redi_url=${encodeURIComponent(redirect)}`
   })
 }
 
@@ -32,8 +33,9 @@ async function setTokenAndRedirect (token = '', tokenSetSuccessCallback) {
     const url = redi_url
       ? decodeURIComponent(redi_url)
       : redirect
-      ? redirect
-      : process.env.APP_HOME_PAGE
+      ? decodeURIComponent(redirect)
+      : '/subpages/member/index'
+
     Taro.redirectTo({ url })
     // window.location.href = `${window.location.origin}${url}`
   }
@@ -57,4 +59,8 @@ function pushHistory (returnUrl, currentUrl, currentTitle) {
   // window.history.pushState(state, currentTitle, currentUrl);
 }
 
-export { navigationToReg, setToken, setTokenAndRedirect, pushHistory, getToken }
+function addListener () {
+  window.addEventListener('focusout', () => {})
+}
+
+export { navigationToReg, setToken, setTokenAndRedirect, pushHistory, getToken, addListener }

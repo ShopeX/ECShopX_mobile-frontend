@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Taro, { usePageScroll, getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpNavBar, SpFloatMenuItem, SpNote } from '@/components'
@@ -10,7 +10,7 @@ import './index.scss'
 
 function SpPage (props) {
   console.log(getCurrentInstance())
-  const { page, router = {} } = getCurrentInstance()
+  const { router = {} } = getCurrentInstance()
   // debugger
   const {
     className,
