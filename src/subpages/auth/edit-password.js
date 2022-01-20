@@ -5,7 +5,7 @@ import { SpPage } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import api from '@/api'
-import { setTokenAndRedirect, getToken, pushHistory } from './util'
+import { setTokenAndRedirect, getToken, pushHistory, clearHistory } from './util'
 import { useLogin } from '@/hooks'
 import { useImmer } from 'use-immer'
 import { PASSWORD_TIP } from './const'
@@ -65,6 +65,9 @@ const PageEditPassword = () => {
 
   useEffect(() => {
     pushHistory(loginSuccess)
+    return () => {
+      clearHistory(loginSuccess)
+    }
   }, [])
 
   //全填写完

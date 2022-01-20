@@ -43,18 +43,24 @@ async function setTokenAndRedirect (token = '', tokenSetSuccessCallback) {
 
 /*-----监听返回事件-----*/
 function pushHistory (callback) {
-  window.addEventListener(
-    'popstate',
-    function (e) {
-      callback?.()
-    },
-    false
-  )
-  window.history.pushState('new', null, null)
+  window.addEventListener('popstate', callback, false)
+  window.history.pushState(null, null, document.URL)
+}
+
+function clearHistory (callback) {
+  window.removeEventListener('popstate', callback, false)
 }
 
 function addListener () {
   window.addEventListener('focusout', () => {})
 }
 
-export { navigationToReg, setToken, setTokenAndRedirect, pushHistory, getToken, addListener }
+export {
+  navigationToReg,
+  setToken,
+  setTokenAndRedirect,
+  pushHistory,
+  clearHistory,
+  getToken,
+  addListener
+}
