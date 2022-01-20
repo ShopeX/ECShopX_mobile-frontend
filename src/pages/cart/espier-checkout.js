@@ -6,6 +6,7 @@ import { useImmer } from 'use-immer'
 import { SpPage, SpPrice, SpCell, SpOrderItem } from '@/components'
 import { View, Text } from '@tarojs/components'
 import { updateChooseAddress } from '@/store/slices/user'
+import { changeCoupon } from '@/store/slices/cart'
 import { isObjectsValue, isWeixin, pickBy, authSetting } from '@/utils'
 import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
@@ -260,15 +261,17 @@ function CartCheckout (props) {
     } = data
 
     if (isObjectsValue(coupon_info) && !coupon) {
-      // dispatch({
-      //   type: 'coupon',
-      //   value: {
-      //     title: coupon_info.info,
-      //     card_id: coupon_info.id,
-      //     code: coupon_info.coupon_code,
-      //     discount: coupon_info.discount_fee
-      //   }
-      // })
+      dispatch(
+        changeCoupon({
+          type: 'coupon',
+          value: {
+            title: coupon_info.info,
+            card_id: coupon_info.id,
+            code: coupon_info.coupon_code,
+            discount: coupon_info.discount_fee
+          }
+        })
+      )
     }
 
     const total = {
@@ -401,17 +404,6 @@ function CartCheckout (props) {
                         customFooter
                         renderFooter={
                           <View className='order-item__ft'>
-                            {/* {isPointitemGood ? (
-                                <SpPrice
-                                  className='order-item__price'
-                                  appendText={pointName}
-                                  noSymbol
-                                  noDecimal
-                                  value={item.item_point}
-                                />
-                              ) : (
-                                <SpPrice className='order-item__price' value={item.price || 100} />
-                              )} */}
                             <SpPrice
                               unit='cent'
                               className='order-item__price'
@@ -449,30 +441,6 @@ function CartCheckout (props) {
           共<Text>{totalInfo.items_count}</Text>
           件商品　总计:
           <SpPrice unit='cent' className='primary-price' value={totalInfo.total_fee} />
-          {/* {payType !== 'point' && !isPointitemGood ? (
-          ) : (
-            totalInfo.point && (
-              <View class='checkout-toolbar__price'>
-                <SpPrice
-                  className='order-item__price'
-                  appendText={pointName}
-                  noSymbol
-                  noDecimal
-                  value={totalInfo.point}
-                />
-                {totalInfo.freight_fee != 0 &&
-                  totalInfo.freight_type === 'cash' &&
-                  isPointitemGood && (
-                    <SpPrice
-                      unit='cent'
-                      plus
-                      value={totalInfo.freight_fee}
-                      className='order-item__plus'
-                    />
-                  )}
-              </View>
-            )
-          )} */}
         </View>
         <AtButton
           type='primary'

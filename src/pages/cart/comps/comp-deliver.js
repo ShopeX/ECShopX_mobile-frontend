@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
+import api from '@/api'
 import { AddressChoose } from '@/components'
 import { classNames } from '@/utils'
 
 import './comp-deliver.scss'
-import api from '@/api'
 
 const deliveryList = [
   {
@@ -78,35 +78,12 @@ function CmopDeliver (props) {
 
   const handleChooseAddress = (choose) => {
     // 自定义选择店铺跳转事件
-    let city = headquartersStore.is_headerstore ? headquartersStore.city : currentStore.city
-    let params = ''
-    if (receiptType === 'dada') {
-      params = `&city=${city}&receipt_type=dada`
-    }
+    let city = distributorInfo.city
+    let params = receiptType === 'dada' ? `&city=${city}&receipt_type=dada` : ''
     Taro.navigateTo({
       url: `/marketing/pages/member/address?isPicker=${choose}${params}`
     })
   }
-
-  // const showSwitchDeliverComp = () => {
-  //   // 配送方式选择器
-  //   return (
-  //     <View className='switch-box'>
-  //       <View className={classNames(showSwitchDeliver.length > 0 && 'switch-tab')}>
-  //         {showSwitchDeliver.map((item) => (
-  //           <View
-  //             key={item.type}
-  //             className={`switch-item ${receiptType === item.type ? 'active' : ''}`}
-  //             style={receiptType === item.type && { background: `rgb(${rgb}, 0.4)` }}
-  //             onClick={handleSwitchExpress.bind(this, item.type)}
-  //           >
-  //             {item.name}
-  //           </View>
-  //         ))}
-  //       </View>
-  //     </View>
-  //   )
-  // }
 
   return (
     <View className='page-comp-deliver'>
@@ -128,17 +105,6 @@ function CmopDeliver (props) {
           })}
         </View>
       </View>
-
-      {/* <View>
-        {
-          deliveryList.map(item => {
-            if(distributorInfo[item.key]) {
-              return <View>{item.name}</View>
-            }
-          })
-        }
-      </View> */}
-
       {/** 普通快递 */}
       {receiptType === 'logistics' && <AddressChoose isAddress={address} />}
       {/** 同城配 */}
