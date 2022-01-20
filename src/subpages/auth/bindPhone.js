@@ -104,7 +104,10 @@ const PageBindPhone = () => {
   }, [])
 
   useDidShow(async () => {
-    loginSuccess(S.getAuthToken())
+    if (S.getAuthToken()) {
+      const url = redi_url ? decodeURIComponent(redi_url) : '/subpages/member/index'
+      window.location.href = url
+    }
   })
 
   const handleClickLeft = () => {
