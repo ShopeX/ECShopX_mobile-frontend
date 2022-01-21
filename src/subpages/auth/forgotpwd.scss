@@ -1,6 +1,6 @@
 $border-color:#E2E4EA;
 
-.page-auth-bindphone {
+.page-auth-forgotpwd {
   background-color: #fff;
   position: absolute;
   top: 0;
@@ -53,13 +53,31 @@ $border-color:#E2E4EA;
       font-size: 32px;
       color: #111A34;
       padding-bottom: 20px;
-      // border-bottom: 1PX solid #E2E4EA;
-      @include hairline($border-color,0,bottom);
+      border-bottom: 1PX solid $border-color;
+    }
+    .form{
+      position: relative;
+
+      .error{
+        position: relative;
+        font-size: 28px; 
+        color:rgba(236, 46, 61, 1);
+      }
+    }
+    .form-tip{
+      font-size: 28px;
+      color: #858b9c;
+      margin-top: 16px;
     }
     .form-field {
       display: flex;
       align-items: center;
-      @include hairline($border-color,0,bottom);
+      border-bottom: 1PX solid $border-color;
+      position: relative; 
+
+      &.error{
+        border-bottom:4px solid rgba(236, 46, 61, 1); 
+      }
       // border-bottom: 1PX solid #E2E4EA;
       .at-input {
         padding: 25px 0 !important;
@@ -73,10 +91,12 @@ $border-color:#E2E4EA;
       .input-field {
         flex: 1;
       }
+      
       .btn-field {
         width: 180px;
         text-align: center;
         .image-vcode {
+          display: block;
           width:180px;
           height:60px;
         }
@@ -99,12 +119,8 @@ $border-color:#E2E4EA;
         font-weight: 600;
       }
       .at-button--disabled{
-        opacity: 1;
-      }
-      .login-button{
-        background-color: rgba(197, 202, 213, 1);
-        border-color: rgba(197, 202, 213, 1);
-      }
+        opacity: 0.5;
+      } 
       .login-button,.reg-button{
         height: 100px;
         border-radius: 50px;
@@ -112,7 +128,8 @@ $border-color:#E2E4EA;
       .reg-button{
         margin-top: 32px;
         background-color: white;
-        border:1px solid var(--color-primary);
+        /* prettier-ignore */
+        border: 1PX solid var(--color-primary);
         color:var(--color-primary);
       }
     }

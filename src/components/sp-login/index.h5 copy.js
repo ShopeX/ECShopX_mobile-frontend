@@ -37,7 +37,7 @@ export default class SpLogin extends Component {
   handleOAuthLogin () {
     const { path } = this.$instance.router
     Taro.navigateTo({
-      url: `/subpage/pages/auth/login?redirect=${encodeURIComponent(path)}`
+      url: `/subpages/auth/login?redirect=${encodeURIComponent(path)}`
     })
   }
 

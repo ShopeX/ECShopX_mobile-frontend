@@ -145,3 +145,26 @@
   align-items: center;
   justify-content: center;
 }
+
+@mixin placeholder($color,$font-size){
+  ::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: $color;
+    font-size:$font-size;
+  }
+  :-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: $color;
+    font-size:$font-size;
+  }
+  ::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: $color;
+    font-size:$font-size;
+  }
+  :-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: $color;
+    font-size:$font-size;
+  }
+}

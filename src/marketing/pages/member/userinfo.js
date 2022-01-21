@@ -5,7 +5,7 @@ import { SpPage, SpNavBar, SpCheckbox, SpFloatPrivacy } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import S from '@/spx'
-import { showToast } from '@/utils'
+import { showToast, tokenParse, tokenParseH5, isWeixin } from '@/utils'
 import userIcon from '@/assets/imgs/user-icon.png'
 import imgUploader from '@/utils/upload'
 
@@ -121,13 +121,14 @@ export default class UserInfo extends Component {
     })
   }
 
-  // 更换手机号
+  // 更换手机号ß
   editPhone = (e) => {
     e && e.stopPropagation()
+    let url = '/subpages/auth/edit-phone'
     const { regParams } = this.state
     if (regParams.mobile.is_edit) {
       Taro.navigateTo({
-        url: '/subpage/pages/auth/bindPhone'
+        url
       })
     }
   }

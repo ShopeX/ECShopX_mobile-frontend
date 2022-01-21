@@ -118,17 +118,14 @@ export default class SpFloatPrivacy extends Component {
               您可阅读
               <Text
                 className='privacy-txt'
-                onClick={this.navigateTo.bind(
-                  this,
-                  '/subpage/pages/auth/reg-rule?type=member_register'
-                )}
+                onClick={this.navigateTo.bind(this, '/subpages/auth/reg-rule?type=member_register')}
               >
                 《{info.protocol.member_register}》
               </Text>
               、
               <Text
                 className='privacy-txt'
-                onClick={this.navigateTo.bind(this, '/subpage/pages/auth/reg-rule?type=privacy')}
+                onClick={this.navigateTo.bind(this, '/subpages/auth/reg-rule?type=privacy')}
               >
                 《{info.protocol.privacy}》
               </Text>

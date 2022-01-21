@@ -1,16 +1,23 @@
 .comp-other-login{
+    position: relative; 
+    border-top: 1px solid rgba(0,0,0,.1);
+    margin-top:10px;
     .text{
         color:rgba(197, 202, 213, 1);
-        font-size: 24px;
+        font-size: 26px; 
+        position: relative; 
+        margin: -18px auto 0;
+        background-color: white;
+        width:200px;
     }
     .loginway{
-        padding:24px 0 80px 0;
+        padding:24px 0 10px 0;
         @include flex-center();
 
         .wechat{
             width: 90px;
             height: 90px;
-            border: 1px solid #C5CAD5;
+            border: 1PX solid #C5CAD5; 
             border-radius: 50%;
             color:rgba(0, 200, 0, 1); 
 

@@ -575,11 +575,14 @@ export function isNavbar () {
 
 export const hasNavbar = isWeb && !getBrowserEnv().weixin
 
-export function showToast (title) {
+export function showToast (title, callback) {
   Taro.showToast({
     title,
     icon: 'none'
   })
+  setTimeout(() => {
+    callback?.()
+  }, 2000)
 }
 
 export function hex2rgb (hex) {

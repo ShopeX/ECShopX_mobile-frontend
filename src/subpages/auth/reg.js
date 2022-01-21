@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { SpPage, SpTimer } from '@/components'
+import { SpPage, SpTimer, SpCheckbox } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
+import { useSelector } from 'react-redux'
+import { CompPasswordInput } from './comps'
+import { setTokenAndRedirect } from './util'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
+import { PASSWORD_TIP } from './const'
 import api from '@/api'
 import { useImmer } from 'use-immer'
+import { useLogin } from '@/hooks'
 import './reg.scss'
 
 const initialValue = {
@@ -13,7 +18,10 @@ const initialValue = {
   yzm: '',
   vcode: '',
   password: '',
-  imgInfo: null
+  imgInfo: null,
+  checked: false,
+  member_register: '',
+  privacy: ''
 }
 
 const CODE_SYMBOL = 'sign'
@@ -21,7 +29,11 @@ const CODE_SYMBOL = 'sign'
 const Reg = () => {
   const [state, setState] = useImmer(initialValue)
 
-  const { mobile, yzm, vcode, password, imgInfo } = state
+  const { mobile, yzm, vcode, password, imgInfo, checked, member_register, privacy } = state
+
+  const { colorPrimary } = useSelector((state) => state.sys)
+
+  const { getUserInfo } = useLogin()
 
   const handleInputChange = (name) => (val) => {
     setState((state) => {
@@ -60,6 +72,19 @@ const Reg = () => {
   }
 
   const handleSubmit = async () => {
+    if (!checked) {
+      const res = await Taro.showModal({
+        title: '提示',
+        content: `请先阅读并同意${member_register}、${privacy}?`,
+        showCancel: true,
+        cancel: '取消',
+        cancelText: '拒绝',
+        confirmText: '同意',
+        confirmColor: colorPrimary
+      })
+      if (!res.confirm) return
+    }
+
     if (!validate.isMobileNum(mobile)) {
       showToast('请输入正确的手机号')
       return
@@ -72,26 +97,50 @@ const Reg = () => {
       showToast('请输入密码')
       return
     }
+    if (!validate.isPassword(password)) {
+      return showToast('密码格式不正确')
+    }
     try {
       //从登陆页跳转过来
-      await api.user.reg({
+      const { token } = await api.user.reg({
         auth_type: 'local',
         check_type: CODE_SYMBOL,
         mobile,
-        user_name: mobile,
         password,
         vcode,
         sex: 0,
         user_type: 'local'
       })
-      Taro.navigateBack()
+      showToast('注册成功', async () => {
+        await setTokenAndRedirect(token, async () => {
+          await getUserInfo()
+        })
+      })
     } catch (e) {
       console.log(e)
     }
   }
 
+  const handleSelect = () => {
+    setState((_state) => {
+      _state.checked = !checked
+    })
+  }
+
+  const fetchPrivacyData = async () => {
+    const {
+      protocol: { member_register, privacy }
+    } = await api.shop.getStoreBaseInfo()
+
+    setState((v) => {
+      v.member_register = member_register
+      v.privacy = privacy
+    })
+  }
+
   useEffect(() => {
     getImageVcode()
+    fetchPrivacyData()
   }, [])
 
   //全填写完
@@ -107,7 +156,6 @@ const Reg = () => {
         <View className='title'>欢迎注册</View>
       </View>
       <View className='auth-bd'>
-        <View className='form-title'>中国大陆 +86</View>
         <AtForm className='form'>
           <View className='form-field'>
             <AtInput
@@ -156,16 +204,11 @@ const Reg = () => {
 
           <View className='form-field'>
             <View className='input-field'>
-              <AtInput
-                clear
-                type='password'
-                name='password'
-                value={state.password}
-                placeholder='请输入密码'
-                onChange={handleInputChange('password')}
-              />
+              <CompPasswordInput onChange={handleInputChange('password')} />
             </View>
           </View>
+
+          {/* <View className='form-tip'>{PASSWORD_TIP}</View> */}
 
           <View className='form-submit'>
             <AtButton
@@ -180,17 +223,31 @@ const Reg = () => {
           </View>
 
           <View className='form-text'>
-            已阅读并同意
-            <Text
-              className='primary-color'
-              onClick={() =>
-                Taro.navigateTo({
-                  url: '/subpage/pages/auth/reg-rule'
-                })
-              }
-            >
-              《注册协议》
-            </Text>
+            <SpCheckbox checked={checked} onChange={handleSelect} />
+            <View>
+              已阅读并同意
+              <Text
+                className='primary-color'
+                onClick={() =>
+                  Taro.navigateTo({
+                    url: '/subpages/auth/reg-rule?type=member_register'
+                  })
+                }
+              >
+                《{member_register}》
+              </Text>
+              、
+              <Text
+                className='primary-color'
+                onClick={() =>
+                  Taro.navigateTo({
+                    url: '/subpages/auth/reg-rule?type=privacy'
+                  })
+                }
+              >
+                《{privacy}》
+              </Text>
+            </View>
           </View>
         </AtForm>
       </View>

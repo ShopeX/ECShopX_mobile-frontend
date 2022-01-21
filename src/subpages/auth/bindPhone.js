@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { View, Text, Image } from '@tarojs/components'
-import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { SpPage, SpTimer } from '@/components'
 import { classNames, validate, showToast, tokenParseH5 } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { useLogin } from '@/hooks'
 import api from '@/api'
+import S from '@/spx'
 import { useImmer } from 'use-immer'
 import { setTokenAndRedirect, setToken } from './util'
 import './bindPhone.scss'
@@ -68,6 +69,13 @@ const PageBindPhone = () => {
     }
   }
 
+  const loginSuccess = async (token) => {
+    if (!token) return
+    await setTokenAndRedirect(token, async () => {
+      await getUserInfo()
+    })
+  }
+
   const handleSubmit = async () => {
     try {
       const { token } = await api.user.bind({
@@ -76,19 +84,15 @@ const PageBindPhone = () => {
         vcode,
         union_id: unionid
       })
-
       const { is_new } = tokenParseH5(token)
 
       if (is_new === 1) {
         setToken(token)
         Taro.navigateTo({
-          url: `/subpage/pages/auth/edit-password?phone=${username}`
+          url: `/subpages/auth/edit-password?phone=${username}`
         })
       } else {
-        const self = this
-        setTokenAndRedirect(token, async () => {
-          await getUserInfo()
-        }).bind(self)
+        loginSuccess(token)
       }
     } catch (e) {
       console.log(e)
@@ -97,24 +101,19 @@ const PageBindPhone = () => {
 
   useEffect(() => {
     getImageVcode()
-    //pushHistory('/subpage/pages/auth/login', '/subpage/pages/auth/bindPhone', '绑定手机号')
   }, [])
+
+  useDidShow(async () => {
+    if (S.getAuthToken()) {
+      const url = redi_url ? decodeURIComponent(redi_url) : '/subpages/member/index'
+      window.location.href = url
+    }
+  })
 
   const handleClickLeft = () => {
     Taro.redirectTo({
-      url: `/subpage/pages/auth/login?redirect=${redi_url}`
+      url: `/subpages/auth/login?redirect=${redi_url}`
     })
-  }
-
-  const handlePhoneBlur = async (mobile) => {
-    if (mobile) {
-      const { is_new } = await api.wx.getIsNew({ mobile })
-      if (is_new === 1) {
-        setState((_state) => {
-          _state.is_new = true
-        })
-      }
-    }
   }
 
   //全填写完
@@ -131,7 +130,6 @@ const PageBindPhone = () => {
         <View className='title'>手机号绑定</View>
       </View>
       <View className='auth-bd'>
-        <View className='form-title'>中国大陆 +86</View>
         <AtForm className='form'>
           <View className='form-field'>
             <AtInput
@@ -142,7 +140,6 @@ const PageBindPhone = () => {
               value={username}
               placeholder='请输入您的手机号码'
               onChange={handleInputChange('username')}
-              onBlur={handlePhoneBlur}
             />
           </View>
 

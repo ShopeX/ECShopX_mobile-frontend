@@ -1,10 +1,11 @@
 import S from '@/spx'
+import { showToast } from '@/utils'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 
 //跳转到注册页
-function navigationToReg () {
+function navigationToReg (redirect) {
   Taro.navigateTo({
-    url: '/subpage/pages/auth/reg'
+    url: `/subpages/auth/reg?redi_url=${encodeURIComponent(redirect)}`
   })
 }
 
@@ -32,29 +33,33 @@ async function setTokenAndRedirect (token = '', tokenSetSuccessCallback) {
     const url = redi_url
       ? decodeURIComponent(redi_url)
       : redirect
-      ? redirect
-      : process.env.APP_HOME_PAGE
+      ? decodeURIComponent(redirect)
+      : '/subpages/member/index'
     Taro.redirectTo({ url })
     // window.location.href = `${window.location.origin}${url}`
   }
 }
 
 /*-----监听返回事件-----*/
-function pushHistory (returnUrl, currentUrl, currentTitle) {
-  window.addEventListener(
-    'popstate',
-    function (e) {
-      console.log('====popstate===>', e)
-      // window.location.href = returnUrl
-      //window.location.replace(returnUrl);
-    },
-    false
-  )
-  // var state = {
-  //   title: currentTitle,
-  //   url: currentUrl
-  // };
-  // window.history.pushState(state, currentTitle, currentUrl);
+function pushHistory (callback) {
+  window.addEventListener('popstate', callback, false)
+  window.history.pushState(null, null, document.URL)
 }
 
-export { navigationToReg, setToken, setTokenAndRedirect, pushHistory, getToken }
+function clearHistory (callback) {
+  window.removeEventListener('popstate', callback, false)
+}
+
+function addListener () {
+  window.addEventListener('focusout', () => {})
+}
+
+export {
+  navigationToReg,
+  setToken,
+  setTokenAndRedirect,
+  pushHistory,
+  clearHistory,
+  getToken,
+  addListener
+}

@@ -1,0 +1,15 @@
+.comp-input-phone{
+
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    border-bottom: 1PX solid #E2E4EA;
+     
+    .error{
+        position: absolute;
+        right:50px;
+        color:rgba(236, 46, 61, 1);
+        font-size:28px;
+    }
+}

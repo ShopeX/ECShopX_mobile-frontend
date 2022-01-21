@@ -20,7 +20,10 @@ export default class SpTimer extends Component {
 
     this.state = {
       countDur: props.duration,
-      sent: false
+      //表示是否已经结束倒计时
+      sent: false,
+      //表示是否已经完成倒计时
+      finish: false
     }
   }
 
@@ -51,7 +54,8 @@ export default class SpTimer extends Component {
         } else {
           this.stop()
           this.setState({
-            countDur: this.props.duration
+            countDur: this.props.duration,
+            finish: true
           })
           this.props.onStop && this.props.onStop()
         }
@@ -62,7 +66,8 @@ export default class SpTimer extends Component {
       if (start !== false) {
         this.setState(
           {
-            sent: true
+            sent: true,
+            finish: false
           },
           () => next()
         )
@@ -78,15 +83,18 @@ export default class SpTimer extends Component {
   }
 
   render () {
-    const { timer } = this
-    const { countDur, sent } = this.state
+    const { countDur, sent, finish } = this.state
     const { timerMsg, className, style = '' } = this.props
 
-    const msg = timerMsg || (timer ? `${countDur}s` : sent ? this.props.msg : this.props.defaultMsg)
+    //发送中
+    const is_sending = sent && !finish
+
+    const msg =
+      timerMsg || (is_sending ? `${countDur}s` : finish ? this.props.msg : this.props.defaultMsg)
 
     return (
       <Text
-        className={classNames('mobile-timer', { 'mobile-timer__counting': timer }, className)}
+        className={classNames('mobile-timer', { 'mobile-timer__counting': is_sending }, className)}
         style={style}
         onClick={this.handleClick}
       >

@@ -1,4 +1,3 @@
- 
 @font-face {
   font-family: "iconfont"; /* Project id 869421 */
   src: url('//at.alicdn.com/t/font_869421_t4jyhncswtc.woff2?t=1641885136651') format('woff2'),
@@ -6,7 +5,7 @@
        url('//at.alicdn.com/t/font_869421_t4jyhncswtc.ttf?t=1641885136651') format('truetype');
 }
 
-.iconfont,[class^="icon-"], [class*=" icon-"]  {
+.iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
@@ -813,4 +812,3 @@
 .icon-arrowRight:before {
   content: "\e726";
 }
-

@@ -5,9 +5,10 @@ import { SpPage } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import api from '@/api'
-import { setTokenAndRedirect, getToken } from './util'
+import { setTokenAndRedirect, getToken, pushHistory, clearHistory } from './util'
 import { useLogin } from '@/hooks'
 import { useImmer } from 'use-immer'
+import { PASSWORD_TIP } from './const'
 import './edit-password.scss'
 
 const SYMBOL = 'login'
@@ -56,8 +57,14 @@ const PageEditPassword = () => {
     }
   }
 
+  const loginSuccess = async () => {
+    await setTokenAndRedirect(getToken(), async () => {
+      await getUserInfo()
+    })
+  }
+
   //全填写完
-  const isFull = phone && password && repassword
+  const isFull = phone && password && repassword && password.length >= 6 && repassword.length >= 6
 
   return (
     <SpPage
@@ -94,7 +101,7 @@ const PageEditPassword = () => {
               onChange={handleInputChange('repassword')}
             />
           </View>
-          <View className='form-tip'>6-16位密码、数字或字母</View>
+          <View className='form-tip'>{PASSWORD_TIP}</View>
 
           <View className='form-submit'>
             <AtButton

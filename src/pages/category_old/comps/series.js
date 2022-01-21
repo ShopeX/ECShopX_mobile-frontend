@@ -112,15 +112,15 @@ export default class Series extends Component {
                 className='category__banner'
               />
             )}
-            {items.map((item) =>
+            {items.map((item, index) =>
               item.children ? (
-                <View className='new'>
+                <View className='new' key={`category__${index}`}>
                   <View className='group-title'>{item.name}</View>
                   <View className='content-group'>
                     {item.children.map((child) => (
                       <View
                         className='category-content__img'
-                        key={child.category_id}
+                        key={`category-item__${child.category_id}`}
                         onClick={this.handleClickItem.bind(this, child)}
                       >
                         {child.img && (
@@ -138,7 +138,7 @@ export default class Series extends Component {
               ) : (
                 <View
                   className='category-content__img'
-                  key={item.category_id}
+                  key={`category-item__${item.category_id}`}
                   onClick={this.handleClickItem.bind(this, item)}
                 >
                   {item.img && (

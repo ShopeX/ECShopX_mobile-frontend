@@ -77,7 +77,7 @@ export default class PcAuth extends Component {
         }
       } else {
         Taro.redirectTo({
-          url: '/subpage/pages/auth/reg'
+          url: '/subpages/auth/reg'
         })
       }
     } catch (e) {
