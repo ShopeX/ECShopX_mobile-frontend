@@ -85,7 +85,7 @@ export const GOODS_INFO = {
   couponList: 'kaquan_list',
   store: 'store',
   isGift: 'is_gift',
-  skuItems: 'item_spec_desc',
+  skuList: 'item_spec_desc',
   specItems: ({ spec_items }) => {
     return pickBy(spec_items, {
       itemSpec: 'item_spec',
