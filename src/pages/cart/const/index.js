@@ -5,6 +5,7 @@ export const initialState = {
   addressList: [],
   receiptType: 'logistics', // 收货方式：ziti自提  logistics快递
   payType: 'wxpay', // wxpay 微信支付 point 积分支付 deposit 储值支付
+  payChannel: '', // 支付渠道
   isPointitemGood: false, // 是否为积分商城的商品
   shoppingGuideData: {}, //代客下单导购信息
   totalInfo: {
@@ -27,7 +28,8 @@ export const initialState = {
   channel: '',
   paramsInfo: {}, // 结算接口参数
   discountInfo: [],
-  couponInfo: {} // 优惠券信息
+  couponInfo: {}, // 优惠券信息
+  remark: '' // 备注
 }
 
 export const deliveryList = [

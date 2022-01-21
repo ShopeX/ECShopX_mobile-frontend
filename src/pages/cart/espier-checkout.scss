@@ -3,7 +3,7 @@ $margin24: 24px;
 .page-cart-checkout {
   box-sizing: border-box;
   overflow-y: auto;
-  padding: 24px 16px;
+  padding: 0px 24px 16px;
   .checkout-toolbar {
     display: flex;
     justify-content: space-between;
@@ -108,6 +108,7 @@ $margin24: 24px;
   }
   .cart-checkout__address {
     margin-bottom: $margin24;
+    margin-top: 24px;
   }
 
   .cart-checkout__invoice, .cart-checkout__coupons, .cart-checkout__pack, .cart-checkout__pay, .cart-checkout__total, .cart-checkout__group {

@@ -44,6 +44,7 @@ function CartCheckout (props) {
   const {
     detailInfo,
     payType,
+    payChannel,
     submitLoading,
     btnIsDisabled,
     isPointitemGood,
@@ -57,7 +58,8 @@ function CartCheckout (props) {
     disabledPayment,
     paramsInfo,
     discountInfo,
-    couponInfo
+    couponInfo,
+    remark
   } = state
 
   useEffect(() => {
@@ -70,7 +72,7 @@ function CartCheckout (props) {
     getTradeSetting()
     return () => {
       dispatch(changeCoupon()) // 清空优惠券信息
-      dispatch(updateChooseAddress()) // 清空地址信息
+      dispatch(updateChooseAddress(null)) // 清空地址信息
     }
   }, [])
 
@@ -97,8 +99,11 @@ function CartCheckout (props) {
   }
 
   const onSubmitPayChange = () => {
+    setState((draft) => {
+      draft.submitLoading = true
+    })
     // 提交订单按钮
-    console.log('提交按钮', isObjectsValue(shoppingGuideData), shoppingGuideData)
+    console.log('提交按钮', getParamsInfo())
   }
 
   const handleSwitchExpress = ({ receipt_type, distributorInfo }) => {
@@ -168,16 +173,18 @@ function CartCheckout (props) {
     dispatch(changeCoupon(couponInfo))
   }
 
-  const handlePaymentChange = async (payType, channel) => {
+  const handlePaymentChange = async (payType, payChannel) => {
+    console.log(payType, payChannel)
     setState((draft) => {
       draft.payType = payType
-      draft.channel = channel
+      draft.payChannel = payChannel
     })
   }
 
   const handleRemarkChange = (val) => {
+    // 商家留言
     setState((draft) => {
-      draft.paramsInfo = { ...paramsInfo, remark: val }
+      draft.remark = val
     })
   }
 
@@ -301,6 +308,14 @@ function CartCheckout (props) {
     cus_parmas.pack = isNeedPackage ? packInfo : undefined
     cus_parmas.bargain_id = bargain_id || undefined
 
+    if (submitLoading) {
+      // 提交时候获取参数 把留言信息传进去
+      debugger
+      cus_parmas.remark = remark
+      cus_parmas.pay_type = payType
+      cus_parmas.pay_channel = payChannel
+    }
+
     return cus_parmas
   }
 
@@ -317,7 +332,7 @@ function CartCheckout (props) {
           className='checkout-toolbar__btn'
           customStyle='background: var(--color-primary); border-color: var(--color-primary)'
           loading={submitLoading}
-          disabled={!isObjectsValue(address)}
+          disabled={submitLoading || (receiptType !== 'ziti' && !isObjectsValue(address))}
           onClick={onSubmitPayChange}
         >
           提交订单
@@ -383,7 +398,8 @@ function CartCheckout (props) {
                   <AtInput
                     className='trade-remark__input'
                     placeholder='给商家留言：选填（50字以内）'
-                    onChange={handleRemarkChange.bind(this)}
+                    onChange={handleRemarkChange}
+                    value={remark}
                     maxLength={50}
                   />
                 </SpCell>

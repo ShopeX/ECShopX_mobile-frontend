@@ -107,7 +107,7 @@ function CompPaymentPicker (props) {
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
             <Text>支付方式</Text>
-            <View className='iconfont icon-close' onClose={() => handlePaymentShow(false)}></View>
+            <View className='iconfont icon-close'></View>
           </View>
           <View className='payment-picker__bd'>
             {/* {isShowPoint &&
@@ -159,9 +159,10 @@ function CompPaymentPicker (props) {
               </View>
             )}
 
-            {typeList.map((item) => {
+            {typeList.map((item, index) => {
               return (
                 <View
+                  key={index}
                   className='payment-item no-border'
                   onClick={handlePaymentChange.bind(this, item.pay_type_code)}
                 >
