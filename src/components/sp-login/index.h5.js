@@ -18,18 +18,10 @@ function SpLogin (props) {
   /**
    *
    */
-
-  const handleOnChange = () => {
-    onChange && onChange()
-  }
-
-  /**
-   *
-   */
   const handleOAuthLogin = () => {
     const $instance = getCurrentInstance()
     const { path } = $instance.router
-    let url = `/subpage/pages/auth/login?redirect=${encodeURIComponent(`${path}`)}`
+    let url = `/subpages/auth/login?redirect=${encodeURIComponent(`${path}`)}`
 
     Taro.navigateTo({
       url

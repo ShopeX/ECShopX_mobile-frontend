@@ -1,0 +1,18 @@
+$prefixCls:'page-member-integral';
+
+.#{$prefixCls}{
+    background-color: white;
+
+    &-content{
+        @include page-scroll(90px,0);
+        background:white;
+
+        .title{
+            font-size: 36px;
+            font-weight: 500;
+            color: #3A3A5A;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    }
+}

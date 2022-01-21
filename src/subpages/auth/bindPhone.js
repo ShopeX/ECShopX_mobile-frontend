@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
 import { View, Text, Image } from '@tarojs/components'
-import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { SpPage, SpTimer } from '@/components'
-import { classNames, validate, showToast } from '@/utils'
+import { classNames, validate, showToast, tokenParseH5 } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { useLogin } from '@/hooks'
 import api from '@/api'
+import S from '@/spx'
 import { useImmer } from 'use-immer'
-import { setTokenAndRedirect, pushHistory } from './util'
+import { setTokenAndRedirect, setToken } from './util'
 import './bindPhone.scss'
 
 const SYMBOL = 'login'
@@ -68,51 +69,50 @@ const PageBindPhone = () => {
     }
   }
 
+  const loginSuccess = async (token) => {
+    if (!token) return
+    await setTokenAndRedirect(token, async () => {
+      await getUserInfo()
+    })
+  }
+
   const handleSubmit = async () => {
-    let url = ''
-
-    const { is_new } = await api.wx.getIsNew({ mobile: username })
-
-    //如果是新用户
-    if (is_new === 1) {
-      const { status } = await api.user.checkSmsCode({
+    try {
+      const { token } = await api.user.bind({
+        username,
+        check_type,
         vcode,
-        check_type: SYMBOL,
-        mobile: username
+        union_id: unionid
       })
-      //验证码错误
-      if (status === 0) {
-        showToast('手机验证码输入有误')
-        getImageVcode()
-        setState((_state) => {
-          _state.yzm = ''
-          _state.vcode = ''
+      const { is_new } = tokenParseH5(token)
+
+      if (is_new === 1) {
+        setToken(token)
+        Taro.navigateTo({
+          url: `/subpages/auth/edit-password?phone=${username}`
         })
-        return
       } else {
-        url = `/subpage/pages/auth/edit-password?phone=${username}&unionid=${unionid}&redi_url=${redi_url}`
-        Taro.redirectTo({
-          url
-        })
+        loginSuccess(token)
       }
-    } else {
-      url = process.env.APP_HOME_PAGE
-      const { token } = await api.user.bind({ username, check_type, vcode, union_id: unionid })
-      await setTokenAndRedirect(token, async () => {
-        await getUserInfo()
-      })
-      return
+    } catch (e) {
+      console.log(e)
     }
   }
 
   useEffect(() => {
     getImageVcode()
-    //pushHistory('/subpage/pages/auth/login', '/subpage/pages/auth/bindPhone', '绑定手机号')
   }, [])
+
+  useDidShow(async () => {
+    if (S.getAuthToken()) {
+      const url = redi_url ? decodeURIComponent(redi_url) : '/subpages/member/index'
+      window.location.href = url
+    }
+  })
 
   const handleClickLeft = () => {
     Taro.redirectTo({
-      url: `/subpage/pages/auth/login?redirect=${redi_url}`
+      url: `/subpages/auth/login?redirect=${redi_url}`
     })
   }
 
@@ -130,7 +130,6 @@ const PageBindPhone = () => {
         <View className='title'>手机号绑定</View>
       </View>
       <View className='auth-bd'>
-        <View className='form-title'>中国大陆 +86</View>
         <AtForm className='form'>
           <View className='form-field'>
             <AtInput

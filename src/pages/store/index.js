@@ -205,9 +205,9 @@ export default class StoreIndex extends Component {
         })
       }
 
-      if (!info.length) {
-        return showToast('当前暂未配置模板')
-      }
+      // if (!info.length) {
+      //   return showToast('当前暂未配置模板')
+      // }
       //是否有search
       let search = info.config.find((item) => item.name === 'search')
 

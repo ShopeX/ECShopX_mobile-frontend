@@ -62,6 +62,10 @@ const userSlice = createSlice({
       state.location = payload
     },
 
+    closeAdv: (state, { payload }) => {
+      state.showAdv = payload
+    },
+
     clearUserInfo: (state, { payload }) => {
       state.userInfo = null
       state.cardInfo = {}

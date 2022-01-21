@@ -9,7 +9,7 @@ import './index.scss'
 @connect(
   () => ({}),
   (dispatch) => ({
-    onUpdateShowAdv: () => dispatch({ type: 'member/closeAdv' })
+    onUpdateShowAdv: (flag) => dispatch({ type: 'user/closeAdv', payload: flag })
   })
 )
 export default class ScreenAd extends Component {
@@ -94,7 +94,7 @@ export default class ScreenAd extends Component {
         isShow: false
       },
       () => {
-        this.props.onUpdateShowAdv()
+        this.props.onUpdateShowAdv(true)
       }
     )
   }

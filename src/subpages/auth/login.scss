@@ -1,3 +1,5 @@
+$border-color:#E2E4EA; 
+
 .page-auth-login {
   background-color: #fff;
   position: absolute;
@@ -5,52 +7,86 @@
   right: 0;
   bottom: 0;
   left: 0;
-  // padding: 0 32px;
+  padding: 0 32px;
   display: flex;
   flex-direction: column;
 
+  @include placeholder(rgba(197, 202, 213, 1),32px);
 
-  .page-auth-wrapper{
-    // position: absolute;
-    // top:0;
-    // left:32px;
-    // right:32px;
-    // bottom:90px;
-    // max-height:1000px;
-    flex:1;
+  .at-input{
+     .weui-input{
+       color:rgba(17, 26, 52, 1);
+     }
+     .input-placeholder{
+       color:rgba(197, 202, 213, 1);
+     }
+  } 
+
+  &.is-code-login{
+    .auth-bd{
+      .form-submit{
+        margin-top: 50px;
+      }
+    } 
   }
 
+  &.is-full{
+    .auth-bd{
+      .form-submit{ 
+        .login-button{
+          background-color:var(--color-primary);
+          border-color: var(--color-primary);
+        }
+      }
+    } 
+  }
+ 
+
   .auth-hd {
-    margin-top: 20%;
-    padding:  0 40px;
+    
+    margin-top:80px;
+
     .title {
       color: #111A34;
       font-size: 52px;
+      line-height: 1;
+      margin-bottom:24px;
     }
     .desc {
       font-size: 28px;
       color: #858B9C;
+      line-height: 1;
     }
   }
   .auth-bd {
-    margin-top: 60px;
-    padding:  0 40px;
+    margin-top: 100px; 
     .form-title {
       font-size: 32px;
       color: #111A34;
       padding-bottom: 20px;
-      border-bottom: 1PX solid #E2E4EA;
+      border-bottom: 1PX solid $border-color; 
+    }
+    .form-tip{
+      font-size: 28px;
+       color: #858b9c;
+      margin-top: 16px;
     }
     .form-field {
       display: flex;
       align-items: center;
-      border-bottom: 1PX solid #E2E4EA;
+      border-bottom: 1PX solid $border-color; 
+
+      &.noborder{
+        border-bottom: none; 
+      }
+
       .at-input {
         padding: 25px 0 !important;
         margin-bottom: 0;
         flex: 1;
+        
         &:after {
-          border-color: #E2E4EA;
+          border:none;
         }
       }
       .input-field {
@@ -62,6 +98,7 @@
         .image-vcode {
           width:180px;
           height:60px;
+          display: block;
         }
       }
     }
@@ -76,12 +113,36 @@
     }
     .form-submit {
       margin-top: 100px;
+      .at-button__text{
+        @include flex-center();
+        font-size: 36px;
+        font-weight: 600;
+      }
+      .at-button--disabled{
+        opacity: .5;
+      } 
+      .login-button,.reg-button{
+        height: 100px;
+        border-radius: 50px;
+      }
+      .reg-button{
+        margin-top: 32px;
+        background-color: white;
+        /* prettier-ignore */
+        border: 1PX solid var(--color-primary);
+        color:var(--color-primary);
+      }
+    }
+    .forgot-password{
+      color:rgba(133, 139, 156, 1);
     }
     .btn-submit {
       height: 100px;
       border-radius: 50px;
       line-height: 100px;
       font-size: 36px;
+
+      
     }
   }
   .auth-ft {
@@ -95,5 +156,12 @@
       width: 240px;
       height: 45px;
     }
+  }
+  .other-login{ 
+    margin-top: 100px;
+    left: 0;
+    right: 0;
+    bottom:0;
+    text-align: center;
   }
 }

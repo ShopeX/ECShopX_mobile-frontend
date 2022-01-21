@@ -205,7 +205,7 @@ export default class Recharge extends Component {
   // 前往充值协议
   toRule = () => {
     Taro.navigateTo({
-      url: '/subpage/pages/auth/reg-rule?type=1'
+      url: '/subpages/auth/reg-rule?type=1'
     })
   }
   handleLayoutClose = () => {

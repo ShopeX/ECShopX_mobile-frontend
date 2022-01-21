@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { SpPage, SpTimer } from '@/components'
+import { SpPage } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtInput, AtButton } from 'taro-ui'
 import api from '@/api'
-import { setTokenAndRedirect, getToken } from './util'
+import { setTokenAndRedirect, getToken, pushHistory, clearHistory } from './util'
 import { useLogin } from '@/hooks'
 import { useImmer } from 'use-immer'
+import { PASSWORD_TIP } from './const'
 import './edit-password.scss'
 
 const SYMBOL = 'login'
@@ -45,29 +46,25 @@ const PageEditPassword = () => {
       return showToast('2次输入密码不一致!')
     }
 
-    //微信登陆绑定逻辑
-    if (unionid) {
-      const { token } = await api.user.bind({ username: phone, password, union_id: unionid })
-
-      await setTokenAndRedirect(token, async () => {
+    const { user_id } = await api.user.forgotPwd({
+      mobile: phone,
+      password
+    })
+    if (user_id) {
+      await setTokenAndRedirect(getToken(), async () => {
         await getUserInfo()
       })
-    } else {
-      //从登陆页跳转过来
-      const { user_id } = await api.user.forgotPwd({
-        mobile: phone,
-        password
-      })
-      if (user_id) {
-        await setTokenAndRedirect(getToken(), async () => {
-          await getUserInfo()
-        })
-      }
     }
   }
 
+  const loginSuccess = async () => {
+    await setTokenAndRedirect(getToken(), async () => {
+      await getUserInfo()
+    })
+  }
+
   //全填写完
-  const isFull = phone && password && repassword
+  const isFull = phone && password && repassword && password.length >= 6 && repassword.length >= 6
 
   return (
     <SpPage
@@ -104,7 +101,7 @@ const PageEditPassword = () => {
               onChange={handleInputChange('repassword')}
             />
           </View>
-          <View className='form-tip'>6-16位密码、数字或字母</View>
+          <View className='form-tip'>{PASSWORD_TIP}</View>
 
           <View className='form-submit'>
             <AtButton

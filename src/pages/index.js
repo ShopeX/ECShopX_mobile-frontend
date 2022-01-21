@@ -36,6 +36,8 @@ function Home () {
 
   const [policyModal, setPolicyModal] = useState(false)
   const sys = useSelector((state) => state.sys)
+  const showAdv = useSelector((member) => member.user.showAdv)
+
   const { openRecommend } = sys
   const { wgts, shareInfo } = state
 
@@ -135,7 +137,7 @@ function Home () {
       {isWeixin && <MCompAddTip />}
 
       {/* 开屏广告 */}
-      {isWeixin && <SpScreenAd />}
+      {isWeixin && !showAdv && <SpScreenAd />}
 
       {/* 隐私政策 */}
       <MSpPrivacyModal

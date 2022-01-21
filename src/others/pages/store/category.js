@@ -68,63 +68,63 @@ export default class Category extends Component {
       distributor_id: id
     }
     const { list } = await api.category.getCategory(query)
-    let seriesList = list[0] ? list[0].params.data : []
-    if (!seriesList.length) {
-      const param = { distributor_id: id }
-      const res = await api.category.get(param)
-      const nList = pickBy(res, {
-        name: 'category_name',
-        img: 'image_url',
-        id: 'id',
-        category_id: 'category_id',
-        is_main_category: 'is_main_category',
-        children: ({ children }) =>
-          pickBy(children, {
-            name: 'category_name',
-            img: 'image_url',
-            id: 'id',
-            is_main_category: 'is_main_category',
-            category_id: 'category_id',
-            children: ({ children }) =>
-              pickBy(children, {
-                name: 'category_name',
-                img: 'image_url',
-                category_id: 'category_id',
-                is_main_category: 'is_main_category'
-              })
-          })
-      })
-      this.setState({
-        list: nList,
-        hasSeries: false
+    let seriesList = list.length > 0 ? list[0].params.data : []
+    // if (seriesList.length > 0) {
+    //   const param = { distributor_id: id }
+    //   const res = await api.category.get(param)
+    //   const nList = pickBy(res, {
+    //     name: 'category_name',
+    //     img: 'image_url',
+    //     id: 'id',
+    //     category_id: 'category_id',
+    //     is_main_category: 'is_main_category',
+    //     children: ({ children }) =>
+    //       pickBy(children, {
+    //         name: 'category_name',
+    //         img: 'image_url',
+    //         id: 'id',
+    //         is_main_category: 'is_main_category',
+    //         category_id: 'category_id',
+    //         children: ({ children }) =>
+    //           pickBy(children, {
+    //             name: 'category_name',
+    //             img: 'image_url',
+    //             category_id: 'category_id',
+    //             is_main_category: 'is_main_category'
+    //           })
+    //       })
+    //   })
+    //   this.setState({
+    //     list: nList,
+    //     hasSeries: false
+    //   })
+    // } else {
+    // }
+    let tabList = []
+    let contentList = []
+    if (list[0].params.hasSeries) {
+      seriesList.map((item) => {
+        tabList.push({ title: item.title || item.name, status: item.name })
+        contentList.push(item.content || item.children)
       })
     } else {
-      let tabList = []
-      let contentList = []
-      if (list[0].params.hasSeries) {
-        seriesList.map((item) => {
-          tabList.push({ title: item.title, status: item.name })
-          contentList.push(item.content)
-        })
-      } else {
-        contentList.push(seriesList)
-      }
-      const curIndexList = contentList[this.state.curTabIdx]
-      const nList = pickBy(curIndexList, {
-        name: 'name',
-        img: 'img',
-        children: 'children',
-        hot: 'hot',
-        id: 'id',
-        is_main_category: 'is_main_category'
-      })
-      this.setState({
-        tabList,
-        contentList,
-        hasSeries: true,
-        list: nList
-      })
+      contentList.push(seriesList)
     }
+    const curIndexList = contentList[this.state.curTabIdx]
+    const nList = pickBy(curIndexList, {
+      name: 'name',
+      img: 'image_url',
+      children: 'children',
+      hot: 'hot',
+      category_id: 'category_id',
+      is_main_category: 'is_main_category'
+    })
+    this.setState({
+      tabList,
+      contentList,
+      hasSeries: true,
+      list: nList
+    })
   }
 
   handleClickTab = (idx) => {

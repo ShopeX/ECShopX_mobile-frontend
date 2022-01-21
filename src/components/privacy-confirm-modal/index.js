@@ -24,7 +24,7 @@ export default class PrivacyConfirmModal extends Component {
 
   handleClickAgreement = (type) => {
     Taro.navigateTo({
-      url: '/subpage/pages/auth/reg-rule?type=' + type
+      url: '/subpages/auth/reg-rule?type=' + type
     })
   }
 

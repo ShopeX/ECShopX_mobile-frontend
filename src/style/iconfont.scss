@@ -1,17 +1,36 @@
- 
 @font-face {
   font-family: "iconfont"; /* Project id 869421 */
-  src: url('//at.alicdn.com/t/font_869421_8rtzj5dr9wv.woff2?t=1640313473871') format('woff2'),
-       url('//at.alicdn.com/t/font_869421_8rtzj5dr9wv.woff?t=1640313473871') format('woff'),
-       url('//at.alicdn.com/t/font_869421_8rtzj5dr9wv.ttf?t=1640313473871') format('truetype');
+  src: url('//at.alicdn.com/t/font_869421_rjubhs97va.woff2?t=1642646779946') format('woff2'),
+       url('//at.alicdn.com/t/font_869421_rjubhs97va.woff?t=1642646779946') format('woff'),
+       url('//at.alicdn.com/t/font_869421_rjubhs97va.ttf?t=1642646779946') format('truetype');
 }
 
-.iconfont,[class^="icon-"], [class*=" icon-"]  {
+.iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-allGoods:before {
+  content: "\e64c";
+}
+
+.icon-liveroom:before {
+  content: "\e6ef";
+}
+
+.icon-yincang:before {
+  content: "\e64b";
+}
+
+.icon-xianshi:before {
+  content: "\e665";
+}
+
+.icon-gouwuche:before {
+  content: "\e64a";
 }
 
 .icon-weixin:before {
@@ -809,4 +828,3 @@
 .icon-arrowRight:before {
   content: "\e726";
 }
-
