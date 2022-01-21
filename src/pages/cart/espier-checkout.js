@@ -6,6 +6,7 @@ import { useImmer } from 'use-immer'
 import { SpPage, SpPrice, SpCell, SpOrderItem } from '@/components'
 import { View, Text } from '@tarojs/components'
 import { changeCoupon } from '@/store/slices/cart'
+import { updateChooseAddress } from '@/store/slices/user'
 import { isObjectsValue, isWeixin, pickBy, authSetting } from '@/utils'
 import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
@@ -34,8 +35,8 @@ function CartCheckout (props) {
   } = $instance.router?.params || {}
 
   const [state, setState] = useImmer(initialState)
+
   const dispatch = useDispatch()
-  // dispatch(changeZitiStore())
   const { address } = useSelector((state) => state.user)
   const { pointName } = useSelector((state) => state.sys)
   const { coupon } = useSelector((state) => state.cart)
@@ -68,13 +69,14 @@ function CartCheckout (props) {
   useEffect(() => {
     getTradeSetting()
     return () => {
-      dispatch(changeCoupon(null))
+      dispatch(changeCoupon()) // 清空优惠券信息
+      dispatch(updateChooseAddress()) // 清空地址信息
     }
   }, [])
 
   useEffect(() => {
     calcOrder()
-  }, [receiptType, address, coupon])
+  }, [address, coupon])
 
   const transformCartList = (list) => {
     return pickBy(list, doc.checkout.CHECKOUT_GOODS_ITEM)
@@ -104,9 +106,6 @@ function CartCheckout (props) {
     setState((draft) => {
       ;(draft.receiptType = receipt_type), (draft.distributorInfo = distributorInfo)
     })
-    // if (receipt_type !== 'ziti') {
-    //   calcOrder()
-    // }
   }
 
   const handleInvoiceClick = () => {
@@ -187,17 +186,17 @@ function CartCheckout (props) {
       mask: true
     })
     const cus_parmas = getParamsInfo()
-    console.log(cus_parmas)
     let data
     try {
       data = await api.cart.total({ ...cus_parmas })
     } catch (e) {
       console.log(e)
-      // if (e.res.data.data.status_code === 422) {
-      //   setTimeout(() => {
-      //     Taro.navigateBack()
-      //   }, 1000)
-      // }
+      debugger
+      if (e.res.data.data.status_code === 422) {
+        setTimeout(() => {
+          Taro.navigateBack()
+        }, 1000)
+      }
     }
     Taro.hideLoading()
 
@@ -298,7 +297,11 @@ function CartCheckout (props) {
   }
 
   const getParamsInfo = () => {
-    const receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
+    let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
+    if (receiptType === 'ziti') {
+      receiver = pickBy({}, doc.checkout.RECEIVER_ADDRESS)
+    }
+
     let cus_parmas = {
       ...paramsInfo,
       ...receiver,

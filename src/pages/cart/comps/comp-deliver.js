@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import api from '@/api'
 import { AddressChoose } from '@/components'
-import { classNames } from '@/utils'
 import { updateChooseAddress } from '@/store/slices/user'
+import { classNames } from '@/utils'
+import api from '@/api'
 
 import { deliveryList } from '../const'
 import './comp-deliver.scss'
@@ -31,9 +31,7 @@ function CmopDeliver (props) {
   }, [])
 
   useEffect(() => {
-    if (receiptType !== 'ziti') {
-      fetchAddress()
-    }
+    fetchAddress()
   }, [receiptType])
 
   const fetch = async () => {
@@ -49,16 +47,20 @@ function CmopDeliver (props) {
   }
 
   const fetchAddress = async () => {
-    // await dispatch(updateChooseAddress(null))
     let query = {
       receipt_type: receiptType
     }
     if (receiptType == 'dada') {
       query['city'] = distributorInfo.city
     }
-    const { list } = await api.member.addressList(query)
-    const defaultAddress = list.find((item) => item.is_def) || list[0]
-    await dispatch(updateChooseAddress(defaultAddress))
+    if (receiptType !== 'ziti') {
+      // 非自提情况下，把地址存起来，否则清空地址
+      const { list } = await api.member.addressList(query)
+      const defaultAddress = list.find((item) => item.is_def) || list[0]
+      await dispatch(updateChooseAddress(defaultAddress))
+    } else {
+      await dispatch(updateChooseAddress())
+    }
   }
 
   const handleSwitchExpress = async (receipt_type) => {
