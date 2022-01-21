@@ -55,7 +55,8 @@ function CartCheckout (props) {
     isNeedPackage,
     disabledPayment,
     paramsInfo,
-    discountInfo
+    discountInfo,
+    couponInfo
   } = state
 
   useEffect(() => {
@@ -66,9 +67,9 @@ function CartCheckout (props) {
 
   useEffect(() => {
     getTradeSetting()
-    // return () => {
-    //   dispatch(changeCoupon(null))
-    // }
+    return () => {
+      dispatch(changeCoupon(null))
+    }
   }, [])
 
   useEffect(() => {
@@ -161,6 +162,7 @@ function CartCheckout (props) {
       }
     })
     let cus_item = JSON.stringify(items_filter)
+    dispatch(changeCoupon(couponInfo))
     Taro.navigateTo({
       url: `/others/pages/cart/coupon-picker?items=${cus_item}&is_checkout=true&cart_type=${cart_type}&distributor_id=${distributor_id}` // &source=${source}不确定要不要传
     })
@@ -232,19 +234,20 @@ function CartCheckout (props) {
       // real_use_point,
     } = data
 
-    // if (isObjectsValue(coupon_info) && !coupon) {
-    //   dispatch(
-    //     changeCoupon({
-    //       type: 'coupon',
-    //       value: {
-    //         title: coupon_info.info,
-    //         card_id: coupon_info.id,
-    //         code: coupon_info.coupon_code,
-    //         discount: coupon_info.discount_fee
-    //       }
-    //     })
-    //   )
-    // }
+    if (isObjectsValue(coupon_info)) {
+      setState((draft) => {
+        draft.couponInfo = {
+          type: 'coupon',
+          not_use_coupon: coupon_info.coupon_code ? 0 : 1,
+          value: {
+            title: coupon_info.info,
+            card_id: coupon_info.id,
+            code: coupon_info.coupon_code,
+            discount: coupon_info.discount_fee
+          }
+        }
+      })
+    }
 
     const total = {
       ...totalInfo,
@@ -413,11 +416,12 @@ function CartCheckout (props) {
     )
   }
 
-  const couponText = !coupon
-    ? ''
-    : coupon.type === 'member'
-    ? '会员折扣'
-    : (coupon.value && coupon.value.title) || ''
+  const couponText =
+    couponInfo.type === 'member'
+      ? '会员折扣'
+      : couponInfo?.not_use_coupon == 0
+      ? couponInfo?.value?.title
+      : ''
 
   return (
     <SpPage className='page-cart-checkout' renderFooter={renderFooter()}>

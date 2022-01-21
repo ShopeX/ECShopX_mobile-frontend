@@ -115,7 +115,7 @@ function CmopDeliver (props) {
       {/** 同城配 */}
       {receiptType === 'dada' && (
         <View className='store-module'>
-          <AddressChoose isAddress={address} onCustomChosse={handleChooseAddress.bind(this)} />
+          <AddressChoose isAddress={address} onCustomChosse={handleChooseAddress} />
           <View className='store'>配送门店: {distributorInfo.name}</View>
         </View>
       )}
@@ -125,7 +125,7 @@ function CmopDeliver (props) {
           <View className='address-title'>{distributorInfo.name}</View>
           <View className='address-detail'>
             <View className='address'>{distributorInfo.store_address}</View>
-            <View className='iconfont icon-periscope' onClick={handleMapClick.bind(this)}></View>
+            <View className='iconfont icon-periscope' onClick={() => handleMapClick()}></View>
           </View>
           <View className='other-info'>
             <View className='text-muted light'>门店营业时间：{distributorInfo.hour}</View>

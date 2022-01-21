@@ -26,7 +26,8 @@ export const initialState = {
   disabledPayment: {}, // 是否禁用支付
   channel: '',
   paramsInfo: {}, // 结算接口参数
-  discountInfo: []
+  discountInfo: [],
+  couponInfo: {} // 优惠券信息
 }
 
 export const deliveryList = [
