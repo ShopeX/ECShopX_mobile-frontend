@@ -49,24 +49,25 @@ function CmopDeliver (props) {
   }
 
   const fetchAddress = async () => {
-    await dispatch(updateChooseAddress(null))
+    // await dispatch(updateChooseAddress(null))
     let query = {
-      receipt_type: receiptType,
-      city: receiptType === 'dada' ? distributorInfo.city : undefined
+      receipt_type: receiptType
+    }
+    if (receiptType == 'dada') {
+      query['city'] = distributorInfo.city
     }
     const { list } = await api.member.addressList(query)
-    const defaultAddress = list.find((item) => item.is_def)
-    const update_address = defaultAddress || list[0] || {}
-    await dispatch(updateChooseAddress(update_address))
+    const defaultAddress = list.find((item) => item.is_def) || list[0]
+    await dispatch(updateChooseAddress(defaultAddress))
   }
 
-  const handleSwitchExpress = async (type) => {
+  const handleSwitchExpress = async (receipt_type) => {
     // 切换配送方式
-    if (receiptType === type) return
+    if (receiptType === receipt_type) return
     setState((draft) => {
-      draft.receiptType = type
+      draft.receiptType = receipt_type
     })
-    onChangReceiptType(type, distributorInfo)
+    onChangReceiptType({ receipt_type, distributorInfo })
   }
 
   const handleMapClick = () => {
@@ -82,9 +83,8 @@ function CmopDeliver (props) {
   const handleChooseAddress = (choose) => {
     // 自定义选择店铺跳转事件
     let city = distributorInfo.city
-    let params = receiptType === 'dada' ? `&city=${city}&receipt_type=dada` : ''
     Taro.navigateTo({
-      url: `/marketing/pages/member/address?isPicker=${choose}${params}`
+      url: `/marketing/pages/member/address?isPicker=${choose}&city=${city}&receipt_type=dada`
     })
   }
 
@@ -99,7 +99,9 @@ function CmopDeliver (props) {
                   key={item.type}
                   className={`switch-item ${receiptType === item.type ? 'active' : ''}`}
                   style={receiptType === item.type && { background: `rgb(${rgb}, 0.4)` }}
-                  onClick={handleSwitchExpress.bind(this, item.type)}
+                  onClick={() => {
+                    handleSwitchExpress(item.type)
+                  }}
                 >
                   {item.name}
                 </View>

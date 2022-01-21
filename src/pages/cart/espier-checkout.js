@@ -36,7 +36,6 @@ function CartCheckout (props) {
   const [state, setState] = useImmer(initialState)
   const dispatch = useDispatch()
   // dispatch(changeZitiStore())
-
   const { address } = useSelector((state) => state.user)
   const { pointName } = useSelector((state) => state.sys)
   const { coupon } = useSelector((state) => state.cart)
@@ -47,12 +46,12 @@ function CartCheckout (props) {
     submitLoading,
     btnIsDisabled,
     isPointitemGood,
-    totalInfo = {},
+    totalInfo,
     shoppingGuideData,
     receiptType,
-    distributorInfo = {},
+    distributorInfo,
     invoiceTitle,
-    packInfo = {},
+    packInfo,
     isNeedPackage,
     disabledPayment,
     paramsInfo,
@@ -67,24 +66,14 @@ function CartCheckout (props) {
 
   useEffect(() => {
     getTradeSetting()
-    return () => {
-      dispatch(changeCoupon(null))
-    }
+    // return () => {
+    //   dispatch(changeCoupon(null))
+    // }
   }, [])
 
   useEffect(() => {
     calcOrder()
-  }, [address])
-
-  useEffect(() => {
-    calcOrder()
-  }, [coupon])
-
-  useEffect(() => {
-    if (receiptType !== 'ziti') {
-      calcOrder()
-    }
-  }, [receiptType])
+  }, [receiptType, address, coupon])
 
   const transformCartList = (list) => {
     return pickBy(list, doc.checkout.CHECKOUT_GOODS_ITEM)
@@ -109,11 +98,14 @@ function CartCheckout (props) {
     console.log('提交按钮', isObjectsValue(shoppingGuideData), shoppingGuideData)
   }
 
-  const handleSwitchExpress = (receiptType, distributorInfo) => {
+  const handleSwitchExpress = ({ receipt_type, distributorInfo }) => {
     // 切换配送模式
     setState((draft) => {
-      ;(draft.receiptType = receiptType), (draft.distributorInfo = distributorInfo)
+      ;(draft.receiptType = receipt_type), (draft.distributorInfo = distributorInfo)
     })
+    // if (receipt_type !== 'ziti') {
+    //   calcOrder()
+    // }
   }
 
   const handleInvoiceClick = () => {
@@ -193,6 +185,7 @@ function CartCheckout (props) {
       mask: true
     })
     const cus_parmas = getParamsInfo()
+    console.log(cus_parmas)
     let data
     try {
       data = await api.cart.total({ ...cus_parmas })
@@ -239,19 +232,19 @@ function CartCheckout (props) {
       // real_use_point,
     } = data
 
-    if (isObjectsValue(coupon_info) && !coupon) {
-      dispatch(
-        changeCoupon({
-          type: 'coupon',
-          value: {
-            title: coupon_info.info,
-            card_id: coupon_info.id,
-            code: coupon_info.coupon_code,
-            discount: coupon_info.discount_fee
-          }
-        })
-      )
-    }
+    // if (isObjectsValue(coupon_info) && !coupon) {
+    //   dispatch(
+    //     changeCoupon({
+    //       type: 'coupon',
+    //       value: {
+    //         title: coupon_info.info,
+    //         card_id: coupon_info.id,
+    //         code: coupon_info.coupon_code,
+    //         discount: coupon_info.discount_fee
+    //       }
+    //     })
+    //   )
+    // }
 
     const total = {
       ...totalInfo,
@@ -288,7 +281,9 @@ function CartCheckout (props) {
     Taro.hideLoading()
 
     setState((draft) => {
-      ;(draft.totalInfo = total), (draft.paramsInfo = cus_parmas), (draft.detailInfo = info)
+      ;(draft.totalInfo = total),
+        (draft.detailInfo = info),
+        (draft.paramsInfo = { ...paramsInfo, ...cus_parmas })
     })
     if (extraTips) {
       Taro.showModal({
@@ -308,12 +303,15 @@ function CartCheckout (props) {
       distributor_id,
       cart_type,
       order_type: bargain_id ? 'bargain' : order_type,
-      promotion: 'normal'
+      promotion: 'normal',
+      member_discount: 0,
+      coupon_discount: 0,
+      not_use_coupon: 0
     }
 
     if (coupon) {
       const { not_use_coupon, type, value } = coupon
-      cus_parmas.not_use_coupon = not_use_coupon || 0
+      cus_parmas.not_use_coupon = not_use_coupon
       cus_parmas.coupon_discount = type === 'coupon' && value.code ? value.code : undefined
       cus_parmas.member_discount = type === 'member' && value ? 1 : 0
     }
