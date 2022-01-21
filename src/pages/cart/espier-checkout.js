@@ -217,21 +217,6 @@ function CartCheckout (props) {
       invoice_status,
       // 额外提示信息
       extraTips = ''
-      // freight_type,
-      // freight_point = 0,
-      // point = 0,
-      // remainpt, // 总积分
-      // deduction,
-      // third_params,
-      // taxable_fee,
-      // total_tax,
-      // point_fee = 0,
-      // point_use,
-      // user_point = 0,
-      // max_point = 0,
-      // is_open_deduct_point,
-      // deduct_point_rule,
-      // real_use_point,
     } = data
 
     if (isObjectsValue(coupon_info)) {
@@ -259,15 +244,6 @@ function CartCheckout (props) {
       total_fee,
       items_count,
       invoice_status // 是否开启开发票
-      // taxable_fee,
-      // total_tax,
-      // point,
-      // freight_point,
-      // remainpt, // 总积分
-      // deduction, // 抵扣
-      // point_fee: point_fee, //积分抵扣金额,
-      // item_point,
-      // freight_type
     }
     let info = detailInfo
     if (items.length > 0) {
@@ -326,6 +302,28 @@ function CartCheckout (props) {
     cus_parmas.bargain_id = bargain_id || undefined
 
     return cus_parmas
+  }
+
+  const renderFooter = () => {
+    return (
+      <View className='checkout-toolbar'>
+        <View className='checkout-toolbar__total'>
+          共<Text>{totalInfo.items_count}</Text>
+          件商品　总计:
+          <SpPrice unit='cent' className='primary-price' value={totalInfo.total_fee} />
+        </View>
+        <AtButton
+          type='primary'
+          className='checkout-toolbar__btn'
+          customStyle='background: var(--color-primary); border-color: var(--color-primary)'
+          loading={submitLoading}
+          disabled={!isObjectsValue(address)}
+          onClick={onSubmitPayChange}
+        >
+          提交订单
+        </AtButton>
+      </View>
+    )
   }
 
   const goodsComp = () => {
@@ -393,28 +391,6 @@ function CartCheckout (props) {
             </View>
           )
         })}
-      </View>
-    )
-  }
-
-  const renderFooter = () => {
-    return (
-      <View className='checkout-toolbar'>
-        <View className='checkout-toolbar__total'>
-          共<Text>{totalInfo.items_count}</Text>
-          件商品　总计:
-          <SpPrice unit='cent' className='primary-price' value={totalInfo.total_fee} />
-        </View>
-        <AtButton
-          type='primary'
-          className='checkout-toolbar__btn'
-          customStyle='background: var(--color-primary); border-color: var(--color-primary)'
-          loading={submitLoading}
-          disabled={!isObjectsValue(address)}
-          onClick={onSubmitPayChange}
-        >
-          提交订单
-        </AtButton>
       </View>
     )
   }
