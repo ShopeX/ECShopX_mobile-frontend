@@ -90,7 +90,7 @@
     "webpack-dev-server": "^2.9.7"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
+    "src/**/*.{js,jsx,scss}": [
       "prettier-eslint --write"
     ]
   }
