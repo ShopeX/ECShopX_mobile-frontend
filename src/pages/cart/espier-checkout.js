@@ -156,7 +156,7 @@ function CartCheckout (props) {
   }
 
   const handleCouponsClick = async () => {
-    const { cart_type, distributor_id } = paramsInfo
+    const { cart_type, distributor_id: id } = paramsInfo
     let items_filter = discountInfo.filter((item) => item.order_item_type !== 'gift')
     items_filter = items_filter.map((item) => {
       const { item_id, num, total_fee: price } = item
@@ -168,7 +168,9 @@ function CartCheckout (props) {
     })
     let cus_item = JSON.stringify(items_filter)
     Taro.navigateTo({
-      url: `/others/pages/cart/coupon-picker?items=${cus_item}&is_checkout=true&cart_type=${cart_type}&distributor_id=${distributor_id}` // &source=${source}不确定要不要传
+      url: `/others/pages/cart/coupon-picker?items=${cus_item}&is_checkout=true&cart_type=${cart_type}&distributor_id=${
+        distributor_id || id
+      }` // &source=${source}不确定要不要传
     })
     dispatch(changeCoupon(couponInfo))
   }
@@ -230,7 +232,7 @@ function CartCheckout (props) {
       setState((draft) => {
         draft.couponInfo = {
           type: 'coupon',
-          not_use_coupon: coupon_info.coupon_code ? 0 : 1,
+          // not_use_coupon: coupon_info.coupon_code ? 0 : 1, //有优惠券code not_use_coupon就传0 代表使用优惠券
           value: {
             title: coupon_info.info,
             card_id: coupon_info.id,
@@ -299,8 +301,8 @@ function CartCheckout (props) {
     }
 
     if (coupon) {
-      const { not_use_coupon, type, value } = coupon
-      cus_parmas.not_use_coupon = not_use_coupon
+      const { type, value } = coupon
+      cus_parmas.not_use_coupon = value.code ? 0 : 1
       cus_parmas.coupon_discount = type === 'coupon' && value.code ? value.code : undefined
       cus_parmas.member_discount = type === 'member' && value ? 1 : 0
     }
@@ -348,17 +350,15 @@ function CartCheckout (props) {
           return (
             <View className='cart-checkout__group' key={cart.shop_id}>
               <View className='cart-group__cont'>
-                {/* <View className='order-item__idx'>商品清单（{cart.list.length}）</View> */}
+                <View className='order-item__idx'>
+                  商品清单 <Text style={{ color: '#222' }}>（{cart.list.length}）</Text>
+                </View>
                 {cart.list.map((item, idx) => {
                   return (
                     <View className='order-item__wrap' key={item.item_id}>
-                      {item.order_item_type === 'gift' ? (
+                      {item.order_item_type === 'gift' && (
                         <View className='order-item__idx'>
                           <Text>赠品</Text>
-                        </View>
-                      ) : (
-                        <View className='order-item__idx national'>
-                          <Text>第{idx + 1}件商品</Text>
                         </View>
                       )}
                       <SpOrderItem
@@ -414,7 +414,7 @@ function CartCheckout (props) {
   const couponText =
     couponInfo.type === 'member'
       ? '会员折扣'
-      : couponInfo?.not_use_coupon == 0
+      : couponInfo?.value?.code
       ? couponInfo?.value?.title
       : ''
 
@@ -483,7 +483,7 @@ function CartCheckout (props) {
             <SpPrice unit='cent' value={totalInfo.item_fee} />
           </SpCell>
           <SpCell className='trade-sub__item' title='优惠金额：'>
-            <SpPrice unit='cent' primary value={totalInfo.discount_fee} />
+            <SpPrice unit='cent' primary value={-1 * totalInfo.discount_fee} />
           </SpCell>
           <SpCell className='trade-sub__item' title='运费：'>
             <SpPrice unit='cent' value={totalInfo.freight_fee} />

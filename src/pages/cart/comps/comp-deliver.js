@@ -100,7 +100,6 @@ function CmopDeliver (props) {
                 <View
                   key={item.type}
                   className={`switch-item ${receiptType === item.type ? 'active' : ''}`}
-                  style={receiptType === item.type && { background: `rgb(${rgb}, 0.4)` }}
                   onClick={() => {
                     handleSwitchExpress(item.type)
                   }}

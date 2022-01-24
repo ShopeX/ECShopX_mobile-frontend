@@ -110,6 +110,11 @@ $margin24: 24px;
     margin-bottom: $margin24;
     margin-top: 24px;
   }
+  .cart-checkout__coupons {
+    .sp-cell__value {
+      color: #222;
+    }
+  }
 
   .cart-checkout__invoice, .cart-checkout__coupons, .cart-checkout__pack, .cart-checkout__pay, .cart-checkout__total, .cart-checkout__group {
     box-shadow: 0px 2px 10px 0px #EAE7E0;

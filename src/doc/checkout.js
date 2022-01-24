@@ -13,7 +13,8 @@ export const CHECKOUT_GOODS_ITEM = {
   item_point: 'item_point',
   price: 'price', // ({ price }) => (+price / 100).toFixed(2),
   num: 'num',
-  item_spec_desc: 'item_spec_desc'
+  item_spec_desc: 'item_spec_desc',
+  distributor_id: 'distributor_id'
 }
 
 export const INVOICE_TITLE = {

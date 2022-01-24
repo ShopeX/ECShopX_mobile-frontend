@@ -112,8 +112,9 @@ export default class CouponPicker extends Component {
     const payload = value
       ? { type, value }
       : {
-          not_use_coupon: 0 // 1是不用 0是用
+          not_use_coupon: 1 // 1是不用 0是用
         }
+    debugger
     this.props.onChangeCoupon(payload)
     setTimeout(() => {
       Taro.navigateBack()
