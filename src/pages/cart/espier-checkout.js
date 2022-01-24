@@ -8,6 +8,7 @@ import { View, Text } from '@tarojs/components'
 import { changeCoupon } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
 import { isObjectsValue, isWeixin, pickBy, authSetting } from '@/utils'
+import { useAsyncCallback } from '@/hooks'
 import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
 import doc from '@/doc'
@@ -36,7 +37,7 @@ function CartCheckout (props) {
     group_id // 团购id
   } = $instance.router?.params || {}
 
-  const [state, setState] = useImmer(initialState)
+  const [state, setState] = useAsyncCallback(initialState)
 
   const dispatch = useDispatch()
   const { address } = useSelector((state) => state.user)
@@ -48,7 +49,6 @@ function CartCheckout (props) {
     payType,
     payChannel,
     submitLoading,
-    btnIsDisabled,
     isPointitemGood,
     totalInfo,
     shoppingGuideData,
@@ -59,7 +59,6 @@ function CartCheckout (props) {
     isNeedPackage,
     disabledPayment,
     paramsInfo,
-    discountInfo,
     couponInfo,
     remark
   } = state
@@ -82,10 +81,6 @@ function CartCheckout (props) {
     calcOrder()
   }, [address, coupon])
 
-  const transformCartList = (list) => {
-    return pickBy(list, doc.checkout.CHECKOUT_GOODS_ITEM)
-  }
-
   const getTradeSetting = async () => {
     let data = await api.trade.tradeSetting()
     setState((draft) => {
@@ -101,11 +96,15 @@ function CartCheckout (props) {
   }
 
   const onSubmitPayChange = () => {
-    setState((draft) => {
-      draft.submitLoading = true
-    })
+    setState(
+      (draft) => {
+        draft.submitLoading = true
+      },
+      ({ submitLoading }) => {
+        console.log('提交按钮', getParamsInfo(submitLoading))
+      }
+    )
     // 提交订单按钮
-    console.log('提交按钮', getParamsInfo())
   }
 
   const handleSwitchExpress = ({ receipt_type, distributorInfo }) => {
@@ -161,7 +160,7 @@ function CartCheckout (props) {
 
   const handleCouponsClick = async () => {
     const { cart_type, distributor_id: id } = paramsInfo
-    let items_filter = discountInfo.filter((item) => item.order_item_type !== 'gift')
+    let items_filter = detailInfo.filter((item) => item.order_item_type !== 'gift')
     items_filter = items_filter.map((item) => {
       const { item_id, num, total_fee: price } = item
       return {
@@ -205,7 +204,6 @@ function CartCheckout (props) {
       data = await api.cart.total({ ...cus_parmas })
     } catch (e) {
       console.log(e)
-      debugger
       if (e.res.data.data.status_code === 422) {
         setTimeout(() => {
           Taro.navigateBack()
@@ -257,23 +255,11 @@ function CartCheckout (props) {
       items_count,
       invoice_status // 是否开启开发票
     }
-    let info = detailInfo
-    if (items.length > 0) {
-      info = [
-        {
-          list: transformCartList(items)
-        }
-      ]
-      setState((draft) => {
-        draft.discountInfo = transformCartList(items)
-      })
-    }
-
     Taro.hideLoading()
 
     setState((draft) => {
       draft.totalInfo = total
-      draft.detailInfo = info
+      draft.detailInfo = pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM)
       draft.paramsInfo = { ...paramsInfo, ...cus_parmas }
     })
     if (extraTips) {
@@ -285,12 +271,13 @@ function CartCheckout (props) {
     }
   }
 
-  const getParamsInfo = () => {
+  const getParamsInfo = (submitLoading = false) => {
     const { value, activity } = getActivityValue() || {}
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
     if (receiptType === 'ziti') {
       receiver = pickBy({}, doc.checkout.RECEIVER_ADDRESS)
     }
+
     let cus_parmas = {
       ...paramsInfo,
       ...activity,
@@ -312,7 +299,8 @@ function CartCheckout (props) {
       cus_parmas.member_discount = type === 'member' && value ? 1 : 0
     }
 
-    cus_parmas.pack = isNeedPackage ? packInfo : undefined
+    const { packName, packDes } = packInfo
+    cus_parmas.pack = isNeedPackage ? { packName, packDes } : undefined
     cus_parmas.bargain_id = bargain_id || undefined
 
     if (submitLoading) {
@@ -376,67 +364,56 @@ function CartCheckout (props) {
   const goodsComp = () => {
     return (
       <View className='cart-list'>
-        {detailInfo.map((cart) => {
-          return (
-            <View className='cart-checkout__group' key={cart.shop_id}>
-              <View className='cart-group__cont'>
-                <View className='order-item__idx'>
-                  商品清单 <Text style={{ color: '#222' }}>（{cart.list.length}）</Text>
-                </View>
-                {cart.list.map((item, idx) => {
-                  return (
-                    <View className='order-item__wrap' key={item.item_id}>
-                      {/* {item.order_item_type === 'gift' && (
-                        <View className='order-item__idx'>
-                          <Text>赠品</Text>
-                        </View>
-                      )} */}
-                      <SpOrderItem
-                        info={item}
-                        showExtra={false}
-                        showDesc
-                        isPointitemGood={isPointitemGood}
-                        renderDesc={
-                          <View className='order-item__desc'>
-                            {item.discount_info &&
-                              item.order_item_type !== 'gift' &&
-                              item.discount_info.map((discount) => (
-                                <Text className='order-item__discount' key={discount.type}>
-                                  {discount.info}
-                                </Text>
-                              ))}
-                          </View>
-                        }
-                        customFooter
-                        renderFooter={
-                          <View className='order-item__ft'>
-                            <SpPrice
-                              unit='cent'
-                              className='order-item__price'
-                              value={item.price || 100}
-                            />
-                            <Text className='order-item__num'>x {item.num || 1}</Text>
-                          </View>
-                        }
-                      />
-                    </View>
-                  )
-                })}
-              </View>
-              <View className='cart-group__cont cus-input'>
-                <SpCell className='trade-remark' border={false}>
-                  <AtInput
-                    className='trade-remark__input'
-                    placeholder='给商家留言：选填（50字以内）'
-                    onChange={handleRemarkChange}
-                    value={remark}
-                    maxLength={50}
-                  />
-                </SpCell>
-              </View>
+        <View className='cart-checkout__group'>
+          <View className='cart-group__cont'>
+            <View className='order-item__idx'>
+              商品清单 <Text style={{ color: '#222' }}>（{detailInfo.length}）</Text>
             </View>
-          )
-        })}
+            {detailInfo.map((item, idx) => (
+              <View className='order-item__wrap' key={idx}>
+                <SpOrderItem
+                  info={item}
+                  showExtra={false}
+                  showDesc
+                  isPointitemGood={isPointitemGood}
+                  renderDesc={
+                    <View className='order-item__desc'>
+                      {item.discount_info &&
+                        item.order_item_type !== 'gift' &&
+                        item.discount_info.map((discount) => (
+                          <Text className='order-item__discount' key={discount.type}>
+                            {discount.info}
+                          </Text>
+                        ))}
+                    </View>
+                  }
+                  customFooter
+                  renderFooter={
+                    <View className='order-item__ft'>
+                      <SpPrice
+                        unit='cent'
+                        className='order-item__price'
+                        value={item.price || 100}
+                      />
+                      <Text className='order-item__num'>x {item.num || 1}</Text>
+                    </View>
+                  }
+                />
+              </View>
+            ))}
+          </View>
+          <View className='cart-group__cont cus-input'>
+            <SpCell className='trade-remark' border={false}>
+              <AtInput
+                className='trade-remark__input'
+                placeholder='给商家留言：选填（50字以内）'
+                onChange={handleRemarkChange}
+                value={remark}
+                maxLength={50}
+              />
+            </SpCell>
+          </View>
+        </View>
       </View>
     )
   }
