@@ -67,7 +67,7 @@ function SpOrderItem (props) {
               noSymbol
               noDecimal
               value={info.item_point || info.point}
-            ></SpPrice>
+            />
           ) : (
             <SpPrice className='order-item__price' unit='cent' value={info.price}></SpPrice>
           )}
