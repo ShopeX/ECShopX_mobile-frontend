@@ -85,10 +85,31 @@ export const GOODS_INFO = {
   couponList: 'kaquan_list',
   store: 'store',
   isGift: 'is_gift',
-  skuList: 'item_spec_desc',
+  skuList: ({ item_spec_desc }) => {
+    return pickBy(item_spec_desc, {
+      skuName: 'spec_name',
+      skuValue: ({ spec_values }) => {
+        return pickBy(spec_values, {
+          specId: 'spec_value_id',
+          specName: ({ spec_custom_value_name, spec_value_name }) => {
+            return spec_custom_value_name || spec_value_name
+          },
+          specImgs: 'item_image_url'
+        })
+      }
+    })
+  },
   specItems: ({ spec_items }) => {
     return pickBy(spec_items, {
-      itemSpec: 'item_spec',
+      specItem: ({ item_spec }) => {
+        return pickBy(item_spec, {
+          specId: 'spec_value_id',
+          specName: ({ spec_custom_value_name, spec_value_name }) => {
+            return spec_custom_value_name || spec_value_name
+          },
+          specImgs: 'item_image_url'
+        })
+      },
       store: 'store'
     })
   },

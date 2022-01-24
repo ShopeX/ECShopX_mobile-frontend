@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { connect } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
@@ -44,6 +44,8 @@ import CompBuytoolbar from './comps/comp-buytoolbar'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
+
+const MSpSkuSelect = React.memo(SpSkuSelect)
 
 const initialState = {
   info: null,
@@ -348,7 +350,7 @@ function EspierDetail (props) {
       />
 
       {/* Sku选择器 */}
-      <SpSkuSelect
+      <MSpSkuSelect
         open={skuPanelOpen}
         info={info}
         onClose={() => {

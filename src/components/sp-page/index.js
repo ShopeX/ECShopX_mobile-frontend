@@ -26,7 +26,9 @@ function SpPage (props, ref) {
     renderFooter,
     scrollToTopBtn = false,
     isDefault = false,
-    defaultMsg = ''
+    defaultMsg = '',
+    navbar = true,
+    onClickLeftIcon = null
   } = props
   const wrapRef = useRef(null)
   const scrollTopRef = useRef(0)
@@ -109,7 +111,7 @@ function SpPage (props, ref) {
       style={styleNames({ ...pageTheme, ...lockStyle })}
       ref={wrapRef}
     >
-      {hasNavbar && !isTabBarPage && <SpNavBar />}
+      {hasNavbar && !isTabBarPage && <SpNavBar onClickLeftIcon={onClickLeftIcon} />}
 
       {isDefault && <SpNote img='empty_data.png' title={defaultMsg} />}
 
