@@ -28,10 +28,12 @@ function CartCheckout (props) {
     shop_id: distributor_id,
     cart_type,
     seckill_id = null,
-    seckill_ticket = null,
+    ticket: seckill_ticket,
     pay_type,
     source, // 不知道什么情况下会存在值
-    bargain_id
+    bargain_id, // 砍价活动id
+    team_id, // 团队id,
+    group_id // 团购id
   } = $instance.router?.params || {}
 
   const [state, setState] = useImmer(initialState)
@@ -234,7 +236,6 @@ function CartCheckout (props) {
       setState((draft) => {
         draft.couponInfo = {
           type: 'coupon',
-          // not_use_coupon: coupon_info.coupon_code ? 0 : 1, //有优惠券code not_use_coupon就传0 代表使用优惠券
           value: {
             title: coupon_info.info,
             card_id: coupon_info.id,
@@ -285,17 +286,19 @@ function CartCheckout (props) {
   }
 
   const getParamsInfo = () => {
+    const { value, activity } = getActivityValue() || {}
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
     if (receiptType === 'ziti') {
       receiver = pickBy({}, doc.checkout.RECEIVER_ADDRESS)
     }
     let cus_parmas = {
       ...paramsInfo,
+      ...activity,
       ...receiver,
       receipt_type: receiptType,
       distributor_id,
       cart_type,
-      order_type: bargain_id ? 'bargain' : order_type,
+      order_type: bargain_id ? 'bargain' : value,
       promotion: 'normal',
       member_discount: 0,
       coupon_discount: 0,
@@ -304,7 +307,7 @@ function CartCheckout (props) {
 
     if (coupon) {
       const { type, value } = coupon
-      cus_parmas.not_use_coupon = value.code ? 0 : 1
+      cus_parmas.not_use_coupon = value?.code ? 0 : 1
       cus_parmas.coupon_discount = type === 'coupon' && value.code ? value.code : undefined
       cus_parmas.member_discount = type === 'member' && value ? 1 : 0
     }
@@ -321,6 +324,31 @@ function CartCheckout (props) {
     }
 
     return cus_parmas
+  }
+
+  const getActivityValue = () => {
+    let value = ''
+    let activity = {}
+    switch (type) {
+      case 'groups':
+        value = 'normal_groups'
+        activity = Object.assign(activity, { bargain_id: group_id })
+        if (team_id) {
+          activity = Object.assign(activity, { team_id })
+        }
+        break
+      case 'seckill':
+        value = 'normal_seckill'
+        activity = Object.assign(activity, { seckill_id, seckill_ticket })
+        break
+      default:
+        value = 'normal'
+        activity = {}
+    }
+    return {
+      value,
+      activity
+    }
   }
 
   const renderFooter = () => {

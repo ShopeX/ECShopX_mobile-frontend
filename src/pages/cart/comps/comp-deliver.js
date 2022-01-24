@@ -59,7 +59,7 @@ function CmopDeliver (props) {
       const defaultAddress = list.find((item) => item.is_def) || list[0] || null
       await dispatch(updateChooseAddress(defaultAddress))
     } else {
-      await dispatch(updateChooseAddress(null))
+      await dispatch(updateChooseAddress({}))
     }
   }
 
