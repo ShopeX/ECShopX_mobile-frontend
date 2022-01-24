@@ -21,24 +21,15 @@ const initialState = {
   curImage: null,
   selection: [],
   disabledSet: new Set(),
+  curItem: null,
   skuText: ''
 }
 
-/**
- *
- * @param {
- *
- *
- * } props
- *
- *
- * @returns
- */
 function SpSkuSelect (props) {
   const { info, open = false, onClose = () => {} } = props
   // const [state, setState] = useImmer(initialState)
   const [state, setState] = useAsyncCallback(initialState)
-  const { selection, curImage, disabledSet } = state
+  const { selection, curImage, disabledSet, curItem } = state
   const skuDictRef = useRef({})
 
   console.log('xxxxx')
@@ -103,6 +94,7 @@ function SpSkuSelect (props) {
     setState((draft) => {
       draft.selection = selection
       draft.disabledSet = disabledSet
+      draft.curItem = curItem
     })
   }
 
@@ -123,6 +115,31 @@ function SpSkuSelect (props) {
     )
   }
 
+  const getImgs = () => {
+    let img = info.imgs[0]
+    if (curItem) {
+      const { specImgs } = curItem.specItem[curItem.specItem.length - 1]
+      if (specImgs.length > 0) {
+        img = specImgs[0]
+      }
+    }
+    console.log('img:', img)
+    return img
+  }
+
+  const handlePreviewImage = () => {
+    let imgUrls = info.imgs
+    if (curItem) {
+      const { specImgs } = curItem.specItem[curItem.specItem.length - 1]
+      if (specImgs.length > 0) {
+        imgUrls = specImgs
+      }
+    }
+    Taro.previewImage({
+      urls: imgUrls
+    })
+  }
+
   if (!info) {
     return null
   }
@@ -137,7 +154,13 @@ function SpSkuSelect (props) {
       renderFooter={<SpButton resetText='加入购物车' confirmText='立即购买'></SpButton>}
     >
       <View className='sku-info'>
-        <SpImage className='sku-image' width={170} height={170} />
+        <SpImage
+          className='sku-image'
+          src={getImgs()}
+          width={170}
+          height={170}
+          onClick={handlePreviewImage}
+        />
         <View className='info-bd'>
           <View className='goods-sku-price'>
             <SpPrice value={100}></SpPrice>
@@ -155,11 +178,15 @@ function SpSkuSelect (props) {
                 <View
                   className={classNames('sku-btn', {
                     'active': spec.specId == selection[index],
-                    'disabled': disabledSet.has(spec.specId)
+                    'disabled': disabledSet.has(spec.specId),
+                    'sku-img': spec.specImgs.length > 0
                   })}
                   onClick={handleSelectSku.bind(this, spec, index)}
                 >
-                  {spec.specName}
+                  {spec.specImgs.length > 0 && (
+                    <SpImage src={spec.specImgs[0]} width={214} height={214} />
+                  )}
+                  <Text className='spec-name'>{spec.specName}</Text>
                 </View>
               ))}
             </View>

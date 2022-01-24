@@ -76,10 +76,8 @@ function CompGoodsBuyToolbar (props) {
             )
           } else {
             return (
-              <SpLogin onChange={onChangeLogin.bind(this, item)}>
-                <View className={classNames('btn-item', `btn-${item.btnStatus}`)}>
-                  {item.title}
-                </View>
+              <SpLogin className='btn-item' onChange={onChangeLogin.bind(this, item)}>
+                <View className={classNames(`btn-${item.btnStatus}`)}>{item.title}</View>
               </SpLogin>
             )
           }

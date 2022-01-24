@@ -68,10 +68,11 @@
     }
   }
   &-bd {
-    padding: 20px;
+    padding: 24px;
     max-height: 800px;
     background: #fff;
     box-sizing: border-box;
+    overflow: hidden;
   }
   &-ft {
     background: #fff;

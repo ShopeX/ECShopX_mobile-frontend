@@ -80,6 +80,7 @@ export const GOODS_INFO = {
   itemId: 'item_id',
   itemName: 'itemName',
   imgs: 'pics',
+  price: ({ price }) => price / 100,
   memberPrice: 'member_price',
   vipgradeGuideTitle: 'vipgrade_guide_title',
   couponList: 'kaquan_list',

@@ -13,6 +13,7 @@
 
   .sku-list {
     margin-top: 30px;
+    margin-bottom: 100px;
   }
   .sku-group {
     margin-bottom: 20px;
@@ -52,6 +53,19 @@
     margin: 0 24px 24px 0;
     color: #222;
     box-sizing: border-box;
+    &.sku-img {
+      padding: 0;
+      height: 283px;
+      line-height: initial;
+      &:nth-child(3n + 3) {
+        margin-right: 0;
+      }
+      .spec-name {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
     &.active {
       background: #fff;
       /* prettier-ignore */
@@ -62,6 +76,7 @@
       color: #cdcdcd;
     }
   }
+
   .at-input-number {
     /* prettier-ignore */
     border: 1PX solid #999;

@@ -1,7 +1,7 @@
-@import "./style/theme.scss";
-@import "./style/variables.scss";
-@import "./style/layout.scss";
-@import "./style/iconfont.scss";
+@import './style/theme.scss';
+@import './style/variables.scss';
+@import './style/layout.scss';
+@import './style/iconfont.scss';
 
 $font-size-base: $font-size;
 $hd: 2 !default; // 基本单位
@@ -11,9 +11,9 @@ $color-brand-dark: $color-brand-accent-light;
 $color-text-base: $color-primary-text;
 $at-button-border-color-secondary: $color-border-gray;
 
-@import "~taro-ui/dist/style/index.scss";
-@import "./style/taro-ui-mod.scss";
-@import "./style/sp-comps.scss";
+@import '~taro-ui/dist/style/index.scss';
+@import './style/taro-ui-mod.scss';
+@import './style/sp-comps.scss';
 
 body,
 view {
@@ -205,7 +205,7 @@ switch,
   overflow: hidden;
   display: inline-block;
   &::before {
-    content: "";
+    content: '';
     display: block;
     width: 22px;
     height: 22px;
@@ -219,7 +219,7 @@ switch,
     border: 1PX solid var(--color-primary);
   }
   &::after {
-    content: "";
+    content: '';
     display: block;
     width: 22px;
     height: 22px;
@@ -244,4 +244,10 @@ switch,
     color: var(--color-primary);
     font-size: 22px;
   }
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
 }

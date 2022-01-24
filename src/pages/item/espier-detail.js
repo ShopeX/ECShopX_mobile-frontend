@@ -57,7 +57,7 @@ const initialState = {
   mainGoods: {},
   makeUpGoods: [], // 组合商品
   packageOpen: false,
-  skuPanelOpen: true,
+  skuPanelOpen: false,
   evaluationList: [],
   evaluationTotal: 0
 }
@@ -252,10 +252,12 @@ function EspierDetail (props) {
 
           <View className='goods-info'>
             <View className='price-block'>
-              <SpPrice className='goods-price' value={100}></SpPrice>
-              <View className='vip-price'>
-                会员<SpPrice value={100}></SpPrice>
-              </View>
+              <SpPrice className='goods-price' value={info.price}></SpPrice>
+              {info.memberPrice && (
+                <View className='vip-price'>
+                  会员<SpPrice value={info.memberPrice}></SpPrice>
+                </View>
+              )}
             </View>
 
             <CompVipGuide
