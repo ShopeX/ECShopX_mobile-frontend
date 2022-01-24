@@ -24,9 +24,9 @@
     margin: 0 0 15px;
     &-tag{
       display: inline-block;
-      background:$color-brand-primary;
-      color:#ffffff;
-      padding: 3px 4px;
+      background: var(--color-primary);
+      color: #fff;
+      padding: 2px 8px;
       font-size: $font-size-small;
       margin-right: 10px;
       

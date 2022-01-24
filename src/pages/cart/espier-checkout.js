@@ -356,11 +356,11 @@ function CartCheckout (props) {
                 {cart.list.map((item, idx) => {
                   return (
                     <View className='order-item__wrap' key={item.item_id}>
-                      {item.order_item_type === 'gift' && (
+                      {/* {item.order_item_type === 'gift' && (
                         <View className='order-item__idx'>
                           <Text>赠品</Text>
                         </View>
-                      )}
+                      )} */}
                       <SpOrderItem
                         info={item}
                         showExtra={false}

@@ -47,6 +47,7 @@ function SpOrderItem (props) {
           {info.order_item_type === 'plus_buy' && (
             <Text className='order-item__title-tag'>换购</Text>
           )}
+          {info.order_item_type === 'gift' && <Text className='order-item__title-tag'>赠品</Text>}
           {info.title}
         </View>
         {showDesc && info.item_spec_desc && (
