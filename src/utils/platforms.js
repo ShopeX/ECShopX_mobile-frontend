@@ -1,8 +1,9 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { getExtConfigData } from '@/utils'
 
 /* 获取小程序 */
 export const getAppId = () => {
-  const { appid } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : { appid: process.env.APP_ID }
+  const { appid } = getExtConfigData()
 
   return appid
 }
