@@ -4,7 +4,7 @@ import { View, Button } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
-import { isWeixin, isAlipay, classNames, showToast } from '@/utils'
+import { isWeixin, isAlipay, classNames, showToast, entryLaunch } from '@/utils'
 import { SG_SHARER_UID, SG_TRACK_PARAMS } from '@/consts'
 import { Tracker } from '@/service'
 import { SpPrivacyModal } from '@/components'
@@ -42,6 +42,13 @@ function SpLogin (props) {
         auth_type: 'wxapp'
       }
       Taro.showLoading()
+
+      const { uid } = entryLaunch.getLaunchParams()
+      if (uid) {
+        // 分销绑定
+        params['uid'] = uid
+      }
+
       const { token, is_new } = await api.wx.newlogin(params)
       if (token) {
         setToken(token)
