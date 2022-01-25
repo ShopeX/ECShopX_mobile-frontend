@@ -82,7 +82,7 @@ const upload = {
   localUpload: async (item, tokenRes) => {
     const { filetype = 'image', domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-    const { appid } = getAppId()
+    const appid = getAppId()
     try {
       const res = await Taro.uploadFile({
         url: `${req.baseURL}espier/uploadlocal`,

@@ -755,7 +755,7 @@ export default class EspierDetail extends Component {
     const { info, is_open_store_status } = this.state
     const { pics, company_id, item_id } = info
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
-    const { appid } = getAppId()
+    const appid = getAppId()
     const { distributor_id, store_id } = Taro.getStorageSync('curStore')
 
     const pic = pics[0].replace('http:', 'https:')
