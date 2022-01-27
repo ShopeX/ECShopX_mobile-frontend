@@ -17,7 +17,8 @@ function SpTabbar (props) {
     return {
       title: item.text,
       name: item.name,
-      iconType: item.iconPath && item.selectedIconPath ? '' : item.name,
+      iconType: item.iconPath ? '' : item.name,
+      selectedIconType: item.selectedIconPath ? '' : item.name,
       iconPrefixClass: 'iconfont icon',
       image: item.iconPath,
       selectedImage: item.selectedIconPath,
