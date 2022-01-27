@@ -32,7 +32,7 @@ export const PROMOTION_TAG = {
   full_gift: '满赠',
   normal: '秒杀',
   limited_time_sale: '限时特惠',
-  plus_price_buy: '换购',
+  plus_price_buy: '加价购',
   member_preference: '会员限购'
 }
 

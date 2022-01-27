@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
-import { connect } from 'react-redux'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { useSelector } from 'react-redux'
+import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtCountdown } from 'taro-ui'
@@ -12,7 +12,9 @@ import {
   SpRecommend,
   SpHtml,
   SpPage,
-  SpSkuSelect
+  SpSkuSelect,
+  SpPoster,
+  SpLogin
 } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
@@ -33,6 +35,7 @@ import {
 
 import doc from '@/doc'
 import entry from '@/utils/entry'
+import qs from 'qs'
 import S from '@/spx'
 import { Tracker } from '@/service'
 import CompVipGuide from './comps/comp-vipguide'
@@ -42,6 +45,7 @@ import CompPackageList from './comps/comp-packagelist'
 import CompEvaluation from './comps/comp-evaluation'
 import CompBuytoolbar from './comps/comp-buytoolbar'
 import CompShare from './comps/comp-share'
+import CompPromation from './comps/comp-promation'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 
 import './espier-detail.scss'
@@ -59,14 +63,18 @@ const initialState = {
   makeUpGoods: [], // 组合商品
   packageOpen: false,
   skuPanelOpen: false,
+  promotionOpen: false,
+  sharePanelOpen: false,
+  posterModalOpen: false,
   evaluationList: [],
   evaluationTotal: 0
 }
 
 function EspierDetail (props) {
   const $instance = getCurrentInstance()
-  const { type, id } = $instance.router.params
+  const { type, id, dtid } = $instance.router.params
   const pageRef = useRef()
+  const { userInfo } = useSelector((state) => state.user)
 
   const [state, setState] = useImmer(initialState)
   const {
@@ -79,6 +87,9 @@ function EspierDetail (props) {
     promotionPackage,
     packageOpen,
     skuPanelOpen,
+    promotionOpen,
+    sharePanelOpen,
+    posterModalOpen,
     mainGoods,
     makeUpGoods
   } = state
@@ -102,12 +113,38 @@ function EspierDetail (props) {
   }, [play])
 
   useEffect(() => {
-    if (packageOpen || skuPanelOpen) {
+    if (packageOpen || skuPanelOpen || sharePanelOpen || posterModalOpen) {
       pageRef.current.pageLock()
     } else {
       pageRef.current.pageUnLock()
     }
-  }, [packageOpen, skuPanelOpen])
+  }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen])
+
+  useShareAppMessage(async (res) => {
+    return getAppShareInfo()
+  })
+
+  useShareTimeline(async (res) => {
+    return getAppShareInfo()
+  })
+
+  const getAppShareInfo = () => {
+    const { itemName, imgs } = info
+    const query = {
+      id,
+      dtid
+    }
+    if (userInfo) {
+      query['uid'] = userInfo.uid
+    }
+    const path = `/pages/item/espier-detail?${qs.stringify(query)}`
+    log.debug(`share path: ${path}`)
+    return {
+      title: itemName,
+      imageUrl: imgs.length > 0 ? imgs[0] : [],
+      path
+    }
+  }
 
   const fetch = async () => {
     let data
@@ -115,7 +152,8 @@ function EspierDetail (props) {
     } else {
       try {
         const itemDetail = await api.item.detail(id, {
-          showError: false
+          showError: false,
+          distributor_id: dtid
         })
         data = pickBy(itemDetail, doc.goods.GOODS_INFO)
       } catch (e) {
@@ -279,10 +317,18 @@ function EspierDetail (props) {
 
             <View className='goods-name-wrap'>
               <View className='goods-name'>{info.itemName}</View>
-              <View className='btn-share'>
-                <Text className='iconfont icon-fenxiang-01'></Text>
-                <Text className='share-txt'>分享</Text>
-              </View>
+              <SpLogin
+                onChange={() => {
+                  setState((draft) => {
+                    draft.sharePanelOpen = true
+                  })
+                }}
+              >
+                <View className='btn-share'>
+                  <Text className='iconfont icon-fenxiang-01'></Text>
+                  <Text className='share-txt'>分享</Text>
+                </View>
+              </SpLogin>
             </View>
           </View>
 
@@ -303,30 +349,46 @@ function EspierDetail (props) {
               <SpCell
                 title='组合优惠'
                 isLink
-                value={`共${makeUpGoods.length}种组合随意搭配`}
                 onClick={() => {
                   setState((draft) => {
                     draft.packageOpen = true
                   })
                 }}
-              ></SpCell>
+              >
+                <Text className='cell-value'>{`共${makeUpGoods.length}种组合随意搭配`}</Text>
+              </SpCell>
             )}
-            <SpCell title='组合优惠' isLink value='共2种组合随意搭配'></SpCell>
-            <SpCell title='组合优惠' isLink value='共2种组合随意搭配'></SpCell>
+            <SpCell
+              title='优惠活动'
+              isLink
+              onClick={() => {
+                setState((draft) => {
+                  draft.promotionOpen = true
+                })
+              }}
+            >
+              {info.promotionActivity.map((item, index) => (
+                <View className='promotion-tag'>{item.promotion_tag}</View>
+              ))}
+            </SpCell>
           </View>
 
           <View className='goods-params'>
             <View className='params-hd'>商品参数</View>
             <View className='params-bd'>
-              <View className='params-item'>
-                <View className='params-label'>颜色</View>
-                <View className='params-value'>水晶石原色</View>
-              </View>
+              {info.itemParams.map((item, index) => (
+                <View className='params-item' key={`params-item__${index}`}>
+                  <View className='params-label'>{item.attribute_name}</View>
+                  <View className='params-value'>{item.attribute_value_name}</View>
+                </View>
+              ))}
             </View>
           </View>
 
+          {/* 商品评价 */}
           <CompEvaluation list={evaluationList}></CompEvaluation>
 
+          {/* 店铺 */}
           <CompStore info={info.distributorInfo} />
 
           <View className='goods-desc'>
@@ -352,6 +414,9 @@ function EspierDetail (props) {
         }}
       />
 
+      {/* 促销优惠活动 */}
+      <CompPromation open={promotionOpen} />
+
       {/* Sku选择器 */}
       <MSpSkuSelect
         open={skuPanelOpen}
@@ -364,7 +429,33 @@ function EspierDetail (props) {
       />
 
       {/* 分享 */}
-      <CompShare />
+      <CompShare
+        open={sharePanelOpen}
+        onClose={() => {
+          setState((draft) => {
+            draft.sharePanelOpen = false
+          })
+        }}
+        onCreatePoster={() => {
+          setState((draft) => {
+            draft.sharePanelOpen = false
+            draft.posterModalOpen = true
+          })
+        }}
+      />
+
+      {/* 海报 */}
+      {posterModalOpen && (
+        <SpPoster
+          info={info}
+          type='goodsDetial'
+          onClose={() => {
+            setState((draft) => {
+              draft.posterModalOpen = false
+            })
+          }}
+        />
+      )}
     </SpPage>
   )
 }

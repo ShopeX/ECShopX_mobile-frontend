@@ -74,6 +74,7 @@ import SpCouponPackage from './sp-coupon-package'
 import SpFloatLayout from './sp-float-layout'
 import SpOrderItem from './sp-order-item'
 import SpSkuSelect from './sp-sku-select'
+import SpPoster from './sp-poster'
 
 export default {}
 
@@ -153,5 +154,6 @@ export {
   SpCouponPackage,
   SpFloatLayout,
   SpOrderItem,
-  SpSkuSelect
+  SpSkuSelect,
+  SpPoster
 }

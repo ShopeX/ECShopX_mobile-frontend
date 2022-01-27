@@ -36,7 +36,7 @@ export default class PcAuth extends Component {
     }
     setTimeout(async () => {
       if (this.query) {
-        const { appid } = getAppId()
+        const appid = getAppId()
         const { code } = await Taro.login()
         let check_params = {
           code: code,
@@ -52,7 +52,7 @@ export default class PcAuth extends Component {
   }
 
   handleLogin = async (val) => {
-    const { appid } = getAppId()
+    const appid = getAppId()
 
     try {
       if (this.state.checkStatus == true) {
