@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'

@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'redux'
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
@@ -12,7 +12,7 @@ import './index.scss'
   colors: colors.current || { data: [{}] }
 }))
 export default class StoreListItem extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       PrivacyVisible: false,
@@ -20,14 +20,14 @@ export default class StoreListItem extends Component {
     }
   }
   static defaultProps = {
-    onClick: () => {}
+    onClick: () => { }
   }
 
   static options = {
     addGlobalClass: true
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const result = await api.wx.getPrivacyTime()
     const { update_time } = result
     this.setState({ update_time })
@@ -62,7 +62,7 @@ export default class StoreListItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, isStore, colors } = this.props
     const { PrivacyVisible } = this.state
     return (

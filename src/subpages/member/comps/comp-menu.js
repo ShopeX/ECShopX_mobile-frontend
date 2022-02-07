@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { classNames, styleNames, isWeb } from '@/utils'
@@ -49,7 +50,13 @@ const MENUS = [
     icon: 'm_menu_baoming.png',
     link: '/marketing/pages/member/item-activity'
   },
-  { key: 'prorate', name: '推广管理', icon: 'm_menu_tuiguang.png' }
+  { key: 'prorate', name: '推广管理', icon: 'm_menu_tuiguang.png' },
+  {
+    key: 'purchase',
+    name: '内购',
+    icon: 'm_menu_tuangou.png',
+    link: '/marketing/pages/member/purchase'
+  },
   // {
   //   key: "complaint",
   //   name: "投诉记录",
@@ -58,8 +65,8 @@ const MENUS = [
   // },
 ]
 
-function CompMenu (props) {
-  const { accessMenu, onLink = () => {}, isPromoter } = props
+function CompMenu(props) {
+  const { accessMenu, onLink = () => { }, isPromoter } = props
   if (!accessMenu) {
     return null
   }

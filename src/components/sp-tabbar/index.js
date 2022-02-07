@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { View, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
@@ -7,7 +7,7 @@ import { TABBAR_PATH } from '@/consts'
 import { classNames, styleNames, getCurrentRoute } from '@/utils'
 import './index.scss'
 
-function SpTabbar (props) {
+function SpTabbar(props) {
   const { tabbar } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { className } = props

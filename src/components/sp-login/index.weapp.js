@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { View, Button } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import S from '@/spx'
@@ -11,7 +11,7 @@ import { SpPrivacyModal } from '@/components'
 import { useLogin } from '@/hooks'
 import './index.scss'
 
-function SpLogin (props) {
+function SpLogin(props) {
   const { children, className, onChange } = props
   const { isLogin, login, updatePolicyTime, setToken } = useLogin({
     policyUpdateHook: () => {

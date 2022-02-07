@@ -1,5 +1,5 @@
 import Taro, { useShareAppMessage, getCurrentPages, getCurrentInstance } from '@tarojs/taro'
-import { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -56,7 +56,8 @@ const initialConfigState = {
     recharge: false, // 储值
     ziti_order: false, // 自提
     share_enable: false, // 分享
-    memberinfo_enable: false // 个人信息
+    memberinfo_enable: false, // 个人信息
+    purchase: true // 员工内购
   },
   infoAppId: '',
   infoPage: '',
@@ -81,7 +82,7 @@ const initialState = {
   zitiNum: 0
 }
 
-function MemberIndex (props) {
+function MemberIndex(props) {
   console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
   const { isLogin, updatePolicyTime, getUserInfoAuth } = useLogin({
     autoLogin: true,
@@ -153,7 +154,7 @@ function MemberIndex (props) {
       }
     }
     if (menuRes.list.length > 0) {
-      menu = menuRes.list[0].params.data
+      menu = { ...menuRes.list[0].params.data, purchase: true }
     }
     if (redirectRes.list.length > 0) {
       const {
