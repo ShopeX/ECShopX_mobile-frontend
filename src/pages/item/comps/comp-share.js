@@ -7,7 +7,13 @@ import { SpImage, SpFloatLayout } from '@/components'
 import './comp-share.scss'
 
 function CompShare (props) {
-  const { info, open = false, onClose = () => {}, onCreatePoster = () => {} } = props
+  const {
+    info,
+    open = false,
+    onClose = () => {},
+    onCreatePoster = () => {},
+    onShareEdit = () => {}
+  } = props
 
   return (
     <SpFloatLayout
@@ -15,9 +21,9 @@ function CompShare (props) {
       open={open}
       hideClose
       renderFooter={
-        <View>
-          <Text>取消</Text>
-        </View>
+        <AtButton className='at-button--txt' onClick={onClose}>
+          取消
+        </AtButton>
       }
     >
       <View className='share-bd'>
@@ -29,7 +35,7 @@ function CompShare (props) {
           <SpImage src='wx_share.png' width={100} height={100} />
           <Text className='share-item-txt'>海报分享</Text>
         </View>
-        <View className='share-item'>
+        <View className='share-item' onClick={onShareEdit}>
           <SpImage src='wx_share.png' width={100} height={100} />
           <Text className='share-item-txt'>分享编辑</Text>
         </View>

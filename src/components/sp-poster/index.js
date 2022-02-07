@@ -113,11 +113,9 @@ function SpPoster (props) {
   }
 
   const saveToAlbum = () => {
-    debugger
     authSetting(
       'writePhotosAlbum',
       () => {
-        debugger
         savePoster()
       },
       () => {

@@ -36,6 +36,8 @@
     padding: 20px;
     margin: 0px 40px;
     // height: 430px;
+    line-height: 50px;
+    text-align: left;
     .policy-txt {
       color: var(--color-primary);
     }
@@ -45,7 +47,7 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     padding: 30px 20px 20px;
     /*  #endif  */
     .at-button {

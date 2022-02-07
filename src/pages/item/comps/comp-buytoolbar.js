@@ -17,7 +17,7 @@ const BTNS = {
 }
 
 function CompGoodsBuyToolbar (props) {
-  const { onAddCart = () => {}, onFastBuy = () => {}, info } = props
+  const { onAddCart = () => {}, onFastBuy = () => {}, info, onChange = () => {} } = props
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { favs = [] } = useSelector((state) => state.user)
   const dispatch = useDispatch()
@@ -55,19 +55,21 @@ function CompGoodsBuyToolbar (props) {
           this.fetchInfo()
         }
       })
+    } else {
+      onChange(key)
     }
-    if (key == 'addcart') {
-      await dispatch(
-        addCart({
-          item_id: info.itemId,
-          num: 1,
-          distributor_id: info.distributorId,
-          shop_type: 'distributor'
-        })
-      )
-    }
-    if (key == 'fastbuy') {
-    }
+    // if (key == 'addcart') {
+    //   await dispatch(
+    //     addCart({
+    //       item_id: info.itemId,
+    //       num: 1,
+    //       distributor_id: info.distributorId,
+    //       shop_type: 'distributor'
+    //     })
+    //   )
+    // }
+    // if (key == 'fastbuy') {
+    // }
   }
 
   // 收藏

@@ -69,6 +69,11 @@ const cartSlice = createSlice({
       state.validCart = valid_cart
       state.invalidCart = invalid_cart
     })
+
+    builder.addCase(updateCount.fulfilled, (state, action) => {
+      const { item_count, cart_count } = action.payload
+      state.cartCount = item_count
+    })
   }
 })
 

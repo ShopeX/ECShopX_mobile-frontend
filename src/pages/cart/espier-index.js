@@ -9,13 +9,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { navigateTo, pickBy, classNames } from '@/utils'
 import { useLogin, useDepChange } from '@/hooks'
-import {
-  fetchCartList,
-  deleteCartItem,
-  updateCartItemNum,
-  updateCartNum,
-  updateCount
-} from '@/store/slices/cart'
+import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/cart'
 import {
   SpPage,
   SpTabbar,
@@ -81,10 +75,7 @@ function CartIndex () {
       shop_type: type
     }
     await dispatch(fetchCartList(params))
-    const {
-      payload: { item_count }
-    } = await dispatch(updateCount(params)) // 获取购物车数量接口
-    await dispatch(updateCartNum(item_count)) // 更新购物车数量
+    await dispatch(updateCount(params))
     Taro.hideLoading()
   }
 

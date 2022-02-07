@@ -34,7 +34,7 @@ import {
 } from '@/utils'
 
 import doc from '@/doc'
-import entry from '@/utils/entry'
+import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
 import S from '@/spx'
 import { Tracker } from '@/service'
@@ -53,6 +53,9 @@ import './espier-detail.scss'
 const MSpSkuSelect = React.memo(SpSkuSelect)
 
 const initialState = {
+  id: null,
+  type: null,
+  dtid: null,
   info: null,
   curImgIdx: 0,
   play: false,
@@ -64,15 +67,20 @@ const initialState = {
   packageOpen: false,
   skuPanelOpen: false,
   promotionOpen: false,
+  promotionActivity: [],
   sharePanelOpen: false,
   posterModalOpen: false,
+  skuText: '',
+  // sku选择器类型
+  selectType: 'picker',
   evaluationList: [],
   evaluationTotal: 0
 }
 
 function EspierDetail (props) {
   const $instance = getCurrentInstance()
-  const { type, id, dtid } = $instance.router.params
+  // const { type, id, dtid } = $instance.router.params
+  // const { type, id, dtid } = await entryLaunch.getRouteParams()
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
 
@@ -88,17 +96,29 @@ function EspierDetail (props) {
     packageOpen,
     skuPanelOpen,
     promotionOpen,
+    promotionActivity,
     sharePanelOpen,
     posterModalOpen,
     mainGoods,
-    makeUpGoods
+    makeUpGoods,
+    skuText,
+    selectType,
+    id,
+    type,
+    dtid
   } = state
 
   useEffect(() => {
-    fetch()
-    getPackageList()
-    getEvaluationList()
+    init()
   }, [])
+
+  useEffect(() => {
+    if (id) {
+      fetch()
+      getPackageList()
+      getEvaluationList()
+    }
+  }, [id])
 
   useEffect(() => {
     const video = Taro.createVideoContext('goods-video')
@@ -113,12 +133,12 @@ function EspierDetail (props) {
   }, [play])
 
   useEffect(() => {
-    if (packageOpen || skuPanelOpen || sharePanelOpen || posterModalOpen) {
+    if (packageOpen || skuPanelOpen || sharePanelOpen || posterModalOpen || promotionOpen) {
       pageRef.current.pageLock()
     } else {
       pageRef.current.pageUnLock()
     }
-  }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen])
+  }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen])
 
   useShareAppMessage(async (res) => {
     return getAppShareInfo()
@@ -144,6 +164,15 @@ function EspierDetail (props) {
       imageUrl: imgs.length > 0 ? imgs[0] : [],
       path
     }
+  }
+
+  const init = async () => {
+    const { type, id, dtid } = await entryLaunch.getRouteParams()
+    setState((draft) => {
+      draft.id = id
+      draft.type = type
+      draft.dtid = dtid
+    })
   }
 
   const fetch = async () => {
@@ -176,30 +205,20 @@ function EspierDetail (props) {
         ...data,
         subscribe
       }
+      draft.promotionActivity = data.promotionActivity
     })
   }
 
   // 获取包裹
   const getPackageList = async () => {
     const { list } = await api.item.packageList({ item_id: id, showError: false })
-    if (list.length > 0) {
-      const {
-        itemLists,
-        mainItem,
-        main_package_price,
-        package_price: packagePrice
-      } = await api.item.packageDetail(list[0].package_id)
-      setState((draft) => {
-        draft.promotionPackage = list
-        draft.mainGoods = pickBy(mainItem, doc.goods.PACKGOODS_INFO)
-        draft.makeUpGoods = pickBy(itemLists, doc.goods.PACKGOODS_INFO)
-      })
-    }
+    setState((draft) => {
+      draft.promotionPackage = list
+    })
   }
 
   // 获取评论
   const getEvaluationList = async () => {
-    const { id } = $instance.router.params
     const { list, total_count } = await api.item.evaluationList({
       page: 1,
       pageSize: 2,
@@ -225,8 +244,14 @@ function EspierDetail (props) {
     })
   }
 
-  const { windowWidth } = Taro.getSystemInfoSync()
+  const onChangeToolBar = (key) => {
+    setState((draft) => {
+      draft.skuPanelOpen = true
+      draft.selectType = key
+    })
+  }
 
+  const { windowWidth } = Taro.getSystemInfoSync()
   return (
     <SpPage
       className='page-item-espierdetail'
@@ -234,7 +259,7 @@ function EspierDetail (props) {
       isDefault={isDefault}
       defaultMsg={defaultMsg}
       ref={pageRef}
-      renderFooter={<CompBuytoolbar info={info} />}
+      renderFooter={<CompBuytoolbar info={info} onChange={onChangeToolBar} />}
     >
       {!info && <SpLoading />}
       {info && (
@@ -292,7 +317,7 @@ function EspierDetail (props) {
           <View className='goods-info'>
             <View className='price-block'>
               <SpPrice className='goods-price' value={info.price}></SpPrice>
-              {info.memberPrice && (
+              {info.memberPrice > 0 && (
                 <View className='vip-price'>
                   会员<SpPrice value={info.memberPrice}></SpPrice>
                 </View>
@@ -339,9 +364,12 @@ function EspierDetail (props) {
               onClick={() => {
                 setState((draft) => {
                   draft.skuPanelOpen = true
+                  draft.selectType = 'picker'
                 })
               }}
-            ></SpCell>
+            >
+              <Text className='cell-value'>{skuText}</Text>
+            </SpCell>
           </View>
 
           <View className='sku-block'>
@@ -350,27 +378,30 @@ function EspierDetail (props) {
                 title='组合优惠'
                 isLink
                 onClick={() => {
+                  Taro.navigateTo({ url: `/subpages/marketing/package-list?id=${info.itemId}` })
+                  // setState((draft) => {
+                  //   draft.packageOpen = true
+                  // })
+                }}
+              >
+                <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
+              </SpCell>
+            )}
+            {promotionActivity.length > 0 && (
+              <SpCell
+                title='优惠活动'
+                isLink
+                onClick={() => {
                   setState((draft) => {
-                    draft.packageOpen = true
+                    draft.promotionOpen = true
                   })
                 }}
               >
-                <Text className='cell-value'>{`共${makeUpGoods.length}种组合随意搭配`}</Text>
+                {promotionActivity.map((item, index) => (
+                  <View className='promotion-tag'>{item.promotionTag}</View>
+                ))}
               </SpCell>
             )}
-            <SpCell
-              title='优惠活动'
-              isLink
-              onClick={() => {
-                setState((draft) => {
-                  draft.promotionOpen = true
-                })
-              }}
-            >
-              {info.promotionActivity.map((item, index) => (
-                <View className='promotion-tag'>{item.promotion_tag}</View>
-              ))}
-            </SpCell>
           </View>
 
           <View className='goods-params'>
@@ -415,15 +446,29 @@ function EspierDetail (props) {
       />
 
       {/* 促销优惠活动 */}
-      <CompPromation open={promotionOpen} />
+      <CompPromation
+        open={promotionOpen}
+        info={promotionActivity}
+        onClose={() => {
+          setState((draft) => {
+            draft.promotionOpen = false
+          })
+        }}
+      />
 
       {/* Sku选择器 */}
       <MSpSkuSelect
         open={skuPanelOpen}
+        type={selectType}
         info={info}
         onClose={() => {
           setState((draft) => {
             draft.skuPanelOpen = false
+          })
+        }}
+        onChange={(skuText) => {
+          setState((draft) => {
+            draft.skuText = skuText
           })
         }}
       />
@@ -440,6 +485,12 @@ function EspierDetail (props) {
           setState((draft) => {
             draft.sharePanelOpen = false
             draft.posterModalOpen = true
+          })
+        }}
+        onShareEdit={() => {
+          const { itemId, companyId, distributorId } = info
+          Taro.navigateTo({
+            url: `/subpage/pages/editShare/index?id=${itemId}&dtid=${distributorId}&company_id=${companyId}`
           })
         }}
       />

@@ -79,19 +79,41 @@ export const ITEM_LIST_GOODS = {
 export const GOODS_INFO = {
   itemId: 'item_id',
   itemName: 'itemName',
+  img: 'pics[0]',
   imgs: 'pics',
+  companyId: 'company_id',
   price: ({ price }) => price / 100,
-  memberPrice: 'member_price',
+  memberPrice: ({ member_price }) => member_price / 100,
+  marketPrice: ({ market_price }) => market_price / 100,
+  nospec: 'nospec',
+  itemSpecDesc: 'item_spec_desc',
   vipgradeGuideTitle: 'vipgrade_guide_title',
   couponList: 'kaquan_list',
   store: 'store',
   isGift: 'is_gift',
   itemParams: 'item_params',
-  promotionActivity: 'promotion_activity',
+  promotionActivity: ({ promotion_activity }) => {
+    if (!promotion_activity) {
+      return []
+    } else {
+      return pickBy(promotion_activity, {
+        joinLimit: ({ join_limit }) => parseInt(join_limit),
+        promotionTag: 'promotion_tag',
+        marketingName: 'marketing_name',
+        marketingType: 'marketing_type',
+        marketingId: 'marketing_id',
+        endDate: 'end_date',
+        conditionRules: 'condition_rules',
+        gifts: 'gifts',
+        plusItems: 'plusitems'
+      })
+    }
+  },
+
   skuList: ({ item_spec_desc }) => {
     return pickBy(item_spec_desc, {
       skuName: 'spec_name',
-      skuValue: ({ spec_values }) => {
+      skuValue: ({ spec_values, spec_name }) => {
         return pickBy(spec_values, {
           specId: 'spec_value_id',
           specName: ({ spec_custom_value_name, spec_value_name }) => {
@@ -107,13 +129,17 @@ export const GOODS_INFO = {
       specItem: ({ item_spec }) => {
         return pickBy(item_spec, {
           specId: 'spec_value_id',
+          skuName: 'spec_name',
           specName: ({ spec_custom_value_name, spec_value_name }) => {
             return spec_custom_value_name || spec_value_name
           },
           specImgs: 'item_image_url'
         })
       },
-      store: 'store'
+      itemId: 'item_id',
+      store: 'store',
+      price: ({ price }) => price / 100,
+      marketPrice: ({ market_price }) => market_price / 100
     })
   },
   intro: 'intro',
@@ -126,6 +152,6 @@ export const PACKGOODS_INFO = {
   img: 'pics[0]',
   itemName: 'itemName',
   num: '',
-  price: 'price',
-  marketPrice: 'market_price'
+  price: ({ price }) => price / 100,
+  marketPrice: ({ market_price }) => market_price / 100
 }

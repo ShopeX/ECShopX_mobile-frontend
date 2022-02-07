@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
-import { updateCartNum, updateCount } from '@/store/slices/cart'
+import { updateCount } from '@/store/slices/cart'
 import api from '@/api'
 import { isWeixin, showToast } from '@/utils'
 import S from '@/spx'
@@ -53,10 +53,7 @@ export default (props = {}) => {
     setIsLogin(true)
     getUserInfo()
     dispatch(fetchUserFavs())
-    const {
-      payload: { item_count }
-    } = await dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
-    await dispatch(updateCartNum(item_count)) // 更新购物车数量
+    dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
   }
 
   const getUserInfo = async (refresh) => {

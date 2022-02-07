@@ -11,6 +11,39 @@
     }
   }
 
+  .goods-sku-price {
+    .sp-price__symbol {
+      font-size: 24px;
+      color: var(--color-primary);
+    }
+    .sp-price__int {
+      font-size: 40px;
+      color: var(--color-primary);
+    }
+    .sp-price__decimal {
+      font-size: 24px;
+      color: var(--color-primary);
+    }
+    .line-through {
+      margin-left: 10px;
+      .sp-price__symbol {
+        font-size: 24px;
+        color: #999;
+      }
+      .sp-price__int {
+        font-size: 36px;
+        color: #999;
+      }
+      .sp-price__decimal {
+        font-size: 24px;
+        color: #999;
+      }
+    }
+  }
+  .goods-sku-txt {
+    color: #999;
+  }
+
   .sku-list {
     margin-top: 30px;
     margin-bottom: 100px;

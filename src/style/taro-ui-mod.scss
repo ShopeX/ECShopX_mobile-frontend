@@ -180,7 +180,10 @@
       font-size: 22px;
     }
   }
-  &--normal {
+  &--txt {
+    border-color: transparent;
+  }
+  &--default {
     border-color: var(--color-primary);
     color: var(--color-primary);
   }

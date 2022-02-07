@@ -6,10 +6,14 @@ import { SpImage, SpPrice } from '@/components'
 import './index.scss'
 
 function SpGoodsCell (props) {
-  const { info } = props
+  const { info, onSelectSku } = props
 
   if (!info) {
     return null
+  }
+
+  const handleClick = () => {
+    onSelectSku && onSelectSku()
   }
 
   return (
@@ -22,12 +26,17 @@ function SpGoodsCell (props) {
           <View className='goods-title'>{info.itemName}</View>
         </View>
         <View className='item-bd'>
-          <View className='goods-sku'>{info.sku}</View>
+          {/* 多规格商品 */}
+          {!info.nospec && (
+            <View className='goods-sku' onClick={handleClick}>
+              {/* {info.itemSpecDesc || '选择规格'} */}
+            </View>
+          )}
           {info.num && <Text className='item-num'>x {info.num}</Text>}
         </View>
         <View className='item-ft'>
           <SpPrice value={info.price}></SpPrice>
-          <SpPrice lineThrough value={info.marketPrice}></SpPrice>
+          <SpPrice className='market-price' lineThrough value={info.marketPrice}></SpPrice>
         </View>
       </View>
     </View>

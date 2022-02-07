@@ -1,11 +1,14 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
+import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpFloatLayout, SpButton, SpImage, SpPrice, SpInputNumber } from '@/components'
+import { addCart, updateCount } from '@/store/slices/cart'
+import api from '@/api'
 import { useAsyncCallback } from '@/hooks'
-import { classNames } from '@/utils'
+import { classNames, showToast } from '@/utils'
 import './index.scss'
 
 // 数据类型
@@ -22,17 +25,18 @@ const initialState = {
   selection: [],
   disabledSet: new Set(),
   curItem: null,
-  skuText: ''
+  skuText: '选择规格',
+  num: 1
 }
 
 function SpSkuSelect (props) {
-  const { info, open = false, onClose = () => {} } = props
+  const { info, open = false, onClose = () => {}, onChange = () => {}, type } = props
   // const [state, setState] = useImmer(initialState)
   const [state, setState] = useAsyncCallback(initialState)
-  const { selection, curImage, disabledSet, curItem } = state
+  const { selection, curImage, disabledSet, curItem, skuText, num } = state
+  const dispatch = useDispatch()
   const skuDictRef = useRef({})
 
-  console.log('xxxxx')
   useEffect(() => {
     if (info) {
       init()
@@ -90,12 +94,18 @@ function SpSkuSelect (props) {
     )
 
     const curItem = skuDictRef.current[selection.join('_')]
+    const skuText = curItem
+      ? `已选：${curItem.specItem.map((item) => `${item.skuName}:${item.specName}`).join(',')}`
+      : '请选择规格'
 
     setState((draft) => {
       draft.selection = selection
       draft.disabledSet = disabledSet
       draft.curItem = curItem
+      draft.skuText = skuText
     })
+
+    onChange(skuText)
   }
 
   // calcDisabled(initSelection)
@@ -146,12 +156,63 @@ function SpSkuSelect (props) {
 
   const { skuList } = info
 
+  const addToCart = async () => {
+    const { itemId } = curItem
+    await dispatch(
+      addCart({
+        item_id: itemId,
+        num,
+        distributor_id: info.distributorId,
+        shop_type: 'distributor'
+      })
+    )
+    dispatch(updateCount({ shop_type: 'distributor' }))
+    showToast('成功加入购物车')
+  }
+
+  const fastBuy = async () => {
+    const { itemId } = curItem
+    const { distributorId } = info
+    await api.cart.fastBuy({
+      item_id: itemId,
+      num,
+      distributor_id: distributorId
+    })
+    Taro.navigateTo({
+      url: `/pages/cart/espier-checkout`
+    })
+  }
+
+  const renderFooter = () => {
+    if (type == 'picker') {
+      return (
+        <SpButton
+          resetText='加入购物车'
+          confirmText='立即购买'
+          onReset={addToCart}
+          onConfirm={fastBuy}
+        ></SpButton>
+      )
+    } else if (type == 'addcart') {
+      return (
+        <AtButton circle type='primary' onClick={addToCart}>
+          确定
+        </AtButton>
+      )
+    } else if (type == 'fastbuy') {
+      return (
+        <AtButton circle type='primary' onClick={fastBuy}>
+          立即购买
+        </AtButton>
+      )
+    }
+  }
   return (
     <SpFloatLayout
       className='sp-sku-select'
       open={open}
       onClose={onClose}
-      renderFooter={<SpButton resetText='加入购物车' confirmText='立即购买'></SpButton>}
+      renderFooter={renderFooter()}
     >
       <View className='sku-info'>
         <SpImage
@@ -163,10 +224,10 @@ function SpSkuSelect (props) {
         />
         <View className='info-bd'>
           <View className='goods-sku-price'>
-            <SpPrice value={100}></SpPrice>
-            <SpPrice value={100} lineThrough></SpPrice>
+            <SpPrice value={curItem ? curItem.price : info.price}></SpPrice>
+            <SpPrice value={curItem ? curItem.marketPrice : info.marketPrice} lineThrough></SpPrice>
           </View>
-          <View className='goods-sku-txt'>xxxxx</View>
+          <View className='goods-sku-txt'>{skuText}</View>
         </View>
       </View>
       <View className='sku-list'>
@@ -197,7 +258,16 @@ function SpSkuSelect (props) {
             购买数量<Text className='limit-count'>（限购5件）</Text>
           </View>
 
-          <SpInputNumber />
+          <SpInputNumber
+            value={num}
+            min={1}
+            onChange={(n) => {
+              this
+              setState((draft) => {
+                draft.num = n
+              })
+            }}
+          />
         </View>
       </View>
     </SpFloatLayout>
