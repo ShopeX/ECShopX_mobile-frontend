@@ -3,16 +3,18 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import { SpPage, SpImage, SpButton } from '@/components'
 import api from '@/api'
-import { styleNames } from '@/utils'
+import { styleNames, normalizeQuerys } from '@/utils'
 import './purchase.scss'
 
 export default class myGroupList extends Component {
+
   constructor(props) {
     super(props)
 
     this.state = {
       ...this.state,
-      info: {}
+      info: {},
+      code: ''
     }
   }
 
@@ -20,10 +22,23 @@ export default class myGroupList extends Component {
     this.fetch()
   }
 
-  async fetch(params) {
-    const data = await api.purchase.purchaseInfo(params)
+
+  onShareAppMessage() {
+    const { info, code } = this.state
+    return {
+      title: info.purchase_name,
+      imageUrl: info.ad_pic,
+      path: `/subpages/member/index?code=${code}`
+    }
+  }
+
+  async fetch() {
+    const data = await api.purchase.purchaseInfo()
+    const { code } = await api.purchase.purchaseCode()
+
     this.setState({
-      info: data
+      info: data,
+      code
     })
   }
 
@@ -52,9 +67,9 @@ export default class myGroupList extends Component {
                   </View>
                   <View className='userRole'>{info.user_type === 'dependents' ? '家属' : '员工'}</View>
                 </View>
-                <Button open-type='share' size='mini' className='shareBtn' disabled={info.surplus_share_limitnum == '0'}>
+                {info.user_type === 'employee' && <Button open-type='share' size='mini' className='shareBtn' disabled={info.surplus_share_limitnum == '0'}>
                   分享
-                </Button>
+                </Button>}
               </View>
             </View>
           </View>
@@ -75,32 +90,35 @@ export default class myGroupList extends Component {
             </View>
           </View>
         </View>
-        <View className='line-wrap'>
-          <Text className='line'></Text>
-          <Text className='line-title'>全部家属</Text>
-          <Text className='line'></Text>
-        </View>
-        {info.dependents_list && info.dependents_list.length > 0 && <View className='list-wrap'>
-          {info.dependents_list.map((item) => {
-            return (<View className='list-item' key={item.id}>
-              <SpImage
-                className='list-item-img'
-                src={item.avatar || 'default_user.png'}
-                mode='widthFix'
-                width='750'
-                lazyLoad
-              />
-              <View className='list-item-center'>
-                <View className='list-item-name'>{item.username}</View>
-                <View className='list-item-date'>{item.created}</View>
-              </View>
-              <View>
-                <View>使用额度</View>
-                <View className='list-item-count'>100</View>
-              </View>
-            </View>)
-          })}
+        {info.user_type === 'employee' && info.dependents_list && info.dependents_list.length > 0 && <View>
+          <View className='line-wrap'>
+            <Text className='line'></Text>
+            <Text className='line-title'>全部家属</Text>
+            <Text className='line'></Text>
+          </View>
+          <View className='list-wrap'>
+            {info.dependents_list.map((item) => {
+              return (<View className='list-item' key={item.id}>
+                <SpImage
+                  className='list-item-img'
+                  src={item.avatar || 'default_user.png'}
+                  mode='widthFix'
+                  width='750'
+                  lazyLoad
+                />
+                <View className='list-item-center'>
+                  <View className='list-item-name'>{item.username}</View>
+                  <View className='list-item-date'>{item.created}</View>
+                </View>
+                <View>
+                  <View>使用额度</View>
+                  <View className='list-item-count'>100</View>
+                </View>
+              </View>)
+            })}
+          </View>
         </View>}
+
       </SpPage>
     )
   }

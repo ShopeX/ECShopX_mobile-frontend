@@ -1,8 +1,9 @@
 import Taro, { useShareAppMessage, getCurrentPages, getCurrentInstance } from '@tarojs/taro'
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
+
 import {
   TabBar,
   SpLogin,
@@ -23,6 +24,7 @@ import {
   showToast,
   showModal,
   isWeixin,
+  normalizeQuerys,
   log
 } from '@/utils'
 import { useLogin } from '@/hooks'
@@ -96,6 +98,7 @@ function MemberIndex(props) {
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
+  const instance = getCurrentInstance()
 
   useEffect(() => {
     if (isLogin) {
@@ -104,8 +107,11 @@ function MemberIndex(props) {
   }, [isLogin])
 
   useEffect(() => {
+    const code = instance.router.params.code
     getMemberCenterConfig()
+    code && getCode(code)
   }, [])
+
 
   // 分享
   useShareAppMessage(async (res) => {
@@ -120,6 +126,10 @@ function MemberIndex(props) {
       path: '/pages/index'
     }
   })
+
+  const getCode = async (code) => {
+    await api.purchase.purchaseBind({ code })
+  }
 
   const getMemberCenterConfig = async () => {
     const [bannerRes, menuRes, redirectRes, pointShopRes] = await Promise.all([
