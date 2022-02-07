@@ -58,6 +58,9 @@ const config = {
   ],
 
   mini: {
+    miniCssExtractPluginOption: {
+      ignoreOrder: true
+    },
     // 图片转换base64
     imageUrlLoaderOption: {
       limit: 0

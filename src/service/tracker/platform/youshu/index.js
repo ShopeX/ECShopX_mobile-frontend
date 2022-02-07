@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import sr from 'sr-sdk-wxapp'
 import S from '@/spx'
-import { tokenParse } from '@/utils'
+import { tokenParse, getExtConfigData } from '@/utils'
 import Base from '../base'
 import actions from './actions'
 import config from './config'
@@ -11,13 +11,7 @@ export default class Youshu extends Base {
 
   constructor (options = {}) {
     super(options)
-    const extConfig = Taro.getExtConfigSync
-      ? Taro.getExtConfigSync()
-      : {
-          appid: process.env.APP_ID,
-          youshutoken: process.env.APP_YOUSHU_TOKEN
-        }
-
+    const extConfig = getExtConfigData()
     config.token = extConfig.youshutoken
     config.appid = extConfig.appid
     console.log('extConfig', config)

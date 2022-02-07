@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
-import { getAppId } from '@/utils'
+import { getAppId, getExtConfigData } from '@/utils'
 import './pclogin.scss'
 
 function parseUrlStr (urlStr) {
@@ -86,11 +86,7 @@ export default class PcAuth extends Component {
   }
 
   render () {
-    const extConfig = Taro.getExtConfigSync
-      ? Taro.getExtConfigSync()
-      : {
-          wxa_name: process.env.APP_MAP_NAME
-        }
+    const extConfig = getExtConfigData()
 
     return (
       <View className='page-wxauth'>

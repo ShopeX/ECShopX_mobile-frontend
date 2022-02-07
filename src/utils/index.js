@@ -11,6 +11,7 @@ import _get from 'lodash/get'
 import _findKey from 'lodash/findKey'
 import _pickBy from 'lodash/pickBy'
 import _keys from 'lodash/keys'
+import _isEmpty from 'lodash/isEmpty'
 import debounce from 'lodash/debounce'
 import throttle from 'lodash/throttle'
 import log from './log'
@@ -656,6 +657,20 @@ function isUndefined (val) {
 const merchantIsvaild = async (parmas) => {
   const { status } = await api.distribution.merchantIsvaild(parmas)
   return status
+}
+
+export function getExtConfigData () {
+  const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
+  if (_isEmpty(extConfig)) {
+    return {
+      appid: process.env.APP_ID,
+      company_id: process.env.APP_COMPANY_ID,
+      wxa_name: process.env.APP_NAME,
+      youshutoken: process.env.APP_YOUSHU_TOKEN
+    }
+  } else {
+    return extConfig
+  }
 }
 
 export {

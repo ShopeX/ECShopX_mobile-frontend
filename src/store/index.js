@@ -27,7 +27,12 @@ export default function configStore (preloadedState = {}) {
     store = configureStore({
       // reducer: rootReducer,
       reducer,
-      middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+      middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+          serializableCheck: {
+            ignoredActions: ['persist/PERSIST']
+          }
+        }).concat(logger),
       preloadedState
     })
     persistStore(store)

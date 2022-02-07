@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import qs from 'qs'
 import S from '@/spx'
-import { isAlipay, isWeixin, isWeb, isMerchantModule } from '@/utils'
+import { isAlipay, isWeixin, isWeb, isMerchantModule, getExtConfigData } from '@/utils'
 import log from '@/utils/log'
 import { HTTP_STATUS } from './consts'
 
@@ -84,9 +84,7 @@ class API {
       company_id: process.env.APP_COMPANY_ID
     }
     if (isWeixin || isAlipay) {
-      const extConfig = Taro.getExtConfigSync
-        ? Taro.getExtConfigSync()
-        : { appid: process.env.APP_ID }
+      const extConfig = getExtConfigData()
       options.appid = extConfig.appid
       if (extConfig.company_id) {
         options.company_id = extConfig.company_id

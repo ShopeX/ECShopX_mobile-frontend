@@ -56,7 +56,7 @@ const sysSlice = createSlice({
   reducers: {
     setSysConfig: (state, { payload }) => {
       const { colorPrimary } = payload
-      const rgb = hex2rgb(colorPrimary).join(',')
+      const rgb = hex2rgb(colorPrimary ? colorPrimary : DEFAULT_THEME.colorPrimary).join(',')
       return {
         ...state,
         ...payload,
