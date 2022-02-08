@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import { SpPage, SpImage, SpButton } from '@/components'
 import api from '@/api'
-import { styleNames, normalizeQuerys } from '@/utils'
+import { styleNames, formatDateTime } from '@/utils'
 import './purchase.scss'
 
 export default class myGroupList extends Component {
@@ -18,27 +18,28 @@ export default class myGroupList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidShow() {
     this.fetch()
   }
 
 
   onShareAppMessage() {
-    const { info, code } = this.state
-    return {
-      title: info.purchase_name,
-      imageUrl: info.ad_pic,
-      path: `/subpages/member/index?code=${code}`
-    }
+    const { info } = this.state
+    return new Promise(async function (resolve) {
+      const data = await api.purchase.purchaseCode()
+      resolve({
+        title: info.purchase_name,
+        imageUrl: info.ad_pic,
+        path: `/subpages/member/index?code=${data.code}`
+      })
+    })
+
   }
 
   async fetch() {
     const data = await api.purchase.purchaseInfo()
-    const { code } = await api.purchase.purchaseCode()
-
     this.setState({
-      info: data,
-      code
+      info: data
     })
   }
 
@@ -90,13 +91,13 @@ export default class myGroupList extends Component {
             </View>
           </View>
         </View>
-        {info.user_type === 'employee' && info.dependents_list && info.dependents_list.length > 0 && <View>
+        {info.user_type === 'employee' && <View>
           <View className='line-wrap'>
             <Text className='line'></Text>
             <Text className='line-title'>全部家属</Text>
             <Text className='line'></Text>
           </View>
-          <View className='list-wrap'>
+          {info.dependents_list && info.dependents_list.length > 0 && <View className='list-wrap'>
             {info.dependents_list.map((item) => {
               return (<View className='list-item' key={item.id}>
                 <SpImage
@@ -108,15 +109,16 @@ export default class myGroupList extends Component {
                 />
                 <View className='list-item-center'>
                   <View className='list-item-name'>{item.username}</View>
-                  <View className='list-item-date'>{item.created}</View>
+                  <View className='list-item-date'>{formatDateTime(item.created * 1000)}</View>
                 </View>
                 <View>
                   <View>使用额度</View>
-                  <View className='list-item-count'>100</View>
+                  <View className='list-item-count'>{item.used_limitfee}</View>
                 </View>
               </View>)
             })}
-          </View>
+          </View>}
+          {info.dependents_list.length === 0 && <View className='centerText'>暂无数据</View>}
         </View>}
 
       </SpPage>

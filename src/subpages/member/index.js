@@ -1,6 +1,7 @@
 import Taro, { useShareAppMessage, getCurrentPages, getCurrentInstance } from '@tarojs/taro'
 import React, { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
+import { SG_SHARE_CODE } from '@/consts'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 
@@ -99,17 +100,20 @@ function MemberIndex(props) {
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const instance = getCurrentInstance()
+  const code = instance.router.params.code
+  code && Taro.setStorageSync(SG_SHARE_CODE, code)
+
 
   useEffect(() => {
     if (isLogin) {
       getMemberCenterData()
+      const storageCode = Taro.getStorageSync(SG_SHARE_CODE)
+      storageCode && getCode(storageCode)
     }
   }, [isLogin])
 
   useEffect(() => {
-    const code = instance.router.params.code
     getMemberCenterConfig()
-    code && getCode(code)
   }, [])
 
 
@@ -127,8 +131,9 @@ function MemberIndex(props) {
     }
   })
 
-  const getCode = async (code) => {
-    await api.purchase.purchaseBind({ code })
+  const getCode = async (storageCode) => {
+    await api.purchase.purchaseBind({ code: storageCode })
+    Taro.removeStorageSync(SG_SHARE_CODE)
   }
 
   const getMemberCenterConfig = async () => {
